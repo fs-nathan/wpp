@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import { Checkbox } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import OfferMemberItem from './OfferMemberItem';
 import './styles.scss';
@@ -18,7 +18,6 @@ function AddOfferMemberModal({
   const { t } = useTranslation();
   const [selected, setSelected] = useState(value);
   const [searchValue, setSearchValue] = useState('');
-
   function onClickDone() {
     onChange(selected)
     setOpen(false);

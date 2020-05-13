@@ -906,5 +906,11 @@
   "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "Chưa có công việc con được khởi tạo Click + để tạo mới công việc con",
   "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện(",
   "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành(",
-  "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt..."
+  "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
+  "ADD_PERSON_HANDLE": "Add member handle",
+  "ADD_PERSON_MONITOR": "Add member monitor",
+  "ADD_DOCUMENT_OFFER" : "Add document",
+  "PERSON_MONITOR" : "Person monitor",
+  "PERSON_HANDLE" : "Person handle",
+  "DETAIL_OFFER" : "Detail offer"
 }

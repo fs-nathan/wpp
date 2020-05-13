@@ -4,6 +4,7 @@ import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSe
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
 import taskReducer from "../views/JobPage/redux/reducers";
+import offerReducer from "../views/OfferPage/redux/reducers";
 import updateSchedule, { initialState as updateScheduleInitialState } from "././calendar/weeklyCalendar/updateSchedule";
 import authentications, { initialState as authenticationsInitialState } from "./authentications";
 import createPersonalRemind, { initialState as createPersonalRemindInitialState } from "./calendar/alarmCalendar/createPersonalRemind";
@@ -135,7 +136,6 @@ import deleteUserRole, { initialState as deleteUserRoleInitialState } from "./us
 import listUserRole, { initialState as listUserRoleInitialState } from "./userRole/listUserRole";
 import updateUserRole, { initialState as updateUserRoleInitialState } from "./userRole/updateUserRole";
 import viewPermissions, { initialState as viewPermissionsInitialState } from "./viewPermissions";
-
 const rootReducer = combineReducers({
   authentications,
   chat,
@@ -262,6 +262,7 @@ const rootReducer = combineReducers({
     sortTask,
   }),
   taskPage: taskReducer,
+  offerPage: offerReducer,
   groupUser: combineReducers({
     searchUser,
     inviteUserJoinGroup,

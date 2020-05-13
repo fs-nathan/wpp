@@ -1227,5 +1227,12 @@
   "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "Chưa có công việc con được khởi tạo Click + để tạo mới công việc con",
   "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện(",
   "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành(",
-  "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt..."
+  "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
+  "MESSAGE_NOT_PERMISSION": "Bạn không có quyền ",
+  "ADD_PERSON_MONITOR": "Thêm người giám sát",
+  "ADD_PERSON_HANDLE": "Thêm người phê duyệt",
+  "ADD_DOCUMENT_OFFER": "Thêm tài liệu",
+  "PERSON_HANDLE": "Người phê duyệt",
+  "PERSON_MONITOR": "Người giám sát",
+  "DETAIL_OFFER": "Chi tiết đề xuất"
 }

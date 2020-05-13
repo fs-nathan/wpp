@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "optical-name-250306"
+    "default": "optical-name-250306",
+    "s": "native-ee67d",
+    "as": "native-ee67d",
+    "e": "native-ee67d"
   }
 }

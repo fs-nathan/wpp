@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { mdiCloudUpload, mdiLaptop } from '@mdi/js';
 import Icon from '@mdi/react';
 import { appendChat, chatFile, onUploading } from 'actions/chat/chat';
@@ -6,6 +5,7 @@ import { file as file_icon } from 'assets/fileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import { humanFileSize } from 'helpers/jobDetail/stringHelper';
 import React, { useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import CustomModal from '../../../../components/CustomModal';
 import './SendFileModal.scss';

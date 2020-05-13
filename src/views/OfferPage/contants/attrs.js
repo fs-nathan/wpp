@@ -1,4 +1,3 @@
-import cls from "../../../helpers/colorPalette";
 export const statistic = {
   offer_of_me_sending: "static.offer_of_me_sending",
   offer_of_me_approved: "static.offer_of_me_approved",
@@ -20,10 +19,15 @@ export const recent = {
 export const labels = {
   overview: "Tổng quan",
   pageTitle: "Đề xuất của bạn",
+  pageTitleOfferByGroup: "Đề xuất theo nhóm",
+  pageTitleOfferByProject: "Đề xuất theo dự án",
+  pageTitleOfferByDepartment: "Đề xuất theo bộ phận",
+  pageTitleOfferDetailOffer: "Chi tiết đề xuất",
   recently: "Gần đây",
   group: "Nhóm",
   project: "Dự án",
   department: "Bộ phận",
+  detail_offer: "Chi tiết đề xuất",
   offer_by_group: "Đề xuất theo nhóm",
   offer_by_project: "Đề xuất theo dự án",
   offer_by_department: "Đề xuất theo bộ phận",
@@ -53,3 +57,9 @@ export const colors = {
   number_offer: "#1155cc",
   number_offer_aprroved: "#ff9800",
 };
+export const action = {
+  UPDATE_OFFER: "UPDATE_OFFER",
+  CREATE_OFFER: "CREATE_OFFER",
+  DELETE_GROUP_OFFER: "DELETE_GROUP_OFFER",
+  HANDLE_OFFER: "HANDLE_OFFER"
+}

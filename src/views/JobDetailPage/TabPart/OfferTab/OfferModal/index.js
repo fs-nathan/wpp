@@ -1,39 +1,85 @@
-import { useTranslation } from 'react-i18next';
-import { Avatar, Button, Chip, IconButton, TextField, Typography } from '@material-ui/core';
+import { Avatar, Button, Chip, Grid, IconButton, TextField, Typography } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { createOffer, deleteDocumentToOffer, updateOffer, uploadDocumentToOffer } from 'actions/taskDetail/taskDetailActions';
+import { deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
+import lodash from 'lodash';
 import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
-import React from 'react';
+import { useSnackbar } from 'notistack';
+import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import { apiService } from '../../../../../constants/axiosInstance';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
 import OfferFile from './OfferFile';
+import DocumentFileModal from './SendFile/DocumentFileModal';
+import SendFileModal from './SendFile/SendFileModal';
 import './styles.scss';
 
 const OfferModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const currentUserId = useSelector(state => state.system.profile.order_user_id);
-  const members = useSelector(state => state.taskDetail.taskMember.member);
+  const currentUserId = useSelector(state => state.system.profile.id);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  // const members = useSelector(state => state.taskDetail.taskMember.member);
+  const [members, setMembers] = useState([])
   const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
-  const listGroupOffer = offers.map(off => ({ value: off.id, label: off.name }))
-  const defaultOffer = { ...DEFAULT_OFFER_ITEM, offer_group_id: listGroupOffer[0], priority: priorityList[0] }
+  const defaultOffer = { ...DEFAULT_OFFER_ITEM, offer_group_id: "", priority: priorityList[0], condition_logic: "OR", condition_logic_member: "OR", file_ids: [] }
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
   const [handlers, setHandlers] = React.useState([])
   const [monitors, setMonitors] = React.useState([])
+  const [openSendFileModal, setOpenSendFileModal] = React.useState(false)
+  const [approves, setApproves] = React.useState([])
+  const [minRateAccept, setMinRateAccept] = React.useState(100)
+  const [conditionLogicMember, setConditionLogicMember] = useState("OR")
+  const [offersGroup, setOffersGroup] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
+  const [openDocumentModal, setOpenDocumentFileModal] = React.useState(false)
+  const [selectFileFromDocument, setSelectFileFromDocument] = React.useState([])
+  /// Mở modal các thành viên sau phải duyệt
+  const [isOpenAddApprove, setOpenAddAppove] = React.useState(false)
   const { item } = props;
   const createId = (item && item.user_create_id) || currentUserId;
   const createUserIndex = findIndex(members, member => member.id === createId);
 
+
+  const fetchMembers = useCallback(async () => {
+    const config = {
+      url: "/list-users",
+      method: "GET"
+    }
+    var users = []
+    const result = await apiService(config)
+    result.data.users.forEach(x => {
+      users = [...users, [...x.users]]
+    })
+    setMembers(lodash.flatten(users).filter(x => x.id !== currentUserId))
+  }, [currentUserId])
+  const fetchOffersGroup = async () => {
+    const config = {
+      url: "/offers/list-group-offer",
+      method: "GET"
+    }
+    const result = await apiService(config)
+    const { offers_group } = result.data
+    const newArray = []
+    offers_group.forEach(e => {
+      newArray.push({ value: e.id, label: e.name })
+    })
+    setOffersGroup(newArray)
+  }
+  /// Khi nào modal open thì load members và group 
+  React.useEffect(() => {
+    fetchMembers()
+    fetchOffersGroup()
+  }, [fetchMembers, props.isOpen])
   React.useEffect(() => {
     if (item) {
       const { user_can_handers, user_monitors,
@@ -53,33 +99,13 @@ const OfferModal = (props) => {
       setTempSelectedItem(item)
     }
   }, [item, members])
-
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
-
-  const handleUploadFileUpdate = files => {
-    // console.log("files:", files);
-
-    // For update
-    if (!files.length) return
-    let payload = new FormData()
-    // Add offer id to form data
-    payload.append("offer_id", tempSelectedItem.offer_id)
-    // console.log('tempSelectItem::::', tempSelectedItem.offer_id);
-
-    // Add each file to form data
-    for (let i = 0; i < files.length; i++) {
-      payload.append("file", files[i], files[i].name)
-    }
-    // Build a callback that allow saga append new file to state array
-    let appendFileCallBack = responseFiles => {
-      setParams("files", [...tempSelectedItem.files, ...responseFiles])
-    }
-    // Call api
-    dispatch(uploadDocumentToOffer(payload, appendFileCallBack, taskId))
-  }
-
+  const filterUserInHandlers = useCallback(() => {
+    const arr = handlers.map(i => members[i])
+    return arr || []
+  })
   const handleDeleteFile = fileId => {
     let removeFileCallBack = () => {
       setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
@@ -94,37 +120,73 @@ const OfferModal = (props) => {
     }
   }
 
-  const handleUploadFileAdd = files => {
-    setParams("files", [...tempSelectedItem.files, ...files])
-  }
 
+  React.useEffect(() => {
+    filterUserInHandlers()
+  }, [filterUserInHandlers, handlers])
+  const handleSendFileModal = ({ files }) => {
+    setParams("files", [...tempSelectedItem.files, ...files])
+    setOpenSendFileModal(false)
+    // setParams("files", [...tempSelectedItem.files, ...files])
+  }
+  const handleDocumentFileModal = ({ files }) => {
+    if (files) {
+      setSelectFileFromDocument([...selectFileFromDocument, ...files])
+      setParams("file_ids", [...tempSelectedItem.file_ids, ...files.map(x => (x.id))])
+    }
+    setOpenSendFileModal(false)
+    setOpenDocumentFileModal(!openDocumentModal)
+  }
   const getFormData = () => {
     let dataCreateOfferFormData = new FormData()
     // add content and task id to form data
     dataCreateOfferFormData.append('title', tempSelectedItem.title)
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
     dataCreateOfferFormData.append('task_id', taskId)
-    dataCreateOfferFormData.append('offer_group_id', get(tempSelectedItem, 'offer_group_id.value'))
+    dataCreateOfferFormData.append('min_rate_accept', minRateAccept)
     dataCreateOfferFormData.append('priority', tempSelectedItem.priority.id)
-    // add each user to form data
-    for (let i = 0; i < handlers.length; i++) {
-      dataCreateOfferFormData.append("user_hander[" + i + "]", members[handlers[i]].id)
-    }
-    for (let i = 0; i < monitors.length; i++) {
-      dataCreateOfferFormData.append("user_monitor[" + i + "]", members[monitors[i]].id)
-    }
+    dataCreateOfferFormData.append("condition_logic_member", conditionLogicMember)
+    dataCreateOfferFormData.append("condition_logic", tempSelectedItem.condition_logic)
+    dataCreateOfferFormData.append("offer_group_id", tempSelectedItem.offer_group_id)
+
+    // add each user to form data    
+    handlers.forEach((value, index) => {
+      dataCreateOfferFormData.append("user_handle[" + index + "]", members[value].id)
+    })
+    monitors.forEach((value, index) => {
+      dataCreateOfferFormData.append("user_monitor[" + index + "]", members[value].id)
+    })
+    approves.forEach((value, index) => {
+      dataCreateOfferFormData.append("member_accepted_important[" + index + "]", members[value].id)
+    })
     // add each file to form data  
+    console.log(tempSelectedItem.files)
     for (let i = 0; i < tempSelectedItem.files.length; i++) {
+      console.log(tempSelectedItem.files[i])
       dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
     }
+    // add file ids to form data
+    tempSelectedItem.file_ids.forEach(id => {
+      dataCreateOfferFormData.append("file_ids", id)
+    })
     return dataCreateOfferFormData;
   }
 
-  const handleCreateOffer = () => {
-    dispatch(createOffer({ data: getFormData(), taskId }))
-    setParams("files", [])
+  const handleCreateOffer = async () => {
+    try {
+      const config = {
+        url: "/offers/personal/create",
+        method: "POST",
+        data: getFormData(),
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
+      await apiService(config)
+      enqueueSnackbar("Create offer successful", { variant: "success" })
+    } catch (err) {
+      enqueueSnackbar(err.message, { variant: "error" })
+    }
+    // setParams("files", [])
   }
-
   function onClickCreateOffer() {
     props.setOpen(false)
     if (tempSelectedItem.content)
@@ -155,13 +217,29 @@ const OfferModal = (props) => {
       setHandlers([...handlers]);
     }
   }
-
-  function openAddHandlersDialog() {
-    setOpenAddHandler(true)
+  function handleDeleteMonitor(i) {
+    return () => {
+      monitors.splice(i, 1)
+      setMonitors([...monitors])
+    }
+  }
+  function handleDeleteApprove(i) {
+    return () => {
+      approves.splice(i, 1)
+      setApproves([...monitors])
+    }
   }
 
+  function openAddHandlersDialog() {
+    dispatch(getMember())
+    setOpenAddHandler(true)
+    filterUserInHandlers()
+  }
   function openAddMonitorsDialog() {
     setOpenAddMonitor(true)
+  }
+  function openAddApproveDialog() {
+    setOpenAddAppove(true)
   }
 
   function validate() {
@@ -169,6 +247,13 @@ const OfferModal = (props) => {
       && handlers.length
       && tempSelectedItem.offer_group_id
       && tempSelectedItem.priority
+  }
+  const selectConditionMember = (e) => {
+    if (e.value == "OR") {
+      setConditionLogicMember("OR")
+    } else {
+      setConditionLogicMember("AND")
+    }
   }
   return (
     <JobDetailModalWrap
@@ -203,9 +288,8 @@ const OfferModal = (props) => {
         />
         <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')}</Typography>
         <CustomSelect
-          options={listGroupOffer}
-          value={tempSelectedItem.offer_group_id}
-          onChange={(groupOffer) => setParams('offer_group_id', groupOffer)}
+          options={offersGroup}
+          onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
         />
         <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}{handlers.length})</Typography>
         <div>
@@ -227,7 +311,7 @@ const OfferModal = (props) => {
             value={handlers}
             onChange={setHandlers}
             members={members}
-            disableIndexes={[...monitors, createUserIndex]}
+            disableIndexes={[...approves, createUserIndex]}
           />
         </div>
         <Typography className="offerModal--title">{t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}{monitors.length})</Typography>
@@ -237,7 +321,7 @@ const OfferModal = (props) => {
               key={index}
               avatar={<Avatar alt="avatar" src={members[index].avatar} />}
               label={members[index].name}
-              onDelete={handleDeleteHandler(index)}
+              onDelete={handleDeleteMonitor(index)}
             />
           )}
           <IconButton
@@ -258,27 +342,118 @@ const OfferModal = (props) => {
         <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_CHON_MUC_DO')}</Typography>
         <CommonPriorityForm
           labels={priorityList}
-          priority={tempSelectedItem.priority ? tempSelectedItem.priority.value : ''}
+          priority={tempSelectedItem.priority.value}
           handleChangeLabel={priorityItem =>
             setParams('priority', priorityItem)
           }
         />
-        <input
-          accept="image/*"
-          className={'offerModal--input__hidden'}
-          id="outlined-button-file"
-          multiple
-          type="file"
-          onChange={e => props.isOffer ? handleUploadFileUpdate(e.target.files) : handleUploadFileAdd(e.target.files)}
-        />
-        <label className="offerModal--attach" htmlFor="outlined-button-file">
-          <Button variant="outlined" component="span" fullWidth className={'classes.button'}>
+        <Typography className="offerModal--title" >Điều kiện được duyệt</Typography>
+        <Grid container spacing={3}>
+          <Grid item xs={7}>
+            <Grid container alignItems="center">
+              <div className="offerModal--input_rate_prefix_1">
+                <div>Tỷ lệ thành viên đồng ý ≥</div>
+              </div>
+              <div className="offerModal--input__rate">
+                <input placeholder={minRateAccept} onChange={(e) => setMinRateAccept(e.target.value)} />
+              </div>
+              <div className="offerModal--input_rate_suffix">
+                <div>%</div>
+              </div>
+
+            </Grid>
+          </Grid>
+          <Grid item xs={1}>
+            <CustomSelect
+              className="offerModal--custom_select"
+              options={[{ label: "Hoặc", value: "OR" }, { label: "Và", value: "AND" }]}
+              placeholder="Hoặc"
+              onChange={(condition_logic) => setParams("condition_logic", condition_logic.value)}
+            />
+          </Grid>
+          {
+            minRateAccept >= 100 && get(tempSelectedItem, "condition_logic") === "OR" &&
+            <>
+              <Grid item xs={7}>
+                <Grid container >
+                  <CustomSelect
+                    options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
+                    onChange={selectConditionMember}
+                    placeholder="Một số thành viên sau đồng ý"
+                  />
+                </Grid>
+              </Grid>
+              <Grid item xs={3}>
+                <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
+                  <Icon size={1} path={mdiPlusCircleOutline} />
+                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                </IconButton>
+                <AddOfferMemberModal
+                  isOpen={isOpenAddApprove}
+                  setOpen={setOpenAddAppove}
+                  value={approves}
+                  onChange={setApproves}
+                  members={filterUserInHandlers()}
+                  disableIndexes={[...monitors, createUserIndex]}
+                />
+              </Grid>
+            </>
+          }
+          {
+            minRateAccept < 100 &&
+            <>
+              <Grid item xs={7}>
+                <Grid container >
+                  <CustomSelect
+                    options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
+                    onChange={(condition_logic_member) => setParams("condition_logic_member", condition_logic_member)}
+                    placeholder="Một số thành viên sau đồng ý"
+                  />
+                </Grid>
+              </Grid>
+              <Grid item xs={3}>
+                <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
+                  <Icon size={1} path={mdiPlusCircleOutline} />
+                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                </IconButton>
+                <AddOfferMemberModal
+                  isOpen={isOpenAddApprove}
+                  setOpen={setOpenAddAppove}
+                  value={approves}
+                  onChange={setApproves}
+                  members={filterUserInHandlers()}
+                  disableIndexes={[...monitors, createUserIndex]}
+                />
+              </Grid>
+            </>
+          }
+          <Grid item xs={12}>
+            <div>
+              {approves.map((index) =>
+                <Chip
+                  key={index}
+                  avatar={<Avatar alt="avatar" src={members[index].avatar} />}
+                  label={members[index].name}
+                  onDelete={handleDeleteApprove(index)}
+                />
+              )}
+            </div>
+          </Grid>
+        </Grid>
+        <label className="offerModal--attach" >
+          <Button variant="outlined" component="span" onClick={() => setOpenSendFileModal(true)} fullWidth className={'classes.button'}>
             <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
         </label>
         {
           tempSelectedItem.files &&
           tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }
+        {
+          selectFileFromDocument &&
+          selectFileFromDocument.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+        }
+        <SendFileModal open={openSendFileModal} setOpen={handleSendFileModal} onClickShareFromLibrary={() => setOpenDocumentFileModal(true)} />
+        <DocumentFileModal open={openDocumentModal} setOpen={handleDocumentFileModal} />
       </React.Fragment>
     </JobDetailModalWrap>
   )

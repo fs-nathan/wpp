@@ -7,5 +7,8 @@ export const OfferPageContext = React.createContext({
   },
   handleExpand: () => {
     console.error("handleExpand");
-  }
+  },
+  setMenulist : () =>{},
+  setTitle : () =>{},
+  setOpenModalOfferByGroup : () =>{}
 });

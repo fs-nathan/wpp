@@ -1,202 +1,292 @@
-import { all, fork, put, take } from "redux-saga/effects";
+import moment from "moment";
+import { put } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
-import { encodeQueryData } from "../utils";
-import {
-  LOADPAGE_TASK,
-  LOADPAGE_TASK_ASSIGN,
-  LOADPAGE_TASK_DUE,
-  LOADPAGE_TASK_ROLE,
-  LOAD_TASK_OVERVIEW,
-  TASK_ASSIGN,
-  TASK_DUE,
-  TASK_OVERVIEW_RECENT,
-  TASK_OVERVIEW_STATISTIC,
-  TASK_ROLE,
-} from "./types";
+import { ADD_MEMBER_HANDLE_ERROR, ADD_MEMBER_HANDLE_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, CREATE_GROUP_OFFER_ERROR, CREATE_GROUP_OFFER_SUCCESS, DELETE_DOCUMENT_OFFER_SUCCESS, DELETE_GROUP_OFFER_SUCCESS, DELETE_MEMBER_HANDLE_SUCCESS, DELETE_MEMBER_MONITOR_ERROR, DELETE_MEMBER_MONITOR_SUCCESS, ENQUEUE_SNACKBAR, LOAD_DETAIL_OFFER, LOAD_DETAIL_OFFER_ERROR, LOAD_DETAIL_OFFER_SUCCESS, LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS, LOAD_OFFER_BY_GROUP_ID_SUCCESS, LOAD_OFFER_BY_PROJECT_ID_SUCCESS, LOAD_SUMMARY_BY_GROUP_SUCCESS, LOAD_SUMMARY_BY_PROJECT_SUCCESS, LOAD_SUMMARY_OVERVIEW_SUCCESS, LOAD_TASK_RECENTLY_SUCCESS, TASK_OFFER_BY_DEPARTMENT, UPDATE_GROUP_OFFER_OFFERPAGE_ERROR, UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS, UPLOAD_DOCUMENT_OFFER_SUCCESS } from "./types";
 
-function* doGetStaticTask(timeRange) {
-  // console.log("PPPP", project_id)
+export function* doGetSummaryByGroup({ payload }) { // lấy list group cột trái route groupbyoffer
   try {
-    const { timeStart, timeEnd, status, priority } = timeRange;
     const config = {
-      url: `/task-statistic?${encodeQueryData({
-        from_time: timeStart,
-        to_time: timeEnd,
-        status,
-        priority,
-      })}`,
-      method: "get",
+      url: `/offers/summary-group?from_date=2020-01-01&to_date=2020-12-01`,
+      method: "GET"
     };
     const result = yield apiService(config);
-    yield put({ type: TASK_OVERVIEW_STATISTIC, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_OVERVIEW_STATISTIC,
-      payload: {
-        error: error.toString(),
-      },
-    });
+    yield put({ type: LOAD_SUMMARY_BY_GROUP_SUCCESS, payload: result.data });
+  } catch (err) { }
+}
+
+export function* doGetTaskRecently() {
+  try {
+    const config = {
+      url: "/offers/recently",
+      method: "GET"
+    };
+    const result = yield apiService(config);
+    yield put({ type: LOAD_TASK_RECENTLY_SUCCESS, payload: result.data });
+  } catch (err) { }
+}
+
+//
+export function* doCreateOfferGroup({ payload }) {
+  try {
+    const { name, description } = payload;
+
+    const config = {
+      url: "/offers/create-group-offer",
+      method: "POST",
+      data: { name, description }
+    };
+    const result = yield apiService(config);
+    yield put({ type: CREATE_GROUP_OFFER_SUCCESS, payload: result.data });
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Create group offers successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: CREATE_GROUP_OFFER_ERROR, payload: err.message });
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
   }
 }
-function* doGetStaticTaskRecent(timeRange) {
-  // console.log("PPPP", project_id)
+export function* doUpdateGroupOffer({ payload }) {
   try {
-    const { status, priority } = timeRange;
+    const { name, description, offer_group_id } = payload;
     const config = {
-      url: `/task-statistic/recently?${encodeQueryData({
-        status,
-        priority,
-      })}`,
-      method: "get",
+      url: "/offers/update-group-offer",
+      method: "PUT",
+      data: { name, description, offer_group_id }
     };
-    const result = yield apiService(config);
-    yield put({ type: TASK_OVERVIEW_RECENT, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_OVERVIEW_RECENT,
-      payload: {
-        error: error.toString(),
-      },
-    });
+    const result = yield apiService(config)
+    yield put({ type: UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS, payload: result.data })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Update group offers successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: UPDATE_GROUP_OFFER_OFFERPAGE_ERROR, payload: err.message })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+
   }
 }
 
-function* doGetDueTasks(timeRange) {
+export function* doLoadOfferByGroupID({ payload }) {
   try {
-    const { status, priority } = timeRange;
+    const { id, startDate, endDate } = payload;
     const config = {
-      url: `/task-statistic/about-to-expire?${encodeQueryData({
-        status,
-        priority,
-      })}`,
-      method: "get",
+      url: `/offers/list-of-group?from_date=${startDate}&to_date=${endDate}&offer_group_id=` + id,
+      method: "GET"
     };
     const result = yield apiService(config);
-    yield put({ type: TASK_DUE, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_DUE,
-      payload: {
-        error: error.toString(),
-      },
-    });
+    yield put({ type: LOAD_OFFER_BY_GROUP_ID_SUCCESS, payload: result.data });
+  } catch (err) {
+    
+  }
+}
+export function* doLoadSummaryByDepartment({ payload }) {
+  try {
+    const { startDate, endDate } = payload
+    const config = {
+      url: `/offers/summary-room?from_date=${startDate}&to_date=${endDate}`,
+      method: "GET"
+    };
+    const result = yield apiService(config);
+    yield put({ type: TASK_OFFER_BY_DEPARTMENT, payload: result.data });
+  } catch (err) {
+
+  }
+}
+export function* doLoadOfferByDepartmentID({ payload }) {
+  try {
+    const { id } = payload;
+    const config = {
+      url:
+        "/offers/list-of-room?from_date=2020-01-01&to_date=2020-12-01&room_id=" +
+        id,
+      method: "GET"
+    };
+    const result = yield apiService(config);
+
+    yield put({ type: LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS, payload: result.data });
+  } catch (err) {
   }
 }
 
-function* doGetAssignTasks({
-  timeStart,
-  timeEnd,
-  typeAssign,
-  status,
-  priority,
-}) {
+export function* doLoadSummaryOverview({ payload }) {
   try {
+    const { timeRange } = payload
+    const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+    const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
     const config = {
-      url: `/task-statistic/assign?${encodeQueryData({
-        from_time: timeStart,
-        to_time: timeEnd,
-        type_assign: typeAssign,
-        status,
-        priority,
-      })}`,
-      method: "get",
-    };
-    const result = yield apiService(config);
-    yield put({ type: TASK_ASSIGN, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_ASSIGN,
-      payload: {
-        error: error.toString(),
-      },
-    });
-  }
-}
-function* doGetRoleTasks({ timeStart, timeEnd, roleId, status, priority }) {
-  try {
-    const config = {
-      url: `/task-statistic/role?${encodeQueryData({
-        from_time: timeStart,
-        to_time: timeEnd,
-        status,
-        priority,
-        role_id: roleId,
-      })}`,
-      method: "get",
-    };
-    const result = yield apiService(config);
-    yield put({ type: TASK_ROLE, payload: result.data });
-  } catch (error) {
-    console.error(error);
-    yield put({
-      type: TASK_ROLE,
-      payload: {
-        error: error.toString(),
-      },
-    });
-  }
-}
-// watchPage
-function* watchLoadTaskOverviewPage() {
-  while (true) {
-    const {
-      payload: { timeRange },
-    } = yield take(LOAD_TASK_OVERVIEW);
-    yield all([fork(doGetStaticTaskRecent, timeRange)]);
-  }
-}
-function* watchLoadTaskPage() {
-  while (true) {
-    const {
-      payload: { timeRange },
-    } = yield take(LOADPAGE_TASK);
-    yield all([fork(doGetStaticTask, timeRange)]);
-  }
-}
-function* watchLoadTaskDuePage() {
-  while (true) {
-    const {
-      payload: { timeRange },
-    } = yield take(LOADPAGE_TASK_DUE);
-    yield all([fork(doGetDueTasks, timeRange)]);
+      url: `/offers/summary?from_date=${startDate}&to_date=${endDate}`,
+      method: "GET"
+    }
+    const result = yield apiService(config)    
+    yield put({ type: LOAD_SUMMARY_OVERVIEW_SUCCESS, payload: result.data })
+  } catch (err) {
+    
   }
 }
 
-function* watchLoadTaskAssignPage() {
-  while (true) {
-    const {
-      payload: { timeStart, typeAssign, timeEnd, status, priority },
-    } = yield take(LOADPAGE_TASK_ASSIGN);
-    yield all([
-      fork(doGetAssignTasks, {
-        timeStart,
-        typeAssign,
-        timeEnd,
-        status,
-        priority,
-      }),
-    ]);
+export function* doDeleteGroupOffer({ payload }) {
+  try {
+    const { id } = payload
+    const config = {
+      url: "/offers/delete-group-offer",
+      method: "DELETE",
+      data: { offer_group_id: id }
+    }
+    yield apiService(config)
+    yield put({ type: DELETE_GROUP_OFFER_SUCCESS, payload: id })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete group offers successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
   }
 }
 
-function* watchLoadTaskRolePage() {
-  while (true) {
-    const {
-      payload: { timeStart, timeEnd, roleId, status, priority },
-    } = yield take(LOADPAGE_TASK_ROLE);
-    yield all([
-      fork(doGetRoleTasks, { timeStart, timeEnd, roleId, status, priority }),
-    ]);
+export function* doLoadDetailOffer({ payload }) {
+  try {
+    const { id } = payload
+    const config = {
+      url: "/offers/detail?offer_id=" + id,
+      method: "GET"
+    }
+    const result = yield apiService(config)    
+    yield put({ type: LOAD_DETAIL_OFFER_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: LOAD_DETAIL_OFFER_ERROR, payload: err.toString() })
   }
 }
-export {
-  watchLoadTaskPage,
-  watchLoadTaskOverviewPage,
-  watchLoadTaskDuePage,
-  watchLoadTaskAssignPage,
-  watchLoadTaskRolePage,
-};
+
+
+
+export function* doUploadDocumentOffer({ payload }) {
+  try {
+    const { data } = payload    
+    const config = {
+      url: "/offers/personal/upload-documents",
+      method: "POST",
+      data: data,
+      headers: { 'Content-Type': 'multipart/form-data' }
+    }
+    const result = yield apiService(config)
+    console.log(result.data)
+    yield put({ type: UPLOAD_DOCUMENT_OFFER_SUCCESS, payload: result.data })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Upload document successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  }
+}
+export function* doDeleteDocumentOffer({ payload }) {
+  try {
+    const { file_id, offer_id } = payload
+    const config = {
+      url: "/offers/personal/delete-documents",
+      method: "POST",
+      data: { file_id, offer_id }
+    }
+    yield apiService(config)
+    yield put({ type: DELETE_DOCUMENT_OFFER_SUCCESS, payload: { file_id } })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete document successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  }
+}
+
+export function* doAddMemberHandle({ payload }) {
+  try {
+    const { offer_id, member_id } = payload
+    const config = {
+      url: "/offers/personal/add-member-handle",
+      method: "POST",
+      data: { offer_id, member_id }
+    }
+    const result = yield apiService(config)
+    yield put({ type: ADD_MEMBER_HANDLE_SUCCESS, payload: result.data })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Add member handle successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: ADD_MEMBER_HANDLE_ERROR })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  }
+}
+export function* doDeleteMemberHandle({ payload }) {
+  try {
+    const { offer_id, member_id } = payload
+    const config = {
+      url: "/offers/personal/remove-member-handle",
+      method: "POST",
+      data: { offer_id, member_id }
+    }
+    yield apiService(config)
+    yield put({ type: DELETE_MEMBER_HANDLE_SUCCESS, payload: member_id })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete member handle successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  }
+}
+///
+
+export function* doAddMemberMonitor({ payload }) {
+  try {
+    const { offer_id, member_id } = payload
+    const config = {
+      url: "/offers/personal/add-member-monitor",
+      method: "POST",
+      data: { offer_id, member_id }
+    }
+    const result = yield apiService(config)
+    yield put({ type: ADD_MEMBER_MONITOR_SUCCESS, payload: result.data })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Add member monitor successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  }
+}
+export function* doDeleteMemberMonitor({ payload }) {
+  try {
+    const { offer_id, member_id } = payload
+    const config = {
+      url: "/offers/personal/remove-member-monitor",
+      method: "POST",
+      data: { offer_id, member_id }
+    }
+    yield apiService(config)
+    yield put({ type: DELETE_MEMBER_MONITOR_SUCCESS, payload: member_id })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete member monitor successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: DELETE_MEMBER_MONITOR_ERROR, payload: err.message })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  }
+}
+
+export function* doHandleOffer({ payload }) {
+  try {
+
+    const { content, offer_id, status } = payload
+    const config = {
+      url: "/offers/personal/handle",
+      method: "POST",
+      data: { offer_id, status, content }
+    }
+    yield apiService(config)
+    yield put({ type: LOAD_DETAIL_OFFER, payload: { id: offer_id } })
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Handle offer successful", options: { variant: "success" } } })
+  } catch (err) {
+    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  }
+}
+export function* doLoadSummaryProject() {
+  try {
+    const config = {
+      url: "/offers/summary-project?from_date=2020-01-01&to_date=2020-12-01",
+      method: "GET",
+    }
+    const result = yield apiService(config)
+    yield put({ type: LOAD_SUMMARY_BY_PROJECT_SUCCESS, payload: result.data })
+  } catch (err) {
+
+  }
+}
+export function* doLoadOfferByProjectID({ payload }) {
+  try {
+    const { startDate, endDate, id } = payload
+    const config = {
+      url: `/offers/list-of-project?from_date=${startDate}&to_date=${endDate}&project_id=` + id
+    }
+    const result = yield apiService(config)
+    yield put({ type: LOAD_OFFER_BY_PROJECT_ID_SUCCESS, payload: result.data })
+
+  } catch (err) {
+
+  }
+}
