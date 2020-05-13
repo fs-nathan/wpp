@@ -160,7 +160,7 @@ function DocumentsTable({
     setIsSelectedAll(isAll);
   }, [listData, selectedFiles, setIsSelectedAll]);
 
-  console.log('DocumentsTable')
+  // console.log('DocumentsTable')
 
   return (<Table className="ShareFromLibraryModal--table-container" >
     <TableHead className="ShareFromLibraryModal--table-header" >
@@ -173,7 +173,7 @@ function DocumentsTable({
         </TableCell>
         <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
         <TableCell className="ShareFromLibraryModal--TableCell" >
-          {t('Tên')}
+          {t('LABEL_CHAT_TASK_TEN')}
           <IconButton size="small" onClick={() => setSorted(!isSorted)}>
             <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
           </IconButton>
