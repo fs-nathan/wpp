@@ -1,6 +1,6 @@
 import { getEmotions, getGirdListTask, getListStickersRequest } from 'actions/chat/chat';
 import { detailStatus } from 'actions/project/setting/detailStatus';
-import { JOIN_CHAT_EVENT } from 'constants/actions/chat/chat';
+import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
 import last from 'lodash/last';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -75,6 +75,10 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
       dispatch(detailStatus({ projectId }));
+      const customEvent = new CustomEvent(JOIN_PROJECT_EVENT, { detail: projectId });
+      requestAnimationFrame(() => {
+        window.dispatchEvent(customEvent);
+      })
     }
   }, [dispatch, projectId, userId]);
 

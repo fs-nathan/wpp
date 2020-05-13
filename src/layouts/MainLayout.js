@@ -1,6 +1,6 @@
 import { appendChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
 import { updateProjectChat } from "actions/taskDetail/taskDetailActions";
-import { JOIN_CHAT_EVENT } from 'constants/actions/chat/chat';
+import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -114,6 +114,7 @@ function MainLayout({
   updateProjectChat,
   taskDetails = {},
   userId = '',
+  language = 'vi',
   getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
@@ -121,13 +122,6 @@ function MainLayout({
   actionChangeNumMessageNotView
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
-
-  const handleNewChat = (data) => {
-    console.log('handleNewChat', data, taskDetails.uuid)
-    if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
-      appendChat({ data_chat: data })
-    }
-  }
 
   function handleReactEmotion(data) {
     // console.log('handleReactEmotion', data)
@@ -142,13 +136,6 @@ function MainLayout({
   function handleViewChat(data) {
     console.log('handleViewChat', data)
     // getViewedChatSuccess(data)
-  }
-
-  function handleChatInProject(data) {
-    console.log('handleChatInProject', data)
-    const { user_create_id } = data;
-    data.new_chat = user_create_id === userId ? 0 : 1;
-    updateProjectChat(data)
   }
 
   useEffect(() => {
@@ -175,10 +162,18 @@ function MainLayout({
         })
       }
 
+      function joinProject({ detail }) {
+        socket.emit('WP_JOIN_PROJECT', {
+          project_id: detail
+        })
+      }
+
       window.addEventListener(JOIN_CHAT_EVENT, joinChat);
+      window.addEventListener(JOIN_PROJECT_EVENT, joinProject);
       return () => {
         console.log('close socket')
         window.removeEventListener(JOIN_CHAT_EVENT, joinChat);
+        window.removeEventListener(JOIN_PROJECT_EVENT, joinProject);
         socket.close();
       }
     }
@@ -186,15 +181,30 @@ function MainLayout({
   }, []);
 
   useEffect(() => {
+    function handleChatInProject(data) {
+      console.log('handleChatInProject', data)
+      const { user_create_id } = data;
+      data.new_chat = user_create_id === userId ? 0 : 1;
+      data.content = data.content[language];
+      updateProjectChat(data)
+    }
+
     socket.on('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
     return () => {
       socket.off('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
     }
     // eslint-disable-next-line
-  }, [userId])
+  }, [userId, language])
 
   useEffect(() => {
     console.log('listen chat')
+    const handleNewChat = (data) => {
+      console.log('handleNewChat', data, taskDetails.uuid)
+      if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
+        appendChat({ data_chat: data })
+      }
+    }
+
     socket.on('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
     return () => {
       console.log('close socket chat')
@@ -303,6 +313,7 @@ export default connect(
   state => ({
     taskDetails: state.taskDetail.detailTask.taskDetails,
     userId: state.system.profile.id,
+    language: state.system.profile.language,
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,
     isDocumentDetail: state.system.isDocumentDetail,

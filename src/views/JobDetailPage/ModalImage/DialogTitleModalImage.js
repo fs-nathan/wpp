@@ -3,6 +3,7 @@ import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import CloseIcon from '@material-ui/icons/Close';
 import { mdiDownload, mdiInformation, mdiRotateLeft, mdiRotateRight, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
+import { actionDownloadFile } from 'actions/documents';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -64,11 +65,7 @@ const DialogTitleModalImage = withStyles(styles)(props => {
     ...other } = props;
 
   function onClickDownload() {
-    const link = document.createElement('a');
-    link.href = image.url;
-    link.download = image.name;
-    link.target = '_blank';
-    link.click();
+    actionDownloadFile(image)
   }
 
   return (

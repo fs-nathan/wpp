@@ -2,6 +2,7 @@ import { Avatar } from '@material-ui/core';
 import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showImagesList } from 'actions/chat/chat';
+import { actionDownloadFile } from 'actions/documents';
 import { openDocumentDetail } from 'actions/system/system';
 import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
@@ -65,13 +66,9 @@ const FileMessage = ({
   const groupActiveColor = useSelector(currentColorSelector)
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
-  function onClickDownload(url, name) {
+  function onClickDownload(file) {
     return () => {
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = name;
-      link.target = '_blank';
-      link.click();
+      actionDownloadFile(file)
     }
   }
 
@@ -146,10 +143,13 @@ const FileMessage = ({
               {chat_parent &&
                 <TextMessage {...chat_parent} isReply></TextMessage>
               }
-              <div className="FileMessage--files" onClick={onClickFile(file, i)}>
+              <div className="FileMessage--files">
                 <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
+                  onClick={onClickFile(file, i)}
                   src={file.file_icon} alt="file-icon"></img>
-                <div className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
+                <div
+                  onClick={onClickFile(file, i)}
+                  className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
                   {file.name}
                   <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
                     {getFileType(file.name)} - {file && file.size}
@@ -164,7 +164,7 @@ const FileMessage = ({
                   }
                 </div>
                 <div className="FileMessage--downloadButton"
-                  onClick={onClickDownload(file.url, file.name)}>
+                  onClick={onClickDownload(file)}>
                   <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
                 </div>
               </div>
