@@ -23,8 +23,8 @@ async function doMemberProject({ projectId }) {
 
 function* memberProject(action) {
   try {
-    const { member_added: membersAdded, member_frees: membersFree } = yield call(doMemberProject, action.options);
-    yield put(memberProjectSuccess({ membersAdded, membersFree }, action.options));
+    const { member_added: membersAdded, member_frees: membersFree, total_task: totalTask } = yield call(doMemberProject, action.options);
+    yield put(memberProjectSuccess({ membersAdded, membersFree, totalTask }, action.options));
     CustomEventEmitter(MEMBER_PROJECT.SUCCESS);
   } catch (error) {
     yield put(memberProjectFail(error, action.options));

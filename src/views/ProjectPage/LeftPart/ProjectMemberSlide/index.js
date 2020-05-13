@@ -29,9 +29,9 @@ function ProjectMemberSlide({
 
   const newMembers = {
     ...members,
-    members: filter(
-      members.members,
-      member => get(member, 'name').toLowerCase().includes(searchPatern.toLowerCase()),
+    'members': filter(
+      get(members, 'members', []),
+      member => get(member, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()),
     ),
   }
 
