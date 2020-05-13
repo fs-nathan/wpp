@@ -40,5 +40,7 @@
 }
 .views_HomePage___right {
   grid-area: right;
-  height: 100vh;
+  margin-top: -300px;
+  padding-top: 300px;
+  /* height: 100vh; */
 }
