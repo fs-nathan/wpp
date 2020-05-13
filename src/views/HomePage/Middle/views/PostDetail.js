@@ -44,6 +44,7 @@ const CommentList = React.memo(({ comments = emptyArray, onReplyClick }) => {
         <Message
           key={i}
           message={c}
+          comments={c.comments}
           onReplyClick={c.id ? () => onReplyClick(c) : undefined}
         ></Message>
       ))}
@@ -54,7 +55,10 @@ const profileSelector = (state) => state.system.profile;
 
 const CommentListContainer = () => {
   const [reply, setReply] = useState();
-  const [newComments, setNewComments] = useState([]);
+  const [newComments, setNewComments] = useState({
+    default: [],
+  });
+
   const profile = useSelector(profileSelector);
   const { t } = useTranslation();
   const { id, inputId, number_comment } = useContext(PostContext);
@@ -62,16 +66,35 @@ const CommentListContainer = () => {
   const handleComment = useCallback(
     (value) => {
       const asyncId = Date.now();
-      setNewComments([
-        ...newComments,
-        {
-          asyncId,
-          parent: reply,
-          content: value,
-          user_create_name: profile.name,
-          user_create_avatar: profile.avatar,
-        },
-      ]);
+      if (!reply) {
+        setNewComments({
+          ...newComments,
+          default: [
+            ...newComments.default,
+            {
+              asyncId,
+              parent: reply,
+              content: value,
+              user_create_name: profile.name,
+              user_create_avatar: profile.avatar,
+            },
+          ],
+        });
+      } else {
+        setNewComments({
+          ...newComments,
+          [reply.id]: [
+            ...(newComments[reply.id] || emptyArray),
+            {
+              asyncId,
+              content: value,
+              user_create_name: profile.name,
+              user_create_avatar: profile.avatar,
+            },
+          ],
+        });
+      }
+
       setReply(undefined);
       handleDispatchAsyncAction({
         asyncId,
@@ -114,27 +137,29 @@ const CommentListContainer = () => {
     asyncId && setasyncIds([asyncId, ...asyncIds]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [asyncId]);
-  const { comments, currentCommentNumber } = useSelector((state) => {
-    return asyncIds
-      .map((asyncId) => get(state, ["apiCall", asyncId], emptyObject))
-      .reduce(
-        (result, value) => {
-          const comments = get(value, ["data", "comments"], emptyArray);
-          result.comments = [...result.comments, ...[...comments].reverse()];
-          result.currentCommentNumber =
-            result.currentCommentNumber +
-            comments.length +
-            comments.reduce((res, val) => {
-              return res + get(val, commentAttr.total_sub_comment, 0);
-            }, 0);
-          return result;
-        },
-        {
-          comments: [],
-          currentCommentNumber: 0,
-        }
-      );
-  });
+  const { comments = emptyArray, currentCommentNumber } = useSelector(
+    (state) => {
+      return asyncIds
+        .map((asyncId) => get(state, ["apiCall", asyncId], emptyObject))
+        .reduce(
+          (result, value) => {
+            const comments = get(value, ["data", "comments"], emptyArray);
+            result.comments = [...result.comments, ...[...comments].reverse()];
+            result.currentCommentNumber =
+              result.currentCommentNumber +
+              comments.length +
+              comments.reduce((res, val) => {
+                return res + get(val, commentAttr.total_sub_comment, 0);
+              }, 0);
+            return result;
+          },
+          {
+            comments: [],
+            currentCommentNumber: 0,
+          }
+        );
+    }
+  );
   return (
     <>
       {number_comment > currentCommentNumber && (
@@ -168,20 +193,30 @@ const CommentListContainer = () => {
           </Typography>
         </Box>
       )}
-      <CommentList {...{ comments }} onReplyClick={handleReplyClick} />
-      {newComments.map((c, i) => (
+      <CommentList
+        {...{
+          comments: comments.map((c) => ({
+            ...c,
+            comments: newComments[c.id],
+          })),
+        }}
+        onReplyClick={handleReplyClick}
+      />
+      {newComments.default.map((c, i) => (
         <AsyncTracker asyncId={c.asyncId}>
           {({ data: { data_comment } = { data_comment: emptyObject } }) => {
             const comment = {
               ...c,
               ...data_comment,
             };
+            const comments = newComments[comment.id];
             return (
               <Message
                 key={i}
                 onReplyClick={
                   comment.id ? () => handleReplyClick(comment) : undefined
                 }
+                comments={comments}
                 message={comment}
               ></Message>
             );

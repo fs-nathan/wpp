@@ -2,7 +2,12 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { get } from "views/JobPage/utils";
 import { createAsyncAction, createPostAsyncAction } from "./apiCall/utils";
-import { listcreate, listremove, mapPayloadToState } from "./listReducer";
+import {
+  listcreate,
+  listremove,
+  listupdate,
+  mapPayloadToState,
+} from "./listReducer";
 const rootPath = "/setting-group/home";
 
 export const types = {
@@ -29,6 +34,16 @@ const deleteCategoryList = createAction(
     };
   }
 );
+const updateCategory = createAction(types.categoryListUpdated, function prepare(
+  data
+) {
+  return {
+    payload: data.data,
+    meta: {
+      action: listupdate(data.data),
+    },
+  };
+});
 const addCategoryList = createAction(
   types.categoryListUpdated,
   function prepare(data) {
@@ -49,6 +64,16 @@ export const createPostCategory = ({ name, logo }) => {
       data: { name, logo },
     },
     success: addCategoryList,
+  });
+};
+export const updatePostCategory = ({ name, logo, category_id }) => {
+  return createPostAsyncAction({
+    config: {
+      url: "/post-category/update",
+      method: "post",
+      data: { name, logo, category_id },
+    },
+    success: updateCategory,
   });
 };
 export const deletePostCategory = ({ category_id }) => {

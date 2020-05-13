@@ -23,6 +23,10 @@ export const PostCreator = () => {
     (cate) => {
       setModal(
         <Dialog
+          id="PostCreator"
+          PaperProps={{
+            tabIndex: -1,
+          }}
           onClose={handleClose}
           fullWidth={true}
           maxWidth={"sm"}
@@ -70,6 +74,7 @@ export const PostCreator = () => {
                 ])(cate);
                 return (
                   <Chip
+                    className="comp_PostCreator__chip"
                     key={id}
                     avatar={<Avatar alt={name} src={logo} />}
                     label={name}

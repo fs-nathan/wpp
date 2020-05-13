@@ -50,6 +50,7 @@ export const Statistic = ({
             {data.map((item, i) => {
               return (
                 <ButtonBase
+                  title={item.name}
                   onClick={() => {
                     history.push(routes.category.path.replace(":id", item.id));
                   }}

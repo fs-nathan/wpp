@@ -1,20 +1,25 @@
 import { combineReducers, createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, toFormData } from "views/JobPage/utils";
-import { createAsyncAction, createListModule, createPostAsyncAction } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/utils";
+import {
+  createAsyncAction,
+  createListModule,
+  createPostAsyncAction,
+} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/utils";
 
-const rootPath = "posts";
+const rootPath = "home";
 export const types = {
-  homepage: `homepage`,
-  highLight: `highLight`,
-  statistic: "statistic",
+  homepage: `home_postList`,
+  highLight: `home_highLight`,
+  statistic: "home_statistic",
 };
 const post = createListModule(types.homepage);
-export const loadPostList = ({ title,category_id  } = {}) => {
+export const loadPostList = ({ title, category_id } = {}) => {
   return createAsyncAction({
     config: {
       url: `/posts/get-list?${encodeQueryData({
-        search_data: title,category_id 
+        search_data: title,
+        category_id,
       })}`,
     },
     success: createAction(post.actions.listcreate.type, function prepare(data) {
@@ -37,11 +42,12 @@ export const loadPostById = ({ post_id }) => {
     }),
   });
 };
-export const loadMorePostList = ({ title,category_id , page } = {}) => {
+export const loadMorePostList = ({ title, category_id, page } = {}) => {
   return createAsyncAction({
     config: {
       url: `/posts/get-list?${encodeQueryData({
-        search_data: title,category_id ,
+        search_data: title,
+        category_id,
         page,
       })}`,
     },

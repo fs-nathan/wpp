@@ -5,12 +5,11 @@ import {
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
 import { fork, put, take } from "redux-saga/effects";
-import { get, loginlineParams } from "views/JobPage/utils";
+import { get } from "views/JobPage/utils";
 import { apiCallFailure, apiCallSuccess } from "./actions";
 import { API_CALL } from "./types";
 
 function* doAsync(action) {
-  loginlineParams(action);
   const {
     config,
     success,
