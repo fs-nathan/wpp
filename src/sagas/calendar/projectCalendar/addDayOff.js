@@ -32,6 +32,7 @@ function* projectScheduleAddDayOff(action) {
   } catch (error) {
     yield put(projectScheduleAddDayOffFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+    CustomEventEmitter(PROJECT_SCHEDULE_ADD_DAY_OFF);
   }
 }
 

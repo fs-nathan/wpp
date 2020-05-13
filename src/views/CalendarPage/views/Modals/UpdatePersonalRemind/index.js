@@ -32,7 +32,7 @@ const DEFAULT_DATA = {
 
 function UpdatePersonalRemind({
   open, setOpen, onConfirm, remindCategories,
-  members, categoryID, remind
+  members, categoryID, remind, isLoading = false
 }) {
 
   const { t } = useTranslation();
@@ -93,6 +93,7 @@ function UpdatePersonalRemind({
         confirmRender={() => t('views.calendar_page.modal.update_personal_remind.title')}
         onConfirm={() => handleOnConfirm()}
         maxWidth='sm'
+        actionLoading={isLoading}
       >
         <Container>
           <Box className="remind_group_container">

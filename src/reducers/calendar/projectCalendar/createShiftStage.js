@@ -1,8 +1,9 @@
-import { GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_DAY_FAIL, GROUP_SCHEDULE_ADD_WORKING_DAY_SUCCESS } from '../../../constants/actions/calendar/projectCalendar';
+import { GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_FAIL, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_SUCCESS } from '../../../constants/actions/calendar/projectCalendar';
 
 export const initialState = {
   data: {
-    workDays: null,
+    shifts: null,
+    stage_id: null
   },
   error: null,
   loading: false,
@@ -10,14 +11,13 @@ export const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case GROUP_SCHEDULE_ADD_WORKING_DAY:
+    case GROUP_SCHEDULE_CREATE_SHIFT_STAGE:
       return {
         ...state,
         error: null,
-        data: null,
         loading: action.quite ? false : true,
       };
-    case GROUP_SCHEDULE_ADD_WORKING_DAY_SUCCESS:
+    case GROUP_SCHEDULE_CREATE_SHIFT_STAGE_SUCCESS:
       return {
         ...state,
         ...initialState,
@@ -25,12 +25,11 @@ function reducer(state = initialState, action) {
         error: null,
         loading: false,
       };
-    case GROUP_SCHEDULE_ADD_WORKING_DAY_FAIL:
+    case GROUP_SCHEDULE_CREATE_SHIFT_STAGE_FAIL:
       return {
         ...state,
         ...initialState,
         error: action.error,
-        data: null,
         loading: false,
       };
     default:

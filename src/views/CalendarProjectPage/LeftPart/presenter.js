@@ -1,4 +1,4 @@
-import { ListItemText, Menu, MenuItem } from '@material-ui/core';
+import { Box, ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { mdiCalendar, mdiChevronLeft, mdiDotsVertical, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 import { Primary, StyledList, StyledListItem } from 'components/CustomList';
@@ -26,10 +26,13 @@ function CalendarProjectLeftPartPresenter({
   const history = useHistory();
   const params = useParams();
   const [menuAnchor, setMenuAnchor] = React.useState();
+  const [onHover, setOnHover] = React.useState({ id: null });
   const [openEditModal, setOpenEditModal] = React.useState(false);
+  const [selectedItem, setSelectedItem] = React.useState();
 
-  function doOpenMenu(anchorEl) {
-    setMenuAnchor(anchorEl)
+  function doOpenMenu(anchorEl, item) {
+    setMenuAnchor(anchorEl);
+    setSelectedItem(item);
   }
 
   return (
@@ -58,11 +61,13 @@ function CalendarProjectLeftPartPresenter({
           </Banner>
           <StyledList>
             {groupSchedules.data.map((item, index) => (
-              <React.Fragment key={index}>
+              <Box key={index}>
                 <StyledListItem
                   to={Routes.CALENDAR_PROJECT.replace(":scheduleID", get(item, "id", ""))}
                   component={Link}
                   className={`${params.scheduleID == get(item, "id", "") ? "item-actived" : ""}`}
+                  onMouseEnter={() => setOnHover({ id: item.id })}
+                  onMouseLeave={() => setOnHover({ id: null })}
                 >
                   <Icon
                     className="view_CaledarProjectPageLeftPart_List_iconLeft"
@@ -82,19 +87,24 @@ function CalendarProjectLeftPartPresenter({
                     }
                   />
                   {
-                    item.can_modify && (
+                    <div
+                      onClick={evt => doOpenMenu(evt.currentTarget, item)}
+                    >
                       <abbr title={t('IDS_WP_MORE')}>
-                        <Icon
-                          path={mdiDotsVertical}
-                          size={1.4}
-                          color={item.color || "rgba(0, 0, 0, 0.54)"}
-                          onClick={evt => doOpenMenu(evt.currentTarget)}
-                        />
+                        {
+                          onHover.id === item.id && (
+                            <Icon
+                              path={mdiDotsVertical}
+                              size={1}
+                              color={item.color || "rgba(0, 0, 0, 0.54)"}
+                            />
+                          )
+                        }
                       </abbr>
-                    )
+                    </div>
                   }
                 </StyledListItem>
-              </React.Fragment>
+              </Box>
             ))}
           </StyledList>
           <Menu
@@ -108,22 +118,32 @@ function CalendarProjectLeftPartPresenter({
               horizontal: 'right'
             }}
           >
-            <MenuItem
-              onClick={evt => {
-                setOpenEditModal(true);
-                setMenuAnchor(null);
-              }}
-            >
-              {t("views.calendar_page.right_part.edit")}
-            </MenuItem>
-            <MenuItem
-              onClick={evt => {
-                setMenuAnchor(null);
-                handleDeleteGroup(params.scheduleID);
-              }}
-            >
-              {t("views.calendar_page.right_part.delete")}
-            </MenuItem>
+            {
+              havePermission && (
+                <>
+                  <MenuItem
+                    onClick={evt => {
+                      setOpenEditModal(true);
+                      setMenuAnchor(null);
+                    }}
+                  >
+                    {t("views.calendar_page.right_part.edit")}
+                  </MenuItem>
+                  {
+                    get(selectedItem, "can_delete", false) && (
+                      <MenuItem
+                        onClick={evt => {
+                          setMenuAnchor(null);
+                          handleDeleteGroup(params.scheduleID);
+                        }}
+                      >
+                        {t("views.calendar_page.right_part.delete")}
+                      </MenuItem>
+                    )
+                  }
+                </>
+              )
+            }
           </Menu>
         </LeftSideContainer>
       </React.Fragment>

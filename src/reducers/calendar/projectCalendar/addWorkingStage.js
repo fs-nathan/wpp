@@ -2,7 +2,7 @@ import { GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_ADD_WORKING_STAGE_FAIL
 
 export const initialState = {
   data: {
-    stage: [],
+    stage: null,
   },
   error: null,
   loading: false,

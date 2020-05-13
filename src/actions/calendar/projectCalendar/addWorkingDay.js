@@ -8,11 +8,11 @@ export const projectScheduleAddWorkingDay = ({ scheduleGroupID, dateStart, dateE
   }
 });
 
-export const projectScheduleAddWorkingDaySuccess = ({ scheduleGroup }, options) => ({
+export const projectScheduleAddWorkingDaySuccess = ({ workDays }, options) => ({
   type: GROUP_SCHEDULE_ADD_WORKING_DAY_SUCCESS,
   options,
   data: {
-    scheduleGroup
+    workDays
   }
 });
 

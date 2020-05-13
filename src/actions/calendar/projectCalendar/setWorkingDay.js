@@ -8,11 +8,11 @@ export const setWorkingDays = ({ scheduleGroupID, workingDays }, quite = false) 
   },
 });
 
-export const setWorkingDaysSuccess = ({ schedule_group }, options) => ({
+export const setWorkingDaysSuccess = ({ scheduleGroup }, options) => ({
   type: GROUP_SCHEDULE_SET_WORKING_DAY_SUCCESS,
   options,
   data: {
-    schedule_group
+    scheduleGroup
   }
 });
 

@@ -25,8 +25,8 @@ async function doDeleteShiftStage({ scheduleGroupID, stageID, shiftID }) {
 
 function* projectScheduleDeleteShiftStage(action) {
   try {
-    const { shifts: shifts } = yield call(doDeleteShiftStage, action.options);
-    yield put(deleteShiftStageSuccess({ shifts }, action.options));
+    const { shifts: shifts, stage_id: stage_id } = yield call(doDeleteShiftStage, action.options);
+    yield put(deleteShiftStageSuccess({ shifts, stage_id }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE);
   } catch (error) {
