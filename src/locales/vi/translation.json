@@ -1252,11 +1252,11 @@
   "LABEL_CHAT_TASK_GHIM_CONG_VIEC": "Ghim công việc",
   "LABEL_CHAT_TASK_NOI_DUNG": "Nội dung",
   "LABEL_CHAT_TASK_TAT_CA_COUNT": "Tất cả ({{allTask}})",
-  "LABEL_CHAT_TASK_DANG_CHO_COUNT": "Đang chờ {{task_waiting}})",
+  "LABEL_CHAT_TASK_DANG_CHO_COUNT": "Đang chờ ({{task_waiting}})",
   "LABEL_CHAT_TASK_DANG_LAM_COUNT": "Đang làm ({{task_doing}})",
   "LABEL_CHAT_TASK_HOAN_THANH_COUNT": "Hoàn thành ({{task_complete}})",
   "LABEL_CHAT_TASK_QUA_HAN_COUNT": "Quá hạn ({{task_expired}})",
-  "LABEL_CHAT_TASK_TAM_DUNG_COUNT": "Tạm dừng ({{task_stop}}",
+  "LABEL_CHAT_TASK_TAM_DUNG_COUNT": "Tạm dừng ({{task_stop}})",
   "LABEL_CHAT_TASK_VIEC": "({{task}} việc)",
   "LABEL_CHAT_TASK_CHINH_SUA_VAI_TRO": "Chỉnh sửa vai trò",
   "LABEL_CHAT_TASK_TAO_VAI_TRO": "Tạo vai trò",
@@ -1265,5 +1265,9 @@
   "LABEL_CHAT_TASK_DANG_GUI": "Đang gửi...",
   "LABEL_CHAT_TASK_DA_GUI": "Đã gửi",
   "LABEL_CHAT_TASK_XEM_LUC": "Xem lúc {{viewed_at}}",
-  "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Tài liệu đính kèm"
+  "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Tài liệu đính kèm",
+  "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI": "{{name}} đã tạo công việc mới",
+  "LABEL_CHAT_TASK_TIEN_DO_FROM_TO": "Tiến độ: {{start_date}} - {{end_date}}",
+  "LABEL_CHAT_TASK_LUC_NGAY": "Lúc {{time_remind}} ngày {{date_remind}} - {{remind}}",
+  "LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO": "Nhắc theo tiến độ {{remind}}"
 }

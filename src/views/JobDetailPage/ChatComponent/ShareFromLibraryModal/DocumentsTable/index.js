@@ -8,7 +8,7 @@ import { FileType } from 'components/FileType';
 import MoreAction from 'components/MoreAction/MoreAction';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import { findIndex, uniq } from 'lodash';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_ITEM } from '../MenuList';
@@ -151,15 +151,23 @@ function DocumentsTable({
     }
   };
 
+  const [isSelectedAll, setIsSelectedAll] = useState(false);
+
+  useEffect(() => {
+    const isAll = listData.filter(({ type }) => type !== 'folder').length > 0
+      && listData.every(({ id, type }) => type === 'folder'
+        || findIndex(selectedFiles, ['id', id]) !== -1)
+    setIsSelectedAll(isAll);
+  }, [listData, selectedFiles, setIsSelectedAll]);
+
+  console.log('DocumentsTable')
+
   return (<Table className="ShareFromLibraryModal--table-container" >
     <TableHead className="ShareFromLibraryModal--table-header" >
       <TableRow className="ShareFromLibraryModal--TableRow" >
         <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" >
           <Checkbox color="primary"
-            checked={
-              listData.filter(({ type }) => type !== 'folder').length > 0
-              && listData.every(({ id, type }) => type === 'folder'
-                || findIndex(selectedFiles, ['id', id]) !== -1)}
+            checked={isSelectedAll}
             onClick={selectAll}
           />
         </TableCell>

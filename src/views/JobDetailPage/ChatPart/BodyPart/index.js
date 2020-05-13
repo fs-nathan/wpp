@@ -102,10 +102,10 @@ const BodyPart = props => {
 
   const {
     date_create,
-    name,
+    name = '',
     description,
-    start_date,
-    end_date,
+    start_date = '',
+    end_date = '',
     user_create = {},
   } = detailTask || {}
   useEffect(() => {
@@ -214,9 +214,9 @@ const BodyPart = props => {
                     src={user_create.avatar}
                     className="bodyChat--projectAvatar"
                   />
-                  <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
+                  <div className="bodyChat--notifyName">{t('LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI', { name: user_create.name || '' })}</div>
                   <div className="bodyChat--projectName">{name}</div>
-                  <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
+                  <div className="bodyChat--projectProgress">{t('LABEL_CHAT_TASK_TIEN_DO_FROM_TO', { start_date, end_date })}</div>
                   <button onClick={onClickCreateMember}
                     className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
                 </div>

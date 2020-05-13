@@ -34,6 +34,7 @@ export const initialState = {
   imagesList: [],
   selectedImage: 0,
   createUser: {},
+  pinnedRemind: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -269,6 +270,15 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.imagesList = images;
       draft.selectedImage = selected;
       draft.createUser = user;
+      break;
+    }
+    case actionTypes.GET_DATA_PIN_ON_TASK_CHAT_SUCCESS: {
+      const { payload } = action;
+      draft.pinnedRemind = payload.data_pin.remind;
+      break;
+    }
+    case actionTypes.GET_DATA_PIN_ON_TASK_CHAT_FAIL: {
+      draft.pinnedRemind = null;
       break;
     }
   }

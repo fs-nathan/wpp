@@ -1,4 +1,4 @@
-import { appendChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
+import { appendChat, getDataPinOnTaskChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
 import { updateProjectChat } from "actions/taskDetail/taskDetailActions";
 import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
 import React, { useEffect, useState } from 'react';
@@ -110,6 +110,7 @@ function MainLayout({
   groupDetail,
   isDocumentDetail,
   appendChat,
+  getDataPinOnTaskChat,
   updateChatState,
   updateProjectChat,
   taskDetails = {},
@@ -205,10 +206,19 @@ function MainLayout({
       }
     }
 
+    function pinOnTaskChat(data) {
+      console.log('pinOnTaskChat', data, taskDetails.id)
+      if (data.task_id === taskDetails.id) {
+        getDataPinOnTaskChat(data.task_id)
+      }
+    }
+
     socket.on('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+    socket.on('PIN_DATA_ON_CHAT', pinOnTaskChat);
     return () => {
       console.log('close socket chat')
       socket.off('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+      socket.off('PIN_DATA_ON_CHAT', pinOnTaskChat);
     }
     // eslint-disable-next-line
   }, [taskDetails])
@@ -323,6 +333,7 @@ export default connect(
   {
     updateProjectChat,
     appendChat,
+    getDataPinOnTaskChat,
     updateChatState,
     getViewedChatSuccess,
     actionFetchGroupDetail,
