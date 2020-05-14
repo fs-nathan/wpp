@@ -7,6 +7,7 @@ export const ItemMenu = ({
   onItemClick,
   keepMounted,
   options = emptyArray,
+  ...props
 }) => {
   return (
     <Menu
@@ -19,6 +20,7 @@ export const ItemMenu = ({
         vertical: -30,
         horizontal: "right",
       }}
+      {...props}
     >
       {options.map(({ key, label }) => (
         <MenuItem

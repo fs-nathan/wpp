@@ -1,4 +1,4 @@
-import { getEmotions, getGirdListTask, getListStickersRequest } from 'actions/chat/chat';
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest } from 'actions/chat/chat';
 import { detailStatus } from 'actions/project/setting/detailStatus';
 import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
 import last from 'lodash/last';
@@ -57,6 +57,7 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.getMember({ task_id: taskId }));
       dispatch(taskDetailAction.chooseTask(taskId))
       dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }))
+      dispatch(getDataPinOnTaskChat(taskId))
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {
         window.dispatchEvent(customEvent);

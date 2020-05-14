@@ -413,7 +413,7 @@ export default React.memo(({ category_id, title }) => {
     },
     [dispathAsync, category_id, title]
   );
-  if (status === apiCallStatus.loading) return <LoadingBox />;
+  // if (status === apiCallStatus.loading) return <LoadingBox />;
   return (
     <>
       <PostList postList={postList} />

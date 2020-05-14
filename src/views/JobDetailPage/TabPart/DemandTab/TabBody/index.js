@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { ButtonGroup, Collapse } from '@material-ui/core';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ColorButton from '../../../../../components/ColorButton';
@@ -33,9 +33,9 @@ function TabBody(props) {
         <StyledButtonGroup fullWidth variant="text">
           <ColorButton onClick={() => setValue(0)}>
             {value === 0 ? (
-              <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA')}{command.length})</ColorTypo>
+              <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA_COUNT', { count: command.length })}</ColorTypo>
             ) : (
-                <ColorTypo color="gray">{t('LABEL_CHAT_TASK_TAT_CA')}{command.length})
+                <ColorTypo color="gray">{t('LABEL_CHAT_TASK_TAT_CA_COUNT', { count: command.length })}
                 </ColorTypo>
               )}
           </ColorButton>

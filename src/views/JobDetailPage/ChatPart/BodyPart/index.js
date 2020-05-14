@@ -20,11 +20,15 @@ import ForwardMessageDialog from './ForwardMessageDialog';
 import Message from './Message';
 import './styles.scss';
 
+let lastScroll = 0;
+
 const BodyPart = props => {
   const { t } = useTranslation();
   const chatRef = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats);
+  const isMore = useSelector(state => state.chat.isMore);
+  const isLoading = useSelector(state => state.chat.isLoading);
   const userId = useSelector(state => state.system.profile.id);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -45,6 +49,7 @@ const BodyPart = props => {
 
   const imgNum = 5;
   const plusMember = viewedChatMembers.length - imgNum;
+
   useEffect(() => {
     if (plusMember > 0) {
       setShowMembers(viewedChatMembers.slice(0, imgNum))
@@ -102,15 +107,16 @@ const BodyPart = props => {
 
   const {
     date_create,
-    name,
+    name = '',
     description,
-    start_date,
-    end_date,
+    start_date = '',
+    end_date = '',
     user_create = {},
-  } = detailTask || {}
+  } = detailTask || {};
+
   useEffect(() => {
     let rqId;
-    if (chatRef && chatRef.current && chats.data && chats.data.length) {
+    if (chatRef && chatRef.current && chats.data && chats.data.length && !isMore) {
       rqId = requestAnimationFrame(() => {
         // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
         chatRef.current.scrollToBottom()
@@ -121,6 +127,16 @@ const BodyPart = props => {
     }
     // eslint-disable-next-line
   }, [chatRef, chats.data.length]);
+
+  // useEffect(() => {
+  //   console.log('getScrollTop()', chatRef.current.getScrollTop(), lastScroll)
+  //   if (!isLoading) {
+  //     chatRef.current.scrollTop(chatRef.current.getScrollTop() - lastScroll)
+  //     lastScroll = chatRef.current.getScrollTop()
+  //   } else {
+  //   }
+  // }, [isLoading])
+
   useEffect(() => {
     const task_id = queryString.parse(props.location.search).task_id
     dispatch(loadChat(task_id));
@@ -214,9 +230,9 @@ const BodyPart = props => {
                     src={user_create.avatar}
                     className="bodyChat--projectAvatar"
                   />
-                  <div className="bodyChat--notifyName">{`${user_create.name} đã tạo công việc mới`}</div>
+                  <div className="bodyChat--notifyName">{t('LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI', { name: user_create.name || '' })}</div>
                   <div className="bodyChat--projectName">{name}</div>
-                  <div className="bodyChat--projectProgress">{`Tiến độ: ${start_date} - ${end_date}`}</div>
+                  <div className="bodyChat--projectProgress">{t('LABEL_CHAT_TASK_TIEN_DO_FROM_TO', { start_date, end_date })}</div>
                   <button onClick={onClickCreateMember}
                     className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
                 </div>

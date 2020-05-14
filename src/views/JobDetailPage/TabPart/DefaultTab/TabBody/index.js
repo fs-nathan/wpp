@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
@@ -141,7 +141,7 @@ function TabBody(props) {
       <StyledList>
         <ListItem>
           <ListItemText>
-            <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
+            <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
             <ContentText component='span'>
               {detailTask && detailTask.name}
               {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
@@ -168,7 +168,7 @@ function TabBody(props) {
           {
             props.isPause
             &&
-            <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
+            <HtmlTooltip title={<ModalStatus values={t('LABEL_CHAT_TASK_DANG_TAM_DUNG')} />} placement="top-start">
               <Typography
                 className="listPartTabBody--expired listPartTabBody--paused"
               >{t('LABEL_CHAT_TASK_TAM_DUNG')}</Typography>
