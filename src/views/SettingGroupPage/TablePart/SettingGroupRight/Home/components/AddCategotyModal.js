@@ -20,13 +20,18 @@ import {
   MultilineInputFormControl,
   SelecIconInputFormControl,
 } from "./CssFormControl";
-const AddCategoryModal = ({ loading, onClose, toggleLogoModal }) => {
+export const CategoryModal = ({
+  title = "Tạo thể loại",
+  loading,
+  onClose,
+  toggleLogoModal,
+}) => {
   const { t } = useTranslation();
   const { handleSubmit } = useContext(FormikContext);
   return (
     <ModalCommon
       loading={loading}
-      title={t("Tạo thể loại")}
+      title={t(title)}
       onClose={onClose}
       footerAction={[
         {
@@ -115,7 +120,7 @@ export default () => {
   return (
     <AddCategoryForm onSubmit={handleSubmit}>
       <>
-        <AddCategoryModal
+        <CategoryModal
           loading={status === apiCallStatus.loading}
           onClose={onClose}
           toggleLogoModal={toggleLogoModal}

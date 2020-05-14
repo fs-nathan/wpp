@@ -1,5 +1,6 @@
 .view_WeeklyCalendar_rightContainer {
   padding: 10px 20px;
+  min-height: 100%;
 
   &__header {
     color: #656565;
@@ -21,6 +22,39 @@
     }
   }
 
+  &__columnDataHeader {
+    margin: 5px 0px;
+    background: #e6f0ff;
+    padding: 10px 10px;
+    display: inline-flex;
+    align-items: center;
+
+    &>*>span {
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    &_title {
+      width: 425px;
+
+      &>span {
+        margin-left: 175px;
+      }
+    }
+
+    &_content {
+      width: 352px;
+    }
+
+    &_receiver {
+      width: 115px;
+    }
+
+    &_createdBy {
+      width: 145px;
+    }
+  }
+
   &__itemContainer {
     margin: 10px 0px;
     min-width: 100%;
@@ -29,6 +63,10 @@
       &:hover {
         background: #F2F5FA;
       }
+    }
+
+    .MuiList-padding {
+      padding-right: 20px;
     }
 
     &>div:nth-child(1) {
@@ -53,26 +91,6 @@
           font-size: 15px;
           color: #FF5227;
         }
-      }
-
-      .header_title {
-        min-width: 250px;
-        margin-left: 20px;
-        font-size: 14px;
-      }
-
-      .header_content {
-        min-width: 360px;
-        font-size: 14px;
-      }
-
-      .header_members_joined {
-        min-width: 130px;
-      }
-
-      .header_created_by {
-        min-width: 120px;
-        font-size: 14px;
       }
     }
 
@@ -105,13 +123,17 @@
 
       &>span>span {
         font-size: 14px !important;
+        word-break: break-all;
       }
     }
 
     .schedule_item_content {
+      max-width: 340px;
+
       &>span>span {
         font-size: 14px !important;
         font-weight: normal;
+        word-break: break-all;
       }
     }
 

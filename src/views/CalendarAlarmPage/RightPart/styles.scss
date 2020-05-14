@@ -153,12 +153,13 @@
     &>h5 {
       font-weight: 500;
       color: #546E7A;
+      font-size: 17px;
     }
 
     .mark-color {
-      width: 20px;
-      height: 20px;
-      border-radius: 20px;
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
       margin-right: 7px;
     }
 
@@ -283,7 +284,7 @@
         }
       }
 
-      .main_conten_top,
+      .main_content_top,
       .main_content_auther,
       .main_content_alarm {
         display: inline-flex;
@@ -295,10 +296,14 @@
         margin: 7px 0px;
       }
 
-      .main_conten_top {
-        font-size: 15px;
-        font-weight: 500;
-        color: #283593;
+      .main_content_top {
+        &_content {
+          font-size: 15px;
+          font-weight: 500;
+          color: #283593;
+          max-width: 80%;
+          word-break: break-all;
+        }
       }
 
       .main_content_auther>span,

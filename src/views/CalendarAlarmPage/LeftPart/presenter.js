@@ -19,7 +19,7 @@ const getItemStyle = (isDragging, draggableStyle, defaultColor, isHoverOrActive 
 });
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? '#f6f6f6' : 'none',
+  //background: isDraggingOver ? '#f6f6f6' : 'none',
 });
 
 function CalendarAlarmLeftPartPresenter({
@@ -141,7 +141,7 @@ function CalendarAlarmLeftPartPresenter({
               spinner
               fadeSpeed={100}
             >
-              <DragDropContext onDragEnd={handleSortPersonalAlarm}>
+              <DragDropContext onDragEnd={havePermission ? handleSortPersonalAlarm : () => null}>
                 <Droppable droppableId="droppable">
                   {(provided, snapshot) => (
                     <div

@@ -24,6 +24,10 @@ function AddOfferMemberModal({
     setOpen(false);
   }
 
+  React.useEffect(() => {
+    setSelected(value);
+  }, [value]);
+
   function onClickMember(i) {
     return () => {
       const itemIndex = selected.indexOf(i)

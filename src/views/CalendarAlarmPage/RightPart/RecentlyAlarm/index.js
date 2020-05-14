@@ -1,6 +1,7 @@
 import { listRemindRecently } from "actions/calendar/alarmCalendar/listRemindRecently";
 import React from 'react';
 import { connect } from 'react-redux';
+import ViewDetailRemind from "views/CalendarPage/views/Modals/ViewDetailRemind";
 import { Context as CalendarAlarmContext } from '../../index';
 import { bgColorSelector, remindRecentlySelector } from "../../selectors";
 import "../styles.scss";
@@ -14,18 +15,33 @@ function CalendarRecentlyAlarm({
   const {
     expand, handleExpand
   } = React.useContext(CalendarAlarmContext);
+  const [selectedRemind, setSelectedRemind] = React.useState();
+  const [openModalDetail, setOpenModalDetail] = React.useState(false);
 
   React.useEffect(() => {
     doListRemindRecently(false);
   }, [doListRemindRecently]);
 
+  function handleOpenDetail(remind) {
+    setOpenModalDetail(true);
+    setSelectedRemind(remind);
+  }
+
   return (
-    <CalendarRecentlyAlarmPresenter
-      bgColor={bgColor}
-      expand={expand}
-      handleExpand={handleExpand}
-      remindCalendars={listReminds}
-    />
+    <>
+      <CalendarRecentlyAlarmPresenter
+        bgColor={bgColor}
+        expand={expand}
+        handleExpand={handleExpand}
+        remindCalendars={listReminds}
+        handleOpenDetail={(remind) => handleOpenDetail(remind)}
+      />
+      <ViewDetailRemind
+        open={openModalDetail}
+        setOpen={setOpenModalDetail}
+        remind={selectedRemind}
+      />
+    </>
   )
 }
 

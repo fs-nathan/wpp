@@ -44,12 +44,12 @@ const Media = injectClassName("comp_TasksCard__Media")(
             toggle();
           }}
         >
-          {one && <img src={one.url} alt="" />}
-          {two && <img src={two.url} alt="" />}
-          {three && <img src={three.url} alt="" />}
+          {one && <img src={one.url_thumb} alt="" />}
+          {two && <img src={two.url_thumb} alt="" />}
+          {three && <img src={three.url_thumb} alt="" />}
           {hadMore ? (
             <div style={{ position: "relative", height: "100%" }}>
-              <img src={four.url} alt="" />
+              <img src={four.url_thumb} alt="" />
               <div
                 style={{
                   top: 0,
@@ -69,7 +69,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
               </div>
             </div>
           ) : (
-            four && <img src={four.url} alt="" />
+            four && <img src={four.url_thumb} alt="" />
           )}
         </div>
         {istoggle && (

@@ -58,11 +58,18 @@ export const createListModule = (rootPath) => {
     reducer: createReducer([], {
       [listremove.type]: (state, action) =>
         state.filter((item) => item.id !== action.payload),
-      [listupdate.type]: (state, action) =>
-        state.map((item) => {
+      [listupdate.type]: (state, action) => {
+        let exited = false;
+        const newState = state.map((item) => {
           if (item.id !== action.payload.id) return item;
+          exited = true;
           return merge({}, item, action.payload);
-        }),
+        });
+        if (exited) {
+          return newState;
+        }
+        return [action.payload, ...newState];
+      },
       [listcreate.type]: (state, action) => action.payload,
       [listAddFirst.type]: (state, action) => [action.payload, ...state],
     }),
@@ -74,10 +81,9 @@ export const createSimpleAsyncReducer = (
   initial = emptyObject
 ) => {
   const load = (requiredFields) => {
-    return {
-      ...actionCreator(requiredFields),
-      success: type,
-    };
+    return actionCreator(requiredFields, {
+      success: createAction(type),
+    });
   };
   const selector = (state) => get(state, type, initial);
   const reducer = createReducer(initial, {

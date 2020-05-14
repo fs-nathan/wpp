@@ -1,5 +1,6 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { Box, ButtonBase, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -22,14 +23,16 @@ const DEFAULT_DATA = {
 };
 
 function WorkingStageModal({
-  open, setOpen, onCancle = () => null,
-  onConfirm, colors, workingStage
+  open, setOpen, onCancle = () => null, isDisableSubmit,
+  onConfirm, colors, workingStage, calendarStateAdd, calendarStateUpdate
 }) {
 
   const { t } = useTranslation();
   const bgColor = colors.find(item => item.selected === true);
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const [actionType, setActionType] = React.useState("CREATE");
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
@@ -39,7 +42,6 @@ function WorkingStageModal({
     onCancle();
   }
   function handleConfirm() {
-    setOpen(false);
     onConfirm(actionType, data.stageID, data.selectedDateFrom, data.selectedDateTo);
   }
 
@@ -51,6 +53,16 @@ function WorkingStageModal({
       setActionType("EDIT");
     } else setActionType("CREATE");
   }, [workingStage]);
+
+  React.useEffect(() => {
+    if (actionType === "CREATE") {
+      setIsLoading(calendarStateAdd.loading);
+      if (calendarStateAdd.loading === false && calendarStateAdd.error === null) setOpen(false);
+    } else {
+      setIsLoading(calendarStateUpdate.loading);
+      if (calendarStateUpdate.loading === false && calendarStateUpdate.error === null) setOpen(false);
+    }
+  }, [calendarStateAdd, calendarStateUpdate]);
 
   return (
     <Dialog
@@ -114,7 +126,15 @@ function WorkingStageModal({
         <ButtonBase className='comp_AlertModal___cancle-button' onClick={() => handleCancle()}>
           {t('DMH.COMP.ALERT_MODAL.CANCLE_BTN')}
         </ButtonBase>
-        <ButtonBase style={{ color: bgColor.color }} className='comp_AlertModal___accept-button' onClick={() => handleConfirm()}>
+        <ButtonBase
+          style={{ color: bgColor.color }}
+          className='comp_AlertModal___accept-button'
+          onClick={() => handleConfirm()}
+          disabled={isDisableSubmit || isLoading}
+        >
+          {isLoading && (
+            <CircularProgress size={20} className="margin-circular" />
+          )}
           {t('IDS_WP_DONE')}
         </ButtonBase>
       </DialogActions>
@@ -123,7 +143,9 @@ function WorkingStageModal({
 }
 
 export default connect(state => ({
-  colors: state.setting.colors
+  colors: state.setting.colors,
+  calendarStateAdd: state.calendar.projectCalendarAddWorkingStage,
+  calendarStateUpdate: state.calendar.projectCalendarUpdateWorkingStage,
 }),
   {},
 )(WorkingStageModal);

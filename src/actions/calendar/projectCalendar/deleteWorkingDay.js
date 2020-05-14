@@ -8,11 +8,11 @@ export const projectScheduleDeleteWorkingDay = ({ scheduleGroupID, dayID }, quit
   }
 });
 
-export const projectScheduleDeleteWorkingDaySuccess = ({ scheduleGroup }, options) => ({
+export const projectScheduleDeleteWorkingDaySuccess = ({ workDays }, options) => ({
   type: GROUP_SCHEDULE_DELETE_WORKING_DAY_SUCCESS,
   options,
   data: {
-    scheduleGroup
+    workDays
   }
 });
 

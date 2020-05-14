@@ -2,7 +2,7 @@ import { GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_DAY_FAIL, GR
 
 export const initialState = {
   data: {
-    workDays: [],
+    workDays: null,
   },
   error: null,
   loading: false,
@@ -14,6 +14,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         error: null,
+        data: null,
         loading: action.quite ? false : true,
       };
     case GROUP_SCHEDULE_ADD_WORKING_DAY_SUCCESS:
@@ -29,6 +30,7 @@ function reducer(state = initialState, action) {
         ...state,
         ...initialState,
         error: action.error,
+        data: null,
         loading: false,
       };
     default:
