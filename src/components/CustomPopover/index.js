@@ -396,11 +396,12 @@ export const YearPopover = ({
       <Typography component="div" className="year_popover_container">
         <div className="year_popover_container_header">
           <div>{t('IDS_WP_SELECT_YEAR')}</div>
-          <IconButton>
+          <IconButton
+            onClick={evt => setAnchorEl(null)}
+          >
             <Icon
               path={mdiClose}
               size={1}
-              onClick={evt => setAnchorEl(null)}
             />
           </IconButton>
         </div>

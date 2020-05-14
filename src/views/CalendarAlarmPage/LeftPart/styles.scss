@@ -27,6 +27,15 @@
           color: #fff !important;
         }
       }
+
+      &_active {
+
+        .personal_alarm_count,
+        &>a {
+          color: #fff !important;
+          font-weight: 500;
+        }
+      }
     }
   }
 

@@ -5,7 +5,7 @@ import { deletePersonalRemind } from "actions/calendar/alarmCalendar/deletePerso
 import { listPersonalRemind } from "actions/calendar/alarmCalendar/listPersonalRemind";
 import { updatePersonalRemind } from "actions/calendar/alarmCalendar/updatePersonalRemind";
 import AlertModal from "components/AlertModal";
-import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND } from "constants/events";
+import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
 import { useLocalStorage } from "hooks";
 import moment from "moment";
 import React from 'react';
@@ -78,11 +78,13 @@ function CalendarPersonalAlarm({
     CustomEventListener(UPDATE_PERSONAL_REMIND, refreshListPersonalRemind);
     CustomEventListener(DELETE_PERSONAL_REMIND, refreshListPersonalRemind);
     CustomEventListener(DELETE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
+    CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
     return () => {
       CustomEventDispose(CREATE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(UPDATE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(DELETE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(DELETE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
+      CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
     }
   }, [doListPersonalRemind, timeType, timeRange]);
 

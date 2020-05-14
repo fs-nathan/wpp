@@ -5,6 +5,7 @@ import { Primary, StyledList, StyledListItem } from 'components/CustomList';
 import LeftSideContainer from 'components/LeftSideContainer';
 import LoadingOverlay from 'components/LoadingOverlay';
 import { hexToRGBA } from 'helpers/utils/hexToRGBA';
+import { get } from "lodash";
 import React from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +16,7 @@ import "./styles.scss";
 
 const getItemStyle = (isDragging, draggableStyle, defaultColor, isHoverOrActive = false) => ({
   background: isDragging ? "lightgreen" : hexToRGBA(defaultColor, isHoverOrActive ? 1 : 0.2),
+  color: isHoverOrActive ? '#fff' : '#000000',
   ...draggableStyle
 });
 
@@ -25,7 +27,7 @@ const getListStyle = isDraggingOver => ({
 function CalendarAlarmLeftPartPresenter({
   personalRemindCategories, handleSortPersonalAlarm,
   handleOpenModal, handleDeleteCategory, handleEditCategory,
-  havePermission
+  havePermission, reminds
 }) {
 
   const { t } = useTranslation();
@@ -162,7 +164,9 @@ function CalendarAlarmLeftPartPresenter({
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     {...provided.dragHandleProps}
-                                    className="sub_menu_item_inner"
+                                    className={`sub_menu_item_inner 
+                                      ${ new URLSearchParams(search).get("category") === item.id ? 'sub_menu_item_inner_active' : ''}
+                                    `}
                                     style={getItemStyle(
                                       snapshot.isDragging,
                                       provided.draggableProps.style,
@@ -174,7 +178,9 @@ function CalendarAlarmLeftPartPresenter({
                                       onClick={() => history.push(`${Routes.ALARM_PERSONAL}?category=${item.id}`)}
                                       className="personal_alarm_name">{item.name}
                                     </a>
-                                    <div className="personal_alarm_count">2</div>
+                                    <div className="personal_alarm_count">{
+                                      get(reminds.data, `[${index}].reminds`, []).length
+                                    }</div>
                                     {
                                       havePermission && (
                                         <IconButton

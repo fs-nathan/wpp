@@ -27,6 +27,10 @@ function CalendarWeeklyPage({
   const [year, setYear] = React.useState(params.year ?? new Date().getFullYear());
   const [openModal, setOpenModal] = React.useState(false);
   const [actionType, setActionType] = React.useState("CREATE");
+  const [selectedYearAndWeekAtModal, setSelectedYearAndWeekAtModal] = React.useState({
+    year: parseInt(params.year, 10),
+    week: parseInt(params.week, 10)
+  });
 
   React.useEffect(() => {
     doListSchedule({ year }, false);
@@ -46,9 +50,14 @@ function CalendarWeeklyPage({
   }, [doListSchedule, year]);
 
   React.useEffect(() => {
-    CWPDoListScheduleOfWeek({ year, week: params.week });
+    CWPDoListScheduleOfWeek({ year, week: params.week }, false);
+  }, [CWPDoListScheduleOfWeek, year, params.week]);
+
+  React.useEffect(() => {
     const reloadListScheduleOfWeek = () => {
-      CWPDoListScheduleOfWeek({ year, week: params.week }, false);
+      if (selectedYearAndWeekAtModal.year === parseInt(year, 10) && selectedYearAndWeekAtModal.week === parseInt(params.week, 10)) {
+        CWPDoListScheduleOfWeek({ year, week: params.week }, false);
+      }
     }
     CustomEventListener(CREATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
     CustomEventListener(DELETE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
@@ -58,7 +67,7 @@ function CalendarWeeklyPage({
       CustomEventDispose(DELETE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
       CustomEventDispose(UPDATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
     }
-  }, [CWPDoListScheduleOfWeek, year, params.week]);
+  }, [selectedYearAndWeekAtModal]);
 
   React.useEffect(() => {
     if (permissions.length === 0) {
@@ -112,6 +121,9 @@ function CalendarWeeklyPage({
         open={openModal}
         setOpen={setOpenModal}
         actionType={actionType}
+        afterYearAndWeekChange={(data) => {
+          setSelectedYearAndWeekAtModal(data);
+        }}
       />
     </>
   );

@@ -114,7 +114,7 @@ function CalendarProjectLeftPartPresenter({
             open={Boolean(menuAnchor)}
             onClose={evt => setMenuAnchor(null)}
             transformOrigin={{
-              vertical: -30,
+              vertical: -10,
               horizontal: 'right'
             }}
           >

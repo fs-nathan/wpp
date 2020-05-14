@@ -28,6 +28,7 @@
     padding: 10px 10px;
     display: inline-flex;
     align-items: center;
+    width: 98%;
 
     &>*>span {
       font-weight: 500;
@@ -73,7 +74,7 @@
       display: inline-flex;
       align-items: center;
       padding: 5px 0px;
-      width: 100%;
+      width: 98%;
       border-bottom: 2px solid #F6F6F6;
       font-weight: 500;
 
@@ -128,7 +129,7 @@
     }
 
     .schedule_item_content {
-      max-width: 340px;
+      max-width: 300px;
 
       &>span>span {
         font-size: 14px !important;
@@ -188,4 +189,8 @@
       margin-top: 5px;
     }
   }
+}
+
+.comp_CustomTable___header {
+  padding: 10px 20px 10px 20px;
 }

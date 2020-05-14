@@ -13,6 +13,7 @@ import listPersonalRemind, { initialState as listPersonalRemindInitialState } fr
 import listPersonalRemindCategory, { initialState as listPersonalRemindCategoryInitialState } from "./calendar/alarmCalendar/listPersonalRemindCategory";
 import listRemindProject, { initialState as listRemindProjectInitialState } from "./calendar/alarmCalendar/listRemindProject";
 import listRemindRecently, { initialState as listRemindRecentlyInitialState } from "./calendar/alarmCalendar/listRemindRecently";
+import updatePersonalRemindCategory, { initialState as updatePersonalRemindCategoryInitialState } from "./calendar/alarmCalendar/updatePersonalRemindCategory";
 import listCalendarPermission, { initialState as listCalendarPermissionInitialState } from "./calendar/permission/listPermission";
 import projectGroupAddDayOff, { initialState as projectGroupAddDayOffInitialState } from "./calendar/projectCalendar/addDayOff";
 import projectGroupAddWorkingDays, { initialState as projectGroupAddWorkingDaysInitialState } from "./calendar/projectCalendar/addWorkingDay";
@@ -21,6 +22,7 @@ import createProjectGroupSchedule, { initialState as createProjectGroupScheduleI
 import projectCalendarCreateShiftStage, { initialState as projectCalendarCreateShiftStageInitialStage } from "./calendar/projectCalendar/createShiftStage";
 import projectCalendarCreateShiftStageAllTime, { initialState as projectCalendarCreateShiftStageAllTimeInitialState } from "./calendar/projectCalendar/createShiftStageAllTime";
 import projectGroupDeleteDayOff, { initialState as projectGroupDeleteDayOffInitialState } from "./calendar/projectCalendar/deleteDayOff";
+import deleteProjectGroupSchedule, { initialState as deleteProjectGroupScheduleInitialState } from "./calendar/projectCalendar/deleteProjectGroupSchedule";
 import projectCalendarDeleteShiftStage, { initialState as projectCalendarDeleteShiftStageInitialStage } from "./calendar/projectCalendar/deleteShiftStage";
 import projectCalendarDeleteShiftStageAllTime, { initialState as projectCalendarDeleteShiftStageAllTimeInitialState } from "./calendar/projectCalendar/deleteShiftStageAllTime";
 import projectGroupDeleteWorkingDays, { initialState as projectGroupDeleteWorkingDayInitialState } from "./calendar/projectCalendar/deleteWorkingDay";
@@ -29,6 +31,7 @@ import getProjectGroupScheduleDetail, { initialState as getProjectGroupScheduleD
 import listProjectGroupSchedule, { initialState as listProjectGroupScheduleInitialState } from "./calendar/projectCalendar/listSchedule";
 import projectGroupSettingStartingDay, { initialState as projectGroupSettingStartingDayInitialState } from "./calendar/projectCalendar/settingStartingDay";
 import projectGroupSetWorkingDay, { initialState as projectGroupSetWorkingDayInitialState } from "./calendar/projectCalendar/setWorkingDay";
+import updateProjectGroupSchedule, { initialState as updateProjectGroupScheduleInititalState } from "./calendar/projectCalendar/updateProjectGroupSchedule";
 import projectCalendarUpdateShiftStage, { initialState as projectCalendarUpdateShiftStageInitialStage } from "./calendar/projectCalendar/updateShiftStage";
 import projectCalendarUpdateShiftStageAllTime, { initialState as projectCalendarUpdateShiftStageAllTimeInitialState } from "./calendar/projectCalendar/updateShiftStageAllTime";
 import projectCalendarUpdateWorkingStage, { initialState as projectCalendarUpdateWorkingStageInitialState } from "./calendar/projectCalendar/updateWorkingStage";
@@ -312,7 +315,8 @@ const rootReducer = combineReducers({
     projectGroupDeleteWorkingDays, projectGroupAddDayOff, projectGroupDeleteDayOff,
     createPersonalRemindCategory, createPersonalRemind, listRemindProject,
     projectCalendarCreateShiftStageAllTime, projectCalendarUpdateShiftStageAllTime,
-    projectCalendarDeleteShiftStageAllTime
+    projectCalendarDeleteShiftStageAllTime, updateProjectGroupSchedule, deleteProjectGroupSchedule,
+    updatePersonalRemindCategory
   })
 });
 
@@ -453,6 +457,8 @@ export const DEFAULT_STATE = {
     listPersonalRemindCategory: listPersonalRemindCategoryInitialState,
     listRemindRecently: listRemindRecentlyInitialState,
     createProjectGroupSchedule: createProjectGroupScheduleInitialState,
+    updateProjectGroupSchedule: updateProjectGroupScheduleInititalState,
+    deleteProjectGroupSchedule: deleteProjectGroupScheduleInitialState,
     getProjectGroupScheduleDetail: getProjectGroupScheduleDetailInitialState,
     projectGroupSettingStartingDay: projectGroupSettingStartingDayInitialState,
     projectGroupSetWorkingDay: projectGroupSetWorkingDayInitialState,
@@ -461,6 +467,7 @@ export const DEFAULT_STATE = {
     projectGroupAddDayOff: projectGroupAddDayOffInitialState,
     projectGroupDeleteDayOff: projectGroupDeleteDayOffInitialState,
     createPersonalRemindCategory: createPersonalRemindCategoryInitialState,
+    updatePersonalRemindCategory: updatePersonalRemindCategoryInitialState,
     listPersonalRemind: listPersonalRemindInitialState,
     createPersonalRemind: createPersonalRemindInitialState,
     listRemindProject: listRemindProjectInitialState,

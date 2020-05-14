@@ -1,5 +1,6 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { Button, Checkbox, FormControlLabel, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiBellOutline, mdiCalendarMonthOutline, mdiPencilBoxMultipleOutline, mdiPlusCircleOutline, mdiTrashCanOutline } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -69,7 +70,8 @@ function CreateWeeklyCalendar({
   open, setOpen, dateSetting, actionType = "CREATE",
   members, WeeksInYear, doListScheduleOfWeek, scheduleOfWeek,
   doCreateSchedule, doDeleteSchedule, doListMemebers,
-  doUpdateSchedule,
+  doUpdateSchedule, loadingUpdate = false, loadingCreate = false,
+  loadingDelete = false, afterYearAndWeekChange = () => null,
 }) {
   const { t } = useTranslation();
   const params = useParams();
@@ -81,7 +83,6 @@ function CreateWeeklyCalendar({
   const dateFormatSetting = get(dateSetting, "date_format", "DD/MM/YYYYY");
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [scheduleID, setScheduleID] = React.useState();
-  const [isLoading, setIsLoading] = React.useState(scheduleOfWeek.loading);
 
   const [validation, setValidation] = React.useState({
     title: { error: false, message: "" },
@@ -158,7 +159,7 @@ function CreateWeeklyCalendar({
 
     const reloadListScheduleOfWeek = () => {
       doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek }, false);
-      setIsLoading(false);
+      setOperationType("CREATE");
     }
 
     CustomEventListener(CREATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
@@ -178,7 +179,6 @@ function CreateWeeklyCalendar({
   function handleCreateNew() {
     validate();
     if (data.title !== "" && data.content !== "") {
-      setIsLoading(true);
       doCreateSchedule({ schedule: createScheduleModal() }, false);
     }
   }
@@ -236,7 +236,6 @@ function CreateWeeklyCalendar({
   React.useEffect(() => {
     if (schedule !== null) {
       doUpdateSchedule({ schedule }, false);
-      setOperationType("CREATE");
       handleChangeData("title", '');
       handleChangeData("content", '');
       handleChangeData("scheduleID", null);
@@ -255,7 +254,6 @@ function CreateWeeklyCalendar({
   function handleUpdate() {
     validate();
     if (data.title !== "" && data.content !== "") {
-      setIsLoading(true);
       setSchedule(createScheduleModal());
     }
   }
@@ -297,7 +295,7 @@ function CreateWeeklyCalendar({
         canConfirm={data.title !== '' && data.content !== '' && data.selectedTime !== ''}
         height='medium'
         className={"comp_CustomModal views_createWeeklyCalendar_CustomModal"}
-        loading={isLoading}
+        actionLoading={scheduleOfWeek.loading}
       >
         <div className="main_container">
           <div className="header_control">
@@ -316,11 +314,23 @@ function CreateWeeklyCalendar({
               <WeekSelect
                 year={data.selectedYear}
                 value={data.selectedWeek}
-                onChange={({ target }) => handleChangeData("selectedWeek", target.value)}
+                onChange={({ target }) => {
+                  handleChangeData("selectedWeek", target.value);
+                  afterYearAndWeekChange({
+                    year: data.selectedYear,
+                    week: target.value
+                  });
+                }}
               />
               <YearSelect
                 value={data.selectedYear}
-                onChange={({ target }) => handleChangeData('selectedYear', target.value)}
+                onChange={({ target }) => {
+                  handleChangeData('selectedYear', target.value);
+                  afterYearAndWeekChange({
+                    year: target.value,
+                    week: data.selectedWeek
+                  });
+                }}
                 numberOfYears={2}
               />
             </div>
@@ -382,7 +392,7 @@ function CreateWeeklyCalendar({
                   multiline
                   error={validation.content.error}
                   helperText={validation.content.message}
-                  rows={2}
+                  rows={3}
                   fullWidth
                   onChange={({ target }) => handleChangeData('content', target.value)}
                   onFocus={() => handleFocusTextField("content")}
@@ -470,7 +480,11 @@ function CreateWeeklyCalendar({
                         size="medium"
                         onClick={handleCreateNew}
                         disableElevation
+                        disabled={loadingCreate}
                       >
+                        {loadingCreate && (
+                          <CircularProgress size={20} className="margin-circular" color={`#fff`} />
+                        )}
                         {t('IDS_WP_ADD')}
                       </Button>
                     )
@@ -484,7 +498,11 @@ function CreateWeeklyCalendar({
                           size="medium"
                           onClick={handleUpdate}
                           disableElevation
+                          disabled={loadingUpdate}
                         >
+                          {loadingUpdate && (
+                            <CircularProgress size={20} className="margin-circular" color={`#fff`} />
+                          )}
                           {t('IDS_WP_UPDATE')}
                         </Button>
                         <Button
@@ -617,7 +635,10 @@ function CreateWeeklyCalendar({
         open={alertConfirm}
         setOpen={setAlertConfirm}
         content={t('IDS_WP_ALERT_CONTENT')}
-        onConfirm={() => handleDeleteSchedule(scheduleID)}
+        onConfirm={() => {
+          handleDeleteSchedule(scheduleID);
+        }}
+        actionLoading={loadingDelete}
       />
     </>
   )
@@ -639,6 +660,9 @@ export default connect(
     WeeksInYear: state.calendar.listWeeksInYear.data.weeks,
     scheduleOfWeek: scheduleOfWeekSelector(state),
     dateSetting: state.setting.settingDate.find(item => item.selected === true),
+    loadingUpdate: state.calendar.updateSchedule.loading,
+    loadingCreate: state.calendar.createSchedule.loading,
+    loadingDelete: state.calendar.deleteSchedule.loading
   }),
   mapDispatchToProps
 )(CreateWeeklyCalendar);

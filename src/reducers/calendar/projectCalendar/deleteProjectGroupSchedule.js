@@ -1,8 +1,8 @@
-import { GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_FAIL, GROUP_SCHEDULE_CREATE_SUCCESS } from "../../../constants/actions/calendar/projectCalendar";
+import { GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_FAIL, GROUP_SCHEDULE_DELETE_SUCCESS } from "../../../constants/actions/calendar/projectCalendar";
 
 export const initialState = {
   data: {
-    scheduleGroup: null,
+    schedule_id: null,
   },
   error: null,
   loading: false,
@@ -10,13 +10,13 @@ export const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case GROUP_SCHEDULE_CREATE:
+    case GROUP_SCHEDULE_DELETE:
       return {
         ...state,
         error: null,
         loading: action.quite ? false : true,
       };
-    case GROUP_SCHEDULE_CREATE_SUCCESS:
+    case GROUP_SCHEDULE_DELETE_SUCCESS:
       return {
         ...state,
         ...initialState,
@@ -24,7 +24,7 @@ function reducer(state = initialState, action) {
         error: null,
         loading: false,
       };
-    case GROUP_SCHEDULE_CREATE_FAIL:
+    case GROUP_SCHEDULE_DELETE_FAIL:
       return {
         ...state,
         ...initialState,

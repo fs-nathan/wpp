@@ -47,6 +47,8 @@ function ViewDetailRemind({
         onClose={() => handleCancle()}
         aria-labelledby="alert-dialog-slide-title"
         className={"comp_CustomModal"}
+        disableBackdropClick={true}
+        disableEscapeKeyDown={true}
       >
         <StyledDialogTitle id="alert-dialog-slide-title">
           <Box className="view_DetailRemind_header">
