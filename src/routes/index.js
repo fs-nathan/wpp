@@ -25,6 +25,7 @@ import { Routes as jobRoutes } from "views/JobPage/contants/routes";
 //import ReportPage from "views/ReportPage";
 import SettingAccountPage from "views/SettingAccountPage";
 import SettingGroupPage from "views/SettingGroupPage";
+import Grant from "../views/GrantPage/GrantTable";
 
 //import TestPage from "__test__";
 

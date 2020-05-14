@@ -45,7 +45,6 @@ import SubTaskDrawer from "../../components/Drawer/SubTaskDrawer";
 import { apiService } from "../../constants/axiosInstance";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import QuickViewTaskDetailDrawer from "../../views/JobPage/components/QuickViewTaskDetailDrawer";
-import CreateProject from "../../views/ProjectGroupPage/Modals/CreateProject";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import Header from "./Header";
@@ -93,6 +92,76 @@ function decodePriorityCode(priorityCode) {
     case 3:
       return {
         color: "#fe0707",
+        background: "#ff050524",
+        name: "Cao",
+      };
+    case "WAIT":
+      return {
+        color: "#ff9800",
+        background: "#596fff",
+        name: "Cao",
+      };
+    case "DOING":
+      return {
+        color: "#03a9f4",
+        background: "#ff050524",
+        name: "Cao",
+      };
+    case "DONE":
+      return {
+        color: "#03c30b",
+        background: "#ff050524",
+        name: "Cao",
+      };
+    case "EXPIRE":
+      return {
+        color: "#f44336",
+        background: "#ff050524",
+        name: "Cao",
+      };
+    case "MEMBER":
+      return {
+        color: "#f1ff26",
+        background: "rgb(255, 218, 5)",
+        name: "Cao",
+      };
+    default:
+      return {
+        color: "#53d7fc",
+        name: "Thấp",
+      };
+  }
+}
+
+function decodeStatusCode(statusCode) {
+  switch (statusCode) {
+    case 1:
+      return {
+        color: "#ff9800",
+        background: "#4caf5042",
+        name: "Thấp",
+      };
+    case 2:
+      return {
+        color: "#03a9f4",
+        background: "#ff980038",
+        name: "Trung bình",
+      };
+    case 3:
+      return {
+        color: "#f44336",
+        background: "#ff050524",
+        name: "Cao",
+      };
+    case 4:
+      return {
+        color: "#03c30b",
+        background: "#ff050524",
+        name: "Cao",
+      };
+    case 5:
+      return {
+        color: "#607D8B",
         background: "#ff050524",
         name: "Cao",
       };
@@ -920,26 +989,30 @@ class DragSortingTable extends React.Component {
           isOpen={this.state.openCreateJobModal}
           setOpen={this.handleOpenCraeteJobModal}
         />
-        <CreateProject
+        {/* <CreateProject
           open={this.state.openCreateProjectModal}
           setOpen={this.handleOpenCreateProjectModal}
-        />
+        /> */}
         <Header titleProject={this.state.titleProject} />
         <div id="printContent" style={{ display: "flex", width: widthPdf }}>
           <ConfigGanttDrawer height={this.state.height} />
           <SubTaskDrawer height={this.state.height} />
           <ExportPDFDrawer height={this.state.height} />
-          <QuickViewTaskDetailDrawer
+          <div
             style={{
-              height: this.state.height,
+              top: "114px !important",
+              color: "red",
             }}
-            onClose={() =>
-              this.setState({
-                quickViewId: null,
-              })
-            }
-            taskId={this.state.quickViewId}
-          />
+          >
+            <QuickViewTaskDetailDrawer
+              onClose={() =>
+                this.setState({
+                  quickViewId: null,
+                })
+              }
+              taskId={this.state.quickViewId}
+            />
+          </div>
           <div
             style={{
               height: this.state.height,
