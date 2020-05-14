@@ -44,7 +44,7 @@ import ExportPDFDrawer from "../../components/Drawer/DrawerPDF";
 import SubTaskDrawer from "../../components/Drawer/SubTaskDrawer";
 import { apiService } from "../../constants/axiosInstance";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
-import QuickViewTaskDetailDrawer from "../../views/JobPage/components/QuickViewTaskDetailDrawer";
+import QuickViewTaskDetailDrawer from "../../views/JobPage/components/GanttQuickViewTaskDetailDrawer";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import Header from "./Header";
@@ -967,6 +967,7 @@ class DragSortingTable extends React.Component {
       openCreateJobModal: value,
     });
   };
+ 
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -998,13 +999,8 @@ class DragSortingTable extends React.Component {
           <ConfigGanttDrawer height={this.state.height} />
           <SubTaskDrawer height={this.state.height} />
           <ExportPDFDrawer height={this.state.height} />
-          <div
-            style={{
-              top: "114px !important",
-              color: "red",
-            }}
-          >
             <QuickViewTaskDetailDrawer
+              showHeader={this.props.showHeader}
               onClose={() =>
                 this.setState({
                   quickViewId: null,
@@ -1012,7 +1008,6 @@ class DragSortingTable extends React.Component {
               }
               taskId={this.state.quickViewId}
             />
-          </div>
           <div
             style={{
               height: this.state.height,
@@ -1074,6 +1069,7 @@ const mapStateToProps = (state) => ({
   girdType: state.gantt.girdType,
   girdInstance: state.gantt.girdInstance,
   projectInfo: state.gantt.projectInfo,
+  showHeader: state.gantt.showHeader,
   visibleLabel: state.gantt.visible.label,
   activeProjectId: state.taskDetail.commonTaskDetail.activeProjectId,
 });

@@ -33,7 +33,9 @@ const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
                 <div>{projectInfo.name}</div>{" "}
                 <div>
                   <IconButton
-                    onClick={() => setShowSelectProject(!showProject)}
+                    onClick={() => {
+                      
+                      setShowSelectProject(!showProject)}}
                     aria-controls="simple-menu"
                     style={{ padding: 0 }}
                     aria-haspopup="true"
@@ -69,7 +71,8 @@ const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
     <div className="icon-show-header">
       <div style={{ display: "flex", justifyContent: "center" }}>
         <IconComponent
-          onClick={() => changeShowHeader(!showHeader)}
+          onClick={() => {
+            changeShowHeader(!showHeader)}}
           size={1.3}
           title={""}
           path={mdiChevronDown}
