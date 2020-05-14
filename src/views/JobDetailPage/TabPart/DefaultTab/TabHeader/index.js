@@ -2,6 +2,7 @@ import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { cancelStopTask, deleteTask, pinTaskAction, stopTask, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import ColorTypo from 'components/ColorTypo';
 import compact from 'lodash/compact';
 import get from 'lodash/get';
@@ -10,7 +11,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import './styles.scss';
 
 function TabHeader(props) {
@@ -110,6 +110,7 @@ function TabHeader(props) {
         <Icon path={mdiDotsVertical} size={1} className="job-detail-icon" />
       </IconButton>
       <Menu
+        className="tabHeaderDefault--menu"
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
@@ -159,12 +160,18 @@ function TabHeader(props) {
         data={detailTask}
         editMode={editMode}
       />
-      <ModalDeleteConfirm
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
+      />
+      {/* <ModalDeleteConfirm
         confirmDelete={confirmDelete}
         isOpen={isOpenDelete}
         handleOpenModalDelete={handleOpenModalDelete}
         handleCloseModalDelete={handleCloseModalDelete}
-      />
+      /> */}
     </div>
   );
 }

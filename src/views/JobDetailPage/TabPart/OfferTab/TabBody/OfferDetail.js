@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import clsx from 'clsx';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -109,7 +109,10 @@ function OfferDetail({
         <div className="offerDetail--row">
           <div className="offerDetail--label">{t('LABEL_CHAT_TASK_KET_QUA_PHE_DUYET')}</div>
           <div className="offerDetail--data">
-            {status} ({total_accepted}/{total_approved}{t('LABEL_CHAT_TASK_DONG_Y')}{total_rejected}/{total_approved}{t('LABEL_CHAT_TASK_TU_CHOI')}</div>
+            {status} ({t('LABEL_CHAT_TASK_DONG_Y_TU_CHOI', {
+              agree: `${total_accepted}/${total_approved}`,
+              reject: `${total_rejected}/${total_approved}`
+            })})</div>
         </div>
       </div>
     </JobDetailModalWrap>

@@ -2,10 +2,12 @@ import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import TitleSectionModal from 'components/TitleSectionModal';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
 import React, { useEffect } from 'react';
@@ -257,7 +259,10 @@ function CreateJobModal(props) {
       onConfirm={isEdit ? updateData : handlePressConfirm}
       canConfirm={validate(data)}
       maxWidth='sm'
-      className="createJob"
+      className={clsx("createJob", `createJob__edit${props.editMode}`, {
+        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),
+      })}
     >
       <React.Fragment>
         {
@@ -292,7 +297,7 @@ function CreateJobModal(props) {
               margin="normal"
               variant="outlined"
               multiline
-              rowsMax={4}
+              rowsMax={18}
               fullWidth
               value={data.description}
               onChange={e => handleChangeData('description', e.target.value)}
@@ -309,6 +314,10 @@ function CreateJobModal(props) {
               value={scheduleValue}
               onChange={({ value: scheduleId }) => handleChangeData('schedule', scheduleId)}
             />
+          </>
+        }
+        {!isEdit &&
+          <>
             <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
             {date_status !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -411,7 +420,7 @@ function CreateJobModal(props) {
           </>
         }
       </React.Fragment>
-    </JobDetailModalWrap>
+    </JobDetailModalWrap >
   );
 }
 

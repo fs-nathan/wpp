@@ -8,6 +8,9 @@
   .comp_CustomModal___scroll {
     height: 100% !important;
   }
+  .comp_CustomModal___dialog-content {
+    overflow: unset;
+  }
   &--timeWrap {
     display: flex;
     flex-direction: row;
@@ -80,4 +83,12 @@
     margin-right: 20px;
     margin-left: 20px;
   }
+}
+
+.modal_height_50vh .comp_LoadingOverlay___wrapper {
+  height: 50vh !important;
+}
+
+.modal_height_20vh .comp_LoadingOverlay___wrapper {
+  height: 20vh !important;
 }

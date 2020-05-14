@@ -182,13 +182,15 @@ function MainLayout({
   }, []);
 
   useEffect(() => {
-    if (!socket || !userId) return;
+    if (!socket || !userId || !taskDetails) return;
     function handleChatInProject(data) {
       console.log('handleChatInProject', data)
-      const { user_create_id } = data;
-      data.new_chat = user_create_id === userId ? 0 : 1;
-      data.content = data.content[language];
-      updateProjectChat(data)
+      const { user_create_id, task_id } = data;
+      if (task_id !== taskDetails.id) {
+        data.new_chat = user_create_id === userId ? 0 : 1;
+        data.content = data.content[language];
+        updateProjectChat(data)
+      }
     }
 
     socket.on('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
@@ -196,7 +198,7 @@ function MainLayout({
       socket.off('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
     }
     // eslint-disable-next-line
-  }, [userId, language])
+  }, [userId, language, taskDetails])
 
   useEffect(() => {
     if (!socket || !taskDetails) return;

@@ -7,6 +7,36 @@ function getNewChat(newChat, current) {
     return undefined
 }
 
+function findTask(listTaskDetail, task_id) {
+    let ret;
+    listTaskDetail.forEach(group => {
+        const { tasks } = group;
+        tasks.forEach(task => {
+            if (task.id === task_id) {
+                ret = task
+            }
+        })
+    })
+    return ret
+}
+
+function changeGroupTaskDetail(listTaskDetail, task_id, group_task) {
+    const repTask = findTask(listTaskDetail, task_id)
+    return listTaskDetail.map((group) => {
+        const { tasks, id } = group;
+        if (id === group_task) {
+            return {
+                ...group,
+                tasks: [...tasks, repTask]
+            };
+        }
+        return {
+            ...group,
+            tasks: tasks.filter((task) => task_id !== task.id)
+        };
+    })
+}
+
 function updateListTaskDetail(listTaskDetail, id, update) {
     return listTaskDetail.map((data) => {
         const { tasks } = data;
@@ -182,6 +212,13 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 0 }),
                 listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 0 }),
+            }
+        }
+        case types.UPDATE_GROUP_TASK_SUCCESS: {
+            const { task_id, group_task } = action.payload;
+            return {
+                ...state,
+                listTaskDetail: changeGroupTaskDetail(state.listTaskDetail, task_id, group_task),
             }
         }
         default:

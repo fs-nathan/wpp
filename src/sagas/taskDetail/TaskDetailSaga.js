@@ -1505,7 +1505,7 @@ export function* updateGroupTask(payload) {
   try {
     const { task_id, group_task } = payload;
     const res = yield call(apiService.put, "/task/update-group-task", { task_id, group_task });
-    yield put(actions.updateGroupTaskSuccess(res.data));
+    yield put(actions.updateGroupTaskSuccess({ data: res.data, task_id, group_task }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // yield put(appendChat(res.data));
   } catch (error) {

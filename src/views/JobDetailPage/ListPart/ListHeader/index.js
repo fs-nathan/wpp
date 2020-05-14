@@ -5,7 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
+// import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
@@ -112,9 +112,9 @@ function ListHeader(props) {
         isOpen={isOpenSettings}
         setOpen={setOpenSettings}
       />
-      <CreateProjectGroup
+      {/* <CreateProjectGroup
         open={isOpenProjectGroup}
-        setOpen={setOpenProjectGroup} />
+        setOpen={setOpenProjectGroup} /> */}
       <CreateGroupTaskModal
         isOpen={isOpenCreateGroup}
         setOpen={setOpenCreateGroup}

@@ -1,10 +1,10 @@
-import { useTranslation } from 'react-i18next';
 import { Avatar } from '@material-ui/core';
 import { mdiClockOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './styles.scss';
 
 
@@ -26,7 +26,7 @@ function EditProgressItem({ fixedNumber,
       <Avatar className="editProgressItem--avatar" src={avatarUrl}></Avatar>
     </abbr>
     <div className="editProgressItem--change" >
-      <div className="editProgressItem--changeNumber">{t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_LAN')}{fixedNumber}
+      <div className="editProgressItem--changeNumber">{t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_LAN', { fixedNumber })}
       </div>
       <div className="editProgressItem--time">{t('LABEL_CHAT_TASK_LUC')}{createdAt}
       </div>
