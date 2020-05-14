@@ -625,3 +625,24 @@ export function showImagesList(isOpen, images = [], selected = 0, user = {}) {
     isOpen, images, selected, user
   };
 }
+
+export function getDataPinOnTaskChat(task_id) {
+  return {
+    type: actionTypes.GET_DATA_PIN_ON_TASK_CHAT,
+    task_id
+  };
+}
+
+export function getDataPinOnTaskChatSuccess(payload) {
+  return {
+    type: actionTypes.GET_DATA_PIN_ON_TASK_CHAT_SUCCESS,
+    payload
+  };
+}
+
+export function getDataPinOnTaskChatFail(error) {
+  return {
+    type: actionTypes.GET_DATA_PIN_ON_TASK_CHAT_FAIL,
+    error
+  };
+}

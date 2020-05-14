@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { ButtonGroup, Collapse } from '@material-ui/core';
 import { deleteOffer } from 'actions/taskDetail/taskDetailActions';
 import ColorButton from 'components/ColorButton';
@@ -6,6 +5,7 @@ import ColorTypo from 'components/ColorTypo';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ModalDeleteConfirm from '../../ModalDeleteConfirm';
@@ -87,8 +87,8 @@ function TabBody(props) {
             onClick={evt => handleChange(evt, 0)}
           >
             {value === 0
-              ? <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA')}{offer.length})</ColorTypo>
-              : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_TAT_CA')}{offer.length})</ColorTypo>}
+              ? <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA_COUNT', { count: offer.length })}</ColorTypo>
+              : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_TAT_CA_COUNT', { count: offer.length })}</ColorTypo>}
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}

@@ -38,7 +38,7 @@ const ListBanner = props => {
   const allTask = task_waiting + task_doing + task_complete + task_expired + task_stop;
 
   const jobTypes = [
-    t('LABEL_CHAT_TASK_TAT_CA_COUNT', { allTask }),
+    t('LABEL_CHAT_TASK_TAT_CA_COUNT', { count: allTask }),
     t('LABEL_CHAT_TASK_DANG_CHO_COUNT', { task_waiting }),
     t('LABEL_CHAT_TASK_DANG_LAM_COUNT', { task_doing }),
     t('LABEL_CHAT_TASK_HOAN_THANH_COUNT', { task_complete }),

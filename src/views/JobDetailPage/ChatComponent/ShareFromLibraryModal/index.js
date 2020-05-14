@@ -75,6 +75,22 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     }
   }, [listDocumentFromMe, listDocumentShareToMe, listGoogleDocument, listMyDocument, listProject, selectedMenu]);
 
+  const [currentBreadCrumbs, setCurrentBeadCrumbs] = useState([]);
+
+  useEffect(() => {
+    if (breadCrumbs.length > 3) {
+      let breadTemp = breadCrumbs.slice(-3);
+      breadTemp[0] = {
+        id: breadTemp[0].id,
+        title: breadTemp[0].name,
+        name: '...'
+      }
+      setCurrentBeadCrumbs([...breadTemp]);
+    } else {
+      setCurrentBeadCrumbs(breadCrumbs);
+    }
+  }, [breadCrumbs]);
+
   const handleOnChangeMenu = menu => {
     setSelectedMenu(menu);
     const key = menu.key;
@@ -108,26 +124,37 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
   function handleClickLink(idx, id) {
     return function onClickBreadCrumb() {
       // do not anything if click ending item
-      if (idx >= breadCrumbs.length - 1) return false;
+      if (idx >= currentBreadCrumbs.length - 1) return false;
       if (idx === 0) {
-        dispatch(actionChangeBreadCrumbs([]));
+        let newList = currentBreadCrumbs.length === breadCrumbs.length ? [] : breadCrumbs.slice(0, -2);
+        dispatch(actionChangeBreadCrumbs(newList));
+
+      } else {
+        let newList = currentBreadCrumbs.length === breadCrumbs.length ? breadCrumbs.slice(0, idx + 1) : breadCrumbs.slice(0, -1);
+        dispatch(actionChangeBreadCrumbs(newList));
+      }
+      // console.log('handleClickLink', id)
+      if (id === -1) {
         if (selectedMenu.key === 'googleDrive')
           dispatch(actionFetchListGoogleDocument());
         else if (selectedMenu.key === 'projectDocument') {
           dispatch(actionFetchListProject());
           setInsideProject(true)
         }
+        else if (selectedMenu.key === 'sharedWithMe') {
+          dispatch(actionFetchListDocumentShare());
+        }
         else
           dispatch(actionFetchListMyDocument());
       } else {
-        let newList = [...breadCrumbs];
-        newList.length = idx + 1;
-        dispatch(actionChangeBreadCrumbs(newList));
         if (selectedMenu.key === 'googleDrive')
           dispatch(actionFetchListGoogleDocument({ folderId: id }, true))
         else if (selectedMenu.key === 'projectDocument') {
           dispatch(actionFetchListProjectOfFolder({ project_id: id }));
           setInsideProject(true)
+        }
+        else if (selectedMenu.key === 'sharedWithMe') {
+          dispatch(actionFetchListDocumentShare({ folder_id: id }, true));
         }
         else
           dispatch(actionFetchListMyDocument({ folder_id: id }, true));
@@ -188,8 +215,10 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                     {selectedMenu.title}
                   </div>
                   <div className="ShareFromLibraryModal--bread-crumbs-list" >
-                    <Breadcrumbs separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />} aria-label="breadcrumb">
-                      {breadCrumbs.length && breadCrumbs.map(({ name, id }, index) =>
+                    <Breadcrumbs
+                      separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />}
+                      aria-label="breadcrumb">
+                      {currentBreadCrumbs.length && currentBreadCrumbs.map(({ name, id }, index) =>
                         <div
                           className="ShareFromLibraryModal--bread-crumbs-item"
                           key={id}

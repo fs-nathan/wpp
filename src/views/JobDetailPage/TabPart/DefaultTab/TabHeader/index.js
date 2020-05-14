@@ -97,7 +97,7 @@ function TabHeader(props) {
             component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
-          >{t('LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY')}{detailTask.date_create}
+          >{t('LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY', { date_create: detailTask.date_create })}
           </ColorTypo>
         )}
       </div>

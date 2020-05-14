@@ -2,10 +2,10 @@ import { IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import { searchChat } from 'actions/chat/chat';
-import { getRemind, unPinRemind } from 'actions/taskDetail/taskDetailActions';
+import { unPinRemind } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import SearchInput from 'components/SearchInput';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -19,17 +19,18 @@ function ChatPart(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
+  // const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
   const searchChatKey = useSelector(state => state.chat.searchChatKey)
   const userId = useSelector(state => state.system.profile.id)
+  const pinnedRemind = useSelector(state => state.chat.pinnedRemind)
+
   const [selectedChat, setSelectedChat] = useState();
   const [isShowSearch, setShowSearch] = useState(false);
   const [imagesQueue, setImagesQueue] = useState([]);
-  const pinnedRemind = reminds.find(rm => rm.is_ghim);
 
-  useEffect(() => {
-    dispatch(getRemind({ taskId }))
-  }, [dispatch, taskId]);
+  // useEffect(() => {
+  //   dispatch(getRemind({ taskId }))
+  // }, [dispatch, taskId]);
 
   function onChangeKey(evt) {
     dispatch(searchChat(evt.target.value))
@@ -76,8 +77,16 @@ function ChatPart(props) {
               {pinnedRemind.content}
             </div>
             <div className="chatPart--pinType">
-              {pinnedRemind.type === 0 ? `Lúc ${pinnedRemind.time_remind} ngày ${pinnedRemind.date_remind} - ${typesRemind[pinnedRemind.type_remind]} ` :
-                `Nhắc theo tiến độ ${pinnedRemind.duration.map(dr => `${dr}%`).join(', ')}`
+              {pinnedRemind.type === 0 ?
+                t('LABEL_CHAT_TASK_LUC_NGAY', {
+                  time_remind: pinnedRemind.time_remind,
+                  date_remind: pinnedRemind.date_remind,
+                  remind: typesRemind[pinnedRemind.type_remind]
+                })
+                :
+                t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO', {
+                  remind: pinnedRemind.duration.map(dr => `${dr}%`).join(', ')
+                })
               }
             </div>
           </div>

@@ -743,6 +743,10 @@ function* rootSaga() {
     chatTypes.GET_GIRD_LIST_TASK,
     chatDetailSaga.getGirdListTask
   );
+  yield takeLeading(
+    chatTypes.GET_DATA_PIN_ON_TASK_CHAT,
+    chatDetailSaga.getDataPinOnTaskChat
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
