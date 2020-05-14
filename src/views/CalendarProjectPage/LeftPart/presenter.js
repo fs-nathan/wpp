@@ -19,8 +19,8 @@ const Banner = ({ className = '', ...props }) =>
   />;
 
 function CalendarProjectLeftPartPresenter({
-  groupSchedules, handleOpenModal, handleUpdateGroupSchedule,
-  handleSearchPattern, searchPattern, handleDeleteGroup, havePermission
+  groupSchedules, handleOpenModal, handleUpdateGroupSchedule, isLoading = false,
+  setIsLoading, handleSearchPattern, searchPattern, handleDeleteGroup, havePermission
 }) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -43,7 +43,7 @@ function CalendarProjectLeftPartPresenter({
           leftAction={{
             iconPath: mdiChevronLeft,
             onClick: () => history.push(`${Routes.CALENDAR}/project`),
-            tooltip: t("DMH.VIEW.PGP.LEFT.INFO.BACK"),
+            tooltip: t("IDS_WP_BACK"),
           }}
           rightAction={havePermission ? {
             iconPath: mdiPlus,
@@ -151,7 +151,11 @@ function CalendarProjectLeftPartPresenter({
         open={openEditModal}
         setOpen={setOpenEditModal}
         schedule={groupSchedules.data.find(item => item.id === params.scheduleID)}
-        onConfirm={(name, descrtiption) => handleUpdateGroupSchedule(params.scheduleID, name, descrtiption)}
+        onConfirm={(name, descrtiption) => {
+          setIsLoading(true);
+          handleUpdateGroupSchedule(params.scheduleID, name, descrtiption);
+        }}
+        isLoading={isLoading}
       />
     </>
   )

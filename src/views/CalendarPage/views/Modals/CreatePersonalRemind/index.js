@@ -80,7 +80,7 @@ function CreatePersonalRemind({
         open={open}
         setOpen={setOpen}
         canConfirm={data.content !== '' && data.selectedCategory !== null}
-        confirmRender={() => t('views.calendar_page.modal.create_personal_remind.title')}
+        confirmRender={() => t('IDS_WP_DONE')}
         onConfirm={() => handleOnConfirm()}
         maxWidth='sm'
         actionLoading={isLoading}

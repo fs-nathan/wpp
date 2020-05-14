@@ -18,14 +18,14 @@ function CalendarProjectAlarm({
     expand, handleExpand
   } = React.useContext(CalendarAlarmContext);
 
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PERSONAL_REMINDS_OPTIONS', {
-    timeType: 3
+  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_REMINDS_OPTIONS', {
+    timeType: 3,
+    timeRange: {
+      startDate: moment().startOf("isoWeeks"),
+      endDate: moment().endOf("isoWeeks")
+    }
   });
-  const [timeRange, setTimeRange] = React.useState({
-    start: moment().startOf("isoWeek"),
-    end: moment().endOf("isoWeek")
-  });
-
+  const [timeRange, setTimeRange] = React.useState(localOptions.timeRange);
   const [timeType, setTimeType] = React.useState(localOptions.timeType);
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [selectedRemind, setSelectedRemind] = React.useState();
@@ -34,9 +34,10 @@ function CalendarProjectAlarm({
   React.useEffect(() => {
     setLocalOptions(pastOptions => ({
       ...pastOptions,
-      timeType
+      timeType,
+      timeRange
     }));
-  }, [timeType]);
+  }, [timeType, timeRange]);
 
   React.useEffect(() => {
     let fromTime = moment(timeRange.startDate ?? moment().startOf('year')).format("YYYY-MM-DD");

@@ -78,6 +78,10 @@
     padding: 10px 15px;
     height: 90%;
   }
+
+  .MuiFormHelperText-contained {
+    margin-left: 0px !important;
+  }
 }
 
 @mixin view_Calendar_CreateWeekly_Modal_sub-header {

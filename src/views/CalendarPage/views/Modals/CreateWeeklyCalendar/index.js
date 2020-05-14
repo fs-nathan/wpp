@@ -101,6 +101,10 @@ function CreateWeeklyCalendar({
       handleChangeData("selectedYear", parseInt(params.year));
       handleChangeData("selectedWeek", parseInt(params.week));
     }
+    refreshForm();
+  }, [open, params.year, params.week]);
+
+  const refreshForm = () => {
     setOperationType("CREATE");
     handleChangeData("title", '');
     handleChangeData("content", '');
@@ -108,8 +112,10 @@ function CreateWeeklyCalendar({
     setValidationState("title", { error: false, message: "" });
     setValidationState("content", { error: false, message: "" });
     handleChangeData("selectedTime", moment().format("hh:mm"));
-
-  }, [open, params.year, params.week]);
+    handleChangeData("notifyWhenDue", true);
+    handleChangeData("notifyTimeType", 0);
+    handleChangeData("notifyBeforeTime", 30);
+  }
 
   React.useEffect(() => {
     if (members.members.length === 0) {
@@ -159,7 +165,7 @@ function CreateWeeklyCalendar({
 
     const reloadListScheduleOfWeek = () => {
       doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek }, false);
-      setOperationType("CREATE");
+      refreshForm();
     }
 
     CustomEventListener(CREATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
@@ -215,6 +221,21 @@ function CreateWeeklyCalendar({
     handleChangeData("content", get(schedule, "content", data.selectedTime));
     handleChangeData("notifyWhenDue", get(schedule, "is_remind", data.notifyWhenDue));
     handleChangeData("scheduleID", get(schedule, "id", data.scheduleID));
+    if (data.notifyWhenDue) {
+      let notifyBeforeTime = get(schedule, "remind_before", null);
+      let notifyTimeType = 0;
+      if (notifyBeforeTime !== null) {
+        if (notifyBeforeTime >= 24 * 60 * 60) {
+          notifyTimeType = 2;
+          notifyBeforeTime = notifyBeforeTime / 1440;
+        } else if (notifyBeforeTime >= 60) {
+          notifyTimeType = 1;
+          notifyBeforeTime = notifyBeforeTime / 60;
+        }
+      }
+      handleChangeData("notifyBeforeTime", notifyBeforeTime);
+      handleChangeData("notifyTimeType", notifyTimeType);
+    }
     setValidationState("title", { error: false, message: "" });
     setValidationState("content", { error: false, message: "" });
 
@@ -583,25 +604,29 @@ function CreateWeeklyCalendar({
                                           {
                                             schedule.can_modify && (
                                               <>
-                                                <IconButton
-                                                  edge="end"
-                                                  onClick={evt => handleEditSchedule(schedule, item.date)}
-                                                >
-                                                  <Icon
-                                                    path={mdiPencilBoxMultipleOutline}
-                                                    size={0.75}
-                                                    color="#969696"
-                                                  />
-                                                </IconButton>
-                                                <IconButton edge="end"
-                                                  key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
-                                                  onClick={evt => {
-                                                    setScheduleID(schedule.id);
-                                                    setAlertConfirm(true);
-                                                  }}
-                                                >
-                                                  <Icon path={mdiTrashCanOutline} size={0.75} color="#969696" />
-                                                </IconButton>
+                                                <abbr title={t('IDS_WP_EDIT')}>
+                                                  <IconButton
+                                                    edge="end"
+                                                    onClick={evt => handleEditSchedule(schedule, item.date)}
+                                                  >
+                                                    <Icon
+                                                      path={mdiPencilBoxMultipleOutline}
+                                                      size={0.75}
+                                                      color="#969696"
+                                                    />
+                                                  </IconButton>
+                                                </abbr>
+                                                <abbr title={t('IDS_WP_DELETE')}>
+                                                  <IconButton edge="end"
+                                                    key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
+                                                    onClick={evt => {
+                                                      setScheduleID(schedule.id);
+                                                      setAlertConfirm(true);
+                                                    }}
+                                                  >
+                                                    <Icon path={mdiTrashCanOutline} size={0.75} color="#969696" />
+                                                  </IconButton>
+                                                </abbr>
                                               </>
                                             )
                                           }

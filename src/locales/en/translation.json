@@ -5,6 +5,10 @@
         "TITLE": "System Alert",
         "CANCLE_BTN": "Cancel",
         "ACCEPT_BTN": "Accept"
+      },
+      "CUSTOM_MODAL": {
+        "CANCLE": "Cancel",
+        "CONFIRM": "Confirm"
       }
     }
   },
@@ -118,7 +122,7 @@
         "create": "Create calendar",
         "recently": "Recently",
         "project_alarm": "Project remind",
-        "my_alarm": "Personal remind"
+        "my_alarm": "Group remind"
       },
       "right_part": {
         "add": "+ Create",
@@ -955,5 +959,6 @@
   "LABEL_CHAT_TASK_DANG_GUI": "Đang gửi...",
   "LABEL_CHAT_TASK_DA_GUI": "Đã gửi",
   "LABEL_CHAT_TASK_XEM_LUC": "Xem lúc {{viewed_at}}",
-  "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Tài liệu đính kèm"
+  "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Tài liệu đính kèm",
+  "IDS_WP_BACK": "Back"
 }

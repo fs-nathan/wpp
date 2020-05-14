@@ -158,9 +158,6 @@ function Project({
             dir: newDir,
           }
         })}
-        handleSortCalendar={sortData => {
-          setSortedGroupSchedules({ ...groupSchedules, data: sortData })
-        }}
         groupSchedules={sortedGroupSchedules}
         handleEditSchedule={(schedule) => doOpenModal("EDIT", schedule)}
         handleDeleteSchedule={(schedule) => doOpenModal("DELETE", schedule)}

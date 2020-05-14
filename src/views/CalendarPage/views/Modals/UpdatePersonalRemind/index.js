@@ -90,7 +90,7 @@ function UpdatePersonalRemind({
         open={open}
         setOpen={setOpen}
         canConfirm={data.content !== ''}
-        confirmRender={() => t('views.calendar_page.modal.update_personal_remind.title')}
+        confirmRender={() => t('IDS_WP_DONE')}
         onConfirm={() => handleOnConfirm()}
         maxWidth='sm'
         actionLoading={isLoading}

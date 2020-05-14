@@ -12,13 +12,13 @@ export const projectGroupScheduleSelector = createSelector(
   }
 );
 
-const calendarStage = state => state.calendar;
+const calendarState = state => state.calendar;
 export const newProjectGroupScheduleSelector = createSelector(
-  [calendarStage],
-  (calendarStage) => {
-    let afterCreate = get(calendarStage.createProjectGroupSchedule, "data.scheduleGroup", null);
-    let afterUpdate = get(calendarStage.updateProjectGroupSchedule, "data.scheduleGroup", null);
-    let afterDelete = get(calendarStage.deleteProjectGroupSchedule, "data.schedule_id", null);
+  [calendarState],
+  (calendarState) => {
+    let afterCreate = get(calendarState.createProjectGroupSchedule, "data.scheduleGroup", null);
+    let afterUpdate = get(calendarState.updateProjectGroupSchedule, "data.scheduleGroup", null);
+    let afterDelete = get(calendarState.deleteProjectGroupSchedule, "data.schedule_id", null);
     return ({
       afterCreate, afterUpdate, afterDelete
     })

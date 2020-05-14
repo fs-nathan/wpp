@@ -6,14 +6,16 @@ import Icon from '@mdi/react';
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingBox from 'components/LoadingBox';
 import { ScrollbarsContainer } from "components/TableComponents";
-import { CustomEventDispose, CustomEventListener, PROJECT_SCHEDULE_ADD_DAY_OFF, PROJECT_SCHEDULE_ADD_WORKING_DAYS, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_CREATE_WORKING_STAGE, PROJECT_SCHEDULE_DELETE_DAY_OFF, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_DELETE_WORKING_DAYS, PROJECT_SCHEDULE_DELETE_WORKING_STAGE, PROJECT_SCHEDULE_SETTING_STARTING_DAY, PROJECT_SCHEDULE_SETTING_WORKING_DAY, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_UPDATE_WORKING_STAGE } from "constants/events";
+import { CustomEventDispose, CustomEventListener, PROJECT_SCHEDULE_ADD_DAY_OFF, PROJECT_SCHEDULE_ADD_WORKING_DAYS, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_CREATE_WORKING_STAGE, PROJECT_SCHEDULE_DELETE_DAY_OFF, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_DELETE_WORKING_DAYS, PROJECT_SCHEDULE_DELETE_WORKING_STAGE, PROJECT_SCHEDULE_SETTING_STARTING_DAY, PROJECT_SCHEDULE_SETTING_WORKING_DAY, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_UPDATE_WORKING_STAGE, UPDATE_PROJECT_GROUP_SCHEDULE } from "constants/events";
 import { filter, get, isNil, set } from "lodash";
 import moment from 'moment';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
+import { useParams } from "react-router-dom";
 import ShiftStageModal from 'views/CalendarPage/views/Modals/ShiftStageModal';
+import UpdateProjectCalendar from "views/CalendarPage/views/Modals/UpdateProjectCalendar";
 import WorkingStageModal from 'views/CalendarPage/views/Modals/WorkingStageModal';
 import { bgColorSelector } from "../selectors";
 import { projectGroupNewScheduleDetailSelector } from "./selectors";
@@ -21,11 +23,11 @@ import './style.scss';
 
 function CalendarProjectRightPartPresenter({
   havePermission, settingDate, scheduleDetail, handleSettingStartingDayOfWeek,
-  handleAddWorkingDay, handleDeleteWorkingDays, handleDeleteDayOff,
+  handleAddWorkingDay, handleDeleteWorkingDays, handleDeleteDayOff, groupSchedules,
   handleAddDayOff, handleAddWorkingDayInWeek, handleAddWorkingStage,
   handleDeleteWorkingStage, handleUpdateWorkingStage, handleCreateShiftStage,
   hanleDeleteShiftStage, handleUpdateShiftStage, handleDeleteShiftStageAllTime,
-  handleDeleteGroup, handleEditGroupSchedule, newScheduleDetail,
+  handleDeleteGroup, newScheduleDetail, handleUpdateGroupSchedule, setIsLoadingOuter
 }) {
 
   const DEFAULT_DATA = {
@@ -36,6 +38,7 @@ function CalendarProjectRightPartPresenter({
     selectedWorkingType: 1,
   };
 
+  const params = useParams();
   const { t } = useTranslation();
   const daysInWeek = [
     { value: 1, name: t('views.calendar_page.modal.setting_weekly_calendar.monday') },
@@ -52,9 +55,11 @@ function CalendarProjectRightPartPresenter({
   const [selectedWorkingStage, setSelectedWorkingStage] = React.useState();
   const [openShiftStage, setOpenShiftStage] = React.useState(false);
   const [selectedShiftStage, setSelectedShiftStage] = React.useState();
+  const [description, setDescription] = React.useState('');
   const [isLoading, setIsLoading] = React.useState(false);
   const [actionFrom, setActionFrom] = React.useState();
   const [actionType, setActionType] = React.useState();
+  const [openEdit, setOpenEdit] = React.useState(false);
 
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
@@ -102,6 +107,7 @@ function CalendarProjectRightPartPresenter({
       });
       handleChangeData("selectedFistDayInWeek", scheduleDetail.data.day_start_week);
       setWorkingStateAll(scheduleDetail.data.work_hours_of_stage_all);
+      setDescription(scheduleDetail.data.description);
     }
   }, [scheduleDetail]);
 
@@ -144,6 +150,7 @@ function CalendarProjectRightPartPresenter({
       setWorkingDayList({
         list: listWorkingDay
       });
+      setIsLoadingOuter(false);
     }
   }
 
@@ -163,6 +170,7 @@ function CalendarProjectRightPartPresenter({
       setdayOffList({
         list: listDayOff
       });
+      setIsLoadingOuter(false);
     }
   }
 
@@ -186,6 +194,7 @@ function CalendarProjectRightPartPresenter({
       setWorkingState({
         list: list
       });
+      setIsLoadingOuter(false);
     }
   }
 
@@ -200,6 +209,7 @@ function CalendarProjectRightPartPresenter({
           list: list
         });
       }
+      setIsLoadingOuter(false);
     }
   }
 
@@ -214,6 +224,7 @@ function CalendarProjectRightPartPresenter({
       case "DELETE_SHIFT_STAGE":
         shifts = get(newScheduleDetail, "afterDeleteShiftStage.shifts");
         stageID = get(newScheduleDetail, "afterDeleteShiftStage.stageID");
+        setIsLoadingOuter(false);
         break;
       case "UPDATE_SHIFT_STAGE":
         shifts = get(newScheduleDetail, "afterUpdateShiftStage.shifts");
@@ -228,6 +239,7 @@ function CalendarProjectRightPartPresenter({
         break;
       case "DELETE_SHIFT_STAGE_ALLTIME":
         shifts = get(newScheduleDetail, "afterDeleteShiftStageAllTime.shifts");
+        setIsLoadingOuter(false);
         break;
       default: break;
     }
@@ -246,7 +258,14 @@ function CalendarProjectRightPartPresenter({
     }
   }
 
-  console.log(newScheduleDetail);
+  const refreshAfterUpdateGroupSchedule = () => {
+    console.log(newScheduleDetail.afterUpdateGroupSchedule);
+    if (!isNil(newScheduleDetail.afterUpdateGroupSchedule)) {
+      let schedule = get(newScheduleDetail, "afterUpdateGroupSchedule");
+      setDescription(schedule.description);
+      setIsLoading(false);
+    }
+  }
 
   React.useEffect(() => {
     CustomEventListener(PROJECT_SCHEDULE_SETTING_STARTING_DAY, refreshAfterChangeStartingDay);
@@ -264,6 +283,7 @@ function CalendarProjectRightPartPresenter({
     CustomEventListener(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
     CustomEventListener(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
     CustomEventListener(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+    CustomEventListener(UPDATE_PROJECT_GROUP_SCHEDULE, refreshAfterUpdateGroupSchedule);
     return () => {
       CustomEventDispose(PROJECT_SCHEDULE_SETTING_STARTING_DAY, refreshAfterChangeStartingDay);
       CustomEventDispose(PROJECT_SCHEDULE_SETTING_WORKING_DAY, refreshAfterSettingWorkingDay);
@@ -279,6 +299,7 @@ function CalendarProjectRightPartPresenter({
       CustomEventDispose(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
       CustomEventDispose(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
       CustomEventDispose(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, refreshAfterOperateShiftStage);
+      CustomEventDispose(UPDATE_PROJECT_GROUP_SCHEDULE, refreshAfterUpdateGroupSchedule);
     }
   }, [newScheduleDetail]);
 
@@ -297,7 +318,7 @@ function CalendarProjectRightPartPresenter({
                 havePermission ? {
                   label: t('IDS_WP_EDIT_TEXT'),
                   iconPath: mdiPencilBoxOutline,
-                  onClick: evt => handleEditGroupSchedule()
+                  onClick: evt => setOpenEdit(true)
                 } : null
               ]
             }
@@ -317,7 +338,7 @@ function CalendarProjectRightPartPresenter({
                 !scheduleDetail.loading && (
                   <Typography component={'div'} className="view_ProjectCalendar_rightContainer">
                     <div className={"uppercase_title"}>{t('views.calendar_page.right_part.label.description')}</div>
-                    <p className="view_ProjectCalendar_rightContainer_text">{scheduleDetail.data.description}</p>
+                    <p className="view_ProjectCalendar_rightContainer_text">{description}</p>
                     <div className={"uppercase_title"}>{t('views.calendar_page.right_part.label.setting_calendar')}</div>
                     <p className="view_ProjectCalendar_rightContainer_text">{t('views.calendar_page.modal.setting_weekly_calendar.day_begining')}</p>
                     <FormControl variant="outlined">
@@ -759,6 +780,16 @@ function CalendarProjectRightPartPresenter({
         }}
         shiftStage={selectedShiftStage}
         actionFrom={actionFrom}
+      />
+      <UpdateProjectCalendar
+        open={openEdit}
+        setOpen={setOpenEdit}
+        isLoading={isLoading}
+        schedule={groupSchedules.data.find(item => item.id === params.scheduleID)}
+        onConfirm={(name, description) => {
+          setIsLoading(true);
+          handleUpdateGroupSchedule(name, description);
+        }}
       />
     </>
   )

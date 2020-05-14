@@ -57,7 +57,7 @@ function CalendarAlarmLeftPartPresenter({
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => history.push(Routes.WEEKLY),
-          tooltip: t("DMH.VIEW.PGP.LEFT.INFO.BACK"),
+          tooltip: t("IDS_WP_BACK"),
         }}
       >
         <StyledList>
@@ -182,25 +182,29 @@ function CalendarAlarmLeftPartPresenter({
                                       get(reminds.data, `[${index}].reminds`, []).length
                                     }</div>
                                     {
-                                      havePermission && (
-                                        <IconButton
-                                          key={item.id}
-                                          onClick={(evt) => doOpenMenu(evt.currentTarget, item)}
-                                        >
-                                          <abbr title={t('IDS_WP_MORE')}>
-                                            {
-                                              isHover.id === item.id && (
-                                                <Icon
-                                                  key={item.id}
-                                                  path={mdiDotsVertical}
-                                                  size={0.8}
-                                                  color={"#fff"}
-                                                />
-                                              )
-                                            }
-                                          </abbr>
-                                        </IconButton>
-                                      )
+                                      <IconButton
+                                        key={item.id}
+                                        onClick={(evt) => doOpenMenu(evt.currentTarget, item)}
+                                        className="personal_alarm_control"
+                                      >
+                                        {
+                                          havePermission && (
+                                            <abbr title={t('IDS_WP_MORE')}>
+                                              {
+                                                isHover.id === item.id && (
+                                                  <Icon
+                                                    key={item.id}
+                                                    path={mdiDotsVertical}
+                                                    size={0.8}
+                                                    color={"#fff"}
+                                                  />
+                                                )
+                                              }
+                                            </abbr>
+                                          )
+                                        }
+                                      </IconButton>
+
                                     }
                                   </div>
                                 )}

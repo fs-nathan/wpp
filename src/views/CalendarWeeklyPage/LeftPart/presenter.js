@@ -33,7 +33,7 @@ function CalendarWeeklyLeftPartPresenter({
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => history.push(Routes.CALENDAR),
-          tooltip: t("DMH.VIEW.PGP.LEFT.INFO.BACK"),
+          tooltip: t("IDS_WP_BACK"),
         }}
         rightAction={
           havePermission ? {

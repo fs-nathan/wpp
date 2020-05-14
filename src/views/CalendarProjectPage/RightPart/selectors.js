@@ -5,6 +5,9 @@ const calendarState = state => state.calendar;
 export const projectGroupNewScheduleDetailSelector = createSelector(
   [calendarState],
   (calendarState) => {
+    let afterUpdateGroupSchedule = get(calendarState.updateProjectGroupSchedule, "data.scheduleGroup", null);
+    let afterCreateGroupSchedule = get(calendarState.createProjectGroupSchedule, "data.scheduleGroup", null);
+    let afterDeleteGroupSchedule = get(calendarState.deleteProjectGroupSchedule, "data.schedule_id", null);
     let afterSettingStartingDayOfWeek = get(calendarState.projectGroupSettingStartingDay, "data.scheduleGroup", null);
     let afterSettingWorkingDayInWeek = get(calendarState.projectGroupSetWorkingDay, "data.scheduleGroup", null);
     let afterAddWorkingDay = get(calendarState.projectGroupAddWorkingDays, "data.workDays", null);
@@ -40,6 +43,9 @@ export const projectGroupNewScheduleDetailSelector = createSelector(
     }
 
     return ({
+      afterCreateGroupSchedule,
+      afterUpdateGroupSchedule,
+      afterDeleteGroupSchedule,
       afterSettingStartingDayOfWeek,
       afterSettingWorkingDayInWeek,
       afterAddWorkingDay,

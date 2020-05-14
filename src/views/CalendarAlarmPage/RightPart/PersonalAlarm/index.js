@@ -35,12 +35,13 @@ function CalendarPersonalAlarm({
 
   const search = useLocation().search;
   const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PERSONAL_REMIND_OPTIONS', {
-    timeType: 3
+    timeType: 3,
+    timeRange: {
+      startDate: moment().startOf("isoWeeks"),
+      endDate: moment().endOf("isoWeeks")
+    }
   });
-  const [timeRange, setTimeRange] = React.useState({
-    start: moment().startOf("isoWeek"),
-    end: moment().endOf("isoWeek")
-  });
+  const [timeRange, setTimeRange] = React.useState(localOptions.timeRange);
   const [timeType, setTimeType] = React.useState(localOptions.timeType);
   const [openModal, setOpenModal] = React.useState(false);
   const [openModalEdit, setOpenModalEdit] = React.useState(false);
@@ -61,13 +62,14 @@ function CalendarPersonalAlarm({
   React.useEffect(() => {
     setLocalOptions(pastOptions => ({
       ...pastOptions,
-      timeType
+      timeType,
+      timeRange
     }));
-  }, [timeType]);
+  }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(timeRange.start).format("YYYY-MM-DD");
-    let toTime = moment(timeRange.end).format("YYYY-MM-DD");
+    let fromTime = moment(timeRange.startDate ?? moment().startOf('year')).format("YYYY-MM-DD");
+    let toTime = moment(timeRange.endDate ?? moment().endOf('year')).format("YYYY-MM-DD");
     doListPersonalRemind({ fromTime, toTime }, false);
 
     const refreshListPersonalRemind = () => {
@@ -146,8 +148,8 @@ function CalendarPersonalAlarm({
         handleExpand={handleExpand}
         handleTimeType={type => setTimeType(type)}
         handleTimeRange={(start, end) => setTimeRange({
-          start: start ?? moment().startOf('year'),
-          end: end ?? moment().endOf('year')
+          startDate: start,
+          endDate: end,
         })}
         personalReminds={filteredReminds}
         handleOpenModal={(type, props) => handleOpenModal(type, props)}
