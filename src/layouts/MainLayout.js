@@ -182,6 +182,7 @@ function MainLayout({
   }, []);
 
   useEffect(() => {
+    if (!socket || !userId) return;
     function handleChatInProject(data) {
       console.log('handleChatInProject', data)
       const { user_create_id } = data;
@@ -198,6 +199,7 @@ function MainLayout({
   }, [userId, language])
 
   useEffect(() => {
+    if (!socket || !taskDetails) return;
     console.log('listen chat')
     const handleNewChat = (data) => {
       console.log('handleNewChat', data, taskDetails.uuid)

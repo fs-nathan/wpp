@@ -14,6 +14,8 @@ export const initialState = {
   searchChatKey: '',
   stickerKeyWord: '',
   uploadingPercent: 0,
+  isMore: false,
+  isLoading: false,
   isSending: false,
   isFails: false,
   isShowSendStatus: false,
@@ -50,10 +52,15 @@ export default (state = initialState, action) => produce(state, draft => {
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
+      draft.isMore = false;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;
       break;
+    case actionTypes.LOAD_CHAT: {
+      draft.isLoading = true;
+      break
+    }
     case actionTypes.LOAD_CHAT_SUCCESS: {
       const { payload, isMore } = action;
       if (isMore) {
@@ -63,8 +70,10 @@ export default (state = initialState, action) => produce(state, draft => {
       } else {
         draft.chats = payload;
       }
+      draft.isMore = isMore;
       draft.isSending = false;
       draft.isFails = false;
+      draft.isLoading = false;
       draft.lastChat = {};
       break;
     }
