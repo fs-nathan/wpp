@@ -76,7 +76,7 @@ const CustomListItem = () => {
                     primary={item.user_share}
                     secondary={
                       <span>
-                        <ColorTypo variant='caption' color='blue'>{t('LABEL_CHAT_TASK_LUC')}{item.time_create} - {item.date_create}</ColorTypo>
+                        <ColorTypo variant='caption' color='blue'>{t('LABEL_CHAT_TASK_LUC', { createdAt: `${item.time_create} - ${item.date_create}` })}</ColorTypo>
                         <br />
                         <ColorTypo variant='caption'>{item.address}</ColorTypo>
                       </span>

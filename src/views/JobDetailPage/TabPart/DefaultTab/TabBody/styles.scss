@@ -31,6 +31,15 @@
     margin-bottom: 5px;
     text-transform: inherit;
   }
+  &--badge {
+    margin-right: 10px !important;
+    text-transform: lowercase;
+    span {
+      font-size: 12px;
+      padding: 0px 5px;
+      border-radius: 2px;
+    }
+  }
 }
 
 .MuiTooltip-tooltip {

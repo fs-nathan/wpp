@@ -143,6 +143,7 @@ function ListBodyItem(props) {
     history.push({ search: `?task_id=${props.id}` });
   }
 
+  const fillColor = props.complete === 100 ? '#00e690' : '#eee';
   return (
     <div
       className={clsx("container-lbd", {
@@ -151,7 +152,7 @@ function ListBodyItem(props) {
       onClick={onClickItem}
     >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
-        <SimpleDonutChart color={groupActiveColor} percentDone={props.complete} />
+        <SimpleDonutChart color={groupActiveColor} circleColor={fillColor} percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...{
         chat,
