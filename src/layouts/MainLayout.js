@@ -1,6 +1,7 @@
 import { appendChat, getDataPinOnTaskChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
-import { updateProjectChat } from "actions/taskDetail/taskDetailActions";
+import { getTaskDetailTabPartSuccess, updateProjectChat } from "actions/taskDetail/taskDetailActions";
 import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
+import { CHAT_TYPE } from "helpers/jobDetail/arrayHelper";
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -99,6 +100,71 @@ const Image = styled.img`
   margin-top: 10px;
 `;
 
+function getTaskByChat(data, taskDetails) {
+  const { total_subtask,
+    total_subtask_complete,
+    total_offer,
+    total_remind,
+    total_location,
+    total_file,
+    total_link,
+    total_img,
+    total_command } = taskDetails
+  switch (data.type) {
+    case CHAT_TYPE.CANCEL_PIN_TASK:
+      return { ...taskDetails, is_ghim: false }
+    case CHAT_TYPE.CANCEL_STOP_TASK:
+      return { ...taskDetails, state_code: 1 }
+    case CHAT_TYPE.COMPLETE_SUBTASK:
+      return { ...taskDetails, total_subtask_complete: total_subtask_complete + 1 }
+    case CHAT_TYPE.CREATE_COMMAND_DECIDED:
+      return { ...taskDetails, total_command: total_command + 1 }
+    case CHAT_TYPE.CREATE_NEW_SUB_TASK:
+      return { ...taskDetails, total_subtask: total_subtask + 1 }
+    case CHAT_TYPE.CREATE_OFFER:
+      return { ...taskDetails, total_offer: total_offer + 1 }
+    case CHAT_TYPE.CREATE_REMIND:
+    case CHAT_TYPE.CREATE_REMIND_WITH_DURATION:
+      return { ...taskDetails, total_remind: total_remind + 1 }
+    case CHAT_TYPE.DELETE_COMMAND_DECIDED:
+      return { ...taskDetails, total_command: total_command - 1 }
+    case CHAT_TYPE.DELETE_OFFER:
+      return { ...taskDetails, total_offer: total_offer - 1 }
+    case CHAT_TYPE.DELETE_REMIND:
+      return { ...taskDetails, total_remind: total_remind - 1 }
+    case CHAT_TYPE.DELETE_SHARE_LOCATION:
+      return { ...taskDetails, total_location: total_location - 1 }
+    case CHAT_TYPE.DELETE_SUB_TASK:
+      return { ...taskDetails, total_subtask: total_subtask - 1 }
+    case CHAT_TYPE.EDIT_PRIORITY:
+      return { ...taskDetails, priority_code: data.priority }
+    case CHAT_TYPE.PIN_TASK:
+      return { ...taskDetails, is_ghim: true }
+    case CHAT_TYPE.SHARE_FILE:
+    case CHAT_TYPE.FILE:
+    case CHAT_TYPE.CHAT_FILE_FROM_GOOGLE_DRIVER:
+    case CHAT_TYPE.CHAT_FORWARD_FILE:
+      return { ...taskDetails, total_file: total_file + data.files.length }
+    case CHAT_TYPE.SHARE_LOCATION:
+      return { ...taskDetails, total_location: total_location + 1 }
+    case CHAT_TYPE.STOP_TASK:
+      return { ...taskDetails, state_code: 4 }
+    case CHAT_TYPE.UPDATE_TASK_NAME:
+      return { ...taskDetails, name: data.new_task_name, description: data.new_description }
+    case CHAT_TYPE.UPDATE_TYPE_ASSIGN_TASK:
+      return { ...taskDetails, assign_code: data.type_assign_code }
+    case CHAT_TYPE.TEXT:
+      return { ...taskDetails, total_link: total_link + data.urls.length }
+    case CHAT_TYPE.IMAGE:
+      return { ...taskDetails, total_img: total_img + data.images.length }
+    case CHAT_TYPE.UPDATE_COMPLETE:
+      return { ...taskDetails, complete: data.complete }
+
+    default:
+      return null
+  }
+}
+
 let socket;
 function MainLayout({
   location,
@@ -110,6 +176,7 @@ function MainLayout({
   groupDetail,
   isDocumentDetail,
   appendChat,
+  getTaskDetailTabPartSuccess,
   getDataPinOnTaskChat,
   updateChatState,
   updateProjectChat,
@@ -207,6 +274,10 @@ function MainLayout({
       console.log('handleNewChat', data, taskDetails.uuid)
       if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
         appendChat({ data_chat: data })
+      }
+      const task = getTaskByChat(data, taskDetails)
+      if (task) {
+        getTaskDetailTabPartSuccess({ task })
       }
     }
 
@@ -337,6 +408,7 @@ export default connect(
   {
     updateProjectChat,
     appendChat,
+    getTaskDetailTabPartSuccess,
     getDataPinOnTaskChat,
     updateChatState,
     getViewedChatSuccess,

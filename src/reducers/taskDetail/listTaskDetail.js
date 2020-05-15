@@ -37,13 +37,13 @@ function changeGroupTaskDetail(listTaskDetail, task_id, group_task) {
     })
 }
 
-function updateListTaskDetail(listTaskDetail, id, update) {
+function updateListTaskDetail(listTaskDetail, task_id, update) {
     return listTaskDetail.map((data) => {
         const { tasks } = data;
         return {
             ...data,
             tasks: tasks.map((task) => {
-                if (id === task.id) {
+                if (task_id === task.id) {
                     const { new_chat } = update;
                     return {
                         ...task,
@@ -57,9 +57,9 @@ function updateListTaskDetail(listTaskDetail, id, update) {
     })
 }
 
-function updateListDataNotRoom(listDataNotRoom, id, update) {
+function updateListDataNotRoom(listDataNotRoom, task_id, update) {
     return listDataNotRoom.map((data) => {
-        if (id === data.id) {
+        if (task_id === data.id) {
             const { new_chat } = update;
             return {
                 ...data,
@@ -199,19 +199,19 @@ export default function reducer(state = initialState, action) {
             }
         }
         case types.STOP_TASK_SUCCESS: {
-            const { payload, id } = action;
+            const { payload, task_id } = action;
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 4 }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 4 }),
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { status_code: 4 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { status_code: 4 }),
             }
         }
         case types.CANCEL_STOP_TASK_SUCCESS: {
-            const { payload, id } = action;
+            const { payload, task_id } = action;
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 0 }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 0 }),
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { status_code: 1 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { status_code: 1 }),
             }
         }
         case types.UPDATE_GROUP_TASK_SUCCESS: {

@@ -13,11 +13,19 @@ import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobM
 import { taskIdSelector } from '../../../selectors';
 import './styles.scss';
 
+function getAssignType(assign_code) {
+  if (assign_code === 0)
+    return 'LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY'
+  if (assign_code === 1)
+    return 'LABEL_CHAT_TASK_DA_DE_XUAT_NGAY'
+  return 'LABEL_CHAT_TASK_DA_GIAO_VIEC_NGAY'
+}
+
 function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskDetails = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails'));
-  const { is_ghim: isPinned, state_code } = taskDetails || {};
+  const { is_ghim: isPinned, state_code, assign_code } = taskDetails || {};
   const pause = state_code === 4;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -84,6 +92,7 @@ function TabHeader(props) {
     handleCloseMenu();
     handleOpenModalDelete();
   }
+
   return (
     <div className="container-dt-tabheader">
       <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
@@ -97,7 +106,7 @@ function TabHeader(props) {
             component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
-          >{t('LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY', { date_create: detailTask.date_create })}
+          >{t(getAssignType(assign_code), { date_create: detailTask.date_create })}
           </ColorTypo>
         )}
       </div>
