@@ -2,6 +2,7 @@ import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { cancelStopTask, deleteTask, pinTaskAction, stopTask, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import ColorTypo from 'components/ColorTypo';
 import compact from 'lodash/compact';
 import get from 'lodash/get';
@@ -10,14 +11,21 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import './styles.scss';
+
+function getAssignType(assign_code) {
+  if (assign_code === 0)
+    return 'LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY'
+  if (assign_code === 1)
+    return 'LABEL_CHAT_TASK_DA_DE_XUAT_NGAY'
+  return 'LABEL_CHAT_TASK_DA_GIAO_VIEC_NGAY'
+}
 
 function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskDetails = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails'));
-  const { is_ghim: isPinned, state_code } = taskDetails || {};
+  const { is_ghim: isPinned, state_code, assign_code } = taskDetails || {};
   const pause = state_code === 4;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -84,6 +92,7 @@ function TabHeader(props) {
     handleCloseMenu();
     handleOpenModalDelete();
   }
+
   return (
     <div className="container-dt-tabheader">
       <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
@@ -97,7 +106,7 @@ function TabHeader(props) {
             component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
-          >{t('LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY', { date_create: detailTask.date_create })}
+          >{t(getAssignType(assign_code), { date_create: detailTask.date_create })}
           </ColorTypo>
         )}
       </div>
@@ -110,6 +119,7 @@ function TabHeader(props) {
         <Icon path={mdiDotsVertical} size={1} className="job-detail-icon" />
       </IconButton>
       <Menu
+        className="tabHeaderDefault--menu"
         id="simple-menu"
         anchorEl={anchorEl}
         keepMounted
@@ -159,12 +169,18 @@ function TabHeader(props) {
         data={detailTask}
         editMode={editMode}
       />
-      <ModalDeleteConfirm
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
+      />
+      {/* <ModalDeleteConfirm
         confirmDelete={confirmDelete}
         isOpen={isOpenDelete}
         handleOpenModalDelete={handleOpenModalDelete}
         handleCloseModalDelete={handleCloseModalDelete}
-      />
+      /> */}
     </div>
   );
 }

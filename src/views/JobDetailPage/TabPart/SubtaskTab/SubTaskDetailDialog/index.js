@@ -34,7 +34,7 @@ function SubTaskDetailDialog() {
       open={isOpenDetailSubTask}
       setOpen={setOpenDetailSubTask}
       confirmRender={null}
-      className="subTaskDetailDialog"
+      className="subTaskDetailDialog modal_height_30vh"
       titleRender={
         <div className="subTaskDetailDialog--titleWrap">
           <Avatar className="subTaskDetailDialog--avatar" src={user_create_avatar} alt='avatar' />
@@ -52,10 +52,10 @@ function SubTaskDetailDialog() {
         <div className="subTaskDetailDialog--row">
           <div className="subTaskDetailDialog--label">{t('LABEL_CHAT_TASK_TRANG_THAI')}</div>
           <div className={clsx("subTaskDetailDialog--content", { "subTaskDetailDialog__finished": status === 1 })}>
-            {status === 0 ? "Đang làm" : "Hoàn thành"}
+            {status === 0 ? t('LABEL_CHAT_TASK_DANG_LAM') : t('LABEL_CHAT_TASK_HOAN_THANH')}
           </div>
         </div>
-        <div className="subTaskDetailDialog--row">
+        {/* <div className="subTaskDetailDialog--row">
           <div className="subTaskDetailDialog--label">{t('LABEL_CHAT_TASK_HOAN_THANH')}</div>
           <div className="subTaskDetailDialog--content">
             {user_complete_name &&
@@ -69,7 +69,7 @@ function SubTaskDetailDialog() {
           <div className="subTaskDetailDialog--content">
             {time_complete}
           </div>
-        </div>
+        </div> */}
       </div>
     </JobDetailModalWrap>
   );

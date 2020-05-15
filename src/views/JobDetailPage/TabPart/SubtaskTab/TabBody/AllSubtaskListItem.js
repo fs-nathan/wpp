@@ -1,19 +1,20 @@
-import { useTranslation } from 'react-i18next';
 import { IconButton, ListItem, ListItemText, Menu, MenuItem } from '@material-ui/core';
-import { mdiCheck, mdiCircleOutline, mdiDotsVertical, mdiDragVertical } from '@mdi/js';
+import { mdiCheckCircle, mdiCircleOutline, mdiDotsVertical, mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { completeSubTask, deleteSubTask } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import SubtaskModal from '../SubtaskModal';
 
 const AllSubtaskListItemContainer = styled(ListItem)`
   display: flex;
   align-content: center;
   background-color: #fff;
+  cursor: pointer;
   & > *:not(:first-child) {
     margin-left: 10px;
   }
@@ -21,6 +22,9 @@ const AllSubtaskListItemContainer = styled(ListItem)`
     margin-left: auto;
   }
   padding: 8px 0;
+  &:hover {
+    background-color: #f2f5fa;
+  }
 `;
 
 const StyledMenu = styled.div`
@@ -31,7 +35,7 @@ const StyledMenu = styled.div`
 `
 
 export const ButtonIcon = styled(IconButton)`
-  padding: 0.79rem !important;
+  padding: 0rem !important;
   &:hover {
     background: none;
   }
@@ -107,8 +111,7 @@ function AllSubtaskListItem(props) {
         <AllSubtaskListItemContainer
           innerRef={provided.innerRef}
           {...provided.draggableProps}
-          onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}
+
         >
           <StyledMenu {...provided.dragHandleProps}>
             <abbr title={t('LABEL_CHAT_TASK_KEO_THA_SAP_XEP')}>
@@ -118,14 +121,20 @@ function AllSubtaskListItem(props) {
           {
             !isHover
               ?
-              <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}>
+              <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}
+                onMouseEnter={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
+              >
                 {/* <Avatar src={props.task.user_create_avatar} alt='avatar' /> */}
                 <Icon path={mdiCircleOutline} size={1} color="#757575" />
               </abbr>
               :
-              <ButtonIcon onClick={onClickCompleteTask}>
+              <ButtonIcon onClick={onClickCompleteTask}
+                onMouseEnter={() => setIsHover(true)}
+                onMouseLeave={() => setIsHover(false)}
+              >
                 <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}>
-                  <Icon path={mdiCheck} size={1} color="#74f5c0" />
+                  <Icon path={mdiCheckCircle} size={1} color="rgb(2,218,137)" />
                 </abbr>
               </ButtonIcon>
           }
@@ -160,13 +169,11 @@ function AllSubtaskListItem(props) {
             name={props.task.name}
             {...props}
           />
-          <ModalDeleteConfirm
-            confirmDelete={confirmDelete}
-            isOpen={isOpenDelete}
-            handleCloseModalDelete={handleCloseModalDelete}
-            handleOpenModalDelete={handleOpenModalDelete}
-            // task={task.id}
-            {...props}
+          <AlertModal
+            open={isOpenDelete}
+            setOpen={setOpenDelete}
+            content={t('IDS_WP_ALERT_CONTENT')}
+            onConfirm={confirmDelete}
           />
         </AllSubtaskListItemContainer>
       )}
