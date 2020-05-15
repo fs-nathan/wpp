@@ -2,12 +2,12 @@ import { IconButton, ListItem, ListItemText, Menu, MenuItem } from '@material-ui
 import { mdiCheckCircle, mdiCircleOutline, mdiDotsVertical, mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { completeSubTask, deleteSubTask } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import SubtaskModal from '../SubtaskModal';
 
 const AllSubtaskListItemContainer = styled(ListItem)`
@@ -169,13 +169,11 @@ function AllSubtaskListItem(props) {
             name={props.task.name}
             {...props}
           />
-          <ModalDeleteConfirm
-            confirmDelete={confirmDelete}
-            isOpen={isOpenDelete}
-            handleCloseModalDelete={handleCloseModalDelete}
-            handleOpenModalDelete={handleOpenModalDelete}
-            // task={task.id}
-            {...props}
+          <AlertModal
+            open={isOpenDelete}
+            setOpen={setOpenDelete}
+            content={t('IDS_WP_ALERT_CONTENT')}
+            onConfirm={confirmDelete}
           />
         </AllSubtaskListItemContainer>
       )}

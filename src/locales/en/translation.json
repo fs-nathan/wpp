@@ -964,5 +964,6 @@
   "LABEL_CHAT_TASK_TIEN_DO_KE_HOACH": "Tiến độ kế hoạch",
   "LABEL_CHAT_TASK_TU_DONG_XAC_DINH": "Tự động xác định đến thời điểm hiện tại",
   "LABEL_CHAT_TASK_BIEU_DO_CAP_NHAT_TIEN_DO": "Biểu đồ cập nhật tiến độ",
-  "LABEL_CHAT_TASK_BIEU_DO_THE_HIEN": "Biểu đồ thể hiện lịch sử hoàn thành công việc"
+  "LABEL_CHAT_TASK_BIEU_DO_THE_HIEN": "Biểu đồ thể hiện lịch sử hoàn thành công việc",
+  "LABEL_CHAT_TASK_GHIM_NHAC_HEN": "Ghim nhắc hẹn"
 }

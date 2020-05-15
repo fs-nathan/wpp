@@ -37,6 +37,7 @@ function DetailRemind() {
 
   function openEdit() {
     dispatch(openCreateRemind(true, false, dataRemind))
+    dispatch(openDetailRemind(false))
   }
 
   const {

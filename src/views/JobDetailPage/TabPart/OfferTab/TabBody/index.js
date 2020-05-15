@@ -1,5 +1,6 @@
 import { ButtonGroup, Collapse } from '@material-ui/core';
 import { deleteOffer } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import ColorButton from 'components/ColorButton';
 import ColorTypo from 'components/ColorTypo';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
@@ -8,7 +9,6 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import OfferModal from '../OfferModal';
 import ApproveOfferDialog from './ApproveOfferDialog';
@@ -153,12 +153,12 @@ function TabBody(props) {
           isOffer
           item={selectedItem}
         />
-        <ModalDeleteConfirm
-          confirmDelete={confirmDelete}
-          isOpen={isOpenDelete}
-          handleCloseModalDelete={handleCloseModalDelete}
-          item={selectedItem}
-          {...props} />
+        <AlertModal
+          open={isOpenDelete}
+          setOpen={setOpenDelete}
+          content={t('IDS_WP_ALERT_CONTENT')}
+          onConfirm={confirmDelete}
+        />
         <OfferDetail
           isOpen={openDetail}
           setOpen={setOpenDetail}

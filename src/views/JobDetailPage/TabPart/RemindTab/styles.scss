@@ -52,7 +52,14 @@
       margin-right: 4px;
     }
     .MuiChip-root {
-      border-radius: 5px;
+      border-radius: 2px;
+      margin-left: 10px;
+    }
+    .MuiChip-label {
+      padding: 0 5px;
+      border-radius: 2px;
+      font-weight: 500;
+      font-size: 12px;
     }
   }
   &--data {
@@ -76,6 +83,12 @@
       padding: 0px;
     }
   }
+  .MuiFormControl-root {
+    margin-top: 0;
+  }
+  .TitleSectionModal {
+    margin: 0 0 10px;
+  }
   &--dateRemind,
   &--mileStone {
     font-size: 13px;
@@ -94,4 +107,28 @@
     display: flex;
     align-items: center;
   }
+  &--chip {
+    font-size: 14px;
+  }
+}
+//RemindModal - RemindTab
+.remind-title {
+  display: flex;
+  margin: 15px 0 0 0;
+}
+.remind-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  .type-remind {
+    margin: 0px;
+    width: 160px;
+    & > div > div > div {
+      padding: 0;
+    }
+  }
+}
+.wrapper-progress {
+  display: flex;
 }

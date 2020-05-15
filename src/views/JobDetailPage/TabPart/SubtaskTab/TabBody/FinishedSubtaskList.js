@@ -2,10 +2,10 @@ import { Menu, MenuItem } from '@material-ui/core';
 import { mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteSubTask } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import { ButtonIcon } from './AllSubtaskListItem';
 import './styles.scss';
 
@@ -15,7 +15,7 @@ const FinishedSubtaskList = (props) => {
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const completeSubTasks = useSelector(state => state.taskDetail.subTask.completeSubTasks);
   // bien modal delete
-  const [isOpenDel, setOpenDel] = React.useState(false);
+  const [isOpenDelete, setOpenDelete] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState("")
 
   // const [data] = React.useState([1, 2, 3, 4]);
@@ -33,12 +33,12 @@ const FinishedSubtaskList = (props) => {
 
   const handleOpenModalDelete = () => {
     console.log(selectedId)
-    setOpenDel(true)
+    setOpenDelete(true)
     setAnchorEl(null)
   };
 
   const handleCloseModalDelete = () => {
-    setOpenDel(false);
+    setOpenDelete(false);
   };
 
   const confirmDelete = () => {
@@ -92,12 +92,11 @@ const FinishedSubtaskList = (props) => {
         <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
 
-      <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDel}
-        handleCloseModalDelete={handleCloseModalDelete}
-        handleOpenModalDelete={handleOpenModalDelete}
-        {...props}
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
       />
     </ul>
   );

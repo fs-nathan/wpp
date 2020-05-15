@@ -716,27 +716,6 @@
   }
 }
 
-//RemindModal - RemindTab
-.remind-title {
-  display: flex;
-  margin: 15px 0 0 0;
-}
-.remind-body {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .type-remind {
-    margin: 0px;
-    width: 160px;
-    & > div > div > div {
-      padding: 0;
-    }
-  }
-}
-.wrapper-progress {
-  display: flex;
-}
-
 //TabBody - RemindTab
 .container-tabbody-remind {
   padding: 10px 20px;
