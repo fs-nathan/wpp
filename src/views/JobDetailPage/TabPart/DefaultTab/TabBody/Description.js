@@ -6,7 +6,7 @@ import './styles.scss';
 
 function Description({ value }) {
   const { t } = useTranslation();
-  const [isOpen, setOpen] = React.useState(true)
+  const [isOpen, setOpen] = React.useState(false);
   const handlePressViewButton = () => {
     setOpen(!isOpen)
   }
@@ -14,8 +14,8 @@ function Description({ value }) {
   const contentCollapsed = getCollapseText(value);
   // console.log('raw', raw)
   return (
-    <div className="tabBodyDescription">
-      <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>{t('LABEL_CHAT_TASK_MO_TA')}</ColorTypo>
+    <div className="Description">
+      <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_MO_TA')}</ColorTypo>
       <div className="Description--content"
         dangerouslySetInnerHTML={{
           __html: getRichContent(isOpen ? value : contentCollapsed)
@@ -24,7 +24,7 @@ function Description({ value }) {
       </div>
       {
         isLong &&
-        <div className="tabBodyDescription--more" onClick={handlePressViewButton}>
+        <div className="Description--more" onClick={handlePressViewButton}>
           {isOpen ? t('LABEL_CHAT_TASK_THU_GON') : t('LABEL_CHAT_TASK_XEM_THEM')}
         </div>
       }

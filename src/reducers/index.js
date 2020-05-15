@@ -111,7 +111,6 @@ import chat, { initialState as chatInitialState } from "./chat/chat";
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from "./documents";
-import gantt, { initialState as ganttInitialState } from "./gantt";
 import copyGroupTask, {
   initialState as copyGroupTaskInitialState,
 } from "./groupTask/copyGroupTask";
@@ -181,6 +180,9 @@ import listLevel, {
 import updateLevel, {
   initialState as updateLevelInitialState,
 } from "./level/updateLevel";
+import localStorage, {
+  initialState as localStorageInitialState,
+} from "./localStorage";
 import createMajor, {
   initialState as createMajorInitialState,
 } from "./major/createMajor";
@@ -382,6 +384,9 @@ import publicMember, {
 import sortUser, {
   initialState as sortUserInitialState,
 } from "./user/sortUser";
+import updateGroupPermissionUser, {
+  initialState as updateGroupPermissionUserInitialState,
+} from "./user/updateGroupPermissionUser";
 import updateUser, {
   initialState as updateUserInitialState,
 } from "./user/updateUser";
@@ -445,6 +450,7 @@ const rootReducer = combineReducers({
     privateMember,
     banUserFromGroup,
     permissionUser,
+    updateGroupPermissionUser,
   }),
   icon: combineReducers({
     listIcon,
@@ -589,6 +595,7 @@ const rootReducer = combineReducers({
     projectCalendarUpdateShiftStageAllTime,
     projectCalendarDeleteShiftStageAllTime,
   }),
+  localStorage,
 });
 
 export const DEFAULT_STATE = {
@@ -615,6 +622,7 @@ export const DEFAULT_STATE = {
     privateMember: privateMemberInitialState,
     banUserFromGroup: banUserFromGroupInitialState,
     permissionUser: permissionUserInitialState,
+    updateGroupPermissionUser: updateGroupPermissionUserInitialState,
   },
   icon: {
     listIcon: listIconInitialState,
@@ -751,6 +759,7 @@ export const DEFAULT_STATE = {
     projectCalendarUpdateShiftStageAllTime: projectCalendarUpdateShiftStageAllTimeInitialState,
     projectCalendarDeleteShiftStageAllTime: projectCalendarDeleteShiftStageAllTimeInitialState,
   },
+  localStorage: localStorageInitialState,
 };
 
 export default rootReducer;

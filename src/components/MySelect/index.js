@@ -9,6 +9,13 @@ const Title = ({ className = '', ...props }) =>
     {...props}
   />
 
+const Select = ({ className = '', ...props }) =>
+  <Typography
+    className={`comp_MySelect___select ${className}`}
+    component={'div'}
+    {...props}
+  />
+
 function MySelect({
   label, options, value, onChange
 }) {
@@ -16,13 +23,13 @@ function MySelect({
   return (
     <>
       <Title component={'div'}>{label}</Title>
-      <Typography component={'div'}>
+      <Select>
         <CustomSelect
           options={options}
           value={value}
           onChange={onChange}
         />
-      </Typography>
+      </Select>
     </>
   );
 }

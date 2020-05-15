@@ -21,6 +21,9 @@
 .comp_PostCreatorPopupInner__main {
   overflow: auto;
   flex: 1;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .comp_PostCreatorPopupInner__headerTitle {
   flex: 1;
@@ -107,4 +110,7 @@
 }
 .comp_PostCreatorPopupInner__mediaCloseButton .MuiSvgIcon-root {
   font-size: 1em;
+}
+.comp_PostCreatorPopupInner .comp_TasksCard__Content {
+  flex: 1;
 }

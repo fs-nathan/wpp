@@ -92,8 +92,8 @@ const WeedDetailStateLess = ({
   return (
     (!calendar && (
       <EmptyHolder
-        imageUrl={no_calendar_image}
-        title={"no data found"}
+        image={<img src={no_calendar_image} alt="no data found" />}
+        title={""}
         description=""
       />
     )) || (

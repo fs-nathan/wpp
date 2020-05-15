@@ -183,7 +183,7 @@ const MemberModal = () => {
             <StyledAvatar src={avatar} alt='avatar' />
             <div className="general-info">
               <NameStaff bold uppercase >{name}</NameStaff>
-              <ColorTypo color='gray'  >{t('LABEL_CHAT_TASK_NGAY_THAM_GIA')}{date_join}</ColorTypo>
+              <ColorTypo color='gray'  >{t('LABEL_CHAT_TASK_NGAY_THAM_GIA', { date_join })}</ColorTypo>
             </div>
           </div>
           <TextInput

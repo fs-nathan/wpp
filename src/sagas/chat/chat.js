@@ -265,3 +265,13 @@ export function* getGirdListTask(payload) {
     yield put(actions.getGirdListTaskFail(error));
   }
 }
+
+export function* getDataPinOnTaskChat(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.get, "/task/get-data-pin-on-task-chat", { params: { task_id } });
+    yield put(actions.getDataPinOnTaskChatSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getDataPinOnTaskChatFail(error));
+  }
+}

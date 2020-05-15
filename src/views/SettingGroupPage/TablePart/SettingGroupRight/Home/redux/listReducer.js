@@ -15,10 +15,16 @@ export const listReducer = (state = [], action) => {
     case listAddFirst.type:
       return [action.payload, ...state];
     case listupdate.type:
-      return state.map((item) => {
+      let exited = false;
+      const newState = state.map((item) => {
         if (item.id !== action.payload.id) return item;
+        exited = true;
         return merge({}, item, action.payload);
       });
+      if (exited) {
+        return newState;
+      }
+      return [action.payload, ...newState];
     default:
       return state;
   }
