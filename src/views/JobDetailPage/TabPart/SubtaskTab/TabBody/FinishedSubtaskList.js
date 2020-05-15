@@ -58,7 +58,7 @@ const FinishedSubtaskList = (props) => {
             {/* <abbr title={item.user_create_name}>
               <Avatar className="finishedSubTask--avatar" src={item.user_create_avatar} alt='avatar' />
             </abbr> */}
-            <Icon path={mdiCheckCircle} size={1} color="#74f5c0" />
+            <Icon path={mdiCheckCircle} size={1} color="rgb(2,218,137)" />
             <div className="finishedSubTask--title" onClick={onClickTitle(item)}>
               {`${item.name}`}
             </div>

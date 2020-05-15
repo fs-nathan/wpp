@@ -55,6 +55,11 @@ margin-bottom: 6px;
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
   border-radius: 3px !important
+  & > span {
+    font-size: 12px;
+    padding: 0 5px;
+    border-radius: 2px;
+  }
 `
 const ContentText = styled(ColorTypo)`
   font-weight: 500;

@@ -1,7 +1,9 @@
 import { appendChat, getDataPinOnTaskChat, getViewedChatSuccess, updateChatState } from "actions/chat/chat";
-import { getTaskDetailTabPartSuccess, updateProjectChat } from "actions/taskDetail/taskDetailActions";
+import { getListTaskDetail, getTaskDetailTabPartSuccess, updateProjectChat } from "actions/taskDetail/taskDetailActions";
 import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
-import { CHAT_TYPE } from "helpers/jobDetail/arrayHelper";
+import { differenceInDays } from "date-fns";
+import { CHAT_TYPE, findTask } from "helpers/jobDetail/arrayHelper";
+import findIndex from 'lodash/findIndex';
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
@@ -159,6 +161,8 @@ function getTaskByChat(data, taskDetails) {
       return { ...taskDetails, total_img: total_img + data.images.length }
     case CHAT_TYPE.UPDATE_COMPLETE:
       return { ...taskDetails, complete: data.complete }
+    case CHAT_TYPE.UPDATE_DURATION:
+      return { ...taskDetails, duration_value: differenceInDays(new Date(data.time_changes.end.new), new Date(data.time_changes.start.new)) }
 
     default:
       return null
@@ -183,6 +187,10 @@ function MainLayout({
   taskDetails = {},
   userId = '',
   language = 'vi',
+  listDataNotRoom,
+  listTaskDetail,
+  projectId,
+  getListTaskDetail,
   getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
@@ -253,9 +261,15 @@ function MainLayout({
     function handleChatInProject(data) {
       console.log('handleChatInProject', data)
       const { user_create_id, task_id } = data;
-      if (task_id !== taskDetails.id) {
-        data.new_chat = user_create_id === userId ? 0 : 1;
+      const task = findTask(listTaskDetail, task_id) || findIndex(listDataNotRoom, ({ id }) => id === task_id) !== -1
+      if (!task) {
+        getListTaskDetail(projectId)
+      } else {
+        if (task_id !== taskDetails.id) {
+          data.new_chat = user_create_id === userId ? 0 : 1;
+        }
         data.content = data.content[language];
+        data.updatedAt = Date.now();
         updateProjectChat(data)
       }
     }
@@ -265,7 +279,7 @@ function MainLayout({
       socket.off('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
     }
     // eslint-disable-next-line
-  }, [userId, language, taskDetails])
+  }, [userId, language, taskDetails, listTaskDetail, listDataNotRoom, projectId])
 
   useEffect(() => {
     if (!socket || !taskDetails) return;
@@ -396,6 +410,9 @@ function MainLayoutWrapper({ ...rest }) {
 
 export default connect(
   state => ({
+    projectId: state.taskDetail.commonTaskDetail.activeProjectId,
+    listDataNotRoom: state.taskDetail.listDetailTask.listDataNotRoom,
+    listTaskDetail: state.taskDetail.listDetailTask.listTaskDetail,
     taskDetails: state.taskDetail.detailTask.taskDetails,
     userId: state.system.profile.id,
     language: state.system.profile.language,
@@ -406,6 +423,7 @@ export default connect(
     toast: state.system.toast
   }),
   {
+    getListTaskDetail,
     updateProjectChat,
     appendChat,
     getTaskDetailTabPartSuccess,

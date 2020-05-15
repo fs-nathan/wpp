@@ -1230,8 +1230,8 @@
   "LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH": "Đánh dấu hoàn thành",
   "LABEL_CHAT_TASK_NHAP_TEN_CONG_VIEC": "Nhập tên công việc...",
   "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "Chưa có công việc con được khởi tạo Click + để tạo mới công việc con",
-  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện(",
-  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành(",
+  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện (",
+  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành (",
   "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
   "LABEL_CHAT_TASK_HINH_ANH": "Hình ảnh",
   "LABEL_CHAT_TASK_THA_FILE_VAO_DAY": "Thả file vào đây",
@@ -1275,5 +1275,13 @@
   "LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO": "Nhắc theo tiến độ {{remind}}",
   "LABEL_CHAT_TASK_DANG_TAM_DUNG": "Đang tạm dừng",
   "LABEL_CHAT_TASK_TEN": "Tên",
-  "LABEL_CHAT_TASK_CONG_VIEC_DANG_TAM": "Công việc đang tạm dừng. Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng"
+  "LABEL_CHAT_TASK_CONG_VIEC_DANG_TAM": "Công việc đang tạm dừng. Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng",
+  "LABEL_CHAT_TASK_TIEN_DO_THUC_TE": "Tiến độ thực tế",
+  "LABEL_CHAT_TASK_KEO_THA_TIEN_DO_DE_CAP_NHAT": "Kéo, thả tiến độ để cập nhật",
+  "LABEL_CHAT_TASK_BAT_DAU_LABEL": "Bắt đầu",
+  "LABEL_CHAT_TASK_KET_THUC_LABEL": "Kết thúc",
+  "LABEL_CHAT_TASK_TIEN_DO_KE_HOACH": "Tiến độ kế hoạch",
+  "LABEL_CHAT_TASK_TU_DONG_XAC_DINH": "Tự động xác định đến thời điểm hiện tại",
+  "LABEL_CHAT_TASK_BIEU_DO_CAP_NHAT_TIEN_DO": "Biểu đồ cập nhật tiến độ",
+  "LABEL_CHAT_TASK_BIEU_DO_THE_HIEN": "Biểu đồ thể hiện lịch sử hoàn thành công việc"
 }

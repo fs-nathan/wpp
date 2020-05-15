@@ -60,7 +60,7 @@ const DEFAULT_DATA = {
   end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
-  group_task: DEFAULT_GROUP_TASK_VALUE,
+  // group_task: DEFAULT_GROUP_TASK_VALUE,
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN
 };
@@ -86,6 +86,7 @@ function CreateJobModal(props) {
     : get(props, 'projectId');
   const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
+  const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -147,13 +148,14 @@ function CreateJobModal(props) {
 
       // Set default group for input
       let item = listTask.find(
-        item => item.value === ''
+        item => item.value === taskDetails.group_task
       );
       if (item) {
         setGroupTaskValue(item);
+        handleChangeData('group_task', item.value)
       }
     }
-  }, [listGroupTaskData]);
+  }, [listGroupTaskData, taskDetails.group_task]);
 
   React.useEffect(() => {
     if (listSchedule) {
@@ -241,7 +243,9 @@ function CreateJobModal(props) {
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
         : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
-      setDataMember(DEFAULT_DATA);
+      // setDataMember(DEFAULT_DATA);
+      handleChangeData('name', EMPTY_STRING)
+      handleChangeData('description', EMPTY_STRING)
       // Close modal
       // handleClose();
     } else {

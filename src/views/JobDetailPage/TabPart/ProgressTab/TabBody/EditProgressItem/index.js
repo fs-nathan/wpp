@@ -36,11 +36,11 @@ function EditProgressItem({ fixedNumber,
       </div>
       {fixStart && <div className="editProgressItem--time">
         <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"
-          size={1}></Icon>{t('LABEL_CHAT_TASK_BAT_DAU', { start: getFormat(fixStart) })}
+          size={1}></Icon>{t('LABEL_CHAT_TASK_BAT_DAU', { start: fixStart })}
       </div>}
       {fixEnd && <div className="editProgressItem--time">
         <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"
-          size={1}></Icon>{t('LABEL_CHAT_TASK_KET_THUC', { end: getFormat(fixEnd) })}
+          size={1}></Icon>{t('LABEL_CHAT_TASK_KET_THUC', { end: fixEnd })}
       </div>}
     </div>
   </div >)

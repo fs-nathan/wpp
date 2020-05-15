@@ -1,4 +1,6 @@
 // Import actions
+import { findTask } from 'helpers/jobDetail/arrayHelper';
+import sortBy from 'lodash/sortBy';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
 
 function getNewChat(newChat, current) {
@@ -7,18 +9,6 @@ function getNewChat(newChat, current) {
     return undefined
 }
 
-function findTask(listTaskDetail, task_id) {
-    let ret;
-    listTaskDetail.forEach(group => {
-        const { tasks } = group;
-        tasks.forEach(task => {
-            if (task.id === task_id) {
-                ret = task
-            }
-        })
-    })
-    return ret
-}
 
 function changeGroupTaskDetail(listTaskDetail, task_id, group_task) {
     const repTask = findTask(listTaskDetail, task_id)
@@ -40,25 +30,27 @@ function changeGroupTaskDetail(listTaskDetail, task_id, group_task) {
 function updateListTaskDetail(listTaskDetail, task_id, update) {
     return listTaskDetail.map((data) => {
         const { tasks } = data;
+        const updatedTasks = tasks.map((task) => {
+            if (task_id === task.id) {
+                const { new_chat } = update;
+                return {
+                    ...task,
+                    ...update,
+                    new_chat: getNewChat(new_chat, task.new_chat)
+                }
+            }
+            return task;
+        })
+        // const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, 'updatedAt'])
         return {
             ...data,
-            tasks: tasks.map((task) => {
-                if (task_id === task.id) {
-                    const { new_chat } = update;
-                    return {
-                        ...task,
-                        ...update,
-                        new_chat: getNewChat(new_chat, task.new_chat)
-                    }
-                }
-                return task;
-            })
+            tasks: updatedTasks
         };
     })
 }
 
 function updateListDataNotRoom(listDataNotRoom, task_id, update) {
-    return listDataNotRoom.map((data) => {
+    const updatedTasks = listDataNotRoom.map((data) => {
         if (task_id === data.id) {
             const { new_chat } = update;
             return {
@@ -69,6 +61,8 @@ function updateListDataNotRoom(listDataNotRoom, task_id, update) {
         }
         return data;
     })
+    const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, 'updatedAt'])
+    return sortedTasks
 }
 
 // Initial state for store
