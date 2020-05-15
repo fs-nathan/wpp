@@ -37,6 +37,8 @@ export const initialState = {
   selectedImage: 0,
   createUser: {},
   pinnedRemind: null,
+  isOpenShareFileModal: false,
+  item: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -288,6 +290,12 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.GET_DATA_PIN_ON_TASK_CHAT_FAIL: {
       draft.pinnedRemind = null;
+      break;
+    }
+    case actionTypes.OPEN_SHARE_FILE_MODAL: {
+      const { isOpenShareFileModal, item, } = action;
+      draft.isOpenShareFileModal = isOpenShareFileModal;
+      draft.item = item;
       break;
     }
   }

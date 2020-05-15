@@ -1,5 +1,5 @@
-import { IconButton, List, ListItem, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem, Typography } from '@material-ui/core';
-import { mdiDotsHorizontal, mdiLink } from '@mdi/js';
+import { List, ListItem, ListItemText, ListSubheader, Typography } from '@material-ui/core';
+import { mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -60,7 +60,7 @@ const LinkBox = (props) => {
                       {item.url}
                     </a>
                   </ListItemText>
-                  <div className="styled-menu-link">
+                  {/* <div className="styled-menu-link">
                     <ListItemIcon>
                       <IconButton className="linkBox--button"
                         onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
@@ -82,7 +82,7 @@ const LinkBox = (props) => {
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
-                  </Menu>
+                  </Menu> */}
                 </ListItemLink>
               )
             })}
