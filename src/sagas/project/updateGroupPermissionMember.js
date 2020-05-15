@@ -5,7 +5,7 @@ import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPDATE_GROUP_PERMISSION_MEMBER } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
-async function doRemoveProjectRoleFromMember({ projectId, memberId, groupPermission, }) {
+async function doUpdateGroupPermissionMember({ projectId, memberId, groupPermission, }) {
   try {
     const config = {
       url: '/project/update-group-permission-member',
@@ -25,7 +25,7 @@ async function doRemoveProjectRoleFromMember({ projectId, memberId, groupPermiss
 
 function* updateGroupPermissionMember(action) {
   try {
-    yield call(doRemoveProjectRoleFromMember, action.options);
+    yield call(doUpdateGroupPermissionMember, action.options);
     yield put(updateGroupPermissionMemberSuccess(action.options));
     CustomEventEmitter(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
