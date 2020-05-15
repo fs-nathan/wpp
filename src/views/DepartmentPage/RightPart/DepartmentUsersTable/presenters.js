@@ -278,7 +278,10 @@ function DepartmentUsersTable({
           {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
         </MenuItem>
         <MenuItem onClick={() => {
-          handleOpenModal('PERMISSION_SETTING');
+          handleOpenModal('PERMISSION_SETTING', {
+            curUserId: get(user, 'id'),
+            roomId: departmentId,
+          });
           setMenuAnchorEl(null);
         }}>
           {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}

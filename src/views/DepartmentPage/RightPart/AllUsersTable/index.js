@@ -8,7 +8,7 @@ import { privateMember } from 'actions/user/privateMember';
 import { publicMember } from 'actions/user/publicMember';
 import { sortUser } from 'actions/user/sortUser';
 import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_ROOM, SORT_USER } from 'constants/events';
-import { get } from 'lodash';
+import { get, reduce } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { routeSelector } from '../../../MemberPage/selectors';
@@ -99,9 +99,38 @@ function AllUsersTable({
   const [openTableSetting, setOpenTableSetting] = React.useState(false);
   const [openCreateAccount, setOpenCreateAccount] = React.useState(false);
   const [openPermissionSetting, setOpenPermissionSetting] = React.useState(false);
-  const [permissionProps, setPermissionProps] = React.useState(false);
+  const [permissionProps, setPermissionProps] = React.useState({
+    users: {
+      ...rooms,
+      users: reduce(
+        rooms.rooms,
+        (users, room) => {
+          const newUsers = [...users, ...get(room, 'users', [])];
+          return newUsers;
+        },
+        [],
+      ),
+    },
+  });
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+
+  React.useEffect(() => {
+    setPermissionProps(old => ({
+      ...old,
+      users: {
+        ...rooms,
+        users: reduce(
+          rooms.rooms,
+          (users, room) => {
+            const newUsers = [...users, ...get(room, 'users', [])];
+            return newUsers;
+          },
+          [],
+        ),
+      },
+    }))
+  }, [rooms]);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -136,7 +165,10 @@ function AllUsersTable({
       case 'PERMISSION_SETTING': {
         if (get(viewPermissions.permissions, 'can_modify', false)) {
           setOpenPermissionSetting(true);
-          setPermissionProps(props);
+          setPermissionProps(oldProps => ({
+            ...oldProps,
+            ...props,
+          }));
         }
         return;
       }
