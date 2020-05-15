@@ -3,6 +3,7 @@ import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
+import UploadButton from 'components/UploadButton';
 import { CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener, DETAIL_PROJECT_GROUP, EDIT_PROJECT_GROUP, LIST_PROJECT_GROUP } from 'constants/events.js';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
@@ -143,15 +144,12 @@ function CreateProjectGroup({
       <LogoBox>
         <div>
           <ColorTypo>{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO")}</ColorTypo>
-          <MyButton
-            color='primary'
+          <UploadButton
+            label={t('DMH.VIEW.PGP.MODAL.CUPG.LOGO_SELECT')}
             onClick={() => handleOpenModal('LOGO', {
               doSelectIcon: icon => setIcon(icon),
             })}
-          >
-            <span>+</span>
-            <span>{t('DMH.VIEW.PGP.MODAL.CUPG.LOGO_SELECT')}</span>
-          </MyButton>
+          />
         </div>
         <CustomAvatar src={icon.url_full} alt='avatar' />
       </LogoBox>

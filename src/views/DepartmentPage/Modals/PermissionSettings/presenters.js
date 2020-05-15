@@ -6,13 +6,15 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { mdiChevronLeft, mdiChevronRight, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
+import CustomModal from 'components/CustomModal';
+import { CustomEventDispose, CustomEventListener, GET_USER_OF_ROOM, LIST_USER_OF_GROUP, UPDATE_GROUP_PERMISSION_USER } from 'constants/events';
 import { find, get } from 'lodash';
 import React from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-import CustomModal from '../../../../components/CustomModal';
 import './style.scss';
+
 
 const StyledTableRow = ({ className = '', ...props }) =>
   <TableRow
@@ -82,10 +84,14 @@ function CustomArrow({ path, className, isDisabled, onClick }) {
 
 function PermissionMemberModal({
   setOpen, open,
-  permissions, curUser,
+  permissions, curUserId, roomId, users,
+  doReloadUser, handleUpdateGroupPermission,
+  updateGroupPermission,
 }) {
+
   const [selectedValue, setSelectedValue] = React.useState(undefined);
   const [isAdmin, setIsAdmin] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
     setSelectedValue(
@@ -93,27 +99,87 @@ function PermissionMemberModal({
         find(
           permissions.groupPermissions,
           {
-            id: get(curUser, 'permission_id')
+            id: get(
+              find(
+                users.users,
+                { id: curUserId },
+              ),
+              'group_permission'
+            ),
           }
         ),
         "id"
       )
     );
     setIsAdmin(get(
-      curUser,
-      'is_admin',
+      find(
+        users.users,
+        { id: curUserId },
+      ),
+      'is_owner_group',
       false,
     ))
-  }, [curUser, permissions]);
+  }, [users, curUserId, permissions, roomId]);
+
+  React.useEffect(() => {
+    const fail = () => {
+      setLoading(false);
+    };
+    CustomEventListener(UPDATE_GROUP_PERMISSION_USER.SUCCESS, doReloadUser);
+    CustomEventListener(UPDATE_GROUP_PERMISSION_USER.FAIL, fail);
+    return () => {
+      CustomEventDispose(UPDATE_GROUP_PERMISSION_USER.SUCCESS, doReloadUser);
+      CustomEventDispose(UPDATE_GROUP_PERMISSION_USER.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [curUserId, roomId, users]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setLoading(false);
+      setOpen(false);
+      setSelectedValue(undefined);
+      setIsAdmin(false);
+    };
+    const fail = () => {
+      setLoading(false);
+    };
+    if (roomId) {
+      CustomEventListener(GET_USER_OF_ROOM.SUCCESS, success);
+      CustomEventListener(GET_USER_OF_ROOM.FAIL, fail);
+    } else {
+      CustomEventListener(LIST_USER_OF_GROUP.SUCCESS, success);
+      CustomEventListener(LIST_USER_OF_GROUP.FAIL, fail);
+    }
+    return () => {
+      if (roomId) {
+        CustomEventDispose(GET_USER_OF_ROOM.SUCCESS, success);
+        CustomEventDispose(GET_USER_OF_ROOM.FAIL, fail);
+      } else {
+        CustomEventDispose(LIST_USER_OF_GROUP.SUCCESS, success);
+        CustomEventDispose(LIST_USER_OF_GROUP.FAIL, fail);
+      }
+    }
+    // eslint-disable-next-line
+  }, [curUserId, roomId, users]);
 
   return (
     <CustomModal
       title="Phân quyền thành viên"
       open={open}
       setOpen={setOpen}
-      loading={permissions.loading}
+      loading={permissions.loading || users.loading}
       cancleRender={() => isAdmin ? "Thoát" : "Hủy"}
       confirmRender={isAdmin ? null : () => "Hoàn thành"}
+      onConfirm={() => {
+        if (!isAdmin) {
+          handleUpdateGroupPermission(selectedValue);
+          setLoading(true);
+        }
+      }}
+      onCancle={() => setOpen(false)}
+      activeLoading={loading}
+      manualClose={true}
     >
       {isAdmin
         ? (

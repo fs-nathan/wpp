@@ -1,0 +1,21 @@
+.comp_UploadButton___button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > span > span {
+    &:first-child {
+      color: white;
+      width: 15px;
+      height: 15px;
+      line-height: 15px;
+      text-align: center;
+      vertical-align: center;
+      border-radius: 99px;
+    }
+    &:not(:first-child) {
+      color: #333333;
+      margin-left: 10px;
+      font-weight: normal;
+    }
+  }
+}
