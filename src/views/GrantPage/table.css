@@ -693,7 +693,7 @@ div.checkbox-colortag--drawer {
   z-index: 1000;
 }
 
-.gantt__comp_JobPageLayout__drawerPaper{
+.gantt__comp_JobPageLayout__drawerPaper {
   top: 114px !important;
   height: calc(100vh - 114px);
 }
@@ -701,4 +701,29 @@ div.checkbox-colortag--drawer {
 .gantt__comp_JobPageLayout__drawerPaper__showHeader {
   top: 55px;
   height: calc(100vh - 55px);
+}
+
+.gantt--fromNowLayer__container {
+  position: absolute;
+  z-index: 4;
+  height: calc(100% - 17px);
+}
+
+.gantt--fromNowLayer__background {
+  position: absolute;
+  z-index: 4;
+  background: #f58d42;
+  border-right: 5px solid #ff6c03;
+  opacity: 0.5;
+  height: 100%;
+}
+.gantt--fromNowLayer__text {
+  position: absolute;
+  right: 0;
+  color: #fff;
+  width: 140px;
+  background: #f58d42;
+  z-index: 5;
+  padding: 10px 10px;
+  text-align: center;
 }

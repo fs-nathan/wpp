@@ -1,7 +1,7 @@
 import { mdiDragVerticalVariant } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { changeRowHover } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
@@ -13,9 +13,11 @@ function GanttChart({
   setProcessDatasource,
   girdInstance,
   start,
+  girdType,
   showHeader,
   end,
   changeRowHover,
+  visibleGantt,
   dataSource,
   monthArray,
   daysRender,
@@ -29,6 +31,7 @@ function GanttChart({
   const [left, setLeft] = useState(0);
   const [scrollWidth, setScrollWidth] = useState(0);
   const [showResizeIcon, setShowResizeIcon] = useState(false);
+  const [leftLayerFromNow, setLeftLayerFromNow] = useState(0);
   const [currentX, setcurrentX] = useState(0);
   const [drag, setDrag] = useState(false);
   const [heightChart, setHeightChart] = useState(600);
@@ -84,52 +87,51 @@ function GanttChart({
   if (renderFullDay) {
     maxWidth = (end.diff(start, girdInstance.unit) + 1) * 48;
   }
-  const timeline = useMemo(
-    () =>
-      dataSource.map((item, index) => {
-        if (!item.show && !item.isGroupTask) return null;
-        const startDate = moment(item.start_time, girdInstance.formatString);
-        const endDate = moment(item.end_time, girdInstance.formatString);
-        const startPosition = Math.ceil(
-          startDate.diff(start, girdInstance.unit, true)
-        );
-        const endPosition = endDate.diff(startDate, girdInstance.unit) + 1;
-        return (
-          <React.Fragment>
-            <div
-              key={item.id}
-              onMouseEnter={() => changeRowHover(index)}
-              onMouseLeave={() => changeRowHover(-1)}
-              className="gantt--top-timeline-tr"
-              style={{
-                position: "relative",
-                padding: "8.5px 0px",
-                display: "flex",
-                backgroundColor: rowHover === index ? "#fffae6" : "",
-              }}
-            >
-              <div className="gantt--top-timeline"></div>
-              <Timeline
-                canEdit={item.can_edit}
-                setProcessDatasource={setProcessDatasource}
-                isTotalDuration={item.isTotalDuration}
-                isGroupTask={item.isGroupTask}
-                key={item.id + "1"}
-                setDataSource={setDataSource}
-                startDate={startDate}
-                endDate={endDate}
-                key={item.id}
-                dataSource={dataSource}
-                index={index}
-                startPosition={startPosition}
-                endPosition={endPosition}
-              />
-            </div>
-          </React.Fragment>
-        );
-      }),
-    [girdInstance, start, end, dataSource]
-  );
+  const timeline = dataSource.map((item, index) => {
+    if (!item.show && !item.isGroupTask) return null;
+    const startDate = moment(item.start_time, girdInstance.formatString);
+    const endDate = moment(item.end_time, girdInstance.formatString);
+    const startPosition = Math.ceil(
+      startDate.diff(start, girdInstance.unit, true)
+    );
+    const endPosition = endDate.diff(startDate, girdInstance.unit) + 1;
+    return (
+      <React.Fragment>
+        <div
+          key={item.id}
+          onMouseEnter={() => changeRowHover(index)}
+          onMouseLeave={() => changeRowHover(-1)}
+          className="gantt--top-timeline-tr"
+          style={{
+            position: "relative",
+            padding: "8.5px 0px",
+            display: "flex",
+            backgroundColor: rowHover === index ? "#fffae6" : "",
+          }}
+        >
+          <div className="gantt--top-timeline"></div>
+          <Timeline
+            canEdit={item.can_edit}
+            setProcessDatasource={setProcessDatasource}
+            isTotalDuration={item.isTotalDuration}
+            isGroupTask={item.isGroupTask}
+            key={item.id + "1"}
+            setDataSource={setDataSource}
+            startDate={startDate}
+            endDate={endDate}
+            key={item.id}
+            dataSource={dataSource}
+            index={index}
+            startPosition={startPosition}
+            endPosition={endPosition}
+          />
+        </div>
+      </React.Fragment>
+    );
+  });
+  const widthFromNowLayer =
+    new moment(Date.now()).diff(start, girdInstance.unit) + 1;
+
   return (
     <React.Fragment>
       <div
@@ -189,23 +191,47 @@ function GanttChart({
           style={{
             display: "flex",
             height: heightChart,
+            zIndex: 2,
             overflow: "scroll",
             width: "100%",
           }}
           onScroll={(e) => {
+            setLeftLayerFromNow(e.target.scrollLeft);
             if (Math.floor(e.target.scrollLeft / 48) !== scrollWidth) {
               const newScrollWidth = Math.floor(e.target.scrollLeft / 48);
               setScrollWidth(newScrollWidth);
+              setLeftHeader(e.target.scrollLeft % 48);
+              setLeftTable(e.target.scrollLeft % (7 * 48));
             } else {
               setLeftHeader(e.target.scrollLeft % 48);
-              console.log(e.target.scrollLeft);
               setLeftTable(e.target.scrollLeft % (7 * 48));
             }
           }}
         >
+          {visibleGantt.fromNowLayer && (
+            <div
+              className="gantt--fromNowLayer__container"
+              style={{
+                width: widthFromNowLayer * 48,
+                left: -leftLayerFromNow,
+              }}
+            >
+              <div
+                className="gantt--fromNowLayer__background"
+                style={{
+                  width: widthFromNowLayer * 48,
+                }}
+              ></div>
+              <div className="gantt--fromNowLayer__text">
+                <div>Hôm nay</div>
+                <div>{new moment().format("DD/MM/YYYY")}</div>
+              </div>
+            </div>
+          )}
           <div
             style={{
               borderRight: "2px solid #e8e8e8",
+              zIndex: 2,
             }}
           >
             <MonthHeader
@@ -233,6 +259,8 @@ const mapStateToProps = (state) => ({
   showHeader: state.gantt.showHeader,
   rowHover: state.gantt.rowHover,
   renderFullDay: state.gantt.renderFullDay,
+  visibleGantt: state.gantt.visible.gantt,
   girdInstance: state.gantt.girdInstance,
+  girdType: state.gantt.girdType,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(GanttChart);

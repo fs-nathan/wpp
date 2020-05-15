@@ -32,6 +32,7 @@ export const initialState = {
       name: true,
       numberDuration: true,
       numberComplete: true,
+      fromNowLayer: true,
     },
     label: {
       prior: true,
@@ -111,7 +112,7 @@ export const initialState = {
       addUnit: 30,
       parentUnit: "years",
       getWidthParent: (moment, first) =>
-        first ? (4 - moment.quarter() + 1) * 48 : moment.quarter() * 48,
+        first ? (4 - moment.format("Q") + 1) * 48 : 4 * 48,
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "Q",

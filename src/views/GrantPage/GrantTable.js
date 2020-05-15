@@ -45,6 +45,7 @@ import SubTaskDrawer from "../../components/Drawer/SubTaskDrawer";
 import { apiService } from "../../constants/axiosInstance";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import QuickViewTaskDetailDrawer from "../../views/JobPage/components/GanttQuickViewTaskDetailDrawer";
+import CreateProject from "../../views/ProjectGroupPage/Modals/CreateProject";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import Header from "./Header";
@@ -135,70 +136,60 @@ function decodePriorityCode(priorityCode) {
 
 function decodeStatusCode(statusCode) {
   switch (statusCode) {
-    case 1:
+    case 0:
       return {
         color: "#ff9800",
         background: "#4caf5042",
-        name: "Thấp",
       };
-    case 2:
+    case 1:
       return {
         color: "#03a9f4",
         background: "#ff980038",
-        name: "Trung bình",
+      };
+    case 2:
+      return {
+        color: "#03c30b",
+        background: "#ff050524",
       };
     case 3:
       return {
         color: "#f44336",
         background: "#ff050524",
-        name: "Cao",
       };
+
     case 4:
-      return {
-        color: "#03c30b",
-        background: "#ff050524",
-        name: "Cao",
-      };
-    case 5:
       return {
         color: "#607D8B",
         background: "#ff050524",
-        name: "Cao",
       };
     case "WAIT":
       return {
         color: "#ff9800",
         background: "#596fff",
-        name: "Cao",
       };
     case "DOING":
       return {
         color: "#03a9f4",
         background: "#ff050524",
-        name: "Cao",
       };
     case "DONE":
       return {
         color: "#03c30b",
         background: "#ff050524",
-        name: "Cao",
       };
     case "EXPIRE":
       return {
         color: "#f44336",
         background: "#ff050524",
-        name: "Cao",
       };
     case "MEMBER":
       return {
         color: "#f1ff26",
         background: "rgb(255, 218, 5)",
-        name: "Cao",
       };
     default:
       return {
         color: "#53d7fc",
-        name: "Thấp",
       };
   }
 }
@@ -217,8 +208,6 @@ const ResizeableTitle = (props) => {
   return (
     <Resizable
       width={width}
-      // onMouseEnter={() =>setShowIconResize(true)}
-      // onMouseLeave={() =>setShowIconResize(false)}
       handle={(resizeHandle) => (
         <span
           className={`gantt-table-col react-resizable-handle react-resizable-handle-${resizeHandle}`}
@@ -243,6 +232,7 @@ class DragSortingTable extends React.Component {
       width: "",
       endTimeProject: "",
       monthArray: [],
+      openCreateProjectModal: false,
       showIconResize: false,
       daysRender: [],
       data: [],
@@ -398,9 +388,9 @@ class DragSortingTable extends React.Component {
                       <CustomBadge
                         style={{
                           margin: "0px 4px",
-                          ...decodePriorityCode(record.status_code),
+                          ...decodeStatusCode(record.status_code),
                         }}
-                        {...decodePriorityCode(record.status_code)}
+                        {...decodeStatusCode(record.status_code)}
                       >
                         {record.status_name}
                       </CustomBadge>
@@ -696,7 +686,7 @@ class DragSortingTable extends React.Component {
     this.fetchSettingGantt(projectId);
     this.fetchListDetailProject(projectId);
     await this.fetchListTask(projectId);
-    // this.fetchListTask(projectId, true, this.props.girdType);
+    this.fetchListTask(projectId, true, this.props.girdType);
   }
   fetchListDetailProject = (project_id) => {
     this.props.getListGroupTask({ project_id });
@@ -967,7 +957,7 @@ class DragSortingTable extends React.Component {
       openCreateJobModal: value,
     });
   };
- 
+
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -990,24 +980,27 @@ class DragSortingTable extends React.Component {
           isOpen={this.state.openCreateJobModal}
           setOpen={this.handleOpenCraeteJobModal}
         />
-        {/* <CreateProject
-          open={this.state.openCreateProjectModal}
-          setOpen={this.handleOpenCreateProjectModal}
-        /> */}
+        {this.state.openCreateProjectModal && (
+          <CreateProject
+            open={this.state.openCreateProjectModal}
+            projectGroupId={this.props.match.params.projectId}
+            setOpen={this.handleOpenCreateProjectModal}
+          />
+        )}
         <Header titleProject={this.state.titleProject} />
         <div id="printContent" style={{ display: "flex", width: widthPdf }}>
           <ConfigGanttDrawer height={this.state.height} />
           <SubTaskDrawer height={this.state.height} />
           <ExportPDFDrawer height={this.state.height} />
-            <QuickViewTaskDetailDrawer
-              showHeader={this.props.showHeader}
-              onClose={() =>
-                this.setState({
-                  quickViewId: null,
-                })
-              }
-              taskId={this.state.quickViewId}
-            />
+          <QuickViewTaskDetailDrawer
+            showHeader={this.props.showHeader}
+            onClose={() =>
+              this.setState({
+                quickViewId: null,
+              })
+            }
+            taskId={this.state.quickViewId}
+          />
           <div
             style={{
               height: this.state.height,
@@ -1047,6 +1040,7 @@ class DragSortingTable extends React.Component {
             setDataSource={this.setDataSource}
             setProcessDatasource={this.setProcessDatasource}
             minLeft={this.state.minLeft}
+            heightTable={this.state.height}
             widthTable={this.state.width}
             daysRender={this.state.daysRender}
             monthArray={this.state.monthArray}

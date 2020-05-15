@@ -54,20 +54,23 @@ const TimeLine = ({
     offsetLeft = totalTimeRef.current.offsetLeft;
   }
   useEffect(() => {
+    setWidthComplete((dataSource[index].complete * width) / 100);
+  }, [width]);
+  useEffect(() => {
     setStartDateText(new moment(startDate));
-  }, [startDate]);
+  }, [startDate, girdInstance]);
   useEffect(() => {
     setWidthProcess(dataSource[index].complete);
-  }, [dataSource]);
+  }, [dataSource, girdInstance]);
   useEffect(() => {
     setEndDateText(new moment(endDate));
-  }, [endDate]);
+  }, [endDate, girdInstance]);
   useEffect(() => {
     setLeft(startPosition * 48);
-  }, [startPosition, dataSource]);
+  }, [startPosition, dataSource, girdInstance]);
   useEffect(() => {
     setWidth(endPosition * 48);
-  }, [endPosition, dataSource, resizeWidth]);
+  }, [endPosition, dataSource, resizeWidth, startPosition, girdInstance]);
   const handleMouseMove = (e) => {
     console.log("vo day", dragFirstResize);
     if (!drag) return;
