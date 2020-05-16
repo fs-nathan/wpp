@@ -6,7 +6,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import classNames from 'classnames';
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, withRouter } from 'react-router-dom';
 import { Routes } from '../contants/routes';
 import "./Popover.scss";
 const useStyles = makeStyles((theme) => ({
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function ExpandPopover({ offer_id, view }) {
+function ExpandPopover({ offer_id, view, location }) {
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [deleteModal, setDeleteModal] = React.useState(false)
@@ -51,9 +51,16 @@ export default function ExpandPopover({ offer_id, view }) {
                 }}
             >
                 <div className="TaskTable_popover_item">
-                    <Typography className={classNames(classes.typography, "Tasktable_option")} onClick={() => history.push(Routes.DETAILOFFER + "/" + offer_id)}>Xem đề xuất</Typography>
+                    <Typography
+                      className={classNames(classes.typography, "Tasktable_option")}
+                      onClick={() => history.push(Routes.DETAILOFFER + "/" + offer_id, { popup: location })}
+                    >
+                        Xem đề xuất
+                    </Typography>
                 </div>
             </Popover>
         </div >
     );
 }
+
+export default withRouter(ExpandPopover);

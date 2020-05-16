@@ -25,11 +25,6 @@ const routes = [
     path: Routes.OFFERBYDEPARTMENT + "/:id?",
     exact: true,
     component: React.lazy(() => import("../views/OfferByDepartment"))
-  },
-  {
-    path: Routes.DETAILOFFER + "/:id",
-    exact: true,
-    component: React.lazy(() => import("../views/DetailOffer"))
   }
 ];
 

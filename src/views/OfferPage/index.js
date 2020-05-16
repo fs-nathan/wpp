@@ -2,7 +2,7 @@ import { mdiEmailCheck, mdiEmailVariant, mdiViewDashboard } from "@mdi/js";
 import React, { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch, useHistory } from "react-router-dom";
+import { Route, Switch, useHistory, withRouter } from 'react-router-dom';
 import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
@@ -19,6 +19,8 @@ import { get } from "./utils";
 import Notifier from "./utils/notifer";
 import { formatTime } from "./utils/time";
 import { checkUserIsInOfferDepartmentRoutes, checkUserIsInOfferGroupRoutes, checkUserIsInOfferProjectRoutes } from "./utils/validate";
+import DetailOfferModal from './views/DetailOffer/DetailOfferModal';
+import { getDetailOffer } from './views/DetailOffer/selector';
 import { getDepartmentGroupByKeyword } from "./views/OfferByDepartment/selector";
 import { getSummaryByGroupByKeyword } from "./views/OfferByGroup/selector";
 import { getSummaryByProjectAndKeyword } from "./views/OfferByProject/selector";
@@ -263,6 +265,13 @@ function OfferPage(props) {
     }
     return <TabList title={title} {...{ listMenu }} />;
   }, [title, listMenu, setOpenModalOfferByGroup, filterTab, state]);
+
+  const { location } = props;
+  const popup = (location.state || null) && (location.state.popup || null);
+  const detailOffer = useSelector(state => getDetailOffer(state))
+  const [detailOfferModalOpen, setDetailOfferModalOpen] = useState(!!popup)
+  useEffect(() => setDetailOfferModalOpen(!!popup), [popup])
+
   return (
     <TwoColumnsLayout
       leftRenders={[() => renderTabList]}
@@ -296,7 +305,7 @@ function OfferPage(props) {
         >
           <div>
             <Suspense fallback={<LoadingBox />}>
-              <Switch>
+              <Switch location={popup || location}>
                 {routes.map((route, index) => {
                   return (
                     <Route
@@ -308,6 +317,15 @@ function OfferPage(props) {
                   );
                 })}
               </Switch>
+              {popup && (
+                <Switch>
+                  <Route
+                    path={Routes.DETAILOFFER + "/:id"}
+                    exact
+                    render={(props) => <DetailOfferModal {...props} {...detailOffer} open={detailOfferModalOpen} setOpen={setDetailOfferModalOpen} />}
+                  />
+                </Switch>
+              )}
             </Suspense>
             <Notifier />
           </div>
@@ -317,4 +335,4 @@ function OfferPage(props) {
   );
 }
 
-export default OfferPage;
+export default withRouter(OfferPage);
