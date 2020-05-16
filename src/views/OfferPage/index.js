@@ -306,7 +306,6 @@ function OfferPage(props) {
             setkeyword,
             setTitle,
             openModal,
-            isDetailOfferModalOpen,
             setDetailOfferModalOpen,
             setCurrentDetailOfferId,
           }}
