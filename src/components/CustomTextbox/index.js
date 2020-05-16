@@ -1,7 +1,6 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../ColorTypo';
 import './style.scss';
 
 const StyledTextField = ({ className = '', ...rest }) =>
@@ -22,7 +21,6 @@ function CustomTextbox({
   isReadOnly = false,
   maxHeight = 100,
   className = '',
-  helperText = '',
   label = undefined,
   placeholder = 'Nội dung...',
   multiline = false,
@@ -78,11 +76,6 @@ function CustomTextbox({
           value={value}
           onChange={evt => onChange(evt.target.value)}
           placeholder={placeholder}
-          helperText={
-            <ColorTypo variant='caption' color='red'>
-              {helperText}
-            </ColorTypo>
-          }
         />
       </StyledTextBox>
     )

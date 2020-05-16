@@ -1,18 +1,18 @@
+import { acceptRequirementJoinGroup } from 'actions/groupUser/acceptRequirementJoinGroup';
+import { cancleInvitationJoinGroup } from 'actions/groupUser/cancleInvitationJoinGroup';
+import { getListGroup } from 'actions/groupUser/getListGroup';
+import { getListInvitationSent } from 'actions/groupUser/getListInvitationSent';
+import { getRequirementJoinGroup } from 'actions/groupUser/getRequirementJoinGroup';
+import { inviteUserJoinGroup } from 'actions/groupUser/inviteUserJoinGroup';
+import { rejectRequirementJoinGroup } from 'actions/groupUser/rejectRequirementJoinGroup';
+import { resendInvitationUserJoinGroup } from 'actions/groupUser/resendInvitationUserJoinGroup';
+import { searchUser } from 'actions/groupUser/searchUser';
+import { actionVisibleDrawerMessage } from 'actions/system/system';
+import { getPermissionViewUser } from 'actions/viewPermissions';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CANCLE_INVITATION_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { acceptRequirementJoinGroup } from '../../../../actions/groupUser/acceptRequirementJoinGroup';
-import { cancleInvitationJoinGroup } from '../../../../actions/groupUser/cancleInvitationJoinGroup';
-import { getListGroup } from '../../../../actions/groupUser/getListGroup';
-import { getListInvitationSent } from '../../../../actions/groupUser/getListInvitationSent';
-import { getRequirementJoinGroup } from '../../../../actions/groupUser/getRequirementJoinGroup';
-import { inviteUserJoinGroup } from '../../../../actions/groupUser/inviteUserJoinGroup';
-import { rejectRequirementJoinGroup } from '../../../../actions/groupUser/rejectRequirementJoinGroup';
-import { resendInvitationUserJoinGroup } from '../../../../actions/groupUser/resendInvitationUserJoinGroup';
-import { searchUser } from '../../../../actions/groupUser/searchUser';
-import { actionVisibleDrawerMessage } from '../../../../actions/system/system';
-import { getPermissionViewUser } from '../../../../actions/viewPermissions';
-import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CANCLE_INVITATION_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP } from '../../../../constants/events';
 import AddUserPresenter from './presenters';
 import { bgColorSelector, desireLoadingSelector, desireUserSelector, invitationSentsSelector, requireLoadingSelector, requireUsersSelector, viewPermissionsSelector } from './selectors';
 
@@ -123,7 +123,7 @@ function AddUser({
       handleAcceptRequirementJoinGroup={doAcceptRequirementJoinGroup} handleRejectRequirementJoinGroup={doRejectRequirementJoinGroup}
       handleCancleInvitationJoinGroup={doCancleInvitationJoinGroup}
       searchPatern={searchPatern}
-      handleSearchPatern={evt => setSearchPatern(evt.target.value)}
+      handleSearchPatern={value => setSearchPatern(value)}
       anchorDrawer={anchorDrawer}
       handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
     />

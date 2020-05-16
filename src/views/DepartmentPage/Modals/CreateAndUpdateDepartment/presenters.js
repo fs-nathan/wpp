@@ -3,6 +3,7 @@ import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
+import UploadButton from 'components/UploadButton';
 import { CREATE_ROOM, CustomEventDispose, CustomEventListener, DETAIL_ROOM, GET_USER_OF_ROOM, LIST_ROOM, LIST_USER_OF_GROUP, UPDATE_ROOM } from 'constants/events';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
@@ -158,15 +159,12 @@ function CreateAndUpdateDepartment({
         <LogoBox>
           <div>
             <MyTypo>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO')}</MyTypo>
-            <MyButton
-              color='primary'
+            <UploadButton
+              label={t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}
               onClick={() => handleOpenModal('LOGO', {
                 doSelectIcon: icon => setIcon(icon),
               })}
-            >
-              <span>+</span>
-              <span>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}</span>
-            </MyButton>
+            />
           </div>
           <CustomAvatar src={icon.url_full} alt='avatar' />
         </LogoBox>

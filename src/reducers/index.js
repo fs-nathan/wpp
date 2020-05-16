@@ -69,6 +69,7 @@ import createLevel, { initialState as createLevelInitialState } from "./level/cr
 import deleteLevel, { initialState as deleteLevelInitialState } from "./level/deleteLevel";
 import listLevel, { initialState as listLevelInitialState } from "./level/listLevel";
 import updateLevel, { initialState as updateLevelInitialState } from "./level/updateLevel";
+import localStorage, { initialState as localStorageInitialState } from './localStorage';
 import createMajor, { initialState as createMajorInitialState } from "./major/createMajor";
 import deleteMajor, { initialState as deleteMajorInitialState } from "./major/deleteMajor";
 import listMajor, { initialState as listMajorInitialState } from "./major/listMajor";
@@ -146,6 +147,7 @@ import permissionUser, { initialState as permissionUserInitialState } from "./us
 import privateMember, { initialState as privateMemberInitialState } from "./user/privateMember";
 import publicMember, { initialState as publicMemberInitialState } from "./user/publicMember";
 import sortUser, { initialState as sortUserInitialState } from "./user/sortUser";
+import updateGroupPermissionUser, { initialState as updateGroupPermissionUserInitialState } from "./user/updateGroupPermissionUser";
 import updateUser, { initialState as updateUserInitialState } from "./user/updateUser";
 import uploadDocumentsUser, { initialState as uploadDocumentsUserInitialState } from "./user/uploadDocumentsUser";
 import createUserRole, { initialState as createUserRoleInitialState } from "./userRole/createUserRole";
@@ -195,6 +197,7 @@ const rootReducer = combineReducers({
     privateMember,
     banUserFromGroup,
     permissionUser,
+    updateGroupPermissionUser,
   }),
   icon: combineReducers({
     listIcon,
@@ -317,7 +320,8 @@ const rootReducer = combineReducers({
     projectCalendarCreateShiftStageAllTime, projectCalendarUpdateShiftStageAllTime,
     projectCalendarDeleteShiftStageAllTime, updateProjectGroupSchedule, deleteProjectGroupSchedule,
     updatePersonalRemindCategory
-  })
+  }),
+  localStorage
 });
 
 export const DEFAULT_STATE = {
@@ -344,6 +348,7 @@ export const DEFAULT_STATE = {
     privateMember: privateMemberInitialState,
     banUserFromGroup: banUserFromGroupInitialState,
     permissionUser: permissionUserInitialState,
+    updateGroupPermissionUser: updateGroupPermissionUserInitialState,
   },
   icon: {
     listIcon: listIconInitialState,
@@ -481,7 +486,8 @@ export const DEFAULT_STATE = {
     projectCalendarCreateShiftStageAllTime: projectCalendarCreateShiftStageAllTimeInitialState,
     projectCalendarUpdateShiftStageAllTime: projectCalendarUpdateShiftStageAllTimeInitialState,
     projectCalendarDeleteShiftStageAllTime: projectCalendarDeleteShiftStageAllTimeInitialState,
-  }
+  },
+  localStorage: localStorageInitialState,
 };
 
 export default rootReducer;

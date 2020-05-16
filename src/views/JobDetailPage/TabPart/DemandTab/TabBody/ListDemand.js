@@ -1,11 +1,11 @@
 import { deleteCommand, searchDemand, updateCommand } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import SearchInput from 'components/SearchInput';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { taskIdSelector } from '../../../selectors';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 import DemandModal from '../DemandModal';
 import CustomListItem from './CustomListItem';
 import DemandDetail from './DemandDetail';
@@ -100,12 +100,11 @@ const ListDemand = props => {
         item={selectedItem}
         confirmUpdateCommand={confirmUpdateCommand}
       />
-      <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-        handleOpenModalDelete={handleOpenModalDelete}
-        {...props}
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
       />
       <DemandDetail
         isOpen={openDetail}

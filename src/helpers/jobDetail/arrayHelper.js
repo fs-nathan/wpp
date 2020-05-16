@@ -172,3 +172,16 @@ export function getFileUrl(file) {
 export function isOneOf(value, list = []) {
     return list.indexOf(value) !== -1;
 }
+
+export function findTask(listTaskDetail, task_id) {
+    let ret;
+    listTaskDetail.forEach(group => {
+        const { tasks } = group;
+        tasks.forEach(task => {
+            if (task.id === task_id) {
+                ret = task
+            }
+        })
+    })
+    return ret
+}

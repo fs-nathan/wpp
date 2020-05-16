@@ -4,6 +4,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { mdiDownload, mdiInformation, mdiRotateLeft, mdiRotateRight, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionDownloadFile } from 'actions/documents';
+import compact from 'lodash/compact';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -56,8 +57,8 @@ const ButtonAction = styled(Typography)`
 const DialogTitleModalImage = withStyles(styles)(props => {
   const { t } = useTranslation();
   const { children, classes, onClose,
-    user_create_avatar, user_create_name, time_create,
-    user_create_position, image,
+    user_create_avatar, user_create_name = '', time_create = '',
+    user_create_position = '', image,
     onClickShare,
     onClickDetail,
     onClickRotateLeft,
@@ -83,7 +84,7 @@ const DialogTitleModalImage = withStyles(styles)(props => {
               }
               secondary={
                 <Typography component='div'>
-                  {`${user_create_name} - ${time_create}`}
+                  {compact([user_create_name, time_create]).join(' - ')}
                 </Typography>
               }
             />

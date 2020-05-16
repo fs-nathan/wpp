@@ -1,20 +1,16 @@
-import { useTranslation } from 'react-i18next';
-import React from 'react';
+import { Avatar, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import styled from 'styled-components';
-import {
-  Table, TableBody, TableHead, TableRow,
-  Paper, TableCell, Menu, MenuItem, IconButton
-} from '@material-ui/core';
-import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
-import { Avatar, } from '@material-ui/core';
-import MemberRole from './MemberRole';
-import MemberPermission from './MemberPermission';
-import MemberDetail from './MemberDetail';
-import { useSelector, useDispatch } from 'react-redux';
+import Icon from '@mdi/react';
 import { deleteMember } from 'actions/taskDetail/taskDetailActions';
-import ModalDeleteConfirm from '../../../TabPart/ModalDeleteConfirm';
+import AlertModal from 'components/AlertModal';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import MemberDetail from './MemberDetail';
+import MemberPermission from './MemberPermission';
+import MemberRole from './MemberRole';
 
 const CustomMenu = styled(Menu)`
 & > .MuiPaper-root {
@@ -132,11 +128,12 @@ function TableMember(props) {
           </TableBody>
         </Table>
       </div>
-      <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-      ></ModalDeleteConfirm>
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
+      />
     </Paper>
   )
 }

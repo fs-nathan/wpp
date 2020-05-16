@@ -203,7 +203,7 @@ function CustomModal({
               className="margin-circular"
               color={bgColor.color}
               style={{
-                opacity: (actionLoading || activeLoading) ? 1 : 0
+                display: (actionLoading || activeLoading) ? 'initial' : 'none'
               }}
             />
             {isFunction(confirmRender) ? confirmRender() : t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}

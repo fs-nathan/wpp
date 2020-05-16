@@ -1,10 +1,7 @@
-import { useTranslation } from 'react-i18next';
-import React from 'react';
+import { mdiCheckCircle, mdiTimerOff } from '@mdi/js';
 import Icon from '@mdi/react';
-import {
-  mdiCheckCircle,
-  mdiClockAlert
-} from '@mdi/js';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 const ModalStatus = (status) => {
   const { t } = useTranslation();
@@ -31,8 +28,8 @@ const ModalStatus = (status) => {
       break;
     case "Đang tạm dừng":
       value = "Đang tạm dừng";
-      color = '#dc3545';
-      icon = mdiClockAlert;
+      color = '#607d8b';
+      icon = mdiTimerOff;
       break;
     default:
       value = "Đang tải"
@@ -41,9 +38,9 @@ const ModalStatus = (status) => {
     <React.Fragment>
       <div className="styled-context-status">
         <div>
-          <Icon path={icon ? icon : mdiCheckCircle} size={1} color={icon ? '#dc3545' : '#03b000'} />
+          <Icon path={icon ? icon : mdiCheckCircle} size={1} color={icon ? '#feb201' : '#03b000'} />
           <p>{t('LABEL_CHAT_TASK_TRANG_THAI')}</p>
-          <p style={{ color: color }}>{value}</p>
+          <p style={{ color: color }}>{status.values}</p>
         </div>
         <p>
           {(value === "Đang làm" || value === "Đang chờ" || value === "Hoàn thành")
@@ -54,7 +51,7 @@ const ModalStatus = (status) => {
               ?
               'Mức độ ưu tiên phản ánh tính chất khẩn cấp công việc'
               :
-              'Admin đã tạm dừng công việc, vào cài đặt công việc để thay đổi trạng thái'
+              t('LABEL_CHAT_TASK_CONG_VIEC_DANG_TAM')
           }
         </p>
       </div>

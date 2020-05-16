@@ -175,7 +175,7 @@ export function getRichContent(content = '', tags = [], color = 'inherit') {
     ret = ret.replace(reg, `<span class="TextMessage--tag" style="color: ${color};">@${name}</span>`);
   })
   // console.log(matches)
-  ret = ret.replace('\n', '<br/>');
+  ret = ret.replace(/\n/g, '<br/>');
   return replaceUrl(ret);
 }
 
