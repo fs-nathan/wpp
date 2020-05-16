@@ -5,7 +5,7 @@ import CustomModal from '../../../../../components/CustomModal';
 import DetailOffer from '../DetailOfferComponent'
 import { styles } from '../DetailOfferComponent/style'
 
-const DetailOfferModal = ({ open, setOpen, ...rest }) => {
+const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
   const { t } = useTranslation()
   const classes = styles()
   const onCloseModal = () => {
@@ -20,6 +20,7 @@ const DetailOfferModal = ({ open, setOpen, ...rest }) => {
       title={t('DETAIL_OFFER')}
       open={open}
       setOpen={setOpen}
+      loading={loading}
       confirmRender={"Xoa De Xuat"}
       onConfirm={onDeleteOffer}
       cancleRender={"Thoat"}

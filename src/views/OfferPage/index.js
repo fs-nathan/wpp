@@ -3,6 +3,7 @@ import React, { Suspense, useCallback, useEffect, useMemo, useState } from "reac
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useHistory } from 'react-router-dom';
+import { usePrevious } from 'react-use';
 import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
@@ -274,6 +275,7 @@ function OfferPage(props) {
       dispatch(loadDetailOffer({ id: currentDetailOfferId }));
     }
   }, [currentDetailOfferId]);
+  const prevDetailOfferId = usePrevious(currentDetailOfferId);
 
   return (
     <TwoColumnsLayout
@@ -327,6 +329,7 @@ function OfferPage(props) {
                 <DetailOfferModal
                   open={isDetailOfferModalOpen}
                   setOpen={setDetailOfferModalOpen}
+                  loading={currentDetailOfferId !== prevDetailOfferId || currentDetailOfferId === ''}
                   {...detailOffer}
                 />
               )}
