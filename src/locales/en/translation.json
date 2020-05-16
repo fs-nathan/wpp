@@ -912,5 +912,9 @@
   "ADD_DOCUMENT_OFFER" : "Add document",
   "PERSON_MONITOR" : "Person monitor",
   "PERSON_HANDLE" : "Person handle",
-  "DETAIL_OFFER" : "Detail offer"
+  "DETAIL_OFFER": {
+    "DETAIL_OFFER_TITLE": "Offer Detail",
+    "DELETE_OFFER": "Delete offer",
+    "ESCAPE": "Close"
+  }
 }

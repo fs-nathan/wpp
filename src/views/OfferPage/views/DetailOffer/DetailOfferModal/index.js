@@ -17,13 +17,13 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
 
   return (
     <CustomModal
-      title={t('DETAIL_OFFER')}
+      title={t('DETAIL_OFFER.DETAIL_OFFER_TITLE')}
       open={open}
       setOpen={setOpen}
       loading={loading}
-      confirmRender={"Xoa De Xuat"}
+      confirmRender={t('DETAIL_OFFER.DELETE_OFFER')}
       onConfirm={onDeleteOffer}
-      cancleRender={"Thoat"}
+      cancleRender={t('DETAIL_OFFER.ESCAPE')}
       onCancle={onCloseModal}
       fullWidth
     >
