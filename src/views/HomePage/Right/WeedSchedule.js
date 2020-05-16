@@ -147,24 +147,6 @@ const WeedDetailStateLess = ({
                         </span>
                         <span>({item.date})</span>
                       </div>
-                      <div className="header_title">
-                        {t(
-                          "views.calendar_page.modal.create_weekly_calendar.label.title"
-                        )}
-                      </div>
-                      <div className="header_content">
-                        {t(
-                          "views.calendar_page.modal.create_weekly_calendar.content"
-                        )}
-                      </div>
-                      <div className="header_members_joined">
-                        {t(
-                          "views.calendar_page.modal.create_weekly_calendar.receiver"
-                        )}
-                      </div>
-                      <div className="header_created_by">
-                        {t("views.calendar_page.right_part.label.created_by")}
-                      </div>
                     </Typography>
                     <List
                       component={"div"}
