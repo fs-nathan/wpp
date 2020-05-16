@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { ButtonGroup, Collapse } from '@material-ui/core';
 import { mdiFile, mdiImage, mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -6,11 +5,9 @@ import clsx from 'clsx';
 import ColorButton from 'components/ColorButton';
 import ColorTypo from 'components/ColorTypo';
 import colorPal from 'helpers/colorPalette';
-import get from 'lodash/get';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
-import { useSelector } from 'react-redux';
-import NoDataPlaceHolder from '../../NoDataPlaceHolder';
+import { useTranslation } from 'react-i18next';
 import FileContainer from './FileContainer';
 import LinkContainer from './LinkContainer';
 import MediaContainer from './MediaContainer';
@@ -18,10 +15,6 @@ import './styles.scss';
 
 function TabBody(props) {
   const { t } = useTranslation();
-  const links = useSelector(state => state.taskDetail.media.links);
-  const file = useSelector(state => state.taskDetail.media.file);
-  const image = useSelector(state => state.taskDetail.media.image);
-  const isNoData = (get(links, 'links.length', 0) + get(file, 'files.length', 0) + get(image, 'images.length', 0)) === 0;
 
   const [value, setValue] = React.useState(0);
 
@@ -59,22 +52,17 @@ function TabBody(props) {
             {value === 2 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_LINK')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_LINK')}</ColorTypo>}
           </ColorButton>
         </ButtonGroup>
-        {isNoData ? <NoDataPlaceHolder
-          src="/images/no-files.png"
-          title={t('LABEL_CHAT_TASK_CHUA_CO_TAI_LIEU')}
-        ></NoDataPlaceHolder> :
-          <React.Fragment>
-            <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
-              <MediaContainer {...props} />
-            </Collapse>
-            <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
-              <FileContainer {...props} />
-            </Collapse>
-            <Collapse in={value === 2} mountOnEnter unmountOnExit timeout={0}>
-              <LinkContainer {...props} />
-            </Collapse>
-          </React.Fragment>
-        }
+        <React.Fragment>
+          <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
+            <MediaContainer {...props} />
+          </Collapse>
+          <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
+            <FileContainer {...props} />
+          </Collapse>
+          <Collapse in={value === 2} mountOnEnter unmountOnExit timeout={0}>
+            <LinkContainer {...props} />
+          </Collapse>
+        </React.Fragment>
       </div>
     </Scrollbars>
   )

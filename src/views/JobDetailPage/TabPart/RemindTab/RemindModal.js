@@ -2,8 +2,10 @@ import DateFnsUtils from "@date-io/date-fns";
 import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import CloseIcon from '@material-ui/icons/Close';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { openCreateRemind } from 'actions/chat/chat';
+import TimePicker from 'components/TimePicker';
 import TitleSectionModal from 'components/TitleSectionModal';
 import "date-fns";
 import React from 'react';
@@ -220,7 +222,7 @@ function RemindModal(props) {
 
   // Remove duration by it's index
   const removeAnDuration = durationIdx => {
-    let newDuration = data.duration
+    let newDuration = [...data.duration]
     newDuration.splice(durationIdx, 1)
     handleChangeData("duration", newDuration)
   }
@@ -235,7 +237,7 @@ function RemindModal(props) {
       title={t('LABEL_CHAT_TASK_NHAC_HEN')}
       open={isOpenCreateRemind}
       setOpen={setOpenCreate}
-      confirmRender={() => (!isCreateRemind) ? t('LABEL_CHAT_TASK_CHINH_SUA_NHAC_HEN') : t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
+      confirmRender={() => (!isCreateRemind) ? t('LABEL_CHAT_TASK_HOAN_THANH') : t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
       onConfirm={handlePressConfirm}
       canConfirm={validate()}
     >
@@ -277,11 +279,10 @@ function RemindModal(props) {
                 />
               </MuiPickersUtilsProvider>
               <span>
-                <InputDateTime
-                  type={'time'}
+                <TimePicker
                   variant="outlined"
                   value={data.time_remind}
-                  onChange={e => handleChangeData("time_remind", e.target.value)}
+                  onChange={value => handleChangeData("time_remind", value)}
                 />
               </span>
               <div className="type-remind" >
@@ -312,7 +313,15 @@ function RemindModal(props) {
             </div>
             <Typography component={'div'}>
               {data.duration.map((item, key) => (
-                <BadgeItem onClick={() => removeAnDuration(key)} key={key} color={'orangelight'} label={item + ' %'} size='small' badge component='small' />
+                <BadgeItem
+                  className="remindModal--chip"
+                  // onClick={() => removeAnDuration(key)}
+                  key={key}
+                  color={'orangelight'}
+                  label={item + ' %'}
+                  onDelete={() => removeAnDuration(key)}
+                  deleteIcon={<CloseIcon />}
+                  badge component='span' />
               ))}
             </Typography>
           </div>

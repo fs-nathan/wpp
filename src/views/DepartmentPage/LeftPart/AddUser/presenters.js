@@ -1,16 +1,16 @@
-import { ButtonBase, IconButton, ListItemAvatar, ListItemText } from '@material-ui/core';
+import { ButtonBase, CircularProgress, IconButton, ListItemAvatar, ListItemText } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
+import ColorTypo from 'components/ColorTypo';
+import CustomAvatar from 'components/CustomAvatar';
+import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
+import LoadingOverlay from 'components/LoadingOverlay';
+import PillButton from 'components/PillButton';
+import SearchInput from 'components/SearchInput';
 import { find, get } from 'lodash';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../../../../components/ColorTypo';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import LoadingOverlay from '../../../../components/LoadingOverlay';
-import PillButton from '../../../../components/PillButton';
-import SearchInput from '../../../../components/SearchInput';
 import './style.scss';
 
 const StyledBox = ({ className = '', ...props }) =>
@@ -104,6 +104,13 @@ const DesiringUserList = ({
                             : onResendInvitationUserJoinGroup(get(user, 'id'))
                       }
                     >
+                      {loading && (
+                        <CircularProgress
+                          size={16}
+                          className="margin-circular"
+                          color='white'
+                        />
+                      )}
                       {get(user, 'status_code', 0) === 0
                         ? t('DMH.VIEW.DP.LEFT.ADD.BTN.INVT')
                         : t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
@@ -115,6 +122,13 @@ const DesiringUserList = ({
                           invitationId: get(user, 'invitation')
                         })}
                       >
+                        {loading && (
+                          <CircularProgress
+                            size={16}
+                            className="margin-circular"
+                            color='#c1c1c1'
+                          />
+                        )}
                         {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
                       </CancleButton>
                     )}
@@ -165,8 +179,15 @@ const InvitedUserList = ({
                       borderColor: bgColor.color
                     }}
                     disabled={loading}
-                    onClick={() => onResendInvitationUserJoinGroup(get(invitation, 'id'))}
+                    onClick={() => onResendInvitationUserJoinGroup(get(invitation, 'user'))}
                   >
+                    {loading && (
+                      <CircularProgress
+                        size={16}
+                        className="margin-circular"
+                        color='white'
+                      />
+                    )}
                     {t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
                   </OkButton>
                   <CancleButton
@@ -175,6 +196,13 @@ const InvitedUserList = ({
                       invitationId: get(invitation, 'invitation_id')
                     })}
                   >
+                    {loading && (
+                      <CircularProgress
+                        size={16}
+                        className="margin-circular"
+                        color='#c1c1c1'
+                      />
+                    )}
                     {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
                   </CancleButton>
                 </span>}
@@ -228,12 +256,26 @@ const RequestingUserList = ({
                     disabled={loading}
                     onClick={() => onAcceptRequirementJoinGroup(get(user, 'requirement_id'))}
                   >
+                    {loading && (
+                      <CircularProgress
+                        size={16}
+                        className="margin-circular"
+                        color='white'
+                      />
+                    )}
                     {t('DMH.VIEW.DP.LEFT.ADD.BTN.ACPT')}
                   </OkButton>
                   <CancleButton
                     disabled={loading}
                     onClick={() => onRejectRequirementJoinGroup(get(user, 'requirement_id'))}
                   >
+                    {loading && (
+                      <CircularProgress
+                        size={16}
+                        className="margin-circular"
+                        color='#c1c1c1'
+                      />
+                    )}
                     {t('DMH.VIEW.DP.LEFT.ADD.BTN.DENY')}
                   </CancleButton>
                 </span>}
@@ -295,7 +337,7 @@ function AddUser({
               <StyledSearchInput
                 placeholder={t('DMH.VIEW.DP.LEFT.ADD.LABEL.FIND')}
                 value={searchPatern}
-                onChange={handleSearchPatern}
+                onChange={evt => handleSearchPatern(evt.target.value)}
               />
               <PillButton
                 size='large'
@@ -338,7 +380,7 @@ function AddUser({
             <InvitedUserList
               canModify={get(viewPermissions.permissions, 'can_modify', false)}
               bgColor={bgColor}
-              loading={requireLoading}
+              loading={desireLoading}
               invitations={invitations.invitations}
               handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
               handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}

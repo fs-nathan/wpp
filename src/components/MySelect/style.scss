@@ -5,3 +5,16 @@
   color: #222;
   z-index: initial !important;
 }
+
+.comp_MySelect___select {
+  border-radius: 4px;
+  & > div:first-child > div:first-child > div:nth-child(2) {
+    border-color: hsl(0,0%,80%) !important;
+    box-shadow: none !important;
+    &:hover {
+      box-shadow: 0px 0px 10px #d5d5d5 !important;
+      border-color: hsl(0,0%,80%) !important;
+      border-width: 1px !important;
+    }
+  }
+}

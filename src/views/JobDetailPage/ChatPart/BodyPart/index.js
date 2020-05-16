@@ -1,7 +1,7 @@
 import { Avatar, IconButton } from '@material-ui/core';
 import { mdiMenuDown } from '@mdi/js';
 import Icon from '@mdi/react';
-import { loadChat } from 'actions/chat/chat';
+import { getViewedChat, loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
@@ -128,14 +128,23 @@ const BodyPart = props => {
     // eslint-disable-next-line
   }, [chatRef, chats.data.length]);
 
-  // useEffect(() => {
-  //   console.log('getScrollTop()', chatRef.current.getScrollTop(), lastScroll)
-  //   if (!isLoading) {
-  //     chatRef.current.scrollTop(chatRef.current.getScrollTop() - lastScroll)
-  //     lastScroll = chatRef.current.getScrollTop()
-  //   } else {
-  //   }
-  // }, [isLoading])
+  useEffect(() => {
+    let rqId;
+    if (isLoading) {
+      const scrollHeight = chatRef.current.getScrollHeight()
+      const scrollTop = scrollHeight - lastScroll
+      // console.log('getScrollTop()', scrollHeight, lastScroll, scrollTop)
+      rqId = requestAnimationFrame(() => {
+        // chatRef.current.scrollTop = 250
+        // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+        chatRef.current.scrollTop(scrollTop)
+      })
+      lastScroll = scrollHeight
+    }
+    return () => {
+      cancelAnimationFrame(rqId);
+    }
+  }, [isLoading])
 
   useEffect(() => {
     const task_id = queryString.parse(props.location.search).task_id
@@ -175,6 +184,7 @@ const BodyPart = props => {
 
   function onClickDetailViewed(data) {
     setOpenViewedModal(true);
+    dispatch(getViewedChat(taskId));
   }
 
   function loadMoreChat() {

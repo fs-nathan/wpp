@@ -36,9 +36,12 @@
 
 .finishedSubTask {
   &--item {
-    padding: 8px 0 16px 32px;
+    padding: 16px 0 16px 30px;
     display: flex;
     position: relative;
+    &:hover {
+      background-color: #f2f5fa;
+    }
   }
   &--avatar {
     margin: 6px 13px 0 10px;

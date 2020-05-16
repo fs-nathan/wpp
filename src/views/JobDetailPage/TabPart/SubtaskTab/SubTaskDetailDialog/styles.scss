@@ -1,4 +1,7 @@
 .subTaskDetailDialog {
+  .comp_CustomModal___scroll {
+    height: 100% !important;
+  }
   &--titleWrap {
     display: flex;
   }
@@ -35,6 +38,6 @@
     margin: auto 4px;
   }
   &__finished {
-    color: #74f5c0;
+    color: #00a937;
   }
 }

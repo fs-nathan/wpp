@@ -1,11 +1,12 @@
-import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest } from 'actions/chat/chat';
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal } from 'actions/chat/chat';
 import { detailStatus } from 'actions/project/setting/detailStatus';
+import { closeNoticeModal } from 'actions/system/system';
+import * as taskDetailAction from 'actions/taskDetail/taskDetailActions';
 import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from 'constants/actions/chat/chat';
 import last from 'lodash/last';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { closeNoticeModal } from '../../actions/system/system';
-import * as taskDetailAction from '../../actions/taskDetail/taskDetailActions';
+import ShareDocumentModal from 'views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal';
 import '../JobDetailPage/index.scss';
 import ChatPart from './ChatPart';
 import Intro from './introduce';
@@ -20,6 +21,8 @@ function JobDetailPage(props) {
   const taskId = url.searchParams.get('task_id');
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const userId = useSelector(state => state.system.profile.id);
+  const isOpenShareFileModal = useSelector(state => state.chat.isOpenShareFileModal);
+  const item = useSelector(state => state.chat.item);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -83,6 +86,10 @@ function JobDetailPage(props) {
     }
   }, [dispatch, projectId, userId]);
 
+  function onCloseShare() {
+    dispatch(openShareFileModal(false))
+  }
+
   return (
     <div className={taskId ? 'container' : 'container-job-introduce'}>
       <ListPart />
@@ -95,6 +102,12 @@ function JobDetailPage(props) {
           <Intro />
         )}
       <ModalImage />
+      {isOpenShareFileModal && (
+        <ShareDocumentModal
+          onClose={onCloseShare}
+          item={item}
+        />
+      )}
     </div>
   );
 }

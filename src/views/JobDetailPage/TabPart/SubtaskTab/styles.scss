@@ -25,7 +25,12 @@
   }
 }
 
-.editSubtask--content {
-  width: 400px;
-  padding: 24px;
+.editSubtask {
+  .comp_CustomModal___scroll {
+    height: 100% !important;
+  }
+  &--content {
+    width: 400px;
+    padding: 24px;
+  }
 }

@@ -36,9 +36,8 @@ const Target = styled(({ percentTarget, color, ...rest }) => <span {...rest} />)
   position: absolute;
   top: 0;
   left: calc(${expectedPercent}% - 4px);
-  height: 8px;
-  width: 8px;
-  border-radius: 999px;
+  height: 12px;
+  width: 5px;
   background-color: ${props => props.color};
 `;
 
