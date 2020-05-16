@@ -56,7 +56,10 @@ function ExpandPopover({ offer_id, view }) {
                 <div className="TaskTable_popover_item">
                     <Typography
                       className={classNames(classes.typography, "Tasktable_option")}
-                      onClick={() => setDetailOfferModalOpen(true)}
+                      onClick={() => {
+                          setAnchorEl(null);
+                          setDetailOfferModalOpen(true);
+                      }}
                     >
                         Xem đề xuất
                     </Typography>
