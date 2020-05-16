@@ -44,7 +44,7 @@ const LinkBox = (props) => {
   return (
     <List subheader={<li />}>
       {link.links && link.links.map((item, idx) => {
-        return (
+        return item.links.length > 0 && (
           <div className="styled-list-item-link linkBox" key={idx}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
             {item.links.map((item, idx) => {

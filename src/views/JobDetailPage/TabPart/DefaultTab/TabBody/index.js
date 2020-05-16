@@ -99,6 +99,7 @@ function TabBody(props) {
   const dispatch = useDispatch();
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
+  const members = useSelector(state => state.taskDetail.taskMember.member);
 
   // console.log("Props::::", value.detailTask)
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
@@ -217,7 +218,7 @@ function TabBody(props) {
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
           <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
-          <AvatarCircleList total={taskStatistic.members.length} display={6} />
+          <AvatarCircleList users={members} display={9} />
           {/* {MemberTask(taskStatistic)} */}
         </ListItemTab>
       </StyledList>

@@ -1,6 +1,7 @@
 import { IconButton, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import Icon from '@mdi/react';
+import { loadChat, openShareFileModal } from 'actions/chat/chat';
 import { deleteShareLocation } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import React from 'react';
@@ -43,7 +44,7 @@ const ButtonIcon = styled(IconButton)`
   }
 `
 
-const CustomListItem = () => {
+const CustomListItem = ({ isMe }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -62,7 +63,18 @@ const CustomListItem = () => {
     dispatch(deleteShareLocation(taskId, id))
   }
 
+  function handleShare(item) {
+    setAnchorEl(null);
+    dispatch(openShareFileModal(true, item))
+  }
+
+  function handleViewChat(item) {
+    setAnchorEl(null);
+    dispatch(loadChat(taskId, undefined, undefined, item.id))
+  }
+
   let locationArr = useSelector(state => state.taskDetail.location.locations);
+
   return (
     <ListItem>
       {Array.isArray(locationArr) && locationArr.map((location, idx) => {
@@ -70,6 +82,7 @@ const CustomListItem = () => {
           <div className="styled-list-item-location" key={idx}>
             <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
             {location.locations.map((item, key) => {
+              if (isMe && !item.is_me) return null;
               return (
                 <div className="styled-common-location" key={key}>
                   <ItemAvatar>
@@ -106,17 +119,17 @@ const CustomListItem = () => {
                       horizontal: 'right',
                     }}
                   >
-                    <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
-                    <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
-                    <MenuItem onClick={handleDelete(item.id)}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
+                    <MenuItem onClick={() => handleShare(item)}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
+                    <MenuItem onClick={() => handleViewChat(item)}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
+                    {/* <MenuItem onClick={handleDelete(item.id)}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem> */}
                   </Menu>
                 </div>
               )
             })}
-          </div>
+          </div >
         )
       })}
-    </ListItem>
+    </ListItem >
   );
 }
 

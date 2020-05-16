@@ -2,7 +2,7 @@ import get from 'lodash/get';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getFileTabPart, getImage, getLinkTabPart, searchFile } from '../../../../../actions/taskDetail/taskDetailActions';
+import { getFileTabPart, searchFile } from '../../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../../components/SearchInput';
 import { taskIdSelector } from '../../../selectors';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
@@ -17,9 +17,7 @@ const FileContainer = (props) => {
   const isNoData = get(file, 'files.length', 0) === 0;
 
   useEffect(() => {
-    dispatch(getImage({ taskId }));
     dispatch(getFileTabPart({ taskId }));
-    dispatch(getLinkTabPart({ taskId }));
   }, [dispatch, taskId])
 
   const searchFileTabPart = (e) => {

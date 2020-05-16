@@ -55,7 +55,7 @@ function TabBody() {
                 <LocationShareBox />
               </Collapse>
               <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
-                {null}
+                <LocationShareBox isMe />
               </Collapse>
             </React.Fragment>
         }
