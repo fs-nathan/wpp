@@ -13,7 +13,7 @@ import { useMultipleSelect } from "./hooks/useMultipleSelect";
 import "./LeftPart_new/LeftSetting.css";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
-import { loadTaskPage } from "./redux/actions";
+import { loadDetailOffer, loadTaskPage } from './redux/actions';
 import routes from "./routes";
 import { get } from "./utils";
 import Notifier from "./utils/notifer";
@@ -266,8 +266,14 @@ function OfferPage(props) {
     return <TabList title={title} {...{ listMenu }} />;
   }, [title, listMenu, setOpenModalOfferByGroup, filterTab, state]);
 
-  const detailOffer = useSelector(state => getDetailOffer(state))
-  const [isDetailOfferModalOpen, setDetailOfferModalOpen] = useState(false)
+  const detailOffer = useSelector(state => getDetailOffer(state));
+  const [isDetailOfferModalOpen, setDetailOfferModalOpen] = useState(false);
+  const [currentDetailOfferId, setCurrentDetailOfferId] = useState('');
+  useEffect(() => {
+    if (currentDetailOfferId) {
+      dispatch(loadDetailOffer({ id: currentDetailOfferId }));
+    }
+  }, [currentDetailOfferId]);
 
   return (
     <TwoColumnsLayout
@@ -300,6 +306,7 @@ function OfferPage(props) {
             openModal,
             isDetailOfferModalOpen,
             setDetailOfferModalOpen,
+            setCurrentDetailOfferId,
           }}
         >
           <div>

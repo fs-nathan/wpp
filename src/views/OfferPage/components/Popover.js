@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ExpandPopover({ offer_id, view }) {
-    const { setDetailOfferModalOpen } = useContext(OfferPageContext);
+    const { setDetailOfferModalOpen, setCurrentDetailOfferId } = useContext(OfferPageContext);
     const classes = useStyles();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [deleteModal, setDeleteModal] = React.useState(false)
@@ -58,6 +58,7 @@ function ExpandPopover({ offer_id, view }) {
                       className={classNames(classes.typography, "Tasktable_option")}
                       onClick={() => {
                           setAnchorEl(null);
+                          setCurrentDetailOfferId(offer_id);
                           setDetailOfferModalOpen(true);
                       }}
                     >
