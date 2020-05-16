@@ -7,7 +7,6 @@ import classNames from 'classnames';
 import React, { useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
-import { Routes } from '../contants/routes';
 import "./Popover.scss";
 import { OfferPageContext } from '../OfferPageContext';
 
