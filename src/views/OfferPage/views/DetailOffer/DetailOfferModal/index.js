@@ -5,11 +5,11 @@ import CustomModal from '../../../../../components/CustomModal';
 import DetailOffer from '../DetailOfferComponent'
 import { styles } from '../DetailOfferComponent/style'
 
-const DetailOfferModal = ({ open, setOpen, history: { goBack }, ...rest }) => {
+const DetailOfferModal = ({ open, setOpen, ...rest }) => {
   const { t } = useTranslation()
   const classes = styles()
   const onCloseModal = () => {
-    goBack();
+
   }
   const onDeleteOffer = () => {
 

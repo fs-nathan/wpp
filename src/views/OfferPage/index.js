@@ -2,7 +2,7 @@ import { mdiEmailCheck, mdiEmailVariant, mdiViewDashboard } from "@mdi/js";
 import React, { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch, useHistory, withRouter } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
@@ -266,11 +266,8 @@ function OfferPage(props) {
     return <TabList title={title} {...{ listMenu }} />;
   }, [title, listMenu, setOpenModalOfferByGroup, filterTab, state]);
 
-  const { location } = props;
-  const popup = (location.state || null) && (location.state.popup || null);
   const detailOffer = useSelector(state => getDetailOffer(state))
-  const [detailOfferModalOpen, setDetailOfferModalOpen] = useState(!!popup)
-  useEffect(() => setDetailOfferModalOpen(!!popup), [popup])
+  const [isDetailOfferModalOpen, setDetailOfferModalOpen] = useState(false)
 
   return (
     <TwoColumnsLayout
@@ -300,12 +297,14 @@ function OfferPage(props) {
             keyword,
             setkeyword,
             setTitle,
-            openModal
+            openModal,
+            isDetailOfferModalOpen,
+            setDetailOfferModalOpen,
           }}
         >
           <div>
             <Suspense fallback={<LoadingBox />}>
-              <Switch location={popup || location}>
+              <Switch>
                 {routes.map((route, index) => {
                   return (
                     <Route
@@ -317,14 +316,12 @@ function OfferPage(props) {
                   );
                 })}
               </Switch>
-              {popup && (
-                <Switch>
-                  <Route
-                    path={Routes.DETAILOFFER + "/:id"}
-                    exact
-                    render={(props) => <DetailOfferModal {...props} {...detailOffer} open={detailOfferModalOpen} setOpen={setDetailOfferModalOpen} />}
-                  />
-                </Switch>
+              {isDetailOfferModalOpen && (
+                <DetailOfferModal
+                  open={isDetailOfferModalOpen}
+                  setOpen={setDetailOfferModalOpen}
+                  {...detailOffer}
+                />
               )}
             </Suspense>
             <Notifier />
@@ -335,4 +332,4 @@ function OfferPage(props) {
   );
 }
 
-export default withRouter(OfferPage);
+export default OfferPage;
