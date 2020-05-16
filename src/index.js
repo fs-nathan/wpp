@@ -8,7 +8,6 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import store from "./configStore";
 import i18n from "./i18n";
-
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={store}>

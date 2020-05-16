@@ -14,6 +14,8 @@ import {
   JOIN_PROJECT_EVENT,
 } from "constants/actions/chat/chat";
 import { differenceInDays } from "date-fns";
+import SwitchAccount from "favicon/SwitchAccount";
+import useNotificationFavicon from "favicon/useNotificationFavicon";
 import { CHAT_TYPE, findTask } from "helpers/jobDetail/arrayHelper";
 import findIndex from "lodash/findIndex";
 import React, { useEffect, useState } from "react";
@@ -411,12 +413,14 @@ function MainLayout({
 
   const bgColor = colors.find((item) => item.selected === true);
   useWebpush();
+  useNotificationFavicon();
   return (
     <Container
       className={isViewFullPage(location.pathname) ? "view-full-page" : ""}
     >
       {!isViewFullPage(location.pathname) && (
         <React.Fragment>
+          <SwitchAccount />
           <LogoBox
             onClick={() => setVisibleGroupModal(true)}
             style={{ background: bgColor.color }}

@@ -1,4 +1,5 @@
 import { apiService } from "constants/axiosInstance";
+import { TOKEN } from "constants/constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { apiKeyModule } from "webpush";
@@ -9,11 +10,15 @@ const useWebpush = () => {
     apiKeyModule.selectors.web_push_public_key_selector
   );
   useEffect(() => {
-    dispatch(apiKeyModule.actions.loadApiKey());
+    const token = localStorage.getItem(TOKEN);
+    if (token) {
+      dispatch(apiKeyModule.actions.loadApiKey());
+    }
   }, [dispatch]);
   useEffect(() => {
+    const token = localStorage.getItem(TOKEN);
     window.apiService = apiService;
-    if (webpushApikey) {
+    if (token && webpushApikey && webpushApikey !== null) {
       function urlBase64ToUint8Array(base64String) {
         const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
         const base64 = (base64String + padding)
