@@ -33,7 +33,6 @@ import { routes } from "views/HomePage/contant/routes";
 import { postModule } from "views/HomePage/redux/post";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { paging } from "views/JobPage/utils";
-import { loginlineParams } from "views/OfferPage/utils";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/components/AyncTracker";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
@@ -260,9 +259,7 @@ export default () => {
     shallowEqual
   );
   const [{ data, status }, dispatch] = useAsyncTracker();
-  const post = loginlineParams(postList).find(
-    (item) => item.id === get(data, "post.id", "")
-  );
+  const post = postList.find((item) => item.id === get(data, "post.id", ""));
   useEffect(() => {
     dispatch(postModule.actions.loadPostById({ post_id }));
   }, [dispatch, post_id]);

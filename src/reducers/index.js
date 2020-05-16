@@ -4,6 +4,7 @@ import { weekScheduleModule } from "views/HomePage/redux/weekSchedule";
 import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
+import { apiKeyModule } from "webpush";
 import taskReducer from "../views/JobPage/redux/reducers";
 import updateSchedule, { initialState as updateScheduleInitialState } from "././calendar/weeklyCalendar/updateSchedule";
 import authentications, { initialState as authenticationsInitialState } from "./authentications";
@@ -66,7 +67,7 @@ import createLevel, { initialState as createLevelInitialState } from "./level/cr
 import deleteLevel, { initialState as deleteLevelInitialState } from "./level/deleteLevel";
 import listLevel, { initialState as listLevelInitialState } from "./level/listLevel";
 import updateLevel, { initialState as updateLevelInitialState } from "./level/updateLevel";
-import localStorage, { initialState as localStorageInitialState } from './localStorage';
+import localStorage, { initialState as localStorageInitialState } from "./localStorage";
 import createMajor, { initialState as createMajorInitialState } from "./major/createMajor";
 import deleteMajor, { initialState as deleteMajorInitialState } from "./major/deleteMajor";
 import listMajor, { initialState as listMajorInitialState } from "./major/listMajor";
@@ -299,23 +300,45 @@ const rootReducer = combineReducers({
   [settingGroupPermission.key]: settingGroupPermission.reducer,
   [postModule.key]: postModule.reducer,
   [weekScheduleModule.key]: weekScheduleModule.reducer,
+  [apiKeyModule.key]: apiKeyModule.reducer,
 
   apiCall: apiCall,
   inviteOtherPeopleCreateAccount,
   viewPermissions,
   calendar: combineReducers({
-    listSchedule, listScheduleOfWeek,
-    listScheduleOfWeekFromModal, listWeeksInYear, projectGroupSetWorkingDay,
-    settingStartingDay, listProjectGroupSchedule, projectCalendarAddWorkingStage,
-    createSchedule, updateSchedule, listCalendarPermission, projectCalendarUpdateWorkingStage,
-    deleteSchedule, listPersonalRemindCategory, projectCalendarCreateShiftStage,
-    listRemindRecently, listPersonalRemind, projectCalendarDeleteWorkingStage,
-    createProjectGroupSchedule, getProjectGroupScheduleDetail, projectCalendarUpdateShiftStage,
-    projectGroupSettingStartingDay, projectGroupAddWorkingDays, projectCalendarDeleteShiftStage,
-    projectGroupDeleteWorkingDays, projectGroupAddDayOff, projectGroupDeleteDayOff,
-    createPersonalRemindCategory, createPersonalRemind, listRemindProject,
-    projectCalendarCreateShiftStageAllTime, projectCalendarUpdateShiftStageAllTime,
-    projectCalendarDeleteShiftStageAllTime
+    listSchedule,
+    listScheduleOfWeek,
+    listScheduleOfWeekFromModal,
+    listWeeksInYear,
+    projectGroupSetWorkingDay,
+    settingStartingDay,
+    listProjectGroupSchedule,
+    projectCalendarAddWorkingStage,
+    createSchedule,
+    updateSchedule,
+    listCalendarPermission,
+    projectCalendarUpdateWorkingStage,
+    deleteSchedule,
+    listPersonalRemindCategory,
+    projectCalendarCreateShiftStage,
+    listRemindRecently,
+    listPersonalRemind,
+    projectCalendarDeleteWorkingStage,
+    createProjectGroupSchedule,
+    getProjectGroupScheduleDetail,
+    projectCalendarUpdateShiftStage,
+    projectGroupSettingStartingDay,
+    projectGroupAddWorkingDays,
+    projectCalendarDeleteShiftStage,
+    projectGroupDeleteWorkingDays,
+    projectGroupAddDayOff,
+    projectGroupDeleteDayOff,
+    createPersonalRemindCategory,
+    createPersonalRemind,
+    listRemindProject,
+    projectCalendarCreateShiftStageAllTime,
+    projectCalendarUpdateShiftStageAllTime,
+    projectCalendarDeleteShiftStageAllTime,
   }),
   localStorage,
 });

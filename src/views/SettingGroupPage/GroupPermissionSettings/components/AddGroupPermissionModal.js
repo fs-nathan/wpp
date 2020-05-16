@@ -15,7 +15,6 @@ import {
   createValidate,
   get,
   loginlineFunc,
-  loginlineParams,
 } from "views/JobPage/utils";
 import {
   InputFormControl,
@@ -138,10 +137,7 @@ export default () => {
 
   useEffect(() => {
     if (status === apiCallStatus.success) {
-      const item = loginlineFunc(get)(
-        loginlineParams(data),
-        "group_permission"
-      );
+      const item = loginlineFunc(get)(data, "group_permission");
       setSelect(item);
       setModal(<UpdateGroupPermissionModal item={item} />);
     }

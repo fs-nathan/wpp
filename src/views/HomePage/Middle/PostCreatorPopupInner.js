@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { get, loginlineParams, uniqueId } from "views/JobPage/utils";
+import { get, uniqueId } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
@@ -43,14 +43,10 @@ const ImageListField = ({
 }) => {
   const [field] = useField({ name });
   const handleChange = (files = []) => {
-    loginlineParams(files);
     field.onChange({
       target: {
         name,
-        value: [
-          ...(loginlineParams(field.value) || emptyArray),
-          ...loginlineParams(files),
-        ],
+        value: [...(field.value || emptyArray), ...files],
       },
     });
   };
@@ -124,10 +120,7 @@ const FileField = ({ name, id, children, ...props }) => {
           field.onChange({
             target: {
               name,
-              value: [
-                ...(loginlineParams(field.value) || emptyArray),
-                ...loginlineParams(e.target.files),
-              ],
+              value: [...(field.value || emptyArray), ...e.target.files],
             },
           });
         }}
@@ -177,7 +170,7 @@ const FilePreviewField = ({ name }) => {
                   {id && (
                     <label htmlFor={id}>
                       <AddButton
-                        onClick={loginlineParams}
+                        onClick={() => {}}
                         label={t("Thêm tài liệu")}
                       ></AddButton>
                     </label>
