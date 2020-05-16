@@ -90,6 +90,11 @@ export const replaceMultipleReg = (str = '', regex, replacer) => {
   return ret + str.slice(lastEnd);
 }
 
+export function normalizeUrl(match) {
+  const url = match.indexOf('http') !== -1 ? match : `http://${match}`
+  return url
+}
+
 export function replaceUrl(str) {
   const replacer = match => {
     const url = match.indexOf('http') !== -1 ? match : `http://${match}`

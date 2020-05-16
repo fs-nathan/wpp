@@ -1,12 +1,10 @@
-import { useTranslation } from 'react-i18next';
+import { List } from '@material-ui/core';
 import React from 'react';
-import styled from 'styled-components';
-import {
-  List,
-} from '@material-ui/core';
-import SearchInput from '../../../../../components/SearchInput';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
 import { searchLocation } from '../../../../../actions/taskDetail/taskDetailActions';
+import SearchInput from '../../../../../components/SearchInput';
 import CustomListItem from './CustomListItem';
 
 const WrapList = styled(List)`
@@ -15,6 +13,7 @@ const WrapList = styled(List)`
   }
   & > li {
     padding: 5px 0;
+    display: block;
     & > *:last-child {
       min-width: auto !important;
     }

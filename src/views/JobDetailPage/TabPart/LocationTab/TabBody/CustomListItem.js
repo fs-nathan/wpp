@@ -2,22 +2,27 @@ import { IconButton, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListS
 import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import Icon from '@mdi/react';
 import { deleteShareLocation } from 'actions/taskDetail/taskDetailActions';
+import ColorTypo from 'components/ColorTypo';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ColorTypo from '../../../../../components/ColorTypo';
+import './styles.scss';
 
 const HeaderSubText = styled(ListSubheader)`
-  font-size: 13px;
-  color: #6e6d6d;
+  display: inline-block;
+  width: 100%;
+  position: relative;  
+  font-size: 14px;
+  font-weight: 600;
+  color: #9e9e9e;
   padding: 0;
   margin: 0;
 `
 
 const ItemAvatar = styled(ListItemAvatar)`
   & > div {
-    background: #d6d6d6;
+    background: #f2f2f2;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -69,16 +74,17 @@ const CustomListItem = () => {
                 <div className="styled-common-location" key={key}>
                   <ItemAvatar>
                     <div>
-                      <Icon path={mdiMapMarker} alt='map' size={1.1} color={'ff9d00'} />
+                      <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} />
                     </div>
                   </ItemAvatar>
                   <ListItemText
+                    className="LocationItem--content"
                     primary={item.user_share}
                     secondary={
                       <span>
-                        <ColorTypo variant='caption' color='blue'>{t('LABEL_CHAT_TASK_LUC', { createdAt: `${item.time_create} - ${item.date_create}` })}</ColorTypo>
+                        <ColorTypo className="LocationItem--time" variant='caption' color='blue'>{t('LABEL_CHAT_TASK_CHIA_SE_LUC', { createdAt: `${item.time_create} - ${item.date_create}` })}</ColorTypo>
                         <br />
-                        <ColorTypo variant='caption'>{item.address}</ColorTypo>
+                        <ColorTypo className="LocationItem--location" variant='caption'>{item.address}</ColorTypo>
                       </span>
                     }
                   />

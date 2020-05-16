@@ -161,7 +161,7 @@ function TabBody(props) {
               value={getCompleteStatus(taskStatistic.complete)}
             />
             :
-            <HtmlTooltip TransitionProps={{ timeout: 0 }} title={<ModalStatus
+            <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }} TransitionProps={{ timeout: 0 }} title={<ModalStatus
               values={t('LABEL_CHAT_TASK_DANG_TAM_DUNG')} />}
               placement="top-start">
               <Typography

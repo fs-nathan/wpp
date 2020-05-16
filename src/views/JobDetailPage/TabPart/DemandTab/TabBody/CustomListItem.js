@@ -48,7 +48,7 @@ const CustomListItem = props => {
           </div >
           <div className="demandTabItem--time">
             <Icon path={mdiClockOutline} size={1} />
-            {isDemand ? 'Chỉ đạo' : 'Quyết định'}{t('LABEL_CHAT_TASK_LUC', { createdAt: date_create })}
+            {isDemand ? t('LABEL_CHAT_TASK_CHI_DAO_LABEL') : t('LABEL_CHAT_TASK_QUYET_DINH_LABEL')}&nbsp;{t('LABEL_CHAT_TASK_LUC', { createdAt: date_create }).toLowerCase()}
           </div>
         </div>
         <div className="demandTabItem--menu">

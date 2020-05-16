@@ -1,6 +1,7 @@
 import { List, ListItem, ListItemText, ListSubheader, Typography } from '@material-ui/core';
 import { mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
+import { normalizeUrl } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -54,7 +55,7 @@ const LinkBox = (props) => {
                   </Typography>
                   <ListItemText>
                     <a
-                      href={item.url}
+                      href={normalizeUrl(item.url)}
                       target="_blank"
                       rel="noopener noreferrer">
                       {item.url}
