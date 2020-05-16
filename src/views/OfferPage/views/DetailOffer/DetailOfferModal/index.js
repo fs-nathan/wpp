@@ -8,10 +8,10 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
   const { t } = useTranslation()
   const classes = styles()
   const onCloseModal = () => {
-
+    // do nothing
   }
   const onDeleteOffer = () => {
-
+    // todo: implement on delete offer button click
   }
 
   return (

@@ -267,14 +267,17 @@ function OfferPage(props) {
     return <TabList title={title} {...{ listMenu }} />;
   }, [title, listMenu, setOpenModalOfferByGroup, filterTab, state]);
 
+  // Get offer details from redux store to show on offer detail modal
   const detailOffer = useSelector(state => getDetailOffer(state));
   const [isDetailOfferModalOpen, setDetailOfferModalOpen] = useState(false);
+  // Current offer detail id to fetch data showing on offer detail modal
   const [currentDetailOfferId, setCurrentDetailOfferId] = useState('');
   useEffect(() => {
     if (currentDetailOfferId) {
       dispatch(loadDetailOffer({ id: currentDetailOfferId }));
     }
   }, [currentDetailOfferId]);
+  // Compare currentDetailOfferId & prevDetailOfferId to determine offer detail modal loading state
   const prevDetailOfferId = usePrevious(currentDetailOfferId);
 
   return (
