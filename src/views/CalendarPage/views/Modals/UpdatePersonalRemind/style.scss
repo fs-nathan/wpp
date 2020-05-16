@@ -104,6 +104,10 @@
       &_input {
         margin-top: 10px;
       }
+
+      &_textFieldMuitiline {
+        margin-top: 8px;
+      }
     }
 
     &_userAssign {
@@ -121,7 +125,6 @@
       .MuiButton-textPrimary {
         color: #009CF3 !important;
         text-transform: none;
-        margin: 0;
       }
 
       &_buttonAdd {

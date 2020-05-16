@@ -1,6 +1,7 @@
 import { listRemindProject } from "actions/calendar/alarmCalendar/listRemindProject";
 import { listProjectBasicInfo } from "actions/project/listBasicInfo";
 import { useLocalStorage } from "hooks";
+import get from "lodash/get";
 import moment from "moment";
 import React from 'react';
 import { connect } from 'react-redux';
@@ -30,6 +31,7 @@ function CalendarProjectAlarm({
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [selectedRemind, setSelectedRemind] = React.useState();
   const [openModalDetail, setOpenModalDetail] = React.useState(false);
+  const [groupRemind, setGroupRemind] = React.useState();
 
   React.useEffect(() => {
     setLocalOptions(pastOptions => ({
@@ -40,8 +42,8 @@ function CalendarProjectAlarm({
   }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(timeRange.startDate ?? moment().startOf('year')).format("YYYY-MM-DD");
-    let toTime = moment(timeRange.endDate ?? moment().endOf('year')).format("YYYY-MM-DD");
+    let fromTime = moment(get(timeRange, 'startDate') ?? moment().startOf('year')).format("YYYY-MM-DD");
+    let toTime = moment(get(timeRange, 'endDate') ?? moment().endOf('year')).format("YYYY-MM-DD");
     doListRemindProject({ fromTime, toTime }, false);
   }, [doListRemindProject, timeRange]);
 
@@ -49,9 +51,10 @@ function CalendarProjectAlarm({
     doListProjectBasicInfo(false);
   }, [doListProjectBasicInfo]);
 
-  function handleOpenDetail(remind) {
+  function handleOpenDetail(data) {
     setOpenModalDetail(true);
-    setSelectedRemind(remind);
+    setSelectedRemind(data.remind);
+    setGroupRemind(data.item);
   }
 
   return (
@@ -70,12 +73,13 @@ function CalendarProjectAlarm({
         setFilterOpen={setFilterOpen}
         projectReminds={projectReminds}
         projects={projects}
-        handleOpenDetail={(remind) => handleOpenDetail(remind)}
+        handleOpenDetail={(data) => handleOpenDetail(data)}
       />
       <ViewDetailRemind
         open={openModalDetail}
         setOpen={setOpenModalDetail}
         remind={selectedRemind}
+        groupRemind={groupRemind}
       />
     </>
   )

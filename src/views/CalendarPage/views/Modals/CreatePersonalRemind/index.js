@@ -57,6 +57,11 @@ function CreatePersonalRemind({
   }, [doListMemebers]);
 
   React.useEffect(() => {
+    setReceiverListIndex([]);
+    setDataMember(DEFAULT_DATA);
+  }, [open]);
+
+  React.useEffect(() => {
     handleChangeData("selectedCategory", categoryID);
   }, [categoryID])
 
@@ -79,7 +84,7 @@ function CreatePersonalRemind({
         title={t("views.calendar_page.modal.create_personal_remind.title")}
         open={open}
         setOpen={setOpen}
-        canConfirm={data.content !== '' && data.selectedCategory !== null}
+        canConfirm={data.content !== '' && data.selectedCategory !== null && data.selectedDate !== null}
         confirmRender={() => t('IDS_WP_DONE')}
         onConfirm={() => handleOnConfirm()}
         maxWidth='sm'
@@ -195,7 +200,7 @@ function CreatePersonalRemind({
             <Typography component={'span'} className="title_normal"> {t('views.calendar_page.modal.create_personal_remind.member_assign')} </Typography>
             <Box className="remind_setting_userAssignBox">
               {
-                receiverListIndex.length !== 0 &&
+                receiverListIndex.length !== 0 && receiverListIndex.length < members.members.length &&
                 Object.values(pick(members.members, receiverListIndex)).map((member) => {
                   return (
                     <Box className="remind_setting_userAssignItem">
@@ -208,9 +213,16 @@ function CreatePersonalRemind({
                   )
                 })
               }
+              {
+                receiverListIndex.length !== 0 && receiverListIndex.length === members.members.length && (
+                  <Box className="remind_setting_userAssignAll">
+                    {t('views.calendar_page.modal.create_weekly_calendar.all')}
+                  </Box>
+                )
+              }
               <Button
                 color="primary"
-                startIcon={<Icon path={mdiPlusCircle} size={1} color={"#009CF3"} />}
+                startIcon={<Icon path={mdiPlusCircle} size={0.8} color={"#009CF3"} />}
                 onClick={() => setOpenReceiverDialog(true)}
                 className="remind_setting_userAssignBox_buttonAdd"
               >

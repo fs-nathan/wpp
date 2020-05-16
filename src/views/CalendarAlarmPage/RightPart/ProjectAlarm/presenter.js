@@ -226,16 +226,19 @@ function CalendarProjectAlarmPresenter({
                                                   )
                                                 }
                                               </div>
-                                              <div className="alarm_calendar_item_mainContent">
+                                              <div
+                                                onClick={() => handleOpenDetail({ item, remind })}
+                                                className="alarm_calendar_item_mainContent"
+                                              >
                                                 <div className="alarm_calendar_item_mainContent_content">
                                                   <div className="main_content_top">
-                                                    <div className="main_content_top_content" onClick={() => handleOpenDetail(remind)}>
+                                                    <div className="main_content_top_content">
                                                       {remind.content}
                                                     </div>
                                                     <div className="calendar_item_badge calendar_item_badge_bg">
                                                       <span className="calendar_item_badge_secondary calendar_item_badge_secondary_bg">{remind.category_name}</span>
                                                       <span className="calendar_item_badge_default">
-                                                        <Icon path={mdiAccount} size={0.8} color="#FF9B15" /> {remind.members_assign.length}
+                                                        <Icon path={mdiAccount} size={0.7} color="#FF9B15" style={{ marginRight: '2px' }} /> {remind.members_assign.length}
                                                       </span>
                                                     </div>
                                                   </div>
@@ -257,7 +260,10 @@ function CalendarProjectAlarmPresenter({
                                               <div className="alarm_calendar_item_control">
                                                 <IconButton
                                                   key={item.id}
-                                                  onClick={evt => doOpenMenu(evt.currentTarget, remind)}
+                                                  onClick={evt => {
+                                                    evt.stopPropagation();
+                                                    doOpenMenu(evt.currentTarget, remind);
+                                                  }}
                                                 >
                                                   <abbr title={t('IDS_WP_MORE')}>
                                                     <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
@@ -423,14 +429,6 @@ function CalendarProjectAlarmPresenter({
           }}
         >
           {t("views.calendar_page.right_part.view_task")}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            handleOpenDetail(selectedRemind)
-            setMenuAnchor(null);
-          }}
-        >
-          {t("views.calendar_page.right_part.view_detail")}
         </MenuItem>
       </Menu>
     </>

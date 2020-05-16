@@ -2,6 +2,16 @@
   padding: 10px 20px;
   min-height: 100%;
 
+  &_TableLayout {
+    grid-area: right;
+    display: block !important;
+    grid-template-rows: 70px calc(100vh - 70px - 50px);
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'header'
+      'body';
+  }
+
   &__header {
     color: #656565;
     text-transform: uppercase;

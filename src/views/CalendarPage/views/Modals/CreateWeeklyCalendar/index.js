@@ -1,5 +1,5 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Button, Checkbox, FormControlLabel, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { Button, Checkbox, FormControlLabel, IconButton, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, MenuItem, Select, TextField, Tooltip, Typography } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiBellOutline, mdiCalendarMonthOutline, mdiPencilBoxMultipleOutline, mdiPlusCircleOutline, mdiTrashCanOutline } from '@mdi/js';
@@ -569,9 +569,9 @@ function CreateWeeklyCalendar({
                                         <ListItemIcon>
                                           {
                                             schedule.is_remind && (
-                                              <abbr title={schedule.title_remind_before}>
+                                              <Tooltip title={schedule.title_remind_before} placement="right">
                                                 <Icon path={mdiBellOutline} size={0.85} color="rgba(0, 0, 0, 0.7)" />
-                                              </abbr>
+                                              </Tooltip>
                                             )
                                           }
                                           {
@@ -587,7 +587,7 @@ function CreateWeeklyCalendar({
                                         <ListItemSecondaryAction>
                                           {
                                             schedule.assign_to_all && (
-                                              <div className="assign_to_all">Tất cả</div>
+                                              <div className="assign_to_all">{t('views.calendar_page.modal.create_weekly_calendar.all')}</div>
                                             )
                                           }
                                           {

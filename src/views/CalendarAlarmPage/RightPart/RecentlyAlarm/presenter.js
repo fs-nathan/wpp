@@ -115,7 +115,10 @@ function CalendarRecentlyAlarmPresenter({
                                     item.reminds.map((remind) => {
                                       return (
                                         <>
-                                          <div className="alarm_calendar_item_container">
+                                          <div
+                                            onClick={() => handleOpenDetail(remind)}
+                                            className="alarm_calendar_item_container"
+                                          >
                                             <div className="alarm_calendar_item_header">
                                               {
                                                 isNull(get(remind, "time_remind_next", null)) && (
@@ -140,7 +143,6 @@ function CalendarRecentlyAlarmPresenter({
                                                 <div className="main_content_top">
                                                   <div
                                                     className="main_content_top_content"
-                                                    onClick={() => handleOpenDetail(remind)}
                                                   >
                                                     {remind.content}
                                                   </div>
@@ -148,7 +150,7 @@ function CalendarRecentlyAlarmPresenter({
                                                     <span className="calendar_item_badge_primary">{t('LABEL_REMIND_PROJECT')}</span>
                                                     <span className="calendar_item_badge_secondary">{t('LABEL_REMIND_FRIEND')}</span>
                                                     <span className="calendar_item_badge_default">
-                                                      <Icon path={mdiAccount} size={0.8} color="#FF9B15" /> {remind.members_assign.length}
+                                                      <Icon path={mdiAccount} size={0.7} color="#FF9B15" style={{ marginRight: '2px' }} /> {remind.members_assign.length}
                                                     </span>
                                                   </div>
                                                 </div>
@@ -170,7 +172,10 @@ function CalendarRecentlyAlarmPresenter({
                                             <div className="alarm_calendar_item_control">
                                               <IconButton
                                                 key={item.id}
-                                                onClick={evt => doOpenMenu(evt.currentTarget, remind)}
+                                                onClick={evt => {
+                                                  evt.stopPropagation();
+                                                  doOpenMenu(evt.currentTarget, remind);
+                                                }}
                                               >
                                                 <abbr title={t('IDS_WP_MORE')}>
                                                   <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />

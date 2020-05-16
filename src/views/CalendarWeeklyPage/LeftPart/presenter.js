@@ -7,6 +7,7 @@ import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
 import { Routes } from 'constants/routes';
 import { get } from "lodash";
+import moment from "moment";
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useHistory, useParams } from 'react-router-dom';
@@ -77,6 +78,11 @@ function CalendarWeeklyLeftPartPresenter({
                               }`}
                           >
                             {get(item, "name", "")}
+                            {
+                              moment().isoWeek() === parseInt(get(item, "name", "").split(" ")[1]) && (
+                                <span className="view_WeeklyCalendarLeftPart_List_presentLabel">({t('IDS_WP_PRESENT')})</span>
+                              )
+                            }
                           </Primary>
                         }
                       />

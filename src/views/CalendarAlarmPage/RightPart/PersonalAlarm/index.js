@@ -7,6 +7,7 @@ import { updatePersonalRemind } from "actions/calendar/alarmCalendar/updatePerso
 import AlertModal from "components/AlertModal";
 import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
 import { useLocalStorage } from "hooks";
+import get from "lodash/get";
 import moment from "moment";
 import React from 'react';
 import { useTranslation } from "react-i18next";
@@ -51,6 +52,7 @@ function CalendarPersonalAlarm({
   const [filteredReminds, setFilteredReminds] = React.useState(personalReminds);
   const [categoryID, setCategoryID] = React.useState(null);
   const [selectedRemind, setSelectedRemind] = React.useState();
+  const [groupRemind, setGroupRemind] = React.useState();
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -68,8 +70,8 @@ function CalendarPersonalAlarm({
   }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(timeRange.startDate ?? moment().startOf('year')).format("YYYY-MM-DD");
-    let toTime = moment(timeRange.endDate ?? moment().endOf('year')).format("YYYY-MM-DD");
+    let fromTime = moment(get(timeRange, 'startDate') ?? moment().startOf('year')).format("YYYY-MM-DD");
+    let toTime = moment(get(timeRange, 'endDate') ?? moment().endOf('year')).format("YYYY-MM-DD");
     doListPersonalRemind({ fromTime, toTime }, false);
 
     const refreshListPersonalRemind = () => {
@@ -116,7 +118,8 @@ function CalendarPersonalAlarm({
         return;
       case "VIEW":
         setOpenModalDetail(true);
-        setSelectedRemind(data);
+        setSelectedRemind(data.remind);
+        setGroupRemind(data.item);
         return;
       default:
         return;
@@ -187,6 +190,7 @@ function CalendarPersonalAlarm({
         setOpen={setOpenModalDetail}
         remind={selectedRemind}
         remindType={"PERSONAL"}
+        groupRemind={groupRemind}
       />
       <AlertModal
         open={openAlert}
@@ -222,7 +226,11 @@ function CalendarPersonalAlarm({
         open={alertConfirm}
         setOpen={setAlertConfirm}
         content={t('IDS_WP_ALERT_CONTENT')}
-        onConfirm={() => handleDeleteRemind(selectedRemind)}
+        onConfirm={() => {
+          setIsLoading(true);
+          handleDeleteRemind(selectedRemind);
+        }}
+        actionLoading={isLoading}
       />
     </>
   )

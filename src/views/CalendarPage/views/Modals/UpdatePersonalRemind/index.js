@@ -5,14 +5,17 @@ import { mdiPlusCircle } from "@mdi/js";
 import Icon from '@mdi/react';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomModal from 'components/CustomModal';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
+import { listTimeSelect } from 'components/TimeSelect';
 import { findIndex, get, map, pick } from 'lodash';
 import moment from 'moment';
 import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import { membersSelector } from "./selectors";
+import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -89,7 +92,7 @@ function UpdatePersonalRemind({
         title={t("views.calendar_page.modal.update_personal_remind.title")}
         open={open}
         setOpen={setOpen}
-        canConfirm={data.content !== ''}
+        canConfirm={data.content !== '' && data.selectedDate !== null}
         confirmRender={() => t('IDS_WP_DONE')}
         onConfirm={() => handleOnConfirm()}
         maxWidth='sm'
@@ -108,6 +111,13 @@ function UpdatePersonalRemind({
               variant="outlined"
               value={data.selectedCategory}
               onChange={({ target }) => handleChangeData("selectedCategory", target.value)}
+              MenuProps={{
+                className: "remind_group_selector--paper",
+                MenuListProps: {
+                  component: Scrollbars,
+                },
+                variant: 'menu'
+              }}
             >
               {
                 remindCategories !== undefined && Array.isArray(remindCategories)
@@ -147,10 +157,10 @@ function UpdatePersonalRemind({
                 <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.choose_time')} </Typography>
                 <span>*</span>
               </abbr>
-              <TimeSelect
+              <TimePicker
                 className="remind_setting_timeSelector"
                 value={data.selectedTime}
-                onChange={({ target }) => handleChangeData('selectedTime', target.value)}
+                onChange={(value) => handleChangeData('selectedTime', value)}
               />
             </div>
             <div className="remind_setting_type">
@@ -164,6 +174,13 @@ function UpdatePersonalRemind({
                 variant="outlined"
                 value={data.selectedRepeatType}
                 onChange={({ target }) => handleChangeData('selectedRepeatType', target.value)}
+                MenuProps={{
+                  className: "remind_setting_type_selector--paper",
+                  MenuListProps: {
+                    component: Scrollbars,
+                  },
+                  variant: 'menu'
+                }}
               >
                 <MenuItem value={0} key={`remind_repeat_type_0`}>{t('views.calendar_page.modal.create_personal_remind.one_time')}</MenuItem>
                 <MenuItem value={1} key={`remind_repeat_type_1`}>{t('views.calendar_page.modal.create_personal_remind.daily')}</MenuItem>
@@ -185,13 +202,14 @@ function UpdatePersonalRemind({
               value={data.content}
               onChange={({ target }) => handleChangeData("content", target.value)}
               rows={4}
+              className="remind_setting_content_textFieldMuitiline"
             />
           </Box>
           <Box className="remind_setting_userAssign">
             <Typography component={'span'} className="title_normal"> {t('views.calendar_page.modal.create_personal_remind.member_assign')} </Typography>
             <Box className="remind_setting_userAssignBox">
               {
-                receiverListIndex.length !== 0 &&
+                receiverListIndex.length !== 0 && receiverListIndex.length < members.members.length &&
                 Object.values(pick(members.members, receiverListIndex)).map((member) => {
                   return (
                     <Box className="remind_setting_userAssignItem">
@@ -204,9 +222,16 @@ function UpdatePersonalRemind({
                   )
                 })
               }
+              {
+                receiverListIndex.length !== 0 && receiverListIndex.length >= members.members.length && (
+                  <Box className="remind_setting_userAssignAll">
+                    {t('views.calendar_page.modal.create_weekly_calendar.all')}
+                  </Box>
+                )
+              }
               <Button
                 color="primary"
-                startIcon={<Icon path={mdiPlusCircle} size={1} color={"#009CF3"} />}
+                startIcon={<Icon path={mdiPlusCircle} size={0.8} color={"#009CF3"} />}
                 onClick={() => setOpenReceiverDialog(true)}
                 className="remind_setting_userAssignBox_buttonAdd"
               >
