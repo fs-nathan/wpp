@@ -1,15 +1,17 @@
 .ForwardMessageDialog {
-  // &--container {
-  //   height: 500px;
-  // }
+  &--container {
+    // min-height: 600px;
+    height: calc(100% - 104px);
+  }
   &--content {
     min-width: 800px;
+    min-height: 600px;
     display: grid;
     grid-template-columns: 1fr 2fr;
     border: 1px solid #e0e0e0;
   }
   &--body {
-    min-height: 600px;
+    height: calc(100% - 104px);
   }
   &--scroll {
     // margin-bottom: 30px !important;
@@ -49,7 +51,19 @@
   }
   &--sendButton {
     position: absolute;
-    top: 12px;
+    top: 6px;
     right: 20px;
+    height: 25px;
+    text-transform: unset;
+    padding: 2px 8px;
+    border: 1px solid #dcdcdc;
+    font-weight: 400;
+    color: #444;
+    line-height: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    :focus {
+      outline: none;
+    }
   }
 }

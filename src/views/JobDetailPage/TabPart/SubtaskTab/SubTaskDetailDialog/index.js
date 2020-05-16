@@ -34,7 +34,7 @@ function SubTaskDetailDialog() {
       open={isOpenDetailSubTask}
       setOpen={setOpenDetailSubTask}
       confirmRender={null}
-      className="subTaskDetailDialog modal_height_30vh"
+      className={clsx("subTaskDetailDialog", { "modal_height_30vh": !user_complete_name, "modal_height_50vh": user_complete_name })}
       titleRender={
         <div className="subTaskDetailDialog--titleWrap">
           <Avatar className="subTaskDetailDialog--avatar" src={user_create_avatar} alt='avatar' />
@@ -55,21 +55,25 @@ function SubTaskDetailDialog() {
             {status === 0 ? t('LABEL_CHAT_TASK_DANG_LAM') : t('LABEL_CHAT_TASK_HOAN_THANH')}
           </div>
         </div>
-        {/* <div className="subTaskDetailDialog--row">
-          <div className="subTaskDetailDialog--label">{t('LABEL_CHAT_TASK_HOAN_THANH')}</div>
-          <div className="subTaskDetailDialog--content">
-            {user_complete_name &&
-              <Avatar className="subTaskDetailDialog--avatarCompleted" src={user_complete_avatar} alt='avatar' />
-            }
-            {user_complete_name}
-          </div>
-        </div>
-        <div className="subTaskDetailDialog--row">
-          <div className="subTaskDetailDialog--label">{t('LABEL_CHAT_TASK_NGAY_HOAN_THANH')}</div>
-          <div className="subTaskDetailDialog--content">
-            {time_complete}
-          </div>
-        </div> */}
+        {user_complete_name &&
+          <>
+            <div className="subTaskDetailDialog--row">
+              <div className="subTaskDetailDialog--label">{t('LABEL_CHAT_TASK_HOAN_THANH')}</div>
+              <div className="subTaskDetailDialog--content">
+                {user_complete_name &&
+                  <Avatar className="subTaskDetailDialog--avatarCompleted" src={user_complete_avatar} alt='avatar' />
+                }
+                {user_complete_name}
+              </div>
+            </div>
+            <div className="subTaskDetailDialog--row">
+              <div className="subTaskDetailDialog--label">{t('LABEL_CHAT_TASK_NGAY_HOAN_THANH')}</div>
+              <div className="subTaskDetailDialog--content">
+                {time_complete}
+              </div>
+            </div>
+          </>
+        }
       </div>
     </JobDetailModalWrap>
   );
