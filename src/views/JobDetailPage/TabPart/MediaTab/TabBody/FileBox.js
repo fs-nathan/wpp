@@ -6,6 +6,7 @@ import { actionDownloadFile } from 'actions/documents';
 import { openDocumentDetail } from 'actions/system/system';
 import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import MenuListItem from './MenuListItem';
 
@@ -32,29 +33,36 @@ const FileBox = (props) => {
   }
 
   return (
-    <List>
-      {file.files && file.files.map((item, idx) => {
-        return (
-          <ListItem className="fileBoxItem" key={idx} >
-            <img src={item.file_icon} alt='avatar' onClick={onClickFile(item, 0)} />
-            <div className="fileBoxItem--content" >
-              <div className="fileBoxItem--name" onClick={onClickFile(item, 0)}>{item.name}</div>
-              <div className="fileBoxItem--downloaded">
-                {[item.type, item.size].join(' - ').toUpperCase()}
-                <IconButton className="fileBoxItem--button"
-                  onClick={onClickDownload(item)}
-                  size='small'>
-                  <a href={item.url}>
-                    <Icon path={mdiDownload} size={1} />
-                  </a>
-                </IconButton>
-              </div>
-            </div>
-            <MenuListItem item={item} colorIcon={'#000'} />
-          </ListItem>
-        )
-      })}
-    </List>
+    <div className="fileBox">
+      <Scrollbars
+        className="fileBox--body"
+        renderView={props => <div {...props} className="fileBox--scroll" />}
+        autoHide autoHideTimeout={500} autoHideDuration={200}>
+        <List className="fileBox--list">
+          {file.files && file.files.map((item, idx) => {
+            return (
+              <ListItem className="fileBoxItem" key={idx} >
+                <img src={item.file_icon} alt='avatar' onClick={onClickFile(item, 0)} />
+                <div className="fileBoxItem--content" >
+                  <div className="fileBoxItem--name" onClick={onClickFile(item, 0)}>{item.name}</div>
+                  <div className="fileBoxItem--downloaded">
+                    {[item.type, item.size].join(' - ').toUpperCase()}
+                    <IconButton className="fileBoxItem--button"
+                      onClick={onClickDownload(item)}
+                      size='small'>
+                      <a href={item.url}>
+                        <Icon path={mdiDownload} size={1} />
+                      </a>
+                    </IconButton>
+                  </div>
+                </div>
+                <MenuListItem item={item} colorIcon={'#000'} />
+              </ListItem>
+            )
+          })}
+        </List>
+      </Scrollbars>
+    </div>
   );
 }
 

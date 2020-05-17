@@ -121,7 +121,7 @@ const CustomListItem = ({ isMe }) => {
                   >
                     <MenuItem onClick={() => handleShare(item)}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
                     <MenuItem onClick={() => handleViewChat(item)}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
-                    {/* <MenuItem onClick={handleDelete(item.id)}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem> */}
+                    {item.can_delete && <MenuItem onClick={handleDelete(item.id)}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>}
                   </Menu>
                 </div>
               )
