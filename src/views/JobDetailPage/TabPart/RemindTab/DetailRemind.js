@@ -12,6 +12,7 @@ import { openCreateRemind, openDetailRemind } from 'actions/chat/chat';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import React from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -37,6 +38,7 @@ function DetailRemind() {
 
   function openEdit() {
     dispatch(openCreateRemind(true, false, dataRemind))
+    dispatch(openDetailRemind(false))
   }
 
   const {
@@ -55,26 +57,27 @@ function DetailRemind() {
   const [day, month] = created_at.split('/');
 
   return (
-    <div>
-      <Dialog
-        className="detailRemind"
-        open={isOpenDetailRemind}
-        onClose={setCloseDetailRemind}
-      >
-        <DialogTitle disableTypography>
-          <Typography className="detailRemind--title" component="div">
-            <Avatar className="detailRemind--avatar" src={user_create_avatar} alt='avatar' />
-            <div className="detailRemind--user">
-              {user_create_name}
-              <br />
-              <div className="detailRemind--role">{user_create_position}</div>
-            </div>
-          </Typography>
-          <IconButton aria-label="close" className="detailRemind--closeButton" onClick={setCloseDetailRemind}>
-            <CloseIcon />
-          </IconButton>
-        </DialogTitle>
-        <DialogContent>
+    <Dialog
+      className="detailRemind"
+      open={isOpenDetailRemind}
+      onClose={setCloseDetailRemind}
+      maxWidth="md"
+    >
+      <DialogTitle disableTypography>
+        <Typography className="detailRemind--title" component="div">
+          <Avatar className="detailRemind--avatar" src={user_create_avatar} alt='avatar' />
+          <div className="detailRemind--user">
+            {user_create_name}
+            <br />
+            <div className="detailRemind--role">{user_create_position}</div>
+          </div>
+        </Typography>
+        <IconButton aria-label="close" className="detailRemind--closeButton" onClick={setCloseDetailRemind}>
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <Scrollbars>
           <DialogContentText className="detailRemind--content">
             {content}
           </DialogContentText>
@@ -102,15 +105,15 @@ function DetailRemind() {
               </ColorTypo>
             </div>
           </div>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            style={{ color: groupActiveColor }}
-            autoFocus
-            onClick={openEdit} >{t('LABEL_CHAT_TASK_CHINH_SUA')}</Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        </Scrollbars>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          style={{ color: groupActiveColor }}
+          autoFocus
+          onClick={openEdit} >{t('LABEL_CHAT_TASK_CHINH_SUA')}</Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 

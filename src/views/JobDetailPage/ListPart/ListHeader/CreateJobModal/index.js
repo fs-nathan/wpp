@@ -2,10 +2,12 @@ import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import TitleSectionModal from 'components/TitleSectionModal';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
 import React, { useEffect } from 'react';
@@ -58,7 +60,7 @@ const DEFAULT_DATA = {
   end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
-  group_task: DEFAULT_GROUP_TASK_VALUE,
+  // group_task: DEFAULT_GROUP_TASK_VALUE,
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN
 };
@@ -84,6 +86,7 @@ function CreateJobModal(props) {
     : get(props, 'projectId');
   const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
+  const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -144,13 +147,14 @@ function CreateJobModal(props) {
       setListGroupTask(listTask);
       // Set default group for input
       let item = listTask.find(
-        item => item.value === ''
+        item => item.value === taskDetails.group_task
       );
       if (item) {
         setGroupTaskValue(item);
+        handleChangeData('group_task', item.value)
       }
     }
-  }, [listGroupTaskData]);
+  }, [listGroupTaskData, taskDetails.group_task]);
 
   React.useEffect(() => {
     if (listSchedule) {
@@ -238,7 +242,9 @@ function CreateJobModal(props) {
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
         : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
-      setDataMember(DEFAULT_DATA);
+      // setDataMember(DEFAULT_DATA);
+      handleChangeData('name', EMPTY_STRING)
+      handleChangeData('description', EMPTY_STRING)
       // Close modal
       // handleClose();
     } else {
@@ -256,7 +262,10 @@ function CreateJobModal(props) {
       onConfirm={isEdit ? updateData : handlePressConfirm}
       canConfirm={validate(data)}
       maxWidth='sm'
-      className="createJob"
+      className={clsx("createJob", `createJob__edit${props.editMode}`, {
+        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),
+      })}
     >
       <React.Fragment>
         {
@@ -291,7 +300,7 @@ function CreateJobModal(props) {
               margin="normal"
               variant="outlined"
               multiline
-              rowsMax={4}
+              rowsMax={18}
               fullWidth
               value={data.description}
               onChange={e => handleChangeData('description', e.target.value)}
@@ -308,6 +317,10 @@ function CreateJobModal(props) {
               value={scheduleValue}
               onChange={({ value: scheduleId }) => handleChangeData('schedule', scheduleId)}
             />
+          </>
+        }
+        {!isEdit &&
+          <>
             <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
             {date_status !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -410,7 +423,7 @@ function CreateJobModal(props) {
           </>
         }
       </React.Fragment>
-    </JobDetailModalWrap>
+    </JobDetailModalWrap >
   );
 }
 

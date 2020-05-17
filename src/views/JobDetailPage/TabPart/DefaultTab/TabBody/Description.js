@@ -12,7 +12,7 @@ function Description({ value }) {
   }
   const isLong = isLongerContent(value);
   const contentCollapsed = getCollapseText(value);
-  // console.log('raw', raw)
+  // console.log('raw', getRichContent(isOpen ? value : contentCollapsed))
   return (
     <div className="Description">
       <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_MO_TA')}</ColorTypo>

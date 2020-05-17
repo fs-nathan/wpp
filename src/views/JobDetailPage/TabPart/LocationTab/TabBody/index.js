@@ -1,17 +1,14 @@
-import { useTranslation } from 'react-i18next';
+import { ButtonGroup, Collapse } from '@material-ui/core';
 import React from 'react';
-import styled from 'styled-components';
-import {
-  ButtonGroup,
-  Collapse,
-} from '@material-ui/core';
 import { Scrollbars } from 'react-custom-scrollbars';
-
-import ColorTypo from '../../../../../components/ColorTypo';
-import ColorButton from '../../../../../components/ColorButton';
-import LocationShareBox from './LocationShareBox';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import ColorButton from '../../../../../components/ColorButton';
+import ColorTypo from '../../../../../components/ColorTypo';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
+import LocationShareBox from './LocationShareBox';
+
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -54,11 +51,11 @@ function TabBody() {
             title={t('LABEL_CHAT_TASK_CHUA_CO_VI_TRI')}
           ></NoDataPlaceHolder> :
             <React.Fragment>
-              <Collapse in={value === 0} mountOnEnter unmountOnExit>
+              <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
                 <LocationShareBox />
               </Collapse>
-              <Collapse in={value === 1} mountOnEnter unmountOnExit>
-                {null}
+              <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
+                <LocationShareBox isMe />
               </Collapse>
             </React.Fragment>
         }

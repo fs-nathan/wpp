@@ -33,3 +33,37 @@
     background-color: #f2f5fa;
   }
 }
+
+.AddMemberModal {
+  .MuiDialogContent-root {
+    padding: 0;
+    min-height: 660px;
+  }
+}
+
+.table-scroll-add-member {
+  // overflow-y: scroll;
+  height: calc(100% - 160px);
+}
+
+// AddMemberModal - ListHeader
+.table-scroll {
+  // overflow-y: scroll;
+  height: calc(100% - 160px);
+  // scrollbar-width: thin;
+  // scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+  // &::-webkit-scrollbar {
+  //   width: 5px;
+  //   border-radius: 5px;
+  // }
+  // &::-webkit-scrollbar-thumb {
+  //   background-color: #fff;
+  //   border: none;
+  // }
+  // &:hover {
+  //   &::-webkit-scrollbar-thumb {
+  //     background-color: rgba(0, 0, 0, 0.2);
+  //     border-radius: 10px;
+  //   }
+  // }
+}

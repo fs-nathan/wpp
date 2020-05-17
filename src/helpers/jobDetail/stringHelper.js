@@ -90,6 +90,11 @@ export const replaceMultipleReg = (str = '', regex, replacer) => {
   return ret + str.slice(lastEnd);
 }
 
+export function normalizeUrl(match) {
+  const url = match.indexOf('http') !== -1 ? match : `http://${match}`
+  return url
+}
+
 export function replaceUrl(str) {
   const replacer = match => {
     const url = match.indexOf('http') !== -1 ? match : `http://${match}`
@@ -175,7 +180,7 @@ export function getRichContent(content = '', tags = [], color = 'inherit') {
     ret = ret.replace(reg, `<span class="TextMessage--tag" style="color: ${color};">@${name}</span>`);
   })
   // console.log(matches)
-  ret = ret.replace('\n', '<br/>');
+  ret = ret.replace(/\n/g, '<br/>');
   return replaceUrl(ret);
 }
 

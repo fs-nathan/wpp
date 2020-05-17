@@ -3,13 +3,13 @@ import Icon from '@mdi/react';
 import { updateComplete } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'classnames';
 import ColorTypo from 'components/ColorTypo';
-import differenceInDays from 'date-fns/differenceInDays';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
 import clamp from 'lodash/clamp';
 import React, { useState } from 'react';
 import ReactApexChart from "react-apexcharts";
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
 import EditProgressItem from './EditProgressItem';
@@ -29,6 +29,7 @@ function parseDate(date = '') {
 }
 
 function TabBody() {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
   const taskId = useSelector(taskIdSelector);
@@ -122,15 +123,16 @@ function TabBody() {
     end_date,
     complete,
     complete_with_time,
+    duration_value,
   } = detailTask;
   const isHaveDate = (start_date && end_date);
-  const totalDay = isHaveDate ? differenceInDays(parseDate(end_date), parseDate(start_date)) : 0;
+  // const totalDay = isHaveDate ? differenceInDays(parseDate(end_date), parseDate(start_date)) : 0;
   const completePercent = clamp(complete_with_time, 0, 100);
   return (
     <Scrollbars className="progressTabBody" autoHide autoHideTimeout={500} autoHideDuration={200}
       renderView={props => <div {...props} className="progressTabBody--container" />}>
-      <ColorTypo className="progressTabBody--title">{"Tiến độ thực tế"}</ColorTypo>
-      <ColorTypo className="progressTabBody--subTitle">{"Kéo, thả tiến độ để cập nhật"}</ColorTypo>
+      <ColorTypo className="progressTabBody--title">{t('LABEL_CHAT_TASK_TIEN_DO_THUC_TE')}</ColorTypo>
+      <ColorTypo className="progressTabBody--subTitle">{t('LABEL_CHAT_TASK_KEO_THA_TIEN_DO_DE_CAP_NHAT')}</ColorTypo>
       <ProgressSlider
         value={complete}
         onChange={onChangeCommitted}
@@ -142,20 +144,20 @@ function TabBody() {
         <>
           <div className="progressTabBody--timeBox">
             <div className="progressTabBody--start-date-box">
-              <div>{"Bắt đầu"}</div>
+              <div>{t('LABEL_CHAT_TASK_BAT_DAU_LABEL')}</div>
               <div>{`${start_time} ${start_date}`}</div>
             </div>
             <div className="progressTabBody--totalDay">
-              <div>{"Tiến độ"}</div>
-              <div>{`${totalDay} ngày`}</div>
+              <div>{t('LABEL_CHAT_TASK_TIEN_DO')}</div>
+              <div>{`${duration_value} ngày`}</div>
             </div>
             <div className="progressTabBody--end-date-box">
-              <div>{"Kết thúc"}</div>
+              <div>{t('LABEL_CHAT_TASK_KET_THUC_LABEL')}</div>
               <div>{`${end_time} ${end_date}`}</div>
             </div>
           </div>
-          <ColorTypo className="progressTabBody--title">{"Tiến độ kế hoạch"}</ColorTypo>
-          <ColorTypo className="progressTabBody--subTitle">{"Tự động xác định đến thời điểm hiện tại"}</ColorTypo>
+          <ColorTypo className="progressTabBody--title">{t('LABEL_CHAT_TASK_TIEN_DO_KE_HOACH')}</ColorTypo>
+          <ColorTypo className="progressTabBody--subTitle">{t('LABEL_CHAT_TASK_TU_DONG_XAC_DINH')}</ColorTypo>
           <div className="progressTimeExpect">
             <div className="progressTimeExpect--progressExpect"
               style={{ width: `${completePercent}%` }}>
@@ -169,15 +171,15 @@ function TabBody() {
           </div>
         </>
       }
-      <ColorTypo className="progressTabBody--title">{"Biểu đồ cập nhật tiến độ"}</ColorTypo>
-      <ColorTypo className="progressTabBody--subTitle">{"Biểu đồ thể hiện lịch sử hoàn thành công việc"}</ColorTypo>
+      <ColorTypo className="progressTabBody--title">{t('LABEL_CHAT_TASK_BIEU_DO_CAP_NHAT_TIEN_DO')}</ColorTypo>
+      <ColorTypo className="progressTabBody--subTitle">{t('LABEL_CHAT_TASK_BIEU_DO_THE_HIEN')}</ColorTypo>
       <ReactApexChart
         options={chartData.options}
         series={chartData.series} type="bar"
         height={20 * chartData.series[0].data.length + 100} />
       <ColorTypo className="progressTabBody--title"
         onClick={toggleDetail}
-      >{"Điều chỉnh tiến độ"}
+      >{t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO')}
         <Icon
           path={mdiMenuDown}
           color="rgba(0, 0, 0, 0.54)"
@@ -188,7 +190,7 @@ function TabBody() {
       <ColorTypo className="progressTabBody--subTitle">{`${trackings.length} lần điều chỉnh`}</ColorTypo>
       {showDetail && trackings.map((track, i) => (<EditProgressItem
         key={i}
-        fixedNumber={i + 1}
+        fixedNumber={trackings.length - i}
         fixStart={track.new_start}
         fixEnd={track.new_end}
         createdAt={track.time_create}

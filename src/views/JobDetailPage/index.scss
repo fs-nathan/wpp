@@ -394,47 +394,6 @@
   }
 }
 
-// AddMemberModal - ListHeader
-.table-scroll {
-  overflow-y: scroll;
-  height: 542px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
-  &::-webkit-scrollbar {
-    width: 5px;
-    border-radius: 5px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #fff;
-    border: none;
-  }
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-    }
-  }
-}
-.table-scroll-add-member {
-  overflow-y: scroll;
-  height: 470px;
-  scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
-  &::-webkit-scrollbar {
-    width: 5px;
-    border-radius: 5px;
-  }
-  &::-webkit-scrollbar-thumb {
-    background-color: #fff;
-    border: none;
-  }
-  &:hover {
-    &::-webkit-scrollbar-thumb {
-      background-color: rgba(0, 0, 0, 0.2);
-      border-radius: 10px;
-    }
-  }
-}
 // RoleMemberModal - ListHeader
 .handle-button {
   display: flex;
@@ -495,47 +454,6 @@
 }
 .simple-progress-bar-wrapper {
   width: 150px;
-}
-.styled-context-status {
-  & > *:first-child {
-    display: flex;
-    align-items: center;
-    & > p:nth-child(2) {
-      color: #000;
-      margin-left: 8px;
-      margin-right: 5px;
-    }
-    & > p:nth-child(3) {
-      color: #0ce8b5;
-      font-size: 13px;
-    }
-  }
-  & > *:last-child {
-    color: #969696;
-    font-weight: 300;
-    font-size: 12px;
-    line-height: 1.8;
-    margin: 3px 5px 0 0;
-  }
-}
-
-// TabBody - Location Tab
-.container-location-tabbody {
-  padding: 10px 20px 50px 20px;
-  .styled-list-item-location {
-    width: 100%;
-    .styled-common-location {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      .styled-menu-location {
-        opacity: 0;
-      }
-    }
-    &:hover .styled-menu-location {
-      opacity: 1;
-    }
-  }
 }
 
 // TabHeader - MemberTab
@@ -713,27 +631,6 @@
       margin-right: 10px;
     }
   }
-}
-
-//RemindModal - RemindTab
-.remind-title {
-  display: flex;
-  margin: 15px 0 0 0;
-}
-.remind-body {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  .type-remind {
-    margin: 0px;
-    width: 160px;
-    & > div > div > div {
-      padding: 0;
-    }
-  }
-}
-.wrapper-progress {
-  display: flex;
 }
 
 //TabBody - RemindTab

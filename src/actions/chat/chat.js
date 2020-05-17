@@ -62,12 +62,13 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId, last_id, isMore) {
+export function loadChat(taskId, last_id, isMore, file_id) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
     last_id,
     isMore,
+    file_id,
   };
 }
 
@@ -644,5 +645,12 @@ export function getDataPinOnTaskChatFail(error) {
   return {
     type: actionTypes.GET_DATA_PIN_ON_TASK_CHAT_FAIL,
     error
+  };
+}
+
+export function openShareFileModal(isOpenShareFileModal, item, ) {
+  return {
+    type: actionTypes.OPEN_SHARE_FILE_MODAL,
+    isOpenShareFileModal, item
   };
 }

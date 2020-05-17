@@ -5,21 +5,22 @@ import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openDetailMember } from 'actions/chat/chat';
 import { actionDownloadFile } from 'actions/documents';
+import ColorTypo from 'components/ColorTypo';
 import DialogWrap from 'components/DialogWrap';
+import colorPal from 'helpers/colorPalette';
 import get from 'lodash/get';
 import React from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ColorTypo from '../../../../components/ColorTypo';
-import colorPal from '../../../../helpers/colorPalette';
 import './styles.scss';
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
-  min-height: 660px;
+  // min-height: 660px;
   border-right: 1px solid #cfcfcf;
-  padding: 5px 30px 0 10px;
+  padding: 15px 24px 0;
 `
 const StyledStaff = styled(Typography)`
   width: 490px
@@ -45,7 +46,7 @@ const TextInput = styled(TextField)`
 const TextItem = styled(Typography)`
   text-align: center;
   font-size: 16px;
-  padding: 5px 0 30px 0;
+  padding: 15px 0;
   border-bottom: 1px solid #cfcfcf;
   font-weight: 500;
   text-transform: uppercase;
@@ -178,51 +179,53 @@ const MemberModal = () => {
       className="MemberModal"
     >
       <DialogContent dividers className="wrapper-member-modal">
-        <StyledEmploy component={'div'}>
-          <div className="member-general-info">
-            <StyledAvatar src={avatar} alt='avatar' />
-            <div className="general-info">
-              <NameStaff bold uppercase >{name}</NameStaff>
-              <ColorTypo color='gray'  >{t('LABEL_CHAT_TASK_NGAY_THAM_GIA', { date_join })}</ColorTypo>
-            </div>
-          </div>
-          <TextInput
-            value={room_name}
-            InputProps={{
-              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_PHONG_BAN')}</AdornmentInput>,
-            }}
-            fullWidth
-            disabled
-          />
-          <TextInput
-            value={position_name}
-            InputProps={{
-              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUC_DANH')}</AdornmentInput>,
-            }}
-            fullWidth
-            disabled
-          />
-          <TextInput
-            value={level_name}
-            InputProps={{
-              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_TRINH_DO')}</AdornmentInput>,
-            }}
-            fullWidth
-            disabled
-          />
-          <TextInput
-            value={major_name}
-            InputProps={{
-              startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUYEN_NGHANH')}</AdornmentInput>,
-            }}
-            fullWidth
-            disabled
-          />
-          <TitleDescription>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</TitleDescription>
-          <ContentDescription>
-            {description}
-          </ContentDescription>
-          {/* <input
+        <Scrollbars>
+          <div className="MemberModal--content">
+            <StyledEmploy component={'div'}>
+              <div className="member-general-info">
+                <StyledAvatar src={avatar} alt='avatar' />
+                <div className="general-info">
+                  <NameStaff bold uppercase >{name}</NameStaff>
+                  <ColorTypo color='gray'  >{t('LABEL_CHAT_TASK_NGAY_THAM_GIA', { date_join })}</ColorTypo>
+                </div>
+              </div>
+              <TextInput
+                value={room_name}
+                InputProps={{
+                  startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_PHONG_BAN')}</AdornmentInput>,
+                }}
+                fullWidth
+                disabled
+              />
+              <TextInput
+                value={position_name}
+                InputProps={{
+                  startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUC_DANH')}</AdornmentInput>,
+                }}
+                fullWidth
+                disabled
+              />
+              <TextInput
+                value={level_name}
+                InputProps={{
+                  startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_TRINH_DO')}</AdornmentInput>,
+                }}
+                fullWidth
+                disabled
+              />
+              <TextInput
+                value={major_name}
+                InputProps={{
+                  startAdornment: <AdornmentInput position="start" >{t('LABEL_CHAT_TASK_CHUYEN_NGHANH')}</AdornmentInput>,
+                }}
+                fullWidth
+                disabled
+              />
+              <TitleDescription>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</TitleDescription>
+              <ContentDescription>
+                {description}
+              </ContentDescription>
+              {/* <input
               accept="image/*"
               className={classes.input}
               id="contained-button-file"
@@ -233,49 +236,51 @@ const MemberModal = () => {
               <Button variant="contained" component="span" fullWidth className={classes.button}>
                 <img className="member-image" alt="vtask" src={imgDoc} />{t('LABEL_CHAT_TASK_XEM_FILE_HO_SO')}</Button>
             </label> */}
-          <TitleDescription>{t('LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM')}</TitleDescription>
-          {documents.map(({ file_icon, name, type, size, url, id }) => (
-            <div className="MemberModal--file" key={id}>
-              <img className="MemberModal--fileImg" src={file_icon} alt="file_icon"></img>
-              <div className="MemberModal--fileName">{name}
-                <div className="MemberModal--fileType">{`${type} - ${size}`}</div>
-                <div className="MemberModal--fileDownloadButton"
-                  onClick={onClickDownload({ url, name, id })}>
-                  <Icon path={mdiDownload} size="20px" color="#000"></Icon>
-                </div>
-              </div>
-            </div>))}
-        </StyledEmploy>
+              <TitleDescription>{t('LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM')}</TitleDescription>
+              {documents.map(({ file_icon, name, type, size, url, id }) => (
+                <div className="MemberModal--file" key={id}>
+                  <img className="MemberModal--fileImg" src={file_icon} alt="file_icon"></img>
+                  <div className="MemberModal--fileName">{name}
+                    <div className="MemberModal--fileType">{`${type} - ${size}`}</div>
+                    <div className="MemberModal--fileDownloadButton"
+                      onClick={onClickDownload({ url, name, id })}>
+                      <Icon path={mdiDownload} size="20px" color="#000"></Icon>
+                    </div>
+                  </div>
+                </div>))}
+            </StyledEmploy>
 
-        <StyledStaff component={'div'}>
-          <TextItem >{t('LABEL_CHAT_TASK_THONG_TIN_CA_NHAN')}</TextItem>
-          <WrapperMember component="div" >
-            <MemberDetail component='div'>
-              <TitleText >{t('LABEL_CHAT_TASK_HO_VA_TEN_DAY_DU')}</TitleText>
-              <ContentDescription>{name}</ContentDescription>
-            </MemberDetail>
-            <MemberDetail component='div'>
-              <TitleText >{t('LABEL_CHAT_TASK_NGAY_SINH')}</TitleText>
-              <ContentDescription>{birthday}</ContentDescription>
-            </MemberDetail>
-            <MemberDetail component='div'>
-              <TitleText >{t('LABEL_CHAT_TASK_GIOI_TINH')}</TitleText>
-              <ContentDescription>{gender_name}</ContentDescription>
-            </MemberDetail>
-            <MemberDetail component='div'>
-              <TitleText >{t('LABEL_CHAT_TASK_EMAIL')}</TitleText>
-              <ContentDescription>{email}</ContentDescription>
-            </MemberDetail>
-            <MemberDetail component='div'>
-              <TitleText >{t('LABEL_CHAT_TASK_DIEN_THOAI')}</TitleText>
-              <ContentDescription>{phone}</ContentDescription>
-            </MemberDetail>
-            <MemberDetail component='div'>
-              <TitleText >{t('LABEL_CHAT_TASK_DIA_CHI')}</TitleText>
-              <ContentDescription>{address}</ContentDescription>
-            </MemberDetail>
-          </WrapperMember>
-        </StyledStaff>
+            <StyledStaff component={'div'}>
+              <TextItem >{t('LABEL_CHAT_TASK_THONG_TIN_CA_NHAN')}</TextItem>
+              <WrapperMember component="div" >
+                <MemberDetail component='div'>
+                  <TitleText >{t('LABEL_CHAT_TASK_HO_VA_TEN_DAY_DU')}</TitleText>
+                  <ContentDescription>{name}</ContentDescription>
+                </MemberDetail>
+                <MemberDetail component='div'>
+                  <TitleText >{t('LABEL_CHAT_TASK_NGAY_SINH')}</TitleText>
+                  <ContentDescription>{birthday}</ContentDescription>
+                </MemberDetail>
+                <MemberDetail component='div'>
+                  <TitleText >{t('LABEL_CHAT_TASK_GIOI_TINH')}</TitleText>
+                  <ContentDescription>{gender_name}</ContentDescription>
+                </MemberDetail>
+                <MemberDetail component='div'>
+                  <TitleText >{t('LABEL_CHAT_TASK_EMAIL')}</TitleText>
+                  <ContentDescription>{email}</ContentDescription>
+                </MemberDetail>
+                <MemberDetail component='div'>
+                  <TitleText >{t('LABEL_CHAT_TASK_DIEN_THOAI')}</TitleText>
+                  <ContentDescription>{phone}</ContentDescription>
+                </MemberDetail>
+                <MemberDetail component='div'>
+                  <TitleText >{t('LABEL_CHAT_TASK_DIA_CHI')}</TitleText>
+                  <ContentDescription>{address}</ContentDescription>
+                </MemberDetail>
+              </WrapperMember>
+            </StyledStaff>
+          </div>
+        </Scrollbars>
       </DialogContent>
     </DialogWrap>
   )

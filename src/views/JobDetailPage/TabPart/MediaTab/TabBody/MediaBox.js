@@ -1,15 +1,23 @@
 import { GridList, GridListTile, ListSubheader } from '@material-ui/core';
+import { showImagesList } from 'actions/chat/chat';
 import React from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MenuListItem from './MenuListItem';
 import './styles.scss';
 
 const MediaBox = (props) => {
-  const image = useSelector(state => state.taskDetail.media.image);
+  const dispatch = useDispatch();
+  const imageData = useSelector(state => state.taskDetail.media.image);
+
+  function onClickImage(key, idx) {
+    dispatch(showImagesList(true, imageData.images[key].images, idx));
+  }
+
   return (
     <GridList className="mediaBox" cellHeight={60} cols={5} style={{ margin: 0 }}>
-      {image.images && image.images.map((image, key) => {
+      {imageData.images && imageData.images.map((image, key) => {
         return (
+          image.images.length > 0 &&
           <div className="media-image" key={key}>
             <GridListTile className="mediaBox--createdAt" cols={5}>
               <ListSubheader className="mediaBox--subHeader" component='div'>{image.date_create}</ListSubheader>
@@ -17,9 +25,11 @@ const MediaBox = (props) => {
             <div className="wrap-image">
               {image.images.map((item, idx) => {
                 return (
-                  <GridListTile className="mediaBox--item" key={idx}>
+                  <GridListTile className="mediaBox--item"
+                    onClick={() => onClickImage(key, idx)}
+                    key={idx}>
                     <img src={item.url} alt='avatar' className="image-media-box" />
-                    <MenuListItem />
+                    <MenuListItem item={item} />
                   </GridListTile>
                 )
               })}

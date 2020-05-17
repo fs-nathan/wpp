@@ -1,14 +1,14 @@
-import { useTranslation } from 'react-i18next';
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openCreateRemind } from 'actions/chat/chat';
 import { deleteRemind, pinRemind, unPinRemind } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
+import AlertModal from 'components/AlertModal';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ModalDeleteConfirm from '../../ModalDeleteConfirm';
 
 
 const ButtonIcon = styled(IconButton)`
@@ -78,16 +78,16 @@ const MemberMenuLists = ({ item, className, idx }) => {
         }}
       >
         <MenuItem onClick={onClickPin}>
-          {item.is_ghim ? 'Bỏ ghim' : 'Ghim nhắc hẹn'}
+          {item.is_ghim ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_NHAC_HEN')}
         </MenuItem>
         <MenuItem onClick={openEdit}>{t('LABEL_CHAT_TASK_SUA_NHAC_HEN')}</MenuItem>
         <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA_NHAC_HEN')}</MenuItem>
       </Menu>
-      <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-        handleOpenModalDelete={handleOpenModalDelete}
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
       />
     </div>
   )
