@@ -66,6 +66,15 @@ function ExpandPopover({ offer_id, view }) {
                     >
                         Xem đề xuất
                     </Typography>
+                    <Typography
+                        className={classNames(classes.typography, "Tasktable_option")}
+                        onClick={() => {
+                            // Hide popup menu
+                            setAnchorEl(null);
+                        }}
+                    >
+                        Xóa
+                    </Typography>
                 </div>
             </Popover>
         </div >
