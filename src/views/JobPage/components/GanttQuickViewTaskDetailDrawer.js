@@ -96,7 +96,6 @@ const QuickViewTaskDetailDrawer = ({
   ...props
 }) => {
   const open = !!taskId;
-  console.log(showHeader)
   return (
     <Drawer
       className={classnames("comp_JobPageLayout__drawer", className)}
@@ -104,7 +103,11 @@ const QuickViewTaskDetailDrawer = ({
       anchor="right"
       open={open}
       classes={{
-        paper: `comp_JobPageLayout__drawerPaper ${!showHeader ? "gantt__comp_JobPageLayout__drawerPaper__showHeader": "gantt__comp_JobPageLayout__drawerPaper"}`,
+        paper: `comp_JobPageLayout__drawerPaper ${
+          !showHeader
+            ? "gantt__comp_JobPageLayout__drawerPaper__showHeader"
+            : "gantt__comp_JobPageLayout__drawerPaper"
+        }`,
       }}
       onClose={onClose}
       {...props}

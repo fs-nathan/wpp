@@ -80,7 +80,7 @@ const MonthHeader = ({
           </td>
         );
       }
-      tempTable.push(<tr>{children}</tr>);
+      tempTable.push(<tr style={{ height: 37 }}>{children}</tr>);
     }
     return tempTable;
   };

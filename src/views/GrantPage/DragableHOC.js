@@ -159,7 +159,6 @@ function GanttChart({
           left: showFullChart ? minLeft : defaultLeft,
           ...b,
           display: showResizeIcon ? "block" : "none",
-          height: heightChart,
         }}
       >
         <Icon path={mdiDragVerticalVariant} size={1} />
@@ -201,13 +200,11 @@ function GanttChart({
         ></div>
         <div
           ref={scrollRef}
-          style={{
-            display: "flex",
-            height: heightChart,
-            zIndex: 2,
-            overflow: "scroll",
-            width: "100%",
-          }}
+          className={
+            visibleGantt.fromNowLayer
+              ? `gantt-chart__container scroll-gantt`
+              : "gantt-chart__container"
+          }
           onScroll={(e) => {
             setLeftLayerFromNow(e.target.scrollLeft);
             if (Math.floor(e.target.scrollLeft / 48) !== scrollWidth) {

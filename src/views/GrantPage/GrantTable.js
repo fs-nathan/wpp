@@ -23,12 +23,12 @@ import { withRouter } from "react-router-dom";
 import {
   changeProjectInfo,
   changeRowHover,
-  sortTask,
   changeScheduleDetailGantt,
   changeTaskComplete,
   changeTaskduration,
   changeTimelineColor,
   changeVisible,
+  sortTask,
 } from "../../actions/gantt";
 import {
   changeDetailSubtaskDrawer,
@@ -586,13 +586,15 @@ class DragSortingTable extends React.Component {
       key: "TOTAL_DURATION",
     });
     dataSource.tasks.forEach((task, index) => {
+      console.log(task);
       const { name, time, duration_actual } = task;
       data.push({
         name,
-        start_label: time.start_label,
+        start_label: time && time.start_label,
         start_time: getFormatStartStringFromObject(time),
         end_time: getFormatEndStringFromObject(time),
-        end_label: time.end_label,
+        start_label: time && time.start_label,
+        end_label: time && time.end_label,
         duration_actual: duration_actual.value,
         complete: 0,
         isGroupTask: true,
@@ -752,11 +754,14 @@ class DragSortingTable extends React.Component {
   components = {
     body: {
       row: (props) => {
-      const {index} = props;
-      let canDrag
-      if(index)
-       canDrag = !this.state.data[index].isGroupTask && !this.state.data[index].isTotalDuration
-      return <DragableBodyRow canDrag={canDrag} {...props}/>},
+        const { index } = props;
+        let canDrag;
+        if (index)
+          canDrag =
+            !this.state.data[index].isGroupTask &&
+            !this.state.data[index].isTotalDuration;
+        return <DragableBodyRow canDrag={canDrag} {...props} />;
+      },
     },
     header: {
       cell: (props) => (
@@ -845,17 +850,29 @@ class DragSortingTable extends React.Component {
   moveRow = (dragIndex, hoverIndex) => {
     const { data } = this.state;
     const dragRow = data[dragIndex];
-    const indexGroupTaskList  = []
+    const indexGroupTaskList = [];
+    let indexSort = 0;
+    if (data[dragIndex].isGroupTask || data[dragIndex].isTotalDuration) return;
     data.forEach((item, index) => {
-      if(item.isGroupTask)
-        indexGroupTaskList.push(index)
-    })
-    const groupTaskIndex = indexGroupTaskList.filter(item => item <=hoverIndex)[0]
-    console.log(groupTaskIndex, indexGroupTaskList)
-    // const taskId = data[dragIndex].id
-    // const groupId = data[groupTaskIndex].id
-    // const {projectId} = this.props.params
-    // sortTask(taskId, groupId, projectId, hoverIndex)
+      if (item.isGroupTask) indexGroupTaskList.push(index);
+    });
+    console.log(indexGroupTaskList);
+    indexGroupTaskList.forEach((index) => {
+      if (hoverIndex >= index) {
+        indexSort = hoverIndex - index;
+      }
+    });
+    console.log(indexSort);
+    indexSort--;
+    indexSort = indexSort < 0 ? 0 : indexSort;
+    const groupTaskIndex = indexGroupTaskList.filter(
+      (item) => item <= hoverIndex
+    );
+    const taskId = data[dragIndex].id;
+    const groupId = data[groupTaskIndex[groupTaskIndex.length - 1]].id;
+    const { projectId } = this.props.match.params;
+    console.log(indexSort);
+    this.handleSortTask(taskId, groupId, projectId, indexSort);
     this.setState(
       update(this.state, {
         data: {
@@ -867,6 +884,10 @@ class DragSortingTable extends React.Component {
       })
     );
   };
+  handleSortTask = async (task_id, group_task, project_id, sort_index) => {
+    await sortTask(task_id, group_task, project_id, sort_index);
+    this.fetchListTask(project_id, true, this.props.girdType);
+  };
   handleChangeTaskduration = async (data) => {
     try {
       const { projectId } = this.props.match.params;
@@ -877,7 +898,7 @@ class DragSortingTable extends React.Component {
     }
   };
   setDataSource = (index, start, end) => {
-    console.log(index)
+    console.log(index);
     const { data, startTimeProject, endTimeProject } = this.state;
     const { girdInstance } = this.props;
     const { unit, formatString, addUnit } = girdInstance;
@@ -1033,7 +1054,11 @@ class DragSortingTable extends React.Component {
           titleProject={this.state.titleProject}
           scheduleIdDefault={this.state.scheduleIdDefault}
         />
-        <div id="printContent" style={{ display: "flex", width: widthPdf }}>
+        <div
+          id="printContent"
+          className="gantt__container"
+          style={{ width: widthPdf }}
+        >
           <ConfigGanttDrawer height={this.state.height} />
           <SubTaskDrawer height={this.state.height} />
           <ExportPDFDrawer height={this.state.height} />
@@ -1047,13 +1072,13 @@ class DragSortingTable extends React.Component {
             taskId={this.state.quickViewId}
           />
           <div
-            style={{
-              height: this.state.height,
-            }}
             ref={this.tableRef}
+            style={{
+              display: "flex",
+            }}
           >
             {this.state.showProject && (
-              <div className="">
+              <div className="gantt__select-project">
                 <ListProject
                   show={this.state.showProject}
                   setShow={this.handleShowProject}
