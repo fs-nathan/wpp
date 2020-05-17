@@ -5,7 +5,7 @@ import {  useDrag, useDrop } from 'react-dnd';
 
 const type = 'DragbleBodyRow';
 
-const DragableBodyRow = ({ index, moveRow, className, style, ...restProps }) => {
+const DragableBodyRow = ({ index,canDrag, moveRow, className, style, ...restProps }) => {
     const ref = React.useRef();
     const [{ isOver, dropClassName }, drop] = useDrop({
       accept: type,
@@ -29,6 +29,7 @@ const DragableBodyRow = ({ index, moveRow, className, style, ...restProps }) => 
         isDragging: monitor.isDragging(),
       }),
     });
+    if(canDrag)
     drop(drag(ref));
     return (
       <tr

@@ -23,6 +23,7 @@ import { withRouter } from "react-router-dom";
 import {
   changeProjectInfo,
   changeRowHover,
+  sortTask,
   changeScheduleDetailGantt,
   changeTaskComplete,
   changeTaskduration,
@@ -750,7 +751,12 @@ class DragSortingTable extends React.Component {
   };
   components = {
     body: {
-      row: DragableBodyRow,
+      row: (props) => {
+      const {index} = props;
+      let canDrag
+      if(index)
+       canDrag = !this.state.data[index].isGroupTask && !this.state.data[index].isTotalDuration
+      return <DragableBodyRow canDrag={canDrag} {...props}/>},
     },
     header: {
       cell: (props) => (
@@ -839,6 +845,17 @@ class DragSortingTable extends React.Component {
   moveRow = (dragIndex, hoverIndex) => {
     const { data } = this.state;
     const dragRow = data[dragIndex];
+    const indexGroupTaskList  = []
+    data.forEach((item, index) => {
+      if(item.isGroupTask)
+        indexGroupTaskList.push(index)
+    })
+    const groupTaskIndex = indexGroupTaskList.filter(item => item <=hoverIndex)[0]
+    console.log(groupTaskIndex, indexGroupTaskList)
+    // const taskId = data[dragIndex].id
+    // const groupId = data[groupTaskIndex].id
+    // const {projectId} = this.props.params
+    // sortTask(taskId, groupId, projectId, hoverIndex)
     this.setState(
       update(this.state, {
         data: {
@@ -860,6 +877,7 @@ class DragSortingTable extends React.Component {
     }
   };
   setDataSource = (index, start, end) => {
+    console.log(index)
     const { data, startTimeProject, endTimeProject } = this.state;
     const { girdInstance } = this.props;
     const { unit, formatString, addUnit } = girdInstance;

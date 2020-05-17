@@ -216,3 +216,21 @@ export const changeTaskComplete = async ({ task_id, complete }) => {
     console.log(err);
   }
 };
+
+export const sortTask = async (task_id, group_task,project_id, sort_index) => {
+  try {
+    const config = {
+      url: "task/sort",
+      method: "post",
+      data: {
+        task_id,
+        group_task,
+        project_id,
+        sort_index
+      },
+    };
+    const result = await apiService(config);
+  } catch (err) {
+    console.log(err);
+  }
+}
