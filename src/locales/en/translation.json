@@ -912,9 +912,11 @@
   "ADD_DOCUMENT_OFFER" : "Add document",
   "PERSON_MONITOR" : "Person monitor",
   "PERSON_HANDLE" : "Person handle",
-  "DETAIL_OFFER": {
-    "TITLE": "Offer Detail",
-    "DELETE_OFFER": "Delete offer",
-    "ESCAPE": "Close"
+  "OFFER_PAGE": {
+    "DETAIL_OFFER": {
+      "TITLE": "Offer Detail",
+      "DELETE_OFFER": "Delete offer",
+      "ESCAPE": "Close"
+    }
   }
 }

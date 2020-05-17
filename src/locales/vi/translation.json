@@ -1234,9 +1234,11 @@
   "ADD_DOCUMENT_OFFER": "Thêm tài liệu",
   "PERSON_HANDLE": "Người phê duyệt",
   "PERSON_MONITOR": "Người giám sát",
-  "DETAIL_OFFER": {
-    "TITLE": "Chi tiết đề xuất",
-    "DELETE_OFFER": "Xóa đề xuất",
-    "ESCAPE": "Thoát"
+  "OFFER_PAGE": {
+    "DETAIL_OFFER": {
+      "TITLE": "Chi tiết đề xuất",
+      "DELETE_OFFER": "Xóa đề xuất",
+      "ESCAPE": "Thoát"
+    }
   }
 }
