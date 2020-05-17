@@ -13,8 +13,11 @@ import ListProjectHeader from './ListProjectHeader';
 import ProjectItem from './ProjectItem';
 import './styles.scss';
 
-
-function ListProject(props) {
+function ListProject({
+  show,
+  setShow,
+  onClickProject,
+}) {
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
   // const groups = useSelector(groupsSelector);
 
@@ -27,10 +30,10 @@ function ListProject(props) {
     <div
       className={clsx('listProject',
         'lp-container ',
-        (props.show ? 'lp-container-block' : 'lp-container-none'))
+        (show ? 'lp-container-block' : 'lp-container-none'))
       }
     >
-      <ListProjectHeader className="listProject--header" {...props} />
+      <ListProjectHeader className="listProject--header" setShow={setShow} />
       <Scrollbars className="listProject--body"
         renderView={props => <div {...props} className="listProject--container" />}
         autoHide autoHideTimeout={500} autoHideDuration={200}>
@@ -50,7 +53,7 @@ function ListProject(props) {
                       project={project}
                       key={projectIdx}
                       title={project.name}
-                      {...props}
+                      onClickProject={onClickProject}
                     />
                   ))}
                 </MuiExpansionPanelDetails>

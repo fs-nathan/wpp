@@ -123,7 +123,6 @@
 
 .mediaMenuItem {
   display: none;
-  width: 100%;
   background-color: #1119;
   border-radius: 0;
   border-top-left-radius: 2px;
@@ -133,12 +132,18 @@
   top: 0;
   right: 0;
   .mediaBox--item:hover & {
-    display: inline;
+    display: block;
+    width: 100%;
   }
   .fileBoxItem:hover & {
-    display: inline;
+    display: block;
     background-color: unset;
     top: 16px;
+  }
+  .linkBoxItem:hover & {
+    display: block;
+    background-color: unset;
+    top: 9px;
   }
 }
 
@@ -206,13 +211,19 @@
   }
 }
 
-.linkBox--button {
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
+.linkBox {
+  position: relative;
+  &--button {
     &:hover {
-      fill: #03b000;
+      background: none;
     }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &Item {
+    position: relative;
   }
 }
