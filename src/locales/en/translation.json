@@ -917,6 +917,14 @@
       "TITLE": "Offer Detail",
       "DELETE_OFFER": "Delete offer",
       "ESCAPE": "Close"
+    },
+    "OFFER_TABLE": {
+      "ITEM": {
+        "POPOVER": {
+          "DETAIL": "Detail",
+          "DELETE": "Delete"
+        }
+      }
     }
   }
 }

@@ -1239,6 +1239,14 @@
       "TITLE": "Chi tiết đề xuất",
       "DELETE_OFFER": "Xóa đề xuất",
       "ESCAPE": "Thoát"
+    },
+    "OFFER_TABLE": {
+      "ITEM": {
+        "POPOVER": {
+          "DETAIL": "Chi tiết",
+          "DELETE": "Xóa"
+        }
+      }
     }
   }
 }
