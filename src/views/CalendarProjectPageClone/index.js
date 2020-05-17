@@ -1,29 +1,50 @@
 import { listCalendarPermission } from "actions/calendar/permission/listPermission";
 import { listProjectSchedule } from "actions/calendar/projectCalendar/listSchedule";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
-import { CREATE_PROJECT_GROUP_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE } from "constants/events";
-import React from 'react';
-import { connect } from 'react-redux';
+import {
+  CREATE_PROJECT_GROUP_SCHEDULE,
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_PROJECT_GROUP_SCHEDULE,
+} from "constants/events";
+import React from "react";
+import { connect } from "react-redux";
 import { useMountedState } from "react-use";
 import CalendarProjectLeftPart from "./LeftPart";
 import CalendarProjectRightPart from "./RightPart";
 import { projectGroupScheduleSelector } from "./selectors";
 
 function CalendarProjectPage({
-  doListProjectSchedule, groupSchedules,
-  doListPermission, permissions
+  doListProjectSchedule,
+  groupSchedules,
+  setopenModal,
+  doListPermission,
+  permissions,
+  scheduleIdDefault,
 }) {
   React.useEffect(() => {
     doListProjectSchedule(false);
     const reloadListProjectSchedule = () => {
       doListProjectSchedule(false);
-    }
-    CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-    CustomEventListener(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
+    };
+    CustomEventListener(
+      DELETE_PROJECT_GROUP_SCHEDULE,
+      reloadListProjectSchedule
+    );
+    CustomEventListener(
+      CREATE_PROJECT_GROUP_SCHEDULE,
+      reloadListProjectSchedule
+    );
     return () => {
-      CustomEventDispose(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-      CustomEventDispose(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-    }
+      CustomEventDispose(
+        CREATE_PROJECT_GROUP_SCHEDULE,
+        reloadListProjectSchedule
+      );
+      CustomEventDispose(
+        DELETE_PROJECT_GROUP_SCHEDULE,
+        reloadListProjectSchedule
+      );
+    };
   }, [doListProjectSchedule, useMountedState()]);
 
   React.useEffect(() => {
@@ -34,26 +55,42 @@ function CalendarProjectPage({
 
   return (
     <TwoColumnsLayout
-      leftRenders={[() => <CalendarProjectLeftPart groupSchedules={groupSchedules} permissions={permissions} />]}
-      rightRender={
-        () => <CalendarProjectRightPart groupSchedules={groupSchedules} permissions={permissions} />
-      }
+      leftRenders={[
+        () => (
+          <CalendarProjectLeftPart
+            groupSchedules={groupSchedules}
+            permissions={permissions}
+            scheduleIdDefault={scheduleIdDefault}
+            setopenModal={setopenModal}
+          />
+        ),
+      ]}
+      rightRender={() => (
+        <CalendarProjectRightPart
+          scheduleIdDefault={scheduleIdDefault}
+          groupSchedules={groupSchedules}
+          permissions={permissions}
+        />
+      )}
     />
   );
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     doListProjectSchedule: (quite) => dispatch(listProjectSchedule(quite)),
     doListPermission: (quite) => dispatch(listCalendarPermission(quite)),
   };
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     groupSchedules: projectGroupScheduleSelector(state),
-    permissions: state.calendar.listCalendarPermission.data.permissions
+    permissions: state.calendar.listCalendarPermission.data.permissions,
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CalendarProjectPage);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CalendarProjectPage);

@@ -6,10 +6,12 @@ import {
   CHANGE_PROJECT_INFO,
   CHANGE_RENDER_FULL_DAY,
   CHANGE_ROW_HOVER,
+  CHANGE_SCHEDULE_DETAIL_GANTT,
   CHANGE_TIMELINE_COLOR,
   CHANGE_VISIBLE,
   GANTT_SHOW_FULL_CHART,
   GANTT_SHOW_HEADER,
+  SCROLL_GANTT,
 } from "../../constants/actions/gantt";
 import { apiService } from "../../constants/axiosInstance";
 
@@ -93,6 +95,16 @@ export const changeFilterExportPdf = (start, end) => ({
 export const changeInstanceGird = (gird) => ({
   type: CHANGE_INSTANCE_GIRD,
   payload: gird,
+});
+
+export const scrollGantt = (flag) => ({
+  type: SCROLL_GANTT,
+  payload: flag,
+});
+
+export const changeScheduleDetailGantt = (detail) => ({
+  type: CHANGE_SCHEDULE_DETAIL_GANTT,
+  payload: detail,
 });
 
 export const actionChangeColorGanttSetting = (project_id, type, color) => {

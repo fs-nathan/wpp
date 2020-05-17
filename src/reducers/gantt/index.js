@@ -10,10 +10,12 @@ export const initialState = {
     task: "#3ce305",
     duration: "#ab209d",
   },
+  scheduleDetailGantt: {},
   projectInfo: {
     id: "",
     name: "",
   },
+  scrollGanttFlag: false,
   indexColumn: [0, 1, 2, 3, 4],
   visible: {
     table: {
@@ -179,6 +181,10 @@ const gantt = (state = initialState, action) => {
       };
     case actionTypes.CHANGE_PROJECT_INFO:
       return { ...state, projectInfo: action.payload };
+    case actionTypes.CHANGE_SCHEDULE_DETAIL_GANTT:
+      return { ...state, scheduleDetailGantt: action.payload };
+    case actionTypes.SCROLL_GANTT:
+      return { ...state, scrollGanttFlag: action.payload };
     default:
       return state;
   }

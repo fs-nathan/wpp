@@ -3,7 +3,7 @@ import Icon from "@mdi/react";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
-import { changeRowHover } from "../../actions/gantt";
+import { changeRowHover, scrollGantt } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
 import Timeline from "./TimeLine";
 
@@ -16,17 +16,21 @@ function GanttChart({
   girdType,
   showHeader,
   end,
+  scrollGantt,
   changeRowHover,
   visibleGantt,
   dataSource,
   monthArray,
   daysRender,
   showFullChart,
+
   rowHover,
   renderFullDay,
+  scrollGanttFlag,
   widthTable,
 }) {
   const dragRef = useRef();
+  const scrollRef = useRef();
   const ganttRef = useRef();
   const [left, setLeft] = useState(0);
   const [scrollWidth, setScrollWidth] = useState(0);
@@ -81,6 +85,14 @@ function GanttChart({
       setHeightChart(window.innerHeight - ganttRef.current.offsetTop);
     }
   }, [showHeader]);
+  useEffect(() => {
+    if (scrollRef.current && scrollGanttFlag) {
+      const widthFromNowLayer =
+        new moment(Date.now()).diff(start, girdInstance.unit) + 1;
+      scrollRef.current.scrollLeft = widthFromNowLayer * 48 - 500;
+      scrollGantt(false);
+    }
+  }, [scrollGanttFlag]);
   const defaultLeft = minLeft + widthTable;
   const b = left ? { left: showFullChart ? minLeft : left } : {};
   let maxWidth;
@@ -188,6 +200,7 @@ function GanttChart({
           }}
         ></div>
         <div
+          ref={scrollRef}
           style={{
             display: "flex",
             height: heightChart,
@@ -253,12 +266,14 @@ function GanttChart({
 
 const mapDispatchToProps = {
   changeRowHover,
+  scrollGantt,
 };
 const mapStateToProps = (state) => ({
   showFullChart: state.gantt.showFullChart,
   showHeader: state.gantt.showHeader,
   rowHover: state.gantt.rowHover,
   renderFullDay: state.gantt.renderFullDay,
+  scrollGanttFlag: state.gantt.scrollGanttFlag,
   visibleGantt: state.gantt.visible.gantt,
   girdInstance: state.gantt.girdInstance,
   girdType: state.gantt.girdType,

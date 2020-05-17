@@ -5,12 +5,17 @@ import { Col, Row } from "antd";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { changeShowHeader } from "../../actions/gantt";
-import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
 import IconComponent from "./IconComponent";
 import RightHeader from "./RightHeader";
 import "./table.css";
 
-const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
+const Header = ({
+  handleShowProject,
+  projectInfo,
+  scheduleIdDefault,
+  showHeader,
+  changeShowHeader,
+}) => {
   const [showProject, setShowSelectProject] = useState(false);
   return showHeader ? (
     <Row
@@ -34,8 +39,9 @@ const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
                 <div>
                   <IconButton
                     onClick={() => {
-                      
-                      setShowSelectProject(!showProject)}}
+                      handleShowProject(!showProject);
+                      setShowSelectProject(!showProject);
+                    }}
                     aria-controls="simple-menu"
                     style={{ padding: 0 }}
                     aria-haspopup="true"
@@ -46,14 +52,6 @@ const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
                 </div>
               </p>
               {/* <ListHeader show={showProject} setShow={setShowSelectProject} /> */}
-              {showProject && (
-                <div className="gantt-select-project__container">
-                  <ListProject
-                    show={showProject}
-                    setShow={setShowSelectProject}
-                  />
-                </div>
-              )}
               <div className="gantt--navigation">
                 <p>Table</p>
                 <p>Gantt</p>
@@ -64,7 +62,7 @@ const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
         </div>
       </Col>
       <Col offset={2} span={10}>
-        <RightHeader />
+        <RightHeader scheduleIdDefault={scheduleIdDefault} />
       </Col>
     </Row>
   ) : (
@@ -72,7 +70,8 @@ const Header = ({ projectInfo, showHeader, changeShowHeader }) => {
       <div style={{ display: "flex", justifyContent: "center" }}>
         <IconComponent
           onClick={() => {
-            changeShowHeader(!showHeader)}}
+            changeShowHeader(!showHeader);
+          }}
           size={1.3}
           title={""}
           path={mdiChevronDown}

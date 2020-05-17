@@ -2,39 +2,50 @@ import { createProjectSchedule } from "actions/calendar/projectCalendar/createPr
 import { deleteProjectSchedule } from "actions/calendar/projectCalendar/deleteProjectGroupSchedule";
 import { updateProjectSchedule } from "actions/calendar/projectCalendar/updateProjectGroupSchedule";
 import { Routes } from "constants/routes";
-import { filter, get } from 'lodash';
-import React from 'react';
-import { connect } from 'react-redux';
+import { filter, get } from "lodash";
+import React from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import CreateProjectCalendar from "../../CalendarPage/views/Modals/CreateProjectCalendar";
-import CalendarProjectLeftPartPresenter from './presenter';
-import './style.scss';
+import CalendarProjectLeftPartPresenter from "./presenter";
+import "./style.scss";
 
 function CalendarProjectLeftPart({
-  groupSchedules, doCreateGroupSchedule, doDeleteGroupSchedule,
-  doUpdateGroupSchedule, permissions
+  groupSchedules,
+  setopenModal,
+  doCreateGroupSchedule,
+  doDeleteGroupSchedule,
+  doUpdateGroupSchedule,
+  permissions,
 }) {
   const [openCreate, setOpenCreate] = React.useState(false);
-  const [searchPattern, setSearchPattern] = React.useState('');
+  const [searchPattern, setSearchPattern] = React.useState("");
   const [defaultGroup, setDefaultGroup] = React.useState();
   const history = useHistory();
-  const [filterdGroupSchedules, setFilterdGroupSchedules] = React.useState(groupSchedules);
+  const [filterdGroupSchedules, setFilterdGroupSchedules] = React.useState(
+    groupSchedules
+  );
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'CREATE': {
+      case "CREATE": {
         setOpenCreate(true);
         return;
       }
-      default: return;
+      default:
+        return;
     }
   }
 
   React.useEffect(() => {
-    let filtered = filter(groupSchedules.data, schedule => get(schedule, 'name', '').toLowerCase().includes(searchPattern.toLowerCase()));
+    let filtered = filter(groupSchedules.data, (schedule) =>
+      get(schedule, "name", "")
+        .toLowerCase()
+        .includes(searchPattern.toLowerCase())
+    );
     setFilterdGroupSchedules({
       ...groupSchedules,
-      data: filtered
+      data: filtered,
     });
   }, [searchPattern, groupSchedules]);
 
@@ -46,7 +57,9 @@ function CalendarProjectLeftPart({
 
   function handleDeleteGroup(groupID) {
     doDeleteGroupSchedule({ schedule_group_id: groupID }, false);
-    history.push(Routes.CALENDAR_PROJECT.replace(":scheduleID", get(defaultGroup, "id")));
+    history.push(
+      Routes.CALENDAR_PROJECT.replace(":scheduleID", get(defaultGroup, "id"))
+    );
   }
 
   function handleUpdateGroupSchedule(id, name, description) {
@@ -54,7 +67,11 @@ function CalendarProjectLeftPart({
   }
 
   React.useEffect(() => {
-    if (Array.isArray(groupSchedules.data) && groupSchedules.data.length !== 0) {
+    console.log(groupSchedules);
+    if (
+      Array.isArray(groupSchedules.data) &&
+      groupSchedules.data.length !== 0
+    ) {
       setDefaultGroup(get(groupSchedules, "data[0]"));
     }
   }, [groupSchedules]);
@@ -64,32 +81,44 @@ function CalendarProjectLeftPart({
       <CalendarProjectLeftPartPresenter
         groupSchedules={filterdGroupSchedules}
         handleOpenModal={doOpenModal}
+        setopenModal={setopenModal}
         handleDeleteGroup={(groupID) => handleDeleteGroup(groupID)}
         searchPattern={searchPattern}
-        handleSearchPattern={value => setSearchPattern(value)}
-        handleUpdateGroupSchedule={(id, name, description) => handleUpdateGroupSchedule(id, name, description)}
-        havePermission={permissions['manage_project_schedule'] ?? false}
+        handleSearchPattern={(value) => setSearchPattern(value)}
+        handleUpdateGroupSchedule={(id, name, description) =>
+          handleUpdateGroupSchedule(id, name, description)
+        }
+        havePermission={permissions["manage_project_schedule"] ?? false}
       />
       <CreateProjectCalendar
         open={openCreate}
         setOpen={setOpenCreate}
-        onConfirm={(name, description) => handleCreateGroupSchedule(name, description)}
+        onConfirm={(name, description) =>
+          handleCreateGroupSchedule(name, description)
+        }
       />
     </>
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
+  return {};
+};
+
+const mapDispatchToProps = (dispatch) => {
   return {
+    doCreateGroupSchedule: ({ name, description }, quite) =>
+      dispatch(createProjectSchedule({ name, description }, quite)),
+    doDeleteGroupSchedule: ({ schedule_group_id }, quite) =>
+      dispatch(deleteProjectSchedule({ schedule_group_id }, quite)),
+    doUpdateGroupSchedule: ({ schedule_group_id, name, description }, quite) =>
+      dispatch(
+        updateProjectSchedule({ schedule_group_id, name, description }, quite)
+      ),
   };
 };
 
-const mapDispatchToProps = dispatch => {
-  return {
-    doCreateGroupSchedule: ({ name, description }, quite) => dispatch(createProjectSchedule({ name, description }, quite)),
-    doDeleteGroupSchedule: ({ schedule_group_id }, quite) => dispatch(deleteProjectSchedule({ schedule_group_id }, quite)),
-    doUpdateGroupSchedule: ({ schedule_group_id, name, description }, quite) => dispatch(updateProjectSchedule({ schedule_group_id, name, description }, quite)),
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(CalendarProjectLeftPart);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CalendarProjectLeftPart);

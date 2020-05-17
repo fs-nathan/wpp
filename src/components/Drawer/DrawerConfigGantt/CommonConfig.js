@@ -239,9 +239,9 @@ const CommonConfig = ({
           <div className="config--drawer--checkbox-wrapper">
             <Checkbox
               checked={visibleGantt.fromNowLayer}
-              onChange={(e) =>
-                changeVisible(e.target.checked, "gantt", "fromNowLayer")
-              }
+              onChange={(e) => {
+                changeVisible(e.target.checked, "gantt", "fromNowLayer");
+              }}
               className="config--drawer--checkbox"
             >
               Tiến độ kế hoạch đến ngày hôm nay

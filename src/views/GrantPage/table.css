@@ -640,6 +640,15 @@ div.checkbox-colortag--drawer {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+.icon-fromNow-header {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  border-right: 1px solid #ededed;
+  transform: translate(-50%, -50%);
+}
 .icon-invisible-header svg {
   fill: rgb(199, 199, 199) !important;
 }

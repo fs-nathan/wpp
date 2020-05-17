@@ -23,6 +23,7 @@ import { withRouter } from "react-router-dom";
 import {
   changeProjectInfo,
   changeRowHover,
+  changeScheduleDetailGantt,
   changeTaskComplete,
   changeTaskduration,
   changeTimelineColor,
@@ -44,6 +45,7 @@ import ExportPDFDrawer from "../../components/Drawer/DrawerPDF";
 import SubTaskDrawer from "../../components/Drawer/SubTaskDrawer";
 import { apiService } from "../../constants/axiosInstance";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
+import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
 import QuickViewTaskDetailDrawer from "../../views/JobPage/components/GanttQuickViewTaskDetailDrawer";
 import CreateProject from "../../views/ProjectGroupPage/Modals/CreateProject";
 import DragableBodyRow from "./DragableBodyRow";
@@ -681,16 +683,33 @@ class DragSortingTable extends React.Component {
       daysRender,
     });
   };
+  setSelectDefaultCalendar = (detail) => {
+    this.setState({
+      scheduleDetail: detail,
+    });
+  };
+  fetchListSchedule = async () => {
+    try {
+      const result = await apiService({
+        url: "group-schedule/list-schedule",
+      });
+      const { schedules } = result.data;
+      this.props.changeScheduleDetailGantt(schedules[0]);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   async componentDidMount() {
     const { projectId } = this.props.match.params;
     this.fetchSettingGantt(projectId);
     this.fetchListDetailProject(projectId);
     await this.fetchListTask(projectId);
     this.fetchListTask(projectId, true, this.props.girdType);
+    this.fetchListSchedule();
   }
   fetchListDetailProject = (project_id) => {
     this.props.getListGroupTask({ project_id });
-    this.props.getListTaskDetail({ project_id });
+    this.props.getListTaskDetail(project_id);
     this.props.getStaticTask(project_id);
     this.props.getProjectListBasic(project_id);
   };
@@ -957,7 +976,11 @@ class DragSortingTable extends React.Component {
       openCreateJobModal: value,
     });
   };
-
+  handleShowProject = (show) => {
+    this.setState({
+      showProject: show,
+    });
+  };
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -987,7 +1010,11 @@ class DragSortingTable extends React.Component {
             setOpen={this.handleOpenCreateProjectModal}
           />
         )}
-        <Header titleProject={this.state.titleProject} />
+        <Header
+          handleShowProject={this.handleShowProject}
+          titleProject={this.state.titleProject}
+          scheduleIdDefault={this.state.scheduleIdDefault}
+        />
         <div id="printContent" style={{ display: "flex", width: widthPdf }}>
           <ConfigGanttDrawer height={this.state.height} />
           <SubTaskDrawer height={this.state.height} />
@@ -1007,6 +1034,14 @@ class DragSortingTable extends React.Component {
             }}
             ref={this.tableRef}
           >
+            {this.state.showProject && (
+              <div className="">
+                <ListProject
+                  show={this.state.showProject}
+                  setShow={this.handleShowProject}
+                />
+              </div>
+            )}
             <DndProvider backend={HTML5Backend}>
               <Table
                 columns={colShow}
@@ -1074,6 +1109,7 @@ const mapDispatchToProps = {
   changeVisible,
   changeProjectInfo,
   changeVisibleSubtaskDrawer,
+  changeScheduleDetailGantt,
   getListGroupTask,
   getListTaskDetail,
   getStaticTask,

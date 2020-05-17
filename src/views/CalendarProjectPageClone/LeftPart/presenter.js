@@ -1,26 +1,35 @@
-import { ListItemText, Menu, MenuItem } from '@material-ui/core';
-import { mdiCalendar, mdiChevronLeft, mdiDotsVertical, mdiPlus } from '@mdi/js';
-import Icon from '@mdi/react';
-import { Primary, StyledList, StyledListItem } from 'components/CustomList';
-import LeftSideContainer from 'components/LeftSideContainer';
-import SearchInput from 'components/SearchInput';
-import { Routes } from 'constants/routes';
+import { ListItemText, Menu, MenuItem } from "@material-ui/core";
+import { mdiCalendar, mdiDotsVertical, mdiPlus } from "@mdi/js";
+import Icon from "@mdi/react";
+import { Primary, StyledList, StyledListItem } from "components/CustomList";
+import LeftSideContainer from "components/LeftSideContainer";
 import { get } from "lodash";
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import UpdateProjectCalendar from 'views/CalendarPage/views/Modals/UpdateProjectCalendar';
-import './style.scss';
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import UpdateProjectCalendar from "views/CalendarPage/views/Modals/UpdateProjectCalendar";
+import { changeScheduleDetailGantt } from "../../../actions/gantt";
+import "./style.scss";
 
-const Banner = ({ className = '', ...props }) =>
+const Banner = ({ className = "", ...props }) => (
   <div
     className={`view_CaledarProjectPageLeftPart_List___banner ${className}`}
     {...props}
-  />;
+  />
+);
 
 function CalendarProjectLeftPartPresenter({
-  groupSchedules, handleOpenModal, handleUpdateGroupSchedule,
-  handleSearchPattern, searchPattern, handleDeleteGroup, havePermission
+  groupSchedules,
+  handleOpenModal,
+  changeScheduleDetailGantt,
+  handleUpdateGroupSchedule,
+  scheduleDetailGantt,
+  handleSearchPattern,
+  setopenModal,
+  searchPattern,
+  handleDeleteGroup,
+  havePermission,
 }) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -29,40 +38,33 @@ function CalendarProjectLeftPartPresenter({
   const [openEditModal, setOpenEditModal] = React.useState(false);
 
   function doOpenMenu(anchorEl) {
-    setMenuAnchor(anchorEl)
+    setMenuAnchor(anchorEl);
   }
 
   return (
     <>
       <React.Fragment>
         <LeftSideContainer
-          title={t('IDS_WP_PROJECT_CALENDAR')}
-          leftAction={{
-            iconPath: mdiChevronLeft,
-            onClick: () => history.push(`${Routes.CALENDAR}/project`),
-            tooltip: t("DMH.VIEW.PGP.LEFT.INFO.BACK"),
-          }}
-          rightAction={havePermission ? {
-            iconPath: mdiPlus,
-            onClick: evt => handleOpenModal('CREATE'),
-            tooltip: t('views.calendar_page.left_part.create')
-          } : null}
+          title={t("IDS_WP_PROJECT_CALENDAR")}
+          rightAction={
+            havePermission
+              ? {
+                  iconPath: mdiPlus,
+                  onClick: (evt) => setopenModal(true),
+                }
+              : null
+          }
         >
-          <Banner>
-            <SearchInput
-              fullWidth
-              placeholder={t("IDS_WP_INPUT_SEARCH")}
-              value={searchPattern}
-              onChange={evt => handleSearchPattern(evt.currentTarget.value)}
-            />
-          </Banner>
           <StyledList>
             {groupSchedules.data.map((item, index) => (
               <React.Fragment key={index}>
                 <StyledListItem
-                  to={Routes.CALENDAR_PROJECT.replace(":scheduleID", get(item, "id", ""))}
-                  component={Link}
-                  className={`${params.scheduleID == get(item, "id", "") ? "item-actived" : ""}`}
+                  onClick={() => changeScheduleDetailGantt(item)}
+                  className={`${
+                    scheduleDetailGantt.id == get(item, "id", "")
+                      ? "item-actived"
+                      : ""
+                  }`}
                 >
                   <Icon
                     className="view_CaledarProjectPageLeftPart_List_iconLeft"
@@ -75,24 +77,22 @@ function CalendarProjectLeftPartPresenter({
                       <Primary
                         className={`custom-title-setting-item ${
                           item.icon ? "" : "none-icon"
-                          }`}
+                        }`}
                       >
                         {get(item, "name", "")}
                       </Primary>
                     }
                   />
-                  {
-                    item.can_modify && (
-                      <abbr title={t('IDS_WP_MORE')}>
-                        <Icon
-                          path={mdiDotsVertical}
-                          size={1.4}
-                          color={item.color || "rgba(0, 0, 0, 0.54)"}
-                          onClick={evt => doOpenMenu(evt.currentTarget)}
-                        />
-                      </abbr>
-                    )
-                  }
+                  {item.can_modify && (
+                    <abbr title={t("IDS_WP_MORE")}>
+                      <Icon
+                        path={mdiDotsVertical}
+                        size={1.4}
+                        color={item.color || "rgba(0, 0, 0, 0.54)"}
+                        onClick={(evt) => doOpenMenu(evt.currentTarget)}
+                      />
+                    </abbr>
+                  )}
                 </StyledListItem>
               </React.Fragment>
             ))}
@@ -102,14 +102,14 @@ function CalendarProjectLeftPartPresenter({
             anchorEl={menuAnchor}
             keepMounted
             open={Boolean(menuAnchor)}
-            onClose={evt => setMenuAnchor(null)}
+            onClose={(evt) => setMenuAnchor(null)}
             transformOrigin={{
               vertical: -30,
-              horizontal: 'right'
+              horizontal: "right",
             }}
           >
             <MenuItem
-              onClick={evt => {
+              onClick={(evt) => {
                 setOpenEditModal(true);
                 setMenuAnchor(null);
               }}
@@ -117,9 +117,9 @@ function CalendarProjectLeftPartPresenter({
               {t("views.calendar_page.right_part.edit")}
             </MenuItem>
             <MenuItem
-              onClick={evt => {
+              onClick={(evt) => {
                 setMenuAnchor(null);
-                handleDeleteGroup(params.scheduleID);
+                handleDeleteGroup(scheduleDetailGantt.id);
               }}
             >
               {t("views.calendar_page.right_part.delete")}
@@ -130,11 +130,25 @@ function CalendarProjectLeftPartPresenter({
       <UpdateProjectCalendar
         open={openEditModal}
         setOpen={setOpenEditModal}
-        schedule={groupSchedules.data.find(item => item.id === params.scheduleID)}
-        onConfirm={(name, descrtiption) => handleUpdateGroupSchedule(params.scheduleID, name, descrtiption)}
+        schedule={groupSchedules.data.find(
+          (item) => item.id === scheduleDetailGantt.id
+        )}
+        onConfirm={(name, descrtiption) =>
+          handleUpdateGroupSchedule(scheduleDetailGantt.id, name, descrtiption)
+        }
       />
     </>
-  )
+  );
 }
 
-export default CalendarProjectLeftPartPresenter;
+const mapStateToProps = (state) => ({
+  scheduleDetailGantt: state.gantt.scheduleDetailGantt,
+});
+
+const mapDispatchToProps = {
+  changeScheduleDetailGantt,
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CalendarProjectLeftPartPresenter);
