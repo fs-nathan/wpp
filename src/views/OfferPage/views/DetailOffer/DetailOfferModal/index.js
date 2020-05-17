@@ -8,6 +8,7 @@ import {
 } from '../../../utils/i18nSelectors';
 import DetailOffer from '../DetailOfferComponent'
 import { styles } from '../DetailOfferComponent/style'
+import './styles.scss';
 
 const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
   const { t } = useTranslation()
@@ -21,6 +22,7 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
 
   return (
     <CustomModal
+      className="detail-offer-modal"
       title={getDetailOfferModalTitle(t)}
       open={open}
       setOpen={setOpen}
