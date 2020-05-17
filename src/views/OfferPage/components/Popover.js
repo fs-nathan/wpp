@@ -37,6 +37,18 @@ function ExpandPopover({ offer_id, view }) {
         setAnchorEl(null);
     };
     const open = Boolean(anchorEl);
+
+    function renderPopoverOption(title, onClickHandler) {
+        return (
+            <Typography
+                className={classNames(classes.typography, "Tasktable_option")}
+                onClick={onClickHandler}
+            >
+                {title}
+            </Typography>
+        );
+    }
+
     return (
         <div>
             <IconButton aria-label="delete" a variant="contained" className={classes.button} onClick={handleClick}>
@@ -56,28 +68,18 @@ function ExpandPopover({ offer_id, view }) {
                 }}
             >
                 <div className="TaskTable_popover_item">
-                    <Typography
-                        className={classNames(classes.typography, "Tasktable_option")}
-                        onClick={() => {
-                            // Hide popup menu
-                            setAnchorEl(null);
-                            // For triggering offer detail data fetching from OfferPage component
-                            setCurrentDetailOfferId(offer_id);
-                            // Show offer detail modal
-                            setDetailOfferModalOpen(true);
-                        }}
-                    >
-                        {getOfferTableItemPopoverDetail(t)}
-                    </Typography>
-                    <Typography
-                        className={classNames(classes.typography, "Tasktable_option")}
-                        onClick={() => {
-                            // Hide popup menu
-                            setAnchorEl(null);
-                        }}
-                    >
-                        {getOfferTableItemPopoverDelete(t)}
-                    </Typography>
+                    {renderPopoverOption(getOfferTableItemPopoverDetail(t), () => {
+                        // Hide popup menu
+                        setAnchorEl(null);
+                        // For triggering offer detail data fetching from OfferPage component
+                        setCurrentDetailOfferId(offer_id);
+                        // Show offer detail modal
+                        setDetailOfferModalOpen(true);
+                    })}
+                    {renderPopoverOption(getOfferTableItemPopoverDelete(t), () => {
+                        // Hide popup menu
+                        setAnchorEl(null);
+                    })}
                 </div>
             </Popover>
         </div >
