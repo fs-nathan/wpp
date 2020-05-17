@@ -6,6 +6,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
+import MenuListItem from './MenuListItem';
 
 const HeaderSubText = styled(ListSubheader)`
   font-size: 13px;
@@ -49,7 +50,7 @@ const LinkBox = (props) => {
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
             {item.links.map((item, idx) => {
               return (
-                <ListItemLink key={idx}>
+                <ListItemLink key={idx} className="linkBoxItem">
                   <Typography component='div'>
                     <Icon path={mdiLink} size={1.4} color={'green'} />
                   </Typography>
@@ -84,6 +85,7 @@ const LinkBox = (props) => {
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
                   </Menu> */}
+                  <MenuListItem item={item} colorIcon={'#000'} />
                 </ListItemLink>
               )
             })}

@@ -1,16 +1,13 @@
-import React from 'react';
-
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
-
-import ColorTypo from '../../../../../components/ColorTypo';
-
+import ListSubheader from '@material-ui/core/ListSubheader';
+import ColorTypo from 'components/ColorTypo';
+import React from 'react';
 import './styles.scss';
 
 function ListProjectBody({ subPrimary }) {
   return (
     <List className="listProjectBody">
-      <ListSubheader disableSticky  className="listProjectBody--header">
+      <ListSubheader disableSticky className="listProjectBody--header">
         <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>
           {subPrimary}
         </ColorTypo>
