@@ -20,9 +20,9 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
       open={open}
       setOpen={setOpen}
       loading={loading}
-      confirmRender={t('OFFER_PAGE.DETAIL_OFFER.DELETE_OFFER')}
+      confirmRender={() => t('OFFER_PAGE.DETAIL_OFFER.DELETE_OFFER')}
       onConfirm={onDeleteOffer}
-      cancleRender={t('OFFER_PAGE.DETAIL_OFFER.ESCAPE')}
+      cancleRender={() => t('OFFER_PAGE.DETAIL_OFFER.ESCAPE')}
       onCancle={onCloseModal}
       fullWidth
     >
