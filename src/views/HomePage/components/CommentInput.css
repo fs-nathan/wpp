@@ -1,0 +1,15 @@
+.comp_CommentInput {
+  display: flex;
+  align-self: flex-end;
+  min-height: 40px;
+  line-height: 30px;
+  flex: 1 1 0%;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(0, 0, 0, 0.12);
+  border-image: initial;
+  margin: 0px 0px 0px 5px;
+  padding: 0px 8px;
+  background: #f5f6f7;
+  border-radius: 20px;
+}
