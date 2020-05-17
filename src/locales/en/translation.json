@@ -864,6 +864,7 @@
   "LABEL_CHAT_TASK_HUY": "Hủy",
   "LABEL_CHAT_TASK_THOAT": "Thoát",
   "LABEL_CHAT_TASK_TIM_KIEM_THANH_VIEN": "Tìm kiếm thành viên",
+  "LABEL_CHAT_TASK_DA_CHON_THANH_VIEN": "Đã chọn {{count}} thành viên",
   "LABEL_CHAT_TASK_DA_CHON": "Đã chọn",
   "LABEL_CHAT_TASK_CHON_TAT_CA": "Chọn tất cả",
   "LABEL_CHAT_TASK_NOI_DUNG_CONG_VIEC": "Nội dung công việc",
@@ -965,5 +966,10 @@
   "LABEL_CHAT_TASK_TU_DONG_XAC_DINH": "Tự động xác định đến thời điểm hiện tại",
   "LABEL_CHAT_TASK_BIEU_DO_CAP_NHAT_TIEN_DO": "Biểu đồ cập nhật tiến độ",
   "LABEL_CHAT_TASK_BIEU_DO_THE_HIEN": "Biểu đồ thể hiện lịch sử hoàn thành công việc",
-  "LABEL_CHAT_TASK_GHIM_NHAC_HEN": "Ghim nhắc hẹn"
+  "LABEL_CHAT_TASK_GHIM_NHAC_HEN": "Ghim nhắc hẹn",
+  "LABEL_CHAT_TASK_CHIA_SE_LUC": "Chia sẻ lúc: {{ createdAt}}",
+  "LABEL_CHAT_TASK_NOI_DUNG_CHI_DAO": "Nội dung chỉ đạo",
+  "LABEL_CHAT_TASK_NOI_DUNG_QUYET_DINH": "Nội dung quyết định",
+  "LABEL_CHAT_TASK_CHI_DAO_LABEL": "Chỉ đạo",
+  "LABEL_CHAT_TASK_QUYET_DINH_LABEL": "Quyết định"
 }

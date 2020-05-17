@@ -25,6 +25,7 @@ const FinishedSubtaskList = (props) => {
   function handleClick(evt, id) {
     setSelectedId(id)
     setAnchorEl(evt.currentTarget)
+    evt.stopPropagation();
   }
 
   function handleClose() {
@@ -54,12 +55,14 @@ const FinishedSubtaskList = (props) => {
     <ul style={{ padding: 0 }}>
       {completeSubTasks.map((item, index) => {
         return (
-          <li className="finishedSubTask--item" key={index}>
+          <li className="finishedSubTask--item"
+            onClick={onClickTitle(item)}
+            key={index}>
             {/* <abbr title={item.user_create_name}>
               <Avatar className="finishedSubTask--avatar" src={item.user_create_avatar} alt='avatar' />
             </abbr> */}
             <Icon path={mdiCheckCircle} size={1} color="rgb(2,218,137)" />
-            <div className="finishedSubTask--title" onClick={onClickTitle(item)}>
+            <div className="finishedSubTask--title" >
               {`${item.name}`}
             </div>
             {/* <div className="finishedSubTask--subTitle" >

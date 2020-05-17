@@ -1,6 +1,7 @@
 import { List, ListItem, ListItemText, ListSubheader, Typography } from '@material-ui/core';
 import { mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
+import { normalizeUrl } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -43,7 +44,7 @@ const LinkBox = (props) => {
   return (
     <List subheader={<li />}>
       {link.links && link.links.map((item, idx) => {
-        return (
+        return item.links.length > 0 && (
           <div className="styled-list-item-link linkBox" key={idx}>
             <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
             {item.links.map((item, idx) => {
@@ -54,7 +55,7 @@ const LinkBox = (props) => {
                   </Typography>
                   <ListItemText>
                     <a
-                      href={item.url}
+                      href={normalizeUrl(item.url)}
                       target="_blank"
                       rel="noopener noreferrer">
                       {item.url}
