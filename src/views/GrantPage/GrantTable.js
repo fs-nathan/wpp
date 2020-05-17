@@ -862,7 +862,6 @@ class DragSortingTable extends React.Component {
         indexSort = hoverIndex - index;
       }
     });
-    console.log(indexSort);
     indexSort--;
     indexSort = indexSort < 0 ? 0 : indexSort;
     const groupTaskIndex = indexGroupTaskList.filter(
