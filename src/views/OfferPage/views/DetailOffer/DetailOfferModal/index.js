@@ -16,7 +16,7 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
 
   return (
     <CustomModal
-      title={t('DETAIL_OFFER.DETAIL_OFFER_TITLE')}
+      title={t('DETAIL_OFFER.TITLE')}
       open={open}
       setOpen={setOpen}
       loading={loading}

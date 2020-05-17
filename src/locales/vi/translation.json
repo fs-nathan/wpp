@@ -1235,7 +1235,7 @@
   "PERSON_HANDLE": "Người phê duyệt",
   "PERSON_MONITOR": "Người giám sát",
   "DETAIL_OFFER": {
-    "DETAIL_OFFER_TITLE": "Chi tiết đề xuất",
+    "TITLE": "Chi tiết đề xuất",
     "DELETE_OFFER": "Xóa đề xuất",
     "ESCAPE": "Thoát"
   }
