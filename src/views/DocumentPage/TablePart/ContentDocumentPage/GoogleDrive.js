@@ -200,9 +200,9 @@ const GoogleDrive = props => {
   }, []);
 
   const moreAction = [
-    { icon: mdiAccountPlusOutline, text: 'Chia sẻ', type: 'share' },
-    { icon: mdiContentCopy, text: 'Copy Link', type: 'copy' },
-    { icon: mdiDownloadOutline, text: 'Tải xuống', type: 'download' }
+    { icon: mdiAccountPlusOutline, text: t('IDS_WP_SHARE'), type: 'share' },
+    { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' },
+    { icon: mdiDownloadOutline, text: t('IDS_WP_DOWNLOAD'), type: 'download' }
   ];
 
   const hanldeSort = field => {
