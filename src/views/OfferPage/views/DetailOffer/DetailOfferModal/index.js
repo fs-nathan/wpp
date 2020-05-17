@@ -1,6 +1,11 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import CustomModal from '../../../../../components/CustomModal';
+import {
+  getDetailOfferModalCancelBtnTitle,
+  getDetailOfferModalConfirmBtnTitle,
+  getDetailOfferModalTitle,
+} from '../../../utils/i18nSelectors';
 import DetailOffer from '../DetailOfferComponent'
 import { styles } from '../DetailOfferComponent/style'
 
@@ -16,13 +21,13 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
 
   return (
     <CustomModal
-      title={t('OFFER_PAGE.DETAIL_OFFER.TITLE')}
+      title={getDetailOfferModalTitle(t)}
       open={open}
       setOpen={setOpen}
       loading={loading}
-      confirmRender={() => t('OFFER_PAGE.DETAIL_OFFER.DELETE_OFFER')}
+      confirmRender={() => getDetailOfferModalConfirmBtnTitle(t)}
       onConfirm={onDeleteOffer}
-      cancleRender={() => t('OFFER_PAGE.DETAIL_OFFER.ESCAPE')}
+      cancleRender={() => getDetailOfferModalCancelBtnTitle(t)}
       onCancle={onCloseModal}
       fullWidth
     >
