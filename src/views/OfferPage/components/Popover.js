@@ -5,10 +5,12 @@ import Typography from '@material-ui/core/Typography';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import classNames from 'classnames';
 import React, { useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import "./Popover.scss";
 import { OfferPageContext } from '../OfferPageContext';
+import { getOfferTableItemPopoverDelete, getOfferTableItemPopoverDetail } from '../utils/i18nSelectors';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -22,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 function ExpandPopover({ offer_id, view }) {
     const { setDetailOfferModalOpen, setCurrentDetailOfferId } = useContext(OfferPageContext);
     const classes = useStyles();
+    const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [deleteModal, setDeleteModal] = React.useState(false)
     const dispatch = useDispatch()
@@ -64,7 +67,7 @@ function ExpandPopover({ offer_id, view }) {
                             setDetailOfferModalOpen(true);
                         }}
                     >
-                        Xem đề xuất
+                        {getOfferTableItemPopoverDetail(t)}
                     </Typography>
                     <Typography
                         className={classNames(classes.typography, "Tasktable_option")}
@@ -73,7 +76,7 @@ function ExpandPopover({ offer_id, view }) {
                             setAnchorEl(null);
                         }}
                     >
-                        Xóa
+                        {getOfferTableItemPopoverDelete(t)}
                     </Typography>
                 </div>
             </Popover>
