@@ -7,8 +7,8 @@ export const getDetailOfferModalCancelBtnTitle = t => t(`${detailOfferPath}.ESCA
 
 // Offer Table Item Popover
 const offerTablePath = `${offerPagePath}.OFFER_TABLE`;
-const offerTableItemPath = `${offerTablePath}.ITEM`;
-const offerTableItemPopoverPath = `${offerTableItemPath}.POPOVER`;
-export const getOfferTableItemPopoverDetail = t => t(`${offerTableItemPopoverPath}.DETAIL`);
-const offerTableItemPopoverDeletePath = `${offerTableItemPopoverPath}.DELETE`;
-export const getOfferTableItemPopoverDelete = t => t(`${offerTableItemPopoverDeletePath}.TITLE`);
+const offerItemPath = `${offerTablePath}.ITEM`;
+const offerItemPopoverPath = `${offerItemPath}.POPOVER`;
+export const getOfferItemPopoverDetail = t => t(`${offerItemPopoverPath}.DETAIL`);
+const offerItemPopoverDeletePath = `${offerItemPopoverPath}.DELETE`;
+export const getOfferItemPopoverDelete = t => t(`${offerItemPopoverDeletePath}.TITLE`);

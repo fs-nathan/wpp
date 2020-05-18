@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import "./Popover.scss";
 import { OfferPageContext } from '../OfferPageContext';
-import { getOfferTableItemPopoverDelete, getOfferTableItemPopoverDetail } from '../utils/i18nSelectors';
+import { getOfferItemPopoverDelete, getOfferItemPopoverDetail } from '../utils/i18nSelectors';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -68,7 +68,7 @@ function ExpandPopover({ offer_id, view }) {
                 }}
             >
                 <div className="TaskTable_popover_item">
-                    {renderPopoverOption(getOfferTableItemPopoverDetail(t), () => {
+                    {renderPopoverOption(getOfferItemPopoverDetail(t), () => {
                         // Hide popup menu
                         setAnchorEl(null);
                         // For triggering offer detail data fetching from OfferPage component
@@ -76,7 +76,7 @@ function ExpandPopover({ offer_id, view }) {
                         // Show offer detail modal
                         setDetailOfferModalOpen(true);
                     })}
-                    {renderPopoverOption(getOfferTableItemPopoverDelete(t), () => {
+                    {renderPopoverOption(getOfferItemPopoverDelete(t), () => {
                         // Hide popup menu
                         setAnchorEl(null);
                     })}
