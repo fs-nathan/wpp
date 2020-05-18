@@ -922,7 +922,15 @@
       "ITEM": {
         "POPOVER": {
           "DETAIL": "Detail",
-          "DELETE": "Delete"
+          "DELETE": {
+            "TITLE": "Delete",
+            "CONFIRM_MODAL": {
+              "TITLE": "Delete Offer",
+              "MESSAGE": "Are you sure you want to delete this offer?",
+              "CONFIRM": "Delete Offer",
+              "CANCEL": "Cancel"
+            }
+          }
         }
       }
     }

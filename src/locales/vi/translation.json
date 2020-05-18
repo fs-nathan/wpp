@@ -1244,7 +1244,15 @@
       "ITEM": {
         "POPOVER": {
           "DETAIL": "Chi tiết",
-          "DELETE": "Xóa"
+          "DELETE": {
+            "TITLE": "Xóa",
+            "CONFIRM_MODAL": {
+              "TITLE": "Xóa đề xuất",
+              "MESSAGE": "Bạn có chắc chắn muốn xóa đề xuất này?",
+              "CONFIRM": "Xóa đề xuất",
+              "CANCEL": "Hủy"
+            }
+          }
         }
       }
     }

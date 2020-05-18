@@ -8,4 +8,5 @@ const offerTablePath = `${offerPagePath}.OFFER_TABLE`;
 const offerTableItemPath = `${offerTablePath}.ITEM`;
 const offerTableItemPopoverPath = `${offerTableItemPath}.POPOVER`;
 export const getOfferTableItemPopoverDetail = t => t(`${offerTableItemPopoverPath}.DETAIL`);
-export const getOfferTableItemPopoverDelete = t => t(`${offerTableItemPopoverPath}.DELETE`);
+const offerTableItemPopoverDeletePath = `${offerTableItemPopoverPath}.DELETE`;
+export const getOfferTableItemPopoverDelete = t => t(`${offerTableItemPopoverDeletePath}.TITLE`);
