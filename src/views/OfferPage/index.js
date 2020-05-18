@@ -291,6 +291,9 @@ function OfferPage(props) {
 
   // Delete offer confirm modal
   const [showDeleteOfferConfirmModal, setShowDeleteOfferConfirmModal] = useState(false);
+  function onDeleteOffer() {
+
+  }
 
   return (
     <TwoColumnsLayout
@@ -356,6 +359,7 @@ function OfferPage(props) {
                   height="mini"
                   title={getDeleteOfferConfirmModalTitle(t)}
                   confirmRender={() => getDeleteOfferConfirmModalConfirmBtn(t)}
+                  onConfirm={onDeleteOffer}
                   cancleRender={() => getDeleteOfferConfirmModalCancelBtn(t)}
                 >
                   {getDeleteOfferConfirmModalMsg(t)}
