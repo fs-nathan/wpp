@@ -59,6 +59,10 @@ function CalendarWeeklyPage({
 
   React.useEffect(() => {
     CWPDoListScheduleOfWeek({ year, week: params.week }, false);
+    setSelectedYearAndWeekAtModal({
+      year: parseInt(year, 10),
+      week: parseInt(params.week, 10)
+    });
   }, [CWPDoListScheduleOfWeek, year, params.week]);
 
   React.useEffect(() => {
