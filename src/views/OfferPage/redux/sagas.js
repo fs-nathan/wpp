@@ -180,8 +180,9 @@ export function* doDeleteOffer({ payload }) {
   try {
     const { id } = payload;
     const config = {
-      url: "/offers/personal/delete?offer_id=" + id,
-      method: "POST"
+      url: "/offers/personal/delete",
+      method: "POST",
+      data: { offer_id: id }
     };
     const result = yield apiService(config);
     yield put({ type: DELETE_OFFER_SUCCESS, payload: result.data });
