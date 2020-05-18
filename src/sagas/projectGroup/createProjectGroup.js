@@ -1,9 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { createProjectGroupSuccess, createProjectGroupFail } from '../../actions/projectGroup/createProjectGroup';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, CREATE_PROJECT_GROUP } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { createProjectGroupFail, createProjectGroupSuccess } from '../../actions/projectGroup/createProjectGroup';
+import { apiService } from '../../constants/axiosInstance';
+import { CREATE_PROJECT_GROUP, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCreateProjectGroup({ name, icon, description }) {
   try {
@@ -27,14 +27,14 @@ function* createProjectGroup(action) {
   try {
     const { project_group: projectGroup } = yield call(doCreateProjectGroup, action.options);
     yield put(createProjectGroupSuccess({ projectGroup }, action.options));
-    CustomEventEmitter(CREATE_PROJECT_GROUP);
+    CustomEventEmitter(CREATE_PROJECT_GROUP.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createProjectGroupFail(error, action.options));
+    CustomEventEmitter(CREATE_PROJECT_GROUP.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  createProjectGroup,
-}
+export { createProjectGroup, };
+

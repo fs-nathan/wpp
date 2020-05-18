@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { getRemindDetail } from 'actions/chat/chat';
 import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { typesRemind } from 'views/JobDetailPage/TabPart/RemindTab/TabBody/RemindItem';
 import DialogMessageWrap from '../DialogMessageWrap';
@@ -39,7 +39,7 @@ const HandleRemindTimeDetail = (props) => {
     >
       <>
         <div className="HandleRemindTimeDetail--timeRemind">
-          <div className="HandleRemindTimeDetail--month">{t('LABEL_CHAT_TASK_THANG')}{month}
+          <div className="HandleRemindTimeDetail--month">{t('LABEL_CHAT_TASK_THANG', { month })}
           </div>
           <div className="HandleRemindTimeDetail--day">
             {day}

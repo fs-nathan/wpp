@@ -1,28 +1,21 @@
-import { TextField } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
 import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
-import { CREATE_GROUP_TASK, CustomEventDispose, CustomEventListener, UPDATE_GROUP_TASK } from 'constants/events';
+import { CREATE_GROUP_TASK, CustomEventDispose, CustomEventListener, GET_ALL_GROUP_TASK, LIST_GROUP_TASK, UPDATE_GROUP_TASK } from 'constants/events';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
 import './style.scss';
 
-const CustomTextField = ({ className = '', ...props }) =>
-  <TextField
-    className={`view_Project_CreateNewOrUpdateGroupTask_Modal___text-field ${className}`}
-    {...props}
-  />;
-
 function CreateNewOrUpdateGroupTask({
   open, setOpen,
   curGroupTask,
   handleCreateOrUpdateGroupTask,
-  activeLoading,
+  doReload,
+  projectId, timeRange,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 100);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 200);
+  const [description, setDescription] = useMaxlenString('', 200);
 
   React.useEffect(() => {
     if (curGroupTask) {
@@ -32,50 +25,89 @@ function CreateNewOrUpdateGroupTask({
     // eslint-disable-next-line
   }, [curGroupTask]);
 
+  const [activeLoading, setActiveLoading] = React.useState(false);
+  const [activeMask, setActiveMask] = React.useState(-1);
+
   React.useEffect(() => {
-    const successClose = () => {
+    setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
+    if (activeMask === 3) {
       setOpen(false);
       setName('');
       setDescription('');
-    };
-    CustomEventListener(CREATE_GROUP_TASK, successClose);
-    CustomEventListener(UPDATE_GROUP_TASK, successClose);
-    return () => {
-      CustomEventDispose(CREATE_GROUP_TASK, successClose);
-      CustomEventDispose(UPDATE_GROUP_TASK, successClose);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [activeMask]);
+
+  React.useEffect(() => {
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    if (curGroupTask) {
+      CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, doReload);
+      CustomEventListener(UPDATE_GROUP_TASK.FAIL, fail);
+    } else {
+      CustomEventListener(CREATE_GROUP_TASK.SUCCESS, doReload);
+      CustomEventListener(CREATE_GROUP_TASK.FAIL, fail);
+    }
+    return () => {
+      if (curGroupTask) {
+        CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, doReload);
+        CustomEventDispose(UPDATE_GROUP_TASK.FAIL, fail);
+      } else {
+        CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, doReload);
+        CustomEventDispose(CREATE_GROUP_TASK.FAIL, fail);
+      }
+    }
+    // eslint-disable-next-line
+  }, [projectId, curGroupTask, timeRange]);
+
+  React.useEffect(() => {
+    const success = bit => () => {
+      setActiveMask(oldMask => oldMask | (1 << bit));
+    };
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    CustomEventListener(LIST_GROUP_TASK.SUCCESS, success(0));
+    CustomEventListener(GET_ALL_GROUP_TASK.SUCCESS, success(1));
+    CustomEventListener(LIST_GROUP_TASK.FAIL, fail);
+    CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
+    return () => {
+      CustomEventListener(LIST_GROUP_TASK.SUCCESS, success(0));
+      CustomEventListener(GET_ALL_GROUP_TASK.SUCCESS, success(1));
+      CustomEventListener(LIST_GROUP_TASK.FAIL, fail);
+      CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId, curGroupTask, timeRange]);
 
   return (
     <CustomModal
       title={`${curGroupTask ? 'Chỉnh sửa' : 'Tạo mới'} nhóm công việc`}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName && !errorDescription}
-      onConfirm={() => handleCreateOrUpdateGroupTask(name, description)}
+      canConfirm={!errorName}
+      onConfirm={() => {
+        handleCreateOrUpdateGroupTask(name, description)
+        setActiveMask(0);
+      }}
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
-      manualClose={false}
+      manualClose={true}
     >
-      <CustomTextField
+      <CustomTextbox
         label='Tên nhóm công việc'
         value={name}
-        onChange={evt => setName(evt.target.value)}
-        margin="normal"
-        variant="outlined"
+        onChange={value => setName(value)}
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorName, 'message', '')}
-          </ColorTypo>
-        }
+        required={true}
       />
       <CustomTextbox
         label='Mô tả nhóm công việc'
         value={description}
         onChange={value => setDescription(value)}
-        helperText={get(errorDescription, 'message', '')}
+        fullWidth
+        multiline={true}
       />
     </CustomModal>
   )

@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next';
 import { DialogContent, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import Checkbox from '@material-ui/core/Checkbox';
 import { createRole, deleteRole, updateRole, updateRolesForMember } from 'actions/taskDetail/taskDetailActions';
+import AlertModal from 'components/AlertModal';
 import DialogWrap from 'components/DialogWrap';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import ModalDeleteConfirm from '../../TabPart/ModalDeleteConfirm';
 import AddRoleModal from './AddRoleModal';
 import './styles.scss';
 
@@ -94,7 +94,7 @@ function RoleMemberModal({
       title={t('LABEL_CHAT_TASK_VAI_TRO_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel="Cập nhật"
+      successLabel={t('IDS_WP_UPDATE')}
       onClickSuccess={handleUpdateRolesForMember}
       className="RoleMemberModal"
     >
@@ -154,11 +154,12 @@ function RoleMemberModal({
         setOpen={setOpenAddRoleModal}
         isEditRole={isEditRole}
       />
-      <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-      ></ModalDeleteConfirm>
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
+      />
     </DialogWrap>
   );
 }

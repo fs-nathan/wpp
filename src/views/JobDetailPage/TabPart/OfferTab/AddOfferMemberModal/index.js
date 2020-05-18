@@ -1,6 +1,7 @@
 import { Checkbox } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
+import compact from 'lodash/compact';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -22,6 +23,10 @@ function AddOfferMemberModal({
     onChange(selected)
     setOpen(false);
   }
+
+  React.useEffect(() => {
+    setSelected(value);
+  }, [value]);
 
   function onClickMember(i) {
     return () => {
@@ -56,7 +61,7 @@ function AddOfferMemberModal({
       title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       open={isOpen}
       setOpen={setOpen}
-      confirmRender={() => "Hoàn Thành"}
+      confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={onClickDone}
       className="addOfferMemberModal"
     >
@@ -65,7 +70,7 @@ function AddOfferMemberModal({
           value={searchValue}
           onChange={handleChangeSearch}
         />
-        <ColorTypo className="addOfferMemberModal--selected">{t('LABEL_CHAT_TASK_DA_CHON')}{selected.length}{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
+        <ColorTypo className="addOfferMemberModal--selected">{t('LABEL_CHAT_TASK_DA_CHON_THANH_VIEN', { count: selected.length })}</ColorTypo>
         <div className="addOfferMemberModal--selectAll">
           <Checkbox checked={selected.length === members.length} onClick={onClickSelectAll} ></Checkbox>
           <ColorTypo className="addOfferMemberModal--selectAllText" component="div">{t('LABEL_CHAT_TASK_CHON_TAT_CA')}</ColorTypo>
@@ -75,7 +80,7 @@ function AddOfferMemberModal({
           isSelected={selected.indexOf(member.index) !== -1}
           onClick={onClickMember(member.index)}
           avatar={member.avatar}
-          roles={`${member.position} - ${member.room}`}
+          roles={compact([member.position, member.room]).join(' - ')}
           name={member.name}
           isDisable={disableIndexes.indexOf(member.index) !== -1}
         />)}

@@ -1,8 +1,14 @@
-.job-detail-icon {
-  color: #333435;
-  opacity: 0.54;
-}
-.dropdown-icon {
-  // margin-left: 10px;
-  padding: 7px;
+.list-header {
+  .job-detail-icon {
+    color: #333435;
+    opacity: 0.54;
+  }
+  .dropdown-icon {
+    // margin-left: 10px;
+    padding: 7px;
+  }
+  .setting-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
 }

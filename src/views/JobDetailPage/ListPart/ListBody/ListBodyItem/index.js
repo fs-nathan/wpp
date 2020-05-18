@@ -9,6 +9,7 @@ import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import SimpleDonutChart from 'components/SimpleDonutChart';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -22,96 +23,131 @@ const IconPin = styled(Icon)`
   display: ${props => (props.isghim === 'true' ? 'block' : 'none')};
 `;
 const ChipMes = styled(Chip)`
-  display: ${props => (props.notification === 'true' ? 'block' : 'none')};
+  border-radius: 10px;
+  width: auto;
+  height: auto;
+  color: white;
+  background-color: red;
+  font-weight: 500;
+  margin-right: 5px;
+  display: ${props => (props.notification ? 'flex' : 'none')};
 `;
 
-const badgeState = label => {
-  let color;
-  switch (label) {
-    case 'Waiting':
-      color = 'orangelight';
-      break;
-    case 'Doing':
-      color = 'indigolight';
-      break;
-    case 'Complete':
-      color = 'light-green';
-      break;
-    case 'Expired':
-      color = 'redlight';
-      break;
-    case 'Stop':
-      color = 'redlight';
-      break;
+const getBadgeColor = status_code => {
+  switch (status_code) {
+    case 0:
+      return 'orangelight';
+    case 1:
+      return 'indigolight';
+    case 2:
+      return 'light-green';
+    case 3:
+      return 'redlight';
+    case 4:
+      return 'dark-gray';
     default:
-      color = 'redlight';
+      return 'redlight';
   }
-
-  return <BadgeItem color={color} badge label={label} size="small" />;
 };
+
+function getStatusName(status_code) {
+  if (status_code === 0)
+    return "LABEL_CHAT_TASK_DANG_CHO"
+  if (status_code === 1)
+    return "LABEL_CHAT_TASK_DANG_LAM"
+  if (status_code === 2)
+    return "LABEL_CHAT_TASK_HOAN_THANH"
+  if (status_code === 3)
+    return "LABEL_CHAT_TASK_DA_QUA_HAN"
+  if (status_code === 4)
+    return "LABEL_CHAT_TASK_TAM_DUNG"
+}
+
 function JobName(props) {
+  const { t } = useTranslation();
+  const { isghim = '', new_chat, ...rest } = props
   return (
     <div className="name-container-lbd" variant="space-between">
-      <ColorTypo bold>{props.title}</ColorTypo>
+      <ColorTypo bold={new_chat > 0}>{props.title}</ColorTypo>
       <div>
         <IconPin
           color={'#6e6e6e'}
           path={mdiPin}
           size={0.8}
-          {...props}
-          isghim={props.isghim.toString()}
+          {...rest}
+          isghim={isghim.toString()}
         />
-        {badgeState(props.label)}
+        <BadgeItem color={getBadgeColor(props.status_code)} badge
+          label={t(getStatusName(props.status_code))} size="small" />
       </div>
     </div>
   );
 }
 
 function JobContent(props) {
-  const { avatar, notify = 1, ...rest } = props
+  const { avatar, content, name, notification = 0, time } = props
   return (
     <div className="container-content-lbd">
-      <div title={props.name}>
+      <div title={name}>
         <Avatar src={avatar} alt="avatar" />
-        <ColorTypo color="#7a869a">{props.content}</ColorTypo>
+        <ColorTypo color="#7a869a">{content}</ColorTypo>
       </div>
       <div>
         <ChipMes
-          label={notify}
+          label={notification}
           size="small"
-          {...rest}
-          notification={props.notification.toString()}
+          notification={notification > 0}
         />
-        <div>{props.time}</div>
+        <div>{time}</div>
       </div>
     </div>
   );
 }
 
 function JobUnit(props) {
+  const {
+    chat = {},
+    name,
+    status_name,
+    status_code,
+    new_chat,
+    is_ghim,
+    updated_time,
+  } = props;
   return (
     <ListItemText disableTypography>
       <JobName
-        title={props.name}
-        label={props.status_name}
-        isghim={props.is_ghim}
+        title={name}
+        label={status_name}
+        status_code={status_code}
+        new_chat={new_chat}
+        isghim={is_ghim}
       />
       <JobContent
-        time={props.updated_time}
-        avatar={props.chat.user_create_avatar}
-        content={props.chat.content}
-        notification={props.new_chat}
-        name={props.chat.user_create_name}
+        time={updated_time}
+        avatar={chat.user_create_avatar}
+        content={chat.content}
+        notification={new_chat}
+        name={chat.user_create_name}
       />
     </ListItemText>
   );
 }
 
 function ListBodyItem(props) {
+  const {
+    chat = {},
+    name,
+    status_name,
+    status_code,
+    new_chat,
+    is_ghim,
+    updated_time,
+  } = props;
   const history = useHistory();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
-  // console.log({value})
+  // console.log({ props })
 
   function onClickItem() {
     dispatch(chooseTask(props.id));
@@ -123,6 +159,7 @@ function ListBodyItem(props) {
     history.push({ search: `?task_id=${props.id}` });
   }
 
+  const fillColor = props.complete === 100 ? '#00e690' : '#eee';
   return (
     <div
       className={clsx("container-lbd", {
@@ -131,9 +168,17 @@ function ListBodyItem(props) {
       onClick={onClickItem}
     >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
-        <SimpleDonutChart color={groupActiveColor} percentDone={props.complete} />
+        <SimpleDonutChart color={groupActiveColor} circleColor={fillColor} percentDone={props.complete} />
       </ListItemAvatar>
-      <JobUnit {...props} />
+      <JobUnit {...{
+        chat,
+        name,
+        status_name,
+        status_code,
+        new_chat,
+        is_ghim,
+        updated_time,
+      }} />
     </div>
   );
 }

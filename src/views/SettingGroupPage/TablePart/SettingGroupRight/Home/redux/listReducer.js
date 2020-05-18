@@ -1,5 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
-import { get, loginlineFunc, merge } from "views/JobPage/utils";
+import { get, merge } from "views/JobPage/utils";
 
 export const listremove = createAction("listremove");
 export const listupdate = createAction("listupdate");
@@ -15,15 +15,16 @@ export const listReducer = (state = [], action) => {
     case listAddFirst.type:
       return [action.payload, ...state];
     case listupdate.type:
-      return state.map((item) => {
-        if (
-          loginlineFunc((id, action) => {
-            return item.id !== action.payload.id;
-          })(item, action)
-        )
-          return item;
+      let exited = false;
+      const newState = state.map((item) => {
+        if (item.id !== action.payload.id) return item;
+        exited = true;
         return merge({}, item, action.payload);
       });
+      if (exited) {
+        return newState;
+      }
+      return [action.payload, ...newState];
     default:
       return state;
   }

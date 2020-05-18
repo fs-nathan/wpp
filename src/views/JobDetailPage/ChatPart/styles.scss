@@ -1,12 +1,12 @@
 // index.js - Chat Part
 .container-chatpart {
-  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  border-right: 1px solid #e5e5e9;
   height: calc(100vh - 56px);
   position: relative;
   display: flex;
   flex-direction: column;
   .wrap-header {
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid #e5e5e9;
     padding: 0 10px;
     height: 85px;
   }
@@ -75,7 +75,7 @@
       border-radius: 0em;
       height: 40px;
       background-color: #fff;
-      border-bottom: 1px solid #f1f3f4;
+      // border-bottom: 1px solid #f1f3f4;
     }
     svg {
       width: 20px !important;
@@ -85,7 +85,7 @@
   }
   &--close {
     position: absolute;
-    bottom: -5px;
+    bottom: -6px;
     right: 0px;
     svg {
       width: 20px !important;
@@ -95,26 +95,33 @@
   }
   &__showSearch {
     display: block;
+    position: relative;
+    padding: 10px;
+    border-bottom: 1px solid #eeeeee;
   }
   &--pinRemind {
     display: flex;
     position: relative;
     padding: 10px;
+    border-bottom: 1px solid #eeeeee;
   }
   &--pinRemind &--close {
     bottom: 2px;
   }
   &--pinImage {
-    width: 30px;
-    height: 30px;
+    width: 34px;
+    height: 34px;
   }
   &--pinRight {
     margin-left: 10px;
   }
   &--pinContent {
     text-transform: uppercase;
+    font-weight: 500;
+    color: #607d8b;
+    margin-bottom: 4px;
   }
   &--pinType {
-    color: #666666;
+    color: #a4a4a4;
   }
 }

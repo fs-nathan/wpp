@@ -7,12 +7,12 @@ import { listUserOfGroup } from 'actions/user/listUserOfGroup';
 import { privateMember } from 'actions/user/privateMember';
 import { publicMember } from 'actions/user/publicMember';
 import { sortUser } from 'actions/user/sortUser';
-import AlertModal from 'components/AlertModal';
-import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CREATE_ROOM, CustomEventDispose, CustomEventListener, DELETE_ROOM, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_ROOM, SORT_USER, UPDATE_ROOM } from 'constants/events';
-import { get } from 'lodash';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_ROOM, SORT_USER } from 'constants/events';
+import { get, reduce } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { routeSelector } from '../../../MemberPage/selectors';
+import BanUserModal from '../../Modals/BanUser';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
 import LogoManagerModal from '../../Modals/LogoManager';
@@ -72,18 +72,11 @@ function AllUsersTable({
     const reloadListUserOfGroup = () => {
       doListUserOfGroup();
     }
-    CustomEventListener(CREATE_ROOM, reloadListUserOfGroup);
-    CustomEventListener(UPDATE_ROOM, reloadListUserOfGroup);
-    CustomEventListener(DELETE_ROOM, reloadListUserOfGroup);
     CustomEventListener(SORT_ROOM, reloadListUserOfGroup);
     CustomEventListener(SORT_USER, reloadListUserOfGroup);
     CustomEventListener(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
-    CustomEventListener(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
     CustomEventListener(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
     return () => {
-      CustomEventDispose(CREATE_ROOM, reloadListUserOfGroup);
-      CustomEventDispose(UPDATE_ROOM, reloadListUserOfGroup);
-      CustomEventDispose(DELETE_ROOM, reloadListUserOfGroup);
       CustomEventDispose(SORT_ROOM, reloadListUserOfGroup);
       CustomEventDispose(SORT_USER, reloadListUserOfGroup);
       CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
@@ -106,9 +99,38 @@ function AllUsersTable({
   const [openTableSetting, setOpenTableSetting] = React.useState(false);
   const [openCreateAccount, setOpenCreateAccount] = React.useState(false);
   const [openPermissionSetting, setOpenPermissionSetting] = React.useState(false);
-  const [permissionProps, setPermissionProps] = React.useState(false);
+  const [permissionProps, setPermissionProps] = React.useState({
+    users: {
+      ...rooms,
+      users: reduce(
+        rooms.rooms,
+        (users, room) => {
+          const newUsers = [...users, ...get(room, 'users', [])];
+          return newUsers;
+        },
+        [],
+      ),
+    },
+  });
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+
+  React.useEffect(() => {
+    setPermissionProps(old => ({
+      ...old,
+      users: {
+        ...rooms,
+        users: reduce(
+          rooms.rooms,
+          (users, room) => {
+            const newUsers = [...users, ...get(room, 'users', [])];
+            return newUsers;
+          },
+          [],
+        ),
+      },
+    }))
+  }, [rooms]);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -143,7 +165,10 @@ function AllUsersTable({
       case 'PERMISSION_SETTING': {
         if (get(viewPermissions.permissions, 'can_modify', false)) {
           setOpenPermissionSetting(true);
-          setPermissionProps(props);
+          setPermissionProps(oldProps => ({
+            ...oldProps,
+            ...props,
+          }));
         }
         return;
       }
@@ -191,7 +216,7 @@ function AllUsersTable({
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
       <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} {...permissionProps} />
-      <AlertModal
+      <BanUserModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}

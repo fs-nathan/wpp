@@ -1,42 +1,49 @@
-import React from 'react';
+import flattenDepth from 'lodash/flattenDepth';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-// import { withRouter } from 'react-router-dom';
-
-import ColorChip from '../../../../components/ColorChip';
 import { filterTaskByType } from '../../../../actions/taskDetail/taskDetailActions';
+// import { withRouter } from 'react-router-dom';
+import ColorChip from '../../../../components/ColorChip';
+import { listTaskDataTypes } from '../ListHeader/CreateJobSetting';
 
 const ListBanner = props => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+  const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const colors = useSelector(state => state.setting.colors);
-  const [selected, setSelected] = React.useState(0);
+  const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
+  const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
+  const [data, setData] = useState([])
   const handleChangeFilterType = typeIdx => {
     dispatch(filterTaskByType(typeIdx));
-    setSelected(typeIdx);
   };
   // console.log('listTaskDetail', value)
+  useEffect(() => {
+    if (listTaskDataType === listTaskDataTypes[1]) {
+      setData(flattenDepth(listTaskDetail.map(({ tasks }) => tasks)))
+    } else {
+      setData(listDataNotRoom)
+    }
+  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail])
 
-  const {
-    task_waiting = 0,
-    task_doing = 0,
-    task_complete = 0,
-    task_expired = 0,
-    task_stop = 0
-  } = projectDetail || {};
+  const task_waiting = data.filter(({ status_code }) => status_code === 0).length;
+  const task_doing = data.filter(({ status_code }) => status_code === 1).length;
+  const task_complete = data.filter(({ status_code }) => status_code === 2).length;
+  const task_expired = data.filter(({ status_code }) => status_code === 3).length;
+  const task_stop = data.filter(({ status_code }) => status_code === 4).length;
   const allTask = task_waiting + task_doing + task_complete + task_expired + task_stop;
 
   const jobTypes = [
-    'Tất cả (' + allTask + ')',
-    'Đang chờ (' +
-    (task_waiting) +
-    ')', // Waiting
-    'Đang làm (' + (task_doing) + ')', // Doing
-    'Hoàn thành (' +
-    (task_complete) +
-    ')', // Complete
-    'Quá hạn (' + (task_expired) + ')', // Expired
-    'Tạm dừng (' + (task_stop) + ')' // Stop
+    t('LABEL_CHAT_TASK_TAT_CA_COUNT', { count: allTask }),
+    t('LABEL_CHAT_TASK_DANG_CHO_COUNT', { task_waiting }),
+    t('LABEL_CHAT_TASK_DANG_LAM_COUNT', { task_doing }),
+    t('LABEL_CHAT_TASK_HOAN_THANH_COUNT', { task_complete }),
+    t('LABEL_CHAT_TASK_QUA_HAN_COUNT', { task_expired }),
+    t('LABEL_CHAT_TASK_TAM_DUNG_COUNT', { task_stop })
   ];
   const bgColor = colors.find(item => item.selected === true);
   return (
@@ -46,8 +53,8 @@ const ListBanner = props => {
           key={index}
           label={jobType}
           onClick={() => handleChangeFilterType(index)}
-          color={selected === index ? 'light-blue' : 'white'}
-          style={{ background: selected === index && bgColor.color }}
+          color={filterTaskType === index ? 'light-blue' : 'white'}
+          style={{ background: filterTaskType === index && bgColor.color }}
           size="small"
         />
       ))}

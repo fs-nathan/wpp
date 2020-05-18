@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { deleteLevelSuccess, deleteLevelFail } from '../../actions/level/deleteLevel';
+import { deleteLevelFail, deleteLevelSuccess } from '../../actions/level/deleteLevel';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, DELETE_LEVEL } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doDeleteLevel({ levelId }) {
   try {
@@ -25,14 +25,14 @@ function* deleteLevel(action) {
   try {
     yield call(doDeleteLevel, action.options);
     yield put(deleteLevelSuccess(action.options));
-    CustomEventEmitter(DELETE_LEVEL);
+    CustomEventEmitter(DELETE_LEVEL.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(deleteLevelFail(error, action.options));
+    CustomEventEmitter(DELETE_LEVEL.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  deleteLevel,
-}
+export { deleteLevel, };
+

@@ -1,9 +1,9 @@
-import { useTranslation } from 'react-i18next';
 import { Avatar, IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { getStatus, getStatusName, priorityList } from '../data';
 import './styles.scss';
 
@@ -52,7 +52,10 @@ const CustomListItem = (props) => {
             {getStatusName(total_rejected, total_approved)}
           </div>
           <div className="offerTabItem--vote" >
-            {total_accepted}/{total_approved}{t('LABEL_CHAT_TASK_DONG_Y')}{total_rejected}/{total_approved}{t('LABEL_CHAT_TASK_TU_CHOI')}</div>
+            {t('LABEL_CHAT_TASK_DONG_Y_TU_CHOI', {
+              agree: `${total_accepted}/${total_approved}`,
+              reject: `${total_rejected}/${total_approved}`
+            })}</div>
         </div>
         <IconButton className="offerTabItem--button" size='small' onClick={handleClick} >
           <Icon path={mdiDotsHorizontal} size={1} />

@@ -12,9 +12,10 @@ export const getListChat = data => ({
   payload: data
 });
 
-export const appendChat = data => ({
+export const appendChat = (data, replaceId) => ({
   type: actionTypes.APPEND_CHAT,
-  payload: data
+  payload: data,
+  replaceId,
 });
 
 export const getMemberTask = data => ({
@@ -61,12 +62,13 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId, page, isMore) {
+export function loadChat(taskId, last_id, isMore, file_id) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
-    page,
+    last_id,
     isMore,
+    file_id,
   };
 }
 
@@ -86,10 +88,10 @@ export function loadChatFail(error) {
 }
 
 
-export function chatImage(task_id, data, onUploading) {
+export function chatImage(task_id, data, onUploading, id) {
   return {
     type: actionTypes.CHAT_IMAGE,
-    task_id, data, onUploading,
+    task_id, data, onUploading, id,
   };
 }
 
@@ -107,12 +109,13 @@ export function chatImageFail(error) {
   };
 }
 
-export function chatFile(task_id, data, onUploading) {
+export function chatFile(task_id, data, onUploading, id) {
   return {
     type: actionTypes.CHAT_FILE,
     task_id,
     data,
     onUploading,
+    id
   };
 }
 
@@ -554,9 +557,9 @@ export function chatQuickLikeFail(error) {
   };
 }
 
-export function deleteFailedChat(id) {
+export function removeChatById(id) {
   return {
-    type: actionTypes.DELETE_FAILED_CHAT,
+    type: actionTypes.REMOVE_CHAT_BY_ID,
     id
   };
 }
@@ -579,5 +582,75 @@ export function createChatFileFromGoogleDriverFail(error) {
   return {
     type: actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_FAIL,
     error
+  };
+}
+
+export function openDetailMember(isOpen) {
+  return {
+    type: actionTypes.OPEN_DETAIL_MEMBER,
+    isOpen
+  };
+}
+
+export function getGirdListTask(payload) {
+  return {
+    type: actionTypes.GET_GIRD_LIST_TASK,
+    payload
+  };
+}
+
+export function getGirdListTaskSuccess(payload) {
+  return {
+    type: actionTypes.GET_GIRD_LIST_TASK_SUCCESS,
+    payload
+  };
+}
+
+export function getGirdListTaskFail(error) {
+  return {
+    type: actionTypes.GET_GIRD_LIST_TASK_FAIL,
+    error
+  };
+}
+
+export function updateChatState(id, data) {
+  return {
+    type: actionTypes.UPDATE_CHAT_STATE,
+    id, data
+  };
+}
+
+export function showImagesList(isOpen, images = [], selected = 0, user = {}) {
+  return {
+    type: actionTypes.SHOW_IMAGES_LIST,
+    isOpen, images, selected, user
+  };
+}
+
+export function getDataPinOnTaskChat(task_id) {
+  return {
+    type: actionTypes.GET_DATA_PIN_ON_TASK_CHAT,
+    task_id
+  };
+}
+
+export function getDataPinOnTaskChatSuccess(payload) {
+  return {
+    type: actionTypes.GET_DATA_PIN_ON_TASK_CHAT_SUCCESS,
+    payload
+  };
+}
+
+export function getDataPinOnTaskChatFail(error) {
+  return {
+    type: actionTypes.GET_DATA_PIN_ON_TASK_CHAT_FAIL,
+    error
+  };
+}
+
+export function openShareFileModal(isOpenShareFileModal, item, ) {
+  return {
+    type: actionTypes.OPEN_SHARE_FILE_MODAL,
+    isOpenShareFileModal, item
   };
 }

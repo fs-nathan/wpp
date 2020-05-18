@@ -16,13 +16,18 @@ const DEFAULT_DATA = {
 };
 
 function CreateProjectCalendar({
-  open, setOpen, onConfirm
+  open, setOpen, onConfirm, isLoading = false
 }) {
   const { t } = useTranslation();
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
+
+  React.useEffect(() => {
+    handleChangeData("name", '');
+    handleChangeData("description", '');
+  }, [open]);
   return (
     <>
       <CustomModal
@@ -33,6 +38,7 @@ function CreateProjectCalendar({
         maxWidth='sm'
         onConfirm={() => onConfirm(data.name, data.description)}
         canConfirm={data.name !== "" && data.description !== ""}
+        actionLoading={isLoading}
       >
         <Container>
           <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="view_CreateProjectCalendar_label">
@@ -43,7 +49,6 @@ function CreateProjectCalendar({
             id="calendar-name"
             variant="outlined"
             size="small"
-            helperText={t('views.calendar_page.modal.create_project_calendar.name_required')}
             value={data.name}
             onChange={({ target }) => handleChangeData('name', target.value)}
           />
@@ -59,7 +64,6 @@ function CreateProjectCalendar({
             className="input_text"
             multiline
             rows={7}
-            helperText={t('views.calendar_page.modal.create_project_calendar.name_required')}
             fullWidth
             onChange={({ target }) => handleChangeData('description', target.value)}
           />

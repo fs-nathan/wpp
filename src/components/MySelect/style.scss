@@ -1,11 +1,20 @@
 .comp_MySelect___title {
-  color: #9a9a9a;
-  text-transform: uppercase;
-  font-size: 13px;
+  margin: 0 0 8px 0;
+  font-size: 14px;
   font-weight: 500;
-  display: block;
-  position: relative;
-  line-height: 15px;
-  width: 100%;
+  color: #222;
   z-index: initial !important;
+}
+
+.comp_MySelect___select {
+  border-radius: 4px;
+  & > div:first-child > div:first-child > div:nth-child(2) {
+    border-color: hsl(0,0%,80%) !important;
+    box-shadow: none !important;
+    &:hover {
+      box-shadow: 0px 0px 10px #d5d5d5 !important;
+      border-color: hsl(0,0%,80%) !important;
+      border-width: 1px !important;
+    }
+  }
 }

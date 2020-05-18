@@ -6,7 +6,8 @@ import Icon from '@mdi/react';
 import { listUserOfGroup } from "actions/user/listUserOfGroup";
 import CustomAvatar from 'components/CustomAvatar';
 import CustomModal from 'components/CustomModal';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
+import { listTimeSelect } from 'components/TimeSelect';
 import { get, map, pick } from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -35,7 +36,7 @@ const DEFAULT_DATA = {
 
 function CreatePersonalRemind({
   open, setOpen, onConfirm, remindCategories,
-  members, doListMemebers, categoryID
+  members, doListMemebers, categoryID, isLoading = false
 }) {
 
   const { t } = useTranslation();
@@ -82,6 +83,7 @@ function CreatePersonalRemind({
         confirmRender={() => t('views.calendar_page.modal.create_personal_remind.title')}
         onConfirm={() => handleOnConfirm()}
         maxWidth='sm'
+        actionLoading={isLoading}
       >
         <Container>
           <Box className="remind_group_container">
@@ -142,10 +144,9 @@ function CreatePersonalRemind({
                 <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.choose_time')} </Typography>
                 <span>*</span>
               </abbr>
-              <TimeSelect
-                className="remind_setting_timeSelector"
+              <TimePicker
                 value={data.selectedTime}
-                onChange={({ target }) => handleChangeData('selectedTime', target.value)}
+                onChange={(value) => handleChangeData('selectedTime', value)}
               />
             </div>
             <div className="remind_setting_type">
@@ -174,34 +175,14 @@ function CreatePersonalRemind({
               </Select>
             </div>
           </Box>
-          <Box className="remind_setting_beforeTimeContainer">
-            <Typography component={'span'} className="title_normal"> {t('views.calendar_page.modal.create_weekly_calendar.notify_before')} </Typography>
-            <TextField
-              className="remind_setting_beforeTimeContainer_timeInput"
-              value={data.timeBefore}
-              onChange={({ target }) => handleChangeData("timeBefore", target.value)}
-              variant="outlined"
-            />
-            <Select
-              variant="outlined"
-              className="remind_setting_beforeTimeContainer_selector"
-              value={data.notifyTimeType}
-              onChange={({ target }) => handleChangeData('notifyTimeType', target.value)}
-              MenuProps={{
-                className: "remind_setting_beforeTimeContainer_selector--paper",
-                MenuListProps: {
-                  component: Scrollbars,
-                },
-                variant: 'menu'
-              }}
-            >
-              <MenuItem key={'minues'} value={0}>{t('views.calendar_page.modal.create_weekly_calendar.minues')}</MenuItem>
-              <MenuItem key={'hours'} value={1}>{t('views.calendar_page.modal.create_weekly_calendar.hours')}</MenuItem>
-            </Select>
-          </Box>
           <Box className="remind_setting_content">
+            <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
+              <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.remind_content')} </Typography>
+              <span>*</span>
+            </abbr>
             <TextField
               placeholder={t('views.calendar_page.modal.create_personal_remind.content')}
+              className={"remind_setting_content_input"}
               variant="outlined"
               multiline
               fullWidth

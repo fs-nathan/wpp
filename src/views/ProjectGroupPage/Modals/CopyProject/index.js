@@ -1,56 +1,40 @@
+import { copyProject } from 'actions/project/copyProject';
 import { listProject } from 'actions/project/listProject';
 import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
+import { useTimes } from 'components/CustomPopover';
 import { filter, get, map } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { copyProject } from '../../../../actions/project/copyProject';
-import { Context as ProjectGroupContext } from '../../index';
+import { localOptionSelector } from '../../selectors';
 import CopyProjectPresenter from './presenters';
-import { activeLoadingSelector, groupsSelector } from './selectors';
+import { groupsSelector } from './selectors';
 
 function CopyProject({
   open, setOpen,
   groups,
   doCopyProject,
   doListProjectGroup,
-  doListProject,
-  activeLoading,
+  doReload,
+  projectGroupId = undefined,
+  localOption,
 }) {
 
-  const { timeRange } = React.useContext(ProjectGroupContext);
-  const { projectGroupId } = useParams();
-  const [id, setId] = React.useState();
-
-  React.useEffect(() => {
-    setId(projectGroupId);
-  }, [projectGroupId]);
-
-  React.useEffect(() => {
-    if (open) {
-      if (id === 'deleted') return;
-      if (id !== null) {
-        doListProject({
-          groupProject: id,
-          timeStart: get(timeRange, 'timeStart')
-            ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-            : undefined,
-          timeEnd: get(timeRange, 'timeEnd')
-            ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-            : undefined,
-        });
-      }
-    }
+  const times = useTimes();
+  const { timeType } = localOption;
+  const timeRange = React.useMemo(() => {
+    const [timeStart, timeEnd] = times[timeType].option();
+    return ({
+      timeStart,
+      timeEnd,
+    })
     // eslint-disable-next-line
-  }, [id, open]);
+  }, [timeType]);
 
   React.useEffect(() => {
-    if (open) {
-      doListProjectGroup();
-    }
+    doListProjectGroup();
     // eslint-disable-next-line
-  }, [open]);
+  }, []);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
@@ -67,7 +51,18 @@ function CopyProject({
 
   return (
     <CopyProjectPresenter
-      open={open} setOpen={setOpen} activeLoading={activeLoading}
+      open={open} setOpen={setOpen}
+      projectGroupId={projectGroupId}
+      timeRange={timeRange}
+      doReload={() => doReload({
+        groupProject: projectGroupId,
+        timeStart: get(timeRange, 'timeStart')
+          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+          : undefined,
+        timeEnd: get(timeRange, 'timeEnd')
+          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+          : undefined,
+      })}
       searchPatern={searchPatern} setSearchPatern={setSearchPatern}
       groups={newGroups}
       handleCopyProject={(projectId, name, description, startDate, isCopyMember) =>
@@ -86,13 +81,13 @@ function CopyProject({
 const mapStateToProps = state => {
   return {
     groups: groupsSelector(state),
-    activeLoading: activeLoadingSelector(state),
+    localOption: localOptionSelector(state),
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListProject: (options, quite) => dispatch(listProject(options, quite)),
+    doReload: (options) => dispatch(listProject(options, true)),
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
     doCopyProject: ({ projectId, name, description, startDate, isCopyMember }) => dispatch(copyProject({ projectId, name, description, startDate, isCopyMember })),
   }

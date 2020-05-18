@@ -2,7 +2,7 @@ import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_DAY_OFF_FAIL, GROUP_SCHE
 
 export const initialState = {
   data: {
-    workDays: [],
+    workDays: null,
   },
   error: null,
   loading: false,

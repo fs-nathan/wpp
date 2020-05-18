@@ -1,0 +1,27 @@
+.comp_FileListItem .MuiTypography-root {
+  font-size: 15px;
+}
+.comp_FileListItem .MuiListItemText-secondary {
+  text-transform: uppercase;
+}
+.comp_FileListItem svg {
+  font-size: 15px;
+}
+.comp_FileListItem__dowload:hover {
+  background: #f2f2f2;
+}
+.comp_FileListItem .MuiListItemText-primary {
+  font-weight: 500;
+  color: #607d8b;
+}
+.comp_FileListItem .MuiListItemText-secondary {
+  font-size: 14px;
+}
+.comp_FileListItem .MuiAvatar-root {
+  border-radius: unset;
+  width: 40px;
+  height: auto;
+}
+.comp_FileListItem:hover {
+  background: #fbfbfb;
+}

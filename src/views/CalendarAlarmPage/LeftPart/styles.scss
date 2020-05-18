@@ -1,19 +1,33 @@
 .left_sub_menu {
-  margin: 5px 10px 20px 60px;
   display: flex;
   flex-direction: column;
   border-radius: 2px;
-  padding: 10px;
+  margin-top: 7px;
 
   .sub_menu_item {
     min-height: 40px;
-    display: inline-flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    background-color: #DDC2FF;
-    padding: 0px 10px;
-    border-radius: 2px;
+    display: block;
+    background-color: #fff;
+    cursor: pointer;
+    padding: 5px 20px 5px 60px;
+
+    &_inner {
+      display: inline-flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      border-radius: 2px;
+
+      &:hover {
+        .personal_alarm_count {
+          color: #fff;
+        }
+
+        &>a {
+          color: #fff !important;
+        }
+      }
+    }
   }
 
   .personal_alarm_name {
@@ -22,9 +36,5 @@
     text-decoration: none;
     cursor: pointer;
     padding: 15px;
-
-    &:hover {
-      color: #fff;
-    }
   }
 }

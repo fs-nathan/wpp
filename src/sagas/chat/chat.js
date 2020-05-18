@@ -1,13 +1,13 @@
 import * as actions from "actions/chat/chat";
 import { apiService } from "constants/axiosInstance";
-import { call, put } from "redux-saga/effects";
+import { call, put, select } from "redux-saga/effects";
 
 export function* deleteChat(payload) {
   try {
     const { task_id, chat_id } = payload;
     const res = yield call(apiService.post, "/task/delete-chat", { task_id, chat_id });
     yield put(actions.deleteChatSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.deleteChatFail(error));
   }
@@ -15,8 +15,8 @@ export function* deleteChat(payload) {
 
 export function* loadChat(payload) {
   try {
-    const { task_id, page, isMore } = payload;
-    const res = yield call(apiService.get, `/task/get-chat?task_id=${task_id}&page=${page}`, { task_id });
+    const { task_id, file_id, last_id, isMore } = payload;
+    const res = yield call(apiService.get, `/task/get-chat`, { params: { task_id, last_id, file_id } });
     yield put(actions.loadChatSuccess(res.data, isMore));
     yield put(actions.getViewedChat(task_id));
   } catch (error) {
@@ -26,7 +26,9 @@ export function* loadChat(payload) {
 
 export function* chatImage(payload) {
   try {
-    const { task_id, data, onUploading } = payload;
+    const { task_id, data, onUploading, id } = payload;
+    const uuid = yield select(state => state.taskDetail.detailTask.taskDetails.uuid);
+    data.append("uuid", uuid)
     const res = yield call(apiService.post,
       `/task/create-chat-image?task_id=${task_id}`,
       data,
@@ -38,14 +40,17 @@ export function* chatImage(payload) {
       });
     yield put(actions.chatImageSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    // yield put(actions.appendChat(res.data));
+    yield put(actions.appendChat(res.data, id));
+    // yield put(actions.removeChatById(id));
   } catch (error) {
     yield put(actions.chatImageFail(error));
   }
 }
-export function* chatFile(dispatch) {
+export function* chatFile(payload) {
   try {
-    const { task_id, data, onUploading } = dispatch;
+    const { task_id, data, onUploading, id } = payload;
+    const uuid = yield select(state => state.taskDetail.detailTask.taskDetails.uuid);
+    data.append("uuid", uuid)
     const res = yield call(apiService.post,
       `/task/create-chat-file?task_id=${task_id}`,
       data,
@@ -57,7 +62,8 @@ export function* chatFile(dispatch) {
       });
     yield put(actions.chatFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    // yield put(actions.appendChat(res.data));
+    yield put(actions.appendChat(res.data, id));
+    // yield put(actions.removeChatById(id));
   } catch (error) {
     yield put(actions.chatFileFail(error));
   }
@@ -68,7 +74,7 @@ export function* chatForwardFile(payload) {
     const res = yield call(apiService.post, `/task/create-chat-forward-file?task_id=${task_id}`, { file_ids });
     yield put(actions.chatForwardFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatForwardFileFail(error));
   }
@@ -78,7 +84,7 @@ export function* chatSticker(payload) {
     const { task_id, sticker_id } = payload;
     const res = yield call(apiService.post, `/task/create-chat-sticker?task_id=${task_id}`, { sticker_id });
     yield put(actions.chatStickerSuccess(res.data));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatStickerFail(error));
   }
@@ -145,7 +151,7 @@ export function* chatEmotion(payload) {
     const { task_id, chat_id, emotion } = payload;
     const res = yield call(apiService.post, "/task/chat-create-emotion", { task_id, chat_id, emotion });
     yield put(actions.chatEmotionSuccess(res.data));
-    yield put(actions.loadChat(task_id));
+    // yield put(actions.loadChat(task_id));
   } catch (error) {
     yield put(actions.chatEmotionFail(error));
   }
@@ -162,11 +168,17 @@ export function* getEmotionsReactMember(payload) {
 
 export function* createChatText(payload) {
   try {
-    const { content } = payload;
-    const res = yield call(apiService.post, "/task/create-chat-text", content);
+    const { content: { parent_id, content, tags, urls, task_id }, resendId } = payload;
+    const uuid = yield select(state => state.taskDetail.detailTask.taskDetails.uuid);
+    const res = yield call(apiService.post, "/task/create-chat-text", {
+      parent_id, content, tags, urls, task_id, uuid
+    });
     yield put(actions.createChatTextSuccess(res.data));
     // yield put(actions.loadChat(content.task_id));
+    yield put(actions.appendChat(res.data, resendId));
+    // yield put(actions.removeChatById(resendId));
   } catch (error) {
+    console.log('uuid', error)
     yield put(actions.createChatTextFail(error, payload.content.id));
   }
 }
@@ -228,7 +240,7 @@ export function* chatQuickLike(payload) {
     const { task_id } = payload;
     const res = yield call(apiService.post, "/task/chat-quick-like", { task_id });
     yield put(actions.chatQuickLikeSuccess(res.data));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.chatQuickLikeFail(error));
   }
@@ -239,8 +251,27 @@ export function* createChatFileFromGoogleDriver(payload) {
     const { task_id, google_data } = payload;
     const res = yield call(apiService.post, "/task/create-chat-file-from-google-driver", { task_id, google_data });
     yield put(actions.createChatFileFromGoogleDriverSuccess(res.data));
-    yield put(actions.appendChat(res.data));
+    // yield put(actions.appendChat(res.data));
   } catch (error) {
     yield put(actions.createChatFileFromGoogleDriverFail(error));
+  }
+}
+
+export function* getGirdListTask(payload) {
+  try {
+    const res = yield call(apiService.get, "/get-gird-list-task");
+    yield put(actions.getGirdListTaskSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getGirdListTaskFail(error));
+  }
+}
+
+export function* getDataPinOnTaskChat(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.get, "/task/get-data-pin-on-task-chat", { params: { task_id } });
+    yield put(actions.getDataPinOnTaskChatSuccess(res.data));
+  } catch (error) {
+    yield put(actions.getDataPinOnTaskChatFail(error));
   }
 }

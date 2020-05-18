@@ -1,7 +1,7 @@
-import { useTranslation } from 'react-i18next';
 import { List, ListItem, ListItemText, Typography } from '@material-ui/core';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
@@ -55,6 +55,11 @@ margin-bottom: 6px;
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
   border-radius: 3px !important
+  & > span {
+    font-size: 12px;
+    padding: 0 5px;
+    border-radius: 2px;
+  }
 `
 const ContentText = styled(ColorTypo)`
   font-weight: 500;
@@ -94,6 +99,7 @@ function TabBody(props) {
   const dispatch = useDispatch();
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
+  const members = useSelector(state => state.taskDetail.taskMember.member);
 
   // console.log("Props::::", value.detailTask)
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
@@ -111,7 +117,7 @@ function TabBody(props) {
       total_subtask_complete, total_subtask, total_location,
       total_remind, total_file, total_img, total_link, priority_code,
       total_offer, total_offer_approved, total_command, members,
-      complete,
+      complete, state_code,
       complete_with_time = 0,
       duration_value, duration_unit
     } = detailTask
@@ -123,7 +129,7 @@ function TabBody(props) {
       lctCnt: total_location + ' vị trí',
       offerCnt: total_offer + ' đề xuất', acceptOfferCnt: total_offer_approved + ' duyệt',
       commandCnt: total_command + ' nội dung',
-      complete,
+      complete, state_code,
       complete_with_time,
       members,
       priority_code
@@ -141,7 +147,7 @@ function TabBody(props) {
       <StyledList>
         <ListItem>
           <ListItemText>
-            <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
+            <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
             <ContentText component='span'>
               {detailTask && detailTask.name}
               {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
@@ -150,10 +156,20 @@ function TabBody(props) {
         </ListItem>
         <Description value={content} />
         <ListItemButtonGroup>
-          <StatusLabel
-            type={TYPE_STATUS}
-            value={getCompleteStatus(taskStatistic.complete)}
-          />
+          {taskStatistic.state_code !== 4 ?
+            <StatusLabel
+              type={TYPE_STATUS}
+              value={getCompleteStatus(taskStatistic.complete)}
+            />
+            :
+            <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }} TransitionProps={{ timeout: 0 }} title={<ModalStatus
+              values={t('LABEL_CHAT_TASK_DANG_TAM_DUNG')} />}
+              placement="top-start">
+              <Typography
+                className="listPartTabBody--expired listPartTabBody--paused"
+              >{t('LABEL_CHAT_TASK_DANG_TAM_DUNG')}</Typography>
+            </HtmlTooltip>
+          }
           <StatusLabel
             type={TYPE_PRIORITY}
             value={taskStatistic.priority_code}
@@ -165,19 +181,10 @@ function TabBody(props) {
               className="listPartTabBody--expired"
             >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
           }
-          {
-            props.isPause
-            &&
-            <HtmlTooltip title={<ModalStatus values="Đang tạm dừng" />} placement="top-start">
-              <Typography
-                className="listPartTabBody--expired listPartTabBody--paused"
-              >{t('LABEL_CHAT_TASK_TAM_DUNG')}</Typography>
-            </HtmlTooltip>
-          }
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
           <ColorTypo>{t('LABEL_CHAT_TASK_TIEN_DO')}</ColorTypo>
-          <BadgeItem badge size='small' color='orangelight' label={taskStatistic.progressCnt} style={{ marginRight: 10 }} />
+          <BadgeItem badge color='orangelight' label={taskStatistic.progressCnt} className="listPartTabBody--badge" />
           <div className="simple-progress-bar-wrapper">
             <SimpleSmallProgressBar percentDone={taskStatistic.complete} percentTarget={taskStatistic.complete_with_time} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
           </div>
@@ -211,7 +218,7 @@ function TabBody(props) {
         </ListItemTab>
         <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
           <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
-          <AvatarCircleList total={taskStatistic.members.length} display={6} />
+          <AvatarCircleList users={members} display={9} />
           {/* {MemberTask(taskStatistic)} */}
         </ListItemTab>
       </StyledList>

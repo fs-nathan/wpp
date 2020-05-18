@@ -1,12 +1,15 @@
-import { useTranslation } from 'react-i18next';
 import DateFnsUtils from "@date-io/date-fns";
 import { Button, InputAdornment, TextField, Typography } from '@material-ui/core';
 // import { makeStyles } from '@material-ui/core/styles';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
+import CloseIcon from '@material-ui/icons/Close';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { openCreateRemind } from 'actions/chat/chat';
+import TimePicker from 'components/TimePicker';
+import TitleSectionModal from 'components/TitleSectionModal';
 import "date-fns";
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -219,7 +222,7 @@ function RemindModal(props) {
 
   // Remove duration by it's index
   const removeAnDuration = durationIdx => {
-    let newDuration = data.duration
+    let newDuration = [...data.duration]
     newDuration.splice(durationIdx, 1)
     handleChangeData("duration", newDuration)
   }
@@ -234,12 +237,12 @@ function RemindModal(props) {
       title={t('LABEL_CHAT_TASK_NHAC_HEN')}
       open={isOpenCreateRemind}
       setOpen={setOpenCreate}
-      confirmRender={() => (!isCreateRemind) ? "Chỉnh sửa nhắc hẹn" : "Tạo nhắc hẹn"}
+      confirmRender={() => (!isCreateRemind) ? t('LABEL_CHAT_TASK_HOAN_THANH') : t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
       onConfirm={handlePressConfirm}
       canConfirm={validate()}
     >
       <React.Fragment>
-        <TitleText component="div">{t('LABEL_CHAT_TASK_LOAI_NHAC_HEN')}</TitleText>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_LOAI_NHAC_HEN')} isRequired />
         <InputSelect
           commandSelect={selector}
           selectedIndex={data.type}
@@ -251,9 +254,15 @@ function RemindModal(props) {
           <Typography component="div">
             <HelperText>{t('LABEL_CHAT_TASK_BAN_CO_LICH_HEN')}</HelperText>
             <div className="remind-title">
-              <div className="remindModal--dateRemind" component="span">{t('LABEL_CHAT_TASK_NGAY_NHAC')}</div>
-              <div className="remindModal--timeRemind" component="span">{t('LABEL_CHAT_TASK_GIO_NHAC')}</div>
-              <div className="remindModal--repeatRemind" component="span">{t('LABEL_CHAT_TASK_NHAC_HEN_DINH_KY')}</div>
+              <div className="remindModal--dateRemind" component="span">
+                <TitleSectionModal label={t('LABEL_CHAT_TASK_NGAY_NHAC')} isRequired />
+              </div>
+              <div className="remindModal--timeRemind" component="span">
+                <TitleSectionModal label={t('LABEL_CHAT_TASK_GIO_NHAC')} isRequired />
+              </div>
+              <div className="remindModal--repeatRemind" component="span">
+                <TitleSectionModal label={t('LABEL_CHAT_TASK_NHAC_HEN_DINH_KY')} isRequired />
+              </div>
             </div>
             <div className="remind-body">
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -270,11 +279,10 @@ function RemindModal(props) {
                 />
               </MuiPickersUtilsProvider>
               <span>
-                <InputDateTime
-                  type={'time'}
+                <TimePicker
                   variant="outlined"
                   value={data.time_remind}
-                  onChange={e => handleChangeData("time_remind", e.target.value)}
+                  onChange={value => handleChangeData("time_remind", value)}
                 />
               </span>
               <div className="type-remind" >
@@ -305,12 +313,21 @@ function RemindModal(props) {
             </div>
             <Typography component={'div'}>
               {data.duration.map((item, key) => (
-                <BadgeItem onClick={() => removeAnDuration(key)} key={key} color={'orangelight'} label={item + ' %'} size='small' badge component='small' />
+                <BadgeItem
+                  className="remindModal--chip"
+                  // onClick={() => removeAnDuration(key)}
+                  key={key}
+                  color={'orangelight'}
+                  label={item + ' %'}
+                  onDelete={() => removeAnDuration(key)}
+                  deleteIcon={<CloseIcon />}
+                  badge component='span' />
               ))}
             </Typography>
           </div>
         }
         {/* ------- */}
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_NHAC_HEN')} isRequired />
         <ContentText
           label="Nội dung"
           fullWidth

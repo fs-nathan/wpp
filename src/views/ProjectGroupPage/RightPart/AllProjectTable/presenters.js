@@ -77,10 +77,8 @@ function AllProjectTable({
   timeType, handleTimeType,
   handleSortType,
   handleShowOrHideProject,
-  handleDeleteProject,
   handleSortProject,
   handleOpenModal,
-  handleTimeRange,
   bgColor,
   showHidePendings,
   canCreate,
@@ -149,10 +147,6 @@ function AllProjectTable({
             },
             moreMenu: [
               {
-                label: t("DMH.VIEW.PGP.RIGHT.ALL.TABLE_SETTING"),
-                onClick: () => null
-              },
-              {
                 label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
                 onClick: () => history.push(`${Routes.PROJECTS}/deleted`)
               }
@@ -217,7 +211,7 @@ function AllProjectTable({
             },
             {
               label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.NAME"),
-              field: (row) => <LinkSpan onClick={evt => history.push(`${route}/${get(row, 'id', '')}`)}>{get(row, 'name', '')}</LinkSpan>,
+              field: (row) => <LinkSpan onClick={evt => history.push(`${get(row, 'url_redirect', '#')}`)}>{get(row, 'name', '')}</LinkSpan>,
               sort: evt => handleSortType('name'),
               align: 'left',
               width: '25%',
@@ -446,10 +440,7 @@ function AllProjectTable({
           anchorEl={timeAnchor}
           setAnchorEl={setTimeAnchor}
           timeOptionDefault={timeType}
-          handleTimeRange={(timeType, startDate, endDate) => {
-            handleTimeType(timeType)
-            handleTimeRange(startDate, endDate)
-          }}
+          handleTimeRange={timeType => handleTimeType(timeType)}
         />
         <Menu
           id="simple-menu"
@@ -506,8 +497,7 @@ function AllProjectTable({
             onClick={evt => {
               setMenuAnchor(null)
               handleOpenModal('ALERT', {
-                content: t("DMH.VIEW.PGP.RIGHT.ALL.ALERT"),
-                onConfirm: () => handleDeleteProject(curProject),
+                selectedProject: curProject,
               })
             }}
           >{t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}</MenuItem>}

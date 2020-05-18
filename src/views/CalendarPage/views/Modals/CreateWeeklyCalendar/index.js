@@ -5,13 +5,14 @@ import { mdiBellOutline, mdiCalendarMonthOutline, mdiPencilBoxMultipleOutline, m
 import Icon from '@mdi/react';
 import { createSchedule } from 'actions/calendar/weeklyCalendar/createSchedule';
 import { deleteSchedule } from "actions/calendar/weeklyCalendar/deleteSchedule";
-import { listScheduleOfWeek } from "actions/calendar/weeklyCalendar/listScheduleOfWeek";
+import { listScheduleOfWeek } from "actions/calendar/weeklyCalendar/listScheduleOfWeekFromModal";
 import { updateSchedule } from "actions/calendar/weeklyCalendar/updateSchedule";
 import { listUserOfGroup } from "actions/user/listUserOfGroup";
+import AlertModal from "components/AlertModal";
 import AvatarCircleList from 'components/AvatarCircleList';
 import ColorTypo from 'components/ColorTypo';
 import CustomModal from 'components/CustomModal';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
 import WeekSelect from 'components/WeekSelect';
 import YearSelect from 'components/YearSelect';
 import { CREATE_WEEKLY_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_WEEKLY_SCHEDULE, UPDATE_WEEKLY_SCHEDULE } from "constants/events";
@@ -22,10 +23,10 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useMountedState } from 'react-use';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import { membersSelector, scheduleOfWeekSelector } from './selectors';
 import './style.scss';
+
 const Container = ({ className = '', ...props }) =>
   <div
     className={`view_Calendar_CreateWeekly_Modal_container ${className}`}
@@ -53,7 +54,7 @@ const DateWrapper = ({ className = '', ...props }) =>
   />
 
 const DEFAULT_DATA = {
-  selectedTime: listTimeSelect[16],
+  selectedTime: moment().format("hh:mm"),
   selectedDate: moment().toDate(),
   title: "",
   content: "",
@@ -65,10 +66,10 @@ const DEFAULT_DATA = {
 };
 
 function CreateWeeklyCalendar({
-  open, setOpen, dateSetting,
+  open, setOpen, dateSetting, actionType = "CREATE",
   members, WeeksInYear, doListScheduleOfWeek, scheduleOfWeek,
-  doCreateSchedule, handleOnClose, doDeleteSchedule, doListMemebers,
-  doUpdateSchedule
+  doCreateSchedule, doDeleteSchedule, doListMemebers,
+  doUpdateSchedule,
 }) {
   const { t } = useTranslation();
   const params = useParams();
@@ -78,6 +79,9 @@ function CreateWeeklyCalendar({
   const [operationType, setOperationType] = React.useState("CREATE");
   const [schedule, setSchedule] = React.useState(null);
   const dateFormatSetting = get(dateSetting, "date_format", "DD/MM/YYYYY");
+  const [alertConfirm, setAlertConfirm] = React.useState(false);
+  const [scheduleID, setScheduleID] = React.useState();
+  const [isLoading, setIsLoading] = React.useState(scheduleOfWeek.loading);
 
   const [validation, setValidation] = React.useState({
     title: { error: false, message: "" },
@@ -90,16 +94,34 @@ function CreateWeeklyCalendar({
   });
 
   React.useEffect(() => {
-    setReceiverListIndex([]);
+    let keys = Array.from(members.members, (v, k) => k);
+    setReceiverListIndex(keys);
     if (!isNil(params.week) && !isNil(params.year)) {
-      handleChangeData("selectedYear", params.year);
-      handleChangeData("selectedWeek", params.week);
+      handleChangeData("selectedYear", parseInt(params.year));
+      handleChangeData("selectedWeek", parseInt(params.week));
     }
-  }, [open, params]);
+    setOperationType("CREATE");
+    handleChangeData("title", '');
+    handleChangeData("content", '');
+    handleChangeData("scheduleID", null);
+    setValidationState("title", { error: false, message: "" });
+    setValidationState("content", { error: false, message: "" });
+    handleChangeData("selectedTime", moment().format("hh:mm"));
+
+  }, [open, params.year, params.week]);
 
   React.useEffect(() => {
-    doListMemebers(false);
+    if (members.members.length === 0) {
+      doListMemebers(false);
+    }
   }, [doListMemebers]);
+
+  React.useEffect(() => {
+    if (members.members.length !== 0) {
+      let keys = Array.from(members.members, (v, k) => k);
+      setReceiverListIndex(keys);
+    }
+  }, [members]);
 
   const days = [
     t('views.calendar_page.modal.setting_weekly_calendar.sunday'),
@@ -127,12 +149,16 @@ function CreateWeeklyCalendar({
       });
       handleChangeData("selectedDate", moment(WeeksInYear[data.selectedWeek - 1].start, dateFormatSetting));
     }
-  }, [WeeksInYear, data.selectedWeek])
+  }, [WeeksInYear, data.selectedWeek]);
 
   React.useEffect(() => {
-    doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek });
+    if (open === true) {
+      doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek });
+    }
+
     const reloadListScheduleOfWeek = () => {
       doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek }, false);
+      setIsLoading(false);
     }
 
     CustomEventListener(CREATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
@@ -143,36 +169,43 @@ function CreateWeeklyCalendar({
       CustomEventDispose(DELETE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
       CustomEventDispose(UPDATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
     }
-  }, [doListScheduleOfWeek, data.selectedWeek, data.selectedYear, useMountedState()])
+  }, [open, data.selectedWeek, data.selectedYear]);
 
   const setValidationState = (attName, value) => {
     setValidation(prevState => ({ ...prevState, [attName]: value }));
   }
 
   function handleCreateNew() {
-    if (data.title === "") { setValidationState("title", { error: true, message: "title is required" }) }
-    else { setValidationState("title", { error: false, message: "" }) }
-    if (data.content === "") { setValidationState("content", { error: true, message: "content is required" }) }
-    else { setValidationState("content", { error: false, message: "" }) }
-
+    validate();
     if (data.title !== "" && data.content !== "") {
-      let date = moment(data.selectedDate, dateFormatSetting);
-      let user_assign = Object.values(pick(members.members, receiverListIndex));
-      let schedule = {
-        schedule_date: date.format("YYYY-MM-DD"),
-        schedule_time: data.selectedTime,
-        title: data.title,
-        content: data.content,
-        set_remind: data.notifyWhenDue,
-        assign_to_all: receiverListIndex.length === 0 ? true : false,
-        user_assign: receiverListIndex.length !== 0 ? map(user_assign, "id") : []
-      }
-      doCreateSchedule({ schedule }, false);
+      setIsLoading(true);
+      doCreateSchedule({ schedule: createScheduleModal() }, false);
     }
   }
 
   const handleDeleteSchedule = (scheduleID) => {
     doDeleteSchedule({ scheduleID }, false);
+  }
+
+  function validate() {
+    if (data.title === "") {
+      setValidationState("title",
+        {
+          error: true,
+          message: `${t('views.calendar_page.modal.create_weekly_calendar.label.title')} ${t('IDS_WP_REQUIRED')}`
+        }
+      );
+    }
+    else { setValidationState("title", { error: false, message: "" }) }
+    if (data.content === "") {
+      setValidationState("content",
+        {
+          error: true,
+          message: `${t('views.calendar_page.modal.create_weekly_calendar.content')} ${t('IDS_WP_REQUIRED')}`
+        }
+      )
+    }
+    else { setValidationState("content", { error: false, message: "" }) }
   }
 
   const handleEditSchedule = (schedule, date) => {
@@ -182,13 +215,21 @@ function CreateWeeklyCalendar({
     handleChangeData("content", get(schedule, "content", data.selectedTime));
     handleChangeData("notifyWhenDue", get(schedule, "is_remind", data.notifyWhenDue));
     handleChangeData("scheduleID", get(schedule, "id", data.scheduleID));
-    let receiverList = get(schedule, "members_assign", []);
-    let idxArr = [];
-    receiverList.map((item) => {
-      let idx = findIndex(members.members, { id: item.id });
-      idxArr.push(idx);
-    });
-    setReceiverListIndex(idxArr);
+    setValidationState("title", { error: false, message: "" });
+    setValidationState("content", { error: false, message: "" });
+
+    if (get(schedule, "assign_to_all") === true) {
+      let keys = Array.from(members.members, (v, k) => k);
+      setReceiverListIndex(keys);
+    } else {
+      let receiverList = get(schedule, "members_assign", []);
+      let idxArr = [];
+      receiverList.map((item) => {
+        let idx = findIndex(members.members, { id: item.id });
+        idxArr.push(idx);
+      });
+      setReceiverListIndex(idxArr);
+    }
     setOperationType("EDIT");
   }
 
@@ -202,40 +243,61 @@ function CreateWeeklyCalendar({
     }
   }, [doUpdateSchedule, schedule, setSchedule]);
 
-  function handleUpdate() {
-    if (data.title === "") { setValidationState("title", { error: true, message: "title is required" }) }
-    else { setValidationState("title", { error: false, message: "" }) }
-    if (data.content === "") { setValidationState("content", { error: true, message: "content is required" }) }
-    else { setValidationState("content", { error: false, message: "" }) }
+  function hanleCancelUpdate() {
+    setOperationType("CREATE");
+    handleChangeData("title", '');
+    handleChangeData("content", '');
+    handleChangeData("scheduleID", null);
+    setValidationState("title", { error: false, message: "" });
+    setValidationState("content", { error: false, message: "" });
+  }
 
+  function handleUpdate() {
+    validate();
     if (data.title !== "" && data.content !== "") {
-      let date = moment(data.selectedDate, dateFormatSetting);
-      let user_assign = Object.values(pick(members.members, receiverListIndex));
-      let schedule = {
-        schedule_id: data.scheduleID,
-        schedule_date: date.format("YYYY-MM-DD"),
-        schedule_time: data.selectedTime,
-        title: data.title,
-        content: data.content,
-        set_remind: data.notifyWhenDue,
-        assign_to_all: receiverListIndex.length === 0 ? true : false,
-        user_assign: receiverListIndex.length !== 0 ? map(user_assign, "id") : []
-      }
-      setSchedule(schedule);
+      setIsLoading(true);
+      setSchedule(createScheduleModal());
+    }
+  }
+
+  function createScheduleModal() {
+    let date = moment(data.selectedDate, dateFormatSetting);
+    let user_assign = Object.values(pick(members.members, receiverListIndex));
+    let remindBeforeTime = data.notifyBeforeTime;
+    if (data.notifyTimeType === 1) remindBeforeTime = remindBeforeTime * 60;
+    if (data.notifyTimeType === 2) remindBeforeTime = remindBeforeTime * 60 * 24;
+    let schedule = {
+      schedule_id: data.scheduleID,
+      schedule_date: date.format("YYYY-MM-DD"),
+      schedule_time: data.selectedTime,
+      title: data.title,
+      content: data.content,
+      remind_before: remindBeforeTime,
+      set_remind: data.notifyWhenDue,
+      assign_to_all: (members.members.length === receiverListIndex.length) ? true : false,
+      user_assign: (receiverListIndex.length !== 0 && members.members.length !== receiverListIndex.length) ? map(user_assign, "id") : []
+    }
+    return schedule;
+  }
+
+  function handleFocusTextField(type) {
+    if (type == "title") {
+      setValidationState("title", { error: false, message: "" });
+    } else {
+      setValidationState("content", { error: false, message: "" });
     }
   }
 
   return (
     <>
       <CustomModal
-        title={t("views.calendar_page.modal.create_weekly_calendar.title")}
+        title={actionType === "CREATE" ? t("views.calendar_page.modal.create_weekly_calendar.title") : t("views.calendar_page.modal.edit_weekly_calendar.title")}
         open={open}
         setOpen={setOpen}
-        onConfirm={handleOnClose}
-        onCancle={handleOnClose}
-        canConfirm={data.title !== '' && data.content !== ''}
+        canConfirm={data.title !== '' && data.content !== '' && data.selectedTime !== ''}
         height='medium'
         className={"comp_CustomModal views_createWeeklyCalendar_CustomModal"}
+        loading={isLoading}
       >
         <div className="main_container">
           <div className="header_control">
@@ -265,243 +327,278 @@ function CreateWeeklyCalendar({
           </div>
           <Container>
             <div className="left">
-              <LeftHeader>{t("views.calendar_page.modal.create_weekly_calendar.title_left")}</LeftHeader>
-              <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
-                <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.select_time')}<span className="label_required">*</span></ColorTypo>
-              </abbr>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <DateWrapper>
-                  <TimeSelect
-                    className="views_createWeeklyCalendar_timeSelect"
-                    value={data.selectedTime}
-                    onChange={({ target }) => handleChangeData('selectedTime', target.value)}
-                  />
-                  <KeyboardDatePicker
-                    disableToolbar
-                    inputVariant="outlined"
-                    variant="inline"
-                    invalidDateMessage={null}
-                    ampm={false}
-                    value={data.selectedDate}
-                    onChange={value => handleChangeData('selectedDate', value)}
-                    format={dateFormatSetting.replace("DD", "dd").replace("YYYY", "yyyy")}
-                    className="inputDate"
-                    minDate={moment(weekSelectedLabel.start, dateFormatSetting)}
-                    maxDate={moment(weekSelectedLabel.end, dateFormatSetting)}
-                    autoOk={true}
-                  />
-                </DateWrapper>
-              </MuiPickersUtilsProvider>
-              <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
-                <ColorTypo className="label">
-                  {t('views.calendar_page.modal.create_weekly_calendar.label.title')}
-                  <span className="label_required">*</span>
-                </ColorTypo>
-              </abbr>
-              <TextField
-                size="small"
-                variant="outlined"
-                className="input_text"
-                value={data.title}
-                error={validation.title.error}
-                helperText={validation.title.message}
-                onChange={({ target }) => handleChangeData('title', target.value)}
-              />
-              <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
-                <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.content')}<span className="label_required">*</span></ColorTypo>
-              </abbr>
-              <TextField
-                value={data.content}
-                size="small"
-                variant="outlined"
-                className="input_text"
-                multiline
-                error={validation.content.error}
-                helperText={validation.content.message}
-                rows={2}
-                fullWidth
-                onChange={({ target }) => handleChangeData('content', target.value)}
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={data.notifyWhenDue} color="primary"
-                    onChange={({ target }) => handleChangeData('notifyWhenDue', target.checked)}
-                  />
-                }
-                label={t('views.calendar_page.modal.create_weekly_calendar.notify_due')}
-              />
-              {
-                data.notifyWhenDue && (
-                  <div>
-                    <Typography component={'div'} className="notify_setting_block block_grid">
-                      <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.notify_before')}</Typography>
-                      <TextField
-                        className="notify_setting_block__notifyBeforeTime"
-                        variant="outlined"
-                        value={data.notifyBeforeTime}
-                        onChange={({ target }) => handleChangeData('notifyBeforeTime', target.value)}
-                      />
-                      <Typography component={'span'} className="divider">-</Typography>
-                      <Select
-                        className={"notify_setting_block__timeTypeSelector"}
-                        variant="outlined"
-                        value={data.notifyTimeType}
-                        onChange={({ target }) => handleChangeData('notifyTimeType', target.value)}
-                        MenuProps={{
-                          className: "notify_setting_block__timeTypeSelector--paper",
-                          MenuListProps: {
-                            component: Scrollbars,
-                          },
-                          variant: 'menu'
-                        }}
-                      >
-                        <MenuItem key={'minues'} value={0}>{t('views.calendar_page.modal.create_weekly_calendar.minues')}</MenuItem>
-                        <MenuItem key={'hours'} value={1}>{t('views.calendar_page.modal.create_weekly_calendar.hours')}</MenuItem>
-                        <MenuItem key={'day'} value={2}>{t('views.calendar_page.modal.create_weekly_calendar.day')}</MenuItem>
-                      </Select>
-                    </Typography>
-                    <Typography component={'div'} className="receiver_block block_grid">
-                      <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.receiver')}</Typography>
-                      {
-                        receiverListIndex.length === 0 &&
-                        <Typography component={'span'} className="selected_receiver">{t('views.calendar_page.modal.create_weekly_calendar.all')}</Typography>
-                      }
-                      {
-                        receiverListIndex.length !== 0 &&
-                        <AvatarCircleList
-                          users={Object.values(pick(members.members, receiverListIndex)).map((member) => ({
-                            name: get(member, 'name'),
-                            avatar: get(member, 'avatar')
-                          }))}
-                          display={3}
+              <>
+                <LeftHeader>{t("views.calendar_page.modal.create_weekly_calendar.title_left")}</LeftHeader>
+                <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
+                  <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.select_time')}<span className="label_required">*</span></ColorTypo>
+                </abbr>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <DateWrapper>
+                    <TimePicker
+                      value={data.selectedTime}
+                      onChange={(value) => handleChangeData('selectedTime', value)}
+                    />
+                    <KeyboardDatePicker
+                      disableToolbar
+                      contentEditable={false}
+                      inputVariant="outlined"
+                      variant="inline"
+                      invalidDateMessage={null}
+                      ampm={false}
+                      value={data.selectedDate}
+                      onChange={value => handleChangeData('selectedDate', value)}
+                      format={dateFormatSetting.replace("DD", "dd").replace("YYYY", "yyyy")}
+                      className="inputDate"
+                      minDate={moment(weekSelectedLabel.start, dateFormatSetting)}
+                      maxDate={moment(weekSelectedLabel.end, dateFormatSetting)}
+                      autoOk={true}
+                    />
+                  </DateWrapper>
+                </MuiPickersUtilsProvider>
+                <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
+                  <ColorTypo className="label">
+                    {t('views.calendar_page.modal.create_weekly_calendar.label.title')}
+                    <span className="label_required">*</span>
+                  </ColorTypo>
+                </abbr>
+                <TextField
+                  size="small"
+                  variant="outlined"
+                  className="input_text"
+                  value={data.title}
+                  error={validation.title.error}
+                  helperText={validation.title.message}
+                  onChange={({ target }) => handleChangeData('title', target.value)}
+                  onFocus={() => handleFocusTextField("title")}
+                />
+                <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
+                  <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.content')}<span className="label_required">*</span></ColorTypo>
+                </abbr>
+                <TextField
+                  value={data.content}
+                  size="small"
+                  variant="outlined"
+                  className="input_text"
+                  multiline
+                  error={validation.content.error}
+                  helperText={validation.content.message}
+                  rows={2}
+                  fullWidth
+                  onChange={({ target }) => handleChangeData('content', target.value)}
+                  onFocus={() => handleFocusTextField("content")}
+                />
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      checked={data.notifyWhenDue} color="primary"
+                      onChange={({ target }) => handleChangeData('notifyWhenDue', target.checked)}
+                    />
+                  }
+                  label={t('views.calendar_page.modal.create_weekly_calendar.notify_due')}
+                />
+                {
+                  data.notifyWhenDue && (
+                    <div>
+                      <Typography component={'div'} className="notify_setting_block block_grid">
+                        <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.notify_before')}</Typography>
+                        <TextField
+                          className="notify_setting_block__notifyBeforeTime"
+                          variant="outlined"
+                          value={data.notifyBeforeTime}
+                          onChange={({ target }) => handleChangeData('notifyBeforeTime', target.value)}
                         />
-                      }
-                      <Typography component={'span'} className="divider"></Typography>
+                        <Typography component={'span'} className="divider">-</Typography>
+                        <Select
+                          className={"notify_setting_block__timeTypeSelector"}
+                          variant="outlined"
+                          value={data.notifyTimeType}
+                          onChange={({ target }) => handleChangeData('notifyTimeType', target.value)}
+                          MenuProps={{
+                            className: "notify_setting_block__timeTypeSelector--paper",
+                            MenuListProps: {
+                              component: Scrollbars,
+                            },
+                            variant: 'menu'
+                          }}
+                        >
+                          <MenuItem key={'minues'} value={0}>{t('views.calendar_page.modal.create_weekly_calendar.minues')}</MenuItem>
+                          <MenuItem key={'hours'} value={1}>{t('views.calendar_page.modal.create_weekly_calendar.hours')}</MenuItem>
+                          <MenuItem key={'day'} value={2}>{t('views.calendar_page.modal.create_weekly_calendar.day')}</MenuItem>
+                        </Select>
+                      </Typography>
+                      <Typography component={'div'} className="receiver_block block_grid">
+                        <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.receiver')}</Typography>
+                        {
+                          (receiverListIndex.length === members.members.length) &&
+                          <Typography component={'span'} className="selected_receiver">{t('views.calendar_page.modal.create_weekly_calendar.all')}</Typography>
+                        }
+                        {
+                          (receiverListIndex.length !== 0 && receiverListIndex.length < members.members.length) &&
+                          <AvatarCircleList
+                            users={Object.values(pick(members.members, receiverListIndex)).map((member) => ({
+                              name: get(member, 'name'),
+                              avatar: get(member, 'avatar')
+                            }))}
+                            display={3}
+                          />
+                        }
+                        <Typography component={'span'} className="divider"></Typography>
+                        <Button
+                          color="primary"
+                          className="change_receiver_btn"
+                          startIcon={<Icon
+                            path={mdiPlusCircleOutline}
+                            size={0.5}
+                            color="#029CF3"
+                          />}
+                          onClick={evt => {
+                            setOpenReceiverDialog(true)
+                          }}
+                        >
+                          {t('views.calendar_page.modal.create_weekly_calendar.change')}
+                        </Button>
+                      </Typography>
+                    </div>
+                  )
+                }
+                <Typography component={'div'} className="centered_block">
+                  {
+                    operationType === "CREATE" && (
                       <Button
+                        variant="contained"
                         color="primary"
-                        className="change_receiver_btn"
-                        startIcon={<Icon
-                          path={mdiPlusCircleOutline}
-                          size={0.5}
-                          color="#029CF3"
-                        />}
-                        onClick={evt => {
-                          setOpenReceiverDialog(true)
-                        }}
+                        size="medium"
+                        onClick={handleCreateNew}
+                        disableElevation
                       >
-                        {t('views.calendar_page.modal.create_weekly_calendar.change')}
+                        {t('IDS_WP_ADD')}
                       </Button>
-                    </Typography>
-                  </div>
-                )
-              }
-              <Typography component={'div'} className="centered_block">
-                {
-                  operationType === "CREATE" && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="medium"
-                      onClick={handleCreateNew}
-                      disableElevation
-                    >
-                      {t('IDS_WP_ADD')}
-                    </Button>
-                  )
-                }
-                {
-                  operationType === "EDIT" && (
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      size="medium"
-                      onClick={handleUpdate}
-                      disableElevation
-                    >
-                      {t('IDS_WP_UPDATE')}
-                    </Button>
-                  )
-                }
-              </Typography>
+                    )
+                  }
+                  {
+                    operationType === "EDIT" && (
+                      <div className="centered_block_group">
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="medium"
+                          onClick={handleUpdate}
+                          disableElevation
+                        >
+                          {t('IDS_WP_UPDATE')}
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="default"
+                          size="medium"
+                          onClick={() => hanleCancelUpdate()}
+                          disableElevation
+                        >
+                          {t('IDS_WP_CANCEL')}
+                        </Button>
+                      </div>
+                    )
+                  }
+                </Typography>
+              </>
             </div>
             <div className="right">
               <RightHeader>{t("views.calendar_page.modal.create_weekly_calendar.detail_content")}</RightHeader>
               <React.Fragment>
                 <div className={"view_createWeeklyCalendar_list_container"}>
-                  {
-                    scheduleOfWeek.data.map((item, index) => {
-                      if (item.schedules.length !== 0) {
-                        return (
-                          <CalendarItemContainer>
-                            <Typography component={'div'}>
-                              <span>{days[new Date(item.schedules[0].time_original).getDay()]}</span>
-                              <span>({item.date})</span>
-                            </Typography>
-                            <List component={'nav'} key={`views_createWeeklyCalendar_listSchedule_${index}`}>
-                              {
-                                item.schedules.map((schedule) => {
-                                  return (
-                                    <ListItem
-                                      button key={`views_createWeeklyCalendar_listSchedule_item_${schedule.id}`}
-                                      className="view_createWeeklyCalendar_list_scheduleItemContainer"
-                                    >
-                                      <ListItemIcon>
-                                        {
-                                          schedule.is_remind && <Icon path={mdiBellOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
-                                        }
-                                        <div className="calendar_item_time">{schedule.time}</div>
-                                      </ListItemIcon>
-                                      <ListItemText
-                                        primary={schedule.title}
-                                        secondary={schedule.content}
+                  <Scrollbars
+                    autoHide
+                    autoHideTimeout={500}
+                  >
+                    {
+                      scheduleOfWeek.data.map((item, index) => {
+                        if (item.schedules.length !== 0) {
+                          return (
+                            <CalendarItemContainer>
+                              <Typography component={'div'}>
+                                <span>{days[new Date(item.schedules[0].time_original).getDay()]}</span>
+                                <span>({item.date})</span>
+                              </Typography>
+                              <List component={'nav'} key={`views_createWeeklyCalendar_listSchedule_${index}`}>
+                                {
+                                  item.schedules.map((schedule) => {
+                                    return (
+                                      <ListItem
+                                        key={`views_createWeeklyCalendar_listSchedule_item_${schedule.id}`}
+                                        className="view_createWeeklyCalendar_list_scheduleItemContainer"
                                       >
-                                      </ListItemText>
-                                      <ListItemSecondaryAction>
-                                        {
-                                          schedule.assign_to_all && (
-                                            <div className="assign_to_all">Tất cả</div>
-                                          )
-                                        }
-                                        {
-                                          !schedule.assign_to_all && (
-                                            <AvatarCircleList
-                                              users={schedule.members_assign.map((member) => ({
-                                                name: get(member, 'name'),
-                                                avatar: get(member, 'avatar')
-                                              }))}
-                                              display={3}
-                                            />
-                                          )
-                                        }
-                                        <IconButton
-                                          edge="end"
-                                          onClick={evt => handleEditSchedule(schedule, item.date)}
+                                        <ListItemIcon>
+                                          {
+                                            schedule.is_remind && (
+                                              <abbr title={schedule.title_remind_before}>
+                                                <Icon path={mdiBellOutline} size={0.85} color="rgba(0, 0, 0, 0.7)" />
+                                              </abbr>
+                                            )
+                                          }
+                                          {
+                                            !schedule.is_remind && <Icon path={''} size={0.75} color="#969696" />
+                                          }
+                                          <div className="calendar_item_time">{schedule.time}</div>
+                                        </ListItemIcon>
+                                        <ListItemText
+                                          primary={schedule.title}
+                                          secondary={schedule.content}
                                         >
-                                          <Icon
-                                            path={mdiPencilBoxMultipleOutline}
-                                            size={0.7}
-                                            color="rgba(0, 0, 0, 0.7)"
-
-                                          />
-                                        </IconButton>
-                                        <IconButton edge="end"
-                                          key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
-                                          onClick={evt => handleDeleteSchedule(schedule.id)}
-                                        >
-                                          <Icon path={mdiTrashCanOutline} size={0.7} color="rgba(0, 0, 0, 0.7)" />
-                                        </IconButton>
-                                      </ListItemSecondaryAction>
-                                    </ListItem>
-                                  )
-                                })
-                              }
-                            </List>
-                          </CalendarItemContainer>
-                        )
-                      }
-                    })
-                  }
+                                        </ListItemText>
+                                        <ListItemSecondaryAction>
+                                          {
+                                            schedule.assign_to_all && (
+                                              <div className="assign_to_all">Tất cả</div>
+                                            )
+                                          }
+                                          {
+                                            !schedule.assign_to_all && (
+                                              <AvatarCircleList
+                                                users={schedule.members_assign.map((member) => ({
+                                                  name: get(member, 'name'),
+                                                  avatar: get(member, 'avatar')
+                                                }))}
+                                                display={3}
+                                              />
+                                            )
+                                          }
+                                          {
+                                            schedule.can_modify && (
+                                              <>
+                                                <IconButton
+                                                  edge="end"
+                                                  onClick={evt => handleEditSchedule(schedule, item.date)}
+                                                >
+                                                  <Icon
+                                                    path={mdiPencilBoxMultipleOutline}
+                                                    size={0.75}
+                                                    color="#969696"
+                                                  />
+                                                </IconButton>
+                                                <IconButton edge="end"
+                                                  key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
+                                                  onClick={evt => {
+                                                    setScheduleID(schedule.id);
+                                                    setAlertConfirm(true);
+                                                  }}
+                                                >
+                                                  <Icon path={mdiTrashCanOutline} size={0.75} color="#969696" />
+                                                </IconButton>
+                                              </>
+                                            )
+                                          }
+                                        </ListItemSecondaryAction>
+                                      </ListItem>
+                                    )
+                                  })
+                                }
+                              </List>
+                            </CalendarItemContainer>
+                          )
+                        }
+                      })
+                    }
+                  </Scrollbars>
                 </div>
               </React.Fragment>
             </div>
@@ -515,6 +612,12 @@ function CreateWeeklyCalendar({
         value={receiverListIndex}
         disableIndexes={[]}
         onChange={value => handleReceiverChange(value)}
+      />
+      <AlertModal
+        open={alertConfirm}
+        setOpen={setAlertConfirm}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={() => handleDeleteSchedule(scheduleID)}
       />
     </>
   )

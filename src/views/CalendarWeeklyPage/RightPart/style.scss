@@ -1,5 +1,6 @@
 .view_WeeklyCalendar_rightContainer {
   padding: 10px 20px;
+  min-height: 100%;
 
   &__header {
     color: #656565;
@@ -21,9 +22,52 @@
     }
   }
 
+  &__columnDataHeader {
+    margin: 5px 0px;
+    background: #e6f0ff;
+    padding: 10px 10px;
+    display: inline-flex;
+    align-items: center;
+
+    &>*>span {
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    &_title {
+      width: 425px;
+
+      &>span {
+        margin-left: 175px;
+      }
+    }
+
+    &_content {
+      width: 352px;
+    }
+
+    &_receiver {
+      width: 115px;
+    }
+
+    &_createdBy {
+      width: 145px;
+    }
+  }
+
   &__itemContainer {
     margin: 10px 0px;
     min-width: 100%;
+
+    .MuiListItem-container {
+      &:hover {
+        background: #F2F5FA;
+      }
+    }
+
+    .MuiList-padding {
+      padding-right: 20px;
+    }
 
     &>div:nth-child(1) {
       display: inline-flex;
@@ -37,42 +81,32 @@
         width: 165px;
 
         &>span:nth-child(1) {
-          text-transform: uppercase;
           font-weight: 500;
-          margin-right: 5px;
-          font-size: 14px;
+          margin-right: 10px;
+          font-size: 15px;
         }
 
         &>span:nth-child(2) {
           font-weight: normal;
-          font-size: 14px;
+          font-size: 15px;
+          color: #FF5227;
         }
-      }
-
-      .header_title {
-        min-width: 250px;
-        margin-left: 20px;
-        font-size: 14px;
-      }
-
-      .header_content {
-        min-width: 360px;
-        font-size: 14px;
-      }
-
-      .header_members_joined {
-        min-width: 130px;
-      }
-
-      .header_created_by {
-        min-width: 120px;
-        font-size: 14px;
       }
     }
 
     .MuiListItemSecondaryAction-root {
       min-width: 250px;
       justify-content: space-between;
+      cursor: inherit;
+    }
+
+    .MuiListItem-button {
+      cursor: inherit;
+    }
+
+    .MuiListItem-button:hover {
+      background-color: #F2F5FA !important;
+      border-radius: 2px;
     }
 
     .schedule_item_time {
@@ -80,6 +114,7 @@
 
       &>span>span {
         font-size: 14px !important;
+        color: #FF5227;
       }
     }
 
@@ -88,21 +123,27 @@
 
       &>span>span {
         font-size: 14px !important;
+        word-break: break-all;
       }
     }
 
     .schedule_item_content {
+      max-width: 340px;
+
       &>span>span {
         font-size: 14px !important;
+        font-weight: normal;
+        word-break: break-all;
       }
     }
 
     .assign_to_all {
-      background-color: #F6F6F6;
-      padding: 7px 15px;
+      background-color: #8bc34a42;
+      padding: 5px 10px;
       font-weight: 500;
-      border-radius: 4px;
-      font-size: 14px !important;
+      border-radius: 3px;
+      font-size: 13px !important;
+      color: #539a00;
     }
 
     .schedule_item_created_by {
@@ -122,5 +163,29 @@
     justify-content: space-around;
     align-items: center;
     width: 120px;
+  }
+
+  &_No_Data_Container {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+    height: 600px;
+
+    .title {
+      font-size: 19px;
+      text-align: center;
+      margin-top: 40px;
+      font-weight: 500;
+    }
+
+    .description {
+      font-size: 14px;
+      color: #555555;
+      margin-top: 5px;
+    }
   }
 }

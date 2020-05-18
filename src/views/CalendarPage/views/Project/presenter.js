@@ -13,7 +13,6 @@ import LoadingBox from '../../../../components/LoadingBox';
 import { Container, LinkSpan, SettingContainer } from '../../../../components/TableComponents';
 import './style.scss';
 
-
 const SettingButton = ({
   handleOpenMenu
 }) => {
@@ -26,7 +25,9 @@ const SettingButton = ({
         onClick={evt => handleOpenMenu(evt.currentTarget)}
         size="small"
       >
-        <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
+        <abbr title={'More'}>
+          <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
+        </abbr>
       </IconButton>
     </SettingContainer>
   );
@@ -35,7 +36,7 @@ const SettingButton = ({
 function ProjectCalendarPresenter({
   expand, handleExpand, groupSchedules,
   handleOpenModal, handleSortType, handleSortCalendar,
-  bgColor, canCreate, handleEditSchedule, handleDeleteSchedule
+  bgColor, havePermission, handleEditSchedule, handleDeleteSchedule
 }) {
 
   const { t } = useTranslation();
@@ -44,11 +45,8 @@ function ProjectCalendarPresenter({
   const [selectedSchedule, setSelectedSchedule] = React.useState();
 
   function doOpenMenu(anchorEl, schedule) {
-    if (schedule.can_modify) {
-      setSelectedSchedule(schedule);
-      setMenuAnchor(anchorEl);
-    }
-    else return;
+    setSelectedSchedule(schedule);
+    setMenuAnchor(anchorEl);
   }
 
 
@@ -59,7 +57,7 @@ function ProjectCalendarPresenter({
           <CustomTable
             options={{
               title: t('IDS_WP_PROJECT_CALENDAR'),
-              mainAction: canCreate ? {
+              mainAction: havePermission ? {
                 label: t("views.calendar_page.right_part.add"),
                 onClick: evt => handleOpenModal('CREATE'),
               } : null,
@@ -81,8 +79,7 @@ function ProjectCalendarPresenter({
             <img
               src={images.no_data}
               alt="no-data"
-              width="50%"
-              height="50%"
+              width="400px"
             />
             <span style={{ color: `${bgColor.color}` }} className="title">{t('views.calendar_page.right_part.no_data')}</span>
             <span className="description">{t('views.calendar_page.right_part.no_data_description')}</span>
@@ -97,7 +94,7 @@ function ProjectCalendarPresenter({
           <CustomTable
             options={{
               title: t('IDS_WP_PROJECT_CALENDAR'),
-              mainAction: canCreate ? {
+              mainAction: havePermission ? {
                 label: t("views.calendar_page.right_part.add"),
                 onClick: evt => handleOpenModal('CREATE'),
               } : null,
@@ -188,7 +185,7 @@ function ProjectCalendarPresenter({
               {
                 label: t("views.calendar_page.right_part.label.applied_project"),
                 field: row => (
-                  <span className="view_table_project_calendar_applied">{get(row, 'number_project')} {t('views.calendar_page.right_part.label.projects')}</span>
+                  <div className="view_table_project_calendar_applied">{get(row, 'number_project')} {t('views.calendar_page.right_part.label.projects')}</div>
                 ),
                 align: 'left',
                 width: '20%',
@@ -197,14 +194,18 @@ function ProjectCalendarPresenter({
               {
                 label: '',
                 field: row => (
-                  <SettingButton
-                    handleOpenMenu={currentTarget =>
-                      doOpenMenu(
-                        currentTarget,
-                        row,
-                      )
-                    }
-                  />
+                  <SettingContainer onClick={evt => evt.stopPropagation()}>
+                    <IconButton
+                      aria-controls="simple-menu"
+                      aria-haspopup="true"
+                      onClick={evt => doOpenMenu(evt.currentTarget, row)}
+                      size="small"
+                    >
+                      <abbr title={t('IDS_WP_MORE')}>
+                        <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
+                      </abbr>
+                    </IconButton>
+                  </SettingContainer>
                 ),
                 align: 'center',
                 width: '5%',
@@ -223,21 +224,31 @@ function ProjectCalendarPresenter({
               horizontal: 'right'
             }}
           >
-            <MenuItem
-              onClick={() => {
-                handleEditSchedule(selectedSchedule);
-                setMenuAnchor(null);
-              }
-              }
-            >
-              {t("views.calendar_page.right_part.edit")}
-            </MenuItem>
-            <MenuItem
-              onClick={() => {
-                handleDeleteSchedule(selectedSchedule);
-                setMenuAnchor(null);
-              }}
-            >{t("views.calendar_page.right_part.delete")}</MenuItem>
+            {
+              havePermission && (
+                <>
+                  <MenuItem
+                    onClick={() => {
+                      handleEditSchedule(selectedSchedule);
+                      setMenuAnchor(null);
+                    }
+                    }
+                  >
+                    {t("views.calendar_page.right_part.edit")}
+                  </MenuItem>
+                  {
+                    get(selectedSchedule, "can_delete", false) && (
+                      <MenuItem
+                        onClick={() => {
+                          handleDeleteSchedule(selectedSchedule);
+                          setMenuAnchor(null);
+                        }}
+                      >{t("views.calendar_page.right_part.delete")}</MenuItem>
+                    )
+                  }
+                </>
+              )
+            }
           </Menu>
         </React.Fragment>
       </Container>

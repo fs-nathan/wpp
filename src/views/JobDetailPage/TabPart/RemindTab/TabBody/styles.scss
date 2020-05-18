@@ -27,7 +27,8 @@
 .remindItem {
   display: block;
   position: relative;
-  margin: 4px 0;
+  margin: 0 0 0 -16px;
+  padding: 10px 16px;
   width: 100%;
   float: left;
   cursor: pointer;
@@ -53,7 +54,7 @@
     width: calc(100% - 95px);
     float: left;
     padding: 0 10px;
-    background-color: #ffffff;
+    // background-color: #ffffff;
     border-left: 1px solid #cccccc;
   }
   &--title {
@@ -85,7 +86,8 @@
       height: 15px !important;
     }
     .MuiChip-root {
-      border-radius: 5px;
+      border-radius: 2px;
+      margin-left: 10px;
     }
   }
   &--menu {
@@ -98,6 +100,7 @@
     }
     .MuiIconButton-root {
       display: none;
+      margin-right: 10px;
     }
   }
   &--pinned {
@@ -106,6 +109,7 @@
     right: 20px;
   }
   &:hover {
+    background-color: #f2f5fa;
     .MuiIconButton-root {
       display: block;
     }

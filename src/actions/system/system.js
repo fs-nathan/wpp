@@ -207,3 +207,30 @@ export const getNumberMessageNotViewer = () => {
 export const actionGetSupport = () => {
   return apiService({ url: '/get-url-help', method: 'get' });
 };
+
+export const changeVisibleConfigGantt = (state, type) => ({
+  type: actionTypes.CHANGE_VISIBLE_COMMON_CONFIG,
+  payload: {
+    state,
+    type
+  }
+})
+
+export const changeVisibleExportPdfDrawer = (state) => ({
+  type: actionTypes.CHANGE_VISIBLE_EXPORT_PDF_DRAWER,
+  payload: state
+})
+
+export const changeVisibleSubtaskDrawer = state => ({
+  type: actionTypes.CHANGE_VISIBLE_SUBTASK_DRAWER,
+  payload: state
+})
+
+export const changeDetailSubtaskDrawer = ({id, name}) => ({
+  type: actionTypes.CHANGE_DETAIL_SUBTASK_DRAWER,
+  payload: {
+    id,
+    name
+  }
+})
+

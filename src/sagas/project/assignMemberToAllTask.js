@@ -1,9 +1,9 @@
-import { call, put } from 'redux-saga/effects';
-import { assignMemberToAllTaskSuccess, assignMemberToAllTaskFail } from '../../actions/project/assignMemberToAllTask';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, ASSIGN_MEMBER_TO_ALL_TASK } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
 import { get } from 'lodash';
+import { call, put } from 'redux-saga/effects';
+import { assignMemberToAllTaskFail, assignMemberToAllTaskSuccess } from '../../actions/project/assignMemberToAllTask';
+import { apiService } from '../../constants/axiosInstance';
+import { ASSIGN_MEMBER_TO_ALL_TASK, CustomEventEmitter } from '../../constants/events';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doAssignMemberToAllTask({ projectId, memberId }) {
   try {
@@ -26,14 +26,14 @@ function* assignMemberToAllTask(action) {
   try {
     yield call(doAssignMemberToAllTask, action.options);
     yield put(assignMemberToAllTaskSuccess(action.options));
-    CustomEventEmitter(ASSIGN_MEMBER_TO_ALL_TASK);
+    CustomEventEmitter(ASSIGN_MEMBER_TO_ALL_TASK.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(assignMemberToAllTaskFail(error, action.options));
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));    
+    CustomEventEmitter(ASSIGN_MEMBER_TO_ALL_TASK.FAIL);
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  assignMemberToAllTask,
-}
+export { assignMemberToAllTask, };
+

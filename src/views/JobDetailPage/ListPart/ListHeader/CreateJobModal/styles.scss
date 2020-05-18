@@ -2,6 +2,15 @@
   .MuiDialogContent-root:first-child {
     padding: 0px 24px 24px;
   }
+  .comp_LoadingOverlay___wrapper {
+    height: 95vh;
+  }
+  .comp_CustomModal___scroll {
+    height: 100% !important;
+  }
+  .comp_CustomModal___dialog-content {
+    overflow: unset;
+  }
   &--timeWrap {
     display: flex;
     flex-direction: row;
@@ -20,7 +29,8 @@
     width: 100%;
   }
   &--content {
-    padding: 10px;
+    padding: 0px;
+    margin: 0;
   }
   &--processWork {
     display: flex;

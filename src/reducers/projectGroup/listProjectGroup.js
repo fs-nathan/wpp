@@ -1,7 +1,4 @@
-import { concat, findIndex, get, remove, slice } from 'lodash';
-import { CREATE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/createProjectGroup';
-import { DELETE_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/deleteProjectGroup';
-import { EDIT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/editProjectGroup';
+import { get, remove, slice } from 'lodash';
 import { LIST_PROJECT_GROUP, LIST_PROJECT_GROUP_FAIL, LIST_PROJECT_GROUP_RESET, LIST_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/listProjectGroup';
 import { SORT_PROJECT_GROUP, SORT_PROJECT_GROUP_SUCCESS } from '../../constants/actions/projectGroup/sortProjectGroup';
 
@@ -39,6 +36,7 @@ function reducer(state = initialState, action) {
       };
     case LIST_PROJECT_GROUP_RESET:
       return initialState;
+    /*
     case CREATE_PROJECT_GROUP_SUCCESS: {
       const newProjectGroups = concat(state.data.projectGroups, get(action.data, 'projectGroup'));
       return {
@@ -75,6 +73,7 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    */
     case SORT_PROJECT_GROUP:
     case SORT_PROJECT_GROUP_SUCCESS: {
       let newProjectGroups = state.data.projectGroups;

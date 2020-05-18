@@ -278,7 +278,10 @@ function DepartmentUsersTable({
           {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
         </MenuItem>
         <MenuItem onClick={() => {
-          handleOpenModal('PERMISSION_SETTING');
+          handleOpenModal('PERMISSION_SETTING', {
+            curUserId: get(user, 'id'),
+            roomId: departmentId,
+          });
           setMenuAnchorEl(null);
         }}>
           {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
@@ -286,8 +289,8 @@ function DepartmentUsersTable({
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
           <MenuItem onClick={() => {
             handleOpenModal('ALERT', {
-              content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
-              onConfirm: () => handleBanUserFromGroup(user),
+              roomId: departmentId,
+              selectedUser: user,
             });
             setMenuAnchorEl(null);
           }}>

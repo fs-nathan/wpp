@@ -96,7 +96,6 @@ function AllUsersTable({
   expand, handleExpand,
   handleSortUser,
   handleChangeState,
-  handleBanUserFromGroup,
   handleOpenModal,
   handleVisibleDrawerMessage,
 }) {
@@ -289,7 +288,8 @@ function AllUsersTable({
         </MenuItem>
         <MenuItem onClick={() => {
           handleOpenModal('PERMISSION_SETTING', {
-            curUser: user,
+            curUserId: get(user, 'id'),
+            roomId: null,
           });
           setMenuAnchorEl(null);
         }}>
@@ -298,8 +298,8 @@ function AllUsersTable({
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
           <MenuItem onClick={() => {
             handleOpenModal('ALERT', {
-              content: t('DMH.VIEW.DP.RIGHT.UT.ALERT'),
-              onConfirm: () => handleBanUserFromGroup(user),
+              roomId: null,
+              selectedUser: user,
             });
             setMenuAnchorEl(null);
           }}>

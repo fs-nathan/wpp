@@ -20,7 +20,8 @@ function* doAsync(action) {
   } = action.payload;
   try {
     const result = yield apiService(config);
-    if (!result.data.state) throw new Error(result.data.error_code);
+    if (!result.data.state)
+      throw new Error(result.data.error_code || result.data.msg);
     notifyOnSuccess &&
       SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(apiCallSuccess({ asyncId, data: result.data }));

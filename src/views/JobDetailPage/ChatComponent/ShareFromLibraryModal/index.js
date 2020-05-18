@@ -2,12 +2,11 @@ import { Button, IconButton } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { mdiChevronRight, mdiClose, mdiLogout, mdiMagnify, mdiRefresh } from '@mdi/js';
 import Icon from '@mdi/react';
-import { chatForwardFile, createChatFileFromGoogleDriver } from 'actions/chat/chat';
 import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle } from 'actions/documents';
 import { actionChangeBreadCrumbs } from 'actions/system/system';
 import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
-import { transformGoogleDriverData, transformToGoogleFormData } from 'helpers/jobDetail/stringHelper';
+import { transformGoogleDriverData } from 'helpers/jobDetail/stringHelper';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -23,7 +22,7 @@ import NotFoundDocument from './NotFoundDocument';
 import ProjectDocumentsTable from './ProjectDocumentsTable';
 import './styles.scss';
 
-const ShareFromLibraryModal = ({ open, setOpen }) => {
+const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -75,6 +74,22 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     }
   }, [listDocumentFromMe, listDocumentShareToMe, listGoogleDocument, listMyDocument, listProject, selectedMenu]);
 
+  const [currentBreadCrumbs, setCurrentBeadCrumbs] = useState([]);
+
+  useEffect(() => {
+    if (breadCrumbs.length > 3) {
+      let breadTemp = breadCrumbs.slice(-3);
+      breadTemp[0] = {
+        id: breadTemp[0].id,
+        title: breadTemp[0].name,
+        name: '...'
+      }
+      setCurrentBeadCrumbs([...breadTemp]);
+    } else {
+      setCurrentBeadCrumbs(breadCrumbs);
+    }
+  }, [breadCrumbs]);
+
   const handleOnChangeMenu = menu => {
     setSelectedMenu(menu);
     const key = menu.key;
@@ -94,38 +109,46 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     dispatch(actionChangeBreadCrumbs([]));
   };
 
-  function onClickConfirm() {
+  function onConfirmShare() {
     setOpen(false)
-    const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
-    const vtaskFiles = selectedFiles.filter(({ isGoogleDocument }) => !isGoogleDocument)
-    dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
-    dispatch(createChatFileFromGoogleDriver(taskId, googleFiles.map(transformToGoogleFormData)))
+    onClickConfirm(selectedFiles)
     setSelectedFiles([])
   }
 
   function handleClickLink(idx, id) {
     return function onClickBreadCrumb() {
       // do not anything if click ending item
-      if (idx >= breadCrumbs.length - 1) return false;
+      if (idx >= currentBreadCrumbs.length - 1) return false;
       if (idx === 0) {
-        dispatch(actionChangeBreadCrumbs([]));
+        let newList = currentBreadCrumbs.length === breadCrumbs.length ? [] : breadCrumbs.slice(0, -2);
+        dispatch(actionChangeBreadCrumbs(newList));
+
+      } else {
+        let newList = currentBreadCrumbs.length === breadCrumbs.length ? breadCrumbs.slice(0, idx + 1) : breadCrumbs.slice(0, -1);
+        dispatch(actionChangeBreadCrumbs(newList));
+      }
+      // console.log('handleClickLink', id)
+      if (id === -1) {
         if (selectedMenu.key === 'googleDrive')
           dispatch(actionFetchListGoogleDocument());
         else if (selectedMenu.key === 'projectDocument') {
           dispatch(actionFetchListProject());
           setInsideProject(true)
         }
+        else if (selectedMenu.key === 'sharedWithMe') {
+          dispatch(actionFetchListDocumentShare());
+        }
         else
           dispatch(actionFetchListMyDocument());
       } else {
-        let newList = [...breadCrumbs];
-        newList.length = idx + 1;
-        dispatch(actionChangeBreadCrumbs(newList));
         if (selectedMenu.key === 'googleDrive')
           dispatch(actionFetchListGoogleDocument({ folderId: id }, true))
         else if (selectedMenu.key === 'projectDocument') {
           dispatch(actionFetchListProjectOfFolder({ project_id: id }));
           setInsideProject(true)
+        }
+        else if (selectedMenu.key === 'sharedWithMe') {
+          dispatch(actionFetchListDocumentShare({ folder_id: id }, true));
         }
         else
           dispatch(actionFetchListMyDocument({ folder_id: id }, true));
@@ -152,6 +175,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       setListData={setListData}
       selectedFiles={selectedFiles}
       setSelectedFiles={setSelectedFiles}
+      isSharedWithMe={selectedMenu.key === 'sharedWithMe'}
     />
   }
 
@@ -163,7 +187,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       title={t('LABEL_CHAT_TASK_LUU_TRU_TAI_LIEU')}
       className="ShareFromLibraryModal"
       cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
-      onConfirm={onClickConfirm}
+      onConfirm={onConfirmShare}
     >
       <div className="ShareFromLibraryModal--container" >
         <div className="ShareFromLibraryModal--left" >
@@ -185,8 +209,10 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
                     {selectedMenu.title}
                   </div>
                   <div className="ShareFromLibraryModal--bread-crumbs-list" >
-                    <Breadcrumbs separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />} aria-label="breadcrumb">
-                      {breadCrumbs.length && breadCrumbs.map(({ name, id }, index) =>
+                    <Breadcrumbs
+                      separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />}
+                      aria-label="breadcrumb">
+                      {currentBreadCrumbs.length && currentBreadCrumbs.map(({ name, id }, index) =>
                         <div
                           className="ShareFromLibraryModal--bread-crumbs-item"
                           key={id}

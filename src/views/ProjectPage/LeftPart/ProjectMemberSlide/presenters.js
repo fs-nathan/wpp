@@ -107,13 +107,13 @@ function ProjectMemberSlide({
                         }
                         secondary={
                           <Secondary>
-                            {members.members.reduce((sum, member) => sum += get(member, 'number_task', 0), 0)} việc
+                            {get(members, 'totalTask', 0)} việc
                             </Secondary>
                         }
                       />
                     </StyledListItem>
                     {members.members.map((member, index) => (
-                      <CustomListItem key={get(member, 'id')} member={member} index={index} totalTasks={members.members.reduce((sum, member) => sum += get(member, 'number_task', 0), 0)} />
+                      <CustomListItem key={get(member, 'id')} member={member} index={index} />
                     ))}
                     {provided.placeholder}
                   </StyledList>

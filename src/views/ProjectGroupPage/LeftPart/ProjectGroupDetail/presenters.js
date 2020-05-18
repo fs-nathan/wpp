@@ -157,8 +157,7 @@ function ProjectGroupDetail({
                 updatedProjectGroup: group.group,
               })} variant='text' size='small' fullWidth>{t("DMH.VIEW.PGP.LEFT.INFO.BTN.UPT")}</ColorButton>
               <ColorButton onClick={() => handleOpenModal('ALERT', {
-                content: t("DMH.VIEW.PGP.LEFT.INFO.ALERT"),
-                onConfirm: () => handleDeleteProjectGroup(group.group)
+                selectedProjectGroup: group.group,
               })} variant='text' variantColor='red' size='small' fullWidth>{t("DMH.VIEW.PGP.LEFT.INFO.BTN.DEL")}</ColorButton>
             </ActionBox>}
         </Container>

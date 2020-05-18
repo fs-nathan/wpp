@@ -1,31 +1,31 @@
-import { useTranslation } from 'react-i18next';
 import ColorTypo from 'components/ColorTypo';
-import TextEditor, { getEditorData } from 'components/TextEditor';
-import { getCollapseText, isLongerContent } from 'helpers/jobDetail/stringHelper';
+import { getCollapseText, getRichContent, isLongerContent } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './styles.scss';
 
 function Description({ value }) {
   const { t } = useTranslation();
-  const [isOpen, setOpen] = React.useState(true)
+  const [isOpen, setOpen] = React.useState(false);
   const handlePressViewButton = () => {
     setOpen(!isOpen)
   }
-  const raw = getEditorData(value).getCurrentContent().getPlainText();
-  const isLong = isLongerContent(raw);
-  const contentCollapsed = getEditorData(getCollapseText(raw));
-  // console.log('raw', raw)
+  const isLong = isLongerContent(value);
+  const contentCollapsed = getCollapseText(value);
+  // console.log('raw', getRichContent(isOpen ? value : contentCollapsed))
   return (
-    <div className="tabBodyDescription">
-      <ColorTypo color='gray' uppercase bold style={{ marginBottom: '5px' }}>{t('LABEL_CHAT_TASK_MO_TA')}</ColorTypo>
-      <TextEditor isReadOnly
-        value={isOpen ? getEditorData(value) : contentCollapsed}
+    <div className="Description">
+      <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_MO_TA')}</ColorTypo>
+      <div className="Description--content"
+        dangerouslySetInnerHTML={{
+          __html: getRichContent(isOpen ? value : contentCollapsed)
+        }}
       >
-      </TextEditor>
+      </div>
       {
         isLong &&
-        <div className="tabBodyDescription--more" onClick={handlePressViewButton}>
-          {isOpen ? "Thu gọn" : "Xem thêm"}
+        <div className="Description--more" onClick={handlePressViewButton}>
+          {isOpen ? t('LABEL_CHAT_TASK_THU_GON') : t('LABEL_CHAT_TASK_XEM_THEM')}
         </div>
       }
     </div >

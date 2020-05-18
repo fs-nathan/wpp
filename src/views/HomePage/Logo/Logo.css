@@ -1,0 +1,28 @@
+.comp_homeCover {
+  position: relative;
+  height: 100%;
+}
+.comp_homeCover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.u-truncate {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.comp_homeCover div {
+  color: rgb(255, 255, 255);
+  text-shadow: rgb(0, 0, 0) 0px 0px 8px;
+  font-weight: bold;
+  font-size: 24px;
+  padding: 20px;
+  position: absolute;
+  bottom: 0px;
+  overflow: hidden;
+  width: 90%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

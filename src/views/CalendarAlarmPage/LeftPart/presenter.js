@@ -4,39 +4,49 @@ import Icon from '@mdi/react';
 import { Primary, StyledList, StyledListItem } from 'components/CustomList';
 import LeftSideContainer from 'components/LeftSideContainer';
 import LoadingOverlay from 'components/LoadingOverlay';
+import { hexToRGBA } from 'helpers/utils/hexToRGBA';
 import React from 'react';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import { Link, useHistory, useLocation, useParams } from 'react-router-dom';
 import { Routes } from "../constants/routes";
 import "./styles.scss";
 
 
-const getItemStyle = (isDragging, draggableStyle, defaultColor) => ({
-  background: isDragging ? "lightgreen" : defaultColor,
+const getItemStyle = (isDragging, draggableStyle, defaultColor, isHoverOrActive = false) => ({
+  background: isDragging ? "lightgreen" : hexToRGBA(defaultColor, isHoverOrActive ? 1 : 0.2),
   ...draggableStyle
 });
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? '#f6f6f6' : 'none',
+  //background: isDraggingOver ? '#f6f6f6' : 'none',
 });
 
 function CalendarAlarmLeftPartPresenter({
   personalRemindCategories, handleSortPersonalAlarm,
-  handleOpenModal, handleDeleteCategory, handleEditCategory
+  handleOpenModal, handleDeleteCategory, handleEditCategory,
+  havePermission
 }) {
 
   const { t } = useTranslation();
   const history = useHistory();
   const params = useParams();
+  const search = useLocation().search;
 
   const [menuAnchor, setMenuAnchor] = React.useState();
   const [selectedCategory, setSelectedCategory] = React.useState();
+  const [categoryID, setCategoryID] = React.useState(null);
+  const [isHover, setIsHover] = React.useState({ id: null });
 
   function doOpenMenu(anchorEl, category) {
     setSelectedCategory(category);
     setMenuAnchor(anchorEl);
   }
+
+  React.useEffect(() => {
+    let searchParams = new URLSearchParams(search);
+    setCategoryID(searchParams.get("category"));
+  }, [search]);
 
   return (
     <React.Fragment>
@@ -59,7 +69,7 @@ function CalendarAlarmLeftPartPresenter({
                 className="left-setting-icon"
                 path={mdiCalendarClock}
                 size={1.4}
-                color={"rgba(0, 0, 0, 0.54)"}
+                color={"#607D8B"}
               />
               <ListItemText
                 primary={
@@ -82,7 +92,7 @@ function CalendarAlarmLeftPartPresenter({
                 className="left-setting-icon"
                 path={mdiCalendarClock}
                 size={1.4}
-                color={"rgba(0, 0, 0, 0.54)"}
+                color={"#607D8B"}
               />
               <ListItemText
                 primary={
@@ -105,7 +115,7 @@ function CalendarAlarmLeftPartPresenter({
                 className="left-setting-icon"
                 path={mdiCalendarClock}
                 size={1.4}
-                color={"rgba(0, 0, 0, 0.54)"}
+                color={"#607D8B"}
               />
               <ListItemText
                 primary={
@@ -117,15 +127,11 @@ function CalendarAlarmLeftPartPresenter({
                 }
               />
               {
-                params.category === "personal" && (
+                havePermission && (
                   <IconButton
                     onClick={() => handleOpenModal("PERSONAL_REMIND_CREATE")}
                   >
-                    <Icon
-                      path={mdiPlus}
-                      size={0.8}
-                      color={"rgba(0, 0, 0, 0.54)"}
-                    />
+                    <abbr title={t('IDS_WP_CREATE_NEW')}><Icon path={mdiPlus} size={0.85} color={"rgba(0, 0, 0, 0.54)"} /></abbr>
                   </IconButton>
                 )
               }
@@ -135,7 +141,7 @@ function CalendarAlarmLeftPartPresenter({
               spinner
               fadeSpeed={100}
             >
-              <DragDropContext onDragEnd={handleSortPersonalAlarm}>
+              <DragDropContext onDragEnd={havePermission ? handleSortPersonalAlarm : () => null}>
                 <Droppable droppableId="droppable">
                   {(provided, snapshot) => (
                     <div
@@ -147,39 +153,53 @@ function CalendarAlarmLeftPartPresenter({
                       {personalRemindCategories.data.map((item, index) => {
                         if (item.id !== null) {
                           return (
-                            <Draggable key={item.id} draggableId={item.id} index={index}>
-                              {(provided, snapshot) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  className="sub_menu_item"
-                                  style={getItemStyle(
-                                    snapshot.isDragging,
-                                    provided.draggableProps.style,
-                                    item.color
-                                  )}
-                                >
-                                  <a
-                                    onClick={() => history.push(`${Routes.ALARM_PERSONAL}?category=${item.id}`)}
-                                    className="personal_alarm_name">{item.name}
-                                  </a>
-                                  <div className="personal_alarm_count">2</div>
-                                  <IconButton
-                                    key={item.id}
-                                    onClick={({ target }) => doOpenMenu(target, item)}
+                            <div className={`sub_menu_item ${categoryID === item.id ? 'sub_menu_item_active' : ''}`}>
+                              <Draggable key={item.id} draggableId={item.id} index={index}>
+                                {(provided, snapshot) => (
+                                  <div
+                                    onMouseEnter={() => setIsHover({ id: item.id })}
+                                    onMouseLeave={() => setIsHover({ id: null })}
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    {...provided.dragHandleProps}
+                                    className="sub_menu_item_inner"
+                                    style={getItemStyle(
+                                      snapshot.isDragging,
+                                      provided.draggableProps.style,
+                                      item.color,
+                                      new URLSearchParams(search).get("category") === item.id || isHover.id === item.id
+                                    )}
                                   >
-                                    <Icon
-                                      key={item.id}
-                                      path={mdiDotsVertical}
-                                      size={1}
-                                      color={"rgba(0, 0, 0, 0.54)"
-                                      }
-                                    />
-                                  </IconButton>
-                                </div>
-                              )}
-                            </Draggable>
+                                    <a
+                                      onClick={() => history.push(`${Routes.ALARM_PERSONAL}?category=${item.id}`)}
+                                      className="personal_alarm_name">{item.name}
+                                    </a>
+                                    <div className="personal_alarm_count">2</div>
+                                    {
+                                      havePermission && (
+                                        <IconButton
+                                          key={item.id}
+                                          onClick={(evt) => doOpenMenu(evt.currentTarget, item)}
+                                        >
+                                          <abbr title={t('IDS_WP_MORE')}>
+                                            {
+                                              isHover.id === item.id && (
+                                                <Icon
+                                                  key={item.id}
+                                                  path={mdiDotsVertical}
+                                                  size={0.8}
+                                                  color={"#fff"}
+                                                />
+                                              )
+                                            }
+                                          </abbr>
+                                        </IconButton>
+                                      )
+                                    }
+                                  </div>
+                                )}
+                              </Draggable>
+                            </div>
                           )
                         }
 

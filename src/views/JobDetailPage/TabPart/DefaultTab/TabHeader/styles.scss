@@ -14,7 +14,7 @@
     height: 60px;
   }
   &--role {
-    color: blue;
+    color: #607d8b;
     font-size: 12px;
     margin-top: 5px;
   }
@@ -36,5 +36,10 @@
     line-height: 18px;
     margin-top: 18px;
     margin-bottom: 5px;
+  }
+  &--menu {
+    .MuiListItem-button:hover {
+      background-color: #f2f5fa;
+    }
   }
 }

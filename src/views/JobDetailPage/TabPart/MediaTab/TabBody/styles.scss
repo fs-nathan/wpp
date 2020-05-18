@@ -123,18 +123,28 @@
 
 .mediaMenuItem {
   display: none;
-  width: 100%;
   background-color: #1119;
   border-radius: 0;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
-  .mediaBox--item:hover & {
-    display: inline;
-  }
   text-align: center;
   position: absolute;
   top: 0;
   right: 0;
+  .mediaBox--item:hover & {
+    display: block;
+    width: 100%;
+  }
+  .fileBoxItem:hover & {
+    display: block;
+    background-color: unset;
+    top: 16px;
+  }
+  .linkBoxItem:hover & {
+    display: block;
+    background-color: unset;
+    top: 9px;
+  }
 }
 
 .fileBoxItem {
@@ -143,6 +153,7 @@
   padding: 0;
   margin: 10px 0;
   & > img {
+    cursor: pointer;
     width: 40px;
     height: auto;
   }
@@ -168,6 +179,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 230px;
+    cursor: pointer;
   }
   &--downloaded {
     width: 100%;
@@ -199,13 +211,19 @@
   }
 }
 
-.linkBox--button {
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
+.linkBox {
+  position: relative;
+  &--button {
     &:hover {
-      fill: #03b000;
+      background: none;
     }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &Item {
+    position: relative;
   }
 }

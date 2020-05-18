@@ -1,22 +1,30 @@
 import { listRemindProject } from "actions/calendar/alarmCalendar/listRemindProject";
+import { listProjectBasicInfo } from "actions/project/listBasicInfo";
+import { useLocalStorage } from "hooks";
 import moment from "moment";
 import React from 'react';
 import { connect } from 'react-redux';
 import ViewDetailRemind from "views/CalendarPage/views/Modals/ViewDetailRemind";
 import { Context as CalendarAlarmContext } from '../../index';
-import { bgColorSelector, remindProjectSelector } from "../../selectors";
+import { bgColorSelector, listProjectBasicInfoSelector, remindProjectSelector } from "../../selectors";
 import CalendarProjectAlarmPresenter from './presenter';
 
 function CalendarProjectAlarm({
-  bgColor, doListRemindProject,
-  projectReminds
+  bgColor, doListRemindProject, projects,
+  projectReminds, doListProjectBasicInfo,
 }) {
 
   const {
-    localOptions, setLocalOptions,
-    expand, handleExpand,
-    timeRange, setTimeRange
+    expand, handleExpand
   } = React.useContext(CalendarAlarmContext);
+
+  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PERSONAL_REMINDS_OPTIONS', {
+    timeType: 3
+  });
+  const [timeRange, setTimeRange] = React.useState({
+    start: moment().startOf("isoWeek"),
+    end: moment().endOf("isoWeek")
+  });
 
   const [timeType, setTimeType] = React.useState(localOptions.timeType);
   const [filterOpen, setFilterOpen] = React.useState(false);
@@ -31,10 +39,14 @@ function CalendarProjectAlarm({
   }, [timeType]);
 
   React.useEffect(() => {
-    let fromTime = moment(timeRange.start).format("YYYY-MM-DD");
-    let toTime = moment(timeRange.end).format("YYYY-MM-DD");
+    let fromTime = moment(timeRange.startDate ?? moment().startOf('year')).format("YYYY-MM-DD");
+    let toTime = moment(timeRange.endDate ?? moment().endOf('year')).format("YYYY-MM-DD");
     doListRemindProject({ fromTime, toTime }, false);
   }, [doListRemindProject, timeRange]);
+
+  React.useEffect(() => {
+    doListProjectBasicInfo(false);
+  }, [doListProjectBasicInfo]);
 
   function handleOpenDetail(remind) {
     setOpenModalDetail(true);
@@ -56,6 +68,7 @@ function CalendarProjectAlarm({
         filterOpen={filterOpen}
         setFilterOpen={setFilterOpen}
         projectReminds={projectReminds}
+        projects={projects}
         handleOpenDetail={(remind) => handleOpenDetail(remind)}
       />
       <ViewDetailRemind
@@ -70,6 +83,7 @@ function CalendarProjectAlarm({
 const mapDispatchToProps = dispatch => {
   return {
     doListRemindProject: ({ fromTime, toTime }, quite) => dispatch(listRemindProject({ fromTime, toTime }, quite)),
+    doListProjectBasicInfo: (quite) => dispatch(listProjectBasicInfo(quite)),
   };
 };
 
@@ -77,6 +91,7 @@ const mapStateToProps = state => {
   return {
     bgColor: bgColorSelector(state),
     projectReminds: remindProjectSelector(state),
+    projects: listProjectBasicInfoSelector(state)
   };
 };
 

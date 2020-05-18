@@ -1,12 +1,17 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import ColorTypo from '../ColorTypo';
 import './style.scss';
 
 const StyledTextField = ({ className = '', ...rest }) =>
   <TextField
     className={`comp_CustomTextbox___text-field ${className}`}
+    {...rest}
+  />
+
+const StyledTextBox = ({ className = '', ...rest }) =>
+  <div
+    className={`comp_CustomTextbox___text-box ${className}`}
     {...rest}
   />
 
@@ -16,8 +21,10 @@ function CustomTextbox({
   isReadOnly = false,
   maxHeight = 100,
   className = '',
-  helperText = '',
-  label = undefined
+  label = undefined,
+  placeholder = 'Nội dung...',
+  multiline = false,
+  required = false,
 }) {
 
   const { t } = useTranslation();
@@ -59,20 +66,18 @@ function CustomTextbox({
     )
   } else {
     return (
-      <StyledTextField
-        multiline
-        fullWidth
-        rows={3}
-        label={label}
-        variant="outlined"
-        value={value}
-        onChange={evt => onChange(evt.target.value)}
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {helperText}
-          </ColorTypo>
-        }
-      />
+      <StyledTextBox>
+        <p>{label}{required ? <abbr title="Bắt buộc">*</abbr> : null}</p>
+        <StyledTextField
+          multiline={multiline}
+          fullWidth
+          rows={multiline ? 3 : undefined}
+          variant="outlined"
+          value={value}
+          onChange={evt => onChange(evt.target.value)}
+          placeholder={placeholder}
+        />
+      </StyledTextBox>
     )
   }
 }

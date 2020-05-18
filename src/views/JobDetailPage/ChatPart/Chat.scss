@@ -10,5 +10,12 @@
     margin-left: auto;
     padding: 8px;
     margin-right: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    svg {
+      fill: #607d8b;
+      color: #607d8b;
+    }
   }
 }

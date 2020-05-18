@@ -1,6 +1,13 @@
 .demandTabItem {
   display: flex;
+  position: relative;
+  margin: 0 0 0 -16px;
+  padding: 10px 16px;
+  cursor: pointer;
   // align-items: center;
+  &:hover {
+    background-color: #f2f5fa;
+  }
   &--title {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -25,21 +32,28 @@
       width: 15px !important;
       height: 15px !important;
       margin-right: 4px;
-      fill: rgba(0, 0, 0, 0.54);
+      path {
+        fill: #6c6c6c !important;
+      }
     }
   }
   &--icon {
     padding: 12px 6px;
     // background-color: #ccc;
-    min-width: 3em;
+    width: 3rem;
+    height: 3rem;
+    margin-right: 10px;
+    border-radius: 2px;
     &__orange {
+      background-color: #ffebaf;
       path {
-        fill: #ff9800;
+        fill: #ff9800 !important;
       }
     }
     &__blue {
+      background-color: #bff8ff;
       path {
-        fill: #00bcd4;
+        fill: #00bcd4 !important;
       }
     }
   }

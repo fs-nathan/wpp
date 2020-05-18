@@ -1,7 +1,6 @@
-import { TextField } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
 import CustomModal from 'components/CustomModal';
-import { CREATE_USER_ROLE, CustomEventDispose, CustomEventListener, UPDATE_USER_ROLE } from 'constants/events';
+import CustomTextbox from 'components/CustomTextbox';
+import { CREATE_USER_ROLE, CustomEventDispose, CustomEventListener, LIST_USER_ROLE, UPDATE_USER_ROLE } from 'constants/events';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
@@ -11,12 +10,13 @@ function RoleCreateAndUpdate({
   open, setOpen,
   updatedUserRole = null,
   handleCreateOrUpdateUserRole,
-  activeLoading,
+  doReloadUserRole,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const [description, setDescription] = useMaxlenString('', 350);
   const { t } = useTranslation();
+  const [activeLoading, setActiveLoading] = React.useState(false);
 
   React.useEffect(() => {
     if (updatedUserRole) {
@@ -27,16 +27,37 @@ function RoleCreateAndUpdate({
   }, [updatedUserRole]);
 
   React.useEffect(() => {
-    const successClose = () => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(CREATE_USER_ROLE.SUCCESS, doReloadUserRole);
+    CustomEventListener(UPDATE_USER_ROLE.SUCCESS, doReloadUserRole);
+    CustomEventListener(CREATE_USER_ROLE.FAIL, fail);
+    CustomEventListener(UPDATE_USER_ROLE.FAIL, fail);
+    return () => {
+      CustomEventDispose(CREATE_USER_ROLE.SUCCESS, doReloadUserRole);
+      CustomEventDispose(UPDATE_USER_ROLE.SUCCESS, doReloadUserRole);
+      CustomEventDispose(CREATE_USER_ROLE.FAIL, fail);
+      CustomEventDispose(UPDATE_USER_ROLE.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
       setOpen(false);
       setName('');
       setDescription('');
     };
-    CustomEventListener(CREATE_USER_ROLE, successClose);
-    CustomEventListener(UPDATE_USER_ROLE, successClose);
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(LIST_USER_ROLE.SUCCESS, success);
+    CustomEventListener(LIST_USER_ROLE.FAIL, fail);
     return () => {
-      CustomEventDispose(CREATE_USER_ROLE, successClose);
-      CustomEventDispose(UPDATE_USER_ROLE, successClose);
+      CustomEventDispose(LIST_USER_ROLE.SUCCESS, success);
+      CustomEventDispose(LIST_USER_ROLE.FAIL, fail);
     }
     // eslint-disable-next-line
   }, []);
@@ -46,37 +67,28 @@ function RoleCreateAndUpdate({
       open={open}
       setOpen={setOpen}
       title={updatedUserRole ? t('DMH.VIEW.DP.MODAL.ROLE.U_TITLE') : t('DMH.VIEW.DP.MODAL.ROLE.C_TITLE')}
-      canConfirm={!errorName && !errorDescription}
-      onConfirm={() => handleCreateOrUpdateUserRole(name, description)}
+      canConfirm={!errorName}
+      onConfirm={() => {
+        handleCreateOrUpdateUserRole(name, description);
+        setActiveLoading(false);
+      }}
       onCancle={() => setOpen(false)}
-      manualClose={false}
+      manualClose={true}
       activeLoading={activeLoading}
     >
-      <TextField
+      <CustomTextbox
         value={name}
-        onChange={evt => setName(evt.target.value)}
+        onChange={newName => setName(newName)}
         label={t('DMH.VIEW.DP.MODAL.ROLE.NAME')}
-        margin="normal"
-        variant="outlined"
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorName, 'message', '')}
-          </ColorTypo>
-        }
+        required={true}
       />
-      <TextField
+      <CustomTextbox
         value={description}
-        onChange={evt => setDescription(evt.target.value)}
+        onChange={newDescription => setDescription(newDescription)}
         label={t('DMH.VIEW.DP.MODAL.ROLE.DESC')}
-        margin="normal"
-        variant="outlined"
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorDescription, 'message', '')}
-          </ColorTypo>
-        }
+        multiline={true}
       />
     </CustomModal>
   )

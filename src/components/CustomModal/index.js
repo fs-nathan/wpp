@@ -155,6 +155,8 @@ function CustomModal({
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
       className={clsx(className, "comp_CustomModal")}
+      disableBackdropClick={true}
+      disableEscapeKeyDown={true}
     >
       <StyledDialogTitle className={clsx({ "comp_CustomModal__renderTitle": titleRender !== null })} id="alert-dialog-slide-title">
         {
@@ -201,7 +203,7 @@ function CustomModal({
               className="margin-circular"
               color={bgColor.color}
               style={{
-                opacity: (actionLoading || activeLoading) ? 1 : 0
+                display: (actionLoading || activeLoading) ? 'initial' : 'none'
               }}
             />
             {isFunction(confirmRender) ? confirmRender() : t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}

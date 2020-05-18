@@ -26,9 +26,11 @@ export const CssFormControl = ({
 }) => {
   return (
     <div>
-      <Typography gutterBottom>
-        <b>{label}</b>
-      </Typography>
+      {label && (
+        <Typography gutterBottom>
+          <b>{label}</b>
+        </Typography>
+      )}
       {children}
       {textHelper && (
         <Typography className="comp_CssFormControl__textHelper">
@@ -43,16 +45,26 @@ export const CssFormControl = ({
     </div>
   );
 };
-export const InputFormControl = ({ name, ...props }) => {
+export const BindedCssFormControl = ({ name, children, ...props }) => {
   const [field, meta] = useField({ name });
   const error = meta.error;
   return (
-    <CssFormControl {...props} errorMessage={meta.error}>
+    <CssFormControl {...props} errorMessage={error}>
+      {children(field, meta)}
+    </CssFormControl>
+  );
+};
+export const InputFormControl = ({ name, inputProps, ...props }) => {
+  const [field, meta] = useField({ name });
+  const error = meta.error;
+  return (
+    <CssFormControl {...props} errorMessage={error}>
       <TextField
         error={!!error}
         {...field}
         variant="outlined"
         fullWidth
+        {...inputProps}
       ></TextField>
     </CssFormControl>
   );
@@ -61,9 +73,9 @@ export const MultilineInputFormControl = ({ name, ...props }) => {
   const [field, meta] = useField({ name });
   const error = meta.error;
   return (
-    <CssFormControl {...props} errorMessage={meta.error}>
+    <CssFormControl {...props} errorMessage={error}>
       <TextField
-        error={error}
+        error={!!error}
         {...field}
         multiline
         rowsMax={6}
@@ -142,4 +154,5 @@ export const SelecIconInputFormControl = ({
     </CssFormControl>
   );
 };
+
 export default CssFormControl;

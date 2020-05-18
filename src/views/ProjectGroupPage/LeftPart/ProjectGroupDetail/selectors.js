@@ -4,17 +4,13 @@ import { createSelector } from 'reselect';
 const detailProjectGroup = state => state.projectGroup.detailProjectGroup;
 const memberProjectGroup = state => state.projectGroup.memberProjectGroup;
 const listProject = state => state.project.listProject;
-const editProjectGroup = state => state.projectGroup.editProjectGroup;
-const deleteProjectGroup = state => state.projectGroup.deleteProjectGroup;
 
 export const groupSelector = createSelector(
-  [detailProjectGroup, memberProjectGroup, listProject, editProjectGroup, deleteProjectGroup],
-  (detailProjectGroup, memberProjectGroup, listProject, editProjectGroup, deleteProjectGroup) => {
+  [detailProjectGroup, memberProjectGroup, listProject],
+  (detailProjectGroup, memberProjectGroup, listProject) => {
     const { data: { projectGroup }, error: detailProjectGroupError, loading: detailProjectGroupLoading, firstTime: detailFirst } = detailProjectGroup;
     const { data: { members }, error: memberProjectGroupError, loading: memberProjectGroupLoading, firstTime: memberFirst } = memberProjectGroup;
     const { data: { projects } } = listProject;
-    const { loading: editLoading, error: editError } = editProjectGroup;
-    const { loading: deleteLoading, error: deleteError } = deleteProjectGroup;
     const newGroup = {
       ...projectGroup,
       members,
@@ -31,9 +27,8 @@ export const groupSelector = createSelector(
     return {
       group: newGroup,
       loading: (detailFirst ? false : detailProjectGroupLoading) ||
-        (memberFirst ? false : memberProjectGroupLoading) ||
-        editLoading || deleteLoading,
-      error: detailProjectGroupError || memberProjectGroupError || editError || deleteError,
+        (memberFirst ? false : memberProjectGroupLoading),
+      error: detailProjectGroupError || memberProjectGroupError,
       firstTime: detailFirst && memberFirst,
     }
   }

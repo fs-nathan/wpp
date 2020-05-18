@@ -1,10 +1,12 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { Box, ButtonBase, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton, TextField } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
-import TimeSelect, { listTimeSelect } from 'components/TimeSelect';
+import TimePicker from 'components/TimePicker';
+import { listTimeSelect } from 'components/TimeSelect';
 import { isEmpty, isNil } from "lodash";
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -23,8 +25,9 @@ const DEFAULT_DATA = {
 };
 
 function ShiftStageModal({
-  open, setOpen, onCancle = () => null,
-  onConfirm, colors, shiftStage
+  open, setOpen, onCancle = () => null, actionFrom,
+  onConfirm, colors, shiftStage, calendarStateAdd, calendarStateUpdate,
+  calendarStateAddAllTime, calendarStateUpdateAllTime
 }) {
 
   const { t } = useTranslation();
@@ -32,6 +35,8 @@ function ShiftStageModal({
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const [actionType, setActionType] = React.useState("CREATE");
   const [canConfirm, setCanConfirm] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
   };
@@ -42,7 +47,6 @@ function ShiftStageModal({
   }
 
   function handleConfirm() {
-    setOpen(false);
     onConfirm(actionType, data);
   }
 
@@ -53,13 +57,36 @@ function ShiftStageModal({
       handleChangeData("selectedTimeStart", shiftStage.start);
       handleChangeData("selectedTimeEnd", shiftStage.end);
       setActionType("EDIT");
-    } else setActionType("CREATE");
-  }, [shiftStage]);
+    } else {
+      setActionType("CREATE");
+      setDataMember(DEFAULT_DATA);
+    }
+  }, [shiftStage, open]);
 
   React.useEffect(() => {
     if (isEmpty(data.shiftName)) setCanConfirm(false);
     else setCanConfirm(true);
   }, [data.shiftName]);
+
+  React.useEffect(() => {
+    if (actionType === "CREATE") {
+      if (actionFrom === "SHIFT_STAGE") {
+        setIsLoading(calendarStateAdd.loading);
+        if (calendarStateAdd.loading === false && calendarStateAdd.error === null) setOpen(false);
+      } else {
+        setIsLoading(calendarStateAddAllTime.loading);
+        if (calendarStateAddAllTime.loading === false && calendarStateAddAllTime.error === null) setOpen(false);
+      }
+    } else {
+      if (actionFrom === "SHIFT_STAGE") {
+        setIsLoading(calendarStateUpdate.loading);
+        if (calendarStateUpdate.loading === false && calendarStateUpdate.error === null) setOpen(false);
+      } else {
+        setIsLoading(calendarStateUpdateAllTime.loading);
+        if (calendarStateUpdateAllTime.loading === false && calendarStateUpdateAllTime.error === null) setOpen(false);
+      }
+    }
+  }, [calendarStateAdd, calendarStateUpdate, calendarStateAddAllTime, calendarStateUpdateAllTime]);
 
   return (
     <Dialog
@@ -97,16 +124,16 @@ function ShiftStageModal({
               </div>
               <div className="view_ShiftStage_formControl">
                 <span>{t('views.calendar_page.modal.shift_stage.time_start')}</span>
-                <TimeSelect
+                <TimePicker
                   value={data.selectedTimeStart}
-                  onChange={({ target }) => handleChangeData('selectedTimeStart', target.value)}
+                  onChange={(value) => handleChangeData('selectedTimeStart', value)}
                 />
               </div>
               <div className="view_ShiftStage_formControl">
                 <span>{t('views.calendar_page.modal.shift_stage.time_end')}</span>
-                <TimeSelect
+                <TimePicker
                   value={data.selectedTimeEnd}
-                  onChange={({ target }) => handleChangeData('selectedTimeEnd', target.value)}
+                  onChange={(value) => handleChangeData('selectedTimeEnd', value)}
                 />
               </div>
             </MuiPickersUtilsProvider>
@@ -120,8 +147,11 @@ function ShiftStageModal({
         <ButtonBase
           style={{ color: bgColor.color, opacity: canConfirm ? 1 : 0.5 }} className='comp_AlertModal___accept-button'
           onClick={() => handleConfirm()}
-          disabled={!canConfirm}
+          disabled={!canConfirm || isLoading}
         >
+          {isLoading && (
+            <CircularProgress size={20} className="margin-circular" />
+          )}
           {t('IDS_WP_DONE')}
         </ButtonBase>
       </DialogActions>
@@ -130,7 +160,11 @@ function ShiftStageModal({
 }
 
 export default connect(state => ({
-  colors: state.setting.colors
+  colors: state.setting.colors,
+  calendarStateAdd: state.calendar.projectCalendarCreateShiftStage,
+  calendarStateAddAllTime: state.calendar.projectCalendarCreateShiftStageAllTime,
+  calendarStateUpdate: state.calendar.projectCalendarUpdateShiftStage,
+  calendarStateUpdateAllTime: state.calendar.projectCalendarUpdateShiftStageAllTime
 }),
   {},
 )(ShiftStageModal);

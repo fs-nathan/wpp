@@ -56,7 +56,6 @@ const LoginPage = props => {
       const password = elements.password.value;
       setIsLoading(true);
       const { data } = await actionlogin({ email, password });
-
       localStorage.setItem(TOKEN, data.accessToken);
       localStorage.setItem(REFRESH_TOKEN, data.refreshToken);
       localStorage.setItem(GROUP_ACTIVE, data.group_active);

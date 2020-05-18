@@ -1,7 +1,6 @@
-import { TextField } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
 import CustomModal from 'components/CustomModal';
-import { CREATE_MAJOR, CustomEventDispose, CustomEventListener, UPDATE_MAJOR } from 'constants/events';
+import CustomTextbox from 'components/CustomTextbox';
+import { CREATE_MAJOR, CustomEventDispose, CustomEventListener, LIST_MAJOR, UPDATE_MAJOR } from 'constants/events';
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
@@ -11,12 +10,13 @@ function MajorCreateAndUpdate({
   open, setOpen,
   updatedMajor = null,
   handleCreateOrUpdateMajor,
-  activeLoading,
+  doReloadMajor,
 }) {
 
   const [name, setName, errorName] = useRequiredString('', 150);
-  const [description, setDescription, errorDescription] = useMaxlenString('', 350);
+  const [description, setDescription] = useMaxlenString('', 350);
   const { t } = useTranslation();
+  const [activeLoading, setActiveLoading] = React.useState(false);
 
   React.useEffect(() => {
     if (updatedMajor) {
@@ -27,59 +27,68 @@ function MajorCreateAndUpdate({
   }, [updatedMajor]);
 
   React.useEffect(() => {
-    const successClose = () => {
-      setOpen(false);
-      setName('');
-      setDescription('');
+    const fail = () => {
+      setActiveLoading(false);
     };
-    CustomEventListener(CREATE_MAJOR, successClose);
-    CustomEventListener(UPDATE_MAJOR, successClose);
+    CustomEventListener(CREATE_MAJOR.SUCCESS, doReloadMajor);
+    CustomEventListener(UPDATE_MAJOR.SUCCESS, doReloadMajor);
+    CustomEventListener(CREATE_MAJOR.FAIL, fail);
+    CustomEventListener(UPDATE_MAJOR.FAIL, fail);
     return () => {
-      CustomEventDispose(CREATE_MAJOR, successClose);
-      CustomEventDispose(UPDATE_MAJOR, successClose);
+      CustomEventDispose(CREATE_MAJOR.SUCCESS, doReloadMajor);
+      CustomEventDispose(UPDATE_MAJOR.SUCCESS, doReloadMajor);
+      CustomEventDispose(CREATE_MAJOR.FAIL, fail);
+      CustomEventDispose(UPDATE_MAJOR.FAIL, fail);
     }
     // eslint-disable-next-line
   }, []);
 
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
+      setOpen(false);
+      setName('');
+      setDescription('');
+    };
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(LIST_MAJOR.SUCCESS, success);
+    CustomEventListener(LIST_MAJOR.FAIL, fail);
+    return () => {
+      CustomEventDispose(LIST_MAJOR.SUCCESS, success);
+      CustomEventDispose(LIST_MAJOR.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <CustomModal
       open={open}
       setOpen={setOpen}
       title={updatedMajor ? t('DMH.VIEW.DP.MODAL.MAJOR.U_TITLE') : t('DMH.VIEW.DP.MODAL.MAJOR.C_TITLE')}
-      canConfirm={!errorName && !errorDescription}
-      onConfirm={() => handleCreateOrUpdateMajor(name, description)}
+      canConfirm={!errorName}
+      onConfirm={() => {
+        handleCreateOrUpdateMajor(name, description);
+        setActiveLoading(true);
+      }}
       onCancle={() => setOpen(false)}
-      manualClose={false}
+      manualClose={true}
       activeLoading={activeLoading}
     >
-      <TextField
+      <CustomTextbox
         value={name}
-        onChange={evt => setName(evt.target.value)}
+        onChange={newName => setName(newName)}
         label={t('DMH.VIEW.DP.MODAL.MAJOR.NAME')}
-        margin="normal"
-        variant="outlined"
         fullWidth
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorName, 'message', '')}
-          </ColorTypo>
-        }
+        required={true}
       />
-      <TextField
+      <CustomTextbox
         value={description}
-        onChange={evt => setDescription(evt.target.value)}
+        onChange={newDescription => setDescription(newDescription)}
         label={t('DMH.VIEW.DP.MODAL.MAJOR.DESC')}
-        margin="normal"
-        variant="outlined"
         fullWidth
-        multiline
-        rowsMax='4'
-        helperText={
-          <ColorTypo variant='caption' color='red'>
-            {get(errorDescription, 'message', '')}
-          </ColorTypo>
-        }
+        multiline={true}
       />
     </CustomModal>
   )

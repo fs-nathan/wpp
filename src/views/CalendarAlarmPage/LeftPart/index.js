@@ -1,7 +1,9 @@
 import { createPersonalRemindCategory } from "actions/calendar/alarmCalendar/createPersonalRemindCategory";
 import { deletePersonalRemindCategory } from "actions/calendar/alarmCalendar/deletePersonalRemindCategory";
 import { updatePersonalRemindCategory } from "actions/calendar/alarmCalendar/updatePersonalRemindCategory";
+import AlertModal from "components/AlertModal";
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import CreateGroupPersonalRemind from 'views/CalendarPage/views/Modals/CreateGroupPersonalRemind';
 import UpdateGroupPersonalRemind from "views/CalendarPage/views/Modals/UpdateGroupPersonalRemind";
@@ -10,15 +12,23 @@ import CalendarAlarmLeftPartPresenter from './presenter';
 function CalendarAlramLeftPart({
   personalRemindCategories, handleSortPersonalAlarm,
   doCreatePersonalRemindCategory, doDeletePersonalRemindCategory,
-  doUpdatePersonalRemindCategory,
+  doUpdatePersonalRemindCategory, permissions
 }) {
+
+  const { t } = useTranslation();
   const [openPersonalRemindModalCreate, setOpenPersonalRemindModalCreate] = React.useState(false);
   const [openPersonalRemindModalUpdate, setOpenPersonalRemindModalUpdate] = React.useState(false);
   const [selectedCategory, setSelectedCategory] = React.useState();
+  const [alertConfirm, setAlertConfirm] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
   function handleOpenModal(type) {
     switch (type) {
       case "PERSONAL_REMIND_CREATE":
         setOpenPersonalRemindModalCreate(true);
+        return;
+      case "DELETE_CATEGORY":
+        setAlertConfirm(true);
         return;
       default:
         return;
@@ -42,25 +52,47 @@ function CalendarAlramLeftPart({
     doUpdatePersonalRemindCategory({ categoryID: value.id, name: value.title, color: value.color });
   }
 
+  React.useEffect(() => {
+    setIsLoading(false);
+  }, [personalRemindCategories]);
+
   return (
     <>
       <CalendarAlarmLeftPartPresenter
         personalRemindCategories={personalRemindCategories}
+        havePermission={permissions['manage_group_remind'] ?? false}
         handleSortPersonalAlarm={handleSortPersonalAlarm}
         handleOpenModal={(type) => handleOpenModal(type)}
-        handleDeleteCategory={(category) => handleDeleteCategory(category)}
+        handleDeleteCategory={(category) => {
+          setSelectedCategory(category);
+          handleOpenModal("DELETE_CATEGORY");
+        }}
         handleEditCategory={(category) => handleEditCategory(category)}
       />
       <CreateGroupPersonalRemind
         open={openPersonalRemindModalCreate}
         setOpen={setOpenPersonalRemindModalCreate}
-        onConfirm={(value) => handleCreateGroupRemind(value)}
+        onConfirm={(value) => {
+          setIsLoading(true);
+          handleCreateGroupRemind(value);
+        }}
+        isLoading={isLoading}
       />
       <UpdateGroupPersonalRemind
         open={openPersonalRemindModalUpdate}
         setOpen={setOpenPersonalRemindModalUpdate}
-        onConfirm={(value) => handleUpdateCategroy(value)}
+        onConfirm={(value) => {
+          setIsLoading(true);
+          handleUpdateCategroy(value);
+        }}
         value={selectedCategory}
+        isLoading={isLoading}
+      />
+      <AlertModal
+        open={alertConfirm}
+        setOpen={setAlertConfirm}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={() => handleDeleteCategory(selectedCategory)}
       />
     </>
   )

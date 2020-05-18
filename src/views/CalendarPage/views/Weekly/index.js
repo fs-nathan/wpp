@@ -1,7 +1,6 @@
 import { listSchedule } from "actions/calendar/weeklyCalendar/listSchedule";
 import { settingStartingDay } from "actions/calendar/weeklyCalendar/settingStartingDay";
-import { CREATE_WEEKLY_SCHEDULE, CustomEventDispose, CustomEventListener } from "constants/events";
-import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from 'constants/snackbarController';
+import { CREATE_WEEKLY_SCHEDULE, CustomEventDispose, CustomEventListener, WEEKLY_SCHEDULE_SETTING_START_DAY } from "constants/events";
 import { get, reverse, sortBy } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -16,10 +15,10 @@ import { calendarsSelector } from "./selectors";
 function Weekly({
   calendars, doListSchedule,
   bgColor, doListUserOfGroup,
-  doSettingStartingDay, settingStartingDayResult
+  doSettingStartingDay,
 }) {
   const {
-    expand, handleExpand
+    expand, handleExpand, permissions
   } = React.useContext(CalendarPageContext);
   const [openCreate, setOpenCreate] = React.useState(false);
   const [year, setYear] = React.useState(new Date().getFullYear());
@@ -38,8 +37,10 @@ function Weekly({
       doListSchedule({ year }, false);
     }
     CustomEventListener(CREATE_WEEKLY_SCHEDULE, refreshList);
+    CustomEventListener(WEEKLY_SCHEDULE_SETTING_START_DAY, refreshList);
     return () => {
       CustomEventDispose(CREATE_WEEKLY_SCHEDULE, refreshList);
+      CustomEventDispose(WEEKLY_SCHEDULE_SETTING_START_DAY, refreshList);
     }
   }, [doListSchedule, year]);
 
@@ -77,25 +78,11 @@ function Weekly({
     }
   }, [doSettingStartingDay, startingDayInWeek])
 
-  React.useEffect(() => {
-    if (settingStartingDayResult !== null && startingDayInWeek !== null) {
-      if (settingStartingDayResult) {
-        SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-      } else {
-        SnackbarEmitter(SNACKBAR_VARIANT.ERROR, DEFAULT_MESSAGE.MUTATE.ERROR);
-      }
-    }
-  }, [settingStartingDayResult, doSettingStartingDay, startingDayInWeek])
-
-  function handleOnCloseCreateModel() {
-    //doListSchedule({ year }, false);
-  }
-
   return (
     <>
       <WeeklyCalendarPresenter
         expand={expand} handleExpand={handleExpand}
-        canCreate={true}
+        canCreate={permissions['manage_week_schedule'] ?? false}
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         year={year} handleYearChanged={year => setYear(year)}
@@ -107,19 +94,16 @@ function Weekly({
             dir: newDir,
           }
         })}
-        handleSortCalendar={sortData => {
-          setnewCalendars({ data: sortData })
-        }}
         calendars={newCalendars}
       />
       <CreateWeeklyCalendar
         open={openCreate}
         setOpen={setOpenCreate}
-        handleOnClose={handleOnCloseCreateModel}
       />
       <SettingWeeklyCalendar
         open={openSetting}
         setOpen={setOpenSetting}
+        permission={permissions['manage_week_schedule'] ?? false}
         onConfirm={handleSettingStartingDay}
       />
     </>

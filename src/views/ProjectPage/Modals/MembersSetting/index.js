@@ -5,8 +5,6 @@ import { permissionProject } from 'actions/project/permissionProject';
 import { removeMemberProject } from 'actions/project/removeMemberFromProject';
 import { updateStateJoinTask } from 'actions/project/updateStateJoinTask';
 import { listUserRole } from 'actions/userRole/listUserRole';
-import AlertModal from 'components/AlertModal';
-import { ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, CustomEventDispose, CustomEventListener, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, UPDATE_GROUP_PERMISSION_MEMBER, UPDATE_STATE_JOIN_TASK } from 'constants/events';
 import { filter, get, map } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -23,57 +21,29 @@ function MemberSetting({
   doAddMemberProject, doRemoveMemberProject,
   doUpdateStateJoinTask,
   doAssignMemberToAllTask,
-  doListUserRole,
   doMemberProject,
   doPermissionProject,
+  doListUserRole,
   viewPermissions,
+  doReloadMember,
 }) {
 
   const { projectId } = useParams();
-  const [id, setId] = React.useState(null);
-
-  React.useEffect(() => {
-    setId(projectId);
-  }, [projectId]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
-    if (open && id !== null) {
-      doMemberProject({ projectId: id });
-      const reloadMemberProject = () => {
-        doMemberProject({ projectId: id });
-      }
-      CustomEventListener(ADD_MEMBER_PROJECT, reloadMemberProject);
-      CustomEventListener(REMOVE_MEMBER_PROJECT, reloadMemberProject);
-      CustomEventListener(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
-      CustomEventListener(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
-      CustomEventListener(ADD_PROJECT_ROLE_TO_MEMBER, reloadMemberProject);
-      CustomEventListener(REMOVE_PROJECT_ROLE_FROM_MEMBER, reloadMemberProject);
-      CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER, reloadMemberProject);
-      return () => {
-        CustomEventDispose(ADD_MEMBER_PROJECT, reloadMemberProject);
-        CustomEventDispose(REMOVE_MEMBER_PROJECT, reloadMemberProject);
-        CustomEventDispose(UPDATE_STATE_JOIN_TASK, reloadMemberProject);
-        CustomEventDispose(ASSIGN_MEMBER_TO_ALL_TASK, reloadMemberProject);
-        CustomEventDispose(ADD_PROJECT_ROLE_TO_MEMBER, reloadMemberProject);
-        CustomEventDispose(REMOVE_PROJECT_ROLE_FROM_MEMBER, reloadMemberProject);
-        CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER, reloadMemberProject);
-      }
+    if (projectId !== null) {
+      doMemberProject({ projectId });
     }
     // eslint-disable-next-line
-  }, [id, viewPermissions]);
+  }, [projectId, viewPermissions]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
-    if (open) doListUserRole();
+    doPermissionProject();
+    doListUserRole();
     // eslint-disable-next-line
-  }, [open, viewPermissions]);
-
-  React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
-    if (open) doPermissionProject();
-    // eslint-disable-next-line
-  }, [open, viewPermissions]);
+  }, [projectId, viewPermissions]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
@@ -100,8 +70,6 @@ function MemberSetting({
   const [roleProps, setRoleProps] = React.useState({});
   const [openPermission, setOpenPermission] = React.useState(false);
   const [permissionProps, setPermissionProps] = React.useState({});
-  const [openAlert, setOpenAlert] = React.useState(false);
-  const [alertProps, setAlertProps] = React.useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -113,10 +81,6 @@ function MemberSetting({
         setOpenPermission(true);
         setPermissionProps(props);
         return;
-      case 'ALERT':
-        setOpenAlert(true);
-        setAlertProps(props);
-        return;
       default: return;
     }
   }
@@ -125,6 +89,8 @@ function MemberSetting({
     <>
       <MemberSettingPresenter
         open={open} setOpen={setOpen}
+        doReloadMember={() => doReloadMember(projectId)}
+        projectId={projectId}
         searchPatern={searchPatern} setSearchPatern={setSearchPatern}
         members={newMembers} addMember={addMember}
         handleAddMember={member =>
@@ -166,11 +132,6 @@ function MemberSetting({
         setOpen={setOpenPermission}
         {...permissionProps}
       />
-      <AlertModal
-        open={openAlert}
-        setOpen={setOpenAlert}
-        {...alertProps}
-      />
     </>
   )
 }
@@ -190,8 +151,9 @@ const mapDispatchToProps = dispatch => {
     doUpdateStateJoinTask: ({ projectId, memberId, state, }) => dispatch(updateStateJoinTask({ projectId, memberId, state, })),
     doAssignMemberToAllTask: ({ projectId, memberId, }) => dispatch(assignMemberToAllTask({ projectId, memberId })),
     doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
-    doListUserRole: (quite) => dispatch(listUserRole(quite)),
+    doReloadMember: (projectId) => dispatch(memberProject({ projectId }, true)),
     doPermissionProject: (quite) => dispatch(permissionProject(quite)),
+    doListUserRole: (quite) => dispatch(listUserRole(quite)),
   }
 };
 

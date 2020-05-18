@@ -3,6 +3,7 @@ import { projectScheduleAddWorkingDay } from "actions/calendar/projectCalendar/a
 import { createShiftStage } from "actions/calendar/projectCalendar/createShiftStage";
 import { createShiftStageAllTime } from "actions/calendar/projectCalendar/createShiftStageAllTime";
 import { addWorkingStage } from "actions/calendar/projectCalendar/createWorkingStage";
+import { projectScheduleDeleteDayOff } from "actions/calendar/projectCalendar/deleteDayOff";
 import { deleteProjectSchedule } from "actions/calendar/projectCalendar/deleteProjectGroupSchedule";
 import { deleteShiftStage } from "actions/calendar/projectCalendar/deleteShiftStage";
 import { deleteShiftStageAllTime } from "actions/calendar/projectCalendar/deleteShiftStageAllTime";
@@ -11,77 +12,62 @@ import { deleteWorkingStage } from "actions/calendar/projectCalendar/deleteWorki
 import { getGroupScheduleDetail } from "actions/calendar/projectCalendar/getGroupScheduleDetail";
 import { settingStartingDay } from "actions/calendar/projectCalendar/settingStartingDay";
 import { setWorkingDays } from "actions/calendar/projectCalendar/setWorkingDay";
+import { updateProjectSchedule } from "actions/calendar/projectCalendar/updateProjectGroupSchedule";
 import { updateShiftStage } from "actions/calendar/projectCalendar/updateShiftStage";
 import { updateShiftStageAllTime } from "actions/calendar/projectCalendar/updateShiftStageAllTime";
 import { updateWorkingStage } from "actions/calendar/projectCalendar/updateWorkingStage";
-import { CustomEventDispose, CustomEventListener, PROJECT_SCHEDULE_ADD_DAY_OFF, PROJECT_SCHEDULE_ADD_WORKING_DAYS, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_CREATE_WORKING_STAGE, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_DELETE_WORKING_DAYS, PROJECT_SCHEDULE_DELETE_WORKING_STAGE, PROJECT_SCHEDULE_SETTING_START_DAY, PROJECT_SCHEDULE_SETTING_WORKING_DAY, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, PROJECT_SCHEDULE_UPDATE_WORKING_STAGE } from "constants/events";
-import { isNil } from "lodash";
+import AlertModal from "components/AlertModal";
+import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT_GROUP_SCHEDULE } from "constants/events";
+import { Routes } from "constants/routes";
+import { get, isNil } from "lodash";
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
+import UpdateProjectCalendar from "views/CalendarPage/views/Modals/UpdateProjectCalendar";
 import { projectGroupScheduleDetailSelector } from "../selectors";
 import CalendarProjectRightPartPresenter from './presenter';
 
 function CalendarProjectRightPart({
   scheduleDetail, doGetScheduleDetail, groupSchedules,
-  doSettingStartDayOfWeek, doAddWorkingDay,
+  doSettingStartDayOfWeek, doAddWorkingDay, doDeleteDayOff,
   doDeleteWorkingDay, doAddDayOff, doSetWorkingDayInWeek,
   doAddWorkingStage, doDeleteWorkingStage, doUpdateWorkingStage,
   doCreateShiftStage, doUpdateShiftStage, doDeleteShiftStage,
   doCreateShiftStageAllTime, doUpdateShiftStageAllTime, doDeleteShiftStageAllTime,
-  doDeleteGroupSchedule
+  doDeleteGroupSchedule, doUpdateGroupSchedule, permissions
 }) {
 
   const params = useParams();
-  const [canDelete, setCanDelete] = React.useState(false);
-
-  React.useEffect(() => {
-    if (groupSchedules.data.length !== 0) {
-      let scheduleID = params.scheduleID;
-      let groupSchedule = groupSchedules.data.find(item => item.id === scheduleID);
-      if (!isNil(groupSchedule)) {
-        setCanDelete(groupSchedule.can_modify);
-      }
-    }
-  }, [groupSchedules, params.scheduleID]);
+  const history = useHistory();
+  const { t } = useTranslation();
+  const [defaultGroup, setDefaultGroup] = React.useState();
+  const [alertConfirm, setAlertConfirm] = React.useState(false);
+  const [actionDeleteType, setActionDeleteType] = React.useState({ type: null });
+  const [shiftID, setShiftID] = React.useState();
+  const [stageID, setStageID] = React.useState();
+  const [day, setDay] = React.useState();
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     let scheduleID = params.scheduleID;
     doGetScheduleDetail({ scheduleID }, false);
     const refreshScheduleDetail = () => {
+      setIsLoading(false);
       doGetScheduleDetail({ scheduleID }, false);
     }
-    CustomEventListener(PROJECT_SCHEDULE_SETTING_START_DAY, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_ADD_WORKING_DAYS, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_DELETE_WORKING_DAYS, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_ADD_DAY_OFF, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_SETTING_WORKING_DAY, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_CREATE_WORKING_STAGE, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_UPDATE_WORKING_STAGE, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_DELETE_WORKING_STAGE, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, refreshScheduleDetail);
-    CustomEventListener(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, refreshScheduleDetail);
+    CustomEventListener(UPDATE_PROJECT_GROUP_SCHEDULE, refreshScheduleDetail);
     return () => {
-      CustomEventDispose(PROJECT_SCHEDULE_SETTING_START_DAY, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_ADD_WORKING_DAYS, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_DELETE_WORKING_DAYS, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_ADD_DAY_OFF, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_SETTING_WORKING_DAY, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_CREATE_WORKING_STAGE, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_UPDATE_WORKING_STAGE, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_DELETE_WORKING_STAGE, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, refreshScheduleDetail);
-      CustomEventDispose(PROJECT_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, refreshScheduleDetail);
+      CustomEventDispose(UPDATE_PROJECT_GROUP_SCHEDULE, refreshScheduleDetail);
     }
   }, [doGetScheduleDetail, params.scheduleID]);
+
+  React.useEffect(() => {
+    if (Array.isArray(groupSchedules.data) && groupSchedules.data.length !== 0) {
+      setDefaultGroup(get(groupSchedules, "data[0]"));
+    }
+  }, [groupSchedules]);
 
   function handleSettingStartingDayOfWeek(day) {
     doSettingStartDayOfWeek({ day, scheduleGroupID: params.scheduleID }, false);
@@ -97,6 +83,10 @@ function CalendarProjectRightPart({
 
   function handleAddDayOff(dateStart, dateEnd) {
     doAddDayOff({ scheduleGroupID: params.scheduleID, dateStart, dateEnd }, false);
+  }
+
+  function handleDeleteDayOff(day) {
+    doDeleteDayOff({ scheduleGroupID: params.scheduleID, dayID: day.id }, false);
   }
 
   function handleAddWorkingDayInWeek(workingDays) {
@@ -141,27 +131,100 @@ function CalendarProjectRightPart({
 
   function handleDeleteGroup() {
     let scheduleID = params.scheduleID;
-    doDeleteGroupSchedule({ schedule_group_id: scheduleID }, false);
+    if (!isNil(scheduleID)) {
+      doDeleteGroupSchedule({ schedule_group_id: scheduleID }, false);
+      history.push(Routes.CALENDAR_PROJECT.replace(":scheduleID", get(defaultGroup, "id")));
+    }
+  }
+
+  function handleUpdateGroupSchedule(name, description) {
+    doUpdateGroupSchedule({ schedule_group_id: params.scheduleID, name, description }, false);
   }
 
   return (
-    <CalendarProjectRightPartPresenter
-      canDelete={canDelete}
-      scheduleDetail={scheduleDetail}
-      handleSettingStartingDayOfWeek={(day) => handleSettingStartingDayOfWeek(day)}
-      handleAddWorkingDay={(dateStart, dateEnd) => handleAddWorkingDay(dateStart, dateEnd)}
-      handleDeleteWorkingDays={(day) => handleDeleteWorkingDays(day)}
-      handleAddDayOff={(dateStart, dateEnd) => handleAddDayOff(dateStart, dateEnd)}
-      handleAddWorkingDayInWeek={handleAddWorkingDayInWeek}
-      handleAddWorkingStage={(dateStart, dateEnd) => handleAddWorkingStage(dateStart, dateEnd)}
-      handleDeleteWorkingStage={handleDeleteWorkingStage}
-      handleUpdateWorkingStage={handleUpdateWorkingStage}
-      handleCreateShiftStage={handleCreateShiftStage}
-      hanleDeleteShiftStage={hanleDeleteShiftStage}
-      handleUpdateShiftStage={handleUpdateShiftStage}
-      handleDeleteShiftStageAllTime={handleDeleteShiftStageAllTime}
-      handleDeleteGroup={handleDeleteGroup}
-    />
+    <>
+      <CalendarProjectRightPartPresenter
+        havePermission={permissions['manage_project_schedule'] ?? false}
+        scheduleDetail={scheduleDetail}
+        handleSettingStartingDayOfWeek={(day) => handleSettingStartingDayOfWeek(day)}
+        handleAddWorkingDay={(dateStart, dateEnd) => handleAddWorkingDay(dateStart, dateEnd)}
+        handleDeleteWorkingDays={(day) => {
+          setDay(day);
+          setActionDeleteType({ type: "DELETE_WORKING_DAY" });
+          setAlertConfirm(true);
+        }}
+        handleAddDayOff={(dateStart, dateEnd) => handleAddDayOff(dateStart, dateEnd)}
+        handleDeleteDayOff={(day) => {
+          setDay(day);
+          setActionDeleteType({ type: "DELETE_DAY_OFF" });
+          setAlertConfirm(true);
+        }}
+        handleAddWorkingDayInWeek={handleAddWorkingDayInWeek}
+        handleAddWorkingStage={(dateStart, dateEnd) => handleAddWorkingStage(dateStart, dateEnd)}
+        handleDeleteWorkingStage={(stageID) => {
+          setStageID(stageID);
+          setActionDeleteType({ type: "DELETE_WORKING_STAGE" });
+          setAlertConfirm(true);
+        }}
+        handleUpdateWorkingStage={handleUpdateWorkingStage}
+        handleCreateShiftStage={handleCreateShiftStage}
+        hanleDeleteShiftStage={(stageID, shiftID) => {
+          setShiftID(shiftID);
+          setStageID(stageID);
+          setActionDeleteType({ type: "DELETE_SHIFT_STAGE" });
+          setAlertConfirm(true);
+        }}
+        handleUpdateShiftStage={handleUpdateShiftStage}
+        handleDeleteShiftStageAllTime={(shiftID) => {
+          setShiftID(shiftID);
+          setActionDeleteType({ type: "DELETE_SHIFT_STAGE_ALLTIME" });
+          setAlertConfirm(true);
+        }}
+        handleDeleteGroup={() => {
+          setActionDeleteType({ type: "DELETE_GROUP_SCHEDULE" });
+          setAlertConfirm(true);
+        }}
+        handleEditGroupSchedule={() => setOpenEdit(true)}
+      />
+      <UpdateProjectCalendar
+        open={openEdit}
+        setOpen={setOpenEdit}
+        isLoading={isLoading}
+        schedule={groupSchedules.data.find(item => item.id === params.scheduleID)}
+        onConfirm={(name, description) => {
+          setIsLoading(true);
+          handleUpdateGroupSchedule(name, description);
+        }}
+      />
+      <AlertModal
+        open={alertConfirm}
+        setOpen={setAlertConfirm}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={() => {
+          switch (actionDeleteType.type) {
+            case 'DELETE_GROUP_SCHEDULE':
+              handleDeleteGroup();
+              return;
+            case 'DELETE_SHIFT_STAGE_ALLTIME':
+              handleDeleteShiftStageAllTime(shiftID);
+              return;
+            case 'DELETE_SHIFT_STAGE':
+              hanleDeleteShiftStage(stageID, shiftID);
+              return;
+            case 'DELETE_WORKING_DAY':
+              handleDeleteWorkingDays(day);
+              return;
+            case 'DELETE_DAY_OFF':
+              handleDeleteDayOff(day);
+              return;
+            case 'DELETE_WORKING_STAGE':
+              handleDeleteWorkingStage(stageID);
+              return;
+            default: return;
+          }
+        }}
+      />
+    </>
   );
 }
 
@@ -171,6 +234,7 @@ const mapDispatchToProps = dispatch => {
     doSettingStartDayOfWeek: ({ day, scheduleGroupID }, quite) => dispatch(settingStartingDay({ day, scheduleGroupID }, quite)),
     doAddWorkingDay: ({ scheduleGroupID, dateStart, dateEnd }, quite) => dispatch(projectScheduleAddWorkingDay({ scheduleGroupID, dateStart, dateEnd }, quite)),
     doDeleteWorkingDay: ({ scheduleGroupID, dayID }, quite) => dispatch(projectScheduleDeleteWorkingDay({ scheduleGroupID, dayID }, quite)),
+    doDeleteDayOff: ({ scheduleGroupID, dayID }, quite) => dispatch(projectScheduleDeleteDayOff({ scheduleGroupID, dayID }, quite)),
     doAddDayOff: ({ scheduleGroupID, dateStart, dateEnd }, quite) => dispatch(projectScheduleAddDayOff({ scheduleGroupID, dateStart, dateEnd }, quite)),
     doSetWorkingDayInWeek: ({ scheduleGroupID, workingDays }, quite) => dispatch(setWorkingDays({ scheduleGroupID, workingDays }, quite)),
     doAddWorkingStage: ({ scheduleGroupID, dateStart, dateEnd }, quite) => dispatch(addWorkingStage({ scheduleGroupID, dateStart, dateEnd }, quite)),
@@ -183,6 +247,7 @@ const mapDispatchToProps = dispatch => {
     doUpdateShiftStageAllTime: ({ scheduleGroupID, shiftID, name, timeStart, timeEnd }, quite) => dispatch(updateShiftStageAllTime({ scheduleGroupID, shiftID, name, timeStart, timeEnd }, quite)),
     doDeleteShiftStageAllTime: ({ scheduleGroupID, shiftID }, quite) => dispatch(deleteShiftStageAllTime({ scheduleGroupID, shiftID }, quite)),
     doDeleteGroupSchedule: ({ schedule_group_id }, quite) => dispatch(deleteProjectSchedule({ schedule_group_id }, quite)),
+    doUpdateGroupSchedule: ({ schedule_group_id, name, description }, quite) => dispatch(updateProjectSchedule({ schedule_group_id, name, description }, quite)),
   };
 };
 

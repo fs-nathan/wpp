@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
-import React from 'react';
-import Select from 'react-select';
+import { MenuItem, NoSsr, TextField, Typography } from '@material-ui/core';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Typography, TextField, MenuItem, NoSsr } from '@material-ui/core';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import Select from 'react-select';
 
 const suggestions = [
   { label: 'Nguyễn Văn A' },
@@ -27,7 +27,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Option(props) {
-  const { t } = useTranslation();
   return (
     <MenuItem
       ref={props.innerRef}
@@ -44,38 +43,35 @@ function Option(props) {
 }
 
 function inputComponent({ inputRef, ...props }) {
-  const { t } = useTranslation();
-    return <div ref={inputRef} {...props} />;
-  }
+  return <div ref={inputRef} {...props} />;
+}
 
 function Control(props) {
-  const { t } = useTranslation();
-    const {
-      children,
-      innerProps,
-      innerRef,
-      selectProps: { classes, TextFieldProps },
-    } = props;
-  
-    return (
-      <TextField
-        fullWidth
-        InputProps={{
-          inputComponent,
-          inputProps: {
-            className: classes.input,
-            ref: innerRef,
-            children,
-            ...innerProps,
-          },
-        }}
-        {...TextFieldProps}
-      />
-    );
-  }
+  const {
+    children,
+    innerProps,
+    innerRef,
+    selectProps: { classes, TextFieldProps },
+  } = props;
+
+  return (
+    <TextField
+      fullWidth
+      InputProps={{
+        inputComponent,
+        inputProps: {
+          className: classes.input,
+          ref: innerRef,
+          children,
+          ...innerProps,
+        },
+      }}
+      {...TextFieldProps}
+    />
+  );
+}
 
 function SingleValue(props) {
-  const { t } = useTranslation();
   return (
     <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
       {props.children}

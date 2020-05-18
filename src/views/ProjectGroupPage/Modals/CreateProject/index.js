@@ -19,7 +19,7 @@ const ButtonCase = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function CreateProjectGroup({ open, setOpen, }) {
+function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
 
   const { t } = useTranslation();
   const [createNew, setCreateNew] = React.useState(false);
@@ -63,8 +63,8 @@ function CreateProjectGroup({ open, setOpen, }) {
           </ButtonCase>
         </Container>
       </CustomModal>
-      <CreateNewProjectModal open={createNew} setOpen={setCreateNew} />
-      <CopyProjectModal open={copy} setOpen={setCopy} />
+      <CreateNewProjectModal open={createNew} setOpen={setCreateNew} projectGroupId={projectGroupId} />
+      <CopyProjectModal open={copy} setOpen={setCopy} projectGroupId={projectGroupId} />
     </>
   )
 }
