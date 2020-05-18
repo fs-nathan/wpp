@@ -8,11 +8,11 @@ export const deleteProjectSchedule = ({ schedule_group_id }, quite = false) => (
   }
 });
 
-export const deleteProjectScheduleSuccess = ({ state }, options) => ({
+export const deleteProjectScheduleSuccess = ({ schedule_id }, options) => ({
   type: GROUP_SCHEDULE_DELETE_SUCCESS,
   options,
   data: {
-    state
+    schedule_id
   }
 });
 

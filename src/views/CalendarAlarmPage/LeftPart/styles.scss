@@ -27,11 +27,29 @@
           color: #fff !important;
         }
       }
+
+      &_active {
+
+        .personal_alarm_count,
+        &>a {
+          color: #fff !important;
+          font-weight: 500;
+        }
+      }
     }
   }
 
+  .personal_alarm_count {
+    width: 10%;
+  }
+
+  .personal_alarm_control {
+    width: 15%;
+    margin-right: 5px;
+  }
+
   .personal_alarm_name {
-    width: 70%;
+    width: 75%;
     color: black;
     text-decoration: none;
     cursor: pointer;

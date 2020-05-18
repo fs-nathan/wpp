@@ -1,8 +1,8 @@
-import { GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_FAIL, GROUP_SCHEDULE_CREATE_SUCCESS } from "../../../constants/actions/calendar/projectCalendar";
+import { UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_CATEGORY_REMIND_FAIL, UPDATE_PERSONAL_CATEGORY_REMIND_SUCCESS } from "../../../constants/actions/calendar/alarmCalendar";
 
 export const initialState = {
   data: {
-    scheduleGroup: null,
+    category: null,
   },
   error: null,
   loading: false,
@@ -10,13 +10,13 @@ export const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case GROUP_SCHEDULE_CREATE:
+    case UPDATE_PERSONAL_CATEGORY_REMIND:
       return {
         ...state,
         error: null,
         loading: action.quite ? false : true,
       };
-    case GROUP_SCHEDULE_CREATE_SUCCESS:
+    case UPDATE_PERSONAL_CATEGORY_REMIND_SUCCESS:
       return {
         ...state,
         ...initialState,
@@ -24,7 +24,7 @@ function reducer(state = initialState, action) {
         error: null,
         loading: false,
       };
-    case GROUP_SCHEDULE_CREATE_FAIL:
+    case UPDATE_PERSONAL_CATEGORY_REMIND_FAIL:
       return {
         ...state,
         ...initialState,
