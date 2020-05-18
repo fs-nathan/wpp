@@ -27,8 +27,8 @@ function* updatePersonalRemindCategory(action) {
   try {
     const { category: category } = yield call(doUpdatePersonalRemindCategory, action.options);
     yield put(updatePersonalRemindCategorySuccess({ category }, action.options));
-    CustomEventEmitter(UPDATE_PERSONAL_REMIND_CATEGORY);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    CustomEventEmitter(UPDATE_PERSONAL_REMIND_CATEGORY);
   } catch (error) {
     yield put(updatePersonalRemindCategoryFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));

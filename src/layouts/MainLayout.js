@@ -195,14 +195,18 @@ function getTaskByChat(data, taskDetails) {
       return { ...taskDetails, total_img: total_img + data.images.length };
     case CHAT_TYPE.UPDATE_COMPLETE:
       return { ...taskDetails, complete: data.complete };
-    case CHAT_TYPE.UPDATE_DURATION:
-      return {
-        ...taskDetails,
-        duration_value: differenceInDays(
-          new Date(data.time_changes.end.new),
-          new Date(data.time_changes.start.new)
-        ),
-      };
+    case CHAT_TYPE.UPDATE_DURATION: {
+      const { start, end } = data.time_changes;
+      if (start && end)
+        return {
+          ...taskDetails,
+          duration_value: differenceInDays(
+            new Date(end.new),
+            new Date(start.new)
+          ),
+        };
+      return null;
+    }
 
     default:
       return null;

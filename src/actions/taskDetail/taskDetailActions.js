@@ -403,10 +403,11 @@ export const deleteCommandFail = (error) => ({
 });
 
 // Media : Image
-export const getImage = ({ taskId }) => ({
+export const getImage = ({ taskId, page }) => ({
     type: types.GET_IMAGE_TABPART_REQUEST,
     options: {
         taskId,
+        page
     },
 });
 
@@ -420,10 +421,11 @@ export const getImageFail = (error) => ({
     error: error,
 });
 // : File
-export const getFileTabPart = ({ taskId }) => ({
+export const getFileTabPart = ({ taskId, page }) => ({
     type: types.GET_FILE_TABPART_REQUEST,
     options: {
         taskId,
+        page
     },
 });
 

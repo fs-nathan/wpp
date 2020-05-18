@@ -8,6 +8,7 @@ import LoadingBox from 'components/LoadingBox';
 import { Container, DateBox, LinkSpan, SettingContainer } from 'components/TableComponents';
 import { Routes } from 'constants/routes';
 import { get } from 'lodash';
+import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -33,8 +34,7 @@ const SettingButton = ({
 
 function WeeklyCalendarPresenter({
   expand, handleExpand, canCreate,
-  calendars, handleSortCalendar,
-  handleOpenModal, handleSortType,
+  calendars, handleOpenModal, handleSortType,
   bgColor, handleYearChanged, year
 }) {
   const { t } = useTranslation();
@@ -97,6 +97,11 @@ function WeeklyCalendarPresenter({
                     onClick={evt => history.push(`${Routes.CALENDAR_WEEKLY.replace(":week/:year", `${get(row, 'week', '')}/${get(row, 'year', '')}`)}`)}
                   >
                     <span className="views_weeklyCalendar_calendarName">{get(row, 'name', '')}</span>
+                    {
+                      moment().isoWeek() === get(row, 'week') && (
+                        <span className="views_weeklyCalendar_calendarName_present">({t('IDS_WP_PRESENT')})</span>
+                      )
+                    }
                   </LinkSpan>,
                   align: 'left',
                   width: '15%',

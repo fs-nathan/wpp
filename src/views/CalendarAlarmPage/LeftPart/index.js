@@ -2,17 +2,21 @@ import { createPersonalRemindCategory } from "actions/calendar/alarmCalendar/cre
 import { deletePersonalRemindCategory } from "actions/calendar/alarmCalendar/deletePersonalRemindCategory";
 import { updatePersonalRemindCategory } from "actions/calendar/alarmCalendar/updatePersonalRemindCategory";
 import AlertModal from "components/AlertModal";
+import { CustomEventDispose, CustomEventListener, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
+import { get, isNil, set } from "lodash";
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import CreateGroupPersonalRemind from 'views/CalendarPage/views/Modals/CreateGroupPersonalRemind';
 import UpdateGroupPersonalRemind from "views/CalendarPage/views/Modals/UpdateGroupPersonalRemind";
+import { afterUpdateRemindCategorySelector, personalRemindSelector } from "../selectors";
 import CalendarAlarmLeftPartPresenter from './presenter';
 
 function CalendarAlramLeftPart({
   personalRemindCategories, handleSortPersonalAlarm,
   doCreatePersonalRemindCategory, doDeletePersonalRemindCategory,
-  doUpdatePersonalRemindCategory, permissions
+  doUpdatePersonalRemindCategory, permissions, reminds,
+  afterUpdateRemindCategory
 }) {
 
   const { t } = useTranslation();
@@ -21,6 +25,7 @@ function CalendarAlramLeftPart({
   const [selectedCategory, setSelectedCategory] = React.useState();
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [remindCategories, setRemindCategories] = React.useState(personalRemindCategories);
 
   function handleOpenModal(type) {
     switch (type) {
@@ -49,17 +54,44 @@ function CalendarAlramLeftPart({
   }
 
   function handleUpdateCategroy(value) {
-    doUpdatePersonalRemindCategory({ categoryID: value.id, name: value.title, color: value.color });
+    doUpdatePersonalRemindCategory({ categoryID: value.id, name: value.title, color: value.color }, false);
   }
 
   React.useEffect(() => {
     setIsLoading(false);
+    setRemindCategories(personalRemindCategories);
   }, [personalRemindCategories]);
+
+  const refeshAfterUpdateCategory = () => {
+
+    if (!isNil(afterUpdateRemindCategory.afterUpdate)) {
+      let category = get(afterUpdateRemindCategory, 'afterUpdate');
+      let idx = remindCategories.data.findIndex(item => item.id === category.id);
+      if (idx !== -1) {
+        let categories = remindCategories.data
+        set(categories, `[${idx}]`, category);
+        console.log(idx);
+        console.log(categories);
+        setRemindCategories({
+          ...remindCategories,
+          data: categories
+        });
+      }
+      setIsLoading(false);
+    }
+  }
+
+  React.useEffect(() => {
+    CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, refeshAfterUpdateCategory);
+    return () => {
+      CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, refeshAfterUpdateCategory);
+    }
+  }, [afterUpdateRemindCategory]);
 
   return (
     <>
       <CalendarAlarmLeftPartPresenter
-        personalRemindCategories={personalRemindCategories}
+        personalRemindCategories={remindCategories}
         havePermission={permissions['manage_group_remind'] ?? false}
         handleSortPersonalAlarm={handleSortPersonalAlarm}
         handleOpenModal={(type) => handleOpenModal(type)}
@@ -68,6 +100,7 @@ function CalendarAlramLeftPart({
           handleOpenModal("DELETE_CATEGORY");
         }}
         handleEditCategory={(category) => handleEditCategory(category)}
+        reminds={reminds}
       />
       <CreateGroupPersonalRemind
         open={openPersonalRemindModalCreate}
@@ -108,6 +141,8 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   state => ({
+    reminds: personalRemindSelector(state),
+    afterUpdateRemindCategory: afterUpdateRemindCategorySelector(state)
   }),
   mapDispatchToProps
 )(CalendarAlramLeftPart);

@@ -561,11 +561,12 @@ function* handleOffer(action) {
 }
 
 // Media Image
-async function doGetImage({ taskId }) {
+async function doGetImage({ taskId, page }) {
   try {
     const config = {
-      url: "/task/get-image?task_id=" + taskId,
-      method: "get"
+      url: "/task/get-image",
+      method: "get",
+      params: { task_id: taskId, page }
     };
     const result = await apiService(config);
     return result.data;
@@ -586,11 +587,12 @@ function* getImage(action) {
 }
 
 // Media File
-async function doGetFile({ taskId }) {
+async function doGetFile({ taskId, page }) {
   try {
     const config = {
-      url: "/task/get-file?task_id=" + taskId,
-      method: "get"
+      url: "/task/get-file",
+      method: "get",
+      params: { task_id: taskId, page }
     };
     const result = await apiService(config);
     return result.data;

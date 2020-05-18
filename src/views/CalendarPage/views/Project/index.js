@@ -4,7 +4,7 @@ import { listProjectSchedule } from "actions/calendar/projectCalendar/listSchedu
 import { updateProjectSchedule } from "actions/calendar/projectCalendar/updateProjectGroupSchedule";
 import AlertModal from "components/AlertModal";
 import { CREATE_PROJECT_GROUP_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE, UPDATE_PROJECT_GROUP_SCHEDULE } from "constants/events";
-import { get, reverse, sortBy } from 'lodash';
+import { get, isNil, reverse, set, sortBy } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -13,11 +13,12 @@ import { bgColorSelector } from '../../selectors';
 import CreateProjectCalendar from '../Modals/CreateProjectCalendar';
 import UpdateProjectCalendar from "../Modals/UpdateProjectCalendar";
 import ProjectCalendarPresenter from './presenter';
-import { projectGroupScheduleSelector } from "./selectors";
+import { newProjectGroupScheduleSelector, projectGroupScheduleSelector } from "./selectors";
 
 function Project({
   bgColor, doListProjectSchedule, groupSchedules,
-  doCreateGroupSchedule, doUpdateGroupSchedule, doDeleteGroupSchedule
+  doCreateGroupSchedule, doUpdateGroupSchedule, doDeleteGroupSchedule,
+  newGroupSchedules
 }) {
   const {
     expand,
@@ -45,18 +46,6 @@ function Project({
 
   React.useEffect(() => {
     doListProjectSchedule(false);
-    const reloadListProjectSchedule = () => {
-      setIsLoading(false);
-      doListProjectSchedule(false);
-    }
-    CustomEventListener(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-    CustomEventListener(UPDATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-    CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-    return () => {
-      CustomEventDispose(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-      CustomEventDispose(UPDATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-      CustomEventDispose(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
-    }
   }, [doListProjectSchedule])
 
   function doOpenModal(type, data) {
@@ -95,6 +84,65 @@ function Project({
     doDeleteGroupSchedule({ schedule_group_id: schedule.id }, false);
   }
 
+  const refreshAfterCreate = () => {
+    if (!isNil(newGroupSchedules.afterCreate)) {
+      let schedule = get(newGroupSchedules, "afterCreate");
+      let _schedules = sortedGroupSchedules.data;
+      _schedules = _schedules.concat(schedule);
+      setSortedGroupSchedules({
+        ...sortedGroupSchedules,
+        data: _schedules
+      });
+      setIsLoading(false);
+    }
+  }
+
+  const refreshAfterUpdate = () => {
+    if (!isNil(newGroupSchedules.afterUpdate)) {
+      let schedule = get(newGroupSchedules, "afterUpdate");
+      let idx = sortedGroupSchedules.data.findIndex(item => item.id === schedule.id);
+      if (idx !== -1) {
+        let _schedules = sortedGroupSchedules.data;
+        let _schedule = get(_schedules, `[${idx}]`);
+        set(_schedule, 'name', schedule.name);
+        set(_schedule, 'description', schedule.description);
+        _schedules[idx] = _schedule;
+        setSortedGroupSchedules({
+          ...sortedGroupSchedules,
+          data: _schedules
+        });
+      }
+    }
+    setIsLoading(false);
+  }
+
+  const refreshAfterDelete = () => {
+    if (!isNil(newGroupSchedules.afterDelete)) {
+      let scheduleID = get(newGroupSchedules, "afterDelete");
+      let idx = sortedGroupSchedules.data.findIndex(item => item.id === scheduleID);
+      if (idx !== -1) {
+        let _schedules = sortedGroupSchedules.data;
+        _schedules.splice(idx, 1);
+        setSortedGroupSchedules({
+          ...sortedGroupSchedules,
+          data: _schedules
+        });
+      }
+      setIsLoading(false);
+    }
+  }
+
+  React.useEffect(() => {
+    CustomEventListener(UPDATE_PROJECT_GROUP_SCHEDULE, refreshAfterUpdate);
+    CustomEventListener(CREATE_PROJECT_GROUP_SCHEDULE, refreshAfterCreate);
+    CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, refreshAfterDelete);
+    return () => {
+      CustomEventDispose(UPDATE_PROJECT_GROUP_SCHEDULE, refreshAfterUpdate);
+      CustomEventDispose(CREATE_PROJECT_GROUP_SCHEDULE, refreshAfterCreate);
+      CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, refreshAfterDelete);
+    }
+  }, [newGroupSchedules]);
+
   return (
     <>
       <ProjectCalendarPresenter
@@ -110,9 +158,6 @@ function Project({
             dir: newDir,
           }
         })}
-        handleSortCalendar={sortData => {
-          setSortedGroupSchedules({ ...groupSchedules, data: sortData })
-        }}
         groupSchedules={sortedGroupSchedules}
         handleEditSchedule={(schedule) => doOpenModal("EDIT", schedule)}
         handleDeleteSchedule={(schedule) => doOpenModal("DELETE", schedule)}
@@ -159,6 +204,7 @@ const mapStateToProps = state => {
   return {
     bgColor: bgColorSelector(state),
     groupSchedules: projectGroupScheduleSelector(state),
+    newGroupSchedules: newProjectGroupScheduleSelector(state)
   };
 };
 

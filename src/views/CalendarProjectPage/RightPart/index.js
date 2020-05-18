@@ -17,14 +17,12 @@ import { updateShiftStage } from "actions/calendar/projectCalendar/updateShiftSt
 import { updateShiftStageAllTime } from "actions/calendar/projectCalendar/updateShiftStageAllTime";
 import { updateWorkingStage } from "actions/calendar/projectCalendar/updateWorkingStage";
 import AlertModal from "components/AlertModal";
-import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT_GROUP_SCHEDULE } from "constants/events";
 import { Routes } from "constants/routes";
 import { get, isNil } from "lodash";
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from "react-router-dom";
-import UpdateProjectCalendar from "views/CalendarPage/views/Modals/UpdateProjectCalendar";
 import { projectGroupScheduleDetailSelector } from "../selectors";
 import CalendarProjectRightPartPresenter from './presenter';
 
@@ -47,20 +45,11 @@ function CalendarProjectRightPart({
   const [shiftID, setShiftID] = React.useState();
   const [stageID, setStageID] = React.useState();
   const [day, setDay] = React.useState();
-  const [openEdit, setOpenEdit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
     let scheduleID = params.scheduleID;
     doGetScheduleDetail({ scheduleID }, false);
-    const refreshScheduleDetail = () => {
-      setIsLoading(false);
-      doGetScheduleDetail({ scheduleID }, false);
-    }
-    CustomEventListener(UPDATE_PROJECT_GROUP_SCHEDULE, refreshScheduleDetail);
-    return () => {
-      CustomEventDispose(UPDATE_PROJECT_GROUP_SCHEDULE, refreshScheduleDetail);
-    }
   }, [doGetScheduleDetail, params.scheduleID]);
 
   React.useEffect(() => {
@@ -146,6 +135,8 @@ function CalendarProjectRightPart({
       <CalendarProjectRightPartPresenter
         havePermission={permissions['manage_project_schedule'] ?? false}
         scheduleDetail={scheduleDetail}
+        groupSchedules={groupSchedules}
+        setIsLoadingOuter={setIsLoading}
         handleSettingStartingDayOfWeek={(day) => handleSettingStartingDayOfWeek(day)}
         handleAddWorkingDay={(dateStart, dateEnd) => handleAddWorkingDay(dateStart, dateEnd)}
         handleDeleteWorkingDays={(day) => {
@@ -184,23 +175,15 @@ function CalendarProjectRightPart({
           setActionDeleteType({ type: "DELETE_GROUP_SCHEDULE" });
           setAlertConfirm(true);
         }}
-        handleEditGroupSchedule={() => setOpenEdit(true)}
-      />
-      <UpdateProjectCalendar
-        open={openEdit}
-        setOpen={setOpenEdit}
-        isLoading={isLoading}
-        schedule={groupSchedules.data.find(item => item.id === params.scheduleID)}
-        onConfirm={(name, description) => {
-          setIsLoading(true);
-          handleUpdateGroupSchedule(name, description);
-        }}
+        handleUpdateGroupSchedule={(name, description) => handleUpdateGroupSchedule(name, description)}
       />
       <AlertModal
         open={alertConfirm}
         setOpen={setAlertConfirm}
         content={t('IDS_WP_ALERT_CONTENT')}
+        actionLoading={isLoading}
         onConfirm={() => {
+          setIsLoading(true);
           switch (actionDeleteType.type) {
             case 'DELETE_GROUP_SCHEDULE':
               handleDeleteGroup();

@@ -40,7 +40,7 @@
       }
     }
     &__deleted {
-      margin-left: 0;
+      margin-left: 10px;
       &Self {
         margin-left: auto;
       }
@@ -131,7 +131,10 @@
     }
     &__deleted {
       font-style: italic;
-      color: #f1f1f1;
+      color: #a6a6a6;
+      &Self {
+        color: #f1f1f1;
+      }
     }
     &__top {
       border-bottom-left-radius: 5px;

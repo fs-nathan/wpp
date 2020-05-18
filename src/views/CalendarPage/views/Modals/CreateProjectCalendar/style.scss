@@ -31,6 +31,10 @@
   #calendar-descrtiption-helper-text {
     color: red;
   }
+
+  abbr {
+    text-decoration: none;
+  }
 }
 
 @mixin comp_CustomModal___dialog {

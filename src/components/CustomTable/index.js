@@ -73,10 +73,10 @@ export const TableHeader = () => {
     </Header>
   );
 };
-export function CustomTableLayout({ children }) {
+export function CustomTableLayout({ children, className }) {
   const { options } = React.useContext(CustomTableContext);
   return (
-    <Container>
+    <Container className={className}>
       <Header>
         <LeftHeader>
           <div>

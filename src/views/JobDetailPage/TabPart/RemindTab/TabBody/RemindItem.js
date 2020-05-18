@@ -61,7 +61,7 @@ function RemindItem(props) {
           <ColorTypo variant='body1' component="div">
             {
               type === 1 ?
-                'Nhắc theo tiến độ' :
+                <span className="remindItem--remindText">{t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO')}</span> :
                 `${typesRemind[type_remind]} lúc ${time_remind} ${date_remind}`
             }
             {

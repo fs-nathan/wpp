@@ -25,8 +25,8 @@ async function doUpdateProjectSchedule({ schedule_group_id, name, description })
 
 function* updateProjectGroupSchedule(action) {
   try {
-    const { schedules: schedules } = yield call(doUpdateProjectSchedule, action.options);
-    yield put(updateProjectScheduleSuccess({ schedules }, action.options));
+    const { schedule_group: scheduleGroup } = yield call(doUpdateProjectSchedule, action.options);
+    yield put(updateProjectScheduleSuccess({ scheduleGroup }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(UPDATE_PROJECT_GROUP_SCHEDULE);
   } catch (error) {

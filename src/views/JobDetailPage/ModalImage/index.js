@@ -255,26 +255,28 @@ const ModalImage = () => {
         }
       </ContentDialog>
       <FooterDialog>
-        <Scrollbars
-          width="85%"
-          className="ModalImage--scroll"
-          renderView={props => <div {...props} className="ModalImage--scrollView" />}
-        >
-          <div className="ModalImage--imagesList">
-            {
-              (type === 'mp4') ? null :
-                imagesList.map((image, index) => {
-                  return (
-                    <WrapperImage
-                      onClick={() => setCurrentImage(index)}
-                      key={`1-${index}`}>
-                      <Image src={image.url} alt='avatar' selected={currentImage === index} />
-                    </WrapperImage>
-                  );
-                })
-            }
-          </div>
-        </Scrollbars>
+        <div className="ModalImage--scrollWrap">
+          <Scrollbars
+            autoHide autoHideTimeout={500} autoHideDuration={200}
+            className="ModalImage--scroll"
+            renderView={props => <div {...props} className="ModalImage--scrollView" />}
+          >
+            <div className="ModalImage--imagesList">
+              {
+                (type === 'mp4') ? null :
+                  imagesList.map((image, index) => {
+                    return (
+                      <WrapperImage
+                        onClick={() => setCurrentImage(index)}
+                        key={`1-${index}`}>
+                        <Image src={image.url} alt='avatar' selected={currentImage === index} />
+                      </WrapperImage>
+                    );
+                  })
+              }
+            </div>
+          </Scrollbars>
+        </div>
       </FooterDialog >
     </StyledDialog >
   )
