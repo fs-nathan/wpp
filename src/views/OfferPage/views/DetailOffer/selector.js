@@ -12,3 +12,4 @@ export const getDetailOffer = createSelector(selectDetailOffer, detail => {
   }
   return detail.offer
 });
+export const getDetailOfferLoadingState = createSelector(selectDetailOffer, detail => detail.loading);
