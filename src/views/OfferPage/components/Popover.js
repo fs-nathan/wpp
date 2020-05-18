@@ -83,6 +83,8 @@ function ExpandPopover({ offer_id, view }) {
                     {renderPopoverOption(getOfferItemPopoverDelete(t), () => {
                         // Hide popup menu
                         setAnchorEl(null);
+                        // For triggering delete offer from OfferPage component
+                        setCurrentDetailOfferId(offer_id);
                         // Show delete offer confirm modal
                         setShowDeleteOfferConfirmModal(true);
                     })}
