@@ -297,7 +297,9 @@ function RemindModal(props) {
           :
           <div>
             <HelperText>{t('LABEL_CHAT_TASK_KHI_TIEN_DO_CONG')}</HelperText>
-            <Typography className="remindModal--mileStone" component="div">{t('LABEL_CHAT_TASK_MOC_TIEN_DO_CAN_NHAC')}</Typography>
+            <Typography className="remindModal--mileStone" component="div">
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_MOC_TIEN_DO_CAN_NHAC')} isRequired />
+            </Typography>
             <div className="wrapper-progress">
               <InputProgress
                 fullWidth
@@ -329,9 +331,9 @@ function RemindModal(props) {
         {/* ------- */}
         <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_NHAC_HEN')} isRequired />
         <ContentText
-          label="Nội dung"
           fullWidth
           multiline
+          rowsMax={18}
           rows="7"
           value={data.content}
           margin="normal"

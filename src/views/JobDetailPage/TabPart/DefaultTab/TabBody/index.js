@@ -14,6 +14,7 @@ import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper';
 import { taskIdSelector } from '../../../selectors';
 import Description from './Description';
 import HtmlTooltip from './HtmlTooltip';
+import ModalPriority from './ModalPriority';
 import ModalStatus from './ModalStatus';
 import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS } from './StatusLabel';
 import './styles.scss';
@@ -156,24 +157,24 @@ function TabBody(props) {
         </ListItem>
         <Description value={content} />
         <ListItemButtonGroup>
-          {taskStatistic.state_code !== 4 ?
+          <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
+            TransitionProps={{ timeout: 0 }}
+            title={<ModalStatus value={taskStatistic.state_code} />}
+            placement="top-start">
             <StatusLabel
               type={TYPE_STATUS}
-              value={getCompleteStatus(taskStatistic.complete)}
+              value={taskStatistic.state_code}
             />
-            :
-            <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }} TransitionProps={{ timeout: 0 }} title={<ModalStatus
-              values={t('LABEL_CHAT_TASK_DANG_TAM_DUNG')} />}
-              placement="top-start">
-              <Typography
-                className="listPartTabBody--expired listPartTabBody--paused"
-              >{t('LABEL_CHAT_TASK_DANG_TAM_DUNG')}</Typography>
-            </HtmlTooltip>
-          }
-          <StatusLabel
-            type={TYPE_PRIORITY}
-            value={taskStatistic.priority_code}
-          />
+          </HtmlTooltip>
+          <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
+            TransitionProps={{ timeout: 0 }}
+            title={<ModalPriority value={taskStatistic.priority_code} />}
+            placement="top-start">
+            <StatusLabel
+              type={TYPE_PRIORITY}
+              value={taskStatistic.priority_code}
+            />
+          </HtmlTooltip>
           {
             !isExpiredDate(data.end_date)
             &&

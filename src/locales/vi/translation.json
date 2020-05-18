@@ -1290,5 +1290,14 @@
   "LABEL_CHAT_TASK_NOI_DUNG_CHI_DAO": "Nội dung chỉ đạo",
   "LABEL_CHAT_TASK_NOI_DUNG_QUYET_DINH": "Nội dung quyết định",
   "LABEL_CHAT_TASK_CHI_DAO_LABEL": "Chỉ đạo",
-  "LABEL_CHAT_TASK_QUYET_DINH_LABEL": "Quyết định"
+  "LABEL_CHAT_TASK_QUYET_DINH_LABEL": "Quyết định",
+  "LABEL_CHAT_TASK_UU_TIEN_CAO": "Ưu tiên cao",
+  "LABEL_CHAT_TASK_UU_TIEN_TRUNG_BINH": "Ưu tiên trung bình",
+  "LABEL_CHAT_TASK_UU_TIEN_THAP": "Ưu tiên thấp",
+  "LABEL_CHAT_TASK_HAY_CAP_NHAP_TIEN": "Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc",
+  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN": "Mức độ ưu tiên phản ánh tầm quan trọng và tính chất khẩn cấp công việc",
+  "LABEL_CHAT_TASK_UU_TIEN_LABEL": "Ưu tiên: ",
+  "LABEL_CHAT_TASK_CAO_LABEL": "Cao",
+  "LABEL_CHAT_TASK_TRUNG_BINH_LABEL": "Trung bình",
+  "LABEL_CHAT_TASK_THAP_LABEL": "Thấp"
 }
