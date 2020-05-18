@@ -185,7 +185,13 @@ export function* doDeleteOffer({ payload }) {
       data: { offer_id: id }
     };
     const result = yield apiService(config);
-    yield put({ type: DELETE_OFFER_SUCCESS, payload: result.data });
+    yield put({
+      type: DELETE_OFFER_SUCCESS,
+      payload: {
+        deletedState: result.data.state,
+        offerId: id,
+      }
+    });
   } catch (err) {
     yield put({ type: DELETE_OFFER_ERROR, payload: err.toString() });
   }

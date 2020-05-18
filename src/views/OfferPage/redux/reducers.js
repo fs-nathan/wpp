@@ -11,6 +11,7 @@ import {
   DELETE_GROUP_OFFER_SUCCESS,
   DELETE_MEMBER_HANDLE_SUCCESS,
   DELETE_MEMBER_MONITOR_SUCCESS,
+  DELETE_OFFER_SUCCESS,
   DETAIL_OFFER,
   ENQUEUE_SNACKBAR,
   HANDLE_OFFER_OFFERPAGE_SUCCESS,
@@ -183,6 +184,40 @@ function taskReducer(state = initialState, action) {
           loading: false,
         },
       }
+    case DELETE_OFFER_SUCCESS:
+      const { deletedState, offerId } = action.payload;
+      if (deletedState === true) {
+        const { offers: recentOffers} = state[TASK_RECENTLY];
+        const { offers: taskOffersByDepartment} = state[TASK_OFFER_BY_DEPARTMENT];
+        const { offers: offersByGroup} = state[OFFER_BY_GROUP];
+        const { offers: offersByDepartment} = state[OFFER_BY_DEPARTMENT];
+        const { offers: offersByProject} = state[OFFER_BY_PROJECT];
+
+        return {
+          ...state,
+          [TASK_RECENTLY]: {
+            ...state[TASK_RECENTLY],
+            offers: recentOffers.filter(offer => offer.id !== offerId)
+          },
+          [TASK_OFFER_BY_DEPARTMENT]: {
+            ...state[TASK_OFFER_BY_DEPARTMENT],
+            offers: taskOffersByDepartment.filter(offer => offer.id !== offerId)
+          },
+          [OFFER_BY_GROUP]: {
+            ...state[OFFER_BY_GROUP],
+            offers: offersByGroup.filter(offer => offer.id !== offerId)
+          },
+          [OFFER_BY_DEPARTMENT]: {
+            ...state[OFFER_BY_DEPARTMENT],
+            offers: offersByDepartment.filter(offer => offer.id !== offerId)
+          },
+          [OFFER_BY_PROJECT]: {
+            ...state[OFFER_BY_PROJECT],
+            offers: offersByProject.filter(offer => offer.id !== offerId)
+          },
+        }
+      }
+      break;
     case UPLOAD_DOCUMENT_OFFER_SUCCESS:
       return { ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, documents: [...state[DETAIL_OFFER].offer.documents, ...action.payload.documents] } } }
     case LOAD_SUMMARY_BY_PROJECT_SUCCESS:
