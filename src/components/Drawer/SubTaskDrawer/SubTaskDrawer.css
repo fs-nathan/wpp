@@ -1,0 +1,43 @@
+.subtask-drawer--item{
+    display: flex;
+    margin-top: 15px;
+}
+.subtask-drawer--item img{
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.subtask-drawer-search {
+    margin-right: 10px;
+}
+.subtask-drawer--item__title { 
+    font-weight: 500;
+    color: black;
+    font-size: 16px;
+}
+
+.subtask-drawer--group-status__container {
+    margin-top: 20px;
+}
+
+.subtask-drawer--group-status__container {
+    font-size: 16px;
+    color: #cccccc;
+    font-weight: 500;
+}
+
+.subtask-drawer--header {
+    font-weight: 500;
+    color: black;
+    font-size: 18px;
+}
+
+.subtask-drawer--sub-header {
+    color: #cccccc
+}
+.subtask-drawer--item__complete-avatar {
+    width: 14px !important;
+    height: 14px !important;
+}

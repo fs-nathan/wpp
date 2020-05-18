@@ -57,7 +57,7 @@ function QuickViewFilter() {
                     <FormGroup className="comp_QuickViewFilter__FormGroup">
                       {orders.map((key) => (
                         <FormControlLabel
-                          className="comp_QuickViewFilter__FormControlLabel"
+                          // className="comp_QuickViewFilter__FormControlLabel"
                           key={key}
                           control={
                             <Checkbox

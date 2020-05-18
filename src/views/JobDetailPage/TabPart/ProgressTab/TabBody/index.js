@@ -190,7 +190,7 @@ function TabBody() {
       <ColorTypo className="progressTabBody--subTitle">{`${trackings.length} lần điều chỉnh`}</ColorTypo>
       {showDetail && trackings.map((track, i) => (<EditProgressItem
         key={i}
-        fixedNumber={i + 1}
+        fixedNumber={trackings.length - i}
         fixStart={track.new_start}
         fixEnd={track.new_end}
         createdAt={track.time_create}

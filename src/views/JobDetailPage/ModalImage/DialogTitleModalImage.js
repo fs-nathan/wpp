@@ -4,9 +4,11 @@ import CloseIcon from '@material-ui/icons/Close';
 import { mdiDownload, mdiInformation, mdiRotateLeft, mdiRotateRight, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionDownloadFile } from 'actions/documents';
+import { getDialogDate } from 'helpers/jobDetail/stringHelper';
 import compact from 'lodash/compact';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import './styles.scss';
 
@@ -56,6 +58,8 @@ const ButtonAction = styled(Typography)`
 
 const DialogTitleModalImage = withStyles(styles)(props => {
   const { t } = useTranslation();
+  const dateFormat = useSelector(state => state.system.profile.format_date);
+
   const { children, classes, onClose,
     user_create_avatar, user_create_name = '', time_create = '',
     user_create_position = '', image,
@@ -68,6 +72,7 @@ const DialogTitleModalImage = withStyles(styles)(props => {
   function onClickDownload() {
     actionDownloadFile(image)
   }
+  const formattedTime = getDialogDate(time_create, dateFormat)
 
   return (
     <MuiDialogTitle className="DialogTitleModalImage" disableTypography {...other}>
@@ -84,7 +89,7 @@ const DialogTitleModalImage = withStyles(styles)(props => {
               }
               secondary={
                 <Typography component='div'>
-                  {compact([user_create_name, time_create]).join(' - ')}
+                  {compact([user_create_name, formattedTime]).join(' - ')}
                 </Typography>
               }
             />

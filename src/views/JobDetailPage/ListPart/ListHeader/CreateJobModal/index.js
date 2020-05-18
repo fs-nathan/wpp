@@ -145,7 +145,6 @@ function CreateJobModal(props) {
         value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
       }));
       setListGroupTask(listTask);
-
       // Set default group for input
       let item = listTask.find(
         item => item.value === taskDetails.group_task

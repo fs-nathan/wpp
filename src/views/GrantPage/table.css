@@ -1,0 +1,775 @@
+.react-resizable {
+  position: relative;
+  background-clip: padding-box;
+}
+
+.gantt-table-col.react-resizable-handle {
+  position: absolute;
+  width: 20px;
+  height: 50%;
+  top: 25%;
+  right: -12px;
+  cursor: ew-resize;
+  z-index: 1;
+}
+
+.gantt-table-col.react-resizable-handle svg {
+  fill: #bfbfbf;
+}
+
+tr.drop-over-downward td {
+  border-bottom: 2px dashed #1890ff;
+}
+
+tr.drop-over-upward td {
+  border-top: 2px dashed #1890ff;
+}
+.row-tag-antd div {
+  right: 0;
+}
+
+.table-gantt-header thead tr th {
+  padding: 14px !important;
+  white-space: nowrap;
+}
+
+.table-gantt-header tbody tr {
+  white-space: nowrap;
+}
+
+.table-gantt-header tbody tr td div {
+  height: 20px;
+}
+.grantt-header thead tr th {
+  padding: 2px !important;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ant-table-tbody > tr.ant-table-row-level-1:hover > td {
+  background: unset;
+}
+
+.ant-table.ant-table-bordered thead > tr > th {
+  text-align: center;
+}
+/* .grantt-header tbody tr td.ant-table-cell {
+  padding: 16px 0 !important
+} */
+.gantt-header-icon {
+  width: 100%;
+  margin: auto;
+}
+.row-grey-table {
+  background: #fafafa;
+}
+.ant-table-content {
+  overflow: unset !important;
+}
+.config--drawer--checkbox-section {
+  display: flex;
+  flex-direction: column;
+  margin-top: 10px;
+}
+body {
+  overflow-x: hidden;
+}
+.config--drawer--section {
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: black;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.config--drawer--title {
+  margin-top: 10px;
+  color: rgb(165, 160, 160);
+}
+
+.checkbox-label--drawer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.checkbox-colortag--drawer {
+  width: 80px;
+  height: 16px;
+  margin-right: 8px;
+  position: absolute;
+  right: 0;
+}
+.checkbox-colortag--drawer:hover {
+  background-color: #f2f5fa;
+}
+.ml-0 {
+  margin-left: 0 !important;
+}
+/* .ml-8 {
+  margin-left: 8px !important;
+} */
+.ant-checkbox {
+  margin-top: 3px !important;
+}
+.config--drawer--checkbox {
+  display: flex !important;
+  padding-bottom: 10px !important;
+  padding-top: 10px !important;
+}
+
+.config--drawer--checkbox:hover {
+  background-color: #f2f5fa;
+}
+
+.config--drawer--checkbox span {
+  font-size: 1rem;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-weight: 400;
+  line-height: 1.5;
+  letter-spacing: 0.00938em;
+  color: black;
+}
+
+span.ant-checkbox ~ span {
+  width: 100%;
+}
+
+.ant-checkbox-wrapper + .ant-checkbox-wrapper {
+  margin-left: 0 !important;
+}
+
+.title-drawer-config {
+  width: 30%;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+}
+.title-drawer-config p {
+  margin: 0;
+  font-size: 16px;
+}
+.ant-checkbox-checked::after {
+  border: 0 !important;
+}
+
+.gantt--title-project {
+  font-size: 17px;
+  display: flex;
+  margin-bottom: 2px;
+  font-weight: 500;
+}
+
+.gantt--navigation {
+  display: flex;
+}
+.gantt--navigation p {
+  margin-right: 5px;
+  margin-bottom: 0;
+}
+
+.gantt--image-project {
+  border-radius: 50%;
+}
+.gantt--button-header-text {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 11px;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.gantt--timeline--container {
+  margin-top: 22.5px;
+}
+
+.gantt--top-timeline {
+  position: relative;
+  height: 20px;
+  margin: 0;
+  left: -10px;
+}
+
+.gantt--start-timeline {
+  position: absolute;
+  height: 20px;
+  margin: 0;
+  left: -90px;
+}
+
+.gantt--end-timeline {
+  position: relative;
+  height: 20px;
+  margin: 0;
+  left: 20px;
+}
+.gantt--name-timeline {
+  position: relative;
+  height: 20px;
+  margin: 0;
+  left: 40px;
+}
+
+.gantt--time-task {
+  width: 100%;
+  height: 20px;
+  z-index: 1;
+}
+
+.gantt--duration-task {
+  overflow: hidden;
+  width: 100%;
+  height: 20px;
+  z-index: 3;
+}
+
+.config--drawer--checkbox .ant-radio-checked .ant-radio-inner::after {
+  transform: translate(0.5px, -0.5px) !important;
+}
+.resize-width {
+  width: 20px;
+  right: -14px !important;
+  bottom: 0;
+  cursor: ew-resize;
+}
+
+.gantt-dot-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-55%);
+}
+
+.asfdfs {
+  right: 0 !important;
+}
+.resize-duration {
+  width: 10px;
+  right: -5px !important;
+  bottom: -6.67px;
+  padding: 0 !important;
+}
+.container-icon-drag-duration {
+  width: 20px;
+  height: 10px;
+  position: absolute;
+}
+.container-icon-drag-duration span {
+  width: 20px;
+  cursor: pointer;
+}
+.icon-resize-gantt-chart {
+  position: absolute;
+  z-index: 1001;
+  width: 1px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: col-resize;
+}
+.icon-resize-gantt-chart svg {
+  width: 20px !important;
+  height: 30px !important;
+  left: -7px;
+  position: absolute;
+  top: 50%;
+  fill: #9a9a9a;
+  border-radius: 2px;
+  background: #e8e8e8;
+}
+
+.icon-show-header {
+  position: absolute;
+  right: 15px;
+  z-index: 1;
+  width: 40px;
+  height: 20px;
+  border: 1px solid rgba(230, 230, 230, 0.25);
+  border-bottom-left-radius: 50px;
+  border-bottom-right-radius: 50px;
+  border-top: 0;
+  background-color: #f4f4f4;
+}
+.icon-show-header button:hover {
+  background: transparent;
+}
+.icon-show-header svg {
+  width: 20px !important;
+  margin-top: -5px;
+}
+
+.ant-table tbody > tr.ant-table-row:hover > td {
+  background: #fffae6 !important;
+}
+.gantt--top-timeline-tr:hover {
+  background: #fffae6 !important;
+}
+
+.row-background-yellow {
+  background: #fffae6 !important;
+}
+.name-task-gantt:hover {
+  color: #0089f6 !important;
+}
+.name-task-gantt {
+  overflow: hidden;
+  width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+  color: #000;
+  flex-grow: 1;
+}
+.duration-text-gantt {
+  position: relative;
+  right: 10px;
+  text-align: right;
+}
+.right-header-more {
+  margin: 0 !important;
+}
+.gantt--icon-setting-task {
+  fill: #b9b9b9;
+}
+.gantt--icon-setting-task:hover {
+  fill: #8e8e8e;
+}
+
+.calendar--left-header {
+  display: flex;
+  position: relative;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  vertical-align: middle;
+}
+.calendar--left-header div {
+  left: 50%;
+  position: relative;
+  transform: translateX(-50%);
+  font-size: 16px;
+}
+.calendar--left-header svg {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  fill: #b9b9b9;
+}
+
+.calendar--button {
+  display: flex;
+  position: relative;
+  top: 30px;
+  transform: translateY(-50%);
+  width: 100%;
+}
+.calendar--button--title {
+  margin-left: 20px;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+.calendar--button svg {
+  font-size: 16px;
+  margin-left: 15px;
+  margin-right: 15px;
+  display: block;
+  margin-top: auto;
+  margin-bottom: auto;
+  fill: #858483;
+}
+.calendar--button--item__container {
+  height: 60px;
+}
+
+.calendar--button--item__container:hover {
+  background: #b9b9b9;
+}
+.pull-right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.calendar--button--tag-default {
+  color: #ff9800;
+  background: #ff980038;
+  margin-top: 3px;
+  width: fit-content;
+}
+.calendar--right-header {
+  position: relative;
+  top: 50%;
+  text-transform: none;
+  transform: translateY(-50%);
+}
+.calendar--right-header div:first-child {
+  font-size: 16px;
+  font-weight: 700;
+}
+.calendar--right-header div:last-child {
+  font-weight: 400;
+}
+.custom-checkbox-icon--calendar {
+  fill: #48bb78;
+}
+
+.custom-checkbox--calendar {
+  fill: #b9b9b9;
+}
+.custom-checkbox--calendar span {
+  padding: 0 !important;
+}
+.custom-checkbox--calendar--container {
+  display: flex;
+  justify-content: space-around;
+  width: 60%;
+  margin-left: 30px;
+}
+
+.section--calendar {
+  margin: 20px 20px;
+  font-weight: 500;
+}
+.sub-section--calendar {
+  margin: 20px 20px;
+}
+
+#customers {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+  margin-left: 20px;
+}
+#customers td {
+  padding: 0;
+}
+#customers td div {
+  width: 94%;
+  border-bottom: 1px solid #b9b9b9;
+  margin: 0px auto;
+  padding: 10px;
+}
+#customers tr:last-of-type td div {
+  width: 100%;
+  border-bottom: 1px solid #b9b9b9;
+  margin: 0px auto;
+  padding: 10px calc(3% + 10px);
+}
+
+#customers td,
+#customers th {
+  border: 1px solid #b9b9b9;
+}
+#customers th {
+  padding: 8px;
+}
+#customers td {
+  border-bottom: 0 !important;
+  border-top: 0 !important;
+}
+#customers tr:hover {
+  background-color: #b9b9b9;
+}
+
+#customers th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #cae0e0;
+  color: black;
+  font-weight: 500;
+}
+#customers th:first-child svg {
+  fill: #48bb78;
+}
+#customers th:last-child svg {
+  fill: #eb2a2a;
+}
+.header-table-day-work {
+  display: flex;
+  text-align: center;
+  margin: 0 auto;
+  width: fit-content;
+}
+.header-table-day-work svg {
+  margin-top: auto;
+  margin-bottom: auto;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 5px;
+}
+
+#hourwork {
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 80%;
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+#hourwork td {
+  padding: 0;
+}
+#hourwork tr th:first-child {
+  width: 35%;
+}
+
+#hourwork tr td:first-child {
+  text-align: center;
+}
+
+#hourwork tr td:first-child div {
+  width: 100%;
+}
+
+#hourwork td div {
+  width: 94% !important;
+  margin: 0px auto;
+  padding: 10px;
+}
+
+.calendar--hour-work__td {
+  display: flex;
+  border-bottom: 0 !important;
+  padding: 0 !important;
+}
+
+#hourwork td,
+#hourwork th {
+  border: 1px solid #b9b9b9;
+}
+#hourwork th {
+  padding: 8px;
+}
+#hourwork td:hover {
+  background-color: #b9b9b9;
+}
+
+#hourwork th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: center;
+  background-color: #cae0e0;
+  color: black;
+  font-weight: 500;
+}
+#hourwork th:first-child svg {
+  width: 13px;
+  height: 13px;
+  margin-right: 10px;
+  fill: #48bb78;
+}
+#hourwork th:last-child svg {
+  width: 13px;
+  height: 13px;
+  margin-right: 10px;
+  fill: #eb2a2a;
+}
+
+td.table-hourwork-left {
+  padding: 0 auto !important;
+  border-bottom: 1px solid #b9b9b9 !important;
+}
+
+td.table-hourwork-right--border-bottom-none {
+  border-bottom: 0 !important;
+}
+
+td.table-hourwork-right--border-bottom-none div {
+  border-bottom: 1px solid #b9b9b9;
+}
+td.table-hourwork-right--border-top-none {
+  border-top: 0 !important;
+  text-align: left !important;
+}
+.color-picker-drawer-config {
+  position: absolute;
+  z-index: 15;
+  top: 10px;
+  left: 70px;
+}
+
+div.checkbox-colortag--drawer {
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+
+.comp_QuickViewFilter__headerConfig {
+  padding: 10px 0;
+  font-weight: normal;
+}
+
+.ant-drawer-header {
+  padding: 15px !important;
+}
+
+.ant-drawer-body {
+  padding: 15px !important;
+  padding-right: 0 !important;
+}
+.ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #48bb78 !important;
+  border-color: #48bb78 !important;
+}
+.config--drawer--checkbox-wrapper {
+  padding-left: 40px;
+}
+.config--drawer--drag-checkbox-wrapper:hover,
+.config--drawer--checkbox-wrapper:hover {
+  background-color: #f2f5fa;
+}
+.ant-row-end {
+  line-height: 50px;
+}
+.MuiIconButton-label {
+  padding: 0 10px !important;
+}
+
+.gantt--right-header__more {
+  padding-right: 60px;
+  z-index: 1;
+  border-right: 1px solid #ededed;
+}
+.icon-invisible-header {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.icon-fromNow-header {
+  position: absolute;
+  z-index: 0;
+  top: 50%;
+  left: 50%;
+  border-right: 1px solid #ededed;
+  transform: translate(-50%, -50%);
+}
+.icon-invisible-header svg {
+  fill: rgb(199, 199, 199) !important;
+}
+
+.name-task-gantt__icon-container {
+  display: flex;
+  position: absolute;
+  background: #fff;
+  right: 0;
+  top: 0;
+  align-items: center;
+  padding-left: 5px;
+  height: 35px !important;
+  padding-right: 5px;
+}
+
+.gantt-title-table-project {
+  display: flex;
+  margin-left: 20%;
+}
+
+.gantt-title-table-project-icon {
+  width: 20%;
+  text-align: right;
+  fill: #cccccc;
+}
+
+.gantt-title-table-project-name {
+  width: 80%;
+}
+
+.gantt--group-task {
+  display: flex;
+  justify-content: space-between;
+}
+
+.gantt--group-task__left {
+  display: flex;
+}
+.gantt--group-task__right {
+  fill: #cccccc;
+  margin-right: 7px;
+}
+
+.calendar--hour-work__name {
+  width: 30%;
+}
+.gantt-select-project__container {
+  position: absolute;
+  background: #fff;
+  z-index: 1000;
+}
+
+.gantt__comp_JobPageLayout__drawerPaper {
+  top: 114px !important;
+  height: calc(100vh - 114px);
+}
+
+.gantt__comp_JobPageLayout__drawerPaper__showHeader {
+  top: 55px;
+  height: calc(100vh - 55px);
+}
+
+.gantt--fromNowLayer__container {
+  position: absolute;
+  z-index: 4;
+  height: calc(100% - 17px);
+}
+
+.gantt--fromNowLayer__background {
+  position: absolute;
+  z-index: 4;
+  background: #ffc9a066;
+  border-right: 5px solid #ff6c03;
+  height: 100%;
+}
+.gantt--fromNowLayer__text {
+  position: absolute;
+  right: 0;
+  color: #fff;
+  width: 100px;
+  background: #f58d42;
+  z-index: 5;
+  padding: 4px 10px;
+  text-align: center;
+}
+
+.gantt__container {
+  display: flex;
+  position: relative;
+  height: 823px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.gantt__select-project {
+  width: 500px;
+}
+
+.scroll-gantt::webkit-scrollbar-track {
+  width: 2px;
+}
+.scroll-gantt::-webkit-scrollbar {
+  width: 2px;
+}
+.scroll-gantt::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+}
+
+.scroll-gantt::-webkit-scrollbar-track-piece:start:horizontal {
+  background: #ffc9a066;
+}
+
+.scroll-gantt::-webkit-scrollbar-track-piece:end:horizontal {
+  background: #ffc9a066;
+}
+.gantt-chart__container {
+  display: flex;
+  z-index: 2;
+  overflow: scroll;
+  width: 100%;
+}

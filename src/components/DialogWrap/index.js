@@ -19,16 +19,16 @@ function DialogWrap({
   onClickSuccess,
   successLabel = 'Hoàn Thành',
   children,
-  maxWidth,
   isDisableSubmit,
   className,
-  isOneButton
+  isOneButton,
+  ...rest
 }) {
   const { t } = useTranslation();
   const groupActiveColor = useSelector(currentColorSelector)
   return (
     <Dialog
-      maxWidth={maxWidth} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >
+      {...rest} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >
       <DialogTitle disableTypography >
         <ColorTypo className="dialogWrap--title" >{title}</ColorTypo>
         <IconButton aria-label="close" className="dialogWrap--closeButton" onClick={handleClickClose}>

@@ -42,6 +42,17 @@
       border-radius: 2px;
     }
   }
+  &--tooltip {
+    color: #000;
+    font-weight: 400;
+    border: 1px solid #c4c4c4;
+    background-color: #fff;
+    border-radius: 4px;
+    width: 222px;
+    padding: 10px 20px;
+    box-shadow: 0 0 15px 2px hsla(0, 0%, 65.1%, 0.3);
+    margin: 24px 0;
+  }
 }
 
 .MuiTooltip-tooltip {
@@ -173,5 +184,29 @@
   &--content {
     font-size: 14px;
     line-height: 1.5;
+  }
+}
+
+.styled-context-status {
+  & > *:first-child {
+    display: flex;
+    align-items: center;
+    & > p:nth-child(2) {
+      color: #000;
+      margin-left: 8px;
+      margin-right: 5px;
+      font-weight: normal;
+    }
+    & > p:nth-child(3) {
+      color: #0ce8b5;
+      font-size: 13px;
+    }
+  }
+  & > *:last-child {
+    color: #000;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 3px 5px 0 0;
   }
 }

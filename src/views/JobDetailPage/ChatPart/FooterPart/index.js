@@ -1,13 +1,13 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, changeStickerKeyWord, chatFile, chatImage, chatQuickLike, chatSticker, clearTags, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
+import { appendChat, changeStickerKeyWord, chatFile, chatForwardFile, chatImage, chatQuickLike, chatSticker, clearTags, createChatFileFromGoogleDriver, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { file as file_icon } from 'assets/fileType';
 import { FileType } from 'components/FileType';
 import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
 import htmlToText from 'helpers/jobDetail/jsHtmlToText';
-import { humanFileSize } from 'helpers/jobDetail/stringHelper';
+import { humanFileSize, transformToGoogleFormData } from 'helpers/jobDetail/stringHelper';
 import isEmpty from 'lodash/isEmpty';
 import words from 'lodash/words';
 import React, { useEffect, useRef, useState } from 'react';
@@ -423,6 +423,15 @@ const FooterPart = ({
     isOpenMentionRef.current = isOpenMention;
   }, [isOpenMention])
 
+  function onConfirmShare(selectedFiles) {
+    const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
+    const vtaskFiles = selectedFiles.filter(({ isGoogleDocument }) => !isGoogleDocument)
+    if (vtaskFiles.length > 0)
+      dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
+    if (googleFiles.length > 0)
+      dispatch(createChatFileFromGoogleDriver(taskId, googleFiles.map(transformToGoogleFormData)))
+  }
+
   return (
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
@@ -523,6 +532,7 @@ const FooterPart = ({
       <ShareFromLibraryModal
         open={isShareFromLib}
         setOpen={setShareFromLib}
+        onClickConfirm={onConfirmShare}
       />
     </div >
   );

@@ -46,6 +46,7 @@ import chat, { initialState as chatInitialState } from "./chat/chat";
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
 import documents from "./documents";
+import gantt, { initialState as ganttInitialState } from "./gantt";
 import copyGroupTask, { initialState as copyGroupTaskInitialState } from "./groupTask/copyGroupTask";
 import createGroupTask, { initialState as createGroupTaskInitialState } from "./groupTask/createGroupTask";
 import deleteGroupTask, { initialState as deleteGroupTaskInitialState } from "./groupTask/deleteGroupTask";
@@ -69,7 +70,7 @@ import createLevel, { initialState as createLevelInitialState } from "./level/cr
 import deleteLevel, { initialState as deleteLevelInitialState } from "./level/deleteLevel";
 import listLevel, { initialState as listLevelInitialState } from "./level/listLevel";
 import updateLevel, { initialState as updateLevelInitialState } from "./level/updateLevel";
-import localStorage, { initialState as localStorageInitialState } from './localStorage';
+import localStorage, { initialState as localStorageInitialState } from "./localStorage";
 import createMajor, { initialState as createMajorInitialState } from "./major/createMajor";
 import deleteMajor, { initialState as deleteMajorInitialState } from "./major/deleteMajor";
 import listMajor, { initialState as listMajorInitialState } from "./major/listMajor";
@@ -298,6 +299,7 @@ const rootReducer = combineReducers({
   register: combineReducers({
     inviteOtherPeopleCreateAccount,
   }),
+  gantt,
   [settingGroupHome.key]: settingGroupHome.reducer,
   [settingGroupPermission.key]: settingGroupPermission.reducer,
   [postModule.key]: postModule.reducer,
@@ -449,6 +451,7 @@ export const DEFAULT_STATE = {
     inviteOtherPeopleCreateAccount: inviteOtherPeopleCreateAccountInitialState,
   },
   viewPermissions: viewPermissionsInitialState,
+  gantt: ganttInitialState,
   calendar: {
     listSchedule: listScheduleInitialState,
     listScheduleOfWeek: listScheduleOfWeekInitialState,

@@ -2,12 +2,11 @@ import { Button, IconButton } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { mdiChevronRight, mdiClose, mdiLogout, mdiMagnify, mdiRefresh } from '@mdi/js';
 import Icon from '@mdi/react';
-import { chatForwardFile, createChatFileFromGoogleDriver } from 'actions/chat/chat';
 import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle } from 'actions/documents';
 import { actionChangeBreadCrumbs } from 'actions/system/system';
 import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
-import { transformGoogleDriverData, transformToGoogleFormData } from 'helpers/jobDetail/stringHelper';
+import { transformGoogleDriverData } from 'helpers/jobDetail/stringHelper';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import React, { useEffect, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -23,7 +22,7 @@ import NotFoundDocument from './NotFoundDocument';
 import ProjectDocumentsTable from './ProjectDocumentsTable';
 import './styles.scss';
 
-const ShareFromLibraryModal = ({ open, setOpen }) => {
+const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation()
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -110,14 +109,9 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
     dispatch(actionChangeBreadCrumbs([]));
   };
 
-  function onClickConfirm() {
+  function onConfirmShare() {
     setOpen(false)
-    const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
-    const vtaskFiles = selectedFiles.filter(({ isGoogleDocument }) => !isGoogleDocument)
-    if (vtaskFiles.length > 0)
-      dispatch(chatForwardFile(taskId, vtaskFiles.map(({ id }) => id)))
-    if (googleFiles.length > 0)
-      dispatch(createChatFileFromGoogleDriver(taskId, googleFiles.map(transformToGoogleFormData)))
+    onClickConfirm(selectedFiles)
     setSelectedFiles([])
   }
 
@@ -193,7 +187,7 @@ const ShareFromLibraryModal = ({ open, setOpen }) => {
       title={t('LABEL_CHAT_TASK_LUU_TRU_TAI_LIEU')}
       className="ShareFromLibraryModal"
       cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
-      onConfirm={onClickConfirm}
+      onConfirm={onConfirmShare}
     >
       <div className="ShareFromLibraryModal--container" >
         <div className="ShareFromLibraryModal--left" >

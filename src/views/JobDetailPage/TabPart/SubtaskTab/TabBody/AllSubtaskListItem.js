@@ -64,6 +64,7 @@ function AllSubtaskListItem(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   function handleClick(evt) {
+    evt.stopPropagation();
     setAnchorEl(evt.currentTarget)
   }
 
@@ -89,8 +90,9 @@ function AllSubtaskListItem(props) {
     )
   }
 
-  function onClickCompleteTask() {
+  function onClickCompleteTask(evt) {
     console.log('onClickCompleteTask', taskId)
+    evt.stopPropagation();
     dispatch(
       completeSubTask({
         sub_task_id: props.task.id,
@@ -111,7 +113,6 @@ function AllSubtaskListItem(props) {
         <AllSubtaskListItemContainer
           innerRef={provided.innerRef}
           {...provided.draggableProps}
-
         >
           <StyledMenu {...provided.dragHandleProps}>
             <abbr title={t('LABEL_CHAT_TASK_KEO_THA_SAP_XEP')}>
