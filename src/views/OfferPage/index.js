@@ -282,7 +282,7 @@ function OfferPage(props) {
   // Current offer detail id to fetch data showing on offer detail modal
   const [currentDetailOfferId, setCurrentDetailOfferId] = useState('');
   useEffect(() => {
-    if (currentDetailOfferId) {
+    if (currentDetailOfferId && isDetailOfferModalOpen) {
       dispatch(loadDetailOffer({ id: currentDetailOfferId }));
     }
   }, [currentDetailOfferId]);
