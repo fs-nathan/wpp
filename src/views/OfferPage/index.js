@@ -28,7 +28,7 @@ import Notifier from "./utils/notifer";
 import { formatTime } from "./utils/time";
 import { checkUserIsInOfferDepartmentRoutes, checkUserIsInOfferGroupRoutes, checkUserIsInOfferProjectRoutes } from "./utils/validate";
 import DetailOfferModal from './views/DetailOffer/DetailOfferModal';
-import { getDetailOffer } from './views/DetailOffer/selector';
+import { getDetailOffer, getDetailOfferLoadingState } from './views/DetailOffer/selector';
 import { getDepartmentGroupByKeyword } from "./views/OfferByDepartment/selector";
 import { getSummaryByGroupByKeyword } from "./views/OfferByGroup/selector";
 import { getSummaryByProjectAndKeyword } from "./views/OfferByProject/selector";
@@ -278,6 +278,7 @@ function OfferPage(props) {
 
   // Get offer details from redux store to show on offer detail modal
   const detailOffer = useSelector(state => getDetailOffer(state));
+  const detailOfferLoading = useSelector(state => getDetailOfferLoadingState(state));
   const [isDetailOfferModalOpen, setDetailOfferModalOpen] = useState(false);
   // Current offer detail id to fetch data showing on offer detail modal
   const [currentDetailOfferId, setCurrentDetailOfferId] = useState('');
@@ -286,8 +287,6 @@ function OfferPage(props) {
       dispatch(loadDetailOffer({ id: currentDetailOfferId }));
     }
   }, [currentDetailOfferId, isDetailOfferModalOpen]);
-  // Compare currentDetailOfferId & prevDetailOfferId to determine offer detail modal loading state
-  const prevDetailOfferId = usePrevious(currentDetailOfferId);
 
   // Delete offer confirm modal
   const [showDeleteOfferConfirmModal, setShowDeleteOfferConfirmModal] = useState(false);
@@ -347,7 +346,7 @@ function OfferPage(props) {
                 <DetailOfferModal
                   open={isDetailOfferModalOpen}
                   setOpen={setDetailOfferModalOpen}
-                  loading={currentDetailOfferId !== prevDetailOfferId || currentDetailOfferId === ''}
+                  loading={detailOfferLoading}
                   {...detailOffer}
                 />
               )}
