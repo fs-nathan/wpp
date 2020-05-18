@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
 import { apiService } from '../../../../../constants/axiosInstance';
+import ShareFromLibraryModal from '../../../ChatComponent/ShareFromLibraryModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
 import OfferFile from './OfferFile';
@@ -34,15 +35,14 @@ const OfferModal = (props) => {
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
   const [handlers, setHandlers] = React.useState([])
   const [monitors, setMonitors] = React.useState([])
-  const [openSendFileModal, setOpenSendFileModal] = React.useState(false)
   const [approves, setApproves] = React.useState([])
   const [minRateAccept, setMinRateAccept] = React.useState(100)
   const [conditionLogicMember, setConditionLogicMember] = useState("OR")
   const [offersGroup, setOffersGroup] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
-  const [openDocumentModal, setOpenDocumentFileModal] = React.useState(false)
-  const [selectFileFromDocument, setSelectFileFromDocument] = React.useState([])
+  const [selectedFilesFromLibrary, setSelectedFilesFromLibrary] = React.useState([])
+  const [openShareFromLibraryModal, setOpenShareFromLibraryModal] = useState(false);
   /// Mở modal các thành viên sau phải duyệt
   const [isOpenAddApprove, setOpenAddAppove] = React.useState(false)
   const { item } = props;
@@ -108,7 +108,8 @@ const OfferModal = (props) => {
   })
   const handleDeleteFile = fileId => {
     let removeFileCallBack = () => {
-      setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
+      setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
+      setParams("file_ids", tempSelectedItem.file_ids.filter(file => file.id !== fileId));
     }
     if (props.isOffer) {
       let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
@@ -124,18 +125,11 @@ const OfferModal = (props) => {
   React.useEffect(() => {
     filterUserInHandlers()
   }, [filterUserInHandlers, handlers])
-  const handleSendFileModal = ({ files }) => {
-    setParams("files", [...tempSelectedItem.files, ...files])
-    setOpenSendFileModal(false)
-    // setParams("files", [...tempSelectedItem.files, ...files])
-  }
-  const handleDocumentFileModal = ({ files }) => {
-    if (files) {
-      setSelectFileFromDocument([...selectFileFromDocument, ...files])
-      setParams("file_ids", [...tempSelectedItem.file_ids, ...files.map(x => (x.id))])
+  const handleSelectedFilesFromLibrary = (selectedFiles) => {
+    if (selectedFiles) {
+      setParams("file_ids", [...tempSelectedItem.file_ids, ...selectedFiles.map(file => (file.id))]);
+      setSelectedFilesFromLibrary([...selectedFilesFromLibrary, ...selectedFiles]);
     }
-    setOpenSendFileModal(false)
-    setOpenDocumentFileModal(!openDocumentModal)
   }
   const getFormData = () => {
     let dataCreateOfferFormData = new FormData()
@@ -159,13 +153,7 @@ const OfferModal = (props) => {
     approves.forEach((value, index) => {
       dataCreateOfferFormData.append("member_accepted_important[" + index + "]", members[value].id)
     })
-    // add each file to form data  
-    console.log(tempSelectedItem.files)
-    for (let i = 0; i < tempSelectedItem.files.length; i++) {
-      console.log(tempSelectedItem.files[i])
-      dataCreateOfferFormData.append("file", tempSelectedItem.files[i], tempSelectedItem.files[i].name)
-    }
-    // add file ids to form data
+    // add selected file ids from library to form data
     tempSelectedItem.file_ids.forEach(id => {
       dataCreateOfferFormData.append("file_ids", id)
     })
@@ -441,19 +429,14 @@ const OfferModal = (props) => {
           </Grid>
         </Grid>
         <label className="offerModal--attach" >
-          <Button variant="outlined" component="span" onClick={() => setOpenSendFileModal(true)} fullWidth className={'classes.button'}>
+          <Button variant="outlined" component="span" onClick={() => setOpenShareFromLibraryModal(true)} fullWidth className={'classes.button'}>
             <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
         </label>
         {
-          tempSelectedItem.files &&
-          tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+          selectedFilesFromLibrary &&
+          selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }
-        {
-          selectFileFromDocument &&
-          selectFileFromDocument.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
-        }
-        <SendFileModal open={openSendFileModal} setOpen={handleSendFileModal} onClickShareFromLibrary={() => setOpenDocumentFileModal(true)} />
-        <DocumentFileModal open={openDocumentModal} setOpen={handleDocumentFileModal} />
+        <ShareFromLibraryModal open={openShareFromLibraryModal} setOpen={setOpenShareFromLibraryModal} onClickConfirm={handleSelectedFilesFromLibrary}/>
       </React.Fragment>
     </JobDetailModalWrap>
   )
