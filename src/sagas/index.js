@@ -1,5 +1,26 @@
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
-import { ADD_MEMBER_HANDLE, ADD_MEMBER_MONITOR, CREATE_GROUP_OFFER, DELETE_DOCUMENT_OFFER, DELETE_GROUP_OFFER, DELETE_MEMBER_HANDLE, DELETE_MEMBER_MONITOR, HANDLE_OFFER_OFFERPAGE, LOAD_DETAIL_OFFER, LOAD_OFFER_BY_DEPARTMENT_ID, LOAD_OFFER_BY_GROUP_ID, LOAD_OFFER_BY_PROJECT_ID, LOAD_SUMMARY_BY_GROUP, LOAD_SUMMARY_BY_PROJECT, LOAD_SUMMARY_DEPARTMENT, LOAD_SUMMARY_OVERVIEW, LOAD_TASK_RENCENTLY, UPDATE_GROUP_OFFER_OFFERPAGE, UPLOAD_DOCUMENT_OFFER } from "views/OfferPage/redux/types";
+import {
+  ADD_MEMBER_HANDLE,
+  ADD_MEMBER_MONITOR,
+  CREATE_GROUP_OFFER,
+  DELETE_DOCUMENT_OFFER,
+  DELETE_GROUP_OFFER,
+  DELETE_MEMBER_HANDLE,
+  DELETE_MEMBER_MONITOR,
+  HANDLE_OFFER_OFFERPAGE,
+  LOAD_DETAIL_OFFER,
+  DELETE_OFFER,
+  LOAD_OFFER_BY_DEPARTMENT_ID,
+  LOAD_OFFER_BY_GROUP_ID,
+  LOAD_OFFER_BY_PROJECT_ID,
+  LOAD_SUMMARY_BY_GROUP,
+  LOAD_SUMMARY_BY_PROJECT,
+  LOAD_SUMMARY_DEPARTMENT,
+  LOAD_SUMMARY_OVERVIEW,
+  LOAD_TASK_RENCENTLY,
+  UPDATE_GROUP_OFFER_OFFERPAGE,
+  UPLOAD_DOCUMENT_OFFER,
+} from "views/OfferPage/redux/types";
 import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
 import { CREATE_PERSONAL_CATEGORY_REMIND, CREATE_PERSONAL_REMIND, DELETE_PERSONAL_CATEGORY_REMIND, DELETE_PERSONAL_REMIND, LIST_PERSONAL_REMIND, LIST_PERSONAL_REMIND_CATEGORY, LIST_REMIND_PROJECT, LIST_REMIND_RECENTLY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_REMIND } from "../constants/actions/calendar/alarmCalendar";
@@ -102,7 +123,28 @@ import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
 import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
 // ==================================
 import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
-import { doAddMemberHandle, doAddMemberMonitor, doCreateOfferGroup, doDeleteDocumentOffer, doDeleteGroupOffer, doDeleteMemberHandle, doDeleteMemberMonitor, doGetSummaryByGroup, doGetTaskRecently, doHandleOffer, doLoadDetailOffer, doLoadOfferByDepartmentID, doLoadOfferByGroupID, doLoadOfferByProjectID, doLoadSummaryByDepartment, doLoadSummaryOverview, doLoadSummaryProject, doUpdateGroupOffer, doUploadDocumentOffer } from "../views/OfferPage/redux/sagas";
+import {
+  doAddMemberHandle,
+  doAddMemberMonitor,
+  doCreateOfferGroup,
+  doDeleteDocumentOffer,
+  doDeleteGroupOffer,
+  doDeleteMemberHandle,
+  doDeleteMemberMonitor,
+  doDeleteOffer,
+  doGetSummaryByGroup,
+  doGetTaskRecently,
+  doHandleOffer,
+  doLoadDetailOffer,
+  doLoadOfferByDepartmentID,
+  doLoadOfferByGroupID,
+  doLoadOfferByProjectID,
+  doLoadSummaryByDepartment,
+  doLoadSummaryOverview,
+  doLoadSummaryProject,
+  doUpdateGroupOffer,
+  doUploadDocumentOffer,
+} from '../views/OfferPage/redux/sagas';
 import { login, loginCheckState } from "./authentications";
 import { createPersonalRemind } from "./calendar/alarmCalendar/createPersonalRemind";
 import { createPersonalRemindCategory } from "./calendar/alarmCalendar/createPersonalRemindCategory";
@@ -697,6 +739,7 @@ function* rootSaga() {
   yield takeEvery(DELETE_GROUP_OFFER, doDeleteGroupOffer)
   yield takeEvery(UPDATE_GROUP_OFFER_OFFERPAGE, doUpdateGroupOffer)
   yield takeLatest(LOAD_DETAIL_OFFER, doLoadDetailOffer)
+  yield takeLatest(DELETE_OFFER, doDeleteOffer)
   yield takeEvery(UPLOAD_DOCUMENT_OFFER, doUploadDocumentOffer)
   yield takeEvery(DELETE_DOCUMENT_OFFER, doDeleteDocumentOffer)
   yield takeEvery(ADD_MEMBER_HANDLE, doAddMemberHandle)
