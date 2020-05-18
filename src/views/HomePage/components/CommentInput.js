@@ -6,7 +6,7 @@ import {
   InsertEmoticonOutlined,
 } from "@material-ui/icons";
 import colors from "helpers/colorPalette";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import { get } from "views/JobPage/utils";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { commentAttr } from "../contant/attrs";
@@ -84,24 +84,22 @@ export const CommentInput = React.memo(
             </IconButton>
           </Box>
         </div>
-        <Suspense fallback={() => null}>
-          <Popover
-            key="loaded"
-            open={open}
-            anchorEl={anchorElRef.current}
-            onClose={handleClose}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-          >
-            {!!element && element}
-          </Popover>
-        </Suspense>
+        <Popover
+          key="loaded"
+          open={open}
+          anchorEl={anchorElRef.current}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+        >
+          {!!element && element}
+        </Popover>
       </>
     );
   }
