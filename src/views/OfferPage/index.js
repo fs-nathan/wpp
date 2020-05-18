@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useHistory } from 'react-router-dom';
 import { usePrevious } from 'react-use';
+import CustomModal from '../../components/CustomModal';
 import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
@@ -17,6 +18,12 @@ import { OfferPageContext } from "./OfferPageContext";
 import { loadDetailOffer, loadTaskPage } from './redux/actions';
 import routes from "./routes";
 import { get } from "./utils";
+import {
+  getDeleteOfferConfirmModalCancelBtn,
+  getDeleteOfferConfirmModalConfirmBtn,
+  getDeleteOfferConfirmModalMsg,
+  getDeleteOfferConfirmModalTitle,
+} from './utils/i18nSelectors';
 import Notifier from "./utils/notifer";
 import { formatTime } from "./utils/time";
 import { checkUserIsInOfferDepartmentRoutes, checkUserIsInOfferGroupRoutes, checkUserIsInOfferProjectRoutes } from "./utils/validate";
@@ -280,6 +287,9 @@ function OfferPage(props) {
   // Compare currentDetailOfferId & prevDetailOfferId to determine offer detail modal loading state
   const prevDetailOfferId = usePrevious(currentDetailOfferId);
 
+  // Delete offer confirm modal
+  const [showDeleteOfferConfirmModal, setShowDeleteOfferConfirmModal] = useState(false);
+
   return (
     <TwoColumnsLayout
       leftRenders={[() => renderTabList]}
@@ -311,6 +321,7 @@ function OfferPage(props) {
             openModal,
             setDetailOfferModalOpen,
             setCurrentDetailOfferId,
+            setShowDeleteOfferConfirmModal,
           }}
         >
           <div>
@@ -334,6 +345,18 @@ function OfferPage(props) {
                   loading={currentDetailOfferId !== prevDetailOfferId || currentDetailOfferId === ''}
                   {...detailOffer}
                 />
+              )}
+              {showDeleteOfferConfirmModal && (
+                <CustomModal
+                  open={showDeleteOfferConfirmModal}
+                  setOpen={setShowDeleteOfferConfirmModal}
+                  height="mini"
+                  title={getDeleteOfferConfirmModalTitle(t)}
+                  confirmRender={() => getDeleteOfferConfirmModalConfirmBtn(t)}
+                  cancleRender={() => getDeleteOfferConfirmModalCancelBtn(t)}
+                >
+                  {getDeleteOfferConfirmModalMsg(t)}
+                </CustomModal>
               )}
             </Suspense>
             <Notifier />

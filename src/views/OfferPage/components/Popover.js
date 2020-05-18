@@ -22,7 +22,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ExpandPopover({ offer_id, view }) {
-    const { setDetailOfferModalOpen, setCurrentDetailOfferId } = useContext(OfferPageContext);
+    const {
+        setDetailOfferModalOpen,
+        setCurrentDetailOfferId,
+        setShowDeleteOfferConfirmModal,
+    } = useContext(OfferPageContext);
     const classes = useStyles();
     const { t } = useTranslation();
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -79,6 +83,8 @@ function ExpandPopover({ offer_id, view }) {
                     {renderPopoverOption(getOfferItemPopoverDelete(t), () => {
                         // Hide popup menu
                         setAnchorEl(null);
+                        // Show delete offer confirm modal
+                        setShowDeleteOfferConfirmModal(true);
                     })}
                 </div>
             </Popover>
