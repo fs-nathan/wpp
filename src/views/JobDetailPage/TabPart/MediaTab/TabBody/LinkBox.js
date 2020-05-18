@@ -3,6 +3,7 @@ import { mdiLink } from '@mdi/js';
 import Icon from '@mdi/react';
 import { normalizeUrl } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -11,10 +12,13 @@ import MenuListItem from './MenuListItem';
 const HeaderSubText = styled(ListSubheader)`
   font-size: 13px;
   color: #6e6d6d;
+  margin: 0;
 `
 
 const ListItemLink = styled(ListItem)`
-  padding-left: 0;
+  &:hover {
+    background-color: #f2f5fa;
+  }
   & > *:first-child {
     display: flex;
     align-items: center;
@@ -43,26 +47,31 @@ const LinkBox = (props) => {
   }
 
   return (
-    <List subheader={<li />}>
-      {link.links && link.links.map((item, idx) => {
-        return item.links.length > 0 && (
-          <div className="styled-list-item-link linkBox" key={idx}>
-            <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
-            {item.links.map((item, idx) => {
-              return (
-                <ListItemLink key={idx} className="linkBoxItem">
-                  <Typography component='div'>
-                    <Icon path={mdiLink} size={1.4} color={'green'} />
-                  </Typography>
-                  <ListItemText>
-                    <a
-                      href={normalizeUrl(item.url)}
-                      target="_blank"
-                      rel="noopener noreferrer">
-                      {item.url}
-                    </a>
-                  </ListItemText>
-                  {/* <div className="styled-menu-link">
+    <div className="linkBox">
+      <Scrollbars
+        className="linkBox--body"
+        renderView={props => <div {...props} className="linkBox--scroll" />}
+        autoHide autoHideTimeout={500} autoHideDuration={200}>
+        <List subheader={<li />} className="linkBox--list">
+          {link.links && link.links.map((item, idx) => {
+            return item.links.length > 0 && (
+              <div className="styled-list-item-link linkBox" key={idx}>
+                <HeaderSubText component='p' >{item.date_create}</HeaderSubText>
+                {item.links.map((item, idx) => {
+                  return (
+                    <ListItemLink key={idx} className="linkBoxItem">
+                      <Typography component='div'>
+                        <Icon path={mdiLink} size={1.4} color={'green'} />
+                      </Typography>
+                      <ListItemText>
+                        <a
+                          href={normalizeUrl(item.url)}
+                          target="_blank"
+                          rel="noopener noreferrer">
+                          {item.url}
+                        </a>
+                      </ListItemText>
+                      {/* <div className="styled-menu-link">
                     <ListItemIcon>
                       <IconButton className="linkBox--button"
                         onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
@@ -85,14 +94,16 @@ const LinkBox = (props) => {
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
                   </Menu> */}
-                  <MenuListItem item={item} colorIcon={'#000'} />
-                </ListItemLink>
-              )
-            })}
-          </div>
-        )
-      })}
-    </List>
+                      <MenuListItem item={item} colorIcon={'#000'} />
+                    </ListItemLink>
+                  )
+                })}
+              </div>
+            )
+          })}
+        </List>
+      </Scrollbars>
+    </div>
   );
 
 }

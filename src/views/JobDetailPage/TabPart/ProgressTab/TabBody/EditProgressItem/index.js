@@ -1,6 +1,7 @@
 import { Avatar } from '@material-ui/core';
 import { mdiClockOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import clsx from 'clsx';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
 import React from 'react';
@@ -22,6 +23,8 @@ function EditProgressItem({ fixedNumber,
   createdAt,
   avatarUrl,
   userName,
+  isNewEnd,
+  isNewStart,
 }) {
   const { t } = useTranslation();
 
@@ -34,11 +37,11 @@ function EditProgressItem({ fixedNumber,
       </div>
       <div className="editProgressItem--time">{t('LABEL_CHAT_TASK_LUC', { createdAt })}
       </div>
-      {fixStart && <div className="editProgressItem--time">
+      {fixStart && <div className={clsx("editProgressItem--time", { "editProgressItem--time__new": isNewStart })}>
         <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"
           size={1}></Icon>{t('LABEL_CHAT_TASK_BAT_DAU', { start: fixStart })}
       </div>}
-      {fixEnd && <div className="editProgressItem--time">
+      {fixEnd && <div className={clsx("editProgressItem--time", { "editProgressItem--time__new": isNewEnd })}>
         <Icon path={mdiClockOutline} color="rgba(0, 0, 0, 0.54)"
           size={1}></Icon>{t('LABEL_CHAT_TASK_KET_THUC', { end: fixEnd })}
       </div>}

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 
-const MenuListItem = ({ item, colorIcon = '#fff' }) => {
+const MenuListItem = ({ item, colorIcon = '#fff', isLink }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
@@ -29,7 +29,11 @@ const MenuListItem = ({ item, colorIcon = '#fff' }) => {
 
   function handleShare() {
     setAnchorEl(null);
-    dispatch(openShareFileModal(true, item))
+    if (isLink) {
+
+    } else {
+      dispatch(openShareFileModal(true, item))
+    }
   }
 
   function handleViewChat() {

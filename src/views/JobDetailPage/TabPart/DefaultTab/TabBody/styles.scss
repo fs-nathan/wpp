@@ -51,14 +51,14 @@
     width: 222px;
     padding: 10px 20px;
     box-shadow: 0 0 15px 2px hsla(0, 0%, 65.1%, 0.3);
-    margin: 24px 0;
+    margin: 8px 0;
   }
 }
 
 .MuiTooltip-tooltip {
   background-color: #fff;
   max-width: 210px;
-  height: 110px;
+  // height: 110px;
   border: 1px solid #dadde9;
 }
 
@@ -102,6 +102,9 @@
     &__completed {
       color: rgb(3, 195, 11);
     }
+    &__paused {
+      color: #607d8b;
+    }
     &__high {
       color: rgb(244, 67, 54);
     }
@@ -130,6 +133,10 @@
     &__completed {
       color: rgb(3, 195, 11);
       border: 1px solid rgb(3, 195, 11);
+    }
+    &__paused {
+      color: #607d8b;
+      border: 1px solid #607d8b;
     }
     &__high {
       color: rgb(244, 67, 54);
@@ -166,6 +173,24 @@
   }
   &__low {
     fill: rgb(3, 195, 11);
+  }
+}
+
+.ModalPriority {
+  &__high {
+    path {
+      fill: rgb(244, 67, 54) !important;
+    }
+  }
+  &__avg {
+    path {
+      fill: rgb(255, 152, 0) !important;
+    }
+  }
+  &__low {
+    path {
+      fill: rgb(3, 195, 11) !important;
+    }
   }
 }
 
