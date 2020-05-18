@@ -52,9 +52,9 @@ function SimpleManagerTable({
     <StyledTable>
       <StyledTableHead>
         <TableRow>
-          <StyledTableCell width={'25%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
+          <StyledTableCell width={'35%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
           <StyledTableCell width={'45%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
-          <TableCell width={'30%'} colSpan={2}>
+          <TableCell width={'20%'} colSpan={2}>
             <Button
               fullWidth
               style={{
@@ -71,9 +71,9 @@ function SimpleManagerTable({
       <StyledTableBody>
         {data.map(elem => (
           <TableRow key={get(elem, 'id')}>
-            <StyledTableCell width={'25%'}>{get(elem, 'name', '')}</StyledTableCell>
+            <StyledTableCell width={'35%'}>{get(elem, 'name', '')}</StyledTableCell>
             <TableCell width={'45%'}>{get(elem, 'description', '')}</TableCell>
-            <TableCell width={'30%'} align='center'>
+            <TableCell width={'10%'} align='center'>
               <MyButton
                 onClick={() => handleEdit(elem)}
                 disabled={
