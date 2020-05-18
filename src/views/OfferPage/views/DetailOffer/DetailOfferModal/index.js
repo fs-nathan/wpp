@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next'
 import CustomModal from '../../../../../components/CustomModal';
+import { OfferPageContext } from '../../../OfferPageContext';
 import {
   getDetailOfferModalCancelBtnTitle,
   getDetailOfferModalConfirmBtnTitle,
@@ -11,13 +12,14 @@ import { styles } from '../DetailOfferComponent/style'
 import './styles.scss';
 
 const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
+  const { setShowDeleteOfferConfirmModal } = useContext(OfferPageContext);
   const { t } = useTranslation()
   const classes = styles()
+  const onConfirm = () => {
+    setShowDeleteOfferConfirmModal(true);
+  }
   const onCloseModal = () => {
     // do nothing
-  }
-  const onDeleteOffer = () => {
-    // todo: implement on delete offer button click
   }
 
   return (
@@ -28,7 +30,7 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
       setOpen={setOpen}
       loading={loading}
       confirmRender={() => getDetailOfferModalConfirmBtnTitle(t)}
-      onConfirm={onDeleteOffer}
+      onConfirm={onConfirm}
       cancleRender={() => getDetailOfferModalCancelBtnTitle(t)}
       onCancle={onCloseModal}
       fullWidth
