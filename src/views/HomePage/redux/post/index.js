@@ -60,12 +60,24 @@ export const loadMorePostList = ({ title, category_id, page } = {}) => {
 // file: Array file optional
 // sticker: String optional
 // is_push_notification: Boolean required
+// file_ids: Array optional
+// google_data: Array object optional. Description object below
+// {
+// file_id: String required
+// name: String required
+// size: Number required
+// url: String required
+// url_download: String required
+// file_type: String required
+// }
 
 const createPost = ({
   title,
   category,
   content,
   file,
+  file_ids,
+  google_data,
   sticker,
   is_push_notification = true,
 }) => {
@@ -79,12 +91,47 @@ const createPost = ({
         content,
         file,
         sticker,
+        file_ids,
+        google_data,
         is_push_notification,
       }),
     },
     success: createAction(post.actions.listAddFirst.type, function prepare(
       data
     ) {
+      return {
+        payload: data.post,
+      };
+    }),
+  });
+};
+
+const updatePost = ({
+  title,
+  category,
+  content,
+  file,
+  file_ids,
+  google_data,
+  sticker,
+  is_push_notification = true,
+}) => {
+  return createPostAsyncAction({
+    notifyOnSuccess: false,
+    config: {
+      url: "/posts/update-post",
+      data: toFormData({
+        title,
+        category,
+        content,
+        file,
+        sticker,
+        file_ids,
+        google_data,
+        is_push_notification,
+      }),
+    },
+    success: createAction(post.actions.listupdate.type, function prepare(data) {
       return {
         payload: data.post,
       };
@@ -378,6 +425,7 @@ export const postModule = {
     loadReplyList,
     loadMoreReplyList,
     createPost,
+    updatePost,
     makePostHighLight,
     cancelPostHighLight,
     pinPost,
