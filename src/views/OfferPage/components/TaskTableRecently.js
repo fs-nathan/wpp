@@ -9,6 +9,7 @@ import { colors } from "../contants/attrs";
 import EmptyHolder from "./EmptyHolder";
 import Popover from './Popover';
 import "./TaskTableRecently.scss";
+import { TaskTitleLink } from './RecentTableRow';
 const styles = makeStyles((theme) => ({
   button_green: {
     backgroundColor: colors.offer_status_approved
@@ -119,7 +120,12 @@ export function TaskTableRecently({ offers }) {
                   </TableCell>
                   <TableCell>
                     <Grid container>
-                      <div>{get(offer, "title")}</div>
+                      <TaskTitleLink
+                        title={get(offer, "title")}
+                        to={get(offer, "url_redirect")}
+                      >
+                        {get(offer, "title")}
+                      </TaskTitleLink>
                       {!isEqual(get(offer, "type_name"), "") && <div className={`${classes.blue_hightlight} ${classes.text_hightlight}`}>{get(offer, "type_name")}</div>}
 
                       {get(offer, "priority_code") === 0 && <div className={`${classes.orange_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>{get(offer, "priority_name")}</div>}
