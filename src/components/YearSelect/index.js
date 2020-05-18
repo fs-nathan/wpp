@@ -10,8 +10,6 @@ import './styles.scss';
 function YearSelect({ className, value, onChange, numberOfYears }) {
   const year = (new Date("01-01-2020")).getFullYear();
   let diffYear = moment().diff('2020-01-01', 'years');
-  if (diffYear === 0) diffYear = 1;
-
   const years = Array.from(new Array(diffYear + numberOfYears), (val, index) => index + year);
   const { t } = useTranslation();
 

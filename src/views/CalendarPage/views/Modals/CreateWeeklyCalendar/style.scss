@@ -76,6 +76,11 @@
 
   .right {
     padding: 10px 15px;
+    height: 90%;
+  }
+
+  .MuiFormHelperText-contained {
+    margin-left: 0px !important;
   }
 }
 
@@ -242,7 +247,7 @@
 
   &_group {
     .MuiButton-root {
-      width: 100px;
+      width: 150px;
       margin-right: 7px;
     }
   }
@@ -250,7 +255,7 @@
 
 .view_createWeeklyCalendar_list {
   &_container {
-    padding: 10px;
+    padding: 10px 0px;
     height: 100%;
 
     .MuiListItemSecondaryAction-root {
@@ -318,14 +323,48 @@ abbr[title] {
 
 .view_WeeklyCalendar_rightContainer {
   &__itemContainer {
-    &>div:nth-child(1)>span:nth-child(1) {
-      font-size: 15px;
-      margin-right: 10px;
+    margin: 10px 0px;
+    min-width: 100%;
+
+    .MuiListItem-container {
+      &:hover {
+        background: #F2F5FA;
+      }
+    }
+
+    .MuiList-padding {
+      padding-right: 0px;
+    }
+
+    &>div:nth-child(1) {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 0px;
+      width: 100%;
+      border-bottom: 2px solid #F6F6F6;
+      font-weight: 500;
+
+      .header_time {
+        width: 165px;
+
+        &>span:nth-child(1) {
+          font-weight: 500;
+          margin-right: 10px;
+          font-size: 15px;
+        }
+
+        &>span:nth-child(2) {
+          font-weight: normal;
+          font-size: 15px;
+          color: #FF5227;
+        }
+      }
     }
 
     &>div:nth-child(1)>span:nth-child(2) {
       color: #FF5722;
       font-size: 15px;
+      margin-left: 5px;
     }
 
     .calendar_item_time {
@@ -345,8 +384,66 @@ abbr[title] {
       color: #444;
     }
 
-    .MuiListItem-secondaryAction {
-      padding-right: 0px !important;
+    .MuiListItemSecondaryAction-root {
+      min-width: 250px;
+      justify-content: space-between;
+      cursor: inherit;
+    }
+
+    .MuiListItem-button {
+      cursor: inherit;
+    }
+
+    .MuiListItem-button:hover {
+      background-color: #F2F5FA !important;
+      border-radius: 2px;
+    }
+
+    .schedule_item_time {
+      max-width: 115px;
+
+      &>span>span {
+        font-size: 14px !important;
+        color: #FF5227;
+      }
+    }
+
+    .schedule_item_title {
+      max-width: 250px;
+
+      &>span>span {
+        font-size: 14px !important;
+        word-break: break-all;
+      }
+    }
+
+    .schedule_item_content {
+      max-width: 300px;
+
+      &>span>span {
+        font-size: 14px !important;
+        font-weight: normal;
+        word-break: break-all;
+      }
+    }
+
+    .assign_to_all {
+      background-color: #8bc34a42;
+      padding: 5px 10px;
+      font-weight: 500;
+      border-radius: 3px;
+      font-size: 13px !important;
+      color: #539a00;
+    }
+
+    .schedule_item_created_by {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+
+      &>span {
+        margin-left: 5px;
+      }
     }
   }
 }

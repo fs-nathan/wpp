@@ -5,6 +5,21 @@
     }
   }
   .comp_CustomModal___iconButton {
-    margin-right: -12px;
+    margin-right: 0px;
   }
+  .comp_CustomModal___dialog-title > h2 > button {
+    padding: 12px 0;
+  }
+}
+
+.modal_height_50vh .comp_LoadingOverlay___wrapper {
+  height: 50vh !important;
+}
+
+.modal_height_30vh .comp_LoadingOverlay___wrapper {
+  height: 30vh !important;
+}
+
+.modal_height_20vh .comp_LoadingOverlay___wrapper {
+  height: 20vh !important;
 }

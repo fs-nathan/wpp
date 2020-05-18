@@ -37,7 +37,7 @@ const EditPriority = ({
     >
       <>
         <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority_name}`)} >
-          <div>{priority_name}</div>
+          {priority_name}
         </div>
         {/* <Icon className="EditPriority--icon" path={mdiTransferRight}></Icon>
         <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority_name}`)} >

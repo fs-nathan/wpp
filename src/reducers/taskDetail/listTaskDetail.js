@@ -1,4 +1,6 @@
 // Import actions
+import { findTask } from 'helpers/jobDetail/arrayHelper';
+import sortBy from 'lodash/sortBy';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
 
 function getNewChat(newChat, current) {
@@ -7,29 +9,49 @@ function getNewChat(newChat, current) {
     return undefined
 }
 
-function updateListTaskDetail(listTaskDetail, id, update) {
-    return listTaskDetail.map((data) => {
-        const { tasks } = data;
+
+function changeGroupTaskDetail(listTaskDetail, task_id, group_task) {
+    const repTask = findTask(listTaskDetail, task_id)
+    return listTaskDetail.map((group) => {
+        const { tasks, id } = group;
+        if (id === group_task) {
+            return {
+                ...group,
+                tasks: [...tasks, repTask]
+            };
+        }
         return {
-            ...data,
-            tasks: tasks.map((task) => {
-                if (id === task.id) {
-                    const { new_chat } = update;
-                    return {
-                        ...task,
-                        ...update,
-                        new_chat: getNewChat(new_chat, task.new_chat)
-                    }
-                }
-                return task;
-            })
+            ...group,
+            tasks: tasks.filter((task) => task_id !== task.id)
         };
     })
 }
 
-function updateListDataNotRoom(listDataNotRoom, id, update) {
-    return listDataNotRoom.map((data) => {
-        if (id === data.id) {
+function updateListTaskDetail(listTaskDetail, task_id, update) {
+    return listTaskDetail.map((data) => {
+        const { tasks } = data;
+        const updatedTasks = tasks.map((task) => {
+            if (task_id === task.id) {
+                const { new_chat } = update;
+                return {
+                    ...task,
+                    ...update,
+                    new_chat: getNewChat(new_chat, task.new_chat)
+                }
+            }
+            return task;
+        })
+        // const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, 'updatedAt'])
+        return {
+            ...data,
+            tasks: updatedTasks
+        };
+    })
+}
+
+function updateListDataNotRoom(listDataNotRoom, task_id, update) {
+    const updatedTasks = listDataNotRoom.map((data) => {
+        if (task_id === data.id) {
             const { new_chat } = update;
             return {
                 ...data,
@@ -39,6 +61,8 @@ function updateListDataNotRoom(listDataNotRoom, id, update) {
         }
         return data;
     })
+    const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, 'updatedAt'])
+    return sortedTasks
 }
 
 // Initial state for store
@@ -169,19 +193,26 @@ export default function reducer(state = initialState, action) {
             }
         }
         case types.STOP_TASK_SUCCESS: {
-            const { payload, id } = action;
+            const { payload, task_id } = action;
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 4 }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 4 }),
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { status_code: 4 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { status_code: 4 }),
             }
         }
         case types.CANCEL_STOP_TASK_SUCCESS: {
-            const { payload, id } = action;
+            const { payload, task_id } = action;
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, id, { state_code: 0 }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, id, { state_code: 0 }),
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { status_code: 1 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { status_code: 1 }),
+            }
+        }
+        case types.UPDATE_GROUP_TASK_SUCCESS: {
+            const { task_id, group_task } = action.payload;
+            return {
+                ...state,
+                listTaskDetail: changeGroupTaskDetail(state.listTaskDetail, task_id, group_task),
             }
         }
         default:

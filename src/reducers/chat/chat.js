@@ -37,6 +37,8 @@ export const initialState = {
   selectedImage: 0,
   createUser: {},
   pinnedRemind: null,
+  isOpenShareFileModal: false,
+  item: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -45,7 +47,7 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.chats = action.payload;
       break;
     case actionTypes.APPEND_CHAT:
-      const idx = findIndex(draft.chats.data, ({ id }) => id === action.replaceId)
+      const idx = findIndex(draft.chats.data, ({ id }) => id && id === action.replaceId)
       // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
         draft.chats.data.splice(idx, 1, action.payload.data_chat)
@@ -288,6 +290,12 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.GET_DATA_PIN_ON_TASK_CHAT_FAIL: {
       draft.pinnedRemind = null;
+      break;
+    }
+    case actionTypes.OPEN_SHARE_FILE_MODAL: {
+      const { isOpenShareFileModal, item, } = action;
+      draft.isOpenShareFileModal = isOpenShareFileModal;
+      draft.item = item;
       break;
     }
   }

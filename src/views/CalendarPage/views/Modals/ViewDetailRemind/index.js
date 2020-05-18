@@ -28,16 +28,21 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 function ViewDetailRemind({
   open, setOpen, remind, members,
-  loading = false, remindType = "PROJECT"
+  loading = false, remindType = "PROJECT", groupRemind
 }) {
 
   const { t } = useTranslation();
   const colors = useSelector(state => state.setting.colors);
   const bgColor = colors.find(item => item.selected === true);
+  const [receiver, setReceiver] = React.useState([]);
 
   function handleCancle() {
     setOpen(false);
   }
+
+  React.useEffect(() => {
+    setReceiver(get(remind, "members_assign", []));
+  }, [remind]);
 
   return (
     <>
@@ -47,11 +52,16 @@ function ViewDetailRemind({
         onClose={() => handleCancle()}
         aria-labelledby="alert-dialog-slide-title"
         className={"comp_CustomModal"}
+        disableBackdropClick={true}
+        disableEscapeKeyDown={true}
       >
-        <StyledDialogTitle id="alert-dialog-slide-title">
+        <StyledDialogTitle
+          id="alert-dialog-slide-title"
+          className={"view_DetailRemind_StyledDialogTitle"}
+        >
           <Box className="view_DetailRemind_header">
             <CustomAvatar
-              style={{ width: 50, height: 50 }}
+              style={{ width: 40, height: 40 }}
               src={get(remind, "user_create_avatar")} alt='avatar'
             />
             <Box className="view_DetailRemind_headerText">
@@ -75,12 +85,6 @@ function ViewDetailRemind({
           >
             <StyledDialogContent>
               <Box className="view_DetailRemind_container">
-                <div
-                  className="view_DetailRemind_labelType"
-                  style={{
-                    backgroundColor: remindType === "PROJECT" ? "#FFCCC7" : "#DDC2F7"
-                  }}
-                >{t(`IDS_WP_${remindType}`)}</div>
                 <Typography component={"p"} className="view_DetailRemind_description">{get(remind, "content")}</Typography>
                 <Box className="view_DetailRemind_remindProperty">
                   <Box className="view_DetailRemind_remindProperty_header">
@@ -90,6 +94,11 @@ function ViewDetailRemind({
                   <Box className="view_DetailRemind_remindProperty_content">
                     <span>{t('IDS_WP_CREATED_AT')}: {get(remind, "created_at")}</span>
                     <span>{t('IDS_WP_REMIND')}: {get(remind, "label_remind_time")}</span>
+                    {
+                      remindType === "PERSONAL" && (
+                        <span style={{ background: get(groupRemind, 'color') }}>{get(groupRemind, 'name', '')}</span>
+                      )
+                    }
                   </Box>
                 </Box>
                 <Box className="view_DetailRemind_remindContent">
@@ -107,17 +116,24 @@ function ViewDetailRemind({
                         <span>{t('views.calendar_page.modal.create_weekly_calendar.receiver')}:</span>
                         <Box className="view_DetailRemind_userAssignBox">
                           {
-                            get(remind, "members_assign", []).map((user) => {
-                              return (
-                                <Box className="view_DetailRemind_userAssignItem">
-                                  <CustomAvatar
-                                    style={{ width: 20, height: 20 }}
-                                    src={user.avatar} alt='avatar'
-                                  />
-                                  <span>{user.name}</span>
-                                </Box>
-                              )
-                            })
+                            receiver.length >= get(members, 'members', []).length && (
+                              <Box className="view_DetailRemind_userAssignAll">All</Box>
+                            )
+                          }
+                          {
+                            receiver.length < get(members, 'members', []).length && (
+                              receiver.map((user) => {
+                                return (
+                                  <Box className="view_DetailRemind_userAssignItem">
+                                    <CustomAvatar
+                                      style={{ width: 20, height: 20 }}
+                                      src={user.avatar} alt='avatar'
+                                    />
+                                    <span>{user.name}</span>
+                                  </Box>
+                                )
+                              })
+                            )
                           }
                         </Box>
                       </>

@@ -1,9 +1,14 @@
 .detailRemind {
   .MuiDialogContent-root {
     padding: 8px 0;
+    height: 30vh;
+    min-width: 600px;
   }
   .MuiDialogTitle-root {
-    border-bottom: 1px solid #c4c4c4;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .MuiDialogActions-root {
+    border-top: 1px solid transparent;
   }
   &--closeButton {
     position: absolute;
@@ -52,7 +57,14 @@
       margin-right: 4px;
     }
     .MuiChip-root {
-      border-radius: 5px;
+      border-radius: 2px;
+      margin-left: 10px;
+    }
+    .MuiChip-label {
+      padding: 0 5px;
+      border-radius: 2px;
+      font-weight: 500;
+      font-size: 12px;
     }
   }
   &--data {
@@ -76,6 +88,12 @@
       padding: 0px;
     }
   }
+  .MuiFormControl-root {
+    margin-top: 0;
+  }
+  .TitleSectionModal {
+    margin: 0 0 10px;
+  }
   &--dateRemind,
   &--mileStone {
     font-size: 13px;
@@ -94,4 +112,38 @@
     display: flex;
     align-items: center;
   }
+  &--chipWrap {
+    margin-top: -15px;
+    margin-bottom: 20px;
+  }
+  &--chip {
+    font-size: 14px;
+    .MuiChip-deleteIcon {
+      color: rgb(176, 176, 176);
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+//RemindModal - RemindTab
+.remind-title {
+  display: flex;
+  margin: 15px 0 0 0;
+}
+.remind-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  .type-remind {
+    margin: 0px;
+    width: 160px;
+    & > div > div > div {
+      padding: 0;
+    }
+  }
+}
+.wrapper-progress {
+  display: flex;
+  margin-bottom: 20px;
 }

@@ -1,20 +1,17 @@
-import { useTranslation } from 'react-i18next';
-import React from 'react';
+import { Avatar, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import styled from 'styled-components';
-import {
-  Table, TableBody, TableHead, TableRow,
-  Paper, TableCell, Menu, MenuItem, IconButton
-} from '@material-ui/core';
-import Icon from '@mdi/react';
 import { mdiDotsVertical } from '@mdi/js';
-import { Avatar, } from '@material-ui/core';
-import MemberRole from './MemberRole';
-import MemberPermission from './MemberPermission';
-import MemberDetail from './MemberDetail';
-import { useSelector, useDispatch } from 'react-redux';
+import Icon from '@mdi/react';
 import { deleteMember } from 'actions/taskDetail/taskDetailActions';
-import ModalDeleteConfirm from '../../../TabPart/ModalDeleteConfirm';
+import AlertModal from 'components/AlertModal';
+import React from 'react';
+import Scrollbars from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
+import MemberDetail from './MemberDetail';
+import MemberPermission from './MemberPermission';
+import MemberRole from './MemberRole';
 
 const CustomMenu = styled(Menu)`
 & > .MuiPaper-root {
@@ -82,62 +79,66 @@ function TableMember(props) {
   }
 
   return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow style={{ background: '#f7f7f7' }}>
-            <TableCell style={{ width: '9%' }}></TableCell>
-            <TableCell style={{ width: '40%' }}>{t('LABEL_CHAT_TASK_THANH_VIEN')}</TableCell>
-            <TableCell style={{ width: '20%' }}>{t('LABEL_CHAT_TASK_NHOM_QUYEN')}</TableCell>
-            <TableCell style={{ width: '32%' }}>{t('LABEL_CHAT_TASK_VAI_TRO')}</TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
-
-      </Table>
-      <div className="table-scroll">
+    <>
+      <Paper className={classes.root}>
         <Table className={classes.table}>
-          <TableBody>
-            {members.map((item, idx) => (
-              <StyledTableRow key={item.id}>
-                <TableCell style={{ width: '9%' }}>
-                  <Avatar alt="Avatar Member" src={item.avatar} sizes='10px' style={{ width: 30, height: 30 }} />
-                </TableCell>
-                <TableCell style={{ width: '40%' }}>
-                  <MemberDetail name={item.name} email={item.email} />
-                </TableCell>
-                <TableCell style={{ width: '20%' }}><MemberPermission permission={item.group_permission} memberId={item.id} /></TableCell>
-                <TableCell style={{ width: '32%' }}>
-                  <MemberRole roles={item.roles || []} memberId={item.id} />
-                </TableCell>
-                <StyledMenu >
-                  <IconButton size='small' onClick={handleClickEliminate} >
-                    <Icon path={mdiDotsVertical} size={1} />
-                  </IconButton>
-                  <CustomMenu
-                    anchorEl={anchorEl}
-                    keepMounted
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseEliminate}
-                    transformOrigin={{
-                      vertical: -10,
-                      horizontal: 'right',
-                    }}
-                  >
-                    <MenuItem onClick={handleOpenModalDelete(item.id)}>{t('LABEL_CHAT_TASK_LOAI_TRU')}</MenuItem>
-                  </CustomMenu>
-                </StyledMenu>
-              </StyledTableRow>
-            ))}
-          </TableBody>
+          <TableHead>
+            <TableRow style={{ background: '#f7f7f7' }}>
+              <TableCell style={{ width: '9%' }}></TableCell>
+              <TableCell style={{ width: '40%' }}>{t('LABEL_CHAT_TASK_THANH_VIEN')}</TableCell>
+              <TableCell style={{ width: '20%' }}>{t('LABEL_CHAT_TASK_NHOM_QUYEN')}</TableCell>
+              <TableCell style={{ width: '32%' }}>{t('LABEL_CHAT_TASK_VAI_TRO')}</TableCell>
+              <TableCell></TableCell>
+            </TableRow>
+          </TableHead>
         </Table>
+      </Paper>
+      <div className="table-scroll">
+        <Scrollbars>
+          <Table className={classes.table}>
+            <TableBody>
+              {members.map((item, idx) => (
+                <StyledTableRow key={item.id}>
+                  <TableCell style={{ width: '9%' }}>
+                    <Avatar alt="Avatar Member" src={item.avatar} sizes='10px' style={{ width: 30, height: 30 }} />
+                  </TableCell>
+                  <TableCell style={{ width: '40%' }}>
+                    <MemberDetail name={item.name} email={item.email} />
+                  </TableCell>
+                  <TableCell style={{ width: '20%' }}><MemberPermission permission={item.group_permission} memberId={item.id} /></TableCell>
+                  <TableCell style={{ width: '32%' }}>
+                    <MemberRole roles={item.roles || []} memberId={item.id} />
+                  </TableCell>
+                  <StyledMenu >
+                    <IconButton size='small' onClick={handleClickEliminate} >
+                      <Icon path={mdiDotsVertical} size={1} />
+                    </IconButton>
+                    <CustomMenu
+                      anchorEl={anchorEl}
+                      keepMounted
+                      open={Boolean(anchorEl)}
+                      onClose={handleCloseEliminate}
+                      transformOrigin={{
+                        vertical: -10,
+                        horizontal: 'right',
+                      }}
+                    >
+                      <MenuItem onClick={handleOpenModalDelete(item.id)}>{t('LABEL_CHAT_TASK_LOAI_TRU')}</MenuItem>
+                    </CustomMenu>
+                  </StyledMenu>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </Scrollbars>
       </div>
-      <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-      ></ModalDeleteConfirm>
-    </Paper>
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
+      />
+    </>
   )
 }
 export default TableMember

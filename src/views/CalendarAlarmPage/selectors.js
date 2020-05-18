@@ -1,3 +1,4 @@
+import get from 'lodash/get';
 import { createSelector } from 'reselect';
 
 const colors = state => state.setting.colors;
@@ -66,5 +67,16 @@ export const listProjectBasicInfoSelector = createSelector(
       error: listProjectBasic.error,
       loading: listProjectBasic.loading
     });
+  }
+);
+
+const remindCategoryAfterUpdate = state => state.calendar.updatePersonalRemindCategory;
+export const afterUpdateRemindCategorySelector = createSelector(
+  [remindCategoryAfterUpdate],
+  (remindCategoryAfterUpdate) => {
+    let afterUpdate = get(remindCategoryAfterUpdate.data, 'category', null);
+    return ({
+      afterUpdate
+    })
   }
 );

@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import { mdiCheckboxMarkedCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import { getSubtaskDetail } from 'actions/chat/chat';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -38,7 +38,7 @@ const CompleteSubtask = ({
       taskName={t('LABEL_CHAT_TASK_HOAN_THANH_CONG_VIEC_CON')}
     >
       <>
-        <Icon className="CompleteSubtask--icon" path={mdiCheckboxMarkedCircleOutline} color="inherit" />
+        <Icon className="CompleteSubtask--icon" path={mdiCheckboxMarkedCircleOutline} color="#00d988" />
         {sub_task_name}
       </>
     </DialogMessageWrap>

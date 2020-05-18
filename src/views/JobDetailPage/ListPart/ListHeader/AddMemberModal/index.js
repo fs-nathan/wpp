@@ -1,15 +1,17 @@
+import { DialogContent } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { createMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
 import SearchInput from 'components/SearchInput';
 import React from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import ProjectMember from './ProjectMember';
+import './styles.scss';
 import TableMember from './TableMember';
-
 
 const GridArea = styled(Typography)`
     display: grid;
@@ -23,7 +25,7 @@ const ButtonAddAll = styled(Button)`
 
 const BorderGrid = styled(Typography)`
     border-right: 1px solid #e0e0e0;
-    min-height: 660px;
+    // min-height: 660px;
 `
 const FlexMemberProject = styled(Typography)` 
     display: flex;
@@ -72,8 +74,9 @@ function AddMemberModal({ setOpen, isOpen }) {
       onClickSuccess={handleClose}
       maxWidth="xl"
       isOneButton
+      className="AddMemberModal"
     >
-      <React.Fragment>
+      <DialogContent className="wrapper-member-modal">
         <GridArea component={'div'} style={{ borderBottom: 'none' }} >
           <BorderGrid component={'div'}>
             <FlexMemberProject component={'span'}>
@@ -83,22 +86,24 @@ function AddMemberModal({ setOpen, isOpen }) {
               <div style={{ margin: '10px 10px 0 10px' }}>
                 <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_THANH_VIEN')} />
               </div>
-              <ButtonAddAll
+              {/* <ButtonAddAll
                 onClick={handleAddAll}
               >
                 {t('+ Thêm tất cả')}
-              </ButtonAddAll>
+              </ButtonAddAll> */}
               <div className="table-scroll-add-member">
-                {
-                  memberNotAssigned.map((item, key) =>
-                    (
-                      <ProjectMember avatar={item.avatar} key={item.id}
-                        id={item.id}
-                        name={item.name} email={item.email}
-                        label={item.permission}
-                      />
-                    )
-                  )}
+                <Scrollbars>
+                  {
+                    memberNotAssigned.map((item, key) =>
+                      (
+                        <ProjectMember avatar={item.avatar} key={item.id}
+                          id={item.id}
+                          name={item.name} email={item.email}
+                          label={item.permission}
+                        />
+                      )
+                    )}
+                </Scrollbars>
               </div>
             </Typography>
           </BorderGrid>
@@ -109,7 +114,7 @@ function AddMemberModal({ setOpen, isOpen }) {
             <TableMember style={{ boxShadow: 'none' }} />
           </Typography>
         </GridArea>
-      </React.Fragment>
+      </DialogContent>
     </DialogWrap>
   );
 }

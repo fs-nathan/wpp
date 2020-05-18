@@ -1,10 +1,5 @@
 .mediaBody {
-  grid-area: body;
-  height: 100%;
-  // margin: 0px;
-  // display: inline-block;
-  // float: left;
-  // width: 100%;
+  height: calc(100% - 44px);
   .MuiButtonGroup-grouped {
     text-align: center;
     align-items: center;
@@ -22,6 +17,13 @@
     margin-right: 5px;
     margin-left: 0;
   }
+  .MuiCollapse-container {
+    height: 100% !important;
+  }
+  .MuiCollapse-wrapper {
+    height: 100%;
+    // padding: 0 16px;
+  }
   &--buttonGroup {
     margin-bottom: 10px;
     width: 100%;
@@ -34,14 +36,18 @@
 }
 
 .mediaBox {
-  float: left;
-  width: 100%;
-  display: inline-block;
-  margin: 0;
-  overflow-y: initial;
+  height: calc(100% - 65px);
+  &--grid {
+    float: left;
+    width: 100%;
+    display: inline-block;
+    margin: 0;
+    overflow-y: initial;
+  }
   &--createdAt {
     float: left;
     width: 100%;
+    padding-left: 10px;
     .MuiGridListTile-tile {
       height: 100%;
       display: block;
@@ -76,7 +82,7 @@
 }
 
 .container-media-tabbody {
-  padding: 16px 25px 16px 16px;
+  padding: 16px 0px;
   .media-image {
     width: 100% !important;
     display: block;
@@ -88,7 +94,9 @@
     .wrap-image {
       display: flex;
       flex-wrap: wrap;
-      width: calc(100% + 10px);
+      margin-right: 10px;
+      padding-right: 10px;
+      padding-left: 10px;
       margin-left: -5px;
       .image-media-box {
         height: 100%;
@@ -123,26 +131,45 @@
 
 .mediaMenuItem {
   display: none;
-  width: 100%;
   background-color: #1119;
   border-radius: 0;
   border-top-left-radius: 2px;
   border-top-right-radius: 2px;
-  .mediaBox--item:hover & {
-    display: inline;
-  }
   text-align: center;
   position: absolute;
   top: 0;
-  right: 0;
+  .mediaBox--item:hover & {
+    display: block;
+    width: 100%;
+  }
+  .fileBoxItem:hover & {
+    display: block;
+    background-color: unset;
+    top: 16px;
+    right: 15px;
+  }
+  .linkBoxItem:hover & {
+    display: block;
+    background-color: unset;
+    right: 20px;
+    top: 9px;
+  }
+}
+
+.fileBox {
+  height: calc(100% - 65px);
 }
 
 .fileBoxItem {
   display: flex;
   align-items: center;
-  padding: 0;
-  margin: 10px 0;
+  padding: 10px 16px;
+  // margin: 0 0 0 -16px;
+  &:hover {
+    background-color: #f2f5fa;
+  }
   & > img {
+    cursor: pointer;
     width: 40px;
     height: auto;
   }
@@ -168,6 +195,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 230px;
+    cursor: pointer;
   }
   &--downloaded {
     width: 100%;
@@ -199,13 +227,20 @@
   }
 }
 
-.linkBox--button {
-  &:hover {
-    background: none;
-  }
-  & > span > svg {
+.linkBox {
+  height: calc(100% - 65px);
+  position: relative;
+  &--button {
     &:hover {
-      fill: #03b000;
+      background: none;
     }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+  &Item {
+    position: relative;
   }
 }

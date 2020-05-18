@@ -30,7 +30,7 @@ const ExtendTime = ({
     >
       <>
         <Icon className="ExtendTime--icon" path={mdiTimerOff}></Icon>
-        <div className="UpdateTaskNameMessage--content" >{t('LABEL_CHAT_TASK_LUC')}{time_create}
+        <div className="UpdateTaskNameMessage--content" >{t('LABEL_CHAT_TASK_LUC', { createdAt: time_create })}
         </div>
         <div className="ExtendTime--notify" >
           {"Tiến độ công việc đã được chạy"}

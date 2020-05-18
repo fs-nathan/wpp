@@ -1,66 +1,89 @@
-import { IconButton, List, ListItem, Menu, MenuItem } from '@material-ui/core';
-import { mdiDotsHorizontal, mdiDownload } from '@mdi/js';
+import { IconButton, List, ListItem } from '@material-ui/core';
+import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
-import iconDoc from 'assets/doc.png';
+import { showImagesList } from 'actions/chat/chat';
+import { actionDownloadFile } from 'actions/documents';
+import { openDocumentDetail } from 'actions/system/system';
+import { getFileTabPart } from 'actions/taskDetail/taskDetailActions';
+import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import InfiniteScroll from 'react-infinite-scroller';
+import { useDispatch, useSelector } from 'react-redux';
+import { taskIdSelector } from 'views/JobDetailPage/selectors';
+import MenuListItem from './MenuListItem';
 
 const FileBox = (props) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const file = useSelector(state => state.taskDetail.media.file);
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const taskId = useSelector(taskIdSelector);
+  const paging = useSelector(state => state.taskDetail.media.file.paging);
+  const { total_page, page } = paging;
 
-  const handleClick = (evt) => {
-    setAnchorEl(evt.currentTarget);
+  function onClickFile(file, idx) {
+    const type = getFileType(file.name);
+    return () => {
+      if (type === 'mp4') {
+        // const user = { user_create_avatar, user_create_name, time_create, user_create_position };
+        dispatch(showImagesList(true, [file], 0));
+      } else {
+        dispatch(openDocumentDetail({ ...file, type: type }));
+      }
+    }
   }
 
-  const handleClose = () => {
-    setAnchorEl(null);
+  function onClickDownload(file) {
+    return () => {
+      actionDownloadFile(file)
+    }
+  }
+
+  function loadMoreMedia() {
+    dispatch(getFileTabPart({ taskId, page: page + 1 }));
   }
 
   return (
-    <List>
-      {file.files && file.files.map((item, idx) => {
-        return (
-          <ListItem className="fileBoxItem" key={idx}>
-            <img src={iconDoc} alt='avatar' />
-            <div className="fileBoxItem--content" >
-              <div className="fileBoxItem--name">{item.name}</div>
-              <div className="fileBoxItem--downloaded">
-                <IconButton className="fileBoxItem--button" size='small'>
-                  <a href={item.url}>
-                    <Icon path={mdiDownload} size={1} />
-                  </a>
-                </IconButton>
-                {item.size}
-              </div>
-            </div>
-            <div>
-              <div className="fileBoxItem--createdAt">{item.date_create}</div>
-              <IconButton className="fileBoxItem--buttonMenu" size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
-                <Icon path={mdiDotsHorizontal} size={1} ></Icon>
-              </IconButton>
-            </div>
-            <Menu
-              id="simple-menu"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              transformOrigin={{
-                vertical: -30,
-                horizontal: 'right',
-              }}
-            >
-              <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
-              <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
-              <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
-            </Menu>
-          </ListItem>
-        )
-      })}
-    </List>
+    <div className="fileBox">
+      <Scrollbars
+        className="fileBox--body"
+        renderView={props => <div {...props} className="fileBox--scroll" />}
+        autoHide autoHideTimeout={500} autoHideDuration={200}>
+        <InfiniteScroll
+          className="mediaBox--scrollLoad"
+          loadMore={loadMoreMedia}
+          pageStart={1}
+          hasMore={page < total_page}
+          loader={<div className="mediaBody--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
+          useWindow={false}
+        >
+          <List className="fileBox--list">
+            {file.files && file.files.map((item, idx) => {
+              return (
+                <ListItem className="fileBoxItem" key={idx} >
+                  <img src={item.file_icon} alt='avatar' onClick={onClickFile(item, 0)} />
+                  <div className="fileBoxItem--content" >
+                    <div className="fileBoxItem--name" onClick={onClickFile(item, 0)}>{item.name}</div>
+                    <div className="fileBoxItem--downloaded">
+                      {[item.type, item.size].join(' - ').toUpperCase()}
+                      <IconButton className="fileBoxItem--button"
+                        onClick={onClickDownload(item)}
+                        size='small'>
+                        <a href={item.url}>
+                          <Icon path={mdiDownload} size={1} />
+                        </a>
+                      </IconButton>
+                    </div>
+                  </div>
+                  <MenuListItem item={item} colorIcon={'#000'} />
+                </ListItem>
+              )
+            })}
+          </List>
+        </InfiniteScroll>
+      </Scrollbars>
+    </div>
   );
 }
 

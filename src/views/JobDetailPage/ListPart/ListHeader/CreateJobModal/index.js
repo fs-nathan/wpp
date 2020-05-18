@@ -2,17 +2,21 @@ import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import TitleSectionModal from 'components/TitleSectionModal';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { taskIdSelector } from '../../../selectors';
+import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import './styles.scss';
@@ -58,7 +62,7 @@ const DEFAULT_DATA = {
   end_date: DEFAULT_DATE_TEXT,
   type_assign: DEFAULT_ASSIGN_ID,
   priority: DEFAULT_PRIORITY_ID,
-  group_task: DEFAULT_GROUP_TASK_VALUE,
+  // group_task: DEFAULT_GROUP_TASK_VALUE,
   priorityLabel: DEFAULT_PRIORITY,
   assignValue: DEFAULT_ASSIGN
 };
@@ -84,6 +88,7 @@ function CreateJobModal(props) {
     : get(props, 'projectId');
   const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
+  const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -142,16 +147,19 @@ function CreateJobModal(props) {
         value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
       }));
       setListGroupTask(listTask);
-
       // Set default group for input
       let item = listTask.find(
-        item => item.value === ''
+        item => item.value === taskDetails.group_task
       );
       if (item) {
         setGroupTaskValue(item);
+        handleChangeData('group_task', item.value)
+      } else {
+        setGroupTaskValue(null);
+        handleChangeData('group_task', null)
       }
     }
-  }, [listGroupTaskData]);
+  }, [listGroupTaskData, taskDetails.group_task]);
 
   React.useEffect(() => {
     if (listSchedule) {
@@ -239,7 +247,9 @@ function CreateJobModal(props) {
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
         : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
-      setDataMember(DEFAULT_DATA);
+      // setDataMember(DEFAULT_DATA);
+      handleChangeData('name', EMPTY_STRING)
+      handleChangeData('description', EMPTY_STRING)
       // Close modal
       // handleClose();
     } else {
@@ -257,7 +267,10 @@ function CreateJobModal(props) {
       onConfirm={isEdit ? updateData : handlePressConfirm}
       canConfirm={validate(data)}
       maxWidth='sm'
-      className="createJob"
+      className={clsx("createJob", `createJob__edit${props.editMode}`, {
+        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),
+      })}
     >
       <React.Fragment>
         {
@@ -292,7 +305,7 @@ function CreateJobModal(props) {
               margin="normal"
               variant="outlined"
               multiline
-              rowsMax={4}
+              rowsMax={18}
               fullWidth
               value={data.description}
               onChange={e => handleChangeData('description', e.target.value)}
@@ -309,6 +322,10 @@ function CreateJobModal(props) {
               value={scheduleValue}
               onChange={({ value: scheduleId }) => handleChangeData('schedule', scheduleId)}
             />
+          </>
+        }
+        {!isEdit &&
+          <>
             <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
             {date_status !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -387,7 +404,7 @@ function CreateJobModal(props) {
         {
           (!isEdit || props.editMode === EDIT_MODE.PRIORITY) &&
           <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN')} isRequired />
+            <TitleSectionModal label={t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN_LABEL')} isRequired />
             <CommonPriorityForm
               labels={priorityList}
               priority={data.priorityLabel}
@@ -411,8 +428,44 @@ function CreateJobModal(props) {
           </>
         }
       </React.Fragment>
-    </JobDetailModalWrap>
+    </JobDetailModalWrap >
   );
 }
 
-export default CreateJobModal;
+function CheckCreateJob(props) {
+  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
+  const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
+  const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
+
+  useEffect(() => {
+    if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
+      setOpenCreateGroup(true)
+    } else {
+      setOpenCreateGroup(false)
+    }
+  }, [listGroupTaskData])
+
+  function onClickCreateProject() {
+    setOpenCreateGroup(false)
+    setOpenProjectGroup(true)
+  }
+
+  return (
+    <>
+      {
+        !isOpenCreateGroup &&
+        <CreateJobModal {...props}></CreateJobModal>
+      }
+      <CreateGroupTaskModal
+        isOpen={isOpenCreateGroup}
+        setOpen={setOpenCreateGroup}
+        onClickCreate={onClickCreateProject}
+      />
+      <CreateProjectGroup
+        open={isOpenProjectGroup}
+        setOpen={setOpenProjectGroup} />
+    </>
+  )
+}
+
+export default CheckCreateJob;

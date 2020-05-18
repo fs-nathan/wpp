@@ -3,7 +3,7 @@ import { mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import CustomTable from 'components/CustomTable';
 import { Routes } from 'constants/routes';
-import { get, remove, slice } from 'lodash';
+import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -35,8 +35,8 @@ const SettingButton = ({
 
 function ProjectCalendarPresenter({
   expand, handleExpand, groupSchedules,
-  handleOpenModal, handleSortType, handleSortCalendar,
-  bgColor, havePermission, handleEditSchedule, handleDeleteSchedule
+  handleOpenModal, handleSortType, bgColor, havePermission,
+  handleEditSchedule, handleDeleteSchedule
 }) {
 
   const { t } = useTranslation();
@@ -106,28 +106,7 @@ function ProjectCalendarPresenter({
                 bool: false
               },
               draggable: {
-                bool: true,
-                onDragEnd: result => {
-                  const { source, destination, draggableId } = result;
-                  if (!destination) return;
-                  if (
-                    destination.droppableId === source.droppableId &&
-                    destination.index === source.index
-                  )
-                    return;
-                  let sortData = groupSchedules.data;
-                  const indexes = sortData.map(data => get(data, 'sort_index'));
-                  let removed = remove(sortData, { id: draggableId });
-                  sortData = [
-                    ...slice(sortData, 0, destination.index),
-                    ...removed,
-                    ...slice(sortData, destination.index)
-                  ].map((data, index) => ({
-                    ...data,
-                    sort_index: indexes[index],
-                  }));
-                  handleSortCalendar(sortData);
-                }
+                bool: false,
               },
               loading: {
                 bool: false,
@@ -195,16 +174,20 @@ function ProjectCalendarPresenter({
                 label: '',
                 field: row => (
                   <SettingContainer onClick={evt => evt.stopPropagation()}>
-                    <IconButton
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      onClick={evt => doOpenMenu(evt.currentTarget, row)}
-                      size="small"
-                    >
-                      <abbr title={t('IDS_WP_MORE')}>
-                        <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
-                      </abbr>
-                    </IconButton>
+                    {
+                      havePermission && (
+                        <IconButton
+                          aria-controls="simple-menu"
+                          aria-haspopup="true"
+                          onClick={evt => doOpenMenu(evt.currentTarget, row)}
+                          size="small"
+                        >
+                          <abbr title={t('IDS_WP_MORE')}>
+                            <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
+                          </abbr>
+                        </IconButton>
+                      )
+                    }
                   </SettingContainer>
                 ),
                 align: 'center',

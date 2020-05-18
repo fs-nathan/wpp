@@ -18,7 +18,7 @@ const describeArc = (x, y, radius, startAngle, endAngle) => {
   return d;
 }
 
-function SimpleDonutChart({ percentDone = 0, color = '#7da4e8', variant = 'normal' }) {
+function SimpleDonutChart({ percentDone = 0, color = '#7da4e8', variant = 'normal', circleColor = '#eee' }) {
   const deg = (percentDone / 100) * 360;
 
   let size, fontSize;
@@ -37,7 +37,7 @@ function SimpleDonutChart({ percentDone = 0, color = '#7da4e8', variant = 'norma
 
   return (
     <svg height={size} width={size}>
-      <circle cx={size / 2} cy={size / 2} r={size / 2 - 5} stroke="#eee" strokeWidth="6" fill='none' />
+      <circle cx={size / 2} cy={size / 2} r={size / 2 - 5} stroke={circleColor} strokeWidth="6" fill='none' />
       <path d={describeArc(size / 2, size / 2, size / 2 - 5, 0, deg)} stroke={color} strokeWidth="6" fill='none' />
       <text y={size / 2 + fontSize / 3} transform={`translate(${size / 2})`} fill={color}>
         <tspan x="0" textAnchor="middle"

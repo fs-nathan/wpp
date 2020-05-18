@@ -5,7 +5,7 @@ import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
-import { showImagesList } from 'actions/chat/chat';
+import { openShareFileModal, showImagesList } from 'actions/chat/chat';
 import { openDocumentDetail } from 'actions/system/system';
 import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React, { useEffect, useRef, useState } from 'react';
@@ -13,7 +13,6 @@ import Scrollbars from 'react-custom-scrollbars';
 import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import ShareDocumentModal from 'views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal';
 import DialogTitleModalImage from './DialogTitleModalImage';
 import './styles.scss';
 
@@ -101,7 +100,6 @@ const ModalImage = () => {
   const createUser = useSelector(state => state.chat.createUser);
 
   const [currentImage, setCurrentImage] = useState(selectedImage);
-  const [visible, setVisible] = useState(false);
   const [rotate, setRotate] = useState(0);
 
   const { name = '', url } = imagesList[currentImage] || {};
@@ -109,7 +107,7 @@ const ModalImage = () => {
   // console.log(type, name)
 
   function onClickShare() {
-    setVisible(true)
+    dispatch(openShareFileModal(true, imagesList[currentImage]))
   }
 
   function onClickDetail() {
@@ -257,35 +255,29 @@ const ModalImage = () => {
         }
       </ContentDialog>
       <FooterDialog>
-        <Scrollbars
-          width="85%"
-          className="ModalImage--scroll"
-          renderView={props => <div {...props} className="ModalImage--scrollView" />}
-        >
-          <div className="ModalImage--imagesList">
-            {
-              (type === 'mp4') ? null :
-                imagesList.map((image, index) => {
-                  return (
-                    <WrapperImage
-                      onClick={() => setCurrentImage(index)}
-                      key={`1-${index}`}>
-                      <Image src={image.url} alt='avatar' selected={currentImage === index} />
-                    </WrapperImage>
-                  );
-                })
-            }
-          </div>
-        </Scrollbars>
+        <div className="ModalImage--scrollWrap">
+          <Scrollbars
+            autoHide autoHideTimeout={500} autoHideDuration={200}
+            className="ModalImage--scroll"
+            renderView={props => <div {...props} className="ModalImage--scrollView" />}
+          >
+            <div className="ModalImage--imagesList">
+              {
+                (type === 'mp4') ? null :
+                  imagesList.map((image, index) => {
+                    return (
+                      <WrapperImage
+                        onClick={() => setCurrentImage(index)}
+                        key={`1-${index}`}>
+                        <Image src={image.url} alt='avatar' selected={currentImage === index} />
+                      </WrapperImage>
+                    );
+                  })
+              }
+            </div>
+          </Scrollbars>
+        </div>
       </FooterDialog >
-      {visible && (
-        <ShareDocumentModal
-          onClose={() => {
-            setVisible(false);
-          }}
-          item={imagesList[currentImage]}
-        />
-      )}
     </StyledDialog >
   )
 }

@@ -9,6 +9,7 @@ import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import SimpleDonutChart from 'components/SimpleDonutChart';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
@@ -49,7 +50,21 @@ const getBadgeColor = status_code => {
   }
 };
 
+function getStatusName(status_code) {
+  if (status_code === 0)
+    return "LABEL_CHAT_TASK_DANG_CHO"
+  if (status_code === 1)
+    return "LABEL_CHAT_TASK_DANG_LAM"
+  if (status_code === 2)
+    return "LABEL_CHAT_TASK_HOAN_THANH"
+  if (status_code === 3)
+    return "LABEL_CHAT_TASK_DA_QUA_HAN"
+  if (status_code === 4)
+    return "LABEL_CHAT_TASK_TAM_DUNG"
+}
+
 function JobName(props) {
+  const { t } = useTranslation();
   const { isghim = '', new_chat, ...rest } = props
   return (
     <div className="name-container-lbd" variant="space-between">
@@ -62,7 +77,8 @@ function JobName(props) {
           {...rest}
           isghim={isghim.toString()}
         />
-        <BadgeItem color={getBadgeColor(props.status_code)} badge label={props.label} size="small" />
+        <BadgeItem color={getBadgeColor(props.status_code)} badge
+          label={t(getStatusName(props.status_code))} size="small" />
       </div>
     </div>
   );
@@ -143,6 +159,7 @@ function ListBodyItem(props) {
     history.push({ search: `?task_id=${props.id}` });
   }
 
+  const fillColor = props.complete === 100 ? '#00e690' : '#eee';
   return (
     <div
       className={clsx("container-lbd", {
@@ -151,7 +168,7 @@ function ListBodyItem(props) {
       onClick={onClickItem}
     >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
-        <SimpleDonutChart color={groupActiveColor} percentDone={props.complete} />
+        <SimpleDonutChart color={groupActiveColor} circleColor={fillColor} percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...{
         chat,
