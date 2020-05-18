@@ -14,7 +14,9 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { taskIdSelector } from '../../../selectors';
+import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import './styles.scss';
@@ -153,6 +155,9 @@ function CreateJobModal(props) {
       if (item) {
         setGroupTaskValue(item);
         handleChangeData('group_task', item.value)
+      } else {
+        setGroupTaskValue(null);
+        handleChangeData('group_task', null)
       }
     }
   }, [listGroupTaskData, taskDetails.group_task]);
@@ -400,7 +405,7 @@ function CreateJobModal(props) {
         {
           (!isEdit || props.editMode === EDIT_MODE.PRIORITY) &&
           <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN')} isRequired />
+            <TitleSectionModal label={t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN_LABEL')} isRequired />
             <CommonPriorityForm
               labels={priorityList}
               priority={data.priorityLabel}
@@ -428,4 +433,40 @@ function CreateJobModal(props) {
   );
 }
 
-export default CreateJobModal;
+function CheckCreateJob(props) {
+  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
+  const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
+  const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
+
+  useEffect(() => {
+    if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
+      setOpenCreateGroup(true)
+    } else {
+      setOpenCreateGroup(false)
+    }
+  }, [listGroupTaskData])
+
+  function onClickCreateProject() {
+    setOpenCreateGroup(false)
+    setOpenProjectGroup(true)
+  }
+
+  return (
+    <>
+      {
+        !isOpenCreateGroup &&
+        <CreateJobModal {...props}></CreateJobModal>
+      }
+      <CreateGroupTaskModal
+        isOpen={isOpenCreateGroup}
+        setOpen={setOpenCreateGroup}
+        onClickCreate={onClickCreateProject}
+      />
+      <CreateProjectGroup
+        open={isOpenProjectGroup}
+        setOpen={setOpenProjectGroup} />
+    </>
+  )
+}
+
+export default CheckCreateJob;

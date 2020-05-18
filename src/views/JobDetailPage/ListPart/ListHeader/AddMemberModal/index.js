@@ -86,11 +86,11 @@ function AddMemberModal({ setOpen, isOpen }) {
               <div style={{ margin: '10px 10px 0 10px' }}>
                 <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_THANH_VIEN')} />
               </div>
-              <ButtonAddAll
+              {/* <ButtonAddAll
                 onClick={handleAddAll}
               >
                 {t('+ Thêm tất cả')}
-              </ButtonAddAll>
+              </ButtonAddAll> */}
               <div className="table-scroll-add-member">
                 <Scrollbars>
                   {

@@ -5,11 +5,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
 import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
-import CreateGroupTaskModal from './CreateGroupTaskModal';
 import CreateJobModal from './CreateJobModal';
 import CreateJobSetting from './CreateJobSetting';
 
@@ -53,10 +51,7 @@ function ListHeaderSelect({ setShow }) {
 function ListHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
-  const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
-  const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
 
   function onClickSettings() {
@@ -64,17 +59,10 @@ function ListHeader(props) {
   }
 
   function onClickCreateJob() {
-    if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
-      setOpenCreateGroup(true)
-    } else {
-      setOpenCreateJobModal(true);
-    }
+    setOpenCreateJobModal(true);
   }
 
-  function onClickCreateProject() {
-    setOpenCreateGroup(false)
-    setOpenProjectGroup(true)
-  }
+
 
   const searchListTask = e => {
     dispatch(searchTask(e.target.value));
@@ -111,14 +99,6 @@ function ListHeader(props) {
       <CreateJobSetting
         isOpen={isOpenSettings}
         setOpen={setOpenSettings}
-      />
-      <CreateProjectGroup
-        open={isOpenProjectGroup}
-        setOpen={setOpenProjectGroup} />
-      <CreateGroupTaskModal
-        isOpen={isOpenCreateGroup}
-        setOpen={setOpenCreateGroup}
-        onClickCreate={onClickCreateProject}
       />
     </div>
   );

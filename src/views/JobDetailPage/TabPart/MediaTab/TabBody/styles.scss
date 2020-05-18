@@ -22,6 +22,7 @@
   }
   .MuiCollapse-wrapper {
     height: 100%;
+    // padding: 0 16px;
   }
   &--buttonGroup {
     margin-bottom: 10px;
@@ -46,6 +47,7 @@
   &--createdAt {
     float: left;
     width: 100%;
+    padding-left: 10px;
     .MuiGridListTile-tile {
       height: 100%;
       display: block;
@@ -80,7 +82,7 @@
 }
 
 .container-media-tabbody {
-  padding: 16px 0px 16px 16px;
+  padding: 16px 0px;
   .media-image {
     width: 100% !important;
     display: block;
@@ -94,6 +96,7 @@
       flex-wrap: wrap;
       margin-right: 10px;
       padding-right: 10px;
+      padding-left: 10px;
       margin-left: -5px;
       .image-media-box {
         height: 100%;
@@ -148,7 +151,7 @@
   .linkBoxItem:hover & {
     display: block;
     background-color: unset;
-    right: 10px;
+    right: 20px;
     top: 9px;
   }
 }
@@ -160,8 +163,11 @@
 .fileBoxItem {
   display: flex;
   align-items: center;
-  padding: 0;
-  margin: 10px 0;
+  padding: 10px 16px;
+  // margin: 0 0 0 -16px;
+  &:hover {
+    background-color: #f2f5fa;
+  }
   & > img {
     cursor: pointer;
     width: 40px;

@@ -313,7 +313,7 @@ function RemindModal(props) {
                 variant="contained"
               >{t('LABEL_CHAT_TASK_THEM')}</DurationButton>
             </div>
-            <Typography component={'div'}>
+            <Typography component={'div'} className="remindModal--chipWrap">
               {data.duration.map((item, key) => (
                 <BadgeItem
                   className="remindModal--chip"

@@ -87,7 +87,7 @@ const CustomListItem = ({ isMe }) => {
                 <div className="styled-common-location" key={key}>
                   <ItemAvatar>
                     <div>
-                      <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} />
+                      <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
                     </div>
                   </ItemAvatar>
                   <ListItemText

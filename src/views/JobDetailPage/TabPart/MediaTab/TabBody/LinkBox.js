@@ -12,10 +12,13 @@ import MenuListItem from './MenuListItem';
 const HeaderSubText = styled(ListSubheader)`
   font-size: 13px;
   color: #6e6d6d;
+  margin: 0;
 `
 
 const ListItemLink = styled(ListItem)`
-  padding-left: 0;
+  &:hover {
+    background-color: #f2f5fa;
+  }
   & > *:first-child {
     display: flex;
     align-items: center;
@@ -53,7 +56,7 @@ const LinkBox = (props) => {
           {link.links && link.links.map((item, idx) => {
             return item.links.length > 0 && (
               <div className="styled-list-item-link linkBox" key={idx}>
-                <HeaderSubText component='p' style={{ padding: 0, margin: 0 }}>{item.date_create}</HeaderSubText>
+                <HeaderSubText component='p' >{item.date_create}</HeaderSubText>
                 {item.links.map((item, idx) => {
                   return (
                     <ListItemLink key={idx} className="linkBoxItem">
