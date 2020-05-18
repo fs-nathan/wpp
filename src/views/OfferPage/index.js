@@ -15,7 +15,7 @@ import { useMultipleSelect } from "./hooks/useMultipleSelect";
 import "./LeftPart_new/LeftSetting.css";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
-import { loadDetailOffer, loadTaskPage } from './redux/actions';
+import { deleteOffer, loadDetailOffer, loadTaskPage } from './redux/actions';
 import routes from "./routes";
 import { get } from "./utils";
 import {
@@ -291,7 +291,7 @@ function OfferPage(props) {
   // Delete offer confirm modal
   const [showDeleteOfferConfirmModal, setShowDeleteOfferConfirmModal] = useState(false);
   function onDeleteOffer() {
-
+    dispatch(deleteOffer({ id: currentDetailOfferId }));
   }
 
   return (
