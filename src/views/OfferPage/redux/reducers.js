@@ -11,7 +11,7 @@ import {
   DELETE_GROUP_OFFER_SUCCESS,
   DELETE_MEMBER_HANDLE_SUCCESS,
   DELETE_MEMBER_MONITOR_SUCCESS,
-  DELETE_OFFER_SUCCESS,
+  DELETE_OFFER_SUCCESSFULLY,
   DETAIL_OFFER,
   ENQUEUE_SNACKBAR,
   HANDLE_OFFER_OFFERPAGE_SUCCESS,
@@ -184,7 +184,7 @@ function taskReducer(state = initialState, action) {
           loading: false,
         },
       }
-    case DELETE_OFFER_SUCCESS:
+    case DELETE_OFFER_SUCCESSFULLY:
       const { deletedState, offerId } = action.payload;
       if (deletedState === true) {
         const { offers: recentOffers} = state[TASK_RECENTLY];

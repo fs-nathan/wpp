@@ -13,7 +13,7 @@ import {
   DELETE_MEMBER_MONITOR_ERROR,
   DELETE_MEMBER_MONITOR_SUCCESS,
   DELETE_OFFER_ERROR,
-  DELETE_OFFER_SUCCESS,
+  DELETE_OFFER_SUCCESSFULLY,
   ENQUEUE_SNACKBAR,
   LOAD_DETAIL_OFFER,
   LOAD_DETAIL_OFFER_ERROR,
@@ -186,7 +186,7 @@ export function* doDeleteOffer({ payload }) {
     };
     const result = yield apiService(config);
     yield put({
-      type: DELETE_OFFER_SUCCESS,
+      type: DELETE_OFFER_SUCCESSFULLY,
       payload: {
         deletedState: result.data.state,
         offerId: id,
