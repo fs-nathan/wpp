@@ -154,8 +154,8 @@ const OfferModal = (props) => {
       dataCreateOfferFormData.append("member_accepted_important[" + index + "]", members[value].id)
     })
     // add selected file ids from library to form data
-    tempSelectedItem.file_ids.forEach(id => {
-      dataCreateOfferFormData.append("file_ids", id)
+    tempSelectedItem.file_ids.forEach((id, index) => {
+      dataCreateOfferFormData.append(`file_ids[${index}]`, id);
     })
     return dataCreateOfferFormData;
   }
