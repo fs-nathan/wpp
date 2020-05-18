@@ -1,5 +1,6 @@
-import { TextField, Typography } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { updateCommand } from 'actions/taskDetail/taskDetailActions';
+import TitleSectionModal from 'components/TitleSectionModal';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,12 +8,7 @@ import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../selectors';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
-
-const TexTitle = styled(Typography)`
-  font-size: 15px;
-  margin-bottom: 15px;
-  margin-left: 0;
-`
+import './styles.scss';
 
 const Text = styled(TextField)`
   & > label {
@@ -63,19 +59,26 @@ const DemandModal = (props) => {
       confirmRender={() => (props.isEditDemand) ? t('LABEL_CHAT_TASK_CHINH_SUA') : t('IDS_WP_CREATE_NEW')}
       onConfirm={(props.isEditDemand) ? onClickUpdate : onClickCreate}
       canConfirm={validate()}
+      className="DemandModal modal_height_50vh"
     >
       <React.Fragment>
-        <TexTitle >{t('LABEL_CHAT_TASK_CHON_LOAI')}</TexTitle>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_LOAI')} isRequired />
         <OutlinedInputSelect
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
           commandSelect={selector}
         />
+        <TitleSectionModal
+          label={tempSelectedItem.type === selector[0].value ?
+            t('LABEL_CHAT_TASK_NOI_DUNG_CHI_DAO')
+            : t('LABEL_CHAT_TASK_NOI_DUNG_QUYET_DINH')
+          }
+          isRequired />
         <Text
-          label={t('LABEL_CHAT_TASK_NOI_DUNG')}
           fullWidth
           multiline
           rows="7"
+          rowsMax={18}
           margin="normal"
           placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
           variant="outlined"

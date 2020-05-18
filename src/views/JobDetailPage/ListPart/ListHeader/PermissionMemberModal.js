@@ -1,3 +1,4 @@
+import { DialogContent } from "@material-ui/core";
 import Radio from "@material-ui/core/Radio";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -90,7 +91,7 @@ function PermissionMemberModal({ memberId, setOpen,
       maxWidth="md"
       className="permissionMemberModal"
     >
-      <React.Fragment>
+      <DialogContent>
         <div className="permissionMemberModal--title">{t('LABEL_CHAT_TASK_CHON_NHOM_QUYEN')}</div>
         <div className="permissionMemberModal--content">{t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}</div>
         <div className="permissionMemberModal--slider">
@@ -124,7 +125,7 @@ function PermissionMemberModal({ memberId, setOpen,
             ))}
           </TableBody>
         </Table>
-      </React.Fragment>
+      </DialogContent>
     </DialogWrap>
   );
 }

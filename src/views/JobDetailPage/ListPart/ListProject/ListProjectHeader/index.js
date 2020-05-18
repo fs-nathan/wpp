@@ -1,13 +1,13 @@
-import { useTranslation } from 'react-i18next';
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import Icon from '@mdi/react';
-import { mdiClose, mdiDrag } from '@mdi/js';
 import IconButton from '@material-ui/core/IconButton';
-
+import { mdiClose, mdiDrag } from '@mdi/js';
+import Icon from '@mdi/react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { searchProject } from '../../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../../components/SearchInput';
 import './styles.scss';
+
 
 function ListProjectHeader({ setShow }) {
   const { t } = useTranslation();
@@ -32,7 +32,7 @@ function ListProjectHeader({ setShow }) {
           color={'#000000'}
           className="job-detail-icon"
         />
-        <div>{t('LABEL_CHAT_TASK_DANH_SÁCH_DU_ÁN')}</div>
+        <div>{t('LABEL_CHAT_TASK_DANH_SACH_DU_AN')}</div>
         <IconButton className="listProjectHeader--button" onClick={closeListProject}>
           <Icon path={mdiClose} size={1} className="job-detail-icon" />
         </IconButton>

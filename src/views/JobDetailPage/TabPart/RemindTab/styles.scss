@@ -1,9 +1,14 @@
 .detailRemind {
   .MuiDialogContent-root {
     padding: 8px 0;
+    height: 30vh;
+    min-width: 600px;
   }
   .MuiDialogTitle-root {
-    border-bottom: 1px solid #c4c4c4;
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .MuiDialogActions-root {
+    border-top: 1px solid transparent;
   }
   &--closeButton {
     position: absolute;

@@ -12,7 +12,17 @@ export const initialState = {
   toast: { type: null, message: '' },
   numberNotificationNotView: 0,
   numberMessageNotView: 0,
-  groupActive: {}
+  groupActive: {},
+  exportPdfDrawerVisible: false,
+  ganttConfig: {
+    state: false,
+    type: ''
+  },
+  visibleSubtaskDrawer: false,
+  detailSubTaskDrawer: {
+    id: '',
+    name: ''
+  }
 };
 
 const system = (state = initialState, action) => {
@@ -46,6 +56,14 @@ const system = (state = initialState, action) => {
       return { ...state, numberNotificationNotView: action.payload };
     case actionTypes.CHANGE_NUM_MESSAGE_NOT_VIEW:
       return { ...state, numberMessageNotView: action.payload };
+    case actionTypes.CHANGE_VISIBLE_COMMON_CONFIG:
+      return { ...state, ganttConfig: action.payload };
+    case actionTypes.CHANGE_VISIBLE_EXPORT_PDF_DRAWER:
+      return { ...state, exportPdfDrawerVisible: action.payload };
+    case actionTypes.CHANGE_VISIBLE_SUBTASK_DRAWER:
+      return { ...state, visibleSubtaskDrawer: action.payload };
+    case actionTypes.CHANGE_DETAIL_SUBTASK_DRAWER:
+      return { ...state, detailSubTaskDrawer: action.payload };
     default:
       return state;
   }
