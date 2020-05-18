@@ -285,7 +285,7 @@ function OfferPage(props) {
     if (currentDetailOfferId && isDetailOfferModalOpen) {
       dispatch(loadDetailOffer({ id: currentDetailOfferId }));
     }
-  }, [currentDetailOfferId]);
+  }, [currentDetailOfferId, isDetailOfferModalOpen]);
   // Compare currentDetailOfferId & prevDetailOfferId to determine offer detail modal loading state
   const prevDetailOfferId = usePrevious(currentDetailOfferId);
 
