@@ -32,6 +32,8 @@ import { getDetailOffer } from './views/DetailOffer/selector';
 import { getDepartmentGroupByKeyword } from "./views/OfferByDepartment/selector";
 import { getSummaryByGroupByKeyword } from "./views/OfferByGroup/selector";
 import { getSummaryByProjectAndKeyword } from "./views/OfferByProject/selector";
+import './styles.scss';
+
 const { Provider } = OfferPageContext;
 const filterConfig = [
   {
@@ -348,6 +350,7 @@ function OfferPage(props) {
               )}
               {showDeleteOfferConfirmModal && (
                 <CustomModal
+                  className="delete-offer-confirm-modal"
                   open={showDeleteOfferConfirmModal}
                   setOpen={setShowDeleteOfferConfirmModal}
                   height="mini"
