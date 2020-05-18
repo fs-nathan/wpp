@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText, Tooltip, Typography } from '@material-ui/core';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Tooltip, Typography } from '@material-ui/core';
 import { mdiBellOutline, mdiCalendar, mdiPencilBoxOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import * as images from 'assets';
@@ -9,7 +9,6 @@ import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingOverlay from 'components/LoadingOverlay';
 import { get } from "lodash";
 import React from 'react';
-import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import './style.scss';
@@ -85,57 +84,45 @@ function CalendarWeeklyRightPartPresenter({
                 (calendar !== undefined && scheduleOfWeek.data.length !== 0) && (
                   <>
                     <div className="view_WeeklyCalendar_rightContainer">
-                      {
-                        calendar !== undefined && (
-                          <>
-                            <CalendarDetailHeader>
-                              {t("views.calendar_page.modal.create_weekly_calendar.title_right")}
-                              <Typography component={'span'}>
-                                {t('IDS_WP_WEEK')} {params.week} ( {get(calendar, "start", "")} - {get(calendar, "end", "")})
+                      <CalendarDetailHeader>
+                        {t("views.calendar_page.modal.create_weekly_calendar.title_right")}
+                        <Typography component={'span'}>
+                          {t('IDS_WP_WEEK')} {params.week} ( {get(calendar, "start", "")} - {get(calendar, "end", "")})
                             </Typography>
-                            </CalendarDetailHeader>
-                            <Box className="view_WeeklyCalendar_rightContainer__columnDataHeader">
-                              <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_title">
-                                <span>{t('views.calendar_page.modal.create_weekly_calendar.label.title')}</span>
-                              </div>
-                              <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_content">
-                                <span>{t('views.calendar_page.modal.create_weekly_calendar.content')}</span>
-                              </div>
-                              <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_receiver">
-                                <span>{t('views.calendar_page.modal.create_weekly_calendar.receiver')}</span>
-                              </div>
-                              <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_createdBy">
-                                <span>{t('views.calendar_page.right_part.label.created_by')}</span>
-                              </div>
-                            </Box>
-                          </>
-                        )
-                      }
-                      <div style={{ height: '500px' }}>
-                        <Scrollbars
-                          autoHide
-                          autoHideTimeout={500}
-                        >
-                          {
-                            scheduleOfWeek.data.map((item, index) => {
-                              if (item.schedules.length !== 0) {
-                                return (
-                                  <CalendarItemContainer key={`view_weeklyCalendarDetail_itemSchedule_${index}`}>
-                                    <Typography component={'div'} className="header">
-                                      <div className="header_time">
-                                        <span>{i18nDays[new Date(item.schedules[0].time_original).getDay()]}</span>
-                                        <span>({item.date})</span>
-                                      </div>
-                                    </Typography>
-                                    <List component={'div'} key={`views_CalendarWeeklyPage_rightPart_list_${index}`}>
+                      </CalendarDetailHeader>
+                      <TableContainer className="view_WeeklyCalendar_rightContainer__TableContainer">
+                        <Table stickyHeader>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell><Icon path={''} size={0.85} color="rgba(0, 0, 0, 0.7)" /></TableCell>
+                              <TableCell></TableCell>
+                              <TableCell>{t('views.calendar_page.modal.create_weekly_calendar.label.title')}</TableCell>
+                              <TableCell>{t('views.calendar_page.modal.create_weekly_calendar.content')}</TableCell>
+                              <TableCell>{t('views.calendar_page.modal.create_weekly_calendar.receiver')}</TableCell>
+                              <TableCell>{t('views.calendar_page.right_part.label.created_by')}</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            {
+                              scheduleOfWeek.data.map((item, index) => {
+                                if (item.schedules.length !== 0) {
+                                  return (
+                                    <>
+                                      <TableRow>
+                                        <TableCell colSpan={6} className="view_WeeklyCalendar_rightContainer__TableHeaderGroup">
+                                          <Typography component={'div'} className="header">
+                                            <div className="header_time">
+                                              <span>{i18nDays[new Date(item.schedules[0].time_original).getDay()]}</span>
+                                              <span>({item.date})</span>
+                                            </div>
+                                          </Typography>
+                                        </TableCell>
+                                      </TableRow>
                                       {
                                         item.schedules.map((schedule) => {
                                           return (
-                                            <ListItem
-                                              key={`views_CalendarWeeklyPage_rightPart_list_item_${schedule.id}`}
-                                              className="shedule_item"
-                                            >
-                                              <ListItemIcon>
+                                            <TableRow hover>
+                                              <TableCell className="schedule_item_remind">
                                                 {
                                                   schedule.is_remind && (
                                                     <Tooltip title={schedule.title_remind_before} placement="right">
@@ -143,17 +130,16 @@ function CalendarWeeklyRightPartPresenter({
                                                     </Tooltip>
                                                   )
                                                 }
-                                              </ListItemIcon>
-                                              <ListItemText className="schedule_item_time">
-                                                <span>{schedule.time}</span>
-                                              </ListItemText>
-                                              <ListItemText className="schedule_item_title">
-                                                <span>{schedule.title}</span>
-                                              </ListItemText>
-                                              <ListItemText className="schedule_item_content">
-                                                <span>{schedule.content}</span>
-                                              </ListItemText>
-                                              <ListItemSecondaryAction>
+                                                {
+                                                  !schedule.is_remind && (
+                                                    <Icon path={''} size={0.85} color="rgba(0, 0, 0, 0.7)" />
+                                                  )
+                                                }
+                                              </TableCell>
+                                              <TableCell className="schedule_item_time">{schedule.time}</TableCell>
+                                              <TableCell className="schedule_item_title">{schedule.title}</TableCell>
+                                              <TableCell className="schedule_item_content">{schedule.content}</TableCell>
+                                              <TableCell>
                                                 {
                                                   schedule.assign_to_all && (
                                                     <div className="assign_to_all">{t('views.calendar_page.modal.create_weekly_calendar.all')}</div>
@@ -170,6 +156,8 @@ function CalendarWeeklyRightPartPresenter({
                                                     />
                                                   )
                                                 }
+                                              </TableCell>
+                                              <TableCell>
                                                 <Box className="schedule_item_created_by">
                                                   <CustomAvatar
                                                     style={{ width: 20, height: 20 }}
@@ -177,19 +165,19 @@ function CalendarWeeklyRightPartPresenter({
                                                   />
                                                   <span>{schedule.user_create_name}</span>
                                                 </Box>
-                                              </ListItemSecondaryAction>
-                                            </ListItem>
+                                              </TableCell>
+                                            </TableRow>
                                           )
                                         })
                                       }
-                                    </List>
-                                  </CalendarItemContainer>
-                                );
-                              }
-                            })
-                          }
-                        </Scrollbars>
-                      </div>
+                                    </>
+                                  );
+                                }
+                              })
+                            }
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
                     </div>
                   </>
                 )
