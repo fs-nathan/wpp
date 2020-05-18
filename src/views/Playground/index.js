@@ -1,15 +1,17 @@
 import {
   Box,
+  Button,
   ButtonBase,
   Card,
   CardContent,
   Grid,
   Typography,
 } from "@material-ui/core";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
+import ShareFromLibraryModal from "views/JobDetailPage/ChatComponent/ShareFromLibraryModal";
+import { loginlineParams } from "views/JobPage/utils";
 import { QuickViewTaskDetailExample } from "./QuickViewTaskDetailExample";
-
 const rootPath = "/playground";
 
 const routeEntities = {
@@ -21,14 +23,40 @@ const routeEntities = {
   quickViewTask: {
     path: rootPath + "/QuickViewTaskDetailDrawer",
     breadcumName: "QuickViewTaskDetailDrawer",
-    component: QuickViewTaskDetailExample,
+    Component: QuickViewTaskDetailExample,
+  },
+  shareFromLibraryModal: {
+    path: rootPath + "/shareFromLibraryModal",
+    breadcumName: "shareFromLibraryModal",
+    Component: ({ onBack }) => {
+      const [open, setOpen] = useState();
+      return (
+        <>
+          <Grid
+            container
+            item
+            justify="center"
+            alignItems="center"
+            direction="column"
+          >
+            <Button onClick={onBack}>Back</Button>
+            <Button onClick={() => setOpen(true)}>Show modal</Button>
+          </Grid>
+          <ShareFromLibraryModal
+            open={open}
+            setOpen={setOpen}
+            onClickConfirm={loginlineParams}
+          />
+        </>
+      );
+    },
   },
 };
 const Playground = () => {
   const history = useHistory();
   const handleBack = useCallback(
     () => history.replace(routeEntities.default.path),
-    []
+    [history]
   );
 
   return (
@@ -37,9 +65,17 @@ const Playground = () => {
         <Route
           path={routeEntities.quickViewTask.path}
           render={() => (
-            <routeEntities.quickViewTask.component
+            <routeEntities.quickViewTask.Component
               onBack={handleBack}
-            ></routeEntities.quickViewTask.component>
+            ></routeEntities.quickViewTask.Component>
+          )}
+        ></Route>
+        <Route
+          path={routeEntities.shareFromLibraryModal.path}
+          render={() => (
+            <routeEntities.shareFromLibraryModal.Component
+              onBack={handleBack}
+            ></routeEntities.shareFromLibraryModal.Component>
           )}
         ></Route>
         <Route
@@ -66,6 +102,22 @@ const Playground = () => {
                       </Typography>
                       <Typography variant="h5" component="h2">
                         {routeEntities.quickViewTask.breadcumName}
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </ButtonBase>
+                <ButtonBase>
+                  <Card
+                    onClick={() =>
+                      history.replace(routeEntities.shareFromLibraryModal.path)
+                    }
+                  >
+                    <CardContent>
+                      <Typography color="textSecondary" gutterBottom>
+                        Hướng dẫn
+                      </Typography>
+                      <Typography variant="h5" component="h2">
+                        {routeEntities.shareFromLibraryModal.breadcumName}
                       </Typography>
                     </CardContent>
                   </Card>
