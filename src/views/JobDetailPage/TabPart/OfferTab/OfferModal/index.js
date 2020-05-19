@@ -270,7 +270,6 @@ const OfferModal = (props) => {
           fullWidth
           multiline
           rows="7"
-          margin="normal"
           placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
           variant="outlined"
           value={tempSelectedItem ? tempSelectedItem.content : ""}
