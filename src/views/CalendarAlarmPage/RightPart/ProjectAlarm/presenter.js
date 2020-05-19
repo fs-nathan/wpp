@@ -291,7 +291,7 @@ function CalendarProjectAlarmPresenter({
                             <img
                               src={images.no_data}
                               alt="no-data"
-                              width="200px"
+                              width="400px"
                             />
                             <span style={{ color: `${bgColor.color}` }} className="title">{t('views.calendar_page.right_part.no_data')}</span>
                             <span className="description">{t('views.calendar_page.right_part.no_data_description_alarm')}</span>
