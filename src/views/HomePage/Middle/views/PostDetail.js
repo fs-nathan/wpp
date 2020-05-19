@@ -31,12 +31,14 @@ import TasksCard from "views/HomePage/components/TasksCard";
 import { commentAttr } from "views/HomePage/contant/attrs";
 import { routes } from "views/HomePage/contant/routes";
 import { postModule } from "views/HomePage/redux/post";
+import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { paging } from "views/JobPage/utils";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/components/AyncTracker";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
+import nodataimg from "../../components/ic_no_data.png";
 const CommentList = React.memo(({ comments = emptyArray, onReplyClick }) => {
   return (
     <>
@@ -303,8 +305,15 @@ export default () => {
           <PostContainer post={post}>
             <PostDetail />
           </PostContainer>
-        )) ||
-        null
+        )) || (
+          <EmptyHolder
+            image={
+              <img style={{ width: "80%" }} src={nodataimg} alt="empty"></img>
+            }
+            title={""}
+            description={""}
+          />
+        )
       )}
     </Stack>
   );

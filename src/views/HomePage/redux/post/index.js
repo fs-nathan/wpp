@@ -406,7 +406,7 @@ export const loadMoreReplyList = ({ post_id, comment_id, page } = {}) => {
 export const postListSelector = (state) =>
   get(state, [rootPath, types.homepage], emptyArray);
 export const highLightPostListSelector = (state) =>
-  get(state, [rootPath, types.highLight], emptyArray);
+  postListSelector(state).filter((item) => item.is_highlight);
 export const homeStatisticSelector = (state) =>
   get(state, [rootPath, types.statistic], emptyArray);
 
