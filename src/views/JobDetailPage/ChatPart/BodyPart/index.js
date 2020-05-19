@@ -126,7 +126,7 @@ const BodyPart = props => {
       cancelAnimationFrame(rqId);
     }
     // eslint-disable-next-line
-  }, [chatRef, chats.data.length]);
+  }, [chatRef, taskId, chats.data.length]);
 
   useEffect(() => {
     let rqId;
