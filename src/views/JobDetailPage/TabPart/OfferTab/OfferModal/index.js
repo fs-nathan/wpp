@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
 import ShareFromLibraryModal from '../../../ChatComponent/ShareFromLibraryModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
@@ -254,7 +255,7 @@ const OfferModal = (props) => {
       className="offerModal"
     >
       <React.Fragment>
-        <Typography className="offerModal--title createJob--titleLabel" >{t('LABEL_CHAT_TASK_TEN_DE_XUAT')}</Typography>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
         <TextField
           className="offerModal--titleText"
           placeholder={t('LABEL_CHAT_TASK_NHAP_TIEU_DE_DE_XUAT')}
@@ -262,7 +263,7 @@ const OfferModal = (props) => {
           value={tempSelectedItem.title}
           onChange={e => setParams("title", e.target.value)}
         />
-        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_NOI_DUNG_DE_XUAT')}</Typography>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_DE_XUAT')} isRequired />
         <TextField
           className="offerModal--content"
           fullWidth
@@ -274,12 +275,12 @@ const OfferModal = (props) => {
           value={tempSelectedItem ? tempSelectedItem.content : ""}
           onChange={e => setParams("content", e.target.value)}
         />
-        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')}</Typography>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
         <CustomSelect
           options={offersGroup}
           onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
         />
-        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}{handlers.length})</Typography>
+        <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} isRequired />
         <div>
           {handlers.map((index) =>
             <Chip
@@ -302,7 +303,7 @@ const OfferModal = (props) => {
             disableIndexes={[...approves, createUserIndex]}
           />
         </div>
-        <Typography className="offerModal--title">{t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}{monitors.length})</Typography>
+        <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
         <div>
           {monitors.map((index) =>
             <Chip
@@ -327,7 +328,7 @@ const OfferModal = (props) => {
             disableIndexes={[...handlers, createUserIndex]}
           />
         </div>
-        <Typography className="offerModal--title" >{t('LABEL_CHAT_TASK_CHON_MUC_DO')}</Typography>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
         <CommonPriorityForm
           labels={priorityList}
           priority={tempSelectedItem.priority.value}
@@ -335,7 +336,7 @@ const OfferModal = (props) => {
             setParams('priority', priorityItem)
           }
         />
-        <Typography className="offerModal--title" >Điều kiện được duyệt</Typography>
+        <TitleSectionModal label={'Điều kiện được duyệt'} />
         <Grid container spacing={3}>
           <Grid item xs={7}>
             <Grid container alignItems="center">
