@@ -63,6 +63,7 @@ function AddMemberModal({ setOpen, isOpen }) {
       maxWidth="xl"
       isOneButton
       className="AddMemberModal"
+      scroll="body"
     >
       <DialogContent className="wrapper-member-modal">
         <GridArea component={'div'} style={{ borderBottom: 'none' }} >

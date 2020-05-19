@@ -79,7 +79,7 @@ const DialogTitleModalImage = withStyles(styles)(props => {
       <Typography className="DialogTitleModalImage--user" component={'div'}>
         <TitleImg component='div'>
           <ListItem>
-            <Avatar src={user_create_avatar} />
+            {user_create_avatar && <Avatar src={user_create_avatar} />}
             <ListItemText
               style={{ margin: 0 }}
               primary={

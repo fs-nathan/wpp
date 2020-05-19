@@ -37,7 +37,7 @@ const TextInput = styled(TextField)`
     }
     & > input {  
     text-align: end;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 500;
     color: ${colorPal['black'][0]}
     }
@@ -65,7 +65,7 @@ const TitleDescription = styled(Typography)`
     font-weight: 400;
 `
 const ContentDescription = styled(Typography)`
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 400;
   color: ${colorPal['black'][0]}
 `
@@ -75,19 +75,20 @@ const WrapperMember = styled(Typography)`
     padding-left: 20px;
 `
 const MemberDetail = styled(Typography)`
-     margin-bottom: 25px;
+    margin-bottom: 25px;
+    font-size: 14px;
 `
 
 const TitleText = styled(Typography)`
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(0, 0, 0, 0.54);
   margin-bottom: 10px;
 `
 const StyledAvatar = styled(Avatar)`
-        width: 50px;
-        height: 50px;
-    `
+    width: 50px;
+    height: 50px;
+`
 
 const useStyles = makeStyles(theme => ({
   button: {
