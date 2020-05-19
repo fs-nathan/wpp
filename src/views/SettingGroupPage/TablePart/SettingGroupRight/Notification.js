@@ -15,7 +15,7 @@ const WebpushButton = ({ onBack }) => {
   const { t } = useTranslation();
   const classes = usePrimarySubmitActionStyles();
   return (
-    <div className={classes.wrapper}>
+    <span className={classes.wrapper}>
       <Button
         variant="contained"
         onClick={() => {
@@ -30,11 +30,11 @@ const WebpushButton = ({ onBack }) => {
         color={!isSubscribed ? "primary" : "default"}
       >
         {!isSubscribed ? t("turn on") : t("turn off")}
+        {loading && (
+          <CircularProgress size={24} className={classes.buttonProgress} />
+        )}
       </Button>
-      {loading && (
-        <CircularProgress size={24} className={classes.buttonProgress} />
-      )}
-    </div>
+    </span>
   );
 };
 const Notification = () => {
@@ -44,7 +44,9 @@ const Notification = () => {
       <div className="payment-left notification-content">
         <p className="top-header">{t("IDS_WP_SETTING_NOTI")}</p>
         <p className="text-payment-header">{t("IDS_WP_ON_OFF_NOTI")}</p>
-        <WebpushButton />
+        <div>
+          <WebpushButton />
+        </div>
         <br />
         <img src={noti_setting} alt="" />
         <p className="text-payment-header boild-text">
