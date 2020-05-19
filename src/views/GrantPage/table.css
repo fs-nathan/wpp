@@ -40,6 +40,7 @@ tr.drop-over-upward td {
 .table-gantt-header tbody tr td div {
   height: 20px;
 }
+
 .grantt-header thead tr th {
   padding: 2px !important;
   white-space: nowrap;
@@ -750,7 +751,7 @@ div.checkbox-colortag--drawer {
   width: 500px;
 }
 
-.scroll-gantt::webkit-scrollbar-track {
+/* .scroll-gantt::webkit-scrollbar-track {
   width: 2px;
 }
 .scroll-gantt::-webkit-scrollbar {
@@ -766,7 +767,7 @@ div.checkbox-colortag--drawer {
 
 .scroll-gantt::-webkit-scrollbar-track-piece:end:horizontal {
   background: #ffc9a066;
-}
+} */
 .gantt-chart__container {
   display: flex;
   z-index: 2;
