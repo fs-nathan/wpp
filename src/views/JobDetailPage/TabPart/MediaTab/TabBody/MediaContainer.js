@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from 'views/JobDetailPage/selectors';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import MediaBox from './MediaBox';
+import './styles.scss';
 
 const MediaContainer = (props) => {
   const { t } = useTranslation();
@@ -31,6 +32,7 @@ const MediaContainer = (props) => {
       :
       <React.Fragment>
         <SearchInput
+          className="MediaContainer--search"
           fullWidth
           placeholder={t('LABEL_CHAT_TASK_NHAP_NGAY_DANG')}
           onChange={e => searchImagesTabPart(e)}

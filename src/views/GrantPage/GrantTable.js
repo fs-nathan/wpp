@@ -11,7 +11,6 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table, Tooltip } from "antd";
-import "antd/dist/antd.css";
 import update from "immutability-helper";
 import moment from "moment";
 import React from "react";
@@ -829,7 +828,10 @@ class DragSortingTable extends React.Component {
       this.fetchListTask(projectId);
       this.fetchListTask(projectId, true, this.props.girdType);
     }
-    if (this.props.match.params !== prevProps.match.params) {
+    if (
+      this.props.match.params &&
+      this.props.match.params.projectId !== prevProps.match.params.projectId
+    ) {
       const { projectId } = this.props.match.params;
       this.fetchSettingGantt(projectId);
       this.fetchListDetailProject(projectId);
@@ -856,7 +858,6 @@ class DragSortingTable extends React.Component {
     data.forEach((item, index) => {
       if (item.isGroupTask) indexGroupTaskList.push(index);
     });
-    console.log(indexGroupTaskList);
     indexGroupTaskList.forEach((index) => {
       if (hoverIndex >= index) {
         indexSort = hoverIndex - index;
@@ -870,8 +871,8 @@ class DragSortingTable extends React.Component {
     const taskId = data[dragIndex].id;
     const groupId = data[groupTaskIndex[groupTaskIndex.length - 1]].id;
     const { projectId } = this.props.match.params;
-    console.log(indexSort);
-    this.handleSortTask(taskId, groupId, projectId, indexSort);
+    // this.handleSortTask(taskId, groupId, projectId, indexSort);
+    console.log(dragIndex, hoverIndex);
     this.setState(
       update(this.state, {
         data: {
@@ -1029,6 +1030,7 @@ class DragSortingTable extends React.Component {
     }));
     const { indexColumn, visibleTable } = this.props;
     let colShow = columns.map((item, index) => columns[indexColumn[index]]);
+    console.log("update");
     colShow = colShow.filter((col) => visibleTable[col.dataIndex]);
     const { startTimeProject, endTimeProject } = this.state;
     const widthPdf = this.props.renderFullDay
@@ -1070,12 +1072,7 @@ class DragSortingTable extends React.Component {
             }
             taskId={this.state.quickViewId}
           />
-          <div
-            ref={this.tableRef}
-            style={{
-              display: "flex",
-            }}
-          >
+          <div ref={this.tableRef}>
             {this.state.showProject && (
               <div className="gantt__select-project">
                 <ListProject
@@ -1090,6 +1087,7 @@ class DragSortingTable extends React.Component {
                 size="small"
                 className="table-gantt-header"
                 bordered
+                // scroll={{ y: 500 }}
                 rowClassName={(record, index) => {
                   if (this.props.rowHover === index)
                     return "row-background-yellow";

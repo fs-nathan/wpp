@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import MemberDetail from './MemberDetail';
 import MemberPermission from './MemberPermission';
 import MemberRole from './MemberRole';
+import './styles.scss';
 
 const CustomMenu = styled(Menu)`
 & > .MuiPaper-root {
@@ -99,7 +100,7 @@ function TableMember(props) {
             <TableBody>
               {members.map((item, idx) => (
                 <StyledTableRow key={item.id}>
-                  <TableCell style={{ width: '9%' }}>
+                  <TableCell className="TableMember--cellAvatar" style={{ width: '9%' }}>
                     <Avatar alt="Avatar Member" src={item.avatar} sizes='10px' style={{ width: 30, height: 30 }} />
                   </TableCell>
                   <TableCell style={{ width: '40%' }}>

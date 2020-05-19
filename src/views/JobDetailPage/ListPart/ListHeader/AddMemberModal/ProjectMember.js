@@ -1,9 +1,10 @@
-import { useTranslation } from 'react-i18next';
 import { Avatar, ListItem } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { createMember } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
+import once from 'lodash/once';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import './styles.scss';
 
@@ -24,7 +25,7 @@ function ProjectMember(props) {
         <ColorTypo>{props.email}</ColorTypo>
         <ColorTypo color="orange">{props.label}</ColorTypo>
       </div>
-      <Button className="projectMemberItem--button" onClick={onClickAdd}>{t('LABEL_CHAT_TASK_THEM')}</Button>
+      <Button className="projectMemberItem--button" onClick={once(onClickAdd)}>{t('LABEL_CHAT_TASK_THEM')}</Button>
     </ListItem>
   )
 }

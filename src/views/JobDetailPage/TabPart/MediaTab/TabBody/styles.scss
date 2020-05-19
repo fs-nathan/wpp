@@ -170,7 +170,7 @@
   }
   & > img {
     cursor: pointer;
-    width: 40px;
+    width: 48px;
     height: auto;
   }
   & > div {
@@ -196,6 +196,8 @@
     white-space: nowrap;
     width: 230px;
     cursor: pointer;
+    font-weight: 500;
+    color: #222222;
   }
   &--downloaded {
     width: 100%;
@@ -225,6 +227,9 @@
       }
     }
   }
+  &--icon {
+    margin-left: 10px;
+  }
 }
 
 .linkBox {
@@ -243,4 +248,8 @@
   &Item {
     position: relative;
   }
+}
+
+.MediaContainer--search {
+  padding-bottom: 5px;
 }

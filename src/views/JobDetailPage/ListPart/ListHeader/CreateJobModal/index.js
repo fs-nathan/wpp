@@ -438,12 +438,14 @@ function CheckCreateJob(props) {
   const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
 
   useEffect(() => {
-    if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
-      setOpenCreateGroup(true)
-    } else {
-      setOpenCreateGroup(false)
+    if (props.isOpen) {
+      if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
+        setOpenCreateGroup(true)
+      } else {
+        setOpenCreateGroup(false)
+      }
     }
-  }, [listGroupTaskData])
+  }, [listGroupTaskData, props.isOpen])
 
   function onClickCreateProject() {
     setOpenCreateGroup(false)
