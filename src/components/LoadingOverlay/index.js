@@ -6,7 +6,7 @@ import { bgColorSelector } from './selectors';
 
 const CustomLoadingOverlay = styled(({ bgColor, ...props }) => <ReactLoadingOverlay {...props} />)`
   .comp_LoadingOverlay___overlay {
-    background-color: rgba(255, 255, 255, 0.7) !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
   }
   .comp_LoadingOverlay___content {
     color: ${props => props.bgColor} !important;

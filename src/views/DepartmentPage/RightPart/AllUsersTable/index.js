@@ -7,7 +7,7 @@ import { listUserOfGroup } from 'actions/user/listUserOfGroup';
 import { privateMember } from 'actions/user/privateMember';
 import { publicMember } from 'actions/user/publicMember';
 import { sortUser } from 'actions/user/sortUser';
-import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_ROOM, SORT_USER } from 'constants/events';
+import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, BAN_USER_FROM_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_ROOM, SORT_USER } from 'constants/events';
 import { get, reduce } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -80,6 +80,7 @@ function AllUsersTable({
       CustomEventDispose(SORT_ROOM, reloadListUserOfGroup);
       CustomEventDispose(SORT_USER, reloadListUserOfGroup);
       CustomEventDispose(INVITE_USER_JOIN_GROUP, reloadListUserOfGroup);
+      CustomEventDispose(BAN_USER_FROM_GROUP, reloadListUserOfGroup);
       CustomEventDispose(ACCEPT_REQUIREMENT_USER_JOIN_GROUP, reloadListUserOfGroup);
     }
     // eslint-disable-next-line
@@ -98,9 +99,38 @@ function AllUsersTable({
   const [openTableSetting, setOpenTableSetting] = React.useState(false);
   const [openCreateAccount, setOpenCreateAccount] = React.useState(false);
   const [openPermissionSetting, setOpenPermissionSetting] = React.useState(false);
-  const [permissionProps, setPermissionProps] = React.useState({});
+  const [permissionProps, setPermissionProps] = React.useState({
+    users: {
+      ...rooms,
+      users: reduce(
+        rooms.rooms,
+        (users, room) => {
+          const newUsers = [...users, ...get(room, 'users', [])];
+          return newUsers;
+        },
+        [],
+      ),
+    },
+  });
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+
+  React.useEffect(() => {
+    setPermissionProps(old => ({
+      ...old,
+      users: {
+        ...rooms,
+        users: reduce(
+          rooms.rooms,
+          (users, room) => {
+            const newUsers = [...users, ...get(room, 'users', [])];
+            return newUsers;
+          },
+          [],
+        ),
+      },
+    }))
+  }, [rooms]);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -185,19 +215,7 @@ function AllUsersTable({
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} isSelect={false} />
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
-      <PermissionSettingsModal 
-        open={openPermissionSetting} 
-        setOpen={setOpenPermissionSetting} 
-        users={reduce(
-          rooms.rooms,
-          (users, room) => {
-            const newUsers = [...users, ...get(room, 'users', [])];
-            return newUsers;
-          },
-          [],
-        )}
-        {...permissionProps} 
-      />
+      <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} {...permissionProps} />
       <BanUserModal
         open={openAlert}
         setOpen={setOpenAlert}
