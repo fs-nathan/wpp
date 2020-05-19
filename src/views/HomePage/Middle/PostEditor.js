@@ -15,6 +15,7 @@ export default function PostEditor({ onClose, post }) {
   const categories = useSelector(categoryListSelector);
   const initialValues = useMemo(() => {
     const {
+      id,
       title,
       content,
       category_id,
@@ -22,6 +23,7 @@ export default function PostEditor({ onClose, post }) {
       images = emptyArray,
     } = post;
     return {
+      id,
       title: title,
       content: content,
       file: [

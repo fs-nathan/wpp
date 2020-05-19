@@ -4,13 +4,16 @@ import {
   ButtonBase,
   Card,
   CardContent,
+  CircularProgress,
   Grid,
   Typography,
 } from "@material-ui/core";
 import React, { useCallback, useState } from "react";
 import { Route, Switch, useHistory } from "react-router-dom";
+import { usePrimarySubmitActionStyles } from "views/HomePage/components/PrimarySubmitAction";
 import ShareFromLibraryModal from "views/JobDetailPage/ChatComponent/ShareFromLibraryModal";
 import { loginlineParams } from "views/JobPage/utils";
+import useWebpush from "webpush/useWebpush";
 import { QuickViewTaskDetailExample } from "./QuickViewTaskDetailExample";
 const rootPath = "/playground";
 
@@ -51,6 +54,58 @@ const routeEntities = {
       );
     },
   },
+  webpush: {
+    path: rootPath + "/webpush",
+    breadcumName: "webpush",
+    Component: ({ onBack }) => {
+      const {
+        isSubscribed,
+        handleSubscribe,
+        handleUnsubscribe,
+        loading,
+      } = useWebpush();
+      const classes = usePrimarySubmitActionStyles();
+      return (
+        <>
+          <Grid
+            container
+            item
+            justify="center"
+            alignItems="center"
+            direction="column"
+          >
+            <Button onClick={onBack}>Back</Button>
+            <div className={classes.wrapper}>
+              <Button
+                variant="contained"
+                onClick={() => {
+                  !isSubscribed
+                    ? handleSubscribe()
+                    : (() => {
+                        if (
+                          window.confirm("Do you really want to unsubscribe?")
+                        ) {
+                          handleUnsubscribe();
+                        }
+                      })();
+                }}
+                color={!isSubscribed ? "primary" : "default"}
+              >
+                {!isSubscribed ? "subscribed" : "unsubscribe"}
+              </Button>
+              {loading && (
+                <CircularProgress
+                  color="primary"
+                  size={24}
+                  className={classes.buttonProgress}
+                />
+              )}
+            </div>
+          </Grid>
+        </>
+      );
+    },
+  },
 };
 const Playground = () => {
   const history = useHistory();
@@ -79,6 +134,14 @@ const Playground = () => {
           )}
         ></Route>
         <Route
+          path={routeEntities.webpush.path}
+          render={() => (
+            <routeEntities.webpush.Component
+              onBack={handleBack}
+            ></routeEntities.webpush.Component>
+          )}
+        ></Route>
+        <Route
           path={routeEntities.default.path}
           render={() => (
             <>
@@ -89,39 +152,69 @@ const Playground = () => {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid container item justify="center" alignItems="center">
-                <ButtonBase>
-                  <Card
-                    onClick={() =>
-                      history.replace(routeEntities.quickViewTask.path)
-                    }
-                  >
-                    <CardContent>
-                      <Typography color="textSecondary" gutterBottom>
-                        Hướng dẫn
-                      </Typography>
-                      <Typography variant="h5" component="h2">
-                        {routeEntities.quickViewTask.breadcumName}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </ButtonBase>
-                <ButtonBase>
-                  <Card
-                    onClick={() =>
-                      history.replace(routeEntities.shareFromLibraryModal.path)
-                    }
-                  >
-                    <CardContent>
-                      <Typography color="textSecondary" gutterBottom>
-                        Hướng dẫn
-                      </Typography>
-                      <Typography variant="h5" component="h2">
-                        {routeEntities.shareFromLibraryModal.breadcumName}
-                      </Typography>
-                    </CardContent>
-                  </Card>
-                </ButtonBase>
+              <Grid
+                spacing={4}
+                container
+                item
+                justify="center"
+                alignItems="center"
+              >
+                <Grid item>
+                  <ButtonBase>
+                    <Card
+                      onClick={() =>
+                        history.replace(routeEntities.quickViewTask.path)
+                      }
+                    >
+                      <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                          Hướng dẫn
+                        </Typography>
+                        <Typography variant="h5" component="h2">
+                          {routeEntities.quickViewTask.breadcumName}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </ButtonBase>
+                </Grid>
+                <Grid item>
+                  <ButtonBase>
+                    <Card
+                      onClick={() =>
+                        history.replace(
+                          routeEntities.shareFromLibraryModal.path
+                        )
+                      }
+                    >
+                      <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                          Hướng dẫn
+                        </Typography>
+                        <Typography variant="h5" component="h2">
+                          {routeEntities.shareFromLibraryModal.breadcumName}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </ButtonBase>
+                </Grid>
+                <Grid item>
+                  <ButtonBase>
+                    <Card
+                      onClick={() =>
+                        history.replace(routeEntities.webpush.path)
+                      }
+                    >
+                      <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                          Hướng dẫn
+                        </Typography>
+                        <Typography variant="h5" component="h2">
+                          {routeEntities.webpush.breadcumName}
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </ButtonBase>
+                </Grid>
               </Grid>
             </>
           )}

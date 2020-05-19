@@ -107,6 +107,7 @@ const createPost = ({
 };
 
 const updatePost = ({
+  id,
   title,
   category,
   content,
@@ -121,6 +122,7 @@ const updatePost = ({
     config: {
       url: "/posts/update-post",
       data: toFormData({
+        post_id: id,
         title,
         category,
         content,

@@ -189,11 +189,15 @@ const ImagePreview = ({ file, onDelete }) => {
   console.log(file);
   const [src, setSrc] = useState();
   useEffect(() => {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      setSrc(e.target.result);
-    };
-    reader.readAsDataURL(file);
+    if (file.url_thumb || file.url) {
+      setSrc(file.url_thumb || file.url);
+    } else {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        setSrc(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   }, [file]);
   return (
     <div>
@@ -209,7 +213,16 @@ const ImagePreview = ({ file, onDelete }) => {
   );
 };
 function isFileImage(file) {
-  return file && file["type"].split("/")[0] === "image";
+  const acceptedImageTypes = [
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+    "gif",
+    "jpeg",
+    "jpg",
+    "png",
+  ];
+  return file && acceptedImageTypes.includes(file["type"]);
 }
 const DropZone = ({ onChange, children }) => {
   const [isDragActive, setIsDragActive] = useState();

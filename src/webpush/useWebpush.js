@@ -1,10 +1,12 @@
 import { apiService } from "constants/axiosInstance";
 import { TOKEN } from "constants/constants";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { apiKeyModule } from "webpush";
 
 const useWebpush = () => {
+  const [isSubscribed, setSubscribed] = useState();
+  const [loading, setloading] = useState(true);
   const dispatch = useDispatch();
   const webpushApikey = useSelector(
     apiKeyModule.selectors.web_push_public_key_selector
@@ -15,10 +17,11 @@ const useWebpush = () => {
       dispatch(apiKeyModule.actions.loadApiKey());
     }
   }, [dispatch]);
-  useEffect(() => {
+  const handleSubscribe = useCallback(() => {
     const token = localStorage.getItem(TOKEN);
     window.apiService = apiService;
     if (token && webpushApikey && webpushApikey !== null) {
+      setloading(true);
       function urlBase64ToUint8Array(base64String) {
         const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
         const base64 = (base64String + padding)
@@ -71,8 +74,45 @@ const useWebpush = () => {
           console.error("Service workers are not supported in this browser");
         }
       }
-      triggerPushNotification().catch((error) => console.error({ error }));
+      triggerPushNotification()
+        .then(() => {
+          setSubscribed(true);
+        })
+        .catch((error) => {
+          console.error({ error });
+        })
+        .finally(() => {
+          setloading(false);
+        });
     }
-  }, [webpushApikey]);
+  }, [webpushApikey, setSubscribed]);
+  const handleUnsubscribe = useCallback(() => {
+    navigator.serviceWorker.ready.then(function (reg) {
+      reg.pushManager.getSubscription().then(function (subscription) {
+        setloading(true);
+        subscription
+          .unsubscribe()
+          .then(function (successful) {
+            setSubscribed(false);
+            console.log("unsubscribed to push service!");
+          })
+          .catch(function (e) {
+            // Unsubscription failed
+          })
+          .finally(() => {
+            setloading(false);
+          });
+      });
+    });
+  }, []);
+  useEffect(() => {
+    handleSubscribe();
+  }, [handleSubscribe]);
+  return {
+    isSubscribed: !!isSubscribed,
+    handleSubscribe,
+    handleUnsubscribe,
+    loading,
+  };
 };
 export default useWebpush;
