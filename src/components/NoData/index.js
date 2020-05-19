@@ -1,4 +1,3 @@
-import { isFunction } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { bgColorSelector } from './selectors';
@@ -18,16 +17,12 @@ function NoData({
   return (
     <Container>
       <img src='/images/no-data.png' alt='no-data-logo' />
-      {isFunction(title) ? title() : (
-        <p
-          style={{
-            color: bgColor.color,
-          }}
-        >{title}</p>
-      )}
-      {isFunction(subtitle) ? subtitle() : (
-        <p>{subtitle}</p>
-      )}
+      <p
+        style={{
+          color: bgColor.color,
+        }}
+      >{title}</p>
+      <p>{subtitle}</p>
     </Container>
   )
 }

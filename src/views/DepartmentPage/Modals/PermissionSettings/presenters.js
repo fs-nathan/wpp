@@ -86,6 +86,7 @@ function PermissionMemberModal({
   setOpen, open,
   permissions, curUserId, roomId, users,
   doReloadUser, handleUpdateGroupPermission,
+  updateGroupPermission,
 }) {
 
   const [selectedValue, setSelectedValue] = React.useState(undefined);
@@ -100,7 +101,7 @@ function PermissionMemberModal({
           {
             id: get(
               find(
-                users,
+                users.users,
                 { id: curUserId },
               ),
               'group_permission'
@@ -118,8 +119,7 @@ function PermissionMemberModal({
       'is_owner_group',
       false,
     ))
-    // eslint-disable-next-line
-  }, [curUserId, permissions]);
+  }, [users, curUserId, permissions, roomId]);
 
   React.useEffect(() => {
     const fail = () => {
@@ -132,12 +132,14 @@ function PermissionMemberModal({
       CustomEventDispose(UPDATE_GROUP_PERMISSION_USER.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [roomId]);
+  }, [curUserId, roomId, users]);
 
   React.useEffect(() => {
     const success = () => {
       setLoading(false);
       setOpen(false);
+      setSelectedValue(undefined);
+      setIsAdmin(false);
     };
     const fail = () => {
       setLoading(false);
@@ -159,14 +161,14 @@ function PermissionMemberModal({
       }
     }
     // eslint-disable-next-line
-  }, [roomId]);
+  }, [curUserId, roomId, users]);
 
   return (
     <CustomModal
       title="Phân quyền thành viên"
       open={open}
       setOpen={setOpen}
-      loading={permissions.loading}
+      loading={permissions.loading || users.loading}
       cancleRender={() => isAdmin ? "Thoát" : "Hủy"}
       confirmRender={isAdmin ? null : () => "Hoàn thành"}
       onConfirm={() => {

@@ -1,5 +1,4 @@
 import { memberProject } from 'actions/project/memberProject';
-import { removeGroupPermissionMember } from 'actions/project/removeGroupPermissionMember';
 import { updateGroupPermissionMember } from 'actions/project/updateGroupPermissionMember';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -12,7 +11,6 @@ function MemberRole({
   bgColor, permissions, members,
   curMemberId = null,
   doUpdateGroupPermissionMember,
-  doRemoveGroupPermissionMember,
   updateGroupPermission,
   doReloadMember,
 }) {
@@ -28,16 +26,11 @@ function MemberRole({
       bgColor={bgColor} permissions={permissions}
       updateGroupPermission={updateGroupPermission}
       handleUpdateGroupPermission={groupPermissionId =>
-        groupPermissionId
-          ? doUpdateGroupPermissionMember({
-            projectId,
-            memberId: curMemberId,
-            groupPermission: groupPermissionId
-          })
-          : doRemoveGroupPermissionMember({
-            projectId,
-            memberId: curMemberId,
-          })
+        doUpdateGroupPermissionMember({
+          projectId,
+          memberId: curMemberId,
+          groupPermission: groupPermissionId
+        })
       }
     />
   )
@@ -56,7 +49,6 @@ const mapDispatchToProps = dispatch => {
   return {
     doReloadMember: (projectId) => dispatch(memberProject({ projectId }, true)),
     doUpdateGroupPermissionMember: ({ projectId, memberId, groupPermission }) => dispatch(updateGroupPermissionMember({ projectId, memberId, groupPermission })),
-    doRemoveGroupPermissionMember: ({ projectId, memberId }) => dispatch(removeGroupPermissionMember({ projectId, memberId })),
   }
 };
 

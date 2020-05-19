@@ -1,5 +1,7 @@
+import { Button } from '@material-ui/core';
+import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
-import CustomModal, { Title } from 'components/CustomModal';
+import CustomModal from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import UploadButton from 'components/UploadButton';
 import { CREATE_ROOM, CustomEventDispose, CustomEventListener, DETAIL_ROOM, GET_USER_OF_ROOM, LIST_ROOM, LIST_USER_OF_GROUP, UPDATE_ROOM } from 'constants/events';
@@ -14,6 +16,21 @@ const LogoBox = ({ className = '', ...props }) =>
     className={`view_Department_Create_Modal___logo-box ${className}`}
     {...props}
   />;
+
+const MyButton = ({ className = '', ...props }) =>
+  <Button
+    className={`view_Department_Create_Modal___button ${className}`}
+    disableRipple
+    disableFocusRipple
+    disableTouchRipple
+    {...props}
+  />
+
+const MyTypo = ({ className = '', ...props }) =>
+  <ColorTypo
+    className={`view_Department_Create_Modal___typo ${className}`}
+    {...props}
+  />
 
 function CreateAndUpdateDepartment({
   updateDepartment = null,
@@ -141,7 +158,7 @@ function CreateAndUpdateDepartment({
         />
         <LogoBox>
           <div>
-            <Title>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO')}</Title>
+            <MyTypo>{t('DMH.VIEW.DP.MODAL.CUDP.LOGO')}</MyTypo>
             <UploadButton
               label={t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}
               onClick={() => handleOpenModal('LOGO', {

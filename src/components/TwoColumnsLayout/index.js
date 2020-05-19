@@ -1,22 +1,22 @@
 import React from 'react';
 import './style.scss';
 
-const Container = ({ className = '', expand, ...rest }) =>
-  <div className={`${expand
-    ? 'comp_TwoColumnsLayout___container-expanded'
+const Container = ({ className = '', expand, ...rest }) => 
+  <div className={`${expand 
+    ? 'comp_TwoColumnsLayout___container-expanded' 
     : 'comp_TwoColumnsLayout___container-normal'} 
-    ${className}`}
-    {...rest} />;
+    ${className}`} 
+  {...rest} />;
 
-const LeftDiv = ({ ...rest }) => <div {...rest} />;
+const LeftDiv = ({ ...rest }) => <div {...rest}/>;
 
-const RightDiv = ({ className = '', ...rest }) => <div className={`comp_TwoColumnsLayout___right ${className}`} {...rest} />;
+const RightDiv = ({ className = '', ...rest }) => <div className={`comp_TwoColumnsLayout___right ${className}`} {...rest}/>;
 
 function TwoColumnsLayout({
   leftRenders = [() => <div />],
   rightRender = () => <div />,
 }) {
-
+  
   const [expand, setExpand] = React.useState(false);
   const [subSlide, setSubSlide] = React.useState(0);
 
@@ -30,13 +30,11 @@ function TwoColumnsLayout({
 
   return (
     <Container expand={expand}>
-      <LeftDiv
-        style={{
-          display: expand ? 'none' : 'initial'
-        }}
-      >
-        {leftRenders[subSlide]({ handleSubSlide })}
-      </LeftDiv>
+      {!expand && (
+        <LeftDiv>
+          {leftRenders[subSlide]({ handleSubSlide })}
+        </LeftDiv>
+      )}
       <RightDiv>
         {rightRender({ expand, handleExpand, handleSubSlide })}
       </RightDiv>
