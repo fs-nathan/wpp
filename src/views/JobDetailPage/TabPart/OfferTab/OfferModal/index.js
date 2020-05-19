@@ -259,6 +259,7 @@ const OfferModal = (props) => {
         <TextField
           className="offerModal--titleText"
           placeholder={t('LABEL_CHAT_TASK_NHAP_TIEU_DE_DE_XUAT')}
+          variant="outlined"
           fullWidth
           value={tempSelectedItem.title}
           onChange={e => setParams("title", e.target.value)}
