@@ -4,11 +4,12 @@ import Icon from '@mdi/react';
 import { getRole } from 'actions/taskDetail/taskDetailActions';
 import ColorChip from 'components/ColorChip';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import RoleMemberModal from '../RoleMemberModal';
 
-
 function MemberRole({ roles, memberId }) {
+  const { t } = useTranslation()
   const dispatch = useDispatch();
   const [openRoleModal, setOpenRoleModal] = React.useState(false);
 
@@ -27,7 +28,9 @@ function MemberRole({ roles, memberId }) {
         size='small'
         onClick={onClickAdd}
       >
-        <Icon path={mdiPlusCircleOutline} size={1} style={{ fill: '#b0b0b0' }} />
+        <Icon path={mdiPlusCircleOutline} size={1} color={'#03a9f4'} />
+        &nbsp;
+        {t('LABEL_CHAT_TASK_THEM')}
       </IconButton>
       <RoleMemberModal
         roles={roles}

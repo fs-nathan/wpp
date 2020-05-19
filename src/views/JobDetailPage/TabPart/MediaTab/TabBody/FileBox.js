@@ -70,9 +70,7 @@ const FileBox = (props) => {
                       <IconButton className="fileBoxItem--button"
                         onClick={onClickDownload(item)}
                         size='small'>
-                        <a href={item.url}>
-                          <Icon path={mdiDownload} size={1} />
-                        </a>
+                        <Icon className="fileBoxItem--icon" path={mdiDownload} size={1} color={'#b9b9b9'} />
                       </IconButton>
                     </div>
                   </div>

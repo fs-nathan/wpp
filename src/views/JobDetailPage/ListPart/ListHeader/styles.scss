@@ -20,6 +20,26 @@
     margin: auto;
     transition: none;
   }
+  &--noPermissions {
+    padding: 20px 30px;
+  }
+  &--noPermissionsTitle {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  &--noPermissionsDes {
+    font-size: 14px;
+  }
+  &--noPermissionsImg {
+    margin: 20px auto;
+    width: 80%;
+    display: block;
+  }
+  &--noPermissionsFooter {
+    font-size: 14px;
+    text-align: center;
+  }
 }
 .permissionMemberModal {
   .dialogWrap--content {

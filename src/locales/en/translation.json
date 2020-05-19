@@ -995,5 +995,8 @@
   "LABEL_CHAT_TASK_UU_TIEN_LABEL": "Ưu tiên: ",
   "LABEL_CHAT_TASK_CAO_LABEL": "Cao",
   "LABEL_CHAT_TASK_TRUNG_BINH_LABEL": "Trung bình",
-  "LABEL_CHAT_TASK_THAP_LABEL": "Thấp"
+  "LABEL_CHAT_TASK_THAP_LABEL": "Thấp",
+  "LABEL_CHAT_TASK_GAN_QUYEN": "Gán quyền",
+  "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION": "Hiện tại chưa có nhóm quyền nào được tạo cho chức năng này! Liên hệ với Quản trị viên để yều cầu bổ sung.",
+  "LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON": "Xóa nhóm quyền đã chọn"
 }
