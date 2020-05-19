@@ -128,23 +128,23 @@ const BodyPart = props => {
     // eslint-disable-next-line
   }, [chatRef, taskId, chats.data.length]);
 
-  useEffect(() => {
-    let rqId;
-    if (isLoading) {
-      const scrollHeight = chatRef.current.getScrollHeight()
-      const scrollTop = scrollHeight - lastScroll
-      // console.log('getScrollTop()', scrollHeight, lastScroll, scrollTop)
-      rqId = requestAnimationFrame(() => {
-        // chatRef.current.scrollTop = 250
-        // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-        chatRef.current.scrollTop(scrollTop)
-      })
-      lastScroll = scrollHeight
-    }
-    return () => {
-      cancelAnimationFrame(rqId);
-    }
-  }, [isLoading])
+  // useEffect(() => {
+  //   let rqId;
+  //   if (isLoading) {
+  //     const scrollHeight = chatRef.current.getScrollHeight()
+  //     const scrollTop = scrollHeight - lastScroll
+  //     // console.log('getScrollTop()', scrollHeight, lastScroll, scrollTop)
+  //     rqId = requestAnimationFrame(() => {
+  //       // chatRef.current.scrollTop = 250
+  //       // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+  //       chatRef.current.scrollTop(scrollTop)
+  //     })
+  //     lastScroll = scrollHeight
+  //   }
+  //   return () => {
+  //     cancelAnimationFrame(rqId);
+  //   }
+  // }, [isLoading])
 
   useEffect(() => {
     const task_id = queryString.parse(props.location.search).task_id
