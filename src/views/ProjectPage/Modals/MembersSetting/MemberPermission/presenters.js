@@ -178,6 +178,7 @@ function PermissionMemberModal({
       setOpen={setOpen}
       loading={permissions.loading || members.loading}
       cancleRender={() => isAdmin ? "Thoát" : "Hủy"}
+      canConfirm={permissions.groupPermissions.length > 0}
       confirmRender={isAdmin ? null : () => "Hoàn thành"}
       onConfirm={() => {
         if (!isAdmin) {

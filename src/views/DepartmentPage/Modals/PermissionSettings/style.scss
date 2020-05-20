@@ -32,6 +32,13 @@
     margin: auto;
     transition: none;
   }
+  &:hover {
+    color: #fff;
+    background: #2196f3;
+    & > * {
+      color: #fff;
+    }
+  }
 }
 
 .view_DepartmentPage_UserPermissionModal___permission-item {
@@ -40,8 +47,8 @@
   }
   &-checked {
     @include view_DepartmentPage_UserPermissionModal___permission-item;
-    color: #ffffff;
-    background-color: #58abf3;
+    color: #fff;
+    background-color: #2196f3;
   }
 }
 
@@ -60,13 +67,12 @@
 .view_DepartmentPage_UserPermissionModal___content {
   font-weight: normal;
   margin: 20px 0px;
-  max-width: 500px;
   font-size: 14px;
   line-height: 1.5;
 }
 
 .view_DepartmentPage_UserPermissionModal___slider {
-  background-color: #cccccc;
+  background-color: #f1f1f1;
   padding: 0 32px;
 }
 

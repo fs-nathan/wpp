@@ -8,7 +8,7 @@ import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey } from '@mdi/
 import Icon from '@mdi/react';
 import CustomModal from 'components/CustomModal';
 import NoData from 'components/NoData';
-import { CustomEventDispose, CustomEventListener, GET_USER_OF_ROOM, LIST_USER_OF_GROUP, UPDATE_GROUP_PERMISSION_USER } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, GET_USER_OF_ROOM, LIST_USER_OF_GROUP, REMOVE_GROUP_PERMISSION_USER, UPDATE_GROUP_PERMISSION_USER } from 'constants/events';
 import { find, get } from 'lodash';
 import React from "react";
 import Slider from "react-slick";
@@ -125,12 +125,12 @@ function PermissionMemberModal({
     );
     setIsAdmin(get(
       find(
-        users.users,
+        users,
         { id: curUserId },
       ),
       'is_owner_group',
       false,
-    ))
+    ));
     // eslint-disable-next-line
   }, [curUserId, permissions]);
 
@@ -140,9 +140,13 @@ function PermissionMemberModal({
     };
     CustomEventListener(UPDATE_GROUP_PERMISSION_USER.SUCCESS, doReloadUser);
     CustomEventListener(UPDATE_GROUP_PERMISSION_USER.FAIL, fail);
+    CustomEventListener(REMOVE_GROUP_PERMISSION_USER.SUCCESS, doReloadUser);
+    CustomEventListener(REMOVE_GROUP_PERMISSION_USER.FAIL, fail);
     return () => {
       CustomEventDispose(UPDATE_GROUP_PERMISSION_USER.SUCCESS, doReloadUser);
       CustomEventDispose(UPDATE_GROUP_PERMISSION_USER.FAIL, fail);
+      CustomEventDispose(REMOVE_GROUP_PERMISSION_USER.SUCCESS, doReloadUser);
+      CustomEventDispose(REMOVE_GROUP_PERMISSION_USER.FAIL, fail);
     }
     // eslint-disable-next-line
   }, [roomId]);
@@ -182,6 +186,7 @@ function PermissionMemberModal({
       loading={permissions.loading}
       cancleRender={() => isAdmin ? "Thoát" : "Hủy"}
       confirmRender={isAdmin ? null : () => "Hoàn thành"}
+      canConfirm={permissions.groupPermissions.length > 0}
       onConfirm={() => {
         if (!isAdmin) {
           handleUpdateGroupPermission(selectedValue);
