@@ -1,6 +1,6 @@
-import loadable from "@loadable/component";
-import { Routes } from "constants/routes";
-import React from "react";
+import loadable from '@loadable/component';
+import { Routes } from 'constants/routes';
+import React from 'react';
 //import CalendarAlarmPage from "views/CalendarAlarmPage";
 //import CalendarPage from "views/CalendarPage";
 //import CalendarProjectPage from "views/CalendarProjectPage";
@@ -12,8 +12,8 @@ import React from "react";
 //import RegisterPage from "views/AccountPage/RegisterPage";
 //import ResetPassword from "views/AccountPage/ResetPassword";
 //import DepartmentPage from "views/DepartmentPage";
-import DocumentPage from "views/DocumentPage";
-import { Routes as jobRoutes } from "views/JobPage/contants/routes";
+import DocumentPage from 'views/DocumentPage';
+import { Routes as jobRoutes } from 'views/JobPage/contants/routes';
 //import HomePage from "views/HomePage";
 //import JobDetailPage from "views/JobDetailPage";
 //import JobPage from "views/JobPage";
@@ -23,55 +23,55 @@ import { Routes as jobRoutes } from "views/JobPage/contants/routes";
 //import ProjectGroupPage from "views/ProjectGroupPage";
 //import ProjectPage from "views/ProjectPage";
 //import ReportPage from "views/ReportPage";
-import SettingAccountPage from "views/SettingAccountPage";
-import SettingGroupPage from "views/SettingGroupPage";
-import Grant from "../views/GrantPage/GrantTable";
+import SettingAccountPage from 'views/SettingAccountPage';
+import SettingGroupPage from 'views/SettingGroupPage';
+import Grant from '../views/GrantPage/GrantTable';
 
 //import TestPage from "__test__";
 
-const CalendarAlarmPage = loadable(() => import("views/CalendarAlarmPage"), {
+const CalendarAlarmPage = loadable(() => import('views/CalendarAlarmPage'), {
   fallback: <div />,
 });
-const CalendarPage = loadable(() => import("views/CalendarPage"), {
+const CalendarPage = loadable(() => import('views/CalendarPage'), {
   fallback: <div />,
 });
 const CalendarProjectPage = loadable(
-  () => import("views/CalendarProjectPage"),
+  () => import('views/CalendarProjectPage'),
   {
     fallback: <div />,
   }
 );
-const CalendarWeeklyPage = loadable(() => import("views/CalendarWeeklyPage"), {
+const CalendarWeeklyPage = loadable(() => import('views/CalendarWeeklyPage'), {
   fallback: <div />,
 });
-const Playground = loadable(() => import("views/Playground"), {
+const Playground = loadable(() => import('views/Playground'), {
   fallback: <div />,
 });
 const ConfirmRegistration = loadable(
-  () => import("views/AccountPage/ConfirmRegistration"),
+  () => import('views/AccountPage/ConfirmRegistration'),
   {
     fallback: <div />,
   }
 );
 const ForgotPassword = loadable(
-  () => import("views/AccountPage/ForgotPassword"),
+  () => import('views/AccountPage/ForgotPassword'),
   {
     fallback: <div />,
   }
 );
-const LoginPage = loadable(() => import("views/AccountPage/LoginPage"), {
+const LoginPage = loadable(() => import('views/AccountPage/LoginPage'), {
   fallback: <div />,
 });
-const RegisterPage = loadable(() => import("views/AccountPage/RegisterPage"), {
+const RegisterPage = loadable(() => import('views/AccountPage/RegisterPage'), {
   fallback: <div />,
 });
 const ResetPassword = loadable(
-  () => import("views/AccountPage/ResetPassword"),
+  () => import('views/AccountPage/ResetPassword'),
   {
     fallback: <div />,
   }
 );
-const DepartmentPage = loadable(() => import("views/DepartmentPage"), {
+const DepartmentPage = loadable(() => import('views/DepartmentPage'), {
   fallback: <div />,
 });
 /*
@@ -79,34 +79,34 @@ const DocumentPage = loadable(() => import('views/DocumentPage'), {
   fallback: <div />,
 });
 */
-const HomePage = loadable(() => import("views/HomePage"), {
+const HomePage = loadable(() => import('views/HomePage'), {
   fallback: <div />,
 });
-const JobDetailPage = loadable(() => import("views/JobDetailPage"), {
+const JobDetailPage = loadable(() => import('views/JobDetailPage'), {
   fallback: <div />,
 });
-const JobPage = loadable(() => import("views/JobPage"), {
+const JobPage = loadable(() => import('views/JobPage'), {
   fallback: <div />,
 });
-const MemberPage = loadable(() => import("views/MemberPage"), {
+const MemberPage = loadable(() => import('views/MemberPage'), {
   fallback: <div />,
 });
-const MessageNoticePage = loadable(() => import("views/MessageNoticePage"), {
+const MessageNoticePage = loadable(() => import('views/MessageNoticePage'), {
   fallback: <div />,
 });
-const OfferPage = loadable(() => import("views/OfferPage"), {
+const OfferPage = loadable(() => import('views/OfferPage'), {
   fallback: <div />,
 });
-const ProjectGroupPage = loadable(() => import("views/ProjectGroupPage"), {
+const ProjectGroupPage = loadable(() => import('views/ProjectGroupPage'), {
   fallback: <div />,
 });
-const TestPage = loadable(() => import("__test__"), {
+const TestPage = loadable(() => import('__test__'), {
   fallback: <div />,
 });
-const ProjectPage = loadable(() => import("views/ProjectPage"), {
+const ProjectPage = loadable(() => import('views/ProjectPage'), {
   fallback: <div />,
 });
-const ReportPage = loadable(() => import("views/ReportPage"), {
+const ReportPage = loadable(() => import('views/ReportPage'), {
   fallback: <div />,
 });
 /*
@@ -158,10 +158,10 @@ const routes = [
   },
   { path: Routes.PROJECT_GRANT, component: () => <Grant /> },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
-  ...(process.env.NODE_ENV !== "production"
-    ? [{ path: "/playground", component: () => <Playground /> }]
+  ...(process.env.NODE_ENV !== 'production'
+    ? [{ path: '/playground', component: () => <Playground /> }]
     : []),
-  { path: "", exact: false, component: () => null },
+  { path: '', exact: false, component: () => null },
 ];
 
 export default routes;
