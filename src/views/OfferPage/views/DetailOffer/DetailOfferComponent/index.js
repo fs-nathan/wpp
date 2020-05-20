@@ -1,8 +1,8 @@
 import { Grid } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
-import LeftContent from "./LeftContent";
-import RightContent from "./RightContent";
+import LeftContent from "./LeftContent/LeftContent";
+import RightContent from "./RightContent/RightContent";
 import "./style.scss";
 
 const DetailOffer = ({

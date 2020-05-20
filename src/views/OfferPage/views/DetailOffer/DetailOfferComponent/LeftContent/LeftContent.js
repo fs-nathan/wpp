@@ -13,10 +13,10 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor } from "views/OfferPage/redux/actions";
-import CustomAddOfferMemberModal from "./AddOfferMemberModal";
-import DocumentFileModal from "./SendFile/DocumentFileModal.js";
-import SendFileModal from "./SendFile/SendFileModal";
-import { styles } from './style';
+import CustomAddOfferMemberModal from "../AddOfferMemberModal";
+import DocumentFileModal from "../SendFile/DocumentFileModal.js";
+import SendFileModal from "../SendFile/SendFileModal";
+import { styles } from '../style';
 
 
 

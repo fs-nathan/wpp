@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import styled from "styled-components";
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
-import { styles } from './style';
+import { styles } from '../style';
 const WrapperButton1 = styled.div`    
     button:hover {
         background-color: #03c30b;
