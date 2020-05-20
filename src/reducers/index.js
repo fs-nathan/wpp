@@ -147,6 +147,7 @@ import listUserOfGroup, { initialState as listUserOfGroupInitialState } from "./
 import permissionUser, { initialState as permissionUserInitialState } from "./user/permissionUser";
 import privateMember, { initialState as privateMemberInitialState } from "./user/privateMember";
 import publicMember, { initialState as publicMemberInitialState } from "./user/publicMember";
+import removeGroupPermissionUser, { initialState as removeGroupPermissionUserInitialState } from "./user/removeGroupPermissionUser";
 import sortUser, { initialState as sortUserInitialState } from "./user/sortUser";
 import updateGroupPermissionUser, { initialState as updateGroupPermissionUserInitialState } from "./user/updateGroupPermissionUser";
 import updateUser, { initialState as updateUserInitialState } from "./user/updateUser";
@@ -199,6 +200,7 @@ const rootReducer = combineReducers({
     banUserFromGroup,
     permissionUser,
     updateGroupPermissionUser,
+    removeGroupPermissionUser,
   }),
   icon: combineReducers({
     listIcon,
@@ -351,6 +353,7 @@ export const DEFAULT_STATE = {
     banUserFromGroup: banUserFromGroupInitialState,
     permissionUser: permissionUserInitialState,
     updateGroupPermissionUser: updateGroupPermissionUserInitialState,
+    removeGroupPermissionUser: removeGroupPermissionUserInitialState,
   },
   icon: {
     listIcon: listIconInitialState,
