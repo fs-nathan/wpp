@@ -98,9 +98,24 @@ function DepartmentUsersTable({
   const [openTableSetting, setOpenTableSetting] = React.useState(false);
   const [openCreateAccount, setOpenCreateAccount] = React.useState(false);
   const [openPermissionSetting, setOpenPermissionSetting] = React.useState(false);
-  const [permissionProps, setPermissionProps] = React.useState({});
+  const [permissionProps, setPermissionProps] = React.useState({
+    users: {
+      ...room,
+      users: room.room.users,
+    },
+  });
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+
+  React.useEffect(() => {
+    setPermissionProps(old => ({
+      ...old,
+      users: {
+        ...room,
+        users: room.room.users,
+      },
+    }))
+  }, [room]);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -184,11 +199,7 @@ function DepartmentUsersTable({
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} isSelect={false} />
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
-      <PermissionSettingsModal
-        open={openPermissionSetting}
-        setOpen={setOpenPermissionSetting}
-        users={room.room.users}
-        {...permissionProps} />
+      <PermissionSettingsModal open={openPermissionSetting} setOpen={setOpenPermissionSetting} {...permissionProps} />
       <BanUserModal
         open={openAlert}
         setOpen={setOpenAlert}

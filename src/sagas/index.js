@@ -53,7 +53,6 @@ import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedPr
 import { LIST_PROJECT } from "../constants/actions/project/listProject";
 import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
 import { PERMISSION_PROJECT } from "../constants/actions/project/permissionProject";
-import { REMOVE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/removeGroupPermissionMember";
 import { REMOVE_MEMBER_PROJECT } from "../constants/actions/project/removeMemberProject";
 import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/removeProjectRoleFromMember";
 import { RESTORE_TRASH_PROJECT } from "../constants/actions/project/restoreTrashProject";
@@ -196,7 +195,6 @@ import { listProjectBasicInfo } from "./project/listBasicInfo";
 import { listDeletedProject, listProject } from "./project/listProject";
 import { memberProject } from "./project/memberProject";
 import { permissionProject } from "./project/permissionProject";
-import { removeGroupPermissionMember } from "./project/removeGroupPermissionMember";
 import { removeMemberProject } from "./project/removeMemberProject";
 import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMember";
 import { restoreTrashProject } from "./project/restoreTrashProject";
@@ -331,7 +329,6 @@ function* rootSaga() {
   yield takeEvery(ADD_PROJECT_ROLE_TO_MEMBER, addProjectRoleToMember);
   yield takeEvery(REMOVE_PROJECT_ROLE_FROM_MEMBER, removeProjectRoleFromMember);
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
-  yield takeEvery(REMOVE_GROUP_PERMISSION_MEMBER, removeGroupPermissionMember);
   yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
   yield takeLeading(DETAIL_STATUS, detailStatus);
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);

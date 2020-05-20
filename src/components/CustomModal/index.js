@@ -1,4 +1,4 @@
-import { ButtonBase, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton, Typography } from '@material-ui/core';
+import { ButtonBase, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
@@ -49,12 +49,6 @@ const TwoColumnsContainer = ({ maxWidth, className = '', ...rest }) =>
       : 'comp_CustomModal___two-columns-container-w-md'} ${className}`}
     {...rest}
   />;
-
-export const Title = ({ className = '', ...props }) =>
-  <Typography
-    className={`comp_CustomModal___typo ${className}`}
-    {...props}
-  />
 
 const LeftHeader = ({ className = '', ...props }) => <ColorTypo bold uppercase className={`comp_CustomModal___header-left ${className}`} {...props} />;
 
