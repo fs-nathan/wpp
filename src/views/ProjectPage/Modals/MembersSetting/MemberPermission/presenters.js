@@ -4,10 +4,11 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { mdiChevronLeft, mdiChevronRight, mdiKey } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
 import CustomModal from 'components/CustomModal';
-import { CustomEventDispose, CustomEventListener, MEMBER_PROJECT, UPDATE_GROUP_PERMISSION_MEMBER } from 'constants/events';
+import NoData from 'components/NoData';
+import { CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_GROUP_PERMISSION_MEMBER, UPDATE_GROUP_PERMISSION_MEMBER } from 'constants/events';
 import { find, get } from 'lodash';
 import React from "react";
 import Slider from "react-slick";
@@ -54,6 +55,18 @@ const SliderWrapper = ({ className = '', ...props }) =>
 const CustomIcon = ({ className = '', disabled = false, ...props }) =>
   <Icon
     className={`view_ProjectPage_MemberPermissionModal___icon${disabled ? '-disabled' : ''} ${className}`}
+    {...props}
+  />
+
+const NoDataHelper = ({ className = '', ...props }) =>
+  <span
+    className={`view_ProjectPage_MemberPermissionModal___no-data-helper ${className}`}
+    {...props}
+  />
+
+const Deselect = ({ className = '', ...props }) =>
+  <div
+    className={`view_ProjectPage_MemberPermissionModal___deselect ${className}`}
     {...props}
   />
 
@@ -118,8 +131,9 @@ function PermissionMemberModal({
       ),
       'is_admin',
       false,
-    ))
-  }, [members, curMemberId, permissions]);
+    ));
+    // eslint-disable-next-line
+  }, [curMemberId, permissions]);
 
   React.useEffect(() => {
     const fail = () => {
@@ -127,9 +141,13 @@ function PermissionMemberModal({
     };
     CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
     CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER.FAIL, fail);
+    CustomEventListener(REMOVE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
+    CustomEventListener(REMOVE_GROUP_PERMISSION_MEMBER.FAIL, fail);
     return () => {
       CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
       CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER.FAIL, fail);
+      CustomEventDispose(REMOVE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
+      CustomEventDispose(REMOVE_GROUP_PERMISSION_MEMBER.FAIL, fail);
     }
     // eslint-disable-next-line
   }, [projectId]);
@@ -161,7 +179,12 @@ function PermissionMemberModal({
       loading={permissions.loading || members.loading}
       cancleRender={() => isAdmin ? "Thoát" : "Hủy"}
       confirmRender={isAdmin ? null : () => "Hoàn thành"}
-      onConfirm={() => !isAdmin && handleUpdateGroupPermission(selectedValue)}
+      onConfirm={() => {
+        if (!isAdmin) {
+          handleUpdateGroupPermission(selectedValue);
+          setLoading(true);
+        }
+      }}
       onCancle={() => setOpen(false)}
       activeLoading={updateGroupPermission.loading || loading}
       manualClose={true}
@@ -201,44 +224,64 @@ function PermissionMemberModal({
           <>
             <Title>Chọn nhóm quyền</Title>
             <Content>Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.</Content>
-            <SliderWrapper>
-              <Slider adaptiveHeight variableWidth infinite={false}
-                nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={permissions.groupPermissions.length < 5} />}
-                prevArrow={<CustomArrow path={mdiChevronLeft} isDisabled={permissions.groupPermissions.length < 5} />}
-                settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
-              >
-                {permissions.groupPermissions.map(group =>
-                  <PriorityTable key={get(group, 'id')} radio={get(group, 'name')} value={get(group, 'id')} checked={selectedValue === get(group, 'id')} onChange={evt => setSelectedValue(evt.target.value)} />
-                )}
-              </Slider>
-            </SliderWrapper>
-            <Table>
-              <TableHead>
-                <StyledTableRow>
-                  <StyledTableCell style={{ width: "10%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>&nbsp;</StyledTableCell>
-                  <StyledTableCell style={{ width: "35%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Tên quyền</StyledTableCell>
-                  <StyledTableCell style={{ width: "55%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Mô tả</StyledTableCell>
-                </StyledTableRow>
-              </TableHead>
-              <TableBody>
-                {get(
-                  find(
-                    permissions.groupPermissions,
-                    { id: selectedValue },
-                  ),
-                  "permissions",
-                  [],
-                ).map(row => (
-                  <TableRow key={get(row, 'value')}>
-                    <StyledTableCell align="center"><Icon path={mdiKey} size={1} /></StyledTableCell>
-                    <StyledTableCell component="th" scope="row" style={{ fontSize: '15px', fontWeight: 'bold' }}>
-                      {get(row, 'name')}
-                    </StyledTableCell>
-                    <StyledTableCell >{get(row, 'description')}</StyledTableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            {permissions.groupPermissions.length === 0
+              ? <NoData
+                title={() => null}
+                subtitle={() =>
+                  <>
+                    <NoDataHelper>Hiện tại chưa có nhóm quyền nào được chọn cho chức năng này!</NoDataHelper>
+                    <NoDataHelper>Liên hệ với Quản trị viên để yêu cầu bổ sung</NoDataHelper>
+                  </>
+                }
+              />
+              : (
+                <>
+                  <Deselect
+                    onClick={evt => setSelectedValue(undefined)}
+                  >
+                    <Icon path={mdiDeleteOutline} size={1} color='#898989' />
+                    <span>Xóa nhóm quyền đã chọn</span>
+                  </Deselect>
+                  <SliderWrapper>
+                    <Slider adaptiveHeight variableWidth infinite={false}
+                      nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={permissions.groupPermissions.length < 5} />}
+                      prevArrow={<CustomArrow path={mdiChevronLeft} isDisabled={permissions.groupPermissions.length < 5} />}
+                      settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
+                    >
+                      {permissions.groupPermissions.map(group =>
+                        <PriorityTable key={get(group, 'id')} radio={get(group, 'name')} value={get(group, 'id')} checked={selectedValue === get(group, 'id')} onChange={evt => setSelectedValue(evt.target.value)} />
+                      )}
+                    </Slider>
+                  </SliderWrapper>
+                  <Table>
+                    <TableHead>
+                      <StyledTableRow>
+                        <StyledTableCell style={{ width: "10%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>&nbsp;</StyledTableCell>
+                        <StyledTableCell style={{ width: "35%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Tên quyền</StyledTableCell>
+                        <StyledTableCell style={{ width: "55%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Mô tả</StyledTableCell>
+                      </StyledTableRow>
+                    </TableHead>
+                    <TableBody>
+                      {get(
+                        find(
+                          permissions.groupPermissions,
+                          { id: selectedValue },
+                        ),
+                        "permissions",
+                        [],
+                      ).map(row => (
+                        <TableRow key={get(row, 'value')}>
+                          <StyledTableCell align="center"><Icon path={mdiKey} size={1} /></StyledTableCell>
+                          <StyledTableCell component="th" scope="row" style={{ fontSize: '15px', fontWeight: 'bold' }}>
+                            {get(row, 'name')}
+                          </StyledTableCell>
+                          <StyledTableCell >{get(row, 'description')}</StyledTableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </>
+              )}
           </>
         )}
 
