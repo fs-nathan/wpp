@@ -2,10 +2,13 @@ import { get } from "lodash";
 import { createSelector } from 'reselect';
 
 const calendarState = state => state.calendar;
-export const calendarStateSelector = createSelector(
+export const projectGroupNewScheduleDetailSelector = createSelector(
   [calendarState],
   (calendarState) => {
-    let afterSettingStartDayOfWeek = get(calendarState.projectGroupSettingStartingDay, "data.scheduleGroup");
+    let afterUpdateGroupSchedule = get(calendarState.updateProjectGroupSchedule, "data.scheduleGroup", null);
+    let afterCreateGroupSchedule = get(calendarState.createProjectGroupSchedule, "data.scheduleGroup", null);
+    let afterDeleteGroupSchedule = get(calendarState.deleteProjectGroupSchedule, "data.schedule_id", null);
+    let afterSettingStartingDayOfWeek = get(calendarState.projectGroupSettingStartingDay, "data.scheduleGroup", null);
     let afterSettingWorkingDayInWeek = get(calendarState.projectGroupSetWorkingDay, "data.scheduleGroup", null);
     let afterAddWorkingDay = get(calendarState.projectGroupAddWorkingDays, "data.workDays", null);
     let afterDeleteWorkingDay = get(calendarState.projectGroupDeleteWorkingDays, "data.workDays", null);
@@ -14,20 +17,36 @@ export const calendarStateSelector = createSelector(
     let afterAddWorkingStage = get(calendarState.projectCalendarAddWorkingStage, "data.stage", null);
     let afterDeleteWorkingStage = get(calendarState.projectCalendarDeleteWorkingStage, "data.stage", null);
     let afterUpdateWorkingStage = get(calendarState.projectCalendarUpdateWorkingStage, "data.stage", null);
-    let afterOperateShiftStage = {
-      'shifts': get(calendarState.projectCalendarCreateShiftStage, "data.shifts", null)
-        ?? get(calendarState.projectCalendarUpdateShiftStage, "data.shifts", null)
-        ?? get(calendarState.projectCalendarDeleteShiftStage, "data.shifts", null)
-        ?? get(calendarState.projectCalendarCreateShiftStageAllTime, "data.shifts", null)
-        ?? get(calendarState.projectCalendarUpdateShiftStageAllTime, "data.shifts", null)
-        ?? get(calendarState.projectCalendarDeleteShiftStageAllTime, "data.shifts", null),
+    let afterCreateShiftStage = {
+      'shifts': get(calendarState.projectCalendarCreateShiftStage, "data.shifts", null),
       'stageID': get(calendarState.projectCalendarCreateShiftStage, "data.stage_id", null)
-        ?? get(calendarState.projectCalendarUpdateShiftStage, "data.stage_id", null)
-        ?? get(calendarState.projectCalendarDeleteShiftStage, "data.stage_id", null)
+    }
+    let afterUpdateShiftStage = {
+      'shifts': get(calendarState.projectCalendarUpdateShiftStage, "data.shifts", null),
+      'stageID': get(calendarState.projectCalendarUpdateShiftStage, "data.stage_id", null)
+    }
+    let afterDeleteShiftStage = {
+      'shifts': get(calendarState.projectCalendarDeleteShiftStage, "data.shifts", null),
+      'stageID': get(calendarState.projectCalendarDeleteShiftStage, "data.stage_id", null)
+    }
+    let afterCreateShiftStageAllTime = {
+      'shifts': get(calendarState.projectCalendarCreateShiftStageAllTime, "data.shifts", null),
+      'stageID': null
+    }
+    let afterUpdateShiftStageAllTime = {
+      'shifts': get(calendarState.projectCalendarUpdateShiftStageAllTime, "data.shifts", null),
+      'stageID': null
+    }
+    let afterDeleteShiftStageAllTime = {
+      'shifts': get(calendarState.projectCalendarDeleteShiftStageAllTime, "data.shifts", null),
+      'stageID': null
     }
 
     return ({
-      afterSettingStartDayOfWeek,
+      afterCreateGroupSchedule,
+      afterUpdateGroupSchedule,
+      afterDeleteGroupSchedule,
+      afterSettingStartingDayOfWeek,
       afterSettingWorkingDayInWeek,
       afterAddWorkingDay,
       afterDeleteWorkingDay,
@@ -36,7 +55,12 @@ export const calendarStateSelector = createSelector(
       afterAddWorkingStage,
       afterUpdateWorkingStage,
       afterDeleteWorkingStage,
-      afterOperateShiftStage
+      afterCreateShiftStageAllTime,
+      afterUpdateShiftStageAllTime,
+      afterDeleteShiftStageAllTime,
+      afterCreateShiftStage,
+      afterUpdateShiftStage,
+      afterDeleteShiftStage
     });
   }
 );

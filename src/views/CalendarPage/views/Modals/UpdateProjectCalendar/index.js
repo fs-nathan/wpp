@@ -54,7 +54,7 @@ function UpdateProjectCalendar({
             onChange={({ target }) => handleChangeData('name', target.value)}
           />
           <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="view_CreateProjectCalendar_label">
-            <Typography component={'span'}> {t('views.calendar_page.modal.create_project_calendar.name')} </Typography>
+            <Typography component={'span'}> {t('views.calendar_page.modal.create_project_calendar.description')} </Typography>
             <span>*</span>
           </abbr>
           <TextField

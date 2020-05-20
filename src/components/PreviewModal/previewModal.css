@@ -1,0 +1,17 @@
+.gantt--preview-pdf__title{
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.gantt--preview-pdf__content{
+    display: flex;
+    color: #c0bcbc;
+    font-size: 16px;
+    margin: 10px 0px;
+    justify-content: space-between;
+}
+
+.gantt--preview-pdf__container{
+    margin: 10px 10px;
+}

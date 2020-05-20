@@ -24,8 +24,8 @@ async function doCreateProjectSchedule({ name, description }) {
 
 function* createProjectGroupSchedule(action) {
   try {
-    const { schedules: schedules } = yield call(doCreateProjectSchedule, action.options);
-    yield put(createProjectScheduleSuccess({ schedules }, action.options));
+    const { schedule_group: scheduleGroup } = yield call(doCreateProjectSchedule, action.options);
+    yield put(createProjectScheduleSuccess({ scheduleGroup }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(CREATE_PROJECT_GROUP_SCHEDULE);
   } catch (error) {

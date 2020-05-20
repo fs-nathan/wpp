@@ -27,7 +27,7 @@ function UpdateGroupPersonalRemind({
       });
       setGroupTitle(value.name);
     }
-  }, [value])
+  }, [value]);
 
   function handleOnChangeBG(colors) {
     if (colors !== undefined && Array.isArray(colors)) {

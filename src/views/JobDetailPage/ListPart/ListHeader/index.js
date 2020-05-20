@@ -32,8 +32,7 @@ const ButtonIcon = styled(IconButton)`
 `;
 
 function ListHeaderSelect({ setShow }) {
-  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
-
+  const projectDetail = useSelector(state=> state.taskDetail.commonTaskDetail.projectDetail);
   const openListProject = () => {
     setShow(true);
   };

@@ -1,6 +1,6 @@
 import loadable from '@loadable/component';
-import { Routes } from "constants/routes";
-import React from "react";
+import { Routes } from 'constants/routes';
+import React from 'react';
 //import CalendarAlarmPage from "views/CalendarAlarmPage";
 //import CalendarPage from "views/CalendarPage";
 //import CalendarProjectPage from "views/CalendarProjectPage";
@@ -12,8 +12,8 @@ import React from "react";
 //import RegisterPage from "views/AccountPage/RegisterPage";
 //import ResetPassword from "views/AccountPage/ResetPassword";
 //import DepartmentPage from "views/DepartmentPage";
-import DocumentPage from "views/DocumentPage";
-import { Routes as jobRoutes } from "views/JobPage/contants/routes";
+import DocumentPage from 'views/DocumentPage';
+import { Routes as jobRoutes } from 'views/JobPage/contants/routes';
 //import HomePage from "views/HomePage";
 //import JobDetailPage from "views/JobDetailPage";
 //import JobPage from "views/JobPage";
@@ -23,11 +23,11 @@ import { Routes as jobRoutes } from "views/JobPage/contants/routes";
 //import ProjectGroupPage from "views/ProjectGroupPage";
 //import ProjectPage from "views/ProjectPage";
 //import ReportPage from "views/ReportPage";
-import SettingAccountPage from "views/SettingAccountPage";
-import SettingGroupPage from "views/SettingGroupPage";
+import SettingAccountPage from 'views/SettingAccountPage';
+import SettingGroupPage from 'views/SettingGroupPage';
+import Grant from '../views/GrantPage/GrantTable';
 
 //import TestPage from "__test__";
-
 
 const CalendarAlarmPage = loadable(() => import('views/CalendarAlarmPage'), {
   fallback: <div />,
@@ -35,30 +35,42 @@ const CalendarAlarmPage = loadable(() => import('views/CalendarAlarmPage'), {
 const CalendarPage = loadable(() => import('views/CalendarPage'), {
   fallback: <div />,
 });
-const CalendarProjectPage = loadable(() => import('views/CalendarProjectPage'), {
-  fallback: <div />,
-});
+const CalendarProjectPage = loadable(
+  () => import('views/CalendarProjectPage'),
+  {
+    fallback: <div />,
+  }
+);
 const CalendarWeeklyPage = loadable(() => import('views/CalendarWeeklyPage'), {
   fallback: <div />,
 });
 const Playground = loadable(() => import('views/Playground'), {
   fallback: <div />,
 });
-const ConfirmRegistration = loadable(() => import('views/AccountPage/ConfirmRegistration'), {
-  fallback: <div />,
-});
-const ForgotPassword = loadable(() => import('views/AccountPage/ForgotPassword'), {
-  fallback: <div />,
-});
+const ConfirmRegistration = loadable(
+  () => import('views/AccountPage/ConfirmRegistration'),
+  {
+    fallback: <div />,
+  }
+);
+const ForgotPassword = loadable(
+  () => import('views/AccountPage/ForgotPassword'),
+  {
+    fallback: <div />,
+  }
+);
 const LoginPage = loadable(() => import('views/AccountPage/LoginPage'), {
   fallback: <div />,
 });
 const RegisterPage = loadable(() => import('views/AccountPage/RegisterPage'), {
   fallback: <div />,
 });
-const ResetPassword = loadable(() => import('views/AccountPage/ResetPassword'), {
-  fallback: <div />,
-});
+const ResetPassword = loadable(
+  () => import('views/AccountPage/ResetPassword'),
+  {
+    fallback: <div />,
+  }
+);
 const DepartmentPage = loadable(() => import('views/DepartmentPage'), {
   fallback: <div />,
 });
@@ -108,6 +120,7 @@ const SettingGroupPage = loadable(() => import('views/SettingGroupPage'), {
 });
 */
 
+console.log(Routes);
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },
@@ -143,11 +156,12 @@ const routes = [
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />,
   },
+  { path: Routes.PROJECT_GRANT, component: () => <Grant /> },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
-  ...(process.env.NODE_ENV !== "production"
-    ? [{ path: "/playground", component: () => <Playground /> }]
+  ...(process.env.NODE_ENV !== 'production'
+    ? [{ path: '/playground', component: () => <Playground /> }]
     : []),
-  { path: "", exact: false, component: () => null },
+  { path: '', exact: false, component: () => null },
 ];
 
 export default routes;

@@ -1,4 +1,17 @@
 {
+  "DMH": {
+    "COMP": {
+      "ALERT_MODAL": {
+        "TITLE": "System Alert",
+        "CANCLE_BTN": "Cancel",
+        "ACCEPT_BTN": "Accept"
+      },
+      "CUSTOM_MODAL": {
+        "CANCLE": "Cancel",
+        "CONFIRM": "Confirm"
+      }
+    }
+  },
   "views": {
     "user_page": {
       "left_part": {
@@ -109,7 +122,7 @@
         "create": "Create calendar",
         "recently": "Recently",
         "project_alarm": "Project remind",
-        "my_alarm": "Personal remind"
+        "my_alarm": "Group remind"
       },
       "right_part": {
         "add": "+ Create",
@@ -910,8 +923,8 @@
   "LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH": "Đánh dấu hoàn thành",
   "LABEL_CHAT_TASK_NHAP_TEN_CONG_VIEC": "Nhập tên công việc...",
   "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "Chưa có công việc con được khởi tạo Click + để tạo mới công việc con",
-  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện (",
-  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành (",
+  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện(",
+  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành(",
   "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
   "LABEL_REMIND_PROJECT": "Project",
   "LABEL_REMIND_FRIEND": "Friend",
@@ -951,12 +964,14 @@
   "LABEL_CHAT_TASK_DA_GUI": "Đã gửi",
   "LABEL_CHAT_TASK_XEM_LUC": "Xem lúc {{viewed_at}}",
   "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Tài liệu đính kèm",
+  "IDS_WP_BACK": "Back",
   "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI": "{{name}} đã tạo công việc mới",
   "LABEL_CHAT_TASK_TIEN_DO_FROM_TO": "Tiến độ: {{start_date}} - {{end_date}}",
   "LABEL_CHAT_TASK_LUC_NGAY": "Lúc {{time_remind}} ngày {{date_remind}} - {{remind}}",
   "LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO": "Nhắc theo tiến độ {{remind}}",
   "LABEL_CHAT_TASK_DANG_TAM_DUNG": "Đang tạm dừng",
   "LABEL_CHAT_TASK_TEN": "Tên",
+  "IDS_WP_PRESENT": "Present",
   "LABEL_CHAT_TASK_CONG_VIEC_DANG_TAM": "Công việc đang tạm dừng. Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng",
   "LABEL_CHAT_TASK_TIEN_DO_THUC_TE": "Tiến độ thực tế",
   "LABEL_CHAT_TASK_KEO_THA_TIEN_DO_DE_CAP_NHAT": "Kéo, thả tiến độ để cập nhật",
@@ -983,5 +998,33 @@
   "LABEL_CHAT_TASK_THAP_LABEL": "Thấp",
   "LABEL_CHAT_TASK_GAN_QUYEN": "Gán quyền",
   "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION": "Hiện tại chưa có nhóm quyền nào được tạo cho chức năng này! Liên hệ với Quản trị viên để yều cầu bổ sung.",
-  "LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON": "Xóa nhóm quyền đã chọn"
+  "LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON": "Xóa nhóm quyền đã chọn",
+  "ADD_PERSON_HANDLE": "Add member handle",
+  "ADD_PERSON_MONITOR": "Add member monitor",
+  "ADD_DOCUMENT_OFFER" : "Add document",
+  "PERSON_MONITOR" : "Person monitor",
+  "PERSON_HANDLE" : "Person handle",
+  "OFFER_PAGE": {
+    "DETAIL_OFFER": {
+      "TITLE": "Offer Detail",
+      "DELETE_OFFER": "Delete offer",
+      "ESCAPE": "Close"
+    },
+    "OFFER_TABLE": {
+      "ITEM": {
+        "POPOVER": {
+          "DETAIL": "Detail",
+          "DELETE": {
+            "TITLE": "Delete",
+            "CONFIRM_MODAL": {
+              "TITLE": "Delete Offer",
+              "MESSAGE": "Are you sure you want to delete this offer?",
+              "CONFIRM": "Delete Offer",
+              "CANCEL": "Cancel"
+            }
+          }
+        }
+      }
+    }
+  }
 }

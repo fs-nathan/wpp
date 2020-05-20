@@ -1,0 +1,17 @@
+.popover-color-picker {
+    position: fixed;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+  }
+.cover-color-picker{
+    position: absolute;
+    z-index: 2;
+}
+
+.checkbox-colortag--drawer__container{
+    position: relative;
+    right: 0;
+}
+

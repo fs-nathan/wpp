@@ -1,6 +1,7 @@
 import { getUserOfRoom } from 'actions/room/getUserOfRoom';
 import { listUserOfGroup } from 'actions/user/listUserOfGroup';
 import { permissionUser } from 'actions/user/permissionUser';
+import { removeGroupPermissionUser } from 'actions/user/removeGroupPermissionUser';
 import { updateGroupPermissionUser } from 'actions/user/updateGroupPermissionUser';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -17,6 +18,7 @@ function UserPermission({
   doReloadUser,
   updateGroupPermission,
   doUpdateGroupPermissionUser,
+  doRemoveGroupPermissionUser,
 }) {
 
   React.useEffect(() => {
@@ -34,10 +36,14 @@ function UserPermission({
       permissions={permissions}
       updateGroupPermission={updateGroupPermission}
       handleUpdateGroupPermission={groupPermissionId =>
-        doUpdateGroupPermissionUser({
-          userId: curUserId,
-          groupPermission: groupPermissionId
-        })
+        groupPermissionId
+          ? doUpdateGroupPermissionUser({
+            userId: curUserId,
+            groupPermission: groupPermissionId
+          })
+          : doRemoveGroupPermissionUser({
+            userId: curUserId
+          })
       }
     />
   )
@@ -58,6 +64,7 @@ const mapDispatchToProps = dispatch => {
       : dispatch(listUserOfGroup(true)),
     doPermissionUser: (quite) => dispatch(permissionUser(quite)),
     doUpdateGroupPermissionUser: ({ userId, groupPermission }) => dispatch(updateGroupPermissionUser({ userId, groupPermission })),
+    doRemoveGroupPermissionUser: ({ userId }) => dispatch(removeGroupPermissionUser({ userId })),
   }
 };
 

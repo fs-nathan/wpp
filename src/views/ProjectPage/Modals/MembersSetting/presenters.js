@@ -1,5 +1,5 @@
 import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiAccountConvert, mdiAccountMinus, mdiCheckCircle, mdiChevronDown, mdiDotsVertical, mdiPlusCircleOutline } from '@mdi/js';
+import { mdiAccountConvert, mdiAccountMinus, mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
@@ -9,6 +9,7 @@ import SearchInput from 'components/SearchInput';
 import { ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, UPDATE_STATE_JOIN_TASK } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
+import { useSelector } from 'react-redux';
 import './style.scss';
 
 const ListContainer = ({ className = '', ...props }) =>
@@ -133,9 +134,15 @@ const CustomList = ({ className = '', ...props }) =>
     {...props}
   />
 
-const PermissionBox = ({ className = '', isAdmin = false, ...props }) =>
+const PermissionBox = ({ className = '', isAdmin = false, isNotEmpty = true, ...props }) =>
   <div
-    className={`view_Project_MemberSetting_Modal___permission-box${isAdmin ? '-admin' : ''} ${className}`}
+    className={`view_Project_MemberSetting_Modal___permission-box${isAdmin ? '-admin' : ''}${isNotEmpty ? '' : '-empty'} ${className}`}
+    {...props}
+  />
+
+const RoleButton = ({ className = '', ...props }) =>
+  <div
+    className={`view_Project_MemberSetting_Modal___role-button ${className}`}
     {...props}
   />
 
@@ -238,6 +245,9 @@ function MemberSetting({
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [curMemberSetting, setCurMemberSetting] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+
+  const colors = useSelector(state => state.setting.colors)
+  const bgColor = colors.find(item => item.selected === true);
 
   React.useEffect(() => {
     const fail = () => {
@@ -353,9 +363,19 @@ function MemberSetting({
                           curMemberId: get(member, 'id'),
                         })}
                         isAdmin={get(member, 'is_admin', false)}
+                        isNotEmpty={(get(member, 'is_admin', false) || get(member, 'group_permission_name'))}
                       >
-                        <span>{get(member, 'group_permission_name', '')}</span>
-                        <Icon path={mdiChevronDown} size={0.6} color={"bbb"} />
+                        {
+                          (get(member, 'is_admin', false) || get(member, 'group_permission_name'))
+                            ? <span>{get(member, 'group_permission_name')}</span>
+                            : <>
+                              <span
+                                style={{
+                                  backgroundColor: bgColor.color,
+                                }}>+</span>
+                              <span>Gán quyền</span>
+                            </>
+                        }
                       </PermissionBox>
                     </TableCell>
                     <TableCell width='25%'>
@@ -363,14 +383,18 @@ function MemberSetting({
                         {get(member, 'roles', []).map(role => (
                           <p key={get(role, 'id')}>{get(role, 'name', '')}</p>
                         ))}
-                        <IconButton
+                        <RoleButton
                           size='small'
                           onClick={evt => handleOpenModal('ROLE', {
                             curMemberId: get(member, 'id'),
                           })}
                         >
-                          <Icon path={mdiPlusCircleOutline} size={1} color={'#dadada'} />
-                        </IconButton>
+                          <span
+                            style={{
+                              backgroundColor: bgColor.color,
+                            }}>+</span>
+                          {get(member, 'roles', []).length === 0 && <span>Thêm</span>}
+                        </RoleButton>
                       </RolesBox>
                     </TableCell>
                     <TableCell width='25%'>
