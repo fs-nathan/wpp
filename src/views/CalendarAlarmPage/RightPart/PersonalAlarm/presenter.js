@@ -21,7 +21,7 @@ function CalendarPersonalAlarmPresenter({
   const { t } = useTranslation();
   const times = useTimes();
   const [searchPattern, setSearchPattern] = React.useState('');
-  const [menuAnchor, setMenuAnchor] = React.useState();
+  const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState();
   const [filteredRemind, setFilteredRemind] = React.useState(personalReminds);
   const [selectedRemind, setSelectedRemind] = React.useState();
@@ -103,7 +103,12 @@ function CalendarPersonalAlarmPresenter({
                                   item.reminds.map((remind) => {
                                     return (
                                       <>
-                                        <div className="alarm_calendar_item_container">
+                                        <div
+                                          onClick={(evt) => {
+                                            handleOpenModal("VIEW", { item, remind });
+                                          }}
+                                          className="alarm_calendar_item_container"
+                                        >
                                           <div className="alarm_calendar_item_header">
                                             {
                                               isNull(get(remind, "time_remind_next", null)) && (
@@ -126,10 +131,10 @@ function CalendarPersonalAlarmPresenter({
                                           <div className="alarm_calendar_item_mainContent">
                                             <div className="alarm_calendar_item_mainContent_content">
                                               <div className="main_content_top">
-                                                <div className="main_content_top_content" onClick={() => handleOpenModal("VIEW", remind)}>{remind.content}</div>
+                                                <div className="main_content_top_content">{remind.content}</div>
                                                 <div className="calendar_item_badge">
                                                   <span className="calendar_item_badge_default">
-                                                    <Icon path={mdiAccount} size={0.8} color="#FF9B15" /> {remind.members_assign.length}
+                                                    <Icon path={mdiAccount} size={0.7} color="#FF9B15" style={{ marginRight: '2px' }} /> {remind.members_assign.length}
                                                   </span>
                                                 </div>
                                               </div>
@@ -153,7 +158,10 @@ function CalendarPersonalAlarmPresenter({
                                               remind.can_modifi && (
                                                 <IconButton
                                                   key={item.id}
-                                                  onClick={evt => doOpenMenu(remind.can_modifi ? evt.currentTarget : null, remind)}
+                                                  onClick={evt => {
+                                                    evt.stopPropagation();
+                                                    doOpenMenu(remind.can_modifi ? evt.currentTarget : null, remind);
+                                                  }}
                                                 >
                                                   <abbr title={t('IDS_WP_MORE')}>
                                                     <Icon path={mdiDotsVertical} size={1} color="rgba(0,0,0,0.7)" />
@@ -217,24 +225,16 @@ function CalendarPersonalAlarmPresenter({
       >
         <MenuItem
           onClick={() => {
-            handleOpenModal("VIEW", selectedRemind);
             setMenuAnchor(null);
-          }}
-        >
-          {t("views.calendar_page.right_part.view_detail")}
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
             handleOpenModal("EDIT", selectedRemind);
-            setMenuAnchor(null);
           }}
         >
           {t("views.calendar_page.right_part.edit")}
         </MenuItem>
         <MenuItem
           onClick={() => {
-            handleDeleteRemind(selectedRemind);
             setMenuAnchor(null);
+            handleDeleteRemind(selectedRemind);
           }}
         >
           {t("views.calendar_page.right_part.delete")}

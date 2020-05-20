@@ -1,52 +1,42 @@
-import { useTranslation } from 'react-i18next';
-import { mdiCheckCircle } from '@mdi/js';
-import Icon from '@mdi/react';
 import clsx from 'classnames';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
+import './styles.scss';
 
 export const TYPE_STATUS = 'Trạng thái: ';
 export const TYPE_PRIORITY = 'Ưu tiên: ';
-const statusLabel = ["Đang chờ", "Đang làm", "Hoàn thành"];
-const priorityLabel = ["Cao", "Trung bình", "Thấp"];
+export const statusLabel = [
+  'LABEL_CHAT_TASK_DANG_CHO',
+  'LABEL_CHAT_TASK_DANG_LAM',
+  'LABEL_CHAT_TASK_HOAN_THANH',
+  'LABEL_CHAT_TASK_DA_QUA_HAN',
+  'LABEL_CHAT_TASK_TAM_DUNG',
+];
+export const priorityLabel = [
+  'LABEL_CHAT_TASK_UU_TIEN_CAO',
+  'LABEL_CHAT_TASK_UU_TIEN_TRUNG_BINH',
+  'LABEL_CHAT_TASK_UU_TIEN_THAP'
+];
 
-const typeDescription = [
-  'Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc',
-  'Mức độ ưu tiên phản ánh tầm quan trọng và tính chất khẩn cấp công việc',
-  'Admin đã tạm dừng công việc, vào cài đặt công việc để thay đổi trạng thái'
-]
-
-function getStatusLabel(value, type) {
+export function getStatusLabel(value, type) {
   if (TYPE_STATUS === type) {
-    return ['wait', 'doing', 'completed'][value]
+    return ['wait', 'doing', 'completed', 'expired', 'paused'][value]
   }
   return ['high', 'avg', 'low'][value]
 }
 
-const StatusLabel = ({ value, icon, type }) => {
+const StatusLabel = ({ value, type, ...rest }, ref) => {
   const { t } = useTranslation();
-  const label = (type === TYPE_STATUS) ? statusLabel[value] : priorityLabel[value];
-  const labelButton = (type === TYPE_STATUS) ? statusLabel[value] : `Ưu tiên ${priorityLabel[value].toLocaleLowerCase()}`;
-  const description = (type === TYPE_STATUS) ? typeDescription[0] : typeDescription[1];
+  const labelButton = (type === TYPE_STATUS) ? statusLabel[value] : priorityLabel[value];
 
   return (
-    <span className={clsx("statusLabel--button", `statusLabel--button__${getStatusLabel(value, type)}`)}>
-      <div className={clsx("statusLabel--popup", `statusLabel__${getStatusLabel(value, type)}`)}>
-        <Icon path={icon || mdiCheckCircle} size={1}
-          className="statusLabel--icon" />
-        <span>{type}</span>
-        <span className={clsx("statusLabel--label", `statusLabel--label__${getStatusLabel(value, type)}`)}>
-          {label}
-        </span>
-        <div className="statusLabel--description">{description}</div>
-        {(type === TYPE_STATUS) && <div>
-          <div className="statusLabel--guide">0% = <span className="statusLabel--label__wait">{t('LABEL_CHAT_TASK_DANG_CHO')}</span></div>
-          <div className="statusLabel--guide">0% &lt; <span className="statusLabel--label__doing">{t('LABEL_CHAT_TASK_DANG_LAM')}</span> &lt; 99%</div>
-          <div className="statusLabel--guide">100% = <span className="statusLabel--label__completed">{t('LABEL_CHAT_TASK_HOAN_THANH')}</span></div>
-        </div>}
-      </div>
-      {labelButton}
+    <span
+      {...rest}
+      ref={ref}
+      className={clsx("statusLabel--button", `statusLabel--button__${getStatusLabel(value, type)}`)}>
+      {t(labelButton)}
     </span>
   )
 }
 
-export default StatusLabel
+export default React.forwardRef(StatusLabel)

@@ -87,7 +87,7 @@ const CustomListItem = ({ isMe }) => {
                 <div className="styled-common-location" key={key}>
                   <ItemAvatar>
                     <div>
-                      <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} />
+                      <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
                     </div>
                   </ItemAvatar>
                   <ListItemText
@@ -121,7 +121,7 @@ const CustomListItem = ({ isMe }) => {
                   >
                     <MenuItem onClick={() => handleShare(item)}>{t('LABEL_CHAT_TASK_CHIA_SE')}</MenuItem>
                     <MenuItem onClick={() => handleViewChat(item)}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
-                    {/* <MenuItem onClick={handleDelete(item.id)}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem> */}
+                    {item.can_delete && <MenuItem onClick={handleDelete(item.id)}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>}
                   </Menu>
                 </div>
               )

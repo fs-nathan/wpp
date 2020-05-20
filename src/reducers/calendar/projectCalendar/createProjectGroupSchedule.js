@@ -2,7 +2,7 @@ import { GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_FAIL, GROUP_SCHEDULE_CREAT
 
 export const initialState = {
   data: {
-    scheduleGroup: [],
+    scheduleGroup: null,
   },
   error: null,
   loading: false,

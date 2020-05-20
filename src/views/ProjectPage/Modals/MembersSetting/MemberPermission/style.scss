@@ -32,6 +32,13 @@
     margin: auto;
     transition: none;
   }
+  &:hover {
+    color: #fff;
+    background: #2196f3;
+    & > * {
+      color: #fff;
+    }
+  }
 }
 
 .view_ProjectPage_MemberPermissionModal___permission-item {
@@ -60,13 +67,12 @@
 .view_ProjectPage_MemberPermissionModal___content {
   font-weight: normal;
   margin: 20px 0px;
-  max-width: 500px;
   font-size: 14px;
   line-height: 1.5;
 }
 
 .view_ProjectPage_MemberPermissionModal___slider {
-  background-color: #cccccc;
+  background-color: #f1f1f1;
   padding: 0 32px;
 }
 
@@ -78,4 +84,31 @@
     fill: #cccccc;
     cursor: auto;
   }
+}
+
+.view_ProjectPage_MemberPermissionModal___no-data-helper {
+  font-size: 14px;
+  color: #555;
+  word-wrap: break-word;
+  max-width: 90%;
+}
+
+.view_ProjectPage_MemberPermissionModal___deselect {
+  display: flex;
+  align-items: center;
+  width: fit-content;
+  padding: 2px 8px;
+  border-radius: 4px;
+  &:hover {
+    cursor: pointer;
+    background: #eee;
+  }
+  &:active {
+    background: #ddd;
+  }
+  & > span:last-child {
+    margin-left: 8px;
+    color: red;
+  }
+  margin-bottom: 8px;
 }

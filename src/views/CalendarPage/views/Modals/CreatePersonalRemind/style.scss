@@ -3,6 +3,10 @@
   display: flex;
   flex-direction: column;
 
+  abbr {
+    text-decoration: none;
+  }
+
   .MuiOutlinedInput-input {
     padding: 11px;
   }
@@ -57,6 +61,40 @@
 
       &_selector {
         height: 40px;
+
+        &--paper {
+          .MuiList-root {
+            min-height: 80px !important;
+          }
+
+          .MuiPaper-root {
+            transform: translateY(30px) !important;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+
+            &::-webkit-scrollbar {
+              width: 5px;
+              background-color: unset !important;
+            }
+
+            &::-webkit-scrollbar-thumb {
+              cursor: pointer !important;
+              min-height: 50px !important;
+              border-radius: 5px;
+            }
+
+            &::-webkit-scrollbar-track {
+              background-color: unset !important;
+            }
+
+            &:hover {
+              &::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, 0.2);
+                border-radius: 10px;
+              }
+            }
+          }
+        }
       }
     }
 
@@ -83,6 +121,7 @@
       .MuiButton-textPrimary {
         color: #009CF3 !important;
         text-transform: none;
+        margin: 0;
       }
 
       &_buttonAdd {
@@ -99,11 +138,22 @@
       justify-content: space-between;
       align-items: center;
       padding: 0px 7px;
-      margin: 0px 5px;
+      margin: 5px 5px;
 
       &>span {
         margin-left: 5px;
       }
+    }
+
+    &_userAssignAll {
+      background-color: rgba(139, 195, 74, .26);
+      padding: 10px 20px;
+      font-weight: 500;
+      border-radius: 3px;
+      font-size: 13px !important;
+      color: #539a00;
+      margin-right: 7px;
+      text-align: center;
     }
 
     &_beforeTimeContainer {
@@ -127,6 +177,7 @@
   .title_normal {
     font-size: 14px;
     font-weight: 500;
+    margin-bottom: 5px;
   }
 
   .title {

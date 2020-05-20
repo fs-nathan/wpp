@@ -22,6 +22,7 @@ const StyledButtonGroup = styled(ButtonGroup)`
 function TabBody() {
   const { t } = useTranslation();
   const locations = useSelector(state => state.taskDetail.location.locations);
+  const myLocations = locations.filter(({ is_me }) => is_me)
   const [value, setValue] = React.useState(0);
 
   const isNoData = locations.length === 0;
@@ -37,12 +38,20 @@ function TabBody() {
           <ColorButton
             onClick={evt => handleChange(evt, 0)}
           >
-            {value === 0 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_TAT_CA')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_TAT_CA')}</ColorTypo>}
+            <ColorTypo bold={value === 0} color={value === 0 ? 'black' : 'gray'}>
+              {t('LABEL_CHAT_TASK_TAT_CA')}
+              &nbsp;
+              {`(${locations.length})`}
+            </ColorTypo>
           </ColorButton>
           <ColorButton
             onClick={evt => handleChange(evt, 1)}
           >
-            {value === 1 ? <ColorTypo bold>{t('LABEL_CHAT_TASK_VI_TRI_CUA_TOI')}</ColorTypo> : <ColorTypo color='gray'>{t('LABEL_CHAT_TASK_VI_TRI_CUA_TOI')}</ColorTypo>}
+            <ColorTypo bold={value === 1} color={value === 1 ? 'black' : 'gray'}>
+              {t('LABEL_CHAT_TASK_VI_TRI_CUA_TOI')}
+              &nbsp;
+              {`(${myLocations.length})`}
+            </ColorTypo>
           </ColorButton>
         </StyledButtonGroup>
         {

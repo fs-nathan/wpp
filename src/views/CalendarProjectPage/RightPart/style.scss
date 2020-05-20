@@ -15,7 +15,7 @@
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: minmax(320px, 3fr) minmax(320px, 3fr);
-    width: 677px;
+    width: 685px;
     margin: 15px 0px 15px 10px;
 
     .table_header {
@@ -70,8 +70,8 @@
   .table_working_stage {
     display: grid;
     grid-template-rows: auto;
-    grid-template-columns: 200px 477px;
-    width: 677px;
+    grid-template-columns: 200px 485px;
+    width: 685px;
     margin: 15px 0px 15px 10px;
 
     .table_header {
@@ -195,9 +195,9 @@
     min-width: 135px;
   }
 
-  .inputDate {
+  &_inputDate {
     .MuiOutlinedInput-adornedEnd {
-      width: 140px;
+      width: 170px;
       height: 30px;
     }
   }

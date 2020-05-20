@@ -35,4 +35,10 @@
 
 .views_weeklyCalendar_calendarName {
   font-weight: 500;
+
+  &_present {
+    margin-left: 10px;
+    color: red;
+    font-weight: 500;
+  }
 }
