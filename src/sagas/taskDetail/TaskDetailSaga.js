@@ -1552,6 +1552,16 @@ export function* getSchedules(payload) {
   }
 }
 
+export function* removeGroupPermissionOfMember(payload) {
+  try {
+    const { task_id, member_id } = payload;
+    const res = yield call(apiService.post, "/task/remove-group-permission-of-member", { task_id, member_id });
+    yield put(actions.removeGroupPermissionOfMemberSuccess(res.data));
+  } catch (error) {
+    yield put(actions.removeGroupPermissionOfMemberFail(error));
+  }
+}
+
 export {
   updateComplete,
   // Update Priority

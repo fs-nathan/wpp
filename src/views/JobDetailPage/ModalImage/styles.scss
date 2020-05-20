@@ -50,4 +50,7 @@
       margin: 2px 3px;
     }
   }
+  &--scrollWrap:hover &--scrollTrack {
+    opacity: 1 !important;
+  }
 }

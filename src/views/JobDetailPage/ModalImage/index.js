@@ -259,6 +259,7 @@ const ModalImage = () => {
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}
             className="ModalImage--scroll"
+            renderTrackHorizontal={props => <div {...props} className="ModalImage--scrollTrack" />}
             renderView={props => <div {...props} className="ModalImage--scrollView" />}
           >
             <div className="ModalImage--imagesList">

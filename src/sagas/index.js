@@ -653,6 +653,10 @@ function* rootSaga() {
     taskDetailType.DELETE_TASK_REQUEST,
     taskDetailSaga.deleteTask
   );
+  yield takeLeading(
+    taskDetailType.REMOVE_GROUP_PERMISSION_OF_MEMBER,
+    taskDetailSaga.removeGroupPermissionOfMember
+  );
   //chat 
   yield takeLeading(
     chatTypes.DELETE_CHAT,

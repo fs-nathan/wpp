@@ -1172,3 +1172,24 @@ export function updateProjectChat(payload) {
         payload
     };
 }
+
+export function removeGroupPermissionOfMember(task_id, member_id) {
+    return {
+        type: types.REMOVE_GROUP_PERMISSION_OF_MEMBER,
+        task_id, member_id
+    };
+}
+
+export function removeGroupPermissionOfMemberSuccess(payload) {
+    return {
+        type: types.REMOVE_GROUP_PERMISSION_OF_MEMBER_SUCCESS,
+        payload
+    };
+}
+
+export function removeGroupPermissionOfMemberFail(error) {
+    return {
+        type: types.REMOVE_GROUP_PERMISSION_OF_MEMBER_FAIL,
+        error
+    };
+}

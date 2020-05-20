@@ -7,7 +7,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { mdiChevronLeft, mdiChevronRight, mdiKey, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
-import { updatePermission } from "actions/taskDetail/taskDetailActions";
+import { removeGroupPermissionOfMember, updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
 import DialogWrap from 'components/DialogWrap';
 import get from "lodash/get";
@@ -81,6 +81,11 @@ function PermissionMemberModal({ memberId, setOpen,
     handleClose()
   }
 
+  function onClickDelete() {
+    dispatch(removeGroupPermissionOfMember(taskId, memberId))
+    handleClose()
+  }
+
   return (
     <DialogWrap
       title={t('LABEL_CHAT_TASK_PHAN_QUYEN_THANH_VIEN')}
@@ -96,7 +101,10 @@ function PermissionMemberModal({ memberId, setOpen,
         <div className="permissionMemberModal--content">{t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}</div>
         {listGroupPermission.length > 0 ?
           <>
-            <div><Icon path={mdiTrashCan} size={1}></Icon>{t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}</div>
+            <div className="permissionMemberModal--delete" onClick={onClickDelete}>
+              <Icon path={mdiTrashCan} size={1}></Icon>
+              {t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}
+            </div>
             <div className="permissionMemberModal--slider">
               <Slider adaptiveHeight variableWidth infinite={false}
                 nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
