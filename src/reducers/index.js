@@ -5,6 +5,7 @@ import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSe
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
 import taskReducer from "../views/JobPage/redux/reducers";
+import offerReducer from "../views/OfferPage/redux/reducers";
 
 import updateSchedule, { initialState as updateScheduleInitialState } from "././calendar/weeklyCalendar/updateSchedule";
 import authentications, { initialState as authenticationsInitialState } from "./authentications";
