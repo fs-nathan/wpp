@@ -7,7 +7,6 @@ import "./QuickView.css";
 
 function QuickView({ title, children, bottom }) {
   const { handleClose } = useContext(OfferPageContext);
-
   return (
     // <ClickAwayListener onClickAway={handleClose}>
     <div className="comp_QuickViewWrapper">

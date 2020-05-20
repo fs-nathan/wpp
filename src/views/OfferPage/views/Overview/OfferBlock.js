@@ -1,16 +1,14 @@
-import { useTimes } from "components/CustomPopover";
+import { get } from "lodash";
 import React from "react";
 import Chart from "react-apexcharts";
 import { useSelector } from "react-redux";
 import ChartLegend from "../../components/ChartLegend";
+import { statistic } from "../../contants/attrs";
 import { createPieChartProps } from "../../utils/chart";
 import { Block } from "./Block";
-import { statistic } from "../../contants/attrs";
-import { get } from "lodash";
 
-const times = "Tháng này (01/04/2020 - 30/04/2020)"
 
-export function OfferBlock({ strings = [], title, data = {} }) {
+export function OfferBlock({ strings = [], title, data = {}, time }) {
   const series = strings.map(string =>
     Math.max(Number(get(data, statistic[string], 0)), 0)
   )
@@ -23,7 +21,7 @@ export function OfferBlock({ strings = [], title, data = {} }) {
   return (
     <Block
       title={title}
-      extra={times}
+      extra={time}
     >
       <Chart {...chartProps} />
       <ChartLegend strings={strings} showIndex series={series} />

@@ -1,14 +1,6 @@
 import { Box, Button, Drawer } from "@material-ui/core";
-import {
-  mdiCalendar,
-  mdiFilterOutline,
-  mdiFullscreen,
-  mdiFullscreenExit,
-} from "@mdi/js";
-import {
-  CustomTableContext,
-  CustomTableProvider,
-} from "components/CustomTable";
+import { mdiCalendar, mdiFilterOutline, mdiFullscreen, mdiFullscreenExit } from "@mdi/js";
+import { CustomTableContext, CustomTableProvider } from "components/CustomTable";
 import HeaderButtonGroup from "components/CustomTable/HeaderButtonGroup";
 import React, { useContext, useState } from "react";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
@@ -16,9 +8,9 @@ import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import LoadingBox from "../../../components/LoadingBox";
+import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
-import RedirectModal from "../components/RedirectModal";
 import { OfferPageContext } from "../OfferPageContext";
 import { get } from "../utils";
 import "./Layout.css";
@@ -155,7 +147,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   } = useContext(OfferPageContext);
   const times = useTimes();
   const open = !!quickTask;
-  const [openModalDirect, setOpenModalDirect] = useState();
+  const [openModalOffer, setopenModalOffer] = useState();
   const options = {
     title: props.title,
     subActions: [
@@ -177,7 +169,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     ],
     mainAction: {
       label: "+ Tạo đề xuất",
-      onClick: () => setOpenModalDirect(true),
+      onClick: () => setopenModalOffer(true),
       color: "#fd7e14"
     },
     search: {
@@ -187,7 +179,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
 
     draggable: {
       bool: true,
-      onDragEnd: () => {},
+      onDragEnd: () => { },
     },
 
     loading: {
@@ -198,6 +190,9 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
       id: "id",
     },
   };
+  const setOpen = () => {
+    setopenModalOffer(!openModalOffer)
+  }
   return (
     <CustomTableProvider
       value={{
@@ -227,8 +222,9 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             settimeRange({ startDate, endDate });
           }}
         />
-        {openModalDirect && (
-          <RedirectModal onClose={() => setOpenModalDirect(false)} />
+
+        {openModalOffer && (
+          <OfferModal isOpen={true} setOpen={setOpen} />
         )}
       </>
     </CustomTableProvider>
