@@ -1,0 +1,20 @@
+.OutOfStorageDialog {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  .MuiPaper-root {
+    padding: 10px 40px;
+  }
+  &--iconButton {
+    top: 8px;
+    color: #9e9e9e;
+    right: 8px;
+    position: absolute;
+  }
+  &--footer {
+    font-size: 18px;
+    color: #00db7c;
+    font-weight: 600;
+    padding-bottom: 30px;
+  }
+}

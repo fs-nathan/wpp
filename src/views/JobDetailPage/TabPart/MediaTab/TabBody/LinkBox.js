@@ -94,7 +94,7 @@ const LinkBox = (props) => {
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XEM_TIN_NHAN')}</MenuItem>
                     <MenuItem onClick={handleClose}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
                   </Menu> */}
-                      <MenuListItem item={item} colorIcon={'#000'} />
+                      <MenuListItem item={item} colorIcon={'#000'} isLink />
                     </ListItemLink>
                   )
                 })}

@@ -50,7 +50,7 @@
       margin: 2px 3px;
     }
   }
-  &--scrollWrap:hover &--scrollTrack {
+  &--scroll:hover div:nth-child(2) {
     opacity: 1 !important;
   }
 }

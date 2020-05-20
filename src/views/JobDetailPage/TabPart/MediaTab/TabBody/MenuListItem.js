@@ -1,7 +1,7 @@
 import { IconButton, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal } from '@mdi/js';
 import Icon from '@mdi/react';
-import { loadChat, openShareFileModal } from 'actions/chat/chat';
+import { forwardMessage, loadChat, openShareFileModal } from 'actions/chat/chat';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -30,7 +30,7 @@ const MenuListItem = ({ item, colorIcon = '#fff', isLink }) => {
   function handleShare() {
     setAnchorEl(null);
     if (isLink) {
-
+      dispatch(forwardMessage(true, { ...item, id: item.chat_id }));
     } else {
       dispatch(openShareFileModal(true, item))
     }
@@ -38,7 +38,11 @@ const MenuListItem = ({ item, colorIcon = '#fff', isLink }) => {
 
   function handleViewChat() {
     setAnchorEl(null);
-    dispatch(loadChat(taskId, undefined, undefined, item.id))
+    if (isLink) {
+      dispatch(loadChat(taskId, undefined, true, undefined, item.chat_id))
+    } else {
+      dispatch(loadChat(taskId, undefined, true, item.id))
+    }
   }
 
   return (

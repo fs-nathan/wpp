@@ -84,12 +84,12 @@ const DialogTitleModalImage = withStyles(styles)(props => {
               style={{ margin: 0 }}
               primary={
                 <Typography component='div'>
-                  {user_create_position}
+                  {compact([user_create_name, user_create_position]).join(' - ')}
                 </Typography>
               }
               secondary={
                 <Typography component='div'>
-                  {compact([user_create_name, formattedTime]).join(' - ')}
+                  {`Đăng ${formattedTime.toLowerCase()}`}
                 </Typography>
               }
             />
