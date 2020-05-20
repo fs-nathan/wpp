@@ -7,7 +7,7 @@ import { createTask } from 'actions/task/createTask';
 import { deleteTask } from 'actions/task/deleteTask';
 import { listTask } from 'actions/task/listTask';
 import { sortTask } from 'actions/task/sortTask';
-import { getListTaskDetail } from 'actions/taskDetail/taskDetailActions';
+import { getListGroupTask } from 'actions/taskDetail/taskDetailActions';
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
 import { useTimes } from 'components/CustomPopover';
@@ -36,7 +36,7 @@ function AllTaskTable({
   doListGroupTask,
   doListTask,
   doGetPermissionViewDetailProject,
-  doGetListTaskDetail,
+  getListGroupTask,
   doSetProject,
   localOption,
 }) {
@@ -111,9 +111,9 @@ function AllTaskTable({
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
     if (projectId !== null) {
-      doGetListTaskDetail({ projectId });
+      getListGroupTask({ projectId });
       const reloadGetListTaskDetail = () => {
-        doGetListTaskDetail({ projectId });
+        getListGroupTask({ projectId });
       }
       CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
       CustomEventListener(COPY_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
@@ -258,7 +258,7 @@ const mapDispatchToProps = dispatch => {
     doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
-    doGetListTaskDetail: ({ projectId }) => dispatch(getListTaskDetail({ project_id: projectId })),
+    getListGroupTask: ({ projectId }) => dispatch(getListGroupTask({ project_id: projectId })),
     doSetProject: (value) => dispatch(setProject(value)),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   };
