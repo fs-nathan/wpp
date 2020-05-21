@@ -1,5 +1,7 @@
 import { DialogContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import { mdiAlertCircleOutline } from '@mdi/js';
+import Icon from '@mdi/react';
 import { createMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
 import SearchInput from 'components/SearchInput';
@@ -80,6 +82,12 @@ function AddMemberModal({ setOpen, isOpen }) {
               >
                 {t('+ Thêm tất cả')}
               </ButtonAddAll> */}
+              <div className="AddMemberModal--alert">
+                <Icon path={mdiAlertCircleOutline} size={1}></Icon>
+                <div className="AddMemberModal--alertText">
+                  Hãy thêm thành viên vào dự án trước khi gán cho công việc!
+                </div>
+              </div>
               <div className="table-scroll-add-member">
                 <Scrollbars>
                   {

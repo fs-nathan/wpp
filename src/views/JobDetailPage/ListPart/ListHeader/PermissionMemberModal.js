@@ -55,7 +55,7 @@ function CustomArrow({ path, className, isDisabled, onClick }) {
     <Icon
       path={path}
       className={clsx(className, { "customArrow__disabled": isDisabled })}
-      onClick={!isDisabled && onClick}
+      onClick={!isDisabled ? onClick : undefined}
     />
   );
 }
