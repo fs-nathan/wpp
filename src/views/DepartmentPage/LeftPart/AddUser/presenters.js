@@ -60,6 +60,7 @@ const DesiringUserList = ({
   user, loading, bgColor, canModify,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
   handleCancleInvitationJoinGroup,
+  handleSearchPatern,
 }) => {
 
   function onInviteUserJoinGroup(userId) {
@@ -115,23 +116,39 @@ const DesiringUserList = ({
                         ? t('DMH.VIEW.DP.LEFT.ADD.BTN.INVT')
                         : t('DMH.VIEW.DP.LEFT.ADD.BTN.REINVT')}
                     </OkButton>
-                    {get(user, 'status_code', 0) === 1 && (
-                      <CancleButton
-                        disabled={loading}
-                        onClick={evt => handleCancleInvitationJoinGroup({
-                          invitationId: get(user, 'invitation')
-                        })}
-                      >
-                        {loading && (
-                          <CircularProgress
-                            size={16}
-                            className="margin-circular"
-                            color='#c1c1c1'
-                          />
-                        )}
-                        {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
-                      </CancleButton>
-                    )}
+                    {get(user, 'status_code', 0) === 1
+                      ? (
+                        <CancleButton
+                          disabled={loading}
+                          onClick={evt => handleCancleInvitationJoinGroup({
+                            invitationId: get(user, 'invitation')
+                          })}
+                        >
+                          {loading && (
+                            <CircularProgress
+                              size={16}
+                              className="margin-circular"
+                              color='#c1c1c1'
+                            />
+                          )}
+                          {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
+                        </CancleButton>
+                      )
+                      : (
+                        <CancleButton
+                          disabled={loading}
+                          onClick={evt => handleSearchPatern('')}
+                        >
+                          {loading && (
+                            <CircularProgress
+                              size={16}
+                              className="margin-circular"
+                              color='#c1c1c1'
+                            />
+                          )}
+                          {t('DMH.VIEW.DP.LEFT.ADD.BTN.CANCLE')}
+                        </CancleButton>
+                      )}
                   </span>}
                 </StyledSecondary>
               }
@@ -371,6 +388,7 @@ function AddUser({
               handleInviteUserJoinGroup={handleInviteUserJoinGroup}
               handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
               handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
+              handleSearchPatern={handleSearchPatern}
             />
           </StyledBox>
           <StyledBox>
