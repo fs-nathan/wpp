@@ -111,7 +111,7 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
     setSelectedItem({ file_id, name, url, file_icon })
     setDeleteDocumentModal(true)
   }
-  const renderFile = () => {
+  const renderConfirmRemoveFileModal = () => {
     return (
       <>
         <Grid container direction="column" justify="center" alignItems="center">
@@ -201,7 +201,7 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
             </span>
           </Button>
         </label>
-        <AlertModal open={deleteDocumentModal} onConfirm={confirmDeleteDocument} setOpen={setOpen} content={renderFile()} />
+        <AlertModal open={deleteDocumentModal} onConfirm={confirmDeleteDocument} setOpen={setOpen} content={renderConfirmRemoveFileModal()} />
         <SendFileModal offer_id={offer_id} open={openSendFileModal} setOpen={handleOpenSendFileModal} onClickShareFromLibrary={onClickShareFromLibrary} />
         <DocumentFileModal offer_id={offer_id} open={openDocumentModal} setOpen={handleOpenDocumentFileModal} />
       </div>
