@@ -248,7 +248,7 @@
             "DESC": "Mô tả công việc",
             "DOC": {
               "TITLE": "Xem file hồ sơ",
-              "BTN": "+ Upload file hồ sơ"
+              "BTN": "Upload file hồ sơ"
             },
             "INFO": {
               "TITLE": "Thông tin cá nhân",
