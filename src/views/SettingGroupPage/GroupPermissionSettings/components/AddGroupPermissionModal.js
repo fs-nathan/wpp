@@ -34,12 +34,13 @@ export const GroupPermissionFormInner = ({ permissionModules }) => {
   const { t } = useTranslation();
   return (
     <VerticleList>
-      <InputFormControl name="name" label={t("Tên nhóm quyền")} />
+      <InputFormControl required name="name" label={t("Tên nhóm quyền")} />
       <MultilineInputFormControl
         name="description"
         label={t("Mô tả nhóm quyền")}
       />
       <RadioGroupFormControl
+        required
         options={permissionModules.map((item) => {
           const [name, value] = createMapPropsFromAttrs([
             permissionModulesAttr.name,
@@ -119,7 +120,7 @@ export const GroupPermissionForm = ({
   return (
     <Formik
       enableReinitialize
-      validateOnMount
+      // validateOnMount
       initialValues={initialValues}
       onSubmit={onSubmit}
       validate={validateMemo}

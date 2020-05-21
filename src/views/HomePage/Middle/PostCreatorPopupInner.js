@@ -7,7 +7,7 @@ import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
-import ShareFromLibraryModal from "views/JobDetailPage/ChatComponent/ShareFromLibraryModal";
+import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { get, uniqueId } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
@@ -332,7 +332,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
             <Close />
           </IconButton>
         </div>
-        <Box height="540px">
+        <Box minHeight="540px">
           <TasksScrollbar>
             <div className={classes.main}>
               <TasksCard.Content>
@@ -409,10 +409,11 @@ const ModalFileInput = ({ name, open, setOpen }) => {
     setOpen(false);
   };
   return (
-    <ShareFromLibraryModal
+    <SendFileModal
       open={open}
       setOpen={setOpen}
-      onClickConfirm={handleChange}
+      handleUploadFile={(e) => handleChange(e.target.files)}
+      onConfirmShare={handleChange}
     />
   );
 };

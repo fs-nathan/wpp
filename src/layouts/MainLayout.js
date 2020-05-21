@@ -50,6 +50,7 @@ import LeftBar from "../views/LeftBar";
 import TopBar from "../views/TopBar";
 
 const Container = styled.div`
+  --color-primary: ${(props) => props.color};
   height: 100vh;
   width: 100vw;
   display: grid;
@@ -418,9 +419,15 @@ function MainLayout({
   const bgColor = colors.find((item) => item.selected === true);
   useWebpush();
   useNotificationFavicon();
+  useEffect(() => {
+    document.body.style.setProperty("--color-primary", bgColor.color);
+    // style={{ "--color-primary":  }}
+  });
   return (
     <Container
-      className={isViewFullPage(location.pathname) ? "view-full-page" : ""}
+      className={
+        isViewFullPage(location.pathname) ? "view-full-page" : location.pathname
+      }
     >
       {!isViewFullPage(location.pathname) && (
         <React.Fragment>
