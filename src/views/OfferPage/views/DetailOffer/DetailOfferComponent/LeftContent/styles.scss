@@ -101,6 +101,22 @@
     }
   }
 
+  &-monitoringPerson {
+    &-title {
+      font-weight: 700;
+    }
+    &-infoContainer {
+      height: 100%;
+      margin-left: 1em;
+    }
+    &-name {
+      font-weight: 700;
+    }
+    &-position {
+      color: #fd7e14;
+    }
+  }
+
   &-addBtn {
     margin: 0.8em 0 0;
     &-icon {

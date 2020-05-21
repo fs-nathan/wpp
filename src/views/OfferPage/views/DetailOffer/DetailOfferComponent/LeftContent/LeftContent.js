@@ -286,7 +286,6 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
   );
 };
 const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_monitor }) => {
-  const classes = styles();
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -322,19 +321,15 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
   }
   const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false)
   return (
-    <Grid container className={classNames(classes.border_top, classes.pt_1)}>
+    <Grid container>
       <Grid item xs={5}>
-        <h4 className={classes.m_0}>Người giám sát</h4>
+        <div className="offerDetail-monitoringPerson-title">Người giám sát</div>
         <Button
           size="small"
           onClick={() => setOpenAddMonitorModal(true)}
-          startIcon={
-            <AddCircle
-              className={`${classes.color_blue} ${classes.add_file_button}`}
-            />
-          }
+          startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
         >
-          <span className={classes.handle_button}>
+          <span className="offerDetail-addBtn-title">
             {t('ADD_PERSON_MONITOR')}
           </span>
         </Button>
@@ -343,7 +338,7 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
         <Grid container>
           {!isEmpty(members_monitor) && (
             members_monitor.map(member => (
-              <Grid item xs={12} direction="row" style={{ marginTop: '2px' }} alignItems="center" justify="center">
+              <Grid item xs={12} direction="row" alignItems="center" justify="center">
                 <Grid container>
                   <Grid item xs={2}>
                     <Avatar src={get(member, "avatar")} />
@@ -352,14 +347,14 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
                     <Grid
                       container
                       direction="column"
-                      className={`${classes.h_100} ${classes.ml_1}`}
+                      className="offerDetail-monitoringPerson-infoContainer"
                       justify="center"
                     >
-                      <h5 className={classes.m_0}>{get(member, "name")}</h5>
-                      <div className={classes.color_orange}>{get(member, "position")}</div>
+                      <h5 className="offerDetail-monitoringPerson-name">{get(member, "name")}</h5>
+                      <div className="offerDetail-monitoringPerson-position">{get(member, "position")}</div>
                     </Grid>
                   </Grid>
-                  <IconButton style={{ marginLeft: "auto" }} onClick={() => handleDeleteMemberMonitor({ offer_id, member_id: get(member, "id") })} >
+                  <IconButton onClick={() => handleDeleteMemberMonitor({ offer_id, member_id: get(member, "id") })} >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </Grid>
