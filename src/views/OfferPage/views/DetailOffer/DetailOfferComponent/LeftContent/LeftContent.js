@@ -97,7 +97,6 @@ const DetailDescription = ({ priority_name, priority_code, type_name, content, t
 };
 
 const RenderListFile = ({ can_modify, offer_id, documents }) => {
-  const classes = styles();
   const { t } = useTranslation()
   const [deleteDocumentModal, setDeleteDocumentModal] = useState(false)
   const file = useRef(null)
@@ -120,7 +119,7 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
             <a target="_blank"
               href={get(selectedItem, "url")}>
               <img height="50" width="50" alt="file" src={get(selectedItem, "file_icon")} />
-              <div className={classes.icon_name}>{get(selectedItem, "name")}</div>
+              <div>{get(selectedItem, "name")}</div>
             </a>
           </div>
         </Grid>
@@ -161,42 +160,37 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
   return (
     <>
       <div>
-        <h4>Tài liệu đính kèm</h4>
+        <div className="offerDetail-attachedDocument-title">Tài liệu đính kèm</div>
       </div>
       <Grid container spacing="2">
         {!isEmpty(documents) &&
           reRenDerDocumentsOnDelete.map((document) => (
-            <Grid item xs={6} >
+            <Grid item xs={6} className="offerDetail-attachedDocument-fileContainer">
               <div
-                className={classes.icon_file}
+                className="offerDetail-attachedDocument-fileIcon"
               >
                 <img height="30" width="30" src={get(document, "file_icon")} />
-                <a target="_blank"
-                  href={get(document, "url")}>
-                  <div className={classes.icon_name}>{get(document, "name")}</div>
+                <a
+                  target="_blank"
+                  href={get(document, "url")}
+                >
+                  <div className="offerDetail-attachedDocument-fileName">{get(document, "name")}</div>
                 </a>
-
-                <IconButton style={{ marginLeft: "auto" }} onClick={() => handleDeleteDocument({ file_id: document.id, ...document })}>
+                <IconButton onClick={() => handleDeleteDocument({ file_id: document.id, ...document })}>
                   <CloseIcon fontSize="small" />
                 </IconButton>
               </div>
             </Grid>
           ))}
       </Grid>
-      <div
-        className={`${classes.mt_1} ${classes.border_bottom} ${classes.pb_1}`}
-      >
+      <div className="offerDetail-attachedDocument-addFileBtn">
         <label htmlFor="icon-button-file">
           <Button
             size="small"
             onClick={() => setOpenSendFileModal(true)}
-            startIcon={
-              <AddCircle
-                className={`${classes.color_blue} ${classes.add_file_button}`}
-              />
-            }
+            startIcon={<AddCircle className="offerDetail-attachedDocument-addFileBtn-icon" />}
           >
-            <span className={classes.handle_button}>
+            <span className="offerDetail-attachedDocument-addFileBtn-title">
               {t("ADD_DOCUMENT_OFFER")}
             </span>
           </Button>
@@ -205,6 +199,7 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
         <SendFileModal offer_id={offer_id} open={openSendFileModal} setOpen={handleOpenSendFileModal} onClickShareFromLibrary={onClickShareFromLibrary} />
         <DocumentFileModal offer_id={offer_id} open={openDocumentModal} setOpen={handleOpenDocumentFileModal} />
       </div>
+      <div className="offerDetail-horizontalLine" />
     </>
   );
 };

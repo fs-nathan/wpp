@@ -61,6 +61,42 @@
       margin-bottom: 2em;
     }
   }
+
+  &-attachedDocument {
+    &-title {
+      font-weight: 700;
+      margin-bottom: 1em;
+    }
+    &-fileContainer {
+      width: 100%;
+      height: auto;
+      display: flex;
+      align-items: center;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+      padding: 5px;
+    }
+    &-fileIcon {
+      display: flex;
+      align-items: center;
+    }
+    &-fileName {
+      margin-left: 0.8em;
+    }
+    &-addFileBtn {
+      margin: 0.8em 0 0;
+      &-icon {
+        font-weight: 400;
+        color: #1155cc;
+      }
+      &-title {
+        font-size: 1rem;
+        font-weight: 400;
+        color: #1673e5;
+        text-transform: none;
+      }
+    }
+  }
 }
 
 .bg--red {
