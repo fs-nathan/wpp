@@ -22,7 +22,7 @@ import { styles } from '../style';
 
 
 
-const InforPerson = ({
+const PersonInfo = ({
   hour_label,
   date_label,
   user_create_position,
@@ -45,7 +45,7 @@ const InforPerson = ({
     </Grid>
   );
 };
-const Detail = ({ priority_name, priority_code, type_name, content, title }) => {
+const DetailDescription = ({ priority_name, priority_code, type_name, content, title }) => {
   const classes = styles();
   return (
     <>
@@ -427,14 +427,14 @@ export default function LeftContent({
   }
   return (
     <Grid item xs={6} className={classes.border_right}>
-      <InforPerson
+      <PersonInfo
         date_label={date_label}
         hour_label={hour_label}
         user_create_position={user_create_position}
         user_create_name={user_create_name}
         user_create_avatar={user_create_avatar}
       />
-      <Detail
+      <DetailDescription
         type_name={type_name}
         priority_name={priority_name}
         priority_code={priority_code}
