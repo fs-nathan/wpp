@@ -35,7 +35,7 @@ const DetailOffer = ({
   members_monitor,
 }) => {
   return (
-    <Grid container spacing={3}>
+    <div className="offerDetailContainer">
       <LeftContent
         id={id}
         date_label={date_label}
@@ -55,6 +55,7 @@ const DetailOffer = ({
         type_name={type_name}
         members_monitor={members_monitor}
       />
+      <div className="offerDetailContainer-verticalLine" />
       <RightContent
         can_modify={can_modify}
         status_code={status_code}
@@ -72,7 +73,7 @@ const DetailOffer = ({
         user_create_avatar={user_create_avatar}
         condition_accept={condition_accept}
       />
-    </Grid>
+    </div>
   );
 };
 DetailOffer.prototype = {
