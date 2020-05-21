@@ -17,6 +17,7 @@ import CustomAddOfferMemberModal from "../AddOfferMemberModal";
 import DocumentFileModal from "../SendFile/DocumentFileModal.js";
 import SendFileModal from "../SendFile/SendFileModal";
 import { styles } from '../style';
+import './styles.scss';
 
 
 
@@ -29,20 +30,23 @@ const PersonInfo = ({
   user_create_avatar,
   user_create_name,
 }) => {
-  const classes = styles();
   return (
-    <Grid container className={`${classes.border_bottom} ${classes.pb_1}`}>
-      <Grid item xs={2}>
-        <Avatar className={classes.avatar} src={user_create_avatar} />
+    <>
+      <Grid container className="offerDetail">
+        <Grid item xs={2}>
+          <Avatar className="offerDetail-personInfo-avatar" src={user_create_avatar} />
+        </Grid>
+        <div className="offerDetail-personInfo-middleSpacing" />
+        <Grid item>
+          <div className="offerDetail-personInfo-userCreateName">{user_create_name}</div>
+          <div className="offerDetail-personInfo-userCreatePosition">{user_create_position}</div>
+          <div className="offerDetail-personInfo-timeCreated">
+            Đã tạo đề xuất lúc {hour_label} ngày {date_label}
+          </div>
+        </Grid>
       </Grid>
-      <Grid item>
-        <div className={classes.name}>{user_create_name}</div>
-        <div>{user_create_position}</div>
-        <div>
-          Đã tạo lúc {hour_label} ngày {date_label}
-        </div>
-      </Grid>
-    </Grid>
+      <div className="offerDetail-horizontalLine"></div>
+    </>
   );
 };
 const DetailDescription = ({ priority_name, priority_code, type_name, content, title }) => {

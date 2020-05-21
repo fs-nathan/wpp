@@ -1,0 +1,31 @@
+.offerDetail {
+  & > * {
+    font-family: Roboto, sans-serif;
+    color: black;
+  }
+
+  &-personInfo {
+    &-avatar {
+      width: 90%;
+      height: 90%;
+    }
+    &-middleSpacing {
+      width: 5px;
+    }
+    &-userCreateName {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0 0 5px;
+    }
+    &-userCreatePosition {
+      color: grey;
+    }
+    &-timeCreated {
+      font-size: 1rem;
+    }
+  }
+  &-horizontalLine {
+    margin: 10px 0 5px;
+    border-bottom: 1px solid #3333;
+  }
+}
