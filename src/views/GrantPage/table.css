@@ -162,14 +162,17 @@ span.ant-checkbox ~ span {
 
 .gantt--navigation {
   display: flex;
+  margin-top: -5px;
 }
 .gantt--navigation p {
   margin-right: 5px;
   margin-bottom: 0;
+  cursor: pointer;
 }
 
 .gantt--image-project {
   border-radius: 50%;
+  margin: 5px;
 }
 .gantt--button-header-text {
   text-align: center;
@@ -292,6 +295,9 @@ span.ant-checkbox ~ span {
 }
 .icon-show-header button:hover {
   background: transparent;
+}
+.icon-show-header {
+  z-index: 10;
 }
 .icon-show-header svg {
   width: 20px !important;
@@ -724,8 +730,9 @@ div.checkbox-colortag--drawer {
 .gantt--fromNowLayer__background {
   position: absolute;
   z-index: 4;
-  background: #ffc9a066;
-  border-right: 5px solid #ff6c03;
+  background: #ffc49866;
+  border-right: 3px solid #ff6c03;
+  opacity: 0.5;
   height: 100%;
 }
 .gantt--fromNowLayer__text {
@@ -749,6 +756,9 @@ div.checkbox-colortag--drawer {
 
 .gantt__select-project {
   width: 500px;
+  position: absolute;
+  z-index: 1;
+  background: #fff;
 }
 
 /* .scroll-gantt::webkit-scrollbar-track {
@@ -773,4 +783,55 @@ div.checkbox-colortag--drawer {
   z-index: 2;
   overflow: scroll;
   width: 100%;
+}
+
+.gantt-left-header__container {
+  padding: 4px 13px;
+}
+
+.gantt--group-task__total {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3f51b5;
+  line-height: 19px;
+  text-transform: uppercase;
+}
+.gantt--group-task-item {
+  color: #222;
+  font-weight: 500;
+}
+
+.gantt-icon-table__total {
+  width: 18px;
+  fill: #3f51b5;
+  margin: 0 10px 0 5px;
+}
+.gantt-icon-table__group {
+  width: 20px;
+  fill: rgb(119, 119, 119);
+  margin: 0 10px 0 5px;
+}
+
+.gantt-btn__list-project {
+  padding: 0px !important;
+  margin-top: 5px !important;
+}
+.gantt--title-project__name {
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 320px;
+}
+
+.gantt-container-lp {
+  grid-area: list;
+  border-right: 1px solid #e5e5e9;
+}
+
+.gantt--left-header__text-active {
+  color: #2196f3;
 }

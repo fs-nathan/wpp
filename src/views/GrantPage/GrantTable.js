@@ -1,16 +1,8 @@
 import { IconButton } from "@material-ui/core";
-import {
-  mdiAccount,
-  mdiClockOutline,
-  mdiDragVertical,
-  mdiFileTree,
-  mdiMenuDown,
-  mdiMenuUp,
-  mdiPlus,
-  mdiSettings,
-} from "@mdi/js";
+import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuUp, mdiPlus, mdiSettings } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table, Tooltip } from "antd";
+import "antd/dist/antd.css";
 import update from "immutability-helper";
 import moment from "moment";
 import React from "react";
@@ -19,31 +11,15 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import {
-  changeProjectInfo,
-  changeRowHover,
-  changeScheduleDetailGantt,
-  changeTaskComplete,
-  changeTaskduration,
-  changeTimelineColor,
-  changeVisible,
-  sortTask,
-} from "../../actions/gantt";
-import {
-  changeDetailSubtaskDrawer,
-  changeVisibleSubtaskDrawer,
-} from "../../actions/system/system";
-import {
-  getListGroupTask,
-  getListTaskDetail,
-  getProjectListBasic,
-  getStaticTask,
-} from "../../actions/taskDetail/taskDetailActions";
+import { changeProjectInfo, changeRowHover, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortTask } from "../../actions/gantt";
+import { changeDetailSubtaskDrawer, changeVisibleSubtaskDrawer } from "../../actions/system/system";
+import { getListGroupTask, getListTaskDetail, getProjectListBasic, getStaticTask } from "../../actions/taskDetail/taskDetailActions";
 import CustomBadge from "../../components/CustomBadge";
 import ConfigGanttDrawer from "../../components/Drawer/DrawerConfigGantt";
 import ExportPDFDrawer from "../../components/Drawer/DrawerPDF";
 import SubTaskDrawer from "../../components/Drawer/SubTaskDrawer";
 import { apiService } from "../../constants/axiosInstance";
+import '../../views/JobDetailPage/index.scss';
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
 import QuickViewTaskDetailDrawer from "../../views/JobPage/components/GanttQuickViewTaskDetailDrawer";
@@ -274,10 +250,10 @@ class DragSortingTable extends React.Component {
                   className="gantt--group-task"
                   style={{ display: "flex", cursor: "auto" }}
                 >
-                  <div className="gantt--group-task__left">
+                  <div className="gantt--group-task__left gantt--group-task__total">
                     <div>
                       <Icon
-                        style={{ width: 19, fill: "#777" }}
+                        className="gantt-icon-table__total"
                         path={mdiClockOutline}
                       />
                     </div>
@@ -292,10 +268,10 @@ class DragSortingTable extends React.Component {
                   onClick={() => this.handleClickMainTask(record.id)}
                   style={{ display: "flex", cursor: "auto" }}
                 >
-                  <div className="gantt--group-task__left">
+                  <div className="gantt--group-task__left gantt--group-task-item">
                     <div>
                       <Icon
-                        style={{ width: 19, fill: "#777" }}
+                        className="gantt-icon-table__group"
                         path={record.show ? mdiMenuDown : mdiMenuUp}
                       />
                     </div>
@@ -426,16 +402,6 @@ class DragSortingTable extends React.Component {
                         }}
                         {...decodePriorityCode(record.priority_code)}
                       >
-                        <Icon
-                          style={{
-                            transform: "translateY(-50%)",
-                            width: 12,
-                            top: "57%",
-                            fill: "white",
-                            position: "relative",
-                          }}
-                          path={mdiAccount}
-                        />
                         {decodePriorityCode(record.priority_code).name}
                       </CustomBadge>
                     )}
@@ -452,10 +418,23 @@ class DragSortingTable extends React.Component {
           align: "center",
           width: 100,
           height: 100,
-          render: (text) =>
-            new moment(text, "DD/MM/YYYY HH:mm").format(
-              this.props.girdType !== "HOUR" ? "DD/MM/YYYY" : "DD/MM/YYYY HH:mm"
-            ),
+          render: (text, record) => (
+            <div
+              className={
+                record.isTotalDuration
+                  ? "gantt--group-task__total"
+                  : record.isGroupTask
+                  ? "gantt--group-task-item"
+                  : ""
+              }
+            >
+              {new moment(text, "DD/MM/YYYY HH:mm").format(
+                this.props.girdType !== "HOUR"
+                  ? "DD/MM/YYYY"
+                  : "DD/MM/YYYY HH:mm"
+              )}
+            </div>
+          ),
         },
         {
           title: "Kết thúc",
@@ -464,10 +443,23 @@ class DragSortingTable extends React.Component {
           align: "center",
           width: 100,
           height: 100,
-          render: (text) =>
-            new moment(text, "DD/MM/YYYY HH:mm").format(
-              this.props.girdType !== "HOUR" ? "DD/MM/YYYY" : "DD/MM/YYYY HH:mm"
-            ),
+          render: (text, record) => (
+            <div
+              className={
+                record.isTotalDuration
+                  ? "gantt--group-task__total"
+                  : record.isGroupTask
+                  ? "gantt--group-task-item"
+                  : ""
+              }
+            >
+              {new moment(text, "DD/MM/YYYY HH:mm").format(
+                this.props.girdType !== "HOUR"
+                  ? "DD/MM/YYYY"
+                  : "DD/MM/YYYY HH:mm"
+              )}
+            </div>
+          ),
         },
         {
           title: "Tiến độ",
@@ -476,10 +468,21 @@ class DragSortingTable extends React.Component {
           align: "center",
           width: 100,
           height: 100,
-          render: (text) =>
-            `${Math.round((parseFloat(text) + Number.EPSILON) * 100) / 100} ${
-              this.props.girdInstance.unitText
-            }`,
+          render: (text, record) => (
+            <div
+              className={
+                record.isTotalDuration
+                  ? "gantt--group-task__total"
+                  : record.isGroupTask
+                  ? "gantt--group-task-item"
+                  : ""
+              }
+            >
+              {`${
+                Math.round((parseFloat(text) + Number.EPSILON) * 100) / 100
+              } ${this.props.girdInstance.unitText}`}
+            </div>
+          ),
         },
         {
           title: "Hoàn thành",
@@ -488,7 +491,19 @@ class DragSortingTable extends React.Component {
           id: 5,
           width: 100,
           height: 100,
-          render: (text) => text + "%",
+          render: (text, record) => (
+            <div
+              className={
+                record.isTotalDuration
+                  ? "gantt--group-task__total"
+                  : record.isGroupTask
+                  ? "gantt--group-task-item"
+                  : ""
+              }
+            >
+              {text + "%"}
+            </div>
+          ),
         },
       ],
     };
@@ -634,7 +649,7 @@ class DragSortingTable extends React.Component {
       startTimeProject,
       endTimeProject,
       data,
-      height: window.innerHeight - this.tableRef.current.offsetTop,
+      height: this.tableRef.current.clientHeight,
       width: this.tableRef.current.clientWidth,
       minLeft: this.tableRef.current.offsetLeft,
     });
@@ -1060,9 +1075,15 @@ class DragSortingTable extends React.Component {
           className="gantt__container"
           style={{ width: widthPdf }}
         >
-          <ConfigGanttDrawer height={this.state.height} />
-          <SubTaskDrawer height={this.state.height} />
-          <ExportPDFDrawer height={this.state.height} />
+          <ConfigGanttDrawer
+            height={this.tableRef.current && this.tableRef.current.clientHeight}
+          />
+          <SubTaskDrawer
+            height={this.tableRef.current && this.tableRef.current.clientHeight}
+          />
+          <ExportPDFDrawer
+            height={this.tableRef.current && this.tableRef.current.clientHeight}
+          />
           <QuickViewTaskDetailDrawer
             showHeader={this.props.showHeader}
             onClose={() =>
@@ -1074,11 +1095,19 @@ class DragSortingTable extends React.Component {
           />
           <div ref={this.tableRef}>
             {this.state.showProject && (
-              <div className="gantt__select-project">
-                <ListProject
-                  show={this.state.showProject}
-                  setShow={this.handleShowProject}
-                />
+              <div
+                className="gantt__select-project"
+                style={{
+                  height:
+                    this.tableRef.current && this.tableRef.current.clientHeight,
+                }}
+              >
+                <div className="gantt-container-lp">
+                  <ListProject
+                    show={this.state.showProject}
+                    setShow={this.handleShowProject}
+                  />
+                </div>
               </div>
             )}
             <DndProvider backend={HTML5Backend}>
