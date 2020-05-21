@@ -1,14 +1,17 @@
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { mdiPlusCircleOutline } from '@mdi/js';
+import { mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import PermissionMemberModal from '../PermissionMemberModal';
 
 function MemberPermission({ permission, memberId }) {
   const { t } = useTranslation()
+  const groupActiveColor = useSelector(currentColorSelector)
   const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
   // if (props.master) {
   //     return (
@@ -26,7 +29,7 @@ function MemberPermission({ permission, memberId }) {
           size='small'
           onClick={openSelectPermissionModal}
         >
-          <Icon path={mdiPlusCircleOutline} size={1} color={'#03a9f4'} />
+          <Icon path={mdiPlusCircle} size={1} color={groupActiveColor || '#03a9f4'} />
           &nbsp;
           {t('LABEL_CHAT_TASK_GAN_QUYEN')}
         </IconButton>

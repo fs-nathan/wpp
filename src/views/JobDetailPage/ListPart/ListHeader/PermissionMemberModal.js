@@ -5,7 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { mdiChevronLeft, mdiChevronRight, mdiKey, mdiTrashCan } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
 import { removeGroupPermissionOfMember, updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
@@ -102,7 +102,7 @@ function PermissionMemberModal({ memberId, setOpen,
         {listGroupPermission.length > 0 ?
           <>
             <div className="permissionMemberModal--delete" onClick={onClickDelete}>
-              <Icon path={mdiTrashCan} size={1}></Icon>
+              <Icon path={mdiDeleteOutline} size={1}></Icon>
               {t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}
             </div>
             <div className="permissionMemberModal--slider">

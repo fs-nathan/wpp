@@ -43,6 +43,7 @@
   .MuiDialogContent-root {
     padding: 0;
     min-height: 660px;
+    height: 100%;
   }
   &--title {
     color: #555555;
@@ -84,6 +85,6 @@
 .TableMember--cellAvatar {
   border-bottom: 1px solid #f0f0f0;
   .MuiAvatar-root {
-    padding-left: 10px;
+    margin-left: 10px;
   }
 }

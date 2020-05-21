@@ -170,12 +170,13 @@ const ModalImage = () => {
     const { id } = imagesList[currentImage] || {}
     async function getDetail() {
       const { data } = await getDocumentDetail({ file_id: id })
-      console.log('currentImage', data)
+      // console.log('currentImage', data)
       if (data.file) {
         const { avatar, name } = data.file.user_create;
         setUserCreated({
           user_create_avatar: avatar,
           user_create_name: name,
+          time_create: data.file.created_at,
         })
       }
     }

@@ -122,17 +122,24 @@ function ForwardMessageDialog({ }) {
               autoHide autoHideTimeout={500} autoHideDuration={200}>
               {listTasks.map(taskGroup => (
                 <div className="ForwardMessageDialog--taskGroup" key={taskGroup.id}>
-                  <div className="ForwardMessageDialog--taskGroupTitle">
-                    {taskGroup.name}
-                  </div>
-                  {
-                    taskGroup.tasks.map(task => (
-                      <div className="ForwardMessageDialog--task" key={task.id}>
-                        {task.name}
-                        <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">{t('LABEL_CHAT_TASK_GUI')}</button>
-                      </div>
-                    ))
-                  }
+                  <ExpansionPanel className="ForwardMessageDialog--taskExpansion" defaultExpanded>
+                    <ExpansionPanelSummary
+                      expandIcon={<Icon path={mdiMenuUp} size={1} />}
+                      id="panel1bh-header"
+                    >
+                      {taskGroup.name}
+                    </ExpansionPanelSummary>
+                    <MuiExpansionPanelDetails className="ForwardMessageDialog--taskExpansionDetail">
+                      {
+                        taskGroup.tasks.map(task => (
+                          <div className="ForwardMessageDialog--task" key={task.id}>
+                            {task.name}
+                            <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">{t('LABEL_CHAT_TASK_GUI')}</button>
+                          </div>
+                        ))
+                      }
+                    </MuiExpansionPanelDetails>
+                  </ExpansionPanel>
                 </div>
               ))}
             </Scrollbars>

@@ -15,7 +15,7 @@ import TableMember from './TableMember';
 const GridArea = styled(Typography)`
     display: grid;
     grid-template-columns: 1fr 2fr;
-    border: 1px solid #e0e0e0;
+    // border: 1px solid #e0e0e0;
 `
 
 const BorderGrid = styled(Typography)`
@@ -27,14 +27,14 @@ const FlexMemberProject = styled(Typography)`
     justify-content: center;
     align-items: center
     height: 60px;
-    border-bottom: 1px solid #e0e0e0;
+    // border-bottom: 1px solid #e0e0e0;
 `
 
 const FlexJobMember = styled(Typography)`
     display: flex;
     align-items: center
     height: 60px;
-    border-bottom: 1px solid #e0e0e0;
+    // border-bottom: 1px solid #e0e0e0;
 `
 
 function AddMemberModal({ setOpen, isOpen }) {

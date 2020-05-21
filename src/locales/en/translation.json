@@ -1027,5 +1027,6 @@
       }
     }
   },
-  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "Tiến độ công việc đã được chạy"
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "Tiến độ công việc đã được chạy",
+  "LABEL_CHAT_TASK_TAO_MOI": "Tạo mới"
 }
