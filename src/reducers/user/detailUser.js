@@ -1,6 +1,4 @@
-import { get } from 'lodash';
 import { DETAIL_USER, DETAIL_USER_FAIL, DETAIL_USER_SUCCESS } from '../../constants/actions/user/detailUser';
-import { UPLOAD_DOCUMENTS_USER_SUCCESS } from '../../constants/actions/user/uploadDocumentsUser';
 
 export const initialState = {
   data: {
@@ -34,38 +32,6 @@ function reducer(state = initialState, action) {
         loading: false,
         firstTime: false,
       };
-    /*
-    case UPDATE_USER_SUCCESS: {
-      const newUser = {
-        ...state.data.user,
-        room_id: get(action.options, 'roomId'),
-        position_id: get(action.options, 'positionId'),
-        level_id: get(action.options, 'levelId'),
-        major_id: get(action.options, 'majorId'),
-        description: get(action.options, 'description'),
-      };
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          user: newUser,
-        }
-      }
-    }
-    */
-    case UPLOAD_DOCUMENTS_USER_SUCCESS: {
-      const newUser = {
-        ...state.data.user,
-        documents: get(action.data, 'documents'),
-      };
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          user: newUser,
-        }
-      }
-    }
     default:
       return state;
   }

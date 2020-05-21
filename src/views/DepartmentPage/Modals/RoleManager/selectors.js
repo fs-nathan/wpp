@@ -1,4 +1,3 @@
-import { concat } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listUserRole = state => state.userRole.listUserRole;
@@ -17,7 +16,8 @@ export const userRolesSelector = createSelector(
       userRoles,
       loading: (firstTime ? false : listLoading) || createLoading,
       error: listError || createError || updateError || deleteError,
-      pendings: concat(updatePendings, deletePendings),
+      updatePendings,
+      deletePendings,
       firstTime,
     }
   }

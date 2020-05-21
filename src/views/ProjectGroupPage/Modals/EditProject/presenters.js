@@ -1,5 +1,5 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup, Typography } from '@material-ui/core';
-import CustomModal from 'components/CustomModal';
+import { FormControl, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
+import CustomModal, { Title } from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import MySelect from 'components/MySelect';
 import { CustomEventDispose, CustomEventListener, DETAIL_PROJECT, LIST_PROJECT, UPDATE_PROJECT } from 'constants/events.js';
@@ -14,12 +14,6 @@ const StyledFormControl = ({ className = '', ...props }) =>
     className={`view_ProjectGroup_EditProjectModal___form-control ${className}`}
     {...props}
   />;
-
-const SubTitle = ({ className = '', ...props }) =>
-  <Typography
-    className={`view_ProjectGroup_CreateNew_Project_Modal___subtitle ${className}`}
-    {...props}
-  />
 
 function EditProject({
   curProject = null,
@@ -152,9 +146,9 @@ function EditProject({
         multiline={true}
       />
       <StyledFormControl fullWidth>
-        <SubTitle>
+        <Title>
           {t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}
-        </SubTitle>
+        </Title>
         <RadioGroup
           aria-label='priority'
           name='priority'

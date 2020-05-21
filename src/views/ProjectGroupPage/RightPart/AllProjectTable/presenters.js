@@ -28,6 +28,12 @@ const CustomMenuItem = ({ className = '', selected, refs, ...props }) =>
     {...props}
   />;
 
+const MyIcon = ({ className = '', ...props }) =>
+  <Icon
+    className={`view_ProjectGroup_Table_All___icon ${className}`}
+    {...props}
+  />
+
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:
@@ -228,16 +234,14 @@ function AllProjectTable({
                       {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}
                     </span>
                   </div>
-                  {(get(row, 'state_code') === 1 || get(row, 'state_code') === 3) && (
-                    <small>
-                      {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
-                        date: get(row, 'state_code') === 3
-                          ? get(row, 'day_expired', 0)
-                          : get(row, 'day_implement', 0)
-                      }
-                      )}
-                    </small>
-                  )}
+                  {(get(row, 'state_code') === 3 && get(row, 'day_expired', 0) !== 0)
+                    ? (
+                      <small>
+                        {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
+                          date: get(row, 'day_expired', 0)
+                        })}
+                      </small>)
+                    : null}
                 </StateBox>
               ),
               sort: evt => handleSortType('state_code'),
@@ -271,7 +275,7 @@ function AllProjectTable({
                           title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
                           value: get(row, 'statistic.complete', 0),
                         }, {
-                          color: 'black',
+                          color: '#607d8b',
                           title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
                           value: get(row, 'statistic.stop', 0),
                         }]
@@ -294,7 +298,7 @@ function AllProjectTable({
                         color: '#03c30b',
                         value: get(row, 'statistic.complete', 0),
                       }, {
-                        color: 'black',
+                        color: '#607d8b',
                         value: get(row, 'statistic.stop', 0),
                       }]}
                       color={'#05b50c'}
@@ -403,7 +407,7 @@ function AllProjectTable({
               }}
               selected={filterType === index}
             >
-              <Icon path={mdiCheckCircle} size={0.7} />
+              <MyIcon path={mdiCheckCircle} size={0.7} />
               <span>{filter.title}</span>
               <span>{get(projects.summary, filter.field, 0)}</span>
             </CustomMenuItem>

@@ -1,325 +1,255 @@
 import {
-  TASK_ASSIGN,
-  TASK_DUE,
+  ADD_MEMBER_HANDLE_SUCCESS,
+  ADD_MEMBER_MONITOR_SUCCESS,
+  CREATE_GROUP_OFFER,
+  CREATE_GROUP_OFFER_ERROR,
+  CREATE_GROUP_OFFER_SUCCESS,
+  DELETE_DOCUMENT_OFFER_ERROR,
+  DELETE_DOCUMENT_OFFER_SUCCESS,
+  DELETE_GROUP_OFFER,
+  DELETE_GROUP_OFFER_ERROR,
+  DELETE_GROUP_OFFER_SUCCESS,
+  DELETE_MEMBER_HANDLE_SUCCESS,
+  DELETE_MEMBER_MONITOR_SUCCESS,
+  DELETE_OFFER_SUCCESSFULLY,
+  DETAIL_OFFER,
+  ENQUEUE_SNACKBAR,
+  HANDLE_OFFER_OFFERPAGE_SUCCESS,
+  LOAD_DETAIL_OFFER,
+  LOAD_DETAIL_OFFER_SUCCESS,
+  LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS,
+  LOAD_OFFER_BY_GROUP_ID_SUCCESS,
+  LOAD_OFFER_BY_PROJECT_ID_SUCCESS,
+  LOAD_SUMMARY_BY_GROUP_SUCCESS,
+  LOAD_SUMMARY_BY_PROJECT_SUCCESS,
+  LOAD_SUMMARY_OVERVIEW_SUCCESS,
+  LOAD_TASK_RECENTLY_SUCCESS,
+  NOTIFICATIONS,
+  OFFER_BY_DEPARTMENT,
+  OFFER_BY_GROUP,
+  OFFER_BY_PROJECT,
+  REMOVE_SNACKBAR,
+  SUMMARY_BY_GROUP,
+  SUMMARY_OVERVIEW,
+  SUMMARY_PROJECT,
+  TASK_OFFER_BY_DEPARTMENT,
   TASK_OVERVIEW_RECENT,
-  TASK_OVERVIEW_STATISTIC,
-  TASK_ROLE
-} from "./types";
+  TASK_RECENTLY,
+  UPDATE_GROUP_OFFER_OFFERPAGE_ERROR,
+  UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS,
+  UPLOAD_DOCUMENT_OFFER_SUCCESS,
+} from './types';
 
-// export const initialState = {
-//   [TASK_OVERVIEW_STATISTIC]: {
-//     state: false,
-//     update: 0,
-//     static: {
-//       task_of_me: 0,
-//       task_waiting: 0,
-//       task_doing: 0,
-//       task_complete: 0,
-//       task_stop: 0,
-//       task_will_expire: 0,
-//       task_expired: 0,
-//       task_hight_priority: 0,
-//       task_medium_priority: 0,
-//       task_low_priority: 0,
-//       task_me_assign: 0,
-//       task_assign_to_me: 0,
-//       task_me_offer: 0,
-//       roles: []
-//     }
-//   },
-//   [TASK_OVERVIEW_RECENT]: {
-//     state: false,
-//     summary: { waiting: 5, doing: 1, complete: 0, expired: 6, stop: 1 },
-//     tasks: [
-//       {
-//         id: "5e6bc31cab3161f136e28c8e",
-//         project_id: "5e634565cb73c30a19d9baf3",
-//         name: "Công việc 1",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 0,
-//         status_name: "Waiting",
-//         complete: 0,
-//         number_member: 1,
-//         duration_unit: "Hours",
-//         duration_value: 0,
-//         time_end: "Invalid date",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e6bc376ab3161f136e28c92",
-//         project_id: "5e634565cb73c30a19d9baf3",
-//         name: "Công việc 2",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 0,
-//         status_name: "Waiting",
-//         complete: 0,
-//         number_member: 1,
-//         duration_unit: "Hours",
-//         duration_value: 0,
-//         time_end: "Invalid date",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e63097ccb73c30a19d9baea",
-//         project_id: "5e5f76527c8297d8d735782e",
-//         name: "Bảo trì bảo dưỡng hệ thống tòa nhà",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 3,
-//         status_name: "Expired 8 days",
-//         complete: 62,
-//         number_member: 3,
-//         duration_unit: "Hours",
-//         duration_value: 10,
-//         time_end: "07/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5f76527c8297d8d7357834",
-//         project_id: "5e5f76527c8297d8d735782e",
-//         name: "Lập dự án đầu tư",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 3,
-//         status_name: "Expired 1 hours",
-//         complete: 0,
-//         number_member: 4,
-//         duration_unit: "Days",
-//         duration_value: 0,
-//         time_end: "16/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5f76527c8297d8d7357833",
-//         project_id: "5e5f76527c8297d8d735782e",
-//         name: "Phân tích dự án đầu tư",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 3,
-//         status_name: "Expired 9 days",
-//         complete: 0,
-//         number_member: 4,
-//         duration_unit: "Days",
-//         duration_value: 0,
-//         time_end: "07/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5e25061e1763bff85c0dd4",
-//         project_id: "5e5e22771e1763bff85c0dcd",
-//         name: "Lập dự án đầu tư",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 4,
-//         status_name: "Stop",
-//         complete: 25,
-//         number_member: 1,
-//         duration_unit: "Days",
-//         duration_value: 6,
-//         time_end: "",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5e25f41e1763bff85c0dd8",
-//         project_id: "5e5e22771e1763bff85c0dcd",
-//         name: "Khai trương tòa nhà",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 1,
-//         status_name: "Doing",
-//         complete: 43,
-//         number_member: 3,
-//         duration_unit: "Days",
-//         duration_value: 2,
-//         time_end: "17/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5e24251e1763bff85c0dd2",
-//         project_id: "5e5e22771e1763bff85c0dcd",
-//         name: "Phân tích dự án đầu tư",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 3,
-//         status_name: "Expired 11 days",
-//         complete: 0,
-//         number_member: 4,
-//         duration_unit: "Days",
-//         duration_value: 0,
-//         time_end: "04/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e6bc357ab3161f136e28c90",
-//         project_id: "5e5f76527c8297d8d735782e",
-//         name: "Cv1",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 0,
-//         status_name: "Waiting",
-//         complete: 0,
-//         number_member: 1,
-//         duration_unit: "Days",
-//         duration_value: 9,
-//         time_end: "22/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e6babb9308cbbec75063242",
-//         project_id: "5e6204b544f49bfc470c7f77",
-//         name: "Cv1",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 0,
-//         status_name: "Waiting",
-//         complete: 0,
-//         number_member: 1,
-//         duration_unit: "Hours",
-//         duration_value: 0,
-//         time_end: "Invalid date",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5e25c01e1763bff85c0dd6",
-//         project_id: "5e5e22771e1763bff85c0dcd",
-//         name: "Thi công móng hầm",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 0,
-//         status_name: "Waiting",
-//         complete: 0,
-//         number_member: 4,
-//         duration_unit: "Days",
-//         duration_value: 0,
-//         time_end: "30/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5f76527c8297d8d7357835",
-//         project_id: "5e5f76527c8297d8d735782e",
-//         name: "Thi công móng hầm",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 3,
-//         status_name: "Expired 2 days",
-//         complete: 0,
-//         number_member: 4,
-//         duration_unit: "Days",
-//         duration_value: 0,
-//         time_end: "14/03/2020",
-//         haveNewChat: false
-//       },
-//       {
-//         id: "5e5f76527c8297d8d7357836",
-//         project_id: "5e5f76527c8297d8d735782e",
-//         name: "Khai trương tòa nhà",
-//         user_create: {
-//           avatar:
-//             "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//           name: "Thành Nguyễn"
-//         },
-//         created_at: "16/03/2020",
-//         status_code: 3,
-//         status_name: "Expired 1 days",
-//         complete: 0,
-//         number_member: 4,
-//         duration_unit: "Days",
-//         duration_value: 0,
-//         time_end: "15/03/2020",
-//         haveNewChat: false
-//       }
-//     ]
-//   }
-// };
 export const initialState = {
-  [TASK_OVERVIEW_STATISTIC]: {
-    state: false,
-    updated: 0,
-    static: {
-      task_of_me: 0,
-      task_waiting: 0,
-      task_doing: 0,
-      task_complete: 0,
-      task_stop: 0,
-      task_will_expire: 0,
-      task_expired: 0,
-      task_hight_priority: 0,
-      task_medium_priority: 0,
-      task_low_priority: 0,
-      task_me_assign: 0,
-      task_assign_to_me: 0,
-      task_me_offer: 0,
-      roles: []
-    }
-  },
   [TASK_OVERVIEW_RECENT]: {
     state: false,
     summary: { waiting: 5, doing: 1, complete: 0, expired: 6, stop: 1 },
     updated: 0,
     tasks: []
+  },
+  [TASK_RECENTLY]: {  /// Các task route recently
+    offers: [],
+    state: false,
+    statistic_status: {
+      accepted: 0,
+      accepted_rate: 0,
+      approving: 0,
+      approving_rate: 0,
+      rejected: 0,
+      rejected_rate: 0,
+      waiting: 0,
+      waiting_rate: 0
+    },
+    error: null
+  },
+  [SUMMARY_BY_GROUP]: { // List cột trái route bygroup
+    offers_group: [],
+    state: false,
   }
+  ,
+  [TASK_OFFER_BY_DEPARTMENT]: { /// List cột trái route department
+    offers_room: [],
+    state: false,
+    offers: []
+  },
+  // Tất cả offer các tab đề xuất theo nhóm, dự án, bộ phận nằm ở state này
+  [OFFER_BY_GROUP]: { // Danh mục task trong bảng table route order by group
+    state: false,
+    offers: [],
+    statistic_status: {
+      accepted: 0,
+      accepted_rate: 0,
+      approving: 0,
+      approving_rate: 0,
+      rejected: 0,
+      rejected_rate: 0,
+      waiting: 0,
+      waiting_rate: 0
+    }
+  },
+  [OFFER_BY_DEPARTMENT]: { // Danh mục task trong bảng table route department
+    state: false,
+    offers: [],
+    statistic_status: {
+      accepted: 0,
+      accepted_rate: 0,
+      approving: 0,
+      approving_rate: 0,
+      rejected: 0,
+      rejected_rate: 0,
+      waiting: 0,
+      waiting_rate: 0
+    }
+  },
+  [SUMMARY_OVERVIEW]: {   /// Biểu đồ bảng overview
+    state: false,
+    my_offers: [
+
+    ],
+    status_offers: [],
+    priority_offers: [],
+    group_offers: [],
+  },
+  [DETAIL_OFFER]: {
+    offer: {
+      members_monitor: [],
+      members_can_approve: [],
+      documents: []
+    },
+    loading: false,
+  },
+  [SUMMARY_PROJECT]: {
+    projects: []
+  },
+  [NOTIFICATIONS]: [],
+  [OFFER_BY_PROJECT]: {
+    state: false,
+    offers: [],
+    statistic_status: {
+      accepted: 0,
+      accepted_rate: 0,
+      approving: 0,
+      approving_rate: 0,
+      rejected: 0,
+      rejected_rate: 0,
+      waiting: 0,
+      waiting_rate: 0
+    }
+  },
 };
 function taskReducer(state = initialState, action) {
   switch (action.type) {
-    case TASK_OVERVIEW_STATISTIC:
-    case TASK_OVERVIEW_RECENT:
-    case TASK_DUE:
-    case TASK_ASSIGN:
-    case TASK_ROLE:
+    case LOAD_TASK_RECENTLY_SUCCESS:
+      return { ...state, [TASK_RECENTLY]: { ...action.payload } };
+    case LOAD_SUMMARY_BY_GROUP_SUCCESS:
+      return { ...state, [SUMMARY_BY_GROUP]: { ...action.payload } };
+    case CREATE_GROUP_OFFER_SUCCESS:
+      return { ...state, [SUMMARY_BY_GROUP]: { offers_group: [...state[SUMMARY_BY_GROUP].offers_group, { ...action.payload.offer_group, offer_waiting: 0 }] } };
+    case CREATE_GROUP_OFFER_ERROR:
+      return { ...state, [CREATE_GROUP_OFFER]: { error: true, message: action.payload } };
+    case LOAD_OFFER_BY_GROUP_ID_SUCCESS:
+      return { ...state, [OFFER_BY_GROUP]: { ...action.payload } };
+    case TASK_OFFER_BY_DEPARTMENT:
+      return { ...state, [TASK_OFFER_BY_DEPARTMENT]: { ...action.payload } }
+    case LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS:
+      return { ...state, [OFFER_BY_DEPARTMENT]: { ...action.payload } }
+    case LOAD_SUMMARY_OVERVIEW_SUCCESS:
+      return { ...state, [SUMMARY_OVERVIEW]: { ...action.payload } }
+    case DELETE_GROUP_OFFER_SUCCESS:
+      return { ...state, [SUMMARY_BY_GROUP]: { offers_group: [...state[SUMMARY_BY_GROUP].offers_group.filter(x => x.id !== action.payload)] } }
+    case DELETE_GROUP_OFFER_ERROR:
+      return { ...state, [DELETE_GROUP_OFFER]: { error: true, message: action.payload } }
+    case UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS:
+      const newArr = state[SUMMARY_BY_GROUP].offers_group
+      newArr.forEach(current => {
+        if (current.id === action.payload.offer_group.id) {
+          current.name = action.payload.offer_group.name
+        }
+      })
+      return { ...state, [SUMMARY_BY_GROUP]: { offers_group: newArr } }
+    case UPDATE_GROUP_OFFER_OFFERPAGE_ERROR:
+      return { ...state }
+    case LOAD_DETAIL_OFFER:
       return {
         ...state,
-        [action.type]: { ...action.payload, updated: Date.now() }
-      };
+        [DETAIL_OFFER]: {
+          loading: true,
+        },
+      }
+    case LOAD_DETAIL_OFFER_SUCCESS:
+      return {
+        ...state,
+        [DETAIL_OFFER]: {
+          ...action.payload,
+          loading: false,
+        },
+      }
+    case DELETE_OFFER_SUCCESSFULLY:
+      const { deletedState, offerId } = action.payload;
+      if (deletedState === true) {
+        const { offers: recentOffers} = state[TASK_RECENTLY];
+        const { offers: taskOffersByDepartment} = state[TASK_OFFER_BY_DEPARTMENT];
+        const { offers: offersByGroup} = state[OFFER_BY_GROUP];
+        const { offers: offersByDepartment} = state[OFFER_BY_DEPARTMENT];
+        const { offers: offersByProject} = state[OFFER_BY_PROJECT];
+
+        return {
+          ...state,
+          [TASK_RECENTLY]: {
+            ...state[TASK_RECENTLY],
+            offers: recentOffers.filter(offer => offer.id !== offerId)
+          },
+          [TASK_OFFER_BY_DEPARTMENT]: {
+            ...state[TASK_OFFER_BY_DEPARTMENT],
+            offers: taskOffersByDepartment.filter(offer => offer.id !== offerId)
+          },
+          [OFFER_BY_GROUP]: {
+            ...state[OFFER_BY_GROUP],
+            offers: offersByGroup.filter(offer => offer.id !== offerId)
+          },
+          [OFFER_BY_DEPARTMENT]: {
+            ...state[OFFER_BY_DEPARTMENT],
+            offers: offersByDepartment.filter(offer => offer.id !== offerId)
+          },
+          [OFFER_BY_PROJECT]: {
+            ...state[OFFER_BY_PROJECT],
+            offers: offersByProject.filter(offer => offer.id !== offerId)
+          },
+        }
+      }
+      break;
+    case UPLOAD_DOCUMENT_OFFER_SUCCESS:
+      return { ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, documents: [...state[DETAIL_OFFER].offer.documents, ...action.payload.documents] } } }
+    case LOAD_SUMMARY_BY_PROJECT_SUCCESS:
+      return { ...state, [SUMMARY_PROJECT]: { ...action.payload } }
+    case DELETE_DOCUMENT_OFFER_SUCCESS:
+      return { ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, documents: [...state[DETAIL_OFFER].offer.documents.filter(document => document.id !== action.payload.file_id)] } } }
+    case DELETE_DOCUMENT_OFFER_ERROR:
+      return { ...state, }
+    case LOAD_OFFER_BY_PROJECT_ID_SUCCESS:
+      return { ...state, [OFFER_BY_PROJECT]: { ...action.payload } }
+    case HANDLE_OFFER_OFFERPAGE_SUCCESS:
+      return { ...state }
+    case ADD_MEMBER_HANDLE_SUCCESS:
+      return {
+        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve, ...action.payload.members] } }
+      }
+    case DELETE_MEMBER_HANDLE_SUCCESS:
+      return {
+        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve.filter(x => x.id !== action.payload)] } }
+      }
+    case ADD_MEMBER_MONITOR_SUCCESS:
+      return {
+        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_monitor: [...state[DETAIL_OFFER].offer.members_monitor, ...action.payload.members] } }
+      }
+    case DELETE_MEMBER_MONITOR_SUCCESS:
+      return {
+        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_monitor: [...state[DETAIL_OFFER].offer.members_monitor.filter(x => x.id !== action.payload)] } }
+      }
+    case ENQUEUE_SNACKBAR:
+      return { ...state, [NOTIFICATIONS]: [...state[NOTIFICATIONS], { key: new Date().getTime() * Math.random(), ...action.payload }] }
+    case REMOVE_SNACKBAR:
+      return { ...state, [NOTIFICATIONS]: [...state[NOTIFICATIONS].filter(x => x.key !== action.key)] }
     default:
       return state;
   }

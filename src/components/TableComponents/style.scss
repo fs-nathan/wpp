@@ -70,7 +70,7 @@
   &-4 {
     @include comp_TableComponents___state-box;
     & > div > span {
-      color: #000;
+      color: #607d8b;
     }
   }
   &-5 {
@@ -87,7 +87,7 @@
   justify-content: space-between;
   & > span {
     font-size: 13px;
-    color: red;
+    color: rgba(0, 0, 0, 0.87);
   }
   & > small {
     margin-top: 4px;

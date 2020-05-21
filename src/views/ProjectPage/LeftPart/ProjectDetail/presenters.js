@@ -89,7 +89,7 @@ function ProjectDetail({
                         'Công việc hoàn thành',
                         'Công việc dừng',
                       ],
-                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#000000'],
+                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#607d8b'],
                     }}
                     series={[
                       get(project.project, 'task_waiting', 0),
@@ -136,7 +136,7 @@ function ProjectDetail({
                       title: 'Công việc hoàn thành',
                       value: get(project.project, 'task_complete', 0),
                     }, {
-                      color: '#000000',
+                      color: '#607d8b',
                       title: 'Công việc dừng',
                       value: get(project.project, 'task_stop', 0),
                     }]

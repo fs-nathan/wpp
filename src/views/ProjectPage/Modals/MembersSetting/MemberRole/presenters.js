@@ -106,7 +106,10 @@ function MemberRole({
                       .map(role => get(role, 'id'))
                       .includes(get(userRole, 'id'))
                   }
-                  onChange={evt => handleUpdateRoleOfMember(userRole)}
+                  onChange={evt => {
+                    handleUpdateRoleOfMember(userRole);
+                    setLoading(true);
+                  }}
                   value={get(userRole, 'name', '')}
                   color='primary'
                 />

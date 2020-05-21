@@ -23,7 +23,8 @@ function MajorManager({
       >
         <SimpleManagerTable
           data={majors.majors}
-          pendings={majors.pendings}
+          updatePendings={majors.updatePendings}
+          deletePendings={majors.deletePendings}
           handleAdd={() => handleOpenModal('CREATE')}
           handleEdit={major => handleOpenModal('UPDATE', {
             updatedMajor: major,
