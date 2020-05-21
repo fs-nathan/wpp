@@ -235,8 +235,8 @@
   grid-area: list;
   border-right: 1px solid #e5e5e9;
   .wrap-list-task {
-    height: calc(76vh);
-    grid-template-rows: 165px calc(76vh);
+    height: calc(100vh - 165px);
+    grid-template-rows: 165px calc(100vh - 165px);
     grid-template-columns: 1fr;
     grid-template-areas:
       "header"
