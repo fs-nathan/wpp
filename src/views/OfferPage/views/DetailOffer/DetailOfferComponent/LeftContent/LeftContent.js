@@ -3,6 +3,7 @@ import { AddCircle } from "@material-ui/icons";
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import classNames from 'classnames';
+import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
 import { apiService } from "constants/axiosInstance";
 import lodash from 'lodash';
@@ -49,53 +50,48 @@ const PersonInfo = ({
     </>
   );
 };
+
+const RenderChipItem = (priority_code, priority_name) => {
+  let chipBgColorClassName;
+  switch (priority_code) {
+    case 0:
+      chipBgColorClassName = 'bg--orange';
+      break;
+    case 1:
+      chipBgColorClassName = 'bg--red';
+      break;
+    case 2:
+      chipBgColorClassName = 'bg--red';
+      break;
+    default:
+      chipBgColorClassName = 'bg--orange';
+  }
+  return (
+    <div className={clsx('offerDetail-detailDescription-offerPriorityName', chipBgColorClassName)}>
+      {priority_name}
+    </div>
+  );
+};
 const DetailDescription = ({ priority_name, priority_code, type_name, content, title }) => {
-  const classes = styles();
   return (
     <>
-      <div>
-        <h2>{title}</h2>
-      </div>
-      <div>
-        <h4>Mô tả chi tiết</h4>
-      </div>
-      <div>
-        <p>{content}</p>
-      </div>
       <Grid container>
         {!isEmpty(type_name) &&
-          <div className={`${classes.bg_blue} ${classes.status_title}`}>
-            {type_name}
-          </div>
+         <div className="offerDetail-detailDescription-offerTypeName">
+           {type_name}
+         </div>
         }
-        {
-          priority_code === 0 && (
-            <div
-              className={classNames(classes.bg_orange, classes.status_file, classes.ml_1)}
-            >
-              {priority_name}
-            </div>
-          )
-        }
-        {
-          priority_code === 1 && (
-            <div
-              className={classNames(classes.bg_red, classes.status_file, classes.ml_1)}
-            >
-              {priority_name}
-            </div>
-          )
-        }
-        {
-          priority_code === 2 && (
-            <div
-              className={classNames(classes.bg_red, classes.status_file, classes.ml_1)}
-            >
-              {priority_name}
-            </div>
-          )
-        }
+        {RenderChipItem(priority_code, priority_name)}
       </Grid>
+      <div>
+        <div className="offerDetail-detailDescription-title">{title}</div>
+      </div>
+      <div>
+        <div className="offerDetail-detailDescription-detailSection">Mô tả chi tiết</div>
+      </div>
+      <div>
+        <p className="offerDetail-detailDescription-content">{content}</p>
+      </div>
     </>
   );
 };

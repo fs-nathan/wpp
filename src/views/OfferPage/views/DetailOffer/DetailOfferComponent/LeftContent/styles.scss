@@ -1,3 +1,9 @@
+@mixin center-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .offerDetail {
   & > * {
     font-family: Roboto, sans-serif;
@@ -28,4 +34,44 @@
     margin: 10px 0 5px;
     border-bottom: 1px solid #3333;
   }
+
+  &-detailDescription {
+    &-offerTypeName {
+      @include center-text;
+      @extend .bg--blue;
+      font-size: 0.8rem;
+      padding: 5px;
+    }
+    &-offerPriorityName {
+      @include center-text;
+      font-size: 0.8rem;
+      margin-left: 1em;
+      padding: 5px;
+    }
+    &-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0.7em 0;
+      color: dimgrey;
+    }
+    &-detailSection {
+      font-weight: 700;
+    }
+    &-content {
+      margin-bottom: 2em;
+    }
+  }
+}
+
+.bg--red {
+  background-color: #f44336;
+  color: white;
+}
+.bg--blue {
+  background-color: #1155cc;
+  color: white;
+}
+.bg--orange {
+  background-color: #fd7e14;
+  color: white;
 }
