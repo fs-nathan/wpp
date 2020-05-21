@@ -56,3 +56,11 @@
     color: #dc3545;
   }
 };
+
+.comp_SimpleManagerTable___button-wrapper {
+  display: flex;
+  align-items: center;
+  & > *:not(:first-child) {
+    margin-left: 5px;
+  }
+}

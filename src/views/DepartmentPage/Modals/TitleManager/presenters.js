@@ -22,7 +22,8 @@ function TitleManager({
     >
       <SimpleManagerTable
         data={positions.positions}
-        pendings={positions.pendings}
+        updatePendings={positions.updatePendings}
+        deletePendings={positions.deletePendings}
         handleAdd={() => handleOpenModal('CREATE')}
         handleEdit={position => handleOpenModal('UPDATE', {
           updatedPosition: position,

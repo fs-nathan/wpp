@@ -22,7 +22,8 @@ function LevelManager({
     >
       <SimpleManagerTable
         data={levels.levels}
-        pendings={levels.pendings}
+        updatePendings={levels.updatePendings}
+        deletePendings={levels.deletePendings}
         handleAdd={() => handleOpenModal('CREATE')}
         handleEdit={level => handleOpenModal('UPDATE', {
           updatedLevel: level,

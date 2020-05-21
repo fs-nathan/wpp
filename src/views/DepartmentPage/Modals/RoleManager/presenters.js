@@ -13,7 +13,8 @@ export const RoleManagerContent = () => {
   ) : (
       <SimpleManagerTable
         data={userRoles.userRoles}
-        pendings={userRoles.pendings}
+        updatePendings={userRoles.updatePendings}
+        deletePendings={userRoles.deletePendings}
         handleAdd={() => handleOpenModal("CREATE")}
         handleEdit={(userRole) =>
           handleOpenModal("UPDATE", {
@@ -48,7 +49,8 @@ export function RoleManagerModalWrapper({ children }) {
     >
       <SimpleManagerTable
         data={userRoles.userRoles}
-        pendings={userRoles.pendings}
+        updatePendings={userRoles.updatePendings}
+        deletePendings={userRoles.deletePendings}
         handleAdd={() => handleOpenModal("CREATE")}
         handleEdit={(userRole) =>
           handleOpenModal("UPDATE", {
