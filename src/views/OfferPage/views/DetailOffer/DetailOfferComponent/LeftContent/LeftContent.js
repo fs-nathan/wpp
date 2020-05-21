@@ -188,9 +188,9 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
           <Button
             size="small"
             onClick={() => setOpenSendFileModal(true)}
-            startIcon={<AddCircle className="offerDetail-attachedDocument-addFileBtn-icon" />}
+            startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
           >
-            <span className="offerDetail-attachedDocument-addFileBtn-title">
+            <span className="offerDetail-addBtn-title">
               {t("ADD_DOCUMENT_OFFER")}
             </span>
           </Button>
@@ -204,7 +204,6 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
   );
 };
 const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members_can_approve }) => {
-  const classes = styles();
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -237,20 +236,15 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
   }
   return (
     <>
-      <Grid container className={classNames(classes.border_bottom, classes.pb_1, classes.mt_1)}>
+      <Grid container>
         <Grid item xs={5}>
-          <h4 className={classes.m_0}>{t('PERSON_HANDLE')}</h4>
+          <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
           <Button
-
             size="small"
             onClick={() => setOpenAddApproveModal(true)}
-            startIcon={
-              <AddCircle
-                className={`${classes.color_blue} ${classes.add_file_button}`}
-              />
-            }
+            startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
           >
-            <span className={classes.handle_button}>
+            <span className="offerDetail-addBtn-title">
               {t("ADD_PERSON_HANDLE")}
             </span>
           </Button>
@@ -268,15 +262,15 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
                       <Grid
                         container
                         direction="column"
-                        className={`${classes.h_100} ${classes.ml_1}`}
+                        className="offerDetail-handlingPerson-infoContainer"
                         justify="center"
                       >
-                        <h5 className={classes.m_0}>{get(member, "name")}</h5>
-                        <div className={classes.color_orange}>{get(member, "position")}</div>
+                        <div className="offerDetail-handlingPerson-name">{get(member, "name")}</div>
+                        <div className="offerDetail-handlingPerson-position">{get(member, "position")}</div>
                       </Grid>
                     </Grid>
 
-                    <IconButton style={{ marginLeft: "auto" }} onClick={() => handleDeleteMemberHandle({ member_id: get(member, "id") })} >
+                    <IconButton onClick={() => handleDeleteMemberHandle({ member_id: get(member, "id") })} >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </Grid>
@@ -286,6 +280,7 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
           </Grid>
         </Grid>
       </Grid>
+      <div className="offerDetail-horizontalLine" />
       <CustomAddOfferMemberModal members={memberCanAddInApprove} onChange={handleAddMemberApprove} isOpen={openAddApproveModal} setOpen={handleOpenAddHandleMemberModal} />
     </>
   );
