@@ -1,16 +1,18 @@
 import { List, ListItem, ListItemText } from '@material-ui/core';
-import ColorButton from 'components/ColorButton';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomTextbox from 'components/CustomTextbox';
-import LoadingBox from 'components/LoadingBox';
 import LoadingOverlay from 'components/LoadingOverlay';
 import PillButton from 'components/PillButton';
+import UploadButton from 'components/UploadButton';
+import { CustomEventDispose, CustomEventListener, DETAIL_USER, UPLOAD_DOCUMENTS_USER } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
+import { FileListItem } from 'views/HomePage/components/FileListItem';
 import './style.scss';
+
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -48,12 +50,6 @@ const MainFooter = ({ className = '', ...props }) =>
     {...props}
   />;
 
-const StyledButton = ({ className = '', ...props }) =>
-  <ColorButton
-    className={`view_Member_UserInfo___button ${className}`}
-    {...props}
-  />;
-
 const SideBox = ({ className = '', ...props }) =>
   <div
     className={`view_Member_UserInfo___side-box ${className}`}
@@ -79,11 +75,43 @@ const NameSpan = ({ className = '', ...props }) =>
   />
 
 function UserInfo({
-  user, isUpload, canModify,
+  user, userId, canModify,
   handleUploadDocumentsUser, handleOpenModal,
+  doReloadUser,
 }) {
 
   const { t } = useTranslation();
+
+  const [uploadLoading, setUploadLoading] = React.useState(false);
+
+  React.useEffect(() => {
+    const fail = () => {
+      setUploadLoading(false);
+    };
+    CustomEventListener(UPLOAD_DOCUMENTS_USER.SUCCESS, doReloadUser);
+    CustomEventListener(UPLOAD_DOCUMENTS_USER.FAIL, fail);
+    return () => {
+      CustomEventDispose(UPLOAD_DOCUMENTS_USER.SUCCESS, doReloadUser);
+      CustomEventDispose(UPLOAD_DOCUMENTS_USER.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [userId]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setUploadLoading(false);
+    };
+    const fail = () => {
+      setUploadLoading(false);
+    };
+    CustomEventListener(DETAIL_USER.SUCCESS, success);
+    CustomEventListener(DETAIL_USER.FAIL, fail);
+    return () => {
+      CustomEventDispose(DETAIL_USER.SUCCESS, success);
+      CustomEventDispose(DETAIL_USER.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [userId]);
 
   return (
     <LoadingOverlay
@@ -141,28 +169,35 @@ function UserInfo({
               </StyledListItem>
             </MainList>
           </Scrollbars>
+          <Scrollbars
+            autoHide
+            autoHideTimeout={500}
+          >
+            <List>
+              {get(user.user, 'documents', []).map(file =>
+                <FileListItem
+                  file={file}
+                />
+              )}
+            </List>
+          </Scrollbars>
           <MainFooter>
-            <StyledButton variant='text' fullWidth onClick={() => handleOpenModal('DOCUMENT', {
-              files: get(user.user, 'documents', [])
-            })}>
-              <CustomAvatar alt='avatar' />
-              <ColorTypo>{t("DMH.VIEW.MP.RIGHT.INFO.DOC.TITLE")}</ColorTypo>
-            </StyledButton>
             {canModify && (
               <>
                 <input
                   id="raised-button-file"
                   type="file"
-                  onChange={evt => handleUploadDocumentsUser(evt.target.files[0])}
+                  onChange={evt => {
+                    handleUploadDocumentsUser(evt.target.files[0]);
+                    setUploadLoading(true);
+                  }}
                 />
-                {isUpload
-                  ? (<ColorButton variant='text' variantColor='blue' size='small'>
-                    <LoadingBox size={16} />
-                  </ColorButton>)
-                  : (
-                    <ColorButton variant='text' variantColor='blue' size='small' component='label' htmlFor='raised-button-file'>
-                      {t("DMH.VIEW.MP.RIGHT.INFO.DOC.BTN")}
-                    </ColorButton>)}
+                <UploadButton
+                  label={t("DMH.VIEW.MP.RIGHT.INFO.DOC.BTN")}
+                  component='label'
+                  htmlFor='raised-button-file'
+                  loading={uploadLoading}
+                />
               </>
             )}
           </MainFooter>

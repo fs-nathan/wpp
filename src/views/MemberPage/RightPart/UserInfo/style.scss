@@ -1,5 +1,5 @@
 .view_Member_UserInfo___container {
-  height: 100%;
+  height: calc(100vh - 55px);
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: minmax(450px, 3fr) minmax(350px, 2fr);
@@ -12,10 +12,9 @@
   height: 100%;
   border-right: 1px solid rgba(0, 0, 0, .1);
   display: grid;
-  grid-template-rows: 60px 400px 100px;
-  & > * {
-    margin-top: 16px;
-  }
+  grid-template-rows: 60px 3fr 2fr 35px;
+  align-self: stretch;
+  row-gap: 16px;
 };
 
 .view_Member_UserInfo___main-header {
@@ -32,6 +31,7 @@
 
 .view_Member_UserInfo___main-list {
   padding: 0 16px;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
 };
 
 .view_Member_UserInfo___list-item {
@@ -39,7 +39,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(0, 0, 0, .1);
   &:last-child {
     flex-direction: column;
     align-items: flex-start;
@@ -51,12 +50,12 @@
 };
 
 .view_Member_UserInfo___main-footer {
+  border-top: 1px solid rgba(0, 0, 0, .1);
   padding: 0 16px;
   & > input[type='file'] {
     display: none;
   }
   & > label:last-child {
-    margin-top: 8px;
     & > span {
       text-transform: none;
     }

@@ -2,7 +2,6 @@ import { find, get } from 'lodash';
 import { createSelector } from 'reselect';
 
 const detailUser = state => state.user.detailUser;
-const uploadDocumentsUser = state => state.user.uploadDocumentsUser;
 const listRoom = state => state.room.listRoom;
 const listLevel = state => state.level.listLevel;
 const listMajor = state => state.major.listMajor;
@@ -33,13 +32,5 @@ export const userSelector = createSelector(
       error: detailUserError || listRoomError || listPositionError || listMajorError || listLevelError,
       firstTime: detailFirst && roomFirst && positionFirst && majorFirst && levelFirst,
     }
-  }
-);
-
-export const isUploadSelector = createSelector(
-  [uploadDocumentsUser],
-  (uploadDocumentsUser) => {
-    const { loading } = uploadDocumentsUser;
-    return loading;
   }
 );
