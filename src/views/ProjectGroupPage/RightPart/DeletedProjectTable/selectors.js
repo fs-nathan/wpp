@@ -1,4 +1,3 @@
-import { concat } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listDeletedProject = state => state.project.listDeletedProject;
@@ -24,7 +23,8 @@ export const pendingsSelector = createSelector(
     const { pendings: deletePendings, erorr: deleteError } = deleteTrashProject;
     const { pendings: restorePendings, erorr: restoreError } = restoreTrashProject;
     return {
-      pendings: concat(deletePendings, restorePendings),
+      deletePendings,
+      restorePendings,
       error: deleteError || restoreError,
     }
   }

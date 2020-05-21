@@ -153,6 +153,15 @@ function AllUsersTable({
     }
   }
 
+  const users = React.useMemo(() => reduce(
+    rooms.rooms,
+    (users, room) => {
+      const newUsers = [...users, ...get(room, 'users', [])];
+      return newUsers;
+    },
+    [],
+  ), [rooms.rooms]);
+
   return (
     <>
       <AllUsersTablePresenter
@@ -185,18 +194,11 @@ function AllUsersTable({
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} isSelect={false} />
       <TableSettingsModal open={openTableSetting} setOpen={setOpenTableSetting} />
       <CreateAccountModal open={openCreateAccount} setOpen={setOpenCreateAccount} />
-      <PermissionSettingsModal 
-        open={openPermissionSetting} 
-        setOpen={setOpenPermissionSetting} 
-        users={reduce(
-          rooms.rooms,
-          (users, room) => {
-            const newUsers = [...users, ...get(room, 'users', [])];
-            return newUsers;
-          },
-          [],
-        )}
-        {...permissionProps} 
+      <PermissionSettingsModal
+        open={openPermissionSetting}
+        setOpen={setOpenPermissionSetting}
+        users={users}
+        {...permissionProps}
       />
       <BanUserModal
         open={openAlert}
