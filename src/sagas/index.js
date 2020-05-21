@@ -1,5 +1,27 @@
 import { SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
+import {
+  ADD_MEMBER_HANDLE,
+  ADD_MEMBER_MONITOR,
+  CREATE_GROUP_OFFER,
+  DELETE_DOCUMENT_OFFER,
+  DELETE_GROUP_OFFER,
+  DELETE_MEMBER_HANDLE,
+  DELETE_MEMBER_MONITOR,
+  HANDLE_OFFER_OFFERPAGE,
+  LOAD_DETAIL_OFFER,
+  DELETE_OFFER,
+  LOAD_OFFER_BY_DEPARTMENT_ID,
+  LOAD_OFFER_BY_GROUP_ID,
+  LOAD_OFFER_BY_PROJECT_ID,
+  LOAD_SUMMARY_BY_GROUP,
+  LOAD_SUMMARY_BY_PROJECT,
+  LOAD_SUMMARY_DEPARTMENT,
+  LOAD_SUMMARY_OVERVIEW,
+  LOAD_TASK_RENCENTLY,
+  UPDATE_GROUP_OFFER_OFFERPAGE,
+  UPLOAD_DOCUMENT_OFFER,
+} from "views/OfferPage/redux/types";
 import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
 import { CREATE_PERSONAL_CATEGORY_REMIND, CREATE_PERSONAL_REMIND, DELETE_PERSONAL_CATEGORY_REMIND, DELETE_PERSONAL_REMIND, LIST_PERSONAL_REMIND, LIST_PERSONAL_REMIND_CATEGORY, LIST_REMIND_PROJECT, LIST_REMIND_RECENTLY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_REMIND } from "../constants/actions/calendar/alarmCalendar";
@@ -107,6 +129,28 @@ import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
 import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
 // ==================================
 import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
+import {
+  doAddMemberHandle,
+  doAddMemberMonitor,
+  doCreateOfferGroup,
+  doDeleteDocumentOffer,
+  doDeleteGroupOffer,
+  doDeleteMemberHandle,
+  doDeleteMemberMonitor,
+  doDeleteOffer,
+  doGetSummaryByGroup,
+  doGetTaskRecently,
+  doHandleOffer,
+  doLoadDetailOffer,
+  doLoadOfferByDepartmentID,
+  doLoadOfferByGroupID,
+  doLoadOfferByProjectID,
+  doLoadSummaryByDepartment,
+  doLoadSummaryOverview,
+  doLoadSummaryProject,
+  doUpdateGroupOffer,
+  doUploadDocumentOffer,
+} from '../views/OfferPage/redux/sagas';
 import { login, loginCheckState } from "./authentications";
 import { createPersonalRemind } from "./calendar/alarmCalendar/createPersonalRemind";
 import { createPersonalRemindCategory } from "./calendar/alarmCalendar/createPersonalRemindCategory";
@@ -352,14 +396,8 @@ function* rootSaga() {
     INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
     inviteOtherPeopleCreateAccount
   );
-  yield takeLeading(
-    GET_PERMISSION_VIEW_PROJECTS,
-    getPermissionViewProjects
-  );
-  yield takeLeading(
-    GET_PERMISSION_VIEW_USERS,
-    getPermissionViewUsers
-  );
+  yield takeLeading(GET_PERMISSION_VIEW_PROJECTS, getPermissionViewProjects);
+  yield takeLeading(GET_PERMISSION_VIEW_USERS, getPermissionViewUsers);
   yield takeLeading(
     GET_PERMISSION_VIEW_DETAIL_PROJECT,
     getPermissionViewDetailProject
@@ -552,10 +590,22 @@ function* rootSaga() {
   );
   // Member Role::
   yield takeLeading(taskDetailType.GET_ROLE_REQUEST, taskDetailSaga.getRole);
-  yield takeLeading(taskDetailType.POST_ROLE_REQUEST, taskDetailSaga.createRole);
-  yield takeLeading(taskDetailType.UPDATE_ROLE_REQUEST, taskDetailSaga.updateRole);
-  yield takeLeading(taskDetailType.DELETE_ROLE_REQUEST, taskDetailSaga.deleteRole);
-  yield takeLeading(taskDetailType.UPDATE_ROLES_FOR_MEMBER_REQUEST, taskDetailSaga.updateRolesForMember);
+  yield takeLeading(
+    taskDetailType.POST_ROLE_REQUEST,
+    taskDetailSaga.createRole
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_ROLE_REQUEST,
+    taskDetailSaga.updateRole
+  );
+  yield takeLeading(
+    taskDetailType.DELETE_ROLE_REQUEST,
+    taskDetailSaga.deleteRole
+  );
+  yield takeLeading(
+    taskDetailType.UPDATE_ROLES_FOR_MEMBER_REQUEST,
+    taskDetailSaga.updateRolesForMember
+  );
 
   //Time
   yield takeLeading(
@@ -651,87 +701,42 @@ function* rootSaga() {
     taskDetailSaga.updateScheduleTask
   );
   // getSchedules
-  yield takeLeading(
-    taskDetailType.GET_SCHEDULES,
-    taskDetailSaga.getSchedules
-  );
-  yield takeLeading(
-    taskDetailType.DELETE_TASK_REQUEST,
-    taskDetailSaga.deleteTask
-  );
-  //chat 
-  yield takeLeading(
-    chatTypes.DELETE_CHAT,
-    chatDetailSaga.deleteChat
-  );
-  yield takeLeading(
-    chatTypes.LOAD_CHAT,
-    chatDetailSaga.loadChat
-  );
-  yield takeLeading(
-    chatTypes.CHAT_IMAGE,
-    chatDetailSaga.chatImage
-  );
-  yield takeLeading(
-    chatTypes.CHAT_FILE,
-    chatDetailSaga.chatFile
-  );
+  yield takeLeading(taskDetailType.GET_SCHEDULES, taskDetailSaga.getSchedules);
+  yield takeLeading(taskDetailType.DELETE_TASK_REQUEST, taskDetailSaga.deleteTask);
+  //chat
+  yield takeLeading(chatTypes.DELETE_CHAT, chatDetailSaga.deleteChat);
+  yield takeLeading(chatTypes.LOAD_CHAT, chatDetailSaga.loadChat);
+  yield takeLeading(chatTypes.CHAT_IMAGE, chatDetailSaga.chatImage);
+  yield takeLeading(chatTypes.CHAT_FILE, chatDetailSaga.chatFile);
   yield takeLeading(
     chatTypes.CHAT_FORWARD_FILE,
     chatDetailSaga.chatForwardFile
   );
-  yield takeLeading(
-    chatTypes.CHAT_STICKER,
-    chatDetailSaga.chatSticker
-  );
+  yield takeLeading(chatTypes.CHAT_STICKER, chatDetailSaga.chatSticker);
   yield takeLeading(
     chatTypes.GET_CHAT_NOT_VIEWED,
     chatDetailSaga.getChatNotViewed
   );
-  yield takeLeading(
-    chatTypes.GET_NOTI_CHAT,
-    chatDetailSaga.getNotiChat
-  );
-  yield takeLeading(
-    chatTypes.FORWARD_CHAT,
-    chatDetailSaga.forwardChat
-  );
+  yield takeLeading(chatTypes.GET_NOTI_CHAT, chatDetailSaga.getNotiChat);
+  yield takeLeading(chatTypes.FORWARD_CHAT, chatDetailSaga.forwardChat);
   yield takeLeading(
     chatTypes.GET_LIST_STICKERS,
     chatDetailSaga.getListStickers
   );
-  yield takeLeading(
-    chatTypes.LOAD_LIST_TASK,
-    chatDetailSaga.loadListTask
-  );
-  yield takeLeading(
-    chatTypes.GET_EMOTIONS,
-    chatDetailSaga.getEmotions
-  );
-  yield takeLeading(
-    chatTypes.CHAT_EMOTION,
-    chatDetailSaga.chatEmotion
-  );
+  yield takeLeading(chatTypes.LOAD_LIST_TASK, chatDetailSaga.loadListTask);
+  yield takeLeading(chatTypes.GET_EMOTIONS, chatDetailSaga.getEmotions);
+  yield takeLeading(chatTypes.CHAT_EMOTION, chatDetailSaga.chatEmotion);
   yield takeLeading(
     chatTypes.GET_EMOTIONS_REACT_MEMBER,
     chatDetailSaga.getEmotionsReactMember
   );
-  yield takeLeading(
-    chatTypes.CREATE_CHAT_TEXT,
-    chatDetailSaga.createChatText
-  );
-  yield takeLeading(
-    chatTypes.CHAT_QUICK_LIKE,
-    chatDetailSaga.chatQuickLike
-  );
+  yield takeLeading(chatTypes.CREATE_CHAT_TEXT, chatDetailSaga.createChatText);
+  yield takeLeading(chatTypes.CHAT_QUICK_LIKE, chatDetailSaga.chatQuickLike);
   yield takeLeading(
     chatTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER,
     chatDetailSaga.createChatFileFromGoogleDriver
   );
-  yield takeLeading(
-    chatTypes.GET_VIEWED_CHAT,
-    chatDetailSaga.getViewedChat
-  );
+  yield takeLeading(chatTypes.GET_VIEWED_CHAT, chatDetailSaga.getViewedChat);
   yield takeLeading(
     chatTypes.GET_REMIND_DETAIL,
     chatDetailSaga.getRemindDetail
@@ -740,10 +745,7 @@ function* rootSaga() {
     chatTypes.GET_SUBTASK_DETAIL,
     chatDetailSaga.getSubtaskDetail
   );
-  yield takeLeading(
-    chatTypes.GET_OFFER_DETAIL,
-    chatDetailSaga.getOfferDetail
-  );
+  yield takeLeading(chatTypes.GET_OFFER_DETAIL, chatDetailSaga.getOfferDetail);
   yield takeLeading(
     chatTypes.GET_DEMAND_DETAIL,
     chatDetailSaga.getDemandDetail
@@ -761,6 +763,29 @@ function* rootSaga() {
   yield fork(watchLoadTaskDuePage);
   yield fork(watchLoadTaskAssignPage);
   yield fork(watchLoadTaskRolePage);
+
+  /// Offerpage
+  yield takeLatest(LOAD_TASK_RENCENTLY, doGetTaskRecently);
+  yield takeLatest(LOAD_SUMMARY_BY_GROUP, doGetSummaryByGroup);
+  yield takeEvery(CREATE_GROUP_OFFER, doCreateOfferGroup);
+  yield takeLatest(LOAD_OFFER_BY_GROUP_ID, doLoadOfferByGroupID);
+  yield takeLatest(LOAD_SUMMARY_DEPARTMENT, doLoadSummaryByDepartment)
+  yield takeLatest(LOAD_OFFER_BY_DEPARTMENT_ID, doLoadOfferByDepartmentID);
+  yield takeLatest(LOAD_SUMMARY_OVERVIEW, doLoadSummaryOverview)
+  yield takeEvery(DELETE_GROUP_OFFER, doDeleteGroupOffer)
+  yield takeEvery(UPDATE_GROUP_OFFER_OFFERPAGE, doUpdateGroupOffer)
+  yield takeLatest(LOAD_DETAIL_OFFER, doLoadDetailOffer)
+  yield takeLatest(DELETE_OFFER, doDeleteOffer)
+  yield takeEvery(UPLOAD_DOCUMENT_OFFER, doUploadDocumentOffer)
+  yield takeEvery(DELETE_DOCUMENT_OFFER, doDeleteDocumentOffer)
+  yield takeEvery(ADD_MEMBER_HANDLE, doAddMemberHandle)
+  yield takeEvery(DELETE_MEMBER_HANDLE, doDeleteMemberHandle)
+  yield takeEvery(ADD_MEMBER_MONITOR, doAddMemberMonitor)
+  yield takeEvery(DELETE_MEMBER_MONITOR, doDeleteMemberMonitor)
+  yield takeEvery(HANDLE_OFFER_OFFERPAGE, doHandleOffer)
+  yield takeLatest(LOAD_SUMMARY_BY_PROJECT, doLoadSummaryProject)
+  yield takeLatest(LOAD_OFFER_BY_PROJECT_ID, doLoadOfferByProjectID)
+  //
 
   //calendar
   yield takeLatest(SCHEDULE_LIST, listWeeklySchedule);
@@ -780,8 +805,14 @@ function* rootSaga() {
   yield takeLatest(GROUP_SCHEDULE_CREATE, createProjectGroupSchedule);
   yield takeLatest(GROUP_SCHEDULE_DETAIL, projectGroupScheduleDetail);
   yield takeEvery(SETTING_START_DAY_WEEK, projectScheduleSettingStartingDay);
-  yield takeLatest(GROUP_SCHEDULE_ADD_WORKING_DAY, projectScheduleAddWorkingDays);
-  yield takeEvery(GROUP_SCHEDULE_DELETE_WORKING_DAY, projectScheduleDeleteWorkingDays);
+  yield takeLatest(
+    GROUP_SCHEDULE_ADD_WORKING_DAY,
+    projectScheduleAddWorkingDays
+  );
+  yield takeEvery(
+    GROUP_SCHEDULE_DELETE_WORKING_DAY,
+    projectScheduleDeleteWorkingDays
+  );
   yield takeLatest(GROUP_SCHEDULE_ADD_DAY_OFF, projectScheduleAddDayOff);
   yield takeLatest(GROUP_SCHEDULE_DELETE_DAY_OFF, projectScheduleDeleteDayOff);
   yield takeLatest(CREATE_PERSONAL_CATEGORY_REMIND, createPersonalRemindCategory);

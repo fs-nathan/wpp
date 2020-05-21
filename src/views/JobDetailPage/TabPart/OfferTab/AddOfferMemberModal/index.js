@@ -19,7 +19,6 @@ function AddOfferMemberModal({
   const { t } = useTranslation();
   const [selected, setSelected] = useState(value);
   const [searchValue, setSearchValue] = useState('');
-
   function onClickDone() {
     onChange(selected)
     setOpen(false);
