@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   ButtonBase,
+  Dialog,
   IconButton,
   List,
   SvgIcon,
@@ -31,6 +32,7 @@ import TasksCard from "../components/TasksCard";
 import { postAttr } from "../contant/attrs";
 import { comment, like, love } from "../contant/icons";
 import { routes } from "../contant/routes";
+import PostEditor from "../Middle/PostEditor";
 import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
 import { CommentInput } from "./CommentInput";
@@ -40,7 +42,6 @@ import loveImage from "./love-image.png";
 import Message from "./Message";
 import "./Post.css";
 import { PostActionButton } from "./PostActionButton";
-
 const CommentList = ({ comments = emptyArray, onReplyClick }) => {
   return (
     <>
@@ -603,6 +604,7 @@ export const PostContainer = ({ post, children }) => {
     postAttr.can_modify,
   ])(post);
   const dispatch = useDispatch();
+  const [modal, setModal] = useState();
   const handleActionClick = useCallback(
     (key) => {
       switch (key) {
@@ -621,6 +623,22 @@ export const PostContainer = ({ post, children }) => {
         case "delete":
           dispatch(postModule.actions.deletePost({ post_id: id }));
           break;
+        case "edit":
+          setModal(
+            <Dialog
+              id={"PostCreator"}
+              PaperProps={{
+                tabIndex: -1,
+              }}
+              onClose={() => setModal(undefined)}
+              fullWidth={true}
+              maxWidth={"sm"}
+              open={true}
+            >
+              <PostEditor onClose={() => setModal(undefined)} post={post} />
+            </Dialog>
+          );
+          break;
         case "like":
           dispatch(postModule.actions.like({ post_id: id }));
           break;
@@ -631,12 +649,13 @@ export const PostContainer = ({ post, children }) => {
           break;
       }
     },
-    [dispatch, id]
+    [dispatch, id, post]
   );
   const { t } = useTranslation();
   const menuoptions = useMemo(() => {
     return can_modify
       ? [
+          { key: "edit", label: t("Sửa") },
           !is_pin
             ? { key: "pin", label: t("Ghim") }
             : { key: "cancel-pin", label: t("Bỏ ghim") },
@@ -691,7 +710,10 @@ export const PostContainer = ({ post, children }) => {
         handleComment,
       }}
     >
-      {children}
+      <>
+        {children}
+        {!!modal && modal}
+      </>
     </PostContext.Provider>
   );
 };

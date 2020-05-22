@@ -4,6 +4,7 @@ import { weekScheduleModule } from "views/HomePage/redux/weekSchedule";
 import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
 import { settingGroupHome } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/reducer";
+import { apiKeyModule } from "webpush";
 import taskReducer from "../views/JobPage/redux/reducers";
 import offerReducer from "../views/OfferPage/redux/reducers";
 
@@ -314,6 +315,7 @@ const rootReducer = combineReducers({
   [settingGroupPermission.key]: settingGroupPermission.reducer,
   [postModule.key]: postModule.reducer,
   [weekScheduleModule.key]: weekScheduleModule.reducer,
+  [apiKeyModule.key]: apiKeyModule.reducer,
 
   apiCall: apiCall,
   inviteOtherPeopleCreateAccount,

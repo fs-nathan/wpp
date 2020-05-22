@@ -43,7 +43,7 @@ export const CategoryModal = ({
       <DialogContent dividers className="dialog-content move-content">
         <Box padding="24px">
           <VerticleList>
-            <InputFormControl name="name" label={t("Tên thể loại")} />
+            <InputFormControl required name="name" label={t("Tên thể loại")} />
             <MultilineInputFormControl
               name="description"
               label={t("Mô tả chi tiết")}
