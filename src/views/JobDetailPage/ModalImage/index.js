@@ -86,6 +86,7 @@ const Image = styled.img`
   cursor: pointer;
   opacity: ${props => props.selected ? 1 : 0.4};
   object-fit: cover;
+  background: #fff;
   &:hover {
     opacity: 1;
   }
@@ -267,7 +268,7 @@ const ModalImage = () => {
                   ref={transformRef}
                   alt="vtask"
                   // style={{ transform: `rotate(${rotate}deg)` }}
-                  src={imagesList[currentImage] && imagesList[currentImage].url} />
+                  src={imagesList[currentImage] && (imagesList[currentImage].url || imagesList[currentImage].url_thumbnail)} />
               </div>
               <ButtonImage onClick={clickNext}>
                 <Icon path={mdiChevronRight} size="30px" />

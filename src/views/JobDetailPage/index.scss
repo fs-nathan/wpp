@@ -347,9 +347,9 @@
     justify-content: center;
     & > div:nth-child(1) {
       & > span {
-        font-size: 12px;
-        line-height: 13px;
-        padding: 2px 5px;
+        font-size: 10px;
+        line-height: 12px;
+        padding: 1px 34x;
         font-weight: 500;
       }
     }
@@ -427,7 +427,7 @@
 
 // index.js - TabHeader - Default Tab
 .container-dt-tabheader {
-  padding: 0 20px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   background-color: #fff;
