@@ -15,7 +15,6 @@ import Icon from "@mdi/react";
 import { CustomTableProvider } from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
 import { bgColorSelector } from "components/LoadingOverlay/selectors";
-import colors from "helpers/colorPalette";
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -261,7 +260,7 @@ export default ({ ...props }) => {
     subActions: [],
     mainAction: can_modify
       ? {
-          color: colors.red[0],
+          color: "red",
           label: t("Xóa nhóm quyền"),
           onClick: () => setModal(<DeleteGroupPermissionModal item={detail} />),
         }
