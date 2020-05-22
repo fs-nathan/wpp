@@ -28,6 +28,8 @@ import {
   TASK_OFFER_BY_DEPARTMENT,
   UPDATE_GROUP_OFFER_OFFERPAGE_ERROR,
   UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
   UPLOAD_DOCUMENT_OFFER_SUCCESS,
 } from './types';
 
@@ -174,6 +176,26 @@ export function* doLoadDetailOffer({ payload }) {
     yield put({ type: LOAD_DETAIL_OFFER_SUCCESS, payload: result.data })
   } catch (err) {
     yield put({ type: LOAD_DETAIL_OFFER_ERROR, payload: err.toString() })
+  }
+}
+export function* doUpdateOfferDetailDescriptionSection({ payload }) {
+  try {
+    const { offerId, title, content, offerGroupId, priorityCode } = payload
+    const config = {
+      url: "/offers/personal/update-info",
+      method: "POST",
+      data: {
+        offer_id: offerId,
+        title,
+        content,
+        offer_group_id: offerGroupId,
+        priority: priorityCode,
+      },
+    }
+    const result = yield apiService(config)
+    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, payload: err.toString() })
   }
 }
 export function* doDeleteOffer({ payload }) {

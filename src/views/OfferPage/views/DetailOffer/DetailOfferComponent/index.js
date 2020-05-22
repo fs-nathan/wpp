@@ -54,6 +54,7 @@ const DetailOffer = ({
         priority_code={priority_code}
         type_name={type_name}
         members_monitor={members_monitor}
+        offer_group_id={offer_group_id}
       />
       <div className="offerDetailContainer-verticalLine" />
       <RightContent

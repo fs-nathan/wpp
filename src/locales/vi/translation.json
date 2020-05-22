@@ -1316,6 +1316,9 @@
   "OFFER_PAGE": {
     "DETAIL_OFFER": {
       "TITLE": "Chi tiết đề xuất",
+      "OFFER_PRIORITY_EDITING": {
+        "TITLE": "Chỉnh sửa"
+      },
       "DELETE_OFFER": "Xóa đề xuất",
       "ESCAPE": "Thoát"
     },

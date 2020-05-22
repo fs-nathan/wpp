@@ -14,6 +14,7 @@ import {
   LOADPAGE_TASK_DUE,
   LOADPAGE_TASK_ROLE,
   LOAD_DETAIL_OFFER,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
   DELETE_OFFER,
   LOAD_OFFER_BY_DEPARTMENT_ID,
   LOAD_OFFER_BY_GROUP_ID,
@@ -125,6 +126,12 @@ export const loadDetailOffer = ({ id }) => {
   return {
     type: LOAD_DETAIL_OFFER,
     payload: { id }
+  }
+}
+export const updateOfferDetailDescriptionSection = ({ offerId, title, content, offerGroupId, priorityCode }) => {
+  return {
+    type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
+    payload: { offerId, title, content, offerGroupId, priorityCode }
   }
 }
 export const deleteOffer = ({ id }) => {

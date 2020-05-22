@@ -1007,6 +1007,9 @@
   "OFFER_PAGE": {
     "DETAIL_OFFER": {
       "TITLE": "Offer Detail",
+      "OFFER_PRIORITY_EDITING": {
+        "TITLE": "Edit"
+      },
       "DELETE_OFFER": "Delete offer",
       "ESCAPE": "Close"
     },

@@ -1,4 +1,4 @@
-import { Avatar, Button, Grid, IconButton } from "@material-ui/core";
+import { Avatar, Button, Grid, IconButton, TextField } from '@material-ui/core';
 import { AddCircle } from "@material-ui/icons";
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -14,11 +14,15 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from "react"
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor } from "views/OfferPage/redux/actions";
+import TitleSectionModal from '../../../../../../components/TitleSectionModal';
+import JobDetailModalWrap from '../../../../../JobDetailPage/JobDetailModalWrap';
+import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import CustomAddOfferMemberModal from "../AddOfferMemberModal";
 import DocumentFileModal from "../SendFile/DocumentFileModal.js";
 import SendFileModal from "../SendFile/SendFileModal";
 import { styles } from '../style';
 import './styles.scss';
+import { getPriorityEditingTitle } from './i18nSelectors';
 
 
 
@@ -67,22 +71,71 @@ const RenderChipItem = (priority_code, priority_name) => {
       chipBgColorClassName = 'bg--orange';
   }
   return (
-    <div className={clsx('offerDetail-detailDescription-offerPriorityName', chipBgColorClassName)}>
+    <div className={
+      clsx(
+        'offerDetail-detailDescription-priorityAndOfferTypeContainer-chipContainer-offerPriorityName',
+        chipBgColorClassName
+      )
+    }>
       {priority_name}
     </div>
   );
 };
-const DetailDescription = ({ priority_name, priority_code, type_name, content, title }) => {
+const RenderUpdateOfferDetailDescriptionSectionModal = (
+  openUpdateOfferModal, setOpenUpdateOfferModal, offerId, title, content, priorityCode, offerGroupId
+) => {
+  return (
+    <OfferModal
+      isOpen={openUpdateOfferModal}
+      setOpen={setOpenUpdateOfferModal}
+      isUpdateOffer
+      isUpdateOfferDetailDescriptionSection
+      item={{
+        id: offerId,
+        title,
+        content,
+        priority_code: priorityCode,
+        offer_group_id: offerGroupId
+      }}
+    />
+  );
+};
+const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, content, title, offer_group_id }) => {
+  const { t } = useTranslation();
+  const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
+
   return (
     <>
-      <Grid container>
-        {!isEmpty(type_name) &&
-         <div className="offerDetail-detailDescription-offerTypeName">
-           {type_name}
-         </div>
+      <div className="offerDetail-detailDescription-priorityAndOfferTypeContainer">
+        <div className="offerDetail-detailDescription-priorityAndOfferTypeContainer-chipContainer">
+          {!isEmpty(type_name) &&
+           <div className="offerDetail-detailDescription-priorityAndOfferTypeContainer-chipContainer-offerTypeName">
+             {type_name}
+           </div>
+          }
+          {RenderChipItem(priority_code, priority_name)}
+        </div>
+        <Button
+          className="offerDetail-detailDescription-priorityAndOfferTypeContainer-editBtn"
+          size="small"
+          onClick={() => {setOpenUpdateOfferModal(true)}}
+        >
+          {getPriorityEditingTitle(t)}
+        </Button>
+        {
+          openUpdateOfferModal && (
+            RenderUpdateOfferDetailDescriptionSectionModal(
+              openUpdateOfferModal,
+              setOpenUpdateOfferModal,
+              offer_id,
+              title,
+              content,
+              priority_code,
+              offer_group_id
+            )
+          )
         }
-        {RenderChipItem(priority_code, priority_name)}
-      </Grid>
+      </div>
       <div>
         <div className="offerDetail-detailDescription-title">{title}</div>
       </div>
@@ -385,6 +438,7 @@ export default function LeftContent({
   user_create_avatar,
   user_create_id,
   members_monitor,
+  offer_group_id,
   id
 }) {
   const classes = styles();
@@ -420,11 +474,13 @@ export default function LeftContent({
         user_create_avatar={user_create_avatar}
       />
       <DetailDescription
+        offer_id={id}
         type_name={type_name}
         priority_name={priority_name}
         priority_code={priority_code}
         content={content}
         title={title}
+        offer_group_id={offer_group_id}
       />
       <RenderListFile can_modify={can_modify} offer_id={id} documents={documents} />
       <PersonCanApprove can_modify={can_modify} offer_id={id} memberCanAddInApprove={memberCanAdd()} members_can_approve={members_can_approve} />

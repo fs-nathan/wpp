@@ -17,6 +17,7 @@ import {
   HANDLE_OFFER_OFFERPAGE_SUCCESS,
   LOAD_DETAIL_OFFER,
   LOAD_DETAIL_OFFER_SUCCESS,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
   LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS,
   LOAD_OFFER_BY_GROUP_ID_SUCCESS,
   LOAD_OFFER_BY_PROJECT_ID_SUCCESS,
@@ -184,6 +185,16 @@ function taskReducer(state = initialState, action) {
           loading: false,
         },
       }
+    case UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS:
+      return {
+        ...state,
+        [DETAIL_OFFER]: {
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            ...action.payload.data_offer,
+          },
+        }
+      };
     case DELETE_OFFER_SUCCESSFULLY:
       const { deletedState, offerId } = action.payload;
       if (deletedState === true) {

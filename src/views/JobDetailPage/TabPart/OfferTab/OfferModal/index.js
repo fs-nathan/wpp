@@ -15,6 +15,7 @@ import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
+import { updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
 import ShareFromLibraryModal from '../../../ChatComponent/ShareFromLibraryModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
@@ -95,8 +96,8 @@ const OfferModal = (props) => {
         const monitorsIndexes = user_monitors.map(monitor => findIndex(members, member => member.id === monitor.id))
         setMonitors(monitorsIndexes.filter(idx => idx !== -1))
       }
-      if (priority_code) item.priority = priorityList[priority_code];
-      if (id) item.offer_id = id;
+      if (priority_code != null) item.priority = priorityList[priority_code];
+      if (id != null) item.offer_id = id;
       setTempSelectedItem(item)
     }
   }, [item, members])
@@ -112,7 +113,7 @@ const OfferModal = (props) => {
       setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
       setParams("file_ids", tempSelectedItem.file_ids.filter(file => file.id !== fileId));
     }
-    if (props.isOffer) {
+    if (props.isUpdateOffer) {
       let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
       // Build a callback that allow saga remove file in state array
       // Call api
@@ -185,19 +186,19 @@ const OfferModal = (props) => {
 
   function onClickUpdateOffer() {
     props.setOpen(false)
-    if (tempSelectedItem.content) {
-      dispatch(updateOffer({
-        task_id: taskId,
-        offer_id: tempSelectedItem.offer_id,
-        user_hander: handlers.map((id) => members[id].id),
-        user_monitor: monitors.map((id) => members[id].id),
-        title: tempSelectedItem.title,
-        content: tempSelectedItem.content,
-        offer_group_id: get(tempSelectedItem, 'offer_group_id.value'),
-        priority: get(tempSelectedItem, 'priority.id'),
-      }))
+    if (props.isUpdateOfferDetailDescriptionSection) {
+      if (tempSelectedItem.content) {
+        dispatch(updateOfferDetailDescriptionSection({
+          offerId: tempSelectedItem.offer_id,
+          title: tempSelectedItem.title,
+          content: tempSelectedItem.content,
+          offerGroupId: get(tempSelectedItem, 'offer_group_id'),
+          priorityCode: get(tempSelectedItem, 'priority.id'),
+        }))
+      }
+    } else {
+
     }
-    setParams("content", '')
   }
 
   function handleDeleteHandler(i) {
@@ -232,10 +233,16 @@ const OfferModal = (props) => {
   }
 
   function validate() {
-    return tempSelectedItem.content && tempSelectedItem.title
-      && handlers.length
-      && tempSelectedItem.offer_group_id
-      && tempSelectedItem.priority
+    const { isUpdateOfferDetailDescriptionSection, isUpdateOfferApprovalCondition } = props;
+    const { title, content, offer_group_id, priority } = tempSelectedItem;
+    if (isUpdateOfferDetailDescriptionSection) {
+      return title && content;
+    } else {
+      return title && content
+             && offer_group_id
+             && priority
+             && handlers.length
+    }
   }
   const selectConditionMember = (e) => {
     if (e.value == "OR") {
@@ -246,198 +253,228 @@ const OfferModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={props.isOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
+      title={props.isUpdateOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
       open={props.isOpen}
       setOpen={props.setOpen}
-      confirmRender={() => props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
-      onConfirm={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
+      confirmRender={() => "Hoàn Thành"}
+      onConfirm={props.isUpdateOffer ? onClickUpdateOffer : onClickCreateOffer}
       canConfirm={validate()}
       className="offerModal"
     >
       <React.Fragment>
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
-        <TextField
-          className="offerModal--titleText"
-          placeholder={t('LABEL_CHAT_TASK_NHAP_TIEU_DE_DE_XUAT')}
-          variant="outlined"
-          fullWidth
-          value={tempSelectedItem.title}
-          onChange={e => setParams("title", e.target.value)}
-        />
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_DE_XUAT')} isRequired />
-        <TextField
-          className="offerModal--content"
-          fullWidth
-          multiline
-          rows="7"
-          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
-          variant="outlined"
-          value={tempSelectedItem ? tempSelectedItem.content : ""}
-          onChange={e => setParams("content", e.target.value)}
-        />
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
-        <CustomSelect
-          options={offersGroup}
-          onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
-        />
-        <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} isRequired />
-        <div>
-          {handlers.map((index) =>
-            <Chip
-              key={index}
-              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-              label={members[index].name}
-              onDelete={handleDeleteHandler(index)}
-            />
-          )}
-          <IconButton className="offerModal--buttonAdd" onClick={openAddHandlersDialog}>
-            <Icon size={1} path={mdiPlusCircleOutline} />
-            <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-          </IconButton>
-          <AddOfferMemberModal
-            isOpen={isOpenAddHandler}
-            setOpen={setOpenAddHandler}
-            value={handlers}
-            onChange={setHandlers}
-            members={members}
-            disableIndexes={[...approves, createUserIndex]}
-          />
-        </div>
-        <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
-        <div>
-          {monitors.map((index) =>
-            <Chip
-              key={index}
-              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-              label={members[index].name}
-              onDelete={handleDeleteMonitor(index)}
-            />
-          )}
-          <IconButton
-            className="offerModal--buttonAdd"
-            onClick={openAddMonitorsDialog}>
-            <Icon size={1} path={mdiPlusCircleOutline} />
-            <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-          </IconButton>
-          <AddOfferMemberModal
-            isOpen={isOpenAddMonitor}
-            setOpen={setOpenAddMonitor}
-            value={monitors}
-            onChange={setMonitors}
-            members={members}
-            disableIndexes={[...handlers, createUserIndex]}
-          />
-        </div>
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
-        <CommonPriorityForm
-          labels={priorityList}
-          priority={tempSelectedItem.priority.value}
-          handleChangeLabel={priorityItem =>
-            setParams('priority', priorityItem)
-          }
-        />
-        <TitleSectionModal label={'Điều kiện được duyệt'} />
-        <Grid container spacing={3}>
-          <Grid item xs={7}>
-            <Grid container alignItems="center">
-              <div className="offerModal--input_rate_prefix_1">
-                <div>Tỷ lệ thành viên đồng ý ≥</div>
-              </div>
-              <div className="offerModal--input__rate">
-                <input placeholder={minRateAccept} onChange={(e) => setMinRateAccept(e.target.value)} />
-              </div>
-              <div className="offerModal--input_rate_suffix">
-                <div>%</div>
-              </div>
-
-            </Grid>
-          </Grid>
-          <Grid item xs={1}>
-            <CustomSelect
-              className="offerModal--custom_select"
-              options={[{ label: "Hoặc", value: "OR" }, { label: "Và", value: "AND" }]}
-              placeholder="Hoặc"
-              onChange={(condition_logic) => setParams("condition_logic", condition_logic.value)}
-            />
-          </Grid>
-          {
-            minRateAccept >= 100 && get(tempSelectedItem, "condition_logic") === "OR" &&
-            <>
-              <Grid item xs={7}>
-                <Grid container >
-                  <CustomSelect
-                    options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
-                    onChange={selectConditionMember}
-                    placeholder="Một số thành viên sau đồng ý"
-                  />
-                </Grid>
-              </Grid>
-              <Grid item xs={3}>
-                <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
-                  <Icon size={1} path={mdiPlusCircleOutline} />
-                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-                </IconButton>
-                <AddOfferMemberModal
-                  isOpen={isOpenAddApprove}
-                  setOpen={setOpenAddAppove}
-                  value={approves}
-                  onChange={setApproves}
-                  members={filterUserInHandlers()}
-                  disableIndexes={[...monitors, createUserIndex]}
-                />
-              </Grid>
-            </>
-          }
-          {
-            minRateAccept < 100 &&
-            <>
-              <Grid item xs={7}>
-                <Grid container >
-                  <CustomSelect
-                    options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
-                    onChange={(condition_logic_member) => setParams("condition_logic_member", condition_logic_member)}
-                    placeholder="Một số thành viên sau đồng ý"
-                  />
-                </Grid>
-              </Grid>
-              <Grid item xs={3}>
-                <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
-                  <Icon size={1} path={mdiPlusCircleOutline} />
-                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-                </IconButton>
-                <AddOfferMemberModal
-                  isOpen={isOpenAddApprove}
-                  setOpen={setOpenAddAppove}
-                  value={approves}
-                  onChange={setApproves}
-                  members={filterUserInHandlers()}
-                  disableIndexes={[...monitors, createUserIndex]}
-                />
-              </Grid>
-            </>
-          }
-          <Grid item xs={12}>
-            <div>
-              {approves.map((index) =>
-                <Chip
-                  key={index}
-                  avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-                  label={members[index].name}
-                  onDelete={handleDeleteApprove(index)}
-                />
-              )}
-            </div>
-          </Grid>
-        </Grid>
-        <label className="offerModal--attach" >
-          <Button variant="outlined" component="span" onClick={() => setOpenShareFromLibraryModal(true)} fullWidth className={'classes.button'}>
-            <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
-        </label>
         {
-          selectedFilesFromLibrary &&
-          selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+          !props.isUpdateOffer || props.isUpdateOfferDetailDescriptionSection ? (
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
+              <TextField
+                className="offerModal--titleText"
+                placeholder={t('LABEL_CHAT_TASK_NHAP_TIEU_DE_DE_XUAT')}
+                variant="outlined"
+                fullWidth
+                value={tempSelectedItem.title}
+                onChange={e => setParams("title", e.target.value)}
+              />
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_DE_XUAT')} isRequired />
+              <TextField
+                className="offerModal--content"
+                fullWidth
+                multiline
+                rows="7"
+                placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
+                variant="outlined"
+                value={tempSelectedItem ? tempSelectedItem.content : ""}
+                onChange={e => setParams("content", e.target.value)}
+              />
+            </>
+          ) : null
         }
-        <ShareFromLibraryModal open={openShareFromLibraryModal} setOpen={setOpenShareFromLibraryModal} onClickConfirm={handleSelectedFilesFromLibrary}/>
+        {
+          !props.isUpdateOffer ? (
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
+              <CustomSelect
+                options={offersGroup}
+                onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
+              />
+              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} isRequired />
+              <div>
+                {handlers.map((index) =>
+                  <Chip
+                    key={index}
+                    avatar={<Avatar alt="avatar" src={members[index].avatar} />}
+                    label={members[index].name}
+                    onDelete={handleDeleteHandler(index)}
+                  />
+                )}
+                <IconButton className="offerModal--buttonAdd" onClick={openAddHandlersDialog}>
+                  <Icon size={1} path={mdiPlusCircleOutline} />
+                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                </IconButton>
+                <AddOfferMemberModal
+                  isOpen={isOpenAddHandler}
+                  setOpen={setOpenAddHandler}
+                  value={handlers}
+                  onChange={setHandlers}
+                  members={members}
+                  disableIndexes={[...approves, createUserIndex]}
+                />
+              </div>
+              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
+              <div>
+                {monitors.map((index) =>
+                  <Chip
+                    key={index}
+                    avatar={<Avatar alt="avatar" src={members[index].avatar} />}
+                    label={members[index].name}
+                    onDelete={handleDeleteMonitor(index)}
+                  />
+                )}
+                <IconButton
+                  className="offerModal--buttonAdd"
+                  onClick={openAddMonitorsDialog}>
+                  <Icon size={1} path={mdiPlusCircleOutline} />
+                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                </IconButton>
+                <AddOfferMemberModal
+                  isOpen={isOpenAddMonitor}
+                  setOpen={setOpenAddMonitor}
+                  value={monitors}
+                  onChange={setMonitors}
+                  members={members}
+                  disableIndexes={[...handlers, createUserIndex]}
+                />
+              </div>
+            </>
+          ) : null
+        }
+        {
+          !props.isUpdateOffer || props.isUpdateOfferDetailDescriptionSection ? (
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
+              <CommonPriorityForm
+                labels={priorityList}
+                priority={tempSelectedItem.priority.value}
+                handleChangeLabel={priorityItem =>
+                  setParams('priority', priorityItem)
+                }
+              />
+            </>
+          ) : null
+        }
+        {
+          !props.isUpdateOffer || props.isUpdateOfferApprovalCondition ? (
+            <>
+              <TitleSectionModal label={'Điều kiện được duyệt'} />
+              <Grid container spacing={3}>
+                <Grid item xs={7}>
+                  <Grid container alignItems="center">
+                    <div className="offerModal--input_rate_prefix_1">
+                      <div>Tỷ lệ thành viên đồng ý ≥</div>
+                    </div>
+                    <div className="offerModal--input__rate">
+                      <input placeholder={minRateAccept} onChange={(e) => setMinRateAccept(e.target.value)} />
+                    </div>
+                    <div className="offerModal--input_rate_suffix">
+                      <div>%</div>
+                    </div>
+
+                  </Grid>
+                </Grid>
+                <Grid item xs={1}>
+                  <CustomSelect
+                    className="offerModal--custom_select"
+                    options={[{ label: "Hoặc", value: "OR" }, { label: "Và", value: "AND" }]}
+                    placeholder="Hoặc"
+                    onChange={(condition_logic) => setParams("condition_logic", condition_logic.value)}
+                  />
+                </Grid>
+                {
+                  minRateAccept >= 100 && get(tempSelectedItem, "condition_logic") === "OR" &&
+                  <>
+                    <Grid item xs={7}>
+                      <Grid container >
+                        <CustomSelect
+                          options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
+                          onChange={selectConditionMember}
+                          placeholder="Một số thành viên sau đồng ý"
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
+                        <Icon size={1} path={mdiPlusCircleOutline} />
+                        <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                      </IconButton>
+                      <AddOfferMemberModal
+                        isOpen={isOpenAddApprove}
+                        setOpen={setOpenAddAppove}
+                        value={approves}
+                        onChange={setApproves}
+                        members={filterUserInHandlers()}
+                        disableIndexes={[...monitors, createUserIndex]}
+                      />
+                    </Grid>
+                  </>
+                }
+                {
+                  minRateAccept < 100 &&
+                  <>
+                    <Grid item xs={7}>
+                      <Grid container >
+                        <CustomSelect
+                          options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
+                          onChange={(condition_logic_member) => setParams("condition_logic_member", condition_logic_member)}
+                          placeholder="Một số thành viên sau đồng ý"
+                        />
+                      </Grid>
+                    </Grid>
+                    <Grid item xs={3}>
+                      <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
+                        <Icon size={1} path={mdiPlusCircleOutline} />
+                        <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                      </IconButton>
+                      <AddOfferMemberModal
+                        isOpen={isOpenAddApprove}
+                        setOpen={setOpenAddAppove}
+                        value={approves}
+                        onChange={setApproves}
+                        members={filterUserInHandlers()}
+                        disableIndexes={[...monitors, createUserIndex]}
+                      />
+                    </Grid>
+                  </>
+                }
+                <Grid item xs={12}>
+                  <div>
+                    {approves.map((index) =>
+                      <Chip
+                        key={index}
+                        avatar={<Avatar alt="avatar" src={members[index].avatar} />}
+                        label={members[index].name}
+                        onDelete={handleDeleteApprove(index)}
+                      />
+                    )}
+                  </div>
+                </Grid>
+              </Grid>
+            </>
+          ) : null
+        }
+        {
+          !props.isUpdateOffer ? (
+            <>
+              <label className="offerModal--attach" >
+                <Button variant="outlined" component="span" onClick={() => setOpenShareFromLibraryModal(true)} fullWidth className={'classes.button'}>
+                  <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
+              </label>
+              {
+                selectedFilesFromLibrary &&
+                selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+              }
+              <ShareFromLibraryModal open={openShareFromLibraryModal} setOpen={setOpenShareFromLibraryModal} onClickConfirm={handleSelectedFilesFromLibrary}/>
+            </>
+          ) : null
+        }
       </React.Fragment>
     </JobDetailModalWrap>
   )

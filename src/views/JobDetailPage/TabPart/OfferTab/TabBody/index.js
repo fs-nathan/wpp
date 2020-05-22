@@ -150,7 +150,7 @@ function TabBody(props) {
           {...props}
           isOpen={open}
           setOpen={setOpen}
-          isOffer
+          isUpdateOffer
           item={selectedItem}
         />
         <AlertModal
