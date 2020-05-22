@@ -1,8 +1,7 @@
 .MemberModal {
   .MuiDialogContent-root {
-    min-width: 800px;
     padding: 0;
-    height: 600px;
+    height: 100%;
   }
   &--file {
     display: flex;

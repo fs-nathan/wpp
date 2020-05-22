@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import PermissionMemberModal from '../PermissionMemberModal';
+import './styles.scss';
 
 function MemberPermission({ permission, memberId }) {
   const { t } = useTranslation()
@@ -25,11 +26,12 @@ function MemberPermission({ permission, memberId }) {
   return (
     <div className="memberPermission">
       {!permission ?
-        <IconButton style={{ float: 'right' }}
+        <IconButton
+          className="memberPermission--button"
           size='small'
           onClick={openSelectPermissionModal}
         >
-          <Icon path={mdiPlusCircle} size={1} color={groupActiveColor || '#03a9f4'} />
+          <Icon path={mdiPlusCircle} size={'1.2rem'} color={groupActiveColor || '#03a9f4'} />
           &nbsp;
           {t('LABEL_CHAT_TASK_GAN_QUYEN')}
         </IconButton>

@@ -41,7 +41,7 @@ const MenuListItem = ({ item, colorIcon = '#fff', isLink }) => {
     if (isLink) {
       dispatch(loadChat(taskId, undefined, true, undefined, item.chat_id))
     } else {
-      dispatch(loadChat(taskId, undefined, true, item.id))
+      dispatch(loadChat(taskId, undefined, true, item.id, item.chat_id))
     }
   }
 

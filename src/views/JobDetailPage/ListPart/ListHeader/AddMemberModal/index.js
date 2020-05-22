@@ -29,14 +29,14 @@ const FlexMemberProject = styled(Typography)`
     justify-content: center;
     align-items: center
     height: 60px;
-    // border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
 `
 
 const FlexJobMember = styled(Typography)`
     display: flex;
     align-items: center
     height: 60px;
-    // border-bottom: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
 `
 
 function AddMemberModal({ setOpen, isOpen }) {
@@ -83,7 +83,9 @@ function AddMemberModal({ setOpen, isOpen }) {
                 {t('+ Thêm tất cả')}
               </ButtonAddAll> */}
               <div className="AddMemberModal--alert">
-                <Icon path={mdiAlertCircleOutline} size={1}></Icon>
+                <div>
+                  <Icon path={mdiAlertCircleOutline} size={'15px'}></Icon>
+                </div>
                 <div className="AddMemberModal--alertText">
                   Hãy thêm thành viên vào dự án trước khi gán cho công việc!
                 </div>

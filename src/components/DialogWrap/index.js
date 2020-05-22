@@ -30,6 +30,7 @@ function DialogWrap({
   return (
     <Dialog
       fullWidth
+      scroll="body"
       {...rest} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >
       <DialogTitle disableTypography >
         <ColorTypo className="dialogWrap--title" >{title}</ColorTypo>

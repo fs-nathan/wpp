@@ -82,7 +82,7 @@ function CreateJobModal(props) {
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.date'));
+  const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.status.date'));
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
