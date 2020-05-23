@@ -1,7 +1,7 @@
-import { Avatar, Button, Chip, Grid, IconButton, TextField, Typography } from '@material-ui/core';
+import { Avatar, Button, Chip, Grid, IconButton, TextField } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
+import { deleteDocumentToOffer, getMember } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
 import lodash from 'lodash';
@@ -16,13 +16,11 @@ import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJo
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
 import { updateOfferApprovalCondition, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
-import ShareFromLibraryModal from '../../../ChatComponent/ShareFromLibraryModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
 import { CONDITION_LOGIC, CONDITION_LOGIC_MEMBER } from './constants';
 import OfferFile from './OfferFile';
-import DocumentFileModal from './SendFile/DocumentFileModal';
-import SendFileModal from './SendFile/SendFileModal';
+import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import './styles.scss';
 
 const OfferModal = (props) => {
@@ -43,7 +41,7 @@ const OfferModal = (props) => {
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
   const [selectedFilesFromLibrary, setSelectedFilesFromLibrary] = React.useState([])
-  const [openShareFromLibraryModal, setOpenShareFromLibraryModal] = useState(false);
+  const [openSendFileModal, setOpenSendFileModal] = useState(false);
   /// Mở modal các thành viên sau phải duyệt
   const [isOpenAddApprovalMemberModal, setOpenAddApprovalMemberModal] = React.useState(false)
   const { item } = props;
@@ -119,8 +117,9 @@ const OfferModal = (props) => {
   })
   const handleDeleteFile = fileId => {
     let removeFileCallBack = () => {
-      setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
+      setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
       setParams("file_ids", tempSelectedItem.file_ids.filter(file => file.id !== fileId));
+      setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
     }
     if (props.isUpdateOffer) {
       let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
@@ -136,6 +135,10 @@ const OfferModal = (props) => {
   React.useEffect(() => {
     filterUserInHandlers()
   }, [filterUserInHandlers, handlers])
+  const handleUploadSelectedFilesFromPC = async (e) => {
+    const { files } = e.target;
+    setParams("files", [...tempSelectedItem.files, ...files]);
+  }
   const handleSelectedFilesFromLibrary = (selectedFiles) => {
     if (selectedFiles) {
       setParams("file_ids", [...tempSelectedItem.file_ids, ...selectedFiles.map(file => (file.id))]);
@@ -164,6 +167,10 @@ const OfferModal = (props) => {
     approvalMembers.forEach((value, index) => {
       dataCreateOfferFormData.append("member_accepted_important[" + index + "]", members[value].id)
     })
+    // add uploaded files to form data
+    tempSelectedItem.files.forEach(file => {
+      dataCreateOfferFormData.append("file", file, file.name);
+    });
     // add selected file ids from library to form data
     tempSelectedItem.file_ids.forEach((id, index) => {
       dataCreateOfferFormData.append(`file_ids[${index}]`, id);
@@ -488,14 +495,23 @@ const OfferModal = (props) => {
           !props.isUpdateOffer ? (
             <>
               <label className="offerModal--attach" >
-                <Button variant="outlined" component="span" onClick={() => setOpenShareFromLibraryModal(true)} fullWidth className={'classes.button'}>
+                <Button variant="outlined" component="span" onClick={() => setOpenSendFileModal(true)} fullWidth className={'classes.button'}>
                   <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
               </label>
+              {
+                tempSelectedItem.files &&
+                tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+              }
               {
                 selectedFilesFromLibrary &&
                 selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
               }
-              <ShareFromLibraryModal open={openShareFromLibraryModal} setOpen={setOpenShareFromLibraryModal} onClickConfirm={handleSelectedFilesFromLibrary}/>
+              <SendFileModal
+                open={openSendFileModal}
+                setOpen={setOpenSendFileModal}
+                handleUploadFile={handleUploadSelectedFilesFromPC}
+                onConfirmShare={handleSelectedFilesFromLibrary}
+              />
             </>
           ) : null
         }
