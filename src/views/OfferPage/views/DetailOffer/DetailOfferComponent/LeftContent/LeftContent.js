@@ -236,7 +236,7 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
             </Grid>
           ))}
       </Grid>
-      <div className="offerDetail-attachedDocument-addFileBtn">
+      <div className="offerDetail-attachedDocument-addFileBtnContainer">
         <label htmlFor="icon-button-file">
           <Button
             size="small"
@@ -306,24 +306,22 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
           <Grid container>
             {!isEmpty(members_can_approve) && (
               members_can_approve.map((member, i) => (
-                <Grid item xs={12} style={{ marginTop: '2px' }} direction="row" alignItems="center" justify="center">
+                <Grid item xs={12} className="offerDetail-handlingPerson-item">
                   <Grid container>
                     <Grid item xs={2}>
                       <Avatar src={get(member, "avatar")} />
                     </Grid>
                     <Grid item>
-                      <Grid
-                        container
-                        direction="column"
-                        className="offerDetail-handlingPerson-infoContainer"
-                        justify="center"
-                      >
+                      <div className="offerDetail-handlingPerson-infoContainer">
                         <div className="offerDetail-handlingPerson-name">{get(member, "name")}</div>
                         <div className="offerDetail-handlingPerson-position">{get(member, "position")}</div>
-                      </Grid>
+                      </div>
                     </Grid>
 
-                    <IconButton onClick={() => handleDeleteMemberHandle({ member_id: get(member, "id") })} >
+                    <IconButton
+                      className="offerDetail-handlingPerson-deleteBtn"
+                      onClick={() => handleDeleteMemberHandle({ member_id: get(member, "id") })}
+                    >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
                   </Grid>
@@ -391,23 +389,21 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
         <Grid container>
           {!isEmpty(members_monitor) && (
             members_monitor.map(member => (
-              <Grid item xs={12} direction="row" alignItems="center" justify="center">
+              <Grid item xs={12} className="offerDetail-monitoringPerson-item">
                 <Grid container>
                   <Grid item xs={2}>
                     <Avatar src={get(member, "avatar")} />
                   </Grid>
                   <Grid item>
-                    <Grid
-                      container
-                      direction="column"
-                      className="offerDetail-monitoringPerson-infoContainer"
-                      justify="center"
-                    >
-                      <h5 className="offerDetail-monitoringPerson-name">{get(member, "name")}</h5>
+                    <div className="offerDetail-monitoringPerson-infoContainer">
+                      <div className="offerDetail-monitoringPerson-name">{get(member, "name")}</div>
                       <div className="offerDetail-monitoringPerson-position">{get(member, "position")}</div>
-                    </Grid>
+                    </div>
                   </Grid>
-                  <IconButton onClick={() => handleDeleteMemberMonitor({ offer_id, member_id: get(member, "id") })} >
+                  <IconButton
+                    className="offerDetail-monitoringPerson-deleteBtn"
+                    onClick={() => handleDeleteMemberMonitor({ offer_id, member_id: get(member, "id") })}
+                  >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
                 </Grid>
