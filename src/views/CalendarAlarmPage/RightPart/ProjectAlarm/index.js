@@ -5,6 +5,7 @@ import get from "lodash/get";
 import moment from "moment";
 import React from 'react';
 import { connect } from 'react-redux';
+import { LOCAL_PROJECT_REMINDS_STORAGE } from "views/CalendarPage/constants/attrs";
 import ViewDetailRemind from "views/CalendarPage/views/Modals/ViewDetailRemind";
 import { Context as CalendarAlarmContext } from '../../index';
 import { bgColorSelector, listProjectBasicInfoSelector, remindProjectSelector } from "../../selectors";
@@ -19,7 +20,7 @@ function CalendarProjectAlarm({
     expand, handleExpand
   } = React.useContext(CalendarAlarmContext);
 
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PROJECT_REMINDS_OPTIONS', {
+  const [localOptions, setLocalOptions] = useLocalStorage(LOCAL_PROJECT_REMINDS_STORAGE, {
     timeType: 3,
     timeRange: {
       startDate: moment().startOf("isoWeeks"),

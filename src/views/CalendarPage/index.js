@@ -1,13 +1,12 @@
 import { mdiCalendarClock, mdiCalendarMonth, mdiCalendarText } from '@mdi/js';
 import { listCalendarPermission } from "actions/calendar/permission/listPermission";
-import moment from "moment";
 import React, { Suspense } from "react";
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
+import { useMountedState } from 'react-use';
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
-import { useLocalStorage } from "../../hooks";
 import { Routes } from "./constants/routes";
 import routes from "./routes";
 import './style.scss';
@@ -19,15 +18,8 @@ const { Provider } = Context;
 function CalendarPage({
   doListPermission, permissions
 }) {
-  const { t } = useTranslation();
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_CALENDAR_OPTIONS', {
-    timeType: 3
-  });
-  const [timeRange, setTimeRange] = React.useState({
-    startDate: moment().startOf("isoWeek").toDate(),
-    endDate: moment().endOf("isoWeek").toDate()
-  });
 
+  const { t } = useTranslation();
   const listMenu = [
     {
       title: t('IDS_WP_WEEKLY_CALENDAR'),
@@ -51,10 +43,8 @@ function CalendarPage({
   ];
 
   React.useEffect(() => {
-    if (permissions.length === 0) {
-      doListPermission(false);
-    }
-  }, [doListPermission]);
+    doListPermission(false);
+  }, [doListPermission, useMountedState()]);
 
   return (
     <TwoColumnsLayout
@@ -62,10 +52,7 @@ function CalendarPage({
       rightRender={({ expand, handleExpand }) => (
         <Provider
           value={{
-            expand, handleExpand,
-            setTimeRange, timeRange,
-            localOptions, setLocalOptions,
-            permissions
+            expand, handleExpand, permissions
           }}
         >
           <div>

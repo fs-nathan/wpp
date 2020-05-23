@@ -23,6 +23,7 @@ import { SubTitle } from "./components/SubTitle";
 import { Title } from "./components/Title";
 import { categoryAttr } from "./contants";
 import HomeContext from "./HomeContext";
+import "./index.css";
 import {
   categoryListSelector,
   deletePostCategory,
@@ -85,6 +86,7 @@ const EnchanedChip = ({ id, logo, name }) => {
   return (
     <>
       <Chip
+        className="comp_home__chip"
         disabled={status === apiCallStatus.loading}
         avatar={<Avatar alt={name} src={logo} />}
         label={name}

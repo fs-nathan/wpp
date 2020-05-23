@@ -7,8 +7,9 @@ import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
+import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { get, loginlineParams, uniqueId } from "views/JobPage/utils";
+import { get, uniqueId } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
@@ -43,14 +44,10 @@ const ImageListField = ({
 }) => {
   const [field] = useField({ name });
   const handleChange = (files = []) => {
-    loginlineParams(files);
     field.onChange({
       target: {
         name,
-        value: [
-          ...(loginlineParams(field.value) || emptyArray),
-          ...loginlineParams(files),
-        ],
+        value: [...(field.value || emptyArray), ...files],
       },
     });
   };
@@ -124,10 +121,7 @@ const FileField = ({ name, id, children, ...props }) => {
           field.onChange({
             target: {
               name,
-              value: [
-                ...(loginlineParams(field.value) || emptyArray),
-                ...loginlineParams(e.target.files),
-              ],
+              value: [...(field.value || emptyArray), ...e.target.files],
             },
           });
         }}
@@ -177,7 +171,7 @@ const FilePreviewField = ({ name }) => {
                   {id && (
                     <label htmlFor={id}>
                       <AddButton
-                        onClick={loginlineParams}
+                        onClick={() => {}}
                         label={t("Thêm tài liệu")}
                       ></AddButton>
                     </label>
@@ -195,11 +189,15 @@ const ImagePreview = ({ file, onDelete }) => {
   console.log(file);
   const [src, setSrc] = useState();
   useEffect(() => {
-    var reader = new FileReader();
-    reader.onload = function (e) {
-      setSrc(e.target.result);
-    };
-    reader.readAsDataURL(file);
+    if (file.url_thumb || file.url) {
+      setSrc(file.url_thumb || file.url);
+    } else {
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        setSrc(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
   }, [file]);
   return (
     <div>
@@ -215,7 +213,16 @@ const ImagePreview = ({ file, onDelete }) => {
   );
 };
 function isFileImage(file) {
-  return file && file["type"].split("/")[0] === "image";
+  const acceptedImageTypes = [
+    "image/gif",
+    "image/jpeg",
+    "image/png",
+    "gif",
+    "jpeg",
+    "jpg",
+    "png",
+  ];
+  return file && acceptedImageTypes.includes(file["type"]);
 }
 const DropZone = ({ onChange, children }) => {
   const [isDragActive, setIsDragActive] = useState();
@@ -313,84 +320,103 @@ const CategoryField = ({ name, categories }) => {
 };
 export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
   const { t } = useTranslation();
+  const [open, setOpen] = useState();
   return (
-    <TasksCard.Container className={classes.root}>
-      <div className={classes.header}>
-        <div className={classes.headerTitle}>
-          {t("Tạo bài viết trên bảng tin nội bộ")}
-        </div>
-        <IconButton onClick={onClose} size="small">
-          <Close />
-        </IconButton>
-      </div>
-      <Box height="540px">
-        <TasksScrollbar>
-          <div className={classes.main}>
-            <TasksCard.Content>
-              <Stack large>
-                <div>
-                  <InputFormControl
-                    name="title"
-                    inputProps={{
-                      error: false,
-                      variant: "standard",
-                      className: classes.title,
-                      size: "medium",
-                      multiline: true,
-                      label: t("Tiêu đề bài viết..."),
-                    }}
-                  />
-                  <InputFormControl
-                    name="content"
-                    inputProps={{
-                      variant: "standard",
-                      className: classes.content,
-                      size: "medium",
-                      rows: 5,
-                      multiline: true,
-                      label: t("Nội dung bài viết..."),
-                    }}
-                  />
-                </div>
-                <CategoryField name="category" categories={categories} />
-                <FilePreviewField name="file" />
-              </Stack>
-            </TasksCard.Content>
-            <ImageListField
-              name="file"
-              placeholder={t("Thả file, hình ảnh vào đây...")}
-            />
+    <>
+      <TasksCard.Container className={classes.root}>
+        <div className={classes.header}>
+          <div className={classes.headerTitle}>
+            {t("Tạo bài viết trên bảng tin nội bộ")}
           </div>
-        </TasksScrollbar>
-      </Box>
-      <div className={classes.footer}>
-        <FileField name="file">
-          {(id) => (
-            <IconButton>
-              <label htmlFor={id}>
-                <AttachFile />
-              </label>
-            </IconButton>
-          )}
-        </FileField>
-        <ImageField name="file">
-          {(id) => (
-            <IconButton>
-              <label htmlFor={id}>
-                <Image />
-              </label>
-            </IconButton>
-          )}
-        </ImageField>
-        <Box flex="1" />
-        <PrimarySubmitAction loading={loading}>
-          {t("Đăng bài")}
-        </PrimarySubmitAction>
-      </div>
-    </TasksCard.Container>
+          <IconButton onClick={onClose} size="small">
+            <Close />
+          </IconButton>
+        </div>
+        <Box minHeight="540px">
+          <TasksScrollbar>
+            <div className={classes.main}>
+              <TasksCard.Content>
+                <Stack large>
+                  <div>
+                    <InputFormControl
+                      name="title"
+                      inputProps={{
+                        error: false,
+                        variant: "standard",
+                        className: classes.title,
+                        size: "medium",
+                        multiline: true,
+                        label: t("Tiêu đề bài viết..."),
+                      }}
+                    />
+                    <InputFormControl
+                      name="content"
+                      inputProps={{
+                        variant: "standard",
+                        className: classes.content,
+                        size: "medium",
+                        rows: 5,
+                        multiline: true,
+                        label: t("Nội dung bài viết..."),
+                      }}
+                    />
+                  </div>
+                  <CategoryField name="category" categories={categories} />
+                  <FilePreviewField name="file" />
+                </Stack>
+              </TasksCard.Content>
+              <ImageListField
+                name="file"
+                placeholder={t("Thả file, hình ảnh vào đây...")}
+              />
+            </div>
+          </TasksScrollbar>
+        </Box>
+        <div className={classes.footer}>
+          <IconButton onClick={() => setOpen(true)}>
+            <label>
+              <AttachFile />
+            </label>
+          </IconButton>
+          <ImageField name="file">
+            {(id) => (
+              <IconButton>
+                <label htmlFor={id}>
+                  <Image />
+                </label>
+              </IconButton>
+            )}
+          </ImageField>
+          <Box flex="1" />
+          <PrimarySubmitAction loading={loading}>
+            {t("Đăng bài")}
+          </PrimarySubmitAction>
+        </div>
+      </TasksCard.Container>
+      <ModalFileInput name="file" open={open} setOpen={setOpen} />
+    </>
   );
 };
-
+const ModalFileInput = ({ name, open, setOpen }) => {
+  const [field] = useField({ name });
+  const handleChange = (files = []) => {
+    field.onChange({
+      target: {
+        name,
+        value: [...(field.value || emptyArray), ...files],
+      },
+    });
+    setOpen(false);
+  };
+  return (
+    <SendFileModal
+      open={open}
+      setOpen={setOpen}
+      handleUploadFile={(e) => handleChange(e.target.files)}
+      onConfirmShare={handleChange}
+    />
+  );
+};
 export const PostCreatorForm = ({ initialValues = emptyObject, ...props }) => {
   const { t } = useTranslation();
   const validateMemo = useMemo(
@@ -437,11 +463,39 @@ export default ({ onClose, category }) => {
       initialValues={initialValues}
       onSubmit={(values) => {
         const finalValues = { ...values };
-        // finalValues.file = finalValues.file || [];
-        // if (finalValues.image && finalValues.image.length) {
-        //   finalValues.file = [...finalValues.file, ...finalValues.image];
-        // }
-        setAsyncAction(postModule.actions.createPost(finalValues));
+        finalValues.file = finalValues.file || [];
+        const isFileFromStore = (file) => !!file.id;
+        const isFileFromGoggle = (file) => !!file.file_id;
+        const { file_ids, file, google_data } = finalValues.file.reduce(
+          (result, f) => {
+            switch (true) {
+              case isFileFromStore(f):
+                result.file_ids.push(f.id);
+                break;
+              case isFileFromGoggle(f):
+                result.google_data.push(f);
+                break;
+              default:
+                result.file.push(f);
+                break;
+            }
+            return result;
+          },
+          {
+            file_ids: [],
+            file: [],
+            google_data: [],
+          }
+        );
+
+        setAsyncAction(
+          postModule.actions.createPost({
+            ...finalValues,
+            file_ids,
+            file,
+            google_data,
+          })
+        );
       }}
     >
       <PostCreatorPopupInner

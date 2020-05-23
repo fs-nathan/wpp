@@ -10,12 +10,11 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
-import { mdiAccountKey, mdiAccountMultipleCheck, mdiKey } from "@mdi/js";
+import { mdiAccountKey, mdiKey } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CustomTableProvider } from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
 import { bgColorSelector } from "components/LoadingOverlay/selectors";
-import colors from "helpers/colorPalette";
 import React, { useContext, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -31,16 +30,17 @@ import { GroupPermissionSettingsCotnext } from "..";
 import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
 import TasksScrollbar from "../components/TasksScrollbar";
 import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal";
-
+import "./index.css";
 const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
   return (
-    <Grid item container direction="column" style={{ flex: 1 }} {...props}>
-      <Grid
-        className="comp_CustomTable___header"
-        item
-        container
-        style={{ height: 70 }}
-      >
+    <Grid
+      className="comp_ColumnLayout"
+      item
+      container
+      direction="column"
+      {...props}
+    >
+      <Grid className="comp_CustomTable___header" item container>
         <ListItemLayout
           title={title}
           subTitle={subTitle}
@@ -99,20 +99,20 @@ const ColumnLeft = () => {
         </TableHead>
         <TableBody>
           {permissions.map(({ name, description }, i) => (
-            <TableRow key={i} className="comp_RecentTableRow table-body-row">
-              <StyledTableBodyCell className="comp_AvatarCell" align="left">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon
-                    color="#8d8d8d"
-                    style={{ width: "18px" }}
-                    path={mdiKey}
-                  ></Icon>
-                </div>
+            <TableRow
+              key={i}
+              className="comp_RecentTableRow comp_PermissionRow table-body-row "
+            >
+              <StyledTableBodyCell
+                style={{ paddingLeft: "20px" }}
+                className="comp_AvatarCell"
+                align="left"
+              >
+                <Icon
+                  color="#8d8d8d"
+                  style={{ width: "18px" }}
+                  path={mdiKey}
+                ></Icon>
               </StyledTableBodyCell>
               <StyledTableBodyCell className="comp_TitleCell" align="left">
                 <Typography
@@ -170,18 +170,14 @@ const ColumnRight = () => {
   } = useContext(GroupPermissionSettingsCotnext);
   return (
     <ColumnLayout
+      className="comp_rightColumn"
       title={t("Sử dụng nhóm quyền")}
-      subTitle={t("Phân phối nhóm quyền cho module và thành viên")}
-      style={{ width: 300 }}
+      subTitle={t("Nhóm quyền được phân phối")}
     >
-      <div
-        style={{
-          padding: "20px 27px 50px 20px",
-        }}
-      >
+      <div className="comp_rightColumn_content">
         <Stack>
           <b className="comp_QuickViewFilter__title">
-            {t("Gán nhóm quyền cho module")}
+            {t("Module được gán nhóm quyền")}
           </b>
           <Box>
             {permissionModules
@@ -194,17 +190,7 @@ const ColumnRight = () => {
           </Box>
           <Divider />
           <ListItemLayout
-            title={t("Thành viên được gán")}
-            subTitle={
-              <>
-                <Icon
-                  color="#8d8d8d"
-                  style={{ width: "1.4em", verticalAlign: "sub" }}
-                  path={mdiAccountMultipleCheck}
-                />{" "}
-                {t("Phân phối nhóm quyền cho module và thành viên")}
-              </>
-            }
+            title={t("Thành viên được gán nhóm quyền")}
           ></ListItemLayout>
           <Stack>
             {members_assigned.map(
@@ -274,7 +260,7 @@ export default ({ ...props }) => {
     subActions: [],
     mainAction: can_modify
       ? {
-          color: colors.red[0],
+          color: "red",
           label: t("Xóa nhóm quyền"),
           onClick: () => setModal(<DeleteGroupPermissionModal item={detail} />),
         }

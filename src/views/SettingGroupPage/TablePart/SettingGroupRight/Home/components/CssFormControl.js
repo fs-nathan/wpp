@@ -18,6 +18,7 @@ import "./CssFormControl.css";
 
 export const CssFormControl = ({
   children,
+  required,
   label,
   errorMessage,
   color,
@@ -29,6 +30,7 @@ export const CssFormControl = ({
       {label && (
         <Typography gutterBottom>
           <b>{label}</b>
+          {required && <span className="TitleSectionModal--asterisk">*</span>}
         </Typography>
       )}
       {children}

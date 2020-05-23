@@ -5,7 +5,7 @@
   display: grid;
   grid-template-rows: auto;
   grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
-  grid-template-areas: 'list table';
+  grid-template-areas: "list table";
 }
 .MuiChip-label {
   overflow: unset;
@@ -38,4 +38,8 @@
 
 li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiListItem-button:hover {
   background: #f2f5fa;
+}
+
+.u-colorWhite {
+  color: #fff;
 }
