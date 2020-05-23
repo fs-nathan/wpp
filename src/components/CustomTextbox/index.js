@@ -45,8 +45,8 @@ function CustomTextbox({
       >
         <div
           style={{
-            maxHeight: !isReadOnly || showMore ? 'initial' : maxHeight,
-            overflow: !isReadOnly || showMore ? 'initial' : 'hidden',
+            maxHeight: 'initial', //!isReadOnly || showMore ? 'initial' : maxHeight,
+            overflow: 'initial', //!isReadOnly || showMore ? 'initial' : 'hidden',
           }}
         >
           <div
@@ -59,9 +59,11 @@ function CustomTextbox({
             }}
           />
         </div>
-        {innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>
+        {/*
+        innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>
           {showMore ? t('DMH.COMP.CUSTOM_TEXTBOX.LESS') : t('DMH.COMP.CUSTOM_TEXTBOX.MORE')}
-        </span>}
+        </span>
+        */}
       </div >
     )
   } else {
