@@ -15,6 +15,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
+import { bgColorSelector } from "../../../selectors";
 import { membersSelector } from "./selectors";
 import './style.scss';
 
@@ -35,7 +36,7 @@ const DEFAULT_DATA = {
 };
 
 function CreatePersonalRemind({
-  open, setOpen, onConfirm, remindCategories,
+  open, setOpen, onConfirm, remindCategories, bgColor,
   members, doListMemebers, categoryID, isLoading = false
 }) {
 
@@ -222,11 +223,11 @@ function CreatePersonalRemind({
               }
               <Button
                 color="primary"
-                startIcon={<Icon path={mdiPlusCircle} size={0.8} color={"#009CF3"} />}
+                startIcon={<Icon path={mdiPlusCircle} size={0.8} color={bgColor.color} />}
                 onClick={() => setOpenReceiverDialog(true)}
                 className="remind_setting_userAssignBox_buttonAdd"
               >
-                {t('IDS_WP_COMMON_ADD')}
+                <span className="remind_setting_userAssignBox_buttonAdd_title">{t('IDS_WP_COMMON_ADD')}</span>
               </Button>
             </Box>
           </Box>
@@ -252,7 +253,8 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   state => ({
-    members: membersSelector(state)
+    members: membersSelector(state),
+    bgColor: bgColorSelector(state)
   }),
   mapDispatchToProps
 )(CreatePersonalRemind);

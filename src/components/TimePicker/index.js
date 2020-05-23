@@ -89,7 +89,7 @@ function TimePicker({ value, onChange }) {
                 <InputAdornment
                   position="end" className="comp_TimePicker__dropdownButton"
                 >
-                  <Icon path={mdiMenuDown} color="rgba(0,0,0.7)" size={1} onClick={handleClick} />
+                  <Icon path={mdiMenuDown} color="rgb(155,155,155)" size={1} onClick={handleClick} />
                 </InputAdornment>
             }}
           />
