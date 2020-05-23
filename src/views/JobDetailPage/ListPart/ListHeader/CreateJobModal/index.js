@@ -326,7 +326,7 @@ function CreateJobModal(props) {
         }
         {!isEdit &&
           <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
+            {date_status !== 0 && <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />}
             {date_status !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Typography className="createJob--timeWrap" component={'span'}>

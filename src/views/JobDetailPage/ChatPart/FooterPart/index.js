@@ -216,7 +216,7 @@ const FooterPart = ({
     dispatch(openCreateRemind(true, true))
   }
 
-  function handleClickMention(mention) {
+  function handleClickMention(mention = {}) {
     const tag = `<span style="color:#03A9F4;">@${mention.name}</span>&nbsp;`;
     const sel = window.getSelection();
     const range = sel.getRangeAt(0);

@@ -35,6 +35,7 @@ function JobDetailPage(props) {
     dispatch(getListStickersRequest());
     dispatch(getEmotions());
     dispatch(getGirdListTask());
+    dispatch(taskDetailAction.detailGroupPermissionDefault())
     dispatch(taskDetailAction.getRole());
     dispatch(taskDetailAction.getListOffer());
     dispatch(taskDetailAction.getPermission({ type: 4 }));

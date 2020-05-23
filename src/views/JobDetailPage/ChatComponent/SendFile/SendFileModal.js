@@ -71,8 +71,8 @@ const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile }) => {
           </div>
         </div>
       </CustomModal>
-      {(error && error.error_code === 'LIMIT_GROUP_SIZE') ?
-        <OutOfStorageDialog isOpen={isShareFromLib} setOpen={setShareFromLib} />
+      {(error === 'limit_group_size') ?
+        <OutOfStorageDialog isOpen={error === 'limit_group_size'} setOpen={setShareFromLib} />
         :
         <ShareFromLibraryModal
           open={isShareFromLib}

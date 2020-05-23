@@ -7,7 +7,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
-import { detailGroupPermissionDefault, removeGroupPermissionOfMember, updatePermission } from "actions/taskDetail/taskDetailActions";
+import { removeGroupPermissionOfMember, updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
 import DialogWrap from 'components/DialogWrap';
 import get from "lodash/get";
@@ -66,19 +66,20 @@ function PermissionMemberModal({ memberId, setOpen,
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
+  const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
   const [selectedValue, setSelectedValue] = React.useState(0);
   const [permissionsList, setPermissionsList] = React.useState([]);
   const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
 
-  useEffect(() => {
-    if (is_admin)
-      dispatch(detailGroupPermissionDefault())
-  }, [dispatch, is_admin])
+  // useEffect(() => {
+  //   if (is_admin)
+  //     dispatch(detailGroupPermissionDefault())
+  // }, [dispatch, is_admin])
 
   useEffect(() => {
+    console.log('PermissionMemberModal')
     if (is_admin && ownerPermissions)
       setPermissionsList(ownerPermissions.permissions)
     else {

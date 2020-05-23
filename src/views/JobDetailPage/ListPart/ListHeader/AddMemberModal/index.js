@@ -86,9 +86,7 @@ function AddMemberModal({ setOpen, isOpen }) {
                 <div>
                   <Icon path={mdiAlertCircleOutline} size={'15px'}></Icon>
                 </div>
-                <div className="AddMemberModal--alertText">
-                  Hãy thêm thành viên vào dự án trước khi gán cho công việc!
-                </div>
+                <div className="AddMemberModal--alertText">{t('LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN')}</div>
               </div>
               <div className="table-scroll-add-member">
                 <Scrollbars>

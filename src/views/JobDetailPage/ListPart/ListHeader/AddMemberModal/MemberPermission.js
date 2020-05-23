@@ -11,7 +11,7 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import PermissionMemberModal from '../PermissionMemberModal';
 import './styles.scss';
 
-function MemberPermission({ group_permission, id, is_admin }) {
+function MemberPermission({ group_permission, id, is_admin, is_in_group }) {
   const { t } = useTranslation()
   const groupActiveColor = useSelector(currentColorSelector)
   const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
@@ -24,7 +24,7 @@ function MemberPermission({ group_permission, id, is_admin }) {
     setOpenPriorityModal(true)
   }
 
-  return (
+  return (is_in_group ?
     <div className="memberPermission">
       {is_admin ? <Button
         className={clsx("memberPermission--button", { 'memberPermission--button__owner': is_admin })}
@@ -43,7 +43,7 @@ function MemberPermission({ group_permission, id, is_admin }) {
         </IconButton>
         :
         <Button
-          className={clsx("memberPermission--button", { 'memberPermission--button__owner': is_admin })}
+          className={clsx("memberPermission--button", "memberPermission--buttonPermission", { 'memberPermission--button__owner': is_admin })}
           onClick={openSelectPermissionModal}
         >
           {group_permission.name}<ArrowDropDownIcon />
@@ -54,6 +54,10 @@ function MemberPermission({ group_permission, id, is_admin }) {
         memberId={id}
         is_admin={is_admin}
         isOpen={openPriorityModal} setOpen={setOpenPriorityModal} />
+    </div>
+    :
+    <div className="memberPermission--button__owner">
+      {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
     </div>
   )
 }

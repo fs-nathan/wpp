@@ -114,9 +114,11 @@ function TableMember(props) {
                     <MemberRole roles={item.roles || []} memberId={item.id} />
                   </TableCell>
                   <StyledMenu >
-                    <IconButton size='small' onClick={handleClickEliminate} >
-                      <Icon path={mdiDotsVertical} size={1} />
-                    </IconButton>
+                    {item.can_ban &&
+                      <IconButton size='small' onClick={handleClickEliminate} >
+                        <Icon path={mdiDotsVertical} size={1} />
+                      </IconButton>
+                    }
                     <CustomMenu
                       anchorEl={anchorEl}
                       keepMounted

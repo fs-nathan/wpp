@@ -97,15 +97,17 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.payload = payload;
       break;
     }
+    case actionTypes.CHAT_FILE:
     case actionTypes.CHAT_FORWARD_FILE:
     case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER: {
       draft.error = null;
       break;
     }
     case actionTypes.CHAT_FORWARD_FILE_FAIL:
+    case actionTypes.CHAT_FILE_FAIL:
     case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_FAIL: {
-      const { payload } = action;
-      draft.error = payload;
+      const { error } = action;
+      draft.error = error;
       break;
     }
     case actionTypes.CHAT_STICKER_SUCCESS: {

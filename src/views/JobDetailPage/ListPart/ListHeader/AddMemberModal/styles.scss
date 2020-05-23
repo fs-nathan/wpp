@@ -1,21 +1,35 @@
 .memberPermission {
   &--button {
     border-radius: 2px;
-    padding: 3px 6px;
+    padding: 6px 6px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     color: #333333;
     font-weight: 400;
     background-color: #ffffff;
     font-size: 12px;
-    text-transform: initial;
+    text-transform: none;
+    width: 100px;
     .MuiButton-label {
       font-size: 12px;
+      line-height: 15px;
+      text-align: left;
     }
     &:hover {
       cursor: pointer;
       background-color: #eeeeee;
     }
     &__owner {
+      color: red;
+    }
+  }
+  &--buttonPermission {
+    &::after {
+      content: "\f002";
+      font-family: FontAwesome;
+      font-style: normal;
+      font-weight: normal;
+      text-decoration: inherit;
+      margin-left: 5px;
       color: red;
     }
   }

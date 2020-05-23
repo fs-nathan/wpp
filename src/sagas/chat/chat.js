@@ -63,9 +63,10 @@ export function* chatFile(payload) {
     yield put(actions.chatFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
     yield put(actions.appendChat(res.data, id));
-    // yield put(actions.removeChatById(id));
   } catch (error) {
-    yield put(actions.chatFileFail(error));
+    console.log(error, error.message, error.response)
+    yield put(actions.chatFileFail(error.message));
+    yield put(actions.removeChatById(payload.id));
   }
 }
 export function* chatForwardFile(payload) {

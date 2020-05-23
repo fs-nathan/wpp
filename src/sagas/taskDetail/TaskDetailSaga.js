@@ -898,7 +898,7 @@ function* deleteMember(action) {
 async function doGetPermission(payload) {
   try {
     const config = {
-      url: '/permissions/list-group-permission?type=' + payload.type,
+      url: '/permissions/list-group-permission?module=3',
       method: 'get',
       data: payload
     };
