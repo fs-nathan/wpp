@@ -20,6 +20,7 @@ import {
   StyledButton,
   StyledTableBodyCell,
 } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
+import "./RoleManager.css";
 const HomeWrap = styled.div`
   padding-right: 10px;
   font-size: 16px;
@@ -52,7 +53,7 @@ function RoleManager({ setHackHeader, ...props }) {
     <Table stickyHeader className="header-document">
       <TableHead>
         <TableRow>
-          <TableCell width="30%" align="left">
+          <TableCell className="comp_rowHeader_name" width="30%" align="left">
             {t("Tên")}
           </TableCell>
           <TableCell width="70%" align="left">
@@ -66,7 +67,10 @@ function RoleManager({ setHackHeader, ...props }) {
           const { name, description } = item;
           return (
             <TableRow key={i} className="comp_RecentTableRow table-body-row">
-              <StyledTableBodyCell className="comp_TitleCell" align="left">
+              <StyledTableBodyCell
+                className="comp_TitleCell comp_rowHeader_name"
+                align="left"
+              >
                 <Typography
                   noWrap
                   title={name}
@@ -92,6 +96,7 @@ function RoleManager({ setHackHeader, ...props }) {
                   }}
                 >
                   <Button
+                    className="u-colorWhite"
                     onClick={() =>
                       handleOpenModal("UPDATE", {
                         updatedUserRole: item,
@@ -106,6 +111,7 @@ function RoleManager({ setHackHeader, ...props }) {
                   </Button>
                   <div style={{ width: 10 }}></div>
                   <Button
+                    className="u-colorWhite"
                     onClick={() =>
                       handleOpenModal("ALERT", {
                         content: "Bạn chắc chắn muốn xóa vai trò?",
