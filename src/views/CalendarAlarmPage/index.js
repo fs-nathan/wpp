@@ -8,6 +8,7 @@ import { get } from "lodash";
 import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
+import { useMountedState } from "react-use";
 import CalendarAlramLeftPart from "./LeftPart";
 import routes from "./routes";
 import { personalRemindCategoriesSelector } from "./selectors";
@@ -46,10 +47,8 @@ function CalendarAlarmPage({
   }, [doListPersonalRemindCategory])
 
   React.useEffect(() => {
-    if (permissions.length === 0) {
-      doListPermission(false);
-    }
-  }, [doListPermission]);
+    doListPermission(false);
+  }, [doListPermission, useMountedState()]);
 
   return (
     <TwoColumnsLayout

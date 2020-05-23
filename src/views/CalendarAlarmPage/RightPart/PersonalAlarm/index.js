@@ -13,6 +13,7 @@ import React from 'react';
 import { useTranslation } from "react-i18next";
 import { connect } from 'react-redux';
 import { useLocation } from "react-router-dom";
+import { LOCAL_PERSONAL_REMINDS_STORAGE } from "views/CalendarPage/constants/attrs";
 import CreateGroupPersonalRemind from 'views/CalendarPage/views/Modals/CreateGroupPersonalRemind';
 import CreatePersonalRemind from "views/CalendarPage/views/Modals/CreatePersonalRemind";
 import UpdatePersonalRemind from "views/CalendarPage/views/Modals/UpdatePersonalRemind";
@@ -35,7 +36,7 @@ function CalendarPersonalAlarm({
   } = React.useContext(CalendarAlarmContext);
 
   const search = useLocation().search;
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PERSONAL_REMIND_OPTIONS', {
+  const [localOptions, setLocalOptions] = useLocalStorage(LOCAL_PERSONAL_REMINDS_STORAGE, {
     timeType: 3,
     timeRange: {
       startDate: moment().startOf("isoWeeks"),
