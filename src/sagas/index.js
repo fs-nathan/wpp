@@ -11,6 +11,7 @@ import {
   HANDLE_OFFER_OFFERPAGE,
   LOAD_DETAIL_OFFER,
   UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
+  UPDATE_OFFER_APPROVAL_CONDITION,
   DELETE_OFFER,
   LOAD_OFFER_BY_DEPARTMENT_ID,
   LOAD_OFFER_BY_GROUP_ID,
@@ -144,6 +145,7 @@ import {
   doHandleOffer,
   doLoadDetailOffer,
   doUpdateOfferDetailDescriptionSection,
+  doUpdateOfferApprovalCondition,
   doLoadOfferByDepartmentID,
   doLoadOfferByGroupID,
   doLoadOfferByProjectID,
@@ -778,6 +780,7 @@ function* rootSaga() {
   yield takeEvery(UPDATE_GROUP_OFFER_OFFERPAGE, doUpdateGroupOffer)
   yield takeLatest(LOAD_DETAIL_OFFER, doLoadDetailOffer)
   yield takeLatest(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, doUpdateOfferDetailDescriptionSection)
+  yield takeLatest(UPDATE_OFFER_APPROVAL_CONDITION, doUpdateOfferApprovalCondition)
   yield takeLatest(DELETE_OFFER, doDeleteOffer)
   yield takeEvery(UPLOAD_DOCUMENT_OFFER, doUploadDocumentOffer)
   yield takeEvery(DELETE_DOCUMENT_OFFER, doDeleteDocumentOffer)

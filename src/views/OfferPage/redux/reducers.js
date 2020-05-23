@@ -18,6 +18,7 @@ import {
   LOAD_DETAIL_OFFER,
   LOAD_DETAIL_OFFER_SUCCESS,
   UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
+  UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS,
   LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS,
   LOAD_OFFER_BY_GROUP_ID_SUCCESS,
   LOAD_OFFER_BY_PROJECT_ID_SUCCESS,
@@ -192,6 +193,18 @@ function taskReducer(state = initialState, action) {
           offer: {
             ...state[DETAIL_OFFER].offer,
             ...action.payload.data_offer,
+          },
+        }
+      };
+    case UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS:
+      return {
+        ...state,
+        [DETAIL_OFFER]: {
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            condition_accept: {
+              ...action.payload.condition_accept,
+            },
           },
         }
       };

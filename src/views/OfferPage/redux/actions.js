@@ -15,6 +15,7 @@ import {
   LOADPAGE_TASK_ROLE,
   LOAD_DETAIL_OFFER,
   UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
+  UPDATE_OFFER_APPROVAL_CONDITION,
   DELETE_OFFER,
   LOAD_OFFER_BY_DEPARTMENT_ID,
   LOAD_OFFER_BY_GROUP_ID,
@@ -132,6 +133,18 @@ export const updateOfferDetailDescriptionSection = ({ offerId, title, content, o
   return {
     type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
     payload: { offerId, title, content, offerGroupId, priorityCode }
+  }
+}
+export const updateOfferApprovalCondition = ({
+                                               offerId,
+                                               minRateAccept,
+                                               conditionLogic,
+                                               conditionLogicMember,
+                                               memberAcceptedImportantIds
+                                             }) => {
+  return {
+    type: UPDATE_OFFER_APPROVAL_CONDITION,
+    payload: { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds }
   }
 }
 export const deleteOffer = ({ id }) => {

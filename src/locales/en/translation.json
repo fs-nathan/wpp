@@ -1010,6 +1010,9 @@
       "OFFER_PRIORITY_EDITING": {
         "TITLE": "Edit"
       },
+      "OFFER_APPROVAL_CONDITION_EDITING": {
+        "TITLE": "Edit"
+      },
       "DELETE_OFFER": "Delete offer",
       "ESCAPE": "Close"
     },

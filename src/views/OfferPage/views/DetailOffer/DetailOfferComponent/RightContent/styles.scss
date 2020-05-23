@@ -21,22 +21,37 @@
   }
 
   &-approvalConditionContainer {
-    margin: 0.6em 0 0;
-    &-title {
-      font-weight: 700;
+    margin: 0.6em 0;
+    &-inner {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &-title {
+        font-weight: 700;
+      }
+      &-editBtn {
+        margin-top: 0;
+        margin-left: auto;
+        font-weight: 400;
+        color: #1673e5;
+        [class*='MuiButton-label'] {
+          font-size: 1rem;
+          text-transform: none;
+        }
+      }
     }
   }
 
   &-memberApprovalRateContainer {
-
+    margin: 0.6em 0;
   }
 
   &-memberToAccept {
     &-title {
-      margin: 0.2em;
+      margin: 0.6em 0;
     }
     &-container {
-      margin: 1em 0 0;
+      margin: 0.6em 0;
     }
     &-avatar {
       width: 60%;

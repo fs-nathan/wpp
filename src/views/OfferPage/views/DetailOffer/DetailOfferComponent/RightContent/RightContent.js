@@ -3,15 +3,21 @@ import classNames from 'classnames';
 import { isEmpty } from "helpers/utils/isEmpty";
 import get from "lodash/get";
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import styled from "styled-components";
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
+import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
+import { getPriorityEditingTitle } from '../LeftContent/i18nSelectors';
 import { styles } from '../style';
 import './styles.scss';
+import { getApprovalConditionEditingTitle } from './i18nSelectors';
 
 const RightContent = ({ status_code, rate_accepted, members_approved, number_member_rejected, number_member_accepted, date_label, hour_label, content, title, id, priority_code, user_create_name, condition_accept, user_create_avatar }) => {
+  const { t } = useTranslation();
   const classes = styles()
   const [openModal, setOpenModal] = useState(false)
+  const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
   const onConfirm = () => {
     setOpenModal(false)
   }
@@ -29,6 +35,24 @@ const RightContent = ({ status_code, rate_accepted, members_approved, number_mem
       return classes.color_red
     }
   }
+  const renderUpdateOfferApprovalConditionModal = () => {
+    return (
+      <OfferModal
+        isOpen={openUpdateOfferModal}
+        setOpen={setOpenUpdateOfferModal}
+        isUpdateOffer
+        isUpdateOfferApprovalCondition
+        item={{
+          id: id,
+          min_rate_accept: condition_accept.min_rate,
+          condition_logic: condition_accept.condition_logic,
+          condition_logic_member: condition_accept.condition_logic_member,
+          approval_members: condition_accept.member_accept,
+        }}
+      />
+    );
+  }
+
   return (
     <Grid item xs={6}>
       <Grid container>
@@ -55,7 +79,21 @@ const RightContent = ({ status_code, rate_accepted, members_approved, number_mem
           </Button>
         </Grid>
         <Grid item xs={12} className="offerDetail-approvalConditionContainer">
-          <h4 className="offerDetail-approvalConditionContainer-title">Điều kiện phê duyệt đồng ý</h4>
+          <div className="offerDetail-approvalConditionContainer-inner">
+            <div className="offerDetail-approvalConditionContainer-inner-title">Điều kiện phê duyệt đồng ý</div>
+            <Button
+              className="offerDetail-approvalConditionContainer-inner-editBtn"
+              size="small"
+              onClick={() => {setOpenUpdateOfferModal(true)}}
+            >
+              {getApprovalConditionEditingTitle(t)}
+            </Button>
+            {
+              openUpdateOfferModal && (
+                renderUpdateOfferApprovalConditionModal()
+              )
+            }
+          </div>
         </Grid>
         <Grid item xs={12} className="offerDetail-memberApprovalRateContainer">
           <div>Tỷ lệ thành viên đồng ý:&nbsp;&nbsp;&nbsp;≥&nbsp;&nbsp;&nbsp;{get(condition_accept, "min_rate", "0")}%</div>

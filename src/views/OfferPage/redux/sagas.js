@@ -30,6 +30,8 @@ import {
   UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS,
   UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR,
   UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
+  UPDATE_OFFER_APPROVAL_CONDITION_ERROR,
+  UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS,
   UPLOAD_DOCUMENT_OFFER_SUCCESS,
 } from './types';
 
@@ -101,7 +103,7 @@ export function* doLoadOfferByGroupID({ payload }) {
     const result = yield apiService(config);
     yield put({ type: LOAD_OFFER_BY_GROUP_ID_SUCCESS, payload: result.data });
   } catch (err) {
-    
+
   }
 }
 export function* doLoadSummaryByDepartment({ payload }) {
@@ -142,10 +144,10 @@ export function* doLoadSummaryOverview({ payload }) {
       url: `/offers/summary?from_date=${startDate}&to_date=${endDate}`,
       method: "GET"
     }
-    const result = yield apiService(config)    
+    const result = yield apiService(config)
     yield put({ type: LOAD_SUMMARY_OVERVIEW_SUCCESS, payload: result.data })
   } catch (err) {
-    
+
   }
 }
 
@@ -172,7 +174,7 @@ export function* doLoadDetailOffer({ payload }) {
       url: "/offers/detail?offer_id=" + id,
       method: "GET"
     }
-    const result = yield apiService(config)    
+    const result = yield apiService(config)
     yield put({ type: LOAD_DETAIL_OFFER_SUCCESS, payload: result.data })
   } catch (err) {
     yield put({ type: LOAD_DETAIL_OFFER_ERROR, payload: err.toString() })
@@ -198,6 +200,26 @@ export function* doUpdateOfferDetailDescriptionSection({ payload }) {
     yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, payload: err.toString() })
   }
 }
+export function* doUpdateOfferApprovalCondition({ payload }) {
+  try {
+    const { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds } = payload
+    const config = {
+      url: "/offers/personal/update-condition-accept",
+      method: "POST",
+      data: {
+        offer_id: offerId,
+        min_rate_accept: minRateAccept,
+        condition_logic: conditionLogic,
+        condition_logic_member: conditionLogicMember,
+        member_accepted_important: memberAcceptedImportantIds,
+      },
+    }
+    const result = yield apiService(config)
+    yield put({ type: UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: UPDATE_OFFER_APPROVAL_CONDITION_ERROR, payload: err.toString() })
+  }
+}
 export function* doDeleteOffer({ payload }) {
   try {
     const { id } = payload;
@@ -221,7 +243,7 @@ export function* doDeleteOffer({ payload }) {
 
 export function* doUploadDocumentOffer({ payload }) {
   try {
-    const { data } = payload    
+    const { data } = payload
     const config = {
       url: "/offers/personal/upload-documents",
       method: "POST",
