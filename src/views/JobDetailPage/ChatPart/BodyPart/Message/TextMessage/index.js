@@ -93,8 +93,8 @@ const TextMessage = ({
           {
             "TextMessage--reply": isReply,
             "TextMessage--rightContentWrap__self": is_me,
-            "TextMessage--rightContentWrap__deleted ": is_deleted && !is_me,
-            "TextMessage--rightContentWrap__deletedSelf ": is_deleted && is_me,
+            "TextMessage--rightContentWrap__deleted": is_deleted && !is_me,
+            "TextMessage--rightContentWrap__deletedSelf": is_deleted && is_me,
             [`TextMessage--rightContentWrap__self-${chatPosition}`]: is_me,
             "TextMessage--rightContentWrap__haveParent": Boolean(chat_parent)
           })}
@@ -138,12 +138,13 @@ const TextMessage = ({
                   : `TextMessage--content__${chatPosition}`,
                 {
                   "TextMessage--content__self": is_me,
-                  "TextMessage--content__deleted": is_deleted,
+                  "TextMessage--content__deleted": is_deleted && !is_me,
+                  "TextMessage--content__deletedSelf": is_deleted && is_me,
                   "TextMessage--content__withReact": !is_deleted && data_emotion.length > 0,
                 })}
                 dangerouslySetInnerHTML={{
                   __html: is_deleted ?
-                    (!is_me ? t('LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA') : t('LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA'))
+                    t('LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA')
                     : getRichContent(content, tags, getColor())
                 }}
               >

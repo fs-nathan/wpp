@@ -40,6 +40,7 @@ tr.drop-over-upward td {
 .table-gantt-header tbody tr td div {
   height: 20px;
 }
+
 .grantt-header thead tr th {
   padding: 2px !important;
   white-space: nowrap;
@@ -123,7 +124,7 @@ body {
 
 .config--drawer--checkbox span {
   font-size: 1rem;
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: 0.00938em;
@@ -437,7 +438,7 @@ span.ant-checkbox ~ span {
 }
 
 #customers {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 80%;
   margin-left: 20px;
@@ -502,7 +503,7 @@ span.ant-checkbox ~ span {
 }
 
 #hourwork {
-  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 80%;
   margin-left: 20px;
@@ -626,9 +627,9 @@ div.checkbox-colortag--drawer {
 .ant-row-end {
   line-height: 50px;
 }
-.MuiIconButton-label {
+/* .MuiIconButton-label {
   padding: 0 10px !important;
-}
+} */
 
 .gantt--right-header__more {
   padding-right: 60px;
@@ -750,7 +751,7 @@ div.checkbox-colortag--drawer {
   width: 500px;
 }
 
-.scroll-gantt::webkit-scrollbar-track {
+/* .scroll-gantt::webkit-scrollbar-track {
   width: 2px;
 }
 .scroll-gantt::-webkit-scrollbar {
@@ -766,7 +767,7 @@ div.checkbox-colortag--drawer {
 
 .scroll-gantt::-webkit-scrollbar-track-piece:end:horizontal {
   background: #ffc9a066;
-}
+} */
 .gantt-chart__container {
   display: flex;
   z-index: 2;

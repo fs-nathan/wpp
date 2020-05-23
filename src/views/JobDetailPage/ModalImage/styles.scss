@@ -30,18 +30,21 @@
       outline: none;
     }
   }
-  &--scroll {
-    width: 85% !important;
+  &--scrollWrap {
+    width: 85%;
+    height: 100%;
+    margin: auto;
   }
   &--imagesList {
     display: flex;
-    justify-content: center;
+    // justify-content: center;
     background: #3e4041;
     padding: 3px;
     border-radius: 10px;
     // width: 1200px;
     z-index: 999;
     // overflow-x: scroll;
+    // width: 134%;
     & > * {
       list-style-type: none;
       margin: 2px 3px;

@@ -1,5 +1,4 @@
 import { DialogContent } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { createMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
@@ -18,10 +17,6 @@ const GridArea = styled(Typography)`
     grid-template-columns: 1fr 2fr;
     border: 1px solid #e0e0e0;
 `
-const ButtonAddAll = styled(Button)`
-    color: #417cbf;
-    margin: 10px 5px;
-`
 
 const BorderGrid = styled(Typography)`
     border-right: 1px solid #e0e0e0;
@@ -35,18 +30,11 @@ const FlexMemberProject = styled(Typography)`
     border-bottom: 1px solid #e0e0e0;
 `
 
-const MemberProject = styled(Typography)`
-    margin-bottom: 5px;
-    color: #686868;
-    font-size: 16px;
-    text-transform: uppercase;
-`
 const FlexJobMember = styled(Typography)`
     display: flex;
     align-items: center
     height: 60px;
     border-bottom: 1px solid #e0e0e0;
-    padding-left: 25px;
 `
 
 function AddMemberModal({ setOpen, isOpen }) {
@@ -80,17 +68,17 @@ function AddMemberModal({ setOpen, isOpen }) {
         <GridArea component={'div'} style={{ borderBottom: 'none' }} >
           <BorderGrid component={'div'}>
             <FlexMemberProject component={'span'}>
-              <MemberProject component={'div'} >{t('LABEL_CHAT_TASK_THANH_VIEN_DU_AN')}</MemberProject>
+              <Typography component={'div'} className="AddMemberModal--title" >{t('LABEL_CHAT_TASK_THANH_VIEN_DU_AN')}</Typography>
             </FlexMemberProject>
             <Typography component="span">
               <div style={{ margin: '10px 10px 0 10px' }}>
                 <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_THANH_VIEN')} />
               </div>
-              <ButtonAddAll
+              {/* <ButtonAddAll
                 onClick={handleAddAll}
               >
                 {t('+ Thêm tất cả')}
-              </ButtonAddAll>
+              </ButtonAddAll> */}
               <div className="table-scroll-add-member">
                 <Scrollbars>
                   {
@@ -109,7 +97,7 @@ function AddMemberModal({ setOpen, isOpen }) {
           </BorderGrid>
           <Typography component="div">
             <FlexJobMember component="div">
-              <MemberProject component={'div'}>{t('LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC')}</MemberProject>
+              <Typography className="AddMemberModal--title" component={'div'}>{t('LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC')}</Typography>
             </FlexJobMember>
             <TableMember style={{ boxShadow: 'none' }} />
           </Typography>

@@ -1,6 +1,10 @@
 .comp_AddButton {
   background: transparent;
 }
+.comp_AddButton:hover,
+.comp_AddButton:focus {
+  background-color: rgb(244, 244, 244);
+}
 .comp_AddButton__icon {
-  color: rgb(0, 123, 255);
+  color: var(--color-primary);
 }

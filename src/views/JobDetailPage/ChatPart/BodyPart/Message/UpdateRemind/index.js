@@ -20,7 +20,7 @@ const UpdateRemind = (props) => {
     user_create_avatar,
     user_create_position,
     remind_name,
-    remind_duration,
+    remind_duration = [],
     time_create,
     chatPosition = "top",
   } = props;
@@ -44,7 +44,7 @@ const UpdateRemind = (props) => {
       <>
         {remind_name}
         <div className="UpdateRemind--time">
-          {remind_type ?
+          {remind_type !== null ?
             `${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`
             :
             t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO', {

@@ -1,4 +1,3 @@
-import { concat } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listLevel = state => state.level.listLevel;
@@ -18,7 +17,8 @@ export const levelsSelector = createSelector(
       levels,
       loading: (firstTime ? false : listLevelLoading) || createLevelLoading,
       error: listLevelError || createLevelError || updateLevelError || deleteLevelError,
-      pendings: concat(updatePendings, deletePendings),
+      updatePendings,
+      deletePendings,
       firstTime,
     }
   }

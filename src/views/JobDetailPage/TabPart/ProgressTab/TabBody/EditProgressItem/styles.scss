@@ -21,10 +21,13 @@
 .editProgressItem {
   display: flex;
   margin: 10px 0px;
-  background-color: #f8f8f8;
+  background-color: #ffffff;
   padding: 5px 15px;
   border-radius: 5px;
   border: 1px solid #e7e7e7;
+  &:hover {
+    background-color: #f2f5fa;
+  }
   svg {
     padding: 0 5px 0 0;
     transform: translateY(3px);
@@ -49,5 +52,8 @@
   }
   &--time {
     color: rgba(0, 0, 0, 0.54);
+    &__new {
+      color: #f44336;
+    }
   }
 }

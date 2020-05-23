@@ -1,6 +1,6 @@
 .comp_CustomList___list {
   padding: 0;
-};
+}
 
 .comp_CustomList___list-item {
   display: flex;
@@ -8,7 +8,7 @@
   padding: 10px;
   background-color: #fff;
   & > *:not(:first-child) {
-    margin-left: 12px;
+    margin-left: 5px;
   }
   &:hover {
     cursor: pointer;
@@ -17,14 +17,14 @@
   &:focus {
     background-color: #e6f0ff;
   }
-};
+}
 
 .comp_CustomList___primary {
   color: #000;
   font-size: 17px;
-};
+}
 
 .comp_CustomList___secondary {
   color: #05b50c;
   font-size: 14px;
-};
+}

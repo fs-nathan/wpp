@@ -248,7 +248,7 @@
             "DESC": "Mô tả công việc",
             "DOC": {
               "TITLE": "Xem file hồ sơ",
-              "BTN": "+ Upload file hồ sơ"
+              "BTN": "Upload file hồ sơ"
             },
             "INFO": {
               "TITLE": "Thông tin cá nhân",
@@ -1111,7 +1111,7 @@
   "LABEL_CHAT_TASK_LICH_CONG_VIEC": "Lịch công việc",
   "LABEL_CHAT_TASK_NGAY_BAT_DAU": "Ngày bắt đầu",
   "LABEL_CHAT_TASK_NGAY_KET_THUC": "Ngày kết thúc",
-  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN": "Mức độ ưu tiên",
+  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN_LABEL": "Mức độ ưu tiên",
   "LABEL_CHAT_TASK_HINH_THUC_GIAO_VIEC": "Hình thức giao việc",
   "LABEL_CHAT_TASK_CAI_DAT_CONG_VIEC": "Cài đặt chi tiết công việc",
   "LABEL_CHAT_TASK_CAI_DAT": "Cài đặt",
@@ -1232,8 +1232,8 @@
   "LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH": "Đánh dấu hoàn thành",
   "LABEL_CHAT_TASK_NHAP_TEN_CONG_VIEC": "Nhập tên công việc...",
   "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "Chưa có công việc con được khởi tạo Click + để tạo mới công việc con",
-  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện (",
-  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành (",
+  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện(",
+  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành(",
   "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
   "LABEL_CHAT_TASK_HINH_ANH": "Hình ảnh",
   "LABEL_CHAT_TASK_THA_FILE_VAO_DAY": "Thả file vào đây",
@@ -1294,5 +1294,46 @@
   "LABEL_CHAT_TASK_NOI_DUNG_CHI_DAO": "Nội dung chỉ đạo",
   "LABEL_CHAT_TASK_NOI_DUNG_QUYET_DINH": "Nội dung quyết định",
   "LABEL_CHAT_TASK_CHI_DAO_LABEL": "Chỉ đạo",
-  "LABEL_CHAT_TASK_QUYET_DINH_LABEL": "Quyết định"
+  "LABEL_CHAT_TASK_QUYET_DINH_LABEL": "Quyết định",
+  "LABEL_CHAT_TASK_UU_TIEN_CAO": "Ưu tiên cao",
+  "LABEL_CHAT_TASK_UU_TIEN_TRUNG_BINH": "Ưu tiên trung bình",
+  "LABEL_CHAT_TASK_UU_TIEN_THAP": "Ưu tiên thấp",
+  "LABEL_CHAT_TASK_HAY_CAP_NHAP_TIEN": "Hãy cập nhập tiến độ hoàn thành để thay đổi trạng thái công việc",
+  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN": "Mức độ ưu tiên phản ánh tầm quan trọng và tính chất khẩn cấp công việc",
+  "LABEL_CHAT_TASK_UU_TIEN_LABEL": "Ưu tiên: ",
+  "LABEL_CHAT_TASK_CAO_LABEL": "Cao",
+  "LABEL_CHAT_TASK_TRUNG_BINH_LABEL": "Trung bình",
+  "LABEL_CHAT_TASK_THAP_LABEL": "Thấp",
+  "LABEL_CHAT_TASK_GAN_QUYEN": "Gán quyền",
+  "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION": "Hiện tại chưa có nhóm quyền nào được tạo cho chức năng này! Liên hệ với Quản trị viên để yều cầu bổ sung.",
+  "LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON": "Xóa nhóm quyền đã chọn",
+  "MESSAGE_NOT_PERMISSION": "Bạn không có quyền ",
+  "ADD_PERSON_MONITOR": "Thêm người giám sát",
+  "ADD_PERSON_HANDLE": "Thêm người phê duyệt",
+  "ADD_DOCUMENT_OFFER": "Thêm tài liệu",
+  "PERSON_HANDLE": "Người phê duyệt",
+  "PERSON_MONITOR": "Người giám sát",
+  "OFFER_PAGE": {
+    "DETAIL_OFFER": {
+      "TITLE": "Chi tiết đề xuất",
+      "DELETE_OFFER": "Xóa đề xuất",
+      "ESCAPE": "Thoát"
+    },
+    "OFFER_TABLE": {
+      "ITEM": {
+        "POPOVER": {
+          "DETAIL": "Chi tiết",
+          "DELETE": {
+            "TITLE": "Xóa",
+            "CONFIRM_MODAL": {
+              "TITLE": "Xóa đề xuất",
+              "MESSAGE": "Bạn có chắc chắn muốn xóa đề xuất này?",
+              "CONFIRM": "Xóa đề xuất",
+              "CANCEL": "Hủy"
+            }
+          }
+        }
+      }
+    }
+  }
 }

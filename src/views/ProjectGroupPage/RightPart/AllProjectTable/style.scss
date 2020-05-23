@@ -26,16 +26,20 @@
   & {
     @include view_ProjectGroup_Table_All___menu-item;
     color: #222;
-    & > svg {
-      fill: #d4d4d4 !important; 
+    & > .view_ProjectGroup_Table_All___icon {
+      & * {
+        fill: #d4d4d4 !important; 
+      }
     }
   };
   &-selected {
     @include view_ProjectGroup_Table_All___menu-item;
     color: #05b50c;
     background: #05b50c1c;
-    & > svg {
-      fill: #05b50c !important;
+    & > .view_ProjectGroup_Table_All___icon {
+      & * {
+        fill: #05b50c !important;
+      }
     }
   };
 };

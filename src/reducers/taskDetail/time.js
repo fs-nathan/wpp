@@ -1,4 +1,4 @@
-import * as types from '../../constants/actions/taskDetail/taskDetailConst'
+import * as types from '../../constants/actions/taskDetail/taskDetailConst';
 
 const initialState = {
     listTime: null,
@@ -9,6 +9,28 @@ const initialState = {
 }
 export default function reducer(state = initialState, action) {
     switch (action.type) {
+        case types.UPDATE_TIME_DURATION_SUCCESS:
+            const { payload } = action;
+            // console.log('payload', payload)
+            if (payload.data_chat) {
+                const { user_create_name, user_create_avatar, time_create, time_changes } = payload.data_chat
+                const { start, end } = time_changes
+                const newTrack = {
+                    user_create_name, user_create_avatar,
+                    time_create,
+                    old_start: start ? start.old : undefined,
+                    new_start: start ? start.new : undefined,
+                    old_end: end ? end.old : undefined,
+                    new_end: end ? end.new : undefined,
+                }
+                state.listTime.trackings.unshift(newTrack)
+                // console.log('newTrack', newTrack)
+            }
+            // console.log(' state.listTime.trackings', state.listTime.trackings)
+            return {
+                ...state,
+                listTime: state.listTime
+            }
         case types.GET_TRACKING_TIME_REQUEST:
             return {
                 ...state,

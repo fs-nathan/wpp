@@ -2,12 +2,7 @@
 import { ListItemText } from "@material-ui/core";
 import Icon from "@mdi/react";
 import classnames from "classnames";
-import {
-  Primary,
-  Secondary,
-  StyledList,
-  StyledListItem
-} from "components/CustomList";
+import { Primary, Secondary, StyledList, StyledListItem } from "components/CustomList";
 import LeftSideContainer from "components/LeftSideContainer";
 import React, { Fragment } from "react";
 import { Link, withRouter } from "react-router-dom";
@@ -34,7 +29,7 @@ const LeftSetting = props => {
               }}
               className={classnames(
                 `${pathname === item.url ? "item-actived" : ""} ${
-                  item.url ? "" : "none-action"
+                item.url ? "" : "none-action"
                 }`,
                 item.className
               )}
@@ -52,7 +47,7 @@ const LeftSetting = props => {
                   <Primary
                     className={`title-setting-item ${
                       item.icon ? "" : "none-icon"
-                    }`}
+                      }`}
                   >
                     {item.title}
                   </Primary>

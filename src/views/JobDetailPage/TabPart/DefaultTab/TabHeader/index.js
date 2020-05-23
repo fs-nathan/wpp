@@ -9,6 +9,7 @@ import get from 'lodash/get';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
 import './styles.scss';
@@ -23,6 +24,7 @@ function getAssignType(assign_code) {
 
 function TabHeader(props) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const taskDetails = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails'));
   const { is_ghim: isPinned, state_code, assign_code } = taskDetails || {};
@@ -58,11 +60,10 @@ function TabHeader(props) {
     setOpenDelete(true);
     setAnchorEl(null);
   };
-  const handleCloseModalDelete = () => {
-    setOpenDelete(false);
-  };
+
   const confirmDelete = () => {
     dispatch(deleteTask({ taskId, projectId }));
+    history.push(`/tasks/chat/${projectId}`);
   };
 
   function onClickPin() {

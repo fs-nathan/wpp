@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { find, get, isNil } from 'lodash';
+import { concat, find, get, isNil } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -38,8 +38,15 @@ const MyButton = ({ className = '', disabled = false, isDel = false, ...props })
     {...props}
   />;
 
+const ButtonWrapper = ({ className = '', ...props }) =>
+  <div
+    className={`comp_SimpleManagerTable___button-wrapper ${className}`}
+    {...props}
+  />
+
 function SimpleManagerTable({
-  data = [], pendings = [],
+  data = [],
+  updatePendings = [], deletePendings = [],
   handleAdd = () => null,
   handleEdit = () => null,
   handleDelete = () => null,
@@ -52,9 +59,9 @@ function SimpleManagerTable({
     <StyledTable>
       <StyledTableHead>
         <TableRow>
-          <StyledTableCell width={'25%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
-          <StyledTableCell width={'45%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
-          <TableCell width={'30%'} colSpan={2}>
+          <StyledTableCell width={'35%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
+          <StyledTableCell width={'50%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
+          <TableCell width={'15%'}>
             <Button
               fullWidth
               style={{
@@ -71,40 +78,40 @@ function SimpleManagerTable({
       <StyledTableBody>
         {data.map(elem => (
           <TableRow key={get(elem, 'id')}>
-            <StyledTableCell width={'25%'}>{get(elem, 'name', '')}</StyledTableCell>
-            <TableCell width={'45%'}>{get(elem, 'description', '')}</TableCell>
-            <TableCell width={'30%'} align='center'>
-              <MyButton
-                onClick={() => handleEdit(elem)}
-                disabled={
-                  !isNil(find(pendings, pending => pending === get(elem, 'id')))
-                }
-              >
-                {!isNil(find(pendings, pending => pending === get(elem, 'id'))) &&
-                  <CircularProgress
-                    size={16}
-                    className="margin-circular"
-                    color="white"
-                  />}
-                {t('DMH.COMP.SMT.BTN.UPT')}
-              </MyButton>
-            </TableCell>
-            <TableCell width={'10%'} align='center'>
-              <MyButton
-                onClick={() => handleDelete(elem)}
-                isDel={true}
-                disabled={
-                  !isNil(find(pendings, pending => pending === get(elem, 'id')))
-                }
-              >
-                {!isNil(find(pendings, pending => pending === get(elem, 'id'))) &&
-                  <CircularProgress
-                    size={16}
-                    className="margin-circular"
-                    color="white"
-                  />}
-                {t('DMH.COMP.SMT.BTN.DEL')}
-              </MyButton>
+            <StyledTableCell width={'35%'}>{get(elem, 'name', '')}</StyledTableCell>
+            <TableCell width={'50%'}>{get(elem, 'description', '')}</TableCell>
+            <TableCell width={'15%'} align='center'>
+              <ButtonWrapper>
+                <MyButton
+                  onClick={() => handleEdit(elem)}
+                  disabled={
+                    !isNil(find(concat(updatePendings, deletePendings), pending => pending === get(elem, 'id')))
+                  }
+                >
+                  {!isNil(find(updatePendings, pending => pending === get(elem, 'id'))) &&
+                    <CircularProgress
+                      size={16}
+                      className="margin-circular"
+                      color="white"
+                    />}
+                  {t('DMH.COMP.SMT.BTN.UPT')}
+                </MyButton>
+                <MyButton
+                  onClick={() => handleDelete(elem)}
+                  isDel={true}
+                  disabled={
+                    !isNil(find(concat(updatePendings, deletePendings), pending => pending === get(elem, 'id')))
+                  }
+                >
+                  {!isNil(find(deletePendings, pending => pending === get(elem, 'id'))) &&
+                    <CircularProgress
+                      size={16}
+                      className="margin-circular"
+                      color="white"
+                    />}
+                  {t('DMH.COMP.SMT.BTN.DEL')}
+                </MyButton>
+              </ButtonWrapper>
             </TableCell>
           </TableRow>
         ))}

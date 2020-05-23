@@ -1,0 +1,10 @@
+.comp_GroupPermissionSettings__List
+  .comp_CustomList___list-item
+  .MuiIconButton-root {
+  /* display: none; */
+}
+.comp_GroupPermissionSettings__List
+  .comp_CustomList___list-item:hover
+  .MuiIconButton-root {
+  /* display: unset; */
+}
