@@ -1,11 +1,13 @@
 import { Avatar, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
+import clsx from 'clsx';
 import { isEqual } from "date-fns";
 import { get } from 'lodash';
-import React from "react";
+import React, { useContext } from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { colors } from "../contants/attrs";
+import { OfferPageContext } from '../OfferPageContext';
 import EmptyHolder from "./EmptyHolder";
 import Popover from './Popover';
 import "./TaskTableRecently.scss";
@@ -77,6 +79,11 @@ const WrapButton = styled.div`
 export function TaskTableRecently({ offers }) {
   const classes = styles()
   const { t } = useTranslation()
+  const {
+    setDetailOfferModalOpen,
+    setCurrentDetailOfferId,
+  } = useContext(OfferPageContext);
+
   return (
     <>
       {offers.length === 0 || undefined ? < EmptyHolder /> : (
@@ -120,12 +127,19 @@ export function TaskTableRecently({ offers }) {
                   </TableCell>
                   <TableCell>
                     <Grid container>
-                      <TaskTitleLink
-                        title={get(offer, "title")}
-                        to={get(offer, "url_redirect")}
+                      <div
+                        className={clsx(offer.url_redirect && 'offerTable-item-title-link')}
+                        onClick={() => {
+                          if (offer.url_redirect) {
+                            // For triggering offer detail data fetching from OfferPage component
+                            setCurrentDetailOfferId(offer.id);
+                            // Show offer detail modal
+                            setDetailOfferModalOpen(true);
+                          }
+                        }}
                       >
-                        {get(offer, "title")}
-                      </TaskTitleLink>
+                        {offer.title}
+                      </div>
                       {!isEqual(get(offer, "type_name"), "") && <div className={`${classes.blue_hightlight} ${classes.text_hightlight}`}>{get(offer, "type_name")}</div>}
 
                       {get(offer, "priority_code") === 0 && <div className={`${classes.orange_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>{get(offer, "priority_name")}</div>}
@@ -211,7 +225,7 @@ export function TaskTableRecently({ offers }) {
                     }
                   </TableCell>
                   <TableCell>
-                    <Popover offer_id={get(offer, "id")} />
+                    <Popover offer_id={get(offer, "id")} url_redirect={offer.url_redirect} />
                   </TableCell>
                 </TableRow>
               ))

@@ -1,5 +1,12 @@
-.detail-offer-modal {
-  [class*='comp_CustomModal___accept-button'] {
-    color: red !important;
+.detailOfferModal {
+  &-confirmBtn--red {
+    [class*='comp_CustomModal___accept-button'] {
+      color: red !important;
+    }
+  }
+  &-confirmBtn--black {
+    [class*='comp_CustomModal___accept-button'] {
+      color: black !important;
+    }
   }
 }

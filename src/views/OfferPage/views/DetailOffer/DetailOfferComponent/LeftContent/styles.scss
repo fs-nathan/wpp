@@ -170,6 +170,9 @@
       font-weight: 400;
       color: #1673e5;
       text-transform: none;
+      [class*='MuiButton-label'] {
+        font-size: 1rem;
+      }
     }
   }
 }

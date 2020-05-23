@@ -107,7 +107,7 @@ const RenderUpdateOfferDetailDescriptionSectionModal = (
     />
   );
 };
-const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, content, title, offer_group_id }) => {
+const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, content, title, offer_group_id, can_modify }) => {
   const { t } = useTranslation();
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
 
@@ -125,7 +125,8 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
         <Button
           className="offerDetail-detailDescription-priorityAndOfferTypeContainer-editBtn"
           size="small"
-          onClick={() => {setOpenUpdateOfferModal(true)}}
+          onClick={() => setOpenUpdateOfferModal(true)}
+          disabled={!can_modify}
         >
           {getPriorityEditingTitle(t)}
         </Button>
@@ -186,10 +187,9 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
   }
   const confirmDeleteDocument = useCallback(() => {
     if (can_modify === false) {
-      enqueueSnackbar('You not have permission to access', {
+      enqueueSnackbar('You do not have permission to do this', {
         variant: "warning"
       });
-
       return
     }
     dispatch(deleteDocumentOffer({ offer_id, file_id: selectedItem.file_id }))
@@ -245,13 +245,13 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
       <div className="offerDetail-attachedDocument-addFileBtnContainer">
         <label htmlFor="icon-button-file">
           <Button
+            className="offerDetail-addBtn-title"
             size="small"
             onClick={() => setOpenSendFileModal(true)}
             startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
+            disabled={!can_modify}
           >
-            <span className="offerDetail-addBtn-title">
-              {t("ADD_DOCUMENT_OFFER")}
-            </span>
+            {t("ADD_DOCUMENT_OFFER")}
           </Button>
         </label>
         <AlertModal
@@ -275,14 +275,11 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [openAddApproveModal, setOpenAddApproveModal] = useState(false)
+  const [openAddMemberHandleModal, setOpenAddMemberHandleModal] = useState(false)
 
-  const handleOpenAddHandleMemberModal = () => {
-    setOpenAddApproveModal(false)
-  }
-  const handleAddMemberApprove = (member) => {
+  const onAddMemberHandle = (member) => {
     if (can_modify === false) {
-      enqueueSnackbar(t('MESSAGE_NOT_PERMISSION'), {
+      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
       return
@@ -293,9 +290,9 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
     })
     dispatch(addMemberHandle({ offer_id, member_id: membersID }))
   }
-  const handleDeleteMemberHandle = ({ member_id }) => {
+  const onDeleteMemberHandle = ({ member_id }) => {
     if (can_modify === false) {
-      enqueueSnackbar(t('MESSAGE_NOT_PERMISSION'), {
+      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
       return
@@ -309,7 +306,7 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
           <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
           <Button
             size="small"
-            onClick={() => setOpenAddApproveModal(true)}
+            onClick={() => setOpenAddMemberHandleModal(true)}
             startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
           >
             <span className="offerDetail-addBtn-title">
@@ -335,7 +332,7 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
 
                     <IconButton
                       className="offerDetail-handlingPerson-deleteBtn"
-                      onClick={() => handleDeleteMemberHandle({ member_id: get(member, "id") })}
+                      onClick={() => onDeleteMemberHandle({ member_id: get(member, "id") })}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -347,7 +344,12 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
         </Grid>
       </Grid>
       <div className="offerDetail-horizontalLine" />
-      <CustomAddOfferMemberModal members={memberCanAddInApprove} onChange={handleAddMemberApprove} isOpen={openAddApproveModal} setOpen={handleOpenAddHandleMemberModal} />
+      <CustomAddOfferMemberModal
+        isOpen={openAddMemberHandleModal}
+        setOpen={setOpenAddMemberHandleModal}
+        onChange={onAddMemberHandle}
+        members={memberCanAddInApprove}
+      />
     </>
   );
 };
@@ -355,12 +357,11 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-
-
+  const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false)
 
   const handleAddMember = (member) => {
     if (can_modify === false) {
-      enqueueSnackbar(t('MESSAGE_NOT_PERMISSION'), {
+      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
 
@@ -372,20 +373,15 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
     })
     dispatch(addMemberMonitor({ offer_id, member_id: membersID }))
   }
-  const handleOpenAddMonitorModal = () => {
-    setOpenAddMonitorModal(false)
-  }
   const handleDeleteMemberMonitor = ({ member_id, offer_id }) => {
     if (can_modify === false) {
-      enqueueSnackbar(t('MESSAGE_NOT_PERMISSION'), {
+      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
-
       return
     }
     dispatch(deleteMemberMonitor({ offer_id, member_id }))
   }
-  const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false)
   return (
     <Grid container>
       <Grid item xs={5}>
@@ -427,7 +423,12 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
           )}
         </Grid>
       </Grid>
-      <CustomAddOfferMemberModal members={memberCanAddInMonitor} onChange={handleAddMember} isOpen={openAddMonitorModal} setOpen={handleOpenAddMonitorModal} />
+      <CustomAddOfferMemberModal
+        isOpen={openAddMonitorModal}
+        setOpen={setOpenAddMonitorModal}
+        members={memberCanAddInMonitor}
+        onChange={handleAddMember}
+      />
     </Grid>
 
 
@@ -492,6 +493,7 @@ export default function LeftContent({
         content={content}
         title={title}
         offer_group_id={offer_group_id}
+        can_modify={can_modify}
       />
       <RenderListFile can_modify={can_modify} offer_id={id} documents={documents} />
       <PersonCanApprove can_modify={can_modify} offer_id={id} memberCanAddInApprove={memberCanAdd()} members_can_approve={members_can_approve} />
