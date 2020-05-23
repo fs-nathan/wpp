@@ -72,7 +72,7 @@ function AlertModal({
             className="margin-circular"
             color={bgColor.color}
             style={{
-              opacity: (actionLoading || activeLoading) ? 1 : 0
+              display: (actionLoading || activeLoading) ? 'initial' : 'none'
             }}
           />
           {t('DMH.COMP.ALERT_MODAL.ACCEPT_BTN')}

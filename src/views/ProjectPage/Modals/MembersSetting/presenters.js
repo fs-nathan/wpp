@@ -1,5 +1,5 @@
 import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiAccountConvert, mdiAccountMinus, mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
+import { mdiAccountConvert, mdiAccountMinus, mdiAlertCircleOutline, mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
@@ -143,6 +143,12 @@ const PermissionBox = ({ className = '', isAdmin = false, isNotEmpty = true, ...
 const RoleButton = ({ className = '', ...props }) =>
   <div
     className={`view_Project_MemberSetting_Modal___role-button ${className}`}
+    {...props}
+  />
+
+const HelperText = ({ className = '', ...props }) =>
+  <div
+    className={`view_Project_MemberSetting_Modal___helper ${className}`}
     {...props}
   />
 
@@ -296,6 +302,7 @@ function MemberSetting({
 
   return (
     <CustomModal
+      className={'view_Project_MemberSetting_Modal___wide-modal'}
       title={`Quản lý thành viên dự án`}
       fullWidth={true}
       open={open}
@@ -319,6 +326,10 @@ function MemberSetting({
                 onChange={evt => setSearchPatern(evt.target.value)}
               />
             </Banner>
+            <HelperText>
+              <Icon path={mdiAlertCircleOutline} size={1} />
+              <span>Hãy thêm thành viên vào nhóm trước khi gán cho dự án!</span>
+            </HelperText>
             <ListContainer>
               {members.free.map(room => (
                 <UserFreeRoomList

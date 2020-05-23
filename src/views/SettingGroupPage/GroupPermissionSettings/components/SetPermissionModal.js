@@ -20,6 +20,7 @@ import { get } from "views/JobPage/utils";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { CustomTableBodyCell } from "./AddGroupPermissionModal";
 import { RoundSearchBox } from "./SearchBox";
+import TasksScrollbar from "./TasksScrollbar";
 export const SetPermissionModal = ({
   permissionList = emptyArray,
   loading,
@@ -30,8 +31,12 @@ export const SetPermissionModal = ({
   value = emptyArray,
   onSubmit,
 }) => {
+  const allPremission = permissionList.flatMap((item) =>
+    (item.permissions || emptyArray).flatMap((item) => item.permission)
+  );
+
   const [keyword, setKeyword] = useState("");
-  const [select, setSelect] = useMultipleSelect(
+  const [select, setSelect, __, selectAll] = useMultipleSelect(
     value.reduce(
       (result, key) => ({
         ...result,
@@ -71,94 +76,120 @@ export const SetPermissionModal = ({
       ]}
     >
       <DialogContent dividers className="dialog-content move-content">
-        <Box padding="24px">
-          <VerticleList>
-            <Box fontSize="15px" fontWeight="bold">
-              {t("DANH SÁCH QUYỀN")}
-            </Box>
-            <RoundSearchBox
-              onChange={onInputChange}
-              placeholder={t("Tìm kiếm quyền")}
-            />
-            <Table size="small" stickyHeader>
-              <TableHead>
-                <TableRow>
-                  <TableCell style={{ padding: "0px" }} width="20px">
-                    {/* <Checkbox
-                      onChange={(e) => loginlineParams(e.target.value)}
-                      color="primary"
-                    /> */}
-                  </TableCell>
-                  <TableCell width="30%" align="left">
-                    {t("Tên quyền")}
-                  </TableCell>
-                  <TableCell align="left">{t("Mô tả")}</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {permissionList.map((group, i) => (
-                  <React.Fragment key={i}>
-                    <TableRow>
-                      <CustomTableBodyCell
-                        style={{ padding: "0px" }}
-                        align="left"
-                      >
-                        {/* <Checkbox color="primary" /> */}
-                      </CustomTableBodyCell>
-                      <CustomTableBodyCell
-                        colSpan={12}
-                        className="comp_TitleCell"
-                        align="left"
-                      >
-                        <Typography fontWeight="bold">
-                          <b>{get(group, "name")}</b>
-                        </Typography>
-                      </CustomTableBodyCell>
-                    </TableRow>
-                    {get(group, "permissions", [])
-                      .filter(({ name = "" }) => name.includes(keyword))
-                      .map(({ name, description, permission }) => (
-                        <TableRow
-                          key={permission}
-                          className="comp_RecentTableRow table-body-row"
+        <TasksScrollbar>
+          <Box padding="24px">
+            <VerticleList>
+              <Box fontSize="15px" fontWeight="bold">
+                {t("DANH SÁCH QUYỀN")}
+              </Box>
+              <RoundSearchBox
+                onChange={onInputChange}
+                placeholder={t("Tìm kiếm quyền")}
+              />
+              <Table size="small" stickyHeader>
+                <TableHead>
+                  <TableRow>
+                    <TableCell style={{ padding: "0px" }} width="20px">
+                      <Checkbox
+                        checked={
+                          !(
+                            allPremission.findIndex((item) => !select[item]) >=
+                            0
+                          )
+                        }
+                        onChange={() => {
+                          const isAll = !(
+                            allPremission.findIndex((item) => !select[item]) >=
+                            0
+                          );
+                          if (!isAll) {
+                            selectAll(
+                              allPremission.reduce((result, v) => {
+                                result[v] = true;
+                                return result;
+                              }, {})
+                            );
+                          } else {
+                            selectAll(
+                              allPremission.reduce((result, v) => {
+                                result[v] = false;
+                                return result;
+                              }, {})
+                            );
+                          }
+                        }}
+                        color="primary"
+                      />
+                    </TableCell>
+                    <TableCell width="30%" align="left">
+                      {t("Tên quyền")}
+                    </TableCell>
+                    <TableCell align="left">{t("Mô tả")}</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {permissionList.map((group, i) => (
+                    <React.Fragment key={i}>
+                      <TableRow>
+                        <CustomTableBodyCell
+                          style={{ padding: "0px" }}
+                          align="left"
+                        ></CustomTableBodyCell>
+                        <CustomTableBodyCell
+                          colSpan={12}
+                          className="comp_TitleCell"
+                          align="left"
                         >
-                          <CustomTableBodyCell
-                            style={{ padding: "0px" }}
-                            align="left"
+                          <Typography fontWeight="bold">
+                            <b>{get(group, "name")}</b>
+                          </Typography>
+                        </CustomTableBodyCell>
+                      </TableRow>
+                      {get(group, "permissions", [])
+                        .filter(({ name = "" }) => name.includes(keyword))
+                        .map(({ name, description, permission }) => (
+                          <TableRow
+                            key={permission}
+                            className="comp_RecentTableRow table-body-row"
                           >
-                            <Checkbox
-                              checked={select[permission]}
-                              onChange={() => setSelect(permission)}
-                              color="primary"
-                            />
-                          </CustomTableBodyCell>
-                          <CustomTableBodyCell align="left">
-                            <Typography noWrap title={name}>
-                              {name}
-                            </Typography>
-                          </CustomTableBodyCell>
-                          <CustomTableBodyCell align="left">
-                            <Typography>{description}</Typography>
-                          </CustomTableBodyCell>
-                        </TableRow>
-                      ))}
-                    <TableRow>
-                      <CustomTableBodyCell
-                        colSpan={12}
-                        style={{ padding: "5px 0px" }}
-                        align="left"
-                      >
-                        <Divider />
-                      </CustomTableBodyCell>
-                    </TableRow>
-                  </React.Fragment>
-                ))}
-              </TableBody>
-            </Table>
+                            <CustomTableBodyCell
+                              style={{ padding: "0px" }}
+                              align="left"
+                            >
+                              <Checkbox
+                                checked={!!select[permission]}
+                                onChange={() => setSelect(permission)}
+                                color="primary"
+                              />
+                            </CustomTableBodyCell>
+                            <CustomTableBodyCell align="left">
+                              <Typography noWrap title={name}>
+                                {name}
+                              </Typography>
+                            </CustomTableBodyCell>
+                            <CustomTableBodyCell align="left">
+                              <Typography>{description}</Typography>
+                            </CustomTableBodyCell>
+                          </TableRow>
+                        ))}
+                      <TableRow>
+                        <CustomTableBodyCell
+                          colSpan={12}
+                          style={{ padding: "5px 0px" }}
+                          align="left"
+                        >
+                          <Divider />
+                        </CustomTableBodyCell>
+                      </TableRow>
+                    </React.Fragment>
+                  ))}
+                </TableBody>
+              </Table>
 
-            <Space height={"50px"}></Space>
-          </VerticleList>
-        </Box>
+              <Space height={"50px"}></Space>
+            </VerticleList>
+          </Box>
+        </TasksScrollbar>
       </DialogContent>
     </ModalCommon>
   );

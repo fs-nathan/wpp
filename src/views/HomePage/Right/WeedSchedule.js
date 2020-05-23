@@ -32,6 +32,7 @@ import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, useDispatch, useSelector } from "react-redux";
+import "views/CalendarWeeklyPage/RightPart/style.scss";
 import {
   calendarsSelector,
   listWeeksInYearSelector,
@@ -106,6 +107,30 @@ const WeedDetailStateLess = ({
               {get(calendar, "end", "")})
             </Typography>
           </CalendarDetailHeader>
+          <Box className="view_WeeklyCalendar_rightContainer__columnDataHeader">
+            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_title">
+              <span>
+                {t(
+                  "views.calendar_page.modal.create_weekly_calendar.label.title"
+                )}
+              </span>
+            </div>
+            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_content">
+              <span>
+                {t("views.calendar_page.modal.create_weekly_calendar.content")}
+              </span>
+            </div>
+            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_receiver">
+              <span>
+                {t("views.calendar_page.modal.create_weekly_calendar.receiver")}
+              </span>
+            </div>
+            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_createdBy">
+              <span>
+                {t("views.calendar_page.right_part.label.created_by")}
+              </span>
+            </div>
+          </Box>
           {scheduleOfWeek.data.length !== 0 &&
             scheduleOfWeek.data.map((item, index) => {
               if (item.schedules.length !== 0) {
@@ -121,24 +146,6 @@ const WeedDetailStateLess = ({
                           }
                         </span>
                         <span>({item.date})</span>
-                      </div>
-                      <div className="header_title">
-                        {t(
-                          "views.calendar_page.modal.create_weekly_calendar.label.title"
-                        )}
-                      </div>
-                      <div className="header_content">
-                        {t(
-                          "views.calendar_page.modal.create_weekly_calendar.content"
-                        )}
-                      </div>
-                      <div className="header_members_joined">
-                        {t(
-                          "views.calendar_page.modal.create_weekly_calendar.receiver"
-                        )}
-                      </div>
-                      <div className="header_created_by">
-                        {t("views.calendar_page.right_part.label.created_by")}
                       </div>
                     </Typography>
                     <List
@@ -266,8 +273,8 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
   const next = () =>
     setCurrentIndex(Math.min(weekScheduleNow.length - 1, currentIndex + 1));
   const { t } = useTranslation();
-  const week = moment(currentDay.date, "DD/MM/YYYY").format("W");
-  const year = moment(currentDay.date, "DD/MM/YYYY").format("YYYY");
+  const week = moment().format("W");
+  const year = moment().format("YYYY");
   return (
     <>
       <TasksCard.Container>

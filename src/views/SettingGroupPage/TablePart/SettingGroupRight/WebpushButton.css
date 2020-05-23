@@ -1,0 +1,19 @@
+.WebpushButton {
+  padding: 10px;
+  border: 1px solid #cecece;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+.WebpushButton img {
+  width: 30px;
+  height: 30px;
+}
+.WebpushButton > div {
+  margin: 0 10px;
+  font-size: 16px;
+}
+.WebpushButton button {
+  text-transform: uppercase;
+}

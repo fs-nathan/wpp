@@ -1,6 +1,6 @@
 import { Button, CircularProgress } from '@material-ui/core';
 import { mdiArrowLeft } from '@mdi/js';
-import { find, get, isNil } from 'lodash';
+import { concat, find, get, isNil } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -114,7 +114,7 @@ function DeletedProjectTable({
             width: '5%',
           }, {
             label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.NAME"),
-            field: 'name',
+            field: row => <span style={{ fontSize: 14 }}>{get(row, 'name')}</span>,
             sort: (evt) => handleSortType('name'),
             align: 'left',
             width: '25%',
@@ -170,11 +170,11 @@ function DeletedProjectTable({
                 <MyButton
                   onClick={() => handleDelete(get(row, 'id'))}
                   disabled={
-                    !isNil(find(pendings.pendings, pending => pending === get(row, 'id')))
+                    !isNil(find(concat(pendings.deletePendings, pendings.restorePendings), pending => pending === get(row, 'id')))
                   }
                   isDel={true}
                 >
-                  {!isNil(find(pendings.pendings, pending => pending === get(row, 'id'))) &&
+                  {!isNil(find(pendings.deletePendings, pending => pending === get(row, 'id'))) &&
                     <CircularProgress
                       size={16}
                       className="margin-circular"
@@ -185,10 +185,10 @@ function DeletedProjectTable({
                 <MyButton
                   onClick={() => handleRestore(get(row, 'id'))}
                   disabled={
-                    !isNil(find(pendings.pendings, pending => pending === get(row, 'id')))
+                    !isNil(find(concat(pendings.deletePendings, pendings.restorePendings), pending => pending === get(row, 'id')))
                   }
                 >
-                  {!isNil(find(pendings.pendings, pending => pending === get(row, 'id'))) &&
+                  {!isNil(find(pendings.restorePendings, pending => pending === get(row, 'id'))) &&
                     <CircularProgress
                       size={16}
                       className="margin-circular"
