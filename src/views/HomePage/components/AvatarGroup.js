@@ -14,7 +14,7 @@ const useAvatarGroupStyles = makeStyles(() => ({
   }),
 }));
 
-const AvatarGroup = ({ images, offset, size = 30 }) => {
+const AvatarGroup = ({ images, offset, size = 30, onClick }) => {
   const styles = useAvatarGroupStyles({ offset, size });
   return images.map((face, i) => (
     <Avatar className={styles.item} key={i} src={face} />
