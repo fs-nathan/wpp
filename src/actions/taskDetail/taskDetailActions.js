@@ -1193,3 +1193,24 @@ export function removeGroupPermissionOfMemberFail(error) {
         error
     };
 }
+
+export function detailGroupPermissionDefault(payload) {
+    return {
+        type: types.DETAIL_GROUP_PERMISSION_DEFAULT,
+        payload
+    };
+}
+
+export function detailGroupPermissionDefaultSuccess(payload) {
+    return {
+        type: types.DETAIL_GROUP_PERMISSION_DEFAULT_SUCCESS,
+        payload
+    };
+}
+
+export function detailGroupPermissionDefaultFail(error) {
+    return {
+        type: types.DETAIL_GROUP_PERMISSION_DEFAULT_FAIL,
+        error
+    };
+}

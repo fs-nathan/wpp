@@ -1337,5 +1337,8 @@
     }
   },
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "Tiến độ công việc đã được chạy",
-  "LABEL_CHAT_TASK_TAO_MOI": "Tạo mới"
+  "LABEL_CHAT_TASK_TAO_MOI": "Tạo mới",
+  "LABEL_CHAT_TASK_CHU_CONG_VIEC": "Chủ công việc",
+  "LABEL_CHAT_TASK_CHU_SO_HUU_CONG": "Chủ sở hữu công việc có các quyền sau",
+  "LABEL_CHAT_TASK_NHOM_QUYEN_CHU_SO": "Nhóm quyền: Chủ sở hữu công việc"
 }

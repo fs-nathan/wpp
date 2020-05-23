@@ -7,12 +7,16 @@
     font-weight: 400;
     background-color: #ffffff;
     font-size: 12px;
+    text-transform: initial;
     .MuiButton-label {
       font-size: 12px;
     }
     &:hover {
       cursor: pointer;
       background-color: #eeeeee;
+    }
+    &__owner {
+      color: red;
     }
   }
 }

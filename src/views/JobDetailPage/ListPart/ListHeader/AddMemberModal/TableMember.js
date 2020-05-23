@@ -106,7 +106,10 @@ function TableMember(props) {
                   <TableCell style={{ width: '40%' }}>
                     <MemberDetail name={item.name} email={item.email} />
                   </TableCell>
-                  <TableCell style={{ width: '20%' }}><MemberPermission permission={item.group_permission} memberId={item.id} /></TableCell>
+                  <TableCell style={{ width: '20%' }}>
+                    <MemberPermission
+                      {...item} />
+                  </TableCell>
                   <TableCell style={{ width: '20%' }}>
                     <MemberRole roles={item.roles || []} memberId={item.id} />
                   </TableCell>

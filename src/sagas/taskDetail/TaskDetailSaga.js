@@ -1562,6 +1562,15 @@ export function* removeGroupPermissionOfMember(payload) {
   }
 }
 
+export function* detailGroupPermissionDefault(payload) {
+  try {
+    const res = yield call(apiService.get, "/permissions/detail-group-permission-default?group_permission_id=3", { payload });
+    yield put(actions.detailGroupPermissionDefaultSuccess(res.data));
+  } catch (error) {
+    yield put(actions.detailGroupPermissionDefaultFail(error));
+  }
+}
+
 export {
   updateComplete,
   // Update Priority

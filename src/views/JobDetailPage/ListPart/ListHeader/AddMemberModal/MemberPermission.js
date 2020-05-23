@@ -3,6 +3,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
+import clsx from 'clsx';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -10,7 +11,7 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import PermissionMemberModal from '../PermissionMemberModal';
 import './styles.scss';
 
-function MemberPermission({ permission, memberId }) {
+function MemberPermission({ group_permission, id, is_admin }) {
   const { t } = useTranslation()
   const groupActiveColor = useSelector(currentColorSelector)
   const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
@@ -25,7 +26,12 @@ function MemberPermission({ permission, memberId }) {
 
   return (
     <div className="memberPermission">
-      {!permission ?
+      {is_admin ? <Button
+        className={clsx("memberPermission--button", { 'memberPermission--button__owner': is_admin })}
+        onClick={openSelectPermissionModal}
+      >
+        {t('LABEL_CHAT_TASK_CHU_CONG_VIEC')}
+      </Button> : (!group_permission ?
         <IconButton
           className="memberPermission--button"
           size='small'
@@ -37,14 +43,16 @@ function MemberPermission({ permission, memberId }) {
         </IconButton>
         :
         <Button
-          className="memberPermission--button"
+          className={clsx("memberPermission--button", { 'memberPermission--button__owner': is_admin })}
           onClick={openSelectPermissionModal}
         >
-          {permission.name}<ArrowDropDownIcon />
-        </Button>
+          {group_permission.name}<ArrowDropDownIcon />
+        </Button>)
       }
-      <PermissionMemberModal permission={permission}
-        memberId={memberId}
+      <PermissionMemberModal
+        permission={group_permission}
+        memberId={id}
+        is_admin={is_admin}
         isOpen={openPriorityModal} setOpen={setOpenPriorityModal} />
     </div>
   )
