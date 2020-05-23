@@ -13,13 +13,20 @@ import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor } from "views/OfferPage/redux/actions";
+import {
+  addMemberHandle,
+  addMemberMonitor,
+  deleteDocumentOffer,
+  deleteMemberHandle,
+  deleteMemberMonitor,
+  uploadDocumentOffer,
+} from 'views/OfferPage/redux/actions';
 import TitleSectionModal from '../../../../../../components/TitleSectionModal';
+import SendFileModal from '../../../../../JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import JobDetailModalWrap from '../../../../../JobDetailPage/JobDetailModalWrap';
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import CustomAddOfferMemberModal from "../AddOfferMemberModal";
 import DocumentFileModal from "../SendFile/DocumentFileModal.js";
-import SendFileModal from "../SendFile/SendFileModal";
 import { styles } from '../style';
 import './styles.scss';
 import { getPriorityEditingTitle } from './i18nSelectors';
@@ -152,13 +159,11 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
 const RenderListFile = ({ can_modify, offer_id, documents }) => {
   const { t } = useTranslation()
   const [deleteDocumentModal, setDeleteDocumentModal] = useState(false)
-  const file = useRef(null)
   const dispatch = useDispatch()
   const { enqueueSnackbar } = useSnackbar();
   const [deletedFileId, setDeletedFileId] = useState([])
   const [selectedItem, setSelectedItem] = useState({ file_id: "", name: "", url: "", file_icon: "" })
   const [openSendFileModal, setOpenSendFileModal] = useState(false)
-  const [openDocumentModal, setOpenDocumentModal] = useState(false)
   const handleDeleteDocument = ({ file_id, name, url, file_icon }) => {
     setSelectedItem({ file_id, name, url, file_icon })
     setDeleteDocumentModal(true)
@@ -179,9 +184,6 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
       </>
     )
   }
-  const setOpen = () => {
-    setDeleteDocumentModal(false)
-  }
   const confirmDeleteDocument = useCallback(() => {
     if (can_modify === false) {
       enqueueSnackbar('You not have permission to access', {
@@ -190,19 +192,23 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
 
       return
     }
-    setDeleteDocumentModal(false)
     dispatch(deleteDocumentOffer({ offer_id, file_id: selectedItem.file_id }))
     // setDeletedFileId((prevValue) => [...prevValue, selectedItem.file_id])
   }, [can_modify, dispatch, enqueueSnackbar, offer_id, selectedItem.file_id])
-  const handleOpenDocumentFileModal = () => {
-    setOpenDocumentModal(false)
+  const handleUploadSelectedFilesFromPC = async (e) => {
+    const { files } = e.target;
+    const formData = new FormData();
+    formData.append("offer_id", offer_id);
+    [...files].forEach(file => formData.append("file", file, file.name));
+    dispatch(uploadDocumentOffer({ data: formData }));
   }
-  const handleOpenSendFileModal = () => {
-    setOpenSendFileModal(false)
-  }
-  const onClickShareFromLibrary = () => {
-    setOpenSendFileModal(false)
-    setOpenDocumentModal(true)
+  const handleSelectedFilesFromLibrary = (selectedFiles) => {
+    if (selectedFiles) {
+      const formData = new FormData();
+      formData.append("offer_id", offer_id);
+      selectedFiles.forEach((file, index) => formData.append(`file_ids[${index}]`, file.id));
+      dispatch(uploadDocumentOffer({ data: formData }))
+    }
   }
   const reRenDerDocumentsOnDelete = useMemo(() => {
     if (isEmpty(documents)) {
@@ -218,7 +224,7 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
       <Grid container spacing="2">
         {!isEmpty(documents) &&
           reRenDerDocumentsOnDelete.map((document) => (
-            <Grid item xs={6} className="offerDetail-attachedDocument-fileContainer">
+            <Grid item xs={5} className="offerDetail-attachedDocument-fileContainer">
               <div
                 className="offerDetail-attachedDocument-fileIcon"
               >
@@ -248,9 +254,18 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
             </span>
           </Button>
         </label>
-        <AlertModal open={deleteDocumentModal} onConfirm={confirmDeleteDocument} setOpen={setOpen} content={renderConfirmRemoveFileModal()} />
-        <SendFileModal offer_id={offer_id} open={openSendFileModal} setOpen={handleOpenSendFileModal} onClickShareFromLibrary={onClickShareFromLibrary} />
-        <DocumentFileModal offer_id={offer_id} open={openDocumentModal} setOpen={handleOpenDocumentFileModal} />
+        <AlertModal
+          open={deleteDocumentModal}
+          setOpen={setDeleteDocumentModal}
+          onConfirm={confirmDeleteDocument}
+          content={renderConfirmRemoveFileModal()}
+        />
+        <SendFileModal
+          open={openSendFileModal}
+          setOpen={setOpenSendFileModal}
+          handleUploadFile={handleUploadSelectedFilesFromPC}
+          onConfirmShare={handleSelectedFilesFromLibrary}
+        />
       </div>
       <div className="offerDetail-horizontalLine" />
     </>
