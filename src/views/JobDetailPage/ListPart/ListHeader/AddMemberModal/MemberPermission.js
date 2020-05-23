@@ -1,6 +1,5 @@
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
@@ -46,7 +45,9 @@ function MemberPermission({ group_permission, id, is_admin, is_in_group }) {
           className={clsx("memberPermission--button", "memberPermission--buttonPermission", { 'memberPermission--button__owner': is_admin })}
           onClick={openSelectPermissionModal}
         >
-          {group_permission.name}<ArrowDropDownIcon />
+          <div className="memberPermission--permissionName" >
+            {group_permission.name}
+          </div>
         </Button>)
       }
       <PermissionMemberModal

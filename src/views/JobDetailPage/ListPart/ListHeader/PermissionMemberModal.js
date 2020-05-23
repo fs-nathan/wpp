@@ -66,7 +66,7 @@ function PermissionMemberModal({ memberId, setOpen,
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission);
+  const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
   const [selectedValue, setSelectedValue] = React.useState(0);
@@ -79,13 +79,14 @@ function PermissionMemberModal({ memberId, setOpen,
   // }, [dispatch, is_admin])
 
   useEffect(() => {
-    console.log('PermissionMemberModal')
+    // console.log('PermissionMemberModal', is_admin, ownerPermissions, selectedPermission)
     if (is_admin && ownerPermissions)
       setPermissionsList(ownerPermissions.permissions)
     else {
       setPermissionsList(selectedPermission)
     }
-  }, [dispatch, is_admin, ownerPermissions, selectedPermission])
+    // eslint-disable-next-line
+  }, [dispatch, is_admin])
 
   const handleChange = (event) => {
     setSelectedValue(parseInt(event.target.value));
