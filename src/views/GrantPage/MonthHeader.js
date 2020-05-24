@@ -1,5 +1,5 @@
 import moment from "moment";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 
 const MonthHeader = ({
@@ -14,6 +14,7 @@ const MonthHeader = ({
   const [countDay, setCountDay] = useState(daysRender.length);
   const [countTask, setCountTask] = useState(dataSource.length);
   const [table, setTable] = useState([]);
+  const containerRef = useRef();
   useEffect(() => {
     setCountDay(daysRender.length);
   }, [daysRender.length]);
@@ -23,35 +24,22 @@ const MonthHeader = ({
 
   const month = allMonth.map((item) => (
     <div
+      className="gantt--parent-header"
       style={{
-        borderBottom: "1px solid #f0f0f0",
-        borderTop: "1px solid #f0f0f0",
-        padding: "2px 0px",
-        borderRight: "1px solid #f0f0f0",
-        backgroundColor: "#fafafa",
         width: item.width,
-        textAlign: "center",
       }}
     >
       {item.text}
     </div>
   ));
   const day = daysRender.map((item, index) => (
-    <div
-      style={{
-        borderBottom: "1px solid #f0f0f0",
-        borderRight: "1px solid #f0f0f0",
-        padding: "1px 0px",
-        backgroundColor: "#fafafa",
-        width: 48,
-        textAlign: "center",
-      }}
-    >
+    <div className="gantt--child-header">
       {new moment(item)
         .add(scrollWidth, girdInstance.unit)
         .format(girdInstance.formatChild)}
     </div>
   ));
+  console.log(leftHeader, scrollWidth);
   const createTable = (axisX, axisY) => {
     let tempTable = [];
     for (let i = 0; i < axisX; i++) {
@@ -89,13 +77,20 @@ const MonthHeader = ({
   }, [countTask]);
   return (
     <React.Fragment>
-      <div style={{ display: "flex" }}>{month}</div>
-      <div>
+      <div ref={containerRef} style={{ display: "flex" }}>
+        {month}
+      </div>
+      <div
+        style={{
+          width: containerRef.current && containerRef.current.clientWidth,
+        }}
+        className="gantt-grid-background"
+      >
         <div
           style={{
             display: "flex",
             position: "absolute",
-            left: -leftHeader,
+            left: leftHeader,
             borderLeft: "2px solid #e8e8e8",
           }}
         >
@@ -105,7 +100,7 @@ const MonthHeader = ({
           style={{
             position: "absolute",
             marginTop: 22.5,
-            left: -leftTable,
+            left: leftTable,
           }}
         >
           {table}

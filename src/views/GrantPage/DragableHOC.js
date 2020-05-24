@@ -1,7 +1,7 @@
 import { mdiDragVerticalVariant } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { changeRowHover, scrollGantt } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
@@ -13,7 +13,6 @@ function GanttChart({
   setProcessDatasource,
   girdInstance,
   start,
-  girdType,
   showHeader,
   end,
   scrollGantt,
@@ -22,8 +21,10 @@ function GanttChart({
   dataSource,
   monthArray,
   daysRender,
+  handleScrollTop,
   showFullChart,
-
+  scrollTop,
+  heightTable,
   rowHover,
   renderFullDay,
   scrollGanttFlag,
@@ -32,10 +33,11 @@ function GanttChart({
   const dragRef = useRef();
   const scrollRef = useRef();
   const ganttRef = useRef();
+  const scrollTimeLineRef = useRef();
   const [left, setLeft] = useState(0);
+  const [canScroll, setCanScroll] = useState(true);
   const [scrollWidth, setScrollWidth] = useState(0);
   const [showResizeIcon, setShowResizeIcon] = useState(false);
-  const [leftLayerFromNow, setLeftLayerFromNow] = useState(0);
   const [currentX, setcurrentX] = useState(0);
   const [drag, setDrag] = useState(false);
   const [heightChart, setHeightChart] = useState(600);
@@ -86,6 +88,10 @@ function GanttChart({
     }
   }, [showHeader]);
   useEffect(() => {
+    scrollTimeLineRef.current.scrollTop = scrollTop;
+    setCanScroll(false);
+  }, [scrollTop]);
+  useEffect(() => {
     if (scrollRef.current && scrollGanttFlag) {
       const widthFromNowLayer =
         new moment(Date.now()).diff(start, girdInstance.unit) + 1;
@@ -99,51 +105,55 @@ function GanttChart({
   if (renderFullDay) {
     maxWidth = (end.diff(start, girdInstance.unit) + 1) * 48;
   }
-  const timeline = dataSource.map((item, index) => {
-    if (!item.show && !item.isGroupTask) return null;
-    const startDate = moment(item.start_time, girdInstance.formatString);
-    const endDate = moment(item.end_time, girdInstance.formatString);
-    const startPosition = Math.ceil(
-      startDate.diff(start, girdInstance.unit, true)
-    );
-    const endPosition = endDate.diff(startDate, girdInstance.unit) + 1;
-    return (
-      <React.Fragment>
-        <div
-          key={item.id}
-          onMouseEnter={() => changeRowHover(index)}
-          onMouseLeave={() => changeRowHover(-1)}
-          className="gantt--top-timeline-tr"
-          style={{
-            position: "relative",
-            padding: "8.5px 0px",
-            display: "flex",
-            backgroundColor: rowHover === index ? "#fffae6" : "",
-          }}
-        >
-          <div className="gantt--top-timeline"></div>
-          <Timeline
-            canEdit={item.can_edit}
-            setProcessDatasource={setProcessDatasource}
-            isTotalDuration={item.isTotalDuration}
-            isGroupTask={item.isGroupTask}
-            key={item.id + "1"}
-            setDataSource={setDataSource}
-            startDate={startDate}
-            endDate={endDate}
-            key={item.id}
-            dataSource={dataSource}
-            index={index}
-            startPosition={startPosition}
-            endPosition={endPosition}
-          />
-        </div>
-      </React.Fragment>
-    );
-  });
+  const timeline = useMemo(
+    () =>
+      dataSource.map((item, index) => {
+        if (!item.show && !item.isGroupTask) return null;
+        const startDate = moment(item.start_time, girdInstance.formatString);
+        const endDate = moment(item.end_time, girdInstance.formatString);
+        const startPosition = Math.ceil(
+          startDate.diff(start, girdInstance.unit, true)
+        );
+        const endPosition = endDate.diff(startDate, girdInstance.unit) + 1;
+        return (
+          <React.Fragment>
+            <div
+              key={item.id}
+              onMouseEnter={() => changeRowHover(index)}
+              onMouseLeave={() => changeRowHover(-1)}
+              className="gantt--top-timeline-tr"
+              style={{
+                position: "relative",
+                padding: "8.5px 0px",
+                display: "flex",
+                backgroundColor: rowHover === index ? "#fffae6" : "",
+              }}
+            >
+              <div className="gantt--top-timeline"></div>
+              <Timeline
+                canEdit={item.can_edit}
+                setProcessDatasource={setProcessDatasource}
+                isTotalDuration={item.isTotalDuration}
+                isGroupTask={item.isGroupTask}
+                key={item.id + "1"}
+                setDataSource={setDataSource}
+                startDate={startDate}
+                endDate={endDate}
+                key={item.id}
+                dataSource={dataSource}
+                index={index}
+                startPosition={startPosition}
+                endPosition={endPosition}
+              />
+            </div>
+          </React.Fragment>
+        );
+      }),
+    [dataSource, girdInstance, start, visibleGantt, rowHover]
+  );
   const widthFromNowLayer =
     new moment(Date.now()).diff(start, girdInstance.unit) + 1;
-
+  console.log("updateee");
   return (
     <React.Fragment>
       <div
@@ -205,17 +215,32 @@ function GanttChart({
               ? `gantt-chart__container scroll-gantt`
               : "gantt-chart__container"
           }
+          style={{
+            height: heightTable,
+          }}
           onScroll={(e) => {
-            setLeftLayerFromNow(e.target.scrollLeft);
-            if (Math.floor(e.target.scrollLeft / 48) !== scrollWidth) {
-              const newScrollWidth = Math.floor(e.target.scrollLeft / 48);
-              setScrollWidth(newScrollWidth);
-              setLeftHeader(e.target.scrollLeft % 48);
-              setLeftTable(e.target.scrollLeft % (7 * 48));
-            } else {
-              setLeftHeader(e.target.scrollLeft % 48);
-              setLeftTable(e.target.scrollLeft % (7 * 48));
+            if (!canScroll) {
+              setCanScroll(true);
+              return;
             }
+            if (!e.target.scrollTop) {
+              if (Math.floor(e.target.scrollLeft / 48) !== scrollWidth) {
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 48);
+                setScrollWidth(newScrollWidth);
+                setLeftHeader(newScrollWidth * 48);
+                setLeftTable(
+                  Math.floor(e.target.scrollLeft / (48 * 7)) * 48 * 7
+                );
+              } else {
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 48);
+                setLeftHeader(newScrollWidth * 48);
+                setScrollWidth(newScrollWidth);
+                setLeftTable(
+                  Math.floor(e.target.scrollLeft / (48 * 7)) * 48 * 7
+                );
+              }
+            }
+            handleScrollTop(e.target.scrollTop);
           }}
         >
           {visibleGantt.fromNowLayer && (
@@ -223,7 +248,6 @@ function GanttChart({
               className="gantt--fromNowLayer__container"
               style={{
                 width: widthFromNowLayer * 48,
-                left: -leftLayerFromNow,
               }}
             >
               <div
@@ -253,7 +277,15 @@ function GanttChart({
               leftHeader={leftHeader}
               leftTable={leftTable}
             />
-            <div className="gantt--timeline--container">{timeline}</div>
+            <div
+              style={{
+                height: heightTable - 23 - 26,
+              }}
+              ref={scrollTimeLineRef}
+              className="gantt--timeline--container"
+            >
+              {timeline}
+            </div>
           </div>
         </div>
       </div>

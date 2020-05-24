@@ -50,6 +50,7 @@ export const initialState = {
     "Nội dung 5",
     "Nội dung 6",
   ],
+  scrollTop: 0,
   renderFullDay: false,
   filterExportPdf: {
     start: null,
