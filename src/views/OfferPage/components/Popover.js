@@ -62,11 +62,11 @@ function ExpandPopover({ offer_id, url_redirect }) {
                 anchorEl={anchorEl}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: 'center',
+                    vertical: 'bottom',
                     horizontal: 'left',
                 }}
                 transformOrigin={{
-                    vertical: 'center',
+                    vertical: 'top',
                     horizontal: 'center',
                 }}
             >
