@@ -14,9 +14,6 @@ const StyledList = styled.ul`
   margin-top: 20px;
   padding-inline-start: 0 !important;
   list-style-type: none;
-  & > li {
-    padding: 8px 0;
-  }
 `;
 
 const ListDemand = props => {

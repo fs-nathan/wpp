@@ -42,6 +42,9 @@
   }
 }
 .permissionMemberModal {
+  .MuiPaper-root {
+    max-width: 55vw;
+  }
   .dialogWrap--content {
     width: 95%;
   }
@@ -60,13 +63,13 @@
     display: block;
     position: relative;
     line-height: 23px;
-    margin: 15px 0 10px;
+    margin: 0px 0 10px;
     width: 100%;
   }
   &--content {
-    font-weight: normal;
+    font-weight: 400;
     margin: 20px 0px;
-    max-width: 500px;
+    // max-width: 500px;
     font-size: 14px;
     line-height: 1.5;
   }

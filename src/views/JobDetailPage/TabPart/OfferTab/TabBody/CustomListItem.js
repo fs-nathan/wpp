@@ -23,6 +23,7 @@ const CustomListItem = (props) => {
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
+    evt.stopPropagation()
   }
 
   const handleClose = () => {
@@ -36,8 +37,8 @@ const CustomListItem = (props) => {
 
   return (
     <React.Fragment>
-      <li className="offerTabItem">
-        <div className="offerTabItem--content" onClick={onClickDetail}>{title}</div>
+      <li className="offerTabItem" onClick={onClickDetail}>
+        <div className="offerTabItem--content" >{title}</div>
         <div className="offerTabItem--user">
           <Avatar className="offerTabItem--avatar" src={user_create_avatar} alt='avatar' />
           {`${user_create_name} đề xuất lúc ${date_create}`}

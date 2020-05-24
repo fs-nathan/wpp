@@ -156,7 +156,10 @@ function ListBodyItem(props) {
     dispatch(loadChat(props.id))
     // getMemberByTaskId(props.id)
     // getMemberNotAssignedByTaskId(props.id)
-    history.push({ search: `?task_id=${props.id}` });
+    // console.log('history', history.search)
+    const { pathname } = history.location;
+    const path = pathname.split('?')[0]
+    history.push({ pathname: path, search: `?task_id=${props.id}` });
   }
 
   const fillColor = props.complete === 100 ? '#00e690' : '#eee';
