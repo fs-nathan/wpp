@@ -10,6 +10,11 @@ import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
 import { useLocalStorage } from "../../hooks";
 import { labels } from "./contants/attrs";
+import {
+  TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
+} from './contants/localStorage';
 import { Routes } from "./contants/routes";
 import { useMultipleSelect } from "./hooks/useMultipleSelect";
 import "./LeftPart_new/LeftSetting.css";
@@ -123,12 +128,23 @@ export const defaultFilter = {
 function OfferPage(props) {
   const { t } = useTranslation();
   const [keyword, setkeyword] = useState("");
-  const [title, setTtile] = useState(get(labels, "pageTitle"));
-  const [localOptions, setLocalOptions] = useLocalStorage(
-    "LOCAL_PROJECT_OPTIONS",
+  const [title, setTitle] = useState(get(labels, "pageTitle"));
+  const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
     {
-      filterType: 1,
-      timeType: 5
+      timeType: 1,
+    }
+  );
+  const [timeFilterTypeOfferByProject, storeTimeFilterTypeOfferByProject] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
+    {
+      timeType: 1,
+    }
+  );
+  const [timeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByDepartment] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
+    {
+      timeType: 1,
     }
   );
   const [quickTask, setQuickTask] = useState();
@@ -137,19 +153,33 @@ function OfferPage(props) {
   const history = useHistory()
   const [openModal, setOpenModal] = useState(false);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
-  const [timeType, setTimeType] = React.useState(localOptions.timeType);
-  const times = useTimes();
+  const [timeType, setTimeType] = React.useState(1);
   useEffect(() => {
-    setLocalOptions({
-      ...localOptions,
-      timeType
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const { pathname } = history.location;
+    const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
+    const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
+    const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
+    if (offerByGroupRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferByGroup({
+        ...timeFilterTypeOfferByGroup,
+        timeType
+      });
+    } else if (offerByProjectRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferByProject({
+        ...timeFilterTypeOfferByProject,
+        timeType
+      });
+    } else if (offerByDepartmentRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferByDepartment({
+        ...timeFilterTypeOfferByDepartment,
+        timeType
+      });
+    }
   }, [timeType]);
 
-  const [timeRange, settimeRange] = React.useState(() => {
-    const [startDate, endDate] = times[timeType].option();
+  const times = useTimes();
+  const [timeRange, setTimeRange] = React.useState(() => {
+    const [startDate, endDate] = times[1].option();
     return {
       startDate,
       endDate
@@ -225,10 +255,6 @@ function OfferPage(props) {
   const setOpenModalOfferByGroup = useCallback(open => {
     setOpenModal(open);
   });
-  // Set tiêu đề
-  const setTitle = title => {
-    setTtile(title);
-  };
 
   // Filter các tab bên cột trái
   const filter = value => {
@@ -312,10 +338,13 @@ function OfferPage(props) {
             timeAnchor,
             setTimeAnchor,
             setOpenModalOfferByGroup,
+            timeFilterTypeOfferByGroup,
+            timeFilterTypeOfferByProject,
+            timeFilterTypeOfferByDepartment,
             timeType,
             setTimeType,
             timeRange,
-            settimeRange,
+            setTimeRange,
             statusFilter,
             setstatusFilter,
             handleRemoveStatusFilter,

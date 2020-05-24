@@ -6,12 +6,20 @@ import { actionVisibleDrawerMessage } from '../../actions/system/system';
 import './Drawer.scss';
 import { TOKEN, REFRESH_TOKEN, DRAWER_TYPE } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
+import {
+  TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
+} from '../../views/OfferPage/contants/localStorage';
 
 const FooterListDrawer = props => {
   const closeDrawer = url => {
-    if (url === Routes.DANG_NHAP) {
+    if (url === Routes.LOGIN) {
       localStorage.removeItem(TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);
+      localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW);
+      localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW);
+      localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW);
     }
     props.actionVisibleDrawerMessage({
       type: '',
