@@ -1,7 +1,7 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import get from "lodash/get";
 import { emptyObject } from "views/JobPage/contants/defaultValue";
-import { merge, toFormData } from "views/JobPage/utils";
+import { merge } from "views/JobPage/utils";
 import { apiCallRequest } from "./actions";
 export const createAsyncAction = ({
   config: { url, method = "get", data },
@@ -15,7 +15,7 @@ export const createAsyncAction = ({
     config: {
       url,
       method,
-      data: toFormData(data),
+      data: data,
     },
     data,
     asyncId,

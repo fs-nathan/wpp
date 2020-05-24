@@ -15,7 +15,6 @@ import {
   createValidate,
   get,
   loginlineFunc,
-  loginlineParams,
 } from "views/JobPage/utils";
 import {
   InputFormControl,
@@ -35,12 +34,13 @@ export const GroupPermissionFormInner = ({ permissionModules }) => {
   const { t } = useTranslation();
   return (
     <VerticleList>
-      <InputFormControl name="name" label={t("Tên nhóm quyền")} />
+      <InputFormControl required name="name" label={t("Tên nhóm quyền")} />
       <MultilineInputFormControl
         name="description"
         label={t("Mô tả nhóm quyền")}
       />
       <RadioGroupFormControl
+        required
         options={permissionModules.map((item) => {
           const [name, value] = createMapPropsFromAttrs([
             permissionModulesAttr.name,
@@ -120,7 +120,7 @@ export const GroupPermissionForm = ({
   return (
     <Formik
       enableReinitialize
-      validateOnMount
+      // validateOnMount
       initialValues={initialValues}
       onSubmit={onSubmit}
       validate={validateMemo}
@@ -138,10 +138,7 @@ export default () => {
 
   useEffect(() => {
     if (status === apiCallStatus.success) {
-      const item = loginlineFunc(get)(
-        loginlineParams(data),
-        "group_permission"
-      );
+      const item = loginlineFunc(get)(data, "group_permission");
       setSelect(item);
       setModal(<UpdateGroupPermissionModal item={item} />);
     }

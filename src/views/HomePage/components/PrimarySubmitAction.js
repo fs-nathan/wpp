@@ -3,7 +3,7 @@ import { bgColorSelector } from "components/LoadingOverlay/selectors";
 import { FormikContext } from "formik";
 import React, { useContext } from "react";
 import { useSelector } from "react-redux";
-const useStyles = makeStyles((theme) => ({
+export const usePrimarySubmitActionStyles = makeStyles((theme) => ({
   wrapper: {
     position: "relative",
   },
@@ -16,11 +16,10 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: -12,
   },
 }));
-
 export const PrimarySubmitAction = ({ loading, ...props }) => {
   const { color } = useSelector(bgColorSelector);
   const { handleSubmit, isValid } = useContext(FormikContext);
-  const classes = useStyles();
+  const classes = usePrimarySubmitActionStyles();
   return (
     <div className={classes.wrapper}>
       <Button

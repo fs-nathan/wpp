@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, loginlineParams } from "views/JobPage/utils";
+import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { GroupPermissionSettingsCotnext } from "..";
@@ -76,12 +76,10 @@ export default ({ item }) => {
   }, [setModal]);
   const handleSubmit = (values) => {
     dispatchAsyncAction(
-      loginlineParams(
-        settingGroupPermission.actions.updateGroupPermissionInfo({
-          group_permission_id: id,
-          ...values,
-        })
-      )
+      settingGroupPermission.actions.updateGroupPermissionInfo({
+        group_permission_id: id,
+        ...values,
+      })
     );
   };
   const dispatch = useDispatch();

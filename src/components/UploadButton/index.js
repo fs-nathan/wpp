@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, CircularProgress } from '@material-ui/core';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import './style.scss';
@@ -12,7 +12,7 @@ const MyButton = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function UploadButton({ label, onClick }) {
+function UploadButton({ label, onClick, loading = false, ...props }) {
 
   const colors = useSelector(state => state.setting.colors)
   const bgColor = colors.find(item => item.selected === true);
@@ -21,12 +21,22 @@ function UploadButton({ label, onClick }) {
     <MyButton
       color='primary'
       onClick={onClick}
+      {...props}
     >
-      <span
-        style={{
-          backgroundColor: bgColor.color,
-        }}
-      >+</span>
+      {loading
+        ? (
+          <CircularProgress
+            size={15}
+            className="margin-circular"
+            color={bgColor.color}
+          />)
+        : (
+          <span
+            style={{
+              backgroundColor: bgColor.color,
+            }}
+          >+</span>
+        )}
       <span>{label}</span>
     </MyButton>
   );

@@ -4,7 +4,6 @@ import { listPosition } from 'actions/position/listPosition';
 import { listRoom } from 'actions/room/listRoom';
 import { detailUser } from 'actions/user/detailUser';
 import { uploadDocumentsUser } from 'actions/user/uploadDocumentsUser';
-import { CustomEventDispose, CustomEventListener, UPLOAD_DOCUMENTS_USER } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -13,16 +12,17 @@ import UpdateUserModal from '../../Modals/UpdateUser';
 import UserDocumentModal from '../../Modals/UserDocument';
 import { viewPermissionsSelector } from '../../selectors';
 import UserInfoPresenter from './presenters';
-import { isUploadSelector, userSelector } from './selectors';
+import { userSelector } from './selectors';
 
 function UserInfo({
-  user, isUpload, viewPermissions,
+  user, viewPermissions,
   doUploadDocumentsUser,
   doListRoom,
   doListPosition,
   doListMajor,
   doListLevel,
   doDetailUser,
+  doReloadUser,
 }) {
 
   React.useEffect(() => {
@@ -46,23 +46,13 @@ function UserInfo({
   }, []);
 
   const { userId } = useParams();
-  const [id, setId] = React.useState(null);
 
   React.useEffect(() => {
-    setId(userId);
-  }, [userId]);
-
-  React.useEffect(() => {
-    if (id !== null) {
-      doDetailUser({ userId: id });
-      const reloadDetailUserHandler = () => doDetailUser({ userId });
-      CustomEventListener(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
-      return () => {
-        CustomEventDispose(UPLOAD_DOCUMENTS_USER, reloadDetailUserHandler);
-      }
+    if (userId !== null) {
+      doDetailUser({ userId });
     }
     // eslint-disable-next-line
-  }, [id]);
+  }, [userId]);
 
   const [openDocuments, setOpenDocuments] = React.useState(false);
   const [documentsProps, setDocumentsProps] = React.useState({});
@@ -91,9 +81,10 @@ function UserInfo({
     <>
       <UserInfoPresenter
         canModify={get(viewPermissions.permissions, 'can_modify', false)}
-        user={user} isUpload={isUpload}
+        user={user} userId={userId}
         handleUploadDocumentsUser={file => doUploadDocumentsUser({ userId, file })}
         handleOpenModal={doOpenModal}
+        doReloadUser={() => doReloadUser({ userId })}
       />
       <UserDocumentModal open={openDocuments} setOpen={setOpenDocuments} {...documentsProps} />
       <UpdateUserModal open={openUpdate} setOpen={setOpenUpdate} {...updateProps} />
@@ -104,13 +95,15 @@ function UserInfo({
 const mapStateToProps = state => {
   return {
     user: userSelector(state),
-    isUpload: isUploadSelector(state),
     viewPermissions: viewPermissionsSelector(state),
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    doReloadUser: ({ userId }) => {
+      dispatch(detailUser({ userId }));
+    },
     doDetailUser: ({ userId }, quite) => dispatch(detailUser({ userId }, quite)),
     doUploadDocumentsUser: ({ userId, file }) => dispatch(uploadDocumentsUser({ userId, file })),
     doListRoom: (quite) => dispatch(listRoom(quite)),

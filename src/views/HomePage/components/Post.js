@@ -2,28 +2,45 @@ import {
   Avatar,
   Box,
   ButtonBase,
+  Dialog,
   IconButton,
   List,
   SvgIcon,
+  Tab,
+  Tabs,
   Typography,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
+import { withStyles } from "@material-ui/styles";
 import { mdiPin, mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
+import { apiService } from "constants/axiosInstance";
 import colors from "helpers/colorPalette";
 import linkify from "linkifyjs/string";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useToggle } from "react-use";
+import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
+import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import {
   createMapPropsFromAttrs,
+  encodeQueryData,
   injectClassName,
   template,
 } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
+import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
+import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/components/AyncTracker";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
@@ -31,10 +48,12 @@ import TasksCard from "../components/TasksCard";
 import { postAttr } from "../contant/attrs";
 import { comment, like, love } from "../contant/icons";
 import { routes } from "../contant/routes";
+import PostEditor from "../Middle/PostEditor";
 import { postModule } from "../redux/post";
 import AvatarGroup from "./AvatarGroup";
 import { CommentInput } from "./CommentInput";
 import { FileListItem } from "./FileListItem";
+import nodataimg from "./ic_no_data.png";
 import likeImage from "./like-image.jpg";
 import loveImage from "./love-image.png";
 import Message from "./Message";
@@ -431,7 +450,138 @@ export const PostContent = () => {
     </TasksCard.Content>
   );
 };
+const AntTabs = withStyles({
+  root: {
+    borderBottom: "1px solid #e8e8e8",
+  },
+  indicator: {
+    backgroundColor: "#1890ff",
+  },
+})(Tabs);
+const AntTab = withStyles((theme) => ({
+  root: {
+    textTransform: "none",
+    minWidth: 72,
+    fontWeight: theme.typography.fontWeightRegular,
+    marginRight: theme.spacing(4),
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:hover": {
+      color: "#40a9ff",
+      opacity: 1,
+    },
+    "&$selected": {
+      color: "#1890ff",
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+    "&:focus": {
+      color: "#40a9ff",
+    },
+  },
+  selected: {},
+}))((props) => <Tab disableRipple {...props} />);
+
+const MemberLikeAndLoveModal = ({ open, setModal }) => {
+  const [data, setData] = useState({
+    members_like: emptyArray,
+    members_love: emptyArray,
+    state: false,
+  });
+  const [tab, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const { id } = useContext(PostContext);
+  const { t } = useTranslation();
+  useEffect(() => {
+    setData(
+      apiService({
+        url:
+          "/posts/get-member-like-and-love?" +
+          encodeQueryData({
+            post_id: id,
+          }),
+        method: "get",
+      }).then((res) => setData(res.data))
+    );
+  }, [id]);
+  let list = [];
+  if (data.state) {
+    switch (tab) {
+      case 0:
+        list = [...data.members_like, ...data.members_love];
+        break;
+      case 1:
+        list = data.members_like;
+        break;
+      case 2:
+        list = data.members_love;
+        break;
+      default:
+        break;
+    }
+  }
+
+  return (
+    <ModalCommon
+      loading={data.then}
+      title={t("love and like")}
+      onClose={() => setModal(false)}
+      footerAction={[]}
+    >
+      <Box height="400px">
+        <TasksScrollbar>
+          <AntTabs
+            value={tab}
+            onChange={handleChange}
+            aria-label="love and like tab"
+          >
+            <AntTab label={t("all")} />
+            <AntTab label={t("like")} />
+            <AntTab label={t("love")} />
+          </AntTabs>
+          {data.state && (
+            <Box padding="24px">
+              {list.map(({ avatar, id, name, postion, room }) => (
+                <ListItemLayout
+                  key={id}
+                  left={<Avatar src={avatar}></Avatar>}
+                  title={name}
+                  subTitle={postion}
+                ></ListItemLayout>
+              ))}
+              {!list.length && (
+                <EmptyHolder
+                  image={
+                    <img
+                      style={{ width: "80%" }}
+                      src={nodataimg}
+                      alt="empty"
+                    ></img>
+                  }
+                  title={""}
+                  description={""}
+                />
+              )}
+            </Box>
+          )}
+        </TasksScrollbar>
+      </Box>
+    </ModalCommon>
+  );
+};
 export const PostStats = () => {
+  const [open, toggle] = useToggle();
   const { t } = useTranslation();
   const {
     inputId,
@@ -452,7 +602,10 @@ export const PostStats = () => {
   return (
     <Stack small>
       <div />
-      <div className="comp_Post__statWrap">
+      <div
+        onClick={() => toggle(true)}
+        className="comp_Post__statWrap cursor-pointer"
+      >
         <Box display="flex" alignItems="center">
           <AvatarGroup
             size={20}
@@ -508,6 +661,7 @@ export const PostStats = () => {
         )}
       </div>
       <ActionGroup {...{ is_love, is_like, handleActionClick, inputId }} />
+      {open && <MemberLikeAndLoveModal open={open} setModal={toggle} />}
     </Stack>
   );
 };
@@ -603,6 +757,7 @@ export const PostContainer = ({ post, children }) => {
     postAttr.can_modify,
   ])(post);
   const dispatch = useDispatch();
+  const [modal, setModal] = useState();
   const handleActionClick = useCallback(
     (key) => {
       switch (key) {
@@ -621,6 +776,22 @@ export const PostContainer = ({ post, children }) => {
         case "delete":
           dispatch(postModule.actions.deletePost({ post_id: id }));
           break;
+        case "edit":
+          setModal(
+            <Dialog
+              id={"PostCreator"}
+              PaperProps={{
+                tabIndex: -1,
+              }}
+              onClose={() => setModal(undefined)}
+              fullWidth={true}
+              maxWidth={"sm"}
+              open={true}
+            >
+              <PostEditor onClose={() => setModal(undefined)} post={post} />
+            </Dialog>
+          );
+          break;
         case "like":
           dispatch(postModule.actions.like({ post_id: id }));
           break;
@@ -631,12 +802,13 @@ export const PostContainer = ({ post, children }) => {
           break;
       }
     },
-    [dispatch, id]
+    [dispatch, id, post]
   );
   const { t } = useTranslation();
   const menuoptions = useMemo(() => {
     return can_modify
       ? [
+          { key: "edit", label: t("Sửa") },
           !is_pin
             ? { key: "pin", label: t("Ghim") }
             : { key: "cancel-pin", label: t("Bỏ ghim") },
@@ -691,7 +863,10 @@ export const PostContainer = ({ post, children }) => {
         handleComment,
       }}
     >
-      {children}
+      <>
+        {children}
+        {!!modal && modal}
+      </>
     </PostContext.Provider>
   );
 };

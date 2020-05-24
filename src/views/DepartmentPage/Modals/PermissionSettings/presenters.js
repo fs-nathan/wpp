@@ -73,11 +73,10 @@ const Deselect = ({ className = '', ...props }) =>
 
 function PriorityTable(props) {
   return (
-    <PermissionItem check={props.checked} align="center">
+    <PermissionItem onClick={() => props.setChecked()} check={props.checked} align="center">
       {props.radio}
       <Radio
         checked={props.checked}
-        onChange={props.onChange}
         value={props.value}
       />
     </PermissionItem>
@@ -104,6 +103,23 @@ function PermissionMemberModal({
   const [selectedValue, setSelectedValue] = React.useState(undefined);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const initialValue = React.useMemo(() =>
+    get(
+      find(
+        permissions.groupPermissions,
+        {
+          id: get(
+            find(
+              users,
+              { id: curUserId },
+            ),
+            'group_permission'
+          ),
+        }
+      ),
+      "id"
+    )
+    , [curUserId, permissions]);
 
   React.useEffect(() => {
     setSelectedValue(
@@ -193,7 +209,10 @@ function PermissionMemberModal({
           setLoading(true);
         }
       }}
-      onCancle={() => setOpen(false)}
+      onCancle={() => {
+        setOpen(false)
+        setSelectedValue(initialValue);
+      }}
       activeLoading={loading}
       manualClose={true}
     >
@@ -259,7 +278,12 @@ function PermissionMemberModal({
                       settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
                     >
                       {permissions.groupPermissions.map(group =>
-                        <PriorityTable key={get(group, 'id')} radio={get(group, 'name')} value={get(group, 'id')} checked={selectedValue === get(group, 'id')} onChange={evt => setSelectedValue(evt.target.value)} />
+                        <PriorityTable
+                          key={get(group, 'id')}
+                          radio={get(group, 'name')}
+                          value={get(group, 'id')}
+                          checked={selectedValue === get(group, 'id')}
+                          setChecked={() => setSelectedValue(get(group, 'id'))} />
                       )}
                     </Slider>
                   </SliderWrapper>

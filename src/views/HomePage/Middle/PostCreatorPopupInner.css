@@ -3,6 +3,9 @@
   flex-direction: column;
   height: 100%;
 }
+.MuiDialog-container .comp_PostCreatorPopupInner {
+  border: none;
+}
 .comp_PostCreatorPopupInner__header {
   flex-shrink: 0;
   background: rgb(245, 246, 247);

@@ -1,4 +1,3 @@
-import { concat } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listMajor = state => state.major.listMajor;
@@ -18,7 +17,8 @@ export const majorsSelector = createSelector(
       majors,
       loading: (firstTime ? false : listLoading) || createLoading,
       error: listError || createError || updateError || deleteError,
-      pendings: concat(updatePendings, deletePendings),
+      updatePendings,
+      deletePendings,
       firstTime,
     }
   }
