@@ -94,7 +94,7 @@ function JobContent(props) {
       </div>
       <div>
         <ChipMes
-          label={notification}
+          label={notification > 99 ? '99+' : notification}
           size="small"
           notification={notification > 0}
         />

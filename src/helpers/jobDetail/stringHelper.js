@@ -114,9 +114,13 @@ export function getDialogDate(timeString, formatDate = '') {
 }
 
 export function getUpdateProgressDate(timeString, formatDate = '') {
-  const date = new Date(timeString);
-  const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
-  return format(date, `HH:mm ${fixedFormat}`);
+  try {
+    const date = new Date(timeString);
+    const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+    return format(date, `HH:mm ${fixedFormat}`);
+  } catch (e) {
+    return timeString;
+  }
 }
 
 export function getChatDate(timeString) {

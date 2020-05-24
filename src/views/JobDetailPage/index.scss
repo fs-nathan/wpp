@@ -328,9 +328,11 @@
   justify-content: space-between;
   align-items: center;
   margin-top: 2px;
+  width: 100%;
   & > div:nth-child(1) {
     display: flex;
     align-items: center;
+    max-width: 65%;
     & > *:first-child {
       margin-right: 7px;
       width: 15px;
@@ -348,12 +350,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 35%;
     & > div:nth-child(1) {
       & > span {
         font-size: 10px;
         line-height: 12px;
-        padding: 1px 34x;
+        padding: 2px 4px;
         font-weight: 500;
+        min-width: 8px;
+        text-align: center;
       }
     }
     & > div:nth-child(2) {
