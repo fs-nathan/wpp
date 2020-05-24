@@ -5,13 +5,13 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { mdiChevronLeft, mdiChevronRight, mdiKey, mdiTrashCan } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey } from '@mdi/js';
 import Icon from '@mdi/react';
-import { updatePermission } from "actions/taskDetail/taskDetailActions";
+import { removeGroupPermissionOfMember, updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
 import DialogWrap from 'components/DialogWrap';
 import get from "lodash/get";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import Slider from "react-slick";
@@ -55,20 +55,39 @@ function CustomArrow({ path, className, isDisabled, onClick }) {
     <Icon
       path={path}
       className={clsx(className, { "customArrow__disabled": isDisabled })}
-      onClick={!isDisabled && onClick}
+      onClick={!isDisabled ? onClick : undefined}
     />
   );
 }
 
 function PermissionMemberModal({ memberId, setOpen,
+  is_admin,
   isOpen
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
   const [selectedValue, setSelectedValue] = React.useState(0);
+  const [permissionsList, setPermissionsList] = React.useState([]);
   const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
+
+  // useEffect(() => {
+  //   if (is_admin)
+  //     dispatch(detailGroupPermissionDefault())
+  // }, [dispatch, is_admin])
+
+  useEffect(() => {
+    // console.log('PermissionMemberModal', is_admin, ownerPermissions, selectedPermission)
+    if (is_admin && ownerPermissions)
+      setPermissionsList(ownerPermissions.permissions)
+    else {
+      setPermissionsList(selectedPermission)
+    }
+    // eslint-disable-next-line
+  }, [dispatch, is_admin])
+
   const handleChange = (event) => {
     setSelectedValue(parseInt(event.target.value));
   };
@@ -81,33 +100,52 @@ function PermissionMemberModal({ memberId, setOpen,
     handleClose()
   }
 
+  function onClickDelete() {
+    dispatch(removeGroupPermissionOfMember(taskId, memberId))
+    handleClose()
+  }
+
   return (
     <DialogWrap
       title={t('LABEL_CHAT_TASK_PHAN_QUYEN_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel={t('LABEL_CHAT_TASK_HOAN_THANH')}
-      onClickSuccess={handleUpdateMemberPermission}
       maxWidth="md"
       className="permissionMemberModal"
+      successLabel={is_admin ? t('LABEL_CHAT_TASK_THOAT') : t('LABEL_CHAT_TASK_HOAN_THANH')}
+      onClickSuccess={is_admin ? handleClose : handleUpdateMemberPermission}
+      isOneButton={is_admin}
     >
       <DialogContent>
-        <div className="permissionMemberModal--title">{t('LABEL_CHAT_TASK_CHON_NHOM_QUYEN')}</div>
-        <div className="permissionMemberModal--content">{t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}</div>
-        {listGroupPermission.length > 0 ?
+        <div className="permissionMemberModal--title">
+          {is_admin ?
+            t('LABEL_CHAT_TASK_NHOM_QUYEN_CHU_SO')
+            : t('LABEL_CHAT_TASK_CHON_NHOM_QUYEN')}
+        </div>
+        <div className="permissionMemberModal--content">
+          {is_admin ? t('LABEL_CHAT_TASK_CHU_SO_HUU_CONG') : t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}
+        </div>
+        {listGroupPermission.length > 0 || is_admin ?
           <>
-            <div><Icon path={mdiTrashCan} size={1}></Icon>{t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}</div>
-            <div className="permissionMemberModal--slider">
-              <Slider adaptiveHeight variableWidth infinite={false}
-                nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
-                prevArrow={<CustomArrow path={mdiChevronLeft} isDisabled={listGroupPermission.length < 5} />}
-                settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
-              >
-                {listGroupPermission.map((group, i) =>
-                  <PriorityTable key={group.name} radio={group.name} value={i} checked={selectedValue === i} onChange={handleChange} />
-                )}
-              </Slider>
-            </div>
+            {!is_admin &&
+              <>
+                <div className="permissionMemberModal--delete" onClick={onClickDelete}>
+                  <Icon path={mdiDeleteOutline} size={1}></Icon>
+                  {t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}
+                </div>
+                <div className="permissionMemberModal--slider">
+                  <Slider adaptiveHeight variableWidth infinite={false}
+                    nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
+                    prevArrow={<CustomArrow path={mdiChevronLeft} isDisabled={listGroupPermission.length < 5} />}
+                    settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
+                  >
+                    {listGroupPermission.map((group, i) =>
+                      <PriorityTable key={group.name} radio={group.name} value={i} checked={selectedValue === i} onChange={handleChange} />
+                    )}
+                  </Slider>
+                </div>
+              </>
+            }
             <Table>
               <TableHead>
                 <RowTable>
@@ -117,7 +155,7 @@ function PermissionMemberModal({ memberId, setOpen,
                 </RowTable>
               </TableHead>
               <TableBody>
-                {selectedPermission.map(row => (
+                {permissionsList.map(row => (
                   <TableRow key={row.name}>
                     <CellTable align="center"><Icon path={mdiKey} size={1} /></CellTable>
                     <CellTable component="th" scope="row" style={{ fontSize: '15px', fontWeight: 'bold' }}>

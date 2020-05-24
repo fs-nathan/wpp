@@ -1,7 +1,7 @@
-import { Avatar, Button, Chip, Grid, IconButton, TextField, Typography } from '@material-ui/core';
+import { Avatar, Button, Chip, Grid, IconButton, TextField } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
+import { createOffer, deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
 import lodash from 'lodash';
@@ -19,8 +19,6 @@ import ShareFromLibraryModal from '../../../ChatComponent/ShareFromLibraryModal'
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
 import OfferFile from './OfferFile';
-import DocumentFileModal from './SendFile/DocumentFileModal';
-import SendFileModal from './SendFile/SendFileModal';
 import './styles.scss';
 
 const OfferModal = (props) => {
@@ -162,19 +160,20 @@ const OfferModal = (props) => {
   }
 
   const handleCreateOffer = async () => {
-    try {
-      const config = {
-        url: "/offers/personal/create",
-        method: "POST",
-        data: getFormData(),
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }
-      await apiService(config)
-      enqueueSnackbar("Create offer successful", { variant: "success" })
-    } catch (err) {
-      enqueueSnackbar(err.message, { variant: "error" })
-    }
-    // setParams("files", [])
+    // try {
+    //   const config = {
+    //     url: "/offers/personal/create",
+    //     method: "POST",
+    //     data: getFormData(),
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    //   }
+    //   await apiService(config)
+    //   enqueueSnackbar("Create offer successful", { variant: "success" })
+    // } catch (err) {
+    //   enqueueSnackbar(err.message, { variant: "error" })
+    // }
+    dispatch(createOffer({ data: getFormData(), taskId }))
+    setParams("files", [])
   }
   function onClickCreateOffer() {
     props.setOpen(false)
@@ -341,7 +340,7 @@ const OfferModal = (props) => {
           <Grid item xs={7}>
             <Grid container alignItems="center">
               <div className="offerModal--input_rate_prefix_1">
-                <div>Tỷ lệ thành viên đồng ý ≥</div>
+                <div>{t('LABEL_CHAT_TASK_TY_LE_THANH_VIEN_DONG_Y')}</div>
               </div>
               <div className="offerModal--input__rate">
                 <input placeholder={minRateAccept} onChange={(e) => setMinRateAccept(e.target.value)} />
@@ -356,7 +355,7 @@ const OfferModal = (props) => {
             <CustomSelect
               className="offerModal--custom_select"
               options={[{ label: "Hoặc", value: "OR" }, { label: "Và", value: "AND" }]}
-              placeholder="Hoặc"
+              placeholder={t('LABEL_CHAT_TASK_HOAC')}
               onChange={(condition_logic) => setParams("condition_logic", condition_logic.value)}
             />
           </Grid>
@@ -368,7 +367,7 @@ const OfferModal = (props) => {
                   <CustomSelect
                     options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
                     onChange={selectConditionMember}
-                    placeholder="Một số thành viên sau đồng ý"
+                    placeholder={t('LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y')}
                   />
                 </Grid>
               </Grid>
@@ -396,7 +395,7 @@ const OfferModal = (props) => {
                   <CustomSelect
                     options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
                     onChange={(condition_logic_member) => setParams("condition_logic_member", condition_logic_member)}
-                    placeholder="Một số thành viên sau đồng ý"
+                    placeholder={t('LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y')}
                   />
                 </Grid>
               </Grid>
@@ -437,7 +436,7 @@ const OfferModal = (props) => {
           selectedFilesFromLibrary &&
           selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
         }
-        <ShareFromLibraryModal open={openShareFromLibraryModal} setOpen={setOpenShareFromLibraryModal} onClickConfirm={handleSelectedFilesFromLibrary}/>
+        <ShareFromLibraryModal open={openShareFromLibraryModal} setOpen={setOpenShareFromLibraryModal} onClickConfirm={handleSelectedFilesFromLibrary} />
       </React.Fragment>
     </JobDetailModalWrap>
   )

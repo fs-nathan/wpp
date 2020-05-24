@@ -5,10 +5,10 @@
   }
   &--content {
     min-width: 800px;
-    min-height: 600px;
+    height: 100%;
     display: grid;
     grid-template-columns: 1fr 2fr;
-    border: 1px solid #e0e0e0;
+    // border: 1px solid #e0e0e0;
   }
   &--body {
     height: calc(100% - 104px);
@@ -16,8 +16,8 @@
   &--scroll {
     // margin-bottom: 30px !important;
     // margin-right: 0px !important;
-    width: calc(100% + 5px) !important;
-    scrollbar-width: none !important;
+    // width: calc(100% + 5px) !important;
+    // scrollbar-width: none !important;
     padding-top: 5px;
   }
   &--border {
@@ -27,27 +27,53 @@
   &--title {
     border-bottom: 1px solid #e0e0e0;
     padding: 20px;
-    color: #686868;
-    font-size: 16px;
+    color: #555555;
+    font-size: 14px;
     text-transform: uppercase;
+    font-weight: 500;
   }
   &--subTitle {
-    background-color: #efefef;
-    padding: 12px;
+    background-color: #fafafa;
+    padding: 12px 20px;
+    font-weight: 500;
   }
   &--taskGroup {
     text-transform: uppercase;
     font-weight: bold;
     background-color: #efefef;
     &Title {
-      padding: 12px;
+      // padding: 12px 20px;
+      color: #283593;
     }
   }
   &--task {
     position: relative;
-    padding: 12px;
+    padding: 12px 12px 12px 40px;
     background-color: #ffffff;
-    border-bottom: 1px solid #cccccc;
+    border-bottom: 1px solid #eaeaea;
+    font-weight: normal;
+    color: #222222;
+    text-transform: initial;
+  }
+  &--taskExpansion {
+    box-shadow: unset;
+    .MuiExpansionPanelSummary-root {
+      color: #283593;
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: 1px solid #e5e5e5;
+      background-color: #fafafa;
+      border-top: 1px solid #e5e5e5;
+      min-height: unset;
+    }
+    .MuiExpansionPanelSummary-content {
+      margin: 0;
+      flex-grow: unset;
+    }
+  }
+  &--taskExpansionDetail {
+    display: block;
+    padding: 0;
   }
   &--sendButton {
     position: absolute;

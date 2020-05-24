@@ -9,6 +9,8 @@ export const initialState = {
   error: false,
   showIndex: 0,
   projectSchedules: [],
+  payload: null,
+  ownerPermissions: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -93,6 +95,16 @@ export default (state = initialState, action) => produce(state, draft => {
     case types.GET_SCHEDULES_SUCCESS: {
       const { payload } = action;
       draft.projectSchedules = payload.schedules;
+      break;
+    }
+    case types.REMOVE_GROUP_PERMISSION_OF_MEMBER_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
+    case types.DETAIL_GROUP_PERMISSION_DEFAULT_SUCCESS: {
+      const { payload } = action;
+      draft.ownerPermissions = payload.group_detail;
       break;
     }
   }

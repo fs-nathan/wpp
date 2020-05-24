@@ -6,6 +6,7 @@ import useMediaQuery from '@material-ui/core/useMediaQuery';
 import { mdiChevronLeft, mdiChevronRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import { openShareFileModal, showImagesList } from 'actions/chat/chat';
+import { getDocumentDetail } from 'actions/documents';
 import { openDocumentDetail } from 'actions/system/system';
 import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React, { useEffect, useRef, useState } from 'react';
@@ -85,6 +86,7 @@ const Image = styled.img`
   cursor: pointer;
   opacity: ${props => props.selected ? 1 : 0.4};
   object-fit: cover;
+  background: #fff;
   &:hover {
     opacity: 1;
   }
@@ -100,6 +102,7 @@ const ModalImage = () => {
   const createUser = useSelector(state => state.chat.createUser);
 
   const [currentImage, setCurrentImage] = useState(selectedImage);
+  const [userCreated, setUserCreated] = useState(createUser);
   const [rotate, setRotate] = useState(0);
 
   const { name = '', url } = imagesList[currentImage] || {};
@@ -164,6 +167,25 @@ const ModalImage = () => {
     setRotate(0)
   }, [currentImage]);
 
+  useEffect(() => {
+    const { id } = imagesList[currentImage] || {}
+    async function getDetail() {
+      const { data } = await getDocumentDetail({ file_id: id })
+      // console.log('currentImage', data)
+      if (data.file) {
+        const { avatar, name } = data.file.user_create;
+        setUserCreated({
+          user_create_avatar: avatar,
+          user_create_name: name,
+          time_create: data.file.created_at,
+        })
+      }
+    }
+    if (id) {
+      getDetail()
+    }
+  }, [currentImage, imagesList]);
+
   const handleZoomImage = evt => {
     let currentTarget = evt.target;
     // console.log('deltaY', evt.deltaY)
@@ -213,7 +235,7 @@ const ModalImage = () => {
       className="ModalImage"
     >
       <DialogTitleModalImage id="customized-dialog-title"
-        {...createUser}
+        {...userCreated}
         image={imagesList[currentImage]}
         onClickShare={onClickShare}
         onClickDetail={onClickDetail}
@@ -246,7 +268,7 @@ const ModalImage = () => {
                   ref={transformRef}
                   alt="vtask"
                   // style={{ transform: `rotate(${rotate}deg)` }}
-                  src={imagesList[currentImage] && imagesList[currentImage].url} />
+                  src={imagesList[currentImage] && (imagesList[currentImage].url || imagesList[currentImage].url_thumbnail)} />
               </div>
               <ButtonImage onClick={clickNext}>
                 <Icon path={mdiChevronRight} size="30px" />
@@ -259,6 +281,7 @@ const ModalImage = () => {
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}
             className="ModalImage--scroll"
+            // renderTrackHorizontal={props => <div {...props} className="ModalImage--scrollTrack" />}
             renderView={props => <div {...props} className="ModalImage--scrollView" />}
           >
             <div className="ModalImage--imagesList">

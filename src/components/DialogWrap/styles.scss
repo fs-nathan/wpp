@@ -2,22 +2,35 @@
   .MuiDialogTitle-root {
     background-color: #f5f8fc;
     padding: 20px 24px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   }
   .MuiDialogActions-root {
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    // border-top: 1px solid rgba(0, 0, 0, 0.1);
     margin: 0;
     padding: 8px;
     .MuiButton-text {
       padding: 8px 16px;
     }
   }
-  &--scrollContainer {
-    position: relative !important;
-    overflow-y: scroll !important;
-    margin-right: -17px !important;
-    margin-bottom: -17px !important;
-    height: 100%;
+  .MuiDialog-container {
+    overflow: hidden;
+  }
+  .MuiPaper-root {
+    max-width: 70vw;
+  }
+  // &--scrollContainer {
+  //   position: relative !important;
+  //   overflow-y: scroll !important;
+  //   margin-right: -17px !important;
+  //   margin-bottom: -17px !important;
+  //   height: 100%;
+  // }
+  &--scrollWrap {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  &--container {
+    height: 76vh;
   }
   & &--content {
     min-width: 500px;

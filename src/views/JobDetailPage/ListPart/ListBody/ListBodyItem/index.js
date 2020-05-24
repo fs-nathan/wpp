@@ -168,7 +168,7 @@ function ListBodyItem(props) {
       onClick={onClickItem}
     >
       <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
-        <SimpleDonutChart color={groupActiveColor} circleColor={fillColor} percentDone={props.complete} />
+        <SimpleDonutChart color={'#ff9800'} circleColor={fillColor} percentDone={props.complete} />
       </ListItemAvatar>
       <JobUnit {...{
         chat,
