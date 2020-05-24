@@ -3,7 +3,7 @@ import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { mdiMenuUp } from '@mdi/js';
 import Icon from '@mdi/react';
-import { forwardChat, loadListTask } from 'actions/chat/chat';
+import { forwardChat, forwardMessage, loadListTask } from 'actions/chat/chat';
 import clsx from 'clsx';
 import DialogWrap from 'components/DialogWrap';
 import SearchInput from 'components/SearchInput';
@@ -14,11 +14,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import ListProjectBody from 'views/JobDetailPage/ListPart/ListProject/ListProjectBody';
 import './styles.scss';
 
-function ForwardMessageDialog({ setOpen, isOpen, chat }) {
+function ForwardMessageDialog({ }) {
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const listTasks = useSelector(state => state.chat.listTasks);
+  const isOpenForward = useSelector(state => state.chat.isOpenForward);
+  const contentForward = useSelector(state => state.chat.contentForward);
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
   const [selectedProject, setSelectedProject] = useState(0);
   const [searchKey, setSearchKey] = useState('');
@@ -35,7 +37,7 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
   }
 
   const handleClose = () => {
-    setOpen(false);
+    dispatch(forwardMessage(false));
   };
 
   function onClickProject(project) {
@@ -49,10 +51,10 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
     return () => {
       dispatch(forwardChat(
         taskId,
-        chat.id,
+        contentForward.id,
         task
       ))
-      setOpen(false);
+      handleClose();
     }
   }
 
@@ -63,7 +65,7 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
   return (
     <DialogWrap
       title={t('LABEL_CHAT_TASK_CHIA_SE')}
-      isOpen={isOpen}
+      isOpen={isOpenForward}
       handleClickClose={handleClose}
       successLabel={t('LABEL_CHAT_TASK_THOAT')}
       onClickSuccess={handleClose}
@@ -120,17 +122,24 @@ function ForwardMessageDialog({ setOpen, isOpen, chat }) {
               autoHide autoHideTimeout={500} autoHideDuration={200}>
               {listTasks.map(taskGroup => (
                 <div className="ForwardMessageDialog--taskGroup" key={taskGroup.id}>
-                  <div className="ForwardMessageDialog--taskGroupTitle">
-                    {taskGroup.name}
-                  </div>
-                  {
-                    taskGroup.tasks.map(task => (
-                      <div className="ForwardMessageDialog--task" key={task.id}>
-                        {task.name}
-                        <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">{t('LABEL_CHAT_TASK_GUI')}</button>
-                      </div>
-                    ))
-                  }
+                  <ExpansionPanel className="ForwardMessageDialog--taskExpansion" defaultExpanded>
+                    <ExpansionPanelSummary
+                      expandIcon={<Icon path={mdiMenuUp} size={1} />}
+                      id="panel1bh-header"
+                    >
+                      {taskGroup.name}
+                    </ExpansionPanelSummary>
+                    <MuiExpansionPanelDetails className="ForwardMessageDialog--taskExpansionDetail">
+                      {
+                        taskGroup.tasks.map(task => (
+                          <div className="ForwardMessageDialog--task" key={task.id}>
+                            {task.name}
+                            <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">{t('LABEL_CHAT_TASK_GUI')}</button>
+                          </div>
+                        ))
+                      }
+                    </MuiExpansionPanelDetails>
+                  </ExpansionPanel>
                 </div>
               ))}
             </Scrollbars>

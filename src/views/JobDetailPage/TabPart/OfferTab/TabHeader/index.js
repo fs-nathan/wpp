@@ -1,5 +1,5 @@
-import { useTranslation } from 'react-i18next';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOffer } from '../../../../../actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
@@ -21,6 +21,7 @@ function TabHeader(props) {
   return (
     <div className="container-normal-tabheader">
       <HeaderTab title={t('LABEL_CHAT_TASK_DE_XUAT_PHE_DUYET')}
+        buttonTooltipText={t('LABEL_CHAT_TASK_TAO_MOI')}
         onClickBack={() => props.setShow(0)}
         onClickOpen={handleClickOpen}
       />

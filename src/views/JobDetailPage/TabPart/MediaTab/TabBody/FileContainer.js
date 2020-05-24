@@ -33,6 +33,7 @@ const FileContainer = (props) => {
       :
       <React.Fragment>
         <SearchInput
+          className="MediaContainer--search"
           fullWidth
           placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA_FILE')}
           onChange={e => searchFileTabPart(e)}

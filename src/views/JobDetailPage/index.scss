@@ -235,12 +235,13 @@
   grid-area: list;
   border-right: 1px solid #e5e5e9;
   .wrap-list-task {
-    height: calc(76vh);
-    grid-template-rows: 165px calc(76vh);
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "header"
-      "body";
+    // height: calc(100% - 165px);
+    height: calc(100% + 55px);
+    // grid-template-rows: 165px calc(100% - 165px);
+    // grid-template-columns: 1fr;
+    // grid-template-areas:
+    //   "header"
+    //   "body";
     .wlt-header {
       grid-area: header;
       position: -webkit-sticky; /* Safari */
@@ -251,7 +252,9 @@
     }
   }
   .wlt-block {
-    display: block;
+    // display: block;
+    display: flex;
+    flex-direction: column;
   }
   .wlt-none {
     display: none;
@@ -347,9 +350,9 @@
     justify-content: center;
     & > div:nth-child(1) {
       & > span {
-        font-size: 12px;
-        line-height: 13px;
-        padding: 2px 5px;
+        font-size: 10px;
+        line-height: 12px;
+        padding: 1px 34x;
         font-weight: 500;
       }
     }
@@ -410,7 +413,7 @@
   transform: none !important;
   height: 100%;
   display: grid;
-  grid-template-rows: 85px calc(85vh);
+  grid-template-rows: 85px calc(100% - 85px);
   grid-template-columns: 1fr;
   grid-template-areas:
     "header"
@@ -427,7 +430,7 @@
 
 // index.js - TabHeader - Default Tab
 .container-dt-tabheader {
-  padding: 0 20px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   background-color: #fff;

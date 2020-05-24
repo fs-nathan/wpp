@@ -898,7 +898,7 @@ function* deleteMember(action) {
 async function doGetPermission(payload) {
   try {
     const config = {
-      url: '/permissions/list-group-permission?type=' + payload.type,
+      url: '/permissions/list-group-permission?module=3',
       method: 'get',
       data: payload
     };
@@ -1549,6 +1549,25 @@ export function* getSchedules(payload) {
     yield put(actions.getSchedulesSuccess(res.data));
   } catch (error) {
     yield put(actions.getSchedulesFail(error));
+  }
+}
+
+export function* removeGroupPermissionOfMember(payload) {
+  try {
+    const { task_id, member_id } = payload;
+    const res = yield call(apiService.post, "/task/remove-group-permission-of-member", { task_id, member_id });
+    yield put(actions.removeGroupPermissionOfMemberSuccess(res.data));
+  } catch (error) {
+    yield put(actions.removeGroupPermissionOfMemberFail(error));
+  }
+}
+
+export function* detailGroupPermissionDefault(payload) {
+  try {
+    const res = yield call(apiService.get, "/permissions/detail-group-permission-default?group_permission_id=3", { payload });
+    yield put(actions.detailGroupPermissionDefaultSuccess(res.data));
+  } catch (error) {
+    yield put(actions.detailGroupPermissionDefaultFail(error));
   }
 }
 

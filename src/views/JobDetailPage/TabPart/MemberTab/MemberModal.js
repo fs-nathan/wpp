@@ -3,11 +3,13 @@ import MuiDialogContent from '@material-ui/core/DialogContent';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { mdiDownload } from '@mdi/js';
 import Icon from '@mdi/react';
-import { openDetailMember } from 'actions/chat/chat';
+import { openDetailMember, showImagesList } from 'actions/chat/chat';
 import { actionDownloadFile } from 'actions/documents';
+import { openDocumentDetail } from 'actions/system/system';
 import ColorTypo from 'components/ColorTypo';
 import DialogWrap from 'components/DialogWrap';
 import colorPal from 'helpers/colorPalette';
+import { getFileType } from 'helpers/jobDetail/stringHelper';
 import get from 'lodash/get';
 import React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
@@ -27,7 +29,7 @@ const StyledStaff = styled(Typography)`
 `
 const NameStaff = styled(ColorTypo)`
   font-size: 16px;
-  color: ${colorPal['teal'][0]}
+  color: #333;
 `
 const TextInput = styled(TextField)`
   margin-bottom: 17px;
@@ -37,7 +39,7 @@ const TextInput = styled(TextField)`
     }
     & > input {  
     text-align: end;
-    font-size: 17px;
+    font-size: 14px;
     font-weight: 500;
     color: ${colorPal['black'][0]}
     }
@@ -65,7 +67,7 @@ const TitleDescription = styled(Typography)`
     font-weight: 400;
 `
 const ContentDescription = styled(Typography)`
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 400;
   color: ${colorPal['black'][0]}
 `
@@ -75,19 +77,20 @@ const WrapperMember = styled(Typography)`
     padding-left: 20px;
 `
 const MemberDetail = styled(Typography)`
-     margin-bottom: 25px;
+    margin-bottom: 25px;
+    font-size: 14px;
 `
 
 const TitleText = styled(Typography)`
   font-weight: 400;
-  font-size: 16px;
+  font-size: 14px;
   color: rgba(0, 0, 0, 0.54);
   margin-bottom: 10px;
 `
 const StyledAvatar = styled(Avatar)`
-        width: 50px;
-        height: 50px;
-    `
+    width: 50px;
+    height: 50px;
+`
 
 const useStyles = makeStyles(theme => ({
   button: {
@@ -157,13 +160,25 @@ const MemberModal = () => {
   } = userDetail || {};
 
   function onClickDownload(file) {
-    return () => {
+    return (evt) => {
       // const link = document.createElement('a');
       // link.href = url;
       // link.download = name;
       // link.target = '_blank';
       // link.click();
       actionDownloadFile(file)
+      evt.stopPropagation()
+    }
+  }
+
+  function onClickFile(file, idx) {
+    const type = getFileType(file.name);
+    return (evt) => {
+      if (type === 'mp4') {
+        dispatch(showImagesList(true, [file], idx));
+      } else {
+        dispatch(openDocumentDetail({ ...file, type: type }));
+      }
     }
   }
 
@@ -178,7 +193,7 @@ const MemberModal = () => {
       isOneButton
       className="MemberModal"
     >
-      <DialogContent dividers className="wrapper-member-modal">
+      <DialogContent className="wrapper-member-modal">
         <Scrollbars>
           <div className="MemberModal--content">
             <StyledEmploy component={'div'}>
@@ -238,7 +253,7 @@ const MemberModal = () => {
             </label> */}
               <TitleDescription>{t('LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM')}</TitleDescription>
               {documents.map(({ file_icon, name, type, size, url, id }) => (
-                <div className="MemberModal--file" key={id}>
+                <div className="MemberModal--file" key={id} onClick={onClickFile({ file_icon, name, type, size, url, id })}>
                   <img className="MemberModal--fileImg" src={file_icon} alt="file_icon"></img>
                   <div className="MemberModal--fileName">{name}
                     <div className="MemberModal--fileType">{`${type} - ${size}`}</div>

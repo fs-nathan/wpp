@@ -1,14 +1,14 @@
 // index.js - Chat Part
 .container-chatpart {
   border-right: 1px solid #e5e5e9;
-  height: calc(100vh - 56px);
+  // height: calc(100vh - 56px);
   position: relative;
   display: flex;
   flex-direction: column;
   .wrap-header {
     border-bottom: 1px solid #e5e5e9;
     padding: 0 10px;
-    height: 85px;
+    // height: 85px;
   }
   .wrap-body {
     background-color: #f8f8f8;

@@ -1,7 +1,7 @@
 import { Avatar, IconButton } from '@material-ui/core';
 import { mdiMenuDown } from '@mdi/js';
 import Icon from '@mdi/react';
-import { getViewedChat, loadChat } from 'actions/chat/chat';
+import { forwardMessage, getViewedChat, loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
@@ -16,7 +16,6 @@ import { withRouter } from 'react-router-dom';
 import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
 import DetailEmotionModal from './DetailEmotionModal';
 import DetailViewedModal from './DetailViewedModal';
-import ForwardMessageDialog from './ForwardMessageDialog';
 import Message from './Message';
 import './styles.scss';
 
@@ -40,8 +39,6 @@ const BodyPart = props => {
   const [isShowScroll, setShowScroll] = React.useState(false);
   const [openViewedModal, setOpenViewedModal] = React.useState(false);
   const [openAddModal, setOpenAddModal] = React.useState(false);
-  const [isOpenForward, setOpenForward] = React.useState(false);
-  const [forwardChat, setForwardChat] = React.useState(null);
   const [chatEmotion, setChatEmotion] = React.useState([]);
   const [openDetailEmotionModal, setOpenDetailEmotionModal] = React.useState(false);
   const [showMembers, setShowMembers] = React.useState(viewedChatMembers);
@@ -169,8 +166,7 @@ const BodyPart = props => {
   function handleForwardChat(data) {
     return () => {
       // console.log('handleForwardChat', data);
-      setOpenForward(true);
-      setForwardChat(data);
+      dispatch(forwardMessage(true, data));
     }
   }
 
@@ -304,7 +300,6 @@ const BodyPart = props => {
           <Icon path={mdiMenuDown} size={1.5} ></Icon>
         </IconButton>
       }
-      <ForwardMessageDialog isOpen={isOpenForward} setOpen={setOpenForward} chat={forwardChat} />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />
       <DetailViewedModal isOpen={openViewedModal} setOpen={setOpenViewedModal} />

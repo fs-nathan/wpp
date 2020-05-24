@@ -15,8 +15,8 @@ export function* deleteChat(payload) {
 
 export function* loadChat(payload) {
   try {
-    const { task_id, file_id, last_id, isMore } = payload;
-    const res = yield call(apiService.get, `/task/get-chat`, { params: { task_id, last_id, file_id } });
+    const { task_id, file_id, last_id, isMore, chat_id } = payload;
+    const res = yield call(apiService.get, `/task/get-chat`, { params: { task_id, last_id, file_id, chat_id } });
     yield put(actions.loadChatSuccess(res.data, isMore));
     yield put(actions.getViewedChat(task_id));
   } catch (error) {
@@ -63,9 +63,10 @@ export function* chatFile(payload) {
     yield put(actions.chatFileSuccess(res.data));
     // yield put(actions.loadChat(task_id));
     yield put(actions.appendChat(res.data, id));
-    // yield put(actions.removeChatById(id));
   } catch (error) {
-    yield put(actions.chatFileFail(error));
+    console.log(error, error.message, error.response)
+    yield put(actions.chatFileFail(error.message));
+    yield put(actions.removeChatById(payload.id));
   }
 }
 export function* chatForwardFile(payload) {

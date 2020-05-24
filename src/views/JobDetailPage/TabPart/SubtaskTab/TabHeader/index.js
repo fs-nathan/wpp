@@ -1,10 +1,10 @@
-import { useTranslation } from 'react-i18next';
 import { IconButton } from '@material-ui/core';
 import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 import { getSubTask } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { taskIdSelector } from '../../../selectors';
@@ -51,7 +51,7 @@ function TabHeader(props) {
           handleClick()
         }
         }>
-          <abbr title={t('LABEL_CHAT_TASK_THEM')}>
+          <abbr title={t('LABEL_CHAT_TASK_TAO_MOI')}>
             <Icon path={mdiPlus} size={1} />
           </abbr>
         </IconButton>

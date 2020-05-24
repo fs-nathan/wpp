@@ -85,11 +85,11 @@ function TableMember(props) {
         <Table className={classes.table}>
           <TableHead>
             <TableRow style={{ background: '#f7f7f7' }}>
-              <TableCell style={{ width: '9%' }}></TableCell>
+              <TableCell style={{ width: '10%' }}></TableCell>
               <TableCell style={{ width: '40%' }}>{t('LABEL_CHAT_TASK_THANH_VIEN')}</TableCell>
               <TableCell style={{ width: '20%' }}>{t('LABEL_CHAT_TASK_NHOM_QUYEN')}</TableCell>
-              <TableCell style={{ width: '32%' }}>{t('LABEL_CHAT_TASK_VAI_TRO')}</TableCell>
-              <TableCell></TableCell>
+              <TableCell style={{ width: '20%' }}>{t('LABEL_CHAT_TASK_VAI_TRO')}</TableCell>
+              <TableCell style={{ width: '10%' }}></TableCell>
             </TableRow>
           </TableHead>
         </Table>
@@ -100,20 +100,25 @@ function TableMember(props) {
             <TableBody>
               {members.map((item, idx) => (
                 <StyledTableRow key={item.id}>
-                  <TableCell className="TableMember--cellAvatar" style={{ width: '9%' }}>
+                  <TableCell className="TableMember--cellAvatar" style={{ width: '10%' }}>
                     <Avatar alt="Avatar Member" src={item.avatar} sizes='10px' style={{ width: 30, height: 30 }} />
                   </TableCell>
                   <TableCell style={{ width: '40%' }}>
                     <MemberDetail name={item.name} email={item.email} />
                   </TableCell>
-                  <TableCell style={{ width: '20%' }}><MemberPermission permission={item.group_permission} memberId={item.id} /></TableCell>
-                  <TableCell style={{ width: '32%' }}>
+                  <TableCell style={{ width: '20%' }}>
+                    <MemberPermission
+                      {...item} />
+                  </TableCell>
+                  <TableCell style={{ width: '20%' }}>
                     <MemberRole roles={item.roles || []} memberId={item.id} />
                   </TableCell>
                   <StyledMenu >
-                    <IconButton size='small' onClick={handleClickEliminate} >
-                      <Icon path={mdiDotsVertical} size={1} />
-                    </IconButton>
+                    {item.can_ban &&
+                      <IconButton size='small' onClick={handleClickEliminate} >
+                        <Icon path={mdiDotsVertical} size={1} />
+                      </IconButton>
+                    }
                     <CustomMenu
                       anchorEl={anchorEl}
                       keepMounted
