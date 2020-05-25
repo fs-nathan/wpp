@@ -26,7 +26,10 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
 
   return (
     <CustomModal
-      className={clsx(can_modify ? 'detailOfferModal-confirmBtn--red' : 'detailOfferModal-confirmBtn--black')}
+      className={clsx(
+        'detailOfferModal-container',
+        can_modify ? 'detailOfferModal-confirmBtn--red' : 'detailOfferModal-confirmBtn--black'
+      )}
       title={getDetailOfferModalTitle(t)}
       open={open}
       setOpen={setOpen}

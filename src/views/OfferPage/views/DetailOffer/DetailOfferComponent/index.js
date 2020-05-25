@@ -35,7 +35,7 @@ const DetailOffer = ({
   members_monitor,
 }) => {
   return (
-    <div className="offerDetailContainer">
+    <div className="offerDetail-container">
       <LeftContent
         id={id}
         date_label={date_label}
@@ -56,7 +56,7 @@ const DetailOffer = ({
         members_monitor={members_monitor}
         offer_group_id={offer_group_id}
       />
-      <div className="offerDetailContainer-verticalLine" />
+      <div className="offerDetail-verticalLine" />
       <RightContent
         can_modify={can_modify}
         status_code={status_code}

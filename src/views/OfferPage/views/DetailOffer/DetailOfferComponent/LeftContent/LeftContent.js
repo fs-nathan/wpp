@@ -466,7 +466,7 @@ export default function LeftContent({
     return lodash.differenceBy(members, members_can_approve, members_monitor, 'id')
   }
   return (
-    <Grid item xs={6}>
+    <Grid item xs={6} className="offerDetail-leftContent-container">
       <PersonInfo
         date_label={date_label}
         hour_label={hour_label}

@@ -1,4 +1,9 @@
 .detailOfferModal {
+  &-container {
+    [class*='MuiDialogContent-root'] {
+      padding: 0;
+    }
+  }
   &-confirmBtn--red {
     [class*='comp_CustomModal___accept-button'] {
       color: red !important;

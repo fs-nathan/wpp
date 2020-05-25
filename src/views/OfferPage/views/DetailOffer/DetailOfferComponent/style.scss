@@ -2,13 +2,14 @@ a {
   text-decoration: none;
 }
 
-.offerDetailContainer {
-  display: flex;
-  justify-content: space-between;
-  height: 100%;
+.offerDetail {
+  &-container {
+    display: flex;
+    justify-content: space-between;
+    height: 100%;
+  }
 
   &-verticalLine {
     border-right: 1px solid #3333;
-    margin: 0 2em;
   }
 }

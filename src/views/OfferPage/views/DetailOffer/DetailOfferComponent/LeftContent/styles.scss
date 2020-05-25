@@ -10,6 +10,12 @@
     color: black;
   }
 
+  &-leftContent {
+    &-container {
+      padding: 1.2em 2em;
+    }
+  }
+
   &-personInfo {
     &-avatar {
       width: 90%;

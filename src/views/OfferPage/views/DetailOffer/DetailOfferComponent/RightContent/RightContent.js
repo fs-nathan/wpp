@@ -38,7 +38,7 @@ const RightContent = ({ can_modify, status_code, rate_accepted, members_approved
   }
 
   return (
-    <Grid item xs={6}>
+    <Grid item xs={6} className="offerDetail-rightContent-container">
       <Grid container>
         <Grid item xs={12}>
           <ApproveOfferDialog onConfirm={onConfirm} handleClickClose={onConfirm} isOpen={openModal} item={{
