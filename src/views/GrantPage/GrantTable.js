@@ -23,7 +23,6 @@ import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
 import {
   changeProjectInfo,
-  changeRowHover,
   changeScheduleDetailGantt,
   changeTaskComplete,
   changeTaskduration,
@@ -49,7 +48,7 @@ import { apiService } from "../../constants/axiosInstance";
 import "../../views/JobDetailPage/index.scss";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
-import QuickViewTaskDetailDrawer from "../../views/JobPage/components/GanttQuickViewTaskDetailDrawer";
+import QuickViewTaskDetailDrawer from "../../views/JobPage/components/QuickViewTaskDetailDrawer";
 import CreateProject from "../../views/ProjectGroupPage/Modals/CreateProject";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
@@ -58,6 +57,44 @@ import "./table.css";
 
 const MAX_DAY_DEFAULT = 40;
 
+const RenderJobModal = React.memo(
+  (props) => <CreateJobModal {...props} />,
+  (prevProps, nextProps) => {
+    return false;
+  }
+);
+
+const RenderHeader = React.memo(
+  (props) => <Header {...props} />,
+  (prevProps, nextProps) => {
+    return false;
+  }
+);
+
+const RenderDrawers = React.memo(
+  (props) => (
+    <React.Fragment>
+      <ConfigGanttDrawer height={props.height} />
+      <SubTaskDrawer height={props.height} />
+      <ExportPDFDrawer height={props.height} />
+    </React.Fragment>
+  ),
+  (prevProps, nextProps) => {
+    return false;
+  }
+);
+
+const RenderDragTable = React.memo(
+  (props) => <DragTable {...props} />,
+  (prevProps, nextProps) => {
+    return false;
+  }
+);
+
+const RenderQuickViewTaskDetailDrawer = React.memo(
+  (props) => <QuickViewTaskDetailDrawer {...props} />,
+  () => false
+);
 function getFormatStartStringFromObject(data) {
   try {
     const {
@@ -235,7 +272,8 @@ class DragSortingTable extends React.Component {
       rowHover: null,
       startTimeProject: "",
       canScroll: true,
-      width: "",
+      width: 800,
+      widthTable: 800,
       endTimeProject: "",
       isLoading: true,
       monthArray: [],
@@ -323,16 +361,18 @@ class DragSortingTable extends React.Component {
             ) : (
               <React.Fragment>
                 <div
-                  onMouseLeave={() =>
-                    this.setState({
-                      rowHover: -2,
-                    })
-                  }
-                  onMouseMove={() =>
-                    this.setState({
-                      rowHover: record.key,
-                    })
-                  }
+                  onMouseLeave={() => {
+                    if (!window.scrollTable)
+                      this.setState({
+                        rowHover: -2,
+                      });
+                  }}
+                  onMouseMove={() => {
+                    if (!window.scrollTable)
+                      this.setState({
+                        rowHover: record.key,
+                      });
+                  }}
                   style={{ display: "flex", height: 20 }}
                 >
                   <Icon
@@ -371,7 +411,7 @@ class DragSortingTable extends React.Component {
                         />
                       </IconButton>
                     )}
-                    {!isHover && record.number_subtask > 0 && (
+                    {isHover && record.number_subtask > 0 && (
                       <IconButton
                         aria-controls="simple-menu"
                         style={{ padding: 0 }}
@@ -749,16 +789,20 @@ class DragSortingTable extends React.Component {
   };
   setEventScroll = () => {
     const tableBody = document.getElementsByClassName("ant-table-body");
+    let timeOutId;
     tableBody[0].addEventListener("scroll", (e) => {
-      if (!this.state.canScroll) {
-        this.setState({
-          canScroll: true,
-        });
-        return;
-      }
-      this.setState({
-        scrollTop: e.target.scrollTop,
-      });
+      if (window.scrollTimeline) return;
+      window.scrollTable = true;
+      const timelineContainer = document.getElementsByClassName(
+        "gantt--timeline--container"
+      )[0];
+      const timelineContainerRelative = document.getElementsByClassName(
+        " gantt--timeline--container__relative"
+      )[0];
+      timelineContainerRelative.scrollTop = e.target.scrollTop;
+      timelineContainer.scrollTop = e.target.scrollTop;
+      if (timeOutId) clearTimeout(timeOutId);
+      timeOutId = setTimeout(() => (window.scrollTable = false), 100);
     });
   };
   async componentDidMount() {
@@ -902,6 +946,10 @@ class DragSortingTable extends React.Component {
     }
   };
   handleResize = (index) => (e, { size }) => {
+    this.setState({
+      widthTable:
+        this.state.widthTable + size.width - this.state.columns[index].width,
+    });
     this.setState(({ columns }) => {
       const nextColumns = [...columns];
       nextColumns[index] = {
@@ -934,7 +982,7 @@ class DragSortingTable extends React.Component {
     const taskId = data[dragIndex].id;
     const groupId = data[groupTaskIndex[groupTaskIndex.length - 1]].id;
     const { projectId } = this.props.match.params;
-    // this.handleSortTask(taskId, groupId, projectId, indexSort);
+    this.handleSortTask(taskId, groupId, projectId, indexSort);
     console.log(dragIndex, hoverIndex);
     this.setState(
       update(this.state, {
@@ -1090,6 +1138,7 @@ class DragSortingTable extends React.Component {
       canScroll: false,
     });
   };
+
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -1108,10 +1157,17 @@ class DragSortingTable extends React.Component {
     if (this.state.isLoading) return <LoadingBox />;
     return (
       <React.Fragment>
-        <CreateJobModal
-          projectId={this.props.projectInfo.id || null}
-          isOpen={this.state.openCreateJobModal}
-          setOpen={this.handleOpenCraeteJobModal}
+        {
+          <RenderJobModal
+            projectId={this.props.projectInfo.id || null}
+            isOpen={this.state.openCreateJobModal}
+            setOpen={this.handleOpenCraeteJobModal}
+          />
+        }
+        <RenderHeader
+          handleShowProject={this.handleShowProject}
+          titleProject={this.state.titleProject}
+          scheduleIdDefault={this.state.scheduleIdDefault}
         />
         {this.state.openCreateProjectModal && (
           <CreateProject
@@ -1120,20 +1176,13 @@ class DragSortingTable extends React.Component {
             setOpen={this.handleOpenCreateProjectModal}
           />
         )}
-        <Header
-          handleShowProject={this.handleShowProject}
-          titleProject={this.state.titleProject}
-          scheduleIdDefault={this.state.scheduleIdDefault}
-        />
         <div
           id="printContent"
           className="gantt__container"
-          style={{ width: widthPdf }}
+          style={{ width: widthPdf, height: "calc(100% - 59px)" }}
         >
-          <ConfigGanttDrawer height={this.state.height} />
-          <SubTaskDrawer height={this.state.height} />
-          <ExportPDFDrawer height={this.state.height} />
-          <QuickViewTaskDetailDrawer
+          <RenderDrawers height={this.state.height} />
+          <RenderQuickViewTaskDetailDrawer
             showHeader={this.props.showHeader}
             onClose={() =>
               this.setState({
@@ -1161,19 +1210,17 @@ class DragSortingTable extends React.Component {
             )}
             <div
               style={{
-                width: 900,
+                width: this.state.widthTable,
               }}
             >
               <DndProvider backend={HTML5Backend}>
                 <Table
-                  columns={colShow}
+                  columns={columns}
                   size="small"
                   className="table-gantt-header"
                   bordered
-                  scroll={{ y: this.state.height - 49, x: "unset" }}
+                  scroll={{ y: this.state.height - 69, x: "unset" }}
                   rowClassName={(record, index) => {
-                    if (this.props.rowHover === index)
-                      return "row-background-yellow";
                     if (
                       this.state.data[index] &&
                       (this.state.data[index].isGroupTask ||
@@ -1195,7 +1242,7 @@ class DragSortingTable extends React.Component {
               </DndProvider>
             </div>
           </div>
-          <DragTable
+          <RenderDragTable
             setDataSource={this.setDataSource}
             setProcessDatasource={this.setProcessDatasource}
             minLeft={this.state.minLeft}
@@ -1207,7 +1254,6 @@ class DragSortingTable extends React.Component {
             end={this.state.endTimeProject}
             dataSource={this.state.data}
             handleScrollTop={this.handleScrollTop}
-            scrollTop={this.state.scrollTop}
           />
           {/* <div
             id="asdasdasd"
@@ -1215,7 +1261,7 @@ class DragSortingTable extends React.Component {
               position: "absolute",
               left: "calc(100vw - 200px)",
               zIndex: 1000,
-            }}
+            }}  
           >
             <div
               style={{
@@ -1249,7 +1295,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-  changeRowHover,
   changeTimelineColor,
   changeVisible,
   changeProjectInfo,

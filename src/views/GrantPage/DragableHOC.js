@@ -6,7 +6,7 @@ import { connect } from "react-redux";
 import { changeRowHover, scrollGantt } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
 import Timeline from "./TimeLine";
-
+let timeoutId;
 function GanttChart({
   minLeft,
   setDataSource,
@@ -21,9 +21,7 @@ function GanttChart({
   dataSource,
   monthArray,
   daysRender,
-  handleScrollTop,
   showFullChart,
-  scrollTop,
   heightTable,
   rowHover,
   renderFullDay,
@@ -87,10 +85,7 @@ function GanttChart({
       setHeightChart(window.innerHeight - ganttRef.current.offsetTop);
     }
   }, [showHeader]);
-  useEffect(() => {
-    scrollTimeLineRef.current.scrollTop = scrollTop;
-    setCanScroll(false);
-  }, [scrollTop]);
+
   useEffect(() => {
     if (scrollRef.current && scrollGanttFlag) {
       const widthFromNowLayer =
@@ -119,8 +114,12 @@ function GanttChart({
           <React.Fragment>
             <div
               key={item.id}
-              onMouseEnter={() => changeRowHover(index)}
-              onMouseLeave={() => changeRowHover(-1)}
+              onMouseEnter={() => {
+                if (!window.scrollTimeline) changeRowHover(index);
+              }}
+              onMouseLeave={() => {
+                if (!window.scrollTimeline) changeRowHover(-1);
+              }}
               className="gantt--top-timeline-tr"
               style={{
                 position: "relative",
@@ -154,6 +153,28 @@ function GanttChart({
   const widthFromNowLayer =
     new moment(Date.now()).diff(start, girdInstance.unit) + 1;
   console.log("updateee");
+  const renderMonthHeader = useMemo(
+    () => (
+      <MonthHeader
+        scrollWidth={scrollWidth}
+        daysRender={daysRender}
+        allMonth={monthArray}
+        startTimeProject={start}
+        dataSource={dataSource}
+        leftHeader={leftHeader}
+        leftTable={leftTable}
+      />
+    ),
+    [
+      scrollWidth,
+      daysRender,
+      monthArray,
+      start,
+      dataSource,
+      leftHeader,
+      leftTable,
+    ]
+  );
   return (
     <React.Fragment>
       <div
@@ -219,10 +240,7 @@ function GanttChart({
             height: heightTable,
           }}
           onScroll={(e) => {
-            if (!canScroll) {
-              setCanScroll(true);
-              return;
-            }
+            if (window.scrollTimeline) return;
             if (!e.target.scrollTop) {
               if (Math.floor(e.target.scrollLeft / 48) !== scrollWidth) {
                 const newScrollWidth = Math.floor(e.target.scrollLeft / 48);
@@ -240,7 +258,6 @@ function GanttChart({
                 );
               }
             }
-            handleScrollTop(e.target.scrollTop);
           }}
         >
           {visibleGantt.fromNowLayer && (
@@ -268,23 +285,38 @@ function GanttChart({
               zIndex: 2,
             }}
           >
-            <MonthHeader
-              scrollWidth={scrollWidth}
-              daysRender={daysRender}
-              allMonth={monthArray}
-              startTimeProject={start}
-              dataSource={dataSource}
-              leftHeader={leftHeader}
-              leftTable={leftTable}
-            />
+            {renderMonthHeader}
             <div
               style={{
-                height: heightTable - 23 - 26,
+                height: heightTable - 69,
+              }}
+              onScroll={(e) => {
+                if (!window.scrollTable) {
+                  window.scrollTimeline = true;
+                  const tableBody = document.getElementsByClassName(
+                    "ant-table-body"
+                  )[0];
+                  tableBody.scrollTop = e.target.scrollTop;
+                  if (timeoutId) clearTimeout(timeoutId);
+                  timeoutId = setTimeout(
+                    () => (window.scrollTimeline = false),
+                    100
+                  );
+                }
               }}
               ref={scrollTimeLineRef}
               className="gantt--timeline--container"
             >
-              {timeline}
+              <div
+                className="gantt--timeline--container__relative"
+                style={{
+                  position: "relative",
+                  height: heightTable - 69,
+                  overflowY: "scroll",
+                }}
+              >
+                {timeline}
+              </div>
             </div>
           </div>
         </div>

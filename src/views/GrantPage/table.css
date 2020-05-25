@@ -750,7 +750,6 @@ div.checkbox-colortag--drawer {
 .gantt__container {
   display: flex;
   position: relative;
-  height: 823px;
   overflow-y: scroll;
   overflow-x: hidden;
 }

@@ -41,8 +41,12 @@ const DragableBodyRow = ({
   return (
     <tr
       ref={ref}
-      onMouseEnter={() => restProps.changeRowHover(index)}
-      onMouseLeave={() => restProps.changeRowHover(-1)}
+      onMouseEnter={() => {
+        if (!window.scrollTable) restProps.changeRowHover(index);
+      }}
+      onMouseLeave={() => {
+        if (!window.scrollTable) restProps.changeRowHover(-1);
+      }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}
       {...restProps}
