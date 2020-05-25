@@ -1,6 +1,7 @@
 import { Avatar, Button, Chip, Grid, IconButton, TextField } from '@material-ui/core';
-import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
+import { mdiCloudDownloadOutline, mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
+import { bgColorSelector } from '../../../../../reducers/setting/selectors';
 import { createOffer, deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
@@ -26,6 +27,7 @@ import './styles.scss';
 const OfferModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const bgColor = useSelector(state => bgColorSelector(state));
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.id);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -326,9 +328,9 @@ const OfferModal = (props) => {
                     onDelete={handleDeleteHandler(index)}
                   />
                 )}
-                <IconButton className="offerModal--buttonAdd" onClick={openAddHandlersDialog}>
-                  <Icon size={1} path={mdiPlusCircleOutline} />
-                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                <IconButton className="offerModal-buttonAdd" onClick={openAddHandlersDialog}>
+                  <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                  <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
                 </IconButton>
                 <AddOfferMemberModal
                   isOpen={isOpenAddHandler}
@@ -349,11 +351,9 @@ const OfferModal = (props) => {
                     onDelete={handleDeleteMonitor(index)}
                   />
                 )}
-                <IconButton
-                  className="offerModal--buttonAdd"
-                  onClick={openAddMonitorsDialog}>
-                  <Icon size={1} path={mdiPlusCircleOutline} />
-                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                <IconButton className="offerModal-buttonAdd" onClick={openAddMonitorsDialog}>
+                  <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                  <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
                 </IconButton>
                 <AddOfferMemberModal
                   isOpen={isOpenAddMonitor}
@@ -430,9 +430,9 @@ const OfferModal = (props) => {
                         </Grid>
                       </Grid>
                       <Grid item xs={3}>
-                        <IconButton className="offerModal--buttonAdd" onClick={openAddApprovalMemberModal}>
-                          <Icon size={1} path={mdiPlusCircleOutline} />
-                          <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                        <IconButton className="offerModal-buttonAdd" onClick={openAddApprovalMemberModal}>
+                          <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                          <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
                         </IconButton>
                         <AddOfferMemberModal
                           isOpen={isOpenAddApprovalMemberModal}
@@ -461,9 +461,9 @@ const OfferModal = (props) => {
                       </Grid>
                     </Grid>
                     <Grid item xs={3}>
-                      <IconButton className="offerModal--buttonAdd" onClick={openAddApprovalMemberModal}>
-                        <Icon size={1} path={mdiPlusCircleOutline} />
-                        <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
+                      <IconButton className="offerModal-buttonAdd" onClick={openAddApprovalMemberModal}>
+                        <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                        <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
                       </IconButton>
                       <AddOfferMemberModal
                         isOpen={isOpenAddApprovalMemberModal}
