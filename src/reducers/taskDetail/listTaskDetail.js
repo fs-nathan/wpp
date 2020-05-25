@@ -61,7 +61,7 @@ function updateListDataNotRoom(listDataNotRoom, task_id, update) {
         }
         return data;
     })
-    const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, 'updatedAt'])
+    const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, function (o) { return -o.updatedAt; }])
     return sortedTasks
 }
 
@@ -87,9 +87,11 @@ export default function reducer(state = initialState, action) {
             const { payload } = action;
             const { id, task_id, content, new_chat,
                 user_create_avatar, user_create_id,
+                updatedAt,
                 user_create_name } = payload;
             const update = {
                 new_chat,
+                updatedAt,
                 chat: {
                     content, user_create_avatar, user_create_name
                 }

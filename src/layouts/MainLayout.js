@@ -307,7 +307,7 @@ function MainLayout({
     if (!socket || !userId || !taskDetails) return;
     function handleChatInProject(data) {
       console.log("handleChatInProject", data);
-      const { user_create_id, task_id } = data;
+      const { user_create_id, task_id, content = {} } = data;
       const task =
         findTask(listTaskDetail, task_id) ||
         findIndex(listDataNotRoom, ({ id }) => id === task_id) !== -1;
@@ -317,7 +317,7 @@ function MainLayout({
         if (task_id !== taskDetails.id) {
           data.new_chat = user_create_id === userId ? 0 : 1;
         }
-        data.content = data.content[language];
+        data.content = content[language];
         data.updatedAt = Date.now();
         updateProjectChat(data);
       }
@@ -374,7 +374,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(

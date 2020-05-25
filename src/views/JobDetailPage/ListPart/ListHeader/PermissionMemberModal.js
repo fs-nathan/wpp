@@ -171,6 +171,7 @@ function PermissionMemberModal({ memberId, setOpen,
           <div className="permissionItem--noPermissions">
             <img className="permissionItem--noPermissionsImg" src="/images/no-data.png" alt='no permission'></img>
             <div className="permissionItem--noPermissionsFooter">{t('LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION')}</div>
+            <div className="permissionItem--noPermissionsFooter">{t('LABEL_CHAT_TASK_LIEN_HE_VOI_QUAN')}</div>
           </div>
         }
       </DialogContent>

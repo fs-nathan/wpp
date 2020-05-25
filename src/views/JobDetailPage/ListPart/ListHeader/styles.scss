@@ -33,12 +33,14 @@
   }
   &--noPermissionsImg {
     margin: 20px auto;
-    width: 80%;
+    max-width: 400px;
     display: block;
   }
   &--noPermissionsFooter {
-    font-size: 14px;
+    font-size: 15px;
     text-align: center;
+    line-height: 1.5;
+    font-weight: 500;
   }
 }
 .permissionMemberModal {
