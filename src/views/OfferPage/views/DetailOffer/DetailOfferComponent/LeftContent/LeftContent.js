@@ -2,6 +2,8 @@ import { Avatar, Button, Grid, IconButton, TextField } from '@material-ui/core';
 import { AddCircle } from "@material-ui/icons";
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { mdiPlusCircle } from '@mdi/js';
+import Icon from '@mdi/react';
 import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
 import { apiService } from "constants/axiosInstance";
@@ -20,6 +22,7 @@ import {
   deleteMemberMonitor,
   uploadDocumentOffer,
 } from 'views/OfferPage/redux/actions';
+import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
 import SendFileModal from '../../../../../JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import CustomAddOfferMemberModal from "../AddOfferMemberModal";
@@ -152,7 +155,7 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
   );
 };
 
-const RenderListFile = ({ can_modify, offer_id, documents }) => {
+const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
   const { t } = useTranslation()
   const [deleteDocumentModal, setDeleteDocumentModal] = useState(false)
   const dispatch = useDispatch()
@@ -237,36 +240,31 @@ const RenderListFile = ({ can_modify, offer_id, documents }) => {
             </Grid>
           ))}
       </Grid>
-      <div className="offerDetail-attachedDocument-addFileBtnContainer">
-        <label htmlFor="icon-button-file">
-          <Button
-            className="offerDetail-addBtn-title"
-            size="small"
-            onClick={() => setOpenSendFileModal(true)}
-            startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
-            disabled={!can_modify}
-          >
-            {t("ADD_DOCUMENT_OFFER")}
-          </Button>
-        </label>
-        <AlertModal
-          open={deleteDocumentModal}
-          setOpen={setDeleteDocumentModal}
-          onConfirm={confirmDeleteDocument}
-          content={renderConfirmRemoveFileModal()}
-        />
-        <SendFileModal
-          open={openSendFileModal}
-          setOpen={setOpenSendFileModal}
-          handleUploadFile={handleUploadSelectedFilesFromPC}
-          onConfirmShare={handleSelectedFilesFromLibrary}
-        />
-      </div>
+      <IconButton
+        className="offerDetail-addBtn"
+        onClick={() => setOpenSendFileModal(true)}
+        disabled={!can_modify}
+      >
+        <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+        <span className="offerDetail-addBtn-title">{t('ADD_DOCUMENT_OFFER')}</span>
+      </IconButton>
+      <AlertModal
+        open={deleteDocumentModal}
+        setOpen={setDeleteDocumentModal}
+        onConfirm={confirmDeleteDocument}
+        content={renderConfirmRemoveFileModal()}
+      />
+      <SendFileModal
+        open={openSendFileModal}
+        setOpen={setOpenSendFileModal}
+        handleUploadFile={handleUploadSelectedFilesFromPC}
+        onConfirmShare={handleSelectedFilesFromLibrary}
+      />
       <div className="offerDetail-horizontalLine" />
     </>
   );
 };
-const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members_can_approve }) => {
+const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members_can_approve, bgColor }) => {
   const dispatch = useDispatch()
   const { t } = useTranslation()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -299,15 +297,13 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
       <Grid container>
         <Grid item xs={5}>
           <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
-          <Button
-            size="small"
+          <IconButton
+            className="offerDetail-addBtn"
             onClick={() => setOpenAddMemberHandleModal(true)}
-            startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
           >
-            <span className="offerDetail-addBtn-title">
-              {t("ADD_PERSON_HANDLE")}
-            </span>
-          </Button>
+            <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+            <span className="offerDetail-addBtn-title">{t('ADD_PERSON_HANDLE')}</span>
+          </IconButton>
         </Grid>
         <Grid item xs={7}>
           <Grid container>
@@ -348,7 +344,7 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
     </>
   );
 };
-const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_monitor }) => {
+const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_monitor, bgColor }) => {
   const { t } = useTranslation()
   const dispatch = useDispatch()
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -381,15 +377,13 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
     <Grid container>
       <Grid item xs={5}>
         <div className="offerDetail-monitoringPerson-title">Người giám sát</div>
-        <Button
-          size="small"
+        <IconButton
+          className="offerDetail-addBtn"
           onClick={() => setOpenAddMonitorModal(true)}
-          startIcon={<AddCircle className="offerDetail-addBtn-icon" />}
         >
-          <span className="offerDetail-addBtn-title">
-            {t('ADD_PERSON_MONITOR')}
-          </span>
-        </Button>
+          <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+          <span className="offerDetail-addBtn-title">{t('ADD_PERSON_MONITOR')}</span>
+        </IconButton>
       </Grid>
       <Grid item xs={7}>
         <Grid container>
@@ -448,6 +442,7 @@ export default function LeftContent({
   offer_group_id,
   id
 }) {
+  const bgColor = useSelector(state => bgColorSelector(state));
   const currentUserId = useSelector(state => state.system.profile.id);
   const [members, setMembers] = useState([])
 
@@ -489,9 +484,26 @@ export default function LeftContent({
         offer_group_id={offer_group_id}
         can_modify={can_modify}
       />
-      <RenderListFile can_modify={can_modify} offer_id={id} documents={documents} />
-      <PersonCanApprove can_modify={can_modify} offer_id={id} memberCanAddInApprove={memberCanAdd()} members_can_approve={members_can_approve} />
-      <PersonMonitor can_modify={can_modify} offer_id={id} memberCanAddInMonitor={memberCanAdd()} members_monitor={members_monitor} />
+      <RenderListFile
+        can_modify={can_modify}
+        offer_id={id}
+        documents={documents}
+        bgColor={bgColor}
+      />
+      <PersonCanApprove
+        can_modify={can_modify}
+        offer_id={id}
+        memberCanAddInApprove={memberCanAdd()}
+        members_can_approve={members_can_approve}
+        bgColor={bgColor}
+      />
+      <PersonMonitor
+        can_modify={can_modify}
+        offer_id={id}
+        memberCanAddInMonitor={memberCanAdd()}
+        members_monitor={members_monitor}
+        bgColor={bgColor}
+      />
     </Grid>
   );
 }

@@ -102,9 +102,6 @@
     &-fileName {
       margin-left: 0.8em;
     }
-    &-addFileBtnContainer {
-      margin: 0.8em 0;
-    }
   }
 
   &-handlingPerson {
@@ -160,19 +157,13 @@
   }
 
   &-addBtn {
-    margin: 0.8em 0 0;
-    &-icon {
-      font-weight: 400;
-      color: #1155cc;
-    }
+    padding: 0.8em 0;
     &-title {
+      margin-left: 0.5em;
       font-size: 1rem;
       font-weight: 400;
-      color: #1673e5;
+      color: black;
       text-transform: none;
-      [class*='MuiButton-label'] {
-        font-size: 1rem;
-      }
     }
   }
 }
