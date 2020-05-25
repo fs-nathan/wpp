@@ -2,7 +2,6 @@ import { Avatar, Button, Grid, IconButton, TextField } from '@material-ui/core';
 import { AddCircle } from "@material-ui/icons";
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
-import classNames from 'classnames';
 import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
 import { apiService } from "constants/axiosInstance";
@@ -21,13 +20,9 @@ import {
   deleteMemberMonitor,
   uploadDocumentOffer,
 } from 'views/OfferPage/redux/actions';
-import TitleSectionModal from '../../../../../../components/TitleSectionModal';
 import SendFileModal from '../../../../../JobDetailPage/ChatComponent/SendFile/SendFileModal';
-import JobDetailModalWrap from '../../../../../JobDetailPage/JobDetailModalWrap';
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import CustomAddOfferMemberModal from "../AddOfferMemberModal";
-import DocumentFileModal from "../SendFile/DocumentFileModal.js";
-import { styles } from '../style';
 import './styles.scss';
 import { getPriorityEditingTitle } from './i18nSelectors';
 
@@ -453,7 +448,6 @@ export default function LeftContent({
   offer_group_id,
   id
 }) {
-  const classes = styles();
   const currentUserId = useSelector(state => state.system.profile.id);
   const [members, setMembers] = useState([])
 

@@ -9,7 +9,6 @@ import {
 } from '../../../utils/i18nSelectors';
 import DetailOffer from '../DetailOfferComponent'
 import clsx from 'clsx';
-import { styles } from '../DetailOfferComponent/style'
 import './styles.scss';
 
 const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {

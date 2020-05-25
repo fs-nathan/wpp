@@ -11,7 +11,6 @@ import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadDetailOffer } from "../../redux/actions";
 import { get } from "../../utils";
-import { styles } from './DetailOfferComponent/style';
 import { getDetailOffer } from "./selector";
 import DetailOffer from "./DetailOfferComponent";
 export const PageContainer = styled(Container)`
@@ -29,7 +28,6 @@ const OfferByDepartment = (props) => {
     const dispatch = useDispatch();
     const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
     const { id } = useParams()
-    const classes = styles()
     const isMounted = useMountedState();
     const detailOffer = useSelector(state => getDetailOffer(state))
     useEffect(() => {
@@ -64,7 +62,7 @@ const OfferByDepartment = (props) => {
             }
         >
             <PageContainer>
-                <DetailOffer {...detailOffer} />                
+                <DetailOffer {...detailOffer} />
             </PageContainer>
         </Layout>
     );

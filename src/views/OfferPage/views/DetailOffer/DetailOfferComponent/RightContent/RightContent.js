@@ -9,31 +9,15 @@ import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/App
 import { action } from "views/OfferPage/contants/attrs";
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { getPriorityEditingTitle } from '../LeftContent/i18nSelectors';
-import { styles } from '../style';
 import './styles.scss';
 import { getApprovalConditionEditingTitle } from './i18nSelectors';
 
 const RightContent = ({ can_modify, status_code, rate_accepted, members_approved, number_member_rejected, number_member_accepted, date_label, hour_label, content, title, id, priority_code, user_create_name, condition_accept, user_create_avatar }) => {
   const { t } = useTranslation();
-  const classes = styles()
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
   const onConfirm = () => {
     setOpenModal(false)
-  }
-  const textStatus = (status_code) => {
-    if (status_code === 0) {
-      return ""
-    }
-    if (status_code === 1) {
-      return classes.color_orange
-    }
-    if (status_code === 2) {
-      return classes.color_green
-    }
-    if (status_code === 3) {
-      return classes.color_red
-    }
   }
   const renderUpdateOfferApprovalConditionModal = () => {
     return (
