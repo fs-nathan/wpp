@@ -148,7 +148,11 @@ export default React.memo(
         <QuickViewCell
           onClick={() =>
             setQuickTask(
-              <QuickViewTaskDetail taskId={id} defaultTaskDetail={task} />
+              <QuickViewTaskDetail
+                taskId={id}
+                defaultTaskDetail={task}
+                onClose={() => setQuickTask(null)}
+              />
             )
           }
         >

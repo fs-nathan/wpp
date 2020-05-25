@@ -332,7 +332,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
             <Close />
           </IconButton>
         </div>
-        <Box minHeight="540px">
+        <Box>
           <TasksScrollbar>
             <div className={classes.main}>
               <TasksCard.Content>

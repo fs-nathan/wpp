@@ -602,11 +602,13 @@ export const PostStats = () => {
   return (
     <Stack small>
       <div />
-      <div
-        onClick={() => toggle(true)}
-        className="comp_Post__statWrap cursor-pointer"
-      >
-        <Box display="flex" alignItems="center">
+      <div className="comp_Post__statWrap cursor-pointer">
+        <Box
+          flex={1}
+          onClick={() => toggle(true)}
+          display="flex"
+          alignItems="center"
+        >
           <AvatarGroup
             size={20}
             offset={-4}
@@ -614,39 +616,39 @@ export const PostStats = () => {
               (item) => item
             )}
           ></AvatarGroup>
-        </Box>
-        <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
-          {[
-            hadLikeUser && <span href="#">{last_like_user}</span>,
-            hadLoveUser && <span href="#">{last_love_user}</span>,
-            !!otherNumber && (
-              <span>
-                {template(t("<%= numner %> người khác"))({
-                  numner: otherNumber,
-                })}
-              </span>
-            ),
-          ]
-            .filter((item) => item)
-            .map((item, i, array) => {
-              if (i === array.length - 2) {
-                return (
-                  <>
-                    {item}
-                    {" và "}
-                  </>
-                );
-              }
-              if (i < array.length - 1) {
-                return (
-                  <>
-                    {item}
-                    {" ,"}
-                  </>
-                );
-              }
-              return item;
-            })}
+          <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
+            {[
+              hadLikeUser && <span href="#">{last_like_user}</span>,
+              hadLoveUser && <span href="#">{last_love_user}</span>,
+              !!otherNumber && (
+                <span>
+                  {template(t("<%= numner %> người khác"))({
+                    numner: otherNumber,
+                  })}
+                </span>
+              ),
+            ]
+              .filter((item) => item)
+              .map((item, i, array) => {
+                if (i === array.length - 2) {
+                  return (
+                    <>
+                      {item}
+                      {" và "}
+                    </>
+                  );
+                }
+                if (i < array.length - 1) {
+                  return (
+                    <>
+                      {item}
+                      {" ,"}
+                    </>
+                  );
+                }
+                return item;
+              })}
+          </Box>
         </Box>
         {!!number_comment && (
           <ButtonBase htmlFor={inputId} component="label">

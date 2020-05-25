@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
 import { useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
+import ModalImage from "views/JobDetailPage/ModalImage";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
@@ -86,6 +87,7 @@ function HomePage({ groupDetail }) {
             </StickyBox>
           </div>
         </div>
+        <ModalImage />
       </TasksScrollbar>
     </GroupDetailProvider>
   );
