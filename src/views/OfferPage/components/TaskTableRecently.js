@@ -128,14 +128,12 @@ export function TaskTableRecently({ offers }) {
                   <TableCell>
                     <Grid container>
                       <div
-                        className={clsx(offer.url_redirect && 'offerTable-item-title-link')}
+                        className="offerTable-item-title-link"
                         onClick={() => {
-                          if (offer.url_redirect) {
-                            // For triggering offer detail data fetching from OfferPage component
-                            setCurrentDetailOfferId(offer.id);
-                            // Show offer detail modal
-                            setDetailOfferModalOpen(true);
-                          }
+                          // For triggering offer detail data fetching from OfferPage component
+                          setCurrentDetailOfferId(offer.id);
+                          // Show offer detail modal
+                          setDetailOfferModalOpen(true);
                         }}
                       >
                         {offer.title}
