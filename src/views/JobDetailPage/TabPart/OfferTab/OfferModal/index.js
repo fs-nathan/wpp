@@ -1,7 +1,7 @@
 import { Avatar, Button, Chip, Grid, IconButton, TextField } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
 import Icon from '@mdi/react';
-import { deleteDocumentToOffer, getMember } from 'actions/taskDetail/taskDetailActions';
+import { createOffer, deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
 import lodash from 'lodash';
@@ -179,19 +179,20 @@ const OfferModal = (props) => {
   }
 
   const handleCreateOffer = async () => {
-    try {
-      const config = {
-        url: "/offers/personal/create",
-        method: "POST",
-        data: getFormData(),
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }
-      await apiService(config)
-      enqueueSnackbar("Create offer successful", { variant: "success" })
-    } catch (err) {
-      enqueueSnackbar(err.message, { variant: "error" })
-    }
-    // setParams("files", [])
+    // try {
+    //   const config = {
+    //     url: "/offers/personal/create",
+    //     method: "POST",
+    //     data: getFormData(),
+    //     headers: { 'Content-Type': 'multipart/form-data' },
+    //   }
+    //   await apiService(config)
+    //   enqueueSnackbar("Create offer successful", { variant: "success" })
+    // } catch (err) {
+    //   enqueueSnackbar(err.message, { variant: "error" })
+    // }
+    dispatch(createOffer({ data: getFormData(), taskId }))
+    setParams("files", [])
   }
   function onClickCreateOffer() {
     props.setOpen(false)

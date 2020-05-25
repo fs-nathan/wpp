@@ -1,16 +1,17 @@
-import React from 'react';
 import Icon from '@mdi/react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { LOCAL_PERSONAL_REMINDS_STORAGE, LOCAL_PROJECT_REMINDS_STORAGE } from "views/CalendarPage/constants/attrs";
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
-import './Drawer.scss';
-import { TOKEN, REFRESH_TOKEN, DRAWER_TYPE } from '../../constants/constants';
+import { DRAWER_TYPE, REFRESH_TOKEN, TOKEN } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
 import {
   TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
   TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
   TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
 } from '../../views/OfferPage/contants/localStorage';
+import './Drawer.scss';
 
 const FooterListDrawer = props => {
   const closeDrawer = url => {
@@ -20,6 +21,8 @@ const FooterListDrawer = props => {
       localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW);
       localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW);
       localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW);
+      localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+      localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
     }
     props.actionVisibleDrawerMessage({
       type: '',
@@ -37,7 +40,7 @@ const FooterListDrawer = props => {
             onClick={() => closeDrawer(el.url)}
             className={`text-btn ${
               typeDrawer === DRAWER_TYPE.SUPPORT ? 'support-text' : ''
-            }`}
+              }`}
           >
             {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
             <span className="name-text">{el.name}</span>

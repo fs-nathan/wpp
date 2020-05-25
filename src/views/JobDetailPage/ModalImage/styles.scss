@@ -45,9 +45,14 @@
     z-index: 999;
     // overflow-x: scroll;
     // width: 134%;
+    width: fit-content;
+    margin: auto;
     & > * {
       list-style-type: none;
       margin: 2px 3px;
     }
+  }
+  &--scroll:hover div:nth-child(2) {
+    opacity: 1 !important;
   }
 }

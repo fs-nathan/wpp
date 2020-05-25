@@ -82,7 +82,7 @@ function CreateJobModal(props) {
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.date'));
+  const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.status.date'));
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
@@ -326,7 +326,7 @@ function CreateJobModal(props) {
         }
         {!isEdit &&
           <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
+            {date_status !== 0 && <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />}
             {date_status !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Typography className="createJob--timeWrap" component={'span'}>

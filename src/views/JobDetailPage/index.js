@@ -1,22 +1,14 @@
-import {
-  getDataPinOnTaskChat,
-  getEmotions,
-  getGirdListTask,
-  getListStickersRequest,
-  openShareFileModal,
-} from "actions/chat/chat";
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal } from "actions/chat/chat";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { closeNoticeModal } from "actions/system/system";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
-import {
-  JOIN_CHAT_EVENT,
-  JOIN_PROJECT_EVENT,
-} from "constants/actions/chat/chat";
+import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from "constants/actions/chat/chat";
 import last from "lodash/last";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ShareDocumentModal from "views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal";
 import "../JobDetailPage/index.scss";
+import ForwardMessageDialog from './ChatComponent/ForwardMessageDialog';
 import ChatPart from "./ChatPart";
 import Intro from "./introduce";
 import ListPart from "./ListPart";
@@ -43,6 +35,7 @@ function JobDetailPage(props) {
     dispatch(getListStickersRequest());
     dispatch(getEmotions());
     dispatch(getGirdListTask());
+    dispatch(taskDetailAction.detailGroupPermissionDefault())
     dispatch(taskDetailAction.getRole());
     dispatch(taskDetailAction.getListOffer());
     dispatch(taskDetailAction.getPermission({ type: 4 }));
@@ -114,9 +107,10 @@ function JobDetailPage(props) {
           <TabPart />
         </>
       ) : (
-        <Intro />
-      )}
+          <Intro />
+        )}
       <ModalImage />
+      <ForwardMessageDialog />
       {isOpenShareFileModal && (
         <ShareDocumentModal onClose={onCloseShare} item={item} />
       )}

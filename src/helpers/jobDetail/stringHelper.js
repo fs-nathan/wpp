@@ -109,7 +109,7 @@ export function getDialogDate(timeString, formatDate = '') {
     const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
     return `Lúc ${format(date, 'HH:mm')} ngày ${format(date, fixedFormat)}`;
   } catch (e) {
-    return '';
+    return timeString;
   }
 }
 

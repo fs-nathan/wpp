@@ -13,6 +13,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import { useMountedState } from "react-use";
 import CreateWeeklyCalendar from '../CalendarPage/views/Modals/CreateWeeklyCalendar';
 import CalendarWeeklyLeftPart from "./LeftPart";
 import CalendarWeeklyRightPart from "./RightPart";
@@ -82,10 +83,8 @@ function CalendarWeeklyPage({
   }, [selectedYearAndWeekAtModal]);
 
   React.useEffect(() => {
-    if (permissions.length === 0) {
-      doListPermission(false);
-    }
-  }, [doListPermission]);
+    doListPermission(false);
+  }, [doListPermission, useMountedState()]);
 
   function handleDeleteAllSchedule(year, week) {
     let schedulesExclude = filter(calendars.data, calendar => calendar.week !== parseInt(week));

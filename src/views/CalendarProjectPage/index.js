@@ -29,10 +29,8 @@ function CalendarProjectPage({
   }, [doListProjectSchedule, useMountedState()]);
 
   React.useEffect(() => {
-    if (permissions.length === 0) {
-      doListPermission(false);
-    }
-  }, [doListPermission]);
+    doListPermission(false);
+  }, [doListPermission, useMountedState()]);
 
   return (
     <TwoColumnsLayout

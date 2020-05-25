@@ -1172,3 +1172,45 @@ export function updateProjectChat(payload) {
         payload
     };
 }
+
+export function removeGroupPermissionOfMember(task_id, member_id) {
+    return {
+        type: types.REMOVE_GROUP_PERMISSION_OF_MEMBER,
+        task_id, member_id
+    };
+}
+
+export function removeGroupPermissionOfMemberSuccess(payload) {
+    return {
+        type: types.REMOVE_GROUP_PERMISSION_OF_MEMBER_SUCCESS,
+        payload
+    };
+}
+
+export function removeGroupPermissionOfMemberFail(error) {
+    return {
+        type: types.REMOVE_GROUP_PERMISSION_OF_MEMBER_FAIL,
+        error
+    };
+}
+
+export function detailGroupPermissionDefault(payload) {
+    return {
+        type: types.DETAIL_GROUP_PERMISSION_DEFAULT,
+        payload
+    };
+}
+
+export function detailGroupPermissionDefaultSuccess(payload) {
+    return {
+        type: types.DETAIL_GROUP_PERMISSION_DEFAULT_SUCCESS,
+        payload
+    };
+}
+
+export function detailGroupPermissionDefaultFail(error) {
+    return {
+        type: types.DETAIL_GROUP_PERMISSION_DEFAULT_FAIL,
+        error
+    };
+}

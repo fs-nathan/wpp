@@ -24,6 +24,7 @@ function TabHeader({ setShow }) {
   return (
     <div className="container-normal-tabheader RemindTab--header">
       <HeaderTab title={t('LABEL_CHAT_TASK_NHAC_HEN')}
+        buttonTooltipText={t('LABEL_CHAT_TASK_TAO_MOI')}
         onClickBack={() => setShow(0)}
         onClickOpen={handleClickOpen}
       />

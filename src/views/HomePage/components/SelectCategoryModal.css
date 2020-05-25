@@ -1,0 +1,16 @@
+.comp_SelectCategoryModal_listItem {
+  width: auto;
+  display: inline-flex;
+  padding: 16px;
+  padding-right: 0;
+
+  /* padding-right: 0; */
+}
+.comp_SelectCategoryModal_list {
+  margin-bottom: 30px;
+  padding-right: 16px;
+}
+.comp_SelectCategoryModal_paper {
+  max-width: 600px;
+  width: calc(100% - 64px);
+}

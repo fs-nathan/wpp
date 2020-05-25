@@ -7,7 +7,8 @@
 .chatBox {
   cursor: text;
   position: relative;
-  height: 60px;
+  // height: 100%;
+  flex-basis: 61px;
   border-radius: 2px;
   .DraftEditor-root {
     height: 100%;

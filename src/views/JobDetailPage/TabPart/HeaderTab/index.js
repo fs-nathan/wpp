@@ -1,14 +1,14 @@
-import { useTranslation } from 'react-i18next';
-import React from 'react';
-import PropTypes from 'prop-types';
 import { IconButton } from '@material-ui/core';
+import { mdiChevronLeft, mdiPlus, mdiSettings } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiChevronLeft, mdiSettings, mdiPlus } from '@mdi/js';
+import PropTypes from 'prop-types';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ColorTypo from '../../../../components/ColorTypo';
-
 import './styles.scss';
 
-function HeaderTab({ title, onClickBack, onClickOpen, rightIcon }) {
+
+function HeaderTab({ title, onClickBack, onClickOpen, rightIcon, buttonTooltipText }) {
   const { t } = useTranslation();
 
   return (
@@ -20,7 +20,7 @@ function HeaderTab({ title, onClickBack, onClickOpen, rightIcon }) {
       </IconButton>
       <ColorTypo className="headerTab--text" uppercase >{title}</ColorTypo>
       <IconButton className="headerTab--button" onClick={onClickOpen}>
-        <abbr title={t('LABEL_CHAT_TASK_CAI_DAT')}>
+        <abbr title={buttonTooltipText || t('LABEL_CHAT_TASK_CAI_DAT')}>
           <Icon path={rightIcon === "add" ? mdiPlus : mdiSettings} size={1} />
         </abbr>
       </IconButton>

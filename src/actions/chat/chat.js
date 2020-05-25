@@ -62,13 +62,14 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId, last_id, isMore, file_id) {
+export function loadChat(taskId, last_id, isMore, file_id, chat_id) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
     last_id,
     isMore,
     file_id,
+    chat_id,
   };
 }
 
@@ -652,5 +653,12 @@ export function openShareFileModal(isOpenShareFileModal, item, ) {
   return {
     type: actionTypes.OPEN_SHARE_FILE_MODAL,
     isOpenShareFileModal, item
+  };
+}
+
+export function forwardMessage(isOpenForward, content) {
+  return {
+    type: actionTypes.FORWARD_MESSAGE,
+    isOpenForward, content
   };
 }

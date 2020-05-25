@@ -39,6 +39,9 @@ export const initialState = {
   pinnedRemind: null,
   isOpenShareFileModal: false,
   item: null,
+  isOpenForward: false,
+  contentForward: null,
+  error: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -92,6 +95,19 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.CHAT_FORWARD_FILE_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      break;
+    }
+    case actionTypes.CHAT_FILE:
+    case actionTypes.CHAT_FORWARD_FILE:
+    case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER: {
+      draft.error = null;
+      break;
+    }
+    case actionTypes.CHAT_FORWARD_FILE_FAIL:
+    case actionTypes.CHAT_FILE_FAIL:
+    case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_FAIL: {
+      const { error } = action;
+      draft.error = error;
       break;
     }
     case actionTypes.CHAT_STICKER_SUCCESS: {
@@ -296,6 +312,12 @@ export default (state = initialState, action) => produce(state, draft => {
       const { isOpenShareFileModal, item, } = action;
       draft.isOpenShareFileModal = isOpenShareFileModal;
       draft.item = item;
+      break;
+    }
+    case actionTypes.FORWARD_MESSAGE: {
+      const { isOpenForward, content } = action;
+      draft.isOpenForward = isOpenForward;
+      draft.contentForward = content;
       break;
     }
   }

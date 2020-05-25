@@ -3,6 +3,7 @@ import { DialogContent, Menu, MenuItem, TextField } from '@material-ui/core';
 import { mdiFileUploadOutline, mdiFolderPlusOutline, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionCreateFolder, actionFetchListMyDocument } from 'actions/documents';
+import TitleSectionModal from 'components/TitleSectionModal';
 import UploadModal from 'components/UploadModal';
 import { isEmpty } from 'helpers/utils/isEmpty';
 import React, { useState } from 'react';
@@ -148,11 +149,11 @@ function AddNewButton({ selectedMenu }) {
         ]}
       >
         <DialogContent dividers className="dialog-content">
+          <TitleSectionModal label={t('IDS_WP_INPUT_NEW_FOLDER_NAME')} isRequired />
           <TextField
             value={nameFolder}
             id="standard-full-width"
             variant="outlined"
-            label={t('IDS_WP_INPUT_NEW_FOLDER_NAME')}
             fullWidth
             margin="normal"
             InputLabelProps={{ shrink: true }}

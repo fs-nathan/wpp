@@ -1,13 +1,13 @@
 .MemberModal {
   .MuiDialogContent-root {
-    min-width: 800px;
     padding: 0;
-    height: 600px;
+    height: 100%;
   }
   &--file {
     display: flex;
     position: relative;
     margin: 2px;
+    cursor: pointer;
   }
   &--fileImg {
     padding: 0 10px;

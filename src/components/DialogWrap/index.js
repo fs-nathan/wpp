@@ -6,6 +6,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import clsx from 'clsx';
 import ColorTypo from 'components/ColorTypo';
 import React from 'react';
+import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -28,6 +29,8 @@ function DialogWrap({
   const groupActiveColor = useSelector(currentColorSelector)
   return (
     <Dialog
+      fullWidth
+      scroll="body"
       {...rest} className={clsx("dialogWrap", className)} aria-labelledby="customized-dialog-title" open={isOpen} >
       <DialogTitle disableTypography >
         <ColorTypo className="dialogWrap--title" >{title}</ColorTypo>
@@ -35,7 +38,13 @@ function DialogWrap({
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      {children}
+      <div className="dialogWrap--container">
+        <Scrollbars
+          renderView={props => <div {...props} className="dialogWrap--scrollWrap" />}
+          autoHide autoHideTimeout={500} autoHideDuration={200}>
+          {children}
+        </Scrollbars>
+      </div>
       <DialogActions>
         {!isOneButton && <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >
           {t('IDS_WP_CANCEL')}
