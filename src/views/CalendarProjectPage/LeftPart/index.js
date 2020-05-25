@@ -2,19 +2,21 @@ import { createProjectSchedule } from "actions/calendar/projectCalendar/createPr
 import { deleteProjectSchedule } from "actions/calendar/projectCalendar/deleteProjectGroupSchedule";
 import { updateProjectSchedule } from "actions/calendar/projectCalendar/updateProjectGroupSchedule";
 import AlertModal from "components/AlertModal";
+import { CREATE_PROJECT_GROUP_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE, UPDATE_PROJECT_GROUP_SCHEDULE } from "constants/events";
 import { Routes } from "constants/routes";
-import { filter, get } from 'lodash';
+import { filter, get, isNil, set } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import CreateProjectCalendar from "../../CalendarPage/views/Modals/CreateProjectCalendar";
+import { projectGroupNewScheduleDetailSelector } from "../RightPart/selectors";
 import CalendarProjectLeftPartPresenter from './presenter';
 import './style.scss';
 
 function CalendarProjectLeftPart({
   groupSchedules, doCreateGroupSchedule, doDeleteGroupSchedule,
-  doUpdateGroupSchedule, permissions
+  doUpdateGroupSchedule, permissions, newGroupSchedules
 }) {
 
   const { t } = useTranslation();
@@ -72,6 +74,65 @@ function CalendarProjectLeftPart({
     }
   }, [groupSchedules]);
 
+  const refreshAfterCreate = () => {
+    if (!isNil(newGroupSchedules.afterCreate)) {
+      let schedule = get(newGroupSchedules, "afterCreate");
+      let _schedules = filterdGroupSchedules.data;
+      _schedules = _schedules.concat(schedule);
+      setFilterdGroupSchedules({
+        ...filterdGroupSchedules,
+        data: _schedules
+      });
+      setIsLoading(false);
+    }
+  }
+
+  const refreshAfterUpdate = () => {
+    if (!isNil(newGroupSchedules.afterUpdate)) {
+      let schedule = get(newGroupSchedules, "afterUpdate");
+      let idx = groupSchedules.data.findIndex(item => item.id === schedule.id);
+      if (idx !== -1) {
+        let _schedules = groupSchedules.data;
+        let _schedule = get(_schedules, `[${idx}]`);
+        set(_schedule, 'name', schedule.name);
+        set(_schedule, 'description', schedule.description);
+        _schedules[idx] = _schedule;
+        setFilterdGroupSchedules({
+          ...filterdGroupSchedules,
+          data: _schedules
+        });
+      }
+    }
+    setIsLoading(false);
+  }
+
+  const refreshAfterDelete = () => {
+    if (!isNil(newGroupSchedules.afterDelete)) {
+      let scheduleID = get(newGroupSchedules, "afterDelete");
+      let idx = groupSchedules.data.findIndex(item => item.id === scheduleID);
+      if (idx !== -1) {
+        let _schedules = groupSchedules.data;
+        _schedules.splice(idx, 1);
+        setFilterdGroupSchedules({
+          ...filterdGroupSchedules,
+          data: _schedules
+        });
+      }
+      setIsLoading(false);
+    }
+  }
+
+  React.useEffect(() => {
+    CustomEventListener(UPDATE_PROJECT_GROUP_SCHEDULE, refreshAfterUpdate);
+    CustomEventListener(CREATE_PROJECT_GROUP_SCHEDULE, refreshAfterCreate);
+    CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, refreshAfterDelete);
+    return () => {
+      CustomEventDispose(UPDATE_PROJECT_GROUP_SCHEDULE, refreshAfterUpdate);
+      CustomEventDispose(CREATE_PROJECT_GROUP_SCHEDULE, refreshAfterCreate);
+      CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, refreshAfterDelete);
+    }
+  }, [newGroupSchedules]);
+
   return (
     <>
       <CalendarProjectLeftPartPresenter
@@ -82,6 +143,8 @@ function CalendarProjectLeftPart({
         handleSearchPattern={value => setSearchPattern(value)}
         handleUpdateGroupSchedule={(id, name, description) => handleUpdateGroupSchedule(id, name, description)}
         havePermission={permissions['manage_project_schedule'] ?? false}
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
       />
       <CreateProjectCalendar
         open={openCreate}
@@ -93,7 +156,11 @@ function CalendarProjectLeftPart({
         open={alertConfirm}
         setOpen={setAlertConfirm}
         content={t('IDS_WP_ALERT_CONTENT')}
-        onConfirm={() => handleDeleteGroup(selectedGroupSchedule)}
+        onConfirm={() => {
+          setIsLoading(true);
+          handleDeleteGroup(selectedGroupSchedule);
+        }}
+        actionLoading={isLoading}
       />
     </>
   );
@@ -101,6 +168,7 @@ function CalendarProjectLeftPart({
 
 const mapStateToProps = state => {
   return {
+    newGroupSchedules: projectGroupNewScheduleDetailSelector(state)
   };
 };
 

@@ -15,6 +15,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
+import { bgColorSelector } from "../../../selectors";
 import { membersSelector } from "./selectors";
 import './style.scss';
 
@@ -35,7 +36,7 @@ const DEFAULT_DATA = {
 };
 
 function CreatePersonalRemind({
-  open, setOpen, onConfirm, remindCategories,
+  open, setOpen, onConfirm, remindCategories, bgColor,
   members, doListMemebers, categoryID, isLoading = false
 }) {
 
@@ -55,6 +56,11 @@ function CreatePersonalRemind({
   React.useEffect(() => {
     doListMemebers(false);
   }, [doListMemebers]);
+
+  React.useEffect(() => {
+    setReceiverListIndex([]);
+    setDataMember(DEFAULT_DATA);
+  }, [open]);
 
   React.useEffect(() => {
     handleChangeData("selectedCategory", categoryID);
@@ -79,8 +85,8 @@ function CreatePersonalRemind({
         title={t("views.calendar_page.modal.create_personal_remind.title")}
         open={open}
         setOpen={setOpen}
-        canConfirm={data.content !== '' && data.selectedCategory !== null}
-        confirmRender={() => t('views.calendar_page.modal.create_personal_remind.title')}
+        canConfirm={data.content !== '' && data.selectedCategory !== null && data.selectedDate !== null}
+        confirmRender={() => t('IDS_WP_DONE')}
         onConfirm={() => handleOnConfirm()}
         maxWidth='sm'
         actionLoading={isLoading}
@@ -195,7 +201,7 @@ function CreatePersonalRemind({
             <Typography component={'span'} className="title_normal"> {t('views.calendar_page.modal.create_personal_remind.member_assign')} </Typography>
             <Box className="remind_setting_userAssignBox">
               {
-                receiverListIndex.length !== 0 &&
+                receiverListIndex.length !== 0 && receiverListIndex.length < members.members.length &&
                 Object.values(pick(members.members, receiverListIndex)).map((member) => {
                   return (
                     <Box className="remind_setting_userAssignItem">
@@ -208,13 +214,20 @@ function CreatePersonalRemind({
                   )
                 })
               }
+              {
+                receiverListIndex.length !== 0 && receiverListIndex.length === members.members.length && (
+                  <Box className="remind_setting_userAssignAll">
+                    {t('views.calendar_page.modal.create_weekly_calendar.all')}
+                  </Box>
+                )
+              }
               <Button
                 color="primary"
-                startIcon={<Icon path={mdiPlusCircle} size={1} color={"#009CF3"} />}
+                startIcon={<Icon path={mdiPlusCircle} size={0.8} color={bgColor.color} />}
                 onClick={() => setOpenReceiverDialog(true)}
                 className="remind_setting_userAssignBox_buttonAdd"
               >
-                {t('IDS_WP_COMMON_ADD')}
+                <span className="remind_setting_userAssignBox_buttonAdd_title">{t('IDS_WP_COMMON_ADD')}</span>
               </Button>
             </Box>
           </Box>
@@ -240,7 +253,8 @@ const mapDispatchToProps = dispatch => {
 
 export default connect(
   state => ({
-    members: membersSelector(state)
+    members: membersSelector(state),
+    bgColor: bgColorSelector(state)
   }),
   mapDispatchToProps
 )(CreatePersonalRemind);

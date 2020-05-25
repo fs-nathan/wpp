@@ -15,7 +15,6 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
-import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
@@ -72,7 +71,6 @@ const FooterPart = ({
   const [isOpenMention, setOpenMention] = useState(false);
   const [isOpenSticker, setOpenSticker] = useState(false);
   const [isShowQuickLike, setShowQuickLike] = useState(false);
-  const [isShareFromLib, setShareFromLib] = useState(false);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
   const [clipBoardImages, setClipBoardImages] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
@@ -216,11 +214,6 @@ const FooterPart = ({
   function onClickRemind() {
     // dispatch(showTab(3))
     dispatch(openCreateRemind(true, true))
-  }
-
-  function onClickShareFromLibrary() {
-    setVisibleSendFile(false)
-    setShareFromLib(true)
   }
 
   function handleClickMention(mention) {
@@ -527,12 +520,8 @@ const FooterPart = ({
       <SendFileModal
         open={visibleSendFile}
         setOpen={setVisibleSendFile}
-        onClickShareFromLibrary={onClickShareFromLibrary}
-      />
-      <ShareFromLibraryModal
-        open={isShareFromLib}
-        setOpen={setShareFromLib}
-        onClickConfirm={onConfirmShare}
+        onConfirmShare={onConfirmShare}
+        handleUploadFile={handleUploadFile}
       />
     </div >
   );

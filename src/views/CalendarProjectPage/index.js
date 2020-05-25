@@ -1,7 +1,7 @@
 import { listCalendarPermission } from "actions/calendar/permission/listPermission";
 import { listProjectSchedule } from "actions/calendar/projectCalendar/listSchedule";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
-import { CREATE_PROJECT_GROUP_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE } from "constants/events";
+import { CREATE_PROJECT_GROUP_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP_SCHEDULE, UPDATE_PROJECT_GROUP_SCHEDULE } from "constants/events";
 import React from 'react';
 import { connect } from 'react-redux';
 import { useMountedState } from "react-use";
@@ -20,17 +20,17 @@ function CalendarProjectPage({
     }
     CustomEventListener(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
     CustomEventListener(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
+    CustomEventListener(UPDATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
     return () => {
       CustomEventDispose(CREATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
       CustomEventDispose(DELETE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
+      CustomEventDispose(UPDATE_PROJECT_GROUP_SCHEDULE, reloadListProjectSchedule);
     }
   }, [doListProjectSchedule, useMountedState()]);
 
   React.useEffect(() => {
-    if (permissions.length === 0) {
-      doListPermission(false);
-    }
-  }, [doListPermission]);
+    doListPermission(false);
+  }, [doListPermission, useMountedState()]);
 
   return (
     <TwoColumnsLayout

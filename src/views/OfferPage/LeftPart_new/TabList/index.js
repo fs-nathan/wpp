@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import { labels } from "../../contants/attrs";
+import { OfferPageContext } from "../../OfferPageContext";
 import LeftSetting from "../LeftSetting";
 import "./style.scss";
-const ListPart = ({ listMenu }) => {
+const ListPart = ({ searchPlaceHolder, subMenu, filter, searchInput, title, listMenu, setOpenModalOfferByGroup }) => {
   const { t } = useTranslation();
-  return <LeftSetting title={t(labels.pageTitle)} listMenu={listMenu} />;
+  const { } = useContext(OfferPageContext)
+  return <LeftSetting filter={filter} searchPlaceHolder={searchPlaceHolder} subMenu={subMenu} searchInput={searchInput} setOpenModalOfferByGroup={setOpenModalOfferByGroup} title={title} listMenu={listMenu} />;
 };
 
 export default ListPart;

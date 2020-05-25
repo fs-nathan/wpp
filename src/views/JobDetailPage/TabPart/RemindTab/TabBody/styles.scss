@@ -32,6 +32,9 @@
   width: 100%;
   float: left;
   cursor: pointer;
+  &--remindText {
+    margin-right: 10px;
+  }
   &--time {
     width: 65px;
     float: left;
@@ -87,7 +90,7 @@
     }
     .MuiChip-root {
       border-radius: 2px;
-      margin-left: 10px;
+      margin-left: 5px;
     }
   }
   &--menu {

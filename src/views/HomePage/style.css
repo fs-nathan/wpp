@@ -18,7 +18,7 @@
   height: 100%;
   display: grid;
   grid-template-rows: 300px auto;
-  grid-template-columns: 250px minmax(auto, 3fr) minmax(300px, 2fr);
+  grid-template-columns: 280px minmax(auto, 3fr) minmax(300px, 2fr);
   column-gap: 20px;
   align-items: flex-start;
   row-gap: 20px;

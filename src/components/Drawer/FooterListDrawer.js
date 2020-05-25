@@ -1,17 +1,20 @@
-import React from 'react';
 import Icon from '@mdi/react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { LOCAL_PERSONAL_REMINDS_STORAGE, LOCAL_PROJECT_REMINDS_STORAGE } from "views/CalendarPage/constants/attrs";
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
-import './Drawer.scss';
-import { TOKEN, REFRESH_TOKEN, DRAWER_TYPE } from '../../constants/constants';
+import { DRAWER_TYPE, REFRESH_TOKEN, TOKEN } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
+import './Drawer.scss';
 
 const FooterListDrawer = props => {
   const closeDrawer = url => {
     if (url === Routes.DANG_NHAP) {
       localStorage.removeItem(TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);
+      localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+      localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
     }
     props.actionVisibleDrawerMessage({
       type: '',
@@ -29,7 +32,7 @@ const FooterListDrawer = props => {
             onClick={() => closeDrawer(el.url)}
             className={`text-btn ${
               typeDrawer === DRAWER_TYPE.SUPPORT ? 'support-text' : ''
-            }`}
+              }`}
           >
             {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
             <span className="name-text">{el.name}</span>

@@ -3,11 +3,12 @@ import { sortPersonalRemindCategory } from "actions/calendar/alarmCalendar/sortP
 import { listCalendarPermission } from "actions/calendar/permission/listPermission";
 import LoadingBox from "components/LoadingBox";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
-import { CREATE_PERSONAL_REMIND_CATEGORY, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND_CATEGORY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
+import { CREATE_PERSONAL_REMIND_CATEGORY, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND_CATEGORY, SORT_PERSONAL_REMIND_CATEGORY } from "constants/events";
 import { get } from "lodash";
 import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
+import { useMountedState } from "react-use";
 import CalendarAlramLeftPart from "./LeftPart";
 import routes from "./routes";
 import { personalRemindCategoriesSelector } from "./selectors";
@@ -38,20 +39,16 @@ function CalendarAlarmPage({
     CustomEventListener(SORT_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
     CustomEventListener(CREATE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
     CustomEventListener(DELETE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
-    CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
     return () => {
       CustomEventDispose(SORT_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
       CustomEventDispose(CREATE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
       CustomEventDispose(DELETE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
-      CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
     }
   }, [doListPersonalRemindCategory])
 
   React.useEffect(() => {
-    if (permissions.length === 0) {
-      doListPermission(false);
-    }
-  }, [doListPermission]);
+    doListPermission(false);
+  }, [doListPermission, useMountedState()]);
 
   return (
     <TwoColumnsLayout

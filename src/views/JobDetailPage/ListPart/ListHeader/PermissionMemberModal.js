@@ -5,7 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { mdiChevronLeft, mdiChevronRight, mdiKey } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiKey, mdiTrashCan } from '@mdi/js';
 import Icon from '@mdi/react';
 import { updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
@@ -94,38 +94,49 @@ function PermissionMemberModal({ memberId, setOpen,
       <DialogContent>
         <div className="permissionMemberModal--title">{t('LABEL_CHAT_TASK_CHON_NHOM_QUYEN')}</div>
         <div className="permissionMemberModal--content">{t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}</div>
-        <div className="permissionMemberModal--slider">
-          <Slider adaptiveHeight variableWidth infinite={false}
-            nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
-            prevArrow={<CustomArrow path={mdiChevronLeft} isDisabled={listGroupPermission.length < 5} />}
-            settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
-          >
-            {listGroupPermission.map((group, i) =>
-              <PriorityTable key={group.name} radio={group.name} value={i} checked={selectedValue === i} onChange={handleChange} />
-            )}
-          </Slider>
-        </div>
-        <Table>
-          <TableHead>
-            <RowTable>
-              <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>&nbsp;</CellTable>
-              <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t('LABEL_CHAT_TASK_TEN_QUYEN')}</CellTable>
-              <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t('LABEL_CHAT_TASK_MO_TA')}</CellTable>
-            </RowTable>
-          </TableHead>
-          <TableBody>
-            {selectedPermission.map(row => (
-              <TableRow key={row.name}>
-                <CellTable align="center"><Icon path={mdiKey} size={1} /></CellTable>
-                <CellTable component="th" scope="row" style={{ fontSize: '15px', fontWeight: 'bold' }}>
-                  {row.name}
-                </CellTable>
-                <CellTable >{row.description}</CellTable>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+        {listGroupPermission.length > 0 ?
+          <>
+            <div><Icon path={mdiTrashCan} size={1}></Icon>{t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}</div>
+            <div className="permissionMemberModal--slider">
+              <Slider adaptiveHeight variableWidth infinite={false}
+                nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
+                prevArrow={<CustomArrow path={mdiChevronLeft} isDisabled={listGroupPermission.length < 5} />}
+                settings={{ dots: false, slidesToShow: 5, adaptiveHeight: true }}
+              >
+                {listGroupPermission.map((group, i) =>
+                  <PriorityTable key={group.name} radio={group.name} value={i} checked={selectedValue === i} onChange={handleChange} />
+                )}
+              </Slider>
+            </div>
+            <Table>
+              <TableHead>
+                <RowTable>
+                  <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>&nbsp;</CellTable>
+                  <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t('LABEL_CHAT_TASK_TEN_QUYEN')}</CellTable>
+                  <CellTable style={{ color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t('LABEL_CHAT_TASK_MO_TA')}</CellTable>
+                </RowTable>
+              </TableHead>
+              <TableBody>
+                {selectedPermission.map(row => (
+                  <TableRow key={row.name}>
+                    <CellTable align="center"><Icon path={mdiKey} size={1} /></CellTable>
+                    <CellTable component="th" scope="row" style={{ fontSize: '15px', fontWeight: 'bold' }}>
+                      {row.name}
+                    </CellTable>
+                    <CellTable >{row.description}</CellTable>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </>
+          :
+          <div className="permissionItem--noPermissions">
+            <img className="permissionItem--noPermissionsImg" src="/images/no-data.png" alt='no permission'></img>
+            <div className="permissionItem--noPermissionsFooter">{t('LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION')}</div>
+          </div>
+        }
       </DialogContent>
+
     </DialogWrap>
   );
 }

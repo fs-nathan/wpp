@@ -2,6 +2,7 @@ import { listCalendarPermission } from "actions/calendar/permission/listPermissi
 import { deleteAllSchedule } from "actions/calendar/weeklyCalendar/deleteAllSchedule";
 import { listSchedule } from "actions/calendar/weeklyCalendar/listSchedule";
 import { listScheduleOfWeek } from "actions/calendar/weeklyCalendar/listScheduleOfWeek";
+import AlertModal from "components/AlertModal";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
 import { CREATE_WEEKLY_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_ALL_WEEKLY_SCHEDULE, DELETE_WEEKLY_SCHEDULE, UPDATE_WEEKLY_SCHEDULE } from "constants/events";
 import { Routes } from "constants/routes";
@@ -9,8 +10,10 @@ import { filter } from "lodash";
 import get from "lodash/get";
 import moment from "moment";
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
+import { useMountedState } from "react-use";
 import CreateWeeklyCalendar from '../CalendarPage/views/Modals/CreateWeeklyCalendar';
 import CalendarWeeklyLeftPart from "./LeftPart";
 import CalendarWeeklyRightPart from "./RightPart";
@@ -22,11 +25,21 @@ function CalendarWeeklyPage({
   doListPermission, permissions
 }) {
 
+  const { t } = useTranslation();
   const params = useParams();
   const history = useHistory();
   const [year, setYear] = React.useState(params.year ?? new Date().getFullYear());
   const [openModal, setOpenModal] = React.useState(false);
   const [actionType, setActionType] = React.useState("CREATE");
+  const [selectedYearAndWeekAtModal, setSelectedYearAndWeekAtModal] = React.useState({
+    year: parseInt(params.year, 10),
+    week: parseInt(params.week, 10)
+  });
+  const [alertConfirm, setAlertConfirm] = React.useState(false);
+  const [dataDelete, setDataDelete] = React.useState({
+    year: null,
+    week: null
+  });
 
   React.useEffect(() => {
     doListSchedule({ year }, false);
@@ -46,9 +59,18 @@ function CalendarWeeklyPage({
   }, [doListSchedule, year]);
 
   React.useEffect(() => {
-    CWPDoListScheduleOfWeek({ year, week: params.week });
+    CWPDoListScheduleOfWeek({ year, week: params.week }, false);
+    setSelectedYearAndWeekAtModal({
+      year: parseInt(year, 10),
+      week: parseInt(params.week, 10)
+    });
+  }, [CWPDoListScheduleOfWeek, year, params.week]);
+
+  React.useEffect(() => {
     const reloadListScheduleOfWeek = () => {
-      CWPDoListScheduleOfWeek({ year, week: params.week }, false);
+      if (selectedYearAndWeekAtModal.year === parseInt(year, 10) && selectedYearAndWeekAtModal.week === parseInt(params.week, 10)) {
+        CWPDoListScheduleOfWeek({ year, week: params.week }, false);
+      }
     }
     CustomEventListener(CREATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
     CustomEventListener(DELETE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
@@ -58,13 +80,11 @@ function CalendarWeeklyPage({
       CustomEventDispose(DELETE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
       CustomEventDispose(UPDATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
     }
-  }, [CWPDoListScheduleOfWeek, year, params.week]);
+  }, [selectedYearAndWeekAtModal]);
 
   React.useEffect(() => {
-    if (permissions.length === 0) {
-      doListPermission(false);
-    }
-  }, [doListPermission]);
+    doListPermission(false);
+  }, [doListPermission, useMountedState()]);
 
   function handleDeleteAllSchedule(year, week) {
     let schedulesExclude = filter(calendars.data, calendar => calendar.week !== parseInt(week));
@@ -97,7 +117,10 @@ function CalendarWeeklyPage({
               year={year} handleYearChanged={year => setYear(year)}
               scheduleOfWeek={scheduleOfWeek}
               calendar={calendars.data.find(item => item.week === parseInt(params.week, 10))}
-              handleDeleteAllSchedule={(year, week) => handleDeleteAllSchedule(year, week)}
+              handleDeleteAllSchedule={(year, week) => {
+                setDataDelete({ year, week });
+                setAlertConfirm(true);
+              }}
               bgColor={bgColor}
               permissions={permissions}
               doOpenModal={(type) => {
@@ -112,6 +135,15 @@ function CalendarWeeklyPage({
         open={openModal}
         setOpen={setOpenModal}
         actionType={actionType}
+        afterYearAndWeekChange={(data) => {
+          setSelectedYearAndWeekAtModal(data);
+        }}
+      />
+      <AlertModal
+        open={alertConfirm}
+        setOpen={setAlertConfirm}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={() => handleDeleteAllSchedule(dataDelete.year, dataDelete.week)}
       />
     </>
   );

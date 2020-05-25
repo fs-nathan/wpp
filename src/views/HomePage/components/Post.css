@@ -23,6 +23,7 @@
   letter-spacing: 0.00938em;
   display: inline;
   color: #fd7e14;
+  cursor: pointer;
 }
 .comp_Post .comp_TasksCard__HeaderTitle {
 }
@@ -80,6 +81,7 @@
 }
 .comp_Timeline__header .comp_TasksCard__HeaderTitle {
   font-weight: 700;
+  text-transform: uppercase;
 }
 .comp_Post__statWrap__comment,
 .comp_Post__viewAll {

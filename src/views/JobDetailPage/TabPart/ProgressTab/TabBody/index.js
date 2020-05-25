@@ -196,6 +196,8 @@ function TabBody() {
         createdAt={track.time_create}
         avatarUrl={track.user_create_avatar}
         userName={track.user_create_name}
+        isNewEnd={track.new_end !== track.old_end}
+        isNewStart={track.new_start !== track.old_start}
       ></EditProgressItem>))}
     </Scrollbars >
   )

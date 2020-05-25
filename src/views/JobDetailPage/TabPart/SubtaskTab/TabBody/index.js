@@ -1,4 +1,3 @@
-import { useTranslation } from 'react-i18next';
 import { InputBase } from '@material-ui/core';
 import { mdiSend } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -8,6 +7,7 @@ import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
@@ -28,7 +28,7 @@ const NewWork = styled.div`
   border-top: 1px solid rgba(0, 0, 0, .1);
   align-item: center;
   margin-bottom: 12px;
-
+  padding: 10px 0px;
 `
 const InputText = styled(InputBase)`
   padding-left: 16px;

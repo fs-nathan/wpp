@@ -1,7 +1,5 @@
-import { Button } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
-import CustomModal from 'components/CustomModal';
+import CustomModal, { Title } from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import UploadButton from 'components/UploadButton';
 import { CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener, DETAIL_PROJECT_GROUP, EDIT_PROJECT_GROUP, LIST_PROJECT_GROUP } from 'constants/events.js';
@@ -16,15 +14,6 @@ const LogoBox = ({ className = '', ...props }) =>
     className={`view_ProjectGroup_Create_ProjectGroup___logo-box ${className}`}
     {...props}
   />;
-
-const MyButton = ({ className = '', ...props }) =>
-  <Button
-    className={`view_ProjectGroup_Create_ProjectGroup___button ${className}`}
-    disableRipple
-    disableFocusRipple
-    disableTouchRipple
-    {...props}
-  />
 
 function CreateProjectGroup({
   updatedProjectGroup,
@@ -143,7 +132,7 @@ function CreateProjectGroup({
       />
       <LogoBox>
         <div>
-          <ColorTypo>{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO")}</ColorTypo>
+          <Title>{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO")}</Title>
           <UploadButton
             label={t('DMH.VIEW.PGP.MODAL.CUPG.LOGO_SELECT')}
             onClick={() => handleOpenModal('LOGO', {

@@ -178,6 +178,14 @@ function AllTaskTable({
                   {get(row, 'status_name')}
                 </span>
               </div>
+              {(get(row, 'status_code') === 1 || get(row, 'status_code') === 3) && (
+                <small>
+                  {get(row, 'status_code') === 3
+                    ? get(row, 'day_expired', '') ? `${get(row, 'day_expired', 0)} ngày` : null
+                    : get(row, 'day_implement', '') ? `${get(row, 'day_implement', 0)} ngày` : null
+                  }
+                </small>
+              )}
             </StateBox>,
             align: 'left',
             width: '10%',

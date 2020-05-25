@@ -23,8 +23,8 @@ async function doDeleteProjectSchedule({ schedule_group_id }) {
 
 function* deleteProjectGroupSchedule(action) {
   try {
-    const { state: state } = yield call(doDeleteProjectSchedule, action.options);
-    yield put(deleteProjectScheduleSuccess({ state }, action.options));
+    const { schedule_id: schedule_id } = yield call(doDeleteProjectSchedule, action.options);
+    yield put(deleteProjectScheduleSuccess({ schedule_id }, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(DELETE_PROJECT_GROUP_SCHEDULE);
   } catch (error) {
@@ -34,3 +34,4 @@ function* deleteProjectGroupSchedule(action) {
 }
 
 export { deleteProjectGroupSchedule };
+

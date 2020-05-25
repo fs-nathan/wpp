@@ -1,9 +1,11 @@
 import { listRemindProject } from "actions/calendar/alarmCalendar/listRemindProject";
 import { listProjectBasicInfo } from "actions/project/listBasicInfo";
 import { useLocalStorage } from "hooks";
+import get from "lodash/get";
 import moment from "moment";
 import React from 'react';
 import { connect } from 'react-redux';
+import { LOCAL_PROJECT_REMINDS_STORAGE } from "views/CalendarPage/constants/attrs";
 import ViewDetailRemind from "views/CalendarPage/views/Modals/ViewDetailRemind";
 import { Context as CalendarAlarmContext } from '../../index';
 import { bgColorSelector, listProjectBasicInfoSelector, remindProjectSelector } from "../../selectors";
@@ -18,29 +20,31 @@ function CalendarProjectAlarm({
     expand, handleExpand
   } = React.useContext(CalendarAlarmContext);
 
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PERSONAL_REMINDS_OPTIONS', {
-    timeType: 3
+  const [localOptions, setLocalOptions] = useLocalStorage(LOCAL_PROJECT_REMINDS_STORAGE, {
+    timeType: 3,
+    timeRange: {
+      startDate: moment().startOf("isoWeeks"),
+      endDate: moment().endOf("isoWeeks")
+    }
   });
-  const [timeRange, setTimeRange] = React.useState({
-    start: moment().startOf("isoWeek"),
-    end: moment().endOf("isoWeek")
-  });
-
+  const [timeRange, setTimeRange] = React.useState(localOptions.timeRange);
   const [timeType, setTimeType] = React.useState(localOptions.timeType);
   const [filterOpen, setFilterOpen] = React.useState(false);
   const [selectedRemind, setSelectedRemind] = React.useState();
   const [openModalDetail, setOpenModalDetail] = React.useState(false);
+  const [groupRemind, setGroupRemind] = React.useState();
 
   React.useEffect(() => {
     setLocalOptions(pastOptions => ({
       ...pastOptions,
-      timeType
+      timeType,
+      timeRange
     }));
-  }, [timeType]);
+  }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(timeRange.startDate ?? moment().startOf('year')).format("YYYY-MM-DD");
-    let toTime = moment(timeRange.endDate ?? moment().endOf('year')).format("YYYY-MM-DD");
+    let fromTime = moment(get(timeRange, 'startDate') ?? moment().startOf('year')).format("YYYY-MM-DD");
+    let toTime = moment(get(timeRange, 'endDate') ?? moment().endOf('year')).format("YYYY-MM-DD");
     doListRemindProject({ fromTime, toTime }, false);
   }, [doListRemindProject, timeRange]);
 
@@ -48,9 +52,10 @@ function CalendarProjectAlarm({
     doListProjectBasicInfo(false);
   }, [doListProjectBasicInfo]);
 
-  function handleOpenDetail(remind) {
+  function handleOpenDetail(data) {
     setOpenModalDetail(true);
-    setSelectedRemind(remind);
+    setSelectedRemind(data.remind);
+    setGroupRemind(data.item);
   }
 
   return (
@@ -69,12 +74,13 @@ function CalendarProjectAlarm({
         setFilterOpen={setFilterOpen}
         projectReminds={projectReminds}
         projects={projects}
-        handleOpenDetail={(remind) => handleOpenDetail(remind)}
+        handleOpenDetail={(data) => handleOpenDetail(data)}
       />
       <ViewDetailRemind
         open={openModalDetail}
         setOpen={setOpenModalDetail}
         remind={selectedRemind}
+        groupRemind={groupRemind}
       />
     </>
   )

@@ -1,9 +1,9 @@
+import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
-import { uploadDocumentsUserSuccess, uploadDocumentsUserFail } from '../../actions/user/uploadDocumentsUser';
+import { uploadDocumentsUserFail, uploadDocumentsUserSuccess } from '../../actions/user/uploadDocumentsUser';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPLOAD_DOCUMENTS_USER } from '../../constants/events';
-import { SnackbarEmitter, SNACKBAR_VARIANT, DEFAULT_MESSAGE } from '../../constants/snackbarController';
-import { get } from 'lodash';
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doUploadDocumentsUser({ userId, file }) {
   try {
@@ -26,14 +26,14 @@ function* uploadDocumentsUser(action) {
   try {
     const { documents } = yield call(doUploadDocumentsUser, action.options);
     yield put(uploadDocumentsUserSuccess({ documents }, action.options));
-    CustomEventEmitter(UPLOAD_DOCUMENTS_USER);
+    CustomEventEmitter(UPLOAD_DOCUMENTS_USER.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(uploadDocumentsUserFail(error, action.options));
+    CustomEventEmitter(UPLOAD_DOCUMENTS_USER.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 
-export {
-  uploadDocumentsUser,
-}
+export { uploadDocumentsUser, };
+

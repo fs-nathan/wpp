@@ -42,6 +42,8 @@ function AlertModal({
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
+      disableBackdropClick={true}
+      disableEscapeKeyDown={true}
     >
       <DialogTitle className='comp_AlertModal___dialog-title' id="alert-dialog-slide-title">
         <ColorTypo uppercase>{t('DMH.COMP.ALERT_MODAL.TITLE')}</ColorTypo>
@@ -70,7 +72,7 @@ function AlertModal({
             className="margin-circular"
             color={bgColor.color}
             style={{
-              opacity: (actionLoading || activeLoading) ? 1 : 0
+              display: (actionLoading || activeLoading) ? 'initial' : 'none'
             }}
           />
           {t('DMH.COMP.ALERT_MODAL.ACCEPT_BTN')}

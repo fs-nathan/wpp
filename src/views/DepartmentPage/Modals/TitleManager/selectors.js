@@ -1,4 +1,3 @@
-import { concat } from 'lodash';
 import { createSelector } from 'reselect';
 
 const listPosition = state => state.position.listPosition;
@@ -17,7 +16,8 @@ export const positionsSelector = createSelector(
       positions,
       loading: (firstTime ? false : listLoading) || createLoading,
       error: listError || createError || updateError || deleteError,
-      pendings: concat(updatePendings, deletePendings),
+      updatePendings,
+      deletePendings,
       firstTime,
     }
   }

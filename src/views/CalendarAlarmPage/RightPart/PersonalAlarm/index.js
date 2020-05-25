@@ -5,13 +5,15 @@ import { deletePersonalRemind } from "actions/calendar/alarmCalendar/deletePerso
 import { listPersonalRemind } from "actions/calendar/alarmCalendar/listPersonalRemind";
 import { updatePersonalRemind } from "actions/calendar/alarmCalendar/updatePersonalRemind";
 import AlertModal from "components/AlertModal";
-import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND } from "constants/events";
+import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
 import { useLocalStorage } from "hooks";
+import get from "lodash/get";
 import moment from "moment";
 import React from 'react';
 import { useTranslation } from "react-i18next";
 import { connect } from 'react-redux';
 import { useLocation } from "react-router-dom";
+import { LOCAL_PERSONAL_REMINDS_STORAGE } from "views/CalendarPage/constants/attrs";
 import CreateGroupPersonalRemind from 'views/CalendarPage/views/Modals/CreateGroupPersonalRemind';
 import CreatePersonalRemind from "views/CalendarPage/views/Modals/CreatePersonalRemind";
 import UpdatePersonalRemind from "views/CalendarPage/views/Modals/UpdatePersonalRemind";
@@ -34,13 +36,14 @@ function CalendarPersonalAlarm({
   } = React.useContext(CalendarAlarmContext);
 
   const search = useLocation().search;
-  const [localOptions, setLocalOptions] = useLocalStorage('LOCAL_PERSONAL_REMIND_OPTIONS', {
-    timeType: 3
+  const [localOptions, setLocalOptions] = useLocalStorage(LOCAL_PERSONAL_REMINDS_STORAGE, {
+    timeType: 3,
+    timeRange: {
+      startDate: moment().startOf("isoWeeks"),
+      endDate: moment().endOf("isoWeeks")
+    }
   });
-  const [timeRange, setTimeRange] = React.useState({
-    start: moment().startOf("isoWeek"),
-    end: moment().endOf("isoWeek")
-  });
+  const [timeRange, setTimeRange] = React.useState(localOptions.timeRange);
   const [timeType, setTimeType] = React.useState(localOptions.timeType);
   const [openModal, setOpenModal] = React.useState(false);
   const [openModalEdit, setOpenModalEdit] = React.useState(false);
@@ -50,6 +53,7 @@ function CalendarPersonalAlarm({
   const [filteredReminds, setFilteredReminds] = React.useState(personalReminds);
   const [categoryID, setCategoryID] = React.useState(null);
   const [selectedRemind, setSelectedRemind] = React.useState();
+  const [groupRemind, setGroupRemind] = React.useState();
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
@@ -61,13 +65,14 @@ function CalendarPersonalAlarm({
   React.useEffect(() => {
     setLocalOptions(pastOptions => ({
       ...pastOptions,
-      timeType
+      timeType,
+      timeRange
     }));
-  }, [timeType]);
+  }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(timeRange.start).format("YYYY-MM-DD");
-    let toTime = moment(timeRange.end).format("YYYY-MM-DD");
+    let fromTime = moment(get(timeRange, 'startDate') ?? moment().startOf('year')).format("YYYY-MM-DD");
+    let toTime = moment(get(timeRange, 'endDate') ?? moment().endOf('year')).format("YYYY-MM-DD");
     doListPersonalRemind({ fromTime, toTime }, false);
 
     const refreshListPersonalRemind = () => {
@@ -78,11 +83,13 @@ function CalendarPersonalAlarm({
     CustomEventListener(UPDATE_PERSONAL_REMIND, refreshListPersonalRemind);
     CustomEventListener(DELETE_PERSONAL_REMIND, refreshListPersonalRemind);
     CustomEventListener(DELETE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
+    CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
     return () => {
       CustomEventDispose(CREATE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(UPDATE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(DELETE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(DELETE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
+      CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
     }
   }, [doListPersonalRemind, timeType, timeRange]);
 
@@ -112,7 +119,8 @@ function CalendarPersonalAlarm({
         return;
       case "VIEW":
         setOpenModalDetail(true);
-        setSelectedRemind(data);
+        setSelectedRemind(data.remind);
+        setGroupRemind(data.item);
         return;
       default:
         return;
@@ -144,8 +152,8 @@ function CalendarPersonalAlarm({
         handleExpand={handleExpand}
         handleTimeType={type => setTimeType(type)}
         handleTimeRange={(start, end) => setTimeRange({
-          start: start ?? moment().startOf('year'),
-          end: end ?? moment().endOf('year')
+          startDate: start,
+          endDate: end,
         })}
         personalReminds={filteredReminds}
         handleOpenModal={(type, props) => handleOpenModal(type, props)}
@@ -183,6 +191,7 @@ function CalendarPersonalAlarm({
         setOpen={setOpenModalDetail}
         remind={selectedRemind}
         remindType={"PERSONAL"}
+        groupRemind={groupRemind}
       />
       <AlertModal
         open={openAlert}
@@ -218,7 +227,11 @@ function CalendarPersonalAlarm({
         open={alertConfirm}
         setOpen={setAlertConfirm}
         content={t('IDS_WP_ALERT_CONTENT')}
-        onConfirm={() => handleDeleteRemind(selectedRemind)}
+        onConfirm={() => {
+          setIsLoading(true);
+          handleDeleteRemind(selectedRemind);
+        }}
+        actionLoading={isLoading}
       />
     </>
   )
