@@ -13,8 +13,8 @@
   /* font-size: 14px; */
 }
 .views_HomePage___container {
-  max-width: 1224px;
-  margin: auto;
+  /* max-width: 1224px; */
+  margin: 0;
   height: 100%;
   display: grid;
   grid-template-rows: 300px auto;
@@ -36,7 +36,7 @@
 }
 .views_HomePage___middle {
   grid-area: middle;
-  max-width: 600px;
+  /* max-width: 600px; */
 }
 .views_HomePage___right {
   grid-area: right;

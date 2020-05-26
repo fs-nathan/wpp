@@ -169,11 +169,7 @@ const ColumnRight = () => {
     module: groupModule,
   } = useContext(GroupPermissionSettingsCotnext);
   return (
-    <ColumnLayout
-      className="comp_rightColumn"
-      title={t("Sử dụng nhóm quyền")}
-      subTitle={t("Nhóm quyền được phân phối")}
-    >
+    <div className="comp_rightColumn">
       <div className="comp_rightColumn_content">
         <Stack>
           <b className="comp_QuickViewFilter__title">
@@ -215,7 +211,7 @@ const ColumnRight = () => {
           </Stack>
         </Stack>
       </div>
-    </ColumnLayout>
+    </div>
   );
 };
 const Right = () => {

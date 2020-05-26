@@ -375,7 +375,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
         <div className={classes.footer}>
           <IconButton onClick={() => setOpen(true)}>
             <label>
-              <AttachFile />
+              <AttachFile className="comp_PostCreatorPopupInner__fileIcon" />
             </label>
           </IconButton>
           <ImageField name="file">

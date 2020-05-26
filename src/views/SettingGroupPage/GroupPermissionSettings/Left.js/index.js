@@ -66,6 +66,7 @@ const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
 function Left({
   groupPermissionList,
   setSelect,
+  select,
   groupPermissionDefaultList,
   setModal,
 }) {
@@ -139,6 +140,9 @@ function Left({
                   ])(item);
                   return (
                     <StyledListItem
+                      className={
+                        select && item && select.id === item.id ? "active" : ""
+                      }
                       key={id}
                       onClick={() => {
                         setSelect(item, true);
@@ -217,6 +221,11 @@ function Left({
                   return bindDraggable(
                     <div>
                       <StyledListItem
+                        className={
+                          select && item && select.id === item.id
+                            ? "active"
+                            : ""
+                        }
                         onClick={() => {
                           setSelect(item);
                         }}
@@ -282,6 +291,7 @@ function Left({
 }
 export default () => {
   const {
+    select,
     setSelect,
     setModal,
     groupPermissionList,
@@ -291,7 +301,7 @@ export default () => {
     <Left
       groupPermissionList={groupPermissionList}
       groupPermissionDefaultList={groupPermissionDefaultList}
-      {...{ setSelect, setModal }}
+      {...{ setSelect, setModal, select }}
     />
   );
 };

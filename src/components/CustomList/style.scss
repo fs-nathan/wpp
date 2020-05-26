@@ -10,12 +10,17 @@
   & > *:not(:first-child) {
     margin-left: 5px;
   }
+
   &:hover {
     cursor: pointer;
     background-color: #f2f5fa;
   }
   &:focus {
     background-color: #e6f0ff;
+  }
+  &.active {
+    cursor: pointer;
+    background-color: #f2f5fa;
   }
 }
 

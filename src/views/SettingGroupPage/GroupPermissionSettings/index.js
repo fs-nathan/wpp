@@ -113,6 +113,7 @@ const GroupPermissionSettings = () => {
   return (
     <GroupPermissionSettingsCotnext.Provider
       value={{
+        select,
         setSelect: handleSelect,
         modal,
         setModal,
