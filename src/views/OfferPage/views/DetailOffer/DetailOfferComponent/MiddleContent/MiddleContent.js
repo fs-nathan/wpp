@@ -12,7 +12,7 @@ import { getPriorityEditingTitle } from '../LeftContent/i18nSelectors';
 import './styles.scss';
 import { getApprovalConditionEditingTitle } from './i18nSelectors';
 
-const RightContent = ({ can_modify, status_code, rate_accepted, members_approved, number_member_rejected, number_member_accepted, date_label, hour_label, content, title, id, priority_code, user_create_name, condition_accept, user_create_avatar }) => {
+const MiddleContent = ({ can_modify, status_code, rate_accepted, members_approved, number_member_rejected, number_member_accepted, date_label, hour_label, content, title, id, priority_code, user_create_name, condition_accept, user_create_avatar }) => {
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
@@ -38,7 +38,7 @@ const RightContent = ({ can_modify, status_code, rate_accepted, members_approved
   }
 
   return (
-    <Grid item xs={6} className="offerDetail-rightContent-container">
+    <Grid item xs={6} className="offerDetail-middleContent-container">
       <Grid container>
         <Grid item xs={12}>
           <ApproveOfferDialog onConfirm={onConfirm} handleClickClose={onConfirm} isOpen={openModal} item={{
@@ -156,4 +156,4 @@ const RightContent = ({ can_modify, status_code, rate_accepted, members_approved
     </Grid >
   )
 }
-export default RightContent;
+export default MiddleContent;

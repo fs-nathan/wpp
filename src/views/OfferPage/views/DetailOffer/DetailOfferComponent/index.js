@@ -2,7 +2,7 @@ import { Grid } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
 import LeftContent from "./LeftContent/LeftContent";
-import RightContent from "./RightContent/RightContent";
+import MiddleContent from "./MiddleContent/MiddleContent";
 import "./style.scss";
 
 const DetailOffer = ({
@@ -57,7 +57,7 @@ const DetailOffer = ({
         offer_group_id={offer_group_id}
       />
       <div className="offerDetail-verticalLine" />
-      <RightContent
+      <MiddleContent
         can_modify={can_modify}
         status_code={status_code}
         rate_accepted={rate_accepted}
