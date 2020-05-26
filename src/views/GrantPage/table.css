@@ -231,7 +231,7 @@ span.ant-checkbox ~ span {
 }
 .resize-width {
   width: 20px;
-  right: -14px !important;
+  right: -18px !important;
   bottom: 0;
   cursor: ew-resize;
 }
@@ -251,7 +251,7 @@ span.ant-checkbox ~ span {
 .resize-duration {
   width: 10px;
   right: -5px !important;
-  bottom: -6.67px;
+  bottom: -7.67px;
   padding: 0 !important;
 }
 .container-icon-drag-duration {

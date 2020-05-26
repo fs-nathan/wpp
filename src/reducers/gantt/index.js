@@ -137,6 +137,7 @@ export const initialState = {
   },
 };
 
+initialState.girdInstance = initialState.girdAttribute[localStorage.getItem("timeUnitGantt") || 'DAY']
 const gantt = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GANTT_SHOW_FULL_CHART:

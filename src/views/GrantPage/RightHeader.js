@@ -308,13 +308,15 @@ const RightHeader = ({
   scrollGantt,
   changeVisibleExportPdfDrawer,
   visibleGantt,
+  girdInstance
+
 }) => {
   return (
     <Row justify="end">
       <IconComponent title={"TÌM KIẾM"} path={mdiMagnify} />
       <IconComponent
         onClick={() => changeVisibleConfigGantt(true, "TIME")}
-        title={"TIẾN ĐỘ: NGÀY"}
+        title={`TIẾN ĐỘ: ${girdInstance.unitText.toUpperCase()}`}
         path={mdiCalendar}
       />
       <IconComponent
@@ -382,6 +384,7 @@ const mapDispatchToProps = {
 const mapStateToProps = (state) => ({
   showFullChart: state.gantt.showFullChart,
   showHeader: state.gantt.showHeader,
+  girdInstance: state.gantt.girdInstance,
   visibleGantt: state.gantt.visible.gantt,
 });
 export default connect(mapStateToProps, mapDispatchToProps)(RightHeader);

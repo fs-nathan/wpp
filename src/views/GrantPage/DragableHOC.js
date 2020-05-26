@@ -288,7 +288,7 @@ function GanttChart({
             {renderMonthHeader}
             <div
               style={{
-                height: heightTable - 69,
+                height: !showHeader ? heightTable :heightTable - 69,
               }}
               onScroll={(e) => {
                 if (!window.scrollTable) {
@@ -311,8 +311,9 @@ function GanttChart({
                 className="gantt--timeline--container__relative"
                 style={{
                   position: "relative",
-                  height: heightTable - 69,
+                  height: !showHeader ? heightTable :heightTable - 69,
                   overflowY: "scroll",
+                  overflowX: "hidden"
                 }}
               >
                 {timeline}

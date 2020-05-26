@@ -443,6 +443,18 @@ class DragSortingTable extends React.Component {
                         {record.status_name}
                       </CustomBadge>
                     )}
+                    
+                    {!isHover && this.props.visibleLabel.prior && (
+                      <CustomBadge
+                        style={{
+                          margin: "0px 4px",
+                          ...decodePriorityCode(record.priority_code),
+                        }}
+                        {...decodePriorityCode(record.priority_code)}
+                      >
+                        {decodePriorityCode(record.priority_code).name}
+                      </CustomBadge>
+                    )}
                     {!isHover && this.props.visibleLabel.member && (
                       <CustomBadge
                         style={{
@@ -462,17 +474,6 @@ class DragSortingTable extends React.Component {
                           path={mdiAccount}
                         />
                         {record.number_member}
-                      </CustomBadge>
-                    )}
-                    {!isHover && this.props.visibleLabel.prior && (
-                      <CustomBadge
-                        style={{
-                          margin: "0px 4px",
-                          ...decodePriorityCode(record.priority_code),
-                        }}
-                        {...decodePriorityCode(record.priority_code)}
-                      >
-                        {decodePriorityCode(record.priority_code).name}
                       </CustomBadge>
                     )}
                   </div>
@@ -878,6 +879,11 @@ class DragSortingTable extends React.Component {
     },
   };
   componentDidUpdate = async (prevProps) => {
+    if(this.props.showHeader !== prevProps.showHeader){
+      this.setState({
+        height: this.tableRef.current.clientHeight
+      })
+    }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
       const { startTimeProject, endTimeProject } = this.state;
       const { start, end } = this.props.filterExportPdf;
@@ -1222,7 +1228,7 @@ class DragSortingTable extends React.Component {
                   size="small"
                   className="table-gantt-header"
                   bordered
-                  scroll={{ y: this.state.height - 69, x: "unset" }}
+                  scroll={{ y: !this.props.showHeader ? this.state.height   :this.state.height  - 69, x: "unset" }}
                   rowClassName={(record, index) => {
                     if (
                       this.state.data[index] &&
