@@ -11,7 +11,6 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table, Tooltip } from "antd";
-import "antd/dist/antd.css";
 import LoadingBox from "components/LoadingBox";
 import update from "immutability-helper";
 import moment from "moment";
@@ -50,6 +49,7 @@ import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/Create
 import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
 import QuickViewTaskDetailDrawer from "../../views/JobPage/components/QuickViewTaskDetailDrawer";
 import CreateProject from "../../views/ProjectGroupPage/Modals/CreateProject";
+import "./abc.scss";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import Header from "./Header";
@@ -945,6 +945,9 @@ class DragSortingTable extends React.Component {
       this.fetchListTask(projectId, true, this.props.girdType);
     }
   };
+  componentWillUnmount() {
+    return null;
+  }
   handleResize = (index) => (e, { size }) => {
     this.setState({
       widthTable:

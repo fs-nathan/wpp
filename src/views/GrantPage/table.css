@@ -869,3 +869,7 @@ div.checkbox-colortag--drawer {
 .ant-table-body {
   -ms-overflow-style: none;
 }
+
+.ant-row-end {
+  line-height: inherit;
+}
