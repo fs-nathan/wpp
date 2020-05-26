@@ -147,9 +147,11 @@ function ListBodyItem(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
+  const isLoading = useSelector(state => state.chat.isLoading)
   // console.log({ props })
 
   function onClickItem() {
+    if (isLoading) return;
     // dispatch(chooseTask(props.id));
     // dispatch(getTaskDetailTabPart({ taskId: props.id }));
     dispatch(showTab(0))

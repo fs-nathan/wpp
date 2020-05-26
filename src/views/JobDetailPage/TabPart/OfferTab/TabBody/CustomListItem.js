@@ -16,6 +16,7 @@ const CustomListItem = (props) => {
     total_approved,
     total_accepted,
     total_rejected,
+    can_modify,
   } = props.offer || {}
 
   const priority = priorityList[priority_code].value;
@@ -58,9 +59,11 @@ const CustomListItem = (props) => {
               reject: `${total_rejected}/${total_approved}`
             })}</div>
         </div>
-        <IconButton className="offerTabItem--button" size='small' onClick={handleClick} >
-          <Icon path={mdiDotsHorizontal} size={1} />
-        </IconButton>
+        {can_modify &&
+          <IconButton className="offerTabItem--button" size='small' onClick={handleClick} >
+            <Icon path={mdiDotsHorizontal} size={1} />
+          </IconButton>
+        }
       </li>
       <Menu
         anchorEl={anchorEl}

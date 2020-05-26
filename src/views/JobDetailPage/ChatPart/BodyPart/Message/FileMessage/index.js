@@ -58,6 +58,7 @@ const FileMessage = ({
   isReply,
   isUploading,
   is_me,
+  can_delete,
   chatPosition = "top",
 }) => {
   const { t } = useTranslation();
@@ -103,7 +104,7 @@ const FileMessage = ({
           </abbr>
         }
         {!isReply && is_me &&
-          <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+          <CommonMessageAction can_delete={can_delete} isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
         <div className={clsx("TextMessage--rightContentWrap",
           is_me ? `TextMessage--rightContentWrap__self-${chatFilePosition}`
             : `TextMessage--rightContentWrap__${chatFilePosition}`,
@@ -175,7 +176,7 @@ const FileMessage = ({
           </abbr>
         </div>
         {!isReply && !is_me &&
-          <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+          <CommonMessageAction can_delete={can_delete} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
         }
       </div >
     )

@@ -5,13 +5,14 @@ import { chatEmotion, deleteChat } from 'actions/chat/chat';
 import { createCommand, postSubTask } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import ReactEmotionPopup from '../ReactEmotionPopup';
 import './styles.scss';
+import AlertModal from 'components/AlertModal';
 
 const StyledButton = styled.button`
   &:hover svg {
@@ -23,6 +24,7 @@ const CommonMessageAction = ({
   chatId, handleReplyChat,
   handleForwardChat,
   content,
+  can_delete,
   isSelf, isShortMessage }) => {
   const { t } = useTranslation();
   const { enqueueSnackbar } = useSnackbar()
@@ -31,6 +33,7 @@ const CommonMessageAction = ({
   const emotionsList = useSelector(state => state.chat.emotionsList);
   const groupActiveColor = useSelector(currentColorSelector)
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [alert, setAlert] = useState(false);
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -65,6 +68,11 @@ const CommonMessageAction = ({
   }
 
   function handleDeleteChat() {
+    if (!can_delete) return;
+    setAlert(true)
+  }
+
+  function confirmDeleteChat() {
     dispatch(deleteChat(taskId, chatId))
     setAnchorEl(null);
   }
@@ -112,13 +120,27 @@ const CommonMessageAction = ({
           horizontal: 'right',
         }}
       >
-        <MenuItem className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })} onClick={handleClickCopy}>{t('LABEL_CHAT_TASK_COPY')}</MenuItem>
+        <MenuItem
+          className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })}
+          onClick={handleClickCopy}>{t('LABEL_CHAT_TASK_COPY')}</MenuItem>
         <MenuItem divider></MenuItem>
-        <MenuItem className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })} onClick={onClickMarkSubTask}>{t('LABEL_CHAT_TASK_DANH_DAU_CONG_VIEC_CON')}</MenuItem>
-        <MenuItem className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })} onClick={onClickMarkDemand}>{t('LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO')}</MenuItem>
+        <MenuItem
+          className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })}
+          onClick={onClickMarkSubTask}>{t('LABEL_CHAT_TASK_DANH_DAU_CONG_VIEC_CON')}</MenuItem>
+        <MenuItem
+          className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !content })}
+          onClick={onClickMarkDemand}>{t('LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO')}</MenuItem>
         <MenuItem divider></MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={handleDeleteChat}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
+        <MenuItem
+          className={clsx("memberItem--menuItem", { 'memberItem--menuItem__disabled': !can_delete })}
+          onClick={handleDeleteChat}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
       </Menu>
+      <AlertModal
+        open={alert}
+        setOpen={setAlert}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDeleteChat}
+      />
     </div>
   );
 }

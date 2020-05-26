@@ -38,6 +38,7 @@ const TextMessage = ({
   chat_parent,
   isReply,
   is_me,
+  can_delete,
   is_deleted,
   chatPosition = "top",
   tags = [],
@@ -82,7 +83,7 @@ const TextMessage = ({
           </abbr>
         }
         {!isReply && is_me && !is_deleted &&
-          <CommonMessageAction content={content} isSelf
+          <CommonMessageAction can_delete={can_delete} content={content} isSelf
             isShortMessage={content.length < 3}
             chatId={id}
             handleReplyChat={handleReplyChat}
@@ -156,7 +157,7 @@ const TextMessage = ({
           </abbr>
         </div>
         {!isReply && !is_me && !is_deleted &&
-          <CommonMessageAction content={content} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+          <CommonMessageAction can_delete={can_delete} content={content} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
         }
       </div >
       {

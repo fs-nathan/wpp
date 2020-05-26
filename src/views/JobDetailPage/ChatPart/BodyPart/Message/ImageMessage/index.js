@@ -27,6 +27,7 @@ const ImageMessage = ({
   isReply,
   isUploading,
   is_me,
+  can_delete,
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
@@ -62,7 +63,7 @@ const ImageMessage = ({
         </abbr>
       }
       {!isReply && is_me &&
-        <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+        <CommonMessageAction can_delete={can_delete} isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <div className={clsx("ImageMessage--rightContentWrap", {
         "TextMessage--reply": isReply,
         "ImageMessage--rightContentWrap__self": is_me
@@ -141,7 +142,7 @@ const ImageMessage = ({
       </div>
       {
         !isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+        <CommonMessageAction can_delete={can_delete} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
       }
     </div >
   );
