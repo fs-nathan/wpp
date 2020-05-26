@@ -578,7 +578,7 @@ async function doGetImage({ taskId, page }) {
 function* getImage(action) {
   try {
     const res = yield call(doGetImage, action.options);
-    yield put(actions.getImageSuccess(res));
+    yield put(actions.getImageSuccess(res, action.options.page));
     // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getImageFail(error));
@@ -604,7 +604,7 @@ async function doGetFile({ taskId, page }) {
 function* getFile(action) {
   try {
     const res = yield call(doGetFile, action.options);
-    yield put(actions.getFileTabPartSuccess(res));
+    yield put(actions.getFileTabPartSuccess(res, action.options.page));
     // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getFileTabPartFail(error));

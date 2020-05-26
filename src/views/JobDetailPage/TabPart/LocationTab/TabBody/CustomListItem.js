@@ -78,7 +78,7 @@ const CustomListItem = ({ isMe }) => {
   return (
     <ListItem>
       {Array.isArray(locationArr) && locationArr.map((location, idx) => {
-        return (
+        return (!isMe || location.locations.filter(({ is_me }) => is_me).length > 0) ? (
           <div className="styled-list-item-location" key={idx}>
             <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
             {location.locations.map((item, key) => {
@@ -127,7 +127,7 @@ const CustomListItem = ({ isMe }) => {
               )
             })}
           </div >
-        )
+        ) : null
       })}
     </ListItem >
   );
