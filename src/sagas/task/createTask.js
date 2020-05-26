@@ -1,9 +1,7 @@
-import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { createTaskFail, createTaskSuccess } from '../../actions/task/createTask';
 import { apiService } from '../../constants/axiosInstance';
 import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
-import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) {
   console.log('x');
@@ -39,10 +37,10 @@ function* createTask(action) {
     const { task } = yield call(doCreateTask, action.options);
     yield put(createTaskSuccess({ task }, action.options));
     CustomEventEmitter(CREATE_TASK);
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    //SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createTaskFail(error, action.options));
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+    //SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

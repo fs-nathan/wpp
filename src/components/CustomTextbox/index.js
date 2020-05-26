@@ -1,6 +1,5 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 const StyledTextField = ({ className = '', ...rest }) =>
@@ -19,24 +18,12 @@ function CustomTextbox({
   value,
   onChange,
   isReadOnly = false,
-  maxHeight = 100,
   className = '',
   label = undefined,
   placeholder = 'Nội dung...',
   multiline = false,
   required = false,
 }) {
-
-  const { t } = useTranslation();
-  const [innerHeight, setInnerHeight] = React.useState(0);
-  const [showMore, setShowMore] = React.useState(false);
-
-  const innerRef = React.useCallback(node => {
-    if (node !== null) {
-      setInnerHeight(node.getBoundingClientRect().height);
-    }
-    //eslint-disable-next-line
-  }, [value]);
 
   if (isReadOnly) {
     return (
@@ -50,7 +37,6 @@ function CustomTextbox({
           }}
         >
           <div
-            ref={innerRef}
             dangerouslySetInnerHTML={{
               __html: value.replace(
                 /(https?:\/\/[^\s]+)/g,
@@ -68,7 +54,7 @@ function CustomTextbox({
     )
   } else {
     return (
-      <StyledTextBox>
+      <StyledTextBox className={className}>
         <p>{label}{required ? <abbr title="Bắt buộc">*</abbr> : null}</p>
         <StyledTextField
           multiline={multiline}
