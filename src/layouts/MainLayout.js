@@ -349,6 +349,9 @@ function MainLayout({
       if (task) {
         getTaskDetailTabPartSuccess({ task });
       }
+      if (data.type === CHAT_TYPE.UPDATE_COMPLETE) {
+        updateProjectChat({ complete: data.complete, task_id: data.task_id });
+      }
     };
 
     function pinOnTaskChat(data) {

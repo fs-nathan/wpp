@@ -88,13 +88,16 @@ export default function reducer(state = initialState, action) {
             const { id, task_id, content, new_chat,
                 user_create_avatar, user_create_id,
                 updatedAt,
+                complete,
                 user_create_name } = payload;
+            const chat = content ? {
+                content, user_create_avatar, user_create_name
+            } : undefined;
             const update = {
                 new_chat,
                 updatedAt,
-                chat: {
-                    content, user_create_avatar, user_create_name
-                }
+                complete,
+                chat
             }
             return {
                 ...state,

@@ -150,10 +150,10 @@ function ListBodyItem(props) {
   // console.log({ props })
 
   function onClickItem() {
-    dispatch(chooseTask(props.id));
-    dispatch(getTaskDetailTabPart({ taskId: props.id }));
+    // dispatch(chooseTask(props.id));
+    // dispatch(getTaskDetailTabPart({ taskId: props.id }));
     dispatch(showTab(0))
-    dispatch(loadChat(props.id))
+    // dispatch(loadChat(props.id))
     // getMemberByTaskId(props.id)
     // getMemberNotAssignedByTaskId(props.id)
     // console.log('history', history.search)

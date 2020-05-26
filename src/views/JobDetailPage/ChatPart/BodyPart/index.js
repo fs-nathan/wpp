@@ -6,7 +6,6 @@ import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailAc
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { getChatDate } from 'helpers/jobDetail/stringHelper';
-import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
@@ -143,11 +142,6 @@ const BodyPart = props => {
   //   }
   // }, [isLoading])
 
-  useEffect(() => {
-    const task_id = queryString.parse(props.location.search).task_id
-    dispatch(loadChat(task_id));
-    // eslint-disable-next-line
-  }, []);
   // console.log('chats', chats);
   function onClickCreateMember() {
     setOpenAddModal(true)
@@ -213,6 +207,7 @@ const BodyPart = props => {
         onScrollFrame={handleScrollFrame}
         onScrollStart={handleScrollStart}
         onScrollStop={handleScrollStop}
+        renderView={props => <div {...props} className="bodyChat--scrollWrap" />}
       >
         <InfiniteScroll
           className="bodyChat--scroll"

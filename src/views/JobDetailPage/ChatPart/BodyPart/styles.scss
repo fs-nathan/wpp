@@ -8,6 +8,9 @@
   &::-webkit-scrollbar {
     display: none;
   }
+  &--scrollWrap {
+    margin-right: -10px !important;
+  }
   &--scroll {
     overflow-x: hidden;
     margin-right: 20px;
