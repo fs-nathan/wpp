@@ -3,10 +3,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
+import { showImagesList } from "actions/chat/chat";
 import classnames from "classnames";
 import React from "react";
-import { useToggle } from "react-use";
-import ModalImage from "views/JobDetailPage/ModalImage";
+import { useDispatch } from "react-redux";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { injectClassName } from "views/JobPage/utils";
 import "./TasksCard.css";
@@ -26,10 +26,10 @@ const Content = injectClassName("comp_TasksCard__Content")(CardContent);
 
 const Media = injectClassName("comp_TasksCard__Media")(
   ({ className, images = emptyArray, ...props }) => {
+    const dispatch = useDispatch();
     if (!images.length) return null;
     const [one, two, three, four] = images;
     const hadMore = images.length && images.length >= 5;
-    const [istoggle, toggle] = useToggle();
     return (
       <div
         className={classnames(
@@ -41,7 +41,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
         <div
           className="cursor-pointer"
           onClick={() => {
-            toggle();
+            dispatch(showImagesList(true, images));
           }}
         >
           {one && <img src={one.url_thumb} alt="" />}
@@ -72,15 +72,6 @@ const Media = injectClassName("comp_TasksCard__Media")(
             four && <img src={four.url_thumb} alt="" />
           )}
         </div>
-        {istoggle && (
-          <ModalImage
-            {...{
-              isOpen: true,
-              handleClose: toggle,
-              images: images,
-            }}
-          ></ModalImage>
-        )}
       </div>
     );
   }
