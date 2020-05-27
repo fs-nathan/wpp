@@ -1322,6 +1322,20 @@
       "OFFER_APPROVAL_CONDITION_EDITING": {
         "TITLE": "Chỉnh sửa"
       },
+      "DISCUSSION": {
+        "TITLE": "Thảo luận",
+        "TEXT_BOX": {
+          "PLACEHOLDER": "Nhập bình luận",
+          "BUTTON_TITLE": "Gửi"
+        },
+        "COMMENT": {
+          "DATE_TIME_POSTED": "Thêm lúc {{time}} ngày {{date}}",
+          "POPOVER": {
+            "UPDATE": "Cập nhật",
+            "REMOVE": "Xóa"
+          }
+        }
+      },
       "DELETE_OFFER": {
         "TITLE": "Xóa đề xuất",
         "CONFIRM_MODAL": {

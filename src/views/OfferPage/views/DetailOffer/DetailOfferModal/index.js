@@ -39,6 +39,7 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
       cancleRender={() => can_modify && getDetailOfferModalCancelBtnTitle(t)}
       onCancle={can_modify && onCloseModal}
       fullWidth
+      maxWidth='lg'
     >
       <DetailOffer {...rest} />
     </CustomModal>

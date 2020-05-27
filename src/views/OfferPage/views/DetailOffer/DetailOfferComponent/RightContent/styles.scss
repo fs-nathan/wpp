@@ -1,0 +1,96 @@
+@mixin flexRow {
+  display: flex;
+  flex-direction: row;
+}
+@mixin flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.offerDetail {
+  &-rightContent {
+    &-leftRightPadding {
+      padding: 0 2em;
+    }
+    &-container {
+      width: 35%;
+    }
+  }
+
+  &-discussion {
+    &-headerTitle {
+      font-size: 1.3rem;
+      @extend .offerDetail-rightContent-leftRightPadding;
+      padding-top: 1em;
+      padding-bottom: 1em;
+    }
+    &-textInputSection {
+      &-container {
+        @include flexRow;
+        justify-content: space-between;
+        align-items: flex-start;
+        @extend .offerDetail-rightContent-leftRightPadding;
+        padding-top: 0.5em;
+        padding-bottom: 0.5em;
+
+        [class*='MuiButton-root'] {
+          border-radius: 1.5em;
+        }
+      }
+      &-textBox {
+
+      }
+      &-sendBtn {
+        color: white;
+        &-disabled {
+          background-color: grey !important;
+        }
+      }
+    }
+  }
+
+  &-comment {
+    &-container {
+      @include flexRow;
+      @extend .offerDetail-rightContent-leftRightPadding;
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+    }
+    &-avatar {
+      width: 50%;
+      height: 50%;
+    }
+    &-detail {
+      &-container {
+        @include flexColumn;
+      }
+    }
+    &-title {
+      &-container {
+        @include flexRow;
+      }
+      &-username {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+      &-userPosition {
+        color: #fd7e14;
+      }
+    }
+    &-dateTimePosted {
+      font-size: 0.9rem;
+      color: grey;
+    }
+    &-content {
+      font-size: 0.8rem;
+    }
+    &-moreBtn {
+      margin-left: auto;
+    }
+  }
+
+  &-horizontalLine {
+    margin: 1em 0;
+    border-bottom: 1px solid #3333;
+  }
+}

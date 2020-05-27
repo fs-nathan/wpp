@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import LeftContent from "./LeftContent/LeftContent";
 import MiddleContent from "./MiddleContent/MiddleContent";
+import RightContent from './RightContent/RightContent';
 import "./style.scss";
 
 const DetailOffer = ({
@@ -74,6 +75,8 @@ const DetailOffer = ({
         user_create_avatar={user_create_avatar}
         condition_accept={condition_accept}
       />
+      <div className="offerDetail-verticalLine" />
+      <RightContent />
     </div>
   );
 };

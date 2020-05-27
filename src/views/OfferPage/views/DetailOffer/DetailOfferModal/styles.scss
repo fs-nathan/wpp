@@ -3,6 +3,9 @@
     [class*='MuiDialogContent-root'] {
       padding: 0;
     }
+    & > div:nth-child(3) > div {
+      max-width: 85vw !important;
+    }
   }
   &-confirmBtn--red {
     [class*='comp_CustomModal___accept-button'] {

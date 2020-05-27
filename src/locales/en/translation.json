@@ -1014,6 +1014,20 @@
       "OFFER_APPROVAL_CONDITION_EDITING": {
         "TITLE": "Edit"
       },
+      "DISCUSSION": {
+        "TITLE": "Discuss",
+        "TEXT_BOX": {
+          "PLACEHOLDER": "Enter discussion",
+          "BUTTON_TITLE": "Send"
+        },
+        "COMMENT": {
+          "DATE_TIME_POSTED": "Posted at {{time}} on {{date}}",
+          "POPOVER": {
+            "UPDATE": "Update",
+            "REMOVE": "Remove"
+          }
+        }
+      },
       "DELETE_OFFER": {
         "TITLE": "Delete offer",
         "CONFIRM_MODAL": {
