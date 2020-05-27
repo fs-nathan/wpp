@@ -181,6 +181,7 @@ function taskReducer(state = initialState, action) {
       return {
         ...state,
         [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
           loading: true,
         },
       }
@@ -188,7 +189,10 @@ function taskReducer(state = initialState, action) {
       return {
         ...state,
         [DETAIL_OFFER]: {
-          ...action.payload,
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...action.payload.offer,
+          },
           loading: false,
         },
       }
