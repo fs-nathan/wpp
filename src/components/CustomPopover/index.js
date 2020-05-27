@@ -179,11 +179,11 @@ export const useFilters = () => {
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.CREATED'),
       field: 'created',
-      option: {},
+      option: { me_created: true },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ASSIGNED'),
       field: 'assigned',
-      option: {},
+      option: { me_created: false },
     }], [t]);
   return filters;
 };

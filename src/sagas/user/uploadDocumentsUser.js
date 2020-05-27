@@ -5,15 +5,33 @@ import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, UPLOAD_DOCUMENTS_USER } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
-async function doUploadDocumentsUser({ userId, file }) {
+async function doUploadDocumentsUser({ userId, files, fileIds, googleData }) {
   try {
-    const formData = new FormData();
-    formData.append('user_id', userId);
-    formData.append('file', file);
+    let data;
+    if (files) {
+      const formData = new FormData();
+      formData.append('user_id', userId);
+      for (let i = 0; i < files.length; i++) {
+        formData.append("file", files[i])
+      }
+      data = formData;
+    }
+    if (fileIds) {
+      data = {
+        user_id: userId,
+        file_ids: fileIds,
+      }
+    }
+    if (googleData) {
+      data = {
+        user_id: userId,
+        google_data: googleData,
+      }
+    }
     const config = {
       url: '/upload-documents-user',
       method: 'put',
-      data: formData,
+      data,
     }
     const result = await apiService(config);
     return result.data;

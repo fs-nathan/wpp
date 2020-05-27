@@ -15,7 +15,7 @@ const Container = ({ className = '', ...props }) =>
 
 const ButtonCase = ({ className = '', ...props }) =>
   <div
-    className={`view_ProjectGroup_Create_Project_Modal___button-case ${className}`}
+    className={`${className}`}
     {...props}
   />;
 
@@ -33,13 +33,16 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
         setOpen={setOpen}
         confirmRender={null}
         height='short'
+        className='view_ProjectGroup_Create_Project_Modal___modal'
       >
         <Container>
-          <ButtonCase onClick={evt => {
-            setCreateNew(true);
-            setCopy(false);
-            setOpen(false);
-          }}>
+          <ButtonCase
+            className={'view_ProjectGroup_Create_Project_Modal___button-new'}
+            onClick={evt => {
+              setCreateNew(true);
+              setCopy(false);
+              setOpen(false);
+            }}>
             <div>
               <Icon path={mdiNotePlusOutline} size={2} />
             </div>
@@ -48,11 +51,13 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
               <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.DESC")}</span>
             </div>
           </ButtonCase>
-          <ButtonCase onClick={evt => {
-            setCreateNew(false);
-            setCopy(true);
-            setOpen(false);
-          }}>
+          <ButtonCase
+            className={'view_ProjectGroup_Create_Project_Modal___button-copy'}
+            onClick={evt => {
+              setCreateNew(false);
+              setCopy(true);
+              setOpen(false);
+            }}>
             <div>
               <Icon path={mdiContentCopy} size={2} />
             </div>

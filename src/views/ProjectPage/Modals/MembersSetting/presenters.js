@@ -369,59 +369,59 @@ function MemberSetting({
                       <small>{get(member, 'email', '')}</small>
                     </UserTableCell>
                     <TableCell width='15%'>
-                      <PermissionBox
-                        onClick={evt => handleOpenModal('PERMISSION', {
-                          curMemberId: get(member, 'id'),
-                        })}
-                        isAdmin={get(member, 'is_admin', false)}
-                        isNotEmpty={(get(member, 'is_admin', false) || get(member, 'group_permission_name'))}
-                      >
-                        {
-                          (get(member, 'is_admin', false) || get(member, 'group_permission_name'))
-                            ? <span>{get(member, 'group_permission_name')}</span>
-                            : <>
-                              <span
-                                style={{
-                                  backgroundColor: bgColor.color,
-                                }}>+</span>
-                              <span>Gán quyền</span>
-                            </>
-                        }
-                      </PermissionBox>
-                    </TableCell>
-                    <TableCell width='25%'>
-                      <RolesBox>
-                        {get(member, 'roles', []).map(role => (
-                          <p key={get(role, 'id')}>{get(role, 'name', '')}</p>
-                        ))}
-                        <RoleButton
-                          size='small'
-                          onClick={evt => handleOpenModal('ROLE', {
+                      {get(member, 'is_in_group', false) &&
+                        (<PermissionBox
+                          onClick={evt => handleOpenModal('PERMISSION', {
                             curMemberId: get(member, 'id'),
                           })}
+                          isAdmin={get(member, 'is_admin', false)}
+                          isNotEmpty={(get(member, 'is_admin', false) || get(member, 'group_permission_name'))}
                         >
-                          <span
-                            style={{
-                              backgroundColor: bgColor.color,
-                            }}>+</span>
-                          {get(member, 'roles', []).length === 0 && <span>Thêm</span>}
-                        </RoleButton>
-                      </RolesBox>
+                          {
+                            (get(member, 'is_admin', false) || get(member, 'group_permission_name'))
+                              ? <span>{get(member, 'group_permission_name')}</span>
+                              : <>
+                                <span
+                                  style={{
+                                    backgroundColor: bgColor.color,
+                                  }}>+</span>
+                                <span>Gán quyền</span>
+                              </>
+                          }
+                        </PermissionBox>)}
                     </TableCell>
                     <TableCell width='25%'>
-                      {getJoinStatusName(get(member, 'join_task_status_code', ''))}
+                      {get(member, 'is_in_group', false) &&
+                        (<RolesBox>
+                          {get(member, 'roles', []).map(role => (
+                            <p key={get(role, 'id')}>{get(role, 'name', '')}</p>
+                          ))}
+                          <RoleButton
+                            size='small'
+                            onClick={evt => handleOpenModal('ROLE', {
+                              curMemberId: get(member, 'id'),
+                            })}
+                          >
+                            <span
+                              style={{
+                                backgroundColor: bgColor.color,
+                              }}>+</span>
+                            {get(member, 'roles', []).length === 0 && <span>Thêm</span>}
+                          </RoleButton>
+                        </RolesBox>)}
+                    </TableCell>
+                    <TableCell width='25%'>
+                      {get(member, 'is_in_group', false)
+                        ? getJoinStatusName(get(member, 'join_task_status_code', ''))
+                        : <span style={{ color: 'red' }}>Đã rời nhóm</span>}
                     </TableCell>
                     <TableCell width='5%'>
-                      {get(member, 'is_in_group', false) ?
+                      {get(member, 'is_in_group', false) &&
                         (<SettingButton
                           member={member}
                           setAnchorEl={setAnchorEl}
                           setCurMemberSetting={setCurMemberSetting}
-                        />) : (
-                          <ColorTypo color='red'>
-                            Đã rời nhóm
-                          </ColorTypo>
-                        )}
+                        />)}
                     </TableCell>
                   </StyledRow>
                 ))}
