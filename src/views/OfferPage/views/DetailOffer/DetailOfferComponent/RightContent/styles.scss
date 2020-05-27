@@ -10,7 +10,7 @@
 .offerDetail {
   &-rightContent {
     &-leftRightPadding {
-      padding: 0 2em;
+      padding: 0 1em;
     }
     &-container {
       width: 35%;
@@ -57,12 +57,13 @@
       padding-bottom: 0.5em;
     }
     &-avatar {
-      width: 50%;
-      height: 50%;
+      width: 13%;
+      height: 13%;
     }
     &-detail {
       &-container {
         @include flexColumn;
+        padding-left: 0.5em;
       }
     }
     &-title {
@@ -72,20 +73,34 @@
       &-username {
         font-size: 1rem;
         font-weight: 500;
+        margin: 0;
+        padding: 0 0 0.2em;
       }
       &-userPosition {
+        font-size: 1rem;
         color: #fd7e14;
+        margin: 0;
+        padding: 0 0 0.2em;
       }
     }
     &-dateTimePosted {
-      font-size: 0.9rem;
+      font-size: 1rem;
+      margin: 0;
       color: grey;
     }
     &-content {
-      font-size: 0.8rem;
+      font-size: 1rem;
+      margin: 0.5em 0 0;
     }
     &-moreBtn {
       margin-left: auto;
+    }
+    &-popoverOption {
+      padding: 0.5em 1em;
+      &:hover {
+        cursor: pointer;
+        background-color: #f0f0f0;
+      }
     }
   }
 

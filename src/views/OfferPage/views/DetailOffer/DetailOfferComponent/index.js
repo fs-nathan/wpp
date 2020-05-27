@@ -76,7 +76,7 @@ const DetailOffer = ({
         condition_accept={condition_accept}
       />
       <div className="offerDetail-verticalLine" />
-      <RightContent />
+      <RightContent offerId={id} />
     </div>
   );
 };

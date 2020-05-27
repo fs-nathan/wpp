@@ -3,10 +3,16 @@ import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
+import {
+  getCommentListOfferDetail,
+  postCommentOfferDetail,
+  removeCommentOfferDetail,
+  updateCommentOfferDetail,
+} from '../../../../redux/actions';
 import { SEND_MODE } from './constants';
 import {
   getDiscussionDateTimePosted, getHeaderTitle, getPopoverRemoveOption,
@@ -15,13 +21,22 @@ import {
   getTextBoxPlaceholder,
 } from './i18nSelectors';
 import './styles.scss';
+import { selectCommentListOfferDetail } from './selectors';
 
 function RightContent(props) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const bgColor = useSelector(state => bgColorSelector(state));
+  const commentList = useSelector(state => selectCommentListOfferDetail(state));
+
+  const { offerId } = props;
+  useEffect(() => {
+    dispatch(getCommentListOfferDetail({ offerId }))
+  }, [offerId]);
+
   const [text, setText] = useState('');
   const [sendMode, setSendMode] = useState(SEND_MODE.CREATE);
-  const [anchorEl, setAnchorEl] = useState(false);
+  const [commentToUpdateId, setCommentToUpdateId] = useState('');
 
   function renderHeaderTitle(title) {
     return <p className="offerDetail-discussion-headerTitle">{title}</p>;
@@ -54,10 +69,14 @@ function RightContent(props) {
     const onClick = () => {
       switch (sendMode) {
         case SEND_MODE.CREATE:
+          dispatch(postCommentOfferDetail({ offerId, content: contentToSubmit }));
           break;
         case SEND_MODE.UPDATE:
+          dispatch(updateCommentOfferDetail({ commentId: commentToUpdateId, content: contentToSubmit }))
           break;
       }
+      // Clear text box after creating or updating comments
+      setText('');
     }
     return (
       <Button
@@ -75,7 +94,8 @@ function RightContent(props) {
     );
   }
 
-  function renderComment(username, avatarUrl, userPosition, time, date, content) {
+  function Comment({ id, username, avatarUrl, userPosition, time, date, content }) {
+    const [anchorEl, setAnchorEl] = useState(null);
     return (
       <div className="offerDetail-comment-container">
         <Avatar className="offerDetail-comment-avatar" src={avatarUrl} />
@@ -84,10 +104,15 @@ function RightContent(props) {
             <p className="offerDetail-comment-title-username">{username}</p>
             <p className="offerDetail-comment-title-userPosition">{userPosition}</p>
           </div>
-          <p className="offerDetail-comment-dateTimePosted">{getDiscussionDateTimePosted(t, time, date)}</p>
+          <p className="offerDetail-comment-dateTimePosted">
+            {getDiscussionDateTimePosted(t, time, date)}
+          </p>
           <p className="offerDetail-comment-content">{content}</p>
         </div>
-        <IconButton className="offerDetail-comment-moreBtn" onClick={(e) => setAnchorEl(e.currentTarget)}>
+        <IconButton
+          className="offerDetail-comment-moreBtn"
+          onClick={(e) => setAnchorEl(e.currentTarget)}
+        >
           <MoreVertIcon />
         </IconButton>
         <Popover
@@ -108,6 +133,8 @@ function RightContent(props) {
             setAnchorEl(null);
             // Switch send button to Update Mode
             setSendMode(SEND_MODE.UPDATE);
+            // Set comment id to update
+            setCommentToUpdateId(id);
             // Fill text on Text Field for updating
             setText(content);
           })}
@@ -115,17 +142,18 @@ function RightContent(props) {
             // Hide popup menu
             setAnchorEl(null);
             // Remove comment
+            dispatch(removeCommentOfferDetail({ commentId: id }));
           })}
         </Popover>
       </div>
     );
   }
 
-  function renderPopoverOption(title, onClickHandler) {
+  function renderPopoverOption(title, onClick) {
     return (
       <Typography
         className="offerDetail-comment-popoverOption"
-        onClick={onClickHandler}
+        onClick={onClick}
       >
         {title}
       </Typography>
@@ -141,6 +169,18 @@ function RightContent(props) {
         {renderSendButton(bgColor.color, text)}
       </div>
       <div className="offerDetail-horizontalLine" />
+      {commentList.map(cmt => (
+        <Comment
+          key={cmt.id}
+          id={cmt.id}
+          username={cmt.user_create.name}
+          avatarUrl={cmt.user_create.avatar}
+          userPosition={''}
+          time={cmt.time_create}
+          date={cmt.date_create}
+          content={cmt.content}
+        />
+      ))}
     </div>
   );
 }

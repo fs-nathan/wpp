@@ -1325,7 +1325,7 @@
       "DISCUSSION": {
         "TITLE": "Thảo luận",
         "TEXT_BOX": {
-          "PLACEHOLDER": "Nhập bình luận",
+          "PLACEHOLDER": "Nhập bình luận...",
           "BUTTON_TITLE": "Gửi"
         },
         "COMMENT": {

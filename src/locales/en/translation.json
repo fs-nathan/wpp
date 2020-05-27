@@ -1017,7 +1017,7 @@
       "DISCUSSION": {
         "TITLE": "Discuss",
         "TEXT_BOX": {
-          "PLACEHOLDER": "Enter discussion",
+          "PLACEHOLDER": "Enter discussion...",
           "BUTTON_TITLE": "Send"
         },
         "COMMENT": {
