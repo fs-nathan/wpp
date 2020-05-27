@@ -1,41 +1,22 @@
-import React, { useState, useEffect } from 'react';
-import { withRouter } from 'react-router-dom';
-import { Icon } from '@mdi/react';
-import { mdiAccountOutline, mdiLockOutline } from '@mdi/js';
+import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, InputAdornment, Link, OutlinedInput } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import {
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-  FormControlLabel,
-  Checkbox,
-  FormGroup,
-  Button,
-  Link
-} from '@material-ui/core';
-import { connect } from 'react-redux';
+import { mdiAccountOutline, mdiLockOutline } from '@mdi/js';
+import { Icon } from '@mdi/react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import {
-  actionlogin,
-  loginSuccess,
-  loginFail
-} from '../../actions/authentications';
-import { apiService } from '../../constants/axiosInstance';
-import { Routes } from '../../constants/routes';
-import MainAccount from '../../components/MainAccount/MainAccount';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+import { actionlogin, loginFail, loginSuccess } from '../../actions/authentications';
+import { reset } from '../../actions/localStorage';
+import { actionFetchGroupDetail, actionFetchListColor } from '../../actions/setting/setting';
+import { actionActiveGroup, getProfileService, openNoticeModal } from '../../actions/system/system';
 // import LoadingContent from '../../components/LoadingContent';
 import * as images from '../../assets';
+import MainAccount from '../../components/MainAccount/MainAccount';
+import { apiService } from '../../constants/axiosInstance';
+import { GROUP_ACTIVE, REFRESH_TOKEN, TOKEN } from '../../constants/constants';
+import { Routes } from '../../constants/routes';
 import './AccountPage.scss';
-import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from '../../constants/constants';
-import {
-  openNoticeModal,
-  getProfileService,
-  actionActiveGroup
-} from '../../actions/system/system';
-import {
-  actionFetchGroupDetail,
-  actionFetchListColor
-} from '../../actions/setting/setting';
 
 const LoginPage = props => {
   const [isLoginFail, setLoginFail] = useState(false);
@@ -46,7 +27,8 @@ const LoginPage = props => {
     localStorage.removeItem(TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
     localStorage.removeItem(GROUP_ACTIVE);
-  }, []);
+    props.reset();
+  }, [props]);
 
   const handleLogin = async e => {
     e.preventDefault();
@@ -190,5 +172,6 @@ export default connect(null, {
   openNoticeModal,
   actionFetchGroupDetail,
   actionFetchListColor,
-  actionActiveGroup
+  actionActiveGroup,
+  reset,
 })(withRouter(LoginPage));

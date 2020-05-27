@@ -1,10 +1,10 @@
 import { IconButton } from "@material-ui/core";
 import { mdiBorderNoneVariant } from "@mdi/js";
 import Icon from "@mdi/react";
+import Scrollbars from "components/Scrollbars";
 import { get } from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
-import { Scrollbars } from "react-custom-scrollbars";
 import CustomAvatar from "../CustomAvatar";
 import LoadingOverlay from "../LoadingOverlay";
 import "./style.scss";

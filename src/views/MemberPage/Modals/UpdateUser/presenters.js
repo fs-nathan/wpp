@@ -169,6 +169,7 @@ function UpdateUser({
         />
       </StyledFormControl>
       <CustomTextbox
+        className='view_Member_UpdateUser_Modal___text-box'
         value={description}
         label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
         onChange={newDescription => setDescription(newDescription)}

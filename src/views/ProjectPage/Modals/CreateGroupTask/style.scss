@@ -7,7 +7,7 @@
   align-items: center;
 };
 
-.view_Project_CreateGroup_Modal___button {
+@mixin view_Project_CreateGroup_Modal___button {
   &:first-child {
     margin-top: 12px; 
   }
@@ -52,6 +52,7 @@
   &:hover {
     cursor: pointer;
     border: 1px solid #05b50c;  
+    background-color: #f7fcf0;
     & > div:first-child > svg {
       fill: #05b50c;
     }
@@ -59,4 +60,31 @@
       color: #05b50c;
     }
   }
+}
+
+.view_Project_CreateGroup_Modal___button {
+  @include view_Project_CreateGroup_Modal___button;
 };
+
+.view_Project_CreateGroup_Modal___button-new {
+  @include view_Project_CreateGroup_Modal___button;
+  & path {
+    fill: rgb(255, 87, 34) !important;
+  }
+}
+
+.view_Project_CreateGroup_Modal___button-copy {
+  @include view_Project_CreateGroup_Modal___button;
+  & path {
+    fill: rgb(33, 150, 243) !important;
+  }
+}
+
+.view_Project_CreateGroup_Modal___modal {
+  & > div:nth-child(3) > div > div:nth-child(2) {
+    height: 45vh;
+    & > div {
+      height: 100%;
+    }
+  }
+}
