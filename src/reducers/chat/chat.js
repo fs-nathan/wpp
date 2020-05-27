@@ -320,5 +320,10 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.contentForward = content;
       break;
     }
+    case actionTypes.APPEND_VIEWED_CHAT: {
+      const { data } = action;
+      draft.viewedChatMembers.push(data);
+      break;
+    }
   }
 });

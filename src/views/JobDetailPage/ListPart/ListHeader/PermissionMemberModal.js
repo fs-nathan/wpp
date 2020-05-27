@@ -19,6 +19,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import styled from 'styled-components';
 import './styles.scss';
+import findIndex from "lodash/findIndex";
 
 const RowTable = styled(TableRow)`
 & > *:not(first-child) {
@@ -62,6 +63,7 @@ function CustomArrow({ path, className, isDisabled, onClick }) {
 
 function PermissionMemberModal({ memberId, setOpen,
   is_admin,
+  permission = {},
   isOpen
 }) {
   const { t } = useTranslation();
@@ -69,9 +71,9 @@ function PermissionMemberModal({ memberId, setOpen,
   const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
-  const [selectedValue, setSelectedValue] = React.useState(0);
+  const idx = permission ? findIndex(listGroupPermission || [], ({ id }) => id === permission.id) : -1
+  const [selectedValue, setSelectedValue] = React.useState(idx);
   const [permissionsList, setPermissionsList] = React.useState([]);
-  const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
 
   // useEffect(() => {
   //   if (is_admin)
@@ -79,6 +81,7 @@ function PermissionMemberModal({ memberId, setOpen,
   // }, [dispatch, is_admin])
 
   useEffect(() => {
+    const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
     // console.log('PermissionMemberModal', is_admin, ownerPermissions, selectedPermission)
     if (is_admin && ownerPermissions)
       setPermissionsList(ownerPermissions.permissions)
@@ -86,7 +89,7 @@ function PermissionMemberModal({ memberId, setOpen,
       setPermissionsList(selectedPermission)
     }
     // eslint-disable-next-line
-  }, [dispatch, is_admin])
+  }, [dispatch, is_admin, selectedValue])
 
   const handleChange = (event) => {
     setSelectedValue(parseInt(event.target.value));

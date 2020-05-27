@@ -3,6 +3,7 @@ import {
   getDataPinOnTaskChat,
   getViewedChatSuccess,
   updateChatState,
+  appendViewedChat,
 } from "actions/chat/chat";
 import {
   getListTaskDetail,
@@ -228,6 +229,7 @@ function MainLayout({
   getTaskDetailTabPartSuccess,
   getDataPinOnTaskChat,
   updateChatState,
+  appendViewedChat,
   updateProjectChat,
   taskDetails = {},
   userId = "",
@@ -256,7 +258,9 @@ function MainLayout({
 
   function handleViewChat(data) {
     console.log("handleViewChat", data);
+    const { user_name, user_avatar, user_id } = data
     // getViewedChatSuccess(data)
+    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar })
   }
 
   useEffect(() => {
@@ -497,6 +501,7 @@ export default connect(
     getTaskDetailTabPartSuccess,
     getDataPinOnTaskChat,
     updateChatState,
+    appendViewedChat,
     getViewedChatSuccess,
     actionFetchGroupDetail,
     actionToast,

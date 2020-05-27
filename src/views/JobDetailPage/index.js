@@ -40,7 +40,6 @@ function JobDetailPage(props) {
     dispatch(taskDetailAction.detailGroupPermissionDefault())
     dispatch(taskDetailAction.getRole());
     dispatch(taskDetailAction.getListOffer());
-    dispatch(taskDetailAction.getPermission({ type: 4 }));
   }, [dispatch]);
 
   useEffect(() => {

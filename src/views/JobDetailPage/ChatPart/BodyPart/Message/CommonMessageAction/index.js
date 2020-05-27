@@ -83,16 +83,20 @@ const CommonMessageAction = ({
 
   return (
     <div className={clsx("CommonMessageAction", { 'CommonMessageAction__self': isSelf })} >
-      <StyledButton className="CommonMessageAction--button" onClick={handleReplyChat} colorHover={groupActiveColor}>
-        <abbr title={t('LABEL_CHAT_TASK_TRA_LOI')}>
-          <Icon className="CommonMessageAction--icon" path={mdiCommentQuoteOutline} />
-        </abbr>
-      </StyledButton>
-      <StyledButton className="CommonMessageAction--button" onClick={handleForwardChat} colorHover={groupActiveColor}>
-        <abbr title={t('LABEL_CHAT_TASK_CHUYEN_TIEP')}>
-          <Icon className="CommonMessageAction--icon" path={mdiShare} />
-        </abbr>
-      </StyledButton>
+      {handleReplyChat &&
+        <StyledButton className="CommonMessageAction--button" onClick={handleReplyChat} colorHover={groupActiveColor}>
+          <abbr title={t('LABEL_CHAT_TASK_TRA_LOI')}>
+            <Icon className="CommonMessageAction--icon" path={mdiCommentQuoteOutline} />
+          </abbr>
+        </StyledButton>
+      }
+      {handleForwardChat &&
+        <StyledButton className="CommonMessageAction--button" onClick={handleForwardChat} colorHover={groupActiveColor}>
+          <abbr title={t('LABEL_CHAT_TASK_CHUYEN_TIEP')}>
+            <Icon className="CommonMessageAction--icon" path={mdiShare} />
+          </abbr>
+        </StyledButton>
+      }
       <StyledButton
         className={clsx("CommonMessageAction--button", "CommonMessageAction--buttonEmo", {
           "CommonMessageAction--buttonEmo__short": isShortMessage
