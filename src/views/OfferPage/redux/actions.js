@@ -29,6 +29,10 @@ import {
   REMOVE_SNACKBAR,
   UPDATE_GROUP_OFFER_OFFERPAGE,
   UPLOAD_DOCUMENT_OFFER,
+  OFFER_DETAIL_POST_COMMENT,
+  OFFER_DETAIL_UPDATE_COMMENT,
+  OFFER_DETAIL_REMOVE_COMMENT,
+  OFFER_DETAIL_GET_COMMENT_LIST,
 } from './types';
 
 export const loadTaskPage = timeRange => {
@@ -147,6 +151,30 @@ export const updateOfferApprovalCondition = ({
     payload: { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds }
   }
 }
+export const getCommentListOfferDetail = ({ offerId }) => {
+  return {
+    type: OFFER_DETAIL_GET_COMMENT_LIST,
+    payload: { offerId },
+  }
+};
+export const postCommentOfferDetail = ({ offerId, content }) => {
+  return {
+    type: OFFER_DETAIL_POST_COMMENT,
+    payload: { offerId, content },
+  }
+};
+export const updateCommentOfferDetail = ({ commentId, content }) => {
+  return {
+    type: OFFER_DETAIL_UPDATE_COMMENT,
+    payload: { commentId, content },
+  }
+};
+export const removeCommentOfferDetail = ({ commentId }) => {
+  return {
+    type: OFFER_DETAIL_REMOVE_COMMENT,
+    payload: { commentId },
+  }
+};
 export const deleteOffer = ({ id }) => {
   return {
     type: DELETE_OFFER,

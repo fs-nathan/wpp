@@ -1,3 +1,4 @@
+import { cloneDeep } from 'lodash';
 import {
   ADD_MEMBER_HANDLE_SUCCESS,
   ADD_MEMBER_MONITOR_SUCCESS,
@@ -19,6 +20,10 @@ import {
   LOAD_DETAIL_OFFER_SUCCESS,
   UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
   UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS,
+  OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS,
+  OFFER_DETAIL_POST_COMMENT_SUCCESS,
+  OFFER_DETAIL_UPDATE_COMMENT_SUCCESS,
+  OFFER_DETAIL_REMOVE_COMMENT_SUCCESS,
   LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS,
   LOAD_OFFER_BY_GROUP_ID_SUCCESS,
   LOAD_OFFER_BY_PROJECT_ID_SUCCESS,
@@ -118,6 +123,7 @@ export const initialState = {
       members_can_approve: [],
       documents: []
     },
+    comments: [],
     loading: false,
   },
   [SUMMARY_PROJECT]: {
@@ -208,6 +214,56 @@ function taskReducer(state = initialState, action) {
           },
         }
       };
+    case OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS:
+      return {
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          comments: action.payload.comments,
+        }
+      };
+    case OFFER_DETAIL_POST_COMMENT_SUCCESS: {
+      const comments = cloneDeep(state[DETAIL_OFFER].comments);
+      comments.unshift(action.payload.comment);
+
+      return {
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          comments,
+        }
+      };
+    }
+    case OFFER_DETAIL_UPDATE_COMMENT_SUCCESS: {
+      const { id, content } = action.payload.comment;
+
+      const comments = cloneDeep(state[DETAIL_OFFER].comments);
+      const newCommentIdx = comments.findIndex(cmt => cmt.id === id);
+      comments[newCommentIdx].content = content;
+
+      return {
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          comments,
+        }
+      };
+    }
+    case OFFER_DETAIL_REMOVE_COMMENT_SUCCESS: {
+      const { id } = action.payload;
+
+      const comments = cloneDeep(state[DETAIL_OFFER].comments);
+      const commentToRemoveIdx = comments.findIndex(cmt => cmt.id === id);
+      comments.splice(commentToRemoveIdx, 1);
+
+      return {
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          comments,
+        }
+      };
+    }
     case DELETE_OFFER_SUCCESSFULLY:
       const { deletedState, offerId } = action.payload;
       if (deletedState === true) {

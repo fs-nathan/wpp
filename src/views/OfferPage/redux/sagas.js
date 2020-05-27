@@ -33,6 +33,14 @@ import {
   UPDATE_OFFER_APPROVAL_CONDITION_ERROR,
   UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS,
   UPLOAD_DOCUMENT_OFFER_SUCCESS,
+  OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS,
+  OFFER_DETAIL_GET_COMMENT_LIST_ERROR,
+  OFFER_DETAIL_POST_COMMENT_SUCCESS,
+  OFFER_DETAIL_POST_COMMENT_ERROR,
+  OFFER_DETAIL_UPDATE_COMMENT_SUCCESS,
+  OFFER_DETAIL_UPDATE_COMMENT_ERROR,
+  OFFER_DETAIL_REMOVE_COMMENT_SUCCESS,
+  OFFER_DETAIL_REMOVE_COMMENT_ERROR,
 } from './types';
 
 export function* doGetSummaryByGroup({ payload }) { // lấy list group cột trái route groupbyoffer
@@ -218,6 +226,69 @@ export function* doUpdateOfferApprovalCondition({ payload }) {
     yield put({ type: UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, payload: result.data })
   } catch (err) {
     yield put({ type: UPDATE_OFFER_APPROVAL_CONDITION_ERROR, payload: err.toString() })
+  }
+}
+export function* doGetCommentListOfferDetail({ payload }) {
+  try {
+    const { offerId } = payload;
+    const config = {
+      url: "/offers/list-comment?offer_id=" + offerId,
+      method: "GET",
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_GET_COMMENT_LIST_ERROR, payload: err.toString() })
+  }
+}
+export function* doPostCommentOfferDetail({ payload }) {
+  try {
+    const { offerId, content } = payload;
+    const config = {
+      url: "/offers/create-comment",
+      method: "POST",
+      data: {
+        offer_id: offerId,
+        content: content,
+      },
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_POST_COMMENT_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_POST_COMMENT_ERROR, payload: err.toString() })
+  }
+}
+export function* doUpdateCommentOfferDetail({ payload }) {
+  try {
+    const { commentId, content } = payload;
+    const config = {
+      url: "/offers/update-comment",
+      method: "POST",
+      data: {
+        comment_id: commentId,
+        content: content,
+      },
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_UPDATE_COMMENT_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_UPDATE_COMMENT_ERROR, payload: err.toString() })
+  }
+}
+export function* doRemoveCommentOfferDetail({ payload }) {
+  try {
+    const { commentId } = payload;
+    const config = {
+      url: "/offers/delete-comment",
+      method: "DELETE",
+      data: {
+        comment_id: commentId,
+      },
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_REMOVE_COMMENT_SUCCESS, payload: { ...result.data, id: commentId } })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_REMOVE_COMMENT_ERROR, payload: err.toString() })
   }
 }
 export function* doDeleteOffer({ payload }) {
