@@ -88,6 +88,26 @@
       transform: translate(-4px, 4px);
     }
   }
+  &--removed {
+    display: flex;
+    background-color: red;
+    padding: 6px 11px;
+    color: white;
+  }
+  &--removedDes {
+    margin: auto 5px;
+    div {
+      color: white;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+  &--seeMore {
+    margin: auto;
+    color: white;
+    font-size: 14px;
+    text-decoration: unset;
+  }
 }
 
 .RoleMemberModal {

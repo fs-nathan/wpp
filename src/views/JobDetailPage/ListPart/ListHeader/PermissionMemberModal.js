@@ -5,7 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey, mdiAlert } from '@mdi/js';
 import Icon from '@mdi/react';
 import { removeGroupPermissionOfMember, updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
@@ -128,6 +128,21 @@ function PermissionMemberModal({ memberId, setOpen,
         <div className="permissionMemberModal--content">
           {is_admin ? t('LABEL_CHAT_TASK_CHU_SO_HUU_CONG') : t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}
         </div>
+        {permission && idx === -1 &&
+          <div className="permissionMemberModal--removed">
+            <Icon path={mdiAlert} size={3}></Icon>
+            <div className="permissionMemberModal--removedDes">
+              <div dangerouslySetInnerHTML={{ __html: t('LABEL_CHAT_TASK_NHOM_QUYEN_B_QUAN', { name: permission.name }) }}></div>
+              <div >{t('LABEL_CHAT_TASK_BAN_CO_THE_GIU')}</div>
+            </div>
+            <a
+              href="http://workplus.vn/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="permissionMemberModal--seeMore">
+              {t('LABEL_CHAT_TASK_XEM_THEM')}
+            </a>
+          </div>}
         {listGroupPermission.length > 0 || is_admin ?
           <>
             {!is_admin &&
