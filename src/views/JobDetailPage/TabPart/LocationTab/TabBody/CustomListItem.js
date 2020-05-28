@@ -70,7 +70,7 @@ const CustomListItem = ({ isMe }) => {
 
   function handleViewChat(item) {
     setAnchorEl(null);
-    dispatch(loadChat(taskId, undefined, true, undefined, item.chat_id))
+    dispatch(loadChat(taskId, undefined, false, undefined, item.chat_id))
   }
 
   let locationArr = useSelector(state => state.taskDetail.location.locations);

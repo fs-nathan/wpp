@@ -33,11 +33,11 @@ const SearchBoxBase = styled(InputBase)`
   width: 100%;
 `;
 
-function SearchBox({ classes, className, ...rest }) {
+function SearchBox({ classes, className, onClickSearch, ...rest }) {
   return (
     <Container classes={classes} className={className}>
-      <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
-      <SearchBoxBase 
+      <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' onClick={onClickSearch} />
+      <SearchBoxBase
         {...rest}
       />
     </Container>

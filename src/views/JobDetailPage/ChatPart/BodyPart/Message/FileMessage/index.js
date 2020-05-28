@@ -16,6 +16,7 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 
 function getPosition(chatPosition, i, length) {
   if (length === 1 || chatPosition === 'mid')
@@ -98,7 +99,10 @@ const FileMessage = ({
       })}  >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar}
+            className={clsx("TextMessage--avatar", {
+              'TextMessage--avatar__hidden': isOneOf(chatPosition, ['bot', 'mid'])
+            })} src={user_create_avatar} />
         </abbr>
       }
       {!isReply && is_me &&

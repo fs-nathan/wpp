@@ -57,7 +57,7 @@ export default (state = initialState, action) => produce(state, draft => {
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
-      draft.isMore = false;
+      draft.isMore = undefined;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;

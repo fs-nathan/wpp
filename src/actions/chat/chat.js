@@ -1,4 +1,4 @@
-import   APPEND_VIEWED_CHAT,* as actionTypes from '../../constants/actions/chat/chat';
+import APPEND_VIEWED_CHAT, * as actionTypes from '../../constants/actions/chat/chat';
 import { apiService } from '../../constants/axiosInstance';
 
 // action
@@ -62,7 +62,7 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId, last_id, isMore, file_id, chat_id) {
+export function loadChat(taskId, last_id, isMore, file_id, chat_id, content) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
@@ -70,6 +70,7 @@ export function loadChat(taskId, last_id, isMore, file_id, chat_id) {
     isMore,
     file_id,
     chat_id,
+    content,
   };
 }
 

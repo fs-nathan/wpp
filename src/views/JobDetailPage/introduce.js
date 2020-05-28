@@ -84,7 +84,9 @@ function Introduce() {
     return (
         <div className="container-intro">
             <div>
-                <Typography>{t('LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG')}<b>Workplus PC!</b></Typography>
+                <Typography>{t('LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG')}
+                &nbsp;
+                <b>Workplus PC!</b></Typography>
                 <Typography>{t('LABEL_CHAT_TASK_HI')}
                 &nbsp;
                 <StyledName color={groupActiveColor}>{userName}</StyledName>

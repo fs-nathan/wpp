@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 import CommonMessageAction from '../CommonMessageAction';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 
 const QuickLike = ({
   id,
@@ -34,7 +35,11 @@ const QuickLike = ({
     <div className={clsx("QuickLike", `TextMessage__${chatPosition}`)} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar}
+            className={clsx("TextMessage--avatar", {
+              'TextMessage--avatar__hidden': isOneOf(chatPosition, ['bot', 'mid'])
+            })}
+            src={user_create_avatar} />
         </abbr>
       }
       {!isReply && is_me &&

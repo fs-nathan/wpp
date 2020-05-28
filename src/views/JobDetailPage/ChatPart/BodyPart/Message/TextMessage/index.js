@@ -13,6 +13,7 @@ import CommonMessageAction from '../CommonMessageAction';
 import FileMessage from '../FileMessage';
 import ImageMessage from '../ImageMessage';
 import './styles.scss';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 
 function getChatParent(chat_parent) {
   if (!chat_parent) return null;
@@ -77,7 +78,7 @@ const TextMessage = ({
             <Avatar
               onClick={onClickAvatar}
               className={clsx("TextMessage--avatar", {
-                'TextMessage--avatar__hidden': (chatPosition !== 'top' && chatPosition !== 'one')
+                'TextMessage--avatar__hidden': isOneOf(chatPosition, ['bot', 'mid'])
               })}
               src={user_create_avatar} />
           </abbr>
