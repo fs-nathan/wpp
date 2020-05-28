@@ -144,7 +144,7 @@ function CustomModal({
 
   function handleCancle() {
     !manualClose && setOpen(false);
-    onCancle();
+    onCancle && onCancle();
   }
 
   function handleConfirm() {
