@@ -23,7 +23,7 @@ export function RoleBlock() {
   const { timeType = 0 } = useContext(JobPageContext);
   const times = useTimes();
   const ready = useSelector((state) => {
-    return get(state, [state.taskPage[TASK_OVERVIEW_STATISTIC], "state"]);
+    return get(state.taskPage, [TASK_OVERVIEW_STATISTIC, "state"]);
   });
   return (
     <Block

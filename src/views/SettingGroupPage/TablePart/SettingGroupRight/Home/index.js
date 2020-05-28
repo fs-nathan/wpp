@@ -52,7 +52,7 @@ export const ChipMenu = ({
     ></ItemMenu>
   );
 };
-const EnchanedChip = ({ id, logo, name }) => {
+const EnchanedChip = ({ id, logo, name, short_url }) => {
   const { t } = useTranslation();
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -72,7 +72,7 @@ const EnchanedChip = ({ id, logo, name }) => {
     (key) => {
       switch (key) {
         case "edit":
-          setModal(<EditCategoryModal {...{ id, logo, name }} />);
+          setModal(<EditCategoryModal {...{ id, logo, name, short_url }} />);
           break;
         case "delete":
           setAsyncAction(deletePostCategory({ category_id: id }));
@@ -81,7 +81,7 @@ const EnchanedChip = ({ id, logo, name }) => {
           break;
       }
     },
-    [id, logo, name, setAsyncAction, setModal]
+    [id, logo, name, setAsyncAction, setModal, short_url]
   );
   return (
     <>
@@ -114,12 +114,13 @@ function Home() {
         </Stack>
         <ChipGroup>
           {categories.map((cate, i) => {
-            const [id, name, logo] = createMapPropsFromAttrs([
+            const [id, name, logo, short_url] = createMapPropsFromAttrs([
               categoryAttr.id,
               categoryAttr.name,
               categoryAttr.logo,
+              categoryAttr.short_url,
             ])(cate);
-            return <EnchanedChip key={id} {...{ id, name, logo }} />;
+            return <EnchanedChip key={id} {...{ id, name, logo, short_url }} />;
           })}
           <Box flexBasis="100%" margin="0px!important" />
           <AddButton

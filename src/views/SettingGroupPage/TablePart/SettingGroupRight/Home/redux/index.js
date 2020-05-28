@@ -73,7 +73,15 @@ export const updatePostCategory = ({ name, logo, category_id }) => {
       method: "post",
       data: { name, logo, category_id },
     },
-    success: updateCategory,
+    success: createAction(types.categoryListUpdated, function prepare(data) {
+      const newdata = { ...data.data, short_url: logo };
+      return {
+        payload: newdata,
+        meta: {
+          action: listupdate(newdata),
+        },
+      };
+    }),
   });
 };
 export const deletePostCategory = ({ category_id }) => {

@@ -24,7 +24,7 @@ export function PiorityBlock() {
     );
   });
   const ready = useSelector((state) => {
-    return get(state, [state.taskPage[TASK_OVERVIEW_STATISTIC], "state"]);
+    return get(state.taskPage, [TASK_OVERVIEW_STATISTIC, "state"]);
   });
   const { t } = useTranslation();
   const { timeType = 0 } = useContext(JobPageContext);

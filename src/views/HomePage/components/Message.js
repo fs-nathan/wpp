@@ -190,7 +190,7 @@ const Message = ({
             </Box>
           )}
           <span className="comp_Message__creator">{user_create_name}</span>
-          {content}
+          <span className="comp_Message__message">{content}</span>
         </div>
         <Box padding="0 10px">
           {onReplyClick && (
