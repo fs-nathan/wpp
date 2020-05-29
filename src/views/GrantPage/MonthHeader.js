@@ -51,11 +51,12 @@ const MonthHeader = ({
             backgroundColor: "#fafafa",
           };
         children.push(
-          <td
+          <div
             key={`${i}-${j}`}
             style={{
               border: "0.2px solid #fcfcfc",
               padding: "8.5px 0px",
+              width: 48,
               ...backgroud,
             }}
           >
@@ -65,10 +66,12 @@ const MonthHeader = ({
                 height: 20,
               }}
             ></div>
-          </td>
+          </div>
         );
       }
-      tempTable.push(<tr style={{ height: 37 }}>{children}</tr>);
+      tempTable.push(
+        <div style={{ height: 37, display: "flex" }}>{children}</div>
+      );
     }
     return tempTable;
   };
@@ -99,6 +102,7 @@ const MonthHeader = ({
         <div
           style={{
             position: "absolute",
+            marginLeft: 1,
             marginTop: 22.5,
             left: leftTable,
           }}

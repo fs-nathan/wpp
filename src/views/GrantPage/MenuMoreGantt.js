@@ -15,6 +15,7 @@ import "./calendarModal.css";
 const MenuMoreGantt = ({
   changeVisibleExportPdfDrawer,
   scheduleDetailGantt,
+  changeVisibleMenu,
 }) => {
   const [openConfigCalendar, setOpenConfigCalendar] = useState(false);
   const [selectCalendar, setSelectCalendar] = useState([1]);
@@ -22,6 +23,7 @@ const MenuMoreGantt = ({
   const [listSchedule, setListSchedule] = useState([]);
   const clickConfigCalendar = () => {
     setOpenConfigCalendar(true);
+    changeVisibleMenu(false);
   };
   const handleChangeCheckbox = (e) => {
     const { value, checked } = e.target;
@@ -122,7 +124,12 @@ const MenuMoreGantt = ({
       <Paper>
         <MenuList open={true}>
           <MenuItem onClick={clickConfigCalendar}>Lịch dự án</MenuItem>
-          <MenuItem onClick={() => changeVisibleExportPdfDrawer(true)}>
+          <MenuItem
+            onClick={() => {
+              changeVisibleExportPdfDrawer(true);
+              changeVisibleMenu(false);
+            }}
+          >
             Xuất file PDF
           </MenuItem>
         </MenuList>

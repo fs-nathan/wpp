@@ -42,10 +42,24 @@ const DragableBodyRow = ({
     <tr
       ref={ref}
       onMouseEnter={() => {
-        if (!window.scrollTable) restProps.changeRowHover(index);
+        if (!window.scrollTable) {
+          const divs = document.getElementsByClassName(
+            "gantt--top-timeline-tr"
+          );
+          divs[index].style.backgroundColor = "#fffae6";
+          const divss = document.getElementsByClassName(
+            "ant-table-row ant-table-row-level-0"
+          );
+          divss[index].style.backgroundColor = "#fffae6";
+        }
       }}
       onMouseLeave={() => {
-        if (!window.scrollTable) restProps.changeRowHover(-1);
+        const divs = document.getElementsByClassName("gantt--top-timeline-tr");
+        divs[index].style.backgroundColor = "";
+        const divss = document.getElementsByClassName(
+          "ant-table-row ant-table-row-level-0"
+        );
+        divss[index].style.backgroundColor = "";
       }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}

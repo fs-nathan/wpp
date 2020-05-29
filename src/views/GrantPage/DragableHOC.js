@@ -16,7 +16,6 @@ function GanttChart({
   showHeader,
   end,
   scrollGantt,
-  changeRowHover,
   visibleGantt,
   dataSource,
   monthArray,
@@ -115,10 +114,20 @@ function GanttChart({
             <div
               key={item.id}
               onMouseEnter={() => {
-                if (!window.scrollTimeline) changeRowHover(index);
+                if (!window.scrollTimeline) {
+                  const divs = document.getElementsByClassName(
+                    "ant-table-row ant-table-row-level-0"
+                  );
+                  divs[index].style.backgroundColor = "#fffae6";
+                }
               }}
               onMouseLeave={() => {
-                if (!window.scrollTimeline) changeRowHover(-1);
+                if (!window.scrollTimeline) {
+                  const divs = document.getElementsByClassName(
+                    "ant-table-row ant-table-row-level-0"
+                  );
+                  divs[index].style.backgroundColor = "";
+                }
               }}
               className="gantt--top-timeline-tr"
               style={{
@@ -200,10 +209,10 @@ function GanttChart({
           width: renderFullDay
             ? maxWidth
             : showFullChart
-            ? window.innerWidth - minLeft
+            ? window.innerWidth - 80 - minLeft
             : left
-            ? window.innerWidth - left
-            : window.innerWidth - defaultLeft,
+            ? window.innerWidth - 80 - left
+            : window.innerWidth - 80 - defaultLeft,
           position: "absolute",
           left: showFullChart ? minLeft : defaultLeft,
           overflow: "hidden",
@@ -288,7 +297,7 @@ function GanttChart({
             {renderMonthHeader}
             <div
               style={{
-                height: !showHeader ? heightTable :heightTable - 69,
+                height: heightTable - 69,
               }}
               onScroll={(e) => {
                 if (!window.scrollTable) {
@@ -311,9 +320,9 @@ function GanttChart({
                 className="gantt--timeline--container__relative"
                 style={{
                   position: "relative",
-                  height: !showHeader ? heightTable :heightTable - 69,
+                  height: heightTable - 69,
                   overflowY: "scroll",
-                  overflowX: "hidden"
+                  overflowX: "hidden",
                 }}
               >
                 {timeline}

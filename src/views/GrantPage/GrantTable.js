@@ -47,8 +47,8 @@ import { apiService } from "../../constants/axiosInstance";
 import "../../views/JobDetailPage/index.scss";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
-import QuickViewTaskDetailDrawer from "../../views/JobPage/components/QuickViewTaskDetailDrawer";
-import CreateProject from "../../views/ProjectGroupPage/Modals/CreateProject";
+import QuickViewTaskDetailDrawer from "../../views/JobPage/components/GanttQuickViewTaskDetailDrawer";
+import CreateProject from "../../views/ProjectPage/Modals/CreateGroupTask";
 import "./abc.scss";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
@@ -333,7 +333,15 @@ class DragSortingTable extends React.Component {
               <React.Fragment>
                 <div
                   className="gantt--group-task"
-                  onClick={() => this.handleClickMainTask(record.id)}
+                  onClick={(e) => {
+                    const className = e.target.className;
+                    if (
+                      !className.indexOf ||
+                      className.indexOf("gantt--group-task__right") !== -1
+                    )
+                      return;
+                    this.handleClickMainTask(record.id);
+                  }}
                   style={{ display: "flex", cursor: "auto" }}
                 >
                   <div className="gantt--group-task__left gantt--group-task-item">
@@ -380,9 +388,46 @@ class DragSortingTable extends React.Component {
                     path={mdiDragVertical}
                     size={1}
                   />
-                  <div className="name-task-gantt">
+                  <div
+                    onClick={(e) => {
+                      const className = e.target.className;
+                      if (
+                        !className.indexOf ||
+                        className.indexOf(
+                          "MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall"
+                        ) !== -1
+                      )
+                        return;
+                      this.props.history.push({
+                        pathname: `/tasks/chat/${this.props.match.params.projectId}`,
+                        search: `?task_id=${record.id}`,
+                      });
+                    }}
+                    className="name-task-gantt"
+                  >
                     <Tooltip title={record.name}>
-                      <span>{record.name}</span>
+                      <span style={{ paddingRight: "5px" }}>{record.name}</span>
+                      {record.number_subtask > 0 && (
+                        <IconButton
+                          aria-controls="simple-menu"
+                          style={{ padding: 0 }}
+                          aria-haspopup="true"
+                          size="small"
+                          onClick={() => {
+                            this.props.changeDetailSubtaskDrawer({
+                              id: record.id,
+                              name: record.name,
+                            });
+                            this.props.changeVisibleSubtaskDrawer(true);
+                          }}
+                        >
+                          <Icon
+                            className="gantt--icon-setting-task"
+                            path={mdiFileTree}
+                            size={1}
+                          />
+                        </IconButton>
+                      )}
                     </Tooltip>
                   </div>
                   <div
@@ -411,27 +456,7 @@ class DragSortingTable extends React.Component {
                         />
                       </IconButton>
                     )}
-                    {isHover && record.number_subtask > 0 && (
-                      <IconButton
-                        aria-controls="simple-menu"
-                        style={{ padding: 0 }}
-                        aria-haspopup="true"
-                        size="small"
-                        onClick={() => {
-                          this.props.changeDetailSubtaskDrawer({
-                            id: record.id,
-                            name: record.name,
-                          });
-                          this.props.changeVisibleSubtaskDrawer(true);
-                        }}
-                      >
-                        <Icon
-                          className="gantt--icon-setting-task"
-                          path={mdiFileTree}
-                          size={1}
-                        />
-                      </IconButton>
-                    )}
+
                     {!isHover && this.props.visibleLabel.status && (
                       <CustomBadge
                         style={{
@@ -443,7 +468,7 @@ class DragSortingTable extends React.Component {
                         {record.status_name}
                       </CustomBadge>
                     )}
-                    
+
                     {!isHover && this.props.visibleLabel.prior && (
                       <CustomBadge
                         style={{
@@ -499,11 +524,13 @@ class DragSortingTable extends React.Component {
                   : ""
               }
             >
-              {new moment(text, "DD/MM/YYYY HH:mm").format(
-                this.props.girdType !== "HOUR"
-                  ? "DD/MM/YYYY"
-                  : "DD/MM/YYYY HH:mm"
-              )}
+              {new moment(text, "DD/MM/YYYY HH:mm").isValid()
+                ? new moment(text, "DD/MM/YYYY HH:mm").format(
+                    this.props.girdType !== "HOUR"
+                      ? "DD/MM/YYYY"
+                      : "DD/MM/YYYY HH:mm"
+                  )
+                : ""}
             </div>
           ),
         },
@@ -524,11 +551,13 @@ class DragSortingTable extends React.Component {
                   : ""
               }
             >
-              {new moment(text, "DD/MM/YYYY HH:mm").format(
-                this.props.girdType !== "HOUR"
-                  ? "DD/MM/YYYY"
-                  : "DD/MM/YYYY HH:mm"
-              )}
+              {new moment(text, "DD/MM/YYYY HH:mm").isValid()
+                ? new moment(text, "DD/MM/YYYY HH:mm").format(
+                    this.props.girdType !== "HOUR"
+                      ? "DD/MM/YYYY"
+                      : "DD/MM/YYYY HH:mm"
+                  )
+                : ""}
             </div>
           ),
         },
@@ -539,21 +568,26 @@ class DragSortingTable extends React.Component {
           align: "center",
           width: 100,
           height: 100,
-          render: (text, record) => (
-            <div
-              className={
-                record.isTotalDuration
-                  ? "gantt--group-task__total"
-                  : record.isGroupTask
-                  ? "gantt--group-task-item"
-                  : ""
-              }
-            >
-              {`${
-                Math.round((parseFloat(text) + Number.EPSILON) * 100) / 100
-              } ${this.props.girdInstance.unitText}`}
-            </div>
-          ),
+          render: (text, record) => {
+            return (
+              <div
+                className={
+                  record.isTotalDuration
+                    ? "gantt--group-task__total"
+                    : record.isGroupTask
+                    ? "gantt--group-task-item"
+                    : ""
+                }
+              >
+                {text
+                  ? `${
+                      Math.round((parseFloat(text) + Number.EPSILON) * 100) /
+                      100
+                    } ${this.props.girdInstance.unitText}`
+                  : ""}
+              </div>
+            );
+          },
         },
         {
           title: "Hoàn thành",
@@ -790,6 +824,7 @@ class DragSortingTable extends React.Component {
   };
   setEventScroll = () => {
     const tableBody = document.getElementsByClassName("ant-table-body");
+    if (!tableBody[0]) return;
     let timeOutId;
     tableBody[0].addEventListener("scroll", (e) => {
       if (window.scrollTimeline) return;
@@ -809,7 +844,7 @@ class DragSortingTable extends React.Component {
   async componentDidMount() {
     const { projectId } = this.props.match.params;
     this.fetchSettingGantt(projectId);
-    this.fetchListDetailProject(projectId);
+    // this.fetchListDetailProject(projectId);
     await this.fetchListTask(projectId);
     this.fetchListTask(projectId, true, this.props.girdType);
     this.fetchListSchedule();
@@ -879,10 +914,10 @@ class DragSortingTable extends React.Component {
     },
   };
   componentDidUpdate = async (prevProps) => {
-    if(this.props.showHeader !== prevProps.showHeader){
+    if (this.props.showHeader !== prevProps.showHeader) {
       this.setState({
-        height: this.tableRef.current.clientHeight
-      })
+        height: this.tableRef.current.clientHeight,
+      });
     }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
       const { startTimeProject, endTimeProject } = this.state;
@@ -943,12 +978,12 @@ class DragSortingTable extends React.Component {
       this.props.match.params.projectId !== prevProps.match.params.projectId
     ) {
       const { projectId } = this.props.match.params;
-      this.setState({
-        isLoading: true,
-      });
       this.fetchSettingGantt(projectId);
       this.fetchListDetailProject(projectId);
+      this.fetchListTask(projectId);
       this.fetchListTask(projectId, true, this.props.girdType);
+      this.fetchListSchedule();
+      this.setEventScroll();
     }
   };
   componentWillUnmount() {
@@ -1136,6 +1171,14 @@ class DragSortingTable extends React.Component {
     });
   };
   handleShowProject = (show) => {
+    const { projectId } = this.props.match.params;
+    if (show) {
+      this.setState({
+        showProject: true,
+      });
+      this.fetchListDetailProject(projectId);
+      return;
+    }
     this.setState({
       showProject: show,
     });
@@ -1176,19 +1219,21 @@ class DragSortingTable extends React.Component {
         <RenderHeader
           handleShowProject={this.handleShowProject}
           titleProject={this.state.titleProject}
+          showProject={this.state.showProject}
           scheduleIdDefault={this.state.scheduleIdDefault}
         />
-        {this.state.openCreateProjectModal && (
-          <CreateProject
-            open={this.state.openCreateProjectModal}
-            projectGroupId={this.props.match.params.projectId}
-            setOpen={this.handleOpenCreateProjectModal}
-          />
-        )}
+        <CreateProject
+          open={this.state.openCreateProjectModal}
+          projectGroupId={this.props.match.params.projectId}
+          setOpen={this.handleOpenCreateProjectModal}
+        />
         <div
           id="printContent"
           className="gantt__container"
-          style={{ width: widthPdf, height: "calc(100% - 59px)" }}
+          style={{
+            width: widthPdf,
+            height: `${this.props.showHeader ? "calc(100% - 59px)" : "100%"}`,
+          }}
         >
           <RenderDrawers height={this.state.height} />
           <RenderQuickViewTaskDetailDrawer
@@ -1224,11 +1269,14 @@ class DragSortingTable extends React.Component {
             >
               <DndProvider backend={HTML5Backend}>
                 <Table
-                  columns={columns}
+                  columns={colShow}
                   size="small"
                   className="table-gantt-header"
                   bordered
-                  scroll={{ y: !this.props.showHeader ? this.state.height   :this.state.height  - 69, x: "unset" }}
+                  scroll={{
+                    y: this.state.height - 69,
+                    x: "unset",
+                  }}
                   rowClassName={(record, index) => {
                     if (
                       this.state.data[index] &&
@@ -1290,7 +1338,6 @@ class DragSortingTable extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-  rowHover: state.gantt.rowHover,
   indexColumn: state.gantt.indexColumn,
   renderFullDay: state.gantt.renderFullDay,
   visibleTable: state.gantt.visible.table,

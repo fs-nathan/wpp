@@ -2,7 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { mdiChevronDown, mdiMenuDown } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Col, Row } from "antd";
-import React, { useState } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-use";
@@ -17,8 +17,8 @@ const Header = ({
   scheduleIdDefault,
   showHeader,
   changeShowHeader,
+  showProject,
 }) => {
-  const [showProject, setShowSelectProject] = useState(false);
   const history = useHistory();
   const { pathname } = useLocation();
   return showHeader ? (
@@ -42,7 +42,6 @@ const Header = ({
                 <div
                   onClick={() => {
                     handleShowProject(!showProject);
-                    setShowSelectProject(!showProject);
                   }}
                   className="gantt--title-project__name"
                 >
@@ -52,7 +51,6 @@ const Header = ({
                   <IconButton
                     onClick={() => {
                       handleShowProject(!showProject);
-                      setShowSelectProject(!showProject);
                     }}
                     aria-controls="simple-menu"
                     className="gantt-btn__list-project"

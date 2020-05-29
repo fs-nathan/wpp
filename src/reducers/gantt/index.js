@@ -91,7 +91,7 @@ export const initialState = {
       addUnit: 6,
       parentUnit: "days",
       getWidthParent: (moment, first) =>
-        first ? (23 - moment.format("HH") + 1) * 48 : 23 * 48,
+        first ? (23 - moment.format("HH") + 1) * 48 : 24 * 48,
       getTextParent: (moment) => moment.format("DD/MM/YYYY"),
       getTimeCompare: (moment) => moment.format("DD/MM/YYYY"),
       formatChild: "HH",
@@ -137,7 +137,8 @@ export const initialState = {
   },
 };
 
-initialState.girdInstance = initialState.girdAttribute[localStorage.getItem("timeUnitGantt") || 'DAY']
+initialState.girdInstance =
+  initialState.girdAttribute[localStorage.getItem("timeUnitGantt") || "DAY"];
 const gantt = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GANTT_SHOW_FULL_CHART:

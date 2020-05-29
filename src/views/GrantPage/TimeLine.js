@@ -72,7 +72,6 @@ const TimeLine = ({
     setWidth(endPosition * 48);
   }, [endPosition, dataSource, resizeWidth, startPosition, girdInstance]);
   const handleMouseMove = (e) => {
-    console.log("vo day", dragFirstResize);
     if (!drag) return;
     if (dragFirstResize) {
       handleMouseMoveFirst(e);
@@ -196,6 +195,7 @@ const TimeLine = ({
     !visibleGantt.task
   )
     return null;
+  if (!width) return null;
   if (isTotalDuration && !visibleGantt.total) return null;
   return (
     <React.Fragment>
@@ -267,7 +267,7 @@ const TimeLine = ({
             // onMouseUp={handleMouseUpFirstResize}
           >
             {!isGroupTask && !isTotalDuration && canEdit && (
-              <Circle show={showResize} left={-15} />
+              <Circle show={showResize} left={-18} />
             )}
           </div>
           <div
