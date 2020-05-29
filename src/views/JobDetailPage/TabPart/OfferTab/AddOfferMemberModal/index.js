@@ -19,7 +19,7 @@ function AddOfferMemberModal({
   disableIndexes,
 }) {
   const { t } = useTranslation();
-  const groupActiveColor = useSelector(currentColorSelector)
+  const appColor = useSelector(currentColorSelector)
   const [selected, setSelected] = useState(value);
   const [searchValue, setSearchValue] = useState('');
 
@@ -79,10 +79,12 @@ function AddOfferMemberModal({
         />
         <ColorTypo className="addOfferMemberModal--selected">{t('LABEL_CHAT_TASK_DA_CHON_THANH_VIEN', { count: selected.length })}</ColorTypo>
         <StyledDiv
-          selectedColor={groupActiveColor}
+          selectedColor={appColor}
           className="addOfferMemberModal--selectAll">
-          <Checkbox checked={selected.length === filteredMembers.length}
-            onClick={onClickSelectAll} />
+          <Checkbox
+            checked={selected.length === filteredMembers.length}
+            onClick={onClickSelectAll}
+          />
           <ColorTypo className="addOfferMemberModal--selectAllText" component="div">{t('LABEL_CHAT_TASK_CHON_TAT_CA')}</ColorTypo>
         </StyledDiv>
         {filteredMembers.map((member, i) => <OfferMemberItem
