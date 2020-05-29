@@ -578,7 +578,7 @@ async function doGetImage({ taskId, page }) {
 function* getImage(action) {
   try {
     const res = yield call(doGetImage, action.options);
-    yield put(actions.getImageSuccess(res));
+    yield put(actions.getImageSuccess(res, action.options.page));
     // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getImageFail(error));
@@ -604,7 +604,7 @@ async function doGetFile({ taskId, page }) {
 function* getFile(action) {
   try {
     const res = yield call(doGetFile, action.options);
-    yield put(actions.getFileTabPartSuccess(res));
+    yield put(actions.getFileTabPartSuccess(res, action.options.page));
     // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getFileTabPartFail(error));
@@ -1362,10 +1362,10 @@ function* updateComplete(action) {
   try {
     const res = yield call(doUpdateComplete, action.payload.data);
     yield put(actions.updateCompleteSuccess(res));
-    yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
+    // yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
     yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
     // yield put(appendChat(res));
-    yield put(actions.getListTaskDetail(action.payload.projectId));
+    // yield put(actions.getListTaskDetail(action.payload.projectId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateCommandFail(error));
@@ -1426,8 +1426,8 @@ export function* pinTask({ payload }) {
     const { task_id, projectId } = payload;
     const res = yield call(apiService.post, "/task/ghim-task", { task_id });
     yield put(actions.pinTaskSuccess(res.data));
-    yield put(actions.getListTaskDetail(projectId));
-    yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+    // yield put(actions.getListTaskDetail(projectId));
+    // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -1443,8 +1443,8 @@ export function* unPinTask({ payload }) {
       task_id
     });
     yield put(actions.unPinTaskSuccess(res.data));
-    yield put(actions.getListTaskDetail(projectId));
-    yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+    // yield put(actions.getListTaskDetail(projectId));
+    // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

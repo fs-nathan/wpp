@@ -5,13 +5,15 @@ import Icon from '@mdi/react';
 import clsx from 'clsx';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import PermissionMemberModal from '../PermissionMemberModal';
 import './styles.scss';
+import { getPermission } from 'actions/taskDetail/taskDetailActions';
 
 function MemberPermission({ group_permission, id, is_admin, is_in_group }) {
   const { t } = useTranslation()
+  const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
   const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
   // if (props.master) {
@@ -21,6 +23,7 @@ function MemberPermission({ group_permission, id, is_admin, is_in_group }) {
   // }
   function openSelectPermissionModal() {
     setOpenPriorityModal(true)
+    dispatch(getPermission());
   }
 
   return (is_in_group ?

@@ -77,15 +77,19 @@ export function humanFileSize(bytes, si) {
 }
 
 // const urlRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
-const urlRegex = /(https?:\/\/)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/g;
+const urlRegex = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/g;
+const regex1 = new RegExp(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g)
+const regex2 = new RegExp(/(http(s)?:\/\/.)?(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/g)
+// const urlRegex = new RegExp(regex1.source + "|" + regex2.source);
+// const urlRegex = /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)|(http(s)?:\/\/.)?(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
 
 export const replaceMultipleReg = (str = '', regex, replacer) => {
   let match;
   let lastEnd = 0, ret = '';
   while (match = regex.exec(str)) {
-    // console.log(match.index + ':' + match[0] + '::' + urlRegex.lastIndex);
+    // console.log(match.index + '_' + match[0] + '__' + urlRegex.lastIndex);
     ret += str.slice(lastEnd, match.index) + replacer(match[0])
-    lastEnd = urlRegex.lastIndex;
+    lastEnd = regex.lastIndex;
   }
   return ret + str.slice(lastEnd);
 }
@@ -100,7 +104,8 @@ export function replaceUrl(str) {
     const url = match.indexOf('http') !== -1 ? match : `http://${match}`
     return `<a href="${url}" target="_blank">${match}</a>`
   }
-  return replaceMultipleReg(str, urlRegex, replacer)
+  const withDomain = replaceMultipleReg(str, regex1, replacer)
+  return replaceMultipleReg(withDomain, regex2, replacer)
 }
 
 export function getDialogDate(timeString, formatDate = '') {
@@ -114,9 +119,13 @@ export function getDialogDate(timeString, formatDate = '') {
 }
 
 export function getUpdateProgressDate(timeString, formatDate = '') {
-  const date = new Date(timeString);
-  const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
-  return format(date, `HH:mm ${fixedFormat}`);
+  try {
+    const date = new Date(timeString);
+    const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+    return format(date, `HH:mm ${fixedFormat}`);
+  } catch (e) {
+    return timeString;
+  }
 }
 
 export function getChatDate(timeString) {

@@ -69,7 +69,7 @@ const StyledName = styled.span`
 `
 
 function Introduce() {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
     const classes = useStyles();
     const theme = useTheme();
     const userName = useSelector(state => state.system.profile.name);
@@ -84,8 +84,14 @@ function Introduce() {
     return (
         <div className="container-intro">
             <div>
-                <Typography>{t('LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG')}<b>Workplus PC!</b></Typography>
-                <Typography>{t('LABEL_CHAT_TASK_HI')}<StyledName color={groupActiveColor}>{userName}</StyledName>{t('LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN')}</Typography>
+                <Typography>{t('LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG')}
+                &nbsp;
+                <b>Workplus PC!</b></Typography>
+                <Typography>{t('LABEL_CHAT_TASK_HI')}
+                &nbsp;
+                <StyledName color={groupActiveColor}>{userName}</StyledName>
+                    {t('LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN')}
+                </Typography>
                 <div className={classes.root}>
                     <AutoPlaySwipeableViews
                         axis={theme.direction === "rtl" ? "x-reverse" : "x"}

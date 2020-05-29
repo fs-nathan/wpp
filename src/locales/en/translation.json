@@ -997,7 +997,7 @@
   "LABEL_CHAT_TASK_TRUNG_BINH_LABEL": "Trung bình",
   "LABEL_CHAT_TASK_THAP_LABEL": "Thấp",
   "LABEL_CHAT_TASK_GAN_QUYEN": "Gán quyền",
-  "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION": "Hiện tại chưa có nhóm quyền nào được tạo cho chức năng này! Liên hệ với Quản trị viên để yều cầu bổ sung.",
+  "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION": "Hiện tại chưa có nhóm quyền nào được tạo cho chức năng này!",
   "LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON": "Xóa nhóm quyền đã chọn",
   "ADD_PERSON_HANDLE": "Add member handle",
   "ADD_PERSON_MONITOR": "Add member monitor",
@@ -1039,5 +1039,8 @@
   "LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN": "Hãy thêm thành viên vào dự án trước khi gán cho công việc!",
   "LABEL_CHAT_TASK_TY_LE_THANH_VIEN_DONG_Y": "Tỷ lệ thành viên đồng ý ≥",
   "LABEL_CHAT_TASK_HOAC": "Hoặc",
-  "LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y": "Một số thành viên sau đồng ý"
+  "LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y": "Một số thành viên sau đồng ý",
+  "LABEL_CHAT_TASK_LIEN_HE_VOI_QUAN": "Liên hệ với Quản trị viên để yều cầu bổ sung.",
+  "LABEL_CHAT_TASK_NHOM_QUYEN_B_QUAN": "Nhóm quyền \"<b>{{name}}</b>\" đã được loại bỏ khỏi module này.",
+  "LABEL_CHAT_TASK_BAN_CO_THE_GIU": "Bạn có thể giữ quyền để tiếp tục sử dụng nhóm quyền này hoặc lựa chọn nhóm quyền khác."
 }

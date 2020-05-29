@@ -57,7 +57,7 @@ export default (state = initialState, action) => produce(state, draft => {
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
-      draft.isMore = false;
+      draft.isMore = undefined;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;
@@ -318,6 +318,11 @@ export default (state = initialState, action) => produce(state, draft => {
       const { isOpenForward, content } = action;
       draft.isOpenForward = isOpenForward;
       draft.contentForward = content;
+      break;
+    }
+    case actionTypes.APPEND_VIEWED_CHAT: {
+      const { data } = action;
+      draft.viewedChatMembers.push(data);
       break;
     }
   }

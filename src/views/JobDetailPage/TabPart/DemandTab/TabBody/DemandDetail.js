@@ -32,7 +32,7 @@ function DemandDetail({
       setOpen={setOpen}
       confirmRender={null}
       cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
-      className="subTaskDetailDialog"
+      className="subTaskDetailDialog modal_height_50vh"
       titleRender={
         <div className="subTaskDetailDialog--titleWrap">
           <Avatar className="subTaskDetailDialog--avatar" src={user_create_avatar} alt='avatar' />
@@ -43,9 +43,9 @@ function DemandDetail({
         </div>
       }
     >
-      <DialogContent>
+      <>
         <div className="demandDetail--label">
-          {isDemand ? 'Chỉ đạo' : 'Quyết định'}
+          {isDemand ? t('LABEL_CHAT_TASK_CHI_DAO_LABEL') : t('LABEL_CHAT_TASK_QUYET_DINH_LABEL')}
         </div>
         <div className="demandDetail--iconContainer" >
           <div className="demandDetail--line">
@@ -60,7 +60,7 @@ function DemandDetail({
         <DialogContentText className="demandDetail--content">
           {content}
         </DialogContentText>
-      </DialogContent>
+      </>
     </JobDetailModalWrap>
   );
 }

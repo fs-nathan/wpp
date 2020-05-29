@@ -330,7 +330,7 @@ const OfferModal = (props) => {
         <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
         <CommonPriorityForm
           labels={priorityList}
-          priority={tempSelectedItem.priority.value}
+          priority={tempSelectedItem.priority ? tempSelectedItem.priority.value : null}
           handleChangeLabel={priorityItem =>
             setParams('priority', priorityItem)
           }

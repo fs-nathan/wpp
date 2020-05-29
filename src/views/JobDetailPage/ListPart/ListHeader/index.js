@@ -5,7 +5,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
+import { searchTask, getProjectListBasic } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
 import CreateJobModal from './CreateJobModal';
@@ -32,9 +32,12 @@ const ButtonIcon = styled(IconButton)`
 `;
 
 function ListHeaderSelect({ setShow }) {
-  const projectDetail = useSelector(state=> state.taskDetail.commonTaskDetail.projectDetail);
+  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+  const dispatch = useDispatch();
+
   const openListProject = () => {
     setShow(true);
+    dispatch(getProjectListBasic());
   };
 
   return (
@@ -60,8 +63,6 @@ function ListHeader(props) {
   function onClickCreateJob() {
     setOpenCreateJobModal(true);
   }
-
-
 
   const searchListTask = e => {
     dispatch(searchTask(e.target.value));

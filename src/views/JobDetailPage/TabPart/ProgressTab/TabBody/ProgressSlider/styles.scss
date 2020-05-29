@@ -2,6 +2,9 @@
   position: relative;
   width: 100%;
   margin-bottom: 32px;
+  .MuiSlider-root {
+    color: #00db7c;
+  }
   &--expected {
     background-color: #ff9800;
     position: absolute;
