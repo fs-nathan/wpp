@@ -31,8 +31,10 @@ function AddOfferMemberModal({
   }, [members, disableIndexes, searchValue])
 
   function onClickDone() {
-    onChange(selected)
-    setOpen(false);
+    onChange(selected);
+  }
+  function onCancel() {
+    onChange([]);
   }
 
   React.useEffect(() => {
@@ -70,6 +72,7 @@ function AddOfferMemberModal({
       setOpen={setOpen}
       confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={onClickDone}
+      onCancle={onCancel}
       className="addOfferMemberModal"
     >
       <React.Fragment>
