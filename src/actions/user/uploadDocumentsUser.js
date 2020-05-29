@@ -1,14 +1,12 @@
-import {
-  UPLOAD_DOCUMENTS_USER,
-  UPLOAD_DOCUMENTS_USER_FAIL,
-  UPLOAD_DOCUMENTS_USER_SUCCESS,
-} from '../../constants/actions/user/uploadDocumentsUser';
+import { UPLOAD_DOCUMENTS_USER, UPLOAD_DOCUMENTS_USER_FAIL, UPLOAD_DOCUMENTS_USER_SUCCESS } from '../../constants/actions/user/uploadDocumentsUser';
 
-export const uploadDocumentsUser = ({ userId, file }) => ({
+export const uploadDocumentsUser = ({ userId, files, fileIds, googleData }) => ({
   type: UPLOAD_DOCUMENTS_USER,
   options: {
     userId,
-    file,
+    files,
+    fileIds,
+    googleData,
   },
 });
 

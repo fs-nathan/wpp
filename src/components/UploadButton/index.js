@@ -21,6 +21,7 @@ function UploadButton({ label, onClick, loading = false, ...props }) {
     <MyButton
       color='primary'
       onClick={onClick}
+      disabled={loading}
       {...props}
     >
       {loading

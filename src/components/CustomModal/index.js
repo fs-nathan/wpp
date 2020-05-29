@@ -2,10 +2,10 @@ import { ButtonBase, CircularProgress, Dialog, DialogActions, DialogContent, Dia
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
+import Scrollbars from 'components/Scrollbars';
 import { get, isFunction } from 'lodash';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import ColorTypo from '../ColorTypo';

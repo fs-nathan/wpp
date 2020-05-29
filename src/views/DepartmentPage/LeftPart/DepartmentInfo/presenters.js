@@ -19,6 +19,12 @@ const StyledTextbox = ({ className = '', ...props }) =>
     {...props}
   />;
 
+const IntroText = ({ className = '', ...props }) =>
+  <ColorTypo
+    className={`view_Department_Info___intro-text ${className}`}
+    {...props}
+  />
+
 export const DefaultDepartment = ({
   handleGoBack,
 }) => {
@@ -84,9 +90,9 @@ export const NormalDepartment = ({
                   {t('DMH.VIEW.DP.LEFT.INFO.NUM_MEM', { members: get(room.detail, 'number_member', 0) })}
                 </ColorTypo>
               </LogoBox>
-              <ColorTypo uppercase bold color="gray">
+              <IntroText uppercase bold color="gray">
                 {t('DMH.VIEW.DP.LEFT.INFO.INFO')}
-              </ColorTypo>
+              </IntroText>
               <StyledTextbox
                 value={get(room.detail, 'description', '')}
                 isReadOnly={true}

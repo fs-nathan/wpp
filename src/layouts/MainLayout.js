@@ -80,44 +80,6 @@ const LogoBox = styled.div`
 const ContentBox = styled.div`
   grid-area: main;
   overflow: hidden;
-  &::-webkit-scrollbar-track {
-    background-color: unset !important;
-  }
-  &::-webkit-scrollbar {
-    width: 10px;
-    background-color: unset !important;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    cursor: pointer !important;
-    min-height: 50px !important;
-    &:hover {
-      background-color: #4a4a4a54;
-    }
-  }
-  &:hover::-webkit-scrollbar-thumb {
-    background-color: #88888854;
-  }
-  && * {
-    &::-webkit-scrollbar-track {
-      background-color: unset !important;
-    }
-    &::-webkit-scrollbar {
-      width: 5px;
-      background-color: unset !important;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      cursor: pointer !important;
-      min-height: 50px !important;
-      &:hover {
-        background-color: #4a4a4a54;
-      }
-    }
-    &:hover::-webkit-scrollbar-thumb {
-      background-color: #88888854;
-    }
-  }
 `;
 
 const Image = styled.img`
