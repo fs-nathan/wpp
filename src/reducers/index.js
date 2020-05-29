@@ -149,7 +149,7 @@ import trackingTime from "./taskDetail/time";
 
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from "./user/banUserFromGroup";
 import detailUser, { initialState as detailUserInitialState } from "./user/detailUser";
-import listUserOfGroup, { initialState as listUserOfGroupInitialState } from "./user/listUserOfGroup";
+import listUserOfGroup, { initialState as listUserOfGroupInitialState } from "./user/listOfUserGroup/listUserOfGroup";
 import permissionUser, { initialState as permissionUserInitialState } from "./user/permissionUser";
 import privateMember, { initialState as privateMemberInitialState } from "./user/privateMember";
 import publicMember, { initialState as publicMemberInitialState } from "./user/publicMember";

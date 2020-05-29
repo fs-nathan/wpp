@@ -12,7 +12,7 @@ import { getPriorityEditingTitle } from '../LeftContent/i18nSelectors';
 import './styles.scss';
 import { getApprovalConditionEditingTitle } from './i18nSelectors';
 
-const MiddleContent = ({ can_modify, status_code, rate_accepted, members_approved, number_member_rejected, number_member_accepted, date_label, hour_label, content, title, id, priority_code, user_create_name, condition_accept, user_create_avatar }) => {
+const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted, members_approved, number_member_rejected, number_member_accepted, date_label, hour_label, content, title, id, priority_code, user_create_name, condition_accept, user_create_avatar }) => {
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
@@ -69,7 +69,7 @@ const MiddleContent = ({ can_modify, status_code, rate_accepted, members_approve
               className="offerDetail-approvalConditionContainer-inner-editBtn"
               size="small"
               onClick={() => setOpenUpdateOfferModal(true)}
-              disabled={!can_modify}
+              disabled={!can_update_condition_accept}
             >
               {getApprovalConditionEditingTitle(t)}
             </Button>

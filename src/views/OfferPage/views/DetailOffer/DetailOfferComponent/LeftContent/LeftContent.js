@@ -22,8 +22,11 @@ import {
   deleteMemberMonitor,
   uploadDocumentOffer,
 } from 'views/OfferPage/redux/actions';
+import { listUserOfGroup } from '../../../../../../actions/user/listUserOfGroup';
 import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
+import { allMembersSelector } from '../../../../../../reducers/user/listOfUserGroup/selectors';
 import SendFileModal from '../../../../../JobDetailPage/ChatComponent/SendFile/SendFileModal';
+import AddOfferMemberModal from '../../../../../JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import CustomAddOfferMemberModal from "../AddOfferMemberModal";
 import './styles.scss';
@@ -264,27 +267,38 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     </>
   );
 };
-const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members_can_approve, bgColor }) => {
-  const dispatch = useDispatch()
-  const { t } = useTranslation()
+const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers, addedHandlers, addableHandlers, bgColor }) => {
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [openAddMemberHandleModal, setOpenAddMemberHandleModal] = useState(false)
+  const [openAddHandlerModal, setOpenAddHandlerModal] = useState(false);
+  const [newHandlerIndexes, setNewHandlerIndexes] = useState([]);
 
-  const onAddMemberHandle = (member) => {
-    if (can_modify === false) {
+  const disabledMemberIndexes = [];
+  allMembers.forEach((member, idx) => {
+    (
+      addableHandlers.every(handler => member.id !== handler.id)
+      || member.id === userCreateId
+    )
+    && disabledMemberIndexes.push(idx);
+  })
+
+  const onAddHandler = (members) => {
+    if (can_update_member_handle === false) {
       enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
-      return
+      return;
     }
-    let membersID = []
-    member.forEach(i => {
-      membersID = [...membersID, memberCanAddInApprove[i].id]
+    setNewHandlerIndexes(members);
+    const memberIds = [];
+    members.forEach(idx => {
+      memberIds.push(allMembers[idx].id);
     })
-    dispatch(addMemberHandle({ offer_id, member_id: membersID }))
+    dispatch(addMemberHandle({ offer_id, member_id: memberIds }))
   }
-  const onDeleteMemberHandle = ({ member_id }) => {
-    if (can_modify === false) {
+  const onDeleteHandler = ({ offer_id, member_id }) => {
+    if (can_update_member_handle === false) {
       enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
@@ -299,7 +313,7 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
           <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
           <IconButton
             className="offerDetail-addBtn"
-            onClick={() => setOpenAddMemberHandleModal(true)}
+            onClick={() => setOpenAddHandlerModal(true)}
           >
             <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
             <span className="offerDetail-addBtn-title">{t('ADD_PERSON_HANDLE')}</span>
@@ -307,8 +321,8 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
         </Grid>
         <Grid item xs={7}>
           <Grid container>
-            {!isEmpty(members_can_approve) && (
-              members_can_approve.map((member, i) => (
+            {!isEmpty(addedHandlers) && (
+              addedHandlers.map((member, i) => (
                 <Grid item xs={12} className="offerDetail-handlingPerson-item">
                   <Grid container>
                     <Grid item xs={2}>
@@ -323,7 +337,7 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
 
                     <IconButton
                       className="offerDetail-handlingPerson-deleteBtn"
-                      onClick={() => onDeleteMemberHandle({ member_id: get(member, "id") })}
+                      onClick={() => onDeleteHandler({ offer_id, member_id: get(member, "id") })}
                     >
                       <DeleteIcon fontSize="small" />
                     </IconButton>
@@ -335,37 +349,49 @@ const PersonCanApprove = ({ can_modify, offer_id, memberCanAddInApprove, members
         </Grid>
       </Grid>
       <div className="offerDetail-horizontalLine" />
-      <CustomAddOfferMemberModal
-        isOpen={openAddMemberHandleModal}
-        setOpen={setOpenAddMemberHandleModal}
-        onChange={onAddMemberHandle}
-        members={memberCanAddInApprove}
+      <AddOfferMemberModal
+        isOpen={openAddHandlerModal}
+        setOpen={setOpenAddHandlerModal}
+        members={allMembers}
+        disableIndexes={disabledMemberIndexes}
+        value={newHandlerIndexes}
+        onChange={onAddHandler}
       />
     </>
   );
 };
-const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_monitor, bgColor }) => {
-  const { t } = useTranslation()
-  const dispatch = useDispatch()
+const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers, addedMonitors, addableMonitors, bgColor }) => {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false)
+  const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false);
+  const [newMonitorIndexes, setNewMonitorIndexes] = useState([]);
 
-  const handleAddMember = (member) => {
-    if (can_modify === false) {
+  const disabledMemberIndexes = [];
+  allMembers.forEach((member, idx) => {
+    (
+      addableMonitors.every(monitor => member.id !== monitor.id)
+      || member.id === userCreateId
+    )
+    && disabledMemberIndexes.push(idx);
+  })
+
+  const onAddMonitor = (members) => {
+    if (can_update_member_monitor === false) {
       enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
-
-      return
+      return;
     }
-    let membersID = []
-    member.forEach(i => {
-      membersID = [...membersID, memberCanAddInMonitor[i].id]
+    setNewMonitorIndexes(members);
+    const memberIds = [];
+    members.forEach(idx => {
+      memberIds.push(allMembers[idx].id);
     })
-    dispatch(addMemberMonitor({ offer_id, member_id: membersID }))
+    dispatch(addMemberMonitor({ offer_id, member_id: memberIds }))
   }
-  const handleDeleteMemberMonitor = ({ member_id, offer_id }) => {
-    if (can_modify === false) {
+  const onDeleteMonitor = ({ offer_id, member_id }) => {
+    if (can_update_member_monitor === false) {
       enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
         variant: "warning"
       });
@@ -387,8 +413,8 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
       </Grid>
       <Grid item xs={7}>
         <Grid container>
-          {!isEmpty(members_monitor) && (
-            members_monitor.map(member => (
+          {!isEmpty(addedMonitors) && (
+            addedMonitors.map(member => (
               <Grid item xs={12} className="offerDetail-monitoringPerson-item">
                 <Grid container>
                   <Grid item xs={2}>
@@ -402,7 +428,7 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
                   </Grid>
                   <IconButton
                     className="offerDetail-monitoringPerson-deleteBtn"
-                    onClick={() => handleDeleteMemberMonitor({ offer_id, member_id: get(member, "id") })}
+                    onClick={() => onDeleteMonitor({ offer_id, member_id: get(member, "id") })}
                   >
                     <DeleteIcon fontSize="small" />
                   </IconButton>
@@ -412,11 +438,13 @@ const PersonMonitor = ({ can_modify, offer_id, memberCanAddInMonitor, members_mo
           )}
         </Grid>
       </Grid>
-      <CustomAddOfferMemberModal
+      <AddOfferMemberModal
         isOpen={openAddMonitorModal}
         setOpen={setOpenAddMonitorModal}
-        members={memberCanAddInMonitor}
-        onChange={handleAddMember}
+        members={allMembers}
+        disableIndexes={disabledMemberIndexes}
+        value={newMonitorIndexes}
+        onChange={onAddMonitor}
       />
     </Grid>
 
@@ -435,6 +463,8 @@ export default function LeftContent({
   title,
   content,
   can_modify,
+  can_update_member_handle,
+  can_update_member_monitor,
   user_create_name,
   user_create_avatar,
   user_create_id,
@@ -442,29 +472,18 @@ export default function LeftContent({
   offer_group_id,
   id
 }) {
+  const dispatch = useDispatch();
   const bgColor = useSelector(state => bgColorSelector(state));
   const currentUserId = useSelector(state => state.system.profile.id);
-  const [members, setMembers] = useState([])
-
-  const fetchMembers = useCallback(async () => {
-    const config = {
-      url: "/list-users",
-      method: "GET"
-    }
-    var users = []
-    const result = await apiService(config)
-    result.data.users.forEach(x => {
-      users = [...users, [...x.users]]
-    })
-    setMembers(lodash.flatten(users).filter(x => x.id !== currentUserId))
-  }, [currentUserId])
+  const { members: allMembers } = useSelector(state => allMembersSelector(state));
   useEffect(() => {
-    fetchMembers()
-  }, [fetchMembers])
+    dispatch(listUserOfGroup(false));
+  }, [currentUserId])
 
-  const memberCanAdd = () => {
-    return lodash.differenceBy(members, members_can_approve, members_monitor, 'id')
-  }
+  const addableMembers = useMemo(
+    () => lodash.differenceBy(allMembers, members_can_approve, members_monitor, 'id'),
+    [allMembers, members_can_approve, members_monitor]
+  );
   return (
     <Grid item xs={6} className="offerDetail-leftContent-container">
       <PersonInfo
@@ -490,18 +509,22 @@ export default function LeftContent({
         documents={documents}
         bgColor={bgColor}
       />
-      <PersonCanApprove
-        can_modify={can_modify}
+      <Handler
+        can_update_member_handle={can_update_member_handle}
         offer_id={id}
-        memberCanAddInApprove={memberCanAdd()}
-        members_can_approve={members_can_approve}
+        userCreateId={user_create_id}
+        allMembers={allMembers}
+        addedHandlers={members_can_approve}
+        addableHandlers={addableMembers}
         bgColor={bgColor}
       />
-      <PersonMonitor
-        can_modify={can_modify}
+      <Monitor
+        can_update_member_monitor={can_update_member_monitor}
         offer_id={id}
-        memberCanAddInMonitor={memberCanAdd()}
-        members_monitor={members_monitor}
+        userCreateId={user_create_id}
+        allMembers={allMembers}
+        addedMonitors={members_monitor}
+        addableMonitors={addableMembers}
         bgColor={bgColor}
       />
     </Grid>

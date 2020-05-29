@@ -8,6 +8,9 @@ import "./style.scss";
 
 const DetailOffer = ({
   can_modify,
+  can_update_condition_accept,
+  can_update_member_handle,
+  can_update_member_monitor,
   condition_accept,
   documents,
   content,
@@ -46,6 +49,8 @@ const DetailOffer = ({
         user_create_avatar={user_create_avatar}
         user_create_id={user_create_id}
         can_modify={can_modify}
+        can_update_member_handle={can_update_member_handle}
+        can_update_member_monitor={can_update_member_monitor}
         title={title}
         priority_name={priority_name}
         status_name={status_name}
@@ -59,7 +64,7 @@ const DetailOffer = ({
       />
       <div className="offerDetail-verticalLine" />
       <MiddleContent
-        can_modify={can_modify}
+        can_update_condition_accept={can_update_condition_accept}
         status_code={status_code}
         rate_accepted={rate_accepted}
         number_member_rejected={number_member_rejected}
@@ -82,6 +87,9 @@ const DetailOffer = ({
 };
 DetailOffer.prototype = {
   can_modify: PropTypes.bool,
+  can_update_condition_accept: PropTypes.bool,
+  can_update_member_handle: PropTypes.bool,
+  can_update_member_monitor: PropTypes.bool,
   condition_accept: PropTypes.object,
   documents: PropTypes.array,
   content: PropTypes.string,
