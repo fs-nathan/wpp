@@ -1,6 +1,7 @@
 import { Avatar, Button, Chip, Grid, IconButton, TextField } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
+import { listUserOfGroup } from '../../../../../actions/user/listUserOfGroup';
 import { bgColorSelector } from '../../../../../reducers/setting/selectors';
 import { createOffer, deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
@@ -9,13 +10,14 @@ import lodash from 'lodash';
 import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 import { useSnackbar } from 'notistack';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
+import { allMembersSelector } from '../../../../../reducers/user/listOfUserGroup/selectors';
 import { updateOfferApprovalCondition, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
@@ -31,8 +33,7 @@ const OfferModal = (props) => {
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.id);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  // const members = useSelector(state => state.taskDetail.taskMember.member);
-  const [members, setMembers] = useState([])
+  const { members: allMembers } = useSelector(state => allMembersSelector(state));
   const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
   const defaultOffer = { ...DEFAULT_OFFER_ITEM, offer_group_id: "", priority: priorityList[0], condition_logic: "OR", condition_logic_member: "OR", file_ids: [], min_rate_accept: 100 }
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
@@ -48,21 +49,8 @@ const OfferModal = (props) => {
   const [isOpenAddApprovalMemberModal, setOpenAddApprovalMemberModal] = React.useState(false)
   const { item } = props;
   const createId = (item && item.user_create_id) || currentUserId;
-  const createUserIndex = findIndex(members, member => member.id === createId);
+  const createUserIndex = findIndex(allMembers, member => member.id === createId);
 
-
-  const fetchMembers = useCallback(async () => {
-    const config = {
-      url: "/list-users",
-      method: "GET"
-    }
-    var users = []
-    const result = await apiService(config)
-    result.data.users.forEach(x => {
-      users = [...users, [...x.users]]
-    })
-    setMembers(lodash.flatten(users).filter(x => x.id !== currentUserId))
-  }, [currentUserId])
   const fetchOffersGroup = async () => {
     const config = {
       url: "/offers/list-group-offer",
@@ -76,12 +64,11 @@ const OfferModal = (props) => {
     })
     setOffersGroup(newArray)
   }
-  /// Khi nào modal open thì load members và group
-  React.useEffect(() => {
-    fetchMembers()
-    fetchOffersGroup()
-  }, [fetchMembers, props.isOpen])
-  React.useEffect(() => {
+  useEffect(() => {
+    dispatch(listUserOfGroup(false));
+    fetchOffersGroup();
+  }, [currentUserId])
+  useEffect(() => {
     if (item) {
       const {
         user_can_handers,
@@ -92,16 +79,16 @@ const OfferModal = (props) => {
       } = item;
       if (user_can_handers) {
         const handlerIndexes = user_can_handers.map(
-          handler => findIndex(members, member => member.id === handler.id))
+          handler => findIndex(allMembers, member => member.id === handler.id))
         setHandlers(handlerIndexes.filter(idx => idx !== -1))
       }
       if (user_monitors) {
-        const monitorsIndexes = user_monitors.map(monitor => findIndex(members, member => member.id === monitor.id))
+        const monitorsIndexes = user_monitors.map(monitor => findIndex(allMembers, member => member.id === monitor.id))
         setMonitors(monitorsIndexes.filter(idx => idx !== -1))
       }
       if (approval_members) {
         const approvalMembersIndices = approval_members.map(
-          approvalMembers => findIndex(members, member => member.id === approvalMembers.id)
+          approvalMembers => findIndex(allMembers, member => member.id === approvalMembers.id)
         );
         setApprovalMembers(approvalMembersIndices.filter(idx => idx !== -1));
       }
@@ -109,12 +96,12 @@ const OfferModal = (props) => {
       if (id != null) item.offer_id = id;
       setTempSelectedItem(item)
     }
-  }, [item, members])
+  }, [item, allMembers])
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
   const filterUserInHandlers = useCallback(() => {
-    const arr = handlers.map(i => members[i])
+    const arr = handlers.map(i => allMembers[i])
     return arr || []
   })
   const handleDeleteFile = fileId => {
@@ -161,13 +148,13 @@ const OfferModal = (props) => {
 
     // add each user to form data
     handlers.forEach((value, index) => {
-      dataCreateOfferFormData.append("user_handle[" + index + "]", members[value].id)
+      dataCreateOfferFormData.append("user_handle[" + index + "]", allMembers[value].id)
     })
     monitors.forEach((value, index) => {
-      dataCreateOfferFormData.append("user_monitor[" + index + "]", members[value].id)
+      dataCreateOfferFormData.append("user_monitor[" + index + "]", allMembers[value].id)
     })
     approvalMembers.forEach((value, index) => {
-      dataCreateOfferFormData.append("member_accepted_important[" + index + "]", members[value].id)
+      dataCreateOfferFormData.append("member_accepted_important[" + index + "]", allMembers[value].id)
     })
     // add uploaded files to form data
     tempSelectedItem.files.forEach(file => {
@@ -218,7 +205,7 @@ const OfferModal = (props) => {
     } else {
       const approvalMemberIds = [];
       approvalMembers.forEach(idx => {
-        approvalMemberIds.push(members[idx].id)
+        approvalMemberIds.push(allMembers[idx].id)
       })
       dispatch(updateOfferApprovalCondition({
         offerId: tempSelectedItem.offer_id,
@@ -323,8 +310,8 @@ const OfferModal = (props) => {
                 {handlers.map((index) =>
                   <Chip
                     key={index}
-                    avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-                    label={members[index].name}
+                    avatar={<Avatar alt="avatar" src={allMembers[index].avatar} />}
+                    label={allMembers[index].name}
                     onDelete={handleDeleteHandler(index)}
                   />
                 )}
@@ -337,7 +324,7 @@ const OfferModal = (props) => {
                   setOpen={setOpenAddHandler}
                   value={handlers}
                   onChange={setHandlers}
-                  members={members}
+                  members={allMembers}
                   disableIndexes={[...approvalMembers, createUserIndex]}
                 />
               </div>
@@ -346,8 +333,8 @@ const OfferModal = (props) => {
                 {monitors.map((index) =>
                   <Chip
                     key={index}
-                    avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-                    label={members[index].name}
+                    avatar={<Avatar alt="avatar" src={allMembers[index].avatar} />}
+                    label={allMembers[index].name}
                     onDelete={handleDeleteMonitor(index)}
                   />
                 )}
@@ -360,7 +347,7 @@ const OfferModal = (props) => {
                   setOpen={setOpenAddMonitor}
                   value={monitors}
                   onChange={setMonitors}
-                  members={members}
+                  members={allMembers}
                   disableIndexes={[...handlers, createUserIndex]}
                 />
               </div>
@@ -481,8 +468,8 @@ const OfferModal = (props) => {
                     {approvalMembers.map((index) =>
                       <Chip
                         key={index}
-                        avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-                        label={members[index].name}
+                        avatar={<Avatar alt="avatar" src={allMembers[index].avatar} />}
+                        label={allMembers[index].name}
                         onDelete={handleDeleteApprove(index)}
                       />
                     )}
