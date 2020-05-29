@@ -102,7 +102,7 @@ const ModalImage = () => {
   const createUser = useSelector(state => state.chat.createUser);
 
   const [currentImage, setCurrentImage] = useState(selectedImage);
-  const [userCreated, setUserCreated] = useState(createUser);
+  const [imageInfo, setImageInfo] = useState(createUser);
   const [rotate, setRotate] = useState(0);
 
   const { name = '', url } = imagesList[currentImage] || {};
@@ -171,13 +171,15 @@ const ModalImage = () => {
     const { id } = imagesList[currentImage] || {}
     async function getDetail() {
       const { data } = await getDocumentDetail({ file_id: id })
-      // console.log('currentImage', data)
+      console.log('currentImage', data)
       if (data.file) {
-        const { avatar, name } = data.file.user_create;
-        setUserCreated({
+        const { user_create: { avatar, name }, size, name: file_name } = data.file;
+        setImageInfo({
           user_create_avatar: avatar,
           user_create_name: name,
           time_create: data.file.created_at,
+          size,
+          file_name,
         })
       }
     }
@@ -235,7 +237,7 @@ const ModalImage = () => {
       className="ModalImage"
     >
       <DialogTitleModalImage id="customized-dialog-title"
-        {...userCreated}
+        {...imageInfo}
         image={imagesList[currentImage]}
         onClickShare={onClickShare}
         onClickDetail={onClickDetail}

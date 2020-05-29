@@ -16,6 +16,7 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 
 function getPosition(chatPosition, i, length) {
   if (length === 1 || chatPosition === 'mid')
@@ -58,6 +59,7 @@ const FileMessage = ({
   isReply,
   isUploading,
   is_me,
+  can_delete,
   chatPosition = "top",
 }) => {
   const { t } = useTranslation();
@@ -89,61 +91,63 @@ const FileMessage = ({
   }
 
 
-  return files.map((file, i) => {
-    const chatFilePosition = getPosition(chatPosition, i, files.length)
-    return (
-      <div key={i} className={clsx("FileMessage",
+  return (
+    <div className={clsx("FileMessage",
+      {
+        [`TextMessage__${chatPosition}`]: !isReply,
+        [`TextMessage__reply`]: isReply,
+      })}  >
+      {!isReply && !is_me &&
+        <abbr title={user_create_name}>
+          <Avatar onClick={onClickAvatar}
+            className={clsx("TextMessage--avatar", {
+              'TextMessage--avatar__hidden': isOneOf(chatPosition, ['bot', 'mid'])
+            })} src={user_create_avatar} />
+        </abbr>
+      }
+      {!isReply && is_me &&
+        <CommonMessageAction can_delete={can_delete} isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+      <div className={clsx("TextMessage--rightContentWrap",
+        is_me ? `TextMessage--rightContentWrap__self-${chatPosition}`
+          : `TextMessage--rightContentWrap__${chatPosition}`,
         {
-          [`TextMessage__${chatFilePosition}`]: !isReply,
-          [`TextMessage__reply`]: isReply,
-        })}  >
-        {!isReply && !is_me &&
-          <abbr title={user_create_name}>
-            <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
-          </abbr>
-        }
-        {!isReply && is_me &&
-          <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
-        <div className={clsx("TextMessage--rightContentWrap",
-          is_me ? `TextMessage--rightContentWrap__self-${chatFilePosition}`
-            : `TextMessage--rightContentWrap__${chatFilePosition}`,
+          "TextMessage--reply": isReply,
+          "TextMessage--rightContentWrap__self": is_me
+        })}
+        style={{
+          backgroundColor: is_me ? groupActiveColor : '#fff',
+          borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none'
+        }}
+      >
+        <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
           {
-            "TextMessage--reply": isReply,
-            "TextMessage--rightContentWrap__self": is_me
-          })}
-          style={{
-            backgroundColor: is_me ? groupActiveColor : '#fff',
-            borderLeft: isReply ? `2px solid ${groupActiveColor}` : 'none'
-          }}
-        >
-          <abbr className="TextMessage--tooltip" title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
-            {
-              ((chatFilePosition === 'top' && !is_me) || isReply) &&
-              <div className="TextMessage--sender"  >
-                {isReply &&
-                  <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
-                }
-                <div className="TextMessage--name"  >
-                  {user_create_name}
-                </div>
-                <div className="TextMessage--position"  >
-                  {user_create_position}
-                </div>
-                {user_create_roles[0] &&
-                  <div className="TextMessage--room"  >
-                    {user_create_roles[0]}
-                  </div>
-                }
-              </div>
-            }
-            <div className={clsx("TextMessage--content", {
-              "TextMessage--content__self": is_me,
-              "TextMessage--content__withReact": data_emotion.length > 0,
-            })} >
-              {chat_parent &&
-                <TextMessage {...chat_parent} isReply></TextMessage>
+            ((chatPosition === 'top' && !is_me) || isReply) &&
+            <div className="TextMessage--sender"  >
+              {isReply &&
+                <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
               }
-              <div className="FileMessage--files">
+              <div className="TextMessage--name"  >
+                {user_create_name}
+              </div>
+              <div className="TextMessage--position"  >
+                {user_create_position}
+              </div>
+              {user_create_roles[0] &&
+                <div className="TextMessage--room"  >
+                  {user_create_roles[0]}
+                </div>
+              }
+            </div>
+          }
+          <div className={clsx("TextMessage--content", {
+            "TextMessage--content__self": is_me,
+            "TextMessage--content__withReact": data_emotion.length > 0,
+          })} >
+            {chat_parent &&
+              <TextMessage {...chat_parent} isReply></TextMessage>
+            }
+            {files.map((file, i) =>
+              (<div className="FileMessage--files" key={file.id || i} >
                 <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
                   onClick={onClickFile(file, i)}
                   src={file.file_icon} alt="file-icon"></img>
@@ -168,18 +172,18 @@ const FileMessage = ({
                   <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
                 </div>
               </div>
-            </div>
-            {data_emotion.length > 0 &&
-              <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
-            }
-          </abbr>
-        </div>
-        {!isReply && !is_me &&
-          <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
-        }
-      </div >
-    )
-  })
+              ))}
+          </div>
+          {data_emotion.length > 0 &&
+            <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
+          }
+        </abbr>
+      </div>
+      {!isReply && !is_me &&
+        <CommonMessageAction can_delete={can_delete} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+      }
+    </div >
+  )
 }
 
 FileMessage.propTypes = {

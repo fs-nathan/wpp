@@ -63,6 +63,16 @@ function getStatusName(status_code) {
     return "LABEL_CHAT_TASK_TAM_DUNG"
 }
 
+function getStatusCode(status_code, complete) {
+  if (status_code === 3)
+    return 3;
+  if (complete === 0)
+    return 0;
+  if (complete === 100)
+    return 2;
+  return 1;
+}
+
 function JobName(props) {
   const { t } = useTranslation();
   const { isghim = '', new_chat, ...rest } = props
@@ -94,7 +104,7 @@ function JobContent(props) {
       </div>
       <div>
         <ChipMes
-          label={notification}
+          label={notification > 99 ? '99+' : notification}
           size="small"
           notification={notification > 0}
         />
@@ -147,16 +157,21 @@ function ListBodyItem(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
+  const isLoading = useSelector(state => state.chat.isLoading)
   // console.log({ props })
 
   function onClickItem() {
-    dispatch(chooseTask(props.id));
-    dispatch(getTaskDetailTabPart({ taskId: props.id }));
+    if (isLoading) return;
+    // dispatch(chooseTask(props.id));
+    // dispatch(getTaskDetailTabPart({ taskId: props.id }));
     dispatch(showTab(0))
-    dispatch(loadChat(props.id))
+    // dispatch(loadChat(props.id))
     // getMemberByTaskId(props.id)
     // getMemberNotAssignedByTaskId(props.id)
-    history.push({ search: `?task_id=${props.id}` });
+    // console.log('history', history.search)
+    const { pathname } = history.location;
+    const path = pathname.split('?')[0]
+    history.push({ pathname: path, search: `?task_id=${props.id}` });
   }
 
   const fillColor = props.complete === 100 ? '#00e690' : '#eee';
@@ -174,7 +189,7 @@ function ListBodyItem(props) {
         chat,
         name,
         status_name,
-        status_code,
+        status_code: getStatusCode(status_code, props.complete),
         new_chat,
         is_ghim,
         updated_time,

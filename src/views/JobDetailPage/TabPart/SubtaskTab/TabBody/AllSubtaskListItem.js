@@ -146,9 +146,11 @@ function AllSubtaskListItem(props) {
             {/* <div className="subTaskItem--createdAt">Tạo lúc {props.task.created_at}</div> */}
           </ListItemText>
           <StyledMenu>
-            <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
-              <Icon path={mdiDotsVertical} size={1} />
-            </ButtonIcon>
+            {props.task.can_modify &&
+              <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
+                <Icon path={mdiDotsVertical} size={1} />
+              </ButtonIcon>
+            }
             <Menu
               anchorEl={anchorEl}
               keepMounted

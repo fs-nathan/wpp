@@ -411,9 +411,10 @@ export const getImage = ({ taskId, page }) => ({
     },
 });
 
-export const getImageSuccess = (payload) => ({
+export const getImageSuccess = (payload, isMore) => ({
     type: types.GET_IMAGE_TABPART_SUCCESS,
-    payload
+    payload,
+    isMore
 });
 
 export const getImageFail = (error) => ({
@@ -429,9 +430,10 @@ export const getFileTabPart = ({ taskId, page }) => ({
     },
 });
 
-export const getFileTabPartSuccess = (payload) => ({
+export const getFileTabPartSuccess = (payload, isMore) => ({
     type: types.GET_FILE_TABPART_SUCCESS,
-    payload
+    payload,
+    isMore
 });
 
 export const getFileTabPartFail = (error) => ({

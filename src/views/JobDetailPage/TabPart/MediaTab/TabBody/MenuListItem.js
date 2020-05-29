@@ -39,9 +39,9 @@ const MenuListItem = ({ item, colorIcon = '#fff', isLink }) => {
   function handleViewChat() {
     setAnchorEl(null);
     if (isLink) {
-      dispatch(loadChat(taskId, undefined, true, undefined, item.chat_id))
+      dispatch(loadChat(taskId, undefined, false, undefined, item.chat_id))
     } else {
-      dispatch(loadChat(taskId, undefined, true, item.id, item.chat_id))
+      dispatch(loadChat(taskId, undefined, false, item.id, item.chat_id))
     }
   }
 
