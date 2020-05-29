@@ -96,7 +96,6 @@ const RenderUpdateOfferDetailDescriptionSectionModal = (
     <OfferModal
       isOpen={openUpdateOfferModal}
       setOpen={setOpenUpdateOfferModal}
-      isUpdateOffer
       isUpdateOfferDetailDescriptionSection
       item={{
         id: offerId,

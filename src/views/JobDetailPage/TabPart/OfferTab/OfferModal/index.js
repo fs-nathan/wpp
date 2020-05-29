@@ -26,7 +26,13 @@ import OfferFile from './OfferFile';
 import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import './styles.scss';
 
-const OfferModal = (props) => {
+const OfferModal = ({
+                      isOpen,
+                      setOpen,
+                      item: offerItem,
+                      isUpdateOfferDetailDescriptionSection,
+                      isUpdateOfferApprovalCondition
+                    }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const bgColor = useSelector(state => bgColorSelector(state));
@@ -47,8 +53,7 @@ const OfferModal = (props) => {
   const [openSendFileModal, setOpenSendFileModal] = useState(false);
   /// Mở modal các thành viên sau phải duyệt
   const [isOpenAddApprovalMemberModal, setOpenAddApprovalMemberModal] = React.useState(false)
-  const { item } = props;
-  const createId = (item && item.user_create_id) || currentUserId;
+  const createId = (offerItem && offerItem.user_create_id) || currentUserId;
   const createUserIndex = findIndex(allMembers, member => member.id === createId);
 
   const fetchOffersGroup = async () => {
@@ -69,14 +74,14 @@ const OfferModal = (props) => {
     fetchOffersGroup();
   }, [currentUserId])
   useEffect(() => {
-    if (item) {
+    if (offerItem) {
       const {
         user_can_handers,
         user_monitors,
         priority_code,
         id,
         approval_members,
-      } = item;
+      } = offerItem;
       if (user_can_handers) {
         const handlerIndexes = user_can_handers.map(
           handler => findIndex(allMembers, member => member.id === handler.id))
@@ -92,11 +97,11 @@ const OfferModal = (props) => {
         );
         setApprovalMembers(approvalMembersIndices.filter(idx => idx !== -1));
       }
-      if (priority_code != null) item.priority = priorityList[priority_code];
-      if (id != null) item.offer_id = id;
-      setTempSelectedItem(item)
+      if (priority_code != null) offerItem.priority = priorityList[priority_code];
+      if (id != null) offerItem.offer_id = id;
+      setTempSelectedItem(offerItem)
     }
-  }, [item, allMembers])
+  }, [offerItem, allMembers])
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
@@ -110,7 +115,7 @@ const OfferModal = (props) => {
       setParams("file_ids", tempSelectedItem.file_ids.filter(file => file.id !== fileId));
       setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
     }
-    if (props.isUpdateOffer) {
+    if (isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition) {
       let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
       // Build a callback that allow saga remove file in state array
       // Call api
@@ -184,15 +189,15 @@ const OfferModal = (props) => {
     setParams("files", [])
   }
   function onClickCreateOffer() {
-    props.setOpen(false)
+    setOpen(false)
     if (tempSelectedItem.content)
       handleCreateOffer()
     setParams("content", '')
   }
 
   function onClickUpdateOffer() {
-    props.setOpen(false)
-    if (props.isUpdateOfferDetailDescriptionSection) {
+    setOpen(false)
+    if (isUpdateOfferDetailDescriptionSection) {
       if (validate()) {
         dispatch(updateOfferDetailDescriptionSection({
           offerId: tempSelectedItem.offer_id,
@@ -249,7 +254,6 @@ const OfferModal = (props) => {
   }
 
   function validate() {
-    const { isUpdateOfferDetailDescriptionSection, isUpdateOfferApprovalCondition } = props;
     const { title, content, offer_group_id, priority } = tempSelectedItem;
     if (isUpdateOfferDetailDescriptionSection) {
       return title && content;
@@ -262,17 +266,25 @@ const OfferModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={props.isUpdateOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
-      open={props.isOpen}
-      setOpen={props.setOpen}
+      title={
+        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition
+          ? "Chỉnh sửa đề xuất"
+          : 'Tạo đề xuất'
+      }
+      open={isOpen}
+      setOpen={setOpen}
       confirmRender={() => "Hoàn Thành"}
-      onConfirm={props.isUpdateOffer ? onClickUpdateOffer : onClickCreateOffer}
+      onConfirm={
+        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition
+          ? onClickUpdateOffer
+          : onClickCreateOffer
+      }
       canConfirm={validate()}
       className="offerModal"
     >
       <React.Fragment>
         {
-          !props.isUpdateOffer || props.isUpdateOfferDetailDescriptionSection ? (
+          !isUpdateOfferApprovalCondition ? (
             <>
               <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
               <TextField
@@ -298,7 +310,7 @@ const OfferModal = (props) => {
           ) : null
         }
         {
-          !props.isUpdateOffer ? (
+          !isUpdateOfferDetailDescriptionSection && !isUpdateOfferApprovalCondition ? (
             <>
               <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
               <CustomSelect
@@ -355,7 +367,7 @@ const OfferModal = (props) => {
           ) : null
         }
         {
-          !props.isUpdateOffer || props.isUpdateOfferDetailDescriptionSection ? (
+          !isUpdateOfferApprovalCondition ? (
             <>
               <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
               <CommonPriorityForm
@@ -369,7 +381,7 @@ const OfferModal = (props) => {
           ) : null
         }
         {
-          !props.isUpdateOffer || props.isUpdateOfferApprovalCondition ? (
+          !isUpdateOfferDetailDescriptionSection ? (
             <>
               <TitleSectionModal label={'Điều kiện được duyệt'} />
               <Grid container spacing={3} className="">
@@ -480,7 +492,7 @@ const OfferModal = (props) => {
           ) : null
         }
         {
-          !props.isUpdateOffer ? (
+          !isUpdateOfferDetailDescriptionSection && !isUpdateOfferApprovalCondition ? (
             <>
               <label className="offerModal--attach" >
                 <Button variant="outlined" component="span" onClick={() => setOpenSendFileModal(true)} fullWidth className={'classes.button'}>

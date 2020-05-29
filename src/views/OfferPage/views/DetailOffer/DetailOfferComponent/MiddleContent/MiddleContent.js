@@ -24,7 +24,6 @@ const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted
       <OfferModal
         isOpen={openUpdateOfferModal}
         setOpen={setOpenUpdateOfferModal}
-        isUpdateOffer
         isUpdateOfferApprovalCondition
         item={{
           id: id,
