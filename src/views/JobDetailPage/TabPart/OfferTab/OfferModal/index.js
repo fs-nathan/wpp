@@ -29,6 +29,7 @@ import './styles.scss';
 const OfferModal = ({
                       isOpen,
                       setOpen,
+                      actionCreateOffer,
                       item: offerItem,
                       isUpdateOfferDetailDescriptionSection,
                       isUpdateOfferApprovalCondition
@@ -172,22 +173,18 @@ const OfferModal = ({
     return dataCreateOfferFormData;
   }
 
-  const handleCreateOffer = async () => {
-    // try {
-    //   const config = {
-    //     url: "/offers/personal/create",
-    //     method: "POST",
-    //     data: getFormData(),
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   }
-    //   await apiService(config)
-    //   enqueueSnackbar("Create offer successful", { variant: "success" })
-    // } catch (err) {
-    //   enqueueSnackbar(err.message, { variant: "error" })
-    // }
-    dispatch(createOffer({ data: getFormData(), taskId }))
-    setParams("files", [])
-  }
+  const handleCreateOffer = () => {
+    if (actionCreateOffer) {
+      if (actionCreateOffer.payload) {
+        actionCreateOffer.payload.data = getFormData();
+      } else {
+        actionCreateOffer.payload = {
+          data: getFormData(),
+        }
+      }
+      dispatch(actionCreateOffer);
+    }
+  };
   function onClickCreateOffer() {
     setOpen(false)
     if (tempSelectedItem.content)

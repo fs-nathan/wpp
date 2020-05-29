@@ -16,6 +16,7 @@ import {
   LOAD_DETAIL_OFFER,
   UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
   UPDATE_OFFER_APPROVAL_CONDITION,
+  CREATE_OFFER,
   DELETE_OFFER,
   LOAD_OFFER_BY_DEPARTMENT_ID,
   LOAD_OFFER_BY_GROUP_ID,
@@ -175,6 +176,9 @@ export const removeCommentOfferDetail = ({ commentId }) => {
     payload: { commentId },
   }
 };
+export const createOffer = () => ({
+  type: CREATE_OFFER,
+})
 export const deleteOffer = ({ id }) => {
   return {
     type: DELETE_OFFER,

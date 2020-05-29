@@ -1,6 +1,7 @@
 import moment from "moment";
 import { put } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
+import { DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter } from '../../../constants/snackbarController';
 import {
   ADD_MEMBER_HANDLE_ERROR,
   ADD_MEMBER_HANDLE_SUCCESS,
@@ -289,6 +290,22 @@ export function* doRemoveCommentOfferDetail({ payload }) {
     yield put({ type: OFFER_DETAIL_REMOVE_COMMENT_SUCCESS, payload: { ...result.data, id: commentId } })
   } catch (err) {
     yield put({ type: OFFER_DETAIL_REMOVE_COMMENT_ERROR, payload: err.toString() })
+  }
+}
+export function* doCreateOffer({ payload }) {
+  try {
+    const { data } = payload;
+    const config = {
+      url: "/offers/personal/create",
+      method: "POST",
+      data: data,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    };
+    const result = yield apiService(config);
+    result.data.state && SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS)
+    || SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.ERROR);
+  } catch (err) {
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doDeleteOffer({ payload }) {

@@ -14,6 +14,7 @@ import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTabl
 import QuickViewFilter from "../components/QuickViewFilter";
 import { Routes } from '../contants/routes';
 import { OfferPageContext } from "../OfferPageContext";
+import { createOffer } from '../redux/actions';
 import { get } from "../utils";
 import "./Layout.css";
 
@@ -245,7 +246,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
         />
 
         {openModalOffer && (
-          <OfferModal isOpen={true} setOpen={setOpen} />
+          <OfferModal isOpen={true} setOpen={setOpen} actionCreateOffer={createOffer()} />
         )}
       </>
     </CustomTableProvider>
