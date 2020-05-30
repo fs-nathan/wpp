@@ -11,10 +11,11 @@ import './Drawer.scss';
 const FooterListDrawer = props => {
   const closeDrawer = url => {
     if (url === Routes.DANG_NHAP) {
-      localStorage.removeItem(TOKEN);
-      localStorage.removeItem(REFRESH_TOKEN);
-      localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
-      localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+      // localStorage.removeItem(TOKEN);
+      // localStorage.removeItem(REFRESH_TOKEN);
+      // localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+      // localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+      localStorage.clear();
     }
     props.actionVisibleDrawerMessage({
       type: '',

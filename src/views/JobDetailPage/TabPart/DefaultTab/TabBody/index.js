@@ -163,7 +163,7 @@ function TabBody(props) {
             placement="top-start">
             <StatusLabel
               type={TYPE_STATUS}
-              value={taskStatistic.state_code}
+              value={getCompleteStatus(taskStatistic.complete)}
             />
           </HtmlTooltip>
           <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}

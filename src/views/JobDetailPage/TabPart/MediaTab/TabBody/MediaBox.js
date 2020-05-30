@@ -17,7 +17,7 @@ const MediaBox = (props) => {
   const taskId = useSelector(taskIdSelector);
   const paging = useSelector(state => state.taskDetail.media.image.paging);
   const isLoading = useSelector(state => state.taskDetail.media.isFetching);
-  const { total_page, page } = paging;
+  const { total_page, page } = paging || {};
 
   function onClickImage(key, idx) {
     dispatch(showImagesList(true, imageData.images[key].images, idx));
@@ -37,7 +37,7 @@ const MediaBox = (props) => {
           className="mediaBox--scrollLoad"
           loadMore={loadMoreMedia}
           pageStart={1}
-          hasMore={false}
+          hasMore={page < total_page}
           loader={<div className="mediaBody--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
           useWindow={false}
         >

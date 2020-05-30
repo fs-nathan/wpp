@@ -3,6 +3,7 @@ import {
   getDataPinOnTaskChat,
   getViewedChatSuccess,
   updateChatState,
+  appendViewedChat,
 } from "actions/chat/chat";
 import {
   getListTaskDetail,
@@ -79,44 +80,6 @@ const LogoBox = styled.div`
 const ContentBox = styled.div`
   grid-area: main;
   overflow: hidden;
-  &::-webkit-scrollbar-track {
-    background-color: unset !important;
-  }
-  &::-webkit-scrollbar {
-    width: 10px;
-    background-color: unset !important;
-  }
-  &::-webkit-scrollbar-thumb {
-    border-radius: 5px;
-    cursor: pointer !important;
-    min-height: 50px !important;
-    &:hover {
-      background-color: #4a4a4a54;
-    }
-  }
-  &:hover::-webkit-scrollbar-thumb {
-    background-color: #88888854;
-  }
-  && * {
-    &::-webkit-scrollbar-track {
-      background-color: unset !important;
-    }
-    &::-webkit-scrollbar {
-      width: 5px;
-      background-color: unset !important;
-    }
-    &::-webkit-scrollbar-thumb {
-      border-radius: 5px;
-      cursor: pointer !important;
-      min-height: 50px !important;
-      &:hover {
-        background-color: #4a4a4a54;
-      }
-    }
-    &:hover::-webkit-scrollbar-thumb {
-      background-color: #88888854;
-    }
-  }
 `;
 
 const Image = styled.img`
@@ -228,6 +191,7 @@ function MainLayout({
   getTaskDetailTabPartSuccess,
   getDataPinOnTaskChat,
   updateChatState,
+  appendViewedChat,
   updateProjectChat,
   taskDetails = {},
   userId = "",
@@ -256,7 +220,9 @@ function MainLayout({
 
   function handleViewChat(data) {
     console.log("handleViewChat", data);
+    const { user_name, user_avatar, user_id } = data
     // getViewedChatSuccess(data)
+    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar })
   }
 
   useEffect(() => {
@@ -307,7 +273,7 @@ function MainLayout({
     if (!socket || !userId || !taskDetails) return;
     function handleChatInProject(data) {
       console.log("handleChatInProject", data);
-      const { user_create_id, task_id } = data;
+      const { user_create_id, task_id, content = {} } = data;
       const task =
         findTask(listTaskDetail, task_id) ||
         findIndex(listDataNotRoom, ({ id }) => id === task_id) !== -1;
@@ -317,7 +283,7 @@ function MainLayout({
         if (task_id !== taskDetails.id) {
           data.new_chat = user_create_id === userId ? 0 : 1;
         }
-        data.content = data.content[language];
+        data.content = content[language];
         data.updatedAt = Date.now();
         updateProjectChat(data);
       }
@@ -349,6 +315,9 @@ function MainLayout({
       if (task) {
         getTaskDetailTabPartSuccess({ task });
       }
+      if (data.type === CHAT_TYPE.UPDATE_COMPLETE) {
+        updateProjectChat({ complete: data.complete, task_id: taskDetails.id });
+      }
     };
 
     function pinOnTaskChat(data) {
@@ -374,7 +343,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(
@@ -494,6 +463,7 @@ export default connect(
     getTaskDetailTabPartSuccess,
     getDataPinOnTaskChat,
     updateChatState,
+    appendViewedChat,
     getViewedChatSuccess,
     actionFetchGroupDetail,
     actionToast,

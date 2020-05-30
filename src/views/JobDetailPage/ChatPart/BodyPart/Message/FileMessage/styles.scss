@@ -43,6 +43,8 @@
   &--download {
     &Button {
       cursor: pointer;
+      position: absolute;
+      right: 10px;
     }
     background-color: #eeeeee;
     border-radius: 50%;

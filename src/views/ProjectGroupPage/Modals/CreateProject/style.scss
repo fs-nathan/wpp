@@ -7,7 +7,7 @@
   align-items: center;
 }
 
-.view_ProjectGroup_Create_Project_Modal___button-case {
+@mixin view_ProjectGroup_Create_Project_Modal___button {
   &:first-child {
     margin-top: 12px; 
   }
@@ -59,6 +59,33 @@
     }
     & > div:last-child > span:first-child {
       color: #05b50c;
+    }
+  }
+}
+
+.view_ProjectGroup_Create_Project_Modal___button {
+  @include view_ProjectGroup_Create_Project_Modal___button;
+};
+
+.view_ProjectGroup_Create_Project_Modal___button-new {
+  @include view_ProjectGroup_Create_Project_Modal___button;
+  & path {
+    fill: rgb(255, 87, 34) !important;
+  }
+}
+
+.view_ProjectGroup_Create_Project_Modal___button-copy {
+  @include view_ProjectGroup_Create_Project_Modal___button;
+  & path {
+    fill: rgb(33, 150, 243) !important;
+  }
+}
+
+.view_ProjectGroup_Create_Project_Modal___modal {
+  & > div:nth-child(3) > div > div:nth-child(2) {
+    height: 45vh;
+    & > div {
+      height: 100%;
     }
   }
 }

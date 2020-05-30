@@ -10,6 +10,7 @@ import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 
 const ImageMessage = ({
   handleReplyChat,
@@ -27,6 +28,7 @@ const ImageMessage = ({
   isReply,
   isUploading,
   is_me,
+  can_delete,
   chatPosition = "top",
 }) => {
   const dispatch = useDispatch();
@@ -58,11 +60,14 @@ const ImageMessage = ({
     )} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
-          <Avatar onClick={onClickAvatar} className={clsx("TextMessage--avatar", { 'TextMessage--avatar__hidden': chatPosition !== 'top' })} src={user_create_avatar} />
+          <Avatar onClick={onClickAvatar}
+            className={clsx("TextMessage--avatar", {
+              'TextMessage--avatar__hidden': isOneOf(chatPosition, ['bot', 'mid'])
+            })} src={user_create_avatar} />
         </abbr>
       }
       {!isReply && is_me &&
-        <CommonMessageAction isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
+        <CommonMessageAction can_delete={can_delete} isSelf chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />}
       <div className={clsx("ImageMessage--rightContentWrap", {
         "TextMessage--reply": isReply,
         "ImageMessage--rightContentWrap__self": is_me
@@ -141,7 +146,7 @@ const ImageMessage = ({
       </div>
       {
         !isReply && !is_me &&
-        <CommonMessageAction chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+        <CommonMessageAction can_delete={can_delete} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
       }
     </div >
   );

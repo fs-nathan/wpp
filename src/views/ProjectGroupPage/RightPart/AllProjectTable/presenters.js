@@ -252,6 +252,7 @@ function AllProjectTable({
               label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.PROGRESS"),
               field: row => (
                 <LightTooltip
+                  className={'view_ProjectGroup_Table_All___progress'}
                   placement='top'
                   title={
                     <ChartInfoBox

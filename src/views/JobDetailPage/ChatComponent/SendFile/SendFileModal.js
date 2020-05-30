@@ -2,13 +2,16 @@ import { mdiCloudUpload, mdiLaptop } from '@mdi/js';
 import Icon from '@mdi/react';
 import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import ShareFromLibraryModal from 'views/JobDetailPage/ChatComponent/ShareFromLibraryModal';
 import CustomModal from '../../../../components/CustomModal';
+import OutOfStorageDialog from '../OutOfStorageDialog';
 import './SendFileModal.scss';
 
 const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile }) => {
   const { t } = useTranslation();
   const fileInputRef = useRef()
+  const error = useSelector(state => state.chat.error);
   const [isShareFromLib, setShareFromLib] = useState(false);
 
   function onClickFromComputer() {
@@ -68,11 +71,15 @@ const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile }) => {
           </div>
         </div>
       </CustomModal>
-      <ShareFromLibraryModal
-        open={isShareFromLib}
-        setOpen={setShareFromLib}
-        onClickConfirm={onClickConfirmShare}
-      />
+      {(error === 'limit_group_size') ?
+        <OutOfStorageDialog isOpen={error === 'limit_group_size'} setOpen={setShareFromLib} />
+        :
+        <ShareFromLibraryModal
+          open={isShareFromLib}
+          setOpen={setShareFromLib}
+          onClickConfirm={onClickConfirmShare}
+        />
+      }
     </>
   );
 };

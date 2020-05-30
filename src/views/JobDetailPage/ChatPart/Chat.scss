@@ -6,6 +6,8 @@
   height: 25px;
 }
 .footer-chat-container {
+  display: flex;
+  flex-direction: column;
   .icon-btn {
     margin-left: auto;
     padding: 8px;

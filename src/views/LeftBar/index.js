@@ -43,18 +43,24 @@ const LeftBar = ({
     actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer });
   };
   let menuList = [];
+  let itemManage = false;
 
   if (!isEmpty(group_active) && !isEmpty(group_active.modules)) {
     group_active.modules.forEach((el, idx) => {
-      const isActived =
-        el.url_redirect.indexOf('/document') !== -1
-          ? isDocument(pathname)
-          : pathname === el.url_redirect;
-      menuList.push({
-        ...el,
-        isSelected: isActived,
-        icon: isActived ? el.url_icon_selected : el.url_icon
-      });
+      const isActived = pathname.indexOf(el.path_search) != -1 ? true : false
+      if (el.is_manage_group) {
+        itemManage = {
+          ...el,
+          isSelected: isActived,
+          icon: isActived ? el.url_icon_selected : el.url_icon
+        }
+      } else {
+        menuList.push({
+          ...el,
+          isSelected: isActived,
+          icon: isActived ? el.url_icon_selected : el.url_icon
+        });
+      }
     });
   }
   const isFree = groupActive.type === 'Free';
@@ -62,7 +68,6 @@ const LeftBar = ({
     <div className="left-bar-container" style={{ background: bgColor.color }}>
       {!isEmpty(menuList) &&
         menuList.map((el, idx) => {
-          if (idx >= menuList.length - 1) return null;
           return (
             <Link
               to={isFree ? null : el.url_redirect}
@@ -80,15 +85,15 @@ const LeftBar = ({
             </Link>
           );
         })}
-      {!isEmpty(menuList) && (
+      {itemManage && (
         <Link
-          to={menuList[menuList.length - 1].url_redirect}
+          to={itemManage.url_redirect}
           onClick={onCloseDrawer}
-          className="menu-item"
-          title={menuList[menuList.length - 1].name}
+          className={`menu-item menu-item-last ${itemManage.isSelected ? 'actived' : ''}`}
+          title={itemManage.name}
         >
           <img
-            src={menuList[menuList.length - 1].icon}
+            src={itemManage.icon}
             alt=""
             className="LeftNavIcon"
           />

@@ -3,8 +3,16 @@ import { getListTaskDetail } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
+
+export const StyledTypography = styled(Typography)`
+  .Mui-checked {
+    color: ${props => props.selectedColor};
+  }
+`
 
 export const listTaskDataTypes = ['not-room', 'include-room'];
 export const lastJobSettingKey = 'lastJobSettingKey';
@@ -12,6 +20,7 @@ export const lastJobSettingKey = 'lastJobSettingKey';
 function CreateJobSetting(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const groupActiveColor = useSelector(currentColorSelector)
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const userId = useSelector(state => state.system.profile.id);
@@ -38,8 +47,14 @@ function CreateJobSetting(props) {
       className="CreateJobSetting"
     >
       <React.Fragment>
-        <Typography className="CreateJobSetting--title">
-          <Checkbox checked={listTaskDataType === listTaskDataTypes[1]} onChange={onCheck} />{t('LABEL_CHAT_TASK_HIEN_NHOM_CONG_VIEC')}</Typography>
+        <StyledTypography
+          selectedColor={groupActiveColor}
+          className="CreateJobSetting--title">
+          <Checkbox
+            checked={listTaskDataType === listTaskDataTypes[1]}
+            onChange={onCheck} />
+          {t('LABEL_CHAT_TASK_HIEN_NHOM_CONG_VIEC')}
+        </StyledTypography>
       </React.Fragment>
     </JobDetailModalWrap>
   );

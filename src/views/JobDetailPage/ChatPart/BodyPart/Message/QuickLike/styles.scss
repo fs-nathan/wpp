@@ -4,7 +4,21 @@
     width: 130px;
     height: auto;
   }
-  svg {
+  .CommonMessageAction {
+    .CommonMessageAction--buttonEmo:hover .ReactEmotionPopup {
+      left: -30px;
+      right: unset;
+    }
+    &__self .CommonMessageAction--buttonEmo:hover .ReactEmotionPopup {
+      left: -160px;
+      right: unset;
+    }
+  }
+  &:hover .CommonMessageAction {
+    opacity: 1;
+    margin-top: 10px;
+  }
+  &--likeIcon {
     width: 35px;
     height: auto;
   }

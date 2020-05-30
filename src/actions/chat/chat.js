@@ -1,4 +1,4 @@
-import * as actionTypes from '../../constants/actions/chat/chat';
+import APPEND_VIEWED_CHAT, * as actionTypes from '../../constants/actions/chat/chat';
 import { apiService } from '../../constants/axiosInstance';
 
 // action
@@ -62,13 +62,15 @@ export function deleteChatFail(error) {
   };
 }
 
-export function loadChat(taskId, last_id, isMore, file_id) {
+export function loadChat(taskId, last_id, isMore, file_id, chat_id, content) {
   return {
     type: actionTypes.LOAD_CHAT,
     task_id: taskId,
     last_id,
     isMore,
     file_id,
+    chat_id,
+    content,
   };
 }
 
@@ -652,5 +654,19 @@ export function openShareFileModal(isOpenShareFileModal, item, ) {
   return {
     type: actionTypes.OPEN_SHARE_FILE_MODAL,
     isOpenShareFileModal, item
+  };
+}
+
+export function forwardMessage(isOpenForward, content) {
+  return {
+    type: actionTypes.FORWARD_MESSAGE,
+    isOpenForward, content
+  };
+}
+
+export function appendViewedChat(data) {
+  return {
+    type: actionTypes.APPEND_VIEWED_CHAT,
+    data
   };
 }

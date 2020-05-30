@@ -57,6 +57,7 @@
   // & > *:not(:last-child) {
   //   margin-bottom: 12px;
   // }
+  overflow: hidden;
   &>input[type="file"] {
     display: none;
   }
@@ -74,7 +75,7 @@
     width: 100%;
 
     &>button {
-      padding: 12px 12px;
+      padding: 12px 0 12px;
     }
   }
 }
@@ -87,10 +88,10 @@
   padding: 15px 24px;
 }
 
-@mixin comp_CustomModal___accept-button {
+@mixin comp_CustomModal___action-button {
   padding: 8px 16px;
   background-color: #fff;
-
+  
   &:hover {
     background-color: #eee;
   }
@@ -107,33 +108,18 @@
 
 .comp_CustomModal___accept-button {
   & {
-    @include comp_CustomModal___accept-button;
+    @include comp_CustomModal___action-button;
   }
 
   &-disabled {
-    @include comp_CustomModal___accept-button;
+    @include comp_CustomModal___action-button;
     // color: #999 !important;
     opacity: 0.5;
   }
 }
 
 .comp_CustomModal___cancle-button {
-  padding: 8px 16px;
-  background-color: #fff;
-
-  &:hover {
-    background-color: #eee;
-  }
-
-  color: #222;
-  font-weight: 500;
-  font-size: 16px;
-  text-transform: uppercase;
-  border-radius: 5px;
-
-  &>span:last-child {
-    display: none;
-  }
+  @include comp_CustomModal___action-button;
 }
 
 @mixin comp_CustomModal___dialog {

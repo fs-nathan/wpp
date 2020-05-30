@@ -1,4 +1,4 @@
-import { SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
+import { RESET, SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
 import { PROJECT, PROJECT_GROUP } from 'constants/localStorageKey';
 
 function getData(key, initialValue) {
@@ -8,6 +8,14 @@ function getData(key, initialValue) {
   } catch (error) {
     window.localStorage.setItem(key, JSON.stringify(initialValue));
     return initialValue;
+  }
+}
+
+function resetData() {
+  try {
+    localStorage.removeItem(PROJECT);
+    localStorage.removeItem(PROJECT_GROUP);
+  } catch (error) {
   }
 }
 
@@ -34,6 +42,18 @@ function reducer(state = initialState, action) {
         ...state,
         projectGroup: action.value,
       };
+    case RESET:
+      resetData();
+      return {
+        project: {
+          filterType: 1,
+          timeType: 5,
+        },
+        projectGroup: {
+          filterType: 1,
+          timeType: 5,
+        }
+      }
     default:
       return state;
   }
