@@ -1337,5 +1337,6 @@
     }
   },
   "DATE_ERROR_FORMAT_MESSAGE": "Định dạng ngày tháng không hợp lệ",
-  "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Ngày không được trước ngày tối thiểu"
+  "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Ngày không được trước ngày tối thiểu",
+  "DATE_ERROR_INTERVAL_MAX_MESSAGE": "Ngày không được sau ngày tối đa"
 }

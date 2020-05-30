@@ -1028,5 +1028,6 @@
     }
   },
   "DATE_ERROR_FORMAT_MESSAGE": "Invalid Date Format",
-  "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Date should not be before minimal date"
+  "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Date should not be before minimal date",
+  "DATE_ERROR_INTERVAL_MAX_MESSAGE": "Date should not be after maximal date"
 }
