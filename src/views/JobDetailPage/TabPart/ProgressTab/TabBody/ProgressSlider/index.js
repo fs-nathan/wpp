@@ -2,9 +2,15 @@ import { Slider } from '@material-ui/core';
 import clamp from 'lodash/clamp';
 import React, { useEffect, useState } from 'react';
 import './styles.scss';
+import { useSelector } from 'react-redux';
+import get from 'lodash/get';
 
 function ProgressSlider({ value, onChange, expected, isHaveDate }) {
+  const {
+    update_complete,
+  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
   const [progressPercent, setProgressPercent] = useState(value);
+
   useEffect(() => {
     setProgressPercent(value)
   }, [value]);
@@ -14,6 +20,7 @@ function ProgressSlider({ value, onChange, expected, isHaveDate }) {
       valueLabelDisplay="on"
       aria-label="pretty slider"
       value={progressPercent}
+      disabled={!update_complete}
       valueLabelFormat={x => `${x}%`}
       onChange={(e, val) => { setProgressPercent(val) }}
       onChangeCommitted={(e, val) => {
