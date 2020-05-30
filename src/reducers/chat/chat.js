@@ -253,7 +253,8 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.OPEN_DETAIL_DEMAND: {
       const { isOpenDetailDemand, data } = action;
       draft.isOpenDetailDemand = isOpenDetailDemand;
-      draft.dataDemand = data;
+      if (data)
+        draft.dataDemand = data;
       break;
     }
     case actionTypes.GET_OFFER_DETAIL_SUCCESS: {
@@ -263,7 +264,7 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.GET_DEMAND_DETAIL_SUCCESS: {
       const { payload } = action;
-      draft.dataDemand = payload;
+      draft.dataDemand = payload.command;
       break;
     }
     case actionTypes.REMOVE_CHAT_BY_ID: {

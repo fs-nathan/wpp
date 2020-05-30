@@ -9,14 +9,19 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { openDetailDemand } from 'actions/chat/chat';
 
-
-function DemandDetail({
-  isOpen,
-  setOpen,
-  item
-}) {
+function DemandDetail({ }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isOpen = useSelector(state => state.chat.isOpenDetailDemand);
+  const dataDemand = useSelector(state => state.chat.dataDemand);
+
+  function setOpen(open) {
+    dispatch(openDetailDemand(open))
+  }
+
   const {
     date_create,
     user_create_name,
@@ -24,7 +29,7 @@ function DemandDetail({
     user_create_avatar,
     content,
     type,
-  } = item;
+  } = dataDemand || {};
   const isDemand = type === 1
   return (
     <JobDetailModalWrap
