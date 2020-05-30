@@ -659,6 +659,23 @@ class DragSortingTable extends React.Component {
       data: newData,
     });
   };
+  fetchTimeNotWork = async (projectId, fromDate, endDate) => {
+    try{
+    const { girdInstance } = this.props;
+    const result = await apiService({
+      url: `gantt/get-time-not-work?project_id=${projectId}&from_date=${fromDate}&endDate=${endDate}&gird=${girdInstance.unit}`
+    })
+    if(!result.data.state) return
+    this.setState({
+      timeNotWork: result.data.data
+    })
+    return true
+  } catch(e){
+    console.log(e)
+    return false
+  }
+
+  }
   fetchListTask = async (projectId, update, girdType) => {
     const { girdInstance } = this.props;
     const { formatString, unit, addUnit } = girdInstance;

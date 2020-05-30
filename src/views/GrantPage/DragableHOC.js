@@ -246,7 +246,7 @@ function GanttChart({
               : "gantt-chart__container"
           }
           style={{
-            height: heightTable,
+            height: heightTable,  
           }}
           onScroll={(e) => {
             if (window.scrollTimeline) return;
@@ -325,6 +325,7 @@ function GanttChart({
                   overflowX: "hidden",
                 }}
               >
+                <div></div>
                 {timeline}
               </div>
             </div>
