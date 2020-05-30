@@ -398,9 +398,8 @@ class DragSortingTable extends React.Component {
                         ) !== -1
                       )
                         return;
-                      this.props.history.push({
-                        pathname: `/tasks/chat/${this.props.match.params.projectId}`,
-                        search: `?task_id=${record.id}`,
+                      this.setState({
+                        quickViewId: record.id,
                       });
                     }}
                     className="name-task-gantt"
@@ -430,13 +429,7 @@ class DragSortingTable extends React.Component {
                       )}
                     </Tooltip>
                   </div>
-                  <div
-                    style={{
-                      background:
-                        this.state.rowHover === record.key ? "unset" : "#fff",
-                    }}
-                    className="name-task-gantt__icon-container"
-                  >
+                  <div className="name-task-gantt__icon-container">
                     {this.state.rowHover === record.key && (
                       <IconButton
                         aria-controls="simple-menu"
@@ -444,8 +437,9 @@ class DragSortingTable extends React.Component {
                         aria-haspopup="true"
                         size="small"
                         onClick={() =>
-                          this.setState({
-                            quickViewId: record.id,
+                          this.props.history.push({
+                            pathname: `/tasks/chat/${this.props.match.params.projectId}`,
+                            search: `?task_id=${record.id}`,
                           })
                         }
                       >
@@ -579,7 +573,7 @@ class DragSortingTable extends React.Component {
                     : ""
                 }
               >
-                {text
+                {text || text === 0
                   ? `${
                       Math.round((parseFloat(text) + Number.EPSILON) * 100) /
                       100
@@ -660,22 +654,21 @@ class DragSortingTable extends React.Component {
     });
   };
   fetchTimeNotWork = async (projectId, fromDate, endDate) => {
-    try{
-    const { girdInstance } = this.props;
-    const result = await apiService({
-      url: `gantt/get-time-not-work?project_id=${projectId}&from_date=${fromDate}&endDate=${endDate}&gird=${girdInstance.unit}`
-    })
-    if(!result.data.state) return
-    this.setState({
-      timeNotWork: result.data.data
-    })
-    return true
-  } catch(e){
-    console.log(e)
-    return false
-  }
-
-  }
+    try {
+      const { girdInstance } = this.props;
+      const result = await apiService({
+        url: `gantt/get-time-not-work?project_id=${projectId}&from_date=${fromDate}&endDate=${endDate}&gird=${girdInstance.unit}`,
+      });
+      if (!result.data.state) return;
+      this.setState({
+        timeNotWork: result.data.data,
+      });
+      return true;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
+  };
   fetchListTask = async (projectId, update, girdType) => {
     const { girdInstance } = this.props;
     const { formatString, unit, addUnit } = girdInstance;
@@ -1304,9 +1297,11 @@ class DragSortingTable extends React.Component {
                     return "";
                   }}
                   pagination={false}
-                  dataSource={this.state.data.filter(
-                    (item) => item.isGroupTask || item.show
-                  )}
+                  dataSource={this.state.data.filter((item) => {
+                    if (!this.props.visibleGantt.total && item.isTotalDuration)
+                      return false;
+                    return item.isGroupTask || item.show;
+                  })}
                   components={this.components}
                   onRow={(record, index) => ({
                     index,
@@ -1364,6 +1359,7 @@ const mapStateToProps = (state) => ({
   projectInfo: state.gantt.projectInfo,
   showHeader: state.gantt.showHeader,
   visibleLabel: state.gantt.visible.label,
+  visibleGantt: state.gantt.visible.gantt,
   activeProjectId: state.taskDetail.commonTaskDetail.activeProjectId,
 });
 

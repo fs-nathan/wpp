@@ -102,6 +102,7 @@ function GanttChart({
   const timeline = useMemo(
     () =>
       dataSource.map((item, index) => {
+        if (!visibleGantt.total && item.isTotalDuration) return null;
         if (!item.show && !item.isGroupTask) return null;
         const startDate = moment(item.start_time, girdInstance.formatString);
         const endDate = moment(item.end_time, girdInstance.formatString);
@@ -246,7 +247,7 @@ function GanttChart({
               : "gantt-chart__container"
           }
           style={{
-            height: heightTable,  
+            height: heightTable,
           }}
           onScroll={(e) => {
             if (window.scrollTimeline) return;
