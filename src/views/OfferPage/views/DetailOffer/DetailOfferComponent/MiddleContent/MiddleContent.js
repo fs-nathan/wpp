@@ -16,9 +16,7 @@ const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
-  const onConfirm = () => {
-    setOpenModal(false)
-  }
+
   const renderUpdateOfferApprovalConditionModal = () => {
     return (
       <OfferModal
@@ -40,17 +38,19 @@ const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted
     <Grid item xs={6} className="offerDetail-middleContent-container">
       <Grid container>
         <Grid item xs={12}>
-          <ApproveOfferDialog onConfirm={onConfirm} handleClickClose={onConfirm} isOpen={openModal} item={{
-            user_create_avatar,
-            content,
-            onConfirm,
-            title,
-            user_create_name,
-            priority_code,
-            id,
-            date_create: hour_label + " " + date_label,
-            action: action.HANDLE_OFFER
-          }}
+          <ApproveOfferDialog
+            isOpen={openModal}
+            setOpen={setOpenModal}
+            item={{
+              user_create_avatar,
+              content,
+              title,
+              user_create_name,
+              priority_code,
+              id,
+              date_create: hour_label + " " + date_label,
+              action: action.HANDLE_OFFER
+            }}
           />
           <Button className="offerDetail-createApprovalBtn" variant="contained" onClick={() => setOpenModal(true)} color="primary" disableElevation>
             TẠO PHÊ DUYỆT

@@ -3,15 +3,16 @@ import { mdiCancel, mdiCheck } from '@mdi/js';
 import Icon from '@mdi/react';
 import { approveOffer } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
-import DialogWrap from 'components/DialogWrap';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { action as _action } from 'views/OfferPage/contants/attrs';
 import { handleOfferOfferPage } from 'views/OfferPage/redux/actions';
 import { } from 'views/OfferPage/redux/sagas';
+import CustomModal from '../../../../../components/CustomModal';
 import { priorityList } from '../data';
 import './styles.scss';
+import { getCancelBtnTitle, getConfirmBtnTitle } from './i18nSelectors';
 
 
 const ApproveOfferDialog = (props) => {
@@ -37,19 +38,19 @@ const ApproveOfferDialog = (props) => {
   function onClickApproveOffer() {
     if (action === _action.HANDLE_OFFER) {
       dispatch(handleOfferOfferPage({ offer_id: id, content: description, status: type }))
-      props.onConfirm()
       return
     }
     dispatch(approveOffer({ offer_id: id, content: description, status: type, task_id: taskId }));
   }
 
   return (
-    <DialogWrap
+    <CustomModal
       title={t('LABEL_CHAT_TASK_PHE_DUYET_DE_XUAT')}
-      isOpen={props.isOpen}
-      handleClickClose={props.handleClickClose}
-      successLabel={"Hoàn Thành"}
-      onClickSuccess={onClickApproveOffer}
+      open={props.isOpen}
+      setOpen={props.setOpen}
+      confirmRender={() => getConfirmBtnTitle(t)}
+      onConfirm={onClickApproveOffer}
+      cancleRender={() => getCancelBtnTitle(t)}
       className="approve"
     >
       <React.Fragment>
@@ -95,7 +96,7 @@ const ApproveOfferDialog = (props) => {
           onChange={e => setDescription(e.target.value)}
         />
       </React.Fragment>
-    </DialogWrap>
+    </CustomModal>
   )
 }
 

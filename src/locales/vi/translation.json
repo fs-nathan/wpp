@@ -1322,6 +1322,10 @@
       "OFFER_APPROVAL_CONDITION_EDITING": {
         "TITLE": "Chỉnh sửa"
       },
+      "CREATE_APPROVAL": {
+        "CONFIRM": "Hoàn thành",
+        "CANCEL": "Hủy"
+      },
       "DISCUSSION": {
         "TITLE": "Thảo luận",
         "TEXT_BOX": {
