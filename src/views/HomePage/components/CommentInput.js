@@ -5,9 +5,13 @@ import {
   ExtensionOutlined,
   InsertEmoticonOutlined,
 } from "@material-ui/icons";
+import { getListStickersRequest } from "actions/chat/chat";
 import colors from "helpers/colorPalette";
-import React, { useState } from "react";
+import words from "lodash/words";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { get } from "views/JobPage/utils";
+import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { commentAttr } from "../contant/attrs";
 import "./CommentInput.css";
@@ -79,7 +83,14 @@ export const CommentInput = React.memo(
             <IconButton id={"file"} size="small" aria-label="file">
               <AttachFileOutlined />
             </IconButton>
-            <IconButton id={"sticker"} size="small" aria-label="sticker">
+            <IconButton
+              onClick={() => {
+                setElement(<StickerPicker />);
+              }}
+              id={"sticker"}
+              size="small"
+              aria-label="sticker"
+            >
               <ExtensionOutlined />
             </IconButton>
           </Box>
@@ -104,3 +115,46 @@ export const CommentInput = React.memo(
     );
   }
 );
+
+const StickerPicker = ({ isOpen, handleClose, handleClickSticker }) => {
+  const listStickers = useSelector((state) => state.chat.listStickers);
+  const stickerKeyWord = useSelector((state) => state.chat.stickerKeyWord);
+  const renderStickersList = listStickers.filter(
+    (sticker) =>
+      !stickerKeyWord || words(sticker.host_key).indexOf(stickerKeyWord) !== -1
+  );
+  // console.log(renderStickersList, stickerKeyWord)
+  function onClickSticker(id) {}
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getListStickersRequest());
+  }, [dispatch]);
+  return (
+    <TasksScrollbar style={{ width: "354px", height: "300px" }}>
+      <Box
+        display="flex"
+        width="100%"
+        flexWrap="wrap"
+        justifyContent="space-around"
+        alignItems="center"
+      >
+        {renderStickersList.map((el) => (
+          <div
+            key={el.id}
+            style={{ width: "28%" }}
+            onClick={onClickSticker(el.id)}
+          >
+            <img
+              style={{ width: "100%" }}
+              // style={{ width: el.witdh_of_web, height: el.witdh_of_web }}
+              alt="sticker"
+              src={el.url}
+            />
+            &nbsp;&nbsp;&nbsp;
+            <span>{el.name}</span>
+          </div>
+        ))}
+      </Box>
+    </TasksScrollbar>
+  );
+};
