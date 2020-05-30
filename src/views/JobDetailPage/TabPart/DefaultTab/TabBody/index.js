@@ -87,12 +87,16 @@ const DEFAULT_TASK_STATISTIC = {
   linkCnt: "Đang tải"
 }
 
-function getCompleteStatus(complete) {
+function getStatusCode(status_code, complete) {
   if (complete === 100)
-    return 2
+    return 2;
+  if (status_code === 3)
+    return 3;
+  if (status_code === 4)
+    return 4;
   if (complete === 0)
-    return 0
-  return 1
+    return 0;
+  return 1;
 }
 
 function TabBody(props) {
@@ -163,7 +167,7 @@ function TabBody(props) {
             placement="top-start">
             <StatusLabel
               type={TYPE_STATUS}
-              value={getCompleteStatus(taskStatistic.complete)}
+              value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
             />
           </HtmlTooltip>
           <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}

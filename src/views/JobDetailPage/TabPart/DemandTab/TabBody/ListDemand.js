@@ -9,7 +9,7 @@ import { taskIdSelector } from '../../../selectors';
 import DemandModal from '../DemandModal';
 import CustomListItem from './CustomListItem';
 import DemandDetail from './DemandDetail';
-import { getDemandDetail } from 'actions/chat/chat';
+import { getDemandDetail, openDetailDemand } from 'actions/chat/chat';
 
 const StyledList = styled.ul`
   margin-top: 20px;
@@ -65,6 +65,7 @@ const ListDemand = props => {
       setSelectedItem({ ...item, offer_id: item.id })
       // setOpenDetail(true)
       dispatch(getDemandDetail(taskId, item.id))
+      dispatch(openDetailDemand(true))
     }
   }
   return (

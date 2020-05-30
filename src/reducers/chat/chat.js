@@ -2,6 +2,7 @@ import produce from "immer";
 import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
+import { UPDATE_PROJECT_CHAT } from "constants/actions/taskDetail/taskDetailConst";
 
 export const initialState = {
   chats: { data: [] },
@@ -325,6 +326,9 @@ export default (state = initialState, action) => produce(state, draft => {
       const { data } = action;
       draft.viewedChatMembers.push(data);
       break;
+    }
+    case UPDATE_PROJECT_CHAT: {
+      draft.viewedChatMembers = []
     }
   }
 });

@@ -1,4 +1,4 @@
-import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal, loadChat, getViewedChat } from "actions/chat/chat";
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal, loadChat, getViewedChat, openDetailMember } from "actions/chat/chat";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { closeNoticeModal } from "actions/system/system";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
@@ -70,6 +70,7 @@ function JobDetailPage(props) {
       dispatch(getDataPinOnTaskChat(taskId));
       dispatch(loadChat(taskId));
       dispatch(getViewedChat(taskId));
+      dispatch(openDetailMember(false))
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {
         window.dispatchEvent(customEvent);

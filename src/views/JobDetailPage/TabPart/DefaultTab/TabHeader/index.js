@@ -151,15 +151,16 @@ function TabHeader(props) {
         >
           {isPinned ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_CONG_VIEC')}
         </MenuItem>
-        {!pause ? (
-          <MenuItem
-            onClick={onClickPause}
-          >{t('LABEL_CHAT_TASK_TAM_DUNG')}</MenuItem>
-        ) : (
+        {detailTask && detailTask.state_code === 2 ? null :
+          !pause ? (
             <MenuItem
-              onClick={onClickResume}
-            >{t('LABEL_CHAT_TASK_HUY_TAM_DUNG')}</MenuItem>
-          )}
+              onClick={onClickPause}
+            >{t('LABEL_CHAT_TASK_TAM_DUNG')}</MenuItem>
+          ) : (
+              <MenuItem
+                onClick={onClickResume}
+              >{t('LABEL_CHAT_TASK_HUY_TAM_DUNG')}</MenuItem>
+            )}
         <MenuItem
           onClick={onClickDelete}
         >{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
