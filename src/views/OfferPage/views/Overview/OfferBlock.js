@@ -6,7 +6,8 @@ import ChartLegend from "../../components/ChartLegend";
 import { statistic } from "../../contants/attrs";
 import { createPieChartProps } from "../../utils/chart";
 import { Block } from "./Block";
-
+import chart_no_data from '../../../../assets/chart_no_data.png';
+import './styles.scss';
 
 export function OfferBlock({ strings = [], title, data = {}, time }) {
   const series = strings.map(string =>
@@ -23,7 +24,11 @@ export function OfferBlock({ strings = [], title, data = {}, time }) {
       title={title}
       extra={time}
     >
-      <Chart {...chartProps} />
+      {
+        series.some(value => value !== 0)
+          ? <Chart {...chartProps} />
+          : <img className="offerOverview-defaultImgChart" src={chart_no_data} alt="" />
+      }
       <ChartLegend strings={strings} showIndex series={series} />
     </Block>
   );
