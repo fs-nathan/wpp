@@ -30,7 +30,7 @@ const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted
           min_rate_accept: condition_accept.min_rate,
           condition_logic: condition_accept.condition_logic,
           condition_logic_member: condition_accept.condition_logic_member,
-          approval_members: condition_accept.member_accept,
+          approvers: condition_accept.member_accept,
         }}
       />
     );

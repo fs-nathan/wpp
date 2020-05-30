@@ -46,7 +46,7 @@ const OfferModal = ({
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
   const [handlers, setHandlers] = React.useState([])
   const [monitors, setMonitors] = React.useState([])
-  const [approvalMembers, setApprovalMembers] = React.useState([])
+  const [approver, setApprover] = React.useState([])
   const [offersGroup, setOffersGroup] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
@@ -81,7 +81,7 @@ const OfferModal = ({
         user_monitors,
         priority_code,
         id,
-        approval_members,
+        approvers,
       } = offerItem;
       if (user_can_handers) {
         const handlerIndexes = user_can_handers.map(
@@ -92,24 +92,26 @@ const OfferModal = ({
         const monitorsIndexes = user_monitors.map(monitor => findIndex(allMembers, member => member.id === monitor.id))
         setMonitors(monitorsIndexes.filter(idx => idx !== -1))
       }
-      if (approval_members) {
-        const approvalMembersIndices = approval_members.map(
-          approvalMembers => findIndex(allMembers, member => member.id === approvalMembers.id)
+      if (approvers) {
+        const approversIndexes = approvers.map(
+          approver => findIndex(allMembers, member => member.id === approver.id)
         );
-        setApprovalMembers(approvalMembersIndices.filter(idx => idx !== -1));
+        setApprover(approversIndexes.filter(idx => idx !== -1));
       }
       if (priority_code != null) offerItem.priority = priorityList[priority_code];
       if (id != null) offerItem.offer_id = id;
+
+      // Set default values for approval conditions
+      if (!offerItem.min_rate_accept) offerItem.min_rate_accept = 100;
+      if (!offerItem.condition_logic) offerItem.condition_logic = 'OR';
+      if (!offerItem.condition_logic_member) offerItem.condition_logic_member = 'OR';
       setTempSelectedItem(offerItem)
     }
   }, [offerItem, allMembers])
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
-  const filterUserInHandlers = useCallback(() => {
-    const arr = handlers.map(i => allMembers[i])
-    return arr || []
-  })
+
   const handleDeleteFile = fileId => {
     let removeFileCallBack = () => {
       setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
@@ -126,10 +128,6 @@ const OfferModal = ({
     }
   }
 
-
-  React.useEffect(() => {
-    filterUserInHandlers()
-  }, [filterUserInHandlers, handlers])
   const handleUploadSelectedFilesFromPC = async (e) => {
     const { files } = e.target;
     setParams("files", [...tempSelectedItem.files, ...files]);
@@ -159,7 +157,7 @@ const OfferModal = ({
     monitors.forEach((value, index) => {
       dataCreateOfferFormData.append("user_monitor[" + index + "]", allMembers[value].id)
     })
-    approvalMembers.forEach((value, index) => {
+    approver.forEach((value, index) => {
       dataCreateOfferFormData.append("member_accepted_important[" + index + "]", allMembers[value].id)
     })
     // add uploaded files to form data
@@ -205,16 +203,16 @@ const OfferModal = ({
         }))
       }
     } else {
-      const approvalMemberIds = [];
-      approvalMembers.forEach(idx => {
-        approvalMemberIds.push(allMembers[idx].id)
+      const approverIds = [];
+      approver.forEach(idx => {
+        approverIds.push(allMembers[idx].id)
       })
       dispatch(updateOfferApprovalCondition({
         offerId: tempSelectedItem.offer_id,
         minRateAccept: tempSelectedItem.min_rate_accept,
         conditionLogic: tempSelectedItem.condition_logic,
         conditionLogicMember: tempSelectedItem.condition_logic_member,
-        memberAcceptedImportantIds: approvalMemberIds,
+        memberAcceptedImportantIds: approverIds,
       }))
     }
   }
@@ -231,17 +229,16 @@ const OfferModal = ({
       setMonitors([...monitors])
     }
   }
-  function handleDeleteApprove(i) {
+  function handleDeleteApprover(i) {
     return () => {
-      approvalMembers.splice(i, 1)
-      setApprovalMembers([...monitors])
+      approver.splice(i, 1)
+      setApprover([...approver])
     }
   }
 
   function openAddHandlersDialog() {
     dispatch(getMember())
     setOpenAddHandler(true)
-    filterUserInHandlers()
   }
   function openAddMonitorsDialog() {
     setOpenAddMonitor(true)
@@ -316,12 +313,12 @@ const OfferModal = ({
               />
               <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} isRequired />
               <div>
-                {handlers.map((index) =>
+                {handlers.map((allMembersIdx, idx) =>
                   <Chip
-                    key={index}
-                    avatar={<Avatar alt="avatar" src={allMembers[index].avatar} />}
-                    label={allMembers[index].name}
-                    onDelete={handleDeleteHandler(index)}
+                    key={allMembersIdx}
+                    avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
+                    label={allMembers[allMembersIdx].name}
+                    onDelete={handleDeleteHandler(idx)}
                   />
                 )}
                 <IconButton className="offerModal-buttonAdd" onClick={openAddHandlersDialog}>
@@ -334,17 +331,17 @@ const OfferModal = ({
                   value={handlers}
                   onChange={setHandlers}
                   members={allMembers}
-                  disableIndexes={[...approvalMembers, createUserIndex]}
+                  disableIndexes={[...approver, createUserIndex]}
                 />
               </div>
               <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
               <div>
-                {monitors.map((index) =>
+                {monitors.map((allMembersIdx, idx) =>
                   <Chip
-                    key={index}
-                    avatar={<Avatar alt="avatar" src={allMembers[index].avatar} />}
-                    label={allMembers[index].name}
-                    onDelete={handleDeleteMonitor(index)}
+                    key={allMembersIdx}
+                    avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
+                    label={allMembers[allMembersIdx].name}
+                    onDelete={handleDeleteMonitor(idx)}
                   />
                 )}
                 <IconButton className="offerModal-buttonAdd" onClick={openAddMonitorsDialog}>
@@ -433,9 +430,9 @@ const OfferModal = ({
                         <AddOfferMemberModal
                           isOpen={isOpenAddApprovalMemberModal}
                           setOpen={setOpenAddApprovalMemberModal}
-                          value={approvalMembers}
-                          onChange={setApprovalMembers}
-                          members={filterUserInHandlers()}
+                          value={approver}
+                          onChange={setApprover}
+                          members={allMembers}
                           disableIndexes={[...monitors, createUserIndex]}
                         />
                       </Grid>
@@ -464,9 +461,9 @@ const OfferModal = ({
                       <AddOfferMemberModal
                         isOpen={isOpenAddApprovalMemberModal}
                         setOpen={setOpenAddApprovalMemberModal}
-                        value={approvalMembers}
-                        onChange={setApprovalMembers}
-                        members={filterUserInHandlers()}
+                        value={approver}
+                        onChange={setApprover}
+                        members={allMembers}
                         disableIndexes={[...monitors, createUserIndex]}
                       />
                     </Grid>
@@ -474,12 +471,12 @@ const OfferModal = ({
                 }
                 <Grid item xs={12}>
                   <div>
-                    {approvalMembers.map((index) =>
+                    {approver.map((allMembersIdx, idx) =>
                       <Chip
-                        key={index}
-                        avatar={<Avatar alt="avatar" src={allMembers[index].avatar} />}
-                        label={allMembers[index].name}
-                        onDelete={handleDeleteApprove(index)}
+                        key={allMembersIdx}
+                        avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
+                        label={allMembers[allMembersIdx].name}
+                        onDelete={handleDeleteApprover(idx)}
                       />
                     )}
                   </div>
