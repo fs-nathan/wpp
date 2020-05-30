@@ -26,7 +26,7 @@ const LeftSetting = props => {
     return true
   }
   const checkBeforeShowRightIcon = () => {
-    return checkUserIsInOfferGroupRoutes(window.location.pathname)
+    return props.isOfferGroupManageable && checkUserIsInOfferGroupRoutes(window.location.pathname)
   }
   return (
     <LeftSideContainer
@@ -36,12 +36,10 @@ const LeftSetting = props => {
         tooltip: 'Quay lại',
         onClick: () => history.push(Routes.OVERVIEW)
       }}
-      rightAction={checkBeforeShowRightIcon() &&
-      {
+      rightAction={checkBeforeShowRightIcon() && {
         iconPath: mdiPlus,
         onClick: () => props.setOpenModalOfferByGroup(true)
-      }
-      }
+      }}
 
     >
       <StyledList>

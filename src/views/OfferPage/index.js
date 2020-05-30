@@ -8,6 +8,7 @@ import CustomModal from '../../components/CustomModal';
 import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
+import { apiService } from '../../constants/axiosInstance';
 import { useLocalStorage } from "../../hooks";
 import { labels } from "./contants/attrs";
 import {
@@ -260,6 +261,20 @@ function OfferPage(props) {
   const filter = value => {
     setFilterTab(value);
   };
+  const [isOfferGroupManageable, setIsOfferGroupManageable] = useState(false);
+  const fetchIsOfferGroupManageable = async () => {
+    const config = {
+      url: "/permissions/get-permission-view-offer",
+      method: "GET"
+    }
+    const result = await apiService(config)
+    if (result.data && result.data.permissions) {
+      setIsOfferGroupManageable(result.data.permissions.manage_offer_group);
+    }
+  }
+  useEffect(() => {
+    fetchIsOfferGroupManageable();
+  }, [props])
   // Trả tab bên cột trái
   const renderTabList = useMemo(() => {
     if (checkUserIsInOfferDepartmentRoutes(window.location.pathname)) {
@@ -295,7 +310,8 @@ function OfferPage(props) {
           searchInput={true}
           searchPlaceHolder="Nhập nội dung cần tìm"
           title={title}
-          {...{ listMenu: getSummaryByGroupByKeyword(filterTab)(state) }}
+          isOfferGroupManageable={isOfferGroupManageable}
+          {...{ listMenu: getSummaryByGroupByKeyword(filterTab, isOfferGroupManageable)(state) }}
         />
       );
     }
