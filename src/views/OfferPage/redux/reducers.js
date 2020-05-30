@@ -200,6 +200,7 @@ function taskReducer(state = initialState, action) {
       return {
         ...state,
         [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
           offer: {
             ...state[DETAIL_OFFER].offer,
             ...action.payload.data_offer,
@@ -210,6 +211,7 @@ function taskReducer(state = initialState, action) {
       return {
         ...state,
         [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
           offer: {
             ...state[DETAIL_OFFER].offer,
             condition_accept: {

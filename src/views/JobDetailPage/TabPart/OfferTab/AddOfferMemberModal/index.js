@@ -17,6 +17,7 @@ function AddOfferMemberModal({
   onChange,
   members,
   disableIndexes,
+  isUpdate,
 }) {
   const { t } = useTranslation();
   const appColor = useSelector(currentColorSelector)
@@ -34,7 +35,7 @@ function AddOfferMemberModal({
     onChange(selected);
   }
   function onCancel() {
-    onChange([]);
+    !isUpdate && onChange([]);
   }
 
   React.useEffect(() => {

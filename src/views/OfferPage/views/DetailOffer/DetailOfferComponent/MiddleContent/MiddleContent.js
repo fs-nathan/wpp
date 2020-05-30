@@ -1,18 +1,32 @@
 import { Avatar, Button, Grid } from "@material-ui/core";
-import classNames from 'classnames';
 import { isEmpty } from "helpers/utils/isEmpty";
 import get from "lodash/get";
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from "styled-components";
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
-import { getPriorityEditingTitle } from '../LeftContent/i18nSelectors';
 import './styles.scss';
 import { getApprovalConditionEditingTitle } from './i18nSelectors';
 
-const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted, members_approved, number_member_rejected, number_member_accepted, date_label, hour_label, content, title, id, priority_code, user_create_name, condition_accept, user_create_avatar }) => {
+const MiddleContent = ({
+                         can_update_condition_accept,
+                         status_code,
+                         rate_accepted,
+                         members_approved,
+                         number_member_rejected,
+                         number_member_accepted,
+                         date_label,
+                         hour_label,
+                         content,
+                         title,
+                         id,
+                         priority_code,
+                         user_create_name,
+                         condition_accept,
+                         members_can_approve,
+                         user_create_avatar,
+                       }) => {
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
@@ -28,12 +42,12 @@ const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted
           min_rate_accept: condition_accept.min_rate,
           condition_logic: condition_accept.condition_logic,
           condition_logic_member: condition_accept.condition_logic_member,
+          handlers: members_can_approve,
           approvers: condition_accept.member_accept,
         }}
       />
     );
   }
-
   return (
     <Grid item xs={6} className="offerDetail-middleContent-container">
       <Grid container>
@@ -82,30 +96,31 @@ const MiddleContent = ({ can_update_condition_accept, status_code, rate_accepted
         <Grid item xs={12} className="offerDetail-memberApprovalRateContainer">
           <div>Tỷ lệ thành viên đồng ý:&nbsp;&nbsp;&nbsp;≥&nbsp;&nbsp;&nbsp;{get(condition_accept, "min_rate", "0")}%</div>
         </Grid>
-
-        <Grid item xs={12} className="offerDetail-memberToAccept-title">
-          {get(condition_accept, "condition_logic_member") === "OR"
-          ? "Một trong các thành viên sau phải đồng ý:"
-          : "Tất cả thành viên sau phải đồng ý:"}
-        </Grid>
-        <Grid item xs={12} className="offerDetail-memberToAccept-container">
-          <Grid container>
-            {get(condition_accept, "member_accept", []).map(member =>
-              <>
-                <Grid item xs={4}>
-                  <Grid container alignItems="center">
-                    <Grid item>
-                      <Avatar className="offerDetail-memberToAccept-avatar" src={member.avatar} />
-                    </Grid>
-                    <Grid className="offerDetail-memberToAccept-name" item xs={8}>
-                      <div>{member.name}</div>
-                    </Grid>
-                  </Grid>
+        {
+          get(condition_accept, "min_rate", "0") < 100 && (
+            <>
+              <Grid item xs={12} className="offerDetail-memberToAccept-title">
+                {get(condition_accept, "condition_logic_member") === "OR"
+                  ? "Một trong các thành viên sau phải đồng ý:"
+                  : "Tất cả thành viên sau phải đồng ý:"}
+              </Grid>
+              <Grid item xs={12} className="offerDetail-memberToAccept-container">
+                <Grid container>
+                  {get(condition_accept, "member_accept", []).map(member =>
+                    <>
+                      <Grid item xs={4}>
+                        <div className="offerDetail-memberToAccept-item">
+                          <Avatar className="offerDetail-memberToAccept-item-avatar" src={member.avatar} />
+                          <div className="offerDetail-memberToAccept-item-name">{member.name}</div>
+                        </div>
+                      </Grid>
+                    </>
+                  )}
                 </Grid>
-              </>
-            )}
-          </Grid>
-        </Grid>
+              </Grid>
+            </>
+          )
+        }
         {/* - */}
         <Grid item xs={12}>
           <Grid container direction="row">

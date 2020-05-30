@@ -211,17 +211,20 @@ export function* doUpdateOfferDetailDescriptionSection({ payload }) {
 }
 export function* doUpdateOfferApprovalCondition({ payload }) {
   try {
-    const { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds } = payload
+    const { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds } = payload;
+    const dataToSend = {
+      offer_id: offerId,
+      min_rate_accept: minRateAccept,
+      condition_logic: conditionLogic,
+    };
+    if (conditionLogicMember) {
+      dataToSend.condition_logic_member = conditionLogicMember;
+      dataToSend.member_accepted_important = memberAcceptedImportantIds;
+    }
     const config = {
       url: "/offers/personal/update-condition-accept",
       method: "POST",
-      data: {
-        offer_id: offerId,
-        min_rate_accept: minRateAccept,
-        condition_logic: conditionLogic,
-        condition_logic_member: conditionLogicMember,
-        member_accepted_important: memberAcceptedImportantIds,
-      },
+      data: dataToSend,
     }
     const result = yield apiService(config)
     yield put({ type: UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, payload: result.data })

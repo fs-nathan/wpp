@@ -79,6 +79,7 @@ const DetailOffer = ({
         user_create_name={user_create_name}
         user_create_avatar={user_create_avatar}
         condition_accept={condition_accept}
+        members_can_approve={members_can_approve}
       />
       <div className="offerDetail-verticalLine" />
       <RightContent offerId={id} />

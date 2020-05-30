@@ -10,7 +10,7 @@ import lodash from 'lodash';
 import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 import { useSnackbar } from 'notistack';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -42,20 +42,28 @@ const OfferModal = ({
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { members: allMembers } = useSelector(state => allMembersSelector(state));
   const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
-  const defaultOffer = { ...DEFAULT_OFFER_ITEM, offer_group_id: "", priority: priorityList[0], condition_logic: "OR", condition_logic_member: "OR", file_ids: [], min_rate_accept: 100 }
+  const defaultOffer = { ...DEFAULT_OFFER_ITEM, title: '', content: '', offer_group_id: "", priority: priorityList[0], condition_logic: "OR", condition_logic_member: "OR", file_ids: [], min_rate_accept: 100 }
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
   const [handlers, setHandlers] = React.useState([])
   const [monitors, setMonitors] = React.useState([])
-  const [approver, setApprover] = React.useState([])
+  const [approvers, setApprovers] = React.useState([])
   const [offersGroup, setOffersGroup] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
   const [selectedFilesFromLibrary, setSelectedFilesFromLibrary] = React.useState([])
   const [openSendFileModal, setOpenSendFileModal] = useState(false);
   /// Mở modal các thành viên sau phải duyệt
-  const [isOpenAddApprovalMemberModal, setOpenAddApprovalMemberModal] = React.useState(false)
+  const [isOpenAddApproverModal, setOpenAddApproverModal] = React.useState(false)
   const createId = (offerItem && offerItem.user_create_id) || currentUserId;
   const createUserIndex = findIndex(allMembers, member => member.id === createId);
+
+  const handlersToAddInApprovalCondition = useMemo(() => {
+    return (
+      handlers.length > 0
+        ? allMembers.filter((_, idx) => handlers.includes(idx))
+        : []
+    );
+  }, [handlers])
 
   const fetchOffersGroup = async () => {
     const config = {
@@ -81,7 +89,8 @@ const OfferModal = ({
         user_monitors,
         priority_code,
         id,
-        approvers,
+        handlers,   // member object
+        approvers,  // member object
       } = offerItem;
       if (user_can_handers) {
         const handlerIndexes = user_can_handers.map(
@@ -92,11 +101,17 @@ const OfferModal = ({
         const monitorsIndexes = user_monitors.map(monitor => findIndex(allMembers, member => member.id === monitor.id))
         setMonitors(monitorsIndexes.filter(idx => idx !== -1))
       }
+      // handlers & approvers are used when editing approval conditions
+      if (handlers) {
+        const handlerIndexes = handlers.map(
+          handler => findIndex(allMembers, member => member.id === handler.id));
+        setHandlers(handlerIndexes.filter(idx => idx !== -1)); // use indexes of all members to set
+      }
       if (approvers) {
         const approversIndexes = approvers.map(
-          approver => findIndex(allMembers, member => member.id === approver.id)
+          approver => findIndex(handlersToAddInApprovalCondition, handler => handler.id === approver.id)
         );
-        setApprover(approversIndexes.filter(idx => idx !== -1));
+        setApprovers(approversIndexes.filter(idx => idx !== -1)); // use indexes of all members to set
       }
       if (priority_code != null) offerItem.priority = priorityList[priority_code];
       if (id != null) offerItem.offer_id = id;
@@ -105,7 +120,7 @@ const OfferModal = ({
       if (!offerItem.min_rate_accept) offerItem.min_rate_accept = 100;
       if (!offerItem.condition_logic) offerItem.condition_logic = 'OR';
       if (!offerItem.condition_logic_member) offerItem.condition_logic_member = 'OR';
-      setTempSelectedItem(offerItem)
+      setTempSelectedItem(offerItem);
     }
   }, [offerItem, allMembers])
   const setParams = (nameParam, value) => {
@@ -157,7 +172,7 @@ const OfferModal = ({
     monitors.forEach((value, index) => {
       dataCreateOfferFormData.append("user_monitor[" + index + "]", allMembers[value].id)
     })
-    approver.forEach((value, index) => {
+    approvers.forEach((value, index) => {
       dataCreateOfferFormData.append("member_accepted_important[" + index + "]", allMembers[value].id)
     })
     // add uploaded files to form data
@@ -204,16 +219,19 @@ const OfferModal = ({
       }
     } else {
       const approverIds = [];
-      approver.forEach(idx => {
-        approverIds.push(allMembers[idx].id)
+      approvers.forEach(idx => {
+        approverIds.push(handlersToAddInApprovalCondition[idx].id)
       })
-      dispatch(updateOfferApprovalCondition({
+      const dataToUpdate = {
         offerId: tempSelectedItem.offer_id,
         minRateAccept: tempSelectedItem.min_rate_accept,
         conditionLogic: tempSelectedItem.condition_logic,
-        conditionLogicMember: tempSelectedItem.condition_logic_member,
-        memberAcceptedImportantIds: approverIds,
-      }))
+      }
+      if (tempSelectedItem.min_rate_accept < 100) {
+        dataToUpdate.conditionLogicMember = tempSelectedItem.condition_logic_member;
+        dataToUpdate.memberAcceptedImportantIds = approverIds;
+      }
+      dispatch(updateOfferApprovalCondition(dataToUpdate));
     }
   }
 
@@ -231,8 +249,8 @@ const OfferModal = ({
   }
   function handleDeleteApprover(i) {
     return () => {
-      approver.splice(i, 1)
-      setApprover([...approver])
+      approvers.splice(i, 1)
+      setApprovers([...approvers])
     }
   }
 
@@ -244,7 +262,20 @@ const OfferModal = ({
     setOpenAddMonitor(true)
   }
   function openAddApprovalMemberModal() {
-    setOpenAddApprovalMemberModal(true)
+    setOpenAddApproverModal(true)
+  }
+  function renderAddMemberModal(isOpen, setOpen, value, onChange, members, disabledIndexes, isUpdate) {
+    return (
+      <AddOfferMemberModal
+        isOpen={isOpen}
+        setOpen={setOpen}
+        value={value}
+        onChange={onChange}
+        members={members}
+        disableIndexes={disabledIndexes}
+        isUpdate={isUpdate}
+      />
+    );
   }
 
   function validate() {
@@ -325,14 +356,14 @@ const OfferModal = ({
                   <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
                   <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
                 </IconButton>
-                <AddOfferMemberModal
-                  isOpen={isOpenAddHandler}
-                  setOpen={setOpenAddHandler}
-                  value={handlers}
-                  onChange={setHandlers}
-                  members={allMembers}
-                  disableIndexes={[...approver, createUserIndex]}
-                />
+                {renderAddMemberModal(
+                  isOpenAddHandler,
+                  setOpenAddHandler,
+                  handlers,
+                  setHandlers,
+                  allMembers,
+                  [...monitors, createUserIndex]
+                )}
               </div>
               <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
               <div>
@@ -348,14 +379,14 @@ const OfferModal = ({
                   <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
                   <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
                 </IconButton>
-                <AddOfferMemberModal
-                  isOpen={isOpenAddMonitor}
-                  setOpen={setOpenAddMonitor}
-                  value={monitors}
-                  onChange={setMonitors}
-                  members={allMembers}
-                  disableIndexes={[...handlers, createUserIndex]}
-                />
+                {renderAddMemberModal(
+                  isOpenAddMonitor,
+                  setOpenAddMonitor,
+                  monitors,
+                  setMonitors,
+                  allMembers,
+                  [...handlers, createUserIndex]
+                )}
               </div>
             </>
           ) : null
@@ -375,7 +406,7 @@ const OfferModal = ({
           ) : null
         }
         {
-          !isUpdateOfferDetailDescriptionSection ? (
+          isUpdateOfferApprovalCondition ? (
             <>
               <TitleSectionModal label={'Điều kiện được duyệt'} />
               <Grid container spacing={3} className="">
@@ -394,7 +425,6 @@ const OfferModal = ({
                     <div className="offerModal--input_rate_suffix">
                       <div>%</div>
                     </div>
-
                   </Grid>
                 </Grid>
                 <Grid item xs={1}>
@@ -408,7 +438,7 @@ const OfferModal = ({
                   />
                 </Grid>
                 {
-                  tempSelectedItem.min_rate_accept >= 100 && get(tempSelectedItem, "condition_logic") === "OR" &&
+                  tempSelectedItem.min_rate_accept < 100 &&
                   (
                     <>
                       <Grid item xs={7}>
@@ -427,55 +457,26 @@ const OfferModal = ({
                           <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
                           <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
                         </IconButton>
-                        <AddOfferMemberModal
-                          isOpen={isOpenAddApprovalMemberModal}
-                          setOpen={setOpenAddApprovalMemberModal}
-                          value={approver}
-                          onChange={setApprover}
-                          members={allMembers}
-                          disableIndexes={[...monitors, createUserIndex]}
-                        />
+                        {renderAddMemberModal(
+                          isOpenAddApproverModal,
+                          setOpenAddApproverModal,
+                          approvers,
+                          setApprovers,
+                          handlersToAddInApprovalCondition,
+                          [],
+                          isUpdateOfferApprovalCondition
+                        )}
                       </Grid>
                     </>
                   )
                 }
-                {
-                  tempSelectedItem.min_rate_accept < 100 &&
-                  <>
-                    <Grid item xs={7}>
-                      <Grid container >
-                        <CustomSelect
-                          options={CONDITION_LOGIC_MEMBER}
-                          value={CONDITION_LOGIC_MEMBER.find(option =>
-                            option.value.toLowerCase() === tempSelectedItem.condition_logic_member.toLowerCase()
-                          )}
-                          onChange={(condition_logic_member) => setParams("condition_logic_member", condition_logic_member.value)}
-                        />
-                      </Grid>
-                    </Grid>
-                    <Grid item xs={3}>
-                      <IconButton className="offerModal-buttonAdd" onClick={openAddApprovalMemberModal}>
-                        <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
-                        <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
-                      </IconButton>
-                      <AddOfferMemberModal
-                        isOpen={isOpenAddApprovalMemberModal}
-                        setOpen={setOpenAddApprovalMemberModal}
-                        value={approver}
-                        onChange={setApprover}
-                        members={allMembers}
-                        disableIndexes={[...monitors, createUserIndex]}
-                      />
-                    </Grid>
-                  </>
-                }
                 <Grid item xs={12}>
                   <div>
-                    {approver.map((allMembersIdx, idx) =>
+                    {handlersToAddInApprovalCondition && approvers.map((handlersToAddIdx, idx) =>
                       <Chip
-                        key={allMembersIdx}
-                        avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
-                        label={allMembers[allMembersIdx].name}
+                        key={handlersToAddIdx}
+                        avatar={<Avatar alt="avatar" src={handlersToAddInApprovalCondition[handlersToAddIdx].avatar} />}
+                        label={handlersToAddInApprovalCondition[handlersToAddIdx].name}
                         onDelete={handleDeleteApprover(idx)}
                       />
                     )}
