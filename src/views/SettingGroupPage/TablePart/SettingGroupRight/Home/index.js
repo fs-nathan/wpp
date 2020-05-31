@@ -1,6 +1,7 @@
-import { Avatar, Box, Chip, Divider } from "@material-ui/core";
-import { mdiDotsVertical } from "@mdi/js";
+import { Avatar, Box, Checkbox, Chip, Divider } from "@material-ui/core";
+import { mdiDotsVertical, mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
+import { apiService } from "constants/axiosInstance";
 import React, {
   useCallback,
   useContext,
@@ -11,7 +12,8 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { createMapPropsFromAttrs } from "views/JobPage/utils";
+import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
+import { createMapPropsFromAttrs, loginlineParams } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import AddButton from "./components/AddButton";
 import AddCategotyModal from "./components/AddCategotyModal";
@@ -34,7 +36,9 @@ import useAsyncTracker from "./redux/apiCall/useAsyncTracker";
 const HomeWrap = styled.div`
   padding: 20px;
   font-size: 16px;
-  line-height: 1.4;
+`;
+const DragWrap = styled.div`
+  line-height: 0;
 `;
 export const ChipMenu = ({
   menuAnchor,
@@ -142,7 +146,7 @@ function Home() {
             <br />
           </SubTitle>
         </Stack>
-        <DraggableList />
+        <PluginSettings />
       </Stack>
     </HomeWrap>
   );
@@ -161,5 +165,76 @@ export default () => {
       <Home />
       {modal}
     </HomeContext.Provider>
+  );
+};
+const PluginSettings = () => {
+  const STATUS = {
+    ON: "ON",
+    OFF: "OFF",
+  };
+  const [data = emptyObject, setData] = useState([]);
+  useEffect(() => {
+    apiService.get(`home-page/get-setting`).then((res) => setData(res.data));
+  }, []);
+  loginlineParams(data);
+  const { data: sections = emptyArray, state } = data;
+  const updatePloginSettings = (data = emptyArray) => {
+    apiService
+      .post(`home-page/post-setting`, {
+        sections: data,
+      })
+      .then((res) => setData(res.data));
+  };
+  if (!state) return null;
+  return (
+    <DraggableList
+      onChange={(orderList = emptyArray) => {
+        console.log({ orderList });
+        updatePloginSettings(
+          sections.map((s, i) => {
+            return {
+              ...s,
+              sort_index: orderList.findIndex((value) => value === s.value),
+            };
+          })
+        );
+      }}
+      list={sections}
+      getId={(item) => item.value}
+    >
+      {({ name, sort_index, status, value }, bindDraggable, bindDragHandle) =>
+        bindDraggable(
+          <div>
+            <Box display="flex" alignItems="center">
+              {bindDragHandle(
+                <DragWrap>
+                  <Icon path={mdiDragVertical} size={1} color="#8d8d8d" />
+                </DragWrap>
+              )}
+              <Checkbox
+                defaultChecked={status === STATUS.ON}
+                color="primary"
+                onClick={(e) => {
+                  console.log(e.target.checked);
+                  updatePloginSettings(
+                    sections.map((s) => {
+                      if (s.value !== value) {
+                        return s;
+                      }
+                      return {
+                        value,
+                        sort_index,
+                        status: e.target.checked ? STATUS.ON : STATUS.OFF,
+                      };
+                    })
+                  );
+                }}
+              ></Checkbox>
+              <div>{name}</div>
+            </Box>
+          </div>
+        )
+      }
+    </DraggableList>
   );
 };

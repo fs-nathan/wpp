@@ -29,6 +29,7 @@ export const DraggableList = ({
   list = DraggableListDefaultProps.list,
   children = DraggableListDefaultProps.children,
   getId = DraggableListDefaultProps.getId,
+  onChange,
 }) => {
   const entitiesRef = useRef({});
   const [orderList, setorderList] = useState(emptyArray);
@@ -47,8 +48,10 @@ export const DraggableList = ({
     );
     entitiesRef.current = entites;
     setorderList(orderList);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list]);
+
   return (
     <DragDropContext
       onDragEnd={(result) => {
@@ -58,6 +61,7 @@ export const DraggableList = ({
         newStrings.splice(source.index, 1);
         newStrings.splice(destination.index, 0, draggableId);
         setorderList(newStrings);
+        onChange(newStrings);
       }}
     >
       <Droppable droppableId={"12312321"}>
