@@ -1,7 +1,6 @@
 import { Avatar, Box, Checkbox, Chip, Divider } from "@material-ui/core";
 import { mdiDotsVertical, mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
-import { apiService } from "constants/axiosInstance";
 import React, {
   useCallback,
   useContext,
@@ -12,8 +11,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, loginlineParams } from "views/JobPage/utils";
+import pluginSettings from "views/HomePage/redux/pluginSettings";
+import { emptyArray } from "views/JobPage/contants/defaultValue";
+import { createMapPropsFromAttrs, get } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import AddButton from "./components/AddButton";
 import AddCategotyModal from "./components/AddCategotyModal";
@@ -172,18 +172,17 @@ const PluginSettings = () => {
     ON: "ON",
     OFF: "OFF",
   };
-  const [data = emptyObject, setData] = useState([]);
+  const dispatch = useDispatch();
+  const pluginSettingsResponse = useSelector(
+    pluginSettings.selectors.pluginSettingsSelector
+  );
+  const sections = get(pluginSettingsResponse, "data", emptyArray);
+  const state = get(pluginSettingsResponse, "state", false);
   useEffect(() => {
-    apiService.get(`home-page/get-setting`).then((res) => setData(res.data));
-  }, []);
-  loginlineParams(data);
-  const { data: sections = emptyArray, state } = data;
-  const updatePloginSettings = (data = emptyArray) => {
-    apiService
-      .post(`home-page/post-setting`, {
-        sections: data,
-      })
-      .then((res) => setData(res.data));
+    dispatch(pluginSettings.actions.loadPluginSettings());
+  }, [dispatch]);
+  const updatePloginSettings = (sections = emptyArray) => {
+    dispatch(pluginSettings.actions.updatePluginSettings({ sections }));
   };
   if (!state) return null;
   return (
