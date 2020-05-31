@@ -417,6 +417,7 @@ function CalendarProjectRightPartPresenter({
                           format="dd/MM/yyyy"
                           className="view_ProjectCalendar_rightContainer_inputDate"
                           autoOk={true}
+                          invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
                         />
                         {
                           data.selectedDayType === 1 && (
@@ -432,6 +433,8 @@ function CalendarProjectRightPartPresenter({
                               format="dd/MM/yyyy"
                               className="view_ProjectCalendar_rightContainer_inputDate"
                               autoOk={true}
+                              invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
+                              minDateMessage={t('DATE_ERROR_INTERVAL_MIN_MESSAGE')}
                             />
                           )
                         }

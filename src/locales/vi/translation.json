@@ -1336,6 +1336,9 @@
       }
     }
   },
+  "DATE_ERROR_FORMAT_MESSAGE": "Định dạng ngày tháng không hợp lệ",
+  "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Ngày không được trước ngày tối thiểu",
+  "DATE_ERROR_INTERVAL_MAX_MESSAGE": "Ngày không được sau ngày tối đa",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "Tiến độ công việc đã được chạy",
   "LABEL_CHAT_TASK_TAO_MOI": "Tạo mới",
   "LABEL_CHAT_TASK_CHU_CONG_VIEC": "Chủ công việc",
