@@ -27,23 +27,31 @@ const DemandModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: props.taskId, content: "", type: -1 })
+  const isFetching = useSelector(state => state.taskDetail.taskCommand.isFetching)
+  const error = useSelector(state => state.taskDetail.taskCommand.error)
 
   React.useEffect(() => {
     setTempSelectedItem(props.item)
   }, [props.item])
+
+  React.useEffect(() => {
+    if (!isFetching && !error)
+      props.setOpen(false);
+    // eslint-disable-next-line
+  }, [isFetching, error])
 
   const setParams = (nameParam, value) => {
     setTempSelectedItem({ ...tempSelectedItem, [nameParam]: value })
   }
 
   function onClickCreate() {
-    props.setOpen(false)
+    // props.setOpen(false)
     props.confirmCreateCommand(tempSelectedItem)
     setParams("content", '')
   }
 
   function onClickUpdate() {
-    props.setOpen(false);
+    // props.setOpen(false);
     tempSelectedItem.taskId = taskId;
     dispatch(updateCommand(tempSelectedItem))
     setParams("content", '')
@@ -59,6 +67,9 @@ const DemandModal = (props) => {
       confirmRender={() => (props.isEditDemand) ? t('LABEL_CHAT_TASK_CHINH_SUA') : t('IDS_WP_CREATE_NEW')}
       onConfirm={(props.isEditDemand) ? onClickUpdate : onClickCreate}
       canConfirm={validate()}
+      actionLoading={isFetching}
+      manualClose
+      onCancle={() => props.setOpen(false)}
       className="DemandModal modal_height_50vh"
     >
       <React.Fragment>

@@ -121,6 +121,8 @@ function RemindModal(props) {
   const isOpenCreateRemind = useSelector(state => state.chat.isOpenCreateRemind);
   const isCreateRemind = useSelector(state => state.chat.isCreateRemind);
   const dataRemind = useSelector(state => state.chat.dataRemind);
+  const isFetching = useSelector(state => state.taskDetail.taskRemind.isFetching)
+  const error = useSelector(state => state.taskDetail.taskRemind.error)
 
   function setOpenCreate(isOpen) {
     dispatch(openCreateRemind(isOpen))
@@ -138,6 +140,12 @@ function RemindModal(props) {
       setData(tempData)
     }
   }, [dataRemind, isCreateRemind])
+
+  React.useEffect(() => {
+    if (!isFetching && !error)
+      dispatch(openCreateRemind(false));
+    // eslint-disable-next-line
+  }, [isFetching, error])
 
   const handleChangeData = (attName, value) => {
     // console.log('valueRemind:::',attName, value)
@@ -187,7 +195,7 @@ function RemindModal(props) {
       }
     }
     // Close modal
-    setOpenCreate(false)
+    // setOpenCreate(false)
   }
   const [value, setValue] = React.useState('')
   // console.log("daataaA::::", data)
@@ -239,6 +247,9 @@ function RemindModal(props) {
       setOpen={setOpenCreate}
       confirmRender={() => (!isCreateRemind) ? t('LABEL_CHAT_TASK_HOAN_THANH') : t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
       onConfirm={handlePressConfirm}
+      actionLoading={isFetching}
+      manualClose
+      onCancle={() => setOpenCreate(false)}
       canConfirm={validate()}
     >
       <React.Fragment>

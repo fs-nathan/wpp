@@ -161,15 +161,17 @@ function TabBody(props) {
         </ListItem>
         <Description value={content} />
         <ListItemButtonGroup>
-          <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
-            TransitionProps={{ timeout: 0 }}
-            title={<ModalStatus value={taskStatistic.state_code} />}
-            placement="top-start">
-            <StatusLabel
-              type={TYPE_STATUS}
-              value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
-            />
-          </HtmlTooltip>
+          {taskStatistic.state_code !== 3 &&
+            <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
+              TransitionProps={{ timeout: 0 }}
+              title={<ModalStatus value={taskStatistic.state_code} />}
+              placement="top-start">
+              <StatusLabel
+                type={TYPE_STATUS}
+                value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+              />
+            </HtmlTooltip>
+          }
           <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
             TransitionProps={{ timeout: 0 }}
             title={<ModalPriority value={taskStatistic.priority_code} />}
@@ -180,8 +182,7 @@ function TabBody(props) {
             />
           </HtmlTooltip>
           {
-            !isExpiredDate(data.end_date)
-            &&
+            taskStatistic.state_code === 3 &&
             <Typography
               className="listPartTabBody--expired"
             >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
