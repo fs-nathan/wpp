@@ -1,6 +1,8 @@
 import * as actions from "actions/chat/chat";
 import { apiService } from "constants/axiosInstance";
 import { call, put, select } from "redux-saga/effects";
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
+import get from "lodash/get";
 
 export function* deleteChat(payload) {
   try {
@@ -113,7 +115,9 @@ export function* forwardChat(payload) {
     const { task_id, chat_id, forward_to } = payload;
     const res = yield call(apiService.post, "/task/forward-chat", { task_id, chat_id, forward_to });
     yield put(actions.forwardChatSuccess(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
     yield put(actions.forwardChatFail(error));
   }
 }
