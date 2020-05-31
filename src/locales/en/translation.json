@@ -1006,6 +1006,16 @@
   "PERSON_MONITOR": "Person monitor",
   "PERSON_HANDLE": "Person handle",
   "OFFER_PAGE": {
+    "OVERVIEW": {
+      "GROUP_OFFERS": {
+        "TITLE": {
+          "WAITING": "Waiting",
+          "APPROVING": "Approving",
+          "REJECTED": "Rejected",
+          "ACCEPTED": "Accepted"
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Offer Detail",
       "OFFER_PRIORITY_EDITING": {

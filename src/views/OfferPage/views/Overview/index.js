@@ -26,7 +26,7 @@ export const PageContainer = styled(Container)`
 //dữ liệu mẫu
 const stringsSelfOffer = ["offer_of_me_sending", "offer_of_me_approved", "offer_of_me_monitoring"];
 const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel"];
-const stringsPiorityOffer = ["offer_piority_normal", "offer_piority_urgent", "offer_piority_very_urgent"];
+const stringsPriorityOffer = ["offer_priority_normal", "offer_priority_urgent", "offer_priority_very_urgent"];
 
 
 const Overview = () => {
@@ -36,7 +36,7 @@ const Overview = () => {
   const isMounted = useMountedState();
   const myOffers = useSelector(state => getMyOffers(state))
   const statusOffers = useSelector(state => getStatusOffers(state))
-  const piorityOffers = useSelector(state => getPriorityOffers(state))
+  const priorityOffers = useSelector(state => getPriorityOffers(state))
   useEffect(() => {
     dispatch(loadSummaryOverview({ timeRange }))
   }, [dispatch, timeRange])
@@ -49,11 +49,11 @@ const Overview = () => {
       return statusOffers
     }
   }, [statusOffers, timeRange])
-  const renderDataPiorityOffer = useMemo(() => {
+  const renderDataPriorityOffer = useMemo(() => {
     if (timeRange) {
-      return piorityOffers
+      return priorityOffers
     }
-  }, [piorityOffers, timeRange])
+  }, [priorityOffers, timeRange])
   const renderDataMyOfferGroup = useMemo(() => {
     if (timeRange) {
       return myOffers
@@ -91,7 +91,7 @@ const Overview = () => {
             {[
               <OfferBlock time={renderExtraTimeTitle} strings={stringsSelfOffer} data={renderDataMyOfferGroup} title={t("ĐỀ XUẤT CỦA BẠN")} />,
               <OfferBlock time={renderExtraTimeTitle} strings={stringsStatusOffer} data={renderDataGroupOffer} title={t("ĐỀ XUẤT THEO TRẠNG THÁI")} />,
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsPiorityOffer} data={renderDataPiorityOffer} title={t("ĐỀ XUẤT THEO MỨC ĐỘ")} />
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsPriorityOffer} data={renderDataPriorityOffer} title={t("ĐỀ XUẤT THEO MỨC ĐỘ")} />
             ].map(
               (children, i) => (
                 <Grid

@@ -16,5 +16,5 @@ export const getStatusOffers = createSelector(selectSummaryGroup, offer => {
   return { static: { offer_status_waiting: offer.status_offers["waiting"], offer_status_approved: offer.status_offers["accepted"], offer_status_cancel: offer.status_offers["rejected"] } }
 })
 export const getPriorityOffers = createSelector(selectSummaryGroup, offer => {
-  return { static: { offer_piority_normal: offer.priority_offers["nomal"], offer_piority_urgent: offer.priority_offers["urgent"], offer_piority_very_urgent: offer.priority_offers["very_urgent"] } }
+  return { static: { offer_priority_normal: offer.priority_offers["nomal"], offer_priority_urgent: offer.priority_offers["urgent"], offer_priority_very_urgent: offer.priority_offers["very_urgent"] } }
 })

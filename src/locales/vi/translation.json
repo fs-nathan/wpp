@@ -1314,6 +1314,16 @@
   "PERSON_HANDLE": "Người phê duyệt",
   "PERSON_MONITOR": "Người giám sát",
   "OFFER_PAGE": {
+    "OVERVIEW": {
+      "GROUP_OFFERS": {
+        "TITLE": {
+          "WAITING": "Đề xuất",
+          "APPROVING": "Chờ duyệt",
+          "REJECTED": "Từ chối",
+          "ACCEPTED": "Đồng ý"
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Chi tiết đề xuất",
       "OFFER_PRIORITY_EDITING": {

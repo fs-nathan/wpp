@@ -7,38 +7,56 @@ import { useSelector } from "react-redux";
 import ChartLegend from "../../components/ChartLegend";
 import { createColumnRoleChartProps } from "../../utils/chart";
 import { Block } from "./Block";
+import { getWaitingOfferTitle } from './i18nSelectors';
 
-const strings = ["number_offer_aprroved", "number_offer"];
+const strings = [
+  "number_offer",
+  "number_offer_approving",
+  "number_offer_rejected",
+  "number_offer_accepted"
+];
 const groups = [
   {
     name: "NGHỈ LÀM",
-    number_offer_aprroved: 3,
-    number_offer: 6
+    number_offer: 9,
+    number_offer_approving: 2,
+    number_offer_rejected: 4,
+    number_offer_accepted: 3
   },
   {
     name: "TĂNG LƯƠNG",
-    number_offer_aprroved: 32,
-    number_offer: 44
+    number_offer: 44,
+    number_offer_approving: 20,
+    number_offer_rejected: 10,
+    number_offer_accepted: 14
   },
   {
     name: "MUA SẮM CÔNG CỤ, DỤNG CỤ",
-    number_offer_aprroved: 32,
-    number_offer: 65
+    number_offer: 65,
+    number_offer_approving: 25,
+    number_offer_rejected: 15,
+    number_offer_accepted: 25
   },
   {
     name: "SỬ DỤNG PHÒNG HỌP",
-    number_offer_aprroved: 44,
-    number_offer: 80
+    number_offer: 80,
+    number_offer_approving: 30,
+    number_offer_rejected: 10,
+    number_offer_accepted: 40
   },
   {
     name: "SỬ DỤNG XE",
-    number_offer_aprroved: 4,
-    number_offer: 7
+    number_offer: 7,
+    number_offer_approving: 2,
+    number_offer_rejected: 3,
+    number_offer_accepted: 2
   },
   {
     name: "CÔNG TÁC",
-    number_offer_aprroved: 12,
-    number_offer: 44
+    number_offer: 44,
+    number_offer_approving: 15,
+    number_offer_rejected: 10,
+    number_offer_accepted: 19
   },
 ]
 
@@ -55,23 +73,24 @@ const useStyles = makeStyles(theme => ({
     textTransform: 'uppercase',
   }
 }));
-export function GroupBlock() {
+export function GroupBlock({  }) {
+  const { t } = useTranslation();
   const classes = useStyles();
 
   const chartProps = (group) => {
     return createColumnRoleChartProps(
+      t,
       strings,
       [group]
     );
   }
-  const { t } = useTranslation();
   return (
     <Block
       title={t("BIỂU ĐỒ ĐỀ XUẤT THEO NHÓM")}
       extra={times}
     >
-    <Grid container>
-      <ChartLegend strings={strings} xs={1} />
+      <Grid container>
+        <ChartLegend strings={strings} xs={1} />
         {groups.map(group => (
           <Grid xs={12} md={2} classes={{ root: classes.root }} key={group.name} item>
             <Chart {...chartProps(group)} />
