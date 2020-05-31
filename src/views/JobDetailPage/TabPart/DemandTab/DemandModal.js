@@ -17,10 +17,6 @@ const Text = styled(TextField)`
   }
 `
 
-const selector = [
-  { label: 'Chỉ đạo', value: 1 },
-  { label: 'Quyết định', value: 0 }
-]
 
 const DemandModal = (props) => {
   const { t } = useTranslation();
@@ -29,6 +25,11 @@ const DemandModal = (props) => {
   const [tempSelectedItem, setTempSelectedItem] = React.useState({ task_id: props.taskId, content: "", type: -1 })
   const isFetching = useSelector(state => state.taskDetail.taskCommand.isFetching)
   const error = useSelector(state => state.taskDetail.taskCommand.error)
+
+  const selector = [
+    { label: t('LABEL_CHAT_TASK_CHI_DAO_LABEL'), value: 1 },
+    { label: t('LABEL_CHAT_TASK_QUYET_DINH_LABEL'), value: 0 }
+  ]
 
   React.useEffect(() => {
     setTempSelectedItem(props.item)
@@ -61,10 +62,10 @@ const DemandModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}
+      title={(props.isEditDemand) ? t('LABEL_CHAT_TASK_TAO_CHI_DAO_QUYET_DINH') : t('LABEL_CHAT_TASK_SUA_CHI_DAO_QUYET_DINH')}
       open={props.isOpen}
       setOpen={props.setOpen}
-      confirmRender={() => (props.isEditDemand) ? t('LABEL_CHAT_TASK_CHINH_SUA') : t('IDS_WP_CREATE_NEW')}
+      confirmRender={() => (props.isEditDemand) ? t('IDS_WP_UPDATE') : t('IDS_WP_CREATE_NEW')}
       onConfirm={(props.isEditDemand) ? onClickUpdate : onClickCreate}
       canConfirm={validate()}
       actionLoading={isFetching}

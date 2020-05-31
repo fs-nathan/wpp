@@ -19,36 +19,6 @@ import { convertDate, DEFAULT_DATE_TEXT, DEFAULT_TIME_TEXT, isValidDuration, REM
 // import TimeField from 'react-simple-timefield';
 import OutlinedInputSelect from '../ProgressTab/OutlinedInputSelect';
 
-const selector = [
-  {
-    value: 0,
-    label: 'Nhắc hẹn theo thời gian',
-  },
-  {
-    value: 1,
-    label: 'Nhắc hẹn theo tiến độ thực tế',
-  }
-];
-
-const badges = [
-  {
-    value: 0,
-    label: 'Nhắc 1 lần',
-  },
-  {
-    value: 1,
-    label: 'Theo ngày',
-  },
-  {
-    value: 2,
-    label: 'Theo tuần',
-  },
-  {
-    value: 3,
-    label: 'Theo tháng',
-  },
-]
-
 const TitleText = styled(Typography)`
     font-size: 15px;
     margin: 0 0 15px 0;
@@ -123,7 +93,35 @@ function RemindModal(props) {
   const dataRemind = useSelector(state => state.chat.dataRemind);
   const isFetching = useSelector(state => state.taskDetail.taskRemind.isFetching)
   const error = useSelector(state => state.taskDetail.taskRemind.error)
+  const selector = [
+    {
+      value: 0,
+      label: t('LABEL_CHAT_TASK_NHAC_HEN_THEO_THOI_GIAN'),
+    },
+    {
+      value: 1,
+      label: t('LABEL_CHAT_TASK_NHAC_HEN_THEO_TIEN_DO_THUC_TE'),
+    }
+  ];
 
+  const badges = [
+    {
+      value: 0,
+      label: t('LABEL_CHAT_TASK_NHAC_1_LAN'),
+    },
+    {
+      value: 1,
+      label: t('LABEL_CHAT_TASK_THEO_NGAY'),
+    },
+    {
+      value: 2,
+      label: t('LABEL_CHAT_TASK_THEO_TUAN'),
+    },
+    {
+      value: 3,
+      label: t('LABEL_CHAT_TASK_THEO_THANG'),
+    },
+  ]
   function setOpenCreate(isOpen) {
     dispatch(openCreateRemind(isOpen))
   }
@@ -242,10 +240,10 @@ function RemindModal(props) {
     <JobDetailModalWrap
       maxWidth='sm'
       className="remindModal"
-      title={t('LABEL_CHAT_TASK_NHAC_HEN')}
+      title={(isCreateRemind) ? t('LABEL_CHAT_TASK_TAO_NHAC_HEN_LABEL') : t('LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL')}
       open={isOpenCreateRemind}
       setOpen={setOpenCreate}
-      confirmRender={() => (!isCreateRemind) ? t('LABEL_CHAT_TASK_HOAN_THANH') : t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
+      confirmRender={() => (!isCreateRemind) ? t('IDS_WP_UPDATE') : t('LABEL_CHAT_TASK_TAO_NHAC_HEN')}
       onConfirm={handlePressConfirm}
       actionLoading={isFetching}
       manualClose
