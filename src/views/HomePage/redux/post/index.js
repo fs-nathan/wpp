@@ -307,12 +307,38 @@ const love = ({ post_id }) => {
 // file: Array file optional
 // sticker: String optional
 // parent_id: String optional
-const comment = ({ post_id, content, file, sticker, parent_id }) => {
+// file_ids: Array optional
+// google_data: Array object optional. Description object below
+// {
+// file_id: String required
+// name: String required
+// size: Number required
+// url: String required
+// url_download: String required
+// file_type: String required
+// }
+const comment = ({
+  post_id,
+  content,
+  file,
+  file_ids,
+  google_data,
+  sticker,
+  parent_id,
+}) => {
   return createPostAsyncAction({
     notifyOnSuccess: false,
     config: {
       url: "/posts/create-comment",
-      data: toFormData({ post_id, content, file, sticker, parent_id }),
+      data: toFormData({
+        post_id,
+        content,
+        file,
+        sticker,
+        parent_id,
+        file_ids,
+        google_data,
+      }),
     },
     // success: createAction(updatePostList.type, function prepare(data) {
     //   return {

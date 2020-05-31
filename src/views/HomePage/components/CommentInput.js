@@ -10,6 +10,7 @@ import colors from "helpers/colorPalette";
 import words from "lodash/words";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { get } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
@@ -22,7 +23,7 @@ export const CommentInput = React.memo(
     const anchorElRef = React.useRef();
     const [element, setElement] = useState();
     const open = !!element;
-
+    const [openFilePicker, setOpenFilePicker] = useState();
     const handleClose = () => {
       setElement(undefined);
     };
@@ -78,14 +79,72 @@ export const CommentInput = React.memo(
               <InsertEmoticonOutlined />
             </IconButton>
             <IconButton id={"camera"} size="small" aria-label="camera">
-              <CameraAltOutlined />
+              <label htmlFor={`${inputId}_FilePicker`}>
+                <CameraAltOutlined />
+              </label>
             </IconButton>
-            <IconButton id={"file"} size="small" aria-label="file">
-              <AttachFileOutlined />
-            </IconButton>
+            <FilePicker
+              id={`${inputId}_FilePicker`}
+              onSelect={(file) => {
+                handleComment("", file);
+              }}
+            />
             <IconButton
               onClick={() => {
-                setElement(<StickerPicker />);
+                setOpenFilePicker(true);
+              }}
+              id={"file"}
+              size="small"
+              aria-label="file"
+            >
+              <AttachFileOutlined />
+            </IconButton>
+            {
+              <ModalFilePicker
+                {...{
+                  open: openFilePicker,
+                  setOpen: setOpenFilePicker,
+                  handleUploadFile: (e) => {
+                    handleComment("", [...e.target.files]);
+                  },
+                  onConfirmShare: (files) => {
+                    const isFileFromStore = (file) => !!file.id;
+                    const isFileFromGoggle = (file) => !!file.file_id;
+                    const { file_ids, file, google_data } = files.reduce(
+                      (result, f) => {
+                        switch (true) {
+                          case isFileFromStore(f):
+                            result.file_ids.push(f.id);
+                            break;
+                          case isFileFromGoggle(f):
+                            result.google_data.push(f);
+                            break;
+                          default:
+                            result.file.push(f);
+                            break;
+                        }
+                        return result;
+                      },
+                      {
+                        file_ids: [],
+                        file: [],
+                        google_data: [],
+                      }
+                    );
+                    handleComment("", null, null, file_ids, google_data);
+                  },
+                }}
+              />
+            }
+            <IconButton
+              onClick={() => {
+                setElement(
+                  <StickerPicker
+                    handleClickSticker={(sticker) =>
+                      handleComment("", null, sticker)
+                    }
+                  />
+                );
               }}
               id={"sticker"}
               size="small"
@@ -124,7 +183,7 @@ const StickerPicker = ({ isOpen, handleClose, handleClickSticker }) => {
       !stickerKeyWord || words(sticker.host_key).indexOf(stickerKeyWord) !== -1
   );
   // console.log(renderStickersList, stickerKeyWord)
-  function onClickSticker(id) {}
+  const onClickSticker = handleClickSticker;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getListStickersRequest());
@@ -142,7 +201,7 @@ const StickerPicker = ({ isOpen, handleClose, handleClickSticker }) => {
           <div
             key={el.id}
             style={{ width: "28%" }}
-            onClick={onClickSticker(el.id)}
+            onClick={() => onClickSticker(el.id)}
           >
             <img
               style={{ width: "100%" }}
@@ -156,5 +215,35 @@ const StickerPicker = ({ isOpen, handleClose, handleClickSticker }) => {
         ))}
       </Box>
     </TasksScrollbar>
+  );
+};
+const FilePicker = ({ id, onSelect }) => {
+  return (
+    <input
+      hidden
+      id={id}
+      name={id}
+      type="file"
+      accept="image/*"
+      onChange={(e) => {
+        onSelect([...e.target.files]);
+      }}
+    />
+  );
+};
+const ModalFilePicker = ({
+  name,
+  open,
+  setOpen,
+  handleUploadFile,
+  onConfirmShare,
+}) => {
+  return (
+    <SendFileModal
+      open={open}
+      setOpen={setOpen}
+      handleUploadFile={handleUploadFile}
+      onConfirmShare={onConfirmShare}
+    />
   );
 };

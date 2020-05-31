@@ -1,3 +1,4 @@
+import { getListStickersRequest } from "actions/chat/chat";
 import { actionFetchGroupDetail } from "actions/setting/setting";
 import React, { useEffect } from "react";
 import { connect, useDispatch } from "react-redux";
@@ -105,6 +106,9 @@ export default connect((state) => ({
 
   useEffect(() => {
     dispatch(actionFetchGroupDetail());
+  }, [dispatch]);
+  useEffect(() => {
+    dispatch(getListStickersRequest());
   }, [dispatch]);
   if (!props.groupDetail.id) return null;
   return <HomePage {...props} />;

@@ -18,6 +18,17 @@
   border-radius: 15px;
   display: inline-block;
 }
+.comp_Message__sticker {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  padding: 8px;
+  max-width: 400px;
+  background: rgb(245, 246, 247);
+  border-radius: 15px;
+}
+.comp_Message__sticker img {
+  width: 100%;
+}
 .comp_Message__reply {
   color: #3f51b5;
   margin-right: 8px;

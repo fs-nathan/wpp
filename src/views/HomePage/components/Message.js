@@ -163,7 +163,7 @@ const Message = ({
   user_create_avatar,
   comments,
   total_sub_comment,
-  images,
+  images = emptyArray,
   images_id,
   images_url,
   images_size,
@@ -192,6 +192,16 @@ const Message = ({
           <span className="comp_Message__creator">{user_create_name}</span>
           <span className="comp_Message__message">{content}</span>
         </div>
+        {sticker && (
+          <div className="comp_Message__sticker">
+            <Sticker {...{ sticker }}></Sticker>
+          </div>
+        )}
+        {images.map(({ url_thumbnail, url }, i) => (
+          <div key={i} className="comp_Message__sticker">
+            <Sticker {...{ sticker: url_thumbnail || url }}></Sticker>
+          </div>
+        ))}
         <Box padding="0 10px">
           {onReplyClick && (
             <ButtonBase
@@ -276,3 +286,11 @@ export default ({ message, comments, onReplyClick }) => {
     />
   );
 };
+
+const Sticker = React.memo(({ sticker }) => {
+  // const listStickers = useSelector((state) => state.chat.listStickers);
+  // const item = (listStickers || emptyArray).find((item) => item.id === sticker);
+  // console.log({ listStickers, sticker });
+  // if (!item || !item.url) return null;
+  return <img src={sticker} />;
+});

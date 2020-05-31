@@ -87,7 +87,7 @@ const CommentListContainer = () => {
   );
   const [{}, handleDispatchAsyncAction] = useAsyncTracker();
   const handleComment = useCallback(
-    (value) => {
+    (value, file, sticker, file_ids, google_data) => {
       const asyncId = Date.now();
       if (!reply) {
         setNewComments({
@@ -98,6 +98,10 @@ const CommentListContainer = () => {
               asyncId,
               parent: reply,
               content: value,
+              file,
+              sticker,
+              file_ids,
+              google_data,
               user_create_name: profile.name,
               user_create_avatar: profile.avatar,
             },
@@ -111,6 +115,10 @@ const CommentListContainer = () => {
             {
               asyncId,
               content: value,
+              file,
+              sticker,
+              file_ids,
+              google_data,
               user_create_name: profile.name,
               user_create_avatar: profile.avatar,
             },
@@ -119,11 +127,16 @@ const CommentListContainer = () => {
       }
 
       setReply(undefined);
+
       handleDispatchAsyncAction({
         asyncId,
         ...postModule.actions.comment({
           post_id: id,
           content: value,
+          file,
+          sticker,
+          file_ids,
+          google_data,
           parent_id: reply && reply.id,
         }),
       });
