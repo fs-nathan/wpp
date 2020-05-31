@@ -46,10 +46,7 @@ const MonthHeader = ({
       let children = [];
       for (let j = 0; j < axisY; j++) {
         let backgroud = {};
-        if ((j + 1) % 7 === 0 || (j + 2) % 7 === 0)
-          backgroud = {
-            backgroundColor: "#fafafa",
-          };
+       
         children.push(
           <div
             key={`${i}-${j}`}

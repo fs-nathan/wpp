@@ -650,14 +650,15 @@ class DragSortingTable extends React.Component {
       return item;
     });
     this.setState({
-      data: newData,
+    data: newData,
     });
   };
-  fetchTimeNotWork = async (projectId, fromDate, endDate) => {
+  fetchTimeNotWork = async ( fromDate, endDate) => {
     try {
+      const { projectId } = this.props.match.params;
       const { girdInstance } = this.props;
       const result = await apiService({
-        url: `gantt/get-time-not-work?project_id=${projectId}&from_date=${fromDate}&endDate=${endDate}&gird=${girdInstance.unit}`,
+        url: `gantt/get-time-not-work?project_id=${projectId}&from_date=${fromDate}&to_date=${endDate}&gird=${girdInstance.gird}`,
       });
       if (!result.data.state) return;
       this.setState({
@@ -760,6 +761,7 @@ class DragSortingTable extends React.Component {
       endTimeProject,
       startTimeProject
     );
+    this.fetchTimeNotWork( startTimeProject.format("YYYY-MM-DD"), new moment(startTimeProject).add(700, girdInstance.unit).format("YYYY-MM-DD"))
     this.setState({
       startTimeProject,
       endTimeProject,
@@ -1323,6 +1325,8 @@ class DragSortingTable extends React.Component {
             end={this.state.endTimeProject}
             dataSource={this.state.data}
             handleScrollTop={this.handleScrollTop}
+            timeNotWork={this.state.timeNotWork}
+            fetchTimeNotWork={this.fetchTimeNotWork}
           />
           {/* <div
             id="asdasdasd"

@@ -241,6 +241,7 @@ const TimeLine = ({
           }
           handle={() => (
             <Tooltip
+            placement="top"
               title={`${
                 endDateText.diff(startDateText, girdInstance.unit) + 1
               } ${girdInstance.unitText}`}
@@ -264,6 +265,7 @@ const TimeLine = ({
           width={width}
         >
           <Tooltip
+          placement="top"
             title={`${endDateText.diff(startDateText, girdInstance.unit) + 1} ${
               girdInstance.unitText
             }`}

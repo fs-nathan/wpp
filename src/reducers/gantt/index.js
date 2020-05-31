@@ -71,6 +71,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("MM/YYYY"),
       getTimeCompare: (moment) => moment.format("M"),
       formatChild: "DD",
+      gird: 'day',
     },
     MONTH: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -83,6 +84,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "MM",
+      gird: 'month',
     },
     HOUR: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -95,6 +97,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("DD/MM/YYYY"),
       getTimeCompare: (moment) => moment.format("DD/MM/YYYY"),
       formatChild: "HH",
+      gird: 'hour',
     },
     WEEK: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -107,6 +110,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("W"),
       formatChild: "W",
+      gird: 'week',
     },
     QUARTER: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -119,6 +123,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "Q",
+      gird: 'quarter'
     },
   },
   girdInstance: {
@@ -134,6 +139,7 @@ export const initialState = {
     getTextParent: (moment) => moment.format("MM/YYYY"),
     getTimeCompare: (moment) => moment.format("M"),
     formatChild: "DD",
+    gird: 'day'
   },
 };
 
