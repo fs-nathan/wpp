@@ -175,7 +175,7 @@ function RightContent(props) {
           id={cmt.id}
           username={cmt.user_create.name}
           avatarUrl={cmt.user_create.avatar}
-          userPosition={''}
+          userPosition={cmt.user_create.position}
           time={cmt.time_create}
           date={cmt.date_create}
           content={cmt.content}
