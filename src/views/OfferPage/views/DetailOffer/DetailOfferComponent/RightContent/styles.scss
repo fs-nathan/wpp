@@ -19,10 +19,10 @@
 
   &-discussion {
     &-headerTitle {
-      font-size: 1.3rem;
-      @extend .offerDetail-rightContent-leftRightPadding;
-      padding-top: 1em;
-      padding-bottom: 1em;
+      font-size: 15px;
+      padding: 10px 20px;
+      color: #222;
+      text-transform: uppercase;
     }
     &-textInputSection {
       &-container {
@@ -30,8 +30,6 @@
         justify-content: space-between;
         align-items: flex-start;
         @extend .offerDetail-rightContent-leftRightPadding;
-        padding-top: 0.5em;
-        padding-bottom: 0.5em;
 
         [class*='MuiButton-root'] {
           border-radius: 1.5em;
@@ -41,9 +39,15 @@
 
       }
       &-sendBtn {
-        color: white;
+        color: #fff;
+        padding: 3px 12px;
+        min-width: unset;
+        box-shadow: unset;
+        background-color: #e9e9e9;
         &-disabled {
-          background-color: grey !important;
+          background-color: #ececec !important;
+          padding: 3px 12px;
+          min-width: unset;
         }
       }
     }

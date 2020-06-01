@@ -85,7 +85,7 @@ function RightContent(props) {
           !contentToSubmit && 'offerDetail-discussion-textInputSection-sendBtn-disabled'
         )}
         variant="contained"
-        style={{backgroundColor: bgColor}}
+        // style={{backgroundColor: bgColor}}
         onClick={onClick}
         disabled={!contentToSubmit}
       >
