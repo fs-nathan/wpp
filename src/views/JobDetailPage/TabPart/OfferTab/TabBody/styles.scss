@@ -236,6 +236,12 @@
 }
 
 .approve {
+  [class*='comp_LoadingOverlay___wrapper'] {
+    height: 90vh !important;
+  }
+  [class*='comp_CustomModal___scroll'] {
+    height: 100% !important;
+  }
   .MuiFormControl-marginNormal {
     margin-top: 0;
   }
