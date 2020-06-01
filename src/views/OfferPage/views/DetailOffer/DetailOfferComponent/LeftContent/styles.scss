@@ -79,7 +79,10 @@
       color: dimgrey;
     }
     &-detailSection {
-      font-weight: 700;
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
     }
     &-content {
       margin-bottom: 2em;
@@ -88,7 +91,10 @@
 
   &-attachedDocument {
     &-title {
-      font-weight: 700;
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
       margin-bottom: 1em;
     }
     &-fileContainer {
@@ -112,7 +118,10 @@
 
   &-handlingPerson {
     &-title {
-      font-weight: 700;
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
     }
     &-item {
       margin: 0.2em 0;
@@ -138,7 +147,10 @@
 
   &-monitoringPerson {
     &-title {
-      font-weight: 700;
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
     }
     &-item {
       margin: 0.2em 0;
