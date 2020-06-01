@@ -13,7 +13,7 @@ import { loadSummaryOverview } from "../../redux/actions";
 import { get } from "../../utils";
 import { GroupBlock } from "./GroupBlock";
 import { OfferBlock } from "./OfferBlock";
-import { getMyOffers, getPriorityOffers, getStatusOffers } from "./selector";
+import { getGroupOffers, getMyOffers, getPriorityOffers, getStatusOffers } from './selector';
 export const PageContainer = styled(Container)`
   overflow: auto;
   background: #f6f6f6;
@@ -22,12 +22,15 @@ export const PageContainer = styled(Container)`
   min-height: 100%;
 `;
 
-
-//dữ liệu mẫu
 const stringsSelfOffer = ["offer_of_me_sending", "offer_of_me_approved", "offer_of_me_monitoring"];
 const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel"];
 const stringsPriorityOffer = ["offer_priority_normal", "offer_priority_urgent", "offer_priority_very_urgent"];
-
+const stringsGroupOffer = [
+  "number_offer",
+  "number_offer_approving",
+  "number_offer_rejected",
+  "number_offer_accepted"
+];
 
 const Overview = () => {
   const { t } = useTranslation();
@@ -37,6 +40,7 @@ const Overview = () => {
   const myOffers = useSelector(state => getMyOffers(state))
   const statusOffers = useSelector(state => getStatusOffers(state))
   const priorityOffers = useSelector(state => getPriorityOffers(state))
+  const groupOffers = useSelector(getGroupOffers);
   useEffect(() => {
     dispatch(loadSummaryOverview({ timeRange }))
   }, [dispatch, timeRange])
@@ -44,7 +48,7 @@ const Overview = () => {
     isMounted &&
       setTitle(get(labels, "pageTitle"))
   }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, setTitle]);
-  const renderDataGroupOffer = useMemo(() => {
+  const renderDataStatusOffer = useMemo(() => {
     if (timeRange) {
       return statusOffers
     }
@@ -59,6 +63,11 @@ const Overview = () => {
       return myOffers
     }
   }, [myOffers, timeRange])
+  const renderDataGroupOffer = useMemo(() => {
+    if (timeRange) {
+      return groupOffers;
+    }
+  }, [groupOffers, timeRange]);
   const renderExtraTimeTitle = useMemo(() => {
     const startDate = moment(timeRange.startDate).format("DD/MM/YYYY")
     const endDate = moment(timeRange.endDate).format("DD/MM/YYYY")
@@ -71,7 +80,7 @@ const Overview = () => {
           <Icon
             size={1.4}
             {...{ color: listMenu[0].color, path: listMenu[0].icon }}
-          ></Icon>
+          />
           <Box
             {...{
               paddingLeft: "20px",
@@ -90,7 +99,7 @@ const Overview = () => {
           <Grid container spacing={3}>
             {[
               <OfferBlock time={renderExtraTimeTitle} strings={stringsSelfOffer} data={renderDataMyOfferGroup} title={t("ĐỀ XUẤT CỦA BẠN")} />,
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsStatusOffer} data={renderDataGroupOffer} title={t("ĐỀ XUẤT THEO TRẠNG THÁI")} />,
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsStatusOffer} data={renderDataStatusOffer} title={t("ĐỀ XUẤT THEO TRẠNG THÁI")} />,
               <OfferBlock time={renderExtraTimeTitle} strings={stringsPriorityOffer} data={renderDataPriorityOffer} title={t("ĐỀ XUẤT THEO MỨC ĐỘ")} />
             ].map(
               (children, i) => (
@@ -107,7 +116,12 @@ const Overview = () => {
               )
             )}
             <Grid xs={12} md={12} item>
-              <GroupBlock />
+              <GroupBlock
+                time={renderExtraTimeTitle}
+                strings={stringsGroupOffer}
+                data={renderDataGroupOffer}
+                title={t("BIỂU ĐỒ ĐỀ XUẤT THEO NHÓM")}
+              />
             </Grid>
           </Grid>
         </PageContainer>

@@ -18,3 +18,16 @@ export const getStatusOffers = createSelector(selectSummaryGroup, offer => {
 export const getPriorityOffers = createSelector(selectSummaryGroup, offer => {
   return { static: { offer_priority_normal: offer.priority_offers["nomal"], offer_priority_urgent: offer.priority_offers["urgent"], offer_priority_very_urgent: offer.priority_offers["very_urgent"] } }
 })
+export const getGroupOffers = createSelector(selectSummaryGroup, offer => {
+  const groupOffers = [];
+  offer.group_offers.forEach(groupOffer =>
+    groupOffers.push({
+      name: groupOffer.name,
+      number_offer: groupOffer.waiting,
+      number_offer_approving: groupOffer.approving,
+      number_offer_rejected: groupOffer.rejected,
+      number_offer_accepted: groupOffer.accepted,
+    })
+  )
+  return groupOffers;
+})
