@@ -1097,7 +1097,7 @@
   "LABEL_CHAT_TASK_NHAP_GOI_Y_NOI": "Nhập @ gợi ý, nội dung thảo luận...",
   "LABEL_CHAT_TASK_NHAC_HEN": "Nhắc hẹn",
   "LABEL_CHAT_TASK_XEM_CHI_TIET": "Xem chi tiết",
-  "LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO": "Tìm nội dung trong thảo luận",
+  "LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO": "Nhập nội dung và ấn Enter để xem kết quả tìm kiếm",
   "LABEL_CHAT_TASK_THANH_VIEN": "Thành viên",
   "LABEL_CHAT_TASK_NHOM_QUYEN": "Nhóm quyền",
   "LABEL_CHAT_TASK_VAI_TRO": "Vai trò",
@@ -1380,5 +1380,11 @@
   "LABEL_CHAT_TASK_DAT_PERCENT": "Đạt {{percent}}%",
   "LABEL_CHAT_TASK_DANG_LUC_USER_TIME": "{{user}} đăng lúc {{time}}",
   "LABEL_CHAT_TASK_TAO_NHAC_HEN_LABEL": "Tạo nhắc hẹn",
-  "LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL": "Sửa nhắc hẹn"
+  "LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL": "Sửa nhắc hẹn",
+  "LABEL_CHAT_TASK_DUOC_GIAO": "Được giao",
+  "LABEL_CHAT_TASK_TU_DE_XUAT": "Tự đề xuất",
+  "LABEL_CHAT_TASK_GIAO_VIEC_CHO": "Giao việc cho",
+  "LABEL_CHAT_TASK_THAP": "Thấp",
+  "LABEL_CHAT_TASK_TRUNG_BINH": "Trung bình",
+  "LABEL_CHAT_TASK_CAO": "Cao"
 }

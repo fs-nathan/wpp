@@ -1,7 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign, getListGroupTask } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
-import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProjectGroup';
+import CreateProjectGroup from 'views/ProjectPage/Modals/CreateGroupTask';
 import { taskIdSelector } from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
@@ -28,38 +28,6 @@ export const EDIT_MODE = {
   PRIORITY: 3,
   ASSIGN_TYPE: 4,
 }
-
-let assignList = [
-  { id: 0, value: 'Được giao' },
-  { id: 1, value: 'Tự đề xuất' },
-  { id: 2, value: 'Giao việc cho' }
-];
-
-const DEFAULT_ASSIGN = assignList[0];
-const DEFAULT_ASSIGN_ID = assignList[0];
-
-// Define variable using in form
-let priorityList = [
-  { id: 2, value: 'Thấp' },
-  { id: 1, value: 'Trung bình' },
-  { id: 0, value: 'Cao' },
-];
-const DEFAULT_PRIORITY = priorityList[0].value;
-const DEFAULT_PRIORITY_ID = priorityList[0].id;
-
-const DEFAULT_DATA = {
-  name: EMPTY_STRING,
-  description: EMPTY_STRING,
-  start_time: listTimeSelect[16],
-  start_date: DEFAULT_DATE_TEXT,
-  end_time: listTimeSelect[34],
-  end_date: DEFAULT_DATE_TEXT,
-  type_assign: DEFAULT_ASSIGN_ID,
-  priority: DEFAULT_PRIORITY_ID,
-  // group_task: DEFAULT_GROUP_TASK_VALUE,
-  priorityLabel: DEFAULT_PRIORITY,
-  assignValue: DEFAULT_ASSIGN
-};
 
 function validate(data) {
   const {
@@ -84,6 +52,38 @@ function CreateJobModal(props) {
     : get(props, 'projectId');
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
+
+  let assignList = [
+    { id: 0, value: t('LABEL_CHAT_TASK_DUOC_GIAO') },
+    { id: 1, value: t('LABEL_CHAT_TASK_TU_DE_XUAT') },
+    { id: 2, value: t('LABEL_CHAT_TASK_GIAO_VIEC_CHO') }
+  ];
+
+  const DEFAULT_ASSIGN = assignList[0];
+  const DEFAULT_ASSIGN_ID = assignList[0];
+
+  // Define variable using in form
+  let priorityList = [
+    { id: 2, value: t('LABEL_CHAT_TASK_THAP') },
+    { id: 1, value: t('LABEL_CHAT_TASK_TRUNG_BINH') },
+    { id: 0, value: t('LABEL_CHAT_TASK_CAO') },
+  ];
+  const DEFAULT_PRIORITY = priorityList[0].value;
+  const DEFAULT_PRIORITY_ID = priorityList[0].id;
+
+  const DEFAULT_DATA = {
+    name: EMPTY_STRING,
+    description: EMPTY_STRING,
+    start_time: listTimeSelect[16],
+    start_date: DEFAULT_DATE_TEXT,
+    end_time: listTimeSelect[34],
+    end_date: DEFAULT_DATE_TEXT,
+    type_assign: DEFAULT_ASSIGN_ID,
+    priority: DEFAULT_PRIORITY_ID,
+    // group_task: DEFAULT_GROUP_TASK_VALUE,
+    priorityLabel: DEFAULT_PRIORITY,
+    assignValue: DEFAULT_ASSIGN
+  };
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -198,7 +198,7 @@ function CreateJobModal(props) {
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
       setDataMember(tempData);
     }
-  }, [props.data, props.editMode]);
+  }, [DEFAULT_ASSIGN, DEFAULT_PRIORITY, assignList, priorityList, props.data, props.editMode]);
 
   useEffect(() => {
     if (!isFetching && !error)
@@ -207,9 +207,12 @@ function CreateJobModal(props) {
   }, [isFetching, error])
 
   useEffect(() => {
-    if (projectId)
-      dispatch(getSchedules(projectId))
-  }, [dispatch, projectId])
+    if (props.isOpen) {
+      if (projectId)
+        dispatch(getSchedules(projectId))
+      dispatch(getListGroupTask({ project_id: projectId }));
+    }
+  }, [dispatch, projectId, props.isOpen])
 
   const handleChangeData = (attName, value) => {
     // console.log(attName, value)

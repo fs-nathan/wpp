@@ -97,17 +97,19 @@ const CommonMessageAction = ({
           </abbr>
         </StyledButton>
       }
-      <StyledButton
-        className={clsx("CommonMessageAction--button", "CommonMessageAction--buttonEmo", {
-          "CommonMessageAction--buttonEmo__short": isShortMessage
-        })}
-        onClick={handleClickEmotion}
-        colorHover={groupActiveColor}>
-        <abbr title={t('LABEL_CHAT_TASK_BIEU_CAM')}>
-          <Icon className="CommonMessageAction--icon" path={mdiCardsHeart} />
-        </abbr>
-        <ReactEmotionPopup chatId={chatId} />
-      </StyledButton>
+      {handleForwardChat &&
+        <StyledButton
+          className={clsx("CommonMessageAction--button", "CommonMessageAction--buttonEmo", {
+            "CommonMessageAction--buttonEmo__short": isShortMessage
+          })}
+          onClick={handleClickEmotion}
+          colorHover={groupActiveColor}>
+          <abbr title={t('LABEL_CHAT_TASK_BIEU_CAM')}>
+            <Icon className="CommonMessageAction--icon" path={mdiCardsHeart} />
+          </abbr>
+          <ReactEmotionPopup chatId={chatId} />
+        </StyledButton>
+      }
       <StyledButton className="CommonMessageAction--button" onClick={handleClick} colorHover={groupActiveColor}>
         <abbr title={t('LABEL_CHAT_TASK_THEM')}>
           <Icon className="CommonMessageAction--icon" path={mdiDotsVertical} />
