@@ -46,6 +46,18 @@ function TabHeader(props) {
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+  const {
+    view_task,
+    update_task,
+    delete_task,
+    stop_task,
+    manage_member,
+    manage_chat,
+    manage_sub_task,
+    manage_remind,
+    manage_offer,
+    manage_command_decision
+  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
 
   let avatar, name, roles;
   if (detailTask) {
@@ -93,7 +105,23 @@ function TabHeader(props) {
     handleCloseMenu();
     handleOpenModalDelete();
   }
-
+  const editList = [
+    <MenuItem
+      onClick={onClickEdit(EDIT_MODE.NAME_DES)}
+    >{t('LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC')}</MenuItem>,
+    <MenuItem
+      onClick={onClickEdit(EDIT_MODE.PRIORITY)}
+    >{t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}</MenuItem>,
+    <MenuItem
+      onClick={onClickEdit(EDIT_MODE.GROUP)}
+    >{t('LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC')}</MenuItem>,
+    <MenuItem
+      onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
+    >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>,
+    <MenuItem
+      onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
+    >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>,
+  ]
   return (
     <div className="container-dt-tabheader">
       <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
@@ -131,38 +159,27 @@ function TabHeader(props) {
           horizontal: 'right'
         }}
       >
-        <MenuItem
-          onClick={onClickEdit(EDIT_MODE.NAME_DES)}
-        >{t('LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC')}</MenuItem>
-        <MenuItem
-          onClick={onClickEdit(EDIT_MODE.PRIORITY)}
-        >{t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}</MenuItem>
-        <MenuItem
-          onClick={onClickEdit(EDIT_MODE.GROUP)}
-        >{t('LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC')}</MenuItem>
-        <MenuItem
-          onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
-        >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>
-        <MenuItem
-          onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
-        >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>
+        {update_task && editList}
         <MenuItem
           onClick={onClickPin}
         >
           {isPinned ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_CONG_VIEC')}
         </MenuItem>
-        {!pause ? (
-          <MenuItem
-            onClick={onClickPause}
-          >{t('LABEL_CHAT_TASK_TAM_DUNG')}</MenuItem>
-        ) : (
+        {(detailTask && detailTask.state_code === 2) || !stop_task ? null :
+          !pause ? (
             <MenuItem
-              onClick={onClickResume}
-            >{t('LABEL_CHAT_TASK_HUY_TAM_DUNG')}</MenuItem>
-          )}
-        <MenuItem
-          onClick={onClickDelete}
-        >{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
+              onClick={onClickPause}
+            >{t('LABEL_CHAT_TASK_TAM_DUNG')}</MenuItem>
+          ) : (
+              <MenuItem
+                onClick={onClickResume}
+              >{t('LABEL_CHAT_TASK_HUY_TAM_DUNG')}</MenuItem>
+            )}
+        {delete_task &&
+          <MenuItem
+            onClick={onClickDelete}
+          >{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
+        }
       </Menu>
       <EditJobModal
         isOpen={openCreateJobModal}

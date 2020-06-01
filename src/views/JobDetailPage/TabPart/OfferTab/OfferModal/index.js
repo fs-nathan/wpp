@@ -26,6 +26,8 @@ const OfferModal = (props) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.id);
+  const isFetching = useSelector(state => state.taskDetail.taskOffer.isFetching)
+  const error = useSelector(state => state.taskDetail.taskOffer.error)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   // const members = useSelector(state => state.taskDetail.taskMember.member);
   const [members, setMembers] = useState([])
@@ -47,7 +49,6 @@ const OfferModal = (props) => {
   const { item } = props;
   const createId = (item && item.user_create_id) || currentUserId;
   const createUserIndex = findIndex(members, member => member.id === createId);
-
 
   const fetchMembers = useCallback(async () => {
     const config = {
@@ -119,7 +120,11 @@ const OfferModal = (props) => {
       removeFileCallBack()
     }
   }
-
+  React.useEffect(() => {
+    if (!isFetching && !error)
+      props.setOpen(false);
+    // eslint-disable-next-line
+  }, [isFetching, error])
 
   React.useEffect(() => {
     filterUserInHandlers()
@@ -176,14 +181,14 @@ const OfferModal = (props) => {
     setParams("files", [])
   }
   function onClickCreateOffer() {
-    props.setOpen(false)
+    // props.setOpen(false)
     if (tempSelectedItem.content)
       handleCreateOffer()
     setParams("content", '')
   }
 
   function onClickUpdateOffer() {
-    props.setOpen(false)
+    // props.setOpen(false)
     if (tempSelectedItem.content) {
       dispatch(updateOffer({
         task_id: taskId,
@@ -245,12 +250,15 @@ const OfferModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={props.isOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
+      title={props.isOffer ? t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT') : t('LABEL_CHAT_TASK_TAO_DE_XUAT')}
       open={props.isOpen}
       setOpen={props.setOpen}
-      confirmRender={() => props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
+      confirmRender={() => props.isOffer ? t('LABEL_CHAT_TASK_CHINH_SUA') : t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
       canConfirm={validate()}
+      actionLoading={isFetching}
+      manualClose
+      onCancle={() => props.setOpen(false)}
       className="offerModal"
     >
       <React.Fragment>

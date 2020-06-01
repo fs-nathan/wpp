@@ -1,4 +1,4 @@
-import { getDemandDetail } from 'actions/chat/chat';
+import { getDemandDetail, openDetailDemand } from 'actions/chat/chat';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
@@ -19,6 +19,7 @@ const CreateCommandDecided = ({
 
   function onClickViewDetail() {
     dispatch(getDemandDetail(taskId, command_id))
+    dispatch(openDetailDemand(true))
   }
 
   return (

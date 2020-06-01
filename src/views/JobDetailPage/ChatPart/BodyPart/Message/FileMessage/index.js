@@ -69,8 +69,9 @@ const FileMessage = ({
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
   function onClickDownload(file) {
-    return () => {
+    return (evt) => {
       actionDownloadFile(file)
+      evt.stopPropagation();
     }
   }
 
@@ -89,7 +90,6 @@ const FileMessage = ({
   function onClickAvatar() {
     dispatch(detailUser({ userId: user_create_id }))
   }
-
 
   return (
     <div className={clsx("FileMessage",
@@ -147,14 +147,14 @@ const FileMessage = ({
               <TextMessage {...chat_parent} isReply></TextMessage>
             }
             {files.map((file, i) =>
-              (<div className="FileMessage--files" key={file.id || i} >
+              (<div className="FileMessage--files" key={file.id || i} onClick={onClickFile(file, i)}>
                 <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
-                  onClick={onClickFile(file, i)}
                   src={file.file_icon} alt="file-icon"></img>
                 <div
-                  onClick={onClickFile(file, i)}
                   className={clsx("FileMessage--fileName", { "FileMessage--fileName__self": is_me, "FileMessage--fileName__reply": isReply })}>
-                  {file.name}
+                  <div className="FileMessage--fileNameLabel" >
+                    {file.name}
+                  </div>
                   <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
                     {getFileType(file.name)} - {file && file.size}
                   </div>

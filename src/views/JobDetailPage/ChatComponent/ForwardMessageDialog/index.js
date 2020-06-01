@@ -20,6 +20,7 @@ function ForwardMessageDialog({ }) {
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const listTasks = useSelector(state => state.chat.listTasks);
   const isOpenForward = useSelector(state => state.chat.isOpenForward);
+  const isLoading = useSelector(state => state.chat.isLoadingForward);
   const contentForward = useSelector(state => state.chat.contentForward);
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
   const [selectedProject, setSelectedProject] = useState(0);
@@ -54,7 +55,6 @@ function ForwardMessageDialog({ }) {
         contentForward.id,
         task
       ))
-      handleClose();
     }
   }
 
@@ -73,6 +73,7 @@ function ForwardMessageDialog({ }) {
       isOneButton
       className="ForwardMessageDialog"
       scroll="body"
+      isLoading={isLoading}
     >
       <div className="ForwardMessageDialog--content" >
         <div className="ForwardMessageDialog--border">

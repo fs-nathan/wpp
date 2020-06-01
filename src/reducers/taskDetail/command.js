@@ -1,8 +1,8 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
-import { 
-    filterCommandItem, 
-    filterDecisionItem, 
+import {
+    filterCommandItem,
+    filterDecisionItem,
     searchArrayTabpart
 } from '../../helpers/jobDetail/arrayHelper'
 
@@ -51,6 +51,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: false,
+                error: false,
                 dataFetched: true,
             };
 
@@ -70,6 +71,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: false,
+                error: false,
                 dataFetched: true
             }
         case types.UPDATE_COMMAND_FAIL:

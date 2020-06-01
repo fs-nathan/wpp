@@ -394,7 +394,6 @@ const FooterPart = ({
 
   function onChangeChatText(value) {
     // chatTextRef.current = value;
-    setShowQuickLike(!value)
     setChatText(value)
   }
 
@@ -404,6 +403,7 @@ const FooterPart = ({
 
   useEffect(() => {
     chatTextRef.current = chatText;
+    setShowQuickLike(!chatText)
   }, [chatText])
 
   useEffect(() => {
