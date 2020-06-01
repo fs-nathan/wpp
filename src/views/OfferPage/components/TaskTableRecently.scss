@@ -11,15 +11,32 @@
 .offerTable {
     &-item {
         &-title {
+            &-container {
+                display: flex;
+                flex-direction: column;
+            }
+            &-chip {
+                &-container {
+                    display: grid;
+                    grid-template-columns: auto auto;
+                    grid-column-gap: 0.3em;
+                    justify-content: start;
+                }
+            }
             &-link {
+                width: 100%;
+                line-height: 1.5;
+                margin: 0 0 3px;
                 font-size: 14px;
-                color: #000;
+                font-weight: 500;
+                color: #111;
                 text-decoration: none;
                 max-width: 300px;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 &:hover {
+                    cursor: pointer;
                     color: #0089f6;
                 }
             }
