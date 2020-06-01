@@ -141,7 +141,7 @@ const MiddleContent = ({
                 </Grid>
                 <Grid items xs={7} direction="column">
                   <div className="offerDetail-approvalResult-member-name">{get(member, "name")}</div>
-                  <div className="offerDetail-approvalResult-member-position">Người phê duyệt</div>
+                  <div className="offerDetail-approvalResult-member-position">{get(member, 'position')}</div>
                   <div>Phê duyệt lúc 12:30 ngày 20/02/2020</div>
                 </Grid>
                 <Grid item xs={2}>
