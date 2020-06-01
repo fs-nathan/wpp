@@ -18,8 +18,8 @@
 
   &-personInfo {
     &-avatar {
-      width: 90%;
-      height: 90%;
+      width: 55px;
+      height: 55px;
     }
     &-middleSpacing {
       width: 5px;
@@ -27,10 +27,12 @@
     &-userCreateName {
       font-size: 1.3rem;
       font-weight: 700;
-      margin: 0 0 5px;
+      margin: 0;
     }
     &-userCreatePosition {
       color: grey;
+      line-height: 1.5;
+      margin-bottom: 3px;
     }
     &-timeCreated {
       font-size: 1rem;
