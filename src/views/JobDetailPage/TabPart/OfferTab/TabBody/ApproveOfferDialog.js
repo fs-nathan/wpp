@@ -10,6 +10,7 @@ import { action as _action } from 'views/OfferPage/contants/attrs';
 import { handleOfferOfferPage } from 'views/OfferPage/redux/actions';
 import { } from 'views/OfferPage/redux/sagas';
 import CustomModal from '../../../../../components/CustomModal';
+import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { priorityList } from '../data';
 import './styles.scss';
 import { getCancelBtnTitle, getConfirmBtnTitle } from './i18nSelectors';
@@ -68,7 +69,7 @@ const ApproveOfferDialog = (props) => {
           {title}
         </div>
         <Typography className="approve--content" >{content}</Typography>
-        <Typography className="approve--title" >{t('LABEL_CHAT_TASK_NOI_DUNG_PHE_DUYET')}</Typography>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_PHE_DUYET')} isRequired />
         <div className="approve--select">
           <div className={clsx("approve--option", { "approve--option__green": type === 0 })} onClick={() => setType(0)}>
             <div className={clsx("approve--option-icon")} >
@@ -83,7 +84,7 @@ const ApproveOfferDialog = (props) => {
             <div className={clsx("approve--option-text", { "approve--option__selected": type === 1 })} >{t('LABEL_CHAT_TASK_TU_CHOI')}</div>
           </div>
         </div>
-        <Typography className="approve--title" >{t('LABEL_CHAT_TASK_MO_TA_THEM_NEU_CO')}</Typography>
+        <TitleSectionModal label={t('LABEL_CHAT_TASK_MO_TA_THEM_NEU_CO')} />
         <TextField
           className="approve--description"
           fullWidth
