@@ -12,7 +12,7 @@ import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/
 import { commentAttr } from "../contant/attrs";
 import { postModule } from "../redux/post";
 import "./Message.css";
-import { PostContext } from "./Post";
+import { PostContext, PostFilesStateLess } from "./Post";
 const RepliesContainer = ({
   total_sub_comment,
   post_id,
@@ -170,6 +170,7 @@ const Message = ({
   images_type,
   files,
   sticker,
+  stickerUrl,
 }) => {
   const { t } = useTranslation();
   return (
@@ -194,14 +195,19 @@ const Message = ({
         </div>
         {sticker && (
           <div className="comp_Message__sticker">
-            <Sticker {...{ sticker }}></Sticker>
+            <Sticker {...{ sticker: stickerUrl || sticker }}></Sticker>
           </div>
         )}
-        {images.map(({ url_thumbnail, url }, i) => (
+        {images.map(({ url_thumb, url }, i) => (
           <div key={i} className="comp_Message__sticker">
-            <Sticker {...{ sticker: url_thumbnail || url }}></Sticker>
+            <Sticker {...{ sticker: url_thumb || url }}></Sticker>
           </div>
         ))}
+        {files && (
+          <div className="comp_Message__files">
+            <PostFilesStateLess files={files} />
+          </div>
+        )}
         <Box padding="0 10px">
           {onReplyClick && (
             <ButtonBase
@@ -242,12 +248,9 @@ export default ({ message, comments, onReplyClick }) => {
     user_create_name,
     user_create_avatar,
     images,
-    images_id,
-    images_url,
-    images_size,
-    images_type,
     files,
     sticker,
+
     total_sub_comment,
   ] = createMapPropsFromAttrs([
     commentAttr.id,
@@ -255,10 +258,6 @@ export default ({ message, comments, onReplyClick }) => {
     commentAttr.user_create_name,
     commentAttr.user_create_avatar,
     commentAttr.images,
-    commentAttr.images_id,
-    commentAttr.images_url,
-    commentAttr.images_size,
-    commentAttr.images_type,
     commentAttr.files,
     commentAttr.sticker,
     commentAttr.total_sub_comment,
@@ -275,12 +274,9 @@ export default ({ message, comments, onReplyClick }) => {
         user_create_name,
         user_create_avatar,
         images,
-        images_id,
-        images_url,
-        images_size,
-        images_type,
         files,
         sticker,
+        stickerUrl: message.stickerUrl,
         total_sub_comment,
       }}
     />

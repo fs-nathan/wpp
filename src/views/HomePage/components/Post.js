@@ -99,7 +99,7 @@ const CommentListContainer = () => {
               parent: reply,
               content: value,
               file,
-              sticker,
+              stickerUrl: sticker ? sticker.url : undefined,
               file_ids,
               google_data,
               user_create_name: profile.name,
@@ -116,7 +116,7 @@ const CommentListContainer = () => {
               asyncId,
               content: value,
               file,
-              sticker,
+              stickerUrl: sticker ? sticker.url : undefined,
               file_ids,
               google_data,
               user_create_name: profile.name,
@@ -134,7 +134,7 @@ const CommentListContainer = () => {
           post_id: id,
           content: value,
           file,
-          sticker,
+          sticker: sticker ? sticker.id : undefined,
           file_ids,
           google_data,
           parent_id: reply && reply.id,
@@ -374,7 +374,7 @@ export const PostHeader = () => {
     </>
   );
 };
-function generate(files, e) {
+export function generate(files, e) {
   return files.map((value) =>
     React.cloneElement(e, {
       key: value,
@@ -382,15 +382,20 @@ function generate(files, e) {
     })
   );
 }
+export const PostFilesStateLess = ({ files = emptyArray }) => {
+  return (
+    <List className="comp_Post__fileList">
+      {generate(files, <FileListItem />)}
+    </List>
+  );
+};
 export const PostFiles = () => {
   const { files = emptyArray } = useContext(PostContext);
   if (files && files.length)
     return (
       <TasksCard.Content>
         <TasksCard.Container>
-          <List className="comp_Post__fileList">
-            {generate(files, <FileListItem />)}
-          </List>
+          <PostFilesStateLess files={files} />
         </TasksCard.Container>
       </TasksCard.Content>
     );

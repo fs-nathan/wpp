@@ -201,7 +201,7 @@ const StickerPicker = ({ isOpen, handleClose, handleClickSticker }) => {
           <div
             key={el.id}
             style={{ width: "28%" }}
-            onClick={() => onClickSticker(el.id)}
+            onClick={() => onClickSticker(el)}
           >
             <img
               style={{ width: "100%" }}
