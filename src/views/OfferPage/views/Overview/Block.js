@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column"
   },
   cardContent: {
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     height: "300px",
     display: "flex",
     flexDirection: "column",
