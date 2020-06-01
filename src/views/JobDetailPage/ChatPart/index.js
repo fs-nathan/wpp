@@ -86,7 +86,7 @@ function ChatPart(props) {
                 t('LABEL_CHAT_TASK_LUC_NGAY', {
                   time_remind: pinnedRemind.time_remind,
                   date_remind: pinnedRemind.date_remind,
-                  remind: typesRemind[pinnedRemind.type_remind]
+                  remind: t(typesRemind[pinnedRemind.type_remind])
                 })
                 :
                 t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO', {

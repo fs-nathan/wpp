@@ -1,6 +1,8 @@
 import * as actions from "actions/chat/chat";
 import { apiService } from "constants/axiosInstance";
 import { call, put, select } from "redux-saga/effects";
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
+import get from "lodash/get";
 
 export function* deleteChat(payload) {
   try {
@@ -113,7 +115,9 @@ export function* forwardChat(payload) {
     const { task_id, chat_id, forward_to } = payload;
     const res = yield call(apiService.post, "/task/forward-chat", { task_id, chat_id, forward_to });
     yield put(actions.forwardChatSuccess(res.data));
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
     yield put(actions.forwardChatFail(error));
   }
 }
@@ -219,7 +223,7 @@ export function* getSubtaskDetail(payload) {
 export function* getOfferDetail(payload) {
   try {
     const { task_id, offer_id } = payload;
-    const res = yield call(apiService.post, "/task/get-offer-detail", { task_id, offer_id });
+    const res = yield call(apiService.get, "/task/get-offer-detail", { params: { task_id, offer_id } });
     yield put(actions.getOfferDetailSuccess(res.data));
   } catch (error) {
     yield put(actions.getOfferDetailFail(error));
@@ -229,7 +233,7 @@ export function* getOfferDetail(payload) {
 export function* getDemandDetail(payload) {
   try {
     const { task_id, demand_id } = payload;
-    const res = yield call(apiService.post, "/task/get-command-decision-detail", { task_id, demand_id });
+    const res = yield call(apiService.get, "/task/get-command-decision-detail", { params: { task_id, command_id: demand_id } });
     yield put(actions.getDemandDetailSuccess(res.data));
   } catch (error) {
     yield put(actions.getDemandDetailFail(error));

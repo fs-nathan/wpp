@@ -82,6 +82,8 @@
   }
   &--menu {
     display: none;
+    position: absolute;
+    right: 10px;
   }
   &:hover &--menu {
     display: block;
@@ -136,6 +138,8 @@
     min-width: 500px;
     min-height: 300px;
     margin-top: 10px;
+    color: #111111;
+    font-size: 14px;
   }
   &--line {
     width: 100px;

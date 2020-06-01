@@ -34,11 +34,19 @@ const SearchBoxBase = styled(InputBase)`
 `;
 
 function SearchBox({ classes, className, onClickSearch, ...rest }) {
+
+  function onKeyDown(e) {
+    if (e.which === 13 || e.keyCode === 13 || e.key === "Enter") {
+      onClickSearch && onClickSearch()
+    }
+  }
+
   return (
     <Container classes={classes} className={className}>
       <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' onClick={onClickSearch} />
       <SearchBoxBase
         {...rest}
+        onKeyDown={onKeyDown}
       />
     </Container>
   )
