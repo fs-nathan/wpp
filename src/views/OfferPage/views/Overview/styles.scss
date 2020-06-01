@@ -1,6 +1,10 @@
 .offerOverview {
-  &-defaultImgChart {
+  &-defaultImgOfferBlock {
     width: 100%;
+    height: 80%;
+  }
+  &-defaultImgGroupBlock {
+    width: 40%;
     height: 80%;
   }
 }

@@ -142,6 +142,7 @@ export const createColumnRoleChartProps = (t, strings, data) => {
         categories: categories,
         labels: {
           show: false,
+          rotate: 0,
         }
       },
       yaxis: {

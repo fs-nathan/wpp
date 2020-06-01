@@ -4,10 +4,10 @@ import React, { useContext } from "react";
 import Chart from "react-apexcharts";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import chart_no_data from '../../../../assets/chart_no_data.png';
 import ChartLegend from "../../components/ChartLegend";
 import { createColumnRoleChartProps } from "../../utils/chart";
 import { Block } from "./Block";
-import { getWaitingOfferTitle } from './i18nSelectors';
 
 const strings = [
   "number_offer",
@@ -84,6 +84,12 @@ export function GroupBlock({  }) {
       [group]
     );
   }
+  const hasNoData = groups.some(group =>
+    group.number_offer !== 0
+    || group.number_offer_approving !== 0
+    || group.number_offer_rejected !== 0
+    || group.number_offer_accepted !== 0
+  );
   return (
     <Block
       title={t("BIỂU ĐỒ ĐỀ XUẤT THEO NHÓM")}
@@ -91,12 +97,20 @@ export function GroupBlock({  }) {
     >
       <Grid container>
         <ChartLegend strings={strings} xs={1} />
-        {groups.map(group => (
-          <Grid xs={12} md={2} classes={{ root: classes.root }} key={group.name} item>
-            <Chart {...chartProps(group)} />
-            <span className={classes.subTitle}>{group.name}</span>
-          </Grid>
-        ))}
+        {
+          hasNoData ? (
+            groups.map(group => (
+              <Grid xs={12} md={2} classes={{ root: classes.root }} key={group.name} item>
+                <Chart {...chartProps(group)} />
+                <div className={classes.subTitle}>{group.name}</div>
+              </Grid>
+            ))
+          ) : (
+            <Grid xs={12} md={2} item justify="center">
+              <img className="offerOverview-defaultImgGroupBlock" src={chart_no_data} alt="" />
+            </Grid>
+          )
+        }
       </Grid>
     </Block>
   );
