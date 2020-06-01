@@ -24,7 +24,7 @@ const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) =
     const res = series.reduce((total,currentValue) => {
       return total + currentValue;
     });
-    return Math.round((value / res) * 100);
+    return res > 0 ? Math.round((value / res) * 100) : 0;
   }
   return (
     <Grid container justify="center">
