@@ -54,12 +54,14 @@
           @extend .bg--blue;
           font-size: 0.8rem;
           padding: 5px;
+          border-radius: 2px;
         }
         &-offerPriorityName {
           @include center-text;
           font-size: 0.8rem;
           margin-left: 1em;
           padding: 5px;
+          border-radius: 2px;
         }
       }
       &-editBtn {
