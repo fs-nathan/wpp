@@ -6,7 +6,11 @@ import {
 } from "@material-ui/pickers";
 import { mdiSquareEditOutline } from "@mdi/js";
 import Icon from "@mdi/react";
+import {connect} from 'react-redux'
 import { default as React, useEffect, useRef, useState } from "react";
+
+import { changeTaskduration } from '../../actions/gantt'
+import moment from "moment";
 
 const EditCell = ({
   taskId,
@@ -18,13 +22,24 @@ const EditCell = ({
 }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [showEditIcon, setShowEditIcon] = useState(false);
+  const [data, setData] = useState(null)
   const containerRef = useRef();
   useEffect(() => {
     if (showEdit) {
       document.addEventListener("click", handleClickOutSide);
+      document.addEventListener("keyup", handleClickOutSide);
     }
   });
+  const handleOnChange = (date) => {
+    if(!date.isValid()) return
+    setData(new moment(date).format("YYYY-MM-DD"))
+  }
   const handleClickOutSide = (e) => {
+    if(e.keyCode === 13){
+      e.preventDefault()
+      setShowEdit(false);
+    document.removeEventListener("keyup", handleClickOutSide);
+    }
     if (containerRef.current && containerRef.current.contains(e.target)) return;
     setShowEdit(false);
     document.removeEventListener("click", handleClickOutSide);
@@ -44,6 +59,7 @@ const EditCell = ({
               <KeyboardDatePicker
                 disableToolbar
                 variant="inline"
+                onChange={handleOnChange}
                 format="MM/dd/yyyy"
                 margin="normal"
                 id="date-picker-inline"
@@ -89,4 +105,5 @@ const EditCell = ({
     </React.Fragment>
   );
 };
+
 export default EditCell;
