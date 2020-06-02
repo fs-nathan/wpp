@@ -101,6 +101,7 @@ function WorkingStageModal({
                   onChange={(value) => handleChangeData("selectedDateFrom", value)}
                   className={"view_AddWorkingStage_formControl_inputDate"}
                   autoOk={true}
+                  invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
                 />
               </div>
               <div className="view_AddWorkingStage_formControl">
@@ -116,6 +117,8 @@ function WorkingStageModal({
                   format="dd/MM/yyyy"
                   className={"view_AddWorkingStage_formControl_inputDate"}
                   autoOk={true}
+                  invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
+                  minDateMessage={t('DATE_ERROR_INTERVAL_MIN_MESSAGE')}
                 />
               </div>
             </MuiPickersUtilsProvider>
