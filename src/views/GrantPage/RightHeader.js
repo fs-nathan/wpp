@@ -80,7 +80,7 @@ const RightHeader = ({
       </Col>
       {visibleGantt.fromNowLayer && (
         <Col span={2}>
-          <div className="icon-fromNow-header">
+          <div title="Hôm nay" className="icon-fromNow-header">
             <IconComponent
               onClick={() => scrollGantt(true)}
               size={1.3}

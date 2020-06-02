@@ -52,6 +52,7 @@ import CreateProject from "../../views/ProjectPage/Modals/CreateGroupTask";
 import "./abc.scss";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
+import EditCell from "./EditCell";
 import Header from "./Header";
 import "./table.css";
 
@@ -274,6 +275,7 @@ class DragSortingTable extends React.Component {
       canScroll: true,
       width: 800,
       widthTable: 800,
+      cellDetail: {},
       endTimeProject: "",
       isLoading: true,
       monthArray: [],
@@ -535,25 +537,31 @@ class DragSortingTable extends React.Component {
           align: "center",
           width: 100,
           height: 100,
-          render: (text, record) => (
-            <div
-              className={
-                record.isTotalDuration
-                  ? "gantt--group-task__total"
-                  : record.isGroupTask
-                  ? "gantt--group-task-item"
-                  : ""
-              }
-            >
-              {new moment(text, "DD/MM/YYYY HH:mm").isValid()
-                ? new moment(text, "DD/MM/YYYY HH:mm").format(
-                    this.props.girdType !== "HOUR"
-                      ? "DD/MM/YYYY"
-                      : "DD/MM/YYYY HH:mm"
-                  )
-                : ""}
-            </div>
-          ),
+          render: (text, record) => {
+            return (
+              <EditCell
+                component={
+                  <div
+                    className={
+                      record.isTotalDuration
+                        ? "gantt--group-task__total"
+                        : record.isGroupTask
+                        ? "gantt--group-task-item"
+                        : ""
+                    }
+                  >
+                    {new moment(text, "DD/MM/YYYY HH:mm").isValid()
+                      ? new moment(text, "DD/MM/YYYY HH:mm").format(
+                          this.props.girdType !== "HOUR"
+                            ? "DD/MM/YYYY"
+                            : "DD/MM/YYYY HH:mm"
+                        )
+                      : ""}
+                  </div>
+                }
+              />
+            );
+          },
         },
         {
           title: "Tiến độ",
@@ -650,10 +658,10 @@ class DragSortingTable extends React.Component {
       return item;
     });
     this.setState({
-    data: newData,
+      data: newData,
     });
   };
-  fetchTimeNotWork = async ( fromDate, endDate) => {
+  fetchTimeNotWork = async (fromDate, endDate) => {
     try {
       const { projectId } = this.props.match.params;
       const { girdInstance } = this.props;
@@ -761,7 +769,12 @@ class DragSortingTable extends React.Component {
       endTimeProject,
       startTimeProject
     );
-    this.fetchTimeNotWork( startTimeProject.format("YYYY-MM-DD"), new moment(startTimeProject).add(700, girdInstance.unit).format("YYYY-MM-DD"))
+    this.fetchTimeNotWork(
+      startTimeProject.format("YYYY-MM-DD"),
+      new moment(startTimeProject)
+        .add(700, girdInstance.unit)
+        .format("YYYY-MM-DD")
+    );
     this.setState({
       startTimeProject,
       endTimeProject,
@@ -1204,6 +1217,7 @@ class DragSortingTable extends React.Component {
   };
 
   render() {
+    console.log(this.state.cellDetail);
     const columns = this.state.columns.map((col, index) => ({
       ...col,
       onHeaderCell: (column) => ({
@@ -1234,6 +1248,7 @@ class DragSortingTable extends React.Component {
           showProject={this.state.showProject}
           scheduleIdDefault={this.state.scheduleIdDefault}
         />
+        <EditCell {...this.state.cellDetail} />
         <CreateProject
           open={this.state.openCreateProjectModal}
           projectGroupId={this.props.match.params.projectId}

@@ -862,7 +862,7 @@ div.checkbox-colortag--drawer {
 
 .gantt-grid-background {
   position: absolute;
-  height: 23px;
+  overflow: hidden;
 }
 
 .ant-table-body::-webkit-scrollbar {
@@ -887,4 +887,16 @@ table.ant-table-bordered thead > tr > th {
 }
 .ant-table.ant-table-small thead > tr > th {
   background-color: #f5f5f5;
+}
+
+input[type="time"]::-webkit-clear-button {
+  display: none;
+}
+
+input[type="time"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="time"]::-webkit-outside-spin-button {
+  display: none;
 }

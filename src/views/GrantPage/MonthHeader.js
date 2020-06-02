@@ -46,7 +46,7 @@ const MonthHeader = ({
       let children = [];
       for (let j = 0; j < axisY; j++) {
         let backgroud = {};
-       
+
         children.push(
           <div
             key={`${i}-${j}`}
@@ -83,6 +83,7 @@ const MonthHeader = ({
       <div
         style={{
           width: containerRef.current && containerRef.current.clientWidth,
+          height: dataSource.length * 37,
         }}
         className="gantt-grid-background"
       >
