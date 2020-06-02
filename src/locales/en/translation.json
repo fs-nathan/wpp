@@ -798,7 +798,7 @@
   "LABEL_CHAT_TASK_KHONG_DUOC_DE_TRONG": "Don't blank",
   "LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC": "Select the task group",
   "LABEL_CHAT_TASK_MO_TA_CONG_VIEC": "Task descriptions",
-  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC": "Duration",
+  "_DA_DUNG": "Duration",
   "LABEL_CHAT_TASK_LICH_CONG_VIEC": "Task schedule",
   "LABEL_CHAT_TASK_NGAY_BAT_DAU": "Start time",
   "LABEL_CHAT_TASK_NGAY_KET_THUC": "End time",
@@ -1031,7 +1031,7 @@
   "DATE_ERROR_FORMAT_MESSAGE": "Invalid Date Format",
   "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Date should not be before minimal date",
   "DATE_ERROR_INTERVAL_MAX_MESSAGE": "Date should not be after maximal date",
-  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "The task has been started",
+  "_DA_DUNG_DA_DUOC_CHAY": "The task has been started",
   "LABEL_CHAT_TASK_TAO_MOI": "Create new",
   "LABEL_CHAT_TASK_CHU_CONG_VIEC": "Task owner",
   "LABEL_CHAT_TASK_CHU_SO_HUU_CONG": "The task owner has the following rights",
@@ -1081,5 +1081,9 @@
   "LABEL_CHAT_TASK_GIAO_VIEC_CHO": "Giao việc cho",
   "LABEL_CHAT_TASK_THAP": "Thấp",
   "LABEL_CHAT_TASK_TRUNG_BINH": "Trung bình",
-  "LABEL_CHAT_TASK_CAO": "Cao"
+  "LABEL_CHAT_TASK_CAO": "Cao",
+  "LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT": "{{count}} lần điều chỉnh",
+  "LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE": "Lúc {{time}} ngày {{date}}",
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUNG": "Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!",
+  "LABEL_CHAT_TASK_DA_DO_TASK": "đã {{taskName}}"
 }

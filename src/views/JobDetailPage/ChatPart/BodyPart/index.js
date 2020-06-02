@@ -117,7 +117,7 @@ const BodyPart = props => {
 
   useEffect(() => {
     let rqId;
-    if (chatRef && chatRef.current && chats.data && chats.data.length && !isMore && !isLoading) {
+    if (chatRef && chatRef.current && chats.data && chats.data.length && !isMore) {
       rqId = setTimeout(function () {
         requestAnimationFrame(() => {
           // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
