@@ -1,7 +1,15 @@
 .detailOfferModal {
   &-container {
+    [class*='comp_LoadingOverlay___wrapper'] {
+      height: 90vh;
+    }
+    [class*='comp_CustomModal___scroll'] {
+      height: 100% !important;
+    }
     [class*='MuiDialogContent-root'] {
+      height: 100%;
       padding: 0;
+      overflow: unset;
     }
     & > div:nth-child(3) > div {
       max-width: 85vw !important;
