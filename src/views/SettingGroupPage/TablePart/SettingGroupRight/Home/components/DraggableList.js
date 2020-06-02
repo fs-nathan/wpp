@@ -61,7 +61,7 @@ export const DraggableList = ({
         newStrings.splice(source.index, 1);
         newStrings.splice(destination.index, 0, draggableId);
         setorderList(newStrings);
-        onChange(newStrings);
+        onChange && onChange(newStrings);
       }}
     >
       <Droppable droppableId={"12312321"}>

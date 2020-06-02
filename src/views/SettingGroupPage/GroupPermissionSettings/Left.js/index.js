@@ -156,13 +156,13 @@ function Left({
                             color="#8d8d8d"
                           />
                         )}
+                        <Icon
+                          style={{ flexShrink: 0, fill: "#8d8d8d" }}
+                          path={mdiAccountKey}
+                          size={1}
+                        />
                       </div>
 
-                      <Icon
-                        style={{ flexShrink: 0, fill: "#8d8d8d" }}
-                        path={mdiAccountKey}
-                        size={1}
-                      />
                       <ListItemLayout
                         title={name}
                         subTitle={template(
@@ -223,8 +223,8 @@ function Left({
                       <StyledListItem
                         className={
                           select && item && select.id === item.id
-                            ? "active"
-                            : ""
+                            ? "active onHover"
+                            : "onHover"
                         }
                         onClick={() => {
                           setSelect(item);
@@ -233,17 +233,20 @@ function Left({
                         {bindDragHandle(
                           <div style={{ flexShrink: 0, lineHeight: 1 }}>
                             <Icon
+                              className="onHover__show"
                               path={mdiDragVertical}
                               size={1}
                               color="#8d8d8d"
                             />
+                            <Icon
+                              className="onHover__hide"
+                              style={{ fill: "#8d8d8d" }}
+                              path={mdiAccountKey}
+                              size={1}
+                            />
                           </div>
                         )}
-                        <Icon
-                          style={{ flexShrink: 0, fill: "#8d8d8d" }}
-                          path={mdiAccountKey}
-                          size={1}
-                        />
+
                         <ListItemLayout
                           title={name}
                           subTitle={template(
@@ -253,6 +256,7 @@ function Left({
                           })}
                           actions={
                             <IconButton
+                              className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuAnchor(

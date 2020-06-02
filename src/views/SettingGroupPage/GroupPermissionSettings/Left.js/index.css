@@ -11,3 +11,15 @@
 .comp_CustomList___list-item svg {
   color: rgb(141, 141, 141) !important;
 }
+.onHover .onHover__show {
+  display: none;
+}
+.onHover .onHover__hide {
+  display: block;
+}
+.onHover:hover .onHover__show {
+  display: block;
+}
+.onHover:hover .onHover__hide {
+  display: none;
+}

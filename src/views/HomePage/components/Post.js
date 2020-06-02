@@ -402,7 +402,7 @@ export const PostFiles = () => {
   return null;
 };
 
-const Description = ({ children = "", limit = 100 }) => {
+const Description = ({ children = "", limit = 200 }) => {
   const { t } = useTranslation();
   const [showMore, setShowMore] = useState(false);
   const hasMore = children.length >= limit;
@@ -427,20 +427,23 @@ const Description = ({ children = "", limit = 100 }) => {
             __html: linkify(children),
           }}
         ></span>
-      )}
+      )}{" "}
       {hasMore && showMore ? (
-        <span>
-          {" "}
-          <b className="u-colorBlue" onClick={() => setShowMore(false)}>
-            {t("see less")}
-          </b>
+        <span
+          className="u-colorBlue cursor-pointer"
+          onClick={() => setShowMore(false)}
+        >
+          {t("see less")}
         </span>
       ) : (
         <span>
           ...{" "}
-          <b className="u-colorBlue" onClick={() => setShowMore(true)}>
+          <span
+            className="u-colorBlue cursor-pointer"
+            onClick={() => setShowMore(true)}
+          >
             {t("see more")}
-          </b>
+          </span>
         </span>
       )}
     </>

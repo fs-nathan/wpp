@@ -20,3 +20,6 @@
 .comp_PostCreator__chip {
   background: #f2f2f2;
 }
+#PostCreator .MuiPaper-root:focus {
+  outline: none;
+}

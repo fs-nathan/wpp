@@ -38,38 +38,60 @@ const Media = injectClassName("comp_TasksCard__Media")(
         )}
         {...props}
       >
-        <div
-          className="cursor-pointer"
-          onClick={() => {
-            dispatch(showImagesList(true, images));
-          }}
-        >
-          {one && <img src={one.url_thumb} alt="" />}
-          {two && <img src={two.url_thumb} alt="" />}
-          {three && <img src={three.url_thumb} alt="" />}
+        <div className="cursor-pointer">
+          {one && (
+            <img
+              src={one.url_thumb}
+              alt=""
+              onClick={() => {
+                dispatch(showImagesList(true, images));
+              }}
+            />
+          )}
+          {two && (
+            <img
+              src={two.url_thumb}
+              alt=""
+              onClick={() => {
+                dispatch(showImagesList(true, images, 1));
+              }}
+            />
+          )}
+          {three && (
+            <img
+              src={three.url_thumb}
+              alt=""
+              onClick={() => {
+                dispatch(showImagesList(true, images, 2));
+              }}
+            />
+          )}
           {hadMore ? (
-            <div style={{ position: "relative", height: "100%" }}>
+            <div
+              onClick={() => {
+                dispatch(showImagesList(true, images, 3));
+              }}
+            >
               <img src={four.url_thumb} alt="" />
               <div
-                style={{
-                  top: 0,
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  background: "#00000057",
-                  color: "#fff",
-                  fontSize: "28px",
-                  fontWeight: "bold",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                onClick={() => {
+                  dispatch(showImagesList(true, images, 3));
                 }}
+                className="comp_TasksCard__Media__mark"
               >
                 +{images.length - 4}
               </div>
             </div>
           ) : (
-            four && <img src={four.url_thumb} alt="" />
+            four && (
+              <img
+                onClick={() => {
+                  dispatch(showImagesList(true, images, 3));
+                }}
+                src={four.url_thumb}
+                alt=""
+              />
+            )
           )}
         </div>
       </div>

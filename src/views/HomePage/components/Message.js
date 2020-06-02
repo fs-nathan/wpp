@@ -203,7 +203,7 @@ const Message = ({
             <Sticker {...{ sticker: url_thumb || url }}></Sticker>
           </div>
         ))}
-        {files && (
+        {!!files && !!files.length && (
           <div className="comp_Message__files">
             <PostFilesStateLess files={files} />
           </div>
