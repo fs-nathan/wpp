@@ -78,14 +78,17 @@ const MiddleContent = ({
         <Grid item xs={12} className="offerDetail-approvalConditionContainer">
           <div className="offerDetail-approvalConditionContainer-inner">
             <div className="offerDetail-approvalConditionContainer-inner-title">Điều kiện phê duyệt đồng ý</div>
-            <Button
-              className="offerDetail-approvalConditionContainer-inner-editBtn"
-              size="small"
-              onClick={() => setOpenUpdateOfferModal(true)}
-              disabled={!can_update_condition_accept}
-            >
-              {getApprovalConditionEditingTitle(t)}
-            </Button>
+            {
+              can_update_condition_accept && (
+                <Button
+                  className="offerDetail-approvalConditionContainer-inner-editBtn"
+                  size="small"
+                  onClick={() => setOpenUpdateOfferModal(true)}
+                >
+                  {getApprovalConditionEditingTitle(t)}
+                </Button>
+              )
+            }
             {
               openUpdateOfferModal && (
                 renderUpdateOfferApprovalConditionModal()

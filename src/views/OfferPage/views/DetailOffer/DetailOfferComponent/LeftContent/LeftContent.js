@@ -122,14 +122,17 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
           }
           {RenderChipItem(priority_code, priority_name)}
         </div>
-        <Button
-          className="offerDetail-detailDescription-priorityAndOfferTypeContainer-editBtn"
-          size="small"
-          onClick={() => setOpenUpdateOfferModal(true)}
-          disabled={!can_modify}
-        >
-          {getPriorityEditingTitle(t)}
-        </Button>
+        {
+          can_modify && (
+            <Button
+              className="offerDetail-detailDescription-priorityAndOfferTypeContainer-editBtn"
+              size="small"
+              onClick={() => setOpenUpdateOfferModal(true)}
+            >
+              {getPriorityEditingTitle(t)}
+            </Button>
+          )
+        }
         {
           openUpdateOfferModal && (
             RenderUpdateOfferDetailDescriptionSectionModal(
@@ -161,7 +164,6 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
   const { t } = useTranslation()
   const [deleteDocumentModal, setDeleteDocumentModal] = useState(false)
   const dispatch = useDispatch()
-  const { enqueueSnackbar } = useSnackbar();
   const [deletedFileId, setDeletedFileId] = useState([])
   const [selectedItem, setSelectedItem] = useState({ file_id: "", name: "", url: "", file_icon: "" })
   const [openSendFileModal, setOpenSendFileModal] = useState(false)
@@ -186,15 +188,9 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     )
   }
   const confirmDeleteDocument = useCallback(() => {
-    if (can_modify === false) {
-      enqueueSnackbar('You do not have permission to do this', {
-        variant: "warning"
-      });
-      return
-    }
     dispatch(deleteDocumentOffer({ offer_id, file_id: selectedItem.file_id }))
     // setDeletedFileId((prevValue) => [...prevValue, selectedItem.file_id])
-  }, [can_modify, dispatch, enqueueSnackbar, offer_id, selectedItem.file_id])
+  }, [dispatch, offer_id, selectedItem.file_id])
   const handleUploadSelectedFilesFromPC = async (e) => {
     const { files } = e.target;
     const formData = new FormData();
@@ -235,21 +231,28 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
                 >
                   <div className="offerDetail-attachedDocument-fileName">{get(document, "name")}</div>
                 </a>
-                <IconButton onClick={() => handleDeleteDocument({ file_id: document.id, ...document })}>
-                  <CloseIcon fontSize="small" />
-                </IconButton>
+                {
+                  can_modify && (
+                    <IconButton onClick={() => handleDeleteDocument({ file_id: document.id, ...document })}>
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  )
+                }
               </div>
             </Grid>
           ))}
       </Grid>
-      <IconButton
-        className="offerDetail-addBtn"
-        onClick={() => setOpenSendFileModal(true)}
-        disabled={!can_modify}
-      >
-        <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
-        <span className="offerDetail-addBtn-title">{t('ADD_DOCUMENT_OFFER')}</span>
-      </IconButton>
+      {
+        can_modify && (
+          <IconButton
+            className="offerDetail-addBtn"
+            onClick={() => setOpenSendFileModal(true)}
+          >
+            <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+            <span className="offerDetail-addBtn-title">{t('ADD_DOCUMENT_OFFER')}</span>
+          </IconButton>
+        )
+      }
       <AlertModal
         open={deleteDocumentModal}
         setOpen={setDeleteDocumentModal}
@@ -269,7 +272,6 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
 const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers, addedHandlers, addableHandlers, bgColor }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openAddHandlerModal, setOpenAddHandlerModal] = useState(false);
   const [newHandlerIndexes, setNewHandlerIndexes] = useState([]);
 
@@ -283,12 +285,6 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   })
 
   const onAddHandler = (members) => {
-    if (can_update_member_handle === false) {
-      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
-        variant: "warning"
-      });
-      return;
-    }
     setNewHandlerIndexes(members);
     const memberIds = [];
     members.forEach(idx => {
@@ -297,12 +293,6 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
     dispatch(addMemberHandle({ offer_id, member_id: memberIds }))
   }
   const onDeleteHandler = ({ offer_id, member_id }) => {
-    if (can_update_member_handle === false) {
-      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
-        variant: "warning"
-      });
-      return
-    }
     dispatch(deleteMemberHandle({ offer_id, member_id }))
   }
   return (
@@ -310,13 +300,17 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
       <Grid container>
         <Grid item xs={5}>
           <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
-          <IconButton
-            className="offerDetail-addBtn"
-            onClick={() => setOpenAddHandlerModal(true)}
-          >
-            <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
-            <span className="offerDetail-addBtn-title">{t('ADD_PERSON_HANDLE')}</span>
-          </IconButton>
+          {
+            can_update_member_handle && (
+              <IconButton
+                className="offerDetail-addBtn"
+                onClick={() => setOpenAddHandlerModal(true)}
+              >
+                <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                <span className="offerDetail-addBtn-title">{t('ADD_PERSON_HANDLE')}</span>
+              </IconButton>
+            )
+          }
         </Grid>
         <Grid item xs={7}>
           <Grid container>
@@ -333,13 +327,16 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
                         <div className="offerDetail-handlingPerson-position">{get(member, "position")}</div>
                       </div>
                     </Grid>
-
-                    <IconButton
-                      className="offerDetail-handlingPerson-deleteBtn"
-                      onClick={() => onDeleteHandler({ offer_id, member_id: get(member, "id") })}
-                    >
-                      <DeleteIcon fontSize="small" />
-                    </IconButton>
+                    {
+                      can_update_member_handle && (
+                        <IconButton
+                          className="offerDetail-handlingPerson-deleteBtn"
+                          onClick={() => onDeleteHandler({ offer_id, member_id: get(member, "id") })}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      )
+                    }
                   </Grid>
                 </Grid>
               ))
@@ -362,7 +359,6 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
 const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers, addedMonitors, addableMonitors, bgColor }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false);
   const [newMonitorIndexes, setNewMonitorIndexes] = useState([]);
 
@@ -376,12 +372,6 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
   })
 
   const onAddMonitor = (members) => {
-    if (can_update_member_monitor === false) {
-      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
-        variant: "warning"
-      });
-      return;
-    }
     setNewMonitorIndexes(members);
     const memberIds = [];
     members.forEach(idx => {
@@ -390,25 +380,23 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
     dispatch(addMemberMonitor({ offer_id, member_id: memberIds }))
   }
   const onDeleteMonitor = ({ offer_id, member_id }) => {
-    if (can_update_member_monitor === false) {
-      enqueueSnackbar(t('MESSAGE_NO_PERMISSION'), {
-        variant: "warning"
-      });
-      return
-    }
     dispatch(deleteMemberMonitor({ offer_id, member_id }))
   }
   return (
     <Grid container>
       <Grid item xs={5}>
         <div className="offerDetail-monitoringPerson-title">Người giám sát</div>
-        <IconButton
-          className="offerDetail-addBtn"
-          onClick={() => setOpenAddMonitorModal(true)}
-        >
-          <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
-          <span className="offerDetail-addBtn-title">{t('ADD_PERSON_MONITOR')}</span>
-        </IconButton>
+        {
+          can_update_member_monitor && (
+            <IconButton
+              className="offerDetail-addBtn"
+              onClick={() => setOpenAddMonitorModal(true)}
+            >
+              <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+              <span className="offerDetail-addBtn-title">{t('ADD_PERSON_MONITOR')}</span>
+            </IconButton>
+          )
+        }
       </Grid>
       <Grid item xs={7}>
         <Grid container>
@@ -425,12 +413,16 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
                       <div className="offerDetail-monitoringPerson-position">{get(member, "position")}</div>
                     </div>
                   </Grid>
-                  <IconButton
-                    className="offerDetail-monitoringPerson-deleteBtn"
-                    onClick={() => onDeleteMonitor({ offer_id, member_id: get(member, "id") })}
-                  >
-                    <DeleteIcon fontSize="small" />
-                  </IconButton>
+                  {
+                    can_update_member_monitor && (
+                      <IconButton
+                        className="offerDetail-monitoringPerson-deleteBtn"
+                        onClick={() => onDeleteMonitor({ offer_id, member_id: get(member, "id") })}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    )
+                  }
                 </Grid>
               </Grid>
             ))
