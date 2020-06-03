@@ -1365,6 +1365,11 @@
           "BUTTON_TITLE": "Gửi"
         },
         "COMMENT": {
+          "USER_ROLE": {
+            "TYPE_1": "Người tham gia",
+            "TYPE_2": "Người phê duyệt",
+            "TYPE_3": "Người giám sát"
+          },
           "DATE_TIME_POSTED": "Thêm lúc {{time}} ngày {{date}}",
           "POPOVER": {
             "UPDATE": "Cập nhật",

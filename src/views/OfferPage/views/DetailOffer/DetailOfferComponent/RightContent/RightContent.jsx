@@ -13,7 +13,7 @@ import {
   removeCommentOfferDetail,
   updateCommentOfferDetail,
 } from '../../../../redux/actions';
-import { SEND_MODE } from './constants';
+import { SEND_MODE, USER_ROLE } from './constants';
 import {
   getDiscussionDateTimePosted, getHeaderTitle, getPopoverRemoveOption,
   getPopoverUpdateOption,
@@ -94,15 +94,16 @@ function RightContent(props) {
     );
   }
 
-  function Comment({ id, username, avatarUrl, userPosition, time, date, content }) {
+  function Comment({ id, username, avatarUrl, userType, time, date, content }) {
     const [anchorEl, setAnchorEl] = useState(null);
+    const userRole = USER_ROLE(t).find(item => item.type === userType);
     return (
       <div className="offerDetail-comment-container">
         <Avatar className="offerDetail-comment-avatar" src={avatarUrl} />
         <div className="offerDetail-comment-detail-container">
           <div className="offerDetail-comment-title-container">
             <p className="offerDetail-comment-title-username">{username}</p>
-            <p className="offerDetail-comment-title-userPosition">{userPosition}</p>
+            <p className="offerDetail-comment-title-userRole">{userRole.label}</p>
           </div>
           <p className="offerDetail-comment-dateTimePosted">
             {getDiscussionDateTimePosted(t, time, date)}
@@ -175,7 +176,7 @@ function RightContent(props) {
           id={cmt.id}
           username={cmt.user_create.name}
           avatarUrl={cmt.user_create.avatar}
-          userPosition={cmt.user_create.position}
+          userType={cmt.user_create.type}
           time={cmt.time_create}
           date={cmt.date_create}
           content={cmt.content}

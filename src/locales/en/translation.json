@@ -1053,6 +1053,11 @@
           "BUTTON_TITLE": "Send"
         },
         "COMMENT": {
+          "USER_ROLE": {
+            "TYPE_1": "Participant",
+            "TYPE_2": "Handler",
+            "TYPE_3": "Monitor"
+          },
           "DATE_TIME_POSTED": "Posted at {{time}} on {{date}}",
           "POPOVER": {
             "UPDATE": "Update",
