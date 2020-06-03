@@ -8,6 +8,9 @@
   .MuiIconButton-root {
   /* display: unset; */
 }
+.comp_CustomList___list-item {
+  padding: 10px 1rem;
+}
 .comp_CustomList___list-item svg {
   color: rgb(141, 141, 141) !important;
 }

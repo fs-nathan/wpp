@@ -50,7 +50,7 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
       <Grid item container style={{ flex: 1, position: "relative" }}>
         <div style={{ position: "absolute", width: "100%", height: "100%" }}>
           <TasksScrollbar>
-            <div style={{ paddingRight: "10px" }}>
+            <div>
               {children}
               <Space height={"50px"}></Space>
             </div>

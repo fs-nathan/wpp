@@ -260,7 +260,7 @@ const cancelPinPost = ({ post_id }) => {
 //   "is_love": false,
 //   "post_id": "5e79ce6f8baaa24895dd27e4"
 // }
-const like = ({ post_id }) => {
+const like = ({ post_id, profile }) => {
   return createPostAsyncAction({
     notifyOnSuccess: false,
     config: {
@@ -275,13 +275,15 @@ const like = ({ post_id }) => {
           is_love: data.is_love,
           number_like: data.number_like,
           number_love: data.number_love,
+          last_like_user: { name: profile.name },
+          last_love_user: null,
         },
       };
     }),
   });
 };
 
-const love = ({ post_id }) => {
+const love = ({ post_id, profile }) => {
   return createPostAsyncAction({
     notifyOnSuccess: false,
     config: {
@@ -296,6 +298,8 @@ const love = ({ post_id }) => {
           is_love: data.is_love,
           number_like: data.number_like,
           number_love: data.number_love,
+          last_love_user: { name: profile.name },
+          last_like_user: null,
         },
       };
     }),

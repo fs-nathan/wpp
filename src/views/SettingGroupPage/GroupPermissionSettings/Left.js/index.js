@@ -100,7 +100,7 @@ function Left({
           <Box style={{ background: "#fff" }}>
             <Stack>
               <div />
-              <Box padding="0 15px">
+              <Box padding="0 1rem">
                 <ListItemLayout
                   title={t("Danh sách nhóm quyền")}
                   actions={
@@ -113,7 +113,7 @@ function Left({
                   }
                 ></ListItemLayout>
               </Box>
-              <Box padding="0 15px">
+              <Box padding="0 1rem">
                 <SearchBox
                   fullWidth
                   placeholder={t("Tìm nhóm quyền")}

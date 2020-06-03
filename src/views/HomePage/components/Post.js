@@ -781,6 +781,7 @@ export const PostContainer = ({ post, children }) => {
   ])(post);
   const dispatch = useDispatch();
   const [modal, setModal] = useState();
+  const profile = useSelector(profileSelector);
   const handleActionClick = useCallback(
     (key) => {
       switch (key) {
@@ -816,16 +817,16 @@ export const PostContainer = ({ post, children }) => {
           );
           break;
         case "like":
-          dispatch(postModule.actions.like({ post_id: id }));
+          dispatch(postModule.actions.like({ post_id: id, profile }));
           break;
         case "love":
-          dispatch(postModule.actions.love({ post_id: id }));
+          dispatch(postModule.actions.love({ post_id: id, profile }));
           break;
         default:
           break;
       }
     },
-    [dispatch, id, post]
+    [dispatch, id, post, profile]
   );
   const { t } = useTranslation();
   const menuoptions = useMemo(() => {

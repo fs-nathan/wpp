@@ -20,6 +20,7 @@ import {
   StyledButton,
   StyledTableBodyCell,
 } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
+import { loginlineParams } from "views/JobPage/utils";
 import "./RoleManager.css";
 const HomeWrap = styled.div`
   padding-right: 10px;
@@ -65,6 +66,7 @@ function RoleManager({ setHackHeader, ...props }) {
       <TableBody>
         {userRoles.userRoles.map((item, i) => {
           const { name, description } = item;
+
           return (
             <TableRow key={i} className="comp_RecentTableRow table-body-row">
               <StyledTableBodyCell
@@ -112,12 +114,7 @@ function RoleManager({ setHackHeader, ...props }) {
                   <div style={{ width: 10 }}></div>
                   <Button
                     className="u-colorWhite"
-                    onClick={() =>
-                      handleOpenModal("ALERT", {
-                        content: "Bạn chắc chắn muốn xóa vai trò?",
-                        onConfirm: () => handleDeleteUserRole(item),
-                      })
-                    }
+                    onClick={() => handleDeleteUserRole(loginlineParams(item))}
                     disableElevation
                     variant="contained"
                     color="secondary"

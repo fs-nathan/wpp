@@ -297,7 +297,6 @@ export const createColumnRoleChartProps = (strings, data) => {
           columnWidth: "44%",
           startingShape: "flat",
           endingShape: "flat",
-          distributed: true,
         },
       },
       legend: {
