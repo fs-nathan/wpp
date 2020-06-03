@@ -18,7 +18,7 @@ import {
 } from './contants/localStorage';
 import { Routes } from "./contants/routes";
 import { useMultipleSelect } from "./hooks/useMultipleSelect";
-import "./LeftPart_new/LeftSetting.css";
+import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
 import { deleteOffer, loadDetailOffer, loadTaskPage } from './redux/actions';

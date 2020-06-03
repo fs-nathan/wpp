@@ -11,7 +11,7 @@ import SearchInput from '../../../components/SearchInput';
 import DropdownItem from "../components/DropdownItem";
 import { Routes } from "../contants/routes";
 import { checkUserIsInOfferGroupRoutes } from '../utils/validate';
-import "./LeftSetting.css";
+import "./LeftSetting.scss";
 
 // import { isEmpty } from '../../helpers/utils/isEmpty';
 
@@ -42,12 +42,17 @@ const LeftSetting = props => {
       }}
 
     >
+      {
+        props.searchInput && (
+          <div className="leftSettings-searchInput">
+            <SearchInput
+              placeholder={props.searchPlaceHolder}
+              onChange={(e) => props.filter(e.target.value)}
+            />
+          </div>
+        )
+      }
       <StyledList>
-        {props.searchInput && (
-          <StyledListItem>
-            <SearchInput placeholder={props.searchPlaceHolder} onChange={(e) => props.filter(e.target.value)} />
-          </StyledListItem>
-        )}
         {
           props.subMenu && props.listMenu.map((item, index) => (
             <Fragment>
