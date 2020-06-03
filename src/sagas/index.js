@@ -91,6 +91,7 @@ import { SORT_TASK } from "../constants/actions/task/sortTask";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
+import { DELETE_DOCUMENTS_USER } from "../constants/actions/user/deleteDocumentsUser";
 import { DETAIL_USER } from "../constants/actions/user/detailUser";
 import { LIST_USER_OF_GROUP } from "../constants/actions/user/listUserOfGroup";
 import { PERMISSION_USER } from "../constants/actions/user/permissionUser";
@@ -234,6 +235,7 @@ import { listTask } from "./task/listTask";
 import { sortTask } from "./task/sortTask";
 import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
+import { deleteDocumentsUser } from "./user/deleteDocumentsUser";
 import { detailUser } from "./user/detailUser";
 import { listUserOfGroup } from "./user/listUserOfGroup";
 import { permissionUser } from "./user/permissionUser";
@@ -270,6 +272,7 @@ function* rootSaga() {
   yield takeEvery(SORT_ROOM, sortRoom);
   yield takeLeading(DETAIL_USER, detailUser);
   yield takeEvery(UPLOAD_DOCUMENTS_USER, uploadDocumentsUser);
+  yield takeEvery(DELETE_DOCUMENTS_USER, deleteDocumentsUser);
   yield takeLeading(LIST_MAJOR, listMajor);
   yield takeLeading(LIST_LEVEL, listLevel);
   yield takeLeading(LIST_POSITION, listPosition);
