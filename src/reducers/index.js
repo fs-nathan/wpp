@@ -7,7 +7,6 @@ import apiCall from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/red
 import { apiKeyModule } from "webpush";
 import taskReducer from "../views/JobPage/redux/reducers";
 import offerReducer from "../views/OfferPage/redux/reducers";
-
 import updateSchedule, { initialState as updateScheduleInitialState } from "././calendar/weeklyCalendar/updateSchedule";
 import authentications, { initialState as authenticationsInitialState } from "./authentications";
 import createPersonalRemind, { initialState as createPersonalRemindInitialState } from "./calendar/alarmCalendar/createPersonalRemind";
@@ -45,7 +44,6 @@ import listScheduleOfWeek, { initialState as listScheduleOfWeekInitialState } fr
 import listScheduleOfWeekFromModal, { initialState as listScheduleOfWeekFromModalInitialState } from "./calendar/weeklyCalendar/listScheduleOfWeekFromModal";
 import listWeeksInYear, { initialState as listWeeksInYearInitialState } from "./calendar/weeklyCalendar/listWeeksInYear";
 import settingStartingDay, { initialState as settingStartingDayInitialState } from "./calendar/weeklyCalendar/settingStartingDay";
-
 import chat, { initialState as chatInitialState } from "./chat/chat";
 // import documents from './documents'
 // import taskOffer from './taskDetail/offer'
@@ -146,8 +144,8 @@ import taskRemind from "./taskDetail/remind";
 import subTask from "./taskDetail/subTask";
 import detailTask from "./taskDetail/taskDetail";
 import trackingTime from "./taskDetail/time";
-
 import banUserFromGroup, { initialState as banUserFromGroupInitialState } from "./user/banUserFromGroup";
+import deleteDocumentsUser, { initialState as deleteDocumentsUserInitialState } from "./user/deleteDocumentsUser";
 import detailUser, { initialState as detailUserInitialState } from "./user/detailUser";
 import listUserOfGroup, { initialState as listUserOfGroupInitialState } from "./user/listUserOfGroup";
 import permissionUser, { initialState as permissionUserInitialState } from "./user/permissionUser";
@@ -163,6 +161,9 @@ import deleteUserRole, { initialState as deleteUserRoleInitialState } from "./us
 import listUserRole, { initialState as listUserRoleInitialState } from "./userRole/listUserRole";
 import updateUserRole, { initialState as updateUserRoleInitialState } from "./userRole/updateUserRole";
 import viewPermissions, { initialState as viewPermissionsInitialState } from "./viewPermissions";
+
+
+
 
 
 const rootReducer = combineReducers({
@@ -201,6 +202,7 @@ const rootReducer = combineReducers({
     sortUser,
     detailUser,
     uploadDocumentsUser,
+    deleteDocumentsUser,
     updateUser,
     publicMember,
     privateMember,
@@ -357,6 +359,7 @@ export const DEFAULT_STATE = {
     sortUser: sortUserInitialState,
     detailUser: detailUserInitialState,
     uploadDocumentsUser: uploadDocumentsUserInitialState,
+    deleteDocumentsUser: deleteDocumentsUserInitialState,
     updateUser: updateUserInitialState,
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,

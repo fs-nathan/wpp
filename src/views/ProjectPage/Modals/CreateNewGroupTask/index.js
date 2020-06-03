@@ -4,7 +4,7 @@ import { listGroupTask } from 'actions/groupTask/listGroupTask';
 import { updateGroupTask } from 'actions/groupTask/updateGroupTask';
 import { listTask } from 'actions/task/listTask';
 import { useTimes } from 'components/CustomPopover';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ function CreateNewOrUpdateGroupTask({
   doUpdateGroupTask, doCreateGroupTask,
   doReload,
   localOption,
+  project_id = null,
 }) {
 
   const times = useTimes();
@@ -30,7 +31,13 @@ function CreateNewOrUpdateGroupTask({
     });
     // eslint-disable-next-line
   }, [timeType]);
-  const { projectId } = useParams();
+
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
 
   return (
     <CreateNewOrUpdateGroupTaskPresenter

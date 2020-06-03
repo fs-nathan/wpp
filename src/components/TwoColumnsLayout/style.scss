@@ -7,7 +7,7 @@
 .comp_TwoColumnsLayout___container {
   &-normal {
     @include comp_TwoColumnsLayout___container;
-    grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
+    grid-template-columns: minmax(300px, 1fr) minmax(800px, 4fr);
   }
   &-expanded {
     @include comp_TwoColumnsLayout___container;

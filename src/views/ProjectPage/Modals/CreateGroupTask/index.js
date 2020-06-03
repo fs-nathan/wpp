@@ -1,6 +1,8 @@
 import { mdiContentCopy, mdiNotePlusOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import { isNil } from 'lodash';
 import React from 'react';
+import { useParams } from 'react-router-dom';
 import CustomModal from '../../../../components/CustomModal';
 import CopyGroupTask from '../CopyGroupTask';
 import CreateNewGroupTask from '../CreateNewGroupTask';
@@ -18,10 +20,17 @@ const ButtonCase = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function CreateGroupTask({ open, setOpen, }) {
+function CreateGroupTask({ open, setOpen, project_id = null }) {
 
   const [createNew, setCreateNew] = React.useState(false);
   const [copy, setCopy] = React.useState(false);
+
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
 
   return (
     <>
@@ -66,8 +75,8 @@ function CreateGroupTask({ open, setOpen, }) {
           </ButtonCase>
         </Container>
       </CustomModal>
-      <CreateNewGroupTask open={createNew} setOpen={setCreateNew} />
-      <CopyGroupTask open={copy} setOpen={setCopy} />
+      <CreateNewGroupTask open={createNew} setOpen={setCreateNew} project_id={projectId} />
+      <CopyGroupTask open={copy} setOpen={setCopy} project_id={projectId} />
     </>
   )
 }

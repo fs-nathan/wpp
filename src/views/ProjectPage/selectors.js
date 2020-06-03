@@ -1,3 +1,4 @@
+import { Routes } from 'constants/routes';
 import { createSelector } from 'reselect';
 
 const profile = state => state.system.profile;
@@ -7,7 +8,7 @@ const localStorage = state => state.localStorage;
 export const routeSelector = createSelector(
   [profile],
   () => {
-    return '/tasks/table';
+    return Routes.PROJECT;
   }
 );
 

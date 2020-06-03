@@ -1,5 +1,5 @@
 import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiAccountConvert, mdiAccountMinus, mdiAlertCircleOutline, mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
+import { mdiAccountConvert, mdiAccountMinus, mdiAlertCircleOutline, mdiCheckCircle, mdiDotsVertical, mdiMenuRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
@@ -379,7 +379,10 @@ function MemberSetting({
                         >
                           {
                             (get(member, 'is_admin', false) || get(member, 'group_permission_name'))
-                              ? <span>{get(member, 'group_permission_name')}</span>
+                              ? <>
+                                <span>{get(member, 'group_permission_name')}</span>
+                                {get(member, 'is_admin', false) === false && <Icon path={mdiMenuRight} size={0.7} color={'#222'} />}
+                              </>
                               : <>
                                 <span
                                   style={{
@@ -406,7 +409,7 @@ function MemberSetting({
                               style={{
                                 backgroundColor: bgColor.color,
                               }}>+</span>
-                            {get(member, 'roles', []).length === 0 && <span>Thêm</span>}
+                            <span>Thêm</span>
                           </RoleButton>
                         </RolesBox>)}
                     </TableCell>

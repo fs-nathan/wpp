@@ -9,15 +9,13 @@ import { openDocumentDetail } from 'actions/system/system';
 import ColorTypo from 'components/ColorTypo';
 import DialogWrap from 'components/DialogWrap';
 import colorPal from 'helpers/colorPalette';
-import { getFileType } from 'helpers/jobDetail/stringHelper';
+import { getFileType, replaceUrl } from 'helpers/jobDetail/stringHelper';
 import get from 'lodash/get';
 import React from 'react';
-import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import './styles.scss';
-import { replaceUrl } from 'helpers/jobDetail/stringHelper'
 
 const StyledEmploy = styled(Typography)`
   width: 700px;

@@ -234,7 +234,8 @@
           },
           "DOC": {
             "TITLE": "File hồ sơ thành viên",
-            "EXIT": "Thoát"
+            "EXIT": "Thoát",
+            "ALERT": "Bạn chắc chắn muốn xóa file?"
           }
         },
         "RIGHT": {

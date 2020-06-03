@@ -172,7 +172,13 @@ function UserInfo({
             <List>
               {get(user.user, 'documents', []).map(file =>
                 <FileListItem
-                  file={file}
+                  file={{
+                    ...file,
+                    on_delete: () => handleOpenModal('DELETE', {
+                      curUser: user.user,
+                      curDocument: file,
+                    }),
+                  }}
                 />
               )}
             </List>
@@ -203,7 +209,7 @@ function UserInfo({
                       const googleFiles = files.filter(({ isGoogleDocument }) => isGoogleDocument)
                       const vtaskFiles = files.filter(({ isGoogleDocument }) => !isGoogleDocument)
                       if (vtaskFiles.length > 0) {
-                        handleUploadVtaskDocumentsUser(vtaskFiles);
+                        handleUploadVtaskDocumentsUser(vtaskFiles.map(file => get(file, 'id')));
                       }
                       if (googleFiles.length > 0) {
                         handleUploadGoogleDocumentsUser(googleFiles);
