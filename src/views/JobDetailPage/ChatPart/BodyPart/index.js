@@ -236,7 +236,7 @@ const BodyPart = props => {
           getScrollParent={() => chatRefScroll.current}
         >
           {
-            !last_id &&
+            !last_id && !searchChatKey &&
             <React.Fragment>
               <div className="wrap-time">
                 <div className="time">{date_create}</div>

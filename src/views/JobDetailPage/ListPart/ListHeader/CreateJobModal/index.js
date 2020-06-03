@@ -60,7 +60,7 @@ function CreateJobModal(props) {
   ];
 
   const DEFAULT_ASSIGN = assignList[0];
-  const DEFAULT_ASSIGN_ID = assignList[0];
+  const DEFAULT_ASSIGN_ID = assignList[0].id;
 
   // Define variable using in form
   let priorityList = [
@@ -198,19 +198,20 @@ function CreateJobModal(props) {
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
       setDataMember(tempData);
     }
-  }, [DEFAULT_ASSIGN, DEFAULT_PRIORITY, assignList, priorityList, props.data, props.editMode]);
+    // eslint-disable-next-line
+  }, [props.data, props.editMode]);
 
   useEffect(() => {
-    if (!isFetching && !error)
+    if (isFetching === false && error === false)
       props.setOpen(false);
     // eslint-disable-next-line
   }, [isFetching, error])
 
   useEffect(() => {
     if (props.isOpen) {
-      if (projectId)
+      if (projectId) {
         dispatch(getSchedules(projectId))
-      dispatch(getListGroupTask({ project_id: projectId }));
+      }
     }
   }, [dispatch, projectId, props.isOpen])
 
@@ -434,26 +435,41 @@ function CreateJobModal(props) {
 }
 
 function CheckCreateJob(props) {
+
+  const dispatch = useDispatch();
+  const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
   const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
+  const projectId = isNil(get(props, 'projectId'))
+    ? _projectId
+    : get(props, 'projectId');
 
   useEffect(() => {
-    if (props.isOpen) {
-      if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
+    if (props.isOpen && projectId) {
+      dispatch(getListGroupTask({ project_id: projectId }));
+    }
+  }, [dispatch, projectId, props.isOpen])
+
+  useEffect(() => {
+    // console.log(listGroupTaskData, '&& ', props.isOpen)
+    if (listGroupTaskData && props.isOpen) {
+      if (listGroupTaskData.group_tasks.length === 0) {
         setOpenCreateGroup(true)
+        props.setOpen(false)
       } else {
         setOpenCreateGroup(false)
       }
     }
-  }, [listGroupTaskData, props.isOpen])
+  }, [listGroupTaskData, props, props.isOpen])
 
   function onClickCreateProject() {
     setOpenCreateGroup(false)
     setOpenProjectGroup(true)
   }
 
-  return (
+  return listGroupTaskData && !listGroupTaskData.isFetching ? (
     <>
       {
         !isOpenCreateGroup &&
@@ -468,7 +484,7 @@ function CheckCreateJob(props) {
         open={isOpenProjectGroup}
         setOpen={setOpenProjectGroup} />
     </>
-  )
+  ) : null
 }
 
 export default CheckCreateJob;
