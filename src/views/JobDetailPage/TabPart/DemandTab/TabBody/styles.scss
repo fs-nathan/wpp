@@ -82,6 +82,8 @@
   }
   &--menu {
     display: none;
+    position: absolute;
+    right: 10px;
   }
   &:hover &--menu {
     display: block;
@@ -116,12 +118,12 @@
     padding: 12px 4px;
     &__orange {
       path {
-        fill: orange;
+        fill: #ff9800 !important;
       }
     }
     &__blue {
       path {
-        fill: blue;
+        fill: #bff8ff !important;
       }
     }
   }
@@ -136,6 +138,8 @@
     min-width: 500px;
     min-height: 300px;
     margin-top: 10px;
+    color: #111111;
+    font-size: 14px;
   }
   &--line {
     width: 100px;

@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
-import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
+import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProjectGroup';
 import { taskIdSelector } from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
@@ -28,12 +28,6 @@ export const EDIT_MODE = {
   PRIORITY: 3,
   ASSIGN_TYPE: 4,
 }
-
-let optionsList = [
-  { value: 2, label: 'Ngày và giờ (mặc định)' },
-  { value: 1, label: 'Chỉ nhập ngày' },
-  { value: 0, label: 'Không yêu cầu' }
-];
 
 let assignList = [
   { id: 0, value: 'Được giao' },
@@ -81,12 +75,13 @@ function CreateJobModal(props) {
   const dispatch = useDispatch();
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
+  const isFetching = useSelector(state => state.taskDetail.detailTask.isFetching)
+  const error = useSelector(state => state.taskDetail.detailTask.error)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.status.date'));
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
-  const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
 
@@ -135,7 +130,7 @@ function CreateJobModal(props) {
       default:
         break;
     }
-    props.setOpen(false);
+    // props.setOpen(false);
   };
 
   React.useEffect(() => {
@@ -206,10 +201,10 @@ function CreateJobModal(props) {
   }, [props.data, props.editMode]);
 
   useEffect(() => {
-    if (!isFetching)
+    if (!isFetching && !error)
       props.setOpen(false);
     // eslint-disable-next-line
-  }, [isFetching])
+  }, [isFetching, error])
 
   useEffect(() => {
     if (projectId)
@@ -267,6 +262,9 @@ function CreateJobModal(props) {
       onConfirm={isEdit ? updateData : handlePressConfirm}
       canConfirm={validate(data)}
       maxWidth='sm'
+      actionLoading={isFetching}
+      manualClose
+      onCancle={() => props.setOpen(false)}
       className={clsx("createJob", `createJob__edit${props.editMode}`, {
         'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
         'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),

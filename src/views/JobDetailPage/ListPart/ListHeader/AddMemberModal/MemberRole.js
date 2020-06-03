@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import RoleMemberModal from '../RoleMemberModal';
+import './styles.scss';
 
 function MemberRole({ roles, memberId }) {
   const { t } = useTranslation()
@@ -23,11 +24,12 @@ function MemberRole({ roles, memberId }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       {roles.map((item, key) => (
-        <ColorChip key={item.id} color='grey' badge label={item.name} size='small' style={{ borderRadius: '2px', margin: '2px' }} />
+        <ColorChip key={item.id} badge label={item.name}
+          className="memberRole--chip" />
       )
       )}
       <IconButton
-        className="memberPermission--button"
+        className="memberPermission--button memberRole--button"
         size='small'
         onClick={onClickAdd}
       >

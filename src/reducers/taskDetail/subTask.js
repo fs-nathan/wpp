@@ -37,7 +37,7 @@ export default function reducer(state = initialState, action) {
         case types.SEARCH_SUBTASK_TABPART:
             return {
                 ...state,
-                completeSubTasks:  searchArrayTabpart(state.detailComplete, action.payload, "name"),
+                completeSubTasks: searchArrayTabpart(state.detailComplete, action.payload, "name"),
                 uncompleteSubTasks: searchArrayTabpart(state.detailUnComplete, action.payload, "name"),
             }
         case types.GET_SUBTASK_FAIL:
@@ -74,6 +74,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: false,
+                error: false,
                 dataFetched: true
             }
         case types.UPDATE_SUBTASK_FAIL:

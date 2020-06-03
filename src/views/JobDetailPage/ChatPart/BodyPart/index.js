@@ -6,7 +6,6 @@ import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailAc
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { getChatDate } from 'helpers/jobDetail/stringHelper';
-import queryString from 'query-string';
 import React, { useEffect, useRef } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
@@ -59,10 +58,11 @@ const BodyPart = props => {
   const { last_id } = chats || {};
 
   useEffect(() => {
-    const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
-      return !searchChatKey
-        || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
-    });
+    // const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
+    //   return !searchChatKey
+    //     || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
+    // });
+    const chatData = [...chats.data]
     chatData.reverse();
     const chatsWithTime = [];
     for (let index = 0; index < chatData.length; index++) {
@@ -98,9 +98,8 @@ const BodyPart = props => {
       }
       return { ...chat, chatPosition, is_me: userId === chat.user_create_id }
     })
-
     setShowChats(calculatedChats)
-  }, [chats.data, searchChatKey, userId])
+  }, [chats.data, userId])
 
   const {
     date_create,
@@ -114,16 +113,18 @@ const BodyPart = props => {
   useEffect(() => {
     let rqId;
     if (chatRef && chatRef.current && chats.data && chats.data.length && !isMore) {
-      rqId = requestAnimationFrame(() => {
-        // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-        chatRef.current.scrollToBottom()
-      })
+      rqId = setTimeout(function () {
+        requestAnimationFrame(() => {
+          // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+          chatRef.current.scrollToBottom()
+        })
+      }, 1000)
     }
     return () => {
-      cancelAnimationFrame(rqId);
+      clearTimeout(rqId);
     }
     // eslint-disable-next-line
-  }, [chatRef, taskId, chats.data.length]);
+  }, [chatRef, taskId, chats.data.length, isLoading]);
 
   // useEffect(() => {
   //   let rqId;
@@ -131,23 +132,20 @@ const BodyPart = props => {
   //     const scrollHeight = chatRef.current.getScrollHeight()
   //     const scrollTop = scrollHeight - lastScroll
   //     // console.log('getScrollTop()', scrollHeight, lastScroll, scrollTop)
-  //     rqId = requestAnimationFrame(() => {
-  //       // chatRef.current.scrollTop = 250
-  //       // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-  //       chatRef.current.scrollTop(scrollTop)
+  //     rqId = setTimeout(function () {
+  //       requestAnimationFrame(() => {
+  //         // chatRef.current.scrollTop = 250
+  //         // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+  //         chatRef.current.scrollTop(scrollTop)
+  //       })
   //     })
   //     lastScroll = scrollHeight
   //   }
   //   return () => {
-  //     cancelAnimationFrame(rqId);
+  //     clearTimeout(rqId);
   //   }
   // }, [isLoading])
 
-  useEffect(() => {
-    const task_id = queryString.parse(props.location.search).task_id
-    dispatch(loadChat(task_id));
-    // eslint-disable-next-line
-  }, []);
   // console.log('chats', chats);
   function onClickCreateMember() {
     setOpenAddModal(true)
@@ -155,8 +153,12 @@ const BodyPart = props => {
     dispatch(getMemberNotAssigned({ task_id: taskId }))
   }
 
-  function scrollToBottom(data) {
-    chatRef.current.scrollToBottom()
+  function onClickScrollToBottom(data) {
+    if (isMore === false) {
+      dispatch(loadChat(taskId));
+    } else {
+      chatRef.current.scrollToBottom()
+    }
   }
 
   function handleReplyChat(data) {
@@ -213,6 +215,7 @@ const BodyPart = props => {
         onScrollFrame={handleScrollFrame}
         onScrollStart={handleScrollStart}
         onScrollStop={handleScrollStop}
+        renderView={props => <div {...props} className="bodyChat--scrollWrap" />}
       >
         <InfiniteScroll
           className="bodyChat--scroll"
@@ -224,7 +227,7 @@ const BodyPart = props => {
         // getScrollParent={() => chatRef.current}
         >
           {
-            !last_id && !searchChatKey &&
+            !last_id &&
             <React.Fragment>
               <div className="wrap-time">
                 <div className="time">{date_create}</div>
@@ -262,7 +265,7 @@ const BodyPart = props => {
             </React.Fragment>
           }
           {
-            searchChatKey && showedChats.length === 0 &&
+            showedChats.length === 0 && searchChatKey &&
             <div className="bodyChat--searchEmpty">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
           }
           {
@@ -274,7 +277,7 @@ const BodyPart = props => {
           }
           <div className="bodyChat--chatStatus">
             {
-              viewedChatMembers.length > 0 && !searchChatKey &&
+              viewedChatMembers.length > 0 &&
               <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}
                 {showMembers.map(({ avatar, name }, i) =>
                   <abbr title={name} key={i}>
@@ -285,7 +288,7 @@ const BodyPart = props => {
               </div>
             }
             {
-              isShowSendStatus && !searchChatKey &&
+              isShowSendStatus &&
               (
                 <div className="bodyChat--sending">
                   {isSending ? t('LABEL_CHAT_TASK_DANG_GUI') : t('LABEL_CHAT_TASK_DA_GUI')}
@@ -295,8 +298,8 @@ const BodyPart = props => {
           </div>
         </InfiniteScroll >
       </Scrollbars>
-      {isShowScroll &&
-        <IconButton className="bodyChat--buttonToBot" onClick={scrollToBottom}>
+      {(isShowScroll || isMore === false) &&
+        <IconButton className="bodyChat--buttonToBot" onClick={onClickScrollToBottom}>
           <Icon path={mdiMenuDown} size={1.5} ></Icon>
         </IconButton>
       }

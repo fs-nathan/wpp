@@ -142,6 +142,7 @@ function CreatePersonalRemind({
                   className="remind_setting_day_inputDate"
                   disablePast
                   autoOk={true}
+                  invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
                 />
               </MuiPickersUtilsProvider>
             </div>

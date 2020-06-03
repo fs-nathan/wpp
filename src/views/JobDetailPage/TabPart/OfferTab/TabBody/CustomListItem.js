@@ -16,6 +16,7 @@ const CustomListItem = (props) => {
     total_approved,
     total_accepted,
     total_rejected,
+    can_modify,
   } = props.offer || {}
 
   const priority = priorityList[priority_code].value;
@@ -23,6 +24,7 @@ const CustomListItem = (props) => {
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
+    evt.stopPropagation()
   }
 
   const handleClose = () => {
@@ -36,8 +38,8 @@ const CustomListItem = (props) => {
 
   return (
     <React.Fragment>
-      <li className="offerTabItem">
-        <div className="offerTabItem--content" onClick={onClickDetail}>{title}</div>
+      <li className="offerTabItem" onClick={onClickDetail}>
+        <div className="offerTabItem--content" >{title}</div>
         <div className="offerTabItem--user">
           <Avatar className="offerTabItem--avatar" src={user_create_avatar} alt='avatar' />
           {`${user_create_name} đề xuất lúc ${date_create}`}
@@ -57,9 +59,11 @@ const CustomListItem = (props) => {
               reject: `${total_rejected}/${total_approved}`
             })}</div>
         </div>
-        <IconButton className="offerTabItem--button" size='small' onClick={handleClick} >
-          <Icon path={mdiDotsHorizontal} size={1} />
-        </IconButton>
+        {can_modify &&
+          <IconButton className="offerTabItem--button" size='small' onClick={handleClick} >
+            <Icon path={mdiDotsHorizontal} size={1} />
+          </IconButton>
+        }
       </li>
       <Menu
         anchorEl={anchorEl}

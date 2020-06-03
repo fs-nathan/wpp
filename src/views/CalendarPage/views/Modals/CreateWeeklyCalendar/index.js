@@ -374,7 +374,9 @@ function CreateWeeklyCalendar({
                       contentEditable={false}
                       inputVariant="outlined"
                       variant="inline"
-                      invalidDateMessage={null}
+                      invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
+                      minDateMessage={t('DATE_ERROR_INTERVAL_MIN_MESSAGE')}
+                      maxDateMessage={t('DATE_ERROR_INTERVAL_MAX_MESSAGE')}
                       ampm={false}
                       value={data.selectedDate}
                       onChange={value => handleChangeData('selectedDate', value)}

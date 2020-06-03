@@ -9,14 +9,12 @@ import { taskIdSelector } from '../../../selectors';
 import DemandModal from '../DemandModal';
 import CustomListItem from './CustomListItem';
 import DemandDetail from './DemandDetail';
+import { getDemandDetail, openDetailDemand } from 'actions/chat/chat';
 
 const StyledList = styled.ul`
   margin-top: 20px;
   padding-inline-start: 0 !important;
   list-style-type: none;
-  & > li {
-    padding: 8px 0;
-  }
 `;
 
 const ListDemand = props => {
@@ -65,7 +63,9 @@ const ListDemand = props => {
   function onClickDetail(item) {
     return () => {
       setSelectedItem({ ...item, offer_id: item.id })
-      setOpenDetail(true)
+      // setOpenDetail(true)
+      dispatch(getDemandDetail(taskId, item.id))
+      dispatch(openDetailDemand(true))
     }
   }
   return (
@@ -105,11 +105,6 @@ const ListDemand = props => {
         setOpen={setOpenDelete}
         content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={confirmDelete}
-      />
-      <DemandDetail
-        isOpen={openDetail}
-        setOpen={setOpenDetail}
-        item={selectedItem}
       />
     </React.Fragment>
   );

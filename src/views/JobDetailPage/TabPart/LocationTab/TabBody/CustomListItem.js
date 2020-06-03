@@ -70,7 +70,7 @@ const CustomListItem = ({ isMe }) => {
 
   function handleViewChat(item) {
     setAnchorEl(null);
-    dispatch(loadChat(taskId, undefined, true, undefined, item.chat_id))
+    dispatch(loadChat(taskId, undefined, false, undefined, item.chat_id))
   }
 
   let locationArr = useSelector(state => state.taskDetail.location.locations);
@@ -78,7 +78,7 @@ const CustomListItem = ({ isMe }) => {
   return (
     <ListItem>
       {Array.isArray(locationArr) && locationArr.map((location, idx) => {
-        return (
+        return (!isMe || location.locations.filter(({ is_me }) => is_me).length > 0) ? (
           <div className="styled-list-item-location" key={idx}>
             <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
             {location.locations.map((item, key) => {
@@ -127,7 +127,7 @@ const CustomListItem = ({ isMe }) => {
               )
             })}
           </div >
-        )
+        ) : null
       })}
     </ListItem >
   );

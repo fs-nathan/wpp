@@ -33,15 +33,20 @@
   }
   &--noPermissionsImg {
     margin: 20px auto;
-    width: 80%;
+    max-width: 400px;
     display: block;
   }
   &--noPermissionsFooter {
-    font-size: 14px;
+    font-size: 15px;
     text-align: center;
+    line-height: 1.5;
+    font-weight: 500;
   }
 }
 .permissionMemberModal {
+  .MuiPaper-root {
+    max-width: 55vw;
+  }
   .dialogWrap--content {
     width: 95%;
   }
@@ -60,13 +65,13 @@
     display: block;
     position: relative;
     line-height: 23px;
-    margin: 15px 0 10px;
+    margin: 0px 0 10px;
     width: 100%;
   }
   &--content {
-    font-weight: normal;
+    font-weight: 400;
     margin: 20px 0px;
-    max-width: 500px;
+    // max-width: 500px;
     font-size: 14px;
     line-height: 1.5;
   }
@@ -82,6 +87,26 @@
     svg {
       transform: translate(-4px, 4px);
     }
+  }
+  &--removed {
+    display: flex;
+    background-color: red;
+    padding: 6px 11px;
+    color: white;
+  }
+  &--removedDes {
+    margin: auto 5px;
+    div {
+      color: white;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  }
+  &--seeMore {
+    margin: auto;
+    color: white;
+    font-size: 14px;
+    text-decoration: unset;
   }
 }
 

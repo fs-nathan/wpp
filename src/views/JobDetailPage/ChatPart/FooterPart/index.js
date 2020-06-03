@@ -217,7 +217,7 @@ const FooterPart = ({
   }
 
   function handleClickMention(mention = {}) {
-    const tag = `<span style="color:#03A9F4;">@${mention.name}</span>&nbsp;`;
+    const tag = `<span class="chatBox--tag" style="color:#03A9F4;font-size:15px;">@${mention.name}</span>&nbsp;`;
     const sel = window.getSelection();
     const range = sel.getRangeAt(0);
     var preCaretRange = range.cloneRange();
@@ -329,7 +329,9 @@ const FooterPart = ({
     // console.log('sendMessage', imagesQueue.length)
     sendMultipleFiles()
     if (isShowQuickLike) {
-      dispatch(chatQuickLike(taskId))
+      if (imagesQueue.length === 0) {
+        dispatch(chatQuickLike(taskId))
+      }
       editorRef.current.blur();
     } else {
       sendChatText()
@@ -392,7 +394,6 @@ const FooterPart = ({
 
   function onChangeChatText(value) {
     // chatTextRef.current = value;
-    setShowQuickLike(!value)
     setChatText(value)
   }
 
@@ -402,6 +403,7 @@ const FooterPart = ({
 
   useEffect(() => {
     chatTextRef.current = chatText;
+    setShowQuickLike(!chatText)
   }, [chatText])
 
   useEffect(() => {
