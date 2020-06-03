@@ -32,10 +32,11 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
         const { tasks } = data;
         const updatedTasks = tasks.map((task) => {
             if (task_id === task.id) {
-                const { new_chat, complete, chat } = update;
+                const { new_chat, complete, chat, state_code } = update;
                 return {
                     ...task,
                     ...update,
+                    status_code: state_code,
                     complete: complete === undefined ? task.complete : complete,
                     chat: chat || task.chat,
                     new_chat: getNewChat(new_chat, task.new_chat)
@@ -54,10 +55,11 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
 function updateListDataNotRoom(listDataNotRoom, task_id, update) {
     const updatedTasks = listDataNotRoom.map((data) => {
         if (task_id === data.id) {
-            const { new_chat, complete, chat } = update;
+            const { new_chat, complete, chat, state_code } = update;
             return {
                 ...data,
                 ...update,
+                status_code: state_code,
                 complete: complete === undefined ? data.complete : complete,
                 chat: chat || data.chat,
                 new_chat: getNewChat(new_chat, data.new_chat)
@@ -93,6 +95,7 @@ export default function reducer(state = initialState, action) {
                 user_create_avatar, user_create_id,
                 updatedAt,
                 complete,
+                state_code,
                 user_create_name } = payload;
             const chat = content ? {
                 content, user_create_avatar, user_create_name
@@ -101,6 +104,7 @@ export default function reducer(state = initialState, action) {
                 new_chat,
                 updatedAt,
                 complete,
+                state_code,
                 chat
             }
             return {

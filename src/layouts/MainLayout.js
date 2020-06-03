@@ -305,7 +305,7 @@ function MainLayout({
 
   useEffect(() => {
     if (!socket || !taskDetails) return;
-    console.log("listen chat");
+    // console.log("listen chat");
     const handleNewChat = (data) => {
       console.log("handleNewChat", data, taskDetails.uuid);
       if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
@@ -315,13 +315,13 @@ function MainLayout({
       if (task) {
         getTaskDetailTabPartSuccess({ task });
       }
-      if (data.type === CHAT_TYPE.UPDATE_COMPLETE) {
-        updateProjectChat({ complete: data.complete, task_id: taskDetails.id });
-      }
+      // if (data.type === CHAT_TYPE.UPDATE_COMPLETE) {
+      //   updateProjectChat({ complete: data.complete, task_id: taskDetails.id });
+      // }
     };
 
     function pinOnTaskChat(data) {
-      console.log("pinOnTaskChat", data, taskDetails.id);
+      // console.log("pinOnTaskChat", data, taskDetails.id);
       if (data.task_id === taskDetails.id) {
         getDataPinOnTaskChat(data.task_id);
       }
@@ -330,7 +330,7 @@ function MainLayout({
     socket.on("WP_NEW_CHAT_CREATED_IN_TASK", handleNewChat);
     socket.on("PIN_DATA_ON_CHAT", pinOnTaskChat);
     return () => {
-      console.log("close socket chat");
+      // console.log("close socket chat");
       socket.off("WP_NEW_CHAT_CREATED_IN_TASK", handleNewChat);
       socket.off("PIN_DATA_ON_CHAT", pinOnTaskChat);
     };

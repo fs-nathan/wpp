@@ -129,7 +129,7 @@ const BodyPart = props => {
       clearTimeout(rqId);
     }
     // eslint-disable-next-line
-  }, [chatRef, taskId, isLoading]);
+  });
 
   // useEffect(() => {
   //   let rqId;
