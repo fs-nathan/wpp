@@ -71,14 +71,21 @@ function PermissionMemberModal({ memberId, setOpen,
   const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
-  const idx = permission ? findIndex(listGroupPermission || [], ({ id }) => id === permission.id) : -1
-  const [selectedValue, setSelectedValue] = React.useState(idx);
+  const [selectedValue, setSelectedValue] = React.useState(-1);
   const [permissionsList, setPermissionsList] = React.useState([]);
 
   // useEffect(() => {
   //   if (is_admin)
   //     dispatch(detailGroupPermissionDefault())
   // }, [dispatch, is_admin])
+  useEffect(() => {
+    if (permission) {
+      const idx = findIndex(listGroupPermission || [], ({ id }) => id === permission.id)
+      setSelectedValue(idx)
+    } else {
+      setSelectedValue(-1)
+    }
+  }, [listGroupPermission, permission])
 
   useEffect(() => {
     const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
@@ -128,7 +135,7 @@ function PermissionMemberModal({ memberId, setOpen,
         <div className="permissionMemberModal--content">
           {is_admin ? t('LABEL_CHAT_TASK_CHU_SO_HUU_CONG') : t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}
         </div>
-        {permission && idx === -1 &&
+        {permission && selectedValue === -1 &&
           <div className="permissionMemberModal--removed">
             <Icon path={mdiAlert} size={3}></Icon>
             <div className="permissionMemberModal--removedDes">
@@ -136,7 +143,7 @@ function PermissionMemberModal({ memberId, setOpen,
               <div >{t('LABEL_CHAT_TASK_BAN_CO_THE_GIU')}</div>
             </div>
             <a
-              href="http://workplus.vn/"
+              href={permission.url_redirect || "http://workplus.vn/"}
               target="_blank"
               rel="noopener noreferrer"
               className="permissionMemberModal--seeMore">
@@ -194,7 +201,7 @@ function PermissionMemberModal({ memberId, setOpen,
         }
       </DialogContent>
 
-    </DialogWrap>
+    </DialogWrap >
   );
 }
 export default PermissionMemberModal

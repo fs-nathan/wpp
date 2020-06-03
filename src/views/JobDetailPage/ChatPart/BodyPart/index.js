@@ -23,6 +23,7 @@ let lastScroll = 0;
 const BodyPart = props => {
   const { t } = useTranslation();
   const chatRef = useRef();
+  const chatRefScroll = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats);
   const isMore = useSelector(state => state.chat.isMore);
@@ -111,6 +112,10 @@ const BodyPart = props => {
   } = detailTask || {};
 
   useEffect(() => {
+    chatRef.current && chatRef.current.scrollToBottom()
+  }, [])
+
+  useEffect(() => {
     let rqId;
     if (chatRef && chatRef.current && chats.data && chats.data.length && !isMore) {
       rqId = setTimeout(function () {
@@ -118,13 +123,13 @@ const BodyPart = props => {
           // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
           chatRef.current.scrollToBottom()
         })
-      }, 1000)
+      }, 0)
     }
     return () => {
       clearTimeout(rqId);
     }
     // eslint-disable-next-line
-  }, [chatRef, taskId, chats.data.length, isLoading]);
+  }, [chatRef, taskId, isLoading]);
 
   // useEffect(() => {
   //   let rqId;
@@ -205,6 +210,9 @@ const BodyPart = props => {
   function handleScrollStop(data) {
     // console.log('handleScrollStop', data)
   }
+  function onUpdate(data) {
+    console.log('onUpdate', data)
+  }
 
   return (
     <div
@@ -212,10 +220,11 @@ const BodyPart = props => {
     >
       <Scrollbars autoHide autoHideTimeout={500}
         ref={chatRef}
+        // onUpdate={onUpdate}
         onScrollFrame={handleScrollFrame}
         onScrollStart={handleScrollStart}
         onScrollStop={handleScrollStop}
-        renderView={props => <div {...props} className="bodyChat--scrollWrap" />}
+        renderView={props => <div {...props} ref={chatRefScroll} className="bodyChat--scrollWrap" />}
       >
         <InfiniteScroll
           className="bodyChat--scroll"
@@ -224,10 +233,10 @@ const BodyPart = props => {
           hasMore={!!last_id}
           loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
           useWindow={false}
-        // getScrollParent={() => chatRef.current}
+          getScrollParent={() => chatRefScroll.current}
         >
           {
-            !last_id &&
+            !last_id && !searchChatKey &&
             <React.Fragment>
               <div className="wrap-time">
                 <div className="time">{date_create}</div>

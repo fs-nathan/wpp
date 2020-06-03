@@ -187,7 +187,7 @@ function TabBody() {
           className={clsx('progressTabBody--icon', { 'progressTabBody__expanded': showDetail })}
         />
       </ColorTypo>
-      <ColorTypo className="progressTabBody--subTitle">{`${trackings.length} lần điều chỉnh`}</ColorTypo>
+      <ColorTypo className="progressTabBody--subTitle">{t('LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT', { count: trackings.length })}</ColorTypo>
       {showDetail && trackings.map((track, i) => (<EditProgressItem
         key={i}
         fixedNumber={trackings.length - i}

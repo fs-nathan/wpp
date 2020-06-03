@@ -4,9 +4,9 @@ import produce from "immer";
 // Initial state for store
 export const initialState = {
   taskDetails: null,
-  isFetching: false,
+  isFetching: null,
   dataFetched: false,
-  error: false,
+  error: null,
   showIndex: 0,
   projectSchedules: [],
   payload: null,
