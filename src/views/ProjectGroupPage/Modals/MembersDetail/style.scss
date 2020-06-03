@@ -15,3 +15,9 @@
     color: #999;
   }
 };
+
+.view_ProjectGroup_MemberDetailModal___modal {
+  & > div:nth-child(3) > div {
+    min-width: 50vw;
+  }
+}

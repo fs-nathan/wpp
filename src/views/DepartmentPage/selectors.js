@@ -1,3 +1,4 @@
+import { Routes } from 'constants/routes';
 import { find, get } from 'lodash';
 import { createSelector } from 'reselect';
 
@@ -9,7 +10,7 @@ export const routeSelector = createSelector(
   (profile) => {
     const { group_active } = profile;
     const modules = get(group_active, 'modules', []);
-    const route = get(find(modules, { name: "Users" }), 'url_redirect', '/users');
+    const route = get(find(modules, { name: "Users" }), 'url_redirect', Routes.DEPARTMENTS);
     return route;
   }
 );

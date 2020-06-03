@@ -61,7 +61,7 @@
   display: block;
   position: relative;
   line-height: 23px;
-  margin: 15px 0 10px;
+  margin: 0 0 10px;
   width: 100%;
 }
 
@@ -97,7 +97,6 @@
 .view_ProjectPage_MemberPermissionModal___deselect {
   display: flex;
   align-items: center;
-  width: fit-content;
   padding: 2px 8px;
   border-radius: 4px;
   &:hover {
@@ -112,4 +111,16 @@
     color: red;
   }
   margin-bottom: 8px;
+}
+
+.view_ProjectPage_MemberPermissionModal___modal {
+  & > div:nth-child(3) > div {
+    & > div:nth-child(2) {
+      height: 90vh;
+      & > div {
+        grid-template-columns: 3.5fr 8fr;
+        height: 100% !important;
+      }
+    }
+  }
 }
