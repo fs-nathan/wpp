@@ -1324,6 +1324,28 @@
         }
       }
     },
+    "OFFER_BY_GROUP_VIEW": {
+      "MODAL": {
+        "CREATE": {
+          "TITLE": "Tạo nhóm đề xuất",
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        },
+        "UPDATE": {
+          "TITLE": "Chỉnh sửa nhóm đề xuất",
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        },
+        "GROUP_NAME_SECTION": {
+          "TITLE": "Tên nhóm đề xuất",
+          "PLACEHOLDER": "Nhập tên nhóm đề xuất..."
+        },
+        "GROUP_DESCRIPTION_SECTION": {
+          "TITLE": "Mô tả nhóm đề xuất",
+          "PLACEHOLDER": "Nhập mô tả nhóm đề xuất..."
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Chi tiết đề xuất",
       "OFFER_PRIORITY_EDITING": {

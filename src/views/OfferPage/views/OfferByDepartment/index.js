@@ -30,8 +30,6 @@ const Department = props => {
     const {
         keyword,
         listMenu,
-        setOpenModalOfferByGroup,
-        openModal,
         timeRange,
         statusFilter,
         setTitle

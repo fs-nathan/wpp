@@ -152,7 +152,6 @@ function OfferPage(props) {
   const [filterTab, setFilterTab] = useState("");
   const state = useSelector(state => state);
   const history = useHistory()
-  const [openModal, setOpenModal] = useState(false);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [timeType, setTimeType] = React.useState(1);
   useEffect(() => {
@@ -253,9 +252,7 @@ function OfferPage(props) {
     !pin && setQuickTask(undefined);
   };
   // Mở modal tạo nhóm đề xuất
-  const setOpenModalOfferByGroup = useCallback(open => {
-    setOpenModal(open);
-  });
+  const [openModalOfferByGroup, setOpenModalOfferByGroup] = useState(false);
 
   // Filter các tab bên cột trái
   const filter = value => {
@@ -316,7 +313,7 @@ function OfferPage(props) {
       );
     }
     return <TabList title={title} {...{ listMenu }} />;
-  }, [title, listMenu, setOpenModalOfferByGroup, filterTab, state]);
+  }, [title, listMenu, filterTab, state]);
 
   // Get offer details from redux store to show on offer detail modal
   const detailOffer = useSelector(state => getDetailOffer(state));
@@ -353,6 +350,7 @@ function OfferPage(props) {
             handleSubSlide,
             timeAnchor,
             setTimeAnchor,
+            openModalOfferByGroup,
             setOpenModalOfferByGroup,
             timeFilterTypeOfferByGroup,
             timeFilterTypeOfferByProject,
@@ -367,7 +365,6 @@ function OfferPage(props) {
             keyword,
             setkeyword,
             setTitle,
-            openModal,
             setDetailOfferModalOpen,
             setCurrentDetailOfferId,
             setShowDeleteOfferConfirmModal,

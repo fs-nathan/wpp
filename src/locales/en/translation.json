@@ -1016,6 +1016,28 @@
         }
       }
     },
+    "OFFER_BY_GROUP_VIEW": {
+      "MODAL": {
+        "CREATE": {
+          "TITLE": "Create Offer Group",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        },
+        "UPDATE": {
+          "TITLE": "Update Offer Group",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        },
+        "GROUP_NAME_SECTION": {
+          "TITLE": "Offer group name",
+          "PLACEHOLDER": "Type in offer group name..."
+        },
+        "GROUP_DESCRIPTION_SECTION": {
+          "TITLE": "Offer group description",
+          "PLACEHOLDER": "Type in offer group description..."
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Offer Detail",
       "OFFER_PRIORITY_EDITING": {

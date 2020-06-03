@@ -32,7 +32,7 @@ const OfferByGroup = props => {
     keyword,
     listMenu,
     setOpenModalOfferByGroup,
-    openModal,
+    openModalOfferByGroup,
     timeRange,
     statusFilter,
     setTitle
@@ -70,9 +70,6 @@ const OfferByGroup = props => {
     dispatch(loadOfferByGroupID({ id, startDate, endDate }));
     document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
   }, [dispatch, id, timeRange]);
-  const handleOpenModal = () => {
-    setOpenModalOfferByGroup(false);
-  };
   // Redirect to first group when enter
   return (
     <>
@@ -99,7 +96,11 @@ const OfferByGroup = props => {
         <PageContainer>
           <Content />
         </PageContainer>
-        <FormDialog type={action.CREATE_OFFER} open={openModal} handleOpenModal={handleOpenModal} />,
+        <FormDialog
+          type={action.CREATE_OFFER}
+          open={openModalOfferByGroup}
+          setOpen={setOpenModalOfferByGroup}
+        />,
       </Layout>
     </>
   );
