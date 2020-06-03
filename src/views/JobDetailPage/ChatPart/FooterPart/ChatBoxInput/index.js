@@ -3,6 +3,8 @@ import React from 'react';
 import ContentEditable from 'react-contenteditable';
 import './styles.scss';
 
+const regFontTag = /<\/?font[^>]*>/gi;
+
 const ChatBoxInput = (props) => {
   const {
     value,
@@ -12,8 +14,10 @@ const ChatBoxInput = (props) => {
   } = props;
 
   const handleChange = evt => {
-    const { value } = evt.target
-    onChange(value === '<br>' ? '' : value)
+    const { value } = evt.target;
+    // console.log('ChatBoxInput', value)
+    const newValue = value.replace(regFontTag, '')
+    onChange(newValue === '<br>' ? '' : newValue)
   };
 
   const pasteAsPlainText = event => {

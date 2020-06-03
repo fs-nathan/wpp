@@ -34,7 +34,7 @@ function TabHeader({ setShow }) {
       <HeaderTab title={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')}
         onClickBack={onClickBack}
         onClickOpen={handleClickOpen}
-        rightIcon="settings"
+        rightIcon={(!update_duration) ? null : "settings"}
       />
       <ProgressModal isOpen={open} setOpen={setOpen} />
     </div>
