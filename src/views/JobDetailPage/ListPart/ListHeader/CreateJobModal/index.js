@@ -481,6 +481,7 @@ function CheckCreateJob(props) {
         onClickCreate={onClickCreateProject}
       />
       <CreateProjectGroup
+        project_id={projectId}
         open={isOpenProjectGroup}
         setOpen={setOpenProjectGroup} />
     </>
