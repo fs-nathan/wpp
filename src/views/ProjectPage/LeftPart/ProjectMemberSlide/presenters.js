@@ -1,10 +1,12 @@
 import { Button, ListItemText } from '@material-ui/core';
 import { mdiAccountCog, mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
+import { detailUser } from 'actions/user/detailUser';
 import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
@@ -44,6 +46,8 @@ function ProjectMemberSlide({
   searchPatern, setSearchPatern,
   handleOpenModal,
 }) {
+
+  const dispatch = useDispatch();
 
   function onDragEnd(result) {
     const { source, destination } = result;
@@ -113,7 +117,14 @@ function ProjectMemberSlide({
                       />
                     </StyledListItem>
                     {members.members.map((member, index) => (
-                      <CustomListItem key={get(member, 'id')} member={member} index={index} />
+                      <CustomListItem
+                        key={get(member, 'id')}
+                        member={member}
+                        index={index}
+                        onClick={evt => {
+                          dispatch(detailUser({ userId: get(member, 'id') }))
+                        }}
+                      />
                     ))}
                     {provided.placeholder}
                   </StyledList>

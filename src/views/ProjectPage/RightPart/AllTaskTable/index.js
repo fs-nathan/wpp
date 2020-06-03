@@ -7,11 +7,10 @@ import { createTask } from 'actions/task/createTask';
 import { deleteTask } from 'actions/task/deleteTask';
 import { listTask } from 'actions/task/listTask';
 import { sortTask } from 'actions/task/sortTask';
-import { getListGroupTask } from 'actions/taskDetail/taskDetailActions';
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
 import { useTimes } from 'components/CustomPopover';
-import { COPY_GROUP_TASK, CREATE_GROUP_TASK, CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK, UPDATE_GROUP_TASK } from 'constants/events';
+import { CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
 import { get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -36,7 +35,6 @@ function AllTaskTable({
   doListGroupTask,
   doListTask,
   doGetPermissionViewDetailProject,
-  getListGroupTask,
   doSetProject,
   localOption,
 }) {
@@ -107,27 +105,6 @@ function AllTaskTable({
     }
     // eslint-disable-next-line
   }, [projectId, viewPermissions]);
-
-  React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
-    if (projectId !== null) {
-      getListGroupTask({ projectId });
-      const reloadGetListTaskDetail = () => {
-        getListGroupTask({ projectId });
-      }
-      CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-      CustomEventListener(COPY_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-      CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-      CustomEventListener(DELETE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-      return () => {
-        CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-        CustomEventDispose(COPY_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-        CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-        CustomEventDispose(DELETE_GROUP_TASK.SUCCESS, reloadGetListTaskDetail);
-      }
-    }
-    // eslint-disable-next-line
-  }, [viewPermissions, projectId]);
 
   React.useEffect(() => {
     if (projectId !== null) {
@@ -220,6 +197,7 @@ function AllTaskTable({
             startTime: data.start_time,
             endDate: data.end_date,
             endTime: data.end_time,
+            scheduleId: data.schedule
           })
         }
       />
@@ -258,7 +236,6 @@ const mapDispatchToProps = dispatch => {
     doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
-    getListGroupTask: ({ projectId }) => dispatch(getListGroupTask({ project_id: projectId })),
     doSetProject: (value) => dispatch(setProject(value)),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   };

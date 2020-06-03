@@ -33,7 +33,7 @@ const Detail = ({ className = '', isInGroup = false, ...props }) =>
     {...props}
   />
 
-function CustomListItem({ member, index }) {
+function CustomListItem({ member, index, onClick }) {
   const [isHover, setIsHover] = React.useState(false);
 
   return (
@@ -49,6 +49,7 @@ function CustomListItem({ member, index }) {
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}
           onMouseLeave={() => setIsHover(false)}
+          onClick={onClick}
         >
           <div {...provided.dragHandleProps}>
             <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
