@@ -32,7 +32,7 @@ function DeleteDocument({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doReloadUser: ({ userId }) => dispatch(detailUser({ userId })),
+    doReloadUser: ({ userId }) => dispatch(detailUser({ userId }, true)),
     doDeleteDocument: ({ userId, fileId }) => dispatch(deleteDocumentsUser({ userId, fileId })),
   }
 };

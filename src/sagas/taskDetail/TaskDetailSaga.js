@@ -4,6 +4,7 @@ import { call, put, select } from "redux-saga/effects";
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import { apiService } from "../../constants/axiosInstance";
+import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
 // import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
@@ -1168,6 +1169,7 @@ function* createTask(action) {
     yield put(
       actions.getListTaskDetail(action.payload.projectId)
     );
+    CustomEventEmitter(CREATE_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createTaskFail(error));

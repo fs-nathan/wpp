@@ -183,23 +183,7 @@ function AllTaskTable({
       <CreateJobModal
         isOpen={openCreate}
         setOpen={setOpenCreate}
-        isRight={false}
         projectId={projectId}
-        doCreateTask={({ data, projectId }) =>
-          doCreateTask({
-            name: data.name,
-            projectId,
-            groupTask: data.group_task,
-            typeAssign: data.type_assign,
-            priority: data.priority,
-            description: data.description,
-            startDate: data.start_date,
-            startTime: data.start_time,
-            endDate: data.end_date,
-            endTime: data.end_time,
-            scheduleId: data.schedule
-          })
-        }
       />
       <ProjectSettingModal
         open={openSetting}
