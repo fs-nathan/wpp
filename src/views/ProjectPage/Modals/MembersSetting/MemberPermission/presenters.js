@@ -188,6 +188,7 @@ function PermissionMemberModal({
   return (
     <CustomModal
       title="Phân quyền thành viên"
+      className="view_ProjectPage_MemberPermissionModal___modal"
       open={open}
       setOpen={setOpen}
       loading={permissions.loading || members.loading}

@@ -1,3 +1,4 @@
+import { Routes } from 'constants/routes';
 import { createSelector } from 'reselect';
 
 const profile = state => state.system.profile;
@@ -6,7 +7,7 @@ const viewPermissions = state => state.viewPermissions;
 export const routeSelector = createSelector(
   [profile],
   () => {
-    return '/users/detail';
+    return Routes.MEMBERS;
   }
 );
 

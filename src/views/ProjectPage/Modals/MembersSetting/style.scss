@@ -227,7 +227,8 @@
 .view_Project_MemberSetting_Modal___role-button {
   font-size: 12px;
   border-radius: 2px;
-  padding: 3px 6px;
+  margin: 0;
+  padding: 3px 7px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: #fff;
   width: max-content;
@@ -259,9 +260,6 @@
     overflow: hidden;
     min-width: 40vw;
     max-width: 80vw;
-    & > div:nth-child(2) > div {
-      grid-template-columns: 3.5fr 8fr;
-    }
   }
 }
 
