@@ -181,7 +181,8 @@ function taskReducer(state = initialState, action) {
       return {
         ...state,
         [DETAIL_OFFER]: {
-          ...state[DETAIL_OFFER],
+          offer: {},
+          comments: [],
           loading: true,
         },
       }
