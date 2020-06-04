@@ -219,8 +219,7 @@ const TimeLine = ({
           cursor:
             !isGroupTask && !isTotalDuration && canEdit ? "move" : "default",
           width: "fit-content",
-          top: "50%",
-          transform: "translateY(-50%)",
+
           position: "absolute",
           ...b,
         }}
@@ -241,7 +240,7 @@ const TimeLine = ({
           }
           handle={() => (
             <Tooltip
-            placement="top"
+              placement="top"
               title={`${
                 endDateText.diff(startDateText, girdInstance.unit) + 1
               } ${girdInstance.unitText}`}
@@ -265,7 +264,7 @@ const TimeLine = ({
           width={width}
         >
           <Tooltip
-          placement="top"
+            placement="top"
             title={`${endDateText.diff(startDateText, girdInstance.unit) + 1} ${
               girdInstance.unitText
             }`}
@@ -318,8 +317,7 @@ const TimeLine = ({
         onMouseMove={handleMouseMove}
         style={{
           display: "flex",
-          top: "50%",
-          transform: "translateY(-50%)",
+
           position: "absolute",
           cursor:
             !isGroupTask && !isTotalDuration && !isTotalDuration && canEdit
