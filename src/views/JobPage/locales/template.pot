@@ -1,0 +1,124 @@
+#: ./components/Analytic.js
+msgid "Công việc"
+msgstr ""
+
+#: ./components/QuickViewFilter.js
+msgid "FILTER"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "Đã được giao ngày <%= date %>"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "Chỉnh sửa"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "Xem chi tiết công viêc"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "Xóa công viêc"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "TÊN CÔNG VIỆC"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "MÔ TẢ CÔNG VIỆC"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "TIẾN ĐỘ"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "Ngày bắt đầu"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "Ngày kết thúc"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "Hoàn thành"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "TRẠNG THÁI, ƯU TIÊN"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "THÀNH VIÊN"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "CÔNG VIỆC CON"
+msgstr ""
+
+#: ./components/QuickViewTaskDetail.js
+msgid "công việc"
+msgstr ""
+
+#: ./components/RecentTableRow.js
+msgid "Còn <%= days %> ngày"
+msgstr ""
+
+#: ./components/RecentTableRow.js
+msgid "Xem nhanh"
+msgstr ""
+
+#: ./components/RedirectModal.js
+msgid "Tạo mới công việc"
+msgstr ""
+
+#: ./components/RedirectModal.js
+msgid "Bạn cần phải chọn một dự án trước khi tạo mới công việc"
+msgstr ""
+
+#: ./components/RedirectModal.js
+msgid "Đi đến danh sách dự án"
+msgstr ""
+
+#: ./components/TaskTable.js
+msgid "Tên công việc"
+msgstr ""
+
+#: ./components/TaskTable.js
+msgid "Tiến độ"
+msgstr ""
+
+#: ./components/TaskTable.js
+msgid "Kết thúc"
+msgstr ""
+
+#: ./components/TaskTable.js
+msgid "Đến hạn"
+msgstr ""
+
+#: ./views/Overview/PiorityBlock.js
+msgid "Ưu tiên"
+msgstr ""
+
+#: ./views/Overview/PiorityBlock.js
+msgid "Biểu đồ tỗng hợp mức ưu tiên của công việc"
+msgstr ""
+
+#: ./views/Overview/RoleBlock.js
+msgid "Vai trò"
+msgstr ""
+
+#: ./views/Overview/RoleBlock.js
+msgid "Biểu đồ vai trò của công việc"
+msgstr ""
+
+#: ./views/Overview/StatusBlock.js
+msgid "Trạng thái"
+msgstr ""
+
+#: ./views/Overview/StatusBlock.js
+msgid "Biểu đồ theo trạng thái công việc"
+msgstr ""
+

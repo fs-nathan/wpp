@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createMapPropsFromAttrs, get } from "views/JobPage/utils/index.js";
 import { groupPermissionAttr } from "./contants.js";
-import Left from "./Left.js";
+import Left from "./Left";
 import { settingGroupPermission } from "./redux/index.js";
 import Right from "./Right/index.js";
 export const GroupPermissionSettingsCotnext = React.createContext({});

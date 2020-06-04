@@ -1,0 +1,271 @@
+#: ./components/Message.js
+msgid "phản hồi"
+msgstr ""
+
+#: ./components/Message.js
+msgid "Trả lời"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Xem tất cả bình luận"
+msgstr ""
+
+#: ./components/Post.js
+#: ./Middle/views/PostDetail.js
+msgid "Viết bình luận"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Yêu"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Thích"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Bình luận"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Đã đăng"
+msgstr ""
+
+#: ./components/Post.js
+msgid "see less"
+msgstr ""
+
+#: ./components/Post.js
+msgid "see more"
+msgstr ""
+
+#: ./components/Post.js
+msgid "love and like"
+msgstr ""
+
+#: ./components/Post.js
+msgid "all"
+msgstr ""
+
+#: ./components/Post.js
+msgid "like"
+msgstr ""
+
+#: ./components/Post.js
+msgid "love"
+msgstr ""
+
+#: ./components/Post.js
+msgid "<%= numner %> người khác"
+msgstr ""
+
+#: ./components/Post.js
+msgid "bình luận"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Sửa"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Ghim"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Bỏ ghim"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Nổi bật"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Bỏ nổi bật"
+msgstr ""
+
+#: ./components/Post.js
+msgid "Xóa"
+msgstr ""
+
+#: ./components/SelectCategoryModal.js
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Chọn thể loại"
+msgstr ""
+
+#: ./Left.js
+msgid "Liên hệ"
+msgstr ""
+
+#: ./Left.js
+msgid "Lối tắt"
+msgstr ""
+
+#: ./Left.js
+msgid "Cài đặt nhóm"
+msgstr ""
+
+#: ./Left.js
+msgid "Câu hỏi thường gặp"
+msgstr ""
+
+#: ./Left.js
+msgid "Hướng dẫn sử dụng"
+msgstr ""
+
+#: ./Middle/PostCreator.js
+msgid "Tạo bài viết"
+msgstr ""
+
+#: ./Middle/PostCreator.js
+msgid "<%= name %> ơi bạn muốn đăng gì"
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Tài liệu đính kèm"
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Thêm tài liệu"
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Chọn thể loại muốn đăng"
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Chọn thể loại khác"
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Tạo bài viết trên bảng tin nội bộ"
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Tiêu đề bài viết..."
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Nội dung bài viết..."
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Thả file, hình ảnh vào đây..."
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "Đăng bài"
+msgstr ""
+
+#: ./Middle/PostCreatorPopupInner.js
+msgid "required"
+msgstr ""
+
+#: ./Middle/PostList.js
+msgid "Không tìm thấy kết quả!"
+msgstr ""
+
+#: ./Middle/views/Main.js
+#: ./Middle/views/Search.js
+msgid "Enter your keyword..."
+msgstr ""
+
+#: ./Middle/views/Main.js
+#: ./Middle/views/SearchByCategory.js
+msgid "BẢNG TIN NỘI BỘ"
+msgstr ""
+
+#: ./Middle/views/PostDetail.js
+msgid "Xem các bình luận trước"
+msgstr ""
+
+#: ./Middle/views/PostDetail.js
+msgid "BẢNG TIN NỘI BỘ - CHI TIẾT"
+msgstr ""
+
+#: ./Middle/views/Search.js
+msgid "Kết quả tìm kiếm"
+msgstr ""
+
+#: ./Right/HightLight.js
+msgid "TIN NỔI BẬT"
+msgstr ""
+
+#: ./Right/HightLight.js
+#: ./Right/WeedSchedule.js
+msgid "Xem thêm"
+msgstr ""
+
+#: ./Right/HightLight.js
+#: ./Right/WeedSchedule.js
+msgid "THOÁT"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.title_right"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+#: ./Right/WeekSelectMenu.js
+msgid "IDS_WP_WEEK"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.label.title"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.content"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.receiver"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.right_part.label.created_by"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.all"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.sunday"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.monday"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.tuesday"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.wednesday"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.thursday"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.friday"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.saturday"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "LỊCH TUẦN"
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "Tuần <%= week %>  năm <%= year %> "
+msgstr ""
+
+#: ./Right/WeedSchedule.js
+msgid "CHI TIẾT LỊCH TUẦN"
+msgstr ""
+

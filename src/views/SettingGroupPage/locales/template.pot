@@ -1,0 +1,834 @@
+#: ./GroupPermissionSettings/components/AddGroupPermissionModal.js
+msgid "Tên nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/AddGroupPermissionModal.js
+msgid "Mô tả nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/AddGroupPermissionModal.js
+msgid "Phạm vi module phân quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/AddGroupPermissionModal.js
+msgid "Tạo nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/AddGroupPermissionModal.js
+#: ./GroupPermissionSettings/components/SetPermissionModal.js
+#: ./GroupPermissionSettings/components/UpdateInfoGroupPermissionModal.js
+#: ./TablePart/SettingGroupRight/Home/components/AddCategotyModal.js
+msgid "Hoàn thành"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/AddGroupPermissionModal.js
+#: ./TablePart/SettingGroupRight/Home/components/AddCategotyModal.js
+#: ./TablePart/SettingGroupRight/Home/components/EditCategoryModal.js
+msgid "required"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/DeleteGroupPermissionModal.js
+msgid "Cancel"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/DeleteGroupPermissionModal.js
+msgid "Delete"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/DeleteGroupPermissionModal.js
+msgid "Bạn có muốn xóa nhóm quyền?"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/SetPermissionModal.js
+msgid "Gán quyền cho nhóm"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/SetPermissionModal.js
+msgid "DANH SÁCH QUYỀN"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/SetPermissionModal.js
+msgid "Tìm kiếm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/SetPermissionModal.js
+#: ./GroupPermissionSettings/Right/index.js
+msgid "Tên quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/SetPermissionModal.js
+#: ./GroupPermissionSettings/Right/index.js
+#: ./TablePart/SettingGroupRight/RoleManager/index.js
+msgid "Mô tả"
+msgstr ""
+
+#: ./GroupPermissionSettings/components/UpdateInfoGroupPermissionModal.js
+msgid "Cập nhật nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+msgid "Chỉnh sửa"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+#: ./TablePart/SettingGroupRight/Home/index.js
+#: ./TablePart/SettingGroupRight/RoleManager/index.js
+msgid "Xóa"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+msgid "Thiết lập nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+msgid "Trở lại"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+msgid "Danh sách nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+msgid "Thêm nhóm"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+msgid "Tìm nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/Left/index.js
+msgid "Đã gán <%= number %> thành viên"
+msgstr ""
+
+#: ./GroupPermissionSettings/Right/index.js
+msgid "Chi tiết quyền trong nhóm"
+msgstr ""
+
+#: ./GroupPermissionSettings/Right/index.js
+msgid "Có <%= number %> quyền đã được chọn"
+msgstr ""
+
+#: ./GroupPermissionSettings/Right/index.js
+msgid "Thêm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/Right/index.js
+msgid "Module được gán nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/Right/index.js
+msgid "Thành viên được gán nhóm quyền"
+msgstr ""
+
+#: ./GroupPermissionSettings/Right/index.js
+msgid "Xóa nhóm quyền"
+msgstr ""
+
+#: ./ListPart/index.js
+#: ./TablePart/index.js
+msgid "IDS_WP_SETTING_GROUP"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_SETTING_SOFTWARE"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_GROUP_INFO"
+msgstr ""
+
+#: ./ListPart/index.js
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_HOME"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_PERMISSION_GROUP"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_SYMBOLISM"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_ROLE"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_ORDER_MANAGE"
+msgstr ""
+
+#: ./ListPart/index.js
+#: ./TablePart/index.js
+msgid "IDS_WP_CREATE_ORDER"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_ORDER_LIST"
+msgstr ""
+
+#: ./ListPart/index.js
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_PAYMENT_INFO"
+msgstr ""
+
+#: ./ListPart/index.js
+msgid "IDS_WP_MANAGE_GROUP"
+msgstr ""
+
+#: ./TablePart/HeaderButtonGroup/index.js
+msgid "IDS_WP_SEARCH"
+msgstr ""
+
+#: ./TablePart/HeaderButtonGroup/index.js
+#: ./TablePart/index.js
+msgid "IDS_WP_ORDER"
+msgstr ""
+
+#: ./TablePart/index.js
+msgid "IDS_WP_SETTING_HOME"
+msgstr ""
+
+#: ./TablePart/index.js
+msgid "IDS_WP_SETUP_SOFTWARE"
+msgstr ""
+
+#: ./TablePart/index.js
+#: ./TablePart/SettingGroupRight/Notification.js
+msgid "IDS_WP_SETTING_NOTI"
+msgstr ""
+
+#: ./TablePart/index.js
+msgid "IDS_WP_ORDER_DETAIL"
+msgstr ""
+
+#: ./TablePart/index.js
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_PAYMENT"
+msgstr ""
+
+#: ./TablePart/index.js
+msgid "Thiết lập biểu tượng"
+msgstr ""
+
+#: ./TablePart/index.js
+#: ./TablePart/SettingGroupRight/RoleManager/index.js
+msgid "Thiết lập vai trò"
+msgstr ""
+
+#: ./TablePart/index.js
+#: ./TablePart/SettingGroupRight/Info.js
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_CANCEL"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_USER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_MONTH"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_CREATE_ORDER_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_SETUP_ORDER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_SELECT_SERVICE_STEP_1"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_WORKPLUS_JOB_LABEL"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_STORAGE_BUY_LABEL"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_SETUP_CONFIG"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_SELECT_ACCOUNT_NUMBER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_ACCOUNT_NUMBER_RANGE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_ACCOUNT_NUMBER_RANGE_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_PRICE_DEPEND_USER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_VIEW_PRICE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_USED_TIME_PAYMENT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_USED_TIME_PAYMENT_DES_1"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_USED_TIME_PAYMENT_DES_2"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_USED_TIME_PAYMENT_DES_3"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_BUY_TIME_PAYMENT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_PROMOTION_CODE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_PROMOTION_CODE_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_INPUT_PROMOTION_CODE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_INPUT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_CODE_NOT_EXIST"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_PLUS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_USED_DAY"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/CreateOrder.js
+msgid "IDS_WP_FINISH_ORDER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/components/AddCategotyModal.js
+msgid "Tên thể loại"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/components/AddCategotyModal.js
+msgid "Mô tả chi tiết"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/components/AddCategotyModal.js
+msgid "Biểu tượng"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/components/AddCategotyModal.js
+msgid "Chọn biểu tượng"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/components/EditCategoryModal.js
+msgid "Sửa thể loại"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/index.js
+#: ./TablePart/SettingGroupRight/RoleManager/index.js
+msgid "Sửa"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/index.js
+msgid "Quản lý thể loại đăng tin"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/index.js
+msgid "Thiết lập thể loại đăng tin trên trang chủ"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/index.js
+msgid "Thêm"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/index.js
+msgid "Quản lý plugin trang chủ"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/index.js
+msgid "Thiết lập các plugin thể hiện trên trang chủ"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Home/index.js
+msgid "Checkbox thể hiện/ẩn plugin. Kéo thả để sắp xếp vị trí hiển thị"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_CHANGE_INFO_GROUP_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_CHANGE_LOGO_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_CHANGE_COVER_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_ALREADY_COPY"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_COPY_TEXT_CLIPBOARD"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_GROUP_NAME"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_GROUP_NAME_LIMIT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_GROUP_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_GROUP_DES_LIMIT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_GROUP_SLOGAN"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_GROUP_SLOGAN_LIMIT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_ADDRESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_PHONE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_SAVE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_EDIT_TEXT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_GROUP_LOGO"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_CHANGE_LOGO"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_USE_DEFAULT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_COVER_IMAGE_GROUP"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_CHANGE_COVER_IMAGE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Info.js
+msgid "IDS_WP_SELECT_COLOR"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Notification.js
+msgid "IDS_WP_ON_OFF_NOTI"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Notification.js
+msgid "IDS_WP_ON_OFF_NOTI_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Notification.js
+msgid "IDS_WP_ON_OFF_NOTI_STEP_1"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Notification.js
+msgid "IDS_WP_ON_OFF_NOTI_STEP_2"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Notification.js
+msgid "IDS_WP_ON_OFF_NOTI_STEP_2_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_DELETE_ORDER_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_RENEWAL_ORDER_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_CREATOR"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_CREATE_DATE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_ORDER_CODE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_PRODUCT_PACKAGE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_ACCOUNT_CONNECT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_STORAGE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_USE_TIME"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_ACTIVED_DATE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_EXPIRE_DATE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_TIME_REMAINING"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_STATUS_CONDITION"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_BILL"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_VALUE_VND"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_ACTION"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_DAY"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_RENEWAL"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_DELETE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_ALERT_CONTENT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Order.js
+msgid "IDS_WP_RENEWAL_ORDER_CONFIRM"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_OTHER_INFO"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_CREATE_ORDER_EVERY_DAY"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_STATUS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/OrderDetail.js
+msgid "IDS_WP_DOWNLOAD_BILL"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_EDIT_INFO_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ORDER_INFO"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ORDER_INFO_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ORDER_COMPANY_NAME"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ORDER_ADDRESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_LAW_CODE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_LAW_PEOPLE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ADDRESS_RECEIPT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_PHONE_CONTACT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_EMAIL_ORDER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_PAYMENT_INFO_DES_1"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_PAYMENT_INFO_DES_2"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ACCOUNT_COMPANY"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ACCOUNT_BIDV"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ACCOUNT_OWNER_COMPANY"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ACCOUNT_NUMBER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ACCOUNT_PRIVATE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ACCOUNT_VCB"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_ACCOUNT_OWNER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_BIDV_ADDRESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_NOTE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_NOTE_DES_1"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/Payment.js
+msgid "IDS_WP_NOTE_DES_2"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/PickColorModal.js
+msgid "IDS_WP_ERROR_CHANGE_COLOR_GROUP"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/PickColorModal.js
+msgid "IDS_WP_SETUP_COLOR"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/RoleManager/index.js
+msgid "Tạo vai trò"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/RoleManager/index.js
+msgid "Tên"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_ON"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_OFF"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_CALENDAR_WEEK"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_DEADLINE_JOB"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_TOP_MEMBER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_LAW_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_SETTING_MENU_LEFT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_SETTING_SHOW_MENU_LEFT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_PROJECT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_JOB"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_REPORT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_BUDGET"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_SUGGEST"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_PROCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_ARCHIVAL"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_DOCUMENT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_CALENDAR_REMINDER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_POSITION"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_MEMBER"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_SELECT_MENU_LEFT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_SETTING_PLUGIN_HOME"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/SetUp.js
+msgid "IDS_WP_ENABLE_DISABLE_PLUGIN"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_UPDATE_SUCCESS"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_ERROR_CHANGE_FORMAT_DATE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_SETTING_DATE_FORMAT"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_SELECT_FORMAT_DATE_TITLE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_LANGUAGE_APP_TITLE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_SELECT_LANGUAGE_APP_DES"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_VIETNAMESE"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/TimeAndLanguage.js
+msgid "IDS_WP_ENGLISH"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/WebpushButton.js
+msgid "Đang nhận thông báo trình duyệt"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/WebpushButton.js
+msgid "Thông báo trình duyệt chưa được bật"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/WebpushButton.js
+msgid "Do you really want to unsubscribe?"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/WebpushButton.js
+msgid "Bật"
+msgstr ""
+
+#: ./TablePart/SettingGroupRight/WebpushButton.js
+msgid "Tắt"
+msgstr ""
+

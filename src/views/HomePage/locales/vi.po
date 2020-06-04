@@ -1,0 +1,277 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.3.1\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: vi\n"
+
+#: components/Message.js
+msgid "phản hồi"
+msgstr "phản hồi"
+
+#: components/Message.js
+msgid "Trả lời"
+msgstr "Trả lời"
+
+#: components/Post.js
+msgid "Xem tất cả bình luận"
+msgstr "Xem tất cả bình luận"
+
+#: components/Post.js Middle/views/PostDetail.js
+msgid "Viết bình luận"
+msgstr "Viết bình luận"
+
+#: components/Post.js
+msgid "Yêu"
+msgstr "Yêu"
+
+#: components/Post.js
+msgid "Thích"
+msgstr "Thích"
+
+#: components/Post.js
+msgid "Bình luận"
+msgstr "Bình luận"
+
+#: components/Post.js
+msgid "Đã đăng"
+msgstr "Đã đăng"
+
+#: components/Post.js
+msgid "see less"
+msgstr "see less"
+
+#: components/Post.js
+msgid "see more"
+msgstr "see more"
+
+#: components/Post.js
+msgid "love and like"
+msgstr "love and like"
+
+#: components/Post.js
+msgid "all"
+msgstr "all"
+
+#: components/Post.js
+msgid "like"
+msgstr "like"
+
+#: components/Post.js
+msgid "love"
+msgstr "love"
+
+#: components/Post.js
+msgid "<%= numner %> người khác"
+msgstr "<%= numner %> người khác"
+
+#: components/Post.js
+msgid "bình luận"
+msgstr "bình luận"
+
+#: components/Post.js
+msgid "Sửa"
+msgstr "Sửa"
+
+#: components/Post.js
+msgid "Ghim"
+msgstr "Ghim"
+
+#: components/Post.js
+msgid "Bỏ ghim"
+msgstr "Bỏ ghim"
+
+#: components/Post.js
+msgid "Nổi bật"
+msgstr "Nổi bật"
+
+#: components/Post.js
+msgid "Bỏ nổi bật"
+msgstr "Bỏ nổi bật"
+
+#: components/Post.js
+msgid "Xóa"
+msgstr "Xóa"
+
+#: components/SelectCategoryModal.js Middle/PostCreatorPopupInner.js
+msgid "Chọn thể loại"
+msgstr "Chọn thể loại"
+
+#: Left.js
+msgid "Liên hệ"
+msgstr "Liên hệ"
+
+#: Left.js
+msgid "Lối tắt"
+msgstr "Lối tắt"
+
+#: Left.js
+msgid "Cài đặt nhóm"
+msgstr "Cài đặt nhóm"
+
+#: Left.js
+msgid "Câu hỏi thường gặp"
+msgstr "Câu hỏi thường gặp"
+
+#: Left.js
+msgid "Hướng dẫn sử dụng"
+msgstr "Hướng dẫn sử dụng"
+
+#: Middle/PostCreator.js
+msgid "Tạo bài viết"
+msgstr "Tạo bài viết"
+
+#: Middle/PostCreator.js
+msgid "<%= name %> ơi bạn muốn đăng gì"
+msgstr "<%= name %> ơi bạn muốn đăng gì"
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Tài liệu đính kèm"
+msgstr "Tài liệu đính kèm"
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Thêm tài liệu"
+msgstr "Thêm tài liệu"
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Chọn thể loại muốn đăng"
+msgstr "Chọn thể loại muốn đăng"
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Chọn thể loại khác"
+msgstr "Chọn thể loại khác"
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Tạo bài viết trên bảng tin nội bộ"
+msgstr "Tạo bài viết trên bảng tin nội bộ"
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Tiêu đề bài viết..."
+msgstr "Tiêu đề bài viết..."
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Nội dung bài viết..."
+msgstr "Nội dung bài viết..."
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Thả file, hình ảnh vào đây..."
+msgstr "Thả file, hình ảnh vào đây..."
+
+#: Middle/PostCreatorPopupInner.js
+msgid "Đăng bài"
+msgstr "Đăng bài"
+
+#: Middle/PostCreatorPopupInner.js
+msgid "required"
+msgstr "required"
+
+#: Middle/PostList.js
+msgid "Không tìm thấy kết quả!"
+msgstr "Không tìm thấy kết quả!"
+
+#: Middle/views/Main.js Middle/views/Search.js
+msgid "Enter your keyword..."
+msgstr "Enter your keyword..."
+
+#: Middle/views/Main.js Middle/views/SearchByCategory.js
+msgid "BẢNG TIN NỘI BỘ"
+msgstr "BẢNG TIN NỘI BỘ"
+
+#: Middle/views/PostDetail.js
+msgid "Xem các bình luận trước"
+msgstr "Xem các bình luận trước"
+
+#: Middle/views/PostDetail.js
+msgid "BẢNG TIN NỘI BỘ - CHI TIẾT"
+msgstr "BẢNG TIN NỘI BỘ - CHI TIẾT"
+
+#: Middle/views/Search.js
+msgid "Kết quả tìm kiếm"
+msgstr "Kết quả tìm kiếm"
+
+#: Right/HightLight.js
+msgid "TIN NỔI BẬT"
+msgstr "TIN NỔI BẬT"
+
+#: Right/HightLight.js Right/WeedSchedule.js
+msgid "Xem thêm"
+msgstr "Xem thêm"
+
+#: Right/HightLight.js Right/WeedSchedule.js
+msgid "THOÁT"
+msgstr "THOÁT"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.title_right"
+msgstr "views.calendar_page.modal.create_weekly_calendar.title_right"
+
+#: Right/WeedSchedule.js Right/WeekSelectMenu.js
+msgid "IDS_WP_WEEK"
+msgstr "IDS_WP_WEEK"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.label.title"
+msgstr "views.calendar_page.modal.create_weekly_calendar.label.title"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.content"
+msgstr "views.calendar_page.modal.create_weekly_calendar.content"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.receiver"
+msgstr "views.calendar_page.modal.create_weekly_calendar.receiver"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.right_part.label.created_by"
+msgstr "views.calendar_page.right_part.label.created_by"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.create_weekly_calendar.all"
+msgstr "views.calendar_page.modal.create_weekly_calendar.all"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.sunday"
+msgstr "views.calendar_page.modal.setting_weekly_calendar.sunday"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.monday"
+msgstr "views.calendar_page.modal.setting_weekly_calendar.monday"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.tuesday"
+msgstr "views.calendar_page.modal.setting_weekly_calendar.tuesday"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.wednesday"
+msgstr "views.calendar_page.modal.setting_weekly_calendar.wednesday"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.thursday"
+msgstr "views.calendar_page.modal.setting_weekly_calendar.thursday"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.friday"
+msgstr "views.calendar_page.modal.setting_weekly_calendar.friday"
+
+#: Right/WeedSchedule.js
+msgid "views.calendar_page.modal.setting_weekly_calendar.saturday"
+msgstr "views.calendar_page.modal.setting_weekly_calendar.saturday"
+
+#: Right/WeedSchedule.js
+msgid "LỊCH TUẦN"
+msgstr "LỊCH TUẦN"
+
+#: Right/WeedSchedule.js
+msgid "Tuần <%= week %>  năm <%= year %> "
+msgstr "Tuần <%= week %>  năm <%= year %> "
+
+#: Right/WeedSchedule.js
+msgid "CHI TIẾT LỊCH TUẦN"
+msgstr "CHI TIẾT LỊCH TUẦN"
