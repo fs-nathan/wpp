@@ -235,7 +235,7 @@ function OfferPage(props) {
       url: Routes.RECENTLY,
       color: "#7d99a6",
       icon: mdiEmailCheck,
-      rightIcon: rightIcon
+      // rightIcon: rightIcon
     },
     {
       title: t(labels.group),
@@ -243,7 +243,7 @@ function OfferPage(props) {
       url: Routes.OFFERBYGROUP,
       color: "#7d99a6",
       icon: mdiEmailVariant,
-      rightIcon: rightIcon
+      // rightIcon: rightIcon
     },
     {
       title: t(labels.project),
