@@ -418,6 +418,152 @@
             }
           }
         }
+      },
+      "PP": {
+        "LEFT": {
+          "GT": {
+            "NUM_TASK": "{{number_task}} việc",
+            "TITLE": "Nhóm công việc",
+            "BACK": "Quay lại",
+            "ADD": "Thêm nhóm công việc",
+            "SEARCH": "Tìm nhóm công việc",
+            "ALL_LABLE": "Tất cả",
+            "EDIT": "Chỉnh sửa",
+            "DEL": "Xóa"
+          },
+          "PD": {
+            "TITLE": "Thông tin dự án",
+            "BACK": "Quay lại",
+            "PROGRESS": "Tiến độ dự án",
+            "DESC": "Mô tả dự án",
+            "MEM": "Thành viên",
+            "EDIT": "Chỉnh sửa",
+            "DEL": "Xóa dự án"
+          },
+          "PM": {
+            "NUM_TASK": "Tham gia {{number_task}}/{{total_task}} việc",
+            "ALL_TASK": "{{number_task}} việc",
+            "LEAVE": "Đã rời nhóm",
+            "TITLE": "Thành viên dự án",
+            "BACK": "Quay lại",
+            "ADD": "Thêm thành viên dự án",
+            "SEARCH": "Tìm thành viên",
+            "ALL_LABEL": "Tất cả",
+            "MANAGE": "Quản lý thành viên"
+          }
+        },
+        "MODAL": {
+          "COPY": {
+            "TITLE": "Sao chép nhóm công việc",
+            "SEARCH": "Tìm nhóm công việc"
+          },
+          "CREATE": {
+            "TITLE": "Tạo nhóm công việc",
+            "CREATE": {
+              "LABEL": "Tạo mới nhóm công việc",
+              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc"
+            },
+            "COPY": {
+              "LABEL": "Sao chép nhóm công việc",
+              "DESC": "Sao chép các nhóm công việc có sẵn vào dự án"
+            }
+          },
+          "CUGT": {
+            "C_TITLE": "Tạo mới nhóm công việc",
+            "U_TITLE": "Chỉnh sửa nhóm công việc",
+            "NAME": "Tên nhóm công việc",
+            "DESC": "Mô tả nhóm công việc",
+            "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc?"
+          },
+          "MEMBER": {
+            "TITLE": "Quản lý thành viên dự án",
+            "EXIT": "Thoát",
+            "LEFT": {
+              "TITLE": "Danh sách thành viên",
+              "SEARCH": "Tìm thành viên",
+              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án!"
+            },
+            "RIGHT": {
+              "TITLE": "Thành viên dự án",
+              "TABLE": {
+                "MEM": "Thành viên",
+                "PER": "Nhóm quyền",
+                "ROL": "Vai trò",
+                "STA": "Trạng thái"
+              },
+              "LABEL": {
+                "PER": "Gán quyền",
+                "ADD": "Thêm",
+                "LEA": "Đã rời nhóm",
+                "ALL": "Tham gia tất cả việc",
+                "SEL": "Tham gia việc khi được chọn",
+                "PIC": "Gán vào công việc được tạo",
+                "BAN": "Loại trừ"
+              }
+            },
+            "PERMISSION": {
+              "TITLE": "Phân quyền thành viên",
+              "EXIT": "Thoát",
+              "CANCLE": "Hủy",
+              "DONE": "Hoàn thành",
+              "MOVED": {
+                "LABEL_1": "Nhóm quyền \"{{permission_name}}\" đã được loại bỏ khỏi module này.",
+                "LABEL_2": "Bạn có thể giữ nguyên để tiếp tục sử dụng nhóm quyền này hoặc lựa chọn nhóm quyền khác.",
+                "MORE": "Xem thêm"
+              },
+              "TABLE": {
+                "NAME": "Tên quyền",
+                "DESC": "Mô tả"
+              },
+              "ADMIN": {
+                "TITLE": "Nhóm quyền: Chủ sở hữu dự án",
+                "DESC": "Chủ sở hữu dự án có các quyền sau:"
+              },
+              "USER": {
+                "TITLE": "Chọn nhóm quyền",
+                "DESC": "Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.",
+                "NO_DATA": {
+                  "LABEL_1": "Hiện tại chưa có nhóm quyền nào được chọn cho chức năng này!",
+                  "LABEL_2": "Liên hệ với Quản trị viên để yêu cầu bổ sung"
+                },
+                "REMOVE": "Xóa nhóm quyền đã chọn"
+              }
+            },
+            "ROLE": {
+              "TITLE": "Vai trò thành viên",
+              "EXIT": "Thoát",
+              "TABLE": {
+                "NAME": "Tên vai trò",
+                "DESC": "Mô tả vai trò"
+              }
+            }
+          }
+        },
+        "RIGHT": {
+          "ALL": {
+            "TITLE": "Danh sách công việc",
+            "LABEL": {
+              "MEMBER": "Thành viên",
+              "GROUP_TASK": "Nhóm việc",
+              "DOWNLOAD": "Tải xuống",
+              "CREATE": "+ Tạo công việc",
+              "SETTING": "Cài đặt dự án",
+              "HIDE": "Ẩn dự án",
+              "SHOW": "Bỏ ẩn dự án",
+              "NO_DATA": "Chưa có công việc nào được khởi tạo. Hãy click vào nút + TẠO CÔNG VIỆC để bắt đầu quản lý dự án và công việc của bạn"
+            },
+            "TABLE": {
+              "NAME": "Tên công việc",
+              "STATUS": "Trạng thái",
+              "EXP_DATE": "{{date}} ngày",
+              "PROGRESS": "Tiến độ",
+              "BEGIN": "Bắt đầu",
+              "END": "Kết thúc",
+              "COMPLETE": "Hoàn thành",
+              "PRIORITY": "Ưu tiên"
+            }
+          }
+        }
       }
     }
   },
