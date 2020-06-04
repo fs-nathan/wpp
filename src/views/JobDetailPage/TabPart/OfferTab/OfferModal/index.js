@@ -11,6 +11,7 @@ import findIndex from 'lodash/findIndex';
 import get from 'lodash/get';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useMemo, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -18,6 +19,7 @@ import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJo
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
 import { allMembersSelector } from '../../../../../reducers/user/listOfUserGroup/selectors';
+import { Routes } from '../../../../OfferPage/contants/routes';
 import { updateOfferApprovalCondition, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
@@ -36,6 +38,7 @@ const OfferModal = ({
                     }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
   const bgColor = useSelector(state => bgColorSelector(state));
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.id);
@@ -196,10 +199,12 @@ const OfferModal = ({
         }
       }
       dispatch(actionCreateOffer);
+      setTimeout(() => {
+        history.push(`${Routes.OFFERBYGROUP}/${tempSelectedItem.offer_group_id}`);
+      }, 2000);
     }
   };
   function onClickCreateOffer() {
-    setOpen(false)
     if (tempSelectedItem.content)
       handleCreateOffer()
     setParams("content", '')
@@ -282,12 +287,17 @@ const OfferModal = ({
     const { title, content, offer_group_id, priority } = tempSelectedItem;
     if (isUpdateOfferDetailDescriptionSection) {
       return title && content;
-    } else {
+    } else if (isUpdateOfferApprovalCondition) {
       return title && content
              && offer_group_id
              && priority
              && handlers.length;
     }
+    return actionCreateOffer
+           && title && content
+           && offer_group_id
+           && priority
+           && handlers.length;
   }
   return (
     <JobDetailModalWrap

@@ -58,11 +58,12 @@ const OfferByGroup = props => {
     dispatch(loadSummaryByGroup());
   }, [dispatch]);
   useEffect(() => {
-    if (idFirstGroup === undefined || null) {
+    if (history.location.pathname !== Routes.OFFERBYGROUP
+        || idFirstGroup === undefined
+        || idFirstGroup === null) {
       return
     }
     history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
-
   }, [history, idFirstGroup]);
   useEffect(() => {
     const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")

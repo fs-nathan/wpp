@@ -314,7 +314,6 @@ export function* doCreateOffer({ payload }) {
     };
     const result = yield apiService(config);
     result.data.state && SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS)
-    || SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.ERROR);
   } catch (err) {
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
