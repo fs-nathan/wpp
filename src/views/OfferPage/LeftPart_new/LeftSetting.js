@@ -3,7 +3,7 @@ import { ListItemText } from "@material-ui/core";
 import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import Icon from "@mdi/react";
 import classnames from "classnames";
-import { Primary, StyledList, StyledListItem } from "components/CustomList";
+import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
 import LeftSideContainer from "components/LeftSideContainer";
 import React, { Fragment, useState } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
@@ -96,7 +96,7 @@ const LeftSetting = props => {
                     {item.title}
                   </Primary>
                 }
-                secondary={item.subtitle}
+                secondary={<Secondary className="leftSettings-item-subtitle">{item.subtitle}</Secondary>}
               />
               {onHover.id === item.url && item.rightIcon && item.rightIcon()}
             </StyledListItem>
