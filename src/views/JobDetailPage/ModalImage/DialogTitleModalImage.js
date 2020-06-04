@@ -94,7 +94,7 @@ const DialogTitleModalImage = withStyles(styles)(props => {
               }
               secondary={
                 <Typography component='div'>
-                  {`${user_create_name} đăng lúc ${formattedTime.toLowerCase()} - ${size}`}
+                  {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${formattedTime.toLowerCase()} - ${size}` })}
                 </Typography>
               }
             />

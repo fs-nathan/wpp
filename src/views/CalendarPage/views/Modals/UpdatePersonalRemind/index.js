@@ -150,6 +150,8 @@ function UpdatePersonalRemind({
                   className="remind_setting_day_inputDate"
                   minDate={moment(data.selectedDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss")}
                   autoOk={true}
+                  invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
+                  minDateMessage={t('DATE_ERROR_INTERVAL_MIN_MESSAGE')}
                 />
               </MuiPickersUtilsProvider>
             </div>

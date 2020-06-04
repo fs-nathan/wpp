@@ -68,7 +68,10 @@ const CustomListItem = props => {
         }}
       >
         <MenuItem
-          onClick={onClickDetail}
+          onClick={() => {
+            onClickDetail();
+            setAnchorEl(null);
+          }}
         >{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
         <MenuItem
           onClick={() => {

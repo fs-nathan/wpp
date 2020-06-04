@@ -49,6 +49,7 @@ import { Routes } from "../constants/routes";
 import routes from "../routes";
 import LeftBar from "../views/LeftBar";
 import TopBar from "../views/TopBar";
+import configURL from "../constants/apiConstant";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -233,8 +234,7 @@ function MainLayout({
     }
     if (localStorage.getItem(TOKEN)) {
       handleFetchNoti();
-      const uri =
-        "https://appapi.workplus.vn?token=" + localStorage.getItem(TOKEN);
+      const uri = `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>

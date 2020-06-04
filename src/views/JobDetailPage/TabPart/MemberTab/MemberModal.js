@@ -241,7 +241,8 @@ const MemberModal = () => {
           />
           <TitleDescription>{t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')}</TitleDescription>
           <ContentDescription>
-            <span dangerouslySetInnerHTML={{ __html: replaceUrl(description).replace(/\n/g, '<br/>') }}></span>
+            <span className="MemberModal--description"
+              dangerouslySetInnerHTML={{ __html: replaceUrl(description).replace(/\n/g, '<br/>') }}></span>
           </ContentDescription>
           {/* <input
               accept="image/*"
@@ -262,7 +263,8 @@ const MemberModal = () => {
                 <div className="MemberModal--fileType">{`${type} - ${size}`}</div>
                 <div className="MemberModal--fileDownloadButton"
                   onClick={onClickDownload({ url, name, id })}>
-                  <Icon path={mdiDownload} size="20px" color="#000"></Icon>
+                  <Icon className="MemberModal--fileDownloadIcon"
+                    path={mdiDownload} size="20px" color="#000"></Icon>
                 </div>
               </div>
             </div>))}

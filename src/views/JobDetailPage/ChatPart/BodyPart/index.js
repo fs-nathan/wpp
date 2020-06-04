@@ -30,7 +30,7 @@ const BodyPart = props => {
   const userId = useSelector(state => state.system.profile.id);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  // const searchChatKey = useSelector(state => state.chat.searchChatKey)
+  const searchChatKey = useSelector(state => state.chat.searchChatKey)
   const isSending = useSelector(state => state.chat.isSending);
   const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
   const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
@@ -118,7 +118,7 @@ const BodyPart = props => {
           // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
           chatRef.current.scrollToBottom()
         })
-      })
+      }, 1000)
     }
     return () => {
       clearTimeout(rqId);
@@ -265,7 +265,7 @@ const BodyPart = props => {
             </React.Fragment>
           }
           {
-            showedChats.length === 0 &&
+            showedChats.length === 0 && searchChatKey &&
             <div className="bodyChat--searchEmpty">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
           }
           {
