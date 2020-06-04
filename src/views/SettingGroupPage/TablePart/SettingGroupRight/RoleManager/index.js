@@ -20,7 +20,6 @@ import {
   StyledButton,
   StyledTableBodyCell,
 } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
-import { loginlineParams } from "views/JobPage/utils";
 import "./RoleManager.css";
 const HomeWrap = styled.div`
   padding-right: 10px;
@@ -114,7 +113,7 @@ function RoleManager({ setHackHeader, ...props }) {
                   <div style={{ width: 10 }}></div>
                   <Button
                     className="u-colorWhite"
-                    onClick={() => handleDeleteUserRole(loginlineParams(item))}
+                    onClick={() => handleDeleteUserRole(item)}
                     disableElevation
                     variant="contained"
                     color="secondary"
