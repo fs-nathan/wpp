@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
+import { useTimes } from '../../../../components/CustomPopover';
 import { labels } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
@@ -35,8 +36,9 @@ const stringsGroupOffer = [
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
+  const { listMenu, timeType, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
   const isMounted = useMountedState();
+  const times = useTimes();
   const myOffers = useSelector(state => getMyOffers(state))
   const statusOffers = useSelector(state => getStatusOffers(state))
   const priorityOffers = useSelector(state => getPriorityOffers(state))
@@ -69,10 +71,16 @@ const Overview = () => {
     }
   }, [groupOffers, timeRange]);
   const renderExtraTimeTitle = useMemo(() => {
-    const startDate = moment(timeRange.startDate).format("DD/MM/YYYY")
-    const endDate = moment(timeRange.endDate).format("DD/MM/YYYY")
-    return `Tháng này (${startDate} - ${endDate})`
-  }, [timeRange])
+    let startDate = undefined;
+    let endDate = undefined;
+    if (timeRange.startDate && timeRange.endDate) {
+      startDate = moment(timeRange.startDate).format("DD/MM/YYYY")
+      endDate = moment(timeRange.endDate).format("DD/MM/YYYY")
+    }
+    return startDate && endDate
+      ? `${times[timeType].title} (${startDate} - ${endDate})`
+      : t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.ALL_TIME');
+  }, [timeType, timeRange])
   return (
     <Layout
       title={

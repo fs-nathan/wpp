@@ -146,12 +146,20 @@ export function* doLoadOfferByDepartmentID({ payload }) {
 
 export function* doLoadSummaryOverview({ payload }) {
   try {
-    const { timeRange } = payload
-    const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-    const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+    const { timeRange } = payload;
+    let startDate = undefined;
+    let endDate = undefined;
+    if (timeRange.startDate && timeRange.endDate) {
+      startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+      endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+    }
     const config = {
-      url: `/offers/summary?from_date=${startDate}&to_date=${endDate}`,
-      method: "GET"
+      url: `/offers/summary${
+        startDate && endDate
+          ? `?from_date=${startDate}&to_date=${endDate}`
+          : ''
+      }`,
+      method: "GET",
     }
     const result = yield apiService(config)
     yield put({ type: LOAD_SUMMARY_OVERVIEW_SUCCESS, payload: result.data })

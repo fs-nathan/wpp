@@ -140,6 +140,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     setTimeAnchor,
     quickTask,
     setQuickTask,
+    timeFilterTypeOfferOverview,
     timeFilterTypeOfferByGroup,
     timeFilterTypeOfferByProject,
     timeFilterTypeOfferByDepartment,
@@ -157,6 +158,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   const {
     location: { pathname }
   } = useHistory();
+  const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
   const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
   const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
   const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
@@ -167,6 +169,8 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     timeFilterType = timeFilterTypeOfferByProject.timeType;
   } else if (offerByDepartmentRouteRegex.test(pathname)) {
     timeFilterType = timeFilterTypeOfferByDepartment.timeType;
+  } else if (offerOverviewRouteRegex.test(pathname)) {
+    timeFilterType = timeFilterTypeOfferOverview.timeType;
   } else {
     timeFilterType = 1;
   }

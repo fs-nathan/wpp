@@ -15,6 +15,7 @@ import {
   TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
   TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
   TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
+  TIME_FILTER_TYPE_OFFER_OVERVIEW,
 } from './contants/localStorage';
 import { Routes } from "./contants/routes";
 import { useMultipleSelect } from "./hooks/useMultipleSelect";
@@ -130,6 +131,12 @@ function OfferPage(props) {
   const { t } = useTranslation();
   const [keyword, setkeyword] = useState("");
   const [title, setTitle] = useState(get(labels, "pageTitle"));
+  const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_OVERVIEW,
+    {
+      timeType: 1,
+    }
+  );
   const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(
     TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
     {
@@ -156,6 +163,7 @@ function OfferPage(props) {
   const [timeType, setTimeType] = React.useState(1);
   useEffect(() => {
     const { pathname } = history.location;
+    const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
     const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
     const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
     const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
@@ -172,6 +180,11 @@ function OfferPage(props) {
     } else if (offerByDepartmentRouteRegex.test(pathname)) {
       storeTimeFilterTypeOfferByDepartment({
         ...timeFilterTypeOfferByDepartment,
+        timeType
+      });
+    } else if (offerOverviewRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferOverview({
+        ...timeFilterTypeOfferOverview,
         timeType
       });
     }
@@ -352,6 +365,7 @@ function OfferPage(props) {
             setTimeAnchor,
             openModalOfferByGroup,
             setOpenModalOfferByGroup,
+            timeFilterTypeOfferOverview,
             timeFilterTypeOfferByGroup,
             timeFilterTypeOfferByProject,
             timeFilterTypeOfferByDepartment,
