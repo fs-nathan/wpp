@@ -11,11 +11,11 @@ import NoData from 'components/NoData';
 import { CustomEventDispose, CustomEventListener, GET_USER_OF_ROOM, LIST_USER_OF_GROUP, REMOVE_GROUP_PERMISSION_USER, UPDATE_GROUP_PERMISSION_USER } from 'constants/events';
 import { find, get } from 'lodash';
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import Slider from "react-slick";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import './style.scss';
-
 
 const StyledTableRow = ({ className = '', ...props }) =>
   <TableRow
@@ -100,6 +100,8 @@ function PermissionMemberModal({
   doReloadUser, handleUpdateGroupPermission,
 }) {
 
+  const { t } = useTranslation();
+
   const [selectedValue, setSelectedValue] = React.useState(undefined);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
@@ -119,6 +121,7 @@ function PermissionMemberModal({
       ),
       "id"
     )
+    // eslint-disable-next-line
     , [curUserId, permissions]);
 
   React.useEffect(() => {
@@ -196,12 +199,13 @@ function PermissionMemberModal({
 
   return (
     <CustomModal
-      title="Phân quyền thành viên"
+      title={t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.TITLE")}
+      className="view_DepartmentPage_UserPermissionModal___modal"
       open={open}
       setOpen={setOpen}
       loading={permissions.loading}
-      cancleRender={() => isAdmin ? "Thoát" : "Hủy"}
-      confirmRender={isAdmin ? null : () => "Hoàn thành"}
+      cancleRender={() => isAdmin ? t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.EXIT") : t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.CANCLE")}
+      confirmRender={isAdmin ? null : () => t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.DONE")}
       canConfirm={permissions.groupPermissions.length > 0}
       onConfirm={() => {
         if (!isAdmin) {
@@ -219,14 +223,14 @@ function PermissionMemberModal({
       {isAdmin
         ? (
           <>
-            <Title>Nhóm quyền: Chủ sở hữu dự án</Title>
-            <Content>Chủ sở hữu dự án có các quyền sau:</Content>
+            <Title>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.ADMIN.TITLE")}</Title>
+            <Content>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.ADMIN.DESC")}</Content>
             <Table>
               <TableHead>
                 <StyledTableRow>
                   <StyledTableCell style={{ width: "10%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>&nbsp;</StyledTableCell>
-                  <StyledTableCell style={{ width: "35%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Tên quyền</StyledTableCell>
-                  <StyledTableCell style={{ width: "55%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Mô tả</StyledTableCell>
+                  <StyledTableCell style={{ width: "35%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.TABLE.NAME")}</StyledTableCell>
+                  <StyledTableCell style={{ width: "55%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.TABLE.DESC")}</StyledTableCell>
                 </StyledTableRow>
               </TableHead>
               <TableBody>
@@ -249,16 +253,16 @@ function PermissionMemberModal({
         )
         : (
           <>
-            <Title>Chọn nhóm quyền</Title>
-            <Content>Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.</Content>
+            <Title>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.TITLE")}</Title>
+            <Content>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.DESC")}</Content>
             {permissions.groupPermissions.length === 0
               ? (
                 <NoData
                   title={() => null}
                   subtitle={() =>
                     <>
-                      <NoDataHelper>Hiện tại chưa có nhóm quyền nào được chọn cho chức năng này!</NoDataHelper>
-                      <NoDataHelper>Liên hệ với Quản trị viên để yêu cầu bổ sung</NoDataHelper>
+                      <NoDataHelper>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.NO_DATA.LABEL_1")}</NoDataHelper>
+                      <NoDataHelper>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.NO_DATA.LABEL_2")}</NoDataHelper>
                     </>
                   }
                 />
@@ -269,7 +273,7 @@ function PermissionMemberModal({
                     onClick={evt => setSelectedValue(undefined)}
                   >
                     <Icon path={mdiDeleteOutline} size={1} color='#898989' />
-                    <span>Xóa nhóm quyền đã chọn</span>
+                    <span>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.REMOVE")}</span>
                   </Deselect>
                   <SliderWrapper>
                     <Slider adaptiveHeight variableWidth infinite={false}
@@ -291,8 +295,8 @@ function PermissionMemberModal({
                     <TableHead>
                       <StyledTableRow>
                         <StyledTableCell style={{ width: "10%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>&nbsp;</StyledTableCell>
-                        <StyledTableCell style={{ width: "35%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Tên quyền</StyledTableCell>
-                        <StyledTableCell style={{ width: "55%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>Mô tả</StyledTableCell>
+                        <StyledTableCell style={{ width: "35%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.TABLE.NAME")}</StyledTableCell>
+                        <StyledTableCell style={{ width: "55%", color: '#898989', fontSize: '15px', fontWeight: 'bold' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.TABLE.DESC")}</StyledTableCell>
                       </StyledTableRow>
                     </TableHead>
                     <TableBody>

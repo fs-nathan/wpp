@@ -1,16 +1,17 @@
 import { mdiAccount, mdiAccountCircle, mdiCalendar, mdiDownload, mdiScatterPlot } from '@mdi/js';
 import Icon from '@mdi/react';
+import AvatarCircleList from 'components/AvatarCircleList';
+import CustomBadge from 'components/CustomBadge';
+import { DownloadPopover, TimeRangePopover, useTimes } from 'components/CustomPopover';
+import CustomTable from 'components/CustomTable';
+import LoadingBox from 'components/LoadingBox';
+import SimpleSmallProgressBar from 'components/SimpleSmallProgressBar';
+import { Container, DateBox, LinkSpan, StateBox } from 'components/TableComponents';
 import { find, flattenDeep, get, isNil, join } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-use';
-import AvatarCircleList from '../../../../components/AvatarCircleList';
-import CustomBadge from '../../../../components/CustomBadge';
-import { DownloadPopover, TimeRangePopover, useTimes } from '../../../../components/CustomPopover';
-import CustomTable from '../../../../components/CustomTable';
-import LoadingBox from '../../../../components/LoadingBox';
-import SimpleSmallProgressBar from '../../../../components/SimpleSmallProgressBar';
-import { Container, DateBox, LinkSpan, StateBox } from '../../../../components/TableComponents';
 import './style.scss';
 
 const SubTitle = ({ className = '', ...props }) =>
@@ -46,7 +47,7 @@ function decodePriorityCode(priorityCode) {
 function displayDate(time, date, type) {
   return (
     <>
-      {type === 2 && <span>Không yêu cầu</span>}
+      {type === 2 && <span />}
       {type === 0 && <span>{time}</span>}
       {type <= 1 && <span>{date}</span>}
     </>
@@ -66,6 +67,8 @@ function AllTaskTable({
   canUpdateProject, canCreateTask,
 }) {
 
+  const { t } = useTranslation();
+
   const history = useHistory();
   const { pathname } = useLocation();
 
@@ -78,7 +81,7 @@ function AllTaskTable({
       <React.Fragment>
         <CustomTable
           options={{
-            title: 'Danh sách công việc',
+            title: t("DMH.VIEW.PP.RIGHT.ALL.TITLE"),
             subTitle: () => (
               <SubTitle>
                 <span onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</span>
@@ -87,17 +90,17 @@ function AllTaskTable({
               </SubTitle>
             ),
             subActions: [canUpdateProject ? {
-              label: 'Thành viên',
+              label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.MEMBER"),
               iconPath: mdiAccountCircle,
               onClick: (evt) => handleSubSlide(1),
               noExpand: true,
             } : undefined, canUpdateProject ? {
-              label: 'Nhóm việc',
+              label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.GROUP_TASK"),
               iconPath: mdiScatterPlot,
               onClick: (evt) => handleSubSlide(2),
               noExpand: true,
             } : undefined, {
-              label: 'Tải xuống',
+              label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
               iconPath: mdiDownload,
               onClick: (evt) => setDownloadAnchor(evt.currentTarget)
             }, {
@@ -106,7 +109,7 @@ function AllTaskTable({
               onClick: evt => setTimeAnchor(evt.currentTarget)
             }],
             mainAction: canCreateTask ? {
-              label: '+ Tạo công việc',
+              label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.CREATE"),
               onClick: (evt) => handleOpenModal('CREATE'),
             } : null,
             expand: {
@@ -114,7 +117,7 @@ function AllTaskTable({
               toggleExpand: () => handleExpand(!expand),
             },
             moreMenu: [{
-              label: 'Cài đặt dự án',
+              label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SETTING"),
               onClick: () => handleOpenModal('SETTING', {
                 curProject: project.project,
                 canChange: {
@@ -124,14 +127,14 @@ function AllTaskTable({
                 }
               }),
             }, canUpdateProject ? {
-              label: `${get(project.project, 'visibility') ? 'Ẩn dự án' : 'Bỏ ẩn dự án'}`,
+              label: `${get(project.project, 'visibility') ? t("DMH.VIEW.PP.RIGHT.ALL.LABEL.HIDE") : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SHOW")}`,
               onClick: () => handleShowOrHideProject(project.project),
               disabled: !isNil(find(showHidePendings.pendings, pending => pending === get(project.project, 'id'))),
             } : undefined],
             grouped: {
               bool: true,
               id: 'id',
-              label: (group) => get(group, 'id') === 'default' ? 'Chưa phân loại' : get(group, 'name'),
+              label: (group) => get(group, 'name'),
               item: 'tasks',
             },
             draggable: canUpdateProject ? {
@@ -157,18 +160,18 @@ function AllTaskTable({
             },
             noData: {
               bool: (tasks.firstTime === false) && (tasks.tasks.length === 0),
-              subtitle: 'Chưa có công việc nào được khởi tạo. Hãy click vào nút + TẠO CÔNG VIỆC để bắt đầu quản lý dự án và công việc của bạn'
+              subtitle: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.NO_DATA")
             },
           }}
           columns={[{
-            label: 'Tên công việc',
+            label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.NAME"),
             field: (row) => <LinkSpan onClick={evt => {
               history.push(`${get(row, 'url_redirect')}`);
             }}>{get(row, 'name', '')}</LinkSpan>,
             align: 'left',
             width: '25%',
           }, {
-            label: 'Trạng thái',
+            label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.STATUS"),
             field: (row) => <StateBox
               stateCode={get(row, 'status_code')}
             >
@@ -178,43 +181,40 @@ function AllTaskTable({
                   {get(row, 'status_name')}
                 </span>
               </div>
-              {(get(row, 'status_code') === 1 || get(row, 'status_code') === 3) && (
+              {get(row, 'status_code') === 3 && (
                 <small>
-                  {get(row, 'status_code') === 3
-                    ? get(row, 'day_expired', '') ? `${get(row, 'day_expired', 0)} ngày` : null
-                    : get(row, 'day_implement', '') ? `${get(row, 'day_implement', 0)} ngày` : null
-                  }
+                  {t("DMH.VIEW.PP.RIGHT.ALL.TABLE.EXP_DATE", { date: get(row, 'day_expired', 0) })}
                 </small>
               )}
             </StateBox>,
             align: 'left',
             width: '10%',
           }, {
-            label: 'Tiến độ',
+            label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.PROGRESS"),
             field: (row) => `${get(row, 'duration_value', 0)} ${get(row, 'duration_unit', 'ngày')}`,
             align: 'center',
             width: '8%',
           }, {
-            label: 'Bắt đầu',
+            label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.BEGIN"),
             field: (row) => <DateBox>
               {displayDate(get(row, 'start_time'), get(row, 'start_date'), get(row, 'type_time'))}
             </DateBox>,
             align: 'left',
             width: '10%',
           }, {
-            label: 'Kết thúc',
+            label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.END"),
             field: (row) => <DateBox>
               {displayDate(get(row, 'end_time'), get(row, 'end_date'), get(row, 'type_time'))}
             </DateBox>,
             align: 'left',
             width: '10%',
           }, {
-            label: 'Hoàn thành',
+            label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.COMPLETE"),
             field: (row) => <SimpleSmallProgressBar percentDone={get(row, 'complete', 0)} color={'#3edcdb'} />,
             align: 'center',
             width: '15%',
           }, {
-            label: 'Ưu tiên',
+            label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.PRIORITY"),
             field: (row) => <CustomBadge
               color={decodePriorityCode(get(row, 'priority_code', 0)).color}
               background={decodePriorityCode(get(row, 'priority_code', 0)).background}

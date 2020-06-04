@@ -3,6 +3,7 @@ import CustomModal from 'components/CustomModal';
 import { ADD_PROJECT_ROLE_TO_MEMBER, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER } from 'constants/events';
 import { find, get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 const StyledTableHead = ({ className = '', ...props }) =>
@@ -37,6 +38,8 @@ function MemberRole({
   projectId,
   doReloadMember,
 }) {
+
+  const { t } = useTranslation();
 
   const [roles, setRoles] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -80,19 +83,19 @@ function MemberRole({
 
   return (
     <CustomModal
-      title={`Vai trò thành viên`}
+      title={t("DMH.VIEW.PP.MODAL.MEMBER.ROLE.TITLE")}
       open={open}
       setOpen={setOpen}
       confirmRender={null}
-      cancleRender={evt => "Thoát"}
+      cancleRender={evt => t("DMH.VIEW.PP.MODAL.MEMBER.ROLE.EXIT")}
       loading={userRoles.loading || updateMemberRole.loading || members.loading || loading}
     >
       <StyledTable>
         <StyledTableHead>
           <TableRow>
             <TableCell></TableCell>
-            <StyledTableCell width='30%'>Tên vai trò</StyledTableCell>
-            <StyledTableCell width='50%'>Mô tả vai trò</StyledTableCell>
+            <StyledTableCell width='30%'>{t("DMH.VIEW.PP.MODAL.MEMBER.ROLE.TABLE.NAME")}</StyledTableCell>
+            <StyledTableCell width='50%'>{t("DMH.VIEW.PP.MODAL.MEMBER.ROLE.TABLE.DESC")}</StyledTableCell>
             <TableCell width='20%' />
           </TableRow>
         </StyledTableHead>

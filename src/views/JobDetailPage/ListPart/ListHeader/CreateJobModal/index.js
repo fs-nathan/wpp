@@ -449,7 +449,7 @@ function CheckCreateJob(props) {
   useEffect(() => {
     if (projectId) {
       dispatch(getListGroupTask({ project_id: projectId }));
-    }
+    } 
   }, [dispatch, projectId])
 
   useEffect(() => {

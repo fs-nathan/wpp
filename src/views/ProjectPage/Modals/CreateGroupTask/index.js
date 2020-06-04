@@ -1,9 +1,10 @@
 import { mdiContentCopy, mdiNotePlusOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import CustomModal from 'components/CustomModal';
 import { isNil } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
-import CustomModal from '../../../../components/CustomModal';
 import CopyGroupTask from '../CopyGroupTask';
 import CreateNewGroupTask from '../CreateNewGroupTask';
 import './style.scss';
@@ -24,6 +25,7 @@ function CreateGroupTask({ open, setOpen, project_id = null }) {
 
   const [createNew, setCreateNew] = React.useState(false);
   const [copy, setCopy] = React.useState(false);
+  const { t } = useTranslation();
 
   const { projectId: _projectId } = useParams();
   const [projectId, setProjectId] = React.useState(_projectId);
@@ -35,7 +37,7 @@ function CreateGroupTask({ open, setOpen, project_id = null }) {
   return (
     <>
       <CustomModal
-        title='Tạo nhóm công việc'
+        title={t("DMH.VIEW.PP.MODAL.CREATE.TITLE")}
         open={open}
         setOpen={setOpen}
         confirmRender={null}
@@ -54,8 +56,8 @@ function CreateGroupTask({ open, setOpen, project_id = null }) {
               <Icon path={mdiNotePlusOutline} size={2} />
             </div>
             <div>
-              <span>Tạo mới nhóm công việc</span>
-              <span>Tạo mới hoàn toàn các thông số của nhóm công việc</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.CREATE.LABEL")}</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.CREATE.DESC")}</span>
             </div>
           </ButtonCase>
           <ButtonCase
@@ -69,8 +71,8 @@ function CreateGroupTask({ open, setOpen, project_id = null }) {
               <Icon path={mdiContentCopy} size={2} />
             </div>
             <div>
-              <span>Sao chép nhóm công việc</span>
-              <span>Sao chép các nhóm công việc có sẵn vào dự án</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.COPY.LABEL")}</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.COPY.DESC")}</span>
             </div>
           </ButtonCase>
         </Container>

@@ -1,12 +1,13 @@
 import { ListItemText } from '@material-ui/core';
 import { mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
+import CustomAvatar from 'components/CustomAvatar';
+import { Primary, Secondary, StyledListItem } from 'components/CustomList';
 import { get, join } from 'lodash';
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import CustomAvatar from '../../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
 import './style.scss';
 
 function getDetail(member) {
@@ -35,6 +36,7 @@ const Detail = ({ className = '', isInGroup = false, ...props }) =>
 
 function CustomListItem({ member, index, onClick }) {
   const [isHover, setIsHover] = React.useState(false);
+  const { t } = useTranslation();
 
   return (
     <Draggable
@@ -61,11 +63,16 @@ function CustomListItem({ member, index, onClick }) {
             }
             secondary={
               <div>
-                <Secondary>Tham gia {get(member, 'number_task', 0)}/{get(member, 'all_task', 0)} việc</Secondary>
+                <Secondary>
+                  {t("DMH.VIEW.PP.LEFT.PM.NUM_TASK", {
+                    number_task: get(member, 'number_task', 0),
+                    total_task: get(member, 'all_task', 0),
+                  })}
+                </Secondary>
                 <Detail isInGroup={get(member, 'is_in_group', false) === false || get(member, 'is_admin', false)}>
                   {get(member, 'is_in_group', false)
                     ? getDetail(member)
-                    : 'Đã rời nhóm'
+                    : t("DMH.VIEW.PP.LEFT.PM.LEAVE")
                   }
                 </Detail>
               </div>
