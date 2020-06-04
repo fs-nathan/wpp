@@ -56,7 +56,7 @@ export const initialState = {
     start: null,
     end: null,
   },
-  girdType: "DAY",
+  girdType: localStorage.getItem("timeUnitGantt") || "DAY",
   girdAttribute: {
     DAY: {
       formatString: "DD/MM/YYYY",
@@ -71,7 +71,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("MM/YYYY"),
       getTimeCompare: (moment) => moment.format("M"),
       formatChild: "DD",
-      gird: 'day',
+      gird: "day",
     },
     MONTH: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -84,7 +84,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "MM",
-      gird: 'month',
+      gird: "month",
     },
     HOUR: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -97,7 +97,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("DD/MM/YYYY"),
       getTimeCompare: (moment) => moment.format("DD/MM/YYYY"),
       formatChild: "HH",
-      gird: 'hour',
+      gird: "hour",
     },
     WEEK: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -110,7 +110,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("W"),
       formatChild: "W",
-      gird: 'week',
+      gird: "week",
     },
     QUARTER: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -123,7 +123,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "Q",
-      gird: 'quarter'
+      gird: "quarter",
     },
   },
   girdInstance: {
@@ -139,7 +139,7 @@ export const initialState = {
     getTextParent: (moment) => moment.format("MM/YYYY"),
     getTimeCompare: (moment) => moment.format("M"),
     formatChild: "DD",
-    gird: 'day'
+    gird: "day",
   },
 };
 

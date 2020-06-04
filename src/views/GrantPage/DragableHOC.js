@@ -7,14 +7,14 @@ import { changeRowHover, scrollGantt } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
 import Timeline from "./TimeLine";
 let timeoutId;
-let timeNotWorkUnit = 0
+let timeNotWorkUnit = 0;
 function GanttChart({
   minLeft,
   setDataSource,
   setProcessDatasource,
   fetchTimeNotWork,
   girdInstance,
-  timeNotWork=[],
+  timeNotWork = [],
   start,
   showHeader,
   end,
@@ -122,6 +122,7 @@ function GanttChart({
                   const divs = document.getElementsByClassName(
                     "ant-table-row ant-table-row-level-0"
                   );
+                  if (!divs[index]) return;
                   divs[index].style.backgroundColor = "#fffae6";
                 }
               }}
@@ -130,6 +131,7 @@ function GanttChart({
                   const divs = document.getElementsByClassName(
                     "ant-table-row ant-table-row-level-0"
                   );
+                  if (!divs[index]) return;
                   divs[index].style.backgroundColor = "";
                 }
               }}
@@ -163,17 +165,29 @@ function GanttChart({
       }),
     [dataSource, girdInstance, start, visibleGantt, rowHover]
   );
-  const renderTimeNotWork =  useMemo(() => (<div style={{position: 'absolute'}}>
-    <div style={{position: 'relative'}}>
-    {timeNotWork.map(item => <div style={{
-      background: '#fafafa',
-      position: 'absolute',
-      width: 48,
-      height: dataSource.length*37,
-      left: (new moment(`${item.date}/${item.month}/${item.year}${item.hour ? " " +item.hour : ""}`, `DD/MM/YYYY${item.hour ? ' HH' : ''}`)).diff(start, girdInstance.unit)*48
-    }}></div>)}
+  const renderTimeNotWork = useMemo(() => (
+    <div style={{ position: "absolute" }}>
+      <div style={{ position: "relative" }}>
+        {timeNotWork.map((item) => (
+          <div
+            style={{
+              background: "#fafafa",
+              position: "absolute",
+              width: 48,
+              height: dataSource.length * 37,
+              left:
+                new moment(
+                  `${item.date}/${item.month}/${item.year}${
+                    item.hour ? " " + item.hour : ""
+                  }`,
+                  `DD/MM/YYYY${item.hour ? " HH" : ""}`
+                ).diff(start, girdInstance.unit) * 48,
+            }}
+          ></div>
+        ))}
+      </div>
     </div>
-  </div>))
+  ));
   const widthFromNowLayer =
     new moment(Date.now()).diff(start, girdInstance.unit) + 1;
   const renderMonthHeader = useMemo(
@@ -265,12 +279,20 @@ function GanttChart({
           onScroll={(e) => {
             if (window.scrollTimeline) return;
             if (!e.target.scrollTop) {
-              const fetchNewTimeNotWork = Math.floor(e.target.scrollLeft / (700*48)) !== timeNotWorkUnit
-              if(fetchNewTimeNotWork){
-                timeNotWorkUnit= Math.floor(e.target.scrollLeft / (700*48))
-                const fromDate = new moment(start).add(700*timeNotWorkUnit, girdInstance.unit)
-                const toDate = new moment(fromDate).add(700, girdInstance.unit)
-                fetchTimeNotWork(fromDate.format("YYYY-MM-DD"), toDate.format("YYYY-MM-DD"))
+              const fetchNewTimeNotWork =
+                Math.floor(e.target.scrollLeft / (700 * 48)) !==
+                timeNotWorkUnit;
+              if (fetchNewTimeNotWork) {
+                timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 48));
+                const fromDate = new moment(start).add(
+                  700 * timeNotWorkUnit,
+                  girdInstance.unit
+                );
+                const toDate = new moment(fromDate).add(700, girdInstance.unit);
+                fetchTimeNotWork(
+                  fromDate.format("YYYY-MM-DD"),
+                  toDate.format("YYYY-MM-DD")
+                );
               }
               if (Math.floor(e.target.scrollLeft / 48) !== scrollWidth) {
                 const newScrollWidth = Math.floor(e.target.scrollLeft / 48);

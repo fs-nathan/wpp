@@ -309,6 +309,9 @@ span.ant-checkbox ~ span {
 .ant-table tbody > tr.ant-table-row:hover > td {
   background: #fffae6 !important;
 }
+.gantt--top-timeline-tr {
+  height: 37px;
+}
 .gantt--top-timeline-tr:hover {
   background: #fffae6 !important;
 }
@@ -899,4 +902,28 @@ input[type="time"]::-webkit-inner-spin-button {
 
 input[type="time"]::-webkit-outside-spin-button {
   display: none;
+}
+
+.gantt--input-number > .MuiInputBase-root {
+  height: 35px;
+}
+
+.ant-table-cell {
+  height: 36.5px;
+}
+
+.gantt--edit-cell__input-date button.MuiButtonBase-root {
+  display: none;
+}
+
+.gantt--edit-cell__input-date input {
+  text-align: center;
+}
+.gantt--edit-cell__input-date {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  height: 37px !important;
+  border: 1px solid orange !important;
 }

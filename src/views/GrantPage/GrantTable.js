@@ -66,7 +66,11 @@ const RenderJobModal = React.memo(
 );
 
 const RenderHeader = React.memo(
-  (props) => <Header {...props} />,
+  (props) => (
+    <div className="gantt--header-component_container">
+      <Header {...props} />
+    </div>
+  ),
   (prevProps, nextProps) => {
     return false;
   }
@@ -78,6 +82,42 @@ const RenderDrawers = React.memo(
       <ConfigGanttDrawer height={props.height} />
       <SubTaskDrawer height={props.height} />
       <ExportPDFDrawer height={props.height} />
+    </React.Fragment>
+  ),
+  (prevProps, nextProps) => {
+    return false;
+  }
+);
+const RenderEditCell = React.memo(
+  ({ text, record }) => (
+    <React.Fragment>
+      <EditCell
+        defaultValue={text}
+        taskId={record.id}
+        type={"end_date"}
+        start_time={record.start_label}
+        end_time={record.end_label}
+        canEdit={!record.isTotalDuration && !record.isGroupTask}
+        component={
+          <div
+            className={
+              record.isTotalDuration
+                ? "gantt--group-task__total"
+                : record.isGroupTask
+                ? "gantt--group-task-item"
+                : ""
+            }
+          >
+            {new moment(text, "DD/MM/YYYY HH:mm").isValid()
+              ? new moment(text, "DD/MM/YYYY HH:mm").format(
+                  this.props.girdType !== "HOUR"
+                    ? "DD/MM/YYYY"
+                    : "DD/MM/YYYY HH:mm"
+                )
+              : ""}
+          </div>
+        }
+      />
     </React.Fragment>
   ),
   (prevProps, nextProps) => {
@@ -511,23 +551,34 @@ class DragSortingTable extends React.Component {
           width: 100,
           height: 100,
           render: (text, record) => (
-            <div
-              className={
-                record.isTotalDuration
-                  ? "gantt--group-task__total"
-                  : record.isGroupTask
-                  ? "gantt--group-task-item"
-                  : ""
+            <EditCell
+              defaultValue={text}
+              fetchNewDataSource={this.fetchNewDataSource}
+              taskId={record.id}
+              type={"start_date"}
+              start_date={record.start_label}
+              end_date={record.end_label}
+              canEdit={!record.isTotalDuration && !record.isGroupTask}
+              component={
+                <div
+                  className={
+                    record.isTotalDuration
+                      ? "gantt--group-task__total"
+                      : record.isGroupTask
+                      ? "gantt--group-task-item"
+                      : ""
+                  }
+                >
+                  {new moment(text, "DD/MM/YYYY HH:mm").isValid()
+                    ? new moment(text, "DD/MM/YYYY HH:mm").format(
+                        this.props.girdType !== "HOUR"
+                          ? "DD/MM/YYYY"
+                          : "DD/MM/YYYY HH:mm"
+                      )
+                    : ""}
+                </div>
               }
-            >
-              {new moment(text, "DD/MM/YYYY HH:mm").isValid()
-                ? new moment(text, "DD/MM/YYYY HH:mm").format(
-                    this.props.girdType !== "HOUR"
-                      ? "DD/MM/YYYY"
-                      : "DD/MM/YYYY HH:mm"
-                  )
-                : ""}
-            </div>
+            />
           ),
         },
         {
@@ -540,6 +591,13 @@ class DragSortingTable extends React.Component {
           render: (text, record) => {
             return (
               <EditCell
+                defaultValue={text}
+                fetchNewDataSource={this.fetchNewDataSource}
+                taskId={record.id}
+                type={"end_date"}
+                start_date={record.start_label}
+                end_date={record.end_label}
+                canEdit={!record.isTotalDuration && !record.isGroupTask}
                 component={
                   <div
                     className={
@@ -598,18 +656,31 @@ class DragSortingTable extends React.Component {
           id: 5,
           width: 100,
           height: 100,
-          render: (text, record) => (
-            <div
-              className={
-                record.isTotalDuration
-                  ? "gantt--group-task__total"
-                  : record.isGroupTask
-                  ? "gantt--group-task-item"
-                  : ""
+          render: (text, record, index) => (
+            <EditCell
+              defaultValue={text}
+              fetchNewDataSource={this.fetchNewDataSource}
+              taskId={record.id}
+              type={"complete"}
+              start_date={record.start_label}
+              end_date={record.end_label}
+              setProcessDatasource={this.setProcessDatasource}
+              index={index}
+              canEdit={!record.isTotalDuration && !record.isGroupTask}
+              component={
+                <div
+                  className={
+                    record.isTotalDuration
+                      ? "gantt--group-task__total"
+                      : record.isGroupTask
+                      ? "gantt--group-task-item"
+                      : ""
+                  }
+                >
+                  {Math.round(text) + "%"}
+                </div>
               }
-            >
-              {text + "%"}
-            </div>
+            />
           ),
         },
       ],
@@ -746,8 +817,8 @@ class DragSortingTable extends React.Component {
           id: subTask.id,
           key: subTask.id,
           group_task: task.id,
-          start_label: subTask.time.start_label,
-          end_label: subTask.time.end_label,
+          start_label: subTask.time && subTask.time.start_label,
+          end_label: subTask.time && subTask.time.end_label,
           can_edit: subTask.can_edit,
           start_time: getFormatStartStringFromObject(subTask.time),
           end_time: getFormatEndStringFromObject(subTask.time),
@@ -1077,8 +1148,13 @@ class DragSortingTable extends React.Component {
       console.log(e);
     }
   };
+  fetchNewDataSource = () => {
+    console.log("vo day");
+    const { projectId } = this.props.match.params;
+    this.fetchListTask(projectId);
+    this.fetchListTask(projectId, true, this.props.girdType);
+  };
   setDataSource = (index, start, end) => {
-    console.log(index);
     const { data, startTimeProject, endTimeProject } = this.state;
     const { girdInstance } = this.props;
     const { unit, formatString, addUnit } = girdInstance;
@@ -1248,7 +1324,6 @@ class DragSortingTable extends React.Component {
           showProject={this.state.showProject}
           scheduleIdDefault={this.state.scheduleIdDefault}
         />
-        <EditCell {...this.state.cellDetail} />
         <CreateProject
           open={this.state.openCreateProjectModal}
           projectGroupId={this.props.match.params.projectId}
