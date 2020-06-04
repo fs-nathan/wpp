@@ -1355,8 +1355,14 @@
         "TITLE": "Chỉnh sửa"
       },
       "CREATE_APPROVAL": {
-        "CONFIRM": "Hoàn thành",
-        "CANCEL": "Hủy"
+        "BUTTON": {
+          "CREATE": "TẠO PHÊ DUYỆT",
+          "APPROVED": "ĐÃ TẠO PHÊ DUYỆT"
+        },
+        "MODAL": {
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        }
       },
       "DISCUSSION": {
         "TITLE": "Thảo luận",

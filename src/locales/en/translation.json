@@ -1046,6 +1046,16 @@
       "OFFER_APPROVAL_CONDITION_EDITING": {
         "TITLE": "Edit"
       },
+      "CREATE_APPROVAL": {
+        "BUTTON": {
+          "CREATE": "CREATE APPROVAL",
+          "APPROVED": "APPROVAL CREATED"
+        },
+        "MODAL": {
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        }
+      },
       "DISCUSSION": {
         "TITLE": "Discuss",
         "TEXT_BOX": {

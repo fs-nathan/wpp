@@ -1,13 +1,18 @@
 import { Avatar, Button, Grid } from "@material-ui/core";
 import { isEmpty } from "helpers/utils/isEmpty";
 import get from "lodash/get";
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import './styles.scss';
-import { getApprovalConditionEditingTitle } from './i18nSelectors';
+import {
+  getApprovalAcceptedBtnTitle,
+  getApprovalConditionEditingTitle,
+  getCreateApprovalBtnTitle,
+} from './i18nSelectors';
 
 const MiddleContent = ({
                          can_update_condition_accept,
@@ -30,6 +35,15 @@ const MiddleContent = ({
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
+  const currentUserId = useSelector(state => state.system.profile.id);
+  const isCurrentUserAHandler = useMemo(() => {
+    return members_can_approve
+           && members_can_approve.findIndex(member => member.id === currentUserId) !== -1;
+  }, [currentUserId, members_can_approve]);
+  const isCurrentUserAlreadyApproved = useMemo(() => {
+    return members_approved
+           && members_approved.findIndex(member => member.id === currentUserId) !== -1;
+  }, [currentUserId, members_approved]);
 
   const renderUpdateOfferApprovalConditionModal = () => {
     return (
@@ -66,8 +80,20 @@ const MiddleContent = ({
               action: action.HANDLE_OFFER
             }}
           />
-          <Button className="offerDetail-createApprovalBtn" variant="contained" onClick={() => setOpenModal(true)} color="primary" disableElevation>
-            TẠO PHÊ DUYỆT
+          <Button
+            className="offerDetail-createApprovalBtn"
+            variant="contained"
+            onClick={() => setOpenModal(true)}
+            color="primary"
+            disableElevation
+            disabled={!isCurrentUserAHandler || isCurrentUserAlreadyApproved}
+          >
+            {
+              isCurrentUserAHandler && isCurrentUserAlreadyApproved
+                ? getApprovalAcceptedBtnTitle(t)
+                : getCreateApprovalBtnTitle(t)
+
+            }
           </Button>
         </Grid>
         <Grid item xs={12}>
