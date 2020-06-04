@@ -5,7 +5,7 @@ import Icon from "@mdi/react";
 import classnames from "classnames";
 import { Primary, StyledList, StyledListItem } from "components/CustomList";
 import LeftSideContainer from "components/LeftSideContainer";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import SearchInput from '../../../components/SearchInput';
 import DropdownItem from "../components/DropdownItem";
@@ -17,7 +17,8 @@ import "./LeftSetting.scss";
 
 const LeftSetting = props => {
   const { pathname } = props.location;
-  const history = useHistory()
+  const history = useHistory();
+  const [onHover, setOnHover] = useState({ id: null });
   const checkBeforeShowLeftIcon = () => {
     const validPathname = [Routes.OVERVIEW, Routes.RECENTLY]
     if (validPathname.includes(pathname)) {
@@ -74,6 +75,8 @@ const LeftSetting = props => {
                 }`,
                 item.className
               )}
+              onMouseEnter={() => setOnHover({ id: item.url })}
+              onMouseLeave={() => setOnHover({ id: null })}
             >
               {item.icon && (
                 <Icon
@@ -95,7 +98,7 @@ const LeftSetting = props => {
                 }
                 secondary={item.subtitle}
               />
-              {item.rightIcon && item.rightIcon()}
+              {onHover.id === item.url && item.rightIcon && item.rightIcon()}
             </StyledListItem>
             {item.sub &&
               item.sub.map((el, idx) => (
