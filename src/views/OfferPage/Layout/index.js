@@ -236,7 +236,9 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             ...props,
           }}
         >
-          <Scrollbars>{children}</Scrollbars>
+          <Scrollbars autoHide autoHideTimeout={500}>
+            {children}
+          </Scrollbars>
         </LayoutStateLess>
         <TimeRangePopover
           bgColor={bgColor}
