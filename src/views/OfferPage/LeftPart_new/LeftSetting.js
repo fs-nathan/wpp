@@ -52,7 +52,7 @@ const LeftSetting = props => {
           </div>
         )
       }
-      <StyledList>
+      <StyledList className="leftSettings-item-disableAutoFocus">
         {
           props.subMenu && props.listMenu.map((item, index) => (
             <Fragment>

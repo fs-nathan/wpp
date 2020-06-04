@@ -19,4 +19,13 @@
   &-searchInput {
     padding: 15px;
   }
+  &-item {
+    &-disableAutoFocus {
+      [class*='comp_CustomList___list-item'] {
+        &:focus {
+          background-color: unset;
+        }
+      }
+    }
+  }
 }
