@@ -219,7 +219,9 @@ const TimeLine = ({
           cursor:
             !isGroupTask && !isTotalDuration && canEdit ? "move" : "default",
           width: "fit-content",
-
+          height: 20,
+          // top: "50%",
+          // transform: "translateY(-50%)",
           position: "absolute",
           ...b,
         }}
@@ -317,7 +319,8 @@ const TimeLine = ({
         onMouseMove={handleMouseMove}
         style={{
           display: "flex",
-
+          top: "50%",
+          transform: "translateY(-50%)",
           position: "absolute",
           cursor:
             !isGroupTask && !isTotalDuration && !isTotalDuration && canEdit

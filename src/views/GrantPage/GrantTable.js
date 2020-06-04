@@ -11,6 +11,7 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table, Tooltip } from "antd";
+// import "antd/dist/antd.css";
 import LoadingBox from "components/LoadingBox";
 import update from "immutability-helper";
 import moment from "moment";
