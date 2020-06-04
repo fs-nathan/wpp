@@ -26,7 +26,7 @@ export function OfferBlock({ strings = [], title, data = {}, time }) {
     >
       {
         series.some(value => value !== 0)
-          ? <Chart {...chartProps} />
+          ? <Chart className="offerOverview-donutChart" {...chartProps} />
           : <img className="offerOverview-defaultImgOfferBlock" src={chart_no_data} alt="" />
       }
       <ChartLegend strings={strings} showIndex series={series} />

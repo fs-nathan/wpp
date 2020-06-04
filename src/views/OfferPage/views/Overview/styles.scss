@@ -1,4 +1,10 @@
 .offerOverview {
+  &-donutChart {
+    [class*='apexcharts-datalabel-value'] {
+      font-size: 25px;
+      font-weight: 700;
+    }
+  }
   &-defaultImgOfferBlock {
     width: 100%;
     height: 80%;
