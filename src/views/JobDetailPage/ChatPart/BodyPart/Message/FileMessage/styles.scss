@@ -29,6 +29,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     max-width: 290px;
+    padding-right: 20px;
   }
   &--files:hover &--fileNameLabel {
     text-decoration: underline;

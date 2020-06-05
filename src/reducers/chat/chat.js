@@ -67,6 +67,7 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.LOAD_CHAT: {
       const { chat_id, last_id, isMore } = action;
       draft.isLoading = true;
+      draft.chats.last_id = last_id || null;
       if (!chat_id && !last_id && !isMore) {
         draft.chats.data = [];
       }

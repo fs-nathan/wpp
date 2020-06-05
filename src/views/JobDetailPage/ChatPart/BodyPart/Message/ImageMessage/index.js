@@ -53,11 +53,13 @@ const ImageMessage = ({
   }
 
   return (
-    <div className={clsx("ImageMessage", {
-      [`ImageMessage__${chatPosition}`]: !isReply,
-      [`TextMessage__reply`]: isReply,
-    }
-    )} >
+    <div
+      id={id}
+      className={clsx("ImageMessage", {
+        [`ImageMessage__${chatPosition}`]: !isReply,
+        [`TextMessage__reply`]: isReply,
+      }
+      )} >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
           <Avatar onClick={onClickAvatar}
@@ -83,63 +85,67 @@ const ImageMessage = ({
             }
           </div>
         }
-        <div className="ImageMessage--imagesContainer" >
-          {
-            showImages.map(({ url_thumbnail, url }, i) =>
-              <div key={url_thumbnail || url} onClick={handleClickOpen(i)}
-                className={clsx("ImageMessage--wrap",
-                  `ImageMessage--wrap__total${showImages.length}-${i + 1}`,
-                  `ImageMessage--wrap__number${i + 1}`,
-                  { 'ImageMessage--wrap__reply': isReply }
-                )} >
+        <abbr
+          className="TextMessage--tooltip"
+          title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
+          <div className="ImageMessage--imagesContainer" >
+            {
+              showImages.map(({ url_thumbnail, url }, i) =>
+                <div key={url_thumbnail || url} onClick={handleClickOpen(i)}
+                  className={clsx("ImageMessage--wrap",
+                    `ImageMessage--wrap__total${showImages.length}-${i + 1}`,
+                    `ImageMessage--wrap__number${i + 1}`,
+                    { 'ImageMessage--wrap__reply': isReply }
+                  )} >
 
-                {
-                  (plusImage > 0 && !isReply && i === 5) ? (
-                    <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
-                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
-                      <div className={clsx("ImageMessage--plusText")}>
-                        <div className={clsx("ImageMessage--plusTextNumber")}>
-                          +{plusImage}
+                  {
+                    (plusImage > 0 && !isReply && i === 5) ? (
+                      <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
+                        <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
+                        <div className={clsx("ImageMessage--plusText")}>
+                          <div className={clsx("ImageMessage--plusTextNumber")}>
+                            +{plusImage}
+                          </div>
                         </div>
                       </div>
+                    )
+                      :
+                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
+                  }
+                  {!isReply &&
+                    <>
+                      <div className="ImageMessage--quality" >
+                        HD
                     </div>
-                  )
-                    :
-                    <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
-                }
-                {!isReply &&
-                  <>
-                    <div className="ImageMessage--quality" >
-                      HD
-                    </div>
-                    <div className="ImageMessage--cover" >
-                    </div>
-                  </>
-                }
-              </div>
-            )
-          }
-          {
-            (plusImage > 0) && isReply && (
-              <div className={clsx("ImageMessage--wrap ImageMessage--plus",
-                { 'ImageMessage--plus__reply': isReply })}>
-                (+{plusImage})
-              </div>
-            )
-          }
-          {isUploading && uploadingPercent !== 100 &&
-            <div className="ImageMessage--loading" >
-              <div className="ImageMessage--loadingBackground" >
-                <div className="ImageMessage--loadingPercent" style={{ width: `${uploadingPercent}%`, backgroundColor: groupActiveColor }} >
+                      <div className="ImageMessage--cover" >
+                      </div>
+                    </>
+                  }
                 </div>
-              </div>
-            </div>}
-        </div>
-        {!isReply &&
+              )
+            }
+            {
+              (plusImage > 0) && isReply && (
+                <div className={clsx("ImageMessage--wrap ImageMessage--plus",
+                  { 'ImageMessage--plus__reply': isReply })}>
+                  (+{plusImage})
+                </div>
+              )
+            }
+            {isUploading && uploadingPercent !== 100 &&
+              <div className="ImageMessage--loading" >
+                <div className="ImageMessage--loadingBackground" >
+                  <div className="ImageMessage--loadingPercent" style={{ width: `${uploadingPercent}%`, backgroundColor: groupActiveColor }} >
+                  </div>
+                </div>
+              </div>}
+          </div>
+        </abbr>
+        {/* {!isReply &&
           <div className={clsx("TextMessage--time", { "TextMessage--time__self": is_me })} >
             {getUpdateProgressDate(time_create, dateFormat)}
           </div>
-        }
+        } */}
         {data_emotion.length > 0 &&
           <EmotionReact chatId={id} is_me={is_me} data_emotion={data_emotion} handleDetailEmotion={handleDetailEmotion} />
         }
