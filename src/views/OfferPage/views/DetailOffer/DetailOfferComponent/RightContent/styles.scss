@@ -9,11 +9,11 @@
 
 .offerDetail {
   &-rightContent {
-    &-leftRightPadding {
-      padding: 0 1em;
-    }
     &-container {
-      width: 35%;
+      display: flex;
+      flex-direction: column;
+      width: 24%;
+      padding: 0 1em;
     }
   }
 
@@ -29,7 +29,6 @@
         @include flexRow;
         justify-content: space-between;
         align-items: flex-start;
-        @extend .offerDetail-rightContent-leftRightPadding;
 
         [class*='MuiButton-root'] {
           border-radius: 1.5em;
@@ -56,7 +55,6 @@
   &-comment {
     &-container {
       @include flexRow;
-      @extend .offerDetail-rightContent-leftRightPadding;
       padding-top: 0.5em;
       padding-bottom: 0.5em;
     }

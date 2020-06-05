@@ -1,6 +1,9 @@
 .offerDetail {
   &-middleContent {
     &-container {
+      width: 37%;
+      display: flex;
+      flex-direction: column;
       padding: 1.2em 2em;
     }
   }
@@ -82,6 +85,13 @@
 
     }
     &-member {
+      &-container {
+        padding: 0.2em 0;
+      }
+      &-avatar {
+        width: 55px;
+        height: 55px;
+      }
       &-name {
         font-weight: 700;
       }

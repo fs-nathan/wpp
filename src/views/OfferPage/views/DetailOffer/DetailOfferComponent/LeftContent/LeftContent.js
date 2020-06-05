@@ -12,6 +12,7 @@ import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -476,48 +477,52 @@ export default function LeftContent({
     [allMembers, members_can_approve, members_monitor]
   );
   return (
-    <Grid item xs={6} className="offerDetail-leftContent-container">
-      <PersonInfo
-        date_label={date_label}
-        hour_label={hour_label}
-        user_create_position={user_create_position}
-        user_create_name={user_create_name}
-        user_create_avatar={user_create_avatar}
-      />
-      <DetailDescription
-        offer_id={id}
-        type_name={type_name}
-        priority_name={priority_name}
-        priority_code={priority_code}
-        content={content}
-        title={title}
-        offer_group_id={offer_group_id}
-        can_modify={can_modify}
-      />
-      <RenderListFile
-        can_modify={can_modify}
-        offer_id={id}
-        documents={documents}
-        bgColor={bgColor}
-      />
-      <Handler
-        can_update_member_handle={can_update_member_handle}
-        offer_id={id}
-        userCreateId={user_create_id}
-        allMembers={allMembers}
-        addedHandlers={members_can_approve}
-        addableHandlers={addableMembers}
-        bgColor={bgColor}
-      />
-      <Monitor
-        can_update_member_monitor={can_update_member_monitor}
-        offer_id={id}
-        userCreateId={user_create_id}
-        allMembers={allMembers}
-        addedMonitors={members_monitor}
-        addableMonitors={addableMembers}
-        bgColor={bgColor}
-      />
-    </Grid>
+    <div className="offerDetail-leftContent-container">
+      <Scrollbars autoHide autoHideTimeout={500}>
+        <div className="offerDetail-leftContent-inner-container">
+          <PersonInfo
+            date_label={date_label}
+            hour_label={hour_label}
+            user_create_position={user_create_position}
+            user_create_name={user_create_name}
+            user_create_avatar={user_create_avatar}
+          />
+          <DetailDescription
+            offer_id={id}
+            type_name={type_name}
+            priority_name={priority_name}
+            priority_code={priority_code}
+            content={content}
+            title={title}
+            offer_group_id={offer_group_id}
+            can_modify={can_modify}
+          />
+          <RenderListFile
+            can_modify={can_modify}
+            offer_id={id}
+            documents={documents}
+            bgColor={bgColor}
+          />
+          <Handler
+            can_update_member_handle={can_update_member_handle}
+            offer_id={id}
+            userCreateId={user_create_id}
+            allMembers={allMembers}
+            addedHandlers={members_can_approve}
+            addableHandlers={addableMembers}
+            bgColor={bgColor}
+          />
+          <Monitor
+            can_update_member_monitor={can_update_member_monitor}
+            offer_id={id}
+            userCreateId={user_create_id}
+            allMembers={allMembers}
+            addedMonitors={members_monitor}
+            addableMonitors={addableMembers}
+            bgColor={bgColor}
+          />
+        </div>
+      </Scrollbars>
+    </div>
   );
 }

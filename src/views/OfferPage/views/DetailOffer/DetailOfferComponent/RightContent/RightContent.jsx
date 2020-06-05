@@ -1,9 +1,10 @@
-import { Avatar, Button, IconButton, TextField } from '@material-ui/core';
+import { Avatar, Button, Grid, IconButton, TextField } from '@material-ui/core';
 import Popover from '@material-ui/core/Popover';
 import Typography from '@material-ui/core/Typography';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import clsx from 'clsx';
 import React, { useEffect, useState } from 'react';
+import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
@@ -15,7 +16,9 @@ import {
 } from '../../../../redux/actions';
 import { SEND_MODE, USER_ROLE } from './constants';
 import {
-  getDiscussionDateTimePosted, getHeaderTitle, getPopoverRemoveOption,
+  getDiscussionDateTimePosted,
+  getHeaderTitle,
+  getPopoverRemoveOption,
   getPopoverUpdateOption,
   getTextBoxBtnTitle,
   getTextBoxPlaceholder,
@@ -170,18 +173,20 @@ function RightContent(props) {
         {renderSendButton(bgColor.color, text)}
       </div>
       <div className="offerDetail-horizontalLine" />
-      {commentList.map(cmt => (
-        <Comment
-          key={cmt.id}
-          id={cmt.id}
-          username={cmt.user_create.name}
-          avatarUrl={cmt.user_create.avatar}
-          userType={cmt.user_create.type}
-          time={cmt.time_create}
-          date={cmt.date_create}
-          content={cmt.content}
-        />
-      ))}
+      <Scrollbars autoHide autoHideTimeout={500}>
+        {commentList.map(cmt => (
+          <Comment
+            key={cmt.id}
+            id={cmt.id}
+            username={cmt.user_create.name}
+            avatarUrl={cmt.user_create.avatar}
+            userType={cmt.user_create.type}
+            time={cmt.time_create}
+            date={cmt.date_create}
+            content={cmt.content}
+          />
+        ))}
+      </Scrollbars>
     </div>
   );
 }
