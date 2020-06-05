@@ -1,6 +1,7 @@
 import AlertModal from 'components/AlertModal';
 import { CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, GET_ALL_GROUP_TASK, LIST_GROUP_TASK } from 'constants/events';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 function GroupTaskDelete({
   open, setOpen,
@@ -9,6 +10,8 @@ function GroupTaskDelete({
   projectId,
   timeRange,
 }) {
+
+  const { t } = useTranslation();
 
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [activeMask, setActiveMask] = React.useState(-1);
@@ -58,7 +61,7 @@ function GroupTaskDelete({
     <AlertModal
       open={open}
       setOpen={setOpen}
-      content="Bạn chắc chắn muốn xóa nhóm công việc?"
+      content={t("DMH.VIEW.PP.MODAL.CUGT.ALERT")}
       onConfirm={() => {
         handleDeleteGroupTask();
         setActiveMask(0);

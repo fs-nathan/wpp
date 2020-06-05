@@ -1,14 +1,15 @@
 import { ListItemText, Menu, MenuItem } from '@material-ui/core';
 import { mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
+import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
+import LeftSideContainer from 'components/LeftSideContainer';
+import LoadingBox from 'components/LoadingBox';
+import SearchInput from 'components/SearchInput';
 import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
-import LoadingBox from '../../../../components/LoadingBox';
-import SearchInput from '../../../../components/SearchInput';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 
@@ -32,6 +33,8 @@ function GroupTaskSlide({
   handleOpenModal
 }) {
 
+  const { t } = useTranslation();
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [curGroupTask, setCurGroupTask] = React.useState(null);
 
@@ -48,16 +51,16 @@ function GroupTaskSlide({
   return (
     <>
       <LeftSideContainer
-        title='Nhóm công việc'
+        title={t("DMH.VIEW.PP.LEFT.GT.TITLE")}
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => handleSubSlide(0),
-          tooltip: 'Quay lại',
+          tooltip: t("DMH.VIEW.PP.LEFT.GT.BACK"),
         }}
         rightAction={{
           iconPath: mdiPlus,
           onClick: () => handleOpenModal('CREATE'),
-          tooltip: 'Thêm nhóm công việc',
+          tooltip: t("DMH.VIEW.PP.LEFT.GT.ADD"),
         }}
         loading={{
           bool: groupTasks.loading,
@@ -67,7 +70,7 @@ function GroupTaskSlide({
         <Banner>
           <SearchInput
             fullWidth
-            placeholder='Tìm nhóm công việc'
+            placeholder={t("DMH.VIEW.PP.LEFT.GT.SEARCH")}
             value={searchPatern}
             onChange={evt => setSearchPatern(evt.target.value)}
           />
@@ -88,12 +91,12 @@ function GroupTaskSlide({
                   </div>
                   <ListItemText
                     primary={
-                      <StyledPrimary>Tất cả</StyledPrimary>
+                      <StyledPrimary>{t("DMH.VIEW.PP.LEFT.GT.ALL_LABLE")}</StyledPrimary>
                     }
                     secondary={
                       <Secondary>
-                        {groupTasks.groupTasks.reduce((sum, taskGroup) => sum += get(taskGroup, 'number_task', 0), 0)} việc
-                        </Secondary>
+                        {t("DMH.VIEW.PP.LEFT.GT.NUM_TASK", { number_task: groupTasks.groupTasks.reduce((sum, taskGroup) => sum += get(taskGroup, 'number_task', 0), 0) })}
+                      </Secondary>
                     }
                   />
                 </StyledListItem>
@@ -126,13 +129,13 @@ function GroupTaskSlide({
             handleOpenModal('UPDATE', {
               curGroupTask,
             });
-          }}>Chỉnh sửa</MenuItem>
+          }}>{t("DMH.VIEW.PP.LEFT.GT.EDIT")}</MenuItem>
           <MenuItem onClick={evt => {
             setAnchorEl(null);
             handleOpenModal('ALERT', {
               selectedGroupTask: curGroupTask,
             });
-          }}>Xóa</MenuItem>
+          }}>{t("DMH.VIEW.PP.LEFT.GT.DEL")}</MenuItem>
         </Menu>
       </LeftSideContainer>
     </>

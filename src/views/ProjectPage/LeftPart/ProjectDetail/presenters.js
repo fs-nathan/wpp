@@ -1,17 +1,18 @@
 import { mdiChevronLeft } from '@mdi/js';
+import AvatarCircleList from 'components/AvatarCircleList';
+import ColorButton from 'components/ColorButton';
+import ColorTypo from 'components/ColorTypo';
+import { ActionBox, Container, SubContainer } from 'components/CustomDetailBox';
+import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from 'components/CustomDonutChart';
+import CustomTextbox from 'components/CustomTextbox';
+import LeftSideContainer from 'components/LeftSideContainer';
+import LoadingBox from 'components/LoadingBox';
+import ProgressBar from 'components/ProgressBar';
 import { clamp, get, isNaN } from 'lodash';
 import moment from 'moment';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import AvatarCircleList from '../../../../components/AvatarCircleList';
-import ColorButton from '../../../../components/ColorButton';
-import ColorTypo from '../../../../components/ColorTypo';
-import { ActionBox, Container, SubContainer } from '../../../../components/CustomDetailBox';
-import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, CustomChart } from '../../../../components/CustomDonutChart';
-import CustomTextbox from '../../../../components/CustomTextbox';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
-import LoadingBox from '../../../../components/LoadingBox';
-import ProgressBar from '../../../../components/ProgressBar';
 import './style.scss';
 
 const ProjectName = ({ className = '', ...props }) =>
@@ -51,15 +52,16 @@ function ProjectDetail({
 }) {
 
   const history = useHistory();
+  const { t } = useTranslation();
 
   return (
     <>
       <LeftSideContainer
-        title='Thông tin dự án'
+        title={t("DMH.VIEW.PP.LEFT.PD.TITLE")}
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => history.push(route),
-          tooltip: 'Quay lại',
+          tooltip: t("DMH.VIEW.PP.LEFT.PD.BACK"),
         }}
         loading={{
           bool: project.loading,
@@ -83,11 +85,11 @@ function ProjectDetail({
                         },
                       },
                       labels: [
-                        'Công việc đang chờ',
-                        'Công việc đang làm',
-                        'Công việc quá hạn',
-                        'Công việc hoàn thành',
-                        'Công việc dừng',
+                        t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
+                        t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
+                        t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
+                        t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
+                        t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
                       ],
                       colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#607d8b'],
                     }}
@@ -121,23 +123,23 @@ function ProjectDetail({
                   data={
                     [{
                       color: '#ff9800',
-                      title: 'Công việc đang chờ',
+                      title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
                       value: get(project.project, 'task_waiting', 0),
                     }, {
                       color: '#03a9f4',
-                      title: 'Công việc đang làm',
+                      title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
                       value: get(project.project, 'task_doing', 0),
                     }, {
                       color: '#f44336',
-                      title: 'Công việc quá hạn',
+                      title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
                       value: get(project.project, 'task_expired', 0),
                     }, {
                       color: '#03c30b',
-                      title: 'Công việc hoàn thành',
+                      title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
                       value: get(project.project, 'task_complete', 0),
                     }, {
                       color: '#607d8b',
-                      title: 'Công việc dừng',
+                      title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
                       value: get(project.project, 'task_stop', 0),
                     }]
                   }
@@ -146,7 +148,7 @@ function ProjectDetail({
             </SubContainer>
             <SubContainer>
               <SubHeader>
-                <ColorTypo color='gray' uppercase>Tiến độ dự án</ColorTypo>
+                <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PP.LEFT.PD.PROGRESS")}</ColorTypo>
               </SubHeader>
               <DateBox>
                 <div>{get(project.project, 'date_start', -1)}</div>
@@ -166,7 +168,7 @@ function ProjectDetail({
             </SubContainer>
             <SubContainer>
               <SubHeader>
-                <ColorTypo color='gray' uppercase>Mô tả dự án</ColorTypo>
+                <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PP.LEFT.PD.DESC")}</ColorTypo>
               </SubHeader>
               <CustomTextbox
                 value={get(project.project, 'description', '')}
@@ -175,7 +177,7 @@ function ProjectDetail({
             </SubContainer>
             <SubContainer>
               <SubHeader>
-                <ColorTypo color='gray' uppercase>Thành viên</ColorTypo>
+                <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PP.LEFT.PD.MEM")}</ColorTypo>
               </SubHeader>
               <AvatarCircleList users={get(project.project, 'members', [])} total={20} display={12} />
             </SubContainer>
@@ -188,7 +190,7 @@ function ProjectDetail({
               variant='text'
               size='small'
               fullWidth
-            >Chỉnh sửa</ColorButton>
+            >{t("DMH.VIEW.PP.LEFT.PD.EDIT")}</ColorButton>
             <ColorButton
               onClick={() => handleOpenModal('ALERT', {
                 selectedProject: project.project
@@ -197,7 +199,7 @@ function ProjectDetail({
               variantColor='red'
               size='small'
               fullWidth
-            >Xóa dự án</ColorButton>
+            >{t("DMH.VIEW.PP.LEFT.PD.DEL")}</ColorButton>
           </ActionBox>
         </Container>
       </LeftSideContainer>

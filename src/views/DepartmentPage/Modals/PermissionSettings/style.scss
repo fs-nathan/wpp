@@ -113,3 +113,15 @@
   }
   margin-bottom: 8px;
 }
+
+.view_DepartmentPage_UserPermissionModal___modal {
+  & > div:nth-child(3) > div {
+    & > div:nth-child(2) {
+      height: 90vh;
+      & > div {
+        grid-template-columns: 3.5fr 8fr;
+        height: 100% !important;
+      }
+    }
+  }
+}

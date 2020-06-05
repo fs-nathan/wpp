@@ -1,7 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign, getListGroupTask } from 'actions/taskDetail/taskDetailActions';
+import { createTask, getListGroupTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
@@ -447,10 +447,10 @@ function CheckCreateJob(props) {
     : get(props, 'projectId');
 
   useEffect(() => {
-    if (props.isOpen && projectId) {
+    if (projectId) {
       dispatch(getListGroupTask({ project_id: projectId }));
-    }
-  }, [dispatch, projectId, props.isOpen])
+    } 
+  }, [dispatch, projectId])
 
   useEffect(() => {
     // console.log(listGroupTaskData, '&& ', props.isOpen)
