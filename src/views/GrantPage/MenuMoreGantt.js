@@ -1,10 +1,5 @@
-import {
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  MenuList,
-  Paper,
-} from "@material-ui/core";
+import { Checkbox, FormControlLabel, MenuItem, MenuList, Paper } from "@material-ui/core";
+import 'antd/lib/menu/style/index.css';
 import { default as React, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import CustomModal from "../../components/CustomModalGantt";

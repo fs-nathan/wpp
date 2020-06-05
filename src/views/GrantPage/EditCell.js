@@ -28,20 +28,49 @@ const EditCell = ({
 }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [showEditIcon, setShowEditIcon] = useState(false);
-  const [dataComplete, setDataComplete] = useState(defaultValue);
-  const [data, setData] = useState(
-    new moment(defaultValue, "DD/MM/YYYY HH:mm").isValid()
-      ? new moment(defaultValue, "DD/MM/YYYY HH:mm").toDate()
-      : new moment(defaultValue, "DD/MM/YYYY").toDate()
-  );
+  const [dataComplete, setDataComplete] = useState(null);
+  const [data, setData] = useState(null);
   const containerRef = useRef();
+  useEffect(() => {
+    setData(
+      new moment(defaultValue, "DD/MM/YYYY HH:mm").isValid()
+        ? new moment(defaultValue, "DD/MM/YYYY HH:mm").toDate()
+        : new moment(defaultValue, "DD/MM/YYYY").toDate()
+    );
+    setDataComplete(defaultValue);
+  }, [defaultValue]);
+  const handleClickOutSide = async (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault();
+      if (type !== "complete") {
+        postDataToServer();
+      } else {
+        setProcessDatasource(dataComplete, index);
+      }
+      setShowEdit(false);
+    }
+    if (e.keyCode) return;
+    if (containerRef.current && containerRef.current.contains(e.target)) return;
+    if (type !== "complete") {
+      postDataToServer();
+    } else {
+      setProcessDatasource(dataComplete, index);
+    }
+    setShowEdit(false);
+  };
+
   useEffect(() => {
     if (showEdit) {
       document.addEventListener("click", handleClickOutSide);
       document.addEventListener("keyup", handleClickOutSide);
     }
-  }, [showEdit]);
+    return () => {
+      document.removeEventListener("click", handleClickOutSide);
+      document.removeEventListener("keyup", handleClickOutSide);
+    };
+  }, [showEdit, dataComplete, data]);
   const handleOnChange = (date) => {
+    console.log(new moment(date).format("YYYY-MM-DD"));
     setData(new moment(date).format("YYYY-MM-DD"));
   };
   const postDataToServer = async () => {
@@ -56,33 +85,6 @@ const EditCell = ({
       [type]: new moment(data).format("YYYY-MM-DD"),
     });
     fetchNewDataSource();
-  };
-  const handleClickOutSide = async (e) => {
-    if (e.keyCode === 13) {
-      e.preventDefault();
-      if (type !== "complete") {
-        postDataToServer();
-      } else {
-        console.log(type, "sdfdsfds");
-        setProcessDatasource(dataComplete, index);
-      }
-      document.removeEventListener("keyup", handleClickOutSide);
-      document.removeEventListener("click", handleClickOutSide);
-      setShowEdit(false);
-    }
-    if (e.keyCode) return;
-    if (containerRef.current && containerRef.current.contains(e.target)) return;
-    if (type !== "complete") {
-      postDataToServer();
-    } else {
-      console.log(type, "sdfdsfds");
-      setProcessDatasource(dataComplete, index);
-    }
-    document.removeEventListener("keyup", handleClickOutSide);
-    document.removeEventListener("click", handleClickOutSide);
-    setShowEdit(false);
-    document.removeEventListener("click", handleClickOutSide);
-    document.removeEventListener("keyup", handleClickOutSide);
   };
   return (
     <React.Fragment>

@@ -1,24 +1,11 @@
-import {
-  mdiCalendar,
-  mdiChevronUp,
-  mdiDotsVertical,
-  mdiFlagVariant,
-  mdiFullscreen,
-  mdiFullscreenExit,
-  mdiMagnify,
-} from "@mdi/js";
+import { mdiCalendar, mdiChevronUp, mdiDotsVertical, mdiFlagVariant, mdiFullscreen, mdiFullscreenExit, mdiMagnify } from "@mdi/js";
 import { Col, Dropdown, Row } from "antd";
+import 'antd/lib/dropdown/style/index.css';
+import 'antd/lib/menu/style/index.css';
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import {
-  changeShowFullChart,
-  changeShowHeader,
-  scrollGantt,
-} from "../../actions/gantt";
-import {
-  changeVisibleConfigGantt,
-  changeVisibleExportPdfDrawer,
-} from "../../actions/system/system";
+import { changeShowFullChart, changeShowHeader, scrollGantt } from "../../actions/gantt";
+import { changeVisibleConfigGantt, changeVisibleExportPdfDrawer } from "../../actions/system/system";
 import "./calendarModal.css";
 import IconComponent from "./IconComponent";
 import MenuMoreGantt from "./MenuMoreGantt";

@@ -156,7 +156,7 @@ span.ant-checkbox ~ span {
 .gantt--title-project {
   font-size: 17px;
   display: flex;
-  margin-bottom: 2px;
+  margin-bottom: 2px !important;
   font-weight: 500;
 }
 
@@ -182,7 +182,7 @@ span.ant-checkbox ~ span {
 }
 
 .gantt--timeline--container {
-  margin-top: 22.5px;
+  margin-top: 25.2px;
   overflow-y: scroll;
 }
 
@@ -848,7 +848,7 @@ div.checkbox-colortag--drawer {
 .gantt--parent-header {
   border-bottom: 1px solid #e4e4e4;
   border-top: 1px solid #e4e4e4;
-  padding: 2.5px 0px;
+  padding: 4.5px 0px;
   border-right: 1px solid #e4e4e4;
   background-color: #fafafa;
   text-align: center;
@@ -857,7 +857,7 @@ div.checkbox-colortag--drawer {
 .gantt--child-header {
   border-bottom: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
-  padding: 1px 0px;
+  padding: 5px 0px;
   background-color: #fafafa;
   text-align: center;
   width: 48px;

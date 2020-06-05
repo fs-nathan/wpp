@@ -1,16 +1,8 @@
 import { IconButton } from "@material-ui/core";
-import {
-  mdiAccount,
-  mdiClockOutline,
-  mdiDragVertical,
-  mdiFileTree,
-  mdiMenuDown,
-  mdiMenuUp,
-  mdiPageNextOutline,
-  mdiPlus,
-} from "@mdi/js";
+import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuUp, mdiPageNextOutline, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table, Tooltip } from "antd";
+import 'antd/lib/drawer/';
 // import "antd/dist/antd.css";
 import LoadingBox from "components/LoadingBox";
 import update from "immutability-helper";
@@ -21,25 +13,9 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import {
-  changeProjectInfo,
-  changeScheduleDetailGantt,
-  changeTaskComplete,
-  changeTaskduration,
-  changeTimelineColor,
-  changeVisible,
-  sortTask,
-} from "../../actions/gantt";
-import {
-  changeDetailSubtaskDrawer,
-  changeVisibleSubtaskDrawer,
-} from "../../actions/system/system";
-import {
-  getListGroupTask,
-  getListTaskDetail,
-  getProjectListBasic,
-  getStaticTask,
-} from "../../actions/taskDetail/taskDetailActions";
+import { changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortTask } from "../../actions/gantt";
+import { changeDetailSubtaskDrawer, changeVisibleSubtaskDrawer } from "../../actions/system/system";
+import { getListGroupTask, getListTaskDetail, getProjectListBasic, getStaticTask } from "../../actions/taskDetail/taskDetailActions";
 import CustomBadge from "../../components/CustomBadge";
 import ConfigGanttDrawer from "../../components/Drawer/DrawerConfigGantt";
 import ExportPDFDrawer from "../../components/Drawer/DrawerPDF";
@@ -105,16 +81,16 @@ const RenderEditCell = React.memo(
               record.isTotalDuration
                 ? "gantt--group-task__total"
                 : record.isGroupTask
-                ? "gantt--group-task-item"
-                : ""
+                  ? "gantt--group-task-item"
+                  : ""
             }
           >
             {new moment(text, "DD/MM/YYYY HH:mm").isValid()
               ? new moment(text, "DD/MM/YYYY HH:mm").format(
-                  this.props.girdType !== "HOUR"
-                    ? "DD/MM/YYYY"
-                    : "DD/MM/YYYY HH:mm"
-                )
+                this.props.girdType !== "HOUR"
+                  ? "DD/MM/YYYY"
+                  : "DD/MM/YYYY HH:mm"
+              )
               : ""}
           </div>
         }
@@ -410,138 +386,138 @@ class DragSortingTable extends React.Component {
                 </div>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                <div
-                  onMouseLeave={() => {
-                    if (!window.scrollTable)
-                      this.setState({
-                        rowHover: -2,
-                      });
-                  }}
-                  onMouseMove={() => {
-                    if (!window.scrollTable)
-                      this.setState({
-                        rowHover: record.key,
-                      });
-                  }}
-                  style={{ display: "flex", height: 20 }}
-                >
-                  <Icon
-                    style={{ margin: "0 10px", cursor: "grab", fill: "#ccc" }}
-                    path={mdiDragVertical}
-                    size={1}
-                  />
+                <React.Fragment>
                   <div
-                    onClick={(e) => {
-                      const className = e.target.className;
-                      if (
-                        !className.indexOf ||
-                        className.indexOf(
-                          "MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall"
-                        ) !== -1
-                      )
-                        return;
-                      this.setState({
-                        quickViewId: record.id,
-                      });
+                    onMouseLeave={() => {
+                      if (!window.scrollTable)
+                        this.setState({
+                          rowHover: -2,
+                        });
                     }}
-                    className="name-task-gantt"
+                    onMouseMove={() => {
+                      if (!window.scrollTable)
+                        this.setState({
+                          rowHover: record.key,
+                        });
+                    }}
+                    style={{ display: "flex", height: 20 }}
                   >
-                    <Tooltip title={record.name}>
-                      <span style={{ paddingRight: "5px" }}>{record.name}</span>
-                      {record.number_subtask > 0 && (
+                    <Icon
+                      style={{ margin: "0 10px", cursor: "grab", fill: "#ccc" }}
+                      path={mdiDragVertical}
+                      size={1}
+                    />
+                    <div
+                      onClick={(e) => {
+                        const className = e.target.className;
+                        if (
+                          !className.indexOf ||
+                          className.indexOf(
+                            "MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall"
+                          ) !== -1
+                        )
+                          return;
+                        this.setState({
+                          quickViewId: record.id,
+                        });
+                      }}
+                      className="name-task-gantt"
+                    >
+                      <Tooltip title={record.name}>
+                        <span style={{ paddingRight: "5px" }}>{record.name}</span>
+                        {record.number_subtask > 0 && (
+                          <IconButton
+                            aria-controls="simple-menu"
+                            style={{ padding: 0 }}
+                            aria-haspopup="true"
+                            size="small"
+                            onClick={() => {
+                              this.props.changeDetailSubtaskDrawer({
+                                id: record.id,
+                                name: record.name,
+                              });
+                              this.props.changeVisibleSubtaskDrawer(true);
+                            }}
+                          >
+                            <Icon
+                              className="gantt--icon-setting-task"
+                              path={mdiFileTree}
+                              size={1}
+                            />
+                          </IconButton>
+                        )}
+                      </Tooltip>
+                    </div>
+                    <div className="name-task-gantt__icon-container">
+                      {this.state.rowHover === record.key && (
                         <IconButton
                           aria-controls="simple-menu"
                           style={{ padding: 0 }}
                           aria-haspopup="true"
                           size="small"
-                          onClick={() => {
-                            this.props.changeDetailSubtaskDrawer({
-                              id: record.id,
-                              name: record.name,
-                            });
-                            this.props.changeVisibleSubtaskDrawer(true);
-                          }}
+                          onClick={() =>
+                            this.props.history.push({
+                              pathname: `/tasks/chat/${this.props.match.params.projectId}`,
+                              search: `?task_id=${record.id}`,
+                            })
+                          }
                         >
                           <Icon
                             className="gantt--icon-setting-task"
-                            path={mdiFileTree}
+                            path={mdiPageNextOutline}
                             size={1}
                           />
                         </IconButton>
                       )}
-                    </Tooltip>
-                  </div>
-                  <div className="name-task-gantt__icon-container">
-                    {this.state.rowHover === record.key && (
-                      <IconButton
-                        aria-controls="simple-menu"
-                        style={{ padding: 0 }}
-                        aria-haspopup="true"
-                        size="small"
-                        onClick={() =>
-                          this.props.history.push({
-                            pathname: `/tasks/chat/${this.props.match.params.projectId}`,
-                            search: `?task_id=${record.id}`,
-                          })
-                        }
-                      >
-                        <Icon
-                          className="gantt--icon-setting-task"
-                          path={mdiPageNextOutline}
-                          size={1}
-                        />
-                      </IconButton>
-                    )}
 
-                    {!isHover && this.props.visibleLabel.status && (
-                      <CustomBadge
-                        style={{
-                          margin: "0px 4px",
-                          ...decodeStatusCode(record.status_code),
-                        }}
-                        {...decodeStatusCode(record.status_code)}
-                      >
-                        {record.status_name}
-                      </CustomBadge>
-                    )}
-
-                    {!isHover && this.props.visibleLabel.prior && (
-                      <CustomBadge
-                        style={{
-                          margin: "0px 4px",
-                          ...decodePriorityCode(record.priority_code),
-                        }}
-                        {...decodePriorityCode(record.priority_code)}
-                      >
-                        {decodePriorityCode(record.priority_code).name}
-                      </CustomBadge>
-                    )}
-                    {!isHover && this.props.visibleLabel.member && (
-                      <CustomBadge
-                        style={{
-                          margin: "0px 4px",
-                          ...decodePriorityCode("MEMBER"),
-                        }}
-                        {...decodePriorityCode("MEMBER")}
-                      >
-                        <Icon
+                      {!isHover && this.props.visibleLabel.status && (
+                        <CustomBadge
                           style={{
-                            transform: "translateY(-50%)",
-                            width: 12,
-                            top: "57%",
-                            fill: "white",
-                            position: "relative",
+                            margin: "0px 4px",
+                            ...decodeStatusCode(record.status_code),
                           }}
-                          path={mdiAccount}
-                        />
-                        {record.number_member}
-                      </CustomBadge>
-                    )}
+                          {...decodeStatusCode(record.status_code)}
+                        >
+                          {record.status_name}
+                        </CustomBadge>
+                      )}
+
+                      {!isHover && this.props.visibleLabel.prior && (
+                        <CustomBadge
+                          style={{
+                            margin: "0px 4px",
+                            ...decodePriorityCode(record.priority_code),
+                          }}
+                          {...decodePriorityCode(record.priority_code)}
+                        >
+                          {decodePriorityCode(record.priority_code).name}
+                        </CustomBadge>
+                      )}
+                      {!isHover && this.props.visibleLabel.member && (
+                        <CustomBadge
+                          style={{
+                            margin: "0px 4px",
+                            ...decodePriorityCode("MEMBER"),
+                          }}
+                          {...decodePriorityCode("MEMBER")}
+                        >
+                          <Icon
+                            style={{
+                              transform: "translateY(-50%)",
+                              width: 12,
+                              top: "57%",
+                              fill: "white",
+                              position: "relative",
+                            }}
+                            path={mdiAccount}
+                          />
+                          {record.number_member}
+                        </CustomBadge>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </React.Fragment>
-            );
+                </React.Fragment>
+              );
           },
         },
         {
@@ -566,16 +542,16 @@ class DragSortingTable extends React.Component {
                     record.isTotalDuration
                       ? "gantt--group-task__total"
                       : record.isGroupTask
-                      ? "gantt--group-task-item"
-                      : ""
+                        ? "gantt--group-task-item"
+                        : ""
                   }
                 >
                   {new moment(text, "DD/MM/YYYY HH:mm").isValid()
                     ? new moment(text, "DD/MM/YYYY HH:mm").format(
-                        this.props.girdType !== "HOUR"
-                          ? "DD/MM/YYYY"
-                          : "DD/MM/YYYY HH:mm"
-                      )
+                      this.props.girdType !== "HOUR"
+                        ? "DD/MM/YYYY"
+                        : "DD/MM/YYYY HH:mm"
+                    )
                     : ""}
                 </div>
               }
@@ -605,16 +581,16 @@ class DragSortingTable extends React.Component {
                       record.isTotalDuration
                         ? "gantt--group-task__total"
                         : record.isGroupTask
-                        ? "gantt--group-task-item"
-                        : ""
+                          ? "gantt--group-task-item"
+                          : ""
                     }
                   >
                     {new moment(text, "DD/MM/YYYY HH:mm").isValid()
                       ? new moment(text, "DD/MM/YYYY HH:mm").format(
-                          this.props.girdType !== "HOUR"
-                            ? "DD/MM/YYYY"
-                            : "DD/MM/YYYY HH:mm"
-                        )
+                        this.props.girdType !== "HOUR"
+                          ? "DD/MM/YYYY"
+                          : "DD/MM/YYYY HH:mm"
+                      )
                       : ""}
                   </div>
                 }
@@ -636,15 +612,15 @@ class DragSortingTable extends React.Component {
                   record.isTotalDuration
                     ? "gantt--group-task__total"
                     : record.isGroupTask
-                    ? "gantt--group-task-item"
-                    : ""
+                      ? "gantt--group-task-item"
+                      : ""
                 }
               >
                 {text || text === 0
                   ? `${
-                      Math.round((parseFloat(text) + Number.EPSILON) * 100) /
-                      100
-                    } ${this.props.girdInstance.unitText}`
+                  Math.round((parseFloat(text) + Number.EPSILON) * 100) /
+                  100
+                  } ${this.props.girdInstance.unitText}`
                   : ""}
               </div>
             );
@@ -674,8 +650,8 @@ class DragSortingTable extends React.Component {
                     record.isTotalDuration
                       ? "gantt--group-task__total"
                       : record.isGroupTask
-                      ? "gantt--group-task-item"
-                      : ""
+                        ? "gantt--group-task-item"
+                        : ""
                   }
                 >
                   {Math.round(text) + "%"}
@@ -759,7 +735,7 @@ class DragSortingTable extends React.Component {
       resultListTask = await apiService({
         url: `gantt/list-task?project_id=${projectId}&gird=${
           girdType ? girdType.toLowerCase() : "hour"
-        }`,
+          }`,
       });
       if (!resultListTask.data.state) return;
       dataSource = resultListTask.data;
@@ -1200,7 +1176,7 @@ class DragSortingTable extends React.Component {
         !item.isTotalDuration &&
         !item.isGroupTask &&
         startTimeTotalDuration.diff(new moment(item.start_time, formatString)) >
-          0
+        0
       ) {
         startTimeTotalDuration = new moment(item.start_time, formatString);
       }
