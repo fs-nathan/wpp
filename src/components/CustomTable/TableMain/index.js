@@ -1,8 +1,8 @@
 import { Table, TableBody, TableFooter, TableHead, TableRow } from '@material-ui/core';
+import Scrollbars from 'components/Scrollbars';
 import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { Scrollbars } from 'react-custom-scrollbars';
 import { CustomTableContext } from '../index';
 import './style.scss';
 import TableBodyGroupRow from './TableBodyGroupRow';

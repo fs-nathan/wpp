@@ -42,12 +42,13 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: true
             }
-        
+
         case types.POST_REMIND_TIME_DETAIL_SUCCESS:
             return {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
+                error: false,
             };
 
         case types.POST_REMIND_TIME_DETAIL_FAIL:
@@ -67,6 +68,7 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
+                error: false,
             };
 
         case types.POST_REMIND_DURATION_FAIL:
@@ -86,6 +88,7 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
+                error: false,
             };
 
         case types.UPDATE_REMIND_TIME_DETAIL_FAIL:
@@ -105,6 +108,7 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
+                error: false,
             };
 
         case types.UPDATE_REMIND_DURATION_FAIL:

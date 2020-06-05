@@ -1,33 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
-    <link
-      id="favicon"
-      rel="icon"
-      href="%PUBLIC_URL%/logo.png"
-      type="image/png"
-      sizes="16x16"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta
-      name="description"
-      content="Web site created using create-react-app"
-    />
 
-    <link rel="apple-touch-icon" href="logo.png" />
-    <link
-      href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
-      rel="stylesheet"
-    />
+<head>
+  <meta charset="utf-8" />
+  <!-- <link rel="icon" href="%PUBLIC_URL%/favicon.ico" /> -->
+  <link id="favicon" rel="icon" href="%PUBLIC_URL%/logo.png" type="image/png" sizes="16x16" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <meta name="description" content="Web site created using create-react-app" />
 
-    <meta
-      name="google-site-verification"
-      content="BR8-laLbiSSzi4iyOlqNS6T4aE1oUdeinP_HqT5Ngfg"
-    />
-    <!--
+  <link rel="apple-touch-icon" href="logo.png" />
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+  <meta name="google-site-verification" content="BR8-laLbiSSzi4iyOlqNS6T4aE1oUdeinP_HqT5Ngfg" />
+  <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
       Only files inside the `public` folder can be referenced from the HTML.
@@ -36,92 +22,93 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>Vtask - phần mềm quản lý công việc</title>
-    <style>
-      *,
-      *::before,
-      *::after {
-        font-family: Roboto, sans-serif;
-        font-size: 13px;
-      }
-    </style>
-  </head>
-  <body>
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
-    <script src="%PUBLIC_URL%/lib/jquery.min.js"></script>
-    <script src="%PUBLIC_URL%/lib/kendo.all.min.js"></script>
-    <script>
-      function convertToPdf(kendo, fileName) {
-        kendo.drawing
-          .drawDOM("#printContent", {
-            paperSize: "A4",
-            margin: {
-              top: "1.7cm",
-              bottom: "1.7cm",
-              left: "2.5cm",
-              right: "2.5cm",
-            },
-            scale: 0.7,
-          })
-          .then(function (group) {
-            kendo.drawing.pdf.saveAs(group, fileName);
-          });
-        kendo.pdf.defineFont({
-          "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
-          "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
-          "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
-          "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
+  <title>Vtask - phần mềm quản lý công việc</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      font-family: Roboto, sans-serif;
+      font-size: 13px;
+    }
+  </style>
+</head>
+
+<body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
+  <div id="root"></div>
+  <script src="%PUBLIC_URL%/lib/jquery.min.js"></script>
+  <script src="%PUBLIC_URL%/lib/kendo.all.min.js"></script>
+  <script>
+    function convertToPdf(kendo, fileName) {
+      kendo.drawing
+        .drawDOM("#printContent", {
+          paperSize: "A4",
+          margin: {
+            top: "1.7cm",
+            bottom: "1.7cm",
+            left: "2.5cm",
+            right: "2.5cm",
+          },
+          scale: 0.7,
+        })
+        .then(function (group) {
+          kendo.drawing.pdf.saveAs(group, fileName);
         });
-      }
-      function getDataUrlPdf(kendo, fileName, callback) {
-        kendo.drawing
-          .drawDOM("#printContent", {
-            margin: {
-              top: "1.7cm",
-              bottom: "1.7cm",
-              left: "2.5cm",
-              right: "2.5cm"
-            },
-            scale: 0.7
+      kendo.pdf.defineFont({
+        "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
+        "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
+        "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
+        "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
+      });
+    }
+    function getDataUrlPdf(kendo, fileName, callback) {
+      kendo.drawing
+        .drawDOM("#printContent", {
+          margin: {
+            top: "1.7cm",
+            bottom: "1.7cm",
+            left: "2.5cm",
+            right: "2.5cm"
+          },
+          scale: 0.7
+        })
+        .then(group => {
+          kendo.drawing.pdf.toDataURL(group, (dataUrl) => {
+            console.log(dataUrl);
+            callback(dataUrl)
           })
-          .then(group => {
-            kendo.drawing.pdf.toDataURL(group,(dataUrl) =>{
-              console.log(dataUrl);
-              callback(dataUrl)
-            })
-          });
-            kendo.pdf.defineFont({
-          "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
-          "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
-          "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
-          "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
         });
-       
-      }
-      function convertToPdfFullWidth(kendo, fileName) {
-        kendo.drawing
-          .drawDOM("#printContent", {
-            margin: {
-              top: "1.7cm",
-              bottom: "1.7cm",
-              left: "2.5cm",
-              right: "2.5cm"
-            },
-            scale: 0.7
-          })
-          .then(function(group) {
-            kendo.drawing.pdf.saveAs(group, fileName);
-          });
-        kendo.pdf.defineFont({
-          "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
-          "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
-          "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
-          "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
+      kendo.pdf.defineFont({
+        "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
+        "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
+        "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
+        "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
+      });
+
+    }
+    function convertToPdfFullWidth(kendo, fileName) {
+      kendo.drawing
+        .drawDOM("#printContent", {
+          margin: {
+            top: "1.7cm",
+            bottom: "1.7cm",
+            left: "2.5cm",
+            right: "2.5cm"
+          },
+          scale: 0.7
+        })
+        .then(function (group) {
+          kendo.drawing.pdf.saveAs(group, fileName);
         });
-      }
-    </script>
-    <!--
+      kendo.pdf.defineFont({
+        "DejaVu Sans": "%PUBLIC_URL%/lib/DejaVuSans.ttf",
+        "DejaVu Sans|Bold": "%PUBLIC_URL%/lib/DejaVuSans-Bold.ttf",
+        "DejaVu Sans|Bold|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
+        "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
+      });
+    }
+  </script>
+  <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -131,5 +118,6 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-  </body>
+</body>
+
 </html>

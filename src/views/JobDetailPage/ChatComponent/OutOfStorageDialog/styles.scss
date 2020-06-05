@@ -1,0 +1,38 @@
+.OutOfStorageDialog {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.5;
+  .MuiPaper-root {
+    padding: 60px 40px 40px;
+    text-align: center;
+  }
+  &--image {
+    width: 200px;
+    align-items: center;
+    align-content: center;
+    text-align: center;
+    display: -webkit-box;
+    margin-left: calc((100% - 200px) / 2);
+  }
+  &--text {
+    margin: 0;
+    color: #111111;
+    font-size: 17px;
+  }
+  &--iconButton {
+    top: 8px;
+    color: #9e9e9e;
+    right: 8px;
+    position: absolute;
+  }
+  &--footer {
+    font-size: 22px;
+    color: #00b807;
+    font-weight: 600;
+    padding-bottom: 30px;
+    width: 400px;
+    line-height: 1.2;
+    margin-top: 15px;
+    margin-bottom: 30px;
+  }
+}

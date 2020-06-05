@@ -1,7 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import { createTask, getListGroupTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
@@ -14,7 +14,7 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
-import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProject';
+import CreateProjectGroup from 'views/ProjectPage/Modals/CreateGroupTask';
 import { taskIdSelector } from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
@@ -28,44 +28,6 @@ export const EDIT_MODE = {
   PRIORITY: 3,
   ASSIGN_TYPE: 4,
 }
-
-let optionsList = [
-  { value: 2, label: 'Ngày và giờ (mặc định)' },
-  { value: 1, label: 'Chỉ nhập ngày' },
-  { value: 0, label: 'Không yêu cầu' }
-];
-
-let assignList = [
-  { id: 0, value: 'Được giao' },
-  { id: 1, value: 'Tự đề xuất' },
-  { id: 2, value: 'Giao việc cho' }
-];
-
-const DEFAULT_ASSIGN = assignList[0];
-const DEFAULT_ASSIGN_ID = assignList[0];
-
-// Define variable using in form
-let priorityList = [
-  { id: 2, value: 'Thấp' },
-  { id: 1, value: 'Trung bình' },
-  { id: 0, value: 'Cao' },
-];
-const DEFAULT_PRIORITY = priorityList[0].value;
-const DEFAULT_PRIORITY_ID = priorityList[0].id;
-
-const DEFAULT_DATA = {
-  name: EMPTY_STRING,
-  description: EMPTY_STRING,
-  start_time: listTimeSelect[16],
-  start_date: DEFAULT_DATE_TEXT,
-  end_time: listTimeSelect[34],
-  end_date: DEFAULT_DATE_TEXT,
-  type_assign: DEFAULT_ASSIGN_ID,
-  priority: DEFAULT_PRIORITY_ID,
-  // group_task: DEFAULT_GROUP_TASK_VALUE,
-  priorityLabel: DEFAULT_PRIORITY,
-  assignValue: DEFAULT_ASSIGN
-};
 
 function validate(data) {
   const {
@@ -81,14 +43,47 @@ function CreateJobModal(props) {
   const dispatch = useDispatch();
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
+  const isFetching = useSelector(state => state.taskDetail.detailTask.isFetching)
+  const error = useSelector(state => state.taskDetail.detailTask.error)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.date'));
+  const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.status.date'));
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
-  const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
+
+  let assignList = [
+    { id: 0, value: t('LABEL_CHAT_TASK_DUOC_GIAO') },
+    { id: 1, value: t('LABEL_CHAT_TASK_TU_DE_XUAT') },
+    { id: 2, value: t('LABEL_CHAT_TASK_GIAO_VIEC_CHO') }
+  ];
+
+  const DEFAULT_ASSIGN = assignList[0];
+  const DEFAULT_ASSIGN_ID = assignList[0].id;
+
+  // Define variable using in form
+  let priorityList = [
+    { id: 2, value: t('LABEL_CHAT_TASK_THAP') },
+    { id: 1, value: t('LABEL_CHAT_TASK_TRUNG_BINH') },
+    { id: 0, value: t('LABEL_CHAT_TASK_CAO') },
+  ];
+  const DEFAULT_PRIORITY = priorityList[0].value;
+  const DEFAULT_PRIORITY_ID = priorityList[0].id;
+
+  const DEFAULT_DATA = {
+    name: EMPTY_STRING,
+    description: EMPTY_STRING,
+    start_time: listTimeSelect[16],
+    start_date: DEFAULT_DATE_TEXT,
+    end_time: listTimeSelect[34],
+    end_date: DEFAULT_DATE_TEXT,
+    type_assign: DEFAULT_ASSIGN_ID,
+    priority: DEFAULT_PRIORITY_ID,
+    // group_task: DEFAULT_GROUP_TASK_VALUE,
+    priorityLabel: DEFAULT_PRIORITY,
+    assignValue: DEFAULT_ASSIGN
+  };
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -135,7 +130,7 @@ function CreateJobModal(props) {
       default:
         break;
     }
-    props.setOpen(false);
+    // props.setOpen(false);
   };
 
   React.useEffect(() => {
@@ -203,18 +198,22 @@ function CreateJobModal(props) {
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
       setDataMember(tempData);
     }
+    // eslint-disable-next-line
   }, [props.data, props.editMode]);
 
   useEffect(() => {
-    if (!isFetching)
+    if (isFetching === false && error === false)
       props.setOpen(false);
     // eslint-disable-next-line
-  }, [isFetching])
+  }, [isFetching, error])
 
   useEffect(() => {
-    if (projectId)
-      dispatch(getSchedules(projectId))
-  }, [dispatch, projectId])
+    if (props.isOpen) {
+      if (projectId) {
+        dispatch(getSchedules(projectId))
+      }
+    }
+  }, [dispatch, projectId, props.isOpen])
 
   const handleChangeData = (attName, value) => {
     // console.log(attName, value)
@@ -267,6 +266,9 @@ function CreateJobModal(props) {
       onConfirm={isEdit ? updateData : handlePressConfirm}
       canConfirm={validate(data)}
       maxWidth='sm'
+      actionLoading={isFetching}
+      manualClose
+      onCancle={() => props.setOpen(false)}
       className={clsx("createJob", `createJob__edit${props.editMode}`, {
         'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
         'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),
@@ -326,7 +328,7 @@ function CreateJobModal(props) {
         }
         {!isEdit &&
           <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
+            {date_status !== 0 && <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />}
             {date_status !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Typography className="createJob--timeWrap" component={'span'}>
@@ -433,26 +435,41 @@ function CreateJobModal(props) {
 }
 
 function CheckCreateJob(props) {
+
+  const dispatch = useDispatch();
+  const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
   const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
+  const projectId = isNil(get(props, 'projectId'))
+    ? _projectId
+    : get(props, 'projectId');
 
   useEffect(() => {
-    if (props.isOpen) {
-      if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
+    if (projectId) {
+      dispatch(getListGroupTask({ project_id: projectId }));
+    } 
+  }, [dispatch, projectId])
+
+  useEffect(() => {
+    // console.log(listGroupTaskData, '&& ', props.isOpen)
+    if (listGroupTaskData && props.isOpen) {
+      if (listGroupTaskData.group_tasks.length === 0) {
         setOpenCreateGroup(true)
+        props.setOpen(false)
       } else {
         setOpenCreateGroup(false)
       }
     }
-  }, [listGroupTaskData, props.isOpen])
+  }, [listGroupTaskData, props, props.isOpen])
 
   function onClickCreateProject() {
     setOpenCreateGroup(false)
     setOpenProjectGroup(true)
   }
 
-  return (
+  return listGroupTaskData && !listGroupTaskData.isFetching ? (
     <>
       {
         !isOpenCreateGroup &&
@@ -467,7 +484,7 @@ function CheckCreateJob(props) {
         open={isOpenProjectGroup}
         setOpen={setOpenProjectGroup} />
     </>
-  )
+  ) : null
 }
 
 export default CheckCreateJob;

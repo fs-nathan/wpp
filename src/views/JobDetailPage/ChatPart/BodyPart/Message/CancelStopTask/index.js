@@ -1,8 +1,8 @@
-import { useTranslation } from 'react-i18next';
 import { mdiTimer } from '@mdi/js';
 import Icon from '@mdi/react';
 import { getDialogDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
@@ -33,10 +33,10 @@ const CancelStopTask = ({
       <>
         <Icon className="CancelStopTask--icon" path={mdiTimer}></Icon>
         <div className="StopTask--content" >
-          {getDialogDate(time_create, dateFormat)}
+          {getDialogDate(t, time_create, dateFormat)}
         </div>
         <div className="StopTask--notify" >
-          {"Tiến độ công việc đã được chạy"}
+          {t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY')}
         </div>
       </>
     </DialogMessageWrap>

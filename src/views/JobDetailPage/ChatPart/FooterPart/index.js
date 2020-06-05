@@ -5,7 +5,7 @@ import { appendChat, changeStickerKeyWord, chatFile, chatForwardFile, chatImage,
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { file as file_icon } from 'assets/fileType';
 import { FileType } from 'components/FileType';
-import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
+import { CHAT_TYPE, getFileUrl, filterMembersByKey } from 'helpers/jobDetail/arrayHelper';
 import htmlToText from 'helpers/jobDetail/jsHtmlToText';
 import { humanFileSize, transformToGoogleFormData } from 'helpers/jobDetail/stringHelper';
 import isEmpty from 'lodash/isEmpty';
@@ -67,6 +67,7 @@ const FooterPart = ({
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const chatTextRef = useRef('');
+  const chatFilterRef = useRef('');
   const [chatText, setChatText] = useState('');
   const [isOpenMention, setOpenMention] = useState(false);
   const [isOpenSticker, setOpenSticker] = useState(false);
@@ -74,6 +75,21 @@ const FooterPart = ({
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
   const [clipBoardImages, setClipBoardImages] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
+
+  useEffect(() => {
+    if (isOpenMention) {
+      const text = htmlToText(chatText)
+      const lastAy = text.lastIndexOf('@')
+      const key = text.slice(lastAy + 1)
+        .toLowerCase()
+        .replace(/&nbsp;/g, '')
+        .trim()
+      console.log(text, lastAy, key)
+      chatFilterRef.current = key
+    } else {
+      chatFilterRef.current = ''
+    }
+  }, [chatText, isOpenMention, members])
 
   useEffect(() => {
     async function renderPrepareImages(imagesFiles) {
@@ -216,8 +232,8 @@ const FooterPart = ({
     dispatch(openCreateRemind(true, true))
   }
 
-  function handleClickMention(mention) {
-    const tag = `<span style="color:#03A9F4;">@${mention.name}</span>&nbsp;`;
+  function handleClickMention(mention = {}) {
+    const tag = `<span class="chatBox--tag" style="color:#03A9F4;font-size:15px;">@${mention.name}</span>&nbsp;`;
     const sel = window.getSelection();
     const range = sel.getRangeAt(0);
     var preCaretRange = range.cloneRange();
@@ -329,7 +345,9 @@ const FooterPart = ({
     // console.log('sendMessage', imagesQueue.length)
     sendMultipleFiles()
     if (isShowQuickLike) {
-      dispatch(chatQuickLike(taskId))
+      if (imagesQueue.length === 0) {
+        dispatch(chatQuickLike(taskId))
+      }
       editorRef.current.blur();
     } else {
       sendChatText()
@@ -338,7 +356,8 @@ const FooterPart = ({
 
   function onKeyDown(event) {
     const keyCode = event.keyCode || event.which;
-    const members = membersRef.current;
+    const keyFilter = chatFilterRef.current;
+    const members = filterMembersByKey(membersRef.current, keyFilter);
     const selectedId = selectedIdRef.current;
     if ((keyCode === 38 || keyCode === 40) && isOpenMentionRef.current) {
       event.returnValue = false;
@@ -356,6 +375,7 @@ const FooterPart = ({
       event.returnValue = false;
       if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 50 && isPressShift) {// @
+      chatFilterRef.current = ''
       setOpenMention(true)
       focus()
     } else if (keyCode === 8) {// backspace
@@ -392,7 +412,6 @@ const FooterPart = ({
 
   function onChangeChatText(value) {
     // chatTextRef.current = value;
-    setShowQuickLike(!value)
     setChatText(value)
   }
 
@@ -402,6 +421,7 @@ const FooterPart = ({
 
   useEffect(() => {
     chatTextRef.current = chatText;
+    setShowQuickLike(!chatText)
   }, [chatText])
 
   useEffect(() => {
@@ -507,6 +527,8 @@ const FooterPart = ({
           handleClose={handleCloseTag}
           handleClickMention={handleClickMention}
           selectedId={selectedId}
+          keyFilter={chatFilterRef}
+          members={filterMembersByKey(membersRef.current, chatFilterRef.current)}
         />
       }
       {

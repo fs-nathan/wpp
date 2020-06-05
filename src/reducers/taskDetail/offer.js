@@ -1,14 +1,14 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 import {
-    filterPendingItem, filterApprovedItem,searchArrayTabpart
+    filterPendingItem, filterApprovedItem, searchArrayTabpart
 } from '../../helpers/jobDetail/arrayHelper'
 
 
 // Initial state for store
 const initialState = {
-    offer: [], pendingItems : [], approvedItems : [],
-    defaultOffer: [], defaultPendingItems : [], defaultApprovedItems : [],
+    offer: [], pendingItems: [], approvedItems: [],
+    defaultOffer: [], defaultPendingItems: [], defaultApprovedItems: [],
     isFetching: false,
     dataFetched: false,
     error: false,
@@ -50,6 +50,7 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 isFetching: false,
                 dataFetched: true,
+                error: false,
             };
 
         case types.CREATE_OFFER_FAIL:
@@ -68,6 +69,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: false,
+                error: false,
                 dataFetched: true
             }
         case types.UPDATE_OFFER_FAIL:
@@ -140,6 +142,7 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: false,
+                error: false,
                 dataFetched: true
             }
         case types.HANDLE_OFFER_FAIL:

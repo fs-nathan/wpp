@@ -6,7 +6,7 @@ import { updateTimeDuration } from 'actions/taskDetail/taskDetailActions';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import "date-fns";
-import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
+import { convertDate, convertTime, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -59,12 +59,10 @@ const ProgressModal = (props) => {
       const lastTrack = trackings[trackings.length - 1]
       const { new_start, new_end } = lastTrack;
       // const startNew = parse(new_start, 'dd/MM/yyyy HH:mm', new Date());
-      const [startNewDay, startNewTime] = new_start.split(' ')
-      setStartDay(convertDateToJSFormat(startNewDay))
-      setStartTime(startNewTime)
-      const [endNewDay, endNewTime] = new_end.split(' ')
-      setEndDay(convertDateToJSFormat(endNewDay))
-      setEndTime(endNewTime)
+      setStartDay(convertDate(new_start))
+      setStartTime(convertTime(new_start))
+      setEndDay(convertDate(new_end))
+      setEndTime(convertTime(new_end))
     }
   }, [trackings])
 

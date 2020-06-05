@@ -185,3 +185,9 @@ export function findTask(listTaskDetail, task_id) {
     })
     return ret
 }
+
+export const filterMembersByKey = (members, keyword) => {
+    return keyword
+        ? members.filter(member => member.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1)
+        : members
+}

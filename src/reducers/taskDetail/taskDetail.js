@@ -4,11 +4,13 @@ import produce from "immer";
 // Initial state for store
 export const initialState = {
   taskDetails: null,
-  isFetching: false,
+  isFetching: null,
   dataFetched: false,
-  error: false,
+  error: null,
   showIndex: 0,
   projectSchedules: [],
+  payload: null,
+  ownerPermissions: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -73,26 +75,70 @@ export default (state = initialState, action) => produce(state, draft => {
       const { payload } = action;
       draft.taskDetails.name = payload.data_chat.new_task_name;
       draft.taskDetails.description = payload.data_chat.new_description;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.UPDATE_GROUP_TASK_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.UPDATE_TYPE_ASSIGN_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.UPDATE_SCHEDULE_ASSIGN_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.GET_SCHEDULES_SUCCESS: {
       const { payload } = action;
       draft.projectSchedules = payload.schedules;
+      break;
+    }
+    case types.REMOVE_GROUP_PERMISSION_OF_MEMBER_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
+    case types.DETAIL_GROUP_PERMISSION_DEFAULT_SUCCESS: {
+      const { payload } = action;
+      draft.ownerPermissions = payload.group_detail;
+      break;
+    }
+    case types.POST_TASK_REQUEST:
+    case types.UPDATE_NAME_DESCRIPTION:
+    case types.UPDATE_GROUP_TASK:
+    case types.UPDATE_TYPE_ASSIGN:
+    case types.UPDATE_SCHEDULE_ASSIGN:
+    case types.UPDATE_NAME_DESCRIPTION_TASK_REQUEST: {
+      draft.isFetching = true;
+      draft.error = false;
+      break;
+    }
+    case types.POST_TASK_SUCCESS:
+    case types.UPDATE_NAME_DESCRIPTION_TASK_SUCCESS: {
+      draft.isFetching = false;
+      draft.error = false;
+      break;
+    }
+    case types.POST_TASK_FAIL:
+    case types.UPDATE_NAME_DESCRIPTION_FAIL:
+    case types.UPDATE_GROUP_TASK_FAIL:
+    case types.UPDATE_TYPE_ASSIGN_FAIL:
+    case types.UPDATE_SCHEDULE_ASSIGN_FAIL:
+    case types.UPDATE_NAME_DESCRIPTION_TASK_FAIL: {
+      draft.isFetching = false;
+      draft.error = true;
       break;
     }
   }

@@ -12,16 +12,17 @@ import MemberMenuLists from './MemberMenuLists';
 import './styles.scss';
 
 export const typesRemind = [
-  'Nhắc 1 lần',
-  'Nhắc theo ngày',
-  'Nhắc theo tuần',
-  'Nhắc theo tháng',
+  'LABEL_CHAT_TASK_NHAC_1_LAN_LABEL',
+  'LABEL_CHAT_TASK_NHAC_THEO_NGAY_LABEL',
+  'LABEL_CHAT_TASK_NHAC_THEO_TUAN_LABEL',
+  'LABEL_CHAT_TASK_NHAC_THEO_THANG_LABEL'
 ]
 
 function RemindItem(props) {
   const { t } = useTranslation();
   const {
-    user_create_avatar, type,
+    user_create_avatar,
+    type,
     date_remind,
     time_remind,
     duration,
@@ -62,12 +63,12 @@ function RemindItem(props) {
             {
               type === 1 ?
                 <span className="remindItem--remindText">{t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO')}</span> :
-                `${typesRemind[type_remind]} lúc ${time_remind} ${date_remind}`
+                t('LABEL_CHAT_TASK_LUC_REMIND_TIME', { type: t(typesRemind[type_remind]), time: `${time_remind} ${date_remind}` })
             }
             {
               (type === 1) &&
               (duration.map((item, key) => (
-                <ColorChip key={key} color='orangelight' size='small' badge label={"Đạt " + item + "%"} />
+                <ColorChip key={key} color='orangelight' size='small' badge label={t('LABEL_CHAT_TASK_DAT_PERCENT', { percent: item })} />
               )))
             }
           </ColorTypo>

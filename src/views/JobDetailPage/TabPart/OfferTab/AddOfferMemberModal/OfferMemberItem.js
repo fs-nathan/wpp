@@ -1,6 +1,15 @@
 import { Avatar, Checkbox, Typography } from '@material-ui/core';
 import React from 'react';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
+
+export const StyledDiv = styled.div`
+  .Mui-checked {
+    color: ${props => props.selectedColor};
+  }
+`
 
 function OfferMemberItem({
   isSelected = false,
@@ -10,9 +19,14 @@ function OfferMemberItem({
   onClick,
   isDisable,
 }) {
+  const groupActiveColor = useSelector(currentColorSelector)
+
   return (
-    <div className="offerMemberItem">
-      <Checkbox checked={isSelected} onClick={onClick} disabled={isDisable}></Checkbox>
+    <StyledDiv
+      selectedColor={groupActiveColor}
+      className="offerMemberItem">
+      <Checkbox checked={isSelected}
+        onClick={onClick} disabled={isDisable} />
       <Avatar className="offerMemberItem--avatar" src={avatar}></Avatar>
       <Typography className="offerMemberItem--name" component="div">
         {name}
@@ -20,7 +34,7 @@ function OfferMemberItem({
           className="offerMemberItem--role"
           component="div">{roles}</Typography>
       </Typography>
-    </div>
+    </StyledDiv>
   )
 }
 

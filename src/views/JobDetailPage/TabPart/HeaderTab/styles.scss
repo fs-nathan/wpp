@@ -17,6 +17,9 @@
         fill: #03b000;
       }
     }
+    &__hidden {
+      opacity: 0;
+    }
   }
   &--text {
     font-size: 17px;

@@ -4,6 +4,9 @@
   word-break: break-word;
   & > div > div {
     white-space: pre-line;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: justify;
   }
   & > span {
     color: #48bb78;

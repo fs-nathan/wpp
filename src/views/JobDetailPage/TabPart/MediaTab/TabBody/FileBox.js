@@ -20,7 +20,7 @@ const FileBox = (props) => {
   const file = useSelector(state => state.taskDetail.media.file);
   const taskId = useSelector(taskIdSelector);
   const paging = useSelector(state => state.taskDetail.media.file.paging);
-  const { total_page, page } = paging;
+  const { total_page, page } = paging || {};
 
   function onClickFile(file, idx) {
     const type = getFileType(file.name);

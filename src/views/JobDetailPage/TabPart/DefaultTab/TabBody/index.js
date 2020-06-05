@@ -71,28 +71,16 @@ const Body = styled(Scrollbars)`
   height: 100%;
 `;
 
-const DEFAULT_TASK_STATISTIC = {
-  progressCnt: "Đang tải",
-  subTaskCnt: "Đang tải",
-  remindCnt: "Đang tải",
-  docCnt: "Đang tải",
-  lctCnt: "Đang tải",
-  offerCnt: "Đang tải",
-  acceptOfferCnt: "Đang tải",
-  commandCnt: "Đang tải",
-  members: [],
-  priority_code: 0,
-  fileCnt: "Đang tải",
-  imgCnt: "Đang tải",
-  linkCnt: "Đang tải"
-}
-
-function getCompleteStatus(complete) {
+function getStatusCode(status_code, complete) {
   if (complete === 100)
-    return 2
+    return 2;
+  if (status_code === 3)
+    return 3;
+  if (status_code === 4)
+    return 4;
   if (complete === 0)
-    return 0
-  return 1
+    return 0;
+  return 1;
 }
 
 function TabBody(props) {
@@ -101,7 +89,21 @@ function TabBody(props) {
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
   const members = useSelector(state => state.taskDetail.taskMember.member);
-
+  const DEFAULT_TASK_STATISTIC = {
+    progressCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    subTaskCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    remindCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    docCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    lctCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    offerCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    acceptOfferCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    commandCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    members: [],
+    priority_code: 0,
+    fileCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    imgCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    linkCnt: t('LABEL_CHAT_TASK_DANG_TAI')
+  }
   // console.log("Props::::", value.detailTask)
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
   let content = ""
@@ -124,18 +126,21 @@ function TabBody(props) {
     } = detailTask
     setTaskStatistic({
       progressCnt: duration_value + " " + duration_unit,
-      subTaskCnt: total_subtask_complete + '/' + total_subtask + ' hoàn thành',
-      remindCnt: total_remind + ' nhắc hẹn',
-      fileCnt: total_file + ' file', imgCnt: total_img + ' ảnh', linkCnt: total_link + ' link',
-      lctCnt: total_location + ' vị trí',
-      offerCnt: total_offer + ' đề xuất', acceptOfferCnt: total_offer_approved + ' duyệt',
-      commandCnt: total_command + ' nội dung',
+      subTaskCnt: t('LABEL_CHAT_TASK_HOAN_THANH_COUNT_COMPLETE', { complete: total_subtask_complete, total: total_subtask }),
+      remindCnt: t('LABEL_CHAT_TASK_NHAC_HEN_COUNT', { count: total_remind }),
+      fileCnt: t('LABEL_CHAT_TASK_FILE_COUNT', { count: total_file }),
+      imgCnt: t('LABEL_CHAT_TASK_ANH_COUNT', { count: total_img }),
+      linkCnt: t('LABEL_CHAT_TASK_LINK_COUNT', { count: total_link }),
+      lctCnt: t('LABEL_CHAT_TASK_VI_TRI_COUNT', { count: total_location }),
+      offerCnt: t('LABEL_CHAT_TASK_DE_XUAT_COUNT', { count: total_offer }),
+      acceptOfferCnt: t('LABEL_CHAT_TASK_DUYET_COUNT', { count: total_offer_approved }),
+      commandCnt: t('LABEL_CHAT_TASK_NOI_DUNG_COUNT', { count: total_command }),
       complete, state_code,
       complete_with_time,
       members,
       priority_code
     })
-  }, [detailTask])
+  }, [detailTask, t])
 
   function onChangeItem(idx) {
     dispatch(updatePriority({ task_id: taskId, priority: idx }))
@@ -157,15 +162,17 @@ function TabBody(props) {
         </ListItem>
         <Description value={content} />
         <ListItemButtonGroup>
-          <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
-            TransitionProps={{ timeout: 0 }}
-            title={<ModalStatus value={taskStatistic.state_code} />}
-            placement="top-start">
-            <StatusLabel
-              type={TYPE_STATUS}
-              value={taskStatistic.state_code}
-            />
-          </HtmlTooltip>
+          {taskStatistic.state_code !== 3 &&
+            <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
+              TransitionProps={{ timeout: 0 }}
+              title={<ModalStatus value={taskStatistic.state_code} />}
+              placement="top-start">
+              <StatusLabel
+                type={TYPE_STATUS}
+                value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+              />
+            </HtmlTooltip>
+          }
           <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
             TransitionProps={{ timeout: 0 }}
             title={<ModalPriority value={taskStatistic.priority_code} />}
@@ -176,8 +183,7 @@ function TabBody(props) {
             />
           </HtmlTooltip>
           {
-            !isExpiredDate(data.end_date)
-            &&
+            taskStatistic.state_code === 3 &&
             <Typography
               className="listPartTabBody--expired"
             >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>

@@ -2,6 +2,7 @@ import produce from "immer";
 import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
+import { UPDATE_PROJECT_CHAT, GET_PROJECT_LIST_BASIC_REQUEST } from "constants/actions/taskDetail/taskDetailConst";
 
 export const initialState = {
   chats: { data: [] },
@@ -18,6 +19,7 @@ export const initialState = {
   isLoading: false,
   isSending: false,
   isFails: false,
+  isLoadingForward: false,
   isShowSendStatus: false,
   lastChat: {},
   isCreateRemind: false,
@@ -39,6 +41,9 @@ export const initialState = {
   pinnedRemind: null,
   isOpenShareFileModal: false,
   item: null,
+  isOpenForward: false,
+  contentForward: null,
+  error: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -54,7 +59,7 @@ export default (state = initialState, action) => produce(state, draft => {
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
-      draft.isMore = false;
+      draft.isMore = undefined;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;
@@ -79,6 +84,11 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.lastChat = {};
       break;
     }
+    case actionTypes.LOAD_CHAT_FAIL: {
+      draft.isFails = true;
+      draft.isLoading = false;
+      break;
+    }
     case actionTypes.CHAT_IMAGE_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
@@ -92,6 +102,19 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.CHAT_FORWARD_FILE_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      break;
+    }
+    case actionTypes.CHAT_FILE:
+    case actionTypes.CHAT_FORWARD_FILE:
+    case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER: {
+      draft.error = null;
+      break;
+    }
+    case actionTypes.CHAT_FORWARD_FILE_FAIL:
+    case actionTypes.CHAT_FILE_FAIL:
+    case actionTypes.CREATE_CHAT_FILE_FROM_GOOGLE_DRIVER_FAIL: {
+      const { error } = action;
+      draft.error = error;
       break;
     }
     case actionTypes.CHAT_STICKER_SUCCESS: {
@@ -109,9 +132,18 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.payload = payload;
       break;
     }
+    case actionTypes.FORWARD_CHAT: {
+      draft.isLoadingForward = true;
+      break;
+    }
     case actionTypes.FORWARD_CHAT_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isLoadingForward = false;
+      break;
+    }
+    case actionTypes.FORWARD_CHAT_FAIL: {
+      draft.isLoadingForward = false;
       break;
     }
     case actionTypes.GET_LIST_STICKERS_SUCCESS: {
@@ -237,7 +269,8 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.OPEN_DETAIL_DEMAND: {
       const { isOpenDetailDemand, data } = action;
       draft.isOpenDetailDemand = isOpenDetailDemand;
-      draft.dataDemand = data;
+      if (data)
+        draft.dataDemand = data;
       break;
     }
     case actionTypes.GET_OFFER_DETAIL_SUCCESS: {
@@ -247,7 +280,7 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.GET_DEMAND_DETAIL_SUCCESS: {
       const { payload } = action;
-      draft.dataDemand = payload;
+      draft.dataDemand = payload.command;
       break;
     }
     case actionTypes.REMOVE_CHAT_BY_ID: {
@@ -296,6 +329,25 @@ export default (state = initialState, action) => produce(state, draft => {
       const { isOpenShareFileModal, item, } = action;
       draft.isOpenShareFileModal = isOpenShareFileModal;
       draft.item = item;
+      break;
+    }
+    case actionTypes.FORWARD_MESSAGE: {
+      const { isOpenForward, content } = action;
+      draft.isOpenForward = isOpenForward;
+      draft.contentForward = content;
+      break;
+    }
+    case actionTypes.APPEND_VIEWED_CHAT: {
+      const { data } = action;
+      draft.viewedChatMembers.push(data);
+      break;
+    }
+    case UPDATE_PROJECT_CHAT: {
+      draft.viewedChatMembers = []
+      break;
+    }
+    case GET_PROJECT_LIST_BASIC_REQUEST: {
+      draft.isLoading = false;
       break;
     }
   }

@@ -32,10 +32,12 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
         const { tasks } = data;
         const updatedTasks = tasks.map((task) => {
             if (task_id === task.id) {
-                const { new_chat } = update;
+                const { new_chat, complete, chat } = update;
                 return {
                     ...task,
                     ...update,
+                    complete: complete === undefined ? task.complete : complete,
+                    chat: chat || task.chat,
                     new_chat: getNewChat(new_chat, task.new_chat)
                 }
             }
@@ -52,16 +54,18 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
 function updateListDataNotRoom(listDataNotRoom, task_id, update) {
     const updatedTasks = listDataNotRoom.map((data) => {
         if (task_id === data.id) {
-            const { new_chat } = update;
+            const { new_chat, complete, chat } = update;
             return {
                 ...data,
                 ...update,
+                complete: complete === undefined ? data.complete : complete,
+                chat: chat || data.chat,
                 new_chat: getNewChat(new_chat, data.new_chat)
             }
         }
         return data;
     })
-    const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, 'updatedAt'])
+    const sortedTasks = sortBy(updatedTasks, [function (o) { return -o.is_ghim; }, function (o) { return -o.updatedAt; }])
     return sortedTasks
 }
 
@@ -87,12 +91,17 @@ export default function reducer(state = initialState, action) {
             const { payload } = action;
             const { id, task_id, content, new_chat,
                 user_create_avatar, user_create_id,
+                updatedAt,
+                complete,
                 user_create_name } = payload;
+            const chat = content ? {
+                content, user_create_avatar, user_create_name
+            } : undefined;
             const update = {
                 new_chat,
-                chat: {
-                    content, user_create_avatar, user_create_name
-                }
+                updatedAt,
+                complete,
+                chat
             }
             return {
                 ...state,

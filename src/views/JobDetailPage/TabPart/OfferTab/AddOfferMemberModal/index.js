@@ -4,9 +4,12 @@ import SearchInput from 'components/SearchInput';
 import compact from 'lodash/compact';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useSelector, useDispatch } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
-import OfferMemberItem from './OfferMemberItem';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import OfferMemberItem, { StyledDiv } from './OfferMemberItem';
 import './styles.scss';
+import { getListOffer } from 'actions/taskDetail/taskDetailActions';
 
 function AddOfferMemberModal({
   isOpen,
@@ -17,6 +20,8 @@ function AddOfferMemberModal({
   disableIndexes,
 }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const groupActiveColor = useSelector(currentColorSelector)
   const [selected, setSelected] = useState(value);
   const [searchValue, setSearchValue] = useState('');
   function onClickDone() {
@@ -27,6 +32,11 @@ function AddOfferMemberModal({
   React.useEffect(() => {
     setSelected(value);
   }, [value]);
+
+  React.useEffect(() => {
+    if (isOpen)
+      dispatch(getListOffer());
+  }, [dispatch, isOpen]);
 
   function onClickMember(i) {
     return () => {
@@ -71,10 +81,13 @@ function AddOfferMemberModal({
           onChange={handleChangeSearch}
         />
         <ColorTypo className="addOfferMemberModal--selected">{t('LABEL_CHAT_TASK_DA_CHON_THANH_VIEN', { count: selected.length })}</ColorTypo>
-        <div className="addOfferMemberModal--selectAll">
-          <Checkbox checked={selected.length === members.length} onClick={onClickSelectAll} ></Checkbox>
+        <StyledDiv
+          selectedColor={groupActiveColor}
+          className="addOfferMemberModal--selectAll">
+          <Checkbox checked={selected.length === members.length}
+            onClick={onClickSelectAll} />
           <ColorTypo className="addOfferMemberModal--selectAllText" component="div">{t('LABEL_CHAT_TASK_CHON_TAT_CA')}</ColorTypo>
-        </div>
+        </StyledDiv>
         {filteredMembers.map((member, i) => <OfferMemberItem
           key={i}
           isSelected={selected.indexOf(member.index) !== -1}

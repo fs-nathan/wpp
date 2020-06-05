@@ -4,7 +4,7 @@ import { listGroupTask } from 'actions/groupTask/listGroupTask';
 import { listTask } from 'actions/task/listTask';
 import { useTimes } from 'components/CustomPopover';
 import { CustomEventDispose, CustomEventListener, SORT_GROUP_TASK } from 'constants/events';
-import { filter, get } from 'lodash';
+import { filter, get, isNil } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -21,6 +21,7 @@ function CopyGroupTask({
   viewPermissions,
   doReload,
   localOption,
+  project_id = null,
 }) {
 
   const times = useTimes();
@@ -33,7 +34,13 @@ function CopyGroupTask({
     });
     // eslint-disable-next-line
   }, [timeType]);
-  const { projectId } = useParams();
+
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;

@@ -15,6 +15,7 @@ import DetailRemind from './RemindTab/DetailRemind';
 import RemindModal from './RemindTab/RemindModal';
 import SubtaskTab from './SubtaskTab';
 import SubTaskDetailDialog from './SubtaskTab/SubTaskDetailDialog';
+import DemandDetail from './DemandTab/TabBody/DemandDetail';
 const Container = styled.div`
   grid-area: tab;
   padding: 0px;
@@ -43,6 +44,7 @@ function TabPart(props) {
       <RemindModal />
       <SubTaskDetailDialog />
       <MemberModal />
+      <DemandDetail />
     </Container>
   )
 }

@@ -4,11 +4,11 @@ import CustomAvatar from 'components/CustomAvatar';
 import CustomTextbox from 'components/CustomTextbox';
 import LoadingOverlay from 'components/LoadingOverlay';
 import PillButton from 'components/PillButton';
+import Scrollbars from 'components/Scrollbars';
 import UploadButton from 'components/UploadButton';
 import { CustomEventDispose, CustomEventListener, DETAIL_USER, UPLOAD_DOCUMENTS_USER } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { FileListItem } from 'views/HomePage/components/FileListItem';
 import './style.scss';
@@ -76,7 +76,8 @@ const NameSpan = ({ className = '', ...props }) =>
 
 function UserInfo({
   user, userId, canModify,
-  handleUploadDocumentsUser, handleOpenModal,
+  handleUploadComputerDocumentsUser, handleUploadGoogleDocumentsUser, handleUploadVtaskDocumentsUser,
+  handleOpenModal,
   doReloadUser,
 }) {
 
@@ -168,15 +169,16 @@ function UserInfo({
                 />
               </StyledListItem>
             </MainList>
-          </Scrollbars>
-          <Scrollbars
-            autoHide
-            autoHideTimeout={500}
-          >
             <List>
               {get(user.user, 'documents', []).map(file =>
                 <FileListItem
-                  file={file}
+                  file={{
+                    ...file,
+                    on_delete: () => handleOpenModal('DELETE', {
+                      curUser: user.user,
+                      curDocument: file,
+                    }),
+                  }}
                 />
               )}
             </List>
@@ -184,19 +186,37 @@ function UserInfo({
           <MainFooter>
             {canModify && (
               <>
-                <input
+                {/*<input
                   id="raised-button-file"
                   type="file"
                   onChange={evt => {
                     handleUploadDocumentsUser(evt.target.files[0]);
                     setUploadLoading(true);
                   }}
-                />
+                />*/}
                 <UploadButton
                   label={t("DMH.VIEW.MP.RIGHT.INFO.DOC.BTN")}
-                  component='label'
-                  htmlFor='raised-button-file'
                   loading={uploadLoading}
+                  onClick={() => handleOpenModal('UPLOAD', {
+                    handleUploadFile: evt => {
+                      const files = evt.target.files;
+                      if (files.length > 0) {
+                        handleUploadComputerDocumentsUser(files);
+                        setUploadLoading(true);
+                      }
+                    },
+                    onConfirmShare: files => {
+                      const googleFiles = files.filter(({ isGoogleDocument }) => isGoogleDocument)
+                      const vtaskFiles = files.filter(({ isGoogleDocument }) => !isGoogleDocument)
+                      if (vtaskFiles.length > 0) {
+                        handleUploadVtaskDocumentsUser(vtaskFiles.map(file => get(file, 'id')));
+                      }
+                      if (googleFiles.length > 0) {
+                        handleUploadGoogleDocumentsUser(googleFiles);
+                      }
+                      if (vtaskFiles.length > 0 || googleFiles.length > 0) setUploadLoading(true);
+                    }
+                  })}
                 />
               </>
             )}

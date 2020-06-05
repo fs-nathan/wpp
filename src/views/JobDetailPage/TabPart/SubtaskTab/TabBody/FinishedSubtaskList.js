@@ -72,11 +72,13 @@ const FinishedSubtaskList = (props) => {
                 </abbr>
                   Hoàn thành lúc {item.time_complete}
               </div> */}
-            <div className="finishedSubTask--menuIcon" >
-              <ButtonIcon onClick={e => handleClick(e, item.id)} aria-haspopup="true">
-                <Icon path={mdiDotsVertical} size={1} />
-              </ButtonIcon>
-            </div>
+            {item.can_modify &&
+              <div className="finishedSubTask--menuIcon" >
+                <ButtonIcon onClick={e => handleClick(e, item.id)} aria-haspopup="true">
+                  <Icon path={mdiDotsVertical} size={1} />
+                </ButtonIcon>
+              </div>
+            }
           </li>
         );
       })}

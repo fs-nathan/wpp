@@ -1,16 +1,16 @@
-import { createGroupTask } from "actions/groupTask/createGroupTask";
-import { getAllGroupTask } from "actions/groupTask/getAllGroupTask";
-import { listGroupTask } from "actions/groupTask/listGroupTask";
-import { updateGroupTask } from "actions/groupTask/updateGroupTask";
-import { listTask } from "actions/task/listTask";
-import { useTimes } from "components/CustomPopover";
-import { get } from "lodash";
-import moment from "moment";
-import React from "react";
-import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
-import { localOptionSelector } from "../../selectors";
-import CreateNewOrUpdateGroupTaskPresenter from "./presenters";
+import { createGroupTask } from 'actions/groupTask/createGroupTask';
+import { getAllGroupTask } from 'actions/groupTask/getAllGroupTask';
+import { listGroupTask } from 'actions/groupTask/listGroupTask';
+import { updateGroupTask } from 'actions/groupTask/updateGroupTask';
+import { listTask } from 'actions/task/listTask';
+import { useTimes } from 'components/CustomPopover';
+import { get, isNil } from 'lodash';
+import moment from 'moment';
+import React from 'react';
+import { connect } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { localOptionSelector } from '../../selectors';
+import CreateNewOrUpdateGroupTaskPresenter from './presenters';
 
 function CreateNewOrUpdateGroupTask({
   open,
@@ -20,6 +20,7 @@ function CreateNewOrUpdateGroupTask({
   doCreateGroupTask,
   doReload,
   localOption,
+  project_id = null,
 }) {
   const times = useTimes();
   const { timeType } = localOption;
@@ -31,7 +32,14 @@ function CreateNewOrUpdateGroupTask({
     };
     // eslint-disable-next-line
   }, [timeType]);
-  const { projectId } = useParams();
+
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
+
   return (
     <CreateNewOrUpdateGroupTaskPresenter
       open={open}
@@ -56,15 +64,15 @@ function CreateNewOrUpdateGroupTask({
       handleCreateOrUpdateGroupTask={(name, description) =>
         curGroupTask
           ? doUpdateGroupTask({
-              groupTaskId: get(curGroupTask, "id"),
-              name,
-              description,
-            })
+            groupTaskId: get(curGroupTask, "id"),
+            name,
+            description,
+          })
           : doCreateGroupTask({
-              projectId,
-              name,
-              description,
-            })
+            projectId,
+            name,
+            description,
+          })
       }
     />
   );

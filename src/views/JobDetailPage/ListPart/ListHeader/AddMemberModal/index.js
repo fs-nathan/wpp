@@ -1,5 +1,7 @@
 import { DialogContent } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import { mdiAlertCircleOutline } from '@mdi/js';
+import Icon from '@mdi/react';
 import { createMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
 import SearchInput from 'components/SearchInput';
@@ -15,7 +17,7 @@ import TableMember from './TableMember';
 const GridArea = styled(Typography)`
     display: grid;
     grid-template-columns: 1fr 2fr;
-    border: 1px solid #e0e0e0;
+    // border: 1px solid #e0e0e0;
 `
 
 const BorderGrid = styled(Typography)`
@@ -63,6 +65,7 @@ function AddMemberModal({ setOpen, isOpen }) {
       maxWidth="xl"
       isOneButton
       className="AddMemberModal"
+      scroll="body"
     >
       <DialogContent className="wrapper-member-modal">
         <GridArea component={'div'} style={{ borderBottom: 'none' }} >
@@ -79,6 +82,12 @@ function AddMemberModal({ setOpen, isOpen }) {
               >
                 {t('+ Thêm tất cả')}
               </ButtonAddAll> */}
+              <div className="AddMemberModal--alert">
+                <div>
+                  <Icon path={mdiAlertCircleOutline} size={'15px'}></Icon>
+                </div>
+                <div className="AddMemberModal--alertText">{t('LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN')}</div>
+              </div>
               <div className="table-scroll-add-member">
                 <Scrollbars>
                   {

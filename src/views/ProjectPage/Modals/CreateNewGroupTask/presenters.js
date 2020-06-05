@@ -4,6 +4,7 @@ import { CREATE_GROUP_TASK, CustomEventDispose, CustomEventListener, GET_ALL_GRO
 import { useMaxlenString, useRequiredString } from 'hooks';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 function CreateNewOrUpdateGroupTask({
@@ -13,6 +14,8 @@ function CreateNewOrUpdateGroupTask({
   doReload,
   projectId, timeRange,
 }) {
+
+  const { t } = useTranslation();
 
   const [name, setName, errorName] = useRequiredString('', 100);
   const [description, setDescription] = useMaxlenString('', 200);
@@ -83,7 +86,7 @@ function CreateNewOrUpdateGroupTask({
 
   return (
     <CustomModal
-      title={`${curGroupTask ? 'Chỉnh sửa' : 'Tạo mới'} nhóm công việc`}
+      title={curGroupTask ? t("DMH.VIEW.PP.MODAL.CUGT.U_TITLE") : t("DMH.VIEW.PP.MODAL.CUGT.C_TITLE")}
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName}
@@ -96,14 +99,14 @@ function CreateNewOrUpdateGroupTask({
       manualClose={true}
     >
       <CustomTextbox
-        label='Tên nhóm công việc'
+        label={t("DMH.VIEW.PP.MODAL.CUGT.NAME")}
         value={name}
         onChange={value => setName(value)}
         fullWidth
         required={true}
       />
       <CustomTextbox
-        label='Mô tả nhóm công việc'
+        label={t("DMH.VIEW.PP.MODAL.CUGT.DESC")}
         value={description}
         onChange={value => setDescription(value)}
         fullWidth

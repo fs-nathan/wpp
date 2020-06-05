@@ -13,6 +13,18 @@ const Container = ({ className = '', ...props }) =>
     {...props}
   />
 
+const NoteLine = ({ className = '', ...props }) =>
+  <span
+    className={`view_Department_CreateAccount_Modal___note ${className}`}
+    {...props}
+  />
+
+const TextLine = ({ className = '', ...props }) =>
+  <span
+    className={`view_Department_CreateAccount_Modal___text ${className}`}
+    {...props}
+  />
+
 function CreateAccount({
   open, setOpen,
   bgColor,
@@ -45,7 +57,7 @@ function CreateAccount({
     >
       <Container>
         <Typography variant="h4">{t('DMH.VIEW.DP.MODAL.CA.INVT')}</Typography>
-        <span>{t('DMH.VIEW.DP.MODAL.CA.EMAIL')}</span>
+        <TextLine>{t('DMH.VIEW.DP.MODAL.CA.EMAIL')}</TextLine>
         <TextField
           InputProps={{
             startAdornment: <InputAdornment position="start">
@@ -75,8 +87,8 @@ function CreateAccount({
             />}
           {t('DMH.VIEW.DP.MODAL.CA.SEND')}
         </Button>
-        <span>{t('DMH.VIEW.DP.MODAL.CA.NOTE')}</span>
-        <small>{t('DMH.VIEW.DP.MODAL.CA.DESC')}</small>
+        <NoteLine>{t('DMH.VIEW.DP.MODAL.CA.NOTE')}</NoteLine>
+        <TextLine>{t('DMH.VIEW.DP.MODAL.CA.DESC')}</TextLine>
       </Container>
     </CustomModal>
   )

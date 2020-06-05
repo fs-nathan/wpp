@@ -8,8 +8,9 @@ import { get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
+import DeleteDocumentModal from '../../Modals/DeleteDocument';
 import UpdateUserModal from '../../Modals/UpdateUser';
-import UserDocumentModal from '../../Modals/UserDocument';
 import { viewPermissionsSelector } from '../../selectors';
 import UserInfoPresenter from './presenters';
 import { userSelector } from './selectors';
@@ -54,10 +55,12 @@ function UserInfo({
     // eslint-disable-next-line
   }, [userId]);
 
-  const [openDocuments, setOpenDocuments] = React.useState(false);
-  const [documentsProps, setDocumentsProps] = React.useState({});
+  const [openDelete, setOpenDelete] = React.useState(false);
+  const [deleteProps, setDeleteProps] = React.useState({});
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const [updateProps, setUpdateProps] = React.useState({});
+  const [openUpload, setOpenUpload] = React.useState(false);
+  const [uploadProps, setUploadProps] = React.useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -68,9 +71,14 @@ function UserInfo({
         }
         return;
       }
-      case 'DOCUMENT': {
-        setOpenDocuments(true);
-        setDocumentsProps(props);
+      case 'UPLOAD': {
+        setOpenUpload(true);
+        setUploadProps(props);
+        return;
+      }
+      case 'DELETE': {
+        setOpenDelete(true);
+        setDeleteProps(props);
         return;
       }
       default: return;
@@ -82,12 +90,15 @@ function UserInfo({
       <UserInfoPresenter
         canModify={get(viewPermissions.permissions, 'can_modify', false)}
         user={user} userId={userId}
-        handleUploadDocumentsUser={file => doUploadDocumentsUser({ userId, file })}
+        handleUploadComputerDocumentsUser={files => doUploadDocumentsUser({ userId, files })}
+        handleUploadVtaskDocumentsUser={fileIds => doUploadDocumentsUser({ userId, fileIds })}
+        handleUploadGoogleDocumentsUser={googleData => doUploadDocumentsUser({ userId, googleData })}
         handleOpenModal={doOpenModal}
         doReloadUser={() => doReloadUser({ userId })}
       />
-      <UserDocumentModal open={openDocuments} setOpen={setOpenDocuments} {...documentsProps} />
       <UpdateUserModal open={openUpdate} setOpen={setOpenUpdate} {...updateProps} />
+      <SendFileModal open={openUpload} setOpen={setOpenUpload} {...uploadProps} />
+      <DeleteDocumentModal open={openDelete} setOpen={setOpenDelete} {...deleteProps} />
     </>
   )
 }
@@ -105,7 +116,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(detailUser({ userId }));
     },
     doDetailUser: ({ userId }, quite) => dispatch(detailUser({ userId }, quite)),
-    doUploadDocumentsUser: ({ userId, file }) => dispatch(uploadDocumentsUser({ userId, file })),
+    doUploadDocumentsUser: ({ userId, files, fileIds, googleData }) => dispatch(uploadDocumentsUser({ userId, files, fileIds, googleData })),
     doListRoom: (quite) => dispatch(listRoom(quite)),
     doListPosition: (quite) => dispatch(listPosition(quite)),
     doListMajor: (quite) => dispatch(listMajor(quite)),

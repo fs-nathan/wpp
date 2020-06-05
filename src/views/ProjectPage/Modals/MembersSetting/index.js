@@ -5,7 +5,7 @@ import { permissionProject } from 'actions/project/permissionProject';
 import { removeMemberProject } from 'actions/project/removeMemberFromProject';
 import { updateStateJoinTask } from 'actions/project/updateStateJoinTask';
 import { listUserRole } from 'actions/userRole/listUserRole';
-import { filter, get, map } from 'lodash';
+import { filter, get, isNil, map } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -26,9 +26,15 @@ function MemberSetting({
   doListUserRole,
   viewPermissions,
   doReloadMember,
+  project_id = null,
 }) {
 
-  const { projectId } = useParams();
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
@@ -125,11 +131,13 @@ function MemberSetting({
       <MemberRoleModal
         open={openRole}
         setOpen={setOpenRole}
+        project_id={projectId}
         {...roleProps}
       />
       <MemberPermissionModal
         open={openPermission}
         setOpen={setOpenPermission}
+        project_id={projectId}
         {...permissionProps}
       />
     </>

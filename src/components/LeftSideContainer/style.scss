@@ -33,10 +33,6 @@
 .comp_LeftSideContainer___body {
   grid-area: body;
   height: 100%;
-  & > div:first-child {
-    margin-right: -5px !important;
-    scrollbar-width: none;
-  }
 };
 
 .comp_LeftSideContainer___icon-button {

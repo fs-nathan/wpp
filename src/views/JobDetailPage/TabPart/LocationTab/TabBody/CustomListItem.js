@@ -1,7 +1,7 @@
 import { IconButton, ListItem, ListItemAvatar, ListItemIcon, ListItemText, ListSubheader, Menu, MenuItem } from '@material-ui/core';
 import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import Icon from '@mdi/react';
-import { loadChat, openShareFileModal } from 'actions/chat/chat';
+import { forwardMessage, loadChat } from 'actions/chat/chat';
 import { deleteShareLocation } from 'actions/taskDetail/taskDetailActions';
 import ColorTypo from 'components/ColorTypo';
 import React from 'react';
@@ -65,12 +65,12 @@ const CustomListItem = ({ isMe }) => {
 
   function handleShare(item) {
     setAnchorEl(null);
-    dispatch(openShareFileModal(true, item))
+    dispatch(forwardMessage(true, { ...item, id: item.chat_id }));
   }
 
   function handleViewChat(item) {
     setAnchorEl(null);
-    dispatch(loadChat(taskId, undefined, undefined, item.id))
+    dispatch(loadChat(taskId, undefined, false, undefined, item.chat_id))
   }
 
   let locationArr = useSelector(state => state.taskDetail.location.locations);
@@ -78,7 +78,7 @@ const CustomListItem = ({ isMe }) => {
   return (
     <ListItem>
       {Array.isArray(locationArr) && locationArr.map((location, idx) => {
-        return (
+        return (!isMe || location.locations.filter(({ is_me }) => is_me).length > 0) ? (
           <div className="styled-list-item-location" key={idx}>
             <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
             {location.locations.map((item, key) => {
@@ -127,7 +127,7 @@ const CustomListItem = ({ isMe }) => {
               )
             })}
           </div >
-        )
+        ) : null
       })}
     </ListItem >
   );
