@@ -78,7 +78,7 @@ function CreateJobModal(props) {
     start_date: DEFAULT_DATE_TEXT,
     end_time: listTimeSelect[34],
     end_date: DEFAULT_DATE_TEXT,
-    type_assign: DEFAULT_ASSIGN_ID,
+    type_assign: DEFAULT_ASSIGN,
     priority: DEFAULT_PRIORITY_ID,
     // group_task: DEFAULT_GROUP_TASK_VALUE,
     priorityLabel: DEFAULT_PRIORITY,
@@ -194,7 +194,7 @@ function CreateJobModal(props) {
         item => item.id === tempData.priority_code
       );
       tempData.priorityLabel = priority ? priority.value : DEFAULT_PRIORITY;
-      let assign = assignList.find(item => item.id === tempData.type_assign);
+      let assign = assignList.find(item => item.id === tempData.type_assign.id);
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
       setDataMember(tempData);
     }

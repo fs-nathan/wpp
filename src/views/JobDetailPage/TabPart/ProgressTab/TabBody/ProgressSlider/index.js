@@ -9,6 +9,7 @@ function ProgressSlider({ value, onChange, expected, isHaveDate }) {
   const {
     update_complete,
   } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
   const [progressPercent, setProgressPercent] = useState(value);
 
   useEffect(() => {
@@ -20,7 +21,7 @@ function ProgressSlider({ value, onChange, expected, isHaveDate }) {
       valueLabelDisplay="on"
       aria-label="pretty slider"
       value={progressPercent}
-      disabled={!update_complete}
+      disabled={!update_complete || detailTask.state_code === 4}
       valueLabelFormat={x => `${x}%`}
       onChange={(e, val) => { setProgressPercent(val) }}
       onChangeCommitted={(e, val) => {

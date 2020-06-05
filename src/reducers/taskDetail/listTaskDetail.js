@@ -36,8 +36,8 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
                 return {
                     ...task,
                     ...update,
-                    status_code: state_code,
-                    complete: complete === undefined ? task.complete : complete,
+                    status_code: state_code || task.status_code,
+                    complete: complete || task.complete,
                     chat: chat || task.chat,
                     new_chat: getNewChat(new_chat, task.new_chat)
                 }
@@ -59,8 +59,8 @@ function updateListDataNotRoom(listDataNotRoom, task_id, update) {
             return {
                 ...data,
                 ...update,
-                status_code: state_code,
-                complete: complete === undefined ? data.complete : complete,
+                status_code: state_code || data.status_code,
+                complete: complete || data.complete,
                 chat: chat || data.chat,
                 new_chat: getNewChat(new_chat, data.new_chat)
             }
