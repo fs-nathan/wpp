@@ -92,10 +92,13 @@ export const changeFilterExportPdf = (start, end) => ({
   },
 });
 
-export const changeInstanceGird = (gird) => ({
+export const changeInstanceGird = (gird) => {
+  localStorage.setItem("timeUnitGantt", gird)
+  return {
   type: CHANGE_INSTANCE_GIRD,
   payload: gird,
-});
+  }
+};
 
 export const scrollGantt = (flag) => ({
   type: SCROLL_GANTT,

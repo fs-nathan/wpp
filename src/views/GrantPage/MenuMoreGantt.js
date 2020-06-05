@@ -1,10 +1,5 @@
-import {
-  Checkbox,
-  FormControlLabel,
-  MenuItem,
-  MenuList,
-  Paper,
-} from "@material-ui/core";
+import { Checkbox, FormControlLabel, MenuItem, MenuList, Paper } from "@material-ui/core";
+import 'antd/lib/menu/style/index.css';
 import { default as React, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import CustomModal from "../../components/CustomModalGantt";
@@ -15,6 +10,7 @@ import "./calendarModal.css";
 const MenuMoreGantt = ({
   changeVisibleExportPdfDrawer,
   scheduleDetailGantt,
+  changeVisibleMenu,
 }) => {
   const [openConfigCalendar, setOpenConfigCalendar] = useState(false);
   const [selectCalendar, setSelectCalendar] = useState([1]);
@@ -22,6 +18,7 @@ const MenuMoreGantt = ({
   const [listSchedule, setListSchedule] = useState([]);
   const clickConfigCalendar = () => {
     setOpenConfigCalendar(true);
+    changeVisibleMenu(false);
   };
   const handleChangeCheckbox = (e) => {
     const { value, checked } = e.target;
@@ -122,7 +119,12 @@ const MenuMoreGantt = ({
       <Paper>
         <MenuList open={true}>
           <MenuItem onClick={clickConfigCalendar}>Lịch dự án</MenuItem>
-          <MenuItem onClick={() => changeVisibleExportPdfDrawer(true)}>
+          <MenuItem
+            onClick={() => {
+              changeVisibleExportPdfDrawer(true);
+              changeVisibleMenu(false);
+            }}
+          >
             Xuất file PDF
           </MenuItem>
         </MenuList>
