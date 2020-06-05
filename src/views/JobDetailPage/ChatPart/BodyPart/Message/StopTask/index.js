@@ -33,10 +33,10 @@ const StopTask = ({
       <>
         <Icon className="StopTask--icon" path={mdiTimerOff}></Icon>
         <div className="StopTask--content" >
-          {getDialogDate(time_create, dateFormat)}
+          {getDialogDate(t, time_create, dateFormat)}
         </div>
         <div className="StopTask--notify" >
-          {"Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!"}
+          {t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')}
         </div>
       </>
     </DialogMessageWrap>

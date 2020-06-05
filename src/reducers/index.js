@@ -382,6 +382,9 @@ import trackingTime from "./taskDetail/time";
 import banUserFromGroup, {
   initialState as banUserFromGroupInitialState,
 } from "./user/banUserFromGroup";
+import deleteDocumentsUser, {
+  initialState as deleteDocumentsUserInitialState,
+} from "./user/deleteDocumentsUser";
 import detailUser, {
   initialState as detailUserInitialState,
 } from "./user/detailUser";
@@ -464,6 +467,7 @@ const rootReducer = combineReducers({
     sortUser,
     detailUser,
     uploadDocumentsUser,
+    deleteDocumentsUser,
     updateUser,
     publicMember,
     privateMember,
@@ -644,6 +648,7 @@ export const DEFAULT_STATE = {
     sortUser: sortUserInitialState,
     detailUser: detailUserInitialState,
     uploadDocumentsUser: uploadDocumentsUserInitialState,
+    deleteDocumentsUser: deleteDocumentsUserInitialState,
     updateUser: updateUserInitialState,
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,

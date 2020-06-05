@@ -39,7 +39,6 @@ function JobDetailPage(props) {
     dispatch(getGirdListTask());
     dispatch(taskDetailAction.detailGroupPermissionDefault())
     dispatch(taskDetailAction.getRole());
-    dispatch(taskDetailAction.getListOffer());
   }, [dispatch]);
 
   useEffect(() => {
@@ -84,10 +83,10 @@ function JobDetailPage(props) {
     // console.log(key, ' useEffect', type_data)
     // console.log('projectId', projectId)
     if (projectId !== "" && userId) {
-      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
+      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(detailStatus({ projectId }));
       const customEvent = new CustomEvent(JOIN_PROJECT_EVENT, {
         detail: projectId,

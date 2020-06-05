@@ -1,19 +1,22 @@
 import { Avatar, ClickAwayListener, MenuItem } from '@material-ui/core';
 import clsx from 'clsx';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './styles.scss';
+import { filterMembersByKey } from 'helpers/jobDetail/arrayHelper';
 
 const TagModal = ({
   isOpen,
   handleClose,
   handleClickMention,
   selectedId,
+  members,
 }) => {
-  const dispatch = useDispatch();
-  const members = useSelector(state => state.taskDetail.taskMember.member);
-  const tagMembers = useSelector(state => state.chat.tagMembers);
+  // const dispatch = useDispatch();
+  // const members = useSelector(state => state.taskDetail.taskMember.member);
+  // const tagMembers = useSelector(state => state.chat.tagMembers);
+  // const filteredMembers = filterMembersByKey(members, keyFilter.current)
 
   function handleClickMember(index) {
     return () => {

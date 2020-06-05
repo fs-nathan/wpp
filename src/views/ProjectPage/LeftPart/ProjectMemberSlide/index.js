@@ -3,6 +3,7 @@ import { filter, get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import MemberModal from 'views/JobDetailPage/TabPart/MemberTab/MemberModal';
 import MembersSettingModal from '../../Modals/MembersSetting';
 import { viewPermissionsSelector } from '../../selectors';
 import ProjectMemberSlidePresenter from './presenters';
@@ -59,6 +60,7 @@ function ProjectMemberSlide({
         open={openMemberSetting}
         setOpen={setOpenMemberSetting}
       />
+      <MemberModal />
     </>
   )
 }

@@ -1,5 +1,5 @@
 import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiAccountConvert, mdiAccountMinus, mdiAlertCircleOutline, mdiCheckCircle, mdiDotsVertical } from '@mdi/js';
+import { mdiAccountConvert, mdiAccountMinus, mdiAlertCircleOutline, mdiCheckCircle, mdiDotsVertical, mdiMenuRight } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
@@ -9,6 +9,7 @@ import SearchInput from 'components/SearchInput';
 import { ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, UPDATE_STATE_JOIN_TASK } from 'constants/events';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import './style.scss';
 
@@ -152,21 +153,12 @@ const HelperText = ({ className = '', ...props }) =>
     {...props}
   />
 
-function getJoinStatusName(statusCode) {
-  switch (statusCode) {
-    case 0:
-      return 'Tham gia việc khi được chọn';
-    case 1:
-      return 'Tham gia tất cả việc';
-    default:
-      return '';
-  }
-}
-
 function UserFreeRoomList({
   room, loading,
   onAddMember
 }) {
+
+  const { t } = useTranslation();
 
   if (get(room, 'users', []).length > 0)
     return (
@@ -207,7 +199,7 @@ function UserFreeRoomList({
                   color="white"
                 />
               )}
-              Thêm
+              {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ADD")}
             </AddButton>
           </CustomListItem>
         ))}
@@ -251,6 +243,8 @@ function MemberSetting({
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [curMemberSetting, setCurMemberSetting] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+
+  const { t } = useTranslation();
 
   const colors = useSelector(state => state.setting.colors)
   const bgColor = colors.find(item => item.selected === true);
@@ -303,32 +297,32 @@ function MemberSetting({
   return (
     <CustomModal
       className={'view_Project_MemberSetting_Modal___wide-modal'}
-      title={`Quản lý thành viên dự án`}
+      title={t("DMH.VIEW.PP.MODAL.MEMBER.TITLE")}
       fullWidth={true}
       open={open}
       setOpen={setOpen}
       confirmRender={null}
       onConfirm={() => null}
-      cancleRender={() => 'Thoát'}
+      cancleRender={() => t("DMH.VIEW.PP.MODAL.MEMBER.EXIT")}
       height='tall'
       maxWidth='lg'
       columns={2}
       loading={members.loading || loading}
       left={{
-        title: () => <LeftHeader>Danh sách thành viên</LeftHeader>,
+        title: () => <LeftHeader>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.TITLE")}</LeftHeader>,
         content: () =>
           <LeftContainer>
             <Banner>
               <SearchInput
                 fullWidth
-                placeholder='Tìm thành viên'
+                placeholder={t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.SEARCH")}
                 value={searchPatern}
                 onChange={evt => setSearchPatern(evt.target.value)}
               />
             </Banner>
             <HelperText>
               <Icon path={mdiAlertCircleOutline} size={1} />
-              <span>Hãy thêm thành viên vào nhóm trước khi gán cho dự án!</span>
+              <span>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.HELPER")}</span>
             </HelperText>
             <ListContainer>
               {members.free.map(room => (
@@ -343,17 +337,17 @@ function MemberSetting({
           </LeftContainer>,
       }}
       right={{
-        title: () => <RightHeader>Thành viên dự án</RightHeader>,
+        title: () => <RightHeader>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TITLE")}</RightHeader>,
         content: () =>
           <RightContainer>
             <Table>
               <StyledTableHead>
                 <StyledRow>
                   <AvatarTableCell></AvatarTableCell>
-                  <HeaderTableCell>Thành viên</HeaderTableCell>
-                  <HeaderTableCell>Nhóm quyền</HeaderTableCell>
-                  <HeaderTableCell>Vai trò</HeaderTableCell>
-                  <HeaderTableCell>Trạng thái</HeaderTableCell>
+                  <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.MEM")}</HeaderTableCell>
+                  <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.PER")}</HeaderTableCell>
+                  <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.ROL")}</HeaderTableCell>
+                  <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.STA")}</HeaderTableCell>
                   <HeaderTableCell></HeaderTableCell>
                 </StyledRow>
               </StyledTableHead>
@@ -379,13 +373,16 @@ function MemberSetting({
                         >
                           {
                             (get(member, 'is_admin', false) || get(member, 'group_permission_name'))
-                              ? <span>{get(member, 'group_permission_name')}</span>
+                              ? <>
+                                <span>{get(member, 'group_permission_name')}</span>
+                                {get(member, 'is_admin', false) === false && <Icon path={mdiMenuRight} size={0.7} color={'#222'} />}
+                              </>
                               : <>
                                 <span
                                   style={{
                                     backgroundColor: bgColor.color,
                                   }}>+</span>
-                                <span>Gán quyền</span>
+                                <span>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PER")}</span>
                               </>
                           }
                         </PermissionBox>)}
@@ -406,14 +403,18 @@ function MemberSetting({
                               style={{
                                 backgroundColor: bgColor.color,
                               }}>+</span>
-                            {get(member, 'roles', []).length === 0 && <span>Thêm</span>}
+                            <span>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ADD")}</span>
                           </RoleButton>
                         </RolesBox>)}
                     </TableCell>
                     <TableCell width='25%'>
                       {get(member, 'is_in_group', false)
-                        ? getJoinStatusName(get(member, 'join_task_status_code', ''))
-                        : <span style={{ color: 'red' }}>Đã rời nhóm</span>}
+                        ? get(member, 'join_task_status_code') === 0
+                          ? t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")
+                          : get(member, 'join_task_status_code') === 1
+                            ? t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")
+                            : ""
+                        : <span style={{ color: 'red' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.LEA")}</span>}
                     </TableCell>
                     <TableCell width='5%'>
                       {get(member, 'is_in_group', false) &&
@@ -445,7 +446,7 @@ function MemberSetting({
                   handleUpdateStateJoinTask(curMemberSetting, 1);
                 }}
               >
-                <Icon path={mdiCheckCircle} size={0.7} /> Tham gia tất cả việc
+                <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")}
               </CustomMenuItem>
               <CustomMenuItem
                 selected={get(curMemberSetting, 'join_task_status_code') === 0}
@@ -454,7 +455,7 @@ function MemberSetting({
                   handleUpdateStateJoinTask(curMemberSetting, 0);
                 }}
               >
-                <Icon path={mdiCheckCircle} size={0.7} /> Tham gia việc khi được chọn
+                <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")}
               </CustomMenuItem>
               <CustomMenuItem
                 onClick={evt => {
@@ -462,7 +463,7 @@ function MemberSetting({
                   handleAssignMemberToAllTask(curMemberSetting);
                 }}
               >
-                <Icon path={mdiAccountConvert} size={0.7} /> Gán vào công việc được tạo
+                <Icon path={mdiAccountConvert} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PIC")}
               </CustomMenuItem>
               {get(curMemberSetting, 'can_ban', false) && (
                 <CustomMenuItem
@@ -471,7 +472,7 @@ function MemberSetting({
                     handleRemoveMember(curMemberSetting);
                   }}
                 >
-                  <Icon path={mdiAccountMinus} size={0.7} /> Loại trừ
+                  <Icon path={mdiAccountMinus} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.BAN")}
                 </CustomMenuItem>
               )}
             </Menu>

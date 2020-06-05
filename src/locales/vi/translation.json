@@ -234,7 +234,8 @@
           },
           "DOC": {
             "TITLE": "File hồ sơ thành viên",
-            "EXIT": "Thoát"
+            "EXIT": "Thoát",
+            "ALERT": "Bạn chắc chắn muốn xóa file?"
           }
         },
         "RIGHT": {
@@ -414,6 +415,152 @@
             "BTN": {
               "DEL": "Xóa",
               "RES": "Khôi phục"
+            }
+          }
+        }
+      },
+      "PP": {
+        "LEFT": {
+          "GT": {
+            "NUM_TASK": "{{number_task}} việc",
+            "TITLE": "Nhóm công việc",
+            "BACK": "Quay lại",
+            "ADD": "Thêm nhóm công việc",
+            "SEARCH": "Tìm nhóm công việc",
+            "ALL_LABLE": "Tất cả",
+            "EDIT": "Chỉnh sửa",
+            "DEL": "Xóa"
+          },
+          "PD": {
+            "TITLE": "Thông tin dự án",
+            "BACK": "Quay lại",
+            "PROGRESS": "Tiến độ dự án",
+            "DESC": "Mô tả dự án",
+            "MEM": "Thành viên",
+            "EDIT": "Chỉnh sửa",
+            "DEL": "Xóa dự án"
+          },
+          "PM": {
+            "NUM_TASK": "Tham gia {{number_task}}/{{total_task}} việc",
+            "ALL_TASK": "{{number_task}} việc",
+            "LEAVE": "Đã rời nhóm",
+            "TITLE": "Thành viên dự án",
+            "BACK": "Quay lại",
+            "ADD": "Thêm thành viên dự án",
+            "SEARCH": "Tìm thành viên",
+            "ALL_LABEL": "Tất cả",
+            "MANAGE": "Quản lý thành viên"
+          }
+        },
+        "MODAL": {
+          "COPY": {
+            "TITLE": "Sao chép nhóm công việc",
+            "SEARCH": "Tìm nhóm công việc"
+          },
+          "CREATE": {
+            "TITLE": "Tạo nhóm công việc",
+            "CREATE": {
+              "LABEL": "Tạo mới nhóm công việc",
+              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc"
+            },
+            "COPY": {
+              "LABEL": "Sao chép nhóm công việc",
+              "DESC": "Sao chép các nhóm công việc có sẵn vào dự án"
+            }
+          },
+          "CUGT": {
+            "C_TITLE": "Tạo mới nhóm công việc",
+            "U_TITLE": "Chỉnh sửa nhóm công việc",
+            "NAME": "Tên nhóm công việc",
+            "DESC": "Mô tả nhóm công việc",
+            "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc?"
+          },
+          "MEMBER": {
+            "TITLE": "Quản lý thành viên dự án",
+            "EXIT": "Thoát",
+            "LEFT": {
+              "TITLE": "Danh sách thành viên",
+              "SEARCH": "Tìm thành viên",
+              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án!"
+            },
+            "RIGHT": {
+              "TITLE": "Thành viên dự án",
+              "TABLE": {
+                "MEM": "Thành viên",
+                "PER": "Nhóm quyền",
+                "ROL": "Vai trò",
+                "STA": "Trạng thái"
+              },
+              "LABEL": {
+                "PER": "Gán quyền",
+                "ADD": "Thêm",
+                "LEA": "Đã rời nhóm",
+                "ALL": "Tham gia tất cả việc",
+                "SEL": "Tham gia việc khi được chọn",
+                "PIC": "Gán vào công việc được tạo",
+                "BAN": "Loại trừ"
+              }
+            },
+            "PERMISSION": {
+              "TITLE": "Phân quyền thành viên",
+              "EXIT": "Thoát",
+              "CANCLE": "Hủy",
+              "DONE": "Hoàn thành",
+              "MOVED": {
+                "LABEL_1": "Nhóm quyền \"{{permission_name}}\" đã được loại bỏ khỏi module này.",
+                "LABEL_2": "Bạn có thể giữ nguyên để tiếp tục sử dụng nhóm quyền này hoặc lựa chọn nhóm quyền khác.",
+                "MORE": "Xem thêm"
+              },
+              "TABLE": {
+                "NAME": "Tên quyền",
+                "DESC": "Mô tả"
+              },
+              "ADMIN": {
+                "TITLE": "Nhóm quyền: Chủ sở hữu dự án",
+                "DESC": "Chủ sở hữu dự án có các quyền sau:"
+              },
+              "USER": {
+                "TITLE": "Chọn nhóm quyền",
+                "DESC": "Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.",
+                "NO_DATA": {
+                  "LABEL_1": "Hiện tại chưa có nhóm quyền nào được chọn cho chức năng này!",
+                  "LABEL_2": "Liên hệ với Quản trị viên để yêu cầu bổ sung"
+                },
+                "REMOVE": "Xóa nhóm quyền đã chọn"
+              }
+            },
+            "ROLE": {
+              "TITLE": "Vai trò thành viên",
+              "EXIT": "Thoát",
+              "TABLE": {
+                "NAME": "Tên vai trò",
+                "DESC": "Mô tả vai trò"
+              }
+            }
+          }
+        },
+        "RIGHT": {
+          "ALL": {
+            "TITLE": "Danh sách công việc",
+            "LABEL": {
+              "MEMBER": "Thành viên",
+              "GROUP_TASK": "Nhóm việc",
+              "DOWNLOAD": "Tải xuống",
+              "CREATE": "+ Tạo công việc",
+              "SETTING": "Cài đặt dự án",
+              "HIDE": "Ẩn dự án",
+              "SHOW": "Bỏ ẩn dự án",
+              "NO_DATA": "Chưa có công việc nào được khởi tạo. Hãy click vào nút + TẠO CÔNG VIỆC để bắt đầu quản lý dự án và công việc của bạn"
+            },
+            "TABLE": {
+              "NAME": "Tên công việc",
+              "STATUS": "Trạng thái",
+              "EXP_DATE": "{{date}} ngày",
+              "PROGRESS": "Tiến độ",
+              "BEGIN": "Bắt đầu",
+              "END": "Kết thúc",
+              "COMPLETE": "Hoàn thành",
+              "PRIORITY": "Ưu tiên"
             }
           }
         }
@@ -1097,7 +1244,7 @@
   "LABEL_CHAT_TASK_NHAP_GOI_Y_NOI": "Nhập @ gợi ý, nội dung thảo luận...",
   "LABEL_CHAT_TASK_NHAC_HEN": "Nhắc hẹn",
   "LABEL_CHAT_TASK_XEM_CHI_TIET": "Xem chi tiết",
-  "LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO": "Tìm nội dung trong thảo luận",
+  "LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO": "Nhập nội dung và ấn Enter để xem kết quả tìm kiếm",
   "LABEL_CHAT_TASK_THANH_VIEN": "Thành viên",
   "LABEL_CHAT_TASK_NHOM_QUYEN": "Nhóm quyền",
   "LABEL_CHAT_TASK_VAI_TRO": "Vai trò",
@@ -1276,6 +1423,7 @@
   "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI": "{{name}} đã tạo công việc mới",
   "LABEL_CHAT_TASK_TIEN_DO_FROM_TO": "Tiến độ: {{start_date}} - {{end_date}}",
   "LABEL_CHAT_TASK_LUC_NGAY": "Lúc {{time_remind}} ngày {{date_remind}} - {{remind}}",
+  "LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE": "Lúc {{time}} ngày {{date}}",
   "LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO": "Nhắc theo tiến độ {{remind}}",
   "LABEL_CHAT_TASK_DANG_TAM_DUNG": "Đang tạm dừng",
   "LABEL_CHAT_TASK_TEN": "Tên",
@@ -1528,5 +1676,15 @@
   "Vai trò": "Vai trò",
   "Biểu đồ vai trò của công việc": "Biểu đồ vai trò của công việc",
   "Trạng thái": "Trạng thái",
-  "Biểu đồ theo trạng thái công việc": "Biểu đồ theo trạng thái công việc"
+  "Biểu đồ theo trạng thái công việc": "Biểu đồ theo trạng thái công việc",
+
+  "LABEL_CHAT_TASK_DUOC_GIAO": "Được giao",
+  "LABEL_CHAT_TASK_TU_DE_XUAT": "Tự đề xuất",
+  "LABEL_CHAT_TASK_GIAO_VIEC_CHO": "Giao việc cho",
+  "LABEL_CHAT_TASK_THAP": "Thấp",
+  "LABEL_CHAT_TASK_TRUNG_BINH": "Trung bình",
+  "LABEL_CHAT_TASK_CAO": "Cao",
+  "LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT": "{{count}} lần điều chỉnh",
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUNG": "Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!",
+  "LABEL_CHAT_TASK_DA_DO_TASK": "đã {{taskName}}"
 }

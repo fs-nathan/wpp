@@ -61,7 +61,7 @@
   display: block;
   position: relative;
   line-height: 23px;
-  margin: 15px 0 10px;
+  margin: 0 0 10px;
   width: 100%;
 }
 
@@ -97,7 +97,6 @@
 .view_ProjectPage_MemberPermissionModal___deselect {
   display: flex;
   align-items: center;
-  width: fit-content;
   padding: 2px 8px;
   border-radius: 4px;
   &:hover {
@@ -112,4 +111,56 @@
     color: red;
   }
   margin-bottom: 8px;
+}
+
+.view_ProjectPage_MemberPermissionModal___modal {
+  & > div:nth-child(3) > div {
+    & > div:nth-child(2) {
+      height: 90vh;
+      & > div {
+        grid-template-columns: 3.5fr 8fr;
+        height: 100% !important;
+      }
+    }
+  }
+}
+
+.view_ProjectPage_MemberPermissionModal___alert-box {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  background-color: #d32f2f;
+  & > * {
+    color: #ffffff;
+    &:not(:first-child) {
+      margin-left: 16px;
+    }
+    &:nth-child(2) {
+      flex-grow: 2;
+      & > p {
+        & {
+          margin: 0;
+        }
+        &:first-child {
+          margin-bottom: 5px;
+        }
+      }
+    }
+    &:last-child {
+      font-size: 14px;
+      font-weight: 500;
+      padding: 5px 10px;
+      border-radius: 4px;
+      text-align: center;
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+      }
+      &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
+    }
+  }
+  margin-bottom: 10px;
 }

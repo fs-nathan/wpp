@@ -108,11 +108,11 @@ export function replaceUrl(str) {
   return replaceMultipleReg(withDomain, regex2, replacer)
 }
 
-export function getDialogDate(timeString, formatDate = '') {
+export function getDialogDate(t, timeString, formatDate = '') {
   try {
     const date = new Date(timeString);
     const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
-    return `Lúc ${format(date, 'HH:mm')} ngày ${format(date, fixedFormat)}`;
+    return t('LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE', { time: format(date, 'HH:mm'), date: format(date, fixedFormat) });
   } catch (e) {
     return timeString;
   }
