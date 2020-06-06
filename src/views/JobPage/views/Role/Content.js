@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import { Analytic } from "views/JobPage/components/Analytic";
+import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import { TaskTable } from "views/JobPage/components/TaskTable";
 import { useCustomList } from "views/JobPage/hooks/useCustomList";
 import { JobPageContext } from "views/JobPage/JobPageContext";
@@ -23,15 +24,15 @@ export function Content() {
     doing,
     stop,
     expired,
-    tasks = emptyArray
-  ] = useSelector(state => {
+    tasks = emptyArray,
+  ] = useSelector((state) => {
     return createMapPropsFromAttrs([
       recent.complete,
       recent.waiting,
       recent.doing,
       recent.stop,
       recent.expired,
-      recent.tasks
+      recent.tasks,
     ])(state.taskPage[TASK_ROLE]);
   });
 
@@ -39,8 +40,10 @@ export function Content() {
     tasks,
     isToggleSortName,
     keyword,
-    statusFilter
+    statusFilter,
   });
+  const hadData = tasks && tasks.length;
+  if (!hadData) return <EmptyHolder />;
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -52,37 +55,37 @@ export function Content() {
                 label: t(labels.task_waiting),
                 color: colors.task_waiting,
                 count: waiting,
-                show: statusFilter["waiting"]
+                show: statusFilter["waiting"],
               },
               {
                 key: "doing",
                 label: t(labels.task_doing),
                 color: colors.task_doing,
                 count: doing,
-                show: statusFilter["doing"]
+                show: statusFilter["doing"],
               },
               {
                 key: "complete",
                 label: t(labels.task_complete),
                 color: colors.task_complete,
                 count: complete,
-                show: statusFilter["complete"]
+                show: statusFilter["complete"],
               },
               {
                 key: "expired",
                 label: t(labels.task_expired),
                 color: colors.task_expired,
                 count: expired,
-                show: statusFilter["expired"]
+                show: statusFilter["expired"],
               },
               {
                 key: "stop",
                 label: t(labels.task_stop),
                 color: colors.task_stop,
                 count: stop,
-                show: statusFilter["stop"]
-              }
-            ]
+                show: statusFilter["stop"],
+              },
+            ],
           }}
         />
       </Grid>
