@@ -150,8 +150,8 @@ const OfferModal = ({
   }
 
   React.useEffect(() => {
-    if (!isFetching && !error)
-      setOpen(false);
+    // if (!isFetching && !error)
+    //   setOpen(false);
     // eslint-disable-next-line
   }, [isFetching, error])
 
@@ -339,8 +339,6 @@ const OfferModal = ({
       }
       canConfirm={validate()}
       actionLoading={isFetching}
-      manualClose
-      onCancle={() => setOpen(false)}
       className="offerModal"
     >
       <React.Fragment>
