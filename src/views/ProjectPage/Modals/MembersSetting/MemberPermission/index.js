@@ -1,6 +1,7 @@
 import { memberProject } from 'actions/project/memberProject';
 import { removeGroupPermissionMember } from 'actions/project/removeGroupPermissionMember';
 import { updateGroupPermissionMember } from 'actions/project/updateGroupPermissionMember';
+import { isNil } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -15,9 +16,15 @@ function MemberRole({
   doRemoveGroupPermissionMember,
   updateGroupPermission,
   doReloadMember,
+  project_id = null,
 }) {
 
-  const { projectId } = useParams();
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
 
   return (
     <MemberPermissionPresenter

@@ -29,19 +29,22 @@ import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import './styles.scss';
 
 const OfferModal = ({
-                      isOpen,
-                      setOpen,
-                      actionCreateOffer,
-                      item: offerItem,
-                      isUpdateOfferDetailDescriptionSection,
-                      isUpdateOfferApprovalCondition
-                    }) => {
+  isOpen,
+  setOpen,
+  actionCreateOffer,
+  item: offerItem,
+  isUpdateOfferDetailDescriptionSection,
+  isUpdateOfferApprovalCondition,
+  isOffer,
+}) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const bgColor = useSelector(state => bgColorSelector(state));
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.id);
+  const isFetching = useSelector(state => state.taskDetail.taskOffer.isFetching)
+  const error = useSelector(state => state.taskDetail.taskOffer.error)
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const { members: allMembers } = useSelector(state => allMembersSelector(state));
   const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
@@ -146,6 +149,12 @@ const OfferModal = ({
     }
   }
 
+  React.useEffect(() => {
+    if (!isFetching && !error)
+      props.setOpen(false);
+    // eslint-disable-next-line
+  }, [isFetching, error])
+
   const handleUploadSelectedFilesFromPC = async (e) => {
     const { files } = e.target;
     setParams("files", [...tempSelectedItem.files, ...files]);
@@ -211,7 +220,6 @@ const OfferModal = ({
   }
 
   function onClickUpdateOffer() {
-    setOpen(false)
     if (isUpdateOfferDetailDescriptionSection) {
       if (validate()) {
         dispatch(updateOfferDetailDescriptionSection({
@@ -222,7 +230,7 @@ const OfferModal = ({
           priorityCode: tempSelectedItem.priority.id,
         }))
       }
-    } else {
+    } else if (isUpdateOfferApprovalCondition) {
       const approverIds = [];
       approvers.forEach(idx => {
         approverIds.push(handlersToAddInApprovalCondition[idx].id)
@@ -237,6 +245,17 @@ const OfferModal = ({
         dataToUpdate.memberAcceptedImportantIds = approverIds;
       }
       dispatch(updateOfferApprovalCondition(dataToUpdate));
+    } else if (tempSelectedItem.content) {
+      dispatch(updateOffer({
+        task_id: taskId,
+        offer_id: tempSelectedItem.offer_id,
+        user_hander: handlers.map((id) => members[id].id),
+        user_monitor: monitors.map((id) => members[id].id),
+        title: tempSelectedItem.title,
+        content: tempSelectedItem.content,
+        offer_group_id: get(tempSelectedItem, 'offer_group_id.value'),
+        priority: get(tempSelectedItem, 'priority.id'),
+      }))
     }
   }
 
@@ -302,19 +321,26 @@ const OfferModal = ({
   return (
     <JobDetailModalWrap
       title={
-        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition
-          ? "Chỉnh sửa đề xuất"
-          : 'Tạo đề xuất'
+        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition || isOffer
+          ? t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT')
+          : t('LABEL_CHAT_TASK_TAO_DE_XUAT')
       }
       open={isOpen}
       setOpen={setOpen}
-      confirmRender={() => "Hoàn Thành"}
+      confirmRender={() =>
+        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition || isOffer
+          ? t('LABEL_CHAT_TASK_CHINH_SUA')
+          : t('LABEL_CHAT_TASK_HOAN_THANH')
+      }
       onConfirm={
-        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition
+        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition || isOffer
           ? onClickUpdateOffer
           : onClickCreateOffer
       }
       canConfirm={validate()}
+      actionLoading={isFetching}
+      manualClose
+      onCancle={() => props.setOpen(false)}
       className="offerModal"
     >
       <React.Fragment>

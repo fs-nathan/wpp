@@ -1,7 +1,7 @@
 import { addProjectRoleToMember } from 'actions/project/addProjectRoleToMember';
 import { memberProject } from 'actions/project/memberProject';
 import { removeProjectRoleFromMember } from 'actions/project/removeProjectRoleFromMember';
-import { find, get } from 'lodash';
+import { find, get, isNil } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
@@ -14,9 +14,15 @@ function MemberRole({
   curMemberId = null,
   doRemoveProjectRoleFromMember, doAddProjectRoleToMember,
   doReloadMember,
+  project_id = null,
 }) {
 
-  const { projectId } = useParams();
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
 
   return (
     <>

@@ -25,3 +25,9 @@
 .comp_FileListItem:hover {
   background: #fbfbfb;
 }
+.comp_FileListItem__delete {
+  margin-left: 16px;
+}
+.comp_FileListItem__delete:hover {
+  background: #f2f2f2;
+}

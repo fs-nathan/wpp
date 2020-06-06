@@ -85,7 +85,7 @@
   }
   &--close {
     position: absolute;
-    bottom: -6px;
+    bottom: 5px;
     right: 0px;
     svg {
       width: 20px !important;
@@ -106,7 +106,7 @@
     border-bottom: 1px solid #eeeeee;
   }
   &--pinRemind &--close {
-    bottom: 2px;
+    bottom: 5px;
   }
   &--pinImage {
     width: 34px;

@@ -4,8 +4,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import { mdiDownload, mdiInformation, mdiRotateLeft, mdiRotateRight, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionDownloadFile } from 'actions/documents';
-import { getDialogDate } from 'helpers/jobDetail/stringHelper';
-import compact from 'lodash/compact';
+import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -28,9 +27,13 @@ const TitleImg = styled(Typography)`
             & > div:nth-child(1) {
                 color: white;
                 font-size: 15px
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 100%;
             }
             & > div:nth-child(2) {
-                color: white;
+                color: #9c9797;
                 font-size: 13px
             }
         }
@@ -67,12 +70,14 @@ const DialogTitleModalImage = withStyles(styles)(props => {
     onClickDetail,
     onClickRotateLeft,
     onClickRotateRight,
+    size,
+    file_name,
     ...other } = props;
 
   function onClickDownload() {
     actionDownloadFile(image)
   }
-  const formattedTime = getDialogDate(time_create, dateFormat)
+  const formattedTime = getUpdateProgressDate(time_create, 'dd/MM/yyyy')
 
   return (
     <MuiDialogTitle className="DialogTitleModalImage" disableTypography {...other}>
@@ -84,12 +89,12 @@ const DialogTitleModalImage = withStyles(styles)(props => {
               style={{ margin: 0 }}
               primary={
                 <Typography component='div'>
-                  {compact([user_create_name, user_create_position]).join(' - ')}
+                  {file_name}
                 </Typography>
               }
               secondary={
                 <Typography component='div'>
-                  {`Đăng ${formattedTime.toLowerCase()}`}
+                  {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${formattedTime.toLowerCase()} - ${size}` })}
                 </Typography>
               }
             />

@@ -1,3 +1,4 @@
+import { Routes } from 'constants/routes';
 import { find, get } from "lodash";
 import { createSelector } from "reselect";
 
@@ -11,7 +12,7 @@ export const routeSelector = createSelector([profile], (profile) => {
   const route = get(
     find(modules, { name: "Projects" }),
     "url_redirect",
-    "/projects"
+    Routes.PROJECTS
   );
   return route;
 });

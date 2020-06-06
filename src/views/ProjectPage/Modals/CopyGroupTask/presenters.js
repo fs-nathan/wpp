@@ -5,6 +5,7 @@ import SearchInput from 'components/SearchInput';
 import { COPY_GROUP_TASK, CustomEventDispose, CustomEventListener, GET_ALL_GROUP_TASK, LIST_GROUP_TASK } from 'constants/events';
 import { find, get, remove } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 const CustomListItem = ({ className = '', ...props }) =>
@@ -34,6 +35,7 @@ function CopyGroupTask({
   const [selectedGroupTasks, setSelectedGroupTasks] = React.useState([]);
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [activeMask, setActiveMask] = React.useState(-1);
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
@@ -79,7 +81,7 @@ function CopyGroupTask({
   return (
     <React.Fragment>
       <CustomModal
-        title={`Sao chép nhóm công việc`}
+        title={t("DMH.VIEW.PP.MODAL.COPY.TITLE")}
         open={open}
         setOpen={setOpen}
         canConfirm={selectedGroupTasks.length > 0}
@@ -94,7 +96,7 @@ function CopyGroupTask({
       >
         <SearchInput
           fullWidth
-          placeholder='Tìm nhóm công việc'
+          placeholder={t("DMH.VIEW.PP.MODAL.COPY.SEARCH")}
           value={searchPatern}
           onChange={evt => setSearchPatern(evt.target.value)}
         />

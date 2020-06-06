@@ -1,4 +1,4 @@
-import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal } from "actions/chat/chat";
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal, loadChat, getViewedChat, openDetailMember } from "actions/chat/chat";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { closeNoticeModal } from "actions/system/system";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
@@ -28,6 +28,8 @@ function JobDetailPage(props) {
     (state) => state.chat.isOpenShareFileModal
   );
   const item = useSelector((state) => state.chat.item);
+  const users_shared = item ? item.users_shared || [] : [];
+  const shareItem = { ...item, users_shared }
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -37,8 +39,6 @@ function JobDetailPage(props) {
     dispatch(getGirdListTask());
     dispatch(taskDetailAction.detailGroupPermissionDefault())
     dispatch(taskDetailAction.getRole());
-    dispatch(taskDetailAction.getListOffer());
-    dispatch(taskDetailAction.getPermission({ type: 4 }));
   }, [dispatch]);
 
   useEffect(() => {
@@ -67,6 +67,9 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.chooseTask(taskId));
       dispatch(taskDetailAction.getTaskDetailTabPart({ taskId }));
       dispatch(getDataPinOnTaskChat(taskId));
+      dispatch(loadChat(taskId));
+      dispatch(getViewedChat(taskId));
+      dispatch(openDetailMember(false))
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {
         window.dispatchEvent(customEvent);
@@ -80,10 +83,10 @@ function JobDetailPage(props) {
     // console.log(key, ' useEffect', type_data)
     // console.log('projectId', projectId)
     if (projectId !== "" && userId) {
-      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
+      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(detailStatus({ projectId }));
       const customEvent = new CustomEvent(JOIN_PROJECT_EVENT, {
         detail: projectId,
@@ -112,7 +115,7 @@ function JobDetailPage(props) {
       <ModalImage />
       <ForwardMessageDialog />
       {isOpenShareFileModal && (
-        <ShareDocumentModal onClose={onCloseShare} item={item} />
+        <ShareDocumentModal onClose={onCloseShare} item={shareItem} />
       )}
     </div>
   );

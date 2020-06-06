@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { searchChat } from 'actions/chat/chat';
+import { searchChat, loadChat } from 'actions/chat/chat';
 import { unPinRemind } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import SearchInput from 'components/SearchInput';
@@ -36,6 +36,10 @@ function ChatPart(props) {
     dispatch(searchChat(evt.target.value))
   }
 
+  function onClickSearch() {
+    dispatch(loadChat(taskId, undefined, false, undefined, undefined, searchChatKey))
+  }
+
   function hideSearch() {
     setShowSearch(false)
     dispatch(searchChat(''))
@@ -63,6 +67,7 @@ function ChatPart(props) {
       </div>
       <div className={clsx("chatPart--searchWrap", { 'chatPart__showSearch': isShowSearch })}>
         <SearchInput className="chatPart--search"
+          onClickSearch={onClickSearch}
           placeholder={t('LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO')} value={searchChatKey} onChange={onChangeKey} />
         <IconButton className="chatPart--close" onClick={hideSearch}>
           <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
@@ -81,7 +86,7 @@ function ChatPart(props) {
                 t('LABEL_CHAT_TASK_LUC_NGAY', {
                   time_remind: pinnedRemind.time_remind,
                   date_remind: pinnedRemind.date_remind,
-                  remind: typesRemind[pinnedRemind.type_remind]
+                  remind: t(typesRemind[pinnedRemind.type_remind])
                 })
                 :
                 t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO', {

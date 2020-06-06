@@ -6,16 +6,14 @@ import {
   FormControlLabel,
   FormGroup,
   IconButton,
-  Link,
   List,
   ListItem,
-  ListItemSecondaryAction,
   ListItemText,
   MenuItem,
   Select,
   Typography,
 } from "@material-ui/core";
-import { mdiClose, mdiPencilBoxOutline, mdiTrashCanOutline } from "@mdi/js";
+import { mdiClose } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
@@ -218,9 +216,16 @@ function CalendarProjectRightPartPresenter({
                           <FormControlLabel
                             key={get(day, "value", "")}
                             value={get(day, "value", "")}
+                            classes={{
+                              label: "gantt-schedule-modal__checkbox-label",
+                            }}
                             control={
                               <Checkbox
                                 color="primary"
+                                disabled
+                                classes={{
+                                  checked: `gantt-schedule-modal__checkbox-disable`,
+                                }}
                                 checked={get(day, "worked", false)}
                                 onChange={({ target }) =>
                                   handleChangeWorkingInWeek(
@@ -287,15 +292,6 @@ function CalendarProjectRightPartPresenter({
                               <Typography component={"div"}>
                                 {get(item, "label", "")}
                               </Typography>
-                              <IconButton
-                                onClick={() => handleDeleteDayOff(item)}
-                              >
-                                <Icon
-                                  path={mdiClose}
-                                  size={0.7}
-                                  color="rgba(0, 0, 0, 0.7)"
-                                />
-                              </IconButton>
                             </Box>
                           );
                         })}
@@ -335,93 +331,18 @@ function CalendarProjectRightPartPresenter({
                                   <ListItemText>
                                     {shift.start} - {shift.end}
                                   </ListItemText>
-                                  <ListItemSecondaryAction>
-                                    <Link
-                                      onClick={() => {
-                                        setSelectedShiftStage(shift);
-                                        setSelectedWorkingStage(null);
-                                        setOpenShiftStage(true);
-                                      }}
-                                      color="primary"
-                                      variant="body2"
-                                    >
-                                      {t("views.calendar_page.right_part.edit")}
-                                    </Link>
-                                    {shift.can_delete && (
-                                      <Link
-                                        onClick={() =>
-                                          handleDeleteShiftStageAllTime(
-                                            shift.id
-                                          )
-                                        }
-                                        color="primary"
-                                        variant="body2"
-                                        className="table_data_buttonLinkDanger"
-                                      >
-                                        {t(
-                                          "views.calendar_page.right_part.delete"
-                                        )}
-                                      </Link>
-                                    )}
-                                  </ListItemSecondaryAction>
                                 </ListItem>
                                 <Divider component="li" />
                               </>
                             );
                           })}
-                          <ListItem key={`Item_control`}>
-                            <Link
-                              onClick={() => {
-                                setSelectedWorkingStage(null);
-                                setOpenShiftStage(true);
-                              }}
-                              color="primary"
-                            >
-                              +{" "}
-                              {t(
-                                "views.calendar_page.right_part.label.add_stage"
-                              )}
-                            </Link>
-                          </ListItem>
                         </List>
                       </div>
                       {workingStage.list.map((stage, index) => {
                         return (
                           <>
                             <Box className={"table_data stage_setting_date"}>
-                              <Box className="stage_setting_date_control">
-                                <Box className="stage_setting_date_control_group">
-                                  <IconButton
-                                    key={`btn-edit-working-stage-${stage.id}`}
-                                    onClick={() => {
-                                      setSelectedWorkingStage(stage);
-                                      setOpenModalAddTimeWorkingStage(true);
-                                    }}
-                                  >
-                                    <abbr title={t("IDS_WP_EDIT")}>
-                                      <Icon
-                                        path={mdiPencilBoxOutline}
-                                        size={0.85}
-                                        color="#9E9E9E"
-                                      />
-                                    </abbr>
-                                  </IconButton>
-                                  <IconButton
-                                    key={`btn-delete-working-stage-${stage.id}`}
-                                    onClick={() => {
-                                      handleDeleteWorkingStage(stage.id);
-                                    }}
-                                  >
-                                    <abbr title={t("IDS_WP_DELETE")}>
-                                      <Icon
-                                        path={mdiTrashCanOutline}
-                                        size={0.85}
-                                        color="#9E9E9E"
-                                      />
-                                    </abbr>
-                                  </IconButton>
-                                </Box>
-                              </Box>
+                              <Box className="stage_setting_date_control"></Box>
                               <Box className="stage_setting_date_label">
                                 <span className="stage_setting_date_label">{`${stage.start} - ${stage.end}`}</span>
                               </Box>
@@ -443,36 +364,6 @@ function CalendarProjectRightPartPresenter({
                                           <ListItemText>
                                             {shift.start} - {shift.end}
                                           </ListItemText>
-                                          <ListItemSecondaryAction>
-                                            <Link
-                                              color="primary"
-                                              variant="body2"
-                                              onClick={() => {
-                                                setSelectedShiftStage(shift);
-                                                setSelectedWorkingStage(stage);
-                                                setOpenShiftStage(true);
-                                              }}
-                                            >
-                                              {t(
-                                                "views.calendar_page.right_part.edit"
-                                              )}
-                                            </Link>
-                                            <Link
-                                              onClick={() =>
-                                                hanleDeleteShiftStage(
-                                                  stage.id,
-                                                  shift.id
-                                                )
-                                              }
-                                              color="primary"
-                                              variant="body2"
-                                              className="table_data_buttonLinkDanger"
-                                            >
-                                              {t(
-                                                "views.calendar_page.right_part.delete"
-                                              )}
-                                            </Link>
-                                          </ListItemSecondaryAction>
                                         </ListItem>
                                         <Divider component="li" />
                                       </>

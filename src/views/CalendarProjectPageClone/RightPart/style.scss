@@ -51,16 +51,16 @@
       border-radius: 2px;
       min-height: 40px;
 
-      &>div:nth-child(1) {
+      & > div:nth-child(1) {
         font-size: 14px !important;
       }
 
-      &>button {
+      & > button {
         display: none !important;
       }
 
       &:hover {
-        &>button {
+        & > button {
           display: block !important;
         }
       }
@@ -100,7 +100,7 @@
       }
 
       .MuiListItemText-root {
-        &>span {
+        & > span {
           font-size: 14px !important;
         }
       }
@@ -112,9 +112,9 @@
       justify-content: center;
       align-items: center;
       font-weight: 450;
-      background: #F6F6F6;
+      background: #f6f6f6;
 
-      &>span {
+      & > span {
         font-size: 14px !important;
       }
     }
@@ -133,7 +133,7 @@
     }
 
     .stage_setting_date {
-      background: #FFFF;
+      background: #ffff;
       min-height: 80px;
       display: flex;
       flex-direction: column;
@@ -168,7 +168,7 @@
   }
 
   .MuiTypography-colorPrimary {
-    color: #009CF3 !important;
+    color: #009cf3 !important;
     cursor: pointer;
     font-size: 14px !important;
   }
@@ -203,7 +203,7 @@
   }
 
   .color_mark_green {
-    background-color: #3DA50D;
+    background-color: #3da50d;
     border-radius: 10px;
     width: 10px;
     height: 10px;
@@ -227,7 +227,7 @@
     .MuiButton-outlinedSizeSmall {
       min-width: 40px;
       height: 30px;
-      background-color: #8BC34A;
+      background-color: #8bc34a;
 
       &:hover {
         background-color: #6aaa20;
@@ -268,4 +268,10 @@
       }
     }
   }
+}
+.gantt-schedule-modal__checkbox-disable {
+  color: #48bb78 !important;
+}
+.gantt-schedule-modal__checkbox-label {
+  color: rgba(0, 0, 0, 0.87) !important;
 }

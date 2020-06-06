@@ -47,7 +47,7 @@ const HandleRemindTimeDetail = (props) => {
         </div>
         {remind_name}
         <div className="HandleRemindTimeDetail--time">
-          {`${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`}
+          {t('LABEL_CHAT_TASK_LUC_REMIND_TIME', { type: t(typesRemind[remind_type]), time: getUpdateProgressDate(time_create, dateFormat) })}
         </div>
       </>
     </DialogMessageWrap>

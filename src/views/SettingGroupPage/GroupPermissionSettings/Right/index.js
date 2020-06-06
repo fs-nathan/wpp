@@ -50,7 +50,7 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
       <Grid item container style={{ flex: 1, position: "relative" }}>
         <div style={{ position: "absolute", width: "100%", height: "100%" }}>
           <TasksScrollbar>
-            <div style={{ paddingRight: "10px" }}>
+            <div>
               {children}
               <Space height={"50px"}></Space>
             </div>
@@ -169,11 +169,7 @@ const ColumnRight = () => {
     module: groupModule,
   } = useContext(GroupPermissionSettingsCotnext);
   return (
-    <ColumnLayout
-      className="comp_rightColumn"
-      title={t("Sử dụng nhóm quyền")}
-      subTitle={t("Nhóm quyền được phân phối")}
-    >
+    <div className="comp_rightColumn">
       <div className="comp_rightColumn_content">
         <Stack>
           <b className="comp_QuickViewFilter__title">
@@ -215,7 +211,7 @@ const ColumnRight = () => {
           </Stack>
         </Stack>
       </div>
-    </ColumnLayout>
+    </div>
   );
 };
 const Right = () => {

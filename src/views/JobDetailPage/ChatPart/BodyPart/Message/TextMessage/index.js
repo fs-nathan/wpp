@@ -13,6 +13,7 @@ import CommonMessageAction from '../CommonMessageAction';
 import FileMessage from '../FileMessage';
 import ImageMessage from '../ImageMessage';
 import './styles.scss';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 
 function getChatParent(chat_parent) {
   if (!chat_parent) return null;
@@ -38,6 +39,7 @@ const TextMessage = ({
   chat_parent,
   isReply,
   is_me,
+  can_delete,
   is_deleted,
   chatPosition = "top",
   tags = [],
@@ -76,13 +78,13 @@ const TextMessage = ({
             <Avatar
               onClick={onClickAvatar}
               className={clsx("TextMessage--avatar", {
-                'TextMessage--avatar__hidden': (chatPosition !== 'top' && chatPosition !== 'one')
+                'TextMessage--avatar__hidden': isOneOf(chatPosition, ['bot', 'mid'])
               })}
               src={user_create_avatar} />
           </abbr>
         }
         {!isReply && is_me && !is_deleted &&
-          <CommonMessageAction content={content} isSelf
+          <CommonMessageAction can_delete={can_delete} content={content} isSelf
             isShortMessage={content.length < 3}
             chatId={id}
             handleReplyChat={handleReplyChat}
@@ -156,7 +158,7 @@ const TextMessage = ({
           </abbr>
         </div>
         {!isReply && !is_me && !is_deleted &&
-          <CommonMessageAction content={content} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
+          <CommonMessageAction can_delete={can_delete} content={content} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
         }
       </div >
       {

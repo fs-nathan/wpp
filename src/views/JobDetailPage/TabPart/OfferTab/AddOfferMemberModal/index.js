@@ -4,11 +4,12 @@ import SearchInput from 'components/SearchInput';
 import compact from 'lodash/compact';
 import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import OfferMemberItem, { StyledDiv } from './OfferMemberItem';
 import './styles.scss';
+import { getListOffer } from 'actions/taskDetail/taskDetailActions';
 
 function AddOfferMemberModal({
   isOpen,
@@ -20,6 +21,7 @@ function AddOfferMemberModal({
   isUpdate,
 }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const appColor = useSelector(currentColorSelector)
   const [selected, setSelected] = useState(value);
   const [searchValue, setSearchValue] = useState('');
@@ -41,6 +43,11 @@ function AddOfferMemberModal({
   React.useEffect(() => {
     setSelected(value);
   }, [value]);
+
+  React.useEffect(() => {
+    if (isOpen)
+      dispatch(getListOffer());
+  }, [dispatch, isOpen]);
 
   function onClickMember(i) {
     return () => {

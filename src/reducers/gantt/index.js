@@ -50,12 +50,13 @@ export const initialState = {
     "Nội dung 5",
     "Nội dung 6",
   ],
+  scrollTop: 0,
   renderFullDay: false,
   filterExportPdf: {
     start: null,
     end: null,
   },
-  girdType: "DAY",
+  girdType: localStorage.getItem("timeUnitGantt") || "DAY",
   girdAttribute: {
     DAY: {
       formatString: "DD/MM/YYYY",
@@ -70,6 +71,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("MM/YYYY"),
       getTimeCompare: (moment) => moment.format("M"),
       formatChild: "DD",
+      gird: "day",
     },
     MONTH: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -82,6 +84,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "MM",
+      gird: "month",
     },
     HOUR: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -90,10 +93,11 @@ export const initialState = {
       addUnit: 6,
       parentUnit: "days",
       getWidthParent: (moment, first) =>
-        first ? (23 - moment.format("HH") + 1) * 48 : 23 * 48,
+        first ? (23 - moment.format("HH") + 1) * 48 : 24 * 48,
       getTextParent: (moment) => moment.format("DD/MM/YYYY"),
       getTimeCompare: (moment) => moment.format("DD/MM/YYYY"),
       formatChild: "HH",
+      gird: "hour",
     },
     WEEK: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -106,6 +110,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("W"),
       formatChild: "W",
+      gird: "week",
     },
     QUARTER: {
       formatString: "DD/MM/YYYY HH:mm",
@@ -118,6 +123,7 @@ export const initialState = {
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "Q",
+      gird: "quarter",
     },
   },
   girdInstance: {
@@ -133,9 +139,12 @@ export const initialState = {
     getTextParent: (moment) => moment.format("MM/YYYY"),
     getTimeCompare: (moment) => moment.format("M"),
     formatChild: "DD",
+    gird: "day",
   },
 };
 
+initialState.girdInstance =
+  initialState.girdAttribute[localStorage.getItem("timeUnitGantt") || "DAY"];
 const gantt = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.GANTT_SHOW_FULL_CHART:

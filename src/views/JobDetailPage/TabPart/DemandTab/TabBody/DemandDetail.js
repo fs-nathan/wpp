@@ -9,14 +9,19 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { openDetailDemand } from 'actions/chat/chat';
 
-
-function DemandDetail({
-  isOpen,
-  setOpen,
-  item
-}) {
+function DemandDetail({ }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isOpen = useSelector(state => state.chat.isOpenDetailDemand);
+  const dataDemand = useSelector(state => state.chat.dataDemand);
+
+  function setOpen(open) {
+    dispatch(openDetailDemand(open))
+  }
+
   const {
     date_create,
     user_create_name,
@@ -24,7 +29,7 @@ function DemandDetail({
     user_create_avatar,
     content,
     type,
-  } = item;
+  } = dataDemand || {};
   const isDemand = type === 1
   return (
     <JobDetailModalWrap
@@ -32,7 +37,7 @@ function DemandDetail({
       setOpen={setOpen}
       confirmRender={null}
       cancleRender={() => t('LABEL_CHAT_TASK_THOAT')}
-      className="subTaskDetailDialog"
+      className="subTaskDetailDialog modal_height_50vh"
       titleRender={
         <div className="subTaskDetailDialog--titleWrap">
           <Avatar className="subTaskDetailDialog--avatar" src={user_create_avatar} alt='avatar' />
@@ -43,9 +48,9 @@ function DemandDetail({
         </div>
       }
     >
-      <DialogContent>
+      <>
         <div className="demandDetail--label">
-          {isDemand ? 'Chỉ đạo' : 'Quyết định'}
+          {isDemand ? t('LABEL_CHAT_TASK_CHI_DAO_LABEL') : t('LABEL_CHAT_TASK_QUYET_DINH_LABEL')}
         </div>
         <div className="demandDetail--iconContainer" >
           <div className="demandDetail--line">
@@ -60,7 +65,7 @@ function DemandDetail({
         <DialogContentText className="demandDetail--content">
           {content}
         </DialogContentText>
-      </DialogContent>
+      </>
     </JobDetailModalWrap>
   );
 }

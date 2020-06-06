@@ -65,6 +65,7 @@ function RoleManager({ setHackHeader, ...props }) {
       <TableBody>
         {userRoles.userRoles.map((item, i) => {
           const { name, description } = item;
+
           return (
             <TableRow key={i} className="comp_RecentTableRow table-body-row">
               <StyledTableBodyCell
@@ -112,12 +113,7 @@ function RoleManager({ setHackHeader, ...props }) {
                   <div style={{ width: 10 }}></div>
                   <Button
                     className="u-colorWhite"
-                    onClick={() =>
-                      handleOpenModal("ALERT", {
-                        content: "Bạn chắc chắn muốn xóa vai trò?",
-                        onConfirm: () => handleDeleteUserRole(item),
-                      })
-                    }
+                    onClick={() => handleDeleteUserRole(item)}
                     disableElevation
                     variant="contained"
                     color="secondary"

@@ -66,6 +66,7 @@ const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
 function Left({
   groupPermissionList,
   setSelect,
+  select,
   groupPermissionDefaultList,
   setModal,
 }) {
@@ -99,7 +100,7 @@ function Left({
           <Box style={{ background: "#fff" }}>
             <Stack>
               <div />
-              <Box padding="0 15px">
+              <Box padding="0 1rem">
                 <ListItemLayout
                   title={t("Danh sách nhóm quyền")}
                   actions={
@@ -112,7 +113,7 @@ function Left({
                   }
                 ></ListItemLayout>
               </Box>
-              <Box padding="0 15px">
+              <Box padding="0 1rem">
                 <SearchBox
                   fullWidth
                   placeholder={t("Tìm nhóm quyền")}
@@ -139,6 +140,9 @@ function Left({
                   ])(item);
                   return (
                     <StyledListItem
+                      className={
+                        select && item && select.id === item.id ? "active" : ""
+                      }
                       key={id}
                       onClick={() => {
                         setSelect(item, true);
@@ -152,13 +156,13 @@ function Left({
                             color="#8d8d8d"
                           />
                         )}
+                        <Icon
+                          style={{ flexShrink: 0, fill: "#8d8d8d" }}
+                          path={mdiAccountKey}
+                          size={1}
+                        />
                       </div>
 
-                      <Icon
-                        style={{ flexShrink: 0, fill: "#8d8d8d" }}
-                        path={mdiAccountKey}
-                        size={1}
-                      />
                       <ListItemLayout
                         title={name}
                         subTitle={template(
@@ -217,6 +221,11 @@ function Left({
                   return bindDraggable(
                     <div>
                       <StyledListItem
+                        className={
+                          select && item && select.id === item.id
+                            ? "active onHover"
+                            : "onHover"
+                        }
                         onClick={() => {
                           setSelect(item);
                         }}
@@ -224,17 +233,20 @@ function Left({
                         {bindDragHandle(
                           <div style={{ flexShrink: 0, lineHeight: 1 }}>
                             <Icon
+                              className="onHover__show"
                               path={mdiDragVertical}
                               size={1}
                               color="#8d8d8d"
                             />
+                            <Icon
+                              className="onHover__hide"
+                              style={{ fill: "#8d8d8d" }}
+                              path={mdiAccountKey}
+                              size={1}
+                            />
                           </div>
                         )}
-                        <Icon
-                          style={{ flexShrink: 0, fill: "#8d8d8d" }}
-                          path={mdiAccountKey}
-                          size={1}
-                        />
+
                         <ListItemLayout
                           title={name}
                           subTitle={template(
@@ -244,6 +256,7 @@ function Left({
                           })}
                           actions={
                             <IconButton
+                              className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuAnchor(
@@ -282,6 +295,7 @@ function Left({
 }
 export default () => {
   const {
+    select,
     setSelect,
     setModal,
     groupPermissionList,
@@ -291,7 +305,7 @@ export default () => {
     <Left
       groupPermissionList={groupPermissionList}
       groupPermissionDefaultList={groupPermissionDefaultList}
-      {...{ setSelect, setModal }}
+      {...{ setSelect, setModal, select }}
     />
   );
 };

@@ -1,14 +1,17 @@
-import React from 'react';
-import { get } from 'lodash';
-import { Link } from 'react-router-dom';
-import { Draggable } from 'react-beautiful-dnd';
-import { ListItemText, IconButton } from '@material-ui/core';
-import { StyledListItem, Primary, Secondary } from '../../../../../components/CustomList';
+import { IconButton, ListItemText } from '@material-ui/core';
+import { mdiDotsVertical, mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiDragVertical, mdiDotsVertical } from '@mdi/js';
+import { Primary, Secondary, StyledListItem } from 'components/CustomList';
+import { get } from 'lodash';
+import React from 'react';
+import { Draggable } from 'react-beautiful-dnd';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 function CustomListItem({ taskGroup, index, setAnchorEl, setCurGroupTask }) {
-  
+
+  const { t } = useTranslation();
+
   const [isHover, setIsHover] = React.useState(false);
 
   function handleClick(evt) {
@@ -17,28 +20,28 @@ function CustomListItem({ taskGroup, index, setAnchorEl, setCurGroupTask }) {
   }
 
   return (
-    <Draggable 
+    <Draggable
       draggableId={get(taskGroup, 'id')}
-      index={index}  
+      index={index}
     >
       {(provided) => (
-        <StyledListItem 
+        <StyledListItem
           component={Link}
           to={`#`}
           innerRef={provided.innerRef}
           {...provided.draggableProps}
           onMouseEnter={() => setIsHover(true)}
-          onMouseLeave={() => setIsHover(false)}  
+          onMouseLeave={() => setIsHover(false)}
         >
           <div {...provided.dragHandleProps}>
-            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'}/>
+            <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
           </div>
-          <ListItemText 
+          <ListItemText
             primary={
-              <Primary>{get(taskGroup, 'name', '')}</Primary>  
+              <Primary>{get(taskGroup, 'name', '')}</Primary>
             }
             secondary={
-              <Secondary>{get(taskGroup, 'number_task', 0)} việc</Secondary>
+              <Secondary>{t("DMH.VIEW.PP.LEFT.GT.NUM_TASK", { number_task: get(taskGroup, 'number_task', 0) })}</Secondary>
             }
           />
           <IconButton

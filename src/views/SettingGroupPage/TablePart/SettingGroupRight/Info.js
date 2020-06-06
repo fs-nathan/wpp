@@ -72,7 +72,7 @@ const Info = props => {
       group_address: e.target.address.value,
       group_phone: e.target.phoneNumber.value,
       group_email: e.target.email.value,
-      group_website: e.target.email.website
+      group_website: e.target.website.value
     };
     try {
       setLoading(true);
@@ -211,7 +211,6 @@ const Info = props => {
     window.navigator.clipboard.writeText(text);
     handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
   };
-  console.log('test', props.profile);
   return (
     <div className="setting-group-info">
       <div className="group-info-left">

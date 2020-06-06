@@ -32,11 +32,9 @@ function CreateProjectGroup({
   return (
     <>
       <CreateProjectGroupPresenter
-        updatedProjectGroup={updatedProjectGroup} doReloadProjectGroup={() =>
-          updatedProjectGroup
-            ? doReloadDetail({ projectGroupId: get(updatedProjectGroup, 'id') })
-            : doReloadList()
-        }
+        updatedProjectGroup={updatedProjectGroup}
+        doReloadDetail={() => doReloadDetail({ projectGroupId: get(updatedProjectGroup, 'id') })}
+        doReloadList={() => doReloadList()}
         open={open} setOpen={setOpen}
         handleCreateOrEditProjectGroup={(name, description, icon) =>
           updatedProjectGroup

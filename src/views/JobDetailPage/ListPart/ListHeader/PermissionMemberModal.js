@@ -5,7 +5,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey } from '@mdi/js';
+import { mdiChevronLeft, mdiChevronRight, mdiDeleteOutline, mdiKey, mdiAlert } from '@mdi/js';
 import Icon from '@mdi/react';
 import { removeGroupPermissionOfMember, updatePermission } from "actions/taskDetail/taskDetailActions";
 import clsx from "clsx";
@@ -19,6 +19,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 import styled from 'styled-components';
 import './styles.scss';
+import findIndex from "lodash/findIndex";
 
 const RowTable = styled(TableRow)`
 & > *:not(first-child) {
@@ -62,6 +63,7 @@ function CustomArrow({ path, className, isDisabled, onClick }) {
 
 function PermissionMemberModal({ memberId, setOpen,
   is_admin,
+  permission = {},
   isOpen
 }) {
   const { t } = useTranslation();
@@ -69,16 +71,24 @@ function PermissionMemberModal({ memberId, setOpen,
   const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
-  const [selectedValue, setSelectedValue] = React.useState(0);
+  const [selectedValue, setSelectedValue] = React.useState(-1);
   const [permissionsList, setPermissionsList] = React.useState([]);
-  const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
 
   // useEffect(() => {
   //   if (is_admin)
   //     dispatch(detailGroupPermissionDefault())
   // }, [dispatch, is_admin])
+  useEffect(() => {
+    if (permission) {
+      const idx = findIndex(listGroupPermission || [], ({ id }) => id === permission.id)
+      setSelectedValue(idx)
+    } else {
+      setSelectedValue(-1)
+    }
+  }, [listGroupPermission, permission])
 
   useEffect(() => {
+    const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
     // console.log('PermissionMemberModal', is_admin, ownerPermissions, selectedPermission)
     if (is_admin && ownerPermissions)
       setPermissionsList(ownerPermissions.permissions)
@@ -86,7 +96,7 @@ function PermissionMemberModal({ memberId, setOpen,
       setPermissionsList(selectedPermission)
     }
     // eslint-disable-next-line
-  }, [dispatch, is_admin])
+  }, [dispatch, is_admin, selectedValue])
 
   const handleChange = (event) => {
     setSelectedValue(parseInt(event.target.value));
@@ -125,6 +135,21 @@ function PermissionMemberModal({ memberId, setOpen,
         <div className="permissionMemberModal--content">
           {is_admin ? t('LABEL_CHAT_TASK_CHU_SO_HUU_CONG') : t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}
         </div>
+        {permission && selectedValue === -1 &&
+          <div className="permissionMemberModal--removed">
+            <Icon path={mdiAlert} size={3}></Icon>
+            <div className="permissionMemberModal--removedDes">
+              <div dangerouslySetInnerHTML={{ __html: t('LABEL_CHAT_TASK_NHOM_QUYEN_B_QUAN', { name: permission.name }) }}></div>
+              <div >{t('LABEL_CHAT_TASK_BAN_CO_THE_GIU')}</div>
+            </div>
+            <a
+              href={permission.url_redirect || "http://workplus.vn/"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="permissionMemberModal--seeMore">
+              {t('LABEL_CHAT_TASK_XEM_THEM')}
+            </a>
+          </div>}
         {listGroupPermission.length > 0 || is_admin ?
           <>
             {!is_admin &&
@@ -171,11 +196,12 @@ function PermissionMemberModal({ memberId, setOpen,
           <div className="permissionItem--noPermissions">
             <img className="permissionItem--noPermissionsImg" src="/images/no-data.png" alt='no permission'></img>
             <div className="permissionItem--noPermissionsFooter">{t('LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION')}</div>
+            <div className="permissionItem--noPermissionsFooter">{t('LABEL_CHAT_TASK_LIEN_HE_VOI_QUAN')}</div>
           </div>
         }
       </DialogContent>
 
-    </DialogWrap>
+    </DialogWrap >
   );
 }
 export default PermissionMemberModal

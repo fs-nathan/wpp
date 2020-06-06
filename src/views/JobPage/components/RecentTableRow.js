@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { StyledTableBodyCell } from "../../DocumentPage/TablePart/DocumentComponent/TableCommon";
 import { colors } from "../contants/attrs";
 import { JobPageContext } from "../JobPageContext";
+import { template } from "../utils";
 import InlineBadge from "./InlineBadge";
 import InlinePiorityBadge from "./InlinePiorityBadge";
 import InlineStatusBadge from "./InlineStatusBadge";
@@ -145,10 +146,41 @@ export default React.memo(
           {duration_value} {t(duration_unit)}
         </DurationCell>
         <EndTimeCell>{time_end !== "Invalid date" && time_end}</EndTimeCell>
+        <EndTimeCell>
+          {task.remain_day && task.remain_day !== null && (
+            <span
+              style={{
+                color: (() => {
+                  switch (task.remain_day) {
+                    case 0:
+                    case 1:
+                      return colors.remain_day_0_1;
+                    case 2:
+                    case 3:
+                      return colors.remain_day_2_3;
+                    case 4:
+                    case 5:
+                      return colors.remain_day_4_5;
+                    default:
+                      return colors.remain_day_4_5;
+                  }
+                })(),
+              }}
+            >
+              {template(t("Còn <%= days %> ngày"))({
+                days: task.remain_day,
+              })}
+            </span>
+          )}
+        </EndTimeCell>
         <QuickViewCell
           onClick={() =>
             setQuickTask(
-              <QuickViewTaskDetail taskId={id} defaultTaskDetail={task} />
+              <QuickViewTaskDetail
+                taskId={id}
+                defaultTaskDetail={task}
+                onClose={() => setQuickTask(null)}
+              />
             )
           }
         >

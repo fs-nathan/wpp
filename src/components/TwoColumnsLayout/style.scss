@@ -2,19 +2,19 @@
   height: 100%;
   display: grid;
   grid-template-rows: auto;
-};
+}
 
 .comp_TwoColumnsLayout___container {
   &-normal {
     @include comp_TwoColumnsLayout___container;
-    grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
+    grid-template-columns: minmax(300px, 1fr) minmax(800px, 4fr);
   }
   &-expanded {
     @include comp_TwoColumnsLayout___container;
     grid-template-columns: auto;
   }
-};
+}
 
 .comp_TwoColumnsLayout___right {
-  border-left: 1px solid rgba(0, 0, 0, .1);
-};
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}

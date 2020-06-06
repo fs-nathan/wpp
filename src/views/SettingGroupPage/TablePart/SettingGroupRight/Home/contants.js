@@ -21,5 +21,6 @@
 export const categoryAttr = {
   id: "id",
   name: "name",
-  logo: "logo"
+  logo: "logo",
+  short_url: "short_url",
 };

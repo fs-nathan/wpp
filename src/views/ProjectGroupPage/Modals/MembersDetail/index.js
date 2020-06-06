@@ -7,13 +7,13 @@ import CustomModal from '../../../../components/CustomModal';
 import './style.scss';
 
 const StyledTableHead = ({ className = '', ...props }) =>
-  <TableHead 
+  <TableHead
     className={`view_ProjectGroup_MemberDetailModal___table-head ${className}`}
     {...props}
   />;
 
 const UserTableCell = ({ className = '', ...props }) =>
-  <TableCell 
+  <TableCell
     className={`view_ProjectGroup_MemberDetailModal___table-cell ${className}`}
     {...props}
   />;
@@ -25,6 +25,7 @@ function MembersDetail({ open, setOpen, members = [], }) {
   return (
     <React.Fragment>
       <CustomModal
+        className="view_ProjectGroup_MemberDetailModal___modal"
         open={open}
         setOpen={setOpen}
         title={t("DMH.VIEW.PGP.MODAL.MEMBER.TITLE")}
@@ -35,10 +36,10 @@ function MembersDetail({ open, setOpen, members = [], }) {
         <Table>
           <StyledTableHead>
             <TableRow>
-              <TableCell></TableCell>
-              <TableCell>{t("DMH.VIEW.PGP.MODAL.MEMBER.NAME")}</TableCell>
-              <TableCell>{t("DMH.VIEW.PGP.MODAL.MEMBER.TIT")}</TableCell>
-              <TableCell>{t("DMH.VIEW.PGP.MODAL.MEMBER.DESC")}</TableCell>
+              <TableCell width="5%"></TableCell>
+              <TableCell width="45%">{t("DMH.VIEW.PGP.MODAL.MEMBER.NAME")}</TableCell>
+              <TableCell width="25%">{t("DMH.VIEW.PGP.MODAL.MEMBER.TIT")}</TableCell>
+              <TableCell width="25%">{t("DMH.VIEW.PGP.MODAL.MEMBER.DESC")}</TableCell>
             </TableRow>
           </StyledTableHead>
           <TableBody>
@@ -50,7 +51,7 @@ function MembersDetail({ open, setOpen, members = [], }) {
                 <UserTableCell>
                   <span>{get(member, 'name', '')}</span>
                   <br />
-                  <small>{get(member, 'email', '')}</small>  
+                  <small>{get(member, 'email', '')}</small>
                 </UserTableCell>
                 <TableCell>{get(member, 'position', '')}</TableCell>
                 <TableCell>{get(member, 'description', '')}</TableCell>

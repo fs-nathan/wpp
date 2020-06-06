@@ -1,9 +1,12 @@
 .offerTabItem {
   position: relative;
-  border-bottom: 1px solid #eeeeee;
-  padding: 8px 0 10px;
-  margin: 17px 0;
+  // border-bottom: 1px solid #eeeeee;
+  padding: 10px 20px;
+  margin: 0px 0 0 -20px;
   cursor: pointer;
+  &:hover {
+    background-color: #f2f5fa;
+  }
   &--content {
     overflow: hidden;
     text-overflow: ellipsis;
