@@ -1,0 +1,209 @@
+@mixin center-text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.offerDetail {
+  & > * {
+    font-family: Roboto, sans-serif;
+    color: black;
+  }
+
+  &-leftContent {
+    &-inner {
+      &-container {
+        padding: 1.2em 2em;
+      }
+    }
+    &-container {
+      width: 37%;
+    }
+  }
+
+  &-personInfo {
+    &-avatar {
+      width: 55px;
+      height: 55px;
+    }
+    &-middleSpacing {
+      width: 5px;
+    }
+    &-userCreateName {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin: 0;
+    }
+    &-userCreatePosition {
+      color: grey;
+      line-height: 1.5;
+      margin-bottom: 3px;
+    }
+    &-timeCreated {
+      font-size: 1rem;
+    }
+  }
+  &-horizontalLine {
+    margin: 10px 0 5px;
+    border-bottom: 1px solid #3333;
+  }
+
+  &-detailDescription {
+    &-priorityAndOfferTypeContainer {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      &-chipContainer {
+        display: flex;
+        flex-direction: row;
+        &-offerTypeName {
+          @include center-text;
+          @extend .bg--blue;
+          font-size: 0.8rem;
+          padding: 5px;
+          border-radius: 2px;
+        }
+        &-offerPriorityName {
+          @include center-text;
+          font-size: 0.8rem;
+          margin-left: 1em;
+          padding: 5px;
+          border-radius: 2px;
+        }
+      }
+      &-editBtn {
+        margin-left: auto;
+        font-weight: 400;
+        color: #1673e5;
+        [class*='MuiButton-label'] {
+          font-size: 1rem;
+          text-transform: none;
+        }
+      }
+    }
+    &-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0.7em 0;
+      color: dimgrey;
+    }
+    &-detailSection {
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    &-content {
+      margin-bottom: 2em;
+    }
+  }
+
+  &-attachedDocument {
+    &-title {
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 1em;
+    }
+    &-fileContainer {
+      width: 100%;
+      height: auto;
+      display: flex;
+      align-items: center;
+      background-color: #f0f0f0;
+      border-radius: 3px;
+      margin: 5px;
+      padding: 5px;
+    }
+    &-fileIcon {
+      display: flex;
+      align-items: center;
+    }
+    &-fileName {
+      margin-left: 0.8em;
+    }
+  }
+
+  &-handlingPerson {
+    &-title {
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    &-item {
+      margin: 0.2em 0;
+    }
+    &-infoContainer {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      margin-left: 1em;
+    }
+    &-name {
+      font-weight: 700;
+    }
+    &-position {
+      color: #fd7e14;
+    }
+    &-deleteBtn {
+      margin-left: auto;
+    }
+  }
+
+  &-monitoringPerson {
+    &-title {
+      color: rgba(0, 0, 0, 0.87);
+      line-height: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    &-item {
+      margin: 0.2em 0;
+    }
+    &-infoContainer {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      margin-left: 1em;
+    }
+    &-name {
+      font-weight: 700;
+    }
+    &-position {
+      color: #fd7e14;
+    }
+    &-deleteBtn {
+      margin-left: auto;
+    }
+  }
+
+  &-addBtn {
+    padding: 0.8em 0;
+    &-title {
+      margin-left: 0.5em;
+      font-size: 1rem;
+      font-weight: 400;
+      color: black;
+      text-transform: none;
+    }
+  }
+}
+
+.bg--red {
+  background-color: #f44336;
+  color: white;
+}
+.bg--blue {
+  background-color: #1155cc;
+  color: white;
+}
+.bg--orange {
+  background-color: #fd7e14;
+  color: white;
+}

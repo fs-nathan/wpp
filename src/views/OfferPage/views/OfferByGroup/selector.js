@@ -69,7 +69,7 @@ export const getTaskByKeyword = (keyword, status_filter) =>
     return newOffers.filter(x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
   });
 
-export const getSummaryByGroupByKeyword = (keyword) => createSelector(selectSummaryGroup, group => {
+export const getSummaryByGroupByKeyword = (keyword, isOfferGroupManageable) => createSelector(selectSummaryGroup, group => {
   if (group === undefined) {
     return []
   }
@@ -79,8 +79,17 @@ export const getSummaryByGroupByKeyword = (keyword) => createSelector(selectSumm
     url: Routes.OFFERBYGROUP + `/${x.id}`,
     color: "#7d99a6",
     icon: mdiEmailCheck,
-    rightIcon: x.have_new_offer && rightIcon,
-    rightIcon: (() => <><Popover offer_group_id={get(x, "id")} name={get(x, "name")} description={get(x, "description")} view={false} /></>)
+    // rightIcon: x.have_new_offer && rightIcon,
+    rightIcon: (() => isOfferGroupManageable && (
+      <>
+        <Popover
+          offer_group_id={get(x, "id")}
+          name={get(x, "name")}
+          description={get(x, "description")}
+          view={false}
+        />
+      </>
+    ))
   })).filter(
     x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1
   )

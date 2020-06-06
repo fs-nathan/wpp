@@ -15,8 +15,12 @@
       font-size: 14px;
     }
     .MuiCheckbox-root {
-      padding: 0px 9px;
+      padding: 0;
       margin-right: 20px;
+    }
+    .MuiSvgIcon-root {
+      width: 22px !important;
+      height: 22px !important;
     }
   }
 }
@@ -28,16 +32,13 @@
 
   .MuiCheckbox-root {
     margin-right: 20px;
+    padding: 0 !important;
   }
 
   .MuiSvgIcon-root {
     width: 22px !important;
     height: 22px !important;
   }
-
-  // .MuiCheckbox-colorSecondary.Mui-checked {
-  //   color: #01be09;
-  // }
 
   &--avatar {
     margin-left: 4px;

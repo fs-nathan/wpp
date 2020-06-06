@@ -3,21 +3,22 @@ import { ListItemText } from "@material-ui/core";
 import { mdiChevronLeft, mdiPlus } from '@mdi/js';
 import Icon from "@mdi/react";
 import classnames from "classnames";
-import { Primary, StyledList, StyledListItem } from "components/CustomList";
+import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
 import LeftSideContainer from "components/LeftSideContainer";
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from 'react';
 import { Link, useHistory, withRouter } from "react-router-dom";
 import SearchInput from '../../../components/SearchInput';
 import DropdownItem from "../components/DropdownItem";
 import { Routes } from "../contants/routes";
 import { checkUserIsInOfferGroupRoutes } from '../utils/validate';
-import "./LeftSetting.css";
+import "./LeftSetting.scss";
 
 // import { isEmpty } from '../../helpers/utils/isEmpty';
 
 const LeftSetting = props => {
   const { pathname } = props.location;
-  const history = useHistory()
+  const history = useHistory();
+  const [onHover, setOnHover] = useState({ id: null });
   const checkBeforeShowLeftIcon = () => {
     const validPathname = [Routes.OVERVIEW, Routes.RECENTLY]
     if (validPathname.includes(pathname)) {
@@ -26,7 +27,7 @@ const LeftSetting = props => {
     return true
   }
   const checkBeforeShowRightIcon = () => {
-    return checkUserIsInOfferGroupRoutes(window.location.pathname)
+    return props.isOfferGroupManageable && checkUserIsInOfferGroupRoutes(window.location.pathname)
   }
   return (
     <LeftSideContainer
@@ -36,20 +37,23 @@ const LeftSetting = props => {
         tooltip: 'Quay lại',
         onClick: () => history.push(Routes.OVERVIEW)
       }}
-      rightAction={checkBeforeShowRightIcon() &&
-      {
+      rightAction={checkBeforeShowRightIcon() && {
         iconPath: mdiPlus,
         onClick: () => props.setOpenModalOfferByGroup(true)
-      }
-      }
+      }}
 
     >
-      <StyledList>
-        {props.searchInput && (
-          <StyledListItem>
-            <SearchInput placeholder={props.searchPlaceHolder} onChange={(e) => props.filter(e.target.value)} />
-          </StyledListItem>
-        )}
+      {
+        props.searchInput && (
+          <div className="leftSettings-searchInput">
+            <SearchInput
+              placeholder={props.searchPlaceHolder}
+              onChange={(e) => props.filter(e.target.value)}
+            />
+          </div>
+        )
+      }
+      <StyledList className="leftSettings-item-disableAutoFocus">
         {
           props.subMenu && props.listMenu.map((item, index) => (
             <Fragment>
@@ -71,6 +75,8 @@ const LeftSetting = props => {
                 }`,
                 item.className
               )}
+              onMouseEnter={() => setOnHover({ id: item.url })}
+              onMouseLeave={() => setOnHover({ id: null })}
             >
               {item.icon && (
                 <Icon
@@ -90,9 +96,9 @@ const LeftSetting = props => {
                     {item.title}
                   </Primary>
                 }
-                secondary={item.subtitle}
+                secondary={<Secondary className="leftSettings-item-subtitle">{item.subtitle}</Secondary>}
               />
-              {item.rightIcon && item.rightIcon()}
+              {onHover.id === item.url && item.rightIcon && item.rightIcon()}
             </StyledListItem>
             {item.sub &&
               item.sub.map((el, idx) => (
