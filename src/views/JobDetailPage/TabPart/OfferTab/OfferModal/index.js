@@ -151,7 +151,7 @@ const OfferModal = ({
 
   React.useEffect(() => {
     if (!isFetching && !error)
-      props.setOpen(false);
+      setOpen(false);
     // eslint-disable-next-line
   }, [isFetching, error])
 
@@ -249,8 +249,8 @@ const OfferModal = ({
       dispatch(updateOffer({
         task_id: taskId,
         offer_id: tempSelectedItem.offer_id,
-        user_hander: handlers.map((id) => members[id].id),
-        user_monitor: monitors.map((id) => members[id].id),
+        user_hander: handlers.map((idx) => allMembers[idx].id),
+        user_monitor: monitors.map((idx) => allMembers[idx].id),
         title: tempSelectedItem.title,
         content: tempSelectedItem.content,
         offer_group_id: get(tempSelectedItem, 'offer_group_id.value'),
@@ -340,7 +340,7 @@ const OfferModal = ({
       canConfirm={validate()}
       actionLoading={isFetching}
       manualClose
-      onCancle={() => props.setOpen(false)}
+      onCancle={() => setOpen(false)}
       className="offerModal"
     >
       <React.Fragment>
