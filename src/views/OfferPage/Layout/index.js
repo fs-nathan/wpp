@@ -153,7 +153,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   } = useContext(OfferPageContext);
   const times = useTimes();
   const open = !!quickTask;
-  const [openModalOffer, setopenModalOffer] = useState();
+  const [openModalOffer, setOpenModalOffer] = useState(false);
 
   const {
     location: { pathname }
@@ -195,7 +195,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     ],
     mainAction: {
       label: "+ Tạo đề xuất",
-      onClick: () => setopenModalOffer(true),
+      onClick: () => setOpenModalOffer(true),
       color: "#fd7e14"
     },
     search: {
@@ -216,9 +216,6 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
       id: "id",
     },
   };
-  const setOpen = () => {
-    setopenModalOffer(!openModalOffer)
-  }
   return (
     <CustomTableProvider
       value={{
@@ -252,7 +249,11 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
         />
 
         {openModalOffer && (
-          <OfferModal isOpen={true} setOpen={setOpen} actionCreateOffer={createOffer()} />
+          <OfferModal
+            isOpen={openModalOffer}
+            setOpen={setOpenModalOffer}
+            actionCreateOffer={createOffer()}
+          />
         )}
       </>
     </CustomTableProvider>
