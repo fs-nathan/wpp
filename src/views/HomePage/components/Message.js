@@ -12,7 +12,7 @@ import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/
 import { commentAttr } from "../contant/attrs";
 import { postModule } from "../redux/post";
 import "./Message.css";
-import { PostContext } from "./Post";
+import { PostContext, PostFilesStateLess } from "./Post";
 const RepliesContainer = ({
   total_sub_comment,
   post_id,
@@ -163,13 +163,14 @@ const Message = ({
   user_create_avatar,
   comments,
   total_sub_comment,
-  images,
+  images = emptyArray,
   images_id,
   images_url,
   images_size,
   images_type,
   files,
   sticker,
+  stickerUrl,
 }) => {
   const { t } = useTranslation();
   return (
@@ -190,8 +191,23 @@ const Message = ({
             </Box>
           )}
           <span className="comp_Message__creator">{user_create_name}</span>
-          {content}
+          <span className="comp_Message__message">{content}</span>
         </div>
+        {sticker && (
+          <div className="comp_Message__sticker">
+            <Sticker {...{ sticker: stickerUrl || sticker }}></Sticker>
+          </div>
+        )}
+        {images.map(({ url_thumb, url }, i) => (
+          <div key={i} className="comp_Message__sticker">
+            <Sticker {...{ sticker: url_thumb || url }}></Sticker>
+          </div>
+        ))}
+        {!!files && !!files.length && (
+          <div className="comp_Message__files">
+            <PostFilesStateLess files={files} />
+          </div>
+        )}
         <Box padding="0 10px">
           {onReplyClick && (
             <ButtonBase
@@ -232,12 +248,9 @@ export default ({ message, comments, onReplyClick }) => {
     user_create_name,
     user_create_avatar,
     images,
-    images_id,
-    images_url,
-    images_size,
-    images_type,
     files,
     sticker,
+
     total_sub_comment,
   ] = createMapPropsFromAttrs([
     commentAttr.id,
@@ -245,10 +258,6 @@ export default ({ message, comments, onReplyClick }) => {
     commentAttr.user_create_name,
     commentAttr.user_create_avatar,
     commentAttr.images,
-    commentAttr.images_id,
-    commentAttr.images_url,
-    commentAttr.images_size,
-    commentAttr.images_type,
     commentAttr.files,
     commentAttr.sticker,
     commentAttr.total_sub_comment,
@@ -265,14 +274,19 @@ export default ({ message, comments, onReplyClick }) => {
         user_create_name,
         user_create_avatar,
         images,
-        images_id,
-        images_url,
-        images_size,
-        images_type,
         files,
         sticker,
+        stickerUrl: message.stickerUrl,
         total_sub_comment,
       }}
     />
   );
 };
+
+const Sticker = React.memo(({ sticker }) => {
+  // const listStickers = useSelector((state) => state.chat.listStickers);
+  // const item = (listStickers || emptyArray).find((item) => item.id === sticker);
+  // console.log({ listStickers, sticker });
+  // if (!item || !item.url) return null;
+  return <img src={sticker} />;
+});

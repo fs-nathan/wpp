@@ -1,5 +1,5 @@
-import { Avatar, Box, Chip, Divider } from "@material-ui/core";
-import { mdiDotsVertical } from "@mdi/js";
+import { Avatar, Box, Checkbox, Chip, Divider } from "@material-ui/core";
+import { mdiDotsVertical, mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
 import React, {
   useCallback,
@@ -11,7 +11,9 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { createMapPropsFromAttrs } from "views/JobPage/utils";
+import pluginSettings from "views/HomePage/redux/pluginSettings";
+import { emptyArray } from "views/JobPage/contants/defaultValue";
+import { createMapPropsFromAttrs, get } from "views/JobPage/utils";
 import { ItemMenu } from "views/SettingGroupPage/GroupPermissionSettings/components/ItemMenu";
 import AddButton from "./components/AddButton";
 import AddCategotyModal from "./components/AddCategotyModal";
@@ -34,7 +36,9 @@ import useAsyncTracker from "./redux/apiCall/useAsyncTracker";
 const HomeWrap = styled.div`
   padding: 20px;
   font-size: 16px;
-  line-height: 1.4;
+`;
+const DragWrap = styled.div`
+  line-height: 0;
 `;
 export const ChipMenu = ({
   menuAnchor,
@@ -52,7 +56,7 @@ export const ChipMenu = ({
     ></ItemMenu>
   );
 };
-const EnchanedChip = ({ id, logo, name }) => {
+const EnchanedChip = ({ id, logo, name, short_url }) => {
   const { t } = useTranslation();
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -72,7 +76,7 @@ const EnchanedChip = ({ id, logo, name }) => {
     (key) => {
       switch (key) {
         case "edit":
-          setModal(<EditCategoryModal {...{ id, logo, name }} />);
+          setModal(<EditCategoryModal {...{ id, logo, name, short_url }} />);
           break;
         case "delete":
           setAsyncAction(deletePostCategory({ category_id: id }));
@@ -81,7 +85,7 @@ const EnchanedChip = ({ id, logo, name }) => {
           break;
       }
     },
-    [id, logo, name, setAsyncAction, setModal]
+    [id, logo, name, setAsyncAction, setModal, short_url]
   );
   return (
     <>
@@ -114,12 +118,13 @@ function Home() {
         </Stack>
         <ChipGroup>
           {categories.map((cate, i) => {
-            const [id, name, logo] = createMapPropsFromAttrs([
+            const [id, name, logo, short_url] = createMapPropsFromAttrs([
               categoryAttr.id,
               categoryAttr.name,
               categoryAttr.logo,
+              categoryAttr.short_url,
             ])(cate);
-            return <EnchanedChip key={id} {...{ id, name, logo }} />;
+            return <EnchanedChip key={id} {...{ id, name, logo, short_url }} />;
           })}
           <Box flexBasis="100%" margin="0px!important" />
           <AddButton
@@ -141,7 +146,7 @@ function Home() {
             <br />
           </SubTitle>
         </Stack>
-        <DraggableList />
+        <PluginSettings />
       </Stack>
     </HomeWrap>
   );
@@ -160,5 +165,75 @@ export default () => {
       <Home />
       {modal}
     </HomeContext.Provider>
+  );
+};
+const PluginSettings = () => {
+  const STATUS = {
+    ON: "ON",
+    OFF: "OFF",
+  };
+  const dispatch = useDispatch();
+  const pluginSettingsResponse = useSelector(
+    pluginSettings.selectors.pluginSettingsSelector
+  );
+  const sections = get(pluginSettingsResponse, "data", emptyArray);
+  const state = get(pluginSettingsResponse, "state", false);
+  useEffect(() => {
+    dispatch(pluginSettings.actions.loadPluginSettings());
+  }, [dispatch]);
+  const updatePloginSettings = (sections = emptyArray) => {
+    dispatch(pluginSettings.actions.updatePluginSettings({ sections }));
+  };
+  if (!state) return null;
+  return (
+    <DraggableList
+      onChange={(orderList = emptyArray) => {
+        console.log({ orderList });
+        updatePloginSettings(
+          sections.map((s, i) => {
+            return {
+              ...s,
+              sort_index: orderList.findIndex((value) => value === s.value),
+            };
+          })
+        );
+      }}
+      list={sections}
+      getId={(item) => item.value}
+    >
+      {({ name, sort_index, status, value }, bindDraggable, bindDragHandle) =>
+        bindDraggable(
+          <div>
+            <Box display="flex" alignItems="center">
+              {bindDragHandle(
+                <DragWrap>
+                  <Icon path={mdiDragVertical} size={1} color="#8d8d8d" />
+                </DragWrap>
+              )}
+              <Checkbox
+                defaultChecked={status === STATUS.ON}
+                color="primary"
+                onClick={(e) => {
+                  console.log(e.target.checked);
+                  updatePloginSettings(
+                    sections.map((s) => {
+                      if (s.value !== value) {
+                        return s;
+                      }
+                      return {
+                        value,
+                        sort_index,
+                        status: e.target.checked ? STATUS.ON : STATUS.OFF,
+                      };
+                    })
+                  );
+                }}
+              ></Checkbox>
+              <div>{name}</div>
+            </Box>
+          </div>
+        )
+      }
+    </DraggableList>
   );
 };
