@@ -15,12 +15,13 @@ const useWebpush = () => {
     const token = localStorage.getItem(TOKEN);
     if (token) {
       dispatch(apiKeyModule.actions.loadApiKey());
+    } else {
     }
   }, [dispatch]);
   const handleSubscribe = useCallback(() => {
     const token = localStorage.getItem(TOKEN);
     window.apiService = apiService;
-    if (token && webpushApikey && webpushApikey !== null) {
+    if (webpushApikey && webpushApikey !== null) {
       setloading(true);
       function urlBase64ToUint8Array(base64String) {
         const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
@@ -62,14 +63,25 @@ const useWebpush = () => {
             // We have a subscription, update the database
             console.log("Subscription object: ", subscription);
           }
-          const config = {
-            url: "/web-push/subscription",
-            method: "post",
-            data: subscription,
-          };
-          apiService(config).then(() => {
-            console.log("subscribed to push service!");
-          });
+          if (token) {
+            const config = {
+              url: "/web-push/subscription",
+              method: "post",
+              data: subscription,
+            };
+            apiService(config).then(() => {
+              console.log("subscribed to push service!");
+            });
+          } else {
+            const config = {
+              url: "/web-push/delete-subscription",
+              method: "post",
+              data: subscription,
+            };
+            apiService(config).then(() => {
+              console.log("delete-subscription subscribed to push service!");
+            });
+          }
         } else {
           console.error("Service workers are not supported in this browser");
         }

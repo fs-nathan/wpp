@@ -37,7 +37,7 @@ const StyledScrollbarsSide = ({ className = "", height, ...props }) => (
 
 const StyledDialogContent = ({ className = "", ...props }) => (
   <DialogContent
-    className={`comp_CustomModal___dialog-content ${className}`}
+    className={`gant--comp_CustomModal___dialog-content comp_CustomModal___dialog-content ${className}`}
     {...props}
   />
 );

@@ -21,6 +21,19 @@
   padding: 10px;
   align-items: center;
 }
+.comp_PostCreatorPopupInner__fileIcon {
+  transform: rotate(45deg);
+}
+.comp_PostCreatorPopupInner__footer .MuiIconButton-root {
+  background: #e8e8e8;
+  border-radius: 2px;
+  padding: 4p 11px;
+  margin: 0 6px;
+}
+.comp_PostCreatorPopupInner__footer .MuiIconButton-root svg {
+  width: 1.8rem;
+  height: auto;
+}
 .comp_PostCreatorPopupInner__main {
   overflow: auto;
   flex: 1;

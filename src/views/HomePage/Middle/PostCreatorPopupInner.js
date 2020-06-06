@@ -332,7 +332,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
             <Close />
           </IconButton>
         </div>
-        <Box minHeight="540px">
+        <Box>
           <TasksScrollbar>
             <div className={classes.main}>
               <TasksCard.Content>
@@ -375,7 +375,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
         <div className={classes.footer}>
           <IconButton onClick={() => setOpen(true)}>
             <label>
-              <AttachFile />
+              <AttachFile className="comp_PostCreatorPopupInner__fileIcon" />
             </label>
           </IconButton>
           <ImageField name="file">

@@ -2,7 +2,7 @@
   height: 100%;
   display: grid;
   grid-template-rows: auto;
-};
+}
 
 .comp_TwoColumnsLayout___container {
   &-normal {
@@ -13,8 +13,8 @@
     @include comp_TwoColumnsLayout___container;
     grid-template-columns: auto;
   }
-};
+}
 
 .comp_TwoColumnsLayout___right {
-  border-left: 1px solid rgba(0, 0, 0, .1);
-};
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}

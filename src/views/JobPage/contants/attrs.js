@@ -180,6 +180,9 @@ export const colors = {
   task_me_assign: "static.task_me_assign",
   task_assign_to_me: "static.task_assign_to_me",
   task_me_offer: "static.task_me_offer",
+  remain_day_0_1: "#f44336",
+  remain_day_2_3: "#ff9800",
+  remain_day_4_5: "#03c30b",
 };
 export const taskStatusMap = {
   waiting: "0",

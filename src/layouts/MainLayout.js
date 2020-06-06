@@ -1,9 +1,9 @@
 import {
   appendChat,
+  appendViewedChat,
   getDataPinOnTaskChat,
   getViewedChatSuccess,
   updateChatState,
-  appendViewedChat,
 } from "actions/chat/chat";
 import {
   getListTaskDetail,
@@ -221,9 +221,9 @@ function MainLayout({
 
   function handleViewChat(data) {
     console.log("handleViewChat", data);
-    const { user_name, user_avatar, user_id } = data
+    const { user_name, user_avatar, user_id } = data;
     // getViewedChatSuccess(data)
-    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar })
+    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar });
   }
 
   useEffect(() => {
@@ -343,7 +343,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(

@@ -87,7 +87,7 @@ const CommentListContainer = () => {
   );
   const [{}, handleDispatchAsyncAction] = useAsyncTracker();
   const handleComment = useCallback(
-    (value) => {
+    (value, file, sticker, file_ids, google_data) => {
       const asyncId = Date.now();
       if (!reply) {
         setNewComments({
@@ -98,6 +98,10 @@ const CommentListContainer = () => {
               asyncId,
               parent: reply,
               content: value,
+              file,
+              stickerUrl: sticker ? sticker.url : undefined,
+              file_ids,
+              google_data,
               user_create_name: profile.name,
               user_create_avatar: profile.avatar,
             },
@@ -111,6 +115,10 @@ const CommentListContainer = () => {
             {
               asyncId,
               content: value,
+              file,
+              stickerUrl: sticker ? sticker.url : undefined,
+              file_ids,
+              google_data,
               user_create_name: profile.name,
               user_create_avatar: profile.avatar,
             },
@@ -119,11 +127,16 @@ const CommentListContainer = () => {
       }
 
       setReply(undefined);
+
       handleDispatchAsyncAction({
         asyncId,
         ...postModule.actions.comment({
           post_id: id,
           content: value,
+          file,
+          sticker: sticker ? sticker.id : undefined,
+          file_ids,
+          google_data,
           parent_id: reply && reply.id,
         }),
       });
@@ -361,7 +374,7 @@ export const PostHeader = () => {
     </>
   );
 };
-function generate(files, e) {
+export function generate(files, e) {
   return files.map((value) =>
     React.cloneElement(e, {
       key: value,
@@ -369,22 +382,27 @@ function generate(files, e) {
     })
   );
 }
+export const PostFilesStateLess = ({ files = emptyArray }) => {
+  return (
+    <List className="comp_Post__fileList">
+      {generate(files, <FileListItem />)}
+    </List>
+  );
+};
 export const PostFiles = () => {
   const { files = emptyArray } = useContext(PostContext);
   if (files && files.length)
     return (
       <TasksCard.Content>
         <TasksCard.Container>
-          <List className="comp_Post__fileList">
-            {generate(files, <FileListItem />)}
-          </List>
+          <PostFilesStateLess files={files} />
         </TasksCard.Container>
       </TasksCard.Content>
     );
   return null;
 };
 
-const Description = ({ children = "", limit = 100 }) => {
+const Description = ({ children = "", limit = 200 }) => {
   const { t } = useTranslation();
   const [showMore, setShowMore] = useState(false);
   const hasMore = children.length >= limit;
@@ -409,20 +427,23 @@ const Description = ({ children = "", limit = 100 }) => {
             __html: linkify(children),
           }}
         ></span>
-      )}
+      )}{" "}
       {hasMore && showMore ? (
-        <span>
-          {" "}
-          <b className="u-colorBlue" onClick={() => setShowMore(false)}>
-            {t("see less")}
-          </b>
+        <span
+          className="u-colorBlue cursor-pointer"
+          onClick={() => setShowMore(false)}
+        >
+          {t("see less")}
         </span>
       ) : (
         <span>
           ...{" "}
-          <b className="u-colorBlue" onClick={() => setShowMore(true)}>
+          <span
+            className="u-colorBlue cursor-pointer"
+            onClick={() => setShowMore(true)}
+          >
             {t("see more")}
-          </b>
+          </span>
         </span>
       )}
     </>
@@ -602,11 +623,13 @@ export const PostStats = () => {
   return (
     <Stack small>
       <div />
-      <div
-        onClick={() => toggle(true)}
-        className="comp_Post__statWrap cursor-pointer"
-      >
-        <Box display="flex" alignItems="center">
+      <div className="comp_Post__statWrap cursor-pointer">
+        <Box
+          flex={1}
+          onClick={() => toggle(true)}
+          display="flex"
+          alignItems="center"
+        >
           <AvatarGroup
             size={20}
             offset={-4}
@@ -614,39 +637,39 @@ export const PostStats = () => {
               (item) => item
             )}
           ></AvatarGroup>
-        </Box>
-        <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
-          {[
-            hadLikeUser && <span href="#">{last_like_user}</span>,
-            hadLoveUser && <span href="#">{last_love_user}</span>,
-            !!otherNumber && (
-              <span>
-                {template(t("<%= numner %> người khác"))({
-                  numner: otherNumber,
-                })}
-              </span>
-            ),
-          ]
-            .filter((item) => item)
-            .map((item, i, array) => {
-              if (i === array.length - 2) {
-                return (
-                  <>
-                    {item}
-                    {" và "}
-                  </>
-                );
-              }
-              if (i < array.length - 1) {
-                return (
-                  <>
-                    {item}
-                    {" ,"}
-                  </>
-                );
-              }
-              return item;
-            })}
+          <Box padding="0 4px" flex="1" whiteSpace="now-wrap">
+            {[
+              hadLikeUser && <span href="#">{last_like_user}</span>,
+              hadLoveUser && <span href="#">{last_love_user}</span>,
+              !!otherNumber && (
+                <span>
+                  {template(t("<%= numner %> người khác"))({
+                    numner: otherNumber,
+                  })}
+                </span>
+              ),
+            ]
+              .filter((item) => item)
+              .map((item, i, array) => {
+                if (i === array.length - 2) {
+                  return (
+                    <>
+                      {item}
+                      {" và "}
+                    </>
+                  );
+                }
+                if (i < array.length - 1) {
+                  return (
+                    <>
+                      {item}
+                      {" ,"}
+                    </>
+                  );
+                }
+                return item;
+              })}
+          </Box>
         </Box>
         {!!number_comment && (
           <ButtonBase htmlFor={inputId} component="label">
@@ -758,6 +781,7 @@ export const PostContainer = ({ post, children }) => {
   ])(post);
   const dispatch = useDispatch();
   const [modal, setModal] = useState();
+  const profile = useSelector(profileSelector);
   const handleActionClick = useCallback(
     (key) => {
       switch (key) {
@@ -793,16 +817,16 @@ export const PostContainer = ({ post, children }) => {
           );
           break;
         case "like":
-          dispatch(postModule.actions.like({ post_id: id }));
+          dispatch(postModule.actions.like({ post_id: id, profile }));
           break;
         case "love":
-          dispatch(postModule.actions.love({ post_id: id }));
+          dispatch(postModule.actions.love({ post_id: id, profile }));
           break;
         default:
           break;
       }
     },
-    [dispatch, id, post]
+    [dispatch, id, post, profile]
   );
   const { t } = useTranslation();
   const menuoptions = useMemo(() => {
