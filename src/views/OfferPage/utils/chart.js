@@ -1,4 +1,10 @@
 import { colors, labels, statistic } from "../contants/attrs";
+import {
+  getAcceptedOfferTitle,
+  getApprovingOfferTitle,
+  getRejectedOfferTitle,
+  getWaitingOfferTitle,
+} from '../views/Overview/i18nSelectors';
 import { get } from "./index.js";
 
 export const createPieChartProps = (strings, data) => {
@@ -32,7 +38,7 @@ export const createPieChartProps = (strings, data) => {
           }
         }
       },
-      
+
       subtitle: {
         text: undefined,
         align: 'left',
@@ -62,34 +68,51 @@ export const createPieChartProps = (strings, data) => {
   };
 };
 
-export const createColumnRoleChartProps = (strings, data) => {
+export const createColumnRoleChartProps = (t, strings, data) => {
   const categories = data.map(role => role.name);
-  const series = data.reduce(
-    (result, value) => {
-      const [all, complete] = result;
-      const { number_offer_aprroved, number_offer } = value;
-      all.data.push(number_offer);
-      complete.data.push(number_offer_aprroved);
-      return result;
+  const dataToShow = [
+    {
+      name: getWaitingOfferTitle(t),
+      data: [],
     },
-    [
-      {
-        name: "Đề xuất",
-        color: colors.number_offer,
-        data: []
-      },
-      {
-        name: "Phê duyệt",
-        color: colors.number_offer_aprroved,
-        data: []
-      }
-    ]
-  );
+    {
+      name: getApprovingOfferTitle(t),
+      data: [],
+    },
+    {
+      name: getRejectedOfferTitle(t),
+      data: [],
+    },
+    {
+      name: getAcceptedOfferTitle(t),
+      data: [],
+    },
+  ];
+  const series = data.reduce((result, value) => {
+    const [waiting, approving, rejected, accepted] = result;
+    const {
+      number_offer,
+      number_offer_approving,
+      number_offer_rejected,
+      number_offer_accepted
+    } = value;
+    waiting.data.push(number_offer);
+    approving.data.push(number_offer_approving);
+    rejected.data.push(number_offer_rejected);
+    accepted.data.push(number_offer_accepted);
+    return result;
+  }, dataToShow);
+
   return {
     type: "bar",
     series,
     options: {
-      colors: [colors.number_offer, colors.number_offer_aprroved],
+      colors: [
+        colors.number_offer,
+        colors.number_offer_approving,
+        colors.number_offer_rejected,
+        colors.number_offer_accepted
+      ],
       chart: {
         toolbar: {
           show: false
@@ -98,7 +121,7 @@ export const createColumnRoleChartProps = (strings, data) => {
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: "40%",
+          columnWidth: "80%",
           dataLabels: {
             position: 'center',
           },
@@ -116,9 +139,10 @@ export const createColumnRoleChartProps = (strings, data) => {
         }
       },
       xaxis: {
-        categories,
+        categories: categories,
         labels: {
           show: false,
+          rotate: 0,
         }
       },
       yaxis: {

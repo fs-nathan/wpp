@@ -10,44 +10,44 @@
   &-main {
     &-tall {
       @include comp_CustomModal___scrollbar;
-      height: calc(100vh - 64px - 64px - 56.5px);
+      height: calc(100vh - 64px - 64px - 56.5px)!important;
     }
 
     &-medium {
       @include comp_CustomModal___scrollbar;
-      height: calc(90vh - 64px - 64px - 56.5px);
+      height: calc(90vh - 64px - 64px - 56.5px)!important;
     }
 
     &-short {
       @include comp_CustomModal___scrollbar;
-      height: calc(80vh - 64px - 64px - 56.5px);
+      height: calc(80vh - 64px - 64px - 56.5px)!important;
     }
 
     &-mini {
       @include comp_CustomModal___scrollbar;
-      height: calc(70vh - 64px - 64px - 56.5px);
+      height: calc(70vh - 64px - 64px - 56.5px)!important;
     }
   }
 
   &-side {
     &-tall {
       @include comp_CustomModal___scrollbar;
-      height: calc(100vh - 64px - 64px - 56.5px - 46px);
+      height: calc(100vh - 64px - 64px - 56.5px - 46px)!important;
     }
 
     &-medium {
       @include comp_CustomModal___scrollbar;
-      height: calc(90vh - 64px - 64px - 56.5px - 46px);
+      height: calc(90vh - 64px - 64px - 56.5px - 46px)!important;
     }
 
     &-short {
       @include comp_CustomModal___scrollbar;
-      height: calc(80vh - 64px - 64px - 56.5px - 46px);
+      height: calc(80vh - 64px - 64px - 56.5px - 46px)!important;
     }
 
     &-mini {
       @include comp_CustomModal___scrollbar;
-      height: calc(70vh - 64px - 64px - 56.5px - 46px);
+      height: calc(70vh - 64px - 64px - 56.5px - 46px)!important;
     }
   }
 }

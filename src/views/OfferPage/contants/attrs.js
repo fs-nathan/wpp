@@ -1,3 +1,10 @@
+import {
+  getAcceptedOfferTitle,
+  getApprovingOfferTitle,
+  getRejectedOfferTitle,
+  getWaitingOfferTitle,
+} from '../views/Overview/i18nSelectors';
+
 export const statistic = {
   offer_of_me_sending: "static.offer_of_me_sending",
   offer_of_me_approved: "static.offer_of_me_approved",
@@ -5,9 +12,9 @@ export const statistic = {
   offer_status_waiting: "static.offer_status_waiting",
   offer_status_approved: "static.offer_status_approved",
   offer_status_cancel: "static.offer_status_cancel",
-  offer_piority_normal: "static.offer_piority_normal",
-  offer_piority_urgent: "static.offer_piority_urgent",
-  offer_piority_very_urgent: "static.offer_piority_very_urgent",
+  offer_priority_normal: "static.offer_priority_normal",
+  offer_priority_urgent: "static.offer_priority_urgent",
+  offer_priority_very_urgent: "static.offer_priority_very_urgent",
 };
 export const roleAttrs = {
 
@@ -89,16 +96,18 @@ export const labels = {
   offer_by_project: "Đề xuất theo dự án",
   offer_by_department: "Đề xuất theo bộ phận",
   offer_of_me_sending: "Gửi đi",
-  offer_status_approved: "Phê duyệt",
   offer_of_me_approved: "Phê duyệt",
   offer_of_me_monitoring: "Giám sát",
   offer_status_waiting: "Chờ duyệt",
+  offer_status_approved: "Phê duyệt",
   offer_status_cancel: "Bị từ chối",
-  offer_piority_normal: "Bình thường",
-  offer_piority_urgent: "Gấp",
-  offer_piority_very_urgent: "Rất gấp",
-  number_offer: "Đề xuất",
-  number_offer_aprroved: "Phê duyệt",
+  offer_priority_normal: "Bình thường",
+  offer_priority_urgent: "Gấp",
+  offer_priority_very_urgent: "Rất gấp",
+  number_offer: (t) => getWaitingOfferTitle(t),
+  number_offer_approving: (t) => getApprovingOfferTitle(t),
+  number_offer_rejected: (t) => getRejectedOfferTitle(t),
+  number_offer_accepted: (t) => getAcceptedOfferTitle(t),
 };
 
 export const colors = {
@@ -108,11 +117,13 @@ export const colors = {
   offer_of_me_monitoring: "#f44336",
   offer_status_waiting: "#ff9800",
   offer_status_cancel: "#f44336",
-  offer_piority_normal: "#ff9800",
-  offer_piority_urgent: "#03c30b",
-  offer_piority_very_urgent: "#f44336",
-  number_offer: "#1155cc",
-  number_offer_aprroved: "#ff9800",
+  offer_priority_normal: "#ff9800",
+  offer_priority_urgent: "#03c30b",
+  offer_priority_very_urgent: "#f44336",
+  number_offer: "#a800ff",
+  number_offer_approving: "#ff9800",
+  number_offer_rejected: "#f44336",
+  number_offer_accepted: "#03c30b",
 };
 export const action = {
   UPDATE_OFFER: "UPDATE_OFFER",

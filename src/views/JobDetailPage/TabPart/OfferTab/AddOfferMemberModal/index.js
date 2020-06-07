@@ -2,7 +2,7 @@ import { Checkbox } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
 import compact from 'lodash/compact';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -18,15 +18,26 @@ function AddOfferMemberModal({
   onChange,
   members,
   disableIndexes,
+  isUpdate,
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const groupActiveColor = useSelector(currentColorSelector)
+  const appColor = useSelector(currentColorSelector)
   const [selected, setSelected] = useState(value);
   const [searchValue, setSearchValue] = useState('');
+
+  const filteredMembers = useMemo(() => {
+    return members
+      .map((member, index) => ({ ...member, index }))
+      .filter(({ index }) => !disableIndexes.includes(index))
+      .filter(({ name }) => name.indexOf(searchValue) !== -1)
+  }, [members, disableIndexes, searchValue])
+
   function onClickDone() {
-    onChange(selected)
-    setOpen(false);
+    onChange(selected);
+  }
+  function onCancel() {
+    !isUpdate && onChange([]);
   }
 
   React.useEffect(() => {
@@ -51,20 +62,16 @@ function AddOfferMemberModal({
   }
 
   function onClickSelectAll() {
-    if (selected.length === members.length) {
+    if (selected.length === filteredMembers.length) {
       setSelected([])
     } else {
-      setSelected(members.map((m, i) => i))
+      setSelected(members.map((_, idx) => idx).filter(idx => !disableIndexes.includes(idx)))
     }
   }
 
   function handleChangeSearch(evt) {
     setSearchValue(evt.target.value)
   }
-
-  const filteredMembers = members
-    .map((member, index) => ({ ...member, index }))
-    .filter(({ name }) => name.indexOf(searchValue) !== -1)
 
   return (
     <JobDetailModalWrap
@@ -73,6 +80,7 @@ function AddOfferMemberModal({
       setOpen={setOpen}
       confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={onClickDone}
+      onCancle={onCancel}
       className="addOfferMemberModal"
     >
       <React.Fragment>
@@ -82,10 +90,12 @@ function AddOfferMemberModal({
         />
         <ColorTypo className="addOfferMemberModal--selected">{t('LABEL_CHAT_TASK_DA_CHON_THANH_VIEN', { count: selected.length })}</ColorTypo>
         <StyledDiv
-          selectedColor={groupActiveColor}
+          selectedColor={appColor}
           className="addOfferMemberModal--selectAll">
-          <Checkbox checked={selected.length === members.length}
-            onClick={onClickSelectAll} />
+          <Checkbox
+            checked={selected.length === filteredMembers.length}
+            onClick={onClickSelectAll}
+          />
           <ColorTypo className="addOfferMemberModal--selectAllText" component="div">{t('LABEL_CHAT_TASK_CHON_TAT_CA')}</ColorTypo>
         </StyledDiv>
         {filteredMembers.map((member, i) => <OfferMemberItem

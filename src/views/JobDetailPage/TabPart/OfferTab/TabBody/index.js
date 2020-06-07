@@ -146,13 +146,17 @@ function TabBody(props) {
               </Collapse>
             </React.Fragment>
         }
-        <OfferModal
-          {...props}
-          isOpen={open}
-          setOpen={setOpen}
-          isOffer
-          item={selectedItem}
-        />
+        {
+          open && (
+            <OfferModal
+              {...props}
+              isOpen={open}
+              setOpen={setOpen}
+              isUpdateOffer
+              item={selectedItem}
+            />
+          )
+        }
         <AlertModal
           open={isOpenDelete}
           setOpen={setOpenDelete}

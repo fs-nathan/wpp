@@ -1,12 +1,14 @@
 import { Avatar, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import { isEqual } from "date-fns";
-import { get } from 'lodash';
-import React from "react";
+import clsx from 'clsx';
+import { get, isEqual } from 'lodash';
+import React, { useContext } from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
 import { colors } from "../contants/attrs";
+import { OfferPageContext } from '../OfferPageContext';
 import EmptyHolder from "./EmptyHolder";
+import InlineBadge from './InlineBadge';
 import Popover from './Popover';
 import "./TaskTableRecently.scss";
 import { TaskTitleLink } from './RecentTableRow';
@@ -77,6 +79,11 @@ const WrapButton = styled.div`
 export function TaskTableRecently({ offers }) {
   const classes = styles()
   const { t } = useTranslation()
+  const {
+    setDetailOfferModalOpen,
+    setCurrentDetailOfferId,
+  } = useContext(OfferPageContext);
+
   return (
     <>
       {offers.length === 0 || undefined ? < EmptyHolder /> : (
@@ -119,19 +126,50 @@ export function TaskTableRecently({ offers }) {
                     <div> {get(offer, "date_label")}</div>
                   </TableCell>
                   <TableCell>
-                    <Grid container>
-                      <TaskTitleLink
-                        title={get(offer, "title")}
-                        to={get(offer, "url_redirect")}
+                    <div className="offerTable-item-title-container">
+                      <div
+                        className="offerTable-item-title-link"
+                        onClick={() => {
+                          // For triggering offer detail data fetching from OfferPage component
+                          setCurrentDetailOfferId(offer.id);
+                          // Show offer detail modal
+                          setDetailOfferModalOpen(true);
+                        }}
                       >
-                        {get(offer, "title")}
-                      </TaskTitleLink>
-                      {!isEqual(get(offer, "type_name"), "") && <div className={`${classes.blue_hightlight} ${classes.text_hightlight}`}>{get(offer, "type_name")}</div>}
+                        {offer.title}
+                      </div>
+                      <div className="offerTable-item-title-chip-container">
+                        {
+                          !isEqual(get(offer, "type_name"), "") && (
+                            <InlineBadge color={'#03a9f4'}>
+                              {get(offer, "type_name")}
+                            </InlineBadge>
+                          )
+                        }
 
-                      {get(offer, "priority_code") === 0 && <div className={`${classes.orange_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>{get(offer, "priority_name")}</div>}
-                      {get(offer, "priority_code") === 1 && <div className={`${classes.red_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>{get(offer, "priority_name")}</div>}
-                      {get(offer, "priority_code") === 2 && <div className={`${classes.red_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>Very urgent</div>}
-                    </Grid>
+                        {
+                          get(offer, "priority_code") === 0 && (
+                            <InlineBadge color={'#ff9800'}>
+                              {get(offer, "priority_name")}
+                            </InlineBadge>
+                          )
+                        }
+                        {
+                          get(offer, "priority_code") === 1 && (
+                            <InlineBadge color={'#f44336'}>
+                              {get(offer, "priority_name")}
+                            </InlineBadge>
+                          )
+                        }
+                        {
+                          get(offer, "priority_code") === 2 && (
+                            <InlineBadge color={'#f44336'}>
+                              {get(offer, "priority_name")}
+                            </InlineBadge>
+                          )
+                        }
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Grid direction="row" container>
@@ -211,7 +249,7 @@ export function TaskTableRecently({ offers }) {
                     }
                   </TableCell>
                   <TableCell>
-                    <Popover offer_id={get(offer, "id")} />
+                    <Popover offer_id={get(offer, "id")} url_redirect={offer.url_redirect} />
                   </TableCell>
                 </TableRow>
               ))

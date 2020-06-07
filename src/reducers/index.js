@@ -379,6 +379,7 @@ import taskRemind from "./taskDetail/remind";
 import subTask from "./taskDetail/subTask";
 import detailTask from "./taskDetail/taskDetail";
 import trackingTime from "./taskDetail/time";
+
 import banUserFromGroup, {
   initialState as banUserFromGroupInitialState,
 } from "./user/banUserFromGroup";
@@ -390,7 +391,7 @@ import detailUser, {
 } from "./user/detailUser";
 import listUserOfGroup, {
   initialState as listUserOfGroupInitialState,
-} from "./user/listUserOfGroup";
+} from "./user/listOfUserGroup/listUserOfGroup";
 import permissionUser, {
   initialState as permissionUserInitialState,
 } from "./user/permissionUser";

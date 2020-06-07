@@ -1006,24 +1006,91 @@
   "PERSON_HANDLE": "Approver",
   "PERSON_MONITOR": "Supervisor",
   "OFFER_PAGE": {
+    "OVERVIEW": {
+      "GROUP_OFFERS": {
+        "TITLE": {
+          "WAITING": "Waiting",
+          "APPROVING": "Approving",
+          "REJECTED": "Rejected",
+          "ACCEPTED": "Accepted"
+        }
+      }
+    },
+    "OFFER_BY_GROUP_VIEW": {
+      "MODAL": {
+        "CREATE": {
+          "TITLE": "Create Offer Group",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        },
+        "UPDATE": {
+          "TITLE": "Update Offer Group",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        },
+        "GROUP_NAME_SECTION": {
+          "TITLE": "Offer group name",
+          "PLACEHOLDER": "Type in offer group name..."
+        },
+        "GROUP_DESCRIPTION_SECTION": {
+          "TITLE": "Offer group description",
+          "PLACEHOLDER": "Type in offer group description..."
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Offer Detail",
-      "DELETE_OFFER": "Delete proposal",
+      "OFFER_PRIORITY_EDITING": {
+        "TITLE": "Edit"
+      },
+      "OFFER_APPROVAL_CONDITION_EDITING": {
+        "TITLE": "Edit"
+      },
+      "CREATE_APPROVAL": {
+        "BUTTON": {
+          "CREATE": "CREATE APPROVAL",
+          "APPROVED": "APPROVAL CREATED"
+        },
+        "MODAL": {
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        }
+      },
+      "DISCUSSION": {
+        "TITLE": "Discuss",
+        "TEXT_BOX": {
+          "PLACEHOLDER": "Enter discussion...",
+          "BUTTON_TITLE": "Send"
+        },
+        "COMMENT": {
+          "USER_ROLE": {
+            "TYPE_1": "Participant",
+            "TYPE_2": "Handler",
+            "TYPE_3": "Monitor"
+          },
+          "DATE_TIME_POSTED": "Posted at {{time}} on {{date}}",
+          "POPOVER": {
+            "UPDATE": "Update",
+            "REMOVE": "Remove"
+          }
+        }
+      },
+      "DELETE_OFFER": {
+        "TITLE": "Delete proposal",
+        "CONFIRM_MODAL": {
+          "TITLE": "Delete Proposal",
+          "MESSAGE": "Are you sure you want to delete this proposal?",
+          "CONFIRM": "Delete Proposal",
+          "CANCEL": "Cancel"
+        }
+      },
       "ESCAPE": "Close"
     },
     "OFFER_TABLE": {
       "ITEM": {
         "POPOVER": {
           "DETAIL": "Detail",
-          "DELETE": {
-            "TITLE": "Delete",
-            "CONFIRM_MODAL": {
-              "TITLE": "Delete proposal",
-              "MESSAGE": "Do you certainly want to delete this proposal?",
-              "CONFIRM": "Delete proposal",
-              "CANCEL": "Cancel"
-            }
-          }
+          "VIEW_TASK": "View Task"
         }
       }
     }

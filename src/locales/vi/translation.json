@@ -1455,31 +1455,98 @@
   "LABEL_CHAT_TASK_GAN_QUYEN": "Gán quyền",
   "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION": "Hiện tại chưa có nhóm quyền nào được tạo cho chức năng này!",
   "LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON": "Xóa nhóm quyền đã chọn",
-  "MESSAGE_NOT_PERMISSION": "Bạn không có quyền ",
+  "MESSAGE_NO_PERMISSION": "Bạn không có quyền thực hiện hành động này",
   "ADD_PERSON_MONITOR": "Thêm người giám sát",
   "ADD_PERSON_HANDLE": "Thêm người phê duyệt",
   "ADD_DOCUMENT_OFFER": "Thêm tài liệu",
   "PERSON_HANDLE": "Người phê duyệt",
   "PERSON_MONITOR": "Người giám sát",
   "OFFER_PAGE": {
+    "OVERVIEW": {
+      "GROUP_OFFERS": {
+        "TITLE": {
+          "WAITING": "Đề xuất",
+          "APPROVING": "Chờ duyệt",
+          "REJECTED": "Từ chối",
+          "ACCEPTED": "Đồng ý"
+        }
+      }
+    },
+    "OFFER_BY_GROUP_VIEW": {
+      "MODAL": {
+        "CREATE": {
+          "TITLE": "Tạo nhóm đề xuất",
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        },
+        "UPDATE": {
+          "TITLE": "Chỉnh sửa nhóm đề xuất",
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        },
+        "GROUP_NAME_SECTION": {
+          "TITLE": "Tên nhóm đề xuất",
+          "PLACEHOLDER": "Nhập tên nhóm đề xuất..."
+        },
+        "GROUP_DESCRIPTION_SECTION": {
+          "TITLE": "Mô tả nhóm đề xuất",
+          "PLACEHOLDER": "Nhập mô tả nhóm đề xuất..."
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Chi tiết đề xuất",
-      "DELETE_OFFER": "Xóa đề xuất",
+      "OFFER_PRIORITY_EDITING": {
+        "TITLE": "Chỉnh sửa"
+      },
+      "OFFER_APPROVAL_CONDITION_EDITING": {
+        "TITLE": "Chỉnh sửa"
+      },
+      "CREATE_APPROVAL": {
+        "BUTTON": {
+          "CREATE": "TẠO PHÊ DUYỆT",
+          "APPROVED": "ĐÃ TẠO PHÊ DUYỆT"
+        },
+        "MODAL": {
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        }
+      },
+      "DISCUSSION": {
+        "TITLE": "Thảo luận",
+        "TEXT_BOX": {
+          "PLACEHOLDER": "Nhập bình luận...",
+          "BUTTON_TITLE": "Gửi"
+        },
+        "COMMENT": {
+          "USER_ROLE": {
+            "TYPE_1": "Người tham gia",
+            "TYPE_2": "Người phê duyệt",
+            "TYPE_3": "Người giám sát"
+          },
+          "DATE_TIME_POSTED": "Thêm lúc {{time}} ngày {{date}}",
+          "POPOVER": {
+            "UPDATE": "Cập nhật",
+            "REMOVE": "Xóa"
+          }
+        }
+      },
+      "DELETE_OFFER": {
+        "TITLE": "Xóa đề xuất",
+        "CONFIRM_MODAL": {
+          "TITLE": "Xóa đề xuất",
+          "MESSAGE": "Bạn có chắc chắn muốn xóa đề xuất này?",
+          "CONFIRM": "Xóa đề xuất",
+          "CANCEL": "Hủy"
+        }
+      },
       "ESCAPE": "Thoát"
     },
     "OFFER_TABLE": {
       "ITEM": {
         "POPOVER": {
           "DETAIL": "Chi tiết",
-          "DELETE": {
-            "TITLE": "Xóa",
-            "CONFIRM_MODAL": {
-              "TITLE": "Xóa đề xuất",
-              "MESSAGE": "Bạn có chắc chắn muốn xóa đề xuất này?",
-              "CONFIRM": "Xóa đề xuất",
-              "CANCEL": "Hủy"
-            }
-          }
+          "VIEW_TASK": "Xem công việc"
         }
       }
     }
