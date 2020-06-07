@@ -102,7 +102,7 @@ function RoleMemberModal({
         <Table>
           <TableHead style={{ backgroundColor: '#eee' }}>
             <TableRow>
-              <TableCell className="RoleMemberModal--cell" style={{ width: '9%', textAlign: 'center' }}>{t('LABEL_CHAT_TASK_CHON')}</TableCell>
+              <TableCell className="RoleMemberModal--cell" style={{ width: '9%', textAlign: 'center' }}>&nbsp;</TableCell>
               <TableCell style={{ width: '30%' }}>{t('LABEL_CHAT_TASK_TEN_VAI_TRO')}</TableCell>
               <TableCell style={{ width: '30%' }}>{t('LABEL_CHAT_TASK_MO_TA')}</TableCell>
               {/* <TableCell align="right">

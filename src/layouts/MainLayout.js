@@ -216,7 +216,7 @@ function MainLayout({
 
   function handleDeleteChat(data) {
     // console.log('handleDeleteChat', data)
-    updateChatState(data.id, { is_deleted: true });
+    updateChatState(data.id, { type: CHAT_TYPE.TEXT, is_deleted: true });
   }
 
   function handleViewChat(data) {
