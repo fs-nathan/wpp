@@ -86,7 +86,7 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
-      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
+      // dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(detailStatus({ projectId }));
       const customEvent = new CustomEvent(JOIN_PROJECT_EVENT, {
         detail: projectId,

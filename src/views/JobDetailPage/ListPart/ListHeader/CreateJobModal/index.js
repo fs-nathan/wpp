@@ -440,6 +440,7 @@ function CheckCreateJob(props) {
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
 
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
+  const isFetching = useSelector(state => state.taskDetail.listGroupTask.isFetching);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
   const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
   const projectId = isNil(get(props, 'projectId'))
@@ -447,29 +448,39 @@ function CheckCreateJob(props) {
     : get(props, 'projectId');
 
   useEffect(() => {
-    if (projectId) {
+    if (projectId && props.isOpen) {
       dispatch(getListGroupTask({ project_id: projectId }));
-    } 
-  }, [dispatch, projectId])
+    }
+  }, [dispatch, projectId, props.isOpen])
 
   useEffect(() => {
-    // console.log(listGroupTaskData, '&& ', props.isOpen)
-    if (listGroupTaskData && props.isOpen) {
+    // console.log(listGroupTaskData, '&& ', props.isOpen, isFetching)
+    if (listGroupTaskData && props.isOpen && !isFetching) {
       if (listGroupTaskData.group_tasks.length === 0) {
         setOpenCreateGroup(true)
-        props.setOpen(false)
       } else {
         setOpenCreateGroup(false)
       }
     }
-  }, [listGroupTaskData, props, props.isOpen])
+  }, [isFetching, listGroupTaskData, props, props.isOpen])
 
   function onClickCreateProject() {
     setOpenCreateGroup(false)
     setOpenProjectGroup(true)
+    props.setOpen(false)
   }
 
-  return listGroupTaskData && !listGroupTaskData.isFetching ? (
+  function onClickCloseGroupTask(isOpen) {
+    props.setOpen(false)
+    setOpenCreateGroup(isOpen)
+  }
+
+  function onClickCloseGroupProject(isOpen) {
+    props.setOpen(false)
+    setOpenProjectGroup(isOpen)
+  }
+
+  return !isFetching ? (
     <>
       {
         !isOpenCreateGroup &&
@@ -477,13 +488,13 @@ function CheckCreateJob(props) {
       }
       <CreateGroupTaskModal
         isOpen={isOpenCreateGroup}
-        setOpen={setOpenCreateGroup}
+        setOpen={onClickCloseGroupTask}
         onClickCreate={onClickCreateProject}
       />
       <CreateProjectGroup
         project_id={projectId}
         open={isOpenProjectGroup}
-        setOpen={setOpenProjectGroup} />
+        setOpen={onClickCloseGroupProject} />
     </>
   ) : null
 }
