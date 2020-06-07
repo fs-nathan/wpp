@@ -14,7 +14,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import { changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortTask } from "../../actions/gantt";
+import { changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortTask,sortGroupTask } from "../../actions/gantt";
 import { changeDetailSubtaskDrawer, changeVisibleSubtaskDrawer } from "../../actions/system/system";
 import { getListGroupTask, getListTaskDetail, getProjectListBasic, getStaticTask } from "../../actions/taskDetail/taskDetailActions";
 import CustomBadge from "../../components/CustomBadge";
@@ -34,6 +34,8 @@ import EditCell from "./EditCell";
 import Header from "./Header";
 import "./table.css";
 
+
+Array.prototype.insertArray = function (index, items) {     this.splice.apply(this, [index, 0].concat(items)); }
 const MAX_DAY_DEFAULT = 40;
 
 const RenderJobModal = React.memo(
@@ -1083,30 +1085,68 @@ class DragSortingTable extends React.Component {
 
   moveRow = (dragIndex, hoverIndex) => {
     const { data } = this.state;
+    if(dragIndex === hoverIndex) return
     const dragRow = data[dragIndex];
     const indexGroupTaskList = [];
     let indexSort = 0;
-    if (data[dragIndex].isGroupTask || data[dragIndex].isTotalDuration) return;
+    if (data[dragIndex].isTotalDuration) return;
+    
     data.forEach((item, index) => {
       if (item.isGroupTask) indexGroupTaskList.push(index);
     });
-    indexGroupTaskList.forEach((index) => {
+    if(data[dragIndex].isGroupTask){
+      let temp = 0;
+      let groupDataSource = [];
+      indexSort = 0;
+      let oldIndexGroup = 0
+      data.forEach((item,index) =>{
+        if(item.isTotalDuration){
+          groupDataSource[temp] = [item]
+          return
+        }
+        if(item.isGroupTask){
+          temp++
+          if(dragIndex === index)
+          oldIndexGroup = temp
+          groupDataSource[temp] = []
+          groupDataSource[temp].push(item)
+          if(hoverIndex > index ||(hoverIndex > dragIndex && hoverIndex === index))
+          indexSort++
+          return
+        }
+        groupDataSource[temp].push(item)
+      })
+      if(dragIndex < hoverIndex)
+      indexSort--
+      indexSort = indexSort < 0 ? 0 : indexSort;
+      console.log(oldIndexGroup, indexSort,groupDataSource)
+      const oldGroup = groupDataSource[oldIndexGroup]
+     groupDataSource.splice(oldIndexGroup,1)
+     groupDataSource.splice(indexSort +1, 0,oldGroup)
+     sortGroupTask(data[dragIndex].id, indexSort)
+     this.setState({
+       data: groupDataSource.flat()
+     })
+      return
+    }
+    let endProject = false;
+    indexGroupTaskList.forEach((index, indexLoop) => {
       if (hoverIndex > index) {
         indexSort = hoverIndex - index;
       }
       if(hoverIndex === index){
-        indexSort = 0
+        indexSort = index - indexGroupTaskList[indexLoop -1] + 1
+        endProject = true
       }
     });
-    console.log(indexSort)
     if(dragIndex > hoverIndex)
-    indexSort--;
+      indexSort--;
     indexSort = indexSort < 0 ? 0 : indexSort;
     const groupTaskIndex = indexGroupTaskList.filter(
       (item) => item <= hoverIndex
     );
     const taskId = data[dragIndex].id;
-    const groupId = data[groupTaskIndex[!indexSort ? groupTaskIndex.length - 1 : groupTaskIndex.length - 2]].id;
+    const groupId = data[groupTaskIndex[!endProject ? groupTaskIndex.length - 1 : groupTaskIndex.length - 2]].id;
     const { projectId } = this.props.match.params;
     this.handleSortTask(taskId, groupId, projectId, indexSort);
     this.setState(
