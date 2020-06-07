@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: "column"
   },
   cardContent: {
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     height: "300px",
     display: "flex",
     flexDirection: "column",
@@ -32,12 +32,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: "0.9rem"
   },
   extra: {
-    marginTop: "23px",
+    marginTop: "15px",
     color: "rgba(0,0,0,0.54)",
-    fontSize: "12px",
-    marginRight: "10px",
-    background: "#f0f0f0",
-    borderRadius: "3px"
+    fontSize: "13px",
   }
 }));
 export const Block = ({ title, subheader, extra, children, ...props }) => {

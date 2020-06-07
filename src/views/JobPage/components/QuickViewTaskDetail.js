@@ -164,13 +164,13 @@ export function QuickViewTaskDetailStateLess({ detailTask, onClose }) {
         <VerticleList>
           <QuickViewRow
             title={t("TÊN CÔNG VIỆC")}
-            actions={
-              <EditAction
-              // onClick={() => {
-              //   setOpenEditJob(true);
-              // }}
-              />
-            }
+            // actions={
+            //   <EditAction
+            //   // onClick={() => {
+            //   //   setOpenEditJob(true);
+            //   // }}
+            //   />
+            // }
           >
             {get(detailTask, taskAtrrs.name, "#########")}
           </QuickViewRow>

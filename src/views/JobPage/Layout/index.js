@@ -11,9 +11,9 @@ import {
 } from "components/CustomTable";
 import HeaderButtonGroup from "components/CustomTable/HeaderButtonGroup";
 import React, { useContext, useState } from "react";
-import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
+import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import LoadingBox from "../../../components/LoadingBox";
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
@@ -214,7 +214,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             ...props,
           }}
         >
-          <Scrollbars>{children}</Scrollbars>
+          <TasksScrollbar>{children}</TasksScrollbar>
         </LayoutStateLess>
         <TimeRangePopover
           bgColor={bgColor}

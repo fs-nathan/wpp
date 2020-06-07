@@ -68,6 +68,7 @@ const CheckboxColorTimeLine = ({
   color,
   type,
   setColor,
+  disabled,
   changeVisible,
   checked,
 }) => {
@@ -82,13 +83,18 @@ const CheckboxColorTimeLine = ({
     >
       <Checkbox
         checked={checked}
+        disabled={disabled}
         onChange={handleChangeCheckBox}
         style={{
           display: "flex",
           width: "100%",
           marginLeft: "8px !important",
         }}
-        className="config--drawer--checkbox"
+        className={
+          disabled
+            ? `config--drawer--checkbox ant-checkbox-inner-disabled`
+            : "config--drawer--checkbox"
+        }
       >
         <CheckBoxLabel text={text} />
       </Checkbox>
@@ -187,10 +193,12 @@ const CommonConfig = ({
             type={"group"}
             text="Nhóm công việc"
             color={timelineColor.group}
+            disabled={true}
             setColor={handleChangeColor}
           />
           <CheckboxColorTimeLine
             projectInfo={projectInfo}
+            disabled={true}
             checked={visibleGantt.task}
             changeVisible={changeVisible}
             type={"task"}

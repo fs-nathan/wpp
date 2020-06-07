@@ -2,28 +2,34 @@ import { Grid } from "@material-ui/core";
 import { mdiSquare } from "@mdi/js";
 import Icon from "@mdi/react";
 import React from "react";
+import { useTranslation } from 'react-i18next';
 import styled from "styled-components";
 import { colors, labels } from "../contants/attrs";
-import './ChartLegend.css'
+import './ChartLegend.scss'
 
 const IconWrap = styled(Grid)`
   line-height: 1;
-  margin-right: 12px;
+  margin-right: 0.2em;
 `;
 
 const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) => {
-  const map = strings.map(string => [labels[string], colors[string]]);
+  const { t } = useTranslation();
+
+  const map = strings.map(string => [
+    typeof labels[string] === 'function' ? labels[string](t) : labels[string],
+    colors[string],
+  ]);
   const color = strings.map(string => [colors[string]]);
   const getIndexPercent = (value) => {
     const res = series.reduce((total,currentValue) => {
       return total + currentValue;
     });
-    return Math.round((value / res) * 100);
+    return res > 0 ? Math.round((value / res) * 100) : 0;
   }
   return (
     <Grid container justify="center">
       {map.map(([label, color]) => (
-        <Grid container alignItems="center" key={label} item xs={xs}>
+        <Grid container alignItems="center" justify="center" key={label} item xs={xs}>
           <IconWrap item>
             <Icon path={mdiSquare} size={1} color={color} />
           </IconWrap>

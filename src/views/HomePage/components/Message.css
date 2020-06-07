@@ -18,6 +18,19 @@
   border-radius: 15px;
   display: inline-block;
 }
+.comp_Message__sticker {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  max-width: 400px;
+  line-height: 0;
+  overflow: hidden;
+  border: 1px solid rgb(245, 246, 247);
+  background: rgb(245, 246, 247);
+  border-radius: 15px;
+}
+.comp_Message__sticker img {
+  width: 100%;
+}
 .comp_Message__reply {
   color: #3f51b5;
   margin-right: 8px;
@@ -38,4 +51,16 @@
   margin-right: 8px;
   font-weight: bold;
   color: #3f51b5;
+}
+.comp_Message__message {
+  color: #000;
+}
+.comp_Message__files {
+  width: 100%;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  max-width: 400px;
+  border: 1px solid rgb(245, 246, 247);
+  border-radius: 15px;
+  overflow: hidden;
 }

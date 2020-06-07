@@ -5,9 +5,9 @@ import {
   LIST_USER_OF_GROUP_RESET,
 } from '../../constants/actions/user/listUserOfGroup';
 
-export const listUserOfGroup = (quite = false) => ({
+export const listUserOfGroup = (quiet = false) => ({
   type: LIST_USER_OF_GROUP,
-  quite,
+  quiet,
 });
 
 export const listUserOfGroupSuccess = ({ rooms, maxUser }, options) => ({

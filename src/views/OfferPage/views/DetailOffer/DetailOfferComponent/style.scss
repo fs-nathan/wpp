@@ -1,3 +1,15 @@
 a {
   text-decoration: none;
 }
+
+.offerDetail {
+  &-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &-verticalLine {
+    border-right: 1px solid #3333;
+  }
+}

@@ -1,5 +1,41 @@
-.detail-offer-modal {
-  [class*='comp_CustomModal___accept-button'] {
-    color: red !important;
+.detailOfferModal {
+  &-container {
+    [class*='comp_LoadingOverlay___wrapper'] {
+      height: 90vh;
+    }
+    [class*='comp_CustomModal___scroll'] {
+      height: 100% !important;
+      & > div {
+        display: flex;
+        overflow: hidden !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+      }
+      & > div:nth-child(2) {
+        display: none;
+      }
+      & > div:nth-child(3) {
+        display: none;
+      }
+    }
+    [class*='MuiDialogContent-root'] {
+      display: flex;
+      min-height: 100%;
+      padding: 0;
+      overflow: unset;
+    }
+    & > div:nth-child(3) > div {
+      max-width: 85vw !important;
+    }
+  }
+  &-confirmBtn--red {
+    [class*='comp_CustomModal___accept-button'] {
+      color: red !important;
+    }
+  }
+  &-confirmBtn--black {
+    [class*='comp_CustomModal___accept-button'] {
+      color: black !important;
+    }
   }
 }

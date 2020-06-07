@@ -7,7 +7,7 @@ import './styles.scss';
 
 export const StyledDiv = styled.div`
   .Mui-checked {
-    color: ${props => props.selectedColor};
+    color: ${props => props.selectedColor} !important;
   }
 `
 
@@ -19,15 +19,18 @@ function OfferMemberItem({
   onClick,
   isDisable,
 }) {
-  const groupActiveColor = useSelector(currentColorSelector)
+  const appColor = useSelector(currentColorSelector)
 
   return (
     <StyledDiv
-      selectedColor={groupActiveColor}
+      selectedColor={appColor}
       className="offerMemberItem">
-      <Checkbox checked={isSelected}
-        onClick={onClick} disabled={isDisable} />
-      <Avatar className="offerMemberItem--avatar" src={avatar}></Avatar>
+      <Checkbox
+        checked={isSelected}
+        onClick={onClick}
+        disabled={isDisable}
+      />
+      <Avatar className="offerMemberItem--avatar" src={avatar} />
       <Typography className="offerMemberItem--name" component="div">
         {name}
         <Typography

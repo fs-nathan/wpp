@@ -13,22 +13,23 @@ import { localOptionSelector } from '../../selectors';
 import CreateNewOrUpdateGroupTaskPresenter from './presenters';
 
 function CreateNewOrUpdateGroupTask({
-  open, setOpen,
+  open,
+  setOpen,
   curGroupTask = null,
-  doUpdateGroupTask, doCreateGroupTask,
+  doUpdateGroupTask,
+  doCreateGroupTask,
   doReload,
   localOption,
   project_id = null,
 }) {
-
   const times = useTimes();
   const { timeType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
-    return ({
+    return {
       timeStart,
       timeEnd,
-    });
+    };
     // eslint-disable-next-line
   }, [timeType]);
 
@@ -41,25 +42,31 @@ function CreateNewOrUpdateGroupTask({
 
   return (
     <CreateNewOrUpdateGroupTaskPresenter
-      open={open} setOpen={setOpen}
+      open={open}
+      setOpen={setOpen}
       curGroupTask={curGroupTask}
       projectId={projectId}
       timeRange={timeRange}
-      doReload={() => doReload({
-        projectId,
-        timeStart: get(timeRange, 'timeStart')
-          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-          : undefined,
-        timeEnd: get(timeRange, 'timeEnd')
-          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-          : undefined,
-      }, projectId)}
+      doReload={() =>
+        doReload(
+          {
+            projectId,
+            timeStart: get(timeRange, "timeStart")
+              ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
+              : undefined,
+            timeEnd: get(timeRange, "timeEnd")
+              ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
+              : undefined,
+          },
+          projectId
+        )
+      }
       handleCreateOrUpdateGroupTask={(name, description) =>
         curGroupTask
           ? doUpdateGroupTask({
-            groupTaskId: get(curGroupTask, 'id'),
+            groupTaskId: get(curGroupTask, "id"),
             name,
-            description
+            description,
           })
           : doCreateGroupTask({
             projectId,
@@ -68,24 +75,26 @@ function CreateNewOrUpdateGroupTask({
           })
       }
     />
-  )
+  );
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     doReload: (options, projectId) => {
       dispatch(listGroupTask({ projectId }, true));
       dispatch(getAllGroupTask(true));
       dispatch(listTask(options, true));
     },
-    doCreateGroupTask: ({ projectId, name, description }) => dispatch(createGroupTask({ projectId, name, description })),
-    doUpdateGroupTask: ({ groupTaskId, name, description }) => dispatch(updateGroupTask({ groupTaskId, name, description })),
-  }
+    doCreateGroupTask: ({ projectId, name, description }) =>
+      dispatch(createGroupTask({ projectId, name, description })),
+    doUpdateGroupTask: ({ groupTaskId, name, description }) =>
+      dispatch(updateGroupTask({ groupTaskId, name, description })),
+  };
 };
 
 export default connect(
-  state => ({
+  (state) => ({
     localOption: localOptionSelector(state),
   }),
-  mapDispatchToProps,
+  mapDispatchToProps
 )(CreateNewOrUpdateGroupTask);

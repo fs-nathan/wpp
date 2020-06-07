@@ -1,0 +1,117 @@
+.offerDetail {
+  &-middleContent {
+    &-container {
+      width: 37%;
+      display: flex;
+      flex-direction: column;
+      padding: 1.2em 2em;
+    }
+  }
+
+  &-createApprovalBtn {
+    width: 100%;
+    height: 4em;
+    background-color: #03c30b;
+    color: white;
+    &:hover {
+      background-color: #03c30b;
+    }
+  }
+
+  &-approvalStatusBtn {
+    width: 100%;
+    margin-top: 1em;
+    font-weight: 400;
+    background-color: #e0e0e0;
+    color: red;
+    &:hover {
+      background-color: #e6e6e6;
+    }
+  }
+
+  &-approvalConditionContainer {
+    margin: 0.6em 0;
+    &-inner {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      &-title {
+        font-weight: 700;
+      }
+      &-editBtn {
+        margin-top: 0;
+        margin-left: auto;
+        font-weight: 400;
+        color: #1673e5;
+        [class*='MuiButton-label'] {
+          font-size: 1rem;
+          text-transform: none;
+        }
+      }
+    }
+  }
+
+  &-memberApprovalRateContainer {
+    margin: 0.6em 0;
+  }
+
+  &-memberToAccept {
+    &-title {
+      margin: 0.6em 0;
+    }
+    &-container {
+      margin: 0.6em 0;
+    }
+    &-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.6em;
+      &-avatar {
+        width: 4em;
+        height: 4em;
+      }
+      &-name {
+        margin: 0.6em 0 0;
+      }
+    }
+  }
+
+  &-approvalResult {
+    &-title {
+      font-weight: 700;
+    }
+    &-result {
+
+    }
+    &-member {
+      &-container {
+        padding: 0.2em 0;
+      }
+      &-avatar {
+        width: 55px;
+        height: 55px;
+      }
+      &-name {
+        font-weight: 700;
+      }
+      &-position {
+        color: #fd7e14;
+      }
+    }
+  }
+
+  &-horizontalLine {
+    margin: 10px 0 5px;
+    border-bottom: 1px solid #3333;
+  }
+}
+
+.bg--red {
+  background-color: #f44336;
+  color: white;
+}
+.bg--green {
+  background-color: #03c30b;
+  color: white;
+}
