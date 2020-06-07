@@ -21,7 +21,6 @@ const DragableBodyRow = ({
       if (dragIndex === index) {
         return {};
       }
-      console.log(dragIndex < index)
       return {
         isOver: monitor.isOver(),
         dropClassName:
@@ -39,7 +38,6 @@ const DragableBodyRow = ({
     }),
   });
   drop(drag(ref));
-  console.log(isOver)
   return (
     <tr
       ref={ref}

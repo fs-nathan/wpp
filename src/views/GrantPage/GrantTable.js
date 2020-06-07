@@ -1091,20 +1091,24 @@ class DragSortingTable extends React.Component {
       if (item.isGroupTask) indexGroupTaskList.push(index);
     });
     indexGroupTaskList.forEach((index) => {
-      if (hoverIndex >= index) {
+      if (hoverIndex > index) {
         indexSort = hoverIndex - index;
       }
+      if(hoverIndex === index){
+        indexSort = 0
+      }
     });
+    console.log(indexSort)
+    if(dragIndex > hoverIndex)
     indexSort--;
     indexSort = indexSort < 0 ? 0 : indexSort;
     const groupTaskIndex = indexGroupTaskList.filter(
       (item) => item <= hoverIndex
     );
     const taskId = data[dragIndex].id;
-    const groupId = data[groupTaskIndex[groupTaskIndex.length - 1]].id;
+    const groupId = data[groupTaskIndex[!indexSort ? groupTaskIndex.length - 1 : groupTaskIndex.length - 2]].id;
     const { projectId } = this.props.match.params;
     this.handleSortTask(taskId, groupId, projectId, indexSort);
-    console.log(dragIndex, hoverIndex);
     this.setState(
       update(this.state, {
         data: {
