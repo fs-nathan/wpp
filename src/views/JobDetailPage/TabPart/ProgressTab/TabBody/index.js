@@ -149,7 +149,8 @@ function TabBody() {
             </div>
             <div className="progressTabBody--totalDay">
               <div>{t('LABEL_CHAT_TASK_TIEN_DO')}</div>
-              <div>{t('LABEL_CHAT_TASK_NGAY_COUNT', { count: duration_value })}</div>
+              {duration_value &&
+                <div>{t('LABEL_CHAT_TASK_NGAY_COUNT', { count: duration_value })}</div>}
             </div>
             <div className="progressTabBody--end-date-box">
               <div>{t('LABEL_CHAT_TASK_KET_THUC_LABEL')}</div>

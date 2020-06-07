@@ -125,7 +125,7 @@ function TabBody(props) {
       duration_value, duration_unit
     } = detailTask
     setTaskStatistic({
-      progressCnt: duration_value + " " + duration_unit,
+      progressCnt: duration_value ? `${duration_value} ${duration_unit}` : '',
       subTaskCnt: t('LABEL_CHAT_TASK_HOAN_THANH_COUNT_COMPLETE', { complete: total_subtask_complete, total: total_subtask }),
       remindCnt: t('LABEL_CHAT_TASK_NHAC_HEN_COUNT', { count: total_remind }),
       fileCnt: t('LABEL_CHAT_TASK_FILE_COUNT', { count: total_file }),
@@ -191,7 +191,11 @@ function TabBody(props) {
         </ListItemButtonGroup>
         <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
           <ColorTypo>{t('LABEL_CHAT_TASK_TIEN_DO')}</ColorTypo>
-          <BadgeItem badge color='orangelight' label={taskStatistic.progressCnt} className="listPartTabBody--badge" />
+          {taskStatistic.progressCnt &&
+            <BadgeItem badge color='orangelight'
+              label={taskStatistic.progressCnt}
+              className="listPartTabBody--badge"
+            />}
           <div className="simple-progress-bar-wrapper">
             <SimpleSmallProgressBar percentDone={taskStatistic.complete} percentTarget={taskStatistic.complete_with_time} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
           </div>
