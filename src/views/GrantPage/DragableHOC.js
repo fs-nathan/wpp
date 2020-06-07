@@ -16,7 +16,6 @@ function GanttChart({
   girdInstance,
   timeNotWork = [],
   start,
-  showHeader,
   end,
   scrollGantt,
   visibleGantt,
@@ -35,12 +34,10 @@ function GanttChart({
   const ganttRef = useRef();
   const scrollTimeLineRef = useRef();
   const [left, setLeft] = useState(0);
-  const [canScroll, setCanScroll] = useState(true);
   const [scrollWidth, setScrollWidth] = useState(0);
   const [showResizeIcon, setShowResizeIcon] = useState(false);
   const [currentX, setcurrentX] = useState(0);
   const [drag, setDrag] = useState(false);
-  const [heightChart, setHeightChart] = useState(600);
   const [leftHeader, setLeftHeader] = useState(0);
   const [leftTable, setLeftTable] = useState(0);
   let offsetLeft = 0;
@@ -82,12 +79,6 @@ function GanttChart({
       document.removeEventListener("mouseup", handleMouseUp);
     };
   });
-  useEffect(() => {
-    if (ganttRef.current) {
-      setHeightChart(window.innerHeight - ganttRef.current.offsetTop);
-    }
-  }, [showHeader]);
-
   useEffect(() => {
     if (scrollRef.current && scrollGanttFlag) {
       const widthFromNowLayer =
@@ -178,7 +169,7 @@ function GanttChart({
               left:
                 new moment(
                   `${item.date}/${item.month}/${item.year}${
-                    item.hour ? " " + item.hour : ""
+                  item.hour ? " " + item.hour : ""
                   }`,
                   `DD/MM/YYYY${item.hour ? " HH" : ""}`
                 ).diff(start, girdInstance.unit) * 48,
@@ -237,10 +228,10 @@ function GanttChart({
           width: renderFullDay
             ? maxWidth
             : showFullChart
-            ? window.innerWidth - 80 - minLeft
-            : left
-            ? window.innerWidth - 80 - left
-            : window.innerWidth - 80 - defaultLeft,
+              ? window.innerWidth - 80 - minLeft
+              : left
+                ? window.innerWidth - 80 - left
+                : window.innerWidth - 80 - defaultLeft,
           position: "absolute",
           left: showFullChart ? minLeft : defaultLeft,
           overflow: "hidden",
@@ -366,6 +357,7 @@ function GanttChart({
                   height: heightTable - 69,
                   overflowY: "scroll",
                   overflowX: "hidden",
+                  zIndex: 1000
                 }}
               >
                 <div>{renderTimeNotWork}</div>

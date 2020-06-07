@@ -2,8 +2,9 @@ import { IconButton } from "@material-ui/core";
 import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuUp, mdiPageNextOutline, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table, Tooltip } from "antd";
-import 'antd/lib/drawer/';
-// import "antd/dist/antd.css";
+import 'antd/dist/antd.css';
+import 'antd/lib/grid/style/index.css';
+import 'antd/lib/table/style/index.css';
 import LoadingBox from "components/LoadingBox";
 import update from "immutability-helper";
 import moment from "moment";
@@ -44,7 +45,7 @@ const RenderJobModal = React.memo(
 
 const RenderHeader = React.memo(
   (props) => (
-    <div className="gantt--header-component_container">
+    <div className="apply-antd-css">
       <Header {...props} />
     </div>
   ),
@@ -423,29 +424,32 @@ class DragSortingTable extends React.Component {
                       }}
                       className="name-task-gantt"
                     >
-                      <Tooltip title={record.name}>
-                        <span style={{ paddingRight: "5px" }}>{record.name}</span>
-                        {record.number_subtask > 0 && (
-                          <IconButton
-                            aria-controls="simple-menu"
-                            style={{ padding: 0 }}
-                            aria-haspopup="true"
-                            size="small"
-                            onClick={() => {
-                              this.props.changeDetailSubtaskDrawer({
-                                id: record.id,
-                                name: record.name,
-                              });
-                              this.props.changeVisibleSubtaskDrawer(true);
-                            }}
-                          >
-                            <Icon
-                              className="gantt--icon-setting-task"
-                              path={mdiFileTree}
-                              size={1}
-                            />
-                          </IconButton>
-                        )}
+                      <Tooltip
+                        placement="top" title={record.name}>
+                        <div>
+                          <span style={{ paddingRight: "5px" }}>{record.name}</span>
+                          {record.number_subtask > 0 && (
+                            <IconButton
+                              aria-controls="simple-menu"
+                              style={{ padding: 0 }}
+                              aria-haspopup="true"
+                              size="small"
+                              onClick={() => {
+                                this.props.changeDetailSubtaskDrawer({
+                                  id: record.id,
+                                  name: record.name,
+                                });
+                                this.props.changeVisibleSubtaskDrawer(true);
+                              }}
+                            >
+                              <Icon
+                                className="gantt--icon-setting-task"
+                                path={mdiFileTree}
+                                size={1}
+                              />
+                            </IconButton>
+                          )}
+                        </div>
                       </Tooltip>
                     </div>
                     <div className="name-task-gantt__icon-container">

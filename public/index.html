@@ -74,7 +74,6 @@
         })
         .then(group => {
           kendo.drawing.pdf.toDataURL(group, (dataUrl) => {
-            console.log(dataUrl);
             callback(dataUrl)
           })
         });

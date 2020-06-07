@@ -1,9 +1,6 @@
 import DateFnsUtils from "@date-io/date-fns";
 import { IconButton, TextField } from "@material-ui/core";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { mdiSquareEditOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
@@ -70,7 +67,6 @@ const EditCell = ({
     };
   }, [showEdit, dataComplete, data]);
   const handleOnChange = (date) => {
-    console.log(new moment(date).format("YYYY-MM-DD"));
     setData(new moment(date).format("YYYY-MM-DD"));
   };
   const postDataToServer = async () => {
@@ -115,39 +111,39 @@ const EditCell = ({
               </MuiPickersUtilsProvider>
             </div>
           ) : (
-            <div
-              style={{
-                position: "absolute",
-                left,
-                top: 0,
-                width,
-                zIndex: 1000,
-              }}
-            >
-              <TextField
-                type="number"
+              <div
                 style={{
-                  height: 37,
-                  width: "100%",
+                  position: "absolute",
+                  left,
+                  top: 0,
+                  width,
+                  zIndex: 1000,
                 }}
-                fullWidth={true}
-                defaultValue={defaultValue}
-                disableUnderline={true}
-                value={dataComplete}
-                onChange={(e) => setDataComplete(e.target.value)}
-                classes={{
-                  root: "gantt--input-number",
-                }}
-                variant="outlined"
-                InputProps={{
-                  inputProps: {
-                    max: 100,
-                    min: 0,
-                  },
-                }}
-              />
-            </div>
-          ))}
+              >
+                <TextField
+                  type="number"
+                  style={{
+                    height: 37,
+                    width: "100%",
+                  }}
+                  fullWidth={true}
+                  defaultValue={defaultValue}
+                  disableUnderline={true}
+                  value={dataComplete}
+                  onChange={(e) => setDataComplete(e.target.value)}
+                  classes={{
+                    root: "gantt--input-number",
+                  }}
+                  variant="outlined"
+                  InputProps={{
+                    inputProps: {
+                      max: 100,
+                      min: 0,
+                    },
+                  }}
+                />
+              </div>
+            ))}
         {showEditIcon && !showEdit && (
           <div
             style={{

@@ -56,7 +56,7 @@ const TimeLine = ({
   }
   useEffect(() => {
     setWidthComplete((dataSource[index].complete * width) / 100);
-  }, [width]);
+  }, [width, dataSource]);
   useEffect(() => {
     setStartDateText(new moment(startDate));
   }, [startDate, girdInstance]);
@@ -245,7 +245,7 @@ const TimeLine = ({
               placement="top"
               title={`${
                 endDateText.diff(startDateText, girdInstance.unit) + 1
-              } ${girdInstance.unitText}`}
+                } ${girdInstance.unitText}`}
             >
               <span
                 className={
@@ -269,7 +269,7 @@ const TimeLine = ({
             placement="top"
             title={`${endDateText.diff(startDateText, girdInstance.unit) + 1} ${
               girdInstance.unitText
-            }`}
+              }`}
           >
             <div
               ref={refFirstResize}
@@ -279,7 +279,7 @@ const TimeLine = ({
                 setA(e.pageX - offsetLeft);
               }}
               className="resize-width"
-              // onMouseUp={handleMouseUpFirstResize}
+            // onMouseUp={handleMouseUpFirstResize}
             >
               {!isGroupTask && !isTotalDuration && canEdit && (
                 <Circle show={showResize} left={-18} />
@@ -291,8 +291,8 @@ const TimeLine = ({
               background: isTotalDuration
                 ? timelineColor.total
                 : isGroupTask
-                ? timelineColor.group
-                : timelineColor.task,
+                  ? timelineColor.group
+                  : timelineColor.task,
             }}
             className="gantt--time-task"
           ></div>

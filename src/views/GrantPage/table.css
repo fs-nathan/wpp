@@ -18,7 +18,7 @@
 }
 
 tr.drop-over-downward td {
-  border-bottom: 2px dashed #1890ff;
+  border-bottom: 2px dashed #1890ff !important;
 }
 
 tr.drop-over-upward td {
@@ -70,6 +70,7 @@ tr.drop-over-upward td {
   display: flex;
   flex-direction: column;
   margin-top: 10px;
+  padding-left: 10px;
 }
 body {
   overflow-x: hidden;
@@ -79,7 +80,7 @@ body {
   font-size: 14px;
   color: black;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: lowercase;
 }
 .config--drawer--title {
   margin-top: 10px;
@@ -609,6 +610,7 @@ div.checkbox-colortag--drawer {
   z-index: 10;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
+  margin-right: 30px;
 }
 
 .comp_QuickViewFilter__headerConfig {
@@ -919,6 +921,7 @@ input[type="time"]::-webkit-outside-spin-button {
 .gantt--edit-cell__input-date input {
   text-align: center;
 }
+
 .gantt--edit-cell__input-date {
   position: absolute;
   left: 0;

@@ -1,18 +1,7 @@
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputLabel,
-  Select,
-  TextField,
-} from "@material-ui/core";
+import { Box, Button, FormControl, IconButton, InputLabel, Select, TextField } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { mdiFilePdf } from "@mdi/js";
 import Icon from "@mdi/react";
 import kendo from "@progress/kendo-ui";
@@ -20,11 +9,7 @@ import { Drawer } from "antd";
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
-import {
-  changeFilterExportPdf,
-  changePreviewContent,
-  changeRenderFullDay,
-} from "../../../actions/gantt";
+import { changeFilterExportPdf, changePreviewContent, changeRenderFullDay } from "../../../actions/gantt";
 import { changeVisibleExportPdfDrawer } from "../../../actions/system/system";
 import "../../../views/JobPage/components/QuickViewFilter.css";
 import "../../../views/JobPage/Layout/QuickView.css";
@@ -216,18 +201,18 @@ const ExportPDF = ({
         <StyledScrollbarsSide autoHide autoHideTimeout={500} height={"tail"}>
           <div className="export-pdf--drawer__container">
             <p className="config--drawer--section config--drawer--section-subtitle">
-              THIẾT LÂP TRỤC THỜI GIAN{" "}
+              thiết lập trục thời gian{" "}
               <span style={{ color: "blue" }}>Xem mẫu</span>
             </p>
             <div className="config--drawer--checkbox-section">
               {renderInput()}
             </div>
             <p className="config--drawer--section config--drawer--section-subtitle">
-              Khổ giấy <span style={{ color: "#b9b9b9" }}>Tự động</span>
+              khổ giấy <span style={{ color: "#b9b9b9" }}>Tự động</span>
             </p>
             <div className="config--drawer--checkbox-section"></div>
             <p className="config--drawer--section config--drawer--section-subtitle">
-              THỜI GIAN
+              thời gian
             </p>
             <div className="config--drawer--checkbox-section">
               <FormControl size="small" variant="outlined">
