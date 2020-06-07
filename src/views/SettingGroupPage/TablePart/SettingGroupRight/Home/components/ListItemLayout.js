@@ -8,7 +8,7 @@ const Title = styled((props) => <Typography noWrap {...props} />)`
   color: #333;
 `;
 const SubTitle = styled((props) => <Typography noWrap {...props} />)`
-  font-size: 15px;
+  font-size: 13px;
   color: #8d8d8d;
 `;
 function ListItemLayout({

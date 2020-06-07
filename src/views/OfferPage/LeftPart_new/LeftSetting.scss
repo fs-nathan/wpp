@@ -15,3 +15,21 @@
   color: #fff;
   margin-right: 6px;
 }
+.leftSettings {
+  &-searchInput {
+    padding: 15px;
+  }
+  &-item {
+    &-disableAutoFocus {
+      [class*='comp_CustomList___list-item'] {
+        &:focus {
+          background-color: unset;
+        }
+      }
+    }
+    &-subtitle {
+      color: rgba(0, 0, 0, 0.54);
+      font-size: 14px;
+    }
+  }
+}

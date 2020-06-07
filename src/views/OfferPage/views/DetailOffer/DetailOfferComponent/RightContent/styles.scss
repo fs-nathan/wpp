@@ -1,0 +1,113 @@
+@mixin flexRow {
+  display: flex;
+  flex-direction: row;
+}
+@mixin flexColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.offerDetail {
+  &-rightContent {
+    &-container {
+      display: flex;
+      flex-direction: column;
+      width: 24%;
+      padding: 0 1em;
+    }
+  }
+
+  &-discussion {
+    &-headerTitle {
+      font-size: 15px;
+      padding: 10px 20px;
+      color: #222;
+      text-transform: uppercase;
+    }
+    &-textInputSection {
+      &-container {
+        @include flexRow;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        [class*='MuiButton-root'] {
+          border-radius: 1.5em;
+        }
+      }
+      &-textBox {
+
+      }
+      &-sendBtn {
+        color: #fff;
+        padding: 3px 12px;
+        min-width: unset;
+        box-shadow: unset;
+        background-color: #e9e9e9;
+        &-disabled {
+          background-color: #ececec !important;
+          padding: 3px 12px;
+          min-width: unset;
+        }
+      }
+    }
+  }
+
+  &-comment {
+    &-container {
+      @include flexRow;
+      padding-top: 0.5em;
+      padding-bottom: 0.5em;
+    }
+    &-avatar {
+      width: 13%;
+      height: 13%;
+    }
+    &-detail {
+      &-container {
+        @include flexColumn;
+        padding-left: 0.5em;
+      }
+    }
+    &-title {
+      &-container {
+        @include flexColumn;
+      }
+      &-username {
+        font-size: 1rem;
+        font-weight: 500;
+        margin: 0;
+        padding: 0 0 0.2em;
+      }
+      &-userRole {
+        font-size: 1rem;
+        color: #fd7e14;
+        margin: 0;
+        padding: 0 0 0.2em;
+      }
+    }
+    &-dateTimePosted {
+      font-size: 1rem;
+      margin: 0;
+      color: grey;
+    }
+    &-content {
+      font-size: 1rem;
+      margin: 0.5em 0 0;
+    }
+    &-moreBtn {
+      margin-left: auto;
+    }
+    &-popoverOption {
+      padding: 0.5em 1em;
+      &:hover {
+        cursor: pointer;
+        background-color: #f0f0f0;
+      }
+    }
+  }
+
+  &-horizontalLine {
+    margin: 1em 0;
+    border-bottom: 1px solid #3333;
+  }
+}

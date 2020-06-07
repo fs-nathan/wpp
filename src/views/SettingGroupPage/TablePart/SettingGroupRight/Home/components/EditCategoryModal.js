@@ -52,7 +52,7 @@ const EditCategoryForm = ({
     </Formik>
   );
 };
-export default ({ id, logo, name }) => {
+export default function EditCategorrModal({ id, logo, name, short_url }) {
   const { t } = useTranslation();
   const { setModal } = useContext(HomeContext);
   const [{ status }, setAsyncAction] = useAsyncTracker();
@@ -69,7 +69,7 @@ export default ({ id, logo, name }) => {
       initialValues={{
         category_id: id,
         logoPreview: !!logo && logo,
-        logo,
+        logo: short_url,
         name,
       }}
       onSubmit={handleSubmit}
@@ -109,4 +109,4 @@ export default ({ id, logo, name }) => {
       </>
     </EditCategoryForm>
   );
-};
+}

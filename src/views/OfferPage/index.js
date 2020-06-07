@@ -8,11 +8,18 @@ import CustomModal from '../../components/CustomModal';
 import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
+import { apiService } from '../../constants/axiosInstance';
 import { useLocalStorage } from "../../hooks";
 import { labels } from "./contants/attrs";
+import {
+  TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
+  TIME_FILTER_TYPE_OFFER_OVERVIEW,
+} from './contants/localStorage';
 import { Routes } from "./contants/routes";
 import { useMultipleSelect } from "./hooks/useMultipleSelect";
-import "./LeftPart_new/LeftSetting.css";
+import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
 import { deleteOffer, loadDetailOffer, loadTaskPage } from './redux/actions';
@@ -123,33 +130,69 @@ export const defaultFilter = {
 function OfferPage(props) {
   const { t } = useTranslation();
   const [keyword, setkeyword] = useState("");
-  const [title, setTtile] = useState(get(labels, "pageTitle"));
-  const [localOptions, setLocalOptions] = useLocalStorage(
-    "LOCAL_PROJECT_OPTIONS",
+  const [title, setTitle] = useState(get(labels, "pageTitle"));
+  const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_OVERVIEW,
     {
-      filterType: 1,
-      timeType: 5
+      timeType: 1,
+    }
+  );
+  const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
+    {
+      timeType: 1,
+    }
+  );
+  const [timeFilterTypeOfferByProject, storeTimeFilterTypeOfferByProject] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
+    {
+      timeType: 1,
+    }
+  );
+  const [timeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByDepartment] = useLocalStorage(
+    TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
+    {
+      timeType: 1,
     }
   );
   const [quickTask, setQuickTask] = useState();
   const [filterTab, setFilterTab] = useState("");
   const state = useSelector(state => state);
   const history = useHistory()
-  const [openModal, setOpenModal] = useState(false);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
-  const [timeType, setTimeType] = React.useState(localOptions.timeType);
-  const times = useTimes();
+  const [timeType, setTimeType] = React.useState(1);
   useEffect(() => {
-    setLocalOptions({
-      ...localOptions,
-      timeType
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const { pathname } = history.location;
+    const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
+    const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
+    const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
+    const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
+    if (offerByGroupRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferByGroup({
+        ...timeFilterTypeOfferByGroup,
+        timeType
+      });
+    } else if (offerByProjectRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferByProject({
+        ...timeFilterTypeOfferByProject,
+        timeType
+      });
+    } else if (offerByDepartmentRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferByDepartment({
+        ...timeFilterTypeOfferByDepartment,
+        timeType
+      });
+    } else if (offerOverviewRouteRegex.test(pathname)) {
+      storeTimeFilterTypeOfferOverview({
+        ...timeFilterTypeOfferOverview,
+        timeType
+      });
+    }
   }, [timeType]);
 
-  const [timeRange, settimeRange] = React.useState(() => {
-    const [startDate, endDate] = times[timeType].option();
+  const times = useTimes();
+  const [timeRange, setTimeRange] = React.useState(() => {
+    const [startDate, endDate] = times[1].option();
     return {
       startDate,
       endDate
@@ -192,7 +235,7 @@ function OfferPage(props) {
       url: Routes.RECENTLY,
       color: "#7d99a6",
       icon: mdiEmailCheck,
-      rightIcon: rightIcon
+      // rightIcon: rightIcon
     },
     {
       title: t(labels.group),
@@ -200,7 +243,7 @@ function OfferPage(props) {
       url: Routes.OFFERBYGROUP,
       color: "#7d99a6",
       icon: mdiEmailVariant,
-      rightIcon: rightIcon
+      // rightIcon: rightIcon
     },
     {
       title: t(labels.project),
@@ -222,18 +265,26 @@ function OfferPage(props) {
     !pin && setQuickTask(undefined);
   };
   // Mở modal tạo nhóm đề xuất
-  const setOpenModalOfferByGroup = useCallback(open => {
-    setOpenModal(open);
-  });
-  // Set tiêu đề
-  const setTitle = title => {
-    setTtile(title);
-  };
+  const [openModalOfferByGroup, setOpenModalOfferByGroup] = useState(false);
 
   // Filter các tab bên cột trái
   const filter = value => {
     setFilterTab(value);
   };
+  const [isOfferGroupManageable, setIsOfferGroupManageable] = useState(false);
+  const fetchIsOfferGroupManageable = async () => {
+    const config = {
+      url: "/permissions/get-permission-view-offer",
+      method: "GET"
+    }
+    const result = await apiService(config)
+    if (result.data && result.data.permissions) {
+      setIsOfferGroupManageable(result.data.permissions.manage_offer_group);
+    }
+  }
+  useEffect(() => {
+    fetchIsOfferGroupManageable();
+  }, [props])
   // Trả tab bên cột trái
   const renderTabList = useMemo(() => {
     if (checkUserIsInOfferDepartmentRoutes(window.location.pathname)) {
@@ -269,12 +320,13 @@ function OfferPage(props) {
           searchInput={true}
           searchPlaceHolder="Nhập nội dung cần tìm"
           title={title}
-          {...{ listMenu: getSummaryByGroupByKeyword(filterTab)(state) }}
+          isOfferGroupManageable={isOfferGroupManageable}
+          {...{ listMenu: getSummaryByGroupByKeyword(filterTab, isOfferGroupManageable)(state) }}
         />
       );
     }
     return <TabList title={title} {...{ listMenu }} />;
-  }, [title, listMenu, setOpenModalOfferByGroup, filterTab, state]);
+  }, [title, listMenu, filterTab, state]);
 
   // Get offer details from redux store to show on offer detail modal
   const detailOffer = useSelector(state => getDetailOffer(state));
@@ -311,18 +363,22 @@ function OfferPage(props) {
             handleSubSlide,
             timeAnchor,
             setTimeAnchor,
+            openModalOfferByGroup,
             setOpenModalOfferByGroup,
+            timeFilterTypeOfferOverview,
+            timeFilterTypeOfferByGroup,
+            timeFilterTypeOfferByProject,
+            timeFilterTypeOfferByDepartment,
             timeType,
             setTimeType,
             timeRange,
-            settimeRange,
+            setTimeRange,
             statusFilter,
             setstatusFilter,
             handleRemoveStatusFilter,
             keyword,
             setkeyword,
             setTitle,
-            openModal,
             setDetailOfferModalOpen,
             setCurrentDetailOfferId,
             setShowDeleteOfferConfirmModal,

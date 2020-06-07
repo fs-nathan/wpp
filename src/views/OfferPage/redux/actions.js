@@ -14,6 +14,9 @@ import {
   LOADPAGE_TASK_DUE,
   LOADPAGE_TASK_ROLE,
   LOAD_DETAIL_OFFER,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
+  UPDATE_OFFER_APPROVAL_CONDITION,
+  CREATE_OFFER,
   DELETE_OFFER,
   LOAD_OFFER_BY_DEPARTMENT_ID,
   LOAD_OFFER_BY_GROUP_ID,
@@ -27,6 +30,10 @@ import {
   REMOVE_SNACKBAR,
   UPDATE_GROUP_OFFER_OFFERPAGE,
   UPLOAD_DOCUMENT_OFFER,
+  OFFER_DETAIL_POST_COMMENT,
+  OFFER_DETAIL_UPDATE_COMMENT,
+  OFFER_DETAIL_REMOVE_COMMENT,
+  OFFER_DETAIL_GET_COMMENT_LIST,
 } from './types';
 
 export const loadTaskPage = timeRange => {
@@ -127,6 +134,51 @@ export const loadDetailOffer = ({ id }) => {
     payload: { id }
   }
 }
+export const updateOfferDetailDescriptionSection = ({ offerId, title, content, offerGroupId, priorityCode }) => {
+  return {
+    type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
+    payload: { offerId, title, content, offerGroupId, priorityCode }
+  }
+}
+export const updateOfferApprovalCondition = ({
+                                               offerId,
+                                               minRateAccept,
+                                               conditionLogic,
+                                               conditionLogicMember,
+                                               memberAcceptedImportantIds
+                                             }) => {
+  return {
+    type: UPDATE_OFFER_APPROVAL_CONDITION,
+    payload: { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds }
+  }
+}
+export const getCommentListOfferDetail = ({ offerId }) => {
+  return {
+    type: OFFER_DETAIL_GET_COMMENT_LIST,
+    payload: { offerId },
+  }
+};
+export const postCommentOfferDetail = ({ offerId, content }) => {
+  return {
+    type: OFFER_DETAIL_POST_COMMENT,
+    payload: { offerId, content },
+  }
+};
+export const updateCommentOfferDetail = ({ commentId, content }) => {
+  return {
+    type: OFFER_DETAIL_UPDATE_COMMENT,
+    payload: { commentId, content },
+  }
+};
+export const removeCommentOfferDetail = ({ commentId }) => {
+  return {
+    type: OFFER_DETAIL_REMOVE_COMMENT,
+    payload: { commentId },
+  }
+};
+export const createOffer = () => ({
+  type: CREATE_OFFER,
+})
 export const deleteOffer = ({ id }) => {
   return {
     type: DELETE_OFFER,

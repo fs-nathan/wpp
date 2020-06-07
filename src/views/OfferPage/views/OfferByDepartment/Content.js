@@ -47,12 +47,16 @@ function Content() {
   }, [keyword, state, statusFilter]);
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <BottomHeader
-          count={renderLength}
-          statistic_status={caculateStatus({ offers: renderTabList })}
-        />
-      </Grid>
+      {
+        renderLength ? (
+          <Grid item xs={12}>
+            <BottomHeader
+              count={renderLength}
+              statistic_status={caculateStatus({ offers: renderTabList })}
+            />
+          </Grid>
+        ) : null
+      }
       <Grid item xs={12}>
         <Grid container spacing={3}>
           <Grid item container xs={12}>

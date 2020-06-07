@@ -3,6 +3,7 @@ import { mdiCalendar, mdiFilterOutline, mdiFullscreen, mdiFullscreenExit } from 
 import { CustomTableContext, CustomTableProvider } from "components/CustomTable";
 import HeaderButtonGroup from "components/CustomTable/HeaderButtonGroup";
 import React, { useContext, useState } from "react";
+import { useHistory } from 'react-router-dom';
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -11,7 +12,9 @@ import LoadingBox from "../../../components/LoadingBox";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
+import { Routes } from '../contants/routes';
 import { OfferPageContext } from "../OfferPageContext";
+import { createOffer } from '../redux/actions';
 import { get } from "../utils";
 import "./Layout.css";
 
@@ -137,9 +140,12 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     setTimeAnchor,
     quickTask,
     setQuickTask,
-    timeType,
+    timeFilterTypeOfferOverview,
+    timeFilterTypeOfferByGroup,
+    timeFilterTypeOfferByProject,
+    timeFilterTypeOfferByDepartment,
     setTimeType,
-    settimeRange,
+    setTimeRange,
     expand,
     handleExpand,
     keyword,
@@ -147,14 +153,34 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   } = useContext(OfferPageContext);
   const times = useTimes();
   const open = !!quickTask;
-  const [openModalOffer, setopenModalOffer] = useState();
+  const [openModalOffer, setOpenModalOffer] = useState(false);
+
+  const {
+    location: { pathname }
+  } = useHistory();
+  const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
+  const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
+  const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
+  const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
+  let timeFilterType;
+  if (offerByGroupRouteRegex.test(pathname)) {
+    timeFilterType = timeFilterTypeOfferByGroup.timeType;
+  } else if (offerByProjectRouteRegex.test(pathname)) {
+    timeFilterType = timeFilterTypeOfferByProject.timeType;
+  } else if (offerByDepartmentRouteRegex.test(pathname)) {
+    timeFilterType = timeFilterTypeOfferByDepartment.timeType;
+  } else if (offerOverviewRouteRegex.test(pathname)) {
+    timeFilterType = timeFilterTypeOfferOverview.timeType;
+  } else {
+    timeFilterType = 1;
+  }
   const options = {
     title: props.title,
     subActions: [
       {
-        label: times[timeType].title,
+        label: times[timeFilterType].title,
         iconPath: mdiCalendar,
-        onClick: (evt) => setTimeAnchor(evt.target),
+        onClick: (evt) => setTimeAnchor(evt.currentTarget),
       },
       {
         label: t(expand ? "Thu gọn" : "Mở rộng"),
@@ -169,7 +195,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     ],
     mainAction: {
       label: "+ Tạo đề xuất",
-      onClick: () => setopenModalOffer(true),
+      onClick: () => setOpenModalOffer(true),
       color: "#fd7e14"
     },
     search: {
@@ -190,9 +216,6 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
       id: "id",
     },
   };
-  const setOpen = () => {
-    setopenModalOffer(!openModalOffer)
-  }
   return (
     <CustomTableProvider
       value={{
@@ -210,21 +233,27 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             ...props,
           }}
         >
-          <Scrollbars>{children}</Scrollbars>
+          <Scrollbars autoHide autoHideTimeout={500}>
+            {children}
+          </Scrollbars>
         </LayoutStateLess>
         <TimeRangePopover
           bgColor={bgColor}
           anchorEl={timeAnchor}
           setAnchorEl={setTimeAnchor}
-          timeOptionDefault={timeType}
+          timeOptionDefault={timeFilterType}
           handleTimeRange={(timeType, startDate, endDate) => {
             setTimeType(timeType);
-            settimeRange({ startDate, endDate });
+            setTimeRange({ startDate, endDate });
           }}
         />
 
         {openModalOffer && (
-          <OfferModal isOpen={true} setOpen={setOpen} />
+          <OfferModal
+            isOpen={openModalOffer}
+            setOpen={setOpenModalOffer}
+            actionCreateOffer={createOffer()}
+          />
         )}
       </>
     </CustomTableProvider>

@@ -30,8 +30,6 @@ const Department = props => {
     const {
         keyword,
         listMenu,
-        setOpenModalOfferByGroup,
-        openModal,
         timeRange,
         statusFilter,
         setTitle
@@ -42,7 +40,7 @@ const Department = props => {
 
     useEffect(() => {
         if (isMounted) {
-            setTitle(get(labels, "pageTitleOfferByGroup"));
+            setTitle(get(labels, "pageTitleOfferByDepartment"));
         }
     }, [
         dispatch,
@@ -78,7 +76,7 @@ const Department = props => {
                     <Box display="flex" alignItems="center">
                         <Icon
                             size={1.4}
-                            {...{ color: listMenu[2].color, path: listMenu[2].icon }}
+                            {...{ color: listMenu[4].color, path: listMenu[4].icon }}
                         ></Icon>
                         <Box
                             {...{
@@ -88,7 +86,7 @@ const Department = props => {
                                 fontWeight: "600"
                             }}
                         >
-                            {t(listMenu[2].title)}
+                            {t(listMenu[4].title)}
                         </Box>
                     </Box>
                 }

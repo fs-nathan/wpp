@@ -10,17 +10,8 @@ import ModalCommon from "views/DocumentPage/TablePart/DocumentComponent/ModalCom
 import { DialogContent } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
 import VerticleList from "views/JobPage/components/VerticleList";
 import { emptyObject } from "views/JobPage/contants/defaultValue";
-import {
-  createMapPropsFromAttrs,
-  createValidate,
-  get,
-  loginlineFunc,
-} from "views/JobPage/utils";
-import {
-  InputFormControl,
-  MultilineInputFormControl,
-  RadioGroupFormControl,
-} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/CssFormControl";
+import { createMapPropsFromAttrs, createValidate, get } from "views/JobPage/utils";
+import { InputFormControl, MultilineInputFormControl, RadioGroupFormControl } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/CssFormControl";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { GroupPermissionSettingsCotnext } from "..";
@@ -138,7 +129,7 @@ export default () => {
 
   useEffect(() => {
     if (status === apiCallStatus.success) {
-      const item = loginlineFunc(get)(data, "group_permission");
+      const item = (get)(data, "group_permission");
       setSelect(item);
       setModal(<UpdateGroupPermissionModal item={item} />);
     }

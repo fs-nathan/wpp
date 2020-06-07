@@ -1,6 +1,7 @@
 import moment from "moment";
 import { put } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
+import { DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter } from '../../../constants/snackbarController';
 import {
   ADD_MEMBER_HANDLE_ERROR,
   ADD_MEMBER_HANDLE_SUCCESS,
@@ -28,7 +29,19 @@ import {
   TASK_OFFER_BY_DEPARTMENT,
   UPDATE_GROUP_OFFER_OFFERPAGE_ERROR,
   UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
+  UPDATE_OFFER_APPROVAL_CONDITION_ERROR,
+  UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS,
   UPLOAD_DOCUMENT_OFFER_SUCCESS,
+  OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS,
+  OFFER_DETAIL_GET_COMMENT_LIST_ERROR,
+  OFFER_DETAIL_POST_COMMENT_SUCCESS,
+  OFFER_DETAIL_POST_COMMENT_ERROR,
+  OFFER_DETAIL_UPDATE_COMMENT_SUCCESS,
+  OFFER_DETAIL_UPDATE_COMMENT_ERROR,
+  OFFER_DETAIL_REMOVE_COMMENT_SUCCESS,
+  OFFER_DETAIL_REMOVE_COMMENT_ERROR,
 } from './types';
 
 export function* doGetSummaryByGroup({ payload }) { // lấy list group cột trái route groupbyoffer
@@ -99,7 +112,7 @@ export function* doLoadOfferByGroupID({ payload }) {
     const result = yield apiService(config);
     yield put({ type: LOAD_OFFER_BY_GROUP_ID_SUCCESS, payload: result.data });
   } catch (err) {
-    
+
   }
 }
 export function* doLoadSummaryByDepartment({ payload }) {
@@ -133,17 +146,25 @@ export function* doLoadOfferByDepartmentID({ payload }) {
 
 export function* doLoadSummaryOverview({ payload }) {
   try {
-    const { timeRange } = payload
-    const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-    const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-    const config = {
-      url: `/offers/summary?from_date=${startDate}&to_date=${endDate}`,
-      method: "GET"
+    const { timeRange } = payload;
+    let startDate = undefined;
+    let endDate = undefined;
+    if (timeRange.startDate && timeRange.endDate) {
+      startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+      endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
     }
-    const result = yield apiService(config)    
+    const config = {
+      url: `/offers/summary${
+        startDate && endDate
+          ? `?from_date=${startDate}&to_date=${endDate}`
+          : ''
+      }`,
+      method: "GET",
+    }
+    const result = yield apiService(config)
     yield put({ type: LOAD_SUMMARY_OVERVIEW_SUCCESS, payload: result.data })
   } catch (err) {
-    
+
   }
 }
 
@@ -170,10 +191,131 @@ export function* doLoadDetailOffer({ payload }) {
       url: "/offers/detail?offer_id=" + id,
       method: "GET"
     }
-    const result = yield apiService(config)    
+    const result = yield apiService(config)
     yield put({ type: LOAD_DETAIL_OFFER_SUCCESS, payload: result.data })
   } catch (err) {
     yield put({ type: LOAD_DETAIL_OFFER_ERROR, payload: err.toString() })
+  }
+}
+export function* doUpdateOfferDetailDescriptionSection({ payload }) {
+  try {
+    const { offerId, title, content, offerGroupId, priorityCode } = payload
+    const config = {
+      url: "/offers/personal/update-info",
+      method: "POST",
+      data: {
+        offer_id: offerId,
+        title,
+        content,
+        offer_group_id: offerGroupId,
+        priority: priorityCode,
+      },
+    }
+    const result = yield apiService(config)
+    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, payload: err.toString() })
+  }
+}
+export function* doUpdateOfferApprovalCondition({ payload }) {
+  try {
+    const { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds } = payload;
+    const dataToSend = {
+      offer_id: offerId,
+      min_rate_accept: minRateAccept,
+      condition_logic: conditionLogic,
+    };
+    if (conditionLogicMember) {
+      dataToSend.condition_logic_member = conditionLogicMember;
+      dataToSend.member_accepted_important = memberAcceptedImportantIds;
+    }
+    const config = {
+      url: "/offers/personal/update-condition-accept",
+      method: "POST",
+      data: dataToSend,
+    }
+    const result = yield apiService(config)
+    yield put({ type: UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: UPDATE_OFFER_APPROVAL_CONDITION_ERROR, payload: err.toString() })
+  }
+}
+export function* doGetCommentListOfferDetail({ payload }) {
+  try {
+    const { offerId } = payload;
+    const config = {
+      url: "/offers/list-comment?offer_id=" + offerId,
+      method: "GET",
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_GET_COMMENT_LIST_ERROR, payload: err.toString() })
+  }
+}
+export function* doPostCommentOfferDetail({ payload }) {
+  try {
+    const { offerId, content } = payload;
+    const config = {
+      url: "/offers/create-comment",
+      method: "POST",
+      data: {
+        offer_id: offerId,
+        content: content,
+      },
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_POST_COMMENT_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_POST_COMMENT_ERROR, payload: err.toString() })
+  }
+}
+export function* doUpdateCommentOfferDetail({ payload }) {
+  try {
+    const { commentId, content } = payload;
+    const config = {
+      url: "/offers/update-comment",
+      method: "POST",
+      data: {
+        comment_id: commentId,
+        content: content,
+      },
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_UPDATE_COMMENT_SUCCESS, payload: result.data })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_UPDATE_COMMENT_ERROR, payload: err.toString() })
+  }
+}
+export function* doRemoveCommentOfferDetail({ payload }) {
+  try {
+    const { commentId } = payload;
+    const config = {
+      url: "/offers/delete-comment",
+      method: "DELETE",
+      data: {
+        comment_id: commentId,
+      },
+    };
+    const result = yield apiService(config)
+    yield put({ type: OFFER_DETAIL_REMOVE_COMMENT_SUCCESS, payload: { ...result.data, id: commentId } })
+  } catch (err) {
+    yield put({ type: OFFER_DETAIL_REMOVE_COMMENT_ERROR, payload: err.toString() })
+  }
+}
+export function* doCreateOffer({ payload }) {
+  try {
+    const { data } = payload;
+    const config = {
+      url: "/offers/personal/create",
+      method: "POST",
+      data: data,
+      headers: { 'Content-Type': 'multipart/form-data' },
+    };
+    const result = yield apiService(config);
+    result.data.state && SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS)
+  } catch (err) {
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doDeleteOffer({ payload }) {
@@ -199,7 +341,7 @@ export function* doDeleteOffer({ payload }) {
 
 export function* doUploadDocumentOffer({ payload }) {
   try {
-    const { data } = payload    
+    const { data } = payload
     const config = {
       url: "/offers/personal/upload-documents",
       method: "POST",

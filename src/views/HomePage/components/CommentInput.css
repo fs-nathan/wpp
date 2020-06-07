@@ -13,3 +13,6 @@
   background: #f5f6f7;
   border-radius: 20px;
 }
+.comp_CommentInput label {
+  line-height: 0;
+}
