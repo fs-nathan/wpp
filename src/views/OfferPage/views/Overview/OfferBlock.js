@@ -2,11 +2,11 @@ import { get } from "lodash";
 import React from "react";
 import Chart from "react-apexcharts";
 import { useSelector } from "react-redux";
+import chart_no_data from '../../../../assets/chart_no_data.png';
 import ChartLegend from "../../components/ChartLegend";
 import { statistic } from "../../contants/attrs";
 import { createPieChartProps } from "../../utils/chart";
 import { Block } from "./Block";
-import chart_no_data from '../../../../assets/chart_no_data.png';
 import './styles.scss';
 
 export function OfferBlock({ strings = [], title, data = {}, time }) {
@@ -21,7 +21,7 @@ export function OfferBlock({ strings = [], title, data = {}, time }) {
   });
   return (
     <Block
-      title={title}
+      title={title.toUpperCase()}
       extra={time}
     >
       {

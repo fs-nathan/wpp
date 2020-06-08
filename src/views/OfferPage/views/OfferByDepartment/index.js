@@ -7,12 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { labels } from "../../contants/attrs";
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByDepartment, loadOfferByDepartmentID } from "../../redux/actions";
-import { get } from "../../utils";
 import Content from "./Content";
 import { getFirstSummaryGroup } from "./selector";
 export const PageContainer = styled(Container)`
@@ -40,7 +38,7 @@ const Department = props => {
 
     useEffect(() => {
         if (isMounted) {
-            setTitle(get(labels, "pageTitleOfferByDepartment"));
+            setTitle(t("VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE"));
         }
     }, [
         dispatch,

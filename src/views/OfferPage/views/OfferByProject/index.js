@@ -7,11 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { labels } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByProjectID, loadSummaryProject } from "../../redux/actions";
-import { get } from "../../utils";
 import Content from "./Content";
 export const PageContainer = styled(Container)`
   overflow: auto;  
@@ -19,8 +17,6 @@ export const PageContainer = styled(Container)`
   padding-right: 32px;
   min-height: 100%;
 `;
-
-
 
 const OfferByProject = () => {
     const { t } = useTranslation();
@@ -30,19 +26,23 @@ const OfferByProject = () => {
     const isMounted = useMountedState();
     const state = useSelector(state => state)
     const { id } = useParams()
+
     useEffect(() => {
         const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
         const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
         dispatch(loadOfferByProjectID({ id, startDate, endDate }))
-    }, [dispatch, id, timeRange])
+    }, [dispatch, id, timeRange]);
+
     useEffect(() => {
         if (isMounted) {
-            setTitle(get(labels, "pageTitleOfferByProject"))
+            setTitle(t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"))
         }
     }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, context, setTitle]);
+
     useEffect(() => {
         dispatch(loadSummaryProject())
-    }, [dispatch])
+    }, [dispatch]);
+
     return (
         <Layout
             title={

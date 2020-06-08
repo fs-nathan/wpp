@@ -1,22 +1,15 @@
 import { mdiEmailCheck, mdiEmailVariant, mdiViewDashboard } from "@mdi/js";
-import React, { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, useHistory } from 'react-router-dom';
-import { usePrevious } from 'react-use';
 import CustomModal from '../../components/CustomModal';
 import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
 import { apiService } from '../../constants/axiosInstance';
 import { useLocalStorage } from "../../hooks";
-import { labels } from "./contants/attrs";
-import {
-  TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
-  TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
-  TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
-  TIME_FILTER_TYPE_OFFER_OVERVIEW,
-} from './contants/localStorage';
+import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, TIME_FILTER_TYPE_OFFER_OVERVIEW } from './contants/localStorage';
 import { Routes } from "./contants/routes";
 import { useMultipleSelect } from "./hooks/useMultipleSelect";
 import "./LeftPart_new/LeftSetting.scss";
@@ -24,13 +17,8 @@ import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
 import { deleteOffer, loadDetailOffer, loadTaskPage } from './redux/actions';
 import routes from "./routes";
-import { get } from "./utils";
-import {
-  getDeleteOfferConfirmModalCancelBtn,
-  getDeleteOfferConfirmModalConfirmBtn,
-  getDeleteOfferConfirmModalMsg,
-  getDeleteOfferConfirmModalTitle,
-} from './utils/i18nSelectors';
+import './styles.scss';
+import { getDeleteOfferConfirmModalCancelBtn, getDeleteOfferConfirmModalConfirmBtn, getDeleteOfferConfirmModalMsg, getDeleteOfferConfirmModalTitle } from './utils/i18nSelectors';
 import Notifier from "./utils/notifer";
 import { formatTime } from "./utils/time";
 import { checkUserIsInOfferDepartmentRoutes, checkUserIsInOfferGroupRoutes, checkUserIsInOfferProjectRoutes } from "./utils/validate";
@@ -39,72 +27,10 @@ import { getDetailOffer, getDetailOfferLoadingState } from './views/DetailOffer/
 import { getDepartmentGroupByKeyword } from "./views/OfferByDepartment/selector";
 import { getSummaryByGroupByKeyword } from "./views/OfferByGroup/selector";
 import { getSummaryByProjectAndKeyword } from "./views/OfferByProject/selector";
-import './styles.scss';
 
-const { Provider } = OfferPageContext;
-const filterConfig = [
-  {
-    title: "LỌC THEO VAI TRÒ",
-    subTitle: "Chọn/bỏ chọn trạng thái để lọc đề xuất",
-    optionEntities: {
-      you_offer: {
-        label: "Bạn đề xuất",
-        value: "you_offer"
-      },
-      you_monitor: {
-        label: "Bạn giám sát",
-        value: "you_monitor"
-      },
-      you_handle: {
-        label: "Bạn phê duyệt",
-        value: "you_handle"
-      }
-    },
-    orders: ["you_offer", "you_monitor", "you_handle"]
-  },
-  {
-    title: "LỌC THEO MỨC ĐỘ ƯU TIÊN",
-    subTitle: "Chọn/bỏ chọn mức độ ưu tiên để lọc đề xuất",
-    optionEntities: {
-      normal: {
-        label: "Bình thường",
-        value: "normal"
-      },
-      urgent: {
-        label: "Gấp",
-        value: "low"
-      },
-      very_urgent: {
-        label: "Rất gấp",
-        value: "very_urgent"
-      }
-    },
-    orders: ["normal", "urgent", "very_urgent"]
-  },
-  {
-    title: "LỌC THEO TRẠNG THÁI",
-    subTitle: "Chọn/bỏ chọn trạng thái để lọc đề xuất",
-    optionEntities: {
-      offer_waiting: {
-        label: "Đang chờ duyệt",
-        value: "offer_waiting"
-      },
-      offer_approving: {
-        label: "Đang duyệt",
-        value: "offer_approving"
-      },
-      offer_accept: {
-        label: "Đã duyệt: Đồng ý",
-        value: "offer_accept"
-      },
-      offer_reject: {
-        label: "Đã duyệt: Từ chối",
-        value: "offer_reject"
-      }
-    },
-    orders: ["offer_waiting", "offer_accept", "offer_reject", "offer_approving"]
-  }
-];
+const {
+  Provider
+} = OfferPageContext;
 export const defaultStatusFilter = {
   offer_waiting: true,
   offer_accept: true,
@@ -127,33 +53,32 @@ export const defaultFilter = {
   ...defaultPriorityFilter,
   ...defaultRoleFilter
 };
+
 function OfferPage(props) {
-  const { t } = useTranslation();
+  const {
+    t
+  } = useTranslation();
   const [keyword, setkeyword] = useState("");
-  const [title, setTitle] = useState(get(labels, "pageTitle"));
+  const [title, setTitle] = useState(t("VIEW_OFFER_LABEL_YOUR_OFFER"));
   const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_OVERVIEW,
-    {
-      timeType: 1,
-    }
+    TIME_FILTER_TYPE_OFFER_OVERVIEW, {
+    timeType: 1,
+  }
   );
   const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
-    {
-      timeType: 1,
-    }
+    TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, {
+    timeType: 1,
+  }
   );
   const [timeFilterTypeOfferByProject, storeTimeFilterTypeOfferByProject] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
-    {
-      timeType: 1,
-    }
+    TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, {
+    timeType: 1,
+  }
   );
   const [timeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByDepartment] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
-    {
-      timeType: 1,
-    }
+    TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, {
+    timeType: 1,
+  }
   );
   const [quickTask, setQuickTask] = useState();
   const [filterTab, setFilterTab] = useState("");
@@ -162,7 +87,9 @@ function OfferPage(props) {
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [timeType, setTimeType] = React.useState(1);
   useEffect(() => {
-    const { pathname } = history.location;
+    const {
+      pathname
+    } = history.location;
     const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
     const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
     const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
@@ -216,50 +143,105 @@ function OfferPage(props) {
       })
     );
   }, [dispatch, timeRange.startDate, timeRange.endDate]);
-  const rightIcon = () => {
-    return (
-      <div className="right-setting-icon">
-        <span>N</span>
-      </div>
-    );
-  };
-  const listMenu = [
-    {
-      title: t(labels.overview),
-      url: Routes.OVERVIEW,
-      color: "#7d99a6",
-      icon: mdiViewDashboard
-    },
-    {
-      title: t(labels.recently),
-      url: Routes.RECENTLY,
-      color: "#7d99a6",
-      icon: mdiEmailCheck,
-      // rightIcon: rightIcon
-    },
-    {
-      title: t(labels.group),
-      subtitle: t(labels.offer_by_group),
-      url: Routes.OFFERBYGROUP,
-      color: "#7d99a6",
-      icon: mdiEmailVariant,
-      // rightIcon: rightIcon
-    },
-    {
-      title: t(labels.project),
-      subtitle: t(labels.offer_by_project),
-      url: Routes.OFFERBYPROJECT,
-      color: "#7d99a6",
-      icon: mdiEmailVariant
-    },
-    {
-      title: t(labels.department),
-      subtitle: t(labels.offer_by_department),
-      url: Routes.OFFERBYDEPARTMENT,
-      color: "#7d99a6",
-      icon: mdiEmailVariant
-    }
+
+  const listMenu = [{
+    title: t("VIEW_OFFER_LABEL_OVERVIEW_TITLE"),
+    url: Routes.OVERVIEW,
+    color: "#7d99a6",
+    icon: mdiViewDashboard
+  },
+  {
+    title: t("VIEW_OFFER_LABEL_RECENTLY_TITLE"),
+    url: Routes.RECENTLY,
+    color: "#7d99a6",
+    icon: mdiEmailCheck,
+  },
+  {
+    title: t("VIEW_OFFER_LABEL_GROUP_TITLE"),
+    subtitle: t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"),
+    url: Routes.OFFERBYGROUP,
+    color: "#7d99a6",
+    icon: mdiEmailVariant,
+  },
+  {
+    title: t("VIEW_OFFER_LABEL_PROJECT_TITLE"),
+    subtitle: t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"),
+    url: Routes.OFFERBYPROJECT,
+    color: "#7d99a6",
+    icon: mdiEmailVariant
+  },
+  {
+    title: t("VIEW_OFFER_LABEL_DEPARTMENT_TITLE"),
+    subtitle: t("VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE"),
+    url: Routes.OFFERBYDEPARTMENT,
+    color: "#7d99a6",
+    icon: mdiEmailVariant
+  }
   ];
+
+  const filterConfig = [{
+    title: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE"),
+    subTitle: t("VIEW_OFFER_LABEL_FILTET_BY_ROLE_SUBTITLE"),
+    optionEntities: {
+      you_offer: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_1"),
+        value: "you_offer"
+      },
+      you_monitor: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_2"),
+        value: "you_monitor"
+      },
+      you_handle: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_3"),
+        value: "you_handle"
+      }
+    },
+    orders: ["you_offer", "you_monitor", "you_handle"]
+  },
+  {
+    title: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL"),
+    subTitle: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_SUBTITLE"),
+    optionEntities: {
+      normal: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1"),
+        value: "normal"
+      },
+      urgent: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2"),
+        value: "low"
+      },
+      very_urgent: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3"),
+        value: "very_urgent"
+      }
+    },
+    orders: ["normal", "urgent", "very_urgent"]
+  },
+  {
+    title: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS"),
+    subTitle: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_SUBTITLE"),
+    optionEntities: {
+      offer_waiting: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_1"),
+        value: "offer_waiting"
+      },
+      offer_approving: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2"),
+        value: "offer_approving"
+      },
+      offer_accept: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_3"),
+        value: "offer_accept"
+      },
+      offer_reject: {
+        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_4"),
+        value: "offer_reject"
+      }
+    },
+    orders: ["offer_waiting", "offer_approving", "offer_accept", "offer_reject"]
+  }
+  ];
+
   const [pin, setPin] = useState(false);
   const handleClose = () => {
     !pin && setQuickTask(undefined);
@@ -289,43 +271,84 @@ function OfferPage(props) {
   const renderTabList = useMemo(() => {
     if (checkUserIsInOfferDepartmentRoutes(window.location.pathname)) {
       return (
-        <TabList
-          filter={filter}
-          setOpenModalOfferByGroup={setOpenModalOfferByGroup}
-          searchInput={true}
-          searchPlaceHolder="Nhập nội dung cần tìm"
-          title={title}
-          {...{ listMenu: getDepartmentGroupByKeyword(filterTab)(state) }}
+        <TabList filter={
+          filter
+        }
+          setOpenModalOfferByGroup={
+            setOpenModalOfferByGroup
+          }
+          searchInput={
+            true
+          }
+          searchPlaceHolder={t("IDS_WP_INPUT_SEARCH")}
+          title={
+            title
+          } {
+          ...{
+            listMenu: getDepartmentGroupByKeyword(filterTab)(state)
+          }
+          }
         />
       );
     }
     if (checkUserIsInOfferProjectRoutes(window.location.pathname)) {
       return (
-        <TabList
-          filter={filter}
-          searchPlaceHolder="Nhập nội dung cần tìm"
-          setOpenModalOfferByGroup={setOpenModalOfferByGroup}
-          searchInput={true}
-          title={title}
-          subMenu={true}
-          {...{ listMenu: getSummaryByProjectAndKeyword(filterTab)(state) }}
+        <TabList filter={
+          filter
+        }
+          searchPlaceHolder={t("IDS_WP_INPUT_SEARCH")}
+          setOpenModalOfferByGroup={
+            setOpenModalOfferByGroup
+          }
+          searchInput={
+            true
+          }
+          title={
+            title
+          }
+          subMenu={
+            true
+          } {
+          ...{
+            listMenu: getSummaryByProjectAndKeyword(filterTab)(state)
+          }
+          }
         />
       )
     }
     if (checkUserIsInOfferGroupRoutes(window.location.pathname)) {
       return (
-        <TabList
-          filter={filter}
-          setOpenModalOfferByGroup={setOpenModalOfferByGroup}
-          searchInput={true}
-          searchPlaceHolder="Nhập nội dung cần tìm"
-          title={title}
-          isOfferGroupManageable={isOfferGroupManageable}
-          {...{ listMenu: getSummaryByGroupByKeyword(filterTab, isOfferGroupManageable)(state) }}
+        <TabList filter={
+          filter
+        }
+          setOpenModalOfferByGroup={
+            setOpenModalOfferByGroup
+          }
+          searchInput={
+            true
+          }
+          searchPlaceHolder={t("IDS_WP_INPUT_SEARCH")}
+          title={
+            title
+          }
+          isOfferGroupManageable={
+            isOfferGroupManageable
+          } {
+          ...{
+            listMenu: getSummaryByGroupByKeyword(filterTab, isOfferGroupManageable)(state)
+          }
+          }
         />
       );
     }
-    return <TabList title={title} {...{ listMenu }} />;
+    return <TabList title={
+      title
+    } {
+      ...{
+        listMenu
+      }
+      }
+    />;
   }, [title, listMenu, filterTab, state]);
 
   // Get offer details from redux store to show on offer detail modal
@@ -336,96 +359,137 @@ function OfferPage(props) {
   const [currentDetailOfferId, setCurrentDetailOfferId] = useState('');
   useEffect(() => {
     if (currentDetailOfferId && isDetailOfferModalOpen) {
-      dispatch(loadDetailOffer({ id: currentDetailOfferId }));
+      dispatch(loadDetailOffer({
+        id: currentDetailOfferId
+      }));
     }
   }, [currentDetailOfferId, isDetailOfferModalOpen]);
 
   // Delete offer confirm modal
   const [showDeleteOfferConfirmModal, setShowDeleteOfferConfirmModal] = useState(false);
+
   function onDeleteOffer() {
-    dispatch(deleteOffer({ id: currentDetailOfferId }));
+    dispatch(deleteOffer({
+      id: currentDetailOfferId
+    }));
   }
 
-  return (
-    <TwoColumnsLayout
-      leftRenders={[() => renderTabList]}
-      rightRender={({ expand, handleExpand, handleSubSlide }) => (
-        <Provider
-          value={{
-            expand,
-            setPin,
-            handleClose,
-            listMenu,
-            filterConfig,
-            handleExpand,
-            quickTask,
-            setQuickTask,
-            handleSubSlide,
-            timeAnchor,
-            setTimeAnchor,
-            openModalOfferByGroup,
-            setOpenModalOfferByGroup,
-            timeFilterTypeOfferOverview,
-            timeFilterTypeOfferByGroup,
-            timeFilterTypeOfferByProject,
-            timeFilterTypeOfferByDepartment,
-            timeType,
-            setTimeType,
-            timeRange,
-            setTimeRange,
-            statusFilter,
-            setstatusFilter,
-            handleRemoveStatusFilter,
-            keyword,
-            setkeyword,
-            setTitle,
-            setDetailOfferModalOpen,
-            setCurrentDetailOfferId,
-            setShowDeleteOfferConfirmModal,
-          }}
-        >
-          <div>
-            <Suspense fallback={<LoadingBox />}>
-              <Switch>
-                {routes.map((route, index) => {
-                  return (
-                    <Route
-                      key={index}
-                      path={route.path}
-                      exact={route.exact}
-                      component={route.component}
+  return (<TwoColumnsLayout leftRenders={
+    [() => renderTabList]
+  }
+    rightRender={
+      ({
+        expand,
+        handleExpand,
+        handleSubSlide
+      }) => (
+          <Provider value={
+            {
+              expand,
+              setPin,
+              handleClose,
+              listMenu,
+              filterConfig,
+              handleExpand,
+              quickTask,
+              setQuickTask,
+              handleSubSlide,
+              timeAnchor,
+              setTimeAnchor,
+              openModalOfferByGroup,
+              setOpenModalOfferByGroup,
+              timeFilterTypeOfferOverview,
+              timeFilterTypeOfferByGroup,
+              timeFilterTypeOfferByProject,
+              timeFilterTypeOfferByDepartment,
+              timeType,
+              setTimeType,
+              timeRange,
+              setTimeRange,
+              statusFilter,
+              setstatusFilter,
+              handleRemoveStatusFilter,
+              keyword,
+              setkeyword,
+              setTitle,
+              setDetailOfferModalOpen,
+              setCurrentDetailOfferId,
+              setShowDeleteOfferConfirmModal,
+            }
+          } >
+            <div>
+              <Suspense fallback={
+                <LoadingBox />
+              }>
+                <Switch> {
+                  routes.map((route, index) => {
+                    return (<
+                      Route key={
+                        index
+                      }
+                      path={
+                        route.path
+                      }
+                      exact={
+                        route.exact
+                      }
+                      component={
+                        route.component
+                      }
                     />
-                  );
-                })}
-              </Switch>
-              {isDetailOfferModalOpen && (
-                <DetailOfferModal
-                  open={isDetailOfferModalOpen}
-                  setOpen={setDetailOfferModalOpen}
-                  loading={detailOfferLoading}
-                  {...detailOffer}
-                />
-              )}
-              {showDeleteOfferConfirmModal && (
-                <CustomModal
-                  className="delete-offer-confirm-modal"
-                  open={showDeleteOfferConfirmModal}
-                  setOpen={setShowDeleteOfferConfirmModal}
-                  height="mini"
-                  title={getDeleteOfferConfirmModalTitle(t)}
-                  confirmRender={() => getDeleteOfferConfirmModalConfirmBtn(t)}
-                  onConfirm={onDeleteOffer}
-                  cancleRender={() => getDeleteOfferConfirmModalCancelBtn(t)}
-                >
-                  {getDeleteOfferConfirmModalMsg(t)}
-                </CustomModal>
-              )}
-            </Suspense>
-            <Notifier />
-          </div>
-        </Provider>
-      )}
-    />
+                    );
+                  })
+                } </Switch> {
+                  isDetailOfferModalOpen && (<
+                    DetailOfferModal open={
+                      isDetailOfferModalOpen
+                    }
+                    setOpen={
+                      setDetailOfferModalOpen
+                    }
+                    loading={
+                      detailOfferLoading
+                    } {
+                    ...detailOffer
+                    }
+                  />
+                  )
+                } {
+                  showDeleteOfferConfirmModal && (
+                    <CustomModal className="delete-offer-confirm-modal"
+                      open={
+                        showDeleteOfferConfirmModal
+                      }
+                      setOpen={
+                        setShowDeleteOfferConfirmModal
+                      }
+                      height="mini"
+                      title={
+                        getDeleteOfferConfirmModalTitle(t)
+                      }
+                      confirmRender={
+                        () => getDeleteOfferConfirmModalConfirmBtn(t)
+                      }
+                      onConfirm={
+                        onDeleteOffer
+                      }
+                      cancleRender={
+                        () => getDeleteOfferConfirmModalCancelBtn(t)
+                      }
+                    >
+                      {
+                        getDeleteOfferConfirmModalMsg(t)
+                      }
+                    </CustomModal>
+                  )
+                }
+              </Suspense>
+              <Notifier />
+            </div>
+          </Provider>
+        )
+    }
+  />
   );
 }
 

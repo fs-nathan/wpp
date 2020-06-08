@@ -3,10 +3,10 @@ import { mdiCalendar, mdiFilterOutline, mdiFullscreen, mdiFullscreenExit } from 
 import { CustomTableContext, CustomTableProvider } from "components/CustomTable";
 import HeaderButtonGroup from "components/CustomTable/HeaderButtonGroup";
 import React, { useContext, useState } from "react";
-import { useHistory } from 'react-router-dom';
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
+import { useHistory } from 'react-router-dom';
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import LoadingBox from "../../../components/LoadingBox";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
@@ -183,18 +183,18 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
         onClick: (evt) => setTimeAnchor(evt.currentTarget),
       },
       {
-        label: t(expand ? "Thu gọn" : "Mở rộng"),
+        label: t(expand ? "IDS_WP_COLLAPS" : "IDS_WP_EXPAND"),
         iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
         onClick: () => handleExpand(!expand),
       },
       {
-        label: "Lọc",
+        label: t("IDS_WP_FILTER"),
         iconPath: mdiFilterOutline,
         onClick: () => setQuickTask(<QuickViewFilter />),
       },
     ],
     mainAction: {
-      label: "+ Tạo đề xuất",
+      label: t("VIEW_OFFER_LABEL_CREATE_OFFER"),
       onClick: () => setOpenModalOffer(true),
       color: "#fd7e14"
     },

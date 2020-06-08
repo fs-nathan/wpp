@@ -8,11 +8,10 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { action, labels } from "../../contants/attrs";
+import { action } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
-import { get } from "../../utils";
 import Content from "./Content";
 import FormDialog from "./modal";
 import { getFirstSummaryGroup } from "./selector";
@@ -42,7 +41,7 @@ const OfferByGroup = props => {
   const isMounted = useMountedState();
   useEffect(() => {
     if (isMounted) {
-      setTitle(get(labels, "pageTitleOfferByGroup"));
+      setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"));
     }
   }, [
     dispatch,
@@ -59,8 +58,8 @@ const OfferByGroup = props => {
   }, [dispatch]);
   useEffect(() => {
     if (history.location.pathname !== Routes.OFFERBYGROUP
-        || idFirstGroup === undefined
-        || idFirstGroup === null) {
+      || idFirstGroup === undefined
+      || idFirstGroup === null) {
       return
     }
     history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);

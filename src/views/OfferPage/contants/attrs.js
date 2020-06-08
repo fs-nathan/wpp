@@ -1,9 +1,4 @@
-import {
-  getAcceptedOfferTitle,
-  getApprovingOfferTitle,
-  getRejectedOfferTitle,
-  getWaitingOfferTitle,
-} from '../views/Overview/i18nSelectors';
+import { getAcceptedOfferTitle, getApprovingOfferTitle, getRejectedOfferTitle, getWaitingOfferTitle } from '../views/Overview/i18nSelectors';
 
 export const statistic = {
   offer_of_me_sending: "static.offer_of_me_sending",

@@ -6,10 +6,8 @@ import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { loadTaskRencentlyPage } from "views/OfferPage/redux/actions";
-import { labels } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
-import { get } from "../../utils";
 import { Content } from "./Content";
 
 export const PageContainer = styled(Container)`
@@ -28,7 +26,7 @@ const Recently = () => {
   const isMounted = useMountedState();
   useEffect(() => {
     if (isMounted) {
-      setTitle(get(labels, "pageTitle"))
+      setTitle(t("VIEW_OFFER_LABEL_YOUR_OFFER"))
     }
   }, [isMounted, setTitle]);
   useEffect(() => {

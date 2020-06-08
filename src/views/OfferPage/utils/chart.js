@@ -1,11 +1,5 @@
-import { colors, labels, statistic } from "../contants/attrs";
-import {
-  getAcceptedOfferTitle,
-  getApprovingOfferTitle,
-  getRejectedOfferTitle,
-  getWaitingOfferTitle,
-} from '../views/Overview/i18nSelectors';
-import { get } from "./index.js";
+import { colors, labels } from "../contants/attrs";
+import { getAcceptedOfferTitle, getApprovingOfferTitle, getRejectedOfferTitle, getWaitingOfferTitle } from '../views/Overview/i18nSelectors';
 
 export const createPieChartProps = (strings, data) => {
   return {
@@ -47,10 +41,10 @@ export const createPieChartProps = (strings, data) => {
         offsetY: 0,
         floating: false,
         style: {
-          fontSize:  '12px',
-          fontWeight:  'normal',
-          fontFamily:  undefined,
-          color:  '#9699a2'
+          fontSize: '12px',
+          fontWeight: 'normal',
+          fontFamily: undefined,
+          color: '#9699a2'
         },
       },
       labels: strings.map(string => labels[string]),
