@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import ListProjectBody from 'views/JobDetailPage/ListPart/ListProject/ListProjectBody';
 import './styles.scss';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function ForwardMessageDialog({ }) {
   const { t } = useTranslation()
@@ -25,6 +26,8 @@ function ForwardMessageDialog({ }) {
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
   const [selectedProject, setSelectedProject] = useState(0);
   const [searchKey, setSearchKey] = useState('');
+  const [sending, setSending] = useState({});
+
   let data = [];
   if (projectListBasic) {
     data = projectListBasic.projectGroups;
@@ -50,6 +53,8 @@ function ForwardMessageDialog({ }) {
 
   function onClickSend(task) {
     return () => {
+      if (isLoading) return;
+      setSending(task)
       dispatch(forwardChat(
         taskId,
         contentForward.id,
@@ -73,7 +78,7 @@ function ForwardMessageDialog({ }) {
       isOneButton
       className="ForwardMessageDialog"
       scroll="body"
-      isLoading={isLoading}
+    // isLoading={isLoading}
     >
       <div className="ForwardMessageDialog--content" >
         <div className="ForwardMessageDialog--border">
@@ -135,7 +140,11 @@ function ForwardMessageDialog({ }) {
                         taskGroup.tasks.map(task => (
                           <div className="ForwardMessageDialog--task" key={task.id}>
                             {task.name}
-                            <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">{t('LABEL_CHAT_TASK_GUI')}</button>
+                            {isLoading && task.id === sending ?
+                              <CircularProgress size={20} className="ForwardMessageDialog--loading" />
+                              :
+                              <button onClick={onClickSend(task.id)} className="ForwardMessageDialog--sendButton">{t('LABEL_CHAT_TASK_GUI')}</button>
+                            }
                           </div>
                         ))
                       }

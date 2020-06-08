@@ -191,7 +191,7 @@ function ListBodyItem(props) {
         chat,
         name,
         status_name,
-        status_code: getStatusCode(status_code, props.complete),
+        status_code,
         new_chat,
         is_ghim,
         updated_time,

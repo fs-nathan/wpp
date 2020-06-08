@@ -421,8 +421,8 @@ const FooterPart = ({
 
   useEffect(() => {
     chatTextRef.current = chatText;
-    setShowQuickLike(!chatText)
-  }, [chatText])
+    setShowQuickLike(!chatText && imagesQueueUrl.length === 0)
+  }, [chatText, imagesQueueUrl.length])
 
   useEffect(() => {
     membersRef.current = members;

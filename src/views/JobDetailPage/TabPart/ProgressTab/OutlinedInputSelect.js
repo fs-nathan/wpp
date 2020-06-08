@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-import {  makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -12,6 +12,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexGrow: 1,
     width: 'auto',
+    '&:focus': {
+      outline: 'none'
+    }
   }
 }));
 
@@ -24,7 +27,7 @@ function Option(props) {
       style={{
         fontWeight: props.isSelected ? 400 : 400,
         zIndex: 99999,
-        
+
       }}
       {...props.innerProps}
     >
@@ -66,12 +69,28 @@ export default function IntegrationReactSelect(props) {
         font: 'inherit',
       },
     }),
+    container: base => ({
+      ...base,
+      '&:focus': {
+        outline: 'none'
+      }
+    }),
+    control: (base, state) => ({
+      ...base,
+      boxShadow: state.isFocused ? 'none' : 'none',
+      borderColor: state.isFocused ? 'hsl(0,0%,80%)' : 'hsl(0,0%,80%)',
+      '&:hover': {
+        boxShadow: 'none',
+        borderColor: 'hsl(0,0%,80%)',
+        outline: 'none'
+      }
+    }),
   };
 
   React.useEffect(() => {
-    if(props.commandSelect) {
+    if (props.commandSelect) {
       let foundItem = props.commandSelect.find(item => item.value === props.selectedIndex)
-      if(foundItem) setSingle(foundItem)
+      if (foundItem) setSingle(foundItem)
     }
   }, [props.commandSelect, props.selectedIndex])
 
@@ -89,7 +108,7 @@ export default function IntegrationReactSelect(props) {
               shrink: true,
             },
           }}
-          placeholder={props.placeholder ? props.placeholder : "Select..." }
+          placeholder={props.placeholder ? props.placeholder : "Select..."}
           options={props.commandSelect}
           components={components}
           value={single}
