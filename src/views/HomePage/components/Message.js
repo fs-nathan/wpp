@@ -1,10 +1,11 @@
 import { Avatar, Box, ButtonBase, Typography } from "@material-ui/core";
 import { ExpandLess } from "@material-ui/icons";
 import ReplyIcon from "@material-ui/icons/Reply";
+import { showImagesList } from "actions/chat/chat";
 import colors from "helpers/colorPalette";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { createMapPropsFromAttrs, get, paging } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
@@ -198,9 +199,9 @@ const Message = ({
             <Sticker {...{ sticker: stickerUrl || sticker }}></Sticker>
           </div>
         )}
-        {images.map(({ url_thumb, url }, i) => (
+        {images.map((image, i) => (
           <div key={i} className="comp_Message__sticker">
-            <Sticker {...{ sticker: url_thumb || url }}></Sticker>
+            <Image image={image}></Image>
           </div>
         ))}
         {!!files && !!files.length && (
@@ -289,4 +290,22 @@ const Sticker = React.memo(({ sticker }) => {
   // console.log({ listStickers, sticker });
   // if (!item || !item.url) return null;
   return <img src={sticker} />;
+});
+const Image = React.memo(({ image }) => {
+  const dispatch = useDispatch();
+  return (
+    <img
+      src={image.url_thumb}
+      onClick={() =>
+        dispatch(
+          showImagesList(true, [
+            {
+              ...image,
+              url: image.url_thumb,
+            },
+          ])
+        )
+      }
+    />
+  );
 });
