@@ -17,7 +17,6 @@ const Text = styled(TextField)`
   }
 `
 
-
 const DemandModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -87,6 +86,7 @@ const DemandModal = (props) => {
           }
           isRequired />
         <Text
+          className="DemandModal--content"
           fullWidth
           multiline
           rows="7"

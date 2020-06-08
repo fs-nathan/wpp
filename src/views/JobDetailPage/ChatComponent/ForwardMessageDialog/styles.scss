@@ -92,4 +92,9 @@
       outline: none;
     }
   }
+  &--loading {
+    position: absolute;
+    top: 6px;
+    right: 20px;
+  }
 }

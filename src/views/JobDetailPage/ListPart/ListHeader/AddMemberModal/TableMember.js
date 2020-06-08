@@ -59,20 +59,19 @@ function TableMember(props) {
   const [isOpenDelete, setOpenDelete] = React.useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const handleClickEliminate = (evt) => {
+  const handleClickEliminate = (id) => (evt) => {
+    // console.log(' setSelectedItem(id)', id)
+    setSelectedItem(id);
     setAnchorEl(evt.currentTarget);
   }
   const handleCloseEliminate = () => {
     setAnchorEl(null);
   }
   const handleOpenModalDelete = (id) => () => {
-    setSelectedItem(id);
+    // console.log(' setSelectedItem(id)', id)
+    // setSelectedItem(id);
     setOpenDelete(true);
     setAnchorEl(null);
-  };
-
-  const handleCloseModalDelete = () => {
-    setOpenDelete(false);
   };
 
   const confirmDelete = () => {
@@ -115,7 +114,7 @@ function TableMember(props) {
                   </TableCell>
                   <StyledMenu >
                     {item.can_ban &&
-                      <IconButton size='small' onClick={handleClickEliminate} >
+                      <IconButton size='small' onClick={handleClickEliminate(item.id)} >
                         <Icon path={mdiDotsVertical} size={1} />
                       </IconButton>
                     }

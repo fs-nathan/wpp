@@ -91,6 +91,9 @@
 }
 
 .demandDetail {
+  .comp_LoadingOverlay___wrapper {
+    min-height: unset;
+  }
   &--title {
     display: flex;
   }
@@ -136,7 +139,7 @@
   &--content {
     text-align: center;
     min-width: 500px;
-    min-height: 300px;
+    // min-height: 300px;
     margin-top: 10px;
     color: #111111;
     font-size: 14px;
