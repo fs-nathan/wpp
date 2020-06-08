@@ -59,6 +59,7 @@ export default (state = initialState, action) => produce(state, draft => {
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
+      draft.isShowSendStatus = false;
       draft.isMore = undefined;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
@@ -309,7 +310,7 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.UPDATE_CHAT_STATE: {
       const idx = findIndex(draft.chats.data, ({ id }) => id === action.id)
-      console.log('idx', idx, action.data);
+      // console.log('idx', idx, action.data);
       draft.chats.data[idx] = { ...draft.chats.data[idx], ...action.data }
       break;
     }
@@ -353,6 +354,11 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case GET_PROJECT_LIST_BASIC_REQUEST: {
       draft.isLoading = false;
+      break;
+    }
+    case actionTypes.VIEW_CHAT_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
       break;
     }
   }

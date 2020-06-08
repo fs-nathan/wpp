@@ -1,7 +1,7 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, changeStickerKeyWord, chatFile, chatForwardFile, chatImage, chatQuickLike, chatSticker, clearTags, createChatFileFromGoogleDriver, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
+import { appendChat, changeStickerKeyWord, chatFile, chatForwardFile, chatImage, chatQuickLike, chatSticker, clearTags, createChatFileFromGoogleDriver, createChatText, onUploading, openCreateRemind, tagMember, viewChat } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { file as file_icon } from 'assets/fileType';
 import { FileType } from 'components/FileType';
@@ -260,6 +260,7 @@ const FooterPart = ({
 
   const focus = () => {
     editorRef.current.focus();
+    dispatch(viewChat(taskId))
   };
 
   function getChatContent(text) {

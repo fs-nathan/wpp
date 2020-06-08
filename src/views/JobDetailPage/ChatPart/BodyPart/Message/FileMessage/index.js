@@ -145,7 +145,7 @@ const FileMessage = ({
           <div className={clsx("TextMessage--content", {
             "TextMessage--content__self": is_me,
             "TextMessage--content__withReact": data_emotion.length > 0,
-            "FileMessage--content__video": files.length === 1 && getFileType(files[0].name) === 'mp4',
+            "FileMessage--content__video": files.length === 1 && getFileType(files[0].name) === 'mp4' && !isUploading,
           })} >
             {chat_parent &&
               <TextMessage {...chat_parent} isReply></TextMessage>
@@ -197,7 +197,8 @@ const FileMessage = ({
           }
         </abbr>
       </div>
-      {!isReply && !is_me &&
+      {
+        !isReply && !is_me &&
         <CommonMessageAction can_delete={can_delete} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
       }
     </div >

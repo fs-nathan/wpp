@@ -670,3 +670,24 @@ export function appendViewedChat(data) {
     data
   };
 }
+
+export function viewChat(task_id) {
+  return {
+    type: actionTypes.VIEW_CHAT,
+    task_id
+  };
+}
+
+export function viewChatSuccess(payload) {
+  return {
+    type: actionTypes.VIEW_CHAT_SUCCESS,
+    payload
+  };
+}
+
+export function viewChatFail(error) {
+  return {
+    type: actionTypes.VIEW_CHAT_FAIL,
+    error
+  };
+}
