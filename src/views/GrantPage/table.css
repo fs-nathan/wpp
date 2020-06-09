@@ -106,6 +106,9 @@ body {
 }
 .checkbox-colortag--drawer:hover {
   background-color: #f2f5fa;
+  cursor: pointer;
+  outline: 1px solid #ccc;
+  outline-offset: 5px;
 }
 .ml-0 {
   margin-left: 0 !important;

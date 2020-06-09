@@ -35,3 +35,6 @@
     font-weight: 500;
     color: orange;
 }
+.calendar--modal__container{
+  padding: 30px
+}

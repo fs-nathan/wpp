@@ -2,7 +2,6 @@ import { IconButton } from "@material-ui/core";
 import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuUp, mdiPageNextOutline, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table, Tooltip } from "antd";
-import 'antd/dist/antd.css';
 import 'antd/lib/grid/style/index.css';
 import 'antd/lib/table/style/index.css';
 import LoadingBox from "components/LoadingBox";
@@ -923,6 +922,8 @@ class DragSortingTable extends React.Component {
   async componentDidMount() {
     const { projectId } = this.props.match.params;
     this.fetchSettingGantt(projectId);
+    const style = document.getElementById("gantt-style-link")
+    style.href = "../../style/antd.css"
     // this.fetchListDetailProject(projectId);
     await this.fetchListTask(projectId);
     this.fetchListTask(projectId, true, this.props.girdType);
@@ -1071,7 +1072,8 @@ class DragSortingTable extends React.Component {
     }
   };
   componentWillUnmount() {
-    return null;
+    const style = document.getElementById("gantt-style-link")
+    style.href = ""
   }
   handleResize = (index) => (e, { size }) => {
     this.setState({
