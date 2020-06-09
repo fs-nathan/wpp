@@ -1,4 +1,4 @@
-import APPEND_VIEWED_CHAT, * as actionTypes from '../../constants/actions/chat/chat';
+import * as actionTypes from '../../constants/actions/chat/chat';
 import { apiService } from '../../constants/axiosInstance';
 
 // action
@@ -12,10 +12,11 @@ export const getListChat = data => ({
   payload: data
 });
 
-export const appendChat = (data, replaceId) => ({
+export const appendChat = (data, replaceId, isHideSendStatus) => ({
   type: actionTypes.APPEND_CHAT,
   payload: data,
   replaceId,
+  isHideSendStatus,
 });
 
 export const getMemberTask = data => ({
