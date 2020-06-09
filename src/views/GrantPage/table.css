@@ -942,3 +942,14 @@ input[type="time"]::-webkit-outside-spin-button {
 .ant-table-row .ant-table-row-level-0{
   background: #fff;
 }
+.gantt--edit-cell__input-date{
+  width: 100% !important;
+}
+
+.gantt--edit-cell__input-date > .MuiFormControl-root {
+  margin: 0px !important;
+  margin-top: 8px;
+}
+.gantt--edit-cell__input-date > .MuiInput-underline:before{
+  border-bottom: none !important;
+}
