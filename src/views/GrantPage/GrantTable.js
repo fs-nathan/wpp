@@ -638,7 +638,9 @@ class DragSortingTable extends React.Component {
           id: 5,
           width: 100,
           height: 100,
-          render: (text, record, index) => (
+          render: (text, record, index) => {
+            console.log(text, record)
+            return(
             <EditCell
               defaultValue={text}
               fetchNewDataSource={this.fetchNewDataSource}
@@ -663,7 +665,7 @@ class DragSortingTable extends React.Component {
                 </div>
               }
             />
-          ),
+          )},
         },
       ],
     };
@@ -770,7 +772,7 @@ class DragSortingTable extends React.Component {
       end_time: getFormatEndStringFromObject(totalProjectData.time),
       end_label: totalProjectData.time.end_label,
       duration_actual: totalProjectData.duration_actual.value,
-      complete: 0,
+      complete: totalProjectData.complete,
       isTotalDuration: true,
       show: true,
       id: "TOTAL_DURATION",
@@ -787,7 +789,7 @@ class DragSortingTable extends React.Component {
         start_label: time && time.start_label,
         end_label: time && time.end_label,
         duration_actual: duration_actual.value,
-        complete: 0,
+        complete: task.complete,
         isGroupTask: true,
         show: true,
         id: task.id,
