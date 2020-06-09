@@ -35,6 +35,7 @@ const BodyPart = props => {
   const isSending = useSelector(state => state.chat.isSending);
   const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
   const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
+  const focusId = useSelector(state => state.chat.focusId);
 
   const [isCanLoadMore, setCanLoadMore] = React.useState(false);
   const [isMyLastChat, setMyLastChat] = React.useState(false);
@@ -48,6 +49,21 @@ const BodyPart = props => {
 
   const imgNum = 5;
   const plusMember = viewedChatMembers.length - imgNum;
+
+  useEffect(() => {
+    let rqId;
+    if (focusId) {
+      const ele = document.getElementById(focusId)
+      if (ele) {
+        rqId = setTimeout(function () {
+          ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
+        }, 10)
+      }
+    }
+    return () => {
+      clearTimeout(rqId);
+    }
+  })
 
   useEffect(() => {
     if (plusMember > 0) {
@@ -125,19 +141,18 @@ const BodyPart = props => {
 
   useEffect(() => {
     let rqId;
-    if (chatRef && chatRef.current && chats.data && chats.data.length && !isMore) {
+    if (chatRef && chatRef.current && chats.data && chats.data.length
+      && !isMore && !isLoading && !focusId) {
       rqId = setTimeout(function () {
-        requestAnimationFrame(() => {
-          // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-          chatRef.current.scrollToBottom()
-        })
+        // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+        chatRef.current.scrollToBottom()
       }, 0)
     }
     return () => {
       clearTimeout(rqId);
     }
     // eslint-disable-next-line
-  }, [chatRef, taskId, chats.data.length, isLoading]);
+  }, [chatRef, taskId, chats.data.length, isLoading, focusId]);
 
   // useEffect(() => {
   //   let rqId;

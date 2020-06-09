@@ -3,9 +3,19 @@ import CustomModal from 'components/CustomModal';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles.scss';
+import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import { useSelector } from 'react-redux';
+
+const StyledAppBar = styled(AppBar)`
+  & .MuiTabs-indicator {
+    background-color: ${props => props.groupActiveColor};
+  }
+`
 
 const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
   const { t } = useTranslation();
+  const groupActiveColor = useSelector(currentColorSelector)
   const [tab, setTab] = React.useState(0);
 
   const handleChange = (event, newTab) => {
@@ -35,7 +45,7 @@ const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
       confirmRender={null}
     >
       <div className="DetailEmotionModal--container">
-        <AppBar position="static">
+        <StyledAppBar position="static" groupActiveColor={groupActiveColor}>
           <Tabs
             value={tab}
             onChange={handleChange}
@@ -48,7 +58,7 @@ const DetailEmotionModal = ({ isOpen, setOpen, data_emotion = [] }) => {
               <Tab icon={<img alt="icon" className="DetailEmotionModal--tabIcon" src={icon} key={value} />} label={` (${members.length})`} />
             )}
           </Tabs>
-        </AppBar>
+        </StyledAppBar>
         {interactedMembers.map(({ id, avatar, name, icon: src }) =>
           <div key={id} className="DetailEmotionModal--member">
             <Avatar className="DetailEmotionModal--avatar" src={avatar} />

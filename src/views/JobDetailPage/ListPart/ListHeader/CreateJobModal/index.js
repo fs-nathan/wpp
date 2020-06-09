@@ -202,8 +202,10 @@ function CreateJobModal(props) {
   }, [props.data, props.editMode]);
 
   useEffect(() => {
-    if (isFetching === false && error === false)
+    if (isFetching === false && error === false) {
       props.setOpen(false);
+      props.onCreateTaskSuccess()
+    }
     // eslint-disable-next-line
   }, [isFetching, error])
 
