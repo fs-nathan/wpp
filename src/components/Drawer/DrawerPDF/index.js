@@ -36,6 +36,7 @@ const ExportPDF = ({
   const [showFullTime, setShowFullTime] = useState(1);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setContentPreview(previewContent);
@@ -54,8 +55,9 @@ const ExportPDF = ({
     setShowModalPreview(!showModalPreview);
   };
   const callBackPreview = (dataUrl) => {
-    setShowModalPreview(true);
     setSrcPreview(dataUrl);
+    setIsLoading(false)
+
   };
   const handleOnClickPreview = () => {
     changePreviewContent(contentPreview);
@@ -63,6 +65,8 @@ const ExportPDF = ({
     if (!showFullTime) {
       changeFilterExportPdf(startTime, endTime);
     }
+    setShowModalPreview(true);
+    setIsLoading(true)
     setTimeout(
       () => window.getDataUrlPdf(kendo, "previewPdf.pdf", callBackPreview),
       2000
@@ -236,6 +240,7 @@ const ExportPDF = ({
       </Drawer>
       <PreviewPdfModal
         srcPreview={srcPreview}
+        isLoading={isLoading}
         open={showModalPreview}
         setOpen={handleShowModalPreview}
         title={'Sản xuất phim "Sống chung với mẹ chồng"'}

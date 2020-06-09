@@ -78,9 +78,12 @@ body {
 .config--drawer--section {
   margin-bottom: 5px;
   font-size: 14px;
-  color: black;
-  font-weight: bold;
-  text-transform: lowercase;
+  color: #333;
+  font-weight: 500;
+}
+
+.config--drawer--section:first-letter{
+  text-transform: capitalize
 }
 .config--drawer--title {
   margin-top: 10px;
@@ -184,7 +187,6 @@ span.ant-checkbox ~ span {
 
 .gantt--timeline--container {
   margin-top: 25.2px;
-  overflow-y: scroll;
 }
 
 .gantt--top-timeline {
@@ -304,7 +306,7 @@ span.ant-checkbox ~ span {
 }
 .icon-show-header svg {
   width: 20px !important;
-  margin-top: -5px;
+  margin-top: -8px;
 }
 
 .ant-table tbody > tr.ant-table-row:hover > td {
@@ -681,6 +683,8 @@ div.checkbox-colortag--drawer {
   align-items: center;
   padding-left: 5px;
   height: 35px !important;
+  z-index: 1000;
+  background: inherit;
   padding-right: 5px;
 }
 
@@ -759,8 +763,7 @@ div.checkbox-colortag--drawer {
 .gantt__container {
   display: flex;
   position: relative;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .gantt__select-project {
@@ -850,7 +853,7 @@ div.checkbox-colortag--drawer {
 .gantt--parent-header {
   border-bottom: 1px solid #e4e4e4;
   border-top: 1px solid #e4e4e4;
-  padding: 4.5px 0px;
+  padding: 1.5px 0px;
   border-right: 1px solid #e4e4e4;
   background-color: #fafafa;
   text-align: center;
@@ -859,7 +862,7 @@ div.checkbox-colortag--drawer {
 .gantt--child-header {
   border-bottom: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
-  padding: 5px 0px;
+  padding: 2px 0px;
   background-color: #fafafa;
   text-align: center;
   width: 48px;
@@ -929,4 +932,10 @@ input[type="time"]::-webkit-outside-spin-button {
   z-index: 1000;
   height: 37px !important;
   border: 1px solid orange !important;
+}
+.ant-table-cell{
+  background: inherit;
+}
+.ant-table-row .ant-table-row-level-0{
+  background: #fff;
 }

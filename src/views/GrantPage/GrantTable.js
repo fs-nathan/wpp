@@ -14,7 +14,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import { changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortTask,sortGroupTask } from "../../actions/gantt";
+import { changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortGroupTask, sortTask } from "../../actions/gantt";
 import { changeDetailSubtaskDrawer, changeVisibleSubtaskDrawer } from "../../actions/system/system";
 import { getListGroupTask, getListTaskDetail, getProjectListBasic, getStaticTask } from "../../actions/taskDetail/taskDetailActions";
 import CustomBadge from "../../components/CustomBadge";
@@ -35,7 +35,7 @@ import Header from "./Header";
 import "./table.css";
 
 
-Array.prototype.insertArray = function (index, items) {     this.splice.apply(this, [index, 0].concat(items)); }
+Array.prototype.insertArray = function (index, items) { this.splice.apply(this, [index, 0].concat(items)); }
 const MAX_DAY_DEFAULT = 40;
 
 const RenderJobModal = React.memo(
@@ -403,7 +403,7 @@ class DragSortingTable extends React.Component {
                           rowHover: record.key,
                         });
                     }}
-                    style={{ display: "flex", height: 20 }}
+                    style={{ display: "flex", height: 20, background: "inherit" }}
                   >
                     <Icon
                       style={{ margin: "0 10px", cursor: "grab", fill: "#ccc" }}
@@ -1000,17 +1000,27 @@ class DragSortingTable extends React.Component {
     }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
       const { startTimeProject, endTimeProject } = this.state;
+      const { girdInstance } = this.props;
+      const {
+        formatString,
+        unit,
+        parentUnit,
+        getWidthParent,
+        getTextParent,
+        getTimeCompare,
+        formatChild,
+      } = girdInstance;
       const { start, end } = this.props.filterExportPdf;
       const daysRender = [];
-      const endDate = end ? new moment(end) : endTimeProject;
-      const startDate = start ? new moment(start) : startTimeProject;
+      const endDate = end ? new moment(end) : new moment(endTimeProject);
+      const startDate = start ? new moment(start) : new moment(startTimeProject);
       let temp = new moment(startDate);
       const maxDayRender = this.props.renderFullDay
-        ? endDate.diff(startDate, "days") + 1
+        ? endDate.diff(startDate, girdInstance.unit) + 1
         : MAX_DAY_DEFAULT;
       for (let i = 0; i < maxDayRender; i++) {
         const newDate = new moment(temp);
-        newDate.add(i, "days");
+        newDate.add(i, girdInstance.unit);
         daysRender.push(newDate);
       }
       const allMonth = [
@@ -1019,32 +1029,27 @@ class DragSortingTable extends React.Component {
           width: "",
         },
       ];
-      const tempStart = new moment(startDate);
       let index = 0;
       let minMonth = 0;
       while (
-        endDate > tempStart ||
-        tempStart.format("M") === endDate.format("M") ||
+        endDate > startDate ||
+        getTimeCompare(startDate) === getTimeCompare(endDate) ||
         minMonth < 2
       ) {
-        let width = tempStart.daysInMonth() * 48;
-        if (index === 0) {
-          width = (tempStart.daysInMonth() - tempStart.format("DD") + 1) * 48;
-        }
         allMonth.push({
-          text: tempStart.format("MM/YYYY"),
-          width: width,
+          text: getTextParent(startDate),
+          width: getWidthParent(startDate, index === 0),
         });
-        tempStart.add(1, "month");
+        startDate.add(1, parentUnit);
         minMonth++;
         index++;
       }
       allMonth.shift();
       this.setState({
         daysRender,
-        startTimeProject: startDate,
-        endTimeProject: endDate,
         monthArray: allMonth,
+        startTimeProject: start ? new moment(start) : new moment(startTimeProject),
+        endTimeProject: end ? new moment(end).add(1, girdInstance.unit) : new moment(endTimeProject)
       });
     }
     if (this.props.girdType !== prevProps.girdType) {
@@ -1085,48 +1090,48 @@ class DragSortingTable extends React.Component {
 
   moveRow = (dragIndex, hoverIndex) => {
     const { data } = this.state;
-    if(dragIndex === hoverIndex) return
+    if (dragIndex === hoverIndex) return
     const dragRow = data[dragIndex];
     const indexGroupTaskList = [];
     let indexSort = 0;
     if (data[dragIndex].isTotalDuration) return;
-    
+
     data.forEach((item, index) => {
       if (item.isGroupTask) indexGroupTaskList.push(index);
     });
-    if(data[dragIndex].isGroupTask){
+    if (data[dragIndex].isGroupTask) {
       let temp = 0;
       let groupDataSource = [];
       indexSort = 0;
       let oldIndexGroup = 0
-      data.forEach((item,index) =>{
-        if(item.isTotalDuration){
+      data.forEach((item, index) => {
+        if (item.isTotalDuration) {
           groupDataSource[temp] = [item]
           return
         }
-        if(item.isGroupTask){
+        if (item.isGroupTask) {
           temp++
-          if(dragIndex === index)
-          oldIndexGroup = temp
+          if (dragIndex === index)
+            oldIndexGroup = temp
           groupDataSource[temp] = []
           groupDataSource[temp].push(item)
-          if(hoverIndex > index ||(hoverIndex > dragIndex && hoverIndex === index))
-          indexSort++
+          if (hoverIndex > index || (hoverIndex > dragIndex && hoverIndex === index))
+            indexSort++
           return
         }
         groupDataSource[temp].push(item)
       })
-      if(dragIndex < hoverIndex)
-      indexSort--
+      if (dragIndex < hoverIndex)
+        indexSort--
       indexSort = indexSort < 0 ? 0 : indexSort;
-      console.log(oldIndexGroup, indexSort,groupDataSource)
+      console.log(oldIndexGroup, indexSort, groupDataSource)
       const oldGroup = groupDataSource[oldIndexGroup]
-     groupDataSource.splice(oldIndexGroup,1)
-     groupDataSource.splice(indexSort +1, 0,oldGroup)
-     sortGroupTask(data[dragIndex].id, indexSort)
-     this.setState({
-       data: groupDataSource.flat()
-     })
+      groupDataSource.splice(oldIndexGroup, 1)
+      groupDataSource.splice(indexSort + 1, 0, oldGroup)
+      sortGroupTask(data[dragIndex].id, indexSort)
+      this.setState({
+        data: groupDataSource.flat()
+      })
       return
     }
     let endProject = false;
@@ -1134,12 +1139,12 @@ class DragSortingTable extends React.Component {
       if (hoverIndex > index) {
         indexSort = hoverIndex - index;
       }
-      if(hoverIndex === index){
-        indexSort = index - indexGroupTaskList[indexLoop -1] + 1
+      if (hoverIndex === index) {
+        indexSort = index - indexGroupTaskList[indexLoop - 1] + 1
         endProject = true
       }
     });
-    if(dragIndex > hoverIndex)
+    if (dragIndex > hoverIndex)
       indexSort--;
     indexSort = indexSort < 0 ? 0 : indexSort;
     const groupTaskIndex = indexGroupTaskList.filter(
@@ -1318,7 +1323,6 @@ class DragSortingTable extends React.Component {
   };
 
   render() {
-    console.log(this.state.cellDetail);
     const columns = this.state.columns.map((col, index) => ({
       ...col,
       onHeaderCell: (column) => ({
@@ -1326,12 +1330,13 @@ class DragSortingTable extends React.Component {
         onResize: this.handleResize(index),
       }),
     }));
-    const { indexColumn, visibleTable } = this.props;
+    const { indexColumn, visibleTable, girdInstance } = this.props;
     let colShow = columns.map((item, index) => columns[indexColumn[index]]);
     colShow = colShow.filter((col) => visibleTable[col.dataIndex]);
     const { startTimeProject, endTimeProject } = this.state;
+    console.log(endTimeProject && endTimeProject.format("DD/MM/YYYY"))
     const widthPdf = this.props.renderFullDay
-      ? (endTimeProject.diff(startTimeProject, "days") + 1) * 48
+      ? (endTimeProject.diff(startTimeProject, girdInstance.unit) + 1) * 48 + 1000
       : "auto";
     if (this.state.isLoading) return <LoadingBox />;
     return (

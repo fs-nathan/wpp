@@ -366,7 +366,7 @@ const TimeLine = ({
               ref={refProcess}
             >
               <div className="duration-text-gantt">
-                {visibleGantt.numberDuration && widthProcess + "%"}
+                {Math.floor(visibleGantt.numberDuration) && widthProcess + "%"}
               </div>
             </div>
           </ResizableBox>

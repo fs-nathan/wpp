@@ -46,7 +46,6 @@ const MonthHeader = ({
       let children = [];
       for (let j = 0; j < axisY; j++) {
         let backgroud = {};
-
         children.push(
           <div
             key={`${i}-${j}`}
@@ -92,6 +91,7 @@ const MonthHeader = ({
             display: "flex",
             position: "absolute",
             left: leftHeader,
+            zIndex: 1001,
             borderLeft: "2px solid #e8e8e8",
           }}
         >

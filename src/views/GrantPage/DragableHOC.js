@@ -123,7 +123,7 @@ function GanttChart({
                     "ant-table-row ant-table-row-level-0"
                   );
                   if (!divs[index]) return;
-                  divs[index].style.backgroundColor = "";
+                  divs[index].style.backgroundColor = "#fff";
                 }
               }}
               className="gantt--top-timeline-tr"

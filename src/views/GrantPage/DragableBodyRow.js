@@ -59,7 +59,7 @@ const DragableBodyRow = ({
         const divss = document.getElementsByClassName(
           "ant-table-row ant-table-row-level-0"
         );
-        divss[index].style.backgroundColor = "";
+        divss[index].style.backgroundColor = "#fff";
       }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}
