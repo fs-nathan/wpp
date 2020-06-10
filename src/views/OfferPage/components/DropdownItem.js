@@ -1,38 +1,55 @@
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import React, { useRef, useState } from 'react';
-import { Link } from "react-router-dom";
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import MuiExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import List from '@material-ui/core/List';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import { mdiMenuUp } from '@mdi/js';
+import Icon from '@mdi/react';
+import clsx from 'clsx';
+import ColorTypo from 'components/ColorTypo';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 import { Routes } from '../contants/routes';
 import './DropdownItem.scss';
+
 const DropdownItem = ({ name, subMenu }) => {
-  const [showSubMenu, setShowSubMenu] = useState(false)
-  const listRef = useRef()
-  const handleToggle = () => {
-    setShowSubMenu(!showSubMenu)
-    const list = document.getElementsByClassName('Dropdown-item')
-    for (let i = 0; i < list.length; i++) {
-      list[i].classList.remove('item-actived')
-    }
-    listRef.current.classList.add('item-actived')
-  }
+  const history = useHistory();
+  const projectID = window.location.pathname.split("/")[3];
+
   return (
     <>
-      <li ref={listRef} className="Dropdown-item" onClick={handleToggle}>
-        <a href="javascript:void(0)" className="Dropdown-item_title">
-          {name}
-          {!showSubMenu ? <ArrowDropDownIcon className="Dropdown-item__icon" /> : <ArrowDropUpIcon className="Dropdown-item__icon" />}
-        </a>
-      </li>
-      {showSubMenu &&
-        <ul className="Dropdown-item__sub_menu">
-          {subMenu.map(sub => (
-            <li><Link to={Routes.OFFERBYPROJECT + "/" + sub.id} >{sub.name}</Link></li>
+      <ExpansionPanel
+        defaultExpanded
+        className="OfferView-project__contentPanel"
+      >
+        <ExpansionPanelSummary
+          expandIcon={<Icon path={mdiMenuUp} size={1} />}
+          id="panel1bh-header"
+          className="OfferView-project__contentPanel_Summary"
+        >
+          <List className="listProjectBody" key="OfferView-project-name">
+            <ListSubheader disableSticky className="listProjectBody--header">
+              <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>
+                {name.toUpperCase()}
+              </ColorTypo>
+            </ListSubheader>
+          </List>
+        </ExpansionPanelSummary>
+        <MuiExpansionPanelDetails className="OfferView-project_projectPanelDetail">
+          {subMenu.map((project, projectIdx) => (
+            <div
+              className={clsx("OfferView-project_projectItem", { "OfferView-project_projectItem__selected": projectID == project.id })}
+              onClick={() => {
+                history.push(Routes.OFFERBYPROJECT + "/" + project.id)
+              }}
+              key={`OfferView-project-item-${projectIdx}`}
+            >
+              {project.name}
+            </div>
           ))}
-        </ul>
-      }
+        </MuiExpansionPanelDetails>
+      </ExpansionPanel>
     </>
   )
 }
-
-
 export default DropdownItem

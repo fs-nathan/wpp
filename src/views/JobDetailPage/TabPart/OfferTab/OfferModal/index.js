@@ -1,31 +1,30 @@
 import { Avatar, Button, Chip, Grid, IconButton, TextField } from '@material-ui/core';
 import { mdiCloudDownloadOutline, mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
-import { listUserOfGroup } from '../../../../../actions/user/listUserOfGroup';
-import { bgColorSelector } from '../../../../../reducers/setting/selectors';
-import { createOffer, deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
+import { deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
-import lodash from 'lodash';
+import { get, isNaN } from 'lodash';
 import findIndex from 'lodash/findIndex';
-import get from 'lodash/get';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useMemo, useState } from 'react';
-import { useHistory } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import { listUserOfGroup } from '../../../../../actions/user/listUserOfGroup';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
+import { bgColorSelector } from '../../../../../reducers/setting/selectors';
 import { allMembersSelector } from '../../../../../reducers/user/listOfUserGroup/selectors';
 import { Routes } from '../../../../OfferPage/contants/routes';
 import { updateOfferApprovalCondition, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
+import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import { priorityList } from '../data';
 import { CONDITION_LOGIC, CONDITION_LOGIC_MEMBER } from './constants';
 import OfferFile from './OfferFile';
-import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import './styles.scss';
 
 const OfferModal = ({
@@ -303,27 +302,25 @@ const OfferModal = ({
   }
 
   function validate() {
-    const { title, content, offer_group_id, priority } = tempSelectedItem;
+    const { title, content, offer_group_id, priority, condition_logic_member, condition_logic, min_rate_accept } = tempSelectedItem;
     if (isUpdateOfferDetailDescriptionSection) {
       return title && content;
     } else if (isUpdateOfferApprovalCondition) {
-      return title && content
-             && offer_group_id
-             && priority
-             && handlers.length;
+      return condition_logic !== null && !isNaN(parseInt(min_rate_accept));
     }
     return actionCreateOffer
-           && title && content
-           && offer_group_id
-           && priority
-           && handlers.length;
+      && title && content
+      && offer_group_id
+      && priority
+      && handlers.length;
   }
   return (
     <JobDetailModalWrap
       title={
-        isUpdateOfferDetailDescriptionSection || isUpdateOfferApprovalCondition || isOffer
+        isUpdateOfferDetailDescriptionSection || isOffer
           ? t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT')
-          : t('LABEL_CHAT_TASK_TAO_DE_XUAT')
+          : isUpdateOfferApprovalCondition ? t('VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION')
+            : t('LABEL_CHAT_TASK_TAO_DE_XUAT')
       }
       open={isOpen}
       setOpen={setOpen}
@@ -442,12 +439,12 @@ const OfferModal = ({
         {
           isUpdateOfferApprovalCondition ? (
             <>
-              <TitleSectionModal label={'Điều kiện được duyệt'} />
-              <Grid container spacing={3} className="">
+              <TitleSectionModal label={t("VIEW_OFFER_LABEL_APPROVAL_CONDITION")} />
+              <Grid container spacing={3} className="offerModal__updateOfferApprovalCondition">
                 <Grid item xs={7}>
                   <Grid container alignItems="center">
                     <div className="offerModal--input_rate_prefix_1">
-                      <div>Tỷ lệ thành viên đồng ý ≥</div>
+                      <div>{t("VIEW_OFFER_LABEL_RATE_AGREE")} ≥</div>
                     </div>
                     <div className="offerModal--input__rate">
                       <input
