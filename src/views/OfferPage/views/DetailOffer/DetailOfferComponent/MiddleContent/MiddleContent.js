@@ -151,7 +151,7 @@ const MiddleContent = ({
           </>
         )
       }
-      {/* - */}
+
       <div>
         <Grid container direction="row">
           <div className="offerDetail-approvalResult-title">{t("VIEW_OFFER_LABEL_APPROVAL_RESULT")}:&nbsp;</div>
@@ -161,7 +161,7 @@ const MiddleContent = ({
       <div>
         <div className="offerDetail-horizontalLine" />
       </div>
-      {/* - */}
+
       <Scrollbars autoHide autoHideTimeout={500}>
         {!isEmpty(members_approved) && members_approved.map(member =>
           <Grid
@@ -178,7 +178,7 @@ const MiddleContent = ({
             </Grid>
             <Grid items xs={7} direction="column">
               <div className="offerDetail-approvalResult-member-name">{get(member, "name")}</div>
-              <div className="offerDetail-approvalResult-member-position">{get(member, 'position')}</div>
+              <div className="offerDetail-approvalResult-member-position">{get(member, 'position')} - {get(member, 'room')}</div>
               <div>
                 {t("VIEW_OFFER_LABEL_APPROVED_AT", { time: member.hour_label, date: member.date_label })}
               </div>
@@ -187,17 +187,16 @@ const MiddleContent = ({
               <Grid container direction="column" alignItems="center" >
                 {
                   get(member, "status") === 0 &&
-                  <Button variant="contained" size="small" disableElevation className="bg--green">
+                  <div className="offerDetail__result_label bg--green">
                     {t("VIEW_OFFER_LABEL_APPROVED")}
-                  </Button>
+                  </div>
                 }
                 {
                   get(member, "status") === 1 &&
-                  <Button variant="contained" size="small" disableElevation className="bg--red">
+                  <div className="offerDetail__result_label bg--red">
                     {t("VIEW_OFFER_LABEL_REJECTED")}
-                  </Button>
+                  </div>
                 }
-                {/* <Popover /> */}
               </Grid>
             </Grid>
           </Grid>

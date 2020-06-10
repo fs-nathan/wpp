@@ -12,8 +12,8 @@ import { } from 'views/OfferPage/redux/sagas';
 import CustomModal from '../../../../../components/CustomModal';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { priorityList } from '../data';
-import './styles.scss';
 import { getCancelBtnTitle, getConfirmBtnTitle } from './i18nSelectors';
+import './styles.scss';
 
 
 const ApproveOfferDialog = (props) => {
@@ -60,7 +60,7 @@ const ApproveOfferDialog = (props) => {
           <Typography className="approve--userName" component="div">
             {user_create_name}
             <div className="offerDetail--createdAt">{t('LABEL_CHAT_TASK_DA_TAO_DE_XUAT_LUC')}{date_create}</div>
-            <div className={clsx("approve--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>
+            <div className={clsx("approve--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`, `offerTabItem--priority__${priority_code}`)}>
               {priority}
             </div>
           </Typography>

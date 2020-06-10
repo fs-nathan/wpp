@@ -23,6 +23,7 @@ export const PageContainer = styled(Container)`
   padding: 16px;
   padding-right: 32px;
   min-height: 100%;
+  max-width: 100%;
 `;
 
 const OfferByGroup = props => {
