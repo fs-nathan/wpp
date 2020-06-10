@@ -346,7 +346,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
                         className: classes.title,
                         size: "medium",
                         multiline: true,
-                        label: t("Tiêu đề bài viết..."),
+                        label: t("Tiêu đề bài viết") + "...",
                       }}
                     />
                     <InputFormControl
@@ -357,7 +357,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
                         size: "medium",
                         rows: 5,
                         multiline: true,
-                        label: t("Nội dung bài viết..."),
+                        label: t("Nội dung bài viết") + "...",
                       }}
                     />
                   </div>
