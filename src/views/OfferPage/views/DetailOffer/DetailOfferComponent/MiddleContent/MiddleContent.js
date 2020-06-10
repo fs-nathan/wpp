@@ -1,6 +1,6 @@
 import { Avatar, Button, Grid } from "@material-ui/core";
 import { isEmpty } from "helpers/utils/isEmpty";
-import get from "lodash/get";
+import { get, size } from "lodash";
 import React, { useMemo, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
@@ -155,7 +155,7 @@ const MiddleContent = ({
       <div>
         <Grid container direction="row">
           <div className="offerDetail-approvalResult-title">{t("VIEW_OFFER_LABEL_APPROVAL_RESULT")}:&nbsp;</div>
-          <div className="offerDetail-approvalResult-result">{t("VIEW_OFFER_LABEL_APPROVED")} ({number_member_accepted}) - {t("VIEW_OFFER_LABEL_REJECTED")} ({number_member_rejected})  </div>
+          <div className="offerDetail-approvalResult-result">{t("VIEW_OFFER_LABEL_APPROVED")} ({number_member_accepted}/{size(members_can_approve)}) - {t("VIEW_OFFER_LABEL_REJECTED")} ({number_member_rejected}/{size(members_can_approve)})  </div>
         </Grid>
       </div>
       <div>

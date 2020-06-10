@@ -3,6 +3,13 @@
     color: red !important;
   }
 }
+
 .OfferPage__comp_createOfferGroup {
   margin-top: -20px;
+}
+
+.comp_CustomTable___container {
+  [class*='MuiContainer-root'] {
+    min-height: 95% !important;
+  }
 }
