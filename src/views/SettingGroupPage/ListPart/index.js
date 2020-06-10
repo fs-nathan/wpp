@@ -48,7 +48,7 @@ const ListPart = ({ premissions = emptyObject }) => {
           name: t("IDS_WP_ROLE"),
           url: Routes.SETTING_GROUP_ROLE_MANAGER,
         },
-      ],
+      ].filter((item) => item && item !== null),
       // icon: mdiSettings
     },
     !!get(premissions, premissionAttr.manage_order) && {

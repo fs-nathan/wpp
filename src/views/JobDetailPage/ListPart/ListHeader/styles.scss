@@ -45,7 +45,9 @@
 }
 .permissionMemberModal {
   .MuiPaper-root {
-    max-width: 55vw;
+    overflow: hidden;
+    min-width: 55vw;
+    max-width: 70vw;
   }
   .dialogWrap--content {
     width: 95%;
@@ -115,6 +117,9 @@
     min-width: 400px;
     min-height: 300px;
     padding: 24px;
+  }
+  .MuiPaper-root {
+    max-width: 45vw;
   }
   &--cell {
     padding: 15px 15px;

@@ -105,13 +105,12 @@ export default ({ item }) => {
   return (
     <AlertModal
       open={true}
-      setOpen={() => setModal(null)}
       {...{
         canConfirm: true,
         manualClose: true,
         content: t("Bạn có muốn xóa nhóm quyền?"),
         onConfirm: () => handleSubmit(),
-        onCancle: () => {},
+        onCancle: () => setModal(null),
       }}
     />
     // <DeleteGroupPermissionModalStateLess

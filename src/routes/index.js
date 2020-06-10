@@ -1,6 +1,8 @@
 import loadable from "@loadable/component";
+import ValidateNoLogin from "components/ValidateNoLogin/ValidateNoLogin";
 import { Routes } from "constants/routes";
 import React from "react";
+import { Redirect } from "react-router-dom";
 //import CalendarAlarmPage from "views/CalendarAlarmPage";
 //import CalendarPage from "views/CalendarPage";
 //import CalendarProjectPage from "views/CalendarProjectPage";
@@ -146,8 +148,22 @@ const routes = [
   { path: Routes.TEST, component: () => <TestPage /> },
   { path: Routes.SETTING_ACCOUNT, component: () => <SettingAccountPage /> },
   { path: Routes.SETTING_GROUP, component: () => <SettingGroupPage /> },
-  { path: Routes.LOGIN, component: () => <LoginPage /> },
-  { path: Routes.REGISTER, component: () => <RegisterPage /> },
+  {
+    path: Routes.LOGIN,
+    component: () => (
+      <ValidateNoLogin fallback={<Redirect to="/" />}>
+        <LoginPage />
+      </ValidateNoLogin>
+    ),
+  },
+  {
+    path: Routes.REGISTER,
+    component: () => (
+      <ValidateNoLogin fallback={<Redirect to="/" />}>
+        <RegisterPage />
+      </ValidateNoLogin>
+    ),
+  },
   { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
   { path: Routes.CALENDAR, component: () => <CalendarPage /> },

@@ -271,12 +271,7 @@ const like = ({ post_id, profile }) => {
       return {
         payload: {
           id: post_id,
-          is_like: data.is_like,
-          is_love: data.is_love,
-          number_like: data.number_like,
-          number_love: data.number_love,
-          last_like_user: { name: profile.name },
-          last_love_user: null,
+          ...data.post_data,
         },
       };
     }),
@@ -294,12 +289,7 @@ const love = ({ post_id, profile }) => {
       return {
         payload: {
           id: post_id,
-          is_like: data.is_like,
-          is_love: data.is_love,
-          number_like: data.number_like,
-          number_love: data.number_love,
-          last_love_user: { name: profile.name },
-          last_like_user: null,
+          ...data.post_data,
         },
       };
     }),

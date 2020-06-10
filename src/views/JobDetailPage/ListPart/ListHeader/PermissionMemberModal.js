@@ -20,6 +20,7 @@ import "slick-carousel/slick/slick.css";
 import styled from 'styled-components';
 import './styles.scss';
 import findIndex from "lodash/findIndex";
+import { currentColorSelector } from "views/JobDetailPage/selectors";
 
 const RowTable = styled(TableRow)`
 & > *:not(first-child) {
@@ -36,17 +37,31 @@ const CellTable = styled(TableCell)`
     padding: 8px;
 `
 
+const StyledDiv = styled.div`
+  &:hover {
+    background-color: ${props => props.colorHover};
+    color: #ffffff;
+    svg {
+      color: #ffffff;
+    }
+  }
+`
+
 function PriorityTable(props) {
   const { t } = useTranslation();
+  const groupActiveColor = useSelector(currentColorSelector)
   return (
-    <div className={clsx("permissionItem", { "permissionItem__checked": props.checked })} align="center">{props.radio}
+    <StyledDiv
+      className={clsx("permissionItem", { "permissionItem__checked": props.checked })}
+      colorHover={groupActiveColor}
+      align="center">{props.radio}
       <Radio
         className="permissionItem--radio"
         checked={props.checked}
         onChange={props.onChange}
         value={props.value}
       />
-    </div>
+    </StyledDiv>
   )
 }
 

@@ -122,7 +122,7 @@ function RoleMemberModal({ roles, isOpen, setOpen, memberId }) {
                 className="RoleMemberModal--cell"
                 style={{ width: "9%", textAlign: "center" }}
               >
-                {t("LABEL_CHAT_TASK_CHON")}
+                &nbsp;
               </TableCell>
               <TableCell style={{ width: "30%" }}>
                 {t("LABEL_CHAT_TASK_TEN_VAI_TRO")}

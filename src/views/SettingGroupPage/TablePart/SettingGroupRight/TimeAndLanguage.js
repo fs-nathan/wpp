@@ -48,6 +48,7 @@ const TimeAndLanguage = props => {
       setDefaultLang(lang);
       handleToast('success', t('IDS_WP_UPDATE_SUCCESS'));
       setLoading(false);
+      window.location.reload();
     } catch (error) {
       setLoading(false);
     }

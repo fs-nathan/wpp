@@ -7,7 +7,10 @@ import {
   listupdate,
   mapPayloadToState,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/listReducer";
-import { createAsyncAction } from "../../TablePart/SettingGroupRight/Home/redux/apiCall/utils";
+import {
+  createAsyncAction,
+  createPostAsyncAction,
+} from "../../TablePart/SettingGroupRight/Home/redux/apiCall/utils";
 
 const rootPath = "/setting-group/group-permission";
 export const types = {
@@ -91,7 +94,7 @@ export const createGroupPermission = ({
   description,
   module,
 }) => {
-  return createAsyncAction({
+  return createPostAsyncAction({
     config: {
       url: "/permissions/create-group-permission",
       method: "post",

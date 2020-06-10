@@ -34,17 +34,17 @@
       display: flex;
       z-index: 100;
       top: -35px;
-      left: unset;
-      right: -30px;
+      left: -60px;
+      right: unset;
     }
   }
   &__self &--buttonEmo:hover .ReactEmotionPopup {
-    left: -60px;
-    right: unset;
+    left: unset;
+    right: -60px;
   }
-  &__self &--buttonEmo__short:hover .ReactEmotionPopup {
-    left: -100px;
-  }
+  // &__self &--buttonEmo__short:hover .ReactEmotionPopup {
+  //   right: -100px;
+  // }
 }
 
 .emoMenu {
