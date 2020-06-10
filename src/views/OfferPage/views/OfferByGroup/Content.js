@@ -36,14 +36,17 @@ function Content() {
       approving_rate: isNaN(approving_rate) ? 0 : approving_rate
     };
   });
-  //
+
+
   const renderLength = useMemo(() => {
     const offers = getTaskByKeyword(keyword, statusFilter)(state);
     return offers.length;
   }, [keyword, state, statusFilter]);
+
   const renderTabList = useMemo(() => {
     return getTaskByKeyword(keyword, statusFilter)(state);
   }, [keyword, state, statusFilter]);
+
   return (
     <Grid container spacing={3}>
       {

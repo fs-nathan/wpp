@@ -1,13 +1,6 @@
-
-
-
 import { createSelector } from 'reselect';
 import { TASK_RECENTLY } from 'views/OfferPage/redux/types';
-
-
 const selectTaskRecently = (state) => state.offerPage[TASK_RECENTLY]
-
-
 export const getTaskRecentLy = createSelector(selectTaskRecently, list => {
   if (list.offers === undefined) {
     return []

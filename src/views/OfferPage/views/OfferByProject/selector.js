@@ -1,11 +1,18 @@
-
-
 import get from 'lodash/get';
 import { createSelector } from 'reselect';
 import { OFFER_BY_PROJECT, SUMMARY_PROJECT } from 'views/OfferPage/redux/types';
-const selectSummaryProject = state => state.offerPage[SUMMARY_PROJECT]
 
+const selectSummaryProject = state => state.offerPage[SUMMARY_PROJECT]
 const selectOffer = state => state.offerPage[OFFER_BY_PROJECT]
+
+export const getFirstSummaryProject = createSelector(
+  selectSummaryProject,
+  summaryProject => {
+    var projects = get(summaryProject, 'projects');
+    return get(projects, '[0].projects[0].id');
+  }
+);
+
 export const getTaskByKeyword = (keyword, status_filter) =>
   createSelector(selectOffer, offers => {
     let newOffers = offers.offers

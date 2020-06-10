@@ -1,40 +1,26 @@
-import { Avatar, Button, Grid, IconButton, TextField } from '@material-ui/core';
-import { AddCircle } from "@material-ui/icons";
+import { Avatar, Button, Grid, IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
-import { apiService } from "constants/axiosInstance";
 import lodash from 'lodash';
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
-import { useSnackbar } from "notistack";
-import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Scrollbars } from 'react-custom-scrollbars';
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addMemberHandle,
-  addMemberMonitor,
-  deleteDocumentOffer,
-  deleteMemberHandle,
-  deleteMemberMonitor,
-  uploadDocumentOffer,
-} from 'views/OfferPage/redux/actions';
+import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor, uploadDocumentOffer } from 'views/OfferPage/redux/actions';
 import { listUserOfGroup } from '../../../../../../actions/user/listUserOfGroup';
 import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
 import { allMembersSelector } from '../../../../../../reducers/user/listOfUserGroup/selectors';
 import SendFileModal from '../../../../../JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import AddOfferMemberModal from '../../../../../JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
-import CustomAddOfferMemberModal from "../AddOfferMemberModal";
-import './styles.scss';
 import { getPriorityEditingTitle } from './i18nSelectors';
-
-
-
+import './styles.scss';
 
 
 const PersonInfo = ({
@@ -44,6 +30,7 @@ const PersonInfo = ({
   user_create_avatar,
   user_create_name,
 }) => {
+  const { t } = useTranslation();
   return (
     <>
       <Grid container className="offerDetail">
@@ -55,7 +42,7 @@ const PersonInfo = ({
           <div className="offerDetail-personInfo-userCreateName">{user_create_name}</div>
           <div className="offerDetail-personInfo-userCreatePosition">{user_create_position}</div>
           <div className="offerDetail-personInfo-timeCreated">
-            Đã tạo đề xuất lúc {hour_label} ngày {date_label}
+            {t("VIEW_OFFER_CREATED_AT", { time: hour_label, date: date_label })}
           </div>
         </Grid>
       </Grid>
@@ -117,9 +104,9 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
       <div className="offerDetail-detailDescription-priorityAndOfferTypeContainer">
         <div className="offerDetail-detailDescription-priorityAndOfferTypeContainer-chipContainer">
           {!isEmpty(type_name) &&
-           <div className="offerDetail-detailDescription-priorityAndOfferTypeContainer-chipContainer-offerTypeName">
-             {type_name}
-           </div>
+            <div className="offerDetail-detailDescription-priorityAndOfferTypeContainer-chipContainer-offerTypeName">
+              {type_name}
+            </div>
           }
           {RenderChipItem(priority_code, priority_name)}
         </div>
@@ -152,7 +139,7 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
         <div className="offerDetail-detailDescription-title">{title}</div>
       </div>
       <div>
-        <div className="offerDetail-detailDescription-detailSection">Mô tả chi tiết</div>
+        <div className="offerDetail-detailDescription-detailSection">{t("VIEW_OFFER_LABEL_CONTENT_DETAIL")}</div>
       </div>
       <div>
         <p className="offerDetail-detailDescription-content">{content}</p>
@@ -216,7 +203,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
   return (
     <>
       <div>
-        <div className="offerDetail-attachedDocument-title">Tài liệu đính kèm</div>
+        <div className="offerDetail-attachedDocument-title">{t("VIEW_OFFER_LABEL_ATTACHMENTS")}</div>
       </div>
       <Grid container spacing="2">
         {!isEmpty(documents) &&
@@ -282,7 +269,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
       addableHandlers.every(handler => member.id !== handler.id)
       || member.id === userCreateId
     )
-    && disabledMemberIndexes.push(idx);
+      && disabledMemberIndexes.push(idx);
   })
 
   const onAddHandler = (members) => {
@@ -369,7 +356,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
       addableMonitors.every(monitor => member.id !== monitor.id)
       || member.id === userCreateId
     )
-    && disabledMemberIndexes.push(idx);
+      && disabledMemberIndexes.push(idx);
   })
 
   const onAddMonitor = (members) => {
@@ -386,7 +373,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
   return (
     <Grid container>
       <Grid item xs={5}>
-        <div className="offerDetail-monitoringPerson-title">Người giám sát</div>
+        <div className="offerDetail-monitoringPerson-title">{t("VIEW_OFFER_LABEL_SUPERVISOR")}</div>
         {
           can_update_member_monitor && (
             <IconButton

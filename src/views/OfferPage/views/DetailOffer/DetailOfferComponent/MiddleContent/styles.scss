@@ -13,36 +13,56 @@
     height: 4em;
     background-color: #03c30b;
     color: white;
+
     &:hover {
       background-color: #03c30b;
     }
   }
 
   &-approvalStatusBtn {
-    width: 100%;
     margin-top: 1em;
-    font-weight: 400;
-    background-color: #e0e0e0;
-    color: red;
-    &:hover {
-      background-color: #e6e6e6;
+    font-weight: 500;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 2px;
+    text-align: center;
+
+    &-0 {
+      background: #e9e9e9;
+      color: rgba(0, 0, 0, 0.26);
+    }
+
+    &-1 {
+      background: #ff9800;
+    }
+
+    &-2 {
+      background: #0ab711;
+    }
+
+    &-3 {
+      background: #f44336;
     }
   }
 
   &-approvalConditionContainer {
     margin: 0.6em 0;
+
     &-inner {
       display: flex;
       flex-direction: row;
       align-items: center;
+
       &-title {
         font-weight: 700;
       }
+
       &-editBtn {
         margin-top: 0;
         margin-left: auto;
         font-weight: 400;
         color: #1673e5;
+
         [class*='MuiButton-label'] {
           font-size: 1rem;
           text-transform: none;
@@ -59,18 +79,22 @@
     &-title {
       margin: 0.6em 0;
     }
+
     &-container {
       margin: 0.6em 0;
     }
+
     &-item {
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 0.6em;
+
       &-avatar {
         width: 4em;
         height: 4em;
       }
+
       &-name {
         margin: 0.6em 0 0;
       }
@@ -81,20 +105,23 @@
     &-title {
       font-weight: 700;
     }
-    &-result {
 
-    }
+    &-result {}
+
     &-member {
       &-container {
         padding: 0.2em 0;
       }
+
       &-avatar {
         width: 55px;
         height: 55px;
       }
+
       &-name {
         font-weight: 700;
       }
+
       &-position {
         color: #fd7e14;
       }
@@ -111,6 +138,7 @@
   background-color: #f44336;
   color: white;
 }
+
 .bg--green {
   background-color: #03c30b;
   color: white;
