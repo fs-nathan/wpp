@@ -98,16 +98,23 @@
   }
   &--videoPlayButton {
     position: absolute;
-    width: 45px;
-    height: 45px;
-    left: 45%;
-    top: 45%;
-    color: #111;
+    width: 60px;
+    height: 60px;
+    left: calc((100% - 60px) / 2);
+    top: calc((100% - 60px) / 2);
+    color: #767676;
   }
   &--videoPlayer {
     video {
       border-radius: 5px;
     }
+  }
+  &--videoInfo {
+    position: absolute;
+    bottom: 0px;
+    padding: 0 5px;
+    // background-color: #767676;
+    width: 100%;
   }
   &:hover .CommonMessageAction {
     opacity: 1;

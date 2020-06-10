@@ -280,3 +280,13 @@ export function* getDataPinOnTaskChat(payload) {
     yield put(actions.getDataPinOnTaskChatFail(error));
   }
 }
+
+export function* viewChat(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.post, "/chat/view-chat", { task_id });
+    yield put(actions.viewChatSuccess(res.data));
+  } catch (error) {
+    yield put(actions.viewChatFail(error));
+  }
+}

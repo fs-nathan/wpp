@@ -2,6 +2,7 @@
 import { findTask } from 'helpers/jobDetail/arrayHelper';
 import sortBy from 'lodash/sortBy';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
+import { VIEW_CHAT } from 'constants/actions/chat/chat';
 
 function getNewChat(newChat, current) {
     if (newChat === 0) return 0
@@ -118,6 +119,12 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 listTaskDetail: updateListTaskDetail(state.listTaskDetail, options.taskId, { new_chat: 0 }),
                 listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, options.taskId, { new_chat: 0 }),
+            }
+        case VIEW_CHAT:
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, action.task_id, { new_chat: 0 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, action.task_id, { new_chat: 0 }),
             }
         case types.GET_LIST_TASK_DETAIL_REQUEST:
             return {
