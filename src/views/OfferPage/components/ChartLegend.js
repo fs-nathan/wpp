@@ -5,7 +5,7 @@ import React from "react";
 import { useTranslation } from 'react-i18next';
 import styled from "styled-components";
 import { colors, labels } from "../contants/attrs";
-import './ChartLegend.scss'
+import './ChartLegend.scss';
 
 const IconWrap = styled(Grid)`
   line-height: 1;
@@ -14,14 +14,14 @@ const IconWrap = styled(Grid)`
 
 const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) => {
   const { t } = useTranslation();
-
+  if (series.length === 4) xs = 3;
   const map = strings.map(string => [
-    typeof labels[string] === 'function' ? labels[string](t) : labels[string],
+    typeof labels[string] === 'function' ? labels[string](t) : t(labels[string]),
     colors[string],
   ]);
   const color = strings.map(string => [colors[string]]);
   const getIndexPercent = (value) => {
-    const res = series.reduce((total,currentValue) => {
+    const res = series.reduce((total, currentValue) => {
       return total + currentValue;
     });
     return res > 0 ? Math.round((value / res) * 100) : 0;
@@ -42,8 +42,8 @@ const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) =
         <Grid container>
           {series.map((value, key) => (
             <Grid container alignItems="baseline" item xs={xs} className="mt_5" key={key}>
-              <span className="legend_index" style={{color: color[key]}}>{value}</span>
-              <span className="legend_index_percent" style={{color: color[key]}}>{`${getIndexPercent(value)} %`}</span>
+              <span className="legend_index" style={{ color: color[key] }}>{value}</span>
+              <span className="legend_index_percent" style={{ color: color[key] }}>{`${getIndexPercent(value)} %`}</span>
             </Grid>
           ))}
         </Grid>

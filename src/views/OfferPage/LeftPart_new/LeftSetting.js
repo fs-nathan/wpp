@@ -6,6 +6,7 @@ import classnames from "classnames";
 import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
 import LeftSideContainer from "components/LeftSideContainer";
 import React, { Fragment, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { Link, useHistory, withRouter } from "react-router-dom";
 import SearchInput from '../../../components/SearchInput';
 import DropdownItem from "../components/DropdownItem";
@@ -13,11 +14,10 @@ import { Routes } from "../contants/routes";
 import { checkUserIsInOfferGroupRoutes } from '../utils/validate';
 import "./LeftSetting.scss";
 
-// import { isEmpty } from '../../helpers/utils/isEmpty';
-
 const LeftSetting = props => {
   const { pathname } = props.location;
   const history = useHistory();
+  const { t } = useTranslation();
   const [onHover, setOnHover] = useState({ id: null });
   const checkBeforeShowLeftIcon = () => {
     const validPathname = [Routes.OVERVIEW, Routes.RECENTLY]
@@ -34,7 +34,7 @@ const LeftSetting = props => {
       title={props.title}
       leftAction={checkBeforeShowLeftIcon() && {
         iconPath: mdiChevronLeft,
-        tooltip: 'Quay lại',
+        tooltip: t("IDS_WP_BACK"),
         onClick: () => history.push(Routes.OVERVIEW)
       }}
       rightAction={checkBeforeShowRightIcon() && {

@@ -1,4 +1,9 @@
-import { mdiAccountSwitch, mdiAccountTie, mdiAlarm, mdiViewDashboard } from "@mdi/js";
+import {
+  mdiAccountSwitch,
+  mdiAccountTie,
+  mdiAlarm,
+  mdiViewDashboard,
+} from "@mdi/js";
 import React, { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,68 +26,68 @@ import { formatTime } from "./utils/time";
 const { Provider } = JobPageContext;
 const filterConfig = [
   {
-    title: "LỌC THEO TRẠNG THÁI CÔNG VIỆC",
+    title: "Lọc theo trang thái công việc",
     subTitle: "Chọn/bỏ chọn trạng thái để lọc công việc",
     optionEntities: {
       waiting: {
         label: "Đang chờ",
-        value: "waiting"
+        value: "waiting",
       },
       doing: {
         label: "Đang làm",
-        value: "doing"
+        value: "doing",
       },
       complete: {
         label: "Hoàn thành",
-        value: "complete"
+        value: "complete",
       },
       expired: {
         label: "Quá hạn",
-        value: "expired"
+        value: "expired",
       },
       stop: {
         label: "Tạm dừng",
-        value: "stop"
-      }
+        value: "stop",
+      },
     },
-    orders: ["waiting", "doing", "complete", "expired", "stop"]
+    orders: ["waiting", "doing", "complete", "expired", "stop"],
   },
   {
-    title: "LỌC THEO MỨC ĐỘ ƯU TIÊN",
+    title: "Lọc theo mức độ ưu tiên",
     subTitle: "Chọn/bỏ chọn mức độ ưu tiên để lọc công việc",
     optionEntities: {
       priority_low: {
         label: "Ưu tiên thấp",
-        value: "priority_low"
+        value: "priority_low",
       },
       priority_medium: {
         label: "Ưu tiên trung bình",
-        value: "priority_medium"
+        value: "priority_medium",
       },
       priority_hight: {
         label: "Ưu tiên cao",
-        value: "priority_hight"
-      }
+        value: "priority_hight",
+      },
     },
-    orders: ["priority_low", "priority_medium", "priority_hight"]
-  }
+    orders: ["priority_low", "priority_medium", "priority_hight"],
+  },
 ];
 export const defaultStatusFilter = {
   waiting: true,
   doing: true,
   complete: true,
   expired: true,
-  stop: true
+  stop: true,
 };
 export const defaultPriorityFilter = {
   priority_low: true,
   priority_medium: true,
-  priority_hight: true
+  priority_hight: true,
 };
 
 export const defaultFilter = {
   ...defaultStatusFilter,
-  ...defaultPriorityFilter
+  ...defaultPriorityFilter,
 };
 function JobPage() {
   const { t } = useTranslation();
@@ -91,7 +96,7 @@ function JobPage() {
     "LOCAL_PROJECT_OPTIONS",
     {
       filterType: 1,
-      timeType: 5
+      timeType: 5,
     }
   );
   const [quickTask, setQuickTask] = useState();
@@ -101,7 +106,7 @@ function JobPage() {
   useEffect(() => {
     setLocalOptions({
       ...localOptions,
-      timeType
+      timeType,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -110,24 +115,24 @@ function JobPage() {
     const [startDate, endDate] = times[timeType].option();
     return {
       startDate,
-      endDate
+      endDate,
     };
   });
   const [
     statusFilter,
     setstatusFilter,
-    handleRemovestatusFilter
+    handleRemovestatusFilter,
   ] = useMultipleSelect(defaultFilter, true, true);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(
       loadTaskPage({
         timeStart: formatTime(timeRange.startDate),
-        timeEnd: formatTime(timeRange.endDate)
+        timeEnd: formatTime(timeRange.endDate),
       })
     );
   }, [dispatch, timeRange.startDate, timeRange.endDate]);
-  const roles = useSelector(state => {
+  const roles = useSelector((state) => {
     return get(
       state.taskPage[TASK_OVERVIEW_STATISTIC],
       statistic.roles,
@@ -139,13 +144,13 @@ function JobPage() {
       title: t(labels.overview),
       url: Routes.OVERVIEW,
       color: "#7d99a6",
-      icon: mdiViewDashboard
+      icon: mdiViewDashboard,
     },
     {
       title: t(labels.due),
       url: Routes.DUE,
       color: "#FF9800",
-      icon: mdiAlarm
+      icon: mdiAlarm,
     },
     {
       title: t(labels.mission),
@@ -154,28 +159,28 @@ function JobPage() {
       sub: [
         {
           name: t(labels.mission_giving),
-          url: Routes.MISSION.replace(":typeAssign", "0")
+          url: Routes.MISSION.replace(":typeAssign", "0"),
         },
         {
           name: t(labels.mission_given),
-          url: Routes.MISSION.replace(":typeAssign", "1")
+          url: Routes.MISSION.replace(":typeAssign", "1"),
         },
         {
           name: t(labels.self_giving),
-          url: Routes.MISSION.replace(":typeAssign", "2")
-        }
-      ]
+          url: Routes.MISSION.replace(":typeAssign", "2"),
+        },
+      ],
     },
 
     {
       title: t(labels.role),
       icon: mdiAccountTie,
       color: "#f44336",
-      sub: roles.map(role => ({
+      sub: roles.map((role) => ({
         name: t(get(role, roleAttrs.name)),
-        url: Routes.ROLE.replace(":roleId", get(role, roleAttrs.id))
-      }))
-    }
+        url: Routes.ROLE.replace(":roleId", get(role, roleAttrs.id)),
+      })),
+    },
   ];
   const [pin, setPin] = useState(false);
   const handleClose = () => {
@@ -206,7 +211,7 @@ function JobPage() {
             setstatusFilter,
             handleRemovestatusFilter,
             keyword,
-            setkeyword
+            setkeyword,
           }}
         >
           <div>
