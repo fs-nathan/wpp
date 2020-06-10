@@ -10,7 +10,7 @@ import TitleSectionModal from 'components/TitleSectionModal';
 import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -53,21 +53,21 @@ function CreateJobModal(props) {
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
 
-  let assignList = [
+  const assignList = useMemo(() => [
     { id: 0, value: t('LABEL_CHAT_TASK_DUOC_GIAO') },
     { id: 1, value: t('LABEL_CHAT_TASK_TU_DE_XUAT') },
     { id: 2, value: t('LABEL_CHAT_TASK_GIAO_VIEC_CHO') }
-  ];
+  ], [t]);
 
   const DEFAULT_ASSIGN = assignList[0];
   const DEFAULT_ASSIGN_ID = assignList[0].id;
 
   // Define variable using in form
-  let priorityList = [
+  const priorityList = useMemo(() => [
     { id: 2, value: t('LABEL_CHAT_TASK_THAP') },
     { id: 1, value: t('LABEL_CHAT_TASK_TRUNG_BINH') },
     { id: 0, value: t('LABEL_CHAT_TASK_CAO') },
-  ];
+  ], [t]);
   const DEFAULT_PRIORITY = priorityList[0].value;
   const DEFAULT_PRIORITY_ID = priorityList[0].id;
 
@@ -204,7 +204,7 @@ function CreateJobModal(props) {
   useEffect(() => {
     if (isFetching === false && error === false) {
       props.setOpen(false);
-      props.onCreateTaskSuccess()
+      if (props.onCreateTaskSuccess) props.onCreateTaskSuccess()
     }
     // eslint-disable-next-line
   }, [isFetching, error])
@@ -441,10 +441,11 @@ function CheckCreateJob(props) {
   const dispatch = useDispatch();
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
 
-  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
+  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask) || {};
   const isFetching = useSelector(state => state.taskDetail.listGroupTask.isFetching);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
   const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
+  const [isOpenCreateTask, setOpenCreateTask] = React.useState(false);
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
@@ -457,16 +458,18 @@ function CheckCreateJob(props) {
 
   useEffect(() => {
     // console.log(listGroupTaskData, '&& ', props.isOpen, isFetching)
-    if (listGroupTaskData && props.isOpen && !isFetching) {
+    if (listGroupTaskData.group_tasks && props.isOpen && !isFetching) {
       if (listGroupTaskData.group_tasks.length === 0) {
         setOpenCreateGroup(true)
+        setOpenCreateTask(false)
       } else {
         setOpenCreateGroup(false)
+        setOpenCreateTask(true)
       }
     }
-  }, [isFetching, listGroupTaskData, props, props.isOpen])
+  }, [isFetching, listGroupTaskData.group_tasks, props.isOpen])
 
-  function onClickCreateProject() {
+  function onClickCreateProjectGroup() {
     setOpenCreateGroup(false)
     setOpenProjectGroup(true)
     props.setOpen(false)
@@ -482,16 +485,22 @@ function CheckCreateJob(props) {
     setOpenProjectGroup(isOpen)
   }
 
+  function onClickCloseTask(isOpen) {
+    props.setOpen(false)
+    setOpenCreateTask(isOpen)
+  }
+
   return !isFetching ? (
     <>
-      {
-        !isOpenCreateGroup &&
-        <CreateJobModal {...props}></CreateJobModal>
-      }
+      <CreateJobModal
+        {...props}
+        isOpen={isOpenCreateTask}
+        setOpen={onClickCloseTask}
+      />
       <CreateGroupTaskModal
         isOpen={isOpenCreateGroup}
         setOpen={onClickCloseGroupTask}
-        onClickCreate={onClickCreateProject}
+        onClickCreate={onClickCreateProjectGroup}
       />
       <CreateProjectGroup
         project_id={projectId}

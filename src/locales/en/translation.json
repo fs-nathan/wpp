@@ -1152,5 +1152,11 @@
   "LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT": "{{count}} lần điều chỉnh",
   "LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE": "Lúc {{time}} ngày {{date}}",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUNG": "Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!",
-  "LABEL_CHAT_TASK_DA_DO_TASK": "đã {{taskName}}"
+  "LABEL_CHAT_TASK_DA_DO_TASK": "đã {{taskName}}",
+  "LABEL_CHAT_TASK_TAG_THANH_VIEN": "Tag thành viên",
+  "LABEL_CHAT_TASK_GUI_STICKER": "Gửi sticker",
+  "LABEL_CHAT_TASK_GUI_ANH": "Gửi ảnh",
+  "LABEL_CHAT_TASK_GUI_FILE_TAI_LIEU": "Gửi file, tài liệu",
+  "LABEL_CHAT_TASK_THEM_CONG_VIEC_CON": "Thêm công việc con",
+  "LABEL_CHAT_TASK_THEM_NHAC_HEN": "Thêm nhắc hẹn"
 }

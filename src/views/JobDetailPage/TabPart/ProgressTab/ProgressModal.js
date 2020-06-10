@@ -6,7 +6,7 @@ import { updateTimeDuration } from 'actions/taskDetail/taskDetailActions';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import "date-fns";
-import { convertDate, convertTime, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
+import { convertDate, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -45,8 +45,7 @@ const ProgressModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
-  const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
-  const trackings = listTime ? listTime.trackings : [];
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
 
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(listTimeSelect[16])
@@ -55,16 +54,19 @@ const ProgressModal = (props) => {
   const [endDay, setEndDay] = React.useState(DEFAULT_DATE_TEXT)
 
   React.useEffect(() => {
-    if (trackings.length) {
-      const lastTrack = trackings[trackings.length - 1]
-      const { new_start, new_end } = lastTrack;
-      // const startNew = parse(new_start, 'dd/MM/yyyy HH:mm', new Date());
-      setStartDay(convertDate(new_start))
-      setStartTime(convertTime(new_start))
-      setEndDay(convertDate(new_end))
-      setEndTime(convertTime(new_end))
+    if (detailTask) {
+      const {
+        start_time,
+        start_date,
+        end_time,
+        end_date,
+      } = detailTask;
+      setStartDay(start_date)
+      setStartTime(start_time)
+      setEndDay(end_date)
+      setEndTime(end_time)
     }
-  }, [trackings])
+  }, [detailTask])
 
   const handleStartDay = (startDay) => {
     setStartDay(startDay)

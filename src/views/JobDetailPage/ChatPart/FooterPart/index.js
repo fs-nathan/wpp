@@ -428,39 +428,51 @@ const FooterPart = ({
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
         <div>
-          <StyledButton className="icon-btn" onClick={openTag} hoverColor={groupActiveColor}>
-            <Icon path={mdiAt} size={1.2} />
-          </StyledButton>
-          <StyledButton className="icon-btn" onClick={onClickOpenSticker} hoverColor={groupActiveColor}>
-            <Icon path={mdiEmoticon} size={1.2} />
-          </StyledButton>
-          <StyledButton
-            className="icon-btn"
-            onClick={() => handleTriggerUpload('upload_image')}
-            hoverColor={groupActiveColor} >
-            <input
-              name="image"
-              type="file"
-              id="upload_image"
-              className="hide"
-              accept="image/*"
-              multiple
-              onChange={handleUploadImage}
-            />
-            <Icon path={mdiImage} size={1.2} />
-          </StyledButton>
-          <StyledButton
-            className="icon-btn"
-            onClick={() => setVisibleSendFile(true)}
-            hoverColor={groupActiveColor}>
-            <Icon path={mdiPaperclip} size={1.2} />
-          </StyledButton>
-          <StyledButton className="icon-btn" onClick={onClickSubTask} hoverColor={groupActiveColor}>
-            <Icon path={mdiFileTree} size={1.2} />
-          </StyledButton>
-          <StyledButton className="icon-btn" onClick={onClickRemind} hoverColor={groupActiveColor}>
-            <Icon path={mdiAlarmPlus} size={1.2} />
-          </StyledButton>
+          <abbr title={t('LABEL_CHAT_TASK_TAG_THANH_VIEN')}>
+            <StyledButton className="icon-btn" onClick={openTag} hoverColor={groupActiveColor}>
+              <Icon path={mdiAt} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_GUI_STICKER')}>
+            <StyledButton className="icon-btn" onClick={onClickOpenSticker} hoverColor={groupActiveColor}>
+              <Icon path={mdiEmoticon} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_GUI_ANH')}>
+            <StyledButton
+              className="icon-btn"
+              onClick={() => handleTriggerUpload('upload_image')}
+              hoverColor={groupActiveColor} >
+              <input
+                name="image"
+                type="file"
+                id="upload_image"
+                className="hide"
+                accept="image/*"
+                multiple
+                onChange={handleUploadImage}
+              />
+              <Icon path={mdiImage} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_GUI_FILE_TAI_LIEU')}>
+            <StyledButton
+              className="icon-btn"
+              onClick={() => setVisibleSendFile(true)}
+              hoverColor={groupActiveColor}>
+              <Icon path={mdiPaperclip} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_THEM_CONG_VIEC_CON')}>
+            <StyledButton className="icon-btn" onClick={onClickSubTask} hoverColor={groupActiveColor}>
+              <Icon path={mdiFileTree} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_THEM_NHAC_HEN')}>
+            <StyledButton className="icon-btn" onClick={onClickRemind} hoverColor={groupActiveColor}>
+              <Icon path={mdiAlarmPlus} size={1.2} />
+            </StyledButton>
+          </abbr>
         </div>
       </div>
       {parentMessage && <ReplyChatPreview {...parentMessage} cancelReply={cancelReply} />}

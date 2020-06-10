@@ -243,12 +243,12 @@ const BodyPart = props => {
       >
         <div
           className="bodyChat--scroll"
-          isReverse
-          loadMore={loadMoreChat}
-          hasMore={isCanLoadMore}
-          loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
-          useWindow={false}
-          getScrollParent={() => chatRefScroll.current}
+        // isReverse
+        // loadMore={loadMoreChat}
+        // hasMore={isCanLoadMore}
+        // loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
+        // useWindow={false}
+        // getScrollParent={() => chatRefScroll.current}
         >
           {
             !last_id && !searchChatKey &&
