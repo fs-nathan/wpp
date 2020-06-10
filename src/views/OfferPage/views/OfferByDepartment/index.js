@@ -57,7 +57,6 @@ const Department = props => {
     useEffect(() => {
         dispatch(loadOfferByDepartment());
     }, [dispatch]);
-
     useEffect(() => {
         if (isMounted) {
             var currentDepartment = departments.filter(item => item.url === history.location.pathname);

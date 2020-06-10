@@ -1,5 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { get } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
@@ -9,6 +10,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
+import { CREATE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
@@ -75,6 +77,14 @@ const OfferByGroup = props => {
     const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
     dispatch(loadOfferByGroupID({ id, startDate, endDate }));
     document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
+    const refreshAfterCreateOffer = () => {
+      dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      dispatch(loadSummaryByGroup());
+    }
+    CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    return () => {
+      CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    }
   }, [dispatch, id, timeRange]);
 
   // Redirect to first group when enter

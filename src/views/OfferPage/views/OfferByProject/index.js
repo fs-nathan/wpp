@@ -56,7 +56,6 @@ const OfferByProject = () => {
                 var projects = get(item, 'projects');
                 currentProject = filter(projects, project => get(project, 'id') === id);
                 if (currentProject.length !== 0) {
-                    console.log(currentProject);
                     setLayoutTitle(get(currentProject, '[0].name'));
                     return;
                 }

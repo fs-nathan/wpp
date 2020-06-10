@@ -285,7 +285,7 @@ function OfferPage(props) {
             title
           } {
           ...{
-            listMenu: getDepartmentGroupByKeyword(filterTab)(state)
+            listMenu: getDepartmentGroupByKeyword(filterTab, t)(state)
           }
           }
         />
