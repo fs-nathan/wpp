@@ -1676,7 +1676,7 @@
   "Câu hỏi thường gặp": "Câu hỏi thường gặp",
   "Hướng dẫn sử dụng": "Hướng dẫn sử dụng",
   "Tạo bài viết": "Tạo bài viết",
-  "<%= name %> ơi bạn muốn đăng gì": "<%= name %> ơi bạn muốn đăng gì",
+  "<%= name %> ơi bạn muốn đăng gì": "<%= name %> ơi bạn muốn đăng gì ?",
   "Tài liệu đính kèm": "Tài liệu đính kèm",
   "Thêm tài liệu": "Thêm tài liệu",
   "Chọn thể loại muốn đăng": "Chọn thể loại muốn đăng",

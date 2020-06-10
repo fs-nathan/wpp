@@ -690,7 +690,11 @@ export const PostStats = () => {
 };
 export const PostMedia = () => {
   const { images } = useContext(PostContext);
-  return <TasksCard.Media images={images}></TasksCard.Media>;
+  return (
+    <TasksCard.Media
+      images={images.map((i) => ({ ...i, url_thumbnail: i.url_thumb }))}
+    ></TasksCard.Media>
+  );
 };
 export const PostCategory = () => {
   const { category_name, category_id } = useContext(PostContext);

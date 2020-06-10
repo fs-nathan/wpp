@@ -199,16 +199,11 @@ const StickerPicker = ({ isOpen, handleClose, handleClickSticker }) => {
       >
         {renderStickersList.map((el) => (
           <div
+            className="comp_CommentInput_sticker"
             key={el.id}
-            style={{ width: "28%" }}
             onClick={() => onClickSticker(el)}
           >
-            <img
-              style={{ width: "100%" }}
-              // style={{ width: el.witdh_of_web, height: el.witdh_of_web }}
-              alt="sticker"
-              src={el.url}
-            />
+            <img alt="sticker" src={el.url} />
             &nbsp;&nbsp;&nbsp;
             <span>{el.name}</span>
           </div>
