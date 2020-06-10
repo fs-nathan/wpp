@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import BottomHeader from "views/OfferPage/components/BottomHeader";
 import { TaskTableRecently } from "views/OfferPage/components/TaskTableRecently";
 import { OfferPageContext } from "views/OfferPage/OfferPageContext";
+import { TASK_RECENTLY } from 'views/OfferPage/redux/types';
 import { getTaskByKeyword } from "./selector";
 
 export function Content() {
@@ -43,6 +44,13 @@ export function Content() {
     const offers = getTaskByKeyword(keyword, statusFilter)(state);
     return offers.length;
   }, [keyword, state, statusFilter]);
+
+  const loading = useMemo(() => {
+    const taskRecently = state.offerPage[TASK_RECENTLY];
+    console.log(taskRecently.loading);
+    return taskRecently.loading;
+  }, [state]);
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
@@ -54,7 +62,7 @@ export function Content() {
       <Grid item xs={12}>
         <Grid container spacing={3}>
           <Grid item container xs={12}>
-            <TaskTableRecently offers={renderTabList} />
+            <TaskTableRecently offers={renderTabList} loading={loading} />
           </Grid>
         </Grid>
       </Grid>

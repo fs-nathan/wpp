@@ -1,18 +1,19 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { filter, forEach, get } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { labels } from "../../contants/attrs";
+import { Routes } from "views/OfferPage/contants/routes";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByProjectID, loadSummaryProject } from "../../redux/actions";
-import { get } from "../../utils";
 import Content from "./Content";
+import { getFirstSummaryProject, getSummaryByProjectAndKeyword } from "./selector";
 export const PageContainer = styled(Container)`
   overflow: auto;  
   padding: 16px;
@@ -20,29 +21,57 @@ export const PageContainer = styled(Container)`
   min-height: 100%;
 `;
 
-
-
 const OfferByProject = () => {
     const { t } = useTranslation();
     const context = useContext(OfferPageContext)
     const dispatch = useDispatch();
     const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
+    const idFirstProject = useSelector(state => getFirstSummaryProject(state));
+    const listProjects = useSelector(state => getSummaryByProjectAndKeyword('')(state));
     const isMounted = useMountedState();
-    const state = useSelector(state => state)
-    const { id } = useParams()
+    const history = useHistory();
+    const { id } = useParams();
+    const [layoutTitle, setLayoutTitle] = useState("");
+
     useEffect(() => {
         const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
         const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
         dispatch(loadOfferByProjectID({ id, startDate, endDate }))
-    }, [dispatch, id, timeRange])
+    }, [dispatch, id, timeRange]);
+
     useEffect(() => {
         if (isMounted) {
-            setTitle(get(labels, "pageTitleOfferByProject"))
+            setTitle(t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"))
         }
     }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, context, setTitle]);
+
     useEffect(() => {
         dispatch(loadSummaryProject())
-    }, [dispatch])
+    }, [dispatch]);
+
+    useEffect(() => {
+        if (isMounted) {
+            var currentProject = null;
+            forEach(listProjects, item => {
+                var projects = get(item, 'projects');
+                currentProject = filter(projects, project => get(project, 'id') === id);
+                if (currentProject.length !== 0) {
+                    setLayoutTitle(get(currentProject, '[0].name'));
+                    return;
+                }
+            });
+        }
+    }, [isMounted, history.location.pathname, idFirstProject]);
+
+    useEffect(() => {
+        if (history.location.pathname !== Routes.OFFERBYPROJECT
+            || idFirstProject === undefined
+            || idFirstProject === null) {
+            return
+        }
+        history.push(Routes.OFFERBYPROJECT + "/" + idFirstProject);
+    }, [history, idFirstProject]);
+
     return (
         <Layout
             title={
@@ -59,7 +88,7 @@ const OfferByProject = () => {
                             fontWeight: "600",
                         }}
                     >
-                        {t(listMenu[3].title)}
+                        {layoutTitle}
                     </Box>
                 </Box>
             }

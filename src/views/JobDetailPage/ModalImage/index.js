@@ -58,7 +58,7 @@ const FooterDialog = styled(DialogActions)`
     display: flex;
     justify-content: center;
     padding: 5px 0 5px 0;
-    height: 100px;
+    height: ${props => props.fullHeight ? 0 : '100px'};
 `
 const ButtonImage = styled(IconButton)`
     background: #353535;
@@ -278,7 +278,7 @@ const ModalImage = () => {
             </>
         }
       </ContentDialog>
-      <FooterDialog>
+      <FooterDialog fullHeight={type === 'mp4'}>
         <div className="ModalImage--scrollWrap">
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}

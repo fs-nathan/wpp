@@ -7,11 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { useTimes } from '../../../../components/CustomPopover';
-import { labels } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadSummaryOverview } from "../../redux/actions";
-import { get } from "../../utils";
 import { GroupBlock } from "./GroupBlock";
 import { OfferBlock } from "./OfferBlock";
 import { getGroupOffers, getMyOffers, getPriorityOffers, getStatusOffers } from './selector';
@@ -24,7 +22,7 @@ export const PageContainer = styled(Container)`
 `;
 
 const stringsSelfOffer = ["offer_of_me_sending", "offer_of_me_approved", "offer_of_me_monitoring"];
-const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel"];
+const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel", "offer_status_approving"];
 const stringsPriorityOffer = ["offer_priority_normal", "offer_priority_urgent", "offer_priority_very_urgent"];
 const stringsGroupOffer = [
   "number_offer",
@@ -48,7 +46,7 @@ const Overview = () => {
   }, [dispatch, timeRange])
   useEffect(() => {
     isMounted &&
-      setTitle(get(labels, "pageTitle"))
+      setTitle(t("VIEW_OFFER_LABEL_YOUR_OFFER"))
   }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, setTitle]);
   const renderDataStatusOffer = useMemo(() => {
     if (timeRange) {
@@ -106,9 +104,9 @@ const Overview = () => {
         <PageContainer maxWidth="xl">
           <Grid container spacing={3}>
             {[
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsSelfOffer} data={renderDataMyOfferGroup} title={t("ĐỀ XUẤT CỦA BẠN")} />,
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsStatusOffer} data={renderDataStatusOffer} title={t("ĐỀ XUẤT THEO TRẠNG THÁI")} />,
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsPriorityOffer} data={renderDataPriorityOffer} title={t("ĐỀ XUẤT THEO MỨC ĐỘ")} />
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsSelfOffer} data={renderDataMyOfferGroup} title={t("VIEW_OFFER_LABEL_YOUR_OFFER")} />,
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsStatusOffer} data={renderDataStatusOffer} title={t("VIEW_OFFER_LABEL_OFFER_BY_STATUS")} />,
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsPriorityOffer} data={renderDataPriorityOffer} title={t("VIEW_OFFER_LABEL_OFFER_BY_LEVEL")} />
             ].map(
               (children, i) => (
                 <Grid
@@ -128,7 +126,7 @@ const Overview = () => {
                 time={renderExtraTimeTitle}
                 strings={stringsGroupOffer}
                 data={renderDataGroupOffer}
-                title={t("BIỂU ĐỒ ĐỀ XUẤT THEO NHÓM")}
+                title={t("VIEW_OFFER_LABEL_CHART_BY_GROUP").toUpperCase()}
               />
             </Grid>
           </Grid>

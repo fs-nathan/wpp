@@ -1,13 +1,7 @@
-import { colors, labels, statistic } from "../contants/attrs";
-import {
-  getAcceptedOfferTitle,
-  getApprovingOfferTitle,
-  getRejectedOfferTitle,
-  getWaitingOfferTitle,
-} from '../views/Overview/i18nSelectors';
-import { get } from "./index.js";
+import { colors, labels } from "../contants/attrs";
+import { getAcceptedOfferTitle, getApprovingOfferTitle, getRejectedOfferTitle, getWaitingOfferTitle } from '../views/Overview/i18nSelectors';
 
-export const createPieChartProps = (strings, data) => {
+export const createPieChartProps = (strings, data, t) => {
   return {
     type: "donut",
     options: {
@@ -29,7 +23,7 @@ export const createPieChartProps = (strings, data) => {
               total: {
                 showAlways: true,
                 show: true,
-                label: 'ĐỀ XUẤT',
+                label: typeof (t) === 'function' ? t("VIEW_OFFER_LABEL_OFFER").toUpperCase() : 'ĐỀ XUẤT',
               },
               value: {
                 fontWeight: 'bold',
@@ -47,13 +41,13 @@ export const createPieChartProps = (strings, data) => {
         offsetY: 0,
         floating: false,
         style: {
-          fontSize:  '12px',
-          fontWeight:  'normal',
-          fontFamily:  undefined,
-          color:  '#9699a2'
+          fontSize: '12px',
+          fontWeight: 'normal',
+          fontFamily: undefined,
+          color: '#9699a2'
         },
       },
-      labels: strings.map(string => labels[string]),
+      labels: strings.map(string => t(labels[string])),
       colors: strings.map(string => colors[string]),
       axisBorder: {
         show: false

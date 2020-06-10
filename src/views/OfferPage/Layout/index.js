@@ -3,10 +3,11 @@ import { mdiCalendar, mdiFilterOutline, mdiFullscreen, mdiFullscreenExit } from 
 import { CustomTableContext, CustomTableProvider } from "components/CustomTable";
 import HeaderButtonGroup from "components/CustomTable/HeaderButtonGroup";
 import React, { useContext, useState } from "react";
-import { useHistory } from 'react-router-dom';
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
+import { useHistory } from 'react-router-dom';
+import { useMountedState } from "react-use";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import LoadingBox from "../../../components/LoadingBox";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
@@ -128,13 +129,16 @@ export function LayoutStateLess({ open, quickTask, children, setQuickTask }) {
     </div>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     bgColor: bgColorSelector(state),
   };
 };
+
 export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   const { t } = useTranslation();
+  const isMounted = useMountedState();
   const {
     timeAnchor,
     setTimeAnchor,
@@ -151,18 +155,22 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     keyword,
     setkeyword,
   } = useContext(OfferPageContext);
+
   const times = useTimes();
   const open = !!quickTask;
   const [openModalOffer, setOpenModalOffer] = useState(false);
+  const [haveTimePopper, setHaveTimePopper] = useState(true);
 
   const {
     location: { pathname }
   } = useHistory();
+
   const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
   const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
   const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
   const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
   let timeFilterType;
+
   if (offerByGroupRouteRegex.test(pathname)) {
     timeFilterType = timeFilterTypeOfferByGroup.timeType;
   } else if (offerByProjectRouteRegex.test(pathname)) {
@@ -174,27 +182,36 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   } else {
     timeFilterType = 1;
   }
+
+  React.useEffect(() => {
+    if (isMounted) {
+      if (pathname.includes("/recently")) {
+        setHaveTimePopper(false);
+      }
+    }
+  }, [isMounted]);
+
   const options = {
     title: props.title,
     subActions: [
-      {
+      haveTimePopper ? {
         label: times[timeFilterType].title,
         iconPath: mdiCalendar,
         onClick: (evt) => setTimeAnchor(evt.currentTarget),
-      },
+      } : null,
       {
-        label: t(expand ? "Thu gọn" : "Mở rộng"),
+        label: t(expand ? "IDS_WP_COLLAPS" : "IDS_WP_EXPAND"),
         iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
         onClick: () => handleExpand(!expand),
       },
       {
-        label: "Lọc",
+        label: t("IDS_WP_FILTER"),
         iconPath: mdiFilterOutline,
         onClick: () => setQuickTask(<QuickViewFilter />),
       },
     ],
     mainAction: {
-      label: "+ Tạo đề xuất",
+      label: t("VIEW_OFFER_LABEL_CREATE_OFFER"),
       onClick: () => setOpenModalOffer(true),
       color: "#fd7e14"
     },
@@ -216,6 +233,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
       id: "id",
     },
   };
+
   return (
     <CustomTableProvider
       value={{
@@ -237,16 +255,21 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             {children}
           </Scrollbars>
         </LayoutStateLess>
-        <TimeRangePopover
-          bgColor={bgColor}
-          anchorEl={timeAnchor}
-          setAnchorEl={setTimeAnchor}
-          timeOptionDefault={timeFilterType}
-          handleTimeRange={(timeType, startDate, endDate) => {
-            setTimeType(timeType);
-            setTimeRange({ startDate, endDate });
-          }}
-        />
+
+        {
+          haveTimePopper && (
+            <TimeRangePopover
+              bgColor={bgColor}
+              anchorEl={timeAnchor}
+              setAnchorEl={setTimeAnchor}
+              timeOptionDefault={timeFilterType}
+              handleTimeRange={(timeType, startDate, endDate) => {
+                setTimeType(timeType);
+                setTimeRange({ startDate, endDate });
+              }}
+            />
+          )
+        }
 
         {openModalOffer && (
           <OfferModal
