@@ -1,7 +1,8 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { get } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -14,7 +15,7 @@ import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
 import Content from "./Content";
 import FormDialog from "./modal";
-import { getFirstSummaryGroup } from "./selector";
+import { getFirstSummaryGroup, getSummaryByGroupByKeyword } from "./selector";
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
@@ -23,39 +24,43 @@ export const PageContainer = styled(Container)`
 `;
 
 const OfferByGroup = props => {
+
   const { t } = useTranslation();
   const context = useContext(OfferPageContext);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [layoutTitle, setLayoutTitle] = useState("");
+
   const {
-    keyword,
     listMenu,
     setOpenModalOfferByGroup,
     openModalOfferByGroup,
     timeRange,
-    statusFilter,
     setTitle
   } = useContext(OfferPageContext);
+
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
+  const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
   const { id } = useParams();
   const isMounted = useMountedState();
+
   useEffect(() => {
     if (isMounted) {
-      setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"));
+      setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"))
     }
-  }, [
-    dispatch,
-    isMounted,
-    timeRange.startDate,
-    timeRange.endDate,
-    statusFilter,
-    context,
-    setTitle,
-    timeRange
-  ]);
+  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, context, setTitle]);
+
+  useEffect(() => {
+    if (isMounted) {
+      var currentGroup = groupList.filter(group => group.url === history.location.pathname);
+      setLayoutTitle(get(currentGroup, '[0].title'));
+    }
+  }, [isMounted, history.location.pathname, idFirstGroup]);
+
   useEffect(() => {
     dispatch(loadSummaryByGroup());
   }, [dispatch]);
+
   useEffect(() => {
     if (history.location.pathname !== Routes.OFFERBYGROUP
       || idFirstGroup === undefined
@@ -64,12 +69,14 @@ const OfferByGroup = props => {
     }
     history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
   }, [history, idFirstGroup]);
+
   useEffect(() => {
     const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
     const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
     dispatch(loadOfferByGroupID({ id, startDate, endDate }));
     document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
   }, [dispatch, id, timeRange]);
+
   // Redirect to first group when enter
   return (
     <>
@@ -88,7 +95,7 @@ const OfferByGroup = props => {
                 fontWeight: "600"
               }}
             >
-              {t(listMenu[2].title)}
+              {layoutTitle}
             </Box>
           </Box>
         }
@@ -105,4 +112,5 @@ const OfferByGroup = props => {
     </>
   );
 };
+
 export default React.memo(OfferByGroup);

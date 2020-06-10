@@ -22,7 +22,7 @@ export const PageContainer = styled(Container)`
 `;
 
 const stringsSelfOffer = ["offer_of_me_sending", "offer_of_me_approved", "offer_of_me_monitoring"];
-const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel"];
+const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel", "offer_status_approving"];
 const stringsPriorityOffer = ["offer_priority_normal", "offer_priority_urgent", "offer_priority_very_urgent"];
 const stringsGroupOffer = [
   "number_offer",

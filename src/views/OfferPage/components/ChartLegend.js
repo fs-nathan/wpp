@@ -14,9 +14,9 @@ const IconWrap = styled(Grid)`
 
 const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) => {
   const { t } = useTranslation();
-
+  if (series.length === 4) xs = 3;
   const map = strings.map(string => [
-    typeof labels[string] === 'function' ? labels[string](t) : labels[string],
+    typeof labels[string] === 'function' ? labels[string](t) : t(labels[string]),
     colors[string],
   ]);
   const color = strings.map(string => [colors[string]]);

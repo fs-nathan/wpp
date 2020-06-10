@@ -335,7 +335,7 @@ function OfferPage(props) {
             isOfferGroupManageable
           } {
           ...{
-            listMenu: getSummaryByGroupByKeyword(filterTab, isOfferGroupManageable)(state)
+            listMenu: getSummaryByGroupByKeyword(filterTab, isOfferGroupManageable, t)(state)
           }
           }
         />

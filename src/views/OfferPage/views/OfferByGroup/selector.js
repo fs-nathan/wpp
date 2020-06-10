@@ -60,17 +60,16 @@ export const getTaskByKeyword = (keyword, status_filter) =>
     return newOffers.filter(x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
   });
 
-export const getSummaryByGroupByKeyword = (keyword, isOfferGroupManageable) => createSelector(selectSummaryGroup, group => {
+export const getSummaryByGroupByKeyword = (keyword, isOfferGroupManageable, t) => createSelector(selectSummaryGroup, group => {
   if (group === undefined) {
     return []
   }
   return group.offers_group.map(x => ({
     title: x.name,
-    subtitle: x.offer_waiting + " đề xuất chờ duyệt",
+    subtitle: t("VIEW_OFFER_LABEL_PENDING_OFFER", { count: x.offer_waiting }),
     url: Routes.OFFERBYGROUP + `/${x.id}`,
     color: "#7d99a6",
     icon: mdiEmailCheck,
-    // rightIcon: x.have_new_offer && rightIcon,
     rightIcon: (() => isOfferGroupManageable && (
       <>
         <Popover

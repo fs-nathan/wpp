@@ -1,9 +1,7 @@
-import { Box, Grid, makeStyles } from "@material-ui/core";
-import { useTimes } from "components/CustomPopover";
-import React, { useContext } from "react";
+import { Grid, makeStyles } from "@material-ui/core";
+import React from "react";
 import Chart from "react-apexcharts";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import chart_no_data from '../../../../assets/chart_no_data.png';
 import ChartLegend from "../../components/ChartLegend";
 import { createColumnRoleChartProps } from "../../utils/chart";
@@ -53,10 +51,10 @@ export function GroupBlock({ strings = [], title, data = {}, time }) {
               </Grid>
             ))
           ) : (
-            <Grid container justify="center" alignItems="center">
-              <img className="offerOverview-defaultImgGroupBlock" src={chart_no_data} alt="" />
-            </Grid>
-          )
+              <Grid container justify="center" alignItems="center">
+                <img className="offerOverview-defaultImgGroupBlock" src={chart_no_data} alt="" />
+              </Grid>
+            )
         }
       </Grid>
     </Block>

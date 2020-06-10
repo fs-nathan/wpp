@@ -151,6 +151,10 @@
       text-transform: initial;
     }
   }
+
+  &__updateOfferApprovalCondition {
+    min-height: 200px;
+  }
 }
 
 .offerFile {

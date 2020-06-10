@@ -1,6 +1,5 @@
 import { Avatar, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import clsx from 'clsx';
 import { get, isEqual } from 'lodash';
 import React, { useContext } from 'react';
 import { useTranslation } from "react-i18next";
@@ -11,7 +10,6 @@ import EmptyHolder from "./EmptyHolder";
 import InlineBadge from './InlineBadge';
 import Popover from './Popover';
 import "./TaskTableRecently.scss";
-import { TaskTitleLink } from './RecentTableRow';
 const styles = makeStyles((theme) => ({
   button_green: {
     backgroundColor: colors.offer_status_approved
@@ -92,25 +90,25 @@ export function TaskTableRecently({ offers }) {
             <TableHead>
               <TableRow>
                 <TableCell width="10%">
-                  Đề xuất
+                  {t("VIEW_OFFER_LABEL_OFFER")}
                 </TableCell>
                 <TableCell width="15%" >
-                  Ngày đề xuất
+                  {t("VIEW_OFFER_LABEL_OFFER_DATE")}
                 </TableCell>
                 <TableCell width="30%" >
-                  Nội dung đề xuất
+                  {t("VIEW_OFFER_LABEL_OFFER_CONTENT")}
                 </TableCell>
                 <TableCell width="15%" sortDirection="desc">
-                  Giám sát
+                  {t("VIEW_OFFER_LABEL_OFFER_MONITOR")}
                 </TableCell>
                 <TableCell width="15%" >
-                  Duyệt
+                  {t("VIEW_OFFER_LABEL_OFFER_APPROVAL")}
                 </TableCell>
                 <TableCell width="15%" >
-                  Ngày duyệt
+                  {t("VIEW_OFFER_LABEL_OFFER_APPROVAL_DATE")}
                 </TableCell>
                 <TableCell  >
-                  Kết quả
+                  {t("VIEW_OFFER_LABEL_OFFER_APPROVAL_RESULT")}
                 </TableCell>
                 <TableCell width="5%"></TableCell>
               </TableRow>

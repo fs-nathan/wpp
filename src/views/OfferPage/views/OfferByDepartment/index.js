@@ -1,7 +1,8 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { get } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -12,7 +13,7 @@ import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByDepartment, loadOfferByDepartmentID } from "../../redux/actions";
 import Content from "./Content";
-import { getFirstSummaryGroup } from "./selector";
+import { getDepartmentGroupByKeyword, getFirstSummaryGroup } from "./selector";
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
@@ -33,8 +34,10 @@ const Department = props => {
         setTitle
     } = useContext(OfferPageContext);
     const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
+    const departments = useSelector(state => getDepartmentGroupByKeyword('')(state));
     const { id } = useParams();
     const isMounted = useMountedState();
+    const [layoutTitle, setLayoutTitle] = useState('');
 
     useEffect(() => {
         if (isMounted) {
@@ -50,9 +53,18 @@ const Department = props => {
         setTitle,
         timeRange
     ]);
+
     useEffect(() => {
         dispatch(loadOfferByDepartment());
     }, [dispatch]);
+
+    useEffect(() => {
+        if (isMounted) {
+            var currentDepartment = departments.filter(item => item.url === history.location.pathname);
+            setLayoutTitle(get(currentDepartment, '[0].title'));
+        }
+    }, [isMounted, history.location.pathname, idFirstGroup]);
+
     useEffect(() => {
         if (
             idFirstGroup !== null &&
@@ -61,6 +73,7 @@ const Department = props => {
             history.push(Routes.OFFERBYDEPARTMENT + "/" + idFirstGroup);
         }
     }, [history, idFirstGroup]);
+
     useEffect(() => {
         const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
         const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
@@ -84,7 +97,7 @@ const Department = props => {
                                 fontWeight: "600"
                             }}
                         >
-                            {t(listMenu[4].title)}
+                            {layoutTitle}
                         </Box>
                     </Box>
                 }

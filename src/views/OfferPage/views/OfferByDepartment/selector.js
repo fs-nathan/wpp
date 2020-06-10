@@ -45,7 +45,6 @@ export const getTaskByKeyword = (keyword, status_filter) =>
     if (newOffers === undefined) {
       return []
     }
-    console.log(newOffers)
     if (status_filter.offer_waiting === false) {
       newOffers = newOffers.filter(offer => offer.status_code !== 0)
     }
