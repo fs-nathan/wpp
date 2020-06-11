@@ -36,6 +36,8 @@ const BodyPart = props => {
   const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
   const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
 
+  const [isCanLoadMore, setCanLoadMore] = React.useState(false);
+  const [isMyLastChat, setMyLastChat] = React.useState(false);
   const [isShowScroll, setShowScroll] = React.useState(false);
   const [openViewedModal, setOpenViewedModal] = React.useState(false);
   const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -63,6 +65,7 @@ const BodyPart = props => {
     //   return !searchChatKey
     //     || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
     // });
+    setMyLastChat(chats.data && chats.data.length > 0 && chats.data[0].user_create_id === userId)
     const chatData = [...chats.data]
     chatData.reverse();
     const chatsWithTime = [];
@@ -112,8 +115,13 @@ const BodyPart = props => {
   } = detailTask || {};
 
   useEffect(() => {
+    setCanLoadMore(!!last_id && !isLoading && chats.data.length > 0)
+  }, [chats.data.length, isLoading, last_id])
+
+  useEffect(() => {
     chatRef.current && chatRef.current.scrollToBottom()
-  }, [])
+    // eslint-disable-next-line
+  }, [taskId])
 
   useEffect(() => {
     let rqId;
@@ -129,7 +137,7 @@ const BodyPart = props => {
       clearTimeout(rqId);
     }
     // eslint-disable-next-line
-  }, [chatRef, taskId, isLoading]);
+  }, [chatRef, taskId, chats.data.length, isLoading]);
 
   // useEffect(() => {
   //   let rqId;
@@ -192,9 +200,10 @@ const BodyPart = props => {
 
   function loadMoreChat() {
     // console.log('loadMoreChat', currentPage)
-    if (last_id)
+    if (last_id && !isLoading)
       dispatch(loadChat(taskId, last_id, true));
   }
+
   function handleScrollFrame(data) {
     const { scrollTop, scrollHeight, clientHeight } = data;
     // console.log('handleScrollFrame', scrollTop < scrollHeight - 1000)
@@ -203,15 +212,9 @@ const BodyPart = props => {
     } else {
       setShowScroll(false)
     }
-  }
-  function handleScrollStart(data) {
-    // console.log('handleScrollStart', data)
-  }
-  function handleScrollStop(data) {
-    // console.log('handleScrollStop', data)
-  }
-  function onUpdate(data) {
-    console.log('onUpdate', data)
+    if (scrollTop < 10) {
+      loadMoreChat()
+    }
   }
 
   return (
@@ -220,17 +223,14 @@ const BodyPart = props => {
     >
       <Scrollbars autoHide autoHideTimeout={500}
         ref={chatRef}
-        // onUpdate={onUpdate}
         onScrollFrame={handleScrollFrame}
-        onScrollStart={handleScrollStart}
-        onScrollStop={handleScrollStop}
         renderView={props => <div {...props} ref={chatRefScroll} className="bodyChat--scrollWrap" />}
       >
-        <InfiniteScroll
+        <div
           className="bodyChat--scroll"
           isReverse
           loadMore={loadMoreChat}
-          hasMore={!!last_id}
+          hasMore={isCanLoadMore}
           loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
           useWindow={false}
           getScrollParent={() => chatRefScroll.current}
@@ -273,9 +273,15 @@ const BodyPart = props => {
               </div>
             </React.Fragment>
           }
+          {isLoading && isMore &&
+            <div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>
+          }
           {
             showedChats.length === 0 && searchChatKey &&
-            <div className="bodyChat--searchEmpty">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
+            <div className="bodyChat--searchEmpty">
+              <img src="/images/ic_not_found.png" alt="no result" />
+              <br />
+              {t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
           }
           {
             showedChats.map((el, id) => <Message {...el}
@@ -297,7 +303,7 @@ const BodyPart = props => {
               </div>
             }
             {
-              isShowSendStatus &&
+              isShowSendStatus && isMyLastChat &&
               (
                 <div className="bodyChat--sending">
                   {isSending ? t('LABEL_CHAT_TASK_DANG_GUI') : t('LABEL_CHAT_TASK_DA_GUI')}
@@ -305,7 +311,7 @@ const BodyPart = props => {
               )
             }
           </div>
-        </InfiniteScroll >
+        </div >
       </Scrollbars>
       {(isShowScroll || isMore === false) &&
         <IconButton className="bodyChat--buttonToBot" onClick={onClickScrollToBottom}>

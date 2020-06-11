@@ -3,35 +3,36 @@ import { mdiFileDocumentBoxOutline, mdiFileMoveOutline, mdiFileUndoOutline, mdiF
 import Icon from '@mdi/react';
 import React, { useState } from 'react';
 import './styles.scss';
+import { useTranslation } from 'react-i18next';
 
 export const menuList = [
   {
     key: 'projectDocument',
-    title: 'Tài liệu dự án',
+    title: 'IDS_WP_PROJECT_DOCUMENT',
     icon: mdiFileDocumentBoxOutline,
     color: '#4caf50',
   },
   {
     key: 'sharedFromMe',
-    title: 'Đã chia sẻ',
+    title: 'IDS_WP_SHARED',
     icon: mdiFileMoveOutline,
     color: '#f44336',
   },
   {
     key: 'sharedWithMe',
-    title: 'Được chia sẻ với tôi',
+    title: 'IDS_WP_SHARE_WITH_ME',
     icon: mdiFileUndoOutline,
     color: '#607d8b',
   },
   {
     key: 'myDocument',
-    title: 'Tài liệu của tôi',
+    title: 'IDS_WP_MY_DOCUMENT',
     icon: mdiFolderOpenOutline,
     color: '#ff9800',
   },
   {
     key: 'googleDrive',
-    title: 'Google Drive',
+    title: 'IDS_WP_GOOGLE_DRIVE',
     icon: mdiGoogleDrive,
     color: '#2196f3',
   }
@@ -40,6 +41,7 @@ export const menuList = [
 export const DEFAULT_ITEM = menuList[3];
 
 const MenuList = ({ onChangeMenu }) => {
+  const { t } = useTranslation()
 
   const [selectedItem, setSelected] = useState(DEFAULT_ITEM.key);
 
@@ -64,7 +66,7 @@ const MenuList = ({ onChangeMenu }) => {
             size={1.4}
             color={menu.color}
           />
-          <span className="menu-text">{menu.title}</span>
+          <span className="menu-text">{t(menu.title)}</span>
         </div>
       ))}
     </div>

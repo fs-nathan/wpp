@@ -197,7 +197,7 @@ function DocumentsTable({
               className="full-avatar"
             />
           </TableCell>
-          <TableCell onClick={() => handleClickItem(item)}>{item.name}</TableCell>
+          <TableCell className="DocumentsTable--itemName" onClick={() => handleClickItem(item)}>{item.name}</TableCell>
           <TableCell width="120px" align="center">
             {item.owner && item.owner.avatar && (
               <Avatar

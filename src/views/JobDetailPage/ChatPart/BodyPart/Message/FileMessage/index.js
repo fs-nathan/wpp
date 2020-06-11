@@ -1,5 +1,5 @@
 import { Avatar } from '@material-ui/core';
-import { mdiDownload } from '@mdi/js';
+import { mdiDownload, mdiPlayCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showImagesList } from 'actions/chat/chat';
 import { actionDownloadFile } from 'actions/documents';
@@ -17,6 +17,7 @@ import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
 import { isOneOf } from 'helpers/jobDetail/arrayHelper';
+import ReactPlayer from 'react-player';
 
 function getPosition(chatPosition, i, length) {
   if (length === 1 || chatPosition === 'mid')
@@ -78,12 +79,14 @@ const FileMessage = ({
   function onClickFile(file, idx) {
     const type = getFileType(file.name);
     return () => {
-      if (type === 'mp4') {
-        const user = { user_create_avatar, user_create_name, time_create, user_create_position };
-        dispatch(showImagesList(true, files, idx, user));
-      } else {
-        dispatch(openDocumentDetail({ ...file, type: type }));
-      }
+      dispatch(openDocumentDetail({ ...file, type: type }));
+    }
+  }
+
+  function onClickVideo(file, idx) {
+    return () => {
+      const user = { user_create_avatar, user_create_name, time_create, user_create_position };
+      dispatch(showImagesList(true, files, idx, user));
     }
   }
 
@@ -142,12 +145,27 @@ const FileMessage = ({
           <div className={clsx("TextMessage--content", {
             "TextMessage--content__self": is_me,
             "TextMessage--content__withReact": data_emotion.length > 0,
+            "FileMessage--content__video": files.length === 1 && getFileType(files[0].name) === 'mp4',
           })} >
             {chat_parent &&
               <TextMessage {...chat_parent} isReply></TextMessage>
             }
-            {files.map((file, i) =>
-              (<div className="FileMessage--files" key={file.id || i} onClick={onClickFile(file, i)}>
+            {files.map((file, i) => (getFileType(file.name) === 'mp4' && !isUploading) ?
+              (<div className="FileMessage--files FileMessage--video"
+                key={file.id || i}
+                onClick={onClickVideo(file, i)}>
+                <div className="FileMessage--videoCover" >
+                  <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
+                  <ReactPlayer
+                    className="FileMessage--videoPlayer"
+                    url={file.url}
+                    height="auto" width="100%"
+                  />
+                </div>
+              </div>)
+              :
+              (<div className="FileMessage--files" key={file.id || i}
+                onClick={onClickFile(file, i)}>
                 <img className={clsx("FileMessage--icon", { "FileMessage--icon__reply": isReply })}
                   src={file.file_icon} alt="file-icon"></img>
                 <div

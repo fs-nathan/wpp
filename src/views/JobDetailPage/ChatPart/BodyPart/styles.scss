@@ -10,10 +10,16 @@
   }
   &--scrollWrap {
     // margin-right: -10px !important;
+    padding-right: 20px;
   }
   &--scroll {
     overflow-x: hidden;
-    margin-right: 30px;
+    // margin-right: 30px;
+    display: flex;
+    // padding-bottom: 19px;
+    flex-direction: column;
+    justify-content: flex-end;
+    contain: layout style;
   }
   &__reply {
     // height: calc(100% - 300px);
@@ -158,9 +164,10 @@
     margin: 10px auto;
   }
   &--searchEmpty {
+    margin: 25% auto;
     color: #607d8b;
     text-align: center;
-    line-height: 400px;
+    line-height: 30px;
     font-weight: 500;
     font-size: 15px;
   }

@@ -1599,13 +1599,12 @@
   "LABEL_CHAT_TASK_DANG_LUC_USER_TIME": "{{user}} đăng lúc {{time}}",
   "LABEL_CHAT_TASK_TAO_NHAC_HEN_LABEL": "Tạo nhắc hẹn",
   "LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL": "Sửa nhắc hẹn",
-
   "Tên nhóm quyền": "Tên nhóm quyền",
   "Mô tả nhóm quyền": "Mô tả nhóm quyền",
   "Phạm vi module phân quyền": "Mô-đun phạm vi phân quyền",
   "Tạo nhóm quyền": "Tạo nhóm quyền",
-  "Hoàn thành": "Hieu thành",
-  "required": "yêu cầu",
+  "Hoàn thành": "Hoàn thành",
+  "required": "Yêu cầu",
   "Cancel": "Hủy",
   "Delete": "Delete",
   "Bạn có muốn xóa nhóm quyền?": "Bạn có muốn xóa nhóm quyền?",
@@ -1712,11 +1711,9 @@
   "LỊCH TUẦN": "LỊCH TUẦN",
   "Tuần <%= week %>  năm <%= year %> ": "Tuần <%= week %>  năm <%= year %> ",
   "CHI TIẾT LỊCH TUẦN": "CHI TIẾT LỊCH TUẦN",
-
   "Công việc": "Công việc",
   "FILTER": "FILTER",
   "Đã được giao ngày <%= date %>": "Đã được giao ngày <%= date %>",
-
   "Xem chi tiết công viêc": "Xem chi tiết công viêc",
   "Xóa công viêc": "Xóa công viêc",
   "TÊN CÔNG VIỆC": "TÊN CÔNG VIỆC",
@@ -1724,7 +1721,6 @@
   "TIẾN ĐỘ": "TIẾN ĐỘ",
   "Ngày bắt đầu": "Ngày bắt đầu",
   "Ngày kết thúc": "Ngày kết thúc",
-
   "TRẠNG THÁI, ƯU TIÊN": "TRẠNG THÁI, ƯU TIÊN",
   "THÀNH VIÊN": "THÀNH VIÊN",
   "CÔNG VIỆC CON": "CÔNG VIỆC CON",
@@ -1739,12 +1735,11 @@
   "Kết thúc": "Kết thúc",
   "Đến hạn": "Đến hạn",
   "Ưu tiên": "Ưu tiên",
-  "Biểu đồ tỗng hợp mức ưu tiên của công việc": "Biểu đồ tỗng hợp mức ưu tiên của công việc",
+  "Biểu đồ tỗng hợp mức ưu tiên của công việc": "Biểu đồ tổng hợp mức ưu tiên của công việc",
   "Vai trò": "Vai trò",
   "Biểu đồ vai trò của công việc": "Biểu đồ vai trò của công việc",
   "Trạng thái": "Trạng thái",
   "Biểu đồ theo trạng thái công việc": "Biểu đồ theo trạng thái công việc",
-
   "LABEL_CHAT_TASK_DUOC_GIAO": "Được giao",
   "LABEL_CHAT_TASK_TU_DE_XUAT": "Tự đề xuất",
   "LABEL_CHAT_TASK_GIAO_VIEC_CHO": "Giao việc cho",
@@ -1753,5 +1748,5 @@
   "LABEL_CHAT_TASK_CAO": "Cao",
   "LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT": "{{count}} lần điều chỉnh",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUNG": "Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!",
-  "LABEL_CHAT_TASK_DA_DO_TASK": "đã {{taskName}}"
+  "LABEL_CHAT_TASK_DA_DO_TASK": "đã ghim {{taskName}}"
 }
