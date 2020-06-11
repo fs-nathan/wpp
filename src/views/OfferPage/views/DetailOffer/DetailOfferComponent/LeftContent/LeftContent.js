@@ -163,7 +163,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     return (
       <>
         <Grid container direction="column" justify="center" alignItems="center">
-          <p>Bạn có muốn xoá file sau?</p>
+          <p>{t("VIEW_OFFER_TEXT_DELETE_FILE_WARNING")}</p>
           <div style={{ textAlign: "center" }}>
             <a target="_blank"
               href={get(selectedItem, "url")}>
@@ -175,10 +175,11 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
       </>
     )
   }
+
   const confirmDeleteDocument = useCallback(() => {
     dispatch(deleteDocumentOffer({ offer_id, file_id: selectedItem.file_id }))
-    // setDeletedFileId((prevValue) => [...prevValue, selectedItem.file_id])
-  }, [dispatch, offer_id, selectedItem.file_id])
+  }, [dispatch, offer_id, selectedItem.file_id]);
+
   const handleUploadSelectedFilesFromPC = async (e) => {
     const { files } = e.target;
     const formData = new FormData();
@@ -186,6 +187,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     [...files].forEach(file => formData.append("file", file, file.name));
     dispatch(uploadDocumentOffer({ data: formData }));
   }
+
   const handleSelectedFilesFromLibrary = (selectedFiles) => {
     if (selectedFiles) {
       const formData = new FormData();
@@ -194,12 +196,14 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
       dispatch(uploadDocumentOffer({ data: formData }))
     }
   }
+
   const reRenDerDocumentsOnDelete = useMemo(() => {
     if (isEmpty(documents)) {
       return []
     }
     return documents.filter(document => !deletedFileId.includes(document.id))
-  }, [deletedFileId, documents])
+  }, [deletedFileId, documents]);
+
   return (
     <>
       <div>
@@ -217,7 +221,9 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
                   target="_blank"
                   href={get(document, "url")}
                 >
-                  <div className="offerDetail-attachedDocument-fileName">{get(document, "name")}</div>
+                  <abbr title={get(document, "name")}>
+                    <div className="offerDetail-attachedDocument-fileName">{get(document, "name")}</div>
+                  </abbr>
                 </a>
                 {
                   can_modify && (
@@ -257,6 +263,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     </>
   );
 };
+
 const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers, addedHandlers, addableHandlers, bgColor }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -275,10 +282,14 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   const onAddHandler = (members) => {
     setNewHandlerIndexes(members);
     const memberIds = [];
+
     members.forEach(idx => {
       memberIds.push(allMembers[idx].id);
-    })
-    dispatch(addMemberHandle({ offer_id, member_id: memberIds }))
+    });
+
+    if (memberIds.length > 0) {
+      dispatch(addMemberHandle({ offer_id, member_id: memberIds }));
+    }
   }
   const onDeleteHandler = ({ offer_id, member_id }) => {
     dispatch(deleteMemberHandle({ offer_id, member_id }))
@@ -344,6 +355,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
     </>
   );
 };
+
 const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers, addedMonitors, addableMonitors, bgColor }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -365,7 +377,10 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
     members.forEach(idx => {
       memberIds.push(allMembers[idx].id);
     })
-    dispatch(addMemberMonitor({ offer_id, member_id: memberIds }))
+
+    if (memberIds.length > 0) {
+      dispatch(addMemberMonitor({ offer_id, member_id: memberIds }));
+    }
   }
   const onDeleteMonitor = ({ offer_id, member_id }) => {
     dispatch(deleteMemberMonitor({ offer_id, member_id }))

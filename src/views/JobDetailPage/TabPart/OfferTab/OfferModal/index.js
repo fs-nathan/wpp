@@ -22,8 +22,6 @@ import { Routes } from '../../../../OfferPage/contants/routes';
 import { updateOfferApprovalCondition, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
 import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
-import { priorityList } from '../data';
-import { CONDITION_LOGIC, CONDITION_LOGIC_MEMBER } from './constants';
 import OfferFile from './OfferFile';
 import './styles.scss';
 
@@ -39,6 +37,19 @@ const OfferModal = ({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
+  const CONDITION_LOGIC_MEMBER = [
+    { label: t("VIEW_OFFER_TEXT_CONDITION_LOGIC_OR"), value: "OR" },
+    { label: t("VIEW_OFFER_TEXT_CONDITION_LOGIC_AND"), value: "AND" },
+  ];
+  const CONDITION_LOGIC = [
+    { label: t("VIEW_OFFER_LABEL_CONDITION_LOGIC_OR"), value: "OR" },
+    { label: t("VIEW_OFFER_LABEL_CONDITION_LOGIC_AND"), value: "AND" }
+  ];
+  const priorityList = [
+    { id: 0, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1") },
+    { id: 1, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2") },
+    { id: 2, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3") }
+  ];
   const bgColor = useSelector(state => bgColorSelector(state));
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.id);
@@ -68,7 +79,7 @@ const OfferModal = ({
         ? allMembers.filter((_, idx) => handlers.includes(idx))
         : []
     );
-  }, [handlers])
+  }, [handlers]);
 
   const fetchOffersGroup = async () => {
     const config = {
@@ -83,10 +94,12 @@ const OfferModal = ({
     })
     setOffersGroup(newArray)
   }
+
   useEffect(() => {
     dispatch(listUserOfGroup(false));
     fetchOffersGroup();
-  }, [currentUserId])
+  }, [currentUserId]);
+
   useEffect(() => {
     if (offerItem) {
       const {
@@ -337,6 +350,7 @@ const OfferModal = ({
       canConfirm={validate()}
       actionLoading={isFetching}
       className="offerModal"
+      height={isUpdateOfferApprovalCondition ? 'mini' : 'medium'}
     >
       <React.Fragment>
         {
@@ -469,7 +483,7 @@ const OfferModal = ({
                   />
                 </Grid>
                 {
-                  tempSelectedItem.min_rate_accept < 100 &&
+                  (tempSelectedItem.min_rate_accept < 100 || (tempSelectedItem.min_rate_accept === 100 && tempSelectedItem.condition_logic === 'OR')) &&
                   (
                     <>
                       <Grid item xs={7}>

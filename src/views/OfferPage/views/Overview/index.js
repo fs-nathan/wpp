@@ -9,7 +9,7 @@ import styled from "styled-components";
 import { useTimes } from '../../../../components/CustomPopover';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
-import { loadSummaryOverview } from "../../redux/actions";
+import { listStatusHaveNewOffer, loadSummaryOverview } from "../../redux/actions";
 import { GroupBlock } from "./GroupBlock";
 import { OfferBlock } from "./OfferBlock";
 import { getGroupOffers, getMyOffers, getPriorityOffers, getStatusOffers } from './selector';
@@ -43,7 +43,8 @@ const Overview = () => {
   const groupOffers = useSelector(getGroupOffers);
 
   useEffect(() => {
-    dispatch(loadSummaryOverview({ timeRange }))
+    dispatch(loadSummaryOverview({ timeRange }));
+    dispatch(listStatusHaveNewOffer());
   }, [dispatch, timeRange]);
 
   useEffect(() => {

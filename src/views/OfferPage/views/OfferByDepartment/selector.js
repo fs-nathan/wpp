@@ -16,6 +16,7 @@ const rightIcon = () => {
     </>
   );
 };
+
 export const getOffer = createSelector(selectOffer, offer => offer.offers);
 export const getFirstSummaryGroup = createSelector(
   selectSummaryGroup,

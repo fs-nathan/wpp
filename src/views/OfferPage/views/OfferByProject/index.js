@@ -1,6 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
-import { filter, forEach, get } from "lodash";
+import { filter, forEach, get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -24,7 +24,6 @@ export const PageContainer = styled(Container)`
 
 const OfferByProject = () => {
     const { t } = useTranslation();
-    const context = useContext(OfferPageContext)
     const dispatch = useDispatch();
     const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
     const idFirstProject = useSelector(state => getFirstSummaryProject(state));
@@ -35,16 +34,16 @@ const OfferByProject = () => {
     const [layoutTitle, setLayoutTitle] = useState("");
 
     useEffect(() => {
-        const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-        const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-        dispatch(loadOfferByProjectID({ id, startDate, endDate }))
+        if (!isNil(id)) {
+            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+            dispatch(loadOfferByProjectID({ id, startDate, endDate }))
+        }
     }, [dispatch, id, timeRange]);
 
     useEffect(() => {
-        if (isMounted) {
-            setTitle(t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"))
-        }
-    }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, context, setTitle]);
+        setTitle(t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"))
+    }, [dispatch, setTitle]);
 
     useEffect(() => {
         dispatch(loadSummaryProject())

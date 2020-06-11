@@ -1,7 +1,7 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { CustomEventDispose, CustomEventListener } from "constants/events";
-import { get } from "lodash";
+import { get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,7 +10,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { CREATE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
@@ -61,6 +61,13 @@ const OfferByGroup = props => {
 
   useEffect(() => {
     dispatch(loadSummaryByGroup());
+    const refreshSummaryByGroup = () => {
+      dispatch(loadSummaryByGroup());
+    }
+    CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+    return () => {
+      CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -73,17 +80,19 @@ const OfferByGroup = props => {
   }, [history, idFirstGroup]);
 
   useEffect(() => {
-    const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-    const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-    dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-    document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
-    const refreshAfterCreateOffer = () => {
+    if (!isNil(id)) {
+      const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+      const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
       dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-      dispatch(loadSummaryByGroup());
-    }
-    CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
-    return () => {
-      CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
+      const refreshAfterCreateOffer = () => {
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+        dispatch(loadSummaryByGroup());
+      }
+      CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      return () => {
+        CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      }
     }
   }, [dispatch, id, timeRange]);
 

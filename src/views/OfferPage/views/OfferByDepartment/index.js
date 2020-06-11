@@ -1,10 +1,10 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
-import { get } from "lodash";
+import { get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
@@ -22,10 +22,12 @@ export const PageContainer = styled(Container)`
   max-width: 100%;
 `;
 
-const Department = props => {
+function Department({
+    doListOffersByDepartment,
+    doListOffersByDepartmentID,
+    idFirstGroup, departments
+}) {
     const { t } = useTranslation();
-    const context = useContext(OfferPageContext);
-    const dispatch = useDispatch();
     const history = useHistory();
     const {
         keyword,
@@ -34,8 +36,7 @@ const Department = props => {
         statusFilter,
         setTitle
     } = useContext(OfferPageContext);
-    const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
-    const departments = useSelector(state => getDepartmentGroupByKeyword('')(state));
+
     const { id } = useParams();
     const isMounted = useMountedState();
     const [layoutTitle, setLayoutTitle] = useState('');
@@ -44,20 +45,12 @@ const Department = props => {
         if (isMounted) {
             setTitle(t("VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE"));
         }
-    }, [
-        dispatch,
-        isMounted,
-        timeRange.startDate,
-        timeRange.endDate,
-        statusFilter,
-        context,
-        setTitle,
-        timeRange
-    ]);
+    }, [isMounted, setTitle]);
 
     useEffect(() => {
-        dispatch(loadOfferByDepartment());
-    }, [dispatch]);
+        doListOffersByDepartment();
+    }, [doListOffersByDepartment]);
+
     useEffect(() => {
         if (isMounted) {
             var currentDepartment = departments.filter(item => item.url === history.location.pathname);
@@ -72,13 +65,15 @@ const Department = props => {
         ) {
             history.push(Routes.OFFERBYDEPARTMENT + "/" + idFirstGroup);
         }
-    }, [history, idFirstGroup]);
+    }, [window.location.pathname, history, idFirstGroup]);
 
     useEffect(() => {
-        const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-        const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-        dispatch(loadOfferByDepartmentID({ id, startDate, endDate }));
-    }, [dispatch, id, timeRange]);
+        if (isMounted && !isNil(id)) {
+            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+            doListOffersByDepartmentID({ id, startDate, endDate });
+        }
+    }, [isMounted, id, timeRange]);
     // Redirect to first group when enter
     return (
         <>
@@ -109,4 +104,19 @@ const Department = props => {
         </>
     );
 };
-export default React.memo(Department);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        doListOffersByDepartment: () => dispatch(loadOfferByDepartment()),
+        doListOffersByDepartmentID: ({ id, startDate, endDate }) => dispatch(loadOfferByDepartmentID({ id, startDate, endDate }))
+    };
+};
+
+const mapStateToProps = state => {
+    return {
+        idFirstGroup: getFirstSummaryGroup(state),
+        departments: getDepartmentGroupByKeyword('')(state)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Department);

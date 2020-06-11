@@ -1,40 +1,4 @@
-import {
-  ADD_MEMBER_HANDLE,
-  ADD_MEMBER_MONITOR,
-  CLOSE_SNACKBAR,
-  CREATE_GROUP_OFFER,
-  DELETE_DOCUMENT_OFFER,
-  DELETE_GROUP_OFFER,
-  DELETE_MEMBER_HANDLE,
-  DELETE_MEMBER_MONITOR,
-  ENQUEUE_SNACKBAR,
-  HANDLE_OFFER_OFFERPAGE,
-  LOADPAGE_TASK,
-  LOADPAGE_TASK_ASSIGN,
-  LOADPAGE_TASK_DUE,
-  LOADPAGE_TASK_ROLE,
-  LOAD_DETAIL_OFFER,
-  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
-  UPDATE_OFFER_APPROVAL_CONDITION,
-  CREATE_OFFER,
-  DELETE_OFFER,
-  LOAD_OFFER_BY_DEPARTMENT_ID,
-  LOAD_OFFER_BY_GROUP_ID,
-  LOAD_OFFER_BY_PROJECT_ID,
-  LOAD_SUMMARY_BY_GROUP,
-  LOAD_SUMMARY_BY_PROJECT,
-  LOAD_SUMMARY_DEPARTMENT,
-  LOAD_SUMMARY_OVERVIEW,
-  LOAD_TASK_OVERVIEW,
-  LOAD_TASK_RENCENTLY,
-  REMOVE_SNACKBAR,
-  UPDATE_GROUP_OFFER_OFFERPAGE,
-  UPLOAD_DOCUMENT_OFFER,
-  OFFER_DETAIL_POST_COMMENT,
-  OFFER_DETAIL_UPDATE_COMMENT,
-  OFFER_DETAIL_REMOVE_COMMENT,
-  OFFER_DETAIL_GET_COMMENT_LIST,
-} from './types';
+import { ADD_MEMBER_HANDLE, ADD_MEMBER_MONITOR, CLOSE_SNACKBAR, CREATE_GROUP_OFFER, CREATE_OFFER, DELETE_DOCUMENT_OFFER, DELETE_GROUP_OFFER, DELETE_MEMBER_HANDLE, DELETE_MEMBER_MONITOR, DELETE_OFFER, ENQUEUE_SNACKBAR, HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER, LOADPAGE_TASK, LOADPAGE_TASK_ASSIGN, LOADPAGE_TASK_DUE, LOADPAGE_TASK_ROLE, LOAD_DETAIL_OFFER, LOAD_OFFER_BY_DEPARTMENT_ID, LOAD_OFFER_BY_GROUP_ID, LOAD_OFFER_BY_PROJECT_ID, LOAD_SUMMARY_BY_GROUP, LOAD_SUMMARY_BY_PROJECT, LOAD_SUMMARY_DEPARTMENT, LOAD_SUMMARY_OVERVIEW, LOAD_TASK_OVERVIEW, LOAD_TASK_RENCENTLY, OFFER_DETAIL_GET_COMMENT_LIST, OFFER_DETAIL_POST_COMMENT, OFFER_DETAIL_REMOVE_COMMENT, OFFER_DETAIL_UPDATE_COMMENT, REMOVE_SNACKBAR, UPDATE_GROUP_OFFER_OFFERPAGE, UPDATE_OFFER_APPROVAL_CONDITION, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, UPLOAD_DOCUMENT_OFFER } from './types';
 
 export const loadTaskPage = timeRange => {
   return {
@@ -72,6 +36,12 @@ export const loadTaskRolePage = timeRange => {
     payload: timeRange
   };
 };
+
+export const listStatusHaveNewOffer = () => {
+  return {
+    type: LIST_STATUS_HAVE_NEW_OFFER
+  }
+}
 
 export const loadTaskRencentlyPage = () => {
   return {
@@ -141,12 +111,12 @@ export const updateOfferDetailDescriptionSection = ({ offerId, title, content, o
   }
 }
 export const updateOfferApprovalCondition = ({
-                                               offerId,
-                                               minRateAccept,
-                                               conditionLogic,
-                                               conditionLogicMember,
-                                               memberAcceptedImportantIds
-                                             }) => {
+  offerId,
+  minRateAccept,
+  conditionLogic,
+  conditionLogicMember,
+  memberAcceptedImportantIds
+}) => {
   return {
     type: UPDATE_OFFER_APPROVAL_CONDITION,
     payload: { offerId, minRateAccept, conditionLogic, conditionLogicMember, memberAcceptedImportantIds }

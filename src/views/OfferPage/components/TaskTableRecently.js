@@ -27,7 +27,10 @@ const styles = makeStyles((theme) => ({
     height: "30px",
     width: "150px",
     border: 0,
-    borderRadius: '3px'
+    borderRadius: '3px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   small_avatar: {
     width: theme.spacing(4),
@@ -193,14 +196,11 @@ export function TaskTableRecently({ offers, loading }) {
                     {get(offer, "status_code") === 0 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_grey}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
@@ -208,42 +208,33 @@ export function TaskTableRecently({ offers, loading }) {
                     {get(offer, "status_code") === 1 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_yellow}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
                     {get(offer, "status_code") === 2 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_green}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
                     {get(offer, "status_code") === 3 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_red}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
