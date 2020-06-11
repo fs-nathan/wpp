@@ -10,6 +10,7 @@ import './styles.scss';
 import { useTranslation } from 'react-i18next';
 
 const DialogMessageWrap = ({
+  id,
   user_create_name,
   user_create_avatar,
   user_create_position,
@@ -27,7 +28,9 @@ const DialogMessageWrap = ({
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
-    <div className={clsx("DialogMessageWrap", className)} >
+    <div
+      id={id}
+      className={clsx("DialogMessageWrap", className)} >
       <div className="DialogMessageWrap--header" >
         {titleHeader || t('IDS_WP_NOTICE')}
       </div>

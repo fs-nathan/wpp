@@ -1,10 +1,13 @@
 import { Grid, makeStyles } from "@material-ui/core";
 import { mdiSquare } from "@mdi/js";
 import Icon from "@mdi/react";
-import { get } from 'lodash';
-import React, { Fragment } from 'react';
+import { forEach, get } from 'lodash';
+import React, { Fragment, useContext, useState } from 'react';
+import { useTranslation } from "react-i18next";
+import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { colors } from '../contants/attrs';
+import { colors, labels } from '../contants/attrs';
+import { OfferPageContext } from '../OfferPageContext';
 import Chart from './Chart';
 
 const IconWrap = styled(Grid)`
@@ -70,22 +73,51 @@ font-family: Roboto, sans-serif;
 `
 
 const useStyles = makeStyles(theme => ({
-    orange: {
+    waiting: {
         color: colors.offer_status_waiting
     },
-    red: {
+    cancel: {
         color: colors.offer_status_cancel
     },
-    green: {
+    approved: {
         color: colors.offer_status_approved
     },
-    blue: {
-        color: "#03a9f4"
+    processing: {
+        color: colors.offer_status_processing
     }
 }));
 const BottomHeader = ({ statistic_status, count }) => {
-    const classes = useStyles()
+    const classes = useStyles();
+    const { t } = useTranslation();
     const series = [get(statistic_status, "waiting_rate"), get(statistic_status, "accepted_rate"), get(statistic_status, "approving_rate"), get(statistic_status, "rejected_rate")]
+    const isMounted = useMountedState();
+    const {
+        statusFilter
+    } = useContext(OfferPageContext);
+    const [filterData, setFilterData] = useState({
+        role: [],
+        priorityLevel: [],
+        status: []
+    });
+
+    React.useEffect(() => {
+        if (isMounted) {
+            var role = [];
+            var priorityLevel = [];
+            var status = [];
+            forEach(statusFilter, function (value, key) {
+                if (["you_offer", "you_monitor", "you_handle"].includes(key) && value) {
+                    role = role.concat(t(get(labels, key)));
+                } else if (["normal", "urgent", "very_urgent"].includes(key) && value) {
+                    priorityLevel = priorityLevel.concat(t(get(labels, key)));
+                } else if (value) {
+                    status = status.concat(t(get(labels, key)));
+                }
+            });
+            setFilterData({ role, priorityLevel, status });
+        }
+    }, [isMounted, statusFilter]);
+
     return (
         <Fragment>
             <Header>
@@ -97,7 +129,7 @@ const BottomHeader = ({ statistic_status, count }) => {
                         {count}
                     </CountItem1>
                     <CountItem2>
-                        Đề xuất
+                        {t("VIEW_OFFER_LABEL_OFFER")}
                     </CountItem2>
                 </Count>
                 <Filter>
@@ -105,41 +137,60 @@ const BottomHeader = ({ statistic_status, count }) => {
                         <div>
                             <IconWrap item >
                                 {/* #ff9800 */}
-                                <Icon path={mdiSquare} size={1} className={classes.green} />
-                                <div>Chờ duyệt ({get(statistic_status, "waiting_rate")}%)</div>
+                                <Icon path={mdiSquare} size={1} className={classes.waiting} />
+                                <div>{t("VIEW_OFFER_LABEL_PENDING")} ({get(statistic_status, "waiting_rate")}%)</div>
                             </IconWrap>
                         </div>
                         <div>
                             <IconWrap item >
-                                <Icon path={mdiSquare} size={1} className={classes.orange} />
-                                <div >Đã duyệt ({get(statistic_status, "accepted_rate")}%)</div>
-                            </IconWrap>
-                        </div>
-                        <div>
-                            {/* #f44336 */}
-                            <IconWrap item >
-                                <Icon path={mdiSquare} size={1} className={classes.blue} />
-                                <div >Đang duyệt ({get(statistic_status, "approving_rate")}%)</div>
+                                <Icon path={mdiSquare} size={1} className={classes.approved} />
+                                <div >{t("VIEW_OFFER_LABEL_APPROVED")} ({get(statistic_status, "accepted_rate")}%)</div>
                             </IconWrap>
                         </div>
                         <div>
                             {/* #f44336 */}
                             <IconWrap item >
-                                <Icon path={mdiSquare} size={1} className={classes.red} />
-                                <div >Từ chối ({get(statistic_status, "rejected_rate")}%)</div>
+                                <Icon path={mdiSquare} size={1} className={classes.processing} />
+                                <div >{t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2")} ({get(statistic_status, "approving_rate")}%)</div>
+                            </IconWrap>
+                        </div>
+                        <div>
+                            {/* #f44336 */}
+                            <IconWrap item >
+                                <Icon path={mdiSquare} size={1} className={classes.cancel} />
+                                <div >{t("VIEW_OFFER_LABEL_REJECTED")} ({get(statistic_status, "rejected_rate")}%)</div>
                             </IconWrap>
                         </div>
                     </FilterRow1>
                     <FilterRow2>
-                        <FilterRow2Item>
-                            Vai trò: Tất cả
-                        </FilterRow2Item>
-                        <FilterRow2Item>
-                            Mức độ ưu tiên: Tất cả
-                        </FilterRow2Item>
-                        <FilterRow2Last>
-                            Trạng thái: Tất cả
-                        </FilterRow2Last>
+                        {
+                            filterData.role.length != 0 && (
+                                <FilterRow2Item>
+                                    {t("VIEW_OFFER_LABEL_ROLE")}:
+                                    {
+                                        filterData.role.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.role.map((role, idx) => idx !== filterData.role.length - 1 ? <span>{role},</span> : <span>{role}</span>)
+                                    }
+                                </FilterRow2Item>
+                            )
+                        }
+                        {
+                            filterData.priorityLevel.length != 0 && (
+                                <FilterRow2Item>
+                                    {t("VIEW_OFFER_LABEL_PRIORITY_LEVEL")}: {
+                                        filterData.priorityLevel.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.priorityLevel.map((item, idx) => idx !== filterData.priorityLevel.length - 1 ? <span>{item},</span> : <span>{item}</span>)
+                                    }
+                                </FilterRow2Item>
+                            )
+                        }
+                        {
+                            filterData.status.length != 0 && (
+                                <FilterRow2Last>
+                                    {t("VIEW_OFFER_LABEL_STATUS")}: {
+                                        filterData.status.length === 4 ? t("VIEW_OFFER_LABEL_ALL") : filterData.status.map((item, idx) => idx !== filterData.status.length - 1 ? <span>{item},</span> : <span>{item}</span>)
+                                    }
+                                </FilterRow2Last>
+                            )
+                        }
                     </FilterRow2>
                 </Filter>
             </Header>

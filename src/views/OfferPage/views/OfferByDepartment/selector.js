@@ -45,7 +45,6 @@ export const getTaskByKeyword = (keyword, status_filter) =>
     if (newOffers === undefined) {
       return []
     }
-    console.log(newOffers)
     if (status_filter.offer_waiting === false) {
       newOffers = newOffers.filter(offer => offer.status_code !== 0)
     }
@@ -79,13 +78,13 @@ export const getTaskByKeyword = (keyword, status_filter) =>
     return newOffers.filter(x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
   });
 
-export const getDepartmentGroupByKeyword = (keyword) => createSelector(selectSummaryGroup, group => {
+export const getDepartmentGroupByKeyword = (keyword, t) => createSelector(selectSummaryGroup, group => {
   if (group === undefined) {
     return []
   }
   return group.offers_room.map(x => ({
     title: x.name,
-    subtitle: x.offer_waiting + " đề xuất chờ duyệt",
+    subtitle: typeof t === 'function' ? t("VIEW_OFFER_LABEL_PENDING_OFFER", { count: x.offer_waiting }) : x.offer_waiting,
     url: Routes.OFFERBYDEPARTMENT + `/${x.id}`,
     color: "#7d99a6",
     icon: mdiEmailCheck,

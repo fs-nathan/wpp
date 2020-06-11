@@ -1,21 +1,23 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
+import { get } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { action, labels } from "../../contants/attrs";
+import { CREATE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { action } from "../../contants/attrs";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
-import { get } from "../../utils";
 import Content from "./Content";
 import FormDialog from "./modal";
-import { getFirstSummaryGroup } from "./selector";
+import { getFirstSummaryGroup, getSummaryByGroupByKeyword } from "./selector";
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
@@ -24,53 +26,67 @@ export const PageContainer = styled(Container)`
 `;
 
 const OfferByGroup = props => {
+
   const { t } = useTranslation();
   const context = useContext(OfferPageContext);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [layoutTitle, setLayoutTitle] = useState("");
+
   const {
-    keyword,
     listMenu,
     setOpenModalOfferByGroup,
     openModalOfferByGroup,
     timeRange,
-    statusFilter,
     setTitle
   } = useContext(OfferPageContext);
+
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
+  const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
   const { id } = useParams();
   const isMounted = useMountedState();
+
   useEffect(() => {
     if (isMounted) {
-      setTitle(get(labels, "pageTitleOfferByGroup"));
+      setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"))
     }
-  }, [
-    dispatch,
-    isMounted,
-    timeRange.startDate,
-    timeRange.endDate,
-    statusFilter,
-    context,
-    setTitle,
-    timeRange
-  ]);
+  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, context, setTitle]);
+
+  useEffect(() => {
+    if (isMounted) {
+      var currentGroup = groupList.filter(group => group.url === history.location.pathname);
+      setLayoutTitle(get(currentGroup, '[0].title'));
+    }
+  }, [isMounted, history.location.pathname, idFirstGroup]);
+
   useEffect(() => {
     dispatch(loadSummaryByGroup());
   }, [dispatch]);
+
   useEffect(() => {
     if (history.location.pathname !== Routes.OFFERBYGROUP
-        || idFirstGroup === undefined
-        || idFirstGroup === null) {
+      || idFirstGroup === undefined
+      || idFirstGroup === null) {
       return
     }
     history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
   }, [history, idFirstGroup]);
+
   useEffect(() => {
     const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
     const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
     dispatch(loadOfferByGroupID({ id, startDate, endDate }));
     document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
+    const refreshAfterCreateOffer = () => {
+      dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      dispatch(loadSummaryByGroup());
+    }
+    CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    return () => {
+      CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    }
   }, [dispatch, id, timeRange]);
+
   // Redirect to first group when enter
   return (
     <>
@@ -89,7 +105,7 @@ const OfferByGroup = props => {
                 fontWeight: "600"
               }}
             >
-              {t(listMenu[2].title)}
+              {layoutTitle}
             </Box>
           </Box>
         }
@@ -106,4 +122,5 @@ const OfferByGroup = props => {
     </>
   );
 };
+
 export default React.memo(OfferByGroup);

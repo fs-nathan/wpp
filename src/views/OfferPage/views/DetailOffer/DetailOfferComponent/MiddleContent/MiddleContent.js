@@ -8,42 +8,38 @@ import { useSelector } from 'react-redux';
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
+import { getApprovalConditionEditingTitle, getCreateApprovalBtnTitle } from './i18nSelectors';
 import './styles.scss';
-import {
-  getApprovalAcceptedBtnTitle,
-  getApprovalConditionEditingTitle,
-  getCreateApprovalBtnTitle,
-} from './i18nSelectors';
 
 const MiddleContent = ({
-                         can_update_condition_accept,
-                         status_code,
-                         rate_accepted,
-                         members_approved,
-                         number_member_rejected,
-                         number_member_accepted,
-                         date_label,
-                         hour_label,
-                         content,
-                         title,
-                         id,
-                         priority_code,
-                         user_create_name,
-                         condition_accept,
-                         members_can_approve,
-                         user_create_avatar,
-                       }) => {
+  can_update_condition_accept,
+  status_code,
+  rate_accepted,
+  members_approved,
+  number_member_rejected,
+  number_member_accepted,
+  date_label,
+  hour_label,
+  content,
+  title,
+  id,
+  priority_code,
+  user_create_name,
+  condition_accept,
+  members_can_approve,
+  user_create_avatar,
+}) => {
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
   const currentUserId = useSelector(state => state.system.profile.id);
   const isCurrentUserAHandler = useMemo(() => {
     return members_can_approve
-           && members_can_approve.findIndex(member => member.id === currentUserId) !== -1;
+      && members_can_approve.findIndex(member => member.id === currentUserId) !== -1;
   }, [currentUserId, members_can_approve]);
   const isCurrentUserAlreadyApproved = useMemo(() => {
     return members_approved
-           && members_approved.findIndex(member => member.id === currentUserId) !== -1;
+      && members_approved.findIndex(member => member.id === currentUserId) !== -1;
   }, [currentUserId, members_approved]);
 
   const renderUpdateOfferApprovalConditionModal = () => {
@@ -79,29 +75,36 @@ const MiddleContent = ({
           action: action.HANDLE_OFFER
         }}
       />
-      <Button
-        className="offerDetail-createApprovalBtn"
-        variant="contained"
-        onClick={() => setOpenModal(true)}
-        color="primary"
-        disableElevation
-        disabled={!isCurrentUserAHandler || isCurrentUserAlreadyApproved}
-      >
-        {
-          isCurrentUserAHandler && isCurrentUserAlreadyApproved
-            ? getApprovalAcceptedBtnTitle(t)
-            : getCreateApprovalBtnTitle(t)
-
-        }
-      </Button>
+      {
+        (isCurrentUserAHandler && !isCurrentUserAlreadyApproved) && (
+          <Button
+            className="offerDetail-createApprovalBtn"
+            variant="contained"
+            onClick={() => setOpenModal(true)}
+            color="primary"
+            disableElevation
+          >
+            {
+              getCreateApprovalBtnTitle(t)
+            }
+          </Button>
+        )
+      }
       <div>
-        <Button className="offerDetail-approvalStatusBtn" variant="contained" color="primary" disableElevation>
-          Trạng thái: {status_code === 0 && "Đang chờ xử lý"} {status_code === 1 && "Đang duyệt"} {status_code === 2 && "Chấp nhận"} {status_code === 3 && "Từ chối"} ({rate_accepted}% đồng ý)
-        </Button>
+        <div className={`offerDetail-approvalStatusBtn offerDetail-approvalStatusBtn-${status_code}`}>
+          <span>
+            {t("VIEW_OFFER_LABEL_STATUS")}:&nbsp;
+            {status_code === 0 && t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_1")}
+            {status_code === 1 && t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2")}
+            {status_code === 2 && t("VIEW_OFFER_LABEL_APPROVED")}
+            {status_code === 3 && t("VIEW_OFFER_LABEL_REJECTED")}&nbsp;
+            ({t("VIEW_OFFER_LABEL_ACCEPTED_PERCENT", { acceptedPercent: rate_accepted })})
+          </span>
+        </div>
       </div>
       <div className="offerDetail-approvalConditionContainer">
         <div className="offerDetail-approvalConditionContainer-inner">
-          <div className="offerDetail-approvalConditionContainer-inner-title">Điều kiện phê duyệt đồng ý</div>
+          <div className="offerDetail-approvalConditionContainer-inner-title">{t("VIEW_OFFER_LABEL_APPROVAL_CONDITION")}</div>
           {
             can_update_condition_accept && (
               <Button
@@ -121,15 +124,15 @@ const MiddleContent = ({
         </div>
       </div>
       <div className="offerDetail-memberApprovalRateContainer">
-        <div>Tỷ lệ thành viên đồng ý:&nbsp;&nbsp;&nbsp;≥&nbsp;&nbsp;&nbsp;{get(condition_accept, "min_rate", "0")}%</div>
+        <div>{t("VIEW_OFFER_LABEL_RATE_AGREE")}:&nbsp;&nbsp;&nbsp;≥&nbsp;&nbsp;&nbsp;{get(condition_accept, "min_rate", "0")}%</div>
       </div>
       {
         get(condition_accept, "min_rate", "0") < 100 && (
           <>
             <div className="offerDetail-memberToAccept-title">
               {get(condition_accept, "condition_logic_member") === "OR"
-                ? "Một trong các thành viên sau phải đồng ý:"
-                : "Tất cả thành viên sau phải đồng ý:"}
+                ? t("VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1")
+                : t("VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2")}
             </div>
             <div className="offerDetail-memberToAccept-container">
               <Grid container>
@@ -151,8 +154,8 @@ const MiddleContent = ({
       {/* - */}
       <div>
         <Grid container direction="row">
-          <div className="offerDetail-approvalResult-title">Kết quả phê duyệt:&nbsp;</div>
-          <div className="offerDetail-approvalResult-result">Đồng ý ({number_member_accepted}) - Từ chối ({number_member_rejected})  </div>
+          <div className="offerDetail-approvalResult-title">{t("VIEW_OFFER_LABEL_APPROVAL_RESULT")}:&nbsp;</div>
+          <div className="offerDetail-approvalResult-result">{t("VIEW_OFFER_LABEL_APPROVED")} ({number_member_accepted}) - {t("VIEW_OFFER_LABEL_REJECTED")} ({number_member_rejected})  </div>
         </Grid>
       </div>
       <div>
@@ -173,23 +176,25 @@ const MiddleContent = ({
                 src={get(member, "avatar")}
               />
             </Grid>
-            <Grid items xs={8} direction="column">
+            <Grid items xs={7} direction="column">
               <div className="offerDetail-approvalResult-member-name">{get(member, "name")}</div>
               <div className="offerDetail-approvalResult-member-position">{get(member, 'position')}</div>
-              <div>{`Phê duyệt lúc ${member.hour_label} ngày ${member.date_label}`}</div>
+              <div>
+                {t("VIEW_OFFER_LABEL_APPROVED_AT", { time: member.hour_label, date: member.date_label })}
+              </div>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
               <Grid container direction="column" alignItems="center" >
                 {
                   get(member, "status") === 0 &&
                   <Button variant="contained" size="small" disableElevation className="bg--green">
-                    Đồng ý
+                    {t("VIEW_OFFER_LABEL_APPROVED")}
                   </Button>
                 }
                 {
                   get(member, "status") === 1 &&
                   <Button variant="contained" size="small" disableElevation className="bg--red">
-                    Từ chối
+                    {t("VIEW_OFFER_LABEL_REJECTED")}
                   </Button>
                 }
                 {/* <Popover /> */}

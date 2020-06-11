@@ -59,12 +59,12 @@ export default function ExpandPopover({ offer_group_id, name, description, view 
         anchorEl={anchorEl}
         onClose={handleClose}
         anchorOrigin={{
-          vertical: 'center',
-          horizontal: 'left',
+          vertical: 'bottom',
+          horizontal: 'right',
         }}
         transformOrigin={{
-          vertical: 'center',
-          horizontal: 'center',
+          vertical: 10,
+          horizontal: 'left',
         }}
       >
         {view && <Typography className={classNames(classes.typography, "Offer-group_option")}>Xem đề xuất</Typography>}
