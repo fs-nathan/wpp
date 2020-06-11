@@ -1806,5 +1806,7 @@
   "VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION": "Cập nhập điều kiện phê duyệt",
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "Một trong các thành viên sau phải đồng ý",
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "Tất cả thành viên sau phải đồng ý",
-  "VIEW_OFFER_LABEL_APPROVED_AT": "Phê duyệt lúc {{time}} ngày {{date}}"
+  "VIEW_OFFER_LABEL_APPROVED_AT": "Phê duyệt lúc {{time}} ngày {{date}}",
+  "VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING": "Bạn chắc chắn muốn xoá nhóm đề xuất này?",
+  "VIEW_OFFER_LABLE_VIEW_DETAIL_OFFER": "Xem đề xuất"
 }

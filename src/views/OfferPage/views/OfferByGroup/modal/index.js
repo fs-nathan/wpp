@@ -74,7 +74,7 @@ export default function FormDialog({ type, open, setOpen, ...rest }) {
           value={name}
           onChange={e => setForm({ description, name: e.target.value })}
         />
-        <TitleSectionModal label={getOfferGroupDescriptionTitle(t)} isRequired />
+        <TitleSectionModal label={getOfferGroupDescriptionTitle(t)} />
         <TextField
           className="offerModal--titleText"
           placeholder={getOfferGroupDescriptionPlaceholder(t)}

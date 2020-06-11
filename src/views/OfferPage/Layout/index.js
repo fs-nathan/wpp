@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { useMountedState } from "react-use";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
-import LoadingBox from "../../../components/LoadingBox";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
@@ -160,36 +159,28 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   const open = !!quickTask;
   const [openModalOffer, setOpenModalOffer] = useState(false);
   const [haveTimePopper, setHaveTimePopper] = useState(true);
-
-  const {
-    location: { pathname }
-  } = useHistory();
-
-  const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
-  const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
-  const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
-  const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
-  let timeFilterType;
-
-  if (offerByGroupRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferByGroup.timeType;
-  } else if (offerByProjectRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferByProject.timeType;
-  } else if (offerByDepartmentRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferByDepartment.timeType;
-  } else if (offerOverviewRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferOverview.timeType;
-  } else {
-    timeFilterType = 1;
-  }
+  const [haveFilter, setHaveFilter] = useState(true);
+  const [haveSearchBox, setHaveSearchBox] = useState(true);
+  const { location: { pathname } } = useHistory();
+  const [timeFilterType, setTimeFilterType] = useState(1);
 
   React.useEffect(() => {
     if (isMounted) {
       if (pathname.includes("/recently")) {
         setHaveTimePopper(false);
+      } else if (pathname === Routes.OVERVIEW) {
+        setHaveFilter(false);
+        setHaveSearchBox(false);
+        setTimeFilterType(timeFilterTypeOfferOverview.timeType);
+      } else if (pathname.includes(Routes.OFFERBYGROUP)) {
+        setTimeFilterType(timeFilterTypeOfferByGroup.timeType);
+      } else if (pathname.includes(Routes.OFFERBYPROJECT)) {
+        setTimeFilterType(timeFilterTypeOfferByProject.timeType);
+      } else if (pathname.includes(Routes.OFFERBYDEPARTMENT)) {
+        setTimeFilterType(timeFilterTypeOfferByDepartment.timeType);
       }
     }
-  }, [isMounted]);
+  }, [isMounted, pathname, timeFilterTypeOfferOverview, timeFilterTypeOfferByGroup, timeFilterTypeOfferByProject, timeFilterTypeOfferByDepartment, setTimeFilterType]);
 
   const options = {
     title: props.title,
@@ -204,31 +195,21 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
         iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
         onClick: () => handleExpand(!expand),
       },
-      {
+      haveFilter ? {
         label: t("IDS_WP_FILTER"),
         iconPath: mdiFilterOutline,
         onClick: () => setQuickTask(<QuickViewFilter />),
-      },
+      } : null,
     ],
     mainAction: {
       label: t("VIEW_OFFER_LABEL_CREATE_OFFER"),
       onClick: () => setOpenModalOffer(true),
       color: "#fd7e14"
     },
-    search: {
+    search: haveSearchBox ? {
       patern: keyword,
       onChange: setkeyword,
-    },
-
-    draggable: {
-      bool: true,
-      onDragEnd: () => { },
-    },
-
-    loading: {
-      bool: false,
-      component: () => <LoadingBox />,
-    },
+    } : null,
     row: {
       id: "id",
     },

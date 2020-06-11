@@ -29,7 +29,6 @@ export const PageContainer = styled(Container)`
 const OfferByGroup = props => {
 
   const { t } = useTranslation();
-  const context = useContext(OfferPageContext);
   const dispatch = useDispatch();
   const history = useHistory();
   const [layoutTitle, setLayoutTitle] = useState("");
@@ -51,14 +50,14 @@ const OfferByGroup = props => {
     if (isMounted) {
       setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"))
     }
-  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, context, setTitle]);
+  }, [isMounted, setTitle, t]);
 
   useEffect(() => {
     if (isMounted) {
       var currentGroup = groupList.filter(group => group.url === history.location.pathname);
       setLayoutTitle(get(currentGroup, '[0].title'));
     }
-  }, [isMounted, history.location.pathname, idFirstGroup]);
+  }, [isMounted, history.location.pathname, idFirstGroup, groupList]);
 
   useEffect(() => {
     dispatch(loadSummaryByGroup());

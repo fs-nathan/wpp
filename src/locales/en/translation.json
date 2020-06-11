@@ -1211,6 +1211,8 @@
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "One of the following members must agree",
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "All following members must agree",
   "VIEW_OFFER_LABEL_APPROVED_AT": "Approved at {{time}} on {{date}}",
+  "VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING": "Do you really want to delete this group offers?",
+  "VIEW_OFFER_LABLE_VIEW_DETAIL_OFFER": "View detail",
   "Tên nhóm quyền": "Permission group name",
   "Mô tả nhóm quyền": "Permission group descriptions",
   "Phạm vi module phân quyền": "Use in module",

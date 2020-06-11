@@ -1,6 +1,5 @@
 import { Grid } from "@material-ui/core";
 import React, { useCallback, useContext, useMemo } from "react";
-import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import BottomHeader from "views/OfferPage/components/BottomHeader";
 import { TaskTableRecently } from "views/OfferPage/components/TaskTableRecently";
@@ -9,7 +8,6 @@ import { TASK_RECENTLY } from 'views/OfferPage/redux/types';
 import { getTaskByKeyword } from "./selector";
 
 export function Content() {
-  const { t } = useTranslation();
   const state = useSelector(state => state);
   const caculateStatus = useCallback(({ offers }) => {
     let waiting = 0; // Đợi duyệt code = 0
@@ -47,7 +45,6 @@ export function Content() {
 
   const loading = useMemo(() => {
     const taskRecently = state.offerPage[TASK_RECENTLY];
-    console.log(taskRecently.loading);
     return taskRecently.loading;
   }, [state]);
 

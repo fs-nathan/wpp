@@ -4,12 +4,28 @@
   }
 }
 
-.OfferPage__comp_createOfferGroup {
-  margin-top: -20px;
+.OfferPage {
+  &__comp_createOfferGroup {
+    margin-top: -20px;
+  }
+  
+  &__overView__chartGroup {
+    height: 100%;
+    width: 100%;
+    &_wrapper {
+      display: inline-flex;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 100%;
+    }
+  }
 }
 
 .comp_CustomTable___container {
   [class*='MuiContainer-root'] {
     min-height: 95% !important;
+  }
+  [class*='MuiContainer-maxWidthLg'] {
+    max-width: 100%;
   }
 }

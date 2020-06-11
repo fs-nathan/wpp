@@ -115,7 +115,7 @@ function OfferPage(props) {
         timeType
       });
     }
-  }, [timeType]);
+  }, [history.location, storeTimeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByProject, storeTimeFilterTypeOfferOverview, timeFilterTypeOfferByDepartment, timeFilterTypeOfferByGroup, timeFilterTypeOfferByProject, timeFilterTypeOfferOverview, timeType]);
 
   const times = useTimes();
   const [timeRange, setTimeRange] = React.useState(() => {
@@ -349,7 +349,7 @@ function OfferPage(props) {
       }
       }
     />;
-  }, [title, listMenu, filterTab, state]);
+  }, [title, listMenu, t, filterTab, state, isOfferGroupManageable]);
 
   // Get offer details from redux store to show on offer detail modal
   const detailOffer = useSelector(state => getDetailOffer(state));
@@ -363,7 +363,7 @@ function OfferPage(props) {
         id: currentDetailOfferId
       }));
     }
-  }, [currentDetailOfferId, isDetailOfferModalOpen]);
+  }, [currentDetailOfferId, dispatch, isDetailOfferModalOpen]);
 
   // Delete offer confirm modal
   const [showDeleteOfferConfirmModal, setShowDeleteOfferConfirmModal] = useState(false);
