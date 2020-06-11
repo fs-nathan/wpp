@@ -20,3 +20,6 @@
   font-size: 14px;
   margin-top: 15px;
 }
+.comp_EmptyHolder__wrapper img {
+  width: 100%;
+}

@@ -44,12 +44,12 @@ import DrawerComponent from "../components/Drawer/Drawer";
 import GroupModal from "../components/NoticeModal/GroupModal";
 import NoticeModal from "../components/NoticeModal/NoticeModal";
 import SnackbarComponent from "../components/Snackbars";
+import configURL from "../constants/apiConstant";
 import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
 import { Routes } from "../constants/routes";
 import routes from "../routes";
 import LeftBar from "../views/LeftBar";
 import TopBar from "../views/TopBar";
-import configURL from "../constants/apiConstant";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -234,7 +234,8 @@ function MainLayout({
     }
     if (localStorage.getItem(TOKEN)) {
       handleFetchNoti();
-      const uri = `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
+      const uri =
+        `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
@@ -267,7 +268,7 @@ function MainLayout({
       };
     }
     // eslint-disable-next-line
-  }, []);
+  }, [profile && profile.id]);
 
   useEffect(() => {
     if (!socket || !profile.id || !taskDetails) return;
@@ -309,7 +310,8 @@ function MainLayout({
     const handleNewChat = (data) => {
       console.log("handleNewChat", data, taskDetails.uuid);
       if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
-        const isHideSendStatus = data.user_create_avatar && data.user_create_avatar !== profile.avatar
+        const isHideSendStatus =
+          data.user_create_avatar && data.user_create_avatar !== profile.avatar;
         appendChat({ data_chat: data }, undefined, isHideSendStatus);
       }
       const task = getTaskByChat(data, taskDetails);
@@ -344,7 +346,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(

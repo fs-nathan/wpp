@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { get, uniqueId } from "views/JobPage/utils";
+import { uniqueId } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
@@ -17,6 +17,7 @@ import CssFormControl, {
   BindedCssFormControl,
   InputFormControl,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/CssFormControl";
+import { DraggableList } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/DraggableList";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { categoryListSelector } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
@@ -51,8 +52,13 @@ const ImageListField = ({
       },
     });
   };
-  const fileFiltered = get(field, "value", emptyArray).filter(isFileImage);
-  const showEmpty = !fileFiltered.length;
+
+  const { list, showEmpty } = useMemo(() => {
+    const fileFiltered = (field.value || emptyArray).filter(isFileImage);
+    const showEmpty = !fileFiltered.length;
+    const list = fileFiltered.map((item, i) => ({ item, index: "" + i }));
+    return { showEmpty, list };
+  }, [field.value]);
   return (
     <DropZone onChange={handleChange}>
       {(getRootProps, getInputProps, isDragActive) => {
@@ -64,24 +70,50 @@ const ImageListField = ({
             })}
           >
             {!isDragActive && !showEmpty && (
-              <Box padding="10px">
-                {fileFiltered.map((item, i) => (
-                  <ImagePreview
-                    file={item}
-                    key={i}
-                    onDelete={() => {
-                      const newImage = [...field.value];
-                      newImage.splice(i, 1);
-                      field.onChange({
-                        target: {
-                          name,
-                          value: newImage,
-                        },
-                      });
-                    }}
-                  ></ImagePreview>
-                ))}
-              </Box>
+              <DraggableList
+                direction="horizontal"
+                // onChange={(orderList = emptyArray) => {
+                //   console.log({ orderList });
+                //   updatePloginSettings(
+                //     sections.map((s, i) => {
+                //       return {
+                //         ...s,
+                //         sort_index: orderList.findIndex((value) => value === s.value),
+                //       };
+                //     })
+                //   );
+                // }}
+                renderListWrapper={(children) => (
+                  <div className="comp_PostCreatorPopupInner__mediaList">
+                    {children}
+                  </div>
+                )}
+                list={list}
+                getId={(item) => item.index}
+              >
+                {({ item, index }, bindDraggable, bindDragHandle) => {
+                  console.log({ item });
+                  return bindDraggable(
+                    bindDragHandle(
+                      <div className="comp_PostCreatorPopupInner__mediaItem">
+                        <ImagePreview
+                          file={item}
+                          onDelete={() => {
+                            const newImage = [...field.value];
+                            newImage.splice(index, 1);
+                            field.onChange({
+                              target: {
+                                name,
+                                value: newImage,
+                              },
+                            });
+                          }}
+                        ></ImagePreview>
+                      </div>
+                    )
+                  );
+                }}
+              </DraggableList>
             )}
             {isDragActive && placeholder}
             <div

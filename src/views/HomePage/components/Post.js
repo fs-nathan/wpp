@@ -336,7 +336,7 @@ export const PostHeader = () => {
           <TasksCard.HeaderTitle>
             <div className="comp_Post__creatorName">{user_create_name}</div>
             <div className="comp_Post__creatorPostition">
-              {position} {(position || room) && "-"} {room}
+              {position} {position && "-"} {room}
             </div>
           </TasksCard.HeaderTitle>
         }
