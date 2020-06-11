@@ -112,9 +112,12 @@
   &--videoInfo {
     position: absolute;
     bottom: 0px;
-    padding: 0 5px;
-    // background-color: #767676;
-    width: 100%;
+    padding: 0 10px;
+    width: calc(100% - 20px);
+    background-color: #4b4b4b;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 1px solid #929292;
   }
   &:hover .CommonMessageAction {
     opacity: 1;

@@ -309,6 +309,7 @@ function CreateJobModal(props) {
               margin="normal"
               variant="outlined"
               multiline
+              rows={3}
               rowsMax={18}
               fullWidth
               value={data.description}
