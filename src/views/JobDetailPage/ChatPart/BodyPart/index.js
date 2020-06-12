@@ -1,5 +1,5 @@
 import { Avatar, IconButton } from '@material-ui/core';
-import { mdiMenuDown } from '@mdi/js';
+import { mdiMenuDown, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import { forwardMessage, getViewedChat, loadChat } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
@@ -330,7 +330,7 @@ const BodyPart = props => {
       </Scrollbars>
       {(isShowScroll || isMore === false) &&
         <IconButton className="bodyChat--buttonToBot" onClick={onClickScrollToBottom}>
-          <Icon path={mdiMenuDown} size={1.5} ></Icon>
+          <Icon path={isMore === false ? mdiClose : mdiMenuDown} size={1.5} ></Icon>
         </IconButton>
       }
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

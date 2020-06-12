@@ -109,6 +109,15 @@ function CreateJobModal(props) {
       type_assign: data.type_assign.id,
       schedule_id: data.schedule,
     }
+    if (date_status === 0) {
+      updateData.start_date = undefined;
+      updateData.start_time = undefined;
+      updateData.end_date = undefined;
+      updateData.end_time = undefined;
+    } else if (date_status === 1) {
+      updateData.start_time = undefined;
+      updateData.end_time = undefined;
+    }
     // dispatch(updateNameDescriptionTask(dataNameDescription));
     switch (props.editMode) {
       case EDIT_MODE.NAME_DES:
@@ -239,10 +248,19 @@ function CreateJobModal(props) {
   const handlePressConfirm = () => {
     if (validate(data)) {
       // Remove group task in object if user unselect group task
-      let data = dataCreateJob;
+      let data = { ...dataCreateJob };
       if (!dataCreateJob.group_task ||
         dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE) delete data.group_task;
       data.date_status = date_status;
+      if (date_status === 0) {
+        data.start_date = undefined;
+        data.start_time = undefined;
+        data.end_date = undefined;
+        data.end_time = undefined;
+      } else if (date_status === 1) {
+        data.start_time = undefined;
+        data.end_time = undefined;
+      }
       // Call api
       isFunction(get(props, 'doCreateTask'))
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
@@ -272,8 +290,9 @@ function CreateJobModal(props) {
       manualClose
       onCancle={() => props.setOpen(false)}
       className={clsx("createJob", `createJob__edit${props.editMode}`, {
-        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
-        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),
+        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES]),
+        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.GROUP]),
       })}
     >
       <React.Fragment>

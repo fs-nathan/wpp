@@ -48,6 +48,8 @@ const ProgressModal = (props) => {
   const taskId = useSelector(taskIdSelector);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
   const dateFormat = useSelector(state => state.system.profile.format_date);
+  const isFetching = useSelector(state => state.taskDetail.trackingTime.isFetching)
+  const error = useSelector(state => state.taskDetail.trackingTime.error)
 
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(listTimeSelect[16])
@@ -87,12 +89,18 @@ const ProgressModal = (props) => {
     }
     // console.log("data", data);
     dispatch(updateTimeDuration(data));
-    props.setOpen(false)
+    // props.setOpen(false)
   }
 
   function validate() {
     return true
   }
+
+  React.useEffect(() => {
+    if (!isFetching && !error)
+      props.setOpen(false);
+    // eslint-disable-next-line
+  }, [isFetching, error])
 
   return (
     <JobDetailModalWrap
@@ -102,6 +110,8 @@ const ProgressModal = (props) => {
       confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={handlePressConfirm}
       canConfirm={validate()}
+      manualClose
+      actionLoading={isFetching}
       maxWidth='sm'
       className="progressModal modal_height_30vh"
     >
@@ -115,6 +125,7 @@ const ProgressModal = (props) => {
           />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
+              autoOk
               disableToolbar
               variant="inline"
               inputVariant="outlined"
@@ -137,6 +148,7 @@ const ProgressModal = (props) => {
           />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
+              autoOk
               disableToolbar
               variant="inline"
               inputVariant="outlined"

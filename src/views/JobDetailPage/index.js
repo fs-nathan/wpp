@@ -15,11 +15,14 @@ import ListPart from "./ListPart";
 import { lastJobSettingKey } from "./ListPart/ListHeader/CreateJobSetting";
 import ModalImage from "./ModalImage";
 import TabPart from "./TabPart";
+import { getPermissionViewDetailProject } from "actions/viewPermissions";
+import { useHistory } from "react-router-dom";
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
   const url = new URL(window.location.href);
   const taskId = url.searchParams.get("task_id");
+  const history = useHistory();
   const projectId = useSelector(
     (state) => state.taskDetail.commonTaskDetail.activeProjectId
   );
@@ -28,6 +31,7 @@ function JobDetailPage(props) {
     (state) => state.chat.isOpenShareFileModal
   );
   const item = useSelector((state) => state.chat.item);
+  const errorMessage = useSelector((state) => state.taskDetail.detailTask.errorMessage);
   const users_shared = item ? item.users_shared || [] : [];
   const shareItem = { ...item, users_shared }
   // console.log('JobDetailPage', taskId);
@@ -40,6 +44,12 @@ function JobDetailPage(props) {
     dispatch(taskDetailAction.detailGroupPermissionDefault())
     dispatch(taskDetailAction.getRole());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (errorMessage === 'This task does not exist') {
+      history.push('/tasks/chat/' + projectId)
+    }
+  }, [errorMessage, history, projectId]);
 
   useEffect(() => {
     // console.log('url', url.pathname, 'projectId', projectId)
@@ -88,6 +98,7 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.getProjectListBasic(projectId));
       // dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(detailStatus({ projectId }));
+      dispatch(getPermissionViewDetailProject({ projectId }));
       const customEvent = new CustomEvent(JOIN_PROJECT_EVENT, {
         detail: projectId,
       });

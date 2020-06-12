@@ -19,6 +19,8 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
+import * as fileType from 'assets/fileType';
+import { FileType } from 'components/FileType';
 
 const TitleImg = styled(Typography)`
     & > li {
@@ -171,12 +173,12 @@ const FileMessage = ({
           <div className={clsx("TextMessage--content", {
             "TextMessage--content__self": is_me,
             "TextMessage--content__withReact": data_emotion.length > 0,
-            "FileMessage--content__video": files.length === 1 && getFileType(files[0].name) === 'mp4' && !isUploading,
+            "FileMessage--content__video": files.length === 1 && FileType(getFileType(files[0].name)) === fileType.video && !isUploading,
           })} >
             {chat_parent &&
               <TextMessage {...chat_parent} isReply></TextMessage>
             }
-            {files.map((file, i) => (getFileType(file.name) === 'mp4' && !isUploading) ?
+            {files.map((file, i) => (FileType(getFileType(file.name)) === fileType.video && !isUploading) ?
               (<div className="FileMessage--files FileMessage--video"
                 key={file.id || i}
                 onClick={onClickVideo(file, i)}>
