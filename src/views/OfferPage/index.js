@@ -10,21 +10,18 @@ import { useTimes } from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
 import { apiService } from '../../constants/axiosInstance';
-import { useLocalStorage } from "../../hooks";
 import { defaultFilter } from "./contants/defaultValue";
-import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, TIME_FILTER_TYPE_OFFER_OVERVIEW } from './contants/localStorage';
 import { Routes } from "./contants/routes";
 import { useMultipleSelect } from "./hooks/useMultipleSelect";
 import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
-import { deleteOffer, loadDetailOffer, loadTaskPage } from './redux/actions';
+import { deleteOffer, loadDetailOffer } from './redux/actions';
 import { LIST_STATUS_HAVE_NEW_OFFER } from "./redux/types";
 import routes from "./routes";
 import './styles.scss';
 import { getDeleteOfferConfirmModalMsg } from './utils/i18nSelectors';
 import Notifier from "./utils/notifer";
-import { formatTime } from "./utils/time";
 import { checkUserIsInOfferDepartmentRoutes, checkUserIsInOfferGroupRoutes, checkUserIsInOfferProjectRoutes } from "./utils/validate";
 import DetailOfferModal from './views/DetailOffer/DetailOfferModal';
 import { getDetailOffer, getDetailOfferLoadingState } from './views/DetailOffer/selector';
@@ -43,68 +40,21 @@ const rightIcon = () => {
 
 const { Provider } = OfferPageContext;
 
-function OfferPage(props) {
+function OfferPage() {
   const { t } = useTranslation();
   const [keyword, setkeyword] = useState("");
   const [title, setTitle] = useState(t("VIEW_OFFER_LABEL_YOUR_OFFER"));
-
-  const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_OVERVIEW, {
-    timeType: 1,
-  }
-  );
-  const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, {
-    timeType: 1,
-  }
-  );
-  const [timeFilterTypeOfferByProject, storeTimeFilterTypeOfferByProject] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, {
-    timeType: 1,
-  }
-  );
-  const [timeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByDepartment] = useLocalStorage(
-    TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, {
-    timeType: 1,
-  }
-  );
-
   const [quickTask, setQuickTask] = useState();
   const [filterTab, setFilterTab] = useState("");
   const state = useSelector(state => state);
   const history = useHistory();
-  const { pathname } = history.location;
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [timeType, setTimeType] = React.useState(1);
   const [statusNewOffer, setStatusNewOffer] = useState(false);
 
-  useEffect(() => {
-    if (pathname === Routes.OVERVIEW) {
-      storeTimeFilterTypeOfferOverview({
-        ...timeFilterTypeOfferOverview,
-        timeType
-      });
-    } else if (pathname.includes(Routes.OFFERBYGROUP)) {
-      storeTimeFilterTypeOfferByGroup({
-        ...timeFilterTypeOfferByGroup,
-        timeType
-      });
-    } else if (pathname.includes(Routes.OFFERBYPROJECT)) {
-      storeTimeFilterTypeOfferByProject({
-        ...timeFilterTypeOfferByProject,
-        timeType
-      });
-    } else if (pathname.includes(Routes.OFFERBYDEPARTMENT)) {
-      storeTimeFilterTypeOfferByDepartment({
-        ...timeFilterTypeOfferByDepartment,
-        timeType
-      });
-    }
-  }, [pathname, timeType]);
-
   const times = useTimes();
   const [timeRange, setTimeRange] = React.useState(() => {
-    const [startDate, endDate] = times[1].option();
+    const [startDate, endDate] = times[timeType].option();
     return {
       startDate,
       endDate
@@ -124,14 +74,14 @@ function OfferPage(props) {
     history.listen(() => setFilterTab(''))
   }, [history]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     dispatch(
       loadTaskPage({
         timeStart: formatTime(timeRange.startDate),
         timeEnd: formatTime(timeRange.endDate)
       })
     );
-  }, [dispatch, timeRange.startDate, timeRange.endDate]);
+  }, [dispatch, timeRange.startDate, timeRange.endDate]);*/
 
   const listMenu = [{
     title: t("VIEW_OFFER_LABEL_OVERVIEW_TITLE"),
@@ -375,104 +325,80 @@ function OfferPage(props) {
     }));
   }
 
-  return (<TwoColumnsLayout leftRenders={
-    [() => renderTabList]
-  }
-    rightRender={
-      ({
-        expand,
-        handleExpand,
-        handleSubSlide
-      }) => (
-          <Provider value={
-            {
-              expand,
-              setPin,
-              handleClose,
-              listMenu,
-              filterConfig,
-              handleExpand,
-              quickTask,
-              setQuickTask,
-              handleSubSlide,
-              timeAnchor,
-              setTimeAnchor,
-              openModalOfferByGroup,
-              setOpenModalOfferByGroup,
-              timeFilterTypeOfferOverview,
-              timeFilterTypeOfferByGroup,
-              timeFilterTypeOfferByProject,
-              timeFilterTypeOfferByDepartment,
-              timeType,
-              setTimeType,
-              timeRange,
-              setTimeRange,
-              statusFilter,
-              setstatusFilter,
-              handleRemoveStatusFilter,
-              keyword,
-              setkeyword,
-              setTitle,
-              setDetailOfferModalOpen,
-              setCurrentDetailOfferId,
-              setShowDeleteOfferConfirmModal,
-            }
-          } >
-            <div>
-              <Suspense fallback={
-                <LoadingBox />
-              }>
-                <Switch> {
+  return (
+    <TwoColumnsLayout
+      leftRenders={[() => renderTabList]}
+      rightRender={({ expand, handleExpand, handleSubSlide }) => (
+        <Provider
+          value={{
+            expand,
+            setPin,
+            handleClose,
+            listMenu,
+            filterConfig,
+            handleExpand,
+            quickTask,
+            setQuickTask,
+            handleSubSlide,
+            timeAnchor,
+            setTimeAnchor,
+            openModalOfferByGroup,
+            setOpenModalOfferByGroup,
+            timeType,
+            setTimeType,
+            timeRange,
+            setTimeRange,
+            statusFilter,
+            setstatusFilter,
+            handleRemoveStatusFilter,
+            keyword,
+            setkeyword,
+            setTitle,
+            setDetailOfferModalOpen,
+            setCurrentDetailOfferId,
+            setShowDeleteOfferConfirmModal,
+          }
+          }>
+          <div>
+            <Suspense fallback={
+              <LoadingBox />
+            }>
+              <Switch>
+                {
                   routes.map((route, index) => {
-                    return (<
-                      Route key={
-                        index
-                      }
-                      path={
-                        route.path
-                      }
-                      exact={
-                        route.exact
-                      }
-                      component={
-                        route.component
-                      }
-                    />
+                    return (
+                      <Route key={index} path={route.path} exact={route.exact} component={route.component} />
                     );
                   })
-                } </Switch> {
-                  isDetailOfferModalOpen && (
-                    <DetailOfferModal
-                      open={
-                        isDetailOfferModalOpen
-                      }
-                      setOpen={
-                        setDetailOfferModalOpen
-                      }
-                      loading={
-                        detailOfferLoading
-                      } {
-                      ...detailOffer
-                      }
-                    />
-                  )
-                } {
-                  showDeleteOfferConfirmModal && (
-                    <AlertModal
-                      open={showDeleteOfferConfirmModal}
-                      setOpen={setShowDeleteOfferConfirmModal}
-                      onConfirm={onDeleteOffer}
-                      content={getDeleteOfferConfirmModalMsg(t)}
-                    />
-                  )
                 }
-              </Suspense>
-              <Notifier />
-            </div>
-          </Provider>
-        )
-    }
-  />
+              </Switch>
+              {
+                isDetailOfferModalOpen && (
+                  <DetailOfferModal
+                    open={isDetailOfferModalOpen}
+                    setOpen={setDetailOfferModalOpen}
+                    loading={detailOfferLoading}
+                    {...detailOffer}
+                  />
+                )
+              }
+              {
+                showDeleteOfferConfirmModal && (
+                  <AlertModal
+                    open={showDeleteOfferConfirmModal}
+                    setOpen={setShowDeleteOfferConfirmModal}
+                    onConfirm={onDeleteOffer}
+                    content={getDeleteOfferConfirmModalMsg(t)}
+                  />
+                )
+              }
+            </Suspense>
+            <Notifier />
+          </div>
+        </Provider>
+      )
+      }
+    />
   );
 }
 

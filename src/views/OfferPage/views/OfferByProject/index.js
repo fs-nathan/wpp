@@ -1,5 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { useLocalStorage } from "hooks";
 import { filter, forEach, get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
@@ -9,11 +10,13 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
+import { TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByProjectID, loadSummaryProject } from "../../redux/actions";
 import Content from "./Content";
 import { getFirstSummaryProject, getSummaryByProjectAndKeyword } from "./selector";
+
 export const PageContainer = styled(Container)`
   overflow: auto;  
   padding: 16px;
@@ -25,13 +28,30 @@ export const PageContainer = styled(Container)`
 const OfferByProject = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
+    const { listMenu, timeRange = {}, setTitle, timeType, setTimeType } = useContext(OfferPageContext);
     const idFirstProject = useSelector(state => getFirstSummaryProject(state));
     const listProjects = useSelector(state => getSummaryByProjectAndKeyword('')(state));
     const isMounted = useMountedState();
     const history = useHistory();
     const { id } = useParams();
     const [layoutTitle, setLayoutTitle] = useState("");
+    const [timeFilterTypeOfferByProject, storeTimeFilterTypeOfferByProject] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, { timeType: 1 });
+
+    useEffect(() => {
+        if (isMounted) {
+            setTimeType(timeFilterTypeOfferByProject.timeType);
+        }
+    }, [isMounted]);
+
+    useEffect(() => {
+        if (isMounted) {
+            storeTimeFilterTypeOfferByProject({
+                ...timeFilterTypeOfferByProject,
+                timeType
+            });
+        }
+    }, [isMounted, timeType]);
+
 
     useEffect(() => {
         if (!isNil(id)) {

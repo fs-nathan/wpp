@@ -1,5 +1,6 @@
 import { Box, Container, Grid } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { useLocalStorage } from "hooks";
 import moment from "moment";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { useTimes } from '../../../../components/CustomPopover';
+import { TIME_FILTER_TYPE_OFFER_OVERVIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { listStatusHaveNewOffer, loadSummaryOverview } from "../../redux/actions";
@@ -34,13 +36,29 @@ const stringsGroupOffer = [
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { listMenu, timeType, timeRange = {}, setTitle } = useContext(OfferPageContext);
+  const { listMenu, timeType, timeRange = {}, setTitle, setTimeType } = useContext(OfferPageContext);
   const isMounted = useMountedState();
   const times = useTimes();
   const myOffers = useSelector(state => getMyOffers(state))
   const statusOffers = useSelector(state => getStatusOffers(state))
   const priorityOffers = useSelector(state => getPriorityOffers(state))
   const groupOffers = useSelector(getGroupOffers);
+  const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(TIME_FILTER_TYPE_OFFER_OVERVIEW, { timeType: 1 });
+
+  useEffect(() => {
+    if (isMounted) {
+      setTimeType(timeFilterTypeOfferOverview.timeType);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
+      storeTimeFilterTypeOfferOverview({
+        ...timeFilterTypeOfferOverview,
+        timeType
+      });
+    }
+  }, [isMounted, timeType]);
 
   useEffect(() => {
     dispatch(loadSummaryOverview({ timeRange }));

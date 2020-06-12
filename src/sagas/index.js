@@ -109,7 +109,7 @@ import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_P
 // ==================================
 import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
 import { doAddMemberHandle, doAddMemberMonitor, doCreateOffer, doCreateOfferGroup, doDeleteDocumentOffer, doDeleteGroupOffer, doDeleteMemberHandle, doDeleteMemberMonitor, doDeleteOffer, doGetCommentListOfferDetail, doGetSummaryByGroup, doGetTaskRecently, doHandleOffer, doListStatusHaveNewOffers, doLoadDetailOffer, doLoadOfferByDepartmentID, doLoadOfferByGroupID, doLoadOfferByProjectID, doLoadSummaryByDepartment, doLoadSummaryOverview, doLoadSummaryProject, doPostCommentOfferDetail, doRemoveCommentOfferDetail, doUpdateCommentOfferDetail, doUpdateGroupOffer, doUpdateOfferApprovalCondition, doUpdateOfferDetailDescriptionSection, doUploadDocumentOffer } from '../views/OfferPage/redux/sagas';
-import { ADD_MEMBER_HANDLE, ADD_MEMBER_MONITOR, CREATE_GROUP_OFFER, CREATE_OFFER, DELETE_DOCUMENT_OFFER, DELETE_GROUP_OFFER, DELETE_MEMBER_HANDLE, DELETE_MEMBER_MONITOR, DELETE_OFFER, HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER, LOAD_DETAIL_OFFER, LOAD_OFFER_BY_DEPARTMENT_ID, LOAD_OFFER_BY_GROUP_ID, LOAD_OFFER_BY_PROJECT_ID, LOAD_SUMMARY_BY_GROUP, LOAD_SUMMARY_BY_PROJECT, LOAD_SUMMARY_DEPARTMENT, LOAD_SUMMARY_OVERVIEW, LOAD_TASK_RENCENTLY, OFFER_DETAIL_GET_COMMENT_LIST, OFFER_DETAIL_POST_COMMENT, OFFER_DETAIL_REMOVE_COMMENT, OFFER_DETAIL_UPDATE_COMMENT, UPDATE_GROUP_OFFER_OFFERPAGE, UPDATE_OFFER_APPROVAL_CONDITION, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, UPLOAD_DOCUMENT_OFFER } from "../views/OfferPage/redux/types";
+import { ADD_MEMBER_HANDLE, ADD_MEMBER_MONITOR, CREATE_GROUP_OFFER, CREATE_OFFER, DELETE_DOCUMENT_OFFER, DELETE_GROUP_OFFER, DELETE_MEMBER_HANDLE, DELETE_MEMBER_MONITOR, DELETE_OFFER, HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER, LOAD_DETAIL_OFFER, LOAD_OFFER_BY_DEPARTMENT_ID, LOAD_OFFER_BY_GROUP_ID, LOAD_OFFER_BY_PROJECT_ID, LOAD_SUMMARY_BY_GROUP, LOAD_SUMMARY_BY_PROJECT, LOAD_SUMMARY_OFFER_BY_DEPARTMENT, LOAD_SUMMARY_OVERVIEW, LOAD_TASK_RENCENTLY, OFFER_DETAIL_GET_COMMENT_LIST, OFFER_DETAIL_POST_COMMENT, OFFER_DETAIL_REMOVE_COMMENT, OFFER_DETAIL_UPDATE_COMMENT, UPDATE_GROUP_OFFER_OFFERPAGE, UPDATE_OFFER_APPROVAL_CONDITION, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, UPLOAD_DOCUMENT_OFFER } from "../views/OfferPage/redux/types";
 import { login, loginCheckState } from "./authentications";
 import { createPersonalRemind } from "./calendar/alarmCalendar/createPersonalRemind";
 import { createPersonalRemindCategory } from "./calendar/alarmCalendar/createPersonalRemindCategory";
@@ -756,30 +756,30 @@ function* rootSaga() {
   yield takeLatest(LOAD_SUMMARY_BY_GROUP, doGetSummaryByGroup);
   yield takeEvery(CREATE_GROUP_OFFER, doCreateOfferGroup);
   yield takeLatest(LOAD_OFFER_BY_GROUP_ID, doLoadOfferByGroupID);
-  yield takeLatest(LOAD_SUMMARY_DEPARTMENT, doLoadSummaryByDepartment)
+  yield takeEvery(LOAD_SUMMARY_OFFER_BY_DEPARTMENT, doLoadSummaryByDepartment);
   yield takeLatest(LOAD_OFFER_BY_DEPARTMENT_ID, doLoadOfferByDepartmentID);
-  yield takeLatest(LOAD_SUMMARY_OVERVIEW, doLoadSummaryOverview)
-  yield takeEvery(DELETE_GROUP_OFFER, doDeleteGroupOffer)
-  yield takeEvery(UPDATE_GROUP_OFFER_OFFERPAGE, doUpdateGroupOffer)
-  yield takeLatest(LOAD_DETAIL_OFFER, doLoadDetailOffer)
-  yield takeLatest(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, doUpdateOfferDetailDescriptionSection)
-  yield takeLatest(UPDATE_OFFER_APPROVAL_CONDITION, doUpdateOfferApprovalCondition)
-  yield takeLatest(OFFER_DETAIL_GET_COMMENT_LIST, doGetCommentListOfferDetail)
-  yield takeLatest(OFFER_DETAIL_POST_COMMENT, doPostCommentOfferDetail)
-  yield takeLatest(OFFER_DETAIL_UPDATE_COMMENT, doUpdateCommentOfferDetail)
-  yield takeLatest(OFFER_DETAIL_REMOVE_COMMENT, doRemoveCommentOfferDetail)
-  yield takeLatest(CREATE_OFFER, doCreateOffer)
-  yield takeLatest(DELETE_OFFER, doDeleteOffer)
-  yield takeEvery(UPLOAD_DOCUMENT_OFFER, doUploadDocumentOffer)
-  yield takeEvery(DELETE_DOCUMENT_OFFER, doDeleteDocumentOffer)
-  yield takeEvery(ADD_MEMBER_HANDLE, doAddMemberHandle)
-  yield takeEvery(DELETE_MEMBER_HANDLE, doDeleteMemberHandle)
-  yield takeEvery(ADD_MEMBER_MONITOR, doAddMemberMonitor)
-  yield takeEvery(DELETE_MEMBER_MONITOR, doDeleteMemberMonitor)
-  yield takeEvery(HANDLE_OFFER_OFFERPAGE, doHandleOffer)
-  yield takeLatest(LOAD_SUMMARY_BY_PROJECT, doLoadSummaryProject)
-  yield takeLatest(LOAD_OFFER_BY_PROJECT_ID, doLoadOfferByProjectID)
-  yield takeLatest(LIST_STATUS_HAVE_NEW_OFFER, doListStatusHaveNewOffers)
+  yield takeLatest(LOAD_SUMMARY_OVERVIEW, doLoadSummaryOverview);
+  yield takeEvery(DELETE_GROUP_OFFER, doDeleteGroupOffer);
+  yield takeEvery(UPDATE_GROUP_OFFER_OFFERPAGE, doUpdateGroupOffer);
+  yield takeLatest(LOAD_DETAIL_OFFER, doLoadDetailOffer);
+  yield takeLatest(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, doUpdateOfferDetailDescriptionSection);
+  yield takeLatest(UPDATE_OFFER_APPROVAL_CONDITION, doUpdateOfferApprovalCondition);
+  yield takeLatest(OFFER_DETAIL_GET_COMMENT_LIST, doGetCommentListOfferDetail);
+  yield takeLatest(OFFER_DETAIL_POST_COMMENT, doPostCommentOfferDetail);
+  yield takeLatest(OFFER_DETAIL_UPDATE_COMMENT, doUpdateCommentOfferDetail);
+  yield takeLatest(OFFER_DETAIL_REMOVE_COMMENT, doRemoveCommentOfferDetail);
+  yield takeLatest(CREATE_OFFER, doCreateOffer);
+  yield takeLatest(DELETE_OFFER, doDeleteOffer);
+  yield takeEvery(UPLOAD_DOCUMENT_OFFER, doUploadDocumentOffer);
+  yield takeEvery(DELETE_DOCUMENT_OFFER, doDeleteDocumentOffer);
+  yield takeEvery(ADD_MEMBER_HANDLE, doAddMemberHandle);
+  yield takeEvery(DELETE_MEMBER_HANDLE, doDeleteMemberHandle);
+  yield takeEvery(ADD_MEMBER_MONITOR, doAddMemberMonitor);
+  yield takeEvery(DELETE_MEMBER_MONITOR, doDeleteMemberMonitor);
+  yield takeEvery(HANDLE_OFFER_OFFERPAGE, doHandleOffer);
+  yield takeLatest(LOAD_SUMMARY_BY_PROJECT, doLoadSummaryProject);
+  yield takeLatest(LOAD_OFFER_BY_PROJECT_ID, doLoadOfferByProjectID);
+  yield takeLatest(LIST_STATUS_HAVE_NEW_OFFER, doListStatusHaveNewOffers);
   //
 
   //calendar

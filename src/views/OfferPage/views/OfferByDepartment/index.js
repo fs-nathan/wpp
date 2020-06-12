@@ -1,5 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { useLocalStorage } from "hooks";
 import { get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
@@ -8,6 +9,7 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
+import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW } from '../../contants/localStorage';
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
@@ -30,22 +32,38 @@ function Department({
     const { t } = useTranslation();
     const history = useHistory();
     const {
-        keyword,
         listMenu,
+        timeType,
+        setTimeType,
         timeRange,
-        statusFilter,
         setTitle
     } = useContext(OfferPageContext);
 
     const { id } = useParams();
     const isMounted = useMountedState();
     const [layoutTitle, setLayoutTitle] = useState('');
+    const [timeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByDepartment] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, { timeType: 1 });
 
     useEffect(() => {
         if (isMounted) {
             setTitle(t("VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE"));
         }
-    }, [isMounted, setTitle]);
+    }, [isMounted, setTitle, t]);
+
+    useEffect(() => {
+        if (isMounted) {
+            setTimeType(timeFilterTypeOfferByDepartment.timeType);
+        }
+    }, [isMounted]);
+
+    useEffect(() => {
+        if (isMounted) {
+            storeTimeFilterTypeOfferByDepartment({
+                ...timeFilterTypeOfferByDepartment,
+                timeType
+            });
+        }
+    }, [isMounted, timeType]);
 
     useEffect(() => {
         doListOffersByDepartment();
@@ -59,21 +77,18 @@ function Department({
     }, [isMounted, history.location.pathname, idFirstGroup]);
 
     useEffect(() => {
-        if (
-            idFirstGroup !== null &&
-            window.location.pathname === Routes.OFFERBYDEPARTMENT
-        ) {
+        if (idFirstGroup !== null) {
             history.push(Routes.OFFERBYDEPARTMENT + "/" + idFirstGroup);
         }
-    }, [window.location.pathname, history, idFirstGroup]);
+    }, [idFirstGroup]);
 
     useEffect(() => {
-        if (isMounted && !isNil(id)) {
+        if (!isNil(id)) {
             const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
             const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
             doListOffersByDepartmentID({ id, startDate, endDate });
         }
-    }, [isMounted, id, timeRange]);
+    }, [id, timeRange]);
     // Redirect to first group when enter
     return (
         <>

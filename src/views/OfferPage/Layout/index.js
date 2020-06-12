@@ -12,6 +12,7 @@ import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
+import RedirectModal from "../components/RedirectModal";
 import { Routes } from '../contants/routes';
 import { OfferPageContext } from "../OfferPageContext";
 import { createOffer } from '../redux/actions';
@@ -143,10 +144,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     setTimeAnchor,
     quickTask,
     setQuickTask,
-    timeFilterTypeOfferOverview,
-    timeFilterTypeOfferByGroup,
-    timeFilterTypeOfferByProject,
-    timeFilterTypeOfferByDepartment,
+    timeType,
     setTimeType,
     setTimeRange,
     expand,
@@ -162,7 +160,8 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   const [haveFilter, setHaveFilter] = useState(true);
   const [haveSearchBox, setHaveSearchBox] = useState(true);
   const { location: { pathname } } = useHistory();
-  const [timeFilterType, setTimeFilterType] = useState(1);
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [openModalRedirect, setOpenModalRedirect] = useState(false);
 
   React.useEffect(() => {
     if (isMounted) {
@@ -171,22 +170,17 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
       } else if (pathname === Routes.OVERVIEW) {
         setHaveFilter(false);
         setHaveSearchBox(false);
-        setTimeFilterType(timeFilterTypeOfferOverview.timeType);
-      } else if (pathname.includes(Routes.OFFERBYGROUP)) {
-        setTimeFilterType(timeFilterTypeOfferByGroup.timeType);
       } else if (pathname.includes(Routes.OFFERBYPROJECT)) {
-        setTimeFilterType(timeFilterTypeOfferByProject.timeType);
-      } else if (pathname.includes(Routes.OFFERBYDEPARTMENT)) {
-        setTimeFilterType(timeFilterTypeOfferByDepartment.timeType);
+        setShouldRedirect(true);
       }
     }
-  }, [isMounted, pathname, timeFilterTypeOfferOverview, timeFilterTypeOfferByGroup, timeFilterTypeOfferByProject, timeFilterTypeOfferByDepartment, setTimeFilterType]);
+  }, [isMounted, pathname, timeType]);
 
   const options = {
     title: props.title,
     subActions: [
       haveTimePopper ? {
-        label: times[timeFilterType].title,
+        label: times[timeType].title,
         iconPath: mdiCalendar,
         onClick: (evt) => setTimeAnchor(evt.currentTarget),
       } : null,
@@ -203,7 +197,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     ],
     mainAction: {
       label: t("VIEW_OFFER_LABEL_CREATE_OFFER"),
-      onClick: () => setOpenModalOffer(true),
+      onClick: () => shouldRedirect ? setOpenModalRedirect(true) : setOpenModalOffer(true),
       color: "#fd7e14"
     },
     search: haveSearchBox ? {
@@ -243,7 +237,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
               bgColor={bgColor}
               anchorEl={timeAnchor}
               setAnchorEl={setTimeAnchor}
-              timeOptionDefault={timeFilterType}
+              timeOptionDefault={timeType}
               handleTimeRange={(timeType, startDate, endDate) => {
                 setTimeType(timeType);
                 setTimeRange({ startDate, endDate });
@@ -258,6 +252,10 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             setOpen={setOpenModalOffer}
             actionCreateOffer={createOffer()}
           />
+        )}
+
+        {openModalRedirect && (
+          <RedirectModal onClose={() => setOpenModalRedirect(false)} />
         )}
       </>
     </CustomTableProvider>

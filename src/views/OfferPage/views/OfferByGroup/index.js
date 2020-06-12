@@ -1,6 +1,7 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { CustomEventDispose, CustomEventListener } from "constants/events";
+import { useLocalStorage } from "hooks";
 import { get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
 import { CREATE_OFFER_SUCCESSFULLY, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
+import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
@@ -37,6 +39,8 @@ const OfferByGroup = props => {
     listMenu,
     setOpenModalOfferByGroup,
     openModalOfferByGroup,
+    timeType,
+    setTimeType,
     timeRange,
     setTitle
   } = useContext(OfferPageContext);
@@ -45,12 +49,28 @@ const OfferByGroup = props => {
   const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
   const { id } = useParams();
   const isMounted = useMountedState();
+  const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, { timeType: 1 });
 
   useEffect(() => {
     if (isMounted) {
       setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"))
     }
   }, [isMounted, setTitle, t]);
+
+  useEffect(() => {
+    if (isMounted) {
+      setTimeType(timeFilterTypeOfferByGroup.timeType);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
+      storeTimeFilterTypeOfferByGroup({
+        ...timeFilterTypeOfferByGroup,
+        timeType
+      });
+    }
+  }, [isMounted, timeType]);
 
   useEffect(() => {
     if (isMounted) {
