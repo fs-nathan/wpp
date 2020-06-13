@@ -79,7 +79,7 @@ const WrapButton = styled.div`
   text-align: center;
 `
 
-export function TaskTableRecently({ offers, loading }) {
+export function TaskTableRecently({ offers }) {
   const classes = styles()
   const { t } = useTranslation()
   const {
@@ -89,7 +89,7 @@ export function TaskTableRecently({ offers, loading }) {
 
   return (
     <>
-      {(offers.length === 0 || undefined) && !loading ? < EmptyHolder /> : (
+      {(offers.length === 0 || undefined) ? < EmptyHolder /> : (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -249,8 +249,6 @@ export function TaskTableRecently({ offers, loading }) {
           </Table>
         </TableContainer>
       )}
-
-      {}
     </>
   );
 }

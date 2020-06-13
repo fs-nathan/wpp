@@ -66,7 +66,7 @@ function Department({
     }, [isMounted, timeType]);
 
     useEffect(() => {
-        doListOffersByDepartment();
+        doListOffersByDepartment({ timeRange });
     }, [doListOffersByDepartment]);
 
     useEffect(() => {
@@ -84,8 +84,8 @@ function Department({
 
     useEffect(() => {
         if (!isNil(id)) {
-            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
+            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
             doListOffersByDepartmentID({ id, startDate, endDate });
         }
     }, [id, timeRange]);
@@ -122,7 +122,7 @@ function Department({
 
 const mapDispatchToProps = dispatch => {
     return {
-        doListOffersByDepartment: () => dispatch(loadOfferByDepartment()),
+        doListOffersByDepartment: ({ timeRange }) => dispatch(loadOfferByDepartment({ timeRange })),
         doListOffersByDepartmentID: ({ id, startDate, endDate }) => dispatch(loadOfferByDepartmentID({ id, startDate, endDate }))
     };
 };

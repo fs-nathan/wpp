@@ -60,7 +60,7 @@ export default function FormDialog({ type, open, setOpen, ...rest }) {
       setOpen={setOpen}
       confirmRender={confirmBtnTitle}
       onConfirm={createGroup}
-      canConfirm={name !== "" && description !== ""}
+      canConfirm={name !== ""}
       cancleRender={cancelBtnTitle}
       height="mini"
     >

@@ -21,8 +21,7 @@ export const initialState = {
       waiting: 0,
       waiting_rate: 0
     },
-    error: null,
-    loading: true
+    error: null
   },
   [SUMMARY_BY_GROUP]: { // List cột trái route bygroup
     offers_group: [],
@@ -103,7 +102,7 @@ export const initialState = {
 function taskReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_TASK_RECENTLY_SUCCESS:
-      return { ...state, [TASK_RECENTLY]: { ...action.payload, loading: false } };
+      return { ...state, [TASK_RECENTLY]: { ...action.payload } };
     case LOAD_SUMMARY_BY_GROUP_SUCCESS:
       return { ...state, [SUMMARY_BY_GROUP]: { ...action.payload } };
     case CREATE_GROUP_OFFER_SUCCESS:
@@ -227,9 +226,6 @@ function taskReducer(state = initialState, action) {
       };
     }
     case CREATE_OFFER_SUCCESSFULLY: {
-      const { offer_group_id } = action.payload;
-      console.log(offer_group_id);
-      console.log(state[SUMMARY_BY_GROUP]);
       return {
         ...state
       };
@@ -285,19 +281,48 @@ function taskReducer(state = initialState, action) {
       return { ...state }
     case ADD_MEMBER_HANDLE_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve, ...action.payload.members] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve, ...action.payload.members]
+          }
+        }
       }
     case DELETE_MEMBER_HANDLE_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve.filter(x => x.id !== action.payload)] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_can_approve:
+              [...state[DETAIL_OFFER].offer.members_can_approve.filter(x => x.id !== action.payload)]
+          }
+        }
       }
     case ADD_MEMBER_MONITOR_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_monitor: [...state[DETAIL_OFFER].offer.members_monitor, ...action.payload.members] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_monitor: [...state[DETAIL_OFFER].offer.members_monitor, ...action.payload.members]
+          }
+        }
       }
     case DELETE_MEMBER_MONITOR_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_monitor: [...state[DETAIL_OFFER].offer.members_monitor.filter(x => x.id !== action.payload)] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_monitor: [...state[DETAIL_OFFER].offer.members_monitor.filter(x => x.id !== action.payload)]
+          }
+        }
       }
     case ENQUEUE_SNACKBAR:
       return { ...state, [NOTIFICATIONS]: [...state[NOTIFICATIONS], { key: new Date().getTime() * Math.random(), ...action.payload }] }

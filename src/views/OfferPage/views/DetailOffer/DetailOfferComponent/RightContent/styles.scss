@@ -40,11 +40,12 @@
       &-textBox {}
 
       &-sendBtn {
-        color: #fff;
+        color: #607D8B;
         padding: 3px 12px;
         min-width: unset;
         box-shadow: unset;
         background-color: #e9e9e9;
+        text-transform: none;
 
         &-disabled {
           background-color: #ececec !important;

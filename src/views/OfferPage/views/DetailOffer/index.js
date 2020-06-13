@@ -11,31 +11,27 @@ import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadDetailOffer } from "../../redux/actions";
 import { get } from "../../utils";
-import { getDetailOffer } from "./selector";
 import DetailOffer from "./DetailOfferComponent";
+import { getDetailOffer } from "./selector";
 export const PageContainer = styled(Container)`
   overflow: auto;  
   padding: 16px;
   padding-right: 32px;
   min-height: 100%;
 `;
-
-
-
 const OfferByDepartment = (props) => {
     const { t } = useTranslation();
-    const context = useContext(OfferPageContext)
     const dispatch = useDispatch();
-    const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
+    const { listMenu, setTitle } = useContext(OfferPageContext);
     const { id } = useParams()
     const isMounted = useMountedState();
-    const detailOffer = useSelector(state => getDetailOffer(state))
+    const detailOffer = useSelector(state => getDetailOffer(state));
+
     useEffect(() => {
         if (isMounted) {
             setTitle(get(labels, "pageTitleOfferDetailOffer"))
         }
-
-    }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, context, setTitle]);
+    }, [isMounted, setTitle]);
     useEffect(() => {
         dispatch(loadDetailOffer({ id }))
     }, [id, dispatch])

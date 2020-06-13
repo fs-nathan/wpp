@@ -72,9 +72,10 @@ export const loadOfferByGroupID = ({ id, startDate, endDate }) => {
   };
 };
 
-export const loadOfferByDepartment = () => {
+export const loadOfferByDepartment = ({ timeRange }) => {
   return {
-    type: LOAD_SUMMARY_OFFER_BY_DEPARTMENT
+    type: LOAD_SUMMARY_OFFER_BY_DEPARTMENT,
+    payload: { timeRange }
   }
 }
 

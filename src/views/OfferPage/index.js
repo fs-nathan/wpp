@@ -51,6 +51,7 @@ function OfferPage() {
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [timeType, setTimeType] = React.useState(1);
   const [statusNewOffer, setStatusNewOffer] = useState(false);
+  const [scrollBarPosition, setScrollBarPosition] = useState(0);
 
   const times = useTimes();
   const [timeRange, setTimeRange] = React.useState(() => {
@@ -74,113 +75,106 @@ function OfferPage() {
     history.listen(() => setFilterTab(''))
   }, [history]);
 
-  /*useEffect(() => {
-    dispatch(
-      loadTaskPage({
-        timeStart: formatTime(timeRange.startDate),
-        timeEnd: formatTime(timeRange.endDate)
-      })
-    );
-  }, [dispatch, timeRange.startDate, timeRange.endDate]);*/
-
-  const listMenu = [{
-    title: t("VIEW_OFFER_LABEL_OVERVIEW_TITLE"),
-    url: Routes.OVERVIEW,
-    color: "#7d99a6",
-    icon: mdiViewDashboard
-  },
-  {
-    title: t("VIEW_OFFER_LABEL_RECENTLY_TITLE"),
-    url: Routes.RECENTLY,
-    color: "#7d99a6",
-    icon: mdiEmailCheck,
-    rightIcon: statusNewOffer && rightIcon,
-    rightIconVisiableAlways: statusNewOffer
-  },
-  {
-    title: t("VIEW_OFFER_LABEL_GROUP_TITLE"),
-    subtitle: t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"),
-    url: Routes.OFFERBYGROUP,
-    color: "#7d99a6",
-    icon: mdiEmailVariant,
-  },
-  {
-    title: t("VIEW_OFFER_LABEL_PROJECT_TITLE"),
-    subtitle: t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"),
-    url: Routes.OFFERBYPROJECT,
-    color: "#7d99a6",
-    icon: mdiEmailVariant
-  },
-  {
-    title: t("VIEW_OFFER_LABEL_DEPARTMENT_TITLE"),
-    subtitle: t("VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE"),
-    url: Routes.OFFERBYDEPARTMENT,
-    color: "#7d99a6",
-    icon: mdiEmailVariant
-  }
+  const listMenu = [
+    {
+      title: t("VIEW_OFFER_LABEL_OVERVIEW_TITLE"),
+      url: Routes.OVERVIEW,
+      color: "#7d99a6",
+      icon: mdiViewDashboard
+    },
+    {
+      title: t("VIEW_OFFER_LABEL_RECENTLY_TITLE"),
+      url: Routes.RECENTLY,
+      color: "#7d99a6",
+      icon: mdiEmailCheck,
+      rightIcon: statusNewOffer && rightIcon,
+      rightIconVisiableAlways: statusNewOffer
+    },
+    {
+      title: t("VIEW_OFFER_LABEL_GROUP_TITLE"),
+      subtitle: t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"),
+      url: Routes.OFFERBYGROUP,
+      color: "#7d99a6",
+      icon: mdiEmailVariant,
+    },
+    {
+      title: t("VIEW_OFFER_LABEL_PROJECT_TITLE"),
+      subtitle: t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"),
+      url: Routes.OFFERBYPROJECT,
+      color: "#7d99a6",
+      icon: mdiEmailVariant
+    },
+    {
+      title: t("VIEW_OFFER_LABEL_DEPARTMENT_TITLE"),
+      subtitle: t("VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE"),
+      url: Routes.OFFERBYDEPARTMENT,
+      color: "#7d99a6",
+      icon: mdiEmailVariant
+    }
   ];
 
-  const filterConfig = [{
-    title: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE"),
-    subTitle: t("VIEW_OFFER_LABEL_FILTET_BY_ROLE_SUBTITLE"),
-    optionEntities: {
-      you_offer: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_1"),
-        value: "you_offer"
+  const filterConfig = [
+    {
+      title: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE"),
+      subTitle: t("VIEW_OFFER_LABEL_FILTET_BY_ROLE_SUBTITLE"),
+      optionEntities: {
+        you_offer: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_1"),
+          value: "you_offer"
+        },
+        you_monitor: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_2"),
+          value: "you_monitor"
+        },
+        you_handle: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_3"),
+          value: "you_handle"
+        }
       },
-      you_monitor: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_2"),
-        value: "you_monitor"
-      },
-      you_handle: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_ROLE_3"),
-        value: "you_handle"
-      }
+      orders: ["you_offer", "you_monitor", "you_handle"]
     },
-    orders: ["you_offer", "you_monitor", "you_handle"]
-  },
-  {
-    title: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL"),
-    subTitle: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_SUBTITLE"),
-    optionEntities: {
-      normal: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1"),
-        value: "normal"
+    {
+      title: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL"),
+      subTitle: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_SUBTITLE"),
+      optionEntities: {
+        normal: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1"),
+          value: "normal"
+        },
+        urgent: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2"),
+          value: "low"
+        },
+        very_urgent: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3"),
+          value: "very_urgent"
+        }
       },
-      urgent: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2"),
-        value: "low"
-      },
-      very_urgent: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3"),
-        value: "very_urgent"
-      }
+      orders: ["normal", "urgent", "very_urgent"]
     },
-    orders: ["normal", "urgent", "very_urgent"]
-  },
-  {
-    title: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS"),
-    subTitle: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_SUBTITLE"),
-    optionEntities: {
-      offer_waiting: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_1"),
-        value: "offer_waiting"
+    {
+      title: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS"),
+      subTitle: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_SUBTITLE"),
+      optionEntities: {
+        offer_waiting: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_1"),
+          value: "offer_waiting"
+        },
+        offer_approving: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2"),
+          value: "offer_approving"
+        },
+        offer_accept: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_3"),
+          value: "offer_accept"
+        },
+        offer_reject: {
+          label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_4"),
+          value: "offer_reject"
+        }
       },
-      offer_approving: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2"),
-        value: "offer_approving"
-      },
-      offer_accept: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_3"),
-        value: "offer_accept"
-      },
-      offer_reject: {
-        label: t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_4"),
-        value: "offer_reject"
-      }
-    },
-    orders: ["offer_waiting", "offer_approving", "offer_accept", "offer_reject"]
-  }
+      orders: ["offer_waiting", "offer_approving", "offer_accept", "offer_reject"]
+    }
   ];
 
   const [pin, setPin] = useState(false);
@@ -331,32 +325,20 @@ function OfferPage() {
       rightRender={({ expand, handleExpand, handleSubSlide }) => (
         <Provider
           value={{
-            expand,
-            setPin,
-            handleClose,
-            listMenu,
-            filterConfig,
-            handleExpand,
-            quickTask,
-            setQuickTask,
-            handleSubSlide,
-            timeAnchor,
-            setTimeAnchor,
-            openModalOfferByGroup,
-            setOpenModalOfferByGroup,
-            timeType,
-            setTimeType,
-            timeRange,
-            setTimeRange,
-            statusFilter,
-            setstatusFilter,
-            handleRemoveStatusFilter,
-            keyword,
-            setkeyword,
-            setTitle,
-            setDetailOfferModalOpen,
-            setCurrentDetailOfferId,
-            setShowDeleteOfferConfirmModal,
+            expand, setPin,
+            handleClose, listMenu,
+            filterConfig, handleExpand,
+            quickTask, setQuickTask,
+            handleSubSlide, timeAnchor,
+            setTimeAnchor, openModalOfferByGroup,
+            setOpenModalOfferByGroup, timeType,
+            setTimeType, timeRange,
+            setTimeRange, statusFilter,
+            setstatusFilter, handleRemoveStatusFilter,
+            keyword, setkeyword,
+            setTitle, setDetailOfferModalOpen,
+            setCurrentDetailOfferId, setShowDeleteOfferConfirmModal,
+            scrollBarPosition, setScrollBarPosition
           }
           }>
           <div>
@@ -387,7 +369,10 @@ function OfferPage() {
                   <AlertModal
                     open={showDeleteOfferConfirmModal}
                     setOpen={setShowDeleteOfferConfirmModal}
-                    onConfirm={onDeleteOffer}
+                    onConfirm={() => {
+                      setDetailOfferModalOpen(false);
+                      onDeleteOffer();
+                    }}
                     content={getDeleteOfferConfirmModalMsg(t)}
                   />
                 )

@@ -1,4 +1,3 @@
-import { Grid } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React from "react";
 import LeftContent from "./LeftContent/LeftContent";
@@ -33,7 +32,6 @@ const DetailOffer = ({
   priority_code,
   priority_name,
   offer_group_id,
-  offer_group_name,
   number_member_accepted,
   number_member_rejected,
   members_monitor,

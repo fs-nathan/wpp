@@ -151,6 +151,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     handleExpand,
     keyword,
     setkeyword,
+    setScrollBarPosition
   } = useContext(OfferPageContext);
 
   const times = useTimes();
@@ -175,6 +176,12 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
       }
     }
   }, [isMounted, pathname, timeType]);
+
+  function handleScrollbarPosition(values) {
+    if (values.top >= 0.995) {
+      setScrollBarPosition(values.top);
+    }
+  }
 
   const options = {
     title: props.title,
@@ -226,7 +233,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             ...props,
           }}
         >
-          <Scrollbars autoHide autoHideTimeout={500}>
+          <Scrollbars autoHide autoHideTimeout={500} onScrollFrame={(values) => handleScrollbarPosition(values)}>
             {children}
           </Scrollbars>
         </LayoutStateLess>

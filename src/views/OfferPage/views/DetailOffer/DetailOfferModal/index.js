@@ -1,27 +1,29 @@
+import clsx from 'clsx';
 import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../../components/CustomModal';
 import { OfferPageContext } from '../../../OfferPageContext';
 import {
   getDetailOfferModalCancelBtnTitle,
   getDetailOfferModalConfirmBtnTitle,
-  getDetailOfferModalTitle,
+  getDetailOfferModalTitle
 } from '../../../utils/i18nSelectors';
-import DetailOffer from '../DetailOfferComponent'
-import clsx from 'clsx';
+import DetailOffer from '../DetailOfferComponent';
 import './styles.scss';
 
 const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
   const { setShowDeleteOfferConfirmModal } = useContext(OfferPageContext);
   const { t } = useTranslation()
   const { can_modify } = rest;
+
   const onConfirm = () => {
     if (can_modify) {
       setShowDeleteOfferConfirmModal(true);
     }
   }
+
   const onCloseModal = () => {
-    // do nothing
+    setOpen(false);
   }
 
   return (
@@ -37,7 +39,8 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
       confirmRender={() => can_modify ? getDetailOfferModalConfirmBtnTitle(t) : getDetailOfferModalCancelBtnTitle(t)}
       onConfirm={onConfirm}
       cancleRender={() => can_modify && getDetailOfferModalCancelBtnTitle(t)}
-      onCancle={can_modify && onCloseModal}
+      onCancle={onCloseModal}
+      manualClose={true}
       fullWidth
       maxWidth='lg'
     >

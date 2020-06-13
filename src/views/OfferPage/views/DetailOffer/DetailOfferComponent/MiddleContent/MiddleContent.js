@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
-import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
+import ApprovalConditionModal from "./approvalConditionModal";
 import { getApprovalConditionEditingTitle, getCreateApprovalBtnTitle } from './i18nSelectors';
 import './styles.scss';
 
@@ -33,6 +33,7 @@ const MiddleContent = ({
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
   const currentUserId = useSelector(state => state.system.profile.id);
+
   const isCurrentUserAHandler = useMemo(() => {
     return members_can_approve
       && members_can_approve.findIndex(member => member.id === currentUserId) !== -1;
@@ -42,12 +43,11 @@ const MiddleContent = ({
       && members_approved.findIndex(member => member.id === currentUserId) !== -1;
   }, [currentUserId, members_approved]);
 
-  const renderUpdateOfferApprovalConditionModal = () => {
+  const updateOfferApprovalConditionModal = () => {
     return (
-      <OfferModal
-        isOpen={openUpdateOfferModal}
+      <ApprovalConditionModal
+        open={openUpdateOfferModal}
         setOpen={setOpenUpdateOfferModal}
-        isUpdateOfferApprovalCondition
         item={{
           id: id,
           min_rate_accept: condition_accept.min_rate,
@@ -59,6 +59,7 @@ const MiddleContent = ({
       />
     );
   }
+
   return (
     <div className="offerDetail-middleContent-container">
       <ApproveOfferDialog
@@ -118,7 +119,7 @@ const MiddleContent = ({
           }
           {
             openUpdateOfferModal && (
-              renderUpdateOfferApprovalConditionModal()
+              updateOfferApprovalConditionModal()
             )
           }
         </div>
@@ -127,7 +128,7 @@ const MiddleContent = ({
         <div>{t("VIEW_OFFER_LABEL_RATE_AGREE")}:&nbsp;&nbsp;&nbsp;≥&nbsp;&nbsp;&nbsp;{get(condition_accept, "min_rate", "0")}%</div>
       </div>
       {
-        get(condition_accept, "min_rate", "0") < 100 && (
+        (get(condition_accept, "min_rate", "0") < 100 || (get(condition_accept, "condition_logic") === "OR" && get(condition_accept, "min_rate", "0") === 100)) && (
           <>
             <div className="offerDetail-memberToAccept-title">
               {get(condition_accept, "condition_logic_member") === "OR"

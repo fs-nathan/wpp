@@ -3,7 +3,7 @@ import moment from "moment";
 import { put } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../../constants/snackbarController';
-import { ADD_MEMBER_HANDLE_ERROR, ADD_MEMBER_HANDLE_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, CREATE_GROUP_OFFER_ERROR, CREATE_GROUP_OFFER_SUCCESS, CREATE_OFFER_SUCCESSFULLY, DELETE_DOCUMENT_OFFER_SUCCESS, DELETE_GROUP_OFFER_SUCCESS, DELETE_MEMBER_HANDLE_SUCCESS, DELETE_MEMBER_MONITOR_ERROR, DELETE_MEMBER_MONITOR_SUCCESS, DELETE_OFFER_ERROR, DELETE_OFFER_SUCCESSFULLY, ENQUEUE_SNACKBAR, LIST_STATUS_HAVE_NEW_OFFER_SUCCESS, LOAD_DETAIL_OFFER, LOAD_DETAIL_OFFER_ERROR, LOAD_DETAIL_OFFER_SUCCESS, LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS, LOAD_OFFER_BY_GROUP_ID_SUCCESS, LOAD_OFFER_BY_PROJECT_ID_SUCCESS, LOAD_SUMMARY_BY_GROUP_SUCCESS, LOAD_SUMMARY_BY_PROJECT_SUCCESS, LOAD_SUMMARY_OVERVIEW_SUCCESS, LOAD_TASK_RECENTLY_SUCCESS, OFFER_DETAIL_GET_COMMENT_LIST_ERROR, OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS, OFFER_DETAIL_POST_COMMENT_ERROR, OFFER_DETAIL_POST_COMMENT_SUCCESS, OFFER_DETAIL_REMOVE_COMMENT_ERROR, OFFER_DETAIL_REMOVE_COMMENT_SUCCESS, OFFER_DETAIL_UPDATE_COMMENT_ERROR, OFFER_DETAIL_UPDATE_COMMENT_SUCCESS, TASK_OFFER_BY_DEPARTMENT, UPDATE_GROUP_OFFER_OFFERPAGE_ERROR, UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS, UPDATE_OFFER_APPROVAL_CONDITION_ERROR, UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, UPLOAD_DOCUMENT_OFFER_SUCCESS } from './types';
+import { ADD_MEMBER_HANDLE_ERROR, ADD_MEMBER_HANDLE_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, CREATE_GROUP_OFFER_ERROR, CREATE_GROUP_OFFER_SUCCESS, CREATE_OFFER, CREATE_OFFER_SUCCESSFULLY, DELETE_DOCUMENT_OFFER, DELETE_DOCUMENT_OFFER_SUCCESS, DELETE_GROUP_OFFER_SUCCESS, DELETE_MEMBER_HANDLE_SUCCESS, DELETE_MEMBER_MONITOR_ERROR, DELETE_MEMBER_MONITOR_SUCCESS, DELETE_OFFER_ERROR, DELETE_OFFER_SUCCESSFULLY, ENQUEUE_SNACKBAR, LIST_STATUS_HAVE_NEW_OFFER_SUCCESS, LOAD_DETAIL_OFFER, LOAD_DETAIL_OFFER_ERROR, LOAD_DETAIL_OFFER_SUCCESS, LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS, LOAD_OFFER_BY_GROUP_ID_SUCCESS, LOAD_OFFER_BY_PROJECT_ID_SUCCESS, LOAD_SUMMARY_BY_GROUP_SUCCESS, LOAD_SUMMARY_BY_PROJECT_SUCCESS, LOAD_SUMMARY_OVERVIEW_SUCCESS, LOAD_TASK_RECENTLY_SUCCESS, OFFER_DETAIL_GET_COMMENT_LIST_ERROR, OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS, OFFER_DETAIL_POST_COMMENT_ERROR, OFFER_DETAIL_POST_COMMENT_SUCCESS, OFFER_DETAIL_REMOVE_COMMENT_ERROR, OFFER_DETAIL_REMOVE_COMMENT_SUCCESS, OFFER_DETAIL_UPDATE_COMMENT_ERROR, OFFER_DETAIL_UPDATE_COMMENT_SUCCESS, TASK_OFFER_BY_DEPARTMENT, UPDATE_GROUP_OFFER_OFFERPAGE_ERROR, UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS, UPDATE_OFFER_APPROVAL_CONDITION_ERROR, UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, UPLOAD_DOCUMENT_OFFER_SUCCESS } from './types';
 
 export function* doGetSummaryByGroup({ payload }) { // lấy list group cột trái route groupbyoffer
   try {
@@ -78,7 +78,13 @@ export function* doLoadOfferByGroupID({ payload }) {
 }
 export function* doLoadSummaryByDepartment({ payload }) {
   try {
-    const { startDate, endDate } = payload
+    const { timeRange } = payload;
+    let startDate = undefined;
+    let endDate = undefined;
+    if (timeRange.startDate && timeRange.endDate) {
+      startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+      endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+    }
     const config = {
       url: `/offers/summary-room?from_date=${startDate}&to_date=${endDate}`,
       method: "GET"
@@ -91,11 +97,9 @@ export function* doLoadSummaryByDepartment({ payload }) {
 }
 export function* doLoadOfferByDepartmentID({ payload }) {
   try {
-    const { id } = payload;
+    const { id, startDate, endDate } = payload;
     const config = {
-      url:
-        "/offers/list-of-room?from_date=2020-01-01&to_date=2020-12-01&room_id=" +
-        id,
+      url: `/offers/list-of-room?from_date=${startDate}&to_date=${endDate}&room_id=${id}`,
       method: "GET"
     };
     const result = yield apiService(config);
@@ -277,10 +281,11 @@ export function* doCreateOffer({ payload }) {
     };
     const result = yield apiService(config);
     result.data.state && SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    //yield put({ type: CREATE_OFFER_SUCCESSFULLY, payload });
     CustomEventEmitter(CREATE_OFFER_SUCCESSFULLY);
   } catch (err) {
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
+  } finally {
+    CustomEventEmitter(CREATE_OFFER);
   }
 }
 export function* doDeleteOffer({ payload }) {
@@ -335,6 +340,8 @@ export function* doDeleteDocumentOffer({ payload }) {
     yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete document successful", options: { variant: "success" } } })
   } catch (err) {
     yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+  } finally {
+    CustomEventEmitter(DELETE_DOCUMENT_OFFER);
   }
 }
 

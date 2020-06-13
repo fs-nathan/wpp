@@ -55,7 +55,7 @@ function CustomAddOfferMemberModal({
       title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       open={isOpen}
       setOpen={setOpen}
-      confirmRender={() => "Hoàn Thành"}
+      confirmRender={() => t("IDS_WP_DONE")}
       onConfirm={onClickDone}
       className="addOfferMemberModal"
     >

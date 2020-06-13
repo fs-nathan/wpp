@@ -1,10 +1,10 @@
 import { Grid } from "@material-ui/core";
-import React, { useCallback, useContext, useMemo } from "react";
+import { slice, take } from "lodash";
+import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import BottomHeader from "views/OfferPage/components/BottomHeader";
 import { TaskTableRecently } from "views/OfferPage/components/TaskTableRecently";
 import { OfferPageContext } from "views/OfferPage/OfferPageContext";
-import { TASK_RECENTLY } from 'views/OfferPage/redux/types';
 import { getTaskByKeyword } from "./selector";
 
 export function Content() {
@@ -33,33 +33,41 @@ export function Content() {
       approving_rate: isNaN(approving_rate) ? 0 : approving_rate
     };
   });
-  const { statusFilter, keyword } = useContext(OfferPageContext);
+
+  const { statusFilter, keyword, scrollBarPosition } = useContext(OfferPageContext);
+  const [currentPageData, setCurrentPageData] = useState([]);
+  const [offersLength, setOffersLength] = useState(0);
 
   const renderTabList = useMemo(() => {
-    return getTaskByKeyword(keyword, statusFilter)(state);
-  }, [keyword, state, statusFilter]);
-  const renderLength = useMemo(() => {
     const offers = getTaskByKeyword(keyword, statusFilter)(state);
-    return offers.length;
+    setOffersLength(offers.length);
+    return offers;
   }, [keyword, state, statusFilter]);
 
-  const loading = useMemo(() => {
-    const taskRecently = state.offerPage[TASK_RECENTLY];
-    return taskRecently.loading;
-  }, [state]);
+  React.useEffect(() => {
+    setCurrentPageData(take(renderTabList, 20));
+  }, [renderTabList]);
+
+  React.useEffect(() => {
+    if (scrollBarPosition >= 0.995 && currentPageData.length != offersLength) {
+      var numberPerPage = currentPageData.length;
+      var newData = currentPageData.concat(slice(renderTabList, numberPerPage, numberPerPage + 20));
+      setCurrentPageData(newData);
+    }
+  }, [scrollBarPosition]);
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <BottomHeader
-          count={renderLength}
-          statistic_status={caculateStatus({ offers: renderTabList })}
+          count={offersLength}
+          statistic_status={caculateStatus({ offers: currentPageData })}
         />
       </Grid>
       <Grid item xs={12}>
         <Grid container spacing={3}>
           <Grid item container xs={12}>
-            <TaskTableRecently offers={renderTabList} loading={loading} />
+            <TaskTableRecently offers={currentPageData} />
           </Grid>
         </Grid>
       </Grid>
