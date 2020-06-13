@@ -170,18 +170,22 @@
 }
 
 .offerFile {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   position: relative;
   background-color: #f5f5f5;
   margin: 10px 0;
   padding: 10px 15px;
   border-radius: 25px;
   color: #007de0;
+  max-width: 150px;
 
   &--name {
     display: block;
     float: left;
     line-height: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &--size {
