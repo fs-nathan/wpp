@@ -5,12 +5,16 @@ import {
   FormControlLabel,
   FormControl,
 } from '@material-ui/core';
+import { useTranslation } from 'react-i18next';
+import './styles.scss'
 
 const CommonProgressForm = ({
   handleChange,
   value,
   items,
+  defaultState,
 }) => {
+  const { t } = useTranslation();
   return (
     <FormControl component="fieldset">
       <RadioGroup
@@ -26,7 +30,13 @@ const CommonProgressForm = ({
               key={key}
               value={item.value}
               control={<Radio color="primary" />}
-              label={item.label}
+              label={defaultState === item.value ? <span className="CommonProgressForm--radio">
+                <abbr
+                  title={t('LABEL_CHAT_TASK_THAY_DOI_MAC_DINH')}>
+                  {`${item.label} ${t('LABEL_CHAT_TASK_MAC_DINH')}`}
+                </abbr>
+              </span>
+                : item.label}
               labelPlacement="end"
             />
           ))}

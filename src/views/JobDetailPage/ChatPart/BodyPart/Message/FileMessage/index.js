@@ -224,12 +224,12 @@ const FileMessage = ({
                   <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
                     {getFileType(file.name)} - {file && file.size}
                   </div>
-                  {isUploading && uploadingPercent !== 100 &&
+                  {isUploading && uploadingPercent[id] !== 100 &&
                     <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
-                      <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
+                      <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent[id]}%` }} >
                       </div>
                     </div>
-                      {uploadingPercent}%
+                      {uploadingPercent[id]}%
               </div>
                   }
                 </div>

@@ -295,10 +295,10 @@ export function searchChat(key) {
   };
 }
 
-export function onUploading(percent) {
+export function onUploading(percent, id) {
   return {
     type: actionTypes.ON_UPLOADING,
-    percent,
+    percent, id
   };
 }
 
@@ -651,7 +651,7 @@ export function getDataPinOnTaskChatFail(error) {
   };
 }
 
-export function openShareFileModal(isOpenShareFileModal, item, ) {
+export function openShareFileModal(isOpenShareFileModal, item,) {
   return {
     type: actionTypes.OPEN_SHARE_FILE_MODAL,
     isOpenShareFileModal, item

@@ -1357,5 +1357,10 @@
   "VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION": "Update approval condition",
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "One of the following members must agree",
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "All following members must agree",
-  "VIEW_OFFER_LABEL_APPROVED_AT": "Approved at {{time}} on {{date}}"
+  "VIEW_OFFER_LABEL_APPROVED_AT": "Approved at {{time}} on {{date}}",
+  "LABEL_CHAT_TASK_MAC_DINH": "(mặc định)",
+  "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Thay đổi mặc định trong cài đặt dự án",
+  "LABEL_CHAT_TASK_NGAY_VA_GIO": "Ngày và giờ",
+  "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Chỉ nhập ngày",
+  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Không yêu cầu"
 }

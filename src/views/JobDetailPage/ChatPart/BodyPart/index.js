@@ -36,6 +36,7 @@ const BodyPart = props => {
   const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
   const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
   const focusId = useSelector(state => state.chat.focusId);
+  const focusTopId = useSelector(state => state.chat.focusTopId);
 
   const [isCanLoadMore, setCanLoadMore] = React.useState(false);
   const [isMyLastChat, setMyLastChat] = React.useState(false);
@@ -53,10 +54,20 @@ const BodyPart = props => {
   useEffect(() => {
     let rqId;
     if (focusId) {
+      // console.log('focusId', focusId)
       const ele = document.getElementById(focusId)
       if (ele) {
         rqId = setTimeout(function () {
           ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
+        }, 10)
+      }
+    } else if (focusTopId) {
+      const ele = document.getElementById(focusTopId);
+      if (ele) {
+        // console.log('focusTopId', ele.offsetTop)
+        rqId = setTimeout(function () {
+          chatRef.current.scrollTop(ele.offsetTop)
+          // ele.scrollIntoView({ block: "start", inline: "nearest", behavior: 'auto' })
         }, 10)
       }
     }
@@ -227,6 +238,10 @@ const BodyPart = props => {
     } else {
       setShowScroll(false)
     }
+  }
+
+  function onScrollStop() {
+    const scrollTop = chatRef.current.getScrollTop()
     if (scrollTop < 10) {
       loadMoreChat()
     }
@@ -239,6 +254,7 @@ const BodyPart = props => {
       <Scrollbars autoHide autoHideTimeout={500}
         ref={chatRef}
         onScrollFrame={handleScrollFrame}
+        onScrollStop={onScrollStop}
         renderView={props => <div {...props} ref={chatRefScroll} className="bodyChat--scrollWrap" />}
       >
         <div
@@ -305,7 +321,7 @@ const BodyPart = props => {
               handleDetailEmotion={handleDetailEmotion(el)}
               handleReplyChat={handleReplyChat(el)} />)
           }
-          <div className="bodyChat--chatStatus">
+          <div id="chatStatusDiv" className="bodyChat--chatStatus">
             {
               viewedChatMembers.length > 0 &&
               <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}
