@@ -1,5 +1,6 @@
 import { mdiEmailCheck, mdiEmailVariant, mdiViewDashboard } from "@mdi/js";
 import AlertModal from "components/AlertModal";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { get, isNil } from "lodash";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -17,7 +18,7 @@ import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
 import { deleteOffer, loadDetailOffer } from './redux/actions';
-import { LIST_STATUS_HAVE_NEW_OFFER } from "./redux/types";
+import { HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER } from "./redux/types";
 import routes from "./routes";
 import './styles.scss';
 import { getDeleteOfferConfirmModalMsg } from './utils/i18nSelectors';
@@ -304,9 +305,14 @@ function OfferPage() {
   const [currentDetailOfferId, setCurrentDetailOfferId] = useState('');
   useEffect(() => {
     if (currentDetailOfferId && isDetailOfferModalOpen) {
-      dispatch(loadDetailOffer({
-        id: currentDetailOfferId
-      }));
+      dispatch(loadDetailOffer({ id: currentDetailOfferId }));
+      const refreshAfterApprove = () => {
+        dispatch(loadDetailOffer({ id: currentDetailOfferId }));
+      }
+      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshAfterApprove);
+      return () => {
+        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshAfterApprove);
+      };
     }
   }, [currentDetailOfferId, dispatch, isDetailOfferModalOpen]);
 
