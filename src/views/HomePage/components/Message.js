@@ -169,6 +169,7 @@ const Message = ({
   images_url,
   images_size,
   images_type,
+  time_label,
   files,
   sticker,
   stickerUrl,
@@ -223,7 +224,7 @@ const Message = ({
             component="span"
             color="textSecondary"
           >
-            2 giờ
+            {time_label}
           </Typography>
           {type === "comment" && (
             <RepliesContainer
@@ -271,14 +272,14 @@ export default ({ message, comments, onReplyClick }) => {
         id,
         post_id,
         content,
-        onReplyClick,
         user_create_name,
         user_create_avatar,
         images,
         files,
         sticker,
-        stickerUrl: message.stickerUrl,
+
         total_sub_comment,
+        time_label: message.time_label,
       }}
     />
   );
