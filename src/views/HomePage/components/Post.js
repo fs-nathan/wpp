@@ -653,21 +653,21 @@ export const PostStats = () => {
               .map((item, i, array) => {
                 if (i === array.length - 2) {
                   return (
-                    <>
+                    <React.Fragment key={i}>
                       {item}
-                      {" và "}
-                    </>
+                      {` ${t("và")} `}
+                    </React.Fragment>
                   );
                 }
                 if (i < array.length - 1) {
                   return (
-                    <>
+                    <React.Fragment key={i}>
                       {item}
                       {" ,"}
-                    </>
+                    </React.Fragment>
                   );
                 }
-                return item;
+                return <React.Fragment key={i}>{item}</React.Fragment>;
               })}
           </Box>
         </Box>

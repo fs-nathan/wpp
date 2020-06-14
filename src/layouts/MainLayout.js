@@ -25,6 +25,7 @@ import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import io from "socket.io-client";
 import styled from "styled-components";
+import { postModule } from "views/HomePage/redux/post";
 import useWebpush from "webpush/useWebpush";
 import {
   actioGetSettingDate,
@@ -232,7 +233,7 @@ function MainLayout({
       actionFetchListColor();
       actioGetSettingDate();
     }
-    if (localStorage.getItem(TOKEN)) {
+    if (localStorage.getItem(TOKEN) && profile && profile.id) {
       handleFetchNoti();
       const uri =
         `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
@@ -244,6 +245,9 @@ function MainLayout({
       socket.on("WP_NEW_CHAT_EXPRESS_EMOTION_CHAT", handleReactEmotion);
       socket.on("WP_DELETE_CHAT_IN_TASK", handleDeleteChat);
       socket.on("WP_VIEW_CHAT_IN_TASK", handleViewChat);
+
+      socket.on("WP_NEW_COMMENT_POST", postModule.actions.updatePostListItem);
+      socket.on("WP_NEW_LIKE_LOVE_POST", postModule.actions.updatePostListItem);
 
       function joinChat({ detail }) {
         // console.log('joinChat', detail)
@@ -394,7 +398,7 @@ function MainLayout({
   useEffect(() => {
     document.body.style.setProperty("--color-primary", bgColor.color);
     // style={{ "--color-primary":  }}
-  });
+  }, [bgColor]);
   return (
     <Container
       className={

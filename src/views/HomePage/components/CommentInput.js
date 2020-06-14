@@ -235,7 +235,7 @@ const ModalFilePicker = ({
 }) => {
   return (
     <SendFileModal
-      open={open}
+      open={!!open}
       setOpen={setOpen}
       handleUploadFile={handleUploadFile}
       onConfirmShare={onConfirmShare}
