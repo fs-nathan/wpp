@@ -1,7 +1,7 @@
 import { Avatar, IconButton } from '@material-ui/core';
 import { mdiMenuDown, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { forwardMessage, getViewedChat, loadChat } from 'actions/chat/chat';
+import { forwardMessage, getViewedChat, loadChat, clearFocus } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
@@ -59,6 +59,7 @@ const BodyPart = props => {
       if (ele) {
         rqId = setTimeout(function () {
           ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
+          dispatch(clearFocus());
         }, 10)
       }
     } else if (focusTopId) {
@@ -68,6 +69,7 @@ const BodyPart = props => {
         rqId = setTimeout(function () {
           chatRef.current.scrollTop(ele.offsetTop)
           // ele.scrollIntoView({ block: "start", inline: "nearest", behavior: 'auto' })
+          dispatch(clearFocus());
         }, 10)
       }
     }
@@ -242,7 +244,7 @@ const BodyPart = props => {
 
   function onScrollStop() {
     const scrollTop = chatRef.current.getScrollTop()
-    if (scrollTop < 10) {
+    if (isCanLoadMore && scrollTop < 10) {
       loadMoreChat()
     }
   }

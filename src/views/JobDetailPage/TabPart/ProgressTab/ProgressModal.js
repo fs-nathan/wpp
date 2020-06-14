@@ -10,7 +10,7 @@ import { convertDate, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { convertDateByFormat } from 'helpers/jobDetail/stringHelper';
+import { convertDateByFormat, compareDateTime } from 'helpers/jobDetail/stringHelper';
 import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../selectors';
@@ -19,13 +19,14 @@ import './styles.scss';
 const StartEndDay = styled(Typography)`
   display: flex;
   flex-direction: row;
-  align-items: center;
+  align-items: end;
   margin: 30px 0;
 `
 
 const BeginEndTime = styled(Typography)`
   width: 60px;
   margin-right: 20px;
+  margin-top: 10px;
 `
 
 const InputDate = styled(KeyboardDatePicker)`
@@ -93,7 +94,14 @@ const ProgressModal = (props) => {
   }
 
   function validate() {
-    return true
+    try {
+      const result = compareDateTime(`${startDay} ${startTime}`, `${endDay} ${endTime}`)
+      // console.log('validate', result)
+      return result < 0;
+    } catch (error) {
+      // console.log('error', error)
+      return false
+    }
   }
 
   React.useEffect(() => {
@@ -136,6 +144,10 @@ const ProgressModal = (props) => {
               KeyboardButtonProps={{
                 "aria-label": "change date"
               }}
+              invalidDateMessage={t('LABEL_CHAT_TASK_INVALID_DATE_FORMAT')}
+            // invalidLabel="invalidLabel"
+            // maxDateMessage="maxDateMessage"
+            // minDateMessage="minDateMessage"
             />
           </MuiPickersUtilsProvider>
         </StartEndDay>
@@ -160,6 +172,7 @@ const ProgressModal = (props) => {
               KeyboardButtonProps={{
                 "aria-label": "change date"
               }}
+              invalidDateMessage={t('LABEL_CHAT_TASK_INVALID_DATE_FORMAT')}
             />
           </MuiPickersUtilsProvider>
         </StartEndDay>

@@ -372,5 +372,10 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.payload = payload;
       break;
     }
+    case actionTypes.CLEAR_FOCUS: {
+      draft.focusId = null;
+      draft.focusTopId = null;
+      break;
+    }
   }
 });
