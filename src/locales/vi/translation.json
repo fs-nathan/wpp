@@ -1812,5 +1812,10 @@
   "VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION": "Cập nhập điều kiện phê duyệt",
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "Một trong các thành viên sau phải đồng ý",
   "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "Tất cả thành viên sau phải đồng ý",
-  "VIEW_OFFER_LABEL_APPROVED_AT": "Phê duyệt lúc {{time}} ngày {{date}}"
+  "VIEW_OFFER_LABEL_APPROVED_AT": "Phê duyệt lúc {{time}} ngày {{date}}",
+  "LABEL_CHAT_TASK_MAC_DINH": "(mặc định)",
+  "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Thay đổi mặc định trong cài đặt dự án",
+  "LABEL_CHAT_TASK_NGAY_VA_GIO": "Ngày và giờ",
+  "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Chỉ nhập ngày",
+  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Không yêu cầu"
 }
