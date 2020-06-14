@@ -39,12 +39,21 @@ const classes = {
   footer: "comp_PostCreatorPopupInner__footer",
 };
 
+const setFileIds = (files) => {
+  new Array(files.length).fill(true).forEach((file, i) => {
+    files[i].id = uniqueId("file_");
+    files[i].notUploaded = true;
+  });
+};
+
 const ImageListField = ({
   name,
   placeholder = "Thả file, hình ảnh vào đây...",
 }) => {
   const [field] = useField({ name });
+  const [fieldOrder] = useField({ name: `${name}_order` });
   const handleChange = (files = []) => {
+    setFileIds(files);
     field.onChange({
       target: {
         name,
@@ -56,9 +65,10 @@ const ImageListField = ({
   const { list, showEmpty } = useMemo(() => {
     const fileFiltered = (field.value || emptyArray).filter(isFileImage);
     const showEmpty = !fileFiltered.length;
-    const list = fileFiltered.map((item, i) => ({ item, index: "" + i }));
+    const list = fileFiltered.map((item, i) => ({ item, index: "" + item.id }));
     return { showEmpty, list };
   }, [field.value]);
+  console.log({ list, showEmpty });
   return (
     <DropZone onChange={handleChange}>
       {(getRootProps, getInputProps, isDragActive) => {
@@ -72,17 +82,19 @@ const ImageListField = ({
             {!isDragActive && !showEmpty && (
               <DraggableList
                 direction="horizontal"
-                // onChange={(orderList = emptyArray) => {
-                //   console.log({ orderList });
-                //   updatePloginSettings(
-                //     sections.map((s, i) => {
-                //       return {
-                //         ...s,
-                //         sort_index: orderList.findIndex((value) => value === s.value),
-                //       };
-                //     })
-                //   );
-                // }}
+                onChange={(orderList = emptyArray) => {
+                  console.log({ orderList });
+                  fieldOrder.onChange({
+                    target: {
+                      name: `${name}_order`,
+                      value: JSON.stringify(orderList),
+                      // .reduce((result, v, i) => {
+                      //   result[v] = i;
+                      //   return result;
+                      // }, {}),
+                    },
+                  });
+                }}
                 renderListWrapper={(children) => (
                   <div className="comp_PostCreatorPopupInner__mediaList">
                     {children}
@@ -150,6 +162,8 @@ const FileField = ({ name, id, children, ...props }) => {
         type="file"
         multiple="multiple"
         onChange={(e) => {
+          setFileIds(e.target.files);
+          console.log("file", e.target.files);
           field.onChange({
             target: {
               name,
@@ -444,7 +458,10 @@ const ModalFileInput = ({ name, open, setOpen }) => {
     <SendFileModal
       open={open}
       setOpen={setOpen}
-      handleUploadFile={(e) => handleChange(e.target.files)}
+      handleUploadFile={(e) => {
+        setFileIds(e.target.files);
+        handleChange(e.target.files);
+      }}
       onConfirmShare={handleChange}
     />
   );
@@ -494,6 +511,7 @@ export default ({ onClose, category }) => {
     <PostCreatorForm
       initialValues={initialValues}
       onSubmit={(values) => {
+        const { file_order = {} } = values;
         const finalValues = { ...values };
         finalValues.file = finalValues.file || [];
         const isFileFromStore = (file) => !!file.id;
@@ -501,6 +519,9 @@ export default ({ onClose, category }) => {
         const { file_ids, file, google_data } = finalValues.file.reduce(
           (result, f) => {
             switch (true) {
+              case f.notUploaded:
+                result.file.push(f);
+                break;
               case isFileFromStore(f):
                 result.file_ids.push(f.id);
                 break;
@@ -519,13 +540,16 @@ export default ({ onClose, category }) => {
             google_data: [],
           }
         );
-
+        // const getOrder = (f) => file_order[f.id];
+        // const orderedFiles = sortBy(file, loginlineFunc(getOrder));
+        // console.log({ file_order, orderedFiles });
         setAsyncAction(
           postModule.actions.createPost({
             ...finalValues,
             file_ids,
             file,
             google_data,
+            file_order,
           })
         );
       }}

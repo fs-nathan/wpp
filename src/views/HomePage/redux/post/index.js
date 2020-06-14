@@ -79,6 +79,7 @@ const createPost = ({
   file,
   file_ids,
   google_data,
+  file_order,
   sticker,
   is_push_notification = true,
 }) => {
@@ -94,6 +95,7 @@ const createPost = ({
         sticker,
         file_ids,
         google_data,
+        file_order,
         is_push_notification,
       }),
     },
