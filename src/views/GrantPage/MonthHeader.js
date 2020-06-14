@@ -76,7 +76,7 @@ const MonthHeader = ({
   }, [countTask]);
   return (
     <React.Fragment>
-      <div ref={containerRef} style={{ display: "flex" }}>
+      <div ref={containerRef} style={{ display: "flex", marginLeft: 2 }}>
         {month}
       </div>
       <div
@@ -101,7 +101,7 @@ const MonthHeader = ({
           style={{
             position: "absolute",
             marginLeft: 1,
-            marginTop: 22.5,
+            marginTop: 23.5,
             left: leftTable,
           }}
         >

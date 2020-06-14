@@ -123,7 +123,7 @@ function GanttChart({
                     "ant-table-row ant-table-row-level-0"
                   );
                   if (!divs[index]) return;
-                  divs[index].style.backgroundColor = "#fff";
+                  divs[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "#fff";
                 }
               }}
               className="gantt--top-timeline-tr"
@@ -264,6 +264,7 @@ function GanttChart({
               ? `gantt-chart__container scroll-gantt`
               : "gantt-chart__container"
           }
+          id="gantt-container-scroll"
           style={{
             height: heightTable,
           }}

@@ -319,8 +319,6 @@ const TimeLine = ({
         onMouseMove={handleMouseMove}
         style={{
           display: "flex",
-          top: "50%",
-          transform: "translateY(-50%)",
           position: "absolute",
           cursor:
             !isGroupTask && !isTotalDuration && !isTotalDuration && canEdit
@@ -366,7 +364,7 @@ const TimeLine = ({
               ref={refProcess}
             >
               <div className="duration-text-gantt">
-                {Math.floor(visibleGantt.numberDuration) && widthProcess + "%"}
+                {visibleGantt.numberDuration && Math.floor((widthProcess)) + "%"}
               </div>
             </div>
           </ResizableBox>

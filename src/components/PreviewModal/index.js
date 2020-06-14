@@ -6,7 +6,7 @@ import './previewModal.css';
 
 const PreviewPdfModal = ({ title, previewContent, open, setOpen, srcPreview, isLoading }) => {
     return (
-        <CustomModal fullWidth={true} maxWidth="md" height='tall' setOpen={setOpen} open={open} title={"MẪU FILE PDF"}>
+        <CustomModal fullWidth={true} maxWidth="md" height='tall' setOpen={setOpen} open={open} title={"XUẤT FILE PDF"}>
             <div className="gantt--preview-pdf__container">
                 <div className="gantt--preview-pdf__title">{title}</div>
                 <div className="gantt--preview-pdf__content">

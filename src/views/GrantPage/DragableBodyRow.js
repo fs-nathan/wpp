@@ -11,6 +11,7 @@ const DragableBodyRow = ({
   moveRow,
   className,
   style,
+  dataSource,
   ...restProps
 }) => {
   const ref = React.useRef();
@@ -55,11 +56,12 @@ const DragableBodyRow = ({
       }}
       onMouseLeave={() => {
         const divs = document.getElementsByClassName("gantt--top-timeline-tr");
-        divs[index].style.backgroundColor = "";
+        divs[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "#fff";
         const divss = document.getElementsByClassName(
           "ant-table-row ant-table-row-level-0"
         );
-        divss[index].style.backgroundColor = "#fff";
+        if (!divss[index]) return;
+        divss[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "#fff";
       }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}

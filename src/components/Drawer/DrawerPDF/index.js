@@ -29,6 +29,7 @@ const ExportPDF = ({
   previewContent,
   changeRenderFullDay,
   changeFilterExportPdf,
+  projectInfo
 }) => {
   const [showModalPreview, setShowModalPreview] = useState(false);
   const [contentPreview, setContentPreview] = useState([]);
@@ -69,12 +70,12 @@ const ExportPDF = ({
     setIsLoading(true)
     setTimeout(
       () => window.getDataUrlPdf(kendo, "previewPdf.pdf", callBackPreview),
-      2000
+      100
     );
   };
   const handleOnClickOk = () => {
     changePreviewContent(contentPreview);
-    window.convertToPdfFullWidth(kendo, "previewPdf.pdf");
+    window.ganttConvertToPdfFullWidth(kendo, "previewPdf.pdf");
   };
   const handleShowFullTime = (e) => {
     setShowFullTime(parseInt(e.target.value));
@@ -179,22 +180,14 @@ const ExportPDF = ({
           <div className="config--drawer--footer-section">
             <Button
               onClick={handleOnClickPreview}
-              style={{
-                backgroundColor: "#e3e3e3",
-                borderRadius: 0,
-                color: "#b9b9b9",
-              }}
+              className="config--drawer--footer-section__preview"
               fullWidth
             >
               Xem trước
             </Button>
             <Button
               onClick={handleOnClickOk}
-              style={{
-                backgroundColor: "#619eff",
-                borderRadius: 0,
-                color: "#fff",
-              }}
+              className="config--drawer--footer-section__confirm"
               fullWidth
             >
               Hoàn thành
@@ -243,7 +236,7 @@ const ExportPDF = ({
         isLoading={isLoading}
         open={showModalPreview}
         setOpen={handleShowModalPreview}
-        title={'Sản xuất phim "Sống chung với mẹ chồng"'}
+        title={projectInfo.name}
       />
     </React.Fragment>
   );
@@ -252,6 +245,7 @@ const ExportPDF = ({
 const mapStateToProps = (state) => ({
   exportPdfDrawerVisible: state.system.exportPdfDrawerVisible,
   previewContent: state.gantt.previewContent,
+  projectInfo: state.gantt.projectInfo,
 });
 
 const mapDispatchToProps = {
