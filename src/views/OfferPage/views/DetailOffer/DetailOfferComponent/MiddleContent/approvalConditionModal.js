@@ -8,7 +8,7 @@ import CustomSelect from 'components/CustomSelect';
 import { bgColorSelector } from 'components/LoadingOverlay/selectors';
 import TitleSectionModal from 'components/TitleSectionModal';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
-import { findIndex, isNaN, isNumber } from "lodash";
+import { findIndex, isNaN } from "lodash";
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -152,11 +152,10 @@ function ApprovalConditionModal({
 
   function handleRateChange(value) {
     var rateAccept = parseInt(value, 10);
-    console.log(isNumber(rateAccept));
     if (!isNaN(rateAccept)) {
       if (rateAccept > 100) rateAccept = 100;
       else if (rateAccept < 0) rateAccept = 0;
-    } else rateAccept = 0;
+    } else rateAccept = '';
     if (rateAccept == 100) {
       setParams("condition_logic", 'OR');
     }

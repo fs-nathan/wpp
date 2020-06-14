@@ -339,7 +339,10 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
             can_update_member_handle && (
               <IconButton
                 className="offerDetail-addBtn"
-                onClick={() => setOpenAddHandlerModal(true)}
+                onClick={() => {
+                  setNewHandlerIndexes([]);
+                  setOpenAddHandlerModal(true);
+                }}
               >
                 <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
                 <span className="offerDetail-addBtn-title">{t('ADD_PERSON_HANDLE')}</span>
@@ -363,7 +366,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
                       </div>
                     </Grid>
                     {
-                      can_update_member_handle && (
+                      get(member, "can_remove") && (
                         <IconButton
                           className="offerDetail-handlingPerson-deleteBtn"
                           onClick={() => onDeleteHandler({ offer_id, member_id: get(member, "id") })}

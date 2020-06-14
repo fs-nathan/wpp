@@ -101,10 +101,10 @@ const OfferByGroup = props => {
 
   useEffect(() => {
     if (!isNil(id)) {
-      const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-      const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
       dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-      document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
+      document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click();
       const refreshAfterCreateOffer = () => {
         dispatch(loadOfferByGroupID({ id, startDate, endDate }));
         dispatch(loadSummaryByGroup());

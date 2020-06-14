@@ -67,7 +67,7 @@ export function* doLoadOfferByGroupID({ payload }) {
   try {
     const { id, startDate, endDate } = payload;
     const config = {
-      url: `/offers/list-of-group?from_date=${startDate}&to_date=${endDate}&offer_group_id=` + id,
+      url: (startDate !== null && endDate !== null) ? `/offers/list-of-group?from_date=${startDate}&to_date=${endDate}&offer_group_id=${id}` : `/offers/list-of-group?offer_group_id=${id}`,
       method: "GET"
     };
     const result = yield apiService(config);

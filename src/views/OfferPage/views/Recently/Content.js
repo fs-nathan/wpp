@@ -14,18 +14,29 @@ export function Content() {
     let rejected = 0 // Từ chối code = 3
     let accepted = 0; // Chấp nhận code = 2
     let approving = 0 // Đang duyệt code = 1
+    for (var i = 0; i < offers.length; i++) {
+      switch (offers[i].status_code) {
+        case 0:
+          waiting++;
+          break;
+        case 1:
+          approving++;
+          break;
+        case 2:
+          accepted++;
+          break;
+        case 3:
+          rejected++;
+          break;
+      }
+    }
 
-    offers.forEach(x => {
-      if (x.status_code === 0) waiting++;
-      if (x.status_code === 1) approving++
-      if (x.status_code === 2) accepted++;
-      if (x.statuc_code === 3) rejected++;
-    });
-    let sum = waiting + accepted + approving + rejected
-    const waiting_rate = Math.ceil((waiting / (sum)) * 100);
-    const accepted_rate = Math.ceil((accepted / (sum)) * 100);
-    const rejected_rate = Math.ceil((rejected / (sum)) * 100);
-    const approving_rate = Math.ceil((approving / (sum)) * 100);
+    let sum = offers.length;
+    const waiting_rate = Math.round((waiting / (sum)) * 100);
+    const accepted_rate = Math.round((accepted / (sum)) * 100);
+    const rejected_rate = Math.round((rejected / (sum)) * 100);
+    const approving_rate = 100 - (waiting_rate + accepted_rate + rejected_rate);
+
     return {
       waiting_rate: isNaN(waiting_rate) ? 0 : waiting_rate,
       accepted_rate: isNaN(accepted_rate) ? 0 : accepted_rate,
@@ -45,25 +56,29 @@ export function Content() {
   }, [keyword, state, statusFilter]);
 
   React.useEffect(() => {
-    setCurrentPageData(take(renderTabList, 20));
+    setCurrentPageData(take(renderTabList, 50));
   }, [renderTabList]);
 
   React.useEffect(() => {
     if (scrollBarPosition >= 0.995 && currentPageData.length != offersLength) {
       var numberPerPage = currentPageData.length;
-      var newData = currentPageData.concat(slice(renderTabList, numberPerPage, numberPerPage + 20));
+      var newData = currentPageData.concat(slice(renderTabList, numberPerPage, numberPerPage + 50));
       setCurrentPageData(newData);
     }
   }, [scrollBarPosition]);
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12}>
-        <BottomHeader
-          count={offersLength}
-          statistic_status={caculateStatus({ offers: currentPageData })}
-        />
-      </Grid>
+      {
+        offersLength ? (
+          <Grid item xs={12}>
+            <BottomHeader
+              count={offersLength}
+              statistic_status={caculateStatus({ offers: renderTabList })}
+            />
+          </Grid>
+        ) : null
+      }
       <Grid item xs={12}>
         <Grid container spacing={3}>
           <Grid item container xs={12}>

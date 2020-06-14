@@ -14,10 +14,10 @@ import './styles.scss';
 const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
   const { setShowDeleteOfferConfirmModal } = useContext(OfferPageContext);
   const { t } = useTranslation()
-  const { can_modify } = rest;
+  const { can_delete } = rest;
 
   const onConfirm = () => {
-    if (can_modify) {
+    if (can_delete) {
       setShowDeleteOfferConfirmModal(true);
     }
   }
@@ -30,15 +30,15 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
     <CustomModal
       className={clsx(
         'detailOfferModal-container',
-        can_modify ? 'detailOfferModal-confirmBtn--red' : 'detailOfferModal-confirmBtn--black'
+        can_delete ? 'detailOfferModal-confirmBtn--red' : 'detailOfferModal-confirmBtn--black'
       )}
       title={getDetailOfferModalTitle(t)}
       open={open}
       setOpen={setOpen}
       loading={loading}
-      confirmRender={() => can_modify ? getDetailOfferModalConfirmBtnTitle(t) : getDetailOfferModalCancelBtnTitle(t)}
+      confirmRender={() => can_delete ? getDetailOfferModalConfirmBtnTitle(t) : getDetailOfferModalCancelBtnTitle(t)}
       onConfirm={onConfirm}
-      cancleRender={() => can_modify && getDetailOfferModalCancelBtnTitle(t)}
+      cancleRender={() => can_delete && getDetailOfferModalCancelBtnTitle(t)}
       onCancle={onCloseModal}
       manualClose={true}
       fullWidth
