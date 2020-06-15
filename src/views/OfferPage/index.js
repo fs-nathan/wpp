@@ -32,7 +32,7 @@ import { getSummaryByProjectAndKeyword } from "./views/OfferByProject/selector";
 const rightIcon = () => {
   return (
     <>
-      <div className="right-setting-icon">
+      <div className="right-setting-icon icon-new-label">
         <span>N</span>
       </div>
     </>
