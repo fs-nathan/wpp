@@ -1932,5 +1932,14 @@
   "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Thay đổi mặc định trong cài đặt dự án",
   "LABEL_CHAT_TASK_NGAY_VA_GIO": "Ngày và giờ",
   "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Chỉ nhập ngày",
-  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Không yêu cầu"
+  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Không yêu cầu",
+  "Ưu tiên cao": "Ưu tiên cao",
+  "Thu gọn": "Thu gọn",
+  "Mở rộng": "Mở rộng",
+  "Lọc": "Lọc",
+  "+ Tạo công việc": "+ Tạo công việc",
+  "Hủy": "Hủy",
+  "Tìm kiếm": "Tìm kiếm",
+  "Thêm": "Thêm",
+  "Nhập nội dung cần tìm": "Nhập nội dung cần tìm"
 }

@@ -1933,5 +1933,14 @@
   "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Change default in project settings",
   "LABEL_CHAT_TASK_NGAY_VA_GIO": "Date and Time",
   "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Only date",
-  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Not require"
+  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Not require",
+  "Ưu tiên cao": "High Priority",
+  "Thu gọn": "Collapse",
+  "Mở rộng": "Extend",
+  "Lọc": "filter",
+  "+ Tạo công việc": "+ Creating jobs",
+  "Hủy": "Cancel",
+  "Tìm kiếm": "Search",
+  "Thêm": "More",
+  "Nhập nội dung cần tìm": "Enter your search"
 }
