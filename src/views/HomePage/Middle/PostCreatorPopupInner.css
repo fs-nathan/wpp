@@ -106,6 +106,7 @@
   overflow-x: auto;
   height: 120px;
   padding: 4px;
+  align-items: center;
 }
 .comp_PostCreatorPopupInner__mediaItem {
   flex-shrink: 0;

@@ -118,6 +118,7 @@ const updatePost = ({
   file_ids,
   google_data,
   sticker,
+  file_order,
   is_push_notification = true,
 }) => {
   return createPostAsyncAction({
@@ -134,6 +135,7 @@ const updatePost = ({
         file_ids,
         google_data,
         is_push_notification,
+        file_order,
       }),
     },
     success: createAction(post.actions.listupdate.type, function prepare(data) {

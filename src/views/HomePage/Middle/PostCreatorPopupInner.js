@@ -10,6 +10,7 @@ import { useToggle } from "react-use";
 import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { uniqueId } from "views/JobPage/utils";
+import { loginlineParams } from "views/OfferPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
@@ -60,6 +61,15 @@ const ImageListField = ({
         value: [...(field.value || emptyArray), ...files],
       },
     });
+    field.onChange({
+      target: {
+        name: `${name}_order`,
+        value: [
+          ...(fieldOrder.value || emptyArray),
+          ...[...files].map((file) => file.id),
+        ],
+      },
+    });
   };
 
   const { list, showEmpty } = useMemo(() => {
@@ -87,7 +97,7 @@ const ImageListField = ({
                   fieldOrder.onChange({
                     target: {
                       name: `${name}_order`,
-                      value: JSON.stringify(orderList),
+                      value: orderList,
                       // .reduce((result, v, i) => {
                       //   result[v] = i;
                       //   return result;
@@ -112,6 +122,9 @@ const ImageListField = ({
                           file={item}
                           onDelete={() => {
                             const newImage = [...field.value];
+                            const index = newImage.findIndex(
+                              (file) => file.id === item.id
+                            );
                             newImage.splice(index, 1);
                             field.onChange({
                               target: {
@@ -152,6 +165,7 @@ const FileField = ({ name, id, children, ...props }) => {
     return id || "FileField_" + uniqueId();
   });
   const [field, meta] = useField({ name });
+  const [fieldOrder] = useField({ name: `${name}_order` });
   return (
     <>
       {children(inputId, field, meta)}
@@ -168,6 +182,15 @@ const FileField = ({ name, id, children, ...props }) => {
             target: {
               name,
               value: [...(field.value || emptyArray), ...e.target.files],
+            },
+          });
+          field.onChange({
+            target: {
+              name: `${name}_order`,
+              value: [
+                ...(fieldOrder.value || emptyArray),
+                ...[...e.target.files].map((file) => file.id),
+              ],
             },
           });
         }}
@@ -445,11 +468,21 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
 };
 const ModalFileInput = ({ name, open, setOpen }) => {
   const [field] = useField({ name });
+  const [fieldOrder] = useField({ name: `${name}_order` });
   const handleChange = (files = []) => {
     field.onChange({
       target: {
         name,
         value: [...(field.value || emptyArray), ...files],
+      },
+    });
+    field.onChange({
+      target: {
+        name: `${name}_order`,
+        value: [
+          ...(fieldOrder.value || emptyArray),
+          ...[...files].map((file) => file.id),
+        ],
       },
     });
     setOpen(false);
@@ -511,13 +544,13 @@ export default ({ onClose, category }) => {
     <PostCreatorForm
       initialValues={initialValues}
       onSubmit={(values) => {
-        const { file_order = {} } = values;
+        const { file_order = [] } = values;
         const finalValues = { ...values };
         finalValues.file = finalValues.file || [];
         const isFileFromStore = (file) => !!file.id;
         const isFileFromGoggle = (file) => !!file.file_id;
         const { file_ids, file, google_data } = finalValues.file.reduce(
-          (result, f) => {
+          (result, f, i) => {
             switch (true) {
               case f.notUploaded:
                 result.file.push(f);
@@ -543,15 +576,33 @@ export default ({ onClose, category }) => {
         // const getOrder = (f) => file_order[f.id];
         // const orderedFiles = sortBy(file, loginlineFunc(getOrder));
         // console.log({ file_order, orderedFiles });
-        setAsyncAction(
-          postModule.actions.createPost({
+        const action = postModule.actions.createPost(
+          loginlineParams({
             ...finalValues,
             file_ids,
             file,
             google_data,
-            file_order,
+            file_order: JSON.stringify(
+              file_order
+                .map((value) => {
+                  let index = file.findIndex((item) => {
+                    return item.id === value;
+                  });
+                  if (index >= 0) return "file_" + index;
+                  if (index < 0) {
+                    index = file_ids.findIndex((id) => {
+                      return id === value;
+                    });
+                    if (index >= 0) return value;
+                  }
+
+                  return undefined;
+                })
+                .filter((item) => item)
+            ),
           })
         );
+        setAsyncAction(action);
       }}
     >
       <PostCreatorPopupInner
