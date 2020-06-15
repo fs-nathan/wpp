@@ -5,9 +5,7 @@ import { connect } from "react-redux";
 import { bgColorSelector } from "views/ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import "./EmptyHolder.css";
 function EmptyHolder({
-  bgColor,
-  title = "Không có dữ liệu",
-  description = "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc"
+  bgColor
 }) {
   const { t } = useTranslation();
   return (
@@ -19,9 +17,9 @@ function EmptyHolder({
           color: bgColor.color
         }}
       >
-        {t(title)}
+        {t("VIEW_OFFER_LABEL_DATA_NOT_FOUND")}
       </div>
-      <div className="comp_EmptyHolder__description">{t(description)}</div>
+      <div className="comp_EmptyHolder__description">{t("VIEW_OFFER_TEXT_DATA_NOT_FOUND_DISCRIPTION")}</div>
     </div>
   );
 }

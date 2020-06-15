@@ -7,17 +7,21 @@
     color: orange;
     margin-top: 10px;
   }
+
   &--selectAll {
     border-bottom: 1px solid #e0e0e0;
     display: flex;
     padding: 10px 0;
+
     &Text {
       font-size: 14px;
     }
+
     .MuiCheckbox-root {
       padding: 0;
       margin-right: 20px;
     }
+
     .MuiSvgIcon-root {
       width: 22px !important;
       height: 22px !important;
@@ -32,7 +36,7 @@
 
   .MuiCheckbox-root {
     margin-right: 20px;
-    padding: 0 !important;
+    margin-left: -10px;
   }
 
   .MuiSvgIcon-root {

@@ -9,10 +9,10 @@ import { connect } from "react-redux";
 import { useHistory } from 'react-router-dom';
 import { useMountedState } from "react-use";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
-import LoadingBox from "../../../components/LoadingBox";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
+import RedirectModal from "../components/RedirectModal";
 import { Routes } from '../contants/routes';
 import { OfferPageContext } from "../OfferPageContext";
 import { createOffer } from '../redux/actions';
@@ -144,58 +144,50 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     setTimeAnchor,
     quickTask,
     setQuickTask,
-    timeFilterTypeOfferOverview,
-    timeFilterTypeOfferByGroup,
-    timeFilterTypeOfferByProject,
-    timeFilterTypeOfferByDepartment,
+    timeType,
     setTimeType,
     setTimeRange,
     expand,
     handleExpand,
     keyword,
     setkeyword,
+    setScrollBarPosition
   } = useContext(OfferPageContext);
 
   const times = useTimes();
   const open = !!quickTask;
   const [openModalOffer, setOpenModalOffer] = useState(false);
   const [haveTimePopper, setHaveTimePopper] = useState(true);
-
-  const {
-    location: { pathname }
-  } = useHistory();
-
-  const offerOverviewRouteRegex = new RegExp(Routes.OVERVIEW, 'gi');
-  const offerByGroupRouteRegex = new RegExp(Routes.OFFERBYGROUP, 'gi');
-  const offerByProjectRouteRegex = new RegExp(Routes.OFFERBYPROJECT, 'gi');
-  const offerByDepartmentRouteRegex = new RegExp(Routes.OFFERBYDEPARTMENT, 'gi');
-  let timeFilterType;
-
-  if (offerByGroupRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferByGroup.timeType;
-  } else if (offerByProjectRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferByProject.timeType;
-  } else if (offerByDepartmentRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferByDepartment.timeType;
-  } else if (offerOverviewRouteRegex.test(pathname)) {
-    timeFilterType = timeFilterTypeOfferOverview.timeType;
-  } else {
-    timeFilterType = 1;
-  }
+  const [haveFilter, setHaveFilter] = useState(true);
+  const [haveSearchBox, setHaveSearchBox] = useState(true);
+  const { location: { pathname } } = useHistory();
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [openModalRedirect, setOpenModalRedirect] = useState(false);
 
   React.useEffect(() => {
     if (isMounted) {
       if (pathname.includes("/recently")) {
         setHaveTimePopper(false);
+      } else if (pathname === Routes.OVERVIEW) {
+        setHaveFilter(false);
+        setHaveSearchBox(false);
+      } else if (pathname.includes(Routes.OFFERBYPROJECT)) {
+        setShouldRedirect(true);
       }
     }
-  }, [isMounted]);
+  }, [isMounted, pathname, timeType]);
+
+  function handleScrollbarPosition(values) {
+    if (values.top >= 0.995) {
+      setScrollBarPosition(values.top);
+    }
+  }
 
   const options = {
     title: props.title,
     subActions: [
       haveTimePopper ? {
-        label: times[timeFilterType].title,
+        label: times[timeType].title,
         iconPath: mdiCalendar,
         onClick: (evt) => setTimeAnchor(evt.currentTarget),
       } : null,
@@ -204,31 +196,21 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
         iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
         onClick: () => handleExpand(!expand),
       },
-      {
+      haveFilter ? {
         label: t("IDS_WP_FILTER"),
         iconPath: mdiFilterOutline,
         onClick: () => setQuickTask(<QuickViewFilter />),
-      },
+      } : null,
     ],
     mainAction: {
       label: t("VIEW_OFFER_LABEL_CREATE_OFFER"),
-      onClick: () => setOpenModalOffer(true),
+      onClick: () => shouldRedirect ? setOpenModalRedirect(true) : setOpenModalOffer(true),
       color: "#fd7e14"
     },
-    search: {
+    search: haveSearchBox ? {
       patern: keyword,
       onChange: setkeyword,
-    },
-
-    draggable: {
-      bool: true,
-      onDragEnd: () => { },
-    },
-
-    loading: {
-      bool: false,
-      component: () => <LoadingBox />,
-    },
+    } : null,
     row: {
       id: "id",
     },
@@ -251,7 +233,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             ...props,
           }}
         >
-          <Scrollbars autoHide autoHideTimeout={500}>
+          <Scrollbars autoHide autoHideTimeout={500} onScrollFrame={(values) => handleScrollbarPosition(values)}>
             {children}
           </Scrollbars>
         </LayoutStateLess>
@@ -262,7 +244,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
               bgColor={bgColor}
               anchorEl={timeAnchor}
               setAnchorEl={setTimeAnchor}
-              timeOptionDefault={timeFilterType}
+              timeOptionDefault={timeType}
               handleTimeRange={(timeType, startDate, endDate) => {
                 setTimeType(timeType);
                 setTimeRange({ startDate, endDate });
@@ -277,6 +259,10 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             setOpen={setOpenModalOffer}
             actionCreateOffer={createOffer()}
           />
+        )}
+
+        {openModalRedirect && (
+          <RedirectModal onClose={() => setOpenModalRedirect(false)} />
         )}
       </>
     </CustomTableProvider>

@@ -106,8 +106,6 @@
       font-weight: 700;
     }
 
-    &-result {}
-
     &-member {
       &-container {
         padding: 0.2em 0;
@@ -131,6 +129,17 @@
   &-horizontalLine {
     margin: 10px 0 5px;
     border-bottom: 1px solid #3333;
+  }
+
+  &__result_label {
+    padding: 7px 10px;
+    min-width: 64px;
+    box-sizing: border-box;
+    font-weight: 500;
+    line-height: 1.75;
+    border-radius: 4px;
+    letter-spacing: 0.02857em;
+    text-transform: uppercase;
   }
 }
 

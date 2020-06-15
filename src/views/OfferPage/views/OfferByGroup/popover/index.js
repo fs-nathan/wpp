@@ -6,6 +6,7 @@ import MoreVertIcon from '@material-ui/icons/MoreVert';
 import classNames from 'classnames';
 import AlertModal from 'components/AlertModal';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
 import { action } from 'views/OfferPage/contants/attrs';
 import { deleteGroupOffer } from 'views/OfferPage/redux/actions';
@@ -27,7 +28,9 @@ export default function ExpandPopover({ offer_group_id, name, description, view 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [deleteModal, setDeleteModal] = React.useState(false)
   const [openOfferByGroupModal, setOpenOfferByGroupModal] = React.useState(false)
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -67,11 +70,30 @@ export default function ExpandPopover({ offer_group_id, name, description, view 
           horizontal: 'left',
         }}
       >
-        {view && <Typography className={classNames(classes.typography, "Offer-group_option")}>Xem đề xuất</Typography>}
-        <Typography className={classNames(classes.typography, "Offer-group_option")} onClick={() => setOpenOfferByGroupModal(true)}>Chỉnh sửa</Typography>
-        {<Typography className={classNames(classes.typography, "Offer-group_option")} onClick={() => setDeleteModal(true)}>Xoá</Typography>}
+        {view && <Typography className={classNames(classes.typography, "Offer-group_option")}>{t("VIEW_OFFER_LABLE_VIEW_DETAIL_OFFER")}</Typography>}
+        <Typography
+          className={classNames(classes.typography, "Offer-group_option")}
+          onClick={() => {
+            setAnchorEl(null);
+            setOpenOfferByGroupModal(true);
+          }}>
+          {t("IDS_WP_EDIT_TEXT")}
+        </Typography>
+        {<Typography
+          className={classNames(classes.typography, "Offer-group_option")}
+          onClick={() => {
+            setAnchorEl(null);
+            setDeleteModal(true);
+          }}>
+          {t("IDS_WP_DELETE")}
+        </Typography>}
       </Popover>
-      <AlertModal setOpen={setOpenDeleteModal} onConfirm={() => handleDeleteGroupOffer()} open={deleteModal} content="Bạn chắc chắn muốn xoá đề xuất này?" />
+      <AlertModal
+        setOpen={setOpenDeleteModal}
+        onConfirm={() => handleDeleteGroupOffer()}
+        open={deleteModal}
+        content={t("VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING")}
+      />
     </div>
   );
 }
