@@ -13,6 +13,8 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from 'views/JobDetailPage/selectors';
 import MenuListItem from './MenuListItem';
+import * as fileType from 'assets/fileType';
+import { FileType } from 'components/FileType';
 
 const FileBox = (props) => {
   const { t } = useTranslation();
@@ -25,7 +27,7 @@ const FileBox = (props) => {
   function onClickFile(file, idx) {
     const type = getFileType(file.name);
     return () => {
-      if (type === 'mp4') {
+      if (FileType(type) === fileType.video) {
         // const user = { user_create_avatar, user_create_name, time_create, user_create_position };
         dispatch(showImagesList(true, [file], 0));
       } else {

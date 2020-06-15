@@ -12,19 +12,19 @@ const RedirectModal = props => {
   const bgColor = props.colors.find(item => item.selected === true);
   return (
     <ModalCommon
-      title={t("Tạo mới công việc")}
+      title={t("VIEW_OFFER_LABEL_CREATE_NEW_OFFER")}
       onClose={props.onClose}
       footerAction={[]}
     >
       <DialogContent dividers className="dialog-content redirect-modal">
         <p className="redirect-text">
-          {t("Bạn cần phải chọn một dự án trước khi tạo mới công việc")}
+          {t("VIEW_OFFER_TEXT_CREATE_NEW_OFFER_SHOULD_REDIRECT")}
         </p>
         <Button
           variant="outlined"
           className="redirect-btn"
           onClick={() => {
-            props.history.push(Routes.PROJECTS);
+            props.history.push(Routes.TASKS);
             props.onClose();
           }}
           style={{
@@ -33,7 +33,7 @@ const RedirectModal = props => {
             color: "#fff"
           }}
         >
-          {t("Đi đến danh sách dự án")}
+          {t("VIEW_OFFER_LABEL_REDIRECT_TO_TASK")}
         </Button>
       </DialogContent>
     </ModalCommon>

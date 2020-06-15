@@ -4,7 +4,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
+import { updatePriority, getMember } from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
@@ -146,94 +146,101 @@ function TabBody(props) {
     dispatch(updatePriority({ task_id: taskId, priority: idx }))
   }
 
+  function onClickMember() {
+    props.setShow(8)
+    dispatch(getMember({ task_id: taskId }))
+  }
+
   return (
-    <Body className="listPartTabBody"
-      renderView={props => <div {...props} className="listPartTabBody--container" />}
-      autoHide autoHideTimeout={500} autoHideDuration={200}>
-      <StyledList>
-        <ListItem>
-          <ListItemText>
-            <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
-            <ContentText component='span'>
-              {detailTask && detailTask.name}
-              {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
-            </ContentText>
-          </ListItemText>
-        </ListItem>
-        <Description value={content} />
-        <ListItemButtonGroup>
-          {taskStatistic.state_code !== 3 &&
+    <div className="listPartTabBody">
+      <Body
+        renderView={props => <div {...props} className="listPartTabBody--container" />}
+        autoHide autoHideTimeout={500} autoHideDuration={200}>
+        <StyledList>
+          <ListItem>
+            <ListItemText>
+              <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
+              <ContentText component='span'>
+                {detailTask && detailTask.name}
+                {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
+              </ContentText>
+            </ListItemText>
+          </ListItem>
+          <Description value={content} />
+          <ListItemButtonGroup>
+            {taskStatistic.state_code !== 3 &&
+              <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
+                TransitionProps={{ timeout: 0 }}
+                title={<ModalStatus value={taskStatistic.state_code} />}
+                placement="top-start">
+                <StatusLabel
+                  type={TYPE_STATUS}
+                  value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+                />
+              </HtmlTooltip>
+            }
             <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
               TransitionProps={{ timeout: 0 }}
-              title={<ModalStatus value={taskStatistic.state_code} />}
+              title={<ModalPriority value={taskStatistic.priority_code} />}
               placement="top-start">
               <StatusLabel
-                type={TYPE_STATUS}
-                value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+                type={TYPE_PRIORITY}
+                value={taskStatistic.priority_code}
               />
             </HtmlTooltip>
-          }
-          <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
-            TransitionProps={{ timeout: 0 }}
-            title={<ModalPriority value={taskStatistic.priority_code} />}
-            placement="top-start">
-            <StatusLabel
-              type={TYPE_PRIORITY}
-              value={taskStatistic.priority_code}
-            />
-          </HtmlTooltip>
-          {
-            taskStatistic.state_code === 3 &&
-            <Typography
-              className="listPartTabBody--expired"
-            >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
-          }
-        </ListItemButtonGroup>
-        <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_TIEN_DO')}</ColorTypo>
-          {taskStatistic.progressCnt &&
-            <BadgeItem badge color='orangelight'
-              label={taskStatistic.progressCnt}
-              className="listPartTabBody--badge"
-            />}
-          <div className="simple-progress-bar-wrapper">
-            <SimpleSmallProgressBar percentDone={taskStatistic.complete} percentTarget={taskStatistic.complete_with_time} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
-          </div>
-        </ListItemTab>
-        <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_CONG_VIEC_CON')}</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={taskStatistic.subTaskCnt} />
-        </ListItemTab>
-        <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_NHAC_HEN')}</ColorTypo>
-          <BadgeItem badge size='small' color='redlight' label={taskStatistic.remindCnt} />
-        </ListItemTab>
-        <ListItemTab disableRipple button onClick={() => props.setShow(4)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_TAI_LIEU')}</ColorTypo>
-          <BadgeItem badge size='small' color='purplelight' label={taskStatistic.fileCnt} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={taskStatistic.imgCnt} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='purplelight' label={taskStatistic.linkCnt} />
-        </ListItemTab>
-        <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}</ColorTypo>
-          <BadgeItem badge size='small' color='indigolight' label={taskStatistic.lctCnt} />
-        </ListItemTab>
-        <ListItemTab disableRipple button onClick={() => props.setShow(6)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_DE_XUAT_DUYET')}</ColorTypo>
-          <BadgeItem badge size='small' color='orangelight' label={taskStatistic.offerCnt} style={{ marginRight: 5 }} />
-          <BadgeItem badge size='small' color='orangelight' label={taskStatistic.acceptOfferCnt} />
-        </ListItemTab>
-        <ListItemTab disableRipple button onClick={() => props.setShow(7)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}</ColorTypo>
-          <BadgeItem badge size='small' color='bluelight' label={taskStatistic.commandCnt} />
-        </ListItemTab>
-        <ListItemTab disableRipple button onClick={() => props.setShow(8)}>
-          <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
-          <AvatarCircleList users={members} display={9} />
-          {/* {MemberTask(taskStatistic)} */}
-        </ListItemTab>
-      </StyledList>
-    </Body >
+            {
+              taskStatistic.state_code === 3 &&
+              <Typography
+                className="listPartTabBody--expired"
+              >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
+            }
+          </ListItemButtonGroup>
+          <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_TIEN_DO')}</ColorTypo>
+            {taskStatistic.progressCnt &&
+              <BadgeItem badge color='orangelight'
+                label={taskStatistic.progressCnt}
+                className="listPartTabBody--badge"
+              />}
+            <div className="simple-progress-bar-wrapper">
+              <SimpleSmallProgressBar percentDone={taskStatistic.complete} percentTarget={taskStatistic.complete_with_time} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
+            </div>
+          </ListItemTab>
+          <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_CONG_VIEC_CON')}</ColorTypo>
+            <BadgeItem badge size='small' color='bluelight' label={taskStatistic.subTaskCnt} />
+          </ListItemTab>
+          <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_NHAC_HEN')}</ColorTypo>
+            <BadgeItem badge size='small' color='redlight' label={taskStatistic.remindCnt} />
+          </ListItemTab>
+          <ListItemTab disableRipple button onClick={() => props.setShow(4)}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_TAI_LIEU')}</ColorTypo>
+            <BadgeItem badge size='small' color='purplelight' label={taskStatistic.fileCnt} style={{ marginRight: 5 }} />
+            <BadgeItem badge size='small' color='purplelight' label={taskStatistic.imgCnt} style={{ marginRight: 5 }} />
+            <BadgeItem badge size='small' color='purplelight' label={taskStatistic.linkCnt} />
+          </ListItemTab>
+          <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}</ColorTypo>
+            <BadgeItem badge size='small' color='indigolight' label={taskStatistic.lctCnt} />
+          </ListItemTab>
+          <ListItemTab disableRipple button onClick={() => props.setShow(6)}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_DE_XUAT_DUYET')}</ColorTypo>
+            <BadgeItem badge size='small' color='orangelight' label={taskStatistic.offerCnt} style={{ marginRight: 5 }} />
+            <BadgeItem badge size='small' color='orangelight' label={taskStatistic.acceptOfferCnt} />
+          </ListItemTab>
+          <ListItemTab disableRipple button onClick={() => props.setShow(7)}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}</ColorTypo>
+            <BadgeItem badge size='small' color='bluelight' label={taskStatistic.commandCnt} />
+          </ListItemTab>
+          <ListItemTab disableRipple button onClick={onClickMember}>
+            <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
+            <AvatarCircleList users={members} display={9} />
+            {/* {MemberTask(taskStatistic)} */}
+          </ListItemTab>
+        </StyledList>
+      </Body >
+    </div>
   )
 }
 

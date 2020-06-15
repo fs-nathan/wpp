@@ -1,10 +1,11 @@
-import { Avatar, Button, Grid, IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
+import { Avatar, Box, Button, Grid, IconButton } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { mdiPlusCircle } from '@mdi/js';
+import { mdiClose, mdiDownload, mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
+import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
+import { CustomEventDispose, CustomEventListener } from 'constants/events';
 import lodash from 'lodash';
 import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
@@ -12,7 +13,9 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
+import { useMountedState } from 'react-use';
 import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor, uploadDocumentOffer } from 'views/OfferPage/redux/actions';
+import { DELETE_DOCUMENT_OFFER } from 'views/OfferPage/redux/types';
 import { listUserOfGroup } from '../../../../../../actions/user/listUserOfGroup';
 import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
 import { allMembersSelector } from '../../../../../../reducers/user/listOfUserGroup/selectors';
@@ -150,20 +153,23 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
 
 const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
   const { t } = useTranslation()
-  const [deleteDocumentModal, setDeleteDocumentModal] = useState(false)
+  const [deleteDocumentModal, setDeleteDocumentModal] = useState(false);
+  const isMounted = useMountedState();
   const dispatch = useDispatch()
   const [deletedFileId, setDeletedFileId] = useState([])
   const [selectedItem, setSelectedItem] = useState({ file_id: "", name: "", url: "", file_icon: "" })
-  const [openSendFileModal, setOpenSendFileModal] = useState(false)
+  const [openSendFileModal, setOpenSendFileModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const handleDeleteDocument = ({ file_id, name, url, file_icon }) => {
     setSelectedItem({ file_id, name, url, file_icon })
-    setDeleteDocumentModal(true)
+    setDeleteDocumentModal(true);
   }
   const renderConfirmRemoveFileModal = () => {
     return (
       <>
         <Grid container direction="column" justify="center" alignItems="center">
-          <p>Bạn có muốn xoá file sau?</p>
+          <p>{t("VIEW_OFFER_TEXT_DELETE_FILE_WARNING")}</p>
           <div style={{ textAlign: "center" }}>
             <a target="_blank"
               href={get(selectedItem, "url")}>
@@ -175,10 +181,26 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
       </>
     )
   }
+
+  const afterDeleteDocument = () => {
+    setLoading(false);
+    setDeleteDocumentModal(false);
+  }
+
+  React.useEffect(() => {
+    if (isMounted) {
+      CustomEventListener(DELETE_DOCUMENT_OFFER, afterDeleteDocument);
+      return () => {
+        CustomEventDispose(DELETE_DOCUMENT_OFFER, afterDeleteDocument)
+      }
+    }
+  }, [isMounted]);
+
   const confirmDeleteDocument = useCallback(() => {
+    setLoading(true);
     dispatch(deleteDocumentOffer({ offer_id, file_id: selectedItem.file_id }))
-    // setDeletedFileId((prevValue) => [...prevValue, selectedItem.file_id])
-  }, [dispatch, offer_id, selectedItem.file_id])
+  }, [dispatch, offer_id, selectedItem.file_id]);
+
   const handleUploadSelectedFilesFromPC = async (e) => {
     const { files } = e.target;
     const formData = new FormData();
@@ -186,6 +208,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     [...files].forEach(file => formData.append("file", file, file.name));
     dispatch(uploadDocumentOffer({ data: formData }));
   }
+
   const handleSelectedFilesFromLibrary = (selectedFiles) => {
     if (selectedFiles) {
       const formData = new FormData();
@@ -194,12 +217,22 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
       dispatch(uploadDocumentOffer({ data: formData }))
     }
   }
+
   const reRenDerDocumentsOnDelete = useMemo(() => {
     if (isEmpty(documents)) {
       return []
     }
     return documents.filter(document => !deletedFileId.includes(document.id))
-  }, [deletedFileId, documents])
+  }, [deletedFileId, documents]);
+
+  function handleOpenFile(document) {
+    dispatch(openDocumentDetail(document));
+  }
+
+  function handleDownloadFile(url) {
+    window.open(url);
+  }
+
   return (
     <>
       <div>
@@ -208,24 +241,29 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
       <Grid container spacing="2">
         {!isEmpty(documents) &&
           reRenDerDocumentsOnDelete.map((document) => (
-            <Grid item xs={5} className="offerDetail-attachedDocument-fileContainer">
-              <div
-                className="offerDetail-attachedDocument-fileIcon"
-              >
-                <img height="30" width="30" src={get(document, "file_icon")} />
-                <a
-                  target="_blank"
-                  href={get(document, "url")}
-                >
-                  <div className="offerDetail-attachedDocument-fileName">{get(document, "name")}</div>
-                </a>
-                {
-                  can_modify && (
-                    <IconButton onClick={() => handleDeleteDocument({ file_id: document.id, ...document })}>
-                      <CloseIcon fontSize="small" />
-                    </IconButton>
-                  )
-                }
+            <Grid item xs={12} className="offerDetail-attachedDocument-fileContainer">
+              <div className="offerDetail-attachedDocument-fileItem">
+                <div className="offerDetail-attachedDocument-fileItem-fileImage">
+                  <img height="30" width="30" src={get(document, "file_icon")} />
+                </div>
+                <div className="offerDetail-attachedDocument-fileItem-fileNameWrapper" onClick={() => handleOpenFile(document)}>
+                  <abbr title={get(document, "name")}>
+                    <div className="offerDetail-attachedDocument-fileName">{get(document, "name")}</div>
+                  </abbr>
+                  <span>{get(document, "type").toUpperCase()} - {get(document, "size").toUpperCase()}</span>
+                </div>
+                <div className="offerDetail-attachedDocument-fileItem-groupButton">
+                  <IconButton onClick={() => handleDownloadFile(get(document, "url"))}>
+                    <Icon path={mdiDownload} size={1} color="#b9b9b9" />
+                  </IconButton>
+                  {
+                    can_modify && (
+                      <IconButton onClick={() => handleDeleteDocument({ file_id: document.id, ...document })}>
+                        <Icon path={mdiClose} size={1} color="#b9b9b9" />
+                      </IconButton>
+                    )
+                  }
+                </div>
               </div>
             </Grid>
           ))}
@@ -246,6 +284,8 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
         setOpen={setDeleteDocumentModal}
         onConfirm={confirmDeleteDocument}
         content={renderConfirmRemoveFileModal()}
+        manualClose={true}
+        actionLoading={loading}
       />
       <SendFileModal
         open={openSendFileModal}
@@ -257,6 +297,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     </>
   );
 };
+
 const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers, addedHandlers, addableHandlers, bgColor }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
@@ -275,38 +316,47 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   const onAddHandler = (members) => {
     setNewHandlerIndexes(members);
     const memberIds = [];
+
     members.forEach(idx => {
       memberIds.push(allMembers[idx].id);
-    })
-    dispatch(addMemberHandle({ offer_id, member_id: memberIds }))
+    });
+
+    if (memberIds.length > 0) {
+      dispatch(addMemberHandle({ offer_id, member_id: memberIds }));
+    }
   }
+
   const onDeleteHandler = ({ offer_id, member_id }) => {
     dispatch(deleteMemberHandle({ offer_id, member_id }))
   }
+
   return (
     <>
       <Grid container>
-        <Grid item xs={5}>
+        <Box className="offerDetail-handlingPerson-container">
           <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
           {
             can_update_member_handle && (
               <IconButton
                 className="offerDetail-addBtn"
-                onClick={() => setOpenAddHandlerModal(true)}
+                onClick={() => {
+                  setNewHandlerIndexes([]);
+                  setOpenAddHandlerModal(true);
+                }}
               >
                 <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
                 <span className="offerDetail-addBtn-title">{t('ADD_PERSON_HANDLE')}</span>
               </IconButton>
             )
           }
-        </Grid>
-        <Grid item xs={7}>
+        </Box>
+        <Grid item xs={12}>
           <Grid container>
             {!isEmpty(addedHandlers) && (
               addedHandlers.map((member, i) => (
                 <Grid item xs={12} className="offerDetail-handlingPerson-item">
                   <Grid container>
-                    <Grid item xs={2}>
+                    <Grid item xs={1}>
                       <Avatar src={get(member, "avatar")} />
                     </Grid>
                     <Grid item>
@@ -316,7 +366,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
                       </div>
                     </Grid>
                     {
-                      can_update_member_handle && (
+                      get(member, "can_remove") && (
                         <IconButton
                           className="offerDetail-handlingPerson-deleteBtn"
                           onClick={() => onDeleteHandler({ offer_id, member_id: get(member, "id") })}
@@ -344,6 +394,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
     </>
   );
 };
+
 const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers, addedMonitors, addableMonitors, bgColor }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -365,14 +416,17 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
     members.forEach(idx => {
       memberIds.push(allMembers[idx].id);
     })
-    dispatch(addMemberMonitor({ offer_id, member_id: memberIds }))
+
+    if (memberIds.length > 0) {
+      dispatch(addMemberMonitor({ offer_id, member_id: memberIds }));
+    }
   }
   const onDeleteMonitor = ({ offer_id, member_id }) => {
     dispatch(deleteMemberMonitor({ offer_id, member_id }))
   }
   return (
     <Grid container>
-      <Grid item xs={5}>
+      <Box className="offerDetail-handlingPerson-container">
         <div className="offerDetail-monitoringPerson-title">{t("VIEW_OFFER_LABEL_SUPERVISOR")}</div>
         {
           can_update_member_monitor && (
@@ -385,8 +439,8 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
             </IconButton>
           )
         }
-      </Grid>
-      <Grid item xs={7}>
+      </Box>
+      <Grid item xs={12}>
         <Grid container>
           {!isEmpty(addedMonitors) && (
             addedMonitors.map(member => (

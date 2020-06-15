@@ -31,7 +31,7 @@ function OfferDetailItem(props) {
     setAnchorEl(null);
   }
   const statusLabel = status === 0 ? 'ok' : 'denied';
-  const statusContent = status === 0 ? 'Đồng ý' : 'Từ chối';
+  const statusContent = status === 0 ? t('LABEL_CHAT_TASK_DONG_Y') : t('LABEL_CHAT_TASK_TU_CHOI');
   return <div className="offerDetailItem">
     <Avatar
       className="offerDetailItem--avatarIcon"
@@ -40,9 +40,9 @@ function OfferDetailItem(props) {
     <div className="offerDetailItem--data" >
       <div className="offerDetailItem--itemName">
         {user_hander_name}
-        <span className="offerDetailItem--itemRole">
+        {user_hander_position && <span className="offerDetailItem--itemRole">
           - {user_hander_position}
-        </span>
+        </span>}
       </div>
       <div className={clsx("offerDetailItem--itemStatus", `offerDetailItem--itemStatus__${statusLabel}`)}>
         {statusContent}{t('LABEL_CHAT_TASK_DE_XUAT_LUC')}{date_hander}

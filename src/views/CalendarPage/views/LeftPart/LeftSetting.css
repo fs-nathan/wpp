@@ -7,9 +7,14 @@
 .calendar_type_secondary {
   color: rgba(0, 0, 0, 0.54);
   font-size: 14px;
+  word-break: break-all;
 }
 
 .custom-title-setting-item {
   color: #222;
   font-weight: 500;
+}
+
+.comp_CustomList___list-item>:not(:first-child) {
+  max-width: 80%;
 }

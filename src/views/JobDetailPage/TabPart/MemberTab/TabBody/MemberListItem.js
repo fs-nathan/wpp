@@ -32,6 +32,8 @@ const MemberListItem = ({
   id, name, avatar,
   room, position, group_permission,
   handleClickPermission,
+  can_ban,
+  is_admin,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -94,8 +96,8 @@ const MemberListItem = ({
         }}
       >
         <MenuItem className="memberItem--menuItem" onClick={handleClickDetail}>{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
+        {!is_admin && <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>}
+        {can_ban && <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>}
       </Menu>
     </React.Fragment >
   );
