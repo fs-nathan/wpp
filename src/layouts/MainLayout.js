@@ -195,7 +195,7 @@ function MainLayout({
   appendViewedChat,
   updateProjectChat,
   taskDetails = {},
-  userId = "",
+  profile = {},
   language = "vi",
   listDataNotRoom,
   listTaskDetail,
@@ -270,7 +270,7 @@ function MainLayout({
   }, []);
 
   useEffect(() => {
-    if (!socket || !userId || !taskDetails) return;
+    if (!socket || !profile.id || !taskDetails) return;
     function handleChatInProject(data) {
       console.log("handleChatInProject", data);
       const { user_create_id, task_id, content = {} } = data;
@@ -281,7 +281,7 @@ function MainLayout({
         getListTaskDetail(projectId);
       } else {
         if (task_id !== taskDetails.id) {
-          data.new_chat = user_create_id === userId ? 0 : 1;
+          data.new_chat = user_create_id === profile.id ? 0 : 1;
         }
         data.content = content[language];
         data.updatedAt = Date.now();
@@ -295,7 +295,7 @@ function MainLayout({
     };
     // eslint-disable-next-line
   }, [
-    userId,
+    profile.id,
     language,
     taskDetails,
     listTaskDetail,
@@ -309,7 +309,8 @@ function MainLayout({
     const handleNewChat = (data) => {
       console.log("handleNewChat", data, taskDetails.uuid);
       if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
-        appendChat({ data_chat: data });
+        const isHideSendStatus = data.user_create_avatar && data.user_create_avatar !== profile.avatar
+        appendChat({ data_chat: data }, undefined, isHideSendStatus);
       }
       const task = getTaskByChat(data, taskDetails);
       if (task) {
@@ -343,7 +344,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(
@@ -448,7 +449,7 @@ export default connect(
     listDataNotRoom: state.taskDetail.listDetailTask.listDataNotRoom,
     listTaskDetail: state.taskDetail.listDetailTask.listTaskDetail,
     taskDetails: state.taskDetail.detailTask.taskDetails,
-    userId: state.system.profile.id,
+    profile: state.system.profile,
     language: state.system.profile.language,
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,

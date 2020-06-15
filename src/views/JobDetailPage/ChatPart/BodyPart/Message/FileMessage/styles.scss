@@ -98,16 +98,26 @@
   }
   &--videoPlayButton {
     position: absolute;
-    width: 45px;
-    height: 45px;
-    left: 45%;
-    top: 45%;
-    color: #111;
+    width: 60px;
+    height: 60px;
+    left: calc((100% - 60px) / 2);
+    top: calc((100% - 60px) / 2);
+    color: #767676;
   }
   &--videoPlayer {
     video {
       border-radius: 5px;
     }
+  }
+  &--videoInfo {
+    position: absolute;
+    bottom: 0px;
+    padding: 0 10px;
+    width: calc(100% - 20px);
+    background-color: #4b4b4b;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 1px solid #929292;
   }
   &:hover .CommonMessageAction {
     opacity: 1;

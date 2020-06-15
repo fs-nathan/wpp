@@ -1,7 +1,7 @@
 import { TextField } from '@material-ui/core';
 import { updateCommand } from 'actions/taskDetail/taskDetailActions';
 import TitleSectionModal from 'components/TitleSectionModal';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -25,10 +25,10 @@ const DemandModal = (props) => {
   const isFetching = useSelector(state => state.taskDetail.taskCommand.isFetching)
   const error = useSelector(state => state.taskDetail.taskCommand.error)
 
-  const selector = [
+  const selector = useMemo(() => [
     { label: t('LABEL_CHAT_TASK_CHI_DAO_LABEL'), value: 1 },
     { label: t('LABEL_CHAT_TASK_QUYET_DINH_LABEL'), value: 0 }
-  ]
+  ], [t]);
 
   React.useEffect(() => {
     setTempSelectedItem(props.item)
@@ -61,7 +61,7 @@ const DemandModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={(props.isEditDemand) ? t('LABEL_CHAT_TASK_TAO_CHI_DAO_QUYET_DINH') : t('LABEL_CHAT_TASK_SUA_CHI_DAO_QUYET_DINH')}
+      title={(!props.isEditDemand) ? t('LABEL_CHAT_TASK_TAO_CHI_DAO_QUYET_DINH') : t('LABEL_CHAT_TASK_SUA_CHI_DAO_QUYET_DINH')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={() => (props.isEditDemand) ? t('IDS_WP_UPDATE') : t('IDS_WP_CREATE_NEW')}

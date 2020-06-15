@@ -1,4 +1,4 @@
-import APPEND_VIEWED_CHAT, * as actionTypes from '../../constants/actions/chat/chat';
+import * as actionTypes from '../../constants/actions/chat/chat';
 import { apiService } from '../../constants/axiosInstance';
 
 // action
@@ -12,10 +12,11 @@ export const getListChat = data => ({
   payload: data
 });
 
-export const appendChat = (data, replaceId) => ({
+export const appendChat = (data, replaceId, isHideSendStatus) => ({
   type: actionTypes.APPEND_CHAT,
   payload: data,
   replaceId,
+  isHideSendStatus,
 });
 
 export const getMemberTask = data => ({
@@ -294,10 +295,10 @@ export function searchChat(key) {
   };
 }
 
-export function onUploading(percent) {
+export function onUploading(percent, id) {
   return {
     type: actionTypes.ON_UPLOADING,
-    percent,
+    percent, id
   };
 }
 
@@ -650,7 +651,7 @@ export function getDataPinOnTaskChatFail(error) {
   };
 }
 
-export function openShareFileModal(isOpenShareFileModal, item, ) {
+export function openShareFileModal(isOpenShareFileModal, item,) {
   return {
     type: actionTypes.OPEN_SHARE_FILE_MODAL,
     isOpenShareFileModal, item
@@ -668,5 +669,26 @@ export function appendViewedChat(data) {
   return {
     type: actionTypes.APPEND_VIEWED_CHAT,
     data
+  };
+}
+
+export function viewChat(task_id) {
+  return {
+    type: actionTypes.VIEW_CHAT,
+    task_id
+  };
+}
+
+export function viewChatSuccess(payload) {
+  return {
+    type: actionTypes.VIEW_CHAT_SUCCESS,
+    payload
+  };
+}
+
+export function viewChatFail(error) {
+  return {
+    type: actionTypes.VIEW_CHAT_FAIL,
+    error
   };
 }

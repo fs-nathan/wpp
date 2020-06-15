@@ -745,6 +745,10 @@ function* rootSaga() {
     chatTypes.GET_DATA_PIN_ON_TASK_CHAT,
     chatDetailSaga.getDataPinOnTaskChat
   );
+  yield takeLeading(
+    chatTypes.VIEW_CHAT,
+    chatDetailSaga.viewChat
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);

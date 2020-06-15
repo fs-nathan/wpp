@@ -682,7 +682,7 @@ export const getTrackingTimeSuccess = (payload) => ({
     payload
 });
 export const getTrackingTimeFail = (error) => ({
-    type: types.GET_TRACKING_TIME_FAIl,
+    type: types.GET_TRACKING_TIME_FAIL,
     error: error
 });
 export const getTrackingTimeComplete = (payload) => ({

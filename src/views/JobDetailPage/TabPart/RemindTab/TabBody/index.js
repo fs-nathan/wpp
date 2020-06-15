@@ -25,6 +25,7 @@ function TabBody(props) {
       autoHideTimeout={500} autoHideDuration={200}>
       <div className="remindBody--container">
         <SearchInput
+          className="remindBody--search"
           placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
           fullWidth
           onChange={e => searchRemindTabPart(e)}

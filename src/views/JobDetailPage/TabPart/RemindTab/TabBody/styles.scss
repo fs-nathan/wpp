@@ -10,7 +10,11 @@
     // margin-right: 0px !important;
     // width: calc(100% + 5px) !important;
     // scrollbar-width: none !important;
-    padding: 16px 20px 30px 16px;
+    // padding: 16px 20px 30px 16px;
+    padding: 16px 0;
+  }
+  &--search {
+    margin-left: 16px;
   }
 }
 
@@ -27,7 +31,7 @@
 .remindItem {
   display: block;
   position: relative;
-  margin: 0 0 0 -16px;
+  // margin: 0 0 0 -16px;
   padding: 10px 16px;
   width: 100%;
   float: left;

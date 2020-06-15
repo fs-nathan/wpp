@@ -37,7 +37,7 @@ export function* chatImage(payload) {
       {
         onUploadProgress: progressEvent => {
           const percent = (progressEvent.loaded / progressEvent.total) * 100;
-          onUploading(Math.round(percent));
+          onUploading(Math.round(percent), id);
         }
       });
     yield put(actions.chatImageSuccess(res.data));
@@ -59,7 +59,7 @@ export function* chatFile(payload) {
       {
         onUploadProgress: progressEvent => {
           const percent = (progressEvent.loaded / progressEvent.total) * 100;
-          onUploading(Math.round(percent));
+          onUploading(Math.round(percent), id);
         }
       });
     yield put(actions.chatFileSuccess(res.data));
@@ -278,5 +278,15 @@ export function* getDataPinOnTaskChat(payload) {
     yield put(actions.getDataPinOnTaskChatSuccess(res.data));
   } catch (error) {
     yield put(actions.getDataPinOnTaskChatFail(error));
+  }
+}
+
+export function* viewChat(payload) {
+  try {
+    const { task_id } = payload;
+    const res = yield call(apiService.post, "/chat/view-chat", { task_id });
+    yield put(actions.viewChatSuccess(res.data));
+  } catch (error) {
+    yield put(actions.viewChatFail(error));
   }
 }

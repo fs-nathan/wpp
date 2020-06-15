@@ -29,8 +29,11 @@ export default function reducer(state = initialState, action) {
             // console.log(' state.listTime.trackings', state.listTime.trackings)
             return {
                 ...state,
+                isFetching: false,
+                error: false,
                 listTime: state.listTime
             }
+        case types.UPDATE_TIME_DURATION_REQUEST:
         case types.GET_TRACKING_TIME_REQUEST:
             return {
                 ...state,
@@ -43,7 +46,8 @@ export default function reducer(state = initialState, action) {
                 dataFetched: true,
                 listTime: action.payload
             }
-        case types.GET_TRACKING_TIME_FAIl:
+        case types.UPDATE_TIME_DURATION_FAIL:
+        case types.GET_TRACKING_TIME_FAIL:
             return {
                 ...state,
                 isFetching: false,

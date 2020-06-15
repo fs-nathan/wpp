@@ -14,7 +14,7 @@ export const initialState = {
   emotionsList: [],
   searchChatKey: '',
   stickerKeyWord: '',
-  uploadingPercent: 0,
+  uploadingPercent: {},
   isMore: false,
   isLoading: false,
   isSending: false,
@@ -44,6 +44,8 @@ export const initialState = {
   isOpenForward: false,
   contentForward: null,
   error: null,
+  focusId: null,
+  focusTopId: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -59,7 +61,12 @@ export default (state = initialState, action) => produce(state, draft => {
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
+      if (action.isHideSendStatus) {
+        draft.isShowSendStatus = false;
+      }
       draft.isMore = undefined;
+      draft.focusId = null;
+      draft.focusTopId = null;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;
@@ -67,11 +74,13 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.LOAD_CHAT: {
       const { chat_id, last_id, isMore } = action;
       draft.isLoading = true;
+      draft.focusId = chat_id;
+      draft.focusTopId = last_id;
       draft.chats.last_id = last_id || null;
       if (!chat_id && !last_id && !isMore) {
         draft.chats.data = [];
       }
-      break
+      break;
     }
     case actionTypes.LOAD_CHAT_SUCCESS: {
       const { payload, isMore } = action;
@@ -81,6 +90,7 @@ export default (state = initialState, action) => produce(state, draft => {
         draft.chats.last_id = payload.last_id;
       } else {
         draft.chats = payload;
+        draft.focusId = draft.focusId || 'chatStatusDiv';
       }
       draft.isMore = isMore;
       draft.isSending = false;
@@ -92,6 +102,8 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.LOAD_CHAT_FAIL: {
       draft.isFails = true;
       draft.isLoading = false;
+      draft.focusId = null;
+      draft.focusTopId = null;
       break;
     }
     case actionTypes.CHAT_IMAGE_SUCCESS: {
@@ -167,8 +179,8 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     }
     case actionTypes.ON_UPLOADING: {
-      const { percent } = action;
-      draft.uploadingPercent = percent;
+      const { percent, id } = action;
+      draft.uploadingPercent[id] = percent;
       break;
     }
     case actionTypes.TAG_MEMBER: {
@@ -309,7 +321,7 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.UPDATE_CHAT_STATE: {
       const idx = findIndex(draft.chats.data, ({ id }) => id === action.id)
-      console.log('idx', idx, action.data);
+      // console.log('idx', idx, action.data);
       draft.chats.data[idx] = { ...draft.chats.data[idx], ...action.data }
       break;
     }
@@ -353,6 +365,11 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case GET_PROJECT_LIST_BASIC_REQUEST: {
       draft.isLoading = false;
+      break;
+    }
+    case actionTypes.VIEW_CHAT_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
       break;
     }
   }

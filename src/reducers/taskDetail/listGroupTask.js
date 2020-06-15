@@ -16,6 +16,7 @@ export default (state = initialState, action) => produce(state, draft => {
     case types.GET_LIST_GROUP_TASK_REQUEST:
       {
         draft.isFetching = true;
+        draft.error = null;
         break;
       }
     case types.GET_LIST_GROUP_TASK_SUCCESS:

@@ -6,10 +6,11 @@ import { updateTimeDuration } from 'actions/taskDetail/taskDetailActions';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import "date-fns";
-import { convertDate, convertTime, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
+import { convertDate, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { convertDateByFormat } from 'helpers/jobDetail/stringHelper';
 import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import { taskIdSelector } from '../../selectors';
@@ -45,8 +46,10 @@ const ProgressModal = (props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
-  const listTime = useSelector(state => state.taskDetail.trackingTime.listTime);
-  const trackings = listTime ? listTime.trackings : [];
+  const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
+  const dateFormat = useSelector(state => state.system.profile.format_date);
+  const isFetching = useSelector(state => state.taskDetail.trackingTime.isFetching)
+  const error = useSelector(state => state.taskDetail.trackingTime.error)
 
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(listTimeSelect[16])
@@ -55,16 +58,19 @@ const ProgressModal = (props) => {
   const [endDay, setEndDay] = React.useState(DEFAULT_DATE_TEXT)
 
   React.useEffect(() => {
-    if (trackings.length) {
-      const lastTrack = trackings[trackings.length - 1]
-      const { new_start, new_end } = lastTrack;
-      // const startNew = parse(new_start, 'dd/MM/yyyy HH:mm', new Date());
-      setStartDay(convertDate(new_start))
-      setStartTime(convertTime(new_start))
-      setEndDay(convertDate(new_end))
-      setEndTime(convertTime(new_end))
+    if (detailTask) {
+      const {
+        start_time,
+        start_date,
+        end_time,
+        end_date,
+      } = detailTask;
+      setStartDay(convertDateByFormat(start_date, dateFormat))
+      setStartTime(start_time)
+      setEndDay(convertDateByFormat(end_date, dateFormat))
+      setEndTime(end_time)
     }
-  }, [trackings])
+  }, [dateFormat, detailTask])
 
   const handleStartDay = (startDay) => {
     setStartDay(startDay)
@@ -83,12 +89,18 @@ const ProgressModal = (props) => {
     }
     // console.log("data", data);
     dispatch(updateTimeDuration(data));
-    props.setOpen(false)
+    // props.setOpen(false)
   }
 
   function validate() {
     return true
   }
+
+  React.useEffect(() => {
+    if (!isFetching && !error)
+      props.setOpen(false);
+    // eslint-disable-next-line
+  }, [isFetching, error])
 
   return (
     <JobDetailModalWrap
@@ -98,6 +110,8 @@ const ProgressModal = (props) => {
       confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={handlePressConfirm}
       canConfirm={validate()}
+      manualClose
+      actionLoading={isFetching}
       maxWidth='sm'
       className="progressModal modal_height_30vh"
     >
@@ -111,6 +125,7 @@ const ProgressModal = (props) => {
           />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
+              autoOk
               disableToolbar
               variant="inline"
               inputVariant="outlined"
@@ -133,6 +148,7 @@ const ProgressModal = (props) => {
           />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <InputDate
+              autoOk
               disableToolbar
               variant="inline"
               inputVariant="outlined"

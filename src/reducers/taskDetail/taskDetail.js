@@ -7,6 +7,7 @@ export const initialState = {
   isFetching: null,
   dataFetched: false,
   error: null,
+  errorMessage: null,
   showIndex: 0,
   projectSchedules: [],
   payload: null,
@@ -18,6 +19,7 @@ export default (state = initialState, action) => produce(state, draft => {
   switch (action.type) {
     case types.GET_TASK_DETAIL_TABPART_REQUEST:
       draft.isFetching = true
+      draft.errorMessage = null
       break;
     case types.GET_TASK_DETAIL_TABPART_SUCCESS:
       draft.isFetching = false
@@ -28,6 +30,7 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.isFetching = false
       draft.dataFetched = false
       draft.error = true
+      draft.errorMessage = 'This task does not exist'
       break;
     case types.UPDATE_TASK_PRIORITY_REQUEST:
       draft.isFetching = true

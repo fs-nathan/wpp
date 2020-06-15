@@ -1,4 +1,4 @@
-import { Avatar } from '@material-ui/core';
+import { Avatar, ListItem, ListItemText, Typography } from '@material-ui/core';
 import { mdiDownload, mdiPlayCircle } from '@mdi/js';
 import Icon from '@mdi/react';
 import { showImagesList } from 'actions/chat/chat';
@@ -6,18 +6,44 @@ import { actionDownloadFile } from 'actions/documents';
 import { openDocumentDetail } from 'actions/system/system';
 import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
+import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { getFileType, getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import ReactPlayer from 'react-player';
 import { useDispatch, useSelector } from 'react-redux';
+import styled from 'styled-components';
 import EmotionReact from 'views/JobDetailPage/ChatComponent/EmotionReact';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import TextMessage from '../TextMessage';
 import './styles.scss';
-import { isOneOf } from 'helpers/jobDetail/arrayHelper';
-import ReactPlayer from 'react-player';
+import * as fileType from 'assets/fileType';
+import { FileType } from 'components/FileType';
+
+const TitleImg = styled(Typography)`
+    & > li {
+        padding: 10px 10px 10px 0;
+        & > div:nth-child(1) {
+            margin-right: 7px;
+        }
+        & > div:nth-child(2) {
+            & > div:nth-child(1) {
+                color: white;
+                font-size: 15px
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 100%;
+            }
+            & > div:nth-child(2) {
+                color: #9c9797;
+                font-size: 13px
+            }
+        }
+    }
+`
 
 function getPosition(chatPosition, i, length) {
   if (length === 1 || chatPosition === 'mid')
@@ -95,11 +121,13 @@ const FileMessage = ({
   }
 
   return (
-    <div className={clsx("FileMessage",
-      {
-        [`TextMessage__${chatPosition}`]: !isReply,
-        [`TextMessage__reply`]: isReply,
-      })}  >
+    <div
+      id={id}
+      className={clsx("FileMessage",
+        {
+          [`TextMessage__${chatPosition}`]: !isReply,
+          [`TextMessage__reply`]: isReply,
+        })}  >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
           <Avatar onClick={onClickAvatar}
@@ -145,12 +173,12 @@ const FileMessage = ({
           <div className={clsx("TextMessage--content", {
             "TextMessage--content__self": is_me,
             "TextMessage--content__withReact": data_emotion.length > 0,
-            "FileMessage--content__video": files.length === 1 && getFileType(files[0].name) === 'mp4',
+            "FileMessage--content__video": files.length === 1 && FileType(getFileType(files[0].name)) === fileType.video && !isUploading,
           })} >
             {chat_parent &&
               <TextMessage {...chat_parent} isReply></TextMessage>
             }
-            {files.map((file, i) => (getFileType(file.name) === 'mp4' && !isUploading) ?
+            {files.map((file, i) => (FileType(getFileType(file.name)) === fileType.video && !isUploading) ?
               (<div className="FileMessage--files FileMessage--video"
                 key={file.id || i}
                 onClick={onClickVideo(file, i)}>
@@ -161,6 +189,26 @@ const FileMessage = ({
                     url={file.url}
                     height="auto" width="100%"
                   />
+                  <Typography className="FileMessage--videoInfo" component={'div'}>
+                    <TitleImg component='div'>
+                      <ListItem>
+                        {user_create_avatar && <Avatar src={user_create_avatar} />}
+                        <ListItemText
+                          style={{ margin: 0 }}
+                          primary={
+                            <Typography component='div'>
+                              {file.name}
+                            </Typography>
+                          }
+                          secondary={
+                            <Typography component='div'>
+                              {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
+                            </Typography>
+                          }
+                        />
+                      </ListItem>
+                    </TitleImg>
+                  </Typography>
                 </div>
               </div>)
               :
@@ -176,12 +224,12 @@ const FileMessage = ({
                   <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
                     {getFileType(file.name)} - {file && file.size}
                   </div>
-                  {isUploading && uploadingPercent !== 100 &&
+                  {isUploading && uploadingPercent[id] !== 100 &&
                     <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
-                      <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent}%` }} >
+                      <div className="FileMessage--loadingPercent" style={{ width: `${uploadingPercent[id]}%` }} >
                       </div>
                     </div>
-                      {uploadingPercent}%
+                      {uploadingPercent[id]}%
               </div>
                   }
                 </div>
@@ -197,7 +245,8 @@ const FileMessage = ({
           }
         </abbr>
       </div>
-      {!isReply && !is_me &&
+      {
+        !isReply && !is_me &&
         <CommonMessageAction can_delete={can_delete} chatId={id} handleReplyChat={handleReplyChat} handleForwardChat={handleForwardChat} />
       }
     </div >
