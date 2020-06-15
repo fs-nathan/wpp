@@ -1,5 +1,5 @@
 import { cloneDeep } from 'lodash';
-import { ADD_MEMBER_HANDLE_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, CREATE_GROUP_OFFER, CREATE_GROUP_OFFER_ERROR, CREATE_GROUP_OFFER_SUCCESS, CREATE_OFFER_SUCCESSFULLY, DELETE_DOCUMENT_OFFER_ERROR, DELETE_DOCUMENT_OFFER_SUCCESS, DELETE_GROUP_OFFER, DELETE_GROUP_OFFER_ERROR, DELETE_GROUP_OFFER_SUCCESS, DELETE_MEMBER_HANDLE_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS, DELETE_OFFER_SUCCESSFULLY, DETAIL_OFFER, ENQUEUE_SNACKBAR, HANDLE_OFFER_OFFERPAGE_SUCCESS, LOAD_DETAIL_OFFER, LOAD_DETAIL_OFFER_SUCCESS, LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS, LOAD_OFFER_BY_GROUP_ID_SUCCESS, LOAD_OFFER_BY_PROJECT_ID_SUCCESS, LOAD_SUMMARY_BY_GROUP_SUCCESS, LOAD_SUMMARY_BY_PROJECT_SUCCESS, LOAD_SUMMARY_OVERVIEW_SUCCESS, LOAD_TASK_RECENTLY_SUCCESS, NOTIFICATIONS, OFFER_BY_DEPARTMENT, OFFER_BY_GROUP, OFFER_BY_PROJECT, OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS, OFFER_DETAIL_POST_COMMENT_SUCCESS, OFFER_DETAIL_REMOVE_COMMENT_SUCCESS, OFFER_DETAIL_UPDATE_COMMENT_SUCCESS, REMOVE_SNACKBAR, SUMMARY_BY_GROUP, SUMMARY_OVERVIEW, SUMMARY_PROJECT, TASK_OFFER_BY_DEPARTMENT, TASK_OVERVIEW_RECENT, TASK_RECENTLY, UPDATE_GROUP_OFFER_OFFERPAGE_ERROR, UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS, UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, UPLOAD_DOCUMENT_OFFER_SUCCESS } from './types';
+import { ADD_MEMBER_HANDLE_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, CREATE_GROUP_OFFER, CREATE_GROUP_OFFER_ERROR, CREATE_GROUP_OFFER_SUCCESS, CREATE_OFFER_SUCCESSFULLY, DELETE_DOCUMENT_OFFER_ERROR, DELETE_DOCUMENT_OFFER_SUCCESS, DELETE_GROUP_OFFER, DELETE_GROUP_OFFER_ERROR, DELETE_GROUP_OFFER_SUCCESS, DELETE_MEMBER_HANDLE_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS, DELETE_OFFER_SUCCESSFULLY, DETAIL_OFFER, ENQUEUE_SNACKBAR, HANDLE_OFFER_OFFERPAGE_SUCCESS, LIST_STATUS_HAVE_NEW_OFFER, LIST_STATUS_HAVE_NEW_OFFER_SUCCESS, LOAD_DETAIL_OFFER, LOAD_DETAIL_OFFER_SUCCESS, LOAD_OFFER_BY_DEPARTMENT_ID_SUCCESS, LOAD_OFFER_BY_GROUP_ID_SUCCESS, LOAD_OFFER_BY_PROJECT_ID_SUCCESS, LOAD_SUMMARY_BY_GROUP_SUCCESS, LOAD_SUMMARY_BY_PROJECT_SUCCESS, LOAD_SUMMARY_OVERVIEW_SUCCESS, LOAD_TASK_RECENTLY_SUCCESS, NOTIFICATIONS, OFFER_BY_DEPARTMENT, OFFER_BY_GROUP, OFFER_BY_PROJECT, OFFER_DETAIL_GET_COMMENT_LIST_SUCCESS, OFFER_DETAIL_POST_COMMENT_SUCCESS, OFFER_DETAIL_REMOVE_COMMENT_SUCCESS, OFFER_DETAIL_UPDATE_COMMENT_SUCCESS, REMOVE_SNACKBAR, SUMMARY_BY_GROUP, SUMMARY_OVERVIEW, SUMMARY_PROJECT, TASK_OFFER_BY_DEPARTMENT, TASK_OVERVIEW_RECENT, TASK_RECENTLY, UPDATE_GROUP_OFFER_OFFERPAGE_ERROR, UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS, UPDATE_OFFER_APPROVAL_CONDITION_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, UPLOAD_DOCUMENT_OFFER_SUCCESS } from './types';
 
 export const initialState = {
   [TASK_OVERVIEW_RECENT]: {
@@ -21,8 +21,7 @@ export const initialState = {
       waiting: 0,
       waiting_rate: 0
     },
-    error: null,
-    loading: true
+    error: null
   },
   [SUMMARY_BY_GROUP]: { // List cột trái route bygroup
     offers_group: [],
@@ -103,7 +102,7 @@ export const initialState = {
 function taskReducer(state = initialState, action) {
   switch (action.type) {
     case LOAD_TASK_RECENTLY_SUCCESS:
-      return { ...state, [TASK_RECENTLY]: { ...action.payload, loading: false } };
+      return { ...state, [TASK_RECENTLY]: { ...action.payload } };
     case LOAD_SUMMARY_BY_GROUP_SUCCESS:
       return { ...state, [SUMMARY_BY_GROUP]: { ...action.payload } };
     case CREATE_GROUP_OFFER_SUCCESS:
@@ -227,9 +226,6 @@ function taskReducer(state = initialState, action) {
       };
     }
     case CREATE_OFFER_SUCCESSFULLY: {
-      const { offer_group_id } = action.payload;
-      console.log(offer_group_id);
-      console.log(state[SUMMARY_BY_GROUP]);
       return {
         ...state
       };
@@ -268,6 +264,9 @@ function taskReducer(state = initialState, action) {
         }
       }
       break;
+    case LIST_STATUS_HAVE_NEW_OFFER_SUCCESS: {
+      return { ...state, [LIST_STATUS_HAVE_NEW_OFFER]: { haveNewOffers: action.payload.have_new_offer } }
+    }
     case UPLOAD_DOCUMENT_OFFER_SUCCESS:
       return { ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, documents: [...state[DETAIL_OFFER].offer.documents, ...action.payload.documents] } } }
     case LOAD_SUMMARY_BY_PROJECT_SUCCESS:
@@ -282,19 +281,48 @@ function taskReducer(state = initialState, action) {
       return { ...state }
     case ADD_MEMBER_HANDLE_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve, ...action.payload.members] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve, ...action.payload.members]
+          }
+        }
       }
     case DELETE_MEMBER_HANDLE_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_can_approve: [...state[DETAIL_OFFER].offer.members_can_approve.filter(x => x.id !== action.payload)] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_can_approve:
+              [...state[DETAIL_OFFER].offer.members_can_approve.filter(x => x.id !== action.payload)]
+          }
+        }
       }
     case ADD_MEMBER_MONITOR_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_monitor: [...state[DETAIL_OFFER].offer.members_monitor, ...action.payload.members] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_monitor: [...state[DETAIL_OFFER].offer.members_monitor, ...action.payload.members]
+          }
+        }
       }
     case DELETE_MEMBER_MONITOR_SUCCESS:
       return {
-        ...state, [DETAIL_OFFER]: { offer: { ...state[DETAIL_OFFER].offer, members_monitor: [...state[DETAIL_OFFER].offer.members_monitor.filter(x => x.id !== action.payload)] } }
+        ...state,
+        [DETAIL_OFFER]: {
+          ...state[DETAIL_OFFER],
+          offer: {
+            ...state[DETAIL_OFFER].offer,
+            members_monitor: [...state[DETAIL_OFFER].offer.members_monitor.filter(x => x.id !== action.payload)]
+          }
+        }
       }
     case ENQUEUE_SNACKBAR:
       return { ...state, [NOTIFICATIONS]: [...state[NOTIFICATIONS], { key: new Date().getTime() * Math.random(), ...action.payload }] }

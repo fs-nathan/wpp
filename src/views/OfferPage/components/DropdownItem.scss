@@ -98,12 +98,14 @@
     margin: 0px;
     font-weight: 500;
     font-size: 14px;
-    padding: 15px 15px 15px 43px;
+    padding: 15px 15px 15px 49px;
     cursor: pointer;
     line-height: 1.5;
+
     &:hover {
       background-color: #f2f5fa;
     }
+
     &__selected {
       background-color: #f2f5fa;
       font-weight: bold;

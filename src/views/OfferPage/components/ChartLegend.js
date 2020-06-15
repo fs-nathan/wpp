@@ -33,7 +33,7 @@ const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) =
           <IconWrap item>
             <Icon path={mdiSquare} size={1} color={color} />
           </IconWrap>
-          <Grid title={label} item xs zeroMinWidth>
+          <Grid title={label} item xs zeroMinWidth className="ChartLegend_legendLabelText">
             {label}
           </Grid>
         </Grid>

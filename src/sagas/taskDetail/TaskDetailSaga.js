@@ -678,7 +678,8 @@ function* getTaskDetail(action) {
     const res = yield call(doGetTaskDetail, action.options);
     yield put(actions.getTaskDetailTabPartSuccess(res));
   } catch (error) {
-    yield put(actions.getTaskDetailTabPartFail(error));
+    yield put(actions.getTaskDetailTabPartFail(error.message));
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
 

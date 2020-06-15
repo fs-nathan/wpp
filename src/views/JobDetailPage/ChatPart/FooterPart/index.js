@@ -148,8 +148,8 @@ const FooterPart = ({
     document.getElementById(id).click();
   };
 
-  const onUploadingHandler = useCallback(function (percent) {
-    dispatch(onUploading(percent));
+  const onUploadingHandler = useCallback(function (percent, id) {
+    dispatch(onUploading(percent, id));
   }, [dispatch])
 
   const handleUploadImage = useCallback(async e => {

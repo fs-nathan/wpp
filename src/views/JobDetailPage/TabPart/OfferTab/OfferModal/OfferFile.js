@@ -8,7 +8,6 @@ const OfferFile = ({ file, handleDeleteFile }) => {
   return (
     <div className="offerFile">
       <span className="offerFile--name">{file.name}</span>
-      {/* <ColorTypo className="offerFile--size" variant='caption'>{file.size}</ColorTypo> */}
       <Icon className="offerFile--icon" onClick={onClickDelete} path={mdiClose} size={1} />
     </div>
   )

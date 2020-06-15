@@ -1,7 +1,8 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { CustomEventDispose, CustomEventListener } from "constants/events";
-import { get } from "lodash";
+import { useLocalStorage } from "hooks";
+import { get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -10,8 +11,9 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { CREATE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
+import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
@@ -23,12 +25,12 @@ export const PageContainer = styled(Container)`
   padding: 16px;
   padding-right: 32px;
   min-height: 100%;
+  max-width: 100%;
 `;
 
 const OfferByGroup = props => {
 
   const { t } = useTranslation();
-  const context = useContext(OfferPageContext);
   const dispatch = useDispatch();
   const history = useHistory();
   const [layoutTitle, setLayoutTitle] = useState("");
@@ -37,6 +39,8 @@ const OfferByGroup = props => {
     listMenu,
     setOpenModalOfferByGroup,
     openModalOfferByGroup,
+    timeType,
+    setTimeType,
     timeRange,
     setTitle
   } = useContext(OfferPageContext);
@@ -45,22 +49,45 @@ const OfferByGroup = props => {
   const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
   const { id } = useParams();
   const isMounted = useMountedState();
+  const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, { timeType: 1 });
 
   useEffect(() => {
     if (isMounted) {
       setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"))
     }
-  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, context, setTitle]);
+  }, [isMounted, setTitle, t]);
+
+  useEffect(() => {
+    if (isMounted) {
+      setTimeType(timeFilterTypeOfferByGroup.timeType);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
+      storeTimeFilterTypeOfferByGroup({
+        ...timeFilterTypeOfferByGroup,
+        timeType
+      });
+    }
+  }, [isMounted, timeType]);
 
   useEffect(() => {
     if (isMounted) {
       var currentGroup = groupList.filter(group => group.url === history.location.pathname);
       setLayoutTitle(get(currentGroup, '[0].title'));
     }
-  }, [isMounted, history.location.pathname, idFirstGroup]);
+  }, [isMounted, history.location.pathname, idFirstGroup, groupList]);
 
   useEffect(() => {
     dispatch(loadSummaryByGroup());
+    const refreshSummaryByGroup = () => {
+      dispatch(loadSummaryByGroup());
+    }
+    CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+    return () => {
+      CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -73,17 +100,19 @@ const OfferByGroup = props => {
   }, [history, idFirstGroup]);
 
   useEffect(() => {
-    const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-    const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-    dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-    document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
-    const refreshAfterCreateOffer = () => {
+    if (!isNil(id)) {
+      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
       dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-      dispatch(loadSummaryByGroup());
-    }
-    CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
-    return () => {
-      CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click();
+      const refreshAfterCreateOffer = () => {
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+        dispatch(loadSummaryByGroup());
+      }
+      CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      return () => {
+        CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      }
     }
   }, [dispatch, id, timeRange]);
 
