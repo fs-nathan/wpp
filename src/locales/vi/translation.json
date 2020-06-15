@@ -1810,7 +1810,7 @@
   "VIEW_OFFER_CREATED_AT": "Đã tạo đề xuất lúc {{time}} ngày {{date}}",
   "VIEW_OFFER_LABEL_SUPERVISOR": "Người giám sát",
   "VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION": "Cập nhập điều kiện phê duyệt",
-  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "Một trong các thành viên sau phải đồng ý",
-  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "Tất cả thành viên sau phải đồng ý",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "Một trong những thành viên sau đồng ý",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "Tất cả thành viên sau đồng ý",
   "VIEW_OFFER_LABEL_APPROVED_AT": "Phê duyệt lúc {{time}} ngày {{date}}"
 }
