@@ -67,9 +67,9 @@ const EditCell = ({
       document.removeEventListener("keyup", handleClickOutSide);
     };
   }, [showEdit, dataComplete, data]);
-  
+
   const handleOnChange = (date) => {
-    if(!date){
+    if (!date) {
       setData(data);
     }
     setData(new moment(date).format("YYYY-MM-DD HH:mm"));
@@ -154,7 +154,21 @@ const EditCell = ({
                   defaultValue={defaultValue}
                   disableUnderline={true}
                   value={dataComplete}
-                  onChange={(e) => setDataComplete(e.target.value)}
+                  onChange={(e) => {
+                    if (isNaN(e.target.value) || !e.target.value) {
+                      setDataComplete(0)
+                      return
+                    }
+                    if (e.target.value > 100) {
+                      setDataComplete(100)
+                      return
+                    }
+                    if (e.target.value < 0) {
+                      setDataComplete(0)
+                      return
+                    }
+                    setDataComplete(e.target.value)
+                  }}
                   classes={{
                     root: "gantt--input-number",
                   }}
@@ -173,7 +187,7 @@ const EditCell = ({
             style={{
               position: "absolute",
               right: '50%',
-              transform: "translateX(50%)", 
+              transform: "translateX(50%)",
               top: 0,
               background: '#fffae6',
               height: "37px",

@@ -160,13 +160,13 @@ const TimeLine = ({
     handleChange(left / 48, end + add);
   };
   const handleProcessResize = (e, node) => {
-    if(isGroupTask || isTotalDuration) return 
+    if (isGroupTask || isTotalDuration) return
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
     setWidthProcess(newProcess);
   };
   const handleProcessResizeStop = (e, node) => {
-    if(isGroupTask || isTotalDuration) return 
+    if (isGroupTask || isTotalDuration) return
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
     setProcessDatasource(newProcess, index);
@@ -198,6 +198,7 @@ const TimeLine = ({
   )
     return null;
   if (!width) return null;
+  console.log(isTotalDuration)
   if (isTotalDuration && !visibleGantt.total) return null;
   return (
     <React.Fragment>
@@ -294,9 +295,13 @@ const TimeLine = ({
                 : isGroupTask
                   ? timelineColor.group
                   : timelineColor.task,
+              height: isTotalDuration || isGroupTask ? 15 : 20
             }}
             className="gantt--time-task"
-          ></div>
+          >
+            {(isTotalDuration || isGroupTask) && <div className="gantt--timeline-group-task__right"></div>}
+            {(isTotalDuration || isGroupTask) && <div className="gantt--timeline-group-task__left"></div>}
+          </div>
         </ResizableBox>
         {visibleGantt.date && (
           <p className="gantt--end-timeline">
@@ -361,8 +366,12 @@ const TimeLine = ({
             )}
           >
             <div
-              style={{ background: timelineColor.duration }}
+              style={{
+                background: timelineColor.duration,
+                height: isTotalDuration || isGroupTask ? 15 : 20
+              }}
               className="gantt--duration-task"
+
               ref={refProcess}
             >
               <div className="duration-text-gantt">

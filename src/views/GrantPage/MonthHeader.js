@@ -76,7 +76,7 @@ const MonthHeader = ({
   }, [countTask]);
   return (
     <React.Fragment>
-      <div ref={containerRef} style={{ display: "flex", marginLeft: 2 }}>
+      <div ref={containerRef} style={{ display: "flex" }}>
         {month}
       </div>
       <div
@@ -92,7 +92,6 @@ const MonthHeader = ({
             position: "absolute",
             left: leftHeader,
             zIndex: 1001,
-            borderLeft: "2px solid #e8e8e8",
           }}
         >
           {day}

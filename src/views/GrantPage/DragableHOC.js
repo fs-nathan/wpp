@@ -203,6 +203,7 @@ function GanttChart({
       leftTable,
     ]
   );
+  const offSetLeftGanttContainer = document.getElementById("offset-gantt-container") && document.getElementById("offset-gantt-container").getBoundingClientRect() ? document.getElementById("offset-gantt-container").getBoundingClientRect().left : 0
   return (
     <React.Fragment>
       <div
@@ -223,7 +224,43 @@ function GanttChart({
         <Icon path={mdiDragVerticalVariant} size={1} />
       </div>
       <div
+        id="gantt--scroll-top_virtual"
+        onScroll={(e) => {
+          if (!window.scrollTable && !window.scrollTimeline) {
+            window.scrollTimelineVitural = true;
+            const tableBody = document.getElementsByClassName(
+              "ant-table-body"
+            )[0];
+            const timelineContainer = document.getElementsByClassName(
+              "gantt--timeline--container"
+            )[0];
+            const scrollVirtual = document.getElementById(
+              "gantt--scroll-top_virtual"
+            );
+            scrollVirtual.scrollTop = e.target.scrollTop
+            const timelineContainerRelative = document.getElementsByClassName(
+              " gantt--timeline--container__relative"
+            )[0];
+            timelineContainerRelative.scrollTop = e.target.scrollTop;
+            timelineContainer.scrollTop = e.target.scrollTop;
+            tableBody.scrollTop = e.target.scrollTop;
+            if (timeoutId) clearTimeout(timeoutId);
+            timeoutId = setTimeout(
+              () => (window.scrollTimeline = false),
+              100
+            );
+          }
+        }}
+        style={{
+          height: heightTable - 50
+        }} className="dsfsdfds">
+        <div style={{
+          height: dataSource.length * 37
+        }}></div>
+      </div>
+      <div
         ref={ganttRef}
+        id="offset-gantt-container"
         style={{
           width: renderFullDay
             ? maxWidth
@@ -256,6 +293,7 @@ function GanttChart({
             backgroundColor: "#e8e8e8",
             height: "100%",
           }}
+          id="drag-width-gantt-container"
         ></div>
         <div
           ref={scrollRef}
@@ -269,7 +307,7 @@ function GanttChart({
             height: heightTable,
           }}
           onScroll={(e) => {
-            if (window.scrollTimeline) return;
+            if (window.scrollTable || window.scrollTimeline || window.scrollTimelineVitural) return;
             if (!e.target.scrollTop) {
               const fetchNewTimeNotWork =
                 Math.floor(e.target.scrollLeft / (700 * 48)) !==
@@ -335,11 +373,15 @@ function GanttChart({
                 height: heightTable - 69,
               }}
               onScroll={(e) => {
-                if (!window.scrollTable) {
+                if (!window.scrollTable && !window.scrollTimelineVitural) {
                   window.scrollTimeline = true;
                   const tableBody = document.getElementsByClassName(
                     "ant-table-body"
                   )[0];
+                  const scrollVirtual = document.getElementById(
+                    "gantt--scroll-top_virtual"
+                  );
+                  scrollVirtual.scrollTop = e.target.scrollTop
                   tableBody.scrollTop = e.target.scrollTop;
                   if (timeoutId) clearTimeout(timeoutId);
                   timeoutId = setTimeout(

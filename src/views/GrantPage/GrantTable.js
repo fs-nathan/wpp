@@ -13,7 +13,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import { changeProjectInfo,scrollGantt, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortGroupTask, sortTask } from "../../actions/gantt";
+import { changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, scrollGantt, sortGroupTask, sortTask } from "../../actions/gantt";
 import { changeDetailSubtaskDrawer, changeVisibleSubtaskDrawer } from "../../actions/system/system";
 import { getListGroupTask, getListTaskDetail, getProjectListBasic, getStaticTask } from "../../actions/taskDetail/taskDetailActions";
 import CustomBadge from "../../components/CustomBadge";
@@ -871,11 +871,15 @@ class DragSortingTable extends React.Component {
     if (!tableBody[0]) return;
     let timeOutId;
     tableBody[0].addEventListener("scroll", (e) => {
-      if (window.scrollTimeline) return;
+      if (window.scrollTimeline || window.scrollTimelineVitural) return;
       window.scrollTable = true;
       const timelineContainer = document.getElementsByClassName(
         "gantt--timeline--container"
       )[0];
+      const scrollVirtual = document.getElementById(
+        "gantt--scroll-top_virtual"
+      );
+      scrollVirtual.scrollTop = e.target.scrollTop
       const timelineContainerRelative = document.getElementsByClassName(
         " gantt--timeline--container__relative"
       )[0];
@@ -961,14 +965,14 @@ class DragSortingTable extends React.Component {
     },
   };
   componentDidUpdate = async (prevProps) => {
-    const {girdInstance} = this.props
+    const { girdInstance } = this.props
     if (this.props.showHeader !== prevProps.showHeader) {
       this.setState({
         height: this.tableRef.current.clientHeight,
       });
     }
-    
-    if(this.props.scrollGanttFlag !== prevProps.scrollGanttFlag && this.props.scrollGanttFlag){
+
+    if (this.props.scrollGanttFlag !== prevProps.scrollGanttFlag && this.props.scrollGanttFlag) {
       const { startTimeProject, endTimeProject, saveEndTimeProject } = this.state;
       const { girdInstance } = this.props;
       const {
@@ -982,10 +986,10 @@ class DragSortingTable extends React.Component {
       } = girdInstance;
       const { start, end } = {}
       const daysRender = [];
-      const endDate =this.props.scrollGanttFlag ?  new moment(Date.now()) : new moment(saveEndTimeProject)
+      const endDate = this.props.scrollGanttFlag ? new moment(Date.now()) : new moment(saveEndTimeProject)
       const startDate = start ? new moment(start) : new moment(startTimeProject);
       let temp = new moment(startDate);
-      if(this.props.scrollGanttFlag){
+      if (this.props.scrollGanttFlag) {
         this.setState({
           saveEndTimeProject: this.state.endTimeProject
         })
