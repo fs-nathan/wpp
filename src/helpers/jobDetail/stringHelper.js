@@ -142,7 +142,7 @@ export function getChatDate(timeString) {
 }
 
 export function compareDateTime(timeStartString, timeEndString) {
-  console.log(timeStartString, timeEndString)
+  // console.log(timeStartString, timeEndString)
   const dateStart = parse(timeStartString, 'yyyy-MM-dd HH:mm', new Date());
   const dateEnd = parse(timeEndString, 'yyyy-MM-dd HH:mm', new Date());
   return differenceInMinutes(dateStart, dateEnd);

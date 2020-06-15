@@ -371,6 +371,7 @@ function CreateJobModal(props) {
                   <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
                   {type === 1 ? (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -389,6 +390,7 @@ function CreateJobModal(props) {
                     )}
                   {type !== 1 && (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -423,6 +425,7 @@ function CreateJobModal(props) {
                     )}
                   {type !== 1 && (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar

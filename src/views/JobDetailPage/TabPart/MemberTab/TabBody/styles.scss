@@ -8,7 +8,7 @@
 
 .memberItem {
   position: relative;
-  margin: 0 0 0 -16px;
+  // margin: 0 0 0 -16px;
   padding: 10px 25px 10px 16px;
   cursor: pointer;
   width: calc(100% + 30px);
@@ -41,7 +41,7 @@
   &--menuButton {
     position: absolute;
     top: 0;
-    right: 0;
+    right: 32px;
     display: none;
     margin-top: 15px;
     margin-right: 10px;
