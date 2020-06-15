@@ -968,6 +968,22 @@ input[type="time"]::-webkit-outside-spin-button {
 .gantt--edit-cell__container > .MuiFormControl-root >  .MuiInput-underline:after {
   border-bottom: none !important;
 }
+.gantt--edit-cell__container fieldset {
+  border-color: orange !important;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+.gantt--edit-cell__container fieldset:hover {
+  border-color: orange !important;
+  border-radius: 0;
+}
+
+.gantt--edit-cell__container .MuiOutlinedInput-root:hover.MuiOutlinedInput-notchedOutline:hover{
+  border-color: orange;
+  border-radius: 0;
+}
+
 
 
 .gantt-chart__container::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
@@ -996,9 +1012,14 @@ input[type="time"]::-webkit-outside-spin-button {
 .gantt--timeline--container__relative::-webkit-scrollbar-thumb:vertical:active { background: #777; }
 
 .config--drawer--footer-section__preview{
-  background-color: #ba873f;
+  background-color: #75acff;
   border-radius: 0;
-  color: #b9b9b9;
+  color: #fff;
+  opacity: 0.7;
+}
+.config--drawer--footer-section__preview:hover {
+  opacity: 1;
+  background-color: #75acff !important;
 }
 
 .config--drawer--footer-section__confirm{
@@ -1014,5 +1035,22 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 }
 
 .gantt--edit-cell__container > .MuiFormControl-root > .MuiInputBase-root > input {
+  text-align: center;
+}
+
+
+.gantt--export-pdf__dialog .ant-drawer-body{
+  padding: 0 0 0 15px !important;
+}
+
+.gantt--edit-cell__container input::-webkit-outer-spin-button,
+.gantt--edit-cell__container input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.gantt--edit-cell__container input[type=number] {
+  -moz-appearance: textfield;
   text-align: center;
 }

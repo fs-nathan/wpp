@@ -56,12 +56,12 @@ const DragableBodyRow = ({
       }}
       onMouseLeave={() => {
         const divs = document.getElementsByClassName("gantt--top-timeline-tr");
-        divs[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "#fff";
+        divs[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "";
         const divss = document.getElementsByClassName(
           "ant-table-row ant-table-row-level-0"
         );
         if (!divss[index]) return;
-        divss[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "#fff";
+        divss[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "";
       }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}

@@ -13,7 +13,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import { changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortGroupTask, sortTask } from "../../actions/gantt";
+import { changeProjectInfo,scrollGantt, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, sortGroupTask, sortTask } from "../../actions/gantt";
 import { changeDetailSubtaskDrawer, changeVisibleSubtaskDrawer } from "../../actions/system/system";
 import { getListGroupTask, getListTaskDetail, getProjectListBasic, getStaticTask } from "../../actions/taskDetail/taskDetailActions";
 import CustomBadge from "../../components/CustomBadge";
@@ -264,6 +264,7 @@ class DragSortingTable extends React.Component {
       monthArray: [],
       openCreateProjectModal: false,
       showIconResize: false,
+      saveEndTimeProject: null,
       daysRender: [],
       data: [],
       columns: [
@@ -960,9 +961,70 @@ class DragSortingTable extends React.Component {
     },
   };
   componentDidUpdate = async (prevProps) => {
+    const {girdInstance} = this.props
     if (this.props.showHeader !== prevProps.showHeader) {
       this.setState({
         height: this.tableRef.current.clientHeight,
+      });
+    }
+    
+    if(this.props.scrollGanttFlag !== prevProps.scrollGanttFlag && this.props.scrollGanttFlag){
+      const { startTimeProject, endTimeProject, saveEndTimeProject } = this.state;
+      const { girdInstance } = this.props;
+      const {
+        formatString,
+        unit,
+        parentUnit,
+        getWidthParent,
+        getTextParent,
+        getTimeCompare,
+        formatChild,
+      } = girdInstance;
+      const { start, end } = {}
+      const daysRender = [];
+      const endDate =this.props.scrollGanttFlag ?  new moment(Date.now()) : new moment(saveEndTimeProject)
+      const startDate = start ? new moment(start) : new moment(startTimeProject);
+      let temp = new moment(startDate);
+      if(this.props.scrollGanttFlag){
+        this.setState({
+          saveEndTimeProject: this.state.endTimeProject
+        })
+      }
+      const maxDayRender = this.props.renderFullDay
+        ? endDate.diff(startDate, girdInstance.unit) + 1
+        : MAX_DAY_DEFAULT;
+      for (let i = 0; i < maxDayRender; i++) {
+        const newDate = new moment(temp);
+        newDate.add(i, girdInstance.unit);
+        daysRender.push(newDate);
+      }
+      const allMonth = [
+        {
+          text: "",
+          width: "",
+        },
+      ];
+      let index = 0;
+      let minMonth = 0;
+      while (
+        endDate > startDate ||
+        getTimeCompare(startDate) === getTimeCompare(endDate) ||
+        minMonth < 2
+      ) {
+        allMonth.push({
+          text: getTextParent(startDate),
+          width: getWidthParent(startDate, index === 0),
+        });
+        startDate.add(1, parentUnit);
+        minMonth++;
+        index++;
+      }
+      allMonth.shift();
+      this.setState({
+        daysRender,
+        monthArray: allMonth,
+        startTimeProject: start ? new moment(start) : new moment(startTimeProject),
+        endTimeProject: endDate
       });
     }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
@@ -1465,6 +1527,7 @@ const mapStateToProps = (state) => ({
   visibleLabel: state.gantt.visible.label,
   visibleGantt: state.gantt.visible.gantt,
   activeProjectId: state.taskDetail.commonTaskDetail.activeProjectId,
+  scrollGanttFlag: state.gantt.scrollGanttFlag,
 });
 
 const mapDispatchToProps = {
@@ -1478,6 +1541,7 @@ const mapDispatchToProps = {
   getStaticTask,
   getProjectListBasic,
   changeDetailSubtaskDrawer,
+  scrollGantt,
 };
 export default withRouter(
   connect(mapStateToProps, mapDispatchToProps)(DragSortingTable)

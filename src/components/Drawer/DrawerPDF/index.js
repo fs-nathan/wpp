@@ -144,6 +144,8 @@ const ExportPDF = ({
   return (
     <React.Fragment>
       <Drawer
+     
+      className="gantt--export-pdf__dialog"
         closable={false}
         title={
           <div
@@ -183,14 +185,7 @@ const ExportPDF = ({
               className="config--drawer--footer-section__preview"
               fullWidth
             >
-              Xem trước
-            </Button>
-            <Button
-              onClick={handleOnClickOk}
-              className="config--drawer--footer-section__confirm"
-              fullWidth
-            >
-              Hoàn thành
+              Xuất file PDF
             </Button>
           </div>
         }
@@ -198,18 +193,17 @@ const ExportPDF = ({
         <StyledScrollbarsSide autoHide autoHideTimeout={500} height={"tail"}>
           <div className="export-pdf--drawer__container">
             <p className="config--drawer--section config--drawer--section-subtitle">
-              thiết lập trục thời gian{" "}
-              <span style={{ color: "blue" }}>Xem mẫu</span>
+              Thiết lập trục thời gian{" "}
             </p>
             <div className="config--drawer--checkbox-section">
               {renderInput()}
             </div>
             <p className="config--drawer--section config--drawer--section-subtitle">
-              khổ giấy <span style={{ color: "#b9b9b9" }}>Tự động</span>
+              Khổ giấy <span style={{ color: "#b9b9b9" }}>Tự động</span>
             </p>
             <div className="config--drawer--checkbox-section"></div>
             <p className="config--drawer--section config--drawer--section-subtitle">
-              thời gian
+              Thời gian
             </p>
             <div className="config--drawer--checkbox-section">
               <FormControl size="small" variant="outlined">
@@ -237,6 +231,7 @@ const ExportPDF = ({
         open={showModalPreview}
         setOpen={handleShowModalPreview}
         title={projectInfo.name}
+        onConfirm={handleOnClickOk}
       />
     </React.Fragment>
   );

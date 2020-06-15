@@ -160,14 +160,15 @@ const TimeLine = ({
     handleChange(left / 48, end + add);
   };
   const handleProcessResize = (e, node) => {
+    if(isGroupTask || isTotalDuration) return 
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
     setWidthProcess(newProcess);
   };
   const handleProcessResizeStop = (e, node) => {
+    if(isGroupTask || isTotalDuration) return 
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
-    console.log(newProcess);
     setProcessDatasource(newProcess, index);
   };
   const handleChange = (start, end) => {
@@ -334,6 +335,7 @@ const TimeLine = ({
             minConstraints={[0, 0]}
             maxConstraints={[width, width]}
             width={widthComplete}
+            axis={isTotalDuration || isGroupTask ? 'none' : 'both'}
             handle={() => (
               <span
                 // style ={{

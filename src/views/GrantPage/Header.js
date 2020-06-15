@@ -54,7 +54,6 @@ const Header = ({
                     }}
                     aria-controls="simple-menu"
                     className="gantt-btn__list-project"
-                    style={{ padding: 0 }}
                     aria-haspopup="true"
                     size="small"
                   >

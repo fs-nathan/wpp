@@ -4,9 +4,9 @@ import { connect } from 'react-redux';
 import CustomModal from '../CustomModal';
 import './previewModal.css';
 
-const PreviewPdfModal = ({ title, previewContent, open, setOpen, srcPreview, isLoading }) => {
+const PreviewPdfModal = ({ title,onConfirm, previewContent, open, setOpen, srcPreview, isLoading }) => {
     return (
-        <CustomModal fullWidth={true} maxWidth="md" height='tall' setOpen={setOpen} open={open} title={"XUẤT FILE PDF"}>
+        <CustomModal onConfirm={onConfirm} fullWidth={true} maxWidth="md" height='tall' setOpen={setOpen} open={open} title={"XUẤT FILE PDF"}>
             <div className="gantt--preview-pdf__container">
                 <div className="gantt--preview-pdf__title">{title}</div>
                 <div className="gantt--preview-pdf__content">

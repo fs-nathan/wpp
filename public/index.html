@@ -107,7 +107,7 @@
         "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
       });
     }
-    function ganttConvertToPdfFullWidth(kendo, fileName, cb) {
+    function ganttConvertToPdfFullWidth(kendo, fileName, cb = () => null) {
       kendo.drawing
         .drawDOM("#printContent", {
           margin: {

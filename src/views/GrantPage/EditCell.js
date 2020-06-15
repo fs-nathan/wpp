@@ -36,7 +36,7 @@ const EditCell = ({
         : new moment(defaultValue, "DD/MM/YYYY").toDate()
     );
     setDataComplete(defaultValue);
-  }, [defaultValue]);
+  }, [defaultValue, showEdit]);
   const handleClickOutSide = async (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
@@ -67,7 +67,11 @@ const EditCell = ({
       document.removeEventListener("keyup", handleClickOutSide);
     };
   }, [showEdit, dataComplete, data]);
+  
   const handleOnChange = (date) => {
+    if(!date){
+      setData(data);
+    }
     setData(new moment(date).format("YYYY-MM-DD HH:mm"));
   };
   const postDataToServer = async () => {
@@ -169,7 +173,7 @@ const EditCell = ({
             style={{
               position: "absolute",
               right: '50%',
-              transform: "translateX(50%)",
+              transform: "translateX(50%)", 
               top: 0,
               background: '#fffae6',
               height: "37px",
