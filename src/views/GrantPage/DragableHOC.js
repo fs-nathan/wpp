@@ -223,7 +223,7 @@ function GanttChart({
       >
         <Icon path={mdiDragVerticalVariant} size={1} />
       </div>
-      <div
+       <div
         id="gantt--scroll-top_virtual"
         onScroll={(e) => {
           if (!window.scrollTable && !window.scrollTimeline) {
@@ -253,7 +253,7 @@ function GanttChart({
         }}
         style={{
           height: heightTable - 50
-        }} className="dsfsdfds">
+        }} className="gantt--virtual__scroll">
         <div style={{
           height: dataSource.length * 37
         }}></div>

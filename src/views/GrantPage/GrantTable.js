@@ -979,6 +979,7 @@ class DragSortingTable extends React.Component {
         formatString,
         unit,
         parentUnit,
+        addUnit,
         getWidthParent,
         getTextParent,
         getTimeCompare,
@@ -1023,12 +1024,13 @@ class DragSortingTable extends React.Component {
         minMonth++;
         index++;
       }
+      console.log("addUnit", addUnit)
       allMonth.shift();
       this.setState({
         daysRender,
         monthArray: allMonth,
         startTimeProject: start ? new moment(start) : new moment(startTimeProject),
-        endTimeProject: endDate
+        endTimeProject: endDate.add(addUnit, unit)
       });
     }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
@@ -1414,7 +1416,7 @@ class DragSortingTable extends React.Component {
           }}
         >
           <RenderDrawers height={this.state.height} />
-          <RenderQuickViewTaskDetailDrawer
+          {this.state.quickViewId&&<RenderQuickViewTaskDetailDrawer
             showHeader={this.props.showHeader}
             onClose={() =>
               this.setState({
@@ -1422,7 +1424,7 @@ class DragSortingTable extends React.Component {
               })
             }
             taskId={this.state.quickViewId}
-          />
+          />}
           <div ref={this.tableRef}>
             {this.state.showProject && (
               <div

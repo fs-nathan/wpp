@@ -57,7 +57,7 @@ const TimeUnitConfig = ({changeInstanceGird, height,state, type, changeVisibleCo
         >
           <p className="config--drawer--section">THIẾT LÂP TRỤC THỜI GIAN</p>
           <p className="config--drawer--title">Lựa chọn trục thời gian cho sơ đồ gantt</p>
-          <div className="config--drawer--checkbox-section">
+          <div className="config--drawer--checkbox-section gantt--time-unit__label-container">
             <div className="">
           <FormControlLabel
             value={'HOUR'}
