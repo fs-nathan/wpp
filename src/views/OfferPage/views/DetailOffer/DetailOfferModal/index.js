@@ -1,43 +1,46 @@
+import clsx from 'clsx';
 import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../../components/CustomModal';
 import { OfferPageContext } from '../../../OfferPageContext';
 import {
   getDetailOfferModalCancelBtnTitle,
   getDetailOfferModalConfirmBtnTitle,
-  getDetailOfferModalTitle,
+  getDetailOfferModalTitle
 } from '../../../utils/i18nSelectors';
-import DetailOffer from '../DetailOfferComponent'
-import clsx from 'clsx';
+import DetailOffer from '../DetailOfferComponent';
 import './styles.scss';
 
 const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
   const { setShowDeleteOfferConfirmModal } = useContext(OfferPageContext);
   const { t } = useTranslation()
-  const { can_modify } = rest;
+  const { can_delete } = rest;
+
   const onConfirm = () => {
-    if (can_modify) {
+    if (can_delete) {
       setShowDeleteOfferConfirmModal(true);
     }
   }
+
   const onCloseModal = () => {
-    // do nothing
+    setOpen(false);
   }
 
   return (
     <CustomModal
       className={clsx(
         'detailOfferModal-container',
-        can_modify ? 'detailOfferModal-confirmBtn--red' : 'detailOfferModal-confirmBtn--black'
+        can_delete ? 'detailOfferModal-confirmBtn--red' : 'detailOfferModal-confirmBtn--black'
       )}
       title={getDetailOfferModalTitle(t)}
       open={open}
       setOpen={setOpen}
       loading={loading}
-      confirmRender={() => can_modify ? getDetailOfferModalConfirmBtnTitle(t) : getDetailOfferModalCancelBtnTitle(t)}
+      confirmRender={() => can_delete ? getDetailOfferModalConfirmBtnTitle(t) : getDetailOfferModalCancelBtnTitle(t)}
       onConfirm={onConfirm}
-      cancleRender={() => can_modify && getDetailOfferModalCancelBtnTitle(t)}
-      onCancle={can_modify && onCloseModal}
+      cancleRender={() => can_delete && getDetailOfferModalCancelBtnTitle(t)}
+      onCancle={onCloseModal}
+      manualClose={true}
       fullWidth
       maxWidth='lg'
     >

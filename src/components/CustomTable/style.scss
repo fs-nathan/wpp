@@ -5,59 +5,85 @@
   grid-template-columns: 1fr;
   grid-template-areas:
     'header'
-    'body';    
-};
+    'body';
+}
+
+;
 
 .comp_CustomTable___header {
   grid-area: header;
   padding: 10px 10px 10px 20px;
   display: flex;
   align-items: center;
-  position: -webkit-sticky; /* Safari */
+  position: -webkit-sticky;
+  /* Safari */
   position: sticky;
   top: 0px;
   background-color: #fff;
   z-index: 10;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1); 
-};
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+;
 
 .comp_CustomTable___left-header {
   max-width: 250px;
-  & > div:first-child {
+
+  &>div:first-child {
     display: flex;
     align-items: center;
     color: #444;
-    & > p {
+
+    &>p {
       margin: 0;
       font-size: 21px;
       line-height: 26px;
       font-weight: 600;
       text-transform: unset;
-    };
-  };
-  & > span:last-child {
+    }
+
+    ;
+  }
+
+  ;
+
+  &>span:last-child {
     font-size: 11px;
-  };
-};
+  }
+
+  ;
+}
+
+;
 
 .comp_CustomTable___right-header {
   margin-left: auto;
-  & > *:last-child {
+
+  &>*:last-child {
     margin-left: 16px;
-  };
-};
+  }
+
+  ;
+}
+
+;
 
 .comp_CustomTable___table-main {
   grid-area: body;
   overflow-y: auto;
-};
+}
+
+;
 
 .comp_CustomTable___table-button {
   background-color: #fd7e14;
   color: #fff;
   padding: 8px 12px;
   margin-top: 8px;
+
   &:hover {
     background-color: #c46111;
   }
-};
+}
+
+;

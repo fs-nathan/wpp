@@ -568,6 +568,109 @@
     }
   },
   "views": {
+    "user_page": {
+      "left_part": {
+        "add_user": {
+          "no_accounts": "Không tìm thấy tài khoản!",
+          "invited": "Đã mời",
+          "invite": "Mời",
+          "accept_request": "Đồng ý",
+          "deny_request": "Từ chối",
+          "time": "{{minute}} phút",
+          "title": "Thêm thành viên",
+          "invite_member": "Mời thành viên tham gia nhóm",
+          "find_member": "Tìm thành viên",
+          "find_member_button": "Lọc",
+          "request_member_title": "Yêu cầu tham gia nhóm"
+        },
+        "department_info": {
+          "modal_title": "Modal title",
+          "default": "Mặc định",
+          "member_count": "Tổng số thành viên",
+          "intro": "Giới thiệu",
+          "update": "Chỉnh sửa",
+          "delete": "Xóa",
+          "alert_content": "Bạn có chắc chắn muốn xóa ?"
+        }
+      },
+      "modals": {
+        "search_modal": {
+          "search_title": "Search title",
+          "search_label": "Nhập nội dung tìm kiếm",
+          "search_button": "Tìm kiếm"
+        },
+        "update_user": {
+          "room_select": "Chọn bộ phận",
+          "position_select": "Chọn vị trí",
+          "level_select": "Chọn trình độ ",
+          "major_select": "Chọn chuyên ngành",
+          "description": "Mô tả",
+          "description_helper": "Số ký tự tối đa: {{max_count}}",
+          "ok_button": "Hoàn thành"
+        }
+      },
+      "right_part": {
+        "users_table": {
+          "header_button_group": {
+            "search_label": {
+              "add_user_label": "Thêm thành viên",
+              "expand_true_label": "Mở rộng",
+              "expand_false_label": "Thu gọn",
+              "more_label": "Thêm mới",
+              "title_manager_menu_item": "Title management",
+              "role_manager_menu_item": "Quản lý vai trò",
+              "logo_manager_menu_item": "Quản lý biểu tượng",
+              "table_settings_menu_item": "Cài đặt bảng"
+            },
+            "table_main": {
+              "no_data_label": "Không tìm thấy dữ liệu",
+              "table_header_row": {
+                "name_cell": "Họ và tên",
+                "position_cell": "Vị trí",
+                "birthday_cell": "Ngày sinh",
+                "gender_cell": "Giới tính",
+                "email_cell": "Email",
+                "phone_cell": "Điện thoại",
+                "role_cell": "Vài trò",
+                "status_cell": "Trạng thái"
+              },
+              "table_body_row": {
+                "state_label": {
+                  "public": "Công khai",
+                  "private": "Hạn chế"
+                },
+                "change_state": "Trạng thái",
+                "manage_permission": "Quản lý nhóm quyền",
+                "leave_group": "Rời nhóm"
+              }
+            },
+            "create_account_label": "Tạo tài khoản",
+            "table_title": "Human resource list",
+            "total_user_count": "Tổng số thành viên: {{user_count}}",
+            "upgrade_sublabel": "(Nâng cấp)"
+          },
+          "user_info": {
+            "date_join": "Ngày tham gia",
+            "modify_info": "Chỉnh sửa",
+            "room_name": "Bộ phận",
+            "position_name": "Chức danh",
+            "level_name": "Trình độ",
+            "major_name": "Chuyên nhành",
+            "description": "Mô tả công việc",
+            "documents_view": "Xem tài liệu",
+            "upload_documents_error": "Tải tài liệu thất bại",
+            "upload_documents": "Tải tài liệu",
+            "infomation": "Thông tin",
+            "name": "Tên",
+            "birthday": "Ngày sinh",
+            "gender": "Giới tính",
+            "email": "Email",
+            "phone": "Số điện thoại",
+            "address": "Địa chỉ"
+          }
+        }
+      }
+    },
     "calendar_page": {
       "left_part": {
         "title": "Quản lý lịch",
@@ -1810,13 +1913,34 @@
   "VIEW_OFFER_CREATED_AT": "Đã tạo đề xuất lúc {{time}} ngày {{date}}",
   "VIEW_OFFER_LABEL_SUPERVISOR": "Người giám sát",
   "VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION": "Cập nhập điều kiện phê duyệt",
-  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "Một trong các thành viên sau phải đồng ý",
-  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "Tất cả thành viên sau phải đồng ý",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "Một trong những thành viên sau đồng ý",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "Tất cả thành viên sau đồng ý",
   "VIEW_OFFER_LABEL_APPROVED_AT": "Phê duyệt lúc {{time}} ngày {{date}}",
+  "VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING": "Bạn chắc chắn muốn xoá nhóm đề xuất này?",
+  "VIEW_OFFER_LABLE_VIEW_DETAIL_OFFER": "Xem đề xuất",
+  "VIEW_OFFER_TEXT_DELETE_FILE_WARNING": "Bạn có muốn xoá file sau?",
+  "VIEW_OFFER_LABEL_CONDITION_LOGIC_AND": "Và",
+  "VIEW_OFFER_LABEL_CONDITION_LOGIC_OR": "Hoặc",
+  "VIEW_OFFER_TEXT_CONDITION_LOGIC_OR": "Một số thành viên sau phải đồng ý",
+  "VIEW_OFFER_TEXT_CONDITION_LOGIC_AND": "Tất cả thành viên sau phải đồng ý",
+  "VIEW_OFFER_TEXT_DATA_NOT_FOUND_DISCRIPTION": "Hãy tạo mới đề xuất hoặc kiểm tra bộ lọc để xuất hiện dữ liệu đề xuất",
+  "VIEW_OFFER_LABEL_DATA_NOT_FOUND": "Không có dữ liệu",
+  "VIEW_OFFER_LABEL_CREATE_NEW_OFFER": "Tạo mới đề xuất",
+  "VIEW_OFFER_TEXT_CREATE_NEW_OFFER_SHOULD_REDIRECT": "Bạn cần phải chọn một công việc trong dự án trước khi tạo mới đề xuất",
+  "VIEW_OFFER_LABEL_REDIRECT_TO_TASK": "Đi đến danh sách công việc",
   "LABEL_CHAT_TASK_MAC_DINH": "(mặc định)",
   "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Thay đổi mặc định trong cài đặt dự án",
   "LABEL_CHAT_TASK_NGAY_VA_GIO": "Ngày và giờ",
   "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Chỉ nhập ngày",
   "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Không yêu cầu",
-  "LABEL_CHAT_TASK_INVALID_DATE_FORMAT": "invalid date format"
+  "LABEL_CHAT_TASK_INVALID_DATE_FORMAT": "invalid date format",
+  "Ưu tiên cao": "Ưu tiên cao",
+  "Thu gọn": "Thu gọn",
+  "Mở rộng": "Mở rộng",
+  "Lọc": "Lọc",
+  "+ Tạo công việc": "+ Tạo công việc",
+  "Hủy": "Hủy",
+  "Tìm kiếm": "Tìm kiếm",
+  "Thêm": "Thêm",
+  "Nhập nội dung cần tìm": "Nhập nội dung cần tìm"
 }

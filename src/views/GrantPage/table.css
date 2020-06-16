@@ -18,7 +18,7 @@
 }
 
 tr.drop-over-downward td {
-  border-bottom: 2px dashed #1890ff;
+  border-bottom: 2px dashed #1890ff !important;
 }
 
 tr.drop-over-upward td {
@@ -77,9 +77,12 @@ body {
 .config--drawer--section {
   margin-bottom: 5px;
   font-size: 14px;
-  color: black;
-  font-weight: bold;
-  text-transform: uppercase;
+  color: #333;
+  font-weight: 500;
+}
+
+.config--drawer--section:first-letter{
+  text-transform: capitalize
 }
 .config--drawer--title {
   margin-top: 10px;
@@ -102,6 +105,9 @@ body {
 }
 .checkbox-colortag--drawer:hover {
   background-color: #f2f5fa;
+  cursor: pointer;
+  outline: 1px solid #ccc;
+  outline-offset: 5px;
 }
 .ml-0 {
   margin-left: 0 !important;
@@ -158,6 +164,7 @@ span.ant-checkbox ~ span {
   display: flex;
   margin-bottom: 2px !important;
   font-weight: 500;
+  margin-top: 0;
 }
 
 .gantt--navigation {
@@ -167,6 +174,7 @@ span.ant-checkbox ~ span {
 .gantt--navigation p {
   margin-right: 5px;
   margin-bottom: 0;
+  margin-top: 0;
   cursor: pointer;
 }
 
@@ -183,7 +191,6 @@ span.ant-checkbox ~ span {
 
 .gantt--timeline--container {
   margin-top: 25.2px;
-  overflow-y: scroll;
 }
 
 .gantt--top-timeline {
@@ -303,7 +310,7 @@ span.ant-checkbox ~ span {
 }
 .icon-show-header svg {
   width: 20px !important;
-  margin-top: -5px;
+  margin-top: -8px;
 }
 
 .ant-table tbody > tr.ant-table-row:hover > td {
@@ -609,6 +616,7 @@ div.checkbox-colortag--drawer {
   z-index: 10;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
+  margin-right: 30px;
 }
 
 .comp_QuickViewFilter__headerConfig {
@@ -679,6 +687,8 @@ div.checkbox-colortag--drawer {
   align-items: center;
   padding-left: 5px;
   height: 35px !important;
+  z-index: 1000;
+  background: inherit;
   padding-right: 5px;
 }
 
@@ -757,8 +767,7 @@ div.checkbox-colortag--drawer {
 .gantt__container {
   display: flex;
   position: relative;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .gantt__select-project {
@@ -788,6 +797,7 @@ div.checkbox-colortag--drawer {
 .gantt-chart__container {
   display: flex;
   z-index: 2;
+  margin-left: 3px;
   overflow-x: scroll;
   width: 100%;
   overflow-y: hidden;
@@ -848,7 +858,7 @@ div.checkbox-colortag--drawer {
 .gantt--parent-header {
   border-bottom: 1px solid #e4e4e4;
   border-top: 1px solid #e4e4e4;
-  padding: 4.5px 0px;
+  padding: 1.5px 0px;
   border-right: 1px solid #e4e4e4;
   background-color: #fafafa;
   text-align: center;
@@ -857,7 +867,7 @@ div.checkbox-colortag--drawer {
 .gantt--child-header {
   border-bottom: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
-  padding: 5px 0px;
+  padding: 2px 0px;
   background-color: #fafafa;
   text-align: center;
   width: 48px;
@@ -881,9 +891,6 @@ div.checkbox-colortag--drawer {
   line-height: inherit;
 }
 
-.gantt-right-header__wapper {
-  margin: 5px;
-}
 
 table.ant-table-bordered thead > tr > th {
   border-right: 1px solid #e4e4e4;
@@ -919,6 +926,7 @@ input[type="time"]::-webkit-outside-spin-button {
 .gantt--edit-cell__input-date input {
   text-align: center;
 }
+
 .gantt--edit-cell__input-date {
   position: absolute;
   left: 0;
@@ -927,3 +935,159 @@ input[type="time"]::-webkit-outside-spin-button {
   height: 37px !important;
   border: 1px solid orange !important;
 }
+.ant-table-cell{
+  background: inherit;
+}
+.ant-table-row .ant-table-row-level-0{
+  background: #fff;
+}
+.gantt--edit-cell__input-date{
+  width: 100% !important;
+  overflow: hidden;
+}
+
+.gantt--edit-cell__input-date > .MuiFormControl-root {
+  margin: 0px !important;
+  margin-top: 8px;
+  height: 37px;
+}
+
+.gantt--edit-cell__input-date> .MuiFormControl-root >.MuiInput-root {
+  height: 37px;
+}
+.gantt--edit-cell__input-date > .MuiFormControl-root >.MuiInput-underline:before {
+  border-bottom: none !important;
+}
+.gantt--edit-cell__input-date > .MuiFormControl-root >.MuiInput-underline:after {
+  border-bottom: none !important;
+}
+
+.gantt--edit-cell__container > .MuiFormControl-root >  .MuiInput-underline:before {
+  border-bottom: none !important;
+}
+.gantt--edit-cell__container > .MuiFormControl-root >  .MuiInput-underline:after {
+  border-bottom: none !important;
+}
+.gantt--edit-cell__container fieldset {
+  border-color: orange !important;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+.gantt--edit-cell__container fieldset:hover {
+  border-color: orange !important;
+  border-radius: 0;
+}
+
+.gantt--edit-cell__container .MuiOutlinedInput-root:hover.MuiOutlinedInput-notchedOutline:hover{
+  border-color: orange;
+  border-radius: 0;
+}
+
+
+
+.gantt-chart__container::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
+.gantt-chart__container::-webkit-scrollbar-track { background: #f2f2f2; }
+.gantt-chart__container::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
+  border-radius: 15px;
+  background-clip: padding-box;   
+  min-width: 50px !important;
+  cursor: pointer !important;
+}
+.gantt-chart__container:hover::-webkit-scrollbar-thumb { background: #bbb; }
+.gantt-chart__container::-webkit-scrollbar-thumb:horizontal:hover,
+.gantt-chart__container::-webkit-scrollbar-thumb:vertical:hover { background: #d2d2d2; }
+.gantt-chart__container::-webkit-scrollbar-thumb:horizontal:active,
+.gantt-chart__container::-webkit-scrollbar-thumb:vertical:active { background: #777; }
+
+.gantt--timeline--container__relative::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
+.gantt--timeline--container__relative::-webkit-scrollbar-track { background: #f2f2f2; }
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;   }
+.gantt--timeline--container__relative:hover::-webkit-scrollbar-thumb { background: #bbb; }
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:horizontal:hover,
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:vertical:hover { background: #999; }
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:horizontal:active,
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:vertical:active { background: #777; }
+
+.config--drawer--footer-section__preview{
+  background-color: #75acff;
+  border-radius: 0;
+  color: #fff;
+  opacity: 0.7;
+}
+.config--drawer--footer-section__preview:hover {
+  opacity: 1;
+  background-color: #75acff !important;
+}
+
+.config--drawer--footer-section__confirm{
+  background-color: #619eff;
+  border-radius: 0;
+  color: #fff;
+}
+.gantt--edit-cell__container > .MuiFormControl-root .MuiTextField-root > .MuiInputBase-root .MuiInput-root .MuiInput-underline .MuiInputBase-formControl .MuiInput-formControl >input[type='datetime-local']::-webkit-inner-spin-button,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    display: none !important;
+    text-align: center;
+    -webkit-appearance: none !important;
+}
+
+.gantt--edit-cell__container > .MuiFormControl-root > .MuiInputBase-root > input {
+  text-align: center;
+}
+
+
+.gantt--export-pdf__dialog .ant-drawer-body{
+  padding: 0 0 0 15px !important;
+}
+
+.gantt--edit-cell__container input::-webkit-outer-spin-button,
+.gantt--edit-cell__container input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.gantt--edit-cell__container input[type=number] {
+  -moz-appearance: textfield;
+  text-align: center;
+}
+
+.gantt--timeline-group-task__right {
+ position: absolute;
+ right: 0;
+ width: 2px;
+ height: 20px;
+ background-color: inherit;
+ z-index: 10;
+}
+
+.gantt--timeline-group-task__left {
+  position: absolute;
+ left: 0;
+ width: 2px;
+ height: 20px;
+ background-color: inherit;
+ z-index: 10
+}
+
+.dsfsdfds{
+  width: 16px;
+  right: 0;
+  top: 50px;
+  position: absolute;
+  overflow-y: scroll;
+  z-index: 1000;
+}
+.dsfsdfds::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
+.dsfsdfds::-webkit-scrollbar-track { background: #f2f2f2; }
+.dsfsdfds::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;   }
+.dsfsdfds:hover::-webkit-scrollbar-thumb { background: #bbb; }
+.dsfsdfds::-webkit-scrollbar-thumb:horizontal:hover,
+.dsfsdfds::-webkit-scrollbar-thumb:vertical:hover { background: #999; }
+.dsfsdfds::-webkit-scrollbar-thumb:horizontal:active,
+.dsfsdfds::-webkit-scrollbar-thumb:vertical:active { background: #777; }

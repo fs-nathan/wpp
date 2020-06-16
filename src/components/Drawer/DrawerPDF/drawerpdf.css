@@ -37,5 +37,10 @@
 .export-pdf--drawer__date-wrapper {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px
+    margin-top: 10px;
+    margin-bottom: 30px;
 }
+.gantt--header-component_container .ant-row-end {
+    line-height: 1.75;
+}
+

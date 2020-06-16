@@ -16,6 +16,7 @@ const rightIcon = () => {
     </>
   );
 };
+
 export const getOffer = createSelector(selectOffer, offer => offer.offers);
 export const getFirstSummaryGroup = createSelector(
   selectSummaryGroup,
@@ -88,7 +89,8 @@ export const getDepartmentGroupByKeyword = (keyword, t) => createSelector(select
     url: Routes.OFFERBYDEPARTMENT + `/${x.id}`,
     color: "#7d99a6",
     icon: mdiEmailCheck,
-    rightIcon: x.have_new_offer && rightIcon
+    rightIcon: x.have_new_offer && rightIcon,
+    rightIconVisiableAlways: x.have_new_offer
   })).filter(
     x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1
   );

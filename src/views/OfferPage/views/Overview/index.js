@@ -1,5 +1,6 @@
 import { Box, Container, Grid } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { useLocalStorage } from "hooks";
 import moment from "moment";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
@@ -7,9 +8,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { useTimes } from '../../../../components/CustomPopover';
+import { TIME_FILTER_TYPE_OFFER_OVERVIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
-import { loadSummaryOverview } from "../../redux/actions";
+import { listStatusHaveNewOffer, loadSummaryOverview } from "../../redux/actions";
 import { GroupBlock } from "./GroupBlock";
 import { OfferBlock } from "./OfferBlock";
 import { getGroupOffers, getMyOffers, getPriorityOffers, getStatusOffers } from './selector';
@@ -34,40 +36,64 @@ const stringsGroupOffer = [
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { listMenu, timeType, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
+  const { listMenu, timeType, timeRange = {}, setTitle, setTimeType } = useContext(OfferPageContext);
   const isMounted = useMountedState();
   const times = useTimes();
   const myOffers = useSelector(state => getMyOffers(state))
   const statusOffers = useSelector(state => getStatusOffers(state))
   const priorityOffers = useSelector(state => getPriorityOffers(state))
   const groupOffers = useSelector(getGroupOffers);
+  const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(TIME_FILTER_TYPE_OFFER_OVERVIEW, { timeType: 1 });
+
   useEffect(() => {
-    dispatch(loadSummaryOverview({ timeRange }))
-  }, [dispatch, timeRange])
+    if (isMounted) {
+      setTimeType(timeFilterTypeOfferOverview.timeType);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
+      storeTimeFilterTypeOfferOverview({
+        ...timeFilterTypeOfferOverview,
+        timeType
+      });
+    }
+  }, [isMounted, timeType]);
+
+  useEffect(() => {
+    dispatch(loadSummaryOverview({ timeRange }));
+    dispatch(listStatusHaveNewOffer());
+  }, [dispatch, timeRange]);
+
   useEffect(() => {
     isMounted &&
       setTitle(t("VIEW_OFFER_LABEL_YOUR_OFFER"))
-  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, setTitle]);
+  }, [isMounted, setTitle, t]);
+
   const renderDataStatusOffer = useMemo(() => {
     if (timeRange) {
       return statusOffers
     }
-  }, [statusOffers, timeRange])
+  }, [statusOffers, timeRange]);
+
   const renderDataPriorityOffer = useMemo(() => {
     if (timeRange) {
       return priorityOffers
     }
-  }, [priorityOffers, timeRange])
+  }, [priorityOffers, timeRange]);
+
   const renderDataMyOfferGroup = useMemo(() => {
     if (timeRange) {
       return myOffers
     }
-  }, [myOffers, timeRange])
+  }, [myOffers, timeRange]);
+
   const renderDataGroupOffer = useMemo(() => {
     if (timeRange) {
       return groupOffers;
     }
   }, [groupOffers, timeRange]);
+
   const renderExtraTimeTitle = useMemo(() => {
     let startDate = undefined;
     let endDate = undefined;
@@ -78,7 +104,8 @@ const Overview = () => {
     return startDate && endDate
       ? `${times[timeType].title} (${startDate} - ${endDate})`
       : t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.ALL_TIME');
-  }, [timeType, timeRange])
+  }, [timeType, timeRange, times, t]);
+
   return (
     <Layout
       title={

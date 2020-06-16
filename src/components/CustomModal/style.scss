@@ -1,7 +1,7 @@
 @mixin comp_CustomModal___scrollbar {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-  & > div:nth-child(3) {
+  &>div:nth-child(3) {
     z-index: 999;
   }
 }
@@ -10,44 +10,44 @@
   &-main {
     &-tall {
       @include comp_CustomModal___scrollbar;
-      height: calc(100vh - 64px - 64px - 56.5px)!important;
+      height: calc(100vh - 64px - 64px - 56.5px) !important;
     }
 
     &-medium {
       @include comp_CustomModal___scrollbar;
-      height: calc(90vh - 64px - 64px - 56.5px)!important;
+      height: calc(90vh - 64px - 64px - 56.5px) !important;
     }
 
     &-short {
       @include comp_CustomModal___scrollbar;
-      height: calc(80vh - 64px - 64px - 56.5px)!important;
+      height: calc(80vh - 64px - 64px - 56.5px) !important;
     }
 
     &-mini {
       @include comp_CustomModal___scrollbar;
-      height: calc(70vh - 64px - 64px - 56.5px)!important;
+      height: calc(70vh - 64px - 64px - 56.5px) !important;
     }
   }
 
   &-side {
     &-tall {
       @include comp_CustomModal___scrollbar;
-      height: calc(100vh - 64px - 64px - 56.5px - 46px)!important;
+      height: calc(100vh - 64px - 64px - 56.5px - 46px) !important;
     }
 
     &-medium {
       @include comp_CustomModal___scrollbar;
-      height: calc(90vh - 64px - 64px - 56.5px - 46px)!important;
+      height: calc(90vh - 64px - 64px - 56.5px - 46px) !important;
     }
 
     &-short {
       @include comp_CustomModal___scrollbar;
-      height: calc(80vh - 64px - 64px - 56.5px - 46px)!important;
+      height: calc(80vh - 64px - 64px - 56.5px - 46px) !important;
     }
 
     &-mini {
       @include comp_CustomModal___scrollbar;
-      height: calc(70vh - 64px - 64px - 56.5px - 46px)!important;
+      height: calc(70vh - 64px - 64px - 56.5px - 46px) !important;
     }
   }
 }
@@ -58,6 +58,7 @@
   //   margin-bottom: 12px;
   // }
   overflow: hidden;
+
   &>input[type="file"] {
     display: none;
   }
@@ -75,7 +76,7 @@
     width: 100%;
 
     &>button {
-      padding: 12px 0 12px;
+      padding: 12px 12px;
     }
   }
 }
@@ -91,7 +92,7 @@
 @mixin comp_CustomModal___action-button {
   padding: 8px 16px;
   background-color: #fff;
-  
+
   &:hover {
     background-color: #eee;
   }
@@ -123,7 +124,7 @@
 }
 
 @mixin comp_CustomModal___dialog {
-  & > div:nth-child(3) > div {
+  &>div:nth-child(3)>div {
     overflow: hidden;
     min-width: 40vw;
     max-width: 70vw;

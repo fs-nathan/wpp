@@ -31,9 +31,9 @@ const ChartLegend = ({ strings = [], xs = 4, showIndex = false, series = [] }) =
       {map.map(([label, color]) => (
         <Grid container alignItems="center" justify="center" key={label} item xs={xs}>
           <IconWrap item>
-            <Icon path={mdiSquare} size={1} color={color} />
+            <Icon path={mdiSquare} size={0.8} color={color} />
           </IconWrap>
-          <Grid title={label} item xs zeroMinWidth>
+          <Grid title={label} item xs zeroMinWidth className="ChartLegend_legendLabelText">
             {label}
           </Grid>
         </Grid>

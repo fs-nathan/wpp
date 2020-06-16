@@ -17,8 +17,6 @@ export const PageContainer = styled(Container)`
   min-height: 100%;
 `;
 
-
-
 const Recently = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -29,9 +27,11 @@ const Recently = () => {
       setTitle(t("VIEW_OFFER_LABEL_YOUR_OFFER"))
     }
   }, [isMounted, setTitle]);
+
   useEffect(() => {
-    dispatch(loadTaskRencentlyPage())
-  }, [dispatch])
+    dispatch(loadTaskRencentlyPage());
+  }, [dispatch]);
+
   return (
     <Layout
       title={

@@ -1,13 +1,13 @@
 import { Avatar, Button, Grid } from "@material-ui/core";
 import { isEmpty } from "helpers/utils/isEmpty";
-import get from "lodash/get";
+import { get, size } from "lodash";
 import React, { useMemo, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
-import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
+import ApprovalConditionModal from "./approvalConditionModal";
 import { getApprovalConditionEditingTitle, getCreateApprovalBtnTitle } from './i18nSelectors';
 import './styles.scss';
 
@@ -33,6 +33,7 @@ const MiddleContent = ({
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
   const currentUserId = useSelector(state => state.system.profile.id);
+
   const isCurrentUserAHandler = useMemo(() => {
     return members_can_approve
       && members_can_approve.findIndex(member => member.id === currentUserId) !== -1;
@@ -42,12 +43,11 @@ const MiddleContent = ({
       && members_approved.findIndex(member => member.id === currentUserId) !== -1;
   }, [currentUserId, members_approved]);
 
-  const renderUpdateOfferApprovalConditionModal = () => {
+  const updateOfferApprovalConditionModal = () => {
     return (
-      <OfferModal
-        isOpen={openUpdateOfferModal}
+      <ApprovalConditionModal
+        open={openUpdateOfferModal}
         setOpen={setOpenUpdateOfferModal}
-        isUpdateOfferApprovalCondition
         item={{
           id: id,
           min_rate_accept: condition_accept.min_rate,
@@ -59,6 +59,7 @@ const MiddleContent = ({
       />
     );
   }
+
   return (
     <div className="offerDetail-middleContent-container">
       <ApproveOfferDialog
@@ -118,7 +119,7 @@ const MiddleContent = ({
           }
           {
             openUpdateOfferModal && (
-              renderUpdateOfferApprovalConditionModal()
+              updateOfferApprovalConditionModal()
             )
           }
         </div>
@@ -127,7 +128,7 @@ const MiddleContent = ({
         <div>{t("VIEW_OFFER_LABEL_RATE_AGREE")}:&nbsp;&nbsp;&nbsp;≥&nbsp;&nbsp;&nbsp;{get(condition_accept, "min_rate", "0")}%</div>
       </div>
       {
-        get(condition_accept, "min_rate", "0") < 100 && (
+        (get(condition_accept, "min_rate", "0") < 100 || (get(condition_accept, "condition_logic") === "OR" && get(condition_accept, "min_rate", "0") === 100)) && (
           <>
             <div className="offerDetail-memberToAccept-title">
               {get(condition_accept, "condition_logic_member") === "OR"
@@ -151,17 +152,17 @@ const MiddleContent = ({
           </>
         )
       }
-      {/* - */}
+
       <div>
         <Grid container direction="row">
           <div className="offerDetail-approvalResult-title">{t("VIEW_OFFER_LABEL_APPROVAL_RESULT")}:&nbsp;</div>
-          <div className="offerDetail-approvalResult-result">{t("VIEW_OFFER_LABEL_APPROVED")} ({number_member_accepted}) - {t("VIEW_OFFER_LABEL_REJECTED")} ({number_member_rejected})  </div>
+          <div className="offerDetail-approvalResult-result">{t("VIEW_OFFER_LABEL_APPROVED")} ({number_member_accepted}/{size(members_can_approve)}) - {t("VIEW_OFFER_LABEL_REJECTED")} ({number_member_rejected}/{size(members_can_approve)})  </div>
         </Grid>
       </div>
       <div>
         <div className="offerDetail-horizontalLine" />
       </div>
-      {/* - */}
+
       <Scrollbars autoHide autoHideTimeout={500}>
         {!isEmpty(members_approved) && members_approved.map(member =>
           <Grid
@@ -178,7 +179,7 @@ const MiddleContent = ({
             </Grid>
             <Grid items xs={7} direction="column">
               <div className="offerDetail-approvalResult-member-name">{get(member, "name")}</div>
-              <div className="offerDetail-approvalResult-member-position">{get(member, 'position')}</div>
+              <div className="offerDetail-approvalResult-member-position">{get(member, 'position')} {get(member, 'position') && <span> - </span>} {get(member, 'room')}</div>
               <div>
                 {t("VIEW_OFFER_LABEL_APPROVED_AT", { time: member.hour_label, date: member.date_label })}
               </div>
@@ -187,17 +188,16 @@ const MiddleContent = ({
               <Grid container direction="column" alignItems="center" >
                 {
                   get(member, "status") === 0 &&
-                  <Button variant="contained" size="small" disableElevation className="bg--green">
+                  <div className="offerDetail__result_label bg--green">
                     {t("VIEW_OFFER_LABEL_APPROVED")}
-                  </Button>
+                  </div>
                 }
                 {
                   get(member, "status") === 1 &&
-                  <Button variant="contained" size="small" disableElevation className="bg--red">
+                  <div className="offerDetail__result_label bg--red">
                     {t("VIEW_OFFER_LABEL_REJECTED")}
-                  </Button>
+                  </div>
                 }
-                {/* <Popover /> */}
               </Grid>
             </Grid>
           </Grid>
