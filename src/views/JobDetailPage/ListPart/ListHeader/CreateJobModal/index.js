@@ -20,6 +20,7 @@ import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import './styles.scss';
+import CommonProgressForm from './CommonProgressForm';
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -52,6 +53,12 @@ function CreateJobModal(props) {
     : get(props, 'projectId');
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
+
+  const optionsList = useMemo(() => [
+    { value: 2, label: t('LABEL_CHAT_TASK_NGAY_VA_GIO') },
+    { value: 1, label: t('LABEL_CHAT_TASK_CHI_NHAP_NGAY') },
+    { value: 0, label: t('LABEL_CHAT_TASK_KHONG_YEU_CAU') }
+  ], [t]);
 
   const assignList = useMemo(() => [
     { id: 0, value: t('LABEL_CHAT_TASK_DUOC_GIAO') },
@@ -91,6 +98,7 @@ function CreateJobModal(props) {
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
   const [listSchedules, setListSchedules] = React.useState([]);
   const [scheduleValue, setScheduleValue] = React.useState(null);
+  const [type, setType] = React.useState(date_status);
 
   const isEdit = props.editMode !== null && props.editMode !== undefined;
 
@@ -108,6 +116,15 @@ function CreateJobModal(props) {
       group_task: data.group_task,
       type_assign: data.type_assign.id,
       schedule_id: data.schedule,
+    }
+    if (type === 0) {
+      updateData.start_date = undefined;
+      updateData.start_time = undefined;
+      updateData.end_date = undefined;
+      updateData.end_time = undefined;
+    } else if (type === 1) {
+      updateData.start_time = undefined;
+      updateData.end_time = undefined;
     }
     // dispatch(updateNameDescriptionTask(dataNameDescription));
     switch (props.editMode) {
@@ -239,10 +256,19 @@ function CreateJobModal(props) {
   const handlePressConfirm = () => {
     if (validate(data)) {
       // Remove group task in object if user unselect group task
-      let data = dataCreateJob;
+      let data = { ...dataCreateJob };
       if (!dataCreateJob.group_task ||
         dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE) delete data.group_task;
-      data.date_status = date_status;
+      data.type = type;
+      if (type === 0) {
+        data.start_date = undefined;
+        data.start_time = undefined;
+        data.end_date = undefined;
+        data.end_time = undefined;
+      } else if (type === 1) {
+        data.start_time = undefined;
+        data.end_time = undefined;
+      }
       // Call api
       isFunction(get(props, 'doCreateTask'))
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
@@ -253,9 +279,9 @@ function CreateJobModal(props) {
       handleChangeData('description', EMPTY_STRING)
       // Close modal
       // handleClose();
-    } else {
+      // } else {
       // Alert user
-      alert('Bạn cần nhập tên công việc');
+      // alert('Bạn cần nhập tên công việc');
     }
   };
 
@@ -272,8 +298,9 @@ function CreateJobModal(props) {
       manualClose
       onCancle={() => props.setOpen(false)}
       className={clsx("createJob", `createJob__edit${props.editMode}`, {
-        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
-        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),
+        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES]),
+        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.GROUP]),
       })}
     >
       <React.Fragment>
@@ -309,6 +336,7 @@ function CreateJobModal(props) {
               margin="normal"
               variant="outlined"
               multiline
+              rows={3}
               rowsMax={18}
               fullWidth
               value={data.description}
@@ -330,12 +358,18 @@ function CreateJobModal(props) {
         }
         {!isEdit &&
           <>
-            {date_status !== 0 && <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />}
-            {date_status !== 0 &&
+            <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
+            <CommonProgressForm
+              items={optionsList}
+              value={type}
+              handleChange={setType}
+              defaultState={date_status}
+            />
+            {type !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Typography className="createJob--timeWrap" component={'span'}>
                   <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
-                  {date_status === 1 ? (
+                  {type === 1 ? (
                     <KeyboardDatePicker
                       className="createJob--inputDate"
                       size="small"
@@ -353,7 +387,7 @@ function CreateJobModal(props) {
                         onChange={(value) => handleChangeData('start_time', value)}
                       />
                     )}
-                  {date_status !== 1 && (
+                  {type !== 1 && (
                     <KeyboardDatePicker
                       className="createJob--inputDate"
                       size="small"
@@ -368,7 +402,7 @@ function CreateJobModal(props) {
                 </Typography>
                 <Typography className="createJob--timeWrap" component={'span'}>
                   <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_KET_THUC')}</Typography>
-                  {date_status === 1 ? (
+                  {type === 1 ? (
                     <KeyboardDatePicker
                       className="createJob--inputDate"
                       size="small"
@@ -387,7 +421,7 @@ function CreateJobModal(props) {
                         onChange={(value) => handleChangeData('end_time', value)}
                       />
                     )}
-                  {date_status !== 1 && (
+                  {type !== 1 && (
                     <KeyboardDatePicker
                       className="createJob--inputDate"
                       size="small"

@@ -1,4 +1,4 @@
-import { TextField } from '@material-ui/core';
+import { Box, TextField } from '@material-ui/core';
 import React, { useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from "react-redux";
@@ -6,17 +6,7 @@ import { action } from "views/OfferPage/contants/attrs";
 import { createOfferGroup, updateOfferGroup } from "views/OfferPage/redux/actions";
 import CustomModal from '../../../../../components/CustomModal';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
-import {
-  getCreateModalCancelBtnTitle,
-  getCreateModalConfirmBtnTitle,
-  getCreateModalTitle, getOfferGroupDescriptionPlaceholder,
-  getOfferGroupDescriptionTitle,
-  getOfferGroupNamePlaceholder,
-  getOfferGroupNameTitle,
-  getUpdateModalCancelBtnTitle,
-  getUpdateModalConfirmBtnTitle,
-  getUpdateModalTitle,
-} from './i18nSelectors';
+import { getCreateModalCancelBtnTitle, getCreateModalConfirmBtnTitle, getCreateModalTitle, getOfferGroupDescriptionPlaceholder, getOfferGroupDescriptionTitle, getOfferGroupNamePlaceholder, getOfferGroupNameTitle, getUpdateModalCancelBtnTitle, getUpdateModalConfirmBtnTitle, getUpdateModalTitle } from './i18nSelectors';
 
 export default function FormDialog({ type, open, setOpen, ...rest }) {
   const { t } = useTranslation();
@@ -34,7 +24,7 @@ export default function FormDialog({ type, open, setOpen, ...rest }) {
   }
 
   const modalTitle = () => {
-    switch(type) {
+    switch (type) {
       case action.CREATE_OFFER:
         return getCreateModalTitle(t);
       case action.UPDATE_OFFER:
@@ -44,7 +34,7 @@ export default function FormDialog({ type, open, setOpen, ...rest }) {
     }
   };
   const confirmBtnTitle = () => {
-    switch(type) {
+    switch (type) {
       case action.CREATE_OFFER:
         return getCreateModalConfirmBtnTitle(t);
       case action.UPDATE_OFFER:
@@ -54,7 +44,7 @@ export default function FormDialog({ type, open, setOpen, ...rest }) {
     }
   };
   const cancelBtnTitle = () => {
-    switch(type) {
+    switch (type) {
       case action.CREATE_OFFER:
         return getCreateModalCancelBtnTitle(t);
       case action.UPDATE_OFFER:
@@ -70,30 +60,32 @@ export default function FormDialog({ type, open, setOpen, ...rest }) {
       setOpen={setOpen}
       confirmRender={confirmBtnTitle}
       onConfirm={createGroup}
-      canConfirm={name !== "" && description !== ""}
+      canConfirm={name !== ""}
       cancleRender={cancelBtnTitle}
       height="mini"
     >
-      <TitleSectionModal label={getOfferGroupNameTitle(t)} isRequired />
-      <TextField
-        className="offerModal--titleText"
-        placeholder={getOfferGroupNamePlaceholder(t)}
-        variant="outlined"
-        fullWidth
-        value={name}
-        onChange={e => setForm({ description, name: e.target.value })}
-      />
-      <TitleSectionModal label={getOfferGroupDescriptionTitle(t)} isRequired />
-      <TextField
-        className="offerModal--titleText"
-        placeholder={getOfferGroupDescriptionPlaceholder(t)}
-        variant="outlined"
-        fullWidth
-        multiline
-        rows="7"
-        value={description}
-        onChange={e => setForm({ name, description: e.target.value })}
-      />
+      <Box className="OfferPage__comp_createOfferGroup">
+        <TitleSectionModal label={getOfferGroupNameTitle(t)} isRequired />
+        <TextField
+          className="offerModal--titleText"
+          placeholder={getOfferGroupNamePlaceholder(t)}
+          variant="outlined"
+          fullWidth
+          value={name}
+          onChange={e => setForm({ description, name: e.target.value })}
+        />
+        <TitleSectionModal label={getOfferGroupDescriptionTitle(t)} />
+        <TextField
+          className="offerModal--titleText"
+          placeholder={getOfferGroupDescriptionPlaceholder(t)}
+          variant="outlined"
+          fullWidth
+          multiline
+          rows="7"
+          value={description}
+          onChange={e => setForm({ name, description: e.target.value })}
+        />
+      </Box>
     </CustomModal>
   );
 }

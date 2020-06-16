@@ -1,6 +1,7 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
-import { filter, forEach, get } from "lodash";
+import { useLocalStorage } from "hooks";
+import { filter, forEach, get, isNil } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -9,41 +10,60 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
+import { TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByProjectID, loadSummaryProject } from "../../redux/actions";
 import Content from "./Content";
 import { getFirstSummaryProject, getSummaryByProjectAndKeyword } from "./selector";
+
 export const PageContainer = styled(Container)`
   overflow: auto;  
   padding: 16px;
   padding-right: 32px;
   min-height: 100%;
+  max-width: 100%;
 `;
 
 const OfferByProject = () => {
     const { t } = useTranslation();
-    const context = useContext(OfferPageContext)
     const dispatch = useDispatch();
-    const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
+    const { listMenu, timeRange = {}, setTitle, timeType, setTimeType } = useContext(OfferPageContext);
     const idFirstProject = useSelector(state => getFirstSummaryProject(state));
     const listProjects = useSelector(state => getSummaryByProjectAndKeyword('')(state));
     const isMounted = useMountedState();
     const history = useHistory();
     const { id } = useParams();
     const [layoutTitle, setLayoutTitle] = useState("");
-
-    useEffect(() => {
-        const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-        const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-        dispatch(loadOfferByProjectID({ id, startDate, endDate }))
-    }, [dispatch, id, timeRange]);
+    const [timeFilterTypeOfferByProject, storeTimeFilterTypeOfferByProject] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, { timeType: 1 });
 
     useEffect(() => {
         if (isMounted) {
-            setTitle(t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"))
+            setTimeType(timeFilterTypeOfferByProject.timeType);
         }
-    }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, context, setTitle]);
+    }, [isMounted]);
+
+    useEffect(() => {
+        if (isMounted) {
+            storeTimeFilterTypeOfferByProject({
+                ...timeFilterTypeOfferByProject,
+                timeType
+            });
+        }
+    }, [isMounted, timeType]);
+
+
+    useEffect(() => {
+        if (!isNil(id)) {
+            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
+            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
+            dispatch(loadOfferByProjectID({ id, startDate, endDate }))
+        }
+    }, [dispatch, id, timeRange]);
+
+    useEffect(() => {
+        setTitle(t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"))
+    }, [dispatch, setTitle]);
 
     useEffect(() => {
         dispatch(loadSummaryProject())

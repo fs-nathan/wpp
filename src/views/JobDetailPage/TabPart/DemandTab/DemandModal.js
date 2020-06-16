@@ -61,7 +61,7 @@ const DemandModal = (props) => {
   }
   return (
     <JobDetailModalWrap
-      title={(props.isEditDemand) ? t('LABEL_CHAT_TASK_TAO_CHI_DAO_QUYET_DINH') : t('LABEL_CHAT_TASK_SUA_CHI_DAO_QUYET_DINH')}
+      title={(!props.isEditDemand) ? t('LABEL_CHAT_TASK_TAO_CHI_DAO_QUYET_DINH') : t('LABEL_CHAT_TASK_SUA_CHI_DAO_QUYET_DINH')}
       open={props.isOpen}
       setOpen={props.setOpen}
       confirmRender={() => (props.isEditDemand) ? t('IDS_WP_UPDATE') : t('IDS_WP_CREATE_NEW')}

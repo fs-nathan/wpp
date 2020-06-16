@@ -129,7 +129,7 @@ export const colors = {
   offer_priority_normal: "#ff9800",
   offer_priority_urgent: "#03c30b",
   offer_priority_very_urgent: "#f44336",
-  number_offer: "#a800ff",
+  number_offer: "#9e9e9e",
   number_offer_approving: "#ff9800",
   number_offer_rejected: "#f44336",
   number_offer_accepted: "#03c30b",

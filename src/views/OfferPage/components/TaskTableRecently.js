@@ -4,7 +4,6 @@ import { get, isEqual } from 'lodash';
 import React, { useContext } from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
-import { colors } from "../contants/attrs";
 import { OfferPageContext } from '../OfferPageContext';
 import EmptyHolder from "./EmptyHolder";
 import InlineBadge from './InlineBadge';
@@ -12,22 +11,26 @@ import Popover from './Popover';
 import "./TaskTableRecently.scss";
 const styles = makeStyles((theme) => ({
   button_green: {
-    backgroundColor: colors.offer_status_approved
+    backgroundColor: '#0ab711'
   },
   button_red: {
-    backgroundColor: colors.offer_of_me_monitoring
+    backgroundColor: '#f44336'
   },
   button_yellow: {
-    backgroundColor: "#FFD700"
+    backgroundColor: "#ff9800"
   },
   button_grey: {
-    backgroundColor: "#e8e8e8"
+    backgroundColor: "#9e9e9e"
   },
   button: {
     color: "white",
     height: "30px",
-    width: "100px",
-    border: 0
+    width: "150px",
+    border: 0,
+    borderRadius: '3px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   small_avatar: {
     width: theme.spacing(4),
@@ -72,9 +75,11 @@ const WrapButton = styled.div`
     outline:none;
   }
   font-size : 12px;
+  width: 150px;
+  text-align: center;
 `
 
-export function TaskTableRecently({ offers, loading }) {
+export function TaskTableRecently({ offers }) {
   const classes = styles()
   const { t } = useTranslation()
   const {
@@ -84,7 +89,7 @@ export function TaskTableRecently({ offers, loading }) {
 
   return (
     <>
-      {(offers.length === 0 || undefined) && !loading ? < EmptyHolder /> : (
+      {(offers.length === 0 || undefined) ? < EmptyHolder /> : (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -107,7 +112,7 @@ export function TaskTableRecently({ offers, loading }) {
                 <TableCell width="15%" >
                   {t("VIEW_OFFER_LABEL_OFFER_APPROVAL_DATE")}
                 </TableCell>
-                <TableCell  >
+                <TableCell align="center">
                   {t("VIEW_OFFER_LABEL_OFFER_APPROVAL_RESULT")}
                 </TableCell>
                 <TableCell width="5%"></TableCell>
@@ -191,14 +196,11 @@ export function TaskTableRecently({ offers, loading }) {
                     {get(offer, "status_code") === 0 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_grey}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
@@ -206,42 +208,33 @@ export function TaskTableRecently({ offers, loading }) {
                     {get(offer, "status_code") === 1 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_yellow}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
                     {get(offer, "status_code") === 2 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_green}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
                     {get(offer, "status_code") === 3 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_red}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
@@ -256,8 +249,6 @@ export function TaskTableRecently({ offers, loading }) {
           </Table>
         </TableContainer>
       )}
-
-      {}
     </>
   );
 }

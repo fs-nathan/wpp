@@ -23,7 +23,9 @@ function RightContent(props) {
 
   const { offerId } = props;
   useEffect(() => {
-    dispatch(getCommentListOfferDetail({ offerId }))
+    if (!isNil(offerId)) {
+      dispatch(getCommentListOfferDetail({ offerId }))
+    }
   }, [offerId]);
 
   const [text, setText] = useState('');

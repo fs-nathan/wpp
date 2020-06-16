@@ -16,6 +16,8 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import './styles.scss';
+import * as fileType from 'assets/fileType';
+import { FileType } from 'components/FileType';
 
 const StyledEmploy = styled(Typography)`
   width: 700px;
@@ -177,7 +179,7 @@ const MemberModal = () => {
   function onClickFile(file, idx) {
     const type = getFileType(file.name);
     return (evt) => {
-      if (type === 'mp4') {
+      if (FileType(type) === fileType.video) {
         dispatch(showImagesList(true, [file], idx));
       } else {
         dispatch(openDocumentDetail({ ...file, type: type }));

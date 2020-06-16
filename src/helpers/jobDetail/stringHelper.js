@@ -1,4 +1,5 @@
 import format from 'date-fns/format';
+import parse from 'date-fns/parse';
 
 const DEFAULT_MAX_LENGTH = 120
 export const isLongerContent = str => str.length > DEFAULT_MAX_LENGTH
@@ -30,9 +31,15 @@ export const convertTime = inputFormat => {
   return format(d, 'HH:mm');
 }
 
+function pad(s) { return (s < 10) ? '0' + s : s; }
 export const convertDate = inputFormat => {
-  function pad(s) { return (s < 10) ? '0' + s : s; }
   var d = new Date(inputFormat)
+  return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
+}
+
+export const convertDateByFormat = (inputFormat, formatDate) => {
+  const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+  var d = parse(inputFormat, fixedFormat, new Date())
   return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
 }
 

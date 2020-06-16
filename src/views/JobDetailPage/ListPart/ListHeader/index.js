@@ -10,6 +10,7 @@ import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
 import CreateJobModal from './CreateJobModal';
 import CreateJobSetting from './CreateJobSetting';
+import { get } from 'lodash';
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -53,6 +54,10 @@ function ListHeaderSelect({ setShow }) {
 function ListHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+  const viewPermissions = useSelector(state => state.viewPermissions);
+  const create_task = get(viewPermissions, `data.detailProject.${projectDetail.id}.create_task`, false)
+
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
 
@@ -84,12 +89,12 @@ function ListHeader(props) {
           >
             <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon setting-icon" />
           </ButtonIcon>
-          <ButtonIcon
+          {create_task && < ButtonIcon
             className="dropdown-icon"
             onClick={onClickCreateJob}
           >
             <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
-          </ButtonIcon>
+          </ButtonIcon>}
         </div>
       </div>
       <CreateJobModal
@@ -100,7 +105,7 @@ function ListHeader(props) {
         isOpen={isOpenSettings}
         setOpen={setOpenSettings}
       />
-    </div>
+    </div >
   );
 }
 

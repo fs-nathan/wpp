@@ -132,10 +132,10 @@ const ImageMessage = ({
                 </div>
               )
             }
-            {isUploading && uploadingPercent !== 100 &&
+            {isUploading && uploadingPercent[id] !== 100 &&
               <div className="ImageMessage--loading" >
                 <div className="ImageMessage--loadingBackground" >
-                  <div className="ImageMessage--loadingPercent" style={{ width: `${uploadingPercent}%`, backgroundColor: groupActiveColor }} >
+                  <div className="ImageMessage--loadingPercent" style={{ width: `${uploadingPercent[id]}%`, backgroundColor: groupActiveColor }} >
                   </div>
                 </div>
               </div>}
