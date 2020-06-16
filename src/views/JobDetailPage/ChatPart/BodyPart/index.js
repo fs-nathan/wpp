@@ -28,6 +28,7 @@ const BodyPart = props => {
   const chats = useSelector(state => state.chat.chats);
   const isMore = useSelector(state => state.chat.isMore);
   const isLoading = useSelector(state => state.chat.isLoading);
+  const isLoadingSearch = useSelector(state => state.chat.isLoadingSearch);
   const userId = useSelector(state => state.system.profile.id);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -195,10 +196,12 @@ const BodyPart = props => {
   }
 
   function onClickScrollToBottom(data) {
+    chatRef.current.scrollToBottom()
+  }
+
+  function onClickBack(data) {
     if (isMore === false) {
       dispatch(loadChat(taskId));
-    } else {
-      chatRef.current.scrollToBottom()
     }
   }
 
@@ -346,9 +349,14 @@ const BodyPart = props => {
           </div>
         </div >
       </Scrollbars>
-      {(isShowScroll || isMore === false) &&
+      {(isShowScroll) &&
         <IconButton className="bodyChat--buttonToBot" onClick={onClickScrollToBottom}>
-          <Icon path={isMore === false ? mdiClose : mdiMenuDown} size={1.5} ></Icon>
+          <Icon path={mdiMenuDown} size={1.5} ></Icon>
+        </IconButton>
+      }
+      {(searchChatKey && isLoadingSearch) &&
+        <IconButton className="bodyChat--buttonToBot bodyChat--buttonBack" onClick={onClickBack}>
+          <Icon path={mdiClose} size={1.5} ></Icon>
         </IconButton>
       }
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

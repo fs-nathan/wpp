@@ -184,6 +184,10 @@
       opacity: 1;
     }
   }
+  &--buttonBack {
+    left: 10px;
+    right: unset;
+  }
   &--chatStatus {
     display: flex;
     justify-content: space-evenly;

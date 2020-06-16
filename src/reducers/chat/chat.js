@@ -17,6 +17,7 @@ export const initialState = {
   uploadingPercent: {},
   isMore: false,
   isLoading: false,
+  isLoadingSearch: false,
   isSending: false,
   isFails: false,
   isLoadingForward: false,
@@ -57,6 +58,8 @@ export default (state = initialState, action) => produce(state, draft => {
       const idx = findIndex(draft.chats.data, ({ id }) => id && id === action.replaceId)
       // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
+        action.payload.data_chat.url = undefined;
+        action.payload.data_chat.url_thumb = undefined;
         draft.chats.data.splice(idx, 1, action.payload.data_chat)
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
@@ -72,11 +75,13 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.members = action.payload;
       break;
     case actionTypes.LOAD_CHAT: {
-      const { chat_id, last_id, isMore } = action;
+      const { chat_id, last_id, isMore, content } = action;
       draft.isLoading = true;
       draft.focusId = chat_id;
       draft.focusTopId = last_id;
       draft.chats.last_id = last_id || null;
+      if (content) draft.isLoadingSearch = true;
+      else draft.isLoadingSearch = !!chat_id;
       if (!chat_id && !last_id && !isMore) {
         draft.chats.data = [];
       }
@@ -176,6 +181,7 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.SEARCH_CHAT: {
       const { key } = action;
       draft.searchChatKey = key;
+      if (!key) draft.isLoadingSearch = false;
       break;
     }
     case actionTypes.ON_UPLOADING: {
