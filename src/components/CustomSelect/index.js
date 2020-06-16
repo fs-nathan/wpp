@@ -59,7 +59,8 @@ function MultiValue(props) {
 }
 
 const MenuListWrapper = styled(components.MenuList)`
-  max-height: 200px !important;
+  height: auto !important;
+  overflow: hidden !important;
 `;
 
 const MenuList = ({ children, ...props }) => {
