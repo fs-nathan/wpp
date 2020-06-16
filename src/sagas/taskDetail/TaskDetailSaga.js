@@ -1560,6 +1560,7 @@ export function* removeGroupPermissionOfMember(payload) {
     const { task_id, member_id } = payload;
     const res = yield call(apiService.post, "/task/remove-group-permission-of-member", { task_id, member_id });
     yield put(actions.removeGroupPermissionOfMemberSuccess(res.data));
+    yield put(actions.getMember({ task_id }))
   } catch (error) {
     yield put(actions.removeGroupPermissionOfMemberFail(error));
   }

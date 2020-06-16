@@ -30,11 +30,15 @@ function TabBody() {
       renderView={props => <div {...props} className="memberTabBody--container" />}
       autoHide autoHideTimeout={500} autoHideDuration={200}>
       <div className="container-member-tabbody">
-        <SearchInput
-          placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
-          fullWidth
-          onChange={e => searchMemberTabPart(e)}
-        />
+        <div
+          className="memberTabBody--search"
+        >
+          <SearchInput
+            placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
+            fullWidth
+            onChange={e => searchMemberTabPart(e)}
+          />
+        </div>
         <List>
           {members.map((element, index) => {
             return (

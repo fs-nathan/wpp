@@ -21,6 +21,7 @@ import styled from 'styled-components';
 import './styles.scss';
 import findIndex from "lodash/findIndex";
 import { currentColorSelector } from "views/JobDetailPage/selectors";
+import AlertModal from "components/AlertModal";
 
 const RowTable = styled(TableRow)`
 & > *:not(first-child) {
@@ -88,6 +89,7 @@ function PermissionMemberModal({ memberId, setOpen,
   const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
   const [selectedValue, setSelectedValue] = React.useState(-1);
   const [permissionsList, setPermissionsList] = React.useState([]);
+  const [alert, setAlert] = React.useState(false);
 
   // useEffect(() => {
   //   if (is_admin)
@@ -126,6 +128,10 @@ function PermissionMemberModal({ memberId, setOpen,
   }
 
   function onClickDelete() {
+    setAlert(true)
+  }
+
+  function onConfirmDelete() {
     dispatch(removeGroupPermissionOfMember(taskId, memberId))
     handleClose()
   }
@@ -215,7 +221,12 @@ function PermissionMemberModal({ memberId, setOpen,
           </div>
         }
       </DialogContent>
-
+      <AlertModal
+        open={alert}
+        setOpen={setAlert}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={onConfirmDelete}
+      />
     </DialogWrap >
   );
 }

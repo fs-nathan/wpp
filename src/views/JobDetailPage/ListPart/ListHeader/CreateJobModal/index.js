@@ -221,6 +221,8 @@ function CreateJobModal(props) {
   useEffect(() => {
     if (isFetching === false && error === false) {
       props.setOpen(false);
+      handleChangeData('name', EMPTY_STRING)
+      handleChangeData('description', EMPTY_STRING)
       if (props.onCreateTaskSuccess) props.onCreateTaskSuccess()
     }
     // eslint-disable-next-line
@@ -275,8 +277,6 @@ function CreateJobModal(props) {
         : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
       // setDataMember(DEFAULT_DATA);
-      handleChangeData('name', EMPTY_STRING)
-      handleChangeData('description', EMPTY_STRING)
       // Close modal
       // handleClose();
       // } else {
