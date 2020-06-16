@@ -54,7 +54,6 @@ const Header = ({
                     }}
                     aria-controls="simple-menu"
                     className="gantt-btn__list-project"
-                    style={{ padding: 0 }}
                     aria-haspopup="true"
                     size="small"
                   >
@@ -89,19 +88,19 @@ const Header = ({
       </Col>
     </Row>
   ) : (
-    <div className="icon-show-header">
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <IconComponent
-          onClick={() => {
-            changeShowHeader(!showHeader);
-          }}
-          size={1.3}
-          title={""}
-          path={mdiChevronDown}
-        />
+      <div className="icon-show-header">
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <IconComponent
+            onClick={() => {
+              changeShowHeader(!showHeader);
+            }}
+            size={1.3}
+            title={""}
+            path={mdiChevronDown}
+          />
+        </div>
       </div>
-    </div>
-  );
+    );
 };
 
 const mapStateToProps = (state) => ({

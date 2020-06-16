@@ -56,7 +56,7 @@ const TimeLine = ({
   }
   useEffect(() => {
     setWidthComplete((dataSource[index].complete * width) / 100);
-  }, [width]);
+  }, [width, dataSource]);
   useEffect(() => {
     setStartDateText(new moment(startDate));
   }, [startDate, girdInstance]);
@@ -160,14 +160,15 @@ const TimeLine = ({
     handleChange(left / 48, end + add);
   };
   const handleProcessResize = (e, node) => {
+    if (isGroupTask || isTotalDuration) return
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
     setWidthProcess(newProcess);
   };
   const handleProcessResizeStop = (e, node) => {
+    if (isGroupTask || isTotalDuration) return
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
-    console.log(newProcess);
     setProcessDatasource(newProcess, index);
   };
   const handleChange = (start, end) => {
@@ -197,6 +198,7 @@ const TimeLine = ({
   )
     return null;
   if (!width) return null;
+  console.log(isTotalDuration)
   if (isTotalDuration && !visibleGantt.total) return null;
   return (
     <React.Fragment>
@@ -245,7 +247,7 @@ const TimeLine = ({
               placement="top"
               title={`${
                 endDateText.diff(startDateText, girdInstance.unit) + 1
-              } ${girdInstance.unitText}`}
+                } ${girdInstance.unitText}`}
             >
               <span
                 className={
@@ -269,7 +271,7 @@ const TimeLine = ({
             placement="top"
             title={`${endDateText.diff(startDateText, girdInstance.unit) + 1} ${
               girdInstance.unitText
-            }`}
+              }`}
           >
             <div
               ref={refFirstResize}
@@ -279,7 +281,7 @@ const TimeLine = ({
                 setA(e.pageX - offsetLeft);
               }}
               className="resize-width"
-              // onMouseUp={handleMouseUpFirstResize}
+            // onMouseUp={handleMouseUpFirstResize}
             >
               {!isGroupTask && !isTotalDuration && canEdit && (
                 <Circle show={showResize} left={-18} />
@@ -291,11 +293,15 @@ const TimeLine = ({
               background: isTotalDuration
                 ? timelineColor.total
                 : isGroupTask
-                ? timelineColor.group
-                : timelineColor.task,
+                  ? timelineColor.group
+                  : timelineColor.task,
+              height: isTotalDuration || isGroupTask ? 15 : 20
             }}
             className="gantt--time-task"
-          ></div>
+          >
+            {(isTotalDuration || isGroupTask) && <div className="gantt--timeline-group-task__right"></div>}
+            {(isTotalDuration || isGroupTask) && <div className="gantt--timeline-group-task__left"></div>}
+          </div>
         </ResizableBox>
         {visibleGantt.date && (
           <p className="gantt--end-timeline">
@@ -319,8 +325,6 @@ const TimeLine = ({
         onMouseMove={handleMouseMove}
         style={{
           display: "flex",
-          top: "50%",
-          transform: "translateY(-50%)",
           position: "absolute",
           cursor:
             !isGroupTask && !isTotalDuration && !isTotalDuration && canEdit
@@ -336,6 +340,7 @@ const TimeLine = ({
             minConstraints={[0, 0]}
             maxConstraints={[width, width]}
             width={widthComplete}
+            axis={isTotalDuration || isGroupTask ? 'none' : 'both'}
             handle={() => (
               <span
                 // style ={{
@@ -361,12 +366,16 @@ const TimeLine = ({
             )}
           >
             <div
-              style={{ background: timelineColor.duration }}
+              style={{
+                background: timelineColor.duration,
+                height: isTotalDuration || isGroupTask ? 15 : 20
+              }}
               className="gantt--duration-task"
+
               ref={refProcess}
             >
               <div className="duration-text-gantt">
-                {visibleGantt.numberDuration && widthProcess + "%"}
+                {visibleGantt.numberDuration && Math.floor((widthProcess)) + "%"}
               </div>
             </div>
           </ResizableBox>

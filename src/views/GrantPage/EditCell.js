@@ -1,15 +1,12 @@
 import DateFnsUtils from "@date-io/date-fns";
 import { IconButton, TextField } from "@material-ui/core";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { mdiSquareEditOutline } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
 import { default as React, useEffect, useRef, useState } from "react";
+import { connect } from 'react-redux';
 import { changeTaskduration } from "../../actions/gantt";
-
 const EditCell = ({
   taskId,
   top = 0,
@@ -25,6 +22,7 @@ const EditCell = ({
   fetchNewDataSource,
   setProcessDatasource,
   index,
+  girdType
 }) => {
   const [showEdit, setShowEdit] = useState(false);
   const [showEditIcon, setShowEditIcon] = useState(false);
@@ -38,14 +36,14 @@ const EditCell = ({
         : new moment(defaultValue, "DD/MM/YYYY").toDate()
     );
     setDataComplete(defaultValue);
-  }, [defaultValue]);
+  }, [defaultValue, showEdit]);
   const handleClickOutSide = async (e) => {
     if (e.keyCode === 13) {
       e.preventDefault();
       if (type !== "complete") {
         postDataToServer();
       } else {
-        setProcessDatasource(dataComplete, index);
+        setProcessDatasource(parseInt(dataComplete), index);
       }
       setShowEdit(false);
     }
@@ -54,7 +52,7 @@ const EditCell = ({
     if (type !== "complete") {
       postDataToServer();
     } else {
-      setProcessDatasource(dataComplete, index);
+      setProcessDatasource(parseInt(dataComplete), index);
     }
     setShowEdit(false);
   };
@@ -69,11 +67,20 @@ const EditCell = ({
       document.removeEventListener("keyup", handleClickOutSide);
     };
   }, [showEdit, dataComplete, data]);
+
   const handleOnChange = (date) => {
-    console.log(new moment(date).format("YYYY-MM-DD"));
-    setData(new moment(date).format("YYYY-MM-DD"));
+    if (!date) {
+      setData(data);
+    }
+    setData(new moment(date).format("YYYY-MM-DD HH:mm"));
   };
   const postDataToServer = async () => {
+    const fieldChange = type === "start_date" ? "start_time" : "end_time"
+    const startEndTime = girdType === 'HOUR' ? {
+      start_time: new moment(start_date, "DD/MM/YYYY HH:mm").format("HH:mm"),
+      end_time: new moment(end_date, "DD/MM/YYYY HH:mm").format("HH:mm"),
+      [fieldChange]: new moment(data).format("HH:mm")
+    } : {}
     await changeTaskduration({
       task_id: taskId,
       start_date: new moment(start_date, "DD/MM/YYYY HH:mm").isValid()
@@ -83,6 +90,7 @@ const EditCell = ({
         ? new moment(end_date, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD")
         : new moment(end_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
       [type]: new moment(data).format("YYYY-MM-DD"),
+      ...startEndTime
     });
     fetchNewDataSource();
   };
@@ -96,64 +104,94 @@ const EditCell = ({
       >
         {!showEdit && component}
         {showEdit &&
-          (type !== "complete" ? (
-            <div className="gantt--edit-cell__input-date">
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <KeyboardDatePicker
-                  disableToolbar
+          (type !== "complete" ? girdType === 'HOUR' ? <div className="gantt--edit-cell__input-date">
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <KeyboardDateTimePicker
+                disableToolbar
+                disableUnderline={true}
+                value={data}
+                onChange={handleOnChange}
+                format={"dd/MM/yyyy HH:mm"}
+                margin="normal"
+                variant="outlined"
+                KeyboardButtonProps={{
+                  "aria-label": "change date",
+                }}
+              /> </MuiPickersUtilsProvider></div> : (
+              <div className="gantt--edit-cell__input-date">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <KeyboardDateTimePicker
+                    disableToolbar
+                    disableUnderline={true}
+                    value={data}
+                    onChange={handleOnChange}
+                    format={"dd/MM/yyyy"}
+                    margin="normal"
+                    variant="outlined"
+                    KeyboardButtonProps={{
+                      "aria-label": "change date",
+                    }}
+                  />
+                </MuiPickersUtilsProvider>
+              </div>
+            ) : (
+              <div
+                style={{
+                  position: "absolute",
+                  left,
+                  top: 0,
+                  width,
+                  zIndex: 1000,
+                }}
+              >
+                <TextField
+                  type="number"
+                  style={{
+                    height: 37,
+                    width: "100%",
+                  }}
+                  fullWidth={true}
+                  defaultValue={defaultValue}
                   disableUnderline={true}
-                  value={data}
-                  onChange={handleOnChange}
-                  format="dd/MM/yyyy"
-                  margin="normal"
+                  value={dataComplete}
+                  onChange={(e) => {
+                    if (isNaN(e.target.value) || !e.target.value) {
+                      setDataComplete(0)
+                      return
+                    }
+                    if (e.target.value > 100) {
+                      setDataComplete(100)
+                      return
+                    }
+                    if (e.target.value < 0) {
+                      setDataComplete(0)
+                      return
+                    }
+                    setDataComplete(e.target.value)
+                  }}
+                  classes={{
+                    root: "gantt--input-number",
+                  }}
                   variant="outlined"
-                  id="date-picker-inline"
-                  KeyboardButtonProps={{
-                    "aria-label": "change date",
+                  InputProps={{
+                    inputProps: {
+                      max: 100,
+                      min: 0,
+                    },
                   }}
                 />
-              </MuiPickersUtilsProvider>
-            </div>
-          ) : (
-            <div
-              style={{
-                position: "absolute",
-                left,
-                top: 0,
-                width,
-                zIndex: 1000,
-              }}
-            >
-              <TextField
-                type="number"
-                style={{
-                  height: 37,
-                  width: "100%",
-                }}
-                fullWidth={true}
-                defaultValue={defaultValue}
-                disableUnderline={true}
-                value={dataComplete}
-                onChange={(e) => setDataComplete(e.target.value)}
-                classes={{
-                  root: "gantt--input-number",
-                }}
-                variant="outlined"
-                InputProps={{
-                  inputProps: {
-                    max: 100,
-                    min: 0,
-                  },
-                }}
-              />
-            </div>
-          ))}
+              </div>
+            ))}
         {showEditIcon && !showEdit && (
           <div
             style={{
               position: "absolute",
-              right: 0,
+              right: '50%',
+              transform: "translateX(50%)",
               top: 0,
+              background: '#fffae6',
+              height: "37px",
+              width: "100%"
             }}
           >
             <IconButton
@@ -163,7 +201,7 @@ const EditCell = ({
               onClick={() => setShowEdit(true)}
               aria-haspopup="true"
               style={{
-                background: "grey",
+                background: "#fffae6",
                 width: 20,
                 height: 36,
               }}
@@ -184,4 +222,9 @@ const EditCell = ({
   );
 };
 
-export default EditCell;
+const mapStateToProps = (state) => ({
+  girdType: state.gantt.girdType,
+});
+export default
+  connect(mapStateToProps)(EditCell)
+  ;
