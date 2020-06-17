@@ -221,6 +221,8 @@ function CreateJobModal(props) {
   useEffect(() => {
     if (isFetching === false && error === false) {
       props.setOpen(false);
+      handleChangeData('name', EMPTY_STRING)
+      handleChangeData('description', EMPTY_STRING)
       if (props.onCreateTaskSuccess) props.onCreateTaskSuccess()
     }
     // eslint-disable-next-line
@@ -275,8 +277,6 @@ function CreateJobModal(props) {
         : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
       // setDataMember(DEFAULT_DATA);
-      handleChangeData('name', EMPTY_STRING)
-      handleChangeData('description', EMPTY_STRING)
       // Close modal
       // handleClose();
       // } else {
@@ -371,6 +371,7 @@ function CreateJobModal(props) {
                   <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
                   {type === 1 ? (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -389,6 +390,7 @@ function CreateJobModal(props) {
                     )}
                   {type !== 1 && (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -423,6 +425,7 @@ function CreateJobModal(props) {
                     )}
                   {type !== 1 && (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar

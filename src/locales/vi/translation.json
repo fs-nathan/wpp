@@ -1933,6 +1933,7 @@
   "LABEL_CHAT_TASK_NGAY_VA_GIO": "Ngày và giờ",
   "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Chỉ nhập ngày",
   "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Không yêu cầu",
+  "LABEL_CHAT_TASK_INVALID_DATE_FORMAT": "invalid date format",
   "Ưu tiên cao": "Ưu tiên cao",
   "Thu gọn": "Thu gọn",
   "Mở rộng": "Mở rộng",

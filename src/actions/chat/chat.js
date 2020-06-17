@@ -692,3 +692,9 @@ export function viewChatFail(error) {
     error
   };
 }
+
+export function clearFocus() {
+  return {
+    type: actionTypes.CLEAR_FOCUS,
+  };
+}

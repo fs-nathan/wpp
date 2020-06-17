@@ -5,6 +5,7 @@ import clsx from 'clsx';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles.scss';
+import { compact } from 'lodash';
 
 
 const CustomListItem = props => {
@@ -44,7 +45,7 @@ const CustomListItem = props => {
           <div className="demandTabItem--title">{content}</div>
           <div className="demandTabItem--creator">
             <Avatar className="demandTabItem--avatar" src={user_create_avatar} alt="avatar" />
-            {[user_create_name, user_create_position, ...user_create_roles].join(' - ')}
+            {compact([user_create_name, user_create_position, ...user_create_roles]).join(' - ')}
           </div >
           <div className="demandTabItem--time">
             <Icon path={mdiClockOutline} size={1} />

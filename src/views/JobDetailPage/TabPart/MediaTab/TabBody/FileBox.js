@@ -15,6 +15,7 @@ import { taskIdSelector } from 'views/JobDetailPage/selectors';
 import MenuListItem from './MenuListItem';
 import * as fileType from 'assets/fileType';
 import { FileType } from 'components/FileType';
+import { compact } from 'lodash';
 
 const FileBox = (props) => {
   const { t } = useTranslation();
@@ -68,7 +69,7 @@ const FileBox = (props) => {
                   <div className="fileBoxItem--content" >
                     <div className="fileBoxItem--name" onClick={onClickFile(item, 0)}>{item.name}</div>
                     <div className="fileBoxItem--downloaded">
-                      {[item.type, item.size].join(' - ').toUpperCase()}
+                      {compact([item.type, item.size]).join(' - ').toUpperCase()}
                       <IconButton className="fileBoxItem--button"
                         onClick={onClickDownload(item)}
                         size='small'>
