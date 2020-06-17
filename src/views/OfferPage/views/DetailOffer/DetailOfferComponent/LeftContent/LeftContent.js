@@ -6,9 +6,7 @@ import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
 import { CustomEventDispose, CustomEventListener } from 'constants/events';
-import lodash from 'lodash';
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+import lodash, { get, isArray, isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
@@ -165,22 +163,6 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     setSelectedItem({ file_id, name, url, file_icon })
     setDeleteDocumentModal(true);
   }
-  /*const renderConfirmRemoveFileModal = () => {
-    return (
-      <>
-        <Grid container direction="column" justify="center" alignItems="center">
-          <p>{t("VIEW_OFFER_TEXT_DELETE_FILE_WARNING")}</p>
-          <div style={{ textAlign: "center" }}>
-            <a target="_blank"
-              href={get(selectedItem, "url")}>
-              <img height="50" width="50" alt="file" src={get(selectedItem, "file_icon")} />
-              <div>{get(selectedItem, "name")}</div>
-            </a>
-          </div>
-        </Grid>
-      </>
-    )
-  }*/
   const afterDeleteDocument = () => {
     setLoading(false);
     setDeleteDocumentModal(false);
@@ -334,7 +316,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
     <>
       <Grid container>
         <Box className="offerDetail-handlingPerson-container">
-          <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
+          <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')} ({isArray(addedHandlers) ? addedHandlers.length : 0})</div>
           {
             can_update_member_handle && (
               <IconButton
@@ -427,7 +409,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
   return (
     <Grid container>
       <Box className="offerDetail-handlingPerson-container">
-        <div className="offerDetail-monitoringPerson-title">{t("VIEW_OFFER_LABEL_SUPERVISOR")}</div>
+        <div className="offerDetail-monitoringPerson-title">{t("VIEW_OFFER_LABEL_SUPERVISOR")} ({isArray(addedMonitors) ? addedMonitors.length : 0})</div>
         {
           can_update_member_monitor && (
             <IconButton
@@ -446,7 +428,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
             addedMonitors.map(member => (
               <Grid item xs={12} className="offerDetail-monitoringPerson-item">
                 <Grid container>
-                  <Grid item xs={2}>
+                  <Grid item xs={1}>
                     <Avatar src={get(member, "avatar")} />
                   </Grid>
                   <Grid item>

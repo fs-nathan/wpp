@@ -299,7 +299,6 @@ const OfferModal = ({
       && title && content
       && offer_group_id
       && priority
-      && handlers.length;
   }
   return (
     <JobDetailModalWrap
@@ -322,6 +321,17 @@ const OfferModal = ({
       onCancle={() => setOpen(false)}
     >
       <React.Fragment>
+        {
+          !isUpdateOfferDetailDescriptionSection && (
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
+              <CustomSelect
+                options={offersGroup}
+                onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
+              />
+            </>
+          )
+        }
         <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
         <TextField
           className="offerModal--titleText"
@@ -345,12 +355,7 @@ const OfferModal = ({
         {
           !isUpdateOfferDetailDescriptionSection && (
             <>
-              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
-              <CustomSelect
-                options={offersGroup}
-                onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
-              />
-              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} isRequired />
+              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} />
               <div className={classes.listChips}>
                 {handlers.map((allMembersIdx, idx) =>
                   <Chip
