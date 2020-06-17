@@ -19,8 +19,8 @@ import { taskIdSelector } from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
-import './styles.scss';
 import CommonProgressForm from './CommonProgressForm';
+import './styles.scss';
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -28,15 +28,6 @@ export const EDIT_MODE = {
   WORK_DATE: 2,
   PRIORITY: 3,
   ASSIGN_TYPE: 4,
-}
-
-function validate(data) {
-  const {
-    name,
-    type_assign,
-    priority
-  } = data
-  return type_assign !== null && priority !== null && !!name;
 }
 
 function CreateJobModal(props) {
@@ -221,8 +212,6 @@ function CreateJobModal(props) {
   useEffect(() => {
     if (isFetching === false && error === false) {
       props.setOpen(false);
-      handleChangeData('name', EMPTY_STRING)
-      handleChangeData('description', EMPTY_STRING)
       if (props.onCreateTaskSuccess) props.onCreateTaskSuccess()
     }
     // eslint-disable-next-line
@@ -232,9 +221,13 @@ function CreateJobModal(props) {
     if (props.isOpen) {
       if (projectId) {
         dispatch(getSchedules(projectId))
+        if (!isEdit) {
+          handleChangeData('name', EMPTY_STRING)
+          handleChangeData('description', EMPTY_STRING)
+        }
       }
     }
-  }, [dispatch, projectId, props.isOpen])
+  }, [dispatch, isEdit, projectId, props.isOpen])
 
   const handleChangeData = (attName, value) => {
     // console.log(attName, value)
@@ -254,6 +247,18 @@ function CreateJobModal(props) {
     end_time: data.end_time,
     schedule_id: data.schedule,
   };
+
+  function validate(data) {
+    const {
+      name,
+      type_assign,
+      priority
+    } = data
+    if (isEdit && props.editMode !== EDIT_MODE.NAME_DES) {
+      return true;
+    }
+    return type_assign !== null && priority !== null && !!name;
+  }
 
   const handlePressConfirm = () => {
     if (validate(data)) {
@@ -406,6 +411,7 @@ function CreateJobModal(props) {
                   <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_KET_THUC')}</Typography>
                   {type === 1 ? (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar

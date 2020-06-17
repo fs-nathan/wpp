@@ -39,6 +39,7 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.isFetching = false
       draft.dataFetched = true
       draft.taskDetails.priority_code = action.payload.data_chat.priority;
+      draft.error = false;
       break;
     case types.UPDATE_TASK_PRIORITY_FAIL:
       draft.isFetching = false

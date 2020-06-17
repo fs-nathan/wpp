@@ -27,7 +27,7 @@ function* updatePriority(action) {
   try {
     const res = yield call(doUpdatePriority, action.payload);
     yield put(actions.updatePrioritySuccess(res));
-    yield put(actions.getTaskDetailTabPart(action.payload.task_id));
+    // yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // yield put(appendChat(res));
     // CustomEventEmitter(DELETE_ROOM);

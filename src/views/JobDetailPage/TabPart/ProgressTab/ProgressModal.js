@@ -1,23 +1,21 @@
 import DateFnsUtils from "@date-io/date-fns";
 import { Typography } from '@material-ui/core';
-import DialogContent from '@material-ui/core/DialogContent';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { updateTimeDuration } from 'actions/taskDetail/taskDetailActions';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
+import TitleSectionModal from 'components/TitleSectionModal';
 import "date-fns";
-import { convertDate, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
+import { compareDateTime, convertDate, convertDateByFormat, DEFAULT_DATE_TEXT } from 'helpers/jobDetail/stringHelper';
+import { get } from 'lodash';
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { convertDateByFormat, compareDateTime } from 'helpers/jobDetail/stringHelper';
 import styled from 'styled-components';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
+import CommonProgressForm from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonProgressForm";
 import { taskIdSelector } from '../../selectors';
 import './styles.scss';
-import { get } from 'lodash';
-import TitleSectionModal from 'components/TitleSectionModal';
-import CommonProgressForm from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonProgressForm";
 
 const StartEndDay = styled(Typography)`
   display: flex;
@@ -70,6 +68,7 @@ const ProgressModal = (props) => {
   ], [t]);
 
   React.useEffect(() => {
+    // console.log('detailTask', detailTask)
     if (detailTask) {
       const {
         start_time,
