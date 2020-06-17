@@ -6,6 +6,7 @@ import { mdiFilePdf } from "@mdi/js";
 import Icon from "@mdi/react";
 import kendo from "@progress/kendo-ui";
 import { Drawer } from "antd";
+import { get } from 'lodash';
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
@@ -27,6 +28,7 @@ const ExportPDF = ({
   changeVisibleExportPdfDrawer,
   changePreviewContent,
   previewContent,
+  profileDetail,
   changeRenderFullDay,
   changeFilterExportPdf,
   projectInfo
@@ -144,8 +146,8 @@ const ExportPDF = ({
   return (
     <React.Fragment>
       <Drawer
-     
-      className="gantt--export-pdf__dialog"
+
+        className="gantt--export-pdf__dialog"
         closable={false}
         title={
           <div
@@ -184,6 +186,9 @@ const ExportPDF = ({
               onClick={handleOnClickPreview}
               className="config--drawer--footer-section__preview"
               fullWidth
+              style={{
+                color: get(profileDetail, 'group_active.color', '#f2f2f2')
+              }}
             >
               Xuất file PDF
             </Button>

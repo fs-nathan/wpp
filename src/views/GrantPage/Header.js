@@ -2,6 +2,7 @@ import { IconButton } from "@material-ui/core";
 import { mdiChevronDown, mdiMenuDown } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Col, Row } from "antd";
+import { get } from 'lodash';
 import React from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -18,6 +19,7 @@ const Header = ({
   showHeader,
   changeShowHeader,
   showProject,
+  profileDetail
 }) => {
   const history = useHistory();
   const { pathname } = useLocation();
@@ -64,20 +66,39 @@ const Header = ({
               {/* <ListHeader show={showProject} setShow={setShowSelectProject} /> */}
               <div className="gantt--navigation">
                 <p
+                  id="gantt-p-table"
+                  onClick={() =>
+                    history.push(`${pathname.replace("gantt", "table")}`)
+                  }
+                  onMouseOver={function (e) {
+                    console.log(this)
+                    document.getElementById("gantt-p-table").style.background = get(profileDetail, 'group_active.color', '#f2f2f2')
+                  }}
+                  onMouseLeave={() => {
+                    document.getElementById("gantt-p-table").style.background = '#f2f2f2'
+                  }}
+                >
+                  Table
+                </p>
+                <p style={{
+                  background: get(profileDetail, 'group_active.color', '#f2f2f2')
+                }} className="gantt--left-header__text-active">Gantt</p>
+                <p
+                  id="gantt-p-chat"
+                  onMouseOver={function (e) {
+                    document.getElementById("gantt-p-chat").style.background = get(profileDetail, 'group_active.color', '#f2f2f2')
+                  }}
+                  onMouseLeave={() => {
+                    document.getElementById("gantt-p-chat").style.background = '#f2f2f2'
+                  }}
                   onClick={() =>
                     history.push(`${pathname.replace("gantt", "chat")}`)
                   }
                 >
                   Chat
                 </p>
-                <p
-                  onClick={() =>
-                    history.push(`${pathname.replace("gantt", "table")}`)
-                  }
-                >
-                  Table
-                </p>
-                <p className="gantt--left-header__text-active">Gantt</p>
+
+
               </div>
             </Col>
           </Row>
@@ -106,6 +127,7 @@ const Header = ({
 const mapStateToProps = (state) => ({
   showHeader: state.gantt.showHeader,
   projectInfo: state.gantt.projectInfo,
+  profileDetail: state.system.profile,
 });
 const mapDispatchToProps = {
   changeShowHeader,

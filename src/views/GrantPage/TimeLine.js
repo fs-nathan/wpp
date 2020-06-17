@@ -198,7 +198,6 @@ const TimeLine = ({
   )
     return null;
   if (!width) return null;
-  console.log(isTotalDuration)
   if (isTotalDuration && !visibleGantt.total) return null;
   return (
     <React.Fragment>

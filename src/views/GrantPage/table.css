@@ -172,10 +172,20 @@ span.ant-checkbox ~ span {
   margin-top: -5px;
 }
 .gantt--navigation p {
-  margin-right: 5px;
+  margin-right: 7px;
   margin-bottom: 0;
-  margin-top: 0;
+  margin-top: 3px;
   cursor: pointer;
+  color: #8b8b8b;
+  background: #f2f2f2;
+  padding:0 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: normal;
+}
+.gantt--navigation p:hover {
+  color: #fff;
+  font-weight: 500;
 }
 
 .gantt--image-project {
@@ -852,7 +862,8 @@ div.checkbox-colortag--drawer {
 }
 
 .gantt--left-header__text-active {
-  color: #2196f3;
+  color: #fff !important;
+  font-weight: 500 !important;
 }
 
 .gantt--parent-header {
@@ -1094,4 +1105,27 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 
 .gantt--time-unit__label-container {
   margin-left: 10px;
+}
+#gantt--calendar__waring-icon{
+  width: 30px !important;
+  height: 100% !important;
+}
+
+.gantt-right-header__wapper .comp_CustomTable_HeaderButtonGroup___button > span:first-child > span {
+  line-height: 1.75;
+}
+.gantt-calendar--icon-warning{
+  margin-left: 20px;
+  width: 30px;
+}
+.gantt-calendar--text-warning{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+  width: calc(100% - 85px);
+  padding-right: 30px;
+}
+.gantt--calendar-modal__container .comp_CustomModal___accept-button{
+  display: none;
+
 }

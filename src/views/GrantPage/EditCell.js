@@ -43,7 +43,8 @@ const EditCell = ({
       if (type !== "complete") {
         postDataToServer();
       } else {
-        setProcessDatasource(parseInt(dataComplete), index);
+        setDataComplete(dataComplete ? parseInt(dataComplete) : 0)
+        setProcessDatasource(dataComplete ? parseInt(dataComplete) : 0, index);
       }
       setShowEdit(false);
     }
@@ -52,7 +53,8 @@ const EditCell = ({
     if (type !== "complete") {
       postDataToServer();
     } else {
-      setProcessDatasource(parseInt(dataComplete), index);
+      setDataComplete(dataComplete ? parseInt(dataComplete) : 0)
+      setProcessDatasource(dataComplete ? parseInt(dataComplete) : 0, index);
     }
     setShowEdit(false);
   };
@@ -140,7 +142,7 @@ const EditCell = ({
                   position: "absolute",
                   left,
                   top: 0,
-                  width,
+                  width: '100%',
                   zIndex: 1000,
                 }}
               >
@@ -155,10 +157,6 @@ const EditCell = ({
                   disableUnderline={true}
                   value={dataComplete}
                   onChange={(e) => {
-                    if (isNaN(e.target.value) || !e.target.value) {
-                      setDataComplete(0)
-                      return
-                    }
                     if (e.target.value > 100) {
                       setDataComplete(100)
                       return

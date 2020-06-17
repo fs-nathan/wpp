@@ -164,8 +164,8 @@ function decodeStatusCode(statusCode) {
   switch (statusCode) {
     case 0:
       return {
-        color: "#ff9800",
-        background: "#4caf5042",
+        color: "rgb(255,152,0)",
+        background: "rgba(255,152,0,.20)",
       };
     case 1:
       return {
@@ -174,8 +174,8 @@ function decodeStatusCode(statusCode) {
       };
     case 2:
       return {
-        color: "#03c30b",
-        background: "#ff050524",
+        color: "rgb(3,195,11)",
+        background: "rgba(3,195,11,0.21)",
       };
     case 3:
       return {
@@ -987,8 +987,8 @@ class DragSortingTable extends React.Component {
       } = girdInstance;
       const { start, end } = {}
       const daysRender = [];
-      const endDate = this.props.scrollGanttFlag ? new moment(Date.now()) : new moment(saveEndTimeProject)
-      const startDate = start ? new moment(start) : new moment(startTimeProject);
+      const endDate = this.props.scrollGanttFlag && (new moment(Date.now())).diff(endTimeProject) > 0 ? (new moment(Date.now())).add(addUnit, unit) : new moment(endTimeProject)
+      const startDate = false && this.props.scrollGanttFlag && (new moment(Date.now())).diff(startTimeProject) < 0 ? (new moment(Date.now())).subtract(6, unit) : new moment(startTimeProject);
       let temp = new moment(startDate);
       if (this.props.scrollGanttFlag) {
         this.setState({
@@ -1030,7 +1030,7 @@ class DragSortingTable extends React.Component {
         daysRender,
         monthArray: allMonth,
         startTimeProject: start ? new moment(start) : new moment(startTimeProject),
-        endTimeProject: endDate.add(addUnit, unit)
+        endTimeProject: endDate
       });
     }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
@@ -1416,7 +1416,7 @@ class DragSortingTable extends React.Component {
           }}
         >
           <RenderDrawers height={this.state.height} />
-          {this.state.quickViewId&&<RenderQuickViewTaskDetailDrawer
+          {this.state.quickViewId && <RenderQuickViewTaskDetailDrawer
             showHeader={this.props.showHeader}
             onClose={() =>
               this.setState({

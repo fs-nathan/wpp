@@ -39,7 +39,6 @@ const MonthHeader = ({
         .format(girdInstance.formatChild)}
     </div>
   ));
-  console.log(leftHeader, scrollWidth);
   const createTable = (axisX, axisY) => {
     let tempTable = [];
     for (let i = 0; i < axisX; i++) {

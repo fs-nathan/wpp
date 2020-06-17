@@ -104,12 +104,13 @@ const MenuMoreGantt = ({
       </CustomModal>
       <CustomModal
         title={"CÀI ĐẶT LỊCH DỰ ÁN"}
+        className="gantt--calendar-modal__container"
         fullWidth={true}
         open={openConfigCalendar}
         setOpen={setOpenConfigCalendar}
         style={{}}
         height="tall"
-        confirmRender={() => "Chỉnh sửa"}
+        confirmRender={() => null}
       >
         <CalendarProjectPage
           setopenModal={setopenModal}
