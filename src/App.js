@@ -11,23 +11,6 @@ import './App.scss';
 import SnackbarHandler from './components/SnackbarHandler';
 import MainLayout from './layouts/MainLayout';
 
-/*
-const defaultTheme = createMuiTheme({
-  palette: {
-    primary: {
-      main: '#48bb78',
-      light: '#7deea7',
-      dark: '#008a4b'
-    },
-    secondary: {
-      main: '#fd7e14',
-      light: '#ffaf4b',
-      dark: '#c34f00'
-    }
-  }
-});
-*/
-
 function App() {
   const notistackRef = React.createRef();
   const _colors = useSelector(state => state.setting.colors);
@@ -47,8 +30,6 @@ function App() {
       }
     }
   }), [colors]);
-
-  console.log(colors);
 
   const onClickDismiss = key => () => {
     notistackRef.current.closeSnackbar(key);

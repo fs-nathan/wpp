@@ -7,7 +7,7 @@ import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
@@ -20,6 +20,7 @@ import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
 import Content from "./Content";
 import FormDialog from "./modal";
 import { getFirstSummaryGroup, getSummaryByGroupByKeyword } from "./selector";
+
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
@@ -47,9 +48,11 @@ const OfferByGroup = props => {
 
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
   const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
+  const createOfferSuccess = useSelector(state => state.offerPage[CREATE_OFFER_SUCCESSFULLY])
   const { id } = useParams();
   const isMounted = useMountedState();
   const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, { timeType: 1 });
+  const searchParams = useLocation().search;
 
   useEffect(() => {
     if (isMounted) {
@@ -77,7 +80,7 @@ const OfferByGroup = props => {
       var currentGroup = groupList.filter(group => group.url === history.location.pathname);
       setLayoutTitle(get(currentGroup, '[0].title'));
     }
-  }, [isMounted, history.location.pathname, idFirstGroup, groupList]);
+  }, [isMounted, history.location.pathname, groupList]);
 
   useEffect(() => {
     dispatch(loadSummaryByGroup());
@@ -91,13 +94,19 @@ const OfferByGroup = props => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (history.location.pathname !== Routes.OFFERBYGROUP
-      || idFirstGroup === undefined
-      || idFirstGroup === null) {
+    if (idFirstGroup === undefined || idFirstGroup === null) {
       return
     }
     history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
   }, [history, idFirstGroup]);
+
+  useEffect(() => {
+    let urlSearchParams = new URLSearchParams(searchParams);
+    const referrer = urlSearchParams.get("referrer");
+    if (!isNil(referrer) && !isNil(id)) {
+      history.push(Routes.OFFERBYGROUP + "/" + id);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!isNil(id)) {
@@ -105,16 +114,24 @@ const OfferByGroup = props => {
       const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
       dispatch(loadOfferByGroupID({ id, startDate, endDate }));
       document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click();
-      const refreshAfterCreateOffer = () => {
-        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-        dispatch(loadSummaryByGroup());
-      }
-      CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
-      return () => {
-        CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
-      }
     }
   }, [dispatch, id, timeRange]);
+
+  useEffect(() => {
+    const refreshAfterCreateOffer = () => {
+      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+      dispatch(loadSummaryByGroup());
+      if (createOfferSuccess.offer_group_id === id) {
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      }
+    }
+    CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    return () => {
+      CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    }
+  }, [createOfferSuccess, id, timeRange]);
+
 
   // Redirect to first group when enter
   return (

@@ -22,10 +22,6 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
     }
   }
 
-  const onCloseModal = () => {
-    setOpen(false);
-  }
-
   return (
     <CustomModal
       className={clsx(
@@ -39,8 +35,8 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
       confirmRender={() => can_delete ? getDetailOfferModalConfirmBtnTitle(t) : getDetailOfferModalCancelBtnTitle(t)}
       onConfirm={onConfirm}
       cancleRender={() => can_delete && getDetailOfferModalCancelBtnTitle(t)}
-      onCancle={onCloseModal}
       manualClose={true}
+      onCancle={() => setOpen(false)}
       fullWidth
       maxWidth='lg'
     >

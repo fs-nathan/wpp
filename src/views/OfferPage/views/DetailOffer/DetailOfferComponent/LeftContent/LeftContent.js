@@ -165,7 +165,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     setSelectedItem({ file_id, name, url, file_icon })
     setDeleteDocumentModal(true);
   }
-  const renderConfirmRemoveFileModal = () => {
+  /*const renderConfirmRemoveFileModal = () => {
     return (
       <>
         <Grid container direction="column" justify="center" alignItems="center">
@@ -180,8 +180,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
         </Grid>
       </>
     )
-  }
-
+  }*/
   const afterDeleteDocument = () => {
     setLoading(false);
     setDeleteDocumentModal(false);
@@ -283,9 +282,10 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
         open={deleteDocumentModal}
         setOpen={setDeleteDocumentModal}
         onConfirm={confirmDeleteDocument}
-        content={renderConfirmRemoveFileModal()}
+        content={t("VIEW_OFFER_TEXT_DELETE_FILE_WARNING")}
         manualClose={true}
         actionLoading={loading}
+        onCancle={() => setDeleteDocumentModal(false)}
       />
       <SendFileModal
         open={openSendFileModal}

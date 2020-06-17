@@ -176,7 +176,7 @@ export function* doUpdateOfferDetailDescriptionSection({ payload }) {
         priority: priorityCode,
       },
     }
-    const result = yield apiService(config)
+    const result = yield apiService(config);
     yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, payload: result.data })
   } catch (err) {
     yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, payload: err.toString() })
@@ -281,6 +281,7 @@ export function* doCreateOffer({ payload }) {
     };
     const result = yield apiService(config);
     result.data.state && SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put({ type: CREATE_OFFER_SUCCESSFULLY, payload });
     CustomEventEmitter(CREATE_OFFER_SUCCESSFULLY);
   } catch (err) {
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);

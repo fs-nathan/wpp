@@ -130,20 +130,31 @@ const MiddleContent = ({
       {
         (get(condition_accept, "min_rate", "0") < 100 || (get(condition_accept, "condition_logic") === "OR" && get(condition_accept, "min_rate", "0") === 100)) && (
           <>
-            <div className="offerDetail-memberToAccept-title">
-              {get(condition_accept, "condition_logic_member") === "OR"
-                ? t("VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1")
-                : t("VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2")}
-            </div>
+            {
+              get(condition_accept, "member_accept", []).length !== 0 && (
+                <div className="offerDetail-memberToAccept-title">
+                  {get(condition_accept, "condition_logic_member") === "OR"
+                    ? t("VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1")
+                    : t("VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2")}
+                </div>
+              )
+            }
             <div className="offerDetail-memberToAccept-container">
               <Grid container>
                 {get(condition_accept, "member_accept", []).map(member =>
                   <>
-                    <Grid item xs={4}>
-                      <div className="offerDetail-memberToAccept-item">
-                        <Avatar className="offerDetail-memberToAccept-item-avatar" src={member.avatar} />
-                        <div className="offerDetail-memberToAccept-item-name">{member.name}</div>
-                      </div>
+                    <Grid item xs={12} className="offerDetail-handlingPerson-item">
+                      <Grid container>
+                        <Grid item xs={1}>
+                          <Avatar src={get(member, "avatar")} />
+                        </Grid>
+                        <Grid item>
+                          <div className="offerDetail-handlingPerson-infoContainer">
+                            <div className="offerDetail-handlingPerson-name">{get(member, "name")}</div>
+                            <div className="offerDetail-handlingPerson-position">{get(member, "position")}</div>
+                          </div>
+                        </Grid>
+                      </Grid>
                     </Grid>
                   </>
                 )}

@@ -6,7 +6,9 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import React from 'react';
+import { useSelector } from "react-redux";
 import Select, { components } from 'react-select';
+import { bgColorSelector } from 'reducers/setting/selectors';
 import styled from 'styled-components';
 import './styles.scss';
 
@@ -90,6 +92,7 @@ function IntegrationReactSelect({ className, options = [], placeholder = '', isM
   const classes = useStyles();
   const theme = useTheme();
   const [selected, setSelected] = React.useState(value);
+  const bgColor = useSelector(state => bgColorSelector(state));
 
   React.useEffect(() => {
     setSelected(value);
@@ -126,7 +129,7 @@ function IntegrationReactSelect({ className, options = [], placeholder = '', isM
             ...theme,
             colors: {
               ...theme.colors,
-              primary: '#48bb78',
+              primary: bgColor.color,
             },
           })}
         />
