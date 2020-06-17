@@ -3,16 +3,11 @@ import CloseIcon from "@material-ui/icons/Close";
 import { mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Checkbox, Drawer } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChromePicker } from "react-color";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
-import {
-  actionChangeColorGanttSetting,
-  actionChangeVisibaleGanttSetting,
-  changeTimelineColor,
-  changeVisible,
-} from "../../../actions/gantt";
+import { actionChangeColorGanttSetting, actionChangeVisibaleGanttSetting, changeTimelineColor, changeVisible } from "../../../actions/gantt";
 import { changeVisibleConfigGantt } from "../../../actions/system/system";
 import "../../../views/JobPage/components/QuickViewFilter.css";
 import "../../../views/JobPage/Layout/QuickView.css";
@@ -138,6 +133,9 @@ const CommonConfig = ({
   const handleChangeColor = (type, hex) => {
     changeTimelineColor(type, hex);
   };
+  useEffect(() => {
+    localStorage.setItem("ganttConfig", JSON.stringify(visibleGantt))
+  }, [visibleGantt])
   return (
     <Drawer
       closable={false}
@@ -248,6 +246,7 @@ const CommonConfig = ({
             <Checkbox
               checked={visibleGantt.fromNowLayer}
               onChange={(e) => {
+                localStorage.setItem("gant-fromNowLayer", true)
                 changeVisible(e.target.checked, "gantt", "fromNowLayer");
               }}
               className="config--drawer--checkbox"

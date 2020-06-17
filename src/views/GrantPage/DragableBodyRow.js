@@ -11,6 +11,7 @@ const DragableBodyRow = ({
   moveRow,
   className,
   style,
+  dataSource,
   ...restProps
 }) => {
   const ref = React.useRef();
@@ -24,7 +25,7 @@ const DragableBodyRow = ({
       return {
         isOver: monitor.isOver(),
         dropClassName:
-          dragIndex < index ? " drop-over-downward" : " drop-over-upward",
+          dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
       };
     },
     drop: (item) => {
@@ -59,7 +60,8 @@ const DragableBodyRow = ({
         const divss = document.getElementsByClassName(
           "ant-table-row ant-table-row-level-0"
         );
-        divss[index].style.backgroundColor = "";
+        if (!divss[index]) return;
+        divss[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "";
       }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}

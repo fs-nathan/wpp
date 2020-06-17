@@ -1,18 +1,7 @@
 import DateFnsUtils from "@date-io/date-fns";
-import {
-  Box,
-  Button,
-  FormControl,
-  IconButton,
-  InputLabel,
-  Select,
-  TextField,
-} from "@material-ui/core";
+import { Box, Button, FormControl, IconButton, InputLabel, Select, TextField } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { KeyboardDatePicker, MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { mdiFilePdf } from "@mdi/js";
 import Icon from "@mdi/react";
 import kendo from "@progress/kendo-ui";
@@ -20,11 +9,7 @@ import { Drawer } from "antd";
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
-import {
-  changeFilterExportPdf,
-  changePreviewContent,
-  changeRenderFullDay,
-} from "../../../actions/gantt";
+import { changeFilterExportPdf, changePreviewContent, changeRenderFullDay } from "../../../actions/gantt";
 import { changeVisibleExportPdfDrawer } from "../../../actions/system/system";
 import "../../../views/JobPage/components/QuickViewFilter.css";
 import "../../../views/JobPage/Layout/QuickView.css";
@@ -44,6 +29,7 @@ const ExportPDF = ({
   previewContent,
   changeRenderFullDay,
   changeFilterExportPdf,
+  projectInfo
 }) => {
   const [showModalPreview, setShowModalPreview] = useState(false);
   const [contentPreview, setContentPreview] = useState([]);
@@ -51,6 +37,7 @@ const ExportPDF = ({
   const [showFullTime, setShowFullTime] = useState(1);
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setContentPreview(previewContent);
@@ -69,8 +56,9 @@ const ExportPDF = ({
     setShowModalPreview(!showModalPreview);
   };
   const callBackPreview = (dataUrl) => {
-    setShowModalPreview(true);
     setSrcPreview(dataUrl);
+    setIsLoading(false)
+
   };
   const handleOnClickPreview = () => {
     changePreviewContent(contentPreview);
@@ -78,14 +66,16 @@ const ExportPDF = ({
     if (!showFullTime) {
       changeFilterExportPdf(startTime, endTime);
     }
+    setShowModalPreview(true);
+    setIsLoading(true)
     setTimeout(
       () => window.getDataUrlPdf(kendo, "previewPdf.pdf", callBackPreview),
-      2000
+      100
     );
   };
   const handleOnClickOk = () => {
     changePreviewContent(contentPreview);
-    window.convertToPdfFullWidth(kendo, "previewPdf.pdf");
+    window.ganttConvertToPdfFullWidth(kendo, "previewPdf.pdf");
   };
   const handleShowFullTime = (e) => {
     setShowFullTime(parseInt(e.target.value));
@@ -154,6 +144,8 @@ const ExportPDF = ({
   return (
     <React.Fragment>
       <Drawer
+     
+      className="gantt--export-pdf__dialog"
         closable={false}
         title={
           <div
@@ -190,25 +182,10 @@ const ExportPDF = ({
           <div className="config--drawer--footer-section">
             <Button
               onClick={handleOnClickPreview}
-              style={{
-                backgroundColor: "#e3e3e3",
-                borderRadius: 0,
-                color: "#b9b9b9",
-              }}
+              className="config--drawer--footer-section__preview"
               fullWidth
             >
-              Xem trước
-            </Button>
-            <Button
-              onClick={handleOnClickOk}
-              style={{
-                backgroundColor: "#619eff",
-                borderRadius: 0,
-                color: "#fff",
-              }}
-              fullWidth
-            >
-              Hoàn thành
+              Xuất file PDF
             </Button>
           </div>
         }
@@ -216,8 +193,7 @@ const ExportPDF = ({
         <StyledScrollbarsSide autoHide autoHideTimeout={500} height={"tail"}>
           <div className="export-pdf--drawer__container">
             <p className="config--drawer--section config--drawer--section-subtitle">
-              THIẾT LÂP TRỤC THỜI GIAN{" "}
-              <span style={{ color: "blue" }}>Xem mẫu</span>
+              Thiết lập trục thời gian{" "}
             </p>
             <div className="config--drawer--checkbox-section">
               {renderInput()}
@@ -227,7 +203,7 @@ const ExportPDF = ({
             </p>
             <div className="config--drawer--checkbox-section"></div>
             <p className="config--drawer--section config--drawer--section-subtitle">
-              THỜI GIAN
+              Thời gian
             </p>
             <div className="config--drawer--checkbox-section">
               <FormControl size="small" variant="outlined">
@@ -251,9 +227,11 @@ const ExportPDF = ({
       </Drawer>
       <PreviewPdfModal
         srcPreview={srcPreview}
+        isLoading={isLoading}
         open={showModalPreview}
         setOpen={handleShowModalPreview}
-        title={'Sản xuất phim "Sống chung với mẹ chồng"'}
+        title={projectInfo.name}
+        onConfirm={handleOnClickOk}
       />
     </React.Fragment>
   );
@@ -262,6 +240,7 @@ const ExportPDF = ({
 const mapStateToProps = (state) => ({
   exportPdfDrawerVisible: state.system.exportPdfDrawerVisible,
   previewContent: state.gantt.previewContent,
+  projectInfo: state.gantt.projectInfo,
 });
 
 const mapDispatchToProps = {

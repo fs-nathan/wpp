@@ -1,5 +1,6 @@
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
+import differenceInMinutes from 'date-fns/differenceInMinutes'
 
 const DEFAULT_MAX_LENGTH = 120
 export const isLongerContent = str => str.length > DEFAULT_MAX_LENGTH
@@ -138,6 +139,13 @@ export function getUpdateProgressDate(timeString, formatDate = '') {
 export function getChatDate(timeString) {
   const date = timeString ? new Date(timeString) : new Date();
   return format(date, `dd/MM/yyyy`);
+}
+
+export function compareDateTime(timeStartString, timeEndString) {
+  // console.log(timeStartString, timeEndString)
+  const dateStart = parse(timeStartString, 'yyyy-MM-dd HH:mm', new Date());
+  const dateEnd = parse(timeEndString, 'yyyy-MM-dd HH:mm', new Date());
+  return differenceInMinutes(dateStart, dateEnd);
 }
 
 export function spliceSlice(str, index, count, add) {

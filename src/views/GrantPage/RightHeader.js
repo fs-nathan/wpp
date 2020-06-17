@@ -26,68 +26,71 @@ const RightHeader = ({
 }) => {
   const [visible, setVisible] = useState(false);
   return (
-    <Row justify="end">
-      <IconComponent title={"TÌM KIẾM"} path={mdiMagnify} />
-      <IconComponent
-        onClick={() => changeVisibleConfigGantt(true, "TIME")}
-        title={`TIẾN ĐỘ: ${girdInstance.unitText.toUpperCase()}`}
-        path={mdiCalendar}
-      />
-      <IconComponent
-        onClick={() => changeShowFullChart(!showFullChart)}
-        title={!showFullChart ? "MỞ RỘNG" : "Thu gọn"}
-        path={!showFullChart ? mdiFullscreen : mdiFullscreenExit}
-      />
-      <IconComponent
-        onClick={() => changeVisibleConfigGantt(true, "COMMON")}
-        title={"CÀI ĐẶT"}
-        path={pathSettingIcon}
-      />
-      <Col className="gantt--right-header__more" span={2}>
-        <Dropdown
-          overlay={() => (
-            <MenuMoreGantt
-              changeVisibleExportPdfDrawer={changeVisibleExportPdfDrawer}
-              changeVisibleMenu={setVisible}
-            />
-          )}
-          onVisibleChange={(flag) => setVisible(flag)}
-          visible={visible}
-          placement="bottomRight"
-          trigger={["click"]}
-        >
-          <div>
-            <IconComponent
-              onClick={(e) => null}
-              title={"THÊM"}
-              path={mdiDotsVertical}
-            />
-          </div>
-        </Dropdown>
-      </Col>
-      {visibleGantt.fromNowLayer && (
+    <div className="gantt--header-component_container">
+      <Row justify="end">
+        <IconComponent title={"TÌM KIẾM"} path={mdiMagnify} />
+        <IconComponent
+          onClick={() => changeVisibleConfigGantt(true, "TIME")}
+          title={`TIẾN ĐỘ: ${girdInstance.unitText.toUpperCase()}`}
+          path={mdiCalendar}
+        />
+        <IconComponent
+          onClick={() => changeShowFullChart(!showFullChart)}
+          title={!showFullChart ? "MỞ RỘNG" : "Thu gọn"}
+          path={!showFullChart ? mdiFullscreen : mdiFullscreenExit}
+        />
+        <IconComponent
+          onClick={() => changeVisibleConfigGantt(true, "COMMON")}
+          title={"CÀI ĐẶT"}
+          path={pathSettingIcon}
+        />
+        <Col className="gantt--right-header__more" span={2}>
+          <Dropdown
+            overlayClassName="asdasdasdasdasd"
+            overlay={() => (
+              <MenuMoreGantt
+                changeVisibleExportPdfDrawer={changeVisibleExportPdfDrawer}
+                changeVisibleMenu={setVisible}
+              />
+            )}
+            onVisibleChange={(flag) => setVisible(flag)}
+            visible={visible}
+            placement="bottomRight"
+            trigger={["click"]}
+          >
+            <div>
+              <IconComponent
+                onClick={(e) => null}
+                title={"THÊM"}
+                path={mdiDotsVertical}
+              />
+            </div>
+          </Dropdown>
+        </Col>
+        {visibleGantt.fromNowLayer && (
+          <Col span={2}>
+            <div title="Hôm nay" className="icon-fromNow-header">
+              <IconComponent
+                onClick={() => scrollGantt(true)}
+                size={1.3}
+                title={""}
+                path={mdiFlagVariant}
+              />
+            </div>
+          </Col>
+        )}
         <Col span={2}>
-          <div title="Hôm nay" className="icon-fromNow-header">
+          <div className="icon-invisible-header">
             <IconComponent
-              onClick={() => scrollGantt(true)}
+              onClick={() => changeShowHeader(!showHeader)}
               size={1.3}
               title={""}
-              path={mdiFlagVariant}
+              path={mdiChevronUp}
             />
           </div>
         </Col>
-      )}
-      <Col span={2}>
-        <div className="icon-invisible-header">
-          <IconComponent
-            onClick={() => changeShowHeader(!showHeader)}
-            size={1.3}
-            title={""}
-            path={mdiChevronUp}
-          />
-        </div>
-      </Col>
-    </Row>
+      </Row>
+    </div>
   );
 };
 

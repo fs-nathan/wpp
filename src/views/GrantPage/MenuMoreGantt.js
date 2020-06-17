@@ -78,7 +78,7 @@ const MenuMoreGantt = ({
         open={openModal}
         title={"GÁN LỊCH CHO DỰ ÁN"}
       >
-        <div>
+        <div className="calendar--modal__container">
           <div className="calendar--modal__header">
             <div>Chọn lịch để gán cho dự án (lịch mặc định luôn được gán)</div>
             <div>Đã chọn: {selectCalendar.length} lịch</div>
