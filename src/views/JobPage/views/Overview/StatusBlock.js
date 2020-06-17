@@ -31,7 +31,7 @@ export function StatusBlock() {
     <Block
       title={t("Trạng thái")}
       subheader={t("Biểu đồ theo trạng thái công việc")}
-      extra={times[timeType].title}
+      extra={t(times[timeType].title)}
     >
       <Box display="flex" flex="1" alignItems="center">
         {ready ? (

@@ -15,7 +15,7 @@ const createAnalyticButtonProps = ({ key, show, count, label, color }) => ({
   active: show,
   count,
   label,
-  color
+  color,
   // onClick: () => setstatusFilter(string)
 });
 export function Analytic({ options = [] }) {
@@ -24,7 +24,7 @@ export function Analytic({ options = [] }) {
     (result = 0, option) => result + option.count || 0,
     0
   );
-  const formatDateTemplate = useSelector(state =>
+  const formatDateTemplate = useSelector((state) =>
     get(state, "system.profile.format_date", "DD/MM/YYYY")
   );
   const { timeType, timeRange = emptyObject } = useContext(JobPageContext);
@@ -38,15 +38,15 @@ export function Analytic({ options = [] }) {
           label={t("Công việc")}
           subLabel={
             timeType === 5
-              ? times[timeType].title
+              ? t(times[timeType].title)
               : `${moment(timeStart).format(formatDateTemplate)} - ${moment(
-                timeEnd
-              ).format(formatDateTemplate)}`
+                  timeEnd
+                ).format(formatDateTemplate)}`
           }
         />
       </Box>
       {options
-        .filter(option => option.show)
+        .filter((option) => option.show)
         .map((option, i) => (
           <AnalyticButton
             {...createAnalyticButtonProps(option)}

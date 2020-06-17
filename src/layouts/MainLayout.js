@@ -25,6 +25,7 @@ import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import io from "socket.io-client";
 import styled from "styled-components";
+import { postModule } from "views/HomePage/redux/post";
 import useWebpush from "webpush/useWebpush";
 import {
   actioGetSettingDate,
@@ -44,12 +45,12 @@ import DrawerComponent from "../components/Drawer/Drawer";
 import GroupModal from "../components/NoticeModal/GroupModal";
 import NoticeModal from "../components/NoticeModal/NoticeModal";
 import SnackbarComponent from "../components/Snackbars";
+import configURL from "../constants/apiConstant";
 import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
 import { Routes } from "../constants/routes";
 import routes from "../routes";
 import LeftBar from "../views/LeftBar";
 import TopBar from "../views/TopBar";
-import configURL from "../constants/apiConstant";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -232,9 +233,10 @@ function MainLayout({
       actionFetchListColor();
       actioGetSettingDate();
     }
-    if (localStorage.getItem(TOKEN)) {
+    if (localStorage.getItem(TOKEN) && profile && profile.id) {
       handleFetchNoti();
-      const uri = `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
+      const uri =
+        `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
@@ -243,6 +245,9 @@ function MainLayout({
       socket.on("WP_NEW_CHAT_EXPRESS_EMOTION_CHAT", handleReactEmotion);
       socket.on("WP_DELETE_CHAT_IN_TASK", handleDeleteChat);
       socket.on("WP_VIEW_CHAT_IN_TASK", handleViewChat);
+
+      socket.on("WP_NEW_COMMENT_POST", postModule.actions.updatePostListItem);
+      socket.on("WP_NEW_LIKE_LOVE_POST", postModule.actions.updatePostListItem);
 
       function joinChat({ detail }) {
         // console.log('joinChat', detail)
@@ -267,7 +272,7 @@ function MainLayout({
       };
     }
     // eslint-disable-next-line
-  }, []);
+  }, [profile && profile.id]);
 
   useEffect(() => {
     if (!socket || !profile.id || !taskDetails) return;
@@ -309,7 +314,8 @@ function MainLayout({
     const handleNewChat = (data) => {
       console.log("handleNewChat", data, taskDetails.uuid);
       if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
-        const isHideSendStatus = data.user_create_avatar && data.user_create_avatar !== profile.avatar
+        const isHideSendStatus =
+          data.user_create_avatar && data.user_create_avatar !== profile.avatar;
         appendChat({ data_chat: data }, undefined, isHideSendStatus);
       }
       const task = getTaskByChat(data, taskDetails);
@@ -344,7 +350,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(
@@ -392,7 +398,7 @@ function MainLayout({
   useEffect(() => {
     document.body.style.setProperty("--color-primary", bgColor.color);
     // style={{ "--color-primary":  }}
-  });
+  }, [bgColor]);
   return (
     <Container
       className={

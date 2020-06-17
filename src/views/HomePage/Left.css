@@ -36,4 +36,6 @@
 }
 .comp_Left__shortcutLink {
   line-height: 20px;
+  color: rgb(84, 84, 84);
+  text-decoration: none;
 }

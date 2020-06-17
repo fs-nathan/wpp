@@ -384,7 +384,7 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
                     </Box>
                   }
                 >
-                  - {get(schedule, scheduleAttrs.title)}
+                  {get(schedule, scheduleAttrs.title)}
                 </ListItemLayout>
               );
             })}

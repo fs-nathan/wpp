@@ -29,7 +29,7 @@ export function RoleBlock() {
     <Block
       title={t("Vai trò")}
       subheader={t("Biểu đồ vai trò của công việc")}
-      extra={times[timeType].title}
+      extra={t(times[timeType].title)}
     >
       <Box display="flex" flex="1" alignItems="center">
         {ready ? (

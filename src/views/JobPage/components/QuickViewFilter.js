@@ -49,9 +49,11 @@ function QuickViewFilter() {
                     component="fieldset"
                   >
                     <legend>
-                      <Box className="comp_QuickViewFilter__title">{title}</Box>
+                      <Box className="comp_QuickViewFilter__title">
+                        {t(title)}
+                      </Box>
                       <Box className="comp_QuickViewFilter__subTitle">
-                        {subTitle}
+                        {t(subTitle)}
                       </Box>
                     </legend>
                     <FormGroup className="comp_QuickViewFilter__FormGroup">
@@ -67,7 +69,7 @@ function QuickViewFilter() {
                               name={optionEntities[key].value}
                             />
                           }
-                          label={optionEntities[key].label}
+                          label={t(optionEntities[key].label)}
                         />
                       ))}
                     </FormGroup>
