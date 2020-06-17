@@ -277,7 +277,7 @@ export default ({ message, comments, onReplyClick }) => {
         images,
         files,
         sticker,
-
+        onReplyClick,
         total_sub_comment,
         time_label: message.time_label,
       }}
