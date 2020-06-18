@@ -159,7 +159,9 @@ const Message = ({
   parent,
   id,
   onReplyClick,
+  onDelete,
   content,
+  deleted,
   user_create_name,
   user_create_avatar,
   comments,
@@ -175,6 +177,9 @@ const Message = ({
   stickerUrl,
 }) => {
   const { t } = useTranslation();
+  if (deleted) {
+    return null;
+  }
   return (
     <div className={"comp_Message"}>
       <Avatar className="comp_Message__avatar" src={user_create_avatar}>
@@ -217,6 +222,14 @@ const Message = ({
               className="comp_Message__reply u-fontSize12"
             >
               {t("Trả lời")}
+            </ButtonBase>
+          )}
+          {onDelete && (
+            <ButtonBase
+              onClick={onDelete}
+              className="comp_Message__reply u-fontSize12"
+            >
+              {t("Xóa")}
             </ButtonBase>
           )}
           <Typography
@@ -264,6 +277,9 @@ export default ({ message, comments, onReplyClick }) => {
     commentAttr.sticker,
     commentAttr.total_sub_comment,
   ])(message);
+
+  const [{ status }, handleDeleteComment] = useAsyncTracker();
+
   return (
     <Message
       comments={comments}
@@ -276,8 +292,20 @@ export default ({ message, comments, onReplyClick }) => {
         user_create_avatar,
         images,
         files,
+        deleted: status === apiCallStatus.success,
         sticker,
         onReplyClick,
+        onDelete: id
+          ? () => {
+              const asyncId = Date.now();
+              handleDeleteComment({
+                asyncId,
+                ...postModule.actions.deleteComment({
+                  comment_id: id,
+                }),
+              });
+            }
+          : undefined,
         total_sub_comment,
         time_label: message.time_label,
       }}

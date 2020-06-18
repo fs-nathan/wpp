@@ -45,7 +45,11 @@ export const CommentInput = React.memo(
               inputRef={inputRef}
               id={inputId}
               onKeyDown={(e) => {
-                if (e.which == 13 || e.keyCode == 13 || e.key == "Enter") {
+                console.log();
+                if (
+                  (e.which == 13 || e.keyCode == 13 || e.key == "Enter") &&
+                  !e.shiftKey
+                ) {
                   e.preventDefault();
                   handleComment(e.target.value);
                   e.target.value = "";
