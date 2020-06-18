@@ -58,9 +58,10 @@ export default (state = initialState, action) => produce(state, draft => {
       const idx = findIndex(draft.chats.data, ({ id }) => id && id === action.replaceId)
       // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
-        action.payload.data_chat.url = undefined;
-        action.payload.data_chat.url_thumb = undefined;
-        draft.chats.data.splice(idx, 1, action.payload.data_chat)
+        const updateDate = { ...action.payload.data_chat }
+        updateDate.url = undefined;
+        updateDate.url_thumb = undefined;
+        draft.chats.data.splice(idx, 1, updateDate)
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
