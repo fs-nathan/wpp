@@ -1827,6 +1827,7 @@
   "VIEW_OFFER_LABEL_REDIRECT_TO_TASK": "Đi đến danh sách công việc",
   "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVER": "Bạn có chắc chắn muốn xóa người phê duyệt này?",
   "VIEW_OFFER_TEXT_ALERT_DELETE_SUPERVISOR": "Bạn có chắc chắn muốn xóa người giám sát này?",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVAL": "Bạn có chắc chắn muốn xóa phê duyệt này?",
   "LABEL_CHAT_TASK_MAC_DINH": "(mặc định)",
   "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Thay đổi mặc định trong cài đặt dự án",
   "LABEL_CHAT_TASK_NGAY_VA_GIO": "Ngày và giờ",

@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { loadTaskRencentlyPage } from "views/OfferPage/redux/actions";
-import { DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { Content } from "./Content";
@@ -36,8 +36,10 @@ const Recently = () => {
       dispatch(loadTaskRencentlyPage());
     }
     CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+    CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
     return () => {
       CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+      CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
     }
   }, [dispatch]);
 

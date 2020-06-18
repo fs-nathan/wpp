@@ -1225,6 +1225,7 @@
   "VIEW_OFFER_LABEL_REDIRECT_TO_TASK": "Redirect to task list",
   "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVER": "Do youn really want to delete this Approver?",
   "VIEW_OFFER_TEXT_ALERT_DELETE_SUPERVISOR": "Do you really want to delete this Supervisor?",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVAL": "Do you really want to delete this approval",
   "LABEL_CHAT_TASK_TAG_THANH_VIEN": "Tag thành viên",
   "LABEL_CHAT_TASK_GUI_STICKER": "Gửi sticker",
   "LABEL_CHAT_TASK_GUI_ANH": "Gửi ảnh",

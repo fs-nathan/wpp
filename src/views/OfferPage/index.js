@@ -18,7 +18,7 @@ import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
 import { deleteOffer, loadDetailOffer } from './redux/actions';
-import { HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER } from "./redux/types";
+import { DELETE_APPROVAL_SUCCESS, HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER } from "./redux/types";
 import routes from "./routes";
 import './styles.scss';
 import { getDeleteOfferConfirmModalMsg } from './utils/i18nSelectors';
@@ -306,12 +306,14 @@ function OfferPage() {
   useEffect(() => {
     if (currentDetailOfferId && isDetailOfferModalOpen) {
       dispatch(loadDetailOffer({ id: currentDetailOfferId }));
-      const refreshAfterApprove = () => {
+      const refreshOfferModied = () => {
         dispatch(loadDetailOffer({ id: currentDetailOfferId }));
       }
-      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshAfterApprove);
+      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshOfferModied);
+      CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshOfferModied);
       return () => {
-        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshAfterApprove);
+        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshOfferModied);
+        CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshOfferModied);
       };
     }
   }, [currentDetailOfferId, dispatch, isDetailOfferModalOpen]);

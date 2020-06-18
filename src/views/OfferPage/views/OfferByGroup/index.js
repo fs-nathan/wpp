@@ -11,7 +11,7 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { CREATE_OFFER_SUCCESSFULLY, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
 import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
@@ -129,8 +129,23 @@ const OfferByGroup = props => {
     CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
     return () => {
       CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
     }
   }, [createOfferSuccess, id, timeRange]);
+
+  useEffect(() => {
+    if (isMounted) {
+      const refreshAfterCreateOffer = () => {
+        const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+        const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      }
+      CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
+      return () => {
+        CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
+      }
+    }
+  }, [isMounted, timeRange, id]);
 
 
   // Redirect to first group when enter

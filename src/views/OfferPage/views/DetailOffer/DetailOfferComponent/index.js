@@ -5,7 +5,7 @@ import MiddleContent from "./MiddleContent/MiddleContent";
 import RightContent from './RightContent/RightContent';
 import "./style.scss";
 
-const DetailOffer = ({
+function DetailOffer({
   can_modify,
   can_update_condition_accept,
   can_update_member_handle,
@@ -32,8 +32,8 @@ const DetailOffer = ({
   offer_group_id,
   number_member_accepted,
   number_member_rejected,
-  members_monitor,
-}) => {
+  members_monitor
+}) {
   return (
     <div className="offerDetail-container">
       <LeftContent
@@ -62,6 +62,7 @@ const DetailOffer = ({
       <MiddleContent
         can_update_condition_accept={can_update_condition_accept}
         status_code={status_code}
+        status_name={status_name}
         rate_accepted={rate_accepted}
         number_member_rejected={number_member_rejected}
         number_member_accepted={number_member_accepted}
@@ -76,6 +77,7 @@ const DetailOffer = ({
         user_create_avatar={user_create_avatar}
         condition_accept={condition_accept}
         members_can_approve={members_can_approve}
+        handleApprovalDelete={() => console.log("fsdfsd")}
       />
       <div className="offerDetail-verticalLine" />
       <RightContent offerId={id} />
@@ -113,5 +115,6 @@ DetailOffer.prototype = {
   number_member_rejected: PropTypes.number,
   number_member_accepted: PropTypes.number,
   members_monitor: PropTypes.array,
+  handleApprovalDelete: PropTypes.func
 };
 export default DetailOffer;
