@@ -27,20 +27,27 @@ const ShortcutGroup = ({ children, title }) => {
     </Stack>
   );
 };
-const ShortCut = ({ iconPath, url, text }) => {
+const ShortCut = ({ iconPath, url, text, extra }) => {
   const history = useHistory();
   return (
     <div className="comp_Left__shortcut">
       <Icon className="comp_Left__shortcutIcon" path={iconPath}></Icon>
+
       {url ? (
-        <ButtonBase
-          onClick={() => {
-            history.push(url || "/");
-          }}
-          className="comp_Left__shortcutLink"
-        >
-          {text}
-        </ButtonBase>
+        extra ? (
+          <a className="comp_Left__shortcutLink" href={url}>
+            {text}
+          </a>
+        ) : (
+          <ButtonBase
+            onClick={() => {
+              history.push(url || "/");
+            }}
+            className="comp_Left__shortcutLink"
+          >
+            {text}
+          </ButtonBase>
+        )
       ) : (
         <div className="comp_Left__shortcutLink">{text}</div>
       )}
@@ -79,10 +86,20 @@ const Left = React.memo(
         <ShortcutGroup title={t("Lối tắt")}>
           {[
             [mdiCogs, t("Cài đặt nhóm"), Routes.SETTING_GROUP_INFO],
-            [mdiHelpRhombus, t("Câu hỏi thường gặp"), Routes.FAQ],
-            [mdiLifebuoy, t("Hướng dẫn sử dụng"), Routes.HELP],
-          ].map(([iconPath, text, url], i) => (
-            <ShortCut key={i} {...{ iconPath, text, url }} />
+            [
+              mdiHelpRhombus,
+              t("Câu hỏi thường gặp"),
+              "https://support.workplus.vn/hoi-dap/",
+              true,
+            ],
+            [
+              mdiLifebuoy,
+              t("Hướng dẫn sử dụng"),
+              "https://support.workplus.vn/tai-lieu-huong-dan/",
+              true,
+            ],
+          ].map(([iconPath, text, url, extra], i) => (
+            <ShortCut key={i} {...{ iconPath, text, url, extra }} />
           ))}
         </ShortcutGroup>
       </Stack>

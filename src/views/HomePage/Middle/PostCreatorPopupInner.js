@@ -9,7 +9,8 @@ import { useSelector } from "react-redux";
 import { useToggle } from "react-use";
 import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { get, uniqueId } from "views/JobPage/utils";
+import { uniqueId } from "views/JobPage/utils";
+import { loginlineParams } from "views/OfferPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
@@ -17,6 +18,7 @@ import CssFormControl, {
   BindedCssFormControl,
   InputFormControl,
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/CssFormControl";
+import { DraggableList } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/DraggableList";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import { categoryListSelector } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
@@ -38,21 +40,45 @@ const classes = {
   footer: "comp_PostCreatorPopupInner__footer",
 };
 
+const setFileIds = (files) => {
+  new Array(files.length).fill(true).forEach((file, i) => {
+    files[i].id = uniqueId("file_");
+    files[i].notUploaded = true;
+  });
+};
+
 const ImageListField = ({
   name,
   placeholder = "Thả file, hình ảnh vào đây...",
 }) => {
   const [field] = useField({ name });
+  const [fieldOrder] = useField({ name: `${name}_order` });
   const handleChange = (files = []) => {
+    setFileIds(files);
     field.onChange({
       target: {
         name,
         value: [...(field.value || emptyArray), ...files],
       },
     });
+    field.onChange({
+      target: {
+        name: `${name}_order`,
+        value: [
+          ...(fieldOrder.value || emptyArray),
+          ...[...files].map((file) => file.id),
+        ],
+      },
+    });
   };
-  const fileFiltered = get(field, "value", emptyArray).filter(isFileImage);
-  const showEmpty = !fileFiltered.length;
+
+  const { list, showEmpty } = useMemo(() => {
+    const fileFiltered = (field.value || emptyArray).filter(isFileImage);
+    const showEmpty = !fileFiltered.length;
+    const list = fileFiltered.map((item, i) => ({ item, index: "" + item.id }));
+    return { showEmpty, list };
+  }, [field.value]);
+  console.log({ list, showEmpty });
   return (
     <DropZone onChange={handleChange}>
       {(getRootProps, getInputProps, isDragActive) => {
@@ -64,24 +90,55 @@ const ImageListField = ({
             })}
           >
             {!isDragActive && !showEmpty && (
-              <Box padding="10px">
-                {fileFiltered.map((item, i) => (
-                  <ImagePreview
-                    file={item}
-                    key={i}
-                    onDelete={() => {
-                      const newImage = [...field.value];
-                      newImage.splice(i, 1);
-                      field.onChange({
-                        target: {
-                          name,
-                          value: newImage,
-                        },
-                      });
-                    }}
-                  ></ImagePreview>
-                ))}
-              </Box>
+              <DraggableList
+                direction="horizontal"
+                onChange={(orderList = emptyArray) => {
+                  console.log({ orderList });
+                  fieldOrder.onChange({
+                    target: {
+                      name: `${name}_order`,
+                      value: orderList,
+                      // .reduce((result, v, i) => {
+                      //   result[v] = i;
+                      //   return result;
+                      // }, {}),
+                    },
+                  });
+                }}
+                renderListWrapper={(children) => (
+                  <div className="comp_PostCreatorPopupInner__mediaList">
+                    {children}
+                  </div>
+                )}
+                list={list}
+                getId={(item) => item.index}
+              >
+                {({ item, index }, bindDraggable, bindDragHandle) => {
+                  console.log({ item });
+                  return bindDraggable(
+                    bindDragHandle(
+                      <div className="comp_PostCreatorPopupInner__mediaItem">
+                        <ImagePreview
+                          file={item}
+                          onDelete={() => {
+                            const newImage = [...field.value];
+                            const index = newImage.findIndex(
+                              (file) => file.id === item.id
+                            );
+                            newImage.splice(index, 1);
+                            field.onChange({
+                              target: {
+                                name,
+                                value: newImage,
+                              },
+                            });
+                          }}
+                        ></ImagePreview>
+                      </div>
+                    )
+                  );
+                }}
+              </DraggableList>
             )}
             {isDragActive && placeholder}
             <div
@@ -108,6 +165,7 @@ const FileField = ({ name, id, children, ...props }) => {
     return id || "FileField_" + uniqueId();
   });
   const [field, meta] = useField({ name });
+  const [fieldOrder] = useField({ name: `${name}_order` });
   return (
     <>
       {children(inputId, field, meta)}
@@ -118,10 +176,21 @@ const FileField = ({ name, id, children, ...props }) => {
         type="file"
         multiple="multiple"
         onChange={(e) => {
+          setFileIds(e.target.files);
+          console.log("file", e.target.files);
           field.onChange({
             target: {
               name,
               value: [...(field.value || emptyArray), ...e.target.files],
+            },
+          });
+          field.onChange({
+            target: {
+              name: `${name}_order`,
+              value: [
+                ...(fieldOrder.value || emptyArray),
+                ...[...e.target.files].map((file) => file.id),
+              ],
             },
           });
         }}
@@ -346,7 +415,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
                         className: classes.title,
                         size: "medium",
                         multiline: true,
-                        label: t("Tiêu đề bài viết..."),
+                        label: t("Tiêu đề bài viết") + "...",
                       }}
                     />
                     <InputFormControl
@@ -357,7 +426,7 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
                         size: "medium",
                         rows: 5,
                         multiline: true,
-                        label: t("Nội dung bài viết..."),
+                        label: t("Nội dung bài viết") + "...",
                       }}
                     />
                   </div>
@@ -399,11 +468,21 @@ export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
 };
 const ModalFileInput = ({ name, open, setOpen }) => {
   const [field] = useField({ name });
+  const [fieldOrder] = useField({ name: `${name}_order` });
   const handleChange = (files = []) => {
     field.onChange({
       target: {
         name,
         value: [...(field.value || emptyArray), ...files],
+      },
+    });
+    field.onChange({
+      target: {
+        name: `${name}_order`,
+        value: [
+          ...(fieldOrder.value || emptyArray),
+          ...[...files].map((file) => file.id),
+        ],
       },
     });
     setOpen(false);
@@ -412,7 +491,10 @@ const ModalFileInput = ({ name, open, setOpen }) => {
     <SendFileModal
       open={open}
       setOpen={setOpen}
-      handleUploadFile={(e) => handleChange(e.target.files)}
+      handleUploadFile={(e) => {
+        setFileIds(e.target.files);
+        handleChange(e.target.files);
+      }}
       onConfirmShare={handleChange}
     />
   );
@@ -462,13 +544,17 @@ export default ({ onClose, category }) => {
     <PostCreatorForm
       initialValues={initialValues}
       onSubmit={(values) => {
+        const { file_order = [] } = values;
         const finalValues = { ...values };
         finalValues.file = finalValues.file || [];
         const isFileFromStore = (file) => !!file.id;
         const isFileFromGoggle = (file) => !!file.file_id;
         const { file_ids, file, google_data } = finalValues.file.reduce(
-          (result, f) => {
+          (result, f, i) => {
             switch (true) {
+              case f.notUploaded:
+                result.file.push(f);
+                break;
               case isFileFromStore(f):
                 result.file_ids.push(f.id);
                 break;
@@ -487,15 +573,36 @@ export default ({ onClose, category }) => {
             google_data: [],
           }
         );
-
-        setAsyncAction(
-          postModule.actions.createPost({
+        // const getOrder = (f) => file_order[f.id];
+        // const orderedFiles = sortBy(file, loginlineFunc(getOrder));
+        // console.log({ file_order, orderedFiles });
+        const action = postModule.actions.createPost(
+          loginlineParams({
             ...finalValues,
             file_ids,
             file,
             google_data,
+            file_order: JSON.stringify(
+              file_order
+                .map((value) => {
+                  let index = file.findIndex((item) => {
+                    return item.id === value;
+                  });
+                  if (index >= 0) return "file_" + index;
+                  if (index < 0) {
+                    index = file_ids.findIndex((id) => {
+                      return id === value;
+                    });
+                    if (index >= 0) return value;
+                  }
+
+                  return undefined;
+                })
+                .filter((item) => item)
+            ),
           })
         );
+        setAsyncAction(action);
       }}
     >
       <PostCreatorPopupInner

@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, ButtonBase, Dialog } from "@material-ui/core";
+import { Avatar, Box, ButtonBase } from "@material-ui/core";
 import { mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
 import StyledTypo from "components/ColorTypo";
@@ -7,10 +7,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { useToggle } from "react-use";
-import {
-  DialogActions,
-  DialogTitleCus,
-} from "views/DocumentPage/TablePart/DocumentComponent/ModalCommon";
 import EmptyHolder from "views/JobPage/components/EmptyHolder";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
@@ -45,7 +41,7 @@ const HighlightItem = ({ item, history }) => (
     }
   ></ListItemLayout>
 );
-export const HightLight = ({ posts, onMoreClick }) => {
+export const HightLight = ({ posts, isToggle, onMoreClick }) => {
   const { t } = useTranslation();
   const history = useHistory();
   return (
@@ -89,17 +85,19 @@ export const HightLight = ({ posts, onMoreClick }) => {
           {posts.length === 0 && (
             <EmptyHolder title={"Không tìm thấy bài post nào"} description="" />
           )}
-          <div>
-            <ButtonBase onClick={onMoreClick} style={{ float: "right" }}>
-              <StyledTypo
-                className="u-fontSize12 u-colorBlue"
-                component="span"
-                color="blue"
-              >
-                {t("Xem thêm")}
-              </StyledTypo>
-            </ButtonBase>
-          </div>
+          {!isToggle && (
+            <div>
+              <ButtonBase onClick={onMoreClick} style={{ float: "right" }}>
+                <StyledTypo
+                  className="u-fontSize12 u-colorBlue"
+                  component="span"
+                  color="blue"
+                >
+                  {t("Xem thêm")}
+                </StyledTypo>
+              </ButtonBase>
+            </div>
+          )}
         </Stack>
       </TasksCard.Content>
     </TasksCard.Container>
@@ -120,8 +118,13 @@ export default (props) => {
   }, [location, toggle]);
   return (
     <>
-      <HightLight posts={posts} {...props} onMoreClick={() => toggle()} />
-      {isToggle && (
+      <HightLight
+        posts={posts.filter((item, i) => isToggle || i < 3)}
+        {...props}
+        isToggle={posts.length <= 3 || isToggle}
+        onMoreClick={() => toggle()}
+      />
+      {/* {isToggle && (
         <Dialog
           onClose={() => toggle()}
           fullWidth={true}
@@ -162,7 +165,7 @@ export default (props) => {
             </Button>
           </DialogActions>
         </Dialog>
-      )}
+      )} */}
     </>
   );
 };

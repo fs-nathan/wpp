@@ -336,7 +336,7 @@ export const PostHeader = () => {
           <TasksCard.HeaderTitle>
             <div className="comp_Post__creatorName">{user_create_name}</div>
             <div className="comp_Post__creatorPostition">
-              {position} {(position || room) && "-"} {room}
+              {position} {position && "-"} {room}
             </div>
           </TasksCard.HeaderTitle>
         }
@@ -653,21 +653,21 @@ export const PostStats = () => {
               .map((item, i, array) => {
                 if (i === array.length - 2) {
                   return (
-                    <>
+                    <React.Fragment key={i}>
                       {item}
-                      {" và "}
-                    </>
+                      {` ${t("và")} `}
+                    </React.Fragment>
                   );
                 }
                 if (i < array.length - 1) {
                   return (
-                    <>
+                    <React.Fragment key={i}>
                       {item}
                       {" ,"}
-                    </>
+                    </React.Fragment>
                   );
                 }
-                return item;
+                return <React.Fragment key={i}>{item}</React.Fragment>;
               })}
           </Box>
         </Box>
@@ -690,7 +690,11 @@ export const PostStats = () => {
 };
 export const PostMedia = () => {
   const { images } = useContext(PostContext);
-  return <TasksCard.Media images={images}></TasksCard.Media>;
+  return (
+    <TasksCard.Media
+      images={images.map((i) => ({ ...i, url_thumbnail: i.url_thumb }))}
+    ></TasksCard.Media>
+  );
 };
 export const PostCategory = () => {
   const { category_name, category_id } = useContext(PostContext);

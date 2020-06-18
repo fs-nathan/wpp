@@ -27,7 +27,7 @@ function* updatePriority(action) {
   try {
     const res = yield call(doUpdatePriority, action.payload);
     yield put(actions.updatePrioritySuccess(res));
-    yield put(actions.getTaskDetailTabPart(action.payload.task_id));
+    // yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // yield put(appendChat(res));
     // CustomEventEmitter(DELETE_ROOM);
@@ -398,10 +398,11 @@ function* getOffer(action) {
 
 function* createOffer(action) {
   try {
-    const url = `/task/create-offer?task_id=${action.payload.taskId}`;
+    const task_id = action.payload.data.get('task_id');
+    const url = `/task/create-offer?task_id=${task_id}`;
     const res = yield call(apiService.post, url, action.payload.data);
     yield put(actions.createOfferSuccess(res.data));
-    yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    yield put(actions.getOffer({ taskId: task_id }));
     // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -1428,7 +1429,7 @@ export function* pinTask({ payload }) {
   try {
     const { task_id, projectId } = payload;
     const res = yield call(apiService.post, "/task/ghim-task", { task_id });
-    yield put(actions.pinTaskSuccess(res.data));
+    yield put(actions.pinTaskSuccess(res.data, task_id));
     // yield put(actions.getListTaskDetail(projectId));
     // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     // yield put(appendChat(res.data));
@@ -1445,7 +1446,7 @@ export function* unPinTask({ payload }) {
     const res = yield call(apiService.post, "/task/cancel-ghim-task", {
       task_id
     });
-    yield put(actions.unPinTaskSuccess(res.data));
+    yield put(actions.unPinTaskSuccess(res.data, task_id));
     // yield put(actions.getListTaskDetail(projectId));
     // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     // yield put(appendChat(res.data));
@@ -1560,6 +1561,7 @@ export function* removeGroupPermissionOfMember(payload) {
     const { task_id, member_id } = payload;
     const res = yield call(apiService.post, "/task/remove-group-permission-of-member", { task_id, member_id });
     yield put(actions.removeGroupPermissionOfMemberSuccess(res.data));
+    yield put(actions.getMember({ task_id }))
   } catch (error) {
     yield put(actions.removeGroupPermissionOfMemberFail(error));
   }

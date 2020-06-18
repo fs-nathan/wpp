@@ -1,6 +1,7 @@
 import { combineReducers, createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, toFormData } from "views/JobPage/utils";
+import { loginlineFunc } from "views/OfferPage/utils";
 import {
   createAsyncAction,
   createListModule,
@@ -78,6 +79,7 @@ const createPost = ({
   file,
   file_ids,
   google_data,
+  file_order,
   sticker,
   is_push_notification = true,
 }) => {
@@ -93,6 +95,7 @@ const createPost = ({
         sticker,
         file_ids,
         google_data,
+        file_order,
         is_push_notification,
       }),
     },
@@ -115,6 +118,7 @@ const updatePost = ({
   file_ids,
   google_data,
   sticker,
+  file_order,
   is_push_notification = true,
 }) => {
   return createPostAsyncAction({
@@ -131,6 +135,7 @@ const updatePost = ({
         file_ids,
         google_data,
         is_push_notification,
+        file_order,
       }),
     },
     success: createAction(post.actions.listupdate.type, function prepare(data) {
@@ -456,6 +461,9 @@ export const postModule = {
     like,
     love,
     comment,
+    updatePostListItem: loginlineFunc(
+      createAction(post.actions.listupdate.type)
+    ),
   },
   key: rootPath,
   reducer: combineReducers({

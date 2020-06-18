@@ -237,3 +237,19 @@ export const sortTask = async (task_id, group_task,project_id, sort_index) => {
     console.log(err);
   }
 }
+
+export const sortGroupTask = async ( group_task_id, sort_index) => {
+  try {
+    const config = {
+      url: "group-task/sort",
+      method: "post",
+      data: {
+        group_task_id,
+        sort_index
+      },
+    };
+    const result = await apiService(config);
+  } catch (err) {
+    console.log(err);
+  }
+}

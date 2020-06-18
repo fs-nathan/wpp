@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import OfferMemberItem from './OfferMemberItem';
 import './styles.scss';
+import { compact } from 'lodash';
 
 function CustomAddOfferMemberModal({
   isOpen,
@@ -76,7 +77,7 @@ function CustomAddOfferMemberModal({
           isSelected={selected.indexOf(member.index) !== -1}
           onClick={onClickMember(member.index)}
           avatar={member.avatar}
-          roles={[member.position, member.room].join(' - ')}
+          roles={compact([member.position, member.room]).join(' - ')}
           name={member.name}
         />)}
       </React.Fragment>

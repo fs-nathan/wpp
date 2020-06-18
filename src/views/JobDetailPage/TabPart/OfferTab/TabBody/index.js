@@ -13,8 +13,8 @@ import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import OfferModal from '../OfferModal';
 import ApproveOfferDialog from './ApproveOfferDialog';
 import ListOffer from './ListOffer';
-import OfferDetail from './OfferDetail';
-
+// import OfferDetail from './OfferDetail';
+import DetailOfferModal from 'views/OfferPage/views/DetailOffer/DetailOfferModal';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -163,13 +163,14 @@ function TabBody(props) {
           content={t('IDS_WP_ALERT_CONTENT')}
           onConfirm={confirmDelete}
         />
-        <OfferDetail
-          isOpen={openDetail}
+        <DetailOfferModal
+          open={openDetail}
           setOpen={setOpenDetail}
-          item={selectedItem}
-          handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
-          handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
-          handleClickApprove={(data) => handleClickApprove(selectedItem)}
+          {...selectedItem}
+        // item={selectedItem}
+        // handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
+        // handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
+        // handleClickApprove={(data) => handleClickApprove(selectedItem)}
         />
         <ApproveOfferDialog
           isOpen={openApprove}

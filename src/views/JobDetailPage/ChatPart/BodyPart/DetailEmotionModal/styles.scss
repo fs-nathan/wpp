@@ -7,7 +7,7 @@
   }
   .MuiTab-wrapper {
     flex-direction: row;
-    display: initial;
+    display: flex;
   }
   .MuiAppBar-colorPrimary {
     background-color: #ffffff;
@@ -41,5 +41,7 @@
   &--tabIcon {
     width: 24px;
     height: 24px;
+    margin-bottom: 0px;
+    margin-right: 4px;
   }
 }

@@ -35,7 +35,6 @@ import * as images from "../../assets";
 import MainAccount from "../../components/MainAccount/MainAccount";
 import { apiService } from "../../constants/axiosInstance";
 import { GROUP_ACTIVE, REFRESH_TOKEN, TOKEN } from "../../constants/constants";
-import { Routes } from "../../constants/routes";
 import "./AccountPage.scss";
 
 const LoginPage = (props) => {
@@ -61,6 +60,10 @@ const LoginPage = (props) => {
       localStorage.setItem(TOKEN, data.accessToken);
       localStorage.setItem(REFRESH_TOKEN, data.refreshToken);
       localStorage.setItem(GROUP_ACTIVE, data.group_active);
+
+      window.location.reload();
+      return;
+      //
       apiService.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${data.accessToken}`;
@@ -77,7 +80,7 @@ const LoginPage = (props) => {
         props.openNoticeModal();
       }
       props.loginSuccess(data);
-      props.history.push(Routes.HOME);
+      // props.history.push(Routes.HOME);
     } catch (error) {
       setLoginFail(true);
       setIsLoading(false);

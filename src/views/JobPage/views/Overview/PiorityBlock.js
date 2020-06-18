@@ -33,7 +33,7 @@ export function PiorityBlock() {
     <Block
       title={t("Ưu tiên")}
       subheader={t("Biểu đồ tỗng hợp mức ưu tiên của công việc")}
-      extra={times[timeType].title}
+      extra={t(times[timeType].title)}
     >
       <Box display="flex" flex="1" alignItems="center">
         {ready ? (

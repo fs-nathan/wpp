@@ -3,7 +3,7 @@ import * as types from 'constants/actions/taskDetail/taskDetailConst';
 import produce from "immer";
 // Initial state for store
 export const initialState = {
-  taskDetails: null,
+  taskDetails: {},
   isFetching: null,
   dataFetched: false,
   error: null,
@@ -39,6 +39,7 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.isFetching = false
       draft.dataFetched = true
       draft.taskDetails.priority_code = action.payload.data_chat.priority;
+      draft.error = false;
       break;
     case types.UPDATE_TASK_PRIORITY_FAIL:
       draft.isFetching = false
@@ -142,6 +143,14 @@ export default (state = initialState, action) => produce(state, draft => {
     case types.UPDATE_NAME_DESCRIPTION_TASK_FAIL: {
       draft.isFetching = false;
       draft.error = true;
+      break;
+    }
+    case types.PIN_TASK_SUCCESS: {
+      draft.taskDetails.is_ghim = true;
+      break;
+    }
+    case types.UN_PIN_TASK_SUCCESS: {
+      draft.taskDetails.is_ghim = false;
       break;
     }
   }
