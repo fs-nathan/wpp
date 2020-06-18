@@ -177,9 +177,11 @@ export function* doUpdateOfferDetailDescriptionSection({ payload }) {
       },
     }
     const result = yield apiService(config);
-    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, payload: result.data })
+    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, payload: result.data });
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (err) {
-    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, payload: err.toString() })
+    yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, payload: err.toString() });
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doUpdateOfferApprovalCondition({ payload }) {

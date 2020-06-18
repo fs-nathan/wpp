@@ -191,7 +191,7 @@ const MiddleContent = ({
             <Grid items xs={7} direction="column">
               <div className="offerDetail-approvalResult-member-name">{get(member, "name")}</div>
               <div className="offerDetail-approvalResult-member-position">{get(member, 'position')} {get(member, 'position') && <span> - </span>} {get(member, 'room')}</div>
-              <div>
+              <div className="offerDetail-approvalResult-member-date">
                 {t("VIEW_OFFER_LABEL_APPROVED_AT", { time: member.hour_label, date: member.date_label })}
               </div>
             </Grid>
