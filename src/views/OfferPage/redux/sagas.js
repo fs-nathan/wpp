@@ -178,6 +178,7 @@ export function* doUpdateOfferDetailDescriptionSection({ payload }) {
     }
     const result = yield apiService(config);
     yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, payload: result.data });
+    CustomEventEmitter(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (err) {
     yield put({ type: UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_ERROR, payload: err.toString() });

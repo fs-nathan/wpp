@@ -1,11 +1,13 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
 import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { loadTaskRencentlyPage } from "views/OfferPage/redux/actions";
+import { DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { Content } from "./Content";
@@ -30,6 +32,13 @@ const Recently = () => {
 
   useEffect(() => {
     dispatch(loadTaskRencentlyPage());
+    const refreshAfterDelete = () => {
+      dispatch(loadTaskRencentlyPage());
+    }
+    CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+    return () => {
+      CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+    }
   }, [dispatch]);
 
   return (

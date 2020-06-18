@@ -285,6 +285,8 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   const { t } = useTranslation();
   const [openAddHandlerModal, setOpenAddHandlerModal] = useState(false);
   const [newHandlerIndexes, setNewHandlerIndexes] = useState([]);
+  const [alerModal, setAlertModal] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const disabledMemberIndexes = [];
   allMembers.forEach((member, idx) => {
@@ -351,7 +353,10 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
                       get(member, "can_remove") && (
                         <IconButton
                           className="offerDetail-handlingPerson-deleteBtn"
-                          onClick={() => onDeleteHandler({ offer_id, member_id: get(member, "id") })}
+                          onClick={() => {
+                            setSelectedMember(get(member, "id"));
+                            setAlertModal(true);
+                          }}
                         >
                           <DeleteIcon fontSize="small" />
                         </IconButton>
@@ -373,6 +378,12 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
         value={newHandlerIndexes}
         onChange={onAddHandler}
       />
+      <AlertModal
+        open={alerModal}
+        setOpen={setAlertModal}
+        onConfirm={() => onDeleteHandler({ offer_id, member_id: selectedMember })}
+        content={t("VIEW_OFFER_TEXT_ALERT_DELETE_APPROVER")}
+      />
     </>
   );
 };
@@ -382,6 +393,8 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
   const dispatch = useDispatch();
   const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false);
   const [newMonitorIndexes, setNewMonitorIndexes] = useState([]);
+  const [alerModal, setAlertModal] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const disabledMemberIndexes = [];
   allMembers.forEach((member, idx) => {
@@ -441,7 +454,10 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
                     can_update_member_monitor && (
                       <IconButton
                         className="offerDetail-monitoringPerson-deleteBtn"
-                        onClick={() => onDeleteMonitor({ offer_id, member_id: get(member, "id") })}
+                        onClick={() => {
+                          setSelectedMember(get(member, "id"));
+                          setAlertModal(true);
+                        }}
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
@@ -461,9 +477,13 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
         value={newMonitorIndexes}
         onChange={onAddMonitor}
       />
+      <AlertModal
+        open={alerModal}
+        setOpen={setAlertModal}
+        onConfirm={() => onDeleteMonitor({ offer_id, member_id: selectedMember })}
+        content={t("VIEW_OFFER_TEXT_ALERT_DELETE_SUPERVISOR")}
+      />
     </Grid>
-
-
   );
 };
 export default function LeftContent({

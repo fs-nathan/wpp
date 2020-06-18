@@ -1,5 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { useLocalStorage } from "hooks";
 import { filter, forEach, get, isNil } from "lodash";
 import moment from "moment";
@@ -10,6 +11,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
+import { DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import { TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
@@ -55,9 +57,16 @@ const OfferByProject = () => {
 
     useEffect(() => {
         if (!isNil(id)) {
-            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-            dispatch(loadOfferByProjectID({ id, startDate, endDate }))
+            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
+            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
+            dispatch(loadOfferByProjectID({ id, startDate, endDate }));
+            const refreshAfterDelete = () => {
+                dispatch(loadOfferByProjectID({ id, startDate, endDate }));
+            }
+            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+            return () => {
+                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+            }
         }
     }, [dispatch, id, timeRange]);
 

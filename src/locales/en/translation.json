@@ -1223,6 +1223,8 @@
   "VIEW_OFFER_LABEL_CREATE_NEW_OFFER": "Create new offer",
   "VIEW_OFFER_TEXT_CREATE_NEW_OFFER_SHOULD_REDIRECT": "Please choose the task on project before you can create new offer.",
   "VIEW_OFFER_LABEL_REDIRECT_TO_TASK": "Redirect to task list",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVER": "Do youn really want to delete this Approver?",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_SUPERVISOR": "Do you really want to delete this Supervisor?",
   "LABEL_CHAT_TASK_TAG_THANH_VIEN": "Tag thành viên",
   "LABEL_CHAT_TASK_GUI_STICKER": "Gửi sticker",
   "LABEL_CHAT_TASK_GUI_ANH": "Gửi ảnh",

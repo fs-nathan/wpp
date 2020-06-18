@@ -16,7 +16,7 @@ import { useMountedState } from 'react-use';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
 import { Routes } from 'views/OfferPage/contants/routes';
-import { CREATE_OFFER, CREATE_OFFER_SUCCESSFULLY } from 'views/OfferPage/redux/types';
+import { CREATE_OFFER, CREATE_OFFER_SUCCESSFULLY, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from 'views/OfferPage/redux/types';
 import { listUserOfGroup } from '../../../../../actions/user/listUserOfGroup';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
@@ -217,8 +217,10 @@ const OfferModal = ({
   React.useEffect(() => {
     if (isMounted) {
       CustomEventListener(CREATE_OFFER, afterDoOfferOperations);
+      CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
       return () => {
         CustomEventDispose(CREATE_OFFER, afterDoOfferOperations);
+        CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
       }
     }
   }, [isMounted]);
@@ -238,7 +240,8 @@ const OfferModal = ({
           content: tempSelectedItem.content,
           offerGroupId: tempSelectedItem.offer_group_id,
           priorityCode: tempSelectedItem.priority.id,
-        }))
+        }));
+        setLoading(true);
       }
     } else if (tempSelectedItem.content) {
       dispatch(updateOffer({
