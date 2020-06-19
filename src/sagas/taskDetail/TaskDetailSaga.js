@@ -378,7 +378,7 @@ function* unpinRemind(action) {
 async function doGetOffer({ taskId }) {
   try {
     const config = {
-      url: "/task/get-offer?task_id=" + taskId,
+      url: "/offers/get-offer-task?task_id=" + taskId,
       method: "get"
     };
     const result = await apiService(config);
@@ -400,8 +400,10 @@ function* getOffer(action) {
 function* createOffer(action) {
   try {
     const task_id = action.payload.data.get('task_id');
-    const url = `/task/create-offer?task_id=${task_id}`;
-    const res = yield call(apiService.post, url, action.payload.data);
+    const url = `/offers/create?task_id=${task_id}`;
+    const res = yield call(apiService.post, url, action.payload.data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
     yield put(actions.createOfferSuccess(res.data));
     yield put(actions.getOffer({ taskId: task_id }));
     // yield put(appendChat(res.data));

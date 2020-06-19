@@ -15,6 +15,7 @@ import ApproveOfferDialog from './ApproveOfferDialog';
 import ListOffer from './ListOffer';
 // import OfferDetail from './OfferDetail';
 import DetailOfferModal from 'views/OfferPage/views/DetailOffer/DetailOfferModal';
+import { loadDetailOffer } from 'views/OfferPage/redux/actions';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -69,6 +70,7 @@ function TabBody(props) {
 
   function onClickDetail(item) {
     setSelectedItem({ ...item, offer_id: item.id })
+    dispatch(loadDetailOffer({ id: item.id }))
     setOpenDetail(true)
   }
   const handleClickApprove = item => {
