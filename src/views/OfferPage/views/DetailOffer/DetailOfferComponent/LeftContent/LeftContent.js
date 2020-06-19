@@ -6,9 +6,7 @@ import { openDocumentDetail } from 'actions/system/system';
 import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
 import { CustomEventDispose, CustomEventListener } from 'constants/events';
-import lodash from 'lodash';
-import get from "lodash/get";
-import isEmpty from "lodash/isEmpty";
+import lodash, { get, isArray, isEmpty } from 'lodash';
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
@@ -165,23 +163,6 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     setSelectedItem({ file_id, name, url, file_icon })
     setDeleteDocumentModal(true);
   }
-  const renderConfirmRemoveFileModal = () => {
-    return (
-      <>
-        <Grid container direction="column" justify="center" alignItems="center">
-          <p>{t("VIEW_OFFER_TEXT_DELETE_FILE_WARNING")}</p>
-          <div style={{ textAlign: "center" }}>
-            <a target="_blank"
-              href={get(selectedItem, "url")}>
-              <img height="50" width="50" alt="file" src={get(selectedItem, "file_icon")} />
-              <div>{get(selectedItem, "name")}</div>
-            </a>
-          </div>
-        </Grid>
-      </>
-    )
-  }
-
   const afterDeleteDocument = () => {
     setLoading(false);
     setDeleteDocumentModal(false);
@@ -283,9 +264,10 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
         open={deleteDocumentModal}
         setOpen={setDeleteDocumentModal}
         onConfirm={confirmDeleteDocument}
-        content={renderConfirmRemoveFileModal()}
+        content={t("VIEW_OFFER_TEXT_DELETE_FILE_WARNING")}
         manualClose={true}
         actionLoading={loading}
+        onCancle={() => setDeleteDocumentModal(false)}
       />
       <SendFileModal
         open={openSendFileModal}
@@ -303,6 +285,8 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   const { t } = useTranslation();
   const [openAddHandlerModal, setOpenAddHandlerModal] = useState(false);
   const [newHandlerIndexes, setNewHandlerIndexes] = useState([]);
+  const [alerModal, setAlertModal] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const disabledMemberIndexes = [];
   allMembers.forEach((member, idx) => {
@@ -334,7 +318,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
     <>
       <Grid container>
         <Box className="offerDetail-handlingPerson-container">
-          <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')}</div>
+          <div className="offerDetail-handlingPerson-title">{t('PERSON_HANDLE')} ({isArray(addedHandlers) ? addedHandlers.length : 0})</div>
           {
             can_update_member_handle && (
               <IconButton
@@ -369,7 +353,10 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
                       get(member, "can_remove") && (
                         <IconButton
                           className="offerDetail-handlingPerson-deleteBtn"
-                          onClick={() => onDeleteHandler({ offer_id, member_id: get(member, "id") })}
+                          onClick={() => {
+                            setSelectedMember(get(member, "id"));
+                            setAlertModal(true);
+                          }}
                         >
                           <DeleteIcon fontSize="small" />
                         </IconButton>
@@ -391,6 +378,12 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
         value={newHandlerIndexes}
         onChange={onAddHandler}
       />
+      <AlertModal
+        open={alerModal}
+        setOpen={setAlertModal}
+        onConfirm={() => onDeleteHandler({ offer_id, member_id: selectedMember })}
+        content={t("VIEW_OFFER_TEXT_ALERT_DELETE_APPROVER")}
+      />
     </>
   );
 };
@@ -400,6 +393,8 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
   const dispatch = useDispatch();
   const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false);
   const [newMonitorIndexes, setNewMonitorIndexes] = useState([]);
+  const [alerModal, setAlertModal] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const disabledMemberIndexes = [];
   allMembers.forEach((member, idx) => {
@@ -427,7 +422,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
   return (
     <Grid container>
       <Box className="offerDetail-handlingPerson-container">
-        <div className="offerDetail-monitoringPerson-title">{t("VIEW_OFFER_LABEL_SUPERVISOR")}</div>
+        <div className="offerDetail-monitoringPerson-title">{t("VIEW_OFFER_LABEL_SUPERVISOR")} ({isArray(addedMonitors) ? addedMonitors.length : 0})</div>
         {
           can_update_member_monitor && (
             <IconButton
@@ -446,7 +441,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
             addedMonitors.map(member => (
               <Grid item xs={12} className="offerDetail-monitoringPerson-item">
                 <Grid container>
-                  <Grid item xs={2}>
+                  <Grid item xs={1}>
                     <Avatar src={get(member, "avatar")} />
                   </Grid>
                   <Grid item>
@@ -459,7 +454,10 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
                     can_update_member_monitor && (
                       <IconButton
                         className="offerDetail-monitoringPerson-deleteBtn"
-                        onClick={() => onDeleteMonitor({ offer_id, member_id: get(member, "id") })}
+                        onClick={() => {
+                          setSelectedMember(get(member, "id"));
+                          setAlertModal(true);
+                        }}
                       >
                         <DeleteIcon fontSize="small" />
                       </IconButton>
@@ -479,9 +477,13 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
         value={newMonitorIndexes}
         onChange={onAddMonitor}
       />
+      <AlertModal
+        open={alerModal}
+        setOpen={setAlertModal}
+        onConfirm={() => onDeleteMonitor({ offer_id, member_id: selectedMember })}
+        content={t("VIEW_OFFER_TEXT_ALERT_DELETE_SUPERVISOR")}
+      />
     </Grid>
-
-
   );
 };
 export default function LeftContent({

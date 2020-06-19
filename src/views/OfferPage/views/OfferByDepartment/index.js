@@ -1,5 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { useLocalStorage } from "hooks";
 import { get, isNil } from "lodash";
 import moment from "moment";
@@ -9,6 +10,7 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
+import { DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
 import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW } from '../../contants/localStorage';
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
@@ -87,6 +89,18 @@ function Department({
             const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
             const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
             doListOffersByDepartmentID({ id, startDate, endDate });
+
+            const refreshAfterDelete = () => {
+                doListOffersByDepartmentID({ id, startDate, endDate });
+                doListOffersByDepartment({ timeRange });
+            }
+
+            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+            CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
+            return () => {
+                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+                CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
+            }
         }
     }, [id, timeRange]);
     // Redirect to first group when enter

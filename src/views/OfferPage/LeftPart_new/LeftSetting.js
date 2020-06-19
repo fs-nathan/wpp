@@ -99,7 +99,7 @@ const LeftSetting = props => {
                 secondary={<Secondary className="leftSettings-item-subtitle">{item.subtitle}</Secondary>}
               />
               {
-                item.rightIconVisiableAlways ? item.rightIcon() : onHover.id === item.url && item.rightIcon && item.rightIcon()
+                item.rightIconVisiableAlways ? item.rightIcon() : onHover.id === item.url && item.rightIcon ? item.rightIcon() : item.rightLabel && item.rightLabel()
               }
             </StyledListItem>
             {item.sub &&

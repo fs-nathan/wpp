@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../../components/CustomModal';
 import { OfferPageContext } from '../../../OfferPageContext';
 import {
-  getDetailOfferModalCancelBtnTitle,
   getDetailOfferModalConfirmBtnTitle,
   getDetailOfferModalTitle
 } from '../../../utils/i18nSelectors';
@@ -22,10 +21,6 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
     }
   }
 
-  const onCloseModal = () => {
-    setOpen(false);
-  }
-
   return (
     <CustomModal
       className={clsx(
@@ -36,11 +31,10 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
       open={open}
       setOpen={setOpen}
       loading={loading}
-      confirmRender={() => can_delete ? getDetailOfferModalConfirmBtnTitle(t) : getDetailOfferModalCancelBtnTitle(t)}
+      confirmRender={can_delete ? () => getDetailOfferModalConfirmBtnTitle(t) : null}
       onConfirm={onConfirm}
-      cancleRender={() => can_delete && getDetailOfferModalCancelBtnTitle(t)}
-      onCancle={onCloseModal}
       manualClose={true}
+      onCancle={() => setOpen(false)}
       fullWidth
       maxWidth='lg'
     >

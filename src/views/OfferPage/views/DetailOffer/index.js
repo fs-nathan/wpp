@@ -1,7 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
 import React, { useContext, useEffect } from "react";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
@@ -20,7 +19,6 @@ export const PageContainer = styled(Container)`
   min-height: 100%;
 `;
 const OfferByDepartment = (props) => {
-    const { t } = useTranslation();
     const dispatch = useDispatch();
     const { listMenu, setTitle } = useContext(OfferPageContext);
     const { id } = useParams()
@@ -32,9 +30,10 @@ const OfferByDepartment = (props) => {
             setTitle(get(labels, "pageTitleOfferDetailOffer"))
         }
     }, [isMounted, setTitle]);
+
     useEffect(() => {
-        dispatch(loadDetailOffer({ id }))
-    }, [id, dispatch])
+        dispatch(loadDetailOffer({ id }));
+    }, [id, dispatch]);
 
     return (
         <Layout
