@@ -32,7 +32,8 @@ function DetailOffer({
   offer_group_id,
   number_member_accepted,
   number_member_rejected,
-  members_monitor
+  members_monitor,
+  additionQuery
 }) {
   return (
     <div className="offerDetail-container">
@@ -57,6 +58,7 @@ function DetailOffer({
         type_name={type_name}
         members_monitor={members_monitor}
         offer_group_id={offer_group_id}
+        additionQuery={additionQuery}
       />
       <div className="offerDetail-verticalLine" />
       <MiddleContent
@@ -77,10 +79,10 @@ function DetailOffer({
         user_create_avatar={user_create_avatar}
         condition_accept={condition_accept}
         members_can_approve={members_can_approve}
-        handleApprovalDelete={() => console.log("fsdfsd")}
+        additionQuery={additionQuery}
       />
       <div className="offerDetail-verticalLine" />
-      <RightContent offerId={id} />
+      <RightContent offerId={id} additionQuery={additionQuery} />
     </div>
   );
 };
@@ -115,6 +117,6 @@ DetailOffer.prototype = {
   number_member_rejected: PropTypes.number,
   number_member_accepted: PropTypes.number,
   members_monitor: PropTypes.array,
-  handleApprovalDelete: PropTypes.func
+  additionQuery: PropTypes.string
 };
 export default DetailOffer;

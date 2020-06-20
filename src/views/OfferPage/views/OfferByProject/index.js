@@ -11,7 +11,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE } from "views/OfferPage/redux/types";
 import { TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
@@ -60,14 +60,14 @@ const OfferByProject = () => {
             const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
             const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
             dispatch(loadOfferByProjectID({ id, startDate, endDate }));
-            const refreshAfterDelete = () => {
+            const refreshListOffers = () => {
                 dispatch(loadOfferByProjectID({ id, startDate, endDate }));
             }
-            CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
-            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
+            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
+            CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
             return () => {
-                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
-                CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
+                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
+                CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
             }
         }
     }, [dispatch, id, timeRange]);

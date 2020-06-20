@@ -2,7 +2,7 @@ import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { useLocalStorage } from "hooks";
-import { get, isNil } from "lodash";
+import { get, isNil, last } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -11,15 +11,15 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, SORT_GROUP_OFFER_SUCCESS } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
 import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
-import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
+import { loadOfferByGroupID, loadSummaryByGroup, sortOfferGroup } from "../../redux/actions";
 import Content from "./Content";
 import FormDialog from "./modal";
-import { getFirstSummaryGroup, getSummaryByGroupByKeyword } from "./selector";
+import { getFirstSummaryGroup, getGroupOfferList, getSummaryByGroupByKeyword } from "./selector";
 
 export const PageContainer = styled(Container)`
   overflow: auto;
@@ -43,11 +43,13 @@ const OfferByGroup = props => {
     timeType,
     setTimeType,
     timeRange,
-    setTitle
+    setTitle,
+    onDraggEnd
   } = useContext(OfferPageContext);
 
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
   const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
+  const groupOfferList = useSelector(state => getGroupOfferList(state));
   const createOfferSuccess = useSelector(state => state.offerPage[CREATE_OFFER_SUCCESSFULLY])
   const { id } = useParams();
   const isMounted = useMountedState();
@@ -88,8 +90,10 @@ const OfferByGroup = props => {
       dispatch(loadSummaryByGroup());
     }
     CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+    CustomEventListener(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
     return () => {
       CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+      CustomEventDispose(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
     }
   }, [dispatch]);
 
@@ -135,18 +139,26 @@ const OfferByGroup = props => {
 
   useEffect(() => {
     if (isMounted) {
-      const refreshAfterCreateOffer = () => {
+      const refreshListOffers = () => {
         const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
         const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
         dispatch(loadOfferByGroupID({ id, startDate, endDate }));
       }
-      CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
+      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
       return () => {
-        CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
+        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
       }
     }
   }, [isMounted, timeRange, id]);
 
+  useEffect(() => {
+    if (isMounted) {
+      if (onDraggEnd.source !== null && onDraggEnd.destination !== null) {
+        const id = last(onDraggEnd.id.split("/"));
+        dispatch(sortOfferGroup({ group_offer_id: id, position: onDraggEnd.destination.index }));
+      }
+    }
+  }, [dispatch, isMounted, onDraggEnd]);
 
   // Redirect to first group when enter
   return (

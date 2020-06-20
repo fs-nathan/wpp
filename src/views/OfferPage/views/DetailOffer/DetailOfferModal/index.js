@@ -10,7 +10,7 @@ import {
 import DetailOffer from '../DetailOfferComponent';
 import './styles.scss';
 
-const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
+const DetailOfferModal = ({ open, setOpen, loading, additionQuery, ...rest }) => {
   const { setShowDeleteOfferConfirmModal } = useContext(OfferPageContext);
   const { t } = useTranslation()
   const { can_delete } = rest;
@@ -38,7 +38,7 @@ const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
       fullWidth
       maxWidth='lg'
     >
-      <DetailOffer {...rest} />
+      <DetailOffer {...rest} additionQuery={additionQuery} />
     </CustomModal>
   )
 }

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE } from "views/OfferPage/redux/types";
 import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW } from '../../contants/localStorage';
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
@@ -90,16 +90,16 @@ function Department({
             const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
             doListOffersByDepartmentID({ id, startDate, endDate });
 
-            const refreshAfterDelete = () => {
+            const refreshData = () => {
                 doListOffersByDepartmentID({ id, startDate, endDate });
                 doListOffersByDepartment({ timeRange });
             }
 
-            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
-            CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
+            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshData);
+            CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshData);
             return () => {
-                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshAfterDelete);
-                CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterDelete);
+                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshData);
+                CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshData);
             }
         }
     }, [id, timeRange]);

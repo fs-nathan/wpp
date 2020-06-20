@@ -46,6 +46,7 @@ const OfferModal = ({
   item: offerItem,
   isUpdateOfferDetailDescriptionSection,
   isOffer,
+  additionQuery
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -184,12 +185,15 @@ const OfferModal = ({
     if (actionCreateOffer) {
       if (actionCreateOffer.payload) {
         actionCreateOffer.payload.data = getFormData();
+        actionCreateOffer.payload.additionQuery = additionQuery;
       } else {
         actionCreateOffer.payload = {
           data: getFormData(),
+          additionQuery: additionQuery
         }
       }
       setLoading(true);
+      console.log(actionCreateOffer);
       dispatch(actionCreateOffer);
     }
   };
@@ -240,6 +244,7 @@ const OfferModal = ({
           content: tempSelectedItem.content,
           offerGroupId: tempSelectedItem.offer_group_id,
           priorityCode: tempSelectedItem.priority.id,
+          additionQuery
         }));
         setLoading(true);
       }

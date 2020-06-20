@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ApprovalConditionModal({
-  open, setOpen, item: offerItem,
+  open, setOpen, item: offerItem, additionQuery,
   members, doListMemebers, bgColor, doUpdateApprovalConditions
 }) {
   const classes = useStyles();
@@ -138,6 +138,7 @@ function ApprovalConditionModal({
       offerId: tempSelectedItem.offer_id,
       minRateAccept: tempSelectedItem.min_rate_accept,
       conditionLogic: tempSelectedItem.condition_logic,
+      additionQuery
     }
     if (tempSelectedItem.min_rate_accept < 100 || (tempSelectedItem.min_rate_accept === 100 && tempSelectedItem.condition_logic === 'OR')) {
       dataToUpdate.conditionLogicMember = tempSelectedItem.condition_logic_member;
