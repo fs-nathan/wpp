@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { mdiAccountKey, mdiKey } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CustomTableProvider } from "components/CustomTable";
@@ -164,6 +165,7 @@ const ColumnLeft = () => {
 const ColumnRight = () => {
   const { t } = useTranslation();
   const {
+    detail,
     permissionModules = emptyArray,
     members_assigned = emptyArray,
     module: groupModule,
@@ -184,6 +186,20 @@ const ColumnRight = () => {
                 </Box>
               ))}
           </Box>
+          <Alert severity="info">
+            <div>
+              {t(
+                "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên"
+              )}
+            </div>
+            <a
+              target="_blank"
+              className="u-colorBlue text-bold cursor-pointer"
+              href={detail && detail.url_view_more}
+            >
+              <strong>{t("Tìm hiểu thêm")}</strong>
+            </a>
+          </Alert>
           <Divider />
           <ListItemLayout
             title={t("Thành viên được gán nhóm quyền")}

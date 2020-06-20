@@ -221,7 +221,10 @@ export const loadDetailGroupPermission = ({ group_permission_id } = {}) => {
       return {
         payload: data.group_detail,
         meta: {
-          action: listupdate(data.group_detail),
+          action: listupdate({
+            ...data.group_detail,
+            url_view_more: data.url_view_more,
+          }),
         },
       };
     }),

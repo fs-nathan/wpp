@@ -28,6 +28,7 @@ const Header = React.memo(({ handleKeyDown, defaultKeyword }) => {
         }
         action={
           <IconButton
+            title={t("Đóng")}
             onClick={() => history.push(routes.home.path)}
             size="small"
           >

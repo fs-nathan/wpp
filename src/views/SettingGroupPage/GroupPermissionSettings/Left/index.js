@@ -98,21 +98,8 @@ function Left({
           flexDirection="column"
         >
           <Box style={{ background: "#fff" }}>
-            <Stack>
+            <Stack small>
               <div />
-              <Box padding="0 1rem">
-                <ListItemLayout
-                  title={t("Danh sách nhóm quyền")}
-                  actions={
-                    <AddButton
-                      onClick={() => {
-                        setModal(<AddGroupPermissionModal />);
-                      }}
-                      label={t("Thêm nhóm")}
-                    />
-                  }
-                ></ListItemLayout>
-              </Box>
               <Box padding="0 1rem">
                 <SearchBox
                   fullWidth
@@ -120,8 +107,15 @@ function Left({
                   onChange={handleInputChange}
                 />
               </Box>
+              <Box padding="0 1rem">
+                <AddButton
+                  onClick={() => {
+                    setModal(<AddGroupPermissionModal />);
+                  }}
+                  label={t("Thêm nhóm")}
+                />
+              </Box>
             </Stack>
-            <Space heigth="10px" />
           </Box>
           <Box flex="1">
             <Box>
