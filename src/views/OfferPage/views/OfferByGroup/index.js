@@ -2,7 +2,7 @@ import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { useLocalStorage } from "hooks";
-import { get, isNil, last } from "lodash";
+import { findIndex, get, isNil, last } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -44,7 +44,8 @@ const OfferByGroup = props => {
     setTimeType,
     timeRange,
     setTitle,
-    onDraggEnd
+    onDraggEnd,
+    setFilterTab
   } = useContext(OfferPageContext);
 
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
@@ -87,6 +88,7 @@ const OfferByGroup = props => {
   useEffect(() => {
     dispatch(loadSummaryByGroup());
     const refreshSummaryByGroup = () => {
+      setFilterTab("");
       dispatch(loadSummaryByGroup());
     }
     CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
@@ -155,7 +157,9 @@ const OfferByGroup = props => {
     if (isMounted) {
       if (onDraggEnd.source !== null && onDraggEnd.destination !== null) {
         const id = last(onDraggEnd.id.split("/"));
-        dispatch(sortOfferGroup({ group_offer_id: id, position: onDraggEnd.destination.index }));
+        const groupSource = get(groupList, `[${onDraggEnd.destination.index}]`);
+        const originalIndex = findIndex(groupOfferList, (group) => groupSource.url.includes(group.id));
+        dispatch(sortOfferGroup({ group_offer_id: id, position: originalIndex }));
       }
     }
   }, [dispatch, isMounted, onDraggEnd]);

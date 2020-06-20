@@ -339,7 +339,7 @@ function OfferPage() {
             setTitle, setDetailOfferModalOpen,
             setCurrentDetailOfferId, setShowDeleteOfferConfirmModal,
             scrollBarPosition, setScrollBarPosition,
-            handleOnDraggEnd, onDraggEnd
+            handleOnDraggEnd, onDraggEnd, setFilterTab
           }
           }>
           <div>
