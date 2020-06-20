@@ -20,6 +20,7 @@
     flex-direction: column;
     justify-content: flex-end;
     contain: layout style;
+    min-height: 100%;
   }
   &__reply {
     // height: calc(100% - 300px);
@@ -165,7 +166,7 @@
     margin: 10px auto;
   }
   &--searchEmpty {
-    margin: 25% auto;
+    margin: auto;
     color: #607d8b;
     text-align: center;
     line-height: 30px;
