@@ -3,6 +3,7 @@ import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
 import { UPDATE_PROJECT_CHAT, GET_PROJECT_LIST_BASIC_REQUEST } from "constants/actions/taskDetail/taskDetailConst";
+import { forEach } from "lodash";
 
 export const initialState = {
   chats: { data: [] },
@@ -59,8 +60,12 @@ export default (state = initialState, action) => produce(state, draft => {
       // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
         const updateDate = { ...action.payload.data_chat }
-        updateDate.url = undefined;
-        updateDate.url_thumb = undefined;
+        if (updateDate.images) {
+          updateDate.images.forEach(img => {
+            img.url = undefined;
+            img.url_thumb = undefined;
+          })
+        }
         draft.chats.data.splice(idx, 1, updateDate)
       } else {
         draft.chats.data.unshift(action.payload.data_chat)

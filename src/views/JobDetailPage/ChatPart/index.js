@@ -5,7 +5,7 @@ import { searchChat, loadChat } from 'actions/chat/chat';
 import { unPinRemind } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import SearchInput from 'components/SearchInput';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,9 +28,10 @@ function ChatPart(props) {
   const [isShowSearch, setShowSearch] = useState(false);
   const [imagesQueue, setImagesQueue] = useState([]);
 
-  // useEffect(() => {
-  //   dispatch(getRemind({ taskId }))
-  // }, [dispatch, taskId]);
+  useEffect(() => {
+    setShowSearch(false)
+    dispatch(searchChat(''))
+  }, [dispatch, taskId]);
 
   function onChangeKey(evt) {
     dispatch(searchChat(evt.target.value))

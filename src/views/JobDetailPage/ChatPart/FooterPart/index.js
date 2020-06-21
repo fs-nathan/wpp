@@ -89,7 +89,7 @@ const FooterPart = ({
         .toLowerCase()
         .replace(/&nbsp;/g, '')
         .trim()
-      console.log(text, lastAy, key)
+      // console.log(text, lastAy, key)
       setKeyFilter(key)
     } else {
       setKeyFilter('')
@@ -362,12 +362,6 @@ const FooterPart = ({
     }
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
-  function onSendMessage() {
-    const content = getChatContent(htmlToText(chatText));
-    if (!content) return;
-    sendMessage();
-  }
-
   function onChooseMention() {
     handleClickMention(membersFiltered[selectedId])
   }
@@ -509,7 +503,7 @@ const FooterPart = ({
           onDeleteChar={onDeleteChar}
           onOpenMention={onOpenMention}
           onPressDown={onPressDown}
-          onSendMessage={onSendMessage}
+          onSendMessage={sendMessage}
           setOpenMention={setOpenMention}
         />
         <div className="chatBox--send"
