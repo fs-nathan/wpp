@@ -2,7 +2,7 @@
   position: relative;
   // border-bottom: 1px solid #eeeeee;
   padding: 10px 20px;
-  margin: 0px 0 0 -20px;
+  // margin: 0px 0 0 -20px;
   cursor: pointer;
   &:hover {
     background-color: #f2f5fa;
@@ -254,10 +254,10 @@
 }
 
 .approve {
-  [class*='comp_LoadingOverlay___wrapper'] {
+  [class*="comp_LoadingOverlay___wrapper"] {
     height: 90vh !important;
   }
-  [class*='comp_CustomModal___scroll'] {
+  [class*="comp_CustomModal___scroll"] {
     height: 100% !important;
   }
   .MuiFormControl-marginNormal {

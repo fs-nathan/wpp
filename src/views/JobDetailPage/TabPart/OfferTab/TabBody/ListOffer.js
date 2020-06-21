@@ -20,11 +20,13 @@ const ListOffer = (props) => {
   }
   return (
     <React.Fragment>
-      <SearchInput
-        fullWidth
-        placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
-        onChange={e => searchOfferTabPart(e)}
-      />
+      <div className="memberTabBody--search">
+        <SearchInput
+          fullWidth
+          placeholder={t('LABEL_CHAT_TASK_NHAP_TU_KHOA')}
+          onChange={e => searchOfferTabPart(e)}
+        />
+      </div>
       <StyledList>
         {props.offer.map((item) => {
           return (

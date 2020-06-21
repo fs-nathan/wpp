@@ -400,7 +400,7 @@ function* getOffer(action) {
 function* createOffer(action) {
   try {
     const task_id = action.payload.data.get('task_id');
-    const url = `/offers/create?task_id=${task_id}`;
+    const url = `/offers/create`;
     const res = yield call(apiService.post, url, action.payload.data, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
