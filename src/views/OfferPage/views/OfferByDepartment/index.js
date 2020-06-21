@@ -1,5 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { useLocalStorage } from "hooks";
 import { get, isNil } from "lodash";
 import moment from "moment";
@@ -9,6 +10,7 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
 import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW } from '../../contants/localStorage';
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
@@ -87,6 +89,24 @@ function Department({
             const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
             const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
             doListOffersByDepartmentID({ id, startDate, endDate });
+
+            const refreshData = () => {
+                doListOffersByDepartmentID({ id, startDate, endDate });
+                doListOffersByDepartment({ timeRange });
+            }
+
+            const refreshOffersList = () => {
+                doListOffersByDepartmentID({ id, startDate, endDate });
+            }
+
+            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshData);
+            CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshData);
+            CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
+            return () => {
+                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshData);
+                CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshData);
+                CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
+            }
         }
     }, [id, timeRange]);
     // Redirect to first group when enter

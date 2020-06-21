@@ -15,7 +15,8 @@ import { useHistory } from 'react-router-dom';
 import { useMountedState } from 'react-use';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
-import { CREATE_OFFER } from 'views/OfferPage/redux/types';
+import { Routes } from 'views/OfferPage/contants/routes';
+import { CREATE_OFFER, CREATE_OFFER_SUCCESSFULLY, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from 'views/OfferPage/redux/types';
 import { listUserOfGroup } from '../../../../../actions/user/listUserOfGroup';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
@@ -45,6 +46,7 @@ const OfferModal = ({
   item: offerItem,
   isUpdateOfferDetailDescriptionSection,
   isOffer,
+  additionQuery
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -183,12 +185,15 @@ const OfferModal = ({
     if (actionCreateOffer) {
       if (actionCreateOffer.payload) {
         actionCreateOffer.payload.data = getFormData();
+        actionCreateOffer.payload.additionQuery = additionQuery;
       } else {
         actionCreateOffer.payload = {
           data: getFormData(),
+          additionQuery: additionQuery
         }
       }
       setLoading(true);
+      console.log(actionCreateOffer);
       dispatch(actionCreateOffer);
     }
   };
@@ -196,16 +201,30 @@ const OfferModal = ({
   const afterDoOfferOperations = () => {
     setLoading(false);
     setOpen(false);
-    /*setTimeout(() => {
-      history.push(`${Routes.OFFERBYGROUP}/${tempSelectedItem.offer_group_id}`);
-    }, 2000);*/
+  }
+
+  const redirectAfterCreateOfferSuccess = () => {
+    setTimeout(() => {
+      history.push(`${Routes.OFFERBYGROUP}/${tempSelectedItem.offer_group_id}?referrer=${history.location.pathname}`);
+    }, 1000);
   }
 
   React.useEffect(() => {
     if (isMounted) {
+      CustomEventListener(CREATE_OFFER_SUCCESSFULLY, redirectAfterCreateOfferSuccess);
+      return () => {
+        CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, redirectAfterCreateOfferSuccess);
+      }
+    }
+  }, [isMounted, tempSelectedItem]);
+
+  React.useEffect(() => {
+    if (isMounted) {
       CustomEventListener(CREATE_OFFER, afterDoOfferOperations);
+      CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
       return () => {
         CustomEventDispose(CREATE_OFFER, afterDoOfferOperations);
+        CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
       }
     }
   }, [isMounted]);
@@ -225,7 +244,9 @@ const OfferModal = ({
           content: tempSelectedItem.content,
           offerGroupId: tempSelectedItem.offer_group_id,
           priorityCode: tempSelectedItem.priority.id,
-        }))
+          additionQuery
+        }));
+        setLoading(true);
       }
     } else if (tempSelectedItem.content) {
       dispatch(updateOffer({
@@ -286,7 +307,6 @@ const OfferModal = ({
       && title && content
       && offer_group_id
       && priority
-      && handlers.length;
   }
   return (
     <JobDetailModalWrap
@@ -295,11 +315,7 @@ const OfferModal = ({
       }
       open={isOpen}
       setOpen={setOpen}
-      confirmRender={() =>
-        isUpdateOfferDetailDescriptionSection || isOffer
-          ? t('LABEL_CHAT_TASK_CHINH_SUA')
-          : t('LABEL_CHAT_TASK_HOAN_THANH')
-      }
+      confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={
         isUpdateOfferDetailDescriptionSection || isOffer
           ? onClickUpdateOffer
@@ -313,6 +329,17 @@ const OfferModal = ({
       onCancle={() => setOpen(false)}
     >
       <React.Fragment>
+        {
+          !isUpdateOfferDetailDescriptionSection && (
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
+              <CustomSelect
+                options={offersGroup}
+                onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
+              />
+            </>
+          )
+        }
         <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
         <TextField
           className="offerModal--titleText"
@@ -336,12 +363,7 @@ const OfferModal = ({
         {
           !isUpdateOfferDetailDescriptionSection && (
             <>
-              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
-              <CustomSelect
-                options={offersGroup}
-                onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
-              />
-              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} isRequired />
+              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} />
               <div className={classes.listChips}>
                 {handlers.map((allMembersIdx, idx) =>
                   <Chip

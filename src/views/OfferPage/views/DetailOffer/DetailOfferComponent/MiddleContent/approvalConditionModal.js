@@ -8,7 +8,7 @@ import CustomSelect from 'components/CustomSelect';
 import { bgColorSelector } from 'components/LoadingOverlay/selectors';
 import TitleSectionModal from 'components/TitleSectionModal';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
-import { findIndex, isNaN } from "lodash";
+import { findIndex, get, isNaN, keys } from "lodash";
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function ApprovalConditionModal({
-  open, setOpen, item: offerItem,
+  open, setOpen, item: offerItem, additionQuery,
   members, doListMemebers, bgColor, doUpdateApprovalConditions
 }) {
   const classes = useStyles();
@@ -64,7 +64,6 @@ function ApprovalConditionModal({
   const [approvers, setApprovers] = React.useState([]);
   const [isOpenAddApproverModal, setOpenAddApproverModal] = React.useState(false);
   const [allMembers, setAllMembers] = React.useState([]);
-  const [disableSelect, setDisableSelect] = React.useState(true);
 
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }));
@@ -109,14 +108,11 @@ function ApprovalConditionModal({
         setHandlers(handlerIndexes.filter(idx => idx !== -1)); // use indexes of all members to set
       }
       if (approvers) {
-        const approversIndexes = approvers.map(
-          approver => findIndex(handlersToAddInApprovalCondition, handler => handler.id === approver.id)
-        );
-        setApprovers(approversIndexes.filter(idx => idx !== -1)); // use indexes of all members to set
+        const keysArr = keys(approvers);
+        setApprovers(keysArr.map(item => parseInt(item))); // use indexes of all members to set
       }
       if (priority_code != null) offerItem.priority = priorityList[priority_code];
       if (id != null) offerItem.offer_id = id;
-
       setTempSelectedItem(offerItem);
     }
   }, [offerItem, allMembers]);
@@ -142,6 +138,7 @@ function ApprovalConditionModal({
       offerId: tempSelectedItem.offer_id,
       minRateAccept: tempSelectedItem.min_rate_accept,
       conditionLogic: tempSelectedItem.condition_logic,
+      additionQuery
     }
     if (tempSelectedItem.min_rate_accept < 100 || (tempSelectedItem.min_rate_accept === 100 && tempSelectedItem.condition_logic === 'OR')) {
       dataToUpdate.conditionLogicMember = tempSelectedItem.condition_logic_member;
@@ -238,13 +235,16 @@ function ApprovalConditionModal({
             }
             <Grid xs={12}>
               <div className={classes.listChips}>
-                {handlersToAddInApprovalCondition && approvers.map((handlersToAddIdx, idx) =>
-                  <Chip
-                    key={handlersToAddIdx}
-                    avatar={<Avatar alt="avatar" src={handlersToAddInApprovalCondition[handlersToAddIdx].avatar} />}
-                    label={handlersToAddInApprovalCondition[handlersToAddIdx].name}
-                    onDelete={handleDeleteApprover(idx)}
-                  />
+                {handlersToAddInApprovalCondition && approvers.map((handlersToAddIdx, idx) => {
+                  return (
+                    <Chip
+                      key={handlersToAddIdx}
+                      avatar={<Avatar alt="avatar" src={get(handlersToAddInApprovalCondition, `[${handlersToAddIdx}].avatar`)} />}
+                      label={get(handlersToAddInApprovalCondition, `[${handlersToAddIdx}].name`)}
+                      onDelete={handleDeleteApprover(idx)}
+                    />
+                  )
+                }
                 )}
               </div>
             </Grid>

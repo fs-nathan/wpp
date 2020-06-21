@@ -88,9 +88,7 @@ export const getDepartmentGroupByKeyword = (keyword, t) => createSelector(select
     subtitle: typeof t === 'function' ? t("VIEW_OFFER_LABEL_PENDING_OFFER", { count: x.offer_waiting }) : x.offer_waiting,
     url: Routes.OFFERBYDEPARTMENT + `/${x.id}`,
     color: "#7d99a6",
-    icon: mdiEmailCheck,
-    rightIcon: x.have_new_offer && rightIcon,
-    rightIconVisiableAlways: x.have_new_offer
+    icon: mdiEmailCheck
   })).filter(
     x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1
   );
