@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOffer } from '../../../../../actions/taskDetail/taskDetailActions';
+import { getOffer, createOffer } from 'actions/taskDetail/taskDetailActions';
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
 import OfferModal from '../OfferModal';
@@ -25,7 +25,11 @@ function TabHeader(props) {
         onClickBack={() => props.setShow(0)}
         onClickOpen={handleClickOpen}
       />
-      <OfferModal isOpen={open} setOpen={setOpen}{...props} />
+      <OfferModal
+        isOpen={open}
+        setOpen={setOpen}
+        actionCreateOffer={createOffer()}
+        {...props} />
     </div>
   );
 }

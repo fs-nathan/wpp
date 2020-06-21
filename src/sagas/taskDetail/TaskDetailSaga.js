@@ -7,6 +7,7 @@ import { apiService } from "../../constants/axiosInstance";
 import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
 // import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
+import { CREATE_OFFER } from 'views/OfferPage/redux/types';
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -408,6 +409,8 @@ function* createOffer(action) {
   } catch (error) {
     yield put(actions.createOfferFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  } finally {
+    CustomEventEmitter(CREATE_OFFER);
   }
 }
 
