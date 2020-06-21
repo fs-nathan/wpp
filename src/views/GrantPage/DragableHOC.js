@@ -12,6 +12,7 @@ function GanttChart({
   minLeft,
   setDataSource,
   setProcessDatasource,
+  timelineColor,
   fetchTimeNotWork,
   girdInstance,
   timeNotWork = [],
@@ -156,29 +157,32 @@ function GanttChart({
       }),
     [dataSource, girdInstance, start, visibleGantt, rowHover]
   );
-  const renderTimeNotWork = useMemo(() => (
-    <div style={{ position: "absolute" }}>
-      <div style={{ position: "relative" }}>
-        {timeNotWork.map((item) => (
-          <div
-            style={{
-              background: "#fafafa",
-              position: "absolute",
-              width: 48,
-              height: dataSource.length * 37,
-              left:
-                new moment(
-                  `${item.date}/${item.month}/${item.year}${
-                  item.hour ? " " + item.hour : ""
-                  }`,
-                  `DD/MM/YYYY${item.hour ? " HH" : ""}`
-                ).diff(start, girdInstance.unit) * 48,
-            }}
-          ></div>
-        ))}
+  const renderTimeNotWork = useMemo(() => {
+    console.log("visibleGantt", timelineColor)
+    return (
+      <div id="asdasdasdasdasdasd" style={{ position: "absolute" }}>
+        <div style={{ position: "relative" }}>
+          {visibleGantt.timeNotWork && timeNotWork.map((item) => (
+            <div
+              style={{
+                background: timelineColor.timeNotWork,
+                position: "absolute",
+                width: 48,
+                height: dataSource.length * 37,
+                left:
+                  new moment(
+                    `${item.date}/${item.month}/${item.year}${
+                    item.hour ? " " + item.hour : ""
+                    }`,
+                    `DD/MM/YYYY${item.hour ? " HH" : ""}`
+                  ).diff(start, girdInstance.unit) * 48,
+              }}
+            ></div>
+          ))}
+        </div>
       </div>
-    </div>
-  ));
+    )
+  }, [visibleGantt, timelineColor, timeNotWork]);
   const widthFromNowLayer =
     new moment(Date.now()).diff(start, girdInstance.unit) + 1;
   const renderMonthHeader = useMemo(
@@ -203,7 +207,6 @@ function GanttChart({
       leftTable,
     ]
   );
-  const offSetLeftGanttContainer = document.getElementById("offset-gantt-container") && document.getElementById("offset-gantt-container").getBoundingClientRect() ? document.getElementById("offset-gantt-container").getBoundingClientRect().left : 0
   return (
     <React.Fragment>
       <div
@@ -223,7 +226,7 @@ function GanttChart({
       >
         <Icon path={mdiDragVerticalVariant} size={1} />
       </div>
-       <div
+      <div
         id="gantt--scroll-top_virtual"
         onScroll={(e) => {
           if (!window.scrollTable && !window.scrollTimeline) {
@@ -311,7 +314,8 @@ function GanttChart({
             if (!e.target.scrollTop) {
               const fetchNewTimeNotWork =
                 Math.floor(e.target.scrollLeft / (700 * 48)) !==
-                timeNotWorkUnit;
+                timeNotWorkUnit && visibleGantt.timeNotWork;
+              console.log('asdasdasdasdasd', visibleGantt.timeNotWork)
               if (fetchNewTimeNotWork) {
                 timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 48));
                 const fromDate = new moment(start).add(
@@ -420,6 +424,7 @@ const mapDispatchToProps = {
 };
 const mapStateToProps = (state) => ({
   showFullChart: state.gantt.showFullChart,
+  timelineColor: state.gantt.timelineColor,
   showHeader: state.gantt.showHeader,
   rowHover: state.gantt.rowHover,
   renderFullDay: state.gantt.renderFullDay,

@@ -917,6 +917,7 @@ class DragSortingTable extends React.Component {
         group: project.color_group_task,
         task: project.color_task,
         duration: project.color_duration_task,
+        timeNotWork: project.color_day_not_work,
       };
       this.props.changeTimelineColor(null, null, ganttColorConfig);
       const ganttVisibleConfig = localStorage.getItem("ganttConfig") ? JSON.parse(localStorage.getItem("ganttConfig")) : {
@@ -929,6 +930,7 @@ class DragSortingTable extends React.Component {
         numberDuration: true,
         numberComplete: true,
         fromNowLayer: true,
+        timeNotWork: true
       };
       this.props.changeVisible(null, null, null, {
         gantt: ganttVisibleConfig,

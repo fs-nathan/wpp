@@ -1,7 +1,9 @@
 import { Checkbox, FormControlLabel, MenuItem, MenuList, Paper } from "@material-ui/core";
+import { changeFlagFetchProjectSchedules } from 'actions/gantt';
 import 'antd/lib/menu/style/index.css';
 import { default as React, useEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
 import CustomModal from "../../components/CustomModalGantt";
 import { apiService } from "../../constants/axiosInstance";
 import CalendarProjectPage from "../../views/CalendarProjectPageClone";
@@ -10,16 +12,20 @@ import "./calendarModal.css";
 const MenuMoreGantt = ({
   changeVisibleExportPdfDrawer,
   scheduleDetailGantt,
+  projectSchedules,
   changeVisibleMenu,
+  changeFlagFetchProjectSchedules
 }) => {
   const [openConfigCalendar, setOpenConfigCalendar] = useState(false);
   const [selectCalendar, setSelectCalendar] = useState([1]);
   const [openModal, setopenModal] = useState(false);
   const [listSchedule, setListSchedule] = useState([]);
+  const [listProjectSchedule, setListProjectSchedule] = useState([]);
   const clickConfigCalendar = () => {
     setOpenConfigCalendar(true);
     changeVisibleMenu(false);
   };
+  const params = useParams()
   const handleChangeCheckbox = (e) => {
     const { value, checked } = e.target;
     if (checked) {
@@ -36,14 +42,34 @@ const MenuMoreGantt = ({
 
   const fetchListSchedule = async () => {
     try {
-      const result = await apiService({
+      const listSchedule = await apiService({
         url: "group-schedule/list-schedule",
-      });
-      setListSchedule(result.data.schedules);
+      })
+      setListSchedule(listSchedule.data.schedules);
     } catch (e) {
       console.log(e);
     }
   };
+  const assignProjectSchedule = async (projectId, scheduleId, check) => {
+    try {
+      const url = check ? 'project/assign-schedules' : 'project/delete-schedules'
+      const result = await apiService({
+        url,
+        method: 'post',
+        data: {
+          schedule_id: scheduleId,
+          project_id: projectId
+        }
+      })
+      console.log(result)
+      changeFlagFetchProjectSchedules(true)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  useEffect(() => {
+    setListProjectSchedule(projectSchedules.map(item => item._id))
+  }, [projectSchedules])
   const renderListCalendarModal = useMemo(
     () =>
       listSchedule.map((item) => (
@@ -54,10 +80,14 @@ const MenuMoreGantt = ({
                 control={
                   <Checkbox
                     color="primary"
-                    checked
+                    defaultChecked={listProjectSchedule.includes(item.id)}
                     disabled={!item.can_delete}
                   />
                 }
+                onClick={e => {
+                  const { projectId } = params
+                  assignProjectSchedule(projectId, item.id, e.target.checked)
+                }}
                 label={item.name}
               />
             </div>
@@ -67,7 +97,7 @@ const MenuMoreGantt = ({
           </td>
         </tr>
       )),
-    [listSchedule]
+    [listSchedule, listProjectSchedule]
   );
   return (
     <React.Fragment>
@@ -136,5 +166,9 @@ const MenuMoreGantt = ({
 
 const mapStateToProps = (state) => ({
   scheduleDetailGantt: state.gantt.scheduleDetailGantt,
+  projectSchedules: state.gantt.projectSchedules,
 });
-export default connect(mapStateToProps)(MenuMoreGantt);
+const mapDispatchToProps = {
+  changeFlagFetchProjectSchedules
+}
+export default connect(mapStateToProps, mapDispatchToProps)(MenuMoreGantt);

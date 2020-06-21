@@ -213,6 +213,15 @@ const CommonConfig = ({
             color={timelineColor.duration}
             setColor={handleChangeColor}
           />
+          <CheckboxColorTimeLine
+            projectInfo={projectInfo}
+            checked={visibleGantt.timeNotWork}
+            changeVisible={changeVisible}
+            type={"timeNotWork"}
+            text="Ngày nghỉ làm"
+            color={timelineColor.timeNotWork}
+            setColor={handleChangeColor}
+          />
           <div className="config--drawer--checkbox-wrapper">
             <Checkbox
               checked={visibleGantt.date}
