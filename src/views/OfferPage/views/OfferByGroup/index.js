@@ -11,7 +11,7 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, SORT_GROUP_OFFER_SUCCESS } from "views/OfferPage/redux/types";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, SORT_GROUP_OFFER_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
 import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
@@ -147,8 +147,10 @@ const OfferByGroup = props => {
         dispatch(loadOfferByGroupID({ id, startDate, endDate }));
       }
       CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+      CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
       return () => {
         CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+        CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
       }
     }
   }, [isMounted, timeRange, id]);
