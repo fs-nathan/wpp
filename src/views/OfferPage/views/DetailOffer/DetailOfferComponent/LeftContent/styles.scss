@@ -70,12 +70,12 @@
           font-size: 0.8rem;
           padding: 5px;
           border-radius: 2px;
+          margin-right: 1em;
         }
 
         &-offerPriorityName {
           @include center-text;
           font-size: 0.8rem;
-          margin-left: 1em;
           padding: 5px;
           border-radius: 2px;
         }
@@ -112,6 +112,7 @@
       line-height: 1.5;
       font-size: 14px;
       color: #000;
+      white-space: pre-wrap;
     }
   }
 

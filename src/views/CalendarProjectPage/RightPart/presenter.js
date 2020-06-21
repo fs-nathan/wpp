@@ -60,6 +60,7 @@ function CalendarProjectRightPartPresenter({
   const [actionFrom, setActionFrom] = React.useState();
   const [actionType, setActionType] = React.useState();
   const [openEdit, setOpenEdit] = React.useState(false);
+  const [groupInfo, setGroupInfo] = React.useState();
 
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
@@ -110,6 +111,10 @@ function CalendarProjectRightPartPresenter({
       setDescription(scheduleDetail.data.description);
     }
   }, [scheduleDetail]);
+
+  React.useEffect(() => {
+    setGroupInfo(groupSchedules.data.find(item => item.id === params.scheduleID));
+  }, [groupSchedules, params.scheduleID]);
 
   function handleChangeWorkingInWeek(value, index) {
     let _workingDaysInWeek = [...workingDayInWeek];
@@ -259,7 +264,6 @@ function CalendarProjectRightPartPresenter({
   }
 
   const refreshAfterUpdateGroupSchedule = () => {
-    console.log(newScheduleDetail.afterUpdateGroupSchedule);
     if (!isNil(newScheduleDetail.afterUpdateGroupSchedule)) {
       let schedule = get(newScheduleDetail, "afterUpdateGroupSchedule");
       setDescription(schedule.description);
@@ -310,7 +314,7 @@ function CalendarProjectRightPartPresenter({
           value={{
             options: {
               title: t('views.calendar_page.right_part.project_detail'),
-              mainAction: havePermission ? {
+              mainAction: get(groupInfo, "can_delete") ? {
                 label: t('views.calendar_page.right_part.delete_calendar'),
                 onClick: () => handleDeleteGroup()
               } : null,
@@ -788,7 +792,7 @@ function CalendarProjectRightPartPresenter({
         open={openEdit}
         setOpen={setOpenEdit}
         isLoading={isLoading}
-        schedule={groupSchedules.data.find(item => item.id === params.scheduleID)}
+        schedule={groupInfo}
         onConfirm={(name, description) => {
           setIsLoading(true);
           handleUpdateGroupSchedule(name, description);

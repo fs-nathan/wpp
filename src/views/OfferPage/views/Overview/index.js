@@ -11,7 +11,7 @@ import { useTimes } from '../../../../components/CustomPopover';
 import { TIME_FILTER_TYPE_OFFER_OVERVIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
-import { listStatusHaveNewOffer, loadSummaryOverview } from "../../redux/actions";
+import { loadSummaryOverview } from "../../redux/actions";
 import { GroupBlock } from "./GroupBlock";
 import { OfferBlock } from "./OfferBlock";
 import { getGroupOffers, getMyOffers, getPriorityOffers, getStatusOffers } from './selector';
@@ -62,7 +62,6 @@ const Overview = () => {
 
   useEffect(() => {
     dispatch(loadSummaryOverview({ timeRange }));
-    dispatch(listStatusHaveNewOffer());
   }, [dispatch, timeRange]);
 
   useEffect(() => {

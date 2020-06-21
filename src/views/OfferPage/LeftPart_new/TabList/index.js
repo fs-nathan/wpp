@@ -9,7 +9,8 @@ const ListPart = ({
   title,
   listMenu,
   setOpenModalOfferByGroup,
-  isOfferGroupManageable
+  isOfferGroupManageable,
+  draggable = false
 }) => {
   return (
     <LeftSetting
@@ -21,6 +22,7 @@ const ListPart = ({
       title={title}
       listMenu={listMenu}
       isOfferGroupManageable={isOfferGroupManageable}
+      draggable={draggable}
     />
   );
 };

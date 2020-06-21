@@ -7,13 +7,14 @@ import clsx from 'clsx';
 import AlertModal from "components/AlertModal";
 import { CustomEventDispose, CustomEventListener } from 'constants/events';
 import lodash, { get, isArray, isEmpty } from 'lodash';
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from 'react-use';
+import { OfferPageContext } from 'views/OfferPage/OfferPageContext';
 import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor, uploadDocumentOffer } from 'views/OfferPage/redux/actions';
-import { DELETE_DOCUMENT_OFFER } from 'views/OfferPage/redux/types';
+import { DELETE_DOCUMENT_OFFER, DELETE_MEMBER_HANDLE_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS } from 'views/OfferPage/redux/types';
 import { listUserOfGroup } from '../../../../../../actions/user/listUserOfGroup';
 import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
 import { allMembersSelector } from '../../../../../../reducers/user/listOfUserGroup/selectors';
@@ -79,7 +80,7 @@ const RenderChipItem = (priority_code, priority_name) => {
   );
 };
 const RenderUpdateOfferDetailDescriptionSectionModal = (
-  openUpdateOfferModal, setOpenUpdateOfferModal, offerId, title, content, priorityCode, offerGroupId
+  openUpdateOfferModal, setOpenUpdateOfferModal, offerId, title, content, priorityCode, offerGroupId, additionQuery
 ) => {
   return (
     <OfferModal
@@ -93,10 +94,11 @@ const RenderUpdateOfferDetailDescriptionSectionModal = (
         priority_code: priorityCode,
         offer_group_id: offerGroupId
       }}
+      additionQuery
     />
   );
 };
-const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, content, title, offer_group_id, can_modify }) => {
+const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, content, title, offer_group_id, can_modify, additionQuery }) => {
   const { t } = useTranslation();
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
 
@@ -109,7 +111,9 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
               {type_name}
             </div>
           }
-          {RenderChipItem(priority_code, priority_name)}
+          {
+            !isEmpty(priority_name) && RenderChipItem(priority_code, priority_name)
+          }
         </div>
         {
           can_modify && (
@@ -131,7 +135,8 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
               title,
               content,
               priority_code,
-              offer_group_id
+              offer_group_id,
+              additionQuery
             )
           )
         }
@@ -149,7 +154,7 @@ const DetailDescription = ({ offer_id, priority_name, priority_code, type_name, 
   );
 };
 
-const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
+const RenderListFile = ({ can_modify, offer_id, documents, bgColor, additionQuery }) => {
   const { t } = useTranslation()
   const [deleteDocumentModal, setDeleteDocumentModal] = useState(false);
   const isMounted = useMountedState();
@@ -179,7 +184,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
 
   const confirmDeleteDocument = useCallback(() => {
     setLoading(true);
-    dispatch(deleteDocumentOffer({ offer_id, file_id: selectedItem.file_id }))
+    dispatch(deleteDocumentOffer({ offer_id, file_id: selectedItem.file_id, additionQuery }))
   }, [dispatch, offer_id, selectedItem.file_id]);
 
   const handleUploadSelectedFilesFromPC = async (e) => {
@@ -187,7 +192,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
     const formData = new FormData();
     formData.append("offer_id", offer_id);
     [...files].forEach(file => formData.append("file", file, file.name));
-    dispatch(uploadDocumentOffer({ data: formData }));
+    dispatch(uploadDocumentOffer({ data: formData, additionQuery }));
   }
 
   const handleSelectedFilesFromLibrary = (selectedFiles) => {
@@ -195,7 +200,7 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
       const formData = new FormData();
       formData.append("offer_id", offer_id);
       selectedFiles.forEach((file, index) => formData.append(`file_ids[${index}]`, file.id));
-      dispatch(uploadDocumentOffer({ data: formData }))
+      dispatch(uploadDocumentOffer({ data: formData, additionQuery }))
     }
   }
 
@@ -280,13 +285,14 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor }) => {
   );
 };
 
-const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers, addedHandlers, addableHandlers, bgColor }) => {
+const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers, addedHandlers, addableHandlers, bgColor, additionQuery, currentUserId }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [openAddHandlerModal, setOpenAddHandlerModal] = useState(false);
   const [newHandlerIndexes, setNewHandlerIndexes] = useState([]);
   const [alerModal, setAlertModal] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
+  const { setDetailOfferModalOpen } = useContext(OfferPageContext);
 
   const disabledMemberIndexes = [];
   allMembers.forEach((member, idx) => {
@@ -306,13 +312,25 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
     });
 
     if (memberIds.length > 0) {
-      dispatch(addMemberHandle({ offer_id, member_id: memberIds }));
+      dispatch(addMemberHandle({ offer_id, member_id: memberIds, additionQuery }));
     }
   }
 
   const onDeleteHandler = ({ offer_id, member_id }) => {
-    dispatch(deleteMemberHandle({ offer_id, member_id }))
+    dispatch(deleteMemberHandle({ offer_id, member_id, additionQuery }));
   }
+
+  useEffect(() => {
+    const afterRemoveResponsibility = () => {
+      setDetailOfferModalOpen(false);
+    }
+    CustomEventListener(DELETE_MEMBER_HANDLE_SUCCESS, afterRemoveResponsibility);
+    CustomEventListener(DELETE_MEMBER_MONITOR_SUCCESS, afterRemoveResponsibility);
+    return () => {
+      CustomEventDispose(DELETE_MEMBER_HANDLE_SUCCESS, afterRemoveResponsibility);
+      CustomEventDispose(DELETE_MEMBER_MONITOR_SUCCESS, afterRemoveResponsibility);
+    }
+  }, [dispatch]);
 
   return (
     <>
@@ -358,7 +376,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
                             setAlertModal(true);
                           }}
                         >
-                          <DeleteIcon fontSize="small" />
+                          <DeleteIcon fontSize="small" htmlColor={"#b9b9b9"} />
                         </IconButton>
                       )
                     }
@@ -388,7 +406,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   );
 };
 
-const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers, addedMonitors, addableMonitors, bgColor }) => {
+const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers, addedMonitors, addableMonitors, bgColor, additionQuery }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [openAddMonitorModal, setOpenAddMonitorModal] = useState(false);
@@ -413,11 +431,11 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
     })
 
     if (memberIds.length > 0) {
-      dispatch(addMemberMonitor({ offer_id, member_id: memberIds }));
+      dispatch(addMemberMonitor({ offer_id, member_id: memberIds, additionQuery }));
     }
   }
   const onDeleteMonitor = ({ offer_id, member_id }) => {
-    dispatch(deleteMemberMonitor({ offer_id, member_id }))
+    dispatch(deleteMemberMonitor({ offer_id, member_id, additionQuery }))
   }
   return (
     <Grid container>
@@ -459,7 +477,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
                           setAlertModal(true);
                         }}
                       >
-                        <DeleteIcon fontSize="small" />
+                        <DeleteIcon fontSize="small" htmlColor={"#b9b9b9"} />
                       </IconButton>
                     )
                   }
@@ -505,7 +523,8 @@ export default function LeftContent({
   user_create_id,
   members_monitor,
   offer_group_id,
-  id
+  id,
+  additionQuery
 }) {
   const dispatch = useDispatch();
   const bgColor = useSelector(state => bgColorSelector(state));
@@ -539,12 +558,14 @@ export default function LeftContent({
             title={title}
             offer_group_id={offer_group_id}
             can_modify={can_modify}
+            additionQuery={additionQuery}
           />
           <RenderListFile
             can_modify={can_modify}
             offer_id={id}
             documents={documents}
             bgColor={bgColor}
+            additionQuery={additionQuery}
           />
           <Handler
             can_update_member_handle={can_update_member_handle}
@@ -554,6 +575,8 @@ export default function LeftContent({
             addedHandlers={members_can_approve}
             addableHandlers={addableMembers}
             bgColor={bgColor}
+            additionQuery={additionQuery}
+            currentUserId={currentUserId}
           />
           <Monitor
             can_update_member_monitor={can_update_member_monitor}
@@ -563,6 +586,7 @@ export default function LeftContent({
             addedMonitors={members_monitor}
             addableMonitors={addableMembers}
             bgColor={bgColor}
+            additionQuery={additionQuery}
           />
         </div>
       </Scrollbars>

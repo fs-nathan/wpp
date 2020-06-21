@@ -9,15 +9,6 @@ import Popover from "./popover";
 const selectSummaryGroup = state => state.offerPage[SUMMARY_BY_GROUP];
 const selectOffer = state => state.offerPage[OFFER_BY_GROUP];
 const selectStatusCreateGroupOffer = state => state.offerPage[CREATE_GROUP_OFFER]
-const rightLabel = () => {
-  return (
-    <>
-      <div className="right-setting-icon">
-        <span>N</span>
-      </div>
-    </>
-  );
-};
 export const getOffer = createSelector(selectOffer, offer => offer.offers);
 export const getFirstSummaryGroup = createSelector(
   selectSummaryGroup,
@@ -78,8 +69,6 @@ export const getSummaryByGroupByKeyword = (keyword, isOfferGroupManageable, t) =
     url: Routes.OFFERBYGROUP + `/${x.id}`,
     color: "#7d99a6",
     icon: mdiEmailCheck,
-    rightLabel: x.have_new_offer && rightLabel,
-    rightIconVisiableAlways: false,
     rightIcon: (() => isOfferGroupManageable && (
       <>
         <Popover
@@ -101,3 +90,10 @@ export const getStatusCreateGroupOffer = createSelector(selectStatusCreateGroupO
   }
   return status
 })
+
+export const getGroupOfferList = createSelector(
+  selectSummaryGroup,
+  group => {
+    return group.offers_group;
+  }
+);

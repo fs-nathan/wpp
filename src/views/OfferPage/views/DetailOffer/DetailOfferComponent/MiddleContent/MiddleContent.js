@@ -1,16 +1,12 @@
-import { Avatar, Button, Grid, IconButton } from "@material-ui/core";
-import DeleteIcon from '@material-ui/icons/Delete';
-import AlertModal from "components/AlertModal";
+import { Avatar, Button, Grid } from "@material-ui/core";
 import { isEmpty } from "helpers/utils/isEmpty";
 import { get, size } from "lodash";
 import React, { useMemo, useState } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useMountedState } from "react-use";
+import { useSelector } from 'react-redux';
 import ApproveOfferDialog from "views/JobDetailPage/TabPart/OfferTab/TabBody/ApproveOfferDialog";
 import { action } from "views/OfferPage/contants/attrs";
-import { deleteApproval } from "views/OfferPage/redux/actions";
 import ApprovalConditionModal from "./approvalConditionModal";
 import { getApprovalConditionEditingTitle, getCreateApprovalBtnTitle } from './i18nSelectors';
 import './styles.scss';
@@ -33,15 +29,12 @@ const MiddleContent = ({
   condition_accept,
   members_can_approve,
   user_create_avatar,
+  additionQuery
 }) => {
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
   const [openUpdateOfferModal, setOpenUpdateOfferModal] = useState(false);
   const currentUserId = useSelector(state => state.system.profile.id);
-  const [selectedMemberID, setSelectedMemeberID] = useState(null);
-  const [alerModal, setAlertModal] = useState(false);
-  const dispatch = useDispatch();
-  const isMounted = useMountedState();
 
   const isCurrentUserAHandler = useMemo(() => {
     return members_can_approve
@@ -52,9 +45,9 @@ const MiddleContent = ({
       && members_approved.findIndex(member => member.id === currentUserId) !== -1;
   }, [currentUserId, members_approved]);
 
-  function handleDeleteApproval() {
+  /*function handleDeleteApproval() {
     dispatch(deleteApproval({ offer_id: id, member_id: selectedMemberID }));
-  }
+  }*/
 
   const updateOfferApprovalConditionModal = () => {
     return (
@@ -69,6 +62,7 @@ const MiddleContent = ({
           handlers: members_can_approve,
           approvers: condition_accept.member_accept,
         }}
+        additionQuery={additionQuery}
       />
     );
   }
@@ -90,6 +84,7 @@ const MiddleContent = ({
               date_create: hour_label + " " + date_label,
               action: action.HANDLE_OFFER
             }}
+            additionQuery={additionQuery}
           />
           {
             (isCurrentUserAHandler && !isCurrentUserAlreadyApproved) && (
@@ -196,14 +191,14 @@ const MiddleContent = ({
                   src={get(member, "avatar")}
                 />
               </Grid>
-              <Grid items xs={6} direction="column">
+              <Grid items xs={7} direction="column">
                 <div className="offerDetail-approvalResult-member-name">{get(member, "name")}</div>
                 <div className="offerDetail-approvalResult-member-position">{get(member, 'position')} {get(member, 'position') && <span> - </span>} {get(member, 'room')}</div>
                 <div className="offerDetail-approvalResult-member-date">
                   {t("VIEW_OFFER_LABEL_APPROVED_AT", { time: member.hour_label, date: member.date_label })}
                 </div>
               </Grid>
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <Grid container direction="row" alignItems="center">
                   {
                     get(member, "status") === 0 &&
@@ -217,29 +212,10 @@ const MiddleContent = ({
                       {t("VIEW_OFFER_LABEL_REJECTED")}
                     </div>
                   }
-                  {
-                    get(member, "can_delete") && (
-                      <IconButton
-                        className="offerDetail-monitoringPerson-deleteBtn"
-                        onClick={() => {
-                          setSelectedMemeberID(get(member, "id"));
-                          setAlertModal(true);
-                        }}
-                      >
-                        <DeleteIcon />
-                      </IconButton>
-                    )
-                  }
                 </Grid>
               </Grid>
             </Grid>
           )}
-          <AlertModal
-            open={alerModal}
-            setOpen={setAlertModal}
-            onConfirm={() => handleDeleteApproval()}
-            content={t("VIEW_OFFER_TEXT_ALERT_DELETE_APPROVAL")}
-          />
         </div>
       </Scrollbars>
     </div>

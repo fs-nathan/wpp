@@ -21,10 +21,10 @@ function RightContent(props) {
   const bgColor = useSelector(state => bgColorSelector(state));
   const commentList = useSelector(state => selectCommentListOfferDetail(state));
 
-  const { offerId } = props;
+  const { offerId, additionQuery } = props;
   useEffect(() => {
     if (!isNil(offerId)) {
-      dispatch(getCommentListOfferDetail({ offerId }))
+      dispatch(getCommentListOfferDetail({ offerId, additionQuery: additionQuery }))
     }
   }, [offerId]);
 
@@ -63,10 +63,10 @@ function RightContent(props) {
     const onClick = () => {
       switch (sendMode) {
         case SEND_MODE.CREATE:
-          dispatch(postCommentOfferDetail({ offerId, content: contentToSubmit }));
+          dispatch(postCommentOfferDetail({ offerId, content: contentToSubmit, additionQuery: additionQuery }));
           break;
         case SEND_MODE.UPDATE:
-          dispatch(updateCommentOfferDetail({ commentId: commentToUpdateId, content: contentToSubmit }))
+          dispatch(updateCommentOfferDetail({ commentId: commentToUpdateId, content: contentToSubmit, additionQuery: additionQuery }))
           break;
       }
       // Clear text box after creating or updating comments
@@ -137,7 +137,7 @@ function RightContent(props) {
             // Hide popup menu
             setAnchorEl(null);
             // Remove comment
-            dispatch(removeCommentOfferDetail({ commentId: id }));
+            dispatch(removeCommentOfferDetail({ commentId: id, additionQuery: additionQuery }));
           })}
         </Popover>
       </div>

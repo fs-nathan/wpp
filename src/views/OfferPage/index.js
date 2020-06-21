@@ -1,7 +1,7 @@
 import { mdiEmailCheck, mdiEmailVariant, mdiViewDashboard } from "@mdi/js";
 import AlertModal from "components/AlertModal";
 import { CustomEventDispose, CustomEventListener } from "constants/events";
-import { get, isNil } from "lodash";
+import { isNil } from "lodash";
 import React, { Suspense, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +18,7 @@ import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
 import { OfferPageContext } from "./OfferPageContext";
 import { deleteOffer, loadDetailOffer } from './redux/actions';
-import { DELETE_APPROVAL_SUCCESS, HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER } from "./redux/types";
+import { DELETE_APPROVAL_SUCCESS, HANDLE_OFFER_OFFERPAGE } from "./redux/types";
 import routes from "./routes";
 import './styles.scss';
 import { getDeleteOfferConfirmModalMsg } from './utils/i18nSelectors';
@@ -29,16 +29,6 @@ import { getDetailOffer, getDetailOfferLoadingState } from './views/DetailOffer/
 import { getDepartmentGroupByKeyword } from "./views/OfferByDepartment/selector";
 import { getSummaryByGroupByKeyword } from "./views/OfferByGroup/selector";
 import { getSummaryByProjectAndKeyword } from "./views/OfferByProject/selector";
-const rightIcon = () => {
-  return (
-    <>
-      <div className="right-setting-icon icon-new-label">
-        <span>N</span>
-      </div>
-    </>
-  );
-};
-
 const { Provider } = OfferPageContext;
 
 function OfferPage() {
@@ -51,8 +41,8 @@ function OfferPage() {
   const history = useHistory();
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [timeType, setTimeType] = React.useState(1);
-  const [statusNewOffer, setStatusNewOffer] = useState(false);
   const [scrollBarPosition, setScrollBarPosition] = useState(0);
+  const [onDraggEnd, handleOnDraggEnd] = useState({ source: null, distination: null, id: null });
 
   const times = useTimes();
   const [timeRange, setTimeRange] = React.useState(() => {
@@ -88,8 +78,6 @@ function OfferPage() {
       url: Routes.RECENTLY,
       color: "#7d99a6",
       icon: mdiEmailCheck,
-      rightIcon: statusNewOffer && rightIcon,
-      rightIconVisiableAlways: statusNewOffer
     },
     {
       title: t("VIEW_OFFER_LABEL_GROUP_TITLE"),
@@ -262,9 +250,10 @@ function OfferPage() {
       }
       if (checkUserIsInOfferGroupRoutes(window.location.pathname)) {
         return (
-          <TabList filter={
-            filter
-          }
+          <TabList
+            filter={
+              filter
+            }
             setOpenModalOfferByGroup={
               setOpenModalOfferByGroup
             }
@@ -282,6 +271,7 @@ function OfferPage() {
               listMenu: getSummaryByGroupByKeyword(filterTab, isOfferGroupManageable, t)(state)
             }
             }
+            draggable={true}
           />
         );
       }
@@ -290,12 +280,6 @@ function OfferPage() {
       />;
     }
   }, [isMounted, title, listMenu, t, filterTab, state, isOfferGroupManageable]);
-
-  useEffect(() => {
-    if (isMounted) {
-      setStatusNewOffer(get(state.offerPage[LIST_STATUS_HAVE_NEW_OFFER], 'haveNewOffers', false));
-    }
-  }, [dispatch, isMounted, state]);
 
   // Get offer details from redux store to show on offer detail modal
   const detailOffer = useSelector(state => getDetailOffer(state));
@@ -329,7 +313,15 @@ function OfferPage() {
 
   return (
     <TwoColumnsLayout
-      leftRenders={[() => renderTabList]}
+      leftRenders={[() => (
+        <Provider
+          value={{
+            handleOnDraggEnd, onDraggEnd
+          }}
+        >
+          {renderTabList}
+        </Provider>
+      )]}
       rightRender={({ expand, handleExpand, handleSubSlide }) => (
         <Provider
           value={{
@@ -346,7 +338,8 @@ function OfferPage() {
             keyword, setkeyword,
             setTitle, setDetailOfferModalOpen,
             setCurrentDetailOfferId, setShowDeleteOfferConfirmModal,
-            scrollBarPosition, setScrollBarPosition
+            scrollBarPosition, setScrollBarPosition,
+            handleOnDraggEnd, onDraggEnd, setFilterTab
           }
           }>
           <div>
