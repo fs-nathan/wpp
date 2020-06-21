@@ -67,7 +67,7 @@ const ExportPDF = ({
     changeRenderFullDay(true);
     if (!showFullTime) {
       changeFilterExportPdf(startTime, endTime);
-    }
+    } 
     const container = document.getElementById('printContent')
     const stringAppend = previewContent.reduce((result, value, index) =>{
       const temp = [...result]
