@@ -55,6 +55,7 @@ const RenderHeader = React.memo(
   }
 );
 
+
 const RenderDrawers = React.memo(
   (props) => (
     <React.Fragment>
@@ -1409,9 +1410,9 @@ class DragSortingTable extends React.Component {
           projectGroupId={this.props.match.params.projectId}
           setOpen={this.handleOpenCreateProjectModal}
         />
-        <div
-          id="printContent"
+       <div
           className="gantt__container"
+          id="printContent"
           style={{
             width: widthPdf,
             height: `${this.props.showHeader ? "calc(100% - 59px)" : "100%"}`,
@@ -1517,7 +1518,7 @@ class DragSortingTable extends React.Component {
               <div style={{ height: this.state.data.length * 37 }}></div>
             </div>
           </div> */}
-        </div>
+          </div>
       </React.Fragment>
     );
   }

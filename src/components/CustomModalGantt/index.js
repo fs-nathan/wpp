@@ -21,12 +21,12 @@ import ColorTypo from "../ColorTypo";
 import LoadingOverlay from "../LoadingOverlay";
 import "./style.scss";
 
-const StyledScrollbars = ({ className = "", height, ...props }) => (
+const StyledScrollbars = ({ className = "", height,  isScrollContainer,...props }) => isScrollContainer ?(
   <Scrollbars
     className={`comp_CustomModal___scrollbar-main-${height} ${className}`}
     {...props}
   />
-);
+) : <>{props.children}</>;
 
 const StyledScrollbarsSide = ({ className = "", height, ...props }) => (
   <Scrollbars
@@ -49,9 +49,9 @@ const StyledDialogTitle = ({ className = "", ...props }) => (
   />
 );
 
-const StyledDialogActions = ({ className = "", ...props }) => (
+const StyledDialogActions  = ({ className = "",isScrollContainer, ...props }) => (
   <DialogActions
-    className={`comp_CustomModal___dialog-actions ${className}`}
+    className={`comp_CustomModal___dialog-actions ${!isScrollContainer?  'gantt--calender-modal__button-container' : ''} ${className}`}
     {...props}
   />
 );
@@ -184,6 +184,7 @@ function CustomModal({
   height = "medium",
   className = "",
   manualClose = false,
+  isScrollContainer = true
 }) {
   const colors = useSelector((state) => state.setting.colors);
 
@@ -230,7 +231,7 @@ function CustomModal({
         </IconButton>
       </StyledDialogTitle>
       <LoadingOverlay active={loading} spinner fadeSpeed={100}>
-        {columns === 1 && <OneColumn children={children} height={height} />}
+        {columns === 1 && <OneColumn isScrollContainer={isScrollContainer} children={children} height={height} />}
         {columns === 2 && (
           <TwoColumns
             maxWidth={maxWidth}
@@ -240,7 +241,7 @@ function CustomModal({
           />
         )}
       </LoadingOverlay>
-      <StyledDialogActions>
+      <StyledDialogActions isScrollContainer={isScrollContainer}>
         {cancleRender !== null && (
           <ActionsCancleButton onClick={() => handleCancle()}>
             {isFunction(cancleRender)

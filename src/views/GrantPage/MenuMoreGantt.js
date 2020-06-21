@@ -141,6 +141,7 @@ const MenuMoreGantt = ({
         style={{}}
         height="tall"
         confirmRender={() => null}
+        isScrollContainer = {false}
       >
         <CalendarProjectPage
           setopenModal={setopenModal}

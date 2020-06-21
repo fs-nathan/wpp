@@ -79,6 +79,8 @@ body {
   font-size: 14px;
   color: #333;
   font-weight: 500;
+  margin-top: 0;
+  text-transform: lowercase;
 }
 
 .config--drawer--section:first-letter{
@@ -685,6 +687,9 @@ div.checkbox-colortag--drawer {
   border-right: 1px solid #ededed;
   transform: translate(-50%, -50%);
 }
+.icon-fromNow-header svg {
+  fill: #ccc !important;
+}
 .icon-invisible-header svg {
   fill: rgb(199, 199, 199) !important;
 }
@@ -1131,4 +1136,31 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 }
 .duration-text-gantt__group_total{
   top: -2px;
+}
+
+.gantt--calender-modal__button-container{
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+.ant-table-cell{
+  background: #fff;
+}
+
+#stringAppendLast{
+  z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    position: absolute;
+    top: 0px;
+}
+
+#stringAppendFirst{
+  z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: fit-content;
+    position: absolute;
+    bottom: -50px;
 }

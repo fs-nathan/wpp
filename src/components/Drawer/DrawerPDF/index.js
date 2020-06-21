@@ -68,14 +68,33 @@ const ExportPDF = ({
     if (!showFullTime) {
       changeFilterExportPdf(startTime, endTime);
     }
+    const container = document.getElementById('printContent')
+    const stringAppend = previewContent.reduce((result, value, index) =>{
+      const temp = [...result]
+      temp[index < 3 ? 0 : 1] = temp[index < 3 ? 0 : 1] + `<p>${value}</p>`
+      return temp
+    },['', ''])
+    const bodyTable = document.getElementsByClassName("ant-table-body")[0]
+    const timeLineBody = document.getElementsByClassName("gantt--timeline--container__relative")[0]
+    timeLineBody.style.overflowY = 'unset'
+    bodyTable.style.overflow = 'unset'
+    container.style.paddingBottom = '50px'
+    container.style.paddingTop = '50px'
+    container.style.overflow = 'unset'
+    const stringAppendFirst = `<div id="stringAppendFirst" style="display:flex">${stringAppend[0]}</div>`
+    const stringAppendLast = `<div id="stringAppendLast" style="display: flex">${stringAppend[1]}</div>`
+    container.insertAdjacentHTML('beforeend', stringAppendLast)
+    container.insertAdjacentHTML('afterbegin', stringAppendFirst)
     setShowModalPreview(true);
     setIsLoading(true)
+
     setTimeout(
       () => window.getDataUrlPdf(kendo, "previewPdf.pdf", callBackPreview),
       100
     );
   };
   const handleOnClickOk = () => {
+    
     changePreviewContent(contentPreview);
     window.ganttConvertToPdfFullWidth(kendo, "previewPdf.pdf");
   };
