@@ -1,5 +1,7 @@
-import { createSelector } from 'reselect';
 import { findTask } from 'helpers/jobDetail/arrayHelper';
+import { get } from 'lodash';
+import { createSelector } from 'reselect';
+import { OFFER_GET_MEMBER_TO_ADD } from 'views/OfferPage/redux/types';
 
 const taskDetail = state => state.taskDetail.detailTask.taskDetails;
 const commonTask = state => state.taskDetail.commonTaskDetail;
@@ -52,3 +54,21 @@ export const makeSelectIsCanView = (type, task_id) => createSelector(
     return repTask ? repTask.new_chat > 0 : false;
   }
 )
+
+const listUserOfGroupRoom = state => state.offerPage[OFFER_GET_MEMBER_TO_ADD].members;
+export const allMembersSelector = createSelector(
+  [listUserOfGroupRoom],
+  (listUserOfGroupRoom) => {
+    let listMember = [];
+    listUserOfGroupRoom.map((room) => {
+      let users = get(room, 'users');
+      users.map((user) => {
+        user.room = get(room, 'name');
+        listMember.push(user);
+      })
+    })
+    return {
+      members: listMember
+    }
+  }
+);
