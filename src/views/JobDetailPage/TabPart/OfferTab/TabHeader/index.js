@@ -29,6 +29,7 @@ function TabHeader(props) {
         isOpen={open}
         setOpen={setOpen}
         actionCreateOffer={createOffer()}
+        additionQuery={`task_id=${taskId}`}
         {...props} />
     </div>
   );
