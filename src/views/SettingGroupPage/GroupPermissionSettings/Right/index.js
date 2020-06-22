@@ -172,61 +172,63 @@ const ColumnRight = () => {
   } = useContext(GroupPermissionSettingsCotnext);
   return (
     <div className="comp_rightColumn">
-      <div className="comp_rightColumn_content">
-        <Stack>
-          <b className="comp_QuickViewFilter__title">
-            {t("Module được gán nhóm quyền")}
-          </b>
-          <Box>
-            {permissionModules
-              .filter(({ value }) => "" + groupModule === "" + value)
-              .map(({ name, value }) => (
-                <Box fontSize="15px" key={value}>
-                  {name}
-                </Box>
-              ))}
-          </Box>
-          <Alert severity="info">
-            <div>
-              {t(
-                "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên"
-              )}
-            </div>
-            <a
-              target="_blank"
-              className="u-colorBlue text-bold cursor-pointer"
-              href={detail && detail.url_view_more}
-            >
-              <strong>{t("Tìm hiểu thêm")}</strong>
-            </a>
-          </Alert>
-          <Divider />
-          <ListItemLayout
-            title={t("Thành viên được gán nhóm quyền")}
-          ></ListItemLayout>
+      <TasksScrollbar>
+        <div className="comp_rightColumn_content">
           <Stack>
-            {members_assigned.map(
-              ({ name, members = emptyArray, icon } = {}, i) => (
-                <Stack key={i} small>
-                  <b style={{ fontSize: "15px", color: "#8d8d8d" }}>
-                    {name} ({members.length})
-                  </b>
-                  {members.map(({ avatar, id, name, position } = {}) => {
-                    return (
-                      <ListItemLayout
-                        key={id}
-                        left={<Avatar src={avatar}></Avatar>}
-                        title={name}
-                        subTitle={position}
-                      />
-                    );
-                  })}
-                </Stack>
-              )
-            )}
+            <b className="comp_QuickViewFilter__title">
+              {t("Module được gán nhóm quyền")}
+            </b>
+            <Box>
+              {permissionModules
+                .filter(({ value }) => "" + groupModule === "" + value)
+                .map(({ name, value }) => (
+                  <Box fontSize="15px" key={value}>
+                    {name}
+                  </Box>
+                ))}
+            </Box>
+            <Alert severity="info">
+              <div>
+                {t(
+                  "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên"
+                )}
+              </div>
+              <a
+                target="_blank"
+                className="u-colorBlue text-bold cursor-pointer"
+                href={detail && detail.url_view_more}
+              >
+                <strong>{t("Tìm hiểu thêm")}</strong>
+              </a>
+            </Alert>
+            <Divider />
+            <ListItemLayout
+              title={t("Thành viên được gán nhóm quyền")}
+            ></ListItemLayout>
+            <Stack>
+              {members_assigned.map(
+                ({ name, members = emptyArray, icon } = {}, i) => (
+                  <Stack key={i} small>
+                    <b style={{ fontSize: "15px", color: "#8d8d8d" }}>
+                      {name} ({members.length})
+                    </b>
+                    {members.map(({ avatar, id, name, position } = {}) => {
+                      return (
+                        <ListItemLayout
+                          key={id}
+                          left={<Avatar src={avatar}></Avatar>}
+                          title={name}
+                          subTitle={position}
+                        />
+                      );
+                    })}
+                  </Stack>
+                )
+              )}
+            </Stack>
           </Stack>
-        </Stack>
-      </div>
+        </div>
+      </TasksScrollbar>
     </div>
   );
 };

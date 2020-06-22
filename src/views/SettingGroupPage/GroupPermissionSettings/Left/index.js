@@ -136,7 +136,9 @@ function Left({
                   return (
                     <StyledListItem
                       className={
-                        select && item && select.id === item.id ? "active" : ""
+                        select && item && select.id === item.id
+                          ? "active onHover"
+                          : "onHover"
                       }
                       key={id}
                       onClick={() => {
@@ -187,7 +189,7 @@ function Left({
                               <Icon
                                 path={mdiDotsVertical}
                                 size={1}
-                                color="rgba(0, 0, 0, 0.7)"
+                                color="#8d8d8d"
                               />
                             </IconButton>
                           ) : (
@@ -211,7 +213,7 @@ function Left({
                               <Icon
                                 path={mdiLockOutline}
                                 size={1}
-                                color="rgba(0, 0, 0, 0.7)"
+                                color="#8d8d8d"
                               />
                             </IconButton>
                           )
