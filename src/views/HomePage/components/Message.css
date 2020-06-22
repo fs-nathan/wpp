@@ -19,6 +19,7 @@
   display: inline-block;
 }
 .comp_Message__sticker {
+  width: 100%;
   margin-top: 8px;
   margin-bottom: 4px;
   max-width: 400px;
@@ -30,6 +31,7 @@
 }
 .comp_Message__sticker img {
   width: 100%;
+  max-width: 200px;
 }
 .comp_Message__reply {
   color: #3f51b5;

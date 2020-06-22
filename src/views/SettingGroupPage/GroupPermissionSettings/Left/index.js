@@ -4,6 +4,7 @@ import {
   mdiChevronLeft,
   mdiDotsVertical,
   mdiDragVertical,
+  mdiLockOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { StyledList, StyledListItem } from "components/CustomList";
@@ -165,8 +166,10 @@ function Left({
                           number: total_of_member_assigned,
                         })}
                         actions={
-                          can_modify && (
+                          can_modify ? (
                             <IconButton
+                              title={t("thêm")}
+                              className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuAnchor(
@@ -183,6 +186,30 @@ function Left({
                             >
                               <Icon
                                 path={mdiDotsVertical}
+                                size={1}
+                                color="rgba(0, 0, 0, 0.7)"
+                              />
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              title={t("Không sửa, xóa")}
+                              className="onHover__show"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMenuAnchor(
+                                  <GroupSettingMenu
+                                    item={item}
+                                    menuAnchor={e.currentTarget}
+                                    setMenuAnchor={setMenuAnchor}
+                                  />
+                                );
+                              }}
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <Icon
+                                path={mdiLockOutline}
                                 size={1}
                                 color="rgba(0, 0, 0, 0.7)"
                               />
@@ -250,6 +277,7 @@ function Left({
                           })}
                           actions={
                             <IconButton
+                              title={t("thêm")}
                               className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();
