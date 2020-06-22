@@ -18,7 +18,7 @@ export const initialState = {
   uploadingPercent: {},
   isMore: false,
   isLoading: false,
-  isLoadingSearch: false,
+  isShowBackChat: false,
   isSending: false,
   isFails: false,
   isLoadingForward: false,
@@ -81,13 +81,13 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.members = action.payload;
       break;
     case actionTypes.LOAD_CHAT: {
-      const { chat_id, last_id, isMore, content } = action;
+      const { chat_id, last_id, isMore } = action;
       draft.isLoading = true;
       draft.focusId = chat_id;
       draft.focusTopId = last_id;
       draft.chats.last_id = last_id || null;
-      if (content) draft.isLoadingSearch = true;
-      else draft.isLoadingSearch = !!chat_id;
+      if (chat_id) draft.isShowBackChat = true;
+      else if (!isMore) draft.isShowBackChat = false;
       if (!chat_id && !last_id && !isMore) {
         draft.chats.data = [];
       }
@@ -187,7 +187,7 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.SEARCH_CHAT: {
       const { key } = action;
       draft.searchChatKey = key;
-      if (!key) draft.isLoadingSearch = false;
+      if (!key) draft.isShowBackChat = false;
       break;
     }
     case actionTypes.ON_UPLOADING: {

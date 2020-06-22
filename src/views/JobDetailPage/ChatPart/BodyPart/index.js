@@ -28,7 +28,7 @@ const BodyPart = props => {
   const chats = useSelector(state => state.chat.chats);
   const isMore = useSelector(state => state.chat.isMore);
   const isLoading = useSelector(state => state.chat.isLoading);
-  const isLoadingSearch = useSelector(state => state.chat.isLoadingSearch);
+  const isShowBackChat = useSelector(state => state.chat.isShowBackChat);
   const userId = useSelector(state => state.system.profile.id);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -53,6 +53,7 @@ const BodyPart = props => {
   const plusMember = viewedChatMembers.length - imgNum;
 
   useEffect(() => {
+    if (isLoading) return;
     let rqId;
     if (focusId) {
       // console.log('focusId', focusId)
@@ -354,7 +355,7 @@ const BodyPart = props => {
           <Icon path={mdiMenuDown} size={1.5} ></Icon>
         </IconButton>
       }
-      {(searchChatKey && isLoadingSearch) &&
+      {(isShowBackChat) &&
         <IconButton className="bodyChat--buttonToBot bodyChat--buttonBack" onClick={onClickBack}>
           <Icon path={mdiClose} size={1.5} ></Icon>
         </IconButton>

@@ -12,8 +12,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import './styles.scss';
 // Fake data
-const tabs = ['Chat', 'Table', 'Gantt'];
-const tabSelected = tabs[0];
+const tabs = ['Table', 'Gantt', 'Chat',];
+const tabSelected = tabs[2];
 const images = [fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar];
 
 // Some override style of google material components
