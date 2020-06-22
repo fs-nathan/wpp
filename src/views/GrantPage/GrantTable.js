@@ -61,7 +61,7 @@ const RenderDrawers = React.memo(
     <React.Fragment>
       <ConfigGanttDrawer height={props.height} />
       <SubTaskDrawer height={props.height} />
-      <ExportPDFDrawer height={props.height} />
+      <ExportPDFDrawer dataSource={props.dataSource} height={props.height} />
     </React.Fragment>
   ),
   (prevProps, nextProps) => {
@@ -1379,7 +1379,7 @@ class DragSortingTable extends React.Component {
     colShow = colShow.filter((col) => visibleTable[col.dataIndex]);
     const { startTimeProject, endTimeProject } = this.state;
     const widthPdf = this.props.renderFullDay
-      ? (endTimeProject.diff(startTimeProject, girdInstance.unit) + 1) * 48 + 1000
+      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 48 + 800
       : "auto";
     if (this.state.isLoading) return <LoadingBox />;
     return (
@@ -1410,7 +1410,7 @@ class DragSortingTable extends React.Component {
           projectGroupId={this.props.match.params.projectId}
           setOpen={this.handleOpenCreateProjectModal}
         />
-       <div
+        <div
           className="gantt__container"
           id="printContent"
           style={{
@@ -1418,7 +1418,7 @@ class DragSortingTable extends React.Component {
             height: `${this.props.showHeader ? "calc(100% - 59px)" : "100%"}`,
           }}
         >
-          <RenderDrawers height={this.state.height} />
+          <RenderDrawers dataSource={this.state.data} height={this.state.height} />
           {this.state.quickViewId && <RenderQuickViewTaskDetailDrawer
             showHeader={this.props.showHeader}
             onClose={() =>
@@ -1518,7 +1518,8 @@ class DragSortingTable extends React.Component {
               <div style={{ height: this.state.data.length * 37 }}></div>
             </div>
           </div> */}
-          </div>
+          <div>asdasdasdsa</div>
+        </div>
       </React.Fragment>
     );
   }

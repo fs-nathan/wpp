@@ -374,7 +374,7 @@ const TimeLine = ({
               ref={refProcess}
             >
               <div className={`duration-text-gantt ${isTotalDuration || isGroupTask ? 'duration-text-gantt__group_total' : ''}`}>
-                {visibleGantt.numberDuration && Math.floor((widthProcess)) + "%"}
+                {visibleGantt.numberDuration && (Math.floor((widthProcess)) === 0) ? '' : Math.floor((widthProcess)) + "%"}
               </div>
             </div>
           </ResizableBox>

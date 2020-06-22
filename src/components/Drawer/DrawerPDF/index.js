@@ -25,6 +25,7 @@ const StyledScrollbarsSide = ({ className = "", height, ...props }) => (
 const ExportPDF = ({
   height,
   exportPdfDrawerVisible,
+  dataSource,
   changeVisibleExportPdfDrawer,
   changePreviewContent,
   previewContent,
@@ -53,48 +54,46 @@ const ExportPDF = ({
   const handleShowModalPreview = () => {
     if (showModalPreview) {
       changeRenderFullDay(false);
+      document.getElementById('stringAppendFirst').remove()
+      document.getElementById('stringAppendLast').remove()
+      const container = document.getElementById('printContent')
+      container.classList.remove('gantt-no-overflow')
       changeFilterExportPdf(null, null);
+    } else {
+
     }
     setShowModalPreview(!showModalPreview);
   };
   const callBackPreview = (dataUrl) => {
     setSrcPreview(dataUrl);
     setIsLoading(false)
-
   };
   const handleOnClickPreview = () => {
     changePreviewContent(contentPreview);
     changeRenderFullDay(true);
     if (!showFullTime) {
       changeFilterExportPdf(startTime, endTime);
-    } 
+    }
     const container = document.getElementById('printContent')
-    const stringAppend = previewContent.reduce((result, value, index) =>{
+    container.classList.add("gantt-no-overflow");
+    const stringAppend = previewContent.reduce((result, value, index) => {
       const temp = [...result]
       temp[index < 3 ? 0 : 1] = temp[index < 3 ? 0 : 1] + `<p>${value}</p>`
       return temp
-    },['', ''])
-    const bodyTable = document.getElementsByClassName("ant-table-body")[0]
-    const timeLineBody = document.getElementsByClassName("gantt--timeline--container__relative")[0]
-    timeLineBody.style.overflowY = 'unset'
-    bodyTable.style.overflow = 'unset'
-    container.style.paddingBottom = '50px'
-    container.style.paddingTop = '50px'
-    container.style.overflow = 'unset'
+    }, ['', ''])
+    container.style.height = `${dataSource.length * 37 + 150}px`
     const stringAppendFirst = `<div id="stringAppendFirst" style="display:flex">${stringAppend[0]}</div>`
     const stringAppendLast = `<div id="stringAppendLast" style="display: flex">${stringAppend[1]}</div>`
     container.insertAdjacentHTML('beforeend', stringAppendLast)
     container.insertAdjacentHTML('afterbegin', stringAppendFirst)
     setShowModalPreview(true);
     setIsLoading(true)
-
     setTimeout(
       () => window.getDataUrlPdf(kendo, "previewPdf.pdf", callBackPreview),
       100
     );
   };
   const handleOnClickOk = () => {
-    
     changePreviewContent(contentPreview);
     window.ganttConvertToPdfFullWidth(kendo, "previewPdf.pdf");
   };
@@ -187,7 +186,9 @@ const ExportPDF = ({
             <div className="comp_QuickViewHeaderRight">
               <IconButton>
                 <CloseIcon
-                  onClick={() => changeVisibleExportPdfDrawer(false)}
+                  onClick={() => {
+                    changeVisibleExportPdfDrawer(false)
+                  }}
                 />
               </IconButton>
             </div>

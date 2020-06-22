@@ -1077,7 +1077,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
  width: 2px;
  height: 20px;
  background-color: inherit;
- z-index: 10;
+ z-index: 1010 !important;
 }
 
 .gantt--timeline-group-task__left {
@@ -1086,7 +1086,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
  width: 2px;
  height: 20px;
  background-color: inherit;
- z-index: 10
+ z-index: 1010 !important
 }
 
 .gantt--virtual__scroll{
@@ -1149,18 +1149,26 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
   z-index: 1000;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% - 40px);
     height: fit-content;
     position: absolute;
-    top: 0px;
+    top: 50px;
 }
 
 #stringAppendFirst{
-  z-index: 1000;
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
-    width: 100%;
+    width: calc(100% - 40px);
     height: fit-content;
     position: absolute;
-    bottom: -50px;
+    top: 25px;
+}
+.gantt-no-overflow *{
+  overflow: unset !important;
+}
+.gantt-no-overflow{
+  overflow-x: hidden !important;
+  overflow-y: unset !important;
+  padding-top: 100px;
 }

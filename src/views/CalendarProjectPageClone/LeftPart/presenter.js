@@ -136,7 +136,7 @@ function CalendarProjectLeftPartPresenter({
                       <MoreMenuGantt />
                     }
                     onVisibleChange={(flag) => setVisible(flag)}
-                    visible={visible}
+                    visible={true}
                     placement="bottomRight"
                     trigger={["click", 'hover']}
                   >
@@ -150,7 +150,7 @@ function CalendarProjectLeftPartPresenter({
                         <div>
                           <Icon
                             style={{ fill: "rgba(0, 0, 0, 0.54)" }}
-                            path={mdiPlus}
+                            path={mdiDotsVertical}
                             size={1}
                           />
                         </div>
