@@ -69,7 +69,7 @@ function Content() {
     <Grid container spacing={3}>
       {
         offersLength ? (
-          <Grid item xs={12}>
+          <Grid item xs={12} className="offerStatistic-topBar">
             <BottomHeader
               count={offersLength}
               statistic_status={caculateStatus({ offers: renderTabList })}
@@ -79,7 +79,7 @@ function Content() {
       }
       <Grid item xs={12}>
         <Grid container spacing={3}>
-          <Grid item container xs={12}>
+          <Grid item container xs={12} className="offerPage-table-paddingTop-0">
             <TaskTableRecently offers={currentPageData} />
           </Grid>
         </Grid>

@@ -56,10 +56,10 @@
     border-radius: 25px;
     position: relative;
 
-    &:hover .ReactEmotionPopup {
-      display: flex;
-      top: -38px;
-    }
+    // &:hover .ReactEmotionPopup {
+    //   display: flex;
+    //   top: -38px;
+    // }
     &:focus {
       outline: none;
     }

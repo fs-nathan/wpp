@@ -1,5 +1,6 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { useLocalStorage } from "hooks";
 import { filter, forEach, get, isNil } from "lodash";
 import moment from "moment";
@@ -10,6 +11,7 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
 import { TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
@@ -55,9 +57,20 @@ const OfferByProject = () => {
 
     useEffect(() => {
         if (!isNil(id)) {
-            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-            dispatch(loadOfferByProjectID({ id, startDate, endDate }))
+            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
+            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
+            dispatch(loadOfferByProjectID({ id, startDate, endDate }));
+            const refreshListOffers = () => {
+                dispatch(loadOfferByProjectID({ id, startDate, endDate }));
+            }
+            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
+            CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+            CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+            return () => {
+                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
+                CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+                CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+            }
         }
     }, [dispatch, id, timeRange]);
 

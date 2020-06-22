@@ -4,15 +4,15 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import './styles.scss';
 
-
-const ReactEmotionPopup = ({ chatId }) => {
+const ReactEmotionPopup = ({ chatId, setOpenedPopover }) => {
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const emotionsList = useSelector(state => state.chat.emotionsList);
 
   function handleClickEmo(emo) {
     return () => {
-      dispatch(chatEmotion(taskId, chatId, emo))
+      dispatch(chatEmotion(taskId, chatId, emo));
+      setOpenedPopover(false)
     }
   }
 

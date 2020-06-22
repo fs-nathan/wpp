@@ -1,13 +1,13 @@
 .ReactEmotionPopup {
-  display: none;
-  position: absolute;
-  left: -105px;
-  top: -40px;
-  background-color: #fff;
+  display: flex;
+  // position: absolute;
+  // left: -105px;
+  // top: -40px;
+  // background-color: #fff;
   padding: 3px 10px;
-  border-radius: 50px;
+  // border-radius: 50px;
   // border: 1px solid #ececec;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
+  // box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.2);
   opacity: 0.95;
   &--menuItem {
     padding: 0;

@@ -14,4 +14,7 @@
       border-radius: 10px;
     }
   }
+  [class*="control"]:hover {
+    border-color: var(--color-primary) !important;
+  }
 }
