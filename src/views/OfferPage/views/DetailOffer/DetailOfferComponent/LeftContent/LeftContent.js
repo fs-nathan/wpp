@@ -12,18 +12,16 @@ import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from 'react-use';
+import { allMembersSelector } from 'views/JobDetailPage/selectors';
 import { OfferPageContext } from 'views/OfferPage/OfferPageContext';
-import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor, uploadDocumentOffer } from 'views/OfferPage/redux/actions';
+import { addMemberHandle, addMemberMonitor, deleteDocumentOffer, deleteMemberHandle, deleteMemberMonitor, getMemberToAdd, uploadDocumentOffer } from 'views/OfferPage/redux/actions';
 import { DELETE_DOCUMENT_OFFER, DELETE_MEMBER_HANDLE_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS } from 'views/OfferPage/redux/types';
-import { listUserOfGroup } from '../../../../../../actions/user/listUserOfGroup';
 import { bgColorSelector } from '../../../../../../reducers/setting/selectors';
-import { allMembersSelector } from '../../../../../../reducers/user/listOfUserGroup/selectors';
 import SendFileModal from '../../../../../JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import AddOfferMemberModal from '../../../../../JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import OfferModal from '../../../../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { getPriorityEditingTitle } from './i18nSelectors';
 import './styles.scss';
-
 
 const PersonInfo = ({
   hour_label,
@@ -531,7 +529,7 @@ export default function LeftContent({
   const currentUserId = useSelector(state => state.system.profile.id);
   const { members: allMembers } = useSelector(state => allMembersSelector(state));
   useEffect(() => {
-    dispatch(listUserOfGroup(false));
+    dispatch(getMemberToAdd({ additionQuery: additionQuery }));
   }, [currentUserId])
 
   const addableMembers = useMemo(

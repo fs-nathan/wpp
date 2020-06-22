@@ -15,14 +15,13 @@ import { useHistory } from 'react-router-dom';
 import { useMountedState } from 'react-use';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import { allMembersSelector } from 'views/JobDetailPage/selectors';
 import { Routes } from 'views/OfferPage/contants/routes';
 import { CREATE_OFFER, CREATE_OFFER_SUCCESSFULLY, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from 'views/OfferPage/redux/types';
-import { listUserOfGroup } from '../../../../../actions/user/listUserOfGroup';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
 import { bgColorSelector } from '../../../../../reducers/setting/selectors';
-import { allMembersSelector } from '../../../../../reducers/user/listOfUserGroup/selectors';
-import { updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
+import { getMemberToAdd, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
 import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import OfferFile from './OfferFile';
@@ -75,6 +74,8 @@ const OfferModal = ({
   const createUserIndex = findIndex(allMembers, member => member.id === createId);
   const [loading, setLoading] = React.useState(false);
 
+  console.log(allMembers);
+
   const fetchOffersGroup = async () => {
     const config = {
       url: "/offers/list-group-offer",
@@ -90,7 +91,7 @@ const OfferModal = ({
   }
 
   useEffect(() => {
-    dispatch(listUserOfGroup(false));
+    dispatch(getMemberToAdd({ additionQuery: additionQuery }));
     fetchOffersGroup();
   }, [currentUserId]);
 
