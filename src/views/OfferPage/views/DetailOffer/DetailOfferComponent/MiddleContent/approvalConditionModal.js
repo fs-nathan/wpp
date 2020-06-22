@@ -2,7 +2,6 @@ import { Avatar, Chip, Grid, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
-import { listUserOfGroup } from 'actions/user/listUserOfGroup';
 import CustomModal from 'components/CustomModal';
 import CustomSelect from 'components/CustomSelect';
 import { bgColorSelector } from 'components/LoadingOverlay/selectors';
@@ -12,9 +11,9 @@ import { findIndex, get, isNaN, keys } from "lodash";
 import React, { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { allMembersSelector } from 'reducers/user/listOfUserGroup/selectors';
+import { allMembersSelector } from 'views/JobDetailPage/selectors';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
-import { updateOfferApprovalCondition } from 'views/OfferPage/redux/actions';
+import { getMemberToAdd, updateOfferApprovalCondition } from 'views/OfferPage/redux/actions';
 
 const useStyles = makeStyles((theme) => ({
   listChips: {
@@ -71,7 +70,7 @@ function ApprovalConditionModal({
 
   React.useEffect(() => {
     if (members.members.length === 0) {
-      doListMemebers(false);
+      doListMemebers({ additionQuery });
     }
   }, [doListMemebers]);
 
@@ -266,7 +265,7 @@ function ApprovalConditionModal({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListMemebers: (quite) => dispatch(listUserOfGroup(quite)),
+    doListMemebers: (additionQuery) => dispatch(getMemberToAdd({ additionQuery })),
     doUpdateApprovalConditions: (dataToUpdate) => dispatch(updateOfferApprovalCondition(dataToUpdate))
   };
 };
