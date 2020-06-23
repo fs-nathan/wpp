@@ -16,6 +16,7 @@ const MonthHeader = ({
   const [table, setTable] = useState([]);
   const containerRef = useRef();
   useEffect(() => {
+    console.log("daysRender.length", daysRender.length)
     setCountDay(daysRender.length);
   }, [daysRender.length]);
   useEffect(() => {
@@ -39,7 +40,6 @@ const MonthHeader = ({
         .format(girdInstance.formatChild)}
     </div>
   ));
-  console.log(leftHeader, scrollWidth);
   const createTable = (axisX, axisY) => {
     let tempTable = [];
     for (let i = 0; i < axisX; i++) {
@@ -73,7 +73,7 @@ const MonthHeader = ({
   };
   useEffect(() => {
     setTable(createTable(countTask, countDay));
-  }, [countTask]);
+  }, [countTask, countDay]);
   return (
     <React.Fragment>
       <div ref={containerRef} style={{ display: "flex" }}>

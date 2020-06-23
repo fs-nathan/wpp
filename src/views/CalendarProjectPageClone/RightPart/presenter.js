@@ -1,5 +1,5 @@
-import { Box, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, IconButton, List, ListItem, ListItemText, MenuItem, Select, Typography } from "@material-ui/core";
-import { mdiClose } from "@mdi/js";
+import { Box, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, List, ListItem, ListItemText, MenuItem, Select, Typography } from "@material-ui/core";
+import { mdiAlert } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
@@ -138,8 +138,28 @@ function CalendarProjectRightPartPresenter({
           }}
         >
           <CustomTableLayout
+            id="asdasdas"
             children={
               <ScrollbarsContainer autoHide autoHideTimeout={500}>
+                <div
+                  style={{
+                    height: 53,
+                    width: "100%",
+                    background: "#fce8e6",
+                    color: "#e65656",
+                    display: 'flex'
+                  }}
+                ><span className="gantt-calendar--icon-warning"
+                >
+                    <Icon
+                      path={mdiAlert}
+                      size={0.7}
+                      color="#f52222"
+                      id="gantt--calendar__waring-icon"
+                    />
+                  </span><span
+                    className="gantt-calendar--text-warning"
+                  >Bạn không thể chỉnh sửa lịch dự án tại đây. Chỉ những thành viên có quyền và được chỉnh sửa trong chức năng Lịch. <span style={{ fontWeight: 'bold' }}>Tìm hiểu thêm lịch dự án</span></span></div>
                 {scheduleDetail.loading ? (
                   <LoadingBox />
                 ) : (
@@ -147,6 +167,7 @@ function CalendarProjectRightPartPresenter({
                       component={"div"}
                       className="view_ProjectCalendar_rightContainer"
                     >
+
                       <div className={"uppercase_title"}>
                         {t("views.calendar_page.right_part.label.description")}
                       </div>
@@ -256,15 +277,7 @@ function CalendarProjectRightPartPresenter({
                                 <Typography component={"div"}>
                                   {get(item, "label", "")}
                                 </Typography>
-                                <IconButton
-                                  onClick={() => handleDeleteWorkingDays(item)}
-                                >
-                                  <Icon
-                                    path={mdiClose}
-                                    size={0.7}
-                                    color="rgba(0, 0, 0, 0.7)"
-                                  />
-                                </IconButton>
+
                               </Box>
                             );
                           })}

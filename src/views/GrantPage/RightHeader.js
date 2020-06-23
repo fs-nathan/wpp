@@ -46,7 +46,6 @@ const RightHeader = ({
         />
         <Col className="gantt--right-header__more" span={2}>
           <Dropdown
-            overlayClassName="asdasdasdasdasd"
             overlay={() => (
               <MenuMoreGantt
                 changeVisibleExportPdfDrawer={changeVisibleExportPdfDrawer}

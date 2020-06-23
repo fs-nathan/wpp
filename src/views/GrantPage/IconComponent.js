@@ -10,7 +10,6 @@ const IconComponent = ({ path, title, size, onClick }) => {
           onClick={(e) => onClick(e)}
           className="MuiButtonBase-root MuiButton-root MuiButton-text comp_CustomTable_HeaderButtonGroup___button MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedText MuiButtonGroup-groupedTextHorizontal MuiButtonGroup-groupedText MuiButton-textSizeSmall MuiButton-sizeSmall"
           aria-controls="simple-menu"
-          style={{ padding: 0 }}
           aria-haspopup="true"
           size="small"
         >

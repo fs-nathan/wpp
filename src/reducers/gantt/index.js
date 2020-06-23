@@ -5,10 +5,11 @@ export const initialState = {
   showFullChart: false,
   rowHover: -1,
   timelineColor: {
-    total: "#e38100",
-    group: "#e30f00",
-    task: "#3ce305",
-    duration: "#ab209d",
+    total: "#727272",
+    group: "#727272",
+    task: "#FF8123",
+    duration: "#01E03F",
+    timeNotWork: '#E1E1E'
   },
   scheduleDetailGantt: {},
   projectInfo: {
@@ -16,6 +17,7 @@ export const initialState = {
     name: "",
   },
   scrollGanttFlag: false,
+  fetchProjectSchedule: true,
   indexColumn: [0, 1, 2, 3, 4],
   visible: {
     table: {
@@ -35,6 +37,7 @@ export const initialState = {
       numberDuration: true,
       numberComplete: true,
       fromNowLayer: true,
+      timeNotWork: true
     },
     label: {
       prior: true,
@@ -56,6 +59,7 @@ export const initialState = {
     start: null,
     end: null,
   },
+  projectSchedules: [],
   girdType: localStorage.getItem("timeUnitGantt") || "DAY",
   girdAttribute: {
     DAY: {
@@ -194,6 +198,10 @@ const gantt = (state = initialState, action) => {
       return { ...state, scheduleDetailGantt: action.payload };
     case actionTypes.SCROLL_GANTT:
       return { ...state, scrollGanttFlag: action.payload };
+    case actionTypes.CHANGE_PROJECT_SCHEDULE:
+      return { ...state, projectSchedules: action.payload };
+    case actionTypes.FETCH_PROJECT_SCHEDULE:
+      return { ...state, fetchProjectSchedule: action.payload };
     default:
       return state;
   }

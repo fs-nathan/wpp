@@ -1,12 +1,12 @@
 import LoadingBox from 'components/LoadingBox';
 import React from 'react';
 import { connect } from 'react-redux';
-import CustomModal from '../CustomModal';
+import CustomModal from '../CustomModalGantt';
 import './previewModal.css';
 
-const PreviewPdfModal = ({ title,onConfirm, previewContent, open, setOpen, srcPreview, isLoading }) => {
+const PreviewPdfModal = ({ title, onConfirm, previewContent, open, setOpen, srcPreview, isLoading }) => {
     return (
-        <CustomModal onConfirm={onConfirm} fullWidth={true} maxWidth="md" height='tall' setOpen={setOpen} open={open} title={"XUẤT FILE PDF"}>
+        <CustomModal notAutoCloseWhenConfirm={true} onConfirm={onConfirm} fullWidth={true} maxWidth="md" height='tall' setOpen={setOpen} open={open} title={"XUẤT FILE PDF"}>
             <div className="gantt--preview-pdf__container">
                 <div className="gantt--preview-pdf__title">{title}</div>
                 <div className="gantt--preview-pdf__content">

@@ -79,6 +79,8 @@ body {
   font-size: 14px;
   color: #333;
   font-weight: 500;
+  margin-top: 0;
+  text-transform: lowercase;
 }
 
 .config--drawer--section:first-letter{
@@ -172,10 +174,20 @@ span.ant-checkbox ~ span {
   margin-top: -5px;
 }
 .gantt--navigation p {
-  margin-right: 5px;
+  margin-right: 7px;
   margin-bottom: 0;
-  margin-top: 0;
+  margin-top: 3px;
   cursor: pointer;
+  color: #8b8b8b;
+  background: #f2f2f2;
+  padding:0 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: normal;
+}
+.gantt--navigation p:hover {
+  color: #fff;
+  font-weight: 500;
 }
 
 .gantt--image-project {
@@ -675,6 +687,9 @@ div.checkbox-colortag--drawer {
   border-right: 1px solid #ededed;
   transform: translate(-50%, -50%);
 }
+.icon-fromNow-header svg {
+  fill: #ccc !important;
+}
 .icon-invisible-header svg {
   fill: rgb(199, 199, 199) !important;
 }
@@ -852,7 +867,8 @@ div.checkbox-colortag--drawer {
 }
 
 .gantt--left-header__text-active {
-  color: #2196f3;
+  color: #fff !important;
+  font-weight: 500 !important;
 }
 
 .gantt--parent-header {
@@ -1061,7 +1077,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
  width: 2px;
  height: 20px;
  background-color: inherit;
- z-index: 10;
+ z-index: 1010 !important;
 }
 
 .gantt--timeline-group-task__left {
@@ -1070,10 +1086,10 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
  width: 2px;
  height: 20px;
  background-color: inherit;
- z-index: 10
+ z-index: 1010 !important
 }
 
-.dsfsdfds{
+.gantt--virtual__scroll{
   width: 16px;
   right: 0;
   top: 50px;
@@ -1081,13 +1097,78 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
   overflow-y: scroll;
   z-index: 1000;
 }
-.dsfsdfds::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
-.dsfsdfds::-webkit-scrollbar-track { background: #f2f2f2; }
-.dsfsdfds::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
+.gantt--virtual__scroll::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
+.gantt--virtual__scroll::-webkit-scrollbar-track { background: #f2f2f2; }
+.gantt--virtual__scroll::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
   border-radius: 8px;
   background-clip: padding-box;   }
-.dsfsdfds:hover::-webkit-scrollbar-thumb { background: #bbb; }
-.dsfsdfds::-webkit-scrollbar-thumb:horizontal:hover,
-.dsfsdfds::-webkit-scrollbar-thumb:vertical:hover { background: #999; }
-.dsfsdfds::-webkit-scrollbar-thumb:horizontal:active,
-.dsfsdfds::-webkit-scrollbar-thumb:vertical:active { background: #777; }
+.gantt--virtual__scroll:hover::-webkit-scrollbar-thumb { background: #bbb; }
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:horizontal:hover,
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:vertical:hover { background: #999; }
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:horizontal:active,
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:vertical:active { background: #777; }
+
+.gantt--time-unit__label-container {
+  margin-left: 10px;
+}
+#gantt--calendar__waring-icon{
+  width: 30px !important;
+  height: 100% !important;
+}
+
+.gantt-right-header__wapper .comp_CustomTable_HeaderButtonGroup___button > span:first-child > span {
+  line-height: 1.75;
+}
+.gantt-calendar--icon-warning{
+  margin-left: 20px;
+  width: 30px;
+}
+.gantt-calendar--text-warning{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+  width: calc(100% - 85px);
+  padding-right: 30px;
+}
+.gantt--calendar-modal__container .comp_CustomModal___accept-button{
+  display: none;
+
+}
+.duration-text-gantt__group_total{
+  top: -2px;
+}
+
+.gantt--calender-modal__button-container{
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+.ant-table-cell{
+  background: #fff;
+}
+
+#stringAppendLast{
+  z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    height: fit-content;
+    position: absolute;
+    top: 50px;
+}
+
+#stringAppendFirst{
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    height: fit-content;
+    position: absolute;
+    top: 25px;
+}
+.gantt-no-overflow *{
+  overflow: unset !important;
+}
+.gantt-no-overflow{
+  overflow-x: hidden !important;
+  overflow-y: unset !important;
+  padding-top: 100px;
+}

@@ -6,6 +6,7 @@ import { mdiFilePdf } from "@mdi/js";
 import Icon from "@mdi/react";
 import kendo from "@progress/kendo-ui";
 import { Drawer } from "antd";
+import { get } from 'lodash';
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
@@ -24,9 +25,11 @@ const StyledScrollbarsSide = ({ className = "", height, ...props }) => (
 const ExportPDF = ({
   height,
   exportPdfDrawerVisible,
+  dataSource,
   changeVisibleExportPdfDrawer,
   changePreviewContent,
   previewContent,
+  profileDetail,
   changeRenderFullDay,
   changeFilterExportPdf,
   projectInfo
@@ -51,14 +54,19 @@ const ExportPDF = ({
   const handleShowModalPreview = () => {
     if (showModalPreview) {
       changeRenderFullDay(false);
+      document.getElementById('stringAppendFirst').remove()
+      document.getElementById('stringAppendLast').remove()
+      const container = document.getElementById('printContent')
+      container.classList.remove('gantt-no-overflow')
       changeFilterExportPdf(null, null);
+    } else {
+
     }
     setShowModalPreview(!showModalPreview);
   };
   const callBackPreview = (dataUrl) => {
     setSrcPreview(dataUrl);
     setIsLoading(false)
-
   };
   const handleOnClickPreview = () => {
     changePreviewContent(contentPreview);
@@ -66,6 +74,18 @@ const ExportPDF = ({
     if (!showFullTime) {
       changeFilterExportPdf(startTime, endTime);
     }
+    const container = document.getElementById('printContent')
+    container.classList.add("gantt-no-overflow");
+    const stringAppend = previewContent.reduce((result, value, index) => {
+      const temp = [...result]
+      temp[index < 3 ? 0 : 1] = temp[index < 3 ? 0 : 1] + `<p>${value}</p>`
+      return temp
+    }, ['', ''])
+    container.style.height = `${dataSource.length * 37 + 150}px`
+    const stringAppendFirst = `<div id="stringAppendFirst" style="display:flex">${stringAppend[0]}</div>`
+    const stringAppendLast = `<div id="stringAppendLast" style="display: flex">${stringAppend[1]}</div>`
+    container.insertAdjacentHTML('beforeend', stringAppendLast)
+    container.insertAdjacentHTML('afterbegin', stringAppendFirst)
     setShowModalPreview(true);
     setIsLoading(true)
     setTimeout(
@@ -144,8 +164,8 @@ const ExportPDF = ({
   return (
     <React.Fragment>
       <Drawer
-     
-      className="gantt--export-pdf__dialog"
+
+        className="gantt--export-pdf__dialog"
         closable={false}
         title={
           <div
@@ -166,7 +186,9 @@ const ExportPDF = ({
             <div className="comp_QuickViewHeaderRight">
               <IconButton>
                 <CloseIcon
-                  onClick={() => changeVisibleExportPdfDrawer(false)}
+                  onClick={() => {
+                    changeVisibleExportPdfDrawer(false)
+                  }}
                 />
               </IconButton>
             </div>
@@ -184,6 +206,9 @@ const ExportPDF = ({
               onClick={handleOnClickPreview}
               className="config--drawer--footer-section__preview"
               fullWidth
+              style={{
+                color: get(profileDetail, 'group_active.color', '#f2f2f2')
+              }}
             >
               Xuất file PDF
             </Button>
