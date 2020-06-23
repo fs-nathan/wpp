@@ -155,11 +155,14 @@ export const Reply = ({ reply, onReplyClick }) => {
 };
 const Message = ({
   type = "comment",
+  can_modify,
   post_id,
   parent,
   id,
   onReplyClick,
+  onDelete,
   content,
+  deleted,
   user_create_name,
   user_create_avatar,
   comments,
@@ -175,6 +178,9 @@ const Message = ({
   stickerUrl,
 }) => {
   const { t } = useTranslation();
+  if (deleted) {
+    return null;
+  }
   return (
     <div className={"comp_Message"}>
       <Avatar className="comp_Message__avatar" src={user_create_avatar}>
@@ -219,6 +225,14 @@ const Message = ({
               {t("Trả lời")}
             </ButtonBase>
           )}
+          {can_modify && onDelete && (
+            <ButtonBase
+              onClick={onDelete}
+              className="comp_Message__reply u-fontSize12"
+            >
+              {t("Xóa")}
+            </ButtonBase>
+          )}
           <Typography
             className=" u-fontSize12"
             component="span"
@@ -244,41 +258,29 @@ const Message = ({
 };
 export default ({ message, comments, onReplyClick }) => {
   const { id: post_id } = useContext(PostContext);
-  const [
-    id,
-    content,
-    user_create_name,
-    user_create_avatar,
-    images,
-    files,
-    sticker,
 
-    total_sub_comment,
-  ] = createMapPropsFromAttrs([
-    commentAttr.id,
-    commentAttr.content,
-    commentAttr.user_create_name,
-    commentAttr.user_create_avatar,
-    commentAttr.images,
-    commentAttr.files,
-    commentAttr.sticker,
-    commentAttr.total_sub_comment,
-  ])(message);
+  const [{ status }, handleDeleteComment] = useAsyncTracker();
+
   return (
     <Message
       comments={comments}
       parent={message.parent}
       {...{
-        id,
+        ...message,
         post_id,
-        content,
-        user_create_name,
-        user_create_avatar,
-        images,
-        files,
-        sticker,
+        deleted: status === apiCallStatus.success,
         onReplyClick,
-        total_sub_comment,
+        onDelete: message.id
+          ? () => {
+              const asyncId = Date.now();
+              handleDeleteComment({
+                asyncId,
+                ...postModule.actions.deleteComment({
+                  comment_id: message.id,
+                }),
+              });
+            }
+          : undefined,
         time_label: message.time_label,
       }}
     />
@@ -294,15 +296,16 @@ const Sticker = React.memo(({ sticker }) => {
 });
 const Image = React.memo(({ image }) => {
   const dispatch = useDispatch();
+  const url = image.url_thumb || image.url;
   return (
     <img
-      src={image.url_thumb}
+      src={url}
       onClick={() =>
         dispatch(
           showImagesList(true, [
             {
               ...image,
-              url: image.url_thumb,
+              url: url,
             },
           ])
         )

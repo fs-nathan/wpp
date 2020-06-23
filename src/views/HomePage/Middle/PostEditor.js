@@ -105,6 +105,7 @@ export default function PostEditor({ onClose, post }) {
       }}
     >
       <PostCreatorPopupInner
+        title={"Chỉnh sửa bài viết"}
         categories={categories}
         onClose={onClose}
         loading={status === apiCallStatus.loading}

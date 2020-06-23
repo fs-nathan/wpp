@@ -29,7 +29,10 @@ import UpdateGroupPermissionModal from "./UpdateGroupPermissionModal";
 export const CustomTableBodyCell = styled(TableCell)`
   border-bottom: none;
 `;
-export const GroupPermissionFormInner = ({ permissionModules }) => {
+export const GroupPermissionFormInner = ({
+  disabled = {},
+  permissionModules,
+}) => {
   const { t } = useTranslation();
   return (
     <VerticleList>
@@ -39,6 +42,7 @@ export const GroupPermissionFormInner = ({ permissionModules }) => {
         label={t("Mô tả nhóm quyền")}
       />
       <RadioGroupFormControl
+        disabled={disabled.module}
         required
         options={permissionModules.map((item) => {
           const [name, value] = createMapPropsFromAttrs([

@@ -21,7 +21,7 @@ const ChartLegend = ({ strings = [], xs = 6 }) => {
       {map.map(([label, color]) => (
         <Grid container alignItems="center" key={label} item xs={xs}>
           <IconWrap item>
-            <Icon path={mdiSquare} size={1} color={color} />
+            <Icon path={mdiSquare} size={"1.2rem"} color={color} />
           </IconWrap>
           <Grid title={label} item xs zeroMinWidth>
             {t(label)}
