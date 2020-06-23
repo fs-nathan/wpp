@@ -972,9 +972,9 @@ export const pinTaskAction = payload => ({
     type: types.PIN_TASK_REQUEST,
     payload
 })
-export const pinTaskSuccess = payload => ({
+export const pinTaskSuccess = (payload, task_id) => ({
     type: types.PIN_TASK_SUCCESS,
-    payload
+    payload, task_id
 })
 export const pinTaskFail = error => ({
     type: types.PIN_TASK_FAIL,
@@ -986,9 +986,9 @@ export const unPinTaskAction = payload => ({
     type: types.UN_PIN_TASK_REQUEST,
     payload
 })
-export const unPinTaskSuccess = payload => ({
+export const unPinTaskSuccess = (payload, task_id) => ({
     type: types.UN_PIN_TASK_SUCCESS,
-    payload
+    payload, task_id
 })
 export const unPinTaskFail = error => ({
     type: types.UN_PIN_TASK_FAIL,

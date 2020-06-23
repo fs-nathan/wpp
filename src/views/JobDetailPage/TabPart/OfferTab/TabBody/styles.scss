@@ -2,7 +2,7 @@
   position: relative;
   // border-bottom: 1px solid #eeeeee;
   padding: 10px 20px;
-  margin: 0px 0 0 -20px;
+  // margin: 0px 0 0 -20px;
   cursor: pointer;
   &:hover {
     background-color: #f2f5fa;
@@ -254,10 +254,10 @@
 }
 
 .approve {
-  [class*='comp_LoadingOverlay___wrapper'] {
+  [class*="comp_LoadingOverlay___wrapper"] {
     height: 90vh !important;
   }
-  [class*='comp_CustomModal___scroll'] {
+  [class*="comp_CustomModal___scroll"] {
     height: 100% !important;
   }
   .MuiFormControl-marginNormal {
@@ -350,5 +350,16 @@
     line-height: 15px;
     width: 100%;
     margin: 25px 0px 10px;
+  }
+  &__warning {
+    padding: 0px 15px;
+    background: rgb(252,232,230);
+    color: rgb(230,86,86);
+    display: flex;
+    align-items: center;
+    &_content {
+      margin-left: 10px;
+      line-height: 1.5;
+    }
   }
 }

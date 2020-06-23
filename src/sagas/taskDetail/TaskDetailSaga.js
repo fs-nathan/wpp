@@ -7,6 +7,7 @@ import { apiService } from "../../constants/axiosInstance";
 import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
 // import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
+import { CREATE_OFFER } from 'views/OfferPage/redux/types';
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -27,7 +28,7 @@ function* updatePriority(action) {
   try {
     const res = yield call(doUpdatePriority, action.payload);
     yield put(actions.updatePrioritySuccess(res));
-    yield put(actions.getTaskDetailTabPart(action.payload.task_id));
+    // yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // yield put(appendChat(res));
     // CustomEventEmitter(DELETE_ROOM);
@@ -377,7 +378,7 @@ function* unpinRemind(action) {
 async function doGetOffer({ taskId }) {
   try {
     const config = {
-      url: "/task/get-offer?task_id=" + taskId,
+      url: "/offers/get-offer-task?task_id=" + taskId,
       method: "get"
     };
     const result = await apiService(config);
@@ -398,15 +399,21 @@ function* getOffer(action) {
 
 function* createOffer(action) {
   try {
-    const url = `/task/create-offer?task_id=${action.payload.taskId}`;
-    const res = yield call(apiService.post, url, action.payload.data);
+    const task_id = action.payload.data.get('task_id');
+    const url = `/offers/create`;
+    const res = yield call(apiService.post, url, action.payload.data, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      params: { task_id },
+    });
     yield put(actions.createOfferSuccess(res.data));
-    yield put(actions.getOffer({ taskId: action.payload.taskId }));
+    yield put(actions.getOffer({ taskId: task_id }));
     // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createOfferFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  } finally {
+    CustomEventEmitter(CREATE_OFFER);
   }
 }
 
@@ -1428,7 +1435,7 @@ export function* pinTask({ payload }) {
   try {
     const { task_id, projectId } = payload;
     const res = yield call(apiService.post, "/task/ghim-task", { task_id });
-    yield put(actions.pinTaskSuccess(res.data));
+    yield put(actions.pinTaskSuccess(res.data, task_id));
     // yield put(actions.getListTaskDetail(projectId));
     // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     // yield put(appendChat(res.data));
@@ -1445,7 +1452,7 @@ export function* unPinTask({ payload }) {
     const res = yield call(apiService.post, "/task/cancel-ghim-task", {
       task_id
     });
-    yield put(actions.unPinTaskSuccess(res.data));
+    yield put(actions.unPinTaskSuccess(res.data, task_id));
     // yield put(actions.getListTaskDetail(projectId));
     // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
     // yield put(appendChat(res.data));
@@ -1560,6 +1567,7 @@ export function* removeGroupPermissionOfMember(payload) {
     const { task_id, member_id } = payload;
     const res = yield call(apiService.post, "/task/remove-group-permission-of-member", { task_id, member_id });
     yield put(actions.removeGroupPermissionOfMemberSuccess(res.data));
+    yield put(actions.getMember({ task_id }))
   } catch (error) {
     yield put(actions.removeGroupPermissionOfMemberFail(error));
   }

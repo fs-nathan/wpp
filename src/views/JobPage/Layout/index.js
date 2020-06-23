@@ -160,23 +160,23 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     title: props.title,
     subActions: [
       {
-        label: times[timeType].title,
+        label: t(times[timeType].title),
         iconPath: mdiCalendar,
         onClick: (evt) => setTimeAnchor(evt.target),
       },
       {
-        label: t(expand ? "Thu gọn" : "Mở rộng"),
+        label: t(expand ? t("Thu gọn") : t("Mở rộng")),
         iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
         onClick: () => handleExpand(!expand),
       },
       {
-        label: "Lọc",
+        label: t("Lọc"),
         iconPath: mdiFilterOutline,
         onClick: () => setQuickTask(<QuickViewFilter />),
       },
     ],
     mainAction: {
-      label: "+ Tạo công việc",
+      label: t("+ Tạo công việc"),
       onClick: () => setOopenModalDirect(true),
     },
     search: {

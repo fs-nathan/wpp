@@ -1,7 +1,7 @@
 import { Avatar, IconButton } from '@material-ui/core';
 import { mdiMenuDown, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { forwardMessage, getViewedChat, loadChat } from 'actions/chat/chat';
+import { forwardMessage, getViewedChat, loadChat, clearFocus } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
@@ -28,6 +28,7 @@ const BodyPart = props => {
   const chats = useSelector(state => state.chat.chats);
   const isMore = useSelector(state => state.chat.isMore);
   const isLoading = useSelector(state => state.chat.isLoading);
+  const isShowBackChat = useSelector(state => state.chat.isShowBackChat);
   const userId = useSelector(state => state.system.profile.id);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -52,6 +53,7 @@ const BodyPart = props => {
   const plusMember = viewedChatMembers.length - imgNum;
 
   useEffect(() => {
+    if (isLoading) return;
     let rqId;
     if (focusId) {
       // console.log('focusId', focusId)
@@ -59,6 +61,7 @@ const BodyPart = props => {
       if (ele) {
         rqId = setTimeout(function () {
           ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
+          dispatch(clearFocus());
         }, 10)
       }
     } else if (focusTopId) {
@@ -68,6 +71,7 @@ const BodyPart = props => {
         rqId = setTimeout(function () {
           chatRef.current.scrollTop(ele.offsetTop)
           // ele.scrollIntoView({ block: "start", inline: "nearest", behavior: 'auto' })
+          dispatch(clearFocus());
         }, 10)
       }
     }
@@ -193,10 +197,12 @@ const BodyPart = props => {
   }
 
   function onClickScrollToBottom(data) {
+    chatRef.current.scrollToBottom()
+  }
+
+  function onClickBack(data) {
     if (isMore === false) {
       dispatch(loadChat(taskId));
-    } else {
-      chatRef.current.scrollToBottom()
     }
   }
 
@@ -242,7 +248,7 @@ const BodyPart = props => {
 
   function onScrollStop() {
     const scrollTop = chatRef.current.getScrollTop()
-    if (scrollTop < 10) {
+    if (isCanLoadMore && scrollTop < 10) {
       loadMoreChat()
     }
   }
@@ -344,9 +350,14 @@ const BodyPart = props => {
           </div>
         </div >
       </Scrollbars>
-      {(isShowScroll || isMore === false) &&
+      {(isShowScroll) &&
         <IconButton className="bodyChat--buttonToBot" onClick={onClickScrollToBottom}>
-          <Icon path={isMore === false ? mdiClose : mdiMenuDown} size={1.5} ></Icon>
+          <Icon path={mdiMenuDown} size={1.5} ></Icon>
+        </IconButton>
+      }
+      {(isShowBackChat) &&
+        <IconButton className="bodyChat--buttonToBot bodyChat--buttonBack" onClick={onClickBack}>
+          <Icon path={mdiClose} size={1.5} ></Icon>
         </IconButton>
       }
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

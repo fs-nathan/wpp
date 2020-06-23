@@ -21,6 +21,7 @@ export default function PostEditor({ onClose, post }) {
       category_id,
       files = emptyArray,
       images = emptyArray,
+      file_order,
     } = post;
     return {
       id,
@@ -31,6 +32,7 @@ export default function PostEditor({ onClose, post }) {
         ...images,
       ],
       category: category_id,
+      file_order,
     };
   }, [post]);
   useEffect(() => {
@@ -44,6 +46,7 @@ export default function PostEditor({ onClose, post }) {
     <PostCreatorForm
       initialValues={initialValues}
       onSubmit={(values) => {
+        const { file_order = [] } = values;
         const finalValues = { ...values };
         finalValues.file = finalValues.file || [];
         const isFileFromStore = (file) => !!file.id;
@@ -51,6 +54,9 @@ export default function PostEditor({ onClose, post }) {
         const { file_ids, file, google_data } = finalValues.file.reduce(
           (result, f) => {
             switch (true) {
+              case f.notUploaded:
+                result.file.push(f);
+                break;
               case isFileFromStore(f):
                 result.file_ids.push(f.id);
                 break;
@@ -76,11 +82,30 @@ export default function PostEditor({ onClose, post }) {
             file_ids,
             file,
             google_data,
+            file_order: JSON.stringify(
+              file_order
+                .map((value) => {
+                  let index = file.findIndex((item) => {
+                    return item.id === value;
+                  });
+                  if (index >= 0) return "file_" + index;
+                  if (index < 0) {
+                    index = file_ids.findIndex((id) => {
+                      return id === value;
+                    });
+                    if (index >= 0) return value;
+                  }
+
+                  return undefined;
+                })
+                .filter((item) => item)
+            ),
           })
         );
       }}
     >
       <PostCreatorPopupInner
+        title={"Chỉnh sửa bài viết"}
         categories={categories}
         onClose={onClose}
         loading={status === apiCallStatus.loading}

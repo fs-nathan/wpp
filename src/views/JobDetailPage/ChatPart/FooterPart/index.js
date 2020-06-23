@@ -17,12 +17,13 @@ import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
-import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
 import '../Chat.scss';
 import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
 import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
+import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 
 const StyledButton = styled.button`
   border: none;
@@ -61,6 +62,9 @@ const FooterPart = ({
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)
   const members = useSelector(state => state.taskDetail.taskMember.member);
+  const key = `${userId}:${lastJobSettingKey}`;
+  const type = localStorage.getItem(key)
+  const isCanView = useSelector(makeSelectIsCanView(type, taskId));
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [keyFilter, setKeyFilter] = useState('');
@@ -85,7 +89,7 @@ const FooterPart = ({
         .toLowerCase()
         .replace(/&nbsp;/g, '')
         .trim()
-      console.log(text, lastAy, key)
+      // console.log(text, lastAy, key)
       setKeyFilter(key)
     } else {
       setKeyFilter('')
@@ -261,7 +265,9 @@ const FooterPart = ({
 
   const focus = () => {
     editorRef.current.focus();
-    dispatch(viewChat(taskId))
+    if (isCanView) {
+      dispatch(viewChat(taskId))
+    }
   };
 
   const getChatContent = useCallback(function (text) {
@@ -355,12 +361,6 @@ const FooterPart = ({
       sendChatText()
     }
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
-
-  function onSendMessage() {
-    const content = getChatContent(htmlToText(chatText));
-    if (!content) return;
-    sendMessage();
-  }
 
   function onChooseMention() {
     handleClickMention(membersFiltered[selectedId])
@@ -503,7 +503,7 @@ const FooterPart = ({
           onDeleteChar={onDeleteChar}
           onOpenMention={onOpenMention}
           onPressDown={onPressDown}
-          onSendMessage={onSendMessage}
+          onSendMessage={sendMessage}
           setOpenMention={setOpenMention}
         />
         <div className="chatBox--send"

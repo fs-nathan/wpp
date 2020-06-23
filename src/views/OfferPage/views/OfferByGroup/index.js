@@ -2,24 +2,25 @@ import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { CustomEventDispose, CustomEventListener } from "constants/events";
 import { useLocalStorage } from "hooks";
-import { get, isNil } from "lodash";
+import { findIndex, get, isNil, last } from "lodash";
 import moment from "moment";
 import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { CREATE_OFFER_SUCCESSFULLY, DELETE_OFFER_SUCCESSFULLY } from "views/OfferPage/redux/types";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, SORT_GROUP_OFFER_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
 import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
-import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
+import { loadOfferByGroupID, loadSummaryByGroup, sortOfferGroup } from "../../redux/actions";
 import Content from "./Content";
 import FormDialog from "./modal";
-import { getFirstSummaryGroup, getSummaryByGroupByKeyword } from "./selector";
+import { getFirstSummaryGroup, getGroupOfferList, getSummaryByGroupByKeyword } from "./selector";
+
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
@@ -42,14 +43,19 @@ const OfferByGroup = props => {
     timeType,
     setTimeType,
     timeRange,
-    setTitle
+    setTitle,
+    onDraggEnd,
+    setFilterTab
   } = useContext(OfferPageContext);
 
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
   const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
+  const groupOfferList = useSelector(state => getGroupOfferList(state));
+  const createOfferSuccess = useSelector(state => state.offerPage[CREATE_OFFER_SUCCESSFULLY])
   const { id } = useParams();
   const isMounted = useMountedState();
   const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, { timeType: 1 });
+  const searchParams = useLocation().search;
 
   useEffect(() => {
     if (isMounted) {
@@ -77,27 +83,36 @@ const OfferByGroup = props => {
       var currentGroup = groupList.filter(group => group.url === history.location.pathname);
       setLayoutTitle(get(currentGroup, '[0].title'));
     }
-  }, [isMounted, history.location.pathname, idFirstGroup, groupList]);
+  }, [isMounted, history.location.pathname, groupList]);
 
   useEffect(() => {
     dispatch(loadSummaryByGroup());
     const refreshSummaryByGroup = () => {
+      setFilterTab("");
       dispatch(loadSummaryByGroup());
     }
     CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+    CustomEventListener(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
     return () => {
       CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+      CustomEventDispose(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
     }
   }, [dispatch]);
 
   useEffect(() => {
-    if (history.location.pathname !== Routes.OFFERBYGROUP
-      || idFirstGroup === undefined
-      || idFirstGroup === null) {
+    if (idFirstGroup === undefined || idFirstGroup === null) {
       return
     }
     history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
   }, [history, idFirstGroup]);
+
+  useEffect(() => {
+    let urlSearchParams = new URLSearchParams(searchParams);
+    const referrer = urlSearchParams.get("referrer");
+    if (!isNil(referrer) && !isNil(id)) {
+      history.push(Routes.OFFERBYGROUP + "/" + id);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (!isNil(id)) {
@@ -105,16 +120,51 @@ const OfferByGroup = props => {
       const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
       dispatch(loadOfferByGroupID({ id, startDate, endDate }));
       document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click();
-      const refreshAfterCreateOffer = () => {
-        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-        dispatch(loadSummaryByGroup());
-      }
-      CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
-      return () => {
-        CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
-      }
     }
   }, [dispatch, id, timeRange]);
+
+  useEffect(() => {
+    const refreshAfterCreateOffer = () => {
+      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+      dispatch(loadSummaryByGroup());
+      if (createOfferSuccess.offer_group_id === id) {
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      }
+    }
+    CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    return () => {
+      CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
+    }
+  }, [createOfferSuccess, id, timeRange]);
+
+  useEffect(() => {
+    if (isMounted) {
+      const refreshListOffers = () => {
+        const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+        const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      }
+      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+      CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+      return () => {
+        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+        CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+      }
+    }
+  }, [isMounted, timeRange, id]);
+
+  useEffect(() => {
+    if (isMounted) {
+      if (onDraggEnd.source !== null && onDraggEnd.destination !== null) {
+        const id = last(onDraggEnd.id.split("/"));
+        const groupSource = get(groupList, `[${onDraggEnd.destination.index}]`);
+        const originalIndex = findIndex(groupOfferList, (group) => groupSource.url.includes(group.id));
+        dispatch(sortOfferGroup({ group_offer_id: id, position: originalIndex }));
+      }
+    }
+  }, [dispatch, isMounted, onDraggEnd]);
 
   // Redirect to first group when enter
   return (

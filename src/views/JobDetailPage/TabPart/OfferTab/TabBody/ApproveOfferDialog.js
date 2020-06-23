@@ -1,4 +1,5 @@
-import { Avatar, TextField, Typography } from '@material-ui/core';
+import { Avatar, Box, TextField, Typography } from '@material-ui/core';
+import WarningIcon from '@material-ui/icons/Warning';
 import { mdiCancel, mdiCheck } from '@mdi/js';
 import Icon from '@mdi/react';
 import { approveOffer } from 'actions/taskDetail/taskDetailActions';
@@ -38,7 +39,7 @@ const ApproveOfferDialog = (props) => {
 
   function onClickApproveOffer() {
     if (action === _action.HANDLE_OFFER) {
-      dispatch(handleOfferOfferPage({ offer_id: id, content: description, status: type }))
+      dispatch(handleOfferOfferPage({ offer_id: id, content: description, status: type, additionQuery: props.additionQuery }))
       return
     }
     dispatch(approveOffer({ offer_id: id, content: description, status: type, task_id: taskId }));
@@ -96,6 +97,15 @@ const ApproveOfferDialog = (props) => {
           value={description}
           onChange={e => setDescription(e.target.value)}
         />
+        <Box className="approve__warning">
+          <div className="approve__warning_icon">
+            <WarningIcon htmlColor="#fa2500" fontSize="large" />
+          </div>
+          <p className="approve__warning_content">
+            {t("VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_1")}<br />
+            {t("VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_2")}<b>&#32;{t("VIEW_OFFER_LABEL_LEARN_MORE")}</b>
+          </p>
+        </Box>
       </React.Fragment>
     </CustomModal>
   )

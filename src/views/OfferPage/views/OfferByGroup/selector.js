@@ -9,7 +9,6 @@ import Popover from "./popover";
 const selectSummaryGroup = state => state.offerPage[SUMMARY_BY_GROUP];
 const selectOffer = state => state.offerPage[OFFER_BY_GROUP];
 const selectStatusCreateGroupOffer = state => state.offerPage[CREATE_GROUP_OFFER]
-
 export const getOffer = createSelector(selectOffer, offer => offer.offers);
 export const getFirstSummaryGroup = createSelector(
   selectSummaryGroup,
@@ -91,3 +90,10 @@ export const getStatusCreateGroupOffer = createSelector(selectStatusCreateGroupO
   }
   return status
 })
+
+export const getGroupOfferList = createSelector(
+  selectSummaryGroup,
+  group => {
+    return group.offers_group;
+  }
+);

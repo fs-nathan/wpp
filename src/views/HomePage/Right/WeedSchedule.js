@@ -94,11 +94,13 @@ const WeedDetailStateLess = ({
   const { t } = useTranslation();
   return (
     (!calendar && (
-      <EmptyHolder
-        image={<img src={no_calendar_image} alt="no data found" />}
-        title={""}
-        description=""
-      />
+      <Box maxWidth="400px" margin="auto">
+        <EmptyHolder
+          image={<img src={no_calendar_image} alt="no data found" />}
+          title={""}
+          description=""
+        />
+      </Box>
     )) || (
       <>
         <div className="view_WeeklyCalendar_rightContainer">
@@ -384,7 +386,7 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
                     </Box>
                   }
                 >
-                  - {get(schedule, scheduleAttrs.title)}
+                  {get(schedule, scheduleAttrs.title)}
                 </ListItemLayout>
               );
             })}

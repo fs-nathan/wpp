@@ -1,10 +1,10 @@
 const CLIENT_ID =
-  '923513358062-8s222ro5m2d9ruicuhvi98uq7h6gd7mr.apps.googleusercontent.com';
+  '923513358062-1ij07i3s5abvchdm9e2leitn8lukuhvn.apps.googleusercontent.com';
 const API_KEY = 'AIzaSyC0iTTmOVJrNX4PXjD8C4ObSGOXCUwJchg';
 const DISCOVERY_DOCS = [
   'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest'
 ];
-const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';
+const SCOPES = 'https://www.googleapis.com/auth/drive https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/drive.appdata https://www.googleapis.com/auth/drive.metadata https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/drive.photos.readonly https://www.googleapis.com/auth/drive.readonly'
 
 
 // add script to file index.html and init service gg drive

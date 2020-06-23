@@ -25,6 +25,8 @@ const DraggableListDefaultProps = {
 };
 
 export const DraggableList = ({
+  droppableId = "DraggableList",
+  direction,
   renderListWrapper = DraggableListDefaultProps.renderListWrapper,
   list = DraggableListDefaultProps.list,
   children = DraggableListDefaultProps.children,
@@ -64,7 +66,7 @@ export const DraggableList = ({
         onChange && onChange(newStrings);
       }}
     >
-      <Droppable droppableId={"12312321"}>
+      <Droppable droppableId={droppableId} direction={direction}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {renderListWrapper(

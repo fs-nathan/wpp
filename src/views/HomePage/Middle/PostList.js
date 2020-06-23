@@ -426,7 +426,7 @@ export default React.memo(({ category_id, title }) => {
             title={""}
             description={""}
           />
-          <Typography color="textSecondary" component="div" bold>
+          <Typography color="textSecondary" component="div">
             {t("Không tìm thấy kết quả!")}
           </Typography>
         </Box>

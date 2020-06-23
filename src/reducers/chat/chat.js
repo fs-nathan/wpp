@@ -3,6 +3,7 @@ import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
 import { UPDATE_PROJECT_CHAT, GET_PROJECT_LIST_BASIC_REQUEST } from "constants/actions/taskDetail/taskDetailConst";
+import { forEach } from "lodash";
 
 export const initialState = {
   chats: { data: [] },
@@ -17,6 +18,7 @@ export const initialState = {
   uploadingPercent: {},
   isMore: false,
   isLoading: false,
+  isShowBackChat: false,
   isSending: false,
   isFails: false,
   isLoadingForward: false,
@@ -57,7 +59,14 @@ export default (state = initialState, action) => produce(state, draft => {
       const idx = findIndex(draft.chats.data, ({ id }) => id && id === action.replaceId)
       // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
-        draft.chats.data.splice(idx, 1, action.payload.data_chat)
+        const updateDate = { ...action.payload.data_chat }
+        if (updateDate.images) {
+          updateDate.images.forEach(img => {
+            img.url = undefined;
+            img.url_thumb = undefined;
+          })
+        }
+        draft.chats.data.splice(idx, 1, updateDate)
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
       }
@@ -77,6 +86,8 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.focusId = chat_id;
       draft.focusTopId = last_id;
       draft.chats.last_id = last_id || null;
+      if (chat_id) draft.isShowBackChat = true;
+      else if (!isMore) draft.isShowBackChat = false;
       if (!chat_id && !last_id && !isMore) {
         draft.chats.data = [];
       }
@@ -176,6 +187,7 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.SEARCH_CHAT: {
       const { key } = action;
       draft.searchChatKey = key;
+      if (!key) draft.isShowBackChat = false;
       break;
     }
     case actionTypes.ON_UPLOADING: {
@@ -370,6 +382,11 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.VIEW_CHAT_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      break;
+    }
+    case actionTypes.CLEAR_FOCUS: {
+      draft.focusId = null;
+      draft.focusTopId = null;
       break;
     }
   }

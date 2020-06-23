@@ -70,12 +70,12 @@
           font-size: 0.8rem;
           padding: 5px;
           border-radius: 2px;
+          margin-right: 1em;
         }
 
         &-offerPriorityName {
           @include center-text;
           font-size: 0.8rem;
-          margin-left: 1em;
           padding: 5px;
           border-radius: 2px;
         }
@@ -112,6 +112,7 @@
       line-height: 1.5;
       font-size: 14px;
       color: #000;
+      white-space: pre-wrap;
     }
   }
 
@@ -129,13 +130,16 @@
       height: auto;
       display: flex;
       align-items: center;
-      background-color: #f0f0f0;
+      background-color: #f8f8f8;
       border-radius: 3px;
       margin: 5px;
       padding: 5px;
 
       abbr[title] {
         text-decoration: none !important;
+      }
+      &:hover {
+        background-color: #f2f2f2 !important;
       }
     }
 
@@ -153,7 +157,7 @@
         &>span {
           margin-left: 0.8em;
           margin-top: 3px;
-          color: #c7c7c7;
+          color: #777;
         }
       }
 
@@ -161,8 +165,6 @@
         display: inline-flex;
         justify-content: space-between;
       }
-
-      &-fileImage {}
     }
 
     &-fileName {

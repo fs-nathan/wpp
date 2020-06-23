@@ -30,6 +30,7 @@ const Header = React.memo(({ categoryName }) => {
         }
         action={
           <IconButton
+            title={t("Đóng")}
             onClick={() => history.push(routes.home.path)}
             size="small"
           >

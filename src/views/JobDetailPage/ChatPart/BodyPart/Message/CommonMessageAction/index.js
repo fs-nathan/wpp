@@ -1,11 +1,11 @@
-import { Menu, MenuItem } from '@material-ui/core';
+import { Menu, MenuItem, makeStyles, Popover } from '@material-ui/core';
 import { mdiCardsHeart, mdiCommentQuoteOutline, mdiDotsVertical, mdiShare } from '@mdi/js';
 import Icon from '@mdi/react';
 import { chatEmotion, deleteChat } from 'actions/chat/chat';
 import { createCommand, postSubTask } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -19,6 +19,18 @@ const StyledButton = styled.button`
     fill: ${props => props.colorHover};
   }
 `
+
+const useStyles = makeStyles(theme => ({
+  popover: {
+    pointerEvents: 'none',
+    transition: 'none',
+  },
+  popoverContent: {
+    pointerEvents: 'auto',
+    borderRadius: 50,
+    transition: 'none',
+  },
+}));
 
 const CommonMessageAction = ({
   chatId, handleReplyChat,
@@ -34,6 +46,18 @@ const CommonMessageAction = ({
   const groupActiveColor = useSelector(currentColorSelector)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [alert, setAlert] = useState(false);
+  const [openedPopover, setOpenedPopover] = useState(false)
+  const popoverAnchor = useRef(null);
+
+  const popoverEnter = ({ currentTarget }) => {
+    setOpenedPopover(true)
+  };
+
+  const popoverLeave = ({ currentTarget }) => {
+    setOpenedPopover(false)
+  };
+
+  const classes = useStyles();
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -102,12 +126,35 @@ const CommonMessageAction = ({
           className={clsx("CommonMessageAction--button", "CommonMessageAction--buttonEmo", {
             "CommonMessageAction--buttonEmo__short": isShortMessage
           })}
+          ref={popoverAnchor}
+          onMouseEnter={popoverEnter}
+          onMouseLeave={popoverLeave}
           onClick={handleClickEmotion}
           colorHover={groupActiveColor}>
           <abbr title={t('LABEL_CHAT_TASK_BIEU_CAM')}>
             <Icon className="CommonMessageAction--icon" path={mdiCardsHeart} />
           </abbr>
-          <ReactEmotionPopup chatId={chatId} />
+          <Popover
+            id="mouse-over-popover"
+            className={classes.popover}
+            classes={{
+              paper: classes.popoverContent,
+            }}
+            open={openedPopover}
+            anchorEl={popoverAnchor.current}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            TransitionProps={{ timeout: 0 }}
+            PaperProps={{ onMouseEnter: popoverEnter, onMouseLeave: popoverLeave }}
+          >
+            <ReactEmotionPopup chatId={chatId} setOpenedPopover={setOpenedPopover} />
+          </Popover>
         </StyledButton>
       }
       <StyledButton className="CommonMessageAction--button" onClick={handleClick} colorHover={groupActiveColor}>

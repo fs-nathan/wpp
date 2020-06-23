@@ -120,10 +120,9 @@ export function RecentBlock() {
     isToggleSortName,
     keyword,
   });
-
   return (
     <Card variant="outlined">
-      <CardHeader title={"Công việc gần đây"} />
+      <CardHeader title={t("Công việc gần đây")} />
       <CardContent>
         <Analytic
           {...{

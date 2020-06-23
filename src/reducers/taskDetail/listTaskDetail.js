@@ -33,13 +33,14 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
         const { tasks } = data;
         const updatedTasks = tasks.map((task) => {
             if (task_id === task.id) {
-                const { new_chat, complete, chat, state_code } = update;
+                const { new_chat, complete, chat, state_code, is_ghim } = update;
                 return {
                     ...task,
                     ...update,
                     status_code: state_code || task.status_code,
                     complete: complete || task.complete,
                     chat: chat || task.chat,
+                    is_ghim: is_ghim !== undefined ? is_ghim : data.is_ghim,
                     new_chat: getNewChat(new_chat, task.new_chat)
                 }
             }
@@ -56,13 +57,14 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
 function updateListDataNotRoom(listDataNotRoom, task_id, update) {
     const updatedTasks = listDataNotRoom.map((data) => {
         if (task_id === data.id) {
-            const { new_chat, complete, chat, state_code } = update;
+            const { new_chat, complete, chat, state_code, is_ghim } = update;
             return {
                 ...data,
                 ...update,
                 status_code: state_code || data.status_code,
                 complete: complete || data.complete,
                 chat: chat || data.chat,
+                is_ghim: is_ghim !== undefined ? is_ghim : data.is_ghim,
                 new_chat: getNewChat(new_chat, data.new_chat)
             }
         }
@@ -233,6 +235,22 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 listTaskDetail: changeGroupTaskDetail(state.listTaskDetail, task_id, group_task),
+            }
+        }
+        case types.PIN_TASK_SUCCESS: {
+            const { task_id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { is_ghim: true }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { is_ghim: true }),
+            }
+        }
+        case types.UN_PIN_TASK_SUCCESS: {
+            const { task_id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { is_ghim: false }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { is_ghim: false }),
             }
         }
         default:

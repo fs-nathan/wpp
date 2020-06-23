@@ -15,13 +15,13 @@ const IconWrap = styled(Grid)`
   margin-right: 12px;
   margin-left: 20px;
   display:  flex;
-align-items: center;
-margin-left:0 !important;
+  align-items: center;
+  margin-left:0 !important;
 `;
 const Header = styled.div`
     display:flex !important;
     justify-content : start;
-    align-items: center; 
+    align-items: center;
 `
 const Filter = styled.div`
     display: flex;
@@ -74,16 +74,20 @@ font-family: Roboto, sans-serif;
 
 const useStyles = makeStyles(theme => ({
     waiting: {
-        color: colors.offer_status_waiting
+        color: colors.offer_status_waiting,
+        marginRight: '5px'
     },
     cancel: {
-        color: colors.offer_status_cancel
+        color: colors.offer_status_cancel,
+        marginRight: '5px'
     },
     approved: {
-        color: colors.offer_status_approved
+        color: colors.offer_status_approved,
+        marginRight: '5px'
     },
     processing: {
-        color: colors.offer_status_processing
+        color: colors.offer_status_processing,
+        marginRight: '5px'
     }
 }));
 const BottomHeader = ({ statistic_status, count }) => {
@@ -137,27 +141,27 @@ const BottomHeader = ({ statistic_status, count }) => {
                         <div>
                             <IconWrap item >
                                 {/* #ff9800 */}
-                                <Icon path={mdiSquare} size={1} className={classes.waiting} />
+                                <Icon path={mdiSquare} size={0.8} className={classes.waiting} />
                                 <div>{t("VIEW_OFFER_LABEL_PENDING")} ({get(statistic_status, "waiting_rate")}%)</div>
                             </IconWrap>
                         </div>
                         <div>
                             <IconWrap item >
-                                <Icon path={mdiSquare} size={1} className={classes.approved} />
+                                <Icon path={mdiSquare} size={0.8} className={classes.approved} />
                                 <div >{t("VIEW_OFFER_LABEL_APPROVED")} ({get(statistic_status, "accepted_rate")}%)</div>
                             </IconWrap>
                         </div>
                         <div>
                             {/* #f44336 */}
                             <IconWrap item >
-                                <Icon path={mdiSquare} size={1} className={classes.processing} />
+                                <Icon path={mdiSquare} size={0.8} className={classes.processing} />
                                 <div >{t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2")} ({get(statistic_status, "approving_rate")}%)</div>
                             </IconWrap>
                         </div>
                         <div>
                             {/* #f44336 */}
                             <IconWrap item >
-                                <Icon path={mdiSquare} size={1} className={classes.cancel} />
+                                <Icon path={mdiSquare} size={0.8} className={classes.cancel} />
                                 <div >{t("VIEW_OFFER_LABEL_REJECTED")} ({get(statistic_status, "rejected_rate")}%)</div>
                             </IconWrap>
                         </div>
@@ -166,9 +170,9 @@ const BottomHeader = ({ statistic_status, count }) => {
                         {
                             filterData.role.length != 0 && (
                                 <FilterRow2Item>
-                                    {t("VIEW_OFFER_LABEL_ROLE")}:
+                                    {t("VIEW_OFFER_LABEL_ROLE")}:&nbsp;
                                     {
-                                        filterData.role.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.role.map((role, idx) => idx !== filterData.role.length - 1 ? <span>{role},</span> : <span>{role}</span>)
+                                        filterData.role.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.role.map((role, idx) => idx !== filterData.role.length - 1 ? <span>{role}, </span> : <span> {role}</span>)
                                     }
                                 </FilterRow2Item>
                             )
@@ -177,7 +181,7 @@ const BottomHeader = ({ statistic_status, count }) => {
                             filterData.priorityLevel.length != 0 && (
                                 <FilterRow2Item>
                                     {t("VIEW_OFFER_LABEL_PRIORITY_LEVEL")}: {
-                                        filterData.priorityLevel.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.priorityLevel.map((item, idx) => idx !== filterData.priorityLevel.length - 1 ? <span>{item},</span> : <span>{item}</span>)
+                                        filterData.priorityLevel.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.priorityLevel.map((item, idx) => idx !== filterData.priorityLevel.length - 1 ? <span>{item}, </span> : <span> {item}</span>)
                                     }
                                 </FilterRow2Item>
                             )
@@ -186,7 +190,7 @@ const BottomHeader = ({ statistic_status, count }) => {
                             filterData.status.length != 0 && (
                                 <FilterRow2Last>
                                     {t("VIEW_OFFER_LABEL_STATUS")}: {
-                                        filterData.status.length === 4 ? t("VIEW_OFFER_LABEL_ALL") : filterData.status.map((item, idx) => idx !== filterData.status.length - 1 ? <span>{item},</span> : <span>{item}</span>)
+                                        filterData.status.length === 4 ? t("VIEW_OFFER_LABEL_ALL") : filterData.status.map((item, idx) => idx !== filterData.status.length - 1 ? <span>{item}, </span> : <span> {item}</span>)
                                     }
                                 </FilterRow2Last>
                             )

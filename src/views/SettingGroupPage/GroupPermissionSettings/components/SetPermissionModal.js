@@ -20,6 +20,7 @@ import { get } from "views/JobPage/utils";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { CustomTableBodyCell } from "./AddGroupPermissionModal";
 import { RoundSearchBox } from "./SearchBox";
+import "./SetPermissionModal.css";
 import TasksScrollbar from "./TasksScrollbar";
 export const SetPermissionModal = ({
   permissionList = emptyArray,
@@ -75,7 +76,10 @@ export const SetPermissionModal = ({
         },
       ]}
     >
-      <DialogContent dividers className="dialog-content move-content">
+      <DialogContent
+        dividers
+        className="comp_SetPermissionModal_content dialog-content move-content"
+      >
         <TasksScrollbar>
           <Box padding="24px">
             <VerticleList>

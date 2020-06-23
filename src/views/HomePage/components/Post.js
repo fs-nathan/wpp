@@ -336,7 +336,7 @@ export const PostHeader = () => {
           <TasksCard.HeaderTitle>
             <div className="comp_Post__creatorName">{user_create_name}</div>
             <div className="comp_Post__creatorPostition">
-              {position} {(position || room) && "-"} {room}
+              {position} {position && "-"} {room}
             </div>
           </TasksCard.HeaderTitle>
         }
@@ -508,6 +508,13 @@ const AntTab = withStyles((theme) => ({
     "&:focus": {
       color: "#40a9ff",
     },
+    "& img": {
+      width: "20px",
+      height: "20px",
+      objectFit: "cover",
+      marginRight: "0.5em",
+      borderRadius: "100%",
+    },
   },
   selected: {},
 }))((props) => <Tab disableRipple {...props} />);
@@ -558,7 +565,14 @@ const MemberLikeAndLoveModal = ({ open, setModal }) => {
       loading={data.then}
       title={t("love and like")}
       onClose={() => setModal(false)}
-      footerAction={[]}
+      type="share"
+      footerAction={[
+        {
+          type: "cancel",
+          action: () => setModal(false),
+          name: "Thoát",
+        },
+      ]}
     >
       <Box height="400px">
         <TasksScrollbar>
@@ -568,8 +582,20 @@ const MemberLikeAndLoveModal = ({ open, setModal }) => {
             aria-label="love and like tab"
           >
             <AntTab label={t("all")} />
-            <AntTab label={t("like")} />
-            <AntTab label={t("love")} />
+            <AntTab
+              label={
+                <Box display="flex" alignItems="center">
+                  <img src={likeImage} /> {t("like")}
+                </Box>
+              }
+            />
+            <AntTab
+              label={
+                <Box display="flex" alignItems="center">
+                  <img src={loveImage} /> {t("love")}
+                </Box>
+              }
+            />
           </AntTabs>
           {data.state && (
             <Box padding="24px">
@@ -653,21 +679,21 @@ export const PostStats = () => {
               .map((item, i, array) => {
                 if (i === array.length - 2) {
                   return (
-                    <>
+                    <React.Fragment key={i}>
                       {item}
-                      {" và "}
-                    </>
+                      {` ${t("và")} `}
+                    </React.Fragment>
                   );
                 }
                 if (i < array.length - 1) {
                   return (
-                    <>
+                    <React.Fragment key={i}>
                       {item}
                       {" ,"}
-                    </>
+                    </React.Fragment>
                   );
                 }
-                return item;
+                return <React.Fragment key={i}>{item}</React.Fragment>;
               })}
           </Box>
         </Box>
@@ -690,7 +716,11 @@ export const PostStats = () => {
 };
 export const PostMedia = () => {
   const { images } = useContext(PostContext);
-  return <TasksCard.Media images={images}></TasksCard.Media>;
+  return (
+    <TasksCard.Media
+      images={images.map((i) => ({ ...i, url_thumbnail: i.url_thumb }))}
+    ></TasksCard.Media>
+  );
 };
 export const PostCategory = () => {
   const { category_name, category_id } = useContext(PostContext);

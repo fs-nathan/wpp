@@ -103,6 +103,8 @@
     left: calc((100% - 60px) / 2);
     top: calc((100% - 60px) / 2);
     color: #767676;
+    background-color: #ffffff80;
+    border-radius: 50%;
   }
   &--videoPlayer {
     video {

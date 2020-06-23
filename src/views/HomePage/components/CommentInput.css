@@ -16,3 +16,34 @@
 .comp_CommentInput label {
   line-height: 0;
 }
+.comp_CommentInput_sticker {
+  width: calc(100% / 3 - 10px);
+  float: left;
+  line-height: 0;
+  margin: 0;
+  padding: 5px;
+  position: relative;
+  display: block;
+  align-items: center;
+}
+.comp_CommentInput_sticker img {
+  height: 87px;
+  width: calc(100% - 10px);
+  cursor: pointer;
+  object-fit: contain;
+  padding: 10px;
+  margin: 0 !important;
+  display: block;
+  position: relative;
+}
+.comp_CommentInput_sticker:hover {
+  background: #f2f5fa;
+}
+.comp_CommentInput_stickerList {
+  overflow: hidden;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-around;
+}
