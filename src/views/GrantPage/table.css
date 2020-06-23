@@ -1167,8 +1167,14 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .gantt-no-overflow *{
   overflow: unset !important;
 }
+.gantt-no-overflow .gantt--timeline--container{
+  z-index: 1010;
+}
 .gantt-no-overflow{
   overflow-x: hidden !important;
   overflow-y: unset !important;
   padding-top: 100px;
+}
+.gantt--top-timeline-tr{
+  overflow: hidden !important;
 }

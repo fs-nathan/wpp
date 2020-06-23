@@ -294,7 +294,7 @@ function GanttChart({
             position: "absolute",
             zIndex: 10,
             backgroundColor: "#e8e8e8",
-            height: "100%",
+            height: dataSource.length * 37 + 50,
           }}
           id="drag-width-gantt-container"
         ></div>
@@ -307,7 +307,7 @@ function GanttChart({
           }
           id="gantt-container-scroll"
           style={{
-            height: heightTable,
+            height: dataSource.length * 37 + 50,
           }}
           onScroll={(e) => {
             if (window.scrollTable || window.scrollTimeline || window.scrollTimelineVitural) return;
@@ -315,7 +315,6 @@ function GanttChart({
               const fetchNewTimeNotWork =
                 Math.floor(e.target.scrollLeft / (700 * 48)) !==
                 timeNotWorkUnit && visibleGantt.timeNotWork;
-              console.log('asdasdasdasdasd', visibleGantt.timeNotWork)
               if (fetchNewTimeNotWork) {
                 timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 48));
                 const fromDate = new moment(start).add(
