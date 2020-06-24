@@ -257,7 +257,7 @@ function CreateJobModal(props) {
     if (isEdit && props.editMode !== EDIT_MODE.NAME_DES) {
       return true;
     }
-    return type_assign !== null && priority !== null && !!name;
+    return type_assign !== null && priority !== null && !!name.trim();
   }
 
   const handlePressConfirm = () => {

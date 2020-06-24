@@ -50,8 +50,8 @@ const CustomListItem = (props) => {
           {`${user_create_name} ${t('LABEL_CHAT_TASK_DE_XUAT_LUC')} ${date_label} ${hour_label}`}
         </div>
         <div className="offerTabItem--status">
-          <span className={clsx("offerTabItem--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>
-            {priority}
+          <span className={clsx("offerTabItem--priority", `offerTabItem--priority__${priority_code}`)}>
+            {priority_name}
           </span>
           <div className={clsx("offerTabItem--statusIcon", `offerTabItem--statusIcon__${status}`)}>
             {/* <Icon path={status === 'rejected' ? mdiCancel : mdiCheck} size={1} />
