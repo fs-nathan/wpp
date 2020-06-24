@@ -1425,6 +1425,7 @@ function* deleteTask(action) {
     yield put(actions.deleteTaskSuccess(res));
     yield put(actions.getListTaskDetail(action.payload.projectId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    // window.location = `/tasks/chat/${action.payload.projectId}`;
   } catch (error) {
     yield put(actions.deleteTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));

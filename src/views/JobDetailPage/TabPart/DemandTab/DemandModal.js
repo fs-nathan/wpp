@@ -78,6 +78,7 @@ const DemandModal = (props) => {
           selectedIndex={tempSelectedItem.type}
           setOptions={typeId => setParams("type", typeId)}
           commandSelect={selector}
+          placeholder={t('LABEL_CHAT_TASK_SELECT')}
         />
         <TitleSectionModal
           label={tempSelectedItem.type === selector[0].value ?

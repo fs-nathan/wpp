@@ -89,8 +89,12 @@ function JobDetailPage(props) {
       }
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {
-        window.dispatchEvent(customEvent);
+        setTimeout(() => {
+          window.dispatchEvent(customEvent);
+        }, 0);
       });
+    } else {
+      dispatch(taskDetailAction.chooseTask(taskId));
     }
   }, [dispatch, isCanView, taskId]);
 
