@@ -355,6 +355,16 @@ const comment = ({
   });
 };
 
+const deleteComment = ({ comment_id }) => {
+  return createPostAsyncAction({
+    notifyOnSuccess: false,
+    config: {
+      url: "/posts/delete-comment",
+      data: { comment_id },
+    },
+  });
+};
+
 const highLightPostList = createListModule(types.highLight);
 
 // /posts/get-post-highlight
@@ -461,6 +471,7 @@ export const postModule = {
     like,
     love,
     comment,
+    deleteComment,
     updatePostListItem: loginlineFunc(
       createAction(post.actions.listupdate.type)
     ),

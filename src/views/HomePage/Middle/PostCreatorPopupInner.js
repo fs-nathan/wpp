@@ -78,7 +78,6 @@ const ImageListField = ({
     const list = fileFiltered.map((item, i) => ({ item, index: "" + item.id }));
     return { showEmpty, list };
   }, [field.value]);
-  console.log({ list, showEmpty });
   return (
     <DropZone onChange={handleChange}>
       {(getRootProps, getInputProps, isDragActive) => {
@@ -387,16 +386,19 @@ const CategoryField = ({ name, categories }) => {
     </BindedCssFormControl>
   );
 };
-export const PostCreatorPopupInner = ({ onClose, categories, loading }) => {
+export const PostCreatorPopupInner = ({
+  title = "Tạo bài viết trên bảng tin nội bộ",
+  onClose,
+  categories,
+  loading,
+}) => {
   const { t } = useTranslation();
   const [open, setOpen] = useState();
   return (
     <>
       <TasksCard.Container className={classes.root}>
         <div className={classes.header}>
-          <div className={classes.headerTitle}>
-            {t("Tạo bài viết trên bảng tin nội bộ")}
-          </div>
+          <div className={classes.headerTitle}>{t(title)}</div>
           <IconButton onClick={onClose} size="small">
             <Close />
           </IconButton>

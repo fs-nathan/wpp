@@ -55,12 +55,13 @@ const RenderHeader = React.memo(
   }
 );
 
+
 const RenderDrawers = React.memo(
   (props) => (
     <React.Fragment>
       <ConfigGanttDrawer height={props.height} />
       <SubTaskDrawer height={props.height} />
-      <ExportPDFDrawer height={props.height} />
+      <ExportPDFDrawer dataSource={props.dataSource} height={props.height} />
     </React.Fragment>
   ),
   (prevProps, nextProps) => {
@@ -164,8 +165,8 @@ function decodeStatusCode(statusCode) {
   switch (statusCode) {
     case 0:
       return {
-        color: "#ff9800",
-        background: "#4caf5042",
+        color: "rgb(255,152,0)",
+        background: "rgba(255,152,0,.20)",
       };
     case 1:
       return {
@@ -174,8 +175,8 @@ function decodeStatusCode(statusCode) {
       };
     case 2:
       return {
-        color: "#03c30b",
-        background: "#ff050524",
+        color: "rgb(3,195,11)",
+        background: "rgba(3,195,11,0.21)",
       };
     case 3:
       return {
@@ -917,6 +918,7 @@ class DragSortingTable extends React.Component {
         group: project.color_group_task,
         task: project.color_task,
         duration: project.color_duration_task,
+        timeNotWork: project.color_day_not_work,
       };
       this.props.changeTimelineColor(null, null, ganttColorConfig);
       const ganttVisibleConfig = localStorage.getItem("ganttConfig") ? JSON.parse(localStorage.getItem("ganttConfig")) : {
@@ -929,6 +931,7 @@ class DragSortingTable extends React.Component {
         numberDuration: true,
         numberComplete: true,
         fromNowLayer: true,
+        timeNotWork: true
       };
       this.props.changeVisible(null, null, null, {
         gantt: ganttVisibleConfig,
@@ -979,6 +982,7 @@ class DragSortingTable extends React.Component {
         formatString,
         unit,
         parentUnit,
+        addUnit,
         getWidthParent,
         getTextParent,
         getTimeCompare,
@@ -986,8 +990,8 @@ class DragSortingTable extends React.Component {
       } = girdInstance;
       const { start, end } = {}
       const daysRender = [];
-      const endDate = this.props.scrollGanttFlag ? new moment(Date.now()) : new moment(saveEndTimeProject)
-      const startDate = start ? new moment(start) : new moment(startTimeProject);
+      const endDate = this.props.scrollGanttFlag && (new moment(Date.now())).diff(endTimeProject) > 0 ? (new moment(Date.now())).add(addUnit, unit) : new moment(endTimeProject)
+      const startDate = false && this.props.scrollGanttFlag && (new moment(Date.now())).diff(startTimeProject) < 0 ? (new moment(Date.now())).subtract(6, unit) : new moment(startTimeProject);
       let temp = new moment(startDate);
       if (this.props.scrollGanttFlag) {
         this.setState({
@@ -1023,6 +1027,7 @@ class DragSortingTable extends React.Component {
         minMonth++;
         index++;
       }
+      console.log("addUnit", addUnit)
       allMonth.shift();
       this.setState({
         daysRender,
@@ -1374,7 +1379,7 @@ class DragSortingTable extends React.Component {
     colShow = colShow.filter((col) => visibleTable[col.dataIndex]);
     const { startTimeProject, endTimeProject } = this.state;
     const widthPdf = this.props.renderFullDay
-      ? (endTimeProject.diff(startTimeProject, girdInstance.unit) + 1) * 48 + 1000
+      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 48 + 800
       : "auto";
     if (this.state.isLoading) return <LoadingBox />;
     return (
@@ -1406,15 +1411,15 @@ class DragSortingTable extends React.Component {
           setOpen={this.handleOpenCreateProjectModal}
         />
         <div
-          id="printContent"
           className="gantt__container"
+          id="printContent"
           style={{
             width: widthPdf,
             height: `${this.props.showHeader ? "calc(100% - 59px)" : "100%"}`,
           }}
         >
-          <RenderDrawers height={this.state.height} />
-          <RenderQuickViewTaskDetailDrawer
+          <RenderDrawers dataSource={this.state.data} height={this.state.height} />
+          {this.state.quickViewId && <RenderQuickViewTaskDetailDrawer
             showHeader={this.props.showHeader}
             onClose={() =>
               this.setState({
@@ -1422,7 +1427,7 @@ class DragSortingTable extends React.Component {
               })
             }
             taskId={this.state.quickViewId}
-          />
+          />}
           <div ref={this.tableRef}>
             {this.state.showProject && (
               <div
@@ -1513,6 +1518,7 @@ class DragSortingTable extends React.Component {
               <div style={{ height: this.state.data.length * 37 }}></div>
             </div>
           </div> */}
+          <div>asdasdasdsa</div>
         </div>
       </React.Fragment>
     );

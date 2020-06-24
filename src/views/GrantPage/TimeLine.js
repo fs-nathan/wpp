@@ -198,7 +198,6 @@ const TimeLine = ({
   )
     return null;
   if (!width) return null;
-  console.log(isTotalDuration)
   if (isTotalDuration && !visibleGantt.total) return null;
   return (
     <React.Fragment>
@@ -374,8 +373,8 @@ const TimeLine = ({
 
               ref={refProcess}
             >
-              <div className="duration-text-gantt">
-                {visibleGantt.numberDuration && Math.floor((widthProcess)) + "%"}
+              <div className={`duration-text-gantt ${isTotalDuration || isGroupTask ? 'duration-text-gantt__group_total' : ''}`}>
+                {visibleGantt.numberDuration && (Math.floor((widthProcess)) === 0) ? '' : Math.floor((widthProcess)) + "%"}
               </div>
             </div>
           </ResizableBox>

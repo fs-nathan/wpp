@@ -4,6 +4,7 @@ import {
   mdiChevronLeft,
   mdiDotsVertical,
   mdiDragVertical,
+  mdiLockOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { StyledList, StyledListItem } from "components/CustomList";
@@ -98,21 +99,8 @@ function Left({
           flexDirection="column"
         >
           <Box style={{ background: "#fff" }}>
-            <Stack>
+            <Stack small>
               <div />
-              <Box padding="0 1rem">
-                <ListItemLayout
-                  title={t("Danh sách nhóm quyền")}
-                  actions={
-                    <AddButton
-                      onClick={() => {
-                        setModal(<AddGroupPermissionModal />);
-                      }}
-                      label={t("Thêm nhóm")}
-                    />
-                  }
-                ></ListItemLayout>
-              </Box>
               <Box padding="0 1rem">
                 <SearchBox
                   fullWidth
@@ -120,8 +108,15 @@ function Left({
                   onChange={handleInputChange}
                 />
               </Box>
+              <Box padding="0 1rem">
+                <AddButton
+                  onClick={() => {
+                    setModal(<AddGroupPermissionModal />);
+                  }}
+                  label={t("Thêm nhóm")}
+                />
+              </Box>
             </Stack>
-            <Space heigth="10px" />
           </Box>
           <Box flex="1">
             <Box>
@@ -141,7 +136,9 @@ function Left({
                   return (
                     <StyledListItem
                       className={
-                        select && item && select.id === item.id ? "active" : ""
+                        select && item && select.id === item.id
+                          ? "active onHover"
+                          : "onHover"
                       }
                       key={id}
                       onClick={() => {
@@ -171,8 +168,10 @@ function Left({
                           number: total_of_member_assigned,
                         })}
                         actions={
-                          can_modify && (
+                          can_modify ? (
                             <IconButton
+                              title={t("thêm")}
+                              className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuAnchor(
@@ -190,7 +189,31 @@ function Left({
                               <Icon
                                 path={mdiDotsVertical}
                                 size={1}
-                                color="rgba(0, 0, 0, 0.7)"
+                                color="#8d8d8d"
+                              />
+                            </IconButton>
+                          ) : (
+                            <IconButton
+                              title={t("Không sửa, xóa")}
+                              className="onHover__show"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setMenuAnchor(
+                                  <GroupSettingMenu
+                                    item={item}
+                                    menuAnchor={e.currentTarget}
+                                    setMenuAnchor={setMenuAnchor}
+                                  />
+                                );
+                              }}
+                              color="primary"
+                              aria-label="upload picture"
+                              component="span"
+                            >
+                              <Icon
+                                path={mdiLockOutline}
+                                size={1}
+                                color="#8d8d8d"
                               />
                             </IconButton>
                           )
@@ -256,6 +279,7 @@ function Left({
                           })}
                           actions={
                             <IconButton
+                              title={t("thêm")}
                               className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();

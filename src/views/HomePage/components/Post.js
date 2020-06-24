@@ -508,6 +508,13 @@ const AntTab = withStyles((theme) => ({
     "&:focus": {
       color: "#40a9ff",
     },
+    "& img": {
+      width: "20px",
+      height: "20px",
+      objectFit: "cover",
+      marginRight: "0.5em",
+      borderRadius: "100%",
+    },
   },
   selected: {},
 }))((props) => <Tab disableRipple {...props} />);
@@ -558,7 +565,14 @@ const MemberLikeAndLoveModal = ({ open, setModal }) => {
       loading={data.then}
       title={t("love and like")}
       onClose={() => setModal(false)}
-      footerAction={[]}
+      type="share"
+      footerAction={[
+        {
+          type: "cancel",
+          action: () => setModal(false),
+          name: "Thoát",
+        },
+      ]}
     >
       <Box height="400px">
         <TasksScrollbar>
@@ -568,8 +582,20 @@ const MemberLikeAndLoveModal = ({ open, setModal }) => {
             aria-label="love and like tab"
           >
             <AntTab label={t("all")} />
-            <AntTab label={t("like")} />
-            <AntTab label={t("love")} />
+            <AntTab
+              label={
+                <Box display="flex" alignItems="center">
+                  <img src={likeImage} /> {t("like")}
+                </Box>
+              }
+            />
+            <AntTab
+              label={
+                <Box display="flex" alignItems="center">
+                  <img src={loveImage} /> {t("love")}
+                </Box>
+              }
+            />
           </AntTabs>
           {data.state && (
             <Box padding="24px">

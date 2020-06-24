@@ -9,6 +9,7 @@ import { getListStickersRequest } from "actions/chat/chat";
 import colors from "helpers/colorPalette";
 import words from "lodash/words";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { get } from "views/JobPage/utils";
@@ -19,6 +20,7 @@ import "./CommentInput.css";
 import EmojiPicker from "./EmojiPicker";
 export const CommentInput = React.memo(
   ({ placeholder, handleComment, inputId, reply, setReply }) => {
+    const { t } = useTranslation();
     const inputRef = React.useRef();
     const anchorElRef = React.useRef();
     const [element, setElement] = useState();
@@ -45,7 +47,11 @@ export const CommentInput = React.memo(
               inputRef={inputRef}
               id={inputId}
               onKeyDown={(e) => {
-                if (e.which == 13 || e.keyCode == 13 || e.key == "Enter") {
+                console.log();
+                if (
+                  (e.which == 13 || e.keyCode == 13 || e.key == "Enter") &&
+                  !e.shiftKey
+                ) {
                   e.preventDefault();
                   handleComment(e.target.value);
                   e.target.value = "";
@@ -72,13 +78,19 @@ export const CommentInput = React.memo(
                   />
                 );
               }}
+              title={t("emoji")}
               id={"emoji"}
               size="small"
               aria-label="emoji"
             >
               <InsertEmoticonOutlined />
             </IconButton>
-            <IconButton id={"camera"} size="small" aria-label="camera">
+            <IconButton
+              title={t("image")}
+              id={"camera"}
+              size="small"
+              aria-label="camera"
+            >
               <label htmlFor={`${inputId}_FilePicker`}>
                 <CameraAltOutlined />
               </label>
@@ -90,6 +102,7 @@ export const CommentInput = React.memo(
               }}
             />
             <IconButton
+              title={t("file")}
               onClick={() => {
                 setOpenFilePicker(true);
               }}
@@ -99,7 +112,7 @@ export const CommentInput = React.memo(
             >
               <AttachFileOutlined />
             </IconButton>
-            {
+            {openFilePicker && (
               <ModalFilePicker
                 {...{
                   open: openFilePicker,
@@ -135,7 +148,7 @@ export const CommentInput = React.memo(
                   },
                 }}
               />
-            }
+            )}
             <IconButton
               onClick={() => {
                 setElement(
@@ -146,6 +159,7 @@ export const CommentInput = React.memo(
                   />
                 );
               }}
+              title={t("sticker")}
               id={"sticker"}
               size="small"
               aria-label="sticker"
@@ -191,6 +205,7 @@ const StickerPicker = ({ isOpen, handleClose, handleClickSticker }) => {
   return (
     <TasksScrollbar style={{ width: "354px", height: "300px" }}>
       <Box
+        className="comp_CommentInput_stickerList"
         display="flex"
         width="100%"
         flexWrap="wrap"
