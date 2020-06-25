@@ -59,6 +59,7 @@ export const initialState = {
     start: null,
     end: null,
   },
+  calendarPermisstions: {},
   projectSchedules: [],
   girdType: localStorage.getItem("timeUnitGantt") || "DAY",
   girdAttribute: {
@@ -202,6 +203,8 @@ const gantt = (state = initialState, action) => {
       return { ...state, projectSchedules: action.payload };
     case actionTypes.FETCH_PROJECT_SCHEDULE:
       return { ...state, fetchProjectSchedule: action.payload };
+    case actionTypes.CHANGE_CALENDAR_PERMISSTION:
+      return { ...state, calendarPermisstions: action.payload };
     default:
       return state;
   }

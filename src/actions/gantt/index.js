@@ -1,5 +1,5 @@
 import {
-  CHANGE_COLUMN_INDEX,
+  CHANGE_CALENDAR_PERMISSTION, CHANGE_COLUMN_INDEX,
   CHANGE_CONTENT_PREVIEW_PDF,
   CHANGE_FILTER_EXPORT_PDF,
   CHANGE_INSTANCE_GIRD,
@@ -62,6 +62,11 @@ export const changeTimelineColor = (type, color, dataObject = {}) => ({
 export const changeColumnIndex = (indexes) => ({
   type: CHANGE_COLUMN_INDEX,
   payload: indexes,
+});
+
+export const changeCalendarPermisstion = (permisstions) => ({
+  type: CHANGE_CALENDAR_PERMISSTION,
+  payload: permisstions,
 });
 
 export const changeVisible = (visible, section, type, dataObject = {}) => ({

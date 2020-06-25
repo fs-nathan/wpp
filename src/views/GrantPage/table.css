@@ -84,7 +84,7 @@ body {
 }
 
 .config--drawer--section:first-letter{
-  text-transform: capitalize
+  text-transform: uppercase
 }
 .config--drawer--title {
   margin-top: 10px;
@@ -1177,4 +1177,10 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 }
 .gantt--top-timeline-tr{
   overflow: hidden !important;
+}
+.config--drawer--section::first-letter {
+  text-transform: uppercase !important;
+}
+.config--drawer--section-subtitle::first-letter{
+  text-transform: uppercase !important;
 }

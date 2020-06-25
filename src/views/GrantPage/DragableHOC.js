@@ -94,6 +94,7 @@ function GanttChart({
   if (renderFullDay) {
     maxWidth = (end.diff(start, girdInstance.unit) + 1) * 48;
   }
+  console.log("renderFullDay", renderFullDay)
   const timeline = useMemo(
     () =>
       dataSource.map((item, index) => {
@@ -294,7 +295,7 @@ function GanttChart({
             position: "absolute",
             zIndex: 10,
             backgroundColor: "#e8e8e8",
-            height: dataSource.length * 37 + 50,
+            height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
           }}
           id="drag-width-gantt-container"
         ></div>
@@ -307,7 +308,7 @@ function GanttChart({
           }
           id="gantt-container-scroll"
           style={{
-            height: dataSource.length * 37 + 50,
+            height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
           }}
           onScroll={(e) => {
             if (window.scrollTable || window.scrollTimeline || window.scrollTimelineVitural) return;

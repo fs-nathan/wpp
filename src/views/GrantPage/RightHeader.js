@@ -3,6 +3,7 @@ import { Col, Dropdown, Row } from "antd";
 import 'antd/lib/dropdown/style/index.css';
 import 'antd/lib/menu/style/index.css';
 import React, { useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { changeShowFullChart, changeShowHeader, scrollGantt } from "../../actions/gantt";
 import { changeVisibleConfigGantt, changeVisibleExportPdfDrawer } from "../../actions/system/system";
@@ -25,23 +26,24 @@ const RightHeader = ({
   girdInstance,
 }) => {
   const [visible, setVisible] = useState(false);
+  const { t } = useTranslation();
   return (
     <div className="gantt--header-component_container">
       <Row justify="end">
-        <IconComponent title={"TÌM KIẾM"} path={mdiMagnify} />
+        <IconComponent title={t('LABEL_GANTT_NAME_SEARCH_MENU')} path={mdiMagnify} />
         <IconComponent
           onClick={() => changeVisibleConfigGantt(true, "TIME")}
-          title={`TIẾN ĐỘ: ${girdInstance.unitText.toUpperCase()}`}
+          title={t('LABEL_GANTT_NAME_DURATION_MENU', { unit: girdInstance.unitText.toUpperCase() })}
           path={mdiCalendar}
         />
         <IconComponent
           onClick={() => changeShowFullChart(!showFullChart)}
-          title={!showFullChart ? "MỞ RỘNG" : "Thu gọn"}
+          title={!showFullChart ? t('LABEL_GANTT_NAME_EXPAND_MENU') : t('LABEL_GANTT_NAME_COLLAPSE_MENU')}
           path={!showFullChart ? mdiFullscreen : mdiFullscreenExit}
         />
         <IconComponent
           onClick={() => changeVisibleConfigGantt(true, "COMMON")}
-          title={"CÀI ĐẶT"}
+          title={t('LABEL_GANTT_NAME_SETTING_MENU')}
           path={pathSettingIcon}
         />
         <Col className="gantt--right-header__more" span={2}>
@@ -60,7 +62,7 @@ const RightHeader = ({
             <div>
               <IconComponent
                 onClick={(e) => null}
-                title={"THÊM"}
+                title={t('LABEL_GANTT_NAME_MORE_MENU')}
                 path={mdiDotsVertical}
               />
             </div>
@@ -68,7 +70,7 @@ const RightHeader = ({
         </Col>
         {visibleGantt.fromNowLayer && (
           <Col span={2}>
-            <div title="Hôm nay" className="icon-fromNow-header">
+            <div title={t('LABEL_GANTT_NAME_TODAY_MENU')} className="icon-fromNow-header">
               <IconComponent
                 onClick={() => scrollGantt(true)}
                 size={1.3}
