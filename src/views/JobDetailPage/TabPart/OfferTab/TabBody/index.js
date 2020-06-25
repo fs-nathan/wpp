@@ -16,6 +16,7 @@ import ListOffer from './ListOffer';
 // import OfferDetail from './OfferDetail';
 import DetailOfferModal from 'views/OfferPage/views/DetailOffer/DetailOfferModal';
 import { loadDetailOffer } from 'views/OfferPage/redux/actions';
+import { getDetailOffer, getDetailOfferLoadingState } from 'views/OfferPage/views/DetailOffer/selector';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -35,6 +36,8 @@ function TabBody(props) {
   const pendingItems = useSelector(state => state.taskDetail.taskOffer.pendingItems);
   const approvedItems = useSelector(state => state.taskDetail.taskOffer.approvedItems);
   const isNoData = (offer.length + pendingItems.length + approvedItems.length) === 0;
+  const detailOffer = useSelector(state => getDetailOffer(state));
+  const detailOfferLoading = useSelector(state => getDetailOfferLoadingState(state));
 
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -168,7 +171,9 @@ function TabBody(props) {
         <DetailOfferModal
           open={openDetail}
           setOpen={setOpenDetail}
-          {...selectedItem}
+          loading={detailOfferLoading}
+          {...detailOffer}
+        // {...selectedItem}
         // item={selectedItem}
         // handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
         // handleClickEditItem={(data) => handleClickEditItem(selectedItem)}

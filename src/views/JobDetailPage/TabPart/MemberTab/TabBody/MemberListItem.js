@@ -53,6 +53,7 @@ const MemberListItem = ({
   const handleDeleteMembers = () => {
     dispatch(openDetailMember(false))
     dispatch(deleteMember({ task_id: taskId, member_id: id }))
+    setAnchorEl(null);
   };
 
   const handleClickDetail = () => {
