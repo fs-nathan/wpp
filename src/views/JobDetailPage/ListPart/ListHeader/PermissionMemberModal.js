@@ -22,6 +22,7 @@ import './styles.scss';
 import findIndex from "lodash/findIndex";
 import { currentColorSelector } from "views/JobDetailPage/selectors";
 import AlertModal from "components/AlertModal";
+import { isEmpty } from "lodash";
 
 const RowTable = styled(TableRow)`
 & > *:not(first-child) {
@@ -175,10 +176,12 @@ function PermissionMemberModal({ memberId, setOpen,
           <>
             {!is_admin &&
               <>
-                <div className="permissionMemberModal--delete" onClick={onClickDelete}>
-                  <Icon path={mdiDeleteOutline} size={1}></Icon>
-                  {t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}
-                </div>
+                {!isEmpty(permission) &&
+                  <div className="permissionMemberModal--delete" onClick={onClickDelete}>
+                    <Icon path={mdiDeleteOutline} size={1}></Icon>
+                    {t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}
+                  </div>
+                }
                 <div className="permissionMemberModal--slider">
                   <Slider adaptiveHeight variableWidth infinite={false}
                     nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}

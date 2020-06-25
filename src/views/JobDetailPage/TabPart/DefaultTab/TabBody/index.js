@@ -216,8 +216,8 @@ function TabBody(props) {
           </ListItemTab>
           <ListItemTab disableRipple button onClick={() => props.setShow(4)}>
             <ColorTypo>{t('LABEL_CHAT_TASK_TAI_LIEU')}</ColorTypo>
-            <BadgeItem badge size='small' color='purplelight' label={taskStatistic.fileCnt} style={{ marginRight: 5 }} />
             <BadgeItem badge size='small' color='purplelight' label={taskStatistic.imgCnt} style={{ marginRight: 5 }} />
+            <BadgeItem badge size='small' color='purplelight' label={taskStatistic.fileCnt} style={{ marginRight: 5 }} />
             <BadgeItem badge size='small' color='purplelight' label={taskStatistic.linkCnt} />
           </ListItemTab>
           <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
