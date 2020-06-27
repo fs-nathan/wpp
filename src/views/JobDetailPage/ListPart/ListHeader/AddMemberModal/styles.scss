@@ -43,10 +43,14 @@
   display: flex;
   align-items: center;
   padding-left: 20px;
-  & > *:not(:last-child) {
-    margin-right: 8px;
-  }
+  // & > *:not(:last-child) {
+  //   margin-right: 8px;
+  // }
   & > *:last-child {
+    margin-left: auto;
+  }
+  &--loading {
+    margin-right: 8px;
     margin-left: auto;
   }
   &--button {

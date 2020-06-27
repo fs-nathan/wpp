@@ -93,7 +93,9 @@ function AddMemberModal({ setOpen, isOpen }) {
                   {
                     memberNotAssigned.map((item, key) =>
                       (
-                        <ProjectMember avatar={item.avatar} key={item.id}
+                        <ProjectMember
+                          avatar={item.avatar}
+                          key={item.id}
                           id={item.id}
                           name={item.name} email={item.email}
                           label={item.permission}

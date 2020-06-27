@@ -53,34 +53,6 @@ const BodyPart = props => {
   const plusMember = viewedChatMembers.length - imgNum;
 
   useEffect(() => {
-    if (isLoading) return;
-    let rqId;
-    if (focusId) {
-      // console.log('focusId', focusId)
-      const ele = document.getElementById(focusId)
-      if (ele) {
-        rqId = setTimeout(function () {
-          ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
-          dispatch(clearFocus());
-        }, 10)
-      }
-    } else if (focusTopId) {
-      const ele = document.getElementById(focusTopId);
-      if (ele) {
-        // console.log('focusTopId', ele.offsetTop)
-        rqId = setTimeout(function () {
-          chatRef.current.scrollTop(ele.offsetTop)
-          // ele.scrollIntoView({ block: "start", inline: "nearest", behavior: 'auto' })
-          dispatch(clearFocus());
-        }, 10)
-      }
-    }
-    return () => {
-      clearTimeout(rqId);
-    }
-  })
-
-  useEffect(() => {
     if (plusMember > 0) {
       setShowMembers(viewedChatMembers.slice(0, imgNum))
     } else {
@@ -147,27 +119,67 @@ const BodyPart = props => {
 
   useEffect(() => {
     setCanLoadMore(!!last_id && !isLoading && chats.data.length > 0)
-  }, [chats.data.length, isLoading, last_id])
+  }, [chats.data.length, focusId, isLoading, last_id])
 
   useEffect(() => {
+    // console.log('useEffect scrollToBottom taskId')
     chatRef.current && chatRef.current.scrollToBottom()
     // eslint-disable-next-line
   }, [taskId])
 
+  // useEffect(() => {
+  //   let rqId;
+  //   if (chatRef && chatRef.current && chats.data && chats.data.length
+  //     && !isMore && !isLoading && !focusId) {
+  //     rqId = setTimeout(function () {
+  //       // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+  //       console.log('useEffect scrollToBottom chatRef')
+  //       chatRef.current.scrollToBottom()
+  //     }, 0)
+  //   }
+  //   return () => {
+  //     console.log('chatRef clearTimeout')
+  //     clearTimeout(rqId);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [chatRef, taskId, chats.data.length, isLoading, focusId]);
+
   useEffect(() => {
+    if (isLoading) return;
     let rqId;
-    if (chatRef && chatRef.current && chats.data && chats.data.length
-      && !isMore && !isLoading && !focusId) {
-      rqId = setTimeout(function () {
-        // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-        chatRef.current.scrollToBottom()
-      }, 0)
+    if (focusId) {
+      const ele = document.getElementById(focusId)
+      if (ele) {
+        // console.log('focusId', focusId)
+        rqId = setTimeout(function () {
+          chatRef.current.scrollTop(ele.offsetTop)
+          // ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
+          dispatch(clearFocus());
+        }, 10)
+      }
+    } else if (focusTopId) {
+      const ele = document.getElementById(focusTopId);
+      if (ele) {
+        // console.log('focusTopId', focusTopId, ele.offsetTop)
+        rqId = setTimeout(function () {
+          chatRef.current.scrollTop(ele.offsetTop)
+          // ele.scrollIntoView({ block: "start", inline: "nearest", behavior: 'auto' })
+          dispatch(clearFocus());
+        }, 10)
+      }
+      // } else if (chatRef && chatRef.current && chats.data && chats.data.length
+      //   && !isMore && !isLoading && !focusId) {
+      //   rqId = setTimeout(function () {
+      //     // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+      //     console.log('useEffect scrollToBottom chatRef')
+      //     chatRef.current.scrollToBottom()
+      //   }, 0)
     }
     return () => {
-      clearTimeout(rqId);
+      // console.log('focusTopId clearTimeout')
+      // clearTimeout(rqId);
     }
-    // eslint-disable-next-line
-  }, [chatRef, taskId, chats.data.length, isLoading, focusId]);
+  })
 
   // useEffect(() => {
   //   let rqId;
