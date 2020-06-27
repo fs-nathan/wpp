@@ -90,27 +90,27 @@ function AllSubtaskList(props) {
   }, [uncompleteSubTasks])
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      {data.columnOrder.map((columnId, index) => {
-        const column = data.columns[columnId];
-        const tasks = column.dataIdArr.map(taskId => data.data[taskId]);
-        return (
-          <Droppable droppableId={column.id} key={index}>
-            {provided => (
-              <StyledList
-                innerRef={provided.innerRef}
-                {...provided.droppableProps}
-              >
-                {tasks.map((task, index) => (
-                  <AllSubtaskListItem key={task.id} task={task} index={index} {...props} />
-                ))}
-                {provided.placeholder}
-              </StyledList>
-            )}
-          </Droppable>
-        );
-      })}
-    </DragDropContext>
+    // <DragDropContext onDragEnd={onDragEnd}>
+    //   {data.columnOrder.map((columnId, index) => {
+    // const column = data.columns[columnId];
+    // const tasks = column.dataIdArr.map(taskId => data.data[taskId]);
+    //     return (
+    // <Droppable droppableId={column.id} key={index}>
+    //   {provided => (
+    <StyledList
+    // innerRef={provided.innerRef}
+    // {...provided.droppableProps}
+    >
+      {uncompleteSubTasks.map((task, index) => (
+        <AllSubtaskListItem key={task.id} task={task} index={index} {...props} />
+      ))}
+      {/* {provided.placeholder} */}
+    </StyledList>
+    //   )}
+    // </Droppable>
+    //   );
+    // })}
+    // {/* </DragDropContext> */}
   )
 }
 

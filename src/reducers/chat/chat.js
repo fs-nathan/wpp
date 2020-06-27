@@ -67,14 +67,15 @@ export default (state = initialState, action) => produce(state, draft => {
           })
         }
         draft.chats.data.splice(idx, 1, updateDate)
+        draft.focusId = null;
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
+        draft.focusId = 'chatStatusDiv';
       }
       if (action.isHideSendStatus) {
         draft.isShowSendStatus = false;
       }
       draft.isMore = undefined;
-      draft.focusId = null;
       draft.focusTopId = null;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
@@ -84,9 +85,14 @@ export default (state = initialState, action) => produce(state, draft => {
       const { chat_id, last_id, isMore } = action;
       draft.isLoading = true;
       draft.focusId = chat_id;
-      draft.focusTopId = last_id;
       draft.chats.last_id = last_id || null;
-      if (chat_id) draft.isShowBackChat = true;
+      if (chat_id) {
+        draft.isShowBackChat = true;
+      }
+      if (last_id) {
+        draft.focusTopId = last_id;
+        draft.focusId = null;
+      }
       else if (!isMore) draft.isShowBackChat = false;
       if (!chat_id && !last_id && !isMore) {
         draft.chats.data = [];

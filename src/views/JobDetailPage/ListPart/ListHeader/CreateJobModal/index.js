@@ -257,7 +257,7 @@ function CreateJobModal(props) {
     if (isEdit && props.editMode !== EDIT_MODE.NAME_DES) {
       return true;
     }
-    return type_assign !== null && priority !== null && !!name;
+    return type_assign !== null && priority !== null && !!name.trim();
   }
 
   const handlePressConfirm = () => {
@@ -304,8 +304,8 @@ function CreateJobModal(props) {
       onCancle={() => props.setOpen(false)}
       className={clsx("createJob", `createJob__edit${props.editMode}`, {
         'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES]),
-        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE]),
-        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.GROUP]),
+        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE, EDIT_MODE.GROUP]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY]),
       })}
     >
       <React.Fragment>
