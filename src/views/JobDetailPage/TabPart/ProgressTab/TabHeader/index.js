@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { getTrackingTime, getTrackingTimeComplete } from 'actions/taskDetail/taskDetailActions';
+import { getTrackingTime, getTrackingTimeComplete, getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
@@ -21,10 +21,13 @@ function TabHeader({ setShow }) {
   }, [dispatch, taskId])
 
   const [open, setOpen] = React.useState(false);
+
   const handleClickOpen = () => {
     if (!update_duration) return;
     setOpen(true);
+    dispatch(getTaskDetailTabPart({ taskId }));
   };
+
   function onClickBack() {
     setShow(0)
   }

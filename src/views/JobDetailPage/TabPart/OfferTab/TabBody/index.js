@@ -173,6 +173,7 @@ function TabBody(props) {
           setOpen={setOpenDetail}
           loading={detailOfferLoading}
           {...detailOffer}
+          additionQuery={{ task_id: taskId }}
         // {...selectedItem}
         // item={selectedItem}
         // handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}

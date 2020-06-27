@@ -6,6 +6,7 @@ import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
 
 const ShareLocation = ({
+  id,
   user_create_name,
   user_create_avatar,
   user_create_position,
@@ -26,6 +27,7 @@ const ShareLocation = ({
   return (
     <DialogMessageWrap
       {...{
+        id,
         chatPosition,
         user_create_name,
         user_create_avatar,
