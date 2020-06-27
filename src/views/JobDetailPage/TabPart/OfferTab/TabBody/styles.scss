@@ -95,15 +95,18 @@
     svg {
       fill: #ffffff;
     }
-    &__rejected {
-      background-color: red;
-    }
-    &__approve {
-      background-color: greenyellow;
-    }
-    &__normal {
+    &__0 {
       background-color: #9696962b;
       color: #878787;
+    }
+    &__1 {
+      background-color: #ff9800;
+    }
+    &__2 {
+      background-color: #0ab711;
+    }
+    &__3 {
+      background-color: #f44336;
     }
   }
 }
@@ -353,8 +356,8 @@
   }
   &__warning {
     padding: 0px 15px;
-    background: rgb(252,232,230);
-    color: rgb(230,86,86);
+    background: rgb(252, 232, 230);
+    color: rgb(230, 86, 86);
     display: flex;
     align-items: center;
     &_content {

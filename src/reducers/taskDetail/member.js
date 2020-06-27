@@ -11,6 +11,7 @@ const initialState = {
     isFetching: false,
     dataFetched: false,
     error: false,
+    memberId: null,
 };
 
 export default function reducer(state = initialState, action) {
@@ -57,6 +58,7 @@ export default function reducer(state = initialState, action) {
         case types.POST_MEMBER_REQUEST:
             return {
                 ...state,
+                memberId: action.payload.member_id,
                 isFetching: true
             }
         case types.POST_MEMBER_SUCCESS:
