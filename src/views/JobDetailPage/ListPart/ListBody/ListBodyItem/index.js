@@ -64,12 +64,14 @@ function getStatusName(status_code) {
 }
 
 function getStatusCode(status_code, complete) {
-  if (status_code === 3)
-    return 3;
-  if (complete === 0)
-    return 0;
   if (complete === 100)
     return 2;
+  if (status_code === 3)
+    return 3;
+  if (status_code === 4)
+    return 4;
+  if (complete === 0)
+    return 0;
   return 1;
 }
 
@@ -189,7 +191,7 @@ function ListBodyItem(props) {
         chat,
         name,
         status_name,
-        status_code: getStatusCode(status_code, props.complete),
+        status_code,
         new_chat,
         is_ghim,
         updated_time,

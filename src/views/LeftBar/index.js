@@ -44,10 +44,9 @@ const LeftBar = ({
   };
   let menuList = [];
   let itemManage = false;
-
   if (!isEmpty(group_active) && !isEmpty(group_active.modules)) {
     group_active.modules.forEach((el, idx) => {
-      const isActived = pathname.indexOf(el.path_search) != -1 ? true : false
+      const isActived = pathname.indexOf(el.path_search) == 0 ? true : false
       if (el.is_manage_group) {
         itemManage = {
           ...el,

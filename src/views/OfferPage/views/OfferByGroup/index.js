@@ -1,78 +1,171 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
+import { useLocalStorage } from "hooks";
+import { findIndex, get, isNil, last } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { action, labels } from "../../contants/attrs";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, SORT_GROUP_OFFER_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
+import { action } from "../../contants/attrs";
+import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
-import { loadOfferByGroupID, loadSummaryByGroup } from "../../redux/actions";
-import { get } from "../../utils";
+import { loadOfferByGroupID, loadSummaryByGroup, sortOfferGroup } from "../../redux/actions";
 import Content from "./Content";
 import FormDialog from "./modal";
-import { getFirstSummaryGroup } from "./selector";
+import { getFirstSummaryGroup, getGroupOfferList, getSummaryByGroupByKeyword } from "./selector";
+
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
   padding-right: 32px;
   min-height: 100%;
+  max-width: 100%;
 `;
 
 const OfferByGroup = props => {
+
   const { t } = useTranslation();
-  const context = useContext(OfferPageContext);
   const dispatch = useDispatch();
   const history = useHistory();
+  const [layoutTitle, setLayoutTitle] = useState("");
+
   const {
-    keyword,
     listMenu,
     setOpenModalOfferByGroup,
-    openModal,
+    openModalOfferByGroup,
+    timeType,
+    setTimeType,
     timeRange,
-    statusFilter,
-    setTitle
+    setTitle,
+    onDraggEnd,
+    setFilterTab
   } = useContext(OfferPageContext);
+
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
+  const groupList = useSelector(state => getSummaryByGroupByKeyword('', false, t)(state));
+  const groupOfferList = useSelector(state => getGroupOfferList(state));
+  const createOfferSuccess = useSelector(state => state.offerPage[CREATE_OFFER_SUCCESSFULLY])
   const { id } = useParams();
   const isMounted = useMountedState();
+  const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, { timeType: 1 });
+  const searchParams = useLocation().search;
+
   useEffect(() => {
     if (isMounted) {
-      setTitle(get(labels, "pageTitleOfferByGroup"));
+      setTitle(t("VIEW_OFFER_LABEL_GROUP_SUBTITLE"))
     }
-  }, [
-    dispatch,
-    isMounted,
-    timeRange.startDate,
-    timeRange.endDate,
-    statusFilter,
-    context,
-    setTitle,
-    timeRange
-  ]);
+  }, [isMounted, setTitle, t]);
+
+  useEffect(() => {
+    if (isMounted) {
+      setTimeType(timeFilterTypeOfferByGroup.timeType);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
+      storeTimeFilterTypeOfferByGroup({
+        ...timeFilterTypeOfferByGroup,
+        timeType
+      });
+    }
+  }, [isMounted, timeType]);
+
+  useEffect(() => {
+    if (isMounted) {
+      var currentGroup = groupList.filter(group => group.url === history.location.pathname);
+      setLayoutTitle(get(currentGroup, '[0].title'));
+    }
+  }, [isMounted, history.location.pathname, groupList]);
+
   useEffect(() => {
     dispatch(loadSummaryByGroup());
+    const refreshSummaryByGroup = () => {
+      setFilterTab("");
+      dispatch(loadSummaryByGroup());
+    }
+    CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+    CustomEventListener(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
+    return () => {
+      CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+      CustomEventDispose(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
+    }
   }, [dispatch]);
+
   useEffect(() => {
-    if (idFirstGroup === undefined || null) {
+    if (idFirstGroup === undefined || idFirstGroup === null) {
       return
     }
     history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
-
   }, [history, idFirstGroup]);
+
   useEffect(() => {
-    const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-    const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-    dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-    document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click()
+    let urlSearchParams = new URLSearchParams(searchParams);
+    const referrer = urlSearchParams.get("referrer");
+    if (!isNil(referrer) && !isNil(id)) {
+      history.push(Routes.OFFERBYGROUP + "/" + id);
+    }
+  }, [searchParams]);
+
+  useEffect(() => {
+    if (!isNil(id)) {
+      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+      dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click();
+    }
   }, [dispatch, id, timeRange]);
-  const handleOpenModal = () => {
-    setOpenModalOfferByGroup(false);
-  };
+
+  useEffect(() => {
+    const refreshAfterCreateOffer = () => {
+      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+      dispatch(loadSummaryByGroup());
+      if (createOfferSuccess.offer_group_id === id) {
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      }
+    }
+    CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+    return () => {
+      CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
+      CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
+    }
+  }, [createOfferSuccess, id, timeRange]);
+
+  useEffect(() => {
+    if (isMounted) {
+      const refreshListOffers = () => {
+        const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+        const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      }
+      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+      CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+      return () => {
+        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
+        CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+      }
+    }
+  }, [isMounted, timeRange, id]);
+
+  useEffect(() => {
+    if (isMounted) {
+      if (onDraggEnd.source !== null && onDraggEnd.destination !== null) {
+        const id = last(onDraggEnd.id.split("/"));
+        const groupSource = get(groupList, `[${onDraggEnd.destination.index}]`);
+        const originalIndex = findIndex(groupOfferList, (group) => groupSource.url.includes(group.id));
+        dispatch(sortOfferGroup({ group_offer_id: id, position: originalIndex }));
+      }
+    }
+  }, [dispatch, isMounted, onDraggEnd]);
+
   // Redirect to first group when enter
   return (
     <>
@@ -91,7 +184,7 @@ const OfferByGroup = props => {
                 fontWeight: "600"
               }}
             >
-              {t(listMenu[2].title)}
+              {layoutTitle}
             </Box>
           </Box>
         }
@@ -99,9 +192,14 @@ const OfferByGroup = props => {
         <PageContainer>
           <Content />
         </PageContainer>
-        <FormDialog type={action.CREATE_OFFER} open={openModal} handleOpenModal={handleOpenModal} />,
+        <FormDialog
+          type={action.CREATE_OFFER}
+          open={openModalOfferByGroup}
+          setOpen={setOpenModalOfferByGroup}
+        />,
       </Layout>
     </>
   );
 };
+
 export default React.memo(OfferByGroup);

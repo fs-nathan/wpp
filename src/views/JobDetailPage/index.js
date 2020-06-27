@@ -1,4 +1,4 @@
-import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal, loadChat, getViewedChat } from "actions/chat/chat";
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal, loadChat, getViewedChat, openDetailMember, viewChat } from "actions/chat/chat";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { closeNoticeModal } from "actions/system/system";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
@@ -15,11 +15,15 @@ import ListPart from "./ListPart";
 import { lastJobSettingKey } from "./ListPart/ListHeader/CreateJobSetting";
 import ModalImage from "./ModalImage";
 import TabPart from "./TabPart";
+import { getPermissionViewDetailProject } from "actions/viewPermissions";
+import { useHistory } from "react-router-dom";
+import { makeSelectIsCanView } from "./selectors";
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
   const url = new URL(window.location.href);
   const taskId = url.searchParams.get("task_id");
+  const history = useHistory();
   const projectId = useSelector(
     (state) => state.taskDetail.commonTaskDetail.activeProjectId
   );
@@ -27,7 +31,11 @@ function JobDetailPage(props) {
   const isOpenShareFileModal = useSelector(
     (state) => state.chat.isOpenShareFileModal
   );
+  const key = `${userId}:${lastJobSettingKey}`;
+  const type = localStorage.getItem(key)
+  const isCanView = useSelector(makeSelectIsCanView(type, taskId));
   const item = useSelector((state) => state.chat.item);
+  const errorMessage = useSelector((state) => state.taskDetail.detailTask.errorMessage);
   const users_shared = item ? item.users_shared || [] : [];
   const shareItem = { ...item, users_shared }
   // console.log('JobDetailPage', taskId);
@@ -39,8 +47,13 @@ function JobDetailPage(props) {
     dispatch(getGirdListTask());
     dispatch(taskDetailAction.detailGroupPermissionDefault())
     dispatch(taskDetailAction.getRole());
-    dispatch(taskDetailAction.getListOffer());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (errorMessage === 'This task does not exist') {
+      history.push('/tasks/chat/' + projectId)
+    }
+  }, [errorMessage, history, projectId]);
 
   useEffect(() => {
     // console.log('url', url.pathname, 'projectId', projectId)
@@ -70,12 +83,20 @@ function JobDetailPage(props) {
       dispatch(getDataPinOnTaskChat(taskId));
       dispatch(loadChat(taskId));
       dispatch(getViewedChat(taskId));
+      dispatch(openDetailMember(false))
+      if (isCanView) {
+        dispatch(viewChat(taskId))
+      }
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {
-        window.dispatchEvent(customEvent);
+        setTimeout(() => {
+          window.dispatchEvent(customEvent);
+        }, 0);
       });
+    } else {
+      dispatch(taskDetailAction.chooseTask(taskId));
     }
-  }, [dispatch, taskId]);
+  }, [dispatch, isCanView, taskId]);
 
   useEffect(() => {
     const key = `${userId}:${lastJobSettingKey}`;
@@ -83,11 +104,12 @@ function JobDetailPage(props) {
     // console.log(key, ' useEffect', type_data)
     // console.log('projectId', projectId)
     if (projectId !== "" && userId) {
-      dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
+      // dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(detailStatus({ projectId }));
+      dispatch(getPermissionViewDetailProject({ projectId }));
       const customEvent = new CustomEvent(JOIN_PROJECT_EVENT, {
         detail: projectId,
       });

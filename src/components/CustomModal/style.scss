@@ -58,6 +58,7 @@
   //   margin-bottom: 12px;
   // }
   overflow: hidden;
+
   &>input[type="file"] {
     display: none;
   }
@@ -75,7 +76,7 @@
     width: 100%;
 
     &>button {
-      padding: 12px 0 12px;
+      padding: 12px 12px;
     }
   }
 }
@@ -91,7 +92,7 @@
 @mixin comp_CustomModal___action-button {
   padding: 8px 16px;
   background-color: #fff;
-  
+
   &:hover {
     background-color: #eee;
   }

@@ -1,9 +1,9 @@
 import {
   appendChat,
+  appendViewedChat,
   getDataPinOnTaskChat,
   getViewedChatSuccess,
   updateChatState,
-  appendViewedChat,
 } from "actions/chat/chat";
 import {
   getListTaskDetail,
@@ -25,6 +25,7 @@ import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import io from "socket.io-client";
 import styled from "styled-components";
+import { postModule } from "views/HomePage/redux/post";
 import useWebpush from "webpush/useWebpush";
 import {
   actioGetSettingDate,
@@ -44,6 +45,7 @@ import DrawerComponent from "../components/Drawer/Drawer";
 import GroupModal from "../components/NoticeModal/GroupModal";
 import NoticeModal from "../components/NoticeModal/NoticeModal";
 import SnackbarComponent from "../components/Snackbars";
+import configURL from "../constants/apiConstant";
 import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
 import { Routes } from "../constants/routes";
 import routes from "../routes";
@@ -194,7 +196,7 @@ function MainLayout({
   appendViewedChat,
   updateProjectChat,
   taskDetails = {},
-  userId = "",
+  profile = {},
   language = "vi",
   listDataNotRoom,
   listTaskDetail,
@@ -215,14 +217,14 @@ function MainLayout({
 
   function handleDeleteChat(data) {
     // console.log('handleDeleteChat', data)
-    updateChatState(data.id, { is_deleted: true });
+    updateChatState(data.id, { type: CHAT_TYPE.TEXT, is_deleted: true });
   }
 
   function handleViewChat(data) {
     console.log("handleViewChat", data);
-    const { user_name, user_avatar, user_id } = data
+    const { user_name, user_avatar, user_id } = data;
     // getViewedChatSuccess(data)
-    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar })
+    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar });
   }
 
   useEffect(() => {
@@ -231,10 +233,10 @@ function MainLayout({
       actionFetchListColor();
       actioGetSettingDate();
     }
-    if (localStorage.getItem(TOKEN)) {
+    if (localStorage.getItem(TOKEN) && profile && profile.id) {
       handleFetchNoti();
       const uri =
-        "https://appapi.workplus.vn?token=" + localStorage.getItem(TOKEN);
+        `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
@@ -243,6 +245,9 @@ function MainLayout({
       socket.on("WP_NEW_CHAT_EXPRESS_EMOTION_CHAT", handleReactEmotion);
       socket.on("WP_DELETE_CHAT_IN_TASK", handleDeleteChat);
       socket.on("WP_VIEW_CHAT_IN_TASK", handleViewChat);
+
+      socket.on("WP_NEW_COMMENT_POST", postModule.actions.updatePostListItem);
+      socket.on("WP_NEW_LIKE_LOVE_POST", postModule.actions.updatePostListItem);
 
       function joinChat({ detail }) {
         // console.log('joinChat', detail)
@@ -267,10 +272,10 @@ function MainLayout({
       };
     }
     // eslint-disable-next-line
-  }, []);
+  }, [profile && profile.id]);
 
   useEffect(() => {
-    if (!socket || !userId || !taskDetails) return;
+    if (!socket || !profile.id || !taskDetails) return;
     function handleChatInProject(data) {
       console.log("handleChatInProject", data);
       const { user_create_id, task_id, content = {} } = data;
@@ -281,7 +286,7 @@ function MainLayout({
         getListTaskDetail(projectId);
       } else {
         if (task_id !== taskDetails.id) {
-          data.new_chat = user_create_id === userId ? 0 : 1;
+          data.new_chat = user_create_id === profile.id ? 0 : 1;
         }
         data.content = content[language];
         data.updatedAt = Date.now();
@@ -295,7 +300,7 @@ function MainLayout({
     };
     // eslint-disable-next-line
   }, [
-    userId,
+    profile.id,
     language,
     taskDetails,
     listTaskDetail,
@@ -305,23 +310,25 @@ function MainLayout({
 
   useEffect(() => {
     if (!socket || !taskDetails) return;
-    console.log("listen chat");
+    // console.log("listen chat");
     const handleNewChat = (data) => {
       console.log("handleNewChat", data, taskDetails.uuid);
       if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
-        appendChat({ data_chat: data });
+        const isHideSendStatus =
+          data.user_create_avatar && data.user_create_avatar !== profile.avatar;
+        appendChat({ data_chat: data }, undefined, isHideSendStatus);
       }
       const task = getTaskByChat(data, taskDetails);
       if (task) {
         getTaskDetailTabPartSuccess({ task });
       }
-      if (data.type === CHAT_TYPE.UPDATE_COMPLETE) {
-        updateProjectChat({ complete: data.complete, task_id: taskDetails.id });
-      }
+      // if (data.type === CHAT_TYPE.UPDATE_COMPLETE) {
+      //   updateProjectChat({ complete: data.complete, task_id: taskDetails.id });
+      // }
     };
 
     function pinOnTaskChat(data) {
-      console.log("pinOnTaskChat", data, taskDetails.id);
+      // console.log("pinOnTaskChat", data, taskDetails.id);
       if (data.task_id === taskDetails.id) {
         getDataPinOnTaskChat(data.task_id);
       }
@@ -330,7 +337,7 @@ function MainLayout({
     socket.on("WP_NEW_CHAT_CREATED_IN_TASK", handleNewChat);
     socket.on("PIN_DATA_ON_CHAT", pinOnTaskChat);
     return () => {
-      console.log("close socket chat");
+      // console.log("close socket chat");
       socket.off("WP_NEW_CHAT_CREATED_IN_TASK", handleNewChat);
       socket.off("PIN_DATA_ON_CHAT", pinOnTaskChat);
     };
@@ -343,7 +350,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(
@@ -391,7 +398,7 @@ function MainLayout({
   useEffect(() => {
     document.body.style.setProperty("--color-primary", bgColor.color);
     // style={{ "--color-primary":  }}
-  });
+  }, [bgColor]);
   return (
     <Container
       className={
@@ -448,7 +455,7 @@ export default connect(
     listDataNotRoom: state.taskDetail.listDetailTask.listDataNotRoom,
     listTaskDetail: state.taskDetail.listDetailTask.listTaskDetail,
     taskDetails: state.taskDetail.detailTask.taskDetails,
-    userId: state.system.profile.id,
+    profile: state.system.profile,
     language: state.system.profile.language,
     colors: state.setting.colors,
     groupDetail: state.setting.groupDetail,

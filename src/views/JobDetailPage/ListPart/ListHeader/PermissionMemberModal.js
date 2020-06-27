@@ -20,6 +20,9 @@ import "slick-carousel/slick/slick.css";
 import styled from 'styled-components';
 import './styles.scss';
 import findIndex from "lodash/findIndex";
+import { currentColorSelector } from "views/JobDetailPage/selectors";
+import AlertModal from "components/AlertModal";
+import { isEmpty } from "lodash";
 
 const RowTable = styled(TableRow)`
 & > *:not(first-child) {
@@ -36,17 +39,31 @@ const CellTable = styled(TableCell)`
     padding: 8px;
 `
 
+const StyledDiv = styled.div`
+  &:hover {
+    background-color: ${props => props.colorHover};
+    color: #ffffff;
+    svg {
+      color: #ffffff;
+    }
+  }
+`
+
 function PriorityTable(props) {
   const { t } = useTranslation();
+  const groupActiveColor = useSelector(currentColorSelector)
   return (
-    <div className={clsx("permissionItem", { "permissionItem__checked": props.checked })} align="center">{props.radio}
+    <StyledDiv
+      className={clsx("permissionItem", { "permissionItem__checked": props.checked })}
+      colorHover={groupActiveColor}
+      align="center">{props.radio}
       <Radio
         className="permissionItem--radio"
         checked={props.checked}
         onChange={props.onChange}
         value={props.value}
       />
-    </div>
+    </StyledDiv>
   )
 }
 
@@ -71,14 +88,22 @@ function PermissionMemberModal({ memberId, setOpen,
   const listGroupPermission = useSelector(state => state.taskDetail.listGroupPermission.permissions);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const ownerPermissions = useSelector(state => state.taskDetail.detailTask.ownerPermissions);
-  const idx = permission ? findIndex(listGroupPermission || [], ({ id }) => id === permission.id) : -1
-  const [selectedValue, setSelectedValue] = React.useState(idx);
+  const [selectedValue, setSelectedValue] = React.useState(-1);
   const [permissionsList, setPermissionsList] = React.useState([]);
+  const [alert, setAlert] = React.useState(false);
 
   // useEffect(() => {
   //   if (is_admin)
   //     dispatch(detailGroupPermissionDefault())
   // }, [dispatch, is_admin])
+  useEffect(() => {
+    if (permission) {
+      const idx = findIndex(listGroupPermission || [], ({ id }) => id === permission.id)
+      setSelectedValue(idx)
+    } else {
+      setSelectedValue(-1)
+    }
+  }, [listGroupPermission, permission])
 
   useEffect(() => {
     const selectedPermission = get(listGroupPermission[selectedValue], 'permissions', [])
@@ -104,6 +129,10 @@ function PermissionMemberModal({ memberId, setOpen,
   }
 
   function onClickDelete() {
+    setAlert(true)
+  }
+
+  function onConfirmDelete() {
     dispatch(removeGroupPermissionOfMember(taskId, memberId))
     handleClose()
   }
@@ -128,7 +157,7 @@ function PermissionMemberModal({ memberId, setOpen,
         <div className="permissionMemberModal--content">
           {is_admin ? t('LABEL_CHAT_TASK_CHU_SO_HUU_CONG') : t('LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM')}
         </div>
-        {permission && idx === -1 &&
+        {permission && selectedValue === -1 &&
           <div className="permissionMemberModal--removed">
             <Icon path={mdiAlert} size={3}></Icon>
             <div className="permissionMemberModal--removedDes">
@@ -136,7 +165,7 @@ function PermissionMemberModal({ memberId, setOpen,
               <div >{t('LABEL_CHAT_TASK_BAN_CO_THE_GIU')}</div>
             </div>
             <a
-              href="http://workplus.vn/"
+              href={permission.url_redirect || "http://workplus.vn/"}
               target="_blank"
               rel="noopener noreferrer"
               className="permissionMemberModal--seeMore">
@@ -147,10 +176,12 @@ function PermissionMemberModal({ memberId, setOpen,
           <>
             {!is_admin &&
               <>
-                <div className="permissionMemberModal--delete" onClick={onClickDelete}>
-                  <Icon path={mdiDeleteOutline} size={1}></Icon>
-                  {t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}
-                </div>
+                {!isEmpty(permission) &&
+                  <div className="permissionMemberModal--delete" onClick={onClickDelete}>
+                    <Icon path={mdiDeleteOutline} size={1}></Icon>
+                    {t('LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON')}
+                  </div>
+                }
                 <div className="permissionMemberModal--slider">
                   <Slider adaptiveHeight variableWidth infinite={false}
                     nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={listGroupPermission.length < 5} />}
@@ -193,8 +224,13 @@ function PermissionMemberModal({ memberId, setOpen,
           </div>
         }
       </DialogContent>
-
-    </DialogWrap>
+      <AlertModal
+        open={alert}
+        setOpen={setAlert}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={onConfirmDelete}
+      />
+    </DialogWrap >
   );
 }
 export default PermissionMemberModal

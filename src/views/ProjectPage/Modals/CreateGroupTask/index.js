@@ -1,7 +1,10 @@
 import { mdiContentCopy, mdiNotePlusOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import CustomModal from 'components/CustomModal';
+import { isNil } from 'lodash';
 import React from 'react';
-import CustomModal from '../../../../components/CustomModal';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import CopyGroupTask from '../CopyGroupTask';
 import CreateNewGroupTask from '../CreateNewGroupTask';
 import './style.scss';
@@ -18,15 +21,23 @@ const ButtonCase = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function CreateGroupTask({ open, setOpen, }) {
+function CreateGroupTask({ open, setOpen, project_id = null }) {
 
   const [createNew, setCreateNew] = React.useState(false);
   const [copy, setCopy] = React.useState(false);
+  const { t } = useTranslation();
+
+  const { projectId: _projectId } = useParams();
+  const [projectId, setProjectId] = React.useState(_projectId);
+
+  React.useEffect(() => {
+    setProjectId(isNil(project_id) ? _projectId : project_id);
+  }, [project_id, _projectId]);
 
   return (
     <>
       <CustomModal
-        title='Tạo nhóm công việc'
+        title={t("DMH.VIEW.PP.MODAL.CREATE.TITLE")}
         open={open}
         setOpen={setOpen}
         confirmRender={null}
@@ -45,8 +56,8 @@ function CreateGroupTask({ open, setOpen, }) {
               <Icon path={mdiNotePlusOutline} size={2} />
             </div>
             <div>
-              <span>Tạo mới nhóm công việc</span>
-              <span>Tạo mới hoàn toàn các thông số của nhóm công việc</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.CREATE.LABEL")}</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.CREATE.DESC")}</span>
             </div>
           </ButtonCase>
           <ButtonCase
@@ -60,14 +71,14 @@ function CreateGroupTask({ open, setOpen, }) {
               <Icon path={mdiContentCopy} size={2} />
             </div>
             <div>
-              <span>Sao chép nhóm công việc</span>
-              <span>Sao chép các nhóm công việc có sẵn vào dự án</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.COPY.LABEL")}</span>
+              <span>{t("DMH.VIEW.PP.MODAL.CREATE.COPY.DESC")}</span>
             </div>
           </ButtonCase>
         </Container>
       </CustomModal>
-      <CreateNewGroupTask open={createNew} setOpen={setCreateNew} />
-      <CopyGroupTask open={copy} setOpen={setCopy} />
+      <CreateNewGroupTask open={createNew} setOpen={setCreateNew} project_id={projectId} />
+      <CopyGroupTask open={copy} setOpen={setCopy} project_id={projectId} />
     </>
   )
 }

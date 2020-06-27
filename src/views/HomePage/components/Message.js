@@ -1,10 +1,11 @@
 import { Avatar, Box, ButtonBase, Typography } from "@material-ui/core";
 import { ExpandLess } from "@material-ui/icons";
 import ReplyIcon from "@material-ui/icons/Reply";
+import { showImagesList } from "actions/chat/chat";
 import colors from "helpers/colorPalette";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { createMapPropsFromAttrs, get, paging } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
@@ -12,7 +13,7 @@ import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/
 import { commentAttr } from "../contant/attrs";
 import { postModule } from "../redux/post";
 import "./Message.css";
-import { PostContext } from "./Post";
+import { PostContext, PostFilesStateLess } from "./Post";
 const RepliesContainer = ({
   total_sub_comment,
   post_id,
@@ -154,24 +155,32 @@ export const Reply = ({ reply, onReplyClick }) => {
 };
 const Message = ({
   type = "comment",
+  can_modify,
   post_id,
   parent,
   id,
   onReplyClick,
+  onDelete,
   content,
+  deleted,
   user_create_name,
   user_create_avatar,
   comments,
   total_sub_comment,
-  images,
+  images = emptyArray,
   images_id,
   images_url,
   images_size,
   images_type,
+  time_label,
   files,
   sticker,
+  stickerUrl,
 }) => {
   const { t } = useTranslation();
+  if (deleted) {
+    return null;
+  }
   return (
     <div className={"comp_Message"}>
       <Avatar className="comp_Message__avatar" src={user_create_avatar}>
@@ -190,8 +199,23 @@ const Message = ({
             </Box>
           )}
           <span className="comp_Message__creator">{user_create_name}</span>
-          {content}
+          <span className="comp_Message__message">{content}</span>
         </div>
+        {sticker && (
+          <div className="comp_Message__sticker">
+            <Sticker {...{ sticker: stickerUrl || sticker }}></Sticker>
+          </div>
+        )}
+        {images.map((image, i) => (
+          <div key={i} className="comp_Message__sticker">
+            <Image image={image}></Image>
+          </div>
+        ))}
+        {!!files && !!files.length && (
+          <div className="comp_Message__files">
+            <PostFilesStateLess files={files} />
+          </div>
+        )}
         <Box padding="0 10px">
           {onReplyClick && (
             <ButtonBase
@@ -201,12 +225,20 @@ const Message = ({
               {t("Trả lời")}
             </ButtonBase>
           )}
+          {can_modify && onDelete && (
+            <ButtonBase
+              onClick={onDelete}
+              className="comp_Message__reply u-fontSize12"
+            >
+              {t("Xóa")}
+            </ButtonBase>
+          )}
           <Typography
             className=" u-fontSize12"
             component="span"
             color="textSecondary"
           >
-            2 giờ
+            {time_label}
           </Typography>
           {type === "comment" && (
             <RepliesContainer
@@ -226,53 +258,58 @@ const Message = ({
 };
 export default ({ message, comments, onReplyClick }) => {
   const { id: post_id } = useContext(PostContext);
-  const [
-    id,
-    content,
-    user_create_name,
-    user_create_avatar,
-    images,
-    images_id,
-    images_url,
-    images_size,
-    images_type,
-    files,
-    sticker,
-    total_sub_comment,
-  ] = createMapPropsFromAttrs([
-    commentAttr.id,
-    commentAttr.content,
-    commentAttr.user_create_name,
-    commentAttr.user_create_avatar,
-    commentAttr.images,
-    commentAttr.images_id,
-    commentAttr.images_url,
-    commentAttr.images_size,
-    commentAttr.images_type,
-    commentAttr.files,
-    commentAttr.sticker,
-    commentAttr.total_sub_comment,
-  ])(message);
+
+  const [{ status }, handleDeleteComment] = useAsyncTracker();
+
   return (
     <Message
       comments={comments}
       parent={message.parent}
       {...{
-        id,
+        ...message,
         post_id,
-        content,
+        deleted: status === apiCallStatus.success,
         onReplyClick,
-        user_create_name,
-        user_create_avatar,
-        images,
-        images_id,
-        images_url,
-        images_size,
-        images_type,
-        files,
-        sticker,
-        total_sub_comment,
+        onDelete: message.id
+          ? () => {
+              const asyncId = Date.now();
+              handleDeleteComment({
+                asyncId,
+                ...postModule.actions.deleteComment({
+                  comment_id: message.id,
+                }),
+              });
+            }
+          : undefined,
+        time_label: message.time_label,
       }}
     />
   );
 };
+
+const Sticker = React.memo(({ sticker }) => {
+  // const listStickers = useSelector((state) => state.chat.listStickers);
+  // const item = (listStickers || emptyArray).find((item) => item.id === sticker);
+  // console.log({ listStickers, sticker });
+  // if (!item || !item.url) return null;
+  return <img src={sticker} />;
+});
+const Image = React.memo(({ image }) => {
+  const dispatch = useDispatch();
+  const url = image.url_thumb || image.url;
+  return (
+    <img
+      src={url}
+      onClick={() =>
+        dispatch(
+          showImagesList(true, [
+            {
+              ...image,
+              url: url,
+            },
+          ])
+        )
+      }
+    />
+  );
+});

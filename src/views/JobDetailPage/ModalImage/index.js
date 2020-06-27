@@ -16,6 +16,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import DialogTitleModalImage from './DialogTitleModalImage';
 import './styles.scss';
+import * as fileType from 'assets/fileType';
+import { FileType } from 'components/FileType';
 
 const DialogContent = withStyles(theme => ({
   root: {
@@ -58,7 +60,7 @@ const FooterDialog = styled(DialogActions)`
     display: flex;
     justify-content: center;
     padding: 5px 0 5px 0;
-    height: 100px;
+    height: ${props => props.fullHeight ? 0 : '100px'};
 `
 const ButtonImage = styled(IconButton)`
     background: #353535;
@@ -247,7 +249,7 @@ const ModalImage = () => {
       </DialogTitleModalImage>
       <ContentDialog id="ContentDialog-ImageModal">
         {
-          (type === 'mp4') ?
+          (FileType(type) === fileType.video) ?
             <ReactPlayer
               className="ModalImage--video"
               url={url} playing
@@ -278,7 +280,7 @@ const ModalImage = () => {
             </>
         }
       </ContentDialog>
-      <FooterDialog>
+      <FooterDialog fullHeight={FileType(type) === fileType.video}>
         <div className="ModalImage--scrollWrap">
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}
@@ -288,13 +290,13 @@ const ModalImage = () => {
           >
             <div className="ModalImage--imagesList">
               {
-                (type === 'mp4') ? null :
+                (FileType(type) === fileType.video) ? null :
                   imagesList.map((image, index) => {
                     return (
                       <WrapperImage
                         onClick={() => setCurrentImage(index)}
                         key={`1-${index}`}>
-                        <Image src={image.url} alt='avatar' selected={currentImage === index} />
+                        <Image src={image.url_thumbnail} alt='avatar' selected={currentImage === index} />
                       </WrapperImage>
                     );
                   })

@@ -3,16 +3,11 @@ import CloseIcon from "@material-ui/icons/Close";
 import { mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Checkbox, Drawer } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ChromePicker } from "react-color";
 import { Scrollbars } from "react-custom-scrollbars";
 import { connect } from "react-redux";
-import {
-  actionChangeColorGanttSetting,
-  actionChangeVisibaleGanttSetting,
-  changeTimelineColor,
-  changeVisible,
-} from "../../../actions/gantt";
+import { actionChangeColorGanttSetting, actionChangeVisibaleGanttSetting, changeTimelineColor, changeVisible } from "../../../actions/gantt";
 import { changeVisibleConfigGantt } from "../../../actions/system/system";
 import "../../../views/JobPage/components/QuickViewFilter.css";
 import "../../../views/JobPage/Layout/QuickView.css";
@@ -68,6 +63,7 @@ const CheckboxColorTimeLine = ({
   color,
   type,
   setColor,
+  disabled,
   changeVisible,
   checked,
 }) => {
@@ -82,13 +78,18 @@ const CheckboxColorTimeLine = ({
     >
       <Checkbox
         checked={checked}
+        disabled={disabled}
         onChange={handleChangeCheckBox}
         style={{
           display: "flex",
           width: "100%",
           marginLeft: "8px !important",
         }}
-        className="config--drawer--checkbox"
+        className={
+          disabled
+            ? `config--drawer--checkbox ant-checkbox-inner-disabled`
+            : "config--drawer--checkbox"
+        }
       >
         <CheckBoxLabel text={text} />
       </Checkbox>
@@ -132,6 +133,9 @@ const CommonConfig = ({
   const handleChangeColor = (type, hex) => {
     changeTimelineColor(type, hex);
   };
+  useEffect(() => {
+    localStorage.setItem("ganttConfig", JSON.stringify(visibleGantt))
+  }, [visibleGantt])
   return (
     <Drawer
       closable={false}
@@ -187,10 +191,12 @@ const CommonConfig = ({
             type={"group"}
             text="Nhóm công việc"
             color={timelineColor.group}
+            disabled={true}
             setColor={handleChangeColor}
           />
           <CheckboxColorTimeLine
             projectInfo={projectInfo}
+            disabled={true}
             checked={visibleGantt.task}
             changeVisible={changeVisible}
             type={"task"}
@@ -205,6 +211,15 @@ const CommonConfig = ({
             type={"duration"}
             text="Hoàn thành"
             color={timelineColor.duration}
+            setColor={handleChangeColor}
+          />
+          <CheckboxColorTimeLine
+            projectInfo={projectInfo}
+            checked={visibleGantt.timeNotWork}
+            changeVisible={changeVisible}
+            type={"timeNotWork"}
+            text="Ngày nghỉ làm"
+            color={timelineColor.timeNotWork}
             setColor={handleChangeColor}
           />
           <div className="config--drawer--checkbox-wrapper">
@@ -240,6 +255,7 @@ const CommonConfig = ({
             <Checkbox
               checked={visibleGantt.fromNowLayer}
               onChange={(e) => {
+                localStorage.setItem("gant-fromNowLayer", true)
                 changeVisible(e.target.checked, "gantt", "fromNowLayer");
               }}
               className="config--drawer--checkbox"

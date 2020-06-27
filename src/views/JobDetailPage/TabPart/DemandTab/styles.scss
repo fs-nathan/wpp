@@ -45,4 +45,10 @@
   .comp_CustomModal___scroll {
     height: 100% !important;
   }
+  .MuiDialogContent-root {
+    padding-top: 0px;
+  }
+  &--content {
+    font-size: 14px;
+  }
 }

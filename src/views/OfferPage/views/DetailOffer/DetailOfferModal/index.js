@@ -1,41 +1,44 @@
+import clsx from 'clsx';
 import React, { useContext } from 'react';
-import { useTranslation } from 'react-i18next'
+import { useTranslation } from 'react-i18next';
 import CustomModal from '../../../../../components/CustomModal';
 import { OfferPageContext } from '../../../OfferPageContext';
 import {
-  getDetailOfferModalCancelBtnTitle,
   getDetailOfferModalConfirmBtnTitle,
-  getDetailOfferModalTitle,
+  getDetailOfferModalTitle
 } from '../../../utils/i18nSelectors';
-import DetailOffer from '../DetailOfferComponent'
-import { styles } from '../DetailOfferComponent/style'
+import DetailOffer from '../DetailOfferComponent';
 import './styles.scss';
 
-const DetailOfferModal = ({ open, setOpen, loading, ...rest }) => {
+const DetailOfferModal = ({ open, setOpen, loading, additionQuery, ...rest }) => {
   const { setShowDeleteOfferConfirmModal } = useContext(OfferPageContext);
   const { t } = useTranslation()
-  const classes = styles()
+  const { can_delete } = rest;
+
   const onConfirm = () => {
-    setShowDeleteOfferConfirmModal(true);
-  }
-  const onCloseModal = () => {
-    // do nothing
+    if (can_delete) {
+      setShowDeleteOfferConfirmModal(true);
+    }
   }
 
   return (
     <CustomModal
-      className="detail-offer-modal"
+      className={clsx(
+        'detailOfferModal-container',
+        can_delete ? 'detailOfferModal-confirmBtn--red' : 'detailOfferModal-confirmBtn--black'
+      )}
       title={getDetailOfferModalTitle(t)}
       open={open}
       setOpen={setOpen}
       loading={loading}
-      confirmRender={() => getDetailOfferModalConfirmBtnTitle(t)}
+      confirmRender={can_delete ? () => getDetailOfferModalConfirmBtnTitle(t) : null}
       onConfirm={onConfirm}
-      cancleRender={() => getDetailOfferModalCancelBtnTitle(t)}
-      onCancle={onCloseModal}
+      manualClose={true}
+      onCancle={() => setOpen(false)}
       fullWidth
+      maxWidth='lg'
     >
-      <DetailOffer {...rest} />
+      <DetailOffer {...rest} additionQuery={additionQuery} />
     </CustomModal>
   )
 }

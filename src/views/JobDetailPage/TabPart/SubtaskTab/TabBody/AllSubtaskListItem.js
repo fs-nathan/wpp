@@ -21,7 +21,7 @@ const AllSubtaskListItemContainer = styled(ListItem)`
   & > *:last-child {
     margin-left: auto;
   }
-  padding: 8px 0;
+  padding: 8px 0 8px 30px;
   &:hover {
     background-color: #f2f5fa;
   }
@@ -105,82 +105,84 @@ function AllSubtaskListItem(props) {
   }
 
   return (
-    <Draggable
-      draggableId={props.task.id}
-      index={props.index}
+    // <Draggable
+    //   draggableId={props.task.id}
+    //   index={props.index}
+    // >
+    //   {(provided) => (
+    <AllSubtaskListItemContainer
+    // innerRef={provided.innerRef}
+    // {...provided.draggableProps}
     >
-      {(provided) => (
-        <AllSubtaskListItemContainer
-          innerRef={provided.innerRef}
-          {...provided.draggableProps}
-        >
-          <StyledMenu {...provided.dragHandleProps}>
-            <abbr title={t('LABEL_CHAT_TASK_KEO_THA_SAP_XEP')}>
-              <Icon color="#ccc" path={mdiDragVertical} size={1} />
+      {/* <StyledMenu 
+      // {...provided.dragHandleProps}
+      >
+        <abbr title={t('LABEL_CHAT_TASK_KEO_THA_SAP_XEP')}>
+          <Icon color="#ccc" path={mdiDragVertical} size={1} />
+        </abbr>
+      </StyledMenu> */}
+      {
+        !isHover
+          ?
+          <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          >
+            {/* <Avatar src={props.task.user_create_avatar} alt='avatar' /> */}
+            <Icon path={mdiCircleOutline} size={1} color="#757575" />
+          </abbr>
+          :
+          <ButtonIcon onClick={onClickCompleteTask}
+            onMouseEnter={() => setIsHover(true)}
+            onMouseLeave={() => setIsHover(false)}
+          >
+            <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}>
+              <Icon path={mdiCheckCircle} size={1} color="rgb(2,218,137)" />
             </abbr>
-          </StyledMenu>
-          {
-            !isHover
-              ?
-              <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
-              >
-                {/* <Avatar src={props.task.user_create_avatar} alt='avatar' /> */}
-                <Icon path={mdiCircleOutline} size={1} color="#757575" />
-              </abbr>
-              :
-              <ButtonIcon onClick={onClickCompleteTask}
-                onMouseEnter={() => setIsHover(true)}
-                onMouseLeave={() => setIsHover(false)}
-              >
-                <abbr title={t('LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH')}>
-                  <Icon path={mdiCheckCircle} size={1} color="rgb(2,218,137)" />
-                </abbr>
-              </ButtonIcon>
-          }
-          <ListItemText>
-            <div className="subTaskItem--content"
-              onClick={onClickTitle}
-            >{props.task.name}</div>
-            {/* <div className="subTaskItem--createdAt">Tạo lúc {props.task.created_at}</div> */}
-          </ListItemText>
-          <StyledMenu>
-            {props.task.can_modify &&
-              <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
-                <Icon path={mdiDotsVertical} size={1} />
-              </ButtonIcon>
-            }
-            <Menu
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleClose}
-              transformOrigin={{
-                vertical: -30,
-                horizontal: 'right',
-              }}
-            >
-              <MenuItem onClick={handleClickOpen} >{t('LABEL_CHAT_TASK_CHINH_SUA')}</MenuItem>
-              <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
-            </Menu>
-          </StyledMenu>
-          <SubtaskModal isOpen={open}
-            handleClickClose={handleClickClose}
-            handleClickOpen={handleClickOpen}
-            task={props.task.id}
-            name={props.task.name}
-            {...props}
-          />
-          <AlertModal
-            open={isOpenDelete}
-            setOpen={setOpenDelete}
-            content={t('IDS_WP_ALERT_CONTENT')}
-            onConfirm={confirmDelete}
-          />
-        </AllSubtaskListItemContainer>
-      )}
-    </Draggable>
+          </ButtonIcon>
+      }
+      <ListItemText>
+        <div className="subTaskItem--content"
+          onClick={onClickTitle}
+        >{props.task.name}</div>
+        {/* <div className="subTaskItem--createdAt">Tạo lúc {props.task.created_at}</div> */}
+      </ListItemText>
+      <StyledMenu>
+        {props.task.can_modify &&
+          <ButtonIcon style={{ marginRight: 16 }} onClick={handleClick} aria-haspopup="true">
+            <Icon path={mdiDotsVertical} size={1} />
+          </ButtonIcon>
+        }
+        <Menu
+          anchorEl={anchorEl}
+          keepMounted
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+          transformOrigin={{
+            vertical: -30,
+            horizontal: 'right',
+          }}
+        >
+          <MenuItem onClick={handleClickOpen} >{t('LABEL_CHAT_TASK_CHINH_SUA')}</MenuItem>
+          <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
+        </Menu>
+      </StyledMenu>
+      <SubtaskModal isOpen={open}
+        handleClickClose={handleClickClose}
+        handleClickOpen={handleClickOpen}
+        task={props.task.id}
+        name={props.task.name}
+        {...props}
+      />
+      <AlertModal
+        open={isOpenDelete}
+        setOpen={setOpenDelete}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={confirmDelete}
+      />
+    </AllSubtaskListItemContainer>
+    //   )}
+    // </Draggable>
   )
 }
 

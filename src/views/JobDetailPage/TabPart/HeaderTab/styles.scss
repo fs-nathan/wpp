@@ -17,6 +17,10 @@
         fill: #03b000;
       }
     }
+    &__hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
   }
   &--text {
     font-size: 17px;

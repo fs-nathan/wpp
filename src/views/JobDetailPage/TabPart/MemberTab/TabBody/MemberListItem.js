@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import './styles.scss';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -32,10 +33,13 @@ const MemberListItem = ({
   id, name, avatar,
   room, position, group_permission,
   handleClickPermission,
+  can_ban,
+  is_admin,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const groupActiveColor = useSelector(currentColorSelector)
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
@@ -49,6 +53,7 @@ const MemberListItem = ({
   const handleDeleteMembers = () => {
     dispatch(openDetailMember(false))
     dispatch(deleteMember({ task_id: taskId, member_id: id }))
+    setAnchorEl(null);
   };
 
   const handleClickDetail = () => {
@@ -76,6 +81,10 @@ const MemberListItem = ({
             {compact([room, position]).join(' - ')}
           </div>
         </div>
+        {is_admin && <div className="memberItem--admin" style={{ backgroundColor: groupActiveColor }}>
+          Admin
+        </div>
+        }
         <ButtonIcon
           className="memberItem--menuButton"
           size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
@@ -94,8 +103,8 @@ const MemberListItem = ({
         }}
       >
         <MenuItem className="memberItem--menuItem" onClick={handleClickDetail}>{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>
-        <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>
+        {!is_admin && <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>}
+        {can_ban && <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>}
       </Menu>
     </React.Fragment >
   );

@@ -9,16 +9,6 @@ import Popover from "./popover";
 const selectSummaryGroup = state => state.offerPage[SUMMARY_BY_GROUP];
 const selectOffer = state => state.offerPage[OFFER_BY_GROUP];
 const selectStatusCreateGroupOffer = state => state.offerPage[CREATE_GROUP_OFFER]
-const rightIcon = () => {
-  return (
-    <>
-      <div className="right-setting-icon">
-        <span>N</span>
-      </div>
-    </>
-  );
-};
-
 export const getOffer = createSelector(selectOffer, offer => offer.offers);
 export const getFirstSummaryGroup = createSelector(
   selectSummaryGroup,
@@ -69,18 +59,26 @@ export const getTaskByKeyword = (keyword, status_filter) =>
     return newOffers.filter(x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1)
   });
 
-export const getSummaryByGroupByKeyword = (keyword) => createSelector(selectSummaryGroup, group => {
+export const getSummaryByGroupByKeyword = (keyword, isOfferGroupManageable, t) => createSelector(selectSummaryGroup, group => {
   if (group === undefined) {
     return []
   }
   return group.offers_group.map(x => ({
     title: x.name,
-    subtitle: x.offer_waiting + " đề xuất chờ duyệt",
+    subtitle: t("VIEW_OFFER_LABEL_PENDING_OFFER", { count: x.offer_waiting }),
     url: Routes.OFFERBYGROUP + `/${x.id}`,
     color: "#7d99a6",
     icon: mdiEmailCheck,
-    rightIcon: x.have_new_offer && rightIcon,
-    rightIcon: (() => <><Popover offer_group_id={get(x, "id")} name={get(x, "name")} description={get(x, "description")} view={false} /></>)
+    rightIcon: (() => isOfferGroupManageable && (
+      <>
+        <Popover
+          offer_group_id={get(x, "id")}
+          name={get(x, "name")}
+          description={get(x, "description")}
+          view={false}
+        />
+      </>
+    ))
   })).filter(
     x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1
   )
@@ -92,3 +90,10 @@ export const getStatusCreateGroupOffer = createSelector(selectStatusCreateGroupO
   }
   return status
 })
+
+export const getGroupOfferList = createSelector(
+  selectSummaryGroup,
+  group => {
+    return group.offers_group;
+  }
+);

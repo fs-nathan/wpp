@@ -12,3 +12,9 @@
   font-weight: 600;
   font-size: 12px;
 }
+
+.ChartLegend_legendLabelText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

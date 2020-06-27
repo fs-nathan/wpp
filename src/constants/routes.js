@@ -1,5 +1,6 @@
 export const Routes = {
   HOME: "/",
+  LOGIN: "/",
   POST: "/home",
   PROJECTS: "/projects",
   PROJECT: "/tasks/table",
@@ -50,4 +51,6 @@ export const Routes = {
   SETTING_GROUP_GROUP_PERMISSION: "/setting-group/group-permission",
   OFFERS: "/offers",
   PROJECT_GRANT: "/tasks/gantt/:projectId",
+
+  
 };

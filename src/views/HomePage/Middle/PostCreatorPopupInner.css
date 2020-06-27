@@ -21,6 +21,19 @@
   padding: 10px;
   align-items: center;
 }
+.comp_PostCreatorPopupInner__fileIcon {
+  transform: rotate(45deg);
+}
+.comp_PostCreatorPopupInner__footer .MuiIconButton-root {
+  background: #e8e8e8;
+  border-radius: 2px;
+  padding: 4p 11px;
+  margin: 0 6px;
+}
+.comp_PostCreatorPopupInner__footer .MuiIconButton-root svg {
+  width: 1.8rem;
+  height: auto;
+}
 .comp_PostCreatorPopupInner__main {
   overflow: auto;
   flex: 1;
@@ -80,17 +93,34 @@
   justify-content: center;
   align-items: center;
 }
-.comp_PostCreatorPopupInner__media > div {
+.comp_PostCreatorPopupInner__mediaList {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap: 10px;
+
+  /* justify-content: center; */
+  /* grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 8px;
+  padding: 8px; */
+  display: flex;
+  /* flex-wrap: wrap; */
+  overflow-y: hidden;
+  overflow-x: auto;
+  height: 120px;
+  padding: 4px;
+  align-items: center;
 }
-.comp_PostCreatorPopupInner__media > div > div {
+.comp_PostCreatorPopupInner__mediaItem {
+  flex-shrink: 0;
+  width: 100px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 4px;
+  margin-right: 4px;
+}
+.comp_PostCreatorPopupInner__mediaItem > div {
   width: 100%;
   overflow: hidden;
   padding-top: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 4px;
+
   position: relative;
 }
 .comp_PostCreatorPopupInner__media img {

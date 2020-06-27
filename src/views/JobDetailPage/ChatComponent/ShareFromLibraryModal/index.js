@@ -206,7 +206,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
                       size={1.4}
                       color={selectedMenu.color}
                     />
-                    {selectedMenu.title}
+                    {t(selectedMenu.title)}
                   </div>
                   <div className="ShareFromLibraryModal--bread-crumbs-list" >
                     <Breadcrumbs

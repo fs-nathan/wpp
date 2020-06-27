@@ -5,6 +5,7 @@ import { mdiPlusCircle } from "@mdi/js";
 import Icon from '@mdi/react';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomModal from 'components/CustomModal';
+import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import { findIndex, get, map, pick } from 'lodash';
@@ -105,31 +106,11 @@ function UpdatePersonalRemind({
               <Typography component={'span'}> {t('views.calendar_page.modal.create_personal_remind.choose_category')} </Typography>
               <span>*</span>
             </abbr>
-            <Select
-              className="remind_group_selector"
-              id="remind_group_selector"
-              fullWidth
-              variant="outlined"
+            <CustomSelect
               value={data.selectedCategory}
-              onChange={({ target }) => handleChangeData("selectedCategory", target.value)}
-              MenuProps={{
-                className: "remind_group_selector--paper",
-                MenuListProps: {
-                  component: Scrollbars,
-                },
-                variant: 'menu'
-              }}
-            >
-              {
-                remindCategories !== undefined && Array.isArray(remindCategories)
-                &&
-                remindCategories.map((item, index) => {
-                  return (
-                    <MenuItem value={get(item, "id")} key={get(item, "item")}>{get(item, "name")}</MenuItem>
-                  )
-                })
-              }
-            </Select>
+              options={map(remindCategories, (group) => ({ label: get(group, "name"), value: get(group, "id") }))}
+              onChange={(group) => handleChangeData("selectedCategory", group.value)}
+            />
             <Typography component={'p'} className="create_remind_description"> {t('views.calendar_page.modal.create_personal_remind.description')} </Typography>
           </Box>
           <Box className="remind_setting_container">
@@ -150,6 +131,8 @@ function UpdatePersonalRemind({
                   className="remind_setting_day_inputDate"
                   minDate={moment(data.selectedDate, "YYYY-MM-DD").format("YYYY-MM-DD[T]HH:mm:ss")}
                   autoOk={true}
+                  invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
+                  minDateMessage={t('DATE_ERROR_INTERVAL_MIN_MESSAGE')}
                 />
               </MuiPickersUtilsProvider>
             </div>

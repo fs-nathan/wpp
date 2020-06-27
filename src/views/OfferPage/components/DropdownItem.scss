@@ -59,3 +59,57 @@
 .Dropdown-item__sub_menu li:hover {
   background-color: #e0e0e0;
 }
+
+.OfferView-project {
+  &__contentPanel {
+    box-shadow: none !important;
+    margin: 0 !important;
+
+    &_Summary {
+      flex-direction: row-reverse;
+      padding: 0;
+      margin: 0 30px 0 0;
+      min-height: 0 !important;
+
+      .MuiExpansionPanelSummary-content {
+        margin: 0 !important;
+      }
+
+      .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
+        transform: rotate(180deg) !important;
+      }
+
+      .MuiExpansionPanelSummary-expandIcon {
+        transform: rotate(90deg) !important;
+      }
+
+      .MuiList-padding {
+        padding: 0 !important;
+      }
+    }
+  }
+
+  &_projectPanelDetail {
+    padding: 0;
+    flex-direction: column;
+  }
+
+  &_projectItem {
+    margin: 0px;
+    font-weight: 500;
+    font-size: 14px;
+    padding: 15px 15px 15px 49px;
+    cursor: pointer;
+    line-height: 1.5;
+
+    &:hover {
+      background-color: #f2f5fa;
+    }
+
+    &__selected {
+      background-color: #f2f5fa;
+      font-weight: bold;
+      color: #545454;
+    }
+  }
+}

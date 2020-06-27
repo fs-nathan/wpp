@@ -1,21 +1,5 @@
-import {
-  Box,
-  Checkbox,
-  Divider,
-  FormControl,
-  FormControlLabel,
-  FormGroup,
-  IconButton,
-  Link,
-  List,
-  ListItem,
-  ListItemSecondaryAction,
-  ListItemText,
-  MenuItem,
-  Select,
-  Typography,
-} from "@material-ui/core";
-import { mdiClose, mdiPencilBoxOutline, mdiTrashCanOutline } from "@mdi/js";
+import { Box, Checkbox, Divider, FormControl, FormControlLabel, FormGroup, List, ListItem, ListItemText, MenuItem, Select, Typography } from "@material-ui/core";
+import { mdiAlert } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CustomTableLayout, CustomTableProvider } from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
@@ -93,24 +77,24 @@ function CalendarProjectRightPartPresenter({
       case 1:
         data.selectedDayType === 1
           ? handleAddWorkingDay(
-              moment(data.selectedDateFrom).format("YYYY-MM-DD"),
-              moment(data.selectedDateTo).format("YYYY-MM-DD")
-            )
+            moment(data.selectedDateFrom).format("YYYY-MM-DD"),
+            moment(data.selectedDateTo).format("YYYY-MM-DD")
+          )
           : handleAddWorkingDay(
-              moment(data.selectedDateFrom).format("YYYY-MM-DD"),
-              moment(data.selectedDateFrom).format("YYYY-MM-DD")
-            );
+            moment(data.selectedDateFrom).format("YYYY-MM-DD"),
+            moment(data.selectedDateFrom).format("YYYY-MM-DD")
+          );
         return;
       case 2:
         data.selectedDayType === 1
           ? handleAddDayOff(
-              moment(data.selectedDateFrom).format("YYYY-MM-DD"),
-              moment(data.selectedDateTo).format("YYYY-MM-DD")
-            )
+            moment(data.selectedDateFrom).format("YYYY-MM-DD"),
+            moment(data.selectedDateTo).format("YYYY-MM-DD")
+          )
           : handleAddDayOff(
-              moment(data.selectedDateFrom).format("YYYY-MM-DD"),
-              moment(data.selectedDateFrom).format("YYYY-MM-DD")
-            );
+            moment(data.selectedDateFrom).format("YYYY-MM-DD"),
+            moment(data.selectedDateFrom).format("YYYY-MM-DD")
+          );
         return;
     }
   };
@@ -154,339 +138,246 @@ function CalendarProjectRightPartPresenter({
           }}
         >
           <CustomTableLayout
+            id="asdasdas"
             children={
               <ScrollbarsContainer autoHide autoHideTimeout={500}>
+                <div
+                  style={{
+                    height: 53,
+                    width: "100%",
+                    background: "#fce8e6",
+                    color: "#e65656",
+                    display: 'flex'
+                  }}
+                ><span className="gantt-calendar--icon-warning"
+                >
+                    <Icon
+                      path={mdiAlert}
+                      size={0.7}
+                      color="#f52222"
+                      id="gantt--calendar__waring-icon"
+                    />
+                  </span><span
+                    className="gantt-calendar--text-warning"
+                  >Bạn không thể chỉnh sửa lịch dự án tại đây. Chỉ những thành viên có quyền và được chỉnh sửa trong chức năng Lịch. <span style={{ fontWeight: 'bold' }}>Tìm hiểu thêm lịch dự án</span></span></div>
                 {scheduleDetail.loading ? (
                   <LoadingBox />
                 ) : (
-                  <Typography
-                    component={"div"}
-                    className="view_ProjectCalendar_rightContainer"
-                  >
-                    <div className={"uppercase_title"}>
-                      {t("views.calendar_page.right_part.label.description")}
-                    </div>
-                    <p className="view_ProjectCalendar_rightContainer_text">
-                      {scheduleDetail.data.description}
-                    </p>
-                    <div className={"uppercase_title"}>
-                      {t(
-                        "views.calendar_page.right_part.label.setting_calendar"
-                      )}
-                    </div>
-                    <p className="view_ProjectCalendar_rightContainer_text">
-                      {t(
-                        "views.calendar_page.modal.setting_weekly_calendar.day_begining"
-                      )}
-                    </p>
-                    <FormControl variant="outlined">
-                      <Select
-                        value={data.selectedFistDayInWeek}
-                        onChange={({ target }) =>
-                          handleSettingStartingDayOfWeek(target.value)
-                        }
-                        className="selector"
-                        MenuProps={{
-                          className:
-                            "view_ProjectCalendar_rightContainer_Selector",
-                          MenuListProps: {
-                            component: Scrollbars,
-                          },
-                          variant: "menu",
-                        }}
-                      >
-                        {daysInWeek.map((day) => {
-                          return (
-                            <MenuItem
-                              value={get(day, "value", "")}
-                              key={get(day, "value", "")}
-                            >
-                              {get(day, "name", "")}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                    <p className={"normal_title"}>
-                      {t(
-                        "views.calendar_page.right_part.label.working_day_inWeek"
-                      )}
-                    </p>
-                    <FormGroup aria-label="position" row>
-                      {workingDayInWeek.map((day, index) => {
-                        return (
-                          <FormControlLabel
-                            key={get(day, "value", "")}
-                            value={get(day, "value", "")}
-                            control={
-                              <Checkbox
-                                color="primary"
-                                checked={get(day, "worked", false)}
-                                onChange={({ target }) =>
-                                  handleChangeWorkingInWeek(
-                                    target.checked,
-                                    index
-                                  )
-                                }
-                              />
-                            }
-                            label={get(day, "name", "")}
-                            labelPlacement="bottom"
-                          />
-                        );
-                      })}
-                    </FormGroup>
-                    <p className={"normal_title"}>
-                      {t(
-                        "views.calendar_page.right_part.label.add_working_and_off_day"
-                      )}
-                    </p>
                     <Typography
                       component={"div"}
-                      className={"add_working_off_day_container"}
-                    ></Typography>
-                    <Typography component={"div"} className="table_working_day">
-                      <div className={"table_header"}>
-                        <div className="color_mark_green"></div>
-                        {t("views.calendar_page.right_part.label.working_day")}
-                      </div>
-                      <div className={"table_header"}>
-                        <div className="color_mark_red"></div>
-                        {t("views.calendar_page.right_part.label.off_day")}
-                      </div>
-                      <div className={"table_data"}>
-                        {get(workingDayList, "list", []).map((item) => {
-                          return (
-                            <Box
-                              className="table_working_day_item"
-                              style={{ backgroundColor: "#deffe0" }}
-                            >
-                              <Typography component={"div"}>
-                                {get(item, "label", "")}
-                              </Typography>
-                              <IconButton
-                                onClick={() => handleDeleteWorkingDays(item)}
-                              >
-                                <Icon
-                                  path={mdiClose}
-                                  size={0.7}
-                                  color="rgba(0, 0, 0, 0.7)"
-                                />
-                              </IconButton>
-                            </Box>
-                          );
-                        })}
-                      </div>
-                      <div className={"table_data"}>
-                        {get(dayOffList, "list", []).map((item, index) => {
-                          return (
-                            <Box
-                              className="table_working_day_item"
-                              style={{ backgroundColor: "#ffdedb" }}
-                            >
-                              <Typography component={"div"}>
-                                {get(item, "label", "")}
-                              </Typography>
-                              <IconButton
-                                onClick={() => handleDeleteDayOff(item)}
-                              >
-                                <Icon
-                                  path={mdiClose}
-                                  size={0.7}
-                                  color="rgba(0, 0, 0, 0.7)"
-                                />
-                              </IconButton>
-                            </Box>
-                          );
-                        })}
-                      </div>
-                    </Typography>
-                    <p className={"normal_title"}>
-                      {t(
-                        "views.calendar_page.right_part.label.setting_working_time"
-                      )}
-                    </p>
-                    <Typography
-                      component={"div"}
-                      className="table_working_stage"
+                      className="view_ProjectCalendar_rightContainer"
                     >
-                      <div className={"table_header"}>
-                        {t("views.calendar_page.right_part.label.time")}
+
+                      <div className={"uppercase_title"}>
+                        {t("views.calendar_page.right_part.label.description")}
                       </div>
-                      <div className={"table_header"}>
-                        {t("views.calendar_page.right_part.label.working_time")}
+                      <p className="view_ProjectCalendar_rightContainer_text">
+                        {scheduleDetail.data.description}
+                      </p>
+                      <div className={"uppercase_title"}>
+                        {t(
+                          "views.calendar_page.right_part.label.setting_calendar"
+                        )}
                       </div>
-                      <div className={"table_data full_time"}>
-                        <span>
-                          {t("views.calendar_page.right_part.label.full_time")}
-                        </span>
-                      </div>
-                      <div className={"table_data table_data_padding1"}>
-                        <List dense={false}>
-                          {workingStageAll.map((shift, index) => {
+                      <p className="view_ProjectCalendar_rightContainer_text">
+                        {t(
+                          "views.calendar_page.modal.setting_weekly_calendar.day_begining"
+                        )}
+                      </p>
+                      <FormControl variant="outlined">
+                        <Select
+                          disabled
+                          value={data.selectedFistDayInWeek}
+                          onChange={({ target }) =>
+                            handleSettingStartingDayOfWeek(target.value)
+                          }
+                          className="selector"
+                          MenuProps={{
+                            className:
+                              "view_ProjectCalendar_rightContainer_Selector",
+                            MenuListProps: {
+                              component: Scrollbars,
+                            },
+                            variant: "menu",
+                          }}
+                        >
+                          {daysInWeek.map((day) => {
                             return (
-                              <>
-                                <ListItem
-                                  alignItems="flex-start"
-                                  key={`stage_working_all_item_${index}`}
-                                  className="table_working_stage_workingStageItemContainer"
-                                >
-                                  <ListItemText>{shift.name}</ListItemText>
-                                  <ListItemText>
-                                    {shift.start} - {shift.end}
-                                  </ListItemText>
-                                  <ListItemSecondaryAction>
-                                    <Link
-                                      onClick={() => {
-                                        setSelectedShiftStage(shift);
-                                        setSelectedWorkingStage(null);
-                                        setOpenShiftStage(true);
-                                      }}
-                                      color="primary"
-                                      variant="body2"
-                                    >
-                                      {t("views.calendar_page.right_part.edit")}
-                                    </Link>
-                                    {shift.can_delete && (
-                                      <Link
-                                        onClick={() =>
-                                          handleDeleteShiftStageAllTime(
-                                            shift.id
-                                          )
-                                        }
-                                        color="primary"
-                                        variant="body2"
-                                        className="table_data_buttonLinkDanger"
-                                      >
-                                        {t(
-                                          "views.calendar_page.right_part.delete"
-                                        )}
-                                      </Link>
-                                    )}
-                                  </ListItemSecondaryAction>
-                                </ListItem>
-                                <Divider component="li" />
-                              </>
+                              <MenuItem
+                                value={get(day, "value", "")}
+                                key={get(day, "value", "")}
+                              >
+                                {get(day, "name", "")}
+                              </MenuItem>
                             );
                           })}
-                          <ListItem key={`Item_control`}>
-                            <Link
-                              onClick={() => {
-                                setSelectedWorkingStage(null);
-                                setOpenShiftStage(true);
+                        </Select>
+                      </FormControl>
+                      <p className={"normal_title"}>
+                        {t(
+                          "views.calendar_page.right_part.label.working_day_inWeek"
+                        )}
+                      </p>
+                      <FormGroup aria-label="position" row>
+                        {workingDayInWeek.map((day, index) => {
+                          return (
+                            <FormControlLabel
+                              key={get(day, "value", "")}
+                              value={get(day, "value", "")}
+                              classes={{
+                                label: "gantt-schedule-modal__checkbox-label",
                               }}
-                              color="primary"
-                            >
-                              +{" "}
-                              {t(
-                                "views.calendar_page.right_part.label.add_stage"
-                              )}
-                            </Link>
-                          </ListItem>
-                        </List>
-                      </div>
-                      {workingStage.list.map((stage, index) => {
-                        return (
-                          <>
-                            <Box className={"table_data stage_setting_date"}>
-                              <Box className="stage_setting_date_control">
-                                <Box className="stage_setting_date_control_group">
-                                  <IconButton
-                                    key={`btn-edit-working-stage-${stage.id}`}
-                                    onClick={() => {
-                                      setSelectedWorkingStage(stage);
-                                      setOpenModalAddTimeWorkingStage(true);
-                                    }}
+                              control={
+                                <Checkbox
+                                  color="primary"
+                                  disabled
+                                  classes={{
+                                    checked: `gantt-schedule-modal__checkbox-disable`,
+                                  }}
+                                  checked={get(day, "worked", false)}
+                                  onChange={({ target }) =>
+                                    handleChangeWorkingInWeek(
+                                      target.checked,
+                                      index
+                                    )
+                                  }
+                                />
+                              }
+                              label={get(day, "name", "")}
+                              labelPlacement="bottom"
+                            />
+                          );
+                        })}
+                      </FormGroup>
+                      <p className={"normal_title"}>
+                        {t(
+                          "views.calendar_page.right_part.label.add_working_and_off_day"
+                        )}
+                      </p>
+                      <Typography
+                        component={"div"}
+                        className={"add_working_off_day_container"}
+                      ></Typography>
+                      <Typography component={"div"} className="table_working_day">
+                        <div className={"table_header"}>
+                          <div className="color_mark_green"></div>
+                          {t("views.calendar_page.right_part.label.working_day")}
+                        </div>
+                        <div className={"table_header"}>
+                          <div className="color_mark_red"></div>
+                          {t("views.calendar_page.right_part.label.off_day")}
+                        </div>
+                        <div className={"table_data"}>
+                          {get(workingDayList, "list", []).map((item) => {
+                            return (
+                              <Box
+                                className="table_working_day_item"
+                                style={{ backgroundColor: "#deffe0" }}
+                              >
+                                <Typography component={"div"}>
+                                  {get(item, "label", "")}
+                                </Typography>
+
+                              </Box>
+                            );
+                          })}
+                        </div>
+                        <div className={"table_data"}>
+                          {get(dayOffList, "list", []).map((item, index) => {
+                            return (
+                              <Box
+                                className="table_working_day_item"
+                                style={{ backgroundColor: "#ffdedb" }}
+                              >
+                                <Typography component={"div"}>
+                                  {get(item, "label", "")}
+                                </Typography>
+                              </Box>
+                            );
+                          })}
+                        </div>
+                      </Typography>
+                      <p className={"normal_title"}>
+                        {t(
+                          "views.calendar_page.right_part.label.setting_working_time"
+                        )}
+                      </p>
+                      <Typography
+                        component={"div"}
+                        className="table_working_stage"
+                      >
+                        <div className={"table_header"}>
+                          {t("views.calendar_page.right_part.label.time")}
+                        </div>
+                        <div className={"table_header"}>
+                          {t("views.calendar_page.right_part.label.working_time")}
+                        </div>
+                        <div className={"table_data full_time"}>
+                          <span>
+                            {t("views.calendar_page.right_part.label.full_time")}
+                          </span>
+                        </div>
+                        <div className={"table_data table_data_padding1"}>
+                          <List dense={false}>
+                            {workingStageAll.map((shift, index) => {
+                              return (
+                                <>
+                                  <ListItem
+                                    alignItems="flex-start"
+                                    key={`stage_working_all_item_${index}`}
+                                    className="table_working_stage_workingStageItemContainer"
                                   >
-                                    <abbr title={t("IDS_WP_EDIT")}>
-                                      <Icon
-                                        path={mdiPencilBoxOutline}
-                                        size={0.85}
-                                        color="#9E9E9E"
-                                      />
-                                    </abbr>
-                                  </IconButton>
-                                  <IconButton
-                                    key={`btn-delete-working-stage-${stage.id}`}
-                                    onClick={() => {
-                                      handleDeleteWorkingStage(stage.id);
-                                    }}
-                                  >
-                                    <abbr title={t("IDS_WP_DELETE")}>
-                                      <Icon
-                                        path={mdiTrashCanOutline}
-                                        size={0.85}
-                                        color="#9E9E9E"
-                                      />
-                                    </abbr>
-                                  </IconButton>
+                                    <ListItemText>{shift.name}</ListItemText>
+                                    <ListItemText>
+                                      {shift.start} - {shift.end}
+                                    </ListItemText>
+                                  </ListItem>
+                                  <Divider component="li" />
+                                </>
+                              );
+                            })}
+                          </List>
+                        </div>
+                        {workingStage.list.map((stage, index) => {
+                          return (
+                            <>
+                              <Box className={"table_data stage_setting_date"}>
+                                <Box className="stage_setting_date_control"></Box>
+                                <Box className="stage_setting_date_label">
+                                  <span className="stage_setting_date_label">{`${stage.start} - ${stage.end}`}</span>
                                 </Box>
                               </Box>
-                              <Box className="stage_setting_date_label">
-                                <span className="stage_setting_date_label">{`${stage.start} - ${stage.end}`}</span>
+                              <Box className="table_data table_data_padding1">
+                                <List dense={false}>
+                                  {get(stage, "shifts", []).map(
+                                    (shift, shiftIdx) => {
+                                      return (
+                                        <>
+                                          <ListItem
+                                            alignItems="flex-start"
+                                            key={`stage_working_shift_item_${shiftIdx}`}
+                                            className="table_working_stage_workingStageItemContainer"
+                                          >
+                                            <ListItemText>
+                                              {shift.name}
+                                            </ListItemText>
+                                            <ListItemText>
+                                              {shift.start} - {shift.end}
+                                            </ListItemText>
+                                          </ListItem>
+                                          <Divider component="li" />
+                                        </>
+                                      );
+                                    }
+                                  )}
+                                </List>
                               </Box>
-                            </Box>
-                            <Box className="table_data table_data_padding1">
-                              <List dense={false}>
-                                {get(stage, "shifts", []).map(
-                                  (shift, shiftIdx) => {
-                                    return (
-                                      <>
-                                        <ListItem
-                                          alignItems="flex-start"
-                                          key={`stage_working_shift_item_${shiftIdx}`}
-                                          className="table_working_stage_workingStageItemContainer"
-                                        >
-                                          <ListItemText>
-                                            {shift.name}
-                                          </ListItemText>
-                                          <ListItemText>
-                                            {shift.start} - {shift.end}
-                                          </ListItemText>
-                                          <ListItemSecondaryAction>
-                                            <Link
-                                              color="primary"
-                                              variant="body2"
-                                              onClick={() => {
-                                                setSelectedShiftStage(shift);
-                                                setSelectedWorkingStage(stage);
-                                                setOpenShiftStage(true);
-                                              }}
-                                            >
-                                              {t(
-                                                "views.calendar_page.right_part.edit"
-                                              )}
-                                            </Link>
-                                            <Link
-                                              onClick={() =>
-                                                hanleDeleteShiftStage(
-                                                  stage.id,
-                                                  shift.id
-                                                )
-                                              }
-                                              color="primary"
-                                              variant="body2"
-                                              className="table_data_buttonLinkDanger"
-                                            >
-                                              {t(
-                                                "views.calendar_page.right_part.delete"
-                                              )}
-                                            </Link>
-                                          </ListItemSecondaryAction>
-                                        </ListItem>
-                                        <Divider component="li" />
-                                      </>
-                                    );
-                                  }
-                                )}
-                              </List>
-                            </Box>
-                          </>
-                        );
-                      })}
+                            </>
+                          );
+                        })}
+                      </Typography>
                     </Typography>
-                  </Typography>
-                )}
+                  )}
               </ScrollbarsContainer>
             }
           />

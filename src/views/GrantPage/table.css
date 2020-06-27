@@ -18,7 +18,7 @@
 }
 
 tr.drop-over-downward td {
-  border-bottom: 2px dashed #1890ff;
+  border-bottom: 2px dashed #1890ff !important;
 }
 
 tr.drop-over-upward td {
@@ -77,9 +77,14 @@ body {
 .config--drawer--section {
   margin-bottom: 5px;
   font-size: 14px;
-  color: black;
-  font-weight: bold;
-  text-transform: uppercase;
+  color: #333;
+  font-weight: 500;
+  margin-top: 0;
+  text-transform: lowercase;
+}
+
+.config--drawer--section:first-letter{
+  text-transform: capitalize
 }
 .config--drawer--title {
   margin-top: 10px;
@@ -102,6 +107,9 @@ body {
 }
 .checkbox-colortag--drawer:hover {
   background-color: #f2f5fa;
+  cursor: pointer;
+  outline: 1px solid #ccc;
+  outline-offset: 5px;
 }
 .ml-0 {
   margin-left: 0 !important;
@@ -124,7 +132,7 @@ body {
 
 .config--drawer--checkbox span {
   font-size: 1rem;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: 0.00938em;
@@ -156,20 +164,35 @@ span.ant-checkbox ~ span {
 .gantt--title-project {
   font-size: 17px;
   display: flex;
-  margin-bottom: 2px;
+  margin-bottom: 2px !important;
   font-weight: 500;
+  margin-top: 0;
 }
 
 .gantt--navigation {
   display: flex;
+  margin-top: -5px;
 }
 .gantt--navigation p {
-  margin-right: 5px;
+  margin-right: 7px;
   margin-bottom: 0;
+  margin-top: 3px;
+  cursor: pointer;
+  color: #8b8b8b;
+  background: #f2f2f2;
+  padding:0 5px;
+  border-radius: 3px;
+  font-size: 11px;
+  font-weight: normal;
+}
+.gantt--navigation p:hover {
+  color: #fff;
+  font-weight: 500;
 }
 
 .gantt--image-project {
   border-radius: 50%;
+  margin: 5px;
 }
 .gantt--button-header-text {
   text-align: center;
@@ -179,7 +202,7 @@ span.ant-checkbox ~ span {
 }
 
 .gantt--timeline--container {
-  margin-top: 22.5px;
+  margin-top: 25.2px;
 }
 
 .gantt--top-timeline {
@@ -206,7 +229,8 @@ span.ant-checkbox ~ span {
   position: relative;
   height: 20px;
   margin: 0;
-  left: 40px;
+  left: 30px;
+  color: #1e88e5;
 }
 
 .gantt--time-task {
@@ -227,7 +251,7 @@ span.ant-checkbox ~ span {
 }
 .resize-width {
   width: 20px;
-  right: -14px !important;
+  right: -18px !important;
   bottom: 0;
   cursor: ew-resize;
 }
@@ -247,7 +271,7 @@ span.ant-checkbox ~ span {
 .resize-duration {
   width: 10px;
   right: -5px !important;
-  bottom: -6.67px;
+  bottom: -7.67px;
   padding: 0 !important;
 }
 .container-icon-drag-duration {
@@ -293,13 +317,19 @@ span.ant-checkbox ~ span {
 .icon-show-header button:hover {
   background: transparent;
 }
+.icon-show-header {
+  z-index: 10;
+}
 .icon-show-header svg {
   width: 20px !important;
-  margin-top: -5px;
+  margin-top: -8px;
 }
 
 .ant-table tbody > tr.ant-table-row:hover > td {
   background: #fffae6 !important;
+}
+.gantt--top-timeline-tr {
+  height: 37px;
 }
 .gantt--top-timeline-tr:hover {
   background: #fffae6 !important;
@@ -438,7 +468,7 @@ span.ant-checkbox ~ span {
 }
 
 #customers {
-  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 80%;
   margin-left: 20px;
@@ -503,7 +533,7 @@ span.ant-checkbox ~ span {
 }
 
 #hourwork {
-  font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+  font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
   border-collapse: collapse;
   width: 80%;
   margin-left: 20px;
@@ -598,6 +628,7 @@ div.checkbox-colortag--drawer {
   z-index: 10;
   padding-top: 5px !important;
   padding-bottom: 5px !important;
+  margin-right: 30px;
 }
 
 .comp_QuickViewFilter__headerConfig {
@@ -614,8 +645,12 @@ div.checkbox-colortag--drawer {
   padding-right: 0 !important;
 }
 .ant-checkbox-checked .ant-checkbox-inner {
-  background-color: #48bb78 !important;
-  border-color: #48bb78 !important;
+  background-color: #48bb78;
+  border-color: #48bb78;
+}
+.ant-checkbox-disabled .ant-checkbox-inner {
+  background-color: #f5f5f5 !important;
+  border-color: #d9d9d9 !important;
 }
 .config--drawer--checkbox-wrapper {
   padding-left: 40px;
@@ -652,6 +687,9 @@ div.checkbox-colortag--drawer {
   border-right: 1px solid #ededed;
   transform: translate(-50%, -50%);
 }
+.icon-fromNow-header svg {
+  fill: #ccc !important;
+}
 .icon-invisible-header svg {
   fill: rgb(199, 199, 199) !important;
 }
@@ -659,12 +697,13 @@ div.checkbox-colortag--drawer {
 .name-task-gantt__icon-container {
   display: flex;
   position: absolute;
-  background: #fff;
   right: 0;
   top: 0;
   align-items: center;
   padding-left: 5px;
   height: 35px !important;
+  z-index: 1000;
+  background: inherit;
   padding-right: 5px;
 }
 
@@ -706,8 +745,8 @@ div.checkbox-colortag--drawer {
 }
 
 .gantt__comp_JobPageLayout__drawerPaper {
-  top: 114px !important;
-  height: calc(100vh - 114px);
+  top: 116.5px !important;
+  height: calc(100vh - 116.5px);
 }
 
 .gantt__comp_JobPageLayout__drawerPaper__showHeader {
@@ -718,14 +757,15 @@ div.checkbox-colortag--drawer {
 .gantt--fromNowLayer__container {
   position: absolute;
   z-index: 4;
-  height: calc(100% - 17px);
+  height: 100%;
 }
 
 .gantt--fromNowLayer__background {
   position: absolute;
   z-index: 4;
-  background: #ffc9a066;
-  border-right: 5px solid #ff6c03;
+  background: #ffc49866;
+  border-right: 3px solid #ff6c03;
+  opacity: 0.5;
   height: 100%;
 }
 .gantt--fromNowLayer__text {
@@ -742,13 +782,14 @@ div.checkbox-colortag--drawer {
 .gantt__container {
   display: flex;
   position: relative;
-  height: 823px;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
 }
 
 .gantt__select-project {
-  width: 500px;
+  width: 400px;
+  position: absolute;
+  z-index: 1;
+  background: #fff;
 }
 
 /* .scroll-gantt::webkit-scrollbar-track {
@@ -771,6 +812,363 @@ div.checkbox-colortag--drawer {
 .gantt-chart__container {
   display: flex;
   z-index: 2;
-  overflow: scroll;
+  margin-left: 3px;
+  overflow-x: scroll;
   width: 100%;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.gantt-left-header__container {
+  padding: 4px 13px;
+}
+
+.gantt--group-task__total {
+  font-size: 13px;
+  font-weight: 500;
+  color: #3f51b5;
+  line-height: 19px;
+  text-transform: uppercase;
+}
+.gantt--group-task-item {
+  color: #222;
+  font-weight: 500;
+}
+
+.gantt-icon-table__total {
+  width: 18px;
+  fill: #3f51b5;
+  margin: 0 10px 0 5px;
+}
+.gantt-icon-table__group {
+  width: 20px;
+  fill: rgb(119, 119, 119);
+  margin: 0 10px 0 5px;
+}
+
+.gantt-btn__list-project {
+  padding: 0px !important;
+  margin-top: 5px !important;
+}
+.gantt--title-project__name {
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #222;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 320px;
+}
+
+.gantt-container-lp {
+  grid-area: list;
+  border-right: 1px solid #e5e5e9;
+}
+
+.gantt--left-header__text-active {
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+
+.gantt--parent-header {
+  border-bottom: 1px solid #e4e4e4;
+  border-top: 1px solid #e4e4e4;
+  padding: 1.5px 0px;
+  border-right: 1px solid #e4e4e4;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.gantt--child-header {
+  border-bottom: 1px solid #f0f0f0;
+  border-right: 1px solid #f0f0f0;
+  padding: 2px 0px;
+  background-color: #fafafa;
+  text-align: center;
+  width: 48px;
+}
+
+.gantt-grid-background {
+  position: absolute;
+  overflow: hidden;
+}
+
+.ant-table-body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE and Edge */
+.ant-table-body {
+  -ms-overflow-style: none;
+}
+
+.ant-row-end {
+  line-height: inherit;
+}
+
+
+table.ant-table-bordered thead > tr > th {
+  border-right: 1px solid #e4e4e4;
+}
+.ant-table.ant-table-small thead > tr > th {
+  background-color: #f5f5f5;
+}
+
+input[type="time"]::-webkit-clear-button {
+  display: none;
+}
+
+input[type="time"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="time"]::-webkit-outside-spin-button {
+  display: none;
+}
+
+.gantt--input-number > .MuiInputBase-root {
+  height: 35px;
+}
+
+.ant-table-cell {
+  height: 36.5px;
+}
+
+.gantt--edit-cell__input-date button.MuiButtonBase-root {
+  display: none;
+}
+
+.gantt--edit-cell__input-date input {
+  text-align: center;
+}
+
+.gantt--edit-cell__input-date {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1000;
+  height: 37px !important;
+  border: 1px solid orange !important;
+}
+.ant-table-cell{
+  background: inherit;
+}
+.ant-table-row .ant-table-row-level-0{
+  background: #fff;
+}
+.gantt--edit-cell__input-date{
+  width: 100% !important;
+  overflow: hidden;
+}
+
+.gantt--edit-cell__input-date > .MuiFormControl-root {
+  margin: 0px !important;
+  margin-top: 8px;
+  height: 37px;
+}
+
+.gantt--edit-cell__input-date> .MuiFormControl-root >.MuiInput-root {
+  height: 37px;
+}
+.gantt--edit-cell__input-date > .MuiFormControl-root >.MuiInput-underline:before {
+  border-bottom: none !important;
+}
+.gantt--edit-cell__input-date > .MuiFormControl-root >.MuiInput-underline:after {
+  border-bottom: none !important;
+}
+
+.gantt--edit-cell__container > .MuiFormControl-root >  .MuiInput-underline:before {
+  border-bottom: none !important;
+}
+.gantt--edit-cell__container > .MuiFormControl-root >  .MuiInput-underline:after {
+  border-bottom: none !important;
+}
+.gantt--edit-cell__container fieldset {
+  border-color: orange !important;
+  border-radius: 0;
+  box-shadow: none !important;
+}
+
+.gantt--edit-cell__container fieldset:hover {
+  border-color: orange !important;
+  border-radius: 0;
+}
+
+.gantt--edit-cell__container .MuiOutlinedInput-root:hover.MuiOutlinedInput-notchedOutline:hover{
+  border-color: orange;
+  border-radius: 0;
+}
+
+
+
+.gantt-chart__container::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
+.gantt-chart__container::-webkit-scrollbar-track { background: #f2f2f2; }
+.gantt-chart__container::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
+  border-radius: 15px;
+  background-clip: padding-box;   
+  min-width: 50px !important;
+  cursor: pointer !important;
+}
+.gantt-chart__container:hover::-webkit-scrollbar-thumb { background: #bbb; }
+.gantt-chart__container::-webkit-scrollbar-thumb:horizontal:hover,
+.gantt-chart__container::-webkit-scrollbar-thumb:vertical:hover { background: #d2d2d2; }
+.gantt-chart__container::-webkit-scrollbar-thumb:horizontal:active,
+.gantt-chart__container::-webkit-scrollbar-thumb:vertical:active { background: #777; }
+
+.gantt--timeline--container__relative::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
+.gantt--timeline--container__relative::-webkit-scrollbar-track { background: #f2f2f2; }
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;   }
+.gantt--timeline--container__relative:hover::-webkit-scrollbar-thumb { background: #bbb; }
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:horizontal:hover,
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:vertical:hover { background: #999; }
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:horizontal:active,
+.gantt--timeline--container__relative::-webkit-scrollbar-thumb:vertical:active { background: #777; }
+
+.config--drawer--footer-section__preview{
+  background-color: #75acff;
+  border-radius: 0;
+  color: #fff;
+  opacity: 0.7;
+}
+.config--drawer--footer-section__preview:hover {
+  opacity: 1;
+  background-color: #75acff !important;
+}
+
+.config--drawer--footer-section__confirm{
+  background-color: #619eff;
+  border-radius: 0;
+  color: #fff;
+}
+.gantt--edit-cell__container > .MuiFormControl-root .MuiTextField-root > .MuiInputBase-root .MuiInput-root .MuiInput-underline .MuiInputBase-formControl .MuiInput-formControl >input[type='datetime-local']::-webkit-inner-spin-button,
+input[type='datetime-local']::-webkit-calendar-picker-indicator {
+    display: none !important;
+    text-align: center;
+    -webkit-appearance: none !important;
+}
+
+.gantt--edit-cell__container > .MuiFormControl-root > .MuiInputBase-root > input {
+  text-align: center;
+}
+
+
+.gantt--export-pdf__dialog .ant-drawer-body{
+  padding: 0 0 0 15px !important;
+}
+
+.gantt--edit-cell__container input::-webkit-outer-spin-button,
+.gantt--edit-cell__container input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.gantt--edit-cell__container input[type=number] {
+  -moz-appearance: textfield;
+  text-align: center;
+}
+
+.gantt--timeline-group-task__right {
+ position: absolute;
+ right: 0;
+ width: 2px;
+ height: 20px;
+ background-color: inherit;
+ z-index: 1010 !important;
+}
+
+.gantt--timeline-group-task__left {
+  position: absolute;
+ left: 0;
+ width: 2px;
+ height: 20px;
+ background-color: inherit;
+ z-index: 1010 !important
+}
+
+.gantt--virtual__scroll{
+  width: 16px;
+  right: 0;
+  top: 50px;
+  position: absolute;
+  overflow-y: scroll;
+  z-index: 1000;
+}
+.gantt--virtual__scroll::-webkit-scrollbar {width: 16px;  height: 18px; border-radius: 50%; }
+.gantt--virtual__scroll::-webkit-scrollbar-track { background: #f2f2f2; }
+.gantt--virtual__scroll::-webkit-scrollbar-thumb { background: #ddd;border: 4px solid transparent;
+  border-radius: 8px;
+  background-clip: padding-box;   }
+.gantt--virtual__scroll:hover::-webkit-scrollbar-thumb { background: #bbb; }
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:horizontal:hover,
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:vertical:hover { background: #999; }
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:horizontal:active,
+.gantt--virtual__scroll::-webkit-scrollbar-thumb:vertical:active { background: #777; }
+
+.gantt--time-unit__label-container {
+  margin-left: 10px;
+}
+#gantt--calendar__waring-icon{
+  width: 30px !important;
+  height: 100% !important;
+}
+
+.gantt-right-header__wapper .comp_CustomTable_HeaderButtonGroup___button > span:first-child > span {
+  line-height: 1.75;
+}
+.gantt-calendar--icon-warning{
+  margin-left: 20px;
+  width: 30px;
+}
+.gantt-calendar--text-warning{
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 10px;
+  width: calc(100% - 85px);
+  padding-right: 30px;
+}
+.gantt--calendar-modal__container .comp_CustomModal___accept-button{
+  display: none;
+
+}
+.duration-text-gantt__group_total{
+  top: -2px;
+}
+
+.gantt--calender-modal__button-container{
+  border-top: 1px solid rgba(0,0,0,.1);
+}
+.ant-table-cell{
+  background: #fff;
+}
+
+#stringAppendLast{
+  z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    height: fit-content;
+    position: absolute;
+    top: 50px;
+}
+
+#stringAppendFirst{
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - 40px);
+    height: fit-content;
+    position: absolute;
+    top: 25px;
+}
+.gantt-no-overflow *{
+  overflow: unset !important;
+}
+.gantt-no-overflow{
+  overflow-x: hidden !important;
+  overflow-y: unset !important;
+  padding-top: 100px;
 }

@@ -70,12 +70,12 @@ export const filterCommandItem = arr => arr.filter(item => item.type === CM_DC_T
 export const filterDecisionItem = arr => arr.filter(item => item.type === CM_DC_TYPE.DECISION)
 
 const OFFER_STATUS = {
-    APPROVED: 0,
-    PENDING: 1,
+    PENDING: 0,
+    APPROVED: 1,
 }
 
-export const filterPendingItem = arr => arr.filter(item => item.status === OFFER_STATUS.PENDING)
-export const filterApprovedItem = arr => arr.filter(item => item.status === OFFER_STATUS.APPROVED)
+export const filterPendingItem = arr => arr.filter(item => item.status_code === OFFER_STATUS.PENDING)
+export const filterApprovedItem = arr => arr.filter(item => item.status_code === OFFER_STATUS.APPROVED)
 
 export const DEFAULT_OFFER_ITEM = {
     offer_id: "", content: "", user_hander: [],
@@ -184,4 +184,10 @@ export function findTask(listTaskDetail, task_id) {
         })
     })
     return ret
+}
+
+export const filterMembersByKey = (members, keyword) => {
+    return keyword
+        ? members.filter(member => member.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1)
+        : members
 }

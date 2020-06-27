@@ -1,19 +1,20 @@
 import { Box, Container, Grid } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { useLocalStorage } from "hooks";
 import moment from "moment";
 import React, { useContext, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { labels } from "../../contants/attrs";
+import { useTimes } from '../../../../components/CustomPopover';
+import { TIME_FILTER_TYPE_OFFER_OVERVIEW } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadSummaryOverview } from "../../redux/actions";
-import { get } from "../../utils";
 import { GroupBlock } from "./GroupBlock";
 import { OfferBlock } from "./OfferBlock";
-import { getMyOffers, getPriorityOffers, getStatusOffers } from "./selector";
+import { getGroupOffers, getMyOffers, getPriorityOffers, getStatusOffers } from './selector';
 export const PageContainer = styled(Container)`
   overflow: auto;
   background: #f6f6f6;
@@ -22,48 +23,88 @@ export const PageContainer = styled(Container)`
   min-height: 100%;
 `;
 
-
-//dữ liệu mẫu
 const stringsSelfOffer = ["offer_of_me_sending", "offer_of_me_approved", "offer_of_me_monitoring"];
-const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel"];
-const stringsPiorityOffer = ["offer_piority_normal", "offer_piority_urgent", "offer_piority_very_urgent"];
-
+const stringsStatusOffer = ["offer_status_waiting", "offer_status_approved", "offer_status_cancel", "offer_status_approving"];
+const stringsPriorityOffer = ["offer_priority_normal", "offer_priority_urgent", "offer_priority_very_urgent"];
+const stringsGroupOffer = [
+  "number_offer",
+  "number_offer_approving",
+  "number_offer_rejected",
+  "number_offer_accepted"
+];
 
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { listMenu, timeRange = {}, statusFilter, setTitle } = useContext(OfferPageContext);
+  const { listMenu, timeType, timeRange = {}, setTitle, setTimeType } = useContext(OfferPageContext);
   const isMounted = useMountedState();
+  const times = useTimes();
   const myOffers = useSelector(state => getMyOffers(state))
   const statusOffers = useSelector(state => getStatusOffers(state))
-  const piorityOffers = useSelector(state => getPriorityOffers(state))
+  const priorityOffers = useSelector(state => getPriorityOffers(state))
+  const groupOffers = useSelector(getGroupOffers);
+  const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(TIME_FILTER_TYPE_OFFER_OVERVIEW, { timeType: 1 });
+
   useEffect(() => {
-    dispatch(loadSummaryOverview({ timeRange }))
-  }, [dispatch, timeRange])
+    if (isMounted) {
+      setTimeType(timeFilterTypeOfferOverview.timeType);
+    }
+  }, [isMounted]);
+
+  useEffect(() => {
+    if (isMounted) {
+      storeTimeFilterTypeOfferOverview({
+        ...timeFilterTypeOfferOverview,
+        timeType
+      });
+    }
+  }, [isMounted, timeType]);
+
+  useEffect(() => {
+    dispatch(loadSummaryOverview({ timeRange }));
+  }, [dispatch, timeRange]);
+
   useEffect(() => {
     isMounted &&
-      setTitle(get(labels, "pageTitle"))
-  }, [dispatch, isMounted, timeRange.startDate, timeRange.endDate, statusFilter, setTitle]);
-  const renderDataGroupOffer = useMemo(() => {
+      setTitle(t("VIEW_OFFER_LABEL_YOUR_OFFER"))
+  }, [isMounted, setTitle, t]);
+
+  const renderDataStatusOffer = useMemo(() => {
     if (timeRange) {
       return statusOffers
     }
-  }, [statusOffers, timeRange])
-  const renderDataPiorityOffer = useMemo(() => {
+  }, [statusOffers, timeRange]);
+
+  const renderDataPriorityOffer = useMemo(() => {
     if (timeRange) {
-      return piorityOffers
+      return priorityOffers
     }
-  }, [piorityOffers, timeRange])
+  }, [priorityOffers, timeRange]);
+
   const renderDataMyOfferGroup = useMemo(() => {
     if (timeRange) {
       return myOffers
     }
-  }, [myOffers, timeRange])
+  }, [myOffers, timeRange]);
+
+  const renderDataGroupOffer = useMemo(() => {
+    if (timeRange) {
+      return groupOffers;
+    }
+  }, [groupOffers, timeRange]);
+
   const renderExtraTimeTitle = useMemo(() => {
-    const startDate = moment(timeRange.startDate).format("DD/MM/YYYY")
-    const endDate = moment(timeRange.endDate).format("DD/MM/YYYY")
-    return `Tháng này (${startDate} - ${endDate})`
-  }, [timeRange])
+    let startDate = undefined;
+    let endDate = undefined;
+    if (timeRange.startDate && timeRange.endDate) {
+      startDate = moment(timeRange.startDate).format("DD/MM/YYYY")
+      endDate = moment(timeRange.endDate).format("DD/MM/YYYY")
+    }
+    return startDate && endDate
+      ? `${times[timeType].title} (${startDate} - ${endDate})`
+      : t('DMH.COMP.CUSTOM_POPOVER.TIME_FUNC.ALL_TIME');
+  }, [timeType, timeRange, times, t]);
+
   return (
     <Layout
       title={
@@ -71,7 +112,7 @@ const Overview = () => {
           <Icon
             size={1.4}
             {...{ color: listMenu[0].color, path: listMenu[0].icon }}
-          ></Icon>
+          />
           <Box
             {...{
               paddingLeft: "20px",
@@ -89,9 +130,9 @@ const Overview = () => {
         <PageContainer maxWidth="xl">
           <Grid container spacing={3}>
             {[
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsSelfOffer} data={renderDataMyOfferGroup} title={t("ĐỀ XUẤT CỦA BẠN")} />,
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsStatusOffer} data={renderDataGroupOffer} title={t("ĐỀ XUẤT THEO TRẠNG THÁI")} />,
-              <OfferBlock time={renderExtraTimeTitle} strings={stringsPiorityOffer} data={renderDataPiorityOffer} title={t("ĐỀ XUẤT THEO MỨC ĐỘ")} />
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsSelfOffer} data={renderDataMyOfferGroup} title={t("VIEW_OFFER_LABEL_YOUR_OFFER")} />,
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsStatusOffer} data={renderDataStatusOffer} title={t("VIEW_OFFER_LABEL_OFFER_BY_STATUS")} />,
+              <OfferBlock time={renderExtraTimeTitle} strings={stringsPriorityOffer} data={renderDataPriorityOffer} title={t("VIEW_OFFER_LABEL_OFFER_BY_LEVEL")} />
             ].map(
               (children, i) => (
                 <Grid
@@ -107,7 +148,12 @@ const Overview = () => {
               )
             )}
             <Grid xs={12} md={12} item>
-              <GroupBlock />
+              <GroupBlock
+                time={renderExtraTimeTitle}
+                strings={stringsGroupOffer}
+                data={renderDataGroupOffer}
+                title={t("VIEW_OFFER_LABEL_CHART_BY_GROUP").toUpperCase()}
+              />
             </Grid>
           </Grid>
         </PageContainer>

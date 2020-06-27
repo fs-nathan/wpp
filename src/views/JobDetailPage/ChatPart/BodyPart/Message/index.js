@@ -1,4 +1,7 @@
+import * as fileType from 'assets/fileType';
+import { FileType } from 'components/FileType';
 import { CHAT_TYPE } from 'helpers/jobDetail/arrayHelper';
+import { getFileType } from 'helpers/jobDetail/stringHelper';
 import React from 'react';
 import AddNewMember from './AddNewMember';
 import CancelPinRemind from './CancelPinRemind';
@@ -53,6 +56,9 @@ const Message = props => {
     case CHAT_TYPE.CHAT_FILE_FROM_GOOGLE_DRIVER:
       return <FileMessage {...props} />;
     case CHAT_TYPE.IMAGE:
+      const files = props.images;
+      if (files.length === 1 && FileType(getFileType(files[0].name)) === fileType.video)
+        return <FileMessage {...props} files={files} />;
       return <ImageMessage {...props} isUploading={false} />;
     case CHAT_TYPE.UPDATE_TASK_NAME:
       return <UpdateTaskNameMessage {...props} />;

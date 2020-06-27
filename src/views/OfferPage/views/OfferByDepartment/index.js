@@ -1,75 +1,114 @@
 import { Box, Container } from "@material-ui/core";
 import Icon from "@mdi/react";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
+import { useLocalStorage } from "hooks";
+import { get, isNil } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { labels } from "../../contants/attrs";
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
+import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW } from '../../contants/localStorage';
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByDepartment, loadOfferByDepartmentID } from "../../redux/actions";
-import { get } from "../../utils";
 import Content from "./Content";
-import { getFirstSummaryGroup } from "./selector";
+import { getDepartmentGroupByKeyword, getFirstSummaryGroup } from "./selector";
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
   padding-right: 32px;
   min-height: 100%;
+  max-width: 100%;
 `;
 
-const Department = props => {
+function Department({
+    doListOffersByDepartment,
+    doListOffersByDepartmentID,
+    idFirstGroup, departments
+}) {
     const { t } = useTranslation();
-    const context = useContext(OfferPageContext);
-    const dispatch = useDispatch();
     const history = useHistory();
     const {
-        keyword,
         listMenu,
-        setOpenModalOfferByGroup,
-        openModal,
+        timeType,
+        setTimeType,
         timeRange,
-        statusFilter,
         setTitle
     } = useContext(OfferPageContext);
-    const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
+
     const { id } = useParams();
     const isMounted = useMountedState();
+    const [layoutTitle, setLayoutTitle] = useState('');
+    const [timeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByDepartment] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, { timeType: 1 });
 
     useEffect(() => {
         if (isMounted) {
-            setTitle(get(labels, "pageTitleOfferByGroup"));
+            setTitle(t("VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE"));
         }
-    }, [
-        dispatch,
-        isMounted,
-        timeRange.startDate,
-        timeRange.endDate,
-        statusFilter,
-        context,
-        setTitle,
-        timeRange
-    ]);
+    }, [isMounted, setTitle, t]);
+
     useEffect(() => {
-        dispatch(loadOfferByDepartment());
-    }, [dispatch]);
+        if (isMounted) {
+            setTimeType(timeFilterTypeOfferByDepartment.timeType);
+        }
+    }, [isMounted]);
+
     useEffect(() => {
-        if (
-            idFirstGroup !== null &&
-            window.location.pathname === Routes.OFFERBYDEPARTMENT
-        ) {
+        if (isMounted) {
+            storeTimeFilterTypeOfferByDepartment({
+                ...timeFilterTypeOfferByDepartment,
+                timeType
+            });
+        }
+    }, [isMounted, timeType]);
+
+    useEffect(() => {
+        doListOffersByDepartment({ timeRange });
+    }, [doListOffersByDepartment]);
+
+    useEffect(() => {
+        if (isMounted) {
+            var currentDepartment = departments.filter(item => item.url === history.location.pathname);
+            setLayoutTitle(get(currentDepartment, '[0].title'));
+        }
+    }, [isMounted, history.location.pathname, idFirstGroup]);
+
+    useEffect(() => {
+        if (idFirstGroup !== null) {
             history.push(Routes.OFFERBYDEPARTMENT + "/" + idFirstGroup);
         }
-    }, [history, idFirstGroup]);
+    }, [idFirstGroup]);
+
     useEffect(() => {
-        const startDate = moment(timeRange.startDate).format("YYYY-MM-DD")
-        const endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
-        dispatch(loadOfferByDepartmentID({ id, startDate, endDate }));
-    }, [dispatch, id, timeRange]);
+        if (!isNil(id)) {
+            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
+            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
+            doListOffersByDepartmentID({ id, startDate, endDate });
+
+            const refreshData = () => {
+                doListOffersByDepartmentID({ id, startDate, endDate });
+                doListOffersByDepartment({ timeRange });
+            }
+
+            const refreshOffersList = () => {
+                doListOffersByDepartmentID({ id, startDate, endDate });
+            }
+
+            CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshData);
+            CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshData);
+            CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
+            return () => {
+                CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshData);
+                CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshData);
+                CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
+            }
+        }
+    }, [id, timeRange]);
     // Redirect to first group when enter
     return (
         <>
@@ -78,7 +117,7 @@ const Department = props => {
                     <Box display="flex" alignItems="center">
                         <Icon
                             size={1.4}
-                            {...{ color: listMenu[2].color, path: listMenu[2].icon }}
+                            {...{ color: listMenu[4].color, path: listMenu[4].icon }}
                         ></Icon>
                         <Box
                             {...{
@@ -88,7 +127,7 @@ const Department = props => {
                                 fontWeight: "600"
                             }}
                         >
-                            {t(listMenu[2].title)}
+                            {layoutTitle}
                         </Box>
                     </Box>
                 }
@@ -100,4 +139,19 @@ const Department = props => {
         </>
     );
 };
-export default React.memo(Department);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        doListOffersByDepartment: ({ timeRange }) => dispatch(loadOfferByDepartment({ timeRange })),
+        doListOffersByDepartmentID: ({ id, startDate, endDate }) => dispatch(loadOfferByDepartmentID({ id, startDate, endDate }))
+    };
+};
+
+const mapStateToProps = state => {
+    return {
+        idFirstGroup: getFirstSummaryGroup(state),
+        departments: getDepartmentGroupByKeyword('')(state)
+    };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Department);

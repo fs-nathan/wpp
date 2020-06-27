@@ -19,7 +19,8 @@ function CreateProjectGroup({
   updatedProjectGroup,
   open, setOpen,
   handleCreateOrEditProjectGroup, handleOpenModal,
-  doReloadProjectGroup,
+  doReloadDetail,
+  doReloadList,
 }) {
 
   const { t } = useTranslation();
@@ -47,21 +48,38 @@ function CreateProjectGroup({
       setActiveLoading(false);
     };
     if (updatedProjectGroup) {
-      CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+      CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, doReloadDetail);
       CustomEventListener(EDIT_PROJECT_GROUP.FAIL, fail);
     }
     else {
-      CustomEventListener(CREATE_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+      CustomEventListener(CREATE_PROJECT_GROUP.SUCCESS, doReloadList);
       CustomEventListener(CREATE_PROJECT_GROUP.FAIL, fail);
     }
     return () => {
       if (updatedProjectGroup) {
-        CustomEventDispose(EDIT_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+        CustomEventDispose(EDIT_PROJECT_GROUP.SUCCESS, doReloadDetail);
         CustomEventDispose(EDIT_PROJECT_GROUP.FAIL, fail);
       }
       else {
-        CustomEventDispose(CREATE_PROJECT_GROUP.SUCCESS, doReloadProjectGroup);
+        CustomEventDispose(CREATE_PROJECT_GROUP.SUCCESS, doReloadList);
         CustomEventDispose(CREATE_PROJECT_GROUP.FAIL, fail);
+      }
+    }
+    // eslint-disable-next-line
+  }, [updatedProjectGroup]);
+
+  React.useEffect(() => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    if (updatedProjectGroup) {
+      CustomEventListener(DETAIL_PROJECT_GROUP.SUCCESS, doReloadList);
+      CustomEventListener(DETAIL_PROJECT_GROUP.FAIL, fail);
+    }
+    return () => {
+      if (updatedProjectGroup) {
+        CustomEventDispose(DETAIL_PROJECT_GROUP.SUCCESS, doReloadList);
+        CustomEventDispose(DETAIL_PROJECT_GROUP.FAIL, fail);
       }
     }
     // eslint-disable-next-line
@@ -81,26 +99,14 @@ function CreateProjectGroup({
     const fail = () => {
       setActiveLoading(false);
     };
-    if (updatedProjectGroup) {
-      CustomEventListener(DETAIL_PROJECT_GROUP.SUCCESS, success);
-      CustomEventListener(DETAIL_PROJECT_GROUP.FAIL, fail);
-    }
-    else {
-      CustomEventListener(LIST_PROJECT_GROUP.SUCCESS, success);
-      CustomEventListener(LIST_PROJECT_GROUP.FAIL, fail);
-    }
+    CustomEventListener(LIST_PROJECT_GROUP.SUCCESS, success);
+    CustomEventListener(LIST_PROJECT_GROUP.FAIL, fail);
     return () => {
-      if (updatedProjectGroup) {
-        CustomEventDispose(DETAIL_PROJECT_GROUP.SUCCESS, success);
-        CustomEventDispose(DETAIL_PROJECT_GROUP.FAIL, fail);
-      }
-      else {
-        CustomEventDispose(LIST_PROJECT_GROUP.SUCCESS, success);
-        CustomEventDispose(LIST_PROJECT_GROUP.FAIL, fail);
-      }
+      CustomEventDispose(LIST_PROJECT_GROUP.SUCCESS, success);
+      CustomEventDispose(LIST_PROJECT_GROUP.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [updatedProjectGroup]);
+  }, []);
 
   return (
     <CustomModal

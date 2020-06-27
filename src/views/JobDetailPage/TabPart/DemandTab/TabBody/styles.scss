@@ -1,8 +1,8 @@
 .demandTabItem {
   display: flex;
   position: relative;
-  margin: 0 0 0 -16px;
-  padding: 10px 16px;
+  margin: 0 -25px;
+  padding: 10px 25px;
   cursor: pointer;
   // align-items: center;
   &:hover {
@@ -82,6 +82,8 @@
   }
   &--menu {
     display: none;
+    position: absolute;
+    right: 10px;
   }
   &:hover &--menu {
     display: block;
@@ -89,6 +91,9 @@
 }
 
 .demandDetail {
+  .comp_LoadingOverlay___wrapper {
+    min-height: unset;
+  }
   &--title {
     display: flex;
   }
@@ -134,8 +139,10 @@
   &--content {
     text-align: center;
     min-width: 500px;
-    min-height: 300px;
+    // min-height: 300px;
     margin-top: 10px;
+    color: #111111;
+    font-size: 14px;
   }
   &--line {
     width: 100px;

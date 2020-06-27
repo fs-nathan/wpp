@@ -20,6 +20,7 @@ export const CustomTableBodyCell = styled(TableCell)`
   border-bottom: none;
 `;
 export const GroupPermissionModal = ({
+  disabled = {},
   loading,
   permissionModules = [],
   onClose,
@@ -41,7 +42,10 @@ export const GroupPermissionModal = ({
     >
       <DialogContent dividers className="dialog-content move-content">
         <Box padding="24px">
-          <GroupPermissionFormInner permissionModules={permissionModules} />
+          <GroupPermissionFormInner
+            disabled={disabled}
+            permissionModules={permissionModules}
+          />
         </Box>
       </DialogContent>
     </ModalCommon>
@@ -108,6 +112,7 @@ export default ({ item }) => {
   return (
     <GroupPermissionForm initialValues={initialValues} onSubmit={handleSubmit}>
       <GroupPermissionModal
+        disabled={{ module: true }}
         permissionModules={permissionModules}
         loading={status === apiCallStatus.loading}
         onClose={onClose}

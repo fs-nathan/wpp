@@ -55,7 +55,7 @@ const MediaBox = (props) => {
                         <GridListTile className="mediaBox--item"
                           onClick={() => onClickImage(key, idx)}
                           key={idx}>
-                          <img src={item.url} alt='avatar' className="image-media-box" />
+                          <img src={item.url_thumbnail} alt='avatar' className="image-media-box" />
                           <MenuListItem item={item} />
                         </GridListTile>
                       )

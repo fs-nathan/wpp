@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import OfferMemberItem from './OfferMemberItem';
 import './styles.scss';
+import { compact } from 'lodash';
 
 function CustomAddOfferMemberModal({
   isOpen,
@@ -55,7 +56,7 @@ function CustomAddOfferMemberModal({
       title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       open={isOpen}
       setOpen={setOpen}
-      confirmRender={() => "Hoàn Thành"}
+      confirmRender={() => t("IDS_WP_DONE")}
       onConfirm={onClickDone}
       className="addOfferMemberModal"
     >
@@ -64,7 +65,9 @@ function CustomAddOfferMemberModal({
           value={searchValue}
           onChange={handleChangeSearch}
         />
-        <ColorTypo className="addOfferMemberModal--selected">{t('LABEL_CHAT_TASK_DA_CHON')}{selected.length}{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
+        <ColorTypo className="addOfferMemberModal--selected">
+          {t('LABEL_CHAT_TASK_DA_CHON_THANH_VIEN', { count: selected.length })}
+        </ColorTypo>
         <div className="addOfferMemberModal--selectAll">
           <Checkbox checked={selected.length === members.length} onClick={onClickSelectAll} ></Checkbox>
           <ColorTypo className="addOfferMemberModal--selectAllText" component="div">{t('LABEL_CHAT_TASK_CHON_TAT_CA')}</ColorTypo>
@@ -74,7 +77,7 @@ function CustomAddOfferMemberModal({
           isSelected={selected.indexOf(member.index) !== -1}
           onClick={onClickMember(member.index)}
           avatar={member.avatar}
-          roles={`${member.position} - ${member.room}`}
+          roles={compact([member.position, member.room]).join(' - ')}
           name={member.name}
         />)}
       </React.Fragment>

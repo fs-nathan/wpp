@@ -45,7 +45,7 @@ const UpdateRemind = (props) => {
         {remind_name}
         <div className="UpdateRemind--time">
           {remind_type !== null ?
-            `${typesRemind[remind_type]} lúc ${getUpdateProgressDate(time_create, dateFormat)}`
+            t('LABEL_CHAT_TASK_LUC_REMIND_TIME', { type: t(typesRemind[remind_type]), time: getUpdateProgressDate(time_create, dateFormat) })
             :
             t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO', {
               remind: remind_duration.map(dr => `${dr}%`).join(', ')

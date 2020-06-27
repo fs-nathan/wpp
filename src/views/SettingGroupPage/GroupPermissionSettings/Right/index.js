@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from "@material-ui/core";
+import { Alert } from "@material-ui/lab";
 import { mdiAccountKey, mdiKey } from "@mdi/js";
 import Icon from "@mdi/react";
 import { CustomTableProvider } from "components/CustomTable";
@@ -50,7 +51,7 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
       <Grid item container style={{ flex: 1, position: "relative" }}>
         <div style={{ position: "absolute", width: "100%", height: "100%" }}>
           <TasksScrollbar>
-            <div style={{ paddingRight: "10px" }}>
+            <div>
               {children}
               <Space height={"50px"}></Space>
             </div>
@@ -164,58 +165,71 @@ const ColumnLeft = () => {
 const ColumnRight = () => {
   const { t } = useTranslation();
   const {
+    detail,
     permissionModules = emptyArray,
     members_assigned = emptyArray,
     module: groupModule,
   } = useContext(GroupPermissionSettingsCotnext);
   return (
-    <ColumnLayout
-      className="comp_rightColumn"
-      title={t("Sử dụng nhóm quyền")}
-      subTitle={t("Nhóm quyền được phân phối")}
-    >
-      <div className="comp_rightColumn_content">
-        <Stack>
-          <b className="comp_QuickViewFilter__title">
-            {t("Module được gán nhóm quyền")}
-          </b>
-          <Box>
-            {permissionModules
-              .filter(({ value }) => "" + groupModule === "" + value)
-              .map(({ name, value }) => (
-                <Box fontSize="15px" key={value}>
-                  {name}
-                </Box>
-              ))}
-          </Box>
-          <Divider />
-          <ListItemLayout
-            title={t("Thành viên được gán nhóm quyền")}
-          ></ListItemLayout>
+    <div className="comp_rightColumn">
+      <TasksScrollbar>
+        <div className="comp_rightColumn_content">
           <Stack>
-            {members_assigned.map(
-              ({ name, members = emptyArray, icon } = {}, i) => (
-                <Stack key={i} small>
-                  <b style={{ fontSize: "15px", color: "#8d8d8d" }}>
-                    {name} ({members.length})
-                  </b>
-                  {members.map(({ avatar, id, name, position } = {}) => {
-                    return (
-                      <ListItemLayout
-                        key={id}
-                        left={<Avatar src={avatar}></Avatar>}
-                        title={name}
-                        subTitle={position}
-                      />
-                    );
-                  })}
-                </Stack>
-              )
-            )}
+            <b className="comp_QuickViewFilter__title">
+              {t("Module được gán nhóm quyền")}
+            </b>
+            <Box>
+              {permissionModules
+                .filter(({ value }) => "" + groupModule === "" + value)
+                .map(({ name, value }) => (
+                  <Box fontSize="15px" key={value}>
+                    {name}
+                  </Box>
+                ))}
+            </Box>
+            <Alert severity="info">
+              <div>
+                {t(
+                  "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên"
+                )}
+              </div>
+              <a
+                target="_blank"
+                className="u-colorBlue text-bold cursor-pointer"
+                href={detail && detail.url_view_more}
+              >
+                <strong>{t("Tìm hiểu thêm")}</strong>
+              </a>
+            </Alert>
+            <Divider />
+            <ListItemLayout
+              title={t("Thành viên được gán nhóm quyền")}
+            ></ListItemLayout>
+            <Stack>
+              {members_assigned.map(
+                ({ name, members = emptyArray, icon } = {}, i) => (
+                  <Stack key={i} small>
+                    <b style={{ fontSize: "15px", color: "#8d8d8d" }}>
+                      {name} ({members.length})
+                    </b>
+                    {members.map(({ avatar, id, name, position } = {}) => {
+                      return (
+                        <ListItemLayout
+                          key={id}
+                          left={<Avatar src={avatar}></Avatar>}
+                          title={name}
+                          subTitle={position}
+                        />
+                      );
+                    })}
+                  </Stack>
+                )
+              )}
+            </Stack>
           </Stack>
-        </Stack>
-      </div>
-    </ColumnLayout>
+        </div>
+      </TasksScrollbar>
+    </div>
   );
 };
 const Right = () => {

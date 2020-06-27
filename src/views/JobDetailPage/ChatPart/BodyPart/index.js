@@ -1,7 +1,7 @@
 import { Avatar, IconButton } from '@material-ui/core';
-import { mdiMenuDown } from '@mdi/js';
+import { mdiMenuDown, mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
-import { forwardMessage, getViewedChat, loadChat } from 'actions/chat/chat';
+import { forwardMessage, getViewedChat, loadChat, clearFocus } from 'actions/chat/chat';
 import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
@@ -23,18 +23,24 @@ let lastScroll = 0;
 const BodyPart = props => {
   const { t } = useTranslation();
   const chatRef = useRef();
+  const chatRefScroll = useRef();
   const dispatch = useDispatch();
   const chats = useSelector(state => state.chat.chats);
   const isMore = useSelector(state => state.chat.isMore);
   const isLoading = useSelector(state => state.chat.isLoading);
+  const isShowBackChat = useSelector(state => state.chat.isShowBackChat);
   const userId = useSelector(state => state.system.profile.id);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  // const searchChatKey = useSelector(state => state.chat.searchChatKey)
+  const searchChatKey = useSelector(state => state.chat.searchChatKey)
   const isSending = useSelector(state => state.chat.isSending);
   const isShowSendStatus = useSelector(state => state.chat.isShowSendStatus);
   const viewedChatMembers = useSelector(state => state.chat.viewedChatMembers);
+  const focusId = useSelector(state => state.chat.focusId);
+  const focusTopId = useSelector(state => state.chat.focusTopId);
 
+  const [isCanLoadMore, setCanLoadMore] = React.useState(false);
+  const [isMyLastChat, setMyLastChat] = React.useState(false);
   const [isShowScroll, setShowScroll] = React.useState(false);
   const [openViewedModal, setOpenViewedModal] = React.useState(false);
   const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -62,6 +68,7 @@ const BodyPart = props => {
     //   return !searchChatKey
     //     || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
     // });
+    setMyLastChat(chats.data && chats.data.length > 0 && chats.data[0].user_create_id === userId)
     const chatData = [...chats.data]
     chatData.reverse();
     const chatsWithTime = [];
@@ -111,20 +118,68 @@ const BodyPart = props => {
   } = detailTask || {};
 
   useEffect(() => {
+    setCanLoadMore(!!last_id && !isLoading && chats.data.length > 0)
+  }, [chats.data.length, focusId, isLoading, last_id])
+
+  useEffect(() => {
+    // console.log('useEffect scrollToBottom taskId')
+    chatRef.current && chatRef.current.scrollToBottom()
+    // eslint-disable-next-line
+  }, [taskId])
+
+  // useEffect(() => {
+  //   let rqId;
+  //   if (chatRef && chatRef.current && chats.data && chats.data.length
+  //     && !isMore && !isLoading && !focusId) {
+  //     rqId = setTimeout(function () {
+  //       // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+  //       console.log('useEffect scrollToBottom chatRef')
+  //       chatRef.current.scrollToBottom()
+  //     }, 0)
+  //   }
+  //   return () => {
+  //     console.log('chatRef clearTimeout')
+  //     clearTimeout(rqId);
+  //   }
+  //   // eslint-disable-next-line
+  // }, [chatRef, taskId, chats.data.length, isLoading, focusId]);
+
+  useEffect(() => {
+    if (isLoading) return;
     let rqId;
-    if (chatRef && chatRef.current && chats.data && chats.data.length && !isMore) {
-      rqId = setTimeout(function () {
-        requestAnimationFrame(() => {
-          // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-          chatRef.current.scrollToBottom()
-        })
-      })
+    if (focusId) {
+      const ele = document.getElementById(focusId)
+      if (ele) {
+        // console.log('focusId', focusId)
+        rqId = setTimeout(function () {
+          chatRef.current.scrollTop(ele.offsetTop)
+          // ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
+          dispatch(clearFocus());
+        }, 10)
+      }
+    } else if (focusTopId) {
+      const ele = document.getElementById(focusTopId);
+      if (ele) {
+        // console.log('focusTopId', focusTopId, ele.offsetTop)
+        rqId = setTimeout(function () {
+          chatRef.current.scrollTop(ele.offsetTop)
+          // ele.scrollIntoView({ block: "start", inline: "nearest", behavior: 'auto' })
+          dispatch(clearFocus());
+        }, 10)
+      }
+      // } else if (chatRef && chatRef.current && chats.data && chats.data.length
+      //   && !isMore && !isLoading && !focusId) {
+      //   rqId = setTimeout(function () {
+      //     // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
+      //     console.log('useEffect scrollToBottom chatRef')
+      //     chatRef.current.scrollToBottom()
+      //   }, 0)
     }
     return () => {
-      clearTimeout(rqId);
+      // console.log('focusTopId clearTimeout')
+      // clearTimeout(rqId);
     }
-    // eslint-disable-next-line
-  }, [chatRef, taskId, chats.data.length, isLoading]);
+  })
 
   // useEffect(() => {
   //   let rqId;
@@ -154,10 +209,12 @@ const BodyPart = props => {
   }
 
   function onClickScrollToBottom(data) {
+    chatRef.current.scrollToBottom()
+  }
+
+  function onClickBack(data) {
     if (isMore === false) {
       dispatch(loadChat(taskId));
-    } else {
-      chatRef.current.scrollToBottom()
     }
   }
 
@@ -187,9 +244,10 @@ const BodyPart = props => {
 
   function loadMoreChat() {
     // console.log('loadMoreChat', currentPage)
-    if (last_id)
+    if (last_id && !isLoading)
       dispatch(loadChat(taskId, last_id, true));
   }
+
   function handleScrollFrame(data) {
     const { scrollTop, scrollHeight, clientHeight } = data;
     // console.log('handleScrollFrame', scrollTop < scrollHeight - 1000)
@@ -199,11 +257,12 @@ const BodyPart = props => {
       setShowScroll(false)
     }
   }
-  function handleScrollStart(data) {
-    // console.log('handleScrollStart', data)
-  }
-  function handleScrollStop(data) {
-    // console.log('handleScrollStop', data)
+
+  function onScrollStop() {
+    const scrollTop = chatRef.current.getScrollTop()
+    if (isCanLoadMore && scrollTop < 10) {
+      loadMoreChat()
+    }
   }
 
   return (
@@ -213,21 +272,20 @@ const BodyPart = props => {
       <Scrollbars autoHide autoHideTimeout={500}
         ref={chatRef}
         onScrollFrame={handleScrollFrame}
-        onScrollStart={handleScrollStart}
-        onScrollStop={handleScrollStop}
-        renderView={props => <div {...props} className="bodyChat--scrollWrap" />}
+        onScrollStop={onScrollStop}
+        renderView={props => <div {...props} ref={chatRefScroll} className="bodyChat--scrollWrap" />}
       >
-        <InfiniteScroll
+        <div
           className="bodyChat--scroll"
-          isReverse
-          loadMore={loadMoreChat}
-          hasMore={!!last_id}
-          loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
-          useWindow={false}
-        // getScrollParent={() => chatRef.current}
+        // isReverse
+        // loadMore={loadMoreChat}
+        // hasMore={isCanLoadMore}
+        // loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
+        // useWindow={false}
+        // getScrollParent={() => chatRefScroll.current}
         >
           {
-            !last_id &&
+            !last_id && !searchChatKey &&
             <React.Fragment>
               <div className="wrap-time">
                 <div className="time">{date_create}</div>
@@ -264,9 +322,15 @@ const BodyPart = props => {
               </div>
             </React.Fragment>
           }
+          {isLoading && isMore &&
+            <div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>
+          }
           {
-            showedChats.length === 0 &&
-            <div className="bodyChat--searchEmpty">{t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
+            showedChats.length === 0 && searchChatKey &&
+            <div className="bodyChat--searchEmpty">
+              <img src="/images/ic_not_found.png" alt="no result" />
+              <br />
+              {t('LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA')}</div>
           }
           {
             showedChats.map((el, id) => <Message {...el}
@@ -275,7 +339,7 @@ const BodyPart = props => {
               handleDetailEmotion={handleDetailEmotion(el)}
               handleReplyChat={handleReplyChat(el)} />)
           }
-          <div className="bodyChat--chatStatus">
+          <div id="chatStatusDiv" className="bodyChat--chatStatus">
             {
               viewedChatMembers.length > 0 &&
               <div className="bodyChat--viewed" onClick={onClickDetailViewed}>{t('LABEL_CHAT_TASK_DA_XEM')}
@@ -288,7 +352,7 @@ const BodyPart = props => {
               </div>
             }
             {
-              isShowSendStatus &&
+              isShowSendStatus && isMyLastChat &&
               (
                 <div className="bodyChat--sending">
                   {isSending ? t('LABEL_CHAT_TASK_DANG_GUI') : t('LABEL_CHAT_TASK_DA_GUI')}
@@ -296,11 +360,16 @@ const BodyPart = props => {
               )
             }
           </div>
-        </InfiniteScroll >
+        </div >
       </Scrollbars>
-      {(isShowScroll || isMore === false) &&
+      {(isShowScroll) &&
         <IconButton className="bodyChat--buttonToBot" onClick={onClickScrollToBottom}>
           <Icon path={mdiMenuDown} size={1.5} ></Icon>
+        </IconButton>
+      }
+      {(isShowBackChat) &&
+        <IconButton className="bodyChat--buttonToBot bodyChat--buttonBack" onClick={onClickBack}>
+          <Icon path={mdiClose} size={1.5} ></Icon>
         </IconButton>
       }
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

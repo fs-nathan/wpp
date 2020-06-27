@@ -11,6 +11,7 @@ const DragableBodyRow = ({
   moveRow,
   className,
   style,
+  dataSource,
   ...restProps
 }) => {
   const ref = React.useRef();
@@ -24,7 +25,7 @@ const DragableBodyRow = ({
       return {
         isOver: monitor.isOver(),
         dropClassName:
-          dragIndex < index ? " drop-over-downward" : " drop-over-upward",
+          dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
       };
     },
     drop: (item) => {
@@ -41,8 +42,27 @@ const DragableBodyRow = ({
   return (
     <tr
       ref={ref}
-      onMouseEnter={() => restProps.changeRowHover(index)}
-      onMouseLeave={() => restProps.changeRowHover(-1)}
+      onMouseEnter={() => {
+        if (!window.scrollTable) {
+          const divs = document.getElementsByClassName(
+            "gantt--top-timeline-tr"
+          );
+          divs[index].style.backgroundColor = "#fffae6";
+          const divss = document.getElementsByClassName(
+            "ant-table-row ant-table-row-level-0"
+          );
+          divss[index].style.backgroundColor = "#fffae6";
+        }
+      }}
+      onMouseLeave={() => {
+        const divs = document.getElementsByClassName("gantt--top-timeline-tr");
+        divs[index].style.backgroundColor = "";
+        const divss = document.getElementsByClassName(
+          "ant-table-row ant-table-row-level-0"
+        );
+        if (!divss[index]) return;
+        divss[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "";
+      }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}
       {...restProps}

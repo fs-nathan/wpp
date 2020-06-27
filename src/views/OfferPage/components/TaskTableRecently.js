@@ -1,33 +1,36 @@
 import { Avatar, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@material-ui/core";
 import { makeStyles } from '@material-ui/core/styles';
-import { isEqual } from "date-fns";
-import { get } from 'lodash';
-import React from "react";
+import { get, isEqual } from 'lodash';
+import React, { useContext } from 'react';
 import { useTranslation } from "react-i18next";
 import styled from 'styled-components';
-import { colors } from "../contants/attrs";
+import { OfferPageContext } from '../OfferPageContext';
 import EmptyHolder from "./EmptyHolder";
+import InlineBadge from './InlineBadge';
 import Popover from './Popover';
 import "./TaskTableRecently.scss";
-import { TaskTitleLink } from './RecentTableRow';
 const styles = makeStyles((theme) => ({
   button_green: {
-    backgroundColor: colors.offer_status_approved
+    backgroundColor: '#0ab711'
   },
   button_red: {
-    backgroundColor: colors.offer_of_me_monitoring
+    backgroundColor: '#f44336'
   },
   button_yellow: {
-    backgroundColor: "#FFD700"
+    backgroundColor: "#ff9800"
   },
   button_grey: {
-    backgroundColor: "#e8e8e8"
+    backgroundColor: "#9e9e9e"
   },
   button: {
     color: "white",
     height: "30px",
-    width: "100px",
-    border: 0
+    width: "150px",
+    border: 0,
+    borderRadius: '3px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   small_avatar: {
     width: theme.spacing(4),
@@ -72,38 +75,45 @@ const WrapButton = styled.div`
     outline:none;
   }
   font-size : 12px;
+  width: 150px;
+  text-align: center;
 `
 
 export function TaskTableRecently({ offers }) {
   const classes = styles()
   const { t } = useTranslation()
+  const {
+    setDetailOfferModalOpen,
+    setCurrentDetailOfferId,
+  } = useContext(OfferPageContext);
+
   return (
     <>
-      {offers.length === 0 || undefined ? < EmptyHolder /> : (
+      {(offers.length === 0 || undefined) ? < EmptyHolder /> : (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
               <TableRow>
                 <TableCell width="10%">
-                  Đề xuất
+                  {t("VIEW_OFFER_LABEL_OFFER")}
                 </TableCell>
                 <TableCell width="15%" >
-                  Ngày đề xuất
+                  {t("VIEW_OFFER_LABEL_OFFER_DATE")}
                 </TableCell>
                 <TableCell width="30%" >
-                  Nội dung đề xuất
+                  {t("VIEW_OFFER_LABEL_OFFER_CONTENT")}
                 </TableCell>
                 <TableCell width="15%" sortDirection="desc">
-                  Giám sát
+                  {t("VIEW_OFFER_LABEL_OFFER_MONITOR")}
                 </TableCell>
                 <TableCell width="15%" >
-                  Duyệt
+                  {t("VIEW_OFFER_LABEL_OFFER_APPROVAL")}
                 </TableCell>
                 <TableCell width="15%" >
-                  Ngày duyệt
+                  {t("VIEW_OFFER_LABEL_OFFER_APPROVAL_DATE")}
                 </TableCell>
-                <TableCell  >
-                  Kết quả
+                <TableCell align="center">
+                  {t("VIEW_OFFER_LABEL_OFFER_APPROVAL_RESULT")}
                 </TableCell>
                 <TableCell width="5%"></TableCell>
               </TableRow>
@@ -119,19 +129,50 @@ export function TaskTableRecently({ offers }) {
                     <div> {get(offer, "date_label")}</div>
                   </TableCell>
                   <TableCell>
-                    <Grid container>
-                      <TaskTitleLink
-                        title={get(offer, "title")}
-                        to={get(offer, "url_redirect")}
+                    <div className="offerTable-item-title-container">
+                      <div
+                        className="offerTable-item-title-link"
+                        onClick={() => {
+                          // For triggering offer detail data fetching from OfferPage component
+                          setCurrentDetailOfferId(offer.id);
+                          // Show offer detail modal
+                          setDetailOfferModalOpen(true);
+                        }}
                       >
-                        {get(offer, "title")}
-                      </TaskTitleLink>
-                      {!isEqual(get(offer, "type_name"), "") && <div className={`${classes.blue_hightlight} ${classes.text_hightlight}`}>{get(offer, "type_name")}</div>}
+                        {offer.title}
+                      </div>
+                      <div className="offerTable-item-title-chip-container">
+                        {
+                          !isEqual(get(offer, "type_name"), "") && (
+                            <InlineBadge color={'#03a9f4'}>
+                              {get(offer, "type_name")}
+                            </InlineBadge>
+                          )
+                        }
 
-                      {get(offer, "priority_code") === 0 && <div className={`${classes.orange_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>{get(offer, "priority_name")}</div>}
-                      {get(offer, "priority_code") === 1 && <div className={`${classes.red_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>{get(offer, "priority_name")}</div>}
-                      {get(offer, "priority_code") === 2 && <div className={`${classes.red_hightlight} ${classes.text_hightlight} ${classes.margin_hightlight}`}>Very urgent</div>}
-                    </Grid>
+                        {
+                          get(offer, "priority_code") === 0 && (
+                            <InlineBadge color={'#ff9800'}>
+                              {get(offer, "priority_name")}
+                            </InlineBadge>
+                          )
+                        }
+                        {
+                          get(offer, "priority_code") === 1 && (
+                            <InlineBadge color={'#f44336'}>
+                              {get(offer, "priority_name")}
+                            </InlineBadge>
+                          )
+                        }
+                        {
+                          get(offer, "priority_code") === 2 && (
+                            <InlineBadge color={'#f44336'}>
+                              {get(offer, "priority_name")}
+                            </InlineBadge>
+                          )
+                        }
+                      </div>
+                    </div>
                   </TableCell>
                   <TableCell>
                     <Grid direction="row" container>
@@ -155,14 +196,11 @@ export function TaskTableRecently({ offers }) {
                     {get(offer, "status_code") === 0 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_grey}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
@@ -170,48 +208,39 @@ export function TaskTableRecently({ offers }) {
                     {get(offer, "status_code") === 1 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_yellow}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
                     {get(offer, "status_code") === 2 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_green}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
                     {get(offer, "status_code") === 3 &&
                       <>
                         <WrapButton>
-                          <button
+                          <div
                             className={`${classes.button} ${classes.button_red}`}
-                            variant="contained"
-                            size="small"
-                            color="primary"
                           >
                             {get(offer, "status_name")} ({get(offer, "number_accepted")}/{get(offer, "number_have_to_handle")})
-                          </button>
+                          </div>
                         </WrapButton>
                       </>
                     }
                   </TableCell>
                   <TableCell>
-                    <Popover offer_id={get(offer, "id")} />
+                    <Popover offer_id={get(offer, "id")} url_redirect={offer.url_redirect} />
                   </TableCell>
                 </TableRow>
               ))
@@ -220,8 +249,6 @@ export function TaskTableRecently({ offers }) {
           </Table>
         </TableContainer>
       )}
-
-      {}
     </>
   );
 }

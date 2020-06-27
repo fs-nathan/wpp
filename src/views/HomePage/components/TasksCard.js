@@ -3,10 +3,10 @@ import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import Typography from "@material-ui/core/Typography";
+import { showImagesList } from "actions/chat/chat";
 import classnames from "classnames";
 import React from "react";
-import { useToggle } from "react-use";
-import ModalImage from "views/JobDetailPage/ModalImage";
+import { useDispatch } from "react-redux";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { injectClassName } from "views/JobPage/utils";
 import "./TasksCard.css";
@@ -26,10 +26,10 @@ const Content = injectClassName("comp_TasksCard__Content")(CardContent);
 
 const Media = injectClassName("comp_TasksCard__Media")(
   ({ className, images = emptyArray, ...props }) => {
+    const dispatch = useDispatch();
     if (!images.length) return null;
     const [one, two, three, four] = images;
     const hadMore = images.length && images.length >= 5;
-    const [istoggle, toggle] = useToggle();
     return (
       <div
         className={classnames(
@@ -38,49 +38,62 @@ const Media = injectClassName("comp_TasksCard__Media")(
         )}
         {...props}
       >
-        <div
-          className="cursor-pointer"
-          onClick={() => {
-            toggle();
-          }}
-        >
-          {one && <img src={one.url_thumb} alt="" />}
-          {two && <img src={two.url_thumb} alt="" />}
-          {three && <img src={three.url_thumb} alt="" />}
+        <div className="cursor-pointer">
+          {one && (
+            <img
+              src={one.url_thumb}
+              alt=""
+              onClick={() => {
+                dispatch(showImagesList(true, images));
+              }}
+            />
+          )}
+          {two && (
+            <img
+              src={two.url_thumb}
+              alt=""
+              onClick={() => {
+                dispatch(showImagesList(true, images, 1));
+              }}
+            />
+          )}
+          {three && (
+            <img
+              src={three.url_thumb}
+              alt=""
+              onClick={() => {
+                dispatch(showImagesList(true, images, 2));
+              }}
+            />
+          )}
           {hadMore ? (
-            <div style={{ position: "relative", height: "100%" }}>
+            <div
+              onClick={() => {
+                dispatch(showImagesList(true, images, 3));
+              }}
+            >
               <img src={four.url_thumb} alt="" />
               <div
-                style={{
-                  top: 0,
-                  position: "absolute",
-                  width: "100%",
-                  height: "100%",
-                  background: "#00000057",
-                  color: "#fff",
-                  fontSize: "28px",
-                  fontWeight: "bold",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                onClick={() => {
+                  dispatch(showImagesList(true, images, 3));
                 }}
+                className="comp_TasksCard__Media__mark"
               >
                 +{images.length - 4}
               </div>
             </div>
           ) : (
-            four && <img src={four.url_thumb} alt="" />
+            four && (
+              <img
+                onClick={() => {
+                  dispatch(showImagesList(true, images, 3));
+                }}
+                src={four.url_thumb}
+                alt=""
+              />
+            )
           )}
         </div>
-        {istoggle && (
-          <ModalImage
-            {...{
-              isOpen: true,
-              handleClose: toggle,
-              images: images,
-            }}
-          ></ModalImage>
-        )}
       </div>
     );
   }

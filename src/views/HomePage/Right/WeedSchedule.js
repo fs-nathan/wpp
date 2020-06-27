@@ -4,11 +4,13 @@ import {
   ButtonBase,
   Dialog,
   IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Tooltip,
   Typography,
 } from "@material-ui/core";
 import {
@@ -92,11 +94,13 @@ const WeedDetailStateLess = ({
   const { t } = useTranslation();
   return (
     (!calendar && (
-      <EmptyHolder
-        image={<img src={no_calendar_image} alt="no data found" />}
-        title={""}
-        description=""
-      />
+      <Box maxWidth="400px" margin="auto">
+        <EmptyHolder
+          image={<img src={no_calendar_image} alt="no data found" />}
+          title={""}
+          description=""
+        />
+      </Box>
     )) || (
       <>
         <div className="view_WeeklyCalendar_rightContainer">
@@ -107,107 +111,133 @@ const WeedDetailStateLess = ({
               {get(calendar, "end", "")})
             </Typography>
           </CalendarDetailHeader>
-          <Box className="view_WeeklyCalendar_rightContainer__columnDataHeader">
-            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_title">
-              <span>
-                {t(
-                  "views.calendar_page.modal.create_weekly_calendar.label.title"
-                )}
-              </span>
-            </div>
-            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_content">
-              <span>
-                {t("views.calendar_page.modal.create_weekly_calendar.content")}
-              </span>
-            </div>
-            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_receiver">
-              <span>
-                {t("views.calendar_page.modal.create_weekly_calendar.receiver")}
-              </span>
-            </div>
-            <div className="view_WeeklyCalendar_rightContainer__columnDataHeader_createdBy">
-              <span>
-                {t("views.calendar_page.right_part.label.created_by")}
-              </span>
-            </div>
-          </Box>
-          {scheduleOfWeek.data.length !== 0 &&
-            scheduleOfWeek.data.map((item, index) => {
-              if (item.schedules.length !== 0) {
-                return (
-                  <CalendarItemContainer>
-                    <Typography component={"div"} className="header">
-                      <div className="header_time">
-                        <span>
-                          {
-                            i18nDays[
-                              new Date(item.schedules[0].time_original).getDay()
-                            ]
-                          }
-                        </span>
-                        <span>({item.date})</span>
-                      </div>
-                    </Typography>
-                    <List
-                      component={"div"}
-                      key={`views_CalendarWeeklyPage_rightPart_list_${index}`}
-                    >
-                      {item.schedules.map((schedule) => {
-                        return (
-                          <ListItem
-                            key={`views_CalendarWeeklyPage_rightPart_list_item_${schedule.id}`}
-                            className="shedule_item"
+          <TableContainer className="view_WeeklyCalendar_rightContainer__TableContainer">
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell>
+                    <Icon path={""} size={0.85} color="rgba(0, 0, 0, 0.7)" />
+                  </TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    {t(
+                      "views.calendar_page.modal.create_weekly_calendar.label.title"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {t(
+                      "views.calendar_page.modal.create_weekly_calendar.content"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {t(
+                      "views.calendar_page.modal.create_weekly_calendar.receiver"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    {t("views.calendar_page.right_part.label.created_by")}
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {scheduleOfWeek.data.map((item, index) => {
+                  if (item.schedules.length !== 0) {
+                    return (
+                      <>
+                        <TableRow>
+                          <TableCell
+                            colSpan={6}
+                            className="view_WeeklyCalendar_rightContainer__TableHeaderGroup"
                           >
-                            <ListItemIcon>
-                              {schedule.is_remind && (
-                                <Icon
-                                  path={mdiBellOutline}
-                                  size={0.85}
-                                  color="rgba(0, 0, 0, 0.7)"
-                                />
-                              )}
-                            </ListItemIcon>
-                            <ListItemText className="schedule_item_time">
-                              <span>{schedule.time}</span>
-                            </ListItemText>
-                            <ListItemText className="schedule_item_title">
-                              <span>{schedule.title}</span>
-                            </ListItemText>
-                            <ListItemText className="schedule_item_content">
-                              <span>{schedule.content}</span>
-                            </ListItemText>
-                            <ListItemSecondaryAction>
-                              {schedule.assign_to_all && (
-                                <div className="assign_to_all">Tất cả</div>
-                              )}
-                              {!schedule.assign_to_all && (
-                                <AvatarCircleList
-                                  users={schedule.members_assign.map(
-                                    (member) => ({
-                                      name: get(member, "name"),
-                                      avatar: get(member, "avatar"),
-                                    })
-                                  )}
-                                  display={3}
-                                />
-                              )}
-                              <Box className="schedule_item_created_by">
-                                <CustomAvatar
-                                  style={{ width: 20, height: 20 }}
-                                  src={schedule.user_create_avatar}
-                                  alt="avatar"
-                                />
-                                <span>{schedule.user_create_name}</span>
-                              </Box>
-                            </ListItemSecondaryAction>
-                          </ListItem>
-                        );
-                      })}
-                    </List>
-                  </CalendarItemContainer>
-                );
-              }
-            })}
+                            <Typography component={"div"} className="header">
+                              <div className="header_time">
+                                <span>
+                                  {
+                                    i18nDays[
+                                      new Date(
+                                        item.schedules[0].time_original
+                                      ).getDay()
+                                    ]
+                                  }
+                                </span>
+                                <span>({item.date})</span>
+                              </div>
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                        {item.schedules.map((schedule) => {
+                          return (
+                            <TableRow hover>
+                              <TableCell className="schedule_item_remind">
+                                {schedule.is_remind && (
+                                  <Tooltip
+                                    title={schedule.title_remind_before}
+                                    placement="right"
+                                  >
+                                    <Icon
+                                      path={mdiBellOutline}
+                                      size={0.85}
+                                      color="rgba(0, 0, 0, 0.7)"
+                                    />
+                                  </Tooltip>
+                                )}
+                                {!schedule.is_remind && (
+                                  <Icon
+                                    path={""}
+                                    size={0.85}
+                                    color="rgba(0, 0, 0, 0.7)"
+                                  />
+                                )}
+                              </TableCell>
+                              <TableCell className="schedule_item_time">
+                                {schedule.time}
+                              </TableCell>
+                              <TableCell className="schedule_item_title">
+                                {schedule.title}
+                              </TableCell>
+                              <TableCell className="schedule_item_content">
+                                {schedule.content}
+                              </TableCell>
+                              <TableCell>
+                                {schedule.assign_to_all && (
+                                  <div className="assign_to_all">
+                                    {t(
+                                      "views.calendar_page.modal.create_weekly_calendar.all"
+                                    )}
+                                  </div>
+                                )}
+                                {!schedule.assign_to_all && (
+                                  <AvatarCircleList
+                                    users={schedule.members_assign.map(
+                                      (member) => ({
+                                        name: get(member, "name"),
+                                        avatar: get(member, "avatar"),
+                                      })
+                                    )}
+                                    display={3}
+                                  />
+                                )}
+                              </TableCell>
+                              <TableCell>
+                                <Box className="schedule_item_created_by">
+                                  <CustomAvatar
+                                    style={{ width: 20, height: 20 }}
+                                    src={schedule.user_create_avatar}
+                                    alt="avatar"
+                                  />
+                                  <span>{schedule.user_create_name}</span>
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                      </>
+                    );
+                  }
+                })}
+              </TableBody>
+            </Table>
+          </TableContainer>
         </div>
       </>
     )
@@ -356,7 +386,7 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
                     </Box>
                   }
                 >
-                  - {get(schedule, scheduleAttrs.title)}
+                  {get(schedule, scheduleAttrs.title)}
                 </ListItemLayout>
               );
             })}

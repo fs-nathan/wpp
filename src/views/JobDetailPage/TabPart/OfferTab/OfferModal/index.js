@@ -1,66 +1,81 @@
-import { Avatar, Button, Chip, Grid, IconButton, TextField } from '@material-ui/core';
-import { mdiCloudDownloadOutline, mdiPlusCircleOutline } from '@mdi/js';
+import { Avatar, Button, Chip, IconButton, TextField } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { mdiCloudDownloadOutline, mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
-import { createOffer, deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
+import { deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
 import CustomSelect from 'components/CustomSelect';
+import { CustomEventDispose, CustomEventListener } from 'constants/events';
 import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
-import lodash from 'lodash';
+import { get } from 'lodash';
 import findIndex from 'lodash/findIndex';
-import get from 'lodash/get';
-import { useSnackbar } from 'notistack';
-import React, { useCallback, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useMountedState } from 'react-use';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
+import { allMembersSelector } from 'views/JobDetailPage/selectors';
+import { Routes } from 'views/OfferPage/contants/routes';
+import { CREATE_OFFER, CREATE_OFFER_SUCCESSFULLY, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from 'views/OfferPage/redux/types';
 import TitleSectionModal from '../../../../../components/TitleSectionModal';
 import { apiService } from '../../../../../constants/axiosInstance';
-import ShareFromLibraryModal from '../../../ChatComponent/ShareFromLibraryModal';
+import { bgColorSelector } from '../../../../../reducers/setting/selectors';
+import { getMemberToAdd, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
+import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
-import { priorityList } from '../data';
 import OfferFile from './OfferFile';
 import './styles.scss';
 
-const OfferModal = (props) => {
+const useStyles = makeStyles((theme) => ({
+  listChips: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    flexWrap: 'wrap',
+    '& > *': {
+      margin: theme.spacing(0.5)
+    },
+  },
+}));
+
+const OfferModal = ({
+  isOpen,
+  setOpen,
+  actionCreateOffer,
+  item: offerItem,
+  isUpdateOfferDetailDescriptionSection,
+  isOffer,
+  additionQuery
+}) => {
+  const classes = useStyles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
+  const bgColor = useSelector(state => bgColorSelector(state));
+  const isMounted = useMountedState();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const currentUserId = useSelector(state => state.system.profile.id);
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  // const members = useSelector(state => state.taskDetail.taskMember.member);
-  const [members, setMembers] = useState([])
-  const offers = useSelector(state => state.taskDetail.listGroupOffer.offers);
-  const defaultOffer = { ...DEFAULT_OFFER_ITEM, offer_group_id: "", priority: priorityList[0], condition_logic: "OR", condition_logic_member: "OR", file_ids: [] }
+  const priorityList = [
+    { id: 0, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1") },
+    { id: 1, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2") },
+    { id: 2, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3") }
+  ];
+  const { members: allMembers } = useSelector(state => allMembersSelector(state));
+  const defaultOffer = { ...DEFAULT_OFFER_ITEM, title: '', content: '', offer_group_id: "", priority: priorityList[0], file_ids: [] }
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
   const [handlers, setHandlers] = React.useState([])
   const [monitors, setMonitors] = React.useState([])
-  const [approves, setApproves] = React.useState([])
-  const [minRateAccept, setMinRateAccept] = React.useState(100)
-  const [conditionLogicMember, setConditionLogicMember] = useState("OR")
   const [offersGroup, setOffersGroup] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
   const [selectedFilesFromLibrary, setSelectedFilesFromLibrary] = React.useState([])
-  const [openShareFromLibraryModal, setOpenShareFromLibraryModal] = useState(false);
-  /// Mở modal các thành viên sau phải duyệt
-  const [isOpenAddApprove, setOpenAddAppove] = React.useState(false)
-  const { item } = props;
-  const createId = (item && item.user_create_id) || currentUserId;
-  const createUserIndex = findIndex(members, member => member.id === createId);
+  const [openSendFileModal, setOpenSendFileModal] = useState(false);
+  const createId = (offerItem && offerItem.user_create_id) || currentUserId;
+  const createUserIndex = findIndex(allMembers, member => member.id === createId);
+  const [loading, setLoading] = React.useState(false);
 
+  console.log(allMembers);
 
-  const fetchMembers = useCallback(async () => {
-    const config = {
-      url: "/list-users",
-      method: "GET"
-    }
-    var users = []
-    const result = await apiService(config)
-    result.data.users.forEach(x => {
-      users = [...users, [...x.users]]
-    })
-    setMembers(lodash.flatten(users).filter(x => x.id !== currentUserId))
-  }, [currentUserId])
   const fetchOffersGroup = async () => {
     const config = {
       url: "/offers/list-group-offer",
@@ -74,56 +89,65 @@ const OfferModal = (props) => {
     })
     setOffersGroup(newArray)
   }
-  /// Khi nào modal open thì load members và group 
-  React.useEffect(() => {
-    fetchMembers()
-    fetchOffersGroup()
-  }, [fetchMembers, props.isOpen])
-  React.useEffect(() => {
-    if (item) {
-      const { user_can_handers, user_monitors,
+
+  useEffect(() => {
+    dispatch(getMemberToAdd({ additionQuery: additionQuery }));
+    fetchOffersGroup();
+  }, [currentUserId]);
+
+  useEffect(() => {
+    if (offerItem) {
+      const {
+        user_can_handers,
+        user_monitors,
         priority_code,
-        id } = item;
+        id,
+        handlers,   // member object
+        approvers,  // member object
+      } = offerItem;
       if (user_can_handers) {
         const handlerIndexes = user_can_handers.map(
-          handler => findIndex(members, member => member.id === handler.id))
+          handler => findIndex(allMembers, member => member.id === handler.id))
         setHandlers(handlerIndexes.filter(idx => idx !== -1))
       }
       if (user_monitors) {
-        const monitorsIndexes = user_monitors.map(monitor => findIndex(members, member => member.id === monitor.id))
+        const monitorsIndexes = user_monitors.map(monitor => findIndex(allMembers, member => member.id === monitor.id))
         setMonitors(monitorsIndexes.filter(idx => idx !== -1))
       }
-      if (priority_code) item.priority = priorityList[priority_code];
-      if (id) item.offer_id = id;
-      setTempSelectedItem(item)
+      // handlers & approvers are used when editing approval conditions
+      if (handlers) {
+        const handlerIndexes = handlers.map(
+          handler => findIndex(allMembers, member => member.id === handler.id));
+        setHandlers(handlerIndexes.filter(idx => idx !== -1)); // use indexes of all members to set
+      }
+      if (priority_code != null) offerItem.priority = priorityList[priority_code];
+      if (id != null) offerItem.offer_id = id;
+      setTempSelectedItem(offerItem);
     }
-  }, [item, members])
+  }, [offerItem, allMembers]);
+
   const setParams = (nameParam, value) => {
     setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
   }
-  const filterUserInHandlers = useCallback(() => {
-    const arr = handlers.map(i => members[i])
-    return arr || []
-  })
+
   const handleDeleteFile = fileId => {
     let removeFileCallBack = () => {
-      setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
+      setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
       setParams("file_ids", tempSelectedItem.file_ids.filter(file => file.id !== fileId));
+      setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
     }
-    if (props.isOffer) {
+    if (isUpdateOfferDetailDescriptionSection) {
       let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
-      // Build a callback that allow saga remove file in state array
-      // Call api
       dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
     } else {
       removeFileCallBack()
     }
   }
 
-
-  React.useEffect(() => {
-    filterUserInHandlers()
-  }, [filterUserInHandlers, handlers])
+  const handleUploadSelectedFilesFromPC = async (e) => {
+    const { files } = e.target;
+    setParams("files", [...tempSelectedItem.files, ...files]);
+  }
   const handleSelectedFilesFromLibrary = (selectedFiles) => {
     if (selectedFiles) {
       setParams("file_ids", [...tempSelectedItem.file_ids, ...selectedFiles.map(file => (file.id))]);
@@ -136,22 +160,21 @@ const OfferModal = (props) => {
     dataCreateOfferFormData.append('title', tempSelectedItem.title)
     dataCreateOfferFormData.append('content', tempSelectedItem.content)
     dataCreateOfferFormData.append('task_id', taskId)
-    dataCreateOfferFormData.append('min_rate_accept', minRateAccept)
+    dataCreateOfferFormData.append('min_rate_accept', tempSelectedItem.min_rate_accept)
     dataCreateOfferFormData.append('priority', tempSelectedItem.priority.id)
-    dataCreateOfferFormData.append("condition_logic_member", conditionLogicMember)
-    dataCreateOfferFormData.append("condition_logic", tempSelectedItem.condition_logic)
     dataCreateOfferFormData.append("offer_group_id", tempSelectedItem.offer_group_id)
 
-    // add each user to form data    
+    // add each user to form data
     handlers.forEach((value, index) => {
-      dataCreateOfferFormData.append("user_handle[" + index + "]", members[value].id)
+      dataCreateOfferFormData.append("user_handle[" + index + "]", allMembers[value].id)
     })
     monitors.forEach((value, index) => {
-      dataCreateOfferFormData.append("user_monitor[" + index + "]", members[value].id)
+      dataCreateOfferFormData.append("user_monitor[" + index + "]", allMembers[value].id)
     })
-    approves.forEach((value, index) => {
-      dataCreateOfferFormData.append("member_accepted_important[" + index + "]", members[value].id)
-    })
+    // add uploaded files to form data
+    tempSelectedItem.files.forEach(file => {
+      dataCreateOfferFormData.append("file", file, file.name);
+    });
     // add selected file ids from library to form data
     tempSelectedItem.file_ids.forEach((id, index) => {
       dataCreateOfferFormData.append(`file_ids[${index}]`, id);
@@ -159,44 +182,85 @@ const OfferModal = (props) => {
     return dataCreateOfferFormData;
   }
 
-  const handleCreateOffer = async () => {
-    // try {
-    //   const config = {
-    //     url: "/offers/personal/create",
-    //     method: "POST",
-    //     data: getFormData(),
-    //     headers: { 'Content-Type': 'multipart/form-data' },
-    //   }
-    //   await apiService(config)
-    //   enqueueSnackbar("Create offer successful", { variant: "success" })
-    // } catch (err) {
-    //   enqueueSnackbar(err.message, { variant: "error" })
-    // }
-    dispatch(createOffer({ data: getFormData(), taskId }))
-    setParams("files", [])
+  const handleCreateOffer = () => {
+    if (actionCreateOffer) {
+      if (actionCreateOffer.payload) {
+        actionCreateOffer.payload.data = getFormData();
+        actionCreateOffer.payload.additionQuery = additionQuery;
+      } else {
+        actionCreateOffer.payload = {
+          data: getFormData(),
+          additionQuery: additionQuery
+        }
+      }
+      setLoading(true);
+      console.log(actionCreateOffer);
+      dispatch(actionCreateOffer);
+    }
+  };
+
+  const afterDoOfferOperations = () => {
+    setLoading(false);
+    setOpen(false);
   }
+
+  const redirectAfterCreateOfferSuccess = () => {
+    setTimeout(() => {
+      history.push(`${Routes.OFFERBYGROUP}/${tempSelectedItem.offer_group_id}?referrer=${history.location.pathname}`);
+    }, 1000);
+  }
+
+  React.useEffect(() => {
+    if (isMounted) {
+      CustomEventListener(CREATE_OFFER_SUCCESSFULLY, redirectAfterCreateOfferSuccess);
+      return () => {
+        CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, redirectAfterCreateOfferSuccess);
+      }
+    }
+  }, [isMounted, tempSelectedItem]);
+
+  React.useEffect(() => {
+    if (isMounted) {
+      CustomEventListener(CREATE_OFFER, afterDoOfferOperations);
+      CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
+      return () => {
+        CustomEventDispose(CREATE_OFFER, afterDoOfferOperations);
+        CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
+      }
+    }
+  }, [isMounted]);
+
   function onClickCreateOffer() {
-    props.setOpen(false)
     if (tempSelectedItem.content)
       handleCreateOffer()
     setParams("content", '')
   }
 
   function onClickUpdateOffer() {
-    props.setOpen(false)
-    if (tempSelectedItem.content) {
+    if (isUpdateOfferDetailDescriptionSection) {
+      if (validate()) {
+        dispatch(updateOfferDetailDescriptionSection({
+          offerId: tempSelectedItem.offer_id,
+          title: tempSelectedItem.title,
+          content: tempSelectedItem.content,
+          offerGroupId: tempSelectedItem.offer_group_id,
+          priorityCode: tempSelectedItem.priority.id,
+          additionQuery
+        }));
+        setLoading(true);
+      }
+    } else if (tempSelectedItem.content) {
       dispatch(updateOffer({
         task_id: taskId,
         offer_id: tempSelectedItem.offer_id,
-        user_hander: handlers.map((id) => members[id].id),
-        user_monitor: monitors.map((id) => members[id].id),
+        user_hander: handlers.map((idx) => allMembers[idx].id),
+        user_monitor: monitors.map((idx) => allMembers[idx].id),
         title: tempSelectedItem.title,
         content: tempSelectedItem.content,
         offer_group_id: get(tempSelectedItem, 'offer_group_id.value'),
         priority: get(tempSelectedItem, 'priority.id'),
       }))
     }
-    setParams("content", '')
   }
 
   function handleDeleteHandler(i) {
@@ -205,55 +269,78 @@ const OfferModal = (props) => {
       setHandlers([...handlers]);
     }
   }
+
   function handleDeleteMonitor(i) {
     return () => {
       monitors.splice(i, 1)
       setMonitors([...monitors])
     }
   }
-  function handleDeleteApprove(i) {
-    return () => {
-      approves.splice(i, 1)
-      setApproves([...monitors])
-    }
-  }
 
   function openAddHandlersDialog() {
     dispatch(getMember())
     setOpenAddHandler(true)
-    filterUserInHandlers()
   }
   function openAddMonitorsDialog() {
     setOpenAddMonitor(true)
   }
-  function openAddApproveDialog() {
-    setOpenAddAppove(true)
+
+  function renderAddMemberModal(isOpen, setOpen, value, onChange, members, disabledIndexes, isUpdate) {
+    return (
+      <AddOfferMemberModal
+        isOpen={isOpen}
+        setOpen={setOpen}
+        value={value}
+        onChange={onChange}
+        members={members}
+        disableIndexes={disabledIndexes}
+        isUpdate={isUpdate}
+      />
+    );
   }
 
   function validate() {
-    return tempSelectedItem.content && tempSelectedItem.title
-      && handlers.length
-      && tempSelectedItem.offer_group_id
-      && tempSelectedItem.priority
-  }
-  const selectConditionMember = (e) => {
-    if (e.value == "OR") {
-      setConditionLogicMember("OR")
-    } else {
-      setConditionLogicMember("AND")
+    const { title, content, offer_group_id, priority } = tempSelectedItem;
+    if (isUpdateOfferDetailDescriptionSection) {
+      return title && content;
     }
+    return actionCreateOffer
+      && title && content
+      && offer_group_id
+      && priority
   }
   return (
     <JobDetailModalWrap
-      title={props.isOffer ? "Chỉnh sửa đề xuất" : 'Tạo đề xuất'}
-      open={props.isOpen}
-      setOpen={props.setOpen}
-      confirmRender={() => props.isOffer ? "Chỉnh sửa" : "Hoàn Thành"}
-      onConfirm={props.isOffer ? onClickUpdateOffer : onClickCreateOffer}
+      title={
+        isUpdateOfferDetailDescriptionSection || isOffer ? t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT') : t('LABEL_CHAT_TASK_TAO_DE_XUAT')
+      }
+      open={isOpen}
+      setOpen={setOpen}
+      confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
+      onConfirm={
+        isUpdateOfferDetailDescriptionSection || isOffer
+          ? onClickUpdateOffer
+          : onClickCreateOffer
+      }
       canConfirm={validate()}
+      actionLoading={loading}
       className="offerModal"
+      height={'medium'}
+      manualClose={true}
+      onCancle={() => setOpen(false)}
     >
       <React.Fragment>
+        {
+          !isUpdateOfferDetailDescriptionSection && (
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
+              <CustomSelect
+                options={offersGroup}
+                onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
+              />
+            </>
+          )
+        }
         <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
         <TextField
           className="offerModal--titleText"
@@ -274,169 +361,90 @@ const OfferModal = (props) => {
           value={tempSelectedItem ? tempSelectedItem.content : ""}
           onChange={e => setParams("content", e.target.value)}
         />
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
-        <CustomSelect
-          options={offersGroup}
-          onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
-        />
-        <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} isRequired />
-        <div>
-          {handlers.map((index) =>
-            <Chip
-              key={index}
-              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-              label={members[index].name}
-              onDelete={handleDeleteHandler(index)}
-            />
-          )}
-          <IconButton className="offerModal--buttonAdd" onClick={openAddHandlersDialog}>
-            <Icon size={1} path={mdiPlusCircleOutline} />
-            <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-          </IconButton>
-          <AddOfferMemberModal
-            isOpen={isOpenAddHandler}
-            setOpen={setOpenAddHandler}
-            value={handlers}
-            onChange={setHandlers}
-            members={members}
-            disableIndexes={[...approves, createUserIndex]}
-          />
-        </div>
-        <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
-        <div>
-          {monitors.map((index) =>
-            <Chip
-              key={index}
-              avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-              label={members[index].name}
-              onDelete={handleDeleteMonitor(index)}
-            />
-          )}
-          <IconButton
-            className="offerModal--buttonAdd"
-            onClick={openAddMonitorsDialog}>
-            <Icon size={1} path={mdiPlusCircleOutline} />
-            <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-          </IconButton>
-          <AddOfferMemberModal
-            isOpen={isOpenAddMonitor}
-            setOpen={setOpenAddMonitor}
-            value={monitors}
-            onChange={setMonitors}
-            members={members}
-            disableIndexes={[...handlers, createUserIndex]}
-          />
-        </div>
+        {
+          !isUpdateOfferDetailDescriptionSection && (
+            <>
+              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} />
+              <div className={classes.listChips}>
+                {handlers.map((allMembersIdx, idx) =>
+                  <Chip
+                    key={allMembersIdx}
+                    avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
+                    label={allMembers[allMembersIdx].name}
+                    onDelete={handleDeleteHandler(idx)}
+                  />
+                )}
+                <IconButton className="offerModal-buttonAdd" onClick={openAddHandlersDialog}>
+                  <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                  <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
+                </IconButton>
+                {renderAddMemberModal(
+                  isOpenAddHandler,
+                  setOpenAddHandler,
+                  handlers,
+                  setHandlers,
+                  allMembers,
+                  [...monitors, createUserIndex]
+                )}
+              </div>
+              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
+              <div className={classes.listChips}>
+                {monitors.map((allMembersIdx, idx) =>
+                  <Chip
+                    key={allMembersIdx}
+                    avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
+                    label={allMembers[allMembersIdx].name}
+                    onDelete={handleDeleteMonitor(idx)}
+                  />
+                )}
+                <IconButton className="offerModal-buttonAdd" onClick={openAddMonitorsDialog}>
+                  <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                  <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
+                </IconButton>
+                {renderAddMemberModal(
+                  isOpenAddMonitor,
+                  setOpenAddMonitor,
+                  monitors,
+                  setMonitors,
+                  allMembers,
+                  [...handlers, createUserIndex]
+                )}
+              </div>
+            </>
+          )
+        }
         <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
         <CommonPriorityForm
           labels={priorityList}
-          priority={tempSelectedItem.priority ? tempSelectedItem.priority.value : null}
+          priority={tempSelectedItem.priority.value}
           handleChangeLabel={priorityItem =>
             setParams('priority', priorityItem)
           }
         />
-        <TitleSectionModal label={'Điều kiện được duyệt'} />
-        <Grid container spacing={3}>
-          <Grid item xs={7}>
-            <Grid container alignItems="center">
-              <div className="offerModal--input_rate_prefix_1">
-                <div>{t('LABEL_CHAT_TASK_TY_LE_THANH_VIEN_DONG_Y')}</div>
-              </div>
-              <div className="offerModal--input__rate">
-                <input placeholder={minRateAccept} onChange={(e) => setMinRateAccept(e.target.value)} />
-              </div>
-              <div className="offerModal--input_rate_suffix">
-                <div>%</div>
-              </div>
-
-            </Grid>
-          </Grid>
-          <Grid item xs={1}>
-            <CustomSelect
-              className="offerModal--custom_select"
-              options={[{ label: "Hoặc", value: "OR" }, { label: "Và", value: "AND" }]}
-              placeholder={t('LABEL_CHAT_TASK_HOAC')}
-              onChange={(condition_logic) => setParams("condition_logic", condition_logic.value)}
-            />
-          </Grid>
-          {
-            minRateAccept >= 100 && get(tempSelectedItem, "condition_logic") === "OR" &&
-            <>
-              <Grid item xs={7}>
-                <Grid container >
-                  <CustomSelect
-                    options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
-                    onChange={selectConditionMember}
-                    placeholder={t('LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y')}
-                  />
-                </Grid>
-              </Grid>
-              <Grid item xs={3}>
-                <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
-                  <Icon size={1} path={mdiPlusCircleOutline} />
-                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-                </IconButton>
-                <AddOfferMemberModal
-                  isOpen={isOpenAddApprove}
-                  setOpen={setOpenAddAppove}
-                  value={approves}
-                  onChange={setApproves}
-                  members={filterUserInHandlers()}
-                  disableIndexes={[...monitors, createUserIndex]}
-                />
-              </Grid>
-            </>
-          }
-          {
-            minRateAccept < 100 &&
-            <>
-              <Grid item xs={7}>
-                <Grid container >
-                  <CustomSelect
-                    options={[{ label: "Một số thành viên sau phải đồng ý", value: "OR" }, { label: "Tất cả thành viên sau phải đồng ý", value: "AND" }]}
-                    onChange={(condition_logic_member) => setParams("condition_logic_member", condition_logic_member)}
-                    placeholder={t('LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y')}
-                  />
-                </Grid>
-              </Grid>
-              <Grid item xs={3}>
-                <IconButton className="offerModal--buttonAdd" onClick={openAddApproveDialog}>
-                  <Icon size={1} path={mdiPlusCircleOutline} />
-                  <span className="offerModal--textAdd">{t('LABEL_CHAT_TASK_THEM')}</span>
-                </IconButton>
-                <AddOfferMemberModal
-                  isOpen={isOpenAddApprove}
-                  setOpen={setOpenAddAppove}
-                  value={approves}
-                  onChange={setApproves}
-                  members={filterUserInHandlers()}
-                  disableIndexes={[...monitors, createUserIndex]}
-                />
-              </Grid>
-            </>
-          }
-          <Grid item xs={12}>
-            <div>
-              {approves.map((index) =>
-                <Chip
-                  key={index}
-                  avatar={<Avatar alt="avatar" src={members[index].avatar} />}
-                  label={members[index].name}
-                  onDelete={handleDeleteApprove(index)}
-                />
-              )}
-            </div>
-          </Grid>
-        </Grid>
-        <label className="offerModal--attach" >
-          <Button variant="outlined" component="span" onClick={() => setOpenShareFromLibraryModal(true)} fullWidth className={'classes.button'}>
-            <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
-        </label>
         {
-          selectedFilesFromLibrary &&
-          selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+          !isUpdateOfferDetailDescriptionSection && (
+            <>
+              <label className="offerModal--attach" >
+                <Button variant="outlined" component="span" onClick={() => setOpenSendFileModal(true)} fullWidth className={'classes.button'}>
+                  <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
+              </label>
+              {
+                tempSelectedItem.files &&
+                tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+              }
+              {
+                selectedFilesFromLibrary &&
+                selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+              }
+              <SendFileModal
+                open={openSendFileModal}
+                setOpen={setOpenSendFileModal}
+                handleUploadFile={handleUploadSelectedFilesFromPC}
+                onConfirmShare={handleSelectedFilesFromLibrary}
+              />
+            </>
+          )
         }
-        <ShareFromLibraryModal open={openShareFromLibraryModal} setOpen={setOpenShareFromLibraryModal} onClickConfirm={handleSelectedFilesFromLibrary} />
       </React.Fragment>
     </JobDetailModalWrap>
   )

@@ -6,12 +6,16 @@ import React, { useContext, useState } from "react";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
+import { useHistory } from 'react-router-dom';
+import { useMountedState } from "react-use";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
-import LoadingBox from "../../../components/LoadingBox";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
 import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
+import RedirectModal from "../components/RedirectModal";
+import { Routes } from '../contants/routes';
 import { OfferPageContext } from "../OfferPageContext";
+import { createOffer } from '../redux/actions';
 import { get } from "../utils";
 import "./Layout.css";
 
@@ -125,13 +129,16 @@ export function LayoutStateLess({ open, quickTask, children, setQuickTask }) {
     </div>
   );
 }
+
 const mapStateToProps = (state) => {
   return {
     bgColor: bgColorSelector(state),
   };
 };
+
 export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   const { t } = useTranslation();
+  const isMounted = useMountedState();
   const {
     timeAnchor,
     setTimeAnchor,
@@ -139,60 +146,76 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     setQuickTask,
     timeType,
     setTimeType,
-    settimeRange,
+    setTimeRange,
     expand,
     handleExpand,
     keyword,
     setkeyword,
+    setScrollBarPosition
   } = useContext(OfferPageContext);
+
   const times = useTimes();
   const open = !!quickTask;
-  const [openModalOffer, setopenModalOffer] = useState();
+  const [openModalOffer, setOpenModalOffer] = useState(false);
+  const [haveTimePopper, setHaveTimePopper] = useState(true);
+  const [haveFilter, setHaveFilter] = useState(true);
+  const [haveSearchBox, setHaveSearchBox] = useState(true);
+  const { location: { pathname } } = useHistory();
+  const [shouldRedirect, setShouldRedirect] = useState(false);
+  const [openModalRedirect, setOpenModalRedirect] = useState(false);
+
+  React.useEffect(() => {
+    if (isMounted) {
+      if (pathname.includes("/recently")) {
+        setHaveTimePopper(false);
+      } else if (pathname === Routes.OVERVIEW) {
+        setHaveFilter(false);
+        setHaveSearchBox(false);
+      } else if (pathname.includes(Routes.OFFERBYPROJECT)) {
+        setShouldRedirect(true);
+      }
+    }
+  }, [isMounted, pathname, timeType]);
+
+  function handleScrollbarPosition(values) {
+    if (values.top >= 0.995) {
+      setScrollBarPosition(values.top);
+    }
+  }
+
   const options = {
     title: props.title,
     subActions: [
-      {
+      haveTimePopper ? {
         label: times[timeType].title,
         iconPath: mdiCalendar,
-        onClick: (evt) => setTimeAnchor(evt.target),
-      },
+        onClick: (evt) => setTimeAnchor(evt.currentTarget),
+      } : null,
       {
-        label: t(expand ? "Thu gọn" : "Mở rộng"),
+        label: t(expand ? "IDS_WP_COLLAPS" : "IDS_WP_EXPAND"),
         iconPath: expand ? mdiFullscreenExit : mdiFullscreen,
         onClick: () => handleExpand(!expand),
       },
-      {
-        label: "Lọc",
+      haveFilter ? {
+        label: t("IDS_WP_FILTER"),
         iconPath: mdiFilterOutline,
         onClick: () => setQuickTask(<QuickViewFilter />),
-      },
+      } : null,
     ],
     mainAction: {
-      label: "+ Tạo đề xuất",
-      onClick: () => setopenModalOffer(true),
+      label: t("VIEW_OFFER_LABEL_CREATE_OFFER"),
+      onClick: () => shouldRedirect ? setOpenModalRedirect(true) : setOpenModalOffer(true),
       color: "#fd7e14"
     },
-    search: {
+    search: haveSearchBox ? {
       patern: keyword,
       onChange: setkeyword,
-    },
-
-    draggable: {
-      bool: true,
-      onDragEnd: () => { },
-    },
-
-    loading: {
-      bool: false,
-      component: () => <LoadingBox />,
-    },
+    } : null,
     row: {
       id: "id",
     },
   };
-  const setOpen = () => {
-    setopenModalOffer(!openModalOffer)
-  }
+
   return (
     <CustomTableProvider
       value={{
@@ -210,21 +233,36 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
             ...props,
           }}
         >
-          <Scrollbars>{children}</Scrollbars>
+          <Scrollbars autoHide autoHideTimeout={500} onScrollFrame={(values) => handleScrollbarPosition(values)}>
+            {children}
+          </Scrollbars>
         </LayoutStateLess>
-        <TimeRangePopover
-          bgColor={bgColor}
-          anchorEl={timeAnchor}
-          setAnchorEl={setTimeAnchor}
-          timeOptionDefault={timeType}
-          handleTimeRange={(timeType, startDate, endDate) => {
-            setTimeType(timeType);
-            settimeRange({ startDate, endDate });
-          }}
-        />
+
+        {
+          haveTimePopper && (
+            <TimeRangePopover
+              bgColor={bgColor}
+              anchorEl={timeAnchor}
+              setAnchorEl={setTimeAnchor}
+              timeOptionDefault={timeType}
+              handleTimeRange={(timeType, startDate, endDate) => {
+                setTimeType(timeType);
+                setTimeRange({ startDate, endDate });
+              }}
+            />
+          )
+        }
 
         {openModalOffer && (
-          <OfferModal isOpen={true} setOpen={setOpen} />
+          <OfferModal
+            isOpen={openModalOffer}
+            setOpen={setOpenModalOffer}
+            actionCreateOffer={createOffer()}
+          />
+        )}
+
+        {openModalRedirect && (
+          <RedirectModal onClose={() => setOpenModalRedirect(false)} />
         )}
       </>
     </CustomTableProvider>

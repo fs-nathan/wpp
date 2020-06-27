@@ -1,4 +1,6 @@
 import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import differenceInMinutes from 'date-fns/differenceInMinutes'
 
 const DEFAULT_MAX_LENGTH = 120
 export const isLongerContent = str => str.length > DEFAULT_MAX_LENGTH
@@ -30,9 +32,15 @@ export const convertTime = inputFormat => {
   return format(d, 'HH:mm');
 }
 
+function pad(s) { return (s < 10) ? '0' + s : s; }
 export const convertDate = inputFormat => {
-  function pad(s) { return (s < 10) ? '0' + s : s; }
   var d = new Date(inputFormat)
+  return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
+}
+
+export const convertDateByFormat = (inputFormat, formatDate) => {
+  const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
+  var d = parse(inputFormat, fixedFormat, new Date())
   return [d.getFullYear(), pad(d.getMonth() + 1), pad(d.getDate())].join('-')
 }
 
@@ -108,11 +116,11 @@ export function replaceUrl(str) {
   return replaceMultipleReg(withDomain, regex2, replacer)
 }
 
-export function getDialogDate(timeString, formatDate = '') {
+export function getDialogDate(t, timeString, formatDate = '') {
   try {
     const date = new Date(timeString);
     const fixedFormat = formatDate.replace('DD', 'dd').replace('YYYY', 'yyyy')
-    return `Lúc ${format(date, 'HH:mm')} ngày ${format(date, fixedFormat)}`;
+    return t('LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE', { time: format(date, 'HH:mm'), date: format(date, fixedFormat) });
   } catch (e) {
     return timeString;
   }
@@ -131,6 +139,13 @@ export function getUpdateProgressDate(timeString, formatDate = '') {
 export function getChatDate(timeString) {
   const date = timeString ? new Date(timeString) : new Date();
   return format(date, `dd/MM/yyyy`);
+}
+
+export function compareDateTime(timeStartString, timeEndString) {
+  // console.log(timeStartString, timeEndString)
+  const dateStart = parse(timeStartString, 'yyyy-MM-dd HH:mm', new Date());
+  const dateEnd = parse(timeEndString, 'yyyy-MM-dd HH:mm', new Date());
+  return differenceInMinutes(dateStart, dateEnd);
 }
 
 export function spliceSlice(str, index, count, add) {

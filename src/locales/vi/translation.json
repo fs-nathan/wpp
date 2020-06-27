@@ -234,7 +234,8 @@
           },
           "DOC": {
             "TITLE": "File hồ sơ thành viên",
-            "EXIT": "Thoát"
+            "EXIT": "Thoát",
+            "ALERT": "Bạn chắc chắn muốn xóa file?"
           }
         },
         "RIGHT": {
@@ -417,10 +418,259 @@
             }
           }
         }
+      },
+      "PP": {
+        "LEFT": {
+          "GT": {
+            "NUM_TASK": "{{number_task}} việc",
+            "TITLE": "Nhóm công việc",
+            "BACK": "Quay lại",
+            "ADD": "Thêm nhóm công việc",
+            "SEARCH": "Tìm nhóm công việc",
+            "ALL_LABLE": "Tất cả",
+            "EDIT": "Chỉnh sửa",
+            "DEL": "Xóa"
+          },
+          "PD": {
+            "TITLE": "Thông tin dự án",
+            "BACK": "Quay lại",
+            "PROGRESS": "Tiến độ dự án",
+            "DESC": "Mô tả dự án",
+            "MEM": "Thành viên",
+            "EDIT": "Chỉnh sửa",
+            "DEL": "Xóa dự án"
+          },
+          "PM": {
+            "NUM_TASK": "Tham gia {{number_task}}/{{total_task}} việc",
+            "ALL_TASK": "{{number_task}} việc",
+            "LEAVE": "Đã rời nhóm",
+            "TITLE": "Thành viên dự án",
+            "BACK": "Quay lại",
+            "ADD": "Thêm thành viên dự án",
+            "SEARCH": "Tìm thành viên",
+            "ALL_LABEL": "Tất cả",
+            "MANAGE": "Quản lý thành viên"
+          }
+        },
+        "MODAL": {
+          "COPY": {
+            "TITLE": "Sao chép nhóm công việc",
+            "SEARCH": "Tìm nhóm công việc"
+          },
+          "CREATE": {
+            "TITLE": "Tạo nhóm công việc",
+            "CREATE": {
+              "LABEL": "Tạo mới nhóm công việc",
+              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc"
+            },
+            "COPY": {
+              "LABEL": "Sao chép nhóm công việc",
+              "DESC": "Sao chép các nhóm công việc có sẵn vào dự án"
+            }
+          },
+          "CUGT": {
+            "C_TITLE": "Tạo mới nhóm công việc",
+            "U_TITLE": "Chỉnh sửa nhóm công việc",
+            "NAME": "Tên nhóm công việc",
+            "DESC": "Mô tả nhóm công việc",
+            "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc?"
+          },
+          "MEMBER": {
+            "TITLE": "Quản lý thành viên dự án",
+            "EXIT": "Thoát",
+            "LEFT": {
+              "TITLE": "Danh sách thành viên",
+              "SEARCH": "Tìm thành viên",
+              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án!"
+            },
+            "RIGHT": {
+              "TITLE": "Thành viên dự án",
+              "TABLE": {
+                "MEM": "Thành viên",
+                "PER": "Nhóm quyền",
+                "ROL": "Vai trò",
+                "STA": "Trạng thái"
+              },
+              "LABEL": {
+                "PER": "Gán quyền",
+                "ADD": "Thêm",
+                "LEA": "Đã rời nhóm",
+                "ALL": "Tham gia tất cả việc",
+                "SEL": "Tham gia việc khi được chọn",
+                "PIC": "Gán vào công việc được tạo",
+                "BAN": "Loại trừ"
+              }
+            },
+            "PERMISSION": {
+              "TITLE": "Phân quyền thành viên",
+              "EXIT": "Thoát",
+              "CANCLE": "Hủy",
+              "DONE": "Hoàn thành",
+              "MOVED": {
+                "LABEL_1": "Nhóm quyền \"{{permission_name}}\" đã được loại bỏ khỏi module này.",
+                "LABEL_2": "Bạn có thể giữ nguyên để tiếp tục sử dụng nhóm quyền này hoặc lựa chọn nhóm quyền khác.",
+                "MORE": "Xem thêm"
+              },
+              "TABLE": {
+                "NAME": "Tên quyền",
+                "DESC": "Mô tả"
+              },
+              "ADMIN": {
+                "TITLE": "Nhóm quyền: Chủ sở hữu dự án",
+                "DESC": "Chủ sở hữu dự án có các quyền sau:"
+              },
+              "USER": {
+                "TITLE": "Chọn nhóm quyền",
+                "DESC": "Mỗi nhóm bao gồm 1 số quyền. Nhóm quyền do chủ sở hữu hoặc người được phần quyền tạo lập. Nếu không có nhóm quyền phù hợp hãy liên hệ chủ sở hữu.",
+                "NO_DATA": {
+                  "LABEL_1": "Hiện tại chưa có nhóm quyền nào được chọn cho chức năng này!",
+                  "LABEL_2": "Liên hệ với Quản trị viên để yêu cầu bổ sung"
+                },
+                "REMOVE": "Xóa nhóm quyền đã chọn"
+              }
+            },
+            "ROLE": {
+              "TITLE": "Vai trò thành viên",
+              "EXIT": "Thoát",
+              "TABLE": {
+                "NAME": "Tên vai trò",
+                "DESC": "Mô tả vai trò"
+              }
+            }
+          }
+        },
+        "RIGHT": {
+          "ALL": {
+            "TITLE": "Danh sách công việc",
+            "LABEL": {
+              "MEMBER": "Thành viên",
+              "GROUP_TASK": "Nhóm việc",
+              "DOWNLOAD": "Tải xuống",
+              "CREATE": "+ Tạo công việc",
+              "SETTING": "Cài đặt dự án",
+              "HIDE": "Ẩn dự án",
+              "SHOW": "Bỏ ẩn dự án",
+              "NO_DATA": "Chưa có công việc nào được khởi tạo. Hãy click vào nút + TẠO CÔNG VIỆC để bắt đầu quản lý dự án và công việc của bạn"
+            },
+            "TABLE": {
+              "NAME": "Tên công việc",
+              "STATUS": "Trạng thái",
+              "EXP_DATE": "{{date}} ngày",
+              "PROGRESS": "Tiến độ",
+              "BEGIN": "Bắt đầu",
+              "END": "Kết thúc",
+              "COMPLETE": "Hoàn thành",
+              "PRIORITY": "Ưu tiên"
+            }
+          }
+        }
       }
     }
   },
   "views": {
+    "user_page": {
+      "left_part": {
+        "add_user": {
+          "no_accounts": "Không tìm thấy tài khoản!",
+          "invited": "Đã mời",
+          "invite": "Mời",
+          "accept_request": "Đồng ý",
+          "deny_request": "Từ chối",
+          "time": "{{minute}} phút",
+          "title": "Thêm thành viên",
+          "invite_member": "Mời thành viên tham gia nhóm",
+          "find_member": "Tìm thành viên",
+          "find_member_button": "Lọc",
+          "request_member_title": "Yêu cầu tham gia nhóm"
+        },
+        "department_info": {
+          "modal_title": "Modal title",
+          "default": "Mặc định",
+          "member_count": "Tổng số thành viên",
+          "intro": "Giới thiệu",
+          "update": "Chỉnh sửa",
+          "delete": "Xóa",
+          "alert_content": "Bạn có chắc chắn muốn xóa ?"
+        }
+      },
+      "modals": {
+        "search_modal": {
+          "search_title": "Search title",
+          "search_label": "Nhập nội dung tìm kiếm",
+          "search_button": "Tìm kiếm"
+        },
+        "update_user": {
+          "room_select": "Chọn bộ phận",
+          "position_select": "Chọn vị trí",
+          "level_select": "Chọn trình độ ",
+          "major_select": "Chọn chuyên ngành",
+          "description": "Mô tả",
+          "description_helper": "Số ký tự tối đa: {{max_count}}",
+          "ok_button": "Hoàn thành"
+        }
+      },
+      "right_part": {
+        "users_table": {
+          "header_button_group": {
+            "search_label": {
+              "add_user_label": "Thêm thành viên",
+              "expand_true_label": "Mở rộng",
+              "expand_false_label": "Thu gọn",
+              "more_label": "Thêm mới",
+              "title_manager_menu_item": "Title management",
+              "role_manager_menu_item": "Quản lý vai trò",
+              "logo_manager_menu_item": "Quản lý biểu tượng",
+              "table_settings_menu_item": "Cài đặt bảng"
+            },
+            "table_main": {
+              "no_data_label": "Không tìm thấy dữ liệu",
+              "table_header_row": {
+                "name_cell": "Họ và tên",
+                "position_cell": "Vị trí",
+                "birthday_cell": "Ngày sinh",
+                "gender_cell": "Giới tính",
+                "email_cell": "Email",
+                "phone_cell": "Điện thoại",
+                "role_cell": "Vài trò",
+                "status_cell": "Trạng thái"
+              },
+              "table_body_row": {
+                "state_label": {
+                  "public": "Công khai",
+                  "private": "Hạn chế"
+                },
+                "change_state": "Trạng thái",
+                "manage_permission": "Quản lý nhóm quyền",
+                "leave_group": "Rời nhóm"
+              }
+            },
+            "create_account_label": "Tạo tài khoản",
+            "table_title": "Human resource list",
+            "total_user_count": "Tổng số thành viên: {{user_count}}",
+            "upgrade_sublabel": "(Nâng cấp)"
+          },
+          "user_info": {
+            "date_join": "Ngày tham gia",
+            "modify_info": "Chỉnh sửa",
+            "room_name": "Bộ phận",
+            "position_name": "Chức danh",
+            "level_name": "Trình độ",
+            "major_name": "Chuyên nhành",
+            "description": "Mô tả công việc",
+            "documents_view": "Xem tài liệu",
+            "upload_documents_error": "Tải tài liệu thất bại",
+            "upload_documents": "Tải tài liệu",
+            "infomation": "Thông tin",
+            "name": "Tên",
+            "birthday": "Ngày sinh",
+            "gender": "Giới tính",
+            "email": "Email",
+            "phone": "Số điện thoại",
+            "address": "Địa chỉ"
+          }
+        }
+      }
+    },
     "calendar_page": {
       "left_part": {
         "title": "Quản lý lịch",
@@ -1097,7 +1347,7 @@
   "LABEL_CHAT_TASK_NHAP_GOI_Y_NOI": "Nhập @ gợi ý, nội dung thảo luận...",
   "LABEL_CHAT_TASK_NHAC_HEN": "Nhắc hẹn",
   "LABEL_CHAT_TASK_XEM_CHI_TIET": "Xem chi tiết",
-  "LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO": "Tìm nội dung trong thảo luận",
+  "LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO": "Nhập nội dung và ấn Enter để xem kết quả tìm kiếm",
   "LABEL_CHAT_TASK_THANH_VIEN": "Thành viên",
   "LABEL_CHAT_TASK_NHOM_QUYEN": "Nhóm quyền",
   "LABEL_CHAT_TASK_VAI_TRO": "Vai trò",
@@ -1127,7 +1377,7 @@
   "LABEL_CHAT_TASK_DANH_SACH_DU_AN": "DANH SÁCH DỰ ÁN",
   "LABEL_CHAT_TASK_TAI_XUONG": "Tải xuống",
   "LABEL_CHAT_TASK_CHI_TIET": "Chi tiết",
-  "LABEL_CHAT_TASK_SELECT": "Select....",
+  "LABEL_CHAT_TASK_SELECT": "Chọn....",
   "LABEL_CHAT_TASK_TRANG_THAI": "Trạng thái:",
   "LABEL_CHAT_TASK_DANG_CHO": "Đang chờ",
   "LABEL_CHAT_TASK_DANG_LAM": "Đang làm",
@@ -1232,8 +1482,8 @@
   "LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH": "Đánh dấu hoàn thành",
   "LABEL_CHAT_TASK_NHAP_TEN_CONG_VIEC": "Nhập tên công việc...",
   "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "Chưa có công việc con được khởi tạo Click + để tạo mới công việc con",
-  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện(",
-  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành(",
+  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Đang thực hiện (",
+  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Đã hoàn thành (",
   "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
   "LABEL_CHAT_TASK_HINH_ANH": "Hình ảnh",
   "LABEL_CHAT_TASK_THA_FILE_VAO_DAY": "Thả file vào đây",
@@ -1276,6 +1526,7 @@
   "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI": "{{name}} đã tạo công việc mới",
   "LABEL_CHAT_TASK_TIEN_DO_FROM_TO": "Tiến độ: {{start_date}} - {{end_date}}",
   "LABEL_CHAT_TASK_LUC_NGAY": "Lúc {{time_remind}} ngày {{date_remind}} - {{remind}}",
+  "LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE": "Lúc {{time}} ngày {{date}}",
   "LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO": "Nhắc theo tiến độ {{remind}}",
   "LABEL_CHAT_TASK_DANG_TAM_DUNG": "Đang tạm dừng",
   "LABEL_CHAT_TASK_TEN": "Tên",
@@ -1307,35 +1558,105 @@
   "LABEL_CHAT_TASK_GAN_QUYEN": "Gán quyền",
   "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_PEMISSION": "Hiện tại chưa có nhóm quyền nào được tạo cho chức năng này!",
   "LABEL_CHAT_TASK_XOA_NHOM_QUYEN_DA_CHON": "Xóa nhóm quyền đã chọn",
-  "MESSAGE_NOT_PERMISSION": "Bạn không có quyền ",
+  "MESSAGE_NO_PERMISSION": "Bạn không có quyền thực hiện hành động này",
   "ADD_PERSON_MONITOR": "Thêm người giám sát",
   "ADD_PERSON_HANDLE": "Thêm người phê duyệt",
   "ADD_DOCUMENT_OFFER": "Thêm tài liệu",
   "PERSON_HANDLE": "Người phê duyệt",
   "PERSON_MONITOR": "Người giám sát",
   "OFFER_PAGE": {
+    "OVERVIEW": {
+      "GROUP_OFFERS": {
+        "TITLE": {
+          "WAITING": "Đề xuất",
+          "APPROVING": "Chờ duyệt",
+          "REJECTED": "Từ chối",
+          "ACCEPTED": "Đồng ý"
+        }
+      }
+    },
+    "OFFER_BY_GROUP_VIEW": {
+      "MODAL": {
+        "CREATE": {
+          "TITLE": "Tạo nhóm đề xuất",
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        },
+        "UPDATE": {
+          "TITLE": "Chỉnh sửa nhóm đề xuất",
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        },
+        "GROUP_NAME_SECTION": {
+          "TITLE": "Tên nhóm đề xuất",
+          "PLACEHOLDER": "Nhập tên nhóm đề xuất..."
+        },
+        "GROUP_DESCRIPTION_SECTION": {
+          "TITLE": "Mô tả nhóm đề xuất",
+          "PLACEHOLDER": "Nhập mô tả nhóm đề xuất..."
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Chi tiết đề xuất",
-      "DELETE_OFFER": "Xóa đề xuất",
+      "OFFER_PRIORITY_EDITING": {
+        "TITLE": "Chỉnh sửa"
+      },
+      "OFFER_APPROVAL_CONDITION_EDITING": {
+        "TITLE": "Chỉnh sửa"
+      },
+      "CREATE_APPROVAL": {
+        "BUTTON": {
+          "CREATE": "TẠO PHÊ DUYỆT",
+          "APPROVED": "ĐÃ TẠO PHÊ DUYỆT"
+        },
+        "MODAL": {
+          "CONFIRM": "Hoàn thành",
+          "CANCEL": "Hủy"
+        }
+      },
+      "DISCUSSION": {
+        "TITLE": "Thảo luận",
+        "TEXT_BOX": {
+          "PLACEHOLDER": "Nhập bình luận...",
+          "BUTTON_TITLE": "Gửi"
+        },
+        "COMMENT": {
+          "USER_ROLE": {
+            "TYPE_1": "Người tham gia",
+            "TYPE_2": "Người phê duyệt",
+            "TYPE_3": "Người giám sát"
+          },
+          "DATE_TIME_POSTED": "Thêm lúc {{time}} ngày {{date}}",
+          "POPOVER": {
+            "UPDATE": "Cập nhật",
+            "REMOVE": "Xóa"
+          }
+        }
+      },
+      "DELETE_OFFER": {
+        "TITLE": "Xóa đề xuất",
+        "CONFIRM_MODAL": {
+          "TITLE": "Xóa đề xuất",
+          "MESSAGE": "Bạn có chắc chắn muốn xóa đề xuất này?",
+          "CONFIRM": "Xóa đề xuất",
+          "CANCEL": "Hủy"
+        }
+      },
       "ESCAPE": "Thoát"
     },
     "OFFER_TABLE": {
       "ITEM": {
         "POPOVER": {
           "DETAIL": "Chi tiết",
-          "DELETE": {
-            "TITLE": "Xóa",
-            "CONFIRM_MODAL": {
-              "TITLE": "Xóa đề xuất",
-              "MESSAGE": "Bạn có chắc chắn muốn xóa đề xuất này?",
-              "CONFIRM": "Xóa đề xuất",
-              "CANCEL": "Hủy"
-            }
-          }
+          "VIEW_TASK": "Xem công việc"
         }
       }
     }
   },
+  "DATE_ERROR_FORMAT_MESSAGE": "Định dạng ngày tháng không hợp lệ",
+  "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Ngày không được trước ngày tối thiểu",
+  "DATE_ERROR_INTERVAL_MAX_MESSAGE": "Ngày không được sau ngày tối đa",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "Tiến độ công việc đã được chạy",
   "LABEL_CHAT_TASK_TAO_MOI": "Tạo mới",
   "LABEL_CHAT_TASK_CHU_CONG_VIEC": "Chủ công việc",
@@ -1351,5 +1672,310 @@
   "LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y": "Một số thành viên sau đồng ý",
   "LABEL_CHAT_TASK_LIEN_HE_VOI_QUAN": "Liên hệ với Quản trị viên để yều cầu bổ sung.",
   "LABEL_CHAT_TASK_NHOM_QUYEN_B_QUAN": "Nhóm quyền \"<b>{{name}}</b>\" đã được loại bỏ khỏi module này.",
-  "LABEL_CHAT_TASK_BAN_CO_THE_GIU": "Bạn có thể giữ quyền để tiếp tục sử dụng nhóm quyền này hoặc lựa chọn nhóm quyền khác."
+  "LABEL_CHAT_TASK_BAN_CO_THE_GIU": "Bạn có thể giữ quyền để tiếp tục sử dụng nhóm quyền này hoặc lựa chọn nhóm quyền khác.",
+  "LABEL_CHAT_TASK_TAO_CHI_DAO_QUYET_DINH": "Tạo Chỉ đạo - Quyết định",
+  "LABEL_CHAT_TASK_SUA_CHI_DAO_QUYET_DINH": "Sửa Chỉ đạo - Quyết định",
+  "LABEL_CHAT_TASK_NGAY_COUNT": "{{count}} ngày",
+  "LABEL_CHAT_TASK_HOM_NAY_DATE": "Hôm nay: {{date}}",
+  "LABEL_CHAT_TASK_NGAY_TIME_DATE": "{{time}} ngày {{date}}",
+  "LABEL_CHAT_TASK_HOAN_THANH_COUNT_COMPLETE": "{{complete}} /{{total}} hoàn thành",
+  "LABEL_CHAT_TASK_NHAC_HEN_COUNT": "{{count}} nhắc hẹn",
+  "LABEL_CHAT_TASK_FILE_COUNT": "{{count}} file",
+  "LABEL_CHAT_TASK_ANH_COUNT": "{{count}} ảnh",
+  "LABEL_CHAT_TASK_LINK_COUNT": "{{count}} link",
+  "LABEL_CHAT_TASK_VI_TRI_COUNT": "{{count}} vị trí",
+  "LABEL_CHAT_TASK_DE_XUAT_COUNT": "{{count}} đề xuất",
+  "LABEL_CHAT_TASK_NOI_DUNG_COUNT": "{{count}} nội dung",
+  "LABEL_CHAT_TASK_DUYET_COUNT": "{{count}} duyệt",
+  "LABEL_CHAT_TASK_NHAC_HEN_THEO_THOI_GIAN": "Nhắc hẹn theo thời gian",
+  "LABEL_CHAT_TASK_NHAC_HEN_THEO_TIEN_DO_THUC_TE": "Nhắc hẹn theo tiến độ thực tế",
+  "LABEL_CHAT_TASK_NHAC_1_LAN": "Nhắc 1 lần",
+  "LABEL_CHAT_TASK_THEO_NGAY": "Theo ngày",
+  "LABEL_CHAT_TASK_THEO_TUAN": "Theo tuần",
+  "LABEL_CHAT_TASK_THEO_THANG": "Theo tháng",
+  "LABEL_CHAT_TASK_NHAC_1_LAN_LABEL": "Nhắc 1 lần",
+  "LABEL_CHAT_TASK_NHAC_THEO_NGAY_LABEL": "Nhắc theo ngày",
+  "LABEL_CHAT_TASK_NHAC_THEO_TUAN_LABEL": "Nhắc theo tuần",
+  "LABEL_CHAT_TASK_NHAC_THEO_THANG_LABEL": "Nhắc theo tháng",
+  "LABEL_CHAT_TASK_LUC_REMIND_TIME": "{{type}} lúc {{time}}",
+  "LABEL_CHAT_TASK_DAT_PERCENT": "Đạt {{percent}}%",
+  "LABEL_CHAT_TASK_DANG_LUC_USER_TIME": "{{user}} đăng lúc {{time}}",
+  "LABEL_CHAT_TASK_TAO_NHAC_HEN_LABEL": "Tạo nhắc hẹn",
+  "LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL": "Sửa nhắc hẹn",
+  "Tên nhóm quyền": "Tên nhóm quyền",
+  "Mô tả nhóm quyền": "Mô tả nhóm quyền",
+  "Phạm vi module phân quyền": "Mô-đun phạm vi phân quyền",
+  "Tạo nhóm quyền": "Tạo nhóm quyền",
+  "Hoàn thành": "Hoàn thành",
+  "required": "Yêu cầu",
+  "Cancel": "Hủy",
+  "Delete": "Xóa",
+  "Bạn có muốn xóa nhóm quyền?": "Bạn có muốn xóa nhóm quyền?",
+  "Gán quyền cho nhóm": "Gán quyền cho nhóm",
+  "DANH SÁCH QUYỀN": "DANH SÁCH QUYỀN",
+  "Tìm kiếm quyền": "Tìm kiếm quyền",
+  "Tên quyền": "Tên quyền",
+  "Mô tả": "Mô tả",
+  "Cập nhật nhóm quyền": "Cập nhật nhóm quyền",
+  "Chỉnh sửa": "Chỉnh sửa",
+  "Xóa": "Xóa",
+  "Thiết lập nhóm quyền": "Thiết lập nhóm quyền",
+  "Trở lại": "Trở lại",
+  "Danh sách nhóm quyền": "Danh sách nhóm quyền",
+  "Thêm nhóm": "Thêm nhóm",
+  "Tìm nhóm quyền": "Tìm nhóm quyền",
+  "Đã gán <%= number %> thành viên": "Đã gán <%= number %> thành viên",
+  "Chi tiết quyền trong nhóm": "Chi tiết quyền trong nhóm",
+  "Có <%= number %> quyền đã được chọn": "Có <%= number %> quyền đã được chọn",
+  "Thêm quyền": "Thêm quyền",
+  "Module được gán nhóm quyền": "Module được gán nhóm quyền",
+  "Thành viên được gán nhóm quyền": "Thành viên được gán nhóm quyền",
+  "Xóa nhóm quyền": "Xóa nhóm quyền",
+  "Thiết lập biểu tượng": "Thiết lập biểu tượng",
+  "Thiết lập vai trò": "Thiết lập vai trò",
+  "Tên thể loại": "Tên thể loại",
+  "Mô tả chi tiết": "Mô tả chi tiết",
+  "Biểu tượng": "Biểu tượng",
+  "Chọn biểu tượng": "Chọn biểu tượng",
+  "Sửa thể loại": "Sửa thể loại",
+  "Sửa": "Sửa",
+  "Quản lý thể loại đăng tin": "Quản lý thể loại đăng tin",
+  "Thiết lập thể loại đăng tin trên trang chủ": "Thiết lập thể loại đăng tin trên trang chủ",
+  "Thêm": "Thêm",
+  "Quản lý plugin trang chủ": "Quản lý plugin trang chủ",
+  "Thiết lập các plugin thể hiện trên trang chủ": "Thiết lập các plugin thể hiện trên trang chủ",
+  "Checkbox thể hiện/ẩn plugin. Kéo thả để sắp xếp vị trí hiển thị": "Checkbox thể hiện/ẩn plugin. Kéo thả để sắp xếp vị trí hiển thị",
+  "Tạo vai trò": "Tạo vai trò",
+  "Tên": "Tên",
+  "Đang nhận thông báo trình duyệt": "Đang nhận thông báo trình duyệt",
+  "Thông báo trình duyệt chưa được bật": "Thông báo trình duyệt chưa được bật",
+  "Do you really want to unsubscribe?": "Bạn có chắc chắn hủy đăng ký ?",
+  "Bật": "Bật",
+  "Tắt": "Tắt",
+  "phản hồi": "Phản hồi",
+  "Trả lời": "Trả lời",
+  "Xem tất cả bình luận": "Xem tất cả bình luận",
+  "Viết bình luận": "Viết bình luận",
+  "Yêu": "Yêu",
+  "Thích": "Thích",
+  "Bình luận": "Bình luận",
+  "Đã đăng": "Đã đăng",
+  "see less": "Thu gọn",
+  "see more": "Xem thêm",
+  "love and like": "Yêu và Thích",
+  "all": "Tất cả",
+  "like": "Thích",
+  "love": "Yêu",
+  "<%= numner %> người khác": "<%= numner %> người khác",
+  "bình luận": "Bình luận",
+  "Ghim": "Ghim",
+  "Bỏ ghim": "Bỏ ghim",
+  "Nổi bật": "Nổi bật",
+  "Bỏ nổi bật": "Bỏ nổi bật",
+  "Chọn thể loại": "Chọn thể loại",
+  "Liên hệ": "Liên hệ",
+  "Lối tắt": "Lối tắt",
+  "Cài đặt nhóm": "Cài đặt nhóm",
+  "Câu hỏi thường gặp": "Câu hỏi thường gặp",
+  "Hướng dẫn sử dụng": "Hướng dẫn sử dụng",
+  "Tạo bài viết": "Tạo bài viết",
+  "<%= name %> ơi bạn muốn đăng gì": "<%= name %> ơi bạn muốn đăng gì ?",
+  "Tài liệu đính kèm": "Tài liệu đính kèm",
+  "Thêm tài liệu": "Thêm tài liệu",
+  "Chọn thể loại muốn đăng": "Chọn thể loại muốn đăng",
+  "Chọn thể loại khác": "Chọn thể loại khác",
+  "Tạo bài viết trên bảng tin nội bộ": "Tạo bài viết trên bảng tin nội bộ",
+  "Tiêu đề bài viết": "Tiêu đề bài viết",
+  "Nội dung bài viết": "Nội dung bài viết",
+  "Thả file, hình ảnh vào đây...": "Thả file, hình ảnh vào đây...",
+  "Đăng bài": "Đăng bài",
+  "Không tìm thấy kết quả!": "Không tìm thấy kết quả!",
+  "Enter your keyword...": "Nhập từ khóa...",
+  "BẢNG TIN NỘI BỘ": "BẢNG TIN NỘI BỘ",
+  "Xem các bình luận trước": "Xem các bình luận trước",
+  "BẢNG TIN NỘI BỘ - CHI TIẾT": "BẢNG TIN NỘI BỘ - CHI TIẾT",
+  "Kết quả tìm kiếm": "Kết quả tìm kiếm",
+  "TIN NỔI BẬT": "TIN NỔI BẬT",
+  "Xem thêm": "Xem thêm",
+  "THOÁT": "THOÁT",
+  "views.calendar_page.modal.create_weekly_calendar.title_right": "views.calendar_page.modal.create_weekly_calendar.title_right",
+  "views.calendar_page.modal.create_weekly_calendar.label.title": "views.calendar_page.modal.create_weekly_calendar.label.title",
+  "views.calendar_page.modal.create_weekly_calendar.content": "views.calendar_page.modal.create_weekly_calendar.content",
+  "views.calendar_page.modal.create_weekly_calendar.receiver": "views.calendar_page.modal.create_weekly_calendar.receiver",
+  "views.calendar_page.right_part.label.created_by": "views.calendar_page.right_part.label.created_by",
+  "views.calendar_page.modal.create_weekly_calendar.all": "views.calendar_page.modal.create_weekly_calendar.all",
+  "views.calendar_page.modal.setting_weekly_calendar.sunday": "views.calendar_page.modal.setting_weekly_calendar.sunday",
+  "views.calendar_page.modal.setting_weekly_calendar.monday": "views.calendar_page.modal.setting_weekly_calendar.monday",
+  "views.calendar_page.modal.setting_weekly_calendar.tuesday": "views.calendar_page.modal.setting_weekly_calendar.tuesday",
+  "views.calendar_page.modal.setting_weekly_calendar.wednesday": "views.calendar_page.modal.setting_weekly_calendar.wednesday",
+  "views.calendar_page.modal.setting_weekly_calendar.thursday": "views.calendar_page.modal.setting_weekly_calendar.thursday",
+  "views.calendar_page.modal.setting_weekly_calendar.friday": "views.calendar_page.modal.setting_weekly_calendar.friday",
+  "views.calendar_page.modal.setting_weekly_calendar.saturday": "views.calendar_page.modal.setting_weekly_calendar.saturday",
+  "LỊCH TUẦN": "LỊCH TUẦN",
+  "Tuần <%= week %>  năm <%= year %> ": "Tuần <%= week %>  năm <%= year %> ",
+  "CHI TIẾT LỊCH TUẦN": "CHI TIẾT LỊCH TUẦN",
+  "Công việc": "Công việc",
+  "FILTER": "FILTER",
+  "Đã được giao ngày <%= date %>": "Đã được giao ngày <%= date %>",
+  "Xem chi tiết công viêc": "Xem chi tiết công viêc",
+  "Xóa công viêc": "Xóa công viêc",
+  "TÊN CÔNG VIỆC": "TÊN CÔNG VIỆC",
+  "MÔ TẢ CÔNG VIỆC": "MÔ TẢ CÔNG VIỆC",
+  "TIẾN ĐỘ": "TIẾN ĐỘ",
+  "Ngày bắt đầu": "Ngày bắt đầu",
+  "Ngày kết thúc": "Ngày kết thúc",
+  "TRẠNG THÁI, ƯU TIÊN": "TRẠNG THÁI, ƯU TIÊN",
+  "THÀNH VIÊN": "THÀNH VIÊN",
+  "CÔNG VIỆC CON": "CÔNG VIỆC CON",
+  "công việc": "công việc",
+  "Còn <%= days %> ngày": "Còn <%= days %> ngày",
+  "Xem nhanh": "Xem nhanh",
+  "Tạo mới công việc": "Tạo mới công việc",
+  "Bạn cần phải chọn một dự án trước khi tạo mới công việc": "Bạn cần phải chọn một dự án trước khi tạo mới công việc",
+  "Đi đến danh sách dự án": "Đi đến danh sách dự án",
+  "Tên công việc": "Tên công việc",
+  "Tiến độ": "Tiến độ",
+  "Kết thúc": "Kết thúc",
+  "Đến hạn": "Đến hạn",
+  "Ưu tiên": "Ưu tiên",
+  "Biểu đồ tỗng hợp mức ưu tiên của công việc": "Biểu đồ tổng hợp mức ưu tiên của công việc",
+  "Vai trò": "Vai trò",
+  "Biểu đồ vai trò của công việc": "Biểu đồ vai trò của công việc",
+  "Trạng thái": "Trạng thái",
+  "Biểu đồ theo trạng thái công việc": "Biểu đồ theo trạng thái công việc",
+  "LABEL_CHAT_TASK_DUOC_GIAO": "Được giao",
+  "LABEL_CHAT_TASK_TU_DE_XUAT": "Tự đề xuất",
+  "LABEL_CHAT_TASK_GIAO_VIEC_CHO": "Giao việc cho",
+  "LABEL_CHAT_TASK_THAP": "Thấp",
+  "LABEL_CHAT_TASK_TRUNG_BINH": "Trung bình",
+  "LABEL_CHAT_TASK_CAO": "Cao",
+  "LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT": "{{count}} lần điều chỉnh",
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUNG": "Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!",
+  "LABEL_CHAT_TASK_DA_DO_TASK": "đã {{taskName}}",
+  "LABEL_CHAT_TASK_TAG_THANH_VIEN": "Tag thành viên",
+  "LABEL_CHAT_TASK_GUI_STICKER": "Gửi sticker",
+  "LABEL_CHAT_TASK_GUI_ANH": "Gửi ảnh",
+  "LABEL_CHAT_TASK_GUI_FILE_TAI_LIEU": "Gửi file, tài liệu",
+  "LABEL_CHAT_TASK_THEM_CONG_VIEC_CON": "Thêm công việc con",
+  "LABEL_CHAT_TASK_THEM_NHAC_HEN": "Thêm nhắc hẹn",
+  "VIEW_OFFER_LABEL_YOUR_OFFER": "Đề xuất của bạn",
+  "VIEW_OFFER_LABEL_OVERVIEW_TITLE": "Tổng quan",
+  "VIEW_OFFER_LABEL_RECENTLY_TITLE": "Gần đây",
+  "VIEW_OFFER_LABEL_GROUP_TITLE": "Nhóm",
+  "VIEW_OFFER_LABEL_PROJECT_TITLE": "Dự án",
+  "VIEW_OFFER_LABEL_DEPARTMENT_TITLE": "Bộ phận",
+  "VIEW_OFFER_LABEL_GROUP_SUBTITLE": "Đề xuất theo nhóm",
+  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Đề xuất theo dự án",
+  "VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE": "Đề xuất theo bộ phận",
+  "VIEW_OFFER_LABEL_OFFER_BY_STATUS": "Đề xuất theo trạng thái",
+  "VIEW_OFFER_LABEL_OFFER_BY_LEVEL": "Đề xuất theo mức độ",
+  "VIEW_OFFER_LABEL_CHART_BY_GROUP": "Biểu đồ đề xuất theo nhóm",
+  "VIEW_OFFER_LABEL_OFFER": "Đề xuất",
+  "VIEW_OFFER_LABEL_PENDING": "Chờ duyệt",
+  "VIEW_OFFER_LABEL_REJECTED": "Từ chối",
+  "VIEW_OFFER_LABEL_APPROVED": "Đồng ý",
+  "VIEW_OFFER_LABEL_ACCEPTED": "Phê duyệt",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE": "Lọc theo vai trò",
+  "VIEW_OFFER_LABEL_ROLE": "Vai trò",
+  "VIEW_OFFER_LABEL_PRIORITY_LEVEL": "Mức độ ưu tiên",
+  "VIEW_OFFER_LABEL_STATUS": "Trạng thái",
+  "VIEW_OFFER_LABEL_FILTET_BY_ROLE_SUBTITLE": "Chọn/bỏ chọn trạng thái để lọc đề xuất",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE_1": "Bạn đề xuất",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE_2": "Bạn giám sát",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE_3": "Bạn phê duyệt",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL": "Lọc theo mức độ ưu tiên",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_SUBTITLE": "Chọn/bỏ chọn mức độ ưu tiên để lọc đề xuất",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1": "Bình thường",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2": "Gấp",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3": "Rất gấp",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS": "Lọc theo trạng thái",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_SUBTITLE": "Chọn/bỏ chọn trạng thái để lọc đề xuất",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_1": "Đang chờ duyệt",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_2": "Đang duyệt",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_3": "Đã duyệt: Đồng ý",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_4": "Đã duyệt: Từ chối",
+  "VIEW_OFFER_LABEL_ALL": "Tất cả",
+  "VIEW_OFFER_LABEL_CREATE_OFFER": "+ Tạo đề xuất",
+  "VIEW_OFFER_LABEL_OFFER_DATE": "Ngày đề xuất",
+  "VIEW_OFFER_LABEL_OFFER_CONTENT": "Nội dung đề xuất",
+  "VIEW_OFFER_LABEL_OFFER_MONITOR": "Giám sát",
+  "VIEW_OFFER_LABEL_OFFER_APPROVAL": "Duyệt",
+  "VIEW_OFFER_LABEL_OFFER_APPROVAL_DATE": "Ngày duyệt",
+  "VIEW_OFFER_LABEL_OFFER_APPROVAL_RESULT": "Kết quả",
+  "VIEW_OFFER_LABEL_PENDING_OFFER": "{{count}} đề xuất chờ duyệt",
+  "VIEW_OFFER_LABEL_ACCEPTED_PERCENT": "{{acceptedPercent}}% đồng ý",
+  "VIEW_OFFER_LABEL_SENT": "Gửi đi",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION": "Điều kiện phê duyệt đồng ý",
+  "VIEW_OFFER_LABEL_RATE_AGREE": "Tỷ lệ thành viên đồng ý",
+  "VIEW_OFFER_LABEL_APPROVAL_RESULT": "Kết quả phê duyệt",
+  "VIEW_OFFER_LABEL_ATTACHMENTS": "Tài liệu đính kèm",
+  "VIEW_OFFER_LABEL_CONTENT_DETAIL": "Mô tả chi tiết",
+  "VIEW_OFFER_CREATED_AT": "Đã tạo đề xuất lúc {{time}} ngày {{date}}",
+  "VIEW_OFFER_LABEL_SUPERVISOR": "Người giám sát",
+  "VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION": "Cập nhập điều kiện phê duyệt",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "Một trong các thành viên sau phải đồng ý",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "Tất cả thành viên sau phải đồng ý",
+  "VIEW_OFFER_LABEL_APPROVED_AT": "Phê duyệt lúc {{time}} ngày {{date}}",
+  "Lọc theo trang thái công việc": "Lọc theo trang thái công việc",
+  "Chọn/bỏ chọn trạng thái để lọc công việc": "Chọn/bỏ chọn trạng thái để lọc công việc",
+  "Đang chờ": "Đang chờ",
+  "Đang làm": "Đang làm",
+  "Quá hạn": "Quá hạn",
+  "Tạm dừng": "Tạm dừng",
+  "Lọc theo mức độ ưu tiên": "Lọc theo mức độ ưu tiên",
+  "Chọn/bỏ chọn mức độ ưu tiên để lọc công việc": "Chọn/bỏ chọn mức độ ưu tiên để lọc công việc",
+  "Ưu tiên thấp": "Ưu tiên thấp",
+  "Ưu tiên trung bình": "Ưu tiên trung bình",
+  "Ưu tiên cao": "Ưu tiên cao",
+  "Tất cả": "Tất cả",
+  "Công việc của bạn": "Công việc của bạn",
+  "Sắp hết hạn": "Sắp hết hạn",
+  "Cao": "Cao",
+  "Trung bình": "Trung bình",
+  "Thấp": "Thấp",
+  "Giao việc cho nhân viên": "Giao việc cho nhân viên",
+  "Được giao việc": "Được giao việc",
+  "Tự đề xuất công việc": "Tự đề xuất công việc",
+  "Tổng quan": "Tổng quan",
+  "Nhiệm vụ": "Nhiệm vụ",
+  "Thực hiện": "Thực hiện",
+  "Giám sát": "Giám sát",
+  "Phối hợp": "Phối hợp",
+  "Mọi lúc": "Mọi lúc",
+  "VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING": "Bạn chắc chắn muốn xoá nhóm đề xuất này?",
+  "VIEW_OFFER_LABLE_VIEW_DETAIL_OFFER": "Xem đề xuất",
+  "VIEW_OFFER_TEXT_DELETE_FILE_WARNING": "Bạn có muốn xoá file sau?",
+  "VIEW_OFFER_LABEL_CONDITION_LOGIC_AND": "Và",
+  "VIEW_OFFER_LABEL_CONDITION_LOGIC_OR": "Hoặc",
+  "VIEW_OFFER_TEXT_CONDITION_LOGIC_OR": "Một số thành viên sau phải đồng ý",
+  "VIEW_OFFER_TEXT_CONDITION_LOGIC_AND": "Tất cả thành viên sau phải đồng ý",
+  "VIEW_OFFER_TEXT_DATA_NOT_FOUND_DISCRIPTION": "Hãy tạo mới đề xuất hoặc kiểm tra bộ lọc để xuất hiện dữ liệu đề xuất",
+  "VIEW_OFFER_LABEL_DATA_NOT_FOUND": "Không có dữ liệu",
+  "VIEW_OFFER_LABEL_CREATE_NEW_OFFER": "Tạo mới đề xuất",
+  "VIEW_OFFER_TEXT_CREATE_NEW_OFFER_SHOULD_REDIRECT": "Bạn cần phải chọn một công việc trong dự án trước khi tạo mới đề xuất",
+  "VIEW_OFFER_LABEL_REDIRECT_TO_TASK": "Đi đến danh sách công việc",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVER": "Bạn có chắc chắn muốn xóa người phê duyệt này?",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_SUPERVISOR": "Bạn có chắc chắn muốn xóa người giám sát này?",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVAL": "Bạn có chắc chắn muốn xóa phê duyệt này?",
+  "VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_1": "Sau khi phê duyệt bạn không thể Sửa hoặc Xóa phê duyệt của mình.",
+  "VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_2": "Do đó hãy cân nhắc kỹ trước khi phê duyệt.",
+  "VIEW_OFFER_LABEL_LEARN_MORE": "Tìm hiểu thêm",
+  "LABEL_CHAT_TASK_MAC_DINH": "(mặc định)",
+  "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Thay đổi mặc định trong cài đặt dự án",
+  "LABEL_CHAT_TASK_NGAY_VA_GIO": "Ngày và giờ",
+  "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Chỉ nhập ngày",
+  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Không yêu cầu",
+  "LABEL_CHAT_TASK_INVALID_DATE_FORMAT": "Định dạng không hợp lệ",
+  "Thu gọn": "Thu gọn",
+  "Mở rộng": "Mở rộng",
+  "Lọc": "Lọc",
+  "+ Tạo công việc": "+ Tạo công việc",
+  "Hủy": "Hủy",
+  "Tìm kiếm": "Tìm kiếm",
+  "Nhập nội dung cần tìm": "Nhập nội dung cần tìm",
+  "và": "và",
+  "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên": "Ưu tiên cao",
+  "Tìm hiểu thêm": "Tìm hiểu thêm",
+  "Chỉnh sửa bài viết": "Chỉnh sửa bài viết",
+  "Thoát": "Thoát"
 }

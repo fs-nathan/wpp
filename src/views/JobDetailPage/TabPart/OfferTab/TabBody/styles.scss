@@ -2,7 +2,7 @@
   position: relative;
   // border-bottom: 1px solid #eeeeee;
   padding: 10px 20px;
-  margin: 0px 0 0 -20px;
+  // margin: 0px 0 0 -20px;
   cursor: pointer;
   &:hover {
     background-color: #f2f5fa;
@@ -44,6 +44,21 @@
       color: #ffffff;
       background-color: blue;
     }
+    &__1 {
+      background-color: #f44336 !important;
+      color: white !important;
+      font-weight: 400 !important;
+    }
+    &__0 {
+      background-color: #fd7e14 !important;
+      color: white !important;
+      font-weight: 400 !important;
+    }
+    &__2 {
+      background-color: #f44336 !important;
+      color: white !important;
+      font-weight: 400 !important;
+    }
   }
   &--status {
     display: flex;
@@ -80,15 +95,18 @@
     svg {
       fill: #ffffff;
     }
-    &__rejected {
-      background-color: red;
-    }
-    &__approve {
-      background-color: greenyellow;
-    }
-    &__normal {
+    &__0 {
       background-color: #9696962b;
       color: #878787;
+    }
+    &__1 {
+      background-color: #ff9800;
+    }
+    &__2 {
+      background-color: #0ab711;
+    }
+    &__3 {
+      background-color: #f44336;
     }
   }
 }
@@ -239,6 +257,12 @@
 }
 
 .approve {
+  [class*="comp_LoadingOverlay___wrapper"] {
+    height: 90vh !important;
+  }
+  [class*="comp_CustomModal___scroll"] {
+    height: 100% !important;
+  }
   .MuiFormControl-marginNormal {
     margin-top: 0;
   }
@@ -283,6 +307,7 @@
     width: 160px;
     cursor: pointer;
     &-icon {
+      color: #fff;
       padding: 4px;
       background-color: #dddddd;
       text-align: center;
@@ -328,5 +353,16 @@
     line-height: 15px;
     width: 100%;
     margin: 25px 0px 10px;
+  }
+  &__warning {
+    padding: 0px 15px;
+    background: rgb(252, 232, 230);
+    color: rgb(230, 86, 86);
+    display: flex;
+    align-items: center;
+    &_content {
+      margin-left: 10px;
+      line-height: 1.5;
+    }
   }
 }

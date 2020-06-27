@@ -7,6 +7,7 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
+import AlertModal from "components/AlertModal";
 import React, { useCallback, useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
@@ -100,11 +101,22 @@ export default ({ item }) => {
         group_permission_id: id,
       })
     );
+  const { t } = useTranslation();
   return (
-    <DeleteGroupPermissionModalStateLess
-      loading={status === apiCallStatus.loading}
-      onDelete={handleSubmit}
-      onClose={onClose}
+    <AlertModal
+      open={true}
+      {...{
+        canConfirm: true,
+        manualClose: true,
+        content: t("Bạn có muốn xóa nhóm quyền?"),
+        onConfirm: () => handleSubmit(),
+        onCancle: () => setModal(null),
+      }}
     />
+    // <DeleteGroupPermissionModalStateLess
+    //   loading={status === apiCallStatus.loading}
+    //   onDelete={handleSubmit}
+    //   onClose={onClose}
+    // />
   );
 };

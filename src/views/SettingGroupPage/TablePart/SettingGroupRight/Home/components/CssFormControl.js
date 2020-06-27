@@ -117,6 +117,7 @@ export const GroupCheckBoxFormControl = ({
 export const RadioGroupFormControl = ({
   name,
   options = emptyArray,
+  disabled,
   ...props
 }) => {
   const [field, meta] = useField({ name });
@@ -124,12 +125,18 @@ export const RadioGroupFormControl = ({
   const error = meta.error;
   return (
     <CssFormControl {...props} errorMessage={error}>
-      <RadioGroup aria-label={name} name={name} value={"" + value} {...rest}>
+      <RadioGroup
+        aria-label={name}
+        name={name}
+        value={"" + value}
+        {...props}
+        {...rest}
+      >
         {options.map(({ label, value }) => (
           <FormControlLabel
             key={value}
             value={"" + value}
-            control={<Radio color="primary" />}
+            control={<Radio disabled={disabled} color="primary" />}
             label={label}
           />
         ))}

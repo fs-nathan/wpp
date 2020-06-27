@@ -1,11 +1,10 @@
 .views_HomePage___wrapper {
-  padding: 20px;
-  padding-right: 30px;
+  padding: 20px 50px;
   min-height: 100%;
   background: #f1f2f4;
 }
 .views_HomePage___wrapper a {
-  color: #007bff;
+  /* color: #007bff; */
 }
 .views_HomePage___wrapper *:not(svg),
 .views_HomePage___wrapper *:not(svg)::before,
@@ -13,12 +12,12 @@
   /* font-size: 14px; */
 }
 .views_HomePage___container {
-  max-width: 1224px;
-  margin: auto;
+  /* max-width: 1224px; */
+  margin: 0;
   height: 100%;
   display: grid;
   grid-template-rows: 300px auto;
-  grid-template-columns: 280px minmax(auto, 3fr) minmax(300px, 2fr);
+  grid-template-columns: 285px minmax(auto, 3fr) minmax(300px, 2fr);
   column-gap: 20px;
   align-items: flex-start;
   row-gap: 20px;
@@ -36,7 +35,7 @@
 }
 .views_HomePage___middle {
   grid-area: middle;
-  max-width: 600px;
+  /* max-width: 600px; */
 }
 .views_HomePage___right {
   grid-area: right;

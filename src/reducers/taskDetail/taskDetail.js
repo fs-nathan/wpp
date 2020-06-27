@@ -3,10 +3,11 @@ import * as types from 'constants/actions/taskDetail/taskDetailConst';
 import produce from "immer";
 // Initial state for store
 export const initialState = {
-  taskDetails: null,
-  isFetching: false,
+  taskDetails: {},
+  isFetching: null,
   dataFetched: false,
-  error: false,
+  error: null,
+  errorMessage: null,
   showIndex: 0,
   projectSchedules: [],
   payload: null,
@@ -18,6 +19,7 @@ export default (state = initialState, action) => produce(state, draft => {
   switch (action.type) {
     case types.GET_TASK_DETAIL_TABPART_REQUEST:
       draft.isFetching = true
+      draft.errorMessage = null
       break;
     case types.GET_TASK_DETAIL_TABPART_SUCCESS:
       draft.isFetching = false
@@ -28,6 +30,7 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.isFetching = false
       draft.dataFetched = false
       draft.error = true
+      draft.errorMessage = 'This task does not exist'
       break;
     case types.UPDATE_TASK_PRIORITY_REQUEST:
       draft.isFetching = true
@@ -36,6 +39,7 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.isFetching = false
       draft.dataFetched = true
       draft.taskDetails.priority_code = action.payload.data_chat.priority;
+      draft.error = false;
       break;
     case types.UPDATE_TASK_PRIORITY_FAIL:
       draft.isFetching = false
@@ -75,21 +79,29 @@ export default (state = initialState, action) => produce(state, draft => {
       const { payload } = action;
       draft.taskDetails.name = payload.data_chat.new_task_name;
       draft.taskDetails.description = payload.data_chat.new_description;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.UPDATE_GROUP_TASK_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.UPDATE_TYPE_ASSIGN_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.UPDATE_SCHEDULE_ASSIGN_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isFetching = false;
+      draft.error = false;
       break;
     }
     case types.GET_SCHEDULES_SUCCESS: {
@@ -105,6 +117,40 @@ export default (state = initialState, action) => produce(state, draft => {
     case types.DETAIL_GROUP_PERMISSION_DEFAULT_SUCCESS: {
       const { payload } = action;
       draft.ownerPermissions = payload.group_detail;
+      break;
+    }
+    case types.POST_TASK_REQUEST:
+    case types.UPDATE_NAME_DESCRIPTION:
+    case types.UPDATE_GROUP_TASK:
+    case types.UPDATE_TYPE_ASSIGN:
+    case types.UPDATE_SCHEDULE_ASSIGN:
+    case types.UPDATE_NAME_DESCRIPTION_TASK_REQUEST: {
+      draft.isFetching = true;
+      draft.error = false;
+      break;
+    }
+    case types.POST_TASK_SUCCESS:
+    case types.UPDATE_NAME_DESCRIPTION_TASK_SUCCESS: {
+      draft.isFetching = false;
+      draft.error = false;
+      break;
+    }
+    case types.POST_TASK_FAIL:
+    case types.UPDATE_NAME_DESCRIPTION_FAIL:
+    case types.UPDATE_GROUP_TASK_FAIL:
+    case types.UPDATE_TYPE_ASSIGN_FAIL:
+    case types.UPDATE_SCHEDULE_ASSIGN_FAIL:
+    case types.UPDATE_NAME_DESCRIPTION_TASK_FAIL: {
+      draft.isFetching = false;
+      draft.error = true;
+      break;
+    }
+    case types.PIN_TASK_SUCCESS: {
+      draft.taskDetails.is_ghim = true;
+      break;
+    }
+    case types.UN_PIN_TASK_SUCCESS: {
+      draft.taskDetails.is_ghim = false;
       break;
     }
   }

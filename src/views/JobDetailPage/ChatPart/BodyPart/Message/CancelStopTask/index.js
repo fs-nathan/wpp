@@ -33,7 +33,7 @@ const CancelStopTask = ({
       <>
         <Icon className="CancelStopTask--icon" path={mdiTimer}></Icon>
         <div className="StopTask--content" >
-          {getDialogDate(time_create, dateFormat)}
+          {getDialogDate(t, time_create, dateFormat)}
         </div>
         <div className="StopTask--notify" >
           {t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY')}

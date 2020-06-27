@@ -1,6 +1,5 @@
 import { SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
 import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
-import { ADD_MEMBER_HANDLE, ADD_MEMBER_MONITOR, CREATE_GROUP_OFFER, DELETE_DOCUMENT_OFFER, DELETE_GROUP_OFFER, DELETE_MEMBER_HANDLE, DELETE_MEMBER_MONITOR, DELETE_OFFER, HANDLE_OFFER_OFFERPAGE, LOAD_DETAIL_OFFER, LOAD_OFFER_BY_DEPARTMENT_ID, LOAD_OFFER_BY_GROUP_ID, LOAD_OFFER_BY_PROJECT_ID, LOAD_SUMMARY_BY_GROUP, LOAD_SUMMARY_BY_PROJECT, LOAD_SUMMARY_DEPARTMENT, LOAD_SUMMARY_OVERVIEW, LOAD_TASK_RENCENTLY, UPDATE_GROUP_OFFER_OFFERPAGE, UPLOAD_DOCUMENT_OFFER } from "views/OfferPage/redux/types";
 import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
 import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
 import { CREATE_PERSONAL_CATEGORY_REMIND, CREATE_PERSONAL_REMIND, DELETE_PERSONAL_CATEGORY_REMIND, DELETE_PERSONAL_REMIND, LIST_PERSONAL_REMIND, LIST_PERSONAL_REMIND_CATEGORY, LIST_REMIND_PROJECT, LIST_REMIND_RECENTLY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_REMIND } from "../constants/actions/calendar/alarmCalendar";
@@ -91,6 +90,7 @@ import { SORT_TASK } from "../constants/actions/task/sortTask";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
+import { DELETE_DOCUMENTS_USER } from "../constants/actions/user/deleteDocumentsUser";
 import { DETAIL_USER } from "../constants/actions/user/detailUser";
 import { LIST_USER_OF_GROUP } from "../constants/actions/user/listUserOfGroup";
 import { PERMISSION_USER } from "../constants/actions/user/permissionUser";
@@ -108,7 +108,8 @@ import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
 import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
 // ==================================
 import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage } from "../views/JobPage/redux/sagas";
-import { doAddMemberHandle, doAddMemberMonitor, doCreateOfferGroup, doDeleteDocumentOffer, doDeleteGroupOffer, doDeleteMemberHandle, doDeleteMemberMonitor, doDeleteOffer, doGetSummaryByGroup, doGetTaskRecently, doHandleOffer, doLoadDetailOffer, doLoadOfferByDepartmentID, doLoadOfferByGroupID, doLoadOfferByProjectID, doLoadSummaryByDepartment, doLoadSummaryOverview, doLoadSummaryProject, doUpdateGroupOffer, doUploadDocumentOffer } from '../views/OfferPage/redux/sagas';
+import { doAddMemberHandle, doAddMemberMonitor, doCreateOffer, doCreateOfferGroup, doDeleteApproval, doDeleteDocumentOffer, doDeleteGroupOffer, doDeleteMemberHandle, doDeleteMemberMonitor, doDeleteOffer, doGetCommentListOfferDetail, doGetMemberToAdd, doGetSummaryByGroup, doGetTaskRecently, doHandleOffer, doListStatusHaveNewOffers, doLoadDetailOffer, doLoadOfferByDepartmentID, doLoadOfferByGroupID, doLoadOfferByProjectID, doLoadSummaryByDepartment, doLoadSummaryOverview, doLoadSummaryProject, doPostCommentOfferDetail, doRemoveCommentOfferDetail, doSortGroupOffer, doUpdateCommentOfferDetail, doUpdateGroupOffer, doUpdateOfferApprovalCondition, doUpdateOfferDetailDescriptionSection, doUploadDocumentOffer } from '../views/OfferPage/redux/sagas';
+import { ADD_MEMBER_HANDLE, ADD_MEMBER_MONITOR, CREATE_GROUP_OFFER, CREATE_OFFER, DELETE_APPROVAL, DELETE_DOCUMENT_OFFER, DELETE_GROUP_OFFER, DELETE_MEMBER_HANDLE, DELETE_MEMBER_MONITOR, DELETE_OFFER, HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER, LOAD_DETAIL_OFFER, LOAD_OFFER_BY_DEPARTMENT_ID, LOAD_OFFER_BY_GROUP_ID, LOAD_OFFER_BY_PROJECT_ID, LOAD_SUMMARY_BY_GROUP, LOAD_SUMMARY_BY_PROJECT, LOAD_SUMMARY_OFFER_BY_DEPARTMENT, LOAD_SUMMARY_OVERVIEW, LOAD_TASK_RENCENTLY, OFFER_DETAIL_GET_COMMENT_LIST, OFFER_DETAIL_POST_COMMENT, OFFER_DETAIL_REMOVE_COMMENT, OFFER_DETAIL_UPDATE_COMMENT, OFFER_GET_MEMBER_TO_ADD, SORT_GROUP_OFFER, UPDATE_GROUP_OFFER_OFFERPAGE, UPDATE_OFFER_APPROVAL_CONDITION, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, UPLOAD_DOCUMENT_OFFER } from "../views/OfferPage/redux/types";
 import { login, loginCheckState } from "./authentications";
 import { createPersonalRemind } from "./calendar/alarmCalendar/createPersonalRemind";
 import { createPersonalRemindCategory } from "./calendar/alarmCalendar/createPersonalRemindCategory";
@@ -234,6 +235,7 @@ import { listTask } from "./task/listTask";
 import { sortTask } from "./task/sortTask";
 import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
 import { banUserFromGroup } from "./user/banUserFromGroup";
+import { deleteDocumentsUser } from "./user/deleteDocumentsUser";
 import { detailUser } from "./user/detailUser";
 import { listUserOfGroup } from "./user/listUserOfGroup";
 import { permissionUser } from "./user/permissionUser";
@@ -270,6 +272,7 @@ function* rootSaga() {
   yield takeEvery(SORT_ROOM, sortRoom);
   yield takeLeading(DETAIL_USER, detailUser);
   yield takeEvery(UPLOAD_DOCUMENTS_USER, uploadDocumentsUser);
+  yield takeEvery(DELETE_DOCUMENTS_USER, deleteDocumentsUser);
   yield takeLeading(LIST_MAJOR, listMajor);
   yield takeLeading(LIST_LEVEL, listLevel);
   yield takeLeading(LIST_POSITION, listPosition);
@@ -675,7 +678,7 @@ function* rootSaga() {
     taskDetailType.DETAIL_GROUP_PERMISSION_DEFAULT,
     taskDetailSaga.detailGroupPermissionDefault
   );
-  //chat 
+  //chat
   yield takeLeading(
     chatTypes.DELETE_CHAT,
     chatDetailSaga.deleteChat
@@ -742,6 +745,10 @@ function* rootSaga() {
     chatTypes.GET_DATA_PIN_ON_TASK_CHAT,
     chatDetailSaga.getDataPinOnTaskChat
   );
+  yield takeLeading(
+    chatTypes.VIEW_CHAT,
+    chatDetailSaga.viewChat
+  );
   yield fork(watchLoadTaskPage);
   yield fork(watchLoadTaskOverviewPage);
   yield fork(watchLoadTaskDuePage);
@@ -753,22 +760,33 @@ function* rootSaga() {
   yield takeLatest(LOAD_SUMMARY_BY_GROUP, doGetSummaryByGroup);
   yield takeEvery(CREATE_GROUP_OFFER, doCreateOfferGroup);
   yield takeLatest(LOAD_OFFER_BY_GROUP_ID, doLoadOfferByGroupID);
-  yield takeLatest(LOAD_SUMMARY_DEPARTMENT, doLoadSummaryByDepartment)
+  yield takeEvery(LOAD_SUMMARY_OFFER_BY_DEPARTMENT, doLoadSummaryByDepartment);
   yield takeLatest(LOAD_OFFER_BY_DEPARTMENT_ID, doLoadOfferByDepartmentID);
-  yield takeLatest(LOAD_SUMMARY_OVERVIEW, doLoadSummaryOverview)
-  yield takeEvery(DELETE_GROUP_OFFER, doDeleteGroupOffer)
-  yield takeEvery(UPDATE_GROUP_OFFER_OFFERPAGE, doUpdateGroupOffer)
-  yield takeLatest(LOAD_DETAIL_OFFER, doLoadDetailOffer)
-  yield takeLatest(DELETE_OFFER, doDeleteOffer)
-  yield takeEvery(UPLOAD_DOCUMENT_OFFER, doUploadDocumentOffer)
-  yield takeEvery(DELETE_DOCUMENT_OFFER, doDeleteDocumentOffer)
-  yield takeEvery(ADD_MEMBER_HANDLE, doAddMemberHandle)
-  yield takeEvery(DELETE_MEMBER_HANDLE, doDeleteMemberHandle)
-  yield takeEvery(ADD_MEMBER_MONITOR, doAddMemberMonitor)
-  yield takeEvery(DELETE_MEMBER_MONITOR, doDeleteMemberMonitor)
-  yield takeEvery(HANDLE_OFFER_OFFERPAGE, doHandleOffer)
-  yield takeLatest(LOAD_SUMMARY_BY_PROJECT, doLoadSummaryProject)
-  yield takeLatest(LOAD_OFFER_BY_PROJECT_ID, doLoadOfferByProjectID)
+  yield takeLatest(LOAD_SUMMARY_OVERVIEW, doLoadSummaryOverview);
+  yield takeEvery(DELETE_GROUP_OFFER, doDeleteGroupOffer);
+  yield takeEvery(UPDATE_GROUP_OFFER_OFFERPAGE, doUpdateGroupOffer);
+  yield takeLatest(LOAD_DETAIL_OFFER, doLoadDetailOffer);
+  yield takeLatest(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, doUpdateOfferDetailDescriptionSection);
+  yield takeLatest(UPDATE_OFFER_APPROVAL_CONDITION, doUpdateOfferApprovalCondition);
+  yield takeLatest(OFFER_DETAIL_GET_COMMENT_LIST, doGetCommentListOfferDetail);
+  yield takeLatest(OFFER_DETAIL_POST_COMMENT, doPostCommentOfferDetail);
+  yield takeLatest(OFFER_DETAIL_UPDATE_COMMENT, doUpdateCommentOfferDetail);
+  yield takeLatest(OFFER_DETAIL_REMOVE_COMMENT, doRemoveCommentOfferDetail);
+  yield takeLatest(CREATE_OFFER, doCreateOffer);
+  yield takeLatest(DELETE_OFFER, doDeleteOffer);
+  yield takeEvery(UPLOAD_DOCUMENT_OFFER, doUploadDocumentOffer);
+  yield takeEvery(DELETE_DOCUMENT_OFFER, doDeleteDocumentOffer);
+  yield takeEvery(ADD_MEMBER_HANDLE, doAddMemberHandle);
+  yield takeEvery(DELETE_MEMBER_HANDLE, doDeleteMemberHandle);
+  yield takeEvery(ADD_MEMBER_MONITOR, doAddMemberMonitor);
+  yield takeEvery(DELETE_MEMBER_MONITOR, doDeleteMemberMonitor);
+  yield takeEvery(HANDLE_OFFER_OFFERPAGE, doHandleOffer);
+  yield takeLatest(LOAD_SUMMARY_BY_PROJECT, doLoadSummaryProject);
+  yield takeLatest(LOAD_OFFER_BY_PROJECT_ID, doLoadOfferByProjectID);
+  yield takeLatest(LIST_STATUS_HAVE_NEW_OFFER, doListStatusHaveNewOffers);
+  yield takeLatest(DELETE_APPROVAL, doDeleteApproval);
+  yield takeLatest(SORT_GROUP_OFFER, doSortGroupOffer);
+  yield takeLatest(OFFER_GET_MEMBER_TO_ADD, doGetMemberToAdd);
   //
 
   //calendar

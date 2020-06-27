@@ -1,7 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import { TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import { createTask, getListGroupTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
@@ -10,15 +10,16 @@ import TitleSectionModal from 'components/TitleSectionModal';
 import { isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
 import { get, isFunction, isNil } from 'lodash';
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
-import CreateProjectGroup from 'views/ProjectGroupPage/Modals/CreateProjectGroup';
+import CreateProjectGroup from 'views/ProjectPage/Modals/CreateGroupTask';
 import { taskIdSelector } from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
+import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
 
 export const EDIT_MODE = {
@@ -29,66 +30,58 @@ export const EDIT_MODE = {
   ASSIGN_TYPE: 4,
 }
 
-let optionsList = [
-  { value: 2, label: 'Ngày và giờ (mặc định)' },
-  { value: 1, label: 'Chỉ nhập ngày' },
-  { value: 0, label: 'Không yêu cầu' }
-];
-
-let assignList = [
-  { id: 0, value: 'Được giao' },
-  { id: 1, value: 'Tự đề xuất' },
-  { id: 2, value: 'Giao việc cho' }
-];
-
-const DEFAULT_ASSIGN = assignList[0];
-const DEFAULT_ASSIGN_ID = assignList[0];
-
-// Define variable using in form
-let priorityList = [
-  { id: 2, value: 'Thấp' },
-  { id: 1, value: 'Trung bình' },
-  { id: 0, value: 'Cao' },
-];
-const DEFAULT_PRIORITY = priorityList[0].value;
-const DEFAULT_PRIORITY_ID = priorityList[0].id;
-
-const DEFAULT_DATA = {
-  name: EMPTY_STRING,
-  description: EMPTY_STRING,
-  start_time: listTimeSelect[16],
-  start_date: DEFAULT_DATE_TEXT,
-  end_time: listTimeSelect[34],
-  end_date: DEFAULT_DATE_TEXT,
-  type_assign: DEFAULT_ASSIGN_ID,
-  priority: DEFAULT_PRIORITY_ID,
-  // group_task: DEFAULT_GROUP_TASK_VALUE,
-  priorityLabel: DEFAULT_PRIORITY,
-  assignValue: DEFAULT_ASSIGN
-};
-
-function validate(data) {
-  const {
-    name,
-    type_assign,
-    priority
-  } = data
-  return type_assign !== null && priority !== null && !!name;
-}
-
 function CreateJobModal(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
+  const isFetching = useSelector(state => state.taskDetail.detailTask.isFetching)
+  const error = useSelector(state => state.taskDetail.detailTask.error)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.status.date'));
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
-  const isFetching = useSelector(state => state.taskDetail.listDetailTask.isFetching);
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
+
+  const optionsList = useMemo(() => [
+    { value: 2, label: t('LABEL_CHAT_TASK_NGAY_VA_GIO') },
+    { value: 1, label: t('LABEL_CHAT_TASK_CHI_NHAP_NGAY') },
+    { value: 0, label: t('LABEL_CHAT_TASK_KHONG_YEU_CAU') }
+  ], [t]);
+
+  const assignList = useMemo(() => [
+    { id: 0, value: t('LABEL_CHAT_TASK_DUOC_GIAO') },
+    { id: 1, value: t('LABEL_CHAT_TASK_TU_DE_XUAT') },
+    { id: 2, value: t('LABEL_CHAT_TASK_GIAO_VIEC_CHO') }
+  ], [t]);
+
+  const DEFAULT_ASSIGN = assignList[0];
+  const DEFAULT_ASSIGN_ID = assignList[0].id;
+
+  // Define variable using in form
+  const priorityList = useMemo(() => [
+    { id: 2, value: t('LABEL_CHAT_TASK_THAP') },
+    { id: 1, value: t('LABEL_CHAT_TASK_TRUNG_BINH') },
+    { id: 0, value: t('LABEL_CHAT_TASK_CAO') },
+  ], [t]);
+  const DEFAULT_PRIORITY = priorityList[0].value;
+  const DEFAULT_PRIORITY_ID = priorityList[0].id;
+
+  const DEFAULT_DATA = {
+    name: EMPTY_STRING,
+    description: EMPTY_STRING,
+    start_time: listTimeSelect[16],
+    start_date: DEFAULT_DATE_TEXT,
+    end_time: listTimeSelect[34],
+    end_date: DEFAULT_DATE_TEXT,
+    type_assign: DEFAULT_ASSIGN,
+    priority: DEFAULT_PRIORITY_ID,
+    // group_task: DEFAULT_GROUP_TASK_VALUE,
+    priorityLabel: DEFAULT_PRIORITY,
+    assignValue: DEFAULT_ASSIGN
+  };
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
@@ -96,6 +89,7 @@ function CreateJobModal(props) {
   const [groupTaskValue, setGroupTaskValue] = React.useState(null);
   const [listSchedules, setListSchedules] = React.useState([]);
   const [scheduleValue, setScheduleValue] = React.useState(null);
+  const [type, setType] = React.useState(date_status);
 
   const isEdit = props.editMode !== null && props.editMode !== undefined;
 
@@ -113,6 +107,15 @@ function CreateJobModal(props) {
       group_task: data.group_task,
       type_assign: data.type_assign.id,
       schedule_id: data.schedule,
+    }
+    if (type === 0) {
+      updateData.start_date = undefined;
+      updateData.start_time = undefined;
+      updateData.end_date = undefined;
+      updateData.end_time = undefined;
+    } else if (type === 1) {
+      updateData.start_time = undefined;
+      updateData.end_time = undefined;
     }
     // dispatch(updateNameDescriptionTask(dataNameDescription));
     switch (props.editMode) {
@@ -135,7 +138,7 @@ function CreateJobModal(props) {
       default:
         break;
     }
-    props.setOpen(false);
+    // props.setOpen(false);
   };
 
   React.useEffect(() => {
@@ -199,22 +202,32 @@ function CreateJobModal(props) {
         item => item.id === tempData.priority_code
       );
       tempData.priorityLabel = priority ? priority.value : DEFAULT_PRIORITY;
-      let assign = assignList.find(item => item.id === tempData.type_assign);
+      let assign = assignList.find(item => item.id === tempData.type_assign.id);
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
       setDataMember(tempData);
     }
+    // eslint-disable-next-line
   }, [props.data, props.editMode]);
 
   useEffect(() => {
-    if (!isFetching)
+    if (isFetching === false && error === false) {
       props.setOpen(false);
+      if (props.onCreateTaskSuccess) props.onCreateTaskSuccess()
+    }
     // eslint-disable-next-line
-  }, [isFetching])
+  }, [isFetching, error])
 
   useEffect(() => {
-    if (projectId)
-      dispatch(getSchedules(projectId))
-  }, [dispatch, projectId])
+    if (props.isOpen) {
+      if (projectId) {
+        dispatch(getSchedules(projectId))
+        if (!isEdit) {
+          handleChangeData('name', EMPTY_STRING)
+          handleChangeData('description', EMPTY_STRING)
+        }
+      }
+    }
+  }, [dispatch, isEdit, projectId, props.isOpen])
 
   const handleChangeData = (attName, value) => {
     // console.log(attName, value)
@@ -235,26 +248,45 @@ function CreateJobModal(props) {
     schedule_id: data.schedule,
   };
 
+  function validate(data) {
+    const {
+      name,
+      type_assign,
+      priority
+    } = data
+    if (isEdit && props.editMode !== EDIT_MODE.NAME_DES) {
+      return true;
+    }
+    return type_assign !== null && priority !== null && !!name.trim();
+  }
+
   const handlePressConfirm = () => {
     if (validate(data)) {
       // Remove group task in object if user unselect group task
-      let data = dataCreateJob;
+      let data = { ...dataCreateJob };
       if (!dataCreateJob.group_task ||
         dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE) delete data.group_task;
-      data.date_status = date_status;
+      data.type = type;
+      if (type === 0) {
+        data.start_date = undefined;
+        data.start_time = undefined;
+        data.end_date = undefined;
+        data.end_time = undefined;
+      } else if (type === 1) {
+        data.start_time = undefined;
+        data.end_time = undefined;
+      }
       // Call api
       isFunction(get(props, 'doCreateTask'))
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
         : dispatch(createTask({ data, projectId: projectId }));
       // Clear temporary data
       // setDataMember(DEFAULT_DATA);
-      handleChangeData('name', EMPTY_STRING)
-      handleChangeData('description', EMPTY_STRING)
       // Close modal
       // handleClose();
-    } else {
+      // } else {
       // Alert user
-      alert('Bạn cần nhập tên công việc');
+      // alert('Bạn cần nhập tên công việc');
     }
   };
 
@@ -267,9 +299,13 @@ function CreateJobModal(props) {
       onConfirm={isEdit ? updateData : handlePressConfirm}
       canConfirm={validate(data)}
       maxWidth='sm'
+      actionLoading={isFetching}
+      manualClose
+      onCancle={() => props.setOpen(false)}
       className={clsx("createJob", `createJob__edit${props.editMode}`, {
-        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES, EDIT_MODE.GROUP, EDIT_MODE.WORK_DATE]),
-        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.ASSIGN_TYPE]),
+        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES]),
+        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE, EDIT_MODE.GROUP]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY]),
       })}
     >
       <React.Fragment>
@@ -305,6 +341,7 @@ function CreateJobModal(props) {
               margin="normal"
               variant="outlined"
               multiline
+              rows={3}
               rowsMax={18}
               fullWidth
               value={data.description}
@@ -326,13 +363,20 @@ function CreateJobModal(props) {
         }
         {!isEdit &&
           <>
-            {date_status !== 0 && <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />}
-            {date_status !== 0 &&
+            <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
+            <CommonProgressForm
+              items={optionsList}
+              value={type}
+              handleChange={setType}
+              defaultState={date_status}
+            />
+            {type !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <Typography className="createJob--timeWrap" component={'span'}>
                   <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
-                  {date_status === 1 ? (
+                  {type === 1 ? (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -349,8 +393,9 @@ function CreateJobModal(props) {
                         onChange={(value) => handleChangeData('start_time', value)}
                       />
                     )}
-                  {date_status !== 1 && (
+                  {type !== 1 && (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -364,8 +409,9 @@ function CreateJobModal(props) {
                 </Typography>
                 <Typography className="createJob--timeWrap" component={'span'}>
                   <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_KET_THUC')}</Typography>
-                  {date_status === 1 ? (
+                  {type === 1 ? (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -383,8 +429,9 @@ function CreateJobModal(props) {
                         onChange={(value) => handleChangeData('end_time', value)}
                       />
                     )}
-                  {date_status !== 1 && (
+                  {type !== 1 && (
                     <KeyboardDatePicker
+                      autoOk
                       className="createJob--inputDate"
                       size="small"
                       disableToolbar
@@ -433,41 +480,77 @@ function CreateJobModal(props) {
 }
 
 function CheckCreateJob(props) {
-  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
+
+  const dispatch = useDispatch();
+  const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
+
+  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask) || {};
+  const isFetching = useSelector(state => state.taskDetail.listGroupTask.isFetching);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
   const [isOpenProjectGroup, setOpenProjectGroup] = React.useState(false);
+  const [isOpenCreateTask, setOpenCreateTask] = React.useState(false);
+  const projectId = isNil(get(props, 'projectId'))
+    ? _projectId
+    : get(props, 'projectId');
 
   useEffect(() => {
-    if (props.isOpen) {
-      if (!listGroupTaskData || listGroupTaskData.group_tasks.length === 0) {
+    if (projectId && props.isOpen) {
+      dispatch(getListGroupTask({ project_id: projectId }));
+    }
+  }, [dispatch, projectId, props.isOpen])
+
+  useEffect(() => {
+    // console.log(listGroupTaskData, '&& ', props.isOpen, isFetching)
+    if (listGroupTaskData.group_tasks && props.isOpen && !isFetching) {
+      if (listGroupTaskData.group_tasks.length === 0) {
         setOpenCreateGroup(true)
+        setOpenCreateTask(false)
       } else {
         setOpenCreateGroup(false)
+        setOpenCreateTask(true)
       }
     }
-  }, [listGroupTaskData, props.isOpen])
+  }, [isFetching, listGroupTaskData.group_tasks, props.isOpen])
 
-  function onClickCreateProject() {
+  function onClickCreateProjectGroup() {
     setOpenCreateGroup(false)
     setOpenProjectGroup(true)
+    props.setOpen(false)
   }
 
-  return (
+  function onClickCloseGroupTask(isOpen) {
+    props.setOpen(false)
+    setOpenCreateGroup(isOpen)
+  }
+
+  function onClickCloseGroupProject(isOpen) {
+    props.setOpen(false)
+    setOpenProjectGroup(isOpen)
+  }
+
+  function onClickCloseTask(isOpen) {
+    props.setOpen(false)
+    setOpenCreateTask(isOpen)
+  }
+
+  return !isFetching ? (
     <>
-      {
-        !isOpenCreateGroup &&
-        <CreateJobModal {...props}></CreateJobModal>
-      }
+      <CreateJobModal
+        {...props}
+        isOpen={isOpenCreateTask}
+        setOpen={onClickCloseTask}
+      />
       <CreateGroupTaskModal
         isOpen={isOpenCreateGroup}
-        setOpen={setOpenCreateGroup}
-        onClickCreate={onClickCreateProject}
+        setOpen={onClickCloseGroupTask}
+        onClickCreate={onClickCreateProjectGroup}
       />
       <CreateProjectGroup
+        project_id={projectId}
         open={isOpenProjectGroup}
-        setOpen={setOpenProjectGroup} />
+        setOpen={onClickCloseGroupProject} />
     </>
-  )
+  ) : null
 }
 
 export default CheckCreateJob;

@@ -10,32 +10,32 @@ export const createPieChartProps = (strings, data) => {
         //   enabled: false
         // },
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
       legend: {
-        show: false
+        show: false,
         // position: "bottom"
       },
       plotOptions: {
         pie: {
-          expandOnClick: false
-        }
+          expandOnClick: false,
+        },
       },
-      labels: strings.map(string => labels[string]),
-      colors: strings.map(string => colors[string]),
+      labels: strings.map((string) => labels[string]),
+      colors: strings.map((string) => colors[string]),
       axisBorder: {
-        show: false
+        show: false,
       },
       axisTicks: {
-        show: false
+        show: false,
       },
-      floating: true
+      floating: true,
     },
-    series: strings.map(string =>
+    series: strings.map((string) =>
       Math.max(Number(get(data, statistic[string], 0)), 0)
     ),
-    height: 250
+    height: 250,
   };
 };
 
@@ -84,7 +84,7 @@ export const createRadarChartProps = (strings, data) => {
   //     number_task: 22
   //   }
   // ];
-  const categories = roles.map(role => role.name);
+  const categories = roles.map((role) => role.name);
   const series = roles.reduce(
     (result, value) => {
       const [all, complete] = result;
@@ -97,13 +97,13 @@ export const createRadarChartProps = (strings, data) => {
       {
         name: "Tất cả",
         color: colors.task_all,
-        data: []
+        data: [],
       },
       {
         name: "Hoàn thành",
         color: colors.task_complete,
-        data: []
-      }
+        data: [],
+      },
     ]
   );
   return {
@@ -112,51 +112,51 @@ export const createRadarChartProps = (strings, data) => {
     options: {
       plotOptions: {
         radar: {
-          size: 100
-        }
+          size: 100,
+        },
       },
       colors: [colors.task_all, colors.task_complete],
       chart: {
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
       legend: {
-        show: false
+        show: false,
       },
       stroke: {
-        width: 1
+        width: 1,
       },
       fill: {
-        opacity: 0.4
+        opacity: 0.4,
       },
       marker: {
         size: 4,
         hover: {
           size: 7,
-          sizeOffset: 3
-        }
+          sizeOffset: 3,
+        },
       },
       xaxis: {
-        categories
+        categories,
       },
       yaxis: {
         tickAmount: maxValue < 4 ? maxValue : undefined,
         labels: {
-          formatter: function(val, i) {
+          formatter: function (val, i) {
             return Math.floor(val);
-          }
-        }
-      }
+          },
+        },
+      },
     },
-    height: 250
+    height: 250,
   };
 };
 export const createColumnChartProps = (
   strings = [
     "task_hight_priority",
     "task_medium_priority",
-    "task_low_priority"
+    "task_low_priority",
   ],
   data
 ) => {
@@ -165,53 +165,53 @@ export const createColumnChartProps = (
     series: [
       {
         name: "Số lượng",
-        data: strings.map(string =>
+        data: strings.map((string) =>
           Math.max(Number(get(data, statistic[string], 0)), 0)
-        )
-      }
+        ),
+      },
     ],
     options: {
       chart: {
         type: "bar",
         events: {
-          click: function(chart, w, e) {
+          click: function (chart, w, e) {
             // console.log(chart, w, e)
-          }
+          },
         },
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
-      colors: strings.map(string => colors[string]),
+      colors: strings.map((string) => colors[string]),
       plotOptions: {
         bar: {
           columnWidth: "45%",
-          distributed: true
-        }
+          distributed: true,
+        },
       },
       dataLabels: {
         // enabled: false
       },
       legend: {
-        show: false
+        show: false,
         // position: "bottom"
       },
       xaxis: {
-        categories: strings.map(string => labels[string]),
+        categories: strings.map((string) => labels[string]),
         // show: false,
         labels: {
           // show: false,
-          labels: strings.map(string => labels[string])
-        }
+          labels: strings.map((string) => labels[string]),
+        },
         // axisBorder: {
         //   show: false
         // },
         // axisTicks: {
         //   show: false
         // }
-      }
+      },
     },
-    height: 250
+    height: 250,
   };
 };
 export const createColumnRoleChartProps = (strings, data) => {
@@ -259,7 +259,7 @@ export const createColumnRoleChartProps = (strings, data) => {
   //     number_task: 22
   //   }
   // ];
-  const categories = roles.map(role => role.name);
+  const categories = roles.map((role) => role.name);
   const series = roles.reduce(
     (result, value) => {
       const [all, complete] = result;
@@ -272,13 +272,13 @@ export const createColumnRoleChartProps = (strings, data) => {
       {
         name: "Tất cả",
         color: colors.task_all,
-        data: []
+        data: [],
       },
       {
         name: "Hoàn thành",
         color: colors.task_complete,
-        data: []
-      }
+        data: [],
+      },
     ]
   );
   return {
@@ -288,60 +288,61 @@ export const createColumnRoleChartProps = (strings, data) => {
       colors: [colors.task_all, colors.task_complete],
       chart: {
         toolbar: {
-          show: false
-        }
+          show: false,
+        },
       },
       plotOptions: {
         bar: {
           horizontal: false,
-          columnWidth: "55%",
-          endingShape: "rounded"
-        }
+          columnWidth: "44%",
+          startingShape: "flat",
+          endingShape: "flat",
+        },
       },
       legend: {
-        show: false
+        show: false,
       },
       dataLabels: {
-        enabled: false
+        enabled: false,
       },
       stroke: {
         show: true,
         width: 2,
-        colors: ["transparent"]
+        colors: ["transparent"],
       },
       xaxis: {
         categories,
         labels: {
           hideOverlappingLabels: false,
           style: {
-            fontSize: "10px"
-          }
-        }
+            fontSize: "10px",
+          },
+        },
       },
       yaxis: {},
       fill: {
-        opacity: 1
+        opacity: 1,
       },
       tooltip: {
-        enabled: true
-      }
+        enabled: true,
+      },
     },
-    height: 250
+    height: 250,
   };
 };
 export const createPriorityRadialBarChartProps = (
   strings = [
     "task_hight_priority",
     "task_medium_priority",
-    "task_low_priority"
+    "task_low_priority",
   ],
   data
 ) => {
   return {
     type: "radialBar",
-    series: strings.map(string => Number(get(data, statistic[string], 0))),
+    series: strings.map((string) => Number(get(data, statistic[string], 0))),
     options: {
-      colors: strings.map(string => colors[string]),
+      colors: strings.map((string) => colors[string]),
       plotOptions: {
         radialBar: {
           offsetY: 0,
@@ -351,19 +352,19 @@ export const createPriorityRadialBarChartProps = (
             margin: 5,
             size: "30%",
             background: "transparent",
-            image: undefined
+            image: undefined,
           },
           dataLabels: {
             name: {
-              show: false
+              show: false,
             },
             value: {
-              show: false
-            }
-          }
-        }
+              show: false,
+            },
+          },
+        },
       },
-      labels: strings.map(string => labels[string]),
+      labels: strings.map((string) => labels[string]),
       legend: {
         show: false,
         floating: true,
@@ -372,23 +373,23 @@ export const createPriorityRadialBarChartProps = (
         offsetX: 120,
         offsetY: 5,
         labels: {
-          useSeriesColors: true
+          useSeriesColors: true,
         },
         markers: {
           width: 0,
-          height: 0
+          height: 0,
         },
-        formatter: function(seriesName, opts) {
+        formatter: function (seriesName, opts) {
           return opts.w.globals.series[opts.seriesIndex];
         },
         itemMargin: {
-          vertical: 3
-        }
+          vertical: 3,
+        },
       },
       tooltip: {
-        enabled: true
-      }
+        enabled: true,
+      },
     },
-    height: 250
+    height: 250,
   };
 };

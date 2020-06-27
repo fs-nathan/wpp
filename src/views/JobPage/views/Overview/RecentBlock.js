@@ -19,6 +19,8 @@ import { colors, labels, recent, taskAtrrs } from "../../contants/attrs";
 import { TASK_OVERVIEW_RECENT } from "../../redux/types";
 import { createMapPropsFromAttrs } from "../../utils";
 export const RecentTable = ({ tasks = emptyArray }) => {
+  const hadData = tasks && tasks.length;
+  if (!hadData) return <EmptyHolder />;
   return (
     <Table className="header-document">
       <TableBody>
@@ -118,10 +120,9 @@ export function RecentBlock() {
     isToggleSortName,
     keyword,
   });
-
   return (
     <Card variant="outlined">
-      <CardHeader title={"Công việc gần đây"} />
+      <CardHeader title={t("Công việc gần đây")} />
       <CardContent>
         <Analytic
           {...{

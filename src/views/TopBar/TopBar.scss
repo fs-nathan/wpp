@@ -77,7 +77,6 @@
 }
 .acc-box {
   margin-left: 20px;
-  min-width: 200px;
   justify-content: flex-end;
   display: flex;
   align-items: center;
@@ -103,8 +102,8 @@
 .top-bar-container {
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: minmax(300px, 1fr) minmax(800px, 3fr);
-  grid-template-areas: 'list table';
+  grid-template-columns: minmax(300px, 1fr) minmax(800px, 4fr);
+  grid-template-areas: "list table";
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   z-index: 999;

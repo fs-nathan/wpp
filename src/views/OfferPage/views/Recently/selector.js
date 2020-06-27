@@ -1,21 +1,14 @@
-
-
-
 import { createSelector } from 'reselect';
 import { TASK_RECENTLY } from 'views/OfferPage/redux/types';
-
-
-const selectTaskRecently = (state) => state.offerPage[TASK_RECENTLY]
-
-
-export const getTaskRecentLy = createSelector(selectTaskRecently, list => {
+const selectOffersRecently = (state) => state.offerPage[TASK_RECENTLY]
+export const getTaskRecentLy = createSelector(selectOffersRecently, list => {
   if (list.offers === undefined) {
     return []
   }
   return list.offers
 })
 
-export const getTaskByKeyword = (keyword, status_filter) => createSelector(selectTaskRecently, list => {
+export const getTaskByKeyword = (keyword, status_filter) => createSelector(selectOffersRecently, list => {
   let newOffers = list.offers
   if (newOffers === undefined) {
     return []

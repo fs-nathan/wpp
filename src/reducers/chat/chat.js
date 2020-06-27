@@ -2,6 +2,8 @@ import produce from "immer";
 import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
+import { UPDATE_PROJECT_CHAT, GET_PROJECT_LIST_BASIC_REQUEST } from "constants/actions/taskDetail/taskDetailConst";
+import { forEach } from "lodash";
 
 export const initialState = {
   chats: { data: [] },
@@ -13,11 +15,13 @@ export const initialState = {
   emotionsList: [],
   searchChatKey: '',
   stickerKeyWord: '',
-  uploadingPercent: 0,
+  uploadingPercent: {},
   isMore: false,
   isLoading: false,
+  isShowBackChat: false,
   isSending: false,
   isFails: false,
+  isLoadingForward: false,
   isShowSendStatus: false,
   lastChat: {},
   isCreateRemind: false,
@@ -42,6 +46,8 @@ export const initialState = {
   isOpenForward: false,
   contentForward: null,
   error: null,
+  focusId: null,
+  focusTopId: null,
 };
 /* eslint-disable default-case, no-param-reassign */
 export default (state = initialState, action) => produce(state, draft => {
@@ -53,18 +59,45 @@ export default (state = initialState, action) => produce(state, draft => {
       const idx = findIndex(draft.chats.data, ({ id }) => id && id === action.replaceId)
       // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
-        draft.chats.data.splice(idx, 1, action.payload.data_chat)
+        const updateDate = { ...action.payload.data_chat }
+        if (updateDate.images) {
+          updateDate.images.forEach(img => {
+            img.url = undefined;
+            img.url_thumb = undefined;
+          })
+        }
+        draft.chats.data.splice(idx, 1, updateDate)
+        draft.focusId = null;
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
+        draft.focusId = 'chatStatusDiv';
+      }
+      if (action.isHideSendStatus) {
+        draft.isShowSendStatus = false;
       }
       draft.isMore = undefined;
+      draft.focusTopId = null;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
       draft.members = action.payload;
       break;
     case actionTypes.LOAD_CHAT: {
+      const { chat_id, last_id, isMore } = action;
       draft.isLoading = true;
-      break
+      draft.focusId = chat_id;
+      draft.chats.last_id = last_id || null;
+      if (chat_id) {
+        draft.isShowBackChat = true;
+      }
+      if (last_id) {
+        draft.focusTopId = last_id;
+        draft.focusId = null;
+      }
+      else if (!isMore) draft.isShowBackChat = false;
+      if (!chat_id && !last_id && !isMore) {
+        draft.chats.data = [];
+      }
+      break;
     }
     case actionTypes.LOAD_CHAT_SUCCESS: {
       const { payload, isMore } = action;
@@ -74,12 +107,20 @@ export default (state = initialState, action) => produce(state, draft => {
         draft.chats.last_id = payload.last_id;
       } else {
         draft.chats = payload;
+        draft.focusId = draft.focusId || 'chatStatusDiv';
       }
       draft.isMore = isMore;
       draft.isSending = false;
       draft.isFails = false;
       draft.isLoading = false;
       draft.lastChat = {};
+      break;
+    }
+    case actionTypes.LOAD_CHAT_FAIL: {
+      draft.isFails = true;
+      draft.isLoading = false;
+      draft.focusId = null;
+      draft.focusTopId = null;
       break;
     }
     case actionTypes.CHAT_IMAGE_SUCCESS: {
@@ -125,9 +166,18 @@ export default (state = initialState, action) => produce(state, draft => {
       draft.payload = payload;
       break;
     }
+    case actionTypes.FORWARD_CHAT: {
+      draft.isLoadingForward = true;
+      break;
+    }
     case actionTypes.FORWARD_CHAT_SUCCESS: {
       const { payload } = action;
       draft.payload = payload;
+      draft.isLoadingForward = false;
+      break;
+    }
+    case actionTypes.FORWARD_CHAT_FAIL: {
+      draft.isLoadingForward = false;
       break;
     }
     case actionTypes.GET_LIST_STICKERS_SUCCESS: {
@@ -143,11 +193,12 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.SEARCH_CHAT: {
       const { key } = action;
       draft.searchChatKey = key;
+      if (!key) draft.isShowBackChat = false;
       break;
     }
     case actionTypes.ON_UPLOADING: {
-      const { percent } = action;
-      draft.uploadingPercent = percent;
+      const { percent, id } = action;
+      draft.uploadingPercent[id] = percent;
       break;
     }
     case actionTypes.TAG_MEMBER: {
@@ -253,7 +304,8 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.OPEN_DETAIL_DEMAND: {
       const { isOpenDetailDemand, data } = action;
       draft.isOpenDetailDemand = isOpenDetailDemand;
-      draft.dataDemand = data;
+      if (data)
+        draft.dataDemand = data;
       break;
     }
     case actionTypes.GET_OFFER_DETAIL_SUCCESS: {
@@ -263,7 +315,7 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.GET_DEMAND_DETAIL_SUCCESS: {
       const { payload } = action;
-      draft.dataDemand = payload;
+      draft.dataDemand = payload.command;
       break;
     }
     case actionTypes.REMOVE_CHAT_BY_ID: {
@@ -287,7 +339,7 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case actionTypes.UPDATE_CHAT_STATE: {
       const idx = findIndex(draft.chats.data, ({ id }) => id === action.id)
-      console.log('idx', idx, action.data);
+      // console.log('idx', idx, action.data);
       draft.chats.data[idx] = { ...draft.chats.data[idx], ...action.data }
       break;
     }
@@ -323,6 +375,24 @@ export default (state = initialState, action) => produce(state, draft => {
     case actionTypes.APPEND_VIEWED_CHAT: {
       const { data } = action;
       draft.viewedChatMembers.push(data);
+      break;
+    }
+    case UPDATE_PROJECT_CHAT: {
+      draft.viewedChatMembers = []
+      break;
+    }
+    case GET_PROJECT_LIST_BASIC_REQUEST: {
+      draft.isLoading = false;
+      break;
+    }
+    case actionTypes.VIEW_CHAT_SUCCESS: {
+      const { payload } = action;
+      draft.payload = payload;
+      break;
+    }
+    case actionTypes.CLEAR_FOCUS: {
+      draft.focusId = null;
+      draft.focusTopId = null;
       break;
     }
   }

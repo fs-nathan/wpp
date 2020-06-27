@@ -1,28 +1,29 @@
 import { IconButton } from '@material-ui/core';
 import { mdiAlarmPlus, mdiAt, mdiClose, mdiEmoticon, mdiFileTree, mdiImage, mdiPaperclip } from '@mdi/js';
 import Icon from '@mdi/react';
-import { appendChat, changeStickerKeyWord, chatFile, chatForwardFile, chatImage, chatQuickLike, chatSticker, clearTags, createChatFileFromGoogleDriver, createChatText, onUploading, openCreateRemind, tagMember } from 'actions/chat/chat';
+import { appendChat, changeStickerKeyWord, chatFile, chatForwardFile, chatImage, chatQuickLike, chatSticker, clearTags, createChatFileFromGoogleDriver, createChatText, onUploading, openCreateRemind, tagMember, viewChat } from 'actions/chat/chat';
 import { showTab } from 'actions/taskDetail/taskDetailActions';
 import { file as file_icon } from 'assets/fileType';
 import { FileType } from 'components/FileType';
-import { CHAT_TYPE, getFileUrl } from 'helpers/jobDetail/arrayHelper';
+import { CHAT_TYPE, getFileUrl, filterMembersByKey } from 'helpers/jobDetail/arrayHelper';
 import htmlToText from 'helpers/jobDetail/jsHtmlToText';
 import { humanFileSize, transformToGoogleFormData } from 'helpers/jobDetail/stringHelper';
 import isEmpty from 'lodash/isEmpty';
 import words from 'lodash/words';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
-import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
 import '../Chat.scss';
 import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
 import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
+import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 
 const StyledButton = styled.button`
   border: none;
@@ -61,19 +62,39 @@ const FooterPart = ({
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)
   const members = useSelector(state => state.taskDetail.taskMember.member);
-  const membersRef = useRef([]);
-  const selectedIdRef = useRef(0);
-  const isOpenMentionRef = useRef(false);
+  const key = `${userId}:${lastJobSettingKey}`;
+  const type = localStorage.getItem(key)
+  const isCanView = useSelector(makeSelectIsCanView(type, taskId));
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
-  const chatTextRef = useRef('');
+  const [keyFilter, setKeyFilter] = useState('');
   const [chatText, setChatText] = useState('');
   const [isOpenMention, setOpenMention] = useState(false);
   const [isOpenSticker, setOpenSticker] = useState(false);
   const [isShowQuickLike, setShowQuickLike] = useState(false);
   const [imagesQueueUrl, setImagesQueueUrl] = useState([]);
   const [clipBoardImages, setClipBoardImages] = useState([]);
+  const [membersFiltered, setMembersFiltered] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
+
+  useEffect(() => {
+    setMembersFiltered(filterMembersByKey(members, keyFilter));
+  }, [keyFilter, members])
+
+  useEffect(() => {
+    if (isOpenMention) {
+      const text = htmlToText(chatText)
+      const lastAy = text.lastIndexOf('@')
+      const key = text.slice(lastAy + 1)
+        .toLowerCase()
+        .replace(/&nbsp;/g, '')
+        .trim()
+      // console.log(text, lastAy, key)
+      setKeyFilter(key)
+    } else {
+      setKeyFilter('')
+    }
+  }, [chatText, isOpenMention, members])
 
   useEffect(() => {
     async function renderPrepareImages(imagesFiles) {
@@ -131,11 +152,11 @@ const FooterPart = ({
     document.getElementById(id).click();
   };
 
-  function onUploadingHandler(percent) {
-    dispatch(onUploading(percent));
-  }
+  const onUploadingHandler = useCallback(function (percent, id) {
+    dispatch(onUploading(percent, id));
+  }, [dispatch])
 
-  const handleUploadImage = async e => {
+  const handleUploadImage = useCallback(async e => {
     const { files } = e.target;
     // console.log('upload image', files);
     const images = [...clipBoardImages];
@@ -162,7 +183,7 @@ const FooterPart = ({
     }
     dispatch(chatImage(taskId, data, onUploadingHandler, id))
     setClipBoardImages([])
-  };
+  }, [clipBoardImages, dispatch, onUploadingHandler, taskId, userId]);
 
   function onClickDeletePreview(i) {
     return () => {
@@ -216,7 +237,7 @@ const FooterPart = ({
     dispatch(openCreateRemind(true, true))
   }
 
-  function handleClickMention(mention = {}) {
+  const handleClickMention = useCallback(function handleClickMention(mention = {}) {
     const tag = `<span class="chatBox--tag" style="color:#03A9F4;font-size:15px;">@${mention.name}</span>&nbsp;`;
     const sel = window.getSelection();
     const range = sel.getRangeAt(0);
@@ -237,16 +258,19 @@ const FooterPart = ({
       document.execCommand('insertHTML', false, tag)
     }
     dispatch(tagMember(mention))
-    // console.log('chatTextRef.current.selectionStart', chatTextRef.current.selectionStart)
     // setChatText(newContent)
+    setKeyFilter('')
     setOpenMention(false)
-  }
+  }, [dispatch, isOpenMention])
 
   const focus = () => {
     editorRef.current.focus();
+    if (isCanView) {
+      dispatch(viewChat(taskId))
+    }
   };
 
-  function getChatContent(text) {
+  const getChatContent = useCallback(function (text) {
     let ret = text;
     for (let index = 0; index < tagMembers.length; index++) {
       const { name, id } = tagMembers[index];
@@ -254,10 +278,10 @@ const FooterPart = ({
       ret = ret.replace(reg, `@${id}`)
     }
     return ret;
-  }
+  }, [tagMembers])
 
-  function sendChatText() {
-    const content = getChatContent(htmlToText(chatTextRef.current));
+  const sendChatText = useCallback(function () {
+    const content = getChatContent(htmlToText(chatText));
     if (content.trim().length === 0) return;
     dispatch(clearTags());
     const chat_parent = isEmpty(parentMessage) ? undefined : { ...parentMessage, isReply: true }
@@ -276,9 +300,9 @@ const FooterPart = ({
     dispatch(createChatText(data_chat, id));
     setSelectedChat(null)
     clearChatText()
-  }
+  }, [chatText, dispatch, getChatContent, parentMessage, setSelectedChat, tagMembers, taskId, userId])
 
-  const handleUploadFile = async e => {
+  const handleUploadFile = useCallback(async e => {
     const { files } = e.target;
     // console.log('upload file', files);
     const images = [];
@@ -304,9 +328,9 @@ const FooterPart = ({
       data.append("file", files[i], files[i].name)
     }
     dispatch(chatFile(taskId, data, onUploadingHandler, id));
-  };
+  }, [dispatch, onUploadingHandler, taskId, userId]);
 
-  function sendMultipleFiles() {
+  const sendMultipleFiles = useCallback(function () {
     const images = [];
     const others = [];
     for (let index = 0; index < imagesQueue.length; index++) {
@@ -323,9 +347,9 @@ const FooterPart = ({
     if (others.length > 0)
       handleUploadFile({ target: { files: others } });
     setImagesQueue([]);
-  }
+  }, [clipBoardImages.length, handleUploadFile, handleUploadImage, imagesQueue, setImagesQueue])
 
-  function sendMessage() {
+  const sendMessage = useCallback(function () {
     // console.log('sendMessage', imagesQueue.length)
     sendMultipleFiles()
     if (isShowQuickLike) {
@@ -336,65 +360,50 @@ const FooterPart = ({
     } else {
       sendChatText()
     }
+  }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
+
+  function onChooseMention() {
+    handleClickMention(membersFiltered[selectedId])
   }
 
-  function onKeyDown(event) {
-    const keyCode = event.keyCode || event.which;
-    const members = membersRef.current;
-    const selectedId = selectedIdRef.current;
-    if ((keyCode === 38 || keyCode === 40) && isOpenMentionRef.current) {
-      event.returnValue = false;
-      if (event.preventDefault) event.preventDefault()
-    }
-    if (keyCode === 16) {// shift
-      isPressShift = true;
-    } else if (keyCode === 13 && isOpenMentionRef.current) {// enter
-      handleClickMention(members[selectedId])
-      event.returnValue = false;
-      if (event.preventDefault) event.preventDefault()
-    } else if (keyCode === 13 && !isPressShift) {// enter
-      // sendMessage();
-      sendButtonRef.current.click();
-      event.returnValue = false;
-      if (event.preventDefault) event.preventDefault()
-    } else if (keyCode === 50 && isPressShift) {// @
-      setOpenMention(true)
-      focus()
-    } else if (keyCode === 8) {// backspace
-      const sel = window.getSelection();
-      const range = sel.getRangeAt(0);
-      const content = getChatContent(htmlToText(chatTextRef.current));
-      const delChar = content.charAt(content.length - 1)
-      // console.log('chatText', delChar, content)
-      if (delChar === '@') {
-        setOpenMention(false)
-      }
-    } else if (keyCode === 38) {// up
-      setSelectedId(selectedId === 0 ? members.length - 1 : selectedId - 1)
-    } else if (keyCode === 40) {// down
-      // console.log('selectedId', selectedId, members)
-      setSelectedId(selectedId === members.length - 1 ? 0 : selectedId + 1)
-    } else if (keyCode === 32) {// space
+  function onDeleteChar() {
+    const content = getChatContent(htmlToText(chatText));
+    const sel = window.getSelection();
+    const range = sel.getRangeAt(0);
+    const delChar = content.charAt(content.length - 1)
+    // console.log('chatText', delChar, content)
+    if (delChar === '@') {
       setOpenMention(false)
     }
   }
 
-  function onKeyUp(event) {
-    const keyCode = event.keyCode || event.which;
-    if (keyCode === 16) {// shift
-      isPressShift = false;
-    }
+  function onOpenMention() {
+    setTimeout(() => {
+      setKeyFilter('')
+      setOpenMention(true)
+      setSelectedId(0)
+      focus()
+    }, 0)
+  }
+
+  function onPressDown() {
+    const newSelect = selectedId === membersFiltered.length - 1 ? 0 : selectedId + 1;
+    setSelectedId(newSelect)
+  }
+
+  function onPressUp() {
+    const newSelect = selectedId === 0 ? membersFiltered.length - 1 : selectedId - 1;
+    setSelectedId(newSelect)
   }
 
   function clearChatText() {
-    // chatTextRef.current = '';
+    // chatText = '';
     setChatText('')
     setShowQuickLike(true)
   }
 
   function onChangeChatText(value) {
-    // chatTextRef.current = value;
-    setShowQuickLike(!value)
+    // chatText = value;
     setChatText(value)
   }
 
@@ -403,20 +412,8 @@ const FooterPart = ({
   }
 
   useEffect(() => {
-    chatTextRef.current = chatText;
-  }, [chatText])
-
-  useEffect(() => {
-    membersRef.current = members;
-  }, [members]);
-
-  useEffect(() => {
-    selectedIdRef.current = selectedId;
-  }, [selectedId])
-
-  useEffect(() => {
-    isOpenMentionRef.current = isOpenMention;
-  }, [isOpenMention])
+    setShowQuickLike(!chatText && imagesQueueUrl.length === 0)
+  }, [chatText, imagesQueueUrl.length])
 
   function onConfirmShare(selectedFiles) {
     const googleFiles = selectedFiles.filter(({ isGoogleDocument }) => isGoogleDocument)
@@ -431,39 +428,51 @@ const FooterPart = ({
     <div className="footer-chat-container">
       <div className="wrap-function-bar-fp">
         <div>
-          <StyledButton className="icon-btn" onClick={openTag} hoverColor={groupActiveColor}>
-            <Icon path={mdiAt} size={1.2} />
-          </StyledButton>
-          <StyledButton className="icon-btn" onClick={onClickOpenSticker} hoverColor={groupActiveColor}>
-            <Icon path={mdiEmoticon} size={1.2} />
-          </StyledButton>
-          <StyledButton
-            className="icon-btn"
-            onClick={() => handleTriggerUpload('upload_image')}
-            hoverColor={groupActiveColor} >
-            <input
-              name="image"
-              type="file"
-              id="upload_image"
-              className="hide"
-              accept="image/*"
-              multiple
-              onChange={handleUploadImage}
-            />
-            <Icon path={mdiImage} size={1.2} />
-          </StyledButton>
-          <StyledButton
-            className="icon-btn"
-            onClick={() => setVisibleSendFile(true)}
-            hoverColor={groupActiveColor}>
-            <Icon path={mdiPaperclip} size={1.2} />
-          </StyledButton>
-          <StyledButton className="icon-btn" onClick={onClickSubTask} hoverColor={groupActiveColor}>
-            <Icon path={mdiFileTree} size={1.2} />
-          </StyledButton>
-          <StyledButton className="icon-btn" onClick={onClickRemind} hoverColor={groupActiveColor}>
-            <Icon path={mdiAlarmPlus} size={1.2} />
-          </StyledButton>
+          <abbr title={t('LABEL_CHAT_TASK_TAG_THANH_VIEN')}>
+            <StyledButton className="icon-btn" onClick={openTag} hoverColor={groupActiveColor}>
+              <Icon path={mdiAt} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_GUI_STICKER')}>
+            <StyledButton className="icon-btn" onClick={onClickOpenSticker} hoverColor={groupActiveColor}>
+              <Icon path={mdiEmoticon} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_GUI_ANH')}>
+            <StyledButton
+              className="icon-btn"
+              onClick={() => handleTriggerUpload('upload_image')}
+              hoverColor={groupActiveColor} >
+              <input
+                name="image"
+                type="file"
+                id="upload_image"
+                className="hide"
+                accept="image/*"
+                multiple
+                onChange={handleUploadImage}
+              />
+              <Icon path={mdiImage} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_GUI_FILE_TAI_LIEU')}>
+            <StyledButton
+              className="icon-btn"
+              onClick={() => setVisibleSendFile(true)}
+              hoverColor={groupActiveColor}>
+              <Icon path={mdiPaperclip} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_THEM_CONG_VIEC_CON')}>
+            <StyledButton className="icon-btn" onClick={onClickSubTask} hoverColor={groupActiveColor}>
+              <Icon path={mdiFileTree} size={1.2} />
+            </StyledButton>
+          </abbr>
+          <abbr title={t('LABEL_CHAT_TASK_THEM_NHAC_HEN')}>
+            <StyledButton className="icon-btn" onClick={onClickRemind} hoverColor={groupActiveColor}>
+              <Icon path={mdiAlarmPlus} size={1.2} />
+            </StyledButton>
+          </abbr>
         </div>
       </div>
       {parentMessage && <ReplyChatPreview {...parentMessage} cancelReply={cancelReply} />}
@@ -484,12 +493,18 @@ const FooterPart = ({
         onPaste={onpaste}
       >
         <ChatBoxInput
-          onKeyDown={onKeyDown}
-          onKeyUp={onKeyUp}
           placeholder={t('LABEL_CHAT_TASK_NHAP_GOI_Y_NOI')}
           innerRef={editorRef}
           value={chatText}
           onChange={onChangeChatText}
+          onPressUp={onPressUp}
+          isOpenMention={isOpenMention}
+          onChooseMention={onChooseMention}
+          onDeleteChar={onDeleteChar}
+          onOpenMention={onOpenMention}
+          onPressDown={onPressDown}
+          onSendMessage={sendMessage}
+          setOpenMention={setOpenMention}
         />
         <div className="chatBox--send"
           onClick={sendMessage}
@@ -509,6 +524,7 @@ const FooterPart = ({
           handleClose={handleCloseTag}
           handleClickMention={handleClickMention}
           selectedId={selectedId}
+          members={membersFiltered}
         />
       }
       {

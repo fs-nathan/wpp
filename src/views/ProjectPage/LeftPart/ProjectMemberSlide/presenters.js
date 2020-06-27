@@ -1,16 +1,19 @@
 import { Button, ListItemText } from '@material-ui/core';
 import { mdiAccountCog, mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
+import { detailUser } from 'actions/user/detailUser';
+import CustomAvatar from 'components/CustomAvatar';
+import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
+import LeftSideContainer from 'components/LeftSideContainer';
+import LoadingBox from 'components/LoadingBox';
+import SearchInput from 'components/SearchInput';
 import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
-import LoadingBox from '../../../../components/LoadingBox';
-import SearchInput from '../../../../components/SearchInput';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 
@@ -45,6 +48,9 @@ function ProjectMemberSlide({
   handleOpenModal,
 }) {
 
+  const dispatch = useDispatch();
+  const { t } = useTranslation();
+
   function onDragEnd(result) {
     const { source, destination } = result;
     if (!destination) return;
@@ -57,16 +63,16 @@ function ProjectMemberSlide({
   return (
     <>
       <LeftSideContainer
-        title='Thành viên dự án'
+        title={t("DMH.VIEW.PP.LEFT.PM.TITLE")}
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => handleSubSlide(0),
-          tooltip: 'Quay lại',
+          tooltip: t("DMH.VIEW.PP.LEFT.PM.BACK"),
         }}
         rightAction={{
           iconPath: mdiPlus,
           onClick: () => handleOpenModal('MEMBER_SETTING'),
-          tooltip: 'Thêm thành viên dự án',
+          tooltip: t("DMH.VIEW.PP.LEFT.PM.ADD"),
         }}
         loading={{
           bool: members.loading,
@@ -77,7 +83,7 @@ function ProjectMemberSlide({
           <Banner>
             <SearchInput
               fullWidth
-              placeholder='Tìm thành viên'
+              placeholder={t("DMH.VIEW.PP.LEFT.PM.SEARCH")}
               value={searchPatern}
               onChange={evt => setSearchPatern(evt.target.value)}
             />
@@ -103,17 +109,26 @@ function ProjectMemberSlide({
                       <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
                       <ListItemText
                         primary={
-                          <StyledPrimary>Tất cả</StyledPrimary>
+                          <StyledPrimary>{t("DMH.VIEW.PP.LEFT.PM.ALL_LABEL")}</StyledPrimary>
                         }
                         secondary={
                           <Secondary>
-                            {get(members, 'totalTask', 0)} việc
-                            </Secondary>
+                            {t("DMH.VIEW.PP.LEFT.PM.ALL_TASK", {
+                              number_task: get(members, 'totalTask', 0),
+                            })}
+                          </Secondary>
                         }
                       />
                     </StyledListItem>
                     {members.members.map((member, index) => (
-                      <CustomListItem key={get(member, 'id')} member={member} index={index} />
+                      <CustomListItem
+                        key={get(member, 'id')}
+                        member={member}
+                        index={index}
+                        onClick={evt => {
+                          dispatch(detailUser({ userId: get(member, 'id') }))
+                        }}
+                      />
                     ))}
                     {provided.placeholder}
                   </StyledList>
@@ -123,7 +138,7 @@ function ProjectMemberSlide({
           </Wrapper>
           <Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
             <Icon path={mdiAccountCog} size={1} />
-            <span>Quản lý thành viên</span>
+            <span>{t("DMH.VIEW.PP.LEFT.PM.MANAGE")}</span>
           </Button>
         </Container>
       </LeftSideContainer>

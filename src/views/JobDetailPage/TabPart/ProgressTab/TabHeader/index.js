@@ -5,11 +5,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
 import ProgressModal from '../ProgressModal';
+import get from 'lodash/get';
 
 function TabHeader({ setShow }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
+  const {
+    update_duration,
+  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
 
   useEffect(() => {
     dispatch(getTrackingTime(taskId))
@@ -18,6 +22,7 @@ function TabHeader({ setShow }) {
 
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
+    if (!update_duration) return;
     setOpen(true);
   };
   function onClickBack() {
@@ -29,7 +34,7 @@ function TabHeader({ setShow }) {
       <HeaderTab title={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')}
         onClickBack={onClickBack}
         onClickOpen={handleClickOpen}
-        rightIcon="settings"
+        rightIcon={(!update_duration) ? null : "settings"}
       />
       <ProgressModal isOpen={open} setOpen={setOpen} />
     </div>

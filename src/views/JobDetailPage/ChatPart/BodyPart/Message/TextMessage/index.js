@@ -72,7 +72,9 @@ const TextMessage = ({
 
   return (
     <>
-      <div className={clsx("TextMessage", isReply ? `TextMessage__reply` : `TextMessage__${chatPosition}`)}  >
+      <div
+        id={id}
+        className={clsx("TextMessage", isReply ? `TextMessage__reply` : `TextMessage__${chatPosition}`)}  >
         {!isReply && !is_me &&
           <abbr title={user_create_name}>
             <Avatar

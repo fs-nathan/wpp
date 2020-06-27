@@ -1,6 +1,7 @@
 import { combineReducers, createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, toFormData } from "views/JobPage/utils";
+import { loginlineFunc } from "views/OfferPage/utils";
 import {
   createAsyncAction,
   createListModule,
@@ -78,6 +79,7 @@ const createPost = ({
   file,
   file_ids,
   google_data,
+  file_order,
   sticker,
   is_push_notification = true,
 }) => {
@@ -93,6 +95,7 @@ const createPost = ({
         sticker,
         file_ids,
         google_data,
+        file_order,
         is_push_notification,
       }),
     },
@@ -115,6 +118,7 @@ const updatePost = ({
   file_ids,
   google_data,
   sticker,
+  file_order,
   is_push_notification = true,
 }) => {
   return createPostAsyncAction({
@@ -131,6 +135,7 @@ const updatePost = ({
         file_ids,
         google_data,
         is_push_notification,
+        file_order,
       }),
     },
     success: createAction(post.actions.listupdate.type, function prepare(data) {
@@ -260,7 +265,7 @@ const cancelPinPost = ({ post_id }) => {
 //   "is_love": false,
 //   "post_id": "5e79ce6f8baaa24895dd27e4"
 // }
-const like = ({ post_id }) => {
+const like = ({ post_id, profile }) => {
   return createPostAsyncAction({
     notifyOnSuccess: false,
     config: {
@@ -271,17 +276,14 @@ const like = ({ post_id }) => {
       return {
         payload: {
           id: post_id,
-          is_like: data.is_like,
-          is_love: data.is_love,
-          number_like: data.number_like,
-          number_love: data.number_love,
+          ...data.post_data,
         },
       };
     }),
   });
 };
 
-const love = ({ post_id }) => {
+const love = ({ post_id, profile }) => {
   return createPostAsyncAction({
     notifyOnSuccess: false,
     config: {
@@ -292,10 +294,7 @@ const love = ({ post_id }) => {
       return {
         payload: {
           id: post_id,
-          is_like: data.is_like,
-          is_love: data.is_love,
-          number_like: data.number_like,
-          number_love: data.number_love,
+          ...data.post_data,
         },
       };
     }),
@@ -307,12 +306,38 @@ const love = ({ post_id }) => {
 // file: Array file optional
 // sticker: String optional
 // parent_id: String optional
-const comment = ({ post_id, content, file, sticker, parent_id }) => {
+// file_ids: Array optional
+// google_data: Array object optional. Description object below
+// {
+// file_id: String required
+// name: String required
+// size: Number required
+// url: String required
+// url_download: String required
+// file_type: String required
+// }
+const comment = ({
+  post_id,
+  content,
+  file,
+  file_ids,
+  google_data,
+  sticker,
+  parent_id,
+}) => {
   return createPostAsyncAction({
     notifyOnSuccess: false,
     config: {
       url: "/posts/create-comment",
-      data: toFormData({ post_id, content, file, sticker, parent_id }),
+      data: toFormData({
+        post_id,
+        content,
+        file,
+        sticker,
+        parent_id,
+        file_ids,
+        google_data,
+      }),
     },
     // success: createAction(updatePostList.type, function prepare(data) {
     //   return {
@@ -327,6 +352,16 @@ const comment = ({ post_id, content, file, sticker, parent_id }) => {
     //     },
     //   };
     // }),
+  });
+};
+
+const deleteComment = ({ comment_id }) => {
+  return createPostAsyncAction({
+    notifyOnSuccess: false,
+    config: {
+      url: "/posts/delete-comment",
+      data: { comment_id },
+    },
   });
 };
 
@@ -436,6 +471,10 @@ export const postModule = {
     like,
     love,
     comment,
+    deleteComment,
+    updatePostListItem: loginlineFunc(
+      createAction(post.actions.listupdate.type)
+    ),
   },
   key: rootPath,
   reducer: combineReducers({

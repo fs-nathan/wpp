@@ -2,6 +2,7 @@
 import { findTask } from 'helpers/jobDetail/arrayHelper';
 import sortBy from 'lodash/sortBy';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
+import { VIEW_CHAT } from 'constants/actions/chat/chat';
 
 function getNewChat(newChat, current) {
     if (newChat === 0) return 0
@@ -32,12 +33,14 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
         const { tasks } = data;
         const updatedTasks = tasks.map((task) => {
             if (task_id === task.id) {
-                const { new_chat, complete, chat } = update;
+                const { new_chat, complete, chat, state_code, is_ghim } = update;
                 return {
                     ...task,
                     ...update,
-                    complete: complete === undefined ? task.complete : complete,
+                    status_code: state_code || task.status_code,
+                    complete: complete || task.complete,
                     chat: chat || task.chat,
+                    is_ghim: is_ghim !== undefined ? is_ghim : data.is_ghim,
                     new_chat: getNewChat(new_chat, task.new_chat)
                 }
             }
@@ -54,12 +57,14 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
 function updateListDataNotRoom(listDataNotRoom, task_id, update) {
     const updatedTasks = listDataNotRoom.map((data) => {
         if (task_id === data.id) {
-            const { new_chat, complete, chat } = update;
+            const { new_chat, complete, chat, state_code, is_ghim } = update;
             return {
                 ...data,
                 ...update,
-                complete: complete === undefined ? data.complete : complete,
+                status_code: state_code || data.status_code,
+                complete: complete || data.complete,
                 chat: chat || data.chat,
+                is_ghim: is_ghim !== undefined ? is_ghim : data.is_ghim,
                 new_chat: getNewChat(new_chat, data.new_chat)
             }
         }
@@ -93,6 +98,7 @@ export default function reducer(state = initialState, action) {
                 user_create_avatar, user_create_id,
                 updatedAt,
                 complete,
+                state_code,
                 user_create_name } = payload;
             const chat = content ? {
                 content, user_create_avatar, user_create_name
@@ -101,6 +107,7 @@ export default function reducer(state = initialState, action) {
                 new_chat,
                 updatedAt,
                 complete,
+                state_code,
                 chat
             }
             return {
@@ -114,6 +121,12 @@ export default function reducer(state = initialState, action) {
                 ...state,
                 listTaskDetail: updateListTaskDetail(state.listTaskDetail, options.taskId, { new_chat: 0 }),
                 listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, options.taskId, { new_chat: 0 }),
+            }
+        case VIEW_CHAT:
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, action.task_id, { new_chat: 0 }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, action.task_id, { new_chat: 0 }),
             }
         case types.GET_LIST_TASK_DETAIL_REQUEST:
             return {
@@ -222,6 +235,22 @@ export default function reducer(state = initialState, action) {
             return {
                 ...state,
                 listTaskDetail: changeGroupTaskDetail(state.listTaskDetail, task_id, group_task),
+            }
+        }
+        case types.PIN_TASK_SUCCESS: {
+            const { task_id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { is_ghim: true }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { is_ghim: true }),
+            }
+        }
+        case types.UN_PIN_TASK_SUCCESS: {
+            const { task_id } = action;
+            return {
+                ...state,
+                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { is_ghim: false }),
+                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { is_ghim: false }),
             }
         }
         default:

@@ -10,7 +10,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import "./Popover.scss";
 import { OfferPageContext } from '../OfferPageContext';
-import { getOfferItemPopoverDelete, getOfferItemPopoverDetail } from '../utils/i18nSelectors';
+import { getOfferItemPopoverViewTask, getOfferItemPopoverDetail } from '../utils/i18nSelectors';
 
 const useStyles = makeStyles((theme) => ({
     typography: {
@@ -21,11 +21,10 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-function ExpandPopover({ offer_id, view }) {
+function ExpandPopover({ offer_id, url_redirect }) {
     const {
         setDetailOfferModalOpen,
         setCurrentDetailOfferId,
-        setShowDeleteOfferConfirmModal,
     } = useContext(OfferPageContext);
     const classes = useStyles();
     const { t } = useTranslation();
@@ -63,11 +62,11 @@ function ExpandPopover({ offer_id, view }) {
                 anchorEl={anchorEl}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: 'center',
+                    vertical: 'bottom',
                     horizontal: 'left',
                 }}
                 transformOrigin={{
-                    vertical: 'center',
+                    vertical: 'top',
                     horizontal: 'center',
                 }}
             >
@@ -80,13 +79,11 @@ function ExpandPopover({ offer_id, view }) {
                         // Show offer detail modal
                         setDetailOfferModalOpen(true);
                     })}
-                    {renderPopoverOption(getOfferItemPopoverDelete(t), () => {
+                    {url_redirect && renderPopoverOption(getOfferItemPopoverViewTask(t), () => {
                         // Hide popup menu
                         setAnchorEl(null);
-                        // For triggering delete offer from OfferPage component
-                        setCurrentDetailOfferId(offer_id);
-                        // Show delete offer confirm modal
-                        setShowDeleteOfferConfirmModal(true);
+                        // Go to view task page
+                        history.push(url_redirect);
                     })}
                 </div>
             </Popover>

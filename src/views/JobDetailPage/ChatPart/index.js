@@ -5,7 +5,7 @@ import { searchChat, loadChat } from 'actions/chat/chat';
 import { unPinRemind } from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import SearchInput from 'components/SearchInput';
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useEffect } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -28,9 +28,10 @@ function ChatPart(props) {
   const [isShowSearch, setShowSearch] = useState(false);
   const [imagesQueue, setImagesQueue] = useState([]);
 
-  // useEffect(() => {
-  //   dispatch(getRemind({ taskId }))
-  // }, [dispatch, taskId]);
+  useEffect(() => {
+    setShowSearch(false)
+    dispatch(searchChat(''))
+  }, [dispatch, taskId]);
 
   function onChangeKey(evt) {
     dispatch(searchChat(evt.target.value))
@@ -43,6 +44,7 @@ function ChatPart(props) {
   function hideSearch() {
     setShowSearch(false)
     dispatch(searchChat(''))
+    dispatch(loadChat(taskId))
   }
 
   function onClickClosePin() {
@@ -86,7 +88,7 @@ function ChatPart(props) {
                 t('LABEL_CHAT_TASK_LUC_NGAY', {
                   time_remind: pinnedRemind.time_remind,
                   date_remind: pinnedRemind.date_remind,
-                  remind: typesRemind[pinnedRemind.type_remind]
+                  remind: t(typesRemind[pinnedRemind.type_remind])
                 })
                 :
                 t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO', {

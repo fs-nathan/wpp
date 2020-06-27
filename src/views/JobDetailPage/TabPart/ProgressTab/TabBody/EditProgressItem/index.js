@@ -7,15 +7,6 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './styles.scss';
 
-function getFormat(dateString) {
-  try {
-    const date = new Date(dateString)
-    return format(date, 'HH:mm dd/MM/yyyy').replace(' ', ' ngày ')
-  } catch (error) {
-    return ''
-  }
-}
-
 function EditProgressItem({ fixedNumber,
   fixStart,
   fixEnd,
@@ -26,6 +17,18 @@ function EditProgressItem({ fixedNumber,
   isNewStart,
 }) {
   const { t } = useTranslation();
+
+  function getFormat(dateString) {
+    try {
+      const date = new Date(dateString)
+      return t('LABEL_CHAT_TASK_NGAY_TIME_DATE', {
+        time: format(date, 'HH:mm')
+        , date: format(date, 'dd/MM/yyyy')
+      })
+    } catch (error) {
+      return ''
+    }
+  }
 
   return (<div className="editProgressItem">
     <abbr title={userName}>

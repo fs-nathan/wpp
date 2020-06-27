@@ -13,6 +13,9 @@ import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from 'views/JobDetailPage/selectors';
 import MenuListItem from './MenuListItem';
+import * as fileType from 'assets/fileType';
+import { FileType } from 'components/FileType';
+import { compact } from 'lodash';
 
 const FileBox = (props) => {
   const { t } = useTranslation();
@@ -25,7 +28,7 @@ const FileBox = (props) => {
   function onClickFile(file, idx) {
     const type = getFileType(file.name);
     return () => {
-      if (type === 'mp4') {
+      if (FileType(type) === fileType.video) {
         // const user = { user_create_avatar, user_create_name, time_create, user_create_position };
         dispatch(showImagesList(true, [file], 0));
       } else {
@@ -66,7 +69,7 @@ const FileBox = (props) => {
                   <div className="fileBoxItem--content" >
                     <div className="fileBoxItem--name" onClick={onClickFile(item, 0)}>{item.name}</div>
                     <div className="fileBoxItem--downloaded">
-                      {[item.type, item.size].join(' - ').toUpperCase()}
+                      {compact([item.type, item.size]).join(' - ').toUpperCase()}
                       <IconButton className="fileBoxItem--button"
                         onClick={onClickDownload(item)}
                         size='small'>

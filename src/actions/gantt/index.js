@@ -4,14 +4,14 @@ import {
   CHANGE_FILTER_EXPORT_PDF,
   CHANGE_INSTANCE_GIRD,
   CHANGE_PROJECT_INFO,
-  CHANGE_RENDER_FULL_DAY,
+  CHANGE_PROJECT_SCHEDULE, CHANGE_RENDER_FULL_DAY,
   CHANGE_ROW_HOVER,
   CHANGE_SCHEDULE_DETAIL_GANTT,
   CHANGE_TIMELINE_COLOR,
   CHANGE_VISIBLE,
-  GANTT_SHOW_FULL_CHART,
+  FETCH_PROJECT_SCHEDULE, GANTT_SHOW_FULL_CHART,
   GANTT_SHOW_HEADER,
-  SCROLL_GANTT,
+  SCROLL_GANTT
 } from "../../constants/actions/gantt";
 import { apiService } from "../../constants/axiosInstance";
 
@@ -92,10 +92,13 @@ export const changeFilterExportPdf = (start, end) => ({
   },
 });
 
-export const changeInstanceGird = (gird) => ({
-  type: CHANGE_INSTANCE_GIRD,
-  payload: gird,
-});
+export const changeInstanceGird = (gird) => {
+  localStorage.setItem("timeUnitGantt", gird)
+  return {
+    type: CHANGE_INSTANCE_GIRD,
+    payload: gird,
+  }
+};
 
 export const scrollGantt = (flag) => ({
   type: SCROLL_GANTT,
@@ -132,6 +135,16 @@ export const actionChangeCompleteTask = (task_id, complete) => {
   return apiService(config);
 };
 
+
+export const changeProjectSchedule = (schedules) => ({
+  type: CHANGE_PROJECT_SCHEDULE,
+  payload: schedules
+})
+
+export const changeFlagFetchProjectSchedules = (flag) => ({
+  type: FETCH_PROJECT_SCHEDULE,
+  payload: flag
+})
 export const actionChangeTimeTask = ({
   task_id,
   start_date,
@@ -217,7 +230,7 @@ export const changeTaskComplete = async ({ task_id, complete }) => {
   }
 };
 
-export const sortTask = async (task_id, group_task,project_id, sort_index) => {
+export const sortTask = async (task_id, group_task, project_id, sort_index) => {
   try {
     const config = {
       url: "task/sort",
@@ -226,6 +239,22 @@ export const sortTask = async (task_id, group_task,project_id, sort_index) => {
         task_id,
         group_task,
         project_id,
+        sort_index
+      },
+    };
+    const result = await apiService(config);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+export const sortGroupTask = async (group_task_id, sort_index) => {
+  try {
+    const config = {
+      url: "group-task/sort",
+      method: "post",
+      data: {
+        group_task_id,
         sort_index
       },
     };

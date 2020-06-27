@@ -25,10 +25,13 @@ const DraggableListDefaultProps = {
 };
 
 export const DraggableList = ({
+  droppableId = "DraggableList",
+  direction,
   renderListWrapper = DraggableListDefaultProps.renderListWrapper,
   list = DraggableListDefaultProps.list,
   children = DraggableListDefaultProps.children,
   getId = DraggableListDefaultProps.getId,
+  onChange,
 }) => {
   const entitiesRef = useRef({});
   const [orderList, setorderList] = useState(emptyArray);
@@ -47,8 +50,10 @@ export const DraggableList = ({
     );
     entitiesRef.current = entites;
     setorderList(orderList);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [list]);
+
   return (
     <DragDropContext
       onDragEnd={(result) => {
@@ -58,9 +63,10 @@ export const DraggableList = ({
         newStrings.splice(source.index, 1);
         newStrings.splice(destination.index, 0, draggableId);
         setorderList(newStrings);
+        onChange && onChange(newStrings);
       }}
     >
-      <Droppable droppableId={"12312321"}>
+      <Droppable droppableId={droppableId} direction={direction}>
         {(provided, snapshot) => (
           <div ref={provided.innerRef} {...provided.droppableProps}>
             {renderListWrapper(

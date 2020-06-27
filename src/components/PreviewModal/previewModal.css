@@ -6,9 +6,10 @@
 }
 .gantt--preview-pdf__content{
     display: flex;
-    color: #c0bcbc;
-    font-size: 16px;
+    color: #111;
+    font-size: 14px !important;
     margin: 10px 0px;
+    line-height: 1.5;
     justify-content: space-between;
 }
 

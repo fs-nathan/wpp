@@ -1,3 +1,4 @@
+import { Tooltip } from "@material-ui/core";
 import { mdiTriangle } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
@@ -6,7 +7,7 @@ import { connect } from "react-redux";
 import { ResizableBox } from "react-resizable";
 import "./test.css";
 
-const Circle = ({ left, show }) => (
+const Circle = ({ left, show, text }) => (
   <div
     style={{
       left,
@@ -55,7 +56,7 @@ const TimeLine = ({
   }
   useEffect(() => {
     setWidthComplete((dataSource[index].complete * width) / 100);
-  }, [width]);
+  }, [width, dataSource]);
   useEffect(() => {
     setStartDateText(new moment(startDate));
   }, [startDate, girdInstance]);
@@ -72,7 +73,6 @@ const TimeLine = ({
     setWidth(endPosition * 48);
   }, [endPosition, dataSource, resizeWidth, startPosition, girdInstance]);
   const handleMouseMove = (e) => {
-    console.log("vo day", dragFirstResize);
     if (!drag) return;
     if (dragFirstResize) {
       handleMouseMoveFirst(e);
@@ -160,14 +160,15 @@ const TimeLine = ({
     handleChange(left / 48, end + add);
   };
   const handleProcessResize = (e, node) => {
+    if (isGroupTask || isTotalDuration) return
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
     setWidthProcess(newProcess);
   };
   const handleProcessResizeStop = (e, node) => {
+    if (isGroupTask || isTotalDuration) return
     const currentProcessWidth = node.size.width;
     const newProcess = Math.ceil((currentProcessWidth / width) * 100);
-    console.log(newProcess);
     setProcessDatasource(newProcess, index);
   };
   const handleChange = (start, end) => {
@@ -196,6 +197,7 @@ const TimeLine = ({
     !visibleGantt.task
   )
     return null;
+  if (!width) return null;
   if (isTotalDuration && !visibleGantt.total) return null;
   return (
     <React.Fragment>
@@ -218,8 +220,9 @@ const TimeLine = ({
           cursor:
             !isGroupTask && !isTotalDuration && canEdit ? "move" : "default",
           width: "fit-content",
-          top: "50%",
-          transform: "translateY(-50%)",
+          height: 20,
+          // top: "50%",
+          // transform: "translateY(-50%)",
           position: "absolute",
           ...b,
         }}
@@ -239,47 +242,65 @@ const TimeLine = ({
             !isGroupTask && !isTotalDuration && canEdit ? false : true
           }
           handle={() => (
-            <span
-              className={
-                !isGroupTask &&
-                !isTotalDuration &&
-                canEdit &&
-                `resize-width react-resizable-handle`
-              }
+            <Tooltip
+              placement="top"
+              title={`${
+                endDateText.diff(startDateText, girdInstance.unit) + 1
+                } ${girdInstance.unitText}`}
             >
-              {!isGroupTask && !isTotalDuration && (
-                <Circle show={showResize} left={9} />
-              )}
-            </span>
+              <span
+                className={
+                  !isGroupTask &&
+                  !isTotalDuration &&
+                  canEdit &&
+                  `resize-width react-resizable-handle`
+                }
+              >
+                {!isGroupTask && !isTotalDuration && (
+                  <Circle show={showResize} left={9} />
+                )}
+              </span>
+            </Tooltip>
           )}
           onResizeStop={handleResizeStop}
           onResize={handleResizeWidth}
           width={width}
         >
-          <div
-            ref={refFirstResize}
-            onMouseDown={(e) => {
-              setDrag(true);
-              setDragFirstResize(true);
-              setA(e.pageX - offsetLeft);
-            }}
-            className="resize-width"
-            // onMouseUp={handleMouseUpFirstResize}
+          <Tooltip
+            placement="top"
+            title={`${endDateText.diff(startDateText, girdInstance.unit) + 1} ${
+              girdInstance.unitText
+              }`}
           >
-            {!isGroupTask && !isTotalDuration && canEdit && (
-              <Circle show={showResize} left={-15} />
-            )}
-          </div>
+            <div
+              ref={refFirstResize}
+              onMouseDown={(e) => {
+                setDrag(true);
+                setDragFirstResize(true);
+                setA(e.pageX - offsetLeft);
+              }}
+              className="resize-width"
+            // onMouseUp={handleMouseUpFirstResize}
+            >
+              {!isGroupTask && !isTotalDuration && canEdit && (
+                <Circle show={showResize} left={-18} />
+              )}
+            </div>
+          </Tooltip>
           <div
             style={{
               background: isTotalDuration
                 ? timelineColor.total
                 : isGroupTask
-                ? timelineColor.group
-                : timelineColor.task,
+                  ? timelineColor.group
+                  : timelineColor.task,
+              height: isTotalDuration || isGroupTask ? 15 : 20
             }}
             className="gantt--time-task"
-          ></div>
+          >
+            {(isTotalDuration || isGroupTask) && <div className="gantt--timeline-group-task__right"></div>}
+            {(isTotalDuration || isGroupTask) && <div className="gantt--timeline-group-task__left"></div>}
+          </div>
         </ResizableBox>
         {visibleGantt.date && (
           <p className="gantt--end-timeline">
@@ -303,8 +324,6 @@ const TimeLine = ({
         onMouseMove={handleMouseMove}
         style={{
           display: "flex",
-          top: "50%",
-          transform: "translateY(-50%)",
           position: "absolute",
           cursor:
             !isGroupTask && !isTotalDuration && !isTotalDuration && canEdit
@@ -320,6 +339,7 @@ const TimeLine = ({
             minConstraints={[0, 0]}
             maxConstraints={[width, width]}
             width={widthComplete}
+            axis={isTotalDuration || isGroupTask ? 'none' : 'both'}
             handle={() => (
               <span
                 // style ={{
@@ -345,12 +365,16 @@ const TimeLine = ({
             )}
           >
             <div
-              style={{ background: timelineColor.duration }}
+              style={{
+                background: timelineColor.duration,
+                height: isTotalDuration || isGroupTask ? 15 : 20
+              }}
               className="gantt--duration-task"
+
               ref={refProcess}
             >
-              <div className="duration-text-gantt">
-                {visibleGantt.numberDuration && widthProcess + "%"}
+              <div className={`duration-text-gantt ${isTotalDuration || isGroupTask ? 'duration-text-gantt__group_total' : ''}`}>
+                {visibleGantt.numberDuration && (Math.floor((widthProcess)) === 0) ? '' : Math.floor((widthProcess)) + "%"}
               </div>
             </div>
           </ResizableBox>

@@ -7,27 +7,32 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import './styles.scss';
+import { useTranslation } from 'react-i18next';
 
 const DialogMessageWrap = ({
+  id,
   user_create_name,
   user_create_avatar,
   user_create_position,
   time_create,
   chatPosition = "top",
-  titleHeader = "Thông báo",
+  titleHeader,
   taskName,
   isHideFooterIcon = false,
-  footerText = "Xem chi tiết",
+  footerText,
   onClickViewDetail,
   className,
   children
 }) => {
+  const { t } = useTranslation();
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
-    <div className={clsx("DialogMessageWrap", className)} >
+    <div
+      id={id}
+      className={clsx("DialogMessageWrap", className)} >
       <div className="DialogMessageWrap--header" >
-        {titleHeader}
+        {titleHeader || t('IDS_WP_NOTICE')}
       </div>
       {user_create_name && <div className="DialogMessageWrap--sender" >
         <abbr title={user_create_name}>
@@ -42,14 +47,14 @@ const DialogMessageWrap = ({
           {user_create_position ? ` - ${user_create_position} ` : ' '}
         </span>
         <span className="DialogMessageWrap--task" >
-          {`đã ${taskName}`}
+          {t('LABEL_CHAT_TASK_DA_DO_TASK', { taskName })}
         </span>
       </div>}
       <div className="DialogMessageWrap--content" >
         {children}
         {time_create &&
           <div className={clsx("DialogMessageWrap--time")} >
-            {getDialogDate(time_create, dateFormat)}
+            {getDialogDate(t, time_create, dateFormat)}
           </div>
         }
       </div>
@@ -58,7 +63,7 @@ const DialogMessageWrap = ({
           <Icon className="DialogMessageWrap--icon" path={mdiAlarm}></Icon>
         }
         <span className="DialogMessageWrap--detail" onClick={onClickViewDetail}>
-          {footerText}
+          {footerText || t('LABEL_CHAT_TASK_XEM_CHI_TIET')}
         </span>
       </div>
     </div>

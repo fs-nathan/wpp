@@ -6,7 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Fade,
-  IconButton,
+  IconButton
 } from "@material-ui/core";
 import { mdiClose } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -21,12 +21,12 @@ import ColorTypo from "../ColorTypo";
 import LoadingOverlay from "../LoadingOverlay";
 import "./style.scss";
 
-const StyledScrollbars = ({ className = "", height, ...props }) => (
+const StyledScrollbars = ({ className = "", height, isScrollContainer, ...props }) => isScrollContainer ? (
   <Scrollbars
     className={`comp_CustomModal___scrollbar-main-${height} ${className}`}
     {...props}
   />
-);
+) : <>{props.children}</>;
 
 const StyledScrollbarsSide = ({ className = "", height, ...props }) => (
   <Scrollbars
@@ -37,7 +37,7 @@ const StyledScrollbarsSide = ({ className = "", height, ...props }) => (
 
 const StyledDialogContent = ({ className = "", ...props }) => (
   <DialogContent
-    className={`comp_CustomModal___dialog-content ${className}`}
+    className={`gant--comp_CustomModal___dialog-content comp_CustomModal___dialog-content ${className}`}
     {...props}
   />
 );
@@ -49,9 +49,9 @@ const StyledDialogTitle = ({ className = "", ...props }) => (
   />
 );
 
-const StyledDialogActions = ({ className = "", ...props }) => (
+const StyledDialogActions = ({ className = "", isScrollContainer, ...props }) => (
   <DialogActions
-    className={`comp_CustomModal___dialog-actions ${className}`}
+    className={`comp_CustomModal___dialog-actions ${!isScrollContainer ? 'gantt--calender-modal__button-container' : ''} ${className}`}
     {...props}
   />
 );
@@ -63,7 +63,7 @@ const ActionsAcceptButton = ({ className = "", disabled, ...props }) => (
       disabled
         ? "comp_CustomModal___accept-button-disabled"
         : "comp_CustomModal___accept-button"
-    } ${className}`}
+      } ${className}`}
     {...props}
   />
 );
@@ -95,7 +95,7 @@ const TwoColumnsContainer = ({ maxWidth, className = "", ...rest }) => (
       maxWidth === "lg"
         ? "comp_CustomModal___two-columns-container-w-lg"
         : "comp_CustomModal___two-columns-container-w-md"
-    } ${className}`}
+      } ${className}`}
     {...rest}
   />
 );
@@ -142,8 +142,8 @@ function TwoColumns({ maxWidth, left, right, height }) {
         {isFunction(get(left, "title")) ? (
           get(left, "title")()
         ) : (
-          <LeftHeader>{get(left, "title")}</LeftHeader>
-        )}
+            <LeftHeader>{get(left, "title")}</LeftHeader>
+          )}
         <StyledScrollbarsSide autoHide autoHideTimeout={500} height={height}>
           <div>{get(left, "content", () => "")()}</div>
         </StyledScrollbarsSide>
@@ -152,8 +152,8 @@ function TwoColumns({ maxWidth, left, right, height }) {
         {isFunction(get(right, "title")) ? (
           get(right, "title")()
         ) : (
-          <RightHeader>{get(right, "title")}</RightHeader>
-        )}
+            <RightHeader>{get(right, "title")}</RightHeader>
+          )}
         <StyledScrollbarsSide autoHide autoHideTimeout={500} height={height}>
           <div>{get(right, "content", () => "")()}</div>
         </StyledScrollbarsSide>
@@ -184,6 +184,8 @@ function CustomModal({
   height = "medium",
   className = "",
   manualClose = false,
+  isScrollContainer = true,
+  notAutoCloseWhenConfirm = false
 }) {
   const colors = useSelector((state) => state.setting.colors);
 
@@ -196,8 +198,9 @@ function CustomModal({
   }
 
   function handleConfirm() {
-    !manualClose && setOpen(false);
     onConfirm();
+    if (!notAutoCloseWhenConfirm)
+      !manualClose && setOpen(false);
   }
 
   return (
@@ -230,7 +233,7 @@ function CustomModal({
         </IconButton>
       </StyledDialogTitle>
       <LoadingOverlay active={loading} spinner fadeSpeed={100}>
-        {columns === 1 && <OneColumn children={children} height={height} />}
+        {columns === 1 && <OneColumn isScrollContainer={isScrollContainer} children={children} height={height} />}
         {columns === 2 && (
           <TwoColumns
             maxWidth={maxWidth}
@@ -240,7 +243,7 @@ function CustomModal({
           />
         )}
       </LoadingOverlay>
-      <StyledDialogActions>
+      <StyledDialogActions isScrollContainer={isScrollContainer}>
         {cancleRender !== null && (
           <ActionsCancleButton onClick={() => handleCancle()}>
             {isFunction(cancleRender)

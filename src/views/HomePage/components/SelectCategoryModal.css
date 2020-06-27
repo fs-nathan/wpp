@@ -9,6 +9,9 @@
 .comp_SelectCategoryModal_list {
   margin-bottom: 30px;
   padding-right: 16px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
 }
 .comp_SelectCategoryModal_paper {
   max-width: 600px;

@@ -236,7 +236,7 @@
   border-right: 1px solid #e5e5e9;
   .wrap-list-task {
     // height: calc(100% - 165px);
-    height: calc(100% + 55px);
+    height: calc(100%);
     // grid-template-rows: 165px calc(100% - 165px);
     // grid-template-columns: 1fr;
     // grid-template-areas:
@@ -479,7 +479,7 @@
 
 // TabBody - MemberTab
 .container-member-tabbody {
-  padding: 16px 25px 50px 16px;
+  padding: 16px 0 50px;
   .wrapper-span {
     display: flex;
     margin-bottom: 7px;
@@ -488,35 +488,7 @@
     opacity: 0;
   }
 }
-// MemberModal - MemberTab
-.wrapper-member-modal {
-  display: flex;
-  .member-general-info {
-    padding-bottom: 40px;
-    display: flex;
-    .general-info {
-      padding-left: 20px;
-    }
-  }
-  .button-file {
-    & > span {
-      margin: 20px 0 0 0;
-      & > span {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        padding: 3px 10px;
-        font-size: 16px;
-        font-weight: 500;
-      }
-    }
-    .member-image {
-      width: 20px;
-      height: 20px;
-      margin-right: 10px;
-    }
-  }
-}
+
 // OfferModal - Offer Tab
 .button-offer-modal {
   & > span {
@@ -545,7 +517,7 @@
 
 // TabBody - Offer Tab
 .container-offer-tabbody {
-  padding: 10px 20px 50px 20px;
+  padding: 10px 0px 50px;
   .styled-list-item-ot {
     display: flex;
     flex-direction: column;

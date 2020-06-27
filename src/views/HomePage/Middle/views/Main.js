@@ -31,7 +31,7 @@ const Header = React.memo(() => {
             </TasksCard.HeaderAvatar>
           }
           action={
-            <IconButton onClick={toggle} size="small">
+            <IconButton title={t("Đóng")} onClick={toggle} size="small">
               <Close />
             </IconButton>
           }
@@ -66,7 +66,7 @@ const Header = React.memo(() => {
             </TasksCard.HeaderAvatar>
           }
           action={
-            <IconButton onClick={toggle} size="small">
+            <IconButton title={t("Tìm kiếm")} onClick={toggle} size="small">
               <Search />
             </IconButton>
           }

@@ -13,8 +13,10 @@ import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import OfferModal from '../OfferModal';
 import ApproveOfferDialog from './ApproveOfferDialog';
 import ListOffer from './ListOffer';
-import OfferDetail from './OfferDetail';
-
+// import OfferDetail from './OfferDetail';
+import DetailOfferModal from 'views/OfferPage/views/DetailOffer/DetailOfferModal';
+import { loadDetailOffer } from 'views/OfferPage/redux/actions';
+import { getDetailOffer, getDetailOfferLoadingState } from 'views/OfferPage/views/DetailOffer/selector';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -34,6 +36,8 @@ function TabBody(props) {
   const pendingItems = useSelector(state => state.taskDetail.taskOffer.pendingItems);
   const approvedItems = useSelector(state => state.taskDetail.taskOffer.approvedItems);
   const isNoData = (offer.length + pendingItems.length + approvedItems.length) === 0;
+  const detailOffer = useSelector(state => getDetailOffer(state));
+  const detailOfferLoading = useSelector(state => getDetailOfferLoadingState(state));
 
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -69,6 +73,7 @@ function TabBody(props) {
 
   function onClickDetail(item) {
     setSelectedItem({ ...item, offer_id: item.id })
+    dispatch(loadDetailOffer({ id: item.id }))
     setOpenDetail(true)
   }
   const handleClickApprove = item => {
@@ -146,26 +151,33 @@ function TabBody(props) {
               </Collapse>
             </React.Fragment>
         }
-        <OfferModal
-          {...props}
-          isOpen={open}
-          setOpen={setOpen}
-          isOffer
-          item={selectedItem}
-        />
+        {
+          open && (
+            <OfferModal
+              {...props}
+              isOpen={open}
+              setOpen={setOpen}
+              isUpdateOffer
+              item={selectedItem}
+            />
+          )
+        }
         <AlertModal
           open={isOpenDelete}
           setOpen={setOpenDelete}
           content={t('IDS_WP_ALERT_CONTENT')}
           onConfirm={confirmDelete}
         />
-        <OfferDetail
-          isOpen={openDetail}
+        <DetailOfferModal
+          open={openDetail}
           setOpen={setOpenDetail}
-          item={selectedItem}
-          handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
-          handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
-          handleClickApprove={(data) => handleClickApprove(selectedItem)}
+          loading={detailOfferLoading}
+          {...detailOffer}
+        // {...selectedItem}
+        // item={selectedItem}
+        // handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
+        // handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
+        // handleClickApprove={(data) => handleClickApprove(selectedItem)}
         />
         <ApproveOfferDialog
           isOpen={openApprove}

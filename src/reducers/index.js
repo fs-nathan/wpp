@@ -1,4 +1,5 @@
 import { combineReducers } from "redux";
+import { pluginSettings } from "views/HomePage/redux/pluginSettings";
 import { postModule } from "views/HomePage/redux/post";
 import { weekScheduleModule } from "views/HomePage/redux/weekSchedule";
 import { settingGroupPermission } from "views/SettingGroupPage/GroupPermissionSettings/redux";
@@ -381,12 +382,15 @@ import trackingTime from "./taskDetail/time";
 import banUserFromGroup, {
   initialState as banUserFromGroupInitialState,
 } from "./user/banUserFromGroup";
+import deleteDocumentsUser, {
+  initialState as deleteDocumentsUserInitialState,
+} from "./user/deleteDocumentsUser";
 import detailUser, {
   initialState as detailUserInitialState,
 } from "./user/detailUser";
 import listUserOfGroup, {
   initialState as listUserOfGroupInitialState,
-} from "./user/listUserOfGroup";
+} from "./user/listOfUserGroup/listUserOfGroup";
 import permissionUser, {
   initialState as permissionUserInitialState,
 } from "./user/permissionUser";
@@ -463,6 +467,7 @@ const rootReducer = combineReducers({
     sortUser,
     detailUser,
     uploadDocumentsUser,
+    deleteDocumentsUser,
     updateUser,
     publicMember,
     privateMember,
@@ -578,6 +583,7 @@ const rootReducer = combineReducers({
   [postModule.key]: postModule.reducer,
   [weekScheduleModule.key]: weekScheduleModule.reducer,
   [apiKeyModule.key]: apiKeyModule.reducer,
+  [pluginSettings.key]: pluginSettings.reducer,
 
   apiCall: apiCall,
   inviteOtherPeopleCreateAccount,
@@ -642,6 +648,7 @@ export const DEFAULT_STATE = {
     sortUser: sortUserInitialState,
     detailUser: detailUserInitialState,
     uploadDocumentsUser: uploadDocumentsUserInitialState,
+    deleteDocumentsUser: deleteDocumentsUserInitialState,
     updateUser: updateUserInitialState,
     publicMember: publicMemberInitialState,
     privateMember: privateMemberInitialState,

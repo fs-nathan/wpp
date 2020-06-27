@@ -11,11 +11,17 @@ const CustomListItem = (props) => {
   const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const {
-    title, dataHander, date_create, priority_code = 0, priority_name = '',
+    title, dataHander, date_create,
+    priority_code = 0, priority_name = '',
+    member_handled = [],
     user_create_avatar, user_create_name,
     total_approved,
     total_accepted,
     total_rejected,
+    date_label, hour_label,
+    status_name,
+    status_code,
+    number_have_to_handle, number_accepted,
     can_modify,
   } = props.offer || {}
 
@@ -42,21 +48,22 @@ const CustomListItem = (props) => {
         <div className="offerTabItem--content" >{title}</div>
         <div className="offerTabItem--user">
           <Avatar className="offerTabItem--avatar" src={user_create_avatar} alt='avatar' />
-          {`${user_create_name} đề xuất lúc ${date_create}`}
+          {`${user_create_name} ${t('LABEL_CHAT_TASK_DE_XUAT_LUC')} ${date_label} ${hour_label}`}
         </div>
         <div className="offerTabItem--status">
-          <span className={clsx("offerTabItem--priority", `offerTabItem--priority__${priority_name.toLowerCase()}`)}>
-            {priority}
+          <span className={clsx("offerTabItem--priority", `offerTabItem--priority__${priority_code}`)}>
+            {priority_name}
           </span>
-          <div className={clsx("offerTabItem--statusIcon", `offerTabItem--statusIcon__${status}`)}>
+          <div className={clsx("offerTabItem--statusIcon", `offerTabItem--statusIcon__${status_code}`)}>
             {/* <Icon path={status === 'rejected' ? mdiCancel : mdiCheck} size={1} />
              */}
-            {getStatusName(total_rejected, total_approved)}
+            {/* {getStatusName(total_rejected, total_approved)} */}
+            {status_name}
           </div>
           <div className="offerTabItem--vote" >
             {t('LABEL_CHAT_TASK_DONG_Y_TU_CHOI', {
-              agree: `${total_accepted}/${total_approved}`,
-              reject: `${total_rejected}/${total_approved}`
+              agree: `${number_accepted}/${number_have_to_handle}`,
+              reject: `${member_handled.length - number_accepted}/${number_have_to_handle}`
             })}</div>
         </div>
         {can_modify &&

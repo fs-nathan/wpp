@@ -35,11 +35,4 @@
 
 .view_Project_ProjectMemberSlide___wrapper {
   height: 100%;
-  & > div:first-child {
-    margin-right: -5px !important;
-    scrollbar-width: none;
-  }
-  & > div:last-child {
-    right: 7px !important;
-  }
 }

@@ -9,6 +9,561 @@
       "CUSTOM_MODAL": {
         "CANCLE": "Cancel",
         "CONFIRM": "Confirm"
+      },
+      "CUSTOM_POPOVER": {
+        "TIME_FUNC": {
+          "MONTH": {
+            "JAN": "January",
+            "FEB": "February",
+            "MAR": "March",
+            "APR": "April",
+            "MAY": "May",
+            "JUN": "June",
+            "JUL": "July",
+            "AUG": "August",
+            "SEP": "September",
+            "OCT": "October",
+            "NOV": "November",
+            "DEC": "December"
+          },
+          "THIS_YEAR": "This year",
+          "THIS_MONTH": "This month",
+          "LAST_MONTH": "Last month",
+          "THIS_WEEK": "This week",
+          "LAST_WEEK": "Last week",
+          "ALL_TIME": "All time",
+          "CUSTOM": "Custom",
+          "YEAR_DESC": "Year: {{year}}",
+          "MONTH_DESC": "{{month}}",
+          "WEEK_DESC": "Week {{week}}",
+          "ALL_DESC": "All time"
+        },
+        "FILTER_FUNC": {
+          "ALL": "All",
+          "ACTIVE": "Active",
+          "HIDDEN": "Hidden",
+          "WAITING": "Waiting",
+          "DOING": "Doing",
+          "COMPLETE": "Complete",
+          "EXPIRED": "Expired",
+          "CREATED": "You create",
+          "ASSIGNED": "You joined"
+        }
+      },
+      "CUSTOM_TEXTBOX": {
+        "MORE": "Extend",
+        "LESS": "Collapse"
+      },
+      "PROGRESS_BAR": {
+        "PLAN": "Plan",
+        "DONE": "Actually"
+      },
+      "SMT": {
+        "LABEL": {
+          "NAME": "Name",
+          "DESC": "Descriptions",
+          "ADD": "+ Create new"
+        },
+        "BTN": {
+          "UPT": "Edit",
+          "DEL": "Delete"
+        }
+      }
+    },
+    "VIEW": {
+      "DP": {
+        "LEFT": {
+          "ADD": {
+            "LABEL": {
+              "ADD": "Add account",
+              "CLOSE": "Close",
+              "INVT": "Invite member to join group",
+              "FIND": "Enter email",
+              "INVD": "Invited",
+              "REQS": "Requirements join group of member"
+            },
+            "BTN": {
+              "CANCLE": "Cancel",
+              "INVT": "Invite",
+              "REINVT": "Reinvite",
+              "ACPT": "Accept",
+              "DENY": "Reject",
+              "FIND": "Filter"
+            }
+          },
+          "INFO": {
+            "TITLE": "Division details",
+            "DEFAULT": "Default",
+            "NUM_MEM": "Total of number member: {{members}} members",
+            "INFO": "Introduce",
+            "BACK": "Back",
+            "BTN": {
+              "UPT": "Edit",
+              "DEL": "Delete"
+            },
+            "ALERT": "Are you sure want to delete division ?"
+          },
+          "LIST": {
+            "NUM_MEM": "{{members}} members",
+            "TITLE": "List divisions",
+            "ADD": "Add divisions",
+            "FIND": "Filter",
+            "ALL": "All",
+            "DEFAULT": "Default"
+          }
+        },
+        "MODAL": {
+          "CA": {
+            "TITLE": "Add account",
+            "CANCLE": "Cancel",
+            "INVT": "Invite other member register new account",
+            "EMAIL": "Enter email",
+            "EMAIL_INP": "Enter email",
+            "SEND": "Send",
+            "NOTE": "Note:",
+            "DESC": "The system will send an email to registed email with informations for register. Please check inbox or spam of registed email to get informations"
+          },
+          "CUDP": {
+            "C_TITLE": "Create division",
+            "U_TITLE": "Update division",
+            "NAME": "Division name",
+            "DESC": "Division description",
+            "LOGO": "Icon",
+            "LOGO_SELECT": "Change icon"
+          },
+          "LOGO": {
+            "TITLE": "Manage icon",
+            "EXIT": "Exit",
+            "CANCLE": "Cancel",
+            "DONE": "Complete",
+            "DEFAULT": "Available icons",
+            "UPLOADED": "Uploaded icons",
+            "ALERT": "Are you sure want to delete icon ?",
+            "DEL": "Delete",
+            "UPLOAD": "+ Upload icon"
+          },
+          "LEVEL": {
+            "C_TITLE": "Create level",
+            "U_TITLE": "Edit level",
+            "NAME": "Level name",
+            "DESC": "Level descriptions",
+            "TITLE": "Manage level",
+            "EXIT": "Exit",
+            "ALERT": "Are you sure want do delete level"
+          },
+          "MAJOR": {
+            "C_TITLE": "Create major",
+            "U_TITLE": "Edit major",
+            "NAME": "Major name",
+            "DESC": "Major descriptions",
+            "TITLE": "Manage majors",
+            "EXIT": "Exit",
+            "ALERT": "Are you sure want to major ?"
+          },
+          "ROLE": {
+            "C_TITLE": "Create role",
+            "U_TITLE": "Edit role",
+            "NAME": "Role name",
+            "DESC": "Role descriptions",
+            "TITLE": "Manage roles",
+            "EXIT": "Exit",
+            "ALERT": "Are you sure want to delete role ?"
+          },
+          "TITLE": {
+            "C_TITLE": "Create position",
+            "U_TITLE": "Edit position",
+            "NAME": "Position name",
+            "DESC": "Position descriptions",
+            "TITLE": "Manage positions",
+            "EXIT": "Exit",
+            "ALERT": "Are you sure want to delete position ?"
+          }
+        },
+        "RIGHT": {
+          "UT": {
+            "STATE": {
+              "TITLE": "Status",
+              "CHANGE": "Change status",
+              "PUB": {
+                "NAME": "Public",
+                "DESC": "Member can interactive with all members"
+              },
+              "PRI": {
+                "NAME": "Private",
+                "DESC": "Member can only interactive with public members"
+              }
+            },
+            "TITLE": "List members",
+            "NUM_MEMBER_AUT": "There are {{total}}/{{max}} members",
+            "NUM_MEMBER_DUT": "There are {{total}} thành viên",
+            "ADD_USER": "Add member",
+            "ADD_ACC": "+ Add account",
+            "TABLE_SETTING": "Table settings",
+            "DEFAULT": "Default",
+            "LABEL": {
+              "NAME": "Full name",
+              "POS": "Position",
+              "B_DAY": "Birthday",
+              "GENDER": "Gender",
+              "EMAIL": "Email",
+              "PHONE": "Phone number",
+              "ROLE": "Role"
+            },
+            "PERMISSION": "Decentralized",
+            "LEAVE": "Leave group",
+            "ALERT": "Are you sure want to delete member ?"
+          }
+        }
+      },
+      "MP": {
+        "LEFT": {
+          "UL": {
+            "TITLE": "List members",
+            "BACK": "Back",
+            "SEARCH": "Search members",
+            "DEFAULT": "Default"
+          }
+        },
+        "MODAL": {
+          "UPT": {
+            "ROOM": "Choose division",
+            "POSITION": "Choose position",
+            "LEVEL": "Choose level",
+            "MAJOR": "Choose major",
+            "DESC": "Descriptions"
+          },
+          "DOC": {
+            "TITLE": "Documents",
+            "EXIT": "Exit",
+            "ALERT": "Are you sure want to delete document ?"
+          }
+        },
+        "RIGHT": {
+          "INFO": {
+            "DATE_JOIN": "Date join: {{date}}",
+            "EDIT": "Edit",
+            "ROOM": "Division",
+            "POSITION": "Position",
+            "LEVEL": "Level",
+            "MAJOR": "Major",
+            "DESC": "Descriptions",
+            "DOC": {
+              "TITLE": "View documents",
+              "BTN": "Upload documents"
+            },
+            "INFO": {
+              "TITLE": "Profile",
+              "NAME": "Full name",
+              "B_DAY": "Birthday",
+              "GENDER": "Gender",
+              "EMAIL": "Email",
+              "PHONE": "Phone",
+              "ADDR": "Address"
+            }
+          }
+        }
+      },
+      "PGP": {
+        "LEFT": {
+          "INFO": {
+            "BACK": "Back",
+            "TITLE": "Work team",
+            "STATS": {
+              "TOTAL": "Total of number project:",
+              "WAITING": "Total of number waiting project",
+              "DOING": "Total of number doing project",
+              "EXPIRED": "Total of number expired project",
+              "COMPLETE": "Total of number completed project",
+              "HIDDEN": "Total of number hidden project"
+            },
+            "ACTV": "Active",
+            "DEFAULT": "Not categorized",
+            "DESC": "Descriptions",
+            "MEMBER": {
+              "TITLE": "Members",
+              "BTN": "View detail"
+            },
+            "BTN": {
+              "UPT": "Edit",
+              "DEL": "Delete work team"
+            },
+            "ALERT": "Are you sure want to delete work team"
+          },
+          "LIST": {
+            "NUM_MEM": "{{projectGroups}} project",
+            "TITLE": "Work team",
+            "ADD": "Add work team",
+            "FIND": "Search work team",
+            "ALL": "All",
+            "DEFAULT": "Not categorized"
+          }
+        },
+        "MODAL": {
+          "COPY": {
+            "TITLE": "Copy project",
+            "LEFT": {
+              "TITLE": "Choose project",
+              "FIND": "Search project"
+            },
+            "RIGHT": {
+              "TITLE": "Project details",
+              "PROJECT": {
+                "NAME": "The copied project",
+                "PLACEHOLDER": "Choose project for copy",
+                "DESC": "Project details",
+                "NEW_NAME": "Name of new project",
+                "NEW_DESC": "Descriptions of new project",
+                "DATE": "Date start of new project"
+              },
+              "MEMBER": {
+                "TITLE": "Member settings",
+                "KEEP": "Keep members",
+                "DISCARD": "Delete all members"
+              }
+            }
+          },
+          "CUPG": {
+            "C_TITLE": "Create work team",
+            "U_TITLE": "Edit work team",
+            "NAME": "Work team name",
+            "DESC": "Work team descriptions",
+            "LOGO": "Work team icon",
+            "LOGO_SELECT": "Change icon"
+          },
+          "CUP": {
+            "C_TITLE": "Create project",
+            "U_TITLE": "Edit project",
+            "GROUPS": "Work team",
+            "NAME": "Project name",
+            "PRIO": {
+              "TITLE": "Priority",
+              "LOW": "Low",
+              "MED": "Medium",
+              "HIGH": "High"
+            },
+            "DESC": "Project descriptions"
+          },
+          "NEWPG": {
+            "TITLE": "Create project",
+            "CREATE": {
+              "TITLE": "Create project",
+              "DESC": "Start project by create new project informations"
+            },
+            "COPY": {
+              "TITLE": "Copy project",
+              "DESC": "Start project by copy the informations from available. Ex: task group, duration, ..."
+            }
+          },
+          "NOPG": {
+            "TITLE": "System notifications",
+            "LINE_1": "No work team was created",
+            "LINE_2": "Please create new work team before create project",
+            "BTN": "Create work team"
+          },
+          "MEMBER": {
+            "TITLE": "Members",
+            "NAME": "Members",
+            "DESC": "Descriptions",
+            "TIT": "Position",
+            "EXIT": "Exit"
+          }
+        },
+        "RIGHT": {
+          "ALL": {
+            "TITLE": "Projects list",
+            "DOWN": "Download",
+            "ADD": "+ Create project",
+            "TABLE_SETTING": "Table settings",
+            "TRASH": "Trash",
+            "LABEL": {
+              "NAME": "Project",
+              "STATE": "Status",
+              "DATE": "{{date}} days",
+              "PROGRESS": "Completed",
+              "DURATION": "Duration",
+              "PRIO": "Priority"
+            },
+            "SETTING": "Settings",
+            "EDIT": "Edit",
+            "HIDE": "Hide",
+            "SHOW": "Cancel hide",
+            "DEL": "Delete",
+            "ALERT": "Are you sure want to delete project ?",
+            "NO_DATA": {
+              "NO_PROJECT": "No project was created. Let click + CREATE PROJECT to start of your management project and tasks.",
+              "NO_TASK": "Let create new task or filter task"
+            },
+            "STATS": {
+              "TOTAL": "Total of number task:",
+              "WAITING": "Total of number waiting task",
+              "DOING": "Total of number doing task",
+              "EXPIRED": "Total of number expired task",
+              "COMPLETE": "Total of number completed task",
+              "STOP": "Total of number stopped task"
+            }
+          },
+          "TRASH": {
+            "TITLE": "Trash",
+            "BACK": "Back",
+            "LABEL": {
+              "NAME": "Project",
+              "USER": "Member delete",
+              "DATE": "Time delete",
+              "PRIO": "Priority",
+              "STATE": "Status"
+            },
+            "BTN": {
+              "DEL": "Delete",
+              "RES": "Restore"
+            }
+          }
+        }
+      },
+      "PP": {
+        "LEFT": {
+          "GT": {
+            "NUM_TASK": "{{number_task}} tasks",
+            "TITLE": "Task group",
+            "BACK": "Back",
+            "ADD": "Add task group",
+            "SEARCH": "Search task group",
+            "ALL_LABLE": "All",
+            "EDIT": "Edit",
+            "DEL": "Delete"
+          },
+          "PD": {
+            "TITLE": "Project details",
+            "BACK": "Back",
+            "PROGRESS": "Project duration",
+            "DESC": "Project descriptions",
+            "MEM": "Members",
+            "EDIT": "Edit",
+            "DEL": "Delete"
+          },
+          "PM": {
+            "NUM_TASK": "Joined {{number_task}}/{{total_task}} tasks",
+            "ALL_TASK": "{{number_task}} tasks",
+            "LEAVE": "Left out group",
+            "TITLE": "Project members",
+            "BACK": "Back",
+            "ADD": "Add members",
+            "SEARCH": "Search members",
+            "ALL_LABEL": "All",
+            "MANAGE": "Manage members"
+          }
+        },
+        "MODAL": {
+          "COPY": {
+            "TITLE": "Copy task group",
+            "SEARCH": "Search task group"
+          },
+          "CREATE": {
+            "TITLE": "Create task group",
+            "CREATE": {
+              "LABEL": "Create task group",
+              "DESC": "Create new informations of task group"
+            },
+            "COPY": {
+              "LABEL": "Copy task group",
+              "DESC": "Copy available task group"
+            }
+          },
+          "CUGT": {
+            "C_TITLE": "Create task group",
+            "U_TITLE": "Edit task group",
+            "NAME": "Task group name",
+            "DESC": "Task group descriptions",
+            "ALERT": "Are you sure want to delete task group ?"
+          },
+          "MEMBER": {
+            "TITLE": "Manage project members",
+            "EXIT": "Exit",
+            "LEFT": {
+              "TITLE": "Members list",
+              "SEARCH": "Search members",
+              "HELPER": "Let add member to group before assign for project"
+            },
+            "RIGHT": {
+              "TITLE": "Project members",
+              "TABLE": {
+                "MEM": "Member",
+                "PER": "Permission group",
+                "ROL": "Role",
+                "STA": "Status"
+              },
+              "LABEL": {
+                "PER": "Decentralized",
+                "ADD": "Add new",
+                "LEA": "Left out group",
+                "ALL": "Join all task",
+                "SEL": "Join task when choose",
+                "PIC": "Assigned to all tasks what were created",
+                "BAN": "Ban"
+              }
+            },
+            "PERMISSION": {
+              "TITLE": "Decentralization of member",
+              "EXIT": "Exit",
+              "CANCLE": "Cancel",
+              "DONE": "Complete",
+              "MOVED": {
+                "LABEL_1": "The permission group \"{{permission_name}}\" was deleted from this module",
+                "LABEL_2": "You can keep this permission group or select other permission group.",
+                "MORE": "View more"
+              },
+              "TABLE": {
+                "NAME": "Permission name",
+                "DESC": "Descriptions"
+              },
+              "ADMIN": {
+                "TITLE": "Permission group: Project owner",
+                "DESC": "The project owner is group which have permissions below:"
+              },
+              "USER": {
+                "TITLE": "Choose permission group",
+                "DESC": "Each permission group include some permissions. The permission group was created by group owner or member who allowed. If the is no permission group, contact with group owner",
+                "NO_DATA": {
+                  "LABEL_1": "Now, no permission group was selected for this module!",
+                  "LABEL_2": "Contact with Administrators to request add more"
+                },
+                "REMOVE": "Delete selected permission group"
+              }
+            },
+            "ROLE": {
+              "TITLE": "Member role",
+              "EXIT": "Exit",
+              "TABLE": {
+                "NAME": "Role name",
+                "DESC": "Role descriptions"
+              }
+            }
+          }
+        },
+        "RIGHT": {
+          "ALL": {
+            "TITLE": "Task list",
+            "LABEL": {
+              "MEMBER": "Member",
+              "GROUP_TASK": "Task Group",
+              "DOWNLOAD": "Download",
+              "CREATE": "+ Create task",
+              "SETTING": "Project settings",
+              "HIDE": "Hide project",
+              "SHOW": "Cancel hide project",
+              "NO_DATA": "No task was created. Let click + CREATE TASK to start of your management project and tasks."
+            },
+            "TABLE": {
+              "NAME": "Task name",
+              "STATUS": "Status",
+              "EXP_DATE": "{{date}} days",
+              "PROGRESS": "Duration",
+              "BEGIN": "Start",
+              "END": "End",
+              "COMPLETE": "Complete",
+              "PRIORITY": "Priority"
+            }
+          }
+        }
       }
     }
   },
@@ -49,7 +604,7 @@
           "position_select": "Choose a position",
           "level_select": "Select level ",
           "major_select": "Choose a major",
-          "description": "Job description",
+          "description": "Task description",
           "description_helper": "Max characters: {{max_count}}",
           "ok_button": "Finish"
         }
@@ -101,7 +656,7 @@
             "position_name": "Position",
             "level_name": "Level",
             "major_name": "Specialized",
-            "description": "Job description",
+            "description": "Task descriptions",
             "documents_view": "View profile file",
             "upload_documents_error": "Failed to upload file",
             "upload_documents": "Upload documents",
@@ -164,6 +719,9 @@
         "no_data_description_alarm": "Please create a calendar by click + CREATE so you can manage your work easily and don't miss any events."
       },
       "modal": {
+        "create_calendar": {
+          "title": "Create weekly schedule"
+        },
         "setting_weekly_calendar": {
           "title": "Setting weekly calendar",
           "monday": "Monday",
@@ -270,8 +828,8 @@
   "IDS_WP_ALERT_CONTENT": "You definitely want to delete?",
   "IDS_WP_HOME": "Home page",
   "IDS_WP_TERM": "Terms",
-  "IDS_WP_DOCUMENT": "Document",
-  "IDS_WP_CONTACT": "contact",
+  "IDS_WP_DOCUMENT": "Documents",
+  "IDS_WP_CONTACT": "Contact",
   "IDS_WP_LOGIN": "Log in",
   "IDS_WP_I_AM_NOT_ROBOT": "I am not a robot",
   "IDS_WP_EMAIL_OR_PHONE_NUMBER": "Email or Phone number",
@@ -379,7 +937,7 @@
   "IDS_WP_CHANGE_ACTIVE_GROUP_FAIL": "Group conversion failed!",
   "IDS_WP_COPY_TEXT_CLIPBOARD": "Copy to clipboard",
   "IDS_WP_INPUT_JOB_DES": "Type a job name and press Enter to see search results",
-  "IDS_WP_FIND_JOB": "Quickly find work",
+  "IDS_WP_FIND_JOB": "Quickly find tasks",
   "IDS_WP_GROUP": "Group",
   "IDS_WP_ON": "On",
   "IDS_WP_OFF": "Off",
@@ -390,7 +948,7 @@
   "IDS_WP_TOP_MEMBER": "Featured member",
   "IDS_WP_LAW_DES": "Legal advice",
   "IDS_WP_PROJECT": "Project",
-  "IDS_WP_JOB": "Work",
+  "IDS_WP_JOB": "Task",
   "IDS_WP_REPORT": "Report",
   "IDS_WP_BUDGET": "Budget",
   "IDS_WP_SUGGEST": "Proposal",
@@ -684,15 +1242,15 @@
   "IDS_WP_VIEW_STORAGE": "View size",
   "IDS_WP_DOWNLOAD_COUNT_NUMBER": "Number of download",
   "IDS_WP_DOWNLOAD_COUNT": "Download",
-  "IDS_WP_PERMISSION_GROUP": "Group permissions",
-  "IDS_WP_SYMBOLISM": "Symbolism",
+  "IDS_WP_PERMISSION_GROUP": "Permission group",
+  "IDS_WP_SYMBOLISM": "Icons",
   "IDS_WP_ROLE": "Roles",
   "IDS_WP_SETTING_SOFTWARE": "Settings software",
   "IDS_WP_COMMON_SETUP": "General settings",
   "IDS_WP_EXPAND": "Extend",
   "IDS_WP_COLLAPS": "Narrow",
   "IDS_WP_FILTER": "Filter",
-  "IDS_WP_WEEKLY_CALENDAR": "weekly Calendar ",
+  "IDS_WP_WEEKLY_CALENDAR": "Weekly Calendar",
   "IDS_WP_PROJECT_CALENDAR": "Project plan",
   "IDS_WP_ALARM_CALENDAR": "Schedule of Reminder",
   "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Reminder, schedule of appointment, notice of appointment",
@@ -705,7 +1263,7 @@
   "IDS_WP_FILTER_BY_PROJECT": "Filter by project",
   "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Select / no select to filter reminders by project",
   "IDS_WP_CREATED_AT": "Created at",
-  "IDS_WP_REMIND": "Reminder",
+  "IDS_WP_REMIND": "Reminders",
   "IDS_WP_REQUIRED": "Don't blank",
   "IDS_WP_COMMON_ADD": "Add",
   "IDS_WP_PERSONAL": "Personal",
@@ -729,22 +1287,22 @@
   "LABEL_CHAT_TASK_NHAP_TEN_TAI_LIEU": "Type a document name and press Enter to see the search results",
   "LABEL_CHAT_TASK_BIEU_CAM": "Emotion",
   "LABEL_CHAT_TASK_THANH_VIEN_DA_XEM": "Members seen",
-  "LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC": "Membership work",
+  "LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC": "Members",
   "LABEL_CHAT_TASK_CHON_DU_AN": "Select project",
   "LABEL_CHAT_TASK_TIM_DU_AN": "Search project",
-  "LABEL_CHAT_TASK_DANH_SACH_CONG_VIEC": "Work list",
-  "LABEL_CHAT_TASK_TEN_CONG_VIEC": "Work name",
+  "LABEL_CHAT_TASK_DANH_SACH_CONG_VIEC": "Task list",
+  "LABEL_CHAT_TASK_TEN_CONG_VIEC": "Task name",
   "LABEL_CHAT_TASK_GUI": "To send",
-  "LABEL_CHAT_TASK_THEM_THANH_VIEN": "Add membership",
+  "LABEL_CHAT_TASK_THEM_THANH_VIEN": "Add members",
   "LABEL_CHAT_TASK_BO_GHIM_NHAC_HEN": "Unpin the reminder to the discussion",
   "LABEL_CHAT_TASK_BO_GHIM_CONG_VIEC": "Unpin the job",
   "LABEL_CHAT_TASK_HUY_BO_TAM_DUNG": "cancel pause",
   "LABEL_CHAT_TASK_TRA_LOI": "Reply",
   "LABEL_CHAT_TASK_CHUYEN_TIEP": "Forward",
-  "LABEL_CHAT_TASK_THEM": "add",
+  "LABEL_CHAT_TASK_THEM": "Add",
   "LABEL_CHAT_TASK_COPY": "Copy",
   "LABEL_CHAT_TASK_DANH_DAU_CONG_VIEC_CON": "Mark sub task",
-  "LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO": "Mark as steering",
+  "LABEL_CHAT_TASK_DANH_DAU_LA_CHI_DAO": "Mark as direction",
   "LABEL_CHAT_TASK_XOA": "Delete",
   "LABEL_CHAT_TASK_HOAN_THANH_CONG_VIEC_CON": "Complete the job",
   "LABEL_CHAT_TASK_TAO_CONG_VIEC_CON": "Create a job",
@@ -757,14 +1315,14 @@
   "LABEL_CHAT_TASK_XOA_CONG_VIEC_CON": "Delete jobs",
   "LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN": "Change the priority level",
   "LABEL_CHAT_TASK_EXTEND_TIME": "ExtendTime",
-  "LABEL_CHAT_TASK_LUC": "Lúc: {{createdAt}}",
+  "LABEL_CHAT_TASK_LUC": "On: {{createdAt}}",
   "LABEL_CHAT_TASK_DANG_TAI": "Downloading ...",
   "LABEL_CHAT_TASK_PHE_DUYET_DE_XUAT": "Approve the proposal",
-  "LABEL_CHAT_TASK_THANG": "month{{month}}",
+  "LABEL_CHAT_TASK_THANG": "Month {{month}}",
   "LABEL_CHAT_TASK_TIEN_DO_KE_HOACH_DAT": "the plan schedule is reached",
   "LABEL_CHAT_TASK_GHIM_NHAC_HEN_LEN": "Pin the appointment to the discussion",
-  "LABEL_CHAT_TASK_TAO_NHAC_HEN": "Create reminder",
-  "LABEL_CHAT_TASK_XOA_THANH_VIEN": "Delete membership",
+  "LABEL_CHAT_TASK_TAO_NHAC_HEN": "Complete",
+  "LABEL_CHAT_TASK_XOA_THANH_VIEN": "Delete members",
   "LABEL_CHAT_TASK_CHIA_SE_VI_TRI": "Share location",
   "LABEL_CHAT_TASK_TAM_DUNG_CONG_VIEC": "Stop work",
   "LABEL_CHAT_TASK_KHONG_THANH_CONG": "Unsuccessful",
@@ -778,64 +1336,64 @@
   "LABEL_CHAT_TASK_CHINH_SUA_NHAC_HEN": "Edit reminder",
   "LABEL_CHAT_TASK_THAY_DOI_VAI_TRO_THANH_VIEN": "Change member roles",
   "LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC": "Change the schedule",
-  "LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC_CON": "Edit work",
-  "LABEL_CHAT_TASK_CHINH_SUA_TEN_MO_TA_CONG_VIEC": "Edit name, edit job description",
-  "LABEL_CHAT_TASK_THAY_DOI_HINH_THUC": "Change form of work to",
+  "LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC_CON": "Edit subtask",
+  "LABEL_CHAT_TASK_CHINH_SUA_TEN_MO_TA_CONG_VIEC": "Edit name, edit task descriptions",
+  "LABEL_CHAT_TASK_THAY_DOI_HINH_THUC": "Change form of task to",
   "LABEL_CHAT_TASK_THAO_LUAN": "Discussion",
   "LABEL_CHAT_TASK_QUAN_LY": "Manage",
   "LABEL_CHAT_TASK_CHIA_SE": "Share",
   "LABEL_CHAT_TASK_DA_XEM": "Seen",
   "LABEL_CHAT_TASK_NHAP_GOI_Y_NOI": "Enter @ to suggestions, discussion content ...",
-  "LABEL_CHAT_TASK_NHAC_HEN": "Reminder",
+  "LABEL_CHAT_TASK_NHAC_HEN": "Reminders",
   "LABEL_CHAT_TASK_XEM_CHI_TIET": "See details",
   "LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO": "Find content in the discussion",
-  "LABEL_CHAT_TASK_THANH_VIEN": "Membership",
-  "LABEL_CHAT_TASK_NHOM_QUYEN": "access group",
+  "LABEL_CHAT_TASK_THANH_VIEN": "Members",
+  "LABEL_CHAT_TASK_NHOM_QUYEN": "Permission group",
   "LABEL_CHAT_TASK_VAI_TRO": "Role",
-  "LABEL_CHAT_TASK_LOAI_TRU": "To exclude,",
+  "LABEL_CHAT_TASK_LOAI_TRU": "Delete",
   "LABEL_CHAT_TASK_THANH_VIEN_DU_AN": "Member of project",
   "LABEL_CHAT_TASK_TIM_THANH_VIEN": "Find member",
   "LABEL_CHAT_TASK_KHONG_DUOC_DE_TRONG": "Don't blank",
-  "LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC": "Select the work group",
-  "LABEL_CHAT_TASK_MO_TA_CONG_VIEC": "Job description",
-  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC": "Work progress",
-  "LABEL_CHAT_TASK_LICH_CONG_VIEC": "Job schedule",
-  "LABEL_CHAT_TASK_NGAY_BAT_DAU": "Start day",
-  "LABEL_CHAT_TASK_NGAY_KET_THUC": "End date",
-  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN_LABEL": "Priority level",
+  "LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC": "Select the task group",
+  "LABEL_CHAT_TASK_MO_TA_CONG_VIEC": "Task descriptions",
+  "_DA_DUNG": "Duration",
+  "LABEL_CHAT_TASK_LICH_CONG_VIEC": "Task schedule",
+  "LABEL_CHAT_TASK_NGAY_BAT_DAU": "Start time",
+  "LABEL_CHAT_TASK_NGAY_KET_THUC": "End time",
+  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN_LABEL": "Priority",
   "LABEL_CHAT_TASK_HINH_THUC_GIAO_VIEC": "Assign",
-  "LABEL_CHAT_TASK_CAI_DAT_CONG_VIEC": "Installation job details",
-  "LABEL_CHAT_TASK_CAI_DAT": "Setting",
-  "LABEL_CHAT_TASK_HIEN_NHOM_CONG_VIEC": "Show job group in list",
+  "LABEL_CHAT_TASK_CAI_DAT_CONG_VIEC": "Task view settings",
+  "LABEL_CHAT_TASK_CAI_DAT": "Settings",
+  "LABEL_CHAT_TASK_HIEN_NHOM_CONG_VIEC": "Show task group in list",
   "LABEL_CHAT_TASK_PHAN_QUYEN_THANH_VIEN": "Decentralization of member",
-  "LABEL_CHAT_TASK_CHON_NHOM_QUYEN": "Select access group",
+  "LABEL_CHAT_TASK_CHON_NHOM_QUYEN": "Select permission group",
   "LABEL_CHAT_TASK_MOI_NHOM_BAO_GOM": "Each group includes some rights. Rights is created by owner or authorized person. If the right does not match, contact the owner.",
   "LABEL_CHAT_TASK_TEN_QUYEN": "Name of right",
-  "LABEL_CHAT_TASK_MO_TA": "Description",
-  "LABEL_CHAT_TASK_VAI_TRO_THANH_VIEN": "Membership role",
+  "LABEL_CHAT_TASK_MO_TA": "Descriptions",
+  "LABEL_CHAT_TASK_VAI_TRO_THANH_VIEN": "Member roles",
   "LABEL_CHAT_TASK_CHON": "Choose",
   "LABEL_CHAT_TASK_TEN_VAI_TRO": "Name of role",
   "LABEL_CHAT_TASK_DANH_SACH_DU_AN": "Project list",
   "LABEL_CHAT_TASK_TAI_XUONG": "Download",
   "LABEL_CHAT_TASK_CHI_TIET": "Detail",
   "LABEL_CHAT_TASK_SELECT": "Select....",
-  "LABEL_CHAT_TASK_TRANG_THAI": "Status :",
+  "LABEL_CHAT_TASK_TRANG_THAI": "Status:",
   "LABEL_CHAT_TASK_DANG_CHO": "Waiting",
-  "LABEL_CHAT_TASK_DANG_LAM": "Working",
+  "LABEL_CHAT_TASK_DANG_LAM": "Doing",
   "LABEL_CHAT_TASK_HOAN_THANH": "Complete",
   "LABEL_CHAT_TASK_DA_QUA_HAN": "Expired",
   "LABEL_CHAT_TASK_TAM_DUNG": "Stop",
-  "LABEL_CHAT_TASK_TIEN_DO": "Progress",
-  "LABEL_CHAT_TASK_CONG_VIEC_CON": "Work sheet",
-  "LABEL_CHAT_TASK_TAI_LIEU": "Document",
-  "LABEL_CHAT_TASK_DE_XUAT_DUYET": "Proposal, approval",
-  "LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH": "Steering - Decision",
-  "LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY": "delivered on... {{date_create}}",
+  "LABEL_CHAT_TASK_TIEN_DO": "Duration",
+  "LABEL_CHAT_TASK_CONG_VIEC_CON": "Subtasks",
+  "LABEL_CHAT_TASK_TAI_LIEU": "Documents",
+  "LABEL_CHAT_TASK_DE_XUAT_DUYET": "Proposals, Approvals",
+  "LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH": "Directions - Decisions",
+  "LABEL_CHAT_TASK_DA_DUOC_GIAO_NGAY": "Create on {{date_create}}",
   "LABEL_CHAT_TASK_DA_DE_XUAT_NGAY": "Suggested date {{date_create}}",
-  "LABEL_CHAT_TASK_DA_GIAO_VIEC_NGAY": "Assigned the job on ...{{date_create}}",
-  "LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC": "Edit name, edit job description",
-  "LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC": "Change workgroup",
-  "LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC": "Change form of work assignment",
+  "LABEL_CHAT_TASK_DA_GIAO_VIEC_NGAY": "Assigned on {{date_create}}",
+  "LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC": "Edit name, edit task descriptions",
+  "LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC": "Change task group",
+  "LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC": "Change form of task assignment",
   "LABEL_CHAT_TASK_HUY_TAM_DUNG": "Cancel stop",
   "LABEL_CHAT_TASK_CHON_LOAI": "Choose type",
   "LABEL_CHAT_TASK_NHAP_NOI_DUNG": "Import content",
@@ -843,9 +1401,9 @@
   "LABEL_CHAT_TASK_DA_CHI_DAO_LUC": "Directed at :",
   "LABEL_CHAT_TASK_NHAP_TU_KHOA": "Enter keywords",
   "LABEL_CHAT_TASK_TAT_CA": "All",
-  "LABEL_CHAT_TASK_CHI_DAO": "Command (",
-  "LABEL_CHAT_TASK_QUYET_DINH": "Decision(",
-  "LABEL_CHAT_TASK_CHUA_CO_CHI_DAO": "No command / Make decision! Click + to new create.",
+  "LABEL_CHAT_TASK_CHI_DAO": "Directions (",
+  "LABEL_CHAT_TASK_QUYET_DINH": "Decisions (",
+  "LABEL_CHAT_TASK_CHUA_CO_CHI_DAO": "No direction / Make decision! Click + to new create.",
   "LABEL_CHAT_TASK_QUAY_LAI": "Back",
   "LABEL_CHAT_TASK_XEM_TIN_NHAN": "View the message",
   "LABEL_CHAT_TASK_VI_TRI_CUA_TOI": "My location",
@@ -877,7 +1435,7 @@
   "LABEL_CHAT_TASK_HUY": "Cancel",
   "LABEL_CHAT_TASK_THOAT": "Exit",
   "LABEL_CHAT_TASK_TIM_KIEM_THANH_VIEN": "Search for members",
-  "LABEL_CHAT_TASK_DA_CHON_THANH_VIEN": "Selected{{count}} member",
+  "LABEL_CHAT_TASK_DA_CHON_THANH_VIEN": "Selected {{count}} member",
   "LABEL_CHAT_TASK_DA_CHON": "Selected",
   "LABEL_CHAT_TASK_CHON_TAT_CA": "Select all",
   "LABEL_CHAT_TASK_NOI_DUNG_CONG_VIEC": "Work content",
@@ -901,49 +1459,49 @@
   "LABEL_CHAT_TASK_KET_QUA_PHE_DUYET": "Result of approval",
   "LABEL_CHAT_TASK_DE_XUAT_LUC": "Suggestions at",
   "LABEL_CHAT_TASK_DA_DUYET": "Approved (",
-  "LABEL_CHAT_TASK_CHO_DUYET": "Pending(",
+  "LABEL_CHAT_TASK_CHO_DUYET": "Waiting (",
   "LABEL_CHAT_TASK_CHUA_CO_DE_XUAT": "No proposals /approvals have been created! Click + to new create.",
-  "LABEL_CHAT_TASK_DE_XUAT_PHE_DUYET": "Proposal - Approval",
-  "LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO": "Adjust schedule",
-  "LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_LAN": "Times to adjust schedule{{fixedNumber}}",
-  "LABEL_CHAT_TASK_TAO_LUC": "Create at{{created_at}}",
+  "LABEL_CHAT_TASK_DE_XUAT_PHE_DUYET": "Proposals - Approvals",
+  "LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO": "Duration change",
+  "LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_LAN": "Time {{fixedNumber}}",
+  "LABEL_CHAT_TASK_TAO_LUC": "Create at {{created_at}}",
   "LABEL_CHAT_TASK_LOAI_NHAC_HEN": "Type of reminder",
   "LABEL_CHAT_TASK_BAN_CO_LICH_HEN": "Do you have important appointments, notes, events ...? Create a reminder from time to time, system will remind you",
-  "LABEL_CHAT_TASK_NGAY_NHAC": "Date reminder",
-  "LABEL_CHAT_TASK_GIO_NHAC": "Hour reminder",
-  "LABEL_CHAT_TASK_NHAC_HEN_DINH_KY": "Recurring reminders",
+  "LABEL_CHAT_TASK_NGAY_NHAC": "Date",
+  "LABEL_CHAT_TASK_GIO_NHAC": "Hour",
+  "LABEL_CHAT_TASK_NHAC_HEN_DINH_KY": "Recurring",
   "LABEL_CHAT_TASK_KHI_TIEN_DO_CONG": "When the progress is determined (automatically) based on the current time (real time) greater than or equal to the selected timeline, the system will remind you.",
   "LABEL_CHAT_TASK_MOC_TIEN_DO_CAN_NHAC": "Milestones to remind",
   "LABEL_CHAT_TASK_NHAP_NOI_DUNG_NHAC_HEN": "Enter the reminder content",
   "LABEL_CHAT_TASK_SUA_NHAC_HEN": "Edit reminder",
   "LABEL_CHAT_TASK_CHUA_CO_NHAC_HEN": "No reminder has been created yet, Click + to create a new reminder",
-  "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_LUC": "Created job at: {{created_at}}",
+  "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_LUC": "Created task at: {{created_at}}",
   "LABEL_CHAT_TASK_NGAY_HOAN_THANH": "Date complete:",
   "LABEL_CHAT_TASK_KEO_THA_SAP_XEP": "Drag, drop, arrangement",
   "LABEL_CHAT_TASK_DANH_DAU_HOAN_THANH": "Mark completed",
-  "LABEL_CHAT_TASK_NHAP_TEN_CONG_VIEC": "Enter name work",
-  "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "No job has been created, Click + to create a new job",
-  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Processing(",
-  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Completed(",
+  "LABEL_CHAT_TASK_NHAP_TEN_CONG_VIEC": "Enter name",
+  "LABEL_CHAT_TASK_CHUA_CO_CONG_VIEC": "No task has been created, Click + to create a new task",
+  "LABEL_CHAT_TASK_DANG_THUC_HIEN": "Doing (",
+  "LABEL_CHAT_TASK_DA_HOAN_THANH": "Completed (",
   "LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Select moderator...",
   "LABEL_CHAT_TASK_HINH_ANH": "Image",
   "LABEL_CHAT_TASK_THA_FILE_VAO_DAY": "Drop file here",
   "LABEL_CHAT_TASK_TU_SANG": "from {{from}} to {{to}}",
-  "LABEL_CHAT_TASK_TAO_VIEC": "Create job",
-  "LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC": "Edit work",
-  "LABEL_CHAT_TASK_TAO_CONG_VIEC": "Create work",
+  "LABEL_CHAT_TASK_TAO_VIEC": "Complete",
+  "LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC": "Edit task",
+  "LABEL_CHAT_TASK_TAO_CONG_VIEC": "Create task",
   "LABEL_CHAT_TASK_NOI_DUNG_NHAC_HEN": "Content reminder",
   "LABEL_CHAT_TASK_THU_GON": "Shrinking",
   "LABEL_CHAT_TASK_XEM_THEM": "See more",
   "LABEL_CHAT_TASK_THONG_BAO_HE_THONG": "System notification",
   "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO": "No workgroups have been created yet.",
-  "LABEL_CHAT_TASK_HAY_TAO_MOI_NHOM": "Create a new job group before creating a new job!",
+  "LABEL_CHAT_TASK_HAY_TAO_MOI_NHOM": "Create a new task group before creating a new task!",
   "LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC": "Create work group",
   "LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA": "Not found",
   "LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN": "Find work in project",
   "LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG": "Working passionately with...",
   "LABEL_CHAT_TASK_HI": "Hi",
-  "LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN": "Welcome to Workplus. Create new jobs, new share and discuss with colleagues to complete best.",
+  "LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN": "Welcome to Workplus. Create new tasks, new share and discuss with colleagues to complete best.",
   "LABEL_CHAT_TASK_BO_GHIM": "Unpin",
   "LABEL_CHAT_TASK_GHIM_CONG_VIEC": "Pin work",
   "LABEL_CHAT_TASK_NOI_DUNG": "Content",
@@ -951,9 +1509,9 @@
   "LABEL_CHAT_TASK_DANG_CHO_COUNT": "Waiting ({{task_waiting}})",
   "LABEL_CHAT_TASK_DANG_LAM_COUNT": "Doing ({{task_doing}})",
   "LABEL_CHAT_TASK_HOAN_THANH_COUNT": "Complete ({{task_complete}})",
-  "LABEL_CHAT_TASK_QUA_HAN_COUNT": "Out of date ({{task_expired}})",
-  "LABEL_CHAT_TASK_TAM_DUNG_COUNT": "stop ({{task_stop}})",
-  "LABEL_CHAT_TASK_VIEC": "({{task}} work)",
+  "LABEL_CHAT_TASK_QUA_HAN_COUNT": "Expired ({{task_expired}})",
+  "LABEL_CHAT_TASK_TAM_DUNG_COUNT": "Stop ({{task_stop}})",
+  "LABEL_CHAT_TASK_VIEC": "({{task}} tasks)",
   "LABEL_CHAT_TASK_CHINH_SUA_VAI_TRO": "Edit role",
   "LABEL_CHAT_TASK_TAO_VAI_TRO": "Create role",
   "LABEL_CHAT_TASK_TIN_NHAN_DA_BI_XOA": "The message has been deleted!!",
@@ -964,33 +1522,34 @@
   "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Attachments file",
   "LABEL_REMIND_PROJECT": "Project",
   "LABEL_REMIND_FRIEND": "Friend",
-  "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI": "{{name}} have created a new job",
-  "LABEL_CHAT_TASK_TIEN_DO_FROM_TO": "Progress: {{start_date}} - {{end_date}}",
+  "IDS_WP_BACK": "Back",
+  "LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI": "{{name}} have created a new task",
+  "LABEL_CHAT_TASK_TIEN_DO_FROM_TO": "Duration: {{start_date}} - {{end_date}}",
   "LABEL_CHAT_TASK_LUC_NGAY": "at {{time_remind}} date {{date_remind}} - {{remind}}",
   "LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO": "Reminder progress {{remind}}",
   "LABEL_CHAT_TASK_DANG_TAM_DUNG": "Stopping",
   "LABEL_CHAT_TASK_TEN": "Name",
   "IDS_WP_PRESENT": "present",
   "LABEL_CHAT_TASK_CONG_VIEC_DANG_TAM": "The work is stopping. The work schedule will be confirmed when canceling is stopped",
-  "LABEL_CHAT_TASK_TIEN_DO_THUC_TE": "Actual progress",
+  "LABEL_CHAT_TASK_TIEN_DO_THUC_TE": "Actual complete",
   "LABEL_CHAT_TASK_KEO_THA_TIEN_DO_DE_CAP_NHAT": "Drag and drop progress to update",
   "LABEL_CHAT_TASK_BAT_DAU_LABEL": "Start",
   "LABEL_CHAT_TASK_KET_THUC_LABEL": "End",
-  "LABEL_CHAT_TASK_TIEN_DO_KE_HOACH": "Schedule progress",
+  "LABEL_CHAT_TASK_TIEN_DO_KE_HOACH": "Plan duration",
   "LABEL_CHAT_TASK_TU_DONG_XAC_DINH": "Automatically determined to the current time",
-  "LABEL_CHAT_TASK_BIEU_DO_CAP_NHAT_TIEN_DO": "The graph updates the progress",
+  "LABEL_CHAT_TASK_BIEU_DO_CAP_NHAT_TIEN_DO": "The tracking of duration change",
   "LABEL_CHAT_TASK_BIEU_DO_THE_HIEN": "The graph shows the history of work completion",
   "LABEL_CHAT_TASK_GHIM_NHAC_HEN": "Pin reminder",
-  "LABEL_CHAT_TASK_CHIA_SE_LUC": "Share at: {{ createdAt}}",
-  "LABEL_CHAT_TASK_NOI_DUNG_CHI_DAO": "Content of the command",
+  "LABEL_CHAT_TASK_CHIA_SE_LUC": "Shared at: {{ createdAt}}",
+  "LABEL_CHAT_TASK_NOI_DUNG_CHI_DAO": "Content",
   "LABEL_CHAT_TASK_NOI_DUNG_QUYET_DINH": "Content of the decision",
-  "LABEL_CHAT_TASK_CHI_DAO_LABEL": "Command",
+  "LABEL_CHAT_TASK_CHI_DAO_LABEL": "Direction",
   "LABEL_CHAT_TASK_QUYET_DINH_LABEL": "Decision",
   "LABEL_CHAT_TASK_UU_TIEN_CAO": "High priority",
   "LABEL_CHAT_TASK_UU_TIEN_TRUNG_BINH": "Medium priority",
   "LABEL_CHAT_TASK_UU_TIEN_THAP": "Low priority",
-  "LABEL_CHAT_TASK_HAY_CAP_NHAP_TIEN": "Please, update completed schedule to change job status",
-  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN": "The priority reflects the importance and urgency of the job",
+  "LABEL_CHAT_TASK_HAY_CAP_NHAP_TIEN": "Please, update completed schedule to change task status",
+  "LABEL_CHAT_TASK_MUC_DO_UU_TIEN": "The priority reflects the importance and urgency of the task",
   "LABEL_CHAT_TASK_UU_TIEN_LABEL": "Priority ",
   "LABEL_CHAT_TASK_CAO_LABEL": "High",
   "LABEL_CHAT_TASK_TRUNG_BINH_LABEL": "Medium",
@@ -1005,42 +1564,417 @@
   "PERSON_HANDLE": "Approver",
   "PERSON_MONITOR": "Supervisor",
   "OFFER_PAGE": {
+    "OVERVIEW": {
+      "GROUP_OFFERS": {
+        "TITLE": {
+          "WAITING": "Waiting",
+          "APPROVING": "Approving",
+          "REJECTED": "Rejected",
+          "ACCEPTED": "Accepted"
+        }
+      }
+    },
+    "OFFER_BY_GROUP_VIEW": {
+      "MODAL": {
+        "CREATE": {
+          "TITLE": "Create Offer Group",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        },
+        "UPDATE": {
+          "TITLE": "Update Offer Group",
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        },
+        "GROUP_NAME_SECTION": {
+          "TITLE": "Offer group name",
+          "PLACEHOLDER": "Type in offer group name..."
+        },
+        "GROUP_DESCRIPTION_SECTION": {
+          "TITLE": "Offer group description",
+          "PLACEHOLDER": "Type in offer group description..."
+        }
+      }
+    },
     "DETAIL_OFFER": {
       "TITLE": "Offer Detail",
-      "DELETE_OFFER": "Delete proposal",
+      "OFFER_PRIORITY_EDITING": {
+        "TITLE": "Edit"
+      },
+      "OFFER_APPROVAL_CONDITION_EDITING": {
+        "TITLE": "Edit"
+      },
+      "CREATE_APPROVAL": {
+        "BUTTON": {
+          "CREATE": "CREATE APPROVAL",
+          "APPROVED": "APPROVAL CREATED"
+        },
+        "MODAL": {
+          "CONFIRM": "Confirm",
+          "CANCEL": "Cancel"
+        }
+      },
+      "DISCUSSION": {
+        "TITLE": "Discuss",
+        "TEXT_BOX": {
+          "PLACEHOLDER": "Enter discussion...",
+          "BUTTON_TITLE": "Send"
+        },
+        "COMMENT": {
+          "USER_ROLE": {
+            "TYPE_1": "Participant",
+            "TYPE_2": "Handler",
+            "TYPE_3": "Monitor"
+          },
+          "DATE_TIME_POSTED": "Posted at {{time}} on {{date}}",
+          "POPOVER": {
+            "UPDATE": "Update",
+            "REMOVE": "Remove"
+          }
+        }
+      },
+      "DELETE_OFFER": {
+        "TITLE": "Delete proposal",
+        "CONFIRM_MODAL": {
+          "TITLE": "Delete Proposal",
+          "MESSAGE": "Are you sure you want to delete this proposal?",
+          "CONFIRM": "Delete Proposal",
+          "CANCEL": "Cancel"
+        }
+      },
       "ESCAPE": "Close"
     },
     "OFFER_TABLE": {
       "ITEM": {
         "POPOVER": {
           "DETAIL": "Detail",
-          "DELETE": {
-            "TITLE": "Delete",
-            "CONFIRM_MODAL": {
-              "TITLE": "Delete proposal",
-              "MESSAGE": "Do you certainly want to delete this proposal?",
-              "CONFIRM": "Delete proposal",
-              "CANCEL": "Cancel"
-            }
-          }
+          "VIEW_TASK": "View Task"
         }
       }
     }
   },
-  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "The work schedule has been started",
+  "DATE_ERROR_FORMAT_MESSAGE": "Invalid Date Format",
+  "DATE_ERROR_INTERVAL_MIN_MESSAGE": "Date should not be before minimal date",
+  "DATE_ERROR_INTERVAL_MAX_MESSAGE": "Date should not be after maximal date",
+  "_DA_DUNG_DA_DUOC_CHAY": "The task has been started",
   "LABEL_CHAT_TASK_TAO_MOI": "Create new",
-  "LABEL_CHAT_TASK_CHU_CONG_VIEC": "Work owner",
-  "LABEL_CHAT_TASK_CHU_SO_HUU_CONG": "The work owner has the following rights",
-  "LABEL_CHAT_TASK_NHOM_QUYEN_CHU_SO": "Access group: Work owner",
+  "LABEL_CHAT_TASK_CHU_CONG_VIEC": "Task owner",
+  "LABEL_CHAT_TASK_CHU_SO_HUU_CONG": "The task owner has the following rights",
+  "LABEL_CHAT_TASK_NHOM_QUYEN_CHU_SO": "Permission group: Task owner",
   "LABEL_CHAT_TASK_DA_ROI_NHOM": "Left group",
   "LABEL_CHAT_TASK_DUNG_LUONG_LUU_TRU": "Your storage is full",
   "LABEL_CHAT_TASK_VUI_LONG_NANG_CAP": "Please upgrade or contact Administrator",
   "LABEL_CHAT_TASK_LUU_TRU_DAM_MAY": "W + Cloud storage is safe and economical",
-  "LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN": "Please add members to the project before assigning the job!",
+  "LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN": "Please add members to the project before assigning the task!",
   "LABEL_CHAT_TASK_TY_LE_THANH_VIEN_DONG_Y": "Rate of members agree≥",
   "LABEL_CHAT_TASK_HOAC": "Or",
   "LABEL_CHAT_TASK_MOT_SO_THANH_VIEN_SAU_DONG_Y": "Some of the following members",
-  "LABEL_CHAT_TASK_LIEN_HE_VOI_QUAN": "Liên hệ với Quản trị viên để yều cầu bổ sung.",
-  "LABEL_CHAT_TASK_NHOM_QUYEN_B_QUAN": "Nhóm quyền \"<b>{{name}}</b>\" đã được loại bỏ khỏi module này.",
-  "LABEL_CHAT_TASK_BAN_CO_THE_GIU": "Bạn có thể giữ quyền để tiếp tục sử dụng nhóm quyền này hoặc lựa chọn nhóm quyền khác."
+  "LABEL_CHAT_TASK_LIEN_HE_VOI_QUAN": "If you have any requirements, please content with administrator",
+  "LABEL_CHAT_TASK_NHOM_QUYEN_B_QUAN": "Permission group \"<b>{{name}}</b>\" was delete from this module",
+  "LABEL_CHAT_TASK_BAN_CO_THE_GIU": "You can keep this permission group to use or setting orther group.",
+  "LABEL_CHAT_TASK_TAO_CHI_DAO_QUYET_DINH": "Create direction - decision",
+  "LABEL_CHAT_TASK_SUA_CHI_DAO_QUYET_DINH": "Edit direction - decision",
+  "LABEL_CHAT_TASK_NGAY_COUNT": "{{count}} days",
+  "LABEL_CHAT_TASK_HOM_NAY_DATE": "Today: {{date}}",
+  "LABEL_CHAT_TASK_NGAY_TIME_DATE": "{{time}} - {{date}}",
+  "LABEL_CHAT_TASK_HOAN_THANH_COUNT_COMPLETE": "{{complete}}/{{total}} complete",
+  "LABEL_CHAT_TASK_NHAC_HEN_COUNT": "{{count}} reminders",
+  "LABEL_CHAT_TASK_FILE_COUNT": "{{count}} files",
+  "LABEL_CHAT_TASK_ANH_COUNT": "{{count}} images",
+  "LABEL_CHAT_TASK_LINK_COUNT": "{{count}} link",
+  "LABEL_CHAT_TASK_VI_TRI_COUNT": "{{count}} locations",
+  "LABEL_CHAT_TASK_DE_XUAT_COUNT": "{{count}} proposals",
+  "LABEL_CHAT_TASK_NOI_DUNG_COUNT": "{{count}} contents",
+  "LABEL_CHAT_TASK_DUYET_COUNT": "{{count}} approvals",
+  "LABEL_CHAT_TASK_NHAC_HEN_THEO_THOI_GIAN": "Reminder with time",
+  "LABEL_CHAT_TASK_NHAC_HEN_THEO_TIEN_DO_THUC_TE": "Reminder with duration",
+  "LABEL_CHAT_TASK_NHAC_1_LAN": "One time",
+  "LABEL_CHAT_TASK_THEO_NGAY": "Daily",
+  "LABEL_CHAT_TASK_THEO_TUAN": "Weekly",
+  "LABEL_CHAT_TASK_THEO_THANG": "Monthly",
+  "LABEL_CHAT_TASK_NHAC_1_LAN_LABEL": "Remind one time",
+  "LABEL_CHAT_TASK_NHAC_THEO_NGAY_LABEL": "Daily",
+  "LABEL_CHAT_TASK_NHAC_THEO_TUAN_LABEL": "Weekly",
+  "LABEL_CHAT_TASK_NHAC_THEO_THANG_LABEL": "Monthly",
+  "LABEL_CHAT_TASK_LUC_REMIND_TIME": "{{type}} at {{time}}",
+  "LABEL_CHAT_TASK_DAT_PERCENT": "Reached {{percent}}%",
+  "LABEL_CHAT_TASK_DANG_LUC_USER_TIME": "{{user}} created at {{time}}",
+  "LABEL_CHAT_TASK_TAO_NHAC_HEN_LABEL": "Create reminder",
+  "LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL": "Edit reminder",
+  "LABEL_CHAT_TASK_DUOC_GIAO": "Assignment",
+  "LABEL_CHAT_TASK_TU_DE_XUAT": "Proposal",
+  "LABEL_CHAT_TASK_GIAO_VIEC_CHO": "Entrusment",
+  "LABEL_CHAT_TASK_THAP": "Low",
+  "LABEL_CHAT_TASK_TRUNG_BINH": "Medium",
+  "LABEL_CHAT_TASK_CAO": "Hight",
+  "LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT": "{{count}} times",
+  "LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE": "At {{time}} on {{date}}",
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUNG": "The task duration will be recalculate when task restart!",
+  "LABEL_CHAT_TASK_DA_DO_TASK": "{{taskName}}",
+  "VIEW_OFFER_LABEL_YOUR_OFFER": "Your offer",
+  "VIEW_OFFER_LABEL_OVERVIEW_TITLE": "Overview",
+  "VIEW_OFFER_LABEL_RECENTLY_TITLE": "Recently",
+  "VIEW_OFFER_LABEL_GROUP_TITLE": "Group",
+  "VIEW_OFFER_LABEL_PROJECT_TITLE": "Project",
+  "VIEW_OFFER_LABEL_DEPARTMENT_TITLE": "Department",
+  "VIEW_OFFER_LABEL_GROUP_SUBTITLE": "Offer by group",
+  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Offer by project",
+  "VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE": "Offer by department",
+  "VIEW_OFFER_LABEL_OFFER_BY_STATUS": "Offer by status",
+  "VIEW_OFFER_LABEL_OFFER_BY_LEVEL": "Offer by level",
+  "VIEW_OFFER_LABEL_CHART_BY_GROUP": "Chart offer by group",
+  "VIEW_OFFER_LABEL_OFFER": "Offer",
+  "VIEW_OFFER_LABEL_PENDING": "Pending",
+  "VIEW_OFFER_LABEL_REJECTED": "Rejected",
+  "VIEW_OFFER_LABEL_APPROVED": "Approved",
+  "VIEW_OFFER_LABEL_ACCEPTED": "Accepted",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE": "Filter by role",
+  "VIEW_OFFER_LABEL_ROLE": "Role",
+  "VIEW_OFFER_LABEL_PRIORITY_LEVEL": "Priority level",
+  "VIEW_OFFER_LABEL_STATUS": "Status",
+  "VIEW_OFFER_LABEL_FILTET_BY_ROLE_SUBTITLE": "Check/Uncheck to filter by role",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE_1": "You offer",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE_2": "You monitor",
+  "VIEW_OFFER_LABEL_FILTER_BY_ROLE_3": "You handle",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL": "Filter by priority level",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_SUBTITLE": "Check/Uncheck to filter by priority level",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1": "Normal",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2": "Urgent",
+  "VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3": "Very Urgent",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS": "Filter by offer status",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_SUBTITLE": "Check/Uncheck to filter by offer status",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_1": "Pending",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_2": "Processing",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_3": "Proceed: Approved",
+  "VIEW_OFFER_LABEL_FILTER_BY_STATUS_4": "Proceed: Rejected",
+  "VIEW_OFFER_LABEL_ALL": "All",
+  "VIEW_OFFER_LABEL_CREATE_OFFER": "+ Create Offer",
+  "VIEW_OFFER_LABEL_OFFER_DATE": "Offer Date",
+  "VIEW_OFFER_LABEL_OFFER_CONTENT": "Offer Content",
+  "VIEW_OFFER_LABEL_OFFER_MONITOR": "Monitor",
+  "VIEW_OFFER_LABEL_OFFER_APPROVAL": "Approval",
+  "VIEW_OFFER_LABEL_OFFER_APPROVAL_DATE": "Approval Date",
+  "VIEW_OFFER_LABEL_OFFER_APPROVAL_RESULT": "Result",
+  "VIEW_OFFER_LABEL_PENDING_OFFER": "{{count}} pending offers",
+  "VIEW_OFFER_LABEL_SENT": "Sent",
+  "VIEW_OFFER_LABEL_ACCEPTED_PERCENT": "{{acceptedPercent}}% accepted",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION": "Approval conditions agree",
+  "VIEW_OFFER_LABEL_RATE_AGREE": "Rate of members agree",
+  "VIEW_OFFER_LABEL_APPROVAL_RESULT": "Result of approval",
+  "VIEW_OFFER_LABEL_ATTACHMENTS": "Attachments",
+  "VIEW_OFFER_LABEL_CONTENT_DETAIL": "Content detail",
+  "VIEW_OFFER_CREATED_AT": "Offer created at {{time}} on {{date}}",
+  "VIEW_OFFER_LABEL_SUPERVISOR": "Supervisor",
+  "VIEW_OFFER_LABEL_UPDATE_APPROVAL_CONDITION": "Update approval condition",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_1": "One of the following members must agree",
+  "VIEW_OFFER_LABEL_APPROVAL_CONDITION_MEMBER_2": "All following members must agree",
+  "VIEW_OFFER_LABEL_APPROVED_AT": "Approved at {{time}} on {{date}}",
+  "VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING": "Do you really want to delete this group offers?",
+  "VIEW_OFFER_LABLE_VIEW_DETAIL_OFFER": "View detail",
+  "VIEW_OFFER_TEXT_DELETE_FILE_WARNING": "Do you really want to delete this file?",
+  "VIEW_OFFER_LABEL_CONDITION_LOGIC_AND": "AND",
+  "VIEW_OFFER_LABEL_CONDITION_LOGIC_OR": "OR",
+  "VIEW_OFFER_TEXT_CONDITION_LOGIC_OR": "Some of the following members must agree",
+  "VIEW_OFFER_TEXT_CONDITION_LOGIC_AND": "All following members must agree",
+  "VIEW_OFFER_TEXT_DATA_NOT_FOUND_DISCRIPTION": "Please to ensure about filter or create new offer to see the offer's data",
+  "VIEW_OFFER_LABEL_DATA_NOT_FOUND": "Data not found",
+  "VIEW_OFFER_LABEL_CREATE_NEW_OFFER": "Create new offer",
+  "VIEW_OFFER_TEXT_CREATE_NEW_OFFER_SHOULD_REDIRECT": "Please choose the task on project before you can create new offer.",
+  "VIEW_OFFER_LABEL_REDIRECT_TO_TASK": "Redirect to task list",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVER": "Do youn really want to delete this Approver?",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_SUPERVISOR": "Do you really want to delete this Supervisor?",
+  "VIEW_OFFER_TEXT_ALERT_DELETE_APPROVAL": "Do you really want to delete this approval",
+  "VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_1": "After you create a approval you can not Edit or Delete it.",
+  "VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_2": "Please consider carefully before approving.",
+  "VIEW_OFFER_LABEL_LEARN_MORE": "Learn more",
+  "LABEL_CHAT_TASK_TAG_THANH_VIEN": "Tag member",
+  "LABEL_CHAT_TASK_GUI_STICKER": "Send stickers",
+  "LABEL_CHAT_TASK_GUI_ANH": "Send images",
+  "LABEL_CHAT_TASK_GUI_FILE_TAI_LIEU": "Send file",
+  "LABEL_CHAT_TASK_THEM_CONG_VIEC_CON": "Add subtasks",
+  "LABEL_CHAT_TASK_THEM_NHAC_HEN": "Add reminders",
+  "Tên nhóm quyền": "Permission group name",
+  "Mô tả nhóm quyền": "Permission group descriptions",
+  "Phạm vi module phân quyền": "Use in module",
+  "Tạo nhóm quyền": "Create group permission",
+  "Hoàn thành": "Complete",
+  "required": "Field required",
+  "Cancel": "Cancel",
+  "Delete": "Delete",
+  "Bạn có muốn xóa nhóm quyền?": "Are you sure you want to delete this permission group ?",
+  "Gán quyền cho nhóm": "Assign permissions to group",
+  "DANH SÁCH QUYỀN": "LIST PERMISSION",
+  "Tìm kiếm quyền": "Search",
+  "Tên quyền": "Permission name",
+  "Mô tả": "Descriptions",
+  "Cập nhật nhóm quyền": "Update permission group",
+  "Chỉnh sửa": "Edit",
+  "Xóa": "Delete",
+  "Thiết lập nhóm quyền": "Permission group settings",
+  "Trở lại": "Prev",
+  "Danh sách nhóm quyền": "List permission group",
+  "Thêm nhóm": "Add group",
+  "Tìm nhóm quyền": "Search permission group",
+  "Đã gán <%= number %> thành viên": "Assigned <%= number %> members",
+  "Chi tiết quyền trong nhóm": "Permission details",
+  "Có <%= number %> quyền đã được chọn": "<%= number %> permissions were selected",
+  "Thêm quyền": "Add permissions",
+  "Module được gán nhóm quyền": "The modules which was assigned permission group",
+  "Thành viên được gán nhóm quyền": "The members which was assigned permission group",
+  "Xóa nhóm quyền": "Delete permission group",
+  "Thiết lập biểu tượng": "Icon settings",
+  "Thiết lập vai trò": "Role settings",
+  "Tên thể loại": "Category name",
+  "Mô tả chi tiết": "Descriptions",
+  "Biểu tượng": "Icons",
+  "Chọn biểu tượng": "Choose icon",
+  "Sửa thể loại": "Edit category",
+  "Sửa": "Edit",
+  "Quản lý thể loại đăng tin": "Manage post category",
+  "Thiết lập thể loại đăng tin trên trang chủ": "Manage post category on home page",
+  "Thêm": "Add",
+  "Quản lý plugin trang chủ": "Manage plugin on home page",
+  "Thiết lập các plugin thể hiện trên trang chủ": "Setting the plugins which were showed on home page",
+  "Checkbox thể hiện/ẩn plugin. Kéo thả để sắp xếp vị trí hiển thị": "Checkbox to display show/hide plugin. Drag drop to sort the index",
+  "Tạo vai trò": "Create role",
+  "Tên": "Name",
+  "Đang nhận thông báo trình duyệt": "Receiving the notifications of browser",
+  "Thông báo trình duyệt chưa được bật": "The notifications of browser is not turned on",
+  "Do you really want to unsubscribe?": "Do you really want to unsubscribe?",
+  "Bật": "Turn on",
+  "Tắt": "Turn off",
+  "phản hồi": "feedback",
+  "Trả lời": "Reply",
+  "Xem tất cả bình luận": "View all comments",
+  "Viết bình luận": "Write comment",
+  "Yêu": "Love",
+  "Thích": "Like",
+  "Bình luận": "Comments",
+  "Đã đăng": "Posted",
+  "see less": "See less",
+  "see more": "See more",
+  "love and like": "love and like",
+  "all": "All",
+  "like": "Like",
+  "love": "Love",
+  "<%= numner %> người khác": "<%= numner %> other people",
+  "bình luận": "comment",
+  "Ghim": "Pin",
+  "Bỏ ghim": "Cancel pin",
+  "Nổi bật": "Highlight",
+  "Bỏ nổi bật": "Cancel highlight",
+  "Chọn thể loại": "Choose category",
+  "Liên hệ": "Contact",
+  "Lối tắt": "Shortcuts",
+  "Cài đặt nhóm": "Group settings",
+  "Câu hỏi thường gặp": "Frequently asked questions",
+  "Hướng dẫn sử dụng": "User manuals",
+  "Tạo bài viết": "Create post",
+  "<%= name %> ơi bạn muốn đăng gì": "Hi <%= name %>. What post do you want ?",
+  "Tài liệu đính kèm": "Attach documents",
+  "Thêm tài liệu": "Add more documents",
+  "Chọn thể loại muốn đăng": "Choose category",
+  "Chọn thể loại khác": "Choose other category",
+  "Tạo bài viết trên bảng tin nội bộ": "Create posts on internal news",
+  "Tiêu đề bài viết": "Title",
+  "Nội dung bài viết": "Content",
+  "Thả file, hình ảnh vào đây...": "Drop files, images here",
+  "Đăng bài": "Create post",
+  "Không tìm thấy kết quả!": "No results were found!",
+  "Enter your keyword...": "Enter your keyword...",
+  "BẢNG TIN NỘI BỘ": "INTERNAL NEWS",
+  "Xem các bình luận trước": "View comment before",
+  "BẢNG TIN NỘI BỘ - CHI TIẾT": "INTERNAL NEWS - DETAILS",
+  "Kết quả tìm kiếm": "Search results",
+  "TIN NỔI BẬT": "POST HIGHLIGHT",
+  "Xem thêm": "View more",
+  "THOÁT": "EXIT",
+  "views.calendar_page.modal.create_weekly_calendar.title_right": "views.calendar_page.modal.create_weekly_calendar.title_right",
+  "views.calendar_page.modal.create_weekly_calendar.label.title": "views.calendar_page.modal.create_weekly_calendar.label.title",
+  "views.calendar_page.modal.create_weekly_calendar.content": "views.calendar_page.modal.create_weekly_calendar.content",
+  "views.calendar_page.modal.create_weekly_calendar.receiver": "views.calendar_page.modal.create_weekly_calendar.receiver",
+  "views.calendar_page.right_part.label.created_by": "views.calendar_page.right_part.label.created_by",
+  "views.calendar_page.modal.create_weekly_calendar.all": "views.calendar_page.modal.create_weekly_calendar.all",
+  "views.calendar_page.modal.setting_weekly_calendar.sunday": "views.calendar_page.modal.setting_weekly_calendar.sunday",
+  "views.calendar_page.modal.setting_weekly_calendar.monday": "views.calendar_page.modal.setting_weekly_calendar.monday",
+  "views.calendar_page.modal.setting_weekly_calendar.tuesday": "views.calendar_page.modal.setting_weekly_calendar.tuesday",
+  "views.calendar_page.modal.setting_weekly_calendar.wednesday": "views.calendar_page.modal.setting_weekly_calendar.wednesday",
+  "views.calendar_page.modal.setting_weekly_calendar.thursday": "views.calendar_page.modal.setting_weekly_calendar.thursday",
+  "views.calendar_page.modal.setting_weekly_calendar.friday": "views.calendar_page.modal.setting_weekly_calendar.friday",
+  "views.calendar_page.modal.setting_weekly_calendar.saturday": "views.calendar_page.modal.setting_weekly_calendar.saturday",
+  "LỊCH TUẦN": "Week schedule",
+  "Tuần <%= week %>  năm <%= year %> ": "Week <%= week %> of <%= year %> ",
+  "CHI TIẾT LỊCH TUẦN": "Schedule detail",
+  "Công việc": "Task",
+  "FILTER": "FILTER",
+  "Đã được giao ngày <%= date %>": "Assigned on <%= date %>",
+  "Xem chi tiết công viêc": "View task details",
+  "Xóa công viêc": "Delete task",
+  "TÊN CÔNG VIỆC": "Task name",
+  "MÔ TẢ CÔNG VIỆC": "Task descriptions",
+  "TIẾN ĐỘ": "Duration",
+  "Ngày bắt đầu": "Start date",
+  "Ngày kết thúc": "End date",
+  "TRẠNG THÁI, ƯU TIÊN": "Status, Priority",
+  "THÀNH VIÊN": "Members",
+  "CÔNG VIỆC CON": "Subtasks",
+  "công việc": "task",
+  "Còn <%= days %> ngày": "Day remain: <%= days %> days",
+  "Xem nhanh": "Quick view",
+  "Tạo mới công việc": "Create new task",
+  "Bạn cần phải chọn một dự án trước khi tạo mới công việc": "You have to choose one project before create task",
+  "Đi đến danh sách dự án": "Go to project list",
+  "Tên công việc": "Task name",
+  "Tiến độ": "Duration",
+  "Kết thúc": "End",
+  "Đến hạn": "Due",
+  "Ưu tiên": "Priority",
+  "Biểu đồ tỗng hợp mức ưu tiên của công việc": "The chart of task priority",
+  "Vai trò": "Role",
+  "Biểu đồ vai trò của công việc": "Chart of task role",
+  "Trạng thái": "Status",
+  "Biểu đồ theo trạng thái công việc": "Chart of task status",
+  "Chọn/bỏ chọn trạng thái để lọc công việc": "Select / Deselect to filter job status",
+  "Đang chờ": "Waiting",
+  "Đang làm": "Doing",
+  "Quá hạn": "Out of date",
+  "Tạm dừng": "Pause",
+  "Lọc theo mức độ ưu tiên": "Filter by priority",
+  "Chọn/bỏ chọn mức độ ưu tiên để lọc công việc": "Select / Deselect the priority level to filter job",
+  "Ưu tiên thấp": "Low priority",
+  "Ưu tiên trung bình": "Medium priority",
+  "Ưu tiên cao": "High Priority",
+  "Tất cả": "All",
+  "Công việc của bạn": "Your job",
+  "Sắp hết hạn": "Expiring",
+  "Cao": "High",
+  "Trung bình": "medium",
+  "Thấp": "Short",
+  "Giao việc cho nhân viên": "Assigning staff",
+  "Được giao việc": "Assigned work",
+  "Tự đề xuất công việc": "Self proposed work",
+  "Tổng quan": "overview",
+  "Nhiệm vụ": "Mission",
+  "Thực hiện": "Perform",
+  "Giám sát": "Monitoring",
+  "Phối hợp": "Combination",
+  "Mọi lúc": "all time",
+  "LABEL_CHAT_TASK_MAC_DINH": "(Default)",
+  "LABEL_CHAT_TASK_THAY_DOI_MAC_DINH": "Change default in project settings",
+  "LABEL_CHAT_TASK_NGAY_VA_GIO": "Date and Time",
+  "LABEL_CHAT_TASK_CHI_NHAP_NGAY": "Only date",
+  "LABEL_CHAT_TASK_KHONG_YEU_CAU": "Not require",
+  "LABEL_CHAT_TASK_INVALID_DATE_FORMAT": "Invalid date format",
+  "Thu gọn": "Collapse",
+  "Mở rộng": "Extend",
+  "Lọc": "filter",
+  "+ Tạo công việc": "+ Creating jobs",
+  "Hủy": "Cancel",
+  "Tìm kiếm": "Search",
+  "Nhập nội dung cần tìm": "Enter your search",
+  "và": "and",
+  "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên": "Group rights are only assigned to the members of the module members",
+  "Tìm hiểu thêm": "looking for more information",
+  "Chỉnh sửa bài viết": "Edit Post",
+  "Thoát": "exit"
 }

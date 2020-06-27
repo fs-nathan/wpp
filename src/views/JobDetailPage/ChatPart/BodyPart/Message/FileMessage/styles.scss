@@ -3,9 +3,10 @@
   cursor: pointer;
   &--files {
     display: flex;
+    margin-bottom: 10px;
   }
   &--icon {
-    width: 56px;
+    width: 40px;
     height: 100%;
     &__reply {
       width: 30px;
@@ -22,6 +23,16 @@
       font-size: 14px;
       color: #5b5b5b;
     }
+  }
+  &--fileNameLabel {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 290px;
+    padding-right: 20px;
+  }
+  &--files:hover &--fileNameLabel {
+    text-decoration: underline;
   }
   &--loading {
     display: flex;
@@ -53,8 +64,12 @@
     padding: 5px;
     fill: #9e9e9e;
     color: #9e9e9e;
+    margin-top: 5px;
     &__reply {
       background-color: #ffffff;
+    }
+    &:hover {
+      color: #111111;
     }
   }
   &--fileSize {
@@ -70,6 +85,41 @@
       font-size: 12px;
       color: #5b5b5b;
     }
+  }
+  &--content__video {
+    padding: 0;
+  }
+  &--video {
+    margin-bottom: -5px;
+  }
+  &--videoCover {
+    width: 100%;
+    height: 100%;
+  }
+  &--videoPlayButton {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    left: calc((100% - 60px) / 2);
+    top: calc((100% - 60px) / 2);
+    color: #767676;
+    background-color: #ffffff80;
+    border-radius: 50%;
+  }
+  &--videoPlayer {
+    video {
+      border-radius: 5px;
+    }
+  }
+  &--videoInfo {
+    position: absolute;
+    bottom: 0px;
+    padding: 0 10px;
+    width: calc(100% - 20px);
+    background-color: #4b4b4b;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top: 1px solid #929292;
   }
   &:hover .CommonMessageAction {
     opacity: 1;
