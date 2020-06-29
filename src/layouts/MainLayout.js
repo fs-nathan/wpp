@@ -285,9 +285,9 @@ function MainLayout({
       if (!task) {
         getListTaskDetail(projectId);
       } else {
-        if (task_id !== taskDetails.id) {
-          data.new_chat = user_create_id === profile.id ? 0 : 1;
-        }
+        // if (task_id !== taskDetails.id) {
+        data.new_chat = user_create_id === profile.id ? 0 : 1;
+        // }
         data.content = content[language];
         data.updatedAt = Date.now();
         updateProjectChat(data);
@@ -350,7 +350,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(

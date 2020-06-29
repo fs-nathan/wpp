@@ -21,6 +21,7 @@ import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
+import TaskGroupSelect from 'components/TaskGroupSelect';
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -86,7 +87,6 @@ function CreateJobModal(props) {
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
   const [listGroupTask, setListGroupTask] = React.useState([]);
-  const [groupTaskValue, setGroupTaskValue] = React.useState(null);
   const [listSchedules, setListSchedules] = React.useState([]);
   const [scheduleValue, setScheduleValue] = React.useState(null);
   const [type, setType] = React.useState(date_status);
@@ -155,10 +155,8 @@ function CreateJobModal(props) {
         item => item.value === taskDetails.group_task
       );
       if (item) {
-        setGroupTaskValue(item);
         handleChangeData('group_task', item.value)
       } else {
-        setGroupTaskValue(null);
         handleChangeData('group_task', null)
       }
     }
@@ -304,8 +302,8 @@ function CreateJobModal(props) {
       onCancle={() => props.setOpen(false)}
       className={clsx("createJob", `createJob__edit${props.editMode}`, {
         'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES]),
-        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE, EDIT_MODE.GROUP]),
-        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY]),
+        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE]),
+        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.GROUP]),
       })}
     >
       <React.Fragment>
@@ -314,10 +312,10 @@ function CreateJobModal(props) {
           <>
             <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC')} isRequired />
             <Typography component={'div'} >
-              <CustomSelect
+              <TaskGroupSelect
                 options={listGroupTask}
-                value={groupTaskValue}
-                onChange={({ value: groupTaskId }) => handleChangeData('group_task', groupTaskId)}
+                value={data.group_task}
+                onChange={({ target }) => handleChangeData('group_task', target.value)}
               />
             </Typography>
           </>
