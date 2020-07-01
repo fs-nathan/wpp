@@ -3,6 +3,7 @@ import { AttachFile, Close, Image } from "@material-ui/icons";
 import classnames from "classnames";
 import { Field, Formik, useField } from "formik";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import Scrollbars from "react-custom-scrollbars";
 import { useDropzone } from "react-dropzone";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -105,9 +106,17 @@ const ImageListField = ({
                   });
                 }}
                 renderListWrapper={(children) => (
-                  <div className="comp_PostCreatorPopupInner__mediaList">
+                  <Scrollbars
+                    style={{ height: "140px" }}
+                    renderView={(props) => (
+                      <div
+                        {...props}
+                        className="comp_PostCreatorPopupInner__mediaList"
+                      />
+                    )}
+                  >
                     {children}
-                  </div>
+                  </Scrollbars>
                 )}
                 list={list}
                 getId={(item) => item.index}
