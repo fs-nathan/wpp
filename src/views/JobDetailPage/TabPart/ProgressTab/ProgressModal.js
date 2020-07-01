@@ -102,6 +102,15 @@ const ProgressModal = (props) => {
       start_time: startTime,
       end_time: endTime,
     }
+    if (type === 0) {
+      data.start_date = undefined;
+      data.start_time = undefined;
+      data.end_date = undefined;
+      data.end_time = undefined;
+    } else if (type === 1) {
+      data.start_time = undefined;
+      data.end_time = undefined;
+    }
     // console.log("data", data);
     dispatch(updateTimeDuration(data));
     // props.setOpen(false)
@@ -111,7 +120,7 @@ const ProgressModal = (props) => {
     try {
       const result = compareDateTime(`${startDay} ${startTime || '00:00'}`, `${endDay} ${endTime || '00:00'}`)
       // console.log('validate', result)
-      return result < 0;
+      return result < 0;// && type > 0;
     } catch (error) {
       // console.log('error', error)
       return false
