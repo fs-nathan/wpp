@@ -7,7 +7,8 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { createMapPropsFromAttrs, get, paging } from "views/JobPage/utils";
+import { get, paging } from "views/JobPage/utils";
+import AsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/components/AyncTracker";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
 import { commentAttr } from "../contant/attrs";
@@ -99,56 +100,56 @@ const RepliesContainer = ({
       </ButtonBase>
       {show &&
         comments.map((c, i) => {
+          console.log({ c });
+          if (c.asyncId) {
+            return (
+              <AsyncTracker asyncId={c.asyncId}>
+                {({
+                  data: { data_comment } = { data_comment: emptyObject },
+                }) => {
+                  const comment = {
+                    ...c,
+                    ...data_comment,
+                    can_modify: !!data_comment.id && true,
+                  };
+                  return (
+                    <Reply
+                      key={i}
+                      reply={comment}
+                      onReplyClick={onReplyClick}
+                    ></Reply>
+                  );
+                }}
+              </AsyncTracker>
+            );
+          }
           return <Reply key={i} reply={c} onReplyClick={onReplyClick}></Reply>;
         })}
     </>
   );
 };
 export const Reply = ({ reply, onReplyClick }) => {
-  const [
-    id,
-    content,
-    user_create_name,
-    user_create_avatar,
-    images,
-    images_id,
-    images_url,
-    images_size,
-    images_type,
-    files,
-    sticker,
-    total_sub_comment,
-  ] = createMapPropsFromAttrs([
-    commentAttr.id,
-    commentAttr.content,
-    commentAttr.user_create_name,
-    commentAttr.user_create_avatar,
-    commentAttr.images,
-    commentAttr.images_id,
-    commentAttr.images_url,
-    commentAttr.images_size,
-    commentAttr.images_type,
-    commentAttr.files,
-    commentAttr.sticker,
-    commentAttr.total_sub_comment,
-  ])(reply);
+  const [{ status }, handleDeleteComment] = useAsyncTracker();
   return (
     <Message
       type="reply"
       parent={reply.parent}
       {...{
-        id,
-        content,
+        ...reply,
         onReplyClick,
-        user_create_name,
-        user_create_avatar,
-        images,
-        images_id,
-        images_url,
-        images_size,
-        images_type,
-        files,
-        sticker,
+        deleted: status === apiCallStatus.success,
+        onDelete:
+          reply.id && reply.can_modify
+            ? () => {
+                const asyncId = Date.now();
+                handleDeleteComment({
+                  asyncId,
+                  ...postModule.actions.deleteComment({
+                    comment_id: reply.id,
+                  }),
+                });
+              }
+            : undefined,
       }}
     />
   );
@@ -247,6 +248,28 @@ const Message = ({
           )}
           {comments &&
             comments.map((c, i) => {
+              if (c.asyncId) {
+                return (
+                  <AsyncTracker asyncId={c.asyncId}>
+                    {({
+                      data: { data_comment } = { data_comment: emptyObject },
+                    }) => {
+                      const comment = {
+                        ...c,
+                        ...data_comment,
+                        can_modify: !!data_comment.id && true,
+                      };
+                      return (
+                        <Reply
+                          key={i}
+                          reply={comment}
+                          onReplyClick={onReplyClick}
+                        ></Reply>
+                      );
+                    }}
+                  </AsyncTracker>
+                );
+              }
               return (
                 <Reply key={i} reply={c} onReplyClick={onReplyClick}></Reply>
               );
@@ -270,17 +293,18 @@ export default ({ message, comments, onReplyClick }) => {
         post_id,
         deleted: status === apiCallStatus.success,
         onReplyClick,
-        onDelete: message.id
-          ? () => {
-              const asyncId = Date.now();
-              handleDeleteComment({
-                asyncId,
-                ...postModule.actions.deleteComment({
-                  comment_id: message.id,
-                }),
-              });
-            }
-          : undefined,
+        onDelete:
+          message.id && message.can_modify
+            ? () => {
+                const asyncId = Date.now();
+                handleDeleteComment({
+                  asyncId,
+                  ...postModule.actions.deleteComment({
+                    comment_id: message.id,
+                  }),
+                });
+              }
+            : undefined,
         time_label: message.time_label,
       }}
     />

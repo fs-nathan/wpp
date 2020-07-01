@@ -153,9 +153,10 @@ export const CommentInput = React.memo(
               onClick={() => {
                 setElement(
                   <StickerPicker
-                    handleClickSticker={(sticker) =>
-                      handleComment("", null, sticker)
-                    }
+                    handleClickSticker={(sticker) => {
+                      handleComment("", null, sticker);
+                      setElement(undefined);
+                    }}
                   />
                 );
               }}
