@@ -75,11 +75,15 @@ const ProgressModal = (props) => {
         start_date,
         end_time,
         end_date,
+        type_time,
       } = detailTask;
       setStartDay(convertDateByFormat(start_date, dateFormat))
       setStartTime(start_time)
       setEndDay(convertDateByFormat(end_date, dateFormat))
       setEndTime(end_time)
+      if (type_time === 0) setType(2)
+      else if (type_time === 1) setType(1)
+      else if (type_time === 2) setType(0)
     }
   }, [dateFormat, detailTask])
 
