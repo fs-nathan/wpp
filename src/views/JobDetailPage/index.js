@@ -1,11 +1,13 @@
-import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, openShareFileModal, loadChat, getViewedChat, openDetailMember, viewChat } from "actions/chat/chat";
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, getViewedChat, loadChat, openDetailMember, openShareFileModal, viewChat } from "actions/chat/chat";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { closeNoticeModal } from "actions/system/system";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
+import { getPermissionViewDetailProject } from "actions/viewPermissions";
 import { JOIN_CHAT_EVENT, JOIN_PROJECT_EVENT } from "constants/actions/chat/chat";
 import last from "lodash/last";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import ShareDocumentModal from "views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal";
 import "../JobDetailPage/index.scss";
 import ForwardMessageDialog from './ChatComponent/ForwardMessageDialog';
@@ -14,10 +16,8 @@ import Intro from "./introduce";
 import ListPart from "./ListPart";
 import { lastJobSettingKey } from "./ListPart/ListHeader/CreateJobSetting";
 import ModalImage from "./ModalImage";
-import TabPart from "./TabPart";
-import { getPermissionViewDetailProject } from "actions/viewPermissions";
-import { useHistory } from "react-router-dom";
 import { makeSelectIsCanView } from "./selectors";
+import TabPart from "./TabPart";
 
 function JobDetailPage(props) {
   const dispatch = useDispatch();
@@ -84,9 +84,7 @@ function JobDetailPage(props) {
       dispatch(loadChat(taskId));
       dispatch(getViewedChat(taskId));
       dispatch(openDetailMember(false))
-      if (isCanView) {
-        dispatch(viewChat(taskId))
-      }
+
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {
         setTimeout(() => {
@@ -95,6 +93,12 @@ function JobDetailPage(props) {
       });
     } else {
       dispatch(taskDetailAction.chooseTask(taskId));
+    }
+  }, [dispatch, taskId]);
+
+  useEffect(() => {
+    if (isCanView) {
+      dispatch(viewChat(taskId))
     }
   }, [dispatch, isCanView, taskId]);
 
