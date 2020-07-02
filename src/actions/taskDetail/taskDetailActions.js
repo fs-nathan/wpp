@@ -1216,3 +1216,10 @@ export function detailGroupPermissionDefaultFail(error) {
         error
     };
 }
+
+export function setOpenDetailOffer(isOpenDetail) {
+    return {
+        type: types.OPEN_DETAIL_OFFER,
+        isOpenDetail
+    };
+}

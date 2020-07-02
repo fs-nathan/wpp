@@ -12,6 +12,7 @@ const initialState = {
     isFetching: false,
     dataFetched: false,
     error: false,
+    isOpenDetail: false,
 };
 
 export default function reducer(state = initialState, action) {
@@ -151,6 +152,11 @@ export default function reducer(state = initialState, action) {
                 isFetching: false,
                 dataFetched: false,
                 error: true,
+            }
+        case types.OPEN_DETAIL_OFFER:
+            return {
+                ...state,
+                isOpenDetail: action.isOpenDetail,
             }
         case types.SEARCH_OFFER_TABPART:
             return {

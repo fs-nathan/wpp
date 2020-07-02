@@ -237,39 +237,6 @@ const FooterPart = ({
     dispatch(openCreateRemind(true, true))
   }
 
-  const handleClickMention = useCallback(function handleClickMention(mention = {}) {
-    const tag = `<span class="chatBox--tag" style="color:#03A9F4;font-size:15px;">@${mention.name}</span>&nbsp;`;
-    const sel = window.getSelection();
-    const range = sel.getRangeAt(0);
-    var preCaretRange = range.cloneRange();
-    const { commonAncestorContainer } = preCaretRange;
-    const atIndex = commonAncestorContainer.textContent.lastIndexOf('@');
-    // console.log('atIndex', commonAncestorContainer, atIndex)
-    if (atIndex !== -1 || commonAncestorContainer.textContent === '') {
-      preCaretRange.setStart(preCaretRange.startContainer, atIndex + 1);
-      // console.log('preCaretRange', preCaretRange, preCaretRange.toString())
-      preCaretRange.deleteContents();
-      sel.removeAllRanges();
-      sel.addRange(preCaretRange);
-      // console.log('range', range, range.toString())
-      document.execCommand('delete', false)
-      document.execCommand('insertHTML', false, tag)
-    } else if (isOpenMention) {
-      document.execCommand('insertHTML', false, tag)
-    }
-    dispatch(tagMember(mention))
-    // setChatText(newContent)
-    setKeyFilter('')
-    setOpenMention(false)
-  }, [dispatch, isOpenMention])
-
-  const focus = () => {
-    editorRef.current.focus();
-    if (isCanView) {
-      dispatch(viewChat(taskId))
-    }
-  };
-
   const getChatContent = useCallback(function (text) {
     let ret = text;
     for (let index = 0; index < tagMembers.length; index++) {
@@ -279,6 +246,42 @@ const FooterPart = ({
     }
     return ret;
   }, [tagMembers])
+
+  const handleClickMention = useCallback(function handleClickMention(mention = {}) {
+    const tag = `<span class="chatBox--tag" style="color:#03A9F4;font-size:15px;">@${mention.name}</span>&nbsp;`;
+    const sel = window.getSelection();
+    const range = sel.getRangeAt(0);
+    const preCaretRange = range.cloneRange();
+    const { commonAncestorContainer } = preCaretRange;
+    const textContent = commonAncestorContainer.textContent || chatText;
+    const atIndex = textContent.lastIndexOf('@');
+    // console.log('atIndex', textContent, atIndex, chatText.substr(0, atIndex))
+    if (atIndex !== -1) {
+      // preCaretRange.setStart(preCaretRange.startContainer, atIndex + 1);
+      // console.log('preCaretRange', preCaretRange, preCaretRange.toString())
+      // preCaretRange.deleteContents();
+      // sel.removeAllRanges();
+      // sel.addRange(preCaretRange);
+      // // console.log('range', range, range.toString())
+      // document.execCommand('delete', false);
+      setChatText(chatText.substr(0, atIndex) + tag)
+      // document.execCommand('insertHTML', false, tag)
+    } else if (isOpenMention) {
+      document.execCommand('insertHTML', false, tag)
+    }
+    dispatch(tagMember(mention))
+    // setChatText(newContent)
+    setKeyFilter('')
+    setOpenMention(false)
+    editorRef.current.focus()
+  }, [chatText, dispatch, isOpenMention])
+
+  const focus = () => {
+    editorRef.current.focus();
+    if (isCanView) {
+      dispatch(viewChat(taskId))
+    }
+  };
 
   const sendChatText = useCallback(function () {
     const content = getChatContent(htmlToText(chatText));
