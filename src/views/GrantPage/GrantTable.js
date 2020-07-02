@@ -6,6 +6,7 @@ import 'antd/lib/grid/style/index.css';
 import 'antd/lib/table/style/index.css';
 import LoadingBox from "components/LoadingBox";
 import update from "immutability-helper";
+import { get } from 'lodash';
 import moment from "moment";
 import React from "react";
 import { DndProvider } from "react-dnd";
@@ -14,7 +15,7 @@ import { withTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import { changeCalendarPermisstion, changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, scrollGantt, sortGroupTask, sortTask } from "../../actions/gantt";
+import { changeCalendarPermisstion, changePreviewContent, changeProjectInfo, changeScheduleDetailGantt, changeTaskComplete, changeTaskduration, changeTimelineColor, changeVisible, scrollGantt, sortGroupTask, sortTask } from "../../actions/gantt";
 import { changeDetailSubtaskDrawer, changeVisibleSubtaskDrawer } from "../../actions/system/system";
 import { getListGroupTask, getListTaskDetail, getProjectListBasic, getStaticTask } from "../../actions/taskDetail/taskDetailActions";
 import CustomBadge from "../../components/CustomBadge";
@@ -22,6 +23,7 @@ import ConfigGanttDrawer from "../../components/Drawer/DrawerConfigGantt";
 import ExportPDFDrawer from "../../components/Drawer/DrawerPDF";
 import SubTaskDrawer from "../../components/Drawer/SubTaskDrawer";
 import { apiService } from "../../constants/axiosInstance";
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 import "../../views/JobDetailPage/index.scss";
 import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
@@ -34,7 +36,12 @@ import EditCell from "./EditCell";
 import Header from "./Header";
 import "./table.css";
 
-
+const SearchBox = ({ className = "", ...rest }) => (
+  <div
+    className={`comp_CustomTable_HeaderButtonGroup___search-box ${className}`}
+    {...rest}
+  />
+);
 
 Array.prototype.insertArray = function (index, items) { this.splice.apply(this, [index, 0].concat(items)); }
 const MAX_DAY_DEFAULT = 40;
@@ -494,7 +501,7 @@ class DragSortingTable extends React.Component {
           },
         },
         {
-          title: this.props.t('LABEL_GANTT_NAME_START_TIME_TABLE')
+          title: () => this.props.t('LABEL_GANTT_NAME_START_TIME_TABLE')
           ,
           id: 2,
           dataIndex: "start_time",
@@ -509,7 +516,7 @@ class DragSortingTable extends React.Component {
               type={"start_date"}
               start_date={record.start_label}
               end_date={record.end_label}
-              canEdit={!record.isTotalDuration && !record.isGroupTask}
+              canEdit={!record.isTotalDuration && !record.isGroupTask && !record.isStop && record.can_edit}
               component={
                 <div
                   className={
@@ -533,7 +540,7 @@ class DragSortingTable extends React.Component {
           ),
         },
         {
-          title: this.props.t('LABEL_GANTT_NAME_END_TIME_TABLE'),
+          title: () => this.props.t('LABEL_GANTT_NAME_END_TIME_TABLE'),
           id: 3,
           dataIndex: "end_time",
           align: "center",
@@ -548,7 +555,7 @@ class DragSortingTable extends React.Component {
                 type={"end_date"}
                 start_date={record.start_label}
                 end_date={record.end_label}
-                canEdit={!record.isTotalDuration && !record.isGroupTask}
+                canEdit={!record.isTotalDuration && !record.isGroupTask && !record.isStop && record.can_edit}
                 component={
                   <div
                     className={
@@ -573,7 +580,7 @@ class DragSortingTable extends React.Component {
           },
         },
         {
-          title: this.props.t('LABEL_GANTT_NAME_DURATION_TABLE'),
+          title: () => this.props.t('LABEL_GANTT_NAME_DURATION_TABLE'),
           id: 4,
           dataIndex: "duration_actual",
           align: "center",
@@ -594,14 +601,14 @@ class DragSortingTable extends React.Component {
                   ? `${
                   Math.round((parseFloat(text) + Number.EPSILON) * 100) /
                   100
-                  } ${this.props.girdInstance.unitText}`
+                  } ${this.props.t(`GANTT_${this.props.girdInstance.unitText.toUpperCase()}`)}`
                   : ""}
               </div>
             );
           },
         },
         {
-          title: this.props.t('LABEL_GANTT_NAME_COMPLETE_TABLE'),
+          title: () => this.props.t('LABEL_GANTT_NAME_COMPLETE_TABLE'),
           dataIndex: "complete",
           align: "center",
           id: 5,
@@ -618,7 +625,7 @@ class DragSortingTable extends React.Component {
                 end_date={record.end_label}
                 setProcessDatasource={this.setProcessDatasource}
                 index={index}
-                canEdit={!record.isTotalDuration && !record.isGroupTask}
+                canEdit={!record.isTotalDuration && !record.isGroupTask && !record.isStop && record.can_edit}
                 component={
                   <div
                     className={
@@ -690,7 +697,7 @@ class DragSortingTable extends React.Component {
       const { projectId } = this.props.match.params;
       const { girdInstance } = this.props;
       const result = await apiService({
-        url: `gantt/get-time-not-work?project_id=${projectId}&from_date=${fromDate}&to_date=${endDate}&gird=${girdInstance.gird}`,
+        url: `gantt/get-time-not-work?project_id=${projectId}&from_date=${fromDate}&to_date=${endDate}&gird=${girdInstance.gird}&schedule_id=${this.props.mainCalendar}`,
       });
       if (!result.data.state) return;
       this.setState({
@@ -698,6 +705,7 @@ class DragSortingTable extends React.Component {
       });
       return true;
     } catch (e) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
       console.log(e);
       return false;
     }
@@ -778,6 +786,7 @@ class DragSortingTable extends React.Component {
           complete: subTask.complete,
           show: true,
           priority_code: subTask.priority_code,
+          isStop: subTask.status_code === 4,
           number_subtask: subTask.number_subtask,
           status_code: subTask.status_code,
           status_name: subTask.status_name,
@@ -873,6 +882,7 @@ class DragSortingTable extends React.Component {
       console.log(permissions)
       this.props.changeCalendarPermisstion(permissions);
     } catch (e) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
       console.log(e);
     }
   };
@@ -907,6 +917,7 @@ class DragSortingTable extends React.Component {
     // this.fetchListDetailProject(projectId);
     await this.fetchListTask(projectId);
     this.fetchListTask(projectId, true, this.props.girdType);
+    this.fetchContentPreview(projectId)
     this.fetchListSchedule();
     this.setEventScroll();
   }
@@ -915,6 +926,25 @@ class DragSortingTable extends React.Component {
     this.props.getListTaskDetail(project_id);
     this.props.getStaticTask(project_id);
     this.props.getProjectListBasic(project_id);
+  };
+  fetchContentPreview = async (projectId) => {
+    try {
+      const result = await apiService({
+        url: `/gantt/get-export-pdf-info?project_id=${projectId}`,
+      });
+      const { data } = result.data;
+      this.props.changePreviewContent([
+        data.top_left,
+        data.top_center,
+        data.top_right,
+        data.bottom_left,
+        data.bottom_center,
+        data.bottom_right,
+      ])
+    } catch (e) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+      console.log(e);
+    }
   };
   fetchSettingGantt = async (projectId) => {
     try {
@@ -927,7 +957,6 @@ class DragSortingTable extends React.Component {
         group: project.color_group_task,
         task: project.color_task,
         duration: project.color_duration_task,
-        timeNotWork: project.color_day_not_work,
       };
       this.props.changeTimelineColor(null, null, ganttColorConfig);
       const ganttVisibleConfig = localStorage.getItem("ganttConfig") ? JSON.parse(localStorage.getItem("ganttConfig")) : {
@@ -940,7 +969,8 @@ class DragSortingTable extends React.Component {
         numberDuration: true,
         numberComplete: true,
         fromNowLayer: true,
-        timeNotWork: true
+        timeNotWork: true,
+        gridTable: true
       };
       this.props.changeVisible(null, null, null, {
         gantt: ganttVisibleConfig,
@@ -951,6 +981,7 @@ class DragSortingTable extends React.Component {
         group_icon: project.group_icon,
       });
     } catch (e) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
       console.log(e);
     }
   };
@@ -982,6 +1013,14 @@ class DragSortingTable extends React.Component {
       this.setState({
         height: this.tableRef.current.clientHeight,
       });
+    }
+    if (this.props.mainCalendar !== prevProps.mainCalendar) {
+      this.fetchTimeNotWork(
+        this.state.startTimeProject.format("YYYY-MM-DD"),
+        new moment(this.state.startTimeProject)
+          .add(700, girdInstance.unit)
+          .format("YYYY-MM-DD")
+      );
     }
 
     if (this.props.scrollGanttFlag !== prevProps.scrollGanttFlag && this.props.scrollGanttFlag) {
@@ -1115,6 +1154,7 @@ class DragSortingTable extends React.Component {
       this.fetchListTask(projectId, true, this.props.girdType);
       this.fetchListSchedule();
       this.setEventScroll();
+      this.fetchContentPreview(projectId)
     }
   };
   componentWillUnmount() {
@@ -1484,6 +1524,9 @@ class DragSortingTable extends React.Component {
                   }}
                   pagination={false}
                   dataSource={this.state.data.filter((item) => {
+                    if (this.props.keyword) {
+                      return item.name.includes(this.props.keyword)
+                    }
                     if (!this.props.visibleGantt.total && item.isTotalDuration)
                       return false;
                     return item.isGroupTask || item.show;
@@ -1507,7 +1550,7 @@ class DragSortingTable extends React.Component {
             monthArray={this.state.monthArray}
             start={this.state.startTimeProject}
             end={this.state.endTimeProject}
-            dataSource={this.state.data}
+            dataSource={this.props.keyword ? this.state.data.filter(item => item.name.includes(this.props.keyword)) : this.state.data}
             handleScrollTop={this.handleScrollTop}
             timeNotWork={this.state.timeNotWork}
             fetchTimeNotWork={this.fetchTimeNotWork}
@@ -1531,7 +1574,6 @@ class DragSortingTable extends React.Component {
               <div style={{ height: this.state.data.length * 37 }}></div>
             </div>
           </div> */}
-          <div>asdasdasdsa</div>
         </div>
       </React.Fragment>
     );
@@ -1551,6 +1593,10 @@ const mapStateToProps = (state) => ({
   visibleGantt: state.gantt.visible.gantt,
   activeProjectId: state.taskDetail.commonTaskDetail.activeProjectId,
   scrollGanttFlag: state.gantt.scrollGanttFlag,
+  mainCalendar: state.gantt.mainCalendar,
+  keyword: state.gantt.keyword,
+
+
 });
 
 const mapDispatchToProps = {
@@ -1566,6 +1612,7 @@ const mapDispatchToProps = {
   changeCalendarPermisstion,
   changeDetailSubtaskDrawer,
   scrollGantt,
+  changePreviewContent
 };
 export default withRouter(withTranslation()(
   connect(mapStateToProps, mapDispatchToProps)(DragSortingTable))

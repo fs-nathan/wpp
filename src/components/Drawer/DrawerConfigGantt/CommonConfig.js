@@ -36,6 +36,7 @@ const TagColor = ({ color, setColor, type, projectInfo }) => {
     setShow(true);
   };
   const onChangeComplete = (value) => {
+    console.log(type)
     actionChangeColorGanttSetting(projectInfo.id, type, value.hex);
   };
   return (
@@ -223,6 +224,15 @@ const CommonConfig = ({
             type={"timeNotWork"}
             text={t('LABEL_GANTT_DAY_NOT_WORK_CONFIG')}
             color={timelineColor.timeNotWork}
+            setColor={handleChangeColor}
+          />
+          <CheckboxColorTimeLine
+            projectInfo={projectInfo}
+            checked={visibleGantt.gridTable}
+            changeVisible={changeVisible}
+            type={"gridTable"}
+            text={t('LABEL_GANTT_GANTT_CHART_GRID_CONFIG')}
+            color={timelineColor.gridTable}
             setColor={handleChangeColor}
           />
           <div className="config--drawer--checkbox-wrapper">

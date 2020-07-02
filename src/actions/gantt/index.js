@@ -1,19 +1,29 @@
+import { get } from 'lodash';
 import {
   CHANGE_CALENDAR_PERMISSTION, CHANGE_COLUMN_INDEX,
   CHANGE_CONTENT_PREVIEW_PDF,
   CHANGE_FILTER_EXPORT_PDF,
   CHANGE_INSTANCE_GIRD,
-  CHANGE_PROJECT_INFO,
+  CHANGE_KEYWORD,
+
+
+
+
+
+  CHANGE_MAIN_CALENDAR, CHANGE_PROJECT_INFO,
   CHANGE_PROJECT_SCHEDULE, CHANGE_RENDER_FULL_DAY,
   CHANGE_ROW_HOVER,
   CHANGE_SCHEDULE_DETAIL_GANTT,
   CHANGE_TIMELINE_COLOR,
   CHANGE_VISIBLE,
+
   FETCH_PROJECT_SCHEDULE, GANTT_SHOW_FULL_CHART,
   GANTT_SHOW_HEADER,
   SCROLL_GANTT
 } from "../../constants/actions/gantt";
 import { apiService } from "../../constants/axiosInstance";
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
+
 
 const typeColorGanttSetting = {
   total: "color_total_duration",
@@ -48,6 +58,11 @@ export const changeShowHeader = (flag) => ({
 export const changeRowHover = (index) => ({
   type: CHANGE_ROW_HOVER,
   payload: index,
+});
+
+export const changeKeyword = (keyword) => ({
+  type: CHANGE_KEYWORD,
+  payload: keyword,
 });
 
 export const changeTimelineColor = (type, color, dataObject = {}) => ({
@@ -146,6 +161,14 @@ export const changeProjectSchedule = (schedules) => ({
   payload: schedules
 })
 
+export const changeMainCalendar = (_id) => {
+  localStorage.setItem('gantt_main_calendar', _id)
+  return {
+    type: CHANGE_MAIN_CALENDAR,
+    payload: _id
+  }
+}
+
 export const changeFlagFetchProjectSchedules = (flag) => ({
   type: FETCH_PROJECT_SCHEDULE,
   payload: flag
@@ -216,6 +239,7 @@ export const changeTaskduration = async ({
     console.log(result);
   } catch (err) {
     console.log(err);
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 };
 
@@ -232,6 +256,7 @@ export const changeTaskComplete = async ({ task_id, complete }) => {
     const result = await apiService(config);
   } catch (err) {
     console.log(err);
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 };
 
@@ -250,6 +275,7 @@ export const sortTask = async (task_id, group_task, project_id, sort_index) => {
     const result = await apiService(config);
   } catch (err) {
     console.log(err);
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 
@@ -266,5 +292,6 @@ export const sortGroupTask = async (group_task_id, sort_index) => {
     const result = await apiService(config);
   } catch (err) {
     console.log(err);
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }

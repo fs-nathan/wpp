@@ -1184,3 +1184,12 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .config--drawer--section-subtitle::first-letter{
   text-transform: uppercase !important;
 }
+.gantt--timeunitconfig__schedule{
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.gantt--timeunitconfig__schedule .MuiInputBase-root{
+  width: 100%;
+  
+}

@@ -5,6 +5,8 @@ import { connect } from "react-redux";
 const MonthHeader = ({
   girdInstance,
   allMonth,
+  visibleGantt,
+  timelineColor,
   daysRender,
   scrollWidth,
   dataSource,
@@ -42,15 +44,15 @@ const MonthHeader = ({
   ));
   const createTable = (axisX, axisY) => {
     let tempTable = [];
-    for (let i = 0; i < axisX; i++) {
+    for (let i = 0; i <= axisX; i++) {
       let children = [];
-      for (let j = 0; j < axisY; j++) {
+      for (let j = 0; j <= axisY; j++) {
         let backgroud = {};
         children.push(
           <div
             key={`${i}-${j}`}
             style={{
-              border: "0.2px solid #fcfcfc",
+              border: `0.2px solid ${timelineColor.gridTable}`,
               padding: "8.5px 0px",
               width: 48,
               ...backgroud,
@@ -73,7 +75,7 @@ const MonthHeader = ({
   };
   useEffect(() => {
     setTable(createTable(countTask, countDay));
-  }, [countTask, countDay]);
+  }, [countTask, countDay, timelineColor]);
   return (
     <React.Fragment>
       <div ref={containerRef} style={{ display: "flex" }}>
@@ -104,7 +106,7 @@ const MonthHeader = ({
             left: leftTable,
           }}
         >
-          {table}
+          {visibleGantt.gridTable && table}
         </div>
       </div>
       <div></div>
@@ -114,5 +116,7 @@ const MonthHeader = ({
 
 const mapStateToProps = (state) => ({
   girdInstance: state.gantt.girdInstance,
+  visibleGantt: state.gantt.visible.gantt,
+  timelineColor: state.gantt.timelineColor,
 });
 export default connect(mapStateToProps)(MonthHeader);

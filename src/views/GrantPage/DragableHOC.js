@@ -311,6 +311,11 @@ function GanttChart({
             height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
           }}
           onScroll={(e) => {
+            console.log(e.target.scrollLeft, e.target.scrollWidth)
+            if (e.target.scrollLeft + 16 >= e.target.scrollWidth) {
+              e.target.scrollLeft = e.target.scrollWidth - 16
+              return
+            }
             if (window.scrollTable || window.scrollTimeline || window.scrollTimelineVitural) return;
             if (!e.target.scrollTop) {
               const fetchNewTimeNotWork =

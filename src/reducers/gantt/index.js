@@ -9,15 +9,18 @@ export const initialState = {
     group: "#727272",
     task: "#FF8123",
     duration: "#01E03F",
-    timeNotWork: '#E1E1E'
+    timeNotWork: localStorage.getItem('timeNotWorkColor') || '#E1E1E',
+    gridTable: '#f5f5f5'
   },
   scheduleDetailGantt: {},
   projectInfo: {
     id: "",
     name: "",
   },
+  keyword: '',
   scrollGanttFlag: false,
   fetchProjectSchedule: true,
+  mainCalendar: localStorage.getItem('gantt_main_calendar') || null,
   indexColumn: [0, 1, 2, 3, 4],
   visible: {
     table: {
@@ -37,7 +40,8 @@ export const initialState = {
       numberDuration: true,
       numberComplete: true,
       fromNowLayer: true,
-      timeNotWork: true
+      timeNotWork: true,
+      gridTable: true
     },
     label: {
       prior: true,
@@ -159,6 +163,12 @@ const gantt = (state = initialState, action) => {
     case actionTypes.CHANGE_ROW_HOVER:
       return { ...state, rowHover: action.payload };
     case actionTypes.CHANGE_TIMELINE_COLOR:
+      if (action.payload.type === 'timeNotWork') {
+        localStorage.setItem('timeNotWorkColor', action.payload.color)
+      }
+      if (action.payload.type === 'gridTable') {
+        localStorage.setItem('gridTable', action.payload.color)
+      }
       return {
         ...state,
         timelineColor: {
@@ -203,8 +213,12 @@ const gantt = (state = initialState, action) => {
       return { ...state, projectSchedules: action.payload };
     case actionTypes.FETCH_PROJECT_SCHEDULE:
       return { ...state, fetchProjectSchedule: action.payload };
+    case actionTypes.CHANGE_MAIN_CALENDAR:
+      return { ...state, mainCalendar: action.payload };
     case actionTypes.CHANGE_CALENDAR_PERMISSTION:
       return { ...state, calendarPermisstions: action.payload };
+    case actionTypes.CHANGE_KEYWORD:
+      return { ...state, keyword: action.payload };
     default:
       return state;
   }

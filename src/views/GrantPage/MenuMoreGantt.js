@@ -134,7 +134,7 @@ const MenuMoreGantt = ({
         </div>
       </CustomModal>
       <CustomModal
-        title={"CÀI ĐẶT LỊCH DỰ ÁN"}
+        title={t('GANTT_CALENDAR_TITLE_MODAL')}
         className="gantt--calendar-modal__container"
         fullWidth={true}
         open={openConfigCalendar}

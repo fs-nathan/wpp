@@ -70,7 +70,7 @@ function CalendarProjectLeftPartPresenter({
             }
           }
         >
-          <StyledList>
+          <StyledList className="gantt-left-menu-calendar__container">
             {reducerProjectSchedules.map(item => {
               console.log(item)
               return {

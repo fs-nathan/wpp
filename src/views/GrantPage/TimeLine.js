@@ -3,6 +3,7 @@ import { mdiTriangle } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { ResizableBox } from "react-resizable";
 import "./test.css";
@@ -54,6 +55,7 @@ const TimeLine = ({
   if (totalTimeRef.current) {
     offsetLeft = totalTimeRef.current.offsetLeft;
   }
+  const { t } = useTranslation()
   useEffect(() => {
     setWidthComplete((dataSource[index].complete * width) / 100);
   }, [width, dataSource]);
@@ -246,7 +248,7 @@ const TimeLine = ({
               placement="top"
               title={`${
                 endDateText.diff(startDateText, girdInstance.unit) + 1
-                } ${girdInstance.unitText}`}
+                } ${t('GANTT_' + girdInstance.unitText.toUpperCase())}`}
             >
               <span
                 className={
@@ -256,7 +258,7 @@ const TimeLine = ({
                   `resize-width react-resizable-handle`
                 }
               >
-                {!isGroupTask && !isTotalDuration && (
+                {!isGroupTask && !isTotalDuration && canEdit && (
                   <Circle show={showResize} left={9} />
                 )}
               </span>
@@ -268,9 +270,9 @@ const TimeLine = ({
         >
           <Tooltip
             placement="top"
-            title={`${endDateText.diff(startDateText, girdInstance.unit) + 1} ${
-              girdInstance.unitText
-              }`}
+            title={`${endDateText.diff(startDateText, girdInstance.unit) + 1}
+              ${t('GANTT_' + girdInstance.unitText.toUpperCase())}
+              `}
           >
             <div
               ref={refFirstResize}

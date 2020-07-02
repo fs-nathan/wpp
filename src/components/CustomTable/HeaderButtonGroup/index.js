@@ -106,8 +106,8 @@ function HeaderButtonGroup() {
                     color={"rgba(0, 0, 0, 0.54)"}
                   />
                 ) : (
-                  get(subAction, "icon", () => null)()
-                )}
+                    get(subAction, "icon", () => null)()
+                  )}
               </div>
               <span>{t(get(subAction, "label", ""))}</span>
             </StyledButton>
