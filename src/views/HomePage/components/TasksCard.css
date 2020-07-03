@@ -6,6 +6,9 @@
 .comp_TasksCard__HeaderAvatar {
   font-size: 15px;
 }
+.comp_TasksCard__HeaderAvatar path {
+  fill: currentColor;
+}
 .comp_TasksCard__Header {
   align-items: center;
 }
