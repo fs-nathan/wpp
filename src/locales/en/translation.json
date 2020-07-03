@@ -1976,5 +1976,6 @@
   "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên": "Group rights are only assigned to the members of the module members",
   "Tìm hiểu thêm": "looking for more information",
   "Chỉnh sửa bài viết": "Edit Post",
-  "Thoát": "exit"
+  "Thoát": "exit",
+  "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm"
 }

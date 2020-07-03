@@ -33,6 +33,7 @@ const ButtonIcon = styled(IconButton)`
 `;
 
 function ListHeaderSelect({ setShow }) {
+  const { t } = useTranslation();
   const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
   const dispatch = useDispatch();
 
@@ -44,9 +45,11 @@ function ListHeaderSelect({ setShow }) {
   return (
     <div onClick={openListProject} style={{ marginTop: 8 }}>
       <HeaderText component={'div'}>{projectDetail && projectDetail.name}</HeaderText>
-      <ButtonIcon className="dropdown-icon">
-        <Icon path={mdiChevronDown} size={1.2} className="job-detail-icon" />
-      </ButtonIcon>
+      <abbr title={t('LABEL_CHAT_TASK_CHON_DU_AN')}>
+        <ButtonIcon className="dropdown-icon">
+          <Icon path={mdiChevronDown} size={1.2} className="job-detail-icon" />
+        </ButtonIcon>
+      </abbr>
     </div>
   );
 }
@@ -83,18 +86,24 @@ function ListHeader(props) {
             style={{ height: 'auto' }}
             onChange={e => searchListTask(e)}
           />
-          <ButtonIcon
-            className="dropdown-icon"
-            onClick={onClickSettings}
-          >
-            <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon setting-icon" />
-          </ButtonIcon>
-          {create_task && < ButtonIcon
-            className="dropdown-icon"
-            onClick={onClickCreateJob}
-          >
-            <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
-          </ButtonIcon>}
+          <abbr title={t('LABEL_CHAT_TASK_CAI_DAT')}>
+            <ButtonIcon
+              className="dropdown-icon"
+              onClick={onClickSettings}
+            >
+              <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon setting-icon" />
+            </ButtonIcon>
+          </abbr>
+          {create_task &&
+            <abbr title={t('LABEL_CHAT_TASK_TAO_CONG_VIEC')}>
+              < ButtonIcon
+                className="dropdown-icon"
+                onClick={onClickCreateJob}
+              >
+                <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
+              </ButtonIcon>
+            </abbr>
+          }
         </div>
       </div>
       <CreateJobModal

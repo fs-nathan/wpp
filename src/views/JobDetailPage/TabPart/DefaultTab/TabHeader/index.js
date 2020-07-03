@@ -139,14 +139,16 @@ function TabHeader(props) {
           </ColorTypo>
         )}
       </div>
-      <IconButton
-        className="tabHeaderDefault--button"
-        onClick={handleClick}
-        aria-controls="simple-menu"
-        aria-haspopup="true"
-      >
-        <Icon path={mdiDotsVertical} size={1} className="job-detail-icon" />
-      </IconButton>
+      <abbr title={t('IDS_WP_MORE')}>
+        <IconButton
+          className="tabHeaderDefault--button"
+          onClick={handleClick}
+          aria-controls="simple-menu"
+          aria-haspopup="true"
+        >
+          <Icon path={mdiDotsVertical} size={1} className="job-detail-icon" />
+        </IconButton>
+      </abbr>
       <Menu
         className="tabHeaderDefault--menu"
         id="simple-menu"

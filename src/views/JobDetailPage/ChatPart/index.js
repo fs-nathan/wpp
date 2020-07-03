@@ -71,9 +71,11 @@ function ChatPart(props) {
         <SearchInput className="chatPart--search"
           onClickSearch={onClickSearch}
           placeholder={t('LABEL_CHAT_TASK_TIM_NOI_DUNG_TRONG_HOI_THAO')} value={searchChatKey} onChange={onChangeKey} />
-        <IconButton className="chatPart--close" onClick={hideSearch}>
-          <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
-        </IconButton>
+        <abbr title={t('LABEL_CHAT_TASK_DONG')}>
+          <IconButton className="chatPart--close" onClick={hideSearch}>
+            <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
+          </IconButton>
+        </abbr>
       </div>
       {
         pinnedRemind &&
@@ -97,9 +99,11 @@ function ChatPart(props) {
               }
             </div>
           </div>
-          <IconButton className="chatPart--close" onClick={onClickClosePin}>
-            <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
-          </IconButton>
+          <abbr title={t('LABEL_CHAT_TASK_DONG')}>
+            <IconButton className="chatPart--close" onClick={onClickClosePin}>
+              <Icon path={mdiClose} size={1.2} className="job-detail-icon" />
+            </IconButton>
+          </abbr>
         </div>
       }
       <BodyPart {...props} setSelectedChat={setSelectedChat} isReply={Boolean(selectedChat)} />

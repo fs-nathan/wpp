@@ -40,7 +40,7 @@ function updateListTaskDetail(listTaskDetail, task_id, update) {
                     status_code: state_code !== undefined ? state_code : task.status_code,
                     complete: complete !== undefined ? complete : task.complete,
                     chat: chat || task.chat,
-                    is_ghim: is_ghim !== undefined ? is_ghim : data.is_ghim,
+                    is_ghim: is_ghim !== undefined ? is_ghim : task.is_ghim,
                     new_chat: getNewChat(new_chat, task.new_chat)
                 }
             }
