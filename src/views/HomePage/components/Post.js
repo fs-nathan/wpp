@@ -834,7 +834,10 @@ export const PostContainer = ({ post, children }) => {
           dispatch(postModule.actions.cancelPinPost({ post_id: id }));
           break;
         case "delete":
-          dispatch(postModule.actions.deletePost({ post_id: id }));
+          const confirmDelete = window.confirm("Bạn muốn xóa bài viết ?");
+          if (confirmDelete) {
+            dispatch(postModule.actions.deletePost({ post_id: id }));
+          }
           break;
         case "edit":
           setModal(
