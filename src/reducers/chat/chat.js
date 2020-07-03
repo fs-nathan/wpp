@@ -57,14 +57,18 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     case actionTypes.APPEND_CHAT:
       const idx = findIndex(draft.chats.data, ({ id }) => id && id === action.replaceId)
-      // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
-        const updateDate = { ...action.payload.data_chat }
+        const updateDate = { ...action.payload.data_chat };
         if (updateDate.images) {
-          updateDate.images.forEach(img => {
-            img.url = undefined;
+          const old = draft.chats.data[idx];
+          // console.log('idx', idx, action.replaceId, updateDate, old)
+          for (let index = 0; index < updateDate.images.length; index++) {
+            const img = updateDate.images[index];
+            const { url } = old.images[index]
+            img.url = url;
             img.url_thumb = undefined;
-          })
+            img.url_thumbnail = undefined;
+          }
         }
         draft.chats.data.splice(idx, 1, updateDate)
         draft.focusId = null;

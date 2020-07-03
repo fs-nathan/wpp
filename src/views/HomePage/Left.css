@@ -34,6 +34,9 @@
   margin-right: 10px;
   color: #9c9c9c;
 }
+.comp_Left__shortcutIcon path {
+  fill: currentColor;
+}
 .comp_Left__shortcutLink {
   line-height: 20px;
   color: rgb(84, 84, 84);

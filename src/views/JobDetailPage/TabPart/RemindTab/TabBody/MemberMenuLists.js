@@ -81,10 +81,10 @@ const MemberMenuLists = ({ item, className, idx }) => {
           {item.is_ghim ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_NHAC_HEN')}
         </MenuItem>
         {item.can_modify &&
-          <>
-            <MenuItem onClick={openEdit}>{t('LABEL_CHAT_TASK_SUA_NHAC_HEN')}</MenuItem>
-            <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA_NHAC_HEN')}</MenuItem>
-          </>
+          <MenuItem onClick={openEdit}>{t('LABEL_CHAT_TASK_SUA_NHAC_HEN')}</MenuItem>
+        }
+        {item.can_modify &&
+          <MenuItem onClick={handleOpenModalDelete}>{t('LABEL_CHAT_TASK_XOA_NHAC_HEN')}</MenuItem>
         }
       </Menu>
       <AlertModal

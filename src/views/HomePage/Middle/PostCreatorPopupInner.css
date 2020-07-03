@@ -80,6 +80,7 @@
 }
 .comp_PostCreatorPopupInner__media {
   background-color: #f6f6f6;
+  z-index: 1;
 }
 .comp_PostCreatorPopupInner__media.isDragActive {
   padding: 0;
@@ -102,9 +103,9 @@
   padding: 8px; */
   display: flex;
   /* flex-wrap: wrap; */
-  overflow-y: hidden;
-  overflow-x: auto;
-  height: 120px;
+  /* overflow-y: hidden;
+  overflow-x: auto; */
+  /* height: 120px; */
   padding: 4px;
   align-items: center;
 }

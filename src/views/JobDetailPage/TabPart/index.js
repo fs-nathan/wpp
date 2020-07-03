@@ -16,6 +16,10 @@ import RemindModal from './RemindTab/RemindModal';
 import SubtaskTab from './SubtaskTab';
 import SubTaskDetailDialog from './SubtaskTab/SubTaskDetailDialog';
 import DemandDetail from './DemandTab/TabBody/DemandDetail';
+import DetailOfferModal from 'views/OfferPage/views/DetailOffer/DetailOfferModal';
+import { getDetailOffer, getDetailOfferLoadingState } from 'views/OfferPage/views/DetailOffer/selector';
+import { setOpenDetailOffer } from 'actions/taskDetail/taskDetailActions';
+
 const Container = styled.div`
   grid-area: tab;
   padding: 0px;
@@ -24,9 +28,17 @@ const Container = styled.div`
 function TabPart(props) {
   const dispatch = useDispatch();
   const show = useSelector(state => state.taskDetail.detailTask.showIndex);
+  const detailOffer = useSelector(state => getDetailOffer(state));
+  const detailOfferLoading = useSelector(state => getDetailOfferLoadingState(state));
+  const openDetail = useSelector(state => state.taskDetail.taskOffer.isOpenDetail);
+  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
   const setShow = (index) => {
     dispatch(showTab(index))
+  }
+
+  function setOpenDetail(isOpen) {
+    dispatch(setOpenDetailOffer(isOpen))
   }
 
   return (
@@ -45,6 +57,13 @@ function TabPart(props) {
       <SubTaskDetailDialog />
       <MemberModal />
       <DemandDetail />
+      <DetailOfferModal
+        open={openDetail}
+        setOpen={setOpenDetail}
+        loading={detailOfferLoading}
+        {...detailOffer}
+        additionQuery={`task_id=${taskId}`}
+      />
     </Container>
   )
 }
