@@ -80,7 +80,7 @@
 }
 .comp_PostCreatorPopupInner__media {
   background-color: #f6f6f6;
-  z-index: 1;
+  /* z-index: 1; */
 }
 .comp_PostCreatorPopupInner__media.isDragActive {
   padding: 0;

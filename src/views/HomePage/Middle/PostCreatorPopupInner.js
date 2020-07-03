@@ -107,7 +107,7 @@ const ImageListField = ({
                 }}
                 renderListWrapper={(children) => (
                   <Scrollbars
-                    style={{ height: "140px" }}
+                    style={{ height: "140px" ,zIndex:1}}
                     renderView={(props) => (
                       <div
                         {...props}
