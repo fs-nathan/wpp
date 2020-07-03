@@ -1,4 +1,4 @@
-import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, getViewedChat, loadChat, openDetailMember, openShareFileModal, viewChat } from "actions/chat/chat";
+import { getDataPinOnTaskChat, getEmotions, getGirdListTask, getListStickersRequest, getViewedChat, loadChat, openDetailMember, openShareFileModal } from "actions/chat/chat";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { closeNoticeModal } from "actions/system/system";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
@@ -16,7 +16,6 @@ import Intro from "./introduce";
 import ListPart from "./ListPart";
 import { lastJobSettingKey } from "./ListPart/ListHeader/CreateJobSetting";
 import ModalImage from "./ModalImage";
-import { makeSelectIsCanView } from "./selectors";
 import TabPart from "./TabPart";
 
 function JobDetailPage(props) {
@@ -33,7 +32,6 @@ function JobDetailPage(props) {
   );
   const key = `${userId}:${lastJobSettingKey}`;
   const type = localStorage.getItem(key)
-  const isCanView = useSelector(makeSelectIsCanView(type, taskId));
   const item = useSelector((state) => state.chat.item);
   const errorMessage = useSelector((state) => state.taskDetail.detailTask.errorMessage);
   const users_shared = item ? item.users_shared || [] : [];
@@ -95,12 +93,6 @@ function JobDetailPage(props) {
       dispatch(taskDetailAction.chooseTask(taskId));
     }
   }, [dispatch, taskId]);
-
-  useEffect(() => {
-    if (isCanView) {
-      dispatch(viewChat(taskId))
-    }
-  }, [dispatch, isCanView, taskId]);
 
   useEffect(() => {
     const key = `${userId}:${lastJobSettingKey}`;

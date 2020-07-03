@@ -224,7 +224,13 @@ function MainLayout({
     console.log("handleViewChat", data);
     const { user_name, user_avatar, user_id } = data;
     // getViewedChatSuccess(data)
-    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar });
+    if (user_id !== profile.id) {
+      appendViewedChat({
+        id: user_id,
+        name: user_name,
+        avatar: user_avatar
+      });
+    }
   }
 
   useEffect(() => {

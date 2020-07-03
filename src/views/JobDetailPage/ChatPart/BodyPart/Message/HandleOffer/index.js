@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { getOfferDetail } from 'actions/chat/chat';
+import { loadDetailOffer } from 'views/OfferPage/redux/actions';
 import clsx from 'clsx';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
+import { setOpenDetailOffer } from 'actions/taskDetail/taskDetailActions';
 
 const HandleOffer = ({
   offer_id,
@@ -22,7 +23,8 @@ const HandleOffer = ({
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
   function onClickViewDetail() {
-    dispatch(getOfferDetail(taskId, offer_id))
+    dispatch(loadDetailOffer({ id: offer_id }))
+    dispatch(setOpenDetailOffer(true))
   }
 
   return (

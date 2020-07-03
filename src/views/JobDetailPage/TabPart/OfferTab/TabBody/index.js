@@ -1,5 +1,5 @@
 import { ButtonGroup, Collapse } from '@material-ui/core';
-import { deleteOffer } from 'actions/taskDetail/taskDetailActions';
+import { deleteOffer, setOpenDetailOffer } from 'actions/taskDetail/taskDetailActions';
 import AlertModal from 'components/AlertModal';
 import ColorButton from 'components/ColorButton';
 import ColorTypo from 'components/ColorTypo';
@@ -14,9 +14,7 @@ import OfferModal from '../OfferModal';
 import ApproveOfferDialog from './ApproveOfferDialog';
 import ListOffer from './ListOffer';
 // import OfferDetail from './OfferDetail';
-import DetailOfferModal from 'views/OfferPage/views/DetailOffer/DetailOfferModal';
 import { loadDetailOffer } from 'views/OfferPage/redux/actions';
-import { getDetailOffer, getDetailOfferLoadingState } from 'views/OfferPage/views/DetailOffer/selector';
 
 const Body = styled(Scrollbars)`
   grid-area: body;
@@ -36,15 +34,13 @@ function TabBody(props) {
   const pendingItems = useSelector(state => state.taskDetail.taskOffer.pendingItems);
   const approvedItems = useSelector(state => state.taskDetail.taskOffer.approvedItems);
   const isNoData = (offer.length + pendingItems.length + approvedItems.length) === 0;
-  const detailOffer = useSelector(state => getDetailOffer(state));
-  const detailOfferLoading = useSelector(state => getDetailOfferLoadingState(state));
 
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
   const [openApprove, setOpenApprove] = React.useState(false);
-  const [openDetail, setOpenDetail] = React.useState(false);
+  // const [openDetail, setOpenDetail] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const handleClickOpen = () => {
     setOpen(true);
@@ -52,6 +48,11 @@ function TabBody(props) {
   const handleClickClose = () => {
     setOpen(false);
   };
+
+  function setOpenDetail(isOpen) {
+    dispatch(setOpenDetailOffer(isOpen))
+  }
+
   const [selectedItem, setSelectedItem] = React.useState(DEFAULT_OFFER_ITEM)
   // console.log("selectItem::::", selectedItem.offer_id)
   const handleClickEditItem = item => {
@@ -168,18 +169,7 @@ function TabBody(props) {
           content={t('IDS_WP_ALERT_CONTENT')}
           onConfirm={confirmDelete}
         />
-        <DetailOfferModal
-          open={openDetail}
-          setOpen={setOpenDetail}
-          loading={detailOfferLoading}
-          {...detailOffer}
-          additionQuery={`task_id=${taskId}`}
-        // {...selectedItem}
-        // item={selectedItem}
-        // handleOpenModalDelete={(data) => handleOpenModalDelete(selectedItem)}
-        // handleClickEditItem={(data) => handleClickEditItem(selectedItem)}
-        // handleClickApprove={(data) => handleClickApprove(selectedItem)}
-        />
+
         <ApproveOfferDialog
           isOpen={openApprove}
           handleClickClose={() => setOpenApprove(false)}
