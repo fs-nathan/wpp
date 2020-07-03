@@ -361,7 +361,7 @@ function OfferPage() {
                     setOpen={setDetailOfferModalOpen}
                     loading={detailOfferLoading}
                     {...detailOffer}
-                    additionQuery={additionQuery ? `task_id=${additionQuery}` : null}
+                  //additionQuery={additionQuery ? `task_id=${additionQuery}` : null}
                   />
                 )
               }
