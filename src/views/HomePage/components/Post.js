@@ -610,9 +610,14 @@ const MemberLikeAndLoveModal = ({ open, setModal }) => {
               ))}
               {!list.length && (
                 <EmptyHolder
+                  style={{ padding: 0 }}
                   image={
                     <img
-                      style={{ width: "80%" }}
+                      style={{
+                        objectFit: "cover",
+                        maxWidth: "60%",
+                        margin: "auto",
+                      }}
                       src={nodataimg}
                       alt="empty"
                     ></img>
