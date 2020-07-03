@@ -33,6 +33,7 @@ function DetailOffer({
   number_member_accepted,
   number_member_rejected,
   members_monitor,
+  learn_more_redirect,
   additionQuery
 }) {
   return (
@@ -80,6 +81,7 @@ function DetailOffer({
         condition_accept={condition_accept}
         members_can_approve={members_can_approve}
         additionQuery={additionQuery}
+        learn_more_redirect={learn_more_redirect}
       />
       <div className="offerDetail-verticalLine" />
       <RightContent offerId={id} additionQuery={additionQuery} />

@@ -295,7 +295,7 @@ export function* doDeleteOffer({ payload }) {
   try {
     const { id } = payload;
     const config = {
-      url: "/offers/personal/delete",
+      url: "/offers/delete",
       method: "POST",
       data: { offer_id: id }
     };

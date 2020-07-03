@@ -4,9 +4,11 @@
   padding: 10px 20px;
   // margin: 0px 0 0 -20px;
   cursor: pointer;
+
   &:hover {
     background-color: #f2f5fa;
   }
+
   &--content {
     overflow: hidden;
     text-overflow: ellipsis;
@@ -18,72 +20,88 @@
     width: 91%;
     color: #5a5a5a;
   }
+
   &--user {
     display: flex;
     color: #666666;
     margin: 4px 0;
   }
+
   &--vote {
     margin: auto 8px;
   }
+
   &--avatar {
     width: 16px;
     height: 16px;
     margin-right: 4px;
   }
+
   &--priority {
     margin: 4px 4px 4px 0;
     padding: 4px;
     background-color: #ff110038;
     color: #ff1100;
+
     &__urgent {
       background-color: #ff980030;
       color: #ff9800;
     }
+
     &__nomal {
       color: #ffffff;
       background-color: blue;
     }
+
     &__1 {
       background-color: #f44336 !important;
       color: white !important;
       font-weight: 400 !important;
     }
+
     &__0 {
       background-color: #fd7e14 !important;
       color: white !important;
       font-weight: 400 !important;
     }
+
     &__2 {
       background-color: #f44336 !important;
       color: white !important;
       font-weight: 400 !important;
     }
   }
+
   &--status {
     display: flex;
   }
+
   &--button {
     position: absolute;
     top: 0;
     right: 0;
     display: none;
+
     // margin-right: -15px;
     svg {
       transform: rotate(90deg);
     }
+
     &:hover {
       background: none;
     }
-    & > span > svg {
+
+    &>span>svg {
       &:hover {
         fill: #03b000;
       }
     }
   }
+
   &:hover &--button {
     display: block;
   }
+
   &--statusIcon {
     background-color: #9696962b;
     color: #878787;
@@ -92,19 +110,24 @@
     margin: 4px;
     padding: 4px 6px;
     border-radius: 2px;
+
     svg {
       fill: #ffffff;
     }
+
     &__0 {
       background-color: #9696962b;
       color: #878787;
     }
+
     &__1 {
       background-color: #ff9800;
     }
+
     &__2 {
       background-color: #0ab711;
     }
+
     &__3 {
       background-color: #f44336;
     }
@@ -116,44 +139,56 @@
     display: flex;
     border-bottom: 1px solid #cccccc;
   }
+
   .MuiDialogContent-root {
     min-width: 600px;
     padding: 0;
   }
+
   .comp_CustomModal___scrollbar-main-medium {
     height: 60vh;
   }
+
   &--titleWrap {
     display: flex;
   }
+
   &--avatar {
     margin-right: 8px;
   }
+
   &--title {
     font-weight: bold;
   }
+
   &--priority {
     &Label {
       color: #ff1100;
+
       &__urgent {
         color: #ff9800;
       }
+
       &__nomal {
         color: blue;
       }
     }
   }
+
   &--createdAt {
     font-weight: normal;
   }
+
   &--closeButton {
     position: absolute;
     top: 0;
     right: 0;
   }
+
   &--container {
     padding: 0px 24px;
   }
+
   &--contentLabel {
     color: #111111;
     text-transform: unset;
@@ -165,6 +200,7 @@
     margin: 15px 0 10px;
     width: 100%;
   }
+
   &--content {
     font-weight: normal;
     margin: 20px 0px;
@@ -172,29 +208,35 @@
     font-size: 14px;
     line-height: 1.5;
   }
+
   &--data {
     display: flex;
   }
+
   &--user {
     display: flex;
     background-color: #f2f2f2;
     padding: 2px 7px 2px 2px;
     border-radius: 16px;
     margin-right: 10px;
+
     &Name {
       line-height: 20px;
     }
   }
+
   &--label {
     color: #6d6d6d;
     width: 25%;
     line-height: 17px;
   }
+
   &--avatarIcon {
     width: 15px;
     height: 15px;
     margin: auto 4px;
   }
+
   &--row {
     display: flex;
     color: #6d6d6d;
@@ -206,49 +248,61 @@
 .offerDetailItem {
   display: flex;
   margin: 8px;
+
   &--avatarIcon {
     margin: 4px;
   }
+
   &--data {
     background-color: #cccccc;
     padding: 8px;
   }
+
   &--itemName {
     font-weight: bold;
   }
+
   &--itemRole {
     font-weight: normal;
     color: #666666;
   }
+
   &--itemStatus {
     &__ok {
       color: green;
     }
+
     &__denied {
       color: red;
     }
   }
-  &--itemComment {
-  }
+
+  &--itemComment {}
+
   &--iconStatus {
     display: flex;
     justify-content: center;
     flex-direction: column;
+
     svg {
       fill: #ffffff;
     }
+
     &__ok {
       background-color: green;
     }
+
     &__denied {
       background-color: red;
     }
   }
+
   &--buttonMore {
     &:hover {
       background: none;
     }
-    & > span > svg {
+
+    &>span>svg {
       &:hover {
         fill: #03b000;
       }
@@ -260,28 +314,35 @@
   [class*="comp_LoadingOverlay___wrapper"] {
     height: 90vh !important;
   }
+
   [class*="comp_CustomModal___scroll"] {
     height: 100% !important;
   }
+
   .MuiFormControl-marginNormal {
     margin-top: 0;
   }
+
   .dialogWrap--scroll {
     height: 70vh;
   }
+
   &--content {
     margin: 20px 0;
     min-width: 500px;
     font-size: 14px;
     line-height: 1.5;
   }
+
   &--user {
     display: flex;
+
     &Name {
       font-size: 14px;
       font-weight: 700;
     }
   }
+
   &--priority {
     padding: 0px 10px;
     position: relative;
@@ -294,10 +355,12 @@
     background-color: #ff110038;
     color: #ff1100;
   }
+
   &--select {
     display: flex;
     justify-content: space-evenly;
   }
+
   &--option {
     margin: 10px;
     border: 1px solid #dddddd;
@@ -306,43 +369,54 @@
     padding: 4px;
     width: 160px;
     cursor: pointer;
+
     &-icon {
       color: #fff;
       padding: 4px;
       background-color: #dddddd;
       text-align: center;
     }
+
     &-text {
       padding: 20px;
       text-transform: uppercase;
       font-weight: 500;
       text-align: center;
     }
+
     &__selected {
       color: #787878;
     }
+
     svg {
       fill: #999999;
     }
+
     &__red {
       border: 2px solid red;
+
       .approve--option-icon {
         background-color: red;
       }
+
       svg {
         fill: #ffffff;
       }
     }
+
     &__green {
       border: 2px solid #09c209;
+
       .approve--option-icon {
         background-color: #09c209;
       }
+
       svg {
         fill: #ffffff;
       }
     }
   }
+
   &--title {
     color: rgb(154, 154, 154);
     text-transform: uppercase;
@@ -354,15 +428,21 @@
     width: 100%;
     margin: 25px 0px 10px;
   }
+
   &__warning {
     padding: 0px 15px;
     background: rgb(252, 232, 230);
     color: rgb(230, 86, 86);
     display: flex;
     align-items: center;
+
     &_content {
       margin-left: 10px;
       line-height: 1.5;
+
+      &>b>a {
+        color: rgb(230, 86, 86) !important;
+      }
     }
   }
 }
