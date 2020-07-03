@@ -330,6 +330,7 @@ const Image = React.memo(({ image }) => {
             {
               ...image,
               url: url,
+              url_thumbnail: image.url_thumb || image.url,
             },
           ])
         )
