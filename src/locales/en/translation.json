@@ -1710,6 +1710,7 @@
   "LABEL_CHAT_TASK_LAN_DIEU_CHINH_COUNT": "{{count}} lần điều chỉnh",
   "LABEL_CHAT_TASK_LUC_TIME_NGAY_DATE": "Lúc {{time}} ngày {{date}}",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUNG": "Tiến độ công việc sẽ được tính khi huỷ bỏ tạm dừng!",
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC": "Tiến độ công việc",
   "LABEL_CHAT_TASK_DA_DO_TASK": "đã {{taskName}}",
   "VIEW_OFFER_LABEL_YOUR_OFFER": "Your offer",
   "VIEW_OFFER_LABEL_OVERVIEW_TITLE": "Overview",

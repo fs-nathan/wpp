@@ -93,6 +93,7 @@ function RemindModal(props) {
   const dataRemind = useSelector(state => state.chat.dataRemind);
   const isFetching = useSelector(state => state.taskDetail.taskRemind.isFetching)
   const error = useSelector(state => state.taskDetail.taskRemind.error)
+
   const selector = [
     {
       value: 0,

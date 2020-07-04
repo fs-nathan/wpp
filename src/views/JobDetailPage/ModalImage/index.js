@@ -296,7 +296,7 @@ const ModalImage = () => {
                       <WrapperImage
                         onClick={() => setCurrentImage(index)}
                         key={`1-${index}`}>
-                        <Image src={image.url_thumbnail} alt='avatar' selected={currentImage === index} />
+                        <Image src={image.url_thumbnail || image.src} alt='avatar' selected={currentImage === index} />
                       </WrapperImage>
                     );
                   })

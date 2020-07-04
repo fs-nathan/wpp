@@ -23,6 +23,9 @@
     height: auto;
   }
   &--rightContentWrap {
-    margin-left: 10px;
+    margin-left: 25px;
+    &__self {
+      margin-right: 15px;
+    }
   }
 }

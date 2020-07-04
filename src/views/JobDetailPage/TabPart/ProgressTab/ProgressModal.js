@@ -77,8 +77,7 @@ const ProgressModal = (props) => {
         end_date,
         type_time,
       } = detailTask;
-      let today = new Date()
-      const defaultStart = `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`
+      const defaultStart = convertDate(new Date());
 
       setStartDay(start_date ?
         convertDateByFormat(start_date, dateFormat) : defaultStart)
