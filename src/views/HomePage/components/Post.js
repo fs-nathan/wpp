@@ -610,9 +610,14 @@ const MemberLikeAndLoveModal = ({ open, setModal }) => {
               ))}
               {!list.length && (
                 <EmptyHolder
+                  style={{ padding: 0 }}
                   image={
                     <img
-                      style={{ width: "80%" }}
+                      style={{
+                        objectFit: "cover",
+                        maxWidth: "60%",
+                        margin: "auto",
+                      }}
                       src={nodataimg}
                       alt="empty"
                     ></img>
@@ -829,7 +834,10 @@ export const PostContainer = ({ post, children }) => {
           dispatch(postModule.actions.cancelPinPost({ post_id: id }));
           break;
         case "delete":
-          dispatch(postModule.actions.deletePost({ post_id: id }));
+          const confirmDelete = window.confirm("Bạn muốn xóa bài viết ?");
+          if (confirmDelete) {
+            dispatch(postModule.actions.deletePost({ post_id: id }));
+          }
           break;
         case "edit":
           setModal(
