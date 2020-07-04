@@ -1151,7 +1151,7 @@ function* updateTimeDuration(action) {
     // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
-    yield put(actions.updateTimeDurationFail);
+    yield put(actions.updateTimeDurationFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }
 }
