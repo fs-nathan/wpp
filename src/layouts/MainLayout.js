@@ -224,7 +224,13 @@ function MainLayout({
     console.log("handleViewChat", data);
     const { user_name, user_avatar, user_id } = data;
     // getViewedChatSuccess(data)
-    appendViewedChat({ id: user_id, name: user_name, avatar: user_avatar });
+    if (user_id !== profile.id) {
+      appendViewedChat({
+        id: user_id,
+        name: user_name,
+        avatar: user_avatar
+      });
+    }
   }
 
   useEffect(() => {
@@ -285,9 +291,9 @@ function MainLayout({
       if (!task) {
         getListTaskDetail(projectId);
       } else {
-        if (task_id !== taskDetails.id) {
-          data.new_chat = user_create_id === profile.id ? 0 : 1;
-        }
+        // if (task_id !== taskDetails.id) {
+        data.new_chat = user_create_id === profile.id ? 0 : 1;
+        // }
         data.content = content[language];
         data.updatedAt = Date.now();
         updateProjectChat(data);
@@ -350,7 +356,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) {}
+    } catch (error) { }
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(

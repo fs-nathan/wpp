@@ -85,8 +85,8 @@
     display: block;
   }
   &--statusIcon {
-    background-color: #9696962b;
-    color: #878787;
+    background-color: #9e9e9e;
+    color: #ffffff;
     font-size: 12px;
     font-weight: 500;
     margin: 4px;
@@ -95,15 +95,18 @@
     svg {
       fill: #ffffff;
     }
-    &__rejected {
-      background-color: red;
+    &__0 {
+      background-color: #9e9e9e;
+      // color: #878787;
     }
-    &__approve {
-      background-color: greenyellow;
+    &__1 {
+      background-color: #ff9800;
     }
-    &__normal {
-      background-color: #9696962b;
-      color: #878787;
+    &__2 {
+      background-color: #0ab711;
+    }
+    &__3 {
+      background-color: #f44336;
     }
   }
 }
@@ -353,8 +356,8 @@
   }
   &__warning {
     padding: 0px 15px;
-    background: rgb(252,232,230);
-    color: rgb(230,86,86);
+    background: rgb(252, 232, 230);
+    color: rgb(230, 86, 86);
     display: flex;
     align-items: center;
     &_content {

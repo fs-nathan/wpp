@@ -33,9 +33,11 @@ function ListProjectHeader({ setShow }) {
           className="job-detail-icon"
         />
         <div>{t('LABEL_CHAT_TASK_DANH_SACH_DU_AN')}</div>
-        <IconButton className="listProjectHeader--button" onClick={closeListProject}>
-          <Icon path={mdiClose} size={1} className="job-detail-icon" />
-        </IconButton>
+        <abbr title={t('LABEL_CHAT_TASK_DONG')}>
+          <IconButton className="listProjectHeader--button" onClick={closeListProject}>
+            <Icon path={mdiClose} size={1} className="job-detail-icon" />
+          </IconButton>
+        </abbr>
       </div>
       <SearchInput
         placeholder={t('LABEL_CHAT_TASK_TIM_DU_AN')}

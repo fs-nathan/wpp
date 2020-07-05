@@ -13,7 +13,7 @@ const UpdateRoleMember = ({
   member_name,
   member_avatar,
   time_create,
-  roles,
+  roles = [],
   chatPosition = "top",
 }) => {
   const { t } = useTranslation();

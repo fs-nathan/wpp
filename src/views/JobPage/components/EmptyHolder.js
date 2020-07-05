@@ -10,10 +10,11 @@ function EmptyHolder({
   bgColor,
   title = "Không có dữ liệu",
   description = "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc",
+  ...props
 }) {
   const { t } = useTranslation();
   return (
-    <div className="comp_EmptyHolder__wrapper">
+    <div className="comp_EmptyHolder__wrapper" {...props}>
       {image ? (
         image
       ) : (

@@ -20,6 +20,7 @@ const CustomListItem = (props) => {
     total_rejected,
     date_label, hour_label,
     status_name,
+    status_code,
     number_have_to_handle, number_accepted,
     can_modify,
   } = props.offer || {}
@@ -53,7 +54,7 @@ const CustomListItem = (props) => {
           <span className={clsx("offerTabItem--priority", `offerTabItem--priority__${priority_code}`)}>
             {priority_name}
           </span>
-          <div className={clsx("offerTabItem--statusIcon", `offerTabItem--statusIcon__${status}`)}>
+          <div className={clsx("offerTabItem--statusIcon", `offerTabItem--statusIcon__${status_code}`)}>
             {/* <Icon path={status === 'rejected' ? mdiCancel : mdiCheck} size={1} />
              */}
             {/* {getStatusName(total_rejected, total_approved)} */}

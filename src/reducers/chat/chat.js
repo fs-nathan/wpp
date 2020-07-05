@@ -57,24 +57,29 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     case actionTypes.APPEND_CHAT:
       const idx = findIndex(draft.chats.data, ({ id }) => id && id === action.replaceId)
-      // console.log('idx', idx, action.replaceId)
       if (idx !== -1) {
-        const updateDate = { ...action.payload.data_chat }
+        const updateDate = { ...action.payload.data_chat };
         if (updateDate.images) {
-          updateDate.images.forEach(img => {
-            img.url = undefined;
+          const old = draft.chats.data[idx];
+          // console.log('idx', idx, action.replaceId, updateDate, old)
+          for (let index = 0; index < updateDate.images.length; index++) {
+            const img = updateDate.images[index];
+            const { url } = old.images[index]
+            img.url = url;
             img.url_thumb = undefined;
-          })
+            img.url_thumbnail = undefined;
+          }
         }
         draft.chats.data.splice(idx, 1, updateDate)
+        draft.focusId = null;
       } else {
         draft.chats.data.unshift(action.payload.data_chat)
+        draft.focusId = 'chatStatusDiv';
       }
       if (action.isHideSendStatus) {
         draft.isShowSendStatus = false;
       }
       draft.isMore = undefined;
-      draft.focusId = null;
       draft.focusTopId = null;
       break;
     case actionTypes.FETCH_MEMBER_CHAT:
@@ -84,9 +89,14 @@ export default (state = initialState, action) => produce(state, draft => {
       const { chat_id, last_id, isMore } = action;
       draft.isLoading = true;
       draft.focusId = chat_id;
-      draft.focusTopId = last_id;
       draft.chats.last_id = last_id || null;
-      if (chat_id) draft.isShowBackChat = true;
+      if (chat_id) {
+        draft.isShowBackChat = true;
+      }
+      if (last_id) {
+        draft.focusTopId = last_id;
+        draft.focusId = null;
+      }
       else if (!isMore) draft.isShowBackChat = false;
       if (!chat_id && !last_id && !isMore) {
         draft.chats.data = [];

@@ -124,6 +124,7 @@ function TabBody() {
     complete,
     complete_with_time,
     duration_value,
+    duration_unit,
   } = detailTask;
   const isHaveDate = (start_date && end_date);
   // const totalDay = isHaveDate ? differenceInDays(parseDate(end_date), parseDate(start_date)) : 0;
@@ -150,7 +151,9 @@ function TabBody() {
             <div className="progressTabBody--totalDay">
               <div>{t('LABEL_CHAT_TASK_TIEN_DO')}</div>
               {duration_value &&
-                <div>{t('LABEL_CHAT_TASK_NGAY_COUNT', { count: duration_value })}</div>}
+                <div>
+                  {`${duration_value} ${duration_unit}`}
+                </div>}
             </div>
             <div className="progressTabBody--end-date-box">
               <div>{t('LABEL_CHAT_TASK_KET_THUC_LABEL')}</div>

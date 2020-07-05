@@ -7,13 +7,17 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import './styles.scss';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 function ProjectMember(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const isFetching = useSelector(state => state.taskDetail.taskMember.isFetching);
+  const memberId = useSelector(state => state.taskDetail.taskMember.memberId);
 
   function onClickAdd() {
+    if (isFetching) return;
     dispatch(createMember({ task_id: taskId, member_id: props.id }))
     // console.log('hello', props)
   }
@@ -25,7 +29,16 @@ function ProjectMember(props) {
         <ColorTypo>{props.email}</ColorTypo>
         <ColorTypo color="orange">{props.label}</ColorTypo>
       </div>
-      <Button className="projectMemberItem--button" onClick={once(onClickAdd)}>{t('LABEL_CHAT_TASK_THEM')}</Button>
+      {isFetching && memberId === props.id &&
+        <CircularProgress size={20}
+          className="projectMemberItem--loading" />
+      }
+      <Button
+        disabled={isFetching}
+        className="projectMemberItem--button"
+        onClick={once(onClickAdd)}>
+        {t('LABEL_CHAT_TASK_THEM')}
+      </Button>
     </ListItem>
   )
 }

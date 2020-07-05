@@ -136,9 +136,7 @@ function Left({
                   return (
                     <StyledListItem
                       className={
-                        select && item && select.id === item.id
-                          ? "active onHover"
-                          : "onHover"
+                        select && item && select.id === item.id ? "active" : ""
                       }
                       key={id}
                       onClick={() => {
@@ -171,7 +169,6 @@ function Left({
                           can_modify ? (
                             <IconButton
                               title={t("thêm")}
-                              className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuAnchor(
@@ -195,7 +192,6 @@ function Left({
                           ) : (
                             <IconButton
                               title={t("Không sửa, xóa")}
-                              className="onHover__show"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 setMenuAnchor(
