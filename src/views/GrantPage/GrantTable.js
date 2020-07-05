@@ -36,6 +36,7 @@ import EditCell from "./EditCell";
 import Header from "./Header";
 import "./table.css";
 
+let checkTimeOut = null
 const SearchBox = ({ className = "", ...rest }) => (
   <div
     className={`comp_CustomTable_HeaderButtonGroup___search-box ${className}`}
@@ -306,7 +307,7 @@ class DragSortingTable extends React.Component {
           id: 1,
           width: 400,
           height: 100,
-          render: (text, record) => {
+          render: (text, record, index) => {
             const isHover = this.state.rowHover === record.key;
             if (record.isTotalDuration)
               return (
@@ -367,17 +368,24 @@ class DragSortingTable extends React.Component {
             ) : (
                 <React.Fragment>
                   <div
-                    onMouseLeave={() => {
-                      if (!window.scrollTable)
-                        this.setState({
-                          rowHover: -2,
-                        });
+                    onMouseOut={() => {
+                      if (!window.scrollTable) {
+                        const divs = document.getElementsByClassName("gantt--top-timeline-tr");
+                        if (!divs.length) return
+                        divs[index].style.backgroundColor = "";
+                        const divss = document.getElementsByClassName(
+                          "ant-table-row ant-table-row-level-0"
+                        );
+                        if (!divss[index]) return;
+                        divss[index].style.backgroundColor = record.isTotalDuration || record.isGroupTask ? "#fafafa" : "";
+                        this.handleSetRowHover(-2)
+                      }
+
                     }}
-                    onMouseMove={() => {
+                    onMouseOver={() => {
                       if (!window.scrollTable)
-                        this.setState({
-                          rowHover: record.key,
-                        });
+                        this.handleSetRowHover(record.key)
+
                     }}
                     style={{ display: "flex", height: 20, background: "inherit" }}
                   >
@@ -647,6 +655,16 @@ class DragSortingTable extends React.Component {
     };
     this.tableRef = React.createRef();
   }
+  handleSetRowHover = index => {
+    if (checkTimeOut) {
+      clearTimeout(checkTimeOut)
+    }
+    checkTimeOut = setTimeout(() => {
+      this.setState({
+        rowHover: index
+      })
+    }, 100)
+  }
   setProcessDatasource = (complete, index) => {
     try {
       const data = [...this.state.data];
@@ -706,7 +724,6 @@ class DragSortingTable extends React.Component {
       return true;
     } catch (e) {
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
-      console.log(e);
       return false;
     }
   };
@@ -879,11 +896,9 @@ class DragSortingTable extends React.Component {
       const { permissions } = permisstion.data
       const { schedules } = result.data;
       this.props.changeScheduleDetailGantt(schedules[0]);
-      console.log(permissions)
       this.props.changeCalendarPermisstion(permissions);
     } catch (e) {
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
-      console.log(e);
     }
   };
   setEventScroll = () => {
@@ -899,6 +914,8 @@ class DragSortingTable extends React.Component {
       const scrollVirtual = document.getElementById(
         "gantt--scroll-top_virtual"
       );
+      const gridTable = document.getElementById('gantt_table_grid')
+      gridTable.scrollTop = e.target.scrollTop
       scrollVirtual.scrollTop = e.target.scrollTop
       const timelineContainerRelative = document.getElementsByClassName(
         " gantt--timeline--container__relative"
@@ -943,7 +960,6 @@ class DragSortingTable extends React.Component {
       ])
     } catch (e) {
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
-      console.log(e);
     }
   };
   fetchSettingGantt = async (projectId) => {
@@ -982,7 +998,6 @@ class DragSortingTable extends React.Component {
       });
     } catch (e) {
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
-      console.log(e);
     }
   };
   components = {
@@ -1075,7 +1090,6 @@ class DragSortingTable extends React.Component {
         minMonth++;
         index++;
       }
-      console.log("addUnit", addUnit)
       allMonth.shift();
       this.setState({
         daysRender,
@@ -1269,7 +1283,6 @@ class DragSortingTable extends React.Component {
       const result = await changeTaskduration(data);
       this.fetchListTask(projectId, true, this.props.girdType);
     } catch (e) {
-      console.log(e);
     }
   };
   fetchNewDataSource = () => {
@@ -1429,12 +1442,10 @@ class DragSortingTable extends React.Component {
     const { startTimeProject, endTimeProject } = this.state;
     const boundRectTimeLineContainer = document.getElementById("drag-width-gantt-container")
     const widthExtra = boundRectTimeLineContainer ? boundRectTimeLineContainer.getBoundingClientRect().x : 800
-    console.log('widthExtra:', widthExtra)
     const widthPdf = this.props.renderFullDay
       ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 48 + widthExtra - 80
       : "auto";
     if (this.state.isLoading) return <LoadingBox />;
-    console.log(this.props)
     return (
       <React.Fragment>
 
@@ -1535,6 +1546,7 @@ class DragSortingTable extends React.Component {
                   onRow={(record, index) => ({
                     index,
                     moveRow: this.moveRow,
+                    handleSetRowHover: this.handleSetRowHover
                   })}
                 />
               </DndProvider>

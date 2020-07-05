@@ -10,6 +10,8 @@ import App from "./App";
 import store from "./configStore";
 import i18n from "./i18n";
 
+const styleNode = document.createComment('jss-insertion-point');
+document.head.insertBefore(styleNode, document.head.firstChild);
 const jss = create({
   ...jssPreset(),
   // Define a custom insertion point that JSS will look for when injecting the styles into the DOM.

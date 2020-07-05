@@ -94,7 +94,6 @@ function GanttChart({
   if (renderFullDay) {
     maxWidth = (end.diff(start, girdInstance.unit) + 1) * 48;
   }
-  console.log("renderFullDay", renderFullDay)
   const timeline = useMemo(
     () =>
       dataSource.map((item, index) => {
@@ -117,6 +116,7 @@ function GanttChart({
                   );
                   if (!divs[index]) return;
                   divs[index].style.backgroundColor = "#fffae6";
+                  console.log(divs, divs[index].style.backgroundColor)
                 }
               }}
               onMouseLeave={() => {
@@ -196,10 +196,12 @@ function GanttChart({
         dataSource={dataSource}
         leftHeader={leftHeader}
         leftTable={leftTable}
+        heightTable={heightTable}
       />
     ),
     [
       scrollWidth,
+      heightTable,
       daysRender,
       monthArray,
       start,
@@ -241,6 +243,8 @@ function GanttChart({
             const scrollVirtual = document.getElementById(
               "gantt--scroll-top_virtual"
             );
+            const gridTable = document.getElementById('gantt_table_grid')
+            gridTable.scrollTop = e.target.scrollTop
             scrollVirtual.scrollTop = e.target.scrollTop
             const timelineContainerRelative = document.getElementsByClassName(
               " gantt--timeline--container__relative"
@@ -390,6 +394,8 @@ function GanttChart({
                   const scrollVirtual = document.getElementById(
                     "gantt--scroll-top_virtual"
                   );
+                  const gridTable = document.getElementById('gantt_table_grid')
+                  gridTable.scrollTop = e.target.scrollTop
                   scrollVirtual.scrollTop = e.target.scrollTop
                   tableBody.scrollTop = e.target.scrollTop;
                   if (timeoutId) clearTimeout(timeoutId);

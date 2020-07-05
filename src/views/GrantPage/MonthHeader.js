@@ -12,6 +12,7 @@ const MonthHeader = ({
   dataSource,
   leftHeader = 0,
   leftTable,
+  heightTable
 }) => {
   const [countDay, setCountDay] = useState(daysRender.length);
   const [countTask, setCountTask] = useState(dataSource.length);
@@ -44,9 +45,9 @@ const MonthHeader = ({
   ));
   const createTable = (axisX, axisY) => {
     let tempTable = [];
-    for (let i = 0; i <= axisX; i++) {
+    for (let i = 0; i < axisX; i++) {
       let children = [];
-      for (let j = 0; j <= axisY; j++) {
+      for (let j = 0; j < axisY + girdInstance.addUnit; j++) {
         let backgroud = {};
         children.push(
           <div
@@ -74,6 +75,7 @@ const MonthHeader = ({
     return tempTable;
   };
   useEffect(() => {
+    console.log(countTask, 'áđas')
     setTable(createTable(countTask, countDay));
   }, [countTask, countDay, timelineColor]);
   return (
@@ -99,11 +101,14 @@ const MonthHeader = ({
           {day}
         </div>
         <div
+          id="gantt_table_grid"
           style={{
             position: "absolute",
             marginLeft: 1,
-            marginTop: 23.5,
+            marginTop: 23.8,
             left: leftTable,
+            overflow: 'scroll',
+            height: heightTable - 50
           }}
         >
           {visibleGantt.gridTable && table}

@@ -1141,9 +1141,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .gantt--calender-modal__button-container{
   border-top: 1px solid rgba(0,0,0,.1);
 }
-.ant-table-cell{
-  background: #fff;
-}
+
 
 #stringAppendLast{
   z-index: 1000;
@@ -1192,4 +1190,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .gantt--timeunitconfig__schedule .MuiInputBase-root{
   width: 100%;
   
+}
+.ant-table-tbody > tr.ant-table-row-level-1:hover > td {
+  background: unset !important;
 }

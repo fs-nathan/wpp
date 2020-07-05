@@ -9,7 +9,7 @@ export const initialState = {
     group: "#727272",
     task: "#FF8123",
     duration: "#01E03F",
-    timeNotWork: localStorage.getItem('timeNotWorkColor') || '#E1E1E',
+    timeNotWork: localStorage.getItem('timeNotWorkColor') || '#F1F1F1',
     gridTable: '#f5f5f5'
   },
   scheduleDetailGantt: {},
