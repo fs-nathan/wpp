@@ -33,6 +33,10 @@
   width: 100%;
   max-width: 200px;
 }
+.comp_Message__sticker img:hover {
+  cursor: pointer;
+  opacity: 0.7;
+}
 .comp_Message__reply {
   color: #3f51b5;
   margin-right: 8px;
