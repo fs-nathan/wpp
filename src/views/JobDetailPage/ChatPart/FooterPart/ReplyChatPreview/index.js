@@ -33,11 +33,13 @@ const ReplyChatPreview = ({ id,
   const file = files[0] || {};
   function getContent() {
     if (isOneOf(type, [CHAT_TYPE.CHAT_FILE_FROM_GOOGLE_DRIVER, CHAT_TYPE.CHAT_FORWARD_FILE, CHAT_TYPE.FILE]))
-      return <div className={clsx("ReplyChatPreview--fileName")}>
-        {file.name}&nbsp;&nbsp;&nbsp;&nbsp;
-        <span className={clsx("FileMessage--fileSize")}>
+      return <div className={clsx("ReplyChatPreview--file")}>
+        <div className={clsx("ReplyChatPreview--fileName")}>
+          {file.name}
+        </div>
+        <div className={clsx("ReplyChatPreview--fileSize")}>
           {getFileType(file.name)} - {file && file.size}
-        </span>
+        </div>
       </div>
     if (type === CHAT_TYPE.IMAGE)
       return <div >{t('LABEL_CHAT_TASK_HINH_ANH')}</div>

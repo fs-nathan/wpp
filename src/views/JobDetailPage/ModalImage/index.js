@@ -109,7 +109,7 @@ const ModalImage = () => {
 
   const { name = '', url } = imagesList[currentImage] || {};
   const type = getFileType(name);
-  // console.log(type, name)
+  // console.log('imagesList', imagesList)
 
   function onClickShare() {
     dispatch(openShareFileModal(true, imagesList[currentImage]))
@@ -173,7 +173,7 @@ const ModalImage = () => {
     const { id } = imagesList[currentImage] || {}
     async function getDetail() {
       const { data } = await getDocumentDetail({ file_id: id })
-      console.log('currentImage', data)
+      // console.log('currentImage', data)
       if (data.file) {
         const { user_create: { avatar, name }, size, name: file_name } = data.file;
         setImageInfo({
@@ -296,7 +296,7 @@ const ModalImage = () => {
                       <WrapperImage
                         onClick={() => setCurrentImage(index)}
                         key={`1-${index}`}>
-                        <Image src={image.url_thumbnail} alt='avatar' selected={currentImage === index} />
+                        <Image src={image.url_thumbnail || image.url} alt='avatar' selected={currentImage === index} />
                       </WrapperImage>
                     );
                   })
