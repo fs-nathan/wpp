@@ -125,9 +125,11 @@ const HeaderPart = props => {
         <Typography className="chatHeader--title">{t('LABEL_CHAT_TASK_THAO_LUAN')}</Typography>
         <TabForm tabs={tabs} />
       </div>
-      <IconButton className="chatHeader--button" onClick={openSearch}>
-        <Icon path={mdiMagnify} size={1.2} className="job-detail-icon" />
-      </IconButton>
+      <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>
+        <IconButton className="chatHeader--button" onClick={openSearch}>
+          <Icon path={mdiMagnify} size={1.2} className="job-detail-icon" />
+        </IconButton>
+      </abbr>
     </div>
   );
 };

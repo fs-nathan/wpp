@@ -25,7 +25,7 @@ function TabHeader({ setShow }) {
   const handleClickOpen = () => {
     if (!update_duration) return;
     setOpen(true);
-    dispatch(getTaskDetailTabPart({ taskId }));
+    // dispatch(getTaskDetailTabPart({ taskId }));
   };
 
   function onClickBack() {
