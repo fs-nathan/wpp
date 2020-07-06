@@ -33,7 +33,7 @@ const ApproveOfferDialog = (props) => {
     priority_code = 0,
     content,
     title,
-    id,
+    id, learn_more_redirect
   } = item;
   const priority = priorityList[priority_code].value;
 
@@ -103,7 +103,7 @@ const ApproveOfferDialog = (props) => {
           </div>
           <p className="approve__warning_content">
             {t("VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_1")}<br />
-            {t("VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_2")}<b>&#32;{t("VIEW_OFFER_LABEL_LEARN_MORE")}</b>
+            {t("VIEW_OFFER_TEXT_CREATE_APPROVE_WARNING_2")}<b>&#32;<a href={learn_more_redirect} target="_blank">{t("VIEW_OFFER_LABEL_LEARN_MORE")}</a></b>
           </p>
         </Box>
       </React.Fragment>

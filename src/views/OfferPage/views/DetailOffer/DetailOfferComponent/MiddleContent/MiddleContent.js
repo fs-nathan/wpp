@@ -29,7 +29,8 @@ const MiddleContent = ({
   condition_accept,
   members_can_approve,
   user_create_avatar,
-  additionQuery
+  additionQuery,
+  learn_more_redirect
 }) => {
   const { t } = useTranslation();
   const [openModal, setOpenModal] = useState(false)
@@ -82,7 +83,8 @@ const MiddleContent = ({
               priority_code,
               id,
               date_create: hour_label + " " + date_label,
-              action: action.HANDLE_OFFER
+              action: action.HANDLE_OFFER,
+              learn_more_redirect
             }}
             additionQuery={additionQuery}
           />

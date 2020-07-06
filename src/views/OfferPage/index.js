@@ -304,11 +304,10 @@ function OfferPage() {
 
   // Delete offer confirm modal
   const [showDeleteOfferConfirmModal, setShowDeleteOfferConfirmModal] = useState(false);
+  const [additionQuery, setAdditionQuery] = useState(null);
 
   function onDeleteOffer() {
-    dispatch(deleteOffer({
-      id: currentDetailOfferId
-    }));
+    dispatch(deleteOffer({ id: currentDetailOfferId }));
   }
 
   return (
@@ -339,7 +338,7 @@ function OfferPage() {
             setTitle, setDetailOfferModalOpen,
             setCurrentDetailOfferId, setShowDeleteOfferConfirmModal,
             scrollBarPosition, setScrollBarPosition,
-            handleOnDraggEnd, onDraggEnd, setFilterTab
+            handleOnDraggEnd, onDraggEnd, setFilterTab, setAdditionQuery
           }
           }>
           <div>
@@ -362,6 +361,7 @@ function OfferPage() {
                     setOpen={setDetailOfferModalOpen}
                     loading={detailOfferLoading}
                     {...detailOffer}
+                    additionQuery={additionQuery ? `task_id=${additionQuery}` : null}
                   />
                 )
               }
@@ -371,10 +371,12 @@ function OfferPage() {
                     open={showDeleteOfferConfirmModal}
                     setOpen={setShowDeleteOfferConfirmModal}
                     onConfirm={() => {
-                      setDetailOfferModalOpen(false);
+                      setShowDeleteOfferConfirmModal(false);
                       onDeleteOffer();
+                      setDetailOfferModalOpen(false);
                     }}
                     content={getDeleteOfferConfirmModalMsg(t)}
+                    manualClose={true}
                   />
                 )
               }

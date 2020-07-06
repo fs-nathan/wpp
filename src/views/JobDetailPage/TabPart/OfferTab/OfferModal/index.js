@@ -74,8 +74,6 @@ const OfferModal = ({
   const createUserIndex = findIndex(allMembers, member => member.id === createId);
   const [loading, setLoading] = React.useState(false);
 
-  console.log(allMembers);
-
   const fetchOffersGroup = async () => {
     const config = {
       url: "/offers/list-group-offer",
@@ -91,9 +89,11 @@ const OfferModal = ({
   }
 
   useEffect(() => {
-    dispatch(getMemberToAdd({ additionQuery: additionQuery }));
-    fetchOffersGroup();
-  }, [currentUserId]);
+    if (!isUpdateOfferDetailDescriptionSection) {
+      dispatch(getMemberToAdd({ additionQuery: additionQuery }));
+      fetchOffersGroup();
+    }
+  }, [currentUserId, isUpdateOfferDetailDescriptionSection]);
 
   useEffect(() => {
     if (offerItem) {
@@ -194,7 +194,6 @@ const OfferModal = ({
         }
       }
       setLoading(true);
-      console.log(actionCreateOffer);
       dispatch(actionCreateOffer);
     }
   };
