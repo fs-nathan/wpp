@@ -146,8 +146,9 @@ const updatePost = ({
   });
 };
 
-const deletePost = ({ post_id }) => {
+const deletePost = ({ post_id, asyncId }) => {
   return createPostAsyncAction({
+    asyncId,
     notifyOnSuccess: false,
     config: {
       url: "/posts/delete-post",
