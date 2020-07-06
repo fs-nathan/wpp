@@ -1356,6 +1356,7 @@
   "LABEL_CHAT_TASK_KHONG_DUOC_DE_TRONG": "Don't blank",
   "LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC": "Select the task group",
   "LABEL_CHAT_TASK_MO_TA_CONG_VIEC": "Task descriptions",
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC": "Task duration",
   "_DA_DUNG": "Duration",
   "LABEL_CHAT_TASK_LICH_CONG_VIEC": "Task schedule",
   "LABEL_CHAT_TASK_NGAY_BAT_DAU": "Start time",
@@ -1976,6 +1977,6 @@
   "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên": "Group rights are only assigned to the members of the module members",
   "Tìm hiểu thêm": "looking for more information",
   "Chỉnh sửa bài viết": "Edit Post",
-  "Thoát": "exit",
-  "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm"
+  "Thoát": "Exit",
+  "LABEL_CHAT_TASK_TIM_KIEM": "Search"
 }
