@@ -92,7 +92,7 @@ const RenderUpdateOfferDetailDescriptionSectionModal = (
         priority_code: priorityCode,
         offer_group_id: offerGroupId
       }}
-      additionQuery
+      additionQuery={additionQuery}
     />
   );
 };
