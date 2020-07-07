@@ -26,7 +26,12 @@ function SearchComponent({ changeKeyword }) {
   console.log('update')
   return (<React.Fragment
   >
-    <IconComponent onClick={e => setShow(!show)} title={t('LABEL_GANTT_NAME_SEARCH_MENU')} path={show ? mdiClose : mdiMagnify} />
+    <IconComponent onClick={e => {
+      if (show) {
+        changeKeyword('')
+      }
+      setShow(!show)
+    }} title={t('LABEL_GANTT_NAME_SEARCH_MENU')} path={show ? mdiClose : mdiMagnify} />
     {show && <StyledPopper
       className="gantt--right-menu__search"
       open={true}
@@ -40,6 +45,7 @@ function SearchComponent({ changeKeyword }) {
             <SearchInput
               className="gantt--search__icon"
               placeholder={t("Nhập nội dung cần tìm")}
+
               onClickSearch={() => {
                 changeKeyword(internalKeyword)
               }}
@@ -60,4 +66,5 @@ function SearchComponent({ changeKeyword }) {
 const mapDispatchToProps = {
   changeKeyword
 }
+
 export default connect(null, mapDispatchToProps)(SearchComponent)

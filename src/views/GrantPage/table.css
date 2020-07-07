@@ -788,7 +788,7 @@ div.checkbox-colortag--drawer {
 .gantt__select-project {
   width: 400px;
   position: absolute;
-  z-index: 1;
+  z-index: 100;
   background: #fff;
 }
 
@@ -886,7 +886,7 @@ div.checkbox-colortag--drawer {
   padding: 2px 0px;
   background-color: #fafafa;
   text-align: center;
-  width: 48px;
+  width: 35px;
 }
 
 .gantt-grid-background {

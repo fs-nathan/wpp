@@ -122,7 +122,7 @@ const ExportPDF = ({
             fullWidth
             name={i}
             size="small"
-            placeholder={previewContent[i]}
+            placeholder={previewContent[i] || t('GANTT_CONTENT_PDF', { index: i })}
             variant="outlined"
           />
         </div>

@@ -2037,5 +2037,6 @@
   "GANTT_QUÝ": "Quarter",
   "GANTT_EXPORT_PDF_DISPLAY_CALENDAR": "Display calendar",
   "GANTT_EXPORT_PDF_DISPLAY_CALENDAR_SELECT": "Select display calendar for gantt chart",
-  "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm"
+  "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm",
+  "GANTT_CONTENT_PDF": "Content {{index}}"
 }

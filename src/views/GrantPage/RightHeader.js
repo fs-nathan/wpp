@@ -79,8 +79,9 @@ const RightHeader = ({
             <div title={t('LABEL_GANTT_NAME_TODAY_MENU')} className="icon-fromNow-header">
               <IconComponent
                 onClick={() => scrollGantt(true)}
-                size={1.3}
+                size={'1.5rem'}
                 title={""}
+
                 path={mdiFlagVariant}
               />
             </div>

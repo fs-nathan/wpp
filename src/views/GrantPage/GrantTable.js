@@ -1443,7 +1443,7 @@ class DragSortingTable extends React.Component {
     const boundRectTimeLineContainer = document.getElementById("drag-width-gantt-container")
     const widthExtra = boundRectTimeLineContainer ? boundRectTimeLineContainer.getBoundingClientRect().x : 800
     const widthPdf = this.props.renderFullDay
-      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 48 + widthExtra - 80
+      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 35 + widthExtra - 80
       : "auto";
     if (this.state.isLoading) return <LoadingBox />;
     return (

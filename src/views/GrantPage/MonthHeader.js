@@ -55,7 +55,7 @@ const MonthHeader = ({
             style={{
               border: `0.2px solid ${timelineColor.gridTable}`,
               padding: "8.5px 0px",
-              width: 48,
+              width: 35,
               ...backgroud,
             }}
           >
@@ -75,7 +75,6 @@ const MonthHeader = ({
     return tempTable;
   };
   useEffect(() => {
-    console.log(countTask, 'áđas')
     setTable(createTable(countTask, countDay));
   }, [countTask, countDay, timelineColor]);
   return (
