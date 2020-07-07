@@ -11,7 +11,6 @@ import { useToggle } from "react-use";
 import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
 import { uniqueId } from "views/JobPage/utils";
-import { loginlineParams } from "views/OfferPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import { ChipGroup } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ChipGroup";
@@ -107,7 +106,7 @@ const ImageListField = ({
                 }}
                 renderListWrapper={(children) => (
                   <Scrollbars
-                    style={{ height: "140px" ,zIndex:1}}
+                    style={{ height: "140px", zIndex: 1 }}
                     renderView={(props) => (
                       <div
                         {...props}
@@ -587,32 +586,30 @@ export default ({ onClose, category }) => {
         // const getOrder = (f) => file_order[f.id];
         // const orderedFiles = sortBy(file, loginlineFunc(getOrder));
         // console.log({ file_order, orderedFiles });
-        const action = postModule.actions.createPost(
-          loginlineParams({
-            ...finalValues,
-            file_ids,
-            file,
-            google_data,
-            file_order: JSON.stringify(
-              file_order
-                .map((value) => {
-                  let index = file.findIndex((item) => {
-                    return item.id === value;
+        const action = postModule.actions.createPost({
+          ...finalValues,
+          file_ids,
+          file,
+          google_data,
+          file_order: JSON.stringify(
+            file_order
+              .map((value) => {
+                let index = file.findIndex((item) => {
+                  return item.id === value;
+                });
+                if (index >= 0) return "file_" + index;
+                if (index < 0) {
+                  index = file_ids.findIndex((id) => {
+                    return id === value;
                   });
-                  if (index >= 0) return "file_" + index;
-                  if (index < 0) {
-                    index = file_ids.findIndex((id) => {
-                      return id === value;
-                    });
-                    if (index >= 0) return value;
-                  }
+                  if (index >= 0) return value;
+                }
 
-                  return undefined;
-                })
-                .filter((item) => item)
-            ),
-          })
-        );
+                return undefined;
+              })
+              .filter((item) => item)
+          ),
+        });
         setAsyncAction(action);
       }}
     >
