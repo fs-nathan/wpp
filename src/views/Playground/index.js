@@ -8,7 +8,9 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core";
+import AlertModal from "components/AlertModal";
 import React, { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Route, Switch, useHistory } from "react-router-dom";
 import { usePrimarySubmitActionStyles } from "views/HomePage/components/PrimarySubmitAction";
 import ShareFromLibraryModal from "views/JobDetailPage/ChatComponent/ShareFromLibraryModal";
@@ -58,6 +60,7 @@ const routeEntities = {
     path: rootPath + "/webpush",
     breadcumName: "webpush",
     Component: ({ onBack }) => {
+      const [modal, setModal] = useState();
       const {
         isSubscribed,
         handleSubscribe,
@@ -65,6 +68,7 @@ const routeEntities = {
         loading,
       } = useWebpush();
       const classes = usePrimarySubmitActionStyles();
+      const { t } = useTranslation();
       return (
         <>
           <Grid
@@ -82,11 +86,19 @@ const routeEntities = {
                   !isSubscribed
                     ? handleSubscribe()
                     : (() => {
-                        if (
-                          window.confirm("Do you really want to unsubscribe?")
-                        ) {
-                          handleUnsubscribe();
-                        }
+                        setModal(
+                          <AlertModal
+                            open={true}
+                            setOpen={setModal}
+                            content={t("Do you really want to unsubscribe?z")}
+                            onConfirm={() => {
+                              handleUnsubscribe();
+                              setModal(undefined);
+                            }}
+                            onCancle={() => setModal(undefined)}
+                            manualClose={true}
+                          />
+                        );
                       })();
                 }}
                 color={!isSubscribed ? "primary" : "default"}
@@ -101,6 +113,7 @@ const routeEntities = {
                 />
               )}
             </div>
+            {!!modal && modal}
           </Grid>
         </>
       );
