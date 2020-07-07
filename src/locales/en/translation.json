@@ -1979,7 +1979,20 @@
   "Thoát": "exit",
   "Công việc gần đây": "Recent tasks",
   "Bạn có muốn xóa bài viết?": "Do you want to delete the post?",
+  "Bạn có muốn xóa bình luận ?": "Do you want to delete the comment ?",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC": "Tiến độ công việc",
   "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm",
-  "Module thành viên": "Member mudule"
+  "Module thành viên": "Member mudule",
+  "Trang chủ": "Home",
+  "Lịch": "Calendar",
+  "Đề xuất": "Offers",
+  "Dự án": "Projects",
+  "Lưu trữ": "Storages",
+  "Nhân viên": "Users",
+  "Home": "Home",
+  "Calendar": "Calendar",
+  "Offers": "Offers",
+  "Projects": "Projects",
+  "Storages": "Storages",
+  "Users": "Users"
 }
