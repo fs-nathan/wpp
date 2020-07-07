@@ -92,7 +92,7 @@ const RenderUpdateOfferDetailDescriptionSectionModal = (
         priority_code: priorityCode,
         offer_group_id: offerGroupId
       }}
-      additionQuery
+      additionQuery={additionQuery}
     />
   );
 };
@@ -291,6 +291,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   const [alerModal, setAlertModal] = useState(false);
   const [selectedMember, setSelectedMember] = useState(null);
   const { setDetailOfferModalOpen } = useContext(OfferPageContext);
+  const [deletedMemberID, setDeletedMemberID] = useState(null);
 
   const disabledMemberIndexes = [];
   allMembers.forEach((member, idx) => {
@@ -315,12 +316,13 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
   }
 
   const onDeleteHandler = ({ offer_id, member_id }) => {
+    setDeletedMemberID(member_id);
     dispatch(deleteMemberHandle({ offer_id, member_id, additionQuery }));
   }
 
   useEffect(() => {
     const afterRemoveResponsibility = () => {
-      setDetailOfferModalOpen(false);
+      if (currentUserId === deletedMemberID) setDetailOfferModalOpen(false);
     }
     CustomEventListener(DELETE_MEMBER_HANDLE_SUCCESS, afterRemoveResponsibility);
     CustomEventListener(DELETE_MEMBER_MONITOR_SUCCESS, afterRemoveResponsibility);
@@ -328,7 +330,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
       CustomEventDispose(DELETE_MEMBER_HANDLE_SUCCESS, afterRemoveResponsibility);
       CustomEventDispose(DELETE_MEMBER_MONITOR_SUCCESS, afterRemoveResponsibility);
     }
-  }, [dispatch]);
+  }, [dispatch, deletedMemberID]);
 
   return (
     <>

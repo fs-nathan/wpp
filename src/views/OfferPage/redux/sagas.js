@@ -165,7 +165,8 @@ export function* doUpdateOfferDetailDescriptionSection({ payload }) {
   try {
     const { offerId, title, content, offerGroupId, priorityCode, additionQuery } = payload
     const config = {
-      url: additionQuery ? `/offers/update-info?${additionQuery}` : "/offers/update-info",
+      //url: additionQuery ? `/offers/update-info?${additionQuery}` : "/offers/update-info",
+      url: "/offers/update-info",
       method: "POST",
       data: {
         offer_id: offerId,
@@ -197,7 +198,8 @@ export function* doUpdateOfferApprovalCondition({ payload }) {
       dataToSend.member_accepted_important = memberAcceptedImportantIds;
     }
     const config = {
-      url: additionQuery ? "/offers/update-condition-accept?" + additionQuery : "/offers/update-condition-accept",
+      //url: additionQuery ? "/offers/update-condition-accept?" + additionQuery : "/offers/update-condition-accept",
+      url: "/offers/update-condition-accept",
       method: "POST",
       data: dataToSend,
     }
@@ -213,7 +215,8 @@ export function* doGetCommentListOfferDetail({ payload }) {
   try {
     const { offerId, additionQuery } = payload;
     const config = {
-      url: additionQuery ? `/offers/list-comment?offer_id=${offerId}&${additionQuery}` : "/offers/list-comment?offer_id=" + offerId,
+      //url: additionQuery ? `/offers/list-comment?offer_id=${offerId}&${additionQuery}` : "/offers/list-comment?offer_id=" + offerId,
+      url: "/offers/list-comment?offer_id=" + offerId,
       method: "GET",
     };
     const result = yield apiService(config)
@@ -226,7 +229,8 @@ export function* doPostCommentOfferDetail({ payload }) {
   try {
     const { offerId, content, additionQuery } = payload;
     const config = {
-      url: additionQuery ? "/offers/create-comment?" + additionQuery : "/offers/create-comment",
+      //url: additionQuery ? "/offers/create-comment?" + additionQuery : "/offers/create-comment",
+      url: "/offers/create-comment",
       method: "POST",
       data: {
         offer_id: offerId,
@@ -243,7 +247,8 @@ export function* doUpdateCommentOfferDetail({ payload }) {
   try {
     const { commentId, content, additionQuery } = payload;
     const config = {
-      url: additionQuery ? "/offers/update-comment?" + additionQuery : "/offers/update-comment",
+      //url: additionQuery ? "/offers/update-comment?" + additionQuery : "/offers/update-comment",
+      url: "/offers/update-comment",
       method: "POST",
       data: {
         comment_id: commentId,
@@ -260,7 +265,8 @@ export function* doRemoveCommentOfferDetail({ payload }) {
   try {
     const { commentId, additionQuery } = payload;
     const config = {
-      url: additionQuery ? "/offers/delete-comment?" + additionQuery : "/offers/delete-comment",
+      //url: additionQuery ? "/offers/delete-comment?" + additionQuery : "/offers/delete-comment",
+      url: "/offers/delete-comment",
       method: "DELETE",
       data: {
         comment_id: commentId,
@@ -295,7 +301,7 @@ export function* doDeleteOffer({ payload }) {
   try {
     const { id } = payload;
     const config = {
-      url: "/offers/personal/delete",
+      url: "/offers/delete",
       method: "POST",
       data: { offer_id: id }
     };
@@ -317,7 +323,8 @@ export function* doUploadDocumentOffer({ payload }) {
   try {
     const { data, additionQuery } = payload
     const config = {
-      url: additionQuery ? "/offers/upload-documents?" + additionQuery : "/offers/upload-documents",
+      //url: additionQuery ? "/offers/upload-documents?" + additionQuery : "/offers/upload-documents",
+      url: "/offers/upload-documents",
       method: "POST",
       data: data,
       headers: { 'Content-Type': 'multipart/form-data' }
@@ -334,7 +341,8 @@ export function* doDeleteDocumentOffer({ payload }) {
   try {
     const { file_id, offer_id, additionQuery } = payload
     const config = {
-      url: additionQuery ? "/offers/delete-documents?" + additionQuery : "/offers/delete-documents",
+      //url: additionQuery ? "/offers/delete-documents?" + additionQuery : "/offers/delete-documents",
+      url: "/offers/delete-documents",
       method: "POST",
       data: { file_id, offer_id }
     }
@@ -352,7 +360,8 @@ export function* doAddMemberHandle({ payload }) {
   try {
     const { offer_id, member_id, additionQuery } = payload
     const config = {
-      url: additionQuery ? "/offers/add-member-handle?" + additionQuery : "/offers/add-member-handle",
+      //url: additionQuery ? "/offers/add-member-handle?" + additionQuery : "/offers/add-member-handle",
+      url: "/offers/add-member-handle",
       method: "POST",
       data: { offer_id, member_id }
     }
@@ -368,7 +377,8 @@ export function* doDeleteMemberHandle({ payload }) {
   try {
     const { offer_id, member_id, additionQuery } = payload
     const config = {
-      url: additionQuery ? "/offers/remove-member-handle?" + additionQuery : "/offers/remove-member-handle",
+      //url: additionQuery ? "/offers/remove-member-handle?" + additionQuery : "/offers/remove-member-handle",
+      url: "/offers/remove-member-handle",
       method: "POST",
       data: { offer_id, member_id }
     }
@@ -386,7 +396,8 @@ export function* doAddMemberMonitor({ payload }) {
   try {
     const { offer_id, member_id, additionQuery } = payload
     const config = {
-      url: additionQuery ? "/offers/add-member-monitor?" + additionQuery : "/offers/add-member-monitor",
+      //url: additionQuery ? "/offers/add-member-monitor?" + additionQuery : "/offers/add-member-monitor",
+      url: "/offers/add-member-monitor",
       method: "POST",
       data: { offer_id, member_id }
     }
@@ -401,7 +412,8 @@ export function* doDeleteMemberMonitor({ payload }) {
   try {
     const { offer_id, member_id, additionQuery } = payload
     const config = {
-      url: additionQuery ? "/offers/remove-member-monitor?" + additionQuery : "/offers/remove-member-monitor",
+      //url: additionQuery ? "/offers/remove-member-monitor?" + additionQuery : "/offers/remove-member-monitor",
+      url: "/offers/remove-member-monitor",
       method: "POST",
       data: { offer_id, member_id }
     }
@@ -419,7 +431,8 @@ export function* doHandleOffer({ payload }) {
   try {
     const { content, offer_id, status, additionQuery } = payload
     const config = {
-      url: additionQuery ? "/offers/handle?" + additionQuery : "/offers/handle",
+      //url: additionQuery ? "/offers/handle?" + additionQuery : "/offers/handle",
+      url: "/offers/handle",
       method: "POST",
       data: { offer_id, status, content }
     }

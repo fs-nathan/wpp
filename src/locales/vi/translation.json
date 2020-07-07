@@ -1358,6 +1358,7 @@
   "LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC": "Chọn nhóm công việc",
   "LABEL_CHAT_TASK_MO_TA_CONG_VIEC": "Mô tả công việc",
   "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC": "Tiến độ công việc",
+  "_DA_DUNG": "Tiến độ",
   "LABEL_CHAT_TASK_LICH_CONG_VIEC": "Lịch công việc",
   "LABEL_CHAT_TASK_NGAY_BAT_DAU": "Ngày bắt đầu",
   "LABEL_CHAT_TASK_NGAY_KET_THUC": "Ngày kết thúc",
@@ -2035,7 +2036,11 @@
   "GANTT_TUẦN": "Tuần",
   "GANTT_THÁNG": "Tháng",
   "GANTT_QUÝ": "Quý",
+  "GANTT_CONTENT_PDF": "Nội dung {{index}}",
   "GANTT_EXPORT_PDF_DISPLAY_CALENDAR": "Lịch hiển thị",
   "GANTT_EXPORT_PDF_DISPLAY_CALENDAR_SELECT": "Lựa chọn lịch hiển thị sơ đồ gantt",
-  "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm"
+  "Công việc gần đây": "Công việc gần đây",
+  "Bạn có muốn xóa bài viết?": "Bạn có muốn xóa bài viết?",
+  "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm",
+  "Module thành viên": "Module thành viên"
 }

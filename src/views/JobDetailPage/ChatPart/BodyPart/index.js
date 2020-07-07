@@ -299,7 +299,10 @@ const BodyPart = props => {
                   />
                   <div className="bodyChat--notifyName">{t('LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI', { name: user_create.name || '' })}</div>
                   <div className="bodyChat--projectName">{name}</div>
-                  <div className="bodyChat--projectProgress">{t('LABEL_CHAT_TASK_TIEN_DO_FROM_TO', { start_date, end_date })}</div>
+                  {
+                    start_date && end_date &&
+                    <div className="bodyChat--projectProgress">{t('LABEL_CHAT_TASK_TIEN_DO_FROM_TO', { start_date, end_date })}</div>
+                  }
                   <button onClick={onClickCreateMember}
                     className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
                 </div>
