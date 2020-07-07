@@ -8,6 +8,7 @@ import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
 // import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 import { CREATE_OFFER } from 'views/OfferPage/redux/types';
+import { getDataPinOnTaskChat } from 'actions/chat/chat';
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -277,6 +278,10 @@ function* updateRemindWithTimeDetail(action) {
     const res = yield call(doUpdateRemindWithTimeDetail, action.options.data);
     yield put(actions.updateRemindWithTimeDetailSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
+    const pinnedRemind = yield select(state => state.chat.pinnedRemind)
+    if (pinnedRemind.id === action.options.data.remind_id) {
+      yield put(getDataPinOnTaskChat(action.options.taskId));
+    }
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // yield put(appendChat(res));
   } catch (error) {
@@ -304,6 +309,10 @@ function* updateRemindWithDuration(action) {
     const res = yield call(doUpdateRemindWithDuration, action.options.data);
     yield put(actions.updateRemindWithDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.taskId }));
+    const pinnedRemind = yield select(state => state.chat.pinnedRemind)
+    if (pinnedRemind.id === action.options.data.remind_id) {
+      yield put(getDataPinOnTaskChat(action.options.taskId));
+    }
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     // yield put(appendChat(res));
   } catch (error) {
@@ -333,6 +342,10 @@ function* deleteRemind(action) {
     yield put(actions.deleteRemindSuccess(res));
     yield put(actions.getRemind({ taskId }));
     // yield put(appendChat(res));
+    const pinnedRemind = yield select(state => state.chat.pinnedRemind)
+    if (pinnedRemind.id === remind_id) {
+      yield put(getDataPinOnTaskChat(taskId));
+    }
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteRemindFail(error));

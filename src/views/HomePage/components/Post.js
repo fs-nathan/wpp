@@ -14,6 +14,7 @@ import { MoreVert } from "@material-ui/icons";
 import { withStyles } from "@material-ui/styles";
 import { mdiPin, mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
+import AlertModal from "components/AlertModal";
 import StyledTypo from "components/ColorTypo";
 import { apiService } from "constants/axiosInstance";
 import colors from "helpers/colorPalette";
@@ -815,6 +816,7 @@ export const PostContainer = ({ post, children }) => {
     postAttr.is_like,
     postAttr.can_modify,
   ])(post);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [modal, setModal] = useState();
   const profile = useSelector(profileSelector);
@@ -834,10 +836,26 @@ export const PostContainer = ({ post, children }) => {
           dispatch(postModule.actions.cancelPinPost({ post_id: id }));
           break;
         case "delete":
-          const confirmDelete = window.confirm("Bạn muốn xóa bài viết ?");
-          if (confirmDelete) {
-            dispatch(postModule.actions.deletePost({ post_id: id }));
-          }
+          // const confirmDelete = window.confirm("Bạn muốn xóa bài viết ?");
+          // if (confirmDelete) {
+          //   dispatch(postModule.actions.deletePost({ post_id: id }));
+          // }
+          const asyncId = Date.now();
+          setModal(
+            <AlertModal
+              open={true}
+              setOpen={setModal}
+              content={t("Bạn có muốn xóa bài viết?")}
+              onConfirm={() => {
+                dispatch(
+                  postModule.actions.deletePost({ post_id: id, asyncId })
+                );
+                setModal(undefined);
+              }}
+              onCancle={() => setModal(undefined)}
+              manualClose={true}
+            />
+          );
           break;
         case "edit":
           setModal(
@@ -865,9 +883,8 @@ export const PostContainer = ({ post, children }) => {
           break;
       }
     },
-    [dispatch, id, post, profile]
+    [dispatch, id, post, profile, t]
   );
-  const { t } = useTranslation();
   const menuoptions = useMemo(() => {
     return can_modify
       ? [

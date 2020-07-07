@@ -85,6 +85,7 @@ export function TaskTableRecently({ offers }) {
   const {
     setDetailOfferModalOpen,
     setCurrentDetailOfferId,
+    setAdditionQuery
   } = useContext(OfferPageContext);
 
   return (
@@ -137,6 +138,7 @@ export function TaskTableRecently({ offers }) {
                           setCurrentDetailOfferId(offer.id);
                           // Show offer detail modal
                           setDetailOfferModalOpen(true);
+                          setAdditionQuery(get(offer, 'task_id', null));
                         }}
                       >
                         {offer.title}

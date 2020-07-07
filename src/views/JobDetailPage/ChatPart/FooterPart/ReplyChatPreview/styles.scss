@@ -8,10 +8,24 @@
     color: inherit;
     font-size: inherit;
   }
+  &--file {
+    display: flex;
+  }
   &--fileName {
     margin: 10px 0;
     color: #666666;
     font-size: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 290px;
+  }
+  &--fileSize {
+    font-size: 13px;
+    margin-top: 10px;
+    margin-left: 10px;
+    color: #777777;
+    text-transform: uppercase;
   }
   &--cancel {
     position: absolute;

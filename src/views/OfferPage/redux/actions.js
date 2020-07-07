@@ -286,14 +286,10 @@ export const removeCommentOfferDetail = ({
 export const createOffer = () => ({
   type: CREATE_OFFER,
 })
-export const deleteOffer = ({
-  id
-}) => {
+export const deleteOffer = ({ id }) => {
   return {
     type: DELETE_OFFER,
-    payload: {
-      id
-    },
+    payload: { id },
   };
 }
 export const uploadDocumentOffer = ({
