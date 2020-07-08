@@ -6,12 +6,16 @@ import { mdiFilePdf } from "@mdi/js";
 import Icon from "@mdi/react";
 import kendo from "@progress/kendo-ui";
 import { Drawer } from "antd";
+import { apiService } from "constants/axiosInstance";
 import { get } from 'lodash';
 import React, { useEffect, useState } from "react";
 import { Scrollbars } from "react-custom-scrollbars";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
 import { changeFilterExportPdf, changePreviewContent, changeRenderFullDay } from "../../../actions/gantt";
 import { changeVisibleExportPdfDrawer } from "../../../actions/system/system";
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../../constants/snackbarController';
 import "../../../views/JobPage/components/QuickViewFilter.css";
 import "../../../views/JobPage/Layout/QuickView.css";
 import PreviewPdfModal from "../../PreviewModal";
@@ -41,7 +45,8 @@ const ExportPDF = ({
   const [startTime, setStartTime] = useState(Date.now());
   const [endTime, setEndTime] = useState(Date.now());
   const [isLoading, setIsLoading] = useState(false);
-
+  const params = useParams()
+  const { t } = useTranslation()
   useEffect(() => {
     setContentPreview(previewContent);
   });
@@ -117,7 +122,7 @@ const ExportPDF = ({
             fullWidth
             name={i}
             size="small"
-            placeholder={previewContent[i]}
+            placeholder={previewContent[i] || t('GANTT_CONTENT_PDF', { index: i })}
             variant="outlined"
           />
         </div>
@@ -161,6 +166,30 @@ const ExportPDF = ({
       </div>
     );
   };
+  const handleSavePdfInfo = async () => {
+    try {
+      const { projectId } = params;
+      const data = {
+        project_id: projectId,
+        top_left: contentPreview[0],
+        top_center: contentPreview[1],
+        top_right: contentPreview[2],
+        bottom_left: contentPreview[3],
+        bottom_center: contentPreview[4],
+        bottom_right: contentPreview[5],
+      }
+      await apiService({
+        url: `/gantt/setting-export-pdf-info`,
+        data,
+        method: 'post'
+      });
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, "Lưu thành công");
+    } catch (e) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+      console.log(e);
+      return false;
+    }
+  }
   return (
     <React.Fragment>
       <Drawer
@@ -179,7 +208,7 @@ const ExportPDF = ({
                   path={mdiFilePdf}
                 ></Icon>
                 <Box className="comp_QuickViewFilter__headerTitle">
-                  XUẤT FILE PDF
+                  {t('LABEL_GANTT_NAME_EXPORT_MENU').toUpperCase()}
                 </Box>
               </Box>
             </div>
@@ -210,7 +239,7 @@ const ExportPDF = ({
                 color: get(profileDetail, 'group_active.color', '#f2f2f2')
               }}
             >
-              Xuất file PDF
+              {t('LABEL_GANTT_NAME_EXPORT_MENU')}
             </Button>
           </div>
         }
@@ -218,17 +247,17 @@ const ExportPDF = ({
         <StyledScrollbarsSide autoHide autoHideTimeout={500} height={"tail"}>
           <div className="export-pdf--drawer__container">
             <p className="config--drawer--section config--drawer--section-subtitle">
-              Thiết lập trục thời gian{" "}
+              {t('GANTT_EXPORT_PDF_SET_CONTENT')} <span onClick={handleSavePdfInfo} className="config--drawer--section-subtitle__blue-text" >{t('GANTT_EXPORT_PDF_SAVE_CONTENT')}</span>
             </p>
             <div className="config--drawer--checkbox-section">
               {renderInput()}
             </div>
             <p className="config--drawer--section config--drawer--section-subtitle">
-              Khổ giấy <span style={{ color: "#b9b9b9" }}>Tự động</span>
+              {t('GANTT_EXPORT_PDF_PAPER_SIZE')}  <span style={{ color: "#b9b9b9" }}>{t('GANTT_EXPORT_PDF_AUTO')} </span>
             </p>
             <div className="config--drawer--checkbox-section"></div>
             <p className="config--drawer--section config--drawer--section-subtitle">
-              Thời gian
+              {t('GANTT_EXPORT_PDF_TIME')}
             </p>
             <div className="config--drawer--checkbox-section">
               <FormControl size="small" variant="outlined">
@@ -241,8 +270,8 @@ const ExportPDF = ({
                     id: "outlined-filter-native-simple",
                   }}
                 >
-                  <option value={1}>Toàn bộ thời gian</option>
-                  <option value={0}>Tùy chỉnh</option>
+                  <option value={1}>{t('GANTT_EXPORT_PDF_ALL_TIME')}</option>
+                  <option value={0}>{t('GANTT_EXPORT_PDF_LIMIT_TIME')}</option>
                 </Select>
               </FormControl>
             </div>

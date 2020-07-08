@@ -275,3 +275,8 @@
 .gantt-schedule-modal__checkbox-label {
   color: rgba(0, 0, 0, 0.87) !important;
 }
+
+.gantt-right-part-scroll__container{
+  height: calc(100% - 135px) !important;
+  width: calc(100% - 24px) !important;;
+}

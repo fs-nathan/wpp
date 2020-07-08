@@ -6,6 +6,7 @@ import { Checkbox, Drawer } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import { ChromePicker } from "react-color";
 import { Scrollbars } from "react-custom-scrollbars";
+import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { actionChangeColorGanttSetting, actionChangeVisibaleGanttSetting, changeTimelineColor, changeVisible } from "../../../actions/gantt";
 import { changeVisibleConfigGantt } from "../../../actions/system/system";
@@ -35,6 +36,7 @@ const TagColor = ({ color, setColor, type, projectInfo }) => {
     setShow(true);
   };
   const onChangeComplete = (value) => {
+    console.log(type)
     actionChangeColorGanttSetting(projectInfo.id, type, value.hex);
   };
   return (
@@ -133,6 +135,8 @@ const CommonConfig = ({
   const handleChangeColor = (type, hex) => {
     changeTimelineColor(type, hex);
   };
+  const { t } = useTranslation()
+
   useEffect(() => {
     localStorage.setItem("ganttConfig", JSON.stringify(visibleGantt))
   }, [visibleGantt])
@@ -147,7 +151,7 @@ const CommonConfig = ({
                 className="comp_QuickViewFilter__headerIcon"
                 path={pathSettingIcon}
               ></Icon>
-              <Box className="comp_QuickViewFilter__headerTitle">CÀI ĐẶT</Box>
+              <Box className="comp_QuickViewFilter__headerTitle">{t('LABEL_GANTT_NAME_COMMON_DRAWER_TITLE')}</Box>
             </Box>
           </div>
           <div className="comp_QuickViewHeaderRight">
@@ -164,19 +168,19 @@ const CommonConfig = ({
       style={{ height, top: `calc(100vh - ${height}px` }}
     >
       <StyledScrollbarsSide autoHide autoHideTimeout={500} height={"tail"}>
-        <p className="config--drawer--section">Bảng dữ liệu</p>
+        <p className="config--drawer--section">{t('LABEL_GANTT_TABLE_CONFIG')}</p>
         <p className="config--drawer--title">
-          Ẩn / hiện / sắp xếp trường dữ liệu
+          {t('LABEL_GANTT_TABLE_VISIBLE_SORT_CONFIG')}
         </p>
         <div className="config--drawer--checkbox-section ml-0">
           <CheckboxIndex />
         </div>
         <p style={{ marginTop: "2em" }} className="config--drawer--section">
-          Sơ đồ gantt
+          {t('LABEL_GANTT_GANTT__CONFIG')}
         </p>
         <div className="config--drawer--checkbox-section">
           <CheckboxColorTimeLine
-            text="Tổng tiến độ dự án"
+            text={t('LABEL_GANTT_TOTAL_DURATION_CONFIG')}
             color={timelineColor.total}
             checked={visibleGantt.total}
             setColor={handleChangeColor}
@@ -189,7 +193,7 @@ const CommonConfig = ({
             checked={visibleGantt.group}
             changeVisible={changeVisible}
             type={"group"}
-            text="Nhóm công việc"
+            text={t('LABEL_GANTT_GROUP_TASK_CONFIG')}
             color={timelineColor.group}
             disabled={true}
             setColor={handleChangeColor}
@@ -200,7 +204,7 @@ const CommonConfig = ({
             checked={visibleGantt.task}
             changeVisible={changeVisible}
             type={"task"}
-            text="Công việc"
+            text={t('LABEL_GANTT_TASK_CONFIG')}
             color={timelineColor.task}
             setColor={handleChangeColor}
           />
@@ -209,7 +213,7 @@ const CommonConfig = ({
             checked={visibleGantt.duration}
             changeVisible={changeVisible}
             type={"duration"}
-            text="Hoàn thành"
+            text={t('LABEL_GANTT_DURATION_CONFIG')}
             color={timelineColor.duration}
             setColor={handleChangeColor}
           />
@@ -218,8 +222,17 @@ const CommonConfig = ({
             checked={visibleGantt.timeNotWork}
             changeVisible={changeVisible}
             type={"timeNotWork"}
-            text="Ngày nghỉ làm"
+            text={t('LABEL_GANTT_DAY_NOT_WORK_CONFIG')}
             color={timelineColor.timeNotWork}
+            setColor={handleChangeColor}
+          />
+          <CheckboxColorTimeLine
+            projectInfo={projectInfo}
+            checked={visibleGantt.gridTable}
+            changeVisible={changeVisible}
+            type={"gridTable"}
+            text={t('LABEL_GANTT_GANTT_CHART_GRID_CONFIG')}
+            color={timelineColor.gridTable}
             setColor={handleChangeColor}
           />
           <div className="config--drawer--checkbox-wrapper">
@@ -228,7 +241,7 @@ const CommonConfig = ({
               onChange={(e) => changeVisible(e.target.checked, "gantt", "date")}
               className="config--drawer--checkbox"
             >
-              Hiện ngày bắt đầu/kết thúc trên sơ đồ gantt
+              {t('LABEL_GANTT_VISBILE_START_END_CHART_CONFIG')}
             </Checkbox>
           </div>
           <div className="config--drawer--checkbox-wrapper">
@@ -237,7 +250,7 @@ const CommonConfig = ({
               onChange={(e) => changeVisible(e.target.checked, "gantt", "name")}
               className="config--drawer--checkbox"
             >
-              Hiện tên công việc trên sơ đồ gantt
+              {t('LABEL_GANTT_VISBILE_TASK_NAME_CHART_CONFIG')}
             </Checkbox>
           </div>
           <div className="config--drawer--checkbox-wrapper">
@@ -248,7 +261,7 @@ const CommonConfig = ({
               }
               className="config--drawer--checkbox"
             >
-              Hiện tiến độ hoàn thành trên sơ đồ gantt
+              {t('LABEL_GANTT_VISBILE_COMPLETE_CHART_CONFIG')}
             </Checkbox>
           </div>
           <div className="config--drawer--checkbox-wrapper">
@@ -260,12 +273,12 @@ const CommonConfig = ({
               }}
               className="config--drawer--checkbox"
             >
-              Tiến độ kế hoạch đến ngày hôm nay
+              {t('LABEL_GANTT_DURATION_TODAY_CONFIG')}
             </Checkbox>
           </div>
         </div>
         <p style={{ marginTop: "2em" }} className="config--drawer--section">
-          Nhãn
+          {t('LABEL_GANTT_LABEL_CONFIG')}
         </p>
         <div className="config--drawer--checkbox-section">
           <div className="config--drawer--checkbox-wrapper">
@@ -282,7 +295,7 @@ const CommonConfig = ({
               }}
             >
               {" "}
-              Trạng thái
+              {t('LABEL_GANTT_STATUS_CONFIG')}
             </Checkbox>
           </div>
           <div className="config--drawer--checkbox-wrapper">
@@ -299,7 +312,7 @@ const CommonConfig = ({
               }}
             >
               {" "}
-              Thành viên
+              {t('LABEL_GANTT_MEMBER_CONFIG')}
             </Checkbox>
           </div>
           <div className="config--drawer--checkbox-wrapper">
@@ -316,7 +329,7 @@ const CommonConfig = ({
               }}
             >
               {" "}
-              Mức độ ưu tiên
+              {t('LABEL_GANTT_PRIOR_CONFIG')}
             </Checkbox>
           </div>
         </div>

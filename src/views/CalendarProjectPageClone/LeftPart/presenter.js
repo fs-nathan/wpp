@@ -1,8 +1,7 @@
-import { IconButton, ListItemText, MenuItem, MenuList, Paper } from "@material-ui/core";
-import { mdiCalendar, mdiDotsVertical, mdiPlus } from "@mdi/js";
+import { ListItemText } from "@material-ui/core";
+import { mdiCalendar, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import { changeFlagFetchProjectSchedules, changeProjectSchedule } from 'actions/gantt';
-import { Dropdown } from "antd";
 import { Primary, StyledList, StyledListItem } from "components/CustomList";
 import LeftSideContainer from "components/LeftSideContainer";
 import { apiService } from "constants/axiosInstance";
@@ -12,27 +11,9 @@ import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import UpdateProjectCalendar from "views/CalendarPage/views/Modals/UpdateProjectCalendar";
-import MoreMenuGantt from 'views/GrantPage/MenuMoreGantt';
 import { changeScheduleDetailGantt } from "../../../actions/gantt";
+import CustomMenu from './CustomMenuCalendar';
 import "./style.scss";
-
-
-const Menueee = (<Paper className="dsfsd">
-  <MenuList>
-    <MenuItem >Lịch dự án</MenuItem>
-    <MenuItem
-
-    >
-      Xuất file PDF
-</MenuItem>
-  </MenuList>
-</Paper>)
-const Banner = ({ className = "", ...props }) => (
-  <div
-    className={`view_CaledarProjectPageLeftPart_List___banner ${className}`}
-    {...props}
-  />
-);
 
 function CalendarProjectLeftPartPresenter({
   groupSchedules,
@@ -67,7 +48,6 @@ function CalendarProjectLeftPartPresenter({
       const result = await apiService({
         url: `project/get-schedules?project_id=${projectId}`
       })
-
       changeProjectSchedule(result.data.schedules)
       changeFlagFetchProjectSchedules(false)
     } catch (e) {
@@ -90,14 +70,19 @@ function CalendarProjectLeftPartPresenter({
             }
           }
         >
-          <StyledList>
-            {reducerProjectSchedules.map(item => ({
-              ...item,
-              id: item._id
-            })).map((item, index) => (
+          <StyledList className="gantt-left-menu-calendar__container">
+            {reducerProjectSchedules.map(item => {
+              console.log(item)
+              return {
+                ...item,
+                id: item._id
+              }
+            }).map((item, index) => (
               <React.Fragment key={index}>
                 <StyledListItem
-                  onClick={() => changeScheduleDetailGantt(item)}
+                  onClick={(e) => {
+                    changeScheduleDetailGantt(item)
+                  }}
                   className={`${
                     scheduleDetailGantt.id == get(item, "id", "")
                       ? "item-actived gantt-calendar__left-side"
@@ -121,43 +106,7 @@ function CalendarProjectLeftPartPresenter({
                       </Primary>
                     }
                   />
-                  {item.can_modify && (
-                    <abbr title={t("IDS_WP_MORE")}>
-                      <Icon
-                        path={mdiDotsVertical}
-                        size={1.4}
-                        color={item.color || "rgba(0, 0, 0, 0.54)"}
-                        onClick={(evt) => doOpenMenu(evt.currentTarget)}
-                      />
-                    </abbr>
-                  )}
-                  <Dropdown
-                    overlay={() =>
-                      <MoreMenuGantt />
-                    }
-                    onVisibleChange={(flag) => setVisible(flag)}
-                    visible={true}
-                    placement="bottomRight"
-                    trigger={["click", 'hover']}
-                  >
-                    <div>
-                      <IconButton
-                        className="MuiButtonBase-root MuiButton-root MuiButton-text comp_CustomTable_HeaderButtonGroup___button MuiButtonGroup-grouped MuiButtonGroup-groupedHorizontal MuiButtonGroup-groupedText MuiButtonGroup-groupedTextHorizontal MuiButtonGroup-groupedText MuiButton-textSizeSmall MuiButton-sizeSmall"
-                        aria-controls="simple-menu"
-                        aria-haspopup="true"
-                        size="small"
-                      >
-                        <div>
-                          <Icon
-                            style={{ fill: "rgba(0, 0, 0, 0.54)" }}
-                            path={mdiDotsVertical}
-                            size={1}
-                          />
-                        </div>
-
-                      </IconButton>
-                    </div>
-                  </Dropdown>
+                  <CustomMenu isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />
                 </StyledListItem>
               </React.Fragment>
             ))}

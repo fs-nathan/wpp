@@ -1,4 +1,5 @@
-import { StylesProvider } from "@material-ui/styles";
+import { jssPreset, StylesProvider } from '@material-ui/core/styles';
+import { create } from 'jss';
 import "normalize.css";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -8,10 +9,18 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import store from "./configStore";
 import i18n from "./i18n";
+
+const styleNode = document.createComment('jss-insertion-point');
+document.head.insertBefore(styleNode, document.head.firstChild);
+const jss = create({
+  ...jssPreset(),
+  // Define a custom insertion point that JSS will look for when injecting the styles into the DOM.
+  insertionPoint: 'jss-insertion-point',
+});
 ReactDOM.render(
   <I18nextProvider i18n={i18n}>
     <Provider store={store}>
-      <StylesProvider injectFirst>
+      <StylesProvider jss={jss}>
         <BrowserRouter>
           <App />
         </BrowserRouter>

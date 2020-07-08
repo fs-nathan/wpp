@@ -41,3 +41,12 @@
 .calendar--modal__body th:first-of-type {
  width: 150px;
 }
+
+.gantt--right-menu__search{
+  top: 64px !important;
+  left: auto !important;
+  right: 470px !important;
+}
+.gantt--search__icon svg{
+ cursor: pointer;
+}
