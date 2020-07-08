@@ -1519,7 +1519,7 @@
   "LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA": "The message has been deleted!",
   "LABEL_CHAT_TASK_DANG_GUI": "Sending...",
   "LABEL_CHAT_TASK_DA_GUI": "Sent",
-  "LABEL_CHAT_TASK_XEM_LUC": "Viewed at{{viewed_at}}",
+  "LABEL_CHAT_TASK_XEM_LUC": "Viewed at {{viewed_at}}",
   "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Attachments file",
   "LABEL_REMIND_PROJECT": "Project",
   "LABEL_REMIND_FRIEND": "Friend",
