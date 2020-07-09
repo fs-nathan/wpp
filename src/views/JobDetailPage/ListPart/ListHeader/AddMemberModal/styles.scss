@@ -49,6 +49,9 @@
   & > *:last-child {
     margin-left: auto;
   }
+  &--textWrap {
+    margin-left: 10px;
+  }
   &--loading {
     margin-right: 8px;
     margin-left: auto;

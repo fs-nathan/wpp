@@ -43,7 +43,12 @@ function DemandDetail({ }) {
           <Avatar className="subTaskDetailDialog--avatar" src={user_create_avatar} alt='avatar' />
           <Typography className="subTaskDetailDialog--title" component="div">
             {user_create_name}
-            <div className="subTaskDetailDialog--createdAt">{t('LABEL_CHAT_TASK_DA_CHI_DAO_LUC')}{date_create}</div>
+            <div className="subTaskDetailDialog--createdAt">
+              {isDemand ?
+                t('LABEL_CHAT_TASK_DA_CHI_DAO_LUC', { date_create })
+                : t('LABEL_CHAT_TASK_DA_QUYET_DINH_LUC', { date_create })
+              }
+            </div>
           </Typography>
         </div>
       }

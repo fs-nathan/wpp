@@ -24,7 +24,7 @@ function ProjectMember(props) {
   return (
     <ListItem className="projectMemberItem">
       <Avatar src={props.avatar} alt='avatar' />
-      <div>
+      <div className="projectMemberItem--textWrap">
         <ColorTypo bold fontSize>{props.name}</ColorTypo>
         <ColorTypo>{props.email}</ColorTypo>
         <ColorTypo color="orange">{props.label}</ColorTypo>

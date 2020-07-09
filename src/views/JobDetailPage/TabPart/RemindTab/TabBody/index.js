@@ -21,6 +21,7 @@ function TabBody(props) {
   }
   return (
     <Body autoHide
+      renderTrackHorizontal={() => <div />}
       renderView={props => <div {...props} className="remindBody--scroll" />}
       autoHideTimeout={500} autoHideDuration={200}>
       <div className="remindBody--container">
