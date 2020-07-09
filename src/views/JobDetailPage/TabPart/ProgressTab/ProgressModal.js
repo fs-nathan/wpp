@@ -149,7 +149,7 @@ const ProgressModal = (props) => {
       onCancle={() => props.setOpen(false)}
       actionLoading={isFetching}
       maxWidth='sm'
-      className="progressModal modal_height_30vh"
+      className="progressModal modal_height_35vh"
     >
       <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
       <CommonProgressForm

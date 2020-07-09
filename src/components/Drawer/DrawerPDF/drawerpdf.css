@@ -4,6 +4,7 @@
   
 .config--drawer--section-subtitle {
     display: flex;
+    text-transform: none !important;
     justify-content: space-between;
 }
 
@@ -44,3 +45,12 @@
     line-height: 1.75;
 }
 
+
+.export-pdf--drawer__container{
+    margin-top: 10px;
+}
+.config--drawer--section-subtitle__blue-text{
+    color: #4370f7;
+    cursor: pointer;
+    font-weight: 500 !important;
+}

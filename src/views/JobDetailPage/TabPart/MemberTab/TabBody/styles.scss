@@ -26,6 +26,14 @@
     position: absolute;
     right: 60px;
   }
+  &--left {
+    color: #ff0000;
+    padding: 6px 16px;
+    border-radius: 5px;
+    font-size: 14px;
+    position: absolute;
+    right: 60px;
+  }
   &--textWrap {
     width: 100%;
     float: left;
