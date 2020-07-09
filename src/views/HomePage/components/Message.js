@@ -2,6 +2,7 @@ import { Avatar, Box, ButtonBase, Typography } from "@material-ui/core";
 import { ExpandLess } from "@material-ui/icons";
 import ReplyIcon from "@material-ui/icons/Reply";
 import { showImagesList } from "actions/chat/chat";
+import AlertModal from "components/AlertModal";
 import colors from "helpers/colorPalette";
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -130,28 +131,45 @@ const RepliesContainer = ({
 };
 export const Reply = ({ reply, onReplyClick }) => {
   const [{ status }, handleDeleteComment] = useAsyncTracker();
+  const [modal, setModal] = useState();
+  const { t } = useTranslation();
   return (
-    <Message
-      type="reply"
-      parent={reply.parent}
-      {...{
-        ...reply,
-        onReplyClick,
-        deleted: status === apiCallStatus.success,
-        onDelete:
-          reply.id && reply.can_modify
-            ? () => {
-                const asyncId = Date.now();
-                handleDeleteComment({
-                  asyncId,
-                  ...postModule.actions.deleteComment({
-                    comment_id: reply.id,
-                  }),
-                });
-              }
-            : undefined,
-      }}
-    />
+    <>
+      <Message
+        type="reply"
+        parent={reply.parent}
+        {...{
+          ...reply,
+          onReplyClick,
+          deleted: status === apiCallStatus.success,
+          onDelete:
+            reply.id && reply.can_modify
+              ? () => {
+                  setModal(
+                    <AlertModal
+                      open={true}
+                      setOpen={setModal}
+                      content={t("Bạn có muốn xóa bình luận ?")}
+                      onConfirm={() => {
+                        const asyncId = Date.now();
+                        handleDeleteComment({
+                          asyncId,
+                          ...postModule.actions.deleteComment({
+                            comment_id: reply.id,
+                          }),
+                        });
+                        setModal(undefined);
+                      }}
+                      onCancle={() => setModal(undefined)}
+                      manualClose={true}
+                    />
+                  );
+                }
+              : undefined,
+        }}
+      />
+      {!!modal && modal}
+    </>
   );
 };
 const Message = ({
@@ -281,33 +299,48 @@ const Message = ({
 };
 export default ({ message, comments, onReplyClick }) => {
   const { id: post_id } = useContext(PostContext);
-
+  const [modal, setModal] = useState();
   const [{ status }, handleDeleteComment] = useAsyncTracker();
-
+  const { t } = useTranslation();
   return (
-    <Message
-      comments={comments}
-      parent={message.parent}
-      {...{
-        ...message,
-        post_id,
-        deleted: status === apiCallStatus.success,
-        onReplyClick,
-        onDelete:
-          message.id && message.can_modify
-            ? () => {
-                const asyncId = Date.now();
-                handleDeleteComment({
-                  asyncId,
-                  ...postModule.actions.deleteComment({
-                    comment_id: message.id,
-                  }),
-                });
-              }
-            : undefined,
-        time_label: message.time_label,
-      }}
-    />
+    <>
+      <Message
+        comments={comments}
+        parent={message.parent}
+        {...{
+          ...message,
+          post_id,
+          deleted: status === apiCallStatus.success,
+          onReplyClick,
+          onDelete:
+            message.id && message.can_modify
+              ? () => {
+                  setModal(
+                    <AlertModal
+                      open={true}
+                      setOpen={setModal}
+                      content={t("Bạn có muốn xóa bình luận ?")}
+                      onConfirm={() => {
+                        const asyncId = Date.now();
+                        handleDeleteComment({
+                          asyncId,
+                          ...postModule.actions.deleteComment({
+                            comment_id: message.id,
+                          }),
+                        });
+                        setModal(undefined);
+                      }}
+                      onCancle={() => setModal(undefined)}
+                      manualClose={true}
+                    />
+                  );
+                }
+              : undefined,
+          time_label: message.time_label,
+        }}
+      />
+      {!!modal && modal}
+    </>
   );
 };
 
