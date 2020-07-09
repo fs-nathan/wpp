@@ -2,6 +2,7 @@ import { Checkbox, FormControlLabel, MenuItem, MenuList, Paper } from "@material
 import { changeFlagFetchProjectSchedules } from 'actions/gantt';
 import 'antd/lib/menu/style/index.css';
 import { default as React, useEffect, useMemo, useState } from "react";
+import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import CustomModal from "../../components/CustomModalGantt";
@@ -21,6 +22,7 @@ const MenuMoreGantt = ({
   const [openModal, setopenModal] = useState(false);
   const [listSchedule, setListSchedule] = useState([]);
   const [listProjectSchedule, setListProjectSchedule] = useState([]);
+  const { t } = useTranslation()
   const clickConfigCalendar = () => {
     setOpenConfigCalendar(true);
     changeVisibleMenu(false);
@@ -61,7 +63,6 @@ const MenuMoreGantt = ({
           project_id: projectId
         }
       })
-      console.log(result)
       changeFlagFetchProjectSchedules(true)
     } catch (e) {
       console.log(e)
@@ -133,7 +134,7 @@ const MenuMoreGantt = ({
         </div>
       </CustomModal>
       <CustomModal
-        title={"CÀI ĐẶT LỊCH DỰ ÁN"}
+        title={t('GANTT_CALENDAR_TITLE_MODAL')}
         className="gantt--calendar-modal__container"
         fullWidth={true}
         open={openConfigCalendar}
@@ -141,7 +142,7 @@ const MenuMoreGantt = ({
         style={{}}
         height="tall"
         confirmRender={() => null}
-        isScrollContainer = {false}
+        isScrollContainer={false}
       >
         <CalendarProjectPage
           setopenModal={setopenModal}
@@ -150,14 +151,14 @@ const MenuMoreGantt = ({
       </CustomModal>
       <Paper>
         <MenuList open={true}>
-          <MenuItem onClick={clickConfigCalendar}>Lịch dự án</MenuItem>
+          <MenuItem onClick={clickConfigCalendar}>{t('LABEL_GANTT_NAME_CALENDAR_MENU')}</MenuItem>
           <MenuItem
             onClick={() => {
               changeVisibleExportPdfDrawer(true);
               changeVisibleMenu(false);
             }}
           >
-            Xuất file PDF
+            {t('LABEL_GANTT_NAME_EXPORT_MENU')}
           </MenuItem>
         </MenuList>
       </Paper>

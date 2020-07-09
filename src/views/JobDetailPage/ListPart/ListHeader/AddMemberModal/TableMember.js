@@ -110,7 +110,10 @@ function TableMember(props) {
                       {...item} />
                   </TableCell>
                   <TableCell style={{ width: '35%' }}>
-                    <MemberRole roles={item.roles || []} memberId={item.id} />
+                    {
+                      item.is_in_group &&
+                      <MemberRole roles={item.roles || []} memberId={item.id} />
+                    }
                   </TableCell>
                   <StyledMenu >
                     {item.can_ban &&

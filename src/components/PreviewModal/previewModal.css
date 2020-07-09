@@ -15,4 +15,11 @@
 
 .gantt--preview-pdf__container{
     margin: 10px 10px;
+    height: calc(100% - 41px);
+}
+.gantt-export-pdf--modal__container .MuiPaper-root{
+    height: 100vh !important;
+}
+.gantt-export-pdf--modal__container .comp_LoadingOverlay___wrapper {
+    min-height: calc(100% - 118px) !important
 }

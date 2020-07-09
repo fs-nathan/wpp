@@ -138,12 +138,11 @@ function CalendarProjectRightPartPresenter({
           }}
         >
           <CustomTableLayout
-            id="asdasdas"
             children={
-              <ScrollbarsContainer autoHide autoHideTimeout={500}>
+              <ScrollbarsContainer className="gantt-right-part-scroll__container" autoHide autoHideTimeout={500}>
                 <div
                   style={{
-                    height: 53,
+                    height: 59.5,
                     width: "100%",
                     background: "#fce8e6",
                     color: "#e65656",
@@ -159,7 +158,11 @@ function CalendarProjectRightPartPresenter({
                     />
                   </span><span
                     className="gantt-calendar--text-warning"
-                  >Bạn không thể chỉnh sửa lịch dự án tại đây. Chỉ những thành viên có quyền và được chỉnh sửa trong chức năng Lịch. <span style={{ fontWeight: 'bold' }}>Tìm hiểu thêm lịch dự án</span></span></div>
+                  >
+                    {t('GANTT_CALENDAR_RIGHT_PART_WARING_TEXT')}
+                    <span style={{ fontWeight: 'bold' }}>{t('GANTT_CALENDAR_RIGHT_PART_WARING_TEXT_URL')}
+                    </span></span></div>
+
                 {scheduleDetail.loading ? (
                   <LoadingBox />
                 ) : (
