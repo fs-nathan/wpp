@@ -20,6 +20,7 @@ import useNotificationFavicon from "favicon/useNotificationFavicon";
 import { CHAT_TYPE, findTask } from "helpers/jobDetail/arrayHelper";
 import findIndex from "lodash/findIndex";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
 import { Route, Switch } from "react-router-dom";
@@ -228,7 +229,7 @@ function MainLayout({
       appendViewedChat({
         id: user_id,
         name: user_name,
-        avatar: user_avatar
+        avatar: user_avatar,
       });
     }
   }
@@ -356,7 +357,7 @@ function MainLayout({
       actionChangeNumNotificationNotView(data.number_notification);
       const res = await getNumberMessageNotViewer();
       actionChangeNumMessageNotView(res.data.number_chat);
-    } catch (error) { }
+    } catch (error) {}
   };
   const handleNewNoti = () => {
     actionChangeNumNotificationNotView(
@@ -452,7 +453,8 @@ function MainLayout({
 }
 
 function MainLayoutWrapper({ ...rest }) {
-  return <MainLayout {...rest} />;
+  const { i18n } = useTranslation();
+  return <MainLayout key={i18n.language} {...rest} />;
 }
 
 export default connect(
