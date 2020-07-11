@@ -140,6 +140,7 @@ const ExportPDF = ({
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
+              autoOk={true}
               onChange={handleChangeStartTime}
               value={startTime}
               inputVariant="outlined"
@@ -156,6 +157,7 @@ const ExportPDF = ({
               disableToolbar
               inputVariant="outlined"
               variant="inline"
+              autoOk={true}
               onChange={handleChangeEndTime}
               value={endTime}
               ampm={false}

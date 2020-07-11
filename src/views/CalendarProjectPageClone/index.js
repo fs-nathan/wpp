@@ -74,7 +74,7 @@ function CalendarProjectPage({
   }
   React.useEffect(() => {
     fetchProjectSchedules()
-  }, [])
+  }, [params.projectId])
   return (
     <TwoColumnsLayout
       leftRenders={[

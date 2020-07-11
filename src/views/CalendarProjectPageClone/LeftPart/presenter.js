@@ -72,7 +72,6 @@ function CalendarProjectLeftPartPresenter({
         >
           <StyledList className="gantt-left-menu-calendar__container">
             {reducerProjectSchedules.map(item => {
-              console.log(item)
               return {
                 ...item,
                 id: item._id
@@ -105,9 +104,16 @@ function CalendarProjectLeftPartPresenter({
                         {get(item, "name", "")}
                       </Primary>
                     }
+                    
+                    secondary={item.is_main ?
+                    <div className="gantt--main-calendar__label">{t('GANTT_MAIN_CALENDAR_LABEL')}</div>
+                    : null
+                    }
                   />
+              
                   <CustomMenu isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />
                 </StyledListItem>
+               
               </React.Fragment>
             ))}
           </StyledList>

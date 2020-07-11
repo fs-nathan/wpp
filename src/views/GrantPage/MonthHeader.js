@@ -45,9 +45,9 @@ const MonthHeader = ({
   ));
   const createTable = (axisX, axisY) => {
     let tempTable = [];
-    for (let i = 0; i < axisX; i++) {
+    for (let i = 0; i <= axisX; i++) {
       let children = [];
-      for (let j = 0; j < axisY + girdInstance.addUnit; j++) {
+      for (let j = 0; j <= axisY + girdInstance.addUnit; j++) {
         let backgroud = {};
         children.push(
           <div

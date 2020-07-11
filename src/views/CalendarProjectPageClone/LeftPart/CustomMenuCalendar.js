@@ -21,7 +21,8 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (e) => {
+    e.stopPropagation()
     setAnchorEl(null);
   };
   const assignProjectSchedule = async (projectId, scheduleId,) => {
@@ -68,7 +69,7 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
       <Menu
         id="long-menu"
         anchorEl={anchorEl}
-        keepMounted
+        keepMounted={false}
         open={open}
         onClose={handleClose}
         PaperProps={{
@@ -79,9 +80,11 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
         }}
       >
         {calendarPermisstions.edit_schedule && !calendarPermisstions.is_main && <MenuItem key={1} onClick={(e) => {
+          e.stopPropagation()
           if (!calendarPermisstions.assign_schedule) return
           setMainProjectSchedule(projectId, scheduleId)
           changeMainCalendar(scheduleId)
+          setAnchorEl(null)
         }}>
           {t('GANTT_CALENDAR_SET_MAIN_CALENDAR')}
         </MenuItem>}
@@ -91,9 +94,11 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
         }}>
           {t('GANTT_CALENDAR_EDIT_CALENDAR')}
         </MenuItem>}
-        {!isDefault && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={() => {
+        {!isDefault && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
+          e.stopPropagation()
           if (!calendarPermisstions.edit_schedule) return
           assignProjectSchedule(projectId, scheduleId)
+          setAnchorEl(null)
         }}>
           {t('GANTT_CALENDAR_DELETE_CALENDAR')}
         </MenuItem>}

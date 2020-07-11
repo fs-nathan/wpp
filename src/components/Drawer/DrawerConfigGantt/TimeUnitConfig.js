@@ -80,7 +80,7 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
   useEffect(() => {
     if (fetchProjectSchedule)
       fetchProjectSchedules()
-  }, [fetchProjectSchedule])
+  }, [params.projectId])
   return (
     <Drawer
       closable={false}
