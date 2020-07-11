@@ -118,6 +118,7 @@ function CreateJobModal(props) {
       updateData.end_time = undefined;
     }
     // dispatch(updateNameDescriptionTask(dataNameDescription));
+    // console.log(data)
     switch (props.editMode) {
       case EDIT_MODE.NAME_DES:
         dispatch(updateNameDescription(taskId, data.name, updateData.description));
@@ -132,7 +133,7 @@ function CreateJobModal(props) {
         dispatch(updateTypeAssign(taskId, data.type_assign.id));
         break;
       case EDIT_MODE.GROUP:
-        dispatch(updateGroupTask(taskId, data.group_task));
+        dispatch(updateGroupTask(taskId, data.group_task.value));
         break;
 
       default:
@@ -155,7 +156,7 @@ function CreateJobModal(props) {
         item => item.value === taskDetails.group_task
       );
       if (item) {
-        handleChangeData('group_task', item.value)
+        handleChangeData('group_task', item)
       } else {
         handleChangeData('group_task', null)
       }
@@ -194,7 +195,7 @@ function CreateJobModal(props) {
       if (!tempData.end_date) tempData.end_date = '';
       else tempData.end_date = convertDateToJSFormat(tempData.end_date);
       if (!tempData.end_time) tempData.end_time = '';
-      if (!tempData.group_task) tempData.group_task = '';
+      // if (!tempData.group_task) tempData.group_task = '';
       tempData.type_assign = assignList.find(ass => ass.id === props.data.assign_code);
       let priority = priorityList.find(
         item => item.id === tempData.priority_code
@@ -202,6 +203,21 @@ function CreateJobModal(props) {
       tempData.priorityLabel = priority ? priority.value : DEFAULT_PRIORITY;
       let assign = assignList.find(item => item.id === tempData.type_assign.id);
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
+      if (listGroupTaskData && props.data) {
+        // Map task to input
+        let listTask = listGroupTaskData.group_tasks.map(item => ({
+          label:
+            item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : 'Chưa phân loại',
+          value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
+        }));
+        setListGroupTask(listTask);
+        // Set default group for input
+        let item = listTask.find(
+          item => item.value === props.data.group_task
+        );
+        // console.log('props.data', item, props.data)
+        tempData.group_task = item;
+      }
       setDataMember(tempData);
     }
     // eslint-disable-next-line
@@ -263,7 +279,10 @@ function CreateJobModal(props) {
       // Remove group task in object if user unselect group task
       let data = { ...dataCreateJob };
       if (!dataCreateJob.group_task ||
-        dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE) delete data.group_task;
+        dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE)
+        delete data.group_task;
+      else
+        data.group_task = dataCreateJob.group_task.value;
       data.type = type;
       if (type === 0) {
         data.start_date = undefined;
@@ -312,10 +331,15 @@ function CreateJobModal(props) {
           <>
             <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC')} isRequired />
             <Typography component={'div'} >
-              <TaskGroupSelect
+              {/* <TaskGroupSelect
                 options={listGroupTask}
                 value={data.group_task}
                 onChange={({ target }) => handleChangeData('group_task', target.value)}
+              /> */}
+              <CustomSelect
+                options={listGroupTask}
+                value={data.group_task}
+                onChange={(group_task) => handleChangeData('group_task', group_task)}
               />
             </Typography>
           </>
