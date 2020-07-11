@@ -107,6 +107,8 @@ const MenuMoreGantt = ({
         height="short"
         setOpen={setopenModal}
         open={openModal}
+        confirmRender={null}
+        canConfirm={false}
         title={"GÁN LỊCH CHO DỰ ÁN"}
       >
         <div className="calendar--modal__container">
