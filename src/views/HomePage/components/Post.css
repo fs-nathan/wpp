@@ -71,6 +71,9 @@
   border-top: 1px solid #ededed;
   border-bottom: 1px solid #e5e5e9;
 }
+.comp_Post__actionsWrap path {
+  fill: currentColor;
+}
 .comp_Post__fileList {
   padding: 0;
 }

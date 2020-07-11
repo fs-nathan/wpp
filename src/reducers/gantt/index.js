@@ -9,15 +9,18 @@ export const initialState = {
     group: "#727272",
     task: "#FF8123",
     duration: "#01E03F",
-    timeNotWork: '#E1E1E'
+    timeNotWork: localStorage.getItem('timeNotWorkColor') || '#F1F1F1',
+    gridTable: '#f5f5f5'
   },
   scheduleDetailGantt: {},
   projectInfo: {
     id: "",
     name: "",
   },
+  keyword: '',
   scrollGanttFlag: false,
   fetchProjectSchedule: true,
+  mainCalendar: localStorage.getItem('gantt_main_calendar') || null,
   indexColumn: [0, 1, 2, 3, 4],
   visible: {
     table: {
@@ -37,7 +40,8 @@ export const initialState = {
       numberDuration: true,
       numberComplete: true,
       fromNowLayer: true,
-      timeNotWork: true
+      timeNotWork: true,
+      gridTable: true
     },
     label: {
       prior: true,
@@ -59,6 +63,7 @@ export const initialState = {
     start: null,
     end: null,
   },
+  calendarPermisstions: {},
   projectSchedules: [],
   girdType: localStorage.getItem("timeUnitGantt") || "DAY",
   girdAttribute: {
@@ -70,8 +75,8 @@ export const initialState = {
       addUnit: 6,
       getWidthParent: (moment, first) =>
         first
-          ? (moment.daysInMonth() - moment.format("DD") + 1) * 48
-          : moment.daysInMonth() * 48,
+          ? (moment.daysInMonth() - moment.format("DD") + 1) * 35
+          : moment.daysInMonth() * 35,
       getTextParent: (moment) => moment.format("MM/YYYY"),
       getTimeCompare: (moment) => moment.format("M"),
       formatChild: "DD",
@@ -84,7 +89,7 @@ export const initialState = {
       parentUnit: "years",
       addUnit: 6,
       getWidthParent: (moment, first) =>
-        first ? (12 - moment.format("MM") + 1) * 48 : 12 * 48,
+        first ? (12 - moment.format("MM") + 1) * 35 : 12 * 35,
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "MM",
@@ -97,7 +102,7 @@ export const initialState = {
       addUnit: 6,
       parentUnit: "days",
       getWidthParent: (moment, first) =>
-        first ? (23 - moment.format("HH") + 1) * 48 : 24 * 48,
+        first ? (23 - moment.format("HH") + 1) * 35 : 24 * 35,
       getTextParent: (moment) => moment.format("DD/MM/YYYY"),
       getTimeCompare: (moment) => moment.format("DD/MM/YYYY"),
       formatChild: "HH",
@@ -110,7 +115,7 @@ export const initialState = {
       addUnit: 6,
       parentUnit: "years",
       getWidthParent: (moment, first) =>
-        first ? (52 - moment.format("W") + 1) * 48 : 52 * 48,
+        first ? (52 - moment.format("W") + 1) * 35 : 52 * 35,
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("W"),
       formatChild: "W",
@@ -123,7 +128,7 @@ export const initialState = {
       addUnit: 30,
       parentUnit: "years",
       getWidthParent: (moment, first) =>
-        first ? (4 - moment.format("Q") + 1) * 48 : 4 * 48,
+        first ? (4 - moment.format("Q") + 1) * 35 : 4 * 35,
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "Q",
@@ -138,8 +143,8 @@ export const initialState = {
     parentUnit: "months",
     getWidthParent: (moment, first) =>
       first
-        ? (moment.daysInMonth() - moment.format("DD") + 1) * 48
-        : moment.daysInMonth() * 48,
+        ? (moment.daysInMonth() - moment.format("DD") + 1) * 35
+        : moment.daysInMonth() * 35,
     getTextParent: (moment) => moment.format("MM/YYYY"),
     getTimeCompare: (moment) => moment.format("M"),
     formatChild: "DD",
@@ -158,6 +163,12 @@ const gantt = (state = initialState, action) => {
     case actionTypes.CHANGE_ROW_HOVER:
       return { ...state, rowHover: action.payload };
     case actionTypes.CHANGE_TIMELINE_COLOR:
+      if (action.payload.type === 'timeNotWork') {
+        localStorage.setItem('timeNotWorkColor', action.payload.color)
+      }
+      if (action.payload.type === 'gridTable') {
+        localStorage.setItem('gridTable', action.payload.color)
+      }
       return {
         ...state,
         timelineColor: {
@@ -202,6 +213,12 @@ const gantt = (state = initialState, action) => {
       return { ...state, projectSchedules: action.payload };
     case actionTypes.FETCH_PROJECT_SCHEDULE:
       return { ...state, fetchProjectSchedule: action.payload };
+    case actionTypes.CHANGE_MAIN_CALENDAR:
+      return { ...state, mainCalendar: action.payload };
+    case actionTypes.CHANGE_CALENDAR_PERMISSTION:
+      return { ...state, calendarPermisstions: action.payload };
+    case actionTypes.CHANGE_KEYWORD:
+      return { ...state, keyword: action.payload };
     default:
       return state;
   }

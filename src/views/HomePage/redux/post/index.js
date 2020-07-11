@@ -1,7 +1,6 @@
 import { combineReducers, createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { encodeQueryData, get, toFormData } from "views/JobPage/utils";
-import { loginlineFunc } from "views/OfferPage/utils";
 import {
   createAsyncAction,
   createListModule,
@@ -146,8 +145,9 @@ const updatePost = ({
   });
 };
 
-const deletePost = ({ post_id }) => {
+const deletePost = ({ post_id, asyncId }) => {
   return createPostAsyncAction({
+    asyncId,
     notifyOnSuccess: false,
     config: {
       url: "/posts/delete-post",
@@ -472,9 +472,7 @@ export const postModule = {
     love,
     comment,
     deleteComment,
-    updatePostListItem: loginlineFunc(
-      createAction(post.actions.listupdate.type)
-    ),
+    updatePostListItem: createAction(post.actions.listupdate.type),
   },
   key: rootPath,
   reducer: combineReducers({

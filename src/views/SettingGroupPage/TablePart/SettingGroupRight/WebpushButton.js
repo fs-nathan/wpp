@@ -1,5 +1,6 @@
 import { Button, CircularProgress } from "@material-ui/core";
-import React from "react";
+import AlertModal from "components/AlertModal";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { usePrimarySubmitActionStyles } from "views/HomePage/components/PrimarySubmitAction";
 import useWebpush from "webpush/useWebpush";
@@ -15,6 +16,7 @@ export const WebpushButton = () => {
   } = useWebpush();
   const { t } = useTranslation();
   const classes = usePrimarySubmitActionStyles();
+  const [modal, setModal] = useState();
   return (
     <div className="WebpushButton">
       <img alt="icon" src={isSubscribed ? bellOnImage : bellOffImage}></img>
@@ -31,9 +33,19 @@ export const WebpushButton = () => {
             !isSubscribed
               ? handleSubscribe()
               : (() => {
-                  if (window.confirm(t("Do you really want to unsubscribe?"))) {
-                    handleUnsubscribe();
-                  }
+                  setModal(
+                    <AlertModal
+                      open={true}
+                      setOpen={setModal}
+                      content={t("Do you really want to unsubscribe?")}
+                      onConfirm={() => {
+                        handleUnsubscribe();
+                        setModal(undefined);
+                      }}
+                      onCancle={() => setModal(undefined)}
+                      manualClose={true}
+                    />
+                  );
                 })();
           }}
           color={!isSubscribed ? "primary" : "default"}
@@ -44,6 +56,7 @@ export const WebpushButton = () => {
           )}
         </Button>
       </span>
+      {!!modal && modal}
     </div>
   );
 };

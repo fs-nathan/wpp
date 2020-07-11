@@ -84,7 +84,7 @@ function GanttChart({
     if (scrollRef.current && scrollGanttFlag) {
       const widthFromNowLayer =
         new moment(Date.now()).diff(start, girdInstance.unit) + 1;
-      scrollRef.current.scrollLeft = widthFromNowLayer * 48 - 500;
+      scrollRef.current.scrollLeft = widthFromNowLayer * 35 - 500;
       scrollGantt(false);
     }
   }, [scrollGanttFlag]);
@@ -92,7 +92,7 @@ function GanttChart({
   const b = left ? { left: showFullChart ? minLeft : left } : {};
   let maxWidth;
   if (renderFullDay) {
-    maxWidth = (end.diff(start, girdInstance.unit) + 1) * 48;
+    maxWidth = (end.diff(start, girdInstance.unit) + 1) * 35;
   }
   const timeline = useMemo(
     () =>
@@ -116,6 +116,7 @@ function GanttChart({
                   );
                   if (!divs[index]) return;
                   divs[index].style.backgroundColor = "#fffae6";
+                  console.log(divs, divs[index].style.backgroundColor)
                 }
               }}
               onMouseLeave={() => {
@@ -167,7 +168,7 @@ function GanttChart({
               style={{
                 background: timelineColor.timeNotWork,
                 position: "absolute",
-                width: 48,
+                width: 35,
                 height: dataSource.length * 37,
                 left:
                   new moment(
@@ -175,7 +176,7 @@ function GanttChart({
                     item.hour ? " " + item.hour : ""
                     }`,
                     `DD/MM/YYYY${item.hour ? " HH" : ""}`
-                  ).diff(start, girdInstance.unit) * 48,
+                  ).diff(start, girdInstance.unit) * 35,
               }}
             ></div>
           ))}
@@ -195,10 +196,12 @@ function GanttChart({
         dataSource={dataSource}
         leftHeader={leftHeader}
         leftTable={leftTable}
+        heightTable={heightTable}
       />
     ),
     [
       scrollWidth,
+      heightTable,
       daysRender,
       monthArray,
       start,
@@ -240,6 +243,8 @@ function GanttChart({
             const scrollVirtual = document.getElementById(
               "gantt--scroll-top_virtual"
             );
+            const gridTable = document.getElementById('gantt_table_grid')
+            gridTable.scrollTop = e.target.scrollTop
             scrollVirtual.scrollTop = e.target.scrollTop
             const timelineContainerRelative = document.getElementsByClassName(
               " gantt--timeline--container__relative"
@@ -294,7 +299,7 @@ function GanttChart({
             position: "absolute",
             zIndex: 10,
             backgroundColor: "#e8e8e8",
-            height: "100%",
+            height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
           }}
           id="drag-width-gantt-container"
         ></div>
@@ -307,17 +312,21 @@ function GanttChart({
           }
           id="gantt-container-scroll"
           style={{
-            height: heightTable,
+            height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
           }}
           onScroll={(e) => {
+            console.log(e.target.scrollLeft, e.target.scrollWidth)
+            if (e.target.scrollLeft + 16 >= e.target.scrollWidth) {
+              e.target.scrollLeft = e.target.scrollWidth - 16
+              return
+            }
             if (window.scrollTable || window.scrollTimeline || window.scrollTimelineVitural) return;
             if (!e.target.scrollTop) {
               const fetchNewTimeNotWork =
-                Math.floor(e.target.scrollLeft / (700 * 48)) !==
+                Math.floor(e.target.scrollLeft / (700 * 35)) !==
                 timeNotWorkUnit && visibleGantt.timeNotWork;
-              console.log('asdasdasdasdasd', visibleGantt.timeNotWork)
               if (fetchNewTimeNotWork) {
-                timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 48));
+                timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 35));
                 const fromDate = new moment(start).add(
                   700 * timeNotWorkUnit,
                   girdInstance.unit
@@ -328,19 +337,19 @@ function GanttChart({
                   toDate.format("YYYY-MM-DD")
                 );
               }
-              if (Math.floor(e.target.scrollLeft / 48) !== scrollWidth) {
-                const newScrollWidth = Math.floor(e.target.scrollLeft / 48);
+              if (Math.floor(e.target.scrollLeft / 35) !== scrollWidth) {
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 35);
                 setScrollWidth(newScrollWidth);
-                setLeftHeader(newScrollWidth * 48);
+                setLeftHeader(newScrollWidth * 35);
                 setLeftTable(
-                  Math.floor(e.target.scrollLeft / (48 * 7)) * 48 * 7
+                  Math.floor(e.target.scrollLeft / (35 * 7)) * 35 * 7
                 );
               } else {
-                const newScrollWidth = Math.floor(e.target.scrollLeft / 48);
-                setLeftHeader(newScrollWidth * 48);
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 35);
+                setLeftHeader(newScrollWidth * 35);
                 setScrollWidth(newScrollWidth);
                 setLeftTable(
-                  Math.floor(e.target.scrollLeft / (48 * 7)) * 48 * 7
+                  Math.floor(e.target.scrollLeft / (35 * 7)) * 35 * 7
                 );
               }
             }
@@ -350,13 +359,13 @@ function GanttChart({
             <div
               className="gantt--fromNowLayer__container"
               style={{
-                width: widthFromNowLayer * 48,
+                width: widthFromNowLayer * 35,
               }}
             >
               <div
                 className="gantt--fromNowLayer__background"
                 style={{
-                  width: widthFromNowLayer * 48,
+                  width: widthFromNowLayer * 35,
                 }}
               ></div>
               <div className="gantt--fromNowLayer__text">
@@ -385,6 +394,8 @@ function GanttChart({
                   const scrollVirtual = document.getElementById(
                     "gantt--scroll-top_virtual"
                   );
+                  const gridTable = document.getElementById('gantt_table_grid')
+                  gridTable.scrollTop = e.target.scrollTop
                   scrollVirtual.scrollTop = e.target.scrollTop
                   tableBody.scrollTop = e.target.scrollTop;
                   if (timeoutId) clearTimeout(timeoutId);

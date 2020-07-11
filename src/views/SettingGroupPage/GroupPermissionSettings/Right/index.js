@@ -183,7 +183,7 @@ const ColumnRight = () => {
                 .filter(({ value }) => "" + groupModule === "" + value)
                 .map(({ name, value }) => (
                   <Box fontSize="15px" key={value}>
-                    {name}
+                    {t(name)}
                   </Box>
                 ))}
             </Box>

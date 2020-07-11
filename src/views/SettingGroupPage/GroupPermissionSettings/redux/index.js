@@ -1,6 +1,6 @@
 import { createAction, createReducer } from "@reduxjs/toolkit";
 import { emptyArray, emptyObject } from "views/JobPage/contants/defaultValue";
-import { encodeQueryData, get, loginlineFunc } from "views/JobPage/utils";
+import { encodeQueryData, get } from "views/JobPage/utils";
 import {
   listAddFirst,
   listremove,
@@ -183,7 +183,7 @@ export const loadPermissionList = ({ module = 1 } = {}) => {
         module: "" + module,
       })}`,
     },
-    success: loginlineFunc(updatePermissionList),
+    success: updatePermissionList,
   });
 };
 export const loadDetailGroupPermissionDefault = ({

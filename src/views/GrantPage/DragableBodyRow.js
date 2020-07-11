@@ -47,6 +47,7 @@ const DragableBodyRow = ({
           const divs = document.getElementsByClassName(
             "gantt--top-timeline-tr"
           );
+          if (!divs.length) return
           divs[index].style.backgroundColor = "#fffae6";
           const divss = document.getElementsByClassName(
             "ant-table-row ant-table-row-level-0"
@@ -56,6 +57,7 @@ const DragableBodyRow = ({
       }}
       onMouseLeave={() => {
         const divs = document.getElementsByClassName("gantt--top-timeline-tr");
+        if (!divs.length) return
         divs[index].style.backgroundColor = "";
         const divss = document.getElementsByClassName(
           "ant-table-row ant-table-row-level-0"
