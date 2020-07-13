@@ -113,7 +113,6 @@ export default connect((state) => ({
   }, [dispatch]);
   const item = useSelector((state) => state.chat.item);
   const users_shared = item ? item.users_shared || [] : [];
-  view - file - wrapper;
   const shareItem = { ...item, users_shared };
   const isOpenShareFileModal = useSelector(
     (state) => state.chat.isOpenShareFileModal
