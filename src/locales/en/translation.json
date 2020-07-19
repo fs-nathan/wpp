@@ -1519,7 +1519,7 @@
   "LABEL_CHAT_TASK_TIN_NHAN_DA_DUOC_XOA": "The message has been deleted!",
   "LABEL_CHAT_TASK_DANG_GUI": "Sending...",
   "LABEL_CHAT_TASK_DA_GUI": "Sent",
-  "LABEL_CHAT_TASK_XEM_LUC": "Viewed at{{viewed_at}}",
+  "LABEL_CHAT_TASK_XEM_LUC": "Viewed at {{viewed_at}}",
   "LABEL_CHAT_TASK_TAI_LIEU_DINH_KEM": "Attachments file",
   "LABEL_REMIND_PROJECT": "Project",
   "LABEL_REMIND_FRIEND": "Friend",
@@ -2041,6 +2041,7 @@
   "Thoát": "Exit",
   "Công việc gần đây": "Recent tasks",
   "Bạn có muốn xóa bài viết?": "Do you want to delete the post?",
+  "Bạn có muốn xóa bình luận ?": "Do you want to delete the comment ?",
   "LABEL_CHAT_TASK_TIM_KIEM": "Search",
   "Module thành viên": "Member mudule",
   "GANTT_MAIN_CALENDAR_LABEL": "Main calendar"

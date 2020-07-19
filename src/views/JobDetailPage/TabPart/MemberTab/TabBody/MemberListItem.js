@@ -35,6 +35,7 @@ const MemberListItem = ({
   handleClickPermission,
   can_ban,
   is_admin,
+  is_in_group,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -81,9 +82,15 @@ const MemberListItem = ({
             {compact([room, position]).join(' - ')}
           </div>
         </div>
-        {is_admin && <div className="memberItem--admin" style={{ backgroundColor: groupActiveColor }}>
-          Admin
+        {is_admin &&
+          <div className="memberItem--admin" style={{ backgroundColor: groupActiveColor }}>
+            Admin
         </div>
+        }
+        {!is_in_group &&
+          <div className="memberItem--left">
+            {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
+          </div>
         }
         <ButtonIcon
           className="memberItem--menuButton"
@@ -103,7 +110,7 @@ const MemberListItem = ({
         }}
       >
         <MenuItem className="memberItem--menuItem" onClick={handleClickDetail}>{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
-        {!is_admin && <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>}
+        {!is_admin && is_in_group && <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>}
         {can_ban && <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>}
       </Menu>
     </React.Fragment >
