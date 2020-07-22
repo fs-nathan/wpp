@@ -1,4 +1,4 @@
-import { showTab } from 'actions/taskDetail/taskDetailActions';
+import { showTab, getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
@@ -35,6 +35,7 @@ function TabPart(props) {
 
   const setShow = (index) => {
     dispatch(showTab(index))
+    dispatch(getTaskDetailTabPart({ taskId }));
   }
 
   function setOpenDetail(isOpen) {

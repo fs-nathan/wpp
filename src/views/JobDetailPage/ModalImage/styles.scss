@@ -20,6 +20,9 @@
 }
 
 .ModalImage {
+  path {
+    fill: currentColor !important;
+  }
   &--video {
     video {
       &:focus {

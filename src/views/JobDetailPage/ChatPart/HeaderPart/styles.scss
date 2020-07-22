@@ -76,6 +76,9 @@
         fill: #03b000;
       }
     }
+    path {
+      fill: currentColor !important;
+    }
   }
   &--tabLabel {
     color: #a5a0a0;
