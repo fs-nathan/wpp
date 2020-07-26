@@ -6,12 +6,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
 import './styles.scss';
+import get from 'lodash/get';
 
 function TabHeader({ setShow }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
+  const {
+    manage_remind,
+  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
 
   useEffect(() => {
     dispatch(getRemind({ taskId }))
@@ -27,6 +31,7 @@ function TabHeader({ setShow }) {
         buttonTooltipText={t('LABEL_CHAT_TASK_TAO_MOI')}
         onClickBack={() => setShow(0)}
         onClickOpen={handleClickOpen}
+        rightIcon={manage_remind ? 'add' : null}
       />
     </div>
   );
