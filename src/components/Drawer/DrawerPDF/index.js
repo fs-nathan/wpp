@@ -65,7 +65,6 @@ const ExportPDF = ({
       container.classList.remove('gantt-no-overflow')
       changeFilterExportPdf(null, null);
     } else {
-
     }
     setShowModalPreview(!showModalPreview);
   };
@@ -80,16 +79,17 @@ const ExportPDF = ({
       changeFilterExportPdf(startTime, endTime);
     }
     const container = document.getElementById('printContent')
+    const contentLast = document.getElementById('content-last')
     container.classList.add("gantt-no-overflow");
     const stringAppend = previewContent.reduce((result, value, index) => {
       const temp = [...result]
       temp[index < 3 ? 0 : 1] = temp[index < 3 ? 0 : 1] + `<p>${value}</p>`
       return temp
     }, ['', ''])
-    container.style.height = `${dataSource.length * 37 + 150}px`
+    container.style.height = `${dataSource.length * 37 + 1500}px`
     const stringAppendFirst = `<div id="stringAppendFirst" style="display:flex">${stringAppend[0]}</div>`
-    const stringAppendLast = `<div id="stringAppendLast" style="display: flex">${stringAppend[1]}</div>`
-    container.insertAdjacentHTML('beforeend', stringAppendLast)
+    const stringAppendLast = `<div id="stringAppendLast"  style="display: flex">${stringAppend[1]}</div>`
+    contentLast.insertAdjacentHTML('beforeend', stringAppendLast)
     container.insertAdjacentHTML('afterbegin', stringAppendFirst)
     setShowModalPreview(true);
     setIsLoading(true)

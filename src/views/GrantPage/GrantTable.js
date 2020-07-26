@@ -45,7 +45,7 @@ const SearchBox = ({ className = "", ...rest }) => (
 );
 
 Array.prototype.insertArray = function (index, items) { this.splice.apply(this, [index, 0].concat(items)); }
-const MAX_DAY_DEFAULT = 40;
+const MAX_DAY_DEFAULT = 80;
 
 const RenderJobModal = React.memo(
   (props) => <CreateJobModal {...props} />,
@@ -870,7 +870,7 @@ class DragSortingTable extends React.Component {
     }
     allMonth.shift();
     let temp = new moment(startTimeProject);
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < MAX_DAY_DEFAULT; i++) {
       const newDate = new moment(temp);
       newDate.add(i, unit);
       daysRender.push(newDate);
@@ -988,9 +988,17 @@ class DragSortingTable extends React.Component {
         timeNotWork: true,
         gridTable: true
       };
+      const labelVisibleConfig = localStorage.getItem("labelConfig") ? JSON.parse(localStorage.getItem("labelConfig")) : {
+        prior: true,
+        status: true,
+        member: true,
+      };
       this.props.changeVisible(null, null, null, {
         gantt: ganttVisibleConfig,
       });
+      this.props.changeVisible(null, null, null, {
+        label: labelVisibleConfig
+      })
       this.props.changeProjectInfo({
         id: project.id,
         name: project.name,
@@ -1445,6 +1453,12 @@ class DragSortingTable extends React.Component {
     const widthPdf = this.props.renderFullDay
       ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 35 + widthExtra - 80
       : "auto";
+    const scroll = this.props.renderFullDay ? {} : {
+      scroll: {
+        y: this.state.height - 69,
+        x: "unset",
+      }
+    }
     if (this.state.isLoading) return <LoadingBox />;
     return (
       <React.Fragment>
@@ -1520,10 +1534,7 @@ class DragSortingTable extends React.Component {
                   size="small"
                   className="table-gantt-header"
                   bordered
-                  scroll={{
-                    y: this.state.height - 69,
-                    x: "unset",
-                  }}
+                  {...scroll}
                   rowClassName={(record, index) => {
                     if (
                       this.state.data[index] &&
@@ -1550,6 +1561,7 @@ class DragSortingTable extends React.Component {
                   })}
                 />
               </DndProvider>
+              <div style={{ width: widthPdf }} id="content-last"></div>
             </div>
           </div>
           <RenderDragTable

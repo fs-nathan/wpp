@@ -116,7 +116,6 @@ function GanttChart({
                   );
                   if (!divs[index]) return;
                   divs[index].style.backgroundColor = "#fffae6";
-                  console.log(divs, divs[index].style.backgroundColor)
                 }
               }}
               onMouseLeave={() => {
@@ -159,9 +158,8 @@ function GanttChart({
     [dataSource, girdInstance, start, visibleGantt, rowHover]
   );
   const renderTimeNotWork = useMemo(() => {
-    console.log("visibleGantt", timelineColor)
     return (
-      <div id="asdasdasdasdasdasd" style={{ position: "absolute" }}>
+      <div style={{ position: "absolute" }}>
         <div style={{ position: "relative" }}>
           {visibleGantt.timeNotWork && timeNotWork.map((item) => (
             <div
@@ -169,7 +167,7 @@ function GanttChart({
                 background: timelineColor.timeNotWork,
                 position: "absolute",
                 width: 35,
-                height: dataSource.length * 37,
+                height: dataSource.length * 37 - 2,
                 left:
                   new moment(
                     `${item.date}/${item.month}/${item.year}${
@@ -229,7 +227,7 @@ function GanttChart({
       >
         <Icon path={mdiDragVerticalVariant} size={1} />
       </div>
-      <div
+      {<div
         id="gantt--scroll-top_virtual"
         onScroll={(e) => {
           if (!window.scrollTable && !window.scrollTimeline) {
@@ -254,7 +252,7 @@ function GanttChart({
             tableBody.scrollTop = e.target.scrollTop;
             if (timeoutId) clearTimeout(timeoutId);
             timeoutId = setTimeout(
-              () => (window.scrollTimeline = false),
+              () => (window.scrollTimelineVitural = false),
               100
             );
           }
@@ -265,7 +263,7 @@ function GanttChart({
         <div style={{
           height: dataSource.length * 37
         }}></div>
-      </div>
+      </div>}
       <div
         ref={ganttRef}
         id="offset-gantt-container"
@@ -315,7 +313,6 @@ function GanttChart({
             height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
           }}
           onScroll={(e) => {
-            console.log(e.target.scrollLeft, e.target.scrollWidth)
             if (e.target.scrollLeft + 16 >= e.target.scrollWidth) {
               e.target.scrollLeft = e.target.scrollWidth - 16
               return

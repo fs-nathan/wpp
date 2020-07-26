@@ -110,7 +110,6 @@ const mapStateToProps = (state) => {
   return {
     groupSchedules: projectGroupScheduleSelector(state),
     permissions: state.calendar.listCalendarPermission.data.permissions,
-
   };
 };
 

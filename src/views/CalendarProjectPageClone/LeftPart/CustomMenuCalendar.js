@@ -52,6 +52,7 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
           project_id: projectId
         }
       })
+      changeFlagFetchProjectSchedules(true)
     } catch (e) {
       console.log(e)
     }
@@ -108,6 +109,7 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
 }
 
 const mapStateToProps = state => ({
+  fetchProjectSchedule: state.gantt.fetchProjectSchedule,
   calendarPermisstions: state.gantt.calendarPermisstions
 })
 

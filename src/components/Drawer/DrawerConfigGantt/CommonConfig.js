@@ -140,6 +140,9 @@ const CommonConfig = ({
   useEffect(() => {
     localStorage.setItem("ganttConfig", JSON.stringify(visibleGantt))
   }, [visibleGantt])
+  useEffect(() => {
+    localStorage.setItem("labelConfig", JSON.stringify(visibleLabel))
+  }, [visibleLabel])
   return (
     <Drawer
       closable={false}
