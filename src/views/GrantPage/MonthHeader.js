@@ -54,13 +54,13 @@ const MonthHeader = ({
             style={{
               border: `0.2px solid ${timelineColor.gridTable}`,
               padding: "8.5px 0px",
-              width: 35,
+              width: 30,
               ...backgroud,
             }}
           >
             <div
               style={{
-                width: 47,
+                width: 29,
                 height: 20,
               }}
             ></div>
@@ -102,7 +102,7 @@ const MonthHeader = ({
           id="gantt_table_grid"
           style={{
             position: "absolute",
-            marginLeft: 1,
+            marginLeft: 0,
             marginTop: 23.8,
             left: leftTable,
             overflow: 'scroll',

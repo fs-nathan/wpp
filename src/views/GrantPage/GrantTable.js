@@ -1451,7 +1451,7 @@ class DragSortingTable extends React.Component {
     const boundRectTimeLineContainer = document.getElementById("drag-width-gantt-container")
     const widthExtra = boundRectTimeLineContainer ? boundRectTimeLineContainer.getBoundingClientRect().x : 800
     const widthPdf = this.props.renderFullDay
-      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 35 + widthExtra - 80
+      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 30 + widthExtra - 80
       : "auto";
     const scroll = this.props.renderFullDay ? {} : {
       scroll: {

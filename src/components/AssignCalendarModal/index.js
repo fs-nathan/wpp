@@ -1,32 +1,25 @@
-import { Checkbox, FormControlLabel, MenuItem, MenuList, Paper } from "@material-ui/core";
-import { changeFlagFetchProjectSchedules } from 'actions/gantt';
+import { Checkbox, FormControlLabel } from "@material-ui/core";
+import { changeFlagFetchProjectSchedules, changeProjectSchedule } from 'actions/gantt';
 import 'antd/lib/menu/style/index.css';
-import AssignCalendarModal from 'components/AssignCalendarModal';
+import CustomModal from "components/CustomModalGantt";
+import { apiService } from "constants/axiosInstance";
 import { default as React, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
-import CustomModal from "../../components/CustomModalGantt";
-import { apiService } from "../../constants/axiosInstance";
-import CalendarProjectPage from "../../views/CalendarProjectPageClone";
-import "./calendarModal.css";
+import "./index.css";
 
-const MenuMoreGantt = ({
-  changeVisibleExportPdfDrawer,
-  scheduleDetailGantt,
+const AssignCalendarModal = ({
   projectSchedules,
-  changeVisibleMenu,
-  changeFlagFetchProjectSchedules
+  changeFlagFetchProjectSchedules,
+  fetchProjectSchedule,
+  setopenModal,
+  changeProjectSchedule,
+  openModal
 }) => {
-  const [openConfigCalendar, setOpenConfigCalendar] = useState(false);
-  const [openModal, setopenModal] = useState(false);
   const [listSchedule, setListSchedule] = useState([]);
   const [listProjectSchedule, setListProjectSchedule] = useState([]);
   const { t } = useTranslation()
-  const clickConfigCalendar = () => {
-    setOpenConfigCalendar(true);
-    changeVisibleMenu(false);
-  };
   const params = useParams()
   useEffect(() => {
     fetchListSchedule();
@@ -43,6 +36,22 @@ const MenuMoreGantt = ({
       console.log(e);
     }
   };
+  useEffect(() => {
+    if (fetchProjectSchedule)
+      fetchProjectSchedules()
+  }, [params.projectId, fetchProjectSchedule])
+  const fetchProjectSchedules = async () => {
+    try {
+      const { projectId } = params
+      const result = await apiService({
+        url: `project/get-schedules?project_id=${projectId}`
+      })
+      changeProjectSchedule(result.data.schedules)
+      changeFlagFetchProjectSchedules(false)
+    } catch (e) {
+      console.log(e)
+    }
+  }
   const assignProjectSchedule = async (projectId, scheduleId, check) => {
     try {
       const url = check ? 'project/assign-schedules' : 'project/delete-schedules'
@@ -93,36 +102,39 @@ const MenuMoreGantt = ({
   );
   return (
     <React.Fragment>
-      <AssignCalendarModal setopenModal={setopenModal} openModal={openModal} />
       <CustomModal
-        title={t('GANTT_CALENDAR_TITLE_MODAL')}
-        className="gantt--calendar-modal__container"
-        fullWidth={true}
-        open={openConfigCalendar}
-        setOpen={setOpenConfigCalendar}
-        style={{}}
-        height="tall"
-        confirmRender={() => null}
-        isScrollContainer={false}
+        maxWidth="sm"
+        height="short"
+        setOpen={setopenModal}
+        open={openModal}
+        confirmRender={null}
+        canConfirm={false}
+        title={"GÁN LỊCH CHO DỰ ÁN"}
       >
-        <CalendarProjectPage
-          setopenModal={setopenModal}
-          scheduleDetailGantt={scheduleDetailGantt}
-        />
+        <div className="calendar--modal__container">
+          <div className="calendar--modal__header">
+            <div>{t('GANTT_CALENDAR_SELECT_ASSIGN_PROJECT')}</div>
+            <div>{t('GANTT_SELECTED')}: {listProjectSchedule.length} {t('GANTT_CALENDAR')}</div>
+          </div>
+          <div className="calendar--modal__body">
+            <table>
+              <tr>
+                <th>
+                  <div>
+                    <div>{t('GANTT_CALENDAR_NAME')}</div>
+                  </div>
+                </th>
+                <th>
+                  <div>
+                    <div>{t('GANTT_DESCRIPTION')}</div>
+                  </div>
+                </th>
+              </tr>
+              {renderListCalendarModal}
+            </table>
+          </div>
+        </div>
       </CustomModal>
-      <Paper>
-        <MenuList open={true}>
-          <MenuItem onClick={clickConfigCalendar}>{t('LABEL_GANTT_NAME_CALENDAR_MENU')}</MenuItem>
-          <MenuItem
-            onClick={() => {
-              changeVisibleExportPdfDrawer(true);
-              changeVisibleMenu(false);
-            }}
-          >
-            {t('LABEL_GANTT_NAME_EXPORT_MENU')}
-          </MenuItem>
-        </MenuList>
-      </Paper>
     </React.Fragment>
   );
 };
@@ -130,8 +142,10 @@ const MenuMoreGantt = ({
 const mapStateToProps = (state) => ({
   scheduleDetailGantt: state.gantt.scheduleDetailGantt,
   projectSchedules: state.gantt.projectSchedules,
+  fetchProjectSchedule: state.gantt.fetchProjectSchedule,
 });
 const mapDispatchToProps = {
-  changeFlagFetchProjectSchedules
+  changeFlagFetchProjectSchedules,
+  changeProjectSchedule,
 }
-export default connect(mapStateToProps, mapDispatchToProps)(MenuMoreGantt);
+export default connect(mapStateToProps, mapDispatchToProps)(AssignCalendarModal);

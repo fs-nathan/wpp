@@ -2044,5 +2044,10 @@
   "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm",
   "Module thành viên": "Module thành viên",
   "GANTT_MAIN_CALENDAR_LABEL": "Lịch chính",
-  "Bạn có muốn xóa bình luận ?": "Bạn có muốn xóa bình luận ?"
+  "Bạn có muốn xóa bình luận ?": "Bạn có muốn xóa bình luận ?",
+  "GANTT_CALENDAR_SELECT_ASSIGN_PROJECT": "Chọn lịch để gán cho dự án (lịch mặc định luôn được gán)",
+  "GANTT_SELECTED": "Đã chọn",
+  "GANTT_CALENDAR": "lịch",
+  "GANTT_CALENDAR_NAME": "Tên lịch",
+  "GANTT_DESCRIPTION": "Mô tả"
 }

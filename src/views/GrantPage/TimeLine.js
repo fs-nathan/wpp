@@ -40,7 +40,7 @@ const TimeLine = ({
   const refFirstResize = useRef();
   const [left, setLeft] = useState(null);
   const [resizeWidth, setResizeWidth] = useState(0);
-  const [width, setWidth] = useState(endPosition * 35);
+  const [width, setWidth] = useState(endPosition * 30);
   const [showResize, setShowResize] = useState(false);
   const [widthProcess, setWidthProcess] = useState(dataSource[index].complete);
   const [startDateText, setStartDateText] = useState(new moment(startDate));
@@ -69,10 +69,10 @@ const TimeLine = ({
     setEndDateText(new moment(endDate));
   }, [endDate, girdInstance]);
   useEffect(() => {
-    setLeft(startPosition * 35);
+    setLeft(startPosition * 30);
   }, [startPosition, dataSource, girdInstance]);
   useEffect(() => {
-    setWidth(endPosition * 35);
+    setWidth(endPosition * 30);
   }, [endPosition, dataSource, resizeWidth, startPosition, girdInstance]);
   const handleMouseMove = (e) => {
     if (!drag) return;
@@ -81,7 +81,7 @@ const TimeLine = ({
       return;
     }
     const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
-    const amountUnitAdd = (newPosition - startPosition * 35) / 35;
+    const amountUnitAdd = (newPosition - startPosition * 30) / 35;
 
     const roundAmountUnitAdd =
       amountUnitAdd > 0
@@ -105,7 +105,7 @@ const TimeLine = ({
       setWidth(newWidth);
       setWidthComplete((dataSource[index].complete * newWidth) / 100);
     }
-    const amountUnitAdd = (newPosition - startPosition * 35) / 35;
+    const amountUnitAdd = (newPosition - startPosition * 30) / 35;
     const roundAmountUnitAdd =
       amountUnitAdd > 0
         ? Math.floor(amountUnitAdd, girdInstance.unit)

@@ -75,8 +75,8 @@ export const initialState = {
       addUnit: 6,
       getWidthParent: (moment, first) =>
         first
-          ? (moment.daysInMonth() - moment.format("DD") + 1) * 35
-          : moment.daysInMonth() * 35,
+          ? (moment.daysInMonth() - moment.format("DD") + 1) * 30
+          : moment.daysInMonth() * 30,
       getTextParent: (moment) => moment.format("MM/YYYY"),
       getTimeCompare: (moment) => moment.format("M"),
       formatChild: "DD",
@@ -89,7 +89,7 @@ export const initialState = {
       parentUnit: "years",
       addUnit: 6,
       getWidthParent: (moment, first) =>
-        first ? (12 - moment.format("MM") + 1) * 35 : 12 * 35,
+        first ? (12 - moment.format("MM") + 1) * 30 : 12 * 30,
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "MM",
@@ -102,7 +102,7 @@ export const initialState = {
       addUnit: 6,
       parentUnit: "days",
       getWidthParent: (moment, first) =>
-        first ? (23 - moment.format("HH") + 1) * 35 : 24 * 35,
+        first ? (23 - moment.format("HH") + 1) * 30 : 24 * 30,
       getTextParent: (moment) => moment.format("DD/MM/YYYY"),
       getTimeCompare: (moment) => moment.format("DD/MM/YYYY"),
       formatChild: "HH",
@@ -115,7 +115,7 @@ export const initialState = {
       addUnit: 6,
       parentUnit: "years",
       getWidthParent: (moment, first) =>
-        first ? (52 - moment.format("W") + 1) * 35 : 52 * 35,
+        first ? (52 - moment.format("W") + 1) * 30 : 52 * 30,
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("W"),
       formatChild: "W",
@@ -128,7 +128,7 @@ export const initialState = {
       addUnit: 30,
       parentUnit: "years",
       getWidthParent: (moment, first) =>
-        first ? (4 - moment.format("Q") + 1) * 35 : 4 * 35,
+        first ? (4 - moment.format("Q") + 1) * 30 : 4 * 30,
       getTextParent: (moment) => moment.format("YYYY"),
       getTimeCompare: (moment) => moment.format("YYYY"),
       formatChild: "Q",
@@ -143,8 +143,8 @@ export const initialState = {
     parentUnit: "months",
     getWidthParent: (moment, first) =>
       first
-        ? (moment.daysInMonth() - moment.format("DD") + 1) * 35
-        : moment.daysInMonth() * 35,
+        ? (moment.daysInMonth() - moment.format("DD") + 1) * 30
+        : moment.daysInMonth() * 30,
     getTextParent: (moment) => moment.format("MM/YYYY"),
     getTimeCompare: (moment) => moment.format("M"),
     formatChild: "DD",

@@ -2044,5 +2044,10 @@
   "Bạn có muốn xóa bình luận ?": "Do you want to delete the comment ?",
   "LABEL_CHAT_TASK_TIM_KIEM": "Search",
   "Module thành viên": "Member mudule",
-  "GANTT_MAIN_CALENDAR_LABEL": "Main calendar"
+  "GANTT_MAIN_CALENDAR_LABEL": "Main calendar",
+  "GANTT_CALENDAR_SELECT_ASSIGN_PROJECT": "Select the calendar to assign for project (Default calendar is always assigned)",
+  "GANTT_SELECTED": "Selected",
+  "GANTT_CALENDAR": "Calendar",
+  "GANTT_CALENDAR_NAME": "Calendar name",
+  "GANTT_DESCRIPTION": "Description"
 }

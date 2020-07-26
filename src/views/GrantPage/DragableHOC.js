@@ -84,7 +84,7 @@ function GanttChart({
     if (scrollRef.current && scrollGanttFlag) {
       const widthFromNowLayer =
         new moment(Date.now()).diff(start, girdInstance.unit) + 1;
-      scrollRef.current.scrollLeft = widthFromNowLayer * 35 - 500;
+      scrollRef.current.scrollLeft = widthFromNowLayer * 30 - 500;
       scrollGantt(false);
     }
   }, [scrollGanttFlag]);
@@ -92,7 +92,7 @@ function GanttChart({
   const b = left ? { left: showFullChart ? minLeft : left } : {};
   let maxWidth;
   if (renderFullDay) {
-    maxWidth = (end.diff(start, girdInstance.unit) + 1) * 35;
+    maxWidth = (end.diff(start, girdInstance.unit) + 1) * 30;
   }
   const timeline = useMemo(
     () =>
@@ -166,7 +166,7 @@ function GanttChart({
               style={{
                 background: timelineColor.timeNotWork,
                 position: "absolute",
-                width: 35,
+                width: 30,
                 height: dataSource.length * 37 - 2,
                 left:
                   new moment(
@@ -174,7 +174,7 @@ function GanttChart({
                     item.hour ? " " + item.hour : ""
                     }`,
                     `DD/MM/YYYY${item.hour ? " HH" : ""}`
-                  ).diff(start, girdInstance.unit) * 35,
+                  ).diff(start, girdInstance.unit) * 30,
               }}
             ></div>
           ))}
@@ -320,10 +320,10 @@ function GanttChart({
             if (window.scrollTable || window.scrollTimeline || window.scrollTimelineVitural) return;
             if (!e.target.scrollTop) {
               const fetchNewTimeNotWork =
-                Math.floor(e.target.scrollLeft / (700 * 35)) !==
+                Math.floor(e.target.scrollLeft / (700 * 30)) !==
                 timeNotWorkUnit && visibleGantt.timeNotWork;
               if (fetchNewTimeNotWork) {
-                timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 35));
+                timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 30));
                 const fromDate = new moment(start).add(
                   700 * timeNotWorkUnit,
                   girdInstance.unit
@@ -334,19 +334,19 @@ function GanttChart({
                   toDate.format("YYYY-MM-DD")
                 );
               }
-              if (Math.floor(e.target.scrollLeft / 35) !== scrollWidth) {
-                const newScrollWidth = Math.floor(e.target.scrollLeft / 35);
+              if (Math.floor(e.target.scrollLeft / 30) !== scrollWidth) {
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 30);
                 setScrollWidth(newScrollWidth);
-                setLeftHeader(newScrollWidth * 35);
+                setLeftHeader(newScrollWidth * 30);
                 setLeftTable(
-                  Math.floor(e.target.scrollLeft / (35 * 7)) * 35 * 7
+                  Math.floor(e.target.scrollLeft / (30 * 7)) * 30 * 7
                 );
               } else {
-                const newScrollWidth = Math.floor(e.target.scrollLeft / 35);
-                setLeftHeader(newScrollWidth * 35);
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 30);
+                setLeftHeader(newScrollWidth * 30);
                 setScrollWidth(newScrollWidth);
                 setLeftTable(
-                  Math.floor(e.target.scrollLeft / (35 * 7)) * 35 * 7
+                  Math.floor(e.target.scrollLeft / (30 * 7)) * 30 * 7
                 );
               }
             }
@@ -356,13 +356,13 @@ function GanttChart({
             <div
               className="gantt--fromNowLayer__container"
               style={{
-                width: widthFromNowLayer * 35,
+                width: widthFromNowLayer * 30,
               }}
             >
               <div
                 className="gantt--fromNowLayer__background"
                 style={{
-                  width: widthFromNowLayer * 35,
+                  width: widthFromNowLayer * 30,
                 }}
               ></div>
               <div className="gantt--fromNowLayer__text">
