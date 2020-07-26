@@ -1,7 +1,7 @@
 import { ListItemText } from "@material-ui/core";
 import { mdiCalendar, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
-import { changeFlagFetchProjectSchedules, changeProjectSchedule } from 'actions/gantt';
+import { changeCalendarPermisstion, changeFlagFetchProjectSchedules, changeProjectSchedule } from 'actions/gantt';
 import { Primary, StyledList, StyledListItem } from "components/CustomList";
 import LeftSideContainer from "components/LeftSideContainer";
 import { apiService } from "constants/axiosInstance";
@@ -26,6 +26,7 @@ function CalendarProjectLeftPartPresenter({
   reducerProjectSchedules,
   changeFlagFetchProjectSchedules,
   handleSearchPattern,
+  changeCalendarPermisstion,
   setopenModal,
   searchPattern,
   handleDeleteGroup,
@@ -54,6 +55,20 @@ function CalendarProjectLeftPartPresenter({
       console.log(e)
     }
   }
+  const fetchPermissionCalendar = async () => {
+    try {
+      const { projectId } = params
+      const result = await apiService({
+        url: `gantt/get-permissions?project_id=${projectId}`,
+      })
+      changeCalendarPermisstion(result.data.permissions)
+    } catch (e) {
+      console.log(e)
+    }
+  }
+  useEffect(() => {
+    fetchPermissionCalendar()
+  }, [fetchProjectSchedule])
   useEffect(() => {
     if (fetchProjectSchedule)
       fetchProjectSchedules()
@@ -76,46 +91,48 @@ function CalendarProjectLeftPartPresenter({
                 ...item,
                 id: item._id
               }
-            }).map((item, index) => (
-              <React.Fragment key={index}>
-                <StyledListItem
-                  onClick={(e) => {
-                    changeScheduleDetailGantt(item)
-                  }}
-                  className={`${
-                    scheduleDetailGantt.id == get(item, "id", "")
-                      ? "item-actived gantt-calendar__left-side"
-                      : ""
-                    }`}
-                >
-                  <Icon
-                    className="view_CaledarProjectPageLeftPart_List_iconLeft"
-                    path={mdiCalendar}
-                    size={1}
-                    color={"#607D8B"}
-                  />
-                  <ListItemText
-                    primary={
-                      <Primary
-                        className={`custom-title-setting-item ${
-                          item.icon ? "" : "none-icon"
-                          }`}
-                      >
-                        {get(item, "name", "")}
-                      </Primary>
-                    }
-                    
-                    secondary={item.is_main ?
-                    <div className="gantt--main-calendar__label">{t('GANTT_MAIN_CALENDAR_LABEL')}</div>
-                    : null
-                    }
-                  />
-              
-                  <CustomMenu isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />
-                </StyledListItem>
-               
-              </React.Fragment>
-            ))}
+            }).map((item, index) => {
+              return (
+                <React.Fragment key={index}>
+                  <StyledListItem
+                    onClick={(e) => {
+                      changeScheduleDetailGantt(item)
+                    }}
+                    className={`${
+                      scheduleDetailGantt.id == get(item, "id", "")
+                        ? "item-actived gantt-calendar__left-side"
+                        : ""
+                      }`}
+                  >
+                    <Icon
+                      className="view_CaledarProjectPageLeftPart_List_iconLeft"
+                      path={mdiCalendar}
+                      size={1}
+                      color={"#607D8B"}
+                    />
+                    <ListItemText
+                      primary={
+                        <Primary
+                          className={`custom-title-setting-item ${
+                            item.icon ? "" : "none-icon"
+                            }`}
+                        >
+                          {get(item, "name", "")}
+                        </Primary>
+                      }
+
+                      secondary={item.is_main ?
+                        <div className="gantt--main-calendar__label">{t('GANTT_MAIN_CALENDAR_LABEL')}</div>
+                        : null
+                      }
+                    />
+
+                    <CustomMenu isMain={item.is_main} isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />
+                  </StyledListItem>
+
+                </React.Fragment>
+              )
+            })}
           </StyledList>
         </LeftSideContainer>
       </React.Fragment>
@@ -142,7 +159,8 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = {
   changeScheduleDetailGantt,
   changeProjectSchedule,
-  changeFlagFetchProjectSchedules
+  changeFlagFetchProjectSchedules,
+  changeCalendarPermisstion
 };
 export default connect(
   mapStateToProps,

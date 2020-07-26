@@ -3,6 +3,8 @@ import { changeFlagFetchProjectSchedules, changeProjectSchedule } from 'actions/
 import 'antd/lib/menu/style/index.css';
 import CustomModal from "components/CustomModalGantt";
 import { apiService } from "constants/axiosInstance";
+import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from 'constants/snackbarController';
+import { get } from 'lodash';
 import { default as React, useEffect, useMemo, useState } from "react";
 import { useTranslation } from 'react-i18next';
 import { connect } from "react-redux";
@@ -34,6 +36,7 @@ const AssignCalendarModal = ({
       setListSchedule(listSchedule.data.schedules);
     } catch (e) {
       console.log(e);
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
     }
   };
   useEffect(() => {
@@ -50,6 +53,7 @@ const AssignCalendarModal = ({
       changeFlagFetchProjectSchedules(false)
     } catch (e) {
       console.log(e)
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
     }
   }
   const assignProjectSchedule = async (projectId, scheduleId, check) => {
@@ -66,6 +70,7 @@ const AssignCalendarModal = ({
       changeFlagFetchProjectSchedules(true)
     } catch (e) {
       console.log(e)
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
     }
   }
   useEffect(() => {

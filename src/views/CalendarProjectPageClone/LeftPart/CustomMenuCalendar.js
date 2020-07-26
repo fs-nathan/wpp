@@ -12,7 +12,7 @@ import { changeFlagFetchProjectSchedules, changeMainCalendar } from "../../../ac
 
 const ITEM_HEIGHT = 48;
 
-function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermisstions, changeFlagFetchProjectSchedules, isDefault }) {
+function CustomMenu({ projectId, isMain, scheduleId, changeMainCalendar, calendarPermisstions, changeFlagFetchProjectSchedules, isDefault }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const history = useHistory();
@@ -41,6 +41,7 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
       console.log(e)
     }
   }
+
   const setMainProjectSchedule = async (projectId, scheduleId) => {
     try {
       const url = 'project/set-main-schedules'
@@ -80,7 +81,7 @@ function CustomMenu({ projectId, scheduleId, changeMainCalendar, calendarPermiss
           },
         }}
       >
-        {calendarPermisstions.edit_schedule && !calendarPermisstions.is_main && <MenuItem key={1} onClick={(e) => {
+        {calendarPermisstions.edit_schedule && !isMain && <MenuItem key={1} onClick={(e) => {
           e.stopPropagation()
           if (!calendarPermisstions.assign_schedule) return
           setMainProjectSchedule(projectId, scheduleId)
