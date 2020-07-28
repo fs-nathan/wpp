@@ -135,7 +135,7 @@ const ColumnLeft = () => {
                 align="left"
               >
                 <Typography
-                  title={{ description }}
+                  title={description}
                   className="comp_TitleCell__inner"
                 >
                   {description}
