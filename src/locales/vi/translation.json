@@ -2049,5 +2049,6 @@
   "GANTT_SELECTED": "Đã chọn",
   "GANTT_CALENDAR": "lịch",
   "GANTT_CALENDAR_NAME": "Tên lịch",
-  "GANTT_DESCRIPTION": "Mô tả"
+  "GANTT_DESCRIPTION": "Mô tả",
+  "GANTT_ASSIGN_PROJECT": "Gán lịch cho dự án"
 }

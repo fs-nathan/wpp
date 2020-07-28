@@ -2049,5 +2049,6 @@
   "GANTT_SELECTED": "Selected",
   "GANTT_CALENDAR": "Calendar",
   "GANTT_CALENDAR_NAME": "Calendar name",
-  "GANTT_DESCRIPTION": "Description"
+  "GANTT_DESCRIPTION": "Description",
+  "GANTT_ASSIGN_PROJECT": "ASSIGN CALENDAR FOR PROJECT"
 }

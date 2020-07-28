@@ -81,7 +81,7 @@ const TimeLine = ({
       return;
     }
     const newPosition = e.pageX - a > 0 ? e.pageX - a : 0;
-    const amountUnitAdd = (newPosition - startPosition * 30) / 35;
+    const amountUnitAdd = (newPosition - startPosition * 30) / 30;
 
     const roundAmountUnitAdd =
       amountUnitAdd > 0
@@ -105,7 +105,7 @@ const TimeLine = ({
       setWidth(newWidth);
       setWidthComplete((dataSource[index].complete * newWidth) / 100);
     }
-    const amountUnitAdd = (newPosition - startPosition * 30) / 35;
+    const amountUnitAdd = (newPosition - startPosition * 30) / 30;
     const roundAmountUnitAdd =
       amountUnitAdd > 0
         ? Math.floor(amountUnitAdd, girdInstance.unit)
@@ -138,16 +138,16 @@ const TimeLine = ({
   const handleMouseUp = (e) => {
     e.preventDefault();
     if (!drag && !dragFirstResize) return;
-    const surplus = left % 35;
+    const surplus = left % 30;
     const newLeft = left - surplus;
-    const newWidth = dragFirstResize ? (width + left - newLeft) / 35 : width;
+    const newWidth = dragFirstResize ? (width + left - newLeft) / 30 : width;
     // setLeft(newLeft)
     // if(dragFirstResize){
     //     setWidth(width + left - newLeft)
     // }
     setDrag(false);
     setDragFirstResize(false);
-    handleChange(newLeft / 35, (left + width) / 35);
+    handleChange(newLeft / 30, (left + width) / 30);
   };
   useEffect(() => {
     document.addEventListener("mouseup", handleMouseUp);
@@ -158,8 +158,8 @@ const TimeLine = ({
     const newResizeWidth = node.size.width;
     if (newResizeWidth === width) return;
     const add = newResizeWidth > width ? 1 : 0;
-    const end = (newResizeWidth - (newResizeWidth % 35)) / 35 + left / 35;
-    handleChange(left / 35, end + add);
+    const end = (newResizeWidth - (newResizeWidth % 30)) / 30 + left / 30;
+    handleChange(left / 30, end + add);
   };
   const handleProcessResize = (e, node) => {
     if (isGroupTask || isTotalDuration) return
@@ -179,7 +179,7 @@ const TimeLine = ({
   const handleResizeWidth = (e, node) => {
     if (isGroupTask || isTotalDuration || !canEdit) return;
     const newResizeWidth = node.size.width;
-    const amountUnitAdd = (newResizeWidth - width) / 35;
+    const amountUnitAdd = (newResizeWidth - width) / 30;
     const roundAmountUnitAdd =
       amountUnitAdd > 0
         ? Math.ceil(amountUnitAdd, girdInstance.unit)
@@ -237,7 +237,7 @@ const TimeLine = ({
           </p>
         )}
         <ResizableBox
-          minConstraints={[35, 0]}
+          minConstraints={[30, 0]}
           className="container-resizable"
           {...styleWidthGroupTask}
           lockAspectRatio={

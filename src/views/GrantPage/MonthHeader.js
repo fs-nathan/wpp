@@ -103,7 +103,7 @@ const MonthHeader = ({
           style={{
             position: "absolute",
             marginLeft: 0,
-            marginTop: 23.8,
+            marginTop: 25.8,
             left: leftTable,
             overflow: 'scroll',
             height: heightTable - 50

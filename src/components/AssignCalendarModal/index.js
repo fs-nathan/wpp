@@ -114,7 +114,7 @@ const AssignCalendarModal = ({
         open={openModal}
         confirmRender={null}
         canConfirm={false}
-        title={"GÁN LỊCH CHO DỰ ÁN"}
+        title={t('GANTT_ASSIGN_PROJECT')}
       >
         <div className="calendar--modal__container">
           <div className="calendar--modal__header">
