@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { DEFAULT_ITEM } from '../MenuList';
 import './styles.scss';
+import { StyledTableBodyCell } from 'views/DocumentPage/TablePart/DocumentComponent/TableCommon';
 
 function DocumentsTable({
   listData, setListData,
@@ -186,19 +187,19 @@ function DocumentsTable({
     <TableBody className="ShareFromLibraryModal--table-body" >
       {listData.map(item => (
         <TableRow key={item.id} className="ShareFromLibraryModal--table-item" >
-          <TableCell width="50px" align="center">
+          <StyledTableBodyCell width="50px" align="center">
             {item.type !== 'folder' && <Checkbox color="primary"
               checked={findIndex(selectedFiles, ['id', item.id]) !== -1}
               onClick={selectFile(item)} />}
-          </TableCell>
-          <TableCell width="50px" align="center" onClick={() => handleClickItem(item)}>
+          </StyledTableBodyCell>
+          <StyledTableBodyCell width="50px" align="center" onClick={() => handleClickItem(item)}>
             <Avatar
               src={FileType(item.type)}
               className="full-avatar"
             />
-          </TableCell>
-          <TableCell className="DocumentsTable--itemName" onClick={() => handleClickItem(item)}>{item.name}</TableCell>
-          <TableCell width="120px" align="center">
+          </StyledTableBodyCell>
+          <StyledTableBodyCell className="DocumentsTable--itemName" onClick={() => handleClickItem(item)}>{item.name}</StyledTableBodyCell>
+          <StyledTableBodyCell width="120px" align="center">
             {item.owner && item.owner.avatar && (
               <Avatar
                 title={item.owner.name}
@@ -206,10 +207,10 @@ function DocumentsTable({
                 className="owner-avatar"
               />
             )}
-          </TableCell>
-          <TableCell width="150px">
+          </StyledTableBodyCell>
+          <StyledTableBodyCell width="150px">
             {item.size || '-'}
-          </TableCell>
+          </StyledTableBodyCell>
           {item.type !== 'folder' ? (
             <MoreAction
               actionList={moreAction}
