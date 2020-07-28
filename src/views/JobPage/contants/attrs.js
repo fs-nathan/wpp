@@ -45,7 +45,10 @@ export const roleAttrs = {
   number_task: "number_task",
 };
 export const recent = {
-  success: "state",
+  paging: "paging",
+  next_page: "paging.next_page",
+  page: "paging.page",
+  total_page: "paging.total_page",
   error: "msg",
   summary: "summary",
   waiting: "summary.waiting",

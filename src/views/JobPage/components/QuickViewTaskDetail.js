@@ -176,9 +176,7 @@ export function QuickViewTaskDetailStateLess({ detailTask, onClose }) {
           </QuickViewRow>
           <QuickViewRow title={t("MÔ TẢ CÔNG VIỆC")}>
             <Box whiteSpace="pre" lineHeight="1.4" fontSize="14px">
-              {JSON.stringify(
-                get(detailTask, taskAtrrs.description, "#########")
-              )}
+              {get(detailTask, taskAtrrs.description, "#########")}
             </Box>
           </QuickViewRow>
           <QuickViewRow title={t("TIẾN ĐỘ")}>

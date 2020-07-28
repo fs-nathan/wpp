@@ -42,6 +42,17 @@ const Role = () => {
     timeRange.endDate,
     statusFilter,
   ]);
+  const handlePageChange = (page) => {
+    dispatch(
+      loadTaskRolePage({
+        timeStart: formatTime(timeRange.startDate),
+        timeEnd: formatTime(timeRange.endDate),
+        roleId,
+        ...mapQueryStatusAndPriority(statusFilter),
+        page,
+      })
+    );
+  };
   const location = useLocation();
   return (
     <Layout
@@ -72,7 +83,7 @@ const Role = () => {
       }
     >
       <PageContainer maxWidth="xl">
-        <Content />
+        <Content onPageChange={handlePageChange} />
       </PageContainer>
     </Layout>
   );

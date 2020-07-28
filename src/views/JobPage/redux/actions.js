@@ -24,9 +24,7 @@ export const loadTaskOverViewPage = (timeRange) => {
 export const loadTaskDuePage = (timeRange) => {
   return {
     type: LOADPAGE_TASK_DUE,
-    payload: {
-      timeRange,
-    },
+    payload: timeRange,
   };
 };
 export const loadTaskAssignPage = (timeRange) => {
