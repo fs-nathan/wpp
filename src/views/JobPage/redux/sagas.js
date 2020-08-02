@@ -63,13 +63,14 @@ function* doGetStaticTaskRecent(timeRange) {
   }
 }
 
-function* doGetDueTasks(timeRange) {
+function* doGetDueTasks(payload) {
   try {
-    const { status, priority } = timeRange;
+    const { status, priority, page } = payload;
     const config = {
       url: `/task-statistic/about-to-expire?${encodeQueryData({
         status,
         priority,
+        page,
       })}`,
       method: "get",
     };
@@ -92,6 +93,7 @@ function* doGetAssignTasks({
   typeAssign,
   status,
   priority,
+  page,
 }) {
   try {
     const config = {
@@ -101,6 +103,7 @@ function* doGetAssignTasks({
         type_assign: typeAssign,
         status,
         priority,
+        page,
       })}`,
       method: "get",
     };
@@ -116,7 +119,14 @@ function* doGetAssignTasks({
     });
   }
 }
-function* doGetRoleTasks({ timeStart, timeEnd, roleId, status, priority }) {
+function* doGetRoleTasks({
+  timeStart,
+  timeEnd,
+  roleId,
+  status,
+  priority,
+  page,
+}) {
   try {
     const config = {
       url: `/task-statistic/role?${encodeQueryData({
@@ -125,6 +135,7 @@ function* doGetRoleTasks({ timeStart, timeEnd, roleId, status, priority }) {
         status,
         priority,
         role_id: roleId,
+        page,
       })}`,
       method: "get",
     };
@@ -159,17 +170,15 @@ function* watchLoadTaskPage() {
 }
 function* watchLoadTaskDuePage() {
   while (true) {
-    const {
-      payload: { timeRange },
-    } = yield take(LOADPAGE_TASK_DUE);
-    yield all([fork(doGetDueTasks, timeRange)]);
+    const { payload } = yield take(LOADPAGE_TASK_DUE);
+    yield all([fork(doGetDueTasks, payload)]);
   }
 }
 
 function* watchLoadTaskAssignPage() {
   while (true) {
     const {
-      payload: { timeStart, typeAssign, timeEnd, status, priority },
+      payload: { timeStart, typeAssign, timeEnd, status, priority, page },
     } = yield take(LOADPAGE_TASK_ASSIGN);
     yield all([
       fork(doGetAssignTasks, {
@@ -178,6 +187,7 @@ function* watchLoadTaskAssignPage() {
         timeEnd,
         status,
         priority,
+        page,
       }),
     ]);
   }
@@ -185,12 +195,8 @@ function* watchLoadTaskAssignPage() {
 
 function* watchLoadTaskRolePage() {
   while (true) {
-    const {
-      payload: { timeStart, timeEnd, roleId, status, priority },
-    } = yield take(LOADPAGE_TASK_ROLE);
-    yield all([
-      fork(doGetRoleTasks, { timeStart, timeEnd, roleId, status, priority }),
-    ]);
+    const { payload } = yield take(LOADPAGE_TASK_ROLE);
+    yield all([fork(doGetRoleTasks, payload)]);
   }
 }
 export {

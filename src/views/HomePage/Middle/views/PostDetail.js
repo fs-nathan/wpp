@@ -223,6 +223,7 @@ const CommentListContainer = () => {
             const comment = {
               ...c,
               ...data_comment,
+              can_modify: !!data_comment.id && true,
             };
             const comments = newComments[comment.id];
             return (

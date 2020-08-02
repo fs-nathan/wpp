@@ -1,4 +1,5 @@
 import { Grid } from "@material-ui/core";
+import { Pagination } from "@material-ui/lab";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -10,10 +11,10 @@ import { useCustomList } from "views/JobPage/hooks/useCustomList";
 import { JobPageContext } from "views/JobPage/JobPageContext";
 import { TASK_ASSIGN } from "views/JobPage/redux/types";
 import { colors, labels, recent } from "../../contants/attrs";
-import { createMapPropsFromAttrs } from "../../utils";
+import { createMapPropsFromAttrs, loginlineFunc } from "../../utils";
 
 const emptyArray = [];
-export function Content() {
+export function Content({ onPageChange }) {
   const { t } = useTranslation();
   const { statusFilter, keyword } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
@@ -24,6 +25,9 @@ export function Content() {
     complete,
     expired,
     tasks = emptyArray,
+    next_page,
+    page,
+    total_page,
   ] = useSelector((state) => {
     return createMapPropsFromAttrs([
       recent.waiting,
@@ -32,6 +36,9 @@ export function Content() {
       recent.complete,
       recent.expired,
       recent.tasks,
+      recent.next_page,
+      recent.page,
+      recent.total_page,
     ])(state.taskPage[TASK_ASSIGN]);
   });
   const [list] = useCustomList({
@@ -89,7 +96,16 @@ export function Content() {
       </Grid>
 
       <Grid item container xs={12}>
-        <TaskTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
+        <TaskTable
+          tasks={list}
+          {...{ isToggleSortName, toggleSortName, next_page, page, total_page }}
+        />
+      </Grid>
+      <Grid item container xs={12} justify="flex-end">
+        <Pagination
+          count={total_page}
+          onChange={loginlineFunc((e, page) => onPageChange(page))}
+        />
       </Grid>
     </Grid>
   );
