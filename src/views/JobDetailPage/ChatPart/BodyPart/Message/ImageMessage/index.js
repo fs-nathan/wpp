@@ -1,8 +1,7 @@
-import { Avatar } from '@material-ui/core';
 import { showImagesList } from 'actions/chat/chat';
 import { detailUser } from 'actions/user/detailUser';
 import clsx from 'clsx';
-import { getUpdateProgressDate } from 'helpers/jobDetail/stringHelper';
+import { getUpdateProgressDate, getFileType } from 'helpers/jobDetail/stringHelper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -11,6 +10,70 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import CommonMessageAction from '../CommonMessageAction';
 import './styles.scss';
 import { isOneOf } from 'helpers/jobDetail/arrayHelper';
+import { FileType } from 'components/FileType';
+import * as fileType from 'assets/fileType';
+import Icon from '@mdi/react';
+import ReactPlayer from 'react-player';
+import { Avatar, ListItem, ListItemText, Typography } from '@material-ui/core';
+import styled from 'styled-components';
+import { mdiPlayCircle } from '@mdi/js';
+import { useTranslation } from 'react-i18next';
+
+const TitleImg = styled(Typography)`
+    & > li {
+        padding: 10px 10px 10px 0;
+        & > div:nth-child(1) {
+            margin-right: 7px;
+        }
+        & > div:nth-child(2) {
+            & > div:nth-child(1) {
+                color: white;
+                font-size: 15px
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 100%;
+            }
+            & > div:nth-child(2) {
+                color: #9c9797;
+                font-size: 13px
+            }
+        }
+    }
+`
+
+function ImagePlace(t, file, user_create_avatar, user_create_name, time_create) {
+  if (FileType(getFileType(file.name)) === fileType.video)
+    return (<div className="FileMessage--videoCover" >
+      <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
+      <ReactPlayer
+        className="FileMessage--videoPlayer"
+        url={file.url}
+        height="auto" width="100%"
+      />
+      <Typography className="FileMessage--videoInfo" component={'div'}>
+        <TitleImg component='div'>
+          <ListItem>
+            {user_create_avatar && <Avatar src={user_create_avatar} />}
+            <ListItemText
+              style={{ margin: 0 }}
+              primary={
+                <Typography component='div'>
+                  {file.name}
+                </Typography>
+              }
+              secondary={
+                <Typography component='div'>
+                  {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
+                </Typography>
+              }
+            />
+          </ListItem>
+        </TitleImg>
+      </Typography>
+    </div>)
+  return (<img className={clsx("ImageMessage--img")} src={file.url_thumbnail || file.url} alt="hd" />)
+}
 
 const ImageMessage = ({
   handleReplyChat,
@@ -31,6 +94,7 @@ const ImageMessage = ({
   can_delete,
   chatPosition = "top",
 }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const uploadingPercent = useSelector(state => state.chat.uploadingPercent);
   const groupActiveColor = useSelector(currentColorSelector)
@@ -90,8 +154,8 @@ const ImageMessage = ({
           title={!isReply ? getUpdateProgressDate(time_create, dateFormat) : ''}>
           <div className="ImageMessage--imagesContainer" >
             {
-              showImages.map(({ url_thumbnail, url }, i) =>
-                <div key={url_thumbnail || url} onClick={handleClickOpen(i)}
+              showImages.map((image, i) =>
+                <div key={image.url_thumbnail || image.url} onClick={handleClickOpen(i)}
                   className={clsx("ImageMessage--wrap",
                     `ImageMessage--wrap__total${showImages.length}-${i + 1}`,
                     `ImageMessage--wrap__number${i + 1}`,
@@ -101,7 +165,7 @@ const ImageMessage = ({
                   {
                     (plusImage > 0 && !isReply && i === 5) ? (
                       <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
-                        <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
+                        {ImagePlace(t, image, user_create_avatar, user_create_name, time_create)}
                         <div className={clsx("ImageMessage--plusText")}>
                           <div className={clsx("ImageMessage--plusTextNumber")}>
                             +{plusImage}
@@ -110,7 +174,7 @@ const ImageMessage = ({
                       </div>
                     )
                       :
-                      <img className={clsx("ImageMessage--img", { 'ImageMessage--img__reply': isReply })} src={url_thumbnail || url} alt="hd" />
+                      ImagePlace(t, image, user_create_avatar, user_create_name, time_create)
                   }
                   {!isReply &&
                     <>
