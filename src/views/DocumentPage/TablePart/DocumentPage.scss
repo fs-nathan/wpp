@@ -506,6 +506,9 @@
     border-radius: unset;
     width: 30px;
     height: auto;
+    .MuiAvatar-img {
+      height: auto!important
+    }
   }
 }
 
