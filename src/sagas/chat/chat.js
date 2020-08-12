@@ -184,7 +184,7 @@ export function* createChatText(payload) {
     // yield put(actions.removeChatById(resendId));
   } catch (error) {
     console.log('uuid', error)
-    yield put(actions.createChatTextFail(error, payload.content.id));
+    yield put(actions.createChatTextFail(error, payload.content.id || payload.resendId));
   }
 }
 

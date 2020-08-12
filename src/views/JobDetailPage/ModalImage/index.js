@@ -292,6 +292,7 @@ const ModalImage = () => {
               {
                 (FileType(type) === fileType.video) ? null :
                   imagesList.map((image, index) => {
+                    if (FileType(image.type) === fileType.video) return null;
                     return (
                       <WrapperImage
                         onClick={() => setCurrentImage(index)}

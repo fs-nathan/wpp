@@ -18,7 +18,6 @@ apiService.interceptors.request.use(function (config) {
   const group_active = localStorage.getItem("group-active");
   config.headers["Authorization"] = `Bearer ${accessToken}`;
   config.headers["group-active"] = group_active;
-  config.headers["task_id"] = "5da1821ad219830d90402fd8"; // Fixed task id in header (it should be pass from saga)
   return config;
 });
 
@@ -37,17 +36,17 @@ apiService.interceptors.response.use(
     }
 
     return res;
+  },
+  function (error) {
+    if (error.response.status === 403 || error.response.status === 401) {
+      localStorage.removeItem("TOKEN");
+      localStorage.removeItem("REFRESH_TOKEN");
+      localStorage.removeItem("GROUP_ACTIVE");
+      window.location.href = '/login';
+      return error.response;
+    }
+    return Promise.reject(error);
   }
-  // function (error) {
-  //   if (error.response.status === 403) {
-  //     localStorage.removeItem(TOKEN);
-  //     localStorage.removeItem(REFRESH_TOKEN);
-  //     localStorage.removeItem(GROUP_ACTIVE);
-  //     window.location.href = Routes.LOGIN;
-  //     return error.response;
-  //   }
-  //   // return Promise.reject(error);
-  // }
 );
 
 export { apiService };

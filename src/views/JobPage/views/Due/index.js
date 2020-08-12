@@ -28,6 +28,14 @@ const Due = () => {
       );
     });
   }, [dispatch, statusFilter, timeRange]);
+  const handlePageChange = (page) => {
+    dispatch(
+      loadTaskDuePage({
+        ...mapQueryStatusAndPriority(statusFilter),
+        page,
+      })
+    );
+  };
   return (
     <Layout
       title={
@@ -50,7 +58,7 @@ const Due = () => {
       }
     >
       <PageContainer maxWidth="xl">
-        <Content />
+        <Content onPageChange={handlePageChange} />
       </PageContainer>
     </Layout>
   );

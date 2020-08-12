@@ -29,6 +29,9 @@
         fill: #03b000;
       }
     }
+    path {
+      fill: currentColor !important;
+    }
   }
   &--name {
     font-size: 15px;

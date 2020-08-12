@@ -1,4 +1,5 @@
 import { Grid } from "@material-ui/core";
+import { Pagination } from "@material-ui/lab";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
@@ -13,7 +14,7 @@ import { colors, labels, recent } from "../../contants/attrs";
 import { createMapPropsFromAttrs } from "../../utils";
 
 const emptyArray = [];
-export function Content() {
+export function Content({ onPageChange }) {
   const { t } = useTranslation();
   const { statusFilter, keyword } = useContext(JobPageContext);
   const [isToggleSortName, toggleSortName] = useToggle();
@@ -25,6 +26,7 @@ export function Content() {
     stop,
     expired,
     tasks = emptyArray,
+    total_page,
   ] = useSelector((state) => {
     return createMapPropsFromAttrs([
       recent.complete,
@@ -33,6 +35,7 @@ export function Content() {
       recent.stop,
       recent.expired,
       recent.tasks,
+      recent.total_page,
     ])(state.taskPage[TASK_ROLE]);
   });
 
@@ -91,6 +94,12 @@ export function Content() {
       </Grid>
       <Grid item container xs={12}>
         <TaskTable tasks={list} {...{ isToggleSortName, toggleSortName }} />
+      </Grid>
+      <Grid item container xs={12} justify="flex-end">
+        <Pagination
+          count={total_page}
+          onChange={(e, page) => onPageChange(page)}
+        />
       </Grid>
     </Grid>
   );

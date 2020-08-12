@@ -5,11 +5,15 @@ import { createCommand, getCommand } from '../../../../../actions/taskDetail/tas
 import { taskIdSelector } from '../../../selectors';
 import HeaderTab from '../../HeaderTab';
 import DemandModal from '../DemandModal';
+import get from 'lodash/get';
 
 function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
+  const {
+    manage_command_decision
+  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
 
   useEffect(() => {
     dispatch(getCommand({ task_id: taskId }))
@@ -30,6 +34,7 @@ function TabHeader(props) {
         buttonTooltipText={t('LABEL_CHAT_TASK_TAO_MOI')}
         onClickBack={() => props.setShow(0)}
         onClickOpen={handleClickOpen}
+        rightIcon={manage_command_decision ? 'add' : null}
       />
       {/* modal chi dao quyet dinh */}
       <DemandModal

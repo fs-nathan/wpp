@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { taskIdSelector } from '../../../selectors';
 import '../../HeaderTab/styles.scss';
+import get from 'lodash/get';
 
 const ButtonCancel = styled.p`
   font-size: 13px;
@@ -25,6 +26,9 @@ function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
+  const {
+    manage_sub_task,
+  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
   // console.log('header props::', props)
   useEffect(() => {
     dispatch(getSubTask({ taskId }))
@@ -45,7 +49,7 @@ function TabHeader(props) {
         </abbr>
       </IconButton>
       <ColorTypo className="headerTab--text" uppercase>{t('LABEL_CHAT_TASK_CONG_VIEC_CON')}</ColorTypo>
-      {isPlus ?
+      {!manage_sub_task ? null : isPlus ?
         <IconButton className="headerTab--button" onClick={() => {
           props.onClickPlusIcon()
           handleClick()

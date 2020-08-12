@@ -10,6 +10,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import { getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
 import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
 import './styles.scss';
@@ -30,17 +31,6 @@ function TabHeader(props) {
   const { is_ghim: isPinned, state_code, assign_code } = taskDetails || {};
   const pause = state_code === 4;
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [editMode, setEditMode] = React.useState(null);
-
-  function handleClick(evt) {
-    setAnchorEl(evt.currentTarget);
-  }
-
-  function handleCloseMenu() {
-    setAnchorEl(null);
-  }
-
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
@@ -58,6 +48,18 @@ function TabHeader(props) {
     manage_offer,
     manage_command_decision
   } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [editMode, setEditMode] = React.useState(null);
+
+  function handleClick(evt) {
+    dispatch(getTaskDetailTabPart({ taskId }));
+    setAnchorEl(evt.currentTarget);
+  }
+
+  function handleCloseMenu() {
+    setAnchorEl(null);
+  }
 
   let avatar, name, roles;
   if (detailTask) {

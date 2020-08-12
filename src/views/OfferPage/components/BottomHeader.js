@@ -74,19 +74,19 @@ font-family: Roboto, sans-serif;
 
 const useStyles = makeStyles(theme => ({
     waiting: {
-        color: colors.offer_status_waiting,
+        fill: colors.offer_status_waiting,
         marginRight: '5px'
     },
     cancel: {
-        color: colors.offer_status_cancel,
+        fill: colors.offer_status_cancel,
         marginRight: '5px'
     },
     approved: {
-        color: colors.offer_status_approved,
+        fill: colors.offer_status_approved,
         marginRight: '5px'
     },
     processing: {
-        color: colors.offer_status_processing,
+        fill: colors.offer_status_processing,
         marginRight: '5px'
     }
 }));

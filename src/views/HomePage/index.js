@@ -1,9 +1,10 @@
-import { getListStickersRequest } from "actions/chat/chat";
+import { getListStickersRequest, openShareFileModal } from "actions/chat/chat";
 import { actionFetchGroupDetail } from "actions/setting/setting";
 import React, { useEffect } from "react";
-import { connect, useDispatch } from "react-redux";
+import { connect, useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import StickyBox from "react-sticky-box";
+import ShareDocumentModal from "views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal";
 import ModalImage from "views/JobDetailPage/ModalImage";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
@@ -110,6 +111,22 @@ export default connect((state) => ({
   useEffect(() => {
     dispatch(getListStickersRequest());
   }, [dispatch]);
+  const item = useSelector((state) => state.chat.item);
+  const users_shared = item ? item.users_shared || [] : [];
+  const shareItem = { ...item, users_shared };
+  const isOpenShareFileModal = useSelector(
+    (state) => state.chat.isOpenShareFileModal
+  );
+  function onCloseShare() {
+    dispatch(openShareFileModal(false));
+  }
   if (!props.groupDetail.id) return null;
-  return <HomePage {...props} />;
+  return (
+    <>
+      <HomePage {...props} />
+      {isOpenShareFileModal && (
+        <ShareDocumentModal onClose={onCloseShare} item={shareItem} />
+      )}
+    </>
+  );
 });

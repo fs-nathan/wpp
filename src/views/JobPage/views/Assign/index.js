@@ -42,6 +42,18 @@ const Assign = () => {
     timeRange.endDate,
     statusFilter,
   ]);
+  const handlePageChange = (page) => {
+    dispatch(
+      loadTaskAssignPage({
+        timeStart: formatTime(timeRange.startDate),
+        timeEnd: formatTime(timeRange.endDate),
+        typeAssign,
+        ...mapQueryStatusAndPriority(statusFilter),
+        page,
+      })
+    );
+  };
+
   const location = useLocation();
   return (
     <Layout
@@ -72,7 +84,7 @@ const Assign = () => {
       }
     >
       <PageContainer maxWidth="xl">
-        <Content />
+        <Content onPageChange={handlePageChange} />
       </PageContainer>
     </Layout>
   );

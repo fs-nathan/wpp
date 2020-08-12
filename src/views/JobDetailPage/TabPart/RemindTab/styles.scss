@@ -45,6 +45,9 @@
   &--creator {
     display: flex;
   }
+  &--role {
+    font-weight: normal;
+  }
   &--content {
     padding: 16px 20px;
     min-width: 500px;

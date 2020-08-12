@@ -3,6 +3,9 @@
   min-height: 100%;
   background: #f1f2f4;
 }
+.views_HomePage___wrapper path {
+  fill: currentColor;
+}
 .views_HomePage___wrapper a {
   /* color: #007bff; */
 }
