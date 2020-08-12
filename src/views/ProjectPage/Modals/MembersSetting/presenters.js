@@ -417,12 +417,17 @@ function MemberSetting({
                         : <span style={{ color: 'red' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.LEA")}</span>}
                     </TableCell>
                     <TableCell width='5%'>
-                      {get(member, 'is_in_group', false) &&
+                      {/*get(member, 'is_in_group', false) &&
                         (<SettingButton
                           member={member}
                           setAnchorEl={setAnchorEl}
                           setCurMemberSetting={setCurMemberSetting}
-                        />)}
+                        />)*/}
+                      <SettingButton
+                        member={member}
+                        setAnchorEl={setAnchorEl}
+                        setCurMemberSetting={setCurMemberSetting}
+                      />
                     </TableCell>
                   </StyledRow>
                 ))}

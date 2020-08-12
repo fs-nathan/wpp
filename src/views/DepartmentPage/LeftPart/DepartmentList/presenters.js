@@ -44,8 +44,6 @@ function DepartmentList({
     ref.current.focus();
   }, []);
 
-  console.log(rooms);
-
   return (
     <React.Fragment>
       <LeftSideContainer

@@ -1,5 +1,6 @@
 import { Typography } from '@material-ui/core';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import CustomSelect from '../CustomSelect';
 import './style.scss';
 
@@ -17,12 +18,12 @@ const Select = ({ className = '', ...props }) =>
   />
 
 function MySelect({
-  label, options, value, onChange
+  label, options, value, onChange, isRequired = false
 }) {
-
+  const { t } = useTranslation();
   return (
     <>
-      <Title component={'div'}>{label}</Title>
+      <Title component={'div'}>{label} {isRequired ? <abbr title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr> : null}</Title>
       <Select>
         <CustomSelect
           options={options}

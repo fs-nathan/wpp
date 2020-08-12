@@ -129,6 +129,7 @@ function EditProject({
             value: curProjectGroupId,
           }}
           onChange={({ value: curProjectGroupId }) => setCurProjectGroupId(curProjectGroupId)}
+          isRequired={true}
         />
       </StyledFormControl>
       <CustomTextbox
@@ -148,6 +149,7 @@ function EditProject({
       <StyledFormControl fullWidth>
         <Title>
           {t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}
+          <abbr className="EditProject_required_label" title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr>
         </Title>
         <RadioGroup
           aria-label='priority'

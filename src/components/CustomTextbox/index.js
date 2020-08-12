@@ -1,5 +1,6 @@
 import { TextField } from '@material-ui/core';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 const StyledTextField = ({ className = '', ...rest }) =>
@@ -20,11 +21,11 @@ function CustomTextbox({
   isReadOnly = false,
   className = '',
   label = undefined,
-  placeholder = 'Nội dung...',
+  placeholder = null,
   multiline = false,
   required = false,
 }) {
-
+  const { t } = useTranslation();
   if (isReadOnly) {
     return (
       <div
@@ -45,17 +46,12 @@ function CustomTextbox({
             }}
           />
         </div>
-        {/*
-        innerHeight > maxHeight && <span onClick={() => setShowMore(old => !old)}>
-          {showMore ? t('DMH.COMP.CUSTOM_TEXTBOX.LESS') : t('DMH.COMP.CUSTOM_TEXTBOX.MORE')}
-        </span>
-        */}
       </div >
     )
   } else {
     return (
       <StyledTextBox className={className}>
-        <p>{label}{required ? <abbr title="Bắt buộc">*</abbr> : null}</p>
+        <p>{label}{required ? <abbr title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr> : null}</p>
         <StyledTextField
           multiline={multiline}
           fullWidth
@@ -63,7 +59,7 @@ function CustomTextbox({
           variant="outlined"
           value={value}
           onChange={evt => onChange(evt.target.value)}
-          placeholder={placeholder}
+          placeholder={placeholder ?? t("CUSTOM_TEXTBOX_CONTENT_LABEL")}
         />
       </StyledTextBox>
     )

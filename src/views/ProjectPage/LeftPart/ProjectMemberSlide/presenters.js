@@ -1,5 +1,5 @@
 import { Button, ListItemText } from '@material-ui/core';
-import { mdiAccountCog, mdiChevronLeft, mdiDragVertical, mdiPlus } from '@mdi/js';
+import { mdiAccountCog, mdiChevronLeft, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
 import { detailUser } from 'actions/user/detailUser';
 import CustomAvatar from 'components/CustomAvatar';
@@ -9,7 +9,6 @@ import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
 import { get } from 'lodash';
 import React from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -92,49 +91,36 @@ function ProjectMemberSlide({
             autoHide
             autoHideTimeout={500}
           >
-            <DragDropContext onDragEnd={onDragEnd}>
-              <Droppable droppableId={'member-list'}>
-                {provided => (
-                  <StyledList
-                    innerRef={provided.innerRef}
-                    {...provided.droppableProps}
-                  >
-                    <StyledListItem
-                      to={`#`}
-                      component={Link}
-                    >
-                      <div>
-                        <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                      </div>
-                      <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
-                      <ListItemText
-                        primary={
-                          <StyledPrimary>{t("DMH.VIEW.PP.LEFT.PM.ALL_LABEL")}</StyledPrimary>
-                        }
-                        secondary={
-                          <Secondary>
-                            {t("DMH.VIEW.PP.LEFT.PM.ALL_TASK", {
-                              number_task: get(members, 'totalTask', 0),
-                            })}
-                          </Secondary>
-                        }
-                      />
-                    </StyledListItem>
-                    {members.members.map((member, index) => (
-                      <CustomListItem
-                        key={get(member, 'id')}
-                        member={member}
-                        index={index}
-                        onClick={evt => {
-                          dispatch(detailUser({ userId: get(member, 'id') }))
-                        }}
-                      />
-                    ))}
-                    {provided.placeholder}
-                  </StyledList>
-                )}
-              </Droppable>
-            </DragDropContext>
+            <StyledList>
+              <StyledListItem
+                to={`#`}
+                component={Link}
+              >
+                <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
+                <ListItemText
+                  primary={
+                    <StyledPrimary>{t("DMH.VIEW.PP.LEFT.PM.ALL_LABEL")}</StyledPrimary>
+                  }
+                  secondary={
+                    <Secondary>
+                      {t("DMH.VIEW.PP.LEFT.PM.ALL_TASK", {
+                        number_task: get(members, 'totalTask', 0),
+                      })}
+                    </Secondary>
+                  }
+                />
+              </StyledListItem>
+              {members.members.map((member, index) => (
+                <CustomListItem
+                  key={get(member, 'id')}
+                  member={member}
+                  index={index}
+                  onClick={evt => {
+                    dispatch(detailUser({ userId: get(member, 'id') }))
+                  }}
+                />
+              ))}
+            </StyledList>
           </Wrapper>
           <Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
             <Icon path={mdiAccountCog} size={1} />

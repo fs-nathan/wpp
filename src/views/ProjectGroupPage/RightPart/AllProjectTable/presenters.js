@@ -473,6 +473,9 @@ function AllProjectTable({
           >
             {t("DMH.VIEW.PGP.RIGHT.ALL.SETTING")}
           </MenuItem>}
+          <MenuItem>
+            {t("IDS_WP_PROJECT_CALENDAR")}
+          </MenuItem>
           {get(curProject, 'can_update', false) && <MenuItem
             onClick={evt => {
               setMenuAnchor(null);

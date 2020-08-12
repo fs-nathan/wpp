@@ -13,6 +13,7 @@
   <link href="..." />
   <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
   <link rel="stylesheet" href="" id="gantt-style-link" />
+  <link rel="stylesheet" href="%PUBLIC_URL%/style/app.css" />
   <meta name="google-site-verification" content="BR8-laLbiSSzi4iyOlqNS6T4aE1oUdeinP_HqT5Ngfg" />
   <!--
       Notice the use of %PUBLIC_URL% in the tags above.
@@ -30,13 +31,18 @@
     *::after {
       font-family: Roboto, sans-serif;
       font-size: 13px;
+      padding: 0;
+      margin: 0;
     }
   </style>
 </head>
 
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
-  <div id="root"></div>
+  <div id="root">
+    <div class="loading1"></div>
+    <div class="loading2"></div>
+  </div>
   <script src="%PUBLIC_URL%/lib/jquery.min.js"></script>
   <script src="%PUBLIC_URL%/lib/kendo.all.min.js"></script>
   <script>
@@ -62,6 +68,7 @@
         "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf",
       });
     }
+
     function getDataUrlPdf(kendo, fileName, callback) {
       kendo.drawing
         .drawDOM("#printContent", {
@@ -86,6 +93,7 @@
       });
 
     }
+
     function convertToPdfFullWidth(kendo, fileName) {
       kendo.drawing
         .drawDOM("#printContent", {
@@ -107,6 +115,7 @@
         "DejaVu Sans|Italic": "%PUBLIC_URL%/lib/DejaVuSans-Oblique.ttf"
       });
     }
+
     function ganttConvertToPdfFullWidth(kendo, fileName, cb = () => null) {
       kendo.drawing
         .drawDOM("#printContent", {

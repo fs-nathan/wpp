@@ -84,9 +84,9 @@ function AllTaskTable({
             title: t("DMH.VIEW.PP.RIGHT.ALL.TITLE"),
             subTitle: () => (
               <SubTitle>
-                <span onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</span>
-                <span>Table</span>
-                <span onClick={evt => history.push(`${pathname.replace('table', 'gantt')}`)}>Gantt</span>
+                <span className={pathname.includes("table") ? 'view_Project_AllTaskTable___subtitle_active' : ''}>Table</span>
+                <span className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'gantt')}`)}>Gantt</span>
+                <span className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</span>
               </SubTitle>
             ),
             subActions: [canUpdateProject ? {
@@ -191,7 +191,7 @@ function AllTaskTable({
             width: '10%',
           }, {
             label: t("DMH.VIEW.PP.RIGHT.ALL.TABLE.PROGRESS"),
-            field: (row) => `${get(row, 'duration_value', 0)} ${get(row, 'duration_unit', 'ngày')}`,
+            field: (row) => get(row, 'duration_value', 0) !== 0 && `${get(row, 'duration_value', 0)} ${get(row, 'duration_unit', 'ngày')}`,
             align: 'center',
             width: '8%',
           }, {

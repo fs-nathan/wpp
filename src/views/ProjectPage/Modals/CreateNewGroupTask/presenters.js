@@ -97,6 +97,7 @@ function CreateNewOrUpdateGroupTask({
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
       manualClose={true}
+      height={"mini"}
     >
       <CustomTextbox
         label={t("DMH.VIEW.PP.MODAL.CUGT.NAME")}

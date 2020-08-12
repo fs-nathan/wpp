@@ -3,6 +3,7 @@ import CustomModal from 'components/CustomModal';
 import { CustomEventDispose, CustomEventListener, DETAIL_STATUS, LIST_PROJECT, UPDATE_STATUS_COPY, UPDATE_STATUS_DATE, UPDATE_STATUS_VIEW } from 'constants/events.js';
 import { get } from 'lodash';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -39,7 +40,7 @@ function ProjectSetting({
   doReload,
   projectGroupId, timeRange,
 }) {
-
+  const { t } = useTranslation();
   const [progress, setProgress] = React.useState(0);
   const [copy, setCopy] = React.useState(0);
   const [view, setView] = React.useState(0);
@@ -100,53 +101,61 @@ function ProjectSetting({
   return (
     <React.Fragment>
       <CustomModal
-        title={'Cài đặt dự án'}
+        title={t("PROJECT_SETTING_MODAL_TITLE")}
         open={open}
         setOpen={setOpen}
         confirmRender={null}
-        cancleRender={() => 'Thoát'}
+        cancleRender={() => t("IDS_WP_EXIT")}
         loading={loading || status.loading}
       >
         {get(canChange, 'date', false) && <StyledFormControl component='fieldset' fullWidth>
-          <TitleFormLabel component='legend'>Tiến độ dự án</TitleFormLabel>
-          <StyledFormLabel component='legend'>Thiết lập cách nhập tiến độ mặc định khi tạo công việc mới của dự án</StyledFormLabel>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PROGRESS")}</TitleFormLabel>
+          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION")}</StyledFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={progress}
             onChange={evt => {
               handleUpdateStatusDate(parseInt(evt.target.value));
               setMask(0);
             }}
           >
-            <CustomFormControlLabel value={2} control={<Radio color={'primary'} />} label={<React.Fragment>Ngày và giờ (nhập đầy đủ ngày và giờ) <small>(mặc định)</small></React.Fragment>} />
-            <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label='Chỉ nhập ngày (không nhập giờ bắt đầu và kết thúc)' />
-            <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label='Không yêu cầu (dành cho công việc không yêu cầu tiến độ)' />
+            <CustomFormControlLabel value={2} control={<Radio color={'primary'} />} label={<React.Fragment>{t("PROJECT_SETTING_MODAL_PROGRESS_OPTION_2")} <small>{t("LABEL_CHAT_TASK_MAC_DINH")}</small></React.Fragment>} />
+            <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_PROGRESS_OPTION_1")} />
+            <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_PROGRESS_OPTION_0")} />
           </RadioGroup>
         </StyledFormControl>}
         {get(canChange, 'copy', false) && <StyledFormControl component='fieldset' fullWidth>
-          <TitleFormLabel component='legend'>Sao chép dự án</TitleFormLabel>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_COPYING")}</TitleFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={copy}
             onChange={evt => {
               handleUpdateStatusCopy(parseInt(evt.target.value) === 1 ? true : false);
               setMask(0);
             }}
           >
-            <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={<React.Fragment>Không được sao chép <small>(mặc định)</small></React.Fragment>} />
-            <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label='Được sao chép' />
+            <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={<React.Fragment>{t("PROJECT_SETTING_MODAL_COPYING_OPTION_0")} <small>{t("LABEL_CHAT_TASK_MAC_DINH")}</small></React.Fragment>} />
+            <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_COPYING_OPTION_1")} />
           </RadioGroup>
         </StyledFormControl>}
         {get(canChange, 'view', false) && <StyledFormControl component='fieldset' fullWidth>
-          <TitleFormLabel component='legend'>Chế độ xem dự án mặc định</TitleFormLabel>
-          <StyledFormLabel component='legend'>Thiết lập khung hình mặc định khi click vào một dự án: dạng danh sách công việc (Table), dạng sơ đồ gantt (Gantt), dạng thảo luận (Chat)</StyledFormLabel>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_VIEW_TYPE")}</TitleFormLabel>
+          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_VIEW_TYPE_DESCRIPTION")}</StyledFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={view}
             onChange={evt => {
               handleUpdateStatusView(parseInt(evt.target.value));
               setMask(0);
             }}
           >
-            <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={<React.Fragment>Bảng danh sách công việc (Table) <small>(mặc định)</small></React.Fragment>} />
-            <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label='Thảo luận (Chat)' />
-            <CustomFormControlLabel value={2} control={<Radio color={'primary'} />} label='Sơ đồ gantt (Gantt)' />
+            <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={<React.Fragment>{t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_0")} <small>{t("LABEL_CHAT_TASK_MAC_DINH")}</small></React.Fragment>} />
+            <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_1")} />
+            <CustomFormControlLabel value={2} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2")} />
           </RadioGroup>
         </StyledFormControl>}
+        <StyledFormControl component='fieldset' fullWidth>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_NOTIFICATION_SETTING")}</TitleFormLabel>
+          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION")}</StyledFormLabel>
+          <RadioGroup aria-label='progress' name='progress' value={1}>
+            <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_ON")} />
+            <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_OFF")} />
+          </RadioGroup>
+        </StyledFormControl>
       </CustomModal>
     </React.Fragment>
   )

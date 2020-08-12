@@ -1,18 +1,38 @@
 .view_Project_AllTaskTable___subtitle {
   display: flex;
   align-items: center;
-  & > * {
+
+  &>* {
+    color: #8b8b8b;
+    background: #f2f2f2;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-weight: normal;
+    margin-top: 5px;
+
     &:hover {
       cursor: pointer;
+      color: #fff;
+      font-weight: 500;
+      background: var(--color-primary);
+      padding: 2px 5px;
+      border-radius: 3px;
+      margin-top: 5px;
     }
+
     &:not(:first-child) {
       margin-left: 8px;
     }
-    &:not(:nth-child(2)) {
-      color: #8b8b8b;
-    }
-    &:nth-child(2) {
-      color: #2196F3;
-    }
   }
-};
+
+  &_active {
+    color: #fff;
+    font-weight: 500;
+    background: var(--color-primary);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-top: 5px;
+  }
+}
+
+;
