@@ -157,7 +157,7 @@ const CommonConfig = ({
               <Box className="comp_QuickViewFilter__headerTitle">{t('LABEL_GANTT_NAME_COMMON_DRAWER_TITLE')}</Box>
             </Box>
           </div>
-          <div className="comp_QuickViewHeaderRight">
+          <div onClick={() => changeVisibleConfigGantt(false)} className="comp_QuickViewHeaderRight">
             <IconButton>
               <CloseIcon onClick={() => changeVisibleConfigGantt(false)} />
             </IconButton>

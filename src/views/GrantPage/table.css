@@ -329,10 +329,7 @@ span.ant-checkbox ~ span {
   background: #fffae6 !important;
 }
 .gantt--top-timeline-tr {
-  height: 37px;
-}
-.gantt--top-timeline-tr:hover {
-  background: #fffae6 !important;
+  height: 32px;
 }
 
 .row-background-yellow {
@@ -701,9 +698,9 @@ div.checkbox-colortag--drawer {
   top: 0;
   align-items: center;
   padding-left: 5px;
-  height: 35px !important;
+  height: 30px !important;
   z-index: 1000;
-  background: inherit;
+  background-color: #fff;
   padding-right: 5px;
 }
 
@@ -758,6 +755,7 @@ div.checkbox-colortag--drawer {
   position: absolute;
   z-index: 4;
   height: 100%;
+  pointer-events: none;
 }
 
 .gantt--fromNowLayer__background {
@@ -932,7 +930,7 @@ input[type="time"]::-webkit-outside-spin-button {
 }
 
 .ant-table-cell {
-  height: 36.5px;
+  height: 32px;
 }
 
 .gantt--edit-cell__input-date button.MuiButtonBase-root {
@@ -948,11 +946,8 @@ input[type="time"]::-webkit-outside-spin-button {
   left: 0;
   top: 0;
   z-index: 1000;
-  height: 37px !important;
+  height: 32px !important;
   border: 1px solid orange !important;
-}
-.ant-table-cell{
-  background: inherit;
 }
 .ant-table-row .ant-table-row-level-0{
   background: #fff;
@@ -965,11 +960,11 @@ input[type="time"]::-webkit-outside-spin-button {
 .gantt--edit-cell__input-date > .MuiFormControl-root {
   margin: 0px !important;
   margin-top: 8px;
-  height: 37px;
+  height: 32px;
 }
 
 .gantt--edit-cell__input-date> .MuiFormControl-root >.MuiInput-root {
-  height: 37px;
+  height: 32px;
 }
 .gantt--edit-cell__input-date > .MuiFormControl-root >.MuiInput-underline:before {
   border-bottom: none !important;
@@ -1189,7 +1184,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
     display: flex;
     justify-content: space-between;
     width: calc(100% - 40px);
-    height: fit-content;
+    height: 16px;
 }
 
 #stringAppendFirst{
@@ -1197,9 +1192,18 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
     display: flex;
     justify-content: space-between;
     width: calc(100% - 40px);
-    height: fit-content;
+    height: 16px;
     position: absolute;
-    top: 25px;
+    top: 35px;
+}
+#stringAppendFirst * {
+  padding: 20px;
+  margin-top: 20px;
+}
+#stringAppendLast * {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 30px;
 }
 .gantt-no-overflow *{
   overflow: unset !important;
@@ -1218,4 +1222,14 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .gantt--timeunitconfig__schedule .MuiInputBase-root{
   width: 94%;
   margin: auto;
+}
+.ant-table.ant-table-small .ant-table-title, .ant-table.ant-table-small .ant-table-footer, .ant-table.ant-table-small .ant-table-thead > tr > th, .ant-table.ant-table-small .ant-table-tbody > tr > td, .ant-table.ant-table-small tfoot > tr > th, .ant-table.ant-table-small tfoot > tr > td {
+  padding: 4px 5px
+}
+.ant-table-row .ant-table-row-level-0:hover {
+  background: unset !important ;
+}
+.gantt--export-pdf__content-pdf--text{
+  padding: 20px;
+  width: 100%;
 }

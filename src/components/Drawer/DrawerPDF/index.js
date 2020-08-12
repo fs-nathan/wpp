@@ -122,7 +122,8 @@ const ExportPDF = ({
             fullWidth
             name={i}
             size="small"
-            placeholder={previewContent[i] || t('GANTT_CONTENT_PDF', { index: i })}
+            defaultValue={previewContent[i]}
+            placeholder={t('GANTT_CONTENT_PDF', { index: i })}
             variant="outlined"
           />
         </div>
@@ -214,7 +215,9 @@ const ExportPDF = ({
                 </Box>
               </Box>
             </div>
-            <div className="comp_QuickViewHeaderRight">
+            <div onClick={() => {
+              changeVisibleExportPdfDrawer(false)
+            }} className="comp_QuickViewHeaderRight">
               <IconButton>
                 <CloseIcon
                   onClick={() => {

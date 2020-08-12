@@ -100,7 +100,7 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
             </Box>
           </Box>
         </div>
-        <div className="comp_QuickViewHeaderRight">
+        <div onClick={() => changeVisibleConfigGantt(false, '')} className="comp_QuickViewHeaderRight">
           <IconButton >
             <CloseIcon onClick={() => changeVisibleConfigGantt(false, '')} />
           </IconButton>
@@ -130,7 +130,8 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
               checked={girdType === 'HOUR'}
 
             />
-          </div><div className="">
+          </div>
+          <div className="">
             <FormControlLabel
               value={'DAY'}
               control={<Radio color="primary" />}
@@ -138,6 +139,15 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
               onChange={handleOnChange}
               checked={girdType === 'DAY'}
             />
+            <div className="">
+              <FormControlLabel
+                value={'DAYOFWEEK'}
+                control={<Radio color="primary" />}
+                label={t('GANTT_DAY_OF_WEEK')}
+                onChange={handleOnChange}
+                checked={girdType === 'DAYOFWEEK'}
+              />
+            </div>
             <div className="">
               <FormControlLabel
                 value={'WEEK'}
@@ -175,9 +185,6 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
               }}
               defaultValue={mainCalendar}
             >
-              <MenuItem value="">
-                <em>None</em>
-              </MenuItem>
               {projectSchedules.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
             </Select>
           </FormControl>

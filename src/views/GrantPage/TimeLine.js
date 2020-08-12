@@ -222,6 +222,7 @@ const TimeLine = ({
           cursor:
             !isGroupTask && !isTotalDuration && canEdit ? "move" : "default",
           width: "fit-content",
+          zIndex: 1000,
           height: 20,
           // top: "50%",
           // transform: "translateY(-50%)",

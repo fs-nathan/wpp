@@ -82,6 +82,22 @@ export const initialState = {
       formatChild: "DD",
       gird: "day",
     },
+    DAYOFWEEK: {
+      formatString: "DD/MM/YYYY",
+      unit: "days",
+      unitText: "Ngày",
+      parentUnit: "months",
+      addUnit: 6,
+      getWidthParent: (moment, first) =>
+        first
+          ? (moment.daysInMonth() - moment.format("DD") + 1) * 30
+          : moment.daysInMonth() * 30,
+      getTextParent: (moment) => moment.format("MM/YYYY"),
+      getTimeCompare: (moment) => moment.format("M"),
+      formatChild: "d",
+      originDay: 'DD/MM/YYYY',
+      gird: "day",
+    },
     MONTH: {
       formatString: "DD/MM/YYYY HH:mm",
       unit: "months",

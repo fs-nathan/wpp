@@ -45,7 +45,7 @@ width: 150px;
 .gantt--right-menu__search{
 top: 64px !important;
 left: auto !important;
-right: 440px !important;
+right: 390px !important;
 }
 .gantt--search__icon svg{
 cursor: pointer;
