@@ -187,6 +187,7 @@ const LogoManagerModalWrapper = ({ children }) => {
       confirmRender={isSelect ? () => t("DMH.VIEW.DP.MODAL.LOGO.DONE") : null}
       loading={icons.loading}
       actionLoading={mutateIcon.loading}
+      height={"mini"}
     >
       <>
         <CustomTypo>{t("DMH.VIEW.DP.MODAL.LOGO.DEFAULT")}</CustomTypo>

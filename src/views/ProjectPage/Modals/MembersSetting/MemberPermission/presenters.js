@@ -104,8 +104,7 @@ function PermissionMemberModal({
   setOpen, open,
   permissions, members, curMemberId,
   updateGroupPermission, handleUpdateGroupPermission,
-  projectId,
-  doReloadMember,
+  projectId, doReloadMember, doReloadPermissions
 }) {
 
   const { t } = useTranslation();
@@ -167,11 +166,13 @@ function PermissionMemberModal({
     CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
     CustomEventListener(UPDATE_GROUP_PERMISSION_MEMBER.FAIL, fail);
     CustomEventListener(REMOVE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
+    CustomEventListener(REMOVE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadPermissions);
     CustomEventListener(REMOVE_GROUP_PERMISSION_MEMBER.FAIL, fail);
     return () => {
       CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
       CustomEventDispose(UPDATE_GROUP_PERMISSION_MEMBER.FAIL, fail);
       CustomEventDispose(REMOVE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadMember);
+      CustomEventDispose(REMOVE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadPermissions);
       CustomEventDispose(REMOVE_GROUP_PERMISSION_MEMBER.FAIL, fail);
     }
     // eslint-disable-next-line

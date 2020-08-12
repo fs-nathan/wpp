@@ -15,7 +15,7 @@ function MemberRole({
   doUpdateGroupPermissionMember,
   doRemoveGroupPermissionMember,
   updateGroupPermission,
-  doReloadMember,
+  doReloadMember, doReloadPermissions,
   project_id = null,
 }) {
 
@@ -31,6 +31,7 @@ function MemberRole({
       open={open} setOpen={setOpen}
       projectId={projectId}
       doReloadMember={() => doReloadMember(projectId)}
+      doReloadPermissions={() => doReloadPermissions()}
       curMemberId={curMemberId} members={members}
       bgColor={bgColor} permissions={permissions}
       updateGroupPermission={updateGroupPermission}

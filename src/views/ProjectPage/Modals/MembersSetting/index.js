@@ -138,6 +138,7 @@ function MemberSetting({
         open={openPermission}
         setOpen={setOpenPermission}
         project_id={projectId}
+        doReloadPermissions={() => doPermissionProject()}
         {...permissionProps}
       />
     </>

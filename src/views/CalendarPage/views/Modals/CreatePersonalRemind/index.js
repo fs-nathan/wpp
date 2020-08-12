@@ -19,6 +19,8 @@ import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMe
 import { bgColorSelector } from "../../../selectors";
 import { membersSelector } from "./selectors";
 import './style.scss';
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -160,6 +162,26 @@ function CreatePersonalRemind({
                 <MenuItem value={2} key={`remind_repeat_type_2`}>{t('views.calendar_page.modal.create_personal_remind.weekly')}</MenuItem>
                 <MenuItem value={3} key={`remind_repeat_type_3`}>{t('views.calendar_page.modal.create_personal_remind.monthly')}</MenuItem>
               </Select>
+            </div>
+            <div className={"remind_setting_frequency"}>
+              <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
+                <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.frequency')} </Typography>
+                <span>*</span>
+              </abbr>
+              <OutlinedInput
+                  id="outlined-adornment-weight"
+                  value={3}
+                  onChange={() => console.log()}
+                  endAdornment={
+                    <InputAdornment
+                        position="end"
+                        disableTypography={true}
+                        variant={"filled"}
+                    >
+                      ngày/lần
+                    </InputAdornment>
+                  }
+              />
             </div>
           </Box>
           <Box className="remind_setting_content">

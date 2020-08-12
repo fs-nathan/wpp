@@ -16,7 +16,7 @@ export const FileListItem = ({ file }) => {
       </ListItemAvatar>
       <ListItemText
         nowrap
-        primary={file.url.split("-")[1]}
+        primary={get(file, "name", "")}
         secondary={`${file.type} - ${file.size}`}
       />
       <ListItemSecondaryAction>

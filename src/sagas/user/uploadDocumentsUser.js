@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, forEach } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { uploadDocumentsUserFail, uploadDocumentsUserSuccess } from '../../actions/user/uploadDocumentsUser';
 import { apiService } from '../../constants/axiosInstance';
@@ -23,9 +23,20 @@ async function doUploadDocumentsUser({ userId, files, fileIds, googleData }) {
       }
     }
     if (googleData) {
+      let dataGoogleFiles = [];
+      forEach(googleData, (item) => {
+        dataGoogleFiles = dataGoogleFiles.concat({
+          file_id: get(item,"id"),
+          name: get(item, "name"),
+          size: get(item, "rawSize"),
+          file_type: get(item, "type"),
+          url: get(item, "url"),
+          url_download: get(item, "webContentLink")
+        });
+      });
       data = {
         user_id: userId,
-        google_data: googleData,
+        google_data: dataGoogleFiles,
       }
     }
     const config = {
