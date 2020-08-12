@@ -81,17 +81,23 @@
     }
   }
   &--tabLabel {
-    color: #a5a0a0;
+    color: #8b8b8b;
     width: auto;
     margin-left: 0;
     margin-right: 10px;
-    padding: 5px 0;
+    padding: 2px 5px;
+    background: #f2f2f2;
+    border-radius: 3px;
     & > span:first-child {
       display: none;
     }
     &__selected,
     &:hover {
-      color: #007bff;
+      color: #fff;
+      font-weight: 500;
+      background: var(--color-primary);
+      padding: 2px 5px;
+      border-radius: 3px;
     }
   }
 }

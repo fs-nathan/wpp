@@ -72,6 +72,7 @@ import { DETAIL_DEFAULT_GROUP } from "../constants/actions/projectGroup/detailDe
 import { DETAIL_PROJECT_GROUP } from "../constants/actions/projectGroup/detailProjectGroup";
 import { EDIT_PROJECT_GROUP } from "../constants/actions/projectGroup/editProjectGroup";
 import { LIST_PROJECT_GROUP } from "../constants/actions/projectGroup/listProjectGroup";
+import { LIST_PROJECT_GROUP_DELETED } from "../constants/actions/projectGroup/listProjectGroup";
 import { MEMBER_PROJECT_GROUP } from "../constants/actions/projectGroup/memberProjectGroup";
 import { SORT_PROJECT_GROUP } from "../constants/actions/projectGroup/sortProjectGroup";
 import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from "../constants/actions/register/inviteOtherPeopleCreateAccount";
@@ -251,6 +252,7 @@ import { deleteUserRole } from "./userRole/deleteUserRole";
 import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
 import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
+import {listProjectGroupDeleted} from "./projectGroup/listProjectGroupDeleted";
 
 function* rootSaga() {
   // Hoang - begin
@@ -294,10 +296,7 @@ function* rootSaga() {
   yield takeEvery(PRIVATE_MEMBER, privateMember);
   yield takeLeading(SEARCH_USER, searchUser);
   yield takeEvery(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
-  yield takeEvery(
-    RESEND_INVITATION_USER_JOIN_GROUP,
-    resendInvitationUserJoinGroup
-  );
+  yield takeEvery(RESEND_INVITATION_USER_JOIN_GROUP, resendInvitationUserJoinGroup);
   yield takeLeading(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
   yield takeLeading(GET_LIST_INVITATION_SENT, getListInvitationSent);
   yield takeLeading(CANCLE_INVITATION_JOIN_GROUP, cancleInvitationJoinGroup);
@@ -310,6 +309,7 @@ function* rootSaga() {
   yield takeEvery(CREATE_PROJECT_GROUP, createProjectGroup);
   yield takeEvery(EDIT_PROJECT_GROUP, editProjectGroup);
   yield takeLeading(LIST_PROJECT_GROUP, listProjectGroup);
+  yield takeLeading(LIST_PROJECT_GROUP_DELETED, listProjectGroupDeleted)
   yield takeEvery(DELETE_PROJECT_GROUP, deleteProjectGroup);
   yield takeEvery(SORT_PROJECT_GROUP, sortProjectGroup);
   yield takeLeading(DETAIL_PROJECT_GROUP, detailProjectGroup);
@@ -353,24 +353,12 @@ function* rootSaga() {
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
-  yield takeEvery(
-    INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
-    inviteOtherPeopleCreateAccount
-  );
+  yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
   yield takeLeading(GET_PERMISSION_VIEW_PROJECTS, getPermissionViewProjects);
   yield takeLeading(GET_PERMISSION_VIEW_USERS, getPermissionViewUsers);
-  yield takeLeading(
-    GET_PERMISSION_VIEW_DETAIL_PROJECT,
-    getPermissionViewDetailProject
-  );
-  yield takeEvery(
-    SET_PROJECT,
-    setProject,
-  );
-  yield takeEvery(
-    SET_PROJECT_GROUP,
-    setProjectGroup,
-  );
+  yield takeLeading(GET_PERMISSION_VIEW_DETAIL_PROJECT, getPermissionViewDetailProject);
+  yield takeEvery(SET_PROJECT, setProject);
+  yield takeEvery(SET_PROJECT_GROUP, setProjectGroup,);
 
   // Hoang - end
 

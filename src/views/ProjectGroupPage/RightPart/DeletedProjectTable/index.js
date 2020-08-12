@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { routeSelector } from '../../selectors';
 import DeletedProjectTablePresenter from './presenters';
 import { pendingsSelector, projectsSelector } from './selectors';
+import { useLocation } from 'react-router-dom';
 
 function DeletedProjectTable({
   expand, handleExpand,
@@ -17,11 +18,17 @@ function DeletedProjectTable({
 
   React.useEffect(() => {
     doListDeletedProject({});
-    // eslint-disable-next-line
   }, []);
 
   const [newProjects, setNewProjects] = React.useState(projects);
   const [sortType, setSortType] = React.useState({});
+  const [groupID, setGroupID] = React.useState(null);
+  const search = useLocation().search;
+
+  React.useEffect(() => {
+    let searchParams = new URLSearchParams(search);
+    setGroupID(searchParams.get("group_id"));
+  }, [search]);
 
   React.useEffect(() => {
     let _projects = [...projects.projects];

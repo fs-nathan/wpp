@@ -319,6 +319,7 @@ import editProjectGroup, {
 import listProjectGroup, {
   initialState as listProjectGroupInitialState,
 } from "./projectGroup/listProjectGroup";
+import listProjectGroupDeleted, { initialState as listProjectGroupDeletedInitialState} from "./projectGroup/listProjectGroupDeleted";
 import memberProjectGroup, {
   initialState as memberProjectGroupInitialState,
 } from "./projectGroup/memberProjectGroup";
@@ -509,6 +510,7 @@ const rootReducer = combineReducers({
     createProjectGroup,
     editProjectGroup,
     listProjectGroup,
+    listProjectGroupDeleted,
     deleteProjectGroup,
     sortProjectGroup,
     detailProjectGroup,
@@ -690,6 +692,7 @@ export const DEFAULT_STATE = {
     createProjectGroup: createProjectGroupInitialState,
     editProjectGroup: editProjectGroupInitialState,
     listProjectGroup: listProjectGroupInitialState,
+    listProjectGroupDeleted: listProjectGroupDeletedInitialState,
     deleteProjectGroup: deleteProjectGroupInitialState,
     sortProjectGroup: sortProjectGroupInitialState,
     detailProjectGroup: detailProjectGroupInitialState,

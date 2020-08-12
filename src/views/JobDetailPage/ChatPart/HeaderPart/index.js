@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
 import './styles.scss';
 // Fake data
-const tabs = ['Table', 'Gantt', 'Chat',];
+const tabs = ['Table', 'Gantt', 'Chat'];
 const tabSelected = tabs[2];
 const images = [fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar];
 

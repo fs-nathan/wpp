@@ -47,7 +47,7 @@ function App() {
               </IconButton>
             )}
             maxSnack={8}
-            anchorOrigin={{ vertical: 'top', horizontal: 'center', }}
+            anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
             disableWindowBlurListener
             autoHideDuration={20000}
             dense

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
 import ProjectGroupList from './LeftPart/ProjectGroupList';
+import ProjectGroupListDeleted from './LeftPart/ProjectGroupListDeleted';
 import AllProjectTable from './RightPart/AllProjectTable';
 import DeletedProjectTable from './RightPart/DeletedProjectTable';
 import { routeSelector } from './selectors';
@@ -53,7 +54,7 @@ function ProjectGroupPage({
               <TwoColumnsLayout
                 leftRenders={[
                   () =>
-                    <ProjectGroupList
+                    <ProjectGroupListDeleted
                       {...props}
                     />,
                 ]}
