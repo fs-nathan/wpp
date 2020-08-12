@@ -780,6 +780,7 @@
           "daily": "Daily remind",
           "weekly": "Weekly remind",
           "monthly": "Monthly remind",
+          "frequency": "Frequency",
           "content": "Content",
           "remind_content": "Remind content",
           "member_assign": "Select members will recieve remind",

@@ -78,7 +78,7 @@ const ConfirmRegistration = props => {
       if (!isEmpty(data.data)) {
         props.actionActiveGroup(data.data.group_active);
       }
-      if (data.data.group_active && data.data.group_active.type === 'Free') {
+      if (data.data.group_active && data.data.group_active.type === 'Pro') {
         props.openNoticeModal();
       }
       props.loginSuccess(res.data);
@@ -97,9 +97,7 @@ const ConfirmRegistration = props => {
       const { data } = await actionCheckCode(code);
       setCheckedCode(true);
       setEmailRegistered(data.email || '');
-      console.log(data);
     } catch (error) {
-      console.log(error);
       setErrorMsg(error.message || '');
     }
   };

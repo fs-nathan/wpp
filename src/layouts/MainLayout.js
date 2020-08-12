@@ -233,7 +233,7 @@ function MainLayout({
       actionFetchListColor();
       actioGetSettingDate();
     }
-    if (localStorage.getItem(TOKEN) && profile && profile.id) {
+    if (localStorage.getItem(TOKEN) && profile && profile.id && !isViewFullPage(location.pathname)) {
       handleFetchNoti();
       const uri =
         `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);

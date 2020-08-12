@@ -14,17 +14,17 @@ import {
   closeNoticeModal,
   actionVisibleDrawerMessage
 } from '../../actions/system/system';
-// import { actionSettingGroup } from '../../../actions/setting';
+
 import { DRAWER_TYPE } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
-import { isEmpty } from '../../helpers/utils/isEmpty';
+import grey from "@material-ui/core/colors/grey";
 
 const NoticeModal = props => {
   const { t } = useTranslation();
-  // const [type, setType] = useState('intro'); // intro or expire (check follow account status)
   const bgColor = props.colors.find(item => item.selected === true);
   const defaultColor = {
-    color: bgColor.color,
+    backgroundColor: bgColor.color,
+    color: 'white',
     border: `1px solid ${bgColor.color}`
   };
   const hoverColor = {
@@ -33,8 +33,6 @@ const NoticeModal = props => {
     border: `1px solid ${bgColor.color}`
   };
   const [typeHover, setHover] = useState(null);
-
-  const type = 'intro';
   const closeNoticeModal = () => {
     props.closeNoticeModal();
   };
@@ -61,7 +59,7 @@ const NoticeModal = props => {
   return (
     <Dialog
       fullWidth={true}
-      maxWidth="md"
+      maxWidth="sm"
       className="notice-modal-container"
       onClose={closeNoticeModal}
       aria-labelledby="customized-dialog-title"
@@ -74,111 +72,57 @@ const NoticeModal = props => {
           onClick={closeNoticeModal}
           className="close-icon"
         >
-          <CloseIcon />
+          <CloseIcon style={{ color: grey[400] }} fontSize={"small"}/>
         </IconButton>
       </div>
 
-      <MuiDialogActions>
+      <MuiDialogActions disableSpacing={true}>
         <div className="notice-header">
-          <img src={icons.logo} alt="logo" className="notice-logo" />
+          <img src={icons.ic_upgrade} alt="icon upgrade" className="icon-upgrade" />
+          <div className={"notice-header-logo-wrapper"}>
+            <img src={icons.logo_white} alt="logo" className="notice-logo" />
+            <div className={"notice-header-pro-label"}><span>PRO</span></div>
+          </div>
         </div>
-        {type === 'intro' ? (
-          <h2 className="notice-header-text" style={{ color: bgColor.color }}>
-            {t('IDS_WP_WORKPLUS_APPLICATION')}
-          </h2>
-        ) : (
-          <h2
-            className="notice-header-text expire-text"
-            style={{ color: bgColor.color }}
-          >
-            {t('IDS_WP_EXPIRE_ORDER_NOTICE')}
-          </h2>
-        )}
-        <p className="notice-text header-text">
-          {t('IDS_WP_WELCOME')} {props.profile.name}!
-        </p>
-        {type === 'intro' ? (
+        <div className={"notice-body"}>
+          <p className="notice-text header-text">
+            {t('IDS_WP_WELCOME')} {props.profile.name}!
+          </p>
           <p className="notice-text sub-header-text">
-            {t('IDS_WP_LOGIN_SUCCESS_INTRO')}&nbsp;
-            <b>
-              {!isEmpty(props.profile.group_active)
-                ? props.profile.group_active.name
-                : ''}
-            </b>
+            {t('IDS_WP_LOGIN_SUCCESS_INTRO')}
           </p>
-        ) : (
-          <p className="notice-text">
-            Nhóm làm việc TDGroup tạm thời bị khóa do đơn hàng đã hết thời hạn
-            sử dụng vào ngày 20/11/2019
-            <p>
-              Vui lòng gia hạn đơn hàng để tiếp tục sử dụng hệ thống Workplus.
-            </p>
-          </p>
-        )}
-        <p className="notice-text sub-header-text">
-          {t('IDS_WP_LOGIN_SUCCESS_INTRO_1')}
-        </p>
-        {type === 'intro' ? (
           <div className="notice-btn-container">
             <Button
-              variant="outlined"
-              className="notice-btn"
-              onClick={demoMode}
-              style={
-                typeHover === 'join' ? { ...hoverColor } : { ...defaultColor }
-              }
-              onMouseEnter={() => setHover('join')}
-              onMouseLeave={() => setHover(null)}
-            >
-              {t('IDS_WP_SELECT_GROUP_ACC')}
-            </Button>
-            <Button
-              variant="outlined"
-              className="notice-btn"
-              onClick={upgradeAccount}
-              style={
-                typeHover === 'upgrade'
-                  ? { ...hoverColor }
-                  : { ...defaultColor }
-              }
-              onMouseEnter={() => setHover('upgrade')}
-              onMouseLeave={() => setHover(null)}
+                variant="contained"
+                className="notice-btn"
+                onClick={upgradeAccount}
+                style={
+                  typeHover === 'join' ? { ...hoverColor } : { ...defaultColor }
+                }
+                onMouseEnter={() => setHover('join')}
+                onMouseLeave={() => setHover(null)}
             >
               {t('IDS_WP_UPGRADE_ACC')}
             </Button>
-          </div>
-        ) : (
-          <div className="notice-btn-container">
-            <Button
-              variant="outlined"
-              className="notice-btn"
-              onClick={joinGroup}
-            >
-              {t('IDS_WP_JOIN_OTHER_GROUP')}
-            </Button>
-            <Button
-              variant="outlined"
-              className="notice-btn"
-              onClick={extendOrder}
-            >
-              {t('IDS_WP_EXTEND_ORDER')}
+            <Button className={"notice-btn-text"} onClick={demoMode}>
+              {t('IDS_WP_SELECT_GROUP_ACC')}
             </Button>
           </div>
-        )}
 
-        <p className="notice-text-info">{t('IDS_WP_CONTACT_WORKPLUS_ENTER')}</p>
-        <p className="notice-text-info">
-          Hotline: 09.1800.6181 - Email: support@workplus.vn
-        </p>
-        <div className="notice-icon-container">
+          <p className="notice-text-info">{t('IDS_WP_CONTACT_WORKPLUS_ENTER')}</p>
+          <p className="notice-text-info">
+            Hotline: 09.1800.6181 - Email: support@workplus.vn
+          </p>
+          <div className="notice-icon-container">
           <span className="notice-icon">
             <img src={icons.ic_zalo} alt="" />
             &nbsp; {t('IDS_WP_ZALO_SUPPORT')}
           </span>
-          <span className="notice-icon">
+            <span className="notice-icon">
             <img src={icons.ic_messeger} alt="" />
-            &nbsp; {t('IDS_WP_FACEBOOK_SUPPORT')}
+              &nbsp; {t('IDS_WP_FACEBOOK_SUPPORT')}
           </span>
+          </div>
         </div>
       </MuiDialogActions>
     </Dialog>
@@ -195,6 +139,5 @@ export default connect(
     openNoticeModal,
     closeNoticeModal,
     actionVisibleDrawerMessage
-    // actionSettingGroup
   }
 )(withRouter(NoticeModal));
