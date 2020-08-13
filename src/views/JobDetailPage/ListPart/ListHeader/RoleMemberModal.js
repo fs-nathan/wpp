@@ -20,6 +20,14 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import AddRoleModal from "./AddRoleModal";
 import "./styles.scss";
+import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
+
+const StyledTableCell = styled(TableCell)`
+  .Mui-checked{
+    color: ${props => props.groupActiveColor};
+  }
+`
 
 function RoleMemberModal({ roles, isOpen, setOpen, memberId }) {
   const { t } = useTranslation();
@@ -29,6 +37,7 @@ function RoleMemberModal({ roles, isOpen, setOpen, memberId }) {
   const taskId = useSelector(
     (state) => state.taskDetail.commonTaskDetail.activeTaskId
   );
+  const groupActiveColor = useSelector(currentColorSelector)
 
   const handleClose = () => {
     setOpen(false);
@@ -141,14 +150,16 @@ function RoleMemberModal({ roles, isOpen, setOpen, memberId }) {
           <TableBody>
             {userRoles.map((item, key) => (
               <TableRow key={key}>
-                <TableCell component="th" scope="row">
+                <StyledTableCell component="th" scope="row"
+                  groupActiveColor={groupActiveColor}
+                >
                   <Checkbox
-                    checked={selectedRoles.find((role) => role === item.id)}
+                    checked={!!selectedRoles.find((role) => role === item.id)}
                     onChange={(e) => {
                       setData(item.id, e.target.checked);
                     }}
                   />
-                </TableCell>
+                </StyledTableCell>
                 <TableCell style={{ fontWeight: "bold" }}>
                   {item.name}
                 </TableCell>

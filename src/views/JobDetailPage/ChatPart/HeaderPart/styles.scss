@@ -81,11 +81,18 @@
     }
   }
   &--tabLabel {
-    color: #a5a0a0;
     width: auto;
     margin-left: 0;
-    margin-right: 10px;
+    margin-right: 7px;
     padding: 5px 0;
+    .MuiTypography-root {
+      // background-color: #f2f2f2;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-weight: normal;
+      // color: #8b8b8b;
+      line-height: unset;
+    }
     & > span:first-child {
       display: none;
     }
