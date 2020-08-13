@@ -6,7 +6,7 @@ import { Primary, StyledList, StyledListItem } from "components/CustomList";
 import LeftSideContainer from "components/LeftSideContainer";
 import { apiService } from "constants/axiosInstance";
 import { get } from "lodash";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -39,6 +39,7 @@ function CalendarProjectLeftPartPresenter({
   const [openEditModal, setOpenEditModal] = React.useState(false);
   const [projectSchedules, setProjectSchedules] = React.useState([]);
   const [visible, setVisible] = React.useState(false);
+  const [listSchedule, setListSchedule] = useState([]);
 
   function doOpenMenu(anchorEl) {
     setMenuAnchor(anchorEl);
@@ -66,6 +67,7 @@ function CalendarProjectLeftPartPresenter({
       console.log(e)
     }
   }
+
   useEffect(() => {
     fetchPermissionCalendar()
   }, [fetchProjectSchedule])
@@ -92,6 +94,7 @@ function CalendarProjectLeftPartPresenter({
                 id: item._id
               }
             }).map((item, index) => {
+
               return (
                 <React.Fragment key={index}>
                   <StyledListItem
@@ -127,7 +130,7 @@ function CalendarProjectLeftPartPresenter({
                       }
                     />
 
-                    <CustomMenu isMain={item.is_main} isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />
+                    <CustomMenu canDelete={listSchedule.filter(schedule => schedule.id === item.id)[0] && listSchedule.filter(schedule => schedule.id === item.id)[0].can_delete} isMain={item.is_main} isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />
                   </StyledListItem>
 
                 </React.Fragment>

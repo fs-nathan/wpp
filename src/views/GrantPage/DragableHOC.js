@@ -2,6 +2,7 @@ import { mdiDragVerticalVariant } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { changeRowHover, scrollGantt } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
@@ -40,6 +41,7 @@ function GanttChart({
   const [drag, setDrag] = useState(false);
   const [leftHeader, setLeftHeader] = useState(0);
   const [leftTable, setLeftTable] = useState(0);
+  const { t } = useTranslation()
   let offsetLeft = 0;
   const handleMouseMove = (e) => {
     if (drag) {
@@ -370,16 +372,18 @@ function GanttChart({
               className="gantt--fromNowLayer__container"
               style={{
                 width: widthFromNowLayer * 30,
+                height: dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
               }}
             >
               <div
                 className="gantt--fromNowLayer__background"
                 style={{
                   width: widthFromNowLayer * 30,
+                  height: dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
                 }}
               ></div>
               <div className="gantt--fromNowLayer__text">
-                <div>Hôm nay</div>
+                <div>{t("GANTT_TODAY_LABEL")}</div>
                 <div>{new moment().format("DD/MM/YYYY")}</div>
               </div>
             </div>

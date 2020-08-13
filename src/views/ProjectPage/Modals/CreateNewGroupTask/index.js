@@ -16,6 +16,7 @@ function CreateNewOrUpdateGroupTask({
   open,
   setOpen,
   curGroupTask = null,
+  setOpenModal,
   doUpdateGroupTask,
   doCreateGroupTask,
   doReload,
@@ -44,6 +45,7 @@ function CreateNewOrUpdateGroupTask({
     <CreateNewOrUpdateGroupTaskPresenter
       open={open}
       setOpen={setOpen}
+      setOpenModal={setOpenModal}
       curGroupTask={curGroupTask}
       projectId={projectId}
       timeRange={timeRange}

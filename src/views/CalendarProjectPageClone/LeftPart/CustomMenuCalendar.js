@@ -2,6 +2,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import AlertModal from 'components/AlertModal';
 import { apiService } from 'constants/axiosInstance';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -9,11 +10,11 @@ import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { changeFlagFetchProjectSchedules, changeMainCalendar } from "../../../actions/gantt";
 
-
 const ITEM_HEIGHT = 48;
 
-function CustomMenu({ projectId, isMain, scheduleId, changeMainCalendar, calendarPermisstions, changeFlagFetchProjectSchedules, isDefault }) {
+function CustomMenu({ projectId, canDelete, isMain, scheduleId, changeMainCalendar, calendarPermisstions, changeFlagFetchProjectSchedules, isDefault }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [openConfirmModal, setOpenConfirmModal] = React.useState(false)
   const open = Boolean(anchorEl);
   const history = useHistory();
   const { t } = useTranslation()
@@ -96,15 +97,23 @@ function CustomMenu({ projectId, isMain, scheduleId, changeMainCalendar, calenda
         }}>
           {t('GANTT_CALENDAR_EDIT_CALENDAR')}
         </MenuItem>}
-        {!isDefault && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
+        {canDelete && !isDefault && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
           e.stopPropagation()
-          if (!calendarPermisstions.edit_schedule) return
-          assignProjectSchedule(projectId, scheduleId)
-          setAnchorEl(null)
+          setOpenConfirmModal(true)
         }}>
           {t('GANTT_CALENDAR_DELETE_CALENDAR')}
         </MenuItem>}
       </Menu>
+      <AlertModal
+        open={openConfirmModal}
+        setOpen={setOpenConfirmModal}
+        content={t('IDS_WP_ALERT_CONTENT')}
+        onConfirm={() => {
+          if (!calendarPermisstions.edit_schedule) return
+          assignProjectSchedule(projectId, scheduleId)
+          setAnchorEl(null)
+        }}
+      />
     </div>
   );
 }

@@ -70,7 +70,6 @@ const AssignCalendarModal = ({
       changeFlagFetchProjectSchedules(true)
     } catch (e) {
       console.log(e)
-      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
     }
   }
   useEffect(() => {

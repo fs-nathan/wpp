@@ -2065,6 +2065,7 @@
   "GANTT_DIFF_KEYWORD": "Try different keywords.",
   "GANTT_REDUCE_KEYWORD": "Reduce keyword",
   "GANTT_DAY_OF_WEEK": "Day of week",
+  "GANTT_TODAY_LABEL": "Today",
   "GANTT_1": "MO",
   "GANTT_2": "TU",
   "GANTT_3": "WE",

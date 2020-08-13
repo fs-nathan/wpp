@@ -272,6 +272,7 @@ class DragSortingTable extends React.Component {
       widthTable: 800,
       cellDetail: {},
       endTimeProject: "",
+      sort_task: true,
       isLoading: true,
       monthArray: [],
       openCreateProjectModal: false,
@@ -767,6 +768,7 @@ class DragSortingTable extends React.Component {
         dataSource = resultListTask.data;
         this.setState({
           resultListTask,
+          sort_task: get(dataSource, 'permissions.sort_task', false)
         });
       } else dataSource = resultListTask.data;
       if (!resultListTask.data.state) return;
@@ -864,7 +866,7 @@ class DragSortingTable extends React.Component {
       haveError = true
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
       this.props.history.push({
-        pathname: `/`,
+        pathname: `/projects`,
       })
     }
   };
@@ -1047,7 +1049,7 @@ class DragSortingTable extends React.Component {
         const { index } = props;
         let canDrag;
         if (index)
-          canDrag =
+          canDrag = this.state.sort_task &&
             !this.state.data[index].isGroupTask &&
             !this.state.data[index].isTotalDuration;
         return <DragableBodyRow dataSource={this.state.data} canDrag={canDrag} {...props} />;
@@ -1436,7 +1438,12 @@ class DragSortingTable extends React.Component {
       data: newData,
     });
   };
-  handleOpenCreateProjectModal = (value) => {
+  handleOpenCreateProjectModal = (value, fetch) => {
+    if (fetch) {
+      const { projectId } = this.props.match.params
+      this.fetchListTask(projectId);
+      this.fetchListTask(projectId, true, this.props.girdType);
+    }
     this.setState({
       openCreateProjectModal: value,
     });
