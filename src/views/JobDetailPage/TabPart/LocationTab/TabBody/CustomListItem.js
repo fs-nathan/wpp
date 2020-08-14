@@ -44,7 +44,7 @@ const ButtonIcon = styled(IconButton)`
   }
 `
 
-const CustomListItem = ({ isMe }) => {
+const CustomListItem = ({ isMe, handleClickLocation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -84,7 +84,7 @@ const CustomListItem = ({ isMe }) => {
             {location.locations.map((item, key) => {
               if (isMe && !item.is_me) return null;
               return (
-                <div className="styled-common-location" key={key}>
+                <div className="styled-common-location" key={key} onClick={() => handleClickLocation({ isMe, ...item })}>
                   <ItemAvatar>
                     <div>
                       <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
