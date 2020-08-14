@@ -1,11 +1,15 @@
 import {
-  Box, FormControlLabel,
+  Box,
+
+
+
+  FormControl, FormControlLabel,
 
   IconButton,
-  Radio
+
+  MenuItem, Radio, Select
 } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
-import NativeSelect from '@material-ui/core/NativeSelect';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from "@material-ui/icons/Close";
 import { mdiCalendar } from '@mdi/js';
@@ -80,7 +84,7 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
   useEffect(() => {
     if (fetchProjectSchedule)
       fetchProjectSchedules()
-  }, [fetchProjectSchedule])
+  }, [params.projectId, fetchProjectSchedule])
   return (
     <Drawer
       closable={false}
@@ -96,7 +100,7 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
             </Box>
           </Box>
         </div>
-        <div className="comp_QuickViewHeaderRight">
+        <div onClick={() => changeVisibleConfigGantt(false, '')} className="comp_QuickViewHeaderRight">
           <IconButton >
             <CloseIcon onClick={() => changeVisibleConfigGantt(false, '')} />
           </IconButton>
@@ -126,7 +130,8 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
               checked={girdType === 'HOUR'}
 
             />
-          </div><div className="">
+          </div>
+          <div className="">
             <FormControlLabel
               value={'DAY'}
               control={<Radio color="primary" />}
@@ -134,6 +139,15 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
               onChange={handleOnChange}
               checked={girdType === 'DAY'}
             />
+            <div className="">
+              <FormControlLabel
+                value={'DAYOFWEEK'}
+                control={<Radio color="primary" />}
+                label={t('GANTT_DAY_OF_WEEK')}
+                onChange={handleOnChange}
+                checked={girdType === 'DAYOFWEEK'}
+              />
+            </div>
             <div className="">
               <FormControlLabel
                 value={'WEEK'}
@@ -164,24 +178,16 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
         <p className="config--drawer--section">{t('GANTT_EXPORT_PDF_DISPLAY_CALENDAR')}</p>
         <p className="config--drawer--title">{t('GANTT_EXPORT_PDF_DISPLAY_CALENDAR_SELECT')}</p>
         <div className="config--drawer--checkbox-section gantt--time-unit__label-container">
-          <div className="">
-            <FormControlLabel
-              classes={{
-                root: 'gantt--timeunitconfig__schedule'
+          <FormControl variant="outlined" style={{ width: '90%' }}>
+            <Select
+              onChange={(e) => {
+                changeMainCalendar(e.target.value)
               }}
-              control={<NativeSelect
-                native
-                onChange={(e) => {
-                  changeMainCalendar(e.target.value)
-                }}
-                defaultValue={mainCalendar}
-                input={<BootstrapInput />}
-              >
-                {projectSchedules.map(item => <option key={item._id} value={item._id}>{item.name}</option>)}
-              </NativeSelect>}
-              onChange={handleOnChange}
-            />
-          </div>
+              defaultValue={mainCalendar}
+            >
+              {projectSchedules.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
+            </Select>
+          </FormControl>
         </div>
       </StyledScrollbarsSide >
     </Drawer >

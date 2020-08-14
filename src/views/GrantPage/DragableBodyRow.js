@@ -41,6 +41,7 @@ const DragableBodyRow = ({
   drop(drag(ref));
   return (
     <tr
+      id={dataSource[index] && dataSource[index].id}
       ref={ref}
       onMouseEnter={() => {
         if (!window.scrollTable) {
@@ -53,6 +54,12 @@ const DragableBodyRow = ({
             "ant-table-row ant-table-row-level-0"
           );
           divss[index].style.backgroundColor = "#fffae6";
+          const divsss = document.getElementById(
+            `icon__${dataSource[index].id}`
+          );
+          if (!divsss) return;
+          divsss.style.backgroundColor = "#fffae6";
+
         }
       }}
       onMouseLeave={() => {
@@ -64,6 +71,11 @@ const DragableBodyRow = ({
         );
         if (!divss[index]) return;
         divss[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "";
+        const divsss = document.getElementById(
+          `icon__${dataSource[index].id}`
+        );
+        if (!divsss) return;
+        divsss.style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "#fff";
       }}
       className={`${className}${isOver ? dropClassName : ""}`}
       style={{ ...style }}

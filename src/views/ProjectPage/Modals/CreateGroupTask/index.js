@@ -26,7 +26,6 @@ function CreateGroupTask({ open, setOpen, project_id = null }) {
   const [createNew, setCreateNew] = React.useState(false);
   const [copy, setCopy] = React.useState(false);
   const { t } = useTranslation();
-
   const { projectId: _projectId } = useParams();
   const [projectId, setProjectId] = React.useState(_projectId);
 
@@ -77,7 +76,7 @@ function CreateGroupTask({ open, setOpen, project_id = null }) {
           </ButtonCase>
         </Container>
       </CustomModal>
-      <CreateNewGroupTask open={createNew} setOpen={setCreateNew} project_id={projectId} />
+      <CreateNewGroupTask open={createNew} setOpenModal={setOpen} setOpen={setCreateNew} project_id={projectId} />
       <CopyGroupTask open={copy} setOpen={setCopy} project_id={projectId} />
     </>
   )

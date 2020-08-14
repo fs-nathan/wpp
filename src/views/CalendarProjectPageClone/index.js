@@ -74,7 +74,7 @@ function CalendarProjectPage({
   }
   React.useEffect(() => {
     fetchProjectSchedules()
-  }, [])
+  }, [params.projectId])
   return (
     <TwoColumnsLayout
       leftRenders={[
@@ -110,7 +110,6 @@ const mapStateToProps = (state) => {
   return {
     groupSchedules: projectGroupScheduleSelector(state),
     permissions: state.calendar.listCalendarPermission.data.permissions,
-
   };
 };
 

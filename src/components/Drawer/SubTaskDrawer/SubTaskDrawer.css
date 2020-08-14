@@ -29,15 +29,20 @@
 }
 
 .subtask-drawer--header {
-    font-weight: 500;
-    color: black;
-    font-size: 18px;
+    font-weight: 450;
+    color: #000;
+    font-size: 15px;
 }
 
 .subtask-drawer--sub-header {
-    color: #cccccc
+    color: #616161
 }
 .subtask-drawer--item__complete-avatar {
     width: 14px !important;
     height: 14px !important;
+}
+.subtask-drawer--group-status__name{
+    font-size: 13px;
+    font-weight: 500;
+    color: #888;    
 }

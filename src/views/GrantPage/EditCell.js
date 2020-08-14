@@ -21,6 +21,7 @@ const EditCell = ({
   end_date,
   fetchNewDataSource,
   setProcessDatasource,
+  girdInstance,
   index,
   girdType
 }) => {
@@ -77,23 +78,40 @@ const EditCell = ({
     setData(new moment(date).format("YYYY-MM-DD HH:mm"));
   };
   const postDataToServer = async () => {
+    console.log(data)
+    if (!data || data === "Invalid date") return
     const fieldChange = type === "start_date" ? "start_time" : "end_time"
-    const startEndTime = girdType === 'HOUR' ? {
+    let startEndTime = girdType === 'HOUR' ? {
       start_time: new moment(start_date, "DD/MM/YYYY HH:mm").format("HH:mm"),
       end_time: new moment(end_date, "DD/MM/YYYY HH:mm").format("HH:mm"),
-      [fieldChange]: new moment(data).format("HH:mm")
+      [fieldChange]: type === "duration" ? new moment(start_date, "DD/MM/YYYY HH:mm").add(data, girdInstance.unit).format("HH:mm") : new moment(data).format("HH:mm")
     } : {}
-    await changeTaskduration({
-      task_id: taskId,
-      start_date: new moment(start_date, "DD/MM/YYYY HH:mm").isValid()
-        ? new moment(start_date, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD")
-        : new moment(start_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
-      end_date: new moment(end_date, "DD/MM/YYYY HH:mm").isValid()
-        ? new moment(end_date, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD")
-        : new moment(end_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
-      [type]: new moment(data).format("YYYY-MM-DD"),
-      ...startEndTime
-    });
+    if (type === 'duration') {
+      await changeTaskduration({
+        task_id: taskId,
+        start_date: new moment(start_date, "DD/MM/YYYY HH:mm").isValid()
+          ? new moment(start_date, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD")
+          : new moment(start_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        end_date: new moment(start_date, "DD/MM/YYYY HH:mm").isValid()
+          ? new moment(start_date, "DD/MM/YYYY HH:mm").add(data - 1, girdInstance.unit).format("YYYY-MM-DD")
+          : new moment(start_date, "DD/MM/YYYY").add(data - 1, girdInstance.unit).format("YYYY-MM-DD"),
+        ...startEndTime
+      });
+    } else {
+
+
+      await changeTaskduration({
+        task_id: taskId,
+        start_date: new moment(start_date, "DD/MM/YYYY HH:mm").isValid()
+          ? new moment(start_date, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD")
+          : new moment(start_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        end_date: new moment(end_date, "DD/MM/YYYY HH:mm").isValid()
+          ? new moment(end_date, "DD/MM/YYYY HH:mm").format("YYYY-MM-DD")
+          : new moment(end_date, "DD/MM/YYYY").format("YYYY-MM-DD"),
+        [type]: new moment(data).format("YYYY-MM-DD"),
+        ...startEndTime
+      });
+    }
     fetchNewDataSource();
   };
   return (
@@ -106,7 +124,7 @@ const EditCell = ({
       >
         {!showEdit && component}
         {showEdit &&
-          (type !== "complete" ? girdType === 'HOUR' ? <div className="gantt--edit-cell__input-date">
+          (type !== "complete" && type !== "duration" ? girdType === 'HOUR' ? <div className="gantt--edit-cell__input-date">
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <KeyboardDateTimePicker
                 disableToolbar
@@ -149,7 +167,7 @@ const EditCell = ({
                 <TextField
                   type="number"
                   style={{
-                    height: 37,
+                    height: 32,
                     width: "100%",
                   }}
                   fullWidth={true}
@@ -157,6 +175,11 @@ const EditCell = ({
                   disableUnderline={true}
                   value={dataComplete}
                   onChange={(e) => {
+                    if (type === "duration") {
+                      setData(e.target.value)
+                      setDataComplete(e.target.value)
+                      return
+                    }
                     if (e.target.value > 100) {
                       setDataComplete(100)
                       return
@@ -188,7 +211,7 @@ const EditCell = ({
               transform: "translateX(50%)",
               top: 0,
               background: '#fffae6',
-              height: "37px",
+              height: "32px",
               width: "100%"
             }}
           >
@@ -222,6 +245,7 @@ const EditCell = ({
 
 const mapStateToProps = (state) => ({
   girdType: state.gantt.girdType,
+  girdInstance: state.gantt.girdInstance,
 });
 export default
   connect(mapStateToProps)(EditCell)

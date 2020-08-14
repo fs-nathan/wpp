@@ -2,6 +2,7 @@ import { mdiDragVerticalVariant } from "@mdi/js";
 import Icon from "@mdi/react";
 import moment from "moment";
 import React, { useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { changeRowHover, scrollGantt } from "../../actions/gantt";
 import MonthHeader from "./MonthHeader";
@@ -25,7 +26,6 @@ function GanttChart({
   daysRender,
   showFullChart,
   heightTable,
-  rowHover,
   renderFullDay,
   scrollGanttFlag,
   widthTable,
@@ -41,6 +41,7 @@ function GanttChart({
   const [drag, setDrag] = useState(false);
   const [leftHeader, setLeftHeader] = useState(0);
   const [leftTable, setLeftTable] = useState(0);
+  const { t } = useTranslation()
   let offsetLeft = 0;
   const handleMouseMove = (e) => {
     if (drag) {
@@ -84,7 +85,7 @@ function GanttChart({
     if (scrollRef.current && scrollGanttFlag) {
       const widthFromNowLayer =
         new moment(Date.now()).diff(start, girdInstance.unit) + 1;
-      scrollRef.current.scrollLeft = widthFromNowLayer * 35 - 500;
+      scrollRef.current.scrollLeft = widthFromNowLayer * 30 - 500;
       scrollGantt(false);
     }
   }, [scrollGanttFlag]);
@@ -92,7 +93,7 @@ function GanttChart({
   const b = left ? { left: showFullChart ? minLeft : left } : {};
   let maxWidth;
   if (renderFullDay) {
-    maxWidth = (end.diff(start, girdInstance.unit) + 1) * 35;
+    maxWidth = (end.diff(start, girdInstance.unit) + 1) * 30;
   }
   const timeline = useMemo(
     () =>
@@ -110,30 +111,43 @@ function GanttChart({
             <div
               key={item.id}
               onMouseEnter={() => {
-                if (!window.scrollTimeline) {
-                  const divs = document.getElementsByClassName(
-                    "ant-table-row ant-table-row-level-0"
-                  );
-                  if (!divs[index]) return;
-                  divs[index].style.backgroundColor = "#fffae6";
-                  console.log(divs, divs[index].style.backgroundColor)
-                }
+                const divs = document.getElementById(
+                  item.id
+                );
+                if (!divs) return;
+                divs.style.backgroundColor = "#fffae6";
+                const divss = document.getElementsByClassName(
+                  "gantt--top-timeline-tr"
+                );
+                divss[index].style.backgroundColor = "#fffae6";
+                const divsss = document.getElementById(
+                  `icon__${item.id}`
+                );
+                if (!divsss) return;
+                divsss.style.backgroundColor = "#fffae6";
               }}
-              onMouseLeave={() => {
-                if (!window.scrollTimeline) {
-                  const divs = document.getElementsByClassName(
-                    "ant-table-row ant-table-row-level-0"
-                  );
-                  if (!divs[index]) return;
-                  divs[index].style.backgroundColor = dataSource[index].isTotalDuration || dataSource[index].isGroupTask ? "#fafafa" : "#fff";
-                }
+              onMouseOut={() => {
+                const divs = document.getElementById(
+                  item.id
+                );
+                if (!divs) return;
+                divs.style.backgroundColor = item.isTotalDuration || item.isGroupTask ? "#fafafa" : "#fff";
+                const divss = document.getElementsByClassName(
+                  "gantt--top-timeline-tr"
+                );
+                divss[index].style.backgroundColor = ""
+                const divsss = document.getElementById(
+                  `icon__${item.id}`
+                );
+                if (!divsss) return;
+                divsss.style.backgroundColor = "#fff";
+
               }}
               className="gantt--top-timeline-tr"
               style={{
                 position: "relative",
                 padding: "8.5px 0px",
                 display: "flex",
-                backgroundColor: rowHover === index ? "#fffae6" : "",
               }}
             >
               <div className="gantt--top-timeline"></div>
@@ -156,34 +170,33 @@ function GanttChart({
           </React.Fragment>
         );
       }),
-    [dataSource, girdInstance, start, visibleGantt, rowHover]
+    [dataSource, girdInstance, start, visibleGantt]
   );
   const renderTimeNotWork = useMemo(() => {
-    console.log("visibleGantt", timelineColor)
     return (
-      <div id="asdasdasdasdasdasd" style={{ position: "absolute" }}>
+      <div style={{ position: "absolute" }}>
         <div style={{ position: "relative" }}>
           {visibleGantt.timeNotWork && timeNotWork.map((item) => (
             <div
               style={{
                 background: timelineColor.timeNotWork,
                 position: "absolute",
-                width: 35,
-                height: dataSource.length * 37,
+                width: 30,
+                height: dataSource.length * 32 - 2,
                 left:
                   new moment(
                     `${item.date}/${item.month}/${item.year}${
                     item.hour ? " " + item.hour : ""
                     }`,
                     `DD/MM/YYYY${item.hour ? " HH" : ""}`
-                  ).diff(start, girdInstance.unit) * 35,
+                  ).diff(start, girdInstance.unit) * 30,
               }}
             ></div>
           ))}
         </div>
       </div>
     )
-  }, [visibleGantt, timelineColor, timeNotWork]);
+  }, [visibleGantt, timelineColor, timeNotWork, dataSource.length]);
   const widthFromNowLayer =
     new moment(Date.now()).diff(start, girdInstance.unit) + 1;
   const renderMonthHeader = useMemo(
@@ -229,7 +242,7 @@ function GanttChart({
       >
         <Icon path={mdiDragVerticalVariant} size={1} />
       </div>
-      <div
+      {<div
         id="gantt--scroll-top_virtual"
         onScroll={(e) => {
           if (!window.scrollTable && !window.scrollTimeline) {
@@ -254,18 +267,18 @@ function GanttChart({
             tableBody.scrollTop = e.target.scrollTop;
             if (timeoutId) clearTimeout(timeoutId);
             timeoutId = setTimeout(
-              () => (window.scrollTimeline = false),
+              () => (window.scrollTimelineVitural = false),
               100
             );
           }
         }}
         style={{
-          height: heightTable - 50
+          height: dataSource.length * 32 > heightTable - 69 ? heightTable - 69 : dataSource.length * 32,
         }} className="gantt--virtual__scroll">
         <div style={{
-          height: dataSource.length * 37
+          height: dataSource.length * 32
         }}></div>
-      </div>
+      </div>}
       <div
         ref={ganttRef}
         id="offset-gantt-container"
@@ -299,7 +312,7 @@ function GanttChart({
             position: "absolute",
             zIndex: 10,
             backgroundColor: "#e8e8e8",
-            height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
+            height: renderFullDay ? dataSource.length * 32 + 50 : heightTable,
           }}
           id="drag-width-gantt-container"
         ></div>
@@ -312,10 +325,9 @@ function GanttChart({
           }
           id="gantt-container-scroll"
           style={{
-            height: renderFullDay ? dataSource.length * 37 + 50 : heightTable,
+            height: renderFullDay ? dataSource.length * 32 + 50 : heightTable,
           }}
           onScroll={(e) => {
-            console.log(e.target.scrollLeft, e.target.scrollWidth)
             if (e.target.scrollLeft + 16 >= e.target.scrollWidth) {
               e.target.scrollLeft = e.target.scrollWidth - 16
               return
@@ -323,10 +335,10 @@ function GanttChart({
             if (window.scrollTable || window.scrollTimeline || window.scrollTimelineVitural) return;
             if (!e.target.scrollTop) {
               const fetchNewTimeNotWork =
-                Math.floor(e.target.scrollLeft / (700 * 35)) !==
+                Math.floor(e.target.scrollLeft / (700 * 30)) !==
                 timeNotWorkUnit && visibleGantt.timeNotWork;
               if (fetchNewTimeNotWork) {
-                timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 35));
+                timeNotWorkUnit = Math.floor(e.target.scrollLeft / (700 * 30));
                 const fromDate = new moment(start).add(
                   700 * timeNotWorkUnit,
                   girdInstance.unit
@@ -337,19 +349,19 @@ function GanttChart({
                   toDate.format("YYYY-MM-DD")
                 );
               }
-              if (Math.floor(e.target.scrollLeft / 35) !== scrollWidth) {
-                const newScrollWidth = Math.floor(e.target.scrollLeft / 35);
+              if (Math.floor(e.target.scrollLeft / 30) !== scrollWidth) {
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 30);
                 setScrollWidth(newScrollWidth);
-                setLeftHeader(newScrollWidth * 35);
+                setLeftHeader(newScrollWidth * 30);
                 setLeftTable(
-                  Math.floor(e.target.scrollLeft / (35 * 7)) * 35 * 7
+                  Math.floor(e.target.scrollLeft / (30 * 7)) * 30 * 7
                 );
               } else {
-                const newScrollWidth = Math.floor(e.target.scrollLeft / 35);
-                setLeftHeader(newScrollWidth * 35);
+                const newScrollWidth = Math.floor(e.target.scrollLeft / 30);
+                setLeftHeader(newScrollWidth * 30);
                 setScrollWidth(newScrollWidth);
                 setLeftTable(
-                  Math.floor(e.target.scrollLeft / (35 * 7)) * 35 * 7
+                  Math.floor(e.target.scrollLeft / (30 * 7)) * 30 * 7
                 );
               }
             }
@@ -359,17 +371,19 @@ function GanttChart({
             <div
               className="gantt--fromNowLayer__container"
               style={{
-                width: widthFromNowLayer * 35,
+                width: widthFromNowLayer * 30,
+                height: dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
               }}
             >
               <div
                 className="gantt--fromNowLayer__background"
                 style={{
-                  width: widthFromNowLayer * 35,
+                  width: widthFromNowLayer * 30,
+                  height: dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
                 }}
               ></div>
               <div className="gantt--fromNowLayer__text">
-                <div>Hôm nay</div>
+                <div>{t("GANTT_TODAY_LABEL")}</div>
                 <div>{new moment().format("DD/MM/YYYY")}</div>
               </div>
             </div>
@@ -397,7 +411,8 @@ function GanttChart({
                   const gridTable = document.getElementById('gantt_table_grid')
                   gridTable.scrollTop = e.target.scrollTop
                   scrollVirtual.scrollTop = e.target.scrollTop
-                  tableBody.scrollTop = e.target.scrollTop;
+                  if (tableBody)
+                    tableBody.scrollTop = e.target.scrollTop;
                   if (timeoutId) clearTimeout(timeoutId);
                   timeoutId = setTimeout(
                     () => (window.scrollTimeline = false),
@@ -412,7 +427,7 @@ function GanttChart({
                 className="gantt--timeline--container__relative"
                 style={{
                   position: "relative",
-                  height: heightTable - 69,
+                  height: dataSource.length * 32 > heightTable - 69 ? heightTable - 69 : dataSource.length * 32,
                   overflowY: "scroll",
                   overflowX: "hidden",
                   zIndex: 1000
@@ -437,7 +452,6 @@ const mapStateToProps = (state) => ({
   showFullChart: state.gantt.showFullChart,
   timelineColor: state.gantt.timelineColor,
   showHeader: state.gantt.showHeader,
-  rowHover: state.gantt.rowHover,
   renderFullDay: state.gantt.renderFullDay,
   scrollGanttFlag: state.gantt.scrollGanttFlag,
   visibleGantt: state.gantt.visible.gantt,
