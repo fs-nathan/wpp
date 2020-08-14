@@ -113,6 +113,10 @@ function PermissionMemberModal({
   const [loading, setLoading] = React.useState(false);
   const [isFirstView, setIsFirstView] = React.useState(true);
 
+  React.useEffect(() => {
+    setIsFirstView(true);
+  }, [open]);
+
   const initialValue = React.useMemo(() =>
     get(
       find(

@@ -2081,5 +2081,12 @@
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2": "Sơ đồ gantt (Gantt)",
   "CUSTOM_TEXTBOX_CONTENT_LABEL": "Nội dung...",
   "IDS_WP_LEAVE_GROUP_CONFIRM_MSG": "Bạn có chắc chắn muốn rời khỏi nhóm này?",
-  "IDS_WP_START_TRAIL_SUCCESS": "Bạn đã kích hoạt gói dùng thử 30 ngày thành công"
+  "IDS_WP_START_TRAIL_SUCCESS": "Bạn đã kích hoạt gói dùng thử 30 ngày thành công",
+  "IDS_WP_REMIND_CALENDAR_FREQUENCY": "Ngày/lần",
+  "IDS_WP_ERROR_PAGE_404_MSG": "Nội dung bạn vừa truy cập không tồn tại hoặc đã bị xóa!",
+  "IDS_WP_ERROR_PAGE_404_MSG1": "Bạn vui lòng quay lại trang cũ hoặc truy cập vào một nội dung khác.",
+  "IDS_WP_ERROR_PAGE_404_MSG2": "Nếu bạn cho đây là một sự cố hoặc lỗi phần mềm thì hãy liên hệ với",
+  "IDS_WP_ERROR_PAGE_404_SUPPORT_CENTER": "Trung tâm hỗ trợ",
+  "IDS_WP_ERROR_PAGE_404_THANKS": "Xin chân trọng cảm ơn!",
+  "IDS_WP_LABEL_BACK_TO_PREVIOUS_PAGE": "Quay lại trang trước"
 }

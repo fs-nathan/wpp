@@ -78,6 +78,9 @@ const ReportPage = loadable(() => import("views/ReportPage"), {
 const GanttPage = loadable(() => import("views/GrantPage/GrantTable"), {
   fallback: <div />,
 });
+const ErrorPage = loadable(() => import("views/ErrorPage") , {
+  fallback: <div />,
+})
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },
@@ -88,10 +91,7 @@ const routes = [
   { path: Routes.REPORT, component: () => <ReportPage /> },
   { path: Routes.DOCUMENT, component: () => <DocumentPage /> },
   { path: Routes.TASKS, component: () => <JobPage /> },
-  ...Object.values(jobRoutes).map((path) => ({
-    path,
-    component: () => <JobPage />,
-  })),
+  ...Object.values(jobRoutes).map((path) => ({path, component: () => <JobPage />,})),
   { path: Routes.OFFERS, component: () => <OfferPage /> },
   { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} />,},
   { path: Routes.TEST, component: () => <TestPage /> },
@@ -125,7 +125,7 @@ const routes = [
   ...(process.env.NODE_ENV !== "production"
     ? [{ path: "/playground", component: () => <Playground /> }]
     : []),
-  { path: "", exact: false, component: () => null },
+  { path: "", exact: false, component: () => <ErrorPage/> },
 ];
 
 export default routes;

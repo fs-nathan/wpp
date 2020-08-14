@@ -36,9 +36,6 @@ const BadgeItem = styled(ColorChip)`
     margin: 5px 6px 5px 0;
   `
 
-const InputDateTime = styled(TextField)`
-    width: 146px !important;
-  `
 const InputDate = styled(KeyboardDatePicker)`
   & > div:nth-child(2) {
     width: 146px;
@@ -78,6 +75,7 @@ const DEFAULT_DATA = {
   date_remind: DEFAULT_DATE_TEXT,
   time_remind: DEFAULT_TIME_TEXT,
   type_remind: REMIND_SCHEDULE_TYPE,
+  frequency: 3,
   duration: [],
 }
 
@@ -143,18 +141,13 @@ function RemindModal(props) {
   React.useEffect(() => {
     if (!isFetching && !error)
       dispatch(openCreateRemind(false));
-    // eslint-disable-next-line
   }, [isFetching, error])
 
   const handleChangeData = (attName, value) => {
-    // console.log('valueRemind:::',attName, value)
     setData(prevState => ({ ...prevState, [attName]: value }))
   }
 
   const handlePressConfirm = () => {
-    // TODO: validate
-    // const [dd, mm, yyyy] = data.date_remind.split('/')
-    // data.date_remind = `${yyyy}/${mm}/${dd}`;
     const dataUpdateRemind = {
       task_id: taskId,
       remind_id: data.id,
@@ -193,11 +186,9 @@ function RemindModal(props) {
         dispatch(updateRemindWithDuration({ data: dataUpdateRemindDuration, taskId }))
       }
     }
-    // Close modal
-    // setOpenCreate(false)
   }
+
   const [value, setValue] = React.useState('')
-  // console.log("daataaA::::", data)
 
   const handleChangeDuration = value => {
     if (isValidDuration(value) || value === "")
@@ -264,42 +255,63 @@ function RemindModal(props) {
           <Typography component="div">
             <HelperText>{t('LABEL_CHAT_TASK_BAN_CO_LICH_HEN')}</HelperText>
             <div className="remind-title">
-              <div className="remindModal--dateRemind" component="span">
+              <div className="remindModal--dateRemind">
                 <TitleSectionModal label={t('LABEL_CHAT_TASK_NGAY_NHAC')} isRequired />
               </div>
-              <div className="remindModal--timeRemind" component="span">
+              <div className="remindModal--timeRemind">
                 <TitleSectionModal label={t('LABEL_CHAT_TASK_GIO_NHAC')} isRequired />
               </div>
-              <div className="remindModal--repeatRemind" component="span">
+              <div className="remindModal--repeatRemind">
                 <TitleSectionModal label={t('LABEL_CHAT_TASK_NHAC_HEN_DINH_KY')} isRequired />
+              </div>
+              <div className="remindModal--frequencyRemind">
+                <TitleSectionModal label={t('views.calendar_page.modal.create_personal_remind.frequency')} isRequired />
               </div>
             </div>
             <div className="remind-body">
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <InputDate
-                  disableToolbar
-                  variant="inline"
-                  inputVariant="outlined"
-                  format="dd/MM/yyyy"
-                  value={data.date_remind}
-                  onChange={e => handleChangeData("date_remind", convertDate(e))}
-                  KeyboardButtonProps={{
-                    "aria-label": "date change"
-                  }}
-                />
-              </MuiPickersUtilsProvider>
-              <span>
+              <div className={"remind-date"}>
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <InputDate
+                      disableToolbar
+                      variant="inline"
+                      inputVariant="outlined"
+                      format="dd/MM/yyyy"
+                      value={data.date_remind}
+                      onChange={e => handleChangeData("date_remind", convertDate(e))}
+                      KeyboardButtonProps={{
+                        "aria-label": "date change"
+                      }}
+                  />
+                </MuiPickersUtilsProvider>
+              </div>
+              <div className={"remind-time"}>
                 <TimePicker
                   variant="outlined"
                   value={data.time_remind}
                   onChange={value => handleChangeData("time_remind", value)}
                 />
-              </span>
+              </div>
               <div className="type-remind" >
                 <OutlinedInputSelect
                   commandSelect={badges}
                   selectedIndex={data.type_remind}
                   setOptions={typeId => { handleChangeData("type_remind", typeId); }}
+                />
+              </div>
+              <div className={"remind_setting_frequency"}>
+                <OutlinedInput
+                    className={"remind_setting_frequency_input"}
+                    value={data.frequency}
+                    onChange={({target}) => handleChangeData('frequency', target.value)}
+                    endAdornment={
+                      <InputAdornment
+                          position="end"
+                          disableTypography={true}
+                          variant={"filled"}
+                      >
+                        {t("IDS_WP_REMIND_CALENDAR_FREQUENCY")}
+                      </InputAdornment>
+                    }
                 />
               </div>
             </div>

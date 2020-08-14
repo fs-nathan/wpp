@@ -100,17 +100,24 @@
   &--dateRemind,
   &--mileStone {
     font-size: 13px;
-    width: 228px;
+    width: 30%;
     padding: 15px 0 3px;
   }
   &--timeRemind {
     font-size: 13px;
-    width: 164px;
+    width: 30%;
     padding: 15px 0 3px;
   }
   &--repeatRemind {
     font-size: 13px;
-    width: 164px;
+    width: 30%;
+    padding: 15px 0 3px;
+    display: flex;
+    align-items: center;
+  }
+  &--frequencyRemind {
+    font-size: 13px;
+    width: 20%;
     padding: 15px 0 3px;
     display: flex;
     align-items: center;
@@ -138,11 +145,25 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
+  .remind-date {
+    width: 25%;
+    margin-right: 8px;
+  }
   .type-remind {
-    margin: 0px;
-    width: 160px;
+    margin: 8px;
+    width: 25%;
     & > div > div > div {
       padding: 0;
+    }
+  }
+  .remind_setting_frequency {
+    width: 20%;
+    &_input {
+      background: #f8f8f8;
+      height: 38px;
+      &>input {
+        background: #fff;
+      }
     }
   }
 }

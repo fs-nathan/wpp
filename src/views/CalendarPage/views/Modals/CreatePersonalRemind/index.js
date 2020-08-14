@@ -33,6 +33,7 @@ const DEFAULT_DATA = {
   selectedDate: moment().toDate(),
   selectedCategory: null,
   selectedRepeatType: 0,
+  frequency: 3,
   notifyTimeType: 0,
   timeBefore: 30,
   content: '',
@@ -169,16 +170,16 @@ function CreatePersonalRemind({
                 <span>*</span>
               </abbr>
               <OutlinedInput
-                  id="outlined-adornment-weight"
-                  value={3}
-                  onChange={() => console.log()}
+                  className={"remind_setting_frequency_input"}
+                  value={data.frequency}
+                  onChange={({target}) => handleChangeData('frequency', target.value)}
                   endAdornment={
                     <InputAdornment
                         position="end"
                         disableTypography={true}
                         variant={"filled"}
                     >
-                      ngày/lần
+                      {t("IDS_WP_REMIND_CALENDAR_FREQUENCY")}
                     </InputAdornment>
                   }
               />

@@ -2079,5 +2079,12 @@
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2": "Gantt chart (Gantt)",
   "CUSTOM_TEXTBOX_CONTENT_LABEL": "Content...",
   "IDS_WP_LEAVE_GROUP_CONFIRM_MSG": "Do you really want to leave this group?",
-  "IDS_WP_START_TRAIL_SUCCESS": "Start trail using successfully"
+  "IDS_WP_START_TRAIL_SUCCESS": "Start trail using successfully",
+  "IDS_WP_REMIND_CALENDAR_FREQUENCY": "Day/times",
+  "IDS_WP_ERROR_PAGE_404_MSG": "This page you accessed does not exist or have been deleted!",
+  "IDS_WP_ERROR_PAGE_404_MSG1": "Please return to the old page or access another content.",
+  "IDS_WP_ERROR_PAGE_404_MSG2": "If you think this is a software problem or bug then contact to",
+  "IDS_WP_ERROR_PAGE_404_SUPPORT_CENTER": "Support center of",
+  "IDS_WP_ERROR_PAGE_404_THANKS": "Thank you so much!",
+  "IDS_WP_LABEL_BACK_TO_PREVIOUS_PAGE": "Back to previous page"
 }

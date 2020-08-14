@@ -17,7 +17,8 @@ import { connect } from 'react-redux';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import { bgColorSelector } from "../../../selectors";
 import { membersSelector } from "./selectors";
-import './style.scss';
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import InputAdornment from "@material-ui/core/InputAdornment";
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -171,6 +172,26 @@ function UpdatePersonalRemind({
                 <MenuItem value={2} key={`remind_repeat_type_2`}>{t('views.calendar_page.modal.create_personal_remind.weekly')}</MenuItem>
                 <MenuItem value={3} key={`remind_repeat_type_3`}>{t('views.calendar_page.modal.create_personal_remind.monthly')}</MenuItem>
               </Select>
+            </div>
+            <div className={"remind_setting_frequency"}>
+              <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
+                <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.frequency')} </Typography>
+                <span>*</span>
+              </abbr>
+              <OutlinedInput
+                  className={"remind_setting_frequency_input"}
+                  value={data.frequency}
+                  onChange={({target}) => handleChangeData('frequency', target.value)}
+                  endAdornment={
+                    <InputAdornment
+                        position="end"
+                        disableTypography={true}
+                        variant={"filled"}
+                    >
+                      {t("IDS_WP_REMIND_CALENDAR_FREQUENCY")}
+                    </InputAdornment>
+                  }
+              />
             </div>
           </Box>
           <Box className="remind_setting_content">
