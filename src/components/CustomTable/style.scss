@@ -8,8 +8,6 @@
     'body';
 }
 
-;
-
 .comp_CustomTable___header {
   grid-area: header;
   padding: 10px 10px 10px 20px;
@@ -24,16 +22,12 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
-;
-
 .comp_CustomTable___left-header {
   max-width: 250px;
-
   &>div:first-child {
     display: flex;
     align-items: center;
     color: #444;
-
     &>p {
       margin: 0;
       font-size: 21px;
@@ -41,20 +35,11 @@
       font-weight: 600;
       text-transform: unset;
     }
-
-    ;
   }
-
-  ;
-
   &>span:last-child {
-    font-size: 11px;
+    font-size: 12px;
   }
-
-  ;
 }
-
-;
 
 .comp_CustomTable___right-header {
   margin-left: auto;
@@ -62,18 +47,12 @@
   &>*:last-child {
     margin-left: 16px;
   }
-
-  ;
 }
-
-;
 
 .comp_CustomTable___table-main {
   grid-area: body;
   overflow-y: auto;
 }
-
-;
 
 .comp_CustomTable___table-button {
   background-color: #fd7e14;
@@ -85,5 +64,3 @@
     background-color: #c46111;
   }
 }
-
-;

@@ -26,7 +26,9 @@ import {
   LIST_DOCUMENT_SHARE_SUCCESS,
   TOGGLE_BUTTON_SIGNOUT_GOOGLE,
   LIST_GOOGLE_DOCUMENT,
-  LIST_GOOGLE_DOCUMENT_SUCCESS
+  LIST_GOOGLE_DOCUMENT_SUCCESS,
+  LIST_TASK_DOCUMENT_OF_PROJECT,
+  LIST_TASK_DOCUMENT_OF_PROJECT_SUCCESS
 } from '../../constants/actions/documents';
 // Import all the tabs in document page
 import * as TABS from '../../constants/documentTab';
@@ -195,6 +197,19 @@ export default function reducer(state = initialState, action) {
         isLoading: !action.quite
       };
     case LIST_PROJECT_DOCUMENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        listProject: action.payload,
+        isLoading: false
+      };
+    case LIST_TASK_DOCUMENT_OF_PROJECT:
+      return {
+        ...state,
+        isFetching: true,
+        isLoading: !action.quite
+      };
+    case LIST_TASK_DOCUMENT_OF_PROJECT_SUCCESS:
       return {
         ...state,
         isFetching: false,

@@ -12,7 +12,7 @@ import {
 } from '../../../actions/system/system';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
 import { DRAWER_TYPE } from '../../../constants/constants';
-import ItemGroupAcount from './ItemGroupAcount';
+import ItemGroupAcount from './ItemGroupAccount';
 import '../Drawer.scss';
 import select_group_bg from '../../../assets/select_group_bg.png';
 

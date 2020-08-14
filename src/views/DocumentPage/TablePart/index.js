@@ -55,6 +55,8 @@ import {
   mdiTrashCanOutline
 } from '@mdi/js';
 import { useDropzone } from 'react-dropzone';
+import ProjectTaskDocument from "./ContentDocumentPage/ProjectTaskDocument";
+import {isNil} from "lodash";
 
 const HeaderTitle = props => {
   return <ColorTypo className="title">{props.title || ''}</ColorTypo>;
@@ -239,6 +241,16 @@ const getHeaderContent = (
           isTrash
         />
       );
+    case Routes.DOCUMENT_PROJECT_TASK:
+      return (
+        <HeaderBreadCrumbs
+          title={t('IDS_WP_PROJECT_DOCUMENT')}
+          breadCrumbs={breadCrumbs}
+          onUpdateBreadCrumbs={onUpdateBreadCrumbs}
+          srcImg={mdiFileDocumentBoxOutline}
+          colorIcon={'#4caf50'}
+        />
+      );
     default:
       return null;
   }
@@ -284,8 +296,12 @@ const TablePart = props => {
       case Routes.DOCUMENT_PROJECT: {
         if (isProjectDocument) {
           return <ProjectDocument {...props} />;
+        } else {
+          const isTaskDocument = !isNil(props.location.search.split('projectId=').pop());
+          if(isTaskDocument) {
+            return <ProjectTaskDocument {...props}/>;
+          }
         }
-        return <ProjectDocumentDetail {...props} />;
       }
       case Routes.DOCUMENT_SHARE:
         return <DocumentShareFromMe {...props} />;
@@ -297,6 +313,8 @@ const TablePart = props => {
         return <GoogleDrive {...props} />;
       case Routes.DOCUMENT_TRASH:
         return <Trash {...props} />;
+      case Routes.DOCUMENT_PROJECT_TASK:
+        return <ProjectDocumentDetail {...props} />;
       default:
         return null;
     }

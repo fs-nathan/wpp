@@ -84,9 +84,9 @@ function AllTaskTable({
             title: t("DMH.VIEW.PP.RIGHT.ALL.TITLE"),
             subTitle: () => (
               <SubTitle>
-                <span className={pathname.includes("table") ? 'view_Project_AllTaskTable___subtitle_active' : ''}>Table</span>
-                <span className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'gantt')}`)}>Gantt</span>
-                <span className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</span>
+                <div className={pathname.includes("table") ? 'view_Project_AllTaskTable___subtitle_active' : ''}>Table</div>
+                <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'gantt')}`)}>Gantt</div>
+                <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</div>
               </SubTitle>
             ),
             subActions: [canUpdateProject ? {
@@ -126,7 +126,11 @@ function AllTaskTable({
                   view: true,
                 }
               }),
-            }, canUpdateProject ? {
+            },
+            {
+              label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.PROJECT_CALENDAR"),
+              onClick: () => console.log("TRONGNQ")
+            },canUpdateProject ? {
               label: `${get(project.project, 'visibility') ? t("DMH.VIEW.PP.RIGHT.ALL.LABEL.HIDE") : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SHOW")}`,
               onClick: () => handleShowOrHideProject(project.project),
               disabled: !isNil(find(showHidePendings.pendings, pending => pending === get(project.project, 'id'))),

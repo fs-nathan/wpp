@@ -48,10 +48,6 @@ function DepartmentList({
     <React.Fragment>
       <LeftSideContainer
         title={t('DMH.VIEW.DP.LEFT.LIST.TITLE')}
-        leftAction={{
-          iconPath: mdiDrag,
-          onClick: null,
-        }}
         rightAction={get(viewPermissions.permissions, 'can_modify', false) ? {
           iconPath: mdiPlus,
           onClick: () =>
@@ -84,9 +80,13 @@ function DepartmentList({
                   component={Link}
                   innerRef={ref}
                 >
-                  <div>
-                    <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                  </div>
+                  {
+                    get(viewPermissions.permissions, 'can_modify', false) && (
+                      <div>
+                        <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
+                      </div>
+                    )
+                  }
                   <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
                   <ListItemText
                     primary={

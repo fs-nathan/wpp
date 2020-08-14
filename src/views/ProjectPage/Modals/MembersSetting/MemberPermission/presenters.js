@@ -108,10 +108,11 @@ function PermissionMemberModal({
 }) {
 
   const { t } = useTranslation();
-
   const [selectedValue, setSelectedValue] = React.useState(undefined);
   const [isAdmin, setIsAdmin] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [isFirstView, setIsFirstView] = React.useState(true);
+
   const initialValue = React.useMemo(() =>
     get(
       find(
@@ -156,7 +157,6 @@ function PermissionMemberModal({
       'is_admin',
       false,
     ));
-    // eslint-disable-next-line
   }, [members.members, curMemberId, permissions]);
 
   React.useEffect(() => {
@@ -175,7 +175,6 @@ function PermissionMemberModal({
       CustomEventDispose(REMOVE_GROUP_PERMISSION_MEMBER.SUCCESS, doReloadPermissions);
       CustomEventDispose(REMOVE_GROUP_PERMISSION_MEMBER.FAIL, fail);
     }
-    // eslint-disable-next-line
   }, [projectId]);
 
   React.useEffect(() => {
@@ -192,7 +191,6 @@ function PermissionMemberModal({
       CustomEventDispose(MEMBER_PROJECT.SUCCESS, success);
       CustomEventDispose(MEMBER_PROJECT.FAIL, fail);
     }
-    // eslint-disable-next-line
   }, [projectId]);
 
   return (
@@ -215,7 +213,7 @@ function PermissionMemberModal({
         setOpen(false);
         setSelectedValue(initialValue);
       }}
-      activeLoading={updateGroupPermission.loading || loading}
+      activeLoading={updateGroupPermission.loading || loading || permissions.groupPermissions.loading}
       manualClose={true}
     >
       {isAdmin
@@ -253,7 +251,7 @@ function PermissionMemberModal({
           <>
             <Title>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.TITLE")}</Title>
             <Content>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.DESC")}</Content>
-            {isNil(selectedValue) && get(find(members.members, { id: curMemberId }), 'group_permission_name') && (
+            {isNil(selectedValue) && get(find(members.members, { id: curMemberId }), 'group_permission_name') && isFirstView && (
               <AlertBox>
                 <Icon
                   path={mdiAlert}
@@ -268,7 +266,7 @@ function PermissionMemberModal({
                 </span>
               </AlertBox>
             )}
-            {permissions.groupPermissions.length === 0
+            {(permissions.groupPermissions.length === 0 && permissions.groupPermissions.loading === false)
               ? <NoData
                 title={() => null}
                 subtitle={() =>
@@ -281,7 +279,10 @@ function PermissionMemberModal({
               : (
                 <>
                   <Deselect
-                    onClick={evt => setSelectedValue(undefined)}
+                    onClick={evt => {
+                      setSelectedValue(undefined);
+                      setIsFirstView(false);
+                    }}
                   >
                     <Icon path={mdiDeleteOutline} size={1} color='#898989' />
                     <span>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.REMOVE")}</span>

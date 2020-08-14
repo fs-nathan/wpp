@@ -7,7 +7,7 @@ import { CALENDAR_PAGE_PERMISSION } from "../constants/actions/calendar/permissi
 import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_DAY_OFF, GROUP_SCHEDULE_DELETE_SHIFT_STAGE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE_WORKING_DAY, GROUP_SCHEDULE_DELETE_WORKING_STAGE, GROUP_SCHEDULE_DETAIL, GROUP_SCHEDULE_LIST, GROUP_SCHEDULE_SET_WORKING_DAY, GROUP_SCHEDULE_UPDATE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_UPDATE_WORKING_STAGE, SETTING_START_DAY_WEEK } from "../constants/actions/calendar/projectCalendar";
 import { CREATE_SCHEDULE, DELETE_ALL_SCHEDULE, DELETE_SCHEDULE, LIST_WEEKS_IN_YEAR, SCHEDULE_LIST, SCHEDULE_OF_WEEK_LIST, SCHEDULE_OF_WEEK_LIST_FROM_MODAL, SETTING_STARTING_DAY, UPDATE_SCHEDULE } from "../constants/actions/calendar/weeklyCalendar";
 import * as chatTypes from "../constants/actions/chat/chat";
-import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
+import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH, LIST_TASK_DOCUMENT_OF_PROJECT } from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
@@ -154,7 +154,7 @@ import { listWeeksInYear } from "./calendar/weeklyCalendar/listWeeksInYear";
 import { settingStartingDay } from "./calendar/weeklyCalendar/settingStartingDay";
 import { updateSchedule } from "./calendar/weeklyCalendar/updateSchedule";
 import * as chatDetailSaga from "./chat/chat";
-import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash } from "./documents";
+import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash, listTaskDocumentOfProjectFolder } from "./documents";
 import { copyGroupTask } from "./groupTask/copyGroupTask";
 import { createGroupTask } from "./groupTask/createGroupTask";
 import { deleteGroupTask } from "./groupTask/deleteGroupTask";
@@ -368,6 +368,7 @@ function* rootSaga() {
   yield takeLatest(FETCH_GROUP_DETAIL, getGroupDetail);
   yield takeLatest(LIST_RECENT, listRecent);
   yield takeLatest(LIST_PROJECT_DOCUMENT, listProjectDocument);
+  yield takeLatest(LIST_TASK_DOCUMENT_OF_PROJECT, listTaskDocumentOfProjectFolder)
   yield takeLatest(
     LIST_PROJECT_DOCUMENT_OF_FOLDER,
     listProjectDocumentOfFolder

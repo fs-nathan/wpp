@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { createProjectGroupFail, createProjectGroupSuccess } from '../../actions/projectGroup/createProjectGroup';
 import { apiService } from '../../constants/axiosInstance';
@@ -10,11 +10,14 @@ async function doCreateProjectGroup({ name, icon, description }) {
     const config = {
       url: '/project-group/create',
       method: 'post',
-      data: {
+      data: !isNil(icon) ? {
         name,
         description,
-        icon,
-      },
+        icon
+      } : {
+        name,
+        description
+      }
     }
     const result = await apiService(config);
     return result.data;

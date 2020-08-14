@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import MemberPermissionPresenter from './presenters';
 import { bgColorSelector, membersSelector, permissionsSelector, updateGroupPermissionSelector } from './selectors';
+import {permissionProject} from "../../../../../actions/project/permissionProject";
 
 function MemberRole({
   open, setOpen,
@@ -17,6 +18,7 @@ function MemberRole({
   updateGroupPermission,
   doReloadMember, doReloadPermissions,
   project_id = null,
+  doPermissionProject
 }) {
 
   const { projectId: _projectId } = useParams();
@@ -25,6 +27,12 @@ function MemberRole({
   React.useEffect(() => {
     setProjectId(isNil(project_id) ? _projectId : project_id);
   }, [project_id, _projectId]);
+
+  React.useEffect(() => {
+    if(!isNil(projectId) && open) doPermissionProject(false);
+  }, [projectId, open]);
+
+  console.log(members);
 
   return (
     <MemberPermissionPresenter
@@ -65,6 +73,7 @@ const mapDispatchToProps = dispatch => {
     doReloadMember: (projectId) => dispatch(memberProject({ projectId }, true)),
     doUpdateGroupPermissionMember: ({ projectId, memberId, groupPermission }) => dispatch(updateGroupPermissionMember({ projectId, memberId, groupPermission })),
     doRemoveGroupPermissionMember: ({ projectId, memberId }) => dispatch(removeGroupPermissionMember({ projectId, memberId })),
+    doPermissionProject: (quite) => dispatch(permissionProject(quite)),
   }
 };
 

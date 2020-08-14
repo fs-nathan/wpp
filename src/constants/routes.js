@@ -1,6 +1,5 @@
 export const Routes = {
   HOME: "/",
-  LOGIN: "/",
   POST: "/home",
   PROJECTS: "/projects",
   PROJECT: "/tasks/table",
@@ -10,6 +9,7 @@ export const Routes = {
   DOCUMENT: "/document/:documentType",
   DOCUMENT_RECENT: "/document/recent",
   DOCUMENT_PROJECT: "/document/project",
+  DOCUMENT_PROJECT_TASK: "/document/project/task",
   DOCUMENT_SHARE: "/document/share",
   DOCUMENT_SHARE_ME: "/document/share-me",
   DOCUMENT_ME: "/document/me",
@@ -34,7 +34,6 @@ export const Routes = {
   SETTING_ACCOUNT_NOTIFI: "/setting-account/notification-workplus",
   SETTING_GROUP_LANGUAGE: "/setting-account/language",
   SETTING_GROUP_NOTIFICATION: "/setting-account/notification",
-
   SETTING_GROUP: "/setting-group/:type",
   SETTING_GROUP_INFO: "/setting-group/info",
   SETTING_GROUP_SETTING: "/setting-group/setting",
@@ -51,6 +50,4 @@ export const Routes = {
   SETTING_GROUP_GROUP_PERMISSION: "/setting-group/group-permission",
   OFFERS: "/offers",
   PROJECT_GRANT: "/tasks/gantt/:projectId",
-
-  
 };

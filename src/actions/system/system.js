@@ -8,16 +8,16 @@ export const actionVisibleDrawerMessage = option => {
     payload: option
   };
 };
-export const openNoticeModal = () => {
+export const openNoticeModal = (data) => {
   return {
     type: actionTypes.CHANGE_NOTICE_MODAL,
-    payload: true
+    payload: {visible: true, data}
   };
 };
 export const closeNoticeModal = () => {
   return {
     type: actionTypes.CHANGE_NOTICE_MODAL,
-    payload: false
+    payload: {visible: false}
   };
 };
 export const openDocumentDetail = file => ({
@@ -233,4 +233,3 @@ export const changeDetailSubtaskDrawer = ({id, name}) => ({
     name
   }
 })
-

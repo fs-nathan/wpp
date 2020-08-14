@@ -43,7 +43,7 @@ const TopBar = props => {
           data.data.group_active.type === 'Free' &&
           !isNotice
         ) {
-          props.openNoticeModal();
+          props.openNoticeModal("ACCOUNT_FREE");
         }
       }
     } catch (err) {}

@@ -28,7 +28,7 @@ apiService.interceptors.response.use(
         res.data.error_code === "ORDER_EXPIRED" ||
         res.data.error_code === "ACCOUNT_FREE"
       ) {
-        store.dispatch(openNoticeModal());
+        store.dispatch(openNoticeModal(res.data.error_code));
         return Promise.reject(new Error("__NO_SNACKBAR_ERROR__"));
       } else {
         return Promise.reject(new Error(res.data.msg));

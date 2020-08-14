@@ -34,7 +34,7 @@ const system = (state = initialState, action) => {
         anchorDrawer: action.payload.anchor
       };
     case actionTypes.CHANGE_NOTICE_MODAL:
-      return { ...state, visibleNoticeModal: action.payload };
+      return { ...state, visibleNoticeModal: action.payload.visible, visibleNoticeReason: action.payload.data };
     case actionTypes.GROUP_ACTIVE:
       localStorage.setItem(actionTypes.COLOR_ACTIVE, action.payload.color);
       return { ...state, groupActive: action.payload };

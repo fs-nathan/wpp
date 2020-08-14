@@ -9,7 +9,7 @@ import {
   LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS,
   LIST_DOCUMENT_FROM_ME_SUCCESS,
   LIST_DOCUMENT_SHARE_SUCCESS,
-  LIST_GOOGLE_DOCUMENT_SUCCESS
+  LIST_GOOGLE_DOCUMENT_SUCCESS, LIST_TASK_DOCUMENT_OF_PROJECT_SUCCESS
 } from '../../constants/actions/documents';
 import { apiService } from '../../constants/axiosInstance';
 
@@ -116,7 +116,7 @@ function* listProjectDocument(action) {
 async function doListProjectOfFolder({ params }) {
   try {
     const config = {
-      url: '/documents/project',
+      url: '/documents/project-static/task',
       method: 'get',
       params
     };
@@ -133,6 +133,32 @@ function* listProjectDocumentOfFolder(action) {
     yield put({
       type: LIST_PROJECT_DOCUMENT_OF_FOLDER_SUCCESS,
       payload: documents || []
+    });
+  } catch (error) {
+    yield put({ type: DOCUMENT_HIDE_LOADING });
+  }
+}
+
+async function doListTaskOfProjectFolder({ params }) {
+  try {
+    const config = {
+      url: '/documents/project-static/project',
+      method: 'get',
+      params
+    };
+    const result = await apiService(config);
+    return result.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
+function* listTaskDocumentOfProjectFolder(action) {
+  try {
+    const { tasks } = yield call(doListTaskOfProjectFolder, action.options);
+    yield put({
+      type: LIST_TASK_DOCUMENT_OF_PROJECT_SUCCESS,
+      payload: tasks || []
     });
   } catch (error) {
     yield put({ type: DOCUMENT_HIDE_LOADING });
@@ -271,5 +297,6 @@ export {
   listProjectDocumentOfFolder,
   listDocumentShareFromMe,
   listDocumentShare,
-  listGoogleDocument
+  listGoogleDocument,
+  listTaskDocumentOfProjectFolder
 };

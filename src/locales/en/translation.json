@@ -384,6 +384,7 @@
               "PRIO": "Priority"
             },
             "SETTING": "Settings",
+            "PROJECT_CALENDAR": "Project calendar",
             "EDIT": "Edit",
             "HIDE": "Hide",
             "SHOW": "Cancel hide",
@@ -1106,6 +1107,7 @@
   "IDS_WP_MOVE_TO": "Move to",
   "IDS_WP_RENAME": "Change name",
   "IDS_WP_JOIN_PROJECT": "Access the project",
+  "IDS_WP_JOIN_TASK": "Access the task",
   "IDS_WP_DOCUMENT_NOTE": "Document noted",
   "IDS_WP_DELETE_DATE": "Date deleted",
   "IDS_WP_DELETE_PEOPLE": "Who delect",
@@ -1147,10 +1149,13 @@
   "IDS_WP_GROUP_INFO": "Group informations",
   "IDS_WP_EDIT_GROUP_INFO": "Edit group information",
   "IDS_WP_WORKPLUS_APPLICATION": "Digital business management system",
-  "IDS_WP_EXPIRE_ORDER_NOTICE": "Notice of expired orders!",
+  "IDS_WP_EXPIRE_ORDER_NOTICE": "Your account has expired or your order is out of date. Please upgrade or choose a Demo account group to experience!",
   "IDS_WP_WELCOME": "Welcome",
   "IDS_WP_LOGIN_SUCCESS_INTRO": "Welcome to the online business management system",
-  "IDS_WP_LOGIN_SUCCESS_INTRO_1": "This account group has not UPGRADED or DATED.",
+  "IDS_WP_LOGIN_SUCCESS_INTRO_1": "Your account gets a 30-day free trial.",
+  "IDS_WP_SEE_MORE_TRAIL_POLICY": "See the trial policy ",
+  "IDS_WP_START_TRAIL_USING": "Try it for 30 days",
+  "IDS_WP_SELECT_UPGRADE_ACC": "Upgrade account",
   "IDS_WP_SELECT_GROUP_ACC": "Select an account group",
   "IDS_WP_UPGRADE_ACC": "Upgrade account",
   "IDS_WP_JOIN_OTHER_GROUP": "Join other groups",
@@ -2072,5 +2077,7 @@
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_0": "Task list (Table) ",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_1": "Discussion (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2": "Gantt chart (Gantt)",
-  "CUSTOM_TEXTBOX_CONTENT_LABEL": "Content..."
+  "CUSTOM_TEXTBOX_CONTENT_LABEL": "Content...",
+  "IDS_WP_LEAVE_GROUP_CONFIRM_MSG": "Do you really want to leave this group?",
+  "IDS_WP_START_TRAIL_SUCCESS": "Start trail using successfully"
 }

@@ -57,26 +57,21 @@ const ProjectDocumentDetail = props => {
 
   useEffect(() => {
     fetchDataProjectDocumentOfFolder({});
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     return () => {
       props.resetListSelectDocument();
       props.actionSelectedFolder({});
-      actionChangeBreadCrumbs([]);
     };
-    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {
     setListData(props.listProject);
-    // eslint-disable-next-line
   }, [props.listProject]);
 
   useEffect(() => {
     if (isEmpty(props.selectedDocument)) setSelected([]);
-    // eslint-disable-next-line
   }, [props.selectedDocument]);
 
   useEffect(() => {
@@ -84,13 +79,11 @@ const ProjectDocumentDetail = props => {
     projects = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(projects);
     props.actionSortListProject(projects);
-    // eslint-disable-next-line
   }, [sortField, sortType]);
 
   useEffect(() => {
     const dataUpdate = handleSearchData(props.searchText, props.listProject);
     setListData(dataUpdate);
-    // eslint-disable-next-line
   }, [props.searchText]);
 
   const handleSearchData = (valueSearch, listData) => {
@@ -116,9 +109,9 @@ const ProjectDocumentDetail = props => {
   };
 
   const fetchDataProjectDocumentOfFolder = (params = {}, quite = false) => {
-    const search = props.location.search.split('projectId=').pop();
+    const search = props.location.search.split('taskId=').pop();
     props.actionFetchListProjectOfFolder(
-      { project_id: search, ...params },
+      { task_id: search, ...params },
       quite
     );
   };
@@ -193,9 +186,7 @@ const ProjectDocumentDetail = props => {
     { icon: mdiAccountPlusOutline, text: t('IDS_WP_SHARE'), type: 'share' },
     { icon: mdiContentCopy, text: t('IDS_WP_COPY_LINK'), type: 'copy' }
   ];
-  if (isLoading) {
-    return <LoadingBox />;
-  }
+  if (isLoading) return <LoadingBox />;
   return (
     <Fragment>
       <Table stickyHeader className="doc-table-content">
@@ -215,7 +206,7 @@ const ProjectDocumentDetail = props => {
             <StyledTableHeadCell
               align="center"
               width="5%"
-            ></StyledTableHeadCell>
+            />
             <StyledTableHeadCell align="left" width="20%">
               <div
                 className="cursor-pointer"
@@ -245,7 +236,7 @@ const ProjectDocumentDetail = props => {
             <StyledTableHeadCell
               align="center"
               width="5%"
-            ></StyledTableHeadCell>
+            />
           </TableRow>
         </TableHead>
         <TableBody>
@@ -339,7 +330,8 @@ export default connect(
     listProject: state.documents.listProject,
     breadCrumbs: state.system.breadCrumbs,
     isFetching: state.documents.isFetching,
-    searchText: state.documents.searchText
+    searchText: state.documents.searchText,
+    isLoading: state.documents.isLoading
   }),
   {
     selectDocumentItem,

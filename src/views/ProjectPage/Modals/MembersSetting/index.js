@@ -41,14 +41,12 @@ function MemberSetting({
     if (projectId !== null) {
       doMemberProject({ projectId });
     }
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
-    doPermissionProject();
+    //doPermissionProject();
     doListUserRole();
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
   const [searchPatern, setSearchPatern] = React.useState('');

@@ -9,13 +9,11 @@ import { roomsSelector } from './selectors';
 
 function UserList({
   rooms, memberRoute, departmentRoute,
-  doSortUser,
-  doListUserOfGroup,
+  doSortUser, doListUserOfGroup,
 }) {
 
   React.useEffect(() => {
     doListUserOfGroup();
-    // eslint-disable-next-line
   }, []);
 
   return (

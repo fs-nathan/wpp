@@ -10,19 +10,21 @@ import {
   actionVisibleDrawerMessage,
   actionToast
 } from '../../../actions/system/system';
-import ItemGroupAcount from './ItemGroupAcount';
+import ItemGroupAcount from './ItemGroupAccount';
 import '../Drawer.scss';
 import { DRAWER_TYPE } from '../../../constants/constants';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
 import select_group_bg from '../../../assets/select_group_bg.png';
 import * as services from '../DrawerService';
 import * as image from '../../../assets/index';
+import {CircularProgress} from "@material-ui/core";
 // import { Routes } from '../../../constants/routes';
 
 const DrawerGroupAcount = props => {
   const { t } = useTranslation();
   const [groupList, setGroup] = useState({});
   const { anchorDrawer } = props;
+  const [loading, setLoading] = React.useState(false);
 
   const handleJoinNewGroup = () => {
     props.actionVisibleDrawerMessage({
@@ -49,11 +51,14 @@ const DrawerGroupAcount = props => {
 
   const handleRequestJoinDemo = async group_id => {
     try {
+      setLoading(true);
       await services.requestJoinGroupDemoService(group_id);
       handleFetchData();
       handleToast('success', 'Đã gửi yêu cầu thành công!');
     } catch (error) {
       handleToast('error', error.message);
+    } finally {
+      setLoading(false);
     }
   };
   const handleCopyText = text => {
@@ -160,11 +165,21 @@ const DrawerGroupAcount = props => {
                       className="btn-ok"
                       style={{
                         backgroundColor: bgColor.color,
-                        border: `1px solid ${bgColor.color}`
+                        border: `1px solid ${bgColor.color}`,
+                        opacity: loading ? 0.5 : 1,
                       }}
                       variant="contained"
                       onClick={() => handleRequestJoinDemo()}
+                      disabled={loading}
                     >
+                      <CircularProgress
+                          size={15}
+                          className="margin-circular"
+                          color={bgColor.color}
+                          style={{
+                            display: loading ? 'initial' : 'none'
+                          }}
+                      />
                       {t('IDS_WP_JOIN')}
                     </Button>
                   </div>

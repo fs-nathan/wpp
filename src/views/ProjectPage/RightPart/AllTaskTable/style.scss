@@ -1,7 +1,6 @@
 .view_Project_AllTaskTable___subtitle {
   display: flex;
   align-items: center;
-
   &>* {
     color: #8b8b8b;
     background: #f2f2f2;
@@ -9,7 +8,7 @@
     border-radius: 3px;
     font-weight: normal;
     margin-top: 5px;
-
+    font-size: 12px;
     &:hover {
       cursor: pointer;
       color: #fff;

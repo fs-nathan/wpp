@@ -35,7 +35,8 @@ const ListPart = props => {
       title: t('IDS_WP_PROJECT_DOCUMENT'),
       url: Routes.DOCUMENT_PROJECT,
       icon: mdiFileDocumentBoxOutline,
-      color: '#4caf50'
+      color: '#4caf50',
+      extract: true
     },
     {
       title: t('IDS_WP_SHARED'),

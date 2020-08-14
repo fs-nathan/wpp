@@ -21,10 +21,10 @@ import { isEmpty } from '../../../helpers/utils/isEmpty';
 import '../Drawer.scss';
 import * as services from '../DrawerService';
 
-const ItemGroupAcount = props => {
+const ItemGroupAccount = props => {
   const { t } = useTranslation();
-  const [alerModal, showAlertModal] = React.useState(false);
-  const [el, setEl] = React.useState(null);
+  const [alertModal, showAlertModal] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   const [groupID, setGroupID] = React.useState(null);
   const { item, history } = props;
 
@@ -49,13 +49,13 @@ const ItemGroupAcount = props => {
   };
 
   const leaveGroupConfirm = (el, id) => {
+    el.stopPropagation();
     showAlertModal(true);
-    setEl(el);
     setGroupID(id);
   }
-  const leaveGroup = async (e, group_id) => {
-    e.stopPropagation();
+  const leaveGroup = async (group_id) => {
     try {
+      setLoading(true);
       await services.leaveGroupService(group_id);
       if (props.handleFetchData) props.handleFetchData();
       if (props.groupMe) {
@@ -66,6 +66,9 @@ const ItemGroupAcount = props => {
       handleToast('success', t('IDS_WP_LEAVE_GROUP_SUCCESS'));
     } catch (error) {
       handleToast('error', error.message);
+    } finally {
+      showAlertModal(false);
+      setLoading(false);
     }
   };
   const acceptInvitation = async (e, invitation_id) => {
@@ -224,8 +227,8 @@ const ItemGroupAcount = props => {
               <Button
                 className="btn-action leave-group-btn"
                 variant="text"
-                onClick={e => leaveGroup(e, item.id)}
-              //onClick={e => leaveGroupConfirm(e, item.id)}
+                //onClick={e => leaveGroup(e, item.id)}
+                onClick={e => leaveGroupConfirm(e, item.id)}
               >
                 {t('IDS_WP_LEAVE_GROUP')}
               </Button>
@@ -350,10 +353,13 @@ const ItemGroupAcount = props => {
         {getContent()}
       </div>
       <AlertModal
-        open={alerModal}
+        open={alertModal}
         setOpen={showAlertModal}
-        content={"Do you really want to leave this group?"}
-        onConfirm={() => leaveGroup(el, groupID)}
+        content={t("IDS_WP_LEAVE_GROUP_CONFIRM_MSG")}
+        onConfirm={() => leaveGroup(groupID)}
+        manualClose={true}
+        activeLoading={loading}
+        onCancle={() => showAlertModal(false)}
       />
     </>
   );
@@ -368,4 +374,4 @@ export default connect(
     groupActive: state.system.groupActive
   }),
   { actionToast, actionVisibleDrawerMessage, actionActiveGroup }
-)(withRouter(ItemGroupAcount));
+)(withRouter(ItemGroupAccount));

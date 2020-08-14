@@ -23,13 +23,11 @@ const RightDiv = styled.div`
 `;
 
 function UserPage({
-  route,
-  doGetPermissionViewUser
+  route, doGetPermissionViewUser
 }) {
 
   React.useLayoutEffect(() => {
     doGetPermissionViewUser();
-    // eslint-disable-next-line
   }, []);
 
   return (

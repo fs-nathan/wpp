@@ -110,7 +110,6 @@ function DocumentsTable({
   };
 
   const handleClickItem = item => {
-    console.log('handleClickItem', item)
     if (item.type === 'folder') {
       if (item.isGoogleDocument)
         dispatch(actionFetchListGoogleDocument({ folderId: item.id }, true))

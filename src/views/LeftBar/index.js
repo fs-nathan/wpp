@@ -69,12 +69,12 @@ const LeftBar = ({
         menuList.map((el, idx) => {
           return (
             <Link
-              to={isFree ? null : el.url_redirect}
+              to={isFree ? "#" : el.url_redirect}
               key={idx}
               className={`menu-item ${el.isSelected ? "actived" : ""}`}
               onClick={() => {
                 if (isFree) {
-                  openNoticeModal();
+                  openNoticeModal("ACCOUNT_FREE");
                 }
                 onCloseDrawer();
               }}

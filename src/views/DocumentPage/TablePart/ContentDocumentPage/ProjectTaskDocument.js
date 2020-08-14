@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from 'react';
-import {useTranslation} from 'react-i18next';
-import {connect} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import {Table, TableHead, TableBody, IconButton, TableRow} from '@material-ui/core';
-import {reverse} from 'lodash';
+import { reverse } from 'lodash';
 import Icon from '@mdi/react';
-import {mdiSwapVertical, mdiFolderTextOutline} from '@mdi/js';
-import {withRouter} from 'react-router-dom';
-import {Routes} from '../../../../constants/routes';
+import { mdiSwapVertical, mdiFolderTextOutline } from '@mdi/js';
+import { withRouter } from 'react-router-dom';
+import { Routes } from '../../../../constants/routes';
 import ColorTypo from '../../../../components/ColorTypo';
-import {resetListSelectDocument, actionFetchListProject, actionSortListProject} from '../../../../actions/documents';
+import {resetListSelectDocument, actionSortListProject, actionFetchListTaskOfProject} from '../../../../actions/documents';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
-import {isEmpty} from '../../../../helpers/utils/isEmpty';
+import { isEmpty } from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
 import {StyledTableHeadCell, StyledTableBodyCell, FullAvatar} from '../DocumentComponent/TableCommon';
-import {actionChangeBreadCrumbs} from '../../../../actions/system/system';
-import {FileType} from '../../../../components/FileType';
+import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
+import { FileType } from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
-const ProjectDocument = props => {
+const ProjectTaskDocument = props => {
   const { t } = useTranslation();
   const { isLoading, breadCrumbs, actionChangeBreadCrumbs } = props;
   const [listData, setListData] = useState([]);
@@ -29,16 +29,17 @@ const ProjectDocument = props => {
   const [itemActive, setItemActive] = useState({});
 
   useEffect(() => {
-    fetDataProjectDocument();
+    fetchDataTaskOfProject();
   }, []);
-
   useEffect(() => {
-    return () => {props.resetListSelectDocument();}
+    return () => {
+      props.resetListSelectDocument();
+    };
   }, []);
 
   useEffect(() => {
     setListData(props.listProject);
-  }, [props.listProject]);
+  }, [props.listProject])
 
   useEffect(() => {
     if (isEmpty(props.selectedDocument)) setSelected([]);
@@ -52,12 +53,8 @@ const ProjectDocument = props => {
   }, [sortField, sortType]);
 
   useEffect(() => {
-    const pathname = props.history.location.pathname;
-    const isProjectDocument = isEmpty(props.location.search);
-    if (pathname === Routes.DOCUMENT_PROJECT && isProjectDocument) {
-      const dataUpdate = handleSearchData(props.searchText, props.listProject);
-      setListData(dataUpdate);
-    }
+    const dataUpdate = handleSearchData(props.searchText, props.listProject);
+    setListData(dataUpdate);
   }, [props.searchText]);
 
   const handleSearchData = (valueSearch, listData) => {
@@ -73,20 +70,21 @@ const ProjectDocument = props => {
     return listResult;
   };
 
-  const fetDataProjectDocument = (params = {}, quite = false) => {
-    props.actionFetchListProject(params, quite);
+  const fetchDataTaskOfProject = (params = {}, quite = false) => {
+    const search = props.location.search.split('projectId=').pop();
+    props.actionFetchListTaskOfProject({ project_id: search, ...params }, quite);
   };
 
   const isSelected = id => selected.indexOf(id) !== -1;
   const moreAction = [
-    { icon: mdiFolderTextOutline, text: t('IDS_WP_JOIN_PROJECT'), type: 'link' }
+    { icon: mdiFolderTextOutline, text: t('IDS_WP_JOIN_TASK'), type: 'link' }
   ];
 
   const openDetail = item => {
     props.actionSortListProject([]);
     props.history.push({
-      pathname: Routes.DOCUMENT_PROJECT,
-      search: `?projectId=${item.id}`
+      pathname: Routes.DOCUMENT_PROJECT_TASK,
+      search: `?taskId=${item.id}`
     });
     // handle bread crumbs
     let newBreadCrumbs = [...breadCrumbs];
@@ -100,13 +98,24 @@ const ProjectDocument = props => {
           });
         }
       });
+      const projectID = props.location.search.split('projectId=').pop();
       newBreadCrumbs.push({
         id: item.id,
         name: item.name,
         action: () => {
           props.history.push({
             pathname: Routes.DOCUMENT_PROJECT,
-            search: `?projectId=${item.id}`
+            search: `?projectId=${projectID}`
+          });
+        }
+      });
+      newBreadCrumbs.push({
+        id: item.id,
+        name: item.name,
+        action: () => {
+          props.history.push({
+            pathname: Routes.DOCUMENT_PROJECT_TASK,
+            search: `?taskId=${item.id}`
           });
         }
       });
@@ -116,15 +125,15 @@ const ProjectDocument = props => {
         name: item.name,
         action: () => {
           props.history.push({
-            pathname: Routes.DOCUMENT_PROJECT,
-            search: `?projectId=${item.id}`
+            pathname: Routes.DOCUMENT_PROJECT_TASK,
+            search: `?taskId=${item.id}`
           });
         }
       });
     }
     actionChangeBreadCrumbs(newBreadCrumbs);
   };
-  const hanldeSort = field => {
+  const handleSort = field => {
     if (field !== sortField) {
       setSortField(field);
       setSortType(1);
@@ -134,7 +143,7 @@ const ProjectDocument = props => {
   };
   if (isLoading) return <LoadingBox />;
   return (
-    <>
+    <React.Fragment>
       <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
@@ -146,7 +155,7 @@ const ProjectDocument = props => {
             <StyledTableHeadCell align="left" width="50%">
               <div
                 className="cursor-pointer"
-                onClick={() => hanldeSort('name')}
+                onClick={() => handleSort('name')}
               >
                 {t('IDS_WP_NAME')}
                 <IconButton size="small">
@@ -161,8 +170,8 @@ const ProjectDocument = props => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {listData.map((project, index) => {
-            const isItemSelected = isSelected(project.id);
+          {listData.map((task, index) => {
+            const isItemSelected = isSelected(task.id);
             return (
               <TableRow
                 hover={true}
@@ -173,7 +182,7 @@ const ProjectDocument = props => {
                   align="left"
                   width="5%"
                   className="cursor-pointer first-column"
-                  onClick={() => openDetail(project)}
+                  onClick={() => openDetail(task)}
                 >
                   <FullAvatar src={FileType('folder')} />
                 </StyledTableBodyCell>
@@ -181,14 +190,14 @@ const ProjectDocument = props => {
                   align="left"
                   width="50%"
                   className="cursor-pointer"
-                  onClick={() => openDetail(project)}
+                  onClick={() => openDetail(task)}
                 >
-                  <ColorTypo color="black">{project.name}</ColorTypo>
+                  <ColorTypo color="black">{task.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="30%">
-                  <ColorTypo color="black">{project.number_document}</ColorTypo>
+                  <ColorTypo color="black">{task.number_document}</ColorTypo>
                 </StyledTableBodyCell>
-                <MoreAction actionList={moreAction} item={project} />
+                <MoreAction actionList={moreAction} item={task} />
               </TableRow>
             );
           })}
@@ -203,7 +212,7 @@ const ProjectDocument = props => {
           item={itemActive}
         />
       )}
-    </>
+    </React.Fragment>
   );
 };
 
@@ -217,8 +226,8 @@ export default connect(
   }),
   {
     resetListSelectDocument,
-    actionFetchListProject,
     actionChangeBreadCrumbs,
-    actionSortListProject
+    actionSortListProject,
+    actionFetchListTaskOfProject
   }
-)(withRouter(ProjectDocument));
+)(withRouter(ProjectTaskDocument));

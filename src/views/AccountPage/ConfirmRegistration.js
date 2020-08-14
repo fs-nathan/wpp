@@ -78,8 +78,8 @@ const ConfirmRegistration = props => {
       if (!isEmpty(data.data)) {
         props.actionActiveGroup(data.data.group_active);
       }
-      if (data.data.group_active && data.data.group_active.type === 'Pro') {
-        props.openNoticeModal();
+      if (data.data.group_active && data.data.group_active.type === 'Free') {
+        props.openNoticeModal("ACCOUNT_FREE");
       }
       props.loginSuccess(res.data);
       setLoading(false);
