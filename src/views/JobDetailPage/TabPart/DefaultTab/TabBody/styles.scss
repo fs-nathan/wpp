@@ -34,6 +34,9 @@
     margin-bottom: 5px;
     text-transform: inherit;
   }
+  &--groupTask {
+    cursor: pointer;
+  }
   &--badge {
     margin-right: 10px !important;
     text-transform: lowercase;

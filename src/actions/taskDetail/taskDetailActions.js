@@ -1223,3 +1223,17 @@ export function setOpenDetailOffer(isOpenDetail) {
         isOpenDetail
     };
 }
+
+export function focusTaskGroup(id) {
+    return {
+        type: types.FOCUS_TASK_GROUP,
+        id
+    };
+}
+
+export function clearFocusTaskGroup(id) {
+    return {
+        type: types.CLEAR_FOCUS_TASK_GROUP,
+        id
+    };
+}
