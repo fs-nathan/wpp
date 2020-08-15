@@ -24,14 +24,6 @@ const TitleImg = styled(Typography)`
             margin-right: 7px;
         }
         & > div:nth-child(2) {
-            & > div:nth-child(1) {
-                color: white;
-                font-size: 15px
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                max-width: 100%;
-            }
             & > div:nth-child(2) {
                 color: #9c9797;
                 font-size: 13px
@@ -40,33 +32,14 @@ const TitleImg = styled(Typography)`
     }
 `
 
-const ButtonAction = styled(Typography)`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    cursor: pointer;
-    &&:not(:last-child) {
-        margin-right: 20px;
-    }
-    & > *:first-child {
-        margin-bottom: 3px;
-    }
-    & > *:last-child {
-        text-transform: uppercase;
-        font-size: 12px;
-        color: #fff;
-        font-weight: 200;
-    }
-`
-
 const DialogTitleModalMap = withStyles(styles)(props => {
   const { t } = useTranslation();
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
   const { children, classes, onClose,
-    user_create_avatar, user_share = '', time_create = '',
+    user_share_avatar, user_share = '', time_create = '',
     user_create_position = '', image,
-    date_create,
+    date_create, room, roles,
     address,
     ...other } = props;
 
@@ -80,7 +53,7 @@ const DialogTitleModalMap = withStyles(styles)(props => {
       <Typography className="DialogTitleModalMap--user" component={'div'}>
         <TitleImg component='div'>
           <ListItem>
-            {user_create_avatar && <Avatar src={user_create_avatar} />}
+            {user_share_avatar && <Avatar src={user_share_avatar} />}
             <ListItemText
               style={{ margin: 0 }}
               primary={
@@ -90,7 +63,7 @@ const DialogTitleModalMap = withStyles(styles)(props => {
               }
               secondary={
                 <Typography component='div'>
-                  {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_share, time: `${time_create} - ${date_create}` })}
+                  {t('LABEL_CHAT_TASK_CHIS_SE_LUC_USER_TIME', { user: `${user_share} - ${[...roles, room].join(' ')}`, time: `${time_create} ${date_create}` })}
                 </Typography>
               }
             />

@@ -2047,5 +2047,6 @@
   "Module thành viên": "Member mudule",
   "LABEL_CHAT_TASK_DANH_SACH_VI_TRI": "Danh sách vị trí chia sẻ",
   "LABEL_CHAT_TASK_NHOM_VIEC": "Nhóm việc",
+  "LABEL_CHAT_TASK_CHIS_SE_LUC_USER_TIME": "{{user}} chia sẻ vị trí lúc {{time}}",
   "LABEL_CHAT_TASK_NHAC_HEN_HOAN_THANH": "Nhắc hẹn hoàn thành"
 }

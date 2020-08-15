@@ -71,7 +71,7 @@ const ContentDialog = styled(DialogContent)`
     }
 `
 
-const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_create, lat, lng }) => {
+const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_create, lat, lng, user_share_avatar, room, roles }) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -84,19 +84,19 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
   const createUser = useSelector(state => state.chat.createUser);
   let locationArr = useSelector(state => state.taskDetail.location.locations);
 
-  const [zoom, setZoom] = useState(10);
+  const [zoom, setZoom] = useState(20);
   const [center, setCenter] = useState({ lat: 21, lng: 105 });
 
   useEffect(() => {
     setTimeout(() => {
-      setZoom(12)
+      setZoom(18)
     }, 2000)
   }, [])
 
   useEffect(() => {
     setTimeout(() => {
       setCenter({ lat, lng })
-      setZoom(12)
+      setZoom(18)
     }, 1000)
   }, [lat, lng])
 
@@ -108,6 +108,7 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
     console.log('handleClickLocation', data)
     const { lat, lng } = data;
     setCenter({ lat, lng })
+    setZoom(18)
   }
 
   const containerStyle = {
@@ -135,7 +136,7 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
       className="MapView"
     >
       <DialogTitleModalMap id="customized-dialog-title"
-        {...{ address, date_create, user_share, time_create, }}
+        {...{ address, date_create, user_share, time_create, user_share_avatar, room, roles }}
         onClose={handleClose}>
       </DialogTitleModalMap>
       <ContentDialog id="ContentDialog-ImageModal">
@@ -161,7 +162,7 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
               <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
               {location.locations.map((item, key) => {
                 return (
-                  <div className="styled-common-location" key={key} onClick={() => handleClickLocation({ ...item })}>
+                  <div className="MapView--location" key={key} onClick={() => handleClickLocation({ ...item })}>
                     <ItemAvatar>
                       <div>
                         <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
