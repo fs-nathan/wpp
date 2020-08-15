@@ -55,16 +55,12 @@ const RenderJobModal = React.memo(
   }
 );
 
-const RenderHeader = React.memo(
-  (props) => (
-    <div className="apply-antd-css">
-      <Header {...props} />
-    </div>
-  ),
-  (prevProps, nextProps) => {
-    return false;
-  }
-);
+const RenderHeader = (props) => (
+  <div className="apply-antd-css">
+    <Header {...props} />
+  </div>
+)
+
 
 
 const RenderDrawers = React.memo(
@@ -397,11 +393,14 @@ class DragSortingTable extends React.Component {
                     }}
                     style={{ display: "flex", height: 20, background: "inherit" }}
                   >
-                    <Icon
-                      style={{ margin: "0 10px", cursor: "grab", fill: "#ccc" }}
-                      path={mdiDragVertical}
-                      size={1}
-                    />
+                    {this.state.sort_task ?
+                      <Icon
+                        style={{ margin: "0 10px", cursor: "grab", fill: "#ccc" }}
+                        path={mdiDragVertical}
+                        size={1}
+                      /> : <div style={{ width: 30, height: 20 }}>
+                      </div>
+                    }
                     <div
                       onClick={(e) => {
                         const className = e.target.className;
@@ -1522,6 +1521,8 @@ class DragSortingTable extends React.Component {
           titleProject={this.state.titleProject}
           showProject={this.state.showProject}
           scheduleIdDefault={this.state.scheduleIdDefault}
+          start={this.state.startTimeProject}
+          end={this.state.endTimeProject}
         />
         <CreateProject
           open={this.state.openCreateProjectModal}

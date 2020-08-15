@@ -43,6 +43,7 @@ function CustomMenu({ projectId, canDelete, isMain, scheduleId, changeMainCalend
     }
   }
 
+
   const setMainProjectSchedule = async (projectId, scheduleId) => {
     try {
       const url = 'project/set-main-schedules'

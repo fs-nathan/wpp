@@ -2072,5 +2072,6 @@
   "GANTT_4": "TH",
   "GANTT_5": "FR",
   "GANTT_6": "SA",
-  "GANTT_0": "SU"
+  "GANTT_0": "SU",
+  "GANTT_NOT_INCLUDE_PROJECT": "Today's not included project"
 }
