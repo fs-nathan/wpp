@@ -51,26 +51,28 @@ function ImagePlace(t, file, user_create_avatar, user_create_name, time_create) 
         url={file.url}
         height="auto" width="100%"
       />
-      <Typography className="FileMessage--videoInfo" component={'div'}>
-        <TitleImg component='div'>
-          <ListItem>
-            {user_create_avatar && <Avatar src={user_create_avatar} />}
-            <ListItemText
-              style={{ margin: 0 }}
-              primary={
-                <Typography component='div'>
-                  {file.name}
-                </Typography>
-              }
-              secondary={
-                <Typography component='div'>
-                  {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
-                </Typography>
-              }
-            />
-          </ListItem>
-        </TitleImg>
-      </Typography>
+      {user_create_avatar &&
+        <Typography className="FileMessage--videoInfo" component={'div'}>
+          <TitleImg component='div'>
+            <ListItem>
+              {user_create_avatar && <Avatar src={user_create_avatar} />}
+              <ListItemText
+                style={{ margin: 0 }}
+                primary={
+                  <Typography component='div'>
+                    {file.name}
+                  </Typography>
+                }
+                secondary={
+                  <Typography component='div'>
+                    {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
+                  </Typography>
+                }
+              />
+            </ListItem>
+          </TitleImg>
+        </Typography>
+      }
     </div>)
   return (<img className={clsx("ImageMessage--img")} src={file.url_thumbnail || file.url} alt="hd" />)
 }
