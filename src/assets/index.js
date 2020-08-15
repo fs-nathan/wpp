@@ -11,6 +11,7 @@ export { default as ic_alarm_complete } from './ic_alarm_clock_complete.png';
 export { default as ic_menu_more } from './ic_menu_more.png';
 export { default as ic_messeger } from './ic_messeger.png';
 export { default as ic_zalo } from './ic_zalo.png';
+export { default as ic_share_location } from './ic_share_location.png';
 export { default as ic_bidv } from './logo-bidv.png';
 export { default as ic_vcb } from './logo-vietcombank.png';
 export { default as logo_wrokplus } from './logo-wrokplus.png';

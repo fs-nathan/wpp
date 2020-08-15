@@ -13,6 +13,7 @@ export const initialState = {
   payload: null,
   ownerPermissions: null,
   focusId: null,
+  location: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -161,6 +162,11 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case types.CLEAR_FOCUS_TASK_GROUP: {
       draft.focusId = null;
+      break;
+    }
+    case types.SET_LOCATION_DATA: {
+      const { location } = action;
+      draft.location = location;
       break;
     }
   }

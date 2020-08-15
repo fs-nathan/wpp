@@ -9,8 +9,9 @@ import Scrollbars from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import DialogTitleModalMap from './DialogTitleModalMap';
+import CustomMarker from './CustomMarker';
 import './styles.scss';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
 import {
   IconButton, ListItem, ListItemAvatar, ListItemIcon, ListItemText,
@@ -71,21 +72,21 @@ const ContentDialog = styled(DialogContent)`
     }
 `
 
-const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_create, lat, lng, user_share_avatar, room, roles }) => {
+const MapView = ({ isOpen, setOpen }) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
   const transformRef = useRef();
   const dispatch = useDispatch();
-  const isOpenImagesListModal = useSelector(state => state.chat.isOpenImagesListModal);
-  const imagesList = useSelector(state => state.chat.imagesList);
-  const selectedImage = useSelector(state => state.chat.selectedImage);
-  const createUser = useSelector(state => state.chat.createUser);
   let locationArr = useSelector(state => state.taskDetail.location.locations);
-
+  const locationData = useSelector(state => state.taskDetail.detailTask.location);
+  const { address, date_create,
+    user_share, time_create, lat = 21, lng = 105,
+    user_share_avatar, room, roles } = locationData;
   const [zoom, setZoom] = useState(20);
-  const [center, setCenter] = useState({ lat: 21, lng: 105 });
+  const [size, setSize] = useState({});
+  const [center, setCenter] = useState({ lat, lng });
 
   useEffect(() => {
     setTimeout(() => {
@@ -95,7 +96,8 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
 
   useEffect(() => {
     setTimeout(() => {
-      setCenter({ lat, lng })
+      if (lat)
+        setCenter({ lat, lng })
       setZoom(18)
     }, 1000)
   }, [lat, lng])
@@ -105,7 +107,7 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
   }
 
   const handleClickLocation = (data) => {
-    console.log('handleClickLocation', data)
+    // console.log('handleClickLocation', data)
     const { lat, lng } = data;
     setCenter({ lat, lng })
     setZoom(18)
@@ -119,9 +121,16 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
   const [map, setMap] = React.useState(null)
 
   const onLoad = React.useCallback(function callback(map) {
+    console.log('load map')
     const bounds = new window.google.maps.LatLngBounds();
+    // const iconSize = new window.google.maps.Size(64, 64)
+    // setSize(iconSize)
     // bounds.extend(center)
-    map.fitBounds(bounds);
+    setTimeout(() => {
+      map.fitBounds(bounds);
+      setCenter({ lat, lng })
+      setZoom(18)
+    }, 100)
     setMap(map)
   }, [])
 
@@ -151,7 +160,21 @@ const MapView = ({ isOpen, setOpen, address, date_create, user_share, time_creat
             onUnmount={onUnmount}
           >
             { /* Child components, such as markers, info windows, etc. */}
-            <Marker position={center} />
+            <Marker
+              // options={{ icon: { url: user_share_avatar, scaledSize: size, size: size } }}
+              position={{ lat, lng }}>
+            </Marker>
+            {/* <InfoWindow
+              onLoad={onLoad}
+              position={center}
+            >
+              <CustomMarker
+                lat={lat}
+                lng={lng}
+                position={center}
+                user_share_avatar={user_share_avatar}
+              />
+            </InfoWindow> */}
           </GoogleMap>
           }
         </LoadScript>

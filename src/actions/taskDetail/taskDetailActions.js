@@ -1237,3 +1237,10 @@ export function clearFocusTaskGroup(id) {
         id
     };
 }
+
+export function setLocationData(location) {
+    return {
+        type: types.SET_LOCATION_DATA,
+        location
+    };
+}
