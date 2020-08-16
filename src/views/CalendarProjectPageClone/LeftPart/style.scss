@@ -9,8 +9,19 @@
 }
 .gantt-left-menu-calendar__container{
   padding-top: 0;
+  .comp_CustomList___list-item{
+    padding-right: 8px;
+  }
 }
 .gant--comp_CustomModal___dialog-content .comp_Scrollbars___main  {
   height: calc(100% - 135px) !important;
 
+}
+.gantt--main-calendar__label{
+  padding-left: 5px;
+    font-size: 13px;
+    color: #ffa500;
+    padding: 0px 5px;
+    width: fit-content;
+    background: #ffe8a3;
 }

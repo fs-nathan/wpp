@@ -1,5 +1,6 @@
 import moment from "moment";
 import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 
 const MonthHeader = ({
@@ -12,14 +13,15 @@ const MonthHeader = ({
   dataSource,
   leftHeader = 0,
   leftTable,
-  heightTable
+  heightTable,
+  girdType
 }) => {
   const [countDay, setCountDay] = useState(daysRender.length);
   const [countTask, setCountTask] = useState(dataSource.length);
   const [table, setTable] = useState([]);
+  const { t } = useTranslation()
   const containerRef = useRef();
   useEffect(() => {
-    console.log("daysRender.length", daysRender.length)
     setCountDay(daysRender.length);
   }, [daysRender.length]);
   useEffect(() => {
@@ -37,17 +39,21 @@ const MonthHeader = ({
     </div>
   ));
   const day = daysRender.map((item, index) => (
-    <div className="gantt--child-header">
-      {new moment(item)
+    <div title={girdType === "DAYOFWEEK" && new moment(item)
+      .add(scrollWidth, girdInstance.unit)
+      .format(girdInstance.originDay)} className="gantt--child-header" >
+      {girdType === "DAYOFWEEK" ? t('GANTT_' + new moment(item)
         .add(scrollWidth, girdInstance.unit)
-        .format(girdInstance.formatChild)}
-    </div>
+        .format(girdInstance.formatChild)) : new moment(item)
+          .add(scrollWidth, girdInstance.unit)
+          .format(girdInstance.formatChild)}
+    </div >
   ));
   const createTable = (axisX, axisY) => {
     let tempTable = [];
     for (let i = 0; i < axisX; i++) {
       let children = [];
-      for (let j = 0; j < axisY + girdInstance.addUnit; j++) {
+      for (let j = 0; j < axisY + girdInstance.addUnit + 10; j++) {
         let backgroud = {};
         children.push(
           <div
@@ -55,13 +61,13 @@ const MonthHeader = ({
             style={{
               border: `0.2px solid ${timelineColor.gridTable}`,
               padding: "8.5px 0px",
-              width: 35,
+              width: 30,
               ...backgroud,
             }}
           >
             <div
               style={{
-                width: 47,
+                width: 29,
                 height: 20,
               }}
             ></div>
@@ -69,14 +75,14 @@ const MonthHeader = ({
         );
       }
       tempTable.push(
-        <div style={{ height: 37, display: "flex" }}>{children}</div>
+        <div style={{ height: 32, display: "flex" }}>{children}</div>
       );
     }
     return tempTable;
   };
   useEffect(() => {
     setTable(createTable(countTask, countDay));
-  }, [countTask, countDay, timelineColor]);
+  }, [countTask, countDay, timelineColor, dataSource.length]);
   return (
     <React.Fragment>
       <div ref={containerRef} style={{ display: "flex" }}>
@@ -85,7 +91,7 @@ const MonthHeader = ({
       <div
         style={{
           width: containerRef.current && containerRef.current.clientWidth,
-          height: dataSource.length * 37,
+          height: dataSource.length * 32 + 25,
         }}
         className="gantt-grid-background"
       >
@@ -103,11 +109,11 @@ const MonthHeader = ({
           id="gantt_table_grid"
           style={{
             position: "absolute",
-            marginLeft: 1,
-            marginTop: 23.8,
+            marginLeft: 0,
+            marginTop: 25.8,
             left: leftTable,
             overflow: 'scroll',
-            height: heightTable - 50
+            height: dataSource.length * 32 < heightTable - 50 ? dataSource.length * 32 : heightTable - 50
           }}
         >
           {visibleGantt.gridTable && table}
@@ -122,5 +128,6 @@ const mapStateToProps = (state) => ({
   girdInstance: state.gantt.girdInstance,
   visibleGantt: state.gantt.visible.gantt,
   timelineColor: state.gantt.timelineColor,
+  girdType: state.gantt.girdType,
 });
 export default connect(mapStateToProps)(MonthHeader);

@@ -140,6 +140,9 @@ const CommonConfig = ({
   useEffect(() => {
     localStorage.setItem("ganttConfig", JSON.stringify(visibleGantt))
   }, [visibleGantt])
+  useEffect(() => {
+    localStorage.setItem("labelConfig", JSON.stringify(visibleLabel))
+  }, [visibleLabel])
   return (
     <Drawer
       closable={false}
@@ -154,7 +157,7 @@ const CommonConfig = ({
               <Box className="comp_QuickViewFilter__headerTitle">{t('LABEL_GANTT_NAME_COMMON_DRAWER_TITLE')}</Box>
             </Box>
           </div>
-          <div className="comp_QuickViewHeaderRight">
+          <div onClick={() => changeVisibleConfigGantt(false)} className="comp_QuickViewHeaderRight">
             <IconButton>
               <CloseIcon onClick={() => changeVisibleConfigGantt(false)} />
             </IconButton>
