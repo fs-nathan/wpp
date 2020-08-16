@@ -222,8 +222,7 @@ const TimeLine = ({
           cursor:
             !isGroupTask && !isTotalDuration && canEdit ? "move" : "default",
           width: "fit-content",
-          zIndex: 1000,
-          height: 20,
+          height: 15,
           // top: "50%",
           // transform: "translateY(-50%)",
           position: "absolute",
@@ -297,7 +296,7 @@ const TimeLine = ({
                 : isGroupTask
                   ? timelineColor.group
                   : timelineColor.task,
-              height: isTotalDuration || isGroupTask ? 15 : 20
+              height: isTotalDuration || isGroupTask ? 13 : 15
             }}
             className="gantt--time-task"
           >
@@ -370,7 +369,7 @@ const TimeLine = ({
             <div
               style={{
                 background: timelineColor.duration,
-                height: isTotalDuration || isGroupTask ? 15 : 20
+                height: isTotalDuration || isGroupTask ? 13 : 15
               }}
               className="gantt--duration-task"
 
