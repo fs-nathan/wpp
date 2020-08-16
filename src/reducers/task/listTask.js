@@ -3,7 +3,7 @@ import { CREATE_TASK_SUCCESS } from '../../constants/actions/task/createTask';
 import { DELETE_TASK_SUCCESS } from '../../constants/actions/task/deleteTask';
 import { LIST_TASK, LIST_TASK_FAIL, LIST_TASK_RESET, LIST_TASK_SUCCESS } from '../../constants/actions/task/listTask';
 import { SORT_TASK, SORT_TASK_SUCCESS } from '../../constants/actions/task/sortTask';
-
+import { LIST_TASK_MEMBER_SUCCESS, LIST_TASK_MEMBER_FAIL, LIST_TASK_MEMBER } from '../../constants/actions/task/listTaskMember';
 export const initialState = {
   data: {
     tasks: [],
@@ -16,12 +16,14 @@ export const initialState = {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case LIST_TASK:
+    case LIST_TASK_MEMBER:
       return {
         ...state,
         error: null,
         loading: action.quite ? false : true,
       };
     case LIST_TASK_SUCCESS:
+    case LIST_TASK_MEMBER_SUCCESS:
       return {
         ...state,
         data: action.data,
@@ -30,6 +32,7 @@ function reducer(state = initialState, action) {
         firstTime: false,
       };
     case LIST_TASK_FAIL:
+    case LIST_TASK_MEMBER_FAIL:
       return {
         ...state,
         error: action.error,
@@ -47,8 +50,7 @@ function reducer(state = initialState, action) {
           })
           : groupTask
       )
-      return {
-        ...state,
+      return {        ...state,
         data: {
           ...state.data,
           tasks: newTasks,

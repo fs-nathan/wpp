@@ -40,6 +40,7 @@ import {
   getNumberMessageNotViewer,
   getNumberNotificationNotViewer,
 } from "../actions/system/system";
+import {loadDetailOffer} from "views/OfferPage/redux/actions";
 import { avatar_default_120 } from "../assets";
 import DocumentDetail from "../components/DocumentDetail/DocumentDetail";
 import DrawerComponent from "../components/Drawer/Drawer";
@@ -52,6 +53,8 @@ import { Routes } from "../constants/routes";
 import routes from "../routes";
 import LeftBar from "../views/LeftBar";
 import TopBar from "../views/TopBar";
+import { get } from "lodash";
+import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -203,21 +206,20 @@ function MainLayout({
   listTaskDetail,
   projectId,
   getListTaskDetail,
-  getViewedChatSuccess,
   actionFetchListColor,
   actioGetSettingDate,
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView,
+  visibleOfferDetailModal, loadDetailOffer, detailOffer
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
-
+  const [openOfferDetail, setOpenOfferDetail] = useState(false);
   function handleReactEmotion(data) {
     // console.log('handleReactEmotion', data)
     updateChatState(data.id, { data_emotion: data.emotions });
   }
 
   function handleDeleteChat(data) {
-    // console.log('handleDeleteChat', data)
     updateChatState(data.id, { type: CHAT_TYPE.TEXT, is_deleted: true });
   }
 
@@ -351,6 +353,13 @@ function MainLayout({
     // eslint-disable-next-line
   }, [taskDetails]);
 
+  useEffect(() => {
+    if(get(visibleOfferDetailModal, "visible", false)) {
+      loadDetailOffer({id: visibleOfferDetailModal.offer_id});
+      setOpenOfferDetail(true);
+    }
+  }, [visibleOfferDetailModal]);
+
   const handleFetchNoti = async () => {
     try {
       const { data } = await getNumberNotificationNotViewer();
@@ -407,48 +416,56 @@ function MainLayout({
     // style={{ "--color-primary":  }}
   }, [bgColor]);
   return (
-    <Container
-      className={
-        isViewFullPage(location.pathname) ? "view-full-page" : location.pathname
-      }
-    >
-      {!isViewFullPage(location.pathname) && (
-        <React.Fragment>
-          <SwitchAccount />
-          <LogoBox
-            onClick={() => setVisibleGroupModal(true)}
-            style={{ background: bgColor.color }}
-          >
-            <Image
-              src={groupDetail.logo || avatar_default_120}
-              alt="vtask-logo-menu"
-            />
-          </LogoBox>
-          <LeftBar />
-          <TopBar />
-          <DrawerComponent />
-          <NoticeModal />
-          {toast.type && (
-            <SnackbarComponent
-              open={true}
-              handleClose={() => actionToast(null, "")}
-              vertical="top"
-              horizontal="center"
-              variant={toast.type}
-              message={toast.message}
-            />
-          )}
-          {isDocumentDetail && <DocumentDetail />}
-          {visibleGroupModal && (
-            <GroupModal
-              visibleGroupModal={visibleGroupModal}
-              onClose={() => setVisibleGroupModal(false)}
-            />
-          )}
-        </React.Fragment>
-      )}
-      <ContentBox>{configRoute(routes)}</ContentBox>
-    </Container>
+    <>
+      <Container
+        className={
+          isViewFullPage(location.pathname) ? "view-full-page" : location.pathname
+        }
+      >
+        {!isViewFullPage(location.pathname) && (
+          <React.Fragment>
+            <SwitchAccount />
+            <LogoBox
+              onClick={() => setVisibleGroupModal(true)}
+              style={{ background: bgColor.color }}
+            >
+              <Image
+                src={groupDetail.logo || avatar_default_120}
+                alt="vtask-logo-menu"
+              />
+            </LogoBox>
+            <LeftBar />
+            <TopBar />
+            <DrawerComponent />
+            <NoticeModal />
+            {toast.type && (
+              <SnackbarComponent
+                open={true}
+                handleClose={() => actionToast(null, "")}
+                vertical="top"
+                horizontal="center"
+                variant={toast.type}
+                message={toast.message}
+              />
+            )}
+            {isDocumentDetail && <DocumentDetail />}
+            {visibleGroupModal && (
+              <GroupModal
+                visibleGroupModal={visibleGroupModal}
+                onClose={() => setVisibleGroupModal(false)}
+              />
+            )}
+          </React.Fragment>
+        )}
+        <ContentBox>{configRoute(routes)}</ContentBox>
+      </Container>
+      <DetailOfferModal
+          open={openOfferDetail}
+          setOpen={setOpenOfferDetail}
+          loading={false}
+          {...detailOffer}
+      />
+    </>
   );
 }
 
@@ -470,6 +487,8 @@ export default connect(
     isDocumentDetail: state.system.isDocumentDetail,
     numberNotificationNotView: state.system.numberNotificationNotView,
     toast: state.system.toast,
+    visibleOfferDetailModal: state.system.visibleOfferDetail,
+    detailOffer: state.offerPage["DETAIL_OFFER"].offer ?? []
   }),
   {
     getListTaskDetail,
@@ -486,5 +505,6 @@ export default connect(
     actioGetSettingDate,
     actionChangeNumNotificationNotView,
     actionChangeNumMessageNotView,
+    loadDetailOffer
   }
 )(withRouter(MainLayoutWrapper));

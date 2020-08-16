@@ -1,19 +1,11 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import { withRouter } from 'react-router-dom';
-// import * as image from '../../../assets/index';
 
 import '../Drawer.scss';
 
 const ItemMessage = props => {
   const { item } = props;
-
-  // const getCreateToNow = () => {
-  //   let sAgo = '';
-
-  //   sAgo = item.time_label.replace(/&#x2F;/g, '/');
-  //   return sAgo;
-  // };
   const handleClick = () => {
     if (props.handleViewNotification) props.handleViewNotification();
     if (item.url_redirect) {
@@ -33,7 +25,7 @@ const ItemMessage = props => {
           src={item.user_create_avatar}
           className="avatar"
         />
-        {!item.is_viewed && <span className="badge-un-read"></span>}
+        {!item.is_viewed && <span className="badge-un-read"/>}
       </div>
       <div>
         {item.task_name && (
@@ -45,7 +37,7 @@ const ItemMessage = props => {
           <div
             className="text-name-message content-text"
             dangerouslySetInnerHTML={{ __html: item.content }}
-          ></div>
+          />
         </div>
         <div className="des-message">
           <span>{item.time_label}</span>

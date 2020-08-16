@@ -120,8 +120,6 @@ import settingStartingDay, {
   initialState as settingStartingDayInitialState,
 } from "./calendar/weeklyCalendar/settingStartingDay";
 import chat, { initialState as chatInitialState } from "./chat/chat";
-// import documents from './documents'
-// import taskOffer from './taskDetail/offer'
 import documents from "./documents";
 import gantt, { initialState as ganttInitialState } from "./gantt";
 import copyGroupTask, {

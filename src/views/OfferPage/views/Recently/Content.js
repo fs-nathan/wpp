@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
 import { slice, take } from "lodash";
-import React, { useCallback, useContext, useMemo, useState } from "react";
+import React, {useContext, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import BottomHeader from "views/OfferPage/components/BottomHeader";
 import { TaskTableRecently } from "views/OfferPage/components/TaskTableRecently";
@@ -9,12 +9,12 @@ import { getTaskByKeyword } from "./selector";
 
 export function Content() {
   const state = useSelector(state => state);
-  const caculateStatus = useCallback(({ offers }) => {
+  const calculateStatus = (({ offers }) => {
     let waiting = 0; // Đợi duyệt code = 0
     let rejected = 0 // Từ chối code = 3
     let accepted = 0; // Chấp nhận code = 2
     let approving = 0 // Đang duyệt code = 1
-    for (var i = 0; i < offers.length; i++) {
+    for (let i = 0; i < offers.length; i++) {
       switch (offers[i].status_code) {
         case 0:
           waiting++;
@@ -60,9 +60,9 @@ export function Content() {
   }, [renderTabList]);
 
   React.useEffect(() => {
-    if (scrollBarPosition >= 0.995 && currentPageData.length != offersLength) {
-      var numberPerPage = currentPageData.length;
-      var newData = currentPageData.concat(slice(renderTabList, numberPerPage, numberPerPage + 50));
+    if (scrollBarPosition >= 0.995 && currentPageData.length !== offersLength) {
+      const numberPerPage = currentPageData.length;
+      let newData = currentPageData.concat(slice(renderTabList, numberPerPage, numberPerPage + 50));
       setCurrentPageData(newData);
     }
   }, [scrollBarPosition]);
@@ -72,7 +72,7 @@ export function Content() {
       <Grid item xs={12} className="offerStatistic-topBar">
         <BottomHeader
           count={offersLength}
-          statistic_status={caculateStatus({ offers: renderTabList })}
+          statistic_status={calculateStatus({ offers: renderTabList })}
         />
       </Grid>
       <Grid item xs={12}>

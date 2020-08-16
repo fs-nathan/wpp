@@ -192,7 +192,6 @@ function UpdateWeeklyCalendar({
       let idx = findIndex(members.members, { id: item.id });
       idxArr.push(idx);
     });
-    console.log(members);
     setReceiverListIndex(idxArr);
   }
 

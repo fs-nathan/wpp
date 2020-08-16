@@ -1,19 +1,18 @@
 import { Button, ListItemText } from '@material-ui/core';
 import { mdiAccountCog, mdiChevronLeft, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-import { detailUser } from 'actions/user/detailUser';
 import CustomAvatar from 'components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
 import LeftSideContainer from 'components/LeftSideContainer';
 import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import CustomListItem from './CustomListItem';
+import {Routes} from "../../../../constants/routes";
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
@@ -43,29 +42,22 @@ const Wrapper = ({ className = '', ...rest }) =>
 function ProjectMemberSlide({
   handleSubSlide,
   members,
-  searchPatern, setSearchPatern,
+  searchPattern, setSearchPattern,
   handleOpenModal,
 }) {
-
-  const dispatch = useDispatch();
   const { t } = useTranslation();
-
-  function onDragEnd(result) {
-    const { source, destination } = result;
-    if (!destination) return;
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    ) return;
-  }
-
+  const history = useHistory();
+  const {projectId, memberId} = useParams();
   return (
     <>
       <LeftSideContainer
         title={t("DMH.VIEW.PP.LEFT.PM.TITLE")}
         leftAction={{
           iconPath: mdiChevronLeft,
-          onClick: () => handleSubSlide(0),
+          onClick: () => {
+            handleSubSlide(0);
+            !isNil(memberId) && history.replace(`${Routes.PROJECT}/${projectId}`);
+          },
           tooltip: t("DMH.VIEW.PP.LEFT.PM.BACK"),
         }}
         rightAction={{
@@ -83,8 +75,8 @@ function ProjectMemberSlide({
             <SearchInput
               fullWidth
               placeholder={t("DMH.VIEW.PP.LEFT.PM.SEARCH")}
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
+              value={searchPattern}
+              onChange={evt => setSearchPattern(evt.target.value)}
             />
           </Banner>
           <Wrapper
@@ -93,8 +85,9 @@ function ProjectMemberSlide({
           >
             <StyledList>
               <StyledListItem
-                to={`#`}
+                to={`${Routes.PROJECT}/${projectId}`}
                 component={Link}
+                className={isNil(memberId) ? "item-actived" : ""}
               >
                 <CustomAvatar style={{ width: 40, height: 40, }} alt='avatar' />
                 <ListItemText
@@ -115,9 +108,7 @@ function ProjectMemberSlide({
                   key={get(member, 'id')}
                   member={member}
                   index={index}
-                  onClick={evt => {
-                    dispatch(detailUser({ userId: get(member, 'id') }))
-                  }}
+                  onClick={() => history.push(`${Routes.PROJECT}/${projectId}/${member.id}`)}
                 />
               ))}
             </StyledList>

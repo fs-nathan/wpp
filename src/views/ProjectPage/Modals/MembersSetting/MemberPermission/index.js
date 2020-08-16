@@ -32,8 +32,6 @@ function MemberRole({
     if(!isNil(projectId) && open) doPermissionProject(false);
   }, [projectId, open]);
 
-  console.log(members);
-
   return (
     <MemberPermissionPresenter
       open={open} setOpen={setOpen}

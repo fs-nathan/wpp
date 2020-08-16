@@ -87,6 +87,7 @@ import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE } from "..
 import { CREATE_TASK } from "../constants/actions/task/createTask";
 import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
+import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
 import { SORT_TASK } from "../constants/actions/task/sortTask";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
@@ -253,6 +254,7 @@ import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
 import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
 import {listProjectGroupDeleted} from "./projectGroup/listProjectGroupDeleted";
+import {listTaskMember} from "./task/listTaskMember";
 
 function* rootSaga() {
   // Hoang - begin
@@ -350,6 +352,7 @@ function* rootSaga() {
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLeading(GET_ALL_GROUP_TASK, getAllGroupTask);
   yield takeLeading(LIST_TASK, listTask);
+  yield takeLeading(LIST_TASK_MEMBER, listTaskMember);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);

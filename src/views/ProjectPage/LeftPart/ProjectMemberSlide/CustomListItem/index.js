@@ -4,7 +4,7 @@ import { Primary, Secondary, StyledListItem } from 'components/CustomList';
 import { get, join } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import './style.scss';
 
 function getDetail(member) {
@@ -32,16 +32,14 @@ const Detail = ({ className = '', isInGroup = false, ...props }) =>
   />
 
 function CustomListItem({ member, index, onClick }) {
-  const [isHover, setIsHover] = React.useState(false);
   const { t } = useTranslation();
-
+  const {memberId} = useParams();
   return (
     <StyledListItem
       component={Link}
       to={`#`}
-      onMouseEnter={() => setIsHover(true)}
-      onMouseLeave={() => setIsHover(false)}
       onClick={onClick}
+      className={memberId === member.id ? "item-actived" : ""}
     >
       <CustomAvatar style={{ width: 40, height: 40, }} src={get(member, 'avatar', '')} alt='avatar' />
       <ListItemText
@@ -49,7 +47,7 @@ function CustomListItem({ member, index, onClick }) {
           <Primary>{get(member, 'name', '')}</Primary>
         }
         secondary={
-          <div>
+          <>
             <Secondary>
               {t("DMH.VIEW.PP.LEFT.PM.NUM_TASK", {
                 number_task: get(member, 'number_task', 0),
@@ -62,7 +60,7 @@ function CustomListItem({ member, index, onClick }) {
                 : t("DMH.VIEW.PP.LEFT.PM.LEAVE")
               }
             </Detail>
-          </div>
+          </>
         }
       />
     </StyledListItem>

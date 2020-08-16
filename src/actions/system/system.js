@@ -233,3 +233,8 @@ export const changeDetailSubtaskDrawer = ({id, name}) => ({
     name
   }
 })
+
+export const changeVisibleOfferDetailModal = ({offer_id, visible}) => ({
+  type: actionTypes.CHANGE_VISIBLE_OFFER_DETAIL_MODAL,
+  payload: {offer_id, visible}
+})

@@ -290,14 +290,14 @@ function OfferPage() {
   useEffect(() => {
     if (currentDetailOfferId && isDetailOfferModalOpen) {
       dispatch(loadDetailOffer({ id: currentDetailOfferId }));
-      const refreshOfferModied = () => {
+      const refreshOfferModified = () => {
         dispatch(loadDetailOffer({ id: currentDetailOfferId }));
       }
-      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshOfferModied);
-      CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshOfferModied);
+      CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshOfferModified);
+      CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshOfferModified);
       return () => {
-        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshOfferModied);
-        CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshOfferModied);
+        CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshOfferModified);
+        CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshOfferModified);
       };
     }
   }, [currentDetailOfferId, dispatch, isDetailOfferModalOpen]);

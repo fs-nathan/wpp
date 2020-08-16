@@ -22,6 +22,10 @@ export const initialState = {
   detailSubTaskDrawer: {
     id: '',
     name: ''
+  },
+  visibleOfferDetail: {
+    visible: false,
+    offer_id: null
   }
 };
 
@@ -64,6 +68,8 @@ const system = (state = initialState, action) => {
       return { ...state, visibleSubtaskDrawer: action.payload };
     case actionTypes.CHANGE_DETAIL_SUBTASK_DRAWER:
       return { ...state, detailSubTaskDrawer: action.payload };
+    case actionTypes.CHANGE_VISIBLE_OFFER_DETAIL_MODAL:
+      return {...state, visibleOfferDetail: action.payload}
     default:
       return state;
   }

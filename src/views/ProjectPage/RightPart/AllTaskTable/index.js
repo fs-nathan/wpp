@@ -11,7 +11,7 @@ import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
 import { useTimes } from 'components/CustomPopover';
 import { CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -21,6 +21,7 @@ import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting
 import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
 import AllTaskTablePresenter from './presenters';
 import { bgColorSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
+import {listTaskMember} from "../../../../actions/task/listTaskMember";
 
 function AllTaskTable({
   expand, handleExpand, viewPermissions,
@@ -33,7 +34,7 @@ function AllTaskTable({
   doSortTask,
   doDetailProject,
   doListGroupTask,
-  doListTask,
+  doListTask, doListTaskMember,
   doGetPermissionViewDetailProject,
   doSetProject,
   localOption,
@@ -50,15 +51,14 @@ function AllTaskTable({
     // eslint-disable-next-line
   }, [timeType]);
 
-  const { projectId } = useParams();
+  const { projectId, memberId } = useParams();
 
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
-    // eslint-disable-next-line
   }, [projectId]);
 
   React.useEffect(() => {
-    if (projectId !== null) {
+    if (projectId !== null && isNil(memberId)) {
       doListTask({
         projectId,
         timeStart: get(timeRange, 'timeStart')
@@ -88,8 +88,13 @@ function AllTaskTable({
         CustomEventDispose(SORT_TASK, reloadListTask);
       }
     }
-    // eslint-disable-next-line
-  }, [projectId, timeRange]);
+  }, [projectId, timeRange, memberId]);
+
+  React.useEffect(() => {
+    if(!isNil(memberId)) {
+      doListTaskMember({projectId, memberId})
+    }
+  }, [memberId]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
@@ -155,7 +160,7 @@ function AllTaskTable({
         canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
         canCreateTask={get(viewPermissions.permissions, [projectId, 'create_task'], false)}
         showHidePendings={showHidePendings}
-        tasks={tasks} project={project}
+        tasks={tasks} project={project} memberID={memberId}
         handleShowOrHideProject={project =>
           get(project, 'visibility', false)
             ? doHideProject({ projectId: get(project, 'id') })
@@ -218,6 +223,7 @@ const mapDispatchToProps = dispatch => {
     doSortTask: ({ taskId, projectId, groupTask, sortIndex }) => dispatch(sortTask({ taskId, projectId, groupTask, sortIndex })),
     doCreateTask: ({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) => dispatch(createTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, })),
     doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
+    doListTaskMember: ({projectId, memberId, quite}) => dispatch(listTaskMember({projectId, memberId}, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doSetProject: (value) => dispatch(setProject(value)),

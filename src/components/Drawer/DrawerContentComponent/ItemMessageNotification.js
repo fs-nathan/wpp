@@ -11,7 +11,6 @@ const ItemMessageNotification = props => {
   const { t } = useTranslation();
   const { item } = props;
   const time = moment(item.data_notification.createt_at, 'YYYY-MM-DD HH:mm');
-
   const getCreateToNow = () => {
     const now = moment();
     let numDayToNow = now.diff(time, 'days');
@@ -39,7 +38,7 @@ const ItemMessageNotification = props => {
           src={item.user_from.avatar}
           className="avatar"
         />
-        {!item.isViewed && <span className="badge-un-read"></span>}
+        {!item.isViewed && <span className="badge-un-read"/>}
       </div>
       <div>
         <div className="name-message">

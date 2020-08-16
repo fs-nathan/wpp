@@ -23,16 +23,15 @@ function ProjectMemberSlide({
     if (projectId !== null) {
       doMemberProject({ projectId });
     }
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
-  const [searchPatern, setSearchPatern] = React.useState('');
+  const [searchPattern, setSearchPattern] = React.useState('');
 
   const newMembers = {
     ...members,
     'members': filter(
       get(members, 'members', []),
-      member => get(member, 'name', '').toLowerCase().includes(searchPatern.toLowerCase()),
+      member => get(member, 'name', '').toLowerCase().includes(searchPattern.toLowerCase()),
     ),
   }
 
@@ -53,7 +52,7 @@ function ProjectMemberSlide({
       <ProjectMemberSlidePresenter
         handleSubSlide={handleSubSlide}
         members={newMembers}
-        searchPatern={searchPatern} setSearchPatern={setSearchPatern}
+        searchPattern={searchPattern} setSearchPattern={setSearchPattern}
         handleOpenModal={doOpenModal}
       />
       <MembersSettingModal
