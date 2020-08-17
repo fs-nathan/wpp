@@ -426,6 +426,7 @@ class DragSortingTable extends React.Component {
                             aria-controls="simple-menu"
                             style={{ padding: 0 }}
                             aria-haspopup="true"
+
                             size="small"
                             onClick={() => {
                               this.props.changeDetailSubtaskDrawer({
@@ -1051,7 +1052,14 @@ class DragSortingTable extends React.Component {
           canDrag = this.state.sort_task &&
             !this.state.data[index].isGroupTask &&
             !this.state.data[index].isTotalDuration;
-        return <DragableBodyRow dataSource={this.state.data} canDrag={canDrag} {...props} />;
+        return <DragableBodyRow dataSource={this.state.data.filter((item) => {
+          if (this.props.keyword) {
+            return item.name.includes(this.props.keyword)
+          }
+          if (!this.props.visibleGantt.total && item.isTotalDuration)
+            return false;
+          return item.isGroupTask || item.show;
+        })} canDrag={canDrag} {...props} />;
       },
     },
     header: {

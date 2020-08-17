@@ -174,7 +174,6 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
                 changeMainCalendar(e.target.value)
               }}
               defaultValue={mainCalendar || projectSchedules.filter(item => {
-                console.log(item)
                 return item.is_main
               })[0] && projectSchedules.filter(item => item.is_main)[0]._id}
             >
