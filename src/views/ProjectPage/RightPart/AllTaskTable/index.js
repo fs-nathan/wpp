@@ -28,22 +28,21 @@ import {
   tasksSelector
 } from './selectors';
 import {listTaskMember} from "../../../../actions/task/listTaskMember";
+import { deleteMember, createMember } from 'actions/taskDetail/taskDetailActions';
+import {
+  EVENT_ADD_MEMBER_TO_TASK_SUCCESS,
+  EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS
+} from 'constants/actions/taskDetail/taskDetailConst';
+import MemberPermissionModal from "../../Modals/MembersSetting/MemberPermission";
 
 function AllTaskTable({
   expand, handleExpand, viewPermissions,
-  bgColor,
-  showHidePendings,
-  handleSubSlide,
-  tasks, project,
-  doShowProject, doHideProject,
-  doDeleteTask, doCreateTask,
-  doSortTask,
-  doDetailProject,
-  doListGroupTask,
-  doListTask, doListTaskMember,
-  doGetPermissionViewDetailProject,
-  doSetProject, memberTask,
-  localOption,
+  bgColor, showHidePendings, handleSubSlide,
+  tasks, project, doShowProject, doHideProject,
+  doDeleteTask, doCreateTask, doSortTask,
+  doDetailProject, doListGroupTask, doListTask, doListTaskMember,
+  doGetPermissionViewDetailProject, doSetProject, memberTask,
+  localOption, doDeleteMemberFromTask, doAddMemberToTask
 }) {
 
   const times = useTimes();
@@ -54,7 +53,6 @@ function AllTaskTable({
       timeStart,
       timeEnd,
     });
-    // eslint-disable-next-line
   }, [timeType]);
   const { projectId, memberId } = useParams();
 
@@ -97,7 +95,16 @@ function AllTaskTable({
 
   React.useEffect(() => {
     if(!isNil(memberId)) {
-      doListTaskMember({projectId, memberId})
+      doListTaskMember({projectId, memberId});
+      const reloadAfterActionMember = () => {
+        doListTaskMember({projectId, memberId});
+      }
+      CustomEventListener(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+      CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      return () => {
+        CustomEventDispose(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+        CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      }
     }
   }, [memberId]);
 
@@ -113,7 +120,6 @@ function AllTaskTable({
         CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
       }
     }
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
   React.useEffect(() => {
@@ -129,7 +135,6 @@ function AllTaskTable({
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
     }
-    // eslint-disable-next-line
   }, [projectId]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -137,6 +142,8 @@ function AllTaskTable({
   const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+  const [openPermission, setOpenPermission] = React.useState(false);
+  const [permissionProps, setPermissionProps] = React.useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -149,12 +156,22 @@ function AllTaskTable({
         setOpenSetting(true);
         setSettingProps(props);
         return;
+      case "PERMISSION":
+        setOpenPermission(true);
+        setPermissionProps(props);
+        return;
       case 'ALERT':
         setOpenAlert(true);
         setAlertProps(props);
         return;
       default: return;
     }
+  }
+  function handleRemoveMember(taskId) {
+    doDeleteMemberFromTask({task_id: taskId, member_id: memberId});
+  }
+  function handleAddMember(taskId) {
+    doAddMemberToTask({task_id: taskId, member_id: memberId});
   }
 
   return (
@@ -182,6 +199,8 @@ function AllTaskTable({
             sortIndex,
           })
         }
+        handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
+        handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         timeType={timeType}
@@ -199,6 +218,12 @@ function AllTaskTable({
         open={openSetting}
         setOpen={setOpenSetting}
         {...settingProps}
+      />
+      <MemberPermissionModal
+          open={openPermission}
+          setOpen={setOpenPermission}
+          project_id={projectId}
+          {...permissionProps}
       />
       <AlertModal
         open={openAlert}
@@ -234,6 +259,8 @@ const mapDispatchToProps = dispatch => {
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doSetProject: (value) => dispatch(setProject(value)),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
+    doDeleteMemberFromTask: ({task_id, member_id}, quite) => dispatch(deleteMember({task_id,member_id, from: "TaskByMember"},quite)),
+    doAddMemberToTask: ({task_id, member_id}, quite) => dispatch(createMember({task_id,member_id, from: "TaskByMember"}), quite)
   };
 };
 

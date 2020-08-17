@@ -343,12 +343,12 @@ function MemberSetting({
             <Table>
               <StyledTableHead>
                 <StyledRow>
-                  <AvatarTableCell></AvatarTableCell>
+                  <AvatarTableCell/>
                   <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.MEM")}</HeaderTableCell>
                   <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.PER")}</HeaderTableCell>
                   <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.ROL")}</HeaderTableCell>
                   <HeaderTableCell>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TABLE.STA")}</HeaderTableCell>
-                  <HeaderTableCell></HeaderTableCell>
+                  <HeaderTableCell/>
                 </StyledRow>
               </StyledTableHead>
               <StyledTableBody>
@@ -417,12 +417,6 @@ function MemberSetting({
                         : <span style={{ color: 'red' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.LEA")}</span>}
                     </TableCell>
                     <TableCell width='5%'>
-                      {/*get(member, 'is_in_group', false) &&
-                        (<SettingButton
-                          member={member}
-                          setAnchorEl={setAnchorEl}
-                          setCurMemberSetting={setCurMemberSetting}
-                        />)*/}
                       <SettingButton
                         member={member}
                         setAnchorEl={setAnchorEl}

@@ -62,8 +62,8 @@ function AllTaskTable({
   tasks, project,
   handleShowOrHideProject,
   handleSortTask,
-  handleOpenModal,
-  bgColor, timeType,
+  handleOpenModal, handleRemoveMemberFromTask,
+  bgColor, timeType, handleAddMemberToTask,
   handleTimeType, memberID, memberTask,
   canUpdateProject, canCreateTask,
 }) {
@@ -140,7 +140,7 @@ function AllTaskTable({
                     onClick: (evt) => handleOpenModal('CREATE'),
                 } : !isNil(memberID) ? {
                     label: t("DMH.VIEW.DP.RIGHT.UT.PERMISSION"),
-                    onClick: () => handleOpenModal('PERMISSION'),
+                    onClick: () => handleOpenModal('PERMISSION', {curMemberId: memberID}),
                     icon: mdiAccountKey
                 } : null,
                 expand: {
@@ -272,7 +272,12 @@ function AllTaskTable({
                 /> : <>
                     {
                         get(row, "is_joined") === true ? <div className={"taskMember_rowAction_container"}>
-                            <Button size={"small"} className={"taskMember_rowAction_delete"} startIcon={<Icon path={mdiAccountMinusOutline} size={0.8} color={'#fd7e14'}/>}>
+                            <Button
+                                size={"small"}
+                                className={"taskMember_rowAction_delete"}
+                                startIcon={<Icon path={mdiAccountMinusOutline} size={0.8} color={'#fd7e14'}/>}
+                                onClick={() => handleRemoveMemberFromTask(get(row, "id"))}
+                            >
                                 <span className={"taskMember_rowAction_colorOrange"}>{t("IDS_WP_REMOVE_FROM_TASK")}</span>
                             </Button>
                             {get(row, "leave_group", false) && <span className={"taskMember_rowAction_colorRed"}>{t("DMH.VIEW.PP.LEFT.PM.LEAVE")}</span>}
@@ -281,6 +286,7 @@ function AllTaskTable({
                                 size={"small"}
                                 startIcon={<Icon path={mdiPlusCircle} size={0.8} color={"#3DB1F5"}/>}
                                 className={"taskMember_rowAction_add"}
+                                onClick={() => handleAddMemberToTask(get(row, "id"))}
                             >
                                 <span>{t("IDS_WP_ADD_TO_TASK")}</span>
                             </Button>

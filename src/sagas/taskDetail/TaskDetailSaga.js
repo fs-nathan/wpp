@@ -1,14 +1,13 @@
-// import { appendChat } from "actions/chat/chat";
 import { get } from 'lodash';
 import { call, put, select } from "redux-saga/effects";
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import { apiService } from "../../constants/axiosInstance";
 import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
-// import { getFirstProjectDetail } from '../../helpers/jobDetail/arrayHelper'
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 import { CREATE_OFFER } from 'views/OfferPage/redux/types';
 import { getDataPinOnTaskChat } from 'actions/chat/chat';
+import * as types from '../../constants/actions/taskDetail/taskDetailConst';
 
 // Priority
 async function doUpdatePriority(payload) {
@@ -29,10 +28,7 @@ function* updatePriority(action) {
   try {
     const res = yield call(doUpdatePriority, action.payload);
     yield put(actions.updatePrioritySuccess(res));
-    // yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    // yield put(appendChat(res));
-    // CustomEventEmitter(DELETE_ROOM);
   } catch (error) {
     yield put(actions.updatePriorityFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -78,11 +74,9 @@ async function doPostSubTask(payload) {
 
 function* postSubTask(action) {
   try {
-    // console.log("action payload id::", action.options.task_id);
     const res = yield call(doPostSubTask, action.options);
     yield put(actions.postSubTaskSuccess(res));
     yield put(actions.getSubTask({ taskId: action.options.task_id }));
-    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postSubTaskFail(error));
@@ -140,7 +134,6 @@ function* deleteSubTask(action) {
     const res = yield call(doDeleteSubTask, action.options);
     yield put(actions.deleteSubTaskSuccess(res));
     yield put(actions.getSubTask(action.options));
-    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteSubTaskFail(error));
@@ -224,7 +217,6 @@ function* postRemindWithTimeDetail(action) {
   try {
     const res = yield call(doPostRemindWithTimeDetail, action.options);
     yield put(actions.getRemind({ taskId: action.options.taskId }));
-    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postRemindWithTimeDetailFail(error));
@@ -251,7 +243,6 @@ function* postRemindDuration(action) {
     const res = yield call(doPostRemindDuration, action.options);
     yield put(actions.postRemindDurationSuccess(res));
     yield put(actions.getRemind({ taskId: action.options.task_id }));
-    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.postRemindDurationFail(error));
@@ -341,7 +332,6 @@ function* deleteRemind(action) {
     const res = yield call(doDeleteRemind, { remind_id, task_id: taskId });
     yield put(actions.deleteRemindSuccess(res));
     yield put(actions.getRemind({ taskId }));
-    // yield put(appendChat(res));
     const pinnedRemind = yield select(state => state.chat.pinnedRemind)
     if (pinnedRemind.id === remind_id) {
       yield put(getDataPinOnTaskChat(taskId));
@@ -420,7 +410,6 @@ function* createOffer(action) {
     });
     yield put(actions.createOfferSuccess(res.data));
     yield put(actions.getOffer({ taskId: task_id }));
-    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createOfferFail(error));
@@ -447,7 +436,6 @@ async function doUpdateOffer(payload) {
 function* updateOffer(action) {
   try {
     yield call(doUpdateOffer, action.payload);
-    // yield put(actions.updateOfferSuccess(res))
     yield put(actions.getOffer({ taskId: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -472,7 +460,6 @@ async function doDeleteOffer(payload) {
 
 function* deleteOffer(action) {
   try {
-    // console.log("offer_id:::::::", action.payload);
     const { offer_id, taskId } = action.payload
     const res = yield call(doDeleteOffer, { offer_id, task_id: taskId })
     yield put(actions.deleteOfferSuccess(res))
@@ -487,11 +474,9 @@ function* deleteOffer(action) {
 
 function* approveOffer(action) {
   try {
-    // console.log("offer_id:::::::", action.payload);
     const res = yield call(apiService.post, 'task/approve-offer', action.payload)
     yield put(actions.approveOfferSuccess(res))
     yield put(actions.getOffer({ taskId: action.payload.task_id }));
-    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.approveOfferFail(error));
@@ -516,9 +501,7 @@ async function doUploadDocumentToOffer(payload) {
 function* uploadDocumentToOffer(action) {
   try {
     const res = yield call(doUploadDocumentToOffer, action.payload.data);
-    // Success upload -> Call function to append all new file to component
     action.payload.successCallBack(res.documents);
-
     yield put(actions.uploadDocumentToOfferSuccess(res));
     yield put(actions.getOffer(action.payload.taskId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
@@ -600,7 +583,6 @@ function* getImage(action) {
   try {
     const res = yield call(doGetImage, action.options);
     yield put(actions.getImageSuccess(res, action.options.page));
-    // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getImageFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -626,7 +608,6 @@ function* getFile(action) {
   try {
     const res = yield call(doGetFile, action.options);
     yield put(actions.getFileTabPartSuccess(res, action.options.page));
-    // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getFileTabPartFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -650,7 +631,6 @@ function* getLink(action) {
   try {
     const res = yield call(doGetLink, action.options);
     yield put(actions.getLinkTabPartSuccess(res));
-    // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.getLinkTabPartFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -745,7 +725,6 @@ function* createCommand(action) {
     const res = yield call(doCreateCommand, action.payload);
     yield put(actions.createCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.task_id }));
-    // yield put(appendChat({ data_chat: res.data }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createCommandFail(error));
@@ -779,7 +758,6 @@ function* updateCommand(action) {
     yield put(actions.updateCommandSuccess(res));
     yield put(actions.getCommand({ task_id: action.payload.taskId }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    // yield put(appendChat({ data_chat: res.data }));
   } catch (error) {
     yield put(actions.updateCommandFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -877,10 +855,15 @@ async function doCreateMember(payload) {
 function* createMember(action) {
   try {
     const res = yield call(doCreateMember, action.payload)
-    yield put(actions.getMember({ task_id: action.payload.task_id }))
-    yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
-    yield put(actions.createMemberSuccess(res))
-    // yield put(appendChat(res));
+    const from = get(action.payload,"from", null);
+    if(from !== null && from === "TaskByMember") {
+      CustomEventEmitter(types.EVENT_ADD_MEMBER_TO_TASK_SUCCESS);
+    } else {
+      yield put(actions.getMember({ task_id: action.payload.task_id }))
+      yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
+      yield put(actions.createMemberSuccess(res))
+    }
+
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createMemberFail(error));
@@ -905,10 +888,14 @@ async function doDeleteMember(payload) {
 function* deleteMember(action) {
   try {
     const res = yield call(doDeleteMember, action.payload)
-    yield put(actions.getMember({ task_id: action.payload.task_id }))
-    yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
-    yield put(actions.deleteMemberSuccess(res))
-    // yield put(appendChat(res));
+    const from = get(action.payload,"from", null);
+    if(from !== null && from === "TaskByMember") {
+      CustomEventEmitter(types.EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS);
+    } else {
+      yield put(actions.getMember({ task_id: action.payload.task_id }))
+      yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
+      yield put(actions.deleteMemberSuccess(res))
+    }
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteMemberFail(error));
@@ -1074,7 +1061,6 @@ function* updateRolesForMember(action) {
     yield put(actions.updateRolesForMemberSuccess(res.data))
     yield put(actions.getMember({ task_id: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    // yield put(appendChat({ data_chat: res.data.data }));
   } catch (error) {
     yield put(actions.updateRolesForMemberFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1100,10 +1086,8 @@ function* getListTaskDetail(action) {
     if (!action.type_data) {
       const userId = yield select(state => state.system.profile.id);
       const key = `${userId}:${lastJobSettingKey}`;
-      // console.log(key, ' getListTaskDetail')
       action.type_data = localStorage.getItem(key) || 'include-room';
     }
-    // console.log(action, ' action')
     const res = yield call(doGetListTaskDetail, action)
     yield put(actions.getListTaskDetailSuccess(res, action.type_data))
   } catch (error) {
@@ -1161,7 +1145,6 @@ function* updateTimeDuration(action) {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
-    // yield put(appendChat(res));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTimeDurationFail(error));
@@ -1229,58 +1212,7 @@ function* getListOffer(action) {
     yield put(actions.getListOfferFail(error));
   }
 }
-// Get project group - listpart
-// async function doGetProjectGroup() {
-//   try {
-//     const config = {
-//       url: 'project-group/list',
-//       method: 'get'
-//     }
-//     const result = await apiService(config);
-//     return result.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
 
-// async function doGetListProject(payload) {
-//   try {
-//     const config = {
-//       url: 'project/list',
-//       method: 'get',
-//       data: payload
-//     }
-//     const result = await apiService(config);
-//     return result.data;
-//   } catch (error) {
-//     throw error;
-//   }
-// }
-
-// function* getProjectGroup() {
-//   try {
-//     const response = yield call(doGetProjectGroup)
-//     let projectGroups = response.project_groups
-
-//     let projectId = ""
-//     for (let i = 0; i < projectGroups.length; i++) {
-//       let payload = {
-//         group_project: projectGroups[i].id,
-//         type: "active",
-//         status: 0
-//       }
-//       const tempResponse = yield call(doGetListProject, payload)
-//       projectGroups[i].projects = tempResponse.projects
-// set active project id to call other API
-//       if (i === 0) projectId = getFirstProjectId(projectGroups[i])
-//     }
-
-//     yield put(actions.getProjectGroupSuccess({ projectGroups, projectId }))
-//   } catch (error) {
-//     yield put(actions.getProjectGroupFail(error))
-//   }
-// }
-// Get Group Project list basic
 async function doGetProjectListBasic() {
   try {
     const config = {
@@ -1298,12 +1230,7 @@ function* getProjectListBasic(action) {
   try {
     const response = yield call(doGetProjectListBasic);
     let projectGroups = response.projects;
-
     const projectId = action.payload || "";
-    // // set active project id to call other API
-    // let projectDetail = getFirstProjectDetail(projectGroups)
-    // if(projectDetail.id) projectId = projectDetail.id
-
     yield put(actions.getProjectListBasicSuccess({ projectGroups, projectId }));
   } catch (error) {
     yield put(actions.getProjectListBasicFail(error));
@@ -1332,10 +1259,6 @@ function* updateNameDescriptionTask(action) {
     const taskId = action.payload.task_id;
     yield put(actions.updateNameDescriptionTaskSuccess(res));
     yield put(actions.getTaskDetailTabPart({ taskId }));
-    // yield put(appendChat(res));
-    // const resTime = yield call(doUpdateTimeDuration, action.payload.dataTimeDuration)
-    // yield put(actions.updateTimeDurationSuccess(resTime))
-    // yield put(actions.getTrackingTime(action.payload.dataTimeDuration.task_id))
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateNameDescriptionTaskFail(error));
@@ -1345,7 +1268,6 @@ function* updateNameDescriptionTask(action) {
 
 // Get Project Detail
 async function doGetProjectDetail(project_id) {
-  // console.log("PPPP", project_id)
   try {
     const config = {
       url: "project/detail?project_id=" + project_id,
@@ -1385,10 +1307,7 @@ function* updateComplete(action) {
   try {
     const res = yield call(doUpdateComplete, action.payload.data);
     yield put(actions.updateCompleteSuccess(res));
-    // yield put(actions.getTaskDetailTabPart({ taskId: action.payload.data.task_id }));
     yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
-    // yield put(appendChat(res));
-    // yield put(actions.getListTaskDetail(action.payload.projectId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateCommandFail(error));
@@ -1398,7 +1317,6 @@ function* updateComplete(action) {
 
 // static task
 async function doGetStaticTask(project_id) {
-  // console.log("PPPP", project_id)
   try {
     const config = {
       url: "/task/static?project_id=" + project_id,
@@ -1438,7 +1356,6 @@ function* deleteTask(action) {
     yield put(actions.deleteTaskSuccess(res));
     yield put(actions.getListTaskDetail(action.payload.projectId));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    // window.location = `/tasks/chat/${action.payload.projectId}`;
   } catch (error) {
     yield put(actions.deleteTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1450,9 +1367,6 @@ export function* pinTask({ payload }) {
     const { task_id, projectId } = payload;
     const res = yield call(apiService.post, "/task/ghim-task", { task_id });
     yield put(actions.pinTaskSuccess(res.data, task_id));
-    // yield put(actions.getListTaskDetail(projectId));
-    // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
-    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.pinTaskFail(error));
@@ -1467,9 +1381,6 @@ export function* unPinTask({ payload }) {
       task_id
     });
     yield put(actions.unPinTaskSuccess(res.data, task_id));
-    // yield put(actions.getListTaskDetail(projectId));
-    // yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
-    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.unPinTaskFail(error));
@@ -1520,7 +1431,6 @@ export function* updateNameDescription(payload) {
     const res = yield call(apiService.put, "/task/update-name-description", { task_id, name, description });
     yield put(actions.updateNameDescriptionSuccess(res.data, task_id));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    // yield put(appendChat(res.data));
   } catch (error) {
     yield put(actions.updateNameDescriptionFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1533,7 +1443,6 @@ export function* updateGroupTask(payload) {
     const res = yield call(apiService.put, "/task/update-group-task", { task_id, group_task });
     yield put(actions.updateGroupTaskSuccess({ data: res.data, task_id, group_task }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    // yield put(appendChat(res.data));
   } catch (error) {
     yield put(actions.updateGroupTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1545,7 +1454,6 @@ export function* updateTypeAssign(payload) {
     const { task_id, type_assign } = payload;
     const res = yield call(apiService.put, "/task/update-type-assign", { task_id, type_assign });
     yield put(actions.updateTypeAssignSuccess(res.data));
-    // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTypeAssignFail(error));
@@ -1559,7 +1467,6 @@ export function* updateScheduleTask(payload) {
     const res = yield call(apiService.put, "/task/update-schedule-task", { task_id, schedule_id });
     yield put(actions.updateScheduleTaskSuccess(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    // yield put(appendChat(res.data));
   } catch (error) {
     yield put(actions.updateScheduleTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));

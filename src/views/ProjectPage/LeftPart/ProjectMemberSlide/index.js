@@ -8,6 +8,11 @@ import MembersSettingModal from '../../Modals/MembersSetting';
 import { viewPermissionsSelector } from '../../selectors';
 import ProjectMemberSlidePresenter from './presenters';
 import { membersSelector } from './selectors';
+import {
+  EVENT_ADD_MEMBER_TO_TASK_SUCCESS,
+  EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS
+} from 'constants/actions/taskDetail/taskDetailConst';
+import {CustomEventDispose, CustomEventListener} from "../../../../constants/events";
 
 function ProjectMemberSlide({
   handleSubSlide,
@@ -22,6 +27,15 @@ function ProjectMemberSlide({
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
     if (projectId !== null) {
       doMemberProject({ projectId });
+      const reloadAfterActionMember = () => {
+        doMemberProject({ projectId });
+      }
+      CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      CustomEventListener(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+      return () => {
+        CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+        CustomEventDispose(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+      }
     }
   }, [projectId, viewPermissions]);
 
