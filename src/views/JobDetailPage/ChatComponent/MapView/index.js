@@ -72,7 +72,7 @@ const ContentDialog = styled(DialogContent)`
     }
 `
 
-const MapView = ({ isOpen, setOpen }) => {
+const MapView = ({ isOpen, setOpen, locationData }) => {
   const theme = useTheme();
   const { t } = useTranslation();
 
@@ -80,27 +80,12 @@ const MapView = ({ isOpen, setOpen }) => {
   const transformRef = useRef();
   const dispatch = useDispatch();
   let locationArr = useSelector(state => state.taskDetail.location.locations);
-  const locationData = useSelector(state => state.taskDetail.detailTask.location);
+  // const locationData = useSelector(state => state.taskDetail.detailTask.location);
   const { address, date_create,
     user_share, time_create, lat = 21, lng = 105,
     user_share_avatar, room, roles } = locationData;
-  const [zoom, setZoom] = useState(20);
-  const [size, setSize] = useState({});
   const [center, setCenter] = useState({ lat, lng });
-
-  useEffect(() => {
-    setTimeout(() => {
-      setZoom(18)
-    }, 2000)
-  }, [])
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (lat)
-        setCenter({ lat, lng })
-      setZoom(18)
-    }, 1000)
-  }, [lat, lng])
+  const [map, setMap] = React.useState(null)
 
   function handleClose() {
     setOpen(false)
@@ -110,15 +95,13 @@ const MapView = ({ isOpen, setOpen }) => {
     // console.log('handleClickLocation', data)
     const { lat, lng } = data;
     setCenter({ lat, lng })
-    setZoom(18)
   }
 
   const containerStyle = {
-    width: '70%',
+    width: '80%',
     height: '100%'
   };
 
-  const [map, setMap] = React.useState(null)
 
   const onLoad = React.useCallback(function callback(map) {
     console.log('load map')
@@ -126,11 +109,9 @@ const MapView = ({ isOpen, setOpen }) => {
     // const iconSize = new window.google.maps.Size(64, 64)
     // setSize(iconSize)
     // bounds.extend(center)
-    setTimeout(() => {
-      map.fitBounds(bounds);
-      setCenter({ lat, lng })
-      setZoom(18)
-    }, 100)
+    // map.setZoom(18)
+    // map.fitBounds(bounds);
+    // setCenter({ lat, lng })
     setMap(map)
   }, [])
 
@@ -155,7 +136,7 @@ const MapView = ({ isOpen, setOpen }) => {
           {lat && <GoogleMap
             mapContainerStyle={containerStyle}
             center={{ lat, lng }}
-            zoom={zoom}
+            zoom={16}
             onLoad={onLoad}
             onUnmount={onUnmount}
           >

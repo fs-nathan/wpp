@@ -27,7 +27,7 @@ function TabBody() {
   const myLocations = locations.filter(({ is_me }) => is_me)
   const [value, setValue] = React.useState(0);
   const [isOpenMap, setIsOpenMap] = React.useState(false);
-  // const [locationData, setLocationData] = React.useState({});
+  const [locationData, setLocationData] = React.useState({});
 
   const isNoData = locations.length === 0;
 
@@ -38,7 +38,7 @@ function TabBody() {
   const handleClickLocation = (data) => {
     // console.log('handleClickLocation', data)
     setIsOpenMap(true);
-    dispatch(setLocationData(data));
+    setLocationData(data);
   }
 
   return (
@@ -79,7 +79,7 @@ function TabBody() {
             </React.Fragment>
         }
       </div>
-      <MapView isOpen={isOpenMap} setOpen={setIsOpenMap} ></MapView>
+      <MapView isOpen={isOpenMap} setOpen={setIsOpenMap} locationData={locationData} ></MapView>
     </Body>
   )
 }
