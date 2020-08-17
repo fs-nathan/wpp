@@ -9,11 +9,11 @@ export const listTaskMember = ({ projectId, memberId }, quite = false) => ({
   },
 });
 
-export const listTaskMemberSuccess = ({ tasks }, options) => ({
+export const listTaskMemberSuccess = ({ tasks, member }, options) => ({
   type: LIST_TASK_MEMBER_SUCCESS,
   options,
   data: {
-    tasks,
+    tasks,member
   }
 });
 

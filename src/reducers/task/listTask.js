@@ -23,6 +23,13 @@ function reducer(state = initialState, action) {
         loading: action.quite ? false : true,
       };
     case LIST_TASK_SUCCESS:
+      return {
+        ...state,
+        data: action.data,
+        error: null,
+        loading: false,
+        firstTime: false,
+      };
     case LIST_TASK_MEMBER_SUCCESS:
       return {
         ...state,

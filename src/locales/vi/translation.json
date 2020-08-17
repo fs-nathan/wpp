@@ -2088,5 +2088,9 @@
   "IDS_WP_ERROR_PAGE_404_MSG2": "Nếu bạn cho đây là một sự cố hoặc lỗi phần mềm thì hãy liên hệ với",
   "IDS_WP_ERROR_PAGE_404_SUPPORT_CENTER": "Trung tâm hỗ trợ",
   "IDS_WP_ERROR_PAGE_404_THANKS": "Xin chân trọng cảm ơn!",
-  "IDS_WP_LABEL_BACK_TO_PREVIOUS_PAGE": "Quay lại trang trước"
+  "IDS_WP_LABEL_BACK_TO_PREVIOUS_PAGE": "Quay lại trang trước",
+  "IDS_WP_REMOVE_FROM_TASK": "Xóa khỏi việc",
+  "IDS_WP_ADD_TO_TASK": "Thêm vào việc",
+  "IDS_WP_NOT_YET_ASSIGN": "Chưa gán",
+  "IDS_WP_TASK_COUNT_COMPLETE": "{{count}}/{{total}} việc"
 }

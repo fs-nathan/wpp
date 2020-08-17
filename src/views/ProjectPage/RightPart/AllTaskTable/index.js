@@ -20,7 +20,13 @@ import CreateJobModal from 'views/JobDetailPage/ListPart/ListHeader/CreateJobMod
 import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
 import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
 import AllTaskTablePresenter from './presenters';
-import { bgColorSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
+import {
+  bgColorSelector,
+  memberTaskSelector,
+  projectSelector,
+  showHidePendingsSelector,
+  tasksSelector
+} from './selectors';
 import {listTaskMember} from "../../../../actions/task/listTaskMember";
 
 function AllTaskTable({
@@ -36,7 +42,7 @@ function AllTaskTable({
   doListGroupTask,
   doListTask, doListTaskMember,
   doGetPermissionViewDetailProject,
-  doSetProject,
+  doSetProject, memberTask,
   localOption,
 }) {
 
@@ -50,7 +56,6 @@ function AllTaskTable({
     });
     // eslint-disable-next-line
   }, [timeType]);
-
   const { projectId, memberId } = useParams();
 
   React.useLayoutEffect(() => {
@@ -160,7 +165,7 @@ function AllTaskTable({
         canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
         canCreateTask={get(viewPermissions.permissions, [projectId, 'create_task'], false)}
         showHidePendings={showHidePendings}
-        tasks={tasks} project={project} memberID={memberId}
+        tasks={tasks} project={project} memberID={memberId} memberTask={memberTask}
         handleShowOrHideProject={project =>
           get(project, 'visibility', false)
             ? doHideProject({ projectId: get(project, 'id') })
@@ -212,6 +217,7 @@ const mapStateToProps = state => {
     showHidePendings: showHidePendingsSelector(state),
     viewPermissions: viewPermissionsSelector(state),
     localOption: localOptionSelector(state),
+    memberTask: memberTaskSelector(state)
   }
 }
 

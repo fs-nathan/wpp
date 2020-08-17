@@ -30,6 +30,14 @@ export const tasksSelector = createSelector(
   }
 );
 
+export const memberTaskSelector = createSelector([listTask], (listTask) => {
+    const { data: {member}} = listTask;
+    return {
+        member
+    }
+});
+
+
 export const projectSelector = createSelector(
   [detailProject],
   (detailProject) => {

@@ -9,6 +9,7 @@ import HeaderButtonGroup from './HeaderButtonGroup';
 import { bgColorSelector } from './selectors';
 import './style.scss';
 import TableMain from './TableMain';
+import Icon from "@mdi/react";
 
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
@@ -132,11 +133,11 @@ function CustomTable() {
               </p>
             </div>
             {get(options, 'subTitle') ? (
-              <span>
+              <div>
                 {typeof get(options, 'subTitle') === 'function'
                   ? options.subTitle()
                   : get(options, 'subTitle', '')}
-              </span>
+              </div>
             ) : null}
           </LeftHeader>
           <RightHeader>
@@ -146,6 +147,9 @@ function CustomTable() {
                 size="small"
                 onClick={get(options, "mainAction.onClick", () => null)}
               >
+                {
+                  get(options, "mainAction.icon", null) !== null && <Icon path={get(options, "mainAction.icon")} size={1} style={{marginRight: "5px"}}/>
+                }
                 {get(options, "mainAction.label", "")}
               </StyledButton>
             )}

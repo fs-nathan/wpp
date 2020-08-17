@@ -33,5 +33,53 @@
     margin-top: 5px;
   }
 }
-
-;
+.taskMember_rowAction {
+  &_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+  &_colorOrange {
+    color: #fd7e14;
+  }
+  &_colorRed {
+    color: #ff1100;
+  }
+  &_delete, &_add {
+    text-transform: none;
+    font-weight: normal;
+    .MuiButton-startIcon {
+      margin-right: 3px !important;
+    }
+  }
+}
+.taskMember_title {
+  &_container {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    width: 600px;
+  }
+  &_user {
+    display: inline-flex;
+    align-items: center;
+    &>span {
+      font-size: 16px;
+      margin-left: 10px;
+    }
+  }
+  &_summary {
+    display: inline-flex;
+    align-items: center;
+    &>*:not(:last-child) {
+      border-right: 1px solid rgba(0,0,0,0.7);
+      margin-right: 7px;
+    }
+    &_value {
+      color: #00DB7C;
+      margin-right: 5px;
+      font-weight: 500;
+    }
+  }
+}

@@ -15,7 +15,7 @@ function ErrorPage({}) {
                 <p className={"ErrorPage_Content_SubContent"}>
                     {t("IDS_WP_ERROR_PAGE_404_MSG1")}
                     <br/>
-                    {t("IDS_WP_ERROR_PAGE_404_MSG2")} <a href={"#"}>{t("IDS_WP_ERROR_PAGE_404_SUPPORT_CENTER")}</a> Workplus.
+                    {t("IDS_WP_ERROR_PAGE_404_MSG2")} <a href={"https://workplus.vn/lien-he/"} target={"_blank"}>{t("IDS_WP_ERROR_PAGE_404_SUPPORT_CENTER")}</a> Workplus.
                     <br/>
                     {t("IDS_WP_ERROR_PAGE_404_THANKS")}
                 </p>

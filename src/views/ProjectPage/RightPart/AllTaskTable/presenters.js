@@ -1,4 +1,4 @@
-import { mdiAccount, mdiAccountCircle, mdiCalendar, mdiDownload, mdiScatterPlot } from '@mdi/js';
+import { mdiAccount, mdiAccountCircle, mdiCalendar, mdiDownload, mdiScatterPlot, mdiAccountKey, mdiAccountMinusOutline, mdiPlusCircle} from '@mdi/js';
 import Icon from '@mdi/react';
 import AvatarCircleList from 'components/AvatarCircleList';
 import CustomBadge from 'components/CustomBadge';
@@ -12,6 +12,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-use';
+import {Button, Avatar } from "@material-ui/core";
 import './style.scss';
 
 const SubTitle = ({ className = '', ...props }) =>
@@ -63,7 +64,7 @@ function AllTaskTable({
   handleSortTask,
   handleOpenModal,
   bgColor, timeType,
-  handleTimeType, memberID,
+  handleTimeType, memberID, memberTask,
   canUpdateProject, canCreateTask,
 }) {
 
@@ -87,7 +88,34 @@ function AllTaskTable({
                         <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'gantt')}`)}>Gantt</div>
                         <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</div>
                     </SubTitle>
-                ) : () => {},
+                ) : () => (
+                    <div className={"taskMember_title_container"}>
+                        <div className={"taskMember_title_user"}>
+                            <Avatar alt={"user avatar"} src={get(memberTask.members, "avatar")} style={{width: "20px", height: "20px"}}/>
+                            <span>{get(memberTask.member, "name")}</span>
+                        </div>
+                        <div className={"taskMember_title_summary"}>
+                            <div>
+                                <span>{t("LABEL_CHAT_TASK_NHOM_QUYEN")}: </span>
+                                <span className={"taskMember_title_summary_value"}>
+                                    {get(memberTask.member, "permission") ? get(memberTask.member, "permission") : t("IDS_WP_NOT_YET_ASSIGN")}
+                                </span>
+                            </div>
+                            <div>
+                                <span>{t("IDS_WP_JOIN")}: </span>
+                                <span className={"taskMember_title_summary_value"}>
+                                    {t("IDS_WP_TASK_COUNT_COMPLETE", {count: get(memberTask.member, "task_join"), total: get(memberTask.member, "total_task")})}
+                                </span>
+                            </div>
+                            <div>
+                                <span>{t("IDS_WP_DONE")}: </span>
+                                <span className={"taskMember_title_summary_value"}>
+                                    {get(memberTask.member, "complete_rate")} %
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                ),
                 subActions: [canUpdateProject && isNil(memberID) ? {
                     label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.MEMBER"),
                     iconPath: mdiAccountCircle,
@@ -98,24 +126,28 @@ function AllTaskTable({
                     iconPath: mdiScatterPlot,
                     onClick: (evt) => handleSubSlide(2),
                     noExpand: true,
-                } : undefined, {
+                } : undefined, isNil(memberID) ?{
                     label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
                     iconPath: mdiDownload,
                     onClick: (evt) => setDownloadAnchor(evt.currentTarget)
-                }, {
+                } : undefined, {
                     label: times[timeType].title,
                     iconPath: mdiCalendar,
                     onClick: evt => setTimeAnchor(evt.currentTarget)
                 }],
-                mainAction: canCreateTask ? {
+                mainAction: canCreateTask && isNil(memberID) ? {
                     label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.CREATE"),
                     onClick: (evt) => handleOpenModal('CREATE'),
+                } : !isNil(memberID) ? {
+                    label: t("DMH.VIEW.DP.RIGHT.UT.PERMISSION"),
+                    onClick: () => handleOpenModal('PERMISSION'),
+                    icon: mdiAccountKey
                 } : null,
                 expand: {
                     bool: expand,
                     toggleExpand: () => handleExpand(!expand),
                 },
-                moreMenu: [{
+                moreMenu: isNil(memberID) ? [{
                     label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SETTING"),
                     onClick: () => handleOpenModal('SETTING', {
                         curProject: project.project,
@@ -133,7 +165,7 @@ function AllTaskTable({
                         label: `${get(project.project, 'visibility') ? t("DMH.VIEW.PP.RIGHT.ALL.LABEL.HIDE") : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SHOW")}`,
                         onClick: () => handleShowOrHideProject(project.project),
                         disabled: !isNil(find(showHidePendings.pendings, pending => pending === get(project.project, 'id'))),
-                    } : undefined],
+                    } : undefined] : undefined,
                 grouped: {
                     bool: true,
                     id: 'id',
@@ -227,8 +259,8 @@ function AllTaskTable({
                 align: 'center',
                 width: '10%',
             }, {
-                label: () => <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'} />,
-                field: row => <AvatarCircleList
+                label: () => isNil(memberID) && <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'} />,
+                field: row => isNil(memberID) ? <AvatarCircleList
                     users={
                         get(row, 'members', [])
                             .map(member => ({
@@ -237,9 +269,26 @@ function AllTaskTable({
                             }))
                     }
                     display={3}
-                />,
+                /> : <>
+                    {
+                        get(row, "is_joined") === true ? <div className={"taskMember_rowAction_container"}>
+                            <Button size={"small"} className={"taskMember_rowAction_delete"} startIcon={<Icon path={mdiAccountMinusOutline} size={0.8} color={'#fd7e14'}/>}>
+                                <span className={"taskMember_rowAction_colorOrange"}>{t("IDS_WP_REMOVE_FROM_TASK")}</span>
+                            </Button>
+                            {get(row, "leave_group", false) && <span className={"taskMember_rowAction_colorRed"}>{t("DMH.VIEW.PP.LEFT.PM.LEAVE")}</span>}
+                        </div> : <div className={"taskMember_rowAction_container"}>
+                            <Button
+                                size={"small"}
+                                startIcon={<Icon path={mdiPlusCircle} size={0.8} color={"#3DB1F5"}/>}
+                                className={"taskMember_rowAction_add"}
+                            >
+                                <span>{t("IDS_WP_ADD_TO_TASK")}</span>
+                            </Button>
+                        </div>
+                    }
+                </>,
                 align: 'center',
-                width: '10%',
+                width: '12%',
             }]}
             data={tasks.tasks}
         />

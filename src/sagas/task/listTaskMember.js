@@ -23,8 +23,8 @@ async function doListTaskMember({ projectId, memberId }) {
 
 function* listTaskMember(action) {
   try {
-    const { tasks } = yield call(doListTaskMember, action.options);
-    yield put(listTaskMemberSuccess({ tasks }, action.options));
+    const { tasks, member } = yield call(doListTaskMember, action.options);
+    yield put(listTaskMemberSuccess({ tasks, member }, action.options));
   } catch (error) {
     yield put(listTaskMemberFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
