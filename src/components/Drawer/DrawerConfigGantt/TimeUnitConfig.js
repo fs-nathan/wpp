@@ -1,14 +1,4 @@
-import {
-  Box,
-
-
-
-  FormControl, FormControlLabel,
-
-  IconButton,
-
-  MenuItem, Radio, Select
-} from '@material-ui/core';
+import { Box, FormControl, FormControlLabel, IconButton, MenuItem, Radio, Select } from '@material-ui/core';
 import InputBase from '@material-ui/core/InputBase';
 import { withStyles } from '@material-ui/core/styles';
 import CloseIcon from "@material-ui/icons/Close";
@@ -183,7 +173,10 @@ const TimeUnitConfig = ({ changeInstanceGird, mainCalendar, changeMainCalendar, 
               onChange={(e) => {
                 changeMainCalendar(e.target.value)
               }}
-              defaultValue={mainCalendar}
+              defaultValue={mainCalendar || projectSchedules.filter(item => {
+                console.log(item)
+                return item.is_main
+              })[0] && projectSchedules.filter(item => item.is_main)[0]._id}
             >
               {projectSchedules.map(item => <MenuItem key={item._id} value={item._id}>{item.name}</MenuItem>)}
             </Select>

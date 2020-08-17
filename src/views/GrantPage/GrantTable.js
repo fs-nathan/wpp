@@ -1,5 +1,5 @@
 import { IconButton } from "@material-ui/core";
-import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuUp, mdiPageNextOutline, mdiPlus } from "@mdi/js";
+import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuRight, mdiPageNextOutline, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table } from "antd";
 import 'antd/lib/grid/style/index.css';
@@ -348,7 +348,7 @@ class DragSortingTable extends React.Component {
                         }}
                         title={this.props.t(record.show ? 'GANTT_COLLAPSE' : 'GANTT_EXPAND')}
                         className="gantt-icon-table__group"
-                        path={record.show ? mdiMenuDown : mdiMenuUp}
+                        path={record.show ? mdiMenuDown : mdiMenuRight}
                       />
                     </div>
                     {record.name}

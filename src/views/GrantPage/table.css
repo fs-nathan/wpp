@@ -1234,3 +1234,12 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
   padding: 20px;
   width: 100%;
 }
+#gantt_table_grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#gantt_table_grid {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
