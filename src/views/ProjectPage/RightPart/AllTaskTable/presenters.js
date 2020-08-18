@@ -12,8 +12,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useLocation } from 'react-use';
-import {Button, Avatar } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 import './style.scss';
+import CustomAvatar from "../../../../components/CustomAvatar";
 
 const SubTitle = ({ className = '', ...props }) =>
   <div
@@ -91,7 +92,7 @@ function AllTaskTable({
                 ) : () => (
                     <div className={"taskMember_title_container"}>
                         <div className={"taskMember_title_user"}>
-                            <Avatar alt={"user avatar"} src={get(memberTask.members, "avatar")} style={{width: "20px", height: "20px"}}/>
+                            <CustomAvatar style={{ width: 20, height: 20, }} src={get(memberTask.members, 'avatar', '')} alt='avatar' />
                             <span>{get(memberTask.member, "name")}</span>
                         </div>
                         <div className={"taskMember_title_summary"}>
