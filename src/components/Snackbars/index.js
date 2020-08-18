@@ -82,7 +82,6 @@ const SnackbarComponent = props => {
     >
       <MySnackbarContentWrapper
         variant={props.variant}
-        // className={props.classes.margin}
         message={props.message}
       />
     </Snackbar>

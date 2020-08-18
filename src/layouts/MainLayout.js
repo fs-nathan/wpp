@@ -442,8 +442,8 @@ function MainLayout({
               <SnackbarComponent
                 open={true}
                 handleClose={() => actionToast(null, "")}
-                vertical="top"
-                horizontal="center"
+                vertical="bottom"
+                horizontal="right"
                 variant={toast.type}
                 message={toast.message}
               />

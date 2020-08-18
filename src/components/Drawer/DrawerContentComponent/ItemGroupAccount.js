@@ -133,6 +133,7 @@ const ItemGroupAccount = props => {
     window.navigator.clipboard.writeText(text);
     handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
   };
+
   const bgColor = props.colors.find(item => item.selected === true);
   const getContent = () => {
     const commonEl = (

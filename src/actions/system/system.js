@@ -63,7 +63,6 @@ export const actionChangeBreadCrumbs = breadCrumbs => {
   };
 };
 export const actionToast = (type, message) => {
-  // type: error or success or null (null is close toast)
   return {
     type: actionTypes.ACTION_TOAST,
     payload: { type, message }
