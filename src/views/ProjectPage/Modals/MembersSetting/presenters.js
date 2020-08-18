@@ -214,7 +214,7 @@ const SettingButton = ({
 }) => {
 
   return (
-    <div onClick={evt => evt.stopPropagation()}>
+    <div onClick={evt => evt.stopPropagation()} style={{marginRight: "20px"}}>
       <IconButton aria-controls="simple-menu" aria-haspopup="true"
         onClick={evt => {
           setAnchorEl(evt.currentTarget);

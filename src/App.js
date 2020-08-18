@@ -9,13 +9,16 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import './App.scss';
 import SnackbarHandler from './components/SnackbarHandler';
+import { makeStyles } from '@material-ui/core/styles';
 import MainLayout from './layouts/MainLayout';
-
+const useStyles = makeStyles({
+  success: { backgroundColor: '#00bd66' },
+});
 function App() {
   const notistackRef = React.createRef();
   const _colors = useSelector(state => state.setting.colors);
   const colors = get(_colors.find(item => item.selected === true), 'color', '#48bb78');
-
+  const classes = useStyles();
   const defaultTheme = React.useMemo(() => createMuiTheme({
     palette: {
       primary: {
@@ -49,8 +52,11 @@ function App() {
             maxSnack={8}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
             disableWindowBlurListener
-            autoHideDuration={20000}
+            autoHideDuration={30000}
             dense
+            classes={{
+              variantSuccess: classes.success
+            }}
           >
             <SnackbarHandler>
               <MainLayout />
