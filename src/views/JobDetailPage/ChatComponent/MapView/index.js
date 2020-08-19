@@ -11,7 +11,7 @@ import styled from 'styled-components';
 import DialogTitleModalMap from './DialogTitleModalMap';
 import CustomMarker from './CustomMarker';
 import './styles.scss';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker, OverlayView } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
 import {
   IconButton, ListItem, ListItemAvatar, ListItemIcon, ListItemText,
@@ -20,6 +20,7 @@ import {
 import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import ColorTypo from 'components/ColorTypo';
 import { withStyles } from '@material-ui/styles';
+import { ic_share_location } from 'assets';
 
 const DialogContent = withStyles(theme => ({
   root: {
@@ -81,11 +82,16 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
   const dispatch = useDispatch();
   let locationArr = useSelector(state => state.taskDetail.location.locations);
   // const locationData = useSelector(state => state.taskDetail.detailTask.location);
+  const [data, setData] = useState(locationData);
+  const [map, setMap] = React.useState(null);
+
+  useEffect(() => {
+    setData(locationData)
+  }, [locationData])
+
   const { address, date_create,
     user_share, time_create, lat = 21, lng = 105,
-    user_share_avatar, room, roles } = locationData;
-  const [center, setCenter] = useState({ lat, lng });
-  const [map, setMap] = React.useState(null)
+    user_share_avatar, room, roles } = data;
 
   function handleClose() {
     setOpen(false)
@@ -93,8 +99,7 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
 
   const handleClickLocation = (data) => {
     // console.log('handleClickLocation', data)
-    const { lat, lng } = data;
-    setCenter({ lat, lng })
+    setData(data)
   }
 
   const containerStyle = {
@@ -104,14 +109,13 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
 
 
   const onLoad = React.useCallback(function callback(map) {
-    console.log('load map')
+    // console.log('load map')
     const bounds = new window.google.maps.LatLngBounds();
     // const iconSize = new window.google.maps.Size(64, 64)
     // setSize(iconSize)
     // bounds.extend(center)
     // map.setZoom(18)
     // map.fitBounds(bounds);
-    // setCenter({ lat, lng })
     setMap(map)
   }, [])
 
@@ -142,20 +146,16 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
           >
             { /* Child components, such as markers, info windows, etc. */}
             <Marker
+              icon={ic_share_location}
               // options={{ icon: { url: user_share_avatar, scaledSize: size, size: size } }}
               position={{ lat, lng }}>
             </Marker>
-            {/* <InfoWindow
-              onLoad={onLoad}
-              position={center}
+            <OverlayView
+              position={{ lat, lng }}
+              mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
             >
-              <CustomMarker
-                lat={lat}
-                lng={lng}
-                position={center}
-                user_share_avatar={user_share_avatar}
-              />
-            </InfoWindow> */}
+              <img className="MapView--userMark" src={user_share_avatar} alt="user"></img>
+            </OverlayView>
           </GoogleMap>
           }
         </LoadScript>

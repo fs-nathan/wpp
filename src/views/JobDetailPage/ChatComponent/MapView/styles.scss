@@ -56,6 +56,12 @@
     padding: 10px 20px;
     cursor: pointer;
   }
+  &--userMark {
+    border-radius: 50%;
+    transform: translate(-52%, -215%);
+    width: 42px;
+    height: 42px;
+  }
 }
 
 .CustomMarker {
