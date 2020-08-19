@@ -107,7 +107,7 @@ const ModalImage = () => {
   const [imageInfo, setImageInfo] = useState(createUser);
   const [rotate, setRotate] = useState(0);
 
-  const { name = '', url } = imagesList[currentImage] || {};
+  const { name = '', url, media_type } = imagesList[currentImage] || {};
   const type = getFileType(name);
   // console.log('imagesList', imagesList)
 
@@ -249,7 +249,7 @@ const ModalImage = () => {
       </DialogTitleModalImage>
       <ContentDialog id="ContentDialog-ImageModal">
         {
-          (FileType(type) === fileType.video) ?
+          (media_type === 1 || FileType(type) === fileType.video) ?
             <ReactPlayer
               className="ModalImage--video"
               url={url} playing
@@ -280,7 +280,7 @@ const ModalImage = () => {
             </>
         }
       </ContentDialog>
-      <FooterDialog fullHeight={FileType(type) === fileType.video}>
+      <FooterDialog fullHeight={media_type === 1 || FileType(type) === fileType.video}>
         <div className="ModalImage--scrollWrap">
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}
@@ -290,7 +290,7 @@ const ModalImage = () => {
           >
             <div className="ModalImage--imagesList">
               {
-                (FileType(type) === fileType.video) ? null :
+                (media_type === 1 || FileType(type) === fileType.video) ? null :
                   imagesList.map((image, index) => {
                     if (FileType(image.type) === fileType.video) return null;
                     return (

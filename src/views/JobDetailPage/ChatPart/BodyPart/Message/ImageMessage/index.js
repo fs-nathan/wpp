@@ -42,8 +42,8 @@ const TitleImg = styled(Typography)`
     }
 `
 
-function ImagePlace(t, file, user_create_avatar, user_create_name, time_create) {
-  if (FileType(getFileType(file.name)) === fileType.video)
+function ImagePlace(t, file, user_create_avatar, user_create_name, time_create, media_type) {
+  if (media_type === 1 || FileType(getFileType(file.name)) === fileType.video)
     return (<div className="FileMessage--videoCover" >
       <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
       <ReactPlayer
@@ -90,6 +90,7 @@ const ImageMessage = ({
   user_create_position,
   user_create_roles = [],
   data_emotion = [],
+  media_type,
   isReply,
   isUploading,
   is_me,
@@ -167,7 +168,7 @@ const ImageMessage = ({
                   {
                     (plusImage > 0 && !isReply && i === 5) ? (
                       <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
-                        {ImagePlace(t, image, user_create_avatar, user_create_name, time_create)}
+                        {ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type)}
                         <div className={clsx("ImageMessage--plusText")}>
                           <div className={clsx("ImageMessage--plusTextNumber")}>
                             +{plusImage}
@@ -176,7 +177,7 @@ const ImageMessage = ({
                       </div>
                     )
                       :
-                      ImagePlace(t, image, user_create_avatar, user_create_name, time_create)
+                      ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type)
                   }
                   {!isReply &&
                     <>
