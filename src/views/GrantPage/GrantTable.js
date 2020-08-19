@@ -1087,7 +1087,6 @@ class DragSortingTable extends React.Component {
           .format("YYYY-MM-DD")
       );
     }
-
     if (this.props.scrollGanttFlag !== prevProps.scrollGanttFlag && this.props.scrollGanttFlag) {
       const { startTimeProject, endTimeProject, saveEndTimeProject } = this.state;
       const { girdInstance } = this.props;

@@ -129,6 +129,7 @@ console.log(Routes);
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },
+  { path: Routes.PROJECT_GRANT, component: () => <GanttPage /> },
   { path: Routes.PROJECTS, component: () => <ProjectGroupPage /> },
   { path: Routes.PROJECT, component: () => <ProjectPage /> },
   { path: Routes.MEMBERS, component: () => <MemberPage /> },
@@ -175,7 +176,6 @@ const routes = [
     path: Routes.CONFIRM_REGISTRATION,
     component: () => <ConfirmRegistration />,
   },
-  { path: Routes.PROJECT_GRANT, component: () => <GanttPage /> },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
   ...(process.env.NODE_ENV !== "production"
     ? [{ path: "/playground", component: () => <Playground /> }]

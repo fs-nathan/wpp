@@ -8,14 +8,14 @@ import { connect } from "react-redux";
 import { ResizableBox } from "react-resizable";
 import "./test.css";
 
-const Circle = ({ left, show, text }) => (
+const Circle = ({ className, left, show, text }) => (
   <div
     style={{
       left,
       backgroundColor: show ? "#fafafa" : "transparent",
       border: `1px solid ${show ? "rgba(59, 59, 59, 0.25)" : "transparent"}`,
     }}
-    className="gantt-dot-circle"
+    className={`gantt-dot-circle ${className ? className : ''}`}
   ></div>
 );
 
@@ -259,7 +259,7 @@ const TimeLine = ({
                 }
               >
                 {!isGroupTask && !isTotalDuration && canEdit && (
-                  <Circle show={showResize} left={9} />
+                  <Circle show={showResize} left={9} className="gantt_dot_right" />
                 )}
               </span>
             </Tooltip>
