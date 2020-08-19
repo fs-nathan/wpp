@@ -197,7 +197,8 @@ async function doPostRemindWithTimeDetail(payload) {
     content: payload.data.content,
     date_remind: payload.data.date_remind + " " + payload.data.time_remind,
     type_remind: payload.data.type_remind,
-    task_id: payload.taskId
+    task_id: payload.taskId,
+    frequency: payload.data.frequency
   };
 
   try {

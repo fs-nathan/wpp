@@ -1,17 +1,15 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Box, Button, MenuItem, Select, TextField, Typography } from '@material-ui/core';
+import { Box, Button, TextField, Typography } from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiPlusCircle } from "@mdi/js";
 import Icon from '@mdi/react';
 import CustomAvatar from 'components/CustomAvatar';
-import CustomModal from 'components/CustomModal';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
 import { findIndex, get, map, pick } from 'lodash';
 import moment from 'moment';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
@@ -19,6 +17,8 @@ import { bgColorSelector } from "../../../selectors";
 import { membersSelector } from "./selectors";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import JobDetailModalWrap from "../../../../JobDetailPage/JobDetailModalWrap";
+import OutlinedInputSelect from "../../../../JobDetailPage/TabPart/ProgressTab/OutlinedInputSelect";
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -34,6 +34,7 @@ const DEFAULT_DATA = {
   notifyTimeType: 0,
   timeBefore: 30,
   content: '',
+  frequency: 1
 };
 
 function UpdatePersonalRemind({
@@ -45,6 +46,24 @@ function UpdatePersonalRemind({
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const [receiverListIndex, setReceiverListIndex] = React.useState([]);
   const [openReceiverDialog, setOpenReceiverDialog] = React.useState(false);
+  const badges = [
+    {
+      value: 0,
+      label: t('LABEL_CHAT_TASK_NHAC_1_LAN'),
+    },
+    {
+      value: 1,
+      label: t('LABEL_CHAT_TASK_THEO_NGAY'),
+    },
+    {
+      value: 2,
+      label: t('LABEL_CHAT_TASK_THEO_TUAN'),
+    },
+    {
+      value: 3,
+      label: t('LABEL_CHAT_TASK_THEO_THANG'),
+    },
+  ]
 
   const handleChangeData = (attName, value) => {
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
@@ -57,6 +76,8 @@ function UpdatePersonalRemind({
       handleChangeData("selectedCategory", remind.category_id);
       handleChangeData("timeBefore", remind.remind_before);
       handleChangeData("selectedDate", remind.date);
+      handleChangeData("frequency", remind.frequency);
+      handleChangeData("selectedRepeatType", remind.type_remind);
       let receiverList = get(remind, "members_assign", []);
       let idxArr = [];
       receiverList.map((item) => {
@@ -84,22 +105,26 @@ function UpdatePersonalRemind({
       dateRemind: `${moment(data.selectedDate).format("YYYY-MM-DD")} ${data.selectedTime}`,
       typeRemind: data.selectedRepeatType,
       remindBefore: data.notifyTimeType === 0 ? data.timeBefore : data.timeBefore * 60,
-      userAssign: receiverListIndex.length !== 0 ? map(userAssign, "id") : []
+      userAssign: receiverListIndex.length !== 0 ? map(userAssign, "id") : [],
+      frequency: data.frequency
     };
     onConfirm(model);
   }
 
   return (
     <>
-      <CustomModal
-        title={t("views.calendar_page.modal.update_personal_remind.title")}
-        open={open}
-        setOpen={setOpen}
-        canConfirm={data.content !== '' && data.selectedDate !== null}
-        confirmRender={() => t('IDS_WP_DONE')}
-        onConfirm={() => handleOnConfirm()}
-        maxWidth='sm'
-        actionLoading={isLoading}
+      <JobDetailModalWrap
+          maxWidth='sm'
+          className="remindModal"
+          title={t("views.calendar_page.modal.update_personal_remind.title")}
+          open={open}
+          setOpen={setOpen}
+          confirmRender={() => t('IDS_WP_DONE')}
+          onConfirm={() => handleOnConfirm()}
+          actionLoading={isLoading}
+          canConfirm={data.content !== '' && data.selectedDate !== null}
+          manualClose
+          onCancle={() => setOpen(false)}
       >
         <Container>
           <Box className="remind_group_container">
@@ -153,46 +178,36 @@ function UpdatePersonalRemind({
                 <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.repeat_remind')} </Typography>
                 <span>*</span>
               </abbr>
-              <Select
-                className="remind_setting_type_selector"
-                fullWidth
-                variant="outlined"
-                value={data.selectedRepeatType}
-                onChange={({ target }) => handleChangeData('selectedRepeatType', target.value)}
-                MenuProps={{
-                  className: "remind_setting_type_selector--paper",
-                  MenuListProps: {
-                    component: Scrollbars,
-                  },
-                  variant: 'menu'
-                }}
-              >
-                <MenuItem value={0} key={`remind_repeat_type_0`}>{t('views.calendar_page.modal.create_personal_remind.one_time')}</MenuItem>
-                <MenuItem value={1} key={`remind_repeat_type_1`}>{t('views.calendar_page.modal.create_personal_remind.daily')}</MenuItem>
-                <MenuItem value={2} key={`remind_repeat_type_2`}>{t('views.calendar_page.modal.create_personal_remind.weekly')}</MenuItem>
-                <MenuItem value={3} key={`remind_repeat_type_3`}>{t('views.calendar_page.modal.create_personal_remind.monthly')}</MenuItem>
-              </Select>
-            </div>
-            <div className={"remind_setting_frequency"}>
-              <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
-                <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.frequency')} </Typography>
-                <span>*</span>
-              </abbr>
-              <OutlinedInput
-                  className={"remind_setting_frequency_input"}
-                  value={data.frequency}
-                  onChange={({target}) => handleChangeData('frequency', target.value)}
-                  endAdornment={
-                    <InputAdornment
-                        position="end"
-                        disableTypography={true}
-                        variant={"filled"}
-                    >
-                      {t("IDS_WP_REMIND_CALENDAR_FREQUENCY")}
-                    </InputAdornment>
-                  }
+              <OutlinedInputSelect
+                  commandSelect={badges}
+                  selectedIndex={data.selectedRepeatType}
+                  setOptions={typeId => { handleChangeData("selectedRepeatType", typeId); }}
               />
             </div>
+            {
+              data.selectedRepeatType !== 0 && (
+                  <div className={"remind_setting_frequency"}>
+                    <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
+                      <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.frequency')} </Typography>
+                      <span>*</span>
+                    </abbr>
+                    <OutlinedInput
+                        className={"remind_setting_frequency_input"}
+                        value={data.frequency}
+                        onChange={({target}) => handleChangeData('frequency', target.value)}
+                        endAdornment={
+                          <InputAdornment
+                              position="end"
+                              disableTypography={true}
+                              variant={"filled"}
+                          >
+                            {t(`IDS_WP_REMIND_CALENDAR_FREQUENCY_${data.selectedRepeatType}`)}
+                          </InputAdornment>
+                        }
+                    />
+                  </div>
+              )
+            }
           </Box>
           <Box className="remind_setting_content">
             <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
@@ -245,7 +260,7 @@ function UpdatePersonalRemind({
             </Box>
           </Box>
         </Container>
-      </CustomModal>
+      </JobDetailModalWrap>
       <AddOfferMemberModal
         setOpen={setOpenReceiverDialog}
         isOpen={openReceiverDialog}

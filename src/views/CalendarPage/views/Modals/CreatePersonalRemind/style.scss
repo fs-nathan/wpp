@@ -30,6 +30,7 @@
     &_container {
       display: inline-flex;
       margin-top: 10px;
+      justify-content: space-between;
     }
 
     &_day {
@@ -100,7 +101,7 @@
     &_frequency {
       display: flex;
       flex-direction: column;
-      width: 20%;
+      width: 22%;
       &_input {
         background: #f8f8f8;
         height: 38px;

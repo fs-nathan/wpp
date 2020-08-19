@@ -80,7 +80,6 @@ const LoginPage = (props) => {
         props.openNoticeModal("ACCOUNT_FREE");
       }
       props.loginSuccess(data);
-      // props.history.push(Routes.HOME);
     } catch (error) {
       setLoginFail(true);
       setIsLoading(false);

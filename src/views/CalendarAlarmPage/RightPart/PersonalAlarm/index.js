@@ -77,6 +77,8 @@ function CalendarPersonalAlarm({
 
     const refreshListPersonalRemind = () => {
       setIsLoading(false);
+      setOpenModal(false);
+      setOpenModalEdit(false);
       doListPersonalRemind({ fromTime, toTime }, false);
     }
     CustomEventListener(CREATE_PERSONAL_REMIND, refreshListPersonalRemind);

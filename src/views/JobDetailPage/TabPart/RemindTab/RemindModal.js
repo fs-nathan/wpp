@@ -75,7 +75,7 @@ const DEFAULT_DATA = {
   date_remind: DEFAULT_DATE_TEXT,
   time_remind: DEFAULT_TIME_TEXT,
   type_remind: REMIND_SCHEDULE_TYPE,
-  frequency: 3,
+  frequency: 1,
   duration: [],
 }
 
@@ -228,6 +228,7 @@ function RemindModal(props) {
   function validate() {
     return data.content
   }
+
   return (
     <JobDetailModalWrap
       maxWidth='sm'
@@ -264,9 +265,13 @@ function RemindModal(props) {
               <div className="remindModal--repeatRemind">
                 <TitleSectionModal label={t('LABEL_CHAT_TASK_NHAC_HEN_DINH_KY')} isRequired />
               </div>
-              <div className="remindModal--frequencyRemind">
-                <TitleSectionModal label={t('views.calendar_page.modal.create_personal_remind.frequency')} isRequired />
-              </div>
+              {
+                data.type_remind !== 0 && (
+                    <div className="remindModal--frequencyRemind">
+                      <TitleSectionModal label={t('views.calendar_page.modal.create_personal_remind.frequency')} isRequired />
+                    </div>
+                )
+              }
             </div>
             <div className="remind-body">
               <div className={"remind-date"}>
@@ -298,22 +303,26 @@ function RemindModal(props) {
                   setOptions={typeId => { handleChangeData("type_remind", typeId); }}
                 />
               </div>
-              <div className={"remind_setting_frequency"}>
-                <OutlinedInput
-                    className={"remind_setting_frequency_input"}
-                    value={data.frequency}
-                    onChange={({target}) => handleChangeData('frequency', target.value)}
-                    endAdornment={
-                      <InputAdornment
-                          position="end"
-                          disableTypography={true}
-                          variant={"filled"}
-                      >
-                        {t("IDS_WP_REMIND_CALENDAR_FREQUENCY")}
-                      </InputAdornment>
-                    }
-                />
-              </div>
+              {
+                data.type_remind !== 0 && (
+                    <div className={"remind_setting_frequency"}>
+                      <OutlinedInput
+                          className={"remind_setting_frequency_input"}
+                          value={data.frequency}
+                          onChange={({target}) => handleChangeData('frequency', target.value)}
+                          endAdornment={
+                            <InputAdornment
+                                position="end"
+                                disableTypography={true}
+                                variant={"filled"}
+                            >
+                              {t(`IDS_WP_REMIND_CALENDAR_FREQUENCY_${data.type_remind}`)}
+                            </InputAdornment>
+                          }
+                      />
+                    </div>
+                )
+              }
             </div>
           </Typography>
           :

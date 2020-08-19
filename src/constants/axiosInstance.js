@@ -2,6 +2,7 @@ import axios from "axios";
 import { openNoticeModal } from "../actions/system/system";
 import store from "../configStore";
 import config from "./apiConstant";
+import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from "constants/constants";
 
 const apiService = axios.create({
   baseURL: config.BASE_API,
@@ -39,10 +40,10 @@ apiService.interceptors.response.use(
   },
   function (error) {
     if (error.response.status === 403 || error.response.status === 401) {
-      localStorage.removeItem("TOKEN");
-      localStorage.removeItem("REFRESH_TOKEN");
-      localStorage.removeItem("GROUP_ACTIVE");
-      window.location.href = '/login';
+      localStorage.removeItem(TOKEN);
+      localStorage.removeItem(REFRESH_TOKEN);
+      localStorage.removeItem(GROUP_ACTIVE);
+      window.location.href = `/login`;
       return error.response;
     }
     return Promise.reject(error);

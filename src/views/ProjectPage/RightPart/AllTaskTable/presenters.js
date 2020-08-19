@@ -92,7 +92,7 @@ function AllTaskTable({
                 ) : () => (
                     <div className={"taskMember_title_container"}>
                         <div className={"taskMember_title_user"}>
-                            <CustomAvatar style={{ width: 20, height: 20, }} src={get(memberTask.members, 'avatar', '')} alt='avatar' />
+                            <CustomAvatar style={{ width: 20, height: 20, }} src={get(memberTask.member, 'avatar', '')} alt='avatar' />
                             <span>{get(memberTask.member, "name")}</span>
                         </div>
                         <div className={"taskMember_title_summary"}>
