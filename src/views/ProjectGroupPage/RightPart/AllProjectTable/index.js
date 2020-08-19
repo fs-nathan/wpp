@@ -49,7 +49,6 @@ function AllProjectTable({
       timeStart,
       timeEnd,
     });
-    // eslint-disable-next-line
   }, [timeType]);
 
   const [sortType, setSortType] = React.useState({});
@@ -83,7 +82,6 @@ function AllProjectTable({
     return () => {
       CustomEventDispose(SORT_PROJECT, reloadListProject);
     }
-    // eslint-disable-next-line
   }, [projectGroupId, timeRange]);
 
   React.useEffect(() => {
@@ -95,12 +93,10 @@ function AllProjectTable({
     return () => {
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
     }
-    // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {
-    doListIcon();
-    // eslint-disable-next-line
+    //doListIcon();
   }, []);
 
   React.useEffect(() => {
@@ -112,7 +108,6 @@ function AllProjectTable({
       ...projects,
       projects: _projects,
     });
-    // eslint-disable-next-line
   }, [projects, filterType, sortType]);
 
   const [openCreate, setOpenCreate] = React.useState(false);

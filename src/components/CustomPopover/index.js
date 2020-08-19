@@ -163,19 +163,19 @@ export const useFilters = () => {
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.WAITING'),
       field: 'waiting',
-      option: { visibility: true, state_name: 'Waiting' },
+      option: { visibility: true, state_code: 0 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.DOING'),
       field: 'doing',
-      option: { visibility: true, state_name: 'Doing' },
+      option: { visibility: true, state_code: 1 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.COMPLETE'),
       field: 'complete',
-      option: { visibility: true, state_name: 'Finished' },
+      option: { visibility: true, state_code: 2 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.EXPIRED'),
       field: 'expired',
-      option: { visibility: true, state_name: 'Expired' },
+      option: { visibility: true, state_code: 3 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.CREATED'),
       field: 'created',

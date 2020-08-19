@@ -17,7 +17,6 @@ function ProjectGroupPage({
 
   React.useLayoutEffect(() => {
     doGetPermissionViewProjects();
-    // eslint-disable-next-line
   }, []);
 
   return (

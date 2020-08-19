@@ -46,11 +46,11 @@ function reducer(state = initialState, action) {
       resetData();
       return {
         project: {
-          filterType: 1,
+          filterType: 0,
           timeType: 5,
         },
         projectGroup: {
-          filterType: 1,
+          filterType: 0,
           timeType: 5,
         }
       }

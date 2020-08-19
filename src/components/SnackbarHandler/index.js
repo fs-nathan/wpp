@@ -10,10 +10,10 @@ export default function SnackbarHandler({ ...props }) {
     function fireSnackbar({ detail: { message, variant } }) {
       switch (variant) {
         case SNACKBAR_VARIANT.SUCCESS:
-          enqueueSnackbar(message, { variant: 'success' , persist: true});
+          enqueueSnackbar(message, { variant: 'success'});
           return;
         case SNACKBAR_VARIANT.ERROR:
-          enqueueSnackbar(message, { variant: 'error' , persist: true});
+          enqueueSnackbar(message, { variant: 'error'});
           return;
         default:
           return;
