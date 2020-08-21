@@ -845,12 +845,7 @@ class DragSortingTable extends React.Component {
         endTimeProject,
         startTimeProject
       );
-      this.fetchTimeNotWork(
-        startTimeProject.format("YYYY-MM-DD"),
-        new moment(startTimeProject)
-          .add(700, girdInstance.unit)
-          .format("YYYY-MM-DD")
-      );
+
       this.setState({
         startTimeProject,
         endTimeProject,
@@ -1072,12 +1067,21 @@ class DragSortingTable extends React.Component {
       ),
     },
   };
-  componentDidUpdate = async (prevProps) => {
+  componentDidUpdate = async (prevProps, prevStates) => {
     const { girdInstance } = this.props
     if (this.props.showHeader !== prevProps.showHeader) {
       this.setState({
         height: this.tableRef.current.clientHeight,
       });
+    }
+    if (this.state.startTimeProject !== prevStates.startTimeProject) {
+      console.log('here')
+      this.fetchTimeNotWork(
+        this.state.startTimeProject.format("YYYY-MM-DD"),
+        new moment(this.state.startTimeProject)
+          .add(700, girdInstance.unit)
+          .format("YYYY-MM-DD")
+      );
     }
     if (this.props.mainCalendar !== prevProps.mainCalendar) {
       this.fetchTimeNotWork(
@@ -1148,7 +1152,7 @@ class DragSortingTable extends React.Component {
       });
     }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
-      const { startTimeProject, endTimeProject } = this.state;
+      const { startTimeProject, endTimeProject, saveEndTimeProject, saveStartTimeProject } = this.state;
       const { girdInstance } = this.props;
       const {
         formatString,
@@ -1161,8 +1165,8 @@ class DragSortingTable extends React.Component {
       } = girdInstance;
       const { start, end } = this.props.filterExportPdf;
       const daysRender = [];
-      const endDate = end ? new moment(end) : new moment(endTimeProject);
-      const startDate = start ? new moment(start) : new moment(startTimeProject);
+      const endDate = !this.props.renderFullDay ? new moment(saveEndTimeProject) : end ? new moment(end) : new moment(endTimeProject);
+      const startDate = !this.props.renderFullDay ? new moment(saveStartTimeProject) : start ? new moment(start) : new moment(startTimeProject);
       let temp = new moment(startDate);
       const maxDayRender = this.props.renderFullDay
         ? endDate.diff(startDate, girdInstance.unit) + 1
@@ -1197,8 +1201,10 @@ class DragSortingTable extends React.Component {
       this.setState({
         daysRender,
         monthArray: allMonth,
-        startTimeProject: start ? new moment(start) : new moment(startTimeProject),
-        endTimeProject: end ? new moment(end).add(1, girdInstance.unit) : new moment(endTimeProject)
+        saveEndTimeProject: endTimeProject,
+        saveStartTimeProject: startTimeProject,
+        startTimeProject: !this.props.renderFullDay ? new moment(saveStartTimeProject) : start ? new moment(start) : new moment(startTimeProject),
+        endTimeProject: !this.props.renderFullDay ? new moment(saveEndTimeProject) : end ? new moment(end).add(1, girdInstance.unit) : new moment(endTimeProject)
       });
     }
     if (this.props.girdType !== prevProps.girdType) {

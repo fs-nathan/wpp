@@ -372,14 +372,14 @@ function GanttChart({
               className="gantt--fromNowLayer__container"
               style={{
                 width: widthFromNowLayer * 30,
-                height: dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
+                height: renderFullDay ? dataSource.length * 32 + 50 : dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
               }}
             >
               <div
                 className="gantt--fromNowLayer__background"
                 style={{
                   width: widthFromNowLayer * 30,
-                  height: dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
+                  height: renderFullDay ? dataSource.length * 32 + 50 : dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
                 }}
               ></div>
               <div className="gantt--fromNowLayer__text">
