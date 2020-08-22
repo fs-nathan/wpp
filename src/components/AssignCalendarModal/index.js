@@ -23,10 +23,7 @@ const AssignCalendarModal = ({
   const [listProjectSchedule, setListProjectSchedule] = useState([]);
   const { t } = useTranslation()
   const params = useParams()
-  useEffect(() => {
-    fetchListSchedule();
-    return () => null;
-  }, []);
+
 
   const fetchListSchedule = async () => {
     try {

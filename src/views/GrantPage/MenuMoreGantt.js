@@ -29,10 +29,6 @@ const MenuMoreGantt = ({
     changeVisibleMenu(false);
   };
   const params = useParams()
-  useEffect(() => {
-    fetchListSchedule();
-    return () => null;
-  }, []);
 
   const fetchListSchedule = async () => {
     try {
