@@ -2,7 +2,7 @@ export const Routes = {
   HOME: "/",
   POST: "/home",
   PROJECTS: "/projects",
-  PROJECT: "/tasks/table",
+  PROJECT: "/projects/task-table",
   DEPARTMENTS: "/users",
   MEMBERS: "/users/detail",
   REPORT: "/report",

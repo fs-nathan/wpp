@@ -22,9 +22,8 @@ function UserPermission({
 }) {
 
   React.useEffect(() => {
-    doPermissionUser();
-    // eslint-disable-next-line
-  }, []);
+    if(open) doPermissionUser();
+  }, [open]);
 
   return (
     <UserPermissionPresenter

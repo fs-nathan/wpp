@@ -255,7 +255,7 @@ function PermissionMemberModal({
           <>
             <Title>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.TITLE")}</Title>
             <Content>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.DESC")}</Content>
-            {permissions.groupPermissions.length === 0
+            {permissions.groupPermissions.length === 0 && !permissions.loading
               ? (
                 <NoData
                   title={() => null}
@@ -269,12 +269,16 @@ function PermissionMemberModal({
               )
               : (
                 <>
-                  <Deselect
-                    onClick={evt => setSelectedValue(undefined)}
-                  >
-                    <Icon path={mdiDeleteOutline} size={1} color='#898989' />
-                    <span>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.REMOVE")}</span>
-                  </Deselect>
+                  {
+                    selectedValue && (
+                      <Deselect
+                        onClick={evt => setSelectedValue(undefined)}
+                      >
+                        <Icon path={mdiDeleteOutline} size={1} color='#898989' />
+                        <span>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.REMOVE")}</span>
+                      </Deselect>
+                    )
+                  }
                   <SliderWrapper>
                     <Slider adaptiveHeight variableWidth infinite={false}
                       nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={permissions.groupPermissions.length < 5} />}

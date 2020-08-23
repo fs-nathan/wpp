@@ -10,6 +10,7 @@ import './style.scss';
 function CreateNewOrUpdateGroupTask({
   open, setOpen,
   curGroupTask,
+  setOpenModal,
   handleCreateOrUpdateGroupTask,
   doReload,
   projectId, timeRange,
@@ -35,6 +36,7 @@ function CreateNewOrUpdateGroupTask({
     setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
     if (activeMask === 3) {
       setOpen(false);
+      setOpenModal(false, true)
       setName('');
       setDescription('');
     }

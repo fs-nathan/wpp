@@ -9,6 +9,10 @@ import ProjectGroupListDeleted from './LeftPart/ProjectGroupListDeleted';
 import AllProjectTable from './RightPart/AllProjectTable';
 import DeletedProjectTable from './RightPart/DeletedProjectTable';
 import { routeSelector } from './selectors';
+import ProjectDetail from "../ProjectPage/LeftPart/ProjectDetail";
+import ProjectMemberSlide from "../ProjectPage/LeftPart/ProjectMemberSlide";
+import GroupTaskSlide from "../ProjectPage/LeftPart/GroupTaskSlide";
+import AllTaskTable from "../ProjectPage/RightPart/AllTaskTable";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -88,6 +92,30 @@ function ProjectGroupPage({
                 }
               />
             )}
+          />
+          <Route
+            path={`${url}/task-table/:projectId/:memberId?`}
+            exact
+            render={props => {
+              return (
+                <TwoColumnsLayout
+                  leftRenders={[
+                    () => <ProjectDetail {...props} />,
+                    ({handleSubSlide}) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide}/>,
+                    ({handleSubSlide}) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide}/>,
+                  ]}
+                  rightRender={
+                    ({expand, handleExpand, handleSubSlide,}) =>
+                      <AllTaskTable
+                        {...props}
+                        expand={expand}
+                        handleExpand={handleExpand}
+                        handleSubSlide={handleSubSlide}
+                      />
+                  }
+                />
+              )
+            }}
           />
         </Switch>
       )}

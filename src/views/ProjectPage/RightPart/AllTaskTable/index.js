@@ -34,6 +34,7 @@ import {
   EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS
 } from 'constants/actions/taskDetail/taskDetailConst';
 import MemberPermissionModal from "../../Modals/MembersSetting/MemberPermission";
+import AssignCalendarModal from "components/AssignCalendarModal";
 
 function AllTaskTable({
   expand, handleExpand, viewPermissions,
@@ -144,6 +145,7 @@ function AllTaskTable({
   const [alertProps, setAlertProps] = React.useState({});
   const [openPermission, setOpenPermission] = React.useState(false);
   const [permissionProps, setPermissionProps] = React.useState({});
+  const [openCalendar, setOpenCalendar] = React.useState(false);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -163,6 +165,9 @@ function AllTaskTable({
       case 'ALERT':
         setOpenAlert(true);
         setAlertProps(props);
+        return;
+      case 'CALENDAR':
+        setOpenCalendar(true);
         return;
       default: return;
     }
@@ -224,6 +229,10 @@ function AllTaskTable({
           setOpen={setOpenPermission}
           project_id={projectId}
           {...permissionProps}
+      />
+      <AssignCalendarModal
+        openModal={openCalendar}
+        setopenModal={setOpenCalendar}
       />
       <AlertModal
         open={openAlert}

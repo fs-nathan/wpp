@@ -86,8 +86,8 @@ function AllTaskTable({
                 subTitle: isNil(memberID) ? () => (
                     <SubTitle>
                         <div className={pathname.includes("table") ? 'view_Project_AllTaskTable___subtitle_active' : ''}>Table</div>
-                        <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'gantt')}`)}>Gantt</div>
-                        <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('table', 'chat')}`)}>Chat</div>
+                        <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('projects/task-table', 'tasks/gantt')}`)}>Gantt</div>
+                        <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('projects/task-table', 'tasks/chat')}`)}>Chat</div>
                     </SubTitle>
                 ) : () => (
                     <div className={"taskMember_title_container"}>
@@ -161,7 +161,7 @@ function AllTaskTable({
                 },
                     {
                         label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.PROJECT_CALENDAR"),
-                        onClick: () => {}
+                        onClick: () => handleOpenModal('CALENDAR', {})
                     },canUpdateProject ? {
                         label: `${get(project.project, 'visibility') ? t("DMH.VIEW.PP.RIGHT.ALL.LABEL.HIDE") : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SHOW")}`,
                         onClick: () => handleShowOrHideProject(project.project),
