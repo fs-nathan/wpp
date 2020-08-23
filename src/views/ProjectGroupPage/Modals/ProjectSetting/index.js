@@ -3,6 +3,7 @@ import { detailStatus } from 'actions/project/setting/detailStatus';
 import { updateStatusCopy } from 'actions/project/setting/updateStatusCopy';
 import { updateStatusDate } from 'actions/project/setting/updateStatusDate';
 import { updateStatusView } from 'actions/project/setting/updateStatusView';
+import { updateNotificationSetting } from "actions/project/setting/updateNotificationSetting";
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import { useTimes } from 'components/CustomPopover';
 import { get } from 'lodash';
@@ -21,7 +22,7 @@ function ProjectSetting({
   doDetailStatus,
   doUpdateStatusCopy, doUpdateStatusDate, doUpdateStatusView,
   doGetPermissionViewDetailProject,
-  doReload,
+  doReload, doUpdateNotificationSetting,
   projectGroupId = undefined,
   localOption,
 }) {
@@ -75,6 +76,7 @@ function ProjectSetting({
       handleUpdateStatusCopy={status => doUpdateStatusCopy({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusDate={status => doUpdateStatusDate({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusView={status => doUpdateStatusView({ projectId: get(curProject, 'id'), status })}
+      handleUpdateNotificationSetting={status => doUpdateNotificationSetting({ projectId: get(curProject, 'id'), status })}
     />
   )
 }
@@ -97,6 +99,7 @@ const mapDispatchToProps = dispatch => {
     doUpdateStatusDate: ({ projectId, status }) => dispatch(updateStatusDate({ projectId, status, })),
     doUpdateStatusCopy: ({ projectId, status }) => dispatch(updateStatusCopy({ projectId, status, })),
     doUpdateStatusView: ({ projectId, status }) => dispatch(updateStatusView({ projectId, status, })),
+    doUpdateNotificationSetting: ({ projectId, status }) => dispatch(updateNotificationSetting({ projectId, status, })),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   }
 };

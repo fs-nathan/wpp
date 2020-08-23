@@ -26,8 +26,8 @@ function CreateProjectGroup({
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
-    url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
-    url_sort: null,
+    url_full: '',
+    url_sort: '',
   });
   const [activeLoading, setActiveLoading] = React.useState(false);
 
@@ -35,8 +35,8 @@ function CreateProjectGroup({
     setName(get(updatedProjectGroup, 'name'));
     setDescription(get(updatedProjectGroup, 'description'));
     setIcon({
-      url_full: get(updatedProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png'),
-      url_sort: get(updatedProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png')
+      url_full: get(updatedProjectGroup, 'icon', ''),
+      url_sort: get(updatedProjectGroup, 'icon', '')
         .replace('https://storage.googleapis.com', ''),
     });
     // eslint-disable-next-line
@@ -93,8 +93,8 @@ function CreateProjectGroup({
       setName('');
       setDescription('');
       setIcon({
-        url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
-        url_sort: null,
+        url_full: '',
+        url_sort: '',
       });
     };
     const fail = () => {

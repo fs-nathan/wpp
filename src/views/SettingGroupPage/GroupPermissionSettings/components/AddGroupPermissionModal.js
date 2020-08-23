@@ -22,7 +22,7 @@ import {
 } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/CssFormControl";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
-import { GroupPermissionSettingsCotnext } from "..";
+import { GroupPermissionSettingsContext } from "..";
 import { permissionModulesAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
 import UpdateGroupPermissionModal from "./UpdateGroupPermissionModal";
@@ -133,7 +133,7 @@ export const GroupPermissionForm = ({
   );
 };
 export default () => {
-  const { setModal, setSelect } = useContext(GroupPermissionSettingsCotnext);
+  const { setModal, setSelect } = useContext(GroupPermissionSettingsContext);
   const [{ status, data }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);

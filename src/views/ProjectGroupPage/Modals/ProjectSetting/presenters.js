@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
+import {UPDATE_NOTIFICATION_SETTING} from "constants/events";
 
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
@@ -31,30 +32,31 @@ const CustomFormControlLabel = ({ className = '', ...props }) =>
   />;
 
 function ProjectSetting({
-  open, setOpen,
-  status, curProject,
-  canChange,
+  open, setOpen, status,
+  curProject, canChange,
   handleUpdateStatusCopy,
   handleUpdateStatusDate,
   handleUpdateStatusView,
-  doReload,
-  projectGroupId, timeRange,
+  handleUpdateNotificationSetting,
+  doReload, projectGroupId, timeRange,
 }) {
   const { t } = useTranslation();
   const [progress, setProgress] = React.useState(0);
   const [copy, setCopy] = React.useState(0);
   const [view, setView] = React.useState(0);
+  const [notification, setNotification] = React.useState(1);
   const [loading, setLoading] = React.useState(false);
   const [mask, setMask] = React.useState(-1);
 
   React.useEffect(() => {
-    setLoading((mask === 3 || mask === -1) ? false : true);
+    setLoading((!(mask === 3 || mask === -1)));
   }, [mask]);
 
   React.useEffect(() => {
     setProgress(parseInt(get(status.status, 'date', 0)));
     setCopy(get(status.status, 'copy', false) === true ? 1 : 0);
     setView(parseInt(get(status.status, 'view', 0)));
+    setNotification(get(status.status, 'notification', true) === true ? 1 : 0);
   }, [status]);
 
   React.useEffect(() => {
@@ -64,16 +66,20 @@ function ProjectSetting({
     CustomEventListener(UPDATE_STATUS_COPY.SUCCESS, doReload);
     CustomEventListener(UPDATE_STATUS_DATE.SUCCESS, doReload);
     CustomEventListener(UPDATE_STATUS_VIEW.SUCCESS, doReload);
+    CustomEventListener(UPDATE_NOTIFICATION_SETTING.SUCCESS, doReload);
     CustomEventListener(UPDATE_STATUS_COPY.FAIL, fail);
     CustomEventListener(UPDATE_STATUS_DATE.FAIL, fail);
     CustomEventListener(UPDATE_STATUS_VIEW.FAIL, fail);
+    CustomEventListener(UPDATE_NOTIFICATION_SETTING.FAIL, fail);
     return () => {
       CustomEventDispose(UPDATE_STATUS_COPY.SUCCESS, doReload);
       CustomEventDispose(UPDATE_STATUS_DATE.SUCCESS, doReload);
       CustomEventDispose(UPDATE_STATUS_VIEW.SUCCESS, doReload);
+      CustomEventDispose(UPDATE_NOTIFICATION_SETTING.SUCCESS, doReload);
       CustomEventDispose(UPDATE_STATUS_COPY.FAIL, fail);
       CustomEventDispose(UPDATE_STATUS_DATE.FAIL, fail);
       CustomEventDispose(UPDATE_STATUS_VIEW.FAIL, fail);
+      CustomEventDispose(UPDATE_NOTIFICATION_SETTING.FAIL, fail);
     }
     // eslint-disable-next-line
   }, [curProject, projectGroupId, timeRange]);
@@ -151,7 +157,12 @@ function ProjectSetting({
         <StyledFormControl component='fieldset' fullWidth>
           <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_NOTIFICATION_SETTING")}</TitleFormLabel>
           <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION")}</StyledFormLabel>
-          <RadioGroup aria-label='progress' name='progress' value={1}>
+          <RadioGroup aria-label='progress' name='progress' value={notification}
+            onChange={evt => {
+              handleUpdateNotificationSetting(parseInt(evt.target.value));
+              setMask(0);
+            }}
+          >
             <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_ON")} />
             <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_OFF")} />
           </RadioGroup>

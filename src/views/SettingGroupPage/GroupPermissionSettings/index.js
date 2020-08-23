@@ -6,7 +6,7 @@ import { groupPermissionAttr } from "./contants.js";
 import Left from "./Left";
 import { settingGroupPermission } from "./redux/index.js";
 import Right from "./Right/index.js";
-export const GroupPermissionSettingsCotnext = React.createContext({});
+export const GroupPermissionSettingsContext = React.createContext({});
 const GroupPermissionSettings = () => {
   const [{ select, isDefault }, setSelect] = useState({
     select: undefined,
@@ -111,7 +111,7 @@ const GroupPermissionSettings = () => {
     setSelect({ select, isDefault });
   };
   return (
-    <GroupPermissionSettingsCotnext.Provider
+    <GroupPermissionSettingsContext.Provider
       value={{
         select,
         setSelect: handleSelect,
@@ -135,10 +135,10 @@ const GroupPermissionSettings = () => {
         <TwoColumnsLayout
           leftRenders={[() => <Left />]}
           rightRender={() => <Right />}
-        ></TwoColumnsLayout>
+        />
         {modal}
       </>
-    </GroupPermissionSettingsCotnext.Provider>
+    </GroupPermissionSettingsContext.Provider>
   );
 };
 

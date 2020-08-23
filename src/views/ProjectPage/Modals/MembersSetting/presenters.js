@@ -438,32 +438,38 @@ function MemberSetting({
                 horizontal: 'right',
               }}
             >
-              <CustomMenuItem
-                selected={get(curMemberSetting, 'join_task_status_code') === 1}
-                onClick={evt => {
-                  setAnchorEl(null);
-                  handleUpdateStateJoinTask(curMemberSetting, 1);
-                }}
-              >
-                <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")}
-              </CustomMenuItem>
-              <CustomMenuItem
-                selected={get(curMemberSetting, 'join_task_status_code') === 0}
-                onClick={evt => {
-                  setAnchorEl(null);
-                  handleUpdateStateJoinTask(curMemberSetting, 0);
-                }}
-              >
-                <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")}
-              </CustomMenuItem>
-              <CustomMenuItem
-                onClick={evt => {
-                  setAnchorEl(null);
-                  handleAssignMemberToAllTask(curMemberSetting);
-                }}
-              >
-                <Icon path={mdiAccountConvert} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PIC")}
-              </CustomMenuItem>
+              {
+                get(curMemberSetting, 'is_in_group', false) && (
+                    <>
+                      <CustomMenuItem
+                          selected={get(curMemberSetting, 'join_task_status_code') === 1}
+                          onClick={evt => {
+                            setAnchorEl(null);
+                            handleUpdateStateJoinTask(curMemberSetting, 1);
+                          }}
+                      >
+                        <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")}
+                      </CustomMenuItem>
+                      <CustomMenuItem
+                          selected={get(curMemberSetting, 'join_task_status_code') === 0}
+                          onClick={evt => {
+                            setAnchorEl(null);
+                            handleUpdateStateJoinTask(curMemberSetting, 0);
+                          }}
+                      >
+                        <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")}
+                      </CustomMenuItem>
+                      <CustomMenuItem
+                          onClick={evt => {
+                            setAnchorEl(null);
+                            handleAssignMemberToAllTask(curMemberSetting);
+                          }}
+                      >
+                        <Icon path={mdiAccountConvert} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PIC")}
+                      </CustomMenuItem>
+                    </>
+                )
+              }
               {get(curMemberSetting, 'can_ban', false) && (
                 <CustomMenuItem
                   onClick={evt => {

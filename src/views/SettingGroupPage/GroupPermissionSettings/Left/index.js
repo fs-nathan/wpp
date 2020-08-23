@@ -25,7 +25,7 @@ import { DraggableList } from "views/SettingGroupPage/TablePart/SettingGroupRigh
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
-import { GroupPermissionSettingsCotnext } from "..";
+import { GroupPermissionSettingsContext } from "..";
 import AddGroupPermissionModal from "../components/AddGroupPermissionModal";
 import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
 import { ItemMenu } from "../components/ItemMenu";
@@ -35,7 +35,7 @@ import "./index.css";
 
 const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
   const { t } = useTranslation();
-  const { setModal } = useContext(GroupPermissionSettingsCotnext);
+  const { setModal } = useContext(GroupPermissionSettingsContext);
   const options = useMemo(() => {
     return [
       { key: "edit", label: t("Chỉnh sửa") },
@@ -320,7 +320,7 @@ export default () => {
     setModal,
     groupPermissionList,
     groupPermissionDefaultList,
-  } = useContext(GroupPermissionSettingsCotnext);
+  } = useContext(GroupPermissionSettingsContext);
   return (
     <Left
       groupPermissionList={groupPermissionList}

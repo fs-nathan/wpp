@@ -9,7 +9,7 @@ import { emptyArray } from "views/JobPage/contants/defaultValue";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
-import { GroupPermissionSettingsCotnext } from "..";
+import { GroupPermissionSettingsContext } from "..";
 import { groupPermissionAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
 import {
@@ -52,7 +52,7 @@ export const GroupPermissionModal = ({
   );
 };
 export default ({ item }) => {
-  const { setModal } = useContext(GroupPermissionSettingsCotnext);
+  const { setModal } = useContext(GroupPermissionSettingsContext);
   const selectDetailGroupPermission = useMemo(() => {
     return (state) =>
       settingGroupPermission.selectors.detailGroupPermissionSelector(

@@ -13,11 +13,11 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexWrap: 'wrap',
   },
-  textField: {
+  textField: props => ({
     marginLeft: theme.spacing(0),
     marginRight: theme.spacing(1),
-    width: '20ch',
-  },
+    width: `${props.width}ch`,
+  }),
 }));
 
 const listTimeSelect = [];
@@ -28,10 +28,11 @@ for (let index = 0; index < 24; index++) {
     listTimeSelect.push(`${index}:00`, `${index}:30`)
 }
 
-function TimePicker({ value, onChange }) {
-  const classes = useStyles();
+function TimePicker({ value, onChange, width = 20 }) {
+  const classes = useStyles({width: width});
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
+  const anchorRef = React.useRef(null);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -42,8 +43,8 @@ function TimePicker({ value, onChange }) {
   };
 
   const beforeMaskedValueChange = (newState, oldState, userInput) => {
-    var { value } = newState;
-    var selection = newState.selection;
+    let { value } = newState;
+    let selection = newState.selection;
 
     let timeArr = value.split(":");
     let hour = parseInt(timeArr[0]);
@@ -79,6 +80,7 @@ function TimePicker({ value, onChange }) {
         beforeMaskedValueChange={beforeMaskedValueChange}
         children={() => (
           <TextField
+            ref={anchorRef}
             className={classes.textField}
             variant="outlined"
             size={'small'}
@@ -101,18 +103,17 @@ function TimePicker({ value, onChange }) {
         open={open}
         onClose={handleClose}
         keepMounted
-        anchorEl={anchorEl}
+        anchorEl={anchorRef.current}
         PaperProps={{
           className: "comp_TimePicker__dropdownList",
           style: {
             maxHeight: 120,
-            width: '20ch'
+            width: `${width}ch`
           },
           component: Scrollbars
         }}
         transformOrigin={{
           vertical: -42,
-          horizontal: 112
         }}
         variant={'menu'}
       >

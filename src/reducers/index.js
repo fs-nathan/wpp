@@ -284,6 +284,9 @@ import updateStatusDate, {
 import updateStatusView, {
   initialState as updateStatusViewInitialState,
 } from "./project/setting/updateStatusView";
+import updateNotificationSetting, {
+  initialState as updateNotificationSettingInitialState,
+} from "./project/setting/updateNotificationSetting";
 import showProject, {
   initialState as showProjectInitialState,
 } from "./project/showProject";
@@ -544,6 +547,7 @@ const rootReducer = combineReducers({
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
+      updateNotificationSetting,
     }),
   }),
   groupTask: combineReducers({
@@ -726,6 +730,7 @@ export const DEFAULT_STATE = {
       updateStatusDate: updateStatusDateInitialState,
       updateStatusCopy: updateStatusCopyInitialState,
       updateStatusView: updateStatusViewInitialState,
+      updateNotificationSetting: updateNotificationSettingInitialState,
     },
   },
   groupTask: {

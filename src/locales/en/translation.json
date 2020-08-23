@@ -384,7 +384,6 @@
               "PRIO": "Priority"
             },
             "SETTING": "Settings",
-            "PROJECT_CALENDAR": "Project calendar",
             "EDIT": "Edit",
             "HIDE": "Hide",
             "SHOW": "Cancel hide",
@@ -550,6 +549,7 @@
               "CREATE": "+ Create task",
               "SETTING": "Project settings",
               "HIDE": "Hide project",
+              "PROJECT_CALENDAR": "Project calendar",
               "SHOW": "Cancel hide project",
               "NO_DATA": "No task was created. Let click + CREATE TASK to start of your management project and tasks."
             },
@@ -776,7 +776,7 @@
           "choose_category": "Choose group",
           "choose_day": "Choose day",
           "choose_time": "Choose time",
-          "repeat_remind": "Repeat remind type",
+          "repeat_remind": "Repeat type",
           "one_time": "One time",
           "daily": "Daily remind",
           "weekly": "Weekly remind",

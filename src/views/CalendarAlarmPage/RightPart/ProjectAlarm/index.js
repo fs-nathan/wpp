@@ -1,7 +1,7 @@
 import { listRemindProject } from "actions/calendar/alarmCalendar/listRemindProject";
 import { listProjectBasicInfo } from "actions/project/listBasicInfo";
 import { useLocalStorage } from "hooks";
-import get from "lodash/get";
+import { get, isNil } from "lodash";
 import moment from "moment";
 import React from 'react';
 import { connect } from 'react-redux';
@@ -43,8 +43,8 @@ function CalendarProjectAlarm({
   }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(get(timeRange, 'startDate') ?? moment().startOf('year')).format("YYYY-MM-DD");
-    let toTime = moment(get(timeRange, 'endDate') ?? moment().endOf('year')).format("YYYY-MM-DD");
+    let fromTime = !isNil(get(timeRange, 'startDate')) ? moment(get(timeRange, 'startDate')).format("YYYY-MM-DD") : undefined;
+    let toTime = !isNil(get(timeRange, 'endDate')) ? moment(get(timeRange, 'endDate')).format("YYYY-MM-DD") : undefined;
     doListRemindProject({ fromTime, toTime }, false);
   }, [doListRemindProject, timeRange]);
 

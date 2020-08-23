@@ -1,7 +1,7 @@
 import { deleteTrashProject } from 'actions/project/deleteTrashProject';
 import { listDeletedProject } from 'actions/project/listDeletedProject';
 import { restoreTrashProject } from 'actions/project/restoreTrashProject';
-import { get, reverse, sortBy } from 'lodash';
+import { get, reverse, sortBy, isNil, filter } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { routeSelector } from '../../selectors';
@@ -32,6 +32,11 @@ function DeletedProjectTable({
 
   React.useEffect(() => {
     let _projects = [...projects.projects];
+    if(!isNil(groupID)) {
+      _projects = filter(_projects, function (project) {
+        return project.group_id === groupID;
+      });
+    }
     _projects = sortBy(_projects, [
       o => get(o, sortType.col)
     ])
@@ -40,7 +45,7 @@ function DeletedProjectTable({
       ...projects,
       projects: _projects
     });
-  }, [projects, sortType]);
+  }, [projects, sortType, groupID]);
 
   return (
     <DeletedProjectTablePresenter

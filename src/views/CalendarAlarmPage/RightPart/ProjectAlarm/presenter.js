@@ -31,7 +31,7 @@ function CalendarProjectAlarmPresenter({
   const [searchPattern, setSearchPattern] = React.useState('');
   const [timeAnchor, setTimeAnchor] = React.useState();
   const [filteredRemind, setFilteredRemind] = React.useState(projectReminds);
-  const [filterdListHaveRemind, setFilteredListHaveRemind] = React.useState(projectReminds);
+  const [filteredListHaveRemind, setFilteredListHaveRemind] = React.useState(projectReminds);
   const [selectedRemind, setSelectedRemind] = React.useState();
   const [remindCheckBoxList, setRemindCheckBoxList] = React.useState([]);
   const [selectedCheckBox, setSelectedCheckBox] = React.useState();
@@ -81,12 +81,13 @@ function CalendarProjectAlarmPresenter({
   React.useEffect(() => {
     if (projectReminds.data.length !== 0 && projects.data.length !== 0) {
       let checkBoxList = [];
-      let projectIdList = map(projectReminds.data, "id");
+      //let projectIdList = map(projectReminds.data, "id");
       let filtered = [];
       let idx = 0;
       projects.data.map((item) => {
         if (Array.isArray(item.projects) && item.projects.length !== 0) {
-          let _projects = filter(item.projects, project => projectIdList.indexOf(project.id) >= 0);
+          //let _projects = filter(item.projects, project => projectIdList.indexOf(project.id) >= 0);
+          let _projects = item.projects;
           if (_projects.length !== 0) {
             filtered = filtered.concat({ name: item.name, projects: _projects });
             let checkBox = Array.from(_projects, (v, k) => ({
@@ -119,13 +120,13 @@ function CalendarProjectAlarmPresenter({
 
   React.useEffect(() => {
     let filtered = [];
-    let trueStates = filter(remindCheckBoxList, item => item.state === true, []);
+    let trueStates = filter(remindCheckBoxList, item => item.state === true);
     trueStates.map((item) => {
       let data = filter(projectHaveRemindSession.data, data => data.id === item.id);
       filtered = filtered.concat(data);
     });
     setFilteredRemind({
-      ...filterdListHaveRemind,
+      ...filteredListHaveRemind,
       data: filtered
     });
   }, [remindCheckBoxList, selectedCheckBox]);
@@ -333,7 +334,7 @@ function CalendarProjectAlarmPresenter({
               <Icon
                 className="views_FilterViewLayout__headerIcon"
                 path={mdiFilterOutline}
-              ></Icon>
+              />
               <Box className="views_FilterViewLayout__headerTitle">
                 {t("IDS_WP_FILTER")}
               </Box>
@@ -344,70 +345,72 @@ function CalendarProjectAlarmPresenter({
               </IconButton>
             </div>
           </Box>
-          <div className={"views_FilterViewLayout__container"}>
-            <div className={"views_FilterViewLayout__title"}>
-              <div>{t('IDS_WP_FILTER_BY_PROJECT')}</div>
-              <div>{t('IDS_WP_FILTER_BY_PROJECT_DESCRIPTION')}</div>
+          <Scrollbars autoHide autoHideTimeout={500}>
+            <div className={"views_FilterViewLayout__container"}>
+              <div className={"views_FilterViewLayout__title"}>
+                <div>{t('IDS_WP_FILTER_BY_PROJECT')}</div>
+                <div>{t('IDS_WP_FILTER_BY_PROJECT_DESCRIPTION')}</div>
+              </div>
+              <div className="views_FilterViewLayout__searchBox">
+                <SearchInput
+                    fullWidth
+                    placeholder={t("IDS_WP_INPUT_SEARCH_PROJECT")}
+                    value={searchProject}
+                    onChange={evt => setSearchProject(evt.target.value)}
+                />
+              </div>
+              <Box className="views_FilterViewLayout__contentContainer">
+                {
+                  projectHaveRemind.length !== 0 &&
+                  projectHaveRemind.map((item, index) => {
+                    return (
+                        <ExpansionPanel
+                            key={`project-remind-key-${index}`}
+                            defaultExpanded
+                            square={false}
+                            className="views_FilterViewLayout__contentPanel"
+                        >
+                          <ExpansionPanelSummary
+                              key={`project-remind-expansionPanel-${index}`}
+                              expandIcon={<Icon path={mdiMenuUp} size={1} />}
+                              id="panel1bh-header"
+                              className="views_FilterViewLayout__contentPanel_Summary"
+                          >
+                            <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>
+                              {item.name}
+                            </ColorTypo>
+                          </ExpansionPanelSummary>
+                          <MuiExpansionPanelDetails
+                              key={`project-remind-muiExpansionPanel-${index}`}
+                              className="views_FilterViewLayout__contentPanel_detail"
+                          >
+                            {
+                              item.projects.map((project, index) => {
+                                return (
+                                    <FormControlLabel
+                                        key={`project-checkBox-${index}-${project.id}`}
+                                        control={
+                                          <Checkbox
+                                              color="primary"
+                                              checked={filter(remindCheckBoxList, cbx => cbx.id === project.id, [{ state: false }])[0].state}
+                                              onChange={({ target }) => handleCheckBoxChange(target.checked, project.id)}
+                                              name={`checkBox-${index}-${project.id}`}
+                                              key={`checkBox-${index}-${project.id}`}
+                                          />
+                                        }
+                                        label={project.name}
+                                    />
+                                )
+                              })
+                            }
+                          </MuiExpansionPanelDetails>
+                        </ExpansionPanel>
+                    )
+                  })
+                }
+              </Box>
             </div>
-            <div className="views_FilterViewLayout__searchBox">
-              <SearchInput
-                fullWidth
-                placeholder={t("IDS_WP_INPUT_SEARCH_PROJECT")}
-                value={searchProject}
-                onChange={evt => setSearchProject(evt.target.value)}
-              />
-            </div>
-            <Box className="views_FilterViewLayout__contentContainer">
-              {
-                projectHaveRemind.length !== 0 &&
-                projectHaveRemind.map((item, index) => {
-                  return (
-                    <ExpansionPanel
-                      key={`project-remind-key-${index}`}
-                      defaultExpanded
-                      square={false}
-                      className="views_FilterViewLayout__contentPanel"
-                    >
-                      <ExpansionPanelSummary
-                        key={`project-remind-expansionPanel-${index}`}
-                        expandIcon={<Icon path={mdiMenuUp} size={1} />}
-                        id="panel1bh-header"
-                        className="views_FilterViewLayout__contentPanel_Summary"
-                      >
-                        <ColorTypo style={{ color: '#828282', fontWeight: 500 }}>
-                          {item.name}
-                        </ColorTypo>
-                      </ExpansionPanelSummary>
-                      <MuiExpansionPanelDetails
-                        key={`project-remind-muiExpansionPanel-${index}`}
-                        className="views_FilterViewLayout__contentPanel_detail"
-                      >
-                        {
-                          item.projects.map((project, index) => {
-                            return (
-                              <FormControlLabel
-                                key={`project-checkBox-${index}-${project.id}`}
-                                control={
-                                  <Checkbox
-                                    color="primary"
-                                    checked={filter(remindCheckBoxList, cbx => cbx.id === project.id, [{ state: false }])[0].state}
-                                    onChange={({ target }) => handleCheckBoxChange(target.checked, project.id)}
-                                    name={`checkBox-${index}-${project.id}`}
-                                    key={`checkBox-${index}-${project.id}`}
-                                  />
-                                }
-                                label={project.name}
-                              />
-                            )
-                          })
-                        }
-                      </MuiExpansionPanelDetails>
-                    </ExpansionPanel>
-                  )
-                })
-              }
-            </Box>
-          </div>
+          </Scrollbars>
         </Drawer>
       </React.Fragment>
 

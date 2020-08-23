@@ -159,6 +159,7 @@ function CreatePersonalRemind({
               <TimePicker
                 value={data.selectedTime}
                 onChange={(value) => handleChangeData('selectedTime', value)}
+                width={15}
               />
             </div>
             <div className="remind_setting_type">

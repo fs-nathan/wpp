@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { get } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
-import { GroupPermissionSettingsCotnext } from "..";
+import { GroupPermissionSettingsContext } from "..";
 import { groupPermissionAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
 import { SetPermissionModal } from "./SetPermissionModal";
@@ -24,7 +24,7 @@ const UpdateGroupPermissionForm = ({ initialValues, children, onSubmit }) => {
   );
 };
 export default ({ item }) => {
-  const { setModal } = useContext(GroupPermissionSettingsCotnext);
+  const { setModal } = useContext(GroupPermissionSettingsContext);
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const onClose = useCallback(() => {
     setModal(null);

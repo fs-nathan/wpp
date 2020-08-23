@@ -24,6 +24,7 @@ const NOTIFICATION_LOVE_POST = 34;
 const NOTIFICATION_COMMENT_IN_OFFER = 35;
 const NOTIFICATION_TASK_STARTED = 36;
 const NOTIFICATION_TASK_ENDED = 37;
+const NOTIFICATION_ORDER_APPROVED = 38;
 
 const NotificationItemCommon = props => {
   const { data_notification } = props.item;
@@ -128,6 +129,7 @@ const NotificationItemCommon = props => {
       case NOTIFICATION_LIKE_POST:
       case NOTIFICATION_TASK_STARTED:
       case NOTIFICATION_TASK_ENDED:
+      case NOTIFICATION_ORDER_APPROVED:
         props.history.push({ pathname: data_notification.url_redirect });
         break;
       case NOTIFICATION_REMIND:

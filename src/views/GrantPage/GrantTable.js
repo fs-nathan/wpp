@@ -779,7 +779,6 @@ class DragSortingTable extends React.Component {
         start_label: time && time.start_label,
         start_time: getFormatStartStringFromObject(time),
         end_time: getFormatEndStringFromObject(time),
-        start_label: time && time.start_label,
         end_label: time && time.end_label,
         duration_actual: duration_plan.value,
         complete: task.complete,

@@ -22,6 +22,7 @@ import { Context as CalendarAlarmContext } from '../../index';
 import { bgColorSelector, personalRemindCategoriesSelector, personalRemindSelector } from "../../selectors";
 import "../styles.scss";
 import CalendarPersonalAlarmPresenter from './presenter';
+import {isNil} from "lodash";
 
 function CalendarPersonalAlarm({
   bgColor, doListPersonalRemind,
@@ -71,8 +72,8 @@ function CalendarPersonalAlarm({
   }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(get(timeRange, 'startDate') ?? moment().startOf('year')).format("YYYY-MM-DD");
-    let toTime = moment(get(timeRange, 'endDate') ?? moment().endOf('year')).format("YYYY-MM-DD");
+    let fromTime = !isNil(get(timeRange, 'startDate')) ? moment(get(timeRange, 'startDate')).format("YYYY-MM-DD") : undefined;
+    let toTime = !isNil(get(timeRange, 'endDate')) ? moment(get(timeRange, 'endDate')).format("YYYY-MM-DD") : undefined;
     doListPersonalRemind({ fromTime, toTime }, false);
 
     const refreshListPersonalRemind = () => {

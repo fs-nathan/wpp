@@ -1,5 +1,5 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { Box, Button, TextField, Typography } from '@material-ui/core';
+import {Box, Button, FormControl, TextField, Typography} from '@material-ui/core';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiPlusCircle } from "@mdi/js";
 import Icon from '@mdi/react';
@@ -7,7 +7,7 @@ import CustomAvatar from 'components/CustomAvatar';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
 import { listTimeSelect } from 'components/TimeSelect';
-import { findIndex, get, map, pick } from 'lodash';
+import {find, findIndex, get, map, pick} from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -19,12 +19,18 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import JobDetailModalWrap from "../../../../JobDetailPage/JobDetailModalWrap";
 import OutlinedInputSelect from "../../../../JobDetailPage/TabPart/ProgressTab/OutlinedInputSelect";
+import MySelect from "../../../../../components/MySelect";
 
 const Container = ({ className = '', ...props }) =>
   <div
     className={`view_CreatPeronsalRemind_container ${className}`}
     {...props}
   />;
+const StyledFormControl = ({ className = '', ...props }) =>
+    <FormControl
+        className={`view_ProjectGroup_CreateNew_Project_Modal___form-control ${className}`}
+        {...props}
+    />;
 
 const DEFAULT_DATA = {
   selectedTime: listTimeSelect[16],
@@ -128,15 +134,21 @@ function UpdatePersonalRemind({
       >
         <Container>
           <Box className="remind_group_container">
-            <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
-              <Typography component={'span'}> {t('views.calendar_page.modal.create_personal_remind.choose_category')} </Typography>
-              <span>*</span>
-            </abbr>
-            <CustomSelect
-              value={data.selectedCategory}
-              options={map(remindCategories, (group) => ({ label: get(group, "name"), value: get(group, "id") }))}
-              onChange={(group) => handleChangeData("selectedCategory", group.value)}
-            />
+            <StyledFormControl fullWidth>
+              <MySelect
+                  label={t('views.calendar_page.modal.create_personal_remind.choose_category')}
+                  options={map(remindCategories, (group) => ({
+                    label: get(group, 'name'),
+                    value: get(group, 'id'),
+                  }))}
+                  value={{
+                    label: get(find(remindCategories, { id: data.selectedCategory }), 'name'),
+                    value: data.selectedCategory,
+                  }}
+                  isRequired={true}
+                  onChange={({ value: GroupId }) => handleChangeData("selectedCategory",GroupId)}
+              />
+            </StyledFormControl>
             <Typography component={'p'} className="create_remind_description"> {t('views.calendar_page.modal.create_personal_remind.description')} </Typography>
           </Box>
           <Box className="remind_setting_container">
@@ -171,6 +183,7 @@ function UpdatePersonalRemind({
                 className="remind_setting_timeSelector"
                 value={data.selectedTime}
                 onChange={(value) => handleChangeData('selectedTime', value)}
+                width={15}
               />
             </div>
             <div className="remind_setting_type">

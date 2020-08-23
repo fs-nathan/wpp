@@ -61,6 +61,7 @@ import { DETAIL_STATUS } from "../constants/actions/project/setting/detailStatus
 import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateStatusCopy";
 import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
 import { UPDATE_STATUS_VIEW } from "../constants/actions/project/setting/updateStatusView";
+import { UPDATE_NOTIFICATION_SETTING } from "../constants/actions/project/setting/updateNotificationSetting";
 import { SHOW_PROJECT } from "../constants/actions/project/showProject";
 import { SORT_PROJECT } from "../constants/actions/project/sortProject";
 import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
@@ -209,6 +210,7 @@ import { detailStatus } from "./project/setting/detailStatus";
 import { updateStatusCopy } from "./project/setting/updateStatusCopy";
 import { updateStatusDate } from "./project/setting/updateStatusDate";
 import { updateStatusView } from "./project/setting/updateStatusView";
+import { updateNotificationSetting } from "./project/setting/updateNotificationSetting";
 import { showProject } from "./project/showProject";
 import { sortProject } from "./project/sortProject";
 import { updateGroupPermissionMember } from "./project/updateGroupPermissionMember";
@@ -344,6 +346,7 @@ function* rootSaga() {
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
   yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
   yield takeEvery(UPDATE_STATUS_VIEW, updateStatusView);
+  yield takeEvery(UPDATE_NOTIFICATION_SETTING, updateNotificationSetting);
   yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
