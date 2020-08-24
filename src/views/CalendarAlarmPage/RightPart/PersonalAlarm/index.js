@@ -5,7 +5,16 @@ import { deletePersonalRemind } from "actions/calendar/alarmCalendar/deletePerso
 import { listPersonalRemind } from "actions/calendar/alarmCalendar/listPersonalRemind";
 import { updatePersonalRemind } from "actions/calendar/alarmCalendar/updatePersonalRemind";
 import AlertModal from "components/AlertModal";
-import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
+import {
+  CREATE_PERSONAL_REMIND,
+  CREATE_PERSONAL_REMIND_CATEGORY,
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_PERSONAL_REMIND,
+  DELETE_PERSONAL_REMIND_CATEGORY,
+  UPDATE_PERSONAL_REMIND,
+  UPDATE_PERSONAL_REMIND_CATEGORY
+} from "constants/events";
 import { useLocalStorage } from "hooks";
 import get from "lodash/get";
 import moment from "moment";
@@ -28,7 +37,7 @@ function CalendarPersonalAlarm({
   bgColor, doListPersonalRemind,
   personalReminds, remindCategories,
   doCreatePersonalRemind, doUpdatePersonalRemind,
-  doDeletePersonalRemind, doCreatePersonalRemindCategory
+  doDeletePersonalRemind, doCreatePersonalRemindCategory,
 }) {
 
   const { t } = useTranslation();
@@ -109,7 +118,6 @@ function CalendarPersonalAlarm({
       });
     }
   }, [categoryID, personalReminds]);
-
 
   function handleOpenModal(type, data) {
     switch (type) {

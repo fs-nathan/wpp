@@ -252,11 +252,10 @@ export const TimeRangePopover = ({
         <MainBar>
           <SubHeader>
             <span>{t("TIME_RANGE_POPOVER_TIME_CHOOSEN")}</span>
-            <IconButton>
+            <IconButton onClick={evt => setAnchorEl(null)} style={{marginRight: "10px"}}>
               <Icon
                 path={mdiClose}
                 size={1}
-                onClick={evt => setAnchorEl(null)}
               />
             </IconButton>
           </SubHeader>

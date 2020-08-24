@@ -9,7 +9,7 @@ import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
 import { useMountedState } from "react-use";
-import CalendarAlramLeftPart from "./LeftPart";
+import CalendarAlarmLeftPart from "./LeftPart";
 import routes from "./routes";
 import { personalRemindCategoriesSelector } from "./selectors";
 
@@ -54,7 +54,7 @@ function CalendarAlarmPage({
     <TwoColumnsLayout
       leftRenders={[
         () =>
-          <CalendarAlramLeftPart
+          <CalendarAlarmLeftPart
             personalRemindCategories={personalRemindCategories}
             handleSortPersonalAlarm={handleSortPersonalAlarm}
             permissions={permissions}

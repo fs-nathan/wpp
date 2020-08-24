@@ -20,14 +20,10 @@ const getItemStyle = (isDragging, draggableStyle, defaultColor, isHoverOrActive 
   ...draggableStyle
 });
 
-const getListStyle = isDraggingOver => ({
-  //background: isDraggingOver ? '#f6f6f6' : 'none',
-});
-
 function CalendarAlarmLeftPartPresenter({
   personalRemindCategories, handleSortPersonalAlarm,
-  handleOpenModal, handleDeleteCategory, handleEditCategory,
-  havePermission, reminds
+  handleOpenModal, handleDeleteCategory,
+  handleEditCategory, havePermission,
 }) {
 
   const { t } = useTranslation();
@@ -131,7 +127,11 @@ function CalendarAlarmLeftPartPresenter({
               {
                 havePermission && (
                   <IconButton
-                    onClick={() => handleOpenModal("PERSONAL_REMIND_CREATE")}
+                    onClick={evt => {
+                      evt.preventDefault();
+                      evt.stopPropagation();
+                      handleOpenModal("PERSONAL_REMIND_CREATE");
+                    }}
                   >
                     <abbr title={t('IDS_WP_CREATE_NEW')}><Icon path={mdiPlus} size={0.85} color={"rgba(0, 0, 0, 0.54)"} /></abbr>
                   </IconButton>
@@ -149,7 +149,6 @@ function CalendarAlarmLeftPartPresenter({
                     <div
                       {...provided.droppableProps}
                       ref={provided.innerRef}
-                      style={getListStyle(snapshot.isDraggingOver)}
                       className={"left_sub_menu"}
                     >
                       {personalRemindCategories.data.map((item, index) => {
@@ -179,7 +178,7 @@ function CalendarAlarmLeftPartPresenter({
                                       className="personal_alarm_name">{item.name}
                                     </a>
                                     <div className="personal_alarm_count">{
-                                      get(reminds.data, `[${index}].reminds`, []).length
+                                      get(item, `total_remind`, 0)
                                     }</div>
                                     {
                                       <IconButton
