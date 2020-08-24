@@ -20,11 +20,23 @@ const StyledButtonGroup = styled(ButtonGroup)`
   margin: 8px 0 20px 0;
 `;
 
+function countLocations(groups = [], isMe = false) {
+  let total = 0;
+  groups.forEach((dateGroup) => {
+    dateGroup.locations.forEach(({ is_me }) => {
+      if (!isMe || (isMe && is_me)) {
+        total += 1;
+      }
+    })
+  })
+  return total;
+}
+
 function TabBody() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const locations = useSelector(state => state.taskDetail.location.locations);
-  const myLocations = locations.filter(({ is_me }) => is_me)
+  // const myLocations = locations.filter(({ is_me }) => is_me)
   const [value, setValue] = React.useState(0);
   const [isOpenMap, setIsOpenMap] = React.useState(false);
   const [locationData, setLocationData] = React.useState({});
@@ -51,7 +63,7 @@ function TabBody() {
             <ColorTypo bold={value === 0} color={value === 0 ? 'black' : 'gray'}>
               {t('LABEL_CHAT_TASK_TAT_CA')}
               &nbsp;
-              {`(${locations.length})`}
+              {`(${countLocations(locations)})`}
             </ColorTypo>
           </ColorButton>
           <ColorButton
@@ -60,7 +72,7 @@ function TabBody() {
             <ColorTypo bold={value === 1} color={value === 1 ? 'black' : 'gray'}>
               {t('LABEL_CHAT_TASK_VI_TRI_CUA_TOI')}
               &nbsp;
-              {`(${myLocations.length})`}
+              {`(${countLocations(locations, true)})`}
             </ColorTypo>
           </ColorButton>
         </StyledButtonGroup>
