@@ -1249,3 +1249,6 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .gantt_dot_right{
   transform: translateY(-27%) !important;
 }
+.gantt-right-header__wapper span {
+  text-transform: uppercase;
+}

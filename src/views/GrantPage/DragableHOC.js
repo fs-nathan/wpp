@@ -82,6 +82,14 @@ function GanttChart({
     };
   });
   useEffect(() => {
+    if (renderFullDay) {
+      setLeftHeader(0)
+      scrollRef.current.scrollLeft = 0
+      setLeftTable(0)
+      setScrollWidth(0)
+    }
+  }, [renderFullDay])
+  useEffect(() => {
     if (scrollRef.current && scrollGanttFlag) {
       const widthFromNowLayer =
         new moment(Date.now()).diff(start, girdInstance.unit) + 1;
