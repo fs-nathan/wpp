@@ -12,6 +12,8 @@ export const initialState = {
   projectSchedules: [],
   payload: null,
   ownerPermissions: null,
+  focusId: null,
+  location: {},
 };
 
 /* eslint-disable default-case, no-param-reassign */
@@ -151,6 +153,20 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case types.UN_PIN_TASK_SUCCESS: {
       draft.taskDetails.is_ghim = false;
+      break;
+    }
+    case types.FOCUS_TASK_GROUP: {
+      const { id } = action;
+      draft.focusId = id;
+      break;
+    }
+    case types.CLEAR_FOCUS_TASK_GROUP: {
+      draft.focusId = null;
+      break;
+    }
+    case types.SET_LOCATION_DATA: {
+      const { location } = action;
+      draft.location = location;
       break;
     }
   }

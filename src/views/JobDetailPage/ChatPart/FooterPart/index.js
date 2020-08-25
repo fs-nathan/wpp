@@ -158,12 +158,13 @@ const FooterPart = ({
 
   const handleUploadImage = useCallback(async e => {
     const { files } = e.target;
-    // console.log('upload image', files);
+    console.log('upload image', files);
     const images = [...clipBoardImages];
     for (let index = 0; index < files.length; index++) {
       const file = files[index];
       const url = await getFileUrl(file)
-      images.push({ url })
+      const [type] = file.type.split('/')
+      images.push({ url, type, name: file.name })
     }
     const id = Date.now();
     const data_chat = {
@@ -451,7 +452,7 @@ const FooterPart = ({
                 type="file"
                 id="upload_image"
                 className="hide"
-                accept="image/*"
+                accept="image/*,video/*"
                 multiple
                 onChange={handleUploadImage}
               />
