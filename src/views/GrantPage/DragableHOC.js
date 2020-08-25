@@ -14,6 +14,7 @@ function GanttChart({
   setDataSource,
   setProcessDatasource,
   timelineColor,
+  filterExportPdf,
   fetchTimeNotWork,
   girdInstance,
   timeNotWork = [],
@@ -231,6 +232,7 @@ function GanttChart({
       leftTable,
     ]
   );
+  console.log(renderFullDay && start.diff(new moment()) < 0 && end.diff(new moment()) > 0, "asdhasdjhasjkdhjkasdh", end.format("DD/MM/YYYY"), start.format("DD/MM/YYYY"))
   return (
     <React.Fragment>
       <div
@@ -375,7 +377,7 @@ function GanttChart({
             }
           }}
         >
-          {visibleGantt.fromNowLayer && (
+          {!(renderFullDay && ((new moment(filterExportPdf.start)).diff(new moment()) > 0 || (new moment(filterExportPdf.end)).diff(new moment()) <= 0)) && visibleGantt.fromNowLayer && (
             <div
               className="gantt--fromNowLayer__container"
               style={{
@@ -462,6 +464,7 @@ const mapStateToProps = (state) => ({
   showHeader: state.gantt.showHeader,
   renderFullDay: state.gantt.renderFullDay,
   scrollGanttFlag: state.gantt.scrollGanttFlag,
+  filterExportPdf: state.gantt.filterExportPdf,
   visibleGantt: state.gantt.visible.gantt,
   girdInstance: state.gantt.girdInstance,
   girdType: state.gantt.girdType,

@@ -1075,7 +1075,6 @@ class DragSortingTable extends React.Component {
       });
     }
     if (this.state.startTimeProject !== prevStates.startTimeProject) {
-      console.log('here')
       this.fetchTimeNotWork(
         this.state.startTimeProject.format("YYYY-MM-DD"),
         new moment(this.state.startTimeProject)
@@ -1539,7 +1538,7 @@ class DragSortingTable extends React.Component {
         />
         <CreateProject
           open={this.state.openCreateProjectModal}
-          projectGroupId={this.props.match.params.projectId}
+          project_id={this.props.match.params.projectId}
           setOpen={this.handleOpenCreateProjectModal}
         />
         {this.props.keyword && !this.state.data.filter((item) => {
