@@ -201,7 +201,7 @@ const DocumentShareFromMe = props => {
             <StyledTableHeadCell
               align="center"
               width="5%"
-            ></StyledTableHeadCell>
+            />
             <StyledTableHeadCell align="left">
               {t('IDS_WP_DOCUMENT_NAME')}
             </StyledTableHeadCell>

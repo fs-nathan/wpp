@@ -454,12 +454,12 @@ const TablePart = props => {
         </RightHeader>
       </div>
       <div className="setting-right-content">
-        {showLoadingTable && (
+        {/*{showLoadingTable && (
           <div className="loading-table">
             <div className="mark-back"></div>
             <CircularProgress className="progress-turn" />
           </div>
-        )}
+        )}*/}
         {pathname === Routes.DOCUMENT_ME && (
           <div
             {...getRootProps({
