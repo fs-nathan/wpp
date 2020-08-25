@@ -8,7 +8,7 @@ import { ADD_MEMBER_HANDLE_ERROR, ADD_MEMBER_HANDLE_SUCCESS, ADD_MEMBER_MONITOR_
 export function* doGetSummaryByGroup({ payload }) {
   try {
     const config = {
-      url: `/offers/summary-group?from_date=${payload.startDate}&to_date=${payload.endDate}`,
+      url: (payload.startDate !== null && payload.endDate !== null) ? `/offers/summary-group?from_date=${payload.startDate}&to_date=${payload.endDate}` : `/offers/summary-group`,
       method: "GET"
     };
     const result = yield apiService(config);
@@ -99,7 +99,7 @@ export function* doLoadOfferByDepartmentID({ payload }) {
   try {
     const { id, startDate, endDate } = payload;
     const config = {
-      url: `/offers/list-of-room?from_date=${startDate}&to_date=${endDate}&room_id=${id}`,
+      url: (startDate !== null && endDate !== null) ? `/offers/list-of-room?from_date=${startDate}&to_date=${endDate}&room_id=${id}` : `/offers/list-of-room`,
       method: "GET"
     };
     const result = yield apiService(config);
@@ -445,8 +445,9 @@ export function* doHandleOffer({ payload }) {
 }
 export function* doLoadSummaryProject({ payload }) {
   try {
+    const { startDate, endDate } = payload;
     const config = {
-      url: `/offers/summary-project?from_date=${payload.startDate}&to_date=${payload.endDate}`,
+      url: (startDate !== null && endDate !== null) ? `/offers/summary-project?from_date=${payload.startDate}&to_date=${payload.endDate}` : `/offers/summary-project`,
       method: "GET",
     }
     const result = yield apiService(config)
@@ -459,7 +460,7 @@ export function* doLoadOfferByProjectID({ payload }) {
   try {
     const { startDate, endDate, id } = payload
     const config = {
-      url: `/offers/list-of-project?from_date=${startDate}&to_date=${endDate}&project_id=` + id
+      url: (startDate !== null && endDate !== null) ? `/offers/list-of-project?from_date=${startDate}&to_date=${endDate}&project_id=${id}` : `/offers/list-of-project?project_id=${id}`
     }
     const result = yield apiService(config)
     yield put({ type: LOAD_OFFER_BY_PROJECT_ID_SUCCESS, payload: result.data })

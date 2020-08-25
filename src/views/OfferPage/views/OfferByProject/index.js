@@ -57,8 +57,8 @@ const OfferByProject = () => {
 
     useEffect(() => {
         if (!isNil(id)) {
-            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
-            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
+            const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+            const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
             dispatch(loadOfferByProjectID({ id, startDate, endDate }));
             const refreshListOffers = () => {
                 dispatch(loadOfferByProjectID({ id, startDate, endDate }));
@@ -79,8 +79,8 @@ const OfferByProject = () => {
     }, [dispatch, setTitle]);
 
     useEffect(() => {
-        const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
-        const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
+        const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+        const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
         dispatch(loadSummaryProject({startDate, endDate}));
     }, [dispatch, timeRange]);
 
