@@ -294,6 +294,7 @@ function RemindModal(props) {
                   variant="outlined"
                   value={data.time_remind}
                   onChange={value => handleChangeData("time_remind", value)}
+                  width={data.type_remind !== 0 ? 15 : 20}
                 />
               </div>
               <div className="type-remind" >

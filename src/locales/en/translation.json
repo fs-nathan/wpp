@@ -2089,7 +2089,7 @@
   "IDS_WP_ERROR_PAGE_404_SUPPORT_CENTER": "Support center of",
   "IDS_WP_ERROR_PAGE_404_THANKS": "Thank you so much!",
   "IDS_WP_LABEL_BACK_TO_PREVIOUS_PAGE": "Back to previous page",
-  "IDS_WP_REMOVE_FROM_TASK": "Remove from task",
+  "IDS_WP_REMOVE_FROM_TASK": "Unjoin task",
   "IDS_WP_ADD_TO_TASK": "Add to task",
   "IDS_WP_NOT_YET_ASSIGN": "Not yet assigned",
   "IDS_WP_TASK_COUNT_COMPLETE": "{{count}}/{{total}} task",

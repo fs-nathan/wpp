@@ -282,15 +282,19 @@ function PermissionMemberModal({
               />
               : (
                 <>
-                  <Deselect
-                    onClick={evt => {
-                      setSelectedValue(undefined);
-                      setIsFirstView(false);
-                    }}
-                  >
-                    <Icon path={mdiDeleteOutline} size={1} color='#898989' />
-                    <span>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.REMOVE")}</span>
-                  </Deselect>
+                  {
+                    selectedValue && (
+                        <Deselect
+                            onClick={evt => {
+                              setSelectedValue(undefined);
+                              setIsFirstView(false);
+                            }}
+                        >
+                          <Icon path={mdiDeleteOutline} size={1} color='#898989' />
+                          <span>{t("DMH.VIEW.PP.MODAL.MEMBER.PERMISSION.USER.REMOVE")}</span>
+                        </Deselect>
+                    )
+                  }
                   <SliderWrapper>
                     <Slider adaptiveHeight variableWidth infinite={false}
                       nextArrow={<CustomArrow path={mdiChevronRight} isDisabled={permissions.groupPermissions.length < 5} />}
