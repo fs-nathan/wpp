@@ -26,6 +26,7 @@ function CalendarAlarmLeftPart({
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [remindCategories, setRemindCategories] = React.useState(personalRemindCategories);
+  const [remindStatistic, setRemindsStatistic] = React.useState([]);
 
   function handleOpenModal(type) {
     switch (type) {
@@ -62,6 +63,21 @@ function CalendarAlarmLeftPart({
     setRemindCategories(personalRemindCategories);
   }, [personalRemindCategories]);
 
+  React.useEffect(() => {
+    let statistic = [];
+    if(reminds.data.length !== 0) {
+      reminds.data.forEach((item) => {
+        statistic[`${item.id}`] = get(item, 'reminds' , []).length;
+      });
+      setRemindsStatistic(statistic);
+    } else {
+      remindCategories.data.forEach((item) => {
+        statistic[`${item.id}`] = get(item, 'total_remind' , 0);
+      });
+      setRemindsStatistic(statistic);
+    }
+  }, [reminds, remindCategories]);
+
   const refreshAfterUpdateCategory = () => {
     if (!isNil(afterUpdateRemindCategory.afterUpdate)) {
       let category = get(afterUpdateRemindCategory, 'afterUpdate');
@@ -97,6 +113,7 @@ function CalendarAlarmLeftPart({
           handleOpenModal("DELETE_CATEGORY");
         }}
         handleEditCategory={(category) => handleEditCategory(category)}
+        remindStatistic={remindStatistic}
       />
       <CreateGroupPersonalRemind
         open={openPersonalRemindModalCreate}

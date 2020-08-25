@@ -69,11 +69,11 @@ function Department({
 
     useEffect(() => {
         doListOffersByDepartment({ timeRange });
-    }, [doListOffersByDepartment]);
+    }, [timeRange]);
 
     useEffect(() => {
         if (isMounted) {
-            var currentDepartment = departments.filter(item => item.url === history.location.pathname);
+            let currentDepartment = departments.filter(item => item.url === history.location.pathname);
             setLayoutTitle(get(currentDepartment, '[0].title'));
         }
     }, [isMounted, history.location.pathname, idFirstGroup]);
@@ -118,7 +118,7 @@ function Department({
                         <Icon
                             size={1.4}
                             {...{ color: listMenu[4].color, path: listMenu[4].icon }}
-                        ></Icon>
+                        />
                         <Box
                             {...{
                                 paddingLeft: "20px",

@@ -23,7 +23,7 @@ const getItemStyle = (isDragging, draggableStyle, defaultColor, isHoverOrActive 
 function CalendarAlarmLeftPartPresenter({
   personalRemindCategories, handleSortPersonalAlarm,
   handleOpenModal, handleDeleteCategory,
-  handleEditCategory, havePermission,
+  handleEditCategory, havePermission, remindStatistic
 }) {
 
   const { t } = useTranslation();
@@ -178,7 +178,7 @@ function CalendarAlarmLeftPartPresenter({
                                       className="personal_alarm_name">{item.name}
                                     </a>
                                     <div className="personal_alarm_count">{
-                                      get(item, `total_remind`, 0)
+                                      get(remindStatistic, `[${item.id}]`, 0)
                                     }</div>
                                     {
                                       <IconButton

@@ -8,7 +8,7 @@ import { ADD_MEMBER_HANDLE_ERROR, ADD_MEMBER_HANDLE_SUCCESS, ADD_MEMBER_MONITOR_
 export function* doGetSummaryByGroup({ payload }) {
   try {
     const config = {
-      url: `/offers/summary-group?from_date=2020-01-01&to_date=2020-12-01`,
+      url: `/offers/summary-group?from_date=${payload.startDate}&to_date=${payload.endDate}`,
       method: "GET"
     };
     const result = yield apiService(config);
@@ -443,10 +443,10 @@ export function* doHandleOffer({ payload }) {
     yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
   }
 }
-export function* doLoadSummaryProject() {
+export function* doLoadSummaryProject({ payload }) {
   try {
     const config = {
-      url: "/offers/summary-project?from_date=2020-01-01&to_date=2020-12-01",
+      url: `/offers/summary-project?from_date=${payload.startDate}&to_date=${payload.endDate}`,
       method: "GET",
     }
     const result = yield apiService(config)

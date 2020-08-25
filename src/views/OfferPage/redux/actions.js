@@ -88,9 +88,10 @@ export const loadTaskRencentlyPage = () => {
     type: LOAD_TASK_RENCENTLY
   };
 };
-export const loadSummaryByGroup = () => {
+export const loadSummaryByGroup = ({startDate, endDate}) => {
   return {
     type: LOAD_SUMMARY_BY_GROUP,
+    payload: {startDate, endDate}
   };
 };
 export const updateOfferGroup = ({
@@ -391,9 +392,10 @@ export const handleOfferOfferPage = ({
     }
   }
 }
-export const loadSummaryProject = () => {
+export const loadSummaryProject = ({startDate, endDate}) => {
   return {
-    type: LOAD_SUMMARY_BY_PROJECT
+    type: LOAD_SUMMARY_BY_PROJECT,
+    payload: {startDate, endDate}
   }
 }
 export const loadOfferByProjectID = ({

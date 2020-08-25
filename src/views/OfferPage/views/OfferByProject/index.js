@@ -79,14 +79,16 @@ const OfferByProject = () => {
     }, [dispatch, setTitle]);
 
     useEffect(() => {
-        dispatch(loadSummaryProject())
-    }, [dispatch]);
+        const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
+        const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
+        dispatch(loadSummaryProject({startDate, endDate}));
+    }, [dispatch, timeRange]);
 
     useEffect(() => {
         if (isMounted) {
-            var currentProject = null;
+            let currentProject = null;
             forEach(listProjects, item => {
-                var projects = get(item, 'projects');
+                let projects = get(item, 'projects');
                 currentProject = filter(projects, project => get(project, 'id') === id);
                 if (currentProject.length !== 0) {
                     setLayoutTitle(get(currentProject, '[0].name'));
