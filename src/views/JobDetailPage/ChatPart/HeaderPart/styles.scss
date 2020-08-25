@@ -1,9 +1,11 @@
 .chatHeader {
   position: relative;
+
   &--avatar1_1 {
     width: 55px;
     height: 55px;
   }
+
   &--avatar2_1,
   &--avatar2_2 {
     width: 40px;
@@ -13,27 +15,32 @@
     background-color: #fff;
     border: solid 2px #fff;
   }
+
   &--avatar2_2 {
     transform: translateX(-20px);
     position: absolute;
   }
+
   &--avatar3_1 {
     width: 30px;
     height: 30px;
     margin: auto;
   }
+
   &--avatar3_2 {
     width: 30px;
     height: 30px;
     display: inline-flex;
     margin-right: 2px;
   }
+
   &--avatar3_3 {
     width: 30px;
     height: 30px;
     display: inline-flex;
     margin-left: 2px;
   }
+
   &--avatar3_1_plus {
     width: 29px;
     height: 29px;
@@ -41,12 +48,14 @@
     display: inline-flex;
     margin-top: 6px;
   }
+
   &--avatar3_2_plus {
     width: 29px;
     height: 29px;
     display: inline-flex;
     margin-left: 2px;
   }
+
   &--avatar3_3_plus {
     width: 29px;
     height: 29px;
@@ -54,6 +63,7 @@
     margin-right: 2px;
     margin-left: 0px;
   }
+
   &--avatar_plus {
     width: 29px;
     height: 29px;
@@ -63,23 +73,28 @@
     background-color: #b3e5fc;
     color: #fff;
   }
+
   &--title {
     font-size: 24px;
     font-weight: 500;
   }
+
   &--button {
     &:hover {
       background: none;
     }
-    & > span > svg {
+
+    &>span>svg {
       &:hover {
         fill: #03b000;
       }
     }
+
     path {
       fill: currentColor !important;
     }
   }
+
   &--tabLabel {
     color: #8b8b8b;
     width: auto;
@@ -89,9 +104,10 @@
     background: #f2f2f2;
     border-radius: 3px;
 
-    & > span:first-child {
+    &>span:first-child {
       display: none;
     }
+
     &__selected,
     &:hover {
       color: #fff;
@@ -100,6 +116,7 @@
       padding: 2px 5px;
       border-radius: 3px;
     }
+
     &>.MuiTypography-body1 {
       font-size: 12px !important;
     }

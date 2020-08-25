@@ -1,5 +1,5 @@
 import { IconButton } from "@material-ui/core";
-import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuUp, mdiPageNextOutline, mdiPlus } from "@mdi/js";
+import { mdiAccount, mdiClockOutline, mdiDragVertical, mdiFileTree, mdiMenuDown, mdiMenuRight, mdiPageNextOutline, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import { Table } from "antd";
 import 'antd/lib/grid/style/index.css';
@@ -36,6 +36,7 @@ import EditCell from "./EditCell";
 import Header from "./Header";
 import "./table.css";
 
+let haveError = false
 let checkTimeOut = null
 const SearchBox = ({ className = "", ...rest }) => (
   <div
@@ -45,7 +46,7 @@ const SearchBox = ({ className = "", ...rest }) => (
 );
 
 Array.prototype.insertArray = function (index, items) { this.splice.apply(this, [index, 0].concat(items)); }
-const MAX_DAY_DEFAULT = 40;
+const MAX_DAY_DEFAULT = 80;
 
 const RenderJobModal = React.memo(
   (props) => <CreateJobModal {...props} />,
@@ -54,16 +55,12 @@ const RenderJobModal = React.memo(
   }
 );
 
-const RenderHeader = React.memo(
-  (props) => (
-    <div className="apply-antd-css">
-      <Header {...props} />
-    </div>
-  ),
-  (prevProps, nextProps) => {
-    return false;
-  }
-);
+const RenderHeader = (props) => (
+  <div className="apply-antd-css">
+    <Header {...props} />
+  </div>
+)
+
 
 
 const RenderDrawers = React.memo(
@@ -115,19 +112,19 @@ function getFormatEndStringFromObject(data) {
 }
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
-    case 1:
+    case 2:
       return {
         color: "#4caf50",
         background: "#4caf5042",
         name: "Thấp",
       };
-    case 2:
+    case 1:
       return {
         color: "#ff9800",
         background: "#ff980038",
         name: "Trung bình",
       };
-    case 3:
+    case 0:
       return {
         color: "#fe0707",
         background: "#ff050524",
@@ -271,6 +268,7 @@ class DragSortingTable extends React.Component {
       widthTable: 800,
       cellDetail: {},
       endTimeProject: "",
+      sort_task: true,
       isLoading: true,
       monthArray: [],
       openCreateProjectModal: false,
@@ -292,6 +290,7 @@ class DragSortingTable extends React.Component {
               <div className="gantt-title-table-project-icon">
                 {" "}
                 <IconButton
+                  title={this.props.t('GANTT_ADD_TASK_GROUP')}
                   onClick={() => this.handleOpenCreateProjectModal(true)}
                   aria-controls="simple-menu"
                   style={{ padding: 0 }}
@@ -344,8 +343,12 @@ class DragSortingTable extends React.Component {
                   <div className="gantt--group-task__left gantt--group-task-item">
                     <div>
                       <Icon
+                        onClick={(e) => {
+                          this.handleClickMainTask(record.id);
+                        }}
+                        title={this.props.t(record.show ? 'GANTT_COLLAPSE' : 'GANTT_EXPAND')}
                         className="gantt-icon-table__group"
-                        path={record.show ? mdiMenuDown : mdiMenuUp}
+                        path={record.show ? mdiMenuDown : mdiMenuRight}
                       />
                     </div>
                     {record.name}
@@ -354,6 +357,7 @@ class DragSortingTable extends React.Component {
                     <IconButton
                       aria-controls="simple-menu"
                       style={{ padding: 0 }}
+                      title={this.props.t('GANTT_ADD_TASK')}
                       aria-haspopup="true"
                       onClick={() => {
                         this.handleOpenCraeteJobModal(true)
@@ -389,11 +393,14 @@ class DragSortingTable extends React.Component {
                     }}
                     style={{ display: "flex", height: 20, background: "inherit" }}
                   >
-                    <Icon
-                      style={{ margin: "0 10px", cursor: "grab", fill: "#ccc" }}
-                      path={mdiDragVertical}
-                      size={1}
-                    />
+                    {this.state.sort_task ?
+                      <Icon
+                        style={{ margin: "0 10px", cursor: "grab", fill: "#ccc" }}
+                        path={mdiDragVertical}
+                        size={1}
+                      /> : <div style={{ width: 30, height: 20 }}>
+                      </div>
+                    }
                     <div
                       onClick={(e) => {
                         const className = e.target.className;
@@ -415,9 +422,11 @@ class DragSortingTable extends React.Component {
                         <span style={{ paddingRight: "5px" }}>{record.name}</span>
                         {record.number_subtask > 0 && (
                           <IconButton
+                            title={this.props.t('GANTT_SUB_TASK')}
                             aria-controls="simple-menu"
                             style={{ padding: 0 }}
                             aria-haspopup="true"
+
                             size="small"
                             onClick={() => {
                               this.props.changeDetailSubtaskDrawer({
@@ -436,9 +445,10 @@ class DragSortingTable extends React.Component {
                         )}
                       </div>
                     </div>
-                    <div className="name-task-gantt__icon-container">
+                    <div id={`icon__${record.id}`} className="name-task-gantt__icon-container">
                       {this.state.rowHover === record.key && (
                         <IconButton
+                          title={this.props.t('GANTT_DETAIL')}
                           aria-controls="simple-menu"
                           style={{ padding: 0 }}
                           aria-haspopup="true"
@@ -595,24 +605,34 @@ class DragSortingTable extends React.Component {
           width: 100,
           height: 100,
           render: (text, record) => {
-            return (
-              <div
-                className={
-                  record.isTotalDuration
-                    ? "gantt--group-task__total"
-                    : record.isGroupTask
-                      ? "gantt--group-task-item"
-                      : ""
-                }
-              >
-                {text || text === 0
-                  ? `${
-                  Math.round((parseFloat(text) + Number.EPSILON) * 100) /
-                  100
-                  } ${this.props.t(`GANTT_${this.props.girdInstance.unitText.toUpperCase()}`)}`
-                  : ""}
-              </div>
-            );
+            return (<EditCell
+              defaultValue={Math.round((parseFloat(text) + Number.EPSILON) * 100) /
+                100}
+              fetchNewDataSource={this.fetchNewDataSource}
+              taskId={record.id}
+              type={"duration"}
+              start_date={record.start_label}
+              end_date={record.end_label}
+              canEdit={!record.isTotalDuration && !record.isGroupTask && !record.isStop && record.can_edit}
+              component={
+                <div
+                  className={
+                    record.isTotalDuration
+                      ? "gantt--group-task__total"
+                      : record.isGroupTask
+                        ? "gantt--group-task-item"
+                        : ""
+                  }
+                >
+                  {text || text === 0
+                    ? `${
+                    Math.round((parseFloat(text) + Number.EPSILON) * 100) /
+                    100
+                    } ${this.props.t(`GANTT_${this.props.girdInstance.unitText.toUpperCase()}`)}`
+                    : ""}
+                </div>
+              }
+            />)
           },
         },
         {
@@ -654,6 +674,11 @@ class DragSortingTable extends React.Component {
       ],
     };
     this.tableRef = React.createRef();
+  }
+  setRowHover = index => {
+    this.setState({
+      rowHover: index
+    })
   }
   handleSetRowHover = index => {
     if (checkTimeOut) {
@@ -728,111 +753,117 @@ class DragSortingTable extends React.Component {
     }
   };
   fetchListTask = async (projectId, update, girdType) => {
-    const { girdInstance } = this.props;
-    const { formatString, unit, addUnit } = girdInstance;
-    let { resultListTask } = this.state;
-    let dataSource;
-    if (!resultListTask || update) {
-      resultListTask = await apiService({
-        url: `gantt/list-task?project_id=${projectId}&gird=${
-          girdType ? girdType.toLowerCase() : "hour"
-          }`,
-      });
+    try {
+      const { girdInstance } = this.props;
+      const { formatString, unit, addUnit } = girdInstance;
+      let { resultListTask } = this.state;
+      let dataSource;
+      if (!resultListTask || update) {
+        resultListTask = await apiService({
+          url: `gantt/list-task?project_id=${projectId}&gird=${
+            girdType ? girdType.toLowerCase() : "hour"
+            }`,
+        });
+        if (!resultListTask.data.state) return;
+        dataSource = resultListTask.data;
+        this.setState({
+          resultListTask,
+          sort_task: get(dataSource, 'permissions.sort_task', false)
+        });
+      } else dataSource = resultListTask.data;
       if (!resultListTask.data.state) return;
-      dataSource = resultListTask.data;
-      this.setState({
-        resultListTask,
-      });
-    } else dataSource = resultListTask.data;
-    if (!resultListTask.data.state) return;
-    let data = [];
-    let startTimeProject;
-    let endTimeProject;
+      let data = [];
+      let startTimeProject;
+      let endTimeProject;
 
-    startTimeProject = dataSource.total_duration.time ? new moment(
-      getFormatStartStringFromObject(dataSource.total_duration.time),
-      formatString
-    ) : new moment();
-    endTimeProject = dataSource.total_duration.time ? new moment(
-      getFormatEndStringFromObject(dataSource.total_duration.time),
-      formatString
-    ) : (new moment()).add(addUnit, unit);
-    const totalProjectData = dataSource.total_duration;
-    const timeTotal = totalProjectData.time
-    data.push({
-      name: this.props.t('LABEL_GANTT_NAME_TOTAL_DURATION_TABLE'),
-      start_label: timeTotal && totalProjectData.time.start_label,
-      start_time: getFormatStartStringFromObject(totalProjectData.time),
-      end_time: getFormatEndStringFromObject(totalProjectData.time),
-      end_label: timeTotal && totalProjectData.time.end_label,
-      duration_actual: totalProjectData.duration_plan.value,
-      complete: totalProjectData.complete,
-      isTotalDuration: true,
-      show: true,
-      id: "TOTAL_DURATION",
-      key: "TOTAL_DURATION",
-    });
-    dataSource.tasks.forEach((task, index) => {
-      const { name, time, duration_plan } = task;
+      startTimeProject = dataSource.total_duration.time ? new moment(
+        getFormatStartStringFromObject(dataSource.total_duration.time),
+        formatString
+      ) : new moment();
+      endTimeProject = dataSource.total_duration.time ? new moment(
+        getFormatEndStringFromObject(dataSource.total_duration.time),
+        formatString
+      ) : (new moment()).add(addUnit, unit);
+      const totalProjectData = dataSource.total_duration;
+      const timeTotal = totalProjectData.time
       data.push({
-        name,
-        start_label: time && time.start_label,
-        start_time: getFormatStartStringFromObject(time),
-        end_time: getFormatEndStringFromObject(time),
-        end_label: time && time.end_label,
-        duration_actual: duration_plan.value,
-        complete: task.complete,
-        isGroupTask: true,
+        name: this.props.t('LABEL_GANTT_NAME_TOTAL_DURATION_TABLE'),
+        start_label: timeTotal && totalProjectData.time.start_label,
+        start_time: getFormatStartStringFromObject(totalProjectData.time),
+        end_time: getFormatEndStringFromObject(totalProjectData.time),
+        end_label: timeTotal && totalProjectData.time.end_label,
+        duration_actual: totalProjectData.duration_plan.value,
+        complete: totalProjectData.complete,
+        isTotalDuration: true,
         show: true,
-        id: task.id,
-        key: task.id,
+        id: "TOTAL_DURATION",
+        key: "TOTAL_DURATION",
       });
-      task.tasks.forEach((subTask) =>
+      dataSource.tasks.forEach((task, index) => {
+        const { name, time, duration_plan } = task;
         data.push({
-          name: subTask.name,
-          id: subTask.id,
-          key: subTask.id,
-          group_task: task.id,
-          start_label: subTask.time && subTask.time.start_label,
-          end_label: subTask.time && subTask.time.end_label,
-          can_edit: subTask.can_edit,
-          start_time: getFormatStartStringFromObject(subTask.time),
-          end_time: getFormatEndStringFromObject(subTask.time),
-          duration_actual: subTask.duration_plan.value,
-          complete: subTask.complete,
+          name,
+          start_label: time && time.start_label,
+          start_time: getFormatStartStringFromObject(time),
+          end_time: getFormatEndStringFromObject(time),
+          start_label: time && time.start_label,
+          end_label: time && time.end_label,
+          duration_actual: duration_plan.value,
+          complete: task.complete,
+          isGroupTask: true,
           show: true,
-          priority_code: subTask.priority_code,
-          isStop: subTask.status_code === 4,
-          number_subtask: subTask.number_subtask,
-          status_code: subTask.status_code,
-          status_name: subTask.status_name,
-          number_member: subTask.number_member,
-        })
+          id: task.id,
+          key: task.id,
+        });
+        task.tasks.forEach((subTask) =>
+          data.push({
+            name: subTask.name,
+            id: subTask.id,
+            key: subTask.id,
+            group_task: task.id,
+            start_label: subTask.time && subTask.time.start_label,
+            end_label: subTask.time && subTask.time.end_label,
+            can_edit: subTask.can_edit,
+            start_time: getFormatStartStringFromObject(subTask.time),
+            end_time: getFormatEndStringFromObject(subTask.time),
+            duration_actual: subTask.duration_plan.value,
+            complete: subTask.complete,
+            show: true,
+            priority_code: subTask.priority_code,
+            isStop: subTask.status_code === 4,
+            number_subtask: subTask.number_subtask,
+            status_code: subTask.status_code,
+            status_name: subTask.status_name,
+            number_member: subTask.number_member,
+          })
+        );
+      });
+      startTimeProject = startTimeProject.subtract(6, unit);
+      endTimeProject = endTimeProject.add(addUnit, unit);
+      this.setRenderTime(
+        new moment(startTimeProject),
+        endTimeProject,
+        startTimeProject
       );
-    });
-    startTimeProject = startTimeProject.subtract(6, unit);
-    endTimeProject = endTimeProject.add(addUnit, unit);
-    this.setRenderTime(
-      new moment(startTimeProject),
-      endTimeProject,
-      startTimeProject
-    );
-    this.fetchTimeNotWork(
-      startTimeProject.format("YYYY-MM-DD"),
-      new moment(startTimeProject)
-        .add(700, girdInstance.unit)
-        .format("YYYY-MM-DD")
-    );
-    this.setState({
-      startTimeProject,
-      endTimeProject,
-      data,
-      height: this.tableRef.current && this.tableRef.current.clientHeight,
-      width: this.tableRef.current && this.tableRef.current.clientWidth,
-      minLeft: this.tableRef.current && this.tableRef.current.offsetLeft,
-      isLoading: false,
-    });
-    return true;
+
+      this.setState({
+        startTimeProject,
+        endTimeProject,
+        data,
+        height: this.tableRef.current && this.tableRef.current.clientHeight,
+        width: this.tableRef.current && this.tableRef.current.clientWidth,
+        minLeft: this.tableRef.current && this.tableRef.current.offsetLeft,
+        isLoading: false,
+      });
+      return true;
+    } catch (e) {
+      if (haveError) return
+      haveError = true
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+      this.props.history.push({
+        pathname: `/projects`,
+      })
+    }
   };
   setRenderTime = (startTime, endTime, startTimeProject) => {
     const { girdInstance } = this.props;
@@ -869,7 +900,7 @@ class DragSortingTable extends React.Component {
     }
     allMonth.shift();
     let temp = new moment(startTimeProject);
-    for (let i = 0; i < 40; i++) {
+    for (let i = 0; i < MAX_DAY_DEFAULT; i++) {
       const newDate = new moment(temp);
       newDate.add(i, unit);
       daysRender.push(newDate);
@@ -987,9 +1018,17 @@ class DragSortingTable extends React.Component {
         timeNotWork: true,
         gridTable: true
       };
+      const labelVisibleConfig = localStorage.getItem("labelConfig") ? JSON.parse(localStorage.getItem("labelConfig")) : {
+        prior: true,
+        status: true,
+        member: true,
+      };
       this.props.changeVisible(null, null, null, {
         gantt: ganttVisibleConfig,
       });
+      this.props.changeVisible(null, null, null, {
+        label: labelVisibleConfig
+      })
       this.props.changeProjectInfo({
         id: project.id,
         name: project.name,
@@ -1005,10 +1044,17 @@ class DragSortingTable extends React.Component {
         const { index } = props;
         let canDrag;
         if (index)
-          canDrag =
+          canDrag = this.state.sort_task &&
             !this.state.data[index].isGroupTask &&
             !this.state.data[index].isTotalDuration;
-        return <DragableBodyRow dataSource={this.state.data} canDrag={canDrag} {...props} />;
+        return <DragableBodyRow dataSource={this.state.data.filter((item) => {
+          if (this.props.keyword) {
+            return item.name.includes(this.props.keyword)
+          }
+          if (!this.props.visibleGantt.total && item.isTotalDuration)
+            return false;
+          return item.isGroupTask || item.show;
+        })} canDrag={canDrag} {...props} />;
       },
     },
     header: {
@@ -1021,12 +1067,21 @@ class DragSortingTable extends React.Component {
       ),
     },
   };
-  componentDidUpdate = async (prevProps) => {
+  componentDidUpdate = async (prevProps, prevStates) => {
     const { girdInstance } = this.props
     if (this.props.showHeader !== prevProps.showHeader) {
       this.setState({
         height: this.tableRef.current.clientHeight,
       });
+    }
+    if (this.state.startTimeProject !== prevStates.startTimeProject) {
+      console.log('here')
+      this.fetchTimeNotWork(
+        this.state.startTimeProject.format("YYYY-MM-DD"),
+        new moment(this.state.startTimeProject)
+          .add(700, girdInstance.unit)
+          .format("YYYY-MM-DD")
+      );
     }
     if (this.props.mainCalendar !== prevProps.mainCalendar) {
       this.fetchTimeNotWork(
@@ -1036,7 +1091,6 @@ class DragSortingTable extends React.Component {
           .format("YYYY-MM-DD")
       );
     }
-
     if (this.props.scrollGanttFlag !== prevProps.scrollGanttFlag && this.props.scrollGanttFlag) {
       const { startTimeProject, endTimeProject, saveEndTimeProject } = this.state;
       const { girdInstance } = this.props;
@@ -1098,7 +1152,7 @@ class DragSortingTable extends React.Component {
       });
     }
     if (this.props.renderFullDay !== prevProps.renderFullDay) {
-      const { startTimeProject, endTimeProject } = this.state;
+      const { startTimeProject, endTimeProject, saveEndTimeProject, saveStartTimeProject } = this.state;
       const { girdInstance } = this.props;
       const {
         formatString,
@@ -1111,8 +1165,8 @@ class DragSortingTable extends React.Component {
       } = girdInstance;
       const { start, end } = this.props.filterExportPdf;
       const daysRender = [];
-      const endDate = end ? new moment(end) : new moment(endTimeProject);
-      const startDate = start ? new moment(start) : new moment(startTimeProject);
+      const endDate = !this.props.renderFullDay ? new moment(saveEndTimeProject) : end ? new moment(end) : new moment(endTimeProject);
+      const startDate = !this.props.renderFullDay ? new moment(saveStartTimeProject) : start ? new moment(start) : new moment(startTimeProject);
       let temp = new moment(startDate);
       const maxDayRender = this.props.renderFullDay
         ? endDate.diff(startDate, girdInstance.unit) + 1
@@ -1147,8 +1201,10 @@ class DragSortingTable extends React.Component {
       this.setState({
         daysRender,
         monthArray: allMonth,
-        startTimeProject: start ? new moment(start) : new moment(startTimeProject),
-        endTimeProject: end ? new moment(end).add(1, girdInstance.unit) : new moment(endTimeProject)
+        saveEndTimeProject: endTimeProject,
+        saveStartTimeProject: startTimeProject,
+        startTimeProject: !this.props.renderFullDay ? new moment(saveStartTimeProject) : start ? new moment(start) : new moment(startTimeProject),
+        endTimeProject: !this.props.renderFullDay ? new moment(saveEndTimeProject) : end ? new moment(end).add(1, girdInstance.unit) : new moment(endTimeProject)
       });
     }
     if (this.props.girdType !== prevProps.girdType) {
@@ -1196,7 +1252,6 @@ class DragSortingTable extends React.Component {
     const indexGroupTaskList = [];
     let indexSort = 0;
     if (data[dragIndex].isTotalDuration) return;
-
     data.forEach((item, index) => {
       if (item.isGroupTask) indexGroupTaskList.push(index);
     });
@@ -1249,8 +1304,7 @@ class DragSortingTable extends React.Component {
         }
       }
     });
-    if (dragIndex > hoverIndex)
-      indexSort--;
+    indexSort--;
     indexSort = indexSort < 0 ? 0 : indexSort;
     const groupTaskIndex = indexGroupTaskList.filter(
       (item) => item <= hoverIndex
@@ -1396,7 +1450,12 @@ class DragSortingTable extends React.Component {
       data: newData,
     });
   };
-  handleOpenCreateProjectModal = (value) => {
+  handleOpenCreateProjectModal = (value, fetch) => {
+    if (fetch) {
+      const { projectId } = this.props.match.params
+      this.fetchListTask(projectId);
+      this.fetchListTask(projectId, true, this.props.girdType);
+    }
     this.setState({
       openCreateProjectModal: value,
     });
@@ -1442,10 +1501,18 @@ class DragSortingTable extends React.Component {
     const boundRectTimeLineContainer = document.getElementById("drag-width-gantt-container")
     const widthExtra = boundRectTimeLineContainer ? boundRectTimeLineContainer.getBoundingClientRect().x : 800
     const widthPdf = this.props.renderFullDay
-      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 35 + widthExtra - 80
+      ? (endTimeProject.diff(startTimeProject, girdInstance.unit)) * 30 + widthExtra - 80
       : "auto";
+    const scroll = this.props.renderFullDay ? {} : {
+      scroll: {
+        y: this.state.height - 69,
+        x: "unset",
+      }
+    }
     if (this.state.isLoading) return <LoadingBox />;
+
     return (
+
       <React.Fragment>
 
         {
@@ -1467,106 +1534,127 @@ class DragSortingTable extends React.Component {
           titleProject={this.state.titleProject}
           showProject={this.state.showProject}
           scheduleIdDefault={this.state.scheduleIdDefault}
+          start={this.state.startTimeProject}
+          end={this.state.endTimeProject}
         />
         <CreateProject
           open={this.state.openCreateProjectModal}
           projectGroupId={this.props.match.params.projectId}
           setOpen={this.handleOpenCreateProjectModal}
         />
-        <div
-          className="gantt__container"
-          id="printContent"
-          style={{
-            width: widthPdf,
-            height: `${this.props.showHeader ? "calc(100% - 59px)" : "100%"}`,
-          }}
-        >
-          <RenderDrawers dataSource={this.state.data} height={this.state.height} />
-          {this.state.quickViewId && <RenderQuickViewTaskDetailDrawer
-            showHeader={this.props.showHeader}
-            onClose={() =>
-              this.setState({
-                quickViewId: null,
-              })
-            }
-            taskId={this.state.quickViewId}
-          />}
-          <div ref={this.tableRef}>
-            {this.state.showProject && (
+        {this.props.keyword && !this.state.data.filter((item) => {
+          if (this.props.keyword) {
+            return item.name.includes(this.props.keyword)
+          }
+        })[0] ? <div style={{ width: '100%', height: '100%' }}>
+            <div style={{ padding: '40px 50px', color: 'black' }}>
+              <p>{this.props.t('GANTT_CAN_NOT_FIND')} <span style={{ fontWeight: 'bold' }}>"{this.props.keyword}"</span> {this.props.t('GANTT_IN_ANY')}</p>
+              <p>{this.props.t('GANTT_SUGGESTION')}:</p>
+              <ul>
+                <li>{this.props.t('GANTT_MAKE_SURE')}</li>
+                <li>{this.props.t('GANTT_DIFF_KEYWORD')}</li>
+                <li>{this.props.t('GANTT_REDUCE_KEYWORD')}</li>
+              </ul>
+            </div>
+          </div> : <div
+            className="gantt__container"
+            id="printContent"
+            style={{
+              width: widthPdf,
+              height: `${this.props.showHeader ? "calc(100% - 59px)" : "100%"}`,
+            }}
+          >
+            <RenderDrawers dataSource={this.state.data} height={this.state.height} />
+            {this.state.quickViewId && <RenderQuickViewTaskDetailDrawer
+              showHeader={this.props.showHeader}
+              onClose={() =>
+                this.setState({
+                  quickViewId: null,
+                })
+              }
+              taskId={this.state.quickViewId}
+            />}
+            <div ref={this.tableRef}>
+              {this.state.showProject && (
+                <div
+                  className="gantt__select-project"
+                  style={{
+                    height:
+                      this.tableRef.current && this.tableRef.current.clientHeight,
+                  }}
+                >
+                  <div className="gantt-container-lp">
+                    <ListProject
+                      show={this.state.showProject}
+                      setShow={this.handleShowProject}
+                    />
+                  </div>
+                </div>
+              )}
               <div
-                className="gantt__select-project"
                 style={{
-                  height:
-                    this.tableRef.current && this.tableRef.current.clientHeight,
+                  width: this.state.widthTable,
                 }}
               >
-                <div className="gantt-container-lp">
-                  <ListProject
-                    show={this.state.showProject}
-                    setShow={this.handleShowProject}
+                <DndProvider backend={HTML5Backend}>
+                  <Table
+                    columns={colShow}
+                    size="small"
+                    className="table-gantt-header"
+                    bordered
+                    {...scroll}
+                    rowClassName={(record, index) => {
+                      if (
+                        this.state.data[index] &&
+                        (this.state.data[index].isGroupTask ||
+                          this.state.data[index].isTotalDuration)
+                      )
+                        return "row-grey-table";
+                      return "";
+                    }}
+                    pagination={false}
+                    dataSource={this.state.data.filter((item) => {
+                      if (this.props.keyword) {
+                        return item.name.includes(this.props.keyword)
+                      }
+                      if (!this.props.visibleGantt.total && item.isTotalDuration)
+                        return false;
+                      return item.isGroupTask || item.show;
+                    })}
+                    components={this.components}
+                    onRow={(record, index) => ({
+                      index,
+                      moveRow: this.moveRow,
+                      handleSetRowHover: this.handleSetRowHover
+                    })}
                   />
-                </div>
+                </DndProvider>
+                <div style={{ width: widthPdf }} id="content-last"></div>
               </div>
-            )}
-            <div
-              style={{
-                width: this.state.widthTable,
-              }}
-            >
-              <DndProvider backend={HTML5Backend}>
-                <Table
-                  columns={colShow}
-                  size="small"
-                  className="table-gantt-header"
-                  bordered
-                  scroll={{
-                    y: this.state.height - 69,
-                    x: "unset",
-                  }}
-                  rowClassName={(record, index) => {
-                    if (
-                      this.state.data[index] &&
-                      (this.state.data[index].isGroupTask ||
-                        this.state.data[index].isTotalDuration)
-                    )
-                      return "row-grey-table";
-                    return "";
-                  }}
-                  pagination={false}
-                  dataSource={this.state.data.filter((item) => {
-                    if (this.props.keyword) {
-                      return item.name.includes(this.props.keyword)
-                    }
-                    if (!this.props.visibleGantt.total && item.isTotalDuration)
-                      return false;
-                    return item.isGroupTask || item.show;
-                  })}
-                  components={this.components}
-                  onRow={(record, index) => ({
-                    index,
-                    moveRow: this.moveRow,
-                    handleSetRowHover: this.handleSetRowHover
-                  })}
-                />
-              </DndProvider>
             </div>
-          </div>
-          <RenderDragTable
-            setDataSource={this.setDataSource}
-            setProcessDatasource={this.setProcessDatasource}
-            minLeft={this.state.minLeft}
-            heightTable={this.state.height}
-            widthTable={this.state.width}
-            daysRender={this.state.daysRender}
-            monthArray={this.state.monthArray}
-            start={this.state.startTimeProject}
-            end={this.state.endTimeProject}
-            dataSource={this.props.keyword ? this.state.data.filter(item => item.name.includes(this.props.keyword)) : this.state.data}
-            handleScrollTop={this.handleScrollTop}
-            timeNotWork={this.state.timeNotWork}
-            fetchTimeNotWork={this.fetchTimeNotWork}
-          />
-          {/* <div
+            <RenderDragTable
+              setDataSource={this.setDataSource}
+              setProcessDatasource={this.setProcessDatasource}
+              minLeft={this.state.minLeft}
+              heightTable={this.state.height}
+              widthTable={this.state.width}
+              daysRender={this.state.daysRender}
+              monthArray={this.state.monthArray}
+              start={this.state.startTimeProject}
+              end={this.state.endTimeProject}
+              dataSource={this.state.data.filter((item) => {
+                if (this.props.keyword) {
+                  return item.name.includes(this.props.keyword)
+                }
+                if (!this.props.visibleGantt.total && item.isTotalDuration)
+                  return false;
+                return item.isGroupTask || item.show;
+              })}
+              handleScrollTop={this.handleScrollTop}
+              timeNotWork={this.state.timeNotWork}
+              fetchTimeNotWork={this.fetchTimeNotWork}
+            />
+            {/* <div
             id="asdasdasd"
             style={{
               position: "absolute",
@@ -1582,10 +1670,10 @@ class DragSortingTable extends React.Component {
                 width: 200,
               }}
             >
-              <div style={{ height: this.state.data.length * 37 }}></div>
+              <div style={{ height: this.state.data.length * 32 }}></div>
             </div>
           </div> */}
-        </div>
+          </div>}
       </React.Fragment>
     );
   }

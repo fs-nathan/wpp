@@ -1,8 +1,8 @@
 import axios from "axios";
+import { GROUP_ACTIVE, REFRESH_TOKEN, TOKEN } from "constants/constants";
 import { openNoticeModal } from "../actions/system/system";
 import store from "../configStore";
 import config from "./apiConstant";
-import { TOKEN, REFRESH_TOKEN, GROUP_ACTIVE } from "constants/constants";
 
 const apiService = axios.create({
   baseURL: config.BASE_API,
@@ -51,3 +51,4 @@ apiService.interceptors.response.use(
 );
 
 export { apiService };
+

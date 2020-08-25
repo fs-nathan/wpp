@@ -62,7 +62,7 @@ const ModalCommon = (props) => {
       <DialogTitleCus
         id="customized-dialog-title"
         onClose={props.onClose}
-        className="modal-cus"
+        className={"modal-cus " + props.className}
       >
         {props.title}
       </DialogTitleCus>

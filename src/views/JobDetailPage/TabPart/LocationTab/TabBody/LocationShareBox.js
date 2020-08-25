@@ -20,7 +20,7 @@ const WrapList = styled(List)`
   }
 `
 
-const LocationShareBox = ({ isMe }) => {
+const LocationShareBox = ({ isMe, handleClickLocation }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const searchLocationTabPart = (e) => {
@@ -34,7 +34,7 @@ const LocationShareBox = ({ isMe }) => {
         onChange={e => searchLocationTabPart(e)}
       />
       <WrapList subheader={<li />}>
-        <CustomListItem isMe={isMe} />
+        <CustomListItem isMe={isMe} handleClickLocation={handleClickLocation} />
       </WrapList>
     </React.Fragment>
   );

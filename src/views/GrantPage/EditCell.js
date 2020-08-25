@@ -29,6 +29,7 @@ const EditCell = ({
   const [showEditIcon, setShowEditIcon] = useState(false);
   const [dataComplete, setDataComplete] = useState(null);
   const [data, setData] = useState(null);
+  const [change, setChange] = useState(false)
   const containerRef = useRef();
   useEffect(() => {
     setData(
@@ -42,20 +43,26 @@ const EditCell = ({
     if (e.keyCode === 13) {
       e.preventDefault();
       if (type !== "complete") {
-        postDataToServer();
+        if (change)
+          postDataToServer();
       } else {
-        setDataComplete(dataComplete ? parseInt(dataComplete) : 0)
-        setProcessDatasource(dataComplete ? parseInt(dataComplete) : 0, index);
+        if (change) {
+          setDataComplete(dataComplete ? parseInt(dataComplete) : 0)
+          setProcessDatasource(dataComplete ? parseInt(dataComplete) : 0, index);
+        }
       }
       setShowEdit(false);
     }
     if (e.keyCode) return;
     if (containerRef.current && containerRef.current.contains(e.target)) return;
     if (type !== "complete") {
-      postDataToServer();
+      if (change)
+        postDataToServer();
     } else {
-      setDataComplete(dataComplete ? parseInt(dataComplete) : 0)
-      setProcessDatasource(dataComplete ? parseInt(dataComplete) : 0, index);
+      if (change) {
+        setDataComplete(dataComplete ? parseInt(dataComplete) : 0)
+        setProcessDatasource(dataComplete ? parseInt(dataComplete) : 0, index);
+      }
     }
     setShowEdit(false);
   };
@@ -72,6 +79,7 @@ const EditCell = ({
   }, [showEdit, dataComplete, data]);
 
   const handleOnChange = (date) => {
+    setChange(true)
     if (!date) {
       setData(data);
     }
@@ -175,6 +183,7 @@ const EditCell = ({
                   disableUnderline={true}
                   value={dataComplete}
                   onChange={(e) => {
+                    setChange(true)
                     if (type === "duration") {
                       setData(e.target.value)
                       setDataComplete(e.target.value)

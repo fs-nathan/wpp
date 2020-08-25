@@ -16,7 +16,8 @@ const MenuMoreGantt = ({
   scheduleDetailGantt,
   projectSchedules,
   changeVisibleMenu,
-  changeFlagFetchProjectSchedules
+  changeFlagFetchProjectSchedules,
+  calendarPermisstions
 }) => {
   const [openConfigCalendar, setOpenConfigCalendar] = useState(false);
   const [openModal, setopenModal] = useState(false);
@@ -28,10 +29,6 @@ const MenuMoreGantt = ({
     changeVisibleMenu(false);
   };
   const params = useParams()
-  useEffect(() => {
-    fetchListSchedule();
-    return () => null;
-  }, []);
 
   const fetchListSchedule = async () => {
     try {
@@ -130,6 +127,7 @@ const MenuMoreGantt = ({
 const mapStateToProps = (state) => ({
   scheduleDetailGantt: state.gantt.scheduleDetailGantt,
   projectSchedules: state.gantt.projectSchedules,
+  calendarPermisstions: state.gantt.calendarPermisstions
 });
 const mapDispatchToProps = {
   changeFlagFetchProjectSchedules

@@ -10,10 +10,23 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
+import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
+
+const StyledFormControlLabel = styled(FormControlLabel)`
+  & .MuiTypography-root {
+    background-color: ${props => props.checked ? props.groupActiveColor : '#f2f2f2'};
+    color: ${props => props.checked ? '#fff' : '#8b8b8b'};
+  }
+  &:hover .MuiTypography-root {
+    background-color: ${props => props.groupActiveColor};
+    color: #fff;
+  }
+`;
 // Fake data
-const tabs = ['Table', 'Gantt', 'Chat'];
-const tabSelected = tabs[2];
+const tabs = ['Chat', 'Table', 'Gantt',];
+const tabSelected = tabs[0];
 const images = [fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar];
 
 // Some override style of google material components
@@ -29,6 +42,7 @@ const TabForm = props => {
   const gridSettings = useSelector(state => state.chat.gridSettings)
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const [value, setValue] = React.useState(tabSelected);
+  const groupActiveColor = useSelector(currentColorSelector)
 
   function onClickLabel(value) {
     const { url = '' } = gridSettings.find(({ name }) => name === value) || {};
@@ -47,12 +61,13 @@ const TabForm = props => {
         row
       >
         {props.tabs.map((label, idx) => (
-          <FormControlLabel
+          <StyledFormControlLabel
             className={clsx("chatHeader--tabLabel", { "chatHeader--tabLabel__selected": value === label })}
             key={idx}
             value={label}
             control={<Radio />}
             label={label}
+            groupActiveColor={groupActiveColor}
             checked={value === label}
             onClick={onClickLabel(label)}
           />

@@ -134,6 +134,7 @@ function AddNewButton({ selectedMenu }) {
 
     {isCreateFolder && (
       <ModalCommon
+        className="AddNewModal"
         title={t('IDS_WP_CREATE_FOLDER')}
         onClose={() => {
           setCreateFolder(false);
@@ -148,7 +149,7 @@ function AddNewButton({ selectedMenu }) {
           }
         ]}
       >
-        <DialogContent dividers className="dialog-content">
+        <DialogContent dividers className="dialog-content AddNewModal--dialog">
           <TitleSectionModal label={t('IDS_WP_INPUT_NEW_FOLDER_NAME')} isRequired />
           <TextField
             value={nameFolder}

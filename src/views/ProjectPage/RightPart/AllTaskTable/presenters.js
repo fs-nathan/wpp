@@ -86,8 +86,8 @@ function AllTaskTable({
                 subTitle: isNil(memberID) ? () => (
                     <SubTitle>
                         <div className={pathname.includes("table") ? 'view_Project_AllTaskTable___subtitle_active' : ''}>Table</div>
-                        <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('projects/task-table', 'tasks/gantt')}`)}>Gantt</div>
-                        <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('projects/task-table', 'tasks/chat')}`)}>Chat</div>
+                        <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('task-table', 'task-gantt')}`)}>Gantt</div>
+                        <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('task-table', 'task-chat')}`)}>Chat</div>
                     </SubTitle>
                 ) : () => (
                     <div className={"taskMember_title_container"}>

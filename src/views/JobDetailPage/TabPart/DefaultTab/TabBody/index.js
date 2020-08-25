@@ -4,7 +4,7 @@ import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updatePriority, getMember } from '../../../../../actions/taskDetail/taskDetailActions';
+import { updatePriority, getMember, focusTaskGroup } from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
@@ -151,6 +151,11 @@ function TabBody(props) {
     dispatch(getMember({ task_id: taskId }))
   }
 
+  function onClickGroupTask() {
+    console.log('onClickGroupTask')
+    dispatch(focusTaskGroup(detailTask.group_task))
+  }
+
   return (
     <div className="listPartTabBody">
       <Body
@@ -167,6 +172,14 @@ function TabBody(props) {
             </ListItemText>
           </ListItem>
           <Description value={content} />
+          <ListItem onClick={onClickGroupTask} className="listPartTabBody--groupTask">
+            <ListItemText>
+              <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_NHOM_VIEC')}</ColorTypo>
+              <div className="Description--content">
+                {detailTask && detailTask.group_task_name}
+              </div>
+            </ListItemText>
+          </ListItem>
           <ListItemButtonGroup>
             {taskStatistic.state_code !== 3 &&
               <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}

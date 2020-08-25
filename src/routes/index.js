@@ -78,12 +78,13 @@ const ReportPage = loadable(() => import("views/ReportPage"), {
 const GanttPage = loadable(() => import("views/GrantPage/GrantTable"), {
   fallback: <div />,
 });
-const ErrorPage = loadable(() => import("views/ErrorPage") , {
+const ErrorPage = loadable(() => import("views/ErrorPage"), {
   fallback: <div />,
 })
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },
+  { path: Routes.PROJECT_GRANT, component: () => <GanttPage /> },
   { path: Routes.PROJECTS, component: () => <ProjectGroupPage /> },
   //{ path: Routes.PROJECT, component: () => <ProjectPage /> },
   { path: Routes.MEMBERS, component: () => <MemberPage /> },
@@ -91,9 +92,9 @@ const routes = [
   { path: Routes.REPORT, component: () => <ReportPage /> },
   { path: Routes.DOCUMENT, component: () => <DocumentPage /> },
   { path: Routes.TASKS, component: () => <JobPage /> },
-  ...Object.values(jobRoutes).map((path) => ({path, component: () => <JobPage />,})),
+  ...Object.values(jobRoutes).map((path) => ({ path, component: () => <JobPage />, })),
   { path: Routes.OFFERS, component: () => <OfferPage /> },
-  { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} />,},
+  { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} />, },
   { path: Routes.TEST, component: () => <TestPage /> },
   { path: Routes.SETTING_ACCOUNT, component: () => <SettingAccountPage /> },
   { path: Routes.SETTING_GROUP, component: () => <SettingGroupPage /> },
@@ -119,13 +120,12 @@ const routes = [
   { path: Routes.CALENDAR_WEEKLY, component: () => <CalendarWeeklyPage /> },
   { path: Routes.CALENDAR_PROJECT, component: () => <CalendarProjectPage /> },
   { path: Routes.CALENDAR_ALARM, component: () => <CalendarAlarmPage /> },
-  { path: Routes.CONFIRM_REGISTRATION, component: () => <ConfirmRegistration />,},
-  { path: Routes.PROJECT_GRANT, component: () => <GanttPage /> },
+  { path: Routes.CONFIRM_REGISTRATION, component: () => <ConfirmRegistration />, },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
   ...(process.env.NODE_ENV !== "production"
     ? [{ path: "/playground", component: () => <Playground /> }]
     : []),
-  { path: "", exact: false, component: () => <ErrorPage/> },
+  { path: "", exact: false, component: () => <ErrorPage /> },
 ];
 
 export default routes;

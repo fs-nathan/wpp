@@ -42,8 +42,8 @@ const TitleImg = styled(Typography)`
     }
 `
 
-function ImagePlace(t, file, user_create_avatar, user_create_name, time_create) {
-  if (FileType(getFileType(file.name)) === fileType.video)
+function ImagePlace(t, file, user_create_avatar, user_create_name, time_create, media_type) {
+  if (media_type === 1 || FileType(getFileType(file.name)) === fileType.video)
     return (<div className="FileMessage--videoCover" >
       <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
       <ReactPlayer
@@ -51,26 +51,28 @@ function ImagePlace(t, file, user_create_avatar, user_create_name, time_create) 
         url={file.url}
         height="auto" width="100%"
       />
-      <Typography className="FileMessage--videoInfo" component={'div'}>
-        <TitleImg component='div'>
-          <ListItem>
-            {user_create_avatar && <Avatar src={user_create_avatar} />}
-            <ListItemText
-              style={{ margin: 0 }}
-              primary={
-                <Typography component='div'>
-                  {file.name}
-                </Typography>
-              }
-              secondary={
-                <Typography component='div'>
-                  {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
-                </Typography>
-              }
-            />
-          </ListItem>
-        </TitleImg>
-      </Typography>
+      {user_create_avatar &&
+        <Typography className="FileMessage--videoInfo" component={'div'}>
+          <TitleImg component='div'>
+            <ListItem>
+              {user_create_avatar && <Avatar src={user_create_avatar} />}
+              <ListItemText
+                style={{ margin: 0 }}
+                primary={
+                  <Typography component='div'>
+                    {file.name}
+                  </Typography>
+                }
+                secondary={
+                  <Typography component='div'>
+                    {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
+                  </Typography>
+                }
+              />
+            </ListItem>
+          </TitleImg>
+        </Typography>
+      }
     </div>)
   return (<img className={clsx("ImageMessage--img")} src={file.url_thumbnail || file.url} alt="hd" />)
 }
@@ -88,6 +90,7 @@ const ImageMessage = ({
   user_create_position,
   user_create_roles = [],
   data_emotion = [],
+  media_type,
   isReply,
   isUploading,
   is_me,
@@ -165,7 +168,7 @@ const ImageMessage = ({
                   {
                     (plusImage > 0 && !isReply && i === 5) ? (
                       <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
-                        {ImagePlace(t, image, user_create_avatar, user_create_name, time_create)}
+                        {ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type)}
                         <div className={clsx("ImageMessage--plusText")}>
                           <div className={clsx("ImageMessage--plusTextNumber")}>
                             +{plusImage}
@@ -174,7 +177,7 @@ const ImageMessage = ({
                       </div>
                     )
                       :
-                      ImagePlace(t, image, user_create_avatar, user_create_name, time_create)
+                      ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type)
                   }
                   {!isReply &&
                     <>
