@@ -26,7 +26,7 @@ const SubtaskModal = (props) => {
       setOpen={props.handleClickClose}
       confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
       onConfirm={onClickComplete}
-      className="editSubtask modal_height_50vh"
+      className="editSubtask modal_height_20vh"
     >
       <div className="editSubtask--content">
         <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_CONG_VIEC')} isRequired />

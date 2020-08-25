@@ -113,7 +113,7 @@ const MonthHeader = ({
             marginTop: 25.8,
             left: leftTable,
             overflow: 'scroll',
-            height: dataSource.length * 32 < heightTable - 50 ? dataSource.length * 32 : heightTable - 50
+            height: dataSource.length * 32 < heightTable - 50 ? dataSource.length * 32 : heightTable - 73
           }}
         >
           {visibleGantt.gridTable && table}

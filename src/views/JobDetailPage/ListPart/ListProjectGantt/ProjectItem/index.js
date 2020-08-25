@@ -14,7 +14,7 @@ const ProjectItem = (props) => {
   const isSelected = props.project.id === projectId;
 
   function onClickProject() {
-    history.push(`/tasks/gantt/` + props.project.id);
+    history.push(`/projects/task-gantt/` + props.project.id);
     // props.value.getDetailProject(props.project.id)
     // props.value.chooseProject(props.project)
     dispatch(chooseTask(null));

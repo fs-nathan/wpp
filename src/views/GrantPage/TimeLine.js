@@ -8,14 +8,14 @@ import { connect } from "react-redux";
 import { ResizableBox } from "react-resizable";
 import "./test.css";
 
-const Circle = ({ left, show, text }) => (
+const Circle = ({ className, left, show, text }) => (
   <div
     style={{
       left,
       backgroundColor: show ? "#fafafa" : "transparent",
       border: `1px solid ${show ? "rgba(59, 59, 59, 0.25)" : "transparent"}`,
     }}
-    className="gantt-dot-circle"
+    className={`gantt-dot-circle ${className ? className : ''}`}
   ></div>
 );
 
@@ -222,8 +222,7 @@ const TimeLine = ({
           cursor:
             !isGroupTask && !isTotalDuration && canEdit ? "move" : "default",
           width: "fit-content",
-          zIndex: 1000,
-          height: 20,
+          height: 15,
           // top: "50%",
           // transform: "translateY(-50%)",
           position: "absolute",
@@ -260,7 +259,7 @@ const TimeLine = ({
                 }
               >
                 {!isGroupTask && !isTotalDuration && canEdit && (
-                  <Circle show={showResize} left={9} />
+                  <Circle show={showResize} left={9} className="gantt_dot_right" />
                 )}
               </span>
             </Tooltip>
@@ -297,7 +296,7 @@ const TimeLine = ({
                 : isGroupTask
                   ? timelineColor.group
                   : timelineColor.task,
-              height: isTotalDuration || isGroupTask ? 15 : 20
+              height: isTotalDuration || isGroupTask ? 13 : 15
             }}
             className="gantt--time-task"
           >
@@ -370,7 +369,7 @@ const TimeLine = ({
             <div
               style={{
                 background: timelineColor.duration,
-                height: isTotalDuration || isGroupTask ? 15 : 20
+                height: isTotalDuration || isGroupTask ? 13 : 15
               }}
               className="gantt--duration-task"
 

@@ -1986,7 +1986,7 @@
   "LABEL_GANTT_NAME_DURATION_TABLE": "Tiến độ",
   "LABEL_GANTT_NAME_COMPLETE_TABLE": "Hoàn thành",
   "LABEL_GANTT_NAME_SEARCH_MENU": "Tìm kiếm",
-  "LABEL_GANTT_NAME_DURATION_MENU": "Tiến độ",
+  "LABEL_GANTT_NAME_DURATION_MENU": "Tiến độ : {{unit}}",
   "LABEL_GANTT_NAME_EXPAND_MENU": "Mở rộng",
   "LABEL_GANTT_NAME_SETTING_MENU": "Cài đặt",
   "LABEL_GANTT_NAME_MORE_MENU": "Thêm",
@@ -2044,6 +2044,10 @@
   "Bạn có muốn xóa bài viết?": "Bạn có muốn xóa bài viết?",
   "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm",
   "Module thành viên": "Module thành viên",
+  "LABEL_CHAT_TASK_DANH_SACH_VI_TRI": "Danh sách vị trí chia sẻ",
+  "LABEL_CHAT_TASK_NHOM_VIEC": "Nhóm việc",
+  "LABEL_CHAT_TASK_CHIS_SE_LUC_USER_TIME": "{{user}} chia sẻ vị trí lúc {{time}}",
+  "LABEL_CHAT_TASK_NHAC_HEN_HOAN_THANH": "Nhắc hẹn hoàn thành",
   "GANTT_MAIN_CALENDAR_LABEL": "Lịch chính",
   "Bạn có muốn xóa bình luận ?": "Bạn có muốn xóa bình luận ?",
   "GANTT_CALENDAR_SELECT_ASSIGN_PROJECT": "Chọn lịch để gán cho dự án (lịch mặc định luôn được gán)",
@@ -2074,5 +2078,6 @@
   "GANTT_5": "T6",
   "GANTT_6": "T7",
   "GANTT_0": "CN",
-  "GANTT_TODAY_LABEL": "Hôm nay"
+  "GANTT_TODAY_LABEL": "Hôm nay",
+  "GANTT_NOT_INCLUDE_PROJECT": "Ngày hôm nay không thuộc tiến độ dự án"
 }

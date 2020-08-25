@@ -28,6 +28,7 @@ function CalendarProjectLeftPartPresenter({
   handleSearchPattern,
   changeCalendarPermisstion,
   setopenModal,
+  calendarPermisstions,
   searchPattern,
   handleDeleteGroup,
   havePermission,
@@ -56,6 +57,21 @@ function CalendarProjectLeftPartPresenter({
       console.log(e)
     }
   }
+  useEffect(() => {
+    fetchListSchedule();
+    return () => null;
+  }, []);
+
+  const fetchListSchedule = async () => {
+    try {
+      const listSchedule = await apiService({
+        url: "group-schedule/list-schedule",
+      })
+      setListSchedule(listSchedule.data.schedules);
+    } catch (e) {
+      console.log(e);
+    }
+  };
   const fetchPermissionCalendar = async () => {
     try {
       const { projectId } = params
@@ -80,11 +96,11 @@ function CalendarProjectLeftPartPresenter({
       <React.Fragment>
         <LeftSideContainer
           title={t("IDS_WP_PROJECT_CALENDAR")}
-          rightAction={
-            {
-              iconPath: mdiPlus,
-              onClick: (evt) => setopenModal(true),
-            }
+          rightAction={calendarPermisstions.assign_schedule &&
+          {
+            iconPath: mdiPlus,
+            onClick: (evt) => { if (calendarPermisstions.assign_schedule) setopenModal(true) },
+          }
           }
         >
           <StyledList className="gantt-left-menu-calendar__container">
@@ -94,7 +110,8 @@ function CalendarProjectLeftPartPresenter({
                 id: item._id
               }
             }).map((item, index) => {
-
+              console.log(listSchedule)
+              console.log(listSchedule.filter(schedule => schedule.id === item.id)[0], "asdasdasd")
               return (
                 <React.Fragment key={index}>
                   <StyledListItem
@@ -140,7 +157,7 @@ function CalendarProjectLeftPartPresenter({
         </LeftSideContainer>
       </React.Fragment>
       <UpdateProjectCalendar
-        open={openEditModal}
+        open={false}
         setOpen={setOpenEditModal}
         schedule={groupSchedules.data.find(
           (item) => item.id === scheduleDetailGantt.id
@@ -157,6 +174,7 @@ const mapStateToProps = (state) => ({
   scheduleDetailGantt: state.gantt.scheduleDetailGantt,
   fetchProjectSchedule: state.gantt.fetchProjectSchedule,
   reducerProjectSchedules: state.gantt.projectSchedules,
+  calendarPermisstions: state.gantt.calendarPermisstions
 });
 
 const mapDispatchToProps = {

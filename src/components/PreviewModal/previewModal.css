@@ -23,3 +23,10 @@
 .gantt-export-pdf--modal__container .comp_LoadingOverlay___wrapper {
     min-height: calc(100% - 118px) !important
 }
+.gantt-export-pdf--modal__container.comp_CustomModal___dialog-md > div:nth-child(3) > div {
+    overflow: hidden ;
+    min-width: 40vw ;
+    max-width: 100% ;
+    margin: 0 ;
+    max-height: 100% ;
+}
