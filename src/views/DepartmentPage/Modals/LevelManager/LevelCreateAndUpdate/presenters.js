@@ -22,8 +22,10 @@ function LevelCreateAndUpdate({
     if (updatedLevel) {
       setName(get(updatedLevel, 'name', ''));
       setDescription(get(updatedLevel, 'description', ''));
+    } else {
+      setName('');
+      setDescription('');
     }
-    // eslint-disable-next-line
   }, [updatedLevel]);
 
   React.useEffect(() => {

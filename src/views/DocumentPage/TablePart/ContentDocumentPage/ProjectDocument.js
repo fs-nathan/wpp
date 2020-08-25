@@ -132,6 +132,7 @@ const ProjectDocument = props => {
       setSortType(prev => prev * -1);
     }
   };
+  console.log(isLoading);
   if (isLoading) return <LoadingBox />;
   return (
     <>

@@ -22,8 +22,10 @@ function TitleManager({
     if (updatedPosition) {
       setName(get(updatedPosition, 'name', ''));
       setDescription(get(updatedPosition, 'description', ''));
+    } else {
+      setName('');
+      setDescription('');
     }
-    // eslint-disable-next-line
   }, [updatedPosition]);
 
   React.useEffect(() => {
