@@ -216,18 +216,21 @@ span.ant-checkbox ~ span {
   position: absolute;
   height: 20px;
   margin: 0;
+  top: -3px;
   left: -90px;
 }
 
 .gantt--end-timeline {
   position: relative;
   height: 20px;
+  top: -2px;
   margin: 0;
   left: 20px;
 }
 .gantt--name-timeline {
   position: relative;
   height: 20px;
+  top: -2px;
   margin: 0;
   left: 30px;
   color: #1e88e5;
@@ -242,8 +245,8 @@ span.ant-checkbox ~ span {
 .gantt--duration-task {
   overflow: hidden;
   width: 100%;
-  height: 20px;
-  z-index: 3;
+  height: 15px;
+  z-index: 1000;
 }
 
 .config--drawer--checkbox .ant-radio-checked .ant-radio-inner::after {
@@ -262,7 +265,7 @@ span.ant-checkbox ~ span {
   border-radius: 50%;
   position: absolute;
   top: 50%;
-  transform: translateY(-55%);
+  transform: translateY(-48%);
 }
 
 .asfdfs {
@@ -350,6 +353,7 @@ span.ant-checkbox ~ span {
 .duration-text-gantt {
   position: relative;
   right: 10px;
+  top: -2.4px;
   text-align: right;
 }
 .right-header-more {
@@ -1100,7 +1104,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
  position: absolute;
  right: 0;
  width: 2px;
- height: 20px;
+ height: 18px;
  background-color: inherit;
  z-index: 1010 !important;
 }
@@ -1109,7 +1113,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
   position: absolute;
  left: 0;
  width: 2px;
- height: 20px;
+ height: 18px;
  background-color: inherit;
  z-index: 1010 !important
 }
@@ -1172,7 +1176,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 
 }
 .duration-text-gantt__group_total{
-  top: -2px;
+  top: -3px;
 }
 
 .gantt--calender-modal__button-container{
@@ -1232,4 +1236,19 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .gantt--export-pdf__content-pdf--text{
   padding: 20px;
   width: 100%;
+}
+#gantt_table_grid::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#gantt_table_grid {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.gantt_dot_right{
+  transform: translateY(-27%) !important;
+}
+.gantt-right-header__wapper span {
+  text-transform: uppercase;
 }

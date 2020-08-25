@@ -19,7 +19,9 @@ const Header = ({
   showHeader,
   changeShowHeader,
   showProject,
-  profileDetail
+  profileDetail,
+  end,
+  start
 }) => {
   const history = useHistory();
   const { pathname } = useLocation();
@@ -105,7 +107,7 @@ const Header = ({
         </div>
       </Col>
       <Col offset={2} span={10}>
-        <RightHeader scheduleIdDefault={scheduleIdDefault} />
+        <RightHeader end={end} start={start} scheduleIdDefault={scheduleIdDefault} />
       </Col>
     </Row>
   ) : (

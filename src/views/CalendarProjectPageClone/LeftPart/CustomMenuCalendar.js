@@ -82,7 +82,7 @@ function CustomMenu({ projectId, canDelete, isMain, scheduleId, changeMainCalend
           },
         }}
       >
-        {calendarPermisstions.edit_schedule && !isMain && <MenuItem key={1} onClick={(e) => {
+        {calendarPermisstions.assign_schedule && !isMain && <MenuItem key={1} onClick={(e) => {
           e.stopPropagation()
           if (!calendarPermisstions.assign_schedule) return
           setMainProjectSchedule(projectId, scheduleId)
@@ -97,7 +97,7 @@ function CustomMenu({ projectId, canDelete, isMain, scheduleId, changeMainCalend
         }}>
           {t('GANTT_CALENDAR_EDIT_CALENDAR')}
         </MenuItem>}
-        {canDelete && !isDefault && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
+        {canDelete && !isDefault && !isMain && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
           e.stopPropagation()
           setOpenConfirmModal(true)
         }}>

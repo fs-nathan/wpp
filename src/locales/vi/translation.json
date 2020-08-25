@@ -1986,7 +1986,7 @@
   "LABEL_GANTT_NAME_DURATION_TABLE": "Tiến độ",
   "LABEL_GANTT_NAME_COMPLETE_TABLE": "Hoàn thành",
   "LABEL_GANTT_NAME_SEARCH_MENU": "Tìm kiếm",
-  "LABEL_GANTT_NAME_DURATION_MENU": "Tiến độ",
+  "LABEL_GANTT_NAME_DURATION_MENU": "Tiến độ : {{unit}}",
   "LABEL_GANTT_NAME_EXPAND_MENU": "Mở rộng",
   "LABEL_GANTT_NAME_SETTING_MENU": "Cài đặt",
   "LABEL_GANTT_NAME_MORE_MENU": "Thêm",
@@ -2074,5 +2074,6 @@
   "GANTT_5": "T6",
   "GANTT_6": "T7",
   "GANTT_0": "CN",
-  "GANTT_TODAY_LABEL": "Hôm nay"
+  "GANTT_TODAY_LABEL": "Hôm nay",
+  "GANTT_NOT_INCLUDE_PROJECT": "Ngày hôm nay không thuộc tiến độ dự án"
 }
