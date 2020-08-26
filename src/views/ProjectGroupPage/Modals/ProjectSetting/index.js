@@ -69,8 +69,9 @@ function ProjectSetting({
       }, get(curProject, 'id'))}
       status={status}
       canChange={{
-        date: get(permission, [get(curProject, 'id'), 'update_project'], true),
-        copy: get(permission, [get(curProject, 'id'), 'update_project'], true),
+        date: get(permission, [get(curProject, 'id'), 'update_project'], false),
+        copy: get(permission, [get(curProject, 'id'), 'update_project'], false),
+        update: get(permission, [get(curProject, 'id'), 'update_project'], false),
         view: true,
       }}
       handleUpdateStatusCopy={status => doUpdateStatusCopy({ projectId: get(curProject, 'id'), status })}

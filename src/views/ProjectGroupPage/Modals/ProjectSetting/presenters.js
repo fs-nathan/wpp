@@ -154,19 +154,20 @@ function ProjectSetting({
             <CustomFormControlLabel value={2} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2")} />
           </RadioGroup>
         </StyledFormControl>}
-        <StyledFormControl component='fieldset' fullWidth>
+        {get(canChange, 'update', false) && <StyledFormControl component='fieldset' fullWidth>
           <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_NOTIFICATION_SETTING")}</TitleFormLabel>
           <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION")}</StyledFormLabel>
-          <RadioGroup aria-label='progress' name='progress' value={notification}
-            onChange={evt => {
+          <RadioGroup
+              aria-label='progress' name='progress' value={notification}
+              onChange={evt => {
               handleUpdateNotificationSetting(parseInt(evt.target.value));
-              setMask(0);
-            }}
+                setMask(0);
+              }}
           >
             <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_ON")} />
             <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_OFF")} />
           </RadioGroup>
-        </StyledFormControl>
+        </StyledFormControl>}
       </CustomModal>
     </React.Fragment>
   )
