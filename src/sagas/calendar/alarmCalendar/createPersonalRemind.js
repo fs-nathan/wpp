@@ -16,7 +16,8 @@ async function doCreatePersonalRemind({ model }) {
         date_remind: model.dateRemind,
         type_remind: model.typeRemind,
         remind_before: model.remindBefore,
-        members_assign: model.userAssign
+        members_assign: model.userAssign,
+        frequency: model.frequency
       }
     }
     const result = await apiService(config);

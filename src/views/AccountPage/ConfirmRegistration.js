@@ -79,7 +79,7 @@ const ConfirmRegistration = props => {
         props.actionActiveGroup(data.data.group_active);
       }
       if (data.data.group_active && data.data.group_active.type === 'Free') {
-        props.openNoticeModal();
+        props.openNoticeModal("ACCOUNT_FREE");
       }
       props.loginSuccess(res.data);
       setLoading(false);
@@ -97,9 +97,7 @@ const ConfirmRegistration = props => {
       const { data } = await actionCheckCode(code);
       setCheckedCode(true);
       setEmailRegistered(data.email || '');
-      console.log(data);
     } catch (error) {
-      console.log(error);
       setErrorMsg(error.message || '');
     }
   };

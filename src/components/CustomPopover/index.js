@@ -163,19 +163,19 @@ export const useFilters = () => {
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.WAITING'),
       field: 'waiting',
-      option: { visibility: true, state_name: 'Waiting' },
+      option: { visibility: true, state_code: 0 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.DOING'),
       field: 'doing',
-      option: { visibility: true, state_name: 'Doing' },
+      option: { visibility: true, state_code: 1 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.COMPLETE'),
       field: 'complete',
-      option: { visibility: true, state_name: 'Finished' },
+      option: { visibility: true, state_code: 2 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.EXPIRED'),
       field: 'expired',
-      option: { visibility: true, state_name: 'Expired' },
+      option: { visibility: true, state_code: 3 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.CREATED'),
       field: 'created',
@@ -194,7 +194,7 @@ export const TimeRangePopover = ({
   timeOptionDefault = 0,
   handleTimeRange = () => null,
 }) => {
-
+  const { t } = useTranslation();
   const [timeOption, setTimeOption] = React.useState(0);
   const [startDate, setStartDate] = React.useState(moment().toDate());
   const [endDate, setEndDate] = React.useState(moment().toDate());
@@ -224,7 +224,7 @@ export const TimeRangePopover = ({
           <List
             subheader={
               <StyledListSubheader component="div">
-                Tùy chọn
+                {t("TIME_RANGE_POPOVER_OPTIONS")}
               </StyledListSubheader>
             }
           >
@@ -251,12 +251,11 @@ export const TimeRangePopover = ({
         </SideBar>
         <MainBar>
           <SubHeader>
-            <span>Thời gian được chọn</span>
-            <IconButton>
+            <span>{t("TIME_RANGE_POPOVER_TIME_CHOOSEN")}</span>
+            <IconButton onClick={evt => setAnchorEl(null)} style={{marginRight: "10px"}}>
               <Icon
                 path={mdiClose}
                 size={1}
-                onClick={evt => setAnchorEl(null)}
               />
             </IconButton>
           </SubHeader>
@@ -268,11 +267,11 @@ export const TimeRangePopover = ({
                   <>
                     <TextField
                       disabled
-                      value={'Toàn bộ'}
+                      value={t("TIME_RANGE_POPOVER_TIME_ALL")}
                     />
                     <TextField
                       disabled
-                      value={'Toàn bộ'}
+                      value={t("TIME_RANGE_POPOVER_TIME_ALL")}
                     />
                   </>
                 ) : (
@@ -283,12 +282,12 @@ export const TimeRangePopover = ({
                         inputVariant="outlined"
                         variant="inline"
                         ampm={false}
-                        label="Ngày bắt đầu"
+                        label={t("TIME_RANGE_POPOVER_START_DATE")}
                         value={startDate}
                         onChange={setStartDate}
                         format="dd/MM/yyyy"
                         maxDate={endDate}
-                        maxDateMessage='Phải trước ngày kết thúc'
+                        maxDateMessage={t("TIME_RANGE_POPOVER_MESSAGE_MAX_DATE")}
                       />
                       <KeyboardDatePicker
                         disableToolbar
@@ -296,12 +295,12 @@ export const TimeRangePopover = ({
                         inputVariant="outlined"
                         variant="inline"
                         ampm={false}
-                        label="Ngày kết thúc"
+                        label={t("TIME_RANGE_POPOVER_END_DATE")}
                         value={endDate}
                         onChange={setEndDate}
                         format="dd/MM/yyyy"
                         minDate={startDate}
-                        minDateMessage='Phải sau ngày bắt đầu'
+                        minDateMessage={t("TIME_RANGE_POPOVER_MESSAGE_MIN_DATE")}
                       />
                     </>
                   )}
@@ -320,7 +319,9 @@ export const TimeRangePopover = ({
                 );
                 setAnchorEl(null);
               }}
-            >Áp dụng</StyledButton>
+            >
+              {t("TIME_RANGE_POPOVER_APPLY")}
+            </StyledButton>
           </Content>
         </MainBar>
       </TimeBox>

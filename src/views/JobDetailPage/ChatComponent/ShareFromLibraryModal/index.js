@@ -2,7 +2,7 @@ import { Button, IconButton } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { mdiChevronRight, mdiClose, mdiLogout, mdiMagnify, mdiRefresh } from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle } from 'actions/documents';
+import { actionFetchListTaskOfProject ,actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle } from 'actions/documents';
 import { actionChangeBreadCrumbs } from 'actions/system/system';
 import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
@@ -25,7 +25,6 @@ import './styles.scss';
 const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
   const dispatch = useDispatch();
   const { t } = useTranslation()
-  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
   const listProject = useSelector(state => state.documents.listProject);
   const isFetching = useSelector(state => state.documents.isFetching);
   const listDocumentFromMe = useSelector(state => state.documents.listDocumentFromMe);
@@ -43,6 +42,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
   const [isSearching, setSearching] = useState(false);
   const [isSorted, setSorted] = useState(false);
   const [searchKey, setSearchKey] = useState('');
+  const [isTaskSelected, setIsTaskSelected] = React.useState(false);
 
   useEffect(() => {
     dispatch(actionFetchListMyDocument());
@@ -56,7 +56,6 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
   useEffect(() => {
     const sorted = listData.reverse()
     setListData(sorted)
-    // eslint-disable-next-line
   }, [isSorted]);
 
   useEffect(() => {
@@ -127,7 +126,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
         let newList = currentBreadCrumbs.length === breadCrumbs.length ? breadCrumbs.slice(0, idx + 1) : breadCrumbs.slice(0, -1);
         dispatch(actionChangeBreadCrumbs(newList));
       }
-      // console.log('handleClickLink', id)
+      console.log(id);
       if (id === -1) {
         if (selectedMenu.key === 'googleDrive')
           dispatch(actionFetchListGoogleDocument());
@@ -144,8 +143,9 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
         if (selectedMenu.key === 'googleDrive')
           dispatch(actionFetchListGoogleDocument({ folderId: id }, true))
         else if (selectedMenu.key === 'projectDocument') {
-          dispatch(actionFetchListProjectOfFolder({ project_id: id }));
-          setInsideProject(true)
+          dispatch(actionFetchListTaskOfProject({project_id: id}));
+          setInsideProject(true);
+          setIsTaskSelected(false);
         }
         else if (selectedMenu.key === 'sharedWithMe') {
           dispatch(actionFetchListDocumentShare({ folder_id: id }, true));
@@ -163,6 +163,8 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
       return <ProjectDocumentsTable
         listData={listDataFiltered}
         setInsideProject={setInsideProject}
+        setTaskSelected={setIsTaskSelected}
+        isTaskSelected={isTaskSelected}
       />
     if (selectedMenu.key === 'googleDrive' && isInsideProject)
       return <GoogleDriverDocuments

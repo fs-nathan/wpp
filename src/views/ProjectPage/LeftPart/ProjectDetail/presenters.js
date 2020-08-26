@@ -183,23 +183,35 @@ function ProjectDetail({
             </SubContainer>
           </div>
           <ActionBox>
-            <ColorButton
-              onClick={() => handleOpenModal('UPDATE', {
-                curProject: project.project
-              })}
-              variant='text'
-              size='small'
-              fullWidth
-            >{t("DMH.VIEW.PP.LEFT.PD.EDIT")}</ColorButton>
-            <ColorButton
-              onClick={() => handleOpenModal('ALERT', {
-                selectedProject: project.project
-              })}
-              variant='text'
-              variantColor='red'
-              size='small'
-              fullWidth
-            >{t("DMH.VIEW.PP.LEFT.PD.DEL")}</ColorButton>
+            {
+              get(project.project, "permissions.update_task", false) && (
+                <ColorButton
+                  onClick={() => handleOpenModal('UPDATE', {
+                    curProject: project.project
+                  })}
+                  variant='text'
+                  size='small'
+                  fullWidth
+                >
+                  {t("DMH.VIEW.PP.LEFT.PD.EDIT")}
+                </ColorButton>
+              )
+            }
+            {
+              get(project.project, "permissions.delete_task", false) && (
+                <ColorButton
+                  onClick={() => handleOpenModal('ALERT', {
+                    selectedProject: project.project
+                  })}
+                  variant='text'
+                  variantColor='red'
+                  size='small'
+                  fullWidth
+                >
+                  {t("DMH.VIEW.PP.LEFT.PD.DEL")}
+                </ColorButton>
+              )
+            }
           </ActionBox>
         </Container>
       </LeftSideContainer>

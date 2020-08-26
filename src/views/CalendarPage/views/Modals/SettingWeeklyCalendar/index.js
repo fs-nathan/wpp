@@ -34,7 +34,7 @@ function SettingWeeklyCalendar({
         open={open}
         setOpen={setOpen}
         onConfirm={() => onConfirm(day)}
-        height='mini'
+        height='miniWide'
         maxWidth='sm'
         canConfirm={permission}
         confirmRender={permission ? t('IDS_WP_DONE') : null}

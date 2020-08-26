@@ -77,10 +77,9 @@ const LoginPage = (props) => {
         res.data.data.group_active &&
         res.data.data.group_active.type === "Free"
       ) {
-        props.openNoticeModal();
+        props.openNoticeModal("ACCOUNT_FREE");
       }
       props.loginSuccess(data);
-      // props.history.push(Routes.HOME);
     } catch (error) {
       setLoginFail(true);
       setIsLoading(false);

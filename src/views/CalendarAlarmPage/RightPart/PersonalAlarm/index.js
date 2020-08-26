@@ -5,7 +5,16 @@ import { deletePersonalRemind } from "actions/calendar/alarmCalendar/deletePerso
 import { listPersonalRemind } from "actions/calendar/alarmCalendar/listPersonalRemind";
 import { updatePersonalRemind } from "actions/calendar/alarmCalendar/updatePersonalRemind";
 import AlertModal from "components/AlertModal";
-import { CREATE_PERSONAL_REMIND, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND, DELETE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND, UPDATE_PERSONAL_REMIND_CATEGORY } from "constants/events";
+import {
+  CREATE_PERSONAL_REMIND,
+  CREATE_PERSONAL_REMIND_CATEGORY,
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_PERSONAL_REMIND,
+  DELETE_PERSONAL_REMIND_CATEGORY,
+  UPDATE_PERSONAL_REMIND,
+  UPDATE_PERSONAL_REMIND_CATEGORY
+} from "constants/events";
 import { useLocalStorage } from "hooks";
 import get from "lodash/get";
 import moment from "moment";
@@ -22,12 +31,13 @@ import { Context as CalendarAlarmContext } from '../../index';
 import { bgColorSelector, personalRemindCategoriesSelector, personalRemindSelector } from "../../selectors";
 import "../styles.scss";
 import CalendarPersonalAlarmPresenter from './presenter';
+import {isNil} from "lodash";
 
 function CalendarPersonalAlarm({
   bgColor, doListPersonalRemind,
   personalReminds, remindCategories,
   doCreatePersonalRemind, doUpdatePersonalRemind,
-  doDeletePersonalRemind, doCreatePersonalRemindCategory
+  doDeletePersonalRemind, doCreatePersonalRemindCategory,
 }) {
 
   const { t } = useTranslation();
@@ -71,12 +81,14 @@ function CalendarPersonalAlarm({
   }, [timeType, timeRange]);
 
   React.useEffect(() => {
-    let fromTime = moment(get(timeRange, 'startDate') ?? moment().startOf('year')).format("YYYY-MM-DD");
-    let toTime = moment(get(timeRange, 'endDate') ?? moment().endOf('year')).format("YYYY-MM-DD");
+    let fromTime = !isNil(get(timeRange, 'startDate')) ? moment(get(timeRange, 'startDate')).format("YYYY-MM-DD") : undefined;
+    let toTime = !isNil(get(timeRange, 'endDate')) ? moment(get(timeRange, 'endDate')).format("YYYY-MM-DD") : undefined;
     doListPersonalRemind({ fromTime, toTime }, false);
 
     const refreshListPersonalRemind = () => {
       setIsLoading(false);
+      setOpenModal(false);
+      setOpenModalEdit(false);
       doListPersonalRemind({ fromTime, toTime }, false);
     }
     CustomEventListener(CREATE_PERSONAL_REMIND, refreshListPersonalRemind);
@@ -106,7 +118,6 @@ function CalendarPersonalAlarm({
       });
     }
   }, [categoryID, personalReminds]);
-
 
   function handleOpenModal(type, data) {
     switch (type) {

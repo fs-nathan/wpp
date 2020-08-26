@@ -22,8 +22,10 @@ function MajorCreateAndUpdate({
     if (updatedMajor) {
       setName(get(updatedMajor, 'name', ''));
       setDescription(get(updatedMajor, 'description', ''));
+    } else {
+      setName('');
+      setDescription('');
     }
-    // eslint-disable-next-line
   }, [updatedMajor]);
 
   React.useEffect(() => {
@@ -75,6 +77,7 @@ function MajorCreateAndUpdate({
       onCancle={() => setOpen(false)}
       manualClose={true}
       activeLoading={activeLoading}
+      height={"mini"}
     >
       <CustomTextbox
         value={name}

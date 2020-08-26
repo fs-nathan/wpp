@@ -33,7 +33,7 @@ function CalendarPersonalAlarmPresenter({
 
   React.useEffect(() => {
     let filtered = [];
-    personalReminds.data.map((data) => {
+    personalReminds.data.forEach((data) => {
       let filteredRemind = filter(get(data, "reminds", []), remind => get(remind, 'content', '').toLowerCase().includes(searchPattern.toLowerCase()));
       let newData = {
         ...data,
@@ -41,12 +41,11 @@ function CalendarPersonalAlarmPresenter({
       }
       filtered = filtered.concat(newData);
     });
-
     setFilteredRemind({
       ...personalReminds,
       data: filtered
     });
-  }, [personalReminds, searchPattern])
+  }, [personalReminds, searchPattern]);
 
   return (
     <React.Fragment>
@@ -92,7 +91,7 @@ function CalendarPersonalAlarmPresenter({
                             <Box key={get(item, "id", "")}>
                               <div className={`alarm_celendar_item_MainContainer`}>
                                 <div className="alarm_calendar_table_header">
-                                  <div style={{ backgroundColor: item.color }} className="mark-color"></div>
+                                  <div style={{ backgroundColor: item.color }} className="mark-color"/>
                                   <Typography variant={"h5"}>{item.name}</Typography>
                                   <div className="reminds_count">
                                     <Icon path={mdiAlarm} size={0.7} color="#fff" />
@@ -139,12 +138,12 @@ function CalendarPersonalAlarmPresenter({
                                                 </div>
                                               </div>
                                               <div className="main_content_auther">
-                                                <abrr title={remind.user_create_name}>
+                                                <abbr title={remind.user_create_name}>
                                                   <CustomAvatar
                                                     style={{ width: 15, height: 15 }}
                                                     src={remind.user_create_avatar} alt='avatar'
                                                   />
-                                                </abrr>
+                                                </abbr>
                                                 <span>{t('IDS_WP_CREATED_AT')}: {remind.created_at}</span>
                                               </div>
                                               <div className="main_content_alarm">

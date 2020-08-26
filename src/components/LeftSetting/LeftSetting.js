@@ -2,11 +2,10 @@ import React, { Fragment } from "react";
 import Icon from "@mdi/react";
 import { withRouter, Link } from "react-router-dom";
 import "./LeftSetting.scss";
-// import { mdiDragVertical } from '@mdi/js';
 import { ListItemText } from "@material-ui/core";
 import { StyledList, StyledListItem, Primary, Secondary } from "../CustomList";
 import LeftSideContainer from "../LeftSideContainer";
-// import { isEmpty } from '../../helpers/utils/isEmpty';
+import {get} from "lodash";
 
 const LeftSetting = props => {
   const { pathname } = props.location;
@@ -26,7 +25,7 @@ const LeftSetting = props => {
               onClick={() => {
                 if (item.action) item.action();
               }}
-              className={`${pathname === item.url ? "item-actived" : ""} ${
+              className={`${(!get(item,"extract", false) && pathname === item.url) || get(item, "extract", false) && pathname.includes(item.url) ? "item-actived" : ""} ${
                 item.url ? "" : "none-action"
               }`}
             >

@@ -34,47 +34,6 @@ function reducer(state = initialState, action) {
       };
     case DETAIL_STATUS_RESET:
       return initialState;
-    /*
-    case UPDATE_STATUS_DATE_SUCCESS: {
-      const newStatus = {
-        ...state.data.status,
-        date: get(action.options, 'status')
-      }
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          status: newStatus,
-        }
-      };
-    }
-    case UPDATE_STATUS_COPY_SUCCESS: {
-      const newStatus = {
-        ...state.data.status,
-        copy: get(action.options, 'status')
-      }
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          status: newStatus,
-        }
-      };
-    }
-    case UPDATE_STATUS_VIEW_SUCCESS: {
-      const newStatus = {
-        ...state.data.status,
-        view: get(action.options, 'status')
-      }
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          status: newStatus,
-        }
-      };
-    }
-    */
     default:
       return state;
   }

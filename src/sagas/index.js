@@ -7,7 +7,7 @@ import { CALENDAR_PAGE_PERMISSION } from "../constants/actions/calendar/permissi
 import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_DAY_OFF, GROUP_SCHEDULE_DELETE_SHIFT_STAGE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE_WORKING_DAY, GROUP_SCHEDULE_DELETE_WORKING_STAGE, GROUP_SCHEDULE_DETAIL, GROUP_SCHEDULE_LIST, GROUP_SCHEDULE_SET_WORKING_DAY, GROUP_SCHEDULE_UPDATE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_UPDATE_WORKING_STAGE, SETTING_START_DAY_WEEK } from "../constants/actions/calendar/projectCalendar";
 import { CREATE_SCHEDULE, DELETE_ALL_SCHEDULE, DELETE_SCHEDULE, LIST_WEEKS_IN_YEAR, SCHEDULE_LIST, SCHEDULE_OF_WEEK_LIST, SCHEDULE_OF_WEEK_LIST_FROM_MODAL, SETTING_STARTING_DAY, UPDATE_SCHEDULE } from "../constants/actions/calendar/weeklyCalendar";
 import * as chatTypes from "../constants/actions/chat/chat";
-import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH } from "../constants/actions/documents";
+import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH, LIST_TASK_DOCUMENT_OF_PROJECT } from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
@@ -61,6 +61,7 @@ import { DETAIL_STATUS } from "../constants/actions/project/setting/detailStatus
 import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateStatusCopy";
 import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
 import { UPDATE_STATUS_VIEW } from "../constants/actions/project/setting/updateStatusView";
+import { UPDATE_NOTIFICATION_SETTING } from "../constants/actions/project/setting/updateNotificationSetting";
 import { SHOW_PROJECT } from "../constants/actions/project/showProject";
 import { SORT_PROJECT } from "../constants/actions/project/sortProject";
 import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
@@ -72,6 +73,7 @@ import { DETAIL_DEFAULT_GROUP } from "../constants/actions/projectGroup/detailDe
 import { DETAIL_PROJECT_GROUP } from "../constants/actions/projectGroup/detailProjectGroup";
 import { EDIT_PROJECT_GROUP } from "../constants/actions/projectGroup/editProjectGroup";
 import { LIST_PROJECT_GROUP } from "../constants/actions/projectGroup/listProjectGroup";
+import { LIST_PROJECT_GROUP_DELETED } from "../constants/actions/projectGroup/listProjectGroup";
 import { MEMBER_PROJECT_GROUP } from "../constants/actions/projectGroup/memberProjectGroup";
 import { SORT_PROJECT_GROUP } from "../constants/actions/projectGroup/sortProjectGroup";
 import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from "../constants/actions/register/inviteOtherPeopleCreateAccount";
@@ -86,6 +88,7 @@ import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE } from "..
 import { CREATE_TASK } from "../constants/actions/task/createTask";
 import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
+import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
 import { SORT_TASK } from "../constants/actions/task/sortTask";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
@@ -153,7 +156,7 @@ import { listWeeksInYear } from "./calendar/weeklyCalendar/listWeeksInYear";
 import { settingStartingDay } from "./calendar/weeklyCalendar/settingStartingDay";
 import { updateSchedule } from "./calendar/weeklyCalendar/updateSchedule";
 import * as chatDetailSaga from "./chat/chat";
-import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash } from "./documents";
+import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash, listTaskDocumentOfProjectFolder } from "./documents";
 import { copyGroupTask } from "./groupTask/copyGroupTask";
 import { createGroupTask } from "./groupTask/createGroupTask";
 import { deleteGroupTask } from "./groupTask/deleteGroupTask";
@@ -207,6 +210,7 @@ import { detailStatus } from "./project/setting/detailStatus";
 import { updateStatusCopy } from "./project/setting/updateStatusCopy";
 import { updateStatusDate } from "./project/setting/updateStatusDate";
 import { updateStatusView } from "./project/setting/updateStatusView";
+import { updateNotificationSetting } from "./project/setting/updateNotificationSetting";
 import { showProject } from "./project/showProject";
 import { sortProject } from "./project/sortProject";
 import { updateGroupPermissionMember } from "./project/updateGroupPermissionMember";
@@ -251,6 +255,8 @@ import { deleteUserRole } from "./userRole/deleteUserRole";
 import { listUserRole } from "./userRole/listUserRole";
 import { updateUserRole } from "./userRole/updateUserRole";
 import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
+import {listProjectGroupDeleted} from "./projectGroup/listProjectGroupDeleted";
+import {listTaskMember} from "./task/listTaskMember";
 
 function* rootSaga() {
   // Hoang - begin
@@ -294,10 +300,7 @@ function* rootSaga() {
   yield takeEvery(PRIVATE_MEMBER, privateMember);
   yield takeLeading(SEARCH_USER, searchUser);
   yield takeEvery(INVITE_USER_JOIN_GROUP, inviteUserJoinGroup);
-  yield takeEvery(
-    RESEND_INVITATION_USER_JOIN_GROUP,
-    resendInvitationUserJoinGroup
-  );
+  yield takeEvery(RESEND_INVITATION_USER_JOIN_GROUP, resendInvitationUserJoinGroup);
   yield takeLeading(GET_REQUIREMENT_JOIN_GROUP, getRequirementJoinGroup);
   yield takeLeading(GET_LIST_INVITATION_SENT, getListInvitationSent);
   yield takeLeading(CANCLE_INVITATION_JOIN_GROUP, cancleInvitationJoinGroup);
@@ -310,6 +313,7 @@ function* rootSaga() {
   yield takeEvery(CREATE_PROJECT_GROUP, createProjectGroup);
   yield takeEvery(EDIT_PROJECT_GROUP, editProjectGroup);
   yield takeLeading(LIST_PROJECT_GROUP, listProjectGroup);
+  yield takeLeading(LIST_PROJECT_GROUP_DELETED, listProjectGroupDeleted)
   yield takeEvery(DELETE_PROJECT_GROUP, deleteProjectGroup);
   yield takeEvery(SORT_PROJECT_GROUP, sortProjectGroup);
   yield takeLeading(DETAIL_PROJECT_GROUP, detailProjectGroup);
@@ -342,6 +346,7 @@ function* rootSaga() {
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
   yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
   yield takeEvery(UPDATE_STATUS_VIEW, updateStatusView);
+  yield takeEvery(UPDATE_NOTIFICATION_SETTING, updateNotificationSetting);
   yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
@@ -350,27 +355,16 @@ function* rootSaga() {
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLeading(GET_ALL_GROUP_TASK, getAllGroupTask);
   yield takeLeading(LIST_TASK, listTask);
+  yield takeLeading(LIST_TASK_MEMBER, listTaskMember);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
-  yield takeEvery(
-    INVITE_OTHER_PEOPLE_CREATE_ACCOUNT,
-    inviteOtherPeopleCreateAccount
-  );
+  yield takeEvery(INVITE_OTHER_PEOPLE_CREATE_ACCOUNT, inviteOtherPeopleCreateAccount);
   yield takeLeading(GET_PERMISSION_VIEW_PROJECTS, getPermissionViewProjects);
   yield takeLeading(GET_PERMISSION_VIEW_USERS, getPermissionViewUsers);
-  yield takeLeading(
-    GET_PERMISSION_VIEW_DETAIL_PROJECT,
-    getPermissionViewDetailProject
-  );
-  yield takeEvery(
-    SET_PROJECT,
-    setProject,
-  );
-  yield takeEvery(
-    SET_PROJECT_GROUP,
-    setProjectGroup,
-  );
+  yield takeLeading(GET_PERMISSION_VIEW_DETAIL_PROJECT, getPermissionViewDetailProject);
+  yield takeEvery(SET_PROJECT, setProject);
+  yield takeEvery(SET_PROJECT_GROUP, setProjectGroup,);
 
   // Hoang - end
 
@@ -380,6 +374,7 @@ function* rootSaga() {
   yield takeLatest(FETCH_GROUP_DETAIL, getGroupDetail);
   yield takeLatest(LIST_RECENT, listRecent);
   yield takeLatest(LIST_PROJECT_DOCUMENT, listProjectDocument);
+  yield takeLatest(LIST_TASK_DOCUMENT_OF_PROJECT, listTaskDocumentOfProjectFolder)
   yield takeLatest(
     LIST_PROJECT_DOCUMENT_OF_FOLDER,
     listProjectDocumentOfFolder

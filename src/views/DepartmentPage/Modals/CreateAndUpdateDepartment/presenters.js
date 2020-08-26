@@ -26,8 +26,8 @@ function CreateAndUpdateDepartment({
   const [name, setName, errorName] = useRequiredString('', 100);
   const [description, setDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
-    url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
-    url_sort: '/storage_vtask_net/Icon_default/bt0.png',
+    url_full: '',
+    url_sort: '',
   });
   const { t } = useTranslation();
   const [activeLoading, setActiveLoading] = React.useState(false);
@@ -40,8 +40,8 @@ function CreateAndUpdateDepartment({
       setName('');
       setDescription('');
       setIcon({
-        url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
-        url_sort: '/storage_vtask_net/Icon_default/bt0.png',
+        url_full: '',
+        url_sort: '',
       });
     }
     // eslint-disable-next-line
@@ -52,8 +52,8 @@ function CreateAndUpdateDepartment({
       setName(get(updateDepartment, 'name', ''));
       setDescription(get(updateDepartment, 'description', ''));
       setIcon({
-        url_full: get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png'),
-        url_sort: get(updateDepartment, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png')
+        url_full: get(updateDepartment, 'icon', ''),
+        url_sort: get(updateDepartment, 'icon', '')
           .replace('https://storage.googleapis.com', ''),
       });
     }
@@ -125,6 +125,7 @@ function CreateAndUpdateDepartment({
         onCancle={() => setOpen(false)}
         manualClose={true}
         activeLoading={activeLoading}
+        height={"mini"}
       >
         <CustomTextbox
           value={name}

@@ -1,20 +1,15 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-// import { mdiBell, mdiAccountCircle, mdiLock } from '@mdi/js';
-// import Badge from '@material-ui/core/Badge';
-import { Routes } from '../../../constants/routes';
-import '../SettingAccount.scss';
+import { actionGetNotification, getNotificationService } from '../../../actions/account';
 import LeftSetting from '../../../components/LeftSetting/LeftSetting';
-import {
-  getNotificationService,
-  actionGetNotification
-} from '../../../actions/account';
+import { Routes } from '../../../constants/routes';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
+import '../SettingAccount.scss';
 
 const getContent = value => {
   if (value > 0) {
-    return <span className="badge">{value > 99 ? '99+' : value}</span>;
+    return <span className="system-notification-badge">{value > 99 ? '99+' : value}</span>;
   }
   return null;
 };
@@ -24,7 +19,7 @@ const ListPart = props => {
     try {
       const { data } = await getNotificationService();
       props.actionGetNotification(data.notifications || []);
-    } catch (err) {}
+    } catch (err) { }
   };
   useEffect(() => {
     handleFetchData(); // eslint-disable-next-line
@@ -55,7 +50,6 @@ const ListPart = props => {
     {
       title: t('IDS_WP_NOTICE_WORKPLUS'),
       url: Routes.SETTING_ACCOUNT_NOTIFI,
-      // icon: mdiBell,
       rightIcon: () =>
         getContent(!isEmpty(props.notification) ? props.notification.length : 0)
     }

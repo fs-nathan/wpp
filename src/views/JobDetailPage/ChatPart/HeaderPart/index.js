@@ -10,9 +10,9 @@ import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, withRouter } from 'react-router-dom';
-import './styles.scss';
-import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import styled from 'styled-components';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import './styles.scss';
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   & .MuiTypography-root {

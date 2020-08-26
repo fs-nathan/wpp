@@ -58,16 +58,11 @@ const BodyPart = props => {
     } else {
       setShowMembers(viewedChatMembers)
     }
-    // eslint-disable-next-line
   }, [viewedChatMembers])
 
   const { last_id } = chats || {};
 
   useEffect(() => {
-    // const chatData = !Boolean(chats.data) ? [] : chats.data.filter(chat => {
-    //   return !searchChatKey
-    //     || (chat.content && chat.content.indexOf(searchChatKey) !== -1)
-    // });
     setMyLastChat(chats.data && chats.data.length > 0 && chats.data[0].user_create_id === userId)
     const chatData = [...chats.data]
     chatData.reverse();
@@ -111,7 +106,6 @@ const BodyPart = props => {
   const {
     date_create,
     name = '',
-    description,
     start_date = '',
     end_date = '',
     user_create = {},
@@ -122,27 +116,8 @@ const BodyPart = props => {
   }, [chats.data.length, focusId, isLoading, last_id])
 
   useEffect(() => {
-    // console.log('useEffect scrollToBottom taskId')
     chatRef.current && chatRef.current.scrollToBottom()
-    // eslint-disable-next-line
   }, [taskId])
-
-  // useEffect(() => {
-  //   let rqId;
-  //   if (chatRef && chatRef.current && chats.data && chats.data.length
-  //     && !isMore && !isLoading && !focusId) {
-  //     rqId = setTimeout(function () {
-  //       // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-  //       console.log('useEffect scrollToBottom chatRef')
-  //       chatRef.current.scrollToBottom()
-  //     }, 0)
-  //   }
-  //   return () => {
-  //     console.log('chatRef clearTimeout')
-  //     clearTimeout(rqId);
-  //   }
-  //   // eslint-disable-next-line
-  // }, [chatRef, taskId, chats.data.length, isLoading, focusId]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -167,52 +142,20 @@ const BodyPart = props => {
           dispatch(clearFocus());
         }, 10)
       }
-      // } else if (chatRef && chatRef.current && chats.data && chats.data.length
-      //   && !isMore && !isLoading && !focusId) {
-      //   rqId = setTimeout(function () {
-      //     // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-      //     console.log('useEffect scrollToBottom chatRef')
-      //     chatRef.current.scrollToBottom()
-      //   }, 0)
-    }
-    return () => {
-      // console.log('focusTopId clearTimeout')
-      // clearTimeout(rqId);
     }
   })
 
-  // useEffect(() => {
-  //   let rqId;
-  //   if (isLoading) {
-  //     const scrollHeight = chatRef.current.getScrollHeight()
-  //     const scrollTop = scrollHeight - lastScroll
-  //     // console.log('getScrollTop()', scrollHeight, lastScroll, scrollTop)
-  //     rqId = setTimeout(function () {
-  //       requestAnimationFrame(() => {
-  //         // chatRef.current.scrollTop = 250
-  //         // chatRef.current.scrollTop = chatRef.current.scrollHeight - chatRef.current.clientHeight;
-  //         chatRef.current.scrollTop(scrollTop)
-  //       })
-  //     })
-  //     lastScroll = scrollHeight
-  //   }
-  //   return () => {
-  //     clearTimeout(rqId);
-  //   }
-  // }, [isLoading])
-
-  // console.log('chats', chats);
   function onClickCreateMember() {
     setOpenAddModal(true)
     dispatch(getMember({ task_id: taskId }))
     dispatch(getMemberNotAssigned({ task_id: taskId }))
   }
 
-  function onClickScrollToBottom(data) {
+  function onClickScrollToBottom() {
     chatRef.current.scrollToBottom()
   }
 
-  function onClickBack(data) {
+  function onClickBack() {
     if (isMore === false) {
       dispatch(loadChat(taskId));
     }
@@ -232,7 +175,6 @@ const BodyPart = props => {
   function handleDetailEmotion(data) {
     return () => {
       setOpenDetailEmotionModal(true);
-      // dispatch(getEmotionsReactMember(taskId, data.id, 0));
       setChatEmotion(data.data_emotion)
     }
   }
@@ -243,14 +185,12 @@ const BodyPart = props => {
   }
 
   function loadMoreChat() {
-    // console.log('loadMoreChat', currentPage)
     if (last_id && !isLoading)
       dispatch(loadChat(taskId, last_id, true));
   }
 
   function handleScrollFrame(data) {
     const { scrollTop, scrollHeight, clientHeight } = data;
-    // console.log('handleScrollFrame', scrollTop < scrollHeight - 1000)
     if (scrollTop < scrollHeight - clientHeight * 3) {
       setShowScroll(true)
     } else {
@@ -275,15 +215,7 @@ const BodyPart = props => {
         onScrollStop={onScrollStop}
         renderView={props => <div {...props} ref={chatRefScroll} className="bodyChat--scrollWrap" />}
       >
-        <div
-          className="bodyChat--scroll"
-        // isReverse
-        // loadMore={loadMoreChat}
-        // hasMore={isCanLoadMore}
-        // loader={<div className="bodyChat--loader" key={0}>{t('LABEL_CHAT_TASK_DANG_TAI')}</div>}
-        // useWindow={false}
-        // getScrollParent={() => chatRefScroll.current}
-        >
+        <div className="bodyChat--scroll">
           {
             !last_id && !searchChatKey &&
             <React.Fragment>
@@ -310,15 +242,15 @@ const BodyPart = props => {
               <div className="bodyChat--introRow">
                 <div className="bodyChat--introImages">
                   <div className="bodyChat--introItem bodyChat--introItem__left">
-                    <img alt="intro" src="/images/intro/intro-bg-2.png"></img>
+                    <img alt="intro" src="/images/intro/intro-bg-2.png"/>
                     <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_THAO_LUAN')}</div>
                   </div>
                   <div className="bodyChat--introItem">
-                    <img alt="intro" src="/images/intro/intro-bg-3.png"></img>
+                    <img alt="intro" src="/images/intro/intro-bg-3.png"/>
                     <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_QUAN_LY')}</div>
                   </div>
                   <div className="bodyChat--introItem bodyChat--introItem__right">
-                    <img alt="intro" src="/images/intro/intro-bg-4.png"></img>
+                    <img alt="intro" src="/images/intro/intro-bg-4.png"/>
                     <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_CHIA_SE')}</div>
                   </div>
                 </div>
@@ -367,12 +299,12 @@ const BodyPart = props => {
       </Scrollbars>
       {(isShowScroll) &&
         <IconButton className="bodyChat--buttonToBot" onClick={onClickScrollToBottom}>
-          <Icon path={mdiMenuDown} size={1.5} ></Icon>
+          <Icon path={mdiMenuDown} size={1.5} />
         </IconButton>
       }
       {(isShowBackChat) &&
         <IconButton className="bodyChat--buttonToBot bodyChat--buttonBack" onClick={onClickBack}>
-          <Icon path={mdiClose} size={1.5} ></Icon>
+          <Icon path={mdiClose} size={1.5} />
         </IconButton>
       }
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />

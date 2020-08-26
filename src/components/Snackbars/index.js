@@ -10,6 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import IconButton from '@material-ui/core/IconButton';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
 import classNames from 'classnames';
 
 const variantIcon = {
@@ -20,7 +21,7 @@ const variantIcon = {
 };
 const styles1 = theme => ({
   success: {
-    backgroundColor: green[600]
+    backgroundColor: "#00bd66"
   },
   error: {
     backgroundColor: theme.palette.error.dark
@@ -43,12 +44,13 @@ const styles1 = theme => ({
     alignItems: 'center'
   }
 });
-function MySnackbarContent(props) {
+const MySnackbarContent = React.forwardRef((props, ref) => {
   const { classes, className, message, onClose, variant, ...other } = props;
   const Icon = variantIcon[variant];
 
   return (
     <SnackbarContent
+      ref={ref}
       className={classNames(classes[variant], className)}
       aria-describedby="client-snackbar"
       message={
@@ -71,18 +73,22 @@ function MySnackbarContent(props) {
       {...other}
     />
   );
-}
+})
 const MySnackbarContentWrapper = withStyles(styles1)(MySnackbarContent);
 const SnackbarComponent = props => {
+  function TransitionLeft(props) {
+    return <Slide {...props} direction="left" />;
+  }
   return (
     <Snackbar
       anchorOrigin={{ vertical: props.vertical, horizontal: props.horizontal }}
       open={props.open}
       onClose={props.handleClose}
+      autoHideDuration={50000}
+      TransitionComponent={TransitionLeft}
     >
       <MySnackbarContentWrapper
         variant={props.variant}
-        // className={props.classes.margin}
         message={props.message}
       />
     </Snackbar>

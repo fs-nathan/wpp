@@ -1,18 +1,87 @@
 .view_Project_AllTaskTable___subtitle {
   display: flex;
   align-items: center;
-  & > * {
+  &>* {
+    color: #8b8b8b;
+    background: #f2f2f2;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-weight: normal;
+    margin-top: 5px;
+    font-size: 12px;
     &:hover {
       cursor: pointer;
+      color: #fff;
+      font-weight: 500;
+      background: var(--color-primary);
+      padding: 2px 5px;
+      border-radius: 3px;
+      margin-top: 5px;
     }
+
     &:not(:first-child) {
       margin-left: 8px;
     }
-    &:not(:nth-child(2)) {
-      color: #8b8b8b;
-    }
-    &:nth-child(2) {
-      color: #2196F3;
+  }
+
+  &_active {
+    color: #fff;
+    font-weight: 500;
+    background: var(--color-primary);
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-top: 5px;
+  }
+}
+.taskMember_rowAction {
+  &_container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  &_colorOrange {
+    color: #fd7e14;
+  }
+  &_colorRed {
+    color: #ff1100;
+    align-self: center;
+  }
+  &_delete, &_add {
+    text-transform: none;
+    font-weight: normal;
+    .MuiButton-startIcon {
+      margin-right: 3px !important;
     }
   }
-};
+}
+.taskMember_title {
+  &_container {
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+    width: 600px;
+  }
+  &_user {
+    display: inline-flex;
+    align-items: center;
+    &>span {
+      font-size: 14px;
+      font-weight: 500;
+      margin-left: 10px;
+    }
+  }
+  &_summary {
+    display: inline-flex;
+    align-items: center;
+    &>*:not(:last-child) {
+      border-right: 1px solid rgba(0,0,0,0.7);
+      margin-right: 7px;
+    }
+    &_value {
+      color: #00BD1A;
+      margin-right: 5px;
+      font-weight: 500;
+    }
+  }
+}

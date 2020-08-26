@@ -7,7 +7,7 @@ import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../../con
 async function doListPersonalRemindCategory() {
   try {
     const config = {
-      url: '/personal-remind-category/list',
+      url: '/personal-remind-category/list?type=statistic',
       method: 'get'
     }
     const result = await apiService(config);

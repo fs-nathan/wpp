@@ -1,6 +1,6 @@
+import { forEach, get, map, reduce } from 'lodash';
 import React from 'react';
 import styled from 'styled-components';
-import { reduce, get, map, forEach } from 'lodash';
 
 const Container = styled(({ color, ...rest }) => <div {...rest} />)`
   display: flex;
@@ -14,7 +14,7 @@ const Container = styled(({ color, ...rest }) => <div {...rest} />)`
 
 const BackBar = styled.div`
   position: relative;
-  width: 60%;
+  width: 90px;
   height: 10px;
   background-color: rgba(0, 0, 0, 0.1);
 `;
@@ -61,12 +61,12 @@ function ImprovedSmallProgressBar({ color, percentDone, data }) {
 
   return (
     <Container color={color}>
-      <span>{barsData.total}</span>
+      <span style={{ minWidth: "20px" }}>{barsData.total}</span>
       <BackBar>
         {map(
           barsData.widths,
-          (width, index) => 
-            <FrontBar 
+          (width, index) =>
+            <FrontBar
               key={index}
               width={width}
               color={barsData.colors[index]}
@@ -74,7 +74,7 @@ function ImprovedSmallProgressBar({ color, percentDone, data }) {
             />
         )}
       </BackBar>
-      <span>{percentDone}%</span>
+      <span style={{ minWidth: "30px" }}>{percentDone}%</span>
     </Container>
   )
 }

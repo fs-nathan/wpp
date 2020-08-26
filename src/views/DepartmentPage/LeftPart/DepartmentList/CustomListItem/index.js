@@ -57,9 +57,6 @@ function CustomListItem({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div>
-          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-        </div>
         <CustomAvatar style={{ height: 50, width: 50, }} src={room.icon} alt='avatar' />
         <ListItemText
           primary={
@@ -72,7 +69,4 @@ function CustomListItem({
       </StyledListItem>
     )
 }
-
-
-
 export default CustomListItem;

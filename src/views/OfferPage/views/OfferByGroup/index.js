@@ -80,16 +80,18 @@ const OfferByGroup = props => {
 
   useEffect(() => {
     if (isMounted) {
-      var currentGroup = groupList.filter(group => group.url === history.location.pathname);
+      let currentGroup = groupList.filter(group => group.url === history.location.pathname);
       setLayoutTitle(get(currentGroup, '[0].title'));
     }
   }, [isMounted, history.location.pathname, groupList]);
 
   useEffect(() => {
-    dispatch(loadSummaryByGroup());
+    const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+    const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+    dispatch(loadSummaryByGroup({startDate, endDate}));
     const refreshSummaryByGroup = () => {
       setFilterTab("");
-      dispatch(loadSummaryByGroup());
+      dispatch(loadSummaryByGroup({startDate, endDate}));
     }
     CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
     CustomEventListener(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
@@ -97,7 +99,7 @@ const OfferByGroup = props => {
       CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
       CustomEventDispose(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
     }
-  }, [dispatch]);
+  }, [dispatch, timeRange]);
 
   useEffect(() => {
     if (idFirstGroup === undefined || idFirstGroup === null) {
@@ -175,7 +177,7 @@ const OfferByGroup = props => {
             <Icon
               size={1.4}
               {...{ color: listMenu[2].color, path: listMenu[2].icon }}
-            ></Icon>
+            />
             <Box
               {...{
                 paddingLeft: "20px",

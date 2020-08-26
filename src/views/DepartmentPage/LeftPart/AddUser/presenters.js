@@ -57,10 +57,9 @@ const IconWrapper = ({ className = '', ...rest }) => (<div className={`view_Depa
 
 
 const DesiringUserList = ({
-  user, loading, bgColor, canModify,
+  user, loading, bgColor, canModify, handleClearDesireUsers,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
-  handleCancleInvitationJoinGroup,
-  handleSearchPatern,
+  handleCancleInvitationJoinGroup, handleSearchPatern,
 }) => {
 
   function onInviteUserJoinGroup(userId) {
@@ -137,7 +136,7 @@ const DesiringUserList = ({
                       : (
                         <CancleButton
                           disabled={loading}
-                          onClick={evt => handleSearchPatern('')}
+                          onClick={() => handleClearDesireUsers()}
                         >
                           {loading && (
                             <CircularProgress
@@ -309,11 +308,10 @@ function AddUser({
   bgColor, viewPermissions,
   desireUser, desireLoading,
   requireUsers, requireLoading,
-  invitations,
-  handleSearchUser,
+  invitations, handleSearchUser,
   handleInviteUserJoinGroup, handleResendInvitationUserJoinGroup,
   handleAcceptRequirementJoinGroup, handleRejectRequirementJoinGroup,
-  handleCancleInvitationJoinGroup,
+  handleCancleInvitationJoinGroup, handleClearDesireUsers,
   searchPatern, handleSearchPatern,
   anchorDrawer, handleVisibleDrawerMessage
 }) {
@@ -389,6 +387,7 @@ function AddUser({
               handleResendInvitationUserJoinGroup={handleResendInvitationUserJoinGroup}
               handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
               handleSearchPatern={handleSearchPatern}
+              handleClearDesireUsers={handleClearDesireUsers}
             />
           </StyledBox>
           <StyledBox>

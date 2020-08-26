@@ -22,8 +22,10 @@ function LevelCreateAndUpdate({
     if (updatedLevel) {
       setName(get(updatedLevel, 'name', ''));
       setDescription(get(updatedLevel, 'description', ''));
+    } else {
+      setName('');
+      setDescription('');
     }
-    // eslint-disable-next-line
   }, [updatedLevel]);
 
   React.useEffect(() => {
@@ -75,6 +77,7 @@ function LevelCreateAndUpdate({
       onCancle={() => setOpen(false)}
       manualClose={true}
       activeLoading={activeLoading}
+      height={"mini"}
     >
       <CustomTextbox
         value={name}

@@ -30,6 +30,7 @@ function ColorPickerModal({
       title={t('IDS_WP_SETUP_COLOR')}
       className="pick-color-modal"
       onConfirm={() => handleOnChangeBG(listColors)}
+      height={"miniWide"}
     >
       <div className="pick-color-content list-color">
         {listColors.map((item, idx) => (

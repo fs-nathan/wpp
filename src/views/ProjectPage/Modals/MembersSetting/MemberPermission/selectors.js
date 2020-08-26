@@ -25,7 +25,7 @@ export const permissionsSelector = createSelector(
     return {
       groupPermissions,
       adminPermission,
-      loading: firstTime ? false : loading,
+      loading,
       error,
       firstTime,
     }

@@ -6,7 +6,7 @@ import { getRequirementJoinGroup } from 'actions/groupUser/getRequirementJoinGro
 import { inviteUserJoinGroup } from 'actions/groupUser/inviteUserJoinGroup';
 import { rejectRequirementJoinGroup } from 'actions/groupUser/rejectRequirementJoinGroup';
 import { resendInvitationUserJoinGroup } from 'actions/groupUser/resendInvitationUserJoinGroup';
-import { searchUser } from 'actions/groupUser/searchUser';
+import {searchUser, searchUserReset} from 'actions/groupUser/searchUser';
 import { actionVisibleDrawerMessage } from 'actions/system/system';
 import { getPermissionViewUser } from 'actions/viewPermissions';
 import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CANCLE_INVITATION_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, RESEND_INVITATION_USER_JOIN_GROUP } from 'constants/events';
@@ -26,7 +26,7 @@ function AddUser({
   doInviteUserJoinGroup, doResendInvitationUserJoinGroup,
   doAcceptRequirementJoinGroup, doRejectRequirementJoinGroup,
   doGetRequirementJoinGroup,
-  doGetListGroup,
+  doGetListGroup, doSearchUserReset,
   doGetListInvitationSent,
   doCancleInvitationJoinGroup,
   doActionVisibleDrawerMessage,
@@ -35,7 +35,6 @@ function AddUser({
 
   React.useEffect(() => {
     if (viewPermissions.permissions === null) doGetPermissionViewUser(true);
-    //eslint-disable-next-line
   }, [doGetPermissionViewUser]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
@@ -46,18 +45,28 @@ function AddUser({
         const doSearchUserHandler = () => {
           doSearchUser({ info: searchPatern });
         };
-        CustomEventListener(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
         CustomEventListener(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
         CustomEventListener(CANCLE_INVITATION_JOIN_GROUP, doSearchUserHandler);
         return () => {
-          CustomEventDispose(INVITE_USER_JOIN_GROUP, doSearchUserHandler);
           CustomEventDispose(RESEND_INVITATION_USER_JOIN_GROUP, doSearchUserHandler);
           CustomEventDispose(CANCLE_INVITATION_JOIN_GROUP, doSearchUserHandler);
         }
       }
     }
-    // eslint-disable-next-line
   }, [searchPatern, viewPermissions]);
+
+  const resetDesireUser = () => {
+    doSearchUserReset();
+    setSearchPatern('');
+  }
+
+  React.useEffect(() => {
+    CustomEventListener(INVITE_USER_JOIN_GROUP, resetDesireUser);
+    return () => {
+      CustomEventDispose(INVITE_USER_JOIN_GROUP, resetDesireUser);
+    }
+  }, []);
+
 
   React.useEffect(() => {
     if (get(viewPermissions.permissions, 'can_modify', false)) {
@@ -126,6 +135,7 @@ function AddUser({
       handleSearchPatern={value => setSearchPatern(value)}
       anchorDrawer={anchorDrawer}
       handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
+      handleClearDesireUsers={() => resetDesireUser()}
     />
   )
 }
@@ -156,6 +166,7 @@ const mapDispatchToProps = dispatch => {
     doCancleInvitationJoinGroup: ({ invitationId }) => dispatch(cancleInvitationJoinGroup({ invitationId })),
     doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
     doGetPermissionViewUser: (quite) => dispatch(getPermissionViewUser(quite)),
+    doSearchUserReset: () => dispatch(searchUserReset())
   }
 };
 

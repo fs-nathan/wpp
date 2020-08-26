@@ -5,6 +5,12 @@ import { useTranslation } from 'react-i18next';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomModal from '../../../../components/CustomModal';
 import './style.scss';
+import {memberInGroupProjectSelector} from "../../LeftPart/ProjectGroupDetail/selectors";
+import {memberProjectGroup} from "../../../../actions/projectGroup/memberProjectGroup";
+import {isNil} from "lodash";
+import {connect} from "react-redux";
+import {useMountedState} from "react-use";
+import {useParams} from "react-router-dom";
 
 const StyledTableHead = ({ className = '', ...props }) =>
   <TableHead
@@ -18,9 +24,13 @@ const UserTableCell = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function MembersDetail({ open, setOpen, members = [], }) {
-
+function MembersDetail({ open, setOpen, members, projectGroupId,  doMemberProjectGroup}) {
   const { t } = useTranslation();
+  React.useEffect(() => {
+    if(open && !isNil(projectGroupId)) {
+      doMemberProjectGroup({projectGroupId});
+    }
+  }, [useMountedState(), open]);
 
   return (
     <React.Fragment>
@@ -63,5 +73,19 @@ function MembersDetail({ open, setOpen, members = [], }) {
     </React.Fragment>
   )
 }
+const mapStateToProps = state => {
+  return {
+    members: memberInGroupProjectSelector(state),
+  };
+};
 
-export default MembersDetail;
+const mapDispatchToProps = dispatch => {
+  return {
+    doMemberProjectGroup: ({ projectGroupId }, quite) => dispatch(memberProjectGroup({ projectGroupId }, quite)),
+  };
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps,
+)(MembersDetail);

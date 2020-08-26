@@ -28,17 +28,16 @@
 
   .remind_setting {
     &_container {
-      display: grid;
-      grid-template-rows: 1fr;
-      grid-template-columns: 40% 30% 30%;
+      display: inline-flex;
       margin-top: 10px;
+      justify-content: space-between;
     }
 
     &_day {
       display: flex;
       flex-direction: column;
-      margin-right: 15px;
-
+      margin-right: 8px;
+      width: 30%;
       &_inputDate {
         .MuiOutlinedInput-input {
           padding: 11px;
@@ -49,7 +48,7 @@
     &_time {
       display: flex;
       flex-direction: column;
-
+      width: 25%;
       &_timeSelector {
         width: 100%;
       }
@@ -58,9 +57,10 @@
     &_type {
       display: flex;
       flex-direction: column;
-
+      width: 25%;
+      margin-right: 8px;
       &_selector {
-        height: 40px;
+        height: 38px;
 
         &--paper {
           .MuiList-root {
@@ -94,6 +94,19 @@
               }
             }
           }
+        }
+      }
+    }
+
+    &_frequency {
+      display: flex;
+      flex-direction: column;
+      width: 25%;
+      &_input {
+        background: #f8f8f8;
+        height: 38px;
+        &>input {
+          background: #fff;
         }
       }
     }

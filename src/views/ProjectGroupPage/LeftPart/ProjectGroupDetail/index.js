@@ -1,7 +1,6 @@
 import { listProject } from 'actions/project/listProject';
 import { deleteProjectGroup } from 'actions/projectGroup/deleteProjectGroup';
 import { detailProjectGroup } from 'actions/projectGroup/detailProjectGroup';
-import { memberProjectGroup } from 'actions/projectGroup/memberProjectGroup';
 import { useTimes } from 'components/CustomPopover';
 import { CustomEventDispose, CustomEventListener, DELETE_PROJECT_GROUP, SORT_PROJECT } from 'constants/events.js';
 import { get } from 'lodash';
@@ -14,7 +13,7 @@ import DeleteProjectGroup from '../../Modals/DeleteProjectGroup';
 import MembersDetail from '../../Modals/MembersDetail';
 import { localOptionSelector, routeSelector, viewPermissionsSelector } from '../../selectors';
 import ProjectGroupDetailPresenter from './presenters';
-import { groupSelector } from './selectors';
+import {groupSelector} from './selectors';
 
 function ProjectGroupDetail({
   group, route, viewPermissions,
@@ -22,7 +21,7 @@ function ProjectGroupDetail({
   doListProject,
   doDetailProjectGroup,
   doMemberProjectGroup,
-  localOption,
+  localOption, members,
 }) {
 
   const times = useTimes();
@@ -33,7 +32,6 @@ function ProjectGroupDetail({
       timeStart,
       timeEnd,
     });
-    // eslint-disable-next-line
   }, [timeType]);
 
   const { projectGroupId } = useParams();
@@ -49,13 +47,6 @@ function ProjectGroupDetail({
     if (id !== null) {
       doDetailProjectGroup({ projectGroupId: id });
     }
-    // eslint-disable-next-line
-  }, [id]);
-
-  React.useEffect(() => {
-    if (id === 'deleted') return;
-    if (id) doMemberProjectGroup({ projectGroupId: id });
-    // eslint-disable-next-line
   }, [id]);
 
   React.useEffect(() => {
@@ -86,7 +77,6 @@ function ProjectGroupDetail({
         CustomEventDispose(SORT_PROJECT, reloadListProject);
       }
     }
-    // eslint-disable-next-line
   }, [id, timeRange]);
 
   React.useEffect(() => {
@@ -97,13 +87,11 @@ function ProjectGroupDetail({
     return () => {
       CustomEventDispose(DELETE_PROJECT_GROUP.SUCCESS, historyPushHandler);
     };
-    //eslint-disable-next-line
   }, []);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
   const [openMember, setOpenMember] = React.useState(false);
-  const [memberProps, setMemberProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
 
@@ -118,7 +106,6 @@ function ProjectGroupDetail({
       }
       case 'MEMBER': {
         setOpenMember(true);
-        setMemberProps(props);
         return;
       }
       case 'ALERT': {
@@ -149,7 +136,7 @@ function ProjectGroupDetail({
       <MembersDetail
         open={openMember}
         setOpen={setOpenMember}
-        {...memberProps}
+        projectGroupId={id}
       />
       <DeleteProjectGroup
         open={openAlert}
@@ -174,7 +161,6 @@ const mapDispatchToProps = dispatch => {
     doDeleteProjectGroup: ({ projectGroupId }) => dispatch(deleteProjectGroup({ projectGroupId })),
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
     doDetailProjectGroup: ({ projectGroupId }, quite) => dispatch(detailProjectGroup({ projectGroupId }, quite)),
-    doMemberProjectGroup: ({ projectGroupId }, quite) => dispatch(memberProjectGroup({ projectGroupId }, quite)),
   };
 };
 

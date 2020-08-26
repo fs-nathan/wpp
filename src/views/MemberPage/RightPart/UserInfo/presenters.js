@@ -186,14 +186,6 @@ function UserInfo({
           <MainFooter>
             {canModify && (
               <>
-                {/*<input
-                  id="raised-button-file"
-                  type="file"
-                  onChange={evt => {
-                    handleUploadDocumentsUser(evt.target.files[0]);
-                    setUploadLoading(true);
-                  }}
-                />*/}
                 <UploadButton
                   label={t("DMH.VIEW.MP.RIGHT.INFO.DOC.BTN")}
                   loading={uploadLoading}

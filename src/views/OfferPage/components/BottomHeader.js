@@ -75,18 +75,22 @@ font-family: Roboto, sans-serif;
 const useStyles = makeStyles(theme => ({
     waiting: {
         fill: colors.offer_status_waiting,
+        color: colors.offer_status_waiting,
         marginRight: '5px'
     },
     cancel: {
         fill: colors.offer_status_cancel,
+        color: colors.offer_status_cancel,
         marginRight: '5px'
     },
     approved: {
         fill: colors.offer_status_approved,
+        color: colors.offer_status_approved,
         marginRight: '5px'
     },
     processing: {
         fill: colors.offer_status_processing,
+        color: colors.offer_status_processing,
         marginRight: '5px'
     }
 }));
@@ -154,7 +158,7 @@ const BottomHeader = ({ statistic_status, count }) => {
                         <div>
                             {/* #f44336 */}
                             <IconWrap item >
-                                <Icon path={mdiSquare} size={0.8} className={classes.processing} />
+                                <Icon path={mdiSquare} size={0.8} className={classes.processing}/>
                                 <div >{t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2")} ({get(statistic_status, "approving_rate")}%)</div>
                             </IconWrap>
                         </div>

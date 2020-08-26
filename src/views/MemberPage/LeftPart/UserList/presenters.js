@@ -34,7 +34,7 @@ function UserList({
   handleSortUser,
 }) {
 
-  const [searchPatern, setSearchPatern] = React.useState('');
+  const [searchPattern, setSearchPattern] = React.useState('');
   const { t } = useTranslation();
 
   const history = useHistory();
@@ -69,8 +69,8 @@ function UserList({
       >
         <Banner>
           <SearchInput
-            value={searchPatern}
-            onChange={evt => setSearchPatern(evt.target.value)}
+            value={searchPattern}
+            onChange={evt => setSearchPattern(evt.target.value)}
             fullWidth
             placeholder={t('DMH.VIEW.MP.LEFT.UL.SEARCH')}
           />
@@ -90,7 +90,7 @@ function UserList({
                         {get(room, 'name', '') === 'default' ? t('DMH.VIEW.MP.LEFT.UL.DEFAULT') : get(room, 'name', '')}
                       </RoomNameSpan>
                     </StyledListItem>
-                    {users.filter(user => get(user, 'name').toLowerCase().includes(searchPatern.toLowerCase())).map((user, index) =>
+                    {users.filter(user => get(user, 'name').toLowerCase().includes(searchPattern.toLowerCase())).map((user, index) =>
                       <CustomListItem key={index} user={user} index={index} handleLink={doLink} />
                     )}
                     {provided.placeholder}

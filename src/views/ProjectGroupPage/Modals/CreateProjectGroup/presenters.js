@@ -19,16 +19,15 @@ function CreateProjectGroup({
   updatedProjectGroup,
   open, setOpen,
   handleCreateOrEditProjectGroup, handleOpenModal,
-  doReloadDetail,
-  doReloadList,
+  doReloadDetail, doReloadList, createSuccessCallBack = () => {}
 }) {
 
   const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 150);
   const [description, setDescription] = useMaxlenString('', 500);
   const [icon, setIcon] = React.useState({
-    url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
-    url_sort: '/storage_vtask_net/Icon_default/bt0.png',
+    url_full: '',
+    url_sort: '',
   });
   const [activeLoading, setActiveLoading] = React.useState(false);
 
@@ -36,8 +35,8 @@ function CreateProjectGroup({
     setName(get(updatedProjectGroup, 'name'));
     setDescription(get(updatedProjectGroup, 'description'));
     setIcon({
-      url_full: get(updatedProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png'),
-      url_sort: get(updatedProjectGroup, 'icon', 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png')
+      url_full: get(updatedProjectGroup, 'icon', ''),
+      url_sort: get(updatedProjectGroup, 'icon', '')
         .replace('https://storage.googleapis.com', ''),
     });
     // eslint-disable-next-line
@@ -53,6 +52,7 @@ function CreateProjectGroup({
     }
     else {
       CustomEventListener(CREATE_PROJECT_GROUP.SUCCESS, doReloadList);
+      CustomEventListener(CREATE_PROJECT_GROUP.SUCCESS, createSuccessCallBack);
       CustomEventListener(CREATE_PROJECT_GROUP.FAIL, fail);
     }
     return () => {
@@ -62,6 +62,7 @@ function CreateProjectGroup({
       }
       else {
         CustomEventDispose(CREATE_PROJECT_GROUP.SUCCESS, doReloadList);
+        CustomEventDispose(CREATE_PROJECT_GROUP.SUCCESS, createSuccessCallBack);
         CustomEventDispose(CREATE_PROJECT_GROUP.FAIL, fail);
       }
     }
@@ -92,8 +93,8 @@ function CreateProjectGroup({
       setName('');
       setDescription('');
       setIcon({
-        url_full: 'https://storage.googleapis.com/storage_vtask_net/Icon_default/bt0.png',
-        url_sort: '/storage_vtask_net/Icon_default/bt0.png',
+        url_full: '',
+        url_sort: '',
       });
     };
     const fail = () => {
@@ -121,6 +122,7 @@ function CreateProjectGroup({
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
       manualClose={true}
+      height={"mini"}
     >
       <CustomTextbox
         value={name}

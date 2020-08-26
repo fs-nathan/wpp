@@ -21,7 +21,7 @@ import {
   LIST_DOCUMENT_SHARE,
   LIST_DOCUMENT_SHARE_SUCCESS,
   TOGGLE_BUTTON_SIGNOUT_GOOGLE,
-  LIST_GOOGLE_DOCUMENT
+  LIST_GOOGLE_DOCUMENT, LIST_TASK_DOCUMENT_OF_PROJECT
 } from '../../constants/actions/documents';
 import { apiService } from '../../constants/axiosInstance';
 
@@ -194,6 +194,14 @@ export const actionSortListRecent = newData => ({
 // Handle for project page
 export const actionFetchListProject = (params = {}, quite = false) => ({
   type: LIST_PROJECT_DOCUMENT,
+  quite,
+  options: {
+    params
+  }
+});
+
+export const actionFetchListTaskOfProject = (params = {}, quite = false) => ({
+  type: LIST_TASK_DOCUMENT_OF_PROJECT,
   quite,
   options: {
     params

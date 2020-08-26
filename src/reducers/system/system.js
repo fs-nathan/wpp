@@ -22,6 +22,10 @@ export const initialState = {
   detailSubTaskDrawer: {
     id: '',
     name: ''
+  },
+  visibleOfferDetail: {
+    visible: false,
+    offer_id: null
   }
 };
 
@@ -34,7 +38,7 @@ const system = (state = initialState, action) => {
         anchorDrawer: action.payload.anchor
       };
     case actionTypes.CHANGE_NOTICE_MODAL:
-      return { ...state, visibleNoticeModal: action.payload };
+      return { ...state, visibleNoticeModal: action.payload.visible, visibleNoticeReason: action.payload.data };
     case actionTypes.GROUP_ACTIVE:
       localStorage.setItem(actionTypes.COLOR_ACTIVE, action.payload.color);
       return { ...state, groupActive: action.payload };
@@ -64,6 +68,8 @@ const system = (state = initialState, action) => {
       return { ...state, visibleSubtaskDrawer: action.payload };
     case actionTypes.CHANGE_DETAIL_SUBTASK_DRAWER:
       return { ...state, detailSubTaskDrawer: action.payload };
+    case actionTypes.CHANGE_VISIBLE_OFFER_DETAIL_MODAL:
+      return {...state, visibleOfferDetail: action.payload}
     default:
       return state;
   }

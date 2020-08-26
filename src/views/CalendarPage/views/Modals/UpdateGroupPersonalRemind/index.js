@@ -44,7 +44,7 @@ function UpdateGroupPersonalRemind({
         setOpen={setOpen}
         canConfirm={groupTitle !== ''}
         onConfirm={() => onConfirm({ id: value.id, title: groupTitle, color: color.color })}
-        height='mini'
+        height='miniWide'
         maxWidth='sm'
         actionLoading={isLoading}
       >

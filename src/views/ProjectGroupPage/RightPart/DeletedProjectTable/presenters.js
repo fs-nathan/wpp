@@ -10,6 +10,8 @@ import CustomTable from '../../../../components/CustomTable';
 import LoadingBox from '../../../../components/LoadingBox';
 import { StateBox } from '../../../../components/TableComponents';
 import './style.scss';
+import AlertModal from "../../../../components/AlertModal";
+import {CustomEventListener, DELETE_TRASH_PROJECT, CustomEventDispose, DELETE_TRASH_PROJECT_FAIL} from "../../../../constants/events";
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -64,6 +66,22 @@ function DeletedProjectTable({
 
   const history = useHistory();
   const { t } = useTranslation();
+  const [alertConfirm, showAlertConfirm] = React.useState(false);
+  const [selectedRow, setSelectedRow] = React.useState(null);
+  const [loading, setLoading] = React.useState(false);
+
+  React.useEffect(() => {
+      const resetConfirm = () => {
+          showAlertConfirm(false);
+          setLoading(false);
+      }
+      CustomEventListener(DELETE_TRASH_PROJECT, resetConfirm);
+      CustomEventListener(DELETE_TRASH_PROJECT_FAIL, resetConfirm);
+      return () => {
+          CustomEventDispose(DELETE_TRASH_PROJECT, resetConfirm);
+          CustomEventDispose(DELETE_TRASH_PROJECT_FAIL, resetConfirm);
+      }
+  }, [loading]);
 
   return (
     <Container>
@@ -168,11 +186,15 @@ function DeletedProjectTable({
             field: (row) =>
               <ButtonWrapper>
                 <MyButton
-                  onClick={() => handleDelete(get(row, 'id'))}
-                  disabled={
+                  //onClick={() => handleDelete(get(row, 'id'))}
+                   onClick={() => {
+                       setSelectedRow(row)
+                       showAlertConfirm(true);
+                   }}
+                    disabled={
                     !isNil(find(concat(pendings.deletePendings, pendings.restorePendings), pending => pending === get(row, 'id')))
-                  }
-                  isDel={true}
+                    }
+                    isDel={true}
                 >
                   {!isNil(find(pendings.deletePendings, pending => pending === get(row, 'id'))) &&
                     <CircularProgress
@@ -203,6 +225,21 @@ function DeletedProjectTable({
           data={projects.projects}
         />
       </React.Fragment>
+      <AlertModal
+        open={alertConfirm}
+        setOpen={showAlertConfirm}
+        content={t("DMH.VIEW.PGP.RIGHT.ALL.ALERT")}
+        onConfirm={() => {
+            setLoading(true);
+            handleDelete(get(selectedRow, 'id'));
+        }}
+        onCancle={() => {
+            showAlertConfirm(false);
+            setLoading(false);
+        }}
+        manualClose={true}
+        actionLoading={loading}
+      />
     </Container>
   )
 }

@@ -26,7 +26,9 @@ import {
   LIST_DOCUMENT_SHARE_SUCCESS,
   TOGGLE_BUTTON_SIGNOUT_GOOGLE,
   LIST_GOOGLE_DOCUMENT,
-  LIST_GOOGLE_DOCUMENT_SUCCESS
+  LIST_GOOGLE_DOCUMENT_SUCCESS,
+  LIST_TASK_DOCUMENT_OF_PROJECT,
+  LIST_TASK_DOCUMENT_OF_PROJECT_SUCCESS
 } from '../../constants/actions/documents';
 // Import all the tabs in document page
 import * as TABS from '../../constants/documentTab';
@@ -44,51 +46,9 @@ const initialState = {
   listMyDocument: [],
   listGoogleDocument: [],
   activeTabId: TABS.RECENT_TAB.id,
-  docs: {
-    'task-1': {
-      id: 'task-1',
-      content: 20,
-      name: 'Dự án thiết kế website Phúc An',
-      type: 'folder',
-      location: 'Văn Thư',
-      size: '10.3 Kb',
-      date: '02/02/2019'
-    },
-    'task-2': {
-      id: 'task-2',
-      content: 40,
-      name: 'Ảnh mẫu gửi khách hàng.jpg',
-      type: 'jpg',
-      location: 'Marketing',
-      size: '30 Mb',
-      date: '01/03/2019'
-    },
-    'task-3': {
-      id: 'task-3',
-      content: 60,
-      name: 'Ảnh mẫu gửi khách hàng 2.jpg',
-      type: 'jpg',
-      location: 'Văn Thư',
-      size: '20.5 Mb',
-      date: '05/02/2019'
-    },
-    'task-4': {
-      id: 'task-4',
-      content: 80,
-      name: 'Ảnh mẫu gửi khách hàng 3.jpg',
-      type: 'jpg',
-      location: 'Thiết kế',
-      size: '5 Gb',
-      date: '28/12/2018'
-    }
-  },
-  columns: {
-    'column-1': {
-      id: 'column-1',
-      tasksId: ['task-1', 'task-2', 'task-3', 'task-4']
-    }
-  },
-  columnOrder: ['column-1'],
+  docs: {},
+  columns: {},
+  columnOrder: [],
   selectedDocument: [],
   currentFolder: {},
   searchText: '',
@@ -195,6 +155,19 @@ export default function reducer(state = initialState, action) {
         isLoading: !action.quite
       };
     case LIST_PROJECT_DOCUMENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        listProject: action.payload,
+        isLoading: false
+      };
+    case LIST_TASK_DOCUMENT_OF_PROJECT:
+      return {
+        ...state,
+        isFetching: true,
+        isLoading: !action.quite
+      };
+    case LIST_TASK_DOCUMENT_OF_PROJECT_SUCCESS:
       return {
         ...state,
         isFetching: false,

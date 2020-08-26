@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import MemberPermissionPresenter from './presenters';
 import { bgColorSelector, membersSelector, permissionsSelector, updateGroupPermissionSelector } from './selectors';
+import {permissionProject} from "../../../../../actions/project/permissionProject";
 
 function MemberRole({
   open, setOpen,
@@ -15,8 +16,9 @@ function MemberRole({
   doUpdateGroupPermissionMember,
   doRemoveGroupPermissionMember,
   updateGroupPermission,
-  doReloadMember,
+  doReloadMember, doReloadPermissions,
   project_id = null,
+  doPermissionProject
 }) {
 
   const { projectId: _projectId } = useParams();
@@ -26,11 +28,16 @@ function MemberRole({
     setProjectId(isNil(project_id) ? _projectId : project_id);
   }, [project_id, _projectId]);
 
+  React.useEffect(() => {
+    if(!isNil(projectId) && open) doPermissionProject(false);
+  }, [projectId, open]);
+
   return (
     <MemberPermissionPresenter
       open={open} setOpen={setOpen}
       projectId={projectId}
       doReloadMember={() => doReloadMember(projectId)}
+      doReloadPermissions={() => doReloadPermissions()}
       curMemberId={curMemberId} members={members}
       bgColor={bgColor} permissions={permissions}
       updateGroupPermission={updateGroupPermission}
@@ -64,6 +71,7 @@ const mapDispatchToProps = dispatch => {
     doReloadMember: (projectId) => dispatch(memberProject({ projectId }, true)),
     doUpdateGroupPermissionMember: ({ projectId, memberId, groupPermission }) => dispatch(updateGroupPermissionMember({ projectId, memberId, groupPermission })),
     doRemoveGroupPermissionMember: ({ projectId, memberId }) => dispatch(removeGroupPermissionMember({ projectId, memberId })),
+    doPermissionProject: (quite) => dispatch(permissionProject(quite)),
   }
 };
 

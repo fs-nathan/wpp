@@ -8,16 +8,16 @@ export const actionVisibleDrawerMessage = option => {
     payload: option
   };
 };
-export const openNoticeModal = () => {
+export const openNoticeModal = (data) => {
   return {
     type: actionTypes.CHANGE_NOTICE_MODAL,
-    payload: true
+    payload: {visible: true, data}
   };
 };
 export const closeNoticeModal = () => {
   return {
     type: actionTypes.CHANGE_NOTICE_MODAL,
-    payload: false
+    payload: {visible: false}
   };
 };
 export const openDocumentDetail = file => ({
@@ -63,7 +63,6 @@ export const actionChangeBreadCrumbs = breadCrumbs => {
   };
 };
 export const actionToast = (type, message) => {
-  // type: error or success or null (null is close toast)
   return {
     type: actionTypes.ACTION_TOAST,
     payload: { type, message }
@@ -234,3 +233,7 @@ export const changeDetailSubtaskDrawer = ({id, name}) => ({
   }
 })
 
+export const changeVisibleOfferDetailModal = ({offer_id, visible}) => ({
+  type: actionTypes.CHANGE_VISIBLE_OFFER_DETAIL_MODAL,
+  payload: {offer_id, visible}
+})

@@ -41,17 +41,14 @@ function MemberSetting({
     if (projectId !== null) {
       doMemberProject({ projectId });
     }
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
-    doPermissionProject();
     doListUserRole();
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
-  const [searchPatern, setSearchPatern] = React.useState('');
+  const [searchPattern, setSearchPattern] = React.useState('');
 
   const newMembers = {
     ...members,
@@ -61,7 +58,7 @@ function MemberSetting({
         const { name, _id: id, users } = room;
         const newUsers = filter(
           users,
-          user => get(user, 'name').toLowerCase().includes(searchPatern.toLowerCase())
+          user => get(user, 'name').toLowerCase().includes(searchPattern.toLowerCase())
         );
         return {
           name,
@@ -97,7 +94,7 @@ function MemberSetting({
         open={open} setOpen={setOpen}
         doReloadMember={() => doReloadMember(projectId)}
         projectId={projectId}
-        searchPatern={searchPatern} setSearchPatern={setSearchPatern}
+        searchPatern={searchPattern} setSearchPatern={setSearchPattern}
         members={newMembers} addMember={addMember}
         handleAddMember={member =>
           doAddMemberProject({
@@ -138,6 +135,7 @@ function MemberSetting({
         open={openPermission}
         setOpen={setOpenPermission}
         project_id={projectId}
+        doReloadPermissions={() => doPermissionProject()}
         {...permissionProps}
       />
     </>

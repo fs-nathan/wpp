@@ -18,10 +18,9 @@ function ProjectPage({
       render={({ match: { url, } }) => (
         <>
           <Route
-            path={`${url}/:projectId`}
+            path={`${url}/:projectId/:memberId?`}
             exact
             render={props => {
-
               return (
                 <TwoColumnsLayout
                   leftRenders={[

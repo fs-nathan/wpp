@@ -1,35 +1,38 @@
-import React, { Fragment } from 'react';
-import { connect } from 'react-redux';
-import { useTranslation } from 'react-i18next';
-import Icon from '@mdi/react';
-import { mdiContentCopy } from '@mdi/js';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { mdiContentCopy } from '@mdi/js';
+import Icon from '@mdi/react';
+import AlertModal from 'components/AlertModal';
+import React, { Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import {
-  actionToast,
-  actionVisibleDrawerMessage,
   actionActiveGroup,
-  actionChangeActiveGroup
+  actionChangeActiveGroup, actionToast,
+  actionVisibleDrawerMessage
 } from '../../../actions/system/system';
-import { COLOR_ACTIVE } from '../../../constants/actions/system/system';
 import * as image from '../../../assets/index';
+import { COLOR_ACTIVE } from '../../../constants/actions/system/system';
 import { Routes } from '../../../constants/routes';
+import { isEmpty } from '../../../helpers/utils/isEmpty';
 import '../Drawer.scss';
 import * as services from '../DrawerService';
-import { isEmpty } from '../../../helpers/utils/isEmpty';
-// import { isEmpty } from '../../../helpers/utils/isEmpty';
 
-const ItemGroupAcount = props => {
+const ItemGroupAccount = props => {
   const { t } = useTranslation();
+  const [alertModal, showAlertModal] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
+  const [groupID, setGroupID] = React.useState(null);
   const { item, history } = props;
 
   const handleToast = (type, message) => {
     props.actionToast(type, message);
     setTimeout(() => props.actionToast(null, ''), 2000);
   };
+
   const requestJoinGroup = async (e, group_id) => {
     e.stopPropagation();
     if (item.type_group === 'Free') {
@@ -44,9 +47,15 @@ const ItemGroupAcount = props => {
       }
     }
   };
-  const leaveGroup = async (e, group_id) => {
-    e.stopPropagation();
+
+  const leaveGroupConfirm = (el, id) => {
+    el.stopPropagation();
+    showAlertModal(true);
+    setGroupID(id);
+  }
+  const leaveGroup = async (group_id) => {
     try {
+      setLoading(true);
       await services.leaveGroupService(group_id);
       if (props.handleFetchData) props.handleFetchData();
       if (props.groupMe) {
@@ -57,6 +66,9 @@ const ItemGroupAcount = props => {
       handleToast('success', t('IDS_WP_LEAVE_GROUP_SUCCESS'));
     } catch (error) {
       handleToast('error', error.message);
+    } finally {
+      showAlertModal(false);
+      setLoading(false);
     }
   };
   const acceptInvitation = async (e, invitation_id) => {
@@ -79,14 +91,6 @@ const ItemGroupAcount = props => {
       handleToast('error', error.message);
     }
   };
-  // const acceptJoinGroup = async requirement_id => {
-  //   try {
-  //     await services.acceptJoinGroupService(requirement_id);
-  //     handleToast('success', 'Phê duyệt yêu cầu thành công!');
-  //   } catch (error) {
-  //     handleToast('error', error.message);
-  //   }
-  // };
   const rejectJoinGroup = async (e, requirement_id) => {
     e.stopPropagation();
     try {
@@ -129,6 +133,7 @@ const ItemGroupAcount = props => {
     window.navigator.clipboard.writeText(text);
     handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
   };
+
   const bgColor = props.colors.find(item => item.selected === true);
   const getContent = () => {
     const commonEl = (
@@ -137,7 +142,7 @@ const ItemGroupAcount = props => {
           <span
             className={`text-name-item-group-account ${
               props.type === 'requirements' ? 'requirement-header-text' : ''
-            }`}
+              }`}
             title={item.name}
           >
             {item.name}
@@ -145,12 +150,12 @@ const ItemGroupAcount = props => {
           {item.type_group === 'Free' ? (
             <span className="account-status-text">{item.type_group}</span>
           ) : (
-            <Chip
-              size="small"
-              label={item.type_group}
-              className="status-item-group-account pro-color"
-            />
-          )}
+              <Chip
+                size="small"
+                label={item.type_group}
+                className="status-item-group-account pro-color"
+              />
+            )}
         </div>
         <div className="acc-item-group-account">
           <span className="text-value-email-phone">
@@ -183,11 +188,6 @@ const ItemGroupAcount = props => {
             onClick={() => handleActiveGroup(item)}
           >
             {commonEl}
-            {/* <div className="phone-item-group-account">
-            <span className="text-value-email-phone">
-              {!isEmpty(props.profile) ? props.profile.phone : ''}
-            </span>
-          </div> */}
           </div>
         );
       case 'join':
@@ -200,19 +200,19 @@ const ItemGroupAcount = props => {
                   {t('IDS_WP_JOINED')}
                 </Button>
               ) : (
-                <Button
-                  className="btn-action"
-                  variant="text"
-                  onClick={e => requestJoinGroup(e, item.id)}
-                  style={{
-                    backgroundColor: bgColor.color,
-                    border: `1px solid ${bgColor.color}`,
-                    color: 'white'
-                  }}
-                >
-                  {t('IDS_WP_JOIN')}
-                </Button>
-              )}
+                  <Button
+                    className="btn-action"
+                    variant="text"
+                    onClick={e => requestJoinGroup(e, item.id)}
+                    style={{
+                      backgroundColor: bgColor.color,
+                      border: `1px solid ${bgColor.color}`,
+                      color: 'white'
+                    }}
+                  >
+                    {t('IDS_WP_JOIN')}
+                  </Button>
+                )}
             </div>
           </div>
         );
@@ -228,7 +228,8 @@ const ItemGroupAcount = props => {
               <Button
                 className="btn-action leave-group-btn"
                 variant="text"
-                onClick={e => leaveGroup(e, item.id)}
+                //onClick={e => leaveGroup(e, item.id)}
+                onClick={e => leaveGroupConfirm(e, item.id)}
               >
                 {t('IDS_WP_LEAVE_GROUP')}
               </Button>
@@ -321,36 +322,47 @@ const ItemGroupAcount = props => {
     );
   };
   return (
-    <div
-      className={`item-group-account ${
-        props.groupActive.code === item.code ? 'actived' : ''
-      } ${
-        props.type === 'join' || props.type === 'requirements'
-          ? 'normal-pointer'
-          : ''
-      }`}
-      key={item.id}
-      onClick={() => {
-        if (props.type === 'join' || props.type === 'requirements') return;
-        history.push(Routes.HOME);
-        props.actionVisibleDrawerMessage({
-          type: '',
-          anchor: props.anchorDrawer
-        });
-      }}
-    >
-      <div className="avatar-item-group-account">
-        <Avatar
-          alt=""
-          src={item.logo || image.avatar_user}
-          className="avatar"
-        />
-        {props.groupActive.code === item.code && (
-          <CheckCircleIcon className="check-icon" />
-        )}
+    <>
+      <div
+        className={`item-group-account ${
+          props.groupActive.code === item.code ? 'actived' : ''
+          } ${
+          props.type === 'join' || props.type === 'requirements'
+            ? 'normal-pointer'
+            : ''
+          }`}
+        key={item.id}
+        onClick={() => {
+          if (props.type === 'join' || props.type === 'requirements') return;
+          history.push(Routes.HOME);
+          props.actionVisibleDrawerMessage({
+            type: '',
+            anchor: props.anchorDrawer
+          });
+        }}
+      >
+        <div className="avatar-item-group-account">
+          <Avatar
+            alt=""
+            src={item.logo || image.avatar_user}
+            className="avatar"
+          />
+          {props.groupActive.code === item.code && (
+            <CheckCircleIcon className="check-icon" />
+          )}
+        </div>
+        {getContent()}
       </div>
-      {getContent()}
-    </div>
+      <AlertModal
+        open={alertModal}
+        setOpen={showAlertModal}
+        content={t("IDS_WP_LEAVE_GROUP_CONFIRM_MSG")}
+        onConfirm={() => leaveGroup(groupID)}
+        manualClose={true}
+        activeLoading={loading}
+        onCancle={() => showAlertModal(false)}
+      />
+    </>
   );
 };
 
@@ -363,4 +375,4 @@ export default connect(
     groupActive: state.system.groupActive
   }),
   { actionToast, actionVisibleDrawerMessage, actionActiveGroup }
-)(withRouter(ItemGroupAcount));
+)(withRouter(ItemGroupAccount));

@@ -120,8 +120,6 @@ import settingStartingDay, {
   initialState as settingStartingDayInitialState,
 } from "./calendar/weeklyCalendar/settingStartingDay";
 import chat, { initialState as chatInitialState } from "./chat/chat";
-// import documents from './documents'
-// import taskOffer from './taskDetail/offer'
 import documents from "./documents";
 import gantt, { initialState as ganttInitialState } from "./gantt";
 import copyGroupTask, {
@@ -286,6 +284,9 @@ import updateStatusDate, {
 import updateStatusView, {
   initialState as updateStatusViewInitialState,
 } from "./project/setting/updateStatusView";
+import updateNotificationSetting, {
+  initialState as updateNotificationSettingInitialState,
+} from "./project/setting/updateNotificationSetting";
 import showProject, {
   initialState as showProjectInitialState,
 } from "./project/showProject";
@@ -319,6 +320,7 @@ import editProjectGroup, {
 import listProjectGroup, {
   initialState as listProjectGroupInitialState,
 } from "./projectGroup/listProjectGroup";
+import listProjectGroupDeleted, { initialState as listProjectGroupDeletedInitialState} from "./projectGroup/listProjectGroupDeleted";
 import memberProjectGroup, {
   initialState as memberProjectGroupInitialState,
 } from "./projectGroup/memberProjectGroup";
@@ -509,6 +511,7 @@ const rootReducer = combineReducers({
     createProjectGroup,
     editProjectGroup,
     listProjectGroup,
+    listProjectGroupDeleted,
     deleteProjectGroup,
     sortProjectGroup,
     detailProjectGroup,
@@ -544,6 +547,7 @@ const rootReducer = combineReducers({
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
+      updateNotificationSetting,
     }),
   }),
   groupTask: combineReducers({
@@ -690,6 +694,7 @@ export const DEFAULT_STATE = {
     createProjectGroup: createProjectGroupInitialState,
     editProjectGroup: editProjectGroupInitialState,
     listProjectGroup: listProjectGroupInitialState,
+    listProjectGroupDeleted: listProjectGroupDeletedInitialState,
     deleteProjectGroup: deleteProjectGroupInitialState,
     sortProjectGroup: sortProjectGroupInitialState,
     detailProjectGroup: detailProjectGroupInitialState,
@@ -725,6 +730,7 @@ export const DEFAULT_STATE = {
       updateStatusDate: updateStatusDateInitialState,
       updateStatusCopy: updateStatusCopyInitialState,
       updateStatusView: updateStatusViewInitialState,
+      updateNotificationSetting: updateNotificationSettingInitialState,
     },
   },
   groupTask: {

@@ -238,7 +238,7 @@ CustomModal.propTypes = {
   onCancle: PropTypes.func,
   open: PropTypes.bool.isRequired,
   setOpen: PropTypes.func.isRequired,
-  height: PropTypes.oneOf(['short', 'medium', 'tall', 'mini']),
+  height: PropTypes.oneOf(['short', 'medium', 'tall', 'mini', 'miniWide']),
 };
 
 export default CustomModal;

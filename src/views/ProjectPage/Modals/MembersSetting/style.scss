@@ -1,10 +1,10 @@
 .view_Project_MemberSetting_Modal___list-container {
-  margin-top: 8px;  
-};
+  margin-top: 8px;
+}
 
 .view_Project_MemberSetting_Modal___list {
-  margin-bottom: 20px;  
-};
+  margin-bottom: 20px;
+}
 
 .view_Project_MemberSetting_Modal___list-subheader {
   background-color: #fff;
@@ -13,9 +13,10 @@
   padding: 5px 0;
   margin: 0 15px 0 24px;
   position: relative;
-  & > * {
+
+  &>* {
     color: #9a9a9a;
-    text-transform: uppercase; 
+    text-transform: uppercase;
     font-size: 13px;
     font-weight: 500;
     display: block;
@@ -23,14 +24,15 @@
     line-height: 15px;
     width: 100%;
   }
-};
+}
 
 .view_Project_MemberSetting_Modal___list-item {
   padding: 10px 15px 10px 24px;
+
   &:hover {
     cursor: auto !important;
   }
-};
+}
 
 .view_Project_MemberSetting_Modal___banner {
   display: flex;
@@ -38,48 +40,52 @@
   justify-content: space-between;
   width: unset;
   margin: 15px 15px 15px 24px;
-};
+}
 
 .view_Project_MemberSetting_Modal___table-head {
-  background-color: #eee; 
+  background-color: #eee;
+
   & * {
     text-transform: none;
   }
-};
+}
 
 .view_Project_MemberSetting_Modal___table-cell {
-  & > span {
+  &>span {
     font-size: 15px;
     color: #111;
   }
-  & > small {
+
+  &>small {
     font-size: 13px;
     color: #333;
   }
-};
+}
 
 .view_Project_MemberSetting_Modal___table-row {
-  & > td {
+  &>td {
     border-bottom: 1px solid rgb(240, 240, 240);
   }
-};
+}
 
 
 .view_Project_MemberSetting_Modal___avatar-table-cell {
   text-align: center;
-  padding: 5px 10px 5px 24px !important; 
-};
+  padding: 5px 10px 5px 24px !important;
+}
 
 .view_Project_MemberSetting_Modal___roles-box {
   height: 100%;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  & > * {
+
+  &>* {
     margin: 3px 5px 0 0;
     padding: 2px 3px;
   }
-  & > p {
+
+  &>p {
     color: #222;
     font-size: 12px;
     border-radius: 2px;
@@ -87,13 +93,13 @@
     background: #ff98004f;
     width: max-content;
   }
-};
+}
 
 @mixin view_Project_MemberSetting_Modal___add-button {
   height: 25px;
   text-transform: unset;
   padding: 2px 8px;
-  width: 50px;
+  width: 75px;
   min-width: unset;
 }
 
@@ -105,6 +111,7 @@
     color: #444;
     line-height: 20px;
   }
+
   &-disabled {
     @include view_Project_MemberSetting_Modal___add-button;
     font-weight: normal;
@@ -112,54 +119,63 @@
     cursor: not-allowed;
     opacity: 0.65;
   }
-};
+}
+
 
 @mixin view_Project_MemberSetting_Modal___menu-item {
   display: flex;
   align-items: center;
-  & > svg {
+
+  &>svg {
     margin-right: 10px;
   }
-  &:nth-child(2), &:nth-child(3) {  
+
+  &:nth-child(2),
+  &:nth-child(3) {
     border-bottom: 1px solid #f4f4f4;
   }
-};
+}
 
 .view_Project_MemberSetting_Modal___menu-item {
   & {
     @include view_Project_MemberSetting_Modal___menu-item;
     color: #222;
-    & > svg {
+
+    &>svg {
       fill: #888;
     }
   }
+
   &-selected {
     @include view_Project_MemberSetting_Modal___menu-item;
     color: #05b50c;
-    & > svg {
+
+    &>svg {
       fill: #05b50c;
     }
   }
-};
+}
+
+;
 
 .view_Project_MemberSetting_Modal___primary {
   font-size: 15px;
   color: #111;
-};
+}
 
 .view_Project_MemberSetting_Modal___secondary {
   font-size: 13px;
   color: #333;
-};
+}
 
 .view_Project_MemberSetting_Modal___right-container {
-  & > * {
+  &>* {
     &:nth-child(1) {
       font-size: 14px;
       padding: 12px;
     }
   }
-};
+}
 
 @mixin view_Project_MemberSetting_Modal___sub-header {
   color: #555;
@@ -173,11 +189,13 @@
 
 .view_Project_MemberSetting_Modal___right-header {
   @include view_Project_MemberSetting_Modal___sub-header;
-};
+}
+
+;
 
 .view_Project_MemberSetting_Modal___left-header {
   @include view_Project_MemberSetting_Modal___sub-header;
-};
+}
 
 @mixin view_Project_MemberSetting_Modal___permission-box {
   font-size: 12px;
@@ -189,10 +207,12 @@
   display: flex;
   align-items: center;
   width: 90px;
+
   &:hover {
     cursor: pointer;
     background: #eee;
   }
+
   &:active {
     background: #ddd;
   }
@@ -203,13 +223,16 @@
     @include view_Project_MemberSetting_Modal___permission-box;
     color: #222;
   }
+
   &-admin {
     @include view_Project_MemberSetting_Modal___permission-box;
     color: red;
   }
+
   &-empty {
     @include view_Project_MemberSetting_Modal___permission-box;
-    & > span:first-child {
+
+    &>span:first-child {
       color: white;
       width: 12px;
       height: 12px;
@@ -218,11 +241,12 @@
       vertical-align: center;
       border-radius: 99px;
     }
-    & > span:not(:first-child) {
+
+    &>span:not(:first-child) {
       margin-left: 5px;
     }
   }
-};
+}
 
 .view_Project_MemberSetting_Modal___role-button {
   font-size: 12px;
@@ -234,14 +258,17 @@
   width: max-content;
   display: flex;
   align-items: center;
+
   &:hover {
     cursor: pointer;
     background: #eee;
   }
+
   &:active {
     background: #ddd;
   }
-  & > span:first-child {
+
+  &>span:first-child {
     color: white;
     width: 12px;
     height: 12px;
@@ -250,13 +277,14 @@
     vertical-align: center;
     border-radius: 99px;
   }
-  & > span:not(:first-child) {
+
+  &>span:not(:first-child) {
     margin-left: 5px;
   }
 }
 
 .view_Project_MemberSetting_Modal___wide-modal {
-  & > div:nth-child(3) > div {
+  &>div:nth-child(3)>div {
     overflow: hidden;
     min-width: 40vw;
     max-width: 80vw;
@@ -271,7 +299,8 @@
   margin: 15px 15px 15px 24px;
   border-bottom: 1px solid #efefef;
   padding-bottom: 5px;
-  & > *:not(:first-child) {
+
+  &>*:not(:first-child) {
     margin-left: 5px;
   }
 }

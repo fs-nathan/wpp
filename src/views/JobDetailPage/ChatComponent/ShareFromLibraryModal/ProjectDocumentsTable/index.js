@@ -1,7 +1,7 @@
 import { IconButton, Table, TableBody, TableHead, TableRow } from '@material-ui/core';
 import { mdiFolderTextOutline, mdiSwapVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionFetchListProjectOfFolder, actionSortListProject } from 'actions/documents';
+import { actionFetchListProjectOfFolder, actionSortListProject, actionFetchListTaskOfProject } from 'actions/documents';
 import { actionChangeBreadCrumbs, openDocumentDetail } from 'actions/system/system';
 import ColorTypo from 'components/ColorTypo';
 import { FileType } from 'components/FileType';
@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FullAvatar, StyledTableBodyCell, StyledTableHeadCell } from 'views/DocumentPage/TablePart/DocumentComponent/TableCommon';
 import './styles.scss';
 
-function ProjectDocumentsTable({ isLoading, listData, setInsideProject }) {
+function ProjectDocumentsTable({ isLoading, listData, setInsideProject, setTaskSelected, isTaskSelected = false }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const breadCrumbs = useSelector(state => state.system.breadCrumbs);
@@ -25,7 +25,6 @@ function ProjectDocumentsTable({ isLoading, listData, setInsideProject }) {
 
   useEffect(() => {
     let projects = [];
-    // projects = sortBy(listData, [o => get(o, sortField)]);
     projects = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(projects);
     actionSortListProject(projects);
@@ -50,29 +49,28 @@ function ProjectDocumentsTable({ isLoading, listData, setInsideProject }) {
         newBreadCrumbs.push({
           id: -1,
           name: 'Home',
-          action: () => {
-
-          }
+          action: () => {}
         });
         newBreadCrumbs.push({
           id: item.id,
           name: item.name,
-          action: () => {
-
-          }
+          action: () => {}
         });
       } else {
         newBreadCrumbs.push({
           id: item.id,
           name: item.name,
-          action: () => {
-
-          }
+          action: () => {}
         });
       }
+      if(isTaskSelected) {
+        dispatch(actionFetchListProjectOfFolder({ task_id: item.id }));
+        setInsideProject(false);
+      } else {
+        dispatch(actionFetchListTaskOfProject({ project_id: item.id }));
+        setTaskSelected(true);
+      }
       dispatch(actionChangeBreadCrumbs(newBreadCrumbs));
-      dispatch(actionFetchListProjectOfFolder({ project_id: item.id }));
-      setInsideProject(false);
     }
   };
   if (isLoading) {
@@ -93,7 +91,7 @@ function ProjectDocumentsTable({ isLoading, listData, setInsideProject }) {
           align="left"
           width="5%"
           className="first-column"
-        ></StyledTableHeadCell>
+        />
         <StyledTableHeadCell align="left" width="50%">
           <div
             className="cursor-pointer"

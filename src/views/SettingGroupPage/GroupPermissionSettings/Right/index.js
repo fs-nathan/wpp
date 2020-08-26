@@ -27,7 +27,7 @@ import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/c
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
-import { GroupPermissionSettingsCotnext } from "..";
+import { GroupPermissionSettingsContext } from "..";
 import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
 import TasksScrollbar from "../components/TasksScrollbar";
 import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal";
@@ -46,14 +46,14 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
           title={title}
           subTitle={subTitle}
           actions={actions}
-        ></ListItemLayout>
+        />
       </Grid>
       <Grid item container style={{ flex: 1, position: "relative" }}>
         <div style={{ position: "absolute", width: "100%", height: "100%" }}>
           <TasksScrollbar>
             <div>
               {children}
-              <Space height={"50px"}></Space>
+              <Space height={"50px"}/>
             </div>
           </TasksScrollbar>
         </div>
@@ -69,7 +69,7 @@ const ColumnLeft = () => {
     permissionsNumber,
     permissions = emptyArray,
     can_modify,
-  } = useContext(GroupPermissionSettingsCotnext);
+  } = useContext(GroupPermissionSettingsContext);
   // if (!item) return null;
   return (
     <ColumnLayout
@@ -90,12 +90,12 @@ const ColumnLeft = () => {
       <Table stickyHeader className="header-document">
         <TableHead>
           <TableRow>
-            <TableCell width="20px"></TableCell>
+            <TableCell width="20px"/>
             <TableCell width="300px" align="left">
               {t("Tên quyền")}
             </TableCell>
             <TableCell align="left">{t("Mô tả")}</TableCell>
-            <TableCell width="20px" align="right"></TableCell>
+            <TableCell width="20px" align="right"/>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -113,7 +113,7 @@ const ColumnLeft = () => {
                   color="#8d8d8d"
                   style={{ width: "18px" }}
                   path={mdiKey}
-                ></Icon>
+                />
               </StyledTableBodyCell>
               <StyledTableBodyCell className="comp_TitleCell" align="left">
                 <Typography
@@ -148,11 +148,6 @@ const ColumnLeft = () => {
                     alignItems: "center",
                   }}
                 >
-                  {/* <Icon
-                  color="#8d8d8d"
-                  style={{ width: "18px" }}
-                  path={mdiTrashCanOutline}
-                ></Icon> */}
                 </div>
               </StyledTableBodyCell>
             </TableRow>
@@ -169,7 +164,7 @@ const ColumnRight = () => {
     permissionModules = emptyArray,
     members_assigned = emptyArray,
     module: groupModule,
-  } = useContext(GroupPermissionSettingsCotnext);
+  } = useContext(GroupPermissionSettingsContext);
   return (
     <div className="comp_rightColumn">
       <TasksScrollbar>
@@ -204,7 +199,7 @@ const ColumnRight = () => {
             <Divider />
             <ListItemLayout
               title={t("Thành viên được gán nhóm quyền")}
-            ></ListItemLayout>
+            />
             <Stack>
               {members_assigned.map(
                 ({ name, members = emptyArray, icon } = {}, i) => (
@@ -216,7 +211,7 @@ const ColumnRight = () => {
                       return (
                         <ListItemLayout
                           key={id}
-                          left={<Avatar src={avatar}></Avatar>}
+                          left={<Avatar src={avatar}/>}
                           title={name}
                           subTitle={position}
                         />
@@ -241,7 +236,7 @@ const Right = () => {
           width: "1px",
           background: "rgba(0, 0, 0, 0.1)",
         }}
-      ></div>
+      />
       <ColumnRight />
     </Grid>
   );
@@ -249,16 +244,16 @@ const Right = () => {
 export default ({ ...props }) => {
   const { t } = useTranslation();
   const { setModal, name, can_modify } = useContext(
-    GroupPermissionSettingsCotnext
+    GroupPermissionSettingsContext
   );
   const [quickTask, setQuickTask] = useState();
   const bgColor = useSelector(bgColorSelector);
   const open = !!quickTask;
-  const { detail } = useContext(GroupPermissionSettingsCotnext);
+  const { detail } = useContext(GroupPermissionSettingsContext);
   const options = {
     title: (
       <Box display="flex" alignItems="center">
-        <Icon size={1.4} {...{ color: "#8d8d8d", path: mdiAccountKey }}></Icon>
+        <Icon size={1.4} {...{ color: "#8d8d8d", path: mdiAccountKey }}/>
         <Box
           {...{
             paddingLeft: "20px",

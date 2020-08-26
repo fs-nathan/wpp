@@ -2,23 +2,34 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { isEmpty } from '../../helpers/utils/isEmpty';
-import {
-  actionVisibleDrawerMessage,
-  openDocumentDetail,
-  actionActiveGroup,
-  actionChangeBreadCrumbs
-} from '../../actions/system/system';
-import {
-  getDocumentDetail,
-  actionFetchListMyDocument,
-  actionSelectedFolder
-} from '../../actions/documents';
+import {actionVisibleDrawerMessage, openDocumentDetail, actionActiveGroup, actionChangeBreadCrumbs, changeVisibleOfferDetailModal} from '../../actions/system/system';
+import {getDocumentDetail, actionFetchListMyDocument, actionSelectedFolder} from '../../actions/documents';
 import { DRAWER_TYPE } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
+import { Routes as CalendarRoutes } from "views/CalendarPage/constants/routes";
+
+const NOTIFICATION_NEW_POST_CREATED = 22;
+const NOTIFICATION_COMMENT_IN_POST = 23;
+const NOTIFICATION_LEAVE_GROUP = 24;
+const NOTIFICATION_ADD_MEMBER_TO_OFFER = 25;
+const NOTIFICATION_ADD_MEMBER_TO_MONITOR_OFFER = 26;
+const NOTIFICATION_REMOVE_MEMBER_IN_OFFER = 27;
+const NOTIFICATION_DELETE_OFFER = 28;
+const NOTIFICATION_OFFER_HAS_APPROVED = 29;
+const NOTIFICATION_DELETE_APPROVED_OFFER = 30;
+const NOTIFICATION_REMIND = 31;
+const NOTIFICATION_WEEKLY_CALENDAR = 32;
+const NOTIFICATION_LIKE_POST = 33;
+const NOTIFICATION_LOVE_POST = 34;
+const NOTIFICATION_COMMENT_IN_OFFER = 35;
+const NOTIFICATION_TASK_STARTED = 36;
+const NOTIFICATION_TASK_ENDED = 37;
+const NOTIFICATION_ORDER_APPROVED = 38;
 
 const NotificationItemCommon = props => {
   const { data_notification } = props.item;
   const handleClick = async () => {
+    console.log(data_notification);
     if (props.handleViewNotification) props.handleViewNotification();
     if (!isEmpty(props.typeDrawer)) {
       props.actionVisibleDrawerMessage({
@@ -29,14 +40,12 @@ const NotificationItemCommon = props => {
     switch (data_notification.type) {
       case 1:
       case 3:
-        console.log('show detail file');
         try {
           const { data } = await getDocumentDetail({
             file_id: data_notification.file_id
           });
           props.openDocumentDetail(data.file);
         } catch (err) {}
-        // props.openDocumentDetail({ id: data_notification.file_id });
         break;
       case 2:
         console.log(
@@ -77,7 +86,6 @@ const NotificationItemCommon = props => {
       case 4:
       case 6:
       case 14:
-        console.log('Redirect to url BE response');
         if (data_notification.change_group) {
           props.actionActiveGroup(data_notification.group);
         }
@@ -86,17 +94,14 @@ const NotificationItemCommon = props => {
       case 8:
       case 10:
       case 15:
-        console.log('Show popup get-list-group');
         props.actionVisibleDrawerMessage({
           type: DRAWER_TYPE.GROUP_ACCOUNT,
           anchor: 'top'
         });
         break;
       case 13:
-        console.log('Load url google driver at another tab');
         break;
       case 17:
-        console.log('Show popup add new member');
         props.actionVisibleDrawerMessage({
           type: DRAWER_TYPE.ADD_USER,
           anchor: 'left'
@@ -111,10 +116,35 @@ const NotificationItemCommon = props => {
       case 18:
       case 19:
       case 20:
+      case NOTIFICATION_LEAVE_GROUP:
+      case NOTIFICATION_DELETE_OFFER:
+        // no action
         return;
       case 21:
-        console.log('refresh page');
         window.location.reload(false);
+        break;
+      case NOTIFICATION_NEW_POST_CREATED:
+      case NOTIFICATION_COMMENT_IN_POST:
+      case NOTIFICATION_LOVE_POST:
+      case NOTIFICATION_LIKE_POST:
+      case NOTIFICATION_TASK_STARTED:
+      case NOTIFICATION_TASK_ENDED:
+      case NOTIFICATION_ORDER_APPROVED:
+        props.history.push({ pathname: data_notification.url_redirect });
+        break;
+      case NOTIFICATION_REMIND:
+        props.history.push({ pathname: CalendarRoutes.ALARM_RECENTLY });
+        break;
+      case NOTIFICATION_WEEKLY_CALENDAR:
+        props.history.push({ pathname: CalendarRoutes.WEEKLY });
+        break;
+      case NOTIFICATION_ADD_MEMBER_TO_OFFER:
+      case NOTIFICATION_ADD_MEMBER_TO_MONITOR_OFFER:
+      case NOTIFICATION_REMOVE_MEMBER_IN_OFFER:
+      case NOTIFICATION_COMMENT_IN_OFFER:
+      case NOTIFICATION_OFFER_HAS_APPROVED:
+      case NOTIFICATION_DELETE_APPROVED_OFFER:
+        props.changeVisibleOfferDetailModal({offer_id: data_notification.offer_id, visible: true});
         break;
       default:
         return;
@@ -135,6 +165,7 @@ export default connect(
     actionActiveGroup,
     actionFetchListMyDocument,
     actionChangeBreadCrumbs,
-    actionSelectedFolder
+    actionSelectedFolder,
+    changeVisibleOfferDetailModal
   }
 )(withRouter(NotificationItemCommon));

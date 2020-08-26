@@ -110,10 +110,6 @@ function IntegrationReactSelect({ className, options = [], placeholder = '', isM
       '& input': {
         font: 'inherit',
       },
-    }),
-    control: (base, state) => ({
-      ...base,
-      border: state.isFocused && 0,
     })
   };
 

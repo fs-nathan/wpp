@@ -8,7 +8,7 @@ import { filter, get } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
 import { localOptionSelector, routeSelector, viewPermissionsSelector } from '../../selectors';
 import ProjectGroupListPresenter from './presenters';
@@ -31,13 +31,10 @@ function ProjectList({
       timeStart,
       timeEnd,
     });
-    // eslint-disable-next-line
   }, [timeType]);
 
   const { projectGroupId } = useParams();
-
   React.useEffect(() => {
-    if (projectGroupId === 'deleted') return;
     if (projectGroupId !== null) {
       doListProject({
         groupProject: projectGroupId,
@@ -64,7 +61,6 @@ function ProjectList({
         CustomEventDispose(SORT_PROJECT, reloadListProject);
       }
     }
-    // eslint-disable-next-line
   }, [projectGroupId, timeRange]);
 
   React.useEffect(() => {
@@ -76,12 +72,10 @@ function ProjectList({
     return () => {
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
     }
-    // eslint-disable-next-line
   }, []);
 
   React.useEffect(() => {
     doListIcon();
-    // eslint-disable-next-line
   }, []);
 
   const [searchPatern, setSearchPatern] = React.useState('');

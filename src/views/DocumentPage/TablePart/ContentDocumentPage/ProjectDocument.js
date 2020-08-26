@@ -1,38 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import {
-  Table,
-  TableHead,
-  TableBody,
-  IconButton,
-  // TablePagination,
-  TableRow
-} from '@material-ui/core';
-import { reverse } from 'lodash';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {connect} from 'react-redux';
+import {Table, TableHead, TableBody, IconButton, TableRow} from '@material-ui/core';
+import {reverse} from 'lodash';
 import Icon from '@mdi/react';
-import { mdiSwapVertical, mdiFolderTextOutline } from '@mdi/js';
-import { withRouter } from 'react-router-dom';
-
-import { Routes } from '../../../../constants/routes';
+import {mdiSwapVertical, mdiFolderTextOutline} from '@mdi/js';
+import {withRouter} from 'react-router-dom';
+import {Routes} from '../../../../constants/routes';
 import ColorTypo from '../../../../components/ColorTypo';
-import {
-  resetListSelectDocument,
-  actionFetchListProject,
-  actionSortListProject
-} from '../../../../actions/documents';
-import { openDocumentDetail } from '../../../../actions/system/system';
+import {resetListSelectDocument, actionFetchListProject, actionSortListProject} from '../../../../actions/documents';
 import MoreAction from '../../../../components/MoreAction/MoreAction';
-import { isEmpty } from '../../../../helpers/utils/isEmpty';
+import {isEmpty} from '../../../../helpers/utils/isEmpty';
 import './ContentDocumentPage.scss';
-import {
-  StyledTableHeadCell,
-  StyledTableBodyCell,
-  FullAvatar
-  // GreenCheckbox
-} from '../DocumentComponent/TableCommon';
-import { actionChangeBreadCrumbs } from '../../../../actions/system/system';
-import { FileType } from '../../../../components/FileType';
+import {StyledTableHeadCell, StyledTableBodyCell, FullAvatar} from '../DocumentComponent/TableCommon';
+import {actionChangeBreadCrumbs} from '../../../../actions/system/system';
+import {FileType} from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
 
@@ -48,29 +30,25 @@ const ProjectDocument = props => {
 
   useEffect(() => {
     fetDataProjectDocument();
-    // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
-    return () => {
-      props.resetListSelectDocument();
-    };
-    // eslint-disable-next-line
+    return () => {props.resetListSelectDocument();}
   }, []);
+
   useEffect(() => {
     setListData(props.listProject);
-    // eslint-disable-next-line
   }, [props.listProject]);
+
   useEffect(() => {
     if (isEmpty(props.selectedDocument)) setSelected([]);
-    // eslint-disable-next-line
   }, [props.selectedDocument]);
+
   useEffect(() => {
     let projects = [];
-    // projects = sortBy(listData, [o => get(o, sortField)]);
     projects = listData.sort((a, b) => a.name.localeCompare(b.name));
     if (sortType === -1) reverse(projects);
     props.actionSortListProject(projects);
-    // eslint-disable-next-line
   }, [sortField, sortType]);
 
   useEffect(() => {
@@ -80,8 +58,8 @@ const ProjectDocument = props => {
       const dataUpdate = handleSearchData(props.searchText, props.listProject);
       setListData(dataUpdate);
     }
-    // eslint-disable-next-line
   }, [props.searchText]);
+
   const handleSearchData = (valueSearch, listData) => {
     let listResult = [];
     if (!isEmpty(valueSearch)) {
@@ -94,6 +72,7 @@ const ProjectDocument = props => {
 
     return listResult;
   };
+
   const fetDataProjectDocument = (params = {}, quite = false) => {
     props.actionFetchListProject(params, quite);
   };
@@ -102,57 +81,49 @@ const ProjectDocument = props => {
   const moreAction = [
     { icon: mdiFolderTextOutline, text: t('IDS_WP_JOIN_PROJECT'), type: 'link' }
   ];
+
   const openDetail = item => {
-    const isDetail =
-      item.type === 'word' || item.type === 'pdf' || item.type === 'excel';
-    if (isDetail) {
-      props.openDocumentDetail(item);
-    } else {
-      props.actionSortListProject([]);
-      props.history.push({
-        pathname: Routes.DOCUMENT_PROJECT,
-        search: `?projectId=${item.id}`
+    props.actionSortListProject([]);
+    props.history.push({
+      pathname: Routes.DOCUMENT_PROJECT,
+      search: `?projectId=${item.id}`
+    });
+    // handle bread crumbs
+    let newBreadCrumbs = [...breadCrumbs];
+    if (breadCrumbs.length === 0) {
+      newBreadCrumbs.push({
+        id: -1,
+        name: 'Home',
+        action: () => {
+          props.history.push({
+            pathname: Routes.DOCUMENT_PROJECT
+          });
+        }
       });
-      // handle bread crumbs
-      let newBreadCrumbs = [...breadCrumbs];
-      if (breadCrumbs.length === 0) {
-        newBreadCrumbs.push({
-          id: -1,
-          name: 'Home',
-          action: () => {
-            props.history.push({
-              pathname: Routes.DOCUMENT_PROJECT
-            });
-          }
-        });
-        newBreadCrumbs.push({
-          id: item.id,
-          name: item.name,
-          action: () => {
-            props.history.push({
-              pathname: Routes.DOCUMENT_PROJECT,
-              search: `?projectId=${item.id}`
-            });
-          }
-        });
-      } else {
-        newBreadCrumbs.push({
-          id: item.id,
-          name: item.name,
-          action: () => {
-            props.history.push({
-              pathname: Routes.DOCUMENT_PROJECT,
-              search: `?projectId=${item.id}`
-            });
-          }
-        });
-      }
-      actionChangeBreadCrumbs(newBreadCrumbs);
+      newBreadCrumbs.push({
+        id: item.id,
+        name: item.name,
+        action: () => {
+          props.history.push({
+            pathname: Routes.DOCUMENT_PROJECT,
+            search: `?projectId=${item.id}`
+          });
+        }
+      });
+    } else {
+      newBreadCrumbs.push({
+        id: item.id,
+        name: item.name,
+        action: () => {
+          props.history.push({
+            pathname: Routes.DOCUMENT_PROJECT,
+            search: `?projectId=${item.id}`
+          });
+        }
+      });
     }
+    actionChangeBreadCrumbs(newBreadCrumbs);
   };
-  if (isLoading) {
-    return <LoadingBox />;
-  }
   const hanldeSort = field => {
     if (field !== sortField) {
       setSortField(field);
@@ -161,8 +132,10 @@ const ProjectDocument = props => {
       setSortType(prev => prev * -1);
     }
   };
+  console.log(isLoading);
+  if (isLoading) return <LoadingBox />;
   return (
-    <React.Fragment>
+    <>
       <Table stickyHeader>
         <TableHead>
           <TableRow className="table-header-row">
@@ -170,7 +143,7 @@ const ProjectDocument = props => {
               align="left"
               width="5%"
               className="first-column"
-            ></StyledTableHeadCell>
+            />
             <StyledTableHeadCell align="left" width="50%">
               <div
                 className="cursor-pointer"
@@ -231,7 +204,7 @@ const ProjectDocument = props => {
           item={itemActive}
         />
       )}
-    </React.Fragment>
+    </>
   );
 };
 
@@ -240,11 +213,11 @@ export default connect(
     selectedDocument: state.documents.selectedDocument,
     listProject: state.documents.listProject,
     breadCrumbs: state.system.breadCrumbs,
-    searchText: state.documents.searchText
+    searchText: state.documents.searchText,
+    isLoading: state.documents.isLoading,
   }),
   {
     resetListSelectDocument,
-    openDocumentDetail,
     actionFetchListProject,
     actionChangeBreadCrumbs,
     actionSortListProject

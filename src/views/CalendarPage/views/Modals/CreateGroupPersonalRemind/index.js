@@ -34,7 +34,7 @@ function CreateGroupPersonalRemind({
         setOpen={setOpen}
         canConfirm={groupTitle !== ''}
         onConfirm={() => onConfirm({ title: groupTitle, color: color.color })}
-        height='mini'
+        height='miniWide'
         maxWidth='sm'
         actionLoading={isLoading}
       >

@@ -36,4 +36,7 @@ export { default as ic_task_select } from './task_select.png';
 export { default as ic_user } from './user.png';
 export { default as ic_user_select } from './user_select.png';
 export { default as vtask_logo } from './vtask-logo-app.png';
-
+export { default as ic_upgrade } from './ic_upgrade.png';
+export { default as logo_white } from './logo_white.png';
+export { default as notice_bg_head} from './notice_bg_head.png';
+export { default as ic_404} from './ic_404.png';

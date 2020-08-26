@@ -56,67 +56,69 @@ function SimpleManagerTable({
   const { t } = useTranslation();
 
   return (
-    <StyledTable>
-      <StyledTableHead>
-        <TableRow>
-          <StyledTableCell width={'35%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
-          <StyledTableCell width={'50%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
-          <TableCell width={'15%'}>
-            <Button
-              fullWidth
-              style={{
-                backgroundColor: bgColor.color,
-                color: 'white',
-              }}
-              onClick={() => handleAdd()}
-            >
-              {t('DMH.COMP.SMT.LABEL.ADD')}
-            </Button>
-          </TableCell>
-        </TableRow>
-      </StyledTableHead>
-      <StyledTableBody>
-        {data.map(elem => (
-          <TableRow key={get(elem, 'id')}>
-            <StyledTableCell width={'35%'}>{get(elem, 'name', '')}</StyledTableCell>
-            <TableCell width={'50%'}>{get(elem, 'description', '')}</TableCell>
-            <TableCell width={'15%'} align='center'>
-              <ButtonWrapper>
-                <MyButton
-                  onClick={() => handleEdit(elem)}
-                  disabled={
-                    !isNil(find(concat(updatePendings, deletePendings), pending => pending === get(elem, 'id')))
-                  }
-                >
-                  {!isNil(find(updatePendings, pending => pending === get(elem, 'id'))) &&
-                    <CircularProgress
-                      size={16}
-                      className="margin-circular"
-                      color="white"
-                    />}
-                  {t('DMH.COMP.SMT.BTN.UPT')}
-                </MyButton>
-                <MyButton
-                  onClick={() => handleDelete(elem)}
-                  isDel={true}
-                  disabled={
-                    !isNil(find(concat(updatePendings, deletePendings), pending => pending === get(elem, 'id')))
-                  }
-                >
-                  {!isNil(find(deletePendings, pending => pending === get(elem, 'id'))) &&
-                    <CircularProgress
-                      size={16}
-                      className="margin-circular"
-                      color="white"
-                    />}
-                  {t('DMH.COMP.SMT.BTN.DEL')}
-                </MyButton>
-              </ButtonWrapper>
-            </TableCell>
+    <>
+      <Button
+        style={{
+          backgroundColor: bgColor.color,
+          color: 'white',
+          float: 'right',
+          marginBottom: '10px'
+        }}
+        onClick={() => handleAdd()}
+      >
+        {t('DMH.COMP.SMT.LABEL.ADD')}
+      </Button>
+      <StyledTable>
+        <StyledTableHead>
+          <TableRow>
+            <StyledTableCell width={'35%'}>{t('DMH.COMP.SMT.LABEL.NAME')}</StyledTableCell>
+            <StyledTableCell width={'50%'}>{t('DMH.COMP.SMT.LABEL.DESC')}</StyledTableCell>
+            <TableCell width={'15%'}></TableCell>
           </TableRow>
-        ))}
-      </StyledTableBody>
-    </StyledTable>
+        </StyledTableHead>
+        <StyledTableBody>
+          {data.map(elem => (
+            <TableRow key={get(elem, 'id')}>
+              <StyledTableCell width={'35%'}>{get(elem, 'name', '')}</StyledTableCell>
+              <TableCell width={'50%'}>{get(elem, 'description', '')}</TableCell>
+              <TableCell width={'15%'} align='center'>
+                <ButtonWrapper>
+                  <MyButton
+                    onClick={() => handleEdit(elem)}
+                    disabled={
+                      !isNil(find(concat(updatePendings, deletePendings), pending => pending === get(elem, 'id')))
+                    }
+                  >
+                    {!isNil(find(updatePendings, pending => pending === get(elem, 'id'))) &&
+                      <CircularProgress
+                        size={16}
+                        className="margin-circular"
+                        color="white"
+                      />}
+                    {t('DMH.COMP.SMT.BTN.UPT')}
+                  </MyButton>
+                  <MyButton
+                    onClick={() => handleDelete(elem)}
+                    isDel={true}
+                    disabled={
+                      !isNil(find(concat(updatePendings, deletePendings), pending => pending === get(elem, 'id')))
+                    }
+                  >
+                    {!isNil(find(deletePendings, pending => pending === get(elem, 'id'))) &&
+                      <CircularProgress
+                        size={16}
+                        className="margin-circular"
+                        color="white"
+                      />}
+                    {t('DMH.COMP.SMT.BTN.DEL')}
+                  </MyButton>
+                </ButtonWrapper>
+              </TableCell>
+            </TableRow>
+          ))}
+        </StyledTableBody>
+      </StyledTable>
+    </>
   )
 }
 

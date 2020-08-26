@@ -2,9 +2,11 @@
   .SettingAccountHeader {
     border-bottom: 1px solid #ededed;
   }
+
   .message-title {
     display: flex;
   }
+
   .right-header-account {
     margin-right: 20px;
   }
@@ -22,27 +24,33 @@
     border: solid 1px #fafafa;
   }
 }
+
 .setting-info {
+
   // padding-top: 60px;
   .header-setting-info {
     padding: 16px 21px 16px 35px;
     border-bottom: 1px solid #ededed;
     align-items: center;
     display: flex;
+
     .text-header-setting-info {
       color: #01b374;
       font-size: 22px;
       padding-left: 20px;
     }
   }
+
   .content-setting-info {
     padding: 30px 120px 0 60px;
     display: flex;
+
     .avatar-content-setting-info {
       padding-right: 60px;
       display: flex;
       flex-direction: column;
       align-items: center;
+
       .img-avatar {
         border-radius: 50%;
         background: white;
@@ -50,12 +58,15 @@
         width: 120px;
         height: 120px;
       }
+
       .block-change-avatar {
         text-align: center;
         padding-top: 20px;
+
         &:hover {
           background-color: transparent;
         }
+
         span {
           text-transform: none;
           font-weight: normal;
@@ -63,52 +74,65 @@
           color: #2196f3;
         }
       }
+
       .avatar-note-text {
         margin: 0;
         color: rgba(0, 0, 0, 0.5);
       }
     }
+
     .info-content-setting-info {
       width: 60%;
+
       .item-info {
         display: flex;
         border-bottom: 1px solid #ededed;
         padding: 10px 0;
+
         .title-item-info {
           font-size: 14px;
           width: 25%;
           display: flex;
           align-items: center;
+
           &.gender-title {
             width: 85%;
           }
         }
+
         .value-item-info {
           text-align: right;
           width: 75%;
+
           &.gender-content {
             width: 15%;
           }
+
           .MuiFormControl-fullWidth {
             width: unset;
             margin: 0;
           }
+
           .MuiInputBase-fullWidth {
             &::after {
               display: none;
             }
+
             &::before {
               display: none;
             }
           }
+
           .MuiInputBase-input {
             text-align: right;
           }
+
           .type-account {
             background-color: rgb(250, 226, 11);
             height: 20px;
           }
         }
+
         .email {
           input {
             color: #6d6d6d;
@@ -116,17 +140,20 @@
           }
         }
       }
+
       .btn-edit-info {
         display: flex;
         padding-top: 30px;
         border-top: 2px solid #ededed;
         justify-content: center;
+
         .btn-action {
           min-width: 150px;
           border-radius: 30px;
           text-transform: uppercase;
           font-size: 16px;
           height: 40px;
+
           &.cancel-btn {
             margin-left: 30px;
           }
@@ -135,12 +162,16 @@
     }
   }
 }
+
 .notification-container {
   padding: 10px;
+
   .notification-group {
     margin: 20px 10px;
+
     .table-notification {
       margin: 20px;
+
       .notification-row-item {
         &:hover {
           .MuiTableCell-root {
@@ -148,10 +179,12 @@
           }
         }
       }
+
       .MuiTableCell-root {
         font-size: 14px;
         padding: 10px;
       }
+
       .action-btn {
         padding: 0.25rem;
         border-radius: 2px;
@@ -163,16 +196,19 @@
         padding: 5px;
         align-items: center;
         justify-content: center;
+
         &.Success {
           background: rgb(250, 195, 191);
           color: #ec1000;
         }
+
         &.Normal {
           background: rgb(209, 238, 221);
           color: #48bb78;
         }
       }
     }
+
     .title-list {
       font-size: 20px;
       font-weight: bold;
@@ -180,36 +216,45 @@
     }
   }
 }
+
 .change-password {
   padding: 20px 0 0px 20px;
   width: 50%;
+
   .item-change-password {
     .style-input-text {
       .MuiInputLabel-formControl {
         font-size: 19px;
         color: #000;
       }
+
       .MuiInputBase-root {
         border-bottom: solid 1px rgb(253, 253, 253);
       }
+
       .MuiInput-underline:before {
         // border-bottom: 1px solid rgb(253, 253, 253);
         border-bottom: 1px solid #ededed;
       }
     }
   }
+
   .text-notification {
     padding: 15px 0 50px 0;
     margin-left: 8px;
+
     .text-noti {
       font-size: 14px;
     }
+
     .title {
       color: red;
     }
   }
+
   .block-action {
     display: flex;
+
     .btn-action {
       margin: 0 auto;
       min-width: 150px;
@@ -220,16 +265,20 @@
     }
   }
 }
+
 .work-plus-detail {
   padding: 30px 0 0px 20px;
+
   .header-work-plus-detail {
     .text-header {
       font-size: 22px;
       font-weight: 500;
     }
   }
+
   .status-date-work-plus-detail {
     padding: 15px 0 35px 0;
+
     .status-text {
       padding: 2px 5px;
       border-radius: 2px;
@@ -238,38 +287,48 @@
       color: #fff;
       font-size: 12px;
     }
+
     .date-text {
       font-size: 14px;
     }
+
     .devider {
       padding: 0px 1px;
       margin: 0 5px;
       background-color: #ededed;
     }
+
     .view-text {
       font-size: 14px;
     }
   }
+
   .content-work-plus-detail {
     .des-text {
       font-size: 17px;
+      white-space: pre;
     }
   }
 }
+
 .cus-toast {
   background-color: #43a047;
 }
+
 .value-date-info {
   button {
     padding-right: 0;
+
     &:hover {
       background-color: #fff;
     }
   }
 }
+
 .phone-infor {
   right: -15px;
 }
+
 .bag-cus.none-view.notification-left-badge {
   .MuiBadge-anchorOriginTopRightRectangle {
     top: 0;

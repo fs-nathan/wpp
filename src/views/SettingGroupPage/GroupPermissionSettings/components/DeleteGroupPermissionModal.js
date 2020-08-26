@@ -13,7 +13,7 @@ import { useTranslation } from "react-i18next";
 import { createMapPropsFromAttrs } from "views/JobPage/utils";
 import { apiCallStatus } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/types";
 import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
-import { GroupPermissionSettingsCotnext } from "..";
+import { GroupPermissionSettingsContext } from "..";
 import { groupPermissionAttr } from "../contants";
 import { settingGroupPermission } from "../redux";
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +78,7 @@ export function DeleteGroupPermissionModalStateLess({
 
 export default ({ item }) => {
   const { setModal, detail, setSelect } = useContext(
-    GroupPermissionSettingsCotnext
+    GroupPermissionSettingsContext
   );
   const [id] = createMapPropsFromAttrs([
     groupPermissionAttr.id,

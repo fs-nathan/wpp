@@ -12,7 +12,7 @@ import UpdateGroupPersonalRemind from "views/CalendarPage/views/Modals/UpdateGro
 import { afterUpdateRemindCategorySelector, personalRemindSelector } from "../selectors";
 import CalendarAlarmLeftPartPresenter from './presenter';
 
-function CalendarAlramLeftPart({
+function CalendarAlarmLeftPart({
   personalRemindCategories, handleSortPersonalAlarm,
   doCreatePersonalRemindCategory, doDeletePersonalRemindCategory,
   doUpdatePersonalRemindCategory, permissions, reminds,
@@ -26,6 +26,7 @@ function CalendarAlramLeftPart({
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [remindCategories, setRemindCategories] = React.useState(personalRemindCategories);
+  const [remindStatistic, setRemindsStatistic] = React.useState([]);
 
   function handleOpenModal(type) {
     switch (type) {
@@ -53,7 +54,7 @@ function CalendarAlramLeftPart({
     setOpenPersonalRemindModalUpdate(true);
   }
 
-  function handleUpdateCategroy(value) {
+  function handleUpdateCategory(value) {
     doUpdatePersonalRemindCategory({ categoryID: value.id, name: value.title, color: value.color }, false);
   }
 
@@ -62,16 +63,28 @@ function CalendarAlramLeftPart({
     setRemindCategories(personalRemindCategories);
   }, [personalRemindCategories]);
 
-  const refeshAfterUpdateCategory = () => {
+  React.useEffect(() => {
+    let statistic = [];
+    if(reminds.data.length !== 0) {
+      reminds.data.forEach((item) => {
+        statistic[`${item.id}`] = get(item, 'reminds' , []).length;
+      });
+      setRemindsStatistic(statistic);
+    } else {
+      remindCategories.data.forEach((item) => {
+        statistic[`${item.id}`] = get(item, 'total_remind' , 0);
+      });
+      setRemindsStatistic(statistic);
+    }
+  }, [reminds, remindCategories]);
 
+  const refreshAfterUpdateCategory = () => {
     if (!isNil(afterUpdateRemindCategory.afterUpdate)) {
       let category = get(afterUpdateRemindCategory, 'afterUpdate');
       let idx = remindCategories.data.findIndex(item => item.id === category.id);
       if (idx !== -1) {
         let categories = remindCategories.data
         set(categories, `[${idx}]`, category);
-        console.log(idx);
-        console.log(categories);
         setRemindCategories({
           ...remindCategories,
           data: categories
@@ -82,9 +95,9 @@ function CalendarAlramLeftPart({
   }
 
   React.useEffect(() => {
-    CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, refeshAfterUpdateCategory);
+    CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, refreshAfterUpdateCategory);
     return () => {
-      CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, refeshAfterUpdateCategory);
+      CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, refreshAfterUpdateCategory);
     }
   }, [afterUpdateRemindCategory]);
 
@@ -100,7 +113,7 @@ function CalendarAlramLeftPart({
           handleOpenModal("DELETE_CATEGORY");
         }}
         handleEditCategory={(category) => handleEditCategory(category)}
-        reminds={reminds}
+        remindStatistic={remindStatistic}
       />
       <CreateGroupPersonalRemind
         open={openPersonalRemindModalCreate}
@@ -116,7 +129,7 @@ function CalendarAlramLeftPart({
         setOpen={setOpenPersonalRemindModalUpdate}
         onConfirm={(value) => {
           setIsLoading(true);
-          handleUpdateCategroy(value);
+          handleUpdateCategory(value);
         }}
         value={selectedCategory}
         isLoading={isLoading}
@@ -145,4 +158,4 @@ export default connect(
     afterUpdateRemindCategory: afterUpdateRemindCategorySelector(state)
   }),
   mapDispatchToProps
-)(CalendarAlramLeftPart);
+)(CalendarAlarmLeftPart);

@@ -11,7 +11,7 @@ import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
 import { useTimes } from 'components/CustomPopover';
 import { CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -20,23 +20,30 @@ import CreateJobModal from 'views/JobDetailPage/ListPart/ListHeader/CreateJobMod
 import ProjectSettingModal from '../../../ProjectGroupPage/Modals/ProjectSetting';
 import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
 import AllTaskTablePresenter from './presenters';
-import { bgColorSelector, projectSelector, showHidePendingsSelector, tasksSelector } from './selectors';
+import {
+  bgColorSelector,
+  memberTaskSelector,
+  projectSelector,
+  showHidePendingsSelector,
+  tasksSelector
+} from './selectors';
+import {listTaskMember} from "../../../../actions/task/listTaskMember";
+import { deleteMember, createMember } from 'actions/taskDetail/taskDetailActions';
+import {
+  EVENT_ADD_MEMBER_TO_TASK_SUCCESS,
+  EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS
+} from 'constants/actions/taskDetail/taskDetailConst';
+import MemberPermissionModal from "../../Modals/MembersSetting/MemberPermission";
+import AssignCalendarModal from "components/AssignCalendarModal";
 
 function AllTaskTable({
   expand, handleExpand, viewPermissions,
-  bgColor,
-  showHidePendings,
-  handleSubSlide,
-  tasks, project,
-  doShowProject, doHideProject,
-  doDeleteTask, doCreateTask,
-  doSortTask,
-  doDetailProject,
-  doListGroupTask,
-  doListTask,
-  doGetPermissionViewDetailProject,
-  doSetProject,
-  localOption,
+  bgColor, showHidePendings, handleSubSlide,
+  tasks, project, doShowProject, doHideProject,
+  doDeleteTask, doCreateTask, doSortTask,
+  doDetailProject, doListGroupTask, doListTask, doListTaskMember,
+  doGetPermissionViewDetailProject, doSetProject, memberTask,
+  localOption, doDeleteMemberFromTask, doAddMemberToTask
 }) {
 
   const times = useTimes();
@@ -47,18 +54,15 @@ function AllTaskTable({
       timeStart,
       timeEnd,
     });
-    // eslint-disable-next-line
   }, [timeType]);
-
-  const { projectId } = useParams();
+  const { projectId, memberId } = useParams();
 
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
-    // eslint-disable-next-line
   }, [projectId]);
 
   React.useEffect(() => {
-    if (projectId !== null) {
+    if (projectId !== null && isNil(memberId)) {
       doListTask({
         projectId,
         timeStart: get(timeRange, 'timeStart')
@@ -88,8 +92,22 @@ function AllTaskTable({
         CustomEventDispose(SORT_TASK, reloadListTask);
       }
     }
-    // eslint-disable-next-line
-  }, [projectId, timeRange]);
+  }, [projectId, timeRange, memberId]);
+
+  React.useEffect(() => {
+    if(!isNil(memberId)) {
+      doListTaskMember({projectId, memberId});
+      const reloadAfterActionMember = () => {
+        doListTaskMember({projectId, memberId});
+      }
+      CustomEventListener(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+      CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      return () => {
+        CustomEventDispose(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+        CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      }
+    }
+  }, [memberId]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
@@ -103,7 +121,6 @@ function AllTaskTable({
         CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
       }
     }
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
   React.useEffect(() => {
@@ -119,7 +136,6 @@ function AllTaskTable({
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
     }
-    // eslint-disable-next-line
   }, [projectId]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -127,6 +143,9 @@ function AllTaskTable({
   const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+  const [openPermission, setOpenPermission] = React.useState(false);
+  const [permissionProps, setPermissionProps] = React.useState({});
+  const [openCalendar, setOpenCalendar] = React.useState(false);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -139,12 +158,25 @@ function AllTaskTable({
         setOpenSetting(true);
         setSettingProps(props);
         return;
+      case "PERMISSION":
+        setOpenPermission(true);
+        setPermissionProps(props);
+        return;
       case 'ALERT':
         setOpenAlert(true);
         setAlertProps(props);
         return;
+      case 'CALENDAR':
+        setOpenCalendar(true);
+        return;
       default: return;
     }
+  }
+  function handleRemoveMember(taskId) {
+    doDeleteMemberFromTask({task_id: taskId, member_id: memberId});
+  }
+  function handleAddMember(taskId) {
+    doAddMemberToTask({task_id: taskId, member_id: memberId});
   }
 
   return (
@@ -155,7 +187,7 @@ function AllTaskTable({
         canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
         canCreateTask={get(viewPermissions.permissions, [projectId, 'create_task'], false)}
         showHidePendings={showHidePendings}
-        tasks={tasks} project={project}
+        tasks={tasks} project={project} memberID={memberId} memberTask={memberTask}
         handleShowOrHideProject={project =>
           get(project, 'visibility', false)
             ? doHideProject({ projectId: get(project, 'id') })
@@ -172,6 +204,8 @@ function AllTaskTable({
             sortIndex,
           })
         }
+        handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
+        handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         timeType={timeType}
@@ -190,6 +224,16 @@ function AllTaskTable({
         setOpen={setOpenSetting}
         {...settingProps}
       />
+      <MemberPermissionModal
+          open={openPermission}
+          setOpen={setOpenPermission}
+          project_id={projectId}
+          {...permissionProps}
+      />
+      <AssignCalendarModal
+        openModal={openCalendar}
+        setopenModal={setOpenCalendar}
+      />
       <AlertModal
         open={openAlert}
         setOpen={setOpenAlert}
@@ -207,6 +251,7 @@ const mapStateToProps = state => {
     showHidePendings: showHidePendingsSelector(state),
     viewPermissions: viewPermissionsSelector(state),
     localOption: localOptionSelector(state),
+    memberTask: memberTaskSelector(state)
   }
 }
 
@@ -218,10 +263,13 @@ const mapDispatchToProps = dispatch => {
     doSortTask: ({ taskId, projectId, groupTask, sortIndex }) => dispatch(sortTask({ taskId, projectId, groupTask, sortIndex })),
     doCreateTask: ({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, }) => dispatch(createTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, })),
     doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
+    doListTaskMember: ({projectId, memberId, quite}) => dispatch(listTaskMember({projectId, memberId}, quite)),
     doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
     doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
     doSetProject: (value) => dispatch(setProject(value)),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
+    doDeleteMemberFromTask: ({task_id, member_id}, quite) => dispatch(deleteMember({task_id,member_id, from: "TaskByMember"},quite)),
+    doAddMemberToTask: ({task_id, member_id}, quite) => dispatch(createMember({task_id,member_id, from: "TaskByMember"}), quite)
   };
 };
 
