@@ -228,7 +228,7 @@ function AllProjectTable({
                 <StateBox
                   stateCode={get(row, 'state_code')}
                 >
-                  <div>
+                  <div className="project_state_wrapper">
                     <span>&#11044;</span>
                     <span>
                       {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}

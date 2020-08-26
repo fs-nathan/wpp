@@ -79,14 +79,12 @@ function CalendarProjectAlarmPresenter({
   }, [projectReminds]);
 
   React.useEffect(() => {
-    if (projectReminds.data.length !== 0 && projects.data.length !== 0) {
+    if (projects.data.length !== 0) {
       let checkBoxList = [];
-      //let projectIdList = map(projectReminds.data, "id");
       let filtered = [];
       let idx = 0;
       projects.data.map((item) => {
         if (Array.isArray(item.projects) && item.projects.length !== 0) {
-          //let _projects = filter(item.projects, project => projectIdList.indexOf(project.id) >= 0);
           let _projects = item.projects;
           if (_projects.length !== 0) {
             filtered = filtered.concat({ name: item.name, projects: _projects });

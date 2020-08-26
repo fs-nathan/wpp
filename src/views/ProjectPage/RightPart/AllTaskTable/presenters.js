@@ -211,7 +211,7 @@ function AllTaskTable({
                 field: (row) => <StateBox
                     stateCode={get(row, 'status_code')}
                 >
-                    <div>
+                    <div className="project_state_wrapper">
                         <span>&#11044;</span>
                         <span>
                   {get(row, 'status_name')}
