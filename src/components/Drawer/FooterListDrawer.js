@@ -28,7 +28,7 @@ const FooterListDrawer = (props) => {
       localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
       localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
       localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
-      window.location.href = '/login';
+      window.location.href = Routes.LOGIN;
     }
     props.actionVisibleDrawerMessage({
       type: "",
