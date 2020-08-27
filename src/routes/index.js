@@ -69,9 +69,6 @@ const ProjectGroupPage = loadable(() => import("views/ProjectGroupPage"), {
 const TestPage = loadable(() => import("__test__"), {
   fallback: <div />,
 });
-const ProjectPage = loadable(() => import("views/ProjectPage"), {
-  fallback: <div />,
-});
 const ReportPage = loadable(() => import("views/ReportPage"), {
   fallback: <div />,
 });
@@ -98,16 +95,14 @@ const routes = [
   { path: Routes.TEST, component: () => <TestPage /> },
   { path: Routes.SETTING_ACCOUNT, component: () => <SettingAccountPage /> },
   { path: Routes.SETTING_GROUP, component: () => <SettingGroupPage /> },
-  {
-    path: Routes.LOGIN,
+  { path: Routes.LOGIN,
     component: () => (
       <ValidateNoLogin fallback={<Redirect to="/" />}>
         <LoginPage />
       </ValidateNoLogin>
     ),
   },
-  {
-    path: Routes.REGISTER,
+  { path: Routes.REGISTER,
     component: () => (
       <ValidateNoLogin fallback={<Redirect to="/" />}>
         <RegisterPage />
