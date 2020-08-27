@@ -96,11 +96,13 @@ function AllTaskTable({
                             <span>{get(memberTask.member, "name")}</span>
                         </div>
                         <div className={"taskMember_title_summary"}>
-                            <div>
+                            <div style={{display: 'flex'}}>
                                 <span>{t("LABEL_CHAT_TASK_NHOM_QUYEN")}: </span>
-                                <span className={"taskMember_title_summary_value"}>
-                                    {get(memberTask.member, "permission") ? get(memberTask.member, "permission") : t("IDS_WP_NOT_YET_ASSIGN")}
-                                </span>
+                                <div className={"taskMember_title_summary_value text-ellipsis"}>
+                                    <abbr title={get(memberTask.member, "permission") ? get(memberTask.member, "permission") : t("IDS_WP_NOT_YET_ASSIGN")}>
+                                        {get(memberTask.member, "permission") ? get(memberTask.member, "permission") : t("IDS_WP_NOT_YET_ASSIGN")}
+                                    </abbr>
+                                </div>
                             </div>
                             <div>
                                 <span>{t("IDS_WP_JOIN")}: </span>
