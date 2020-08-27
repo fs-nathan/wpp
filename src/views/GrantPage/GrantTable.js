@@ -77,10 +77,7 @@ const RenderDrawers = React.memo(
 );
 
 const RenderDragTable = React.memo(
-  (props) => <DragTable {...props} />,
-  (prevProps, nextProps) => {
-    return false;
-  }
+  (props) => <DragTable {...props} />
 );
 
 const RenderQuickViewTaskDetailDrawer = React.memo(
