@@ -1,1 +1,1 @@
-export const taskDetailLink = "/tasks/chat/{projectId}?task_id={taskId}";
+export const taskDetailLink = "/task-chat/{projectId}?task_id={taskId}";

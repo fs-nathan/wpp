@@ -27,7 +27,7 @@ function ListPart(props) {
 
   function onClickProject(project) {
     // console.log('Click item ', props);
-    history.push(`/tasks/chat/` + project.id);
+    history.push(`/task-chat/` + project.id);
     // value.getDetailProject(project.id)
     // value.chooseProject(project)
     dispatch(chooseTask(null));

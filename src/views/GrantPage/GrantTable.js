@@ -455,7 +455,7 @@ class DragSortingTable extends React.Component {
                           size="small"
                           onClick={() =>
                             this.props.history.push({
-                              pathname: `/tasks/chat/${this.props.match.params.projectId}`,
+                              pathname: `/task-chat/${this.props.match.params.projectId}`,
                               search: `?task_id=${record.id}`,
                             })
                           }

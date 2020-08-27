@@ -77,7 +77,7 @@ function TabHeader(props) {
 
   const confirmDelete = () => {
     dispatch(deleteTask({ taskId, projectId }));
-    history.push(`/tasks/chat/${projectId}`);
+    history.push(`/task-chat/${projectId}`);
   };
 
   function onClickPin() {

@@ -16,7 +16,7 @@ export const Routes = {
   DOCUMENT_GOOGLE_DRIVE: "/document/google-drive",
   DOCUMENT_TRASH: "/document/trash",
   TASKS: "/tasks/overview",
-  JOB_DETAIL: "/tasks/chat",
+  JOB_DETAIL: "/task-chat",
   TEST: "/__test__",
   REGISTER: "/register",
   LOGIN: "/login",
