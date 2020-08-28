@@ -12,7 +12,7 @@ import { changeFlagFetchProjectSchedules, changeMainCalendar } from "../../../ac
 
 const ITEM_HEIGHT = 48;
 
-function CustomMenu({ projectId, canDelete, isMain, scheduleId, changeMainCalendar, calendarPermisstions, changeFlagFetchProjectSchedules, isDefault }) {
+function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, changeMainCalendar, calendarPermisstions, changeFlagFetchProjectSchedules, isDefault }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openConfirmModal, setOpenConfirmModal] = React.useState(false)
   const open = Boolean(anchorEl);
@@ -97,7 +97,7 @@ function CustomMenu({ projectId, canDelete, isMain, scheduleId, changeMainCalend
         }}>
           {t('GANTT_CALENDAR_EDIT_CALENDAR')}
         </MenuItem>}
-        {canDelete && !isDefault && !isMain && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
+        {canDelete && !isDefault && mainCalendar !== scheduleId && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
           e.stopPropagation()
           setOpenConfirmModal(true)
         }}>
@@ -120,7 +120,8 @@ function CustomMenu({ projectId, canDelete, isMain, scheduleId, changeMainCalend
 
 const mapStateToProps = state => ({
   fetchProjectSchedule: state.gantt.fetchProjectSchedule,
-  calendarPermisstions: state.gantt.calendarPermisstions
+  calendarPermisstions: state.gantt.calendarPermisstions,
+  mainCalendar: state.gantt.mainCalendar
 })
 
 const mapDispatchToProps = {
