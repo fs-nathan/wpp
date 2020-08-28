@@ -14,6 +14,7 @@ function GanttChart({
   setDataSource,
   setProcessDatasource,
   timelineColor,
+  filterExportPdf,
   fetchTimeNotWork,
   girdInstance,
   timeNotWork = [],
@@ -375,28 +376,31 @@ function GanttChart({
             }
           }}
         >
-          {visibleGantt.fromNowLayer && (
+          {!(renderFullDay && ((new moment(filterExportPdf.start)).diff(new moment()) > 0 || (new moment(filterExportPdf.end)).diff(new moment()) <= 0)) && visibleGantt.fromNowLayer && (
             <div
               className="gantt--fromNowLayer__container"
               style={{
-                width: widthFromNowLayer * 30,
+                width: Date.now() - end.toDate().getTime() > 0 || Date.now() - start.toDate().getTime() < 0 ? document.getElementById("getWidthContainer")?.scrollWidth
+                  : widthFromNowLayer * 30,
                 height: renderFullDay ? dataSource.length * 32 + 50 : dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
               }}
             >
               <div
                 className="gantt--fromNowLayer__background"
                 style={{
-                  width: widthFromNowLayer * 30,
+                  width: Date.now() - end.toDate().getTime() > 0 || Date.now() - start.toDate().getTime() < 0 ? document.getElementById("getWidthContainer")?.scrollWidth
+                    : widthFromNowLayer * 30,
                   height: renderFullDay ? dataSource.length * 32 + 50 : dataSource.length * 32 + 50 > heightTable ? heightTable : dataSource.length * 32 + 50,
                 }}
               ></div>
-              <div className="gantt--fromNowLayer__text">
+              {!(Date.now() - end.toDate().getTime() > 0 || Date.now() - start.toDate().getTime() < 0) && <div className="gantt--fromNowLayer__text">
                 <div>{t("GANTT_TODAY_LABEL")}</div>
                 <div>{new moment().format("DD/MM/YYYY")}</div>
-              </div>
+              </div>}
             </div>
           )}
           <div
+            id="getWidthContainer"
             style={{
               borderRight: "2px solid #e8e8e8",
               zIndex: 2,
@@ -462,6 +466,7 @@ const mapStateToProps = (state) => ({
   showHeader: state.gantt.showHeader,
   renderFullDay: state.gantt.renderFullDay,
   scrollGanttFlag: state.gantt.scrollGanttFlag,
+  filterExportPdf: state.gantt.filterExportPdf,
   visibleGantt: state.gantt.visible.gantt,
   girdInstance: state.gantt.girdInstance,
   girdType: state.gantt.girdType,
