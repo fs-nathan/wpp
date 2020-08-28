@@ -40,6 +40,9 @@ const AssignCalendarModal = ({
     if (fetchProjectSchedule)
       fetchProjectSchedules()
   }, [params.projectId, fetchProjectSchedule])
+  useEffect(() => {
+    fetchListSchedule()
+  }, [params.projectId])
   const fetchProjectSchedules = async () => {
     try {
       const { projectId } = params
