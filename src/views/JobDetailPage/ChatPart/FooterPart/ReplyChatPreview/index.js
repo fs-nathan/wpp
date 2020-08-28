@@ -10,6 +10,9 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
+import ReactPlayer from 'react-player';
+import { FileType } from 'components/FileType';
+import * as fileType from 'assets/fileType';
 
 const ReplyChatPreview = ({ id,
   user_create_id,
@@ -42,7 +45,12 @@ const ReplyChatPreview = ({ id,
         </div>
       </div>
     if (type === CHAT_TYPE.IMAGE)
-      return <div >{t('LABEL_CHAT_TASK_HINH_ANH')}</div>
+      return <div className={clsx("ReplyChatPreview--imgDes")}>
+        {
+          images[0].media_type === 1 ||
+            FileType(getFileType(images[0].name)) === fileType.video ? 'Video' : t('LABEL_CHAT_TASK_HINH_ANH')
+        }
+      </div>
     return <div className={clsx("ReplyChatPreview--content", {
     })}
       dangerouslySetInnerHTML={{
@@ -58,14 +66,32 @@ const ReplyChatPreview = ({ id,
     >
       <div className={clsx("ReplyChatPreview--leftContentWrap")} >
         {(type === CHAT_TYPE.IMAGE) && <>
-          <img src={images[0].url} alt="preview" />
-          {(images.length > 1) && <div className="ReplyChatPreview--imagesNum"  >
-            + {images.length - 1}
-          </div>
+          {images[0].media_type === 1 || FileType(getFileType(images[0].name)) === fileType.video ?
+            <ReactPlayer
+              className="FileMessage--videoPlayer"
+              url={images[0].url}
+              height="auto" width="40px"
+            />
+            :
+            <>
+              <img src={images[0].url} alt="preview" />
+              {(images.length > 1) && <div className="ReplyChatPreview--imagesNum"  >
+                + {images.length - 1}
+              </div>
+              }
+            </>
           }
         </>}
         {(type === CHAT_TYPE.FILE || type === CHAT_TYPE.CHAT_FILE_FROM_GOOGLE_DRIVER || type === CHAT_TYPE.CHAT_FORWARD_FILE) && <>
-          <img src={file.file_icon} alt="preview" />
+          {file.media_type === 1 ?
+            <ReactPlayer
+              className="FileMessage--videoPlayer"
+              url={file.url}
+              height="auto" width="100%"
+            />
+            :
+            <img src={file.file_icon} alt="preview" />
+          }
         </>}
       </div>
       <div className={clsx("ReplyChatPreview--rightContentWrap", {

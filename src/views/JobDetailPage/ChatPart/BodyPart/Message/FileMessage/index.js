@@ -183,32 +183,36 @@ const FileMessage = ({
                 key={file.id || i}
                 onClick={onClickVideo(file, i)}>
                 <div className="FileMessage--videoCover" >
-                  <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
+                  {!isReply &&
+                    <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
+                  }
                   <ReactPlayer
                     className="FileMessage--videoPlayer"
                     url={file.url}
                     height="auto" width="100%"
                   />
-                  <Typography className="FileMessage--videoInfo" component={'div'}>
-                    <TitleImg component='div'>
-                      <ListItem>
-                        {user_create_avatar && <Avatar src={user_create_avatar} />}
-                        <ListItemText
-                          style={{ margin: 0 }}
-                          primary={
-                            <Typography component='div'>
-                              {file.name}
-                            </Typography>
-                          }
-                          secondary={
-                            <Typography component='div'>
-                              {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
-                            </Typography>
-                          }
-                        />
-                      </ListItem>
-                    </TitleImg>
-                  </Typography>
+                  {!isReply &&
+                    <Typography className="FileMessage--videoInfo" component={'div'}>
+                      <TitleImg component='div'>
+                        <ListItem>
+                          {user_create_avatar && <Avatar src={user_create_avatar} />}
+                          <ListItemText
+                            style={{ margin: 0 }}
+                            primary={
+                              <Typography component='div'>
+                                {file.name}
+                              </Typography>
+                            }
+                            secondary={
+                              <Typography component='div'>
+                                {t('LABEL_CHAT_TASK_DANG_LUC_USER_TIME', { user: user_create_name, time: `${getUpdateProgressDate(time_create, 'dd/MM/yyyy')} - ${file.size}` })}
+                              </Typography>
+                            }
+                          />
+                        </ListItem>
+                      </TitleImg>
+                    </Typography>
+                  }
                 </div>
               </div>)
               :

@@ -51,6 +51,7 @@ const CustomListItem = ({ isMe, handleClickLocation }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
+    evt.stopPropagation();
     setAnchorEl(evt.currentTarget);
   }
 
@@ -84,13 +85,14 @@ const CustomListItem = ({ isMe, handleClickLocation }) => {
             {location.locations.map((item, key) => {
               if (isMe && !item.is_me) return null;
               return (
-                <div className="styled-common-location" key={key} onClick={() => handleClickLocation({ isMe, ...item })}>
-                  <ItemAvatar>
+                <div className="styled-common-location" key={key}>
+                  <ItemAvatar onClick={() => handleClickLocation({ isMe, ...item })}>
                     <div>
                       <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
                     </div>
                   </ItemAvatar>
                   <ListItemText
+                    onClick={() => handleClickLocation({ isMe, ...item })}
                     className="LocationItem--content"
                     primary={item.user_share}
                     secondary={
