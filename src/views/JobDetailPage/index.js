@@ -49,7 +49,7 @@ function JobDetailPage(props) {
 
   useEffect(() => {
     if (errorMessage === 'This task does not exist') {
-      history.push('/task-chat/' + projectId)
+      history.push('/projects/task-chat/' + projectId)
     }
   }, [errorMessage, history, projectId]);
 
