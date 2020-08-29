@@ -25,9 +25,8 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   }
 `;
 // Fake data
-const tabs = ['Chat', 'Table', 'Gantt',];
-const tabSelected = tabs[0];
-const images = [fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar, fakeAvatar];
+const tabs = ['Table', 'Gantt', 'Chat'];
+const tabSelected = tabs[2];
 
 // Some override style of google material components
 const useStyles = makeStyles({
@@ -78,24 +77,13 @@ const TabForm = props => {
 };
 
 const renderAvatars = props => {
-  const { styles, images = [] } = props;
+  const { images = [] } = props;
   let showImages = images;
   const imgNum = 3;
   const plusImage = images.length - imgNum;
   if (plusImage > 0) {
     showImages = images.slice(0, imgNum);
   }
-  const getAvatar = ({ number, src }) => {
-    return (
-      <Grid item xs={6}>
-        {number ? (
-          <Avatar className="header-chat-avatar">{number}</Avatar>
-        ) : (
-            <Avatar className="header-chat-avatar" src={src} />
-          )}
-      </Grid>
-    );
-  };
   return (
     <div className="wrap-avatars">
       {showImages.map(({ avatar }, i) =>

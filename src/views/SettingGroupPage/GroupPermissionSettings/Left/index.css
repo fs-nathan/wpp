@@ -11,7 +11,7 @@
 .comp_CustomList___list-item {
   padding: 10px 15px;
 }
-.comp_CustomList___list-item svg {
+.comp_GroupPermissionSettings__List .comp_CustomList___list-item svg {
   color: rgb(141, 141, 141) !important;
 }
 .onHover .onHover__show {

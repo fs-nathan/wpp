@@ -11,6 +11,9 @@
       margin-left: 8px;
     }
   }
+  .MuiCheckbox-colorPrimary.Mui-checked {
+    color: var(--color-primary);
+  }
 }
 
 .view_Project_CopyGroupTask_Modal___primary {
