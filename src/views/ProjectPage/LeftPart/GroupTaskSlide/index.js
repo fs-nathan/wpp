@@ -93,6 +93,7 @@ function GroupTaskSlide({
           doDeleteGroupTask({ groupTaskId: get(groupTask, 'id') })
         }
         handleOpenModal={doOpenModal}
+        permissions={get(viewPermissions.permissions, [id, 'update_project'], false)}
       />
       <DeleteGroupTask
         open={openAlert}

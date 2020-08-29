@@ -24,12 +24,9 @@ const StyledPrimary = ({ className = '', isSelected, ...props }) =>
 
 function CopyGroupTask({
   open, setOpen,
-  searchPatern, setSearchPatern,
-  groupTasks,
-  handleCopyGroupTask,
-  doReload,
-  projectId,
-  timeRange,
+  searchPattern, setSearchPattern,
+  groupTasks, handleCopyGroupTask,
+  doReload, projectId, timeRange,
 }) {
 
   const [selectedGroupTasks, setSelectedGroupTasks] = React.useState([]);
@@ -97,9 +94,10 @@ function CopyGroupTask({
         <SearchInput
           fullWidth
           placeholder={t("DMH.VIEW.PP.MODAL.COPY.SEARCH")}
-          value={searchPatern}
-          onChange={evt => setSearchPatern(evt.target.value)}
+          value={searchPattern}
+          onChange={evt => setSearchPattern(evt.target.value)}
         />
+        <div style={{marginBottom: "10px"}}/>
         <StyledList
           component="nav"
         >

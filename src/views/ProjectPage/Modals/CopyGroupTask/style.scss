@@ -11,6 +11,9 @@
       margin-left: 8px;
     }
   }
+  .MuiCheckbox-colorPrimary.Mui-checked {
+    color: var(--color-primary);
+  }
 }
 
 .view_Project_CopyGroupTask_Modal___primary {
@@ -26,7 +29,7 @@
     @include view_Project_CopyGroupTask_Modal___primary;
     & > * {
       &:last-child {
-        color: #05b50c;
+        color: var(--color-primary);
       }
     }
   }

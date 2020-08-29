@@ -43,7 +43,7 @@ function CopyGroupTask({
   }, [project_id, _projectId]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
+    //if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
     doGetAllGroupTask();
     const reloadGetAllGroupTask = () => {
       doGetAllGroupTask();
@@ -52,16 +52,15 @@ function CopyGroupTask({
     return () => {
       CustomEventDispose(SORT_GROUP_TASK, reloadGetAllGroupTask);
     }
-    // eslint-disable-next-line
   }, [projectId, viewPermissions]);
 
-  const [searchPatern, setSearchPatern] = React.useState('');
+  const [searchPattern, setSearchPattern] = React.useState('');
 
   const newGroupTasks = {
     ...groupTasks,
     groupTasks: filter(
       groupTasks.groupTasks,
-      groupTask => get(groupTask, 'name').toLowerCase().includes(searchPatern.toLowerCase())
+      groupTask => get(groupTask, 'name').toLowerCase().includes(searchPattern.toLowerCase())
     ),
   }
 
@@ -79,7 +78,7 @@ function CopyGroupTask({
           ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
           : undefined,
       }, projectId)}
-      searchPatern={searchPatern} setSearchPatern={setSearchPatern}
+      searchPattern={searchPattern} setSearchPattern={setSearchPattern}
       groupTasks={newGroupTasks}
       handleCopyGroupTask={(groupTasks) =>
         doCopyGroupTask({

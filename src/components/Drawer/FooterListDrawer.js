@@ -26,6 +26,9 @@ const FooterListDrawer = (props) => {
       localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW);
       localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
       localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+      localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+      localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+      window.location.href = Routes.LOGIN;
     }
     props.actionVisibleDrawerMessage({
       type: "",
@@ -38,35 +41,16 @@ const FooterListDrawer = (props) => {
     <div className="footer-list-drawer">
       {actionList.map((el, index) => (
         <div className={`button-item ${el.classname}`} key={index}>
-          {el.url === Routes.LOGIN ? (
-            <div
-              onClick={() => {
-                localStorage.removeItem(TOKEN);
-                localStorage.removeItem(REFRESH_TOKEN);
-                localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
-                localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
-                localStorage.clear();
-                window.location.reload();
-              }}
-              className={`text-btn ${
-                typeDrawer === DRAWER_TYPE.SUPPORT ? "support-text" : ""
-              }`}
-            >
-              {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
-              <span className="name-text">{el.name}</span>
-            </div>
-          ) : (
-            <Link
+          <Link
               to={el.url}
               onClick={() => closeDrawer(el.url)}
               className={`text-btn ${
-                typeDrawer === DRAWER_TYPE.SUPPORT ? "support-text" : ""
+                  typeDrawer === DRAWER_TYPE.SUPPORT ? "support-text" : ""
               }`}
-            >
-              {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
-              <span className="name-text">{el.name}</span>
-            </Link>
-          )}
+          >
+            {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
+            <span className="name-text">{el.name}</span>
+          </Link>
         </div>
       ))}
     </div>
