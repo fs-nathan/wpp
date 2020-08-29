@@ -1,0 +1,25 @@
+.gantt--left-header__text-active {
+  color: #fff !important;
+  font-weight: 500 !important;
+}
+.gantt--navigation {
+  display: flex;
+  margin-top: -5px;
+}
+.gantt--navigation p {
+  margin-right: 7px;
+  font-family: Roboto, sans-serif;
+  margin-bottom: 0;
+  margin-top: 3px;
+  cursor: pointer;
+  color: #8b8b8b;
+  background: #f2f2f2;
+  padding:0 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  font-weight: normal;
+}
+.gantt--navigation p:hover {
+  color: #fff;
+  font-weight: 500;
+}

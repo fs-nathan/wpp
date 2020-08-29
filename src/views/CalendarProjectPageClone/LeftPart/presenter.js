@@ -86,11 +86,11 @@ function CalendarProjectLeftPartPresenter({
 
   useEffect(() => {
     fetchPermissionCalendar()
-  }, [fetchProjectSchedule])
+  }, [fetchProjectSchedule, params.projectId])
   useEffect(() => {
     if (fetchProjectSchedule)
       fetchProjectSchedules()
-  }, [fetchProjectSchedule])
+  }, [fetchProjectSchedule, params.projectId])
   return (
     <>
       <React.Fragment>
@@ -110,8 +110,6 @@ function CalendarProjectLeftPartPresenter({
                 id: item._id
               }
             }).map((item, index) => {
-              console.log(listSchedule)
-              console.log(listSchedule.filter(schedule => schedule.id === item.id)[0], "asdasdasd")
               return (
                 <React.Fragment key={index}>
                   <StyledListItem
@@ -147,9 +145,8 @@ function CalendarProjectLeftPartPresenter({
                       }
                     />
 
-                    <CustomMenu canDelete={listSchedule.filter(schedule => schedule.id === item.id)[0] && listSchedule.filter(schedule => schedule.id === item.id)[0].can_delete} isMain={item.is_main} isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />
+                    {(calendarPermisstions.assign_schedule || calendarPermisstions.edit_schedule) && <CustomMenu canDelete={listSchedule.filter(schedule => schedule.id === item.id)[0] && listSchedule.filter(schedule => schedule.id === item.id)[0].can_delete} isMain={item.is_main} isDefault={item.is_default} scheduleId={get(item, "id", "")} projectId={params.projectId} />}
                   </StyledListItem>
-
                 </React.Fragment>
               )
             })}
