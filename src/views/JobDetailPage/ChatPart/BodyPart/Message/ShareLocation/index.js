@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { showTab, setLocationData } from 'actions/taskDetail/taskDetailActions';
+import { showTab, setLocationData, getLocationTabPart } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
@@ -13,6 +13,7 @@ const ShareLocation = ({
   user_create_roles,
   time_create,
   chatPosition = "top",
+  location_id,
   address,
   lat,
   lng,
@@ -22,8 +23,10 @@ const ShareLocation = ({
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
 
   function onClickViewDetail() {
+    dispatch(getLocationTabPart({ taskId }))
     // dispatch(showTab(5))
     dispatch(setLocationData({
+      id,
       address, date_create: time_create,
       user_share: user_create_name, time_create, lat, lng,
       user_share_avatar: user_create_avatar,
@@ -34,7 +37,7 @@ const ShareLocation = ({
   return (
     <DialogMessageWrap
       {...{
-        id,
+        id: location_id,
         chatPosition,
         user_create_name,
         user_create_avatar,
