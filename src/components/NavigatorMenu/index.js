@@ -31,9 +31,9 @@ class NavigatorMenu extends React.Component {
       <p
         key={item.name}
         style={{
-          background: item.url === match.url ? get(this.props.profileDetail, 'group_active.color', '#f2f2f2') : '#f2f2f2'
+          background: item.url === match && match.url ? get(this.props.profileDetail, 'group_active.color', '#f2f2f2') : '#f2f2f2'
         }}
-        className={item.url === match.url ? "gantt--left-header__text-active" : ""}
+        className={item.url === match && match.url ? "gantt--left-header__text-active" : ""}
         id={`gantt-p-${item.name}`}
         onClick={() => {
           this.props.history.push(this.props.location.pathname.replace(match.url, item.url))
@@ -43,7 +43,7 @@ class NavigatorMenu extends React.Component {
           document.getElementById(`gantt-p-${item.name}`).style.background = get(this.props.profileDetail, 'group_active.color', '#f2f2f2')
         }}
         onMouseLeave={() => {
-          if (item.url === match.url) return
+          if (match && item.url === match.url) return
           document.getElementById(`gantt-p-${item.name}`).style.background = '#f2f2f2'
         }}
       >

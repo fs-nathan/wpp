@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import ColorTypo from 'components/ColorTypo';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { ic_share_location } from 'assets';
 
 const DialogContent = withStyles(theme => ({
