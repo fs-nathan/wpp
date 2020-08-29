@@ -26,14 +26,15 @@ class NavigatorMenu extends React.Component {
   render() {
     const match = this.state.listGird.filter(item => {
       return this.props.location.pathname.includes(item.url)
-    })[0]
-    const listGirdRender = this.state.listGird.map(item =>
-      <p
+    })[0] || {}
+    const listGirdRender = this.state.listGird.map(item => {
+      console.log(item.url === match, item.url, "asdasdasdasd")
+      return <p
         key={item.name}
         style={{
-          background: item.url === match && match.url ? get(this.props.profileDetail, 'group_active.color', '#f2f2f2') : '#f2f2f2'
+          background: item.url === match.url ? get(this.props.profileDetail, 'group_active.color', '#f2f2f2') : '#f2f2f2'
         }}
-        className={item.url === match && match.url ? "gantt--left-header__text-active" : ""}
+        className={item.url === match.url ? "gantt--left-header__text-active" : ""}
         id={`gantt-p-${item.name}`}
         onClick={() => {
           this.props.history.push(this.props.location.pathname.replace(match.url, item.url))
@@ -49,6 +50,7 @@ class NavigatorMenu extends React.Component {
       >
         {item.name}
       </p>
+    }
     )
     return <div className="gantt--navigation">
       {listGirdRender}
