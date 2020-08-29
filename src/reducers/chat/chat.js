@@ -3,7 +3,6 @@ import findIndex from 'lodash/findIndex';
 import uniq from 'lodash/uniq';
 import * as actionTypes from '../../constants/actions/chat/chat';
 import { UPDATE_PROJECT_CHAT, GET_PROJECT_LIST_BASIC_REQUEST } from "constants/actions/taskDetail/taskDetailConst";
-import { forEach } from "lodash";
 
 export const initialState = {
   chats: { data: [] },

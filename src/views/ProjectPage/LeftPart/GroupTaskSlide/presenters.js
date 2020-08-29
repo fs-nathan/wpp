@@ -28,7 +28,7 @@ const StyledPrimary = ({ className = '', ...props }) =>
 function GroupTaskSlide({
   handleSubSlide,
   searchPatern, setSearchPatern,
-  groupTasks,
+  groupTasks, permissions = false,
   handleSortGroupTask, handleDeleteGroupTask,
   handleOpenModal
 }) {
@@ -57,11 +57,11 @@ function GroupTaskSlide({
           onClick: () => handleSubSlide(0),
           tooltip: t("DMH.VIEW.PP.LEFT.GT.BACK"),
         }}
-        rightAction={{
+        rightAction={permissions ? {
           iconPath: mdiPlus,
           onClick: () => handleOpenModal('CREATE'),
           tooltip: t("DMH.VIEW.PP.LEFT.GT.ADD"),
-        }}
+        } : null}
         loading={{
           bool: groupTasks.loading,
           component: () => <LoadingBox />

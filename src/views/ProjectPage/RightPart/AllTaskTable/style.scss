@@ -83,5 +83,15 @@
       margin-right: 5px;
       font-weight: 500;
     }
+    abbr[title] {
+      text-decoration: none !important;
+    }
   }
+}
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 70px;
+  margin-left: 5px;
 }

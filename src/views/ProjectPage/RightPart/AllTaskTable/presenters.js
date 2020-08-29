@@ -87,7 +87,7 @@ function AllTaskTable({
                     <SubTitle>
                         <div className={pathname.includes("table") ? 'view_Project_AllTaskTable___subtitle_active' : ''}>Table</div>
                         <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('task-table', 'task-gantt')}`)}>Gantt</div>
-                        <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('task-table', 'task-chat')}`)}>Chat</div>
+                        <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('projects/task-table', 'tasks/chat')}`)}>Chat</div>
                     </SubTitle>
                 ) : () => (
                     <div className={"taskMember_title_container"}>
@@ -96,11 +96,13 @@ function AllTaskTable({
                             <span>{get(memberTask.member, "name")}</span>
                         </div>
                         <div className={"taskMember_title_summary"}>
-                            <div>
+                            <div style={{display: 'flex'}}>
                                 <span>{t("LABEL_CHAT_TASK_NHOM_QUYEN")}: </span>
-                                <span className={"taskMember_title_summary_value"}>
-                                    {get(memberTask.member, "permission") ? get(memberTask.member, "permission") : t("IDS_WP_NOT_YET_ASSIGN")}
-                                </span>
+                                <div className={"taskMember_title_summary_value text-ellipsis"}>
+                                    <abbr title={get(memberTask.member, "permission") ? get(memberTask.member, "permission") : t("IDS_WP_NOT_YET_ASSIGN")}>
+                                        {get(memberTask.member, "permission") ? get(memberTask.member, "permission") : t("IDS_WP_NOT_YET_ASSIGN")}
+                                    </abbr>
+                                </div>
                             </div>
                             <div>
                                 <span>{t("IDS_WP_JOIN")}: </span>
