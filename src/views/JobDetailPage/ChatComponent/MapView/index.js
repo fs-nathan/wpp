@@ -9,7 +9,7 @@ import Scrollbars from 'react-custom-scrollbars';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import DialogTitleModalMap from './DialogTitleModalMap';
-import CustomMarker from './CustomMarker';
+import clsx from 'clsx';
 import './styles.scss';
 import { GoogleMap, LoadScript, Marker, OverlayView } from '@react-google-maps/api';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ import {
 } from '@material-ui/core';
 import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import ColorTypo from 'components/ColorTypo';
-import { withStyles } from '@material-ui/styles';
+import { withStyles } from '@material-ui/core/styles';
 import { ic_share_location } from 'assets';
 
 const DialogContent = withStyles(theme => ({
@@ -89,7 +89,7 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
     setData(locationData)
   }, [locationData])
 
-  const { address, date_create,
+  const { id, address, date_create,
     user_share, time_create, lat = 21, lng = 105,
     user_share_avatar, room, roles } = data;
 
@@ -98,7 +98,7 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
   }
 
   const handleClickLocation = (data) => {
-    // console.log('handleClickLocation', data)
+    console.log('handleClickLocation', data)
     setData(data)
   }
 
@@ -162,11 +162,16 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
         <ListItem className="MapView--list">
           <div className="MapView--listTitle">{t('LABEL_CHAT_TASK_DANH_SACH_VI_TRI')}</div>
           {Array.isArray(locationArr) && locationArr.map((location, idx) => {
-            return (<div className="styled-list-item-location" key={idx}>
+            return (<div
+              className={clsx("styled-list-item-location")}
+              key={idx}>
               <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
               {location.locations.map((item, key) => {
                 return (
-                  <div className="MapView--location" key={key} onClick={() => handleClickLocation({ ...item })}>
+                  <div className={clsx("MapView--location", {
+                    'MapView--location__selected': id === item.id
+                  })}
+                    key={key} onClick={() => handleClickLocation({ ...item })}>
                     <ItemAvatar>
                       <div>
                         <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
