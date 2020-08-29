@@ -29,7 +29,7 @@
     @include view_Project_CopyGroupTask_Modal___primary;
     & > * {
       &:last-child {
-        color: #05b50c;
+        color: var(--color-primary);
       }
     }
   }
