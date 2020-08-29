@@ -3,6 +3,7 @@ import { showTab, setLocationData, getLocationTabPart } from 'actions/taskDetail
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
+import { getChatDate, convertTime } from 'helpers/jobDetail/stringHelper';
 import './styles.scss';
 
 const ShareLocation = ({
@@ -26,9 +27,9 @@ const ShareLocation = ({
     dispatch(getLocationTabPart({ taskId }))
     // dispatch(showTab(5))
     dispatch(setLocationData({
-      id,
-      address, date_create: time_create,
-      user_share: user_create_name, time_create, lat, lng,
+      id: location_id,
+      address, date_create: getChatDate(time_create),
+      user_share: user_create_name, time_create: convertTime(time_create), lat, lng,
       user_share_avatar: user_create_avatar,
       room: user_create_position, roles: user_create_roles
     }))
