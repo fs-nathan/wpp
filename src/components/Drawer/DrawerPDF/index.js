@@ -73,6 +73,12 @@ const ExportPDF = ({
     setIsLoading(false)
   };
   const handleOnClickPreview = () => {
+    if (!showFullTime) {
+      if (endTime - startTime <= 0) {
+        SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t('GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER'));
+        return
+      }
+    }
     changePreviewContent(contentPreview);
     changeRenderFullDay(true);
     if (!showFullTime) {
@@ -137,7 +143,7 @@ const ExportPDF = ({
     return (
       <div className="export-pdf--drawer__date-wrapper">
         <div className="export-pdf--drawer__date-picker">
-          <div>Từ ngày</div>
+          <div>{t("GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME")}</div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
@@ -152,7 +158,7 @@ const ExportPDF = ({
           </MuiPickersUtilsProvider>
         </div>
         <div className="export-pdf--drawer__date-picker">
-          <div>Đến ngày</div>
+          <div>{t("GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME")}</div>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar

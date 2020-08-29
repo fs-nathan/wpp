@@ -2128,5 +2128,9 @@
   "GANTT_6": "T7",
   "GANTT_0": "CN",
   "GANTT_TODAY_LABEL": "Hôm nay",
-  "GANTT_NOT_INCLUDE_PROJECT": "Ngày hôm nay không thuộc tiến độ dự án"
+  "GANTT_NOT_INCLUDE_PROJECT": "Ngày hôm nay không thuộc tiến độ dự án",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "Thời gian kết thúc phải lớn hơn thời gian bắt đầu",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "Từ ngày",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Đến ngày",
+  "GANTT_CANNOT": "Biểu đồ đang sử dụng lịch này."
 }
