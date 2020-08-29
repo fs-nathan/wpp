@@ -1,5 +1,5 @@
 import { ButtonGroup, Collapse } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -36,12 +36,20 @@ function TabBody() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const locations = useSelector(state => state.taskDetail.location.locations);
+  const locationUpdate = useSelector(state => state.taskDetail.detailTask.location);
   // const myLocations = locations.filter(({ is_me }) => is_me)
   const [value, setValue] = React.useState(0);
   const [isOpenMap, setIsOpenMap] = React.useState(false);
   const [locationData, setLocationData] = React.useState({});
 
   const isNoData = locations.length === 0;
+
+  useEffect(() => {
+    if (locationUpdate) {
+      setLocationData(locationUpdate)
+      setIsOpenMap(true)
+    }
+  }, [locationUpdate])
 
   const handleChange = (evt, newValue) => {
     setValue(newValue);

@@ -13,6 +13,7 @@ import { useHistory, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
+import NavigatorMenu from "components/NavigatorMenu";
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   & .MuiTypography-root {
@@ -126,7 +127,8 @@ const HeaderPart = props => {
       {renderAvatars({ styles: classes, images: members })}
       <div className="wrap-room-description">
         <Typography className="chatHeader--title">{t('LABEL_CHAT_TASK_THAO_LUAN')}</Typography>
-        <TabForm tabs={tabs} />
+        {/* <TabForm tabs={tabs} /> */}
+        <NavigatorMenu />
       </div>
       <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>
         <IconButton className="chatHeader--button" onClick={openSearch}>
