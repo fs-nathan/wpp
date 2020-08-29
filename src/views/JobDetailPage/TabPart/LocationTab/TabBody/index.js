@@ -8,7 +8,6 @@ import ColorButton from '../../../../../components/ColorButton';
 import ColorTypo from '../../../../../components/ColorTypo';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import LocationShareBox from './LocationShareBox';
-import MapView from 'views/JobDetailPage/ChatComponent/MapView';
 import { setLocationData } from 'actions/taskDetail/taskDetailActions';
 
 const Body = styled(Scrollbars)`
@@ -36,20 +35,10 @@ function TabBody() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const locations = useSelector(state => state.taskDetail.location.locations);
-  const locationUpdate = useSelector(state => state.taskDetail.detailTask.location);
   // const myLocations = locations.filter(({ is_me }) => is_me)
   const [value, setValue] = React.useState(0);
-  const [isOpenMap, setIsOpenMap] = React.useState(false);
-  const [locationData, setLocationData] = React.useState({});
 
   const isNoData = locations.length === 0;
-
-  useEffect(() => {
-    if (locationUpdate) {
-      setLocationData(locationUpdate)
-      setIsOpenMap(true)
-    }
-  }, [locationUpdate])
 
   const handleChange = (evt, newValue) => {
     setValue(newValue);
@@ -57,8 +46,9 @@ function TabBody() {
 
   const handleClickLocation = (data) => {
     // console.log('handleClickLocation', data)
-    setIsOpenMap(true);
-    setLocationData(data);
+    // setIsOpenMap(true);
+    // setLocationData(data);
+    dispatch(setLocationData(data))
   }
 
   return (
@@ -99,7 +89,6 @@ function TabBody() {
             </React.Fragment>
         }
       </div>
-      <MapView isOpen={isOpenMap} setOpen={setIsOpenMap} locationData={locationData} ></MapView>
     </Body>
   )
 }

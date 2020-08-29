@@ -52,15 +52,18 @@
     align-items: center;
     width: 100%;
     position: relative;
-    margin: 0 0 0 -20px;
+    margin: 0 0 0 -16px;
     padding: 10px 20px;
     cursor: pointer;
+    &__selected {
+      background-color: #ffeb3b;
+    }
   }
   &--userMark {
     border-radius: 50%;
-    transform: translate(-52%, -215%);
-    width: 42px;
-    height: 42px;
+    transform: translate(-52%, -209%);
+    width: 28px;
+    height: 28px;
   }
 }
 
