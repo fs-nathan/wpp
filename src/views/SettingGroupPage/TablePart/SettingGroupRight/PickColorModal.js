@@ -45,6 +45,7 @@ function PickColorModal(props) {
       title={t('IDS_WP_SETUP_COLOR')}
       className="pick-color-modal"
       onConfirm={handleOnChangeBG}
+      height={"miniWide"}
     >
       <div className="pick-color-content list-color">
         {colors.map((item, idx) => (

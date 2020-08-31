@@ -55,6 +55,9 @@ import LeftBar from "../views/LeftBar";
 import TopBar from "../views/TopBar";
 import { get } from "lodash";
 import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
+import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
+import {getRemindDetail} from "../actions/calendar/alarmCalendar/getRemindDetail";
+import { GET_REMIND_DETAIL_FAIL, CustomEventListener, CustomEventDispose } from "constants/events";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -210,12 +213,14 @@ function MainLayout({
   actioGetSettingDate,
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView,
-  visibleOfferDetailModal, loadDetailOffer, detailOffer
+  visibleOfferDetailModal, loadDetailOffer, detailOffer,
+  visibleRemindDetail, detailRemind, getRemindDetail
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
+  const [openRemindDetail, setOpenRemindDetail] = useState(false);
+
   function handleReactEmotion(data) {
-    // console.log('handleReactEmotion', data)
     updateChatState(data.id, { data_emotion: data.emotions });
   }
 
@@ -360,6 +365,20 @@ function MainLayout({
     }
   }, [visibleOfferDetailModal]);
 
+  useEffect(() => {
+    if(get(visibleRemindDetail, "visible", false)) {
+      getRemindDetail({remind_id: visibleRemindDetail.remind_id});
+      setOpenRemindDetail(true);
+      const forceCloseModal = () =>{
+        setOpenRemindDetail(false);
+      }
+      CustomEventListener(GET_REMIND_DETAIL_FAIL, forceCloseModal);
+      return () => {
+        CustomEventDispose(GET_REMIND_DETAIL_FAIL, forceCloseModal);
+      }
+    }
+  },[visibleRemindDetail]);
+
   const handleFetchNoti = async () => {
     try {
       const { data } = await getNumberNotificationNotViewer();
@@ -465,6 +484,12 @@ function MainLayout({
           loading={false}
           {...detailOffer}
       />
+      <ViewDetailRemind
+        open={openRemindDetail}
+        setOpen={setOpenRemindDetail}
+        remind={detailRemind.remind}
+        groupRemind={""}
+      />
     </>
   );
 }
@@ -488,7 +513,9 @@ export default connect(
     numberNotificationNotView: state.system.numberNotificationNotView,
     toast: state.system.toast,
     visibleOfferDetailModal: state.system.visibleOfferDetail,
-    detailOffer: state.offerPage["DETAIL_OFFER"].offer ?? []
+    visibleRemindDetail: state.system.visibleRemindDetail,
+    detailOffer: state.offerPage["DETAIL_OFFER"].offer ?? [],
+    detailRemind: state.calendar.remindDetail
   }),
   {
     getListTaskDetail,
@@ -505,6 +532,7 @@ export default connect(
     actioGetSettingDate,
     actionChangeNumNotificationNotView,
     actionChangeNumMessageNotView,
-    loadDetailOffer
+    loadDetailOffer,
+    getRemindDetail
   }
 )(withRouter(MainLayoutWrapper));

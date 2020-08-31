@@ -2125,5 +2125,6 @@
   "GANTT_5": "FR",
   "GANTT_6": "SA",
   "GANTT_0": "SU",
-  "GANTT_NOT_INCLUDE_PROJECT": "Today's not included project"
+  "GANTT_NOT_INCLUDE_PROJECT": "Today's not included project",
+  "REMIND_DETAIL_LABEL_REMIND_CREATED": "was created remind"
 }
