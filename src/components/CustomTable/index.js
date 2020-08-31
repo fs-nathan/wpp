@@ -148,7 +148,7 @@ function CustomTable() {
                 onClick={get(options, "mainAction.onClick", () => null)}
               >
                 {
-                  get(options, "mainAction.icon", null) !== null && <Icon path={get(options, "mainAction.icon")} size={1} style={{marginRight: "5px", color: "#fff"}}/>
+                  get(options, "mainAction.icon", null) !== null && <Icon path={get(options, "mainAction.icon")} size={1} style={{marginRight: "5px", fill: "#fff"}}/>
                 }
                 {get(options, "mainAction.label", "")}
               </StyledButton>

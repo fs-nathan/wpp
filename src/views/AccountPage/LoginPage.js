@@ -30,7 +30,6 @@ import {
   getProfileService,
   openNoticeModal,
 } from "../../actions/system/system";
-// import LoadingContent from '../../components/LoadingContent';
 import * as images from "../../assets";
 import MainAccount from "../../components/MainAccount/MainAccount";
 import { apiService } from "../../constants/axiosInstance";
@@ -43,9 +42,6 @@ const LoginPage = (props) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    // localStorage.removeItem(TOKEN);
-    // localStorage.removeItem(REFRESH_TOKEN);
-    // localStorage.removeItem(GROUP_ACTIVE);
     props.reset();
   }, [props]);
 
@@ -94,7 +90,6 @@ const LoginPage = (props) => {
           <img className="logo-workplus" alt="" src={images.logo} />
         </div>
         <div className="heading-title">{t("IDS_WP_LOGIN")}</div>
-        {/* <LoadingContent loading={isLoading || false}> */}
         <form className="form-content" onSubmit={handleLogin}>
           <FormControl
             fullWidth
@@ -176,7 +171,6 @@ const LoginPage = (props) => {
             {t("IDS_WP_LOGIN")}
           </Button>
         </form>
-        {/* </LoadingContent> */}
         <div className="bottom-des">
           {t("IDS_WP_DONT_HAVE_ACCOUNT")}
           <Link href="/register" className="btn-link">
