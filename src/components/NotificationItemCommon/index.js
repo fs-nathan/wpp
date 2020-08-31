@@ -132,7 +132,7 @@ const NotificationItemCommon = props => {
         props.history.push({ pathname: data_notification.url_redirect });
         break;
       case NOTIFICATION_REMIND:
-        props.changeVisibleRemindDetailModal({remind_id: data_notification.id, visible: true});
+        props.changeVisibleRemindDetailModal({remind_id: data_notification.remind_id, visible: true});
         break;
       case NOTIFICATION_WEEKLY_CALENDAR:
         props.history.push({ pathname: CalendarRoutes.WEEKLY });
