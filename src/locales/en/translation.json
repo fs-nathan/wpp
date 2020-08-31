@@ -1053,7 +1053,8 @@
   "IDS_WP_FINISH_ORDER": "Complete the order",
   "IDS_WP_SEARCH": "Search",
   "IDS_WP_ORDER": "Order",
-  "IDS_WP_SETTING_GROUP": "Group setting",
+  "IDS_WP_SETTING_HOME": "Home page settings",
+  "IDS_WP_SETTING_GROUP": "Group settings",
   "IDS_WP_SETUP_SOFTWARE": "Setup software",
   "IDS_WP_TIME_LANGUAGE": "Time and language",
   "IDS_WP_SETUP_NOTICE": "Notification settings",
@@ -2125,5 +2126,9 @@
   "GANTT_5": "FR",
   "GANTT_6": "SA",
   "GANTT_0": "SU",
-  "GANTT_NOT_INCLUDE_PROJECT": "Today's not included project"
+  "GANTT_NOT_INCLUDE_PROJECT": "Today's not included project",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "End time must be greater than start time",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "End time",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Start time",
+  "GANTT_CANNOT": "The chart is using this schedules."
 }

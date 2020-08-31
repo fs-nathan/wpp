@@ -19,6 +19,7 @@ const DragableBodyRow = ({
     accept: type,
     collect: (monitor) => {
       const { index: dragIndex } = monitor.getItem() || {};
+      console.log(monitor)
       if (dragIndex === index) {
         return {};
       }
@@ -28,7 +29,7 @@ const DragableBodyRow = ({
           dragIndex < index ? ' drop-over-downward' : ' drop-over-upward',
       };
     },
-    drop: (item) => {
+    drop: (item, monitor) => {
       moveRow(item.index, index);
     },
   });
@@ -83,7 +84,6 @@ const DragableBodyRow = ({
     />
   );
 };
-
 const mapDispatchToProps = {
   changeRowHover,
 };

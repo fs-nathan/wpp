@@ -70,10 +70,7 @@ const RenderDrawers = React.memo(
       <SubTaskDrawer height={props.height} />
       <ExportPDFDrawer dataSource={props.dataSource} height={props.height} />
     </React.Fragment>
-  ),
-  (prevProps, nextProps) => {
-    return false;
-  }
+  )
 );
 
 const RenderDragTable = React.memo(
