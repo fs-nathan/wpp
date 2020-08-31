@@ -2129,6 +2129,7 @@
   "GANTT_0": "CN",
   "GANTT_TODAY_LABEL": "Hôm nay",
   "GANTT_NOT_INCLUDE_PROJECT": "Ngày hôm nay không thuộc tiến độ dự án",
+  "REMIND_DETAIL_LABEL_REMIND_CREATED": "đã tạo lịch nhắc hẹn",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "Thời gian kết thúc phải lớn hơn thời gian bắt đầu",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "Từ ngày",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Đến ngày",

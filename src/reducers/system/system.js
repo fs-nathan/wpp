@@ -26,6 +26,10 @@ export const initialState = {
   visibleOfferDetail: {
     visible: false,
     offer_id: null
+  },
+  visibleRemindDetail: {
+    visible: false,
+    remind_id: null
   }
 };
 
@@ -80,6 +84,8 @@ const system = (state = initialState, action) => {
       return { ...state, detailSubTaskDrawer: action.payload };
     case actionTypes.CHANGE_VISIBLE_OFFER_DETAIL_MODAL:
       return { ...state, visibleOfferDetail: action.payload }
+    case actionTypes.CHANGE_VISIBLE_REMIND_DETAIL_MODAL:
+      return { ...state, visibleRemindDetail: action.payload }
     default:
       return state;
   }

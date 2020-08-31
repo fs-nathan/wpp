@@ -8,7 +8,7 @@ import moment from "moment";
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
-import { connect, useSelector } from 'react-redux';
+import { connect } from 'react-redux';
 import { membersSelector } from "./selectors";
 import './style.scss';
 
@@ -22,7 +22,7 @@ const StyledDialog = ({ className = '', ...props }) =>
 const StyledDialogTitle = ({ className = '', ...props }) => <DialogTitle className={`comp_CustomModal___dialog-title ${className}`} {...props} />;
 const StyledDialogContent = ({ className = '', ...props }) => <DialogContent className={`comp_CustomModal___dialog-content ${className}`} {...props} />;
 const StyledDialogActions = ({ className = '', ...props }) => <DialogActions className={`comp_CustomModal___dialog-actions ${className}`} {...props} />;
-const ActionsCancleButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___cancle-button ${className}`} {...props} />;
+const ActionsCancelButton = ({ className = '', ...props }) => <ButtonBase className={`comp_CustomModal___cancle-button ${className}`} {...props} />;
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction='down' ref={ref} {...props} />;
 });
@@ -32,11 +32,8 @@ function ViewDetailRemind({
 }) {
 
   const { t } = useTranslation();
-  const colors = useSelector(state => state.setting.colors);
-  const bgColor = colors.find(item => item.selected === true);
   const [receiver, setReceiver] = React.useState([]);
-
-  function handleCancle() {
+  function handleCancel() {
     setOpen(false);
   }
 
@@ -49,7 +46,7 @@ function ViewDetailRemind({
       <StyledDialog
         open={open}
         TransitionComponent={Transition}
-        onClose={() => handleCancle()}
+        onClose={() => handleCancel()}
         aria-labelledby="alert-dialog-slide-title"
         className={"comp_CustomModal"}
         disableBackdropClick={true}
@@ -66,10 +63,10 @@ function ViewDetailRemind({
             />
             <Box className="view_DetailRemind_headerText">
               <Typography component={"span"}>{get(remind, "user_create_name", "")}</Typography>
-              <Typography component={"span"}>PTGD - Ban lãnh đạo đã tạo lịch nhắc hẹn</Typography>
+              <Typography component={"span"}>PTGD - Ban lãnh đạo {t("REMIND_DETAIL_LABEL_REMIND_CREATED")}</Typography>
             </Box>
           </Box>
-          <IconButton className="comp_CustomModal___iconButton" onClick={() => handleCancle()}>
+          <IconButton className="comp_CustomModal___iconButton" onClick={() => handleCancel()}>
             <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
           </IconButton>
         </StyledDialogTitle>
@@ -105,7 +102,7 @@ function ViewDetailRemind({
                   {
                     remindType === "PROJECT" && (
                       <>
-                        <span>Công việc:</span>
+                        <span>{t("Công việc")}:</span>
                         <Typography component={"p"}>Lap ke hoach kinh doanh mua san pham ABC cho muc dich XYZ</Typography>
                       </>
                     )
@@ -145,9 +142,9 @@ function ViewDetailRemind({
           </StyledScrollbars>
         </LoadingOverlay>
         <StyledDialogActions>
-          <ActionsCancleButton onClick={() => handleCancle()}>
+          <ActionsCancelButton onClick={() => handleCancel()}>
             {t('IDS_WP_EXIT')}
-          </ActionsCancleButton>
+          </ActionsCancelButton>
         </StyledDialogActions>
       </StyledDialog>
     </>

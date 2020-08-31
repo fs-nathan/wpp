@@ -90,6 +90,7 @@ import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
 import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
 import { SORT_TASK } from "../constants/actions/task/sortTask";
+import { GET_REMIND_DETAIL } from "../constants/actions/calendar/alarmCalendar";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -257,6 +258,7 @@ import { updateUserRole } from "./userRole/updateUserRole";
 import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
 import {listProjectGroupDeleted} from "./projectGroup/listProjectGroupDeleted";
 import {listTaskMember} from "./task/listTaskMember";
+import {getRemindDetail} from "./calendar/alarmCalendar/getRemindDetail";
 
 function* rootSaga() {
   // Hoang - begin
@@ -832,6 +834,7 @@ function* rootSaga() {
   yield takeLatest(GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, projectScheduleUpdateShiftStageAllTime);
   yield takeEvery(GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, projectScheduleDeleteShiftStageAllTime);
   yield takeLatest(CALENDAR_PAGE_PERMISSION, listCalendarPermission);
+  yield takeLatest(GET_REMIND_DETAIL, getRemindDetail)
   yield fork(watchAsyncAction);
 }
 

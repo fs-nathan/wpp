@@ -2127,6 +2127,7 @@
   "GANTT_6": "SA",
   "GANTT_0": "SU",
   "GANTT_NOT_INCLUDE_PROJECT": "Today's not included project",
+  "REMIND_DETAIL_LABEL_REMIND_CREATED": "was created remind",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "End time must be greater than start time",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "End time",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Start time",
