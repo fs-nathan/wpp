@@ -490,7 +490,7 @@ function MainLayout({
         remind={detailRemind.remind}
         groupRemind={{
           name: get(detailRemind.remind, "category_name", ""),
-          color: get(detailRemind.remind, "category_color", "")
+          color: get(detailRemind.remind, "category_color", "#000")
         }}
         remindType={"PERSONAL"}
       />
