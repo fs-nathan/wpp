@@ -245,6 +245,9 @@ const TimeLine = ({
           }
           handle={() => (
             <Tooltip
+              classes={
+                { tooltip: "Custom-MuiTooltip-tooltip" }
+              }
               placement="top"
               title={`${
                 endDateText.diff(startDateText, girdInstance.unit) + 1
@@ -269,6 +272,9 @@ const TimeLine = ({
           width={width}
         >
           <Tooltip
+            classes={
+              { tooltip: "Custom-MuiTooltip-tooltip" }
+            }
             placement="top"
             title={`${endDateText.diff(startDateText, girdInstance.unit) + 1}
               ${t('GANTT_' + girdInstance.unitText.toUpperCase())}
