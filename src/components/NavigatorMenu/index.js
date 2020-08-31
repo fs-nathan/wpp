@@ -4,7 +4,7 @@ import { get } from 'lodash';
 import React from 'react';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-
+import "./index.scss";
 class NavigatorMenu extends React.Component {
   state = {
     listGird: []
@@ -26,9 +26,10 @@ class NavigatorMenu extends React.Component {
   render() {
     const match = this.state.listGird.filter(item => {
       return this.props.location.pathname.includes(item.url)
-    })[0]
-    const listGirdRender = this.state.listGird.map(item =>
-      <p
+    })[0] || {}
+    const listGirdRender = this.state.listGird.map(item => {
+      console.log(item.url === match, item.url, "asdasdasdasd")
+      return <p
         key={item.name}
         style={{
           background: item.url === match.url ? get(this.props.profileDetail, 'group_active.color', '#f2f2f2') : '#f2f2f2'
@@ -43,12 +44,13 @@ class NavigatorMenu extends React.Component {
           document.getElementById(`gantt-p-${item.name}`).style.background = get(this.props.profileDetail, 'group_active.color', '#f2f2f2')
         }}
         onMouseLeave={() => {
-          if (item.url === match.url) return
+          if (match && item.url === match.url) return
           document.getElementById(`gantt-p-${item.name}`).style.background = '#f2f2f2'
         }}
       >
         {item.name}
       </p>
+    }
     )
     return <div className="gantt--navigation">
       {listGirdRender}

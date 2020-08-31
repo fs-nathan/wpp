@@ -193,7 +193,6 @@ const mapStateToProps = state => ({
   projectSchedules: state.gantt.projectSchedules,
   fetchProjectSchedule: state.gantt.fetchProjectSchedule,
   mainCalendar: state.gantt.mainCalendar,
-
 })
 
 const mapDispatchToProps = {

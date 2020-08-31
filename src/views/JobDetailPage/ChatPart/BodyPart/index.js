@@ -6,7 +6,7 @@ import { getMember, getMemberNotAssigned } from 'actions/taskDetail/taskDetailAc
 import clsx from 'clsx';
 import { CHAT_TYPE, isOneOf } from 'helpers/jobDetail/arrayHelper';
 import { getChatDate } from 'helpers/jobDetail/stringHelper';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, memo } from 'react';
 import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroller';
@@ -242,15 +242,15 @@ const BodyPart = props => {
               <div className="bodyChat--introRow">
                 <div className="bodyChat--introImages">
                   <div className="bodyChat--introItem bodyChat--introItem__left">
-                    <img alt="intro" src="/images/intro/intro-bg-2.png"/>
+                    <img alt="intro" src="/images/intro/intro-bg-2.png" />
                     <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_THAO_LUAN')}</div>
                   </div>
                   <div className="bodyChat--introItem">
-                    <img alt="intro" src="/images/intro/intro-bg-3.png"/>
+                    <img alt="intro" src="/images/intro/intro-bg-3.png" />
                     <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_QUAN_LY')}</div>
                   </div>
                   <div className="bodyChat--introItem bodyChat--introItem__right">
-                    <img alt="intro" src="/images/intro/intro-bg-4.png"/>
+                    <img alt="intro" src="/images/intro/intro-bg-4.png" />
                     <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_CHIA_SE')}</div>
                   </div>
                 </div>
@@ -313,4 +313,4 @@ const BodyPart = props => {
     </div>
   );
 };
-export default withRouter(BodyPart);
+export default memo(BodyPart);

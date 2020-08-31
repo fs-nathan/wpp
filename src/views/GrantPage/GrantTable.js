@@ -70,10 +70,7 @@ const RenderDrawers = React.memo(
       <SubTaskDrawer height={props.height} />
       <ExportPDFDrawer dataSource={props.dataSource} height={props.height} />
     </React.Fragment>
-  ),
-  (prevProps, nextProps) => {
-    return false;
-  }
+  )
 );
 
 const RenderDragTable = React.memo(
@@ -452,7 +449,7 @@ class DragSortingTable extends React.Component {
                           size="small"
                           onClick={() =>
                             this.props.history.push({
-                              pathname: `/tasks/chat/${this.props.match.params.projectId}`,
+                              pathname: `/projects/task-chat/${this.props.match.params.projectId}`,
                               search: `?task_id=${record.id}`,
                             })
                           }

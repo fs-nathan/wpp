@@ -1,5 +1,5 @@
 import { showTab, getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import DefaultTab from './DefaultTab';
@@ -19,6 +19,7 @@ import DemandDetail from './DemandTab/TabBody/DemandDetail';
 import DetailOfferModal from 'views/OfferPage/views/DetailOffer/DetailOfferModal';
 import { getDetailOffer, getDetailOfferLoadingState } from 'views/OfferPage/views/DetailOffer/selector';
 import { setOpenDetailOffer } from 'actions/taskDetail/taskDetailActions';
+import MapView from 'views/JobDetailPage/ChatComponent/MapView';
 
 const Container = styled.div`
   grid-area: tab;
@@ -32,6 +33,16 @@ function TabPart(props) {
   const detailOfferLoading = useSelector(state => getDetailOfferLoadingState(state));
   const openDetail = useSelector(state => state.taskDetail.taskOffer.isOpenDetail);
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const locationUpdate = useSelector(state => state.taskDetail.detailTask.location);
+  const [isOpenMap, setIsOpenMap] = React.useState(false);
+  const [locationData, setLocationData] = React.useState({});
+
+  useEffect(() => {
+    if (locationUpdate) {
+      setLocationData(locationUpdate)
+      setIsOpenMap(true)
+    }
+  }, [locationUpdate])
 
   const setShow = (index) => {
     dispatch(showTab(index))
@@ -65,6 +76,7 @@ function TabPart(props) {
         {...detailOffer}
         additionQuery={`task_id=${taskId}`}
       />
+      <MapView isOpen={isOpenMap} setOpen={setIsOpenMap} locationData={locationData} ></MapView>
     </Container>
   )
 }

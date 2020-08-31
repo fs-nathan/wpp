@@ -42,16 +42,18 @@ const TitleImg = styled(Typography)`
     }
 `
 
-function ImagePlace(t, file, user_create_avatar, user_create_name, time_create, media_type) {
+function ImagePlace(t, file, user_create_avatar, user_create_name, time_create, media_type, isReply) {
   if (media_type === 1 || FileType(getFileType(file.name)) === fileType.video)
     return (<div className="FileMessage--videoCover" >
-      <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
+      {!isReply &&
+        <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
+      }
       <ReactPlayer
         className="FileMessage--videoPlayer"
         url={file.url}
         height="auto" width="100%"
       />
-      {user_create_avatar &&
+      {user_create_avatar && !isReply &&
         <Typography className="FileMessage--videoInfo" component={'div'}>
           <TitleImg component='div'>
             <ListItem>
@@ -148,7 +150,23 @@ const ImageMessage = ({
           <div className={clsx("ImageMessage--sender",
             { "ImageMessage--sender__reply": isReply })}  >
             {isReply &&
-              <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
+              <>
+                <Avatar className="TextMessage--avatarReply" src={user_create_avatar} />
+                <div className="TextMessage--name"  >
+                  {user_create_name}
+                </div>
+                {user_create_position &&
+                  < div className="TextMessage--position"  >
+                    {' - '}
+                    {user_create_position}
+                  </div>
+                }
+                {user_create_roles[0] &&
+                  <div className="TextMessage--room"  >
+                    {user_create_roles[0]}
+                  </div>
+                }
+              </>
             }
           </div>
         }
@@ -168,7 +186,7 @@ const ImageMessage = ({
                   {
                     (plusImage > 0 && !isReply && i === 5) ? (
                       <div className={clsx("ImageMessage--plus")} onClick={handleClickOpen(5)} >
-                        {ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type)}
+                        {ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type, isReply)}
                         <div className={clsx("ImageMessage--plusText")}>
                           <div className={clsx("ImageMessage--plusTextNumber")}>
                             +{plusImage}
@@ -177,7 +195,7 @@ const ImageMessage = ({
                       </div>
                     )
                       :
-                      ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type)
+                      ImagePlace(t, image, user_create_avatar, user_create_name, time_create, media_type, isReply)
                   }
                   {!isReply &&
                     <>
