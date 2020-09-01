@@ -43,9 +43,9 @@ width: 150px;
 }
 
 .gantt--right-menu__search{
-top: 64px !important;
-left: auto !important;
-right: 390px !important;
+  top: 68px!important;
+  left: auto!important;
+  right: 457px!important;
 }
 .gantt--search__icon svg{
 cursor: pointer;
