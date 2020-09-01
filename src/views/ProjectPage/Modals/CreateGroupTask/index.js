@@ -21,8 +21,7 @@ const ButtonCase = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function CreateGroupTask({ open, setOpen, project_id = null }) {
-
+function CreateGroupTask({ fetchChart, open, setOpen, project_id = null }) {
   const [createNew, setCreateNew] = React.useState(false);
   const [copy, setCopy] = React.useState(false);
   const { t } = useTranslation();
@@ -77,7 +76,7 @@ function CreateGroupTask({ open, setOpen, project_id = null }) {
         </Container>
       </CustomModal>
       <CreateNewGroupTask open={createNew} setOpenModal={setOpen} setOpen={setCreateNew} project_id={projectId} />
-      <CopyGroupTask open={copy} setOpen={setCopy} project_id={projectId} />
+      <CopyGroupTask fetchChart={fetchChart} open={copy} setOpen={setCopy} project_id={projectId} />
     </>
   )
 }

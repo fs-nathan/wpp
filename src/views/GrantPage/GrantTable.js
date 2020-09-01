@@ -1451,7 +1451,7 @@ class DragSortingTable extends React.Component {
     }
     this.setState({
       openCreateProjectModal: value,
-    });
+    })
   };
   handleOpenCraeteJobModal = (value) => {
     this.setState({
@@ -1534,6 +1534,7 @@ class DragSortingTable extends React.Component {
           open={this.state.openCreateProjectModal}
           project_id={this.props.match.params.projectId}
           setOpen={this.handleOpenCreateProjectModal}
+          fetchChart={this.handleOpenCreateProjectModal}
         />
         {this.props.keyword && !this.state.data.filter((item) => {
           if (this.props.keyword) {

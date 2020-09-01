@@ -18,6 +18,7 @@ function CopyGroupTask({
   groupTasks,
   doCopyGroupTask,
   doGetAllGroupTask,
+  fetchChart,
   viewPermissions,
   doReload,
   localOption,
@@ -67,6 +68,7 @@ function CopyGroupTask({
   return (
     <CopyGroupTaskPresenter
       open={open} setOpen={setOpen}
+      fetchChart={fetchChart}
       projectId={projectId}
       timeRange={timeRange}
       doReload={() => doReload({
