@@ -432,6 +432,7 @@ import updateUserRole, {
 import viewPermissions, {
   initialState as viewPermissionsInitialState,
 } from "./viewPermissions";
+import remindDetail, {initialState as getRemindDetailInitialState } from "./calendar/alarmCalendar/getRemindDetail";
 
 const rootReducer = combineReducers({
   authentications,
@@ -629,6 +630,7 @@ const rootReducer = combineReducers({
     updateProjectGroupSchedule,
     deleteProjectGroupSchedule,
     updatePersonalRemindCategory,
+    remindDetail
   }),
   localStorage,
 });
@@ -801,6 +803,7 @@ export const DEFAULT_STATE = {
     projectCalendarCreateShiftStageAllTime: projectCalendarCreateShiftStageAllTimeInitialState,
     projectCalendarUpdateShiftStageAllTime: projectCalendarUpdateShiftStageAllTimeInitialState,
     projectCalendarDeleteShiftStageAllTime: projectCalendarDeleteShiftStageAllTimeInitialState,
+    remindDetail: getRemindDetailInitialState
   },
   localStorage: localStorageInitialState,
 };

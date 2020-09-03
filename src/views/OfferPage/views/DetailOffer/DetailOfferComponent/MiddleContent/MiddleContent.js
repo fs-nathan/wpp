@@ -134,7 +134,9 @@ const MiddleContent = ({
           <div className="offerDetail-memberApprovalRateContainer">
             <div>
               {t("VIEW_OFFER_LABEL_RATE_AGREE")}:&nbsp;&nbsp;&nbsp;≥&nbsp;&nbsp;&nbsp;{get(condition_accept, "min_rate", "0")}%
-              &nbsp; <span style={{textTransform: "uppercase"}}>{t(`VIEW_OFFER_LABEL_CONDITION_LOGIC_${get(condition_accept, 'condition_logic', 'OR')}`)}</span>
+              &nbsp; {
+              get(condition_accept, "member_accept", []).length !== 0 && <span style={{textTransform: "uppercase"}}>{t(`VIEW_OFFER_LABEL_CONDITION_LOGIC_${get(condition_accept, 'condition_logic', 'OR')}`)}</span>
+            }
             </div>
           </div>
           {

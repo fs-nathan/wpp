@@ -21,6 +21,7 @@ import { mdiDotsHorizontal, mdiMapMarker } from '@mdi/js';
 import ColorTypo from 'components/ColorTypo';
 import { withStyles } from '@material-ui/core/styles';
 import { ic_share_location } from 'assets';
+import { setLocationData } from 'actions/taskDetail/taskDetailActions';
 
 const DialogContent = withStyles(theme => ({
   root: {
@@ -95,6 +96,7 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
 
   function handleClose() {
     setOpen(false)
+    dispatch(setLocationData(null))
   }
 
   const handleClickLocation = (data) => {

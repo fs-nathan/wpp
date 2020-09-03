@@ -1,8 +1,11 @@
 import { LIST_PERSONAL_REMIND_CATEGORY, LIST_PERSONAL_REMIND_CATEGORY_FAIL, LIST_PERSONAL_REMIND_CATEGORY_SUCCESS } from '../../../constants/actions/calendar/alarmCalendar';
 
-export const listPersonalRemindCategory = (quite = false) => ({
+export const listPersonalRemindCategory = ({ fromTime, toTime }, quite = false) => ({
   type: LIST_PERSONAL_REMIND_CATEGORY,
-  quite
+  quite,
+  options: {
+    fromTime, toTime
+  }
 });
 
 export const listPersonalRemindCategorySuccess = ({ categories }, options) => ({

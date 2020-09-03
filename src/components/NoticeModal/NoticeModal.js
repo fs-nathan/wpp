@@ -145,7 +145,7 @@ const NoticeModal = props => {
                     {t('IDS_WP_LOGIN_SUCCESS_INTRO')} <strong>{get(props.profile, "group_active.name")}</strong>
                     <br/>
                     {t("IDS_WP_LOGIN_SUCCESS_INTRO_1")}
-                    <a href={"#"}>
+                    <a href={"https://support.workplus.vn/hoi-dap/don-hang-dung-thu-la-gi/"} target={"_blank"}>
                       {t("IDS_WP_SEE_MORE_TRAIL_POLICY")}
                       <Icon path={mdiDockWindow} size={0.7} color={"#0000EE"}/>
                     </a>
@@ -214,14 +214,18 @@ const NoticeModal = props => {
             Hotline: 09.1800.6181 - Email: support@workplus.vn
           </p>
           <div className="notice-icon-container">
-          <span className="notice-icon">
-            <img src={icons.ic_zalo} alt="" />
-            &nbsp; {t('IDS_WP_ZALO_SUPPORT')}
-          </span>
-            <span className="notice-icon">
-            <img src={icons.ic_messeger} alt="" />
-              &nbsp; {t('IDS_WP_FACEBOOK_SUPPORT')}
-          </span>
+          <a href={"https://zalo.me/3224858190179871108"} target={"_blank"}>
+              <span className="notice-icon">
+                <img src={icons.ic_zalo} alt="" />
+                &nbsp; {t('IDS_WP_ZALO_SUPPORT')}
+              </span>
+          </a>
+          <a href={"https://m.me/workplus.vn"} target={"_blank"}>
+              <span className="notice-icon">
+                <img src={icons.ic_messeger} alt="" />
+                &nbsp; {t('IDS_WP_FACEBOOK_SUPPORT')}
+              </span>
+          </a>
           </div>
         </div>
       </MuiDialogActions>

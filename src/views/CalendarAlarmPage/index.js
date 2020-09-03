@@ -4,7 +4,7 @@ import { listCalendarPermission } from "actions/calendar/permission/listPermissi
 import LoadingBox from "components/LoadingBox";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
 import { CREATE_PERSONAL_REMIND_CATEGORY, CustomEventDispose, CustomEventListener, DELETE_PERSONAL_REMIND_CATEGORY, SORT_PERSONAL_REMIND_CATEGORY } from "constants/events";
-import { get } from "lodash";
+import {get, isNil} from "lodash";
 import React, { Suspense } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch } from "react-router-dom";
@@ -12,6 +12,9 @@ import { useMountedState } from "react-use";
 import CalendarAlarmLeftPart from "./LeftPart";
 import routes from "./routes";
 import { personalRemindCategoriesSelector } from "./selectors";
+import moment from "moment";
+import {useLocalStorage} from "../../hooks";
+import {LOCAL_PERSONAL_REMINDS_STORAGE} from "../CalendarPage/constants/attrs";
 
 export const Context = React.createContext();
 const { Provider } = Context;
@@ -20,6 +23,14 @@ function CalendarAlarmPage({
   doListPersonalRemindCategory, personalRemindCategories,
   doSortPersonalRemindCategory, doListPermission, permissions
 }) {
+
+  const [localOptions, setLocalOptions] = useLocalStorage(LOCAL_PERSONAL_REMINDS_STORAGE, {
+    timeType: 3,
+    timeRange: {
+      startDate: moment().startOf("isoWeeks"),
+      endDate: moment().endOf("isoWeeks")
+    }
+  });
 
   function handleSortPersonalAlarm(result) {
     if (!result.destination || (result.destination.index === result.source.index)) {
@@ -31,9 +42,11 @@ function CalendarAlarmPage({
   }
 
   React.useEffect(() => {
-    doListPersonalRemindCategory(false);
+    let fromTime = !isNil(get(localOptions.timeRange, 'startDate')) ? moment(get(localOptions.timeRange, 'startDate')).format("YYYY-MM-DD") : undefined;
+    let toTime = !isNil(get(localOptions.timeRange, 'endDate')) ? moment(get(localOptions.timeRange, 'endDate')).format("YYYY-MM-DD") : undefined;
+    doListPersonalRemindCategory({ fromTime, toTime }, false);
     const reloadListPersonalRemindCategory = () => {
-      doListPersonalRemindCategory(false);
+      doListPersonalRemindCategory({ fromTime, toTime }, false);
     }
 
     CustomEventListener(SORT_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
@@ -44,7 +57,7 @@ function CalendarAlarmPage({
       CustomEventDispose(CREATE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
       CustomEventDispose(DELETE_PERSONAL_REMIND_CATEGORY, reloadListPersonalRemindCategory);
     }
-  }, [doListPersonalRemindCategory])
+  }, [doListPersonalRemindCategory, localOptions.timeRange])
 
   React.useEffect(() => {
     doListPermission(false);
@@ -90,7 +103,7 @@ function CalendarAlarmPage({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListPersonalRemindCategory: (quite) => dispatch(listPersonalRemindCategory(quite)),
+    doListPersonalRemindCategory: ({ fromTime, toTime },quite) => dispatch(listPersonalRemindCategory({ fromTime, toTime }, quite)),
     doSortPersonalRemindCategory: ({ category_id, sort_index }, quite) => dispatch(sortPersonalRemindCategory({ category_id, sort_index }, quite)),
     doListPermission: (quite) => dispatch(listCalendarPermission(quite)),
   };

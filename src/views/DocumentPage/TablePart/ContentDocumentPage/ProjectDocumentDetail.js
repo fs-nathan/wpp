@@ -207,7 +207,7 @@ const ProjectDocumentDetail = props => {
               align="center"
               width="5%"
             />
-            <StyledTableHeadCell align="left" width="20%">
+            <StyledTableHeadCell align="left" width="40%">
               <div
                 className="cursor-pointer"
                 onClick={() => hanldeSort('name')}
@@ -217,9 +217,6 @@ const ProjectDocumentDetail = props => {
                   <Icon path={mdiSwapVertical} size={0.8} color="#8d8d8d" />
                 </IconButton>
               </div>
-            </StyledTableHeadCell>
-            <StyledTableHeadCell align="left" width="20%">
-              {t('IDS_WP_JOB')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="15%">
               {t('IDS_WP_SHARE')}
@@ -266,18 +263,6 @@ const ProjectDocumentDetail = props => {
                   onClick={() => handleClickItem(file)}
                 >
                   <ColorTypo color="black">{file.name}</ColorTypo>
-                </StyledTableBodyCell>
-                <StyledTableBodyCell align="left" width="20%">
-                  <ColorTypo color="black">
-                    <span
-                      onClick={() =>
-                        props.history.push({ pathname: file.redirect_url })
-                      }
-                      className="address-link"
-                    >
-                      {file.task_name}
-                    </span>
-                  </ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="15%">
                   <ShareColumnAvatar

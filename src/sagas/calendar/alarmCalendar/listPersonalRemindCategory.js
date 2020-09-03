@@ -4,11 +4,15 @@ import { listPersonalRemindCategoryFail, listPersonalRemindCategorySuccess } fro
 import { apiService } from '../../../constants/axiosInstance';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../../constants/snackbarController';
 
-async function doListPersonalRemindCategory() {
+async function doListPersonalRemindCategory({ fromTime, toTime }) {
   try {
     const config = {
       url: '/personal-remind-category/list?type=statistic',
-      method: 'get'
+      method: 'get',
+      params: {
+        from_time: fromTime,
+        to_time: toTime
+      }
     }
     const result = await apiService(config);
     return result.data;
