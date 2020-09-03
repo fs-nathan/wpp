@@ -1280,3 +1280,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 .sc-kkGfuU img::before{
   box-sizing: content-box;
 } 
+
+.Custom-MuiTooltip-tooltip{
+  background-color: rgba(97, 97, 97, 0.9);
+}
