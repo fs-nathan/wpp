@@ -97,7 +97,7 @@ function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, ch
         }}>
           {t('GANTT_CALENDAR_EDIT_CALENDAR')}
         </MenuItem>}
-        {canDelete && !isDefault && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
+        {canDelete && !isDefault && calendarPermisstions.assign_schedule && <MenuItem key={3} onClick={(e) => {
           e.stopPropagation()
           if (mainCalendar === scheduleId) {
             SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("GANTT_CANNOT"));
