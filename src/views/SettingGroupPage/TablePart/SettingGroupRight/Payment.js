@@ -34,7 +34,7 @@ const Payment = props => {
     }
   };
   useEffect(() => {
-    handleFetchData(); // eslint-disable-next-line
+    handleFetchData().then(r => {});
   }, []);
   const handleEditBill = async e => {
     e.preventDefault();
@@ -77,7 +77,7 @@ const Payment = props => {
             label={t('IDS_WP_ORDER_COMPANY_NAME')}
             fullWidth
             margin="normal"
-            defaultValue={props.bill.company}
+            value={props.bill.company}
             InputLabelProps={{ shrink: true }}
             disabled={!editMode}
             className="style-input-text"
@@ -87,7 +87,7 @@ const Payment = props => {
             label={t('IDS_WP_ORDER_ADDRESS')}
             fullWidth
             margin="normal"
-            defaultValue={props.bill.address_export}
+            value={props.bill.address_export}
             InputLabelProps={{ shrink: true }}
             disabled={!editMode}
             className="style-input-text"
@@ -97,7 +97,7 @@ const Payment = props => {
             label={t('IDS_WP_LAW_CODE')}
             fullWidth
             margin="normal"
-            defaultValue={props.bill.tax_code}
+            value={props.bill.tax_code}
             InputLabelProps={{ shrink: true }}
             disabled={!editMode}
             className="style-input-text"
@@ -107,7 +107,7 @@ const Payment = props => {
             label={t('IDS_WP_LAW_PEOPLE')}
             fullWidth
             margin="normal"
-            defaultValue={props.bill.manager}
+            value={props.bill.manager}
             InputLabelProps={{ shrink: true }}
             disabled={!editMode}
             className="style-input-text"
@@ -117,7 +117,7 @@ const Payment = props => {
             label={t('IDS_WP_ADDRESS_RECEIPT')}
             fullWidth
             margin="normal"
-            defaultValue={props.bill.address_import}
+            value={props.bill.address_import}
             InputLabelProps={{ shrink: true }}
             disabled={!editMode}
             className="style-input-text"
@@ -127,7 +127,7 @@ const Payment = props => {
             label={t('IDS_WP_PHONE_CONTACT')}
             fullWidth
             margin="normal"
-            defaultValue={props.bill.phone}
+            value={props.bill.phone}
             InputLabelProps={{ shrink: true }}
             disabled={!editMode}
             className="style-input-text"
@@ -137,7 +137,7 @@ const Payment = props => {
             label={t('IDS_WP_EMAIL_ORDER')}
             fullWidth
             margin="normal"
-            defaultValue={props.bill.email}
+            value={props.bill.email}
             InputLabelProps={{ shrink: true }}
             disabled={!editMode}
             className="style-input-text"
