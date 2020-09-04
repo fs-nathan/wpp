@@ -134,7 +134,7 @@ const NotificationItemCommon = props => {
         props.changeVisibleRemindDetailModal({remind_id: data_notification.remind_id, visible: true});
         break;
       case NOTIFICATION_WEEKLY_CALENDAR:
-        props.history.push({ pathname: Routes.CALENDAR_WEEKLY.replace(":week/:year", `${data_notification.week}/${data_notification.year}`)});
+        props.history.push({ pathname: Routes.CALENDAR_WEEKLY.replace(":week/:year/:from?", `${data_notification.week}/${data_notification.year}/notification`)});
         break;
       case NOTIFICATION_ADD_MEMBER_TO_OFFER:
       case NOTIFICATION_ADD_MEMBER_TO_MONITOR_OFFER:

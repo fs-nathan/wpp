@@ -60,7 +60,7 @@ function CalendarWeeklyLeftPartPresenter({
                 {calendars.data.map((item, index) => (
                   <React.Fragment key={index}>
                     <StyledListItem
-                      to={Routes.CALENDAR_WEEKLY.replace(":week/:year", `${get(item, "week", "")}/${get(item, "year", "")}`)}
+                      to={Routes.CALENDAR_WEEKLY.replace(":week/:year/:from", `${get(item, "week", "")}/${get(item, "year", "")}`)}
                       component={Link}
                       className={`${params.week == get(item, "week", "") ? "item-actived" : ""}`}
                     >
