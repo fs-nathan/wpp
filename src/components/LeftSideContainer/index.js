@@ -9,6 +9,12 @@ import CustomAvatar from "../CustomAvatar";
 import LoadingOverlay from "../LoadingOverlay";
 import "./style.scss";
 
+const removeEvent = action => {
+  return action ? {} : {
+    pointerEvents: "none"
+  }
+}
+
 const Container = ({ className = "", ...rest }) => (
   <div
     className={`comp_LeftSideContainer___container ${className}`}
@@ -65,7 +71,9 @@ function LeftSideContainer({
     get(action, "avatar") ? (
       <CustomAvatar src={get(action, "avatar")} alt="avatar" />
     ) : typeof (get(action, "onClick", null) === "function") ? (
-      <StyledIconButton size="small" onClick={get(action, "onClick")}>
+      <StyledIconButton style={{
+        ...removeEvent(action)
+      }} size="small" onClick={get(action, "onClick")}>
         <abbr title={get(action, "tooltip", "")}>
           <div>
             {get(action, "iconPath") ? (

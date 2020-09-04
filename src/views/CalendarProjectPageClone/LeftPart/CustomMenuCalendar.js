@@ -26,7 +26,7 @@ function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, ch
     e.stopPropagation()
     setAnchorEl(null);
   };
-  const assignProjectSchedule = async (projectId, scheduleId,) => {
+  const assignProjectSchedule = async (projectId, scheduleId, ) => {
     try {
       const url = 'project/delete-schedules'
       const result = await apiService({
@@ -59,6 +59,7 @@ function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, ch
       console.log(e)
     }
   }
+  if (!calendarPermisstions.assign_schedule && !calendarPermisstions.edit_schedule) return null
   return (
     <div>
       <IconButton
