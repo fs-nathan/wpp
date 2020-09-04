@@ -22,16 +22,6 @@ import {get} from "lodash";
 const NoticeModal = props => {
   const { t } = useTranslation();
   const bgColor = props.colors.find(item => item.selected === true);
-  const defaultColor = {
-    backgroundColor: bgColor.color,
-    color: 'white',
-    border: `1px solid ${bgColor.color}`
-  };
-  const hoverColor = {
-    backgroundColor: bgColor.color,
-    color: 'white',
-    border: `1px solid ${bgColor.color}`
-  };
   const backgroundHeader = (img, imgSize = "contain") => {
     return {
       backgroundImage: `url(${img})`,
@@ -40,8 +30,6 @@ const NoticeModal = props => {
       backgroundSize: imgSize
     }
   }
-
-  const [typeHover, setHover] = useState(null);
   const [loading, setLoading] = useState(false);
   const handleToast = (type, message) => {
     props.actionToast(type, message);
@@ -149,64 +137,49 @@ const NoticeModal = props => {
                       {t("IDS_WP_SEE_MORE_TRAIL_POLICY")}
                       <Icon path={mdiDockWindow} size={0.7} color={"#0000EE"}/>
                     </a>
+                    {t("IDS_WP_LOGIN_SUCCESS_INTRO_2")}
                   </p>
                 </>
             ) : (
                 <p className="notice-text sub-header-text">
-                  {t('IDS_WP_EXPIRE_ORDER_NOTICE')}
+                  <span className={"text-bold"}>{t('IDS_WP_EXPIRE_ORDER_NOTICE')}</span>
+                  <br/>
+                  <span>{t("IDS_WP_EXPIRE_ORDER_NOTICE_2")}</span>
                 </p>
             )
           }
 
           <div className="notice-btn-container">
             {
-              props.visibleNoticeReason === "ACCOUNT_FREE" ? (
-                  <>
-                    <Button
-                        variant="contained"
-                        className="notice-btn"
-                        onClick={startTrailUsing}
-                        style={
-                          typeHover === 'join' ? { ...hoverColor, opacity: loading ? "0.5" : "1"} : { ...defaultColor, opacity: loading ? "0.5" : "1"}
-                        }
-                        onMouseEnter={() => setHover('join')}
-                        onMouseLeave={() => setHover(null)}
-                        disabled={loading}
-                    >
-                      <CircularProgress
-                          size={16}
-                          className="margin-circular"
-                          color={bgColor.color}
-                          style={{
-                            display: loading ? 'initial' : 'none'
-                          }}
-                      />
-                      {t('IDS_WP_START_TRAIL_USING')}
-                    </Button>
-                    <Button className={"notice-btn-text"} onClick={upgradeAccount}>
-                      {t('IDS_WP_SELECT_UPGRADE_ACC')}
-                    </Button>
-                  </>
-              ) : (
-                  <>
-                    <Button
-                        variant="contained"
-                        className="notice-btn"
-                        onClick={upgradeAccount}
-                        style={
-                          typeHover === 'join' ? { ...hoverColor } : { ...defaultColor }
-                        }
-                        onMouseEnter={() => setHover('join')}
-                        onMouseLeave={() => setHover(null)}
-                    >
-                      {t('IDS_WP_UPGRADE_ACC')}
-                    </Button>
-                    <Button className={"notice-btn-text"} onClick={demoMode}>
-                      {t('IDS_WP_SELECT_GROUP_ACC')}
-                    </Button>
-                  </>
+              props.visibleNoticeReason === "ACCOUNT_FREE" && (
+                <Button
+                  variant="contained"
+                  className="notice-btn notice-btn-orange"
+                  onClick={startTrailUsing}
+                  disabled={loading}
+                >
+                  <CircularProgress
+                    size={16}
+                    className="margin-circular"
+                    color={bgColor.color}
+                    style={{
+                      display: loading ? 'initial' : 'none'
+                    }}
+                  />
+                  {t('IDS_WP_START_TRAIL_USING')}
+                </Button>
               )
             }
+            <Button
+              variant="contained"
+              className="notice-btn notice-btn-green"
+              onClick={upgradeAccount}
+            >
+              {t('IDS_WP_UPGRADE_ACC')}
+            </Button>
+            <Button className={"notice-btn-text"} onClick={demoMode}>
+              {t('IDS_WP_SELECT_GROUP_ACC')}
+            </Button>
           </div>
 
           <p className="notice-text-info">{t('IDS_WP_CONTACT_WORKPLUS_ENTER')}</p>

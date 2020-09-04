@@ -72,7 +72,7 @@
   color: #f37c00;
 }
 .notice-btn-container {
-  margin: 40px 0;
+  margin: 15px 0;
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -99,8 +99,7 @@
   }
 }
 .notice-btn-container .notice-btn {
-  color: #01b374;
-  border-color: #01b374;
+  color: white;
   margin: 6px 16px;
   text-transform: uppercase;
   padding: 16px 48px;
@@ -108,9 +107,17 @@
   .MuiButton-label {
     font-size: 19px;
   }
+}
+.notice-btn-green {
+  background: #05c350;
   &:hover {
-    color: white;
-    background: #01b374;
+    background: #05c350;
+  }
+}
+.notice-btn-orange {
+  background: #ff9800;
+  &:hover {
+    background: #ff9800;
   }
 }
 .notice-btn-text {
@@ -202,7 +209,7 @@
 }
 
 .notice-body {
-  padding: 20px 30px;
+  padding: 0px 30px;
 }
 .justify-content-center {
   justify-content: center;
@@ -215,4 +222,8 @@
 }
 .mr-50 {
   margin-right: 50px;
+}
+.text-bold {
+  font-weight: 500;
+  font-size: 16px;
 }
