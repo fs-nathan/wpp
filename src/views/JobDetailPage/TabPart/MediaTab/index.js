@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { Slide } from '@material-ui/core';
 import TabHeader from './TabHeader';
 import TabBody from './TabBody';
@@ -19,13 +19,13 @@ const Header = styled(TabHeader)`
 `
 function MediaTab(props) {
   return (
-    <Slide in={props.show === 4}  mountOnEnter unmountOnExit>
+    <Slide in={props.show === 4} mountOnEnter unmountOnExit>
       <div className="container-tabpart">
         <Header setShow={props.setShow} />
-        <TabBody {...props}/>
+        <TabBody {...props} />
       </div>
     </Slide>
   )
 }
 
-export default MediaTab;
+export default memo(MediaTab);

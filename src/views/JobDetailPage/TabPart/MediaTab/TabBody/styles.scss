@@ -1,13 +1,13 @@
 .mediaBody {
-  height: calc(100% - 44px);
-  .MuiButtonGroup-grouped {
-    text-align: center;
-    align-items: center;
-    display: inline-block;
-    padding: 3px;
-    border-radius: unset;
-    background-color: transparent;
-  }
+  // height: calc(100% - 69px);
+  // .MuiButtonGroup-grouped {
+  //   text-align: center;
+  //   align-items: center;
+  //   display: inline-block;
+  //   padding: 3px;
+  //   border-radius: unset;
+  //   background-color: transparent;
+  // }
   .MuiButton-label {
     display: inline-flex;
     position: relative;
@@ -18,7 +18,7 @@
     margin-left: 0;
   }
   .MuiCollapse-container {
-    height: 100% !important;
+    height: calc(100% - 36px) !important;
   }
   .MuiCollapse-wrapper {
     height: 100%;
@@ -36,7 +36,7 @@
 }
 
 .mediaBox {
-  height: calc(100% - 65px);
+  height: calc(100% - 69px);
   &--grid {
     float: left;
     width: 100%;
@@ -157,7 +157,7 @@
 }
 
 .fileBox {
-  height: calc(100% - 65px);
+  height: calc(100% - 69px);
 }
 
 .fileBoxItem {
@@ -233,7 +233,7 @@
 }
 
 .linkBox {
-  height: calc(100% - 65px);
+  height: calc(100% - 69px);
   position: relative;
   &--button {
     &:hover {
