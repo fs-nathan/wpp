@@ -1,5 +1,5 @@
 import { showTab, getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import DefaultTab from './DefaultTab';
@@ -81,4 +81,4 @@ function TabPart(props) {
   )
 }
 
-export default TabPart;
+export default memo(TabPart);
