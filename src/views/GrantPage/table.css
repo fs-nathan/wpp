@@ -1167,6 +1167,22 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
   width: 30px !important;
   height: 100% !important;
 }
+.gantt-right-header__wapper *{
+  letter-spacing:1px !important;
+}
+.gantt--right-header__more .MuiButtonBase-root {
+  width: 64px;
+}
+
+.gantt--right-header__more .MuiIconButton-label {
+  padding-left: 0 !important;
+}
+.gantt--right-header__more .gantt-right-header__wapper{
+  letter-spacing:1px !important;
+}
+.gantt--right-header__more * {
+  letter-spacing:1px !important;
+}
 
 .gantt-right-header__wapper .comp_CustomTable_HeaderButtonGroup___button > span:first-child > span {
   line-height: 1.75;
@@ -1283,4 +1299,7 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 
 .Custom-MuiTooltip-tooltip{
   background-color: rgba(97, 97, 97, 0.9);
+}
+li.gantt-calendar__left-side{
+  height: 63.5px;
 }

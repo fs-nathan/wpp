@@ -53,7 +53,7 @@ const RightHeader = ({
           title={t('LABEL_GANTT_NAME_SETTING_MENU')}
           path={pathSettingIcon}
         />
-        <Col className="gantt--right-header__more" span={2}>
+        <Col style={{width: 56}} className="gantt--right-header__more " span={2}>
           <Dropdown
             overlay={() => (
               <MenuMoreGantt
@@ -68,6 +68,7 @@ const RightHeader = ({
           >
             <div>
               <IconComponent
+              
                 onClick={(e) => null}
                 title={t('LABEL_GANTT_NAME_MORE_MENU')}
                 path={mdiDotsVertical}

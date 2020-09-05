@@ -34,6 +34,10 @@ import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import EditCell from "./EditCell";
 import Header from "./Header";
+import "views/JobPage/components/QuickViewFilter.css";
+import "views/JobPage/Layout/QuickView.css";
+import "components/Drawer/DrawerPDF/drawerpdf.css";
+import "components/PreviewModal/previewModal.css";
 import "./table.css";
 
 let haveError = false
@@ -281,7 +285,7 @@ class DragSortingTable extends React.Component {
                 {" "}
                 {this.props.t('LABEL_GANTT_NAME_TASK_TABLE')}
               </div>
-              <div className="gantt-title-table-project-icon">
+              {this.props.calendarPermisstions?.manage_group_task &&<div className="gantt-title-table-project-icon">
                 {" "}
                 <IconButton
                   title={this.props.t('GANTT_ADD_TASK_GROUP')}
@@ -293,7 +297,7 @@ class DragSortingTable extends React.Component {
                 >
                   <Icon path={mdiPlus} size={1} />
                 </IconButton>
-              </div>
+              </div>}
             </div>
           ),
           dataIndex: "name",
@@ -347,7 +351,7 @@ class DragSortingTable extends React.Component {
                     </div>
                     {record.name}
                   </div>
-                  <div className="gantt--group-task__right">
+                 {this.props.calendarPermisstions?.create_task && <div className="gantt--group-task__right">
                     <IconButton
                       aria-controls="simple-menu"
                       style={{ padding: 0 }}
@@ -360,7 +364,7 @@ class DragSortingTable extends React.Component {
                     >
                       <Icon path={mdiPlus} size={1} />
                     </IconButton>
-                  </div>
+                  </div>}
                 </div>
               </React.Fragment>
             ) : (
@@ -1451,7 +1455,7 @@ class DragSortingTable extends React.Component {
     }
     this.setState({
       openCreateProjectModal: value,
-    });
+    })
   };
   handleOpenCraeteJobModal = (value) => {
     this.setState({
@@ -1534,6 +1538,7 @@ class DragSortingTable extends React.Component {
           open={this.state.openCreateProjectModal}
           project_id={this.props.match.params.projectId}
           setOpen={this.handleOpenCreateProjectModal}
+          fetchChart={this.handleOpenCreateProjectModal}
         />
         {this.props.keyword && !this.state.data.filter((item) => {
           if (this.props.keyword) {
@@ -1685,6 +1690,7 @@ const mapStateToProps = (state) => ({
   visibleGantt: state.gantt.visible.gantt,
   activeProjectId: state.taskDetail.commonTaskDetail.activeProjectId,
   scrollGanttFlag: state.gantt.scrollGanttFlag,
+  calendarPermisstions: state.gantt.calendarPermisstions,
   mainCalendar: state.gantt.mainCalendar,
   keyword: state.gantt.keyword,
 

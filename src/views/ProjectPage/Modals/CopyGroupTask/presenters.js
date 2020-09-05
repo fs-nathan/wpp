@@ -24,6 +24,7 @@ const StyledPrimary = ({ className = '', isSelected, ...props }) =>
 
 function CopyGroupTask({
   open, setOpen,
+  fetchChart,
   searchPattern, setSearchPattern,
   groupTasks, handleCopyGroupTask,
   doReload, projectId, timeRange,
@@ -38,6 +39,7 @@ function CopyGroupTask({
     setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
     if (activeMask === 3) {
       setOpen(false);
+      if (fetchChart) fetchChart(false, true)
     }
     // eslint-disable-next-line
   }, [activeMask]);
@@ -51,6 +53,7 @@ function CopyGroupTask({
     return () => {
       CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doReload);
       CustomEventDispose(COPY_GROUP_TASK.FAIL, fail);
+      CustomEventListener(COPY_GROUP_TASK.FAIL, fail);
     }
     // eslint-disable-next-line
   }, [projectId, timeRange]);
@@ -97,7 +100,7 @@ function CopyGroupTask({
           value={searchPattern}
           onChange={evt => setSearchPattern(evt.target.value)}
         />
-        <div style={{marginBottom: "10px"}}/>
+        <div style={{ marginBottom: "10px" }} />
         <StyledList
           component="nav"
         >
