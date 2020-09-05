@@ -122,7 +122,7 @@ const ItemGroupAccount = props => {
         localStorage.setItem(COLOR_ACTIVE, item.color);
         await actionChangeActiveGroup(item.id);
         props.actionActiveGroup(item);
-        handleToast('success', t('IDS_WP_CHANGE_ACTIVE_GROUP_SUCCESS'));
+        //handleToast('success', t('IDS_WP_CHANGE_ACTIVE_GROUP_SUCCESS'));
         window.location.reload(false);
       } catch (error) {
         handleToast('error', t('IDS_WP_CHANGE_ACTIVE_GROUP_FAIL'));
@@ -153,7 +153,7 @@ const ItemGroupAccount = props => {
               <Chip
                 size="small"
                 label={item.type_group}
-                className="status-item-group-account pro-color"
+                className={`status-item-group-account ${item.is_expired ? "expire-color" : "pro-color"}`}
               />
             )}
         </div>
@@ -334,11 +334,12 @@ const ItemGroupAccount = props => {
         key={item.id}
         onClick={() => {
           if (props.type === 'join' || props.type === 'requirements') return;
-          history.push(Routes.HOME);
           props.actionVisibleDrawerMessage({
             type: '',
             anchor: props.anchorDrawer
           });
+          //if((item.is_expired && item.type_group === "Trial") || item.type_group === "Free") return;
+          //history.push(Routes.HOME);
         }}
       >
         <div className="avatar-item-group-account">

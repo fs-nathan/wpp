@@ -1,4 +1,7 @@
 .view_DetailRemind {
+  &_container {
+    line-height: 1.05;
+  }
   &_scrollbar {
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     height: 350px !important;
@@ -9,8 +12,8 @@
   }
 
   &_StyledDialogTitle {
-    background-color: #fff;
-    padding: 15px 24px;
+    background-color: #fff !important;
+    padding: 15px 24px !important;
   }
 
   &_header {
