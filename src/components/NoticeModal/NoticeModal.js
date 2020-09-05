@@ -39,9 +39,10 @@ const NoticeModal = props => {
     props.closeNoticeModal();
   };
 
-  const demoMode = () => {
+  const demoMode = (e) => {
+    e.preventDefault();
     closeNoticeModal();
-    props.history.push(Routes.HOME);
+    //props.history.push(Routes.HOME);
     props.actionVisibleDrawerMessage({
       type: DRAWER_TYPE.GROUP_ACCOUNT,
       anchor: 'top'
@@ -55,7 +56,7 @@ const NoticeModal = props => {
     });
   };
 
-  const startTrailUsing = async () => {
+  const startTrialUsing = async () => {
     try {
       setLoading(true);
       await apiService({
@@ -155,7 +156,7 @@ const NoticeModal = props => {
                 <Button
                   variant="contained"
                   className="notice-btn notice-btn-orange"
-                  onClick={startTrailUsing}
+                  onClick={startTrialUsing}
                   disabled={loading}
                 >
                   <CircularProgress
@@ -177,7 +178,7 @@ const NoticeModal = props => {
             >
               {t('IDS_WP_UPGRADE_ACC')}
             </Button>
-            <Button className={"notice-btn-text"} onClick={demoMode}>
+            <Button className={"notice-btn-text"} onClick={evt => demoMode(evt)}>
               {t('IDS_WP_SELECT_GROUP_ACC')}
             </Button>
           </div>

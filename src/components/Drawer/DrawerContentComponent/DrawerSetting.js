@@ -15,6 +15,7 @@ import {
   actionGetProfile
 } from '../../../actions/system/system';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
+import {get} from "lodash";
 
 const DrawerSetting = props => {
   const { t } = useTranslation();
@@ -53,6 +54,7 @@ const DrawerSetting = props => {
     });
   };
   const isFree = !isEmpty(props.profile) && props.profile.type === 'Free';
+  console.log(props.profile)
   return (
     <div className="drawer-content">
       <HeaderDrawer title={null} />
@@ -75,7 +77,7 @@ const DrawerSetting = props => {
               {props.profile.type}
             </div>
           ) : (
-            <div className="account-status text-center pro-color">
+            <div className={`account-status text-center ${get(props.profile, "group_active.is_expire", false) ? "expire-color" : "pro-color"}`}>
               {props.profile.type}
             </div>
           )}
