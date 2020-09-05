@@ -34,6 +34,10 @@ import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import EditCell from "./EditCell";
 import Header from "./Header";
+import "views/JobPage/components/QuickViewFilter.css";
+import "views/JobPage/Layout/QuickView.css";
+import "components/Drawer/DrawerPDF/drawerpdf.css";
+import "components/PreviewModal/previewModal.css";
 import "./table.css";
 
 let haveError = false

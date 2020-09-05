@@ -22,8 +22,8 @@ async function doProjectGroupScheduleDetail({ scheduleID }) {
 
 function* projectGroupScheduleDetail(action) {
   try {
-    const { schedule: schedule } = yield call(doProjectGroupScheduleDetail, action.options);
-    yield put(getGroupScheduleDetailSuccess({ schedule }, action.options));
+    const { schedule: schedule, url_view_more } = yield call(doProjectGroupScheduleDetail, action.options);
+    yield put(getGroupScheduleDetailSuccess({ schedule, url_view_more }, action.options));
   } catch (error) {
     yield put(getGroupScheduleDetailFail(error, action.options));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));

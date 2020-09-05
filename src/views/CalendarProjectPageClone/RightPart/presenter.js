@@ -34,6 +34,7 @@ function CalendarProjectRightPartPresenter({
   handleDeleteShiftStageAllTime,
   handleDeleteGroup,
   handleEditGroupSchedule,
+  calendarDetail
 }) {
   const DEFAULT_DATA = {
     selectedDateFrom: moment().toDate(),
@@ -126,7 +127,7 @@ function CalendarProjectRightPartPresenter({
     let workingDay = filter(_workingDaysInWeek, { worked: true });
     handleAddWorkingDayInWeek(workingDay.map((day) => day.value));
   }
-
+  console.log(calendarDetail, "Asdasdsadasd")
   return (
     <>
       <React.Fragment>
@@ -142,7 +143,7 @@ function CalendarProjectRightPartPresenter({
               <ScrollbarsContainer className="gantt-right-part-scroll__container" autoHide autoHideTimeout={500}>
                 <div
                   style={{
-                    height: 59.5,
+                    height: 63.5,
                     width: "100%",
                     background: "#fce8e6",
                     color: "#e65656",
@@ -160,8 +161,8 @@ function CalendarProjectRightPartPresenter({
                     className="gantt-calendar--text-warning"
                   >
                     {t('GANTT_CALENDAR_RIGHT_PART_WARING_TEXT')}
-                    <span style={{ fontWeight: 'bold' }}>{t('GANTT_CALENDAR_RIGHT_PART_WARING_TEXT_URL')}
-                    </span></span></div>
+                    <a href={calendarDetail?.data?.url_view_more} target="_blank" style={{color: "rgb(230, 86, 86)", fontWeight: 'bold' }}>{t('GANTT_CALENDAR_RIGHT_PART_WARING_TEXT_URL')}
+                    </a></span></div>
 
                 {scheduleDetail.loading ? (
                   <LoadingBox />
@@ -437,6 +438,7 @@ const mapStateToProps = (state) => {
   return {
     bgColor: bgColorSelector(state),
     settingDate: state.setting.settingDate,
+    calendarDetail: state.calendar.getProjectGroupScheduleDetail
   };
 };
 

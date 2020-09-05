@@ -60,6 +60,10 @@ function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, ch
     }
   }
   if (!calendarPermisstions.assign_schedule && !calendarPermisstions.edit_schedule) return null
+  const checkSet = calendarPermisstions.assign_schedule && !isMain
+  const chectEdit = calendarPermisstions.edit_schedule
+  const checkDelte = canDelete && !isDefault && calendarPermisstions.assign_schedule
+  if(!checkDelte && ! checkSet && !chectEdit) return null
   return (
     <div>
       <IconButton
