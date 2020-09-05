@@ -3,7 +3,7 @@ import './styles.scss';
 
 function NoDataPlaceHolder({ src, title }) {
   return (<div className="placeholder--noData">
-    <img src={src} alt="no data"></img>
+    <img className="placeholder--noDataImage" src={src} alt="no data"></img>
     <div>
       {title}
     </div>

@@ -8,13 +8,16 @@ export const getGroupScheduleDetail = ({ scheduleID }, quite = false) => ({
   }
 });
 
-export const getGroupScheduleDetailSuccess = ({ schedule }, options) => ({
+export const getGroupScheduleDetailSuccess = ({ schedule,url_view_more }, options) => ({
   type: GROUP_SCHEDULE_DETAIL_SUCCESS,
   options,
   data: {
-    schedule
+    schedule,
+    url_view_more
   }
 });
+
+
 
 export const getGroupScheduleDetailFail = (error, options) => ({
   type: GROUP_SCHEDULE_DETAIL_FAIL,

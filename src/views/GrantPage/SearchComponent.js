@@ -23,7 +23,6 @@ function SearchComponent({ changeKeyword }) {
   const [internalKeyword, setInternalKeyword] = useState('')
   const { t } = useTranslation()
   let checkTimeOut = null
-  console.log('update')
   return (<React.Fragment
   >
     <IconComponent onClick={e => {
@@ -31,7 +30,7 @@ function SearchComponent({ changeKeyword }) {
         changeKeyword('')
       }
       setShow(!show)
-    }} title={t('LABEL_GANTT_NAME_SEARCH_MENU')} path={show ? mdiClose : mdiMagnify} />
+    }} title={show ?t("Hủy") :t('LABEL_GANTT_NAME_SEARCH_MENU')} path={show ? mdiClose : mdiMagnify} />
     {show && <StyledPopper
       className="gantt--right-menu__search"
       open={true}
