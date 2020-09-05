@@ -31,7 +31,7 @@ function TabHeader({ setShow }) {
         buttonTooltipText={t('LABEL_CHAT_TASK_TAO_MOI')}
         onClickBack={() => setShow(0)}
         onClickOpen={handleClickOpen}
-        rightIcon={manage_remind ? 'add' : null}
+        rightIcon='add'
       />
     </div>
   );

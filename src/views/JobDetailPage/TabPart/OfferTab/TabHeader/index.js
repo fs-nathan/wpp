@@ -29,7 +29,7 @@ function TabHeader(props) {
         buttonTooltipText={t('LABEL_CHAT_TASK_TAO_MOI')}
         onClickBack={() => props.setShow(0)}
         onClickOpen={handleClickOpen}
-        rightIcon={manage_offer ? 'add' : null}
+        rightIcon='add'
       />
       <OfferModal
         isOpen={open}

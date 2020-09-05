@@ -49,7 +49,7 @@ function TabHeader(props) {
         </abbr>
       </IconButton>
       <ColorTypo className="headerTab--text" uppercase>{t('LABEL_CHAT_TASK_CONG_VIEC_CON')}</ColorTypo>
-      {!manage_sub_task ? null : isPlus ?
+      {isPlus ?
         <IconButton className="headerTab--button" onClick={() => {
           props.onClickPlusIcon()
           handleClick()
