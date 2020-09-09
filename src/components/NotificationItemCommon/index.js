@@ -6,7 +6,6 @@ import {actionVisibleDrawerMessage, openDocumentDetail, actionActiveGroup, actio
 import {getDocumentDetail, actionFetchListMyDocument, actionSelectedFolder} from '../../actions/documents';
 import { DRAWER_TYPE } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
-import { Routes as CalendarRoutes } from "views/CalendarPage/constants/routes";
 
 const NOTIFICATION_NEW_POST_CREATED = 22;
 const NOTIFICATION_COMMENT_IN_POST = 23;
@@ -135,7 +134,7 @@ const NotificationItemCommon = props => {
         props.changeVisibleRemindDetailModal({remind_id: data_notification.remind_id, visible: true});
         break;
       case NOTIFICATION_WEEKLY_CALENDAR:
-        props.history.push({ pathname: CalendarRoutes.WEEKLY });
+        props.history.push({ pathname: Routes.CALENDAR_WEEKLY.replace(":week/:year/:from?", `${data_notification.week}/${data_notification.year}/notification`)});
         break;
       case NOTIFICATION_ADD_MEMBER_TO_OFFER:
       case NOTIFICATION_ADD_MEMBER_TO_MONITOR_OFFER:

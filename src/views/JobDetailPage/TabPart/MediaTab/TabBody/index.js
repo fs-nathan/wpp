@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import ColorButton from 'components/ColorButton';
 import ColorTypo from 'components/ColorTypo';
 import colorPal from 'helpers/colorPalette';
-import React from 'react';
+import React, { memo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import FileContainer from './FileContainer';
@@ -60,7 +60,16 @@ function TabBody(props) {
         </ColorButton>
       </ButtonGroup>
       <React.Fragment>
-        <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
+        {value === 0 &&
+          <MediaContainer {...props} />
+        }
+        {value === 1 &&
+          <FileContainer {...props} />
+        }
+        {value === 2 &&
+          <LinkContainer {...props} />
+        }
+        {/* <Collapse in={value === 0} mountOnEnter unmountOnExit timeout={0}>
           <MediaContainer {...props} />
         </Collapse>
         <Collapse in={value === 1} mountOnEnter unmountOnExit timeout={0}>
@@ -68,10 +77,10 @@ function TabBody(props) {
         </Collapse>
         <Collapse in={value === 2} mountOnEnter unmountOnExit timeout={0}>
           <LinkContainer {...props} />
-        </Collapse>
+        </Collapse> */}
       </React.Fragment>
     </div>
   )
 }
 
-export default TabBody;
+export default memo(TabBody);

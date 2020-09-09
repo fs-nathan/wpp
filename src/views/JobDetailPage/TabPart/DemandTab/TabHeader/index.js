@@ -34,7 +34,7 @@ function TabHeader(props) {
         buttonTooltipText={t('LABEL_CHAT_TASK_TAO_MOI')}
         onClickBack={() => props.setShow(0)}
         onClickOpen={handleClickOpen}
-        rightIcon={manage_command_decision ? 'add' : null}
+        rightIcon='add'
       />
       {/* modal chi dao quyet dinh */}
       <DemandModal

@@ -102,6 +102,8 @@ const TopBar = props => {
     !isEmpty(props.groupActive) &&
     (props.groupActive.type === 'Free' ||
       props.groupActive.type_group === 'Free');
+  const isExpire =
+    !isEmpty(props.groupActive) && props.groupActive.is_expire;
   return (
     <div id="topNavId" className="top-bar-container">
       <div className="left-part">
@@ -115,7 +117,7 @@ const TopBar = props => {
                 badge
                 color="orange"
                 label={props.groupActive.type || props.groupActive.type_group}
-                className={`style-status ${isFree ? 'free-status' : ''}`}
+                className={`style-status ${isFree ? 'free-status' : isExpire ? 'expire-status' : ''}`}
               />
             </div>
             {props.groupActive.code && (

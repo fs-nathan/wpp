@@ -283,7 +283,7 @@ const BodyPart = props => {
                     <Avatar className="bodyChat--viewedAvatar" src={avatar} />
                   </abbr>
                 )}
-                {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{plusMember}</Avatar>}
+                {(plusMember > 0) && <Avatar className="bodyChat--viewedAvatar" >{`+${plusMember}`}</Avatar>}
               </div>
             }
             {

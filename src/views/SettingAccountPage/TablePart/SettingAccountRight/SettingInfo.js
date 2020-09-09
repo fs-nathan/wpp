@@ -10,6 +10,7 @@ import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
+import {get} from "lodash";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker
@@ -234,7 +235,7 @@ class SettingInfo extends Component {
                 {t('IDS_WP_ACCOUNT_TYPE')}
               </div>
               <div className="value-item-info col-sm-9">
-                <Chip size="small" label={data.type} className="type-account" />
+                <Chip size="small" label={data.type} className={get(data.group_active , "is_expire", false) ? "expire-account" : "type-account"} />
               </div>
             </div>
             <div className="item-info row">
