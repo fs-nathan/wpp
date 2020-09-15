@@ -11,6 +11,7 @@ import {
   actionChangeNumNotificationNotView
 } from '../../../actions/system/system';
 import LoadingBox from '../../../components/LoadingBox';
+import {TOKEN} from "../../../constants/constants";
 
 let currentPage = 1;
 const MessageRight = props => {
@@ -83,10 +84,13 @@ const MessageRight = props => {
     }
   };
   const fetNumberNotificationNotViewer = async () => {
-    try {
-      const { data } = await getNumberNotificationNotViewer();
-      props.actionChangeNumNotificationNotView(data.number_notification);
-    } catch (error) {}
+    const hasToken = localStorage.getItem(TOKEN);
+    if(hasToken) {
+      try {
+        const { data } = await getNumberNotificationNotViewer();
+        props.actionChangeNumNotificationNotView(data.number_notification);
+      } catch (error) {}
+    } else return;
   };
   return (
     <div className="MessagePage">

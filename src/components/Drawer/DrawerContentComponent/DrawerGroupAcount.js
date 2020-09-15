@@ -46,7 +46,6 @@ const DrawerGroupAcount = props => {
   }, []);
   const handleToast = (type, message) => {
     props.actionToast(type, message);
-    setTimeout(() => props.actionToast(null, ''), 2000);
   };
 
   const handleRequestJoinDemo = async group_id => {
@@ -138,11 +137,6 @@ const DrawerGroupAcount = props => {
                     handleFetchData={handleFetchData}
                   />
                 ))}
-                {/* <ItemGroupAcount
-                  item={groupList.group_me}
-                  type="invitations"
-                  handleFetchData={handleFetchData}
-                /> */}
               </div>
             )}
 

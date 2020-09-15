@@ -174,11 +174,14 @@ span.ant-checkbox ~ span {
   margin-top: -5px;
 }
 .gantt--navigation p {
+  box-sizing: content-box;
   margin-right: 7px;
   margin-bottom: 0;
   margin-top: 3px;
   cursor: pointer;
   color: #8b8b8b;
+  width: 31px;
+  text-align: center;
   background: #f2f2f2;
   padding:0 5px;
   border-radius: 3px;
@@ -930,11 +933,22 @@ input[type="time"]::-webkit-outside-spin-button {
 }
 
 .gantt--input-number > .MuiInputBase-root {
-  height: 35px;
+  height: 32px;
 }
 
 .ant-table-cell {
   height: 32px;
+}
+.gant--comp_CustomModal___dialog-content .comp_TwoColumnsLayout___container-normal {
+  grid-template-columns: 30% 70%;
+}
+.gant--comp_CustomModal___dialog-content .view_ProjectCalendar_rightContainer .table_working_day {
+  width: 569px;
+  grid-template-columns: minmax(258px, 3fr) minmax(209px, 3fr)
+}
+.gant--comp_CustomModal___dialog-content .view_ProjectCalendar_rightContainer .table_working_stage{
+  grid-template-columns:171px 398px;
+  width: 583px;
 }
 
 .gantt--edit-cell__input-date button.MuiButtonBase-root {
@@ -1156,6 +1170,22 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
   width: 30px !important;
   height: 100% !important;
 }
+.gantt-right-header__wapper *{
+  letter-spacing:1px !important;
+}
+.gantt--right-header__more .MuiButtonBase-root {
+  width: 64px;
+}
+
+.gantt--right-header__more .MuiIconButton-label {
+  padding-left: 0 !important;
+}
+.gantt--right-header__more .gantt-right-header__wapper{
+  letter-spacing:1px !important;
+}
+.gantt--right-header__more * {
+  letter-spacing:1px !important;
+}
 
 .gantt-right-header__wapper .comp_CustomTable_HeaderButtonGroup___button > span:first-child > span {
   line-height: 1.75;
@@ -1251,4 +1281,28 @@ input[type='datetime-local']::-webkit-calendar-picker-indicator {
 }
 .gantt-right-header__wapper span {
   text-transform: uppercase;
+}
+#topNavId{
+  line-height: 1.15;
+}
+.left-bar-container {
+  line-height: 1.15;
+}
+.sc-kkGfuU img{
+  line-height: 1.15;
+  box-sizing: content-box;
+} 
+
+.sc-kkGfuU img::after{
+  box-sizing: content-box;
+} 
+.sc-kkGfuU img::before{
+  box-sizing: content-box;
+} 
+
+.Custom-MuiTooltip-tooltip{
+  background-color: rgba(97, 97, 97, 0.9);
+}
+li.gantt-calendar__left-side{
+  height: 63.5px;
 }

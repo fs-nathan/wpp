@@ -13,7 +13,7 @@ export const initialState = {
   payload: null,
   ownerPermissions: null,
   focusId: null,
-  location: {},
+  location: null,
 };
 
 /* eslint-disable default-case, no-param-reassign */

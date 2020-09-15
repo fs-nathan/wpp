@@ -4,12 +4,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import AlertModal from 'components/AlertModal';
 import { apiService } from 'constants/axiosInstance';
+import { SnackbarEmitter, SNACKBAR_VARIANT } from 'constants/snackbarController';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { changeFlagFetchProjectSchedules, changeMainCalendar } from "../../../actions/gantt";
-
 const ITEM_HEIGHT = 48;
 
 function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, changeMainCalendar, calendarPermisstions, changeFlagFetchProjectSchedules, isDefault }) {
@@ -26,7 +26,7 @@ function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, ch
     e.stopPropagation()
     setAnchorEl(null);
   };
-  const assignProjectSchedule = async (projectId, scheduleId,) => {
+  const assignProjectSchedule = async (projectId, scheduleId, ) => {
     try {
       const url = 'project/delete-schedules'
       const result = await apiService({
@@ -59,6 +59,11 @@ function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, ch
       console.log(e)
     }
   }
+  if (!calendarPermisstions.assign_schedule && !calendarPermisstions.edit_schedule) return null
+  const checkSet = calendarPermisstions.assign_schedule && !isMain
+  const chectEdit = calendarPermisstions.edit_schedule
+  const checkDelte = canDelete && !isDefault && calendarPermisstions.assign_schedule
+  if(!checkDelte && ! checkSet && !chectEdit) return null
   return (
     <div>
       <IconButton
@@ -97,8 +102,12 @@ function CustomMenu({ projectId, canDelete, isMain, mainCalendar, scheduleId, ch
         }}>
           {t('GANTT_CALENDAR_EDIT_CALENDAR')}
         </MenuItem>}
-        {canDelete && !isDefault && mainCalendar !== scheduleId && calendarPermisstions.edit_schedule && <MenuItem key={3} onClick={(e) => {
+        {canDelete && !isDefault && calendarPermisstions.assign_schedule && <MenuItem key={3} onClick={(e) => {
           e.stopPropagation()
+          if (mainCalendar === scheduleId) {
+            SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("GANTT_CANNOT"));
+            return
+          }
           setOpenConfirmModal(true)
         }}>
           {t('GANTT_CALENDAR_DELETE_CALENDAR')}

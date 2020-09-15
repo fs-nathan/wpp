@@ -1,5 +1,5 @@
 import { ButtonGroup, Collapse } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,7 +8,6 @@ import ColorButton from '../../../../../components/ColorButton';
 import ColorTypo from '../../../../../components/ColorTypo';
 import NoDataPlaceHolder from '../../NoDataPlaceHolder';
 import LocationShareBox from './LocationShareBox';
-import MapView from 'views/JobDetailPage/ChatComponent/MapView';
 import { setLocationData } from 'actions/taskDetail/taskDetailActions';
 
 const Body = styled(Scrollbars)`
@@ -38,8 +37,6 @@ function TabBody() {
   const locations = useSelector(state => state.taskDetail.location.locations);
   // const myLocations = locations.filter(({ is_me }) => is_me)
   const [value, setValue] = React.useState(0);
-  const [isOpenMap, setIsOpenMap] = React.useState(false);
-  const [locationData, setLocationData] = React.useState({});
 
   const isNoData = locations.length === 0;
 
@@ -49,8 +46,9 @@ function TabBody() {
 
   const handleClickLocation = (data) => {
     // console.log('handleClickLocation', data)
-    setIsOpenMap(true);
-    setLocationData(data);
+    // setIsOpenMap(true);
+    // setLocationData(data);
+    dispatch(setLocationData(data))
   }
 
   return (
@@ -91,7 +89,6 @@ function TabBody() {
             </React.Fragment>
         }
       </div>
-      <MapView isOpen={isOpenMap} setOpen={setIsOpenMap} locationData={locationData} ></MapView>
     </Body>
   )
 }

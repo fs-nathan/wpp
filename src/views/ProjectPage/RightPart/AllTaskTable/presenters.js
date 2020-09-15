@@ -11,16 +11,10 @@ import { find, flattenDeep, get, isNil, join } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
-import { useLocation } from 'react-use';
 import { Button } from "@material-ui/core";
 import './style.scss';
 import CustomAvatar from "../../../../components/CustomAvatar";
-
-const SubTitle = ({ className = '', ...props }) =>
-  <div
-    className={`view_Project_AllTaskTable___subtitle ${className}`}
-    {...props}
-  />;
+import NavigatorMenu from "../../../../components/NavigatorMenu";
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
@@ -70,10 +64,7 @@ function AllTaskTable({
 }) {
 
   const { t } = useTranslation();
-
   const history = useHistory();
-  const { pathname } = useLocation();
-
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const times = useTimes();
@@ -84,11 +75,10 @@ function AllTaskTable({
             options={{
                 title: t("DMH.VIEW.PP.RIGHT.ALL.TITLE"),
                 subTitle: isNil(memberID) ? () => (
-                    <SubTitle>
-                        <div className={pathname.includes("table") ? 'view_Project_AllTaskTable___subtitle_active' : ''}>Table</div>
-                        <div className={pathname.includes("gantt") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('task-table', 'task-gantt')}`)}>Gantt</div>
-                        <div className={pathname.includes("chat") ? 'view_Project_AllTaskTable___subtitle_active' : ''} onClick={evt => history.push(`${pathname.replace('task-table', 'task-chat')}`)}>Chat</div>
-                    </SubTitle>
+                    <>
+                      <div style={{marginTop: "5px"}}/>
+                      <NavigatorMenu/>
+                    </>
                 ) : () => (
                     <div className={"taskMember_title_container"}>
                         <div className={"taskMember_title_user"}>

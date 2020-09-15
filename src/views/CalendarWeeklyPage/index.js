@@ -6,7 +6,7 @@ import AlertModal from "components/AlertModal";
 import TwoColumnsLayout from "components/TwoColumnsLayout";
 import { CREATE_WEEKLY_SCHEDULE, CustomEventDispose, CustomEventListener, DELETE_ALL_WEEKLY_SCHEDULE, DELETE_WEEKLY_SCHEDULE, UPDATE_WEEKLY_SCHEDULE } from "constants/events";
 import { Routes } from "constants/routes";
-import { filter } from "lodash";
+import { filter, isNil } from "lodash";
 import get from "lodash/get";
 import moment from "moment";
 import React from 'react';
@@ -93,10 +93,10 @@ function CalendarWeeklyPage({
   }
 
   React.useEffect(() => {
-    if (calendars.data.length === 0) {
+    if (calendars.data.length === 0 && isNil(params.from)) {
       history.push(`${Routes.CALENDAR}/weekly`);
     }
-  }, [calendars]);
+  }, [calendars, params.from]);
 
   return (
     <>

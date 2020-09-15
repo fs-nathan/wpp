@@ -17,7 +17,8 @@ const AssignCalendarModal = ({
   fetchProjectSchedule,
   setopenModal,
   changeProjectSchedule,
-  openModal
+  openModal,
+  mainCalendar
 }) => {
   const [listSchedule, setListSchedule] = useState([]);
   const [listProjectSchedule, setListProjectSchedule] = useState([]);
@@ -58,6 +59,10 @@ const AssignCalendarModal = ({
   }
   const assignProjectSchedule = async (projectId, scheduleId, check) => {
     try {
+      if (!check && scheduleId === mainCalendar) {
+        SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("GANTT_CANNOT"));
+        return
+      }
       const url = check ? 'project/assign-schedules' : 'project/delete-schedules'
       const result = await apiService({
         url,
@@ -91,6 +96,11 @@ const AssignCalendarModal = ({
                 }
                 onClick={e => {
                   const { projectId } = params
+                  if (!e.target.checked && item.id === mainCalendar) {
+                    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("GANTT_CANNOT"));
+                    e.preventDefault()
+                    return
+                  }
                   assignProjectSchedule(projectId, item.id, e.target.checked)
                 }}
                 label={item.name}
@@ -147,6 +157,7 @@ const mapStateToProps = (state) => ({
   scheduleDetailGantt: state.gantt.scheduleDetailGantt,
   projectSchedules: state.gantt.projectSchedules,
   fetchProjectSchedule: state.gantt.fetchProjectSchedule,
+  mainCalendar: state.gantt.mainCalendar
 });
 const mapDispatchToProps = {
   changeFlagFetchProjectSchedules,

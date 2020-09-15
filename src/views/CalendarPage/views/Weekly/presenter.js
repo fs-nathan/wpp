@@ -94,7 +94,7 @@ function WeeklyCalendarPresenter({
                 {
                   label: t("views.calendar_page.right_part.label.name"),
                   field: (row) => <LinkSpan
-                    onClick={evt => history.push(`${Routes.CALENDAR_WEEKLY.replace(":week/:year", `${get(row, 'week', '')}/${get(row, 'year', '')}`)}`)}
+                    onClick={evt => history.push(`${Routes.CALENDAR_WEEKLY.replace(":week/:year/:from", `${get(row, 'week', '')}/${get(row, 'year', '')}`)}`)}
                   >
                     <span className="views_weeklyCalendar_calendarName">{get(row, 'name', '')}</span>
                     {

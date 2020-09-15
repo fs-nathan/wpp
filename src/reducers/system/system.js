@@ -26,6 +26,10 @@ export const initialState = {
   visibleOfferDetail: {
     visible: false,
     offer_id: null
+  },
+  visibleRemindDetail: {
+    visible: false,
+    remind_id: null
   }
 };
 
@@ -61,15 +65,27 @@ const system = (state = initialState, action) => {
     case actionTypes.CHANGE_NUM_MESSAGE_NOT_VIEW:
       return { ...state, numberMessageNotView: action.payload };
     case actionTypes.CHANGE_VISIBLE_COMMON_CONFIG:
-      return { ...state, ganttConfig: action.payload };
+      return { ...state, ganttConfig: action.payload, visibleSubtaskDrawer: false, exportPdfDrawerVisible: false };
     case actionTypes.CHANGE_VISIBLE_EXPORT_PDF_DRAWER:
-      return { ...state, exportPdfDrawerVisible: action.payload };
+      return {
+        ...state, visibleSubtaskDrawer: false, exportPdfDrawerVisible: action.payload, ganttConfig: {
+          ...state.ganttConfig,
+          state: false
+        }
+      };
     case actionTypes.CHANGE_VISIBLE_SUBTASK_DRAWER:
-      return { ...state, visibleSubtaskDrawer: action.payload };
+      return {
+        ...state, visibleSubtaskDrawer: action.payload, exportPdfDrawerVisible: false, ganttConfig: {
+          ...state.ganttConfig,
+          state: false
+        }
+      };
     case actionTypes.CHANGE_DETAIL_SUBTASK_DRAWER:
       return { ...state, detailSubTaskDrawer: action.payload };
     case actionTypes.CHANGE_VISIBLE_OFFER_DETAIL_MODAL:
-      return {...state, visibleOfferDetail: action.payload}
+      return { ...state, visibleOfferDetail: action.payload }
+    case actionTypes.CHANGE_VISIBLE_REMIND_DETAIL_MODAL:
+      return { ...state, visibleRemindDetail: action.payload }
     default:
       return state;
   }

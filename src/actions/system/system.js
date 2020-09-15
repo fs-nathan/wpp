@@ -237,3 +237,8 @@ export const changeVisibleOfferDetailModal = ({offer_id, visible}) => ({
   type: actionTypes.CHANGE_VISIBLE_OFFER_DETAIL_MODAL,
   payload: {offer_id, visible}
 })
+
+export const changeVisibleRemindDetailModal = ({remind_id, visible}) => ({
+  type: actionTypes.CHANGE_VISIBLE_REMIND_DETAIL_MODAL,
+  payload: {remind_id, visible}
+})

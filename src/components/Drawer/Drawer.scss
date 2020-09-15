@@ -310,6 +310,10 @@
         background-color: #fd7e14;
         color: white;
       }
+      &.expire-color {
+        background-color: #a0c1d1;
+        color: white;
+      }
     }
     .account-name {
       font-size: 20px;
@@ -550,6 +554,12 @@
           }
           &.pro-color {
             background-color: #fd7e14;
+            color: white;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+          }
+          &.expire-color {
+            background-color: #a0c1d1;
             color: white;
             text-transform: uppercase;
             margin-bottom: 5px;

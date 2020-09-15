@@ -43,8 +43,10 @@ function ChatPart(props) {
 
   function hideSearch() {
     setShowSearch(false)
-    dispatch(searchChat(''))
-    dispatch(loadChat(taskId))
+    if (searchChatKey) {
+      dispatch(searchChat(''))
+      dispatch(loadChat(taskId))
+    }
   }
 
   function onClickClosePin() {

@@ -376,7 +376,7 @@ function GanttChart({
             }
           }}
         >
-          {!(renderFullDay && ((new moment(filterExportPdf.start)).diff(new moment()) > 0 || (new moment(filterExportPdf.end)).diff(new moment()) <= 0)) && visibleGantt.fromNowLayer && (
+          {!(Date.now() - end.toDate().getTime() > 0 || Date.now() - start.toDate().getTime() < 0) && !(renderFullDay && ((new moment(filterExportPdf.start)).diff(new moment()) > 0 || (new moment(filterExportPdf.end)).diff(new moment()) <= 0)) && visibleGantt.fromNowLayer && (
             <div
               className="gantt--fromNowLayer__container"
               style={{

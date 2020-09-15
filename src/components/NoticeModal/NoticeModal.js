@@ -22,16 +22,6 @@ import {get} from "lodash";
 const NoticeModal = props => {
   const { t } = useTranslation();
   const bgColor = props.colors.find(item => item.selected === true);
-  const defaultColor = {
-    backgroundColor: bgColor.color,
-    color: 'white',
-    border: `1px solid ${bgColor.color}`
-  };
-  const hoverColor = {
-    backgroundColor: bgColor.color,
-    color: 'white',
-    border: `1px solid ${bgColor.color}`
-  };
   const backgroundHeader = (img, imgSize = "contain") => {
     return {
       backgroundImage: `url(${img})`,
@@ -40,8 +30,6 @@ const NoticeModal = props => {
       backgroundSize: imgSize
     }
   }
-
-  const [typeHover, setHover] = useState(null);
   const [loading, setLoading] = useState(false);
   const handleToast = (type, message) => {
     props.actionToast(type, message);
@@ -51,9 +39,10 @@ const NoticeModal = props => {
     props.closeNoticeModal();
   };
 
-  const demoMode = () => {
+  const demoMode = (e) => {
+    e.preventDefault();
     closeNoticeModal();
-    props.history.push(Routes.HOME);
+    //props.history.push(Routes.HOME);
     props.actionVisibleDrawerMessage({
       type: DRAWER_TYPE.GROUP_ACCOUNT,
       anchor: 'top'
@@ -67,7 +56,7 @@ const NoticeModal = props => {
     });
   };
 
-  const startTrailUsing = async () => {
+  const startTrialUsing = async () => {
     try {
       setLoading(true);
       await apiService({
@@ -145,68 +134,53 @@ const NoticeModal = props => {
                     {t('IDS_WP_LOGIN_SUCCESS_INTRO')} <strong>{get(props.profile, "group_active.name")}</strong>
                     <br/>
                     {t("IDS_WP_LOGIN_SUCCESS_INTRO_1")}
-                    <a href={"#"}>
+                    <a href={"https://support.workplus.vn/hoi-dap/don-hang-dung-thu-la-gi/"} target={"_blank"}>
                       {t("IDS_WP_SEE_MORE_TRAIL_POLICY")}
                       <Icon path={mdiDockWindow} size={0.7} color={"#0000EE"}/>
                     </a>
+                    {t("IDS_WP_LOGIN_SUCCESS_INTRO_2")}
                   </p>
                 </>
             ) : (
                 <p className="notice-text sub-header-text">
-                  {t('IDS_WP_EXPIRE_ORDER_NOTICE')}
+                  <span className={"text-bold"}>{t('IDS_WP_EXPIRE_ORDER_NOTICE')}</span>
+                  <br/>
+                  <span>{t("IDS_WP_EXPIRE_ORDER_NOTICE_2")}</span>
                 </p>
             )
           }
 
           <div className="notice-btn-container">
             {
-              props.visibleNoticeReason === "ACCOUNT_FREE" ? (
-                  <>
-                    <Button
-                        variant="contained"
-                        className="notice-btn"
-                        onClick={startTrailUsing}
-                        style={
-                          typeHover === 'join' ? { ...hoverColor, opacity: loading ? "0.5" : "1"} : { ...defaultColor, opacity: loading ? "0.5" : "1"}
-                        }
-                        onMouseEnter={() => setHover('join')}
-                        onMouseLeave={() => setHover(null)}
-                        disabled={loading}
-                    >
-                      <CircularProgress
-                          size={16}
-                          className="margin-circular"
-                          color={bgColor.color}
-                          style={{
-                            display: loading ? 'initial' : 'none'
-                          }}
-                      />
-                      {t('IDS_WP_START_TRAIL_USING')}
-                    </Button>
-                    <Button className={"notice-btn-text"} onClick={upgradeAccount}>
-                      {t('IDS_WP_SELECT_UPGRADE_ACC')}
-                    </Button>
-                  </>
-              ) : (
-                  <>
-                    <Button
-                        variant="contained"
-                        className="notice-btn"
-                        onClick={upgradeAccount}
-                        style={
-                          typeHover === 'join' ? { ...hoverColor } : { ...defaultColor }
-                        }
-                        onMouseEnter={() => setHover('join')}
-                        onMouseLeave={() => setHover(null)}
-                    >
-                      {t('IDS_WP_UPGRADE_ACC')}
-                    </Button>
-                    <Button className={"notice-btn-text"} onClick={demoMode}>
-                      {t('IDS_WP_SELECT_GROUP_ACC')}
-                    </Button>
-                  </>
+              props.visibleNoticeReason === "ACCOUNT_FREE" && (
+                <Button
+                  variant="contained"
+                  className="notice-btn notice-btn-orange"
+                  onClick={startTrialUsing}
+                  disabled={loading}
+                >
+                  <CircularProgress
+                    size={16}
+                    className="margin-circular"
+                    color={bgColor.color}
+                    style={{
+                      display: loading ? 'initial' : 'none'
+                    }}
+                  />
+                  {t('IDS_WP_START_TRAIL_USING')}
+                </Button>
               )
             }
+            <Button
+              variant="contained"
+              className="notice-btn notice-btn-green"
+              onClick={upgradeAccount}
+            >
+              {t('IDS_WP_UPGRADE_ACC')}
+            </Button>
+            <Button className={"notice-btn-text"} onClick={evt => demoMode(evt)}>
+              {t('IDS_WP_SELECT_GROUP_ACC')}
+            </Button>
           </div>
 
           <p className="notice-text-info">{t('IDS_WP_CONTACT_WORKPLUS_ENTER')}</p>
@@ -214,14 +188,18 @@ const NoticeModal = props => {
             Hotline: 09.1800.6181 - Email: support@workplus.vn
           </p>
           <div className="notice-icon-container">
-          <span className="notice-icon">
-            <img src={icons.ic_zalo} alt="" />
-            &nbsp; {t('IDS_WP_ZALO_SUPPORT')}
-          </span>
-            <span className="notice-icon">
-            <img src={icons.ic_messeger} alt="" />
-              &nbsp; {t('IDS_WP_FACEBOOK_SUPPORT')}
-          </span>
+          <a href={"https://zalo.me/3224858190179871108"} target={"_blank"}>
+              <span className="notice-icon">
+                <img src={icons.ic_zalo} alt="" />
+                &nbsp; {t('IDS_WP_ZALO_SUPPORT')}
+              </span>
+          </a>
+          <a href={"https://m.me/workplus.vn"} target={"_blank"}>
+              <span className="notice-icon">
+                <img src={icons.ic_messeger} alt="" />
+                &nbsp; {t('IDS_WP_FACEBOOK_SUPPORT')}
+              </span>
+          </a>
           </div>
         </div>
       </MuiDialogActions>

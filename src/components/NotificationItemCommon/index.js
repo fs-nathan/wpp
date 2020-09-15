@@ -2,11 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { isEmpty } from '../../helpers/utils/isEmpty';
-import {actionVisibleDrawerMessage, openDocumentDetail, actionActiveGroup, actionChangeBreadCrumbs, changeVisibleOfferDetailModal} from '../../actions/system/system';
+import {actionVisibleDrawerMessage, openDocumentDetail, actionActiveGroup, actionChangeBreadCrumbs, changeVisibleOfferDetailModal, changeVisibleRemindDetailModal} from '../../actions/system/system';
 import {getDocumentDetail, actionFetchListMyDocument, actionSelectedFolder} from '../../actions/documents';
 import { DRAWER_TYPE } from '../../constants/constants';
 import { Routes } from '../../constants/routes';
-import { Routes as CalendarRoutes } from "views/CalendarPage/constants/routes";
 
 const NOTIFICATION_NEW_POST_CREATED = 22;
 const NOTIFICATION_COMMENT_IN_POST = 23;
@@ -29,7 +28,6 @@ const NOTIFICATION_ORDER_APPROVED = 38;
 const NotificationItemCommon = props => {
   const { data_notification } = props.item;
   const handleClick = async () => {
-    console.log(data_notification);
     if (props.handleViewNotification) props.handleViewNotification();
     if (!isEmpty(props.typeDrawer)) {
       props.actionVisibleDrawerMessage({
@@ -133,10 +131,10 @@ const NotificationItemCommon = props => {
         props.history.push({ pathname: data_notification.url_redirect });
         break;
       case NOTIFICATION_REMIND:
-        props.history.push({ pathname: CalendarRoutes.ALARM_RECENTLY });
+        props.changeVisibleRemindDetailModal({remind_id: data_notification.remind_id, visible: true});
         break;
       case NOTIFICATION_WEEKLY_CALENDAR:
-        props.history.push({ pathname: CalendarRoutes.WEEKLY });
+        props.history.push({ pathname: Routes.CALENDAR_WEEKLY.replace(":week/:year/:from?", `${data_notification.week}/${data_notification.year}/notification`)});
         break;
       case NOTIFICATION_ADD_MEMBER_TO_OFFER:
       case NOTIFICATION_ADD_MEMBER_TO_MONITOR_OFFER:
@@ -166,6 +164,7 @@ export default connect(
     actionFetchListMyDocument,
     actionChangeBreadCrumbs,
     actionSelectedFolder,
-    changeVisibleOfferDetailModal
+    changeVisibleOfferDetailModal,
+    changeVisibleRemindDetailModal
   }
 )(withRouter(NotificationItemCommon));

@@ -1054,6 +1054,7 @@
   "IDS_WP_FINISH_ORDER": "Hoàn thành đơn hàng",
   "IDS_WP_SEARCH": "Tìm kiếm",
   "IDS_WP_ORDER": "Đơn hàng",
+  "IDS_WP_SETTING_HOME": "Thiết lập trang chủ",
   "IDS_WP_SETTING_GROUP": "Thiết lập nhóm",
   "IDS_WP_SETUP_SOFTWARE": "Cài đặt phần mềm",
   "IDS_WP_TIME_LANGUAGE": "Thời gian và ngôn ngữ",
@@ -1150,10 +1151,12 @@
   "IDS_WP_GROUP_INFO": "Thông tin nhóm",
   "IDS_WP_EDIT_GROUP_INFO": "Chỉnh sửa thông tin nhóm",
   "IDS_WP_WORKPLUS_APPLICATION": "Hệ thống quản trị doanh nghiệp số",
-  "IDS_WP_EXPIRE_ORDER_NOTICE": "Tài khoản của bạn đã hết thời hạn dùng thử hoặc đơn hàng hết hạn sử dụng. Vui lòng nâng cấp hoặc chọn nhóm tài khoản Demo để trải nghiệm!",
+  "IDS_WP_EXPIRE_ORDER_NOTICE": "Tài khoản của bạn đã hết thời hạn dùng thử hoặc đơn hàng đã hết hạn sử dụng.",
+  "IDS_WP_EXPIRE_ORDER_NOTICE_2": "Vui lòng nâng cấp hoặc chọn nhóm tài khoản Demo để trải nghiệm!",
   "IDS_WP_WELCOME": "Xin chào",
   "IDS_WP_LOGIN_SUCCESS_INTRO": "Chào mừng bạn đến với hệ thống quản trị doanh nghiệp trực tuyến",
   "IDS_WP_LOGIN_SUCCESS_INTRO_1": "Tài khoản của bạn được dùng thử miễn phí 30 ngày. ",
+  "IDS_WP_LOGIN_SUCCESS_INTRO_2":  "Hoặc nâng cấp tài khoản",
   "IDS_WP_SEE_MORE_TRAIL_POLICY": "Xem chính sách dùng thử ",
   "IDS_WP_START_TRAIL_USING": "Dùng thử 30 ngày",
   "IDS_WP_SELECT_UPGRADE_ACC": "Nâng cấp tài khoản",
@@ -2127,5 +2130,10 @@
   "GANTT_6": "T7",
   "GANTT_0": "CN",
   "GANTT_TODAY_LABEL": "Hôm nay",
-  "GANTT_NOT_INCLUDE_PROJECT": "Ngày hôm nay không thuộc tiến độ dự án"
+  "GANTT_NOT_INCLUDE_PROJECT": "Ngày hôm nay không thuộc tiến độ dự án",
+  "REMIND_DETAIL_LABEL_REMIND_CREATED": "đã tạo lịch nhắc hẹn",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "Thời gian kết thúc phải lớn hơn thời gian bắt đầu",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "Từ ngày",
+  "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Đến ngày",
+  "GANTT_CANNOT": "Biểu đồ đang sử dụng lịch này."
 }

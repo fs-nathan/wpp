@@ -10,7 +10,7 @@ import { IconButton, Avatar } from '@material-ui/core';
 import avatar from '../../assets/avatar.jpg';
 import * as icons from '../../assets';
 import { actionVisibleDrawerMessage } from '../../actions/system/system';
-import { DRAWER_TYPE } from '../../constants/constants';
+import {DRAWER_TYPE, TOKEN} from '../../constants/constants';
 import SearchModal from '../../components/SearchModal/SearchModal';
 import './TopBar.scss';
 import {
@@ -49,9 +49,12 @@ const TopBar = props => {
     } catch (err) {}
   };
   useEffect(() => {
-    handleFetchNumNotificationNotView();
-    handleFetchNumMessageNotView();
-    handleFetchProfile(); // eslint-disable-next-line
+    const hasToken = localStorage.getItem(TOKEN);
+    if(hasToken) {
+      handleFetchNumNotificationNotView();
+      handleFetchNumMessageNotView();
+      handleFetchProfile();
+    }
   }, []);
   const handleFetchNumNotificationNotView = async () => {
     try {
@@ -99,6 +102,8 @@ const TopBar = props => {
     !isEmpty(props.groupActive) &&
     (props.groupActive.type === 'Free' ||
       props.groupActive.type_group === 'Free');
+  const isExpire =
+    !isEmpty(props.groupActive) && props.groupActive.is_expire;
   return (
     <div id="topNavId" className="top-bar-container">
       <div className="left-part">
@@ -112,7 +117,7 @@ const TopBar = props => {
                 badge
                 color="orange"
                 label={props.groupActive.type || props.groupActive.type_group}
-                className={`style-status ${isFree ? 'free-status' : ''}`}
+                className={`style-status ${isFree ? 'free-status' : isExpire ? 'expire-status' : ''}`}
               />
             </div>
             {props.groupActive.code && (

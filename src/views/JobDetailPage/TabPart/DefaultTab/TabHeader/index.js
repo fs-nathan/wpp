@@ -77,7 +77,7 @@ function TabHeader(props) {
 
   const confirmDelete = () => {
     dispatch(deleteTask({ taskId, projectId }));
-    history.push(`/tasks/chat/${projectId}`);
+    history.push(`/projects/task-chat/${projectId}`);
   };
 
   function onClickPin() {
@@ -108,19 +108,19 @@ function TabHeader(props) {
     handleOpenModalDelete();
   }
   const editList = [
-    <MenuItem
+    <MenuItem key="editList1"
       onClick={onClickEdit(EDIT_MODE.NAME_DES)}
     >{t('LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC')}</MenuItem>,
-    <MenuItem
+    <MenuItem key="editList2"
       onClick={onClickEdit(EDIT_MODE.PRIORITY)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}</MenuItem>,
-    <MenuItem
+    <MenuItem key="editList3"
       onClick={onClickEdit(EDIT_MODE.GROUP)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC')}</MenuItem>,
-    <MenuItem
+    <MenuItem key="editList4"
       onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>,
-    <MenuItem
+    <MenuItem key="editList5"
       onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>,
   ]
