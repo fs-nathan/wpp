@@ -11,12 +11,24 @@ import { OfferPageContext } from '../OfferPageContext';
 import { checkUserIsInOfferGroupRoutes } from '../utils/validate';
 import "./LeftSetting.scss";
 import ListContent from "./listContent";
+import ColorChip from "../../../components/ColorChip";
+import {useSelector} from "react-redux";
 
 const LeftSetting = props => {
   const history = useHistory();
   const { t } = useTranslation();
   const { pathname } = props.location;
   const { handleOnDraggEnd } = useContext(OfferPageContext);
+  const colors = useSelector(state => state.setting.colors);
+  const bgColor = colors.find(item => item.selected === true);
+  const filterTopicType = 0;
+  const workingTopic = [
+      t("VIEW_OFFER_LABEL_ALL"),
+      t("IDS_WP_PROJECT"),
+      t("IDS_WP_PROCESS"),
+      t("IDS_WP_PLAN"),
+      t("IDS_WP_CAMPAIGN")
+  ];
   const checkBeforeShowLeftIcon = () => {
     const validPathname = [Routes.OVERVIEW, Routes.RECENTLY]
     if (validPathname.includes(pathname)) {
@@ -53,6 +65,22 @@ const LeftSetting = props => {
       }}
 
     >
+      {
+        props.hasFilterByCategory && (
+            <div className={"leftSettings-filterByCategory-container"}>
+                {workingTopic.map((topic,index) => (
+                    <ColorChip
+                        key={index}
+                        label={topic}
+                        onClick={() => {}}
+                        size="small"
+                        color={filterTopicType === index ? 'light-blue' : 'white'}
+                        style={{ background: filterTopicType === index && bgColor.color }}
+                    />
+                ))}
+            </div>
+        )
+      }
       {
         props.searchInput && (
           <div className="leftSettings-searchInput">

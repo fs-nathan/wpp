@@ -28,7 +28,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
   return (
     <>
       <CustomModal
-        title={t("DMH.VIEW.PGP.MODAL.NEWPG.TITLE")}
+        title={t("IDS_WP_ADD")}
         open={open}
         setOpen={setOpen}
         confirmRender={null}
@@ -47,7 +47,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
               <Icon path={mdiNotePlusOutline} size={2} />
             </div>
             <div>
-              <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.TITLE")}</span>
+              <span>{t("IDS_WP_ADD")}</span>
               <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.DESC")}</span>
             </div>
           </ButtonCase>

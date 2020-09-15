@@ -232,6 +232,7 @@ function OfferPage() {
             setOpenModalOfferByGroup={
               setOpenModalOfferByGroup
             }
+            hasFilterByCategory={true}
             searchInput={
               true
             }

@@ -152,6 +152,7 @@ function ProjectSetting({
             <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={<React.Fragment>{t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_0")} <small>{t("LABEL_CHAT_TASK_MAC_DINH")}</small></React.Fragment>} />
             <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_1")} />
             <CustomFormControlLabel value={2} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2")} />
+            <CustomFormControlLabel value={3} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_3")} />
           </RadioGroup>
         </StyledFormControl>}
         {get(canChange, 'update', false) && <StyledFormControl component='fieldset' fullWidth>

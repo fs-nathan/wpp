@@ -347,11 +347,11 @@
             "TITLE": "Tạo dự án",
             "CREATE": {
               "TITLE": "Tạo mới dự án",
-              "DESC": "Bắt đầu dự án bằng cách tạo mới hoàn toàn các thông số của dự án"
+              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình để bắt đầu làm việc"
             },
             "COPY": {
-              "TITLE": "Sao chép dự án",
-              "DESC": "Tạo dự án mới bằng cách sao chép các thông số của dự án cũ như: Danh mục công việc, tiến độ, ..."
+              "TITLE": "Sao chép",
+              "DESC": "Tạo mới chủ đề Công việc, Dự án hoặc Quy trình bằng cách sao chép từ thư viện"
             }
           },
           "NOPG": {
@@ -677,7 +677,7 @@
         "title": "Quản lý lịch",
         "create": "Tạo lịch",
         "recently": "Gần đây",
-        "project_alarm": "Nhắc hẹn dự án",
+        "project_alarm": "Nhắc hẹn theo công việc",
         "my_alarm": "Nhắc hẹn theo nhóm"
       },
       "right_part": {
@@ -956,6 +956,8 @@
   "IDS_WP_BUDGET": "Ngân sách",
   "IDS_WP_SUGGEST": "Đề xuất",
   "IDS_WP_PROCESS": "Quy trình",
+  "IDS_WP_PLAN": "Kế hoạch",
+  "IDS_WP_CAMPAIGN": "Chiến dịch",
   "IDS_WP_ARCHIVAL": "Văn thư",
   "IDS_WP_CALENDAR_REMINDER": "Lịch, nhắc hẹn",
   "IDS_WP_POSITION": "Vị trí",
@@ -1110,11 +1112,11 @@
   "IDS_WP_RENAME": "Đổi tên",
   "IDS_WP_JOIN_PROJECT": "Truy cập dự án",
   "IDS_WP_JOIN_TASK": "Tuy cập công việc",
-  "IDS_WP_DOCUMENT_NOTE": "Sổ tài liệu",
+  "IDS_WP_DOCUMENT_NOTE": "Số tài liệu",
   "IDS_WP_DELETE_DATE": "Ngày xóa",
   "IDS_WP_DELETE_PEOPLE": "Người xóa",
   "IDS_WP_RECENT": "Gần đây",
-  "IDS_WP_PROJECT_DOCUMENT": "Tài liệu dự án",
+  "IDS_WP_PROJECT_DOCUMENT": "Tài liệu làm việc",
   "IDS_WP_SHARED": "Đã chia sẻ",
   "IDS_WP_SHARE_WITH_ME": "Được chia sẻ với tôi",
   "IDS_WP_GOOGLE_DRIVE": "Google Drive",
@@ -1261,7 +1263,8 @@
   "IDS_WP_COLLAPS": "Thu hẹp",
   "IDS_WP_FILTER": "Lọc",
   "IDS_WP_WEEKLY_CALENDAR": "Lịch tuần",
-  "IDS_WP_PROJECT_CALENDAR": "Lịch dự án",
+  "IDS_WP_PROJECT_CALENDAR": "Lịch làm việc",
+  "IDS_WP_PROJECT_CALENDAR_SUBTITLE": "Thiết lập các lịch làm việc cho dự án, quy trình, kế hoạch hay chiến dịch",
   "IDS_WP_ALARM_CALENDAR": "Lịch nhắc hẹn",
   "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Nhắc hẹn, lịch hẹn, báo hẹn",
   "IDS_WP_WEEK_COUNT": "Lịch tuần số",
@@ -1270,8 +1273,8 @@
   "IDS_WP_FROM": "Từ",
   "IDS_WP_SELECT_YEAR": "Chọn thời gian",
   "IDS_WP_INPUT_SEARCH_PROJECT": "Tìm dự án",
-  "IDS_WP_FILTER_BY_PROJECT": "Lọc theo dự án",
-  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Chọn/bỏ chọn để lọc nhắc hẹn theo dự án",
+  "IDS_WP_FILTER_BY_PROJECT": "Lọc theo dự án, quy trình, kế hoạch...",
+  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Chọn/bỏ chọn để lọc nhắc hẹn theo dự án, quy trình...",
   "IDS_WP_CREATED_AT": "Tạo lúc",
   "IDS_WP_REMIND": "Nhắc",
   "IDS_WP_REQUIRED": "Không được để trống.",
@@ -1873,10 +1876,11 @@
   "VIEW_OFFER_LABEL_OVERVIEW_TITLE": "Tổng quan",
   "VIEW_OFFER_LABEL_RECENTLY_TITLE": "Gần đây",
   "VIEW_OFFER_LABEL_GROUP_TITLE": "Nhóm",
-  "VIEW_OFFER_LABEL_PROJECT_TITLE": "Dự án",
+  "VIEW_OFFER_LABEL_PROJECT_TITLE": "Làm việc",
   "VIEW_OFFER_LABEL_DEPARTMENT_TITLE": "Bộ phận",
   "VIEW_OFFER_LABEL_GROUP_SUBTITLE": "Đề xuất theo nhóm",
-  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Đề xuất theo dự án",
+  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Đề xuất theo dự án, quy trình, kế hoạch...",
+  "VIEW_OFFER_LABEL_PROJECT_HEADER_TITLE": "Đề xuất theo làm việc",
   "VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE": "Đề xuất theo bộ phận",
   "VIEW_OFFER_LABEL_OFFER_BY_STATUS": "Đề xuất theo trạng thái",
   "VIEW_OFFER_LABEL_OFFER_BY_LEVEL": "Đề xuất theo mức độ",
@@ -2086,6 +2090,7 @@
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_0": "Bảng danh sách công việc (Table) ",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_1": "Thảo luận (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2": "Sơ đồ gantt (Gantt)",
+  "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_3": "Bảng thẻ việc (Kanban)",
   "CUSTOM_TEXTBOX_CONTENT_LABEL": "Nội dung...",
   "IDS_WP_LEAVE_GROUP_CONFIRM_MSG": "Bạn có chắc chắn muốn rời khỏi nhóm này?",
   "IDS_WP_START_TRAIL_SUCCESS": "Bạn đã kích hoạt gói dùng thử 30 ngày thành công",

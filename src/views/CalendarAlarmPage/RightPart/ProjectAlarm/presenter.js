@@ -195,7 +195,7 @@ function CalendarProjectAlarmPresenter({
                                 <Box key={get(item, "id", "")}>
                                   <div className={`alarm_celendar_item_MainContainer`}>
                                     <div className="alarm_calendar_table_header">
-                                      <Typography variant={"h5"}>{get(item, "name", "")}</Typography>
+                                      <Typography variant={"h5"}>[{t("LABEL_REMIND_PROJECT")}] {get(item, "name", "")}</Typography>
                                       <div className="reminds_count">
                                         <Icon path={mdiAlarm} size={0.7} color="#fff" />
                                         {Array.isArray(item.reminds) ? item.reminds.length : 0}
