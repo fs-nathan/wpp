@@ -5,7 +5,7 @@ import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, EDIT_PROJECT_GROUP } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
-async function doEditProjectGroup({ projectGroupId, name, icon, description }) {
+async function doEditProjectGroup({ projectGroupId, name, icon, description, work_types }) {
   try {
     const config = {
       url: '/project-group/update',
@@ -15,6 +15,7 @@ async function doEditProjectGroup({ projectGroupId, name, icon, description }) {
         name,
         icon,
         description,
+        work_types
       },
     }
     const result = await apiService(config);

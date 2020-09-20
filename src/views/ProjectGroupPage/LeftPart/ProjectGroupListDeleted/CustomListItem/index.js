@@ -1,10 +1,11 @@
-import { ListItemText } from '@material-ui/core';
+import {ListItemText} from '@material-ui/core';
 import {get} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import CustomAvatar from '../../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
-import { Link } from 'react-router-dom';
+import {Primary, StyledListItem} from '../../../../../components/CustomList';
+import {Link} from 'react-router-dom';
+import * as images from "../../../../../assets";
 
 function CustomListItem({ projectGroup, index, groupID}) {
   const { t } = useTranslation();
@@ -21,7 +22,20 @@ function CustomListItem({ projectGroup, index, groupID}) {
                 <Primary>{get(projectGroup, 'name', '')}</Primary>
               }
               secondary={
-                <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", { projectGroups: get(projectGroup, 'number_project', 0) })}</Secondary>
+                <div className={"view_ProjectGroup_List_statistic"}>
+                  <div className={"view_ProjectGroup_List_statistic_item"}>
+                    <img src={images.check_64} alt="" width={15} height={15}/>
+                    <span>{get(projectGroup, 'statistic.work_topic', 0)}</span>
+                  </div>
+                  <div className={"view_ProjectGroup_List_statistic_item"}>
+                    <img src={images.speed_64} alt="" width={15} height={15}/>
+                    <span>{get(projectGroup, 'statistic.project', 0)}</span>
+                  </div>
+                  <div className={"view_ProjectGroup_List_statistic_item"}>
+                    <img src={images.workfollow_64} alt="" width={15} height={15}/>
+                    <span>{get(projectGroup, 'statistic.process', 0)}</span>
+                  </div>
+                </div>
               }
           />
       </StyledListItem>

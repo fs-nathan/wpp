@@ -5,7 +5,7 @@ import { apiService } from '../../constants/axiosInstance';
 import { CREATE_PROJECT_GROUP, CustomEventEmitter } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
-async function doCreateProjectGroup({ name, icon, description }) {
+async function doCreateProjectGroup({ name, icon, description, work_types }) {
   try {
     const config = {
       url: '/project-group/create',
@@ -13,10 +13,12 @@ async function doCreateProjectGroup({ name, icon, description }) {
       data: !isNil(icon) ? {
         name,
         description,
-        icon
+        icon,
+        work_types
       } : {
         name,
-        description
+        description,
+        work_types
       }
     }
     const result = await apiService(config);

@@ -1,0 +1,64 @@
+.workplace-page {
+  &-container {
+    min-height: 100%;
+    background-color: #EEEEEE;
+    padding: 45px 100px;
+  }
+  &-header {
+    text-align: center;
+    &-subtitle {
+      font-size: 17px;
+    }
+  }
+  &-cards {
+    margin-top: 35px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  &-card {
+    background-color: #ffff;
+    border-radius: 10px;
+    width: 350px;
+    position: relative;
+    min-height: 440px;
+    cursor: pointer;
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 45px 40px;
+      &>button {
+        position: absolute;
+        bottom: 40px;
+      }
+    }
+    &-cover {
+      position: absolute;
+      bottom: 0;
+      width: 350px;
+    }
+    &:hover {
+      box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      transition: box-shadow 500ms;
+    }
+  }
+  &-working-type {
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 500;
+    color: #0c92f2;
+    margin-top: 35px;
+  }
+  &-working-count {
+    font-size: 16px;
+    color: #000;
+    font-weight: 500;
+  }
+  &-working-des {
+    color: #000;
+    text-align: center;
+    margin-top: 40px;
+    font-size: 14px;
+  }
+}

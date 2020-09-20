@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import CustomListItem from './CustomListItem';
 import './style.scss';
+import {WORKPLACE_TYPES} from "../../../../constants/constants";
 
 const Banner = ({ className = '', ...props }) =>
   <div
@@ -30,13 +31,14 @@ function GroupTaskSlide({
   searchPatern, setSearchPatern,
   groupTasks, permissions = false,
   handleSortGroupTask, handleDeleteGroupTask,
-  handleOpenModal
+  handleOpenModal, project
 }) {
 
   const { t } = useTranslation();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [curGroupTask, setCurGroupTask] = React.useState(null);
+  const [title, setTitle] = React.useState("");
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -48,10 +50,24 @@ function GroupTaskSlide({
     handleSortGroupTask(draggableId, destination.index);
   }
 
+  React.useEffect(() => {
+    switch (get(project, 'project.work_type')) {
+      case WORKPLACE_TYPES.JOB:
+      case WORKPLACE_TYPES.PROJECT:
+        setTitle(t("DMH.VIEW.PP.LEFT.GT.TITLE"));
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setTitle(t("IDS_WP_PHASE"));
+        break;
+      default:
+        break;
+    }
+  }, [project]);
+
   return (
     <>
       <LeftSideContainer
-        title={t("DMH.VIEW.PP.LEFT.GT.TITLE")}
+        title={title}
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => handleSubSlide(0),

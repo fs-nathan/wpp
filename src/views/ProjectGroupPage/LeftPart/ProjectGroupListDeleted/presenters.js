@@ -11,6 +11,7 @@ import SearchInput from '../../../../components/SearchInput';
 import CustomListItem from './CustomListItem';
 import './style.scss';
 import {useLocation, Link} from "react-router-dom";
+import * as images from "../../../../assets";
 
 const Banner = ({ className = '', ...props }) =>
   <div
@@ -70,9 +71,20 @@ function ProjectListDeleted({
                   <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>
                 }
                 secondary={
-                  <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", {
-                    projectGroups: groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'number_project', 0), 0)
-                  })}</Secondary>
+                  <div className={"view_ProjectGroup_List_statistic"}>
+                    <div className={"view_ProjectGroup_List_statistic_item"}>
+                      <img src={images.check_64} alt="" width={15} height={15}/>
+                      <span>{groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.work_topic', 0), 0)}</span>
+                    </div>
+                    <div className={"view_ProjectGroup_List_statistic_item"}>
+                      <img src={images.speed_64} alt="" width={15} height={15}/>
+                      <span>{groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.project', 0), 0)}</span>
+                    </div>
+                    <div className={"view_ProjectGroup_List_statistic_item"}>
+                      <img src={images.workfollow_64} alt="" width={15} height={15}/>
+                      <span>{groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.process', 0), 0)}</span>
+                    </div>
+                  </div>
                 }
             />
           </StyledListItem>

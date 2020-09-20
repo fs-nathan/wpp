@@ -52,3 +52,16 @@
   flex-direction: row;
   align-items: center;
 }
+.view_ProjectGroup_Table_All_title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-left: 17px;
+  &>span {
+    font-size: 21px;
+    margin-left: 20px;
+  }
+  &_icon {
+    margin-left: 5px;
+  }
+}

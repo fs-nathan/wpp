@@ -4,10 +4,12 @@ import CustomTextbox from 'components/CustomTextbox';
 import UploadButton from 'components/UploadButton';
 import { CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener, DETAIL_PROJECT_GROUP, EDIT_PROJECT_GROUP, LIST_PROJECT_GROUP } from 'constants/events.js';
 import { useMaxlenString, useRequiredString } from 'hooks';
-import { get } from 'lodash';
+import {get, isNil} from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
+import {Box, Checkbox} from "@material-ui/core";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 
 const LogoBox = ({ className = '', ...props }) =>
   <div
@@ -30,6 +32,17 @@ function CreateProjectGroup({
     url_sort: '',
   });
   const [activeLoading, setActiveLoading] = React.useState(false);
+  const [workingTypes, setWorkingTypes] = React.useState([
+    {type: t("IDS_WP_JOB"), value: 0, checked: true},
+    {type: t("IDS_WP_PROJECT"), value: 1, checked: true},
+    {type: t("IDS_WP_PROCESS"), value: 2, checked: true}
+  ]);
+
+  const handleWorkingTypeChange = index => {
+    const _workingTypes = [...workingTypes];
+    _workingTypes[index].checked = !_workingTypes[index].checked;
+    setWorkingTypes(_workingTypes);
+  }
 
   React.useEffect(() => {
     setName(get(updatedProjectGroup, 'name'));
@@ -39,7 +52,12 @@ function CreateProjectGroup({
       url_sort: get(updatedProjectGroup, 'icon', '')
         .replace('https://storage.googleapis.com', ''),
     });
-    // eslint-disable-next-line
+    const workTypes = get(updatedProjectGroup, 'work_type', []);
+    setWorkingTypes([
+      {type: t("IDS_WP_JOB"), value: 0, checked: !isNil(get(workTypes, "[0]"))},
+      {type: t("IDS_WP_PROJECT"), value: 1, checked: !isNil(get(workTypes, "[0]"))},
+      {type: t("IDS_WP_PROCESS"), value: 2, checked: !isNil(get(workTypes, "[0]"))}
+    ]);
   }, [updatedProjectGroup]);
 
   React.useEffect(() => {
@@ -114,15 +132,14 @@ function CreateProjectGroup({
       title={updatedProjectGroup ? t("DMH.VIEW.PGP.MODAL.CUPG.U_TITLE") : t("DMH.VIEW.PGP.MODAL.CUPG.C_TITLE")}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName}
+      canConfirm={!errorName && workingTypes.filter((item) => item.checked === true).length > 0}
       onConfirm={() => {
-        handleCreateOrEditProjectGroup(name, description, icon);
+        handleCreateOrEditProjectGroup(name, description, icon, workingTypes);
         setActiveLoading(true);
       }}
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
       manualClose={true}
-      height={"mini"}
     >
       <CustomTextbox
         value={name}
@@ -138,6 +155,21 @@ function CreateProjectGroup({
         fullWidth
         multiline={true}
       />
+      <Box className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType"}>
+        <div className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType_title"}>{t("IDS_WP_APPLY_WORK_TYPE")}<abbr title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr></div>
+        <FormControlLabel
+          control={<Checkbox checked={workingTypes[0].checked} onChange={() => handleWorkingTypeChange(0)} name={workingTypes[0].type} color={"primary"}/>}
+          label={workingTypes[0].type}
+        />
+        <FormControlLabel
+          control={<Checkbox checked={workingTypes[1].checked} onChange={() => handleWorkingTypeChange(1)} name={workingTypes[1].type} color={"primary"}/>}
+          label={workingTypes[1].type}
+        />
+        <FormControlLabel
+          control={<Checkbox checked={workingTypes[2].checked} onChange={() => handleWorkingTypeChange(2)} name={workingTypes[2].type} color={"primary"}/>}
+          label={workingTypes[2].type}
+        />
+      </Box>
       <LogoBox>
         <div>
           <Title>{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO")}</Title>

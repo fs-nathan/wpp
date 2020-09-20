@@ -91,6 +91,7 @@ import { LIST_TASK } from "../constants/actions/task/listTask";
 import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
 import { SORT_TASK } from "../constants/actions/task/sortTask";
 import { GET_REMIND_DETAIL } from "../constants/actions/calendar/alarmCalendar";
+import { GET_PROJECT_STATISTIC } from "../constants/actions/project/getStatistic";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -259,6 +260,7 @@ import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissio
 import {listProjectGroupDeleted} from "./projectGroup/listProjectGroupDeleted";
 import {listTaskMember} from "./task/listTaskMember";
 import {getRemindDetail} from "./calendar/alarmCalendar/getRemindDetail";
+import {getProjectStatistic} from "./project/getStatistic";
 
 function* rootSaga() {
   // Hoang - begin
@@ -784,6 +786,7 @@ function* rootSaga() {
   yield takeLatest(DELETE_APPROVAL, doDeleteApproval);
   yield takeLatest(SORT_GROUP_OFFER, doSortGroupOffer);
   yield takeLatest(OFFER_GET_MEMBER_TO_ADD, doGetMemberToAdd);
+  yield takeLatest(GET_PROJECT_STATISTIC, getProjectStatistic);
   //
 
   //calendar

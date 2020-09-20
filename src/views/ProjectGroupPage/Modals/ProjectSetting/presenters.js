@@ -6,6 +6,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
 import {UPDATE_NOTIFICATION_SETTING} from "constants/events";
+import {WORKPLACE_TYPES} from "../../../../constants/constants";
 
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
@@ -47,6 +48,8 @@ function ProjectSetting({
   const [notification, setNotification] = React.useState(1);
   const [loading, setLoading] = React.useState(false);
   const [mask, setMask] = React.useState(-1);
+  const [title, setTitle] = React.useState("");
+  const [titleType, setTitleType] = React.useState("");
 
   React.useEffect(() => {
     setLoading((!(mask === 3 || mask === -1)));
@@ -104,10 +107,29 @@ function ProjectSetting({
     // eslint-disable-next-line
   }, [curProject, projectGroupId, timeRange]);
 
+  React.useEffect(() => {
+    switch (get(curProject, 'work_type')) {
+      case WORKPLACE_TYPES.JOB:
+        setTitle(t("IS_WP_WORK_TYPE_SETTING_TITLE", {type: t("IDS_WP_JOB")}));
+        setTitleType(t("IDS_WP_JOB"));
+        break;
+      case WORKPLACE_TYPES.PROJECT:
+        setTitle(t("IS_WP_WORK_TYPE_SETTING_TITLE", {type: t("IDS_WP_PROJECT")}));
+        setTitleType(t("IDS_WP_PROJECT"));
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setTitle(t("IS_WP_WORK_TYPE_SETTING_TITLE", {type: t("IDS_WP_PROCESS")}));
+        setTitleType(t("IDS_WP_PROCESS"));
+        break;
+      default:
+        break;
+    }
+  }, [curProject]);
+
   return (
     <React.Fragment>
       <CustomModal
-        title={t("PROJECT_SETTING_MODAL_TITLE")}
+        title={title}
         open={open}
         setOpen={setOpen}
         confirmRender={null}
@@ -115,8 +137,8 @@ function ProjectSetting({
         loading={loading || status.loading}
       >
         {get(canChange, 'date', false) && <StyledFormControl component='fieldset' fullWidth>
-          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PROGRESS")}</TitleFormLabel>
-          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION")}</StyledFormLabel>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PROGRESS", {type: titleType})}</TitleFormLabel>
+          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION", {type: titleType})}</StyledFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={progress}
             onChange={evt => {
               handleUpdateStatusDate(parseInt(evt.target.value));
@@ -129,7 +151,7 @@ function ProjectSetting({
           </RadioGroup>
         </StyledFormControl>}
         {get(canChange, 'copy', false) && <StyledFormControl component='fieldset' fullWidth>
-          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_COPYING")}</TitleFormLabel>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_COPYING", {type: titleType})}</TitleFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={copy}
             onChange={evt => {
               handleUpdateStatusCopy(parseInt(evt.target.value) === 1 ? true : false);
@@ -141,8 +163,8 @@ function ProjectSetting({
           </RadioGroup>
         </StyledFormControl>}
         {get(canChange, 'view', false) && <StyledFormControl component='fieldset' fullWidth>
-          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_VIEW_TYPE")}</TitleFormLabel>
-          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_VIEW_TYPE_DESCRIPTION")}</StyledFormLabel>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_VIEW_TYPE", {type: titleType})}</TitleFormLabel>
+          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_VIEW_TYPE_DESCRIPTION", {type: titleType})}</StyledFormLabel>
           <RadioGroup aria-label='progress' name='progress' value={view}
             onChange={evt => {
               handleUpdateStatusView(parseInt(evt.target.value));

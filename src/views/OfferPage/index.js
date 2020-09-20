@@ -1,34 +1,39 @@
-import { mdiEmailCheck, mdiEmailVariant, mdiViewDashboard } from "@mdi/js";
+import {mdiEmailCheck, mdiEmailVariant, mdiViewDashboard} from "@mdi/js";
 import AlertModal from "components/AlertModal";
-import { CustomEventDispose, CustomEventListener } from "constants/events";
-import { isNil } from "lodash";
-import React, { Suspense, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch, useHistory } from 'react-router-dom';
-import { useMountedState } from "react-use";
-import { useTimes } from "../../components/CustomPopover";
+import {CustomEventDispose, CustomEventListener} from "constants/events";
+import {isNil} from "lodash";
+import React, {Suspense, useEffect, useMemo, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {useDispatch, useSelector} from "react-redux";
+import {Route, Switch, useHistory} from 'react-router-dom';
+import {useMountedState} from "react-use";
+import {useTimes} from "../../components/CustomPopover";
 import LoadingBox from "../../components/LoadingBox";
 import TwoColumnsLayout from "../../components/TwoColumnsLayout";
-import { apiService } from '../../constants/axiosInstance';
-import { defaultFilter } from "./contants/defaultValue";
-import { Routes } from "./contants/routes";
-import { useMultipleSelect } from "./hooks/useMultipleSelect";
+import {apiService} from '../../constants/axiosInstance';
+import {defaultFilter} from "./contants/defaultValue";
+import {Routes} from "./contants/routes";
+import {useMultipleSelect} from "./hooks/useMultipleSelect";
 import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
-import { OfferPageContext } from "./OfferPageContext";
-import { deleteOffer, loadDetailOffer } from './redux/actions';
-import { DELETE_APPROVAL_SUCCESS, HANDLE_OFFER_OFFERPAGE } from "./redux/types";
+import {OfferPageContext} from "./OfferPageContext";
+import {deleteOffer, loadDetailOffer} from './redux/actions';
+import {DELETE_APPROVAL_SUCCESS, HANDLE_OFFER_OFFERPAGE} from "./redux/types";
 import routes from "./routes";
 import './styles.scss';
-import { getDeleteOfferConfirmModalMsg } from './utils/i18nSelectors';
+import {getDeleteOfferConfirmModalMsg} from './utils/i18nSelectors';
 import Notifier from "./utils/notifer";
-import { checkUserIsInOfferDepartmentRoutes, checkUserIsInOfferGroupRoutes, checkUserIsInOfferProjectRoutes } from "./utils/validate";
+import {
+  checkUserIsInOfferDepartmentRoutes,
+  checkUserIsInOfferGroupRoutes,
+  checkUserIsInOfferProjectRoutes
+} from "./utils/validate";
 import DetailOfferModal from './views/DetailOffer/DetailOfferModal';
-import { getDetailOffer, getDetailOfferLoadingState } from './views/DetailOffer/selector';
-import { getDepartmentGroupByKeyword } from "./views/OfferByDepartment/selector";
-import { getSummaryByGroupByKeyword } from "./views/OfferByGroup/selector";
-import { getSummaryByProjectAndKeyword } from "./views/OfferByProject/selector";
+import {getDetailOffer, getDetailOfferLoadingState} from './views/DetailOffer/selector';
+import {getDepartmentGroupByKeyword} from "./views/OfferByDepartment/selector";
+import {getSummaryByGroupByKeyword} from "./views/OfferByGroup/selector";
+import {getSummaryByProjectAndWorkTopic} from "./views/OfferByProject/selector";
+
 const { Provider } = OfferPageContext;
 
 function OfferPage() {
@@ -37,6 +42,7 @@ function OfferPage() {
   const [title, setTitle] = useState(t("VIEW_OFFER_LABEL_YOUR_OFFER"));
   const [quickTask, setQuickTask] = useState();
   const [filterTab, setFilterTab] = useState("");
+  const [filterTopic, setFilterTopic] = useState(-1);
   const state = useSelector(state => state);
   const history = useHistory();
   const [timeAnchor, setTimeAnchor] = React.useState(null);
@@ -233,6 +239,7 @@ function OfferPage() {
               setOpenModalOfferByGroup
             }
             hasFilterByCategory={true}
+            handleFilterByCategory={(type) => setFilterTopic(type)}
             searchInput={
               true
             }
@@ -243,7 +250,7 @@ function OfferPage() {
               true
             } {
             ...{
-              listMenu: getSummaryByProjectAndKeyword(filterTab)(state)
+              listMenu: getSummaryByProjectAndWorkTopic(filterTab, filterTopic)(state)
             }
             }
           />
