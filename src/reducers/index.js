@@ -434,6 +434,7 @@ import viewPermissions, {
 } from "./viewPermissions";
 import remindDetail, {initialState as getRemindDetailInitialState } from "./calendar/alarmCalendar/getRemindDetail";
 import getProjectStatistic, {initialState as getProjectStatisticInitialState} from "./project/getStatistic";
+import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
 
 const rootReducer = combineReducers({
   authentications,
@@ -545,6 +546,7 @@ const rootReducer = combineReducers({
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
+    getWorkType,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
@@ -730,6 +732,7 @@ export const DEFAULT_STATE = {
     restoreTrashProject: restoreTrashProjectInitialState,
     listProjectBasicInfo: listProjectBasicInfoInitialState,
     getProjectStatistic: getProjectStatisticInitialState,
+    getWorkType: getWorkTypeInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,

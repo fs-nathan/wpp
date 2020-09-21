@@ -146,12 +146,14 @@ function AllTaskTable({
   const [openPermission, setOpenPermission] = React.useState(false);
   const [permissionProps, setPermissionProps] = React.useState({});
   const [openCalendar, setOpenCalendar] = React.useState(false);
+  const [selectedGroup, setSelectedGroup] = React.useState(null);
 
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE':
         if (get(viewPermissions.permissions, [projectId, 'create_task'], false)) {
           setOpenCreate(true);
+          setSelectedGroup(props);
         }
         return;
       case 'SETTING':
@@ -218,6 +220,7 @@ function AllTaskTable({
         isOpen={openCreate}
         setOpen={setOpenCreate}
         projectId={projectId}
+        groupId={selectedGroup}
       />
       <ProjectSettingModal
         open={openSetting}

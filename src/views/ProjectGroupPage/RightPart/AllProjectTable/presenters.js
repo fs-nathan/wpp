@@ -263,9 +263,18 @@ function AllProjectTable({
             columns={[
               {
                 label: () => null,
-                field: row => (
-                  <img src={workTypeIcon} alt={"work type icon"} width={35} height={35}/>
-                ),
+                field: row => {
+                  switch (get(row, 'work_type')) {
+                    case WORKPLACE_TYPES.JOB:
+                      return (<img src={images.check_64} alt={"work type icon"} width={35} height={35}/>);
+                    case WORKPLACE_TYPES.PROJECT:
+                      return (<img src={images.speed_64} alt={"work type icon"} width={35} height={35}/>);
+                    case WORKPLACE_TYPES.PROCESS:
+                      return (<img src={images.workfollow_64} alt={"work type icon"} width={35} height={35}/>);
+                    default:
+                      return;
+                  }
+                },
                 align: 'left',
                 width: '3%',
               },
