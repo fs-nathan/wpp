@@ -1,6 +1,6 @@
-import { Button, CircularProgress } from '@material-ui/core';
-import { mdiArrowLeft } from '@mdi/js';
-import { concat, find, get, isNil } from 'lodash';
+import {Button, CircularProgress, IconButton} from '@material-ui/core';
+import {mdiArrowLeft, mdiMenuDown} from '@mdi/js';
+import {concat, filter, find, get, isNil} from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -12,6 +12,11 @@ import { StateBox } from '../../../../components/TableComponents';
 import './style.scss';
 import AlertModal from "../../../../components/AlertModal";
 import {CustomEventListener, DELETE_TRASH_PROJECT, CustomEventDispose, DELETE_TRASH_PROJECT_FAIL} from "../../../../constants/events";
+import * as images from "../../../../assets";
+import Icon from "@mdi/react";
+import {WORKPLACE_TYPES} from "../../../../constants/constants";
+import SelectWorkType from "../../Modals/SelectWorkType";
+import {connect} from "react-redux";
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -59,7 +64,7 @@ function decodePriorityCode(priorityCode) {
 
 function DeletedProjectTable({
   expand, handleExpand, route,
-  projects, pendings,
+  projects, pendings, projectGroup,
   handleSortType,
   handleDelete, handleRestore,
 }) {
@@ -69,6 +74,11 @@ function DeletedProjectTable({
   const [alertConfirm, showAlertConfirm] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
+  const [title, setTitle] = React.useState(t("IDS_WP_ALL"));
+  const [projectFiltered , setProjectFiltered] = React.useState([]);
+  const [openWorkTypeModal, setOpenWorkTypeModal] = React.useState(false);
+  const [selectedWorkType, setSelectedWorkType] = React.useState(undefined);
+  const [workTypeIcon, setWorkTypeIcon] = React.useState(images.type_all_64);
 
   React.useEffect(() => {
       const resetConfirm = () => {
@@ -83,12 +93,54 @@ function DeletedProjectTable({
       }
   }, [loading]);
 
+  React.useEffect(() => {
+    let _projects = [];
+    switch (selectedWorkType) {
+      case WORKPLACE_TYPES.JOB:
+        setWorkTypeIcon(images.check_64);
+        setTitle(t("IDS_WP_WORKING_TYPE"));
+        _projects = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.JOB);
+        break;
+      case WORKPLACE_TYPES.PROJECT:
+        setWorkTypeIcon(images.speed_64);
+        setTitle(t("IDS_WP_PROJECT_LIST"));
+        _projects = filter(projects.projects, (item) => item.work_type === 1);
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setWorkTypeIcon(images.workfollow_64);
+        setTitle(t("IDS_WP_PROCESS_LIST"));
+        _projects = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.PROCESS);
+        break;
+      default:
+        setWorkTypeIcon(images.type_all_64);
+        setTitle(t("IDS_WP_ALL"));
+        _projects = projects.projects;
+        break;
+    }
+    setProjectFiltered(_projects);
+  }, [selectedWorkType,projects]);
+
   return (
     <Container>
       <React.Fragment>
         <CustomTable
           options={{
-            title: t("DMH.VIEW.PGP.RIGHT.TRASH.TITLE"),
+            title: () => (
+              <div className={"view_ProjectGroup_Table_All_title"} style={{marginLeft: 0}}>
+                <img src={workTypeIcon} alt="Working type icon" width={40} height={40}/>
+                <span>{title}</span>
+                <div className={"view_ProjectGroup_Table_All_title_icon"}>
+                  <IconButton
+                    onClick={() => setOpenWorkTypeModal(true)}
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    size="small"
+                  >
+                    <Icon path={mdiMenuDown} size={1.5} />
+                  </IconButton>
+                </div>
+              </div>
+            ),
             subTitle: '',
             subActions: [{
               label: t("DMH.VIEW.PGP.RIGHT.TRASH.BACK"),
@@ -117,8 +169,23 @@ function DeletedProjectTable({
               bool: (projects.firstTime === false) && (projects.projects.length === 0)
             },
           }}
-          columns={[{
-            label: () => null,
+          columns={[
+            {
+              label: () => null,
+              field: row => (
+                <img src={workTypeIcon} alt={"work type icon"} width={35} height={35}/>
+              ),
+              align: 'left',
+              width: '3%',
+            }, {
+            label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.NAME"),
+            field: row => <span style={{ fontSize: 14 }}>{get(row, 'name')}</span>,
+            sort: (evt) => handleSortType('name'),
+            align: 'left',
+            width: '25%',
+          },
+          {
+              label: t("IDS_WP_GROUP"),
             field: (row) =>
               <CustomAvatar
                 style={{
@@ -128,15 +195,11 @@ function DeletedProjectTable({
                 src={get(row, 'user_delete_avatar')}
                 alt='user delete avatar'
               />,
-            align: 'left',
-            width: '5%',
-          }, {
-            label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.NAME"),
-            field: row => <span style={{ fontSize: 14 }}>{get(row, 'name')}</span>,
-            sort: (evt) => handleSortType('name'),
-            align: 'left',
-            width: '25%',
-          }, {
+              sort: evt => handleSortType('group'),
+              align: 'left',
+              width: '8%'
+          },
+          {
             label: t("DMH.VIEW.PGP.RIGHT.TRASH.LABEL.STATE"),
             field: row => (
               <StateBox
@@ -222,7 +285,7 @@ function DeletedProjectTable({
             align: 'center',
             width: '20%',
           }]}
-          data={projects.projects}
+          data={projectFiltered}
         />
       </React.Fragment>
       <AlertModal
@@ -240,8 +303,23 @@ function DeletedProjectTable({
         manualClose={true}
         actionLoading={loading}
       />
+      <SelectWorkType
+        open={openWorkTypeModal}
+        setOpen={setOpenWorkTypeModal}
+        selected={selectedWorkType}
+        handleSelectItem={(type) => setSelectedWorkType(type)}
+        projectStatistic={{
+          number_work_type: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.work_topic', 0), 0),
+          number_project: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.project', 0), 0),
+          number_process: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.process', 0), 0),
+        }}
+      />
     </Container>
   )
 }
-
-export default DeletedProjectTable;
+export default connect(
+  state => ({
+    projectGroup: get(state.projectGroup.listProjectGroupDeleted.data, "projectGroups", [])
+  }),
+  {},
+)(DeletedProjectTable);

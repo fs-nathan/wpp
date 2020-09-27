@@ -30,7 +30,16 @@ function CreateNewProject({
   const [currency] = React.useState(0);
   const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
   const [activeLoading, setActiveLoading] = React.useState(false);
+  const [workingType, setWorkingType] = React.useState(0);
+  const workingTypes = [
+    {type: t("IDS_WP_JOB"), value: 0},
+    {type: t("IDS_WP_PROJECT"), value: 1},
+    {type: t("IDS_WP_PROCESS"), value: 2}
+  ]
 
+  const handleChangeWorkType = type => {
+    setWorkingType(type);
+  }
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -67,7 +76,7 @@ function CreateNewProject({
 
   return (
     <CustomModal
-      title={t("DMH.VIEW.PGP.MODAL.CUP.C_TITLE")}
+      title={`${t("IDS_WP_CREATE_NEW")} ${get(find(workingTypes, { value: workingType }), 'type')}`}
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName}
@@ -88,6 +97,19 @@ function CreateNewProject({
     >
       <StyledFormControl fullWidth>
         <MySelect
+          label={t("IDS_WP_SELECT_TYPE")}
+          options={workingTypes.map(item => ({
+            label: item.type,
+            value: item.value,
+          }))}
+          value={{
+            label: get(find(workingTypes, { value: workingType }), 'type'),
+            value: workingType,
+          }}
+          onChange={({ value: workingType }) => handleChangeWorkType(workingType)}
+          isRequired={true}
+        />
+        <MySelect
           label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
           options={groups.groups.map(projectGroup => ({
             label: get(projectGroup, 'name'),
@@ -98,19 +120,20 @@ function CreateNewProject({
             value: curProjectGroupId,
           }}
           onChange={({ value: curProjectGroupId }) => setCurProjectGroupId(curProjectGroupId)}
+          isRequired={true}
         />
       </StyledFormControl>
       <CustomTextbox
         value={name}
         onChange={value => setName(value)}
-        label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
+        label={`${t("IDS_WP_NAME")} ${get(find(workingTypes, { value: workingType }), 'type')}`}
         fullWidth
         required={true}
       />
       <CustomTextbox
         value={description}
         onChange={value => setDescription(value)}
-        label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
+        label={`${t("GANTT_DESCRIPTION")} ${get(find(workingTypes, { value: workingType }), 'type')}`}
         fullWidth
         multiline={true}
       />

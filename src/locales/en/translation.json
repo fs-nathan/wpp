@@ -347,11 +347,11 @@
             "TITLE": "Create project",
             "CREATE": {
               "TITLE": "Create project",
-              "DESC": "Start project by create new project informations"
+              "DESC": "Create a new Work Topic, Project or Process to start working"
             },
             "COPY": {
-              "TITLE": "Copy project",
-              "DESC": "Start project by copy the informations from available. Ex: task group, duration, ..."
+              "TITLE": "Copy",
+              "DESC": "Create a New Work, Project or Process topic by copying it from the library"
             }
           },
           "NOPG": {
@@ -677,7 +677,7 @@
         "title": "Calendar management",
         "create": "Create calendar",
         "recently": "Recently",
-        "project_alarm": "Project remind",
+        "project_alarm": "Working remind",
         "my_alarm": "Group remind"
       },
       "right_part": {
@@ -759,8 +759,8 @@
           "title": "Update weekly calendar"
         },
         "create_project_calendar": {
-          "create_title": "Create project calendar",
-          "edit_title": "Edit project calendar",
+          "create_title": "Create working calendar",
+          "edit_title": "Edit working calendar",
           "name": "Calendar name",
           "description": "Calendar description",
           "name_required": "This field is required"
@@ -955,6 +955,8 @@
   "IDS_WP_BUDGET": "Budget",
   "IDS_WP_SUGGEST": "Proposal",
   "IDS_WP_PROCESS": "Procedure",
+  "IDS_WP_PLAN": "Plan",
+  "IDS_WP_CAMPAIGN": "Campaign",
   "IDS_WP_ARCHIVAL": "Document",
   "IDS_WP_CALENDAR_REMINDER": "Calendar, reminder",
   "IDS_WP_POSITION": "Location",
@@ -1260,7 +1262,8 @@
   "IDS_WP_COLLAPS": "Narrow",
   "IDS_WP_FILTER": "Filter",
   "IDS_WP_WEEKLY_CALENDAR": "Weekly Calendar",
-  "IDS_WP_PROJECT_CALENDAR": "Project plan",
+  "IDS_WP_PROJECT_CALENDAR": "Working Calendar",
+  "IDS_WP_PROJECT_CALENDAR_SUBTITLE": "Set up work schedules for projects, processes, plans or campaigns",
   "IDS_WP_ALARM_CALENDAR": "Schedule of Reminder",
   "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Reminder, schedule of appointment, notice of appointment",
   "IDS_WP_WEEK_COUNT": "The number week of year ",
@@ -1269,8 +1272,8 @@
   "IDS_WP_FROM": "From",
   "IDS_WP_SELECT_YEAR": "Select time",
   "IDS_WP_INPUT_SEARCH_PROJECT": "Search project",
-  "IDS_WP_FILTER_BY_PROJECT": "Filter by project",
-  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Select / no select to filter reminders by project",
+  "IDS_WP_FILTER_BY_PROJECT": "Filter by project, process, plan...",
+  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Select / no select to filter reminders by project, process...",
   "IDS_WP_CREATED_AT": "Created at",
   "IDS_WP_REMIND": "Reminders",
   "IDS_WP_REQUIRED": "Don't blank",
@@ -1729,7 +1732,8 @@
   "VIEW_OFFER_LABEL_PROJECT_TITLE": "Project",
   "VIEW_OFFER_LABEL_DEPARTMENT_TITLE": "Department",
   "VIEW_OFFER_LABEL_GROUP_SUBTITLE": "Offer by group",
-  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Offer by project",
+  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Offer by project, process, plan...",
+  "VIEW_OFFER_LABEL_PROJECT_HEADER_TITLE": "Offer by working",
   "VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE": "Offer by department",
   "VIEW_OFFER_LABEL_OFFER_BY_STATUS": "Offer by status",
   "VIEW_OFFER_LABEL_OFFER_BY_LEVEL": "Offer by level",
@@ -2067,19 +2071,20 @@
   "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION": "Enable / disable push notifications on the phone to project participants. It is best to enable notifications so that members do not miss important project announcements.",
   "PROJECT_SETTING_MODAL_NOTIFICATION_ON": "Enable (Default)",
   "PROJECT_SETTING_MODAL_NOTIFICATION_OFF": "Disable",
-  "PROJECT_SETTING_MODAL_PROGRESS": "Project progress",
+  "PROJECT_SETTING_MODAL_PROGRESS": "{{type}} progress",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_0": "Not required (for tasks that don't require progress) ",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_1": "Enter dates only (don't enter start and end times) ",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_2": "Date and time (enter date and time fully) ",
-  "PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION": "Set default progress when creating new project task.",
-  "PROJECT_SETTING_MODAL_COPYING": "Project copying",
+  "PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION": "Set default progress when creating new task of {{type}}.",
+  "PROJECT_SETTING_MODAL_COPYING": "{{type}} copying",
   "PROJECT_SETTING_MODAL_COPYING_OPTION_0": "Copying is not allowed ",
   "PROJECT_SETTING_MODAL_COPYING_OPTION_1": "Copying is allowed ",
-  "PROJECT_SETTING_MODAL_VIEW_TYPE": "Default project view type",
+  "PROJECT_SETTING_MODAL_VIEW_TYPE": "Default {{type}} view type",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_DESCRIPTION": "Set default viewport when clicking on a project: Task list format (Table), gantt diagram format (Gantt), discussion format (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_0": "Task list (Table) ",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_1": "Discussion (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2": "Gantt chart (Gantt)",
+  "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_3": "Task card board (Kanban)",
   "CUSTOM_TEXTBOX_CONTENT_LABEL": "Content...",
   "IDS_WP_LEAVE_GROUP_CONFIRM_MSG": "Do you really want to leave this group?",
   "IDS_WP_START_TRAIL_SUCCESS": "Start trail using successfully",
@@ -2133,5 +2138,25 @@
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "End time must be greater than start time",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "End time",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Start time",
-  "GANTT_CANNOT": "The chart is using this schedules."
+  "GANTT_CANNOT": "The chart is using this schedules.",
+  "IDS_WP_COUNT_WORKPLACE_JOB": "{{count}} work topic was created",
+  "IDS_WP_COUNT_WORKPLACE_PROJECT": "{{count}} project was created",
+  "IDS_WP_COUNT_WORKPLACE_PROCESS": "{{count}} process was created",
+  "IDS_WP_DES_WORKPLACE_JOB": "Create and manage personal affairs, departmental work or on different topics ...",
+  "IDS_WP_DES_WORKPLACE_PROJECT": "Creating new and managing projects invested by the Company, implementing, exploiting, cooperating ...",
+  "IDS_WP_DES_WORKPLACE_PROCESS": "Create and manage professionally, automatically and efficiently ...",
+  "IDS_WP_WORKPLACE_WELLCOME": "Hi {{user}}, Please choose a workspace for you",
+  "IDS_WP_WORKPLACE_SLOGAN": "\"Working is interactive. Workplus does not worry about messing with work\"",
+  "IDS_WP_START_NOW": "Start now",
+  "IDS_WP_APPLY_WORK_TYPE": "Apply for work type",
+  "IDS_WP_SELECT_TYPE": "Select type",
+  "IDS_WP_WORKING_TYPE": "Working Topic",
+  "IDS_WP_TOPICS": "Topics",
+  "IDS_WP_WORKING": "Working",
+  "IDS_WP_PROCESS_LIST": "Process list",
+  "IDS_WP_PROJECT_LIST": "Project list",
+  "IDS_WP_ALL": "All",
+  "IS_WP_WORK_TYPE_SETTING_TITLE": "Setting {{type}}",
+  "IDS_WP_PHASE": "Phase",
+  "IDS_WP_SELECT_PHASE": "Select Phase"
 }

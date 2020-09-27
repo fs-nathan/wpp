@@ -35,3 +35,17 @@
     }
   }
 };
+
+.view_ProjectGroup_Create_ProjectGroup_applyWorkType {
+  margin: 15px 0 40px 0;
+  &_title {
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 10px;
+    &>abbr {
+      color: red;
+      text-decoration: none;
+      margin-left: 5px;
+    }
+  }
+}

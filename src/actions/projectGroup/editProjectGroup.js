@@ -4,13 +4,14 @@ import {
   EDIT_PROJECT_GROUP_SUCCESS,
 } from '../../constants/actions/projectGroup/editProjectGroup';
 
-export const editProjectGroup = ({ projectGroupId, name, icon, description }) => ({
+export const editProjectGroup = ({ projectGroupId, name, icon, description, work_types }) => ({
   type: EDIT_PROJECT_GROUP,
   options: {
     projectGroupId,
     name,
     icon,
     description,
+    work_types
   },
 });
 

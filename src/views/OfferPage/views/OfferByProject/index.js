@@ -75,7 +75,7 @@ const OfferByProject = () => {
     }, [dispatch, id, timeRange]);
 
     useEffect(() => {
-        setTitle(t("VIEW_OFFER_LABEL_PROJECT_SUBTITLE"))
+        setTitle(t("VIEW_OFFER_LABEL_PROJECT_HEADER_TITLE"))
     }, [dispatch, setTitle]);
 
     useEffect(() => {

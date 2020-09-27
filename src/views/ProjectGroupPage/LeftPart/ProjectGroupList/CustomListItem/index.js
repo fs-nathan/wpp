@@ -1,13 +1,14 @@
-import { ListItemText } from '@material-ui/core';
-import { mdiDragVertical } from '@mdi/js';
+import {ListItemText} from '@material-ui/core';
+import {mdiDragVertical} from '@mdi/js';
 import Icon from '@mdi/react';
-import { get } from 'lodash';
+import {get} from 'lodash';
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import {Draggable} from 'react-beautiful-dnd';
+import {useTranslation} from 'react-i18next';
+import {Link} from 'react-router-dom';
 import CustomAvatar from '../../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
+import * as images from "assets";
+import {Primary, StyledListItem} from '../../../../../components/CustomList';
 
 function CustomListItem({ projectGroup, index, route, canDrag }) {
   const [isHover, setIsHover] = React.useState(false);
@@ -37,7 +38,20 @@ function CustomListItem({ projectGroup, index, route, canDrag }) {
                 <Primary>{get(projectGroup, 'name', '')}</Primary>
               }
               secondary={
-                <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", { projectGroups: get(projectGroup, 'number_project', 0) })}</Secondary>
+                <div className={"view_ProjectGroup_List_statistic"}>
+                  <div className={"view_ProjectGroup_List_statistic_item"}>
+                    <img src={images.check_64} alt="" width={15} height={15}/>
+                    <span>{get(projectGroup, 'statistic.work_topic', 0)}</span>
+                  </div>
+                  <div className={"view_ProjectGroup_List_statistic_item"}>
+                    <img src={images.speed_64} alt="" width={15} height={15}/>
+                    <span>{get(projectGroup, 'statistic.project', 0)}</span>
+                  </div>
+                  <div className={"view_ProjectGroup_List_statistic_item"}>
+                    <img src={images.workfollow_64} alt="" width={15} height={15}/>
+                    <span>{get(projectGroup, 'statistic.process', 0)}</span>
+                  </div>
+                </div>
               }
             />
           </StyledListItem>
@@ -58,10 +72,23 @@ function CustomListItem({ projectGroup, index, route, canDrag }) {
         <CustomAvatar style={{ height: 50, width: 50, }} src={get(projectGroup, 'icon')} alt='avatar' />
         <ListItemText
           primary={
-            <Primary>{get(projectGroup, 'name', '')}</Primary>
+            <Primary style={{marginLeft: "15px"}}>{get(projectGroup, 'name', '')}</Primary>
           }
           secondary={
-            <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", { projectGroups: get(projectGroup, 'number_project', 0) })}</Secondary>
+            <div className={"view_ProjectGroup_List_statistic"}>
+              <div className={"view_ProjectGroup_List_statistic_item"}>
+                <img src={images.check_64} alt="" width={15} height={15}/>
+                <span>{get(projectGroup, 'statistic.work_topic', 0)}</span>
+              </div>
+              <div className={"view_ProjectGroup_List_statistic_item"}>
+                <img src={images.speed_64} alt="" width={15} height={15}/>
+                <span>{get(projectGroup, 'statistic.project', 0)}</span>
+              </div>
+              <div className={"view_ProjectGroup_List_statistic_item"}>
+                <img src={images.workfollow_64} alt="" width={15} height={15}/>
+                <span>{get(projectGroup, 'statistic.process', 0)}</span>
+              </div>
+            </div>
           }
         />
       </StyledListItem>

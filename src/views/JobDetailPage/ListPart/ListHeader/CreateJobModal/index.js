@@ -22,6 +22,8 @@ import CommonPriorityForm from './CommonPriorityForm';
 import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
 import TaskGroupSelect from 'components/TaskGroupSelect';
+import {getWorkType} from "../../../../../actions/project/getWorkType";
+import {WORKPLACE_TYPES} from "../../../../../constants/constants";
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -43,9 +45,11 @@ function CreateJobModal(props) {
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
+  const groupId = get(props, 'groupId');
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
-
+  const workType = useSelector(state => state.project.getWorkType.data.work_type);
+  const [title, setTitle] = React.useState("");
   const optionsList = useMemo(() => [
     { value: 2, label: t('LABEL_CHAT_TASK_NGAY_VA_GIO') },
     { value: 1, label: t('LABEL_CHAT_TASK_CHI_NHAP_NGAY') },
@@ -141,7 +145,19 @@ function CreateJobModal(props) {
     }
     // props.setOpen(false);
   };
-
+  React.useEffect(() => {
+    switch (workType) {
+      case WORKPLACE_TYPES.JOB:
+      case WORKPLACE_TYPES.PROJECT:
+        setTitle(t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC'));
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setTitle(t("IDS_WP_SELECT_PHASE"));
+        break;
+      default:
+        break;
+    }
+  }, [workType]);
   React.useEffect(() => {
     if (listGroupTaskData) {
       // Map task to input
@@ -158,10 +174,10 @@ function CreateJobModal(props) {
       if (item) {
         handleChangeData('group_task', item)
       } else {
-        handleChangeData('group_task', null)
+        handleChangeData('group_task', groupId)
       }
     }
-  }, [listGroupTaskData, taskDetails.group_task]);
+  }, [listGroupTaskData, taskDetails.group_task, groupId]);
 
   React.useEffect(() => {
     if (listSchedule) {
@@ -235,6 +251,7 @@ function CreateJobModal(props) {
     if (props.isOpen) {
       if (projectId) {
         dispatch(getSchedules(projectId))
+        dispatch(getWorkType({projectId}))
         if (!isEdit) {
           handleChangeData('name', EMPTY_STRING)
           handleChangeData('description', EMPTY_STRING)
@@ -329,13 +346,8 @@ function CreateJobModal(props) {
         {
           (!isEdit || props.editMode === EDIT_MODE.GROUP) &&
           <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC')} isRequired />
+            <TitleSectionModal label={title} isRequired />
             <Typography component={'div'} >
-              {/* <TaskGroupSelect
-                options={listGroupTask}
-                value={data.group_task}
-                onChange={({ target }) => handleChangeData('group_task', target.value)}
-              /> */}
               <CustomSelect
                 options={listGroupTask}
                 value={data.group_task}
