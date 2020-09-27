@@ -52,11 +52,11 @@ function CreateProjectGroup({
       url_sort: get(updatedProjectGroup, 'icon', '')
         .replace('https://storage.googleapis.com', ''),
     });
-    const workTypes = get(updatedProjectGroup, 'work_type', []);
+    const workTypes = get(updatedProjectGroup, 'work_types', []);
     setWorkingTypes([
       {type: t("IDS_WP_JOB"), value: 0, checked: !isNil(get(workTypes, "[0]"))},
-      {type: t("IDS_WP_PROJECT"), value: 1, checked: !isNil(get(workTypes, "[0]"))},
-      {type: t("IDS_WP_PROCESS"), value: 2, checked: !isNil(get(workTypes, "[0]"))}
+      {type: t("IDS_WP_PROJECT"), value: 1, checked: !isNil(get(workTypes, "[1]"))},
+      {type: t("IDS_WP_PROCESS"), value: 2, checked: !isNil(get(workTypes, "[2]"))}
     ]);
   }, [updatedProjectGroup]);
 

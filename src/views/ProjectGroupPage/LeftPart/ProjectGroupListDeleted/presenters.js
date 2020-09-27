@@ -65,7 +65,7 @@ function ProjectListDeleted({
             component={Link}
             className={isNil(groupID) ? "item-actived" : ""}
           >
-            <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
+            <CustomAvatar style={{marginRight: "10px"}} alt='avatar' />
             <ListItemText
                 primary={
                   <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>

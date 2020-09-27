@@ -40,7 +40,7 @@ function WorkplacePage({
   return (
     <Box className={"workplace-page-container"}>
       <div className={"workplace-page-header"}>
-        <Typography component={"h4"} variant={"h3"}>{t("IDS_WP_WORKPLACE_WELLCOME", {user: profile.name})}</Typography>
+        <Typography component={"h4"} variant={"h3"} style={{fontSize: "30px"}}>{t("IDS_WP_WORKPLACE_WELLCOME", {user: profile.name})}</Typography>
         <p className={"workplace-page-header-subtitle"}>{t("IDS_WP_WORKPLACE_SLOGAN")}</p>
       </div>
       <div className={"workplace-page-cards"}>

@@ -11,6 +11,7 @@ import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, Cust
 import CustomTextbox from '../../../../components/CustomTextbox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
+import * as images from "../../../../assets";
 import './style.scss';
 
 const ProjectGroupName = ({ className = '', ...props }) =>
@@ -38,7 +39,11 @@ function ProjectGroupDetail({
 
   const history = useHistory();
   const { t } = useTranslation();
-
+  const workType = [
+    {key: 'work_topic', image: images.check_64},
+    {key: 'project', image: images.speed_64},
+    {key: 'process', image: images.workfollow_64}
+  ];
   return (
     <React.Fragment>
       <LeftSideContainer
@@ -104,6 +109,16 @@ function ProjectGroupDetail({
                 <ProjectGroupName>
                   {group.loading ? '...' : get(group.group, 'name', '')}
                 </ProjectGroupName>
+                <div className={"view_ProjectGroup_List_statistic"} style={{margin: "10px 0 20px 0", justifyContent: "center", width: "100%"}}>
+                  {get(group.group, 'work_types', []).map((item) => {
+                    return (
+                      <div className={"view_ProjectGroup_List_statistic_item"}>
+                        <img src={workType[parseInt(item)].image} alt="" width={15} height={15}/>
+                        <span>{get(group.group, `statistic.${workType[parseInt(item)].key}`, 0)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
                 <ChartInfoBox
                   title={t("DMH.VIEW.PGP.LEFT.INFO.STATS.TOTAL")}
                   data={

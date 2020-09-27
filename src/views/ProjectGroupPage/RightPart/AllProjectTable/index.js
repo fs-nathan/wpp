@@ -23,6 +23,7 @@ import ProjectSettingModal from '../../Modals/ProjectSetting';
 import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
 import AllProjectTablePresenter from './presenters';
 import { bgColorSelector, projectsSelector, showHidePendingsSelector } from './selectors';
+import {CREATE_PROJECT} from "constants/events";
 
 function AllProjectTable({
   expand,
@@ -79,8 +80,10 @@ function AllProjectTable({
       });
     };
     CustomEventListener(SORT_PROJECT, reloadListProject);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, reloadListProject);
     return () => {
       CustomEventDispose(SORT_PROJECT, reloadListProject);
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProject);
     }
   }, [projectGroupId, timeRange]);
 
@@ -90,8 +93,10 @@ function AllProjectTable({
       doListProjectGroup();
     }
     CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     return () => {
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     }
   }, []);
 
@@ -128,10 +133,11 @@ function AllProjectTable({
             setOpenNoPG(true);
           else
             setOpenCreate(true);
-          setCreateProps({
-            projectGroupId,
-            ...props
-          })
+            setCreateProps({
+              projectGroupId,
+              work_types: get(projects,'group_work_types'),
+              ...props
+            });
         }
         return;
       }

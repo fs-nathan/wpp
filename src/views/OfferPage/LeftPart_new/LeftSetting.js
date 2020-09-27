@@ -27,10 +27,9 @@ const LeftSetting = props => {
   const summaryProject = useSelector(state => state.offerPage[SUMMARY_PROJECT]);
   const [workingTopic, setWorkingTopic] = React.useState([
     { type: t("VIEW_OFFER_LABEL_ALL"), value: -1, count: 0},
+    { type: t("IDS_WP_TOPICS"), value: 0, count: 0},
     { type: t("IDS_WP_PROJECT"), value: 1, count: 0},
     { type: t("IDS_WP_PROCESS"), value: 2, count: 0},
-    { type: t("IDS_WP_PLAN"), value: 0, count: 0},
-    { type: t("IDS_WP_CAMPAIGN"), value: 3, count: 0},
   ]);
   const [filterTopicType, setFilterTopicType] = React.useState(-1);
 
@@ -58,17 +57,17 @@ const LeftSetting = props => {
       _workingTopics[1].count = 0;
       _workingTopics[2].count = 0;
       _workingTopics[3].count = 0;
-      _workingTopics[4].count = 0;
 
       forEach(projects, (project) => {
         switch (get(project, 'work_type')) {
           case WORKPLACE_TYPES.JOB:
-            break;
-          case WORKPLACE_TYPES.PROJECT:
             _workingTopics[1].count += 1;
             break;
-          case WORKPLACE_TYPES.PROCESS:
+          case WORKPLACE_TYPES.PROJECT:
             _workingTopics[2].count += 1;
+            break;
+          case WORKPLACE_TYPES.PROCESS:
+            _workingTopics[3].count += 1;
             break;
           default:
             break;

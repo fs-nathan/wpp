@@ -1,4 +1,4 @@
-import {CircularProgress, IconButton, Menu, MenuItem} from '@material-ui/core';
+import {Button, CircularProgress, IconButton, Menu, MenuItem} from '@material-ui/core';
 import {
   mdiAccount,
   mdiCalendar,
@@ -9,7 +9,7 @@ import {
   mdiMenuDown
 } from '@mdi/js';
 import Icon from '@mdi/react';
-import {find, get, isNil, join, remove, slice, filter} from 'lodash';
+import {filter, find, get, isNil, join, remove, slice} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router-dom';
@@ -116,6 +116,7 @@ function AllProjectTable({
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
   const [title, setTitle] = React.useState(t("IDS_WP_ALL"));
   const [projectFiltered , setProjectFiltered] = React.useState([]);
+  const [statistic, setStatistic] = React.useState({});
 
   const times = useTimes();
   const filters = useFilters();
@@ -139,21 +140,24 @@ function AllProjectTable({
   }, [workType]);
   React.useEffect(() => {
     let _projects = [];
+    const Job = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.JOB);
+    const Project = filter(projects.projects, (item) => item.work_type === 1);
+    const Process = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.PROCESS);
     switch (selectedWorkType) {
       case WORKPLACE_TYPES.JOB:
         setWorkTypeIcon(images.check_64);
         setTitle(t("IDS_WP_WORKING_TYPE"));
-        _projects = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.JOB);
+        _projects = Job;
         break;
       case WORKPLACE_TYPES.PROJECT:
         setWorkTypeIcon(images.speed_64);
         setTitle(t("IDS_WP_PROJECT_LIST"));
-        _projects = filter(projects.projects, (item) => item.work_type === 1);
+        _projects = Project;
         break;
       case WORKPLACE_TYPES.PROCESS:
         setWorkTypeIcon(images.workfollow_64);
         setTitle(t("IDS_WP_PROCESS_LIST"));
-        _projects = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.PROCESS);
+        _projects = Process;
         break;
       default:
         setWorkTypeIcon(images.type_all_64);
@@ -162,6 +166,11 @@ function AllProjectTable({
         break;
     }
     setProjectFiltered(_projects);
+    setStatistic({
+      number_work_type: Job.length,
+      number_project: Project.length,
+      number_process: Process.length
+    });
   }, [selectedWorkType,projects]);
 
   return (
@@ -172,17 +181,9 @@ function AllProjectTable({
             options={{
               title: () => (
                 <div className={"view_ProjectGroup_Table_All_title"}>
-                  <img src={workTypeIcon} alt="Working type icon" width={40} height={40}/>
-                  <span>{title}</span>
+                  <img src={workTypeIcon} alt="Working type icon" width={30} height={30}/>
                   <div className={"view_ProjectGroup_Table_All_title_icon"}>
-                    <IconButton
-                      onClick={() => setOpenWorkTypeModal(true)}
-                      aria-controls="simple-menu"
-                      aria-haspopup="true"
-                      size="small"
-                    >
-                      <Icon path={mdiMenuDown} size={1.5} />
-                    </IconButton>
+                    <Button endIcon={<Icon path={mdiMenuDown} size={1.5} />} onClick={() => setOpenWorkTypeModal(true)}><span>{title}</span></Button>
                   </div>
                 </div>
               ),
@@ -253,8 +254,7 @@ function AllProjectTable({
                 id: 'id',
               },
               noData: {
-                bool: (projects.firstTime === false)
-                  && (projects.projectGroupsCount === 0 || projects.projects.length === 0),
+                bool: (projects.projectGroupsCount === 0 || projectFiltered.length === 0),
                 subtitle: projects.projectGroupsCount === 0
                   ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
                   : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK")
@@ -266,11 +266,11 @@ function AllProjectTable({
                 field: row => {
                   switch (get(row, 'work_type')) {
                     case WORKPLACE_TYPES.JOB:
-                      return (<img src={images.check_64} alt={"work type icon"} width={35} height={35}/>);
+                      return (<abbr title={t("IDS_WP_JOB")}><img src={images.check_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
                     case WORKPLACE_TYPES.PROJECT:
-                      return (<img src={images.speed_64} alt={"work type icon"} width={35} height={35}/>);
+                      return (<abbr title={t("IDS_WP_PROJECT")}><img src={images.speed_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
                     case WORKPLACE_TYPES.PROCESS:
-                      return (<img src={images.workfollow_64} alt={"work type icon"} width={35} height={35}/>);
+                      return (<abbr title={t("IDS_WP_PROCESS")}><img src={images.workfollow_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
                     default:
                       return;
                   }
@@ -288,14 +288,16 @@ function AllProjectTable({
               {
                 label: t("IDS_WP_GROUP"),
                 field: row => (
-                  <CustomAvatar
-                    style={{
-                      width: 35,
-                      height: 35,
-                    }}
-                    src={get(row, 'icon')}
-                    alt="project group icon"
-                  />
+                  <abbr title={get(row, 'project_group.name')}>
+                    <CustomAvatar
+                      style={{
+                        width: 25,
+                        height: 25,
+                      }}
+                      src={get(row, 'icon')}
+                      alt="project group icon"
+                    />
+                  </abbr>
                 ),
                 sort: evt => handleSortType('group'),
                 align: 'left',
@@ -593,11 +595,7 @@ function AllProjectTable({
         setOpen={setOpenWorkTypeModal}
         selected={selectedWorkType}
         handleSelectItem={(type) => setSelectedWorkType(type)}
-        projectStatistic={{
-          number_work_type: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.work_topic', 0), 0),
-          number_project: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.project', 0), 0),
-          number_process: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.process', 0), 0),
-        }}
+        projectStatistic={statistic}
       />
     </>
   );

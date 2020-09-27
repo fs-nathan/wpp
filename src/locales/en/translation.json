@@ -269,12 +269,12 @@
             "BACK": "Back",
             "TITLE": "Work team",
             "STATS": {
-              "TOTAL": "Total of number project:",
-              "WAITING": "Total of number waiting project",
-              "DOING": "Total of number doing project",
-              "EXPIRED": "Total of number expired project",
-              "COMPLETE": "Total of number completed project",
-              "HIDDEN": "Total of number hidden project"
+              "TOTAL": "Total:",
+              "WAITING": "Total of number waiting",
+              "DOING": "Total of number doing",
+              "EXPIRED": "Total of number expired",
+              "COMPLETE": "Total of number completed",
+              "HIDDEN": "Total of number hidden"
             },
             "ACTV": "Active",
             "DEFAULT": "Not categorized",
@@ -372,11 +372,11 @@
           "ALL": {
             "TITLE": "Projects list",
             "DOWN": "Download",
-            "ADD": "+ Create project",
+            "ADD": "+ Create new",
             "TABLE_SETTING": "Table settings",
             "TRASH": "Trash",
             "LABEL": {
-              "NAME": "Project",
+              "NAME": "Name",
               "STATE": "Status",
               "DATE": "{{date}} days",
               "PROGRESS": "Completed",
@@ -391,7 +391,7 @@
             "ALERT": "Are you sure want to delete project ?",
             "NO_DATA": {
               "NO_PROJECT": "No project was created. Let click + CREATE PROJECT to start of your management project and tasks.",
-              "NO_TASK": "Let create new task or filter task"
+              "NO_TASK": "Let create new data or filter data"
             },
             "STATS": {
               "TOTAL": "Total of number task:",
@@ -406,7 +406,7 @@
             "TITLE": "Trash",
             "BACK": "Back",
             "LABEL": {
-              "NAME": "Project",
+              "NAME": "Name",
               "USER": "Member delete",
               "DATE": "Time delete",
               "PRIO": "Priority",

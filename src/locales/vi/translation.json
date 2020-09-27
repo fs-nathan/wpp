@@ -269,12 +269,12 @@
             "BACK": "Quay lại",
             "TITLE": "Chi tiết nhóm làm việc",
             "STATS": {
-              "TOTAL": "Tổng số dự án:",
-              "WAITING": "Dự án đang chờ",
-              "DOING": "Dự án đang làm",
-              "EXPIRED": "Dự án quá hạn",
-              "COMPLETE": "Dự án hoàn thành",
-              "HIDDEN": "Dự án ẩn"
+              "TOTAL": "Tổng số:",
+              "WAITING": "Đang chờ",
+              "DOING": "Đang làm",
+              "EXPIRED": "Quá hạn",
+              "COMPLETE": "Hoàn thành",
+              "HIDDEN": "Bị ẩn"
             },
             "ACTV": "Hoạt động",
             "DEFAULT": "Chưa phân loại",
@@ -372,11 +372,11 @@
           "ALL": {
             "TITLE": "Danh sách dự án",
             "DOWN": "Tải xuống",
-            "ADD": "+ Tạo dự án",
+            "ADD": "+ Thêm mới",
             "TABLE_SETTING": "Cài đặt bảng",
             "TRASH": "Thùng rác",
             "LABEL": {
-              "NAME": "Dự án",
+              "NAME": "Tên",
               "STATE": "Trạng thái",
               "DATE": "{{date}} ngày",
               "PROGRESS": "Hoàn thành",
@@ -391,7 +391,7 @@
             "ALERT": "Bạn chắc chắn muốn xóa dự án?",
             "NO_DATA": {
               "NO_PROJECT": "Chưa có dự án nào được khởi tạo. Hãy click vào nút + TẠO DỰ ÁN để bắt đầu quản lý dự án và công việc của bạn.",
-              "NO_TASK": "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc"
+              "NO_TASK": "Hãy tạo mới dữ liệu hoặc kiểm tra bộ lọc để xuất hiện dữ liệu"
             },
             "STATS": {
               "TOTAL": "Tổng số công việc:",
@@ -406,7 +406,7 @@
             "TITLE": "Thùng rác",
             "BACK": "Quay lại",
             "LABEL": {
-              "NAME": "Dự án",
+              "NAME": "Tên",
               "USER": "Người xóa",
               "DATE": "Ngày xóa",
               "PRIO": "Ưu tiên",

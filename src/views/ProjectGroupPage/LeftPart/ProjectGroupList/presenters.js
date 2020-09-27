@@ -85,10 +85,10 @@ function ProjectList({
                   component={Link}
                   innerRef={ref}
                 >
-                  <div>
+                  <div style={{marginLeft: "-10px"}}>
                     <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
                   </div>
-                  <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
+                  <CustomAvatar style={{marginRight: "10px"}} alt='avatar' />
                   <ListItemText
                     primary={
                       <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>

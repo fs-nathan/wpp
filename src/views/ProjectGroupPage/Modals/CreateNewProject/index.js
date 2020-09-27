@@ -12,7 +12,7 @@ import { groupsSelector } from './selectors';
 
 function CreateNewProject({
   open, setOpen,
-  groups,
+  groups, work_types,
   doCreateProject,
   doListProjectGroup,
   doReload,
@@ -51,8 +51,9 @@ function CreateNewProject({
           : undefined,
       })}
       groups={groups}
-      handleCreateProject={({ name, description, projectGroupId, priority, currency }) =>
-        doCreateProject({ name, description, projectGroupId, priority, currency })
+      work_types={work_types}
+      handleCreateProject={({ name, description, projectGroupId, priority, currency,work_type }) =>
+        doCreateProject({ name, description, projectGroupId, priority, currency,work_type })
       }
     />
   )
@@ -68,7 +69,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doReload: (options) => dispatch(listProject(options, true)),
-    doCreateProject: ({ name, description, projectGroupId, priority, currency }) => dispatch(createProject({ name, description, projectGroupId, priority, currency })),
+    doCreateProject: ({ name, description, projectGroupId, priority, currency, work_type }) => dispatch(createProject({ name, description, projectGroupId, priority, currency,work_type })),
     doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
   }
 };
