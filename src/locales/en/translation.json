@@ -300,10 +300,10 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Copy project",
+            "TITLE": "Copy {{title}}",
             "LEFT": {
-              "TITLE": "Choose project",
-              "FIND": "Search project"
+              "TITLE": "Choose {{title}}",
+              "FIND": "Search {{title}}"
             },
             "RIGHT": {
               "TITLE": "Project details",

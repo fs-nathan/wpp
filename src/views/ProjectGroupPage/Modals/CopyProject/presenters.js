@@ -11,11 +11,13 @@ import CustomTextbox from 'components/CustomTextbox';
 import SearchInput from 'components/SearchInput';
 import { COPY_PROJECT, CustomEventDispose, CustomEventListener, LIST_PROJECT } from 'constants/events.js';
 import { useMaxlenString, useRequiredDate, useRequiredString } from 'hooks';
-import { get } from 'lodash';
+import {find, get} from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
+import MySelect from "../../../../components/MySelect";
+import {WORKPLACE_TYPES} from "../../../../constants/constants";
 
 const Header = ({ className = '', ...props }) =>
   <ColorTypo
@@ -135,7 +137,35 @@ function CopyProject({
   const [startDate, setStartDate, errorDate] = useRequiredDate(moment().toDate());
   const [selectedProject, setSelectedProject] = React.useState(null);
   const [activeLoading, setActiveLoading] = React.useState(false);
+  const [workingType, setWorkingType] = React.useState(0);
+  const [title, setTitle] = React.useState("");
+  const [groupFiltered, setGroupFiltered] = React.useState([]);
 
+  const workingTypes = [
+    {type: t("IDS_WP_JOB"), value: 0},
+    {type: t("IDS_WP_PROJECT"), value: 1},
+    {type: t("IDS_WP_PROCESS"), value: 2}
+  ];
+  React.useEffect(() => {
+    const _groups = groups.map(group => ({
+      ...group,
+      projects: get(group, "projects", []).filter(item => item.work_type === workingType)
+    }));
+    setGroupFiltered(_groups);
+    switch (workingType) {
+      case WORKPLACE_TYPES.JOB:
+        setTitle(t("IDS_WP_WORKING_TYPE"));
+        break;
+      case WORKPLACE_TYPES.PROJECT:
+        setTitle(t("IDS_WP_PROJECT"));
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setTitle(t("IDS_WP_PROCESS"));
+        break;
+      default:
+        break;
+    }
+  }, [workingType,groups]);
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -173,7 +203,7 @@ function CopyProject({
 
   return (
     <CustomModal
-      title={t("DMH.VIEW.PGP.MODAL.COPY.TITLE")}
+      title={t("DMH.VIEW.PGP.MODAL.COPY.TITLE", {title})}
       fullWidth={true}
       open={open}
       setOpen={setOpen}
@@ -195,17 +225,31 @@ function CopyProject({
       activeLoading={activeLoading}
       manualClose={true}
       left={{
-        title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE"),
+        title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE", {title}),
         content: () =>
           <LeftContainer>
             <SearchInput
               fullWidth
-              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND")}
+              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND", {title})}
               value={searchPatern}
               onChange={evt => setSearchPatern(evt.target.value)}
             />
+            <StyledFormControl fullWidth style={{padding: "0 25px", width: "88%", marginTop: 0}}>
+              <MySelect
+                label={t("IDS_WP_SELECT_TYPE")}
+                options={workingTypes.map(item => ({
+                  label: item.type,
+                  value: item.value,
+                }))}
+                value={{
+                  label: get(find(workingTypes, { value: workingType }), 'type'),
+                  value: workingType,
+                }}
+                onChange={({ value: workingType }) => setWorkingType(workingType)}
+              />
+            </StyledFormControl>
             <ListContainer>
-              {groups.map(projectGroup => (
+              {groupFiltered.map(projectGroup => (
                 <ProjectGroupList
                   projectGroup={projectGroup}
                   key={get(projectGroup, 'id')}
@@ -217,23 +261,23 @@ function CopyProject({
           </LeftContainer>,
       }}
       right={{
-        title: t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.TITLE"),
+        title: t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.TITLE", {title}),
         content: () =>
           <RightContainer>
-            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NAME")}</Header>
-            <StyledTypo>{get(selectedProject, 'name', t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.PLACEHOLDER"))}</StyledTypo>
-            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DESC")}</Header>
+            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NAME", {title})}</Header>
+            <StyledTypo>{get(selectedProject, 'name', t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.PLACEHOLDER", {title}))}</StyledTypo>
+            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DESC", {title})}</Header>
             <CustomTextbox
               value={name}
               onChange={value => setName(value)}
-              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_NAME")}
+              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_NAME", {title})}
               fullWidth
               required={true}
             />
             <CustomTextbox
               value={description}
               onChange={value => setDescription(value)}
-              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_DESC")}
+              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NEW_DESC", {title})}
               fullWidth
               multiline={true}
             />

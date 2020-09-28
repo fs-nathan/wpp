@@ -72,7 +72,7 @@ function CreateNewProject({
     }
   }, [projectGroupId, timeRange]);
   React.useEffect(() => {
-    if(!isNil(work_types)) {
+    if(!isNil(work_types) && work_types.length > 0) {
       const allowedTypes = map(work_types, function (type) {
         switch (parseInt(type)) {
           case  WORKPLACE_TYPES.JOB:

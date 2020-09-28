@@ -300,19 +300,19 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Sao chép dự án",
+            "TITLE": "Sao chép {{title}}",
             "LEFT": {
-              "TITLE": "Chọn dự án sao chép",
-              "FIND": "Tìm dự án"
+              "TITLE": "Chọn {{title}} sao chép",
+              "FIND": "Tìm {{title}}"
             },
             "RIGHT": {
-              "TITLE": "Thông tin dự án mới",
+              "TITLE": "Thông tin {{title}} mới",
               "PROJECT": {
-                "NAME": "Dự án được sao chép",
-                "PLACEHOLDER": "Hãy chọn dự án để sao chép",
-                "DESC": "Thông tin dự án",
-                "NEW_NAME": "Tên dự án mới",
-                "NEW_DESC": "Mô tả dự án mới",
+                "NAME": "{{title}} được sao chép",
+                "PLACEHOLDER": "Hãy chọn {{title}} để sao chép",
+                "DESC": "Thông tin {{title}}",
+                "NEW_NAME": "Tên {{title}} mới",
+                "NEW_DESC": "Mô tả {{title}} mới",
                 "DATE": "Chọn ngày bắt đầu tiến độ"
               },
               "MEMBER": {

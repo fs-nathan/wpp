@@ -96,15 +96,15 @@ function AllProjectTable({
   handleSortType,
   handleShowOrHideProject,
   handleSortProject,
-  handleOpenModal,
-  bgColor,
+  handleOpenModal, handleWorkTypeChange,
+  bgColor, workTypeLocal,
   showHidePendings,
   canCreate,
 }) {
 
   const history = useHistory();
   const { t } = useTranslation();
-  const workType = new URLSearchParams(history.location.search).get("workType");
+  const workTypeFromQuery = new URLSearchParams(history.location.search).get("workType");
   const [filterAnchor, setFilterAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
@@ -136,8 +136,10 @@ function AllProjectTable({
     setCurProject(oldProject => find(projects.projects, { id: get(oldProject, 'id') }))
   }, [projects]);
   React.useEffect(() => {
-    setSelectedWorkType(parseInt(workType));
-  }, [workType]);
+    if(isNil(workTypeFromQuery)) {
+      setSelectedWorkType(workTypeLocal);
+    } else setSelectedWorkType(parseInt(workTypeFromQuery));
+  }, [workTypeFromQuery, workTypeLocal]);
   React.useEffect(() => {
     let _projects = [];
     const Job = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.JOB);
@@ -594,7 +596,10 @@ function AllProjectTable({
         open={openWorkTypeModal}
         setOpen={setOpenWorkTypeModal}
         selected={selectedWorkType}
-        handleSelectItem={(type) => setSelectedWorkType(type)}
+        handleSelectItem={(type) => {
+          setSelectedWorkType(type);
+          handleWorkTypeChange(type);
+        }}
         projectStatistic={statistic}
       />
     </>

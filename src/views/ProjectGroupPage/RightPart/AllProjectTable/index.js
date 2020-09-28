@@ -43,7 +43,7 @@ function AllProjectTable({
 
   const filters = useFilters();
   const times = useTimes();
-  const { filterType, timeType } = localOption;
+  const { filterType, timeType, workType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
     return ({
@@ -182,9 +182,14 @@ function AllProjectTable({
           filterType,
         })}
         timeType={timeType}
+        workTypeLocal={workType}
         handleTimeType={timeType => doSetProjectGroup({
           ...localOption,
           timeType,
+        })}
+        handleWorkTypeChange={workType => doSetProjectGroup({
+          ...localOption,
+          workType
         })}
         handleSortType={type => setSortType(oldType => {
           const newCol = type;
