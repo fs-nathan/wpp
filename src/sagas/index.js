@@ -91,6 +91,8 @@ import { LIST_TASK } from "../constants/actions/task/listTask";
 import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
 import { SORT_TASK } from "../constants/actions/task/sortTask";
 import { GET_REMIND_DETAIL } from "../constants/actions/calendar/alarmCalendar";
+import { KANBAN_DETAIL_PROJECT } from 'constants/actions/kanban/detailProject';
+import { KANBAN_LIST_TASK } from 'constants/actions/kanban/listTask';
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -246,6 +248,8 @@ import { listUserOfGroup } from "./user/listUserOfGroup";
 import { permissionUser } from "./user/permissionUser";
 import { privateMember } from "./user/privateMember";
 import { publicMember } from "./user/publicMember";
+import { detailProject as kanbanDetailProject } from './kanban/detailProject';
+import { listTask as kanbanListTask } from './kanban/listTask';
 import { removeGroupPermissionUser } from "./user/removeGroupPermissionUser";
 import { sortUser } from "./user/sortUser";
 import { updateGroupPermissionUser } from "./user/updateGroupPermissionUser";
@@ -366,7 +370,9 @@ function* rootSaga() {
   yield takeLeading(GET_PERMISSION_VIEW_USERS, getPermissionViewUsers);
   yield takeLeading(GET_PERMISSION_VIEW_DETAIL_PROJECT, getPermissionViewDetailProject);
   yield takeEvery(SET_PROJECT, setProject);
-  yield takeEvery(SET_PROJECT_GROUP, setProjectGroup,);
+  yield takeEvery(SET_PROJECT_GROUP, setProjectGroup);
+  yield takeLeading(KANBAN_DETAIL_PROJECT, kanbanDetailProject);
+  yield takeLeading(KANBAN_LIST_TASK, kanbanListTask);
 
   // Hoang - end
 

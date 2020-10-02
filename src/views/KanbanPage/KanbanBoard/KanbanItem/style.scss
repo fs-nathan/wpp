@@ -1,0 +1,32 @@
+@mixin view_KanbanItem___container {
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  & > * {
+    &:not(:first-child) {
+      margin-top: 10px;
+    }
+  }
+}
+
+.view_KanbanItem___container {
+  & {
+    @include view_KanbanItem___container;
+  }
+  &-dragging {
+    @include view_KanbanItem___container;
+    border: 1px solid blue;
+  }
+}
+
+.view_KanbanItem___name {
+  font-weight: 500;
+  width: fit-content;
+}
+
+.view_KanbanItem___footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

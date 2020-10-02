@@ -2,7 +2,6 @@ import { memberProject } from 'actions/project/memberProject';
 import { filter, get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
 import MemberModal from 'views/JobDetailPage/TabPart/MemberTab/MemberModal';
 import MembersSettingModal from '../../Modals/MembersSetting';
 import { viewPermissionsSelector } from '../../selectors';
@@ -12,16 +11,22 @@ import {
   EVENT_ADD_MEMBER_TO_TASK_SUCCESS,
   EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS
 } from 'constants/actions/taskDetail/taskDetailConst';
-import {CustomEventDispose, CustomEventListener} from "../../../../constants/events";
+import {CustomEventDispose, CustomEventListener} from "constants/events";
+import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 
 function ProjectMemberSlide({
   handleSubSlide,
   members,
   doMemberProject,
   viewPermissions,
+  doGetPermissionViewDetailProject,
+  projectId,
 }) {
 
-  const { projectId } = useParams();
+  React.useLayoutEffect(() => {
+    if (viewPermissions.permissions === null) doGetPermissionViewDetailProject({ projectId }, true);
+    // eslint-disable-next-line
+  }, [projectId, doGetPermissionViewDetailProject]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
@@ -87,7 +92,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),
+    doMemberProject: ({ projectId }, quite) => dispatch(memberProject({ projectId }, quite)),  
+    doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   }
 }
 

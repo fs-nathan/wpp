@@ -1,0 +1,34 @@
+@mixin view_KanbanColumn___container {
+  width: 300px;
+  background-color: #fff;
+}
+
+.view_KanbanColumn___container {
+  & {
+    @include view_KanbanColumn___container;
+  }
+  &-dragging {
+    @include view_KanbanColumn___container;
+    border: 1px solid blue;
+  }
+}
+
+@mixin view_KanbanColumn___item-list {
+  padding-bottom: 10px;
+}
+
+.view_KanbanColumn___item-list {
+  & {
+    @include view_KanbanColumn___item-list;
+  }
+  &-dragging-over {
+    @include view_KanbanColumn___item-list;
+    background: lightblue;
+  }
+}
+
+.view_KanbanColumn___group-name {
+  font-weight: 500;
+  padding: 10px;
+  width: fit-content;
+}

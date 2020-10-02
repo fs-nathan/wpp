@@ -10,15 +10,6 @@ import TableBodyRow from './TableBodyGroupRow/TableBodyRow';
 import TableHeaderRow from './TableHeaderRow';
 
 const Container = ({ className = '', ...rest }) => <Scrollbars className={`comp_CustomTable_TableMain___container ${className}`} {...rest} />;
-const PlaceholderRow = ({ className = '', ...rest }) =>
-  <TableRow
-    className={`comp_CustomTable_TableMain___placeholder ${className}`}
-    {...rest}
-  />
-
-const getBodyStyle = isDraggingOver => ({
-  background: isDraggingOver ? "lightblue" : "white",
-});
 
 function TableMain() {
 
@@ -61,29 +52,32 @@ function TableMain() {
       autoHide
       autoHideTimeout={500}
     >
-      <Table stickyHeader>
+      <Table 
+        stickyHeader
+        style={{
+          borderCollapse: 'collapse',
+        }}
+      >
         <TableHead>
           <TableHeaderRow />
         </TableHead>
         <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)} onDragUpdate={onDragUpdate}>
           {get(options, 'grouped.bool', false)
-            ? (
-              data.map((group, index) => (
+            ? (data.map((group, index) => (
                 <TableBodyGroupRow group={group} key={index} placeholderProps={placeholderProps} />
               )))
             : (
               <Droppable
                 droppableId={'custom-table-droppable-id'}
+                direction={'vertical'}
               >
                 {(provided, snapshot) => {
                   return (
                     <TableBody
-                      innerRef={provided.innerRef}
+                      ref={provided.innerRef}
                       {...provided.droppableProps}
-                      style={getBodyStyle(snapshot.isDraggingOver)}
                     >
                       {data.map((row, index) => (
-
                         <TableBodyRow key={index} index={index} row={row} group={null} />
                       ))}
                       {provided.placeholder}
@@ -92,10 +86,8 @@ function TableMain() {
                 }}
               </Droppable>
             )}
+          <TableBody />
         </DragDropContext>
-        <TableFooter>
-          <PlaceholderRow />
-        </TableFooter>
       </Table>
     </Container>
   )

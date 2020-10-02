@@ -122,6 +122,8 @@ import settingStartingDay, {
 import chat, { initialState as chatInitialState } from "./chat/chat";
 import documents from "./documents";
 import gantt, { initialState as ganttInitialState } from "./gantt";
+import kanbanDetailProject, { initialState as kanbanDetailProjectInitialState } from "./kanban/detailProject";
+import kanbanListTask, { initialState as kanbanListTaskInitialState } from "./kanban/listTasks";
 import copyGroupTask, {
   initialState as copyGroupTaskInitialState,
 } from "./groupTask/copyGroupTask";
@@ -633,6 +635,10 @@ const rootReducer = combineReducers({
     remindDetail
   }),
   localStorage,
+  kanban: combineReducers({
+    detailProject: kanbanDetailProject,
+    listTask: kanbanListTask,
+  }),
 });
 
 export const DEFAULT_STATE = {
@@ -662,6 +668,10 @@ export const DEFAULT_STATE = {
     permissionUser: permissionUserInitialState,
     updateGroupPermissionUser: updateGroupPermissionUserInitialState,
     removeGroupPermissionUser: removeGroupPermissionUserInitialState,
+  },
+  kanban: {
+    detailProject: kanbanDetailProjectInitialState,
+    listTask: kanbanListTaskInitialState,
   },
   icon: {
     listIcon: listIconInitialState,

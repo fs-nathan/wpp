@@ -22,21 +22,21 @@ import SearchInput from "../../SearchInput";
 import { CustomTableContext } from "../index";
 import "./style.scss";
 
-const StyledButton = ({ className = "", ...rest }) => (
+export const StyledButton = ({ className = "", ...rest }) => (
   <Button
     className={`comp_CustomTable_HeaderButtonGroup___button ${className}`}
     {...rest}
   />
 );
 
-const StyledPopper = ({ className = "", ...rest }) => (
+export const StyledPopper = ({ className = "", ...rest }) => (
   <Popper
     className={`comp_CustomTable_HeaderButtonGroup___popper ${className}`}
     {...rest}
   />
 );
 
-const SearchBox = ({ className = "", ...rest }) => (
+export const SearchBox = ({ className = "", ...rest }) => (
   <div
     className={`comp_CustomTable_HeaderButtonGroup___search-box ${className}`}
     {...rest}

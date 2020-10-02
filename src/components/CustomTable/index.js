@@ -18,13 +18,13 @@ export const CustomTableConsumer = CustomTableContext.Consumer;
 const Container = ({ className = "", ...rest }) => (
   <div className={`comp_CustomTable___container ${className}`} {...rest} />
 );
-const Header = ({ className = "", ...rest }) => (
+export const Header = ({ className = "", ...rest }) => (
   <div className={`comp_CustomTable___header ${className}`} {...rest} />
 );
-const LeftHeader = ({ className = "", ...rest }) => (
+export const LeftHeader = ({ className = "", ...rest }) => (
   <div className={`comp_CustomTable___left-header ${className}`} {...rest} />
 );
-const RightHeader = ({ className = "", ...rest }) => (
+export const RightHeader = ({ className = "", ...rest }) => (
   <div className={`comp_CustomTable___right-header ${className}`} {...rest} />
 );
 const StyledTableMain = ({ className = "", ...rest }) => (

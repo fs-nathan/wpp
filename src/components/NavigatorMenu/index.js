@@ -28,7 +28,6 @@ class NavigatorMenu extends React.Component {
       return this.props.location.pathname.includes(item.url)
     })[0] || {}
     const listGirdRender = this.state.listGird.map(item => {
-      console.log(item.url === match, item.url, "asdasdasdasd")
       return <p
         key={item.name}
         style={{
@@ -38,8 +37,7 @@ class NavigatorMenu extends React.Component {
         id={`gantt-p-${item.name}`}
         onClick={() => {
           this.props.history.push(this.props.location.pathname.replace(match.url, item.url))
-        }
-        }
+        }}
         onMouseOver={(e) => {
           document.getElementById(`gantt-p-${item.name}`).style.background = get(this.props.profileDetail, 'group_active.color', '#f2f2f2')
         }}
