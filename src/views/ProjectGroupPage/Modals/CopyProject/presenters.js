@@ -11,13 +11,14 @@ import CustomTextbox from 'components/CustomTextbox';
 import SearchInput from 'components/SearchInput';
 import { COPY_PROJECT, CustomEventDispose, CustomEventListener, LIST_PROJECT } from 'constants/events.js';
 import { useMaxlenString, useRequiredDate, useRequiredString } from 'hooks';
-import {find, get} from 'lodash';
+import {find, get, reduce} from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
 import MySelect from "../../../../components/MySelect";
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
+import {ic_no_data22} from "assets";
 
 const Header = ({ className = '', ...props }) =>
   <ColorTypo
@@ -228,13 +229,7 @@ function CopyProject({
         title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE", {title}),
         content: () =>
           <LeftContainer>
-            <SearchInput
-              fullWidth
-              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND", {title})}
-              value={searchPatern}
-              onChange={evt => setSearchPatern(evt.target.value)}
-            />
-            <StyledFormControl fullWidth style={{padding: "0 25px", width: "88%", marginTop: 0}}>
+            <StyledFormControl fullWidth style={{padding: "0 25px", width: "88%", marginTop: 10, zIndex: 11}}>
               <MySelect
                 label={t("IDS_WP_SELECT_TYPE")}
                 options={workingTypes.map(item => ({
@@ -248,15 +243,29 @@ function CopyProject({
                 onChange={({ value: workingType }) => setWorkingType(workingType)}
               />
             </StyledFormControl>
+            <SearchInput
+              fullWidth
+              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND", {title})}
+              value={searchPatern}
+              onChange={evt => setSearchPatern(evt.target.value)}
+              className={"view_ProjecrGroup_Copy_Project_Modal_searchBox"}
+            />
             <ListContainer>
-              {groupFiltered.map(projectGroup => (
-                <ProjectGroupList
-                  projectGroup={projectGroup}
-                  key={get(projectGroup, 'id')}
-                  selectedProject={selectedProject}
-                  setSelectedProject={setSelectedProject}
-                />
-              ))}
+              {reduce(groupFiltered, (sum, group) => sum + get(group, 'projects', []).length, 0) === 0 ? (
+                  <div className={"view_ProjecrGroup_Copy_Project_Modal___list_nodata"}>
+                    <img src={ic_no_data22} alt={"No data icon"}/>
+                    <p>{t("VIEW_OFFER_LABEL_DATA_NOT_FOUND")}</p>
+                  </div>
+                ) :
+                groupFiltered.map(projectGroup => (
+                  <ProjectGroupList
+                    projectGroup={projectGroup}
+                    key={get(projectGroup, 'id')}
+                    selectedProject={selectedProject}
+                    setSelectedProject={setSelectedProject}
+                  />
+                ))
+              }
             </ListContainer>
           </LeftContainer>,
       }}

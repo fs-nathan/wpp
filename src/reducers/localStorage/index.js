@@ -40,7 +40,7 @@ function reducer(state = initialState, action) {
       };
     case SET_PROJECT_GROUP:
       return {
-        ...0,
+        ...state,
         projectGroup: action.value,
       };
     case RESET:

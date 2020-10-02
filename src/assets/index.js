@@ -47,3 +47,4 @@ export { default as type_all_64} from "./type_all_64.png";
 export { default as workfollow_64} from "./workfollow_64.png";
 export { default as check_64} from "./check_64.png";
 export { default as speed_64} from "./speed_64.png";
+export { default as ic_no_data22} from "./ic_no_data22.png";

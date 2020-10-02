@@ -126,18 +126,10 @@ function DeletedProjectTable({
         <CustomTable
           options={{
             title: () => (
-              <div className={"view_ProjectGroup_Table_All_title"} style={{marginLeft: 0}}>
-                <img src={workTypeIcon} alt="Working type icon" width={40} height={40}/>
-                <span>{title}</span>
-                <div className={"view_ProjectGroup_Table_All_title_icon"}>
-                  <IconButton
-                    onClick={() => setOpenWorkTypeModal(true)}
-                    aria-controls="simple-menu"
-                    aria-haspopup="true"
-                    size="small"
-                  >
-                    <Icon path={mdiMenuDown} size={1.5} />
-                  </IconButton>
+              <div className={"view_ProjectGroupPage_Table_Deleted_title"}>
+                <img src={workTypeIcon} alt="Working type icon" width={30} height={30}/>
+                <div className={"view_ProjectGroupPage_Table_Deleted_title_icon"}>
+                  <Button endIcon={<Icon path={mdiMenuDown} size={1.5} />} onClick={() => setOpenWorkTypeModal(true)}><span>{title}</span></Button>
                 </div>
               </div>
             ),
@@ -172,9 +164,18 @@ function DeletedProjectTable({
           columns={[
             {
               label: () => null,
-              field: row => (
-                <img src={workTypeIcon} alt={"work type icon"} width={35} height={35}/>
-              ),
+              field: row => {
+                switch (get(row, 'work_type')) {
+                  case WORKPLACE_TYPES.JOB:
+                    return (<abbr title={t("IDS_WP_JOB")}><img src={images.check_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
+                  case WORKPLACE_TYPES.PROJECT:
+                    return (<abbr title={t("IDS_WP_PROJECT")}><img src={images.speed_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
+                  case WORKPLACE_TYPES.PROCESS:
+                    return (<abbr title={t("IDS_WP_PROCESS")}><img src={images.workfollow_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
+                  default:
+                    return;
+                }
+              },
               align: 'left',
               width: '3%',
             }, {

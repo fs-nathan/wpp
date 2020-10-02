@@ -170,6 +170,7 @@ function CreateNewProject({
         label={`${t("IDS_WP_NAME")} ${title}`}
         fullWidth
         required={true}
+        className={"view_ProjectGroup_CreateNew_Project_Modal_formItem"}
       />
       <CustomTextbox
         value={description}

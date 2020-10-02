@@ -2158,5 +2158,6 @@
   "IDS_WP_ALL": "All",
   "IS_WP_WORK_TYPE_SETTING_TITLE": "Setting {{type}}",
   "IDS_WP_PHASE": "Phase",
-  "IDS_WP_SELECT_PHASE": "Select Phase"
+  "IDS_WP_SELECT_PHASE": "Select Phase",
+  "IDS_WP_PROGRESS": "Progress"
 }

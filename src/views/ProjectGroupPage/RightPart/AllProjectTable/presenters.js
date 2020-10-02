@@ -125,7 +125,6 @@ function AllProjectTable({
     setMenuAnchor(anchorEl)
     setCurProject(project)
   }
-
   React.useEffect(() => {
     setShowHideDisabled(
       !isNil(find(showHidePendings.pendings, pending => pending === get(curProject, 'id')))
