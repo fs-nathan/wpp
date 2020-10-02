@@ -26,6 +26,13 @@ function KanbanBoard({
           droppableId='kanban-board'
           type='COLUMN'
           direction="horizontal"
+          renderClone={(provided, snapshot, rubric) => (
+            <div    
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              ref={provided.innerRef}
+            >X</div>
+          )}
         >
           {(dropProvided, dropSnapshot) => (
             <Container 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { get } from 'lodash';
 import KanbanItem from '../KanbanItem';
+import Scrollbars from 'components/Scrollbars';
 import './style.scss'
 
 const Container = ({ className = '', isDragging, innerRef, ...props }) =>
@@ -15,6 +16,12 @@ const ItemList = ({ className = '', isDraggingOver, innerRef, ...props }) =>
   <div 
     ref={innerRef} 
     className={`view_KanbanColumn___item-list${isDraggingOver ? '-dragging-over' : ''} ${className}`}
+    {...props} 
+  />;
+
+const ListScroll = ({ className = '', ...props }) =>
+  <Scrollbars 
+    className={`view_KanbanColumn___list-scroll ${className}`}
     {...props} 
   />;
  
@@ -41,27 +48,32 @@ function KanbanColumn({ groupTask, index }) {
           <GroupName
             {...dragProvided.dragHandleProps}
           >{get(groupTask, 'name', '')}</GroupName>
-          <Droppable
-            droppableId={`d-${get(groupTask, 'id', '')}`}
-            type='ITEM'
+          <ListScroll
+            autoHide
+            autoHideTimeout={500}
           >
-            {(dropProvided, dropSnapshot) => (
-              <ItemList
-                isDraggingOver={dropSnapshot.isDraggingOver}
-                {...dropProvided.droppableProps}
-                innerRef={dropProvided.innerRef}
-              >
-                {get(groupTask, 'tasks', []).map((task, index) => (
-                  <KanbanItem 
-                    task={task}
-                    index={index}
-                    key={index}
-                  />
-                ))}
-                {dropProvided.placeholder}
-              </ItemList>
-            )}
+            <Droppable
+              droppableId={`d-${get(groupTask, 'id', '')}`}
+              type='ITEM'
+            >
+              {(dropProvided, dropSnapshot) => (
+                <ItemList
+                  isDraggingOver={dropSnapshot.isDraggingOver}
+                  {...dropProvided.droppableProps}
+                  innerRef={dropProvided.innerRef}
+                >
+                  {get(groupTask, 'tasks', []).map((task, index) => (
+                    <KanbanItem 
+                      task={task}
+                      index={index}
+                      key={index}
+                    />
+                  ))}
+                  {dropProvided.placeholder}
+                </ItemList>
+              )}
             </Droppable>
+          </ListScroll>
         </Container>
       )}
     </Draggable>

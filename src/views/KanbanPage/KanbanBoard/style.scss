@@ -1,11 +1,14 @@
 @mixin view_KanbanBoard___container {
+  height: 100%;
+  min-width: 100%;
   width: fit-content;
-  padding-top: 6px;
-  padding-bottom: 6px;
-  padding-right: 6px;
+  box-sizing: border-box;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  padding-right: 15px;
   display: flex;
   & > * {
-    margin-left: 6px;
+    margin-left: 15px;
   }
 }
 
