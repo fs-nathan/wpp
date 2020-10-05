@@ -11,7 +11,7 @@ import Select, { components } from 'react-select';
 import { bgColorSelector } from 'reducers/setting/selectors';
 import styled from 'styled-components';
 import './styles.scss';
-
+import {Scrollbars} from "react-custom-scrollbars";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -61,14 +61,15 @@ function MultiValue(props) {
 }
 
 const MenuListWrapper = styled(components.MenuList)`
-  height: auto !important;
-  overflow: hidden !important;
+  height: 150px !important;
 `;
 
 const MenuList = ({ children, ...props }) => {
   return (
     <MenuListWrapper {...props}>
-      {children}
+      <Scrollbars>
+        {children}
+      </Scrollbars>
     </MenuListWrapper>
   );
 };

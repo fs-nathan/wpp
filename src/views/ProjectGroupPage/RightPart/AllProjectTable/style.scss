@@ -56,12 +56,19 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin-left: 17px;
+  margin-left: 23px;
   &>span {
     font-size: 21px;
     margin-left: 20px;
   }
   &_icon {
     margin-left: 5px;
+    .MuiButton-label {
+      font-size: 21px;
+      line-height: 26px;
+      font-weight: 600;
+      text-transform: none;
+      color: #212529;
+    }
   }
 }
