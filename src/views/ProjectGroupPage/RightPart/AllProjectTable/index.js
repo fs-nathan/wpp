@@ -88,9 +88,23 @@ function AllProjectTable({
   }, [projectGroupId, timeRange]);
 
   React.useEffect(() => {
-    doListProjectGroup();
+    doListProjectGroup({
+      timeStart: get(timeRange, 'timeStart')
+        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        : undefined,
+      timeEnd: get(timeRange, 'timeEnd')
+        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        : undefined,
+    });
     const reloadListProjectGroup = () => {
-      doListProjectGroup();
+      doListProjectGroup({
+        timeStart: get(timeRange, 'timeStart')
+          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+          : undefined,
+        timeEnd: get(timeRange, 'timeEnd')
+          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+          : undefined,
+      });
     }
     CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
     CustomEventListener(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
@@ -98,11 +112,7 @@ function AllProjectTable({
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
       CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     }
-  }, []);
-
-  React.useEffect(() => {
-    //doListIcon();
-  }, []);
+  }, [timeRange]);
 
   React.useEffect(() => {
     let _projects = [...projects.projects];
@@ -252,7 +262,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
-    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListProjectGroup: (options,quite) => dispatch(listProjectGroup(options,quite)),
     doListIcon: (quite) => dispatch(listIcon(quite)),
     doSortProject: ({ sortData, groupId }) =>
       dispatch(sortProject({ sortData, groupId })),

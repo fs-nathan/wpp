@@ -64,11 +64,17 @@
   &_icon {
     margin-left: 5px;
     .MuiButton-label {
-      font-size: 21px;
+      font-size: 21px !important;
       line-height: 26px;
       font-weight: 600;
       text-transform: none;
       color: #212529;
+      &>span {
+        font-size: 21px !important;
+      }
     }
+  }
+  &_bold {
+    font-weight: 500 !important;
   }
 }

@@ -49,7 +49,7 @@ function WorkplacePage({
           <div className={"workplace-page-card-content"}>
             <img src={images.check_64} alt=""/>
             <p className={"workplace-page-working-type"}>{`${t(`IDS_WP_${invert(WORKPLACE_TYPES)[0]}`)}`}</p>
-            <p className={"workplace-page-working-count"}>{t("IDS_WP_COUNT_WORKPLACE_JOB", {count: get(projectStatistic, "number_work_type", 0)})}</p>
+            <p className={"workplace-page-working-count"}>{t("IDS_WP_COUNT_WORKPLACE_JOB", {count: get(projectStatistic, "number_work_topic", 0)})}</p>
             <p className={"workplace-page-working-des"}>{t("IDS_WP_DES_WORKPLACE_JOB")}</p>
             <Button onClick={() => handleClickWorkType(WORKPLACE_TYPES.JOB)} color="primary">{t("IDS_WP_START_NOW")}</Button>
           </div>

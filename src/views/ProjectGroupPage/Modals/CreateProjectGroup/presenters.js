@@ -10,6 +10,8 @@ import { useTranslation } from 'react-i18next';
 import './style.scss';
 import {Box, Checkbox} from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import HtmlTooltip from "../../../JobDetailPage/TabPart/DefaultTab/TabBody/HtmlTooltip";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const LogoBox = ({ className = '', ...props }) =>
   <div
@@ -33,9 +35,9 @@ function CreateProjectGroup({
   });
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [workingTypes, setWorkingTypes] = React.useState([
-    {type: t("IDS_WP_JOB"), value: 0, checked: true},
-    {type: t("IDS_WP_PROJECT"), value: 1, checked: true},
-    {type: t("IDS_WP_PROCESS"), value: 2, checked: true}
+    {type: t("IDS_WP_JOB"), value: 0, checked: true, disabled: false},
+    {type: t("IDS_WP_PROJECT"), value: 1, checked: true, disabled: false},
+    {type: t("IDS_WP_PROCESS"), value: 2, checked: true, disabled: false}
   ]);
 
   const handleWorkingTypeChange = index => {
@@ -54,9 +56,9 @@ function CreateProjectGroup({
     });
     const workTypes = get(updatedProjectGroup, 'work_types', []);
     setWorkingTypes([
-      {type: t("IDS_WP_JOB"), value: 0, checked: !isNil(get(workTypes, "[0]"))},
-      {type: t("IDS_WP_PROJECT"), value: 1, checked: !isNil(get(workTypes, "[1]"))},
-      {type: t("IDS_WP_PROCESS"), value: 2, checked: !isNil(get(workTypes, "[2]"))}
+      {type: t("IDS_WP_JOB"), value: 0, checked: !isNil(get(workTypes, "[0]")), disabled: !isNil(get(workTypes, "[0]"))},
+      {type: t("IDS_WP_PROJECT"), value: 1, checked: !isNil(get(workTypes, "[1]")), disabled: !isNil(get(workTypes, "[1]"))},
+      {type: t("IDS_WP_PROCESS"), value: 2, checked: !isNil(get(workTypes, "[2]")), disabled: !isNil(get(workTypes, "[2]"))}
     ]);
   }, [updatedProjectGroup]);
 
@@ -124,7 +126,6 @@ function CreateProjectGroup({
       CustomEventDispose(LIST_PROJECT_GROUP.SUCCESS, success);
       CustomEventDispose(LIST_PROJECT_GROUP.FAIL, fail);
     }
-    // eslint-disable-next-line
   }, []);
 
   return (
@@ -157,18 +158,27 @@ function CreateProjectGroup({
       />
       <Box className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType"}>
         <div className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType_title"}>{t("IDS_WP_APPLY_WORK_TYPE")}<abbr title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr></div>
-        <FormControlLabel
-          control={<Checkbox checked={workingTypes[0].checked} onChange={() => handleWorkingTypeChange(0)} name={workingTypes[0].type} color={"primary"}/>}
-          label={workingTypes[0].type}
-        />
-        <FormControlLabel
-          control={<Checkbox checked={workingTypes[1].checked} onChange={() => handleWorkingTypeChange(1)} name={workingTypes[1].type} color={"primary"}/>}
-          label={workingTypes[1].type}
-        />
-        <FormControlLabel
-          control={<Checkbox checked={workingTypes[2].checked} onChange={() => handleWorkingTypeChange(2)} name={workingTypes[2].type} color={"primary"}/>}
-          label={workingTypes[2].type}
-        />
+        <abbr title={workingTypes[0].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_WORKING_TYPE")})}>
+          <FormControlLabel
+            control={<Checkbox checked={workingTypes[0].checked} onChange={() => handleWorkingTypeChange(0)} name={workingTypes[0].type} color={"primary"}/>}
+            disabled={workingTypes[0].disabled}
+            label={workingTypes[0].type}
+          />
+        </abbr>
+        <abbr title={workingTypes[1].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROJECT")})}>
+          <FormControlLabel
+            control={<Checkbox checked={workingTypes[1].checked} onChange={() => handleWorkingTypeChange(1)} name={workingTypes[1].type} color={"primary"}/>}
+            disabled={workingTypes[1].disabled}
+            label={workingTypes[1].type}
+          />
+        </abbr>
+        <abbr title={workingTypes[2].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROCESS")})}>
+          <FormControlLabel
+            control={<Checkbox checked={workingTypes[2].checked} onChange={() => handleWorkingTypeChange(2)} name={workingTypes[2].type} color={"primary"}/>}
+            disabled={workingTypes[2].disabled}
+            label={workingTypes[2].type}
+          />
+        </abbr>
       </Box>
       <LogoBox>
         <div>

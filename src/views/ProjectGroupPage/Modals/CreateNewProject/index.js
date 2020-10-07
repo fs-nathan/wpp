@@ -32,9 +32,15 @@ function CreateNewProject({
   }, [timeType]);
 
   React.useEffect(() => {
-    doListProjectGroup();
-    // eslint-disable-next-line
-  }, []);
+    doListProjectGroup({
+      timeStart: get(timeRange, 'timeStart')
+        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        : undefined,
+      timeEnd: get(timeRange, 'timeEnd')
+        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        : undefined,
+    });
+  }, [timeRange]);
 
   return (
     <CreateNewProjectPresenter
@@ -70,7 +76,7 @@ const mapDispatchToProps = dispatch => {
   return {
     doReload: (options) => dispatch(listProject(options, true)),
     doCreateProject: ({ name, description, projectGroupId, priority, currency, work_type }) => dispatch(createProject({ name, description, projectGroupId, priority, currency,work_type })),
-    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListProjectGroup: (options, quite) => dispatch(listProjectGroup(options, quite)),
   }
 };
 

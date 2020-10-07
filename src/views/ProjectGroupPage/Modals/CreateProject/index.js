@@ -28,7 +28,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null , work_types 
   return (
     <>
       <CustomModal
-        title={`${t("LABEL_CHAT_TASK_TAO_MOI")} ${t("IDS_WP_WORK_AND_PHASE_GROUP")}`}
+        title={`${t("IDS_WP_ADD")}`}
         open={open}
         setOpen={setOpen}
         confirmRender={null}
@@ -47,7 +47,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null , work_types 
               <Icon path={mdiNotePlusOutline} size={2} />
             </div>
             <div>
-              <span>{`${t("LABEL_CHAT_TASK_TAO_MOI")} ${t("IDS_WP_WORK_AND_PHASE_GROUP")}`}</span>
+              <span>{`${t("IDS_WP_ADD")}`}</span>
               <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.DESC")}</span>
             </div>
           </ButtonCase>
@@ -62,7 +62,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null , work_types 
               <Icon path={mdiContentCopy} size={2} />
             </div>
             <div>
-              <span>{`${t("DMH.VIEW.PGP.MODAL.NEWPG.COPY.TITLE")} ${t("IDS_WP_WORK_AND_PHASE_GROUP")}`}</span>
+              <span>{`${t("DMH.VIEW.PGP.MODAL.NEWPG.COPY.TITLE")}`}</span>
               <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.COPY.DESC")}</span>
             </div>
           </ButtonCase>

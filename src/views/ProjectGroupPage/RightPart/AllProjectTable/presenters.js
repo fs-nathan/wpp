@@ -135,7 +135,7 @@ function AllProjectTable({
     setCurProject(oldProject => find(projects.projects, { id: get(oldProject, 'id') }))
   }, [projects]);
   React.useEffect(() => {
-    if(isNil(workTypeFromQuery)) {
+    if(!isNil(workTypeFromQuery)) {
       setSelectedWorkType(parseInt(workTypeFromQuery));
     }
   }, [workTypeFromQuery]);
@@ -281,7 +281,13 @@ function AllProjectTable({
               },
               {
                 label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.NAME"),
-                field: (row) => <LinkSpan onClick={evt => history.push(`${get(row, 'url_redirect', '#')}`)}>{get(row, 'name', '')}</LinkSpan>,
+                field: (row) =>
+                  <LinkSpan
+                    onClick={evt => history.push(`${get(row, 'url_redirect', '#')}`)}
+                    className={"view_ProjectGroup_Table_All_title_bold"}
+                  >
+                    {get(row, 'name', '')}
+                  </LinkSpan>,
                 sort: evt => handleSortType('name'),
                 align: 'left',
                 width: '20%',
@@ -294,6 +300,8 @@ function AllProjectTable({
                       style={{
                         width: 25,
                         height: 25,
+                        margin: "0 auto",
+                        padding: "0px 5px"
                       }}
                       src={get(row, 'icon')}
                       alt="project group icon"
@@ -301,7 +309,7 @@ function AllProjectTable({
                   </abbr>
                 ),
                 sort: evt => handleSortType('group'),
-                align: 'left',
+                align: 'center',
                 width: '8%'
               },
               {

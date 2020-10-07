@@ -32,9 +32,15 @@ function CopyProject({
   }, [timeType]);
 
   React.useEffect(() => {
-    doListProjectGroup();
-    // eslint-disable-next-line
-  }, []);
+    doListProjectGroup({
+      timeStart: get(timeRange, 'timeStart')
+        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        : undefined,
+      timeEnd: get(timeRange, 'timeEnd')
+        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        : undefined,
+    });
+  }, [timeRange]);
 
   const [searchPatern, setSearchPatern] = React.useState('');
 
@@ -88,7 +94,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doReload: (options) => dispatch(listProject(options, true)),
-    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListProjectGroup: (options, quite) => dispatch(listProjectGroup(options, quite)),
     doCopyProject: ({ projectId, name, description, startDate, isCopyMember }) => dispatch(copyProject({ projectId, name, description, startDate, isCopyMember })),
   }
 };

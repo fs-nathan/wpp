@@ -347,11 +347,11 @@
             "TITLE": "Create project",
             "CREATE": {
               "TITLE": "Create project",
-              "DESC": "Completely new creation of parameters of workgroup, stage"
+              "DESC": "Create a new Work Topic, Project or Process to start working"
             },
             "COPY": {
               "TITLE": "Copy",
-              "DESC": "Copy workgroups and stages already available"
+              "DESC": "Create a new Work Topic, Project or Process by copying it from the library"
             }
           },
           "NOPG": {
@@ -454,26 +454,26 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Copy task group",
-            "SEARCH": "Search task group"
+            "TITLE": "Copy task group, phrase",
+            "SEARCH": "Search task group, phrase"
           },
           "CREATE": {
-            "TITLE": "Create task group",
+            "TITLE": "Create task group, phrase",
             "CREATE": {
-              "LABEL": "Create task group",
-              "DESC": "Create new informations of task group"
+              "LABEL": "Create task group, phrase",
+              "DESC": "Create new information of task group, phrase"
             },
             "COPY": {
-              "LABEL": "Copy task group",
-              "DESC": "Copy available task group"
+              "LABEL": "Copy task group, phrase",
+              "DESC": "Copy available task group, phrase"
             }
           },
           "CUGT": {
-            "C_TITLE": "Create task group",
-            "U_TITLE": "Edit task group",
-            "NAME": "Task group name",
-            "DESC": "Task group descriptions",
-            "ALERT": "Are you sure want to delete task group ?"
+            "C_TITLE": "Create task group, phrase",
+            "U_TITLE": "Edit task group, phrase",
+            "NAME": "Task group name, phrase",
+            "DESC": "Task group descriptions, phrase",
+            "ALERT": "Are you sure want to delete this task group, phrase ?"
           },
           "MEMBER": {
             "TITLE": "Manage members",
@@ -2160,5 +2160,5 @@
   "IDS_WP_PHASE": "Phase",
   "IDS_WP_SELECT_PHASE": "Select Phase",
   "IDS_WP_PROGRESS": "Progress",
-  "IDS_WP_WORK_AND_PHASE_GROUP": "works and stages group"
+  "IDS_WP_ALREADY_EXIST": "{{object}} already exists"
 }

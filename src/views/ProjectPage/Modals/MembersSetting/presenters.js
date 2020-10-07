@@ -179,12 +179,20 @@ function UserFreeRoomList({
             <ListItemText
               primary={
                 <StyledPrimary>
-                  {get(user, 'name', '')}
+                  <abbr title={get(user, 'name', '')}>
+                    <div className={"view_Project_MemberSetting_Modal__textShorten"}>
+                      {get(user, 'name', '')}
+                    </div>
+                  </abbr>
                 </StyledPrimary>
               }
               secondary={
                 <StyledSecondary>
-                  {get(user, 'email', '')}
+                  <abbr title={get(user, 'email', '')}>
+                    <div className={"view_Project_MemberSetting_Modal__textShorten"}>
+                      {get(user, 'email', '')}
+                    </div>
+                  </abbr>
                 </StyledSecondary>
               }
             />

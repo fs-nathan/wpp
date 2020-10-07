@@ -4,7 +4,7 @@ import * as images from "assets";
 import {useTranslation} from "react-i18next";
 import "./styles.scss";
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
-import {get} from "lodash";
+import {get, isNil} from "lodash";
 
 function SelectWorkType({
   open, setOpen, handleSelectItem = () => null, selected, projectStatistic
@@ -58,7 +58,7 @@ function SelectWorkType({
           <div
             className={"select-work-type-modal-item"}
             onClick={() => handleOnClick()}
-            className={`select-work-type-modal-item ${selected === undefined && "active"}`}
+            className={`select-work-type-modal-item ${(isNil(selected) || selected === -1) && "active"}`}
           >
             <img src={images.type_all_64} alt="" width={35} height={35}/>
             <div className={"select-work-type-modal-item-text"}>

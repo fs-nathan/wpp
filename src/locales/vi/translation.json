@@ -347,11 +347,11 @@
             "TITLE": "Tạo dự án",
             "CREATE": {
               "TITLE": "Tạo mới dự án",
-              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc, giai đoạn"
+              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình để bắt đầu làm việc"
             },
             "COPY": {
               "TITLE": "Sao chép",
-              "DESC": "Sao chép các nhóm công việc, giai đoạn đã có sẵn"
+              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình bằng cách sao chép từ thư viện"
             }
           },
           "NOPG": {
@@ -454,26 +454,26 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Sao chép nhóm công việc",
-            "SEARCH": "Tìm nhóm công việc"
+            "TITLE": "Sao chép nhóm công việc, giai đoạn",
+            "SEARCH": "Tìm nhóm công việc, giai đoạn"
           },
           "CREATE": {
-            "TITLE": "Tạo nhóm công việc",
+            "TITLE": "Tạo nhóm công việc, giai đoạn",
             "CREATE": {
-              "LABEL": "Tạo mới nhóm công việc",
-              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc"
+              "LABEL": "Tạo mới nhóm công việc, giai đoạn",
+              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc, giai đoạn"
             },
             "COPY": {
-              "LABEL": "Sao chép nhóm công việc",
-              "DESC": "Sao chép các nhóm công việc có sẵn vào dự án"
+              "LABEL": "Sao chép nhóm công việc, giai đoạn",
+              "DESC": "Sao chép các nhóm công việc, giai đoạn có sẵn vào dự án"
             }
           },
           "CUGT": {
-            "C_TITLE": "Tạo mới nhóm công việc",
-            "U_TITLE": "Chỉnh sửa nhóm công việc",
-            "NAME": "Tên nhóm công việc",
-            "DESC": "Mô tả nhóm công việc",
-            "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc?"
+            "C_TITLE": "Tạo mới nhóm công việc, giai đoạn",
+            "U_TITLE": "Chỉnh sửa nhóm công việc, giai đoạn",
+            "NAME": "Tên nhóm công việc, giai đoạn",
+            "DESC": "Mô tả nhóm công việc, giai đoạn",
+            "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc, giai đoạn này?"
           },
           "MEMBER": {
             "TITLE": "Quản lý thành viên",
@@ -2162,5 +2162,5 @@
   "IDS_WP_PHASE": "Giai đoạn",
   "IDS_WP_SELECT_PHASE": "Lựa chọn giai đoạn",
   "IDS_WP_PROGRESS": "Tiến độ",
-  "IDS_WP_WORK_AND_PHASE_GROUP": "nhóm công việc, giai đoạn"
+  "IDS_WP_ALREADY_EXIST": "Đã tồn tại {{object}}"
 }
