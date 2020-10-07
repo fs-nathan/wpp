@@ -347,11 +347,11 @@
             "TITLE": "Create project",
             "CREATE": {
               "TITLE": "Create project",
-              "DESC": "Create a new Work Topic, Project or Process to start working"
+              "DESC": "Completely new creation of parameters of workgroup, stage"
             },
             "COPY": {
               "TITLE": "Copy",
-              "DESC": "Create a New Work, Project or Process topic by copying it from the library"
+              "DESC": "Copy workgroups and stages already available"
             }
           },
           "NOPG": {
@@ -444,7 +444,7 @@
             "NUM_TASK": "Joined {{number_task}}/{{total_task}} tasks",
             "ALL_TASK": "{{number_task}} tasks",
             "LEAVE": "Left out group",
-            "TITLE": "Project members",
+            "TITLE": "Members",
             "BACK": "Back",
             "ADD": "Add members",
             "SEARCH": "Search members",
@@ -476,15 +476,15 @@
             "ALERT": "Are you sure want to delete task group ?"
           },
           "MEMBER": {
-            "TITLE": "Manage project members",
+            "TITLE": "Manage members",
             "EXIT": "Exit",
             "LEFT": {
               "TITLE": "Members list",
               "SEARCH": "Search members",
-              "HELPER": "Let add member to group before assign for project"
+              "HELPER": "Let add member to group before assign for project, stages, or works"
             },
             "RIGHT": {
-              "TITLE": "Project members",
+              "TITLE": "Members",
               "TABLE": {
                 "MEM": "Member",
                 "PER": "Permission group",
@@ -516,8 +516,8 @@
                 "DESC": "Descriptions"
               },
               "ADMIN": {
-                "TITLE": "Permission group: Project owner",
-                "DESC": "The project owner is group which have permissions below:"
+                "TITLE": "Permission group: Owner",
+                "DESC": "The owner is group which have permissions below:"
               },
               "USER": {
                 "TITLE": "Choose permission group",
@@ -1810,7 +1810,7 @@
   "LABEL_CHAT_TASK_THEM_NHAC_HEN": "Add reminders",
   "Tên nhóm quyền": "Permission group name",
   "Mô tả nhóm quyền": "Permission group descriptions",
-  "Phạm vi module phân quyền": "Use in module",
+  "Phạm vi module phân quyền": "The scope of application of the rights group",
   "Tạo nhóm quyền": "Create group permission",
   "Hoàn thành": "Complete",
   "required": "Field required",
@@ -2057,7 +2057,7 @@
   "Bạn có muốn xóa bài viết?": "Do you want to delete the post?",
   "Bạn có muốn xóa bình luận ?": "Do you want to delete the comment ?",
   "LABEL_CHAT_TASK_TIM_KIEM": "Search",
-  "Module thành viên": "Member mudule",
+  "Module thành viên": "Employee Decentralization",
   "TIME_RANGE_POPOVER_OPTIONS": "Options",
   "TIME_RANGE_POPOVER_TIME_CHOOSEN": "Time Choosen",
   "TIME_RANGE_POPOVER_TIME_ALL": "All time",
@@ -2159,5 +2159,6 @@
   "IS_WP_WORK_TYPE_SETTING_TITLE": "Setting {{type}}",
   "IDS_WP_PHASE": "Phase",
   "IDS_WP_SELECT_PHASE": "Select Phase",
-  "IDS_WP_PROGRESS": "Progress"
+  "IDS_WP_PROGRESS": "Progress",
+  "IDS_WP_WORK_AND_PHASE_GROUP": "works and stages group"
 }

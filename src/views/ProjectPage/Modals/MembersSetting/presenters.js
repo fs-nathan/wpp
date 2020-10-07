@@ -359,7 +359,6 @@ function MemberSetting({
                     </AvatarTableCell>
                     <UserTableCell width='25%'>
                       <span>{get(member, 'name', '')}</span>
-                      <br />
                       <small>{get(member, 'email', '')}</small>
                     </UserTableCell>
                     <TableCell width='15%'>

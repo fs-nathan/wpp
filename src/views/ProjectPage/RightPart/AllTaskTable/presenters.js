@@ -15,6 +15,7 @@ import { Button } from "@material-ui/core";
 import './style.scss';
 import CustomAvatar from "../../../../components/CustomAvatar";
 import NavigatorMenu from "../../../../components/NavigatorMenu";
+import {WORKPLACE_TYPES} from "../../../../constants/constants";
 
 function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
@@ -115,7 +116,7 @@ function AllTaskTable({
                     onClick: (evt) => handleSubSlide(1),
                     noExpand: true,
                 } : undefined, canUpdateProject && isNil(memberID) ? {
-                    label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.GROUP_TASK"),
+                    label: get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ? t("IDS_WP_PHASE") : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.GROUP_TASK"),
                     iconPath: mdiScatterPlot,
                     onClick: (evt) => handleSubSlide(2),
                     noExpand: true,

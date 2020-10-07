@@ -347,11 +347,11 @@
             "TITLE": "Tạo dự án",
             "CREATE": {
               "TITLE": "Tạo mới dự án",
-              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình để bắt đầu làm việc"
+              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc, giai đoạn"
             },
             "COPY": {
               "TITLE": "Sao chép",
-              "DESC": "Tạo mới chủ đề Công việc, Dự án hoặc Quy trình bằng cách sao chép từ thư viện"
+              "DESC": "Sao chép các nhóm công việc, giai đoạn đã có sẵn"
             }
           },
           "NOPG": {
@@ -444,7 +444,7 @@
             "NUM_TASK": "Tham gia {{number_task}}/{{total_task}} việc",
             "ALL_TASK": "{{number_task}} việc",
             "LEAVE": "Đã rời nhóm",
-            "TITLE": "Thành viên dự án",
+            "TITLE": "Thành viên",
             "BACK": "Quay lại",
             "ADD": "Thêm thành viên dự án",
             "SEARCH": "Tìm thành viên",
@@ -476,15 +476,15 @@
             "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc?"
           },
           "MEMBER": {
-            "TITLE": "Quản lý thành viên dự án",
+            "TITLE": "Quản lý thành viên",
             "EXIT": "Thoát",
             "LEFT": {
               "TITLE": "Danh sách thành viên",
               "SEARCH": "Tìm thành viên",
-              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án!"
+              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án, Quy trình hoặc Chủ đề công việc!"
             },
             "RIGHT": {
-              "TITLE": "Thành viên dự án",
+              "TITLE": "Thành viên",
               "TABLE": {
                 "MEM": "Thành viên",
                 "PER": "Nhóm quyền",
@@ -516,8 +516,8 @@
                 "DESC": "Mô tả"
               },
               "ADMIN": {
-                "TITLE": "Nhóm quyền: Chủ sở hữu dự án",
-                "DESC": "Chủ sở hữu dự án có các quyền sau:"
+                "TITLE": "Nhóm quyền: Chủ sở hữu",
+                "DESC": "Chủ sở hữu có các quyền sau:"
               },
               "USER": {
                 "TITLE": "Chọn nhóm quyền",
@@ -1718,7 +1718,7 @@
   "LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL": "Sửa nhắc hẹn",
   "Tên nhóm quyền": "Tên nhóm quyền",
   "Mô tả nhóm quyền": "Mô tả nhóm quyền",
-  "Phạm vi module phân quyền": "Mô-đun phạm vi phân quyền",
+  "Phạm vi module phân quyền": "Phạm vi áp dụng của nhóm quyền",
   "Tạo nhóm quyền": "Tạo nhóm quyền",
   "Hoàn thành": "Hoàn thành",
   "required": "Yêu cầu",
@@ -2058,7 +2058,7 @@
   "Công việc gần đây": "Công việc gần đây",
   "Bạn có muốn xóa bài viết?": "Bạn có muốn xóa bài viết?",
   "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm",
-  "Module thành viên": "Module thành viên",
+  "Module thành viên": "Phân quyền Nhân viên",
   "LABEL_CHAT_TASK_DANH_SACH_VI_TRI": "Danh sách vị trí chia sẻ",
   "LABEL_CHAT_TASK_NHOM_VIEC": "Nhóm việc",
   "LABEL_CHAT_TASK_CHIS_SE_LUC_USER_TIME": "{{user}} chia sẻ vị trí lúc {{time}}",
@@ -2161,5 +2161,6 @@
   "IS_WP_WORK_TYPE_SETTING_TITLE": "Cài đặt {{type}}",
   "IDS_WP_PHASE": "Giai đoạn",
   "IDS_WP_SELECT_PHASE": "Lựa chọn giai đoạn",
-  "IDS_WP_PROGRESS": "Tiến độ"
+  "IDS_WP_PROGRESS": "Tiến độ",
+  "IDS_WP_WORK_AND_PHASE_GROUP": "nhóm công việc, giai đoạn"
 }
