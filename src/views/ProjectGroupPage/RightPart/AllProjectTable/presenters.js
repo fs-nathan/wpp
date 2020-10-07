@@ -109,7 +109,7 @@ function AllProjectTable({
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [openWorkTypeModal, setOpenWorkTypeModal] = React.useState(false);
-  const [selectedWorkType, setSelectedWorkType] = React.useState(undefined);
+  const [selectedWorkType, setSelectedWorkType] = React.useState(workTypeLocal);
   const [workTypeIcon, setWorkTypeIcon] = React.useState(images.type_all_64);
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
@@ -136,9 +136,9 @@ function AllProjectTable({
   }, [projects]);
   React.useEffect(() => {
     if(isNil(workTypeFromQuery)) {
-      setSelectedWorkType(workTypeLocal);
-    } else setSelectedWorkType(parseInt(workTypeFromQuery));
-  }, [workTypeFromQuery, workTypeLocal]);
+      setSelectedWorkType(parseInt(workTypeFromQuery));
+    }
+  }, [workTypeFromQuery]);
   React.useEffect(() => {
     let _projects = [];
     const Job = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.JOB);
