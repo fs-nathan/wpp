@@ -1,27 +1,41 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { TextField, Typography } from '@material-ui/core';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, getListGroupTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import {TextField, Typography} from '@material-ui/core';
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {
+  createTask,
+  getListGroupTask,
+  getSchedules,
+  updateGroupTask,
+  updateNameDescription,
+  updatePriority,
+  updateScheduleTask,
+  updateTypeAssign
+} from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
-import { listTimeSelect } from 'components/TimeSelect';
+import {listTimeSelect} from 'components/TimeSelect';
 import TitleSectionModal from 'components/TitleSectionModal';
-import { isOneOf } from 'helpers/jobDetail/arrayHelper';
-import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
-import { get, isFunction, isNil } from 'lodash';
-import React, { useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {isOneOf} from 'helpers/jobDetail/arrayHelper';
+import {
+  convertDate,
+  convertDateToJSFormat,
+  DEFAULT_DATE_TEXT,
+  DEFAULT_GROUP_TASK_VALUE,
+  EMPTY_STRING
+} from 'helpers/jobDetail/stringHelper';
+import {get, isFunction, isNil} from 'lodash';
+import React, {useEffect, useMemo} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CreateProjectGroup from 'views/ProjectPage/Modals/CreateGroupTask';
-import { taskIdSelector } from '../../../selectors';
+import {taskIdSelector} from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
-import TaskGroupSelect from 'components/TaskGroupSelect';
 import {getWorkType} from "../../../../../actions/project/getWorkType";
 import {WORKPLACE_TYPES} from "../../../../../constants/constants";
 
@@ -517,7 +531,7 @@ function CheckCreateJob(props) {
 
   const dispatch = useDispatch();
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-
+  const {t} = useTranslation();
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask) || {};
   const isFetching = useSelector(state => state.taskDetail.listGroupTask.isFetching);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
@@ -526,7 +540,7 @@ function CheckCreateJob(props) {
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
-
+  const project = get(props, "project");
   useEffect(() => {
     if (projectId && props.isOpen) {
       dispatch(getListGroupTask({ project_id: projectId }));
@@ -578,6 +592,18 @@ function CheckCreateJob(props) {
         isOpen={isOpenCreateGroup}
         setOpen={onClickCloseGroupTask}
         onClickCreate={onClickCreateProjectGroup}
+        title1={
+          get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ?
+            t("LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_GIAI_DOAN") : null
+        }
+        title2={
+          get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ?
+            t("LABEL_CHAT_TASK_HAY_TAO_MOI_GIAI_DOAN") : null
+        }
+        actionName={
+          get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ?
+            t("LABEL_CHAT_TASK_TAO_MOI_GIAI_DOAN") : null
+        }
       />
       <CreateProjectGroup
         project_id={projectId}

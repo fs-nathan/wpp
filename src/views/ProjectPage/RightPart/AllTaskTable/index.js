@@ -221,6 +221,7 @@ function AllTaskTable({
         setOpen={setOpenCreate}
         projectId={projectId}
         groupId={selectedGroup}
+        project={project}
       />
       <ProjectSettingModal
         open={openSetting}

@@ -116,8 +116,9 @@ function AllProjectTable({
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
   const [title, setTitle] = React.useState(t("IDS_WP_ALL"));
   const [projectFiltered , setProjectFiltered] = React.useState([]);
+  const [projectFilteredByType, setProjectFilteredByType] = React.useState([]);
   const [statistic, setStatistic] = React.useState({});
-
+  const [projectSummary, setProjectSummary] = React.useState({});
   const times = useTimes();
   const filters = useFilters();
 
@@ -167,13 +168,29 @@ function AllProjectTable({
         break;
     }
     setProjectFiltered(_projects);
+    const summary = {
+      all: _projects.length,
+      active: filter(_projects, { visibility: true }).length,
+      hidden: filter(_projects, { visibility: false }).length,
+      waiting: filter(_projects, { state_code: 0 }).length,
+      doing: filter(_projects, { state_code: 1 }).length,
+      complete: filter(_projects, { state_code: 2 }).length,
+      expired: filter(_projects, { state_code: 3 }).length,
+      created: filter(_projects, { me_created: true }).length,
+      assigned: filter(_projects, { me_created: false }).length,
+    }
+    setProjectSummary(summary);
     setStatistic({
       number_work_type: Job.length,
       number_project: Project.length,
       number_process: Process.length
     });
   }, [selectedWorkType,projects]);
-
+  React.useEffect(() => {
+    let _projects = [...projectFiltered];
+    _projects = filter(_projects, filters[filterType].option);
+    setProjectFilteredByType(_projects);
+  }, [filterType,projectFiltered]);
   return (
     <>
       <Container>
@@ -477,7 +494,7 @@ function AllProjectTable({
                 width: '5%',
               }
             ]}
-            data={projectFiltered}
+            data={projectFilteredByType}
           />
           <Menu
             id="filter-menu"
@@ -500,7 +517,7 @@ function AllProjectTable({
               >
                 <MyIcon path={mdiCheckCircle} size={0.7} />
                 <span>{filter.title}</span>
-                <span>{get(projects.summary, filter.field, 0)}</span>
+                <span>{get(projectSummary, filter.field, 0)}</span>
               </CustomMenuItem>
             ))}
           </Menu>

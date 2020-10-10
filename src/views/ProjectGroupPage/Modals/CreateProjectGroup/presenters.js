@@ -1,17 +1,22 @@
 import CustomAvatar from 'components/CustomAvatar';
-import CustomModal, { Title } from 'components/CustomModal';
+import CustomModal, {Title} from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import UploadButton from 'components/UploadButton';
-import { CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener, DETAIL_PROJECT_GROUP, EDIT_PROJECT_GROUP, LIST_PROJECT_GROUP } from 'constants/events.js';
-import { useMaxlenString, useRequiredString } from 'hooks';
-import {get, isNil} from 'lodash';
+import {
+  CREATE_PROJECT_GROUP,
+  CustomEventDispose,
+  CustomEventListener,
+  DETAIL_PROJECT_GROUP,
+  EDIT_PROJECT_GROUP,
+  LIST_PROJECT_GROUP
+} from 'constants/events.js';
+import {useMaxlenString, useRequiredString} from 'hooks';
+import {get, isNil, indexOf} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import './style.scss';
 import {Box, Checkbox} from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import HtmlTooltip from "../../../JobDetailPage/TabPart/DefaultTab/TabBody/HtmlTooltip";
-import Tooltip from "@material-ui/core/Tooltip";
 
 const LogoBox = ({ className = '', ...props }) =>
   <div
@@ -47,6 +52,7 @@ function CreateProjectGroup({
   }
 
   React.useEffect(() => {
+    console.log(updatedProjectGroup);
     setName(get(updatedProjectGroup, 'name'));
     setDescription(get(updatedProjectGroup, 'description'));
     setIcon({
@@ -56,9 +62,20 @@ function CreateProjectGroup({
     });
     const workTypes = get(updatedProjectGroup, 'work_types', []);
     setWorkingTypes([
-      {type: t("IDS_WP_JOB"), value: 0, checked: !isNil(get(workTypes, "[0]")), disabled: !isNil(get(workTypes, "[0]"))},
-      {type: t("IDS_WP_PROJECT"), value: 1, checked: !isNil(get(workTypes, "[1]")), disabled: !isNil(get(workTypes, "[1]"))},
-      {type: t("IDS_WP_PROCESS"), value: 2, checked: !isNil(get(workTypes, "[2]")), disabled: !isNil(get(workTypes, "[2]"))}
+      { type: t("IDS_WP_JOB"), value: 0,
+        checked: indexOf(workTypes, "0") !== -1,
+        disabled: get(updatedProjectGroup, "statistic.work_topic", 0) > 0
+      },
+      {
+        type: t("IDS_WP_PROJECT"), value: 1,
+        checked: indexOf(workTypes, "1") !== -1,
+        disabled: get(updatedProjectGroup, "statistic.project", 0) > 0
+      },
+      {
+        type: t("IDS_WP_PROCESS"), value: 2,
+        checked: indexOf(workTypes, "2") !== -1,
+        disabled: get(updatedProjectGroup, "statistic.process", 0) > 0
+      }
     ]);
   }, [updatedProjectGroup]);
 

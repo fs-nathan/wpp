@@ -113,17 +113,26 @@ function AllProjectTable({
       CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     }
   }, [timeRange]);
-
+  function sort(valuePath, array){
+    let path = valuePath.split('.')
+    return array.sort((a, b) => {
+      return getValue(b,path) -  getValue(a,path)
+    });
+    function getValue(obj, path){
+      path.forEach(path => obj = obj[path])
+      return obj;
+    }
+  }
   React.useEffect(() => {
     let _projects = [...projects.projects];
-    _projects = filter(_projects, filters[filterType].option);
+    //_projects = filter(_projects, filters[filterType].option);
     _projects = sortBy(_projects, o => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
     setNewProjects({
       ...projects,
       projects: _projects,
     });
-  }, [projects, filterType, sortType]);
+  }, [projects, sortType]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
