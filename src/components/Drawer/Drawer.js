@@ -6,6 +6,8 @@ import { DRAWER_TYPE } from "../../constants/constants";
 import { isEmpty } from "../../helpers/utils/isEmpty";
 import AddUser from "views/DepartmentPage/LeftPart/AddUser";
 import ListProjectKanban from "views/JobDetailPage/ListPart/ListProjectKanban";
+import KanbanFilterSlider from "views/KanbanPage/Sliders/FilterSlider";
+import KanbanMemberSlider from "views/KanbanPage/Sliders/MemberSlider";
 import "./Drawer.scss";
 import DrawerGroupAcount from "./DrawerContentComponent/DrawerGroupAcount";
 import DrawerMessage from "./DrawerContentComponent/DrawerMessage";
@@ -33,9 +35,13 @@ const generateContent = (typeDrawer, optionsDrawer) => {
     case DRAWER_TYPE.KANBAN.PROJECTS:
       return <ListProjectKanban projectId={optionsDrawer.projectId} />;
     case DRAWER_TYPE.KANBAN.MEMBERS:
-      return null;
+      return <KanbanMemberSlider 
+        {...optionsDrawer}
+      />;
     case DRAWER_TYPE.KANBAN.FILTER:
-      return null;
+      return <KanbanFilterSlider 
+        {...optionsDrawer}
+      />;
     default:
       return "";
   }

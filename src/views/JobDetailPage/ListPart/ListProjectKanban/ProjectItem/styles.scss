@@ -1,13 +1,28 @@
 .projectItem {
   margin: 0px;
-  font-weight: 500;
-  font-size: 14px;
-  // border-bottom: 1px solid #0000001a;
   padding: 15px 15px 15px 43px;
   cursor: pointer;
-  line-height: 1.5;
-  & > *:first-child {
-    border-top: 1px solid #0000001a;
+  display: flex;
+  align-items: center;
+  & > * {
+    &:first-child {
+      display: block;
+      font-weight: 500;
+      font-size: 14px;
+      max-width: 65%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 16px;
+      line-height: 16px;
+    }
+    &:last-child {
+      display: block;
+      margin-left: auto;
+      height: 16px;
+      line-height: 16px;
+      color: #8b8b8b;
+    }
   }
   &:hover {
     background-color: #f2f5fa;

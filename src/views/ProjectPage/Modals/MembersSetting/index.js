@@ -37,14 +37,12 @@ function MemberSetting({
   }, [project_id, _projectId]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
     if (projectId !== null) {
       doMemberProject({ projectId });
     }
   }, [projectId, viewPermissions]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
     doListUserRole();
   }, [projectId, viewPermissions]);
 

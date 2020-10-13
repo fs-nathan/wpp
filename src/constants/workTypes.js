@@ -1,0 +1,1 @@
+export const workTypes = ["Công việc", "Dự án", "Quy trình", "Kế hoạch", "Chiến dịch"]

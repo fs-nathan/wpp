@@ -93,6 +93,9 @@ import { SORT_TASK } from "../constants/actions/task/sortTask";
 import { GET_REMIND_DETAIL } from "../constants/actions/calendar/alarmCalendar";
 import { KANBAN_DETAIL_PROJECT } from 'constants/actions/kanban/detailProject';
 import { KANBAN_LIST_TASK } from 'constants/actions/kanban/listTask';
+import { KANBAN_SORT_TASK } from 'constants/actions/kanban/sortTask';
+import { KANBAN_SORT_GROUP_TASK } from 'constants/actions/kanban/sortGroupTask';
+import { KANBAN_GET_MANAGER } from 'constants/actions/kanban/getManager';
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -250,6 +253,9 @@ import { privateMember } from "./user/privateMember";
 import { publicMember } from "./user/publicMember";
 import { detailProject as kanbanDetailProject } from './kanban/detailProject';
 import { listTask as kanbanListTask } from './kanban/listTask';
+import { sortTask as kanbanSortTask } from './kanban/sortTask';
+import { sortGroupTask as kanbanSortGroupTask } from './kanban/sortGroupTask';
+import { getManager as kanbanGetManager } from './kanban/getManager';
 import { removeGroupPermissionUser } from "./user/removeGroupPermissionUser";
 import { sortUser } from "./user/sortUser";
 import { updateGroupPermissionUser } from "./user/updateGroupPermissionUser";
@@ -373,6 +379,9 @@ function* rootSaga() {
   yield takeEvery(SET_PROJECT_GROUP, setProjectGroup);
   yield takeLeading(KANBAN_DETAIL_PROJECT, kanbanDetailProject);
   yield takeLeading(KANBAN_LIST_TASK, kanbanListTask);
+  yield takeLeading(KANBAN_SORT_TASK, kanbanSortTask);
+  yield takeLeading(KANBAN_SORT_GROUP_TASK, kanbanSortGroupTask);
+  yield takeLeading(KANBAN_GET_MANAGER, kanbanGetManager);
 
   // Hoang - end
 

@@ -12,15 +12,22 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  padding: 4px 6px;
   box-sizing: border-box;
   & > * {
     margin-right: 32.5px;
     color: rgba(0, 0, 0, 0.54);
+    background-color: #fff;
+    height: 20px;
+    width: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
     &:hover {
       cursor: pointer;
       color: #05b50c;
+      background-color: #efefef;
     }
+    position: relative;
+    z-index: 999;
+    transform: translate(0, 12px);
   }
 }
 

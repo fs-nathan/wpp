@@ -6,12 +6,21 @@ import './style.scss';
 const Container = ({ className = '', isOpen, ...props }) =>
   <div className={`view_KanbanPage___container${isOpen ? '' : '-closed'} ${className}`} {...props} />;
 
-function KanbanPage({ projectId, isOpen, setIsOpen }) {
+function KanbanPage({ 
+  projectId, handleOpenModal,
+  isOpen,
+}) {
 
   return (
     <Container isOpen={isOpen}>
-      <Header projectId={projectId} isOpen={isOpen} setIsOpen={setIsOpen} />
-      <KanbanBoard projectId={projectId} />
+      <Header 
+        projectId={projectId} 
+        handleOpenModal={handleOpenModal}
+      />
+      <KanbanBoard 
+        projectId={projectId} 
+        handleOpenModal={handleOpenModal}
+      />
     </Container>
   );
 }

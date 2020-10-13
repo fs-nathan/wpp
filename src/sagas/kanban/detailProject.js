@@ -7,15 +7,31 @@ import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from 'constants/sn
 
 async function doDetailProject({ projectId }) {
   try {
-    const config = {
+    const configDetail = {
       url: '/gantt/project-detail',
       method: 'get',
       params: {
         project_id: projectId,
       },
-    }
-    const result = await apiService(config);
-    return result.data;
+    };
+    const configWorkTypes = {
+      url: '/project/get-work-type',
+      method: 'get',
+      params: {
+        project_id: projectId,
+      },
+    };
+    const [detailRes, workTypeRes] = await Promise.all([
+      apiService(configDetail), 
+      apiService(configWorkTypes),
+    ]);
+    return ({
+      state: detailRes.data.state && workTypeRes.data.state,
+      project: {
+        ...detailRes.data.project,
+        work_type: workTypeRes.data.work_type,
+      }
+    });
   } catch (error) {
     throw error;
   }

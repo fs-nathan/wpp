@@ -1,42 +1,107 @@
-@mixin view_KanbanColumn___container {
-  width: 300px;
-  background-color: #fff;
-  height: 100%;
-}
-
 .view_KanbanColumn___container {
-  & {
-    @include view_KanbanColumn___container;
-  }
-  &-dragging {
-    @include view_KanbanColumn___container;
-    border: 1px solid blue;
-  }
+  width: 350px;
+  height: 100%;
+  border: 1px solid rgba(0, 0, 0, .1);
+  background-color: #fff;
+  margin-left: 5px;
 }
 
 .view_KanbanColumn___list-scroll {
-  height: calc(100% - 35px) !important;
+  height: calc(100% - 103px) !important;
 }
 
-@mixin view_KanbanColumn___item-list {
-  padding-bottom: 30px;
-  min-height: 100px;
+.view_KanbanColumn___item-list{
+  min-height: 70px;
+  padding-bottom: 5px;
 }
 
-.view_KanbanColumn___item-list {
-  & {
-    @include view_KanbanColumn___item-list;
-  }
-  &-dragging-over {
-    @include view_KanbanColumn___item-list;
-    background: lightblue;
-  }
+.view_KanbanColumn___title {
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(0, 0, 0, .1);
 }
 
 .view_KanbanColumn___group-name {
-  font-weight: 500;
-  padding: 10px;
-  height: 35px;
-  box-sizing: border-box;
-  width: fit-content;
+  display: flex;
+  align-items: center;
+  & > *{
+    &:first-child {
+      padding: 5px 10px;
+      font-weight: 500;
+      box-sizing: border-box;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: auto;
+    }
+    &:last-child {
+      margin-left: 10px;
+    }
+  }
+}
+
+.view_KanbanColumn___indicator {
+  display: flex;
+  align-items: center;
+  & > * {
+    color: #8b8b8b;
+    &:nth-child(1) {
+      margin-left: 3px;
+    }
+    &:nth-child(2) {
+      text-transform: uppercase;
+      margin-left: 10px;
+    }
+    &:nth-child(3) {
+      margin-left: auto;
+    }
+  }
+}
+
+.view_KanbanColumn___status {
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  & > * {
+    &:last-child {
+      margin-left: auto;
+    }
+  }
+}
+
+.view_KanbanColumn___code-box {
+  display: flex;
+  align-items: center;
+  & > * {
+    &:not(:first-child) {
+      margin-left: 10px;
+    }
+  }
+}
+
+.view_KanbanColumn___code {
+  border-bottom: none !important;
+  text-decoration: none !important;
+  display: flex;
+  align-items: center;
+  & > * {
+    &:not(:first-child) {
+      margin-left: 5px;
+      line-height: 12px;
+      font-size: 12px;
+    }
+  }
+}
+
+.view_KanbanColumn___duration {
+  display: flex;
+  align-items: center;
+  & > * {
+    font-size: 13px;
+    color: #8b8b8b;
+    &:not(:first-child) {
+      margin-left: 5px;
+      line-height: 12px;
+      font-size: 12px;
+    }
+  }
 }

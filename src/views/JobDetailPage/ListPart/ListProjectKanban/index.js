@@ -13,11 +13,13 @@ import ListProjectHeader from "./ListProjectHeader";
 import ProjectItem from "./ProjectItem";
 import { connect } from 'react-redux';
 import { getProjectListBasic } from "actions/taskDetail/taskDetailActions";
+import { filter, map, get } from 'lodash';
 import "./styles.scss";
 
 function ListProject(props) {
   
   const { projectId, getProjectListBasic } = props;
+  const [ projectFilter, setProjectFilter ] = React.useState(-1);
 
   React.useLayoutEffect(() => {
     getProjectListBasic(projectId)
@@ -33,6 +35,21 @@ function ListProject(props) {
     data = projectListBasic.projectGroups;
   }
 
+  data = map(
+    data,
+    projectGroup => {
+      const { projects } = projectGroup;
+      const newProjects = filter(
+        projects,
+        project => projectFilter === -1 || get(project, 'work_type', -1) === projectFilter
+      );
+      return ({
+        ...projectGroup,
+        projects: newProjects,
+      });
+    }
+  );
+
   return (
     <div
       className={clsx(
@@ -42,7 +59,11 @@ function ListProject(props) {
         "kanban-lp-container"
       )}
     >
-      <ListProjectHeader className="listProject--header" />
+      <ListProjectHeader 
+        className="listProject--header" 
+        projectFilter={projectFilter}
+        setProjectFilter={setProjectFilter}
+      />
       <Scrollbars
         className="listProject--body"
         renderView={(props) => (

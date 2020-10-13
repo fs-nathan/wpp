@@ -8,11 +8,11 @@
     width: 20px;
     height: 20px;
     z-index: 1;
-    margin-left: -2px;
+    margin-left: -4px;
     border-radius: 100%;
     background-color: #fff;
     &:not(:first-child) {
-      box-shadow: -3px 0px #f8f9fa;
+      box-shadow: -2px 0px #f8f9fa;
     }
     &:last-child {
       background-color: #31b586;

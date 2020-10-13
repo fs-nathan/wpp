@@ -32,7 +32,10 @@ function KanbanPage({
   handleVisibleDrawerMessage,
   search, handleSearchChange,
   project,
-  isOpen, setIsOpen
+  isOpen, setIsOpen,
+  statusFilter, setStatusFilter,
+  priorityFilter, setPriorityFilter,
+  handleOpenModal,
 }) {
 
   const [searchAnchor, setSearchAnchor] = React.useState(null);
@@ -74,6 +77,9 @@ function KanbanPage({
               onClick={() => handleVisibleDrawerMessage({
                 type: DRAWER_TYPE.KANBAN.PROJECTS,
                 anchor: 'left',
+                options: {
+                  projectId: get(project, 'id', ''),
+                },
               })}
             >
               <span>{get(project, 'name', '')}</span>
@@ -95,7 +101,11 @@ function KanbanPage({
             <StyledButton
               onClick={() => handleVisibleDrawerMessage({
                 type: DRAWER_TYPE.KANBAN.MEMBERS,
-                anchor: 'left'
+                anchor: 'right',
+                options: {
+                  projectId: get(project, 'id', ''),
+                  handleOpenModal,
+                },
               })}
             >
               <div>
@@ -110,7 +120,8 @@ function KanbanPage({
             <StyledButton 
               onClick={() => handleVisibleDrawerMessage({
                 type: DRAWER_TYPE.KANBAN.FILTER,
-                anchor: 'right'
+                anchor: 'right',
+                options: {},
               })}
             >
               <div>

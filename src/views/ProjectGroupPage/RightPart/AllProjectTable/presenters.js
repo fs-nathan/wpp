@@ -16,6 +16,7 @@ import { LightTooltip, TooltipWrapper } from '../../../../components/LightToolti
 import LoadingBox from '../../../../components/LoadingBox';
 import { Container, DateBox, LinkSpan, SettingContainer, StateBox } from '../../../../components/TableComponents';
 import { Routes } from '../../../../constants/routes';
+import { taskColors } from 'constants/colors';
 import './style.scss';
 
 const CustomMenuItem = ({ className = '', selected, refs, ...props }) =>
@@ -260,23 +261,23 @@ function AllProjectTable({
                       title={t("DMH.VIEW.PGP.RIGHT.ALL.STATS.TOTAL")}
                       data={
                         [{
-                          color: '#ff9800',
+                          color: taskColors[0],
                           title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
                           value: get(row, 'statistic.waiting', 0),
                         }, {
-                          color: '#03a9f4',
+                          color: taskColors[1],
                           title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
                           value: get(row, 'statistic.doing', 0),
                         }, {
-                          color: '#f44336',
+                          color: taskColors[2],
                           title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
                           value: get(row, 'statistic.expired', 0),
                         }, {
-                          color: '#03c30b',
+                          color: taskColors[3],
                           title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
                           value: get(row, 'statistic.complete', 0),
                         }, {
-                          color: '#607d8b',
+                          color: taskColors[4],
                           title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
                           value: get(row, 'statistic.stop', 0),
                         }]

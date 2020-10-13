@@ -1,24 +1,43 @@
-@mixin view_KanbanBoard___container {
+.view_KanbanBoard___container {
   height: 100%;
   min-width: 100%;
   width: fit-content;
   box-sizing: border-box;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-right: 15px;
   display: flex;
-  & > * {
-    margin-left: 15px;
+  align-items: flex-start;
+  padding: 5px 5px 5px 0;
+  background-color: #efefef;
+}
+
+.view_KanbanBoard___new-grouptask {
+  margin-left: 5px;
+  width: 320px;
+  height: 102px;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-transform: uppercase;
+  color: #8f8f8f;
+  font-weight: 500;
+  font-size: 1.15em;
+  line-height: 1.15em;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
+  cursor: pointer;
+  &:hover {
+    background-color: rgba(0, 0, 0, .2);
   }
 }
 
-.view_KanbanBoard___container {
-  & {
-    @include view_KanbanBoard___container;
-    background-color: #efefef;
-  }
-  &-dragging-over {
-    @include view_KanbanBoard___container;
-    background-color: lightblue;
-  }
+.view_KanbanBoard___column-container-clone {
+  height: fit-content !important;
+}
+
+.view_KanbanBoard___dragdrop-placeholder {
+  position: absolute;
+  background-color: white;
+  border-radius: 3px;
+  border: dashed 1px blue;
+  background-color: white;
 }

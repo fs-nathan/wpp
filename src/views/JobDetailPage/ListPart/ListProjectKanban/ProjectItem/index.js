@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { chooseTask } from "actions/taskDetail/taskDetailActions";
 import { actionVisibleDrawerMessage } from "actions/system/system";
+import { workTypes } from 'constants/workTypes';
+import { get } from 'lodash';
 import "./styles.scss";
 
 const ProjectItem = (props) => {
@@ -28,7 +30,8 @@ const ProjectItem = (props) => {
       className={clsx("projectItem", { projectItem__selected: isSelected })}
       onClick={onClickProject}
     >
-      {props.title}
+      <span>{props.title}</span>
+      <span>{`[${workTypes[get(props.project, 'work_type', 0)]}]`}</span>
     </div>
   );
 };
