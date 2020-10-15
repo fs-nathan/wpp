@@ -7,7 +7,7 @@ import Icon from '@mdi/react';
 import { mdiChevronUp, mdiChevronDown, mdiMenuDown, mdiClose, mdiMagnify, mdiAccountCircle, mdiFilterOutline, mdiDownload, mdiDotsVertical } from '@mdi/js';
 import { StyledButton, StyledPopper, SearchBox } from 'components/CustomTable/HeaderButtonGroup';
 import { DRAWER_TYPE } from 'constants/constants';
-import { get } from 'lodash';
+import { get, isNil, find } from 'lodash';
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
@@ -33,9 +33,9 @@ function KanbanPage({
   search, handleSearchChange,
   project,
   isOpen, setIsOpen,
-  statusFilter, setStatusFilter,
-  priorityFilter, setPriorityFilter,
+  handleShowOrHideProject,
   handleOpenModal,
+  showHidePendings,
 }) {
 
   const [searchAnchor, setSearchAnchor] = React.useState(null);
@@ -200,69 +200,41 @@ function KanbanPage({
           }}
         >
           <MenuItem
-            onClick={handleMoreClick(() => null)}
+            onClick={handleMoreClick(() => handleOpenModal('EDIT_PROJECT', {
+              curProject: project,
+            }))}
             disabled={false}
           >
-            {false && (
-              <CircularProgress
-                size={16}
-                className="margin-circular"
-                color="white"
-              />
-            )}
             Chỉnh sửa
           </MenuItem>
           <MenuItem
-            onClick={handleMoreClick(() => null)}
+            onClick={handleMoreClick(() => handleOpenModal('SETTING_PROJECT', {
+              curProject: project,
+            }))}
             disabled={false}
           >
-            {false && (
-              <CircularProgress
-                size={16}
-                className="margin-circular"
-                color="white"
-              />
-            )}
             Cài đặt
           </MenuItem>
           <MenuItem
-            onClick={handleMoreClick(() => null)}
+            onClick={handleMoreClick(() => handleOpenModal('CALENDAR', {}))}
             disabled={false}
           >
-            {false && (
-              <CircularProgress
-                size={16}
-                className="margin-circular"
-                color="white"
-              />
-            )}
             Lịch làm việc
           </MenuItem>
           <MenuItem
-            onClick={handleMoreClick(() => null)}
-            disabled={false}
+            onClick={handleMoreClick(() => handleShowOrHideProject(project))}
+            disabled={
+              !isNil(find(showHidePendings.pendings, pending => pending === get(project, 'id')))
+            }
           >
-            {false && (
+            {!isNil(find(showHidePendings.pendings, pending => pending === get(project, 'id'))) && (
               <CircularProgress
                 size={16}
                 className="margin-circular"
                 color="white"
               />
             )}
-            Ẩn quy trình
-          </MenuItem>
-          <MenuItem
-            onClick={handleMoreClick(() => null)}
-            disabled={false}
-          >
-            {false && (
-              <CircularProgress
-                size={16}
-                className="margin-circular"
-                color="white"
-              />
-            )}
-            Xóa quy trình
+            {get(project, 'visibility') ? 'Ẩn quy trình' : 'Bỏ ẩn quy trình'}
           </MenuItem>
         </Menu>
       </>

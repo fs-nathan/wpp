@@ -4,13 +4,16 @@ import { connect } from 'react-redux';
 import { actionVisibleDrawerMessage } from 'actions/system/system';
 import { setMemberFilter, setVisibleHeader } from 'actions/kanban/setting';
 import { memberProject } from 'actions/project/memberProject';
-import { detailProject } from 'actions/kanban/detailProject';
-import { projectSelector, visibleSelector } from './selectors';
+import { detailProject as kanbanDetailProject } from 'actions/kanban/detailProject';
+import { detailProject } from 'actions/project/detailProject';
+import { showProject } from 'actions/project/showProject';
+import { hideProject } from 'actions/project/hideProject';
+import { projectSelector, visibleSelector, showHidePendingsSelector } from './selectors';
 import { get } from 'lodash';
 
 function KanbanPage({
   doActionVisibleDrawerMessage,
-  doKanbanDetailProject,
+  doKanbanDetailProject, doDetailProject,
   doMemberProject,
   projectId,
   project,
@@ -19,6 +22,8 @@ function KanbanPage({
   priorityFilter, setPriorityFilter, 
   doSetMemberFitler,
   handleOpenModal,
+  doShowProject, doHideProject,
+  showHidePendings,
 }) {
 
   const [search, setSearch] = React.useState('');
@@ -26,6 +31,7 @@ function KanbanPage({
   React.useEffect(() => {
     doKanbanDetailProject({ projectId });
     doMemberProject({ projectId });
+    doDetailProject({ projectId });
   }, [projectId]);
 
   React.useEffect(() => {
@@ -44,6 +50,12 @@ function KanbanPage({
       statusFilter={statusFilter} setStatusFilter={setStatusFilter}
       priorityFilter={priorityFilter} setPriorityFilter={setPriorityFilter}  
       handleOpenModal={handleOpenModal}
+      handleShowOrHideProject={project =>
+        get(project, 'visibility', false)
+          ? doHideProject({ projectId: get(project, 'id') })
+          : doShowProject({ projectId: get(project, 'id') })
+      }
+      showHidePendings={showHidePendings}
     />
   );
 }
@@ -52,16 +64,20 @@ const mapStateToProps = state => {
   return {
     project: projectSelector(state),
     visible: visibleSelector(state), 
+    showHidePendings: showHidePendingsSelector(state),
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
+    doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
+    doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
     doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
-    doKanbanDetailProject: (option, quite = false) => dispatch(detailProject(option, quite)),
+    doKanbanDetailProject: (option, quite) => dispatch(kanbanDetailProject(option, quite)),
+    doDetailProject: (option, quite) => dispatch(detailProject(option, quite)),
     doSetVisibleHeader: visible => dispatch(setVisibleHeader(visible)),
     doSetMemberFitler: memberFilter => dispatch(setMemberFilter(memberFilter)),
-    doMemberProject: (option, quite = false) => dispatch(memberProject(option, quite)),
+    doMemberProject: (option, quite) => dispatch(memberProject(option, quite)),
   }
 }
 

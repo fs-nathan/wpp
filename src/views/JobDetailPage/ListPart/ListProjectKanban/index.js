@@ -14,6 +14,7 @@ import ProjectItem from "./ProjectItem";
 import { connect } from 'react-redux';
 import { getProjectListBasic } from "actions/taskDetail/taskDetailActions";
 import { filter, map, get } from 'lodash';
+import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT } from 'constants/events.js';
 import "./styles.scss";
 
 function ListProject(props) {
@@ -22,7 +23,14 @@ function ListProject(props) {
   const [ projectFilter, setProjectFilter ] = React.useState(-1);
 
   React.useLayoutEffect(() => {
-    getProjectListBasic(projectId)
+    getProjectListBasic(projectId);
+    const doGetProjectListBasic = () => {
+      getProjectListBasic(projectId);
+    };
+    CustomEventListener(UPDATE_PROJECT.SUCCESS, doGetProjectListBasic);
+    return () => {
+      CustomEventDispose(UPDATE_PROJECT.SUCCESS, doGetProjectListBasic);
+    }
   }, [projectId]);
 
   const projectListBasic = useSelector(
