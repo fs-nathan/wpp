@@ -161,11 +161,17 @@
 .view_Project_MemberSetting_Modal___primary {
   font-size: 15px;
   color: #111;
+  &>abbr {
+    text-decoration: none;
+  }
 }
 
 .view_Project_MemberSetting_Modal___secondary {
   font-size: 13px;
   color: #333;
+  &>abbr {
+    text-decoration: none;
+  }
 }
 
 .view_Project_MemberSetting_Modal___right-container {
@@ -303,4 +309,10 @@
   &>*:not(:first-child) {
     margin-left: 5px;
   }
+}
+.view_Project_MemberSetting_Modal__textShorten {
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

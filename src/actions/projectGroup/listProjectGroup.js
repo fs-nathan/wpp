@@ -5,9 +5,12 @@ import {
   LIST_PROJECT_GROUP_RESET,
 } from '../../constants/actions/projectGroup/listProjectGroup';
 
-export const listProjectGroup = (quite = false) => ({
+export const listProjectGroup = ({timeStart, timeEnd},quite = false) => ({
   type: LIST_PROJECT_GROUP,
   quite,
+  options: {
+    timeStart, timeEnd,
+  },
 });
 
 export const listProjectGroupSuccess = ({ projectGroups }, options) => ({
@@ -22,8 +25,4 @@ export const listProjectGroupFail = (error, options) => ({
   type: LIST_PROJECT_GROUP_FAIL,
   options,
   error,
-});
-
-export const listProjectGroupReset = () => ({
-  type: LIST_PROJECT_GROUP_RESET,
 });

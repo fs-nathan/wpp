@@ -4,7 +4,7 @@ import { listTask } from 'actions/task/listTask';
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import { useTimes } from 'components/CustomPopover';
 import { CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_PROJECT, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
-import { get } from 'lodash';
+import { get, find } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -15,6 +15,7 @@ import { routeSelector } from '../../../ProjectGroupPage/selectors';
 import { localOptionSelector } from '../../selectors';
 import ProjectDetailPresenter from './presenters';
 import { projectSelector } from './selectors';
+import {groupsSelector} from "../../../ProjectGroupPage/LeftPart/ProjectGroupList/selectors";
 
 function ProjectDetail({
   project, route,
@@ -22,7 +23,7 @@ function ProjectDetail({
   doListTask,
   doDetailProject,
   doGetPermissionViewDetailProject,
-  localOption,
+  localOption, groups
 }) {
 
   const times = useTimes();
@@ -33,13 +34,11 @@ function ProjectDetail({
       timeStart,
       timeEnd,
     });
-    // eslint-disable-next-line
   }, [timeType]);
   const { projectId } = useParams();
 
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
-    // eslint-disable-next-line
   }, [projectId]);
 
   React.useEffect(() => {
@@ -73,7 +72,6 @@ function ProjectDetail({
         CustomEventDispose(SORT_TASK, reloadListTask);
       }
     }
-    // eslint-disable-next-line
   }, [projectId, timeRange]);
 
   React.useEffect(() => {
@@ -89,7 +87,6 @@ function ProjectDetail({
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
     }
-    // eslint-disable-next-line
   }, [projectId]);
 
   const history = useHistory();

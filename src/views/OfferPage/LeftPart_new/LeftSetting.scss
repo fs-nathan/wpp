@@ -32,6 +32,17 @@
       font-size: 14px;
     }
   }
+  &-filterByCategory-container {
+    padding: 10px 15px 0 15px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    &>*{
+      margin-right: 10px;
+      margin-bottom: 5px;
+      padding: 0 5px;
+    }
+  }
 }
 
 .dragg-icon {

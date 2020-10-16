@@ -1,18 +1,21 @@
-import { ListItemText } from '@material-ui/core';
-import { mdiDragVertical } from '@mdi/js';
+import {ListItemText} from '@material-ui/core';
+import {mdiDragVertical} from '@mdi/js';
 import Icon from '@mdi/react';
-import { get } from 'lodash';
+import {get} from 'lodash';
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
-import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import {Draggable} from 'react-beautiful-dnd';
+import {Link} from 'react-router-dom';
 import CustomAvatar from '../../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
+import * as images from "assets";
+import {Primary, StyledListItem} from '../../../../../components/CustomList';
 
 function CustomListItem({ projectGroup, index, route, canDrag }) {
   const [isHover, setIsHover] = React.useState(false);
-  const { t } = useTranslation();
-
+  const workType = [
+    {key: 'work_topic', image: images.check_64},
+    {key: 'project', image: images.speed_64},
+    {key: 'process', image: images.workfollow_64}
+  ];
   if (canDrag)
     return (
       <Draggable
@@ -28,16 +31,25 @@ function CustomListItem({ projectGroup, index, route, canDrag }) {
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
           >
-            <div {...provided.dragHandleProps}>
+            <div {...provided.dragHandleProps} style={{marginLeft: "-10px"}}>
               <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
             </div>
-            <CustomAvatar style={{ height: 50, width: 50, }} src={get(projectGroup, 'icon')} alt='avatar' />
+            <CustomAvatar style={{marginRight: "10px"}} src={get(projectGroup, 'icon')} alt='avatar' />
             <ListItemText
               primary={
                 <Primary>{get(projectGroup, 'name', '')}</Primary>
               }
               secondary={
-                <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", { projectGroups: get(projectGroup, 'number_project', 0) })}</Secondary>
+                <div className={"view_ProjectGroup_List_statistic"}>
+                  {get(projectGroup, 'work_types', []).map((item) => {
+                    return (
+                      <div className={"view_ProjectGroup_List_statistic_item"}>
+                        <img src={workType[parseInt(item)].image} alt="" width={15} height={15}/>
+                        <span>{get(projectGroup, `statistic.${workType[parseInt(item)].key}`, 0)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               }
             />
           </StyledListItem>
@@ -52,16 +64,25 @@ function CustomListItem({ projectGroup, index, route, canDrag }) {
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <div>
+        <div style={{marginLeft: "-10px"}}>
           <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
         </div>
-        <CustomAvatar style={{ height: 50, width: 50, }} src={get(projectGroup, 'icon')} alt='avatar' />
+        <CustomAvatar style={{marginRight: "10px"}} src={get(projectGroup, 'icon')} alt='avatar' />
         <ListItemText
           primary={
-            <Primary>{get(projectGroup, 'name', '')}</Primary>
+            <Primary style={{marginLeft: "15px"}}>{get(projectGroup, 'name', '')}</Primary>
           }
           secondary={
-            <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", { projectGroups: get(projectGroup, 'number_project', 0) })}</Secondary>
+            <div className={"view_ProjectGroup_List_statistic"}>
+              {get(projectGroup, 'work_types', []).map((item) => {
+                return (
+                  <div className={"view_ProjectGroup_List_statistic_item"}>
+                    <img src={workType[parseInt(item)].image} alt="" width={15} height={15}/>
+                    <span>{get(projectGroup, `statistic.${workType[parseInt(item)].key}`, 0)}</span>
+                  </div>
+                );
+              })}
+            </div>
           }
         />
       </StyledListItem>

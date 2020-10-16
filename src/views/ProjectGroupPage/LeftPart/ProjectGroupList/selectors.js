@@ -1,5 +1,4 @@
-import { filter, get } from 'lodash';
-import { createSelector } from 'reselect';
+import {createSelector} from 'reselect';
 
 const listProjectGroup = state => state.projectGroup.listProjectGroup;
 const sortProjectGroup = state => state.projectGroup.sortProjectGroup;

@@ -52,7 +52,7 @@ function App() {
             maxSnack={8}
             anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
             disableWindowBlurListener
-            autoHideDuration={10000}
+            autoHideDuration={3000}
             dense
             classes={{
               variantSuccess: classes.success

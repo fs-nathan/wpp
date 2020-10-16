@@ -175,10 +175,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
         onClick: () => setQuickTask(<QuickViewFilter />),
       },
     ],
-    mainAction: {
-      label: t("+ Tạo công việc"),
-      onClick: () => setOopenModalDirect(true),
-    },
+    mainAction: null,
     search: {
       patern: keyword,
       onChange: setkeyword,

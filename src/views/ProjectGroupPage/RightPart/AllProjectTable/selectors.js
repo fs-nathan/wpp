@@ -8,10 +8,11 @@ const colors = state => state.setting.colors;
 const listIcon = state => state.icon.listIcon;
 const showProject = state => state.project.showProject;
 const hideProject = state => state.project.hideProject;
+const detailProjectGroup = state => state.projectGroup.detailProjectGroup;
 
 export const projectsSelector = createSelector(
-  [listProjectGroup, listProject, listIcon, sortProject],
-  (listProjectGroup, listProject, listIcon, sortProject) => {
+  [listProjectGroup, listProject, listIcon, sortProject,detailProjectGroup],
+  (listProjectGroup, listProject, listIcon, sortProject,detailProjectGroup) => {
     const {
       data: { projects },
       loading: listProjectLoading,
@@ -39,6 +40,7 @@ export const projectsSelector = createSelector(
       project_group_id: find(projectGroups, { id: get(project, 'project_group_id') })
         ? get(project, 'project_group_id')
         : null,
+      project_group: find(projectGroups, (item) => item.id === get(project, 'project_group_id')),
       icon: allIcons.includes(
         get(find(projectGroups, { id: get(project, 'project_group_id') }), 'icon', '___no-icon___')
       )
@@ -60,6 +62,7 @@ export const projectsSelector = createSelector(
     }
     return {
       projects: newProjects,
+      group_work_types: get(detailProjectGroup.data, 'projectGroup.work_types',[]),
       summary: newSummary,
       projectGroupsCount: projectGroups.length,
       loading: firstTime ? false : loading,

@@ -12,7 +12,7 @@ import { groupsSelector } from './selectors';
 
 function CreateNewProject({
   open, setOpen,
-  groups,
+  groups, work_types,
   doCreateProject,
   doListProjectGroup,
   doReload,
@@ -32,9 +32,15 @@ function CreateNewProject({
   }, [timeType]);
 
   React.useEffect(() => {
-    doListProjectGroup();
-    // eslint-disable-next-line
-  }, []);
+    doListProjectGroup({
+      timeStart: get(timeRange, 'timeStart')
+        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        : undefined,
+      timeEnd: get(timeRange, 'timeEnd')
+        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        : undefined,
+    });
+  }, [timeRange]);
 
   return (
     <CreateNewProjectPresenter
@@ -51,8 +57,9 @@ function CreateNewProject({
           : undefined,
       })}
       groups={groups}
-      handleCreateProject={({ name, description, projectGroupId, priority, currency }) =>
-        doCreateProject({ name, description, projectGroupId, priority, currency })
+      work_types={work_types}
+      handleCreateProject={({ name, description, projectGroupId, priority, currency,work_type }) =>
+        doCreateProject({ name, description, projectGroupId, priority, currency,work_type })
       }
     />
   )
@@ -68,8 +75,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doReload: (options) => dispatch(listProject(options, true)),
-    doCreateProject: ({ name, description, projectGroupId, priority, currency }) => dispatch(createProject({ name, description, projectGroupId, priority, currency })),
-    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doCreateProject: ({ name, description, projectGroupId, priority, currency, work_type }) => dispatch(createProject({ name, description, projectGroupId, priority, currency,work_type })),
+    doListProjectGroup: (options, quite) => dispatch(listProjectGroup(options, quite)),
   }
 };
 

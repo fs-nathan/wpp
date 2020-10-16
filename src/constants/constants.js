@@ -47,3 +47,8 @@ export const DOCUMENT = {
   GOOGLE_DRIVE: "google-drive",
   TRASH: "trash",
 };
+export const WORKPLACE_TYPES = {
+  JOB: 0,
+  PROJECT: 1,
+  PROCESS: 2,
+}

@@ -1,13 +1,17 @@
-import { ListItemText } from '@material-ui/core';
+import {ListItemText} from '@material-ui/core';
 import {get} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
 import CustomAvatar from '../../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledListItem } from '../../../../../components/CustomList';
-import { Link } from 'react-router-dom';
+import {Primary, StyledListItem} from '../../../../../components/CustomList';
+import {Link} from 'react-router-dom';
+import * as images from "../../../../../assets";
 
 function CustomListItem({ projectGroup, index, groupID}) {
-  const { t } = useTranslation();
+  const workType = [
+    {key: 'work_topic', image: images.check_64},
+    {key: 'project', image: images.speed_64},
+    {key: 'process', image: images.workfollow_64}
+  ];
   return (
       <StyledListItem
           key={`group_project_deleted_${index}`}
@@ -15,13 +19,22 @@ function CustomListItem({ projectGroup, index, groupID}) {
           component={Link}
           className={groupID === get(projectGroup, "id") ? "item-actived" : ""}
       >
-          <CustomAvatar style={{ height: 50, width: 50, }} src={get(projectGroup, 'icon')} alt='avatar' />
+          <CustomAvatar style={{marginRight: "10px"}} src={get(projectGroup, 'icon')} alt='avatar' />
           <ListItemText
               primary={
                 <Primary>{get(projectGroup, 'name', '')}</Primary>
               }
               secondary={
-                <Secondary>{t("DMH.VIEW.PGP.LEFT.LIST.NUM_MEM", { projectGroups: get(projectGroup, 'number_project', 0) })}</Secondary>
+                <div className={"view_ProjectGroup_List_statistic"}>
+                  {get(projectGroup, 'work_types', []).map((item) => {
+                    return (
+                      <div className={"view_ProjectGroup_List_statistic_item"}>
+                        <img src={workType[parseInt(item)].image} alt="" width={15} height={15}/>
+                        <span>{get(projectGroup, `statistic.${workType[parseInt(item)].key}`, 0)}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               }
           />
       </StyledListItem>

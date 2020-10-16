@@ -10,10 +10,11 @@ import LoadingBox from 'components/LoadingBox';
 import ProgressBar from 'components/ProgressBar';
 import { clamp, get, isNaN } from 'lodash';
 import moment from 'moment';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import './style.scss';
+import {WORKPLACE_TYPES} from "../../../../constants/constants";
 
 const ProjectName = ({ className = '', ...props }) =>
   <span
@@ -53,11 +54,28 @@ function ProjectDetail({
 
   const history = useHistory();
   const { t } = useTranslation();
-
+  const [title, setTitle] = useState("");
+  useEffect(() => {
+    if(project.project) {
+      switch (get(project.project, 'work_type')) {
+        case WORKPLACE_TYPES.JOB:
+          setTitle(t("IDS_WP_WORKING_TYPE"));
+          break;
+        case WORKPLACE_TYPES.PROJECT:
+          setTitle(t("IDS_WP_PROJECT"));
+          break;
+        case WORKPLACE_TYPES.PROCESS:
+          setTitle(t("IDS_WP_PROCESS"));
+          break;
+        default:
+          break;
+      }
+    }
+  }, [project]);
   return (
     <>
       <LeftSideContainer
-        title={t("DMH.VIEW.PP.LEFT.PD.TITLE")}
+        title={title}
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => history.push(route),
@@ -148,7 +166,7 @@ function ProjectDetail({
             </SubContainer>
             <SubContainer>
               <SubHeader>
-                <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PP.LEFT.PD.PROGRESS")}</ColorTypo>
+                <ColorTypo color='gray' uppercase>{t("IDS_WP_PROGRESS")}</ColorTypo>
               </SubHeader>
               <DateBox>
                 <div>{get(project.project, 'date_start', -1)}</div>
@@ -168,7 +186,7 @@ function ProjectDetail({
             </SubContainer>
             <SubContainer>
               <SubHeader>
-                <ColorTypo color='gray' uppercase>{t("DMH.VIEW.PP.LEFT.PD.DESC")}</ColorTypo>
+                <ColorTypo color='gray' uppercase>{t("GANTT_DESCRIPTION")}</ColorTypo>
               </SubHeader>
               <CustomTextbox
                 value={get(project.project, 'description', '')}
@@ -208,7 +226,7 @@ function ProjectDetail({
                   size='small'
                   fullWidth
                 >
-                  {t("DMH.VIEW.PP.LEFT.PD.DEL")}
+                  {t("IDS_WP_DELETE")}
                 </ColorButton>
               )
             }

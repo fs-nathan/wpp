@@ -57,6 +57,7 @@ function ProjectCalendarPresenter({
           <CustomTable
             options={{
               title: t('IDS_WP_PROJECT_CALENDAR'),
+              subTitle: t('IDS_WP_PROJECT_CALENDAR_SUBTITLE'),
               mainAction: havePermission ? {
                 label: t("views.calendar_page.right_part.add"),
                 onClick: evt => handleOpenModal('CREATE'),
@@ -94,6 +95,7 @@ function ProjectCalendarPresenter({
           <CustomTable
             options={{
               title: t('IDS_WP_PROJECT_CALENDAR'),
+              subTitle: t('IDS_WP_PROJECT_CALENDAR_SUBTITLE'),
               mainAction: havePermission ? {
                 label: t("views.calendar_page.right_part.add"),
                 onClick: evt => handleOpenModal('CREATE'),

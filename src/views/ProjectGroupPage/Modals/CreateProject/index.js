@@ -19,7 +19,7 @@ const ButtonCase = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
+function CreateProjectGroup({ open, setOpen, projectGroupId = null , work_types = null}) {
 
   const { t } = useTranslation();
   const [createNew, setCreateNew] = React.useState(false);
@@ -28,7 +28,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
   return (
     <>
       <CustomModal
-        title={t("DMH.VIEW.PGP.MODAL.NEWPG.TITLE")}
+        title={`${t("IDS_WP_ADD")}`}
         open={open}
         setOpen={setOpen}
         confirmRender={null}
@@ -47,7 +47,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
               <Icon path={mdiNotePlusOutline} size={2} />
             </div>
             <div>
-              <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.TITLE")}</span>
+              <span>{`${t("IDS_WP_ADD")}`}</span>
               <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.DESC")}</span>
             </div>
           </ButtonCase>
@@ -62,13 +62,13 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null }) {
               <Icon path={mdiContentCopy} size={2} />
             </div>
             <div>
-              <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.COPY.TITLE")}</span>
+              <span>{`${t("DMH.VIEW.PGP.MODAL.NEWPG.COPY.TITLE")}`}</span>
               <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.COPY.DESC")}</span>
             </div>
           </ButtonCase>
         </Container>
       </CustomModal>
-      <CreateNewProjectModal open={createNew} setOpen={setCreateNew} projectGroupId={projectGroupId} />
+      <CreateNewProjectModal open={createNew} setOpen={setCreateNew} projectGroupId={projectGroupId} work_types={work_types}/>
       <CopyProjectModal open={copy} setOpen={setCopy} projectGroupId={projectGroupId} />
     </>
   )

@@ -34,9 +34,15 @@ function EditProject({
   }, [timeType]);
 
   React.useEffect(() => {
-    doListProjectGroup();
-    // eslint-disable-next-line
-  }, []);
+    doListProjectGroup({
+      timeStart: get(timeRange, 'timeStart')
+        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        : undefined,
+      timeEnd: get(timeRange, 'timeEnd')
+        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        : undefined,
+    });
+  }, [timeRange]);
 
   return (
     <EditProjectPresenter
@@ -77,7 +83,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(detailProject({ projectId }, true));
     },
     doUpdateProject: ({ projectId, name, description, projectGroupId, priority, currency }) => dispatch(updateProject({ projectId, name, description, projectGroupId, priority, currency })),
-    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListProjectGroup: (options,quite) => dispatch(listProjectGroup(options, quite)),
   }
 };
 

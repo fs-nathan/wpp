@@ -5,7 +5,7 @@ import { apiService } from '../../constants/axiosInstance';
 import { CREATE_PROJECT, CustomEventEmitter } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
-async function doCreateProject({ name, description, projectGroupId, priority, currency }) {
+async function doCreateProject({ name, description, projectGroupId, priority, currency, work_type }) {
   try {
     const config = {
       url: '/project/create',
@@ -16,6 +16,7 @@ async function doCreateProject({ name, description, projectGroupId, priority, cu
         project_group_id: projectGroupId,
         priority,
         currency,
+        work_type
       },
     }
     const result = await apiService(config);

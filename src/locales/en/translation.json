@@ -269,12 +269,12 @@
             "BACK": "Back",
             "TITLE": "Work team",
             "STATS": {
-              "TOTAL": "Total of number project:",
-              "WAITING": "Total of number waiting project",
-              "DOING": "Total of number doing project",
-              "EXPIRED": "Total of number expired project",
-              "COMPLETE": "Total of number completed project",
-              "HIDDEN": "Total of number hidden project"
+              "TOTAL": "Total:",
+              "WAITING": "Total of number waiting",
+              "DOING": "Total of number doing",
+              "EXPIRED": "Total of number expired",
+              "COMPLETE": "Total of number completed",
+              "HIDDEN": "Total of number hidden"
             },
             "ACTV": "Active",
             "DEFAULT": "Not categorized",
@@ -300,10 +300,10 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Copy project",
+            "TITLE": "Copy {{title}}",
             "LEFT": {
-              "TITLE": "Choose project",
-              "FIND": "Search project"
+              "TITLE": "Choose {{title}}",
+              "FIND": "Search {{title}}"
             },
             "RIGHT": {
               "TITLE": "Project details",
@@ -347,11 +347,11 @@
             "TITLE": "Create project",
             "CREATE": {
               "TITLE": "Create project",
-              "DESC": "Start project by create new project informations"
+              "DESC": "Create a new Work Topic, Project or Process to start working"
             },
             "COPY": {
-              "TITLE": "Copy project",
-              "DESC": "Start project by copy the informations from available. Ex: task group, duration, ..."
+              "TITLE": "Copy",
+              "DESC": "Create a new Work Topic, Project or Process by copying it from the library"
             }
           },
           "NOPG": {
@@ -372,11 +372,11 @@
           "ALL": {
             "TITLE": "Projects list",
             "DOWN": "Download",
-            "ADD": "+ Create project",
+            "ADD": "+ Create new",
             "TABLE_SETTING": "Table settings",
             "TRASH": "Trash",
             "LABEL": {
-              "NAME": "Project",
+              "NAME": "Name",
               "STATE": "Status",
               "DATE": "{{date}} days",
               "PROGRESS": "Completed",
@@ -391,7 +391,7 @@
             "ALERT": "Are you sure want to delete project ?",
             "NO_DATA": {
               "NO_PROJECT": "No project was created. Let click + CREATE PROJECT to start of your management project and tasks.",
-              "NO_TASK": "Let create new task or filter task"
+              "NO_TASK": "Let create new data or filter data"
             },
             "STATS": {
               "TOTAL": "Total of number task:",
@@ -406,7 +406,7 @@
             "TITLE": "Trash",
             "BACK": "Back",
             "LABEL": {
-              "NAME": "Project",
+              "NAME": "Name",
               "USER": "Member delete",
               "DATE": "Time delete",
               "PRIO": "Priority",
@@ -444,7 +444,7 @@
             "NUM_TASK": "Joined {{number_task}}/{{total_task}} tasks",
             "ALL_TASK": "{{number_task}} tasks",
             "LEAVE": "Left out group",
-            "TITLE": "Project members",
+            "TITLE": "Members",
             "BACK": "Back",
             "ADD": "Add members",
             "SEARCH": "Search members",
@@ -454,37 +454,37 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Copy task group",
-            "SEARCH": "Search task group"
+            "TITLE": "Copy task group, phrase",
+            "SEARCH": "Search task group, phrase"
           },
           "CREATE": {
-            "TITLE": "Create task group",
+            "TITLE": "Create task group, phrase",
             "CREATE": {
-              "LABEL": "Create task group",
-              "DESC": "Create new informations of task group"
+              "LABEL": "Create task group, phrase",
+              "DESC": "Create new information of task group, phrase"
             },
             "COPY": {
-              "LABEL": "Copy task group",
-              "DESC": "Copy available task group"
+              "LABEL": "Copy task group, phrase",
+              "DESC": "Copy available task group, phrase"
             }
           },
           "CUGT": {
-            "C_TITLE": "Create task group",
-            "U_TITLE": "Edit task group",
-            "NAME": "Task group name",
-            "DESC": "Task group descriptions",
-            "ALERT": "Are you sure want to delete task group ?"
+            "C_TITLE": "Create task group, phrase",
+            "U_TITLE": "Edit task group, phrase",
+            "NAME": "Task group name, phrase",
+            "DESC": "Task group descriptions, phrase",
+            "ALERT": "Are you sure want to delete this task group, phrase ?"
           },
           "MEMBER": {
-            "TITLE": "Manage project members",
+            "TITLE": "Manage members",
             "EXIT": "Exit",
             "LEFT": {
               "TITLE": "Members list",
               "SEARCH": "Search members",
-              "HELPER": "Let add member to group before assign for project"
+              "HELPER": "Let add member to group before assign for project, stages, or works"
             },
             "RIGHT": {
-              "TITLE": "Project members",
+              "TITLE": "Members",
               "TABLE": {
                 "MEM": "Member",
                 "PER": "Permission group",
@@ -516,8 +516,8 @@
                 "DESC": "Descriptions"
               },
               "ADMIN": {
-                "TITLE": "Permission group: Project owner",
-                "DESC": "The project owner is group which have permissions below:"
+                "TITLE": "Permission group: Owner",
+                "DESC": "The owner is group which have permissions below:"
               },
               "USER": {
                 "TITLE": "Choose permission group",
@@ -547,10 +547,10 @@
               "GROUP_TASK": "Task Group",
               "DOWNLOAD": "Download",
               "CREATE": "+ Create task",
-              "SETTING": "Project settings",
-              "HIDE": "Hide project",
-              "PROJECT_CALENDAR": "Project calendar",
-              "SHOW": "Cancel hide project",
+              "SETTING": "Settings",
+              "HIDE": "Hide",
+              "PROJECT_CALENDAR": "Works calendar",
+              "SHOW": "Cancel hide",
               "NO_DATA": "No task was created. Let click + CREATE TASK to start of your management project and tasks."
             },
             "TABLE": {
@@ -677,7 +677,7 @@
         "title": "Calendar management",
         "create": "Create calendar",
         "recently": "Recently",
-        "project_alarm": "Project remind",
+        "project_alarm": "Working remind",
         "my_alarm": "Group remind"
       },
       "right_part": {
@@ -759,8 +759,8 @@
           "title": "Update weekly calendar"
         },
         "create_project_calendar": {
-          "create_title": "Create project calendar",
-          "edit_title": "Edit project calendar",
+          "create_title": "Create working calendar",
+          "edit_title": "Edit working calendar",
           "name": "Calendar name",
           "description": "Calendar description",
           "name_required": "This field is required"
@@ -955,6 +955,8 @@
   "IDS_WP_BUDGET": "Budget",
   "IDS_WP_SUGGEST": "Proposal",
   "IDS_WP_PROCESS": "Procedure",
+  "IDS_WP_PLAN": "Plan",
+  "IDS_WP_CAMPAIGN": "Campaign",
   "IDS_WP_ARCHIVAL": "Document",
   "IDS_WP_CALENDAR_REMINDER": "Calendar, reminder",
   "IDS_WP_POSITION": "Location",
@@ -1260,7 +1262,8 @@
   "IDS_WP_COLLAPS": "Narrow",
   "IDS_WP_FILTER": "Filter",
   "IDS_WP_WEEKLY_CALENDAR": "Weekly Calendar",
-  "IDS_WP_PROJECT_CALENDAR": "Project plan",
+  "IDS_WP_PROJECT_CALENDAR": "Working Calendar",
+  "IDS_WP_PROJECT_CALENDAR_SUBTITLE": "Set up work schedules for projects, processes, plans or campaigns",
   "IDS_WP_ALARM_CALENDAR": "Schedule of Reminder",
   "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Reminder, schedule of appointment, notice of appointment",
   "IDS_WP_WEEK_COUNT": "The number week of year ",
@@ -1269,8 +1272,8 @@
   "IDS_WP_FROM": "From",
   "IDS_WP_SELECT_YEAR": "Select time",
   "IDS_WP_INPUT_SEARCH_PROJECT": "Search project",
-  "IDS_WP_FILTER_BY_PROJECT": "Filter by project",
-  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Select / no select to filter reminders by project",
+  "IDS_WP_FILTER_BY_PROJECT": "Filter by project, process, plan...",
+  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Select / no select to filter reminders by project, process...",
   "IDS_WP_CREATED_AT": "Created at",
   "IDS_WP_REMIND": "Reminders",
   "IDS_WP_REQUIRED": "Don't blank",
@@ -1508,6 +1511,9 @@
   "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO": "No workgroups have been created yet.",
   "LABEL_CHAT_TASK_HAY_TAO_MOI_NHOM": "Create a new task group before creating a new task!",
   "LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC": "Create work group",
+  "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_GIAI_DOAN": "No stage have been created yet.",
+  "LABEL_CHAT_TASK_HAY_TAO_MOI_GIAI_DOAN": "Create a new stage before creating a new task!",
+  "LABEL_CHAT_TASK_TAO_MOI_GIAI_DOAN": "Create stage",
   "LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA": "Not found",
   "LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN": "Find work in project",
   "LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG": "Working passionately with...",
@@ -1729,7 +1735,8 @@
   "VIEW_OFFER_LABEL_PROJECT_TITLE": "Project",
   "VIEW_OFFER_LABEL_DEPARTMENT_TITLE": "Department",
   "VIEW_OFFER_LABEL_GROUP_SUBTITLE": "Offer by group",
-  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Offer by project",
+  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Offer by project, process, plan...",
+  "VIEW_OFFER_LABEL_PROJECT_HEADER_TITLE": "Offer by working",
   "VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE": "Offer by department",
   "VIEW_OFFER_LABEL_OFFER_BY_STATUS": "Offer by status",
   "VIEW_OFFER_LABEL_OFFER_BY_LEVEL": "Offer by level",
@@ -1806,7 +1813,7 @@
   "LABEL_CHAT_TASK_THEM_NHAC_HEN": "Add reminders",
   "Tên nhóm quyền": "Permission group name",
   "Mô tả nhóm quyền": "Permission group descriptions",
-  "Phạm vi module phân quyền": "Use in module",
+  "Phạm vi module phân quyền": "The scope of application of the rights group",
   "Tạo nhóm quyền": "Create group permission",
   "Hoàn thành": "Complete",
   "required": "Field required",
@@ -2053,7 +2060,7 @@
   "Bạn có muốn xóa bài viết?": "Do you want to delete the post?",
   "Bạn có muốn xóa bình luận ?": "Do you want to delete the comment ?",
   "LABEL_CHAT_TASK_TIM_KIEM": "Search",
-  "Module thành viên": "Member mudule",
+  "Module thành viên": "Employee Decentralization",
   "TIME_RANGE_POPOVER_OPTIONS": "Options",
   "TIME_RANGE_POPOVER_TIME_CHOOSEN": "Time Choosen",
   "TIME_RANGE_POPOVER_TIME_ALL": "All time",
@@ -2063,23 +2070,24 @@
   "TIME_RANGE_POPOVER_MESSAGE_MAX_DATE": "Must before end date",
   "TIME_RANGE_POPOVER_MESSAGE_MIN_DATE": "Must after start date",
   "PROJECT_SETTING_MODAL_TITLE": "Project settings",
-  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING": "Project notification",
-  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION": "Enable / disable push notifications on the phone to project participants. It is best to enable notifications so that members do not miss important project announcements.",
+  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING": "Notification",
+  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION": "Enable / disable push notifications on the phone to participants. It is best to enable notifications so that members do not miss important announcements.",
   "PROJECT_SETTING_MODAL_NOTIFICATION_ON": "Enable (Default)",
   "PROJECT_SETTING_MODAL_NOTIFICATION_OFF": "Disable",
-  "PROJECT_SETTING_MODAL_PROGRESS": "Project progress",
+  "PROJECT_SETTING_MODAL_PROGRESS": "{{type}} progress",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_0": "Not required (for tasks that don't require progress) ",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_1": "Enter dates only (don't enter start and end times) ",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_2": "Date and time (enter date and time fully) ",
-  "PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION": "Set default progress when creating new project task.",
-  "PROJECT_SETTING_MODAL_COPYING": "Project copying",
+  "PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION": "Set default progress when creating new task of {{type}}.",
+  "PROJECT_SETTING_MODAL_COPYING": "{{type}} copying",
   "PROJECT_SETTING_MODAL_COPYING_OPTION_0": "Copying is not allowed ",
   "PROJECT_SETTING_MODAL_COPYING_OPTION_1": "Copying is allowed ",
-  "PROJECT_SETTING_MODAL_VIEW_TYPE": "Default project view type",
+  "PROJECT_SETTING_MODAL_VIEW_TYPE": "Default {{type}} view type",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_DESCRIPTION": "Set default viewport when clicking on a project: Task list format (Table), gantt diagram format (Gantt), discussion format (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_0": "Task list (Table) ",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_1": "Discussion (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2": "Gantt chart (Gantt)",
+  "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_3": "Task card board (Kanban)",
   "CUSTOM_TEXTBOX_CONTENT_LABEL": "Content...",
   "IDS_WP_LEAVE_GROUP_CONFIRM_MSG": "Do you really want to leave this group?",
   "IDS_WP_START_TRAIL_SUCCESS": "Start trail using successfully",
@@ -2133,5 +2141,27 @@
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "End time must be greater than start time",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "End time",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Start time",
-  "GANTT_CANNOT": "The chart is using this schedules."
+  "GANTT_CANNOT": "The chart is using this schedules.",
+  "IDS_WP_COUNT_WORKPLACE_JOB": "{{count}} work topic was created",
+  "IDS_WP_COUNT_WORKPLACE_PROJECT": "{{count}} project was created",
+  "IDS_WP_COUNT_WORKPLACE_PROCESS": "{{count}} process was created",
+  "IDS_WP_DES_WORKPLACE_JOB": "Create and manage personal affairs, departmental work or on different topics ...",
+  "IDS_WP_DES_WORKPLACE_PROJECT": "Creating new and managing projects invested by the Company, implementing, exploiting, cooperating ...",
+  "IDS_WP_DES_WORKPLACE_PROCESS": "Create and manage professionally, automatically and efficiently ...",
+  "IDS_WP_WORKPLACE_WELLCOME": "Hi {{user}}, Please choose a workspace for you",
+  "IDS_WP_WORKPLACE_SLOGAN": "\"Working is interactive. Workplus does not worry about messing with work\"",
+  "IDS_WP_START_NOW": "Start now",
+  "IDS_WP_APPLY_WORK_TYPE": "Apply for work type",
+  "IDS_WP_SELECT_TYPE": "Select type",
+  "IDS_WP_WORKING_TYPE": "Working Topic",
+  "IDS_WP_TOPICS": "Topics",
+  "IDS_WP_WORKING": "Working",
+  "IDS_WP_PROCESS_LIST": "Process list",
+  "IDS_WP_PROJECT_LIST": "Project list",
+  "IDS_WP_ALL": "All",
+  "IS_WP_WORK_TYPE_SETTING_TITLE": "Setting {{type}}",
+  "IDS_WP_PHASE": "Phase",
+  "IDS_WP_SELECT_PHASE": "Select Phase",
+  "IDS_WP_PROGRESS": "Progress",
+  "IDS_WP_ALREADY_EXIST": "{{object}} already exists"
 }
