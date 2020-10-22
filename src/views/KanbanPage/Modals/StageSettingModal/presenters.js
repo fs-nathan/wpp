@@ -64,8 +64,6 @@ function StageSetting({
   const [assign, setAssign] = React.useState(assignOptions[0]);
   const [change, setChange] = React.useState(changeOptions[0]);
 
-  console.log(managers);
-
   return (
     <React.Fragment>
       <CustomModal

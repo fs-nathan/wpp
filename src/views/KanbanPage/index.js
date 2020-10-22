@@ -11,7 +11,7 @@ import AssignCalendarModal from "components/AssignCalendarModal";
 import CreateNewGroupTask from 'views/ProjectPage/Modals/CreateNewGroupTask';
 import DeleteGroupTask from 'views/ProjectPage/Modals/DeleteGroupTask';
 import CreateJobModal from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
-import EditJobModal, { EDIT_MODE } from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
+import EditTaskModal from './Modals/EditTaskModal';
 
 function KanbanPage({
   visible,
@@ -132,10 +132,9 @@ function KanbanPage({
         setOpen={setOpenCreateTask}
         {...createTaskProps}
       />
-      <EditJobModal
-        isOpen={openEditTask}
+      <EditTaskModal
+        open={openEditTask}
         setOpen={setOpenEditTask}
-        editMode={EDIT_MODE.NAME_DES}
         {...editTaskProps}
       />
     </>

@@ -128,6 +128,8 @@ import kanbanSortTask, { initialState as kanbanSortTaskInitialState } from "./ka
 import kanbanSortGroupTask, { initialState as kanbanSortGroupTaskInitialState } from "./kanban/sortGroupTask";
 import kanbanGetManager, { initialState as kanbanGetManagerInitialState } from "./kanban/getManager";
 import kanbanSetting, { initialState as kanbanSettingInitialState } from './kanban/setting';
+import kanbanDetailTask, { initialState as kanbanDetailTaskInitialState } from './kanban/detailTask';
+import kanbanUpdateTask, { initialState as kanbanUpdateTaskInitialState } from './kanban/updateTask';
 import copyGroupTask, {
   initialState as copyGroupTaskInitialState,
 } from "./groupTask/copyGroupTask";
@@ -646,6 +648,8 @@ const rootReducer = combineReducers({
     sortGroupTask: kanbanSortGroupTask,
     getManager: kanbanGetManager,
     setting: kanbanSetting,
+    detailTask: kanbanDetailTask,
+    updateTask: kanbanUpdateTask,
   }),
 });
 
@@ -684,6 +688,8 @@ export const DEFAULT_STATE = {
     sortGroupTask: kanbanSortGroupTaskInitialState,
     getManager: kanbanGetManagerInitialState,
     setting: kanbanSettingInitialState,
+    detailTask: kanbanDetailTaskInitialState,
+    updateTask: kanbanUpdateTaskInitialState,
   },
   icon: {
     listIcon: listIconInitialState,

@@ -141,7 +141,7 @@ function KanbanItem({ task, index, handleOpenModal, projectId }) {
       >
         <MenuItem
           onClick={handleMoreClick(() => handleOpenModal('EDIT_TASK', {
-            data: task,
+            taskId: get(task, 'id'),
             projectId,
           }))}
         >
