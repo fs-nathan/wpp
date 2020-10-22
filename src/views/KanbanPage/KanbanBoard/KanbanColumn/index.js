@@ -191,6 +191,7 @@ export function ColumnHeader({ groupTask, index, dragProvided, iconButtons = nul
 function KanbanColumn({ 
   groupTask, index, handleOpenModal, placeholderProps,
   status, priority, memberFilter,
+  projectId,
 }) { 
 
   const [moreAnchor, setMoreAnchor] = React.useState(null);
@@ -229,7 +230,9 @@ function KanbanColumn({
               dragProvided={dragProvided}
               iconButtons={{
                 moreClick: handleMoreOpen,
-                plusClick: () => null,
+                plusClick: handleMoreClick(() => handleOpenModal('CREATE_TASK', {
+                  projectId,
+                })),
               }}
             />
             <ListScroll
@@ -258,6 +261,8 @@ function KanbanColumn({
                           task={task}
                           index={index}
                           key={index}
+                          projectId={projectId}
+                          handleOpenModal={handleOpenModal}
                         />
                       ))}
                     {dropProvided.placeholder}
@@ -290,7 +295,9 @@ function KanbanColumn({
         }}
       >
         <MenuItem
-          onClick={handleMoreClick(() => null)}
+          onClick={handleMoreClick(() => handleOpenModal('UPDATE_GROUPTASK', {
+            curGroupTask: groupTask,
+          }))}
           disabled={false}
         >
           {false && (
@@ -319,7 +326,9 @@ function KanbanColumn({
           Thiết lập giai đoạn
         </MenuItem>
         <MenuItem
-          onClick={handleMoreClick(() => null)}
+          onClick={handleMoreClick(() => handleOpenModal('DELETE_GROUPTASK', {
+            selectedGroupTask: groupTask,
+          }))}
           disabled={false}
         >
           {false && (

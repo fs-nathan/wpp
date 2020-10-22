@@ -37,7 +37,7 @@ const MoreIcon = ({ className = '', ...props }) =>
 const MiddleSpan = ({ className = '', ...props }) =>
   <span className={`view_KanbanItem___middle-span ${className}`} {...props} />;
 
-function KanbanItem({ task, index }) {
+function KanbanItem({ task, index, handleOpenModal, projectId }) {
 
   const statusCode = get(task, 'status_code', 0);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
@@ -140,7 +140,10 @@ function KanbanItem({ task, index }) {
         }}
       >
         <MenuItem
-          onClick={handleMoreClick(() => null)}
+          onClick={handleMoreClick(() => handleOpenModal('EDIT_TASK', {
+            data: task,
+            projectId,
+          }))}
         >
           Chỉnh sửa
         </MenuItem>

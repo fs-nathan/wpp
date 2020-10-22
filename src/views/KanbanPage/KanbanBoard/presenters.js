@@ -26,6 +26,7 @@ function KanbanBoard({
   handleDragStart, handleDragUpdate,
   handleOpenModal,
   placeholderProps,
+  projectId,
 }) {
 
   return (
@@ -86,6 +87,7 @@ function KanbanBoard({
                     index={index}
                     handleOpenModal={handleOpenModal}
                     placeholderProps={placeholderProps}
+                    projectId={projectId}
                   />)
                 )}
                 {dropProvided.placeholder}

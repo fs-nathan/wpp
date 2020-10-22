@@ -6,13 +6,15 @@ import { tasksSelector } from './selectors';
 import { connect } from 'react-redux';
 import KanbanBoardPresenter from './presenters';
 import { findIndex, isNil } from 'lodash';
-import { CustomEventDispose, CustomEventListener, KANBAN } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, KANBAN, CREATE_TASK } from 'constants/events';
+import { listGroupTask } from 'actions/groupTask/listGroupTask';
 
 function KanbanBoard({
   projectId,
   tasks, doKanbanListTask,
   doKanbanSortGroupTask,
   doKanbanSortTask,
+  doListGroupTask,
   handleOpenModal,
 }) {
 
@@ -26,9 +28,22 @@ function KanbanBoard({
     };
     CustomEventListener(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(KANBAN.SORT_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
+    CustomEventListener(CREATE_TASK, doKanbanListTaskHandler);
     return () => {
       CustomEventDispose(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(KANBAN.SORT_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
+      CustomEventDispose(CREATE_TASK, doKanbanListTaskHandler);
+    }
+  }, [projectId]);
+
+  React.useEffect(() => {
+    doListGroupTask({ projectId });
+    const reloadListGroupTask = () => {
+      doListGroupTask({ projectId });
+    }
+    CustomEventListener(KANBAN.SORT_GROUP_TASK.SUCCESS, reloadListGroupTask);
+    return () => {
+      CustomEventDispose(KANBAN.SORT_GROUP_TASK.SUCCESS, reloadListGroupTask);
     }
   }, [projectId]);
 
@@ -261,6 +276,7 @@ function KanbanBoard({
       handleDragUpdate={handleDragUpdate}
       handleOpenModal={handleOpenModal}
       placeholderProps={placeholderProps}
+      projectId={projectId}
     />
   );
 }
@@ -276,6 +292,7 @@ const mapDispatchToProps = dispatch => {
     doKanbanListTask: (option, quite = false) => dispatch(listTask(option, quite)),
     doKanbanSortTask: (option, quite = false) => dispatch(sortTask(option, quite)),
     doKanbanSortGroupTask: (option, quite = false) => dispatch(sortGroupTask(option, quite)),
+    doListGroupTask: ({ projectId }, quite) => dispatch(listGroupTask({ projectId }, quite)),
   }
 }
 
