@@ -7,6 +7,10 @@ import { IconButton, Menu, MenuItem } from '@material-ui/core'
 import { mdiDragVertical, mdiDotsVertical } from '@mdi/js';
 import { taskColors } from 'constants/colors';
 import { get } from 'lodash';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { deleteTask } from 'actions/taskDetail/taskDetailActions';
+import { connect } from 'react-redux';
 import './style.scss'
 
 const Container = ({ className = '', isDragging, statusCode, innerRef, ...props }) =>
@@ -37,10 +41,12 @@ const MoreIcon = ({ className = '', ...props }) =>
 const MiddleSpan = ({ className = '', ...props }) =>
   <span className={`view_KanbanItem___middle-span ${className}`} {...props} />;
 
-function KanbanItem({ task, index, handleOpenModal, projectId }) {
+function KanbanItem({ task, index, handleOpenModal, projectId, doDeleteTask }) {
 
   const statusCode = get(task, 'status_code', 0);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
+  const history = useHistory();
+  const { t } = useTranslation();
 
   function handleMoreOpen(evt) {
     setMoreAnchor(evt.currentTarget);
@@ -148,12 +154,18 @@ function KanbanItem({ task, index, handleOpenModal, projectId }) {
           Chỉnh sửa
         </MenuItem>
         <MenuItem
-          onClick={handleMoreClick(() => null)}
+          onClick={handleMoreClick(() => history.push(get(task, 'url_redirect')))}
         >
           Chi tiết
         </MenuItem>
         <MenuItem
-          onClick={handleMoreClick(() => null)}
+          onClick={handleMoreClick(() => handleOpenModal('DELETE_TASK', {
+            content: t('IDS_WP_ALERT_CONTENT'),
+            onConfirm: () => doDeleteTask({
+              taskId: get(task, 'id'),
+              projectId,
+            }),
+          }))}
         >
           Xóa
         </MenuItem>
@@ -162,5 +174,14 @@ function KanbanItem({ task, index, handleOpenModal, projectId }) {
   );
 }
 
-export default KanbanItem;
+const mapDispatchToProps = dispatch => {
+  return {
+    doDeleteTask: ({ taskId, projectId }) => dispatch(deleteTask({ taskId, projectId })),
+  }
+}
+
+export default connect(
+  null,
+  mapDispatchToProps,
+)(KanbanItem);
 
