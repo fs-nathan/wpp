@@ -6,7 +6,7 @@ import { tasksSelector } from './selectors';
 import { connect } from 'react-redux';
 import KanbanBoardPresenter from './presenters';
 import { findIndex, isNil } from 'lodash';
-import { CustomEventDispose, CustomEventListener, KANBAN, CREATE_TASK, DELETE_TASK } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, KANBAN, CREATE_TASK, DELETE_TASK, CREATE_GROUP_TASK, COPY_GROUP_TASK } from 'constants/events';
 import { listGroupTask } from 'actions/groupTask/listGroupTask';
 
 function KanbanBoard({
@@ -30,11 +30,15 @@ function KanbanBoard({
     CustomEventListener(KANBAN.SORT_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(CREATE_TASK, doKanbanListTaskHandler);
     CustomEventListener(DELETE_TASK, doKanbanListTaskHandler);
+    CustomEventListener(CREATE_GROUP_TASK, doKanbanListTaskHandler);
+    CustomEventListener(COPY_GROUP_TASK, doKanbanListTaskHandler);
     return () => {
       CustomEventDispose(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(KANBAN.SORT_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(CREATE_TASK, doKanbanListTaskHandler);
       CustomEventDispose(DELETE_TASK, doKanbanListTaskHandler);
+      CustomEventDispose(CREATE_GROUP_TASK, doKanbanListTaskHandler);
+      CustomEventDispose(COPY_GROUP_TASK, doKanbanListTaskHandler);
     }
   }, [projectId]);
 

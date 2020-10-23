@@ -5,7 +5,7 @@ import NavigatorMenu from 'components/NavigatorMenu';
 import Avatar from 'components/CustomAvatar';
 import Icon from '@mdi/react';
 import { mdiChevronUp, mdiChevronDown, mdiMenuDown, mdiClose, mdiMagnify, mdiAccountCircle, mdiFilterOutline, mdiDownload, mdiDotsVertical } from '@mdi/js';
-import { StyledButton, StyledPopper, SearchBox } from 'components/CustomTable/HeaderButtonGroup';
+import { StyledButton as _StyledButton, StyledPopper, SearchBox } from 'components/CustomTable/HeaderButtonGroup';
 import { DRAWER_TYPE } from 'constants/constants';
 import { get, isNil, find } from 'lodash';
 import './style.scss';
@@ -27,6 +27,9 @@ const MiniContainer = ({ className = '', ...props }) =>
 
 const StyledButtonGroup = ({ className = '', ...props }) =>
   <ButtonGroup className={`view_KanbanHeader___button-group ${className}`} {...props} />;
+
+const StyledButton = ({ className = '', ...props }) =>
+  <_StyledButton className={`view_KanbanHeader___button ${className}`} {...props} />;
 
 function KanbanPage({
   handleVisibleDrawerMessage,
