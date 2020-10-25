@@ -12,6 +12,8 @@ import CreateNewGroupTask from 'views/ProjectPage/Modals/CreateNewGroupTask';
 import DeleteGroupTask from 'views/ProjectPage/Modals/DeleteGroupTask';
 import CreateJobModal from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
 import EditTaskModal from './Modals/EditTaskModal';
+import AlertModal from 'components/AlertModal';
+import CreateGroupTask from 'views/ProjectPage/Modals/CreateGroupTask';
 
 function KanbanPage({
   visible,
@@ -35,6 +37,9 @@ function KanbanPage({
   const [ createTaskProps, setCreateTaskProps ] = React.useState({});
   const [ openEditTask, setOpenEditTask ] = React.useState(false);
   const [ editTaskProps, setEditTaskProps ] = React.useState({});
+  const [ openDeleteTask, setOpenDeleteTask ] = React.useState(false);
+  const [ deleteTaskProps, setDeleteTaskProps ] = React.useState({});
+  const [ openCreateGroupTask, setOpenCreateGroupTask ] = React.useState(false);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -62,6 +67,10 @@ function KanbanPage({
         setOpenCalendar(true);
         return;
       }
+      case 'CREATE_GROUPTASK': {
+        setOpenCreateGroupTask(true);
+        return;
+      }
       case 'UPDATE_GROUPTASK': {
         setOpenUpdateGroupTask(true);
         setUpdateGroupTaskProps(props);
@@ -80,6 +89,11 @@ function KanbanPage({
       case 'EDIT_TASK': {
         setOpenEditTask(true);
         setEditTaskProps(props);
+        return;
+      }
+      case 'DELETE_TASK': {
+        setOpenDeleteTask(true);
+        setDeleteTaskProps(props);
         return;
       }
       default: return;
@@ -136,6 +150,15 @@ function KanbanPage({
         open={openEditTask}
         setOpen={setOpenEditTask}
         {...editTaskProps}
+      />
+      <AlertModal
+        open={openDeleteTask}
+        setOpen={setOpenDeleteTask}
+        {...deleteTaskProps}
+      />
+      <CreateGroupTask 
+        open={openCreateGroupTask}
+        setOpen={setOpenCreateGroupTask}
       />
     </>
   );

@@ -102,7 +102,9 @@ function KanbanBoard({
                     }}
                   />
                 )}
-                <NewGroupTaskDiv>
+                <NewGroupTaskDiv
+                  onClick={() => handleOpenModal('CREATE_GROUPTASK')}
+                >
                   {'+ Thêm giai đoạn'}
                 </NewGroupTaskDiv>
               </Container>
