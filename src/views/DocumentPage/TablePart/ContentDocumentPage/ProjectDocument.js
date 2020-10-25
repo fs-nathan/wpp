@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {connect} from 'react-redux';
 import {Table, TableHead, TableBody, IconButton, TableRow} from '@material-ui/core';
-import {reverse} from 'lodash';
+import {reverse, invert} from 'lodash';
 import Icon from '@mdi/react';
 import {mdiSwapVertical, mdiFolderTextOutline} from '@mdi/js';
 import {withRouter} from 'react-router-dom';
@@ -17,6 +17,7 @@ import {actionChangeBreadCrumbs} from '../../../../actions/system/system';
 import {FileType} from '../../../../components/FileType';
 import LoadingBox from '../../../../components/LoadingBox';
 import ShareDocumentModal from '../DocumentComponent/ShareDocumentModal';
+import {WORKPLACE_TYPES} from "../../../../constants/constants"
 
 const ProjectDocument = props => {
   const { t } = useTranslation();
@@ -156,7 +157,7 @@ const ProjectDocument = props => {
               </div>
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="30%">
-              {t('IDS_WP_DOCUMENT_NOTE')}
+              {t('IDS_WP_TYPE')}
             </StyledTableHeadCell>
             <StyledTableHeadCell align="center" width="5%" />
           </TableRow>
@@ -187,7 +188,7 @@ const ProjectDocument = props => {
                   <ColorTypo color="black">{project.name}</ColorTypo>
                 </StyledTableBodyCell>
                 <StyledTableBodyCell align="center" width="30%">
-                  <ColorTypo color="black">{project.number_document}</ColorTypo>
+                  <ColorTypo color="black">{`[${t(`IDS_WP_${invert(WORKPLACE_TYPES)[project.work_type]}`)}]`}</ColorTypo>
                 </StyledTableBodyCell>
                 <MoreAction actionList={moreAction} item={project} />
               </TableRow>

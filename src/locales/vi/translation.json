@@ -269,12 +269,12 @@
             "BACK": "Quay lại",
             "TITLE": "Chi tiết nhóm làm việc",
             "STATS": {
-              "TOTAL": "Tổng số dự án:",
-              "WAITING": "Dự án đang chờ",
-              "DOING": "Dự án đang làm",
-              "EXPIRED": "Dự án quá hạn",
-              "COMPLETE": "Dự án hoàn thành",
-              "HIDDEN": "Dự án ẩn"
+              "TOTAL": "Tổng số:",
+              "WAITING": "Đang chờ",
+              "DOING": "Đang làm",
+              "EXPIRED": "Quá hạn",
+              "COMPLETE": "Hoàn thành",
+              "HIDDEN": "Bị ẩn"
             },
             "ACTV": "Hoạt động",
             "DEFAULT": "Chưa phân loại",
@@ -300,19 +300,19 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Sao chép dự án",
+            "TITLE": "Sao chép {{title}}",
             "LEFT": {
-              "TITLE": "Chọn dự án sao chép",
-              "FIND": "Tìm dự án"
+              "TITLE": "Chọn {{title}} sao chép",
+              "FIND": "Tìm {{title}}"
             },
             "RIGHT": {
-              "TITLE": "Thông tin dự án mới",
+              "TITLE": "Thông tin {{title}} mới",
               "PROJECT": {
-                "NAME": "Dự án được sao chép",
-                "PLACEHOLDER": "Hãy chọn dự án để sao chép",
-                "DESC": "Thông tin dự án",
-                "NEW_NAME": "Tên dự án mới",
-                "NEW_DESC": "Mô tả dự án mới",
+                "NAME": "{{title}} được sao chép",
+                "PLACEHOLDER": "Hãy chọn {{title}} để sao chép",
+                "DESC": "Thông tin {{title}}",
+                "NEW_NAME": "Tên {{title}} mới",
+                "NEW_DESC": "Mô tả {{title}} mới",
                 "DATE": "Chọn ngày bắt đầu tiến độ"
               },
               "MEMBER": {
@@ -347,11 +347,11 @@
             "TITLE": "Tạo dự án",
             "CREATE": {
               "TITLE": "Tạo mới dự án",
-              "DESC": "Bắt đầu dự án bằng cách tạo mới hoàn toàn các thông số của dự án"
+              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình để bắt đầu làm việc"
             },
             "COPY": {
-              "TITLE": "Sao chép dự án",
-              "DESC": "Tạo dự án mới bằng cách sao chép các thông số của dự án cũ như: Danh mục công việc, tiến độ, ..."
+              "TITLE": "Sao chép",
+              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình bằng cách sao chép từ thư viện"
             }
           },
           "NOPG": {
@@ -372,11 +372,11 @@
           "ALL": {
             "TITLE": "Danh sách dự án",
             "DOWN": "Tải xuống",
-            "ADD": "+ Tạo dự án",
+            "ADD": "+ Thêm mới",
             "TABLE_SETTING": "Cài đặt bảng",
             "TRASH": "Thùng rác",
             "LABEL": {
-              "NAME": "Dự án",
+              "NAME": "Tên",
               "STATE": "Trạng thái",
               "DATE": "{{date}} ngày",
               "PROGRESS": "Hoàn thành",
@@ -391,7 +391,7 @@
             "ALERT": "Bạn chắc chắn muốn xóa dự án?",
             "NO_DATA": {
               "NO_PROJECT": "Chưa có dự án nào được khởi tạo. Hãy click vào nút + TẠO DỰ ÁN để bắt đầu quản lý dự án và công việc của bạn.",
-              "NO_TASK": "Hãy tạo mới công việc hoặc kiểm tra bộ lọc để xuất hiện dữ liệu công việc"
+              "NO_TASK": "Hãy tạo mới dữ liệu hoặc kiểm tra bộ lọc để xuất hiện dữ liệu"
             },
             "STATS": {
               "TOTAL": "Tổng số công việc:",
@@ -406,7 +406,7 @@
             "TITLE": "Thùng rác",
             "BACK": "Quay lại",
             "LABEL": {
-              "NAME": "Dự án",
+              "NAME": "Tên",
               "USER": "Người xóa",
               "DATE": "Ngày xóa",
               "PRIO": "Ưu tiên",
@@ -444,7 +444,7 @@
             "NUM_TASK": "Tham gia {{number_task}}/{{total_task}} việc",
             "ALL_TASK": "{{number_task}} việc",
             "LEAVE": "Đã rời nhóm",
-            "TITLE": "Thành viên dự án",
+            "TITLE": "Thành viên",
             "BACK": "Quay lại",
             "ADD": "Thêm thành viên dự án",
             "SEARCH": "Tìm thành viên",
@@ -454,37 +454,37 @@
         },
         "MODAL": {
           "COPY": {
-            "TITLE": "Sao chép nhóm công việc",
-            "SEARCH": "Tìm nhóm công việc"
+            "TITLE": "Sao chép nhóm công việc, giai đoạn",
+            "SEARCH": "Tìm nhóm công việc, giai đoạn"
           },
           "CREATE": {
-            "TITLE": "Tạo nhóm công việc",
+            "TITLE": "Tạo nhóm công việc, giai đoạn",
             "CREATE": {
-              "LABEL": "Tạo mới nhóm công việc",
-              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc"
+              "LABEL": "Tạo mới nhóm công việc, giai đoạn",
+              "DESC": "Tạo mới hoàn toàn các thông số của nhóm công việc, giai đoạn"
             },
             "COPY": {
-              "LABEL": "Sao chép nhóm công việc",
-              "DESC": "Sao chép các nhóm công việc có sẵn vào dự án"
+              "LABEL": "Sao chép nhóm công việc, giai đoạn",
+              "DESC": "Sao chép các nhóm công việc, giai đoạn có sẵn vào dự án"
             }
           },
           "CUGT": {
-            "C_TITLE": "Tạo mới nhóm công việc",
-            "U_TITLE": "Chỉnh sửa nhóm công việc",
-            "NAME": "Tên nhóm công việc",
-            "DESC": "Mô tả nhóm công việc",
-            "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc?"
+            "C_TITLE": "Tạo mới nhóm công việc, giai đoạn",
+            "U_TITLE": "Chỉnh sửa nhóm công việc, giai đoạn",
+            "NAME": "Tên nhóm công việc, giai đoạn",
+            "DESC": "Mô tả nhóm công việc, giai đoạn",
+            "ALERT": "Bạn chắc chắn muốn xóa nhóm công việc, giai đoạn này?"
           },
           "MEMBER": {
-            "TITLE": "Quản lý thành viên dự án",
+            "TITLE": "Quản lý thành viên",
             "EXIT": "Thoát",
             "LEFT": {
               "TITLE": "Danh sách thành viên",
               "SEARCH": "Tìm thành viên",
-              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án!"
+              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án, Quy trình hoặc Chủ đề công việc!"
             },
             "RIGHT": {
-              "TITLE": "Thành viên dự án",
+              "TITLE": "Thành viên",
               "TABLE": {
                 "MEM": "Thành viên",
                 "PER": "Nhóm quyền",
@@ -516,8 +516,8 @@
                 "DESC": "Mô tả"
               },
               "ADMIN": {
-                "TITLE": "Nhóm quyền: Chủ sở hữu dự án",
-                "DESC": "Chủ sở hữu dự án có các quyền sau:"
+                "TITLE": "Nhóm quyền: Chủ sở hữu",
+                "DESC": "Chủ sở hữu có các quyền sau:"
               },
               "USER": {
                 "TITLE": "Chọn nhóm quyền",
@@ -547,10 +547,10 @@
               "GROUP_TASK": "Nhóm việc",
               "DOWNLOAD": "Tải xuống",
               "CREATE": "+ Tạo công việc",
-              "SETTING": "Cài đặt dự án",
-              "PROJECT_CALENDAR": "Lịch dự án",
-              "HIDE": "Ẩn dự án",
-              "SHOW": "Bỏ ẩn dự án",
+              "SETTING": "Cài đặt",
+              "PROJECT_CALENDAR": "Lịch làm việc",
+              "HIDE": "Ẩn",
+              "SHOW": "Bỏ ẩn",
               "NO_DATA": "Chưa có công việc nào được khởi tạo. Hãy click vào nút + TẠO CÔNG VIỆC để bắt đầu quản lý dự án và công việc của bạn"
             },
             "TABLE": {
@@ -677,7 +677,7 @@
         "title": "Quản lý lịch",
         "create": "Tạo lịch",
         "recently": "Gần đây",
-        "project_alarm": "Nhắc hẹn dự án",
+        "project_alarm": "Nhắc hẹn theo công việc",
         "my_alarm": "Nhắc hẹn theo nhóm"
       },
       "right_part": {
@@ -759,8 +759,8 @@
           "title": "Cập nhập lịch tuần"
         },
         "create_project_calendar": {
-          "create_title": "Tạo lịch dự án",
-          "edit_title": "Sửa lịch dự án",
+          "create_title": "Tạo lịch làm việc",
+          "edit_title": "Sửa lịch làm việc",
           "name": "Tên lịch",
           "description": "Mô tả lịch",
           "name_required": "Không được để trống."
@@ -956,6 +956,8 @@
   "IDS_WP_BUDGET": "Ngân sách",
   "IDS_WP_SUGGEST": "Đề xuất",
   "IDS_WP_PROCESS": "Quy trình",
+  "IDS_WP_PLAN": "Kế hoạch",
+  "IDS_WP_CAMPAIGN": "Chiến dịch",
   "IDS_WP_ARCHIVAL": "Văn thư",
   "IDS_WP_CALENDAR_REMINDER": "Lịch, nhắc hẹn",
   "IDS_WP_POSITION": "Vị trí",
@@ -1110,11 +1112,11 @@
   "IDS_WP_RENAME": "Đổi tên",
   "IDS_WP_JOIN_PROJECT": "Truy cập dự án",
   "IDS_WP_JOIN_TASK": "Tuy cập công việc",
-  "IDS_WP_DOCUMENT_NOTE": "Sổ tài liệu",
+  "IDS_WP_DOCUMENT_NOTE": "Số tài liệu",
   "IDS_WP_DELETE_DATE": "Ngày xóa",
   "IDS_WP_DELETE_PEOPLE": "Người xóa",
   "IDS_WP_RECENT": "Gần đây",
-  "IDS_WP_PROJECT_DOCUMENT": "Tài liệu dự án",
+  "IDS_WP_PROJECT_DOCUMENT": "Tài liệu làm việc",
   "IDS_WP_SHARED": "Đã chia sẻ",
   "IDS_WP_SHARE_WITH_ME": "Được chia sẻ với tôi",
   "IDS_WP_GOOGLE_DRIVE": "Google Drive",
@@ -1261,7 +1263,8 @@
   "IDS_WP_COLLAPS": "Thu hẹp",
   "IDS_WP_FILTER": "Lọc",
   "IDS_WP_WEEKLY_CALENDAR": "Lịch tuần",
-  "IDS_WP_PROJECT_CALENDAR": "Lịch dự án",
+  "IDS_WP_PROJECT_CALENDAR": "Lịch làm việc",
+  "IDS_WP_PROJECT_CALENDAR_SUBTITLE": "Thiết lập các lịch làm việc cho dự án, quy trình, kế hoạch hay chiến dịch",
   "IDS_WP_ALARM_CALENDAR": "Lịch nhắc hẹn",
   "IDS_WP_ALARM_CALENDAR_SUB_TITLE": "Nhắc hẹn, lịch hẹn, báo hẹn",
   "IDS_WP_WEEK_COUNT": "Lịch tuần số",
@@ -1270,8 +1273,8 @@
   "IDS_WP_FROM": "Từ",
   "IDS_WP_SELECT_YEAR": "Chọn thời gian",
   "IDS_WP_INPUT_SEARCH_PROJECT": "Tìm dự án",
-  "IDS_WP_FILTER_BY_PROJECT": "Lọc theo dự án",
-  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Chọn/bỏ chọn để lọc nhắc hẹn theo dự án",
+  "IDS_WP_FILTER_BY_PROJECT": "Lọc theo dự án, quy trình, kế hoạch...",
+  "IDS_WP_FILTER_BY_PROJECT_DESCRIPTION": "Chọn/bỏ chọn để lọc nhắc hẹn theo dự án, quy trình...",
   "IDS_WP_CREATED_AT": "Tạo lúc",
   "IDS_WP_REMIND": "Nhắc",
   "IDS_WP_REQUIRED": "Không được để trống.",
@@ -1509,6 +1512,9 @@
   "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO": "Hiện tại chưa có <b>Nhóm công việc</b> nào được tạo.",
   "LABEL_CHAT_TASK_HAY_TAO_MOI_NHOM": "Hãy tạo mới nhóm công việc trước khi tạo mới công việc!",
   "LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC": "Tạo nhóm công việc",
+  "LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_GIAI_DOAN": "Hiện tại chưa có <b>Giai đoạn</b> nào được tạo.",
+  "LABEL_CHAT_TASK_HAY_TAO_MOI_GIAI_DOAN": "Hãy tạo mới giai đoạn trước khi tạo mới công việc!",
+  "LABEL_CHAT_TASK_TAO_MOI_GIAI_DOAN": "Tạo mới giai đoạn",
   "LABEL_CHAT_TASK_KHONG_TIM_THAY_KET_QUA": "Không tìm thấy kết quả",
   "LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN": "Tìm công việc trong dự án...",
   "LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG": "Làm việc mê li cùng",
@@ -1715,7 +1721,7 @@
   "LABEL_CHAT_TASK_SUA_NHAC_HEN_LABEL": "Sửa nhắc hẹn",
   "Tên nhóm quyền": "Tên nhóm quyền",
   "Mô tả nhóm quyền": "Mô tả nhóm quyền",
-  "Phạm vi module phân quyền": "Mô-đun phạm vi phân quyền",
+  "Phạm vi module phân quyền": "Phạm vi áp dụng của nhóm quyền",
   "Tạo nhóm quyền": "Tạo nhóm quyền",
   "Hoàn thành": "Hoàn thành",
   "required": "Yêu cầu",
@@ -1873,10 +1879,11 @@
   "VIEW_OFFER_LABEL_OVERVIEW_TITLE": "Tổng quan",
   "VIEW_OFFER_LABEL_RECENTLY_TITLE": "Gần đây",
   "VIEW_OFFER_LABEL_GROUP_TITLE": "Nhóm",
-  "VIEW_OFFER_LABEL_PROJECT_TITLE": "Dự án",
+  "VIEW_OFFER_LABEL_PROJECT_TITLE": "Làm việc",
   "VIEW_OFFER_LABEL_DEPARTMENT_TITLE": "Bộ phận",
   "VIEW_OFFER_LABEL_GROUP_SUBTITLE": "Đề xuất theo nhóm",
-  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Đề xuất theo dự án",
+  "VIEW_OFFER_LABEL_PROJECT_SUBTITLE": "Đề xuất theo dự án, quy trình, kế hoạch...",
+  "VIEW_OFFER_LABEL_PROJECT_HEADER_TITLE": "Đề xuất theo làm việc",
   "VIEW_OFFER_LABEL_DEPARTMENT_SUBTITLE": "Đề xuất theo bộ phận",
   "VIEW_OFFER_LABEL_OFFER_BY_STATUS": "Đề xuất theo trạng thái",
   "VIEW_OFFER_LABEL_OFFER_BY_LEVEL": "Đề xuất theo mức độ",
@@ -2054,7 +2061,7 @@
   "Công việc gần đây": "Công việc gần đây",
   "Bạn có muốn xóa bài viết?": "Bạn có muốn xóa bài viết?",
   "LABEL_CHAT_TASK_TIM_KIEM": "Tìm kiếm",
-  "Module thành viên": "Module thành viên",
+  "Module thành viên": "Phân quyền Nhân viên",
   "LABEL_CHAT_TASK_DANH_SACH_VI_TRI": "Danh sách vị trí chia sẻ",
   "LABEL_CHAT_TASK_NHOM_VIEC": "Nhóm việc",
   "LABEL_CHAT_TASK_CHIS_SE_LUC_USER_TIME": "{{user}} chia sẻ vị trí lúc {{time}}",
@@ -2069,23 +2076,24 @@
   "TIME_RANGE_POPOVER_MESSAGE_MAX_DATE": "Phải sau ngày kết thúc",
   "TIME_RANGE_POPOVER_MESSAGE_MIN_DATE": "Phải trước ngày bắt đầu",
   "PROJECT_SETTING_MODAL_TITLE": "Cài đặt dự án",
-  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING": "Thông báo dự án",
-  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION": "Bật/Tắt thông báo đẩy trên điện thoại tới các thành viên tham gia dự án. Cách tốt nhất là bạn nên bật thông báo để các thành viên không bỏ lỡ các thông báo quan trọng trong dự án.",
+  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING": "Thông báo",
+  "PROJECT_SETTING_MODAL_NOTIFICATION_SETTING_DESCRIPTION": "Bật/Tắt thông báo đẩy trên điện thoại tới các thành viên tham. Cách tốt nhất là bạn nên bật thông báo để các thành viên không bỏ lỡ các thông báo quan trọng.",
   "PROJECT_SETTING_MODAL_NOTIFICATION_ON": "Bật (mặc định)",
   "PROJECT_SETTING_MODAL_NOTIFICATION_OFF": "Tắt",
-  "PROJECT_SETTING_MODAL_PROGRESS": "Tiến độ dự án",
-  "PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION": "Thiết lập cách nhập tiến độ mặc định khi tạo công việc mới của dự án",
+  "PROJECT_SETTING_MODAL_PROGRESS": "Tiến độ {{type}}",
+  "PROJECT_SETTING_MODAL_PROGRESS_DESCRIPTION": "Thiết lập cách nhập tiến độ mặc định khi tạo công việc mới của {{type}}",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_0": "Không yêu cầu (dành cho công việc không yêu cầu tiến độ) ",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_1": "Chỉ nhập ngày (không nhập giờ bắt đầu và kết thúc) ",
   "PROJECT_SETTING_MODAL_PROGRESS_OPTION_2": "Ngày và giờ (nhập đầy đủ ngày và giờ) ",
-  "PROJECT_SETTING_MODAL_COPYING": "Sáo chép dự án",
+  "PROJECT_SETTING_MODAL_COPYING": "Sáo chép {{type}}",
   "PROJECT_SETTING_MODAL_COPYING_OPTION_0": "Không được sao chép ",
   "PROJECT_SETTING_MODAL_COPYING_OPTION_1": "Được sao chép",
-  "PROJECT_SETTING_MODAL_VIEW_TYPE": "Chế độ xem dự án mặc định",
+  "PROJECT_SETTING_MODAL_VIEW_TYPE": "Chế độ xem {{type}} mặc định",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_DESCRIPTION": "Thiết lập khung hình mặc định khi click vào một dự án: dạng danh sách công việc (Table), dạng sơ đồ gantt (Gantt), dạng thảo luận (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_0": "Bảng danh sách công việc (Table) ",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_1": "Thảo luận (Chat)",
   "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_2": "Sơ đồ gantt (Gantt)",
+  "PROJECT_SETTING_MODAL_VIEW_TYPE_OPTION_3": "Bảng thẻ việc (Kanban)",
   "CUSTOM_TEXTBOX_CONTENT_LABEL": "Nội dung...",
   "IDS_WP_LEAVE_GROUP_CONFIRM_MSG": "Bạn có chắc chắn muốn rời khỏi nhóm này?",
   "IDS_WP_START_TRAIL_SUCCESS": "Bạn đã kích hoạt gói dùng thử 30 ngày thành công",
@@ -2135,5 +2143,27 @@
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER": "Thời gian kết thúc phải lớn hơn thời gian bắt đầu",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_END_TIME": "Từ ngày",
   "GANTT_LABEL_GANTT_NAME_EXPORT_MENU_FILTER_FIRST_TIME": "Đến ngày",
-  "GANTT_CANNOT": "Biểu đồ đang sử dụng lịch này."
+  "GANTT_CANNOT": "Biểu đồ đang sử dụng lịch này.",
+  "IDS_WP_COUNT_WORKPLACE_JOB": "{{count}} chủ đề công việc được tạo",
+  "IDS_WP_COUNT_WORKPLACE_PROJECT": "{{count}} dự án được tạo",
+  "IDS_WP_COUNT_WORKPLACE_PROCESS": "{{count}} quy trình được tạo",
+  "IDS_WP_DES_WORKPLACE_JOB": "Tạo và quản lý công việc cá nhân, công việc các phòng ban hoặc thuộc những chủ đề khác nhau...",
+  "IDS_WP_DES_WORKPLACE_PROJECT": "Tạo mới và quản lý dự án do Công ty đầu tư triển khai, khai thác, hợp tác...",
+  "IDS_WP_DES_WORKPLACE_PROCESS": "Tạo mới và quản lý quy trình chuyên nghiệp, tự động và hiệu quả...",
+  "IDS_WP_WORKPLACE_WELLCOME": "Hi {{user}}, Hãy chọn không gian làm việc cho bạn",
+  "IDS_WP_WORKPLACE_SLOGAN": "\"Làm việc là phải tương tác, có Workplus không lo hỏng việc\"",
+  "IDS_WP_START_NOW": "Bắt đầu ngay",
+  "IDS_WP_APPLY_WORK_TYPE": "Áp dụng cho các loại",
+  "IDS_WP_SELECT_TYPE": "Chọn loại",
+  "IDS_WP_WORKING_TYPE": "Chủ đề công việc",
+  "IDS_WP_TOPICS": "Chủ đề",
+  "IDS_WP_WORKING": "Công việc",
+  "IDS_WP_PROCESS_LIST": "Danh sách quy trình",
+  "IDS_WP_PROJECT_LIST": "Danh sách dự án",
+  "IDS_WP_ALL": "Tất cả",
+  "IS_WP_WORK_TYPE_SETTING_TITLE": "Cài đặt {{type}}",
+  "IDS_WP_PHASE": "Giai đoạn",
+  "IDS_WP_SELECT_PHASE": "Lựa chọn giai đoạn",
+  "IDS_WP_PROGRESS": "Tiến độ",
+  "IDS_WP_ALREADY_EXIST": "Đã tồn tại {{object}}"
 }

@@ -23,6 +23,7 @@ import ProjectSettingModal from '../../Modals/ProjectSetting';
 import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
 import AllProjectTablePresenter from './presenters';
 import { bgColorSelector, projectsSelector, showHidePendingsSelector } from './selectors';
+import {CREATE_PROJECT} from "constants/events";
 
 function AllProjectTable({
   expand,
@@ -42,7 +43,7 @@ function AllProjectTable({
 
   const filters = useFilters();
   const times = useTimes();
-  const { filterType, timeType } = localOption;
+  const { filterType, timeType, workType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
     return ({
@@ -79,36 +80,59 @@ function AllProjectTable({
       });
     };
     CustomEventListener(SORT_PROJECT, reloadListProject);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, reloadListProject);
     return () => {
       CustomEventDispose(SORT_PROJECT, reloadListProject);
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProject);
     }
   }, [projectGroupId, timeRange]);
 
   React.useEffect(() => {
-    doListProjectGroup();
+    doListProjectGroup({
+      timeStart: get(timeRange, 'timeStart')
+        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        : undefined,
+      timeEnd: get(timeRange, 'timeEnd')
+        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        : undefined,
+    });
     const reloadListProjectGroup = () => {
-      doListProjectGroup();
+      doListProjectGroup({
+        timeStart: get(timeRange, 'timeStart')
+          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+          : undefined,
+        timeEnd: get(timeRange, 'timeEnd')
+          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+          : undefined,
+      });
     }
     CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     return () => {
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     }
-  }, []);
-
-  React.useEffect(() => {
-    //doListIcon();
-  }, []);
-
+  }, [timeRange]);
+  function sort(valuePath, array){
+    let path = valuePath.split('.')
+    return array.sort((a, b) => {
+      return getValue(b,path) -  getValue(a,path)
+    });
+    function getValue(obj, path){
+      path.forEach(path => obj = obj[path])
+      return obj;
+    }
+  }
   React.useEffect(() => {
     let _projects = [...projects.projects];
-    _projects = filter(_projects, filters[filterType].option);
+    //_projects = filter(_projects, filters[filterType].option);
     _projects = sortBy(_projects, o => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
     setNewProjects({
       ...projects,
       projects: _projects,
     });
-  }, [projects, filterType, sortType]);
+  }, [projects, sortType]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
@@ -128,10 +152,11 @@ function AllProjectTable({
             setOpenNoPG(true);
           else
             setOpenCreate(true);
-          setCreateProps({
-            projectGroupId,
-            ...props
-          })
+            setCreateProps({
+              projectGroupId,
+              work_types: get(projects,'group_work_types'),
+              ...props
+            });
         }
         return;
       }
@@ -176,9 +201,14 @@ function AllProjectTable({
           filterType,
         })}
         timeType={timeType}
+        workTypeLocal={workType}
         handleTimeType={timeType => doSetProjectGroup({
           ...localOption,
           timeType,
+        })}
+        handleWorkTypeChange={workType => doSetProjectGroup({
+          ...localOption,
+          workType
         })}
         handleSortType={type => setSortType(oldType => {
           const newCol = type;
@@ -241,7 +271,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
-    doListProjectGroup: (quite) => dispatch(listProjectGroup(quite)),
+    doListProjectGroup: (options,quite) => dispatch(listProjectGroup(options,quite)),
     doListIcon: (quite) => dispatch(listIcon(quite)),
     doSortProject: ({ sortData, groupId }) =>
       dispatch(sortProject({ sortData, groupId })),

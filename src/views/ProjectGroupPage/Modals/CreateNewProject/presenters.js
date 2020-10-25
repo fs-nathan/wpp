@@ -4,10 +4,11 @@ import CustomTextbox from 'components/CustomTextbox';
 import MySelect from 'components/MySelect';
 import { CREATE_PROJECT, CustomEventDispose, CustomEventListener, LIST_PROJECT } from 'constants/events.js';
 import { useMaxlenString, useRequiredString } from 'hooks';
-import { find, get } from 'lodash';
+import { find, get, first, isNil,map } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
+import {WORKPLACE_TYPES} from "../../../../constants/constants";
 
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
@@ -17,10 +18,9 @@ const StyledFormControl = ({ className = '', ...props }) =>
 
 function CreateNewProject({
   open, setOpen,
-  groups,
+  groups, work_types,
   handleCreateProject,
-  doReload,
-  projectGroupId, timeRange
+  doReload, projectGroupId, timeRange
 }) {
 
   const { t } = useTranslation();
@@ -28,9 +28,19 @@ function CreateNewProject({
   const [description, setDescription] = useMaxlenString('', 500);
   const [priority, setPriority] = React.useState(0);
   const [currency] = React.useState(0);
-  const [curProjectGroupId, setCurProjectGroupId] = React.useState(get(groups.groups[0], 'id'));
+  const [curProjectGroupId, setCurProjectGroupId] = React.useState(projectGroupId);
   const [activeLoading, setActiveLoading] = React.useState(false);
-
+  const [workingType, setWorkingType] = React.useState(0);
+  const [title, setTitle] = React.useState("");
+  const [selectableGroup, setSelectableGroup] = React.useState([]);
+  const [workingTypes, setWorkingTypes] = React.useState([
+    {type: t("IDS_WP_JOB"), value: 0},
+    {type: t("IDS_WP_PROJECT"), value: 1},
+    {type: t("IDS_WP_PROCESS"), value: 2}
+  ]);
+  const handleChangeWorkType = type => {
+    setWorkingType(type);
+  }
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -41,9 +51,7 @@ function CreateNewProject({
       CustomEventDispose(CREATE_PROJECT.SUCCESS, doReload);
       CustomEventDispose(CREATE_PROJECT.FAIL, fail);
     }
-    // eslint-disable-next-line
   }, [projectGroupId, timeRange]);
-
   React.useEffect(() => {
     const success = () => {
       setActiveLoading(false);
@@ -51,7 +59,7 @@ function CreateNewProject({
       setName('');
       setDescription('');
       setPriority(0);
-      setCurProjectGroupId(get(groups.groups[0], 'id'));
+      setCurProjectGroupId(projectGroupId);
     };
     const fail = () => {
       setActiveLoading(false);
@@ -62,12 +70,53 @@ function CreateNewProject({
       CustomEventDispose(LIST_PROJECT.SUCCESS, success);
       CustomEventDispose(LIST_PROJECT.FAIL, fail);
     }
-    // eslint-disable-next-line
   }, [projectGroupId, timeRange]);
+  React.useEffect(() => {
+    if(!isNil(work_types) && work_types.length > 0) {
+      const allowedTypes = map(work_types, function (type) {
+        switch (parseInt(type)) {
+          case  WORKPLACE_TYPES.JOB:
+            return ({type: t("IDS_WP_JOB"), value: 0});
+          case WORKPLACE_TYPES.PROJECT:
+            return ({type: t("IDS_WP_PROJECT"), value: 1});
+          case WORKPLACE_TYPES.PROCESS:
+            return ({type: t("IDS_WP_PROCESS"), value: 2});
+          default:
+            break;
+        }
+      });
+      setWorkingTypes(allowedTypes);
+      const _first = parseInt(first(work_types));
+      setWorkingType(_first);
+    }
+  }, [work_types]);
+  React.useEffect(() => {
+    switch (workingType) {
+      case WORKPLACE_TYPES.JOB:
+        setTitle(t("IDS_WP_WORKING_TYPE"));
+        break;
+      case WORKPLACE_TYPES.PROJECT:
+        setTitle(t("IDS_WP_PROJECT"));
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setTitle(t("IDS_WP_PROCESS"));
+        break;
+      default:
+        break;
+    }
+  }, [workingType]);
+  React.useEffect(() => {
+    if(!isNil(projectGroupId)) {
+      setCurProjectGroupId(projectGroupId);
+      setSelectableGroup([find(groups.groups, { id: projectGroupId })]);
+    } else {
+      setSelectableGroup(groups.groups);
+    }
+  }, [projectGroupId,groups]);
 
   return (
     <CustomModal
-      title={t("DMH.VIEW.PGP.MODAL.CUP.C_TITLE")}
+      title={`${t("IDS_WP_CREATE_NEW")} ${title}`}
       open={open}
       setOpen={setOpen}
       canConfirm={!errorName}
@@ -78,6 +127,7 @@ function CreateNewProject({
           description,
           priority,
           currency,
+          work_type: workingType
         });
         setActiveLoading(true);
       }}
@@ -88,29 +138,44 @@ function CreateNewProject({
     >
       <StyledFormControl fullWidth>
         <MySelect
+          label={t("IDS_WP_SELECT_TYPE")}
+          options={workingTypes.map(item => ({
+            label: item.type,
+            value: item.value,
+          }))}
+          value={{
+            label: get(find(workingTypes, { value: workingType }), 'type'),
+            value: workingType,
+          }}
+          onChange={({ value: workingType }) => handleChangeWorkType(workingType)}
+          isRequired={true}
+        />
+        <MySelect
           label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
-          options={groups.groups.map(projectGroup => ({
+          options={selectableGroup.map(projectGroup => ({
             label: get(projectGroup, 'name'),
             value: get(projectGroup, 'id'),
           }))}
           value={{
-            label: get(find(groups.groups, { id: curProjectGroupId }), 'name'),
+            label: get(find(selectableGroup, { id: curProjectGroupId }), 'name'),
             value: curProjectGroupId,
           }}
           onChange={({ value: curProjectGroupId }) => setCurProjectGroupId(curProjectGroupId)}
+          isRequired={true}
         />
       </StyledFormControl>
       <CustomTextbox
         value={name}
         onChange={value => setName(value)}
-        label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
+        label={`${t("IDS_WP_NAME")} ${title}`}
         fullWidth
         required={true}
+        className={"view_ProjectGroup_CreateNew_Project_Modal_formItem"}
       />
       <CustomTextbox
         value={description}
         onChange={value => setDescription(value)}
-        label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
+        label={`${t("GANTT_DESCRIPTION")} ${title}`}
         fullWidth
         multiline={true}
       />

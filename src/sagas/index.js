@@ -98,6 +98,8 @@ import { KANBAN_SORT_GROUP_TASK } from 'constants/actions/kanban/sortGroupTask';
 import { KANBAN_GET_MANAGER } from 'constants/actions/kanban/getManager';
 import { KANBAN_DETAIL_TASK } from 'constants/actions/kanban/detailTask';
 import { KANBAN_UPDATE_TASK } from 'constants/actions/kanban/updateTask';
+import { GET_PROJECT_STATISTIC } from "../constants/actions/project/getStatistic";
+import { GET_WORK_TYPE } from "../constants/actions/project/getWorkType";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
@@ -273,6 +275,8 @@ import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissio
 import {listProjectGroupDeleted} from "./projectGroup/listProjectGroupDeleted";
 import {listTaskMember} from "./task/listTaskMember";
 import {getRemindDetail} from "./calendar/alarmCalendar/getRemindDetail";
+import {getProjectStatistic} from "./project/getStatistic";
+import {getWorkType} from "./project/getWorkType";
 
 function* rootSaga() {
   // Hoang - begin
@@ -805,6 +809,8 @@ function* rootSaga() {
   yield takeLatest(DELETE_APPROVAL, doDeleteApproval);
   yield takeLatest(SORT_GROUP_OFFER, doSortGroupOffer);
   yield takeLatest(OFFER_GET_MEMBER_TO_ADD, doGetMemberToAdd);
+  yield takeLatest(GET_PROJECT_STATISTIC, getProjectStatistic);
+  yield takeLatest(GET_WORK_TYPE, getWorkType);
   //
 
   //calendar

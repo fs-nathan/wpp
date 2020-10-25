@@ -4,7 +4,7 @@ import {
   CREATE_PROJECT_SUCCESS,
 } from '../../constants/actions/project/createProject';
 
-export const createProject = ({ name, description, projectGroupId, priority, currency }) => ({
+export const createProject = ({ name, description, projectGroupId, priority, currency, work_type }) => ({
   type: CREATE_PROJECT,
   options: {
     name,
@@ -12,6 +12,7 @@ export const createProject = ({ name, description, projectGroupId, priority, cur
     projectGroupId,
     priority,
     currency,
+    work_type
   },
 });
 

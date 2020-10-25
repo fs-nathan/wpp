@@ -13,10 +13,11 @@ import DeleteGroupTask from '../../Modals/DeleteGroupTask';
 import { viewPermissionsSelector } from '../../selectors';
 import GroupTaskSlidePresenter from './presenters';
 import { groupTasksSelector } from './selectors';
+import {projectSelector} from "../../RightPart/AllTaskTable/selectors";
 
 function GroupTaskSlide({
   handleSubSlide,
-  groupTasks,
+  groupTasks, project,
   doSortGroupTask, doDeleteGroupTask,
   doListGroupTask,
   viewPermissions,
@@ -94,6 +95,7 @@ function GroupTaskSlide({
         }
         handleOpenModal={doOpenModal}
         permissions={get(viewPermissions.permissions, [id, 'update_project'], false)}
+        project={project}
       />
       <DeleteGroupTask
         open={openAlert}
@@ -116,6 +118,7 @@ function GroupTaskSlide({
 const mapStateToProps = state => {
   return {
     groupTasks: groupTasksSelector(state),
+    project: projectSelector(state),
     viewPermissions: viewPermissionsSelector(state),
   };
 };

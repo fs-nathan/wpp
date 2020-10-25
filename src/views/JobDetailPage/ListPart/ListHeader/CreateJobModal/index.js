@@ -1,27 +1,43 @@
 import DateFnsUtils from '@date-io/date-fns';
-import { TextField, Typography } from '@material-ui/core';
-import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
-import { createTask, getListGroupTask, getSchedules, updateGroupTask, updateNameDescription, updatePriority, updateScheduleTask, updateTypeAssign } from 'actions/taskDetail/taskDetailActions';
+import {TextField, Typography} from '@material-ui/core';
+import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import {
+  createTask,
+  getListGroupTask,
+  getSchedules,
+  updateGroupTask,
+  updateNameDescription,
+  updatePriority,
+  updateScheduleTask,
+  updateTypeAssign
+} from 'actions/taskDetail/taskDetailActions';
 import clsx from 'clsx';
 import CustomSelect from 'components/CustomSelect';
 import TimePicker from 'components/TimePicker';
-import { listTimeSelect } from 'components/TimeSelect';
+import {listTimeSelect} from 'components/TimeSelect';
 import TitleSectionModal from 'components/TitleSectionModal';
-import { isOneOf } from 'helpers/jobDetail/arrayHelper';
-import { convertDate, convertDateToJSFormat, DEFAULT_DATE_TEXT, DEFAULT_GROUP_TASK_VALUE, EMPTY_STRING } from 'helpers/jobDetail/stringHelper';
-import { get, isFunction, isNil } from 'lodash';
-import React, { useEffect, useMemo } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {isOneOf} from 'helpers/jobDetail/arrayHelper';
+import {
+  convertDate,
+  convertDateToJSFormat,
+  DEFAULT_DATE_TEXT,
+  DEFAULT_GROUP_TASK_VALUE,
+  EMPTY_STRING
+} from 'helpers/jobDetail/stringHelper';
+import {get, isFunction, isNil} from 'lodash';
+import React, {useEffect, useMemo} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CreateProjectGroup from 'views/ProjectPage/Modals/CreateGroupTask';
-import { taskIdSelector } from '../../../selectors';
+import {taskIdSelector} from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
 import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
-import TaskGroupSelect from 'components/TaskGroupSelect';
+import {getWorkType} from "../../../../../actions/project/getWorkType";
+import {WORKPLACE_TYPES} from "../../../../../constants/constants";
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -43,9 +59,11 @@ function CreateJobModal(props) {
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
+  const groupId = get(props, 'groupId');
   const taskId = useSelector(taskIdSelector);
   const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
-
+  const workType = useSelector(state => state.project.getWorkType.data.work_type);
+  const [title, setTitle] = React.useState("");
   const optionsList = useMemo(() => [
     { value: 2, label: t('LABEL_CHAT_TASK_NGAY_VA_GIO') },
     { value: 1, label: t('LABEL_CHAT_TASK_CHI_NHAP_NGAY') },
@@ -141,7 +159,19 @@ function CreateJobModal(props) {
     }
     // props.setOpen(false);
   };
-
+  React.useEffect(() => {
+    switch (workType) {
+      case WORKPLACE_TYPES.JOB:
+      case WORKPLACE_TYPES.PROJECT:
+        setTitle(t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC'));
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setTitle(t("IDS_WP_SELECT_PHASE"));
+        break;
+      default:
+        break;
+    }
+  }, [workType]);
   React.useEffect(() => {
     if (listGroupTaskData) {
       // Map task to input
@@ -158,10 +188,10 @@ function CreateJobModal(props) {
       if (item) {
         handleChangeData('group_task', item)
       } else {
-        handleChangeData('group_task', null)
+        handleChangeData('group_task', groupId)
       }
     }
-  }, [listGroupTaskData, taskDetails.group_task]);
+  }, [listGroupTaskData, taskDetails.group_task, groupId]);
 
   React.useEffect(() => {
     if (listSchedule) {
@@ -235,6 +265,7 @@ function CreateJobModal(props) {
     if (props.isOpen) {
       if (projectId) {
         dispatch(getSchedules(projectId))
+        dispatch(getWorkType({projectId}))
         if (!isEdit) {
           handleChangeData('name', EMPTY_STRING)
           handleChangeData('description', EMPTY_STRING)
@@ -329,13 +360,8 @@ function CreateJobModal(props) {
         {
           (!isEdit || props.editMode === EDIT_MODE.GROUP) &&
           <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC')} isRequired />
+            <TitleSectionModal label={title} isRequired />
             <Typography component={'div'} >
-              {/* <TaskGroupSelect
-                options={listGroupTask}
-                value={data.group_task}
-                onChange={({ target }) => handleChangeData('group_task', target.value)}
-              /> */}
               <CustomSelect
                 options={listGroupTask}
                 value={data.group_task}
@@ -505,7 +531,7 @@ function CheckCreateJob(props) {
 
   const dispatch = useDispatch();
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-
+  const {t} = useTranslation();
   const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask) || {};
   const isFetching = useSelector(state => state.taskDetail.listGroupTask.isFetching);
   const [isOpenCreateGroup, setOpenCreateGroup] = React.useState(false);
@@ -514,7 +540,7 @@ function CheckCreateJob(props) {
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
-
+  const project = get(props, "project");
   useEffect(() => {
     if (projectId && props.isOpen) {
       dispatch(getListGroupTask({ project_id: projectId }));
@@ -566,6 +592,18 @@ function CheckCreateJob(props) {
         isOpen={isOpenCreateGroup}
         setOpen={onClickCloseGroupTask}
         onClickCreate={onClickCreateProjectGroup}
+        title1={
+          get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ?
+            t("LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO_GIAI_DOAN") : null
+        }
+        title2={
+          get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ?
+            t("LABEL_CHAT_TASK_HAY_TAO_MOI_GIAI_DOAN") : null
+        }
+        actionName={
+          get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ?
+            t("LABEL_CHAT_TASK_TAO_MOI_GIAI_DOAN") : null
+        }
       />
       <CreateProjectGroup
         project_id={projectId}

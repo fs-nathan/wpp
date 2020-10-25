@@ -313,7 +313,7 @@ function CalendarProjectRightPartPresenter({
         <CustomTableProvider
           value={{
             options: {
-              title: t('views.calendar_page.right_part.project_detail'),
+              title: `${t("GANTT_DETAIL")} ${get(scheduleDetail.data, "name", "")}`,
               mainAction: get(groupInfo, "can_delete") ? {
                 label: t('views.calendar_page.right_part.delete_calendar'),
                 onClick: () => handleDeleteGroup()

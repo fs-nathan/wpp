@@ -51,4 +51,5 @@ export const Routes = {
   SETTING_GROUP_GROUP_PERMISSION: "/setting-group/group-permission",
   OFFERS: "/offers",
   PROJECT_GRANT: "/projects/task-gantt/:projectId",
+  WORKPLACE: "/workplace",
 };

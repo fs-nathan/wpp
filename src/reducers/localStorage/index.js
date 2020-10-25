@@ -27,6 +27,7 @@ export const initialState = {
   projectGroup: getData(PROJECT_GROUP, {
     filterType: 1,
     timeType: 5,
+    workType: -1,
   }),
 };
 
@@ -52,6 +53,7 @@ function reducer(state = initialState, action) {
         projectGroup: {
           filterType: 0,
           timeType: 5,
+          workType: -1,
         }
       }
     default:

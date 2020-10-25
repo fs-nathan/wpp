@@ -5,8 +5,8 @@ import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import './styles.scss';
 
 function CreateGroupTaskModal({
-  isOpen,
-  setOpen,
+  isOpen, title1, title2,
+  setOpen, actionName,
   onClickCreate }) {
   const { t } = useTranslation();
 
@@ -22,11 +22,11 @@ function CreateGroupTaskModal({
     >
       <React.Fragment>
         <div className="CreateGroupTaskModal--title"
-          dangerouslySetInnerHTML={{ __html: t('LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO') }}></div>
+          dangerouslySetInnerHTML={{ __html: title1 ?? t('LABEL_CHAT_TASK_HIEN_TAI_CHUA_CO') }}></div>
         <div className="CreateGroupTaskModal--title">
-          {t('LABEL_CHAT_TASK_HAY_TAO_MOI_NHOM')}</div>
+          {title2 ?? t('LABEL_CHAT_TASK_HAY_TAO_MOI_NHOM')}</div>
         <Typography className="CreateGroupTaskModal--button" onClick={onClickCreate}>
-          {t('LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC')}
+          {actionName ?? t('LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC')}
         </Typography>
       </React.Fragment>
     </JobDetailModalWrap>

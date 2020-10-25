@@ -4,8 +4,7 @@
   margin: 0px 0 10px;
   & > * {
     margin-bottom: 10px;
-  }  
-  z-index: 99;
+  }
 };
 
 .view_ProjectGroup_CreateNew_Project_Modal___subtitle {
@@ -17,4 +16,7 @@
   position: relative;
   line-height: 15px;
   width: 100%;
+}
+.view_ProjectGroup_CreateNew_Project_Modal_formItem {
+  margin-top: 0px !important;
 }

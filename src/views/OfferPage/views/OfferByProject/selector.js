@@ -66,3 +66,18 @@ export const getSummaryByProjectAndKeyword = (keyword) => createSelector(selectS
     x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1
   )
 })
+
+export const getSummaryByProjectAndWorkTopic = (keyword,type) => createSelector(selectSummaryProject, summary => {
+  const { projects } = summary
+  if (projects === undefined) {
+    return []
+  }
+  let _projects = projects.map(project => ({
+    title: get(project, "name"),
+    url: get(project, "id"),
+    projects: get(project, "projects", []).filter(item => item.work_type === type || type === -1)
+  })).filter(
+    x => x.title.toLowerCase().indexOf(keyword.toLowerCase()) > -1
+  );
+  return _projects;
+})

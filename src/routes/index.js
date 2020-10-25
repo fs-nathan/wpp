@@ -81,6 +81,9 @@ const GanttPage = loadable(() => import("views/GrantPage/GrantTable"), {
 const ErrorPage = loadable(() => import("views/ErrorPage"), {
   fallback: <div />,
 })
+const WorkplacePage = loadable(() => import("views/WorkplacePage"), {
+  fallback: <div />,
+})
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },
@@ -121,6 +124,7 @@ const routes = [
   { path: Routes.CALENDAR_ALARM, component: () => <CalendarAlarmPage /> },
   { path: Routes.CONFIRM_REGISTRATION, component: () => <ConfirmRegistration />, },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
+  { path: Routes.WORKPLACE, component: () => <WorkplacePage/> },
   ...(process.env.NODE_ENV !== "production"
     ? [{ path: "/playground", component: () => <Playground /> }]
     : []),
