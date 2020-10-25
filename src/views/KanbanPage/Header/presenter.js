@@ -7,6 +7,7 @@ import Icon from '@mdi/react';
 import { mdiChevronUp, mdiChevronDown, mdiMenuDown, mdiClose, mdiMagnify, mdiAccountCircle, mdiFilterOutline, mdiDownload, mdiDotsVertical } from '@mdi/js';
 import { StyledButton as _StyledButton, StyledPopper, SearchBox } from 'components/CustomTable/HeaderButtonGroup';
 import { DRAWER_TYPE } from 'constants/constants';
+import { workTypes } from 'constants/workTypes';
 import { get, isNil, find } from 'lodash';
 import './style.scss';
 
@@ -85,7 +86,7 @@ function KanbanPage({
                 },
               })}
             >
-              <span>{get(project, 'name', '')}</span>
+              <span>{`${isNil(get(project, 'work_type')) ? `` : `[${workTypes[get(project, 'work_type', 0)]}] `}${get(project, 'name', '')}`}</span>
               <Icon path={mdiMenuDown} size={1} />
             </NameBox>
             <NavigatorMenu />
