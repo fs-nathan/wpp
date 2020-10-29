@@ -17,6 +17,7 @@ import {useTranslation} from 'react-i18next';
 import './style.scss';
 import {Box, Checkbox} from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import apiConstant from "../../../../constants/apiConstant";
 
 const LogoBox = ({ className = '', ...props }) =>
   <div
@@ -52,13 +53,12 @@ function CreateProjectGroup({
   }
 
   React.useEffect(() => {
-    console.log(updatedProjectGroup);
     setName(get(updatedProjectGroup, 'name'));
     setDescription(get(updatedProjectGroup, 'description'));
     setIcon({
       url_full: get(updatedProjectGroup, 'icon', ''),
       url_sort: get(updatedProjectGroup, 'icon', '')
-        .replace('https://storage.googleapis.com', ''),
+        .replace(apiConstant.BASE_IMG, ''),
     });
     const workTypes = get(updatedProjectGroup, 'work_types', []);
     setWorkingTypes([
