@@ -56,9 +56,8 @@ function CreateProjectGroup({
     setName(get(updatedProjectGroup, 'name'));
     setDescription(get(updatedProjectGroup, 'description'));
     setIcon({
-      url_full: get(updatedProjectGroup, 'icon', ''),
-      url_sort: get(updatedProjectGroup, 'icon', '')
-        .replace(apiConstant.BASE_IMG, ''),
+      url_full: get(updatedProjectGroup, 'icon'),
+      url_sort: get(updatedProjectGroup, 'sort_icon')
     });
     const workTypes = get(updatedProjectGroup, 'work_types', []);
     setWorkingTypes([

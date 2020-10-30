@@ -5,7 +5,7 @@ import { apiService } from '../../constants/axiosInstance';
 import { COPY_PROJECT, CustomEventEmitter } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
-async function doCopyProject({ projectId, name, description, startDate, isCopyMember }) {
+async function doCopyProject({ projectId, name, description, startDate, isCopyMember, workType }) {
   try {
     const config = {
       url: '/project/copy',
@@ -16,6 +16,7 @@ async function doCopyProject({ projectId, name, description, startDate, isCopyMe
         description,
         day_start: startDate,
         is_copy_member: isCopyMember,
+        work_type: workType
       },
     }
     const result = await apiService(config);

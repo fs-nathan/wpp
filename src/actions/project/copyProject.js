@@ -4,14 +4,15 @@ import {
   COPY_PROJECT_SUCCESS,
 } from '../../constants/actions/project/copyProject';
 
-export const copyProject = ({ projectId, name, description, startDate, isCopyMember }) => ({
+export const copyProject = ({ projectId, name, description, startDate, isCopyMember, workType }) => ({
   type: COPY_PROJECT,
   options: {
     projectId,
     name,
     description,
     startDate,
-    isCopyMember
+    isCopyMember,
+    workType
   },
 });
 

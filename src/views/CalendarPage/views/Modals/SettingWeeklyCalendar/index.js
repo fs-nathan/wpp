@@ -37,7 +37,7 @@ function SettingWeeklyCalendar({
         height='miniWide'
         maxWidth='sm'
         canConfirm={permission}
-        confirmRender={permission ? t('IDS_WP_DONE') : null}
+        confirmRender={() => permission ? t('IDS_WP_DONE') : null}
       >
         <Container>
           <p>{t('views.calendar_page.modal.setting_weekly_calendar.day_begining')}</p>

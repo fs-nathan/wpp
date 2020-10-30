@@ -29,7 +29,6 @@ import CreateJobModal from "../../views/JobDetailPage/ListPart/ListHeader/Create
 import ListProject from "../../views/JobDetailPage/ListPart/ListProjectGantt";
 import QuickViewTaskDetailDrawer from "../../views/JobPage/components/GanttQuickViewTaskDetailDrawer";
 import CreateProject from "../../views/ProjectPage/Modals/CreateGroupTask";
-import "./abc.scss";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import EditCell from "./EditCell";
@@ -359,6 +358,7 @@ class DragSortingTable extends React.Component {
                       aria-haspopup="true"
                       onClick={() => {
                         this.handleOpenCraeteJobModal(true)
+                        this.setGroupTaskSelected(record.name, record.id)
                       }}
                       size="small"
                     >
@@ -1462,6 +1462,14 @@ class DragSortingTable extends React.Component {
       openCreateJobModal: value,
     });
   };
+  setGroupTaskSelected = (groupTaskLabel, groupTaskId) => {
+    this.setState({
+      groupTaskSelected: {
+        label: groupTaskLabel,
+        value: groupTaskId
+      },
+    });
+  };
   handleShowProject = (show) => {
     const { projectId } = this.props.match.params;
     if (show) {
@@ -1507,7 +1515,6 @@ class DragSortingTable extends React.Component {
       }
     }
     if (this.state.isLoading) return <LoadingBox />;
-
     return (
 
       <React.Fragment>
@@ -1516,6 +1523,7 @@ class DragSortingTable extends React.Component {
           <RenderJobModal
             projectId={this.props.projectInfo.id || null}
             isOpen={this.state.openCreateJobModal}
+            groupId={this.state.groupTaskSelected}
             onCreateTaskSuccess={() => {
               const { projectId } = this.props.match.params
               this.fetchListTask(projectId);

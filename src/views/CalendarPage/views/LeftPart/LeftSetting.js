@@ -14,7 +14,7 @@ const LeftSetting = props => {
     <LeftSideContainer
       title={props.title}
       rightAction={null}
-      leftAction={null}
+      leftAction={{}}
     >
       <StyledList>
         {props.listMenu.map((item, index) => (

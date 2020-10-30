@@ -19,6 +19,7 @@ import './style.scss';
 import MySelect from "../../../../components/MySelect";
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
 import {ic_no_data22} from "assets";
+import {useSelector} from 'react-redux';
 
 const Header = ({ className = '', ...props }) =>
   <ColorTypo
@@ -139,8 +140,12 @@ function CopyProject({
   const [selectedProject, setSelectedProject] = React.useState(null);
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [workingType, setWorkingType] = React.useState(0);
+  const [workingTypeNew, setWorkingTypeNew] = React.useState(0);
+  const [titleLeft, setTitleLeft] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [groupFiltered, setGroupFiltered] = React.useState([]);
+
+  const formatDate = useSelector(state => state.system.profile.format_date);
 
   const workingTypes = [
     {type: t("IDS_WP_JOB"), value: 0},
@@ -155,6 +160,21 @@ function CopyProject({
     setGroupFiltered(_groups);
     switch (workingType) {
       case WORKPLACE_TYPES.JOB:
+        setTitleLeft(t("IDS_WP_WORKING_TYPE"));
+        break;
+      case WORKPLACE_TYPES.PROJECT:
+        setTitleLeft(t("IDS_WP_PROJECT"));
+        break;
+      case WORKPLACE_TYPES.PROCESS:
+        setTitleLeft(t("IDS_WP_PROCESS"));
+        break;
+      default:
+        break;
+    }
+  }, [workingType, groups]);
+  React.useEffect(() => {
+    switch (workingTypeNew) {
+      case WORKPLACE_TYPES.JOB:
         setTitle(t("IDS_WP_WORKING_TYPE"));
         break;
       case WORKPLACE_TYPES.PROJECT:
@@ -166,7 +186,7 @@ function CopyProject({
       default:
         break;
     }
-  }, [workingType,groups]);
+  }, [workingTypeNew]);
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -215,7 +235,8 @@ function CopyProject({
           name,
           description,
           moment(startDate).format('YYYY-MM-DD'),
-          isCopyMember
+          isCopyMember,
+          workingTypeNew,
         );
         setActiveLoading(true);
       }}
@@ -226,7 +247,7 @@ function CopyProject({
       activeLoading={activeLoading}
       manualClose={true}
       left={{
-        title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE", {title}),
+        title: t("DMH.VIEW.PGP.MODAL.COPY.LEFT.TITLE", {titleLeft}),
         content: () =>
           <LeftContainer>
             <StyledFormControl fullWidth style={{padding: "0 25px", width: "88%", marginTop: 10, zIndex: 11}}>
@@ -245,7 +266,7 @@ function CopyProject({
             </StyledFormControl>
             <SearchInput
               fullWidth
-              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND", {title})}
+              placeholder={t("DMH.VIEW.PGP.MODAL.COPY.LEFT.FIND", {titleLeft})}
               value={searchPatern}
               onChange={evt => setSearchPatern(evt.target.value)}
               className={"view_ProjecrGroup_Copy_Project_Modal_searchBox"}
@@ -270,12 +291,24 @@ function CopyProject({
           </LeftContainer>,
       }}
       right={{
-        title: t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.TITLE", {title}),
+        title: t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.TITLE_COPY_TO"),
         content: () =>
           <RightContainer>
-            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.NAME", {title})}</Header>
-            <StyledTypo>{get(selectedProject, 'name', t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.PLACEHOLDER", {title}))}</StyledTypo>
-            <Header uppercase bold>{t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DESC", {title})}</Header>
+            <div style={{marginTop: "10px"}}>
+              <MySelect
+                label={t("IDS_WP_SELECT_TYPE")}
+                options={workingTypes.map(item => ({
+                  label: item.type,
+                  value: item.value,
+                }))}
+                value={{
+                  label: get(find(workingTypes, { value: workingTypeNew }), 'type'),
+                  value: workingTypeNew,
+                }}
+                onChange={({ value: workingTypeNew }) => setWorkingTypeNew(workingTypeNew)}
+                isRequired={true}
+              />
+            </div>
             <CustomTextbox
               value={name}
               onChange={value => setName(value)}
@@ -297,14 +330,14 @@ function CopyProject({
                 <FormControlLabel value={false} control={<Radio color='primary' />} label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.DISCARD")} />
               </RadioGroup>
             </StyledFormControl>
-            <StyledFormControl component="div">
+            <StyledFormControl component="div" style={{marginTop: "-20px"}}>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <CustomDatePicker
                   label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
                   ampm={false}
                   value={startDate}
                   onChange={setStartDate}
-                  format="dd/MM/yyyy"
+                  format={formatDate}
                   required={true}
                 />
               </MuiPickersUtilsProvider>

@@ -28,7 +28,6 @@ class NavigatorMenu extends React.Component {
       return this.props.location.pathname.includes(item.url)
     })[0] || {}
     const listGirdRender = this.state.listGird.map(item => {
-      console.log(item.url === match, item.url, "asdasdasdasd")
       return <p
         key={item.name}
         style={{

@@ -300,10 +300,11 @@
         },
         "MODAL": {
           "COPY": {
+            "TITLE_COPY_TO": "Copy to",
             "TITLE": "Copy {{title}}",
             "LEFT": {
-              "TITLE": "Choose {{title}}",
-              "FIND": "Search {{title}}"
+              "TITLE": "Choose {{titleLeft}}",
+              "FIND": "Search {{titleLeft}}"
             },
             "RIGHT": {
               "TITLE": "Project details",
@@ -2163,5 +2164,7 @@
   "IDS_WP_PHASE": "Phase",
   "IDS_WP_SELECT_PHASE": "Select Phase",
   "IDS_WP_PROGRESS": "Progress",
-  "IDS_WP_ALREADY_EXIST": "{{object}} already exists"
+  "IDS_WP_ALREADY_EXIST": "{{object}} already exists",
+  "ENTER_DATE": "Enter date",
+  "REQUIRED": "Required"
 }
