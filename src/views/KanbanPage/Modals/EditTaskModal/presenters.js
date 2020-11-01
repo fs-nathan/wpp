@@ -4,57 +4,8 @@ import TitleSectionModal from 'components/TitleSectionModal';
 import { TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
-import { CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener, KANBAN } from 'constants/events.js';
+import { CustomEventDispose, CustomEventListener, KANBAN } from 'constants/events.js';
 import './style.scss';
-
-const Title = ({ className = '', ...props }) =>
-  <div 
-    className={`view_KanbanPage_Modal_EditTask___title ${className}`}
-    {...props}
-  />
-
-const SubContainer = ({ className = '', ...props }) =>
-  <div 
-    className={`view_KanbanPage_Modal_EditTask___sub-container ${className}`}
-    {...props}
-  />
-
-const SubTitle = ({ className = '', ...props }) =>
-  <div 
-    className={`view_KanbanPage_Modal_EditTask___sub-title ${className}`}
-    {...props}
-  />
-
-const UserList = ({ className = '', ...props }) =>
-  <div 
-    className={`view_KanbanPage_Modal_EditTask___user-list ${className}`}
-    {...props}
-  />
-
-const User = ({ className = '', ...props }) =>
-  <div 
-    className={`view_KanbanPage_Modal_EditTask___user ${className}`}
-    {...props}
-  />
-
-const assignOptions = [{
-  label: 'Giao việc thủ công theo từng công việc (mặc định)',
-  value: 0,
-}, {
-  label: 'Tự động giao việc cho thành viên sau',
-  value: 1,
-}, {
-  label: 'Giữ nguyên người nhận việc giai đoạn trước',
-  value: 2,
-}];
-
-const changeOptions = [{
-  label: 'Không bắt buộc',
-  value: 0,
-}, {
-  label: 'Phải hoàn thành toàn bộ công việc',
-  value: 1,
-}];
 
 function EditTask({
   open, setOpen,
@@ -107,6 +58,7 @@ function EditTask({
   return (
     <React.Fragment>
       <CustomModal
+        class={"view_KanbanPage_Modal_EditTask___title"}
         title={t('LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC')}
         open={open}
         setOpen={setOpen}

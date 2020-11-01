@@ -25,7 +25,7 @@ function FilterSlider({
       const newMemberFilter = members
         .map(member => get(member, 'id', '__dummy__'))
         .filter(member => member !== '__dummy__');
-      doSetMemberFitler(newMemberFilter);
+      doSetMemberFitler(value ? newMemberFilter : []);
     } else {
       const newMemberFilter = Array.from(memberFilter);
       if (includes(newMemberFilter, value)) {

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
+import { Container as DragContainer, Draggable } from "react-smooth-dnd";
 import { CircularProgress, Menu, MenuItem } from '@material-ui/core';
 import { get, includes, isNil } from 'lodash';
 import KanbanItem from '../KanbanItem';
@@ -61,7 +61,7 @@ const ProgressBar = styled.abbr`
     content: "";
     height: 5px;
     width: ${props => props.percent}%;
-    background-color: ${props => props.isExpired ? taskColors[2] : taskColors[3]};
+    background-color: ${props => props.isExpired ? taskColors[3] : taskColors[2]};
   }
 `;
 
@@ -95,11 +95,11 @@ const ListScroll = ({ className = '', ...props }) =>
     {...props}
   />
 
-export function ColumnHeader({ groupTask, index, dragProvided, iconButtons = null }) {
+export function ColumnHeader({ groupTask, index, iconButtons = null }) {
   return (
     <Title>
       <Indicator>
-        <div {...dragProvided.dragHandleProps}>
+        <div data-custom-drag-handle="column-handle">
           <Icon
             path={mdiDragVertical}
             size={1}
@@ -156,17 +156,17 @@ export function ColumnHeader({ groupTask, index, dragProvided, iconButtons = nul
             }}>&#11044;</span>
             <span>{`${get(groupTask, 'task_doing', 0)}`}</span>
           </Code>
-          <Code title='Công việc quá hạn'>
+          <Code title='Công việc hoàn thành'>
             <span style={{
               color: taskColors[2],
             }}>&#11044;</span>
-            <span>{`${get(groupTask, 'task_expired', 0)}`}</span>
+            <span>{`${get(groupTask, 'task_complete', 0)}`}</span>
           </Code>
-          <Code title='Công việc hoàn thành'>
+          <Code title='Công việc quá hạn'>
             <span style={{
               color: taskColors[3],
             }}>&#11044;</span>
-            <span>{`${get(groupTask, 'task_complete', 0)}`}</span>
+            <span>{`${get(groupTask, 'task_expired', 0)}`}</span>
           </Code>
           <Code title='Công việc dừng'>
             <span style={{
@@ -189,11 +189,18 @@ export function ColumnHeader({ groupTask, index, dragProvided, iconButtons = nul
 }
 
 function KanbanColumn({ 
-  groupTask, index, handleOpenModal, placeholderProps,
+  groupTask, index, handleOpenModal,
   status, priority, memberFilter,
-  projectId,
+  projectId, handleItemDrop,
 }) { 
 
+  const tasks = get(groupTask, 'tasks', [])
+    .filter(task => includes(status, get(task, 'status_code', -1)))
+    .filter(task => includes(priority, get(task, 'priority_code', -1)))
+    .filter(task => get(task, 'members', [])
+      .map(member => get(member, 'id', ''))
+      .reduce((result, member) => result || includes(memberFilter, member), false)
+    );
   const [moreAnchor, setMoreAnchor] = React.useState(null);
 
   function handleMoreOpen(evt) {
@@ -213,77 +220,53 @@ function KanbanColumn({
 
   return (
     <>
-      <Draggable 
-        draggableId={get(groupTask, 'id', '')} 
-        key={get(groupTask, 'id', '')}
-        index={index}
-      >
-        {(dragProvided, dragSnapshot) => (
-          <Container
-            innerRef={dragProvided.innerRef}
-            isDragging={dragSnapshot.isDragging}
-            {...dragProvided.draggableProps}
-          >
-            <ColumnHeader 
-              groupTask={groupTask}
-              index={index}
-              dragProvided={dragProvided}
-              iconButtons={{
-                moreClick: handleMoreOpen,
-                plusClick: handleMoreClick(() => handleOpenModal('CREATE_TASK', {
-                  projectId,
-                })),
+      <Container>
+        <ColumnHeader 
+          groupTask={groupTask}
+          index={index}
+          iconButtons={{
+            moreClick: handleMoreOpen,
+            plusClick: handleMoreClick(() => handleOpenModal('CREATE_TASK', {
+              projectId,
+              curGroupTask: groupTask,
+            })),
+          }}
+        />
+        <ListScroll
+          autoHide
+          autoHideTimeout={500}
+        >
+          <ItemList>
+            <DragContainer
+              onDrop={dropResult => handleItemDrop(get(groupTask, 'id'), dropResult.removedIndex, dropResult.addedIndex, dropResult.payload)}
+              getChildPayload={index => get(tasks, `[${index}]`, {})}
+              groupName="col"
+              dragClass="view_KanbanItem___container-drag"
+              dropClass="view_KanbanItem___container-drop"
+              dragHandleSelector='[data-custom-drag-handle="item-handle"]'
+              dropPlaceholder={{
+                animationDuration: 150,
+                showOnTop: true,
+                className: 'view_KanbanItem___container-preview'
               }}
-            />
-            <ListScroll
-              autoHide
-              autoHideTimeout={500}
             >
-              <Droppable
-                droppableId={`d-${get(groupTask, 'id', '')}`}
-                type='ITEM'
-              >
-                {(dropProvided, dropSnapshot) => (
-                  <ItemList
-                    isDraggingOver={dropSnapshot.isDraggingOver}
-                    {...dropProvided.droppableProps}
-                    innerRef={dropProvided.innerRef}
+              {tasks.map((task, index) => (
+                  <Draggable
+                    key={get(task, 'id')}
                   >
-                    {get(groupTask, 'tasks', [])
-                      .filter(task => includes(status, get(task, 'status_code', -1)))
-                      .filter(task => includes(priority, get(task, 'priority_code', -1)))
-                      .filter(task => get(task, 'members', [])
-                        .map(member => get(member, 'id', ''))
-                        .reduce((result, member) => result || includes(memberFilter, member), false)
-                      )
-                      .map((task, index) => (
-                        <KanbanItem 
-                          task={task}
-                          index={index}
-                          key={index}
-                          projectId={projectId}
-                          handleOpenModal={handleOpenModal}
-                        />
-                      ))}
-                    {dropProvided.placeholder}
-                    {get(placeholderProps, 'type', '') === 'ITEM' && dropSnapshot.isDraggingOver && (
-                      <div
-                        className="view_KanbanBoard___dragdrop-placeholder"
-                        style={{
-                          top: placeholderProps.clientY,
-                          left: placeholderProps.clientX,
-                          height: placeholderProps.clientHeight,
-                          width: placeholderProps.clientWidth,
-                        }}
-                      />
-                    )}
-                  </ItemList>
-                )}
-              </Droppable>
-            </ListScroll>
-          </Container>
-        )}
-      </Draggable>
+                    <KanbanItem 
+                      task={task}
+                      index={index}
+                      key={index}
+                      projectId={projectId}
+                      handleOpenModal={handleOpenModal}
+                    />
+                  </Draggable>
+                ))}
+            </DragContainer>
+          </ItemList>
+        </ListScroll>
+      </Container>
       <Menu
         id={`${get(groupTask, 'id', '')}-menu`}
         anchorEl={moreAnchor}

@@ -62,6 +62,7 @@ const DrawerComponent = props => {
             ? "anchor-drawer-right"
             : "anchor-drawer-top"
         }`}
+      transitionDuration={0}
     >
       {generateContent(typeDrawer, optionsDrawer)}
     </Drawer>

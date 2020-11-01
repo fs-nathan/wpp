@@ -137,16 +137,6 @@ function KanbanPage({
               </div>
               <span>{"Lọc"}</span>
             </StyledButton>
-            <StyledButton onClick={() => null}>
-              <div>
-                <Icon
-                  path={mdiDownload}
-                  size={1}
-                  color={"rgba(0, 0, 0, 0.54)"}
-                />
-              </div>
-              <span>{"Tải xuống"}</span>
-            </StyledButton>
             <StyledButton
               aria-controls="simple-menu"
               aria-haspopup="true"

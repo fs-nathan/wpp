@@ -1,13 +1,5 @@
-.view_KanbanPage_Modal_EditTask___title {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.view_KanbanPage_Modal_EditTask___sub-container {
-  margin: 10px 0;
-}
-
-.view_KanbanPage_Modal_EditTask___sub-title {
-  color: #8b8b8b;
+.view_KanbanPage_Modal_EditTask___modal {
+  &>div:nth-child(3)>div>div:nth-child(2) {
+    height: 50vh;
+  }
 }

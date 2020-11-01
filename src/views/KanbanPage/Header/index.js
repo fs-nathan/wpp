@@ -8,7 +8,9 @@ import { detailProject as kanbanDetailProject } from 'actions/kanban/detailProje
 import { detailProject } from 'actions/project/detailProject';
 import { showProject } from 'actions/project/showProject';
 import { hideProject } from 'actions/project/hideProject';
+import { getProjectListBasic } from "actions/taskDetail/taskDetailActions";
 import { projectSelector, visibleSelector, showHidePendingsSelector } from './selectors';
+import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT } from 'constants/events.js';
 import { get } from 'lodash';
 
 function KanbanPage({
@@ -24,6 +26,7 @@ function KanbanPage({
   handleOpenModal,
   doShowProject, doHideProject,
   showHidePendings,
+  doGetProjectListBasic,
 }) {
 
   const [search, setSearch] = React.useState('');
@@ -32,6 +35,17 @@ function KanbanPage({
     doKanbanDetailProject({ projectId });
     doMemberProject({ projectId });
     doDetailProject({ projectId });
+  }, [projectId]);
+
+  React.useLayoutEffect(() => {
+    doGetProjectListBasic(projectId);
+    const handleGetProjectListBasic = () => {
+      doGetProjectListBasic(projectId);
+    };
+    CustomEventListener(UPDATE_PROJECT.SUCCESS, handleGetProjectListBasic);
+    return () => {
+      CustomEventDispose(UPDATE_PROJECT.SUCCESS, handleGetProjectListBasic);
+    }
   }, [projectId]);
 
   React.useEffect(() => {
@@ -78,6 +92,7 @@ const mapDispatchToProps = dispatch => {
     doSetVisibleHeader: visible => dispatch(setVisibleHeader(visible)),
     doSetMemberFitler: memberFilter => dispatch(setMemberFilter(memberFilter)),
     doMemberProject: (option, quite) => dispatch(memberProject(option, quite)),
+    doGetProjectListBasic: (projectId) => dispatch(getProjectListBasic(projectId)),
   }
 }
 

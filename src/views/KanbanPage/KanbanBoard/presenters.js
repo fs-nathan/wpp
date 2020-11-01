@@ -1,6 +1,6 @@
 import React from "react";
 import Scrollbars from 'components/Scrollbars';
-import { DragDropContext, Droppable } from "react-beautiful-dnd";
+import { Container as DragContainer, Draggable } from "react-smooth-dnd";
 import KanbanColumn, { ColumnHeader, Container as ColumnContainer } from './KanbanColumn';
 import LoadingOverlay from "components/LoadingOverlay";
 import { get } from 'lodash';
@@ -19,68 +19,59 @@ const NewGroupTaskDiv = ({ className = '', ...props }) =>
     {...props} 
   />;
 
-function KanbanBoard({
-  tasks,
-  loading,
-  handleSortTasks,
-  handleDragStart, handleDragUpdate,
-  handleOpenModal,
-  placeholderProps,
-  projectId,
-}) {
+class KanbanBoard extends React.Component {
 
-  return (
-    <LoadingOverlay
-      active={loading}
-      spinner
-      fadeSpeed={0}
-      style={{
-        height: "100%",
-        zIndex: "999",
-      }}
-    >
-      <Scrollbars
-        autoHide
-        autoHideTimeout={500}
+  constructor(props) {
+    super(props);
+    this.state = {
+      startX: null,
+      startScrollX: null
+    };
+  }
+
+  render() {
+    const {
+      tasks,
+      loading,
+      handleColumnDrop,
+      handleItemDrop,
+      handleOpenModal,
+      placeholderProps,
+      projectId,
+    } = this.props;
+
+    return (
+      <LoadingOverlay
+        active={loading}
+        spinner
+        fadeSpeed={0}
+        style={{
+          height: "100%",
+          zIndex: "999",
+        }}
       >
-        <DragDropContext 
-          onDragStart={handleDragStart}
-          onDragUpdate={handleDragUpdate}
-          onDragEnd={handleSortTasks}
+        <Scrollbars
+          autoHide
+          autoHideTimeout={500}
         >
-          <Droppable
-            droppableId='kanban-board'
-            type='COLUMN'
-            direction="horizontal"
-            renderClone={(provided, snapshot, rubric) => (
-              <ColumnContainer
-                {...provided.draggableProps}
-                innerRef={provided.innerRef}
-                isDragging={snapshot.isDragging}
-                className={'view_KanbanBoard___column-container-clone'}
-                style={{
-                  ...provided.draggableProps.style,
-                  transform: provided.draggableProps.style.transform
-                    ? `${provided.draggableProps.style.transform} rotate(15deg)`
-                    : null,
-                }}
-              >
-                <ColumnHeader 
-                  groupTask={tasks[rubric.source.index]}
-                  index={rubric.source.index}
-                  dragProvided={provided}
-                />
-              </ColumnContainer>
-            )}
-          >
-            {(dropProvided, dropSnapshot) => (
-              <Container 
-                innerRef={dropProvided.innerRef} 
-                isDraggingOver={dropSnapshot.isDraggingOver}
-                {...dropProvided.droppableProps}
-                data-custom-label="kanban-board"
-              >
-                {tasks.map((groupTask, index) => (
+          <Container>
+            <DragContainer 
+              onDrop={dropResult => handleColumnDrop(dropResult.removedIndex, dropResult.addedIndex, dropResult.payload)}
+              getChildPayload={index => get(tasks, `[${index}]`, {})}
+              orientation='horizontal'
+              dragClass="view_KanbanColumn___container-drag"
+              dropClass="view_KanbanColumn___container-drop"
+              dragHandleSelector='[data-custom-drag-handle="column-handle"]'
+              dropPlaceholder={{
+                animationDuration: 150,
+                showOnTop: true,
+                className: 'view_KanbanColumn___container-preview'
+              }}
+            >
+              {tasks.map((groupTask, index) => (
+                <Draggable
+                  key={get(groupTask, 'id')}
+                >
                   <KanbanColumn 
                     groupTask={groupTask}
                     key={index}
@@ -88,32 +79,20 @@ function KanbanBoard({
                     handleOpenModal={handleOpenModal}
                     placeholderProps={placeholderProps}
                     projectId={projectId}
-                  />)
-                )}
-                {dropProvided.placeholder}
-                {get(placeholderProps, 'type', '') === 'COLUMN' && dropSnapshot.isDraggingOver && (
-                  <div
-                    className="view_KanbanBoard___dragdrop-placeholder"
-                    style={{
-                      top: placeholderProps.clientY,
-                      left: placeholderProps.clientX,
-                      height: placeholderProps.clientHeight,
-                      width: placeholderProps.clientWidth,
-                    }}
+                    handleItemDrop={handleItemDrop}
                   />
-                )}
+                </Draggable>))}
                 <NewGroupTaskDiv
                   onClick={() => handleOpenModal('CREATE_GROUPTASK')}
                 >
                   {'+ Thêm giai đoạn'}
                 </NewGroupTaskDiv>
-              </Container>
-            )}
-          </Droppable>
-        </DragDropContext>
-      </Scrollbars>
-    </LoadingOverlay>
-  );
+            </DragContainer>
+          </Container>
+        </Scrollbars>
+      </LoadingOverlay>
+    );
+  }
 }
 
 export default KanbanBoard;

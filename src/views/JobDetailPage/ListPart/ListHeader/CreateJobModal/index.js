@@ -69,7 +69,7 @@ function CreateJobModal(props) {
     { value: 1, label: t('LABEL_CHAT_TASK_CHI_NHAP_NGAY') },
     { value: 0, label: t('LABEL_CHAT_TASK_KHONG_YEU_CAU') }
   ], [t]);
-
+  const curGroupTask = get(props, 'curGroupTask', null);
   const assignList = useMemo(() => [
     { id: 0, value: t('LABEL_CHAT_TASK_DUOC_GIAO') },
     { id: 1, value: t('LABEL_CHAT_TASK_TU_DE_XUAT') },
@@ -172,6 +172,7 @@ function CreateJobModal(props) {
         break;
     }
   }, [workType]);
+
   React.useEffect(() => {
     if (listGroupTaskData) {
       // Map task to input
@@ -187,6 +188,11 @@ function CreateJobModal(props) {
       );
       if (item) {
         handleChangeData('group_task', item)
+      } else if (!isNil(curGroupTask)) {
+        handleChangeData('group_task', {
+          label: get(curGroupTask, 'name'),
+          value: get(curGroupTask, 'id'),
+        })
       } else {
         handleChangeData('group_task', groupId)
       }

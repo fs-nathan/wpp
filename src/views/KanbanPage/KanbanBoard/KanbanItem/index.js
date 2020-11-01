@@ -1,5 +1,4 @@
 import React from 'react';
-import { Draggable } from 'react-beautiful-dnd';
 import AvatarCircleList from 'components/AvatarCircleList';
 import CustomAvatar from 'components/CustomAvatar';
 import Icon from '@mdi/react';
@@ -7,12 +6,15 @@ import { IconButton, Menu, MenuItem } from '@material-ui/core'
 import { mdiDragVertical, mdiDotsVertical } from '@mdi/js';
 import { taskColors } from 'constants/colors';
 import { get, isNil } from 'lodash';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { deleteTask } from 'actions/taskDetail/taskDetailActions';
 import { connect } from 'react-redux';
 import styled from 'styled-components';
 import CustomTextbox from 'components/CustomTextbox';
+import { getFileType } from 'helpers/jobDetail/stringHelper';
+import { openDocumentDetail } from 'actions/system/system';
+import { showImagesList } from 'actions/chat/chat';
 import './style.scss'
 
 const Container = ({ className = '', isDragging, statusCode, innerRef, ...props }) =>
@@ -54,10 +56,6 @@ const ImageGroupBlock =  ({ className = '', ...props }) =>
 
 const ImageBlock =  ({ className = '', ...props }) =>
   <div className={`view_KanbanItem___image-block ${className}`} {...props} />;
-
-const ImageMore = styled.div`
-  background-image: ${props => props.src};
-`;
 
 const FileBlockMore = styled(FileBlock)`
   position: relative;
@@ -107,15 +105,21 @@ export const ChatContent = ({ className = '', ...props }) =>
     {...props}
   />;
 
-export function FilesContent({ files }) {
+function _FilesContent({ files, doOpenDocumentDetail }) {
   const hasMore = files.length > 4;
+  function handleClick(file) {
+    doOpenDocumentDetail({ ...file, type: getFileType(file.name) });
+  }
   return (
     <FileGroupBlock>
       {hasMore 
       ? (
         <>
           {files.slice(0, 3).map(file =>
-            <FileBlock key={get(file, 'id')}>
+            <FileBlock 
+              onClick={evt => handleClick(file)}
+              key={get(file, 'id')}
+            >
               <img src={get(file, 'file_icon')}/>
               <span>{get(file, 'name')}</span>
             </FileBlock>
@@ -129,7 +133,7 @@ export function FilesContent({ files }) {
       : (
         <>
           {files.map(file =>
-            <FileBlock key={get(file, 'id')}>
+            <FileBlock onClick={evt => handleClick(file)} key={get(file, 'id')}>
               <img src={get(file, 'file_icon')}/>
               <span>{get(file, 'name')}</span>
             </FileBlock>
@@ -139,6 +143,14 @@ export function FilesContent({ files }) {
     </FileGroupBlock>
   );
 }
+
+const mapDispatchToPropsFilesContent = dispatch => {
+  return {
+    doOpenDocumentDetail: options => dispatch(openDocumentDetail(options)),
+  }
+}
+
+export const FilesContent = connect(null, mapDispatchToPropsFilesContent)(_FilesContent);
 
 export function loadImage(url) {
   return new  Promise(resolve => {
@@ -150,14 +162,13 @@ export function loadImage(url) {
   });
 }
 
-export function ImagesContent({ images }) {
+export function _ImagesContent({ images, user, doShowImagesList }) {
   const maxWidth = 370;
   const [maxImg, setMaxImg] = React.useState(0);
   React.useEffect(() => {
     const imgLoaders = images.map(image => loadImage(get(image, 'url')));
     Promise.all(imgLoaders)
       .then(images => {
-        console.log(images);
         let total = 0;
         let count = 0;
         images.forEach(image => {
@@ -173,27 +184,34 @@ export function ImagesContent({ images }) {
       })
       .catch(e => setMaxImg(0));
   }, [images]);
-
+  const handleClickOpen = (index) => {
+    doShowImagesList({ 
+      isOpen: true, 
+      images, 
+      index, 
+      user,
+    });
+  };
   const hasMore = images.length > maxImg;
   return maxImg > 0 
     ? <ImageGroupBlock>
       {hasMore 
       ? (
         <>
-          {images.slice(0, maxImg - 1).map(image =>
-            <ImageBlock key={get(image, 'id')}>
+          {images.slice(0, maxImg - 1).map((image, idx) =>
+            <ImageBlock onClick={evt => handleClickOpen(idx)} key={get(image, 'id')}>
               <img src={get(image, 'url')}/>
             </ImageBlock>
           )}
-          <ImageBlockMore more={`+${images.length - maxImg + 1}`}>
+          <ImageBlockMore onClick={evt => handleClickOpen(maxImg - 1)} more={`+${images.length - maxImg + 1}`}>
             <img src={get(images[maxImg - 1], 'url')}/>
           </ImageBlockMore>
         </>
       )
       : (
         <>
-          {images.map(image =>
-              <ImageBlock key={get(image, 'id')}>
+          {images.map((image, idx) =>
+              <ImageBlock onClick={evt => handleClickOpen(idx)} key={get(image, 'id')}>
                 <img src={get(image, 'url')}/>
               </ImageBlock>
           )}
@@ -203,9 +221,17 @@ export function ImagesContent({ images }) {
     : null;
 }
 
-function Content({ chat }) {
+const mapDispatchToPropsImagesContent = dispatch => {
+  return {
+    doShowImagesList: ({ isOpen, images, index, user }) => dispatch(showImagesList(isOpen, images, index, user)),
+  }
+}
+
+export const ImagesContent = connect(null, mapDispatchToPropsImagesContent)(_ImagesContent);
+
+function Content({ chat, user }) {
   const imagesContent = get(chat, 'images', []).length > 0 
-    ? <ImagesContent images={get(chat, 'images', [])} />
+    ? <ImagesContent user={user} images={get(chat, 'images', [])} />
     : null;
   const filesContent = get(chat, 'files', []).length > 0 
     ? <FilesContent files={get(chat, 'files', [])} />
@@ -215,7 +241,7 @@ function Content({ chat }) {
     : null;
   const chatContent = !isNil(get(chat, 'content', null))
     ? <ChatContent
-      value={get(chat, 'content')}
+      value={get(chat, 'content', '')}
       isReadOnly={true}
     />
     : null;
@@ -226,7 +252,7 @@ function Content({ chat }) {
   return null;
 }
 
-function KanbanItem({ task, index, handleOpenModal, projectId, doDeleteTask }) {
+function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
 
   const statusCode = get(task, 'status_code', 0);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
@@ -250,76 +276,72 @@ function KanbanItem({ task, index, handleOpenModal, projectId, doDeleteTask }) {
 
   return (
     <>
-      <Draggable draggableId={get(task, 'id', '')} index={index} key={get(task, 'id', '')} >
-        {(dragProvided, dragSnapshot) => (
-          <Container
-            innerRef={dragProvided.innerRef}
-            isDragging={dragSnapshot.isDragging}
-            {...dragProvided.draggableProps}
-            statusCode={statusCode}
-            style={{
-              ...dragProvided.draggableProps.style,
-              transform: dragProvided.draggableProps.style.transform
-                ? dragSnapshot.isDragging 
-                  ? `${dragProvided.draggableProps.style.transform} rotate(15deg)`
-                  : dragProvided.draggableProps.style.transform
-                : null,
-            }}
+      <Container
+        statusCode={statusCode}
+      >
+        <Name>
+          <div data-custom-drag-handle="item-handle">
+            <Icon
+              path={mdiDragVertical}
+              size={1}
+              color={statusCode < 2 ? "#8b8b8b" : "#fff"}
+            />
+          </div>
+          <Link to={get(task, 'url_redirect')}><span>{get(task, 'name', '')}</span></Link>
+          <MoreIcon
+            size='small'
+            onClick={handleMoreOpen}
           >
-            <Name>
-              <div {...dragProvided.dragHandleProps}>
-                <Icon
-                  path={mdiDragVertical}
-                  size={1}
-                  color={statusCode < 2 ? "#8b8b8b" : "#fff"}
-                />
-              </div>
-              <span>{get(task, 'name', '')}</span>
-              <MoreIcon
-                size='small'
-                onClick={handleMoreOpen}
-              >
-                <Icon
-                  path={mdiDotsVertical}
-                  size={1}
-                  color={statusCode < 2 ? "#8b8b8b" : "#fff"}
-                />
-              </MoreIcon>
-            </Name>
-            <Body>
-              <User>
-                <CustomAvatar 
-                  src={get(task, 'chat.user_create_avatar', '')}
-                  alt="user's avatar"
-                  style={{
-                    height: 20,
-                    width: 20,
-                  }}
-                />
-                <span>{get(task, 'chat.user_create_name', '')}</span>
-              </User>
-              <Content chat={get(task, 'chat')} />
-            </Body>
-            <Footer>
-              <span>{`${get(task, 'duration.value', 0)} ${get(task, 'duration.unit', 'Ngày')}`}</span>
-              <MiddleSpan>
-                <span style={{
-                  backgroundColor: `${taskColors[get(task, 'status_code', 0)]}`,
-                  border: '1px solid #fff',
-                  borderRadius: '99px',
-                  height: '12px',
-                  width: '12px',
-                }}/>
-                <span>{`${get(task, 'status_name', '')} (${get(task, 'complete', 0)}%)`}</span>
-              </MiddleSpan>
-              <AvatarCircleList 
-                users={get(task, 'members', [])}
-                display={3}
+            <Icon
+              path={mdiDotsVertical}
+              size={1}
+              color={statusCode < 2 ? "#8b8b8b" : "#fff"}
+            />
+          </MoreIcon>
+        </Name>
+        <Body>
+          {get(task, 'chat.user_create_name', null) && 
+            <User>
+              <CustomAvatar 
+                src={get(task, 'chat.user_create_avatar', '')}
+                alt="user's avatar"
+                style={{
+                  height: 20,
+                  width: 20,
+                }}
               />
-            </Footer>
-          </Container>
-        )}
-      </Draggable>
+              <span>{get(task, 'chat.user_create_name')}</span>
+            </User>}
+          <Content 
+            user={{
+              user_create_name: get(task, 'chat.user_create_name', ''),
+              user_create_avatar: get(task, 'chat.user_create_avatar', '')
+            }}
+            chat={get(task, 'chat')} 
+          />
+        </Body>
+        <Footer>
+          <span>{
+            get(task, 'duration.value', 0) && get(task, 'duration.value', 0) !== 'null'
+            ? `${get(task, 'duration.value', 0)} ${get(task, 'duration.unit', 'Ngày')}`
+            : ''
+          }</span>
+          <MiddleSpan>
+            <span style={{
+              backgroundColor: `${taskColors[get(task, 'status_code', 0)]}`,
+              border: '1px solid #fff',
+              borderRadius: '99px',
+              height: '12px',
+              width: '12px',
+            }}/>
+            <span>{`${get(task, 'status_name', '')} (${get(task, 'complete', 0)}%)`}</span>
+          </MiddleSpan>
+          <AvatarCircleList 
+            users={get(task, 'members', [])}
+            display={3}
+          />
+        </Footer>
+      </Container>
       <Menu
         id={`${get(task, 'id', '')}-menu`}
         anchorEl={moreAnchor}

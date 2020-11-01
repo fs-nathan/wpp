@@ -1,9 +1,28 @@
-.view_KanbanColumn___container {
+@mixin view_KanbanColumn___container {
   width: 400px;
   height: 100%;
   border: 1px solid rgba(0, 0, 0, .1);
   background-color: #fff;
   margin-left: 5px;
+}
+.view_KanbanColumn___container {
+  &, &-drop {
+    @include view_KanbanColumn___container;
+  }
+  &-drag {
+    @include view_KanbanColumn___container;
+    transform: rotate(5deg);
+    margin-left: 0;
+    height: auto;
+    & > *:not(:first-child) {
+      display: none;
+    }
+  }
+}
+
+.view_KanbanColumn___container-preview {
+  background-color: rgba(150, 150, 200, 0.1);
+  border: 1px dashed #abc;
 }
 
 .view_KanbanColumn___list-scroll {
@@ -11,8 +30,11 @@
 }
 
 .view_KanbanColumn___item-list{
-  min-height: 70px;
-  padding-bottom: 5px;
+  height: 100%;
+  & > div {
+    height: 100%;
+    width: 100%;
+  }
 }
 
 .view_KanbanColumn___title {

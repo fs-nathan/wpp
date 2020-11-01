@@ -7,6 +7,14 @@
   align-items: flex-start;
   padding: 5px 5px 5px 0;
   background-color: #efefef;
+  & > div {
+    height: 100%;
+    width: 100%;
+  }
+  & .smooth-dnd-drop-preview-constant-class {
+    top: 0;
+    left: 0;
+  }
 }
 
 .view_KanbanBoard___new-grouptask {

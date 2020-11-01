@@ -163,7 +163,7 @@ function MemberSlider({
                 control={
                   <MemberCheckBox
                     checked={memberFilter.length === members.length}
-                    onChange={evt => setMemberFilter(null, true)}
+                    onChange={evt => setMemberFilter(memberFilter.length !== members.length, true)}
                     name={`all-checkbox`}
                   />
                 }

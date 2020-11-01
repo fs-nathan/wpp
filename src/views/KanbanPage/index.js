@@ -14,6 +14,7 @@ import CreateJobModal from 'views/JobDetailPage/ListPart/ListHeader/CreateJobMod
 import EditTaskModal from './Modals/EditTaskModal';
 import AlertModal from 'components/AlertModal';
 import CreateGroupTask from 'views/ProjectPage/Modals/CreateGroupTask';
+import ModalImage from "views/JobDetailPage/ModalImage";
 
 function KanbanPage({
   visible,
@@ -160,6 +161,7 @@ function KanbanPage({
         open={openCreateGroupTask}
         setOpen={setOpenCreateGroupTask}
       />
+      <ModalImage />
     </>
   );
 }
