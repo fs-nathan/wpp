@@ -14,7 +14,7 @@ const initialListOfWeekNow = {
       client_id:
         "923513358062-8s222ro5m2d9ruicuhvi98uq7h6gd7mr.apps.googleusercontent.com",
     },
-    google_map_key: "AIzaSyDeZ2O_NB6rLnIdYjzgk4hsvpuEZS_NR-E",
+    google_map_key: "AIzaSyC0iTTmOVJrNX4PXjD8C4ObSGOXCUwJchg",
     web_push_public_key:
       "BNB2Uqj_kswVbl1phH7XuR39mRereAvuZZRbRtt2J1S0t3ez9gRSACvMJ_DG716Xpwh1luGpUJdUdKhmiHHOpbE",
   },

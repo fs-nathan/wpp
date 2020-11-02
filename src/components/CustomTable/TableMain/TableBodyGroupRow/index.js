@@ -18,7 +18,6 @@ const getBodyStyle = isDraggingOver => ({
 });
 
 function TableBodyGroupRow({ group }) {
-
   const { options, columns } = React.useContext(CustomTableContext);
   const [open, setOpen] = React.useState(true);
 
@@ -48,9 +47,13 @@ function TableBodyGroupRow({ group }) {
                   ? <Icon path={mdiMenuDown} size={1} color='#44485e' />
                   : <Icon path={mdiMenuUp} size={1} color='#44485e' />}
               </CustomButton>
-              {typeof (get(options, 'grouped.action')) === 'function' && (
-                <IconButton size="small" onClick={() => options.grouped.action(group)}><AddIcon fontSize="inherit"/></IconButton>
-              )}
+              {
+                typeof (get(options, 'grouped.action')) === 'function' &&
+                get(options, 'grouped.canCreateTask') && 
+                (
+                  <IconButton size="small" onClick={() => options.grouped.action(group)}><AddIcon fontSize="inherit"/></IconButton>
+                )
+              }
             </StyledTableBodyCell>
           </StyledTableBodyRowGroup>
           {(open || snapshot.isDraggingOver) && group[get(options, 'grouped.item')].map((row, index) => (

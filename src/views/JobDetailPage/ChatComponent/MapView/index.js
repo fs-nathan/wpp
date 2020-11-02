@@ -137,7 +137,7 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
       </DialogTitleModalMap>
       <ContentDialog id="ContentDialog-ImageModal">
         <LoadScript
-          googleMapsApiKey="AIzaSyDeZ2O_NB6rLnIdYjzgk4hsvpuEZS_NR-E"
+          googleMapsApiKey="AIzaSyC0iTTmOVJrNX4PXjD8C4ObSGOXCUwJchg"
         >
           {lat && <GoogleMap
             mapContainerStyle={containerStyle}
