@@ -105,7 +105,7 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
   }
 
   const containerStyle = {
-    width: '80%',
+    width: '75%',
     height: '100%'
   };
 
@@ -161,11 +161,11 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
           </GoogleMap>
           }
         </LoadScript>
-        <ListItem className="MapView--list">
+        <ListItem className="MapView--list MapView-share-location-chat">
           <div className="MapView--listTitle">{t('LABEL_CHAT_TASK_DANH_SACH_VI_TRI')}</div>
           {Array.isArray(locationArr) && locationArr.map((location, idx) => {
             return (<div
-              className={clsx("styled-list-item-location")}
+              className={clsx("styled-list-item-location list-location-share-on-chat")}
               key={idx}>
               <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
               {location.locations.map((item, key) => {

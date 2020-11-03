@@ -93,3 +93,16 @@
     height: 40px;
   }
 }
+.list-location-share-on-chat {
+  height: calc(100vh - 63px - 59px - 8px);
+  overflow: auto;
+  .MapView--location {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    margin: 0px
+  }
+}
+.MapView-share-location-chat {
+  width: 25%
+}
