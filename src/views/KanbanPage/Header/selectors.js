@@ -45,3 +45,11 @@ export const showHidePendingsSelector = createSelector(
     }
   }
 )
+
+export const taskSearchSelector = createSelector(
+  [kanbanSetting],
+  (kanbanSetting) => {
+    const { setting: { taskSearchStr } } = kanbanSetting;
+    return taskSearchStr;
+  }
+)

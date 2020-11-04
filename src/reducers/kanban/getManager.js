@@ -1,4 +1,7 @@
 import { KANBAN_GET_MANAGER, KANBAN_GET_MANAGER_RESET, KANBAN_GET_MANAGER_SUCCESS, KANBAN_GET_MANAGER_FAIL } from 'constants/actions/kanban/getManager';
+import { KANBAN_ADD_MANAGERS_SUCCESS } from 'constants/actions/kanban/addManagers';
+import { KANBAN_REMOVE_MANAGERS_SUCCESS } from 'constants/actions/kanban/removeManagers';
+import { get } from 'lodash';
 
 export const initialState = {
   data: {
@@ -18,6 +21,8 @@ function reducer(state = initialState, action) {
         loading: action.quite ? false : true,
       };
     case KANBAN_GET_MANAGER_SUCCESS:
+    case KANBAN_ADD_MANAGERS_SUCCESS:
+    case KANBAN_REMOVE_MANAGERS_SUCCESS:
       return {
         ...state,
         data: action.data,

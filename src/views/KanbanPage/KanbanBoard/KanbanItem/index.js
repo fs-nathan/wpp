@@ -281,23 +281,31 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
       >
         <Name>
           <div data-custom-drag-handle="item-handle">
-            <Icon
-              path={mdiDragVertical}
-              size={1}
-              color={statusCode < 2 ? "#8b8b8b" : "#fff"}
-            />
+            <abbr title={t("IDS_WP_MOVE")}>
+              <Icon
+                path={mdiDragVertical}
+                size={1}
+                color={"#8b8b8b"}
+              />
+            </abbr>
           </div>
-          <Link to={get(task, 'url_redirect')}><span>{get(task, 'name', '')}</span></Link>
-          <MoreIcon
-            size='small'
-            onClick={handleMoreOpen}
-          >
-            <Icon
-              path={mdiDotsVertical}
-              size={1}
-              color={statusCode < 2 ? "#8b8b8b" : "#fff"}
-            />
-          </MoreIcon>
+          <abbr title={get(task, 'name', '')}>
+            <Link to={get(task, 'url_redirect')}>
+              <span>{get(task, 'name', '')}</span>
+            </Link>
+          </abbr>
+          <abbr title={t("IDS_WP_MORE")}>
+            <MoreIcon
+              size='small'
+              onClick={handleMoreOpen}
+            >
+              <Icon
+                path={mdiDotsVertical}
+                size={1}
+                color={statusCode < 2 ? "#8b8b8b" : "#fff"}
+              />
+            </MoreIcon>
+          </abbr>
         </Name>
         <Body>
           {get(task, 'chat.user_create_name', null) && 
@@ -323,7 +331,7 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
         <Footer>
           <span>{
             get(task, 'duration.value', 0) && get(task, 'duration.value', 0) !== 'null'
-            ? `${get(task, 'duration.value', 0)} ${get(task, 'duration.unit', 'Ngày')}`
+            ? `${get(task, 'duration.value', 0)} ${get(task, 'duration.unit', t("IDS_WP_DAY"))}`
             : ''
           }</span>
           <MiddleSpan>
@@ -355,15 +363,17 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
         <MenuItem
           onClick={handleMoreClick(() => handleOpenModal('EDIT_TASK', {
             taskId: get(task, 'id'),
+            data: task,
             projectId,
+            editMode: 0,
           }))}
         >
-          Chỉnh sửa
+          {t("IDS_WP_EDIT_TEXT")}
         </MenuItem>
         <MenuItem
           onClick={handleMoreClick(() => history.push(get(task, 'url_redirect')))}
         >
-          Chi tiết
+          {t("LABEL_CHAT_TASK_CHI_TIET")}
         </MenuItem>
         <MenuItem
           onClick={handleMoreClick(() => handleOpenModal('DELETE_TASK', {
@@ -374,7 +384,7 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
             }),
           }))}
         >
-          Xóa
+          {t("IDS_WP_DELETE")}
         </MenuItem>
       </Menu>
     </>

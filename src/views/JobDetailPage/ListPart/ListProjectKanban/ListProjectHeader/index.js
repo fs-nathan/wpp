@@ -62,7 +62,7 @@ function ListProjectHeader(props) {
           }}
           onClick={evt => setProjectFilter(-1)}
         >
-          {'Tất cả'}
+          {t("LABEL_CHAT_TASK_TAT_CA")}
         </Filter>
         {[0, 1, 2].map(value => (
           <Filter 
@@ -73,7 +73,7 @@ function ListProjectHeader(props) {
             }}
             onClick={evt => setProjectFilter(value)}
           >
-            {workTypes[value]}
+            {t(workTypes[value])}
           </Filter>
         ))}
       </FilterBox>

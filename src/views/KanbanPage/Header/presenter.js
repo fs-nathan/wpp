@@ -9,6 +9,7 @@ import { StyledButton as _StyledButton, StyledPopper, SearchBox } from 'componen
 import { DRAWER_TYPE } from 'constants/constants';
 import { workTypes } from 'constants/workTypes';
 import { get, isNil, find } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
@@ -42,6 +43,7 @@ function KanbanPage({
   showHidePendings,
 }) {
 
+  const { t } = useTranslation();
   const [searchAnchor, setSearchAnchor] = React.useState(null);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
 
@@ -86,10 +88,10 @@ function KanbanPage({
                 },
               })}
             >
-              <span>{`${isNil(get(project, 'work_type')) ? `` : `[${workTypes[get(project, 'work_type', 0)]}] `}${get(project, 'name', '')}`}</span>
+              <span>{`${isNil(get(project, 'work_type')) ? `` : `[${t(workTypes[get(project, 'work_type', 0)])}] `}${get(project, 'name', '')}`}</span>
               <Icon path={mdiMenuDown} size={1} />
             </NameBox>
-            <NavigatorMenu />
+            <NavigatorMenu className="view_KanbanHeader___navigation"/>
           </InfoBox>
           <StyledButtonGroup>
             <StyledButton onClick={handleSearchClick}>
@@ -100,7 +102,7 @@ function KanbanPage({
                   color={"rgba(0, 0, 0, 0.54)"}
                 />
               </div>
-              <span>{Boolean(searchAnchor) ? "Hủy" : "Tìm kiếm"}</span>
+              <span>{Boolean(searchAnchor) ? t("IDS_WP_CANCEL") : t("IDS_WP_SEARCH")}</span>
             </StyledButton>
             <StyledButton
               onClick={() => handleVisibleDrawerMessage({
@@ -119,7 +121,7 @@ function KanbanPage({
                   color={"rgba(0, 0, 0, 0.54)"}
                 />
               </div>
-              <span>{"Thành viên"}</span>
+              <span>{t("IDS_WP_MEMBER")}</span>
             </StyledButton>
             <StyledButton 
               onClick={() => handleVisibleDrawerMessage({
@@ -135,7 +137,7 @@ function KanbanPage({
                   color={"rgba(0, 0, 0, 0.54)"}
                 />
               </div>
-              <span>{"Lọc"}</span>
+              <span>{t("IDS_WP_FILTER")}</span>
             </StyledButton>
             <StyledButton
               aria-controls="simple-menu"
@@ -149,7 +151,7 @@ function KanbanPage({
                   color={"rgba(0, 0, 0, 0.54)"}
                 />
               </div>
-              <span>{"Thêm"}</span>
+              <span>{t("IDS_WP_MORE")}</span>
             </StyledButton>
             <StyledButton
               onClick={() => null}
@@ -175,7 +177,7 @@ function KanbanPage({
             <Grow {...TransitionProps} timeout={100}>
               <SearchBox>
                 <SearchInput
-                  placeholder={"Nhập nội dung cần tìm"}
+                  placeholder={t("IDS_WP_INPUT_SEARCH")}
                   value={search}
                   onChange={evt => handleSearchChange(evt.target.value)}
                 />
@@ -199,7 +201,7 @@ function KanbanPage({
             }))}
             disabled={false}
           >
-            Chỉnh sửa
+            {t("IDS_WP_EDIT_TEXT")}
           </MenuItem>
           <MenuItem
             onClick={handleMoreClick(() => handleOpenModal('SETTING_PROJECT', {
@@ -207,13 +209,13 @@ function KanbanPage({
             }))}
             disabled={false}
           >
-            Cài đặt
+            {t("IDS_WP_SETTING")}
           </MenuItem>
           <MenuItem
             onClick={handleMoreClick(() => handleOpenModal('CALENDAR', {}))}
             disabled={false}
           >
-            Lịch làm việc
+            {t("IDS_WP_PROJECT_CALENDAR")}
           </MenuItem>
           <MenuItem
             onClick={handleMoreClick(() => handleShowOrHideProject(project))}
@@ -228,7 +230,9 @@ function KanbanPage({
                 color="white"
               />
             )}
-            {get(project, 'visibility') ? 'Ẩn quy trình' : 'Bỏ ẩn quy trình'}
+            {get(project, 'visibility') 
+              ? `${t("IDS_WP_HIDE")} ${t(workTypes[get(project, 'work_type', 0)])}` 
+              : `${t("IDS_WP_UNHIDE")} ${t(workTypes[get(project, 'work_type', 0)])}`}
           </MenuItem>
         </Menu>
       </>

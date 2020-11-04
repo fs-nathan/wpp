@@ -15,10 +15,11 @@ function AddOfferMemberModal({
   setOpen,
   value = [],
   onChange,
-  members,
-  disableIndexes,
+  members = [],
+  disableIndexes = [],
   isUpdate,
 }) {
+
   const { t } = useTranslation();
   const appColor = useSelector(currentColorSelector)
   const [selected, setSelected] = useState(value);

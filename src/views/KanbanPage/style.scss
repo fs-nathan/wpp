@@ -2,7 +2,6 @@
   height: 100%;
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: 55px 1fr;
   & > * {
     &:first-child {
       border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -13,7 +12,7 @@
 .view_KanbanPage___container {
   & {
     @include view_KanbanPage___container;
-    grid-template-rows: 55px 1fr;
+    grid-template-rows: 60px 1fr;
   }
   &-closed {
     @include view_KanbanPage___container;

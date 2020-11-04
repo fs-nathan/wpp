@@ -25,3 +25,11 @@ export const memberSelector = createSelector(
     return memberFilter;
   }
 );
+
+export const taskSearchSelector = createSelector(
+  [kanbanSetting],
+  (kanbanSetting) => {
+    const { setting: { taskSearchStr } } = kanbanSetting;
+    return taskSearchStr;
+  }
+)

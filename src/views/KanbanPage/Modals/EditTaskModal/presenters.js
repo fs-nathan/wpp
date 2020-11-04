@@ -1,11 +1,13 @@
 import React from 'react';
-import CustomModal from 'components/CustomModal';
+import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import TitleSectionModal from 'components/TitleSectionModal';
 import { TextField } from '@material-ui/core';
 import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
 import { CustomEventDispose, CustomEventListener, KANBAN } from 'constants/events.js';
+import clsx from 'clsx';
 import './style.scss';
+import 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/styles.scss';
 
 function EditTask({
   open, setOpen,
@@ -57,8 +59,8 @@ function EditTask({
 
   return (
     <React.Fragment>
-      <CustomModal
-        class={"view_KanbanPage_Modal_EditTask___title"}
+      <JobDetailModalWrap
+        className={clsx("createJob", 'createJob__edit0', 'modal_height_50vh')}
         title={t('LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC')}
         open={open}
         setOpen={setOpen}
@@ -98,7 +100,7 @@ function EditTask({
           onChange={e => setDescription(e.target.value)}
           placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
         />
-      </CustomModal>
+      </JobDetailModalWrap>
     </React.Fragment>
   )
 }

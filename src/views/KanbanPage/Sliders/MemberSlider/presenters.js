@@ -3,6 +3,7 @@ import SearchInput from 'components/SearchInput';
 import { IconButton, Checkbox, FormGroup, FormControlLabel } from '@material-ui/core';
 import Icon from '@mdi/react';
 import { mdiAccountCircle, mdiClose, mdiAccountCog } from '@mdi/js';
+import { useTranslation } from 'react-i18next';
 import { includes, get, join } from 'lodash';
 import './style.scss';
 import CustomAvatar from 'components/CustomAvatar';
@@ -118,6 +119,8 @@ function MemberSlider({
   handleCloseClick, handleOpenModal,
 }) {
 
+  const { t } = useTranslation();
+
   return (
     <Container>
       <Header>
@@ -126,34 +129,38 @@ function MemberSlider({
           size={1}
           color={"rgba(0, 0, 0, 0.54)"}
         />
-        <Title>Thành viên</Title>
-        <IconButton
-          onClick={evt => handleOpenModal("MEMBER_SETTING")}
-        >
-          <Icon
-            path={mdiAccountCog}
-            size={1}
-            color={"rgba(0, 0, 0, 0.54)"}
-          />
-        </IconButton>
-        <IconButton
-          onClick={evt => handleCloseClick()}
-        >
-          <Icon
-            path={mdiClose}
-            size={1}
-            color={"rgba(0, 0, 0, 0.54)"}
-          />
-        </IconButton>
+        <Title>{t("IDS_WP_MEMBER")}</Title>
+        <abbr title={t("DMH.VIEW.PP.LEFT.PM.MANAGE")}>
+          <IconButton
+            onClick={evt => handleOpenModal("MEMBER_SETTING")}
+          >
+            <Icon
+              path={mdiAccountCog}
+              size={1}
+              color={"rgba(0, 0, 0, 0.54)"}
+            />
+          </IconButton>
+        </abbr>
+        <abbr title={t("LABEL_CHAT_TASK_DONG")}>
+          <IconButton
+            onClick={evt => handleCloseClick()}
+          >
+            <Icon
+              path={mdiClose}
+              size={1}
+              color={"rgba(0, 0, 0, 0.54)"}
+            />
+          </IconButton>
+        </abbr>
       </Header>
       <Body>
         <MemberBox>
           <MemberSearch
             value={memberSearchStr}
-            placeholder={'Tìm kiếm thành viên'}
+            placeholder={t("LABEL_CHAT_TASK_TIM_KIEM_THANH_VIEN")}
             onChange={evt => setMemberSearchStr(evt.target.value)}
           />
-          <MemberText>{`Đã chọn ${memberFilter.length} thành viên`}</MemberText>
+          <MemberText>{t("LABEL_CHAT_TASK_DA_CHON_THANH_VIEN", { count: memberFilter.length })}</MemberText>
           <MemberScroll
             autoHide
             autoHideTimeout={500}
@@ -167,7 +174,7 @@ function MemberSlider({
                     name={`all-checkbox`}
                   />
                 }
-                label={'Chọn tất cả'}
+                label={t("LABEL_CHAT_TASK_CHON_TAT_CA")}
               />)}
               {members
                 .filter(member => includes(get(member, 'name', ''), memberSearchStr))

@@ -5,10 +5,13 @@ import { useHistory } from "react-router-dom";
 import { chooseTask } from "actions/taskDetail/taskDetailActions";
 import { actionVisibleDrawerMessage } from "actions/system/system";
 import { workTypes } from 'constants/workTypes';
+import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
 import "./styles.scss";
 
 const ProjectItem = (props) => {
+
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const projectId = useSelector(
@@ -31,7 +34,7 @@ const ProjectItem = (props) => {
       onClick={onClickProject}
     >
       <span>{props.title}</span>
-      <span>{`[${workTypes[get(props.project, 'work_type', 0)]}]`}</span>
+      <span>{`[${t(workTypes[get(props.project, 'work_type', 0)])}]`}</span>
     </div>
   );
 };

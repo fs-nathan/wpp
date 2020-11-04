@@ -4,6 +4,7 @@ import {
   KANBAN_SETTING_SET_PRIORITY_FILTER,
   KANBAN_SETTING_SET_MEMBER_FILTER,
   KANBAN_SETTING_SET_MEMBER_SEARCH,
+  KANBAN_SETTING_SET_TASK_SEARCH,
 } from 'constants/actions/kanban/setting';
 
 export const setVisibleHeader = visible => ({
@@ -36,6 +37,13 @@ export const setMemberFilter = memberFilter => ({
 
 export const searchMember = searchStr => ({
   type: KANBAN_SETTING_SET_MEMBER_SEARCH,
+  options: {
+    searchStr,
+  },
+});
+
+export const searchTask = searchStr => ({
+  type: KANBAN_SETTING_SET_TASK_SEARCH,
   options: {
     searchStr,
   },

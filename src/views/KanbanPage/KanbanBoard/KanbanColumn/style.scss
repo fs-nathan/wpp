@@ -12,11 +12,6 @@
   &-drag {
     @include view_KanbanColumn___container;
     transform: rotate(5deg);
-    margin-left: 0;
-    height: auto;
-    & > *:not(:first-child) {
-      display: none;
-    }
   }
 }
 
@@ -27,6 +22,9 @@
 
 .view_KanbanColumn___list-scroll {
   height: calc(100% - 103px) !important;
+  & > div:nth-child(3) {
+    right: 0 !important;
+  }
 }
 
 .view_KanbanColumn___item-list{
@@ -68,6 +66,7 @@
     color: #8b8b8b;
     &:nth-child(1) {
       margin-left: 3px;
+      cursor: move;
     }
     &:nth-child(2) {
       text-transform: uppercase;

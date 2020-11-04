@@ -3,6 +3,7 @@ import { find, get } from 'lodash';
 
 const kanbanListTask = state => state.kanban.listTask;
 const listGroupTask = state => state.groupTask.listGroupTask;
+const kanbanDetailProject = state => state.kanban.detailProject;
 
 export const tasksSelector = createSelector(
   [kanbanListTask, listGroupTask],
@@ -29,5 +30,13 @@ export const tasksSelector = createSelector(
       loading: listLoading || listGroupTaskLoading,
       error: listError || listGroupTaskError,
     }
+  }
+)
+
+export const workTypeSelector = createSelector(
+  [kanbanDetailProject],
+  (kanbanDetailProject) => {
+    const { data: { project } } = kanbanDetailProject;
+    return get(project, 'work_type', 0);
   }
 )

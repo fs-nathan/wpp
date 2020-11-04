@@ -7,9 +7,8 @@
   align-items: flex-start;
   padding: 5px 5px 5px 0;
   background-color: #efefef;
-  & > div {
+  & > div:not(:last-child) {
     height: 100%;
-    width: 100%;
   }
   & .smooth-dnd-drop-preview-constant-class {
     top: 0;
@@ -48,4 +47,14 @@
   border-radius: 3px;
   border: dashed 1px blue;
   background-color: white;
+}
+
+.view_KanbanBoard___board-scrollbars {
+  & > div:nth-child(2) {
+    height: 12px !important;
+    bottom: 0 !important;
+    & > div {
+      background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+  }
 }

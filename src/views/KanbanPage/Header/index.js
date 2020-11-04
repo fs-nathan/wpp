@@ -4,12 +4,13 @@ import { connect } from 'react-redux';
 import { actionVisibleDrawerMessage } from 'actions/system/system';
 import { setMemberFilter, setVisibleHeader } from 'actions/kanban/setting';
 import { memberProject } from 'actions/project/memberProject';
+import { searchTask } from "actions/kanban/setting";
 import { detailProject as kanbanDetailProject } from 'actions/kanban/detailProject';
 import { detailProject } from 'actions/project/detailProject';
 import { showProject } from 'actions/project/showProject';
 import { hideProject } from 'actions/project/hideProject';
 import { getProjectListBasic } from "actions/taskDetail/taskDetailActions";
-import { projectSelector, visibleSelector, showHidePendingsSelector } from './selectors';
+import { projectSelector, visibleSelector, showHidePendingsSelector, taskSearchSelector } from './selectors';
 import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT } from 'constants/events.js';
 import { get } from 'lodash';
 
@@ -27,6 +28,7 @@ function KanbanPage({
   doShowProject, doHideProject,
   showHidePendings,
   doGetProjectListBasic,
+  taskSearchStr, doSearchTask,
 }) {
 
   const [search, setSearch] = React.useState('');
@@ -57,7 +59,7 @@ function KanbanPage({
 
   return (
     <KanbanHeaderPresenter 
-      search={search} handleSearchChange={search => setSearch(search)}
+      search={taskSearchStr} handleSearchChange={searchStr => doSearchTask(searchStr)}
       handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
       project={project.project}
       isOpen={visible} setIsOpen={doSetVisibleHeader}
@@ -79,6 +81,7 @@ const mapStateToProps = state => {
     project: projectSelector(state),
     visible: visibleSelector(state), 
     showHidePendings: showHidePendingsSelector(state),
+    taskSearchStr: taskSearchSelector(state),
   }
 };
 
@@ -93,6 +96,7 @@ const mapDispatchToProps = dispatch => {
     doSetMemberFitler: memberFilter => dispatch(setMemberFilter(memberFilter)),
     doMemberProject: (option, quite) => dispatch(memberProject(option, quite)),
     doGetProjectListBasic: (projectId) => dispatch(getProjectListBasic(projectId)),
+    doSearchTask: (searchStr) => dispatch(searchTask(searchStr)),
   }
 }
 

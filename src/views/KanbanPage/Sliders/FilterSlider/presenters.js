@@ -3,6 +3,7 @@ import { IconButton, Checkbox, FormGroup, FormControlLabel } from '@material-ui/
 import Icon from '@mdi/react';
 import { mdiFilterOutline, mdiClose } from '@mdi/js';
 import { includes } from 'lodash';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
@@ -66,8 +67,10 @@ function FilterSlider({
   handleCloseClick,
 }) {
 
-  const status = React.useMemo(() => ['Đang chờ', 'Đang làm', 'Hoàn thành', 'Quá hạn', 'Tạm dừng'], []);
-  const priority = React.useMemo(() => ['Ưu tiên thấp', 'Ưu tiên trung bình', 'Ưu tiên cao']);
+  const { t } = useTranslation();
+
+  const status = React.useMemo(() => [t("LABEL_CHAT_TASK_DANG_CHO"), t("LABEL_CHAT_TASK_DANG_LAM"), t("LABEL_CHAT_TASK_HOAN_THANH"), t("LABEL_CHAT_TASK_DA_QUA_HAN"), t("LABEL_CHAT_TASK_TAM_DUNG")], [t]);
+  const priority = React.useMemo(() => [t("LABEL_CHAT_TASK_UU_TIEN_THAP"), t("LABEL_CHAT_TASK_UU_TIEN_TRUNG_BINH"), t("LABEL_CHAT_TASK_UU_TIEN_CAO")], [t]);
 
   return (
     <Container>
@@ -77,21 +80,23 @@ function FilterSlider({
           size={1}
           color={"rgba(0, 0, 0, 0.54)"}
         />
-        <Title>Lọc</Title>
-        <IconButton
-          onClick={evt => handleCloseClick()}
-        >
-          <Icon
-            path={mdiClose}
-            size={1}
-            color={"rgba(0, 0, 0, 0.54)"}
-          />
-        </IconButton>
+        <Title>{t("IDS_WP_FILTER")}</Title>
+        <abbr title={t("LABEL_CHAT_TASK_DONG")}>
+          <IconButton
+            onClick={evt => handleCloseClick()}
+          >
+            <Icon
+              path={mdiClose}
+              size={1}
+              color={"rgba(0, 0, 0, 0.54)"}
+            />
+          </IconButton>
+        </abbr>
       </Header>
       <Body>
         <FilterBox>
-          <FilterTitle>Lọc theo trạng thái công việc</FilterTitle>
-          <FilterHelper>Chọn/bỏ chọn trạng thái để lọc công việc</FilterHelper>
+          <FilterTitle>{t("Lọc theo trạng thái công việc")}</FilterTitle>
+          <FilterHelper>{t("Chọn/bỏ chọn trạng thái để lọc công việc")}</FilterHelper>
           <FilterCheckBoxGroup>
             {status.map((value, index) => (
               <FormControlLabel
@@ -108,8 +113,8 @@ function FilterSlider({
           </FilterCheckBoxGroup>
         </FilterBox>
         <FilterBox>
-          <FilterTitle>Lọc theo mức độ ưu tiên</FilterTitle>
-          <FilterHelper>Chọn/bỏ chọn mức độ ưu tiên để lọc công việc</FilterHelper>
+          <FilterTitle>{t("Lọc theo mức độ ưu tiên")}</FilterTitle>
+          <FilterHelper>{t("Chọn/bỏ chọn mức độ ưu tiên để lọc công việc")}</FilterHelper>
           <FilterCheckBoxGroup>
             {priority.map((value, index) => (
               <FormControlLabel

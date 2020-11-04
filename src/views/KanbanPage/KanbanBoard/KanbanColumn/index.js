@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container as DragContainer, Draggable } from "react-smooth-dnd";
+import { Container as DragContainer, Draggable } from "components/react-smooth-dnd";
 import { CircularProgress, Menu, MenuItem } from '@material-ui/core';
 import { get, includes, isNil } from 'lodash';
 import KanbanItem from '../KanbanItem';
@@ -9,8 +9,9 @@ import Icon from '@mdi/react';
 import { taskColors } from 'constants/colors';
 import { mdiDotsVertical, mdiDragVertical, mdiPlus, mdiClockOutline } from '@mdi/js';
 import { connect } from 'react-redux';
-import { statusSelector, prioritySelector, memberSelector } from './selectors';
+import { statusSelector, prioritySelector, memberSelector, taskSearchSelector } from './selectors';
 import styled from 'styled-components';
+import { useTranslation } from 'react-i18next';
 import './style.scss';
 import '../style.scss';
 
@@ -95,80 +96,87 @@ const ListScroll = ({ className = '', ...props }) =>
     {...props}
   />
 
-export function ColumnHeader({ groupTask, index, iconButtons = null }) {
+export function ColumnHeader({ groupTask, index, iconButtons = null, stageName }) {
+  const { t } = useTranslation();
   return (
     <Title>
       <Indicator>
         <div data-custom-drag-handle="column-handle">
-          <Icon
-            path={mdiDragVertical}
-            size={1}
-            color={"#8b8b8b"}
-          />
-        </div>
-        <div>{`Giai đoạn ${index + 1}`}</div>
-        {!isNil(iconButtons) && 
-          <IconButton
-            size="small"
-            aria-controls={`${get(groupTask, 'id', '')}-menu`}
-            aria-haspopup="true"
-            onClick={iconButtons.moreClick}
-          >
+          <abbr title={t("IDS_WP_MOVE")}>
             <Icon
-              path={mdiDotsVertical}
+              path={mdiDragVertical}
               size={1}
               color={"#8b8b8b"}
             />
-          </IconButton>
+          </abbr>
+        </div>
+        <div>{`${stageName} ${index + 1}`}</div>
+        {!isNil(iconButtons) && 
+          <abbr title={t("IDS_WP_MORE")}>
+            <IconButton
+              size="small"
+              aria-controls={`${get(groupTask, 'id', '')}-menu`}
+              aria-haspopup="true"
+              onClick={iconButtons.moreClick}
+            >
+              <Icon
+                path={mdiDotsVertical}
+                size={1}
+                color={"#8b8b8b"}
+              />
+            </IconButton>
+          </abbr>
         }
       </Indicator>
       <GroupName>
         <span>{`${get(groupTask, 'name', '')}`}</span>
         {!isNil(iconButtons) && 
-          <IconButton
-            size="small"
-            onClick={iconButtons.plusClick}
-          >
-            <Icon
-              path={mdiPlus}
-              size={1}
-              color={"#8b8b8b"}
-            />
-          </IconButton>
+          <abbr title={t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}>
+            <IconButton
+              size="small"
+              onClick={iconButtons.plusClick}
+            >
+              <Icon
+                path={mdiPlus}
+                size={1}
+                color={"#8b8b8b"}
+              />
+            </IconButton>
+          </abbr>
         }
       </GroupName>
       <ProgressBar 
-        title={`Hoàn thành: ${get(groupTask, 'complete', 0)}%`}
+        title={`${t("IDS_WP_DONE")}: ${get(groupTask, 'complete', 0)}%`}
         percent={get(groupTask, 'complete', 0)}
         isExpired={get(groupTask, 'task_expired', 0) > 0}
       />
       <Status>
         <CodeBox>
-          <Code title='Công việc đang chờ'>
+          <Code title={`${t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING")}`}>
             <span style={{
               color: taskColors[0],
             }}>&#11044;</span>
             <span>{`${get(groupTask, 'task_waiting', 0)}`}</span>
           </Code>
-          <Code title='Công việc đang làm'>
+          <Code title={`${t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING")}`}>
             <span style={{
               color: taskColors[1],
             }}>&#11044;</span>
             <span>{`${get(groupTask, 'task_doing', 0)}`}</span>
           </Code>
-          <Code title='Công việc hoàn thành'>
+          <Code title={`${t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE")}`}>
             <span style={{
               color: taskColors[2],
             }}>&#11044;</span>
             <span>{`${get(groupTask, 'task_complete', 0)}`}</span>
           </Code>
-          <Code title='Công việc quá hạn'>
+          <Code title={`${t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED")}`}>
             <span style={{
               color: taskColors[3],
             }}>&#11044;</span>
             <span>{`${get(groupTask, 'task_expired', 0)}`}</span>
           </Code>
-          <Code title='Công việc dừng'>
+          <Code title={`${t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP")}`}>
             <span style={{
               color: taskColors[4],
             }}>&#11044;</span>
@@ -181,7 +189,7 @@ export function ColumnHeader({ groupTask, index, iconButtons = null }) {
             size={0.8}
             color={"#8b8b8b"}
           />
-          <span>{`${get(groupTask, 'duration.value', 0)} ${get(groupTask, 'duration.unit', 'Ngày')}`}</span>
+          <span>{`${get(groupTask, 'duration.value', 0)} ${get(groupTask, 'duration.unit', t("IDS_WP_DAY"))}`}</span>
         </Duration>
       </Status>
     </Title>
@@ -192,15 +200,19 @@ function KanbanColumn({
   groupTask, index, handleOpenModal,
   status, priority, memberFilter,
   projectId, handleItemDrop,
+  stageName,
+  taskSearchStr,
 }) { 
 
+  const { t } = useTranslation();
   const tasks = get(groupTask, 'tasks', [])
     .filter(task => includes(status, get(task, 'status_code', -1)))
     .filter(task => includes(priority, get(task, 'priority_code', -1)))
     .filter(task => get(task, 'members', [])
       .map(member => get(member, 'id', ''))
       .reduce((result, member) => result || includes(memberFilter, member), false)
-    );
+    )
+    .filter(task => includes(get(task, 'name', ''), taskSearchStr));
   const [moreAnchor, setMoreAnchor] = React.useState(null);
 
   function handleMoreOpen(evt) {
@@ -231,6 +243,7 @@ function KanbanColumn({
               curGroupTask: groupTask,
             })),
           }}
+          stageName={stageName}
         />
         <ListScroll
           autoHide
@@ -249,6 +262,7 @@ function KanbanColumn({
                 showOnTop: true,
                 className: 'view_KanbanItem___container-preview'
               }}
+              stopOverlappingAnimator={false}
             >
               {tasks.map((task, index) => (
                   <Draggable
@@ -290,12 +304,15 @@ function KanbanColumn({
               color="white"
             />
           )}
-          Chỉnh sửa
+          {t("IDS_WP_EDIT_TEXT")}
         </MenuItem>
         <MenuItem
           onClick={handleMoreClick(() => handleOpenModal('STAGE_SETTING', {
-            stageName: `Giai đoạn ${index + 1}`,
+            stageName,
+            index: index + 1,
             groupTask,
+            handleOpenModal,
+            projectId,
           }))}
           disabled={false}
         >
@@ -306,7 +323,7 @@ function KanbanColumn({
               color="white"
             />
           )}
-          Thiết lập giai đoạn
+          {`${t("IDS_WP_SETUP")} ${stageName.toLowerCase()}`}
         </MenuItem>
         <MenuItem
           onClick={handleMoreClick(() => handleOpenModal('DELETE_GROUPTASK', {
@@ -321,7 +338,7 @@ function KanbanColumn({
               color="white"
             />
           )}
-          Xóa
+          {t("IDS_WP_DELETE")}
         </MenuItem>
       </Menu>
     </>
@@ -332,6 +349,7 @@ const mapStateToProps = state => ({
   status: statusSelector(state),
   priority: prioritySelector(state),
   memberFilter: memberSelector(state),
+  taskSearchStr: taskSearchSelector(state),
 });
 
 export default connect(mapStateToProps, null)(KanbanColumn);

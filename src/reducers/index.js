@@ -127,6 +127,8 @@ import kanbanListTask, { initialState as kanbanListTaskInitialState } from "./ka
 import kanbanSortTask, { initialState as kanbanSortTaskInitialState } from "./kanban/sortTask";
 import kanbanSortGroupTask, { initialState as kanbanSortGroupTaskInitialState } from "./kanban/sortGroupTask";
 import kanbanGetManager, { initialState as kanbanGetManagerInitialState } from "./kanban/getManager";
+import kanbanAddManagers, { initialState as kanbanAddManagersInitialState } from "./kanban/addManagers";
+import kanbanRemoveManagers, { initialState as kanbanRemoveManagersInitialState } from "./kanban/removeManagers";
 import kanbanSetting, { initialState as kanbanSettingInitialState } from './kanban/setting';
 import kanbanDetailTask, { initialState as kanbanDetailTaskInitialState } from './kanban/detailTask';
 import kanbanUpdateTask, { initialState as kanbanUpdateTaskInitialState } from './kanban/updateTask';
@@ -651,6 +653,8 @@ const rootReducer = combineReducers({
     sortTask: kanbanSortTask,
     sortGroupTask: kanbanSortGroupTask,
     getManager: kanbanGetManager,
+    addManagers: kanbanAddManagers,
+    removeManagers: kanbanRemoveManagers,
     setting: kanbanSetting,
     detailTask: kanbanDetailTask,
     updateTask: kanbanUpdateTask,
@@ -691,6 +695,8 @@ export const DEFAULT_STATE = {
     sortTask: kanbanSortTaskInitialState,
     sortGroupTask: kanbanSortGroupTaskInitialState,
     getManager: kanbanGetManagerInitialState,
+    addManagers: kanbanAddManagersInitialState,
+    removeManagers: kanbanRemoveManagersInitialState,
     setting: kanbanSettingInitialState,
     detailTask: kanbanDetailTaskInitialState,
     updateTask: kanbanUpdateTaskInitialState,

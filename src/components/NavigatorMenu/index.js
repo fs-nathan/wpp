@@ -50,7 +50,7 @@ class NavigatorMenu extends React.Component {
       </p>
     }
     )
-    return <div className="gantt--navigation">
+    return <div className={`gantt--navigation ${this.props.className}`}>
       {listGirdRender}
     </div>
   }

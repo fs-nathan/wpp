@@ -2,7 +2,7 @@ import React from "react";
 import { listTask } from 'actions/kanban/listTask';
 import { sortTask } from 'actions/kanban/sortTask';
 import { sortGroupTask } from 'actions/kanban/sortGroupTask';
-import { tasksSelector } from './selectors';
+import { tasksSelector, workTypeSelector } from './selectors';
 import { connect } from 'react-redux';
 import KanbanBoardPresenter from './presenters';
 import { get } from 'lodash';
@@ -16,6 +16,7 @@ function KanbanBoard({
   doKanbanSortTask,
   doListGroupTask,
   handleOpenModal,
+  workType,
 }) {
 
   const [tasksArr, setTasksArr] = React.useState([]);
@@ -93,6 +94,7 @@ function KanbanBoard({
       projectId={projectId}
       handleColumnDrop={handleColumnDrop}
       handleItemDrop={handleItemDrop}
+      workType={workType}
     />
   );
 }
@@ -100,6 +102,7 @@ function KanbanBoard({
 const mapStateToProps = state => {
   return {
     tasks: tasksSelector(state),
+    workType: workTypeSelector(state),
   }
 };
 
