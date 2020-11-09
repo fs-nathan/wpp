@@ -302,10 +302,11 @@
           "COPY": {
             "TITLE": "Sao chép {{title}}",
             "LEFT": {
-              "TITLE": "Chọn {{title}} sao chép",
-              "FIND": "Tìm {{title}}"
+              "TITLE": "Chọn {{titleLeft}} sao chép",
+              "FIND": "Tìm {{titleLeft}}"
             },
             "RIGHT": {
+              "TITLE_COPY_TO": "Sao chép thành",
               "TITLE": "Thông tin {{title}} mới",
               "PROJECT": {
                 "NAME": "{{title}} được sao chép",
@@ -2170,5 +2171,7 @@
   "IDS_WP_PHASE": "Giai đoạn",
   "IDS_WP_SELECT_PHASE": "Lựa chọn giai đoạn",
   "IDS_WP_PROGRESS": "Tiến độ",
-  "IDS_WP_ALREADY_EXIST": "Đã tồn tại {{object}}"
+  "IDS_WP_ALREADY_EXIST": "Đã tồn tại {{object}}",
+  "ENTER_DATE": "Nhập ngày tháng",
+  "REQUIRED": "Bắt buộc"
 }

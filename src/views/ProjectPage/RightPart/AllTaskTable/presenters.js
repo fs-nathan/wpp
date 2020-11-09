@@ -166,6 +166,7 @@ function AllTaskTable({
                     label: (group) => get(group, 'name'),
                     action: (group) => handleOpenModal('CREATE', {label: get(group, 'name'), value: get(group, 'id')}),
                     item: 'tasks',
+                    canCreateTask: canCreateTask
                 },
                 draggable: canUpdateProject ? {
                     bool: true,

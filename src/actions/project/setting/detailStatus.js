@@ -4,6 +4,7 @@ import {
   DETAIL_STATUS_SUCCESS,
   DETAIL_STATUS_RESET,
 } from '../../../constants/actions/project/setting/detailStatus';
+import { apiService } from '../../../constants/axiosInstance';
 
 export const detailStatus = ({ projectId }, quite = false) => ({
   type: DETAIL_STATUS,
@@ -30,3 +31,11 @@ export const detailStatusFail = (error, options) => ({
 export const detailStatusReset = () => ({
   type: DETAIL_STATUS_RESET,
 })
+
+export const getProjectSetting = projectId => {
+  const config = {
+    url: '/project/setting/detail?project_id=' + projectId,
+    method: 'get'
+  };
+  return apiService(config);
+};

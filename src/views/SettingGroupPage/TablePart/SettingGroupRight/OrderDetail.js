@@ -63,8 +63,7 @@ const OrderDetail = props => {
                 </p>
               </div>
               <img
-                src={`https://storage.googleapis.com${orderItem.user_create.avatar}`}
-                alt=""
+                src={`${orderItem.user_create.avatar}`}
               />
             </div>
 

@@ -38,6 +38,7 @@ import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
 import {getWorkType} from "../../../../../actions/project/getWorkType";
 import {WORKPLACE_TYPES} from "../../../../../constants/constants";
+import {getProjectSetting} from "../../../../../actions/project/setting/detailStatus";
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -55,7 +56,6 @@ function CreateJobModal(props) {
   const isFetching = useSelector(state => state.taskDetail.detailTask.isFetching)
   const error = useSelector(state => state.taskDetail.detailTask.error)
   const _projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.status.date'));
   const projectId = isNil(get(props, 'projectId'))
     ? _projectId
     : get(props, 'projectId');
@@ -107,7 +107,7 @@ function CreateJobModal(props) {
   const [listGroupTask, setListGroupTask] = React.useState([]);
   const [listSchedules, setListSchedules] = React.useState([]);
   const [scheduleValue, setScheduleValue] = React.useState(null);
-  const [type, setType] = React.useState(date_status);
+  const [type, setType] = React.useState(0);
 
   const isEdit = props.editMode !== null && props.editMode !== undefined;
 
@@ -280,6 +280,18 @@ function CreateJobModal(props) {
     }
   }, [dispatch, isEdit, projectId, props.isOpen])
 
+  useEffect(() => {
+    if (props.isOpen) {
+      async function fetchData() {
+        const projectSettings = await getProjectSetting(projectId)
+        if (projectSettings.data && projectSettings.data.state) {
+          setType(projectSettings.data.date_status)
+        }
+      }
+      fetchData();
+    }
+  }, [props.isOpen])
+
   const handleChangeData = (attName, value) => {
     // console.log(attName, value)
     setDataMember(prevState => ({ ...prevState, [attName]: value }));
@@ -422,7 +434,6 @@ function CreateJobModal(props) {
               items={optionsList}
               value={type}
               handleChange={setType}
-              defaultState={date_status}
             />
             {type !== 0 &&
               <MuiPickersUtilsProvider utils={DateFnsUtils}>

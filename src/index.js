@@ -8,7 +8,7 @@ import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import store from "./configStore";
 import i18n from "./i18n";
-import * as serviceWorker from './serviceWorker';
+//import * as serviceWorker from './serviceWorker';
 import App from "./App";
 
 const styleNode = document.createComment('jss-insertion-point');

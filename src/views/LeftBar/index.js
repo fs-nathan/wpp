@@ -46,7 +46,12 @@ const LeftBar = ({
   let itemManage = false;
   if (!isEmpty(group_active) && !isEmpty(group_active.modules)) {
     group_active.modules.forEach((el, idx) => {
-      const isActived = pathname.indexOf(el.path_search) == 0 ? true : false;
+      let isActived = false;
+      if (pathname.indexOf(el.path_search) == 0) {
+        isActived = true;
+      } else if (el.path_search_more && el.path_search_more.includes(pathname)) {
+        isActived = true;
+      }
       if (el.is_manage_group) {
         itemManage = {
           ...el,

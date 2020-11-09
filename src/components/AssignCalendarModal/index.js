@@ -82,8 +82,8 @@ const AssignCalendarModal = ({
   }, [projectSchedules])
   const renderListCalendarModal = useMemo(
     () =>
-      listSchedule.map((item) => (
-        <tr>
+      listSchedule.map((item, index) => (
+        <tr key={index}>
           <td>
             <div>
               <FormControlLabel

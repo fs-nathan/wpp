@@ -167,7 +167,7 @@ export const SetPermissionModal = ({
                               />
                             </CustomTableBodyCell>
                             <CustomTableBodyCell align="left">
-                              <Typography noWrap title={name}>
+                              <Typography title={name}>
                                 {name}
                               </Typography>
                             </CustomTableBodyCell>
