@@ -13,8 +13,11 @@
   & .view_KanbanItem___more-icon {
     display: none;
   }
-  &:hover .view_KanbanItem___more-icon {
-    display: block;
+  &:hover {
+    filter: brightness(90%);
+    & .view_KanbanItem___more-icon {
+      display: block;
+    }
   }
 }
 

@@ -6,6 +6,7 @@
   align-items: center;
   & > * {
     &:first-child {
+      border-top: none !important; 
       display: block;
       font-weight: 500;
       font-size: 14px;
@@ -21,7 +22,8 @@
       margin-left: auto;
       height: 16px;
       line-height: 16px;
-      color: #8b8b8b;
+      color: #c1c1c1;
+      font-weight: normal;
     }
   }
   &:hover {

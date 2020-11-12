@@ -27,6 +27,7 @@ function* addManagers(action) {
     const { managers } = yield call(doAddManagers, action.options);
     yield put(addManagersSuccess({ managers }, action.options));
     CustomEventEmitter(KANBAN.ADD_MANAGERS.SUCCESS);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(addManagersFail(error, action.options));
     CustomEventEmitter(KANBAN.ADD_MANAGERS.FAIL);

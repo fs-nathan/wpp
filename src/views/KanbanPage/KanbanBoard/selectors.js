@@ -4,12 +4,14 @@ import { find, get } from 'lodash';
 const kanbanListTask = state => state.kanban.listTask;
 const listGroupTask = state => state.groupTask.listGroupTask;
 const kanbanDetailProject = state => state.kanban.detailProject;
+const kanbanSortTask = state => state.kanban.sortTask;
 
 export const tasksSelector = createSelector(
-  [kanbanListTask, listGroupTask],
-  (kanbanListTask, listGroupTask) => {
+  [kanbanListTask, listGroupTask, kanbanSortTask],
+  (kanbanListTask, listGroupTask, kanbanSortTask) => {
     const { data: { tasks }, loading: listLoading, error: listError } = kanbanListTask;
     const { data: { groupTasks }, loading: listGroupTaskLoading, error: listGroupTaskError } = listGroupTask;
+    const { loading: sortLoading, error: sortError } = kanbanSortTask;
     const newTasks = groupTasks.map(groupTask => {
       let statistics = new Array(6).fill(0);
       get(find(tasks, { id: get(groupTask, 'id') }), 'tasks', []).forEach(task => {
@@ -27,8 +29,8 @@ export const tasksSelector = createSelector(
     });
     return {
       tasks: newTasks,
-      loading: listLoading || listGroupTaskLoading,
-      error: listError || listGroupTaskError,
+      loading: listLoading || listGroupTaskLoading || sortLoading,
+      error: listError || listGroupTaskError || sortError,
     }
   }
 )

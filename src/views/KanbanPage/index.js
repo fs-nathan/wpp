@@ -15,6 +15,7 @@ import EditTaskModal from './Modals/EditTaskModal';
 import AlertModal from 'components/AlertModal';
 import CreateGroupTask from 'views/ProjectPage/Modals/CreateGroupTask';
 import ModalImage from "views/JobDetailPage/ModalImage";
+import ManagerModal from './Modals/ManagerModal';
 
 function KanbanPage({
   visible,
@@ -41,6 +42,8 @@ function KanbanPage({
   const [ openDeleteTask, setOpenDeleteTask ] = React.useState(false);
   const [ deleteTaskProps, setDeleteTaskProps ] = React.useState({});
   const [ openCreateGroupTask, setOpenCreateGroupTask ] = React.useState(false);
+  const [ openManagers, setOpenManagers ] = React.useState(false);
+  const [ managersProps, setManagersProps ] = React.useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -96,6 +99,10 @@ function KanbanPage({
         setOpenDeleteTask(true);
         setDeleteTaskProps(props);
         return;
+      }
+      case 'MANAGERS': {
+        setOpenManagers(true);
+        setManagersProps(props);
       }
       default: return;
     }
@@ -162,6 +169,11 @@ function KanbanPage({
         setOpen={setOpenCreateGroupTask}
       />
       <ModalImage />
+      <ManagerModal 
+        open={openManagers}
+        setOpen={setOpenManagers}
+        {...managersProps}
+      />
     </>
   );
 }

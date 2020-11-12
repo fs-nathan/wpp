@@ -98,6 +98,7 @@ import { KANBAN_SORT_GROUP_TASK } from 'constants/actions/kanban/sortGroupTask';
 import { KANBAN_GET_MANAGER } from 'constants/actions/kanban/getManager';
 import { KANBAN_ADD_MANAGERS } from 'constants/actions/kanban/addManagers';
 import { KANBAN_REMOVE_MANAGERS } from 'constants/actions/kanban/removeManagers';
+import { KANBAN_UPDATE_MANAGERS } from 'constants/actions/kanban/updateManagers';
 import { KANBAN_DETAIL_TASK } from 'constants/actions/kanban/detailTask';
 import { KANBAN_UPDATE_TASK } from 'constants/actions/kanban/updateTask';
 import { GET_PROJECT_STATISTIC } from "../constants/actions/project/getStatistic";
@@ -264,6 +265,7 @@ import { sortGroupTask as kanbanSortGroupTask } from './kanban/sortGroupTask';
 import { getManager as kanbanGetManager } from './kanban/getManager';
 import { addManagers as kanbanAddManagers } from './kanban/addManagers';
 import { removeManagers as kanbanRemoveManagers } from './kanban/removeManagers';
+import { updateManagers as kanbanUpdateManagers } from './kanban/updateManagers';
 import { detailTask as kanbanDetailTask } from './kanban/detailTask';
 import { updateTask as kanbanUpdateTask } from './kanban/updateTask';
 import { removeGroupPermissionUser } from "./user/removeGroupPermissionUser";
@@ -396,6 +398,7 @@ function* rootSaga() {
   yield takeLeading(KANBAN_GET_MANAGER, kanbanGetManager);
   yield takeEvery(KANBAN_ADD_MANAGERS, kanbanAddManagers);
   yield takeEvery(KANBAN_REMOVE_MANAGERS, kanbanRemoveManagers);
+  yield takeEvery(KANBAN_UPDATE_MANAGERS, kanbanUpdateManagers);
   yield takeLeading(KANBAN_DETAIL_TASK, kanbanDetailTask);
   yield takeEvery(KANBAN_UPDATE_TASK, kanbanUpdateTask);
 

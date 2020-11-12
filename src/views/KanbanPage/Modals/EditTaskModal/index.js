@@ -28,6 +28,7 @@ function EditTask({
     <EditTaskPresenter 
       open={open} setOpen={setOpen}
       task={task.task}
+      loading={task.loading}
       handleUpdateData={({ name, description }) => doUpdateTask({
         taskId,
         name,

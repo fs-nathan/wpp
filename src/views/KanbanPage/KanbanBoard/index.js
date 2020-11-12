@@ -6,7 +6,7 @@ import { tasksSelector, workTypeSelector } from './selectors';
 import { connect } from 'react-redux';
 import KanbanBoardPresenter from './presenters';
 import { get } from 'lodash';
-import { CustomEventDispose, CustomEventListener, CREATE_TASK, DELETE_TASK, CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK } from 'constants/events';
+import { CustomEventDispose, CustomEventListener, CREATE_TASK, DELETE_TASK, KANBAN, CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK } from 'constants/events';
 import { listGroupTask } from 'actions/groupTask/listGroupTask';
 
 function KanbanBoard({
@@ -35,12 +35,16 @@ function KanbanBoard({
     CustomEventListener(CREATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
+    CustomEventListener(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
+    CustomEventListener(KANBAN.UPDATE_MANAGERS.SUCCESS, doKanbanListTaskHandler);
     return () => {
       CustomEventDispose(CREATE_TASK, doKanbanListTaskHandler);
       CustomEventDispose(DELETE_TASK, doKanbanListTaskHandler);
       CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
+      CustomEventDispose(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
+      CustomEventDispose(KANBAN.UPDATE_MANAGERS.SUCCESS, doKanbanListTaskHandler);
     }
   }, [projectId]);
 

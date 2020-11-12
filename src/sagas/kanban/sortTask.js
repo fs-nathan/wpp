@@ -29,6 +29,7 @@ function* sortTask(action) {
     yield call(doSortTask, action.options);
     yield put(sortTaskSuccess(action.options));
     CustomEventEmitter(KANBAN.SORT_TASK.SUCCESS);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(sortTaskFail(error, action.options));
     CustomEventEmitter(KANBAN.SORT_TASK.FAIL);

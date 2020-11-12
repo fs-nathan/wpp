@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@material-ui/core';
 import { mdiPlusCircle } from "@mdi/js";
 import Icon from '@mdi/react';
+import { CustomEventDispose, CustomEventListener, KANBAN } from 'constants/events.js';
 import './style.scss';
 import 'views/CalendarPage/views/Modals/CreatePersonalRemind/style.scss';
 
@@ -42,6 +43,10 @@ function StageSetting({
   bgColor,
   index,
   handleOpenModal,
+  loading,
+  activeLoading, setActiveLoading,
+  doReload,
+  projectId,
 }) {
 
   const { t } = useTranslation();
@@ -50,6 +55,36 @@ function StageSetting({
     if (typeof(str) === "string") return str.toLowerCase();
     else return "";
   }
+
+  React.useEffect(() => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(KANBAN.UPDATE_MANAGERS.SUCCESS, doReload);
+    CustomEventListener(KANBAN.UPDATE_MANAGERS.FAIL, fail);
+    return () => {
+      CustomEventDispose(KANBAN.UPDATE_MANAGERS.SUCCESS, doReload);
+      CustomEventDispose(KANBAN.UPDATE_MANAGERS.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId]);
+
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
+      setOpen(false);
+    };
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(KANBAN.LIST_TASK.SUCCESS, success);
+    CustomEventListener(KANBAN.LIST_TASK.FAIL, fail);
+    return () => {
+      CustomEventDispose(KANBAN.LIST_TASK.SUCCESS, success);
+      CustomEventDispose(KANBAN.LIST_TASK.FAIL, fail);
+    }
+    // eslint-disable-next-line
+  }, [projectId]);
 
   return (
     <React.Fragment>
@@ -61,8 +96,8 @@ function StageSetting({
         canConfirm={true}
         onConfirm={() => setOpen(false)}
         onCancle={() => setOpen(false)}
-        loading={false}
-        activeLoading={false}
+        loading={loading}
+        activeLoading={activeLoading}
         manualClose={true}
       >
         <SubTitle>{`${stageName} ${index}`}</SubTitle>

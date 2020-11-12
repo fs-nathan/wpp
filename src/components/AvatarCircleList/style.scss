@@ -5,21 +5,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 20px;
-    height: 20px;
     z-index: 1;
     margin-left: -4px;
     border-radius: 100%;
     background-color: #fff;
-    &:not(:first-child) {
+    &:not(:last-child) {
       box-shadow: -2px 0px #f8f9fa;
     }
-    &:last-child {
+    &:first-child {
+      box-shadow: none;
+    }
+    &:nth-child(4) {
       background-color: #31b586;
       color: #fff;
-      & > div {
-        font-size: 10px;
-      }
     }
   }
 };

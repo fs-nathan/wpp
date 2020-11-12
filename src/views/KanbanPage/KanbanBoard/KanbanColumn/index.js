@@ -10,6 +10,7 @@ import { taskColors } from 'constants/colors';
 import { mdiDotsVertical, mdiDragVertical, mdiPlus, mdiClockOutline } from '@mdi/js';
 import { connect } from 'react-redux';
 import { statusSelector, prioritySelector, memberSelector, taskSearchSelector } from './selectors';
+import AvatarCircleList from 'components/AvatarCircleList';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
@@ -96,6 +97,12 @@ const ListScroll = ({ className = '', ...props }) =>
     {...props}
   />
 
+const ManagerBox = ({ className = '', ...props }) =>
+  <div 
+    className={`view_KanbanColumn___manager-box ${className}`}
+    {...props}
+  />
+
 export function ColumnHeader({ groupTask, index, iconButtons = null, stageName }) {
   const { t } = useTranslation();
   return (
@@ -129,7 +136,9 @@ export function ColumnHeader({ groupTask, index, iconButtons = null, stageName }
         }
       </Indicator>
       <GroupName>
-        <span>{`${get(groupTask, 'name', '')}`}</span>
+        <abbr title={get(groupTask, 'name', '')}>
+          {`${get(groupTask, 'name', '')}`}
+        </abbr>
         {!isNil(iconButtons) && 
           <abbr title={t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}>
             <IconButton
@@ -183,6 +192,16 @@ export function ColumnHeader({ groupTask, index, iconButtons = null, stageName }
             <span>{`${get(groupTask, 'task_stopped', 0)}`}</span>
           </Code>
         </CodeBox>
+        {get(groupTask, 'managers', []).length > 0 &&
+          <ManagerBox onClick={iconButtons.managersClick}>
+            <span>{`${t("IDS_WP_MANAGER")}:`}</span>
+            <AvatarCircleList 
+              users={get(groupTask, 'managers', [])}
+              display={3}
+              size={15}
+            />
+          </ManagerBox>
+        }
         <Duration>
           <Icon
             path={mdiClockOutline}
@@ -242,6 +261,11 @@ function KanbanColumn({
               projectId,
               curGroupTask: groupTask,
             })),
+            managersClick: () => handleOpenModal('MANAGERS', {
+              projectId,
+              groupTask,
+              name: stageName.toLowerCase(),
+            }),
           }}
           stageName={stageName}
         />

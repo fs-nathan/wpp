@@ -48,8 +48,6 @@ function ListProject(props) {
     <div
       className={clsx(
         "listProject",
-        "lp-container",
-        "lp-container-block",
         "kanban-lp-container"
       )}
     >

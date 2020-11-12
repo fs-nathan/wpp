@@ -2,9 +2,9 @@ import React from 'react';
 import StageSettingPresenter from './presenters';
 import { connect } from 'react-redux';
 import { getManager, getManagerReset } from 'actions/kanban/getManager';
-import { addManagers } from 'actions/kanban/addManagers';
-import { removeManagers } from 'actions/kanban/removeManagers';
+import { updateManagers } from 'actions/kanban/updateManagers';
 import { memberProject } from 'actions/project/memberProject';
+import { listTask } from 'actions/kanban/listTask';
 import { managersSelector, membersSelector, bgColorSelector } from './selectors';
 import { get, isNil } from 'lodash';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
@@ -17,13 +17,15 @@ function StageSetting({
   index,
   doGetManager, managers,
   doMemberProject, members,
-  doAddManagers, doRemoveManagers,
+  doUpdateManagers,
   doReset,
   bgColor,
+  doListTask,
 }) {
 
   const [ openAddOfferMember, setOpenAddOfferMember ] = React.useState(false);
   const [ value, setValue ] = React.useState([]);
+  const [ activeLoading, setActiveLoading ] = React.useState(false);
 
   React.useLayoutEffect(() => {
     doReset();
@@ -84,18 +86,12 @@ function StageSetting({
         }
       }
     });
-    if (addManagers.length > 0) {
-      doAddManagers({
-        groupId: get(groupTask, 'id'),
-        managers: addManagers,
-      })
-    }
-    if (removeManagers.length > 0) {
-      doRemoveManagers({
-        groupId: get(groupTask, 'id'),
-        managers: removeManagers,
-      })
-    }
+    doUpdateManagers({
+      groupId: get(groupTask, 'id'),
+      managersAdded: addManagers,
+      managersRemoved: removeManagers,
+    });
+    setActiveLoading(true);
   };
 
   return (
@@ -107,7 +103,12 @@ function StageSetting({
         groupTask={groupTask}
         managers={managers.managers}
         handleOpenModal={doOpenModal}
+        loading={managers.loading || members.loading}
         bgColor={bgColor}
+        doReload={() => !isNil(projectId) && doListTask({ projectId })}
+        activeLoading={activeLoading}
+        setActiveLoading={setActiveLoading}
+        projectId={projectId}
       />
       <AddOfferMemberModal 
         isOpen={openAddOfferMember}
@@ -131,10 +132,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   doGetManager: (option, quite) => dispatch(getManager(option, quite)),
-  doAddManagers: (option, quite) => dispatch(addManagers(option, quite)),
-  doRemoveManagers: (option, quite) => dispatch(removeManagers(option, quite)),
+  doUpdateManagers: (option, quite) => dispatch(updateManagers(option, quite)),
   doMemberProject: (option, quite) => dispatch(memberProject(option, quite)),
   doReset: () => dispatch(getManagerReset()),
+  doListTask: (option, quite) => dispatch(listTask(option, quite)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(StageSetting);

@@ -27,6 +27,7 @@ function* removeManagers(action) {
     const { managers } = yield call(doRemoveManagers, action.options);
     yield put(removeManagersSuccess({ managers }, action.options));
     CustomEventEmitter(KANBAN.REMOVE_MANAGERS.SUCCESS);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(removeManagersFail(error, action.options));
     CustomEventEmitter(KANBAN.REMOVE_MANAGERS.FAIL);

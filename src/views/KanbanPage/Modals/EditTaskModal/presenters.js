@@ -15,6 +15,7 @@ function EditTask({
   handleUpdateData,
   doReload,
   projectId,
+  loading,
 }) {
 
   const { t } = useTranslation();
@@ -73,7 +74,7 @@ function EditTask({
           setActiveLoading(true);
         }}
         onCancle={() => setOpen(false)}
-        loading={false}
+        loading={loading}
         activeLoading={activeLoading}
         manualClose={true}
       >
