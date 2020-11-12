@@ -104,7 +104,7 @@ const HeaderPart = props => {
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const members = useSelector(state => state.taskDetail.taskMember.member)
+  const members = useSelector(state => state.taskDetail.taskMember.defaultMember)
   useEffect(() => {
     const fetchMemberlist = async () => {
       try {

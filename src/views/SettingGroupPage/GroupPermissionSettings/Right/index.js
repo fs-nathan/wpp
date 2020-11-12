@@ -165,6 +165,7 @@ const ColumnRight = () => {
     members_assigned = emptyArray,
     module: groupModule,
   } = useContext(GroupPermissionSettingsContext);
+  console.log(detail)
   return (
     <div className="comp_rightColumn">
       <TasksScrollbar>
@@ -183,11 +184,16 @@ const ColumnRight = () => {
                 ))}
             </Box>
             <Alert severity="info">
-              <div>
-                {t(
-                  "Nhóm quyền này chỉ được gán cho các thành viên trong module thành viên"
-                )}
-              </div>
+              {
+                detail && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: detail.description_detail ? detail.description_detail : detail.module_description ? detail.module_description : "",
+                    }}
+                  >
+                  </div>
+                )
+              }
               <a
                 target="_blank"
                 className="u-colorBlue text-bold cursor-pointer"

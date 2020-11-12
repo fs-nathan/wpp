@@ -39,7 +39,7 @@ apiService.interceptors.response.use(
     return res;
   },
   function (error) {
-    if (error.response.status === 403 || error.response.status === 401) {
+    if (error.response && (error.response.status === 403 || error.response.status === 401)) {
       localStorage.removeItem(TOKEN);
       localStorage.removeItem(REFRESH_TOKEN);
       localStorage.removeItem(GROUP_ACTIVE);
