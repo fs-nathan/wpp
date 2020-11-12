@@ -163,39 +163,41 @@ const MapView = ({ isOpen, setOpen, locationData }) => {
         </LoadScript>
         <ListItem className="MapView--list MapView-share-location-chat">
           <div className="MapView--listTitle">{t('LABEL_CHAT_TASK_DANH_SACH_VI_TRI')}</div>
-          {Array.isArray(locationArr) && locationArr.map((location, idx) => {
-            return (<div
-              className={clsx("styled-list-item-location list-location-share-on-chat")}
-              key={idx}>
-              <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
-              {location.locations.map((item, key) => {
-                return (
-                  <div className={clsx("MapView--location", {
-                    'MapView--location__selected': id === item.id
-                  })}
-                    key={key} onClick={() => handleClickLocation({ ...item })}>
-                    <ItemAvatar>
-                      <div>
-                        <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
-                      </div>
-                    </ItemAvatar>
-                    <ListItemText
-                      className="LocationItem--content"
-                      primary={item.user_share}
-                      secondary={
-                        <span>
-                          <ColorTypo className="LocationItem--time" variant='caption' color='blue'>{t('LABEL_CHAT_TASK_CHIA_SE_LUC', { createdAt: `${item.time_create} - ${item.date_create}` })}</ColorTypo>
-                          <br />
-                          <ColorTypo className="LocationItem--location" variant='caption'>{item.address}</ColorTypo>
-                        </span>
-                      }
-                    />
-                  </div>
-                )
-              })}
-            </div >
-            )
-          })}
+          <div className="MapView--listContent">
+            {Array.isArray(locationArr) && locationArr.map((location, idx) => {
+              return (<div
+                className={clsx("styled-list-item-location list-location-share-on-chat")}
+                key={idx}>
+                <HeaderSubText component='p'>{location.date_create}</HeaderSubText>
+                {location.locations.map((item, key) => {
+                  return (
+                    <div className={clsx("MapView--location", {
+                      'MapView--location__selected': id === item.id
+                    })}
+                      key={key} onClick={() => handleClickLocation({ ...item })}>
+                      <ItemAvatar>
+                        <div>
+                          <Icon path={mdiMapMarker} alt='map' size={2} color={'#f44336'} style={{ padding: 5 }} />
+                        </div>
+                      </ItemAvatar>
+                      <ListItemText
+                        className="LocationItem--content"
+                        primary={item.user_share}
+                        secondary={
+                          <span>
+                            <ColorTypo className="LocationItem--time" variant='caption' color='blue'>{t('LABEL_CHAT_TASK_CHIA_SE_LUC', { createdAt: `${item.time_create} - ${item.date_create}` })}</ColorTypo>
+                            <br />
+                            <ColorTypo className="LocationItem--location" variant='caption'>{item.address}</ColorTypo>
+                          </span>
+                        }
+                      />
+                    </div>
+                  )
+                })}
+              </div >
+              )
+            })}
+          </div>
         </ListItem >
       </ContentDialog>
     </StyledDialog >

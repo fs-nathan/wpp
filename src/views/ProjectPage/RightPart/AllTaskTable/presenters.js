@@ -124,11 +124,11 @@ function AllTaskTable({
                     label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
                     iconPath: mdiDownload,
                     onClick: (evt) => setDownloadAnchor(evt.currentTarget)
-                } : undefined, {
+                } : undefined, isNil(memberID) ? {
                     label: times[timeType].title,
                     iconPath: mdiCalendar,
                     onClick: evt => setTimeAnchor(evt.currentTarget)
-                }],
+                } : undefined],
                 mainAction: canCreateTask && isNil(memberID) ? {
                     label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.CREATE"),
                     onClick: (evt) => handleOpenModal('CREATE'),
