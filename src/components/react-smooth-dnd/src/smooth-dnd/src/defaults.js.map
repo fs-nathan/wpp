@@ -1,0 +1,1 @@
+{"version":3,"file":"defaults.js","sourceRoot":"","sources":["../../../../src/smooth-dnd/src/defaults.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,IAAM,cAAc,GAAqB;IAC/C,SAAS,EAAE,SAAS;IACpB,SAAS,EAAE,MAAM;IACjB,WAAW,EAAE,UAAU;IACvB,eAAe,EAAE,SAAS;IAC1B,iBAAiB,EAAE,GAAG;IACtB,iBAAiB,EAAE,IAAI;IACvB,gBAAgB,EAAE,SAAS;IAC3B,iBAAiB,EAAE,SAAS;IAC5B,uBAAuB,EAAE,IAAI;CAC7B,CAAC"}

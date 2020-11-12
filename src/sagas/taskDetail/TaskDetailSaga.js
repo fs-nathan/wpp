@@ -3,7 +3,7 @@ import { call, put, select } from "redux-saga/effects";
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import { apiService } from "../../constants/axiosInstance";
-import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
+import { CREATE_TASK, DELETE_TASK, CustomEventEmitter } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 import { CREATE_OFFER } from 'views/OfferPage/redux/types';
 import { getDataPinOnTaskChat } from 'actions/chat/chat';
@@ -1356,6 +1356,7 @@ function* deleteTask(action) {
     const res = yield call(doDeleteTask, action.payload.taskId);
     yield put(actions.deleteTaskSuccess(res));
     yield put(actions.getListTaskDetail(action.payload.projectId));
+    CustomEventEmitter(DELETE_TASK);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.deleteTaskFail(error));

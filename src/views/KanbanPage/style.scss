@@ -1,0 +1,22 @@
+@mixin view_KanbanPage___container {
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto;
+  & > * {
+    &:first-child {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+.view_KanbanPage___container {
+  & {
+    @include view_KanbanPage___container;
+    grid-template-rows: 60px 1fr;
+  }
+  &-closed {
+    @include view_KanbanPage___container;
+    position: relative;
+    grid-template-rows: 0px 1fr;
+  }
+}

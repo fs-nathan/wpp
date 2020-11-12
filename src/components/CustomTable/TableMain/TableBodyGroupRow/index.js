@@ -13,13 +13,14 @@ import AddIcon from '@material-ui/icons/Add';
 const StyledTableBodyRowGroup = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyGroup___row ${className}`} {...rest} />;
 const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`${className}`} {...rest} />;
 const CustomButton = ({ className = '', ...rest }) => <Button className={`comp_CustomTable_TableBodyGroup___button ${className}`} {...rest} />;
-const getBodyStyle = isDraggingOver => ({
-  backgroundColor: isDraggingOver ? "lightblue" : "inherit",
-});
 
 function TableBodyGroupRow({ group }) {
   const { options, columns } = React.useContext(CustomTableContext);
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(group[get(options, 'grouped.item')].length > 0 ? true : false);
+
+  React.useEffect(() => {
+    setOpen(group[get(options, 'grouped.item')].length > 0 ? true : false);
+  }, [get(options, 'grouped.item'), group[get(options, 'grouped.item')]]);
 
   return (
     <Droppable
@@ -28,9 +29,8 @@ function TableBodyGroupRow({ group }) {
     >
       {(provided, snapshot) => (
         <TableBody
-          innerRef={provided.innerRef}
+          ref={provided.innerRef}
           {...provided.droppableProps}
-          style={getBodyStyle(snapshot.isDraggingOver)}
         >
           <StyledTableBodyRowGroup>
             <StyledTableBodyCell colSpan={get(columns, 'length', 0) + 1}>

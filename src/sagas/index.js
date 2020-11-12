@@ -91,6 +91,16 @@ import { LIST_TASK } from "../constants/actions/task/listTask";
 import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
 import { SORT_TASK } from "../constants/actions/task/sortTask";
 import { GET_REMIND_DETAIL } from "../constants/actions/calendar/alarmCalendar";
+import { KANBAN_DETAIL_PROJECT } from 'constants/actions/kanban/detailProject';
+import { KANBAN_LIST_TASK } from 'constants/actions/kanban/listTask';
+import { KANBAN_SORT_TASK } from 'constants/actions/kanban/sortTask';
+import { KANBAN_SORT_GROUP_TASK } from 'constants/actions/kanban/sortGroupTask';
+import { KANBAN_GET_MANAGER } from 'constants/actions/kanban/getManager';
+import { KANBAN_ADD_MANAGERS } from 'constants/actions/kanban/addManagers';
+import { KANBAN_REMOVE_MANAGERS } from 'constants/actions/kanban/removeManagers';
+import { KANBAN_UPDATE_MANAGERS } from 'constants/actions/kanban/updateManagers';
+import { KANBAN_DETAIL_TASK } from 'constants/actions/kanban/detailTask';
+import { KANBAN_UPDATE_TASK } from 'constants/actions/kanban/updateTask';
 import { GET_PROJECT_STATISTIC } from "../constants/actions/project/getStatistic";
 import { GET_WORK_TYPE } from "../constants/actions/project/getWorkType";
 // ==================================
@@ -248,6 +258,16 @@ import { listUserOfGroup } from "./user/listUserOfGroup";
 import { permissionUser } from "./user/permissionUser";
 import { privateMember } from "./user/privateMember";
 import { publicMember } from "./user/publicMember";
+import { detailProject as kanbanDetailProject } from './kanban/detailProject';
+import { listTask as kanbanListTask } from './kanban/listTask';
+import { sortTask as kanbanSortTask } from './kanban/sortTask';
+import { sortGroupTask as kanbanSortGroupTask } from './kanban/sortGroupTask';
+import { getManager as kanbanGetManager } from './kanban/getManager';
+import { addManagers as kanbanAddManagers } from './kanban/addManagers';
+import { removeManagers as kanbanRemoveManagers } from './kanban/removeManagers';
+import { updateManagers as kanbanUpdateManagers } from './kanban/updateManagers';
+import { detailTask as kanbanDetailTask } from './kanban/detailTask';
+import { updateTask as kanbanUpdateTask } from './kanban/updateTask';
 import { removeGroupPermissionUser } from "./user/removeGroupPermissionUser";
 import { sortUser } from "./user/sortUser";
 import { updateGroupPermissionUser } from "./user/updateGroupPermissionUser";
@@ -370,7 +390,17 @@ function* rootSaga() {
   yield takeLeading(GET_PERMISSION_VIEW_USERS, getPermissionViewUsers);
   yield takeLeading(GET_PERMISSION_VIEW_DETAIL_PROJECT, getPermissionViewDetailProject);
   yield takeEvery(SET_PROJECT, setProject);
-  yield takeEvery(SET_PROJECT_GROUP, setProjectGroup,);
+  yield takeEvery(SET_PROJECT_GROUP, setProjectGroup);
+  yield takeLeading(KANBAN_DETAIL_PROJECT, kanbanDetailProject);
+  yield takeLeading(KANBAN_LIST_TASK, kanbanListTask);
+  yield takeEvery(KANBAN_SORT_TASK, kanbanSortTask);
+  yield takeEvery(KANBAN_SORT_GROUP_TASK, kanbanSortGroupTask);
+  yield takeLeading(KANBAN_GET_MANAGER, kanbanGetManager);
+  yield takeEvery(KANBAN_ADD_MANAGERS, kanbanAddManagers);
+  yield takeEvery(KANBAN_REMOVE_MANAGERS, kanbanRemoveManagers);
+  yield takeEvery(KANBAN_UPDATE_MANAGERS, kanbanUpdateManagers);
+  yield takeLeading(KANBAN_DETAIL_TASK, kanbanDetailTask);
+  yield takeEvery(KANBAN_UPDATE_TASK, kanbanUpdateTask);
 
   // Hoang - end
 

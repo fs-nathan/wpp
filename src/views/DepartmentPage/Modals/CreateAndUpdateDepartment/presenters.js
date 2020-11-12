@@ -125,7 +125,6 @@ function CreateAndUpdateDepartment({
         onCancle={() => setOpen(false)}
         manualClose={true}
         activeLoading={activeLoading}
-        height={"mini"}
       >
         <CustomTextbox
           value={name}

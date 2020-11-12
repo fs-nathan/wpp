@@ -4,6 +4,7 @@ export const Routes = {
   PROJECTS: "/projects",
   PROJECT: "/projects/task-table",
   DEPARTMENTS: "/users",
+  KANBAN: "/projects/task-kanban/:projectId",
   MEMBERS: "/users/detail",
   REPORT: "/report",
   DOCUMENT: "/document/:documentType",

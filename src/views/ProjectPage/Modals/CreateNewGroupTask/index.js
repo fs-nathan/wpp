@@ -16,7 +16,7 @@ function CreateNewOrUpdateGroupTask({
   open,
   setOpen,
   curGroupTask = null,
-  setOpenModal,
+  setOpenModal = () => null,
   doUpdateGroupTask,
   doCreateGroupTask,
   doReload,

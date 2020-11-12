@@ -1,0 +1,36 @@
+.view_KanbanPage_Modal_Manager___managers {
+  & > * {
+    &:not(:first-child) {
+      margin-top: 20px;
+    }
+  }
+}
+
+.view_KanbanPage_Modal_Manager___manager {
+  display: flex;
+  align-items: center;
+  & > * {
+    &:not(:first-child) {
+      margin-left: 20px;
+    }
+  }
+}
+
+.view_KanbanPage_Modal_Manager___manager-description {
+  display: flex;
+  flex-direction: column;
+  & > * {
+    font-size: 14px;
+    &:first-child {
+      font-weight: 500;
+    }
+    &:not(:first-child) {
+      margin-top: 7px;
+      color: #8b8b8b;
+    }
+  }
+}
+
+.view_KanbanPage_Modal_Manager___manager-modal > div:nth-child(3) > div {
+  min-width: 35vw;
+}

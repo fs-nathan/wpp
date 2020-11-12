@@ -3,6 +3,7 @@ import * as actionTypes from '../../constants/actions/system/system';
 export const initialState = {
   typeDrawer: '',
   anchorDrawer: 'right',
+  optionsDrawer: {},
   visibleNoticeModal: false,
   isDocumentDetail: false,
   documentFile: null,
@@ -39,7 +40,8 @@ const system = (state = initialState, action) => {
       return {
         ...state,
         typeDrawer: action.payload.type,
-        anchorDrawer: action.payload.anchor
+        anchorDrawer: action.payload.anchor,
+        optionsDrawer: action.payload.options, 
       };
     case actionTypes.CHANGE_NOTICE_MODAL:
       return { ...state, visibleNoticeModal: action.payload.visible, visibleNoticeReason: action.payload.data };

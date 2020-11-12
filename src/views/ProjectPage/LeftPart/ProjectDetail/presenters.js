@@ -10,6 +10,7 @@ import LoadingBox from 'components/LoadingBox';
 import ProgressBar from 'components/ProgressBar';
 import { clamp, get, isNaN } from 'lodash';
 import moment from 'moment';
+import { projectColors } from 'constants/colors';
 import React, {useEffect, useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
@@ -109,7 +110,7 @@ function ProjectDetail({
                         t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
                         t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
                       ],
-                      colors: ['#ff9800', '#03a9f4', '#f44336', '#03c30b', '#607d8b'],
+                      colors: projectColors,
                     }}
                     series={[
                       get(project.project, 'task_waiting', 0),
@@ -140,23 +141,23 @@ function ProjectDetail({
                 <ChartInfoBox
                   data={
                     [{
-                      color: '#ff9800',
+                      color: projectColors[0],
                       title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
                       value: get(project.project, 'task_waiting', 0),
                     }, {
-                      color: '#03a9f4',
+                      color: projectColors[1],
                       title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
                       value: get(project.project, 'task_doing', 0),
                     }, {
-                      color: '#f44336',
+                      color: projectColors[2],
                       title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
                       value: get(project.project, 'task_expired', 0),
                     }, {
-                      color: '#03c30b',
+                      color: projectColors[3],
                       title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
                       value: get(project.project, 'task_complete', 0),
                     }, {
-                      color: '#607d8b',
+                      color: projectColors[4],
                       title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
                       value: get(project.project, 'task_stop', 0),
                     }]

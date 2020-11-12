@@ -1,0 +1,117 @@
+.view_KanbanHeader___container {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 60px 350px 1fr;
+  padding: 0 6px;
+  box-sizing: border-box;
+}
+
+.view_KanbanHeader___container-mini {
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  & > * {
+    color: rgba(0, 0, 0, 0.54);
+    &:hover {
+      cursor: pointer;
+      color: #05b50c;
+    }
+    z-index: 999;
+    transform: translate(0, 10px);
+    position: absolute;
+    right: 15px;
+    width: 40px;
+    height: 20px;
+    border: 1px solid rgba(230, 230, 230, 0.25);
+    border-bottom-left-radius: 50px;
+    border-bottom-right-radius: 50px;
+    border-top: 0;
+    background-color: #efefef;
+    padding: 0 7px;
+  }
+}
+
+.view_KanbanHeader___logo {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.view_KanbanHeader___info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.view_KanbanHeader___name {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: fit-content;
+  & > * {
+    &:first-child {
+      max-width: 320px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-height: 20px;
+      max-height: 20px;
+      padding: 2px 4px 2px 0;
+      color: #222;
+      white-space: nowrap;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    &:last-child {
+      margin-left: 6px;
+    }
+  }
+}
+
+.view_KanbanHeader___navigation {
+  margin-top: -15px;
+}
+
+.view_KanbanHeader___tab {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  width: fit-content;
+  & > * {
+    box-sizing: content-box;
+    margin-right: 7px;
+    cursor: pointer;
+    color: #8b8b8b;
+    text-align: center;
+    padding: 2px 5px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: normal;
+    &:not(:first-child) {
+      margin-left: 6px;  
+    }
+    &:hover {
+      color: #fff;
+      font-weight: 500;
+      background-color: var(--color-primary);
+    }
+  }
+}
+
+.view_KanbanHeader___button-group {
+  margin-left: auto;
+  margin-right: 20px;
+  & > * {
+    border: none;
+  }
+}
+
+.view_KanbanHeader___button {
+  letter-spacing: 1px !important;
+}
