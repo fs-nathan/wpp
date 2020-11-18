@@ -1,0 +1,77 @@
+.view_KanbanPage_MemberSlider___container {
+  padding: 20px 15px;
+}
+
+.view_KanbanPage_MemberSlider___header {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  & > * {
+    &:not(:last-child) {
+      margin-right: 10px;
+    }
+    &:nth-child(3) {
+      margin-left: auto;
+    }
+  }
+}
+
+.view_KanbanPage_MemberSlider___title {
+  font-size: 14px;
+  text-transform: uppercase;
+}
+
+.view_KanbanPage_MemberSlider___body {
+  margin-top: 20px;
+}
+
+.view_KanbanPage_MemberSlider___member-box {
+  margin-bottom: 20px;
+  & > *:not(:last-child) {
+    display: block;
+  }
+}
+
+.view_KanbanPage_MemberSlider___member-search {
+  margin: 10px 0;
+}
+
+.view_KanbanPage_MemberSlider___member-text {
+  font-size: 13px;
+  margin-bottom: 10px;
+  color: #8b8b8b;
+}
+
+.view_KanbanPage_MemberSlider___member-checkbox-group {
+  padding: 0px 10px;
+  & > * {
+    margin: 5px 0;
+  }
+}
+
+.view_KanbanPage_MemberSlider___member-checkbox-checked {
+  color: var(--color-primary) !important;
+}
+
+.view_KanbanPage_MemberSlider___member-detail {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-left: 10px;
+}
+
+.view_KanbanPage_MemberSlider___member-detail-text {
+  margin-left: 10px;
+}
+
+.view_KanbanPage_MemberSlider___member-name {
+  font-size: 14px;
+}
+
+.view_KanbanPage_MemberSlider___member-role {
+  font-size: 12px;
+}
+
+.view_KanbanPage_MemberSlider___member-scrollbar {
+  min-height: calc(100vh - 220px);
+}

@@ -1,0 +1,30 @@
+.view_KanbanPage_Modal_StageSetting___title {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px 0;
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.view_KanbanPage_Modal_StageSetting___sub-title {
+  color: #8b8b8b;
+}
+
+.view_KanbanPage_Modal_StageSetting___manager-add {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: fit-content;
+  & > span:first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 14px;
+    height: 14px;
+    border-radius: 99px;
+    color: white;
+    background-color: var(--color-primary);
+  }
+  & > span:last-child {
+    margin-left: 10px;
+  }
+}

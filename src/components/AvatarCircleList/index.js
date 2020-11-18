@@ -4,16 +4,16 @@ import CustomAvatar from '../CustomAvatar';
 import PropTypes from 'prop-types';
 import './style.scss';
 
-function AvatarCircle({ user }) {
+function AvatarCircle({ user, size }) {
   return (
     <CustomAvatar
-      style={{ width: 20, height: 20, }} 
+      style={{ width: size, height: size, }} 
       src={get(user, 'avatar')} alt='avatar'
     />
   );
 }
 
-function AvatarCircleList({ display, users = [], className = '', }) {
+function AvatarCircleList({ display, users = [], size = 20, className = '', }) {
 
   return (
     <div className={`comp_AvatarCircleList___container ${className}`}>
@@ -28,14 +28,15 @@ function AvatarCircleList({ display, users = [], className = '', }) {
                 <div>  
                   <AvatarCircle 
                     user={user}
+                    size={size}
                   />
                 </div>
               </abbr>
             )
           })}
           {display < users.length && (  
-            <div>
-              <div>+{users.length-display}</div>
+            <div style={{ width: size, height: size }}>
+              <div style={{ fontSize: `${size / 2}px`}}>+{users.length-display}</div>
             </div>
           )}
         </React.Fragment>

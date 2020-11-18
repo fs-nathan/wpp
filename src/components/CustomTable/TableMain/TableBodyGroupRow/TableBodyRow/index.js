@@ -8,7 +8,7 @@ import { mdiDragVertical } from '@mdi/js';
 import { get } from 'lodash';
 import './style.scss';
 
-const StyledTableBodyRow = ({ className = '', ...rest }) => <TableRow className={`comp_CustomTable_TableBodyRow___row ${className}`} {...rest} />;
+const StyledTableBodyRow = ({ className = '', innerRef, ...rest }) => <TableRow ref={innerRef} className={`comp_CustomTable_TableBodyRow___row ${className}`} {...rest} />;
 const StyledTableBodyCell = ({ className = '', draggable, ...rest }) => 
   <TableCell 
     className={`${draggable

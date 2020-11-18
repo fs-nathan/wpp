@@ -53,7 +53,6 @@ function CopyGroupTask({
     return () => {
       CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doReload);
       CustomEventDispose(COPY_GROUP_TASK.FAIL, fail);
-      CustomEventListener(COPY_GROUP_TASK.FAIL, fail);
     }
     // eslint-disable-next-line
   }, [projectId, timeRange]);

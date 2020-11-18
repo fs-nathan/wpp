@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import { actionVisibleDrawerMessage } from "../../actions/system/system";
 import { DRAWER_TYPE } from "../../constants/constants";
 import { isEmpty } from "../../helpers/utils/isEmpty";
-import AddUser from "../../views/DepartmentPage/LeftPart/AddUser";
+import AddUser from "views/DepartmentPage/LeftPart/AddUser";
+import ListProjectKanban from "views/JobDetailPage/ListPart/ListProjectKanban";
+import KanbanFilterSlider from "views/KanbanPage/Sliders/FilterSlider";
+import KanbanMemberSlider from "views/KanbanPage/Sliders/MemberSlider";
 import "./Drawer.scss";
 import DrawerGroupAcount from "./DrawerContentComponent/DrawerGroupAcount";
 import DrawerMessage from "./DrawerContentComponent/DrawerMessage";
@@ -13,7 +16,7 @@ import DrawerNotification from "./DrawerContentComponent/DrawerNotification";
 import DrawerSetting from "./DrawerContentComponent/DrawerSetting";
 import DrawerSupport from "./DrawerContentComponent/DrawerSupport";
 
-const generateContent = typeDrawer => {
+const generateContent = (typeDrawer, optionsDrawer) => {
   switch (typeDrawer) {
     case DRAWER_TYPE.SUPPORT:
       return <DrawerSupport />;
@@ -29,12 +32,22 @@ const generateContent = typeDrawer => {
       return <DrawerNewGroup />;
     case DRAWER_TYPE.ADD_USER:
       return <AddUser />;
+    case DRAWER_TYPE.KANBAN.PROJECTS:
+      return <ListProjectKanban projectId={optionsDrawer.projectId} />;
+    case DRAWER_TYPE.KANBAN.MEMBERS:
+      return <KanbanMemberSlider 
+        {...optionsDrawer}
+      />;
+    case DRAWER_TYPE.KANBAN.FILTER:
+      return <KanbanFilterSlider 
+        {...optionsDrawer}
+      />;
     default:
       return "";
   }
 };
 const DrawerComponent = props => {
-  const { typeDrawer, actionVisibleDrawerMessage, anchorDrawer } = props;
+  const { typeDrawer, actionVisibleDrawerMessage, anchorDrawer, optionsDrawer } = props;
   return (
     <Drawer
       anchor={anchorDrawer}
@@ -49,8 +62,9 @@ const DrawerComponent = props => {
             ? "anchor-drawer-right"
             : "anchor-drawer-top"
         }`}
+      transitionDuration={0}
     >
-      {generateContent(typeDrawer)}
+      {generateContent(typeDrawer, optionsDrawer)}
     </Drawer>
   );
 };
@@ -58,7 +72,8 @@ const DrawerComponent = props => {
 export default connect(
   state => ({
     typeDrawer: state.system.typeDrawer,
-    anchorDrawer: state.system.anchorDrawer
+    anchorDrawer: state.system.anchorDrawer,
+    optionsDrawer: state.system.optionsDrawer,
   }),
   {
     actionVisibleDrawerMessage

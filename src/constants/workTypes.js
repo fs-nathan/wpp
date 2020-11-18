@@ -1,0 +1,1 @@
+export const workTypes = ["IDS_WP_JOB", "IDS_WP_PROJECT", "IDS_WP_PROCESS", "IDS_WP_PLAN", "IDS_WP_CAMPAIGN"]

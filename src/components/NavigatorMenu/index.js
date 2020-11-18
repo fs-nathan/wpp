@@ -37,8 +37,7 @@ class NavigatorMenu extends React.Component {
         id={`gantt-p-${item.name}`}
         onClick={() => {
           this.props.history.push(this.props.location.pathname.replace(match.url, item.url))
-        }
-        }
+        }}
         onMouseOver={(e) => {
           document.getElementById(`gantt-p-${item.name}`).style.background = get(this.props.profileDetail, 'group_active.color', '#f2f2f2')
         }}
@@ -51,7 +50,7 @@ class NavigatorMenu extends React.Component {
       </p>
     }
     )
-    return <div className="gantt--navigation">
+    return <div className={`gantt--navigation ${this.props.className}`}>
       {listGirdRender}
     </div>
   }

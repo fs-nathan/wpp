@@ -45,6 +45,9 @@ const ResetPassword = loadable(
 const DepartmentPage = loadable(() => import("views/DepartmentPage"), {
   fallback: <div />,
 });
+const KanbanPage = loadable(() => import("views/KanbanPage"), {
+  fallback: <div />,
+});
 const HomePage = loadable(() => import("views/HomePage"), {
   fallback: <div />,
 });
@@ -84,6 +87,7 @@ const WorkplacePage = loadable(() => import("views/WorkplacePage"), {
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },
+  { path: Routes.KANBAN, component: () => <KanbanPage /> },
   { path: Routes.PROJECT_GRANT, component: () => <GanttPage /> },
   { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} />, },
   { path: Routes.PROJECTS, component: () => <ProjectGroupPage /> },

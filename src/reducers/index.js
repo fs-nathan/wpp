@@ -122,6 +122,17 @@ import settingStartingDay, {
 import chat, { initialState as chatInitialState } from "./chat/chat";
 import documents from "./documents";
 import gantt, { initialState as ganttInitialState } from "./gantt";
+import kanbanDetailProject, { initialState as kanbanDetailProjectInitialState } from "./kanban/detailProject";
+import kanbanListTask, { initialState as kanbanListTaskInitialState } from "./kanban/listTasks";
+import kanbanSortTask, { initialState as kanbanSortTaskInitialState } from "./kanban/sortTask";
+import kanbanSortGroupTask, { initialState as kanbanSortGroupTaskInitialState } from "./kanban/sortGroupTask";
+import kanbanGetManager, { initialState as kanbanGetManagerInitialState } from "./kanban/getManager";
+import kanbanAddManagers, { initialState as kanbanAddManagersInitialState } from "./kanban/addManagers";
+import kanbanRemoveManagers, { initialState as kanbanRemoveManagersInitialState } from "./kanban/removeManagers";
+import kanbanUpdateManagers, { initialState as kanbanUpdateManagersInitialState } from "./kanban/updateManagers";
+import kanbanSetting, { initialState as kanbanSettingInitialState } from './kanban/setting';
+import kanbanDetailTask, { initialState as kanbanDetailTaskInitialState } from './kanban/detailTask';
+import kanbanUpdateTask, { initialState as kanbanUpdateTaskInitialState } from './kanban/updateTask';
 import copyGroupTask, {
   initialState as copyGroupTaskInitialState,
 } from "./groupTask/copyGroupTask";
@@ -637,6 +648,19 @@ const rootReducer = combineReducers({
     remindDetail
   }),
   localStorage,
+  kanban: combineReducers({
+    detailProject: kanbanDetailProject,
+    listTask: kanbanListTask,
+    sortTask: kanbanSortTask,
+    sortGroupTask: kanbanSortGroupTask,
+    getManager: kanbanGetManager,
+    addManagers: kanbanAddManagers,
+    removeManagers: kanbanRemoveManagers,
+    updateManagers: kanbanUpdateManagers,
+    setting: kanbanSetting,
+    detailTask: kanbanDetailTask,
+    updateTask: kanbanUpdateTask,
+  }),
 });
 
 export const DEFAULT_STATE = {
@@ -666,6 +690,19 @@ export const DEFAULT_STATE = {
     permissionUser: permissionUserInitialState,
     updateGroupPermissionUser: updateGroupPermissionUserInitialState,
     removeGroupPermissionUser: removeGroupPermissionUserInitialState,
+  },
+  kanban: {
+    detailProject: kanbanDetailProjectInitialState,
+    listTask: kanbanListTaskInitialState,
+    sortTask: kanbanSortTaskInitialState,
+    sortGroupTask: kanbanSortGroupTaskInitialState,
+    getManager: kanbanGetManagerInitialState,
+    addManagers: kanbanAddManagersInitialState,
+    removeManagers: kanbanRemoveManagersInitialState,
+    updateManagers: kanbanUpdateManagersInitialState,
+    setting: kanbanSettingInitialState,
+    detailTask: kanbanDetailTaskInitialState,
+    updateTask: kanbanUpdateTaskInitialState,
   },
   icon: {
     listIcon: listIconInitialState,
