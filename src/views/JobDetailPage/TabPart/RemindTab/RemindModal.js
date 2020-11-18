@@ -154,7 +154,8 @@ function RemindModal(props) {
       type: data.type,
       content: data.content,
       date_remind: data.date_remind + " " + data.time_remind,
-      type_remind: data.type_remind
+      type_remind: data.type_remind,
+      frequency: data.frequency
     }
     const dataCreateRemindDuration = {
       task_id: taskId,

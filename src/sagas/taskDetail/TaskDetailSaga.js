@@ -353,6 +353,7 @@ function* pinRemind(action) {
     });
     yield put(actions.pinRemindSuccess(res.data));
     yield put(actions.getRemind({ taskId }));
+    yield put(getDataPinOnTaskChat(taskId));
     // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -370,6 +371,7 @@ function* unpinRemind(action) {
     });
     yield put(actions.unPinRemindSuccess(res.data));
     yield put(actions.getRemind({ taskId }));
+    yield put(getDataPinOnTaskChat(taskId));
     // yield put(appendChat(res.data));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
