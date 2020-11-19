@@ -1,5 +1,5 @@
 @mixin view_KanbanColumn___container {
-  width: 400px;
+  width: 380px;
   height: 100%;
   border: 1px solid rgba(0, 0, 0, .1);
   background-color: #fff;
@@ -21,7 +21,7 @@
 }
 
 .view_KanbanColumn___list-scroll {
-  height: calc(100% - 103px) !important;
+  height: calc(100% - 111px) !important;
   & > div:nth-child(3) {
     right: 0 !important;
   }
@@ -106,6 +106,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 30px;
 }
 
 .view_KanbanColumn___code-box {
