@@ -71,14 +71,15 @@ function CopyProject({
       })}
       searchPatern={searchPatern} setSearchPatern={setSearchPatern}
       groups={newGroups}
-      handleCopyProject={(projectId, name, description, startDate, isCopyMember, workType) =>
+      handleCopyProject={(projectId, name, description, startDate, isCopyMember, workType, workGroup) =>
         doCopyProject({
           projectId: projectId === 'default' ? null : projectId,
           name,
           description,
           startDate,
           isCopyMember,
-          workType
+          workType,
+          workGroup
         })
       }
     />
@@ -96,7 +97,7 @@ const mapDispatchToProps = dispatch => {
   return {
     doReload: (options) => dispatch(listProject(options, true)),
     doListProjectGroup: (options, quite) => dispatch(listProjectGroup(options, quite)),
-    doCopyProject: ({ projectId, name, description, startDate, isCopyMember, workType }) => dispatch(copyProject({ projectId, name, description, startDate, isCopyMember, workType })),
+    doCopyProject: ({ projectId, name, description, startDate, isCopyMember, workType, workGroup }) => dispatch(copyProject({ projectId, name, description, startDate, isCopyMember, workType, workGroup })),
   }
 };
 

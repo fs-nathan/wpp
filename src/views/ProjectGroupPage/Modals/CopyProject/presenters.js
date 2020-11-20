@@ -131,7 +131,6 @@ function CopyProject({
   doReload,
   projectGroupId, timeRange,
 }) {
-
   const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription] = useMaxlenString('', 500);
@@ -144,6 +143,16 @@ function CopyProject({
   const [titleLeft, setTitleLeft] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [groupFiltered, setGroupFiltered] = React.useState([]);
+  const [workingGroup, setWorkingGroup] = React.useState(null);
+  let workingGroupFilter = []
+  groups.map(e => {
+    if (e.work_types.includes(String(workingTypeNew))) {
+      workingGroupFilter.push(e)
+    }
+  })
+  if (workingGroup && !workingGroupFilter.find(e => e.id == workingGroup)) {
+    setWorkingGroup(null)
+  }
 
   const formatDate = useSelector(state => state.system.profile.format_date);
 
@@ -237,6 +246,7 @@ function CopyProject({
           moment(startDate).format('YYYY-MM-DD'),
           isCopyMember,
           workingTypeNew,
+          workingGroup
         );
         setActiveLoading(true);
       }}
@@ -306,6 +316,21 @@ function CopyProject({
                   value: workingTypeNew,
                 }}
                 onChange={({ value: workingTypeNew }) => setWorkingTypeNew(workingTypeNew)}
+                isRequired={true}
+              />
+            </div>
+            <div style={{marginTop: "10px"}}>
+              <MySelect
+                label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
+                options={workingGroupFilter.map(item => ({
+                  label: item.name,
+                  value: item.id,
+                }))}
+                value={{
+                  label: get(find(groups, { id: workingGroup }), 'name'),
+                  value: workingGroup,
+                }}
+                onChange={({ value: workingGroup }) => setWorkingGroup(workingGroup)}
                 isRequired={true}
               />
             </div>
