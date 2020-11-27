@@ -107,7 +107,7 @@ function CalendarWeeklyRightPartPresenter({
                               scheduleOfWeek.data.map((item, index) => {
                                 if (item.schedules.length !== 0) {
                                   return (
-                                    <>
+                                    <React.Fragment key={index}>
                                       <TableRow>
                                         <TableCell colSpan={6} className="view_WeeklyCalendar_rightContainer__TableHeaderGroup">
                                           <Typography component={'div'} className="header">
@@ -121,7 +121,7 @@ function CalendarWeeklyRightPartPresenter({
                                       {
                                         item.schedules.map((schedule) => {
                                           return (
-                                            <TableRow hover>
+                                            <TableRow hover key={schedule.id}>
                                               <TableCell className="schedule_item_remind">
                                                 {
                                                   schedule.is_remind && (
@@ -170,7 +170,7 @@ function CalendarWeeklyRightPartPresenter({
                                           )
                                         })
                                       }
-                                    </>
+                                    </React.Fragment>
                                   );
                                 }
                               })

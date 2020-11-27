@@ -56,7 +56,7 @@ const NotificationWorkPlus = props => {
                       </TableCell>
                       <TableCell align="left" width="75%">
                         {row.title}&nbsp;&nbsp;
-                        <span className={`action-btn ${row.type}`}>
+                        <span className={`action-btn ${row.type_code === 1 ? "Important" : "Normal"}`}>
                           <span>{row.type}</span>
                         </span>
                       </TableCell>

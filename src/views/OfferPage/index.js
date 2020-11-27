@@ -385,6 +385,7 @@ function OfferPage() {
                     }}
                     content={getDeleteOfferConfirmModalMsg(t)}
                     manualClose={true}
+                    onCancle={() => setShowDeleteOfferConfirmModal(false)}
                   />
                 )
               }

@@ -146,6 +146,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     setQuickTask,
     timeType,
     setTimeType,
+    timeRange,
     setTimeRange,
     expand,
     handleExpand,
@@ -187,7 +188,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
     title: props.title,
     subActions: [
       haveTimePopper ? {
-        label: times[timeType].title,
+        label: timeType ? times[timeType].title : "",
         iconPath: mdiCalendar,
         onClick: (evt) => setTimeAnchor(evt.currentTarget),
       } : null,
@@ -245,6 +246,7 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
               anchorEl={timeAnchor}
               setAnchorEl={setTimeAnchor}
               timeOptionDefault={timeType}
+              timeRangeDefault={timeRange}
               handleTimeRange={(timeType, startDate, endDate) => {
                 setTimeType(timeType);
                 setTimeRange({ startDate, endDate });

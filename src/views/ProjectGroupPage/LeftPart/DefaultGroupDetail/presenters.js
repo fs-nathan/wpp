@@ -68,7 +68,7 @@ function DefaultGroupDetail({
                         t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
                         t("DMH.VIEW.PGP.LEFT.INFO.STATS.HIDDEN"),
                       ],
-                      colors: projectColors.splice(4, 1),
+                      colors: projectColors.slice(0, 5),
                     }}
                     series={[
                       get(group.group, 'statistics.task_waiting', 0),

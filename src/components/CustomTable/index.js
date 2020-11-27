@@ -126,11 +126,11 @@ function CustomTable() {
         <Header>
           <LeftHeader>
             <div>
-              <p>
-                {typeof get(options, 'title') === 'function'
-                  ? options.title()
-                  : get(options, 'title', '')}
-              </p>
+              {
+                typeof get(options, 'title') === 'function'
+                ? options.title()
+                : get(options, 'title', '')
+              }
             </div>
             {get(options, 'subTitle') ? (
               <div>

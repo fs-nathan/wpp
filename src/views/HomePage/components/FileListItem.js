@@ -15,7 +15,7 @@ export const FileListItem = ({ file }) => {
         <Avatar src={FileType(file.type)}></Avatar>
       </ListItemAvatar>
       <ListItemText
-        nowrap
+        nowrap="true"
         primary={get(file, "name", "")}
         secondary={`${file.type} - ${file.size}`}
       />

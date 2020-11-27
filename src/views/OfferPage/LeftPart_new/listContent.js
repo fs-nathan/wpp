@@ -16,7 +16,7 @@ const ListContent = props => {
     <>
       {
         props.subMenu && props.listMenu.map((item, index) => (
-          <Box>
+          <Box key={"lc" + index}>
             <DropdownItem name={item.title} subMenu={item.projects} />
           </Box>
         ))

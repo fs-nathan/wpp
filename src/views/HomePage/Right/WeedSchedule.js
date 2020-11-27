@@ -369,6 +369,7 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
                 return (
                   i === 0 && (
                     <Box
+                    key="no-data-weekschedule"
                       display="flex"
                       justifyContent="center"
                       flexDirection="column"

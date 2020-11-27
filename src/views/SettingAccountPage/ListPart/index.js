@@ -1,28 +1,36 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
-import { actionGetNotification, getNotificationService } from '../../../actions/account';
+import { actionGetNotification, getNotificationService, getNotificationStatusService } from '../../../actions/account';
 import LeftSetting from '../../../components/LeftSetting/LeftSetting';
 import { Routes } from '../../../constants/routes';
 import { isEmpty } from '../../../helpers/utils/isEmpty';
 import '../SettingAccount.scss';
 
 const getContent = value => {
-  if (value > 0) {
-    return <span className="system-notification-badge">{value > 99 ? '99+' : value}</span>;
+  if (value) {
+    return <span className="system-notification-badge">N</span>;
   }
   return null;
 };
 const ListPart = props => {
   const { t } = useTranslation();
+  const [haveNewNotiSystem, setNewNotiSystem] = useState(false)
   const handleFetchData = async () => {
     try {
       const { data } = await getNotificationService();
       props.actionGetNotification(data.notifications || []);
     } catch (err) { }
   };
+  const handleFetchDataStatusNewNotification = async () => {
+    try {
+      const res = await getNotificationStatusService();
+      setNewNotiSystem(res.data.new_notification)
+    } catch (err) { }
+  };
   useEffect(() => {
     handleFetchData(); // eslint-disable-next-line
+    handleFetchDataStatusNewNotification();
   }, []);
   const listMenu = [
     {
@@ -51,7 +59,7 @@ const ListPart = props => {
       title: t('IDS_WP_NOTICE_WORKPLUS'),
       url: Routes.SETTING_ACCOUNT_NOTIFI,
       rightIcon: () =>
-        getContent(!isEmpty(props.notification) ? props.notification.length : 0)
+        getContent(haveNewNotiSystem)
     }
   ];
   return <LeftSetting title={t('IDS_WP_SETUP_ACCOUNT')} listMenu={listMenu} />;

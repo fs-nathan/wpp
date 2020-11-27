@@ -121,7 +121,7 @@ export function TaskTableRecently({ offers }) {
             </TableHead>
             <TableBody>
               {offers.map((offer) => (
-                <TableRow>
+                <TableRow key={offer.id}>
                   <TableCell component="th" scope="row">
                     <Avatar className={classes.small_avatar} src={get(offer, "user_create_avatar")} />
                   </TableCell>
@@ -179,14 +179,14 @@ export function TaskTableRecently({ offers }) {
                   <TableCell>
                     <Grid direction="row" container>
                       {get(offer, "member_monitor").map(member =>
-                        <Avatar className={classes.tiny_avatar} src={get(member, "avatar")} />
+                        <Avatar className={classes.tiny_avatar} src={get(member, "avatar")} key={"m-m-" + member.id} />
                       )}
                     </Grid>
                   </TableCell>
                   <TableCell >
                     <Grid container >
                       {get(offer, "member_handled").map(member =>
-                        <Avatar className={classes.tiny_avatar} src={get(member, "avatar")} />
+                        <Avatar className={classes.tiny_avatar} src={get(member, "avatar")} key={"m-h-" + member.id} />
                       )}
                     </Grid>
                   </TableCell>

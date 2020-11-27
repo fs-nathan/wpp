@@ -154,7 +154,7 @@ const MiddleContent = ({
                 <div className="offerDetail-memberToAccept-container">
                   <Grid container>
                     {get(condition_accept, "member_accept", []).map(member =>
-                      <>
+                      <React.Fragment key={"member-approved-" + member.id}>
                         <Grid item xs={12} className="offerDetail-handlingPerson-item">
                           <Grid container>
                             <Grid item xs={1}>
@@ -168,7 +168,7 @@ const MiddleContent = ({
                             </Grid>
                           </Grid>
                         </Grid>
-                      </>
+                      </React.Fragment>
                     )}
                   </Grid>
                 </div>
@@ -191,14 +191,15 @@ const MiddleContent = ({
               container
               justify="space-between"
               alignItems="flex-start"
+              key={member.id}
             >
-              <Grid items>
+              <Grid>
                 <Avatar
                   className="offerDetail-approvalResult-member-avatar"
                   src={get(member, "avatar")}
                 />
               </Grid>
-              <Grid items xs={7} direction="column">
+              <Grid item xs={7} container direction="column">
                 <div className="offerDetail-approvalResult-member-name">{get(member, "name")}</div>
                 <div className="offerDetail-approvalResult-member-position">{get(member, 'position')} {get(member, 'position') && <span> - </span>} {get(member, 'room')}</div>
                 <div className="offerDetail-approvalResult-member-date">

@@ -222,10 +222,10 @@ const RenderListFile = ({ can_modify, offer_id, documents, bgColor, additionQuer
       <div>
         <div className="offerDetail-attachedDocument-title">{t("VIEW_OFFER_LABEL_ATTACHMENTS")}</div>
       </div>
-      <Grid container spacing="2">
+      <Grid container spacing={2}>
         {!isEmpty(documents) &&
           reRenDerDocumentsOnDelete.map((document) => (
-            <Grid item xs={12} className="offerDetail-attachedDocument-fileContainer">
+            <Grid item xs={12} className="offerDetail-attachedDocument-fileContainer" key={document.id}>
               <div className="offerDetail-attachedDocument-fileItem">
                 <div className="offerDetail-attachedDocument-fileItem-fileImage">
                   <img height="30" width="30" src={get(document, "file_icon")} />
@@ -356,7 +356,7 @@ const Handler = ({ can_update_member_handle, offer_id, userCreateId, allMembers,
           <Grid container>
             {!isEmpty(addedHandlers) && (
               addedHandlers.map((member, i) => (
-                <Grid item xs={12} className="offerDetail-handlingPerson-item">
+                <Grid item xs={12} className="offerDetail-handlingPerson-item" key={member.id}>
                   <Grid container>
                     <Grid item xs={1}>
                       <Avatar src={get(member, "avatar")} />
@@ -457,7 +457,7 @@ const Monitor = ({ can_update_member_monitor, offer_id, userCreateId, allMembers
         <Grid container>
           {!isEmpty(addedMonitors) && (
             addedMonitors.map(member => (
-              <Grid item xs={12} className="offerDetail-monitoringPerson-item">
+              <Grid item xs={12} className="offerDetail-monitoringPerson-item" key={member.id}>
                 <Grid container>
                   <Grid item xs={1}>
                     <Avatar src={get(member, "avatar")} />

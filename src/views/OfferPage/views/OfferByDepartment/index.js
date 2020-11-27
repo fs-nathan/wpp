@@ -10,14 +10,15 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
-import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW } from '../../contants/localStorage';
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS } from "views/OfferPage/redux/types";
+import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW_CUSTOM } from '../../contants/localStorage';
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByDepartment, loadOfferByDepartmentID } from "../../redux/actions";
 import Content from "./Content";
 import { getDepartmentGroupByKeyword, getFirstSummaryGroup } from "./selector";
+import {getValueInLocalStorage} from '../../utils';
 export const PageContainer = styled(Container)`
   overflow: auto;
   padding: 16px;
@@ -38,6 +39,7 @@ function Department({
         timeType,
         setTimeType,
         timeRange,
+        setTimeRange,
         setTitle
     } = useContext(OfferPageContext);
 
@@ -45,6 +47,7 @@ function Department({
     const isMounted = useMountedState();
     const [layoutTitle, setLayoutTitle] = useState('');
     const [timeFilterTypeOfferByDepartment, storeTimeFilterTypeOfferByDepartment] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, { timeType: 1 });
+    const [syncTimeType, setSyncTimeType] = useState(false)
 
     useEffect(() => {
         if (isMounted) {
@@ -53,23 +56,35 @@ function Department({
     }, [isMounted, setTitle, t]);
 
     useEffect(() => {
-        if (isMounted) {
-            setTimeType(timeFilterTypeOfferByDepartment.timeType);
+        const timeTypeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, 1, 'timeType')
+        setTimeType(timeTypeStored);
+        setSyncTimeType(true)
+        if (timeTypeStored === 6) {
+            const timeRangeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW_CUSTOM, null)
+            const timeRangeSetState = timeRangeStored ? timeRangeStored : {
+                startDate: null,
+                endDate: null
+            }
+            setTimeRange(timeRangeSetState)
         }
-    }, [isMounted]);
+    }, []);
 
     useEffect(() => {
-        if (isMounted) {
-            storeTimeFilterTypeOfferByDepartment({
-                ...timeFilterTypeOfferByDepartment,
-                timeType
-            });
+        if (syncTimeType) {
+            setTimeType(timeType);
+            window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, JSON.stringify({timeType}))
+            if (timeType === 6) {
+                window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW_CUSTOM, JSON.stringify(timeRange))
+            }
         }
-    }, [isMounted, timeType]);
-
-    useEffect(() => {
-        doListOffersByDepartment({ timeRange });
     }, [timeRange]);
+
+    useEffect(() => {
+        if (syncTimeType) {
+            const timeRangeThis = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, 1, 'timeType') !== 5 ? timeRange : {}
+            doListOffersByDepartment({ timeRange: timeRangeThis });
+        }
+    }, [syncTimeType, timeRange, syncTimeType]);
 
     useEffect(() => {
         if (isMounted) {
@@ -79,20 +94,23 @@ function Department({
     }, [isMounted, history.location.pathname, idFirstGroup]);
 
     useEffect(() => {
-        if (idFirstGroup !== null) {
+        if (idFirstGroup && !id) {
             history.push(Routes.OFFERBYDEPARTMENT + "/" + idFirstGroup);
         }
     }, [idFirstGroup]);
 
     useEffect(() => {
-        if (!isNil(id)) {
-            const startDate = moment(timeRange.startDate).format("YYYY-MM-DD");
-            const endDate = moment(timeRange.endDate).format("YYYY-MM-DD");
+        if (!isNil(id) && syncTimeType) {
+            const startDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+            const endDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
             doListOffersByDepartmentID({ id, startDate, endDate });
 
             const refreshData = () => {
                 doListOffersByDepartmentID({ id, startDate, endDate });
-                doListOffersByDepartment({ timeRange });
+                doListOffersByDepartment({ timeRange: {
+                    startDate: startDate,
+                    endDate: endDate
+                } });
             }
 
             const refreshOffersList = () => {
@@ -102,13 +120,17 @@ function Department({
             CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshData);
             CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshData);
             CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
+            CustomEventListener(ADD_MEMBER_MONITOR_SUCCESS, refreshOffersList);
+            CustomEventListener(DELETE_MEMBER_MONITOR_SUCCESS, refreshOffersList);
             return () => {
                 CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshData);
                 CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshData);
                 CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
+                CustomEventDispose(ADD_MEMBER_MONITOR_SUCCESS, refreshOffersList);
+                CustomEventDispose(DELETE_MEMBER_MONITOR_SUCCESS, refreshOffersList);
             }
         }
-    }, [id, timeRange]);
+    }, [id, timeRange, syncTimeType]);
     // Redirect to first group when enter
     return (
         <>

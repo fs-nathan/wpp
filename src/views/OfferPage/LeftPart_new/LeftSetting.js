@@ -46,7 +46,6 @@ const LeftSetting = props => {
   }
 
   React.useEffect(() => {
-    console.log(summaryProject);
     if(summaryProject.projects) {
       let projects = [];
       forEach(summaryProject.projects, (item) => {
@@ -90,15 +89,15 @@ const LeftSetting = props => {
   return (
     <LeftSideContainer
       title={props.title}
-      leftAction={checkBeforeShowLeftIcon() && {
+      leftAction={checkBeforeShowLeftIcon() ? {
         iconPath: mdiChevronLeft,
         tooltip: t("IDS_WP_BACK"),
         onClick: () => history.push(Routes.OVERVIEW)
-      }}
-      rightAction={checkBeforeShowRightIcon() && {
+      } : {}}
+      rightAction={checkBeforeShowRightIcon() ? {
         iconPath: mdiPlus,
         onClick: () => props.setOpenModalOfferByGroup(true)
-      }}
+      } : {}}
 
     >
       {

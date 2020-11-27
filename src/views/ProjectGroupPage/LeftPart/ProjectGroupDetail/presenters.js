@@ -82,7 +82,7 @@ function ProjectGroupDetail({
                         t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
                         t("DMH.VIEW.PGP.LEFT.INFO.STATS.HIDDEN"),
                       ],
-                      colors: projectColors.splice(4, 1),
+                      colors: projectColors.slice(0, 5),
                     }}
                     series={[
                       get(group.group, 'statistics.task_waiting', 0),
@@ -113,7 +113,7 @@ function ProjectGroupDetail({
                 <div className={"view_ProjectGroup_List_statistic"} style={{margin: "10px 0 20px 0", justifyContent: "center", width: "100%"}}>
                   {get(group.group, 'work_types', []).map((item) => {
                     return (
-                      <div className={"view_ProjectGroup_List_statistic_item"}>
+                      <div key={"wt" + item} className={"view_ProjectGroup_List_statistic_item"}>
                         <img src={workType[parseInt(item)].image} alt="" width={15} height={15}/>
                         <span>{get(group.group, `statistic.${workType[parseInt(item)].key}`, 0)}</span>
                       </div>

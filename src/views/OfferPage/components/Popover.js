@@ -54,7 +54,7 @@ function ExpandPopover({ offer_id, url_redirect }) {
 
     return (
         <div>
-            <IconButton aria-label="delete" a variant="contained" className={classes.button} onClick={handleClick}>
+            <IconButton aria-label="delete" variant="contained" className={classes.button} onClick={handleClick}>
                 <MoreVertIcon />
             </IconButton>
             <Popover

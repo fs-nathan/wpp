@@ -2,19 +2,20 @@ import { Box, Container, Grid } from "@material-ui/core";
 import Icon from "@mdi/react";
 import { useLocalStorage } from "hooks";
 import moment from "moment";
-import React, { useContext, useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { useTimes } from '../../../../components/CustomPopover';
-import { TIME_FILTER_TYPE_OFFER_OVERVIEW } from '../../contants/localStorage';
+import { TIME_FILTER_TYPE_OFFER_OVERVIEW, TIME_FILTER_TYPE_OFFER_OVERVIEW_CUSTOM } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadSummaryOverview } from "../../redux/actions";
 import { GroupBlock } from "./GroupBlock";
 import { OfferBlock } from "./OfferBlock";
 import { getGroupOffers, getMyOffers, getPriorityOffers, getStatusOffers } from './selector';
+import {getValueInLocalStorage} from '../../utils';
 export const PageContainer = styled(Container)`
   overflow: auto;
   background: #f6f6f6;
@@ -36,7 +37,7 @@ const stringsGroupOffer = [
 const Overview = () => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { listMenu, timeType, timeRange = {}, setTitle, setTimeType } = useContext(OfferPageContext);
+  const { listMenu, timeType, timeRange = {}, setTitle, setTimeType, setTimeRange } = useContext(OfferPageContext);
   const isMounted = useMountedState();
   const times = useTimes();
   const myOffers = useSelector(state => getMyOffers(state))
@@ -44,6 +45,7 @@ const Overview = () => {
   const priorityOffers = useSelector(state => getPriorityOffers(state))
   const groupOffers = useSelector(getGroupOffers);
   const [timeFilterTypeOfferOverview, storeTimeFilterTypeOfferOverview] = useLocalStorage(TIME_FILTER_TYPE_OFFER_OVERVIEW, { timeType: 1 });
+  const [syncTimeType, setSyncTimeType] = useState(false)
 
   useEffect(() => {
     if (isMounted) {
@@ -52,17 +54,35 @@ const Overview = () => {
   }, [isMounted]);
 
   useEffect(() => {
-    if (isMounted) {
-      storeTimeFilterTypeOfferOverview({
-        ...timeFilterTypeOfferOverview,
-        timeType
-      });
+    const timeTypeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_OVERVIEW, 1, 'timeType');
+    setTimeType(timeTypeStored);
+    setSyncTimeType(true)
+    if (timeTypeStored === 6) {
+      const timeRangeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_OVERVIEW_CUSTOM, null)
+      const timeRangeSetState = timeRangeStored ? timeRangeStored : {
+        startDate: null,
+        endDate: null
+      }
+      setTimeRange(timeRangeSetState)
     }
-  }, [isMounted, timeType]);
+  }, []);
 
   useEffect(() => {
-    dispatch(loadSummaryOverview({ timeRange }));
-  }, [dispatch, timeRange]);
+    if (syncTimeType) {
+      setTimeType(timeType);
+      window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_OVERVIEW, JSON.stringify({timeType}))
+      if (timeType == 6) {
+        window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_OVERVIEW_CUSTOM, JSON.stringify(timeRange))
+      }
+    }
+  }, [timeRange]);
+
+  useEffect(() => {
+    if (syncTimeType) {
+      const timeRangeThis = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_OVERVIEW, 1, 'timeType') !== 5 ? timeRange : {}
+      dispatch(loadSummaryOverview({ timeRange: timeRangeThis }));
+    }
+  }, [timeRange, syncTimeType]);
 
   useEffect(() => {
     isMounted &&
