@@ -508,18 +508,22 @@ function AllProjectTable({
             }}
           >
             {filters.map((filter, index) => (
-              <CustomMenuItem
+              <MenuItem
                 key={index}
                 onClick={evt => {
                   handleFilterType(index)
                   setFilterAnchor(null)
                 }}
-                selected={filterType === index}
+                button={false}
+                className={`${filterType === index
+                  ? 'view_ProjectGroup_Table_All___menu-item-selected'
+                  : 'view_ProjectGroup_Table_All___menu-item'
+                  }`}
               >
                 <MyIcon path={mdiCheckCircle} size={0.7} />
                 <span>{filter.title}</span>
                 <span>{get(projectSummary, filter.field, 0)}</span>
-              </CustomMenuItem>
+              </MenuItem>
             ))}
           </Menu>
           <DownloadPopover

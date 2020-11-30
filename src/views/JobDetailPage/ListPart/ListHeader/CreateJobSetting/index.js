@@ -10,7 +10,7 @@ import './styles.scss';
 
 export const StyledTypography = styled(Typography)`
   .Mui-checked {
-    color: ${props => props.selectedColor};
+    color: ${props => props.selectedcolor};
   }
 `
 
@@ -48,7 +48,7 @@ function CreateJobSetting(props) {
     >
       <React.Fragment>
         <StyledTypography
-          selectedColor={groupActiveColor}
+          selectedcolor={groupActiveColor}
           className="CreateJobSetting--title">
           <Checkbox
             checked={listTaskDataType === listTaskDataTypes[1]}

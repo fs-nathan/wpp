@@ -24,6 +24,7 @@ const NOTIFICATION_COMMENT_IN_OFFER = 35;
 const NOTIFICATION_TASK_STARTED = 36;
 const NOTIFICATION_TASK_ENDED = 37;
 const NOTIFICATION_ORDER_APPROVED = 38;
+const NOTIFICATION_NEW_SYSTEM_NOTIFICATION = 41;
 
 const NotificationItemCommon = props => {
   const { data_notification } = props.item;
@@ -143,6 +144,9 @@ const NotificationItemCommon = props => {
       case NOTIFICATION_OFFER_HAS_APPROVED:
       case NOTIFICATION_DELETE_APPROVED_OFFER:
         props.changeVisibleOfferDetailModal({offer_id: data_notification.offer_id, visible: true});
+        break;
+      case NOTIFICATION_NEW_SYSTEM_NOTIFICATION:
+        props.history.push(Routes.SETTING_ACCOUNT_NOTIFI + `?id=${data_notification.system_notification_id}`);
         break;
       default:
         return;

@@ -6,7 +6,7 @@ import { currentColorSelector } from 'views/JobDetailPage/selectors';
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   .Mui-checked {
-    color: ${props => props.selectedColor};
+    color: ${props => props.selectedcolor};
   }
 `
 
@@ -35,7 +35,7 @@ function CommonControlForm({
       >
         {labels.map((item, key) => (
           <StyledFormControlLabel
-            selectedColor={groupActiveColor}
+            selectedcolor={groupActiveColor}
             key={key}
             value={item.value}
             control={<Radio color="primary" />}

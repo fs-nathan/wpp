@@ -296,7 +296,7 @@ function MainLayout({
       const task =
         findTask(listTaskDetail, task_id) ||
         findIndex(listDataNotRoom, ({ id }) => id === task_id) !== -1;
-      if (!task) {
+      if (!task || data.type === CHAT_TYPE.UPDATE_GROUP_TASK) {
         getListTaskDetail(projectId);
       } else {
         // if (task_id !== taskDetails.id) {

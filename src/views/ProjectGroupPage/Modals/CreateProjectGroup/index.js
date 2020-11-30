@@ -28,7 +28,6 @@ function CreateProjectGroup({
       default: return;
     }
   }
-
   return (
     <>
       <CreateProjectGroupPresenter
