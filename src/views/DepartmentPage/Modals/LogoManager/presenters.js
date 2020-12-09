@@ -86,7 +86,7 @@ const LogoMnanagerStateLess = () => {
               key={get(icon, "id", "")}
               isSelect={
                 isSelect &&
-                get(selectedIcon, "id", "x") === get(icon, "id", "y")
+                get(selectedIcon, "url_sort", "x") === get(icon, "url_sort", "y")
               }
             >
               <ButtonBase
@@ -223,7 +223,7 @@ const LogoManagerModalWrapper = ({ children }) => {
               key={get(icon, "id", "")}
               isSelect={
                 isSelect &&
-                get(selectedIcon, "id", "x") === get(icon, "id", "y")
+                get(selectedIcon, "url_sort", "x") === get(icon, "url_sort", "y")
               }
             >
               <ButtonBase

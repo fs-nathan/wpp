@@ -53,8 +53,7 @@ function CreateAndUpdateDepartment({
       setDescription(get(updateDepartment, 'description', ''));
       setIcon({
         url_full: get(updateDepartment, 'icon', ''),
-        url_sort: get(updateDepartment, 'icon', '')
-          .replace('https://storage.googleapis.com', ''),
+        url_sort: get(updateDepartment, 'icon_sort', '')
       });
     }
     // eslint-disable-next-line
@@ -146,6 +145,7 @@ function CreateAndUpdateDepartment({
               label={t('DMH.VIEW.DP.MODAL.CUDP.LOGO_SELECT')}
               onClick={() => handleOpenModal('LOGO', {
                 doSelectIcon: icon => setIcon(icon),
+                selectedIcon: icon
               })}
             />
           </div>

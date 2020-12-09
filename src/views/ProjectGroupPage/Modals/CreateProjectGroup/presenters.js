@@ -181,14 +181,14 @@ function CreateProjectGroup({
             label={workingTypes[0].type}
           />
         </abbr>
-        <abbr title={workingTypes[1].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROJECT")})}>
+        <abbr title={workingTypes[1].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROJECT")}) : ""}>
           <FormControlLabel
             control={<Checkbox checked={workingTypes[1].checked} onChange={() => handleWorkingTypeChange(1)} name={workingTypes[1].type} color={"primary"}/>}
             disabled={workingTypes[1].disabled}
             label={workingTypes[1].type}
           />
         </abbr>
-        <abbr title={workingTypes[2].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROCESS")})}>
+        <abbr title={workingTypes[2].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROCESS")}) : ""}>
           <FormControlLabel
             control={<Checkbox checked={workingTypes[2].checked} onChange={() => handleWorkingTypeChange(2)} name={workingTypes[2].type} color={"primary"}/>}
             disabled={workingTypes[2].disabled}
