@@ -172,6 +172,7 @@ function TabBody(props) {
 
         <ApproveOfferDialog
           isOpen={openApprove}
+          setOpen={() => {}}
           handleClickClose={() => setOpenApprove(false)}
           handleClickOpen={() => setOpenApprove(true)}
           item={selectedItem}

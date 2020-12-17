@@ -193,6 +193,10 @@ export const TimeRangePopover = ({
   anchorEl = null, setAnchorEl = () => null,
   timeOptionDefault = 0,
   handleTimeRange = () => null,
+  timeRangeDefault = {
+    startDate: null,
+    endDate: null
+  }
 }) => {
   const { t } = useTranslation();
   const [timeOption, setTimeOption] = React.useState(0);
@@ -202,7 +206,7 @@ export const TimeRangePopover = ({
 
   React.useEffect(() => {
     setTimeOption(timeOptionDefault);
-    const [start, end] = times[timeOptionDefault].option();
+    const [start, end] = timeRangeDefault.startDate && timeRangeDefault.endDate ? [timeRangeDefault.startDate, timeRangeDefault.endDate] : times[timeOptionDefault].option();
     setStartDate(start);
     setEndDate(end);
     //eslint-disable-next-line

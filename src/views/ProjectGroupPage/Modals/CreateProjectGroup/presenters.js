@@ -174,21 +174,21 @@ function CreateProjectGroup({
       />
       <Box className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType"}>
         <div className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType_title"}>{t("IDS_WP_APPLY_WORK_TYPE")}<abbr title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr></div>
-        <abbr title={workingTypes[0].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_WORKING_TYPE")})}>
+        <abbr title={workingTypes[0].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_WORKING_TYPE")}) : ""}>
           <FormControlLabel
             control={<Checkbox checked={workingTypes[0].checked} onChange={() => handleWorkingTypeChange(0)} name={workingTypes[0].type} color={"primary"}/>}
             disabled={workingTypes[0].disabled}
             label={workingTypes[0].type}
           />
         </abbr>
-        <abbr title={workingTypes[1].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROJECT")})}>
+        <abbr title={workingTypes[1].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROJECT")}) : ""}>
           <FormControlLabel
             control={<Checkbox checked={workingTypes[1].checked} onChange={() => handleWorkingTypeChange(1)} name={workingTypes[1].type} color={"primary"}/>}
             disabled={workingTypes[1].disabled}
             label={workingTypes[1].type}
           />
         </abbr>
-        <abbr title={workingTypes[2].disabled && t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROCESS")})}>
+        <abbr title={workingTypes[2].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROCESS")}) : ""}>
           <FormControlLabel
             control={<Checkbox checked={workingTypes[2].checked} onChange={() => handleWorkingTypeChange(2)} name={workingTypes[2].type} color={"primary"}/>}
             disabled={workingTypes[2].disabled}
@@ -203,6 +203,7 @@ function CreateProjectGroup({
             label={t('DMH.VIEW.PGP.MODAL.CUPG.LOGO_SELECT')}
             onClick={() => handleOpenModal('LOGO', {
               doSelectIcon: icon => setIcon(icon),
+              selectedIcon: icon
             })}
           />
         </div>

@@ -28,7 +28,7 @@ const DrawerMessage = props => {
   const [listMessage, setListMessage] = useState([]);
   useEffect(() => {
     fetMessage({});
-    fetNumberMessageNotViewer(); // eslint-disable-next-line
+    fetNumberMessageNotViewer({renderInDrawer: false}); // eslint-disable-next-line
   }, []);
   const fetMessage = async params => {
     try {
@@ -41,10 +41,12 @@ const DrawerMessage = props => {
     }
   };
 
-  const fetNumberMessageNotViewer = async () => {
+  const fetNumberMessageNotViewer = async ({renderInDrawer}) => {
     try {
       const { data } = await getNumberMessageNotViewer();
-      setNumberNotView(data.number_chat);
+      if (renderInDrawer) {
+        setNumberNotView(data.number_chat);
+      }
       props.actionChangeNumMessageNotView(data.number_chat);
     } catch (error) {}
   };
@@ -62,7 +64,7 @@ const DrawerMessage = props => {
     try {
       await getViewAllMessage();
       fetMessage({});
-      fetNumberMessageNotViewer();
+      fetNumberMessageNotViewer({renderInDrawer: true});
     } catch (error) {}
   };
   const handleViewNotification = async message => {
@@ -70,8 +72,7 @@ const DrawerMessage = props => {
       await actionViewMessage({
         task_id: message.task_id
       });
-      fetMessage({});
-      fetNumberMessageNotViewer();
+      fetNumberMessageNotViewer({renderInDrawer: false});
     }
   };
   const handleCloseDrawer = () => {

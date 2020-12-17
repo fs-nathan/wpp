@@ -24,6 +24,7 @@ function CustomListItem({ projectGroup, index, groupID}) {
               primary={
                 <Primary>{get(projectGroup, 'name', '')}</Primary>
               }
+              secondaryTypographyProps={{ component: 'div' }}
               secondary={
                 <div className={"view_ProjectGroup_List_statistic"}>
                   {get(projectGroup, 'work_types', []).map((item) => {

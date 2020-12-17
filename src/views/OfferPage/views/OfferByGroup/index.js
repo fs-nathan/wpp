@@ -11,15 +11,16 @@ import { useHistory, useLocation, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, SORT_GROUP_OFFER_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
+import { CREATE_OFFER_SUCCESSFULLY, DELETE_APPROVAL_SUCCESS, DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, SORT_GROUP_OFFER_SUCCESS, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS } from "views/OfferPage/redux/types";
 import { action } from "../../contants/attrs";
-import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW } from '../../contants/localStorage';
+import { TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW_CUSTOM} from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByGroupID, loadSummaryByGroup, sortOfferGroup } from "../../redux/actions";
 import Content from "./Content";
 import FormDialog from "./modal";
 import { getFirstSummaryGroup, getGroupOfferList, getSummaryByGroupByKeyword } from "./selector";
+import {getValueInLocalStorage} from '../../utils';
 
 export const PageContainer = styled(Container)`
   overflow: auto;
@@ -45,7 +46,8 @@ const OfferByGroup = props => {
     timeRange,
     setTitle,
     onDraggEnd,
-    setFilterTab
+    setFilterTab,
+    setTimeRange
   } = useContext(OfferPageContext);
 
   const idFirstGroup = useSelector(state => getFirstSummaryGroup(state));
@@ -56,6 +58,7 @@ const OfferByGroup = props => {
   const isMounted = useMountedState();
   const [timeFilterTypeOfferByGroup, storeTimeFilterTypeOfferByGroup] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, { timeType: 1 });
   const searchParams = useLocation().search;
+  const [syncTimeType, setSyncTimeType] = useState(false)
 
   useEffect(() => {
     if (isMounted) {
@@ -64,19 +67,28 @@ const OfferByGroup = props => {
   }, [isMounted, setTitle, t]);
 
   useEffect(() => {
-    if (isMounted) {
-      setTimeType(timeFilterTypeOfferByGroup.timeType);
+    const timeTypeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType');
+    setTimeType(timeTypeStored);
+    setSyncTimeType(true)
+    if (timeTypeStored === 6) {
+      const timeRangeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW_CUSTOM, null)
+      const timeRangeSetState = timeRangeStored ? timeRangeStored : {
+        startDate: null,
+        endDate: null
+      }
+      setTimeRange(timeRangeSetState)
     }
-  }, [isMounted]);
+  }, []);
 
   useEffect(() => {
-    if (isMounted) {
-      storeTimeFilterTypeOfferByGroup({
-        ...timeFilterTypeOfferByGroup,
-        timeType
-      });
+    if (syncTimeType) {
+      setTimeType(timeType);
+      window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, JSON.stringify({timeType}))
+      if (timeType === 6) {
+        window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW_CUSTOM, JSON.stringify(timeRange))
+      }
     }
-  }, [isMounted, timeType]);
+  }, [timeRange]);
 
   useEffect(() => {
     if (isMounted) {
@@ -86,26 +98,27 @@ const OfferByGroup = props => {
   }, [isMounted, history.location.pathname, groupList]);
 
   useEffect(() => {
-    const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
-    const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
-    dispatch(loadSummaryByGroup({startDate, endDate}));
-    const refreshSummaryByGroup = () => {
-      setFilterTab("");
+    if (syncTimeType) {
+      const startDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
       dispatch(loadSummaryByGroup({startDate, endDate}));
+      const refreshSummaryByGroup = () => {
+        setFilterTab("");
+        dispatch(loadSummaryByGroup({startDate, endDate}));
+      }
+      CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+      CustomEventListener(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
+      return () => {
+        CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
+        CustomEventDispose(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
+      }
     }
-    CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
-    CustomEventListener(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
-    return () => {
-      CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshSummaryByGroup);
-      CustomEventDispose(SORT_GROUP_OFFER_SUCCESS, refreshSummaryByGroup);
-    }
-  }, [dispatch, timeRange]);
+  }, [dispatch, timeRange, syncTimeType]);
 
   useEffect(() => {
-    if (idFirstGroup === undefined || idFirstGroup === null) {
-      return
+    if (idFirstGroup && !id) {
+      history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
     }
-    history.push(Routes.OFFERBYGROUP + "/" + idFirstGroup);
   }, [history, idFirstGroup]);
 
   useEffect(() => {
@@ -117,42 +130,48 @@ const OfferByGroup = props => {
   }, [searchParams]);
 
   useEffect(() => {
-    if (!isNil(id)) {
-      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
-      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+    if (!isNil(id) && syncTimeType) {
+      const startDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
       dispatch(loadOfferByGroupID({ id, startDate, endDate }));
       document.getElementsByClassName("comp_LeftSideContainer___container ")[0].click();
     }
-  }, [dispatch, id, timeRange]);
+  }, [dispatch, id, timeRange, syncTimeType]);
 
   useEffect(() => {
     const refreshAfterCreateOffer = () => {
-      const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
-      const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
-      dispatch(loadSummaryByGroup());
-      if (createOfferSuccess.offer_group_id === id) {
-        dispatch(loadOfferByGroupID({ id, startDate, endDate }));
-      }
+      const startDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+      const endDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+      dispatch(loadSummaryByGroup({startDate, endDate}));
+      dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      // if (createOfferSuccess.offer_group_id === id) {
+      //   dispatch(loadOfferByGroupID({ id, startDate, endDate }));
+      // }
     }
     CustomEventListener(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
     return () => {
       CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, refreshAfterCreateOffer);
-      CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshAfterCreateOffer);
     }
   }, [createOfferSuccess, id, timeRange]);
 
   useEffect(() => {
     if (isMounted) {
       const refreshListOffers = () => {
-        const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
-        const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+        const startDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+        const endDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
         dispatch(loadOfferByGroupID({ id, startDate, endDate }));
       }
+      CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
       CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
       CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+      CustomEventListener(ADD_MEMBER_MONITOR_SUCCESS, refreshListOffers);
+      CustomEventListener(DELETE_MEMBER_MONITOR_SUCCESS, refreshListOffers);
       return () => {
+        CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
         CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
         CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+        CustomEventDispose(ADD_MEMBER_MONITOR_SUCCESS, refreshListOffers);
+        CustomEventDispose(DELETE_MEMBER_MONITOR_SUCCESS, refreshListOffers);
       }
     }
   }, [isMounted, timeRange, id]);

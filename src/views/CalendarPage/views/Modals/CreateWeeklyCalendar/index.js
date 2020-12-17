@@ -506,7 +506,7 @@ function CreateWeeklyCalendar({
                         disabled={loadingCreate}
                       >
                         {loadingCreate && (
-                          <CircularProgress size={20} className="margin-circular" color={`#fff`} />
+                          <CircularProgress size={20} className="margin-circular" color="secondary" />
                         )}
                         {t('IDS_WP_ADD')}
                       </Button>
@@ -524,7 +524,7 @@ function CreateWeeklyCalendar({
                           disabled={loadingUpdate}
                         >
                           {loadingUpdate && (
-                            <CircularProgress size={20} className="margin-circular" color={`#fff`} />
+                            <CircularProgress size={20} className="margin-circular" color="secondary" />
                           )}
                           {t('IDS_WP_UPDATE')}
                         </Button>
@@ -555,7 +555,7 @@ function CreateWeeklyCalendar({
                       scheduleOfWeek.data.map((item, index) => {
                         if (item.schedules.length !== 0) {
                           return (
-                            <CalendarItemContainer>
+                            <CalendarItemContainer key={index}>
                               <Typography component={'div'}>
                                 <span>{days[new Date(item.schedules[0].time_original).getDay()]}</span>
                                 <span>({item.date})</span>

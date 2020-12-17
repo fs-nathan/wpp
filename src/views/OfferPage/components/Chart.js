@@ -1,10 +1,13 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
+import { useTranslation } from "react-i18next";
 
 
 const PieChart = ({ series }) => {
+    const { t } = useTranslation();
+
     const options = {
-        labels: ["Chờ duyệt", "Đã duyệt", "Đang duyệt", "Từ chối"],
+        labels: [t("VIEW_OFFER_LABEL_PENDING"), t("VIEW_OFFER_LABEL_APPROVED"), t("VIEW_OFFER_LABEL_FILTER_BY_STATUS_2"), t("VIEW_OFFER_LABEL_REJECTED")],
         legend: {
             show: false
         },
@@ -25,7 +28,7 @@ const PieChart = ({ series }) => {
             },
         },
         fill: {
-            colors: ['#03c30b', '#ff9800', '#03a9f4', '#f44336']
+            colors: ['#9e9e9e', '#0ab711', '#ff9800', '#f44336']
         },
         responsive: [{
             breakpoint: 480,

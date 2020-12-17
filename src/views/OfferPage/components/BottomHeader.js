@@ -176,7 +176,7 @@ const BottomHeader = ({ statistic_status, count }) => {
                                 <FilterRow2Item>
                                     {t("VIEW_OFFER_LABEL_ROLE")}:&nbsp;
                                     {
-                                        filterData.role.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.role.map((role, idx) => idx !== filterData.role.length - 1 ? <span>{role}, </span> : <span> {role}</span>)
+                                        filterData.role.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.role.map((role, idx) => idx !== filterData.role.length - 1 ? <span key={'role' + idx}>{role}, </span> : <span key={'role' + idx}> {role}</span>)
                                     }
                                 </FilterRow2Item>
                             )
@@ -185,7 +185,7 @@ const BottomHeader = ({ statistic_status, count }) => {
                             filterData.priorityLevel.length != 0 && (
                                 <FilterRow2Item>
                                     {t("VIEW_OFFER_LABEL_PRIORITY_LEVEL")}: {
-                                        filterData.priorityLevel.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.priorityLevel.map((item, idx) => idx !== filterData.priorityLevel.length - 1 ? <span>{item}, </span> : <span> {item}</span>)
+                                        filterData.priorityLevel.length === 3 ? t("VIEW_OFFER_LABEL_ALL") : filterData.priorityLevel.map((item, idx) => idx !== filterData.priorityLevel.length - 1 ? <span key={'priority' + idx}>{item}, </span> : <span key={'priority' + idx}> {item}</span>)
                                     }
                                 </FilterRow2Item>
                             )
@@ -194,7 +194,7 @@ const BottomHeader = ({ statistic_status, count }) => {
                             filterData.status.length != 0 && (
                                 <FilterRow2Last>
                                     {t("VIEW_OFFER_LABEL_STATUS")}: {
-                                        filterData.status.length === 4 ? t("VIEW_OFFER_LABEL_ALL") : filterData.status.map((item, idx) => idx !== filterData.status.length - 1 ? <span>{item}, </span> : <span> {item}</span>)
+                                        filterData.status.length === 4 ? t("VIEW_OFFER_LABEL_ALL") : filterData.status.map((item, idx) => idx !== filterData.status.length - 1 ? <span key={'status' + idx}>{item}, </span> : <span key={'status' + idx}> {item}</span>)
                                     }
                                 </FilterRow2Last>
                             )

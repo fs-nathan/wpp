@@ -75,6 +75,18 @@ const createValidate = (schema) => (values = {}, mapError = {}) => {
       }, {})
     : emptyObject;
 };
+const getValueInLocalStorage = (key = '', initialValue = null, attribute = null) => {
+  const item = window.localStorage.getItem(key);
+  if (item) {
+    const data = JSON.parse(item);
+    if (attribute) {
+      return data[attribute]
+    } else {
+      return data
+    }
+  }
+  return initialValue
+}
 export {
   chart,
   time,
@@ -90,4 +102,5 @@ export {
   loginlineFunc,
   createMapPropsFromAttrs,
   encodeQueryData,
+  getValueInLocalStorage
 };

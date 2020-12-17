@@ -14,7 +14,7 @@ function EmptyHolder({
 }) {
   const { t } = useTranslation();
   return (
-    <div className="comp_EmptyHolder__wrapper" {...props}>
+    <div className="comp_EmptyHolder__wrapper">
       {image ? (
         image
       ) : (

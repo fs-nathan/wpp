@@ -86,7 +86,7 @@ const LogoMnanagerStateLess = () => {
               key={get(icon, "id", "")}
               isSelect={
                 isSelect &&
-                get(selectedIcon, "id", "x") === get(icon, "id", "y")
+                get(selectedIcon, "url_sort", "x") === get(icon, "url_sort", "y")
               }
             >
               <ButtonBase
@@ -223,7 +223,7 @@ const LogoManagerModalWrapper = ({ children }) => {
               key={get(icon, "id", "")}
               isSelect={
                 isSelect &&
-                get(selectedIcon, "id", "x") === get(icon, "id", "y")
+                get(selectedIcon, "url_sort", "x") === get(icon, "url_sort", "y")
               }
             >
               <ButtonBase
@@ -303,12 +303,26 @@ function LogoManagerProvider({
   handleSelectIcon,
   handleOpenModal,
   canUpload,
+  selectedIconFromOut
 }) {
   const [selectedIcon, setSelectedIcon] = React.useState({
     id: get(icons.defaults[0], "id"),
     url_sort: get(icons.defaults[0], "icon"),
     url_full: get(icons.defaults[0], "url_icon"),
   });
+  React.useEffect(() => {
+    if (selectedIconFromOut && selectedIconFromOut.url_sort != "" && selectedIconFromOut.url_sort != selectedIcon.url_sort) {
+      setSelectedIcon({
+        url_sort: selectedIconFromOut.url_sort,
+        url_full: selectedIconFromOut.url_full
+      })
+    } else {
+      setSelectedIcon({
+        url_sort: get(icons.defaults[0], "icon"),
+        url_full: get(icons.defaults[0], "url_icon"),
+      })
+    }
+  }, [selectedIconFromOut])
 
   return (
     <LogoManagerContext.Provider

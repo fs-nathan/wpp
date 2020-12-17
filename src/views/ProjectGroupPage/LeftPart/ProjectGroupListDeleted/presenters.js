@@ -70,6 +70,7 @@ function ProjectListDeleted({
                 primary={
                   <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>
                 }
+                secondaryTypographyProps={{ component: 'div' }}
                 secondary={
                   <div className={"view_ProjectGroup_List_statistic"}>
                     <div className={"view_ProjectGroup_List_statistic_item"}>

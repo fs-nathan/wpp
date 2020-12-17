@@ -280,7 +280,7 @@ const ModalImage = () => {
             </>
         }
       </ContentDialog>
-      <FooterDialog fullHeight={media_type === 1 || FileType(type) === fileType.video}>
+      <FooterDialog fullheight={(media_type === 1 || FileType(type) === fileType.video).toString()}>
         <div className="ModalImage--scrollWrap">
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}

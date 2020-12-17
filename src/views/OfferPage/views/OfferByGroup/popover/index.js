@@ -46,7 +46,7 @@ export default function ExpandPopover({ offer_group_id, name, description, view 
   const open = Boolean(anchorEl);
   return (
     <div>
-      <IconButton aria-label="delete" a variant="contained" className={classes.button} onClick={handleClick}>
+      <IconButton aria-label="delete" variant="contained" className={classes.button} onClick={handleClick}>
         <MoreVertIcon />
       </IconButton>
       <FormDialog

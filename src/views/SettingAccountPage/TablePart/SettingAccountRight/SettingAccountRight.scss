@@ -311,8 +311,11 @@
 
   .content-work-plus-detail {
     .des-text {
-      font-size: 17px;
-      white-space: pre;
+      font-size: 15px;
+      line-height: 23px;
+      p {
+        font-size: 15px;
+      }
     }
   }
 }

@@ -43,7 +43,7 @@ const NotificationWorkPlusDetail = props => {
         </span>
       </div>
       <div className="content-work-plus-detail">
-        <p className="des-text" dangerouslySetInnerHTML={{__html: notiItem.content}} />
+        <div className="des-text" dangerouslySetInnerHTML={{__html: notiItem.content}}></div>
       </div>
     </div>
   );

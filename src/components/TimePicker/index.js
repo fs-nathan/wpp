@@ -114,6 +114,7 @@ function TimePicker({ value, onChange, width = 20 }) {
         }}
         transformOrigin={{
           vertical: -42,
+          horizontal: 'center'
         }}
         variant={'menu'}
       >

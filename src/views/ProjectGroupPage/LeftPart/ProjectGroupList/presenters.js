@@ -90,6 +90,8 @@ function ProjectList({
                   </div>
                   <CustomAvatar style={{marginRight: "10px"}} alt='avatar' />
                   <ListItemText
+                    component={'span'} 
+                    secondaryTypographyProps={{ component: 'div' }}
                     primary={
                       <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>
                     }

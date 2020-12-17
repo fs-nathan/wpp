@@ -90,7 +90,7 @@ const AssignCalendarModal = ({
                 control={
                   <Checkbox
                     color="primary"
-                    defaultChecked={listProjectSchedule.includes(item.id)}
+                    checked={listProjectSchedule.includes(item.id) ? true : false}
                     disabled={!item.can_delete}
                   />
                 }
@@ -132,19 +132,23 @@ const AssignCalendarModal = ({
           </div>
           <div className="calendar--modal__body">
             <table>
-              <tr>
-                <th>
-                  <div>
-                    <div>{t('GANTT_CALENDAR_NAME')}</div>
-                  </div>
-                </th>
-                <th>
-                  <div>
-                    <div>{t('GANTT_DESCRIPTION')}</div>
-                  </div>
-                </th>
-              </tr>
-              {renderListCalendarModal}
+              <thead>
+                <tr>
+                  <th>
+                    <div>
+                      <div>{t('GANTT_CALENDAR_NAME')}</div>
+                    </div>
+                  </th>
+                  <th>
+                    <div>
+                      <div>{t('GANTT_DESCRIPTION')}</div>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {renderListCalendarModal}
+              </tbody>
             </table>
           </div>
         </div>

@@ -44,7 +44,6 @@ const useWebpush = () => {
               scope: "/",
             })
             .then(function (swReg) {
-              console.log("Service Worker is registered", swReg);
               return swReg;
             })
             .catch(function (error) {
@@ -61,7 +60,6 @@ const useWebpush = () => {
             });
           } else {
             // We have a subscription, update the database
-            console.log("Subscription object: ", subscription);
           }
           if (token) {
             const config = {
@@ -70,7 +68,6 @@ const useWebpush = () => {
               data: subscription,
             };
             apiService(config).then(() => {
-              console.log("subscribed to push service!");
             });
           } else {
             const config = {

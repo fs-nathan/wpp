@@ -86,7 +86,7 @@ export function* doLoadSummaryByDepartment({ payload }) {
       endDate = moment(timeRange.endDate).format("YYYY-MM-DD")
     }
     const config = {
-      url: `/offers/summary-room?from_date=${startDate}&to_date=${endDate}`,
+      url: startDate ? `/offers/summary-room?from_date=${startDate}&to_date=${endDate}` : `/offers/summary-room`,
       method: "GET"
     };
     const result = yield apiService(config);
@@ -99,7 +99,7 @@ export function* doLoadOfferByDepartmentID({ payload }) {
   try {
     const { id, startDate, endDate } = payload;
     const config = {
-      url: (startDate !== null && endDate !== null) ? `/offers/list-of-room?from_date=${startDate}&to_date=${endDate}&room_id=${id}` : `/offers/list-of-room`,
+      url: (startDate !== null && endDate !== null) ? `/offers/list-of-room?from_date=${startDate}&to_date=${endDate}&room_id=${id}` : `/offers/list-of-room?room_id=${id}`,
       method: "GET"
     };
     const result = yield apiService(config);
@@ -299,6 +299,7 @@ export function* doCreateOffer({ payload }) {
 }
 export function* doDeleteOffer({ payload }) {
   try {
+    console.log('dsadadad')
     const { id } = payload;
     const config = {
       url: "/offers/delete",
@@ -306,15 +307,9 @@ export function* doDeleteOffer({ payload }) {
       data: { offer_id: id }
     };
     const result = yield apiService(config);
-    yield put({
-      type: DELETE_OFFER_SUCCESSFULLY,
-      payload: {
-        deletedState: result.data.state,
-        offerId: id,
-      }
-    });
     CustomEventEmitter(DELETE_OFFER_SUCCESSFULLY);
   } catch (err) {
+    console.log(err)
     yield put({ type: DELETE_OFFER_ERROR, payload: err.toString() });
   }
 }
@@ -332,9 +327,9 @@ export function* doUploadDocumentOffer({ payload }) {
     const result = yield apiService(config)
     console.log(result.data)
     yield put({ type: UPLOAD_DOCUMENT_OFFER_SUCCESS, payload: result.data })
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Upload document successful", options: { variant: "success" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (err) {
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doDeleteDocumentOffer({ payload }) {
@@ -348,9 +343,9 @@ export function* doDeleteDocumentOffer({ payload }) {
     }
     yield apiService(config)
     yield put({ type: DELETE_DOCUMENT_OFFER_SUCCESS, payload: { file_id } })
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete document successful", options: { variant: "success" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (err) {
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   } finally {
     CustomEventEmitter(DELETE_DOCUMENT_OFFER);
   }
@@ -367,10 +362,10 @@ export function* doAddMemberHandle({ payload }) {
     }
     const result = yield apiService(config)
     yield put({ type: ADD_MEMBER_HANDLE_SUCCESS, payload: result.data })
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Add member handle successful", options: { variant: "success" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (err) {
     yield put({ type: ADD_MEMBER_HANDLE_ERROR })
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doDeleteMemberHandle({ payload }) {
@@ -384,10 +379,10 @@ export function* doDeleteMemberHandle({ payload }) {
     }
     yield apiService(config)
     yield put({ type: DELETE_MEMBER_HANDLE_SUCCESS, payload: member_id });
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete member handle successful", options: { variant: "success" } } });
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(DELETE_MEMBER_HANDLE_SUCCESS);
   } catch (err) {
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 ///
@@ -403,9 +398,10 @@ export function* doAddMemberMonitor({ payload }) {
     }
     const result = yield apiService(config)
     yield put({ type: ADD_MEMBER_MONITOR_SUCCESS, payload: result.data })
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Add member monitor successful", options: { variant: "success" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    CustomEventEmitter(ADD_MEMBER_MONITOR_SUCCESS);
   } catch (err) {
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doDeleteMemberMonitor({ payload }) {
@@ -419,11 +415,11 @@ export function* doDeleteMemberMonitor({ payload }) {
     }
     yield apiService(config)
     yield put({ type: DELETE_MEMBER_MONITOR_SUCCESS, payload: member_id });
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete member monitor successful", options: { variant: "success" } } });
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     CustomEventEmitter(DELETE_MEMBER_MONITOR_SUCCESS);
   } catch (err) {
     yield put({ type: DELETE_MEMBER_MONITOR_ERROR, payload: err.message })
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 
@@ -438,9 +434,9 @@ export function* doHandleOffer({ payload }) {
     }
     const result = yield apiService(config);
     CustomEventEmitter(HANDLE_OFFER_OFFERPAGE);
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Handle offer successful", options: { variant: "success" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (err) {
-    yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doLoadSummaryProject({ payload }) {
@@ -453,7 +449,7 @@ export function* doLoadSummaryProject({ payload }) {
     const result = yield apiService(config)
     yield put({ type: LOAD_SUMMARY_BY_PROJECT_SUCCESS, payload: result.data })
   } catch (err) {
-
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 export function* doLoadOfferByProjectID({ payload }) {
@@ -466,7 +462,7 @@ export function* doLoadOfferByProjectID({ payload }) {
     yield put({ type: LOAD_OFFER_BY_PROJECT_ID_SUCCESS, payload: result.data })
 
   } catch (err) {
-
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 
@@ -478,7 +474,7 @@ export function* doListStatusHaveNewOffers() {
     const result = yield apiService(config);
     yield put({ type: LIST_STATUS_HAVE_NEW_OFFER_SUCCESS, payload: result.data })
   } catch (err) {
-
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, err.message || DEFAULT_MESSAGE.MUTATE.ERROR);
   }
 }
 

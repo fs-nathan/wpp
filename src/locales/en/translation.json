@@ -312,8 +312,8 @@
                 "NAME": "The copied project",
                 "PLACEHOLDER": "Choose project for copy",
                 "DESC": "Project details",
-                "NEW_NAME": "Name of new project",
-                "NEW_DESC": "Descriptions of new project",
+                "NEW_NAME": "Name of new {{title}}",
+                "NEW_DESC": "Descriptions of new {{title}}",
                 "DATE": "Date start of new project"
               },
               "MEMBER": {
@@ -956,7 +956,7 @@
   "IDS_WP_TOP_MEMBER": "Featured member",
   "IDS_WP_LAW_DES": "Legal advice",
   "IDS_WP_PROJECT": "Project",
-  "IDS_WP_JOB": "Task",
+  "IDS_WP_JOB": "Work topic",
   "IDS_WP_REPORT": "Report",
   "IDS_WP_BUDGET": "Budget",
   "IDS_WP_SUGGEST": "Proposal",

@@ -84,6 +84,7 @@ export const getDepartmentGroupByKeyword = (keyword, t) => createSelector(select
     return []
   }
   return group.offers_room.map(x => ({
+    id: x.id,
     title: x.name,
     subtitle: typeof t === 'function' ? t("VIEW_OFFER_LABEL_PENDING_OFFER", { count: x.offer_waiting }) : x.offer_waiting,
     url: Routes.OFFERBYDEPARTMENT + `/${x.id}`,

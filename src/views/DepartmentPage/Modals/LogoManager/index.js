@@ -22,6 +22,7 @@ function LogoManager({
   children,
   doListIcon,
   canUpload = false,
+  selectedIcon
 }) {
 
   React.useEffect(() => {
@@ -64,6 +65,7 @@ function LogoManager({
         handleSelectIcon={(icon) => doSelectIcon(icon)}
         handleOpenModal={doOpenModal}
         canUpload={canUpload}
+        selectedIconFromOut={selectedIcon}
       >
         {children}
       </LogoManagerPresenter>

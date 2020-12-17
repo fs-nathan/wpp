@@ -39,11 +39,12 @@ function CustomListItem({ projectGroup, index, route, canDrag }) {
               primary={
                 <Primary>{get(projectGroup, 'name', '')}</Primary>
               }
+              secondaryTypographyProps={{ component: 'div' }}
               secondary={
                 <div className={"view_ProjectGroup_List_statistic"}>
                   {get(projectGroup, 'work_types', []).map((item) => {
                     return (
-                      <div className={"view_ProjectGroup_List_statistic_item"}>
+                      <div key={"wtl" + item} className={"view_ProjectGroup_List_statistic_item"}>
                         <img src={workType[parseInt(item)].image} alt="" width={15} height={15}/>
                         <span>{get(projectGroup, `statistic.${workType[parseInt(item)].key}`, 0)}</span>
                       </div>
@@ -72,6 +73,7 @@ function CustomListItem({ projectGroup, index, route, canDrag }) {
           primary={
             <Primary style={{marginLeft: "15px"}}>{get(projectGroup, 'name', '')}</Primary>
           }
+          secondaryTypographyProps={{ component: 'div' }}
           secondary={
             <div className={"view_ProjectGroup_List_statistic"}>
               {get(projectGroup, 'work_types', []).map((item) => {

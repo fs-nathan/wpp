@@ -11,13 +11,14 @@ import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
 import { Routes } from "views/OfferPage/contants/routes";
-import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from "views/OfferPage/redux/types";
-import { TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW } from '../../contants/localStorage';
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS } from "views/OfferPage/redux/types";
+import { TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW_CUSTOM } from '../../contants/localStorage';
 import Layout from "../../Layout";
 import { OfferPageContext } from "../../OfferPageContext";
 import { loadOfferByProjectID, loadSummaryProject } from "../../redux/actions";
 import Content from "./Content";
 import { getFirstSummaryProject, getSummaryByProjectAndKeyword } from "./selector";
+import {getValueInLocalStorage} from '../../utils';
 
 export const PageContainer = styled(Container)`
   overflow: auto;  
@@ -30,7 +31,7 @@ export const PageContainer = styled(Container)`
 const OfferByProject = () => {
     const { t } = useTranslation();
     const dispatch = useDispatch();
-    const { listMenu, timeRange = {}, setTitle, timeType, setTimeType } = useContext(OfferPageContext);
+    const { listMenu, timeRange = {}, setTitle, timeType, setTimeType, setTimeRange } = useContext(OfferPageContext);
     const idFirstProject = useSelector(state => getFirstSummaryProject(state));
     const listProjects = useSelector(state => getSummaryByProjectAndKeyword('')(state));
     const isMounted = useMountedState();
@@ -38,27 +39,37 @@ const OfferByProject = () => {
     const { id } = useParams();
     const [layoutTitle, setLayoutTitle] = useState("");
     const [timeFilterTypeOfferByProject, storeTimeFilterTypeOfferByProject] = useLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, { timeType: 1 });
+    const [syncTimeType, setSyncTimeType] = useState(false)
 
     useEffect(() => {
-        if (isMounted) {
-            setTimeType(timeFilterTypeOfferByProject.timeType);
+        const timeTypeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, 1, 'timeType')
+        setTimeType(timeTypeStored);
+        setSyncTimeType(true)
+        if (timeTypeStored === 6) {
+            const timeRangeStored = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW_CUSTOM, null)
+            console.log(timeRangeStored)
+            const timeRangeSetState = timeRangeStored ? timeRangeStored : {
+                startDate: null,
+                endDate: null
+            }
+            setTimeRange(timeRangeSetState)
         }
-    }, [isMounted]);
+    }, []);
 
     useEffect(() => {
-        if (isMounted) {
-            storeTimeFilterTypeOfferByProject({
-                ...timeFilterTypeOfferByProject,
-                timeType
-            });
+        if (syncTimeType) {
+            setTimeType(timeType);
+            window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, JSON.stringify({timeType}))
+            if (timeType === 6) {
+                window.localStorage.setItem(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW_CUSTOM, JSON.stringify(timeRange))
+            }
         }
-    }, [isMounted, timeType]);
-
+    }, [timeRange]);
 
     useEffect(() => {
-        if (!isNil(id)) {
-            const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
-            const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+        if (!isNil(id) && syncTimeType) {
+            const startDate =  getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+            const endDate =  getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
             dispatch(loadOfferByProjectID({ id, startDate, endDate }));
             const refreshListOffers = () => {
                 dispatch(loadOfferByProjectID({ id, startDate, endDate }));
@@ -66,23 +77,29 @@ const OfferByProject = () => {
             CustomEventListener(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
             CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
             CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+            CustomEventListener(ADD_MEMBER_MONITOR_SUCCESS, refreshListOffers);
+            CustomEventListener(DELETE_MEMBER_MONITOR_SUCCESS, refreshListOffers);
             return () => {
                 CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshListOffers);
                 CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshListOffers);
                 CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshListOffers);
+                CustomEventDispose(ADD_MEMBER_MONITOR_SUCCESS, refreshListOffers);
+                CustomEventDispose(DELETE_MEMBER_MONITOR_SUCCESS, refreshListOffers);
             }
         }
-    }, [dispatch, id, timeRange]);
+    }, [dispatch, id, timeRange, syncTimeType]);
 
     useEffect(() => {
         setTitle(t("VIEW_OFFER_LABEL_PROJECT_HEADER_TITLE"))
     }, [dispatch, setTitle]);
 
     useEffect(() => {
-        const startDate = timeType !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
-        const endDate = timeType !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
-        dispatch(loadSummaryProject({startDate, endDate}));
-    }, [dispatch, timeRange]);
+        if (syncTimeType) {
+            const startDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.startDate).format("YYYY-MM-DD") : null;
+            const endDate = getValueInLocalStorage(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW, 1, 'timeType') !== 5 ? moment(timeRange.endDate).format("YYYY-MM-DD") : null;
+            dispatch(loadSummaryProject({startDate, endDate}));
+        }
+    }, [dispatch, timeRange, syncTimeType]);
 
     useEffect(() => {
         if (isMounted) {
@@ -99,12 +116,9 @@ const OfferByProject = () => {
     }, [isMounted, history.location.pathname, idFirstProject]);
 
     useEffect(() => {
-        if (history.location.pathname !== Routes.OFFERBYPROJECT
-            || idFirstProject === undefined
-            || idFirstProject === null) {
-            return
+        if (idFirstProject && !id) {
+            history.push(Routes.OFFERBYPROJECT + "/" + idFirstProject);
         }
-        history.push(Routes.OFFERBYPROJECT + "/" + idFirstProject);
     }, [history, idFirstProject]);
 
     return (

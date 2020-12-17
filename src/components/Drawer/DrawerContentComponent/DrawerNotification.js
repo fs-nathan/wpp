@@ -28,7 +28,7 @@ const DrawerNotification = props => {
 
   useEffect(() => {
     fetNotification({});
-    fetNumberNotificationNotViewer(); //eslint-disable-next-line
+    fetNumberNotificationNotViewer({renderInDrawer: true}); //eslint-disable-next-line
   }, []);
 
   const fetNotification = async params => {
@@ -42,10 +42,12 @@ const DrawerNotification = props => {
     }
   };
 
-  const fetNumberNotificationNotViewer = async () => {
+  const fetNumberNotificationNotViewer = async ({renderInDrawer}) => {
     try {
       const { data } = await getNumberNotificationNotViewer();
-      setNumberNotView(data.number_notification);
+      if (renderInDrawer) {
+        setNumberNotView(data.number_notification);
+      }
       props.actionChangeNumNotificationNotView(data.number_notification);
     } catch (error) {}
   };
@@ -63,7 +65,7 @@ const DrawerNotification = props => {
     try {
       await getViewAllNotification();
       fetNotification({});
-      fetNumberNotificationNotViewer();
+      fetNumberNotificationNotViewer({renderInDrawer: true});
     } catch (error) {}
   };
   const handleViewNotification = async message => {
@@ -71,8 +73,7 @@ const DrawerNotification = props => {
       await actionViewNotification({
         notification_id: message.data_notification.id
       });
-      fetNotification({});
-      fetNumberNotificationNotViewer();
+      fetNumberNotificationNotViewer({renderInDrawer: false});
     }
   };
   // if (isLoading) return <LoadingBox />;

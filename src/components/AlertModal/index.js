@@ -70,7 +70,6 @@ function AlertModal({
           <CircularProgress
             size={16}
             className="margin-circular"
-            color={bgColor.color}
             style={{
               display: (actionLoading || activeLoading) ? 'initial' : 'none'
             }}

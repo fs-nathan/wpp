@@ -186,6 +186,7 @@ function UserFreeRoomList({
                   </abbr>
                 </StyledPrimary>
               }
+              secondaryTypographyProps={{ component: 'div' }}
               secondary={
                 <StyledSecondary>
                   <abbr title={get(user, 'email', '')}>
@@ -447,45 +448,57 @@ function MemberSetting({
             >
               {
                 get(curMemberSetting, 'is_in_group', false) && (
-                    <>
-                      <CustomMenuItem
-                          selected={get(curMemberSetting, 'join_task_status_code') === 1}
-                          onClick={evt => {
-                            setAnchorEl(null);
-                            handleUpdateStateJoinTask(curMemberSetting, 1);
-                          }}
-                      >
-                        <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")}
-                      </CustomMenuItem>
-                      <CustomMenuItem
-                          selected={get(curMemberSetting, 'join_task_status_code') === 0}
-                          onClick={evt => {
-                            setAnchorEl(null);
-                            handleUpdateStateJoinTask(curMemberSetting, 0);
-                          }}
-                      >
-                        <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")}
-                      </CustomMenuItem>
-                      <CustomMenuItem
-                          onClick={evt => {
-                            setAnchorEl(null);
-                            handleAssignMemberToAllTask(curMemberSetting);
-                          }}
-                      >
-                        <Icon path={mdiAccountConvert} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PIC")}
-                      </CustomMenuItem>
-                    </>
+                  <MenuItem
+                    className={`${get(curMemberSetting, 'join_task_status_code') === 1
+                      ? 'view_Project_MemberSetting_Modal___menu-item-selected'
+                      : 'view_Project_MemberSetting_Modal___menu-item'}`}
+                    onClick={evt => {
+                      setAnchorEl(null);
+                      handleUpdateStateJoinTask(curMemberSetting, 1);
+                    }}
+                  >
+                    <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")}
+                  </MenuItem>
+                )
+              }
+              {
+                get(curMemberSetting, 'is_in_group', false) && (
+                  <MenuItem
+                    className={`${get(curMemberSetting, 'join_task_status_code') === 0
+                      ? 'view_Project_MemberSetting_Modal___menu-item-selected'
+                      : 'view_Project_MemberSetting_Modal___menu-item'}`}
+                    onClick={evt => {
+                      setAnchorEl(null);
+                      handleUpdateStateJoinTask(curMemberSetting, 0);
+                    }}
+                  >
+                    <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")}
+                  </MenuItem>
+                )
+              }
+              {
+                get(curMemberSetting, 'is_in_group', false) && (
+                  <MenuItem
+                    className="view_Project_MemberSetting_Modal___menu-item"
+                    onClick={evt => {
+                      setAnchorEl(null);
+                      handleAssignMemberToAllTask(curMemberSetting);
+                    }}
+                  >
+                    <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PIC")}
+                  </MenuItem>
                 )
               }
               {get(curMemberSetting, 'can_ban', false) && (
-                <CustomMenuItem
+                <MenuItem
+                  className="view_Project_MemberSetting_Modal___menu-item"
                   onClick={evt => {
                     setAnchorEl(null);
                     handleRemoveMember(curMemberSetting);
                   }}
                 >
-                  <Icon path={mdiAccountMinus} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.BAN")}
-                </CustomMenuItem>
+                  <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.BAN")}
+                </MenuItem>
               )}
             </Menu>
           </RightContainer>,
