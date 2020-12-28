@@ -36,6 +36,7 @@ function KanbanBoard({
     CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
+    CustomEventListener(KANBAN.SORT_TASK.FAIL, doKanbanListTaskHandler);
     CustomEventListener(KANBAN.UPDATE_MANAGERS.SUCCESS, doKanbanListTaskHandler);
     return () => {
       CustomEventDispose(CREATE_TASK, doKanbanListTaskHandler);
@@ -44,6 +45,7 @@ function KanbanBoard({
       CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
+      CustomEventListener(KANBAN.SORT_TASK.FAIL, doKanbanListTaskHandler);
       CustomEventDispose(KANBAN.UPDATE_MANAGERS.SUCCESS, doKanbanListTaskHandler);
     }
   }, [projectId]);

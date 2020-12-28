@@ -72,6 +72,7 @@
     &:nth-child(3) {
       margin-left: auto;
       margin-right: -9px;
+      width: 30px;
     }
   }
 }
@@ -239,5 +240,15 @@
   &:hover {
     cursor: pointer;
     background-color: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.view_KanbanItem___sticker {
+  margin-left: 30px;
+  width: calc(100% - 30px);
+  height: 75px;
+  & > img {
+    height: 100%;
+    min-width: 40px;
   }
 }
