@@ -183,6 +183,7 @@ const FooterPart = ({
       data.append("image", clipBoardImages[i].file, clipBoardImages[i].name)
     }
     dispatch(chatImage(taskId, data, onUploadingHandler, id))
+    document.getElementById('upload_image').value= null
     setClipBoardImages([])
   }, [clipBoardImages, dispatch, onUploadingHandler, taskId, userId]);
 
@@ -452,7 +453,7 @@ const FooterPart = ({
                 type="file"
                 id="upload_image"
                 className="hide"
-                accept="image/*,video/*"
+                accept="image/*"
                 multiple
                 onChange={handleUploadImage}
               />

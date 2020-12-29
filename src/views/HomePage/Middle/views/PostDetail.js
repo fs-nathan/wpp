@@ -203,8 +203,8 @@ const CommentListContainer = () => {
           </Box>
 
           <Typography color="textSecondary">
-            {currentCommentNumber + newComments.length}/
-            {number_comment + newComments.length}
+            {currentCommentNumber + newComments.default.length}/
+            {number_comment + newComments.default.length}
           </Typography>
         </Box>
       )}

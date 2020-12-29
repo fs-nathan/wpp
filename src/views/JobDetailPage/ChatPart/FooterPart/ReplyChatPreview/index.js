@@ -41,14 +41,13 @@ const ReplyChatPreview = ({ id,
           {file.name}
         </div>
         <div className={clsx("ReplyChatPreview--fileSize")}>
-          {getFileType(file.name)} - {file && file.size}
+          - {file && file.size}
         </div>
       </div>
     if (type === CHAT_TYPE.IMAGE)
       return <div className={clsx("ReplyChatPreview--imgDes")}>
         {
-          images[0].media_type === 1 ||
-            FileType(getFileType(images[0].name)) === fileType.video ? 'Video' : t('LABEL_CHAT_TASK_HINH_ANH')
+          images[0].media_type === 1 ? 'Video' : t('LABEL_CHAT_TASK_HINH_ANH')
         }
       </div>
     return <div className={clsx("ReplyChatPreview--content", {
@@ -66,7 +65,7 @@ const ReplyChatPreview = ({ id,
     >
       <div className={clsx("ReplyChatPreview--leftContentWrap")} >
         {(type === CHAT_TYPE.IMAGE) && <>
-          {images[0].media_type === 1 || FileType(getFileType(images[0].name)) === fileType.video ?
+          {images[0].media_type === 1 ?
             <ReactPlayer
               className="FileMessage--videoPlayer"
               url={images[0].url}
@@ -98,7 +97,7 @@ const ReplyChatPreview = ({ id,
         'ReplyChatPreview--rightContentWrap__image': type === 2
       })} >
         <div className="ReplyChatPreview--sender"  >
-          <Avatar className="ReplyChatPreview--avatarReply" src={user_create_avatar} />
+          <img src={user_create_avatar} />
           <div className="ReplyChatPreview--name"  >
             {user_create_name}
           </div>

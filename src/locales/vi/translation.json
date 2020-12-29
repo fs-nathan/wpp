@@ -1218,7 +1218,7 @@
   "IDS_WP_USER_UNIT": "USER",
   "IDS_WP_REGISTER_PACKAGE": "Đăng ký gói sản phầm",
   "IDS_WP_TIME_FROM_OLD_ORDER": "Thời gian cộng thêm từ đơn hàng cũ",
-  "IDS_WP_TIME_DONATE": "Tặng thời gian sử dụng do kỳ thanh toán: 12 tháng",
+  "IDS_WP_TIME_DONATE": "Tặng thời gian sử dụng do kỳ thanh toán: {{monthBuyPackageUser}} tháng",
   "IDS_WP_PACKAGE": "Gói sản phầm",
   "IDS_WP_REGISTER_PACKAGE_OPEN": "Đăng ký gói mở rộng",
   "IDS_WP_BUY_STORAGE_OTHER": "Mua thêm dung lượng lưu trữ",
@@ -2173,5 +2173,6 @@
   "IDS_WP_PROGRESS": "Tiến độ",
   "IDS_WP_ALREADY_EXIST": "Đã tồn tại {{object}}",
   "ENTER_DATE": "Nhập ngày tháng",
-  "REQUIRED": "Bắt buộc"
+  "REQUIRED": "Bắt buộc",
+  "WORK_LIST": "Danh sách làm việc"
 }

@@ -18,9 +18,15 @@ const toFormData = (data = emptyObject) => {
   for (let key in data) {
     const item = data[key];
     if (Array.isArray(item)) {
-      item.forEach((value) => {
-        form_data.append(key, value);
-      });
+      if (key === 'file') {
+        item.forEach((value) => {
+          form_data.append(key, value);
+        });
+      } else {
+        item.forEach((value) => {
+          form_data.append(`${key}[]`, value);
+        });
+      }
     } else {
       if (data[key]) form_data.append(key, data[key]);
     }

@@ -113,6 +113,13 @@ export function CustomTableLayout({ children, className }) {
 }
 function CustomTable() {
   const { options, data } = React.useContext(CustomTableContext);
+  const styleOfTitleHead = {
+    margin: 0,
+    fontSize: "21px",
+    lineHeight: "26px",
+    fontWeight: 600,
+    textTransform: "unset"
+  }
   return (
     <LoadingOverlay
       active={get(options, 'loading.bool', false)}
@@ -125,7 +132,7 @@ function CustomTable() {
       <Container>
         <Header>
           <LeftHeader>
-            <div>
+            <div style={styleOfTitleHead}>
               {
                 typeof get(options, 'title') === 'function'
                 ? options.title()

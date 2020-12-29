@@ -28,12 +28,13 @@ const FileBox = (props) => {
   function onClickFile(file, idx) {
     const type = getFileType(file.name);
     return () => {
-      if (FileType(type) === fileType.video) {
-        // const user = { user_create_avatar, user_create_name, time_create, user_create_position };
-        dispatch(showImagesList(true, [file], 0));
-      } else {
-        dispatch(openDocumentDetail({ ...file, type: type }));
-      }
+      dispatch(openDocumentDetail({ ...file, type: type }));
+      // if (FileType(type) === fileType.video) {
+      //   // const user = { user_create_avatar, user_create_name, time_create, user_create_position };
+      //   dispatch(showImagesList(true, [file], 0));
+      // } else {
+      //   dispatch(openDocumentDetail({ ...file, type: type }));
+      // }
     }
   }
 

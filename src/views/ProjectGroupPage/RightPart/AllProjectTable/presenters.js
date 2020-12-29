@@ -313,18 +313,9 @@ function AllProjectTable({
               {
                 label: t("IDS_WP_GROUP"),
                 field: row => (
-                  <abbr title={get(row, 'project_group.name')}>
-                    <CustomAvatar
-                      style={{
-                        width: 25,
-                        height: 25,
-                        margin: "0 auto",
-                        padding: "0px 5px"
-                      }}
-                      src={get(row, 'icon')}
-                      alt="project group icon"
-                    />
-                  </abbr>
+                  <div title={get(row, 'project_group.name')} className="MuiAvatar-root" style={{width: "25px", height: "25px", margin: "0px auto", padding: "0px 5px"}}>
+                    <img className="MuiAvatar-img" style={{borderRadius: "50%"}} src={get(row, 'icon')} alt="project group icon" />
+                  </div>
                 ),
                 sort: evt => handleSortType('group'),
                 align: 'center',

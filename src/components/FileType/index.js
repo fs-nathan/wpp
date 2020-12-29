@@ -4,9 +4,11 @@ export const FileType = mimeType => {
   if (!mimeType) return file.file;
   switch (mimeType.toLowerCase()) {
     case 'doc':
+    case 'google-apps.document':
     case 'docx':
       return file.word;
     case 'xls':
+    case 'google-apps.spreadsheet':
     case 'xlsx':
       return file.excel;
     case 'ppt':
@@ -48,6 +50,7 @@ export const FileType = mimeType => {
     case 'mts':
     case 'divx':
     case 'webm':
+    case 'google-apps.video':
     case 'rmvb':
       return file.video;
     case 'mp3':

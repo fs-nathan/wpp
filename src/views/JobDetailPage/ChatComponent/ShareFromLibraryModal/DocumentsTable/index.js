@@ -1,5 +1,5 @@
 import { Avatar, Checkbox, IconButton, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiContentCopy, mdiDownloadOutline, mdiSwapVertical, mdiTrashCanOutline } from '@mdi/js';
+import { mdiContentCopy, mdiDownloadOutline, mdiSwapVertical, mdiTrashCanOutline, mdiGoogleDrive } from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionDeleteFile, actionDeleteFolder, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionSelectedFolder, resetListSelectDocument } from 'actions/documents';
 import { actionChangeBreadCrumbs, openDocumentDetail } from 'actions/system/system';
@@ -171,7 +171,7 @@ function DocumentsTable({
             onClick={selectAll}
           />
         </TableCell>
-        <TableCell className="ShareFromLibraryModal--TableCell" width="50px" align="center" />
+        <TableCell className="ShareFromLibraryModal--TableCell" width="30px" align="center" />
         <TableCell className="ShareFromLibraryModal--TableCell" >
           {t('LABEL_CHAT_TASK_TEN')}
           <IconButton size="small" onClick={() => setSorted(!isSorted)}>
@@ -191,11 +191,21 @@ function DocumentsTable({
               checked={findIndex(selectedFiles, ['id', item.id]) !== -1}
               onClick={selectFile(item)} />}
           </StyledTableBodyCell>
-          <StyledTableBodyCell width="50px" align="center" onClick={() => handleClickItem(item)}>
+          <StyledTableBodyCell width="30px" align="center" onClick={() => handleClickItem(item)} className="position-relative">
             <Avatar
               src={FileType(item.type)}
               className="full-avatar"
             />
+            {item.document_type === 2 && (
+              <div className="block-icon-share-drive">
+                <Icon
+                  className="icon-share-drive"
+                  path={mdiGoogleDrive}
+                  size={1.4}
+                  color="#2196f3"
+                />
+              </div>
+            )}
           </StyledTableBodyCell>
           <StyledTableBodyCell className="DocumentsTable--itemName" onClick={() => handleClickItem(item)}>{item.name}</StyledTableBodyCell>
           <StyledTableBodyCell width="120px" align="center">

@@ -10,14 +10,14 @@ const useAvatarGroupStyles = makeStyles(() => ({
     border: "2px solid white",
     "&:not(:first-of-type)": {
       marginLeft: offset,
-    },
+    }
   }),
 }));
 
 const AvatarGroup = ({ images, offset, size = 30, onClick }) => {
   const styles = useAvatarGroupStyles({ offset, size });
   return images.map((face, i) => (
-    <Avatar className={styles.item} key={i} src={face} />
+    <Avatar className={styles.item + " avatar-member-like-love-in-post"} key={i} src={face} />
   ));
 };
 AvatarGroup.propTypes = {

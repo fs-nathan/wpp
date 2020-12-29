@@ -146,7 +146,10 @@ const NotificationItemCommon = props => {
         props.changeVisibleOfferDetailModal({offer_id: data_notification.offer_id, visible: true});
         break;
       case NOTIFICATION_NEW_SYSTEM_NOTIFICATION:
-        props.history.push(Routes.SETTING_ACCOUNT_NOTIFI + `?id=${data_notification.system_notification_id}`);
+        props.history.push({
+          pathname: Routes.SETTING_ACCOUNT_NOTIFI,
+          search: `?id=${data_notification.system_notification_id}`,
+        });
         break;
       default:
         return;

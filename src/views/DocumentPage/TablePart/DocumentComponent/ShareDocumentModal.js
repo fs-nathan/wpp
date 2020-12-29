@@ -334,7 +334,7 @@ const ShareDocumentModal = props => {
                           <CircularProgress
                             size={16}
                             className="margin-circular"
-                            color="white"
+                            color="inherit"
                           />
                         )}
                         {t('IDS_WP_SHARE')}

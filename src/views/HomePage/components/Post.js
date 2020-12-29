@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
-import { withStyles } from "@material-ui/styles";
+import { withStyles } from "@material-ui/core/styles";
 import { mdiPin, mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
 import AlertModal from "components/AlertModal";
@@ -67,7 +67,7 @@ const CommentList = ({ comments = emptyArray, onReplyClick }) => {
       {comments.map((c, i) => (
         <Message
           comments={c.comments}
-          key={i}
+          key={c.id}
           message={c}
           onReplyClick={c.id ? () => onReplyClick(c) : undefined}
         ></Message>
@@ -186,7 +186,7 @@ const CommentListContainer = () => {
         onReplyClick={handleReplyClick}
       />
       {newComments.default.map((c, i) => (
-        <AsyncTracker asyncId={c.asyncId}>
+        <AsyncTracker asyncId={c.asyncId} key={c.asyncId}>
           {({ data: { data_comment } = { data_comment: emptyObject } }) => {
             const comment = {
               ...c,
@@ -379,7 +379,7 @@ export const PostHeader = () => {
 export function generate(files, e) {
   return files.map((value) =>
     React.cloneElement(e, {
-      key: value,
+      key: value.id,
       file: value,
     })
   );

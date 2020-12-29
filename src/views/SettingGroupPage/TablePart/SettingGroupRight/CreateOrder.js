@@ -27,6 +27,7 @@ const CreateOrder = props => {
   const [isCheckedBuyData, setIsCheckedBuyData] = useState(false);
   const [numAcc, SetnumAcc] = useState(0);
   const [dateUse, SetdateUse] = useState(0);
+  const [monthBuyPackageUser, setMonthBuyPackageUser] = useState(12);
   const [dataBuy, SetdataBuy] = useState(0);
   const [dateSave, SetdateSave] = useState(0);
   const [inputPromotionCode, SetInputPromotionCode] = useState('');
@@ -55,10 +56,10 @@ const CreateOrder = props => {
     },
     time: {
       mark: [
-        { value: 1, label: `1 ${t('IDS_WP_MONTH')}` },
+        { value: 3, label: `3 ${t('IDS_WP_MONTH')}` },
         { value: 36, label: `36 ${t('IDS_WP_MONTH')}` }
       ],
-      min: 1,
+      min: 3,
       max: 36
     }
   };
@@ -148,6 +149,7 @@ const CreateOrder = props => {
       }
       case 'dateUse':
         SetdateUse(value);
+        setMonthBuyPackageUser(value)
         break;
       case 'dataBuy': {
         if (timeout2) {
@@ -245,6 +247,7 @@ const CreateOrder = props => {
           <ExportPDF
             numAcc={numAcc}
             dateUse={dateUse}
+            monthBuyPackageUser={monthBuyPackageUser}
             dataBuy={dataBuy}
             dateSave={dateSave}
             isCreate={true}

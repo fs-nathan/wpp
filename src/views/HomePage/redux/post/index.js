@@ -160,21 +160,7 @@ const deletePost = ({ post_id, asyncId }) => {
     }),
   });
 };
-// Make post highlight
-// post
-// /posts/make-post-highlight
-// post_id: String required
-// {
-//     "state": true,
-//     "post": {
-//         "id": "5e7b2e9bf1e7e4730a61fb74",
-//         "title": "Thông báo cả làng làm việc ở nhà",
-//         "user_create_avatar": "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-//         "user_create_name": "Thành Nguyễn",
-//         "category_name": "Sự kiện",
-//         "created_at": "17:12 25/03/2020"
-//     }
-// }
+
 const makePostHighLight = ({ post_id }) => {
   return createPostAsyncAction({
     notifyOnSuccess: false,
@@ -325,6 +311,7 @@ const comment = ({
   sticker,
   parent_id,
 }) => {
+  console.log(file_ids)
   return createPostAsyncAction({
     notifyOnSuccess: false,
     config: {

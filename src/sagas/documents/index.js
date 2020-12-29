@@ -277,7 +277,21 @@ function* listGoogleDocument(action) {
   try {
     const { result } = yield call(doListGoogleDocument, action.options);
     pageToken = result.nextPageToken;
-    console.log(pageToken);
+    if (result.files) {
+      result.files.forEach(file => {
+        if (file.mimeType != 'application/vnd.google-apps.folder') {
+          if (!file.size) {
+            file.size = 0
+          }
+          if (!file.fileExtension) {
+            file.fileExtension = 'google-apps.' + file.mimeType.split('.').pop()
+          }
+          if (!file.webContentLink) {
+            file.webContentLink = file.webViewLink
+          }
+        }
+      })
+    }
 
     yield put({
       type: LIST_GOOGLE_DOCUMENT_SUCCESS,

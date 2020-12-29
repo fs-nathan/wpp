@@ -2,7 +2,7 @@ import { Button, IconButton } from '@material-ui/core';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import { mdiChevronRight, mdiClose, mdiLogout, mdiMagnify, mdiRefresh } from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionFetchListTaskOfProject ,actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle } from 'actions/documents';
+import { actionFetchListTaskOfProject ,actionFetchListDocumentFromMe, actionFetchListDocumentShare, actionFetchListGoogleDocument, actionFetchListMyDocument, actionFetchListProject, actionFetchListProjectOfFolder, toggleSingoutGoogle, actionSelectedFolder } from 'actions/documents';
 import { actionChangeBreadCrumbs } from 'actions/system/system';
 import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
@@ -43,6 +43,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
   const [isSorted, setSorted] = useState(false);
   const [searchKey, setSearchKey] = useState('');
   const [isTaskSelected, setIsTaskSelected] = React.useState(false);
+  const [isLogedInGoogleDriver, setLogedInGoogleDriver] = React.useState(false);
 
   useEffect(() => {
     dispatch(actionFetchListMyDocument());
@@ -102,7 +103,6 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
     } else if (key === 'myDocument') {
       dispatch(actionFetchListMyDocument());
     } else if (key === 'googleDrive') {
-      setInsideProject(true)
       dispatch(actionFetchListGoogleDocument());
     }
     dispatch(actionChangeBreadCrumbs([]));
@@ -114,7 +114,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
     setSelectedFiles([])
   }
 
-  function handleClickLink(idx, id) {
+  function handleClickLink(idx, item) {
     return function onClickBreadCrumb() {
       // do not anything if click ending item
       if (idx >= currentBreadCrumbs.length - 1) return false;
@@ -126,8 +126,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
         let newList = currentBreadCrumbs.length === breadCrumbs.length ? breadCrumbs.slice(0, idx + 1) : breadCrumbs.slice(0, -1);
         dispatch(actionChangeBreadCrumbs(newList));
       }
-      console.log(id);
-      if (id === -1) {
+      if (item.id === -1) {
         if (selectedMenu.key === 'googleDrive')
           dispatch(actionFetchListGoogleDocument());
         else if (selectedMenu.key === 'projectDocument') {
@@ -140,22 +139,21 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
         else
           dispatch(actionFetchListMyDocument());
       } else {
-        if (selectedMenu.key === 'googleDrive')
-          dispatch(actionFetchListGoogleDocument({ folderId: id }, true))
-        else if (selectedMenu.key === 'projectDocument') {
-          dispatch(actionFetchListTaskOfProject({project_id: id}));
+        if (selectedMenu.key === 'googleDrive') {
+          dispatch(actionFetchListGoogleDocument({ folderId: item.id }, true))
+          dispatch(actionSelectedFolder(item));
+        } else if (selectedMenu.key === 'projectDocument') {
+          dispatch(actionFetchListTaskOfProject({project_id: item.id}));
           setInsideProject(true);
           setIsTaskSelected(false);
+        } else if (selectedMenu.key === 'sharedWithMe') {
+          dispatch(actionFetchListDocumentShare({ folder_id: item.id }, true));
+        } else {
+          dispatch(actionFetchListMyDocument({ folder_id: item.id }, true));
         }
-        else if (selectedMenu.key === 'sharedWithMe') {
-          dispatch(actionFetchListDocumentShare({ folder_id: id }, true));
-        }
-        else
-          dispatch(actionFetchListMyDocument({ folder_id: id }, true));
       }
     }
   }
-
   function getContent() {
     if (isFetching)
       return <LoadingBox />;
@@ -166,9 +164,10 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
         setTaskSelected={setIsTaskSelected}
         isTaskSelected={isTaskSelected}
       />
-    if (selectedMenu.key === 'googleDrive' && isInsideProject)
+    if (selectedMenu.key === 'googleDrive' && !isLogedInGoogleDriver)
       return <GoogleDriverDocuments
-        setInsideProject={setInsideProject}
+        setLogedInGoogleDriver={(status) => setLogedInGoogleDriver(status)}
+        isLogedInGoogleDriver={isLogedInGoogleDriver}
       />
     if (listDataFiltered.length === 0 && searchKey)
       return <NotFoundDocument searchKey={searchKey} />
@@ -214,12 +213,12 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
                     <Breadcrumbs
                       separator={<Icon path={mdiChevronRight} size={1} color={'#777'} />}
                       aria-label="breadcrumb">
-                      {currentBreadCrumbs.length && currentBreadCrumbs.map(({ name, id }, index) =>
+                      {currentBreadCrumbs.length && currentBreadCrumbs.map((item, index) =>
                         <div
                           className="ShareFromLibraryModal--bread-crumbs-item"
-                          key={id}
-                          onClick={handleClickLink(index, id)}>
-                          {name}
+                          key={item.id}
+                          onClick={handleClickLink(index, item)}>
+                          {item.name}
                         </div>
                       )}
                     </Breadcrumbs>
@@ -229,7 +228,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
                   <Icon path={mdiMagnify} size={1} color='rgba(0,0,0,.3)' />
                 </div>
                 {
-                  (selectedMenu.key === 'googleDrive') &&
+                  (selectedMenu.key === 'googleDrive' && isLogedInGoogleDriver) &&
                   <>
                     <Button
                       disableRipple
@@ -253,7 +252,7 @@ const ShareFromLibraryModal = ({ open, setOpen, onClickConfirm }) => {
                       disableTouchRipple
                       onClick={() => {
                         actionSignoutGoogleDrive(() => {
-                          dispatch(toggleSingoutGoogle(false));
+                          setLogedInGoogleDriver(false)
                         });
                       }}
                       className="header-button-custom"

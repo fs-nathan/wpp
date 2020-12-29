@@ -1,18 +1,6 @@
 // Import actions
 import * as types from '../../constants/actions/taskDetail/taskDetailConst'
 import { searchAttributesArray, searchArrayTabpart } from '../../helpers/jobDetail/arrayHelper'
-// let fakeLink = [
-//     {
-//         "date_create": "2019-10-26",
-//         "links": [
-//             {
-//                 "id": "5db3d8bfac87af0e44aaf78d",
-//                 "url": "https://storage.googleapis.com/storage_vtask_net/1572067517748-8c55033f3ff4daaa83e5.jpg",
-//                 "date_create": "2019-10-26"
-//             }
-//         ]
-//     }
-// ]
 
 // Initial state for store
 const initialState = {
