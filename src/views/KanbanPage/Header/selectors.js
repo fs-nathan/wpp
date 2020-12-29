@@ -7,6 +7,7 @@ const detailProject = state => state.project.detailProject;
 const kanbanSetting = state => state.kanban.setting;
 const showProject = state => state.project.showProject;
 const hideProject = state => state.project.hideProject;
+const viewPermissions = state => state.viewPermissions;
 
 export const projectSelector = createSelector(
   [kanbanDetailProject, memberProject, detailProject],
@@ -53,3 +54,15 @@ export const taskSearchSelector = createSelector(
     return taskSearchStr;
   }
 )
+
+export const viewPermissionsSelector = createSelector(
+  [viewPermissions],
+  (viewPermissions) => {
+    const { data: { detailProject }, loading, error } = viewPermissions;
+    return ({
+      permissions: detailProject,
+      loading,
+      error,
+    });
+  }
+);

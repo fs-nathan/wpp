@@ -24,8 +24,8 @@ const Container = ({ className = '', isDragging, statusCode, innerRef, ...props 
     {...props} 
   />;
 
-const Name = ({ className = '', ...props }) =>
-  <div className={`view_KanbanItem___name ${className}`} {...props} />;
+const Name = ({ className = '', full, ...props }) =>
+  <div className={`view_KanbanItem___name${full ? '-full' : ''} ${className}`} {...props} />;
   
 const Body = ({ className = '', ...props }) =>
   <div className={`view_KanbanItem___body ${className}`} {...props} />;
@@ -252,7 +252,7 @@ function Content({ chat, user }) {
   return null;
 }
 
-function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
+function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask, canUpdateTask, canDeleteTask }) {
 
   const statusCode = get(task, 'status_code', 0);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
@@ -279,8 +279,9 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
       <Container
         statusCode={statusCode}
       >
-        <Name>
-          <div data-custom-drag-handle="item-handle">
+        <Name full={canUpdateTask}>
+          {canUpdateTask
+          && <div data-custom-drag-handle="item-handle">
             <abbr title={t("IDS_WP_MOVE")}>
               <Icon
                 path={mdiDragVertical}
@@ -288,7 +289,8 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
                 color={"#8b8b8b"}
               />
             </abbr>
-          </div>
+          </div> 
+          }
           <abbr title={get(task, 'name', '')}>
             <Link to={get(task, 'url_redirect')}>
               <span>{get(task, 'name', '')}</span>
@@ -360,7 +362,8 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
           horizontal: "right",
         }}
       >
-        <MenuItem
+        {canUpdateTask
+        && <MenuItem
           onClick={handleMoreClick(() => handleOpenModal('EDIT_TASK', {
             taskId: get(task, 'id'),
             data: task,
@@ -370,12 +373,14 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
         >
           {t("IDS_WP_EDIT_TEXT")}
         </MenuItem>
+        }
         <MenuItem
           onClick={handleMoreClick(() => history.push(get(task, 'url_redirect')))}
         >
           {t("LABEL_CHAT_TASK_CHI_TIET")}
         </MenuItem>
-        <MenuItem
+        {canDeleteTask
+        && <MenuItem
           onClick={handleMoreClick(() => handleOpenModal('DELETE_TASK', {
             content: t('IDS_WP_ALERT_CONTENT'),
             onConfirm: () => doDeleteTask({
@@ -386,6 +391,7 @@ function KanbanItem({ task, handleOpenModal, projectId, doDeleteTask }) {
         >
           {t("IDS_WP_DELETE")}
         </MenuItem>
+        }
       </Menu>
     </>
   );
