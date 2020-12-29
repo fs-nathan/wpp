@@ -29,6 +29,7 @@ export const CommentInput = React.memo(
     const handleClose = () => {
       setElement(undefined);
     };
+    console.log(openFilePicker)
     return (
       <>
         <div className="comp_CommentInput" ref={anchorElRef}>
@@ -112,43 +113,41 @@ export const CommentInput = React.memo(
             >
               <AttachFileOutlined />
             </IconButton>
-            {openFilePicker && (
-              <ModalFilePicker
-                {...{
-                  open: openFilePicker,
-                  setOpen: setOpenFilePicker,
-                  handleUploadFile: (e) => {
-                    handleComment("", [...e.target.files]);
-                  },
-                  onConfirmShare: (files) => {
-                    const isFileFromStore = (file) => !!file.id;
-                    const isFileFromGoggle = (file) => !!file.file_id;
-                    const { file_ids, file, google_data } = files.reduce(
-                      (result, f) => {
-                        switch (true) {
-                          case isFileFromStore(f):
-                            result.file_ids.push(f.id);
-                            break;
-                          case isFileFromGoggle(f):
-                            result.google_data.push(f);
-                            break;
-                          default:
-                            result.file.push(f);
-                            break;
-                        }
-                        return result;
-                      },
-                      {
-                        file_ids: [],
-                        file: [],
-                        google_data: [],
+            <ModalFilePicker
+              {...{
+                open: openFilePicker,
+                setOpen: setOpenFilePicker,
+                handleUploadFile: (e) => {
+                  handleComment("", [...e.target.files]);
+                },
+                onConfirmShare: (files) => {
+                  const isFileFromStore = (file) => !!file.id;
+                  const isFileFromGoggle = (file) => !!file.file_id;
+                  const { file_ids, file, google_data } = files.reduce(
+                    (result, f) => {
+                      switch (true) {
+                        case isFileFromStore(f):
+                          result.file_ids.push(f.id);
+                          break;
+                        case isFileFromGoggle(f):
+                          result.google_data.push(f);
+                          break;
+                        default:
+                          result.file.push(f);
+                          break;
                       }
-                    );
-                    handleComment("", null, null, file_ids, google_data);
-                  },
-                }}
-              />
-            )}
+                      return result;
+                    },
+                    {
+                      file_ids: [],
+                      file: [],
+                      google_data: [],
+                    }
+                  );
+                  handleComment("", null, null, file_ids, google_data);
+                },
+              }}
+            />
             <IconButton
               onClick={() => {
                 setElement(

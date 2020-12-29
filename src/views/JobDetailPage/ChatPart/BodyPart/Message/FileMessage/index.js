@@ -119,7 +119,6 @@ const FileMessage = ({
   function onClickAvatar() {
     dispatch(detailUser({ userId: user_create_id }))
   }
-
   return (
     <div
       id={id}
@@ -127,7 +126,7 @@ const FileMessage = ({
         {
           [`TextMessage__${chatPosition}`]: !isReply,
           [`TextMessage__reply`]: isReply,
-        })}  >
+        }) + " " + (files.length === 1 && files[0].media_type === 1 ? is_me ? "section-chat-video-of-me" : "section-chat-video-of-other" : "")}  >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
           <Avatar onClick={onClickAvatar}
@@ -173,24 +172,22 @@ const FileMessage = ({
           <div className={clsx("TextMessage--content", {
             "TextMessage--content__self": is_me,
             "TextMessage--content__withReact": data_emotion.length > 0,
-            "FileMessage--content__video": files.length === 1 && FileType(getFileType(files[0].name)) === fileType.video && !isUploading,
+            "FileMessage--content__video": files.length === 1 && files[0].memedia_type === 1 && !isUploading,
           })} >
             {chat_parent &&
               <TextMessage {...chat_parent} isReply></TextMessage>
             }
-            {files.map((file, i) => (FileType(getFileType(file.name)) === fileType.video && !isUploading) ?
+            {files.map((file, i) => (file.media_type === 1 && !isUploading) ?
               (<div className="FileMessage--files FileMessage--video"
                 key={file.id || i}
                 onClick={onClickVideo(file, i)}>
                 <div className="FileMessage--videoCover" >
-                  {!isReply &&
-                    <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
-                  }
-                  <ReactPlayer
-                    className="FileMessage--videoPlayer"
-                    url={file.url}
-                    height="auto" width="100%"
-                  />
+                  <div style={{display: "flex", position: "relative"}}>
+                    <img style={{width: "100%", borderTopLeftRadius: "5px", borderTopRightRadius: "5px"}} src={file.url_thumbnail} />
+                    {!isReply &&
+                      <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>
+                    }
+                  </div>
                   {!isReply &&
                     <Typography className="FileMessage--videoInfo" component={'div'}>
                       <TitleImg component='div'>
@@ -226,7 +223,11 @@ const FileMessage = ({
                     {file.name}
                   </div>
                   <div className={clsx("FileMessage--fileSize", { "FileMessage--fileSize__self": is_me, "FileMessage--fileSize__reply": isReply })}>
-                    {getFileType(file.name)} - {file && file.size}
+                    <span className="info-file-in-chat-section">{file && file.type} - {file && file.size}</span>
+                    <div className="icon-download-file-in-chat-section"
+                      onClick={onClickDownload(file)}>
+                      <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
+                    </div>
                   </div>
                   {isUploading && uploadingPercent[id] !== 100 &&
                     <div className="FileMessage--loading" >{t('LABEL_CHAT_TASK_DANG_TAI')}<div className="FileMessage--loadingBackground" >
@@ -236,10 +237,6 @@ const FileMessage = ({
                       {uploadingPercent[id]}%
               </div>
                   }
-                </div>
-                <div className="FileMessage--downloadButton"
-                  onClick={onClickDownload(file)}>
-                  <Icon className={clsx("FileMessage--download", { "FileMessage--download__reply": isReply || is_me })} path={mdiDownload}></Icon>
                 </div>
               </div>
               ))}

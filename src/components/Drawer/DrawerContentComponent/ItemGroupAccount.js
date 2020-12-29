@@ -61,7 +61,7 @@ const ItemGroupAccount = props => {
       if (props.groupMe) {
         await actionChangeActiveGroup(props.groupMe.id);
         props.actionActiveGroup(props.groupMe);
-        window.location.reload(false);
+        window.location.href = "/home"
       }
       handleToast('success', t('IDS_WP_LEAVE_GROUP_SUCCESS'));
     } catch (error) {
@@ -123,7 +123,7 @@ const ItemGroupAccount = props => {
         await actionChangeActiveGroup(item.id);
         props.actionActiveGroup(item);
         //handleToast('success', t('IDS_WP_CHANGE_ACTIVE_GROUP_SUCCESS'));
-        window.location.reload(false);
+        window.location.href = "/home";
       } catch (error) {
         handleToast('error', t('IDS_WP_CHANGE_ACTIVE_GROUP_FAIL'));
       }

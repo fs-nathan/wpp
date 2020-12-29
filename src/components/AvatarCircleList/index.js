@@ -35,7 +35,7 @@ function AvatarCircleList({ display, users = [], size = 20, className = '', }) {
             )
           })}
           {display < users.length && (  
-            <div style={{ width: size, height: size }}>
+            <div style={{ width: size, height: size, background: "rgb(0, 150, 136)", color: "#fff", boxShadow: "rgb(248, 249, 250) -2px 0px" }}>
               <div style={{ fontSize: `${size / 2}px`}}>+{users.length-display}</div>
             </div>
           )}

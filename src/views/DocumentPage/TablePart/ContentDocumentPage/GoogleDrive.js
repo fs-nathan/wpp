@@ -80,6 +80,7 @@ const GoogleDrive = props => {
   const [isCheckingService, setCheckingService] = useState(true);
   const [sortType, setSortType] = useState('desc');
   const [defaultDate, setDefaultDate] = useState('');
+  console.log(listData)
 
   useEffect(() => {
     return () => {
@@ -140,20 +141,27 @@ const GoogleDrive = props => {
       newBreadCrumbs.push({
         id: -1,
         name: 'Home',
-        action: () => props.actionFetchListGoogleDocument({}, true)
+        action: () => {
+          props.actionFetchListGoogleDocument({}, true)
+          props.actionSelectedFolder(item);
+        }
       });
       newBreadCrumbs.push({
         id: item.id,
         name: item.name,
-        action: () =>
+        action: () => {
           props.actionFetchListGoogleDocument({ folderId: item.id }, true)
+          props.actionSelectedFolder(item);
+        } 
       });
     } else {
       newBreadCrumbs.push({
         id: item.id,
         name: item.name,
-        action: () =>
+        action: () => {
           props.actionFetchListGoogleDocument({ folderId: item.id }, true)
+          props.actionSelectedFolder(item);
+        }
       });
     }
     props.actionChangeBreadCrumbs(newBreadCrumbs);

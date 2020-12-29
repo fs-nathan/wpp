@@ -32,7 +32,7 @@ function ListProjectHeader({ setShow }) {
           color={'#000000'}
           className="job-detail-icon"
         />
-        <div>{t('LABEL_CHAT_TASK_DANH_SACH_DU_AN')}</div>
+        <div>{t('WORK_LIST')}</div>
         <IconButton className="listProjectHeader--button" onClick={closeListProject}>
           <Icon path={mdiClose} size={1} className="job-detail-icon" />
         </IconButton>

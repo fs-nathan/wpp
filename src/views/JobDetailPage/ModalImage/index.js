@@ -249,7 +249,7 @@ const ModalImage = () => {
       </DialogTitleModalImage>
       <ContentDialog id="ContentDialog-ImageModal">
         {
-          (media_type === 1 || FileType(type) === fileType.video) ?
+          (media_type === 1) ?
             <ReactPlayer
               className="ModalImage--video"
               url={url} playing
@@ -280,7 +280,7 @@ const ModalImage = () => {
             </>
         }
       </ContentDialog>
-      <FooterDialog fullheight={(media_type === 1 || FileType(type) === fileType.video).toString()}>
+      <FooterDialog fullheight={(media_type === 1).toString()}>
         <div className="ModalImage--scrollWrap">
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}
@@ -290,9 +290,9 @@ const ModalImage = () => {
           >
             <div className="ModalImage--imagesList">
               {
-                (media_type === 1 || FileType(type) === fileType.video) ? null :
+                (media_type === 1) ? null :
                   imagesList.map((image, index) => {
-                    if (FileType(image.type) === fileType.video) return null;
+                    // if (FileType(image.type) === fileType.video) return null;
                     return (
                       <WrapperImage
                         onClick={() => setCurrentImage(index)}

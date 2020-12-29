@@ -1,4 +1,6 @@
 import { GridList, GridListTile, ListSubheader } from '@material-ui/core';
+import { mdiDownload, mdiPlayCircle } from '@mdi/js';
+import Icon from '@mdi/react';
 import { showImagesList } from 'actions/chat/chat';
 import { getImage } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
@@ -57,6 +59,7 @@ const MediaBox = (props) => {
                           key={idx}>
                           <img src={item.url_thumbnail} alt='avatar' className="image-media-box" />
                           <MenuListItem item={item} />
+                          { item.media_type === 1 && <Icon className="icon-play-video" path={mdiPlayCircle}></Icon>}
                         </GridListTile>
                       )
                     })}

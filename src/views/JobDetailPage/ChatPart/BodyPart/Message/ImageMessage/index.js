@@ -43,7 +43,7 @@ const TitleImg = styled(Typography)`
 `
 
 function ImagePlace(t, file, user_create_avatar, user_create_name, time_create, media_type, isReply) {
-  if (media_type === 1 || FileType(getFileType(file.name)) === fileType.video)
+  if (media_type === 1)
     return (<div className="FileMessage--videoCover" >
       {!isReply &&
         <Icon className="FileMessage--videoPlayButton" path={mdiPlayCircle}></Icon>

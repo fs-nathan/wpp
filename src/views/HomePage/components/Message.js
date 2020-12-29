@@ -362,7 +362,7 @@ const Image = React.memo(({ image }) => {
           showImagesList(true, [
             {
               ...image,
-              url: url,
+              url: image.url,
               url_thumbnail: image.url_thumb || image.url,
             },
           ])

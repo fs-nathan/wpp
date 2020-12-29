@@ -52,8 +52,7 @@ const DocumentDetail = props => {
   const [visible, setVisible] = useState(false);
   const [type, setType] = useState(
     fileInfo.isGoogleDocument ||
-      fileInfo.isTrashFile ||
-      fileInfo.document_type === 2
+      fileInfo.isTrashFile
       ? null
       : 'comment'
   );
@@ -205,8 +204,7 @@ const DocumentDetail = props => {
               </React.Fragment>
             )}
             {!fileInfo.isGoogleDocument &&
-              !fileInfo.isTrashFile &&
-              fileInfo.document_type !== 2 && (
+              !fileInfo.isTrashFile && (
                 <React.Fragment>
                   <IconButton
                     color="inherit"
@@ -278,7 +276,7 @@ const DocumentDetail = props => {
           </div>
           {!fileInfo.isGoogleDocument &&
             !fileInfo.isTrashFile &&
-            fileInfo.document_type !== 2 && (
+            (
               <Menu
                 id="more-action"
                 anchorEl={anchorEl}

@@ -15,6 +15,7 @@ const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile }) => {
   const [isShareFromLib, setShareFromLib] = useState(false);
 
   function onClickFromComputer() {
+    document.getElementById('upload_file').value= null
     fileInputRef.current.click()
   }
 

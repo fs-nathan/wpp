@@ -34,6 +34,7 @@ class ExportPDF extends Component {
       dayBonus,
       bonusCode,
       dataNumberOldOder,
+      monthBuyPackageUser,
       t
     } = this.props;
     // console.log('dataNumberOldOder', dataNumberOldOder);
@@ -353,7 +354,7 @@ class ExportPDF extends Component {
                           <td className="TdStyled2 number-stt"></td>
                           <td className="TdStyled3 detail-order">
                             <div className="">
-                              <div>{t('IDS_WP_TIME_DONATE')}</div>
+                              <div>{t('IDS_WP_TIME_DONATE', {monthBuyPackageUser})}</div>
                             </div>
                           </td>
                           <td className="TdStyled4">-</td>

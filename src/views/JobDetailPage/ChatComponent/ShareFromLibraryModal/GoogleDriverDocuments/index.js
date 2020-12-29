@@ -7,11 +7,11 @@ import { actionAuthGoogleDrive, checkSignInStatus, initGoogleDrive } from 'views
 import LoginGoogleDrive from '../LoginGoogleDrive';
 import './styles.scss';
 
-function GoogleDriverDocuments({ setInsideProject }) {
+function GoogleDriverDocuments({ isLogedInGoogleDriver, setLogedInGoogleDriver }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const breadCrumbs = useSelector(state => state.system.breadCrumbs);
-  const isShowBtnSignoutGoogle = useSelector(state => state.documents.isShowBtnSignoutGoogle);
+  const isShowBtnSignoutGoogle = isLogedInGoogleDriver
   const settingDate = useSelector(state => state.setting.settingDate)
 
   const [isLogged, setLogged] = useState(false);
@@ -41,11 +41,13 @@ function GoogleDriverDocuments({ setInsideProject }) {
       setLogged(true);
       // Get list file gg Drive
       dispatch(actionFetchListGoogleDocument());
-      setInsideProject(false)
     } else {
       setLogged(false);
       // Hide button Logout gg Drive
       dispatch(toggleSingoutGoogle(false));
+    }
+    if (isLogedInGoogleDriver != isSignedIn) {
+      setLogedInGoogleDriver(true)
     }
   };
 
@@ -72,31 +74,6 @@ function GoogleDriverDocuments({ setInsideProject }) {
     }
     // eslint-disable-next-line
   }, []);
-
-  const handleBreadCrumbs = (item = {}) => {
-    let newBreadCrumbs = [...breadCrumbs];
-    if (breadCrumbs.length === 0) {
-      newBreadCrumbs.push({
-        id: -1,
-        name: 'Home',
-        action: () => dispatch(actionFetchListGoogleDocument({}, true))
-      });
-      newBreadCrumbs.push({
-        id: item.id,
-        name: item.name,
-        action: () =>
-          dispatch(actionFetchListGoogleDocument({ folderId: item.id }, true))
-      });
-    } else {
-      newBreadCrumbs.push({
-        id: item.id,
-        name: item.name,
-        action: () =>
-          dispatch(actionFetchListGoogleDocument({ folderId: item.id }, true))
-      });
-    }
-    dispatch(actionChangeBreadCrumbs(newBreadCrumbs));
-  };
 
   return ((!isLogged || !isShowBtnSignoutGoogle) && !isCheckingService &&
     <LoginGoogleDrive

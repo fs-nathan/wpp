@@ -26,7 +26,7 @@ const NotificationWorkPlusDetail = props => {
   };
   useEffect(() => {
     handleFetchData(); // eslint-disable-next-line
-  }, []);
+  }, [props.location.search]);
   if (props.isLoading) return <LoadingBox />;
   if (isEmpty(notiItem)) return '';
   return (

@@ -1218,7 +1218,7 @@
   "IDS_WP_USER_UNIT": "USER",
   "IDS_WP_REGISTER_PACKAGE": "Register the product package",
   "IDS_WP_TIME_FROM_OLD_ORDER": "Time plus from old orders",
-  "IDS_WP_TIME_DONATE": "Free use period due to payment period: 12 months",
+  "IDS_WP_TIME_DONATE": "Free use period due to payment period: {{monthBuyPackageUser}} months",
   "IDS_WP_PACKAGE": "Product package",
   "IDS_WP_REGISTER_PACKAGE_OPEN": "Sign up for the expansion pack",
   "IDS_WP_BUY_STORAGE_OTHER": "Purchase additional storage space",
@@ -2176,5 +2176,6 @@
   "IDS_WP_PROGRESS": "Progress",
   "IDS_WP_ALREADY_EXIST": "{{object}} already exists",
   "ENTER_DATE": "Enter date",
-  "REQUIRED": "Required"
+  "REQUIRED": "Required",
+  "WORK_LIST": "Work list"
 }

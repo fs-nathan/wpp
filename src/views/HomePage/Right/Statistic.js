@@ -9,42 +9,13 @@ import { routes } from "../contant/routes";
 import { postModule } from "../redux/post";
 import "./Statistic.css";
 export const Statistic = ({
-  data = [
-    // {
-    //   id: "5e79c8959c136873cbfdb2f9",
-    //   name: "Thông báo",
-    //   logo:
-    //     "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
-    //   number_post: 0,
-    // },
-    // {
-    //   id: "5e79c9009c136873cbfdbcec",
-    //   name: "Sự kiện",
-    //   logo:
-    //     "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
-    //   number_post: 8,
-    // },
-  ],
+  data = [],
 }) => {
   const { t } = useTranslation();
   const history = useHistory();
   return (
     <TasksCard.Container>
       {
-        //    [
-        //     {
-        //         "id": "5e79c8959c136873cbfdb2f9",
-        //         "name": "Thông báo",
-        //         "logo": "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
-        //         "number_post": 0
-        //     },
-        //     {
-        //         "id": "5e79c9009c136873cbfdbcec",
-        //         "name": "Sự kiện",
-        //         "logo": "https://storage.googleapis.com/storage_vtask_net/Icon_default/group.jpg",
-        //         "number_post": 8
-        //     }
-        // ]
         <TasksCard.Content>
           <div className="comp_Statistic__wrap">
             {data.map((item, i) => {

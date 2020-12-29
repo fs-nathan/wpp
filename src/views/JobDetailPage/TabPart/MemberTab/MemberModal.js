@@ -179,11 +179,12 @@ const MemberModal = () => {
   function onClickFile(file, idx) {
     const type = getFileType(file.name);
     return (evt) => {
-      if (FileType(type) === fileType.video) {
-        dispatch(showImagesList(true, [file], idx));
-      } else {
-        dispatch(openDocumentDetail({ ...file, type: type }));
-      }
+      // if (FileType(type) === fileType.video) {
+      //   dispatch(showImagesList(true, [file], idx));
+      // } else {
+      //   dispatch(openDocumentDetail({ ...file, type: type }));
+      // }
+      dispatch(openDocumentDetail({ ...file, type: type }));
     }
   }
 

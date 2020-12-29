@@ -66,16 +66,6 @@ export const HightLight = ({ posts, isToggle, onMoreClick }) => {
       <TasksCard.Content>
         <Stack small>
           {
-            // new Array(5)
-            //   .fill({
-            //     id: "5e7b2e9bf1e7e4730a61fb74",
-            //     title: "Thông báo cả làng làm việc ở nhà",
-            //     user_create_avatar:
-            //       "https://storage.googleapis.com/storage_vtask_net/1583571954197-filename",
-            //     user_create_name: "Thành Nguyễn",
-            //     category_name: "Sự kiện",
-            //     created_at: "17:12 25/03/2020",
-            //   })
             posts.map((item, i) => {
               return (
                 <HighlightItem key={i} {...{ item, history }}></HighlightItem>

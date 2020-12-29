@@ -137,27 +137,7 @@ const DocumentShareFromMe = props => {
       }
       actionChangeBreadCrumbs(newBreadCrumbs);
     } else {
-      if (item.document_type !== 2) {
-        props.openDocumentDetail(item);
-      } else {
-        // google drive file
-        let transformData = {
-          isGoogleDocument: true,
-          noConvertFileSize: true,
-          id: item.id,
-          name: item.name || '',
-          webViewLink: item.url,
-          webContentLink: item.url_download,
-          url: item.url.split('?')[0].replace('view', 'preview'),
-          type: item.type,
-          size: item.size,
-          user_create: {
-            name: item.user_create_name || '',
-            avatar: item.user_create_avatar || ''
-          }
-        };
-        props.openDocumentDetail(transformData);
-      }
+      props.openDocumentDetail(item);
     }
   };
 

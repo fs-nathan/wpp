@@ -57,7 +57,7 @@ const Message = props => {
       return <FileMessage {...props} />;
     case CHAT_TYPE.IMAGE:
       const files = props.images;
-      if (files.length === 1 && FileType(getFileType(files[0].name)) === fileType.video)
+      if (files.length === 1 && files[0].media_type === 1)
         return <FileMessage {...props} files={files} />;
       return <ImageMessage {...props} isUploading={false} />;
     case CHAT_TYPE.UPDATE_TASK_NAME:
