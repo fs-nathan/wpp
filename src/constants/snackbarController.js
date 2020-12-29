@@ -1,3 +1,5 @@
+import i18next from 'i18next';
+
 export const SNACKBAR_EVENT = 'CUSTOM_SNACKBAR_EVENT';
 
 export const SNACKBAR_VARIANT = {
@@ -7,12 +9,12 @@ export const SNACKBAR_VARIANT = {
 
 export const DEFAULT_MESSAGE = {
   QUERY: {
-    SUCCESS: 'Tải dữ liệu thành công',
-    ERROR: 'Lỗi trong quá trình tải dữ liệu',
+    SUCCESS: i18next.t('SNACK_QUERY_SUCCESS'),
+    ERROR: i18next.t('SNACK_QUERY_FAIL'),
   },
   MUTATE: {
-    SUCCESS: 'Thao tác thành công',
-    ERROR: 'Thao tác không thành công',
+    SUCCESS: i18next.t('SNACK_MUTATE_SUCCESS'),
+    ERROR: i18next.t('SNACK_MUTATE_FAIL'),
   },
 }
 
