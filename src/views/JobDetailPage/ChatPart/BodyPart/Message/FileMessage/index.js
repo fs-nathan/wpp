@@ -126,7 +126,7 @@ const FileMessage = ({
         {
           [`TextMessage__${chatPosition}`]: !isReply,
           [`TextMessage__reply`]: isReply,
-        }) + " " + (files.length === 1 && files[0].media_type === 1 ? is_me ? "section-chat-video-of-me" : "section-chat-video-of-other" : "")}  >
+        }) + " " + (files.length === 1 && files[0].media_type === 1 ? is_me ? "section-chat-video section-chat-video-of-me" : "section-chat-video section-chat-video-of-other" : "")}  >
       {!isReply && !is_me &&
         <abbr title={user_create_name}>
           <Avatar onClick={onClickAvatar}

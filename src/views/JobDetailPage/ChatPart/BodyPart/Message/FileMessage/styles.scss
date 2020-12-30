@@ -146,9 +146,18 @@
     }
   }
 }
+.section-chat-video .TextMessage--rightContentWrap {
+  width: 50%
+}
 .section-chat-video-of-me {
   .TextMessage--content {
     padding: 0px;
+  }
+  .FileMessage--videoInfo .MuiListItemText-root div:nth-child(1) {
+    font-size: 13px;
+  }
+  .FileMessage--videoInfo .MuiListItemText-root div:nth-child(2) {
+    font-size: 12px;
   }
 }
 .section-chat-video-of-other {

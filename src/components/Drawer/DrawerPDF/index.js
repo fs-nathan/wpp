@@ -192,7 +192,7 @@ const ExportPDF = ({
         data,
         method: 'post'
       });
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, "Lưu thành công");
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     } catch (e) {
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
       console.log(e);

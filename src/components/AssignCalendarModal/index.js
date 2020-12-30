@@ -53,7 +53,6 @@ const AssignCalendarModal = ({
       changeProjectSchedule(result.data.schedules)
       changeFlagFetchProjectSchedules(false)
     } catch (e) {
-      console.log(e)
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
     }
   }
@@ -73,6 +72,7 @@ const AssignCalendarModal = ({
         }
       })
       changeFlagFetchProjectSchedules(true)
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     } catch (e) {
       console.log(e)
     }
