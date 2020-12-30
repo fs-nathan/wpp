@@ -10,7 +10,7 @@ import { detailProject } from 'actions/project/detailProject';
 import { showProject } from 'actions/project/showProject';
 import { hideProject } from 'actions/project/hideProject';
 import { getProjectListBasic } from "actions/taskDetail/taskDetailActions";
-import { projectSelector, visibleSelector, showHidePendingsSelector, taskSearchSelector } from './selectors';
+import { projectSelector, visibleSelector, showHidePendingsSelector, taskSearchSelector, viewPermissionsSelector } from './selectors';
 import { CustomEventDispose, CustomEventListener, UPDATE_PROJECT } from 'constants/events.js';
 import { get } from 'lodash';
 
@@ -29,9 +29,8 @@ function KanbanPage({
   showHidePendings,
   doGetProjectListBasic,
   taskSearchStr, doSearchTask,
+  viewPermissions,
 }) {
-
-  const [search, setSearch] = React.useState('');
 
   React.useEffect(() => {
     doKanbanDetailProject({ projectId });
@@ -72,6 +71,7 @@ function KanbanPage({
           : doShowProject({ projectId: get(project, 'id') })
       }
       showHidePendings={showHidePendings}
+      canUpdate={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
     />
   );
 }
@@ -82,6 +82,7 @@ const mapStateToProps = state => {
     visible: visibleSelector(state), 
     showHidePendings: showHidePendingsSelector(state),
     taskSearchStr: taskSearchSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
   }
 };
 

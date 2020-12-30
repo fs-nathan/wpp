@@ -9,7 +9,7 @@ import Icon from '@mdi/react';
 import { taskColors } from 'constants/colors';
 import { mdiDotsVertical, mdiDragVertical, mdiPlus, mdiClockOutline } from '@mdi/js';
 import { connect } from 'react-redux';
-import { statusSelector, prioritySelector, memberSelector, taskSearchSelector } from './selectors';
+import { statusSelector, prioritySelector, memberSelector, taskSearchSelector, viewPermissionsSelector } from './selectors';
 import AvatarCircleList from 'components/AvatarCircleList';
 import styled from 'styled-components';
 import { useTranslation } from 'react-i18next';
@@ -36,9 +36,9 @@ const GroupName = ({ className = '', ...props }) =>
     {...props} 
   />;
 
-const Indicator = ({ className = '', ...props }) =>
+const Indicator = ({ className = '', full = false, ...props }) =>
   <div 
-    className={`view_KanbanColumn___indicator ${className}`}
+    className={`view_KanbanColumn___indicator${full ? '-full' : ''} ${className}`}
     {...props} 
   />;
 
@@ -103,12 +103,13 @@ const ManagerBox = ({ className = '', ...props }) =>
     {...props}
   />
 
-export function ColumnHeader({ groupTask, index, iconButtons = null, stageName }) {
+export function ColumnHeader({ groupTask, index, iconButtons = null, stageName, canUpdateProject, canManageGroupTask, canCreateTask }) {
   const { t } = useTranslation();
   return (
     <Title>
-      <Indicator>
-        <div data-custom-drag-handle="column-handle">
+      <Indicator full={canUpdateProject}>
+        {canUpdateProject
+        && <div data-custom-drag-handle="column-handle">
           <abbr title={t("IDS_WP_MOVE")}>
             <Icon
               path={mdiDragVertical}
@@ -117,9 +118,11 @@ export function ColumnHeader({ groupTask, index, iconButtons = null, stageName }
             />
           </abbr>
         </div>
+        }
         <div>{`${stageName} ${index + 1}`}</div>
-        {!isNil(iconButtons) && 
-          <abbr title={t("IDS_WP_MORE")}>
+        {canManageGroupTask
+        && !isNil(iconButtons) 
+        && <abbr title={t("IDS_WP_MORE")}>
             <IconButton
               size="small"
               aria-controls={`${get(groupTask, 'id', '')}-menu`}
@@ -139,8 +142,9 @@ export function ColumnHeader({ groupTask, index, iconButtons = null, stageName }
         <abbr title={get(groupTask, 'name', '')}>
           {`${get(groupTask, 'name', '')}`}
         </abbr>
-        {!isNil(iconButtons) && 
-          <abbr title={t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}>
+        {canCreateTask
+        && !isNil(iconButtons) 
+        && <abbr title={t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}>
             <IconButton
               size="small"
               onClick={iconButtons.plusClick}
@@ -221,6 +225,7 @@ function KanbanColumn({
   projectId, handleItemDrop,
   stageName,
   taskSearchStr,
+  viewPermissions,
 }) { 
 
   const { t } = useTranslation();
@@ -233,6 +238,12 @@ function KanbanColumn({
     )
     .filter(task => includes(get(task, 'name', ''), taskSearchStr));
   const [moreAnchor, setMoreAnchor] = React.useState(null);
+
+  const canUpdateProject = get(viewPermissions.permissions, [projectId, 'update_project'], false);
+  const canManageGroupTask = get(viewPermissions.permissions, [projectId, 'manage_group_task'], false); 
+  const canCreateTask = get(viewPermissions.permissions, [projectId, 'create_task'], false);
+  const canUpdateTask = get(viewPermissions.permissions, [projectId, 'update_task'], false);
+  const canDeleteTask = get(viewPermissions.permissions, [projectId, 'delete_task'], false);
 
   function handleMoreOpen(evt) {
     setMoreAnchor(evt.currentTarget);
@@ -268,6 +279,9 @@ function KanbanColumn({
             }),
           }}
           stageName={stageName}
+          canUpdateProject={canUpdateProject}
+          canManageGroupTask={canManageGroupTask}
+          canCreateTask={canCreateTask}
         />
         <ListScroll
           autoHide
@@ -298,6 +312,8 @@ function KanbanColumn({
                       key={index}
                       projectId={projectId}
                       handleOpenModal={handleOpenModal}
+                      canUpdateTask={canUpdateTask}
+                      canDeleteTask={canDeleteTask}
                     />
                   </Draggable>
                 ))}
@@ -374,6 +390,7 @@ const mapStateToProps = state => ({
   priority: prioritySelector(state),
   memberFilter: memberSelector(state),
   taskSearchStr: taskSearchSelector(state),
+  viewPermissions: viewPermissionsSelector(state),
 });
 
 export default connect(mapStateToProps, null)(KanbanColumn);

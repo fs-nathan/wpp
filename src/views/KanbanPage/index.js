@@ -7,7 +7,8 @@ import ProjectSettingModal from 'views/ProjectGroupPage/Modals/ProjectSetting';
 import { useParams } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { visibleSelector } from './selectors';
-import AssignCalendarModal from "components/AssignCalendarModal";
+//import AssignCalendarModal from "components/AssignCalendarModal";
+import CalendarModal from './Modals/CalendarModal';
 import CreateNewGroupTask from 'views/ProjectPage/Modals/CreateNewGroupTask';
 import DeleteGroupTask from 'views/ProjectPage/Modals/DeleteGroupTask';
 import CreateJobModal from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal';
@@ -16,12 +17,19 @@ import AlertModal from 'components/AlertModal';
 import CreateGroupTask from 'views/ProjectPage/Modals/CreateGroupTask';
 import ModalImage from "views/JobDetailPage/ModalImage";
 import ManagerModal from './Modals/ManagerModal';
+import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 
 function KanbanPage({
   visible,
+  doGetPermissionViewDetailProject,
 }) {
 
   const { projectId } = useParams();
+  
+  React.useLayoutEffect(() => {
+    doGetPermissionViewDetailProject({ projectId });
+  }, [projectId]);
+  
   const [ openStageSettingModal, setOpenStageSettingModal ] = React.useState(false);
   const [ openStageSettingProps, setOpenStageSettingProps ] = React.useState({});
   const [ openMemberSettingModal, setOpenMemberSettingModal ] = React.useState(false);
@@ -135,9 +143,10 @@ function KanbanPage({
         setOpen={setOpenSettingProjectModal}
         {...openSettingProjectProps}
       />
-      <AssignCalendarModal
-        openModal={openCalendar}
-        setopenModal={setOpenCalendar}
+      <CalendarModal
+        open={openCalendar}
+        setOpen={setOpenCalendar}
+        projectId={projectId}
       />
       <CreateNewGroupTask
         open={openUpdateGroupTask}
@@ -184,4 +193,10 @@ const mapStateToProps = state => {
   }
 };
 
-export default connect(mapStateToProps, null)(KanbanPage);
+const mapDispatchToProps = dispatch => {
+  return {
+    doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(KanbanPage);

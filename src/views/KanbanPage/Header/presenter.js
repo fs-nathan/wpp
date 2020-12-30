@@ -41,6 +41,7 @@ function KanbanPage({
   handleShowOrHideProject,
   handleOpenModal,
   showHidePendings,
+  canUpdate,
 }) {
 
   const { t } = useTranslation();
@@ -104,7 +105,8 @@ function KanbanPage({
               </div>
               <span>{Boolean(searchAnchor) ? t("IDS_WP_CANCEL") : t("IDS_WP_SEARCH")}</span>
             </StyledButton>
-            <StyledButton
+            {canUpdate
+            && <StyledButton
               onClick={() => handleVisibleDrawerMessage({
                 type: DRAWER_TYPE.KANBAN.MEMBERS,
                 anchor: 'right',
@@ -123,6 +125,7 @@ function KanbanPage({
               </div>
               <span>{t("IDS_WP_MEMBER")}</span>
             </StyledButton>
+            }
             <StyledButton 
               onClick={() => handleVisibleDrawerMessage({
                 type: DRAWER_TYPE.KANBAN.FILTER,
@@ -195,7 +198,8 @@ function KanbanPage({
             horizontal: "right",
           }}
         >
-          <MenuItem
+          {canUpdate
+          && <MenuItem
             onClick={handleMoreClick(() => handleOpenModal('EDIT_PROJECT', {
               curProject: project,
             }))}
@@ -203,6 +207,7 @@ function KanbanPage({
           >
             {t("IDS_WP_EDIT_TEXT")}
           </MenuItem>
+          }
           <MenuItem
             onClick={handleMoreClick(() => handleOpenModal('SETTING_PROJECT', {
               curProject: project,
@@ -217,7 +222,8 @@ function KanbanPage({
           >
             {t("IDS_WP_PROJECT_CALENDAR")}
           </MenuItem>
-          <MenuItem
+          {canUpdate
+          && <MenuItem
             onClick={handleMoreClick(() => handleShowOrHideProject(project))}
             disabled={
               !isNil(find(showHidePendings.pendings, pending => pending === get(project, 'id')))
@@ -234,6 +240,7 @@ function KanbanPage({
               ? `${t("IDS_WP_HIDE")} ${t(workTypes[get(project, 'work_type', 0)])}` 
               : `${t("IDS_WP_UNHIDE")} ${t(workTypes[get(project, 'work_type', 0)])}`}
           </MenuItem>
+          }
         </Menu>
       </>
     )

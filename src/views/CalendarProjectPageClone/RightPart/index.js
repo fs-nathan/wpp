@@ -88,6 +88,7 @@ function CalendarProjectRightPart({
 
   React.useEffect(() => {
     let scheduleID = scheduleDetailGantt.id;
+    console.log('scheduleID: ', scheduleID);
     doGetScheduleDetail({ scheduleID }, false);
     const refreshScheduleDetail = () => {
       doGetScheduleDetail({ scheduleID }, false);

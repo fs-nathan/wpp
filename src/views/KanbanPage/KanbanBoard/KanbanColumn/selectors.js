@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 const kanbanSetting = state => state.kanban.setting;
+const viewPermissions = state => state.viewPermissions;
 
 export const statusSelector = createSelector(
   [kanbanSetting],
@@ -32,4 +33,16 @@ export const taskSearchSelector = createSelector(
     const { setting: { taskSearchStr } } = kanbanSetting;
     return taskSearchStr;
   }
-)
+);
+
+export const viewPermissionsSelector = createSelector(
+  [viewPermissions],
+  (viewPermissions) => {
+    const { data: { detailProject }, loading, error } = viewPermissions;
+    return ({
+      permissions: detailProject,
+      loading,
+      error,
+    });
+  }
+);

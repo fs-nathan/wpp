@@ -1,4 +1,4 @@
-import i18next from 'i18next';
+import i18n from 'i18n';
 
 export const SNACKBAR_EVENT = 'CUSTOM_SNACKBAR_EVENT';
 
@@ -9,12 +9,12 @@ export const SNACKBAR_VARIANT = {
 
 export const DEFAULT_MESSAGE = {
   QUERY: {
-    SUCCESS: i18next.t('SNACK_QUERY_SUCCESS'),
-    ERROR: i18next.t('SNACK_QUERY_FAIL'),
+    SUCCESS: i18n.t('SNACK_QUERY_SUCCESS'),
+    ERROR: i18n.t('SNACK_QUERY_FAIL'),
   },
   MUTATE: {
-    SUCCESS: i18next.t('SNACK_MUTATE_SUCCESS'),
-    ERROR: i18next.t('SNACK_MUTATE_FAIL'),
+    SUCCESS: i18n.t('SNACK_MUTATE_SUCCESS'),
+    ERROR: i18n.t('SNACK_MUTATE_FAIL'),
   },
 }
 

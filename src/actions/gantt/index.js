@@ -155,7 +155,6 @@ export const actionChangeCompleteTask = (task_id, complete) => {
   return apiService(config);
 };
 
-
 export const changeProjectSchedule = (schedules) => ({
   type: CHANGE_PROJECT_SCHEDULE,
   payload: schedules
