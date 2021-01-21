@@ -20,6 +20,8 @@ import MySelect from "../../../../components/MySelect";
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
 import {ic_no_data22} from "assets";
 import {useSelector} from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { Routes } from "constants/routes";
 
 const Header = ({ className = '', ...props }) =>
   <ColorTypo
@@ -132,6 +134,7 @@ function CopyProject({
   projectGroupId, timeRange,
 }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription] = useMaxlenString('', 500);
   const [isCopyMember, setIsCopyMember] = React.useState(false);
@@ -200,10 +203,14 @@ function CopyProject({
     const fail = () => {
       setActiveLoading(false);
     };
-    CustomEventListener(COPY_PROJECT.SUCCESS, doReload);
+    CustomEventListener(COPY_PROJECT.SUCCESS, (e) => {
+      history.push(`${Routes.PROJECT}/${e.detail.project_id}`)
+    });
     CustomEventListener(COPY_PROJECT.FAIL, fail);
     return () => {
-      CustomEventDispose(COPY_PROJECT.SUCCESS, doReload);
+      CustomEventDispose(COPY_PROJECT.SUCCESS, (e) => {
+        history.push(`${Routes.PROJECT}/${e.detail.project_id}`)
+      });
       CustomEventDispose(COPY_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line

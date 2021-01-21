@@ -9,6 +9,8 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
+import { useHistory } from 'react-router-dom';
+import { Routes } from "constants/routes";
 
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
@@ -24,6 +26,7 @@ function CreateNewProject({
 }) {
 
   const { t } = useTranslation();
+  const history = useHistory();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription] = useMaxlenString('', 500);
   const [priority, setPriority] = React.useState(0);
@@ -45,10 +48,14 @@ function CreateNewProject({
     const fail = () => {
       setActiveLoading(false);
     };
-    CustomEventListener(CREATE_PROJECT.SUCCESS, doReload);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      history.push(`${Routes.PROJECT}/${e.detail.project_id}`)
+    });
     CustomEventListener(CREATE_PROJECT.FAIL, fail);
     return () => {
-      CustomEventDispose(CREATE_PROJECT.SUCCESS, doReload);
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
+        history.push(`${Routes.PROJECT}/${e.detail.project_id}`)
+      });
       CustomEventDispose(CREATE_PROJECT.FAIL, fail);
     }
   }, [projectGroupId, timeRange]);

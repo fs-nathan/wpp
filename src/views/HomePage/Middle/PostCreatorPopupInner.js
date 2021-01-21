@@ -28,6 +28,7 @@ import SelectCategoryModal from "../components/SelectCategoryModal";
 import TasksCard from "../components/TasksCard";
 import { postModule } from "../redux/post";
 import "./PostCreatorPopupInner.css";
+
 const classes = {
   root: "comp_PostCreatorPopupInner",
   header: "comp_PostCreatorPopupInner__header",
@@ -49,7 +50,7 @@ const setFileIds = (files) => {
 
 const ImageListField = ({
   name,
-  placeholder = "Thả file, hình ảnh vào đây...",
+  placeholder = "",
 }) => {
   const [field] = useField({ name });
   const [fieldOrder] = useField({ name: `${name}_order` });

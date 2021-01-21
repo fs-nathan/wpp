@@ -2,7 +2,7 @@ import { get } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { createProjectFail, createProjectSuccess } from '../../actions/project/createProject';
 import { apiService } from '../../constants/axiosInstance';
-import { CREATE_PROJECT, CustomEventEmitter } from '../../constants/events';
+import { CREATE_PROJECT, CustomEventEmitter, CustomEventEmitterWithParams } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
 async function doCreateProject({ name, description, projectGroupId, priority, currency, work_type }) {
@@ -29,8 +29,12 @@ async function doCreateProject({ name, description, projectGroupId, priority, cu
 function* createProject(action) {
   try {
     const { project } = yield call(doCreateProject, action.options);
-    yield put(createProjectSuccess({ project }, action.options));
-    CustomEventEmitter(CREATE_PROJECT.SUCCESS);
+    // yield put(createProjectSuccess({ project }, action.options));
+    CustomEventEmitterWithParams(CREATE_PROJECT.SUCCESS, {
+      detail: {
+        project_id: project.id,
+      }
+    });
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createProjectFail(error, action.options));

@@ -3,6 +3,11 @@ export const CustomEventEmitter = (EVENT_TYPE) => {
   window.dispatchEvent(customEvent);
 };
 
+export const CustomEventEmitterWithParams = (EVENT_TYPE, data) => {
+  const customEvent = new CustomEvent(EVENT_TYPE, data);
+  window.dispatchEvent(customEvent);
+};
+
 export const CustomEventListener = (EVENT_TYPE, handler) => {
   window.addEventListener(EVENT_TYPE, handler);
 };
