@@ -29,6 +29,8 @@ const FooterListDrawer = (props) => {
       localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
       localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
       window.location.href = Routes.LOGIN;
+    } else {
+      window.open(url, '_blank');
     }
     props.actionVisibleDrawerMessage({
       type: "",
@@ -41,16 +43,15 @@ const FooterListDrawer = (props) => {
     <div className="footer-list-drawer">
       {actionList.map((el, index) => (
         <div className={`button-item ${el.classname}`} key={index}>
-          <Link
-              to={el.url}
-              onClick={() => closeDrawer(el.url)}
-              className={`text-btn ${
-                  typeDrawer === DRAWER_TYPE.SUPPORT ? "support-text" : ""
-              }`}
+          <div
+            className={`text-btn ${
+                typeDrawer === DRAWER_TYPE.SUPPORT ? "support-text" : ""
+            }`}
+            onClick={() => closeDrawer(el.url)}
           >
             {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
             <span className="name-text">{el.name}</span>
-          </Link>
+          </div>
         </div>
       ))}
     </div>
