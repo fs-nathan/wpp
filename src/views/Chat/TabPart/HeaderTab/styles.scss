@@ -1,0 +1,29 @@
+.headerTab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #fff;
+  height: 85px;
+  width: 100%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  &--button {
+    &:hover {
+      background: none;
+    }
+    svg {
+      fill: rgba(0, 0, 0, 0.54);
+      &:hover {
+        fill: #03b000;
+      }
+    }
+    &__hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+  &--text {
+    font-size: 17px;
+    font-weight: normal;
+  }
+}

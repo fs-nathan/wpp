@@ -1,0 +1,14 @@
+.HandleRemindWithDuration {
+  .DialogMessageWrap--header {
+    background-color: #19a307;
+  }
+  &--title {
+    text-transform: none;
+    font-weight: normal;
+  }
+  &--percent {
+    line-height: 48px;
+    font-size: 36px;
+    color: #c55002;
+  }
+}

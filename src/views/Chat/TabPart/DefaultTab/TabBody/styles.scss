@@ -1,0 +1,241 @@
+.listPartTabBody {
+  height: calc(100% + 42px);
+  path {
+    fill: inherit !important;
+  }
+  &--expired {
+    background-color: red;
+    color: #fff;
+    padding: 7px 9px;
+    margin: 5px 5px 5px 1px;
+    border-radius: 2px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: unset;
+    // border: 1px solid;
+    // box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
+  }
+  &--paused {
+    color: #607d8b;
+    border: 1px solid #607d8b;
+    background-color: #fff;
+  }
+  &--container {
+    // margin-bottom: 0px !important;
+    // margin-right: 0px !important;
+    // width: calc(100% + 5px) !important;
+    // scrollbar-width: none !important;
+    padding-top: 5px;
+    padding-bottom: 30px;
+  }
+  &--title {
+    color: #9e9e9e;
+    font-weight: 500;
+    margin-bottom: 5px;
+    text-transform: inherit;
+  }
+  &--groupTask {
+    cursor: pointer;
+  }
+  &--badge {
+    margin-right: 10px !important;
+    text-transform: lowercase;
+    span {
+      font-size: 12px;
+      padding: 0px 5px;
+      border-radius: 2px;
+    }
+  }
+  &--tooltip {
+    color: #000;
+    font-weight: 400;
+    border: 1px solid #c4c4c4;
+    background-color: #fff;
+    border-radius: 4px;
+    width: 222px;
+    padding: 10px 20px;
+    box-shadow: 0 0 15px 2px hsla(0, 0%, 65.1%, 0.3);
+    margin: 8px 0;
+  }
+}
+
+.MuiTooltip-tooltip {
+  background-color: #fff;
+  max-width: 210px;
+  // height: 110px;
+  border: 1px solid #dadde9;
+}
+
+.statusLabel {
+  &--popup {
+    color: #000000;
+    font-weight: normal;
+    position: absolute;
+    border: 1px solid #c4c4c4;
+    bottom: 33px;
+    left: 0px;
+    background-color: #fff;
+    border-radius: 4px;
+    width: 222px;
+    padding: 10px 20px;
+    display: none;
+    box-shadow: 0 0 15px 2px rgba(166, 166, 166, 0.3);
+  }
+  &--icon {
+    margin-right: 5px;
+    width: 15px !important;
+    height: 15px !important;
+    transform: translateY(4px);
+  }
+  &--description {
+    line-height: 1.5;
+    margin: 10px 0;
+  }
+  &--guide {
+    margin: 5px 0;
+  }
+  &--label {
+    font-weight: 500;
+    margin-left: 5px;
+    &__wait {
+      color: rgb(255, 152, 0);
+    }
+    &__doing {
+      color: rgb(3, 169, 244);
+    }
+    &__completed {
+      color: rgb(3, 195, 11);
+    }
+    &__paused {
+      color: #607d8b;
+    }
+    &__high {
+      color: rgb(244, 67, 54);
+    }
+    &__avg {
+      color: rgb(255, 152, 0);
+    }
+    &__low {
+      color: rgb(3, 195, 11);
+    }
+  }
+
+  &--button {
+    position: relative;
+    border-radius: 2px;
+    padding: 7px 9px;
+    margin: 5px 5px 5px 1px;
+    font-weight: 700;
+    &__wait {
+      color: rgb(255, 152, 0);
+      border: 1px solid rgb(255, 152, 0);
+    }
+    &__doing {
+      color: rgb(3, 169, 244);
+      border: 1px solid rgb(3, 169, 244);
+    }
+    &__completed {
+      color: rgb(3, 195, 11);
+      border: 1px solid rgb(3, 195, 11);
+    }
+    &__paused {
+      color: #607d8b;
+      border: 1px solid #607d8b;
+    }
+    &__high {
+      color: rgb(244, 67, 54);
+      border: 1px solid rgb(244, 67, 54);
+    }
+    &__avg {
+      color: rgb(255, 152, 0);
+      border: 1px solid rgb(255, 152, 0);
+    }
+    &__low {
+      color: rgb(3, 195, 11);
+      border: 1px solid rgb(3, 195, 11);
+    }
+    &:hover {
+      .statusLabel--popup {
+        display: block;
+      }
+    }
+  }
+  &__wait {
+    fill: rgb(255, 152, 0);
+  }
+  &__doing {
+    fill: rgb(3, 169, 244);
+  }
+  &__completed {
+    fill: rgb(3, 195, 11);
+  }
+  &__high {
+    fill: rgb(244, 67, 54);
+  }
+  &__avg {
+    fill: rgb(255, 152, 0);
+  }
+  &__low {
+    fill: rgb(3, 195, 11);
+  }
+}
+
+.ModalPriority {
+  &__high {
+    path {
+      fill: rgb(244, 67, 54) !important;
+    }
+  }
+  &__avg {
+    path {
+      fill: rgb(255, 152, 0) !important;
+    }
+  }
+  &__low {
+    path {
+      fill: rgb(3, 195, 11) !important;
+    }
+  }
+}
+
+.Description {
+  padding: 2px 16px;
+  overflow-wrap: break-word;
+  &--more {
+    background: none;
+    border: none;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 10px 0 0;
+    color: #03a9f4;
+    cursor: pointer;
+  }
+  &--content {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+.styled-context-status {
+  & > *:first-child {
+    display: flex;
+    align-items: center;
+    & > p:nth-child(2) {
+      color: #000;
+      margin-left: 8px;
+      margin-right: 5px;
+      font-weight: normal;
+    }
+    & > p:nth-child(3) {
+      color: #0ce8b5;
+      font-size: 13px;
+    }
+  }
+  & > *:last-child {
+    color: #000;
+    font-weight: normal;
+    font-size: 13px;
+    line-height: 1.5;
+    margin: 3px 5px 0 0;
+  }
+}

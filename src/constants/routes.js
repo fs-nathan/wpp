@@ -52,4 +52,5 @@ export const Routes = {
   OFFERS: "/offers",
   PROJECT_GRANT: "/projects/task-gantt/:projectId",
   WORKPLACE: "/workplace",
+  CHAT: "/chats",
 };

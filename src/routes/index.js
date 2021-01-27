@@ -84,6 +84,11 @@ const ErrorPage = loadable(() => import("views/ErrorPage"), {
 const WorkplacePage = loadable(() => import("views/WorkplacePage"), {
   fallback: <div />,
 })
+
+const Chat = loadable(() => import("views/Chat"), {
+  fallback: <div />,
+});
+
 const routes = [
   { path: Routes.HOME, exact: true, component: () => <HomePage /> },
   { path: Routes.POST, component: () => <HomePage /> },
@@ -125,6 +130,7 @@ const routes = [
   { path: Routes.CONFIRM_REGISTRATION, component: () => <ConfirmRegistration />, },
   { path: Routes.MESSAGE_NOTICE, component: () => <MessageNoticePage /> },
   { path: Routes.WORKPLACE, component: () => <WorkplacePage/> },
+  { path: Routes.CHAT, component: () => <Chat /> },
   ...(process.env.NODE_ENV !== "production"
     ? [{ path: "/playground", component: () => <Playground /> }]
     : []),

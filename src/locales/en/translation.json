@@ -2177,5 +2177,11 @@
   "IDS_WP_ALREADY_EXIST": "{{object}} already exists",
   "ENTER_DATE": "Enter date",
   "REQUIRED": "Required",
-  "WORK_LIST": "Work list"
+  "WORK_LIST": "Work list",
+  "Work message": "Work message",
+  "All": "All ({{total_all}})",
+  "Members": "Members ({{total_member}})",
+  "Groups": "Groups ({{total_group}})",
+  "Create group chat": "Create group chat",
+  "Create chat": "Create chat"
 }

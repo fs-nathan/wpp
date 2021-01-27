@@ -1,0 +1,39 @@
+.chat-container-list-banner {
+	float: left;
+	width: 100%;
+	padding: 10px 15px;
+	-moz-box-sizing: border-box; 
+	-webkit-box-sizing: border-box; 
+	box-sizing: border-box;
+	.MuiButtonBase-root {
+		min-width: 80px;
+		margin-right: 5px;
+	}
+	* {
+		-moz-box-sizing: border-box; 
+		-webkit-box-sizing: border-box; 
+		box-sizing: border-box;
+   }
+   .chat-group-bt-create-thread {
+   	float: right;
+   	span {
+   		float: left;
+   	}
+   	.MuiSvgIcon-root {
+   		fill: #696868;
+   		font-size: 24px;
+   		float: left;
+   		margin-top: 1px;
+   		cursor: pointer;
+   		transition: transform .5s;
+   		&:hover {
+   			fill: #403d3d;
+   			transform: scale(1.2);
+   		}
+   	}
+   	.chat-add-thead-member {
+   		font-size: 22px;
+   		margin-right: 8px
+   	}
+   }
+}

@@ -1,0 +1,32 @@
+.listProjectHeader {
+  margin-bottom: 17px;
+  &--header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 17px;
+    margin-top: 15px;
+    & > svg {
+      color: rbga(0, 0, 0, 0.54);
+    }
+    & > div {
+      font-size: 15px;
+      font-weight: normal;
+      padding: 0 15px;
+    }
+    & > *:last-child {
+      margin-left: 10px;
+      padding: 0px;
+    }
+  }
+  &--button {
+    &:hover {
+      background: none;
+    }
+    & > span > svg {
+      &:hover {
+        fill: #03b000;
+      }
+    }
+  }
+}

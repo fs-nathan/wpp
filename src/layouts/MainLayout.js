@@ -410,6 +410,7 @@ function MainLayout({
 
   function configRoute(routes) {
     if (routes.length === 0) return;
+    console.log(routes)
     const result = routes.map((route, index) => {
       return (
         <Route
