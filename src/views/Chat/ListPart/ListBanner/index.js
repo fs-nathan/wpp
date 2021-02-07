@@ -8,6 +8,7 @@ import ColorChip from '../../../../components/ColorChip';
 import { listTaskDataTypes } from '../ListHeader/CreateJobSetting';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded'
+import CreateTreadChatPrivate from '../../CreateThreadChatPrivate'
 import './index.scss';
 
 const ListBanner = props => {
@@ -20,7 +21,13 @@ const ListBanner = props => {
   const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
+  const [isOpenCreateChatPrivate, setOpenCreateChatPrivate] = useState(true)
   const [data, setData] = useState([])
+
+  function openCreateChatPrivate(stateOpen = false) {
+    setOpenCreateChatPrivate(stateOpen)
+  }
+
   const handleChangeFilterType = typeIdx => {
     dispatch(filterTaskByType(typeIdx));
   };
@@ -63,6 +70,10 @@ const ListBanner = props => {
           <GroupAddRoundedIcon classes={{root: "chat-add-thead-group"}} />
         </span>
       </div>
+      <CreateTreadChatPrivate
+        isOpen={isOpenCreateChatPrivate}
+        setOpen={openCreateChatPrivate}
+      />
     </div>
   );
 };
