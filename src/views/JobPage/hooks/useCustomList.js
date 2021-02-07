@@ -23,13 +23,13 @@ export const useCustomList = ({
       reset,
     },
   ] = useList(tasks);
-  const sortMemo = useMemo(
-    () => (a, b) =>
-      !isToggleSortName
-        ? a.name.localeCompare(b.name)
-        : b.name.localeCompare(a.name),
-    [isToggleSortName]
-  );
+  // const sortMemo = useMemo(
+  //   () => (a, b) =>
+  //     !isToggleSortName
+  //       ? a.name.localeCompare(b.name)
+  //       : b.name.localeCompare(a.name),
+  //   [isToggleSortName]
+  // );
   // const filterStatusMemo = useMemo(
   //   () => item =>
   //     ["waiting", "doing", "complete", "expired", "stop"]
@@ -49,7 +49,7 @@ export const useCustomList = ({
   );
   useEffect(() => {
     set(tasks);
-    sort(sortMemo);
+    // sort(sortMemo);
     if (Object.values(statusFilter).filter((item) => item).length) {
       filter((item) =>
         // filterStatusMemo(item) &&
@@ -62,7 +62,7 @@ export const useCustomList = ({
     isToggleSortName,
     set,
     sort,
-    sortMemo,
+    // sortMemo,
     statusFilter,
     tasks,
   ]);

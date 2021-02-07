@@ -117,7 +117,7 @@ function CreateNewProject({
       setCurProjectGroupId(projectGroupId);
       setSelectableGroup([find(groups.groups, { id: projectGroupId })]);
     } else {
-      setSelectableGroup(groups.groups);
+      setSelectableGroup(groups.groups.filter(e => e.work_types.find(c => c === String(workingType))));
     }
   }, [projectGroupId,groups]);
 

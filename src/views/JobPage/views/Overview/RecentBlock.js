@@ -117,9 +117,10 @@ export function RecentBlock() {
   const [list] = useCustomList({
     tasks,
     statusFilter,
-    isToggleSortName,
+    isToggleSortName: false,
     keyword,
   });
+  console.log('xxx', list)
   return (
     <Card variant="outlined">
       <CardHeader title={t("Công việc gần đây")} />

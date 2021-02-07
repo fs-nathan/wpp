@@ -26,13 +26,7 @@ export const TaskTable = ({
           <TableRow>
             <TableCell width="5%"></TableCell>
             <TableCell align="left">
-              <TableSortLabel
-                active={true}
-                direction={isToggleSortName ? "asc" : "desc"}
-                onClick={() => toggleSortName()}
-              >
-                {t("Tên công việc")}
-              </TableSortLabel>
+              {t("Tên công việc")}
             </TableCell>
             <TableCell width="10%" align="left">
               {t("Tiến độ")}

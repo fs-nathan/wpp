@@ -136,7 +136,7 @@ const NoticeModal = props => {
                     {t("IDS_WP_LOGIN_SUCCESS_INTRO_1")}
                     <a href={"https://support.workplus.vn/hoi-dap/don-hang-dung-thu-la-gi/"} target={"_blank"}>
                       {t("IDS_WP_SEE_MORE_TRAIL_POLICY")}
-                      <Icon path={mdiDockWindow} size={0.7} color={"#0000EE"}/>
+                      <Icon path={mdiDockWindow} size={0.7} color={"#0076f3"}/>
                     </a>
                     {t("IDS_WP_LOGIN_SUCCESS_INTRO_2")}
                   </p>
