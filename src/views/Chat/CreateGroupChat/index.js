@@ -1,4 +1,4 @@
-import { Radio, Avatar, Typography } from '@material-ui/core';
+import { Checkbox, Avatar, Typography, TextField } from '@material-ui/core';
 import ColorTypo from 'components/ColorTypo';
 import SearchInput from 'components/SearchInput';
 import compact from 'lodash/compact';
@@ -9,7 +9,7 @@ import CustomModal from 'components/CustomModal';
 import '../styles.scss';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/Chat/selectors';
-import { getMembersNotCreatePrivateChat, createPrivateChat } from "actions/chat/threadChat";
+import { getMembersToCreateGroupChat, createGroupChat } from "actions/chat/threadChat";
 import {
   getListTaskDetail
 } from "actions/taskDetail/taskDetailActions";
@@ -32,7 +32,7 @@ const MemberRow = ({
   avatar,
   name,
   roles,
-  onClick,
+  onChange,
   appColor
 }) => {
 
@@ -40,9 +40,9 @@ const MemberRow = ({
     <StyledDiv
       selectedColor={appColor}
       className="offerMemberItem">
-      <Radio
+      <Checkbox
         checked={isChecked}
-        onClick={onClick}
+        onChange={onChange}
       />
       <Avatar className="offerMemberItem--avatar" src={avatar} />
       <Typography className="offerMemberItem--name" component="div">
@@ -65,15 +65,16 @@ function CreateThreadPrivate({
   const projectId = useSelector(
     (state) => state.system.profile.group_chat_id
   );
-  const membersOriginal = useSelector((state) => state.threadChat.membersNotCreatePrivateChat);
-  const createPrivateResponse = useSelector((state) => state.threadChat.createPrivateResponse);
+  const membersOriginal = useSelector((state) => state.threadChat.membersToCreateGroupChat);
+  const createGroupChatResponse = useSelector((state) => state.threadChat.createGroupChatResponse);
   const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [selectedMember, setSelectedMember] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [members, setMembers] = useState(membersOriginal);
   const [loading, setLoading] = useState(false);
   const [canConfirm, setCanConfirm] = useState(false);
+  const [groupName, setGroupName] = useState('');
+  const [selectedMembers, setSelectedMembers] = useState([]);
   const appColor = useSelector(currentColorSelector)
 
   function handleChangeSearch(evt) {
@@ -94,19 +95,42 @@ function CreateThreadPrivate({
     }, 300);    
   }
 
-  function handleClickMember(memberId) {
-    setSelectedMember(memberId)
-    setCanConfirm(true)
+  function handleClickMember(memberId, isChecked) {
+    let membersSelected = []
+    if (isChecked) {
+      membersSelected = [...selectedMembers, memberId]
+      setSelectedMembers(membersSelected)
+    } else {
+      membersSelected = selectedMembers.filter(e => e != memberId)
+      setSelectedMembers(membersSelected)
+    }
+    if (membersSelected.length && groupName != "") {
+      setCanConfirm(true)
+    } else {
+      setCanConfirm(false)
+    }
   }
 
-  function handleConfirm(memberId) {
+  function handleChangeGroupName(value) {
+    setGroupName(value)
+    if (selectedMembers.length && value != "") {
+      setCanConfirm(true)
+    } else {
+      setCanConfirm(false)
+    }
+  }
+
+  function handleConfirm() {
     setLoading(true)
-    dispatch(createPrivateChat({member_id: selectedMember}))
+    dispatch(createGroupChat({
+      members_id: selectedMembers,
+      group_name: groupName
+    }))
   }
 
   React.useEffect(() => {
     if (isOpen) {
-      dispatch(getMembersNotCreatePrivateChat())
+      dispatch(getMembersToCreateGroupChat())
     }
   }, [isOpen]);
 
@@ -117,27 +141,27 @@ function CreateThreadPrivate({
   }, [membersOriginal]);
 
   React.useEffect(() => {
-    if (createPrivateResponse && createPrivateResponse.state) {
-      history.push(`/chats?task_id=${createPrivateResponse.task_id}`)
+    if (createGroupChatResponse && createGroupChatResponse.state) {
+      history.push(`/chats?task_id=${createGroupChatResponse.task_id}`)
       setOpen(false)
       setLoading(false)
-      setSelectedMember(false)
+      setSelectedMembers([])
       setCanConfirm(false)
     } else {
       setLoading(false)
     }
-  }, [createPrivateResponse]);
+  }, [createGroupChatResponse]);
 
   return (
     <>
       <CustomModal
-        title={t("THREAD_CHAT_CHAT_TO")}
+        title={t("THREAD_CHAT_CREATE_GROUP_CHAT")}
         open={isOpen}
         setOpen={setOpen}
         onCancle={
           () => {
             setOpen(false)
-            setSelectedMember(false)
+            setSelectedMembers([])
             setCanConfirm(false)
           }
         }
@@ -149,19 +173,39 @@ function CreateThreadPrivate({
         canConfirm={canConfirm}
       >
         <Container>
-          <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_KIEM_THANH_VIEN')}
-            value={searchValue}
-            onChange={handleChangeSearch}
-          />
-          {members.map((member, i) => <MemberRow
-            key={member.id}
-            isChecked={selectedMember === member.id}
-            onClick={() => handleClickMember(member.id)}
-            avatar={member.avatar}
-            roles={compact([member.position, member.room]).join(' - ')}
-            name={member.name}
-            appColor={appColor}
-          />)}
+          <div className="per-line-modal">
+            <p>
+              {t("TREAD_CHAT_GROUP_NAME")}
+              <span className="field-required" title={t("FIELD_REQUIRED")}>*</span>
+            </p>
+            <TextField
+              id="group-name"
+              variant="outlined"
+              fullWidth
+              size="small"
+              value={groupName}
+              onChange={({ target }) => handleChangeGroupName(target.value)}
+            />
+          </div>
+          <div className="per-line-modal">
+            <p>
+              {t("TREAD_CHAT_CHOOSE_MEMBERS")}
+              <span className="field-required" title={t("FIELD_REQUIRED")}>*</span>
+            </p>
+            <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_KIEM_THANH_VIEN')}
+              value={searchValue}
+              onChange={handleChangeSearch}
+            />
+            {members.map((member, i) => <MemberRow
+              key={member.id}
+              isChecked={selectedMembers.find(e => e === member.id) ? true : false}
+              onChange={(event) => handleClickMember(member.id, event.target.checked)}
+              avatar={member.avatar}
+              roles={compact([member.position, member.room]).join(' - ')}
+              name={member.name}
+              appColor={appColor}
+            />)}
+          </div>
         </Container>
       </CustomModal>
     </>

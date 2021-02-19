@@ -17,13 +17,14 @@ import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
-import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
+import { currentColorSelector, makeSelectIsCanView, getNumberChatNotView } from 'views/JobDetailPage/selectors';
 import '../Chat.scss';
 import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
 import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
+import { setNumberMessageNotView } from "actions/chat/threadChat";
 
 const StyledButton = styled.button`
   border: none;
@@ -63,8 +64,9 @@ const FooterPart = ({
   const groupActiveColor = useSelector(currentColorSelector)
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const key = `${userId}:${lastJobSettingKey}`;
-  const type = localStorage.getItem(key)
+  const type = "not-room"
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
+  const numberNewChatWithoutSelf = useSelector(getNumberChatNotView(taskId));
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [keyFilter, setKeyFilter] = useState('');
@@ -282,6 +284,10 @@ const FooterPart = ({
     editorRef.current.focus();
     if (isCanView) {
       dispatch(viewChat(taskId))
+      dispatch(setNumberMessageNotView({
+        type: "Assign",
+        message: numberNewChatWithoutSelf
+      }))
     }
   };
 

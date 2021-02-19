@@ -2178,10 +2178,15 @@
   "ENTER_DATE": "Enter date",
   "REQUIRED": "Required",
   "WORK_LIST": "Work list",
-  "Work message": "Work message",
+  "Messages": "Messages",
   "All": "All ({{total_all}})",
   "Members": "Members ({{total_member}})",
   "Groups": "Groups ({{total_group}})",
-  "Create group chat": "Create group chat",
-  "Create chat": "Create chat"
+  "THREAD_CHAT_CHAT_TO": "Message to",
+  "THREAD_CHAT_CREATE_GROUP_CHAT": "Create group chat",
+  "TREAD_CHAT_GROUP_NAME": "Group name",
+  "FIELD_REQUIRED": "This field is required",
+  "TREAD_CHAT_CHOOSE_MEMBERS": "Choose members",
+  "LABEL_ONLINE": "Online",
+  "CONVERSATION_INFORMATION": "Conversation"
 }

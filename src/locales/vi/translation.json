@@ -2178,5 +2178,16 @@
   "IDS_WP_ALREADY_EXIST": "Đã tồn tại {{object}}",
   "ENTER_DATE": "Nhập ngày tháng",
   "REQUIRED": "Bắt buộc",
-  "WORK_LIST": "Danh sách làm việc"
+  "WORK_LIST": "Danh sách làm việc",
+  "Messages": "Tin nhắn",
+  "All": "Tất cả ({{total_all}})",
+  "Members": "Thành viên ({{total_member}})",
+  "Groups": "Nhóm ({{total_group}})",
+  "THREAD_CHAT_CHAT_TO": "Chát với",
+  "THREAD_CHAT_CREATE_GROUP_CHAT": "Tạo nhóm chát",
+  "TREAD_CHAT_GROUP_NAME": "Tên nhóm",
+  "FIELD_REQUIRED": "Trường bắt buộc",
+  "TREAD_CHAT_CHOOSE_MEMBERS": "Chọn thành viên",
+  "LABEL_ONLINE": "Đang hoạt động",
+  "CONVERSATION_INFORMATION": "Thông tin hội thoại"
 }

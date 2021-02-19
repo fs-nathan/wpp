@@ -8,7 +8,8 @@ import ColorChip from '../../../../components/ColorChip';
 import { listTaskDataTypes } from '../ListHeader/CreateJobSetting';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded'
-import CreateTreadChatPrivate from '../../CreateThreadChatPrivate'
+import CreateThreadChatPrivate from '../../CreateThreadChatPrivate'
+import CreateGroupChat from '../../CreateGroupChat'
 import './index.scss';
 
 const ListBanner = props => {
@@ -21,11 +22,16 @@ const ListBanner = props => {
   const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   // const [staticTasks, setStaticTask] = React.useState(DEFAULT_VALUE)
-  const [isOpenCreateChatPrivate, setOpenCreateChatPrivate] = useState(true)
+  const [isOpenCreateChatPrivate, setOpenCreateChatPrivate] = useState(false)
+  const [isOpenCreateGroupChat, setOpenCreateGroupChat] = useState(false)
   const [data, setData] = useState([])
 
   function openCreateChatPrivate(stateOpen = false) {
     setOpenCreateChatPrivate(stateOpen)
+  }
+
+  function openCreateGroupChat(stateOpen = false) {
+    setOpenCreateGroupChat(stateOpen)
   }
 
   const handleChangeFilterType = typeIdx => {
@@ -40,14 +46,14 @@ const ListBanner = props => {
     }
   }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail])
 
-  const totalMember = 0;
-  const totalGroup = 0;
-  const totalAll = 0;
+  const totalMember = 10;
+  const totalGroup = 9;
+  const totalAll = 8;
 
   const jobTypes = [
-    t('All', { total_all: totalAll }),
-    t('Members', { total_member: totalMember }),
-    t('Groups', { total_group: totalGroup }),
+    t('All', { total_all: listDataNotRoom.length }),
+    t('Members', { total_member: listDataNotRoom.filter(e => e.type_chat == 1).length }),
+    t('Groups', { total_group: listDataNotRoom.filter(e => e.type_chat == 2).length }),
   ];
   const bgColor = colors.find(item => item.selected === true);
   return (
@@ -63,16 +69,20 @@ const ListBanner = props => {
         />
       ))}
       <div className="chat-group-bt-create-thread">
-        <span title={t("Create chat")}>
+        <span title={t("THREAD_CHAT_CHAT_TO")} onClick={() => openCreateChatPrivate(true)}>
           <PersonAddRoundedIcon classes={{root: "chat-add-thead-member"}} />
         </span>
-        <span title={t("Create group chat")}>
+        <span title={t("THREAD_CHAT_CREATE_GROUP_CHAT")} onClick={() => openCreateGroupChat(true)}>
           <GroupAddRoundedIcon classes={{root: "chat-add-thead-group"}} />
         </span>
       </div>
-      <CreateTreadChatPrivate
+      <CreateThreadChatPrivate
         isOpen={isOpenCreateChatPrivate}
         setOpen={openCreateChatPrivate}
+      />
+      <CreateGroupChat
+        isOpen={isOpenCreateGroupChat}
+        setOpen={openCreateGroupChat}
       />
     </div>
   );

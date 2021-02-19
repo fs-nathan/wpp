@@ -58,6 +58,7 @@ import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferMo
 import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
 import {getRemindDetail} from "../actions/calendar/alarmCalendar/getRemindDetail";
 import { GET_REMIND_DETAIL_FAIL, CustomEventListener, CustomEventDispose } from "constants/events";
+import { setNumberMessageNotView } from "actions/chat/threadChat";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -214,7 +215,8 @@ function MainLayout({
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView,
   visibleOfferDetailModal, loadDetailOffer, detailOffer,
-  visibleRemindDetail, detailRemind, getRemindDetail
+  visibleRemindDetail, detailRemind, getRemindDetail,
+  setNumberMessageNotView
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
@@ -254,7 +256,7 @@ function MainLayout({
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
-        handleNewMessage()
+        handleNewMessage(res)
       );
       socket.on("WP_NEW_CHAT_EXPRESS_EMOTION_CHAT", handleReactEmotion);
       socket.on("WP_DELETE_CHAT_IN_TASK", handleDeleteChat);
@@ -392,10 +394,17 @@ function MainLayout({
       parseInt(localStorage.getItem(NOTI_NUMBER)) + 1
     );
   };
-  const handleNewMessage = () => {
-    actionChangeNumMessageNotView(
-      parseInt(localStorage.getItem(MESS_NUMBER)) + 1
-    );
+  const handleNewMessage = (res) => {
+    if (res.belong_to_section === 1) {
+      actionChangeNumMessageNotView(
+        parseInt(localStorage.getItem(MESS_NUMBER)) + 1
+      );
+    } else {
+      setNumberMessageNotView({
+        type: "Plus",
+        message: 1
+      })
+    }
   };
 
   const isViewFullPage = (route) => {
@@ -410,7 +419,6 @@ function MainLayout({
 
   function configRoute(routes) {
     if (routes.length === 0) return;
-    console.log(routes)
     const result = routes.map((route, index) => {
       return (
         <Route
@@ -538,6 +546,7 @@ export default connect(
     actionChangeNumNotificationNotView,
     actionChangeNumMessageNotView,
     loadDetailOffer,
-    getRemindDetail
+    getRemindDetail,
+    setNumberMessageNotView
   }
 )(withRouter(MainLayoutWrapper));

@@ -44,10 +44,11 @@ function ListBody() {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    if (listTaskDataType === listTaskDataTypes[1]) {
-      setData(filterTaskByType(searchTaskByTaskName(listTaskDetail, searchKey), filterTaskType))
+    let allTasks = searchNoGroupTaskByName(listDataNotRoom, searchKey)
+    if (filterTaskType == 0) {
+      setData(allTasks)
     } else {
-      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), filterTaskType))
+      setData(allTasks.filter(e => e.type_chat == filterTaskType))
     }
   }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey])
 

@@ -14,6 +14,8 @@ import styled from 'styled-components';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
 import NavigatorMenu from "components/NavigatorMenu";
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   & .MuiTypography-root {
@@ -100,11 +102,26 @@ const renderAvatars = props => {
   );
 };
 
+function RenderMemberOnline(){
+  const { t } = useTranslation();
+  return (
+    <div className="message-people-online">
+      <PersonOutlineIcon classes={{root: "mpo-icon-people"}} />
+      <span className="mpo-number-people">10</span>
+      <div className="mpo-active">
+        <FiberManualRecordIcon classes={{root: "mpo-icon-circle"}} />
+        <span className="mpo-label-online">{t('LABEL_ONLINE')}</span>
+      </div>
+    </div>
+  )
+}
+
 const HeaderPart = props => {
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const members = useSelector(state => state.taskDetail.taskMember.defaultMember)
+  const task = useSelector(state => state.taskDetail.detailTask.taskDetails);
   useEffect(() => {
     const fetchMemberlist = async () => {
       try {
@@ -126,9 +143,9 @@ const HeaderPart = props => {
     <div className="container-header">
       {renderAvatars({ styles: classes, images: members })}
       <div className="wrap-room-description">
-        <Typography className="chatHeader--title">{t('LABEL_CHAT_TASK_THAO_LUAN')}</Typography>
+        <Typography className="chatHeader--title">{task.name}</Typography>
         {/* <TabForm tabs={tabs} /> */}
-        <NavigatorMenu />
+        <RenderMemberOnline />
       </div>
       <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>
         <IconButton className="chatHeader--button" onClick={openSearch}>

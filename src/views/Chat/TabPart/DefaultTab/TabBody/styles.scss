@@ -239,3 +239,76 @@
     margin: 3px 5px 0 0;
   }
 }
+.conversation-information {
+  float: left;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 25px;
+  .ci-step-avatar {
+    .ci-step-avatar-square {
+      width: 80px;
+      height: 80px;
+      margin-left: calc(50% - 40px);
+      padding: 0px;
+      img {
+
+      }
+      .avatar-square-group-per-step:last-child img {
+        margin-top: -25px;
+      }
+    }
+  }
+  .ci-step-name {
+    font-size: 15px;
+    font-weight: 500;
+    color: #212529;
+    margin: 20px 0px 10px 0px;
+  }
+  .ci-step-time {
+    font-size: 13px;
+    color: #2125299c;
+  }
+  .avatar-square-group-3.ci-step-avatar-square {
+    margin-left: calc(50% - 50px);
+  }
+  .avatar-square-group-3 {
+    width: 100px!important;
+    .avatar-square-group-per-step {
+      width: 50%;
+    }
+    .avatar-square-group-per-step:first-child {
+      width: 100%;
+    }
+    img {
+     width: 40px;
+     margin: 0px!important;
+    }
+  }
+  .avatar-square-group-4.ci-step-avatar-square {
+    margin-left: calc(50% - 50px);
+  }
+  .avatar-square-group-4 {
+    width: 100px!important;
+    .avatar-square-group-per-step {
+      width: 50%;
+    }
+    img {
+     width: 40px;
+     margin: 0px!important;
+    }
+  }
+  .avatar-square-group-images-plus {
+    float: left;
+    width: 50%;
+    text-align: center;
+    span {
+      width: 40px;
+      height: 40px;
+      font-size: 16px;
+      line-height: 40px;
+      display: inline-block;
+      float: unset;
+    }
+  }
+}

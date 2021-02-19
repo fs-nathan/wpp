@@ -446,6 +446,7 @@ import viewPermissions, {
 import remindDetail, {initialState as getRemindDetailInitialState } from "./calendar/alarmCalendar/getRemindDetail";
 import getProjectStatistic, {initialState as getProjectStatisticInitialState} from "./project/getStatistic";
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
+import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
 
 const rootReducer = combineReducers({
   authentications,
@@ -661,6 +662,7 @@ const rootReducer = combineReducers({
     detailTask: kanbanDetailTask,
     updateTask: kanbanUpdateTask,
   }),
+  threadChat
 });
 
 export const DEFAULT_STATE = {
@@ -849,6 +851,7 @@ export const DEFAULT_STATE = {
     remindDetail: getRemindDetailInitialState
   },
   localStorage: localStorageInitialState,
+  threadChat: threadChatInitialState
 };
 
 export default rootReducer;

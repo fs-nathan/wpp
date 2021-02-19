@@ -17,6 +17,7 @@ import ListPart from "./ListPart";
 import { lastJobSettingKey } from "./ListPart/ListHeader/CreateJobSetting";
 import ModalImage from "./ModalImage";
 import TabPart from "./TabPart";
+import { setNumberMessageNotView } from "actions/chat/threadChat";
 
 function Chat(props) {
   const dispatch = useDispatch();
@@ -26,7 +27,6 @@ function Chat(props) {
   const projectId = useSelector(
     (state) => state.system.profile.group_chat_id
   );
-  console.log(projectId)
   const userId = useSelector((state) => state.system.profile.id);
   const isOpenShareFileModal = useSelector(
     (state) => state.chat.isOpenShareFileModal
@@ -37,6 +37,7 @@ function Chat(props) {
   const errorMessage = useSelector((state) => state.taskDetail.detailTask.errorMessage);
   const users_shared = item ? item.users_shared || [] : [];
   const shareItem = { ...item, users_shared }
+  const viewAllMessageResponse = useSelector((state) => state.threadChat.viewAllMessageResponse);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -49,19 +50,26 @@ function Chat(props) {
   }, [dispatch]);
 
   useEffect(() => {
+    if (viewAllMessageResponse && viewAllMessageResponse.state) {
+      dispatch(taskDetailAction.getListTaskDetail(projectId, "not-room"));
+      dispatch(setNumberMessageNotView(0))
+    }
+  }, [viewAllMessageResponse]);
+
+  useEffect(() => {
     if (errorMessage === 'This task does not exist') {
-      history.push('/projects/task-chat/' + projectId)
+      history.push('/chats')
     }
   }, [errorMessage, history, projectId]);
 
   useEffect(() => {
-    // console.log('url', url.pathname, 'projectId', projectId)
-    const key = `${userId}:${lastJobSettingKey}`;
-    const type_data = localStorage.getItem(key) || "include-room";
-    dispatch(taskDetailAction.getProjectListBasic(projectId));
-      // dispatch(taskDetailAction.chooseProject({ projectId }))
+    const type_data = "not-room";
+    if (projectId) {
+      dispatch(taskDetailAction.getProjectListBasic(projectId));
+        // dispatch(taskDetailAction.chooseProject({ projectId }))
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getProjectDetail(projectId));
+    }
   }, [dispatch, projectId, userId]);
 
   useEffect(() => {
@@ -89,7 +97,7 @@ function Chat(props) {
 
   useEffect(() => {
     const key = `${userId}:${lastJobSettingKey}`;
-    const type_data = localStorage.getItem(key) || "include-room";
+    const type_data = "not-room";
     // console.log(key, ' useEffect', type_data)
     // console.log('projectId', projectId)
     if (projectId !== "" && userId) {

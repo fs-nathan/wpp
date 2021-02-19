@@ -77,8 +77,6 @@
   &--title {
     font-size: 24px;
     font-weight: 500;
-    margin-top: -10px;
-    margin-bottom: 5px;
   }
 
   &--button {
@@ -122,5 +120,37 @@
     &>.MuiTypography-body1 {
       font-size: 12px !important;
     }
+  }
+}
+.message-people-online {
+  float: left;
+  width: 100%;
+  .mpo-active {
+    float: left;
+    margin-top: 6px;
+    height: 14px;
+    border-left: 1px solid #ccc;
+    padding-left: 5px;
+  }
+  .mpo-icon-people {
+    float: left;
+    font-size: 25px;
+    color: #868080;
+  }
+  .mpo-icon-circle {
+    float: left;
+    color: #2bc311;
+    margin-top: -3px;
+    margin-right: 5px;
+  }
+  .mpo-number-people {
+    float: left;
+    margin: 0px 5px;
+    color: #545252;
+    font-size: 13px;
+    margin-top: 7px;
+  }
+  .mpo-label-online {
+    color: #969494;
   }
 }

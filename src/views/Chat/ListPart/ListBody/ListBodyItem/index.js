@@ -8,6 +8,7 @@ import clsx from 'classnames';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import SimpleDonutChart from 'components/SimpleDonutChart';
+import AvatarSquareGroup from 'components/AvatarSquareGroup';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +16,7 @@ import { useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
 import { lastJobSettingKey } from '../../ListHeader/CreateJobSetting';
+import { setNumberMessageNotView } from "actions/chat/threadChat";
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -90,8 +92,6 @@ function JobName(props) {
           {...rest}
           isghim={isghim.toString()}
         />
-        <BadgeItem color={getBadgeColor(props.status_code)} badge
-          label={t(getStatusName(props.status_code))} size="small" />
       </div>
     </div>
   );
@@ -156,6 +156,7 @@ function ListBodyItem(props) {
     new_chat,
     is_ghim,
     updated_time,
+    members
   } = props;
   const history = useHistory();
   const dispatch = useDispatch();
@@ -165,7 +166,7 @@ function ListBodyItem(props) {
   const url = new URL(window.location.href);
   const taskId = url.searchParams.get("task_id");
   const key = `${userId}:${lastJobSettingKey}`;
-  const type = localStorage.getItem(key)
+  const type = "not-room"
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
   // console.log({ props })
 
@@ -180,10 +181,14 @@ function ListBodyItem(props) {
     // console.log('history', history.search)
     const { pathname } = history.location;
     const path = pathname.split('?')[0]
-    history.push({ pathname: path, search: `?task_id=${props.id}` });
-    if (isCanView) {
-      dispatch(viewChat(taskId))
+    if (props.new_chat) {
+      dispatch(viewChat(props.id))
+      dispatch(setNumberMessageNotView({
+        type: "Subtract",
+        message: 1
+      }))
     }
+    history.push({ pathname: path, search: `?task_id=${props.id}` });
   }
 
   const fillColor = props.complete === 100 ? '#00e690' : '#eee';
@@ -194,9 +199,7 @@ function ListBodyItem(props) {
       })}
       onClick={onClickItem}
     >
-      <ListItemAvatar style={{ padding: '0 0 0 10px' }}>
-        <SimpleDonutChart color={'#ff9800'} circleColor={fillColor} percentDone={props.complete} />
-      </ListItemAvatar>
+      <AvatarSquareGroup images={members} />
       <JobUnit {...{
         chat,
         name,

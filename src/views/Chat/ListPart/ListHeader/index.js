@@ -9,6 +9,7 @@ import { searchTask } from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
 import { get } from 'lodash';
+import { viewAllMessage } from "actions/chat/threadChat";
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -30,13 +31,19 @@ const ButtonIcon = styled(IconButton)`
   }
 `;
 
+
 function ListHeaderSelect({ setShow }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  function handleViewAllMessage() {
+    dispatch(viewAllMessage())
+  }
 
   return (
     <div className="chat-left-top">
-      <b>{t('Work message')}</b>
-      <span>{t('IDS_WP_VIEW_ALL_ACTION')}</span>
+      <b>{t('Messages')}</b>
+      <span onClick={handleViewAllMessage}>{t('IDS_WP_VIEW_ALL_ACTION')}</span>
     </div>
   );
 }

@@ -18,6 +18,7 @@ import ModalPriority from './ModalPriority';
 import ModalStatus from './ModalStatus';
 import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS } from './StatusLabel';
 import './styles.scss';
+import ConversationInfo from "./ConversationInfo"
 
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
@@ -142,18 +143,9 @@ function TabBody(props) {
     })
   }, [detailTask, t])
 
-  function onChangeItem(idx) {
-    dispatch(updatePriority({ task_id: taskId, priority: idx }))
-  }
-
   function onClickMember() {
     props.setShow(8)
     dispatch(getMember({ task_id: taskId }))
-  }
-
-  function onClickGroupTask() {
-    console.log('onClickGroupTask')
-    dispatch(focusTaskGroup(detailTask.group_task))
   }
 
   return (
@@ -162,67 +154,7 @@ function TabBody(props) {
         renderView={props => <div {...props} className="listPartTabBody--container" />}
         autoHide autoHideTimeout={500} autoHideDuration={200}>
         <StyledList>
-          <ListItem>
-            <ListItemText>
-              <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
-              <ContentText component='span'>
-                {detailTask && detailTask.name}
-                {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
-              </ContentText>
-            </ListItemText>
-          </ListItem>
-          <Description value={content} />
-          <ListItem onClick={onClickGroupTask} className="listPartTabBody--groupTask">
-            <ListItemText>
-              <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_NHOM_VIEC')}</ColorTypo>
-              <div className="Description--content">
-                {detailTask && detailTask.group_task_name}
-              </div>
-            </ListItemText>
-          </ListItem>
-          <ListItemButtonGroup>
-            {taskStatistic.state_code !== 3 &&
-              <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
-                TransitionProps={{ timeout: 0 }}
-                title={<ModalStatus value={taskStatistic.state_code} />}
-                placement="top-start">
-                <StatusLabel
-                  type={TYPE_STATUS}
-                  value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
-                />
-              </HtmlTooltip>
-            }
-            <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
-              TransitionProps={{ timeout: 0 }}
-              title={<ModalPriority value={taskStatistic.priority_code} />}
-              placement="top-start">
-              <StatusLabel
-                type={TYPE_PRIORITY}
-                value={taskStatistic.priority_code}
-              />
-            </HtmlTooltip>
-            {
-              taskStatistic.state_code === 3 &&
-              <Typography
-                className="listPartTabBody--expired"
-              >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
-            }
-          </ListItemButtonGroup>
-          <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
-            <ColorTypo>{t('LABEL_CHAT_TASK_TIEN_DO')}</ColorTypo>
-            {taskStatistic.progressCnt &&
-              <BadgeItem badge color='orangelight'
-                label={taskStatistic.progressCnt}
-                className="listPartTabBody--badge"
-              />}
-            <div className="simple-progress-bar-wrapper">
-              <SimpleSmallProgressBar percentDone={taskStatistic.complete} percentTarget={taskStatistic.complete_with_time} color={colorPal['teal'][0]} targetColor={colorPal['orange'][0]} />
-            </div>
-          </ListItemTab>
-          <ListItemTab disableRipple button onClick={() => props.setShow(2)}>
-            <ColorTypo>{t('LABEL_CHAT_TASK_CONG_VIEC_CON')}</ColorTypo>
-            <BadgeItem badge size='small' color='bluelight' label={taskStatistic.subTaskCnt} />
-          </ListItemTab>
+          <ConversationInfo name={detailTask.name} members={detailTask.members} date_create={detailTask.date_create}/>
           <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
             <ColorTypo>{t('LABEL_CHAT_TASK_NHAC_HEN')}</ColorTypo>
             <BadgeItem badge size='small' color='redlight' label={taskStatistic.remindCnt} />

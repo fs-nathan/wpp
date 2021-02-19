@@ -8,9 +8,24 @@ import {
 } from "../../actions/system/system";
 import { Routes } from "../../constants/routes";
 import { isEmpty } from "../../helpers/utils/isEmpty";
+import { useSelector, useDispatch } from 'react-redux';
 // import { useTranslation } from 'react-i18next';
 // import * as icons from '../../assets';
 import "./LeftBar.scss";
+import { getNumberMessageNotView } from "actions/chat/threadChat";
+
+const BellMessage = () => {
+  const numberChatNotView = useSelector((state) => state.threadChat.numberChatNotView);
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    dispatch(getNumberMessageNotView())
+  }, []);
+  return numberChatNotView > 0 ? (
+    <div className="bell-message">
+      {numberChatNotView}
+    </div>
+  ) : null
+}
 
 const isDocument = (type) => {
   switch (type) {
@@ -86,6 +101,9 @@ const LeftBar = ({
             >
               <img src={el.icon} alt="" className="LeftNavIcon" />
               <span className="titleTab">{t(el.name)}</span>
+              {
+                el.need_bell && <BellMessage />
+              }
             </Link>
           );
         })}
