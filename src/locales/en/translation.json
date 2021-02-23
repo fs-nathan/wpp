@@ -2177,5 +2177,13 @@
   "IDS_WP_ALREADY_EXIST": "{{object}} already exists",
   "ENTER_DATE": "Enter date",
   "REQUIRED": "Required",
-  "WORK_LIST": "Work list"
+  "WORK_LIST": "Work list",
+  "TASK_DETAIL_INTRO_LABEL_1": "Planning for works and projects",
+  "TASK_DETAIL_INTRO_CONTENT_1": "Create tasks, plan for projects and assign tasks easily, quickly",
+  "TASK_DETAIL_INTRO_LABEL_2": "Chat, discussion",
+  "TASK_DETAIL_INTRO_CONTENT_2": "Tracking tasks. Interactive 24/24",
+  "TASK_DETAIL_INTRO_LABEL_3": "File, documents ?",
+  "TASK_DETAIL_INTRO_CONTENT_3": "Share files, documents easily by dragging, dropping, screenshot.... Edit file online",
+  "TASK_DETAIL_INTRO_LABEL_4": "Virtual assistant!",
+  "TASK_DETAIL_INTRO_CONTENT_4": "Notifications, reminder, warning.... let's Workplus do it"
 }

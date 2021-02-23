@@ -32,7 +32,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
     const hadMore = images.length && images.length >= 5;
     return (
       <div
-        className={classnames(
+        className={"area-media-content-in-post " + classnames(
           className,
           `comp_TasksCard__Media${Math.min(4, images.length)}`
         )}

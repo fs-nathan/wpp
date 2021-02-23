@@ -2178,5 +2178,13 @@
   "IDS_WP_ALREADY_EXIST": "Đã tồn tại {{object}}",
   "ENTER_DATE": "Nhập ngày tháng",
   "REQUIRED": "Bắt buộc",
-  "WORK_LIST": "Danh sách làm việc"
+  "WORK_LIST": "Danh sách làm việc",
+  "TASK_DETAIL_INTRO_LABEL_1": "Lập kế hoạch công việc, dự án",
+  "TASK_DETAIL_INTRO_CONTENT_1": "Khởi tạo công việc, lập kế hoạch dự án, giao việc dễ dàng, nhanh chóng",
+  "TASK_DETAIL_INTRO_LABEL_2": "Chát, thảo luận",
+  "TASK_DETAIL_INTRO_CONTENT_2": "Bám sát công việc từng giây. Tương tác 24/24 không lo hỏng việc",
+  "TASK_DETAIL_INTRO_LABEL_3": "File, tài liệu ?",
+  "TASK_DETAIL_INTRO_CONTENT_3": "Chia sẻ file, tài liệu dễ dàng bằng cách kéo, thả, chụp màn hình... Chỉnh sửa file trực tuyến.",
+  "TASK_DETAIL_INTRO_LABEL_4": "Trợ lí ảo!",
+  "TASK_DETAIL_INTRO_CONTENT_4": "Thông báo, cảnh báo, nhắc việc, nhắc hẹn...hãy để Workplus lo"
 }
