@@ -4,6 +4,7 @@ import {
   LOADPAGE_TASK_DUE,
   LOADPAGE_TASK_ROLE,
   LOAD_TASK_OVERVIEW,
+  LOADPAGE_TASK_EXPIRED
 } from "./types";
 export const loadTaskPage = (timeRange) => {
   return {
@@ -24,6 +25,12 @@ export const loadTaskOverViewPage = (timeRange) => {
 export const loadTaskDuePage = (timeRange) => {
   return {
     type: LOADPAGE_TASK_DUE,
+    payload: timeRange,
+  };
+};
+export const loadTaskExpiredPage = (timeRange) => {
+  return {
+    type: LOADPAGE_TASK_EXPIRED,
     payload: timeRange,
   };
 };

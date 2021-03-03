@@ -12,6 +12,8 @@ import {
   TASK_OVERVIEW_RECENT,
   TASK_OVERVIEW_STATISTIC,
   TASK_ROLE,
+  LOADPAGE_TASK_EXPIRED,
+  TASK_PAGE_EXPIRED
 } from "./types";
 
 function* doGetStaticTask(timeRange) {
@@ -80,6 +82,32 @@ function* doGetDueTasks(payload) {
     console.error(error);
     yield put({
       type: TASK_DUE,
+      payload: {
+        error: error.toString(),
+      },
+    });
+  }
+}
+
+function* doGetExpiredTasks(payload) {
+  try {
+    const { status, priority, page, timeStart, timeEnd } = payload;
+    const config = {
+      url: `/task-statistic/expired?${encodeQueryData({
+        status,
+        priority,
+        page,
+        from_time: timeStart,
+        to_time: timeEnd,
+      })}`,
+      method: "get",
+    };
+    const result = yield apiService(config);
+    yield put({ type: TASK_PAGE_EXPIRED, payload: result.data });
+  } catch (error) {
+    console.error(error);
+    yield put({
+      type: TASK_PAGE_EXPIRED,
       payload: {
         error: error.toString(),
       },
@@ -175,6 +203,13 @@ function* watchLoadTaskDuePage() {
   }
 }
 
+function* watchLoadTaskExpiredPage() {
+  while (true) {
+    const { payload } = yield take(LOADPAGE_TASK_EXPIRED);
+    yield all([fork(doGetExpiredTasks, payload)]);
+  }
+}
+
 function* watchLoadTaskAssignPage() {
   while (true) {
     const {
@@ -205,4 +240,5 @@ export {
   watchLoadTaskDuePage,
   watchLoadTaskAssignPage,
   watchLoadTaskRolePage,
+  watchLoadTaskExpiredPage
 };

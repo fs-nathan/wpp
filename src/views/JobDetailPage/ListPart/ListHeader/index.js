@@ -32,9 +32,17 @@ const ButtonIcon = styled(IconButton)`
   }
 `;
 
-function ListHeaderSelect({ setShow }) {
+const findProjectInListBasic = (projectsBasic = [], projectId = undefined) => {
+  let projects = []
+  projectsBasic.map(e => {
+    projects = [...projects, ...e.projects]
+  })
+  const project = projects.find(e => e.id === projectId)
+  return project ? project : {}
+}
+
+function ListHeaderSelect({ setShow, projectDetail }) {
   const { t } = useTranslation();
-  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
   const dispatch = useDispatch();
 
   const openListProject = () => {
@@ -57,9 +65,10 @@ function ListHeaderSelect({ setShow }) {
 function ListHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+  const projectsData = useSelector(state => state.taskDetail.commonTaskDetail);
+  const projectThis = findProjectInListBasic(projectsData.projectListBasic ? projectsData.projectListBasic.projectGroups : [], projectsData.activeProjectId)
   const viewPermissions = useSelector(state => state.viewPermissions);
-  const create_task = get(viewPermissions, `data.detailProject.${projectDetail.id}.create_task`, false)
+  const create_task = get(viewPermissions, `data.detailProject.${projectThis.id}.create_task`, false)
 
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
@@ -79,7 +88,7 @@ function ListHeader(props) {
   return (
     <div>
       <div className="list-header">
-        <ListHeaderSelect {...props} />
+        <ListHeaderSelect {...props} projectDetail={projectThis} />
         <div className="header-bottom-box">
           <SearchInput
             placeholder={t('LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN')}

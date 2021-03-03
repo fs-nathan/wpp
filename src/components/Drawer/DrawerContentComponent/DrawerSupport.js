@@ -73,7 +73,7 @@ const DrawerSupport = props => {
             </div>
           ))}
       </div>
-      <FooterListDrawer actionList={actionList} />
+      <FooterListDrawer actionList={actionList} openInNewTab={true} />
     </div>
   );
 };

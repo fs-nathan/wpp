@@ -15,6 +15,7 @@ import {
   TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
 } from "../../views/OfferPage/contants/localStorage";
 import "./Drawer.scss";
+import { withRouter } from 'react-router-dom';
 
 const FooterListDrawer = (props) => {
   const closeDrawer = (url) => {
@@ -30,7 +31,13 @@ const FooterListDrawer = (props) => {
       localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
       window.location.href = Routes.LOGIN;
     } else {
-      window.open(url, '_blank');
+      if (props.openInNewTab) {
+        window.open(url, '_blank');
+      } else {
+        props.history.push({
+          pathname: url
+        });
+      }
     }
     props.actionVisibleDrawerMessage({
       type: "",
@@ -66,4 +73,4 @@ export default connect(
   {
     actionVisibleDrawerMessage,
   }
-)(FooterListDrawer);
+)(withRouter(FooterListDrawer));

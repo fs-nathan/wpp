@@ -159,11 +159,11 @@ export default connect(mapStateToProps)(({ bgColor, children, ...props }) => {
   const options = {
     title: props.title,
     subActions: [
-      {
+      !props.killTimeOption ? {
         label: t(times[timeType].title),
         iconPath: mdiCalendar,
         onClick: (evt) => setTimeAnchor(evt.target),
-      },
+      } : undefined,
       {
         label: t(expand ? t("Thu gọn") : t("Mở rộng")),
         iconPath: expand ? mdiFullscreenExit : mdiFullscreen,

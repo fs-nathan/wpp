@@ -61,7 +61,7 @@ const Assign = () => {
         <Box display="flex" alignItems="center">
           <Icon
             size={1.4}
-            {...{ color: listMenu[2].color, path: listMenu[2].icon }}
+            {...{ color: listMenu[3].color, path: listMenu[3].icon }}
           ></Icon>
           <Box
             {...{
@@ -71,10 +71,10 @@ const Assign = () => {
               fontWeight: "600",
             }}
           >
-            {t(listMenu[2].title)}:{" "}
+            {t(listMenu[3].title)}:{" "}
             {t(
               (
-                (listMenu[2].sub || emptyArray).find(
+                (listMenu[3].sub || emptyArray).find(
                   (item) => item.url === location.pathname
                 ) || {}
               ).name

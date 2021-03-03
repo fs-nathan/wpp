@@ -198,6 +198,9 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;  
   overflow: hidden;
+  :first-letter {
+    text-transform: uppercase;
+  }
   & div {
     font-size: 13px !important;
   }

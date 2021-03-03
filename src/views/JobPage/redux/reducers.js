@@ -3,7 +3,8 @@ import {
   TASK_DUE,
   TASK_OVERVIEW_RECENT,
   TASK_OVERVIEW_STATISTIC,
-  TASK_ROLE
+  TASK_ROLE,
+  TASK_PAGE_EXPIRED
 } from "./types";
 
 
@@ -41,6 +42,7 @@ function taskReducer(state = initialState, action) {
     case TASK_OVERVIEW_RECENT:
     case TASK_DUE:
     case TASK_ASSIGN:
+    case TASK_PAGE_EXPIRED:
     case TASK_ROLE:
       return {
         ...state,

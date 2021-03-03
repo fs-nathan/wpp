@@ -60,7 +60,7 @@ const Role = () => {
         <Box display="flex" alignItems="center">
           <Icon
             size={1.4}
-            {...{ color: listMenu[3].color, path: listMenu[3].icon }}
+            {...{ color: listMenu[4].color, path: listMenu[4].icon }}
           ></Icon>
           <Box
             {...{
@@ -70,10 +70,10 @@ const Role = () => {
               fontWeight: "600",
             }}
           >
-            {t(listMenu[3].title)}:{" "}
+            {t(listMenu[4].title)}:{" "}
             {
               (
-                (listMenu[3].sub || emptyArray).find(
+                (listMenu[4].sub || emptyArray).find(
                   (item) => item.url === location.pathname
                 ) || {}
               ).name

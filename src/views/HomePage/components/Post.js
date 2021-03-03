@@ -411,7 +411,7 @@ const Description = ({ children = "", limit = 200 }) => {
   if (!hasMore)
     return (
       <span
-        className="comp_Left__description"
+        className="comp_Left__description content-post"
         dangerouslySetInnerHTML={{
           __html: linkify(children),
         }}
@@ -421,10 +421,10 @@ const Description = ({ children = "", limit = 200 }) => {
   return (
     <>
       {hasMore && !showMore ? (
-        <span>{sub}</span>
+        <span class="content-sub-post">{sub}</span>
       ) : (
         <span
-          className="comp_Left__description"
+          className="comp_Left__description content-post"
           dangerouslySetInnerHTML={{
             __html: linkify(children),
           }}

@@ -234,11 +234,16 @@ const TopBar = props => {
         </Badge>
 
         <div className="acc-box">
-          <Avatar
-            style={{ height: 25, width: 25 }}
-            src={props.profile.avatar || avatar}
-            alt="Avatar"
-          />
+          {
+            props.profile.avatar && 
+            (
+              <Avatar
+                style={{ height: 25, width: 25 }}
+                src={props.profile.avatar}
+                alt="Avatar"
+              />
+            )
+          }
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
           <img

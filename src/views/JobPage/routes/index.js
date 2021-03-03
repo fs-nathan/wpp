@@ -18,6 +18,11 @@ const routes = [
     component: React.lazy(() => import("../views/Due"))
   },
   {
+    path: Routes.EXPIRED,
+    exact: true,
+    component: React.lazy(() => import("../views/Expired"))
+  },
+  {
     path: Routes.MISSION,
     exact: true,
     component: React.lazy(() => import("../views/Assign"))

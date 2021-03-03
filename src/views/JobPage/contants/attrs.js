@@ -133,6 +133,7 @@ export const labels = {
   roles: "Vai trò",
   overview: "Tổng quan",
   due: "Đến hạn",
+  expired: "Quá hạn",
   mission: "Nhiệm vụ",
   mission_giving: "Giao việc cho nhân viên",
   mission_given: "Được giao việc",

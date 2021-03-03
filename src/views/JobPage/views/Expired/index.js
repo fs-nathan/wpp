@@ -7,7 +7,8 @@ import styled from "styled-components";
 import { mapQueryStatusAndPriority } from "views/JobPage/utils";
 import { JobPageContext } from "../../JobPageContext";
 import Layout from "../../Layout";
-import { loadTaskDuePage } from "../../redux/actions";
+import { loadTaskExpiredPage } from "../../redux/actions";
+import { formatTime } from "views/JobPage/utils/time";
 import { Content } from "./Content";
 export const PageContainer = styled(Container)`
   overflow: auto;
@@ -15,22 +16,29 @@ export const PageContainer = styled(Container)`
   padding-right: 32px;
 `;
 
-const Due = () => {
+const Expired = () => {
   const { t } = useTranslation();
   const { timeRange, listMenu, statusFilter } = useContext(JobPageContext);
   const dispatch = useDispatch();
   useEffect(() => {
-    setTimeout(() => {
-      dispatch(
-        loadTaskDuePage({
-          ...mapQueryStatusAndPriority(statusFilter),
-        })
-      );
-    });
-  }, [dispatch, statusFilter, timeRange]);
+    dispatch(
+      loadTaskExpiredPage({
+        timeStart: formatTime(timeRange.startDate),
+        timeEnd: formatTime(timeRange.endDate),
+        ...mapQueryStatusAndPriority(statusFilter),
+      })
+    );
+  }, [
+    dispatch,
+    timeRange.timeStart,
+    timeRange.timeEnd,
+    timeRange.startDate,
+    timeRange.endDate,
+    statusFilter,
+  ]);
   const handlePageChange = (page) => {
     dispatch(
-      loadTaskDuePage({
+      loadTaskExpiredPage({
         ...mapQueryStatusAndPriority(statusFilter),
         page,
       })
@@ -42,7 +50,7 @@ const Due = () => {
         <Box display="flex" alignItems="center">
           <Icon
             size={1.4}
-            {...{ color: listMenu[1].color, path: listMenu[1].icon }}
+            {...{ color: listMenu[2].color, path: listMenu[2].icon }}
           ></Icon>
           <Box
             {...{
@@ -52,11 +60,10 @@ const Due = () => {
               fontWeight: "600",
             }}
           >
-            {t(listMenu[1].title)}
+            {t(listMenu[2].title)}
           </Box>
         </Box>
       }
-      killTimeOption={true}
     >
       <PageContainer maxWidth="xl">
         <Content onPageChange={handlePageChange} />
@@ -64,4 +71,4 @@ const Due = () => {
     </Layout>
   );
 };
-export default React.memo(Due);
+export default React.memo(Expired);

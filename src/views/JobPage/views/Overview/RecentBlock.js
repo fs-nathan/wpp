@@ -120,7 +120,6 @@ export function RecentBlock() {
     isToggleSortName: false,
     keyword,
   });
-  console.log('xxx', list)
   return (
     <Card variant="outlined">
       <CardHeader title={t("Công việc gần đây")} />

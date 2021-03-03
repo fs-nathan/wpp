@@ -2,7 +2,7 @@ import React from "react";
 import { listTask } from 'actions/kanban/listTask';
 import { sortTask } from 'actions/kanban/sortTask';
 import { sortGroupTask } from 'actions/kanban/sortGroupTask';
-import { tasksSelector, workTypeSelector } from './selectors';
+import { tasksSelector, workTypeSelector, viewPermissionsSelector } from './selectors';
 import { connect } from 'react-redux';
 import KanbanBoardPresenter from './presenters';
 import { get } from 'lodash';
@@ -17,6 +17,7 @@ function KanbanBoard({
   doListGroupTask,
   handleOpenModal,
   workType,
+  viewPermissions
 }) {
 
   const [tasksArr, setTasksArr] = React.useState([]);
@@ -30,13 +31,22 @@ function KanbanBoard({
     const doKanbanListTaskHandler = () => {
       doKanbanListTask({ projectId });
     };
+    const doKanbanListGroupTaskHandler = () => {
+      doListGroupTask({ projectId });
+    };
     CustomEventListener(CREATE_TASK, doKanbanListTaskHandler);
     CustomEventListener(DELETE_TASK, doKanbanListTaskHandler);
     CustomEventListener(CREATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-    CustomEventListener(KANBAN.SORT_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-    CustomEventListener(KANBAN.SORT_GROUP_TASK.FAIL, doKanbanListTaskHandler);
+    CustomEventListener(KANBAN.SORT_GROUP_TASK.SUCCESS, () => {
+      doKanbanListTaskHandler()
+      doKanbanListGroupTaskHandler()
+    });
+    CustomEventListener(KANBAN.SORT_GROUP_TASK.FAIL, () => {
+      doKanbanListTaskHandler()
+      doKanbanListGroupTaskHandler()
+    });
     CustomEventListener(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
     CustomEventListener(KANBAN.SORT_TASK.FAIL, doKanbanListTaskHandler);
     CustomEventListener(KANBAN.UPDATE_MANAGERS.SUCCESS, doKanbanListTaskHandler);
@@ -46,13 +56,20 @@ function KanbanBoard({
       CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-      CustomEventDispose(KANBAN.SORT_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-      CustomEventDispose(KANBAN.SORT_GROUP_TASK.FAIL, doKanbanListTaskHandler);
+      CustomEventDispose(KANBAN.SORT_GROUP_TASK.SUCCESS, () => {
+        doKanbanListTaskHandler()
+        doKanbanListGroupTaskHandler()
+      });
+      CustomEventDispose(KANBAN.SORT_GROUP_TASK.FAIL, () => {
+        doKanbanListTaskHandler()
+        doKanbanListGroupTaskHandler()
+      });
       CustomEventDispose(KANBAN.SORT_TASK.SUCCESS, doKanbanListTaskHandler);
       CustomEventDispose(KANBAN.SORT_TASK.FAIL, doKanbanListTaskHandler);
       CustomEventDispose(KANBAN.UPDATE_MANAGERS.SUCCESS, doKanbanListTaskHandler);
     }
   }, [projectId]);
+  const canManageGroupTask = get(viewPermissions.permissions, [projectId, 'manage_group_task'], false); 
 
   React.useEffect(() => {
     doListGroupTask({ projectId });
@@ -105,6 +122,7 @@ function KanbanBoard({
       handleColumnDrop={handleColumnDrop}
       handleItemDrop={handleItemDrop}
       workType={workType}
+      canManageGroupTask={canManageGroupTask}
     />
   );
 }
@@ -113,6 +131,7 @@ const mapStateToProps = state => {
   return {
     tasks: tasksSelector(state),
     workType: workTypeSelector(state),
+    viewPermissions: viewPermissionsSelector(state)
   }
 };
 

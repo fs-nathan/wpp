@@ -5,6 +5,7 @@ const kanbanListTask = state => state.kanban.listTask;
 const listGroupTask = state => state.groupTask.listGroupTask;
 const kanbanDetailProject = state => state.kanban.detailProject;
 const kanbanSortTask = state => state.kanban.sortTask;
+const viewPermissions = state => state.viewPermissions;
 
 export const tasksSelector = createSelector(
   [kanbanListTask, listGroupTask, kanbanSortTask],
@@ -42,3 +43,15 @@ export const workTypeSelector = createSelector(
     return get(project, 'work_type', 0);
   }
 )
+
+export const viewPermissionsSelector = createSelector(
+  [viewPermissions],
+  (viewPermissions) => {
+    const { data: { detailProject }, loading, error } = viewPermissions;
+    return ({
+      permissions: detailProject,
+      loading,
+      error,
+    });
+  }
+);
