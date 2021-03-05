@@ -2188,5 +2188,12 @@
   "FIELD_REQUIRED": "This field is required",
   "TREAD_CHAT_CHOOSE_MEMBERS": "Choose members",
   "LABEL_ONLINE": "Online",
-  "CONVERSATION_INFORMATION": "Conversation"
+  "CONVERSATION_INFORMATION": "Conversation",
+  "LABEL_CHAT_TASK_FORWARD": "Forward message",
+  "LABEL_CHAT_TASK_FORWARD_TO": "Forward message to:",
+  "LABEL_CHAT_TASK_FORWARD_TO_WORK": "Works",
+  "LABEL_CHAT_TASK_FORWARD_TO_MESSAGE": "Messages",
+  "LABEL_FORWARD_MESSAGE_MEMBERS": "Members",
+  "LABEL_FORWARD_MESSAGE_GROUP": "Groups",
+  "LABEL_CREATED_AT": "Created at: {{created_at}}"
 }

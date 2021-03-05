@@ -102,12 +102,12 @@ const renderAvatars = props => {
   );
 };
 
-function RenderMemberOnline(){
+function RenderMemberOnline({number_member}){
   const { t } = useTranslation();
   return (
     <div className="message-people-online">
       <PersonOutlineIcon classes={{root: "mpo-icon-people"}} />
-      <span className="mpo-number-people">10</span>
+      <span className="mpo-number-people">{number_member}</span>
       <div className="mpo-active">
         <FiberManualRecordIcon classes={{root: "mpo-icon-circle"}} />
         <span className="mpo-label-online">{t('LABEL_ONLINE')}</span>
@@ -145,7 +145,7 @@ const HeaderPart = props => {
       <div className="wrap-room-description">
         <Typography className="chatHeader--title">{task.name}</Typography>
         {/* <TabForm tabs={tabs} /> */}
-        <RenderMemberOnline />
+        <RenderMemberOnline number_member={members.length} />
       </div>
       <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>
         <IconButton className="chatHeader--button" onClick={openSearch}>

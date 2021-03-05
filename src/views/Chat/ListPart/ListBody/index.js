@@ -74,27 +74,7 @@ function ListBody() {
       ref={scrollRef}
       renderView={props => <div {...props} className="listJobBody--container" />}
       autoHide autoHideTimeout={500} autoHideDuration={200}>
-      {listTaskDataType === listTaskDataTypes[1] ? data.map((item, key) => {
-        const { tasks = [] } = item;
-        return (
-          <StyledList
-            key={item.id}
-            id={item.id}
-          >
-            <ListBodySubHeader
-              subPrimary={item.name}
-              subSecondary={t('LABEL_CHAT_TASK_VIEC', { task: tasks.length })}
-            />
-            {tasks.map((detail, idx) => (
-              <ListBodyItem
-                key={detail.id}
-                {...detail}
-                isSelected={taskId === detail.id}
-              />
-            ))}
-          </StyledList>
-        );
-      }) :
+      {
         data.map((detail, idx) => (
           <ListBodyItem
             key={idx}

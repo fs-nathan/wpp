@@ -2189,5 +2189,12 @@
   "FIELD_REQUIRED": "Trường bắt buộc",
   "TREAD_CHAT_CHOOSE_MEMBERS": "Chọn thành viên",
   "LABEL_ONLINE": "Đang hoạt động",
-  "CONVERSATION_INFORMATION": "Thông tin hội thoại"
+  "CONVERSATION_INFORMATION": "Thông tin hội thoại",
+  "LABEL_CHAT_TASK_FORWARD": "Chuyển tiếp tin nhắn",
+  "LABEL_CHAT_TASK_FORWARD_TO": "Chuyển tiếp tin nhắn tới:",
+  "LABEL_CHAT_TASK_FORWARD_TO_WORK": "Công việc",
+  "LABEL_CHAT_TASK_FORWARD_TO_MESSAGE": "Tin nhắn",
+  "LABEL_FORWARD_MESSAGE_MEMBERS": "Người liên hệ",
+  "LABEL_FORWARD_MESSAGE_GROUP": "Nhóm liên hệ",
+  "LABEL_CREATED_AT": "Tạo ngày: {{created_at}}"
 }

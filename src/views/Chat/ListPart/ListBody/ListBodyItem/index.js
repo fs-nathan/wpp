@@ -165,7 +165,6 @@ function ListBodyItem(props) {
   const userId = useSelector((state) => state.system.profile.id);
   const url = new URL(window.location.href);
   const taskId = url.searchParams.get("task_id");
-  const key = `${userId}:${lastJobSettingKey}`;
   const type = "not-room"
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
   // console.log({ props })

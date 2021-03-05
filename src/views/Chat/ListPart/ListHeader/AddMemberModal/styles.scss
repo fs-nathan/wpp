@@ -57,16 +57,16 @@
     margin-left: auto;
   }
   &--button {
-    border: 1px solid #dcdcdc;
-    color: #444444;
-    height: 25px;
     text-transform: unset;
     padding: 2px 8px;
-    width: 50px;
     min-width: unset;
-    border-radius: 2px;
     font-weight: 400;
     line-height: 20px;
+    color: #fff;
+    border-radius: 3px;
+    border: 0px;
+    height: 35px;
+    width: 80px;
     &:hover {
       // color: #fff;
       background: #efefef;
@@ -161,5 +161,14 @@
   }
   &--button {
     width: 66px;
+  }
+}
+
+.modal-add-member-to-group-chat {
+  width: 100%
+}
+.add-member-to-group-chat-parent {
+  .MuiPaper-root {
+    width: 500px
   }
 }

@@ -31,8 +31,6 @@ function Chat(props) {
   const isOpenShareFileModal = useSelector(
     (state) => state.chat.isOpenShareFileModal
   );
-  const key = `${userId}:${lastJobSettingKey}`;
-  const type = localStorage.getItem(key)
   const item = useSelector((state) => state.chat.item);
   const errorMessage = useSelector((state) => state.taskDetail.detailTask.errorMessage);
   const users_shared = item ? item.users_shared || [] : [];
@@ -65,6 +63,10 @@ function Chat(props) {
   useEffect(() => {
     const type_data = "not-room";
     if (projectId) {
+      const key = `TASK_GIRD:${userId}:${projectId}`;
+      if (!localStorage.getItem(key)) {
+        localStorage.setItem(key, 'not-room')
+      }
       dispatch(taskDetailAction.getProjectListBasic(projectId));
         // dispatch(taskDetailAction.chooseProject({ projectId }))
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
@@ -96,7 +98,6 @@ function Chat(props) {
   }, [dispatch, taskId]);
 
   useEffect(() => {
-    const key = `${userId}:${lastJobSettingKey}`;
     const type_data = "not-room";
     // console.log(key, ' useEffect', type_data)
     // console.log('projectId', projectId)

@@ -34,6 +34,7 @@ function ProjectMember(props) {
           className="projectMemberItem--loading" />
       }
       <Button
+        style={{background: props.appColor}}
         disabled={isFetching}
         className="projectMemberItem--button"
         onClick={once(onClickAdd)}>

@@ -154,7 +154,7 @@ function TabBody(props) {
         renderView={props => <div {...props} className="listPartTabBody--container" />}
         autoHide autoHideTimeout={500} autoHideDuration={200}>
         <StyledList>
-          <ConversationInfo name={detailTask.name} members={detailTask.members} date_create={detailTask.date_create}/>
+          <ConversationInfo name={detailTask.name} members={detailTask.members} date_create={ t("LABEL_CREATED_AT", {created_at: detailTask.date_create})}/>
           <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
             <ColorTypo>{t('LABEL_CHAT_TASK_NHAC_HEN')}</ColorTypo>
             <BadgeItem badge size='small' color='redlight' label={taskStatistic.remindCnt} />
@@ -168,15 +168,6 @@ function TabBody(props) {
           <ListItemTab disableRipple button onClick={() => props.setShow(5)}>
             <ColorTypo>{t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}</ColorTypo>
             <BadgeItem badge size='small' color='indigolight' label={taskStatistic.lctCnt} />
-          </ListItemTab>
-          <ListItemTab disableRipple button onClick={() => props.setShow(6)}>
-            <ColorTypo>{t('LABEL_CHAT_TASK_DE_XUAT_DUYET')}</ColorTypo>
-            <BadgeItem badge size='small' color='orangelight' label={taskStatistic.offerCnt} style={{ marginRight: 5 }} />
-            <BadgeItem badge size='small' color='orangelight' label={taskStatistic.acceptOfferCnt} />
-          </ListItemTab>
-          <ListItemTab disableRipple button onClick={() => props.setShow(7)}>
-            <ColorTypo>{t('LABEL_CHAT_TASK_CHI_DAO_QUYET_DINH')}</ColorTypo>
-            <BadgeItem badge size='small' color='bluelight' label={taskStatistic.commandCnt} />
           </ListItemTab>
           <ListItemTab disableRipple button onClick={onClickMember}>
             <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>

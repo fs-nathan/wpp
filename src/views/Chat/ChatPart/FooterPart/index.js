@@ -63,7 +63,6 @@ const FooterPart = ({
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)
   const members = useSelector(state => state.taskDetail.taskMember.member);
-  const key = `${userId}:${lastJobSettingKey}`;
   const type = "not-room"
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
   const numberNewChatWithoutSelf = useSelector(getNumberChatNotView(taskId));
@@ -472,11 +471,6 @@ const FooterPart = ({
               onClick={() => setVisibleSendFile(true)}
               hoverColor={groupActiveColor}>
               <Icon path={mdiPaperclip} size={1.2} />
-            </StyledButton>
-          </abbr>
-          <abbr title={t('LABEL_CHAT_TASK_THEM_CONG_VIEC_CON')}>
-            <StyledButton className="icon-btn" onClick={onClickSubTask} hoverColor={groupActiveColor}>
-              <Icon path={mdiFileTree} size={1.2} />
             </StyledButton>
           </abbr>
           <abbr title={t('LABEL_CHAT_TASK_THEM_NHAC_HEN')}>

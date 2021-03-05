@@ -14,10 +14,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import ListProjectBody from 'views/JobDetailPage/ListPart/ListProject/ListProjectBody';
 import './styles.scss';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import ForwardMessageDialogWork from './work';
-import ForwardMessageDialogMessage from './message';
+import ForwardMessageDialog from './index';
 
-function ForwardMessageDialog({ }) {
+function ForwardMessageDialogMain({ }) {
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
@@ -31,7 +30,6 @@ function ForwardMessageDialog({ }) {
   const [sending, setSending] = useState({});
 
   const [modalForwardToWork, setOpenModalForwardToWork] = useState(false);
-  const [modalForwardToMessage, setOpenModalForwardToMessage] = useState(false);
 
   let data = [];
   if (projectListBasic) {
@@ -76,15 +74,11 @@ function ForwardMessageDialog({ }) {
     setOpenModalForwardToWork(status)
   }
 
-  function handleChangeStateModalForwardToMessage(status) {
-    setOpenModalForwardToMessage(status)
-  }
-
   return (
     <>
       <DialogWrap
         title={t('LABEL_CHAT_TASK_FORWARD')}
-        isOpen={isOpenForward}
+        isOpen={true}
         handleClickClose={handleClose}
         successLabel={t('LABEL_CHAT_TASK_THOAT')}
         onClickSuccess={handleClose}
@@ -100,22 +94,18 @@ function ForwardMessageDialog({ }) {
             <div className="option-1" onClick={() => handleChangeStateModalForwardToWork(true)}>
               {t('LABEL_CHAT_TASK_FORWARD_TO_WORK')}
             </div>
-            <div className="option-2" onClick={() => handleChangeStateModalForwardToMessage(true)}>
+            <div className="option-2">
               {t('LABEL_CHAT_TASK_FORWARD_TO_MESSAGE')}
             </div>
           </div>
         </div>
       </DialogWrap >
-      <ForwardMessageDialogWork
+      <ForwardMessageDialog
         isOpen={modalForwardToWork}
         handleClickClose={() => handleChangeStateModalForwardToWork(false)}
-      />
-      <ForwardMessageDialogMessage
-        isOpen={modalForwardToMessage}
-        handleClickClose={() => handleChangeStateModalForwardToMessage(false)}
       />
     </>
   );
 }
 
-export default ForwardMessageDialog;
+export default ForwardMessageDialogMain;

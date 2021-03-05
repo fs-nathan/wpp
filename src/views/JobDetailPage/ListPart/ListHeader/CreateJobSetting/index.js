@@ -26,7 +26,7 @@ function CreateJobSetting(props) {
   const userId = useSelector(state => state.system.profile.id);
 
   function onCheck(e, checked) {
-    const key = `${userId}:${lastJobSettingKey}`;
+    const key = `TASK_GIRD:${userId}:${projectId}`;
     if (listTaskDataType === listTaskDataTypes[1]) {
       dispatch(getListTaskDetail(projectId, listTaskDataTypes[0]));
       localStorage.setItem(key, listTaskDataTypes[0])

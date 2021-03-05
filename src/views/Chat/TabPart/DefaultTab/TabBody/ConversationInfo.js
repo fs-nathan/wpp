@@ -12,7 +12,7 @@ const ConversationInfo = ({name, members, date_create}) => {
 				{name}
 			</div>
 			<div className="ci-step-time">
-				Tạo ngày {date_create}
+				{date_create}
 			</div>
 		</div>
 	)
