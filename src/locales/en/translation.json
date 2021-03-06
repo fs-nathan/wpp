@@ -2187,5 +2187,7 @@
   "TASK_DETAIL_INTRO_LABEL_4": "Virtual assistant!",
   "TASK_DETAIL_INTRO_CONTENT_4": "Notifications, reminder, warning.... let's Workplus do it",
   "NO_DATA": "No data",
-  "NO_DATA_SUB": "No data, Let create new data to start"
+  "NO_DATA_SUB": "No data, Let create new data to start",
+  "IDS_WP_REGISTER_NOTICE_REGISTER_DIRECT": "You received verify code?",
+  "IDS_WP_REGISTER_COMPLETE": "Complete registration"
 }

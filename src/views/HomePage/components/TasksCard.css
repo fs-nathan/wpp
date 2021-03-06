@@ -127,6 +127,6 @@
   padding-top: 0px;
 }
 
-.area-media-content-in-post div{
+.area-media-content-in-post > div{
   position: unset;
 }

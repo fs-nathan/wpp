@@ -17,12 +17,13 @@ import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
+import * as images from 'assets';
 
 const typesRemind = [
-  'Nhắc 1 lần',
-  'Nhắc theo ngày',
-  'Nhắc theo tuần',
-  'Nhắc theo tháng',
+  'LABEL_CHAT_TASK_NHAC_1_LAN_LABEL',
+  'LABEL_CHAT_TASK_NHAC_THEO_NGAY_LABEL',
+  'LABEL_CHAT_TASK_NHAC_THEO_TUAN_LABEL',
+  'LABEL_CHAT_TASK_NHAC_THEO_THANG_LABEL'
 ]
 
 function DetailRemind() {
@@ -31,6 +32,7 @@ function DetailRemind() {
   const groupActiveColor = useSelector(currentColorSelector)
   const isOpenDetailRemind = useSelector(state => state.chat.isOpenDetailRemind);
   const dataRemind = useSelector(state => state.chat.dataRemind);
+  console.log(dataRemind)
 
   function setCloseDetailRemind() {
     dispatch(openDetailRemind(false))
@@ -53,8 +55,11 @@ function DetailRemind() {
     is_ghim,
     user_create_name,
     user_create_position = '',
+    time_remind_next = '',
+    month_remind_next = '',
+    day_remind_next = ''
   } = dataRemind || {};
-  const [day, month] = created_at.split('/');
+  const [day, month] = [day_remind_next, month_remind_next]
 
   return (
     <Dialog
@@ -78,33 +83,49 @@ function DetailRemind() {
       </DialogTitle>
       <DialogContent>
         <Scrollbars>
+          <div className="detail-remind-top">
+            {
+              time_remind_next === '' || time_remind_next === null ? (
+                <img
+                  src={images.ic_alarm_complete}
+                  alt="ic_alarm_complete"
+                  width="40px"
+                />
+              ) : <>
+                <div className="step-time-next" style={{ backgroundColor: groupActiveColor }}>
+                  <div className="step-time-next-month">{t('LABEL_CHAT_TASK_THANG', { month })}
+                  </div>
+                  <div className="step-time-next-day">
+                    {day}
+                  </div>
+                </div>
+              </>
+            }
+            <div className="detailRemind--data" >{t('LABEL_CHAT_TASK_TAO_LUC', { created_at })}
+              {
+                time_remind_next === '' || time_remind_next === null ?
+                <ColorTypo variant='body1' component="div">
+                  {t('LABEL_CHAT_TASK_NHAC_HEN_HOAN_THANH')}
+                </ColorTypo> :
+                <ColorTypo variant='body1' component="div">
+                  {
+                    type === 1 ?
+                      <span className="remindItem--remindText">{t('LABEL_CHAT_TASK_NHAC_THEO_TIEN_DO')}</span> :
+                      t('LABEL_CHAT_TASK_LUC_REMIND_TIME', { type: t(typesRemind[type_remind]), time: `${time_remind} ${date_remind}` })
+                  }
+                  {
+                    (type === 1) &&
+                    (duration.map((item, key) => (
+                      <ColorChip key={key} color='orangelight' size='small' badge label={t('LABEL_CHAT_TASK_DAT_PERCENT', { percent: item })} />
+                    )))
+                  }
+                </ColorTypo>
+              }
+          </div>
+          </div>
           <DialogContentText className="detailRemind--content">
             {content}
           </DialogContentText>
-          <div className="detailRemind--main">
-            <div className="detailRemind--time" style={{ backgroundColor: groupActiveColor }}>
-              <div className="detailRemind--month">{t('LABEL_CHAT_TASK_THANG', { month })}
-              </div>
-              <div className="detailRemind--day">
-                {day}
-              </div>
-            </div>
-            <div className="detailRemind--data" >{t('LABEL_CHAT_TASK_TAO_LUC', { created_at })}
-              <ColorTypo variant='body1' component="div">
-                {
-                  type === 1 ?
-                    'Nhắc theo tiến độ' :
-                    `${typesRemind[type_remind]} lúc ${time_remind} ${date_remind}`
-                }
-                {
-                  (type === 1) &&
-                  (duration.map((item, key) => (
-                    <ColorChip key={key} color='orangelight' size='small' badge label={"Đạt " + item + "%"} />
-                  )))
-                }
-              </ColorTypo>
-            </div>
-          </div>
         </Scrollbars>
       </DialogContent>
       <DialogActions>

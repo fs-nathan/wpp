@@ -292,7 +292,7 @@ const ConfirmRegistration = props => {
               label={
                 <span>
                   {t('IDS_WP_I_AGREE')}
-                  <Link href="/term" className="btn-link">
+                  <Link target="_blank" href="https://workplus.vn/dieu-khoan-va-thoa-thuan-su-dung-workplus/" className="btn-link">
                     {t('IDS_WP_TERM_OF_USE')}
                   </Link>
                   {t('IDS_WP_WORKPLUS_BASIS')}

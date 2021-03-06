@@ -172,3 +172,31 @@
   display: flex;
   margin-bottom: 20px;
 }
+
+.detail-remind-top {
+  text-align: center;
+  margin: 20px 0px;
+  .step-time-next {
+    width: 120px;
+    display: inline-block;
+    height: 120px;
+    color: #fff;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    .step-time-next-month {
+      font-size: 18px;
+      line-height: 40px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .step-time-next-day {
+      font-size: 40px;
+      font-weight: bold;
+      line-height: 40px;
+    }
+  }
+  img {
+    width: 60px;
+    margin-bottom: 20px;
+  }
+}

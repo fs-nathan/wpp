@@ -16,16 +16,16 @@ const MainAccount = props => {
           <div className="inner-right-content">
             <div className="main-account-container">{props.children}</div>
             <div className="bottom-content">
-              <a href="/" className="link-item">
+              <a target="_blank" href="https://resources.workplus.vn/" className="link-item">
                 {t('IDS_WP_HOME')}
               </a>
-              <a href="/term" className="link-item">
+              <a target="_blank" href="https://workplus.vn/dieu-khoan-va-thoa-thuan-su-dung-workplus/" className="link-item">
                 {t('IDS_WP_TERM')}
               </a>
-              <a href="/document" className="link-item">
+              <a target="_blank" href="https://support.workplus.vn/tai-lieu-huong-dan/" className="link-item">
                 {t('IDS_WP_DOCUMENT')}
               </a>
-              <a href="/contact" className="link-item">
+              <a target="_blank" href="https://workplus.vn/lien-he/" className="link-item">
                 {t('IDS_WP_CONTACT')}
               </a>
             </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import './style.scss';
+import { useParams } from 'react-router-dom';
 
 const Container = ({ className = '', expand, ...rest }) =>
   <div className={`${expand
@@ -16,9 +17,9 @@ function TwoColumnsLayout({
   leftRenders = [() => <div />],
   rightRender = () => <div />,
 }) {
-
+  const {memberId} = useParams();
   const [expand, setExpand] = React.useState(false);
-  const [subSlide, setSubSlide] = React.useState(0);
+  const [subSlide, setSubSlide] = React.useState(memberId ? 1 : 0);
 
   function handleExpand(expand) {
     setExpand(expand);

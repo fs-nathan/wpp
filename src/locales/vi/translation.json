@@ -2188,5 +2188,7 @@
   "TASK_DETAIL_INTRO_LABEL_4": "Trợ lí ảo!",
   "TASK_DETAIL_INTRO_CONTENT_4": "Thông báo, cảnh báo, nhắc việc, nhắc hẹn...hãy để Workplus lo",
   "NO_DATA": "Không có dữ liệu",
-  "NO_DATA_SUB": "Chưa có dữ liệu, hãy tạo mới dữ liệu để bắt đầu"
+  "NO_DATA_SUB": "Chưa có dữ liệu, hãy tạo mới dữ liệu để bắt đầu",
+  "IDS_WP_REGISTER_NOTICE_REGISTER_DIRECT": "Bạn đã nhận được mã xác thực ?",
+  "IDS_WP_REGISTER_COMPLETE": "Hoàn tất đăng ký"
 }

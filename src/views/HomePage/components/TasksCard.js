@@ -77,7 +77,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
                 onClick={() => {
                   dispatch(showImagesList(true, images, 3));
                 }}
-                className="comp_TasksCard__Media__mark"
+                className="comp_TasksCard__Media__mark are-show-image-more"
               >
                 +{images.length - 4}
               </div>
