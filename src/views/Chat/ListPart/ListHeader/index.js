@@ -62,7 +62,7 @@ function ListHeader(props) {
         <ListHeaderSelect {...props} />
         <div className="header-bottom-box header-bottom-box-chat">
           <SearchInput
-            placeholder={t('LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN')}
+            placeholder={t('LABEL_SEARCH')}
             style={{ height: 'auto' }}
             onChange={e => searchListTask(e)}
           />

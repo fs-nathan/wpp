@@ -154,3 +154,38 @@
     color: #969494;
   }
 }
+.wrap-avatars-1 {
+  width: auto
+}
+.chatHeader--title {
+  &:hover .edit-name-task-on-head-chat {
+    display: inline-block;
+  };
+  .el-edit-name-group-chat input {
+    height: 35px;
+    line-height: 35px;
+    width: 60%;
+    border: 1px solid #ddd;
+    padding-left: 10px;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-size: 15px;
+    font-weight: bold;
+  }
+}
+.edit-name-task-on-head-chat {
+  display: none;
+  .step-hover-edit {
+    background: rgb(0, 156, 243);
+    border-radius: 50%;
+    font-size: 15px;
+    top: 2px;
+    margin-left: 10px;
+    display: block;
+    position: relative;
+    padding: 3px;
+    border-radius: 50%;
+    color: #fff;
+    cursor: pointer;
+  }
+}

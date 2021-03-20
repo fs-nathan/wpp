@@ -59,3 +59,17 @@
     opacity: 1 !important;
   }
 }
+.modal-view-video-online {
+  .area-show-more-image {
+    display: none;
+  }
+  .ModalImage--video {
+    width: 50%!important;
+    height: calc(100vh - 100px)!important;
+    video {
+      width: 100%!important;
+      height: 100%!important;
+      margin: auto!important;
+    }
+  }
+}

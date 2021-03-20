@@ -12,11 +12,41 @@ import { useTranslation } from 'react-i18next';
 import InfiniteScroll from 'react-infinite-scroller';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import AddMemberModal from 'views/JobDetailPage/ListPart/ListHeader/AddMemberModal';
+import AddMemberModal from 'views/Chat/ListPart/ListHeader/AddMemberModal';
 import DetailEmotionModal from './DetailEmotionModal';
 import DetailViewedModal from './DetailViewedModal';
 import Message from './Message';
 import './styles.scss';
+
+function RenderIntroData({detailTask, userId}) {
+  const member = detailTask.members ? detailTask.members.find(m => m.id !== userId) : null
+  if (member) {
+    let inforMore = ""
+    if (member.room != "" && member.position != "") {
+      inforMore = `${member.position} - ${member.room}`
+    } else if (member.position != "") {
+      inforMore = member.position
+    } else if (member.room != "") {
+      inforMore = member.room
+    }
+
+    return (
+      <React.Fragment>
+        <Avatar
+          alt="creator"
+          src={member.avatar}
+          className="bodyChat--projectAvatar"
+        />
+        <div className="bodyChat--projectName member-name-private-chat">{member.name}</div>
+        <div className="infor-more-intro-chat">
+          {inforMore}
+        </div>
+      </React.Fragment>
+    )
+  } else {
+    return (<div></div>)
+  }
+}
 
 let lastScroll = 0;
 
@@ -207,6 +237,7 @@ const BodyPart = props => {
 
   return (
     <div
+      style={{backgroundImage: `url(/images/bg_chat_${detailTask.person_chat_type == 1 ? 3: 2}.png)`}}
       className={clsx("bodyChat", { "bodyChat__reply": props.isReply })}
     >
       <Scrollbars autoHide autoHideTimeout={500}
@@ -223,20 +254,21 @@ const BodyPart = props => {
                 <div className="time">{date_create}</div>
               </div>
               <div className="wrap-common-row">
-                <div className="bodyChat--project">
-                  <Avatar
-                    alt="creator"
-                    src={user_create.avatar}
-                    className="bodyChat--projectAvatar"
-                  />
-                  <div className="bodyChat--notifyName">{t('LABEL_CHAT_TASK_DA_TAO_CONG_VIEC_MOI', { name: user_create.name || '' })}</div>
-                  <div className="bodyChat--projectName">{name}</div>
+                <div className={`bodyChat--project bodyChat--project-${detailTask.person_chat_type == 1 ? "private": "group"}`}>
                   {
-                    start_date && end_date &&
-                    <div className="bodyChat--projectProgress">{t('LABEL_CHAT_TASK_TIEN_DO_FROM_TO', { start_date, end_date })}</div>
+                    detailTask.person_chat_type == 1 ?
+                    <RenderIntroData detailTask={detailTask} userId={userId} /> :
+                    <React.Fragment>
+                      <Avatar
+                        alt="creator"
+                        src={user_create.avatar}
+                        className="bodyChat--projectAvatar"
+                      />
+                      <div className="bodyChat--notifyName">{t('LABEL_CHAT_CREATE_GROUP_INTRO', { name: user_create.name || '' })}</div>
+                      <div className="bodyChat--projectName">{name}</div>
+                      <button onClick={onClickCreateMember} className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
+                    </React.Fragment>
                   }
-                  <button onClick={onClickCreateMember}
-                    className="bodyChat--buttonAddMember">{t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}</button>
                 </div>
               </div>
               <div className="bodyChat--introRow">

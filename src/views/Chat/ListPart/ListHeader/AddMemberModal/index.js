@@ -70,7 +70,7 @@ function AddMemberModal({ setOpen, isOpen }) {
     >
       <DialogContent className="wrapper-member-modal">
           <div className="modal-add-member-to-group-chat">
-            <div style={{ margin: '10px 10px 0 10px' }}>
+            <div style={{ margin: '10px' }}>
               <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_THANH_VIEN')} />
             </div>
             <div className="table-scroll-add-member">

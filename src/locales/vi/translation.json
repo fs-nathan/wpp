@@ -1422,8 +1422,8 @@
   "LABEL_CHAT_TASK_CHON_LOAI": "Chọn loại",
   "LABEL_CHAT_TASK_NHAP_NOI_DUNG": "Nhập nội dung",
   "LABEL_CHAT_TASK_CHINH_SUA": "Chỉnh sửa",
-  "LABEL_CHAT_TASK_DA_CHI_DAO_LUC": "Đã chỉ đạo lúc: {date_create}",
-  "LABEL_CHAT_TASK_DA_QUYET_DINH_LUC": "Đã quyết định lúc: {date_create}",
+  "LABEL_CHAT_TASK_DA_CHI_DAO_LUC": "Đã chỉ đạo lúc: {{date_create}}",
+  "LABEL_CHAT_TASK_DA_QUYET_DINH_LUC": "Đã quyết định lúc: {{date_create}}",
   "LABEL_CHAT_TASK_NHAP_TU_KHOA": "Nhập từ khóa",
   "LABEL_CHAT_TASK_TAT_CA": "Tất cả",
   "LABEL_CHAT_TASK_CHI_DAO": "Chỉ đạo (",
@@ -2196,5 +2196,9 @@
   "LABEL_CHAT_TASK_FORWARD_TO_MESSAGE": "Tin nhắn",
   "LABEL_FORWARD_MESSAGE_MEMBERS": "Người liên hệ",
   "LABEL_FORWARD_MESSAGE_GROUP": "Nhóm liên hệ",
-  "LABEL_CREATED_AT": "Tạo ngày: {{created_at}}"
+  "LABEL_CREATED_AT": "Tạo ngày: {{created_at}}",
+  "LABEL_CHAT_UPDATE_NAME_GROUP": "Đã thay đổi tên nhóm",
+  "LABEL_SEARCH": "Tìm kiếm...",
+  "LABEL_CHAT_CREATE_GROUP_INTRO": "{{name}} đã tạo nhóm chat",
+  "LABEL_JUST_NOW": "Vừa xong"
 }

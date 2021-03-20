@@ -165,7 +165,13 @@
 }
 
 .modal-add-member-to-group-chat {
-  width: 100%
+  width: 100%;
+  .projectMemberItem--button {
+    color: #fff;
+    border-radius: 3px;
+    height: 30px;
+    border: 0px;
+  }
 }
 .add-member-to-group-chat-parent {
   .MuiPaper-root {

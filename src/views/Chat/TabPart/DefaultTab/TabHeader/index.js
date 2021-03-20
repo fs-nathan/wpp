@@ -4,7 +4,7 @@ import './styles.scss';
 
 function TabHeader(props) {
   const { t } = useTranslation();
-
+  
   return (
     <div className="container-dt-tabheader title-conversation-info-message">
       <span>{t("CONVERSATION_INFORMATION")}</span>

@@ -216,7 +216,8 @@ function MainLayout({
   actionChangeNumMessageNotView,
   visibleOfferDetailModal, loadDetailOffer, detailOffer,
   visibleRemindDetail, detailRemind, getRemindDetail,
-  setNumberMessageNotView
+  setNumberMessageNotView,
+  t
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
@@ -301,10 +302,14 @@ function MainLayout({
       if (!task || data.type === CHAT_TYPE.UPDATE_GROUP_TASK) {
         getListTaskDetail(projectId);
       } else {
+        if (data.type === CHAT_TYPE.UPDATE_TASK_NAME) {
+          data.new_name = data.new_task_name
+        }
         // if (task_id !== taskDetails.id) {
         data.new_chat = user_create_id === profile.id ? 0 : 1;
         // }
         data.content = content[language];
+        data.updated_time = t('LABEL_JUST_NOW')
         data.updatedAt = Date.now();
         updateProjectChat(data);
       }
@@ -508,8 +513,8 @@ function MainLayout({
 }
 
 function MainLayoutWrapper({ ...rest }) {
-  const { i18n } = useTranslation();
-  return <MainLayout key={i18n.language} {...rest} />;
+  const { t, i18n } = useTranslation();
+  return <MainLayout key={i18n.language} {...rest} t={t} />;
 }
 
 export default connect(

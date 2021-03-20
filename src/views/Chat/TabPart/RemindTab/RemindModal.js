@@ -97,10 +97,10 @@ function RemindModal(props) {
       value: 0,
       label: t('LABEL_CHAT_TASK_NHAC_HEN_THEO_THOI_GIAN'),
     },
-    {
-      value: 1,
-      label: t('LABEL_CHAT_TASK_NHAC_HEN_THEO_TIEN_DO_THUC_TE'),
-    }
+    // {
+    //   value: 1,
+    //   label: t('LABEL_CHAT_TASK_NHAC_HEN_THEO_TIEN_DO_THUC_TE'),
+    // }
   ];
 
   const badges = [

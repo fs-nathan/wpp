@@ -79,7 +79,7 @@ function ListBody() {
           <ListBodyItem
             key={idx}
             {...detail}
-            isSelected={taskId === detail.id}
+            isSelected={detail.id && taskId === detail.id ? true : false}
           />
         ))
       }

@@ -36,3 +36,11 @@ export const setNumberMessageNotView = data => ({
   type: actionTypes.SET_NUMBER_MESSAGE_NOT_VIEW,
   payload: data
 });
+
+export const doCreateThreadChatPrivate = data => {
+  return apiService({
+    url: '/thread-chat/create-private',
+    method: 'post',
+    data
+  });
+};

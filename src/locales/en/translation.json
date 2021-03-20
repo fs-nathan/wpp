@@ -1421,8 +1421,8 @@
   "LABEL_CHAT_TASK_CHON_LOAI": "Choose type",
   "LABEL_CHAT_TASK_NHAP_NOI_DUNG": "Import content",
   "LABEL_CHAT_TASK_CHINH_SUA": "Edit",
-  "LABEL_CHAT_TASK_DA_CHI_DAO_LUC": "Directed at: {date_create}",
-  "LABEL_CHAT_TASK_DA_QUYET_DINH_LUC": "Decisions at: {date_create}",
+  "LABEL_CHAT_TASK_DA_CHI_DAO_LUC": "Directed at: {{date_create}}",
+  "LABEL_CHAT_TASK_DA_QUYET_DINH_LUC": "Decisions at: {{date_create}}",
   "LABEL_CHAT_TASK_NHAP_TU_KHOA": "Enter keywords",
   "LABEL_CHAT_TASK_TAT_CA": "All",
   "LABEL_CHAT_TASK_CHI_DAO": "Directions (",
@@ -2195,5 +2195,9 @@
   "LABEL_CHAT_TASK_FORWARD_TO_MESSAGE": "Messages",
   "LABEL_FORWARD_MESSAGE_MEMBERS": "Members",
   "LABEL_FORWARD_MESSAGE_GROUP": "Groups",
-  "LABEL_CREATED_AT": "Created at: {{created_at}}"
+  "LABEL_CREATED_AT": "Created at: {{created_at}}",
+  "LABEL_CHAT_UPDATE_NAME_GROUP": "Updated group name",
+  "LABEL_SEARCH": "Search...",
+  "LABEL_CHAT_CREATE_GROUP_INTRO": "{{name}} have created a new group chat",
+  "LABEL_JUST_NOW": "Just now"
 }

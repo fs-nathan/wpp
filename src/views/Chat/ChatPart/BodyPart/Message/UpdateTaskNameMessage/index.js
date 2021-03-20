@@ -26,7 +26,7 @@ const UpdateTaskNameMessage = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName={t('LABEL_CHAT_TASK_CHINH_SUA_TEN_MO_TA_CONG_VIEC')}
+      taskName={t('LABEL_CHAT_UPDATE_NAME_GROUP')}
     >
       <>
         {new_task_name}

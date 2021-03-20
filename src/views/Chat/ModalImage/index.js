@@ -136,12 +136,12 @@ const ModalImage = () => {
   }
   function onClickRotateLeft() {
     setRotate(rotate - 90)
-    checkSize()
+    // checkSize()
   }
 
   function onClickRotateRight() {
     setRotate(rotate + 90)
-    checkSize()
+    // checkSize()
   }
 
   function clickNext() {
@@ -236,7 +236,7 @@ const ModalImage = () => {
       aria-labelledby="customized-dialog-title"
       open={isOpenImagesListModal}
       fullScreen={fullScreen}
-      className="ModalImage"
+      className={`ModalImage ${media_type === 1 ? "modal-view-video-online" : ""}`}
     >
       <DialogTitleModalImage id="customized-dialog-title"
         {...imageInfo}
@@ -254,7 +254,7 @@ const ModalImage = () => {
               className="ModalImage--video"
               url={url} playing
               height="calc(100vh - 81px)" width="auto"
-              controls
+              controls={true}
               style={{ margin: 'auto', transform: `rotate(${rotate}deg)` }}
             />
             :
@@ -280,7 +280,7 @@ const ModalImage = () => {
             </>
         }
       </ContentDialog>
-      <FooterDialog fullheight={(media_type === 1).toString()}>
+      <FooterDialog fullheight={(media_type === 1).toString()} className="area-show-more-image">
         <div className="ModalImage--scrollWrap">
           <Scrollbars
             autoHide autoHideTimeout={500} autoHideDuration={200}

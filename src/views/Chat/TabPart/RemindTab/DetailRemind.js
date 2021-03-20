@@ -32,7 +32,6 @@ function DetailRemind() {
   const groupActiveColor = useSelector(currentColorSelector)
   const isOpenDetailRemind = useSelector(state => state.chat.isOpenDetailRemind);
   const dataRemind = useSelector(state => state.chat.dataRemind);
-  console.log(dataRemind)
 
   function setCloseDetailRemind() {
     dispatch(openDetailRemind(false))

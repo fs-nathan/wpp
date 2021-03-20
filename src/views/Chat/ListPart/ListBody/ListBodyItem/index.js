@@ -1,5 +1,6 @@
 import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
+import { CircularProgress } from '@material-ui/core';
 import { mdiPin } from '@mdi/js';
 import Icon from '@mdi/react';
 import { viewChat } from 'actions/chat/chat';
@@ -9,7 +10,7 @@ import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import SimpleDonutChart from 'components/SimpleDonutChart';
 import AvatarSquareGroup from 'components/AvatarSquareGroup';
-import React from 'react';
+import React, {useState} from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
@@ -17,6 +18,8 @@ import styled from 'styled-components';
 import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
 import { lastJobSettingKey } from '../../ListHeader/CreateJobSetting';
 import { setNumberMessageNotView } from "actions/chat/threadChat";
+import { doCreateThreadChatPrivate } from "actions/chat/threadChat";
+import "./style.scss"
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -53,30 +56,6 @@ const getBadgeColor = status_code => {
   }
 };
 
-function getStatusName(status_code) {
-  if (status_code === 0)
-    return "LABEL_CHAT_TASK_DANG_CHO"
-  if (status_code === 1)
-    return "LABEL_CHAT_TASK_DANG_LAM"
-  if (status_code === 2)
-    return "LABEL_CHAT_TASK_HOAN_THANH"
-  if (status_code === 3)
-    return "LABEL_CHAT_TASK_DA_QUA_HAN"
-  if (status_code === 4)
-    return "LABEL_CHAT_TASK_TAM_DUNG"
-}
-
-function getStatusCode(status_code, complete) {
-  if (complete === 100)
-    return 2;
-  if (status_code === 3)
-    return 3;
-  if (status_code === 4)
-    return 4;
-  if (complete === 0)
-    return 0;
-  return 1;
-}
 
 function JobName(props) {
   const { t } = useTranslation();
@@ -101,7 +80,7 @@ function JobContent(props) {
   const { avatar, content, name, notification = 0, time } = props
   return (
     <div className="container-content-lbd">
-      <div title={name}>
+      <div title={name} className="step-content-chat">
         <Avatar src={avatar} alt="avatar" />
         <ColorTypo color="#7a869a">{content}</ColorTypo>
       </div>
@@ -110,8 +89,9 @@ function JobContent(props) {
           label={notification > 99 ? '99+' : notification}
           size="small"
           notification={notification}
+          className="step-new-chat"
         />
-        <div>{time}</div>
+        <div className="step-time-chat">{time}</div>
       </div>
     </div>
   );
@@ -128,7 +108,7 @@ function JobUnit(props) {
     updated_time,
   } = props;
   return (
-    <ListItemText disableTypography>
+    <ListItemText disableTypography className="chat-left-per-line">
       <JobName
         title={name}
         label={status_name}
@@ -167,7 +147,21 @@ function ListBodyItem(props) {
   const taskId = url.searchParams.get("task_id");
   const type = "not-room"
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
-  // console.log({ props })
+  const [isCreatingThreadChat, setCreatingThreadChat] = useState(false)
+
+  async function onClickToCreateThreadChat() {
+    if (props.members && props.members.length) {
+      setCreatingThreadChat(true)
+      try {
+        const res = await doCreateThreadChatPrivate({ member_id: props.members[0].id });
+        console.log(res)
+        history.push({ pathname: "/chats", search: `?task_id=${res.data.task_id}` });
+        setCreatingThreadChat(false)
+      } catch (error) {
+        setCreatingThreadChat(false)
+      }
+    }
+  }
 
   function onClickItem() {
     if (isLoading) return;
@@ -196,7 +190,7 @@ function ListBodyItem(props) {
       className={clsx("container-lbd", {
         "container-lbd__selected": props.isSelected
       })}
-      onClick={onClickItem}
+      onClick={props.id ? onClickItem : onClickToCreateThreadChat}
     >
       <AvatarSquareGroup images={members} />
       <JobUnit {...{
@@ -208,6 +202,10 @@ function ListBodyItem(props) {
         is_ghim,
         updated_time,
       }} />
+      {
+        !props.id && isCreatingThreadChat &&
+        <CircularProgress />
+      }
     </div>
   );
 }

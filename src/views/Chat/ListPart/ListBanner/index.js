@@ -69,11 +69,11 @@ const ListBanner = props => {
         />
       ))}
       <div className="chat-group-bt-create-thread">
-        <span title={t("THREAD_CHAT_CHAT_TO")} onClick={() => openCreateChatPrivate(true)}>
-          <PersonAddRoundedIcon classes={{root: "chat-add-thead-member"}} />
-        </span>
+        {/*<span title={t("THREAD_CHAT_CHAT_TO")} onClick={() => openCreateChatPrivate(true)}>
+        <img className="chat-add-thead-member" src="/images/ic_chat_user.png" />
+        </span>*/}
         <span title={t("THREAD_CHAT_CREATE_GROUP_CHAT")} onClick={() => openCreateGroupChat(true)}>
-          <GroupAddRoundedIcon classes={{root: "chat-add-thead-group"}} />
+          <img className="chat-add-thead-group" src="/images/ic_chat_group.png" />
         </span>
       </div>
       <CreateThreadChatPrivate

@@ -2,6 +2,9 @@ import { Avatar, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGr
 import { makeStyles } from '@material-ui/core/styles';
 import { mdiMagnify } from '@mdi/js';
 import Icon from '@mdi/react';
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import EditIcon from '@material-ui/icons/Edit';
+import CancelIcon from '@material-ui/icons/Cancel';
 import { getMemberTask, getMemberTaskService } from 'actions/chat/chat';
 import fakeAvatar from 'assets/avatar.jpg';
 import clsx from 'clsx';
@@ -16,6 +19,10 @@ import './styles.scss';
 import NavigatorMenu from "components/NavigatorMenu";
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import { updateNameGroupChat } from "actions/chat/chat";
+import { getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
+import get from 'lodash/get';
+import { CircularProgress } from '@material-ui/core';
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   & .MuiTypography-root {
@@ -39,46 +46,6 @@ const useStyles = makeStyles({
   smallAvatar: { width: 25, height: 25 }
 });
 
-const TabForm = props => {
-  const history = useHistory()
-  const gridSettings = useSelector(state => state.chat.gridSettings)
-  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  const [value, setValue] = React.useState(tabSelected);
-  const groupActiveColor = useSelector(currentColorSelector)
-
-  function onClickLabel(value) {
-    const { url = '' } = gridSettings.find(({ name }) => name === value) || {};
-    return () => {
-      history.push(`${url}/${projectId}`)
-    }
-  }
-
-  return (
-    <FormControl component="fieldset">
-      <RadioGroup
-        aria-label="position"
-        name="position"
-        value={value}
-        onChange={event => setValue(event.target.value)}
-        row
-      >
-        {props.tabs.map((label, idx) => (
-          <StyledFormControlLabel
-            className={clsx("chatHeader--tabLabel", { "chatHeader--tabLabel__selected": value === label })}
-            key={idx}
-            value={label}
-            control={<Radio />}
-            label={label}
-            groupActiveColor={groupActiveColor}
-            checked={value === label}
-            onClick={onClickLabel(label)}
-          />
-        ))}
-      </RadioGroup>
-    </FormControl>
-  );
-};
-
 const renderAvatars = props => {
   const { images = [] } = props;
   let showImages = images;
@@ -88,7 +55,7 @@ const renderAvatars = props => {
     showImages = images.slice(0, imgNum);
   }
   return (
-    <div className="wrap-avatars">
+    <div className={`wrap-avatars wrap-avatars-${showImages.length}`}>
       {showImages.map(({ avatar }, i) =>
         <Avatar key={i} className={clsx(`chatHeader--avatar${showImages.length}_${i + 1}`,
           { [`chatHeader--avatar${showImages.length}_${i + 1}_plus`]: (plusImage > 0) }
@@ -120,8 +87,22 @@ const HeaderPart = props => {
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
-  const members = useSelector(state => state.taskDetail.taskMember.defaultMember)
+  // const members = useSelector(state => state.taskDetail.taskMember.defaultMember)
   const task = useSelector(state => state.taskDetail.detailTask.taskDetails);
+  const userId = useSelector(state => state.system.profile.id);
+  const [nameInput, setNameInput] = React.useState(task ? task.name : "");
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isEditName, setIsEditName] = React.useState(false);
+  const appColor = useSelector(currentColorSelector)
+  const {
+    update_task
+  } = get(task, 'permissions', {});
+  React.useEffect(() => {
+    if (task.name) {
+      setNameInput(task.name)
+    }
+  }, [task.name]);
+  const members = task.members ? (task.person_chat_type == 1 ? task.members.filter(m => m.id !== userId) : task.members) : []
   useEffect(() => {
     const fetchMemberlist = async () => {
       try {
@@ -139,12 +120,54 @@ const HeaderPart = props => {
     props.setShowSearch(true)
   }
 
+  const handleUpdateGroupName = async () => {
+    setIsLoading(true)
+      try {
+        await updateNameGroupChat({ task_id: task.id, name: nameInput });
+        setIsEditName(false)
+        dispatch(getTaskDetailTabPart({ taskId: task.id }));
+        setIsLoading(false)
+      } catch (error) {
+        setIsLoading(false)
+      }
+  }
+
   return (
     <div className="container-header">
       {renderAvatars({ styles: classes, images: members })}
       <div className="wrap-room-description">
-        <Typography className="chatHeader--title">{task.name}</Typography>
-        {/* <TabForm tabs={tabs} /> */}
+        <Typography className="chatHeader--title">
+          {
+            !isEditName ?
+            <React.Fragment>
+              {task.name}
+              <div className="edit-name-task-on-head-chat">
+                {
+                  update_task && task.person_chat_type == 2 &&
+                  <EditIcon
+                    className="step-hover-edit"
+                    style={{background: appColor}}
+                    onClick={() => {
+                      setNameInput(task.name);
+                      setIsEditName(true);
+                    }}
+                  />
+                }
+              </div>
+            </React.Fragment> :
+            <div className="el-edit-name-group-chat">
+              <input type="text" value={nameInput} onChange={e => setNameInput(e.target.value)} />
+              {
+                isLoading ?
+                <CircularProgress size={20} classes={{root: "icon-spin-update-name"}} /> :
+                <React.Fragment>
+                  <CheckCircleIcon className="step-action step-save" onClick={() => handleUpdateGroupName()} />
+                  <CancelIcon className="step-action step-cancel" onClick={() => setIsEditName(false)} />
+                </React.Fragment>
+              }
+            </div>
+          }
+        </Typography>
         <RenderMemberOnline number_member={members.length} />
       </div>
       <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>

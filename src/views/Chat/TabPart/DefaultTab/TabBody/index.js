@@ -90,6 +90,7 @@ function TabBody(props) {
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
   const members = useSelector(state => state.taskDetail.taskMember.member);
+  const userId = useSelector(state => state.system.profile.id);
   const DEFAULT_TASK_STATISTIC = {
     progressCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
     subTaskCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
@@ -154,7 +155,7 @@ function TabBody(props) {
         renderView={props => <div {...props} className="listPartTabBody--container" />}
         autoHide autoHideTimeout={500} autoHideDuration={200}>
         <StyledList>
-          <ConversationInfo name={detailTask.name} members={detailTask.members} date_create={ t("LABEL_CREATED_AT", {created_at: detailTask.date_create})}/>
+          <ConversationInfo type_chat={detailTask.person_chat_type} task_id={taskId} name={detailTask.name} members={detailTask.members ? (detailTask.person_chat_type == 1 ? detailTask.members.filter(m => m.id !== userId) : detailTask.members) : []} date_create={ t("LABEL_CREATED_AT", {created_at: detailTask.date_create})}/>
           <ListItemTab disableRipple button onClick={() => props.setShow(3)}>
             <ColorTypo>{t('LABEL_CHAT_TASK_NHAC_HEN')}</ColorTypo>
             <BadgeItem badge size='small' color='redlight' label={taskStatistic.remindCnt} />
@@ -169,11 +170,13 @@ function TabBody(props) {
             <ColorTypo>{t('LABEL_CHAT_TASK_CHIA_SE_VI_TRI')}</ColorTypo>
             <BadgeItem badge size='small' color='indigolight' label={taskStatistic.lctCnt} />
           </ListItemTab>
-          <ListItemTab disableRipple button onClick={onClickMember}>
-            <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
-            <AvatarCircleList users={members} display={9} />
-            {/* {MemberTask(taskStatistic)} */}
-          </ListItemTab>
+          {
+            detailTask.person_chat_type == 2 &&
+            <ListItemTab disableRipple button onClick={onClickMember}>
+              <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
+              <AvatarCircleList users={members} display={9} />
+            </ListItemTab>
+          }
         </StyledList>
       </Body >
     </div>
