@@ -8,6 +8,7 @@ import { workTypes } from 'constants/workTypes';
 import { useTranslation } from 'react-i18next';
 import { get } from 'lodash';
 import "./styles.scss";
+import {resolvedWorkType} from "../../../../../helpers/project/commonHelpers";
 
 const ProjectItem = (props) => {
 
@@ -21,19 +22,22 @@ const ProjectItem = (props) => {
 
   function onClickProject() {
     history.push(`/projects/task-kanban/` + props.project.id);
-    // props.value.getDetailProject(props.project.id)
-    // props.value.chooseProject(props.project)
     dispatch(chooseTask(null));
     dispatch(actionVisibleDrawerMessage({ type: "", anchor: 'left' }));
   }
 
   return (
-    // redirect ? <Redirect to='/target' /> :
     <div
       className={clsx("projectItem", { projectItem__selected: isSelected })}
       onClick={onClickProject}
     >
       <span>{props.title}</span>
+      <div className={"projectItem--workingType"}>
+        <img
+          src={resolvedWorkType(get(props.project, 'work_type', 0))}
+          alt={""} width={25} height={25}
+        />
+      </div>
       <span>{`[${t(workTypes[get(props.project, 'work_type', 0)])}]`}</span>
     </div>
   );

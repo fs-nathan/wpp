@@ -41,13 +41,6 @@ import "./table.css";
 
 let haveError = false
 let checkTimeOut = null
-const SearchBox = ({ className = "", ...rest }) => (
-  <div
-    className={`comp_CustomTable_HeaderButtonGroup___search-box ${className}`}
-    {...rest}
-  />
-);
-
 Array.prototype.insertArray = function (index, items) { this.splice.apply(this, [index, 0].concat(items)); }
 const MAX_DAY_DEFAULT = 80;
 
@@ -63,8 +56,6 @@ const RenderHeader = (props) => (
     <Header {...props} />
   </div>
 )
-
-
 
 const RenderDrawers = React.memo(
   (props) => (
@@ -670,6 +661,7 @@ class DragSortingTable extends React.Component {
           },
         },
       ],
+      projectFilter: -1
     };
     this.tableRef = React.createRef();
   }
@@ -801,7 +793,6 @@ class DragSortingTable extends React.Component {
         const { name, time, duration_plan } = task;
         data.push({
           name,
-          start_label: time && time.start_label,
           start_time: getFormatStartStringFromObject(time),
           end_time: getFormatEndStringFromObject(time),
           start_label: time && time.start_label,
@@ -1031,6 +1022,7 @@ class DragSortingTable extends React.Component {
         id: project.id,
         name: project.name,
         group_icon: project.group_icon,
+        work_type: project.state_group_task
       });
     } catch (e) {
       SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(e, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
@@ -1241,7 +1233,6 @@ class DragSortingTable extends React.Component {
       return { columns: nextColumns };
     });
   };
-
   moveRow = (dragIndex, hoverIndex) => {
     const { data } = this.state;
     if (dragIndex === hoverIndex) return
@@ -1490,7 +1481,11 @@ class DragSortingTable extends React.Component {
       canScroll: false,
     });
   };
-
+  handleProjectFiler = (type) => {
+    this.setState({
+      projectFilter: type
+    })
+  }
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -1516,7 +1511,6 @@ class DragSortingTable extends React.Component {
     }
     if (this.state.isLoading) return <LoadingBox />;
     return (
-
       <React.Fragment>
 
         {
@@ -1593,6 +1587,8 @@ class DragSortingTable extends React.Component {
                     <ListProject
                       show={this.state.showProject}
                       setShow={this.handleShowProject}
+                      setProjectFilter={this.handleProjectFiler}
+                      projectFilter={this.state.projectFilter}
                     />
                   </div>
                 </div>
@@ -1635,7 +1631,7 @@ class DragSortingTable extends React.Component {
                     })}
                   />
                 </DndProvider>
-                <div style={{ width: widthPdf }} id="content-last"></div>
+                <div style={{ width: widthPdf }} id="content-last"/>
               </div>
             </div>
             <RenderDragTable
@@ -1660,25 +1656,6 @@ class DragSortingTable extends React.Component {
               timeNotWork={this.state.timeNotWork}
               fetchTimeNotWork={this.fetchTimeNotWork}
             />
-            {/* <div
-            id="asdasdasd"
-            style={{
-              position: "absolute",
-              left: "calc(100vw - 200px)",
-              zIndex: 1000,
-            }}  
-          >
-            <div
-              style={{
-                position: "relative",
-                overflow: "scroll",
-                height: this.state.height - 49,
-                width: 200,
-              }}
-            >
-              <div style={{ height: this.state.data.length * 32 }}></div>
-            </div>
-          </div> */}
           </div>}
       </React.Fragment>
     );

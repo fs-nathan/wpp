@@ -80,3 +80,32 @@
     }
   }
 }
+.optionModal-container {
+  .MuiDialog-paperWidthSm {
+    min-width: 300px;
+  }
+  .btnSendMessage {
+    text-transform: initial;
+    width: 150px;
+  }
+  .btnLeaveWork {
+    background: #FD7614;
+    color: #fff;
+    margin-top: 20px;
+  }
+  .memberInformation {
+    margin: 15px auto;
+    display: flex;
+    flex-direction: column;
+    width: 180px;
+    &-item {
+      display: flex;
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+    &-itemLabel {
+      width: 50%;
+      font-weight: 500;
+    }
+  }
+}

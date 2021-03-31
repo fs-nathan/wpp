@@ -13,6 +13,7 @@ import styled from 'styled-components';
 import ProjectMember from './ProjectMember';
 import './styles.scss';
 import TableMember from './TableMember';
+import Link from "@material-ui/core/Link";
 
 const GridArea = styled(Typography)`
     display: grid;
@@ -77,16 +78,16 @@ function AddMemberModal({ setOpen, isOpen }) {
               <div style={{ margin: '10px 10px 0 10px' }}>
                 <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_THANH_VIEN')} />
               </div>
-              {/* <ButtonAddAll
-                onClick={handleAddAll}
-              >
-                {t('+ Thêm tất cả')}
-              </ButtonAddAll> */}
               <div className="AddMemberModal--alert">
                 <div>
-                  <Icon path={mdiAlertCircleOutline} size={'15px'}></Icon>
+                  <Icon path={mdiAlertCircleOutline} size={'15px'}/>
                 </div>
-                <div className="AddMemberModal--alertText">{t('LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN')}</div>
+                <div className="AddMemberModal--alertText">
+                  {t('LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN')}
+                  <Typography component={"span"} style={{marginLeft: 10}}>
+                    <Link href="#">{t("VIEW_OFFER_LABEL_LEARN_MORE")}</Link>
+                  </Typography>
+                </div>
               </div>
               <div className="table-scroll-add-member">
                 <Scrollbars>

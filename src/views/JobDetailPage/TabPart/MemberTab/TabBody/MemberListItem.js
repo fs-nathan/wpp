@@ -1,16 +1,18 @@
-import { Avatar, IconButton, ListItem, Menu, MenuItem } from '@material-ui/core';
-import { mdiDotsVertical } from '@mdi/js';
+import {Avatar, IconButton, ListItem} from '@material-ui/core';
+import {mdiDotsVertical} from '@mdi/js';
 import Icon from '@mdi/react';
-import { openDetailMember } from 'actions/chat/chat';
-import { deleteMember } from 'actions/taskDetail/taskDetailActions';
-import { detailUser } from 'actions/user/detailUser';
+import {openDetailMember} from 'actions/chat/chat';
+import {deleteMember} from 'actions/taskDetail/taskDetailActions';
+import {detailUser} from 'actions/user/detailUser';
 import compact from 'lodash/compact';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import './styles.scss';
-import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import {currentColorSelector} from 'views/JobDetailPage/selectors';
+import * as images from '../../../../../assets/index';
+import OptionModal from "../OptionModal";
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -32,40 +34,37 @@ const StyledListItem = styled(ListItem)`
 const MemberListItem = ({
   id, name, avatar,
   room, position, group_permission,
-  handleClickPermission,
-  can_ban,
-  is_admin,
-  is_in_group,
+  handleClickPermission, handleClickOptionModal,
+  can_ban, is_admin, is_in_group,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const groupActiveColor = useSelector(currentColorSelector)
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (evt) => {
-    setAnchorEl(evt.currentTarget);
+    evt.preventDefault();
+    evt.stopPropagation();
+    handleClickOptionModal();
   }
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  }
-
-  const handleDeleteMembers = () => {
+  /*const handleDeleteMembers = () => {
     dispatch(openDetailMember(false))
     dispatch(deleteMember({ task_id: taskId, member_id: id }))
     setAnchorEl(null);
-  };
+  };*/
 
-  const handleClickDetail = () => {
+  const handleClickDetail = (evt) => {
+    evt.stopPropagation();
     setAnchorEl(null);
     dispatch(detailUser({ userId: id }))
   };
 
-  const onClickPermission = () => {
+  /*const onClickPermission = (evt) => {
+    evt.stopPropagation();
     setAnchorEl(null);
     handleClickPermission()
-  };
+  };*/
 
   return (
     <React.Fragment>
@@ -74,6 +73,11 @@ const MemberListItem = ({
         <div className="memberItem--textWrap" onClick={handleClickDetail}>
           <div className="memberItem--name">
             {name}
+            {is_admin &&
+              <div className="memberItem--admin">
+                Admin
+              </div>
+            }
           </div>
           <div className="memberItem--department">
             {group_permission && group_permission.name}
@@ -82,38 +86,22 @@ const MemberListItem = ({
             {compact([room, position]).join(' - ')}
           </div>
         </div>
-        {is_admin &&
-          <div className="memberItem--admin" style={{ backgroundColor: groupActiveColor }}>
-            Admin
-        </div>
-        }
+
         {!is_in_group &&
           <div className="memberItem--left">
             {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
           </div>
         }
+        <div className={"memberItem--menuButton buttonChat"}>
+          <img src={images.messeger} width={20} height={20}/>
+        </div>
         <ButtonIcon
           className="memberItem--menuButton"
           size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">
           <Icon path={mdiDotsVertical} size={1} />
         </ButtonIcon>
       </StyledListItem>
-      <Menu
-        id="simple-menu"
-        anchorEl={anchorEl}
-        keepMounted
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right',
-        }}
-      >
-        <MenuItem className="memberItem--menuItem" onClick={handleClickDetail}>{t('LABEL_CHAT_TASK_CHI_TIET')}</MenuItem>
-        {!is_admin && is_in_group && <MenuItem className="memberItem--menuItem" onClick={onClickPermission}>{t('LABEL_CHAT_TASK_PHAN_QUYEN')}</MenuItem>}
-        {can_ban && <MenuItem className="memberItem--menuItem" onClick={handleDeleteMembers}>{t('LABEL_CHAT_TASK_XOA')}</MenuItem>}
-      </Menu>
-    </React.Fragment >
+    </React.Fragment>
   );
 }
 

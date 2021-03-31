@@ -32,7 +32,6 @@ import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CreateProjectGroup from 'views/ProjectPage/Modals/CreateGroupTask';
 import {taskIdSelector} from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
-import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
@@ -77,8 +76,6 @@ function CreateJobModal(props) {
   ], [t]);
 
   const DEFAULT_ASSIGN = assignList[0];
-  const DEFAULT_ASSIGN_ID = assignList[0].id;
-
   // Define variable using in form
   const priorityList = useMemo(() => [
     { id: 2, value: t('LABEL_CHAT_TASK_THAP') },
@@ -522,19 +519,6 @@ function CreateJobModal(props) {
               priority={data.priorityLabel}
               handleChangeLabel={priorityItem =>
                 handleChangeData('priority', priorityItem.id)
-              }
-            />
-          </>
-        }
-        {
-          (!isEdit || props.editMode === EDIT_MODE.ASSIGN_TYPE) &&
-          <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_HINH_THUC_GIAO_VIEC')} isRequired />
-            <CommonControlForm
-              labels={assignList}
-              assign={data.type_assign}
-              handleChangeAssign={assignItem =>
-                handleChangeData('type_assign', assignItem)
               }
             />
           </>

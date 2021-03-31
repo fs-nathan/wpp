@@ -14,11 +14,12 @@ import { localOptionSelector } from '../../selectors';
 import ProjectSettingPresenter from './presenters';
 import { permissionSelector, statusSelector } from './selectors';
 import './style.scss';
+import {updatePinBoardSetting} from "../../../../actions/project/setting/updatePinBoardSetting";
 
 function ProjectSetting({
   curProject = null, permission,
   open, setOpen,
-  status,
+  status, doUpdatePinBoardSetting,
   doDetailStatus,
   doUpdateStatusCopy, doUpdateStatusDate, doUpdateStatusView,
   doGetPermissionViewDetailProject,
@@ -78,6 +79,7 @@ function ProjectSetting({
       handleUpdateStatusDate={status => doUpdateStatusDate({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusView={status => doUpdateStatusView({ projectId: get(curProject, 'id'), status })}
       handleUpdateNotificationSetting={status => doUpdateNotificationSetting({ projectId: get(curProject, 'id'), status })}
+      handleOnChangePinBoard={status => doUpdatePinBoardSetting({projectId: get(curProject, 'id'), status})}
     />
   )
 }
@@ -102,6 +104,7 @@ const mapDispatchToProps = dispatch => {
     doUpdateStatusView: ({ projectId, status }) => dispatch(updateStatusView({ projectId, status, })),
     doUpdateNotificationSetting: ({ projectId, status }) => dispatch(updateNotificationSetting({ projectId, status, })),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
+    doUpdatePinBoardSetting: ({projectId, status}) => dispatch(updatePinBoardSetting({projectId, status}))
   }
 };
 

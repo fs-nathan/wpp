@@ -445,7 +445,11 @@ import viewPermissions, {
 } from "./viewPermissions";
 import remindDetail, {initialState as getRemindDetailInitialState } from "./calendar/alarmCalendar/getRemindDetail";
 import getProjectStatistic, {initialState as getProjectStatisticInitialState} from "./project/getStatistic";
+import recentlyProjects, {initialState as recentlyProjectsInitialState} from "./project/recentlyProjects";
+import getStatusWorkGroup, {initialState as getStatusWorkGroupInitialState} from "./project/getStatusWork";
+import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInitialState} from "./project/projectOnPersonalBoard";
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
+import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 
 const rootReducer = combineReducers({
   authentications,
@@ -557,6 +561,9 @@ const rootReducer = combineReducers({
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
+    recentlyProjects,
+    getStatusWorkGroup,
+    getProjectOnPersonalBoard,
     getWorkType,
     setting: combineReducers({
       detailStatus,
@@ -564,6 +571,7 @@ const rootReducer = combineReducers({
       updateStatusCopy,
       updateStatusView,
       updateNotificationSetting,
+      updatePinBoardSetting
     }),
   }),
   groupTask: combineReducers({
@@ -769,6 +777,9 @@ export const DEFAULT_STATE = {
     restoreTrashProject: restoreTrashProjectInitialState,
     listProjectBasicInfo: listProjectBasicInfoInitialState,
     getProjectStatistic: getProjectStatisticInitialState,
+    recentlyProjects: recentlyProjectsInitialState,
+    getStatusWorkGroup: getStatusWorkGroupInitialState,
+    getProjectOnPersonalBoard: getProjectOnPersonalBoardInitialState,
     getWorkType: getWorkTypeInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
@@ -776,6 +787,7 @@ export const DEFAULT_STATE = {
       updateStatusCopy: updateStatusCopyInitialState,
       updateStatusView: updateStatusViewInitialState,
       updateNotificationSetting: updateNotificationSettingInitialState,
+      updatePinBoardSetting: updatePinBoardSettingInitialState
     },
   },
   groupTask: {

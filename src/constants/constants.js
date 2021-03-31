@@ -16,7 +16,8 @@ export const DRAWER_TYPE = {
     PROJECTS: "KANBAN_PROJECTS",
     MEMBERS: "KANBAN_MEMBERS",
     FILTER: "KANBAN_FILTER",
-  }
+  },
+  QUICK_ACCESS: "QUICK_ACCESS"
 };
 export const SETTING_ACCOUNT = {
   INFO: "info",

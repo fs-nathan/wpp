@@ -211,7 +211,7 @@ function CalendarAlarmLeftPartPresenter({
                             </div>
                           )
                         }
-
+                        else return <></>
                       })}
                       {provided.placeholder}
                     </div>

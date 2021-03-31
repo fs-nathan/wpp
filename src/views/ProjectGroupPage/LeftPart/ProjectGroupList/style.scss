@@ -26,3 +26,169 @@
     }
   }
 }
+
+.view_ProjectGroup_List {
+  &--LeftContainer {
+    .active {
+      background: #fafafa;
+    }
+  }
+  @mixin commonItemStyle {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    position: relative;
+    &:hover {
+      background: #fafafa;
+    }
+    span {
+      margin-left: 10px;
+      font-weight: 500;
+      flex-grow: 1;
+    }
+    .MuiIconButton-label {
+      margin-left: 0;
+    }
+    .rightIconControlList {
+      display: none;
+      position: absolute;
+      right: 15px;
+    }
+    &:hover {
+      .rightIconControlList {
+        display: block;
+      }
+    }
+  }
+  &--startButton {
+    @include commonItemStyle;
+  }
+  &--listGroup {
+    &-header {
+      @include commonItemStyle;
+
+    }
+    .textHeader {
+      cursor: unset !important;
+      &:hover { background: unset; }
+    }
+    .scrollList {
+      height: calc(100vh - 345px);
+    }
+  }
+  &-customListItem {
+    cursor: pointer;
+    padding-left: 42px;
+    .rightIconControlList {
+      display: none;
+    }
+    &-dragIcon {
+      position: absolute;
+      left: 20px;
+      display: none;
+    }
+    &:hover {
+      background: #fafafa;
+      .rightIconControlList {
+        display: block;
+      }
+      .view_ProjectGroup_List-customListItem-dragIcon {
+        display: block;
+      }
+    }
+    .MuiListItemIcon-root {
+      min-width: 30px;
+    }
+  }
+}
+.startBtnSetting {
+  &-container {
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 190px;
+    .text-primary {
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .hideBtn {
+      width: 50px;
+      margin-top: 10px;
+      color: #969EAD;
+      background: #F5F6F8;
+      line-height: unset;
+      min-width: 40px;
+      &:hover {
+        color: var(--color-primary);
+      }
+      .MuiButton-label {
+        text-transform: initial;
+      }
+    }
+  }
+}
+.addWorkingGroupPopover {
+  &-container {
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    max-width: 300px;
+    .text-primary {
+      font-weight: 500;
+      margin-bottom: 10px;
+    }
+    .btnAddGroup {
+      background: #F5F6F8;
+      margin-top: 10px;
+      .MuiButton-label {
+        text-transform: initial;
+      }
+    }
+  }
+}
+.personalBoard {
+  &-container {
+    padding: 10px;
+    width: 280px;
+    &>div {
+      margin-bottom: 10px;
+    }
+    .MuiButtonBase-root {
+      background: #f1f0f0;
+      min-width: 50px;
+    }
+    .MuiButton-label {
+      text-transform: initial;
+      font-size: 11px;
+    }
+    .MuiButton-text {
+      padding: 0;
+    }
+  }
+  &-actionItemWrapper {
+    display: flex;
+    flex-direction: column;
+    .title {
+      font-weight: 500;
+    }
+    .actionItem {
+      display: flex;
+      flex-direction: row;
+      margin-top: 10px;
+      &>*:first-child {
+        margin-right: 10px;
+      }
+    }
+  }
+}
+.MuiPaper-elevation0 {
+  border: 1px solid #e5e4e4;
+}
+.MuiMenuItem-root {
+  font-weight: 500;
+}

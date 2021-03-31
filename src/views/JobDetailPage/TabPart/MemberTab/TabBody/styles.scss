@@ -1,30 +1,45 @@
 .memberTabBody {
   grid-area: body;
   height: 100%;
-  .MuiList-root {
-    margin-top: 15px;
-  }
   &--search {
     margin: auto 15px;
+  }
+  &--joinedUsers {
+    display: flex;
+    flex-direction: row;
+    border-bottom: 1px solid #E5E5E9;
+    padding: 10px 5px;
+    align-items: center;
+    &_label {
+      margin-left: 10px;
+    }
+    &_link {
+      margin-left: 15px;
+      font-weight: 500;
+    }
+  }
+  &--memberList {
+    &_header {
+      font-weight: 500;
+      padding: 10px 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      &:hover {
+        background: #F2F5FA;
+      }
+    }
   }
 }
 
 .memberItem {
   position: relative;
-  // margin: 0 0 0 -16px;
   padding: 10px 25px 10px 16px;
   cursor: pointer;
   width: calc(100% + 30px);
   &:hover {
     background-color: #f2f5fa;
-  }
-  &--admin {
-    color: #ffffff;
-    padding: 6px 16px;
-    border-radius: 5px;
-    font-size: 14px;
-    position: absolute;
-    right: 60px;
   }
   &--left {
     color: #ff0000;
@@ -32,7 +47,7 @@
     border-radius: 5px;
     font-size: 14px;
     position: absolute;
-    right: 60px;
+    right: 85px;
   }
   &--textWrap {
     width: 100%;
@@ -50,6 +65,16 @@
     font-size: 15px;
     margin-bottom: 5px;
     color: #585858;
+    display: flex;
+    align-items: center;
+  }
+  &--admin {
+    color: #ffffff;
+    padding: 3px 6px;
+    border-radius: 5px;
+    font-size: 10px;
+    background: #0ab711;
+    margin-left: 10px;
   }
   &--department {
     color: #666666;
@@ -59,7 +84,7 @@
   }
   &--menuButton {
     position: absolute;
-    top: 0;
+    top: 5px;
     right: 32px;
     display: none;
     margin-top: 15px;
@@ -67,6 +92,10 @@
     svg {
       fill: #777777;
     }
+  }
+  .buttonChat {
+    right: 60px;
+    top: 7px;
   }
   &:hover &--menuButton {
     display: block;

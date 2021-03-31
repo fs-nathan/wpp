@@ -31,16 +31,15 @@ function MemberSetting({
 
   const { projectId: _projectId } = useParams();
   const [projectId, setProjectId] = React.useState(_projectId);
-
   React.useEffect(() => {
     setProjectId(isNil(project_id) ? _projectId : project_id);
   }, [project_id, _projectId]);
 
   React.useEffect(() => {
-    if (projectId !== null) {
+    if (!isNil(projectId)) {
       doMemberProject({ projectId });
     }
-  }, [projectId, viewPermissions]);
+  }, [projectId, doMemberProject, viewPermissions]);
 
   React.useEffect(() => {
     doListUserRole();
