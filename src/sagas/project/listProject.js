@@ -6,7 +6,7 @@ import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, LIST_PROJECT } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 
-async function doListProject({ groupProject, type, status, timeStart, timeEnd }) {
+async function doListProject({ groupProject, type, status, timeStart, timeEnd, type_data }) {
   try {
     const config = {
       url: '/project/list',
@@ -17,6 +17,7 @@ async function doListProject({ groupProject, type, status, timeStart, timeEnd })
         status,
         time_start: timeStart,
         time_end: timeEnd,
+        type_data
       },
     }
     const result = await apiService(config);

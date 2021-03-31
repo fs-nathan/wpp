@@ -23,12 +23,13 @@ async function doDetailStatus({ projectId }) {
 
 function* detailStatus(action) {
   try {
-    const { can_copy, date_status, task_view, status_noti } = yield call(doDetailStatus, action.options);
+    const { can_copy, date_status, task_view, status_noti, is_pin_on_personal_board } = yield call(doDetailStatus, action.options);
     const status = {
       copy: can_copy,
       date: date_status,
       view: task_view,
-      notification: status_noti
+      notification: status_noti,
+      is_pin_on_personal_board
     }
     yield put(detailStatusSuccess({ status }, action.options));
     CustomEventEmitter(DETAIL_STATUS.SUCCESS);

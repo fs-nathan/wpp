@@ -10,6 +10,7 @@ import CustomModal from "../../components/CustomModalGantt";
 import { apiService } from "../../constants/axiosInstance";
 import CalendarProjectPage from "../../views/CalendarProjectPageClone";
 import "./calendarModal.css";
+import ProjectSettingModal from "../ProjectGroupPage/Modals/ProjectSetting";
 
 const MenuMoreGantt = ({
   changeVisibleExportPdfDrawer,
@@ -17,18 +18,21 @@ const MenuMoreGantt = ({
   projectSchedules,
   changeVisibleMenu,
   changeFlagFetchProjectSchedules,
-  calendarPermisstions
+  calendarPermisstions,
+  projectInfo
 }) => {
   const [openConfigCalendar, setOpenConfigCalendar] = useState(false);
   const [openModal, setopenModal] = useState(false);
   const [listSchedule, setListSchedule] = useState([]);
   const [listProjectSchedule, setListProjectSchedule] = useState([]);
+  const [openSetting, setOpenSetting] = useState(false);
+
   const { t } = useTranslation()
   const clickConfigCalendar = () => {
     setOpenConfigCalendar(true);
     changeVisibleMenu(false);
   };
-  const params = useParams()
+  const params = useParams();
 
   const fetchListSchedule = async () => {
     try {
@@ -107,6 +111,11 @@ const MenuMoreGantt = ({
           scheduleDetailGantt={scheduleDetailGantt}
         />
       </CustomModal>
+      <ProjectSettingModal
+        open={openSetting}
+        setOpen={setOpenSetting}
+        curProject={projectInfo}
+      />
       <Paper>
         <MenuList open={true}>
           <MenuItem onClick={clickConfigCalendar}>{t('LABEL_GANTT_NAME_CALENDAR_MENU')}</MenuItem>
@@ -118,6 +127,7 @@ const MenuMoreGantt = ({
           >
             {t('LABEL_GANTT_NAME_EXPORT_MENU')}
           </MenuItem>
+          <MenuItem onClick={() => setOpenSetting(true)}>{t("IDS_WP_SETTING")}</MenuItem>
         </MenuList>
       </Paper>
     </React.Fragment>

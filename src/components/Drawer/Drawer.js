@@ -15,6 +15,7 @@ import DrawerNewGroup from "./DrawerContentComponent/DrawerNewGroup";
 import DrawerNotification from "./DrawerContentComponent/DrawerNotification";
 import DrawerSetting from "./DrawerContentComponent/DrawerSetting";
 import DrawerSupport from "./DrawerContentComponent/DrawerSupport";
+import DrawerQuickAccess from "./DrawerContentComponent/DrawerQuickAccess.";
 
 const generateContent = (typeDrawer, optionsDrawer) => {
   switch (typeDrawer) {
@@ -42,6 +43,8 @@ const generateContent = (typeDrawer, optionsDrawer) => {
       return <KanbanFilterSlider 
         {...optionsDrawer}
       />;
+    case DRAWER_TYPE.QUICK_ACCESS:
+      return <DrawerQuickAccess {...optionsDrawer}/>
     default:
       return "";
   }
@@ -55,7 +58,7 @@ const DrawerComponent = props => {
       onClose={() =>
         actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer })
       }
-      className={`Drawer-Compenent ${
+      className={`${typeDrawer === DRAWER_TYPE.QUICK_ACCESS ? "Drawer-Base" : "Drawer-Compenent"} ${
         anchorDrawer === "left"
           ? "anchor-drawer-left"
           : anchorDrawer === "right"

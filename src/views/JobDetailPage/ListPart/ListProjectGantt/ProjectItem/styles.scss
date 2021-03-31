@@ -1,13 +1,32 @@
 .projectItem {
-  margin: 0px;
-  font-weight: 500;
-  font-size: 14px;
-  // border-bottom: 1px solid #0000001a;
+  margin: 0;
   padding: 15px 15px 15px 43px;
   cursor: pointer;
-  line-height: 1.5;
-  & > *:first-child {
-    border-top: 1px solid #0000001a;
+  display: flex;
+  align-items: center;
+  position: relative;
+  & > * {
+    &:first-child {
+      border-top: none !important;
+      display: block;
+      font-weight: 500;
+      font-size: 14px;
+      max-width: 65%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      height: 16px;
+      line-height: 16px;
+      margin-left: 5px;
+    }
+    &:last-child {
+      display: block;
+      margin-left: auto;
+      height: 16px;
+      line-height: 16px;
+      color: #c1c1c1;
+      font-weight: normal;
+    }
   }
   &:hover {
     background-color: #f2f5fa;
@@ -16,5 +35,10 @@
     background-color: #f2f5fa;
     font-weight: bold;
     color: #545454;
+  }
+  &--workingType {
+    position: absolute;
+    left: 10px;
+    bottom: 8px;
   }
 }

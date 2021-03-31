@@ -62,6 +62,7 @@ import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateS
 import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
 import { UPDATE_STATUS_VIEW } from "../constants/actions/project/setting/updateStatusView";
 import { UPDATE_NOTIFICATION_SETTING } from "../constants/actions/project/setting/updateNotificationSetting";
+import { UPDATE_PIN_BOARD_SETTING } from "../constants/actions/project/setting/updatePinBoardSetting";
 import { SHOW_PROJECT } from "../constants/actions/project/showProject";
 import { SORT_PROJECT } from "../constants/actions/project/sortProject";
 import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
@@ -283,6 +284,13 @@ import {listTaskMember} from "./task/listTaskMember";
 import {getRemindDetail} from "./calendar/alarmCalendar/getRemindDetail";
 import {getProjectStatistic} from "./project/getStatistic";
 import {getWorkType} from "./project/getWorkType";
+import {updatePinBoardSetting} from "./project/setting/updatePinBoardSetting";
+import {recentlyProjects} from "./project/recentlyProjects";
+import {getStatusWorkGroup} from "./project/getStatusWork";
+import {GET_PROJECTS_RECENTLY} from "../constants/actions/project/recentlyProjects";
+import {GET_PROJECT_STATUS_WORK} from "../constants/actions/project/getStatusWork";
+import {GET_PROJECT_PERSONAL_BOARD} from "../constants/actions/project/projectOnPersonalBoard";
+import {getProjectOnBoard} from "./project/projectOnBoard";
 
 function* rootSaga() {
   // Hoang - begin
@@ -350,7 +358,7 @@ function* rootSaga() {
   yield takeEvery(SORT_PROJECT, sortProject);
   yield takeEvery(UPDATE_PROJECT, updateProject);
   yield takeEvery(DELETE_PROJECT, deleteProject);
-  yield takeLeading(LIST_PROJECT, listProject);
+  yield takeLatest(LIST_PROJECT, listProject);
   yield takeLeading(LIST_PROJECT_BASIC_INFO, listProjectBasicInfo);
   yield takeLeading(LIST_DELETED_PROJECT, listDeletedProject);
   yield takeLeading(DETAIL_PROJECT, detailProject);
@@ -368,11 +376,12 @@ function* rootSaga() {
   yield takeEvery(UPDATE_GROUP_PERMISSION_MEMBER, updateGroupPermissionMember);
   yield takeEvery(REMOVE_GROUP_PERMISSION_MEMBER, removeGroupPermissionMember);
   yield takeEvery(ASSIGN_MEMBER_TO_ALL_TASK, assignMemberToAllTask);
-  yield takeLeading(DETAIL_STATUS, detailStatus);
+  yield takeLatest(DETAIL_STATUS, detailStatus);
   yield takeEvery(UPDATE_STATUS_COPY, updateStatusCopy);
   yield takeEvery(UPDATE_STATUS_DATE, updateStatusDate);
   yield takeEvery(UPDATE_STATUS_VIEW, updateStatusView);
   yield takeEvery(UPDATE_NOTIFICATION_SETTING, updateNotificationSetting);
+  yield takeLatest(UPDATE_PIN_BOARD_SETTING, updatePinBoardSetting);
   yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
@@ -820,6 +829,9 @@ function* rootSaga() {
   yield takeLatest(SORT_GROUP_OFFER, doSortGroupOffer);
   yield takeLatest(OFFER_GET_MEMBER_TO_ADD, doGetMemberToAdd);
   yield takeLatest(GET_PROJECT_STATISTIC, getProjectStatistic);
+  yield takeLatest(GET_PROJECTS_RECENTLY, recentlyProjects);
+  yield takeLatest(GET_PROJECT_STATUS_WORK, getStatusWorkGroup);
+  yield takeLatest(GET_PROJECT_PERSONAL_BOARD, getProjectOnBoard);
   yield takeLatest(GET_WORK_TYPE, getWorkType);
   //
 

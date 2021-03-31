@@ -1,22 +1,21 @@
-import { List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import {List, ListItem, ListItemText, Typography} from '@material-ui/core';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { updatePriority, getMember, focusTaskGroup } from '../../../../../actions/taskDetail/taskDetailActions';
+import {focusTaskGroup, getMember, updatePriority} from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import colorPal from '../../../../../helpers/colorPalette';
-import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper';
-import { taskIdSelector } from '../../../selectors';
+import {taskIdSelector} from '../../../selectors';
 import Description from './Description';
 import HtmlTooltip from './HtmlTooltip';
 import ModalPriority from './ModalPriority';
 import ModalStatus from './ModalStatus';
-import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS } from './StatusLabel';
+import StatusLabel, {TYPE_PRIORITY, TYPE_STATUS} from './StatusLabel';
 import './styles.scss';
 
 const ListItemButtonGroup = styled(ListItem)`
@@ -45,7 +44,7 @@ const ListItemTab = styled(ListItem)`
 `;
 
 const StyledList = styled(List)`
-margin-bottom: 6px;
+  margin-bottom: 0px;
   & > * {
     & > div {
       margin: 0;
@@ -104,15 +103,14 @@ function TabBody(props) {
     imgCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
     linkCnt: t('LABEL_CHAT_TASK_DANG_TAI')
   }
-  // console.log("Props::::", value.detailTask)
+
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
   let content = ""
   let data = ""
-  // let dataComplete = ""
+
   if (detailTask) {
     content = detailTask.description || ""
     data = detailTask
-    // dataComplete = value.listTaskDetail.tasks
   }
   React.useEffect(() => {
     if (!detailTask) return
@@ -152,7 +150,6 @@ function TabBody(props) {
   }
 
   function onClickGroupTask() {
-    console.log('onClickGroupTask')
     dispatch(focusTaskGroup(detailTask.group_task))
   }
 
@@ -167,7 +164,6 @@ function TabBody(props) {
               <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
               <ContentText component='span'>
                 {detailTask && detailTask.name}
-                {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
               </ContentText>
             </ListItemText>
           </ListItem>
@@ -249,7 +245,6 @@ function TabBody(props) {
           <ListItemTab disableRipple button onClick={onClickMember}>
             <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
             <AvatarCircleList users={members} display={9} />
-            {/* {MemberTask(taskStatistic)} */}
           </ListItemTab>
         </StyledList>
       </Body >

@@ -2,6 +2,10 @@ import clsx from 'clsx';
 import React from 'react';
 import { useSelector } from "react-redux";
 import './styles.scss';
+import {resolvedWorkType} from "../../../../../helpers/project/commonHelpers";
+import {get} from "lodash";
+import {workTypes} from "../../../../../constants/workTypes";
+import {useTranslation} from "react-i18next";
 
 const ProjectItem = ({
   project,
@@ -14,13 +18,19 @@ const ProjectItem = ({
   function onClickItem() {
     onClickProject(project)
   }
-
+  const { t } = useTranslation();
   return (
-    // redirect ? <Redirect to='/target' /> :
     <div className={clsx("projectItem", { "projectItem__selected": isSelected })}
       onClick={onClickItem}
     >
-      {title}
+      <span>{title}</span>
+      <div className={"projectItem--workingType"}>
+        <img
+          src={resolvedWorkType(get(project, 'work_type', 0))}
+          alt={""} width={25} height={25}
+        />
+      </div>
+      <span>{`[${t(workTypes[get(project, 'work_type', 0)])}]`}</span>
     </div>
   );
 };

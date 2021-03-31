@@ -193,12 +193,13 @@ export const actionChangeTimeTask = ({
   return apiService(config);
 };
 
-export const changeProjectInfo = ({ id, name, group_icon }) => ({
+export const changeProjectInfo = ({ id, name, group_icon, work_type }) => ({
   type: CHANGE_PROJECT_INFO,
   payload: {
     id,
     name,
     group_icon,
+    work_type
   },
 });
 

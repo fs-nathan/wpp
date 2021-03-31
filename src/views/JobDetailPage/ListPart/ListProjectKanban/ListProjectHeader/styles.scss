@@ -54,11 +54,13 @@
   font-weight: normal;
   line-height: 1.5;
   &:hover {
-    background-color: rgba($color: #000000, $alpha: 0.1);
+    background: var(--color-primary);
+    color: white;
   }
 }
 
 .view_KanBan_ListProject_Header___text-active {
   color: #fff !important;
   font-weight: 500 !important;
+  background: var(--color-primary);
 }

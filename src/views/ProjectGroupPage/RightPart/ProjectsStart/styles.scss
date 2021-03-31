@@ -1,0 +1,95 @@
+.projectsStart {
+  &-header {
+    position: absolute;
+    right: 130px;
+    top: -48px;
+    z-index: -1;
+    img {
+      width: 650px;
+    }
+  }
+  &-container {
+    margin-top: 100px;
+    .MuiPaper-outlined {
+      border: none;
+    }
+  }
+  &-card{
+    width: 550px;
+    margin-left: 19%;
+    padding-top: 35px;
+    background: transparent;
+    &--topText {
+      margin-bottom: 25px;
+      & > * {
+        margin-bottom: 10px;
+      }
+    }
+    .MuiCardContent-root {
+      padding-left: 40px;
+      padding-right: 40px;
+    }
+    &--header {
+      position: relative;
+      height: 110px;
+      &>img {
+        max-width: 100%;
+        &:nth-child(2) {
+          position: absolute;
+          left: 35%;
+          width: 30%;
+          top: 36%;
+        }
+      }
+    }
+  }
+
+  &-secondaryAction {
+    display: none;
+    position: absolute;
+    right: 5px;
+  }
+  &--stepNumber {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #F3F4F6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 500;
+  }
+  &-listSteps {
+    .MuiListItem-gutters {
+      padding: 2px 7px;
+    }
+    .MuiListItem-root {
+      &:hover {
+        background: #eeeeee;
+        cursor: pointer;
+        .MuiSvgIcon-root {
+          background: #6AEA92;
+          color: white;
+        }
+        .projectsStart-secondaryAction {
+          display: block;
+        }
+        .projectsStart--stepNumber {
+          background: #afaeae;
+        }
+      }
+    }
+    .MuiListItemIcon-root {
+      min-width: unset;
+      margin-right: 10px;
+    }
+    .MuiSvgIcon-root {
+      background: #F3F4F6;
+      border-radius: 50%;
+      padding: 2px;
+    }
+    .MuiListItemText-multiline {
+      max-width: 85%;
+    }
+  }
+}

@@ -1,11 +1,11 @@
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup } from '@material-ui/core';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Checkbox} from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import { CustomEventDispose, CustomEventListener, DETAIL_STATUS, LIST_PROJECT, UPDATE_STATUS_COPY, UPDATE_STATUS_DATE, UPDATE_STATUS_VIEW } from 'constants/events.js';
 import { get } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './style.scss';
-import {UPDATE_NOTIFICATION_SETTING} from "constants/events";
+import {UPDATE_NOTIFICATION_SETTING, UPDATE_PIN_BOARD_SETTING} from "constants/events";
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -40,6 +40,7 @@ function ProjectSetting({
   handleUpdateStatusView,
   handleUpdateNotificationSetting,
   doReload, projectGroupId, timeRange,
+  handleOnChangePinBoard
 }) {
   const { t } = useTranslation();
   const [progress, setProgress] = React.useState(0);
@@ -50,6 +51,7 @@ function ProjectSetting({
   const [mask, setMask] = React.useState(-1);
   const [title, setTitle] = React.useState("");
   const [titleType, setTitleType] = React.useState("");
+  const [pinOnBoard, setPinOnBoard] = React.useState(false);
 
   React.useEffect(() => {
     setLoading((!(mask === 3 || mask === -1)));
@@ -60,8 +62,9 @@ function ProjectSetting({
     setCopy(get(status.status, 'copy', false) === true ? 1 : 0);
     setView(parseInt(get(status.status, 'view', 0)));
     setNotification(get(status.status, 'notification', true) === true ? 1 : 0);
+    setPinOnBoard(get(status.status, 'is_pin_on_personal_board', false));
   }, [status]);
-
+  console.log(status);
   React.useEffect(() => {
     const fail = () => {
       setMask(-1);
@@ -70,15 +73,18 @@ function ProjectSetting({
     CustomEventListener(UPDATE_STATUS_DATE.SUCCESS, doReload);
     CustomEventListener(UPDATE_STATUS_VIEW.SUCCESS, doReload);
     CustomEventListener(UPDATE_NOTIFICATION_SETTING.SUCCESS, doReload);
+    CustomEventListener(UPDATE_PIN_BOARD_SETTING.SUCCESS, doReload);
     CustomEventListener(UPDATE_STATUS_COPY.FAIL, fail);
     CustomEventListener(UPDATE_STATUS_DATE.FAIL, fail);
     CustomEventListener(UPDATE_STATUS_VIEW.FAIL, fail);
     CustomEventListener(UPDATE_NOTIFICATION_SETTING.FAIL, fail);
+    CustomEventListener(UPDATE_PIN_BOARD_SETTING.FAIL, fail);
     return () => {
       CustomEventDispose(UPDATE_STATUS_COPY.SUCCESS, doReload);
       CustomEventDispose(UPDATE_STATUS_DATE.SUCCESS, doReload);
       CustomEventDispose(UPDATE_STATUS_VIEW.SUCCESS, doReload);
       CustomEventDispose(UPDATE_NOTIFICATION_SETTING.SUCCESS, doReload);
+      CustomEventListener(UPDATE_PIN_BOARD_SETTING.SUCCESS, doReload);
       CustomEventDispose(UPDATE_STATUS_COPY.FAIL, fail);
       CustomEventDispose(UPDATE_STATUS_DATE.FAIL, fail);
       CustomEventDispose(UPDATE_STATUS_VIEW.FAIL, fail);
@@ -190,6 +196,18 @@ function ProjectSetting({
             <CustomFormControlLabel value={1} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_ON")} />
             <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_OFF")} />
           </RadioGroup>
+        </StyledFormControl>}
+        {get(canChange, 'update', false) && <StyledFormControl component='fieldset' fullWidth>
+          <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PANEL_PIN")}</TitleFormLabel>
+          <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PANEL_PIN_DESCRIPTION")}</StyledFormLabel>
+          <CustomFormControlLabel
+            value={pinOnBoard}
+            control={<Checkbox color={"primary"} onChange={() => {
+              handleOnChangePinBoard(pinOnBoard);
+              setMask(0);
+            }} checked={pinOnBoard}/>}
+            label={t("PROJECT_SETTING_MODAL_PANEL_PIN")}
+          />
         </StyledFormControl>}
       </CustomModal>
     </React.Fragment>

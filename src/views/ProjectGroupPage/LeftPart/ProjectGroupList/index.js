@@ -1,25 +1,23 @@
-import { listIcon } from 'actions/icon/listIcon';
-import { listProject } from 'actions/project/listProject';
-import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
-import { sortProjectGroup } from 'actions/projectGroup/sortProjectGroup';
-import { useTimes } from 'components/CustomPopover';
-import { CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP } from 'constants/events.js';
-import { filter, get } from 'lodash';
+import {listIcon} from 'actions/icon/listIcon';
+import {listProject} from 'actions/project/listProject';
+import {listProjectGroup} from 'actions/projectGroup/listProjectGroup';
+import {sortProjectGroup} from 'actions/projectGroup/sortProjectGroup';
+import {useTimes} from 'components/CustomPopover';
+import {CustomEventDispose, CustomEventListener, SORT_PROJECT_GROUP} from 'constants/events.js';
+import {filter, get} from 'lodash';
 import moment from 'moment';
 import React from 'react';
-import { connect } from 'react-redux';
-import {useParams} from 'react-router-dom';
+import {connect} from 'react-redux';
 import CreateProjectGroup from '../../Modals/CreateProjectGroup';
-import { localOptionSelector, routeSelector, viewPermissionsSelector } from '../../selectors';
+import {localOptionSelector, routeSelector, viewPermissionsSelector} from '../../selectors';
 import ProjectGroupListPresenter from './presenters';
-import { groupsSelector } from './selectors';
+import {groupsSelector} from './selectors';
 
 function ProjectList({
   groups, route, viewPermissions,
   doSortProjectGroup,
   doListProject,
   doListProjectGroup,
-  doListIcon,
   localOption,
 }) {
 
@@ -32,37 +30,6 @@ function ProjectList({
       timeEnd,
     });
   }, [timeType]);
-
-  const { projectGroupId } = useParams();
-  React.useEffect(() => {
-    if (projectGroupId !== null) {
-      doListProject({
-        groupProject: projectGroupId,
-        timeStart: get(timeRange, 'timeStart')
-          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-          : undefined,
-        timeEnd: get(timeRange, 'timeEnd')
-          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-          : undefined,
-      });
-      const reloadListProject = () => {
-        doListProject({
-          groupProject: projectGroupId,
-          timeStart: get(timeRange, 'timeStart')
-            ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-            : undefined,
-          timeEnd: get(timeRange, 'timeEnd')
-            ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-            : undefined,
-        });
-      };
-      CustomEventListener(SORT_PROJECT, reloadListProject);
-      return () => {
-        CustomEventDispose(SORT_PROJECT, reloadListProject);
-      }
-    }
-  }, [projectGroupId, timeRange]);
-
   React.useEffect(() => {
     doListProjectGroup({
       timeStart: get(timeRange, 'timeStart')
@@ -88,15 +55,11 @@ function ProjectList({
     }
   }, [timeRange]);
 
-  React.useEffect(() => {
-    doListIcon();
-  }, []);
-
-  const [searchPatern, setSearchPatern] = React.useState('');
+  const [searchPattern, setSearchPattern] = React.useState('');
 
   const newGroups = {
     ...groups,
-    groups: filter(groups.groups, projectGroup => get(projectGroup, 'name', '').toLowerCase().includes(searchPatern.toLowerCase())),
+    groups: filter(groups.groups, projectGroup => get(projectGroup, 'name', '').toLowerCase().includes(searchPattern.toLowerCase())),
   }
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -117,7 +80,7 @@ function ProjectList({
     <>
       <ProjectGroupListPresenter
         groups={newGroups} route={route} canModify={get(viewPermissions.permissions, 'manage_group_project', false)}
-        searchPatern={searchPatern} setSearchPatern={setSearchPatern}
+        searchPattern={searchPattern} setSearchPattern={setSearchPattern}
         handleSortProjectGroup={(projectGroupId, sortIndex) => doSortProjectGroup({ projectGroupId, sortIndex })}
         handleOpenModal={doOpenModal}
       />

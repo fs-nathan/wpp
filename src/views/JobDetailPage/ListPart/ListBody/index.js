@@ -1,4 +1,4 @@
-import { List } from '@material-ui/core';
+import { List, Select, MenuItem } from '@material-ui/core';
 import { filterNoGroupTaskByType, filterTaskByType, searchNoGroupTaskByName, searchTaskByTaskName } from 'helpers/jobDetail/arrayHelper';
 import React, { useEffect, useState, useRef } from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -13,7 +13,6 @@ import './styles.scss';
 import { clearFocusTaskGroup } from 'actions/taskDetail/taskDetailActions';
 
 const StyledList = styled(List)`
-
   & > li {
     &:not(:last-child) {
       margin-bottom: 10px;
@@ -26,6 +25,15 @@ const StyledList = styled(List)`
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
+`;
+
+const CustomSelect = styled(Select)`
+  &:before {
+    display: none;
+  }
+  .MuiSelect-selectMenu:focus {
+    background: none;
+  }
 `;
 
 function ListBody() {
@@ -80,6 +88,27 @@ function ListBody() {
             key={item.id}
             id={item.id}
           >
+            <div className={"listJobBody--taskControlTop"}>
+              <div className={"listJoBody--taskControlTop_left"}>
+                <CustomSelect
+                  value={0}
+                  MenuProps={{
+                    anchorOrigin: {
+                      vertical: "bottom",
+                      horizontal: "left"
+                    },
+                    getContentAnchorEl: null
+                  }}
+                >
+                  <MenuItem value={0}>{t("IDS_WP_JOB")}</MenuItem>
+                  <MenuItem value={1}>{t("LABEL_JOBS_AND_GROUP")}</MenuItem>
+                  <MenuItem value={2}>{t("LABEL_DISCUSS_UNREAD")}</MenuItem>
+                </CustomSelect>
+              </div>
+              <div className={"listJoBody--taskControlTop_right"}>
+                <span className={"mark-as-read"}>{t("LABEL_MARK_AS_READ")}</span>
+              </div>
+            </div>
             <ListBodySubHeader
               subPrimary={item.name}
               subSecondary={t('LABEL_CHAT_TASK_VIEC', { task: tasks.length })}

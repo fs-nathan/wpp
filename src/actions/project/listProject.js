@@ -5,14 +5,14 @@ import {
   LIST_PROJECT_RESET,
 } from '../../constants/actions/project/listProject';
 
-export const listProject = ({ groupProject, type, status, timeStart, timeEnd }, quite = false) => ({
+export const listProject = ({ groupProject, type, status, timeStart, timeEnd, type_data }, quite = false) => ({
   type: LIST_PROJECT,
   quite,
   options: {
     groupProject,
     type,
     status,
-    timeStart, timeEnd,
+    timeStart, timeEnd, type_data
   },
 });
 

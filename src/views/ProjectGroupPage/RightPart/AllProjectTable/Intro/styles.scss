@@ -1,0 +1,29 @@
+.introEmptyData {
+  &-container {
+    padding: 45px 0 0 85px;
+    position: relative;
+    margin-top: 50px;
+    height: 100vh;
+    display: flex;
+    font-size: 14px;
+    img {
+      height: 650px;
+      position: absolute;
+      right: 0;
+    }
+    .MuiButton-root {
+      background: var(--color-primary);
+      color: #fff;
+      min-width: 300px;
+      min-height: 55px;
+      margin-top: 20px;
+    }
+    .MuiTypography-h5 {
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+  }
+  &-left {
+    width: 350px;
+  }
+}

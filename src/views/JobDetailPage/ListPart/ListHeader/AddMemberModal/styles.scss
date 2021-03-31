@@ -115,33 +115,23 @@
 
 // AddMemberModal - ListHeader
 .table-scroll {
-  // overflow-y: scroll;
   height: calc(100% - 91px);
-  // scrollbar-width: thin;
-  // scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
-  // &::-webkit-scrollbar {
-  //   width: 5px;
-  //   border-radius: 5px;
-  // }
-  // &::-webkit-scrollbar-thumb {
-  //   background-color: #fff;
-  //   border: none;
-  // }
-  // &:hover {
-  //   &::-webkit-scrollbar-thumb {
-  //     background-color: rgba(0, 0, 0, 0.2);
-  //     border-radius: 10px;
-  //   }
-  // }
   .MuiTableCell-root {
     border-bottom: 1px solid #f0f0f0;
   }
 }
 
-.TableMember--cellAvatar {
-  border-bottom: 1px solid #f0f0f0;
-  .MuiAvatar-root {
-    margin-left: 10px;
+.TableMember {
+  &--cellAvatar {
+    border-bottom: 1px solid #f0f0f0;
+    .MuiAvatar-root {
+      margin-left: 10px;
+    }
+  }
+  &--selectBox {
+    .MuiInputBase-input {
+      padding: 8px 32px 8px 8px;
+    }
   }
 }
 

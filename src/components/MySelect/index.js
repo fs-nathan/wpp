@@ -18,13 +18,14 @@ const Select = ({ className = '', ...props }) =>
   />
 
 function MySelect({
-  label, options, value, onChange, isRequired = false
+  label, options, value, onChange, isRequired = false,
+  selectProps
 }) {
   const { t } = useTranslation();
   return (
     <>
       <Title component={'div'}>{label} {isRequired ? <abbr title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr> : null}</Title>
-      <Select>
+      <Select {...selectProps}>
         <CustomSelect
           options={options}
           value={value}

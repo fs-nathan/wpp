@@ -35,20 +35,18 @@ function CreateProjectGroup({
         doReloadDetail={() => doReloadDetail({ projectGroupId: get(updatedProjectGroup, 'id') })}
         doReloadList={() => doReloadList()}
         open={open} setOpen={setOpen}
-        handleCreateOrEditProjectGroup={(name, description, icon, workingTypes) =>
+        handleCreateOrEditProjectGroup={(name, description, icon) =>
           updatedProjectGroup
             ? doEditProjectGroup({
               projectGroupId: get(updatedProjectGroup, 'id'),
               name,
               description,
-              icon: icon.url_sort,
-              work_types: map(workingTypes.filter((item) => item.checked === true), (item) => item.value)
+              icon: icon.url_sort
             })
             : doCreateProjectGroup({
               name,
               description,
-              icon: icon.url_sort,
-              work_types: map(workingTypes.filter((item) => item.checked === true), (item) => item.value)
+              icon: icon.url_sort
             })
         }
         handleOpenModal={doOpenModal}

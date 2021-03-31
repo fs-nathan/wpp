@@ -91,7 +91,6 @@ const routes = [
   { path: Routes.PROJECT_GRANT, component: () => <GanttPage /> },
   { path: Routes.JOB_DETAIL, component: (props) => <JobDetailPage {...props} />, },
   { path: Routes.PROJECTS, component: () => <ProjectGroupPage /> },
-  //{ path: Routes.PROJECT, component: () => <ProjectPage /> },
   { path: Routes.MEMBERS, component: () => <MemberPage /> },
   { path: Routes.DEPARTMENTS, component: () => <DepartmentPage /> },
   { path: Routes.REPORT, component: () => <ReportPage /> },
