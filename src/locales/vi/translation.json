@@ -347,12 +347,12 @@
           "NEWPG": {
             "TITLE": "Tạo dự án",
             "CREATE": {
-              "TITLE": "Tạo mới dự án",
-              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình để bắt đầu làm việc"
+              "TITLE": "Tạo mới bảng công việc",
+              "DESC": "Tạo mới bảng công việc để bắt đầu làm việc"
             },
             "COPY": {
-              "TITLE": "Sao chép",
-              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình bằng cách sao chép từ thư viện"
+              "TITLE": "Sao chép từ bảng mẫu",
+              "DESC": "Tạo mới bảng công việc bằng cách sao chép từ thư viện bảng mẫu"
             }
           },
           "NOPG": {
@@ -2249,5 +2249,6 @@
   "EMPTY_PERSONAL_BOARD_MESSAGE_1": "Chúng tôi muốn giúp bạn sử dụng Workplus được dễ dàng và thuận tiện hơn!",
   "EMPTY_PERSONAL_BOARD_MESSAGE_2": "Bạn hãy lựa chọn những Bảng công việc thường xuyên phải truy cập để xử lý hoặc có mức độ ưu tiên cao và ghim chúng vào danh mục này.",
   "EMPTY_PERSONAL_BOARD_MESSAGE_3": "Lưu ý: Trước khi tạo bảng Cá nhân bạn phải có Bảng công việc được tạo và ghim chúng vào đây",
-  "LABEL_CREATE_PERSONAL_BOARD": "Tạo bảng cá nhân"
+  "LABEL_CREATE_PERSONAL_BOARD": "Tạo bảng cá nhân",
+  "LABEL_ALL_DELETED_WORKING_BOARD": "Tất cả bảng đã xóa"
 }

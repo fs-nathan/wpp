@@ -3,23 +3,34 @@ import * as images from "assets";
 import {Box, Typography, Button} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import "./styles.scss";
+import AddToPersonalBoardModal from "../../../Modals/AddPersonalBoard";
 
 function IntroWhenEmptyData({type_data = null}) {
   const {t} = useTranslation();
-
+  const [openModal, setOpenModal] = React.useState(false);
+  function handleOpen() {
+    switch (type_data) {
+      case 2:
+        setOpenModal(true);
+        break;
+    }
+  }
   return (
-    <Box className={"introEmptyData-container"}>
-      <Box className={"introEmptyData-left"}>
-        <Typography variant={"h5"}>{t("LABEL_PERSONAL_BOARD")}</Typography>
-        <p>{t("EMPTY_PERSONAL_BOARD_MESSAGE_1")}</p>
-        <p>{t("EMPTY_PERSONAL_BOARD_MESSAGE_2")}</p>
-        <p>{t("EMPTY_PERSONAL_BOARD_MESSAGE_3")}</p>
-        <Button variant={"contained"} color={"primary"} disableElevation>
-          {t("LABEL_CREATE_PERSONAL_BOARD")}
-        </Button>
+    <>
+      <Box className={"introEmptyData-container"}>
+        <Box className={"introEmptyData-left"}>
+          <Typography variant={"h5"}>{t("LABEL_PERSONAL_BOARD")}</Typography>
+          <p>{t("EMPTY_PERSONAL_BOARD_MESSAGE_1")}</p>
+          <p>{t("EMPTY_PERSONAL_BOARD_MESSAGE_2")}</p>
+          <p>{t("EMPTY_PERSONAL_BOARD_MESSAGE_3")}</p>
+          <Button variant={"contained"} color={"primary"} disableElevation onClick={() => handleOpen()}>
+            {t("LABEL_CREATE_PERSONAL_BOARD")}
+          </Button>
+        </Box>
+        <img src={images.bg002} alt={""}/>
       </Box>
-      <img src={images.bg002} alt={""}/>
-    </Box>
+      <AddToPersonalBoardModal setOpen={setOpenModal} open={openModal}/>
+    </>
   );
 }
 

@@ -117,8 +117,7 @@ function AllProjectTable({
     let _projects = [...projects.projects];
     _projects = filter(_projects, filters[filterType].option);
     setNewProjects({...projects, projects: _projects});
-    // eslint-disable-next-line
-  }, [filterType]);
+  }, [filterType, projects.projects]);
 
   React.useEffect(() => {
     let _projects = [...projects.projects];
@@ -243,6 +242,8 @@ function AllProjectTable({
         open={openSetting}
         setOpen={setOpenSetting}
         {...settingProps}
+        type_data={type_data}
+        projectGroupId={groupID}
       />
       <DeleteProjectModal
         open={openAlert}

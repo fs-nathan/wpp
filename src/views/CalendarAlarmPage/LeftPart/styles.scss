@@ -3,14 +3,12 @@
   flex-direction: column;
   border-radius: 2px;
   margin-top: 7px;
-
   .sub_menu_item {
     min-height: 40px;
     display: block;
-    background-color: #fff;
     cursor: pointer;
     padding: 5px 20px 5px 60px;
-
+    background: #F1F2F4;
     &_inner {
       display: inline-flex;
       justify-content: space-between;

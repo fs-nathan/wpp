@@ -2,16 +2,17 @@ import {
   LIST_PROJECT,
   LIST_PROJECT_FAIL,
   LIST_PROJECT_SUCCESS,
-  LIST_PROJECT_RESET,
+  LIST_PROJECT_SELECT,
+  LIST_PROJECT_SELECT_SUCCESS
 } from '../../constants/actions/project/listProject';
 
-export const listProject = ({ groupProject, type, status, timeStart, timeEnd, type_data }, quite = false) => ({
+export const listProject = ({ groupProject, type, status, timeStart, timeEnd, type_data, select }, quite = false) => ({
   type: LIST_PROJECT,
   quite,
   options: {
     groupProject,
     type,
-    status,
+    status, select,
     timeStart, timeEnd, type_data
   },
 });
@@ -31,6 +32,12 @@ export const listProjectFail = (error, options) => ({
   error,
 });
 
-export const listProjectReset = () => ({
-  type: LIST_PROJECT_RESET,
+export const listProjectForSelect = () => ({
+  type: LIST_PROJECT_SELECT,
+  options: {isForSelect: true}
+});
+
+export const listProjectForSelectSuccess = ({projects}) => ({
+  type: LIST_PROJECT_SELECT_SUCCESS,
+  projects
 });

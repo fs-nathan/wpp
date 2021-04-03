@@ -106,8 +106,8 @@ function AllProjectTable({
   return (
     <>
       <Container>
-        {size(projects.projects) === 0 && (
-          <IntroWhenEmptyData/>
+        {size(projects.projects) === 0 && !projects.loading && (
+          <IntroWhenEmptyData type_data={type_data}/>
         )}
         {size(projects.projects) > 0 && (
           <React.Fragment>

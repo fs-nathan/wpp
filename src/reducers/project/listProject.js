@@ -1,17 +1,19 @@
 import { findIndex, get } from 'lodash';
 import { HIDE_PROJECT_SUCCESS } from '../../constants/actions/project/hideProject';
-import { LIST_PROJECT, LIST_PROJECT_FAIL, LIST_PROJECT_RESET, LIST_PROJECT_SUCCESS } from '../../constants/actions/project/listProject';
+import { LIST_PROJECT, LIST_PROJECT_FAIL, LIST_PROJECT_RESET, LIST_PROJECT_SUCCESS, LIST_PROJECT_SELECT_SUCCESS } from '../../constants/actions/project/listProject';
 import { SHOW_PROJECT_SUCCESS } from '../../constants/actions/project/showProject';
 import { SORT_PROJECT, SORT_PROJECT_SUCCESS } from '../../constants/actions/project/sortProject';
 
 export const initialState = {
   data: {
     projects: [],
+    projectsForSelect: [],
     summary: null,
   },
   error: null,
   loading: false,
   firstTime: true,
+  isForSelect: false,
 };
 
 function reducer(state = initialState, action) {
@@ -26,6 +28,17 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: action.data,
+        error: null,
+        loading: false,
+        firstTime: false,
+      };
+    case LIST_PROJECT_SELECT_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          projectsForSelect: action.projects
+        },
         error: null,
         loading: false,
         firstTime: false,

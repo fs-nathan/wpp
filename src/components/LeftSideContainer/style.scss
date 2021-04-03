@@ -5,7 +5,8 @@
   grid-template-columns: 1fr;
   grid-template-areas: 
     "header"
-    "body";  
+    "body";
+  background: #F1F2F4;
 };
 
 .comp_LeftSideContainer___header {
@@ -18,8 +19,9 @@
   position: -webkit-sticky; /* Safari */
   position: sticky;
   top: 0px;
-  background-color: #fff;
+  //background-color: #fff;
   z-index: 100;
+  background: #F1F2F4;
 };
 
 .comp_LeftSideContainer___title {

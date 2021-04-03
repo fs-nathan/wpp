@@ -347,12 +347,12 @@
           "NEWPG": {
             "TITLE": "Create project",
             "CREATE": {
-              "TITLE": "Create project",
-              "DESC": "Create a new Work Topic, Project or Process to start working"
+              "TITLE": "Create a new job board",
+              "DESC": "Create a new job board to start working"
             },
             "COPY": {
-              "TITLE": "Copy",
-              "DESC": "Create a new Work Topic, Project or Process by copying it from the library"
+              "TITLE": "Copy from sample board",
+              "DESC": "Create a new job board by copying it from the sample board library"
             }
           },
           "NOPG": {
