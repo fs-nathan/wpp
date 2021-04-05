@@ -1,75 +1,108 @@
-import { DialogContent } from '@material-ui/core';
+import {
+  Avatar,
+  Box,
+  Chip,
+  DialogContent,
+  IconButton,
+  InputBase,
+  ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,
+  makeStyles,
+  Paper,
+  Radio
+} from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
-import { mdiAlertCircleOutline } from '@mdi/js';
-import Icon from '@mdi/react';
-import { createMember } from 'actions/taskDetail/taskDetailActions';
 import DialogWrap from 'components/DialogWrap';
-import SearchInput from 'components/SearchInput';
 import React from 'react';
-import Scrollbars from 'react-custom-scrollbars';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
-import ProjectMember from './ProjectMember';
 import './styles.scss';
-import TableMember from './TableMember';
 import Link from "@material-ui/core/Link";
+import SearchIcon from "@material-ui/icons/Search";
+import {size, map, filter, toLower} from "lodash";
+import List from "@material-ui/core/List";
 
-const GridArea = styled(Typography)`
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    // border: 1px solid #e0e0e0;
-`
-
-const BorderGrid = styled(Typography)`
-    border-right: 1px solid #e0e0e0;
-    // min-height: 660px;
-`
-const FlexMemberProject = styled(Typography)` 
-    display: flex;
-    justify-content: center;
-    align-items: center
-    height: 60px;
-    border-bottom: 1px solid #e0e0e0;
-`
-
-const FlexJobMember = styled(Typography)`
-    display: flex;
-    align-items: center
-    height: 60px;
-    border-bottom: 1px solid #e0e0e0;
-`
-
+const useStyles = makeStyles((theme) => ({
+  root: {
+    border: '2px solid rgba(0, 0, 0, 0.12)'
+  },
+  input: {
+    width: '91%'
+  },
+}));
 function AddMemberModal({ setOpen, isOpen }) {
-  const { t } = useTranslation()
-  const dispatch = useDispatch();
-  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const memberNotAssigned = useSelector(state => state.taskDetail.taskMember.memberNotAssigned);
-
+  const { t } = useTranslation();
+  const classes = useStyles();
+  const [searchPattern, setSearchPattern] = React.useState("");
+  const members = useSelector(state => state.taskDetail.taskMember.member);
+  const [filteredMembers, setFilteredMembers] = React.useState([]);
+  const [selected, setSelected] = React.useState([]);
   const handleClose = () => {
     setOpen(false);
   };
-
-  function handleAddAll() {
-    memberNotAssigned.forEach(member => {
-      dispatch(createMember({ task_id: taskId, member_id: member.id }))
-    })
-  }
-
+  React.useEffect(() => {
+    const _members = filter(members, function (member) {
+      return toLower(member.name).includes(toLower(searchPattern));
+    });
+    setFilteredMembers(_members);
+  }, [searchPattern, members]);
   return (
     <DialogWrap
-      title={t('LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC')}
+      title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
       successLabel={t('LABEL_CHAT_TASK_THOAT')}
       onClickSuccess={handleClose}
-      maxWidth="xl"
+      maxWidth="sm"
       isOneButton
       className="AddMemberModal"
       scroll="body"
     >
-      <DialogContent className="wrapper-member-modal">
-        <GridArea component={'div'} style={{ borderBottom: 'none' }} >
+      <DialogContent className="AddMemberModal-container">
+        <Paper component="form" elevation={0} variant={"outlined"} className={classes.root}>
+          <IconButton  aria-label="menu">
+            <SearchIcon />
+          </IconButton>
+          <InputBase
+              className={classes.input}
+              placeholder={t("LABEL_SEARCH_MEMBERS_TO_ADD")}
+              inputProps={{ 'aria-label': 'search personal board' }}
+              onChange={evt => setSearchPattern(evt.currentTarget.value)}
+          />
+        </Paper>
+        <Typography variant={"body2"} color={"textSecondary"} className={"text-hint"}>
+          {t("LABEL_SEARCH_MEMBERS_TO_ADD_DES")}
+        </Typography>
+        <Typography>
+          <Link href="#" onClick={() => null}>
+            + {t("DMH.VIEW.PP.LEFT.PM.ADD")}
+          </Link>
+        </Typography>
+        <Box className={"AddMemberModal-btnGroup"}>
+          <Chip label={`${t("IDS_WP_ALL")} (${size(members)})`} color={"primary"}/>
+          {size(selected) >0 && (<Chip label={`${t("GANTT_SELECTED")} (${size(members)})`}/>)}
+        </Box>
+        <Box className={"AddMemberModal-listMembers"}>
+          {map(filteredMembers, function (member) {
+            return (
+              <Box className={"AddMemberModal-listMembersItem"}>
+                  <Radio checked={false}/>
+                  <List component={"nav"} dense={true}>
+                    <ListItem>
+                      <ListItemAvatar>
+                        <Avatar className="memberItem--avatar" src={member.avatar} alt='avatar'/>
+                      </ListItemAvatar>
+                      <ListItemText primary={member.name} secondary={member.email}/>
+                      <ListItemSecondaryAction>
+
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  </List>
+              </Box>
+            );
+          })}
+
+        </Box>
+        {/*<GridArea component={'div'} style={{ borderBottom: 'none' }} >
           <BorderGrid component={'div'}>
             <FlexMemberProject component={'span'}>
               <Typography component={'div'} className="AddMemberModal--title" >{t('LABEL_CHAT_TASK_THANH_VIEN_DU_AN')}</Typography>
@@ -113,7 +146,7 @@ function AddMemberModal({ setOpen, isOpen }) {
             </FlexJobMember>
             <TableMember style={{ boxShadow: 'none' }} />
           </Typography>
-        </GridArea>
+        </GridArea>*/}
       </DialogContent>
     </DialogWrap>
   );

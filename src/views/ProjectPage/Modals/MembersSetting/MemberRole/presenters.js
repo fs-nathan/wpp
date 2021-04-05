@@ -1,4 +1,4 @@
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import {Checkbox, Radio, Table, TableBody, TableCell, TableHead, TableRow} from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import { ADD_PROJECT_ROLE_TO_MEMBER, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER } from 'constants/events';
 import { find, get } from 'lodash';
@@ -103,18 +103,16 @@ function MemberRole({
           {userRoles.userRoles.map(userRole => (
             <TableRow key={get(userRole, 'id')}>
               <TableCell>
-                <Checkbox
-                  checked={
-                    roles
-                      .map(role => get(role, 'id'))
-                      .includes(get(userRole, 'id'))
-                  }
-                  onChange={evt => {
-                    handleUpdateRoleOfMember(userRole);
-                    setLoading(true);
-                  }}
-                  value={get(userRole, 'name', '')}
-                  color='primary'
+                <Radio
+                    checked={roles
+                        .map(role => get(role, 'id'))
+                        .includes(get(userRole, 'id'))}
+                    onChange={evt => {
+                      handleUpdateRoleOfMember(userRole);
+                      setLoading(true);
+                    }}
+                    value={get(userRole, 'name', '')}
+                    color='primary'
                 />
               </TableCell>
               <StyledTableCell>

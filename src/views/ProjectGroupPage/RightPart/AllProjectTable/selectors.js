@@ -65,7 +65,7 @@ export const projectsSelector = createSelector(
       group_work_types: get(detailProjectGroup.data, 'projectGroup.work_types',[]),
       summary: newSummary,
       projectGroupsCount: projectGroups.length,
-      loading: firstTime ? false : loading,
+      loading: loading,
       error,
       firstTime,
     }

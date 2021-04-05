@@ -29,12 +29,16 @@ import {useHistory} from "react-router-dom";
 import {useLocalStorage} from "react-use";
 import CreateProjectGroup from "../../Modals/CreateProjectGroup";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
-import AlertModal from "../../../../components/AlertModal";
 import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
 import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import {SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  RECENTLY_VIEW_PROJECTS_EMPTY_EVENT
+} from "../../../../constants/events";
 
-const Banner = ({ className = '', ...props }) =>
+const Banner = ({className = '', ...props}) =>
   <div
     className={`view_ProjectGroup_List___banner ${className}`}
     {...props}
@@ -44,13 +48,14 @@ const LeftContainer = styled.div`
   background: #F1F2F4;
   height: 100vh;
 `;
+
 function ProjectList({
-  groups, route, canModify,
-  searchPattern, setSearchPattern,
-  handleSortProjectGroup, handleOpenModal,
-}) {
+                       groups, route, canModify,
+                       searchPattern, setSearchPattern,
+                       handleSortProjectGroup, handleOpenModal,
+                     }) {
   const history = useHistory();
-  const { t } = useTranslation();
+  const {t} = useTranslation();
   const [isHideStartButton, setIsHideStartButton] = useLocalStorage(
     "WPS_HIDE_WORKING_START_BUTTON", false
   );
@@ -65,9 +70,9 @@ function ProjectList({
   const [openModalPersonalBoard, setOpenModalPersonalBoard] = React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [alertConfirm, showAlertConfirm] = React.useState(false);
-
+  const [isEmptyRecently, setIsEmptyRecently] =  React.useState(false);
   function onDragEnd(result) {
-    const { source, destination, draggableId } = result;
+    const {source, destination, draggableId} = result;
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&
@@ -92,6 +97,16 @@ function ProjectList({
     showAlertConfirm(true);
     setAnchorElGroup(null);
   }
+
+  React.useEffect(() => {
+    const _emptyRecently = () => {
+      //setIsEmptyRecently(true);
+    }
+    CustomEventListener(RECENTLY_VIEW_PROJECTS_EMPTY_EVENT, _emptyRecently);
+    return () => {
+      CustomEventDispose(RECENTLY_VIEW_PROJECTS_EMPTY_EVENT, _emptyRecently);
+    }
+  }, []);
 
   return (
     <>
@@ -151,7 +166,7 @@ function ProjectList({
             </Box>
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
-                <ListItem
+                {!isEmptyRecently && (<ListItem
                   className={"view_ProjectGroup_List-customListItem"}
                   onClick={() => history.push("/projects/recently")}
                 >
@@ -159,7 +174,7 @@ function ProjectList({
                     <AccessTimeIcon/>
                   </ListItemIcon>
                   <ListItemText primary={t("LABEL_SEE_RECENTLY")}/>
-                </ListItem>
+                </ListItem>)}
                 <ListItem
                   className={"view_ProjectGroup_List-customListItem"}
                   onClick={() => history.push("/projects/personal-board")}
@@ -218,7 +233,7 @@ function ProjectList({
                                     {...provided.dragHandleProps}
                                     className={"view_ProjectGroup_List-customListItem-dragIcon"}
                                   >
-                                    <Icon path={mdiDragVertical} size={1} />
+                                    <Icon path={mdiDragVertical} size={1}/>
                                   </div>
                                   <ListItemIcon>
                                     <CustomAvatar
@@ -227,7 +242,8 @@ function ProjectList({
                                       alt='avatar'
                                     />
                                   </ListItemIcon>
-                                  <ListItemText primary={`${get(projectGroup, "name")} (${projectGroup.number_project})`}/>
+                                  <ListItemText
+                                    primary={`${get(projectGroup, "name")} (${projectGroup.number_project})`}/>
                                   <IconButton
                                     className={"rightIconControlList"} size={"small"}
                                     onClick={(evt) => {
@@ -360,7 +376,7 @@ function ProjectList({
             <span className={"title"}>{t("LABEL_ADD_TABLE")}</span>
             <Box className={"actionItem"}>
               <Typography variant={"body2"} color={"textSecondary"}>{t("LABEL_ADD_TABLE_DES")}</Typography>
-              <Button color={"primary"} onClick={(evt) =>  {
+              <Button color={"primary"} onClick={(evt) => {
                 evt.stopPropagation();
                 setOpenModalPersonalBoard(true);
                 setAnchorElAddBoard(null);

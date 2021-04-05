@@ -5,15 +5,11 @@ import {useTranslation} from "react-i18next";
 import "./styles.scss";
 import AddToPersonalBoardModal from "../../../Modals/AddPersonalBoard";
 
-function IntroWhenEmptyData({type_data = null}) {
+function IntroEmptyPersonalBoard() {
   const {t} = useTranslation();
   const [openModal, setOpenModal] = React.useState(false);
   function handleOpen() {
-    switch (type_data) {
-      case 2:
-        setOpenModal(true);
-        break;
-    }
+    setOpenModal(true);
   }
   return (
     <>
@@ -34,4 +30,4 @@ function IntroWhenEmptyData({type_data = null}) {
   );
 }
 
-export default IntroWhenEmptyData;
+export default IntroEmptyPersonalBoard;

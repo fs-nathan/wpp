@@ -50,7 +50,7 @@ import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
 import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
 import { LIST_PROJECT_BASIC_INFO } from "../constants/actions/project/listBasic";
 import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedProject";
-import {LIST_PROJECT, LIST_PROJECT_SELECT} from "../constants/actions/project/listProject";
+import { LIST_PROJECT, LIST_PROJECT_SELECT} from "../constants/actions/project/listProject";
 import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
 import { PERMISSION_PROJECT } from "../constants/actions/project/permissionProject";
 import { REMOVE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/removeGroupPermissionMember";

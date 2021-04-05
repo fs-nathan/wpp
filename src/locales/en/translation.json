@@ -482,7 +482,7 @@
             "LEFT": {
               "TITLE": "Members list",
               "SEARCH": "Search members",
-              "HELPER": "Let add member to group before assign for project, stages, or works"
+              "HELPER": "Let add member to group before assign for works"
             },
             "RIGHT": {
               "TITLE": "Members",
@@ -490,7 +490,7 @@
                 "MEM": "Member",
                 "PER": "Permission group",
                 "ROL": "Role",
-                "STA": "Status"
+                "STA": "Assign"
               },
               "LABEL": {
                 "PER": "Decentralized",
@@ -2246,5 +2246,12 @@
   "EMPTY_PERSONAL_BOARD_MESSAGE_1": "We want to make it easier and more convenient for you to use Workplus!",
   "EMPTY_PERSONAL_BOARD_MESSAGE_2": "Select Job Boards that are frequently accessible for processing or high priority and pin them to this category. ",
   "EMPTY_PERSONAL_BOARD_MESSAGE_3": "Note: Before creating a Personal board you must have the Work Board created and pin them here.",
-  "LABEL_CREATE_PERSONAL_BOARD": "Create personal board"
+  "LABEL_CREATE_PERSONAL_BOARD": "Create personal board",
+  "LABEL_SEARCH_MEMBERS_TO_ADD": "Search for members in the list below ...",
+  "LABEL_SEARCH_MEMBERS_TO_ADD_DES": "You can only add members who have participated in a Public Project / Process / Topic. If you do not see a member to add in the side list, add them to the Project / Process / Owner before adding them to the task.",
+  "LABEL_WORKING_BOARD_MEMBERS": "Wokring board members",
+  "LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT": "There are {{count}} members added",
+  "MESSAGE_WORKING_BOARD_EMPTY": "Working board is empty",
+  "MESSAGE_WORKING_BOARD_EMPTY_DES": "Please create working board before select",
+  "LABEL_CREATE_WORKING_BOARD": "Create working board"
 }

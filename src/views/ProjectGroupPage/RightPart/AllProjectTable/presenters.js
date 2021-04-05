@@ -24,7 +24,8 @@ import PersonPinCircleOutlinedIcon from "@material-ui/icons/PersonPinCircleOutli
 import {decodePriorityCode} from "../../../../helpers/project/commonHelpers";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
-import IntroWhenEmptyData from "./Intro";
+import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
+import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 
 const MyIcon = ({ className = '', ...props }) =>
   <Icon
@@ -103,13 +104,20 @@ function AllProjectTable({
         </>;
     }
   }
+  function renderEmptyView() {
+    switch (type_data) {
+      case 2:
+        return <EmptyPersonalBoard/>;
+      default:
+        return <EmptyWorkingGroup/>;
+    }
+  }
   return (
     <>
       <Container>
-        {size(projects.projects) === 0 && !projects.loading && (
-          <IntroWhenEmptyData type_data={type_data}/>
-        )}
-        {size(projects.projects) > 0 && (
+        {projects.loading && <LoadingBox/>}
+        {size(projects.projects) === 0 && !projects.loading && renderEmptyView()}
+        {size(projects.projects) > 0 && !projects.loading && (
           <React.Fragment>
             <CustomTable
               options={{

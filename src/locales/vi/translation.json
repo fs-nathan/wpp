@@ -447,7 +447,7 @@
             "LEAVE": "Đã rời nhóm",
             "TITLE": "Thành viên",
             "BACK": "Quay lại",
-            "ADD": "Thêm thành viên dự án",
+            "ADD": "Thêm thành viên vào dự án",
             "SEARCH": "Tìm thành viên",
             "ALL_LABEL": "Tất cả",
             "MANAGE": "Quản lý thành viên"
@@ -482,7 +482,7 @@
             "LEFT": {
               "TITLE": "Danh sách thành viên",
               "SEARCH": "Tìm thành viên",
-              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án, Quy trình hoặc Chủ đề công việc!"
+              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho Bảng công việc"
             },
             "RIGHT": {
               "TITLE": "Thành viên",
@@ -490,7 +490,7 @@
                 "MEM": "Thành viên",
                 "PER": "Nhóm quyền",
                 "ROL": "Vai trò",
-                "STA": "Trạng thái"
+                "STA": "Giao việc"
               },
               "LABEL": {
                 "PER": "Gán quyền",
@@ -2250,5 +2250,17 @@
   "EMPTY_PERSONAL_BOARD_MESSAGE_2": "Bạn hãy lựa chọn những Bảng công việc thường xuyên phải truy cập để xử lý hoặc có mức độ ưu tiên cao và ghim chúng vào danh mục này.",
   "EMPTY_PERSONAL_BOARD_MESSAGE_3": "Lưu ý: Trước khi tạo bảng Cá nhân bạn phải có Bảng công việc được tạo và ghim chúng vào đây",
   "LABEL_CREATE_PERSONAL_BOARD": "Tạo bảng cá nhân",
-  "LABEL_ALL_DELETED_WORKING_BOARD": "Tất cả bảng đã xóa"
+  "LABEL_ALL_DELETED_WORKING_BOARD": "Tất cả bảng đã xóa",
+  "LABEL_SEARCH_MEMBERS_TO_ADD": "TÌm kiếm thành viên trong danh sách dưới đây...",
+  "LABEL_SEARCH_MEMBERS_TO_ADD_DES": "Bạn chỉ được thêm những thành viên đã tham gia vào Dự án/Quy trình/Chủ đề công. Nếu bạn không thấy thành viên cần thêm ở danh sách bên  thì hãy thêm họ vào Dự án/Quy trình/Chủ  trước khi thêm vào công việc này.",
+  "LABEL_WORKING_BOARD_MEMBERS": "Thành viên bảng công việc",
+  "LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT": "Đã thêm {{count}} thành viên",
+  "MESSAGE_WORKING_BOARD_EMPTY": "Không có Bảng công việc nào!",
+  "MESSAGE_WORKING_BOARD_EMPTY_DES": "Tạo bảng công việc mới trước khi lựa chọn",
+  "LABEL_CREATE_WORKING_BOARD": "Tạo bảng công việc",
+  "EMPTY_WORKING_GROUP_MESSAGE_1": "Phân loại và quy hoạch hệ thống làm việc của bạn để dễ dàng quảng lý bằng cách tạo ra các nhóm làm việc",
+  "EMPTY_WORKING_GROUP_MESSAGE_2": "Mẹo: Bạn hãy tạo các nhóm làm việc dựa trên quy mô, tính chất hoặc theo cách mà bạn dễ theo dõi nhất.",
+  "EMPTY_WORKING_GROUP_MESSAGE_3": "Kinh nghiệm: Thông thường các nhóm làm việc sẽ do CEO hoặc Ban lãnh đạo xây dựng để nhất quán sơ đồ quản trị trong hệ thống.",
+  "EMPTY_WORKING_GROUP_MESSAGE_4": "Mỗi thành viên có thể tạo riêng cho mình một nhóm việc, ví dụ: Công việc của tôi...",
+  "EMPTY_WORKING_GROUP_MESSAGE_5": "Bạn chỉ thấy một nhóm làm việc khi bạn được tham gia ít nhất vào một Bảng làm việc trong nhóm."
 }

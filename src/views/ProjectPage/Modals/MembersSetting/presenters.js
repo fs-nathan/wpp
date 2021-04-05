@@ -1,5 +1,19 @@
-import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiAccountConvert, mdiAccountMinus, mdiAlertCircleOutline, mdiCheckCircle, mdiDotsVertical, mdiMenuRight } from '@mdi/js';
+import {
+  Button,
+  CircularProgress,
+  IconButton,
+  ListItemText,
+  ListSubheader,
+  Menu,
+  MenuItem,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography
+} from '@material-ui/core';
+import { mdiCheckCircle, mdiDotsVertical, mdiMenuDown, mdiAccountKey } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
@@ -7,7 +21,7 @@ import { Primary, Secondary, StyledList, StyledListItem } from 'components/Custo
 import CustomModal from 'components/CustomModal';
 import SearchInput from 'components/SearchInput';
 import { ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, UPDATE_STATE_JOIN_TASK } from 'constants/events';
-import { get } from 'lodash';
+import { get, size } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -85,14 +99,6 @@ const AddButton = ({ className = '', disabled, ...props }) =>
     {...props}
   />;
 
-const CustomMenuItem = ({ className = '', selected, ...props }) =>
-  <MenuItem
-    className={`${selected
-      ? 'view_Project_MemberSetting_Modal___menu-item-selected'
-      : 'view_Project_MemberSetting_Modal___menu-item'} ${className}`}
-    {...props}
-  />;
-
 const StyledPrimary = ({ className = '', ...props }) =>
   <Primary
     className={`view_Project_MemberSetting_Modal___primary ${className}`}
@@ -123,11 +129,6 @@ const RightHeader = ({ className = '', ...props }) =>
     {...props}
   />
 
-const LeftHeader = ({ className = '', ...props }) =>
-  <p
-    className={`view_Project_MemberSetting_Modal___left-header ${className}`}
-    {...props}
-  />
 
 const CustomList = ({ className = '', ...props }) =>
   <StyledList
@@ -318,21 +319,26 @@ function MemberSetting({
       columns={2}
       loading={members.loading || loading}
       left={{
-        title: () => <LeftHeader>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.TITLE")}</LeftHeader>,
+        title: () => null,
         content: () =>
           <LeftContainer>
             <Banner>
+              <Button
+                  variant={"contained"} color={"primary"} disableElevation
+                  className={"view_Project_MemberSetting_Modal___buttonAddMembers"}
+              >
+                {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
+              </Button>
+              <HelperText>
+                <span>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.HELPER")}</span>
+              </HelperText>
               <SearchInput
                 fullWidth
                 placeholder={t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.SEARCH")}
-                value={searchPatern}
+                value={searchPatern} style={{background: "#fff"}}
                 onChange={evt => setSearchPatern(evt.target.value)}
               />
             </Banner>
-            <HelperText>
-              <Icon path={mdiAlertCircleOutline} size={1} />
-              <span>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.HELPER")}</span>
-            </HelperText>
             <ListContainer>
               {members.free.map(room => (
                 <UserFreeRoomList
@@ -346,9 +352,15 @@ function MemberSetting({
           </LeftContainer>,
       }}
       right={{
-        title: () => <RightHeader>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TITLE")}</RightHeader>,
+        title: () => null,
         content: () =>
           <RightContainer>
+            <RightHeader>
+              {t("LABEL_WORKING_BOARD_MEMBERS")}
+              <Typography variant={"body2"} color={"secondary"} style={{marginTop: "5px"}}>
+                {t("LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT", {count: size(members.added)})}
+              </Typography>
+            </RightHeader>
             <Table>
               <StyledTableHead>
                 <StyledRow>
@@ -379,11 +391,12 @@ function MemberSetting({
                           isAdmin={get(member, 'is_admin', false)}
                           isNotEmpty={(get(member, 'is_admin', false) || get(member, 'group_permission_name'))}
                         >
+                          <Icon path={mdiAccountKey} size={0.8} color={"rgba(0,0,0,0.54)"} className={"permission-icon"}/>
                           {
                             (get(member, 'is_admin', false) || get(member, 'group_permission_name'))
                               ? <>
                                 <span>{get(member, 'group_permission_name')}</span>
-                                {get(member, 'is_admin', false) === false && <Icon path={mdiMenuRight} size={0.7} color={'#222'} />}
+                                {get(member, 'is_admin', false) === false && <Icon path={mdiMenuDown} size={0.8} color={'#222'} />}
                               </>
                               : <>
                                 <span
@@ -397,22 +410,13 @@ function MemberSetting({
                     </TableCell>
                     <TableCell width='25%'>
                       {get(member, 'is_in_group', false) &&
-                        (<RolesBox>
+                        (<RolesBox onClick={() => handleOpenModal('ROLE', {
+                          curMemberId: get(member, 'id'),
+                        })}>
                           {get(member, 'roles', []).map(role => (
-                            <p key={get(role, 'id')}>{get(role, 'name', '')}</p>
+                            <span key={get(role, 'id')}>{get(role, 'name', '')}</span>
                           ))}
-                          <RoleButton
-                            size='small'
-                            onClick={evt => handleOpenModal('ROLE', {
-                              curMemberId: get(member, 'id'),
-                            })}
-                          >
-                            <span
-                              style={{
-                                backgroundColor: bgColor.color,
-                              }}>+</span>
-                            <span>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ADD")}</span>
-                          </RoleButton>
+                          <Icon path={mdiMenuDown} size={0.8} color={'#222'} />
                         </RolesBox>)}
                     </TableCell>
                     <TableCell width='25%'>
