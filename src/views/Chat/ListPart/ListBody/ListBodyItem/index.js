@@ -150,11 +150,13 @@ function ListBodyItem(props) {
   const [isCreatingThreadChat, setCreatingThreadChat] = useState(false)
 
   async function onClickToCreateThreadChat() {
+    if (isCreatingThreadChat) {
+      return false;
+    }
     if (props.members && props.members.length) {
       setCreatingThreadChat(true)
       try {
         const res = await doCreateThreadChatPrivate({ member_id: props.members[0].id });
-        console.log(res)
         history.push({ pathname: "/chats", search: `?task_id=${res.data.task_id}` });
         setCreatingThreadChat(false)
       } catch (error) {

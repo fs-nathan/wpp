@@ -47,9 +47,17 @@
   }
   &--project-private {
     background-image: url("/images/intro_chat.jpg");
+    .bodyChat--projectAvatar {
+      background: #fff;
+      border: 2px solid #fff;
+    }
   }
   &--project-group {
     background-image: url("/images/intro_chat_group.png");
+    .bodyChat--projectAvatar {
+      background: #fff;
+      border: 2px solid #fff;
+    }
   }
   &--projectAvatar {
     width: 70px;
