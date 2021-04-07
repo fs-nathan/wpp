@@ -28,6 +28,7 @@ import List from "@material-ui/core/List";
 import {withStyles} from '@material-ui/core/styles';
 import {mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle} from '@mdi/js';
 import Icon from "@mdi/react";
+import Scrollbars from "react-custom-scrollbars";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -102,44 +103,50 @@ function AddMemberModal({ setOpen, isOpen }) {
       onClickSuccess={handleClose}
       maxWidth="sm"
       className="AddMemberModal"
-      scroll="body"
+      scroll="body" useScrollbar={false}
     >
       <DialogContent className="AddMemberModal-container">
-        <Paper component="form" elevation={0} variant={"outlined"} className={classes.root}>
-          <IconButton  aria-label="menu">
-            <SearchIcon />
-          </IconButton>
-          <InputBase
+        <div style={{padding: "10px 15px"}}>
+          <Paper component="form" elevation={0} variant={"outlined"} className={classes.root}>
+            <IconButton  aria-label="menu">
+              <SearchIcon />
+            </IconButton>
+            <InputBase
               className={classes.input}
               placeholder={t("LABEL_SEARCH_MEMBERS_TO_ADD")}
               inputProps={{ 'aria-label': 'search personal board' }}
               onChange={evt => setSearchPattern(evt.currentTarget.value)}
-          />
-        </Paper>
-        <Typography variant={"body2"} color={"textSecondary"} className={"text-hint"}>
-          {t("LABEL_SEARCH_MEMBERS_TO_ADD_DES")}
-        </Typography>
-        <Typography>
-          <Link href="#" onClick={() => null}>
-            + {t("DMH.VIEW.PP.LEFT.PM.ADD")}
-          </Link>
-        </Typography>
-        <Box className={"AddMemberModal-btnGroup"}>
-          <Chip label={`${t("IDS_WP_ALL")} (${size(members)})`} color={"primary"}/>
-          {size(filter(selected, function (value, key) { return value;})) > 0 && (
-            <Chip label={`${t("GANTT_SELECTED")} (${size(filter(selected, function (value, key) { return value;}))})`}/>
-          )}
-        </Box>
-        <Box className={"AddMemberModal-listMembers"}>
-          {map(filteredMembers, function (member) {
-            return (
-              <Box className={"AddMemberModal-listMembersItem"}>
-                {get(member, "type_assign", "") !== "" && (
-                  <Icon path={mdiCheckboxMarkedCircle} size={1} color={"#A2CDFF"}/>
-                )}
-                {get(member, "type_assign", "") === "" && !selected[member.id] && (
-                  <Icon path={mdiCheckboxBlankCircleOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
-                )}
+            />
+          </Paper>
+          <Typography variant={"body2"} color={"textSecondary"} className={"text-hint"}>
+            {t("LABEL_SEARCH_MEMBERS_TO_ADD_DES")}
+          </Typography>
+          <Typography>
+            <Link href="#" onClick={() => null}>
+              + {t("DMH.VIEW.PP.LEFT.PM.ADD")}
+            </Link>
+          </Typography>
+          <Box className={"AddMemberModal-btnGroup"}>
+            <Chip label={`${t("IDS_WP_ALL")} (${size(members)})`} color={"primary"}/>
+            {size(filter(selected, function (value, key) { return value;})) > 0 && (
+              <Chip label={`${t("GANTT_SELECTED")} (${size(filter(selected, function (value, key) { return value;}))})`}/>
+            )}
+          </Box>
+        </div>
+        <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
+          <Box className={"AddMemberModal-listMembers"}>
+            {map(filteredMembers, function (member) {
+              return (
+                <Box className={"AddMemberModal-listMembersItem"} onClick={() => handleSelectMember(member.id)}>
+                  {get(member, "type_assign", "") !== "" && (
+                    <Icon path={mdiCheckboxMarkedCircle} size={1} color={"#A2CDFF"}/>
+                  )}
+                  {get(member, "type_assign", "") === "" && !selected[member.id] && (
+                    <Icon path={mdiCheckboxBlankCircleOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
+                  )}
+                  {get(member, "type_assign", "") === "" && selected[member.id] && (
+                    <Icon path={mdiCheckboxMarkedCircle} size={1} color={"#0075FC"}/>
+                  )}
                   <List component={"nav"} dense={true} style={{width: "100%"}}>
                     <ListItem>
                       <ListItemAvatar>
@@ -166,10 +173,11 @@ function AddMemberModal({ setOpen, isOpen }) {
                       </ListItemSecondaryAction>
                     </ListItem>
                   </List>
-              </Box>
-            );
-          })}
-        </Box>
+                </Box>
+              );
+            })}
+          </Box>
+        </Scrollbars>
       </DialogContent>
     </DialogWrap>
   );
