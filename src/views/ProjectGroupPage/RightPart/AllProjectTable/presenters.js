@@ -1,7 +1,7 @@
 import {CircularProgress, IconButton, Menu, MenuItem, Typography} from '@material-ui/core';
 import {mdiAccount, mdiCalendar, mdiCheckCircle, mdiDotsVertical, mdiDownload, mdiFilterOutline} from '@mdi/js';
 import Icon from '@mdi/react';
-import {find, get, isNil, join, remove, slice, size} from 'lodash';
+import {find, get, isNil, join, remove, size, slice} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router-dom';
@@ -26,6 +26,7 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
+import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 
 const MyIcon = ({ className = '', ...props }) =>
   <Icon
@@ -59,7 +60,7 @@ function AllProjectTable({
   handleSortProject,
   handleOpenModal, bgColor,
   showHidePendings,
-  canCreate,
+  canCreate, groupID
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -109,7 +110,9 @@ function AllProjectTable({
       case 2:
         return <EmptyPersonalBoard/>;
       default:
-        return <EmptyWorkingGroup/>;
+        if(!isNil(groupID)) {
+          return <EmptyWorkingBoard groupID={groupID} projects={projects}/>;
+        } else return <EmptyWorkingGroup/>;
     }
   }
   return (

@@ -6,7 +6,7 @@
     height: 100vh;
     display: flex;
     font-size: 14px;
-    img {
+    .bgEmpty {
       height: 650px;
       position: absolute;
       right: 0;
@@ -27,8 +27,37 @@
       line-height: 1.75rem;
       font-size: 14px;
     }
+    .btnActionGroup {
+      display: flex;
+      align-items: center;
+      &>*:not(:last-child) {
+        margin-right: 15px;
+      }
+    }
+    .MuiButton-outlined {
+      color: grey;
+      background: #fff;
+      z-index: 99;
+    }
   }
   &-left {
     width: 400px;
+  }
+}
+.longContent {
+  margin-top: -20px;
+  .selectedGroup {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+  }
+  .bgEmpty {
+    top: calc(100vh - 650px);
+  }
+  ul {
+    padding-left: 12px;
+  }
+  ::marker {
+    color: grey;
   }
 }

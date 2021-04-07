@@ -1,10 +1,16 @@
-import { get } from 'lodash';
+import { get, size } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import { listDeletedProjectFail, listDeletedProjectSuccess } from '../../actions/project/listDeletedProject';
-import {listProjectFail, listProjectForSelectSuccess, listProjectSuccess} from '../../actions/project/listProject';
+import {
+  checkHasRecentlyProjectsSuccess,
+  listProjectFail,
+  listProjectForSelectSuccess,
+  listProjectSuccess
+} from '../../actions/project/listProject';
 import { apiService } from '../../constants/axiosInstance';
 import { CustomEventEmitter, LIST_PROJECT } from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
+import {CHECK_HAS_RECENTLY_PROJECT} from "../../constants/actions/project/listProject";
 
 async function doListProject({ groupProject, type, status, timeStart, timeEnd, type_data }) {
   try {

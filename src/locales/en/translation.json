@@ -2253,5 +2253,15 @@
   "LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT": "There are {{count}} members added",
   "MESSAGE_WORKING_BOARD_EMPTY": "Working board is empty",
   "MESSAGE_WORKING_BOARD_EMPTY_DES": "Please create working board before select",
-  "LABEL_CREATE_WORKING_BOARD": "Create working board"
+  "LABEL_CREATE_WORKING_BOARD": "Create working board",
+  "EMPTY_WORKING_GROUP_MESSAGE_5": "You see only one workgroup when you have joined at least one Workgroup in a group. ",
+  "LABEL_WORKING_BOARD_FIRST_CREATE": "Create your first job board! ",
+  "LABEL_WORKING_BOARD_CREATE": "Create job boards",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE1": "The job board is a <strong> Job Subject </strong>: For example, the topic: Job January 2020 Administration, Regular affairs, Internal affairs Department...",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE2": "The job board is a <strong> Project </strong>: For example: Wood production project, ABC Building investment project, XYZ Product Marketing Project, ... ",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE3": "The job board is a <strong> Process </strong>: For example: Recruitment Process Q1 / 2020, Contract A Payment Process, January 2020 Customer Care Process, ...",
+  "EMPTY_WORKING_BOARD_MESSAGE_1": "You seem to know how to use Workplus! ",
+  "EMPTY_WORKING_BOARD_MESSAGE_2": "Your next step is to create your first Workgroup for this Workgroup to start working on.",
+  "EMPTY_WORKING_BOARD_MESSAGE_3": "We classify job boards into three categories: ",
+  "EMPTY_WORKING_BOARD_MESSAGE_4": "Do not forget to add members to the Job Board to assign tasks to each job in the Board."
 }

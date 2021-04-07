@@ -8,14 +8,8 @@ import {sortProject} from 'actions/project/sortProject';
 import {detailProjectGroup} from 'actions/projectGroup/detailProjectGroup';
 import {listProjectGroup} from 'actions/projectGroup/listProjectGroup';
 import {useFilters, useTimes} from 'components/CustomPopover';
-import {
-  CustomEventDispose,
-  CustomEventEmitter,
-  CustomEventListener, RECENTLY_VIEW_PROJECTS_EMPTY_EVENT,
-  SORT_PROJECT,
-  SORT_PROJECT_GROUP
-} from 'constants/events.js';
-import {filter, get, reverse, sortBy, size} from 'lodash';
+import {CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP} from 'constants/events.js';
+import {filter, get, reverse, sortBy} from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -134,13 +128,6 @@ function AllProjectTable({
       projects: _projects,
     });
   }, [projects, sortType]);
-
-  React.useEffect(() => {
-    if(size(projects.projects) === 0 && type_data === 1) {
-      CustomEventEmitter(RECENTLY_VIEW_PROJECTS_EMPTY_EVENT, true);
-    }
-  }, [projects, type_data]);
-
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
   const [openNoPG, setOpenNoPG] = React.useState(false);
@@ -235,6 +222,7 @@ function AllProjectTable({
           doSortProject({ sortData })
         }
         handleOpenModal={doOpenModal}
+        groupID={groupID}
       />
       <CreateProjectModal
         open={openCreate}

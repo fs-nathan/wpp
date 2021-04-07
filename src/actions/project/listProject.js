@@ -3,7 +3,9 @@ import {
   LIST_PROJECT_FAIL,
   LIST_PROJECT_SUCCESS,
   LIST_PROJECT_SELECT,
-  LIST_PROJECT_SELECT_SUCCESS
+  LIST_PROJECT_SELECT_SUCCESS,
+  CHECK_HAS_RECENTLY_PROJECT,
+  CHECK_HAS_RECENTLY_PROJECT_SUCCESS
 } from '../../constants/actions/project/listProject';
 
 export const listProject = ({ groupProject, type, status, timeStart, timeEnd, type_data, select }, quite = false) => ({
@@ -41,3 +43,15 @@ export const listProjectForSelectSuccess = ({projects}) => ({
   type: LIST_PROJECT_SELECT_SUCCESS,
   projects
 });
+
+export const checkHasRecentlyProjects = () => ({
+  type: CHECK_HAS_RECENTLY_PROJECT,
+  options: {
+    type_data: 1
+  }
+});
+
+export const checkHasRecentlyProjectsSuccess = ({isHas}) => ({
+  type: CHECK_HAS_RECENTLY_PROJECT_SUCCESS,
+  isHas
+})

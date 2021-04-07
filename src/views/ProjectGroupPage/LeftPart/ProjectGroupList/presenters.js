@@ -1,15 +1,16 @@
 import {
   Box,
-  Button, Divider,
+  Button,
+  Divider,
   IconButton,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
-  Popover,
-  Typography,
+  MenuItem,
   MenuList,
-  MenuItem
+  Popover,
+  Typography
 } from '@material-ui/core';
 import {mdiBookmarkOutline, mdiDotsVertical, mdiDragVertical, mdiPlayCircleOutline, mdiPlus} from '@mdi/js';
 import Icon from '@mdi/react';
@@ -32,11 +33,7 @@ import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
 import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import {SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
-import {
-  CustomEventDispose,
-  CustomEventListener,
-  RECENTLY_VIEW_PROJECTS_EMPTY_EVENT
-} from "../../../../constants/events";
+import {useSelector} from "react-redux";
 
 const Banner = ({className = '', ...props}) =>
   <div
@@ -50,10 +47,10 @@ const LeftContainer = styled.div`
 `;
 
 function ProjectList({
-                       groups, route, canModify,
-                       searchPattern, setSearchPattern,
-                       handleSortProjectGroup, handleOpenModal,
-                     }) {
+  groups, route, canModify,
+  searchPattern, setSearchPattern,
+  handleSortProjectGroup, handleOpenModal,
+}) {
   const history = useHistory();
   const {t} = useTranslation();
   const [isHideStartButton, setIsHideStartButton] = useLocalStorage(
@@ -70,7 +67,7 @@ function ProjectList({
   const [openModalPersonalBoard, setOpenModalPersonalBoard] = React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [alertConfirm, showAlertConfirm] = React.useState(false);
-  const [isEmptyRecently, setIsEmptyRecently] =  React.useState(false);
+  const isHasProjectRecently = useSelector(state => state.project.checkHasRecently.hasRecently);
   function onDragEnd(result) {
     const {source, destination, draggableId} = result;
     if (!destination) return;
@@ -97,16 +94,6 @@ function ProjectList({
     showAlertConfirm(true);
     setAnchorElGroup(null);
   }
-
-  React.useEffect(() => {
-    const _emptyRecently = () => {
-      //setIsEmptyRecently(true);
-    }
-    CustomEventListener(RECENTLY_VIEW_PROJECTS_EMPTY_EVENT, _emptyRecently);
-    return () => {
-      CustomEventDispose(RECENTLY_VIEW_PROJECTS_EMPTY_EVENT, _emptyRecently);
-    }
-  }, []);
 
   return (
     <>
@@ -166,7 +153,7 @@ function ProjectList({
             </Box>
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
-                {!isEmptyRecently && (<ListItem
+                {isHasProjectRecently && (<ListItem
                   className={"view_ProjectGroup_List-customListItem"}
                   onClick={() => history.push("/projects/recently")}
                 >

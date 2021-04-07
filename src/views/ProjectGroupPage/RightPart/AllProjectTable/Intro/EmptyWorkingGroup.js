@@ -15,7 +15,7 @@ function EmptyWorkingGroup() {
     <>
       <Box className={"introEmptyData-container"}>
         <Box className={"introEmptyData-left"}>
-          <Typography variant={"h5"}>{t("LABEL_WORKING_GROUP")}</Typography>
+          <Typography variant={"h4"}>{t("LABEL_WORKING_GROUP")}</Typography>
           <p>{t("EMPTY_WORKING_GROUP_MESSAGE_1")}</p>
           <p>{t("EMPTY_WORKING_GROUP_MESSAGE_2")}</p>
           <p>{t("EMPTY_WORKING_GROUP_MESSAGE_3")}</p>
@@ -25,7 +25,7 @@ function EmptyWorkingGroup() {
             {t("LABEL_START_WORK_STEP_1")}
           </Button>
         </Box>
-        <img src={images.bg004} alt={""}/>
+        <img src={images.bg004} alt={""} className={"bgEmpty"}/>
       </Box>
       <CreateProjectGroup open={openModal} setOpen={setOpenModal}/>
     </>
