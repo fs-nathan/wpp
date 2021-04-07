@@ -66,7 +66,11 @@ function AllTaskTable({
   return (
     <Container>
       {isEmpty && !tasks.loading && (
-        <EmptyTasksIntro handleOpenModal={handleOpenModal}/>
+        <EmptyTasksIntro
+          handleOpenModal={handleOpenModal}
+          projectName={get(project.project, "name")}
+          work_type={get(project.project, "work_type")}
+        />
       )}
       {!isEmpty && !tasks.loading && (
         <>

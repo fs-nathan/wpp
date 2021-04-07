@@ -135,6 +135,7 @@
     margin: 0 -15px;
     padding-left: 15px;
     padding-right: 15px;
+    cursor: pointer;
     &:hover {
       background: #F3F5FB;
       .MuiRadio-root {
@@ -143,6 +144,18 @@
     }
     .MuiRadio-root {
       padding: 0;
+    }
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: var(--color-primary);
+    }
+    .MuiSelect-icon {
+      top: calc(50% - 10px);
+    }
+    .memberTypeAssigned {
+      padding: 7px 12px;
+      background: #A4CDFF;
+      color: #72839A;
+      border-radius: 2px;
     }
   }
 }

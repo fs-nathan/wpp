@@ -3,23 +3,31 @@ import {
   Box,
   Chip,
   DialogContent,
+  FormControl,
   IconButton,
   InputBase,
-  ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
   makeStyles,
+  MenuItem,
   Paper,
-  Radio
+  Select
 } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import DialogWrap from 'components/DialogWrap';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {useTranslation} from 'react-i18next';
+import {useSelector} from 'react-redux';
 import './styles.scss';
 import Link from "@material-ui/core/Link";
 import SearchIcon from "@material-ui/icons/Search";
-import {size, map, filter, toLower} from "lodash";
+import {filter, get, map, set, size, toLower} from "lodash";
 import List from "@material-ui/core/List";
+import {withStyles} from '@material-ui/core/styles';
+import {mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle} from '@mdi/js';
+import Icon from "@mdi/react";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -29,13 +37,36 @@ const useStyles = makeStyles((theme) => ({
     width: '91%'
   },
 }));
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    'label + &': {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 2,
+    position: 'relative',
+    backgroundColor: theme.palette.background.paper,
+    border: '1px solid #ced4da',
+    fontSize: 13,
+    padding: '5px 26px 5px 12px',
+    transition: theme.transitions.create(['border-color', 'box-shadow']),
+    '&:focus': {
+      borderRadius: 4,
+      borderColor: '#80bdff',
+      boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
+    },
+  },
+}))(InputBase);
+
 function AddMemberModal({ setOpen, isOpen }) {
   const { t } = useTranslation();
   const classes = useStyles();
   const [searchPattern, setSearchPattern] = React.useState("");
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const [filteredMembers, setFilteredMembers] = React.useState([]);
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState({});
+
   const handleClose = () => {
     setOpen(false);
   };
@@ -45,15 +76,31 @@ function AddMemberModal({ setOpen, isOpen }) {
     });
     setFilteredMembers(_members);
   }, [searchPattern, members]);
+  function handleSelectMember(id) {
+    set(selected, id, !get(selected, id, false));
+    setSelected({...selected});
+  }
+  function renderTypeAssign(type) {
+    switch (type) {
+      case 1:
+        return t("LABEL_ASSIGNERS");
+      case 2:
+        return t("LABEL_OFFER");
+      case 3:
+        return t("Thực hiện");
+      case 4:
+        return t("Giám sát");
+      default: return;
+    }
+  }
   return (
     <DialogWrap
       title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel={t('LABEL_CHAT_TASK_THOAT')}
+      successLabel={t('IDS_WP_DONE')}
       onClickSuccess={handleClose}
       maxWidth="sm"
-      isOneButton
       className="AddMemberModal"
       scroll="body"
     >
@@ -79,74 +126,50 @@ function AddMemberModal({ setOpen, isOpen }) {
         </Typography>
         <Box className={"AddMemberModal-btnGroup"}>
           <Chip label={`${t("IDS_WP_ALL")} (${size(members)})`} color={"primary"}/>
-          {size(selected) >0 && (<Chip label={`${t("GANTT_SELECTED")} (${size(members)})`}/>)}
+          {size(filter(selected, function (value, key) { return value;})) > 0 && (
+            <Chip label={`${t("GANTT_SELECTED")} (${size(filter(selected, function (value, key) { return value;}))})`}/>
+          )}
         </Box>
         <Box className={"AddMemberModal-listMembers"}>
           {map(filteredMembers, function (member) {
             return (
               <Box className={"AddMemberModal-listMembersItem"}>
-                  <Radio checked={false}/>
-                  <List component={"nav"} dense={true}>
+                {get(member, "type_assign", "") !== "" && (
+                  <Icon path={mdiCheckboxMarkedCircle} size={1} color={"#A2CDFF"}/>
+                )}
+                {get(member, "type_assign", "") === "" && !selected[member.id] && (
+                  <Icon path={mdiCheckboxBlankCircleOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
+                )}
+                  <List component={"nav"} dense={true} style={{width: "100%"}}>
                     <ListItem>
                       <ListItemAvatar>
                         <Avatar className="memberItem--avatar" src={member.avatar} alt='avatar'/>
                       </ListItemAvatar>
                       <ListItemText primary={member.name} secondary={member.email}/>
                       <ListItemSecondaryAction>
-
+                        {get(member, "type_assign", "") === "" && (
+                          <FormControl className={classes.margin}>
+                            <Select
+                              input={<BootstrapInput />}
+                              value={3}
+                            >
+                              <MenuItem value={3}>{t("Thực hiện")}</MenuItem>
+                              <MenuItem value={4}>{t("Giám sát")}</MenuItem>
+                              <MenuItem value={2}>{t("LABEL_OFFER")}</MenuItem>
+                              <MenuItem value={1}>{t("LABEL_ASSIGNERS")}</MenuItem>
+                            </Select>
+                          </FormControl>
+                        )}
+                        <div className={"memberTypeAssigned"}>
+                          <span>{renderTypeAssign(member.type_assign)}</span>
+                        </div>
                       </ListItemSecondaryAction>
                     </ListItem>
                   </List>
               </Box>
             );
           })}
-
         </Box>
-        {/*<GridArea component={'div'} style={{ borderBottom: 'none' }} >
-          <BorderGrid component={'div'}>
-            <FlexMemberProject component={'span'}>
-              <Typography component={'div'} className="AddMemberModal--title" >{t('LABEL_CHAT_TASK_THANH_VIEN_DU_AN')}</Typography>
-            </FlexMemberProject>
-            <Typography component="span">
-              <div style={{ margin: '10px 10px 0 10px' }}>
-                <SearchInput placeholder={t('LABEL_CHAT_TASK_TIM_THANH_VIEN')} />
-              </div>
-              <div className="AddMemberModal--alert">
-                <div>
-                  <Icon path={mdiAlertCircleOutline} size={'15px'}/>
-                </div>
-                <div className="AddMemberModal--alertText">
-                  {t('LABEL_CHAT_TASK_HAY_THEM_THANH_VIEN')}
-                  <Typography component={"span"} style={{marginLeft: 10}}>
-                    <Link href="#">{t("VIEW_OFFER_LABEL_LEARN_MORE")}</Link>
-                  </Typography>
-                </div>
-              </div>
-              <div className="table-scroll-add-member">
-                <Scrollbars>
-                  {
-                    memberNotAssigned.map((item, key) =>
-                      (
-                        <ProjectMember
-                          avatar={item.avatar}
-                          key={item.id}
-                          id={item.id}
-                          name={item.name} email={item.email}
-                          label={item.permission}
-                        />
-                      )
-                    )}
-                </Scrollbars>
-              </div>
-            </Typography>
-          </BorderGrid>
-          <Typography component="div">
-            <FlexJobMember component="div">
-              <Typography className="AddMemberModal--title" component={'div'}>{t('LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC')}</Typography>
-            </FlexJobMember>
-            <TableMember style={{ boxShadow: 'none' }} />
-          </Typography>
-        </GridArea>*/}
       </DialogContent>
     </DialogWrap>
   );

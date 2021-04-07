@@ -2263,5 +2263,11 @@
   "EMPTY_WORKING_BOARD_MESSAGE_1": "You seem to know how to use Workplus! ",
   "EMPTY_WORKING_BOARD_MESSAGE_2": "Your next step is to create your first Workgroup for this Workgroup to start working on.",
   "EMPTY_WORKING_BOARD_MESSAGE_3": "We classify job boards into three categories: ",
-  "EMPTY_WORKING_BOARD_MESSAGE_4": "Do not forget to add members to the Job Board to assign tasks to each job in the Board."
+  "EMPTY_WORKING_BOARD_MESSAGE_4": "Do not forget to add members to the Job Board to assign tasks to each job in the Board.",
+  "LABEL_EMPTY_TASK_FIRST_CREATE": "Create your first task!",
+  "EMPTY_TASK_MESSAGE_1": "Welcome to the final step!",
+  "EMPTY_TASK_MESSAGE_2": "The next step is to create jobs for this Table to start implementing and managing the work effectively.",
+  "EMPTY_TASK_MESSAGE_3": "Tip: Create groups of jobs in Table in advance to categorize different job groups. The system has pre-created for you a group named <strong> \"Uncategorized\" </strong>, you can change this group name at any time. ",
+  "EMPTY_TASK_MESSAGE_4": "Workplus provides administration diagrams, including: <strong> Todo List, Kanban, Gantt Chart, Work Chat </strong> and are synchronized with each other. You can set the default Job Board view to a profile you like in <strong> Job Board Settings </strong>",
+  "EMPTY_TASK_MESSAGE_5": "Don't forget to add members to work to discuss, share and together complete assigned tasks."
 }
