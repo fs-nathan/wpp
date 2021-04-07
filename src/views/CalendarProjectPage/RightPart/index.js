@@ -133,7 +133,7 @@ function CalendarProjectRightPart({
   return (
     <>
       <CalendarProjectRightPartPresenter
-        havePermission={permissions['manage_project_schedule'] ?? false}
+        havePermission={scheduleDetail.data && scheduleDetail.data.can_modify}
         scheduleDetail={scheduleDetail}
         groupSchedules={groupSchedules}
         setIsLoadingOuter={setIsLoading}

@@ -44,11 +44,11 @@ function CalendarWeeklyRightPartPresenter({
               iconPath: mdiCalendar,
               onClick: evt => setYearAnchor(evt.currentTarget)
             },
-            havePermission ? {
+            {
               label: t('views.calendar_page.right_part.edit2'),
               iconPath: mdiPencilBoxOutline,
               onClick: evt => doOpenModal("EDIT")
-            } : null
+            }
           ],
           mainAction: havePermission ? {
             label: t('views.calendar_page.right_part.delete_calendar'),

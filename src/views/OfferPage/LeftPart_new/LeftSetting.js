@@ -42,7 +42,7 @@ const LeftSetting = props => {
   }
 
   const checkBeforeShowRightIcon = () => {
-    return props.isOfferGroupManageable && checkUserIsInOfferGroupRoutes(window.location.pathname)
+    return checkUserIsInOfferGroupRoutes(window.location.pathname)
   }
 
   React.useEffect(() => {

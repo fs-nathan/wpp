@@ -45,11 +45,11 @@ function CalendarProjectLeftPartPresenter({
             onClick: () => history.push(`${Routes.CALENDAR}/project`),
             tooltip: t("IDS_WP_BACK"),
           }}
-          rightAction={havePermission ? {
+          rightAction={{
             iconPath: mdiPlus,
             onClick: evt => handleOpenModal('CREATE'),
             tooltip: t('views.calendar_page.left_part.create')
-          } : null}
+          }}
         >
           <Banner>
             <SearchInput
@@ -87,6 +87,7 @@ function CalendarProjectLeftPartPresenter({
                     }
                   />
                   {
+                    get(item, "can_modify", false) &&
                     <div
                       onClick={evt => doOpenMenu(evt.currentTarget, item)}
                     >
@@ -119,29 +120,25 @@ function CalendarProjectLeftPartPresenter({
             }}
           >
             {
-              havePermission && (
-                <>
-                  <MenuItem
-                    onClick={evt => {
-                      setOpenEditModal(true);
-                      setMenuAnchor(null);
-                    }}
-                  >
-                    {t("views.calendar_page.right_part.edit")}
-                  </MenuItem>
-                  {
-                    get(selectedItem, "can_delete", false) && (
-                      <MenuItem
-                        onClick={evt => {
-                          setMenuAnchor(null);
-                          handleDeleteGroup(params.scheduleID);
-                        }}
-                      >
-                        {t("views.calendar_page.right_part.delete")}
-                      </MenuItem>
-                    )
-                  }
-                </>
+              get(selectedItem, "can_modify", false) && <MenuItem
+                onClick={evt => {
+                  setOpenEditModal(true);
+                  setMenuAnchor(null);
+                }}
+              >
+                {t("views.calendar_page.right_part.edit")}
+              </MenuItem>
+            }
+            {
+              get(selectedItem, "can_delete", false) && get(selectedItem, "can_modify", false) && (
+                <MenuItem
+                  onClick={evt => {
+                    setMenuAnchor(null);
+                    handleDeleteGroup(params.scheduleID);
+                  }}
+                >
+                  {t("views.calendar_page.right_part.delete")}
+                </MenuItem>
               )
             }
           </Menu>

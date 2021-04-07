@@ -37,11 +37,11 @@ function CalendarWeeklyLeftPartPresenter({
           tooltip: t("IDS_WP_BACK"),
         }}
         rightAction={
-          havePermission ? {
+          {
             iconPath: mdiPlus,
             onClick: evt => handleOpenModal('CREATE'),
             tooltip: t('views.calendar_page.left_part.create')
-          } : null
+          }
         }
       >
         <Banner>
