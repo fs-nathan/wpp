@@ -265,6 +265,9 @@ import listDeletedProject, {
 import listProject, {
   initialState as listProjectInitialState,
 } from "./project/listProject";
+import checkHasRecently, {
+  initialState as checkHasRecentlyInitialState,
+} from "./project/checkHasRecently";
 import memberProject, {
   initialState as memberProjectInitialState,
 } from "./project/memberProject";
@@ -565,6 +568,7 @@ const rootReducer = combineReducers({
     getStatusWorkGroup,
     getProjectOnPersonalBoard,
     getWorkType,
+    checkHasRecently,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
@@ -757,6 +761,7 @@ export const DEFAULT_STATE = {
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
     listProject: listProjectInitialState,
+    checkHasRecently: checkHasRecentlyInitialState,
     listDeletedProject: listDeletedProjectInitialState,
     detailProject: detailProjectInitialState,
     hideProject: hideProjectInitialState,

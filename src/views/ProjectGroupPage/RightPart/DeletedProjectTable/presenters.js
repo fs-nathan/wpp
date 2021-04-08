@@ -1,22 +1,29 @@
-import {Button, CircularProgress, IconButton} from '@material-ui/core';
+import {Button, CircularProgress, Typography} from '@material-ui/core';
 import {mdiArrowLeft, mdiMenuDown} from '@mdi/js';
 import {concat, filter, find, get, isNil} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {useHistory} from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomBadge from '../../../../components/CustomBadge';
 import CustomTable from '../../../../components/CustomTable';
 import LoadingBox from '../../../../components/LoadingBox';
-import { StateBox } from '../../../../components/TableComponents';
+import {StateBox} from '../../../../components/TableComponents';
 import './style.scss';
 import AlertModal from "../../../../components/AlertModal";
-import {CustomEventListener, DELETE_TRASH_PROJECT, CustomEventDispose, DELETE_TRASH_PROJECT_FAIL} from "../../../../constants/events";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_TRASH_PROJECT,
+  DELETE_TRASH_PROJECT_FAIL
+} from "../../../../constants/events";
 import * as images from "../../../../assets";
 import Icon from "@mdi/react";
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
-import SelectWorkType from "../../Modals/SelectWorkType";
 import {connect} from "react-redux";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import {decodePriorityCode} from "../../../../helpers/project/commonHelpers";
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -38,30 +45,6 @@ const ButtonWrapper = ({ className = '', ...props }) =>
     {...props}
   />;
 
-function decodePriorityCode(priorityCode) {
-  switch (priorityCode) {
-    case 0:
-      return {
-        color: '#4caf50',
-        background: '#4caf5042',
-      };
-    case 1:
-      return {
-        color: '#ff9800',
-        background: '#ff980038',
-      };
-    case 2:
-      return {
-        color: '#fe0707',
-        background: '#ff050524',
-      };
-    default:
-      return {
-        color: '#53d7fc',
-      };
-  }
-}
-
 function DeletedProjectTable({
   expand, handleExpand, route,
   projects, pendings, projectGroup,
@@ -74,11 +57,7 @@ function DeletedProjectTable({
   const [alertConfirm, showAlertConfirm] = React.useState(false);
   const [selectedRow, setSelectedRow] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-  const [title, setTitle] = React.useState(t("IDS_WP_ALL"));
-  const [projectFiltered , setProjectFiltered] = React.useState([]);
-  const [openWorkTypeModal, setOpenWorkTypeModal] = React.useState(false);
-  const [selectedWorkType, setSelectedWorkType] = React.useState(undefined);
-  const [workTypeIcon, setWorkTypeIcon] = React.useState(images.type_all_64);
+  const [title, setTitle] = React.useState(t("LABEL_ALL_DELETED_WORKING_BOARD"));
 
   React.useEffect(() => {
       const resetConfirm = () => {
@@ -92,45 +71,20 @@ function DeletedProjectTable({
           CustomEventDispose(DELETE_TRASH_PROJECT_FAIL, resetConfirm);
       }
   }, [loading]);
-
-  React.useEffect(() => {
-    let _projects = [];
-    switch (selectedWorkType) {
-      case WORKPLACE_TYPES.JOB:
-        setWorkTypeIcon(images.check_64);
-        setTitle(t("IDS_WP_WORKING_TYPE"));
-        _projects = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.JOB);
-        break;
-      case WORKPLACE_TYPES.PROJECT:
-        setWorkTypeIcon(images.speed_64);
-        setTitle(t("IDS_WP_PROJECT_LIST"));
-        _projects = filter(projects.projects, (item) => item.work_type === 1);
-        break;
-      case WORKPLACE_TYPES.PROCESS:
-        setWorkTypeIcon(images.workfollow_64);
-        setTitle(t("IDS_WP_PROCESS_LIST"));
-        _projects = filter(projects.projects, (item) => item.work_type === WORKPLACE_TYPES.PROCESS);
-        break;
-      default:
-        setWorkTypeIcon(images.type_all_64);
-        setTitle(t("IDS_WP_ALL"));
-        _projects = projects.projects;
-        break;
-    }
-    setProjectFiltered(_projects);
-  }, [selectedWorkType,projects]);
-
+  function resolveTitle() {
+    return <>
+      <DeleteOutlineIcon fontSize={"large"} style={{marginRight: 20}}/>
+      <Typography variant={"h5"} bold>{title}</Typography>
+    </>
+  }
   return (
     <Container>
       <React.Fragment>
         <CustomTable
           options={{
             title: () => (
-              <div className={"view_ProjectGroupPage_Table_Deleted_title"}>
-                <img src={workTypeIcon} alt="Working type icon" width={30} height={30}/>
-                <div className={"view_ProjectGroupPage_Table_Deleted_title_icon"}>
-                  <Button endIcon={<Icon path={mdiMenuDown} size={1.5} />} onClick={() => setOpenWorkTypeModal(true)}><span>{title}</span></Button>
-                </div>
+              <div style={{display: "flex", alignItems: "center"}}>
+                {resolveTitle()}
               </div>
             ),
             subTitle: '',
@@ -286,7 +240,7 @@ function DeletedProjectTable({
             align: 'center',
             width: '20%',
           }]}
-          data={projectFiltered}
+          data={projects.projects}
         />
       </React.Fragment>
       <AlertModal
@@ -303,17 +257,6 @@ function DeletedProjectTable({
         }}
         manualClose={true}
         actionLoading={loading}
-      />
-      <SelectWorkType
-        open={openWorkTypeModal}
-        setOpen={setOpenWorkTypeModal}
-        selected={selectedWorkType}
-        handleSelectItem={(type) => setSelectedWorkType(type)}
-        projectStatistic={{
-          number_work_type: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.work_topic', 0), 0),
-          number_project: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.project', 0), 0),
-          number_process: projectGroup.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.process', 0), 0),
-        }}
       />
     </Container>
   )

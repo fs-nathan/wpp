@@ -348,12 +348,12 @@
           "NEWPG": {
             "TITLE": "Tạo dự án",
             "CREATE": {
-              "TITLE": "Tạo mới dự án",
-              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình để bắt đầu làm việc"
+              "TITLE": "Tạo mới bảng công việc",
+              "DESC": "Tạo mới bảng công việc để bắt đầu làm việc"
             },
             "COPY": {
-              "TITLE": "Sao chép",
-              "DESC": "Tạo mới Chủ đề công việc, Dự án hoặc Quy trình bằng cách sao chép từ thư viện"
+              "TITLE": "Sao chép từ bảng mẫu",
+              "DESC": "Tạo mới bảng công việc bằng cách sao chép từ thư viện bảng mẫu"
             }
           },
           "NOPG": {
@@ -448,7 +448,7 @@
             "LEAVE": "Đã rời nhóm",
             "TITLE": "Thành viên",
             "BACK": "Quay lại",
-            "ADD": "Thêm thành viên dự án",
+            "ADD": "Thêm thành viên vào dự án",
             "SEARCH": "Tìm thành viên",
             "ALL_LABEL": "Tất cả",
             "MANAGE": "Quản lý thành viên"
@@ -483,7 +483,7 @@
             "LEFT": {
               "TITLE": "Danh sách thành viên",
               "SEARCH": "Tìm thành viên",
-              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho dự án, Quy trình hoặc Chủ đề công việc!"
+              "HELPER": "Hãy thêm thành viên vào nhóm trước khi gán cho Bảng công việc"
             },
             "RIGHT": {
               "TITLE": "Thành viên",
@@ -491,7 +491,7 @@
                 "MEM": "Thành viên",
                 "PER": "Nhóm quyền",
                 "ROL": "Vai trò",
-                "STA": "Trạng thái"
+                "STA": "Giao việc"
               },
               "LABEL": {
                 "PER": "Gán quyền",
@@ -1735,7 +1735,7 @@
   "Phạm vi module phân quyền": "Phạm vi áp dụng của nhóm quyền",
   "Tạo nhóm quyền": "Tạo nhóm quyền",
   "Hoàn thành": "Hoàn thành",
-  "required": "Yêu cầu",
+  "ç": "Yêu cầu",
   "Cancel": "Hủy",
   "Delete": "Xóa",
   "Bạn có muốn xóa nhóm quyền?": "Bạn có muốn xóa nhóm quyền?",
@@ -2255,5 +2255,36 @@
   "EMPTY_PERSONAL_BOARD_MESSAGE_1": "Chúng tôi muốn giúp bạn sử dụng Workplus được dễ dàng và thuận tiện hơn!",
   "EMPTY_PERSONAL_BOARD_MESSAGE_2": "Bạn hãy lựa chọn những Bảng công việc thường xuyên phải truy cập để xử lý hoặc có mức độ ưu tiên cao và ghim chúng vào danh mục này.",
   "EMPTY_PERSONAL_BOARD_MESSAGE_3": "Lưu ý: Trước khi tạo bảng Cá nhân bạn phải có Bảng công việc được tạo và ghim chúng vào đây",
-  "LABEL_CREATE_PERSONAL_BOARD": "Tạo bảng cá nhân"
+  "LABEL_CREATE_PERSONAL_BOARD": "Tạo bảng cá nhân",
+  "LABEL_ALL_DELETED_WORKING_BOARD": "Tất cả bảng đã xóa",
+  "LABEL_SEARCH_MEMBERS_TO_ADD": "TÌm kiếm thành viên trong danh sách dưới đây...",
+  "LABEL_SEARCH_MEMBERS_TO_ADD_DES": "Bạn chỉ được thêm những thành viên đã tham gia vào Dự án/Quy trình/Chủ đề công. Nếu bạn không thấy thành viên cần thêm ở danh sách bên  thì hãy thêm họ vào Dự án/Quy trình/Chủ  trước khi thêm vào công việc này.",
+  "LABEL_WORKING_BOARD_MEMBERS": "Thành viên bảng công việc",
+  "LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT": "Đã thêm {{count}} thành viên",
+  "MESSAGE_WORKING_BOARD_EMPTY": "Không có Bảng công việc nào!",
+  "MESSAGE_WORKING_BOARD_EMPTY_DES": "Tạo bảng công việc mới trước khi lựa chọn",
+  "LABEL_CREATE_WORKING_BOARD": "Tạo bảng công việc",
+  "EMPTY_WORKING_GROUP_MESSAGE_1": "Phân loại và quy hoạch hệ thống làm việc của bạn để dễ dàng quảng lý bằng cách tạo ra các nhóm làm việc",
+  "EMPTY_WORKING_GROUP_MESSAGE_2": "Mẹo: Bạn hãy tạo các nhóm làm việc dựa trên quy mô, tính chất hoặc theo cách mà bạn dễ theo dõi nhất.",
+  "EMPTY_WORKING_GROUP_MESSAGE_3": "Kinh nghiệm: Thông thường các nhóm làm việc sẽ do CEO hoặc Ban lãnh đạo xây dựng để nhất quán sơ đồ quản trị trong hệ thống.",
+  "EMPTY_WORKING_GROUP_MESSAGE_4": "Mỗi thành viên có thể tạo riêng cho mình một nhóm việc, ví dụ: Công việc của tôi...",
+  "EMPTY_WORKING_GROUP_MESSAGE_5": "Bạn chỉ thấy một nhóm làm việc khi bạn được tham gia ít nhất vào một Bảng làm việc trong nhóm.",
+  "LABEL_WORKING_BOARD_FIRST_CREATE": "Tạo bảng công việc đầu tiên!",
+  "LABEL_WORKING_BOARD_CREATE": "Tạo bảng công việc",
+  "LABEL_WORKING_BOARD_CREATE_NEW": "Tạo mới bảng công việc",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE1": "Bảng công việc là một <strong>Chủ đề công việc</strong>: Ví dụ như chủ đề: Công việc Tháng 1/2020 Phòng Hành chính, Công việc thường xuyên, Công việc nội bộ Phòng...",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE2": "Bảng công việc là một <strong>Dự án</strong>: Ví dụ như: Dự án sản xuất của gỗ, DỰ án đầu tư xây dụng Toà nhà ABC, Dự án Marketing sản phẩm XYZ,...",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE3": "Bảng công việc là một <strong>Quy trình</strong>: Ví dụ như: Quy trình tuyển dụng Quý I/2020, QUy trình thanh toán Hợp đồng A, Quy trình chăm sóc khách hàng Tháng 1/2020,...",
+  "EMPTY_WORKING_BOARD_MESSAGE_1": "Có vẻ bạn đã nắm được cách sử dụng Workplus!",
+  "EMPTY_WORKING_BOARD_MESSAGE_2": "Bước tiếp theo bạn hãy tạo Bảng công việc đầu tiên cho Nhóm làm việc này để bắt đầu làm việc.",
+  "EMPTY_WORKING_BOARD_MESSAGE_3": "Chúng tôi phân loại bảng công việc thành 3 loại: ",
+  "EMPTY_WORKING_BOARD_MESSAGE_4": "Đừng quên thêm thành viên vào Bảng công việc để giao việc, phân việc cho từng công việc trong Bảng.",
+  "LABEL_WORKING_BOARD_NAME": "Tên bảng công việc",
+  "LABEL_CATEGORY": "Phân loại",
+  "LABEL_EMPTY_TASK_FIRST_CREATE": "Tạo công việc đầu tiên!",
+  "EMPTY_TASK_MESSAGE_1": "Chào mừng bạn đã đến bước cuối cùng!",
+  "EMPTY_TASK_MESSAGE_2": "Bước tiếp theo bạn hãy tạo những công việc cho Bảng này để bắt đầu thực hiện và quản lý công việc hiệu quả.",
+  "EMPTY_TASK_MESSAGE_3": "Mẹo: Hãy tạo trước những nhóm công việc trong Bảng để phân loại ra các nhóm công việc khác nhau. Hệ thống đã tạo sẵn ban đầu cho bạn một nhóm có tên <strong>\"Chưa phân loại\"</strong>, bạn có thể thay đổi tên nhóm này bắt cứ lúc nào.",
+  "EMPTY_TASK_MESSAGE_4": "Workplus cung cấp các sơ đồ quản trị, gồm: <strong>Todo List, Kanban, Gantt Chart, Work Chat</strong> và được đồng bộ hoá dữ liệu với nhau. Bạn có thể thiết lập chế độ xem Bảng công việc mặc định theo một sơ đồ mà bạn yêu thích trong mục <strong>Cài đặt bảng công việc</strong>",
+  "EMPTY_TASK_MESSAGE_5": "Đừng quên thêm thành viên vào công việc để thảo luận, chia sẻ và cùng nhau hoàn thành nhiệm vụ được giao."
 }

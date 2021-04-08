@@ -9,7 +9,7 @@
 .view_Project_ProjectMemberSlide___container {
   height: 100%;
   display: grid;
-  grid-template-rows: 65px 1fr 65px;
+  grid-template-rows: 140px 1fr;
   grid-template-columns: auto;
   & > * {
     &:nth-child(2) {
@@ -35,4 +35,10 @@
 
 .view_Project_ProjectMemberSlide___wrapper {
   height: 100%;
+}
+.view_Project_ProjectMemberSlide___buttonAddMembers {
+  width: 100%;
+  color: #fff;
+  margin-bottom: 20px;
+  height: 45px;
 }

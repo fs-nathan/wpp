@@ -23,6 +23,7 @@ function DialogWrap({
   isDisableSubmit,
   className,
   isOneButton,
+  useScrollbar = true,
   ...rest
 }) {
   const { t } = useTranslation();
@@ -39,11 +40,16 @@ function DialogWrap({
         </IconButton>
       </DialogTitle>
       <div className="dialogWrap--container">
-        <Scrollbars
-          renderView={props => <div {...props} className="dialogWrap--scrollWrap" />}
-          autoHide autoHideTimeout={500} autoHideDuration={200}>
-          {children}
-        </Scrollbars>
+        {useScrollbar && (
+          <Scrollbars
+            renderView={props => <div {...props} className="dialogWrap--scrollWrap" />}
+            autoHide autoHideTimeout={500} autoHideDuration={200}>
+            {children}
+          </Scrollbars>
+        )}
+        {!useScrollbar && (
+          <>{children}</>
+        )}
       </div>
       <DialogActions>
         {!isOneButton && <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >

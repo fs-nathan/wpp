@@ -132,7 +132,6 @@ const HeaderPart = props => {
       {renderAvatars({ styles: classes, images: members })}
       <div className="wrap-room-description">
         <Typography className="chatHeader--title">{t('LABEL_CHAT_TASK_THAO_LUAN')}</Typography>
-        {/* <TabForm tabs={tabs} /> */}
         <NavigatorMenu />
       </div>
       <abbr title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}>

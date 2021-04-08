@@ -348,12 +348,12 @@
           "NEWPG": {
             "TITLE": "Create project",
             "CREATE": {
-              "TITLE": "Create project",
-              "DESC": "Create a new Work Topic, Project or Process to start working"
+              "TITLE": "Create a new job board",
+              "DESC": "Create a new job board to start working"
             },
             "COPY": {
-              "TITLE": "Copy",
-              "DESC": "Create a new Work Topic, Project or Process by copying it from the library"
+              "TITLE": "Copy from sample board",
+              "DESC": "Create a new job board by copying it from the sample board library"
             }
           },
           "NOPG": {
@@ -483,7 +483,7 @@
             "LEFT": {
               "TITLE": "Members list",
               "SEARCH": "Search members",
-              "HELPER": "Let add member to group before assign for project, stages, or works"
+              "HELPER": "Let add member to group before assign for works"
             },
             "RIGHT": {
               "TITLE": "Members",
@@ -491,7 +491,7 @@
                 "MEM": "Member",
                 "PER": "Permission group",
                 "ROL": "Role",
-                "STA": "Status"
+                "STA": "Assign"
               },
               "LABEL": {
                 "PER": "Decentralized",
@@ -2252,5 +2252,28 @@
   "EMPTY_PERSONAL_BOARD_MESSAGE_1": "We want to make it easier and more convenient for you to use Workplus!",
   "EMPTY_PERSONAL_BOARD_MESSAGE_2": "Select Job Boards that are frequently accessible for processing or high priority and pin them to this category. ",
   "EMPTY_PERSONAL_BOARD_MESSAGE_3": "Note: Before creating a Personal board you must have the Work Board created and pin them here.",
-  "LABEL_CREATE_PERSONAL_BOARD": "Create personal board"
+  "LABEL_CREATE_PERSONAL_BOARD": "Create personal board",
+  "LABEL_SEARCH_MEMBERS_TO_ADD": "Search for members in the list below ...",
+  "LABEL_SEARCH_MEMBERS_TO_ADD_DES": "You can only add members who have participated in a Public Project / Process / Topic. If you do not see a member to add in the side list, add them to the Project / Process / Owner before adding them to the task.",
+  "LABEL_WORKING_BOARD_MEMBERS": "Wokring board members",
+  "LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT": "There are {{count}} members added",
+  "MESSAGE_WORKING_BOARD_EMPTY": "Working board is empty",
+  "MESSAGE_WORKING_BOARD_EMPTY_DES": "Please create working board before select",
+  "LABEL_CREATE_WORKING_BOARD": "Create working board",
+  "EMPTY_WORKING_GROUP_MESSAGE_5": "You see only one workgroup when you have joined at least one Workgroup in a group. ",
+  "LABEL_WORKING_BOARD_FIRST_CREATE": "Create your first job board! ",
+  "LABEL_WORKING_BOARD_CREATE": "Create job boards",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE1": "The job board is a <strong> Job Subject </strong>: For example, the topic: Job January 2020 Administration, Regular affairs, Internal affairs Department...",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE2": "The job board is a <strong> Project </strong>: For example: Wood production project, ABC Building investment project, XYZ Product Marketing Project, ... ",
+  "EMPTY_WORKING_BOARD_MESSAGE_WORKING_TYPE3": "The job board is a <strong> Process </strong>: For example: Recruitment Process Q1 / 2020, Contract A Payment Process, January 2020 Customer Care Process, ...",
+  "EMPTY_WORKING_BOARD_MESSAGE_1": "You seem to know how to use Workplus! ",
+  "EMPTY_WORKING_BOARD_MESSAGE_2": "Your next step is to create your first Workgroup for this Workgroup to start working on.",
+  "EMPTY_WORKING_BOARD_MESSAGE_3": "We classify job boards into three categories: ",
+  "EMPTY_WORKING_BOARD_MESSAGE_4": "Do not forget to add members to the Job Board to assign tasks to each job in the Board.",
+  "LABEL_EMPTY_TASK_FIRST_CREATE": "Create your first task!",
+  "EMPTY_TASK_MESSAGE_1": "Welcome to the final step!",
+  "EMPTY_TASK_MESSAGE_2": "The next step is to create jobs for this Table to start implementing and managing the work effectively.",
+  "EMPTY_TASK_MESSAGE_3": "Tip: Create groups of jobs in Table in advance to categorize different job groups. The system has pre-created for you a group named <strong> \"Uncategorized\" </strong>, you can change this group name at any time. ",
+  "EMPTY_TASK_MESSAGE_4": "Workplus provides administration diagrams, including: <strong> Todo List, Kanban, Gantt Chart, Work Chat </strong> and are synchronized with each other. You can set the default Job Board view to a profile you like in <strong> Job Board Settings </strong>",
+  "EMPTY_TASK_MESSAGE_5": "Don't forget to add members to work to discuss, share and together complete assigned tasks."
 }

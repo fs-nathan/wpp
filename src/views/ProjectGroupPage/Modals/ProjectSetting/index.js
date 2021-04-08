@@ -25,7 +25,7 @@ function ProjectSetting({
   doGetPermissionViewDetailProject,
   doReload, doUpdateNotificationSetting,
   projectGroupId = undefined,
-  localOption,
+  localOption, type_data = null
 }) {
 
   const times = useTimes();
@@ -67,6 +67,7 @@ function ProjectSetting({
         timeEnd: get(timeRange, 'timeEnd')
           ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
           : undefined,
+        type_data: type_data
       }, get(curProject, 'id'))}
       status={status}
       canChange={{

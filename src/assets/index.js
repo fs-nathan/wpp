@@ -58,3 +58,4 @@ export { default as bg001} from "./bg_001.png";
 export { default as bg002} from "./bg_002.png";
 export { default as bg003} from "./bg_003.png";
 export { default as bg004} from "./bg_004.png";
+export { default as ic_no_data_2021} from "./ic_no_data_2021.png";

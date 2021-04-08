@@ -117,8 +117,7 @@ function AllProjectTable({
     let _projects = [...projects.projects];
     _projects = filter(_projects, filters[filterType].option);
     setNewProjects({...projects, projects: _projects});
-    // eslint-disable-next-line
-  }, [filterType]);
+  }, [filterType, projects.projects]);
 
   React.useEffect(() => {
     let _projects = [...projects.projects];
@@ -129,7 +128,6 @@ function AllProjectTable({
       projects: _projects,
     });
   }, [projects, sortType]);
-
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
   const [openNoPG, setOpenNoPG] = React.useState(false);
@@ -224,6 +222,7 @@ function AllProjectTable({
           doSortProject({ sortData })
         }
         handleOpenModal={doOpenModal}
+        groupID={groupID}
       />
       <CreateProjectModal
         open={openCreate}
@@ -243,6 +242,8 @@ function AllProjectTable({
         open={openSetting}
         setOpen={setOpenSetting}
         {...settingProps}
+        type_data={type_data}
+        projectGroupId={groupID}
       />
       <DeleteProjectModal
         open={openAlert}

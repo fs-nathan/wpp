@@ -23,4 +23,26 @@
       margin-right: 10px;
     }
   }
+  &-noDataWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    width: 300px;
+    margin: 40px auto 0;
+
+    h5 {
+      margin-top: 10px;
+    }
+    p {
+      font-size: 14px;
+    }
+    .MuiButton-root {
+      color: #fff;
+      margin-top: 50px;
+      height: 55px;
+      width: 250px;
+    }
+  }
 }

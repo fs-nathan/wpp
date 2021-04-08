@@ -1,16 +1,15 @@
-import { Button, ListItemText } from '@material-ui/core';
-import { mdiAccountCog, mdiChevronLeft, mdiPlus } from '@mdi/js';
-import Icon from '@mdi/react';
+import {Button, ListItemText} from '@material-ui/core';
+import {mdiAccountCog, mdiChevronLeft} from '@mdi/js';
 import CustomAvatar from 'components/CustomAvatar';
-import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
+import {Primary, Secondary, StyledList, StyledListItem} from 'components/CustomList';
 import LeftSideContainer from 'components/LeftSideContainer';
 import LoadingBox from 'components/LoadingBox';
 import SearchInput from 'components/SearchInput';
-import { get, isNil } from 'lodash';
+import {get, isNil} from 'lodash';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import { Link, useHistory, useParams } from 'react-router-dom';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {useTranslation} from 'react-i18next';
+import {Link, useHistory, useParams} from 'react-router-dom';
 import CustomListItem from './CustomListItem';
 import {Routes} from "../../../../constants/routes";
 import './style.scss';
@@ -61,7 +60,7 @@ function ProjectMemberSlide({
           tooltip: t("DMH.VIEW.PP.LEFT.PM.BACK"),
         }}
         rightAction={{
-          iconPath: mdiPlus,
+          iconPath: mdiAccountCog,
           onClick: () => handleOpenModal('MEMBER_SETTING'),
           tooltip: t("DMH.VIEW.PP.LEFT.PM.ADD"),
         }}
@@ -72,10 +71,17 @@ function ProjectMemberSlide({
       >
         <Container>
           <Banner>
+            <Button
+              variant={"contained"} color={"primary"} disableElevation
+              className={"view_Project_ProjectMemberSlide___buttonAddMembers"}
+            >
+              {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
+            </Button>
             <SearchInput
               fullWidth
               placeholder={t("DMH.VIEW.PP.LEFT.PM.SEARCH")}
               value={searchPattern}
+              style={{background: "#fff"}}
               onChange={evt => setSearchPattern(evt.target.value)}
             />
           </Banner>
@@ -113,10 +119,10 @@ function ProjectMemberSlide({
               ))}
             </StyledList>
           </Wrapper>
-          <Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
+          {/*<Button onClick={evt => handleOpenModal('MEMBER_SETTING')}>
             <Icon path={mdiAccountCog} size={1} />
             <span>{t("DMH.VIEW.PP.LEFT.PM.MANAGE")}</span>
-          </Button>
+          </Button>*/}
         </Container>
       </LeftSideContainer>
     </>

@@ -2,18 +2,29 @@ import { updatePinBoardSettingSuccess, updatePinBoardSettingFail } from 'actions
 import { apiService } from 'constants/axiosInstance';
 import { CustomEventEmitter } from 'constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from 'constants/snackbarController';
-import { get } from 'lodash';
+import { get, isArray } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import {UPDATE_PIN_BOARD_SETTING} from "../../../constants/events";
 
 async function doUpdatePinBoardSetting({ projectId, status }) {
   try {
-    const config = {
-      url: status ? 'project/setting/un-pin-to-personal-board' : '/project/setting/pin-to-personal-board',
-      method: 'post',
-      data: {
-        project_id: projectId,
-      },
+    let config = {};
+    if(isArray(projectId)) {
+      config = {
+        url: '/project/setting/pin-multiple-personal-board',
+        method: 'post',
+        data: {
+          project_ids: projectId,
+        },
+      }
+    } else {
+      config = {
+        url: status ? 'project/setting/un-pin-to-personal-board' : '/project/setting/pin-to-personal-board',
+        method: 'post',
+        data: {
+          project_id: projectId,
+        },
+      }
     }
     const result = await apiService(config);
     return result.data;
