@@ -41,7 +41,7 @@ export const GroupPermissionFormInner = ({
         name="description"
         label={t("Mô tả nhóm quyền")}
       />
-      <RadioGroupFormControl
+      {/* <RadioGroupFormControl
         disabled={disabled.module}
         required
         options={permissionModules.map((item) => {
@@ -57,7 +57,7 @@ export const GroupPermissionFormInner = ({
         })}
         name="module"
         label={t("Phạm vi module phân quyền")}
-      />
+      /> */}
     </VerticleList>
   );
 };
@@ -82,7 +82,7 @@ export const GroupPermissionModal = ({
         },
       ]}
     >
-      <DialogContent dividers className="dialog-content move-content">
+      <DialogContent dividers className="dialog-content move-content" style={{minHeight: '300px'}}>
         <Box padding="24px">
           <GroupPermissionFormInner permissionModules={permissionModules} />
         </Box>

@@ -1,6 +1,7 @@
 import { Avatar, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { mdiMagnify } from '@mdi/js';
+import { ic_add_user } from 'assets';
 import Icon from '@mdi/react';
 import { getMemberTask, getMemberTaskService } from 'actions/chat/chat';
 import fakeAvatar from 'assets/avatar.jpg';
@@ -122,6 +123,10 @@ const HeaderPart = props => {
     props.setShowSearch(true)
   }
 
+  function openAddModal() {
+    props.setOpenAddModal(true)
+  }
+
   return (
     <div className="container-header">
       {renderAvatars({ styles: classes, images: members })}
@@ -130,6 +135,16 @@ const HeaderPart = props => {
         {/* <TabForm tabs={tabs} /> */}
         <NavigatorMenu />
       </div>
+      <abbr title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}>
+        <IconButton className="chatHeader--button" onClick={openAddModal}>
+        <img
+              src={ ic_add_user }
+              alt=""
+              style={{width: '23px'}}
+              className="topnav-icon message-icon"
+            />
+        </IconButton>
+      </abbr>
       <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>
         <IconButton className="chatHeader--button" onClick={openSearch}>
           <Icon path={mdiMagnify} size={1.2} className="job-detail-icon" />

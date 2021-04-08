@@ -6,6 +6,7 @@ import TwoColumnsLayout from '../../components/TwoColumnsLayout';
 import DepartmentInfo from './LeftPart/DepartmentInfo';
 import DepartmentList from './LeftPart/DepartmentList';
 import AllUsersTable from './RightPart/AllUsersTable';
+import MemberRequiredStart from './RightPart/MemberRequiredStart';
 import DepartmentUsersTable from './RightPart/DepartmentUsersTable';
 import { routeSelector } from './selectors';
 
@@ -60,6 +61,50 @@ function UserPage({
                 rightRender={
                   ({ expand, handleExpand }) =>
                     <DepartmentUsersTable
+                      {...props}
+                      expand={expand}
+                      handleExpand={handleExpand}
+                    />
+                }
+              />
+            )}
+          />
+          <Route
+            path={`${url}/memberRequired`}
+            exact
+            render={props => (
+              <TwoColumnsLayout
+                leftRenders={[
+                  () =>
+                    <DepartmentList
+                      {...props}
+                    />,
+                ]}
+                rightRender={
+                  ({ expand, handleExpand }) =>
+                    <MemberRequiredStart
+                      {...props}
+                      expand={expand}
+                      handleExpand={handleExpand}
+                    />
+                }
+              />
+            )}
+          />
+          <Route
+            path={`${url}/listMemberRequired`}
+            exact
+            render={props => (
+              <TwoColumnsLayout
+                leftRenders={[
+                  () =>
+                    <DepartmentList
+                      {...props}
+                    />,
+                ]}
+                rightRender={
+                  ({ expand, handleExpand }) =>
+                    <MemberRequiredStart
                       {...props}
                       expand={expand}
                       handleExpand={handleExpand}

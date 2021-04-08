@@ -61,7 +61,7 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
     </Grid>
   );
 };
-const ColumnLeft = () => {
+const ColumnRight = () => {
   const { t } = useTranslation();
   const {
     setModal,
@@ -157,7 +157,7 @@ const ColumnLeft = () => {
     </ColumnLayout>
   );
 };
-const ColumnRight = () => {
+const ColumnLeft = () => {
   const { t } = useTranslation();
   const {
     detail,
@@ -271,6 +271,7 @@ export default ({ ...props }) => {
           {name}
         </Box>
       </Box>
+      
     ),
     subActions: [],
     mainAction: can_modify

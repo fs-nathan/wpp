@@ -1,0 +1,37 @@
+.view_Department_Create_Modal___logo-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  & > div {
+    & > *:not(:last-child) {
+      margin-bottom: 8px;
+    }
+    & > button {
+      text-transform: none;
+    }
+  }
+};
+
+.view_Department_Create_Modal___button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > span > span {
+    &:first-child {
+      color: white;
+      width: 15px;
+      height: 15px;
+      line-height: 15px;
+      text-align: center;
+      vertical-align: center;
+      background-color: blue;
+      border-radius: 99px;
+    }
+    &:not(:first-child) {
+      color: #333333;
+      margin-left: 10px;
+      font-weight: normal;
+    }
+  }
+};

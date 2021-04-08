@@ -80,7 +80,8 @@
               "INVT": "Invite member to join group",
               "FIND": "Enter email",
               "INVD": "Invited",
-              "REQS": "Requirements join group of member"
+              "REQS": "Requirements join group of member",
+              "REQ": "Members requested to join"
             },
             "BTN": {
               "CANCLE": "Cancel",
@@ -114,9 +115,9 @@
         },
         "MODAL": {
           "CA": {
-            "TITLE": "Add account",
+            "TITLE": "Invite your friends",
             "CANCLE": "Cancel",
-            "INVT": "Invite other member register new account",
+            "INVT": "Recommend Workplus to your friends",
             "EMAIL": "Enter email",
             "EMAIL_INP": "Enter email",
             "SEND": "Send",
@@ -2209,6 +2210,11 @@
   "LABEL_HOW_TO_START": "How to start your work",
   "LABEL_HOW_TO_START_DES": "Please following below steps for starting your online works with Workplus",
   "LABEL_HOW_TO_START_DES2": "You can hide or show this category at any time. We recommend that you hide this category only if you have mastered the steps below.",
+  "LABEL_HOW_TO_REQ_JOIN": "Request to join the group",
+  "LABEL_HOW_TO_REQ_JOIN_DES1": "Each account will be initialized Workplus a corresponding working group and they are assigned with a unique ID.",
+  "LABEL_HOW_TO_REQ_JOIN_DES2": "In addition to proactively invite your teammates to join the group of his Workplus allow other Members can actively request to join your group.",
+  "LABEL_HOW_TO_REQ_JOIN_DES3": "This feature makes it easy to create a team with many members quickly. Simply send them your Group ID or the phone number you registered.",
+  "LABEL_HOW_TO_REQ_JOIN_DES4": "This is your group's ID:",
   "LABEL_START_WORK_STEP_1": "Create work group",
   "LABEL_START_WORK_STEP_1_DES": "Create work group like Marking, Human resource, Factoring etc contains topcs, projects, processing.",
   "LABEL_START_WORK_STEP_2" : "Add topics, projects or processing into your group",

@@ -79,7 +79,7 @@ function Left({
   return (
     <>
       <LeftSideContainer
-        title={t("Thiết lập nhóm quyền")}
+        title={t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
         leftAction={{
           iconPath: mdiChevronLeft,
           onClick: () => {

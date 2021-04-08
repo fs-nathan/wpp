@@ -80,7 +80,8 @@
               "INVT": "Mời thành viên tham gia nhóm",
               "FIND": "Nhập email, số điện thoại thành viên",
               "INVD": "Đã mời thành viên tham gia nhóm",
-              "REQS": "Thành viên yêu cầu tham gia nhóm"
+              "REQS": "Thành viên yêu cầu tham gia nhóm",
+              "REQ": "Thành viên yêu cầu"
             },
             "BTN": {
               "CANCLE": "Hủy",
@@ -114,12 +115,12 @@
         },
         "MODAL": {
           "CA": {
-            "TITLE": "Thêm tài khoản",
+            "TITLE": "Giới thiệu bạn bè",
             "CANCLE": "Hủy",
-            "INVT": "Mời đăng ký tài khoản",
+            "INVT": "Giới thiệu Workplus tới bạn bè",
             "EMAIL": "Nhập email bạn muốn mời đăng ký sử dụng phần mềm",
-            "EMAIL_INP": "Nhập email đăng ký",
-            "SEND": "Gửi yêu cầu",
+            "EMAIL_INP": "Nhập email người được mời",
+            "SEND": "Gửi đi",
             "NOTE": "Lưu ý:",
             "DESC": "Hệ thống sẽ gửi Email kèm theo mã xác thực tới tài khoản được mời đăng ký. Bạn vui lòng nhắc người được mời kiểm tra mail trong Hòm thư đến hoặc Spam để lấy mã"
           },
@@ -2213,6 +2214,11 @@
   "LABEL_HOW_TO_START": "Bắt đầu như thế nào",
   "LABEL_HOW_TO_START_DES": "Hãy làm theo các bước sau để bắt đầu làm việc trực tuyến cùng Workplus",
   "LABEL_HOW_TO_START_DES2": "Bạn có thể ẩn hoặc hiện danh mục này bất cứ lúc nào. Chúng tôi khuyên bạn chỉ nên ẩn danh mục này khi bạn đã thực hiện thành thạo các bước dưới đây.",
+  "LABEL_HOW_TO_REQ_JOIN": "Yêu cầu tham gia nhóm",
+  "LABEL_HOW_TO_REQ_JOIN_DES1": "Mỗi tài khoản Workplus sẽ được khởi tạo một Nhóm làm việc tương ứng và chúng được gán với một ID duy nhất.",
+  "LABEL_HOW_TO_REQ_JOIN_DES2": "Ngoài việc bạn chủ động mời đồng đội tham gia vào nhóm của mình, Workplus cho phép các Thành viên khác có thể chủ động yêu cầu tham gia nhóm của bạn.",
+  "LABEL_HOW_TO_REQ_JOIN_DES3": "Tính năng này giúp bạn dễ dàng tạo dựng nhóm làm việc nhiều thành viên một cách nhanh chóng. Thật đơn giản bạn chỉ việc gửi cho họ ID Nhóm của bạn hoặc số điện thoại bạn đã đăng ký.",
+  "LABEL_HOW_TO_REQ_JOIN_DES4": "Đây là ID nhóm của bạn:",
   "LABEL_START_WORK_STEP_1": "Tạo nhóm làm việc",
   "LABEL_START_WORK_STEP_1_DES": "Tạo nhóm làm việc như Marketing, Nhân sự, Sản xuất... để chứa các chủ đề, dự án, quy trình.",
   "LABEL_START_WORK_STEP_2" : "Thêm chủ đề, dự dự án hoặc quy trình vào nhóm",

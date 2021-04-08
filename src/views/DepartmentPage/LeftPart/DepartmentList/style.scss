@@ -5,3 +5,29 @@
 .view_Department_List___primary {
   font-weight: 500;
 };
+
+.deparmentList_container .comp_LeftSideContainer___container {
+  grid-template-rows: 5px calc(100vh - 70px - 50px);
+}
+
+.deparmentList_container .comp_LeftSideContainer___header {
+  padding: 0px;
+}
+
+.deparmentList_containerHasHeader .comp_LeftSideContainer___container {
+  grid-template-rows: 130px calc(100vh - 70px - 50px);
+}
+
+.deparmentList_containerHasHeader .comp_LeftSideContainer___header {
+  padding: 0px;
+  display: inline-block;
+}
+
+.deparmentList_containerHasHeader .comp_LeftSideContainer___icon-button {
+  display: none;
+}
+
+.deparmentList_containerHasHeader .comp_LeftSideContainer___title {
+  margin: 0px;
+  text-transform: none;
+}

@@ -7,6 +7,8 @@ import { filter, get } from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import CreateAndUpdateDepartmentModal from '../../Modals/CreateAndUpdateDepartment';
+import CreateAccountModal from '../../Modals/CreateAccount';
+import { actionVisibleDrawerMessage } from 'actions/system/system';
 import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import DepartmentListPresenter from './presenters';
 import { roomsSelector } from './selectors';
@@ -17,6 +19,7 @@ function DepartmentList({
   doListIcon,
   doListRoom,
   doListUserOfGroup,
+  doActionVisibleDrawerMessage,
 }) {
 
   React.useEffect(() => {
@@ -81,12 +84,26 @@ function DepartmentList({
   }
 
   const [openCreateAndUpdateDepartmentModal, setOpenCreateAndUpdateDepartmentModal] = React.useState(false);
+  const [openCreateAccountModal, setOpenCreateAccountModal] = React.useState(false);
+  // const [openCreateAccountModal, setOpenCreateAccountModal] = React.useState(false);
 
   function doOpenModal(type) {
     switch (type) {
       case 'CREATE': {
         if (get(viewPermissions.permissions, 'can_modify', false)) {
           setOpenCreateAndUpdateDepartmentModal(true);
+        }
+        return;
+      }
+      case 'CREATE_ACCOUNT': {
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenCreateAccountModal(true);
+        }
+        return;
+      }
+      case 'MEMBERS-REQUIRED': {
+        if (get(viewPermissions.permissions, 'can_modify', false)) {
+          setOpenCreateAccountModal(true);
         }
         return;
       }
@@ -108,11 +125,13 @@ function DepartmentList({
         handleDragEnd={onDragEnd}
         handleSearchPatern={evt => setSearchPatern(evt.target.value)}
         handleOpenModal={doOpenModal}
+        handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
       />
       <CreateAndUpdateDepartmentModal
         open={openCreateAndUpdateDepartmentModal}
         setOpen={setOpenCreateAndUpdateDepartmentModal}
       />
+      <CreateAccountModal open={openCreateAccountModal} setOpen={setOpenCreateAccountModal} />
     </>
   )
 }
@@ -131,6 +150,7 @@ const mapDispatchToProps = dispatch => {
     doListIcon: (quite) => dispatch(listIcon(quite)),
     doListRoom: (quite) => dispatch(listRoom(quite)),
     doListUserOfGroup: (quite) => dispatch(listUserOfGroup(quite)),
+    doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
   };
 };
 

@@ -1,21 +1,21 @@
-import {List, ListItem, ListItemText, Typography} from '@material-ui/core';
+import { List, ListItem, ListItemText, Typography, Select, MenuItem, Checkbox, Icon, FormControlLabel, RadioGroup, Radio, Button, IconButton } from '@material-ui/core';
 import React from 'react';
-import {Scrollbars} from 'react-custom-scrollbars';
-import {useTranslation} from 'react-i18next';
-import {useDispatch, useSelector} from 'react-redux';
+import { Scrollbars } from 'react-custom-scrollbars';
+import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {focusTaskGroup, getMember, updatePriority} from '../../../../../actions/taskDetail/taskDetailActions';
+import { focusTaskGroup, getMember, updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import colorPal from '../../../../../helpers/colorPalette';
-import {taskIdSelector} from '../../../selectors';
+import { taskIdSelector } from '../../../selectors';
 import Description from './Description';
 import HtmlTooltip from './HtmlTooltip';
 import ModalPriority from './ModalPriority';
 import ModalStatus from './ModalStatus';
-import StatusLabel, {TYPE_PRIORITY, TYPE_STATUS} from './StatusLabel';
+import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS, statusLabel } from './StatusLabel';
 import './styles.scss';
 
 const ListItemButtonGroup = styled(ListItem)`

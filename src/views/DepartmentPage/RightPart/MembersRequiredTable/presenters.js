@@ -1,19 +1,18 @@
-import {CircularProgress, IconButton, Menu, MenuItem, Badge, Button} from '@material-ui/core';
-import DeleteIcon from '@material-ui/icons/Delete';
-import {mdiAccountPlus, mdiDotsVertical, mdiShareVariant} from '@mdi/js';
+import { Badge, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { mdiAccountPlus, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
-import {find, get, isNil} from 'lodash';
+import CustomAvatar from 'components/CustomAvatar';
+import CustomBadge from 'components/CustomBadge';
+import CustomTable from 'components/CustomTable';
+import { LightTooltip, TooltipWrapper } from 'components/LightTooltip';
+import LoadingBox from 'components/LoadingBox';
+import { Container, LinkSpan, SettingContainer } from 'components/TableComponents';
+import { DRAWER_TYPE } from 'constants/constants';
+import { find, get, isNil } from 'lodash';
 import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {useHistory} from 'react-router-dom';
-import CustomAvatar from '../../../../components/CustomAvatar';
-import CustomBadge from '../../../../components/CustomBadge';
-import CustomTable from '../../../../components/CustomTable';
-import {LightTooltip, TooltipWrapper} from '../../../../components/LightTooltip';
-import LoadingBox from '../../../../components/LoadingBox';
-import {Container, LinkSpan, SettingContainer, SubTitle} from '../../../../components/TableComponents';
-import {DRAWER_TYPE} from '../../../../constants/constants';
-import './style.scss';
+import { useTranslation } from 'react-i18next';
+import { useHistory, useParams } from 'react-router-dom';
+import '../AllUsersTable/style.scss';
 
 const TooltipBody = ({ className = '', state, ...props }) =>
   <div
@@ -92,21 +91,23 @@ function StateBadge({ user }) {
   );
 }
 
-function AllUsersTable({
-  rooms, maxUser, hasRequirement, publicPrivatePendings, route, canModify,
+function MembersRequiredTable({
+  room, hasRequirement, publicPrivatePendings, route, canModify,
   expand, handleExpand,
   handleSortUser,
   handleChangeState,
+  handleBanUserFromGroup,
   handleOpenModal,
   handleVisibleDrawerMessage,
 }) {
 
+  const { departmentId } = useParams();
   const history = useHistory();
   const { t } = useTranslation();
+
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
-  const [menuMemberAnchorEl, setMenuMemberAnchorEl] = React.useState(null);
 
   function doOpenMenu(anchorEl, user) {
     setMenuAnchorEl(anchorEl);
@@ -119,18 +120,15 @@ function AllUsersTable({
     ));
   }, [publicPrivatePendings, user]);
 
+
   return (
     <Container>
       <CustomTable
         options={{
           title: t('DMH.VIEW.DP.RIGHT.UT.TITLE'),
-          subTitle: () =>
-            <SubTitle>
-              {t('DMH.VIEW.DP.RIGHT.UT.NUM_MEMBER_AUT', {
-                total: rooms.rooms.reduce((sum, room) => sum += get(room, 'number_member', 0), 0),
-                max: maxUser,
-              })}
-            </SubTitle>,
+          subTitle: t('DMH.VIEW.DP.RIGHT.UT.NUM_MEMBER_DUT', {
+            total: get(room.room, 'number_member', 0),
+          }),
           subActions: canModify ? [{
             label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
             icon: () => hasRequirement
@@ -138,16 +136,14 @@ function AllUsersTable({
                 <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
               </NewUserBadge>
               : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
-            onClick: () => {
-              handleVisibleDrawerMessage({
-                type: DRAWER_TYPE.ADD_USER,
-                anchor: 'left'
-              })
-            },
+            onClick: () => handleVisibleDrawerMessage({
+              type: DRAWER_TYPE.ADD_USER,
+              anchor: 'left'
+            }),
             noExpand: true,
           }] : [],
-          mainAction: canModify ? {          
-            icon: mdiShareVariant,
+          mainAction: canModify ? {
+            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_ACC'),
             onClick: () => handleOpenModal('CREATE_ACCOUNT'),
           } : null,
           expand: {
@@ -165,10 +161,7 @@ function AllUsersTable({
             onClick: () => handleOpenModal('MAJOR'),
           }] : null,
           grouped: {
-            bool: true,
-            id: 'id',
-            label: (room) => get(room, 'name'),
-            item: 'users',
+            bool: false,
           },
           row: {
             id: 'id',
@@ -183,21 +176,17 @@ function AllUsersTable({
                 destination.droppableId === source.droppableId &&
                 destination.index === source.index
               ) return;
-              handleSortUser(
-                destination.droppableId,
-                draggableId,
-                destination.index
-              );
+              handleSortUser(departmentId, draggableId, destination.index);
             },
           } : {
               bool: false
             },
           loading: {
-            bool: rooms.loading,
+            bool: room.loading,
             component: () => <LoadingBox />,
           },
           noData: {
-            bool: (rooms.firstTime === false) && (rooms.rooms.length === 0),
+            bool: (room.firstTime === false) && (room.room.users.length === 0),
           },
         }}
         columns={[{
@@ -262,7 +251,7 @@ function AllUsersTable({
           align: 'center',
           width: '5%',
         } : undefined]}
-        data={rooms.rooms}
+        data={room.room.users}
       />
       <Menu
         id="simple-menu"
@@ -291,7 +280,7 @@ function AllUsersTable({
         <MenuItem onClick={() => {
           handleOpenModal('PERMISSION_SETTING', {
             curUserId: get(user, 'id'),
-            roomId: null,
+            roomId: departmentId,
           });
           setMenuAnchorEl(null);
         }}>
@@ -300,7 +289,7 @@ function AllUsersTable({
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
           <MenuItem onClick={() => {
             handleOpenModal('ALERT', {
-              roomId: null,
+              roomId: departmentId,
               selectedUser: user,
             });
             setMenuAnchorEl(null);
@@ -313,4 +302,4 @@ function AllUsersTable({
   )
 }
 
-export default AllUsersTable;
+export default MembersRequiredTable;
