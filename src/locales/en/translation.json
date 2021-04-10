@@ -2275,5 +2275,8 @@
   "EMPTY_TASK_MESSAGE_2": "The next step is to create jobs for this Table to start implementing and managing the work effectively.",
   "EMPTY_TASK_MESSAGE_3": "Tip: Create groups of jobs in Table in advance to categorize different job groups. The system has pre-created for you a group named <strong> \"Uncategorized\" </strong>, you can change this group name at any time. ",
   "EMPTY_TASK_MESSAGE_4": "Workplus provides administration diagrams, including: <strong> Todo List, Kanban, Gantt Chart, Work Chat </strong> and are synchronized with each other. You can set the default Job Board view to a profile you like in <strong> Job Board Settings </strong>",
-  "EMPTY_TASK_MESSAGE_5": "Don't forget to add members to work to discuss, share and together complete assigned tasks."
+  "EMPTY_TASK_MESSAGE_5": "Don't forget to add members to work to discuss, share and together complete assigned tasks.",
+  "LABEL_ADD_MEMBER_TO_BOARD": "Add members to the job board.",
+  "LABEL_LEAVE_TASK": "Leave work",
+  "LABEL_LEAVE_TASK_CONFIRM": "Do you really want to leave this job?"
 }

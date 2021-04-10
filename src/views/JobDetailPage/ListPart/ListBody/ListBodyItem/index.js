@@ -1,20 +1,20 @@
-import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
+import {Avatar, ListItemAvatar, ListItemText} from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
-import { mdiPin } from '@mdi/js';
+import {mdiPin} from '@mdi/js';
 import Icon from '@mdi/react';
-import { viewChat } from 'actions/chat/chat';
-import { chooseTask, getTaskDetailTabPart, showTab } from 'actions/taskDetail/taskDetailActions';
+import {viewChat} from 'actions/chat/chat';
+import {showTab} from 'actions/taskDetail/taskDetailActions';
 import clsx from 'classnames';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
 import SimpleDonutChart from 'components/SimpleDonutChart';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
-import { lastJobSettingKey } from '../../ListHeader/CreateJobSetting';
+import {currentColorSelector, makeSelectIsCanView} from 'views/JobDetailPage/selectors';
+import {lastJobSettingKey} from '../../ListHeader/CreateJobSetting';
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
@@ -159,7 +159,6 @@ function ListBodyItem(props) {
   } = props;
   const history = useHistory();
   const dispatch = useDispatch();
-  const groupActiveColor = useSelector(currentColorSelector)
   const isLoading = useSelector(state => state.chat.isLoading)
   const userId = useSelector((state) => state.system.profile.id);
   const url = new URL(window.location.href);
@@ -167,17 +166,10 @@ function ListBodyItem(props) {
   const key = `${userId}:${lastJobSettingKey}`;
   const type = localStorage.getItem(key)
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
-  // console.log({ props })
 
   function onClickItem() {
     if (isLoading) return;
-    // dispatch(chooseTask(props.id));
-    // dispatch(getTaskDetailTabPart({ taskId: props.id }));
     dispatch(showTab(0))
-    // dispatch(loadChat(props.id))
-    // getMemberByTaskId(props.id)
-    // getMemberNotAssignedByTaskId(props.id)
-    // console.log('history', history.search)
     const { pathname } = history.location;
     const path = pathname.split('?')[0]
     history.push({ pathname: path, search: `?task_id=${props.id}` });
