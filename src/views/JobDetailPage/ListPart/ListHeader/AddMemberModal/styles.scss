@@ -140,6 +140,11 @@
       .MuiRadio-root {
         color: var(--color-primary);
       }
+      .checkIcon {
+        path {
+          fill: var(--color-primary) !important;
+        }
+      }
     }
     .MuiRadio-root {
       padding: 0;
@@ -152,9 +157,18 @@
     }
     .memberTypeAssigned {
       padding: 7px 12px;
-      background: #A4CDFF;
-      color: #72839A;
+      background: #FF0000;
+      color: #fff;
       border-radius: 2px;
+      &:hover {
+        background: #ff4c55;
+      }
+    }
+    .MuiListItemSecondaryAction-root {
+      display: flex;
+      align-items: center;
+      width: 180px;
+      justify-content: space-between;
     }
   }
 }
