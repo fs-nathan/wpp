@@ -2278,5 +2278,15 @@
   "EMPTY_TASK_MESSAGE_5": "Don't forget to add members to work to discuss, share and together complete assigned tasks.",
   "LABEL_ADD_MEMBER_TO_BOARD": "Add members to the job board.",
   "LABEL_LEAVE_TASK": "Leave work",
-  "LABEL_LEAVE_TASK_CONFIRM": "Do you really want to leave this job?"
+  "LABEL_LEAVE_TASK_CONFIRM": "Do you really want to leave this job?",
+  "LABEL_REMOVE_MEMBER_WORKING_BOARD_DES": "Remove members from Project / Subject / Process. You can add members back after deleting.",
+  "LABEL_DELETE": "Delete",
+  "LABEL_QUICK_WORKING_ASSIGN": "Quick assign",
+  "LABEL_QUICK_WORKING_ASSIGN_DES": "Members will be assigned to participate in all jobs from past to present.",
+  "LABEL_QUICK_ASSIGN": "Assign now",
+  "LABEL_AUTO": "Automatic",
+  "LABEL_ASSIGN_AUTO_DES": "This member will be automatically added to the jobs right after initialization (anyone initializes)",
+  "LABEL_ASSIGN_MANUAL_DES": "This member is only allowed to participate in the work when assigned.",
+  "LABEL_MANUAL": "Manual",
+  "LABEL_SET_MEMBER_ROLE": "Set role"
 }

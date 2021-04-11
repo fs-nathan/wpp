@@ -12,10 +12,16 @@ import "./styles.scss";
 import {useTranslation} from "react-i18next";
 import {Box, FormControl, InputBase, MenuItem, Select} from "@material-ui/core";
 import CustomAvatar from "../../../../components/CustomAvatar";
-import {get} from "lodash";
-import {deleteMember, updateRolesForMember} from "../../../../actions/taskDetail/taskDetailActions";
-import {connect} from "react-redux";
+import {get, map, isNil} from "lodash";
+import {
+  deleteMember,
+  threadChatCreatePrivate,
+  updateRolesForMember
+} from "../../../../actions/taskDetail/taskDetailActions";
+import {connect, useDispatch, useSelector} from "react-redux";
 import AlertModal from "../../../../components/AlertModal";
+import {listUserRole} from "../../../../actions/userRole/listUserRole";
+import {useHistory} from "react-router-dom";
 
 const styles = (theme) => ({
   title: {
@@ -80,12 +86,21 @@ const BootstrapInput = withStyles((theme) => ({
     },
   },
 }))(InputBase);
-function OptionModal({open, setOpen, member, doUpdateRoleMember, task_id, doDeleteMember}) {
+function OptionModal({
+  open, setOpen, member, doUpdateRoleMember, task_id, doDeleteMember, doListUserRole,
+  userRoles
+}) {
   const handleClose = () => {
     setOpen(false);
   };
   const { t } = useTranslation();
   const [modalConfirm, setModalConfirm] =  React.useState(false);
+  const privateChatData = useSelector(state => state.taskDetail.createPrivateChat.data);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  React.useEffect(() => {
+    doListUserRole();
+  }, [doListUserRole]);
 
   function handleUpdateRoleMember(member_id, role_id) {
     doUpdateRoleMember({task_id, member_id, role_id});
@@ -94,6 +109,15 @@ function OptionModal({open, setOpen, member, doUpdateRoleMember, task_id, doDele
     doDeleteMember({task_id, member_id});
     setOpen(false);
   }
+  function handleSendMessage() {
+    dispatch(threadChatCreatePrivate({memberID: get(member, "id")}));
+  }
+
+  React.useEffect(() => {
+    if(!isNil(get(privateChatData, "task_id"))) {
+      history.push(`/chats?task_id=${get(privateChatData, "task_id")}`);
+    }
+  }, [privateChatData, history]);
   return (
     <Dialog
       disableBackdropClick={true}
@@ -109,7 +133,10 @@ function OptionModal({open, setOpen, member, doUpdateRoleMember, task_id, doDele
         <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
           <CustomAvatar src={get(member, "avatar")} style={{width: 75, height: 75}}/>
           <Typography variant={"h6"} style={{marginTop: 15}}>{get(member, "name")}</Typography>
-          <Button variant="outlined" color="primary" style={{marginTop: 25}} className={"btnSendMessage"}>
+          <Button
+            variant="outlined" color="primary" style={{marginTop: 25}} className={"btnSendMessage"}
+            onClick={() => handleSendMessage()}
+          >
             {t("LABEL_SEND_MESSAGE")}
           </Button>
 
@@ -127,14 +154,16 @@ function OptionModal({open, setOpen, member, doUpdateRoleMember, task_id, doDele
               <div className={"memberInformation-itemValue"}>
                 <FormControl>
                   <Select
-                    input={<BootstrapInput />}
-                    value={get(member, "type_assign")}
+                    input={<BootstrapInput />} autoWidth displayEmpty
+                    value={get(member, "role.id", "")}
                     onChange={(evt) => handleUpdateRoleMember(member.id, evt.target.value)}
                   >
-                    <MenuItem value={3}>{t("Thực hiện")}</MenuItem>
-                    <MenuItem value={4}>{t("Giám sát")}</MenuItem>
-                    <MenuItem value={2}>{t("LABEL_OFFER")}</MenuItem>
-                    <MenuItem value={1}>{t("LABEL_ASSIGNERS")}</MenuItem>
+                    {isNil(get(member, "role.id")) && (
+                      <MenuItem value={""}>{t("LABEL_SET_MEMBER_ROLE")}</MenuItem>
+                    )}
+                    {map(userRoles, function (role) {
+                      return <MenuItem value={role.id}>{role.name}</MenuItem>
+                    })}
                   </Select>
                 </FormControl>
               </div>
@@ -150,8 +179,8 @@ function OptionModal({open, setOpen, member, doUpdateRoleMember, task_id, doDele
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button autoFocus onClick={handleClose}>{t("LABEL_CHAT_TASK_HUY")}</Button>
-        <Button autoFocus onClick={handleClose} color="primary">{t("LABEL_GANTT_NAME_COMPLETE_TABLE")}</Button>
+        <Button onClick={handleClose}>{t("LABEL_CHAT_TASK_HUY")}</Button>
+        <Button onClick={handleClose} color="primary">{t("LABEL_GANTT_NAME_COMPLETE_TABLE")}</Button>
       </DialogActions>
       <AlertModal
         open={modalConfirm}
@@ -168,6 +197,7 @@ function OptionModal({open, setOpen, member, doUpdateRoleMember, task_id, doDele
 const mapStateToProps = state => {
   return {
     task_id: state.taskDetail.commonTaskDetail.activeTaskId,
+    userRoles: get(state.userRole.listUserRole.data, "userRoles", [])
   }
 }
 
@@ -175,6 +205,7 @@ const mapDispatchToProps = dispatch => {
   return {
     doDeleteMember: (options) => dispatch(deleteMember(options)),
     doUpdateRoleMember: (options) => dispatch(updateRolesForMember(options)),
+    doListUserRole: (quite) => dispatch(listUserRole(quite)),
   }
 };
 

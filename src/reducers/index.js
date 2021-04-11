@@ -385,6 +385,7 @@ import taskCommand from "./taskDetail/command";
 import commonTaskDetail from "./taskDetail/common";
 import listGroupOffer from "./taskDetail/listGroupOffer";
 import listGroupPermission from "./taskDetail/listGroupPermission";
+import createPrivateChat from "./taskDetail/createPrivateChat";
 import listGroupTask from "./taskDetail/listGroupTask";
 import listDetailTask from "./taskDetail/listTaskDetail";
 import location from "./taskDetail/location";
@@ -475,6 +476,7 @@ const rootReducer = combineReducers({
     listGroupTask,
     listGroupOffer,
     listGroupPermission,
+    createPrivateChat
   }),
   room: combineReducers({
     listRoom,

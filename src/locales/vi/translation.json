@@ -2289,5 +2289,19 @@
   "EMPTY_TASK_MESSAGE_5": "Đừng quên thêm thành viên vào công việc để thảo luận, chia sẻ và cùng nhau hoàn thành nhiệm vụ được giao.",
   "LABEL_ADD_MEMBER_TO_BOARD": "Thêm thành viên vào bảng công việc",
   "LABEL_LEAVE_TASK": "Rời việc",
-  "LABEL_LEAVE_TASK_CONFIRM": "Bạn có thực sự muốn rời việc?"
+  "LABEL_LEAVE_TASK_CONFIRM": "Bạn có thực sự muốn rời việc?",
+  "LABEL_REMOVE_MEMBER_WORKING_BOARD_DES": "Xoá thành viên ra khỏi Dự án/Chủ đề/Quy trình. Bạn có thể thêm thành viên trở lại sau khi xoá.",
+  "LABEL_DELETE": "Xoá",
+  "LABEL_QUICK_WORKING_ASSIGN": "Giao việc nhanh",
+  "LABEL_QUICK_WORKING_ASSIGN_DES": "Thành viên sẽ được gán tham gia vào tất cả các công việc từ trước đến thời điểm hiện tại.",
+  "LABEL_QUICK_ASSIGN": "Giao ngay",
+  "LABEL_AUTO": "Tự động",
+  "LABEL_ASSIGN_AUTO_DES": "Thành viên này sẽ được tự động thêm vào các công việc ngay sau khi khởi tạo (bất cứ ai khởi tạo)",
+  "LABEL_ASSIGN_MANUAL_DES": "Thành viên này chỉ được tham gia những công việc khi được giao việc.",
+  "LABEL_MANUAL": "Thủ công",
+  "LABEL_SET_MEMBER_ROLE": "Gán vai trò",
+  "LABEL_SEARCH_MEMBER_TO_ADD": "Nhập số điện thoại hoặc email và click TÌM KIẾM...",
+  "LABEL_SEARCH_MEMBER_TO_ADD_NOTE": "Lưu ý: Bạn chỉ tìm thấy những thành viên đã có tài khoản trên Workplus",
+  "LABEL_OR": "Hoặc",
+  "LABEL_INVITE_MEMBER_REGISTRY": "Mời thành viên đăng ký"
 }

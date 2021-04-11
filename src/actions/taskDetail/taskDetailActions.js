@@ -1265,3 +1265,16 @@ export function getTaskMembersFail({error}) {
         error
     };
 }
+
+export function threadChatCreatePrivate({memberID}) {
+    return {
+        type: types.THREAD_CHAT_CREATE_PRIVATE,
+        memberID
+    }
+}
+export function threadChatCreatePrivateSuccess({data}) {
+    return {
+        type: types.THREAD_CHAT_CREATE_PRIVATE_SUCCESS,
+        data
+    }
+}

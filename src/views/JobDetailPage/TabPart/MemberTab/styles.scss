@@ -112,3 +112,37 @@
     }
   }
 }
+
+.customSelectBox {
+  &--paper {
+    .MuiList-root {
+      height: 140px !important;
+    }
+    .MuiPaper-rounded {
+      border-radius: 0;
+    }
+    .MuiPaper-root {
+      transform: translateY(96px) !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+      &::-webkit-scrollbar {
+        width: 5px;
+        background-color: unset !important;
+      }
+      &::-webkit-scrollbar-thumb {
+        cursor: pointer !important;
+        min-height: 50px !important;
+        border-radius: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: unset !important;
+      }
+      &:hover {
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(0, 0, 0, 0.2);
+          border-radius: 10px;
+        }
+      }
+    }
+  }
+}

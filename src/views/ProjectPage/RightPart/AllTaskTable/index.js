@@ -157,6 +157,8 @@ function AllTaskTable({
           setOpenCreate(true);
           setSelectedGroup(props);
         }
+        setOpenCreate(true);
+        setSelectedGroup(props);
         return;
       case 'SETTING':
         setOpenSetting(true);

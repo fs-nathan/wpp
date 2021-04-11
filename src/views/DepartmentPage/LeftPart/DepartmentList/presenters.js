@@ -58,10 +58,7 @@ function DepartmentList({
     {
       title: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
       icon: PersonAddIcon,
-      action: () => { handleVisibleDrawerMessage({
-        type: DRAWER_TYPE.ADD_USER,
-        anchor: 'left'
-      }) },
+      action: () => handleOpenModal("ADD_USER"),
       color: '#fff',
       style: { background: '#f4511e'},
     },
@@ -97,7 +94,6 @@ function DepartmentList({
         <LeftSideContainer
           title={get(viewPermissions.permissions, 'can_modify', false) ?
             <StyledList>
-              
               {listMenu.map((item, index) => (
                 <StyledListItem
                   component={Link}

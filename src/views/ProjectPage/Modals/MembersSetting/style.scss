@@ -212,7 +212,7 @@
 @mixin view_Project_MemberSetting_Modal___permission-box {
   font-size: 12px;
   border-radius: 2px;
-  padding: 2px 10px;
+  padding: 4px 10px;
   background: #f7f7f7;
   width: 90px;
   display: flex;
@@ -332,6 +332,36 @@
 .comp_CustomModal___two-columns-container-w-lg > :first-child {
   background: #f1f2f4;
 }
-.comp_CustomModal___scrollbar-side-tall {
-
+.memberWorkingBoard-moreSetting {
+  .MuiPaper-root {
+    padding: 10px 15px 5px 15px;
+    width: 310px;
+  }
+  &-item {
+    margin-bottom: 15px;
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: var(--color-primary);
+    }
+    &__Header {
+      display: flex;
+      align-items: center;
+      &>*:first-child {
+        margin-right: 10px;
+      }
+      .MuiTypography-h6 {
+        font-size: 1.10rem;
+      }
+    }
+    &__Body {
+      margin-left: 30px;
+      .MuiButton-contained {
+        color: #fff;
+        width: 150px;
+        margin-top: 15px;
+      }
+      .MuiButton-containedPrimary {
+        background: var(--color-primary);
+      }
+    }
+  }
 }

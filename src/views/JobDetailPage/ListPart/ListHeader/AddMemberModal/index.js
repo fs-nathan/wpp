@@ -23,7 +23,7 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import './styles.scss';
 import Link from "@material-ui/core/Link";
 import SearchIcon from "@material-ui/icons/Search";
-import {filter, find, get, map, set, size, toLower, isNil, concat, differenceBy} from "lodash";
+import {filter, find, get, map, set, size, toLower, isNil, concat, differenceBy, split, last} from "lodash";
 import List from "@material-ui/core/List";
 import {withStyles} from '@material-ui/core/styles';
 import {mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle} from '@mdi/js';
@@ -38,6 +38,8 @@ import {
 import {CustomEventDispose, CustomEventListener} from "../../../../../constants/events";
 import {EVENT_ADD_MEMBER_TO_TASK_SUCCESS} from "../../../../../constants/actions/taskDetail/taskDetailConst";
 import * as taskDetailAction from "../../../../../actions/taskDetail/taskDetailActions";
+import MemberSetting from "../../../../ProjectPage/Modals/MembersSetting";
+import {useHistory} from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,6 +83,8 @@ function AddMemberModal({
   const [selected, setSelected] = React.useState({});
   const colors = useSelector(state => state.setting.colors);
   const bgColor = find(colors, {"selected": true});
+  const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
+  const history = useHistory();
 
   const handleClose = () => {
     setOpen(false);
@@ -162,7 +166,7 @@ function AddMemberModal({
             {t("LABEL_SEARCH_MEMBERS_TO_ADD_DES")}
           </Typography>
           <Typography>
-            <Link href="#" onClick={() => null}>
+            <Link href={"#"} onClick={() => setOpenMemberSetting(true)}>
               + {t("LABEL_ADD_MEMBER_TO_BOARD")}
             </Link>
           </Typography>
@@ -233,6 +237,7 @@ function AddMemberModal({
           </Box>
         </Scrollbars>
       </DialogContent>
+      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting} project_id={last(split(history.location.pathname, "/"))}/>
     </DialogWrap>
   );
 }

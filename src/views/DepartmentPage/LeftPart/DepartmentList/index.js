@@ -12,6 +12,8 @@ import { actionVisibleDrawerMessage } from 'actions/system/system';
 import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import DepartmentListPresenter from './presenters';
 import { roomsSelector } from './selectors';
+import AddMemberModal from "../../../JobDetailPage/ListPart/ListHeader/AddMemberModal";
+import AddUserModal from "../../Modals/AddUserModal";
 
 function DepartmentList({
   rooms, route, viewPermissions,
@@ -85,7 +87,7 @@ function DepartmentList({
 
   const [openCreateAndUpdateDepartmentModal, setOpenCreateAndUpdateDepartmentModal] = React.useState(false);
   const [openCreateAccountModal, setOpenCreateAccountModal] = React.useState(false);
-  // const [openCreateAccountModal, setOpenCreateAccountModal] = React.useState(false);
+  const [openAddUSerModal, setOpenAddUserModal] = React.useState(false);
 
   function doOpenModal(type) {
     switch (type) {
@@ -107,6 +109,9 @@ function DepartmentList({
         }
         return;
       }
+      case 'ADD_USER':
+        setOpenAddUserModal(true);
+        return;
       default: return;
     }
   }
@@ -132,6 +137,7 @@ function DepartmentList({
         setOpen={setOpenCreateAndUpdateDepartmentModal}
       />
       <CreateAccountModal open={openCreateAccountModal} setOpen={setOpenCreateAccountModal} />
+      <AddUserModal setOpen={setOpenAddUserModal} open={openAddUSerModal}/>
     </>
   )
 }

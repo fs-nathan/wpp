@@ -54,17 +54,13 @@ function JobDetailPage(props) {
   }, [errorMessage, history, projectId]);
 
   useEffect(() => {
-    // console.log('url', url.pathname, 'projectId', projectId)
     const key = `${userId}:${lastJobSettingKey}`;
     const type_data = localStorage.getItem(key) || "include-room";
-    // console.log(key, type_data, ' useEffect')
     const path = url.pathname;
     const id = last(path.split("/"));
-    // console.log({ id, path });
     if (id.length > 0 && userId) {
       if (id !== projectId) {
         dispatch(taskDetailAction.getProjectListBasic(id));
-        // dispatch(taskDetailAction.chooseProject({ id }))
         dispatch(taskDetailAction.getListTaskDetail(id, type_data));
         dispatch(taskDetailAction.getProjectDetail(id));
       }
@@ -97,13 +93,10 @@ function JobDetailPage(props) {
   useEffect(() => {
     const key = `${userId}:${lastJobSettingKey}`;
     const type_data = localStorage.getItem(key) || "include-room";
-    // console.log(key, ' useEffect', type_data)
-    // console.log('projectId', projectId)
     if (projectId !== "" && userId) {
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
-      // dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(detailStatus({ projectId }));
       dispatch(getPermissionViewDetailProject({ projectId }));
       const customEvent = new CustomEvent(JOIN_PROJECT_EVENT, {

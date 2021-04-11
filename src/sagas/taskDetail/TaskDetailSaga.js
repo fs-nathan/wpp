@@ -1507,6 +1507,16 @@ export function* detailGroupPermissionDefault(payload) {
   }
 }
 
+export function* createPrivateChat(payload) {
+  try {
+    const { memberID } = payload;
+    const res = yield call(apiService.post, "/thread-chat/create-private", { member_id: memberID });
+    yield put(actions.threadChatCreatePrivateSuccess({data: res.data}));
+  } catch (error) {
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
 export {
   updateComplete,
   // Update Priority

@@ -43,7 +43,7 @@ function MemberSetting({
 
   React.useEffect(() => {
     doListUserRole();
-  }, [projectId, viewPermissions]);
+  }, [projectId, viewPermissions, doListUserRole]);
 
   const [searchPattern, setSearchPattern] = React.useState('');
 

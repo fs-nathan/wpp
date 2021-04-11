@@ -292,6 +292,7 @@ import {GET_PROJECT_STATUS_WORK} from "../constants/actions/project/getStatusWor
 import {GET_PROJECT_PERSONAL_BOARD} from "../constants/actions/project/projectOnPersonalBoard";
 import {getProjectOnBoard} from "./project/projectOnBoard";
 import {checkHasProjectRecently} from "./project/checkHasRecently";
+import {createPrivateChat} from "./taskDetail/TaskDetailSaga";
 
 function* rootSaga() {
   // Hoang - begin
@@ -798,7 +799,6 @@ function* rootSaga() {
   yield fork(watchLoadTaskExpiredPage);
   yield fork(watchLoadTaskAssignPage);
   yield fork(watchLoadTaskRolePage);
-
   /// Offerpage
   yield takeLatest(LOAD_TASK_RENCENTLY, doGetTaskRecently);
   yield takeLatest(LOAD_SUMMARY_BY_GROUP, doGetSummaryByGroup);
@@ -886,7 +886,8 @@ function* rootSaga() {
   yield takeLatest(GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, projectScheduleUpdateShiftStageAllTime);
   yield takeEvery(GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, projectScheduleDeleteShiftStageAllTime);
   yield takeLatest(CALENDAR_PAGE_PERMISSION, listCalendarPermission);
-  yield takeLatest(GET_REMIND_DETAIL, getRemindDetail)
+  yield takeLatest(GET_REMIND_DETAIL, getRemindDetail);
+  yield takeLatest(taskDetailType.THREAD_CHAT_CREATE_PRIVATE, createPrivateChat);
   yield fork(watchAsyncAction);
 }
 
