@@ -1,21 +1,25 @@
-import { List, ListItem, ListItemText, Typography, Select, MenuItem, Checkbox, Icon, FormControlLabel, RadioGroup, Radio, Button, IconButton } from '@material-ui/core';
+import {Box, Divider, List, ListItem, ListItemText, Popover, Radio, Typography} from '@material-ui/core';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { focusTaskGroup, getMember, updatePriority } from '../../../../../actions/taskDetail/taskDetailActions';
+import {
+  focusTaskGroup,
+  getMember,
+  updatePriority,
+  updateTaskStatus
+} from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import colorPal from '../../../../../helpers/colorPalette';
-import { taskIdSelector } from '../../../selectors';
+import {taskIdSelector} from '../../../selectors';
 import Description from './Description';
 import HtmlTooltip from './HtmlTooltip';
 import ModalPriority from './ModalPriority';
-import ModalStatus from './ModalStatus';
-import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS, statusLabel } from './StatusLabel';
+import StatusLabel, {statusLabel, TYPE_PRIORITY, TYPE_STATUS} from './StatusLabel';
 import './styles.scss';
 
 const ListItemButtonGroup = styled(ListItem)`
@@ -54,7 +58,7 @@ const StyledList = styled(List)`
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
-  border-radius: 3px !important
+  border-radius: 3px !important;
   & > span {
     font-size: 12px;
     padding: 0 5px;
@@ -104,7 +108,14 @@ function TabBody(props) {
     linkCnt: t('LABEL_CHAT_TASK_DANG_TAI')
   }
 
-  const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
+  const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC);
+  const taskStatus = [
+    {value: 0, label: statusLabel[0], des: "LABEL_PROCESS_PERCENT_WAITING"},
+    {value: 1, label: statusLabel[1], des: "LABEL_PROCESS_PERCENT_DOING"},
+    {value: 2, label: statusLabel[2], des: "LABEL_PROCESS_PERCENT_COMPLETED"},
+    {value: 4, label: statusLabel[4], des: "LABEL_PROCESS_PERCENT_PAUSED"},
+  ];
+
   let content = ""
   let data = ""
 
@@ -152,7 +163,12 @@ function TabBody(props) {
   function onClickGroupTask() {
     dispatch(focusTaskGroup(detailTask.group_task))
   }
+  const [tooltipChangeTaskStatus, setTooltipChangeTaskStatus] = React.useState(null);
 
+  function handleUpdateTaskStatus(status) {
+    setTooltipChangeTaskStatus(null);
+    dispatch(updateTaskStatus({task_id: taskId, status}));
+  }
   return (
     <div className="listPartTabBody">
       <Body
@@ -178,15 +194,12 @@ function TabBody(props) {
           </ListItem>
           <ListItemButtonGroup>
             {taskStatistic.state_code !== 3 &&
-              <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
-                TransitionProps={{ timeout: 0 }}
-                title={<ModalStatus value={taskStatistic.state_code} />}
-                placement="top-start">
-                <StatusLabel
-                  type={TYPE_STATUS}
-                  value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
-                />
-              </HtmlTooltip>
+              <StatusLabel
+                type={TYPE_STATUS}
+                value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+                hasIcon={true}
+                onClick={(evt) => setTooltipChangeTaskStatus(evt.currentTarget)}
+              />
             }
             <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
               TransitionProps={{ timeout: 0 }}
@@ -248,6 +261,45 @@ function TabBody(props) {
           </ListItemTab>
         </StyledList>
       </Body >
+      <Popover
+        anchorEl={tooltipChangeTaskStatus}
+        open={Boolean(tooltipChangeTaskStatus)}
+        onClose={() => setTooltipChangeTaskStatus(null)}
+        anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+        transformOrigin={{vertical: -10, horizontal: 'left'}}
+        className={"toolTipUpdateStatus"}
+      >
+        <Box className={"toolTipUpdateStatus-header"}>
+          <Typography variant={"h6"}>{t("LABEL_UPDATE_TASK_STATUS")}</Typography>
+        </Box>
+        <Divider/>
+        <Box className={"toolTipUpdateStatus-body"}>
+          {taskStatus.map(function (item, index) {
+            return (
+              <>
+                {index === 3 && (<Divider style={{marginTop: 10}}/>)}
+                <Box className={"toolTipUpdateStatus-item"}>
+                  <div className={"toolTipUpdateStatus-itemHeader"}>
+                    <Radio
+                      checked={getStatusCode(taskStatistic.state_code, taskStatistic.complete) === item.value}
+                      value={item.value}
+                      onChange={() => handleUpdateTaskStatus(item.value)}
+                    />
+                    <Typography variant={"h6"} color={"textSecondary"}>
+                      {t(item.label)}
+                    </Typography>
+                  </div>
+                  <div className={"toolTipUpdateStatus-itemBody"}>
+                    <Typography variant={"body1"} color={"textSecondary"}>
+                      {t(item.des)}
+                    </Typography>
+                  </div>
+                </Box>
+              </>
+            );
+          })}
+        </Box>
+      </Popover>
     </div>
   )
 }

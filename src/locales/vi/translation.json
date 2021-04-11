@@ -2303,5 +2303,10 @@
   "LABEL_SEARCH_MEMBER_TO_ADD": "Nhập số điện thoại hoặc email và click TÌM KIẾM...",
   "LABEL_SEARCH_MEMBER_TO_ADD_NOTE": "Lưu ý: Bạn chỉ tìm thấy những thành viên đã có tài khoản trên Workplus",
   "LABEL_OR": "Hoặc",
-  "LABEL_INVITE_MEMBER_REGISTRY": "Mời thành viên đăng ký"
+  "LABEL_INVITE_MEMBER_REGISTRY": "Mời thành viên đăng ký",
+  "LABEL_UPDATE_TASK_STATUS": "Cập nhập trạng thái công việc",
+  "LABEL_PROCESS_PERCENT_WAITING": "Tín độ hoàn thành = 0%",
+  "LABEL_PROCESS_PERCENT_DOING": "0% < Tiến độ hoàn thành < 100%",
+  "LABEL_PROCESS_PERCENT_COMPLETED": "Tín độ hoàn thành = 100%",
+  "LABEL_PROCESS_PERCENT_PAUSED": "Tín độ công việc sẽ được tính lại khi huỷ bỏ tạm dừng"
 }

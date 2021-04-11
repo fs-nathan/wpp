@@ -1278,3 +1278,10 @@ export function threadChatCreatePrivateSuccess({data}) {
         data
     }
 }
+
+export function updateTaskStatus({task_id, status}) {
+    return {
+        type: types.UPDATE_TASK_STATUS,
+        task_id, status
+    }
+}

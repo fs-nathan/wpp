@@ -3,7 +3,7 @@ import { call, put, select } from "redux-saga/effects";
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import { apiService } from "../../constants/axiosInstance";
-import { CREATE_TASK, DELETE_TASK, CustomEventEmitter } from '../../constants/events';
+import {CREATE_TASK, DELETE_TASK, CustomEventEmitter, UPDATE_TASK_STATUS_EVENT} from '../../constants/events';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
 import { CREATE_OFFER } from 'views/OfferPage/redux/types';
 import { getDataPinOnTaskChat } from 'actions/chat/chat';
@@ -1512,6 +1512,17 @@ export function* createPrivateChat(payload) {
     const { memberID } = payload;
     const res = yield call(apiService.post, "/thread-chat/create-private", { member_id: memberID });
     yield put(actions.threadChatCreatePrivateSuccess({data: res.data}));
+  } catch (error) {
+    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
+  }
+}
+
+export function* updateTaskStatus(payload) {
+  try {
+    const { task_id, status } = payload;
+    yield call(apiService.put, "/task/update-status", { task_id, status});
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
   } catch (error) {
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }

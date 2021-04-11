@@ -74,6 +74,7 @@ function ProjectMemberSlide({
             <Button
               variant={"contained"} color={"primary"} disableElevation
               className={"view_Project_ProjectMemberSlide___buttonAddMembers"}
+              onClick={() => handleOpenModal("MEMBER_SETTING")}
             >
               {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
             </Button>

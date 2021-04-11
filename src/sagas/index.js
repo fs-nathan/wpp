@@ -292,7 +292,7 @@ import {GET_PROJECT_STATUS_WORK} from "../constants/actions/project/getStatusWor
 import {GET_PROJECT_PERSONAL_BOARD} from "../constants/actions/project/projectOnPersonalBoard";
 import {getProjectOnBoard} from "./project/projectOnBoard";
 import {checkHasProjectRecently} from "./project/checkHasRecently";
-import {createPrivateChat} from "./taskDetail/TaskDetailSaga";
+import {createPrivateChat, updateTaskStatus} from "./taskDetail/TaskDetailSaga";
 
 function* rootSaga() {
   // Hoang - begin
@@ -888,6 +888,7 @@ function* rootSaga() {
   yield takeLatest(CALENDAR_PAGE_PERMISSION, listCalendarPermission);
   yield takeLatest(GET_REMIND_DETAIL, getRemindDetail);
   yield takeLatest(taskDetailType.THREAD_CHAT_CREATE_PRIVATE, createPrivateChat);
+  yield takeLatest(taskDetailType.UPDATE_TASK_STATUS, updateTaskStatus);
   yield fork(watchAsyncAction);
 }
 

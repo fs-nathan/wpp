@@ -64,18 +64,6 @@ function getStatusName(status_code) {
     return "LABEL_CHAT_TASK_TAM_DUNG"
 }
 
-function getStatusCode(status_code, complete) {
-  if (complete === 100)
-    return 2;
-  if (status_code === 3)
-    return 3;
-  if (status_code === 4)
-    return 4;
-  if (complete === 0)
-    return 0;
-  return 1;
-}
-
 function JobName(props) {
   const { t } = useTranslation();
   const { isghim = '', new_chat, ...rest } = props

@@ -89,7 +89,7 @@ function CreateNewProject({
       title={`${t("LABEL_WORKING_BOARD_CREATE_NEW")}`}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName}
+      canConfirm={!errorName || !isNil(curProjectGroupId)}
       onConfirm={() => {
         handleCreateProject({
           projectGroupId: curProjectGroupId,
