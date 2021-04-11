@@ -2288,5 +2288,19 @@
   "LABEL_ASSIGN_AUTO_DES": "This member will be automatically added to the jobs right after initialization (anyone initializes)",
   "LABEL_ASSIGN_MANUAL_DES": "This member is only allowed to participate in the work when assigned.",
   "LABEL_MANUAL": "Manual",
-  "LABEL_SET_MEMBER_ROLE": "Set role"
+  "LABEL_SET_MEMBER_ROLE": "Set role",
+  "LABEL_SEARCH_MEMBER_TO_ADD": "Enter phone number or email and click SEARCH...",
+  "LABEL_SEARCH_MEMBER_TO_ADD_NOTE": "Note: You can only find members who already have accounts on Workplus",
+  "LABEL_OR": "Or",
+  "LABEL_INVITE_MEMBER_REGISTRY": "Invite members to register",
+  "LABEL_UPDATE_TASK_STATUS": "Update work status",
+  "LABEL_PROCESS_PERCENT_WAITING": "Completion progress = 0%",
+  "LABEL_PROCESS_PERCENT_DOING": "0% <Progress to complete <100%",
+  "LABEL_PROCESS_PERCENT_COMPLETED": "Completion progress = 100%",
+  "LABEL_PROCESS_PERCENT_PAUSED": "Work progress will be recalculated when canceling a pause",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD": "Add members to join the Job board",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES1": "Add members to this Job board and delegate authority to them for effective execution and management.",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES2": "Or you can do this later at any time you want.",
+  "LABEL_SKIP": "Skip",
+  "LABEL_SET_NOW": "Add now"
 }

@@ -15,7 +15,7 @@ function EmptyWorkingGroup() {
     <>
       <Box className={"introEmptyData-container"}>
         <Box className={"introEmptyData-left"}>
-          <Typography variant={"h4"}>{t("LABEL_WORKING_GROUP")}</Typography>
+          <Typography variant={"h5"}>{t("LABEL_WORKING_GROUP")}</Typography>
           <p>{t("EMPTY_WORKING_GROUP_MESSAGE_1")}</p>
           <p>{t("EMPTY_WORKING_GROUP_MESSAGE_2")}</p>
           <p>{t("EMPTY_WORKING_GROUP_MESSAGE_3")}</p>

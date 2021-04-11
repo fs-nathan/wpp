@@ -160,6 +160,7 @@
       background: #FF0000;
       color: #fff;
       border-radius: 2px;
+      margin-left: 15px;
       &:hover {
         background: #ff4c55;
       }
@@ -167,8 +168,6 @@
     .MuiListItemSecondaryAction-root {
       display: flex;
       align-items: center;
-      width: 180px;
-      justify-content: space-between;
     }
   }
 }

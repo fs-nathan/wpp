@@ -11,7 +11,7 @@ function EmptyTasksIntro({projectName, handleOpenModal, work_type = 0}) {
     <>
       <Box className={"introEmptyData-container longContent"}>
         <Box className={"introEmptyData-left"}>
-          <Typography variant={"h4"}>{t("LABEL_EMPTY_TASK_FIRST_CREATE")}</Typography>
+          <Typography variant={"h5"}>{t("LABEL_EMPTY_TASK_FIRST_CREATE")}</Typography>
           <div className={"selectedGroup"}>
             <img src={resolvedWorkType(work_type)} width={25} height={25} style={{marginRight: 10}}/>
             <strong>{projectName}</strong>

@@ -2304,9 +2304,14 @@
   "LABEL_SEARCH_MEMBER_TO_ADD_NOTE": "Lưu ý: Bạn chỉ tìm thấy những thành viên đã có tài khoản trên Workplus",
   "LABEL_OR": "Hoặc",
   "LABEL_INVITE_MEMBER_REGISTRY": "Mời thành viên đăng ký",
-  "LABEL_UPDATE_TASK_STATUS": "Cập nhập trạng thái công việc",
-  "LABEL_PROCESS_PERCENT_WAITING": "Tín độ hoàn thành = 0%",
+  "LABEL_UPDATE_TASK_STATUS": "Cập nhật trạng thái công việc",
+  "LABEL_PROCESS_PERCENT_WAITING": "Tiến độ hoàn thành = 0%",
   "LABEL_PROCESS_PERCENT_DOING": "0% < Tiến độ hoàn thành < 100%",
-  "LABEL_PROCESS_PERCENT_COMPLETED": "Tín độ hoàn thành = 100%",
-  "LABEL_PROCESS_PERCENT_PAUSED": "Tín độ công việc sẽ được tính lại khi huỷ bỏ tạm dừng"
+  "LABEL_PROCESS_PERCENT_COMPLETED": "Tiến độ hoàn thành = 100%",
+  "LABEL_PROCESS_PERCENT_PAUSED": "Tiến độ công việc sẽ được tính lại khi huỷ bỏ tạm dừng",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD": "Thêm thành viên tham gia Bảng công việc",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES1": "Hãy thêm thành viên vào Bảng công việc này và phân quyền cho họ để thực hiện và quản lý hiệu quả.",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES2": "Hoặc bạn có thể thực hiện hành động này sau vào bất cứ lúc nào bạn muốn. ",
+  "LABEL_SKIP": "Để sau",
+  "LABEL_SET_NOW": "Thêm ngay"
 }

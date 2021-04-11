@@ -40,6 +40,7 @@ import {EVENT_ADD_MEMBER_TO_TASK_SUCCESS} from "../../../../../constants/actions
 import * as taskDetailAction from "../../../../../actions/taskDetail/taskDetailActions";
 import MemberSetting from "../../../../ProjectPage/Modals/MembersSetting";
 import {useHistory} from "react-router-dom";
+import {listUserRole} from "../../../../../actions/userRole/listUserRole";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -73,7 +74,7 @@ const BootstrapInput = withStyles((theme) => ({
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -100,8 +101,9 @@ function AddMemberModal({
   React.useEffect(() => {
     if(!isNil(task_id) && isOpen) {
       doListMembersNotAssign({task_id});
+      doListUserRole(true);
     }
-  }, [task_id, doListMembersNotAssign, isOpen]);
+  }, [task_id, doListMembersNotAssign, isOpen, doListUserRole]);
 
   function handleSelectMember(id) {
     set(selected, id, !get(selected, id, false));
@@ -143,7 +145,7 @@ function AddMemberModal({
       title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
       isOpen={isOpen}
       handleClickClose={handleClose}
-      successLabel={t('IDS_WP_DONE')}
+      successLabel={t('LABEL_CHAT_TASK_THOAT')}
       onClickSuccess={handleClose}
       maxWidth="sm" isOneButton
       className="AddMemberModal"
@@ -213,14 +215,16 @@ function AddMemberModal({
                           <>
                             <FormControl className={classes.margin}>
                               <Select
-                                input={<BootstrapInput />}
-                                value={member.type_assign}
+                                input={<BootstrapInput />} displayEmpty
+                                value={get(member, "role.id", "")}
                                 onChange={(evt) => handleUpdateRoleMember(member.id, evt.target.value)}
                               >
-                                <MenuItem value={3}>{t("Thực hiện")}</MenuItem>
-                                <MenuItem value={4}>{t("Giám sát")}</MenuItem>
-                                <MenuItem value={2}>{t("LABEL_OFFER")}</MenuItem>
-                                <MenuItem value={1}>{t("LABEL_ASSIGNERS")}</MenuItem>
+                                {isNil(get(member, "role.id")) && (
+                                  <MenuItem value={""}>{t("LABEL_SET_MEMBER_ROLE")}</MenuItem>
+                                )}
+                                {map(userRoles, function (role) {
+                                  return <MenuItem value={role.id}>{role.name}</MenuItem>
+                                })}
                               </Select>
                             </FormControl>
                             <div className={"memberTypeAssigned"} onClick={() => handleRemoveMember(member.id)}>
@@ -246,7 +250,8 @@ const mapStateToProps = state => {
   return {
     task_id: state.taskDetail.commonTaskDetail.activeTaskId,
     membersNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
-    members: state.taskDetail.taskMember.member
+    members: state.taskDetail.taskMember.member,
+    userRoles: get(state.userRole.listUserRole.data, "userRoles", [])
   }
 }
 
@@ -256,6 +261,7 @@ const mapDispatchToProps = dispatch => {
     doDeleteMember: (options) => dispatch(deleteMember(options)),
     doUpdateRoleMember: (options) => dispatch(updateRolesForMember(options)),
     doCreateMember: (options) => dispatch(createMember(options)),
+    doListUserRole: (quite) => dispatch(listUserRole(quite)),
   }
 };
 

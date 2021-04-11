@@ -1,15 +1,13 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup } from '@material-ui/core';
-import CustomModal, { Title } from 'components/CustomModal';
+import {FormControl, FormControlLabel, Radio, RadioGroup} from '@material-ui/core';
+import CustomModal, {Title} from 'components/CustomModal';
 import CustomTextbox from 'components/CustomTextbox';
 import MySelect from 'components/MySelect';
-import { CREATE_PROJECT, CustomEventDispose, CustomEventListener, LIST_PROJECT } from 'constants/events.js';
-import { useMaxlenString, useRequiredString } from 'hooks';
-import { find, get, first, isNil } from 'lodash';
+import {CREATE_PROJECT, CustomEventDispose, CustomEventListener, LIST_PROJECT} from 'constants/events.js';
+import {useMaxlenString, useRequiredString} from 'hooks';
+import {find, first, get, isNil} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import './style.scss';
-import { useHistory } from 'react-router-dom';
-import { Routes } from "constants/routes";
 import * as images from "assets/index";
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -26,7 +24,6 @@ function CreateNewProject({
 }) {
 
   const { t } = useTranslation();
-  const history = useHistory();
   const [name, setName, errorName] = useRequiredString('', 200);
   const [description, setDescription] = useMaxlenString('', 500);
   const [priority, setPriority] = React.useState(0);
@@ -39,17 +36,16 @@ function CreateNewProject({
     const fail = () => {
       setActiveLoading(false);
     };
-    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
-      history.push(`${Routes.PROJECT}/${e.detail.project_id}`)
-    });
+    const success = () => {
+      doReload();
+    }
     CustomEventListener(CREATE_PROJECT.FAIL, fail);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, success);
     return () => {
-      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
-        history.push(`${Routes.PROJECT}/${e.detail.project_id}`)
-      });
+      CustomEventListener(CREATE_PROJECT.SUCCESS, success);
       CustomEventDispose(CREATE_PROJECT.FAIL, fail);
     }
-  }, [projectGroupId, timeRange]);
+  }, [projectGroupId, timeRange, doReload]);
   React.useEffect(() => {
     const success = () => {
       setActiveLoading(false);

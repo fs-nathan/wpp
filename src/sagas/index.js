@@ -1,284 +1,424 @@
-import { SET_PROJECT, SET_PROJECT_GROUP } from 'constants/actions/localStorage';
-import { fork, takeEvery, takeLatest, takeLeading } from "redux-saga/effects";
+import {SET_PROJECT, SET_PROJECT_GROUP} from 'constants/actions/localStorage';
+import {fork, takeEvery, takeLatest, takeLeading} from "redux-saga/effects";
 import watchAsyncAction from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/redux/apiCall/saga";
-import { LOGIN, LOGIN_CHECK_STATE } from "../constants/actions/authentications";
-import { CREATE_PERSONAL_CATEGORY_REMIND, CREATE_PERSONAL_REMIND, DELETE_PERSONAL_CATEGORY_REMIND, DELETE_PERSONAL_REMIND, LIST_PERSONAL_REMIND, LIST_PERSONAL_REMIND_CATEGORY, LIST_REMIND_PROJECT, LIST_REMIND_RECENTLY, SORT_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_CATEGORY_REMIND, UPDATE_PERSONAL_REMIND } from "../constants/actions/calendar/alarmCalendar";
-import { CALENDAR_PAGE_PERMISSION } from "../constants/actions/calendar/permission";
-import { GROUP_SCHEDULE_ADD_DAY_OFF, GROUP_SCHEDULE_ADD_WORKING_DAY, GROUP_SCHEDULE_ADD_WORKING_STAGE, GROUP_SCHEDULE_CREATE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE, GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE, GROUP_SCHEDULE_DELETE_DAY_OFF, GROUP_SCHEDULE_DELETE_SHIFT_STAGE, GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_DELETE_WORKING_DAY, GROUP_SCHEDULE_DELETE_WORKING_STAGE, GROUP_SCHEDULE_DETAIL, GROUP_SCHEDULE_LIST, GROUP_SCHEDULE_SET_WORKING_DAY, GROUP_SCHEDULE_UPDATE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE, GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME, GROUP_SCHEDULE_UPDATE_WORKING_STAGE, SETTING_START_DAY_WEEK } from "../constants/actions/calendar/projectCalendar";
-import { CREATE_SCHEDULE, DELETE_ALL_SCHEDULE, DELETE_SCHEDULE, LIST_WEEKS_IN_YEAR, SCHEDULE_LIST, SCHEDULE_OF_WEEK_LIST, SCHEDULE_OF_WEEK_LIST_FROM_MODAL, SETTING_STARTING_DAY, UPDATE_SCHEDULE } from "../constants/actions/calendar/weeklyCalendar";
+import {LOGIN, LOGIN_CHECK_STATE} from "../constants/actions/authentications";
+import {
+  CREATE_PERSONAL_CATEGORY_REMIND,
+  CREATE_PERSONAL_REMIND,
+  DELETE_PERSONAL_CATEGORY_REMIND,
+  DELETE_PERSONAL_REMIND,
+  GET_REMIND_DETAIL,
+  LIST_PERSONAL_REMIND,
+  LIST_PERSONAL_REMIND_CATEGORY,
+  LIST_REMIND_PROJECT,
+  LIST_REMIND_RECENTLY,
+  SORT_PERSONAL_REMIND_CATEGORY,
+  UPDATE_PERSONAL_CATEGORY_REMIND,
+  UPDATE_PERSONAL_REMIND
+} from "../constants/actions/calendar/alarmCalendar";
+import {CALENDAR_PAGE_PERMISSION} from "../constants/actions/calendar/permission";
+import {
+  GROUP_SCHEDULE_ADD_DAY_OFF,
+  GROUP_SCHEDULE_ADD_WORKING_DAY,
+  GROUP_SCHEDULE_ADD_WORKING_STAGE,
+  GROUP_SCHEDULE_CREATE,
+  GROUP_SCHEDULE_CREATE_SHIFT_STAGE,
+  GROUP_SCHEDULE_CREATE_SHIFT_STAGE_ALLTIME,
+  GROUP_SCHEDULE_DELETE,
+  GROUP_SCHEDULE_DELETE_DAY_OFF,
+  GROUP_SCHEDULE_DELETE_SHIFT_STAGE,
+  GROUP_SCHEDULE_DELETE_SHIFT_STAGE_ALLTIME,
+  GROUP_SCHEDULE_DELETE_WORKING_DAY,
+  GROUP_SCHEDULE_DELETE_WORKING_STAGE,
+  GROUP_SCHEDULE_DETAIL,
+  GROUP_SCHEDULE_LIST,
+  GROUP_SCHEDULE_SET_WORKING_DAY,
+  GROUP_SCHEDULE_UPDATE,
+  GROUP_SCHEDULE_UPDATE_SHIFT_STAGE,
+  GROUP_SCHEDULE_UPDATE_SHIFT_STAGE_ALLTIME,
+  GROUP_SCHEDULE_UPDATE_WORKING_STAGE,
+  SETTING_START_DAY_WEEK
+} from "../constants/actions/calendar/projectCalendar";
+import {
+  CREATE_SCHEDULE,
+  DELETE_ALL_SCHEDULE,
+  DELETE_SCHEDULE,
+  LIST_WEEKS_IN_YEAR,
+  SCHEDULE_LIST,
+  SCHEDULE_OF_WEEK_LIST,
+  SCHEDULE_OF_WEEK_LIST_FROM_MODAL,
+  SETTING_STARTING_DAY,
+  UPDATE_SCHEDULE
+} from "../constants/actions/calendar/weeklyCalendar";
 import * as chatTypes from "../constants/actions/chat/chat";
-import { LIST_COMMENT, LIST_DOCUMENT_FROM_ME, LIST_DOCUMENT_SHARE, LIST_GOOGLE_DOCUMENT, LIST_MY_DOCUMENT, LIST_PROJECT_DOCUMENT, LIST_PROJECT_DOCUMENT_OF_FOLDER, LIST_RECENT, LIST_TRASH, LIST_TASK_DOCUMENT_OF_PROJECT } from "../constants/actions/documents";
-import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
-import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
-import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
-import { GET_ALL_GROUP_TASK } from "../constants/actions/groupTask/getAllGroupTask";
-import { LIST_GROUP_TASK } from "../constants/actions/groupTask/listGroupTask";
-import { SORT_GROUP_TASK } from "../constants/actions/groupTask/sortGroupTask";
-import { UPDATE_GROUP_TASK } from "../constants/actions/groupTask/updateGroupTask ";
-import { ACCEPT_REQUIREMENT_JOIN_GROUP } from "../constants/actions/groupUser/acceptRequirementJoinGroup";
-import { CANCLE_INVITATION_JOIN_GROUP } from "../constants/actions/groupUser/cancleInvitationJoinGroup";
-import { GET_LIST_GROUP } from "../constants/actions/groupUser/getListGroup";
-import { GET_LIST_INVITATION_SENT } from "../constants/actions/groupUser/getListInvitationSent";
-import { GET_REQUIREMENT_JOIN_GROUP } from "../constants/actions/groupUser/getRequirementJoinGroup";
-import { INVITE_USER_JOIN_GROUP } from "../constants/actions/groupUser/inviteUserJoinGroup";
-import { REJECT_REQUIREMENT_JOIN_GROUP } from "../constants/actions/groupUser/rejectRequirementJoinGroup";
-import { RESEND_INVITATION_USER_JOIN_GROUP } from "../constants/actions/groupUser/resendInvitationUserJoinGroup";
-import { SEARCH_USER } from "../constants/actions/groupUser/searchUser";
-import { CREATE_ICON } from "../constants/actions/icon/createIcon";
-import { DELETE_ICON } from "../constants/actions/icon/deleteIcon";
-import { LIST_ICON } from "../constants/actions/icon/listIcon";
-import { CREATE_LEVEL } from "../constants/actions/level/createLevel";
-import { DELETE_LEVEL } from "../constants/actions/level/deleteLevel";
-import { LIST_LEVEL } from "../constants/actions/level/listLevel";
-import { UPDATE_LEVEL } from "../constants/actions/level/updateLevel";
-import { CREATE_MAJOR } from "../constants/actions/major/createMajor";
-import { DELETE_MAJOR } from "../constants/actions/major/deleteMajor";
-import { LIST_MAJOR } from "../constants/actions/major/listMajor";
-import { UPDATE_MAJOR } from "../constants/actions/major/updateMajor";
-import { CREATE_POSITION } from "../constants/actions/position/createPosition";
-import { DELETE_POSITION } from "../constants/actions/position/deletePosition";
-import { LIST_POSITION } from "../constants/actions/position/listPosition";
-import { UPDATE_POSITION } from "../constants/actions/position/updatePosition";
-import { ADD_MEMBER_PROJECT } from "../constants/actions/project/addMemberProject";
-import { ADD_PROJECT_ROLE_TO_MEMBER } from "../constants/actions/project/addProjectRoleToMember";
-import { ASSIGN_MEMBER_TO_ALL_TASK } from "../constants/actions/project/assignMemberToAllTask";
-import { COPY_PROJECT } from "../constants/actions/project/copyProject";
-import { CREATE_PROJECT } from "../constants/actions/project/createProject";
-import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
-import { DELETE_TRASH_PROJECT } from "../constants/actions/project/deleteTrashProject";
-import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
-import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
-import { LIST_PROJECT_BASIC_INFO } from "../constants/actions/project/listBasic";
-import { LIST_DELETED_PROJECT } from "../constants/actions/project/listDeletedProject";
+import {
+  LIST_COMMENT,
+  LIST_DOCUMENT_FROM_ME,
+  LIST_DOCUMENT_SHARE,
+  LIST_GOOGLE_DOCUMENT,
+  LIST_MY_DOCUMENT,
+  LIST_PROJECT_DOCUMENT,
+  LIST_PROJECT_DOCUMENT_OF_FOLDER,
+  LIST_RECENT,
+  LIST_TASK_DOCUMENT_OF_PROJECT,
+  LIST_TRASH
+} from "../constants/actions/documents";
+import {COPY_GROUP_TASK} from "../constants/actions/groupTask/copyGroupTask";
+import {CREATE_GROUP_TASK} from "../constants/actions/groupTask/createGroupTask";
+import {DELETE_GROUP_TASK} from "../constants/actions/groupTask/deleteGroupTask";
+import {GET_ALL_GROUP_TASK} from "../constants/actions/groupTask/getAllGroupTask";
+import {LIST_GROUP_TASK} from "../constants/actions/groupTask/listGroupTask";
+import {SORT_GROUP_TASK} from "../constants/actions/groupTask/sortGroupTask";
+import {UPDATE_GROUP_TASK} from "../constants/actions/groupTask/updateGroupTask ";
+import {ACCEPT_REQUIREMENT_JOIN_GROUP} from "../constants/actions/groupUser/acceptRequirementJoinGroup";
+import {CANCLE_INVITATION_JOIN_GROUP} from "../constants/actions/groupUser/cancleInvitationJoinGroup";
+import {GET_LIST_GROUP} from "../constants/actions/groupUser/getListGroup";
+import {GET_LIST_INVITATION_SENT} from "../constants/actions/groupUser/getListInvitationSent";
+import {GET_REQUIREMENT_JOIN_GROUP} from "../constants/actions/groupUser/getRequirementJoinGroup";
+import {INVITE_USER_JOIN_GROUP} from "../constants/actions/groupUser/inviteUserJoinGroup";
+import {REJECT_REQUIREMENT_JOIN_GROUP} from "../constants/actions/groupUser/rejectRequirementJoinGroup";
+import {RESEND_INVITATION_USER_JOIN_GROUP} from "../constants/actions/groupUser/resendInvitationUserJoinGroup";
+import {SEARCH_USER} from "../constants/actions/groupUser/searchUser";
+import {CREATE_ICON} from "../constants/actions/icon/createIcon";
+import {DELETE_ICON} from "../constants/actions/icon/deleteIcon";
+import {LIST_ICON} from "../constants/actions/icon/listIcon";
+import {CREATE_LEVEL} from "../constants/actions/level/createLevel";
+import {DELETE_LEVEL} from "../constants/actions/level/deleteLevel";
+import {LIST_LEVEL} from "../constants/actions/level/listLevel";
+import {UPDATE_LEVEL} from "../constants/actions/level/updateLevel";
+import {CREATE_MAJOR} from "../constants/actions/major/createMajor";
+import {DELETE_MAJOR} from "../constants/actions/major/deleteMajor";
+import {LIST_MAJOR} from "../constants/actions/major/listMajor";
+import {UPDATE_MAJOR} from "../constants/actions/major/updateMajor";
+import {CREATE_POSITION} from "../constants/actions/position/createPosition";
+import {DELETE_POSITION} from "../constants/actions/position/deletePosition";
+import {LIST_POSITION} from "../constants/actions/position/listPosition";
+import {UPDATE_POSITION} from "../constants/actions/position/updatePosition";
+import {ADD_MEMBER_PROJECT} from "../constants/actions/project/addMemberProject";
+import {ADD_PROJECT_ROLE_TO_MEMBER} from "../constants/actions/project/addProjectRoleToMember";
+import {ASSIGN_MEMBER_TO_ALL_TASK} from "../constants/actions/project/assignMemberToAllTask";
+import {COPY_PROJECT} from "../constants/actions/project/copyProject";
+import {CREATE_PROJECT} from "../constants/actions/project/createProject";
+import {DELETE_PROJECT} from "../constants/actions/project/deleteProject";
+import {DELETE_TRASH_PROJECT} from "../constants/actions/project/deleteTrashProject";
+import {DETAIL_PROJECT} from "../constants/actions/project/detailProject";
+import {HIDE_PROJECT} from "../constants/actions/project/hideProject";
+import {LIST_PROJECT_BASIC_INFO} from "../constants/actions/project/listBasic";
+import {LIST_DELETED_PROJECT} from "../constants/actions/project/listDeletedProject";
 import {CHECK_HAS_RECENTLY_PROJECT, LIST_PROJECT, LIST_PROJECT_SELECT} from "../constants/actions/project/listProject";
-import { MEMBER_PROJECT } from "../constants/actions/project/memberProject";
-import { PERMISSION_PROJECT } from "../constants/actions/project/permissionProject";
-import { REMOVE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/removeGroupPermissionMember";
-import { REMOVE_MEMBER_PROJECT } from "../constants/actions/project/removeMemberProject";
-import { REMOVE_PROJECT_ROLE_FROM_MEMBER } from "../constants/actions/project/removeProjectRoleFromMember";
-import { RESTORE_TRASH_PROJECT } from "../constants/actions/project/restoreTrashProject";
-import { DETAIL_STATUS } from "../constants/actions/project/setting/detailStatus";
-import { UPDATE_STATUS_COPY } from "../constants/actions/project/setting/updateStatusCopy";
-import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateStatusDate";
-import { UPDATE_STATUS_VIEW } from "../constants/actions/project/setting/updateStatusView";
-import { UPDATE_NOTIFICATION_SETTING } from "../constants/actions/project/setting/updateNotificationSetting";
-import { UPDATE_PIN_BOARD_SETTING } from "../constants/actions/project/setting/updatePinBoardSetting";
-import { SHOW_PROJECT } from "../constants/actions/project/showProject";
-import { SORT_PROJECT } from "../constants/actions/project/sortProject";
-import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
-import { UPDATE_PROJECT } from "../constants/actions/project/updateProject";
-import { UPDATE_STATE_JOIN_TASK } from "../constants/actions/project/updateStateJoinTask";
-import { CREATE_PROJECT_GROUP } from "../constants/actions/projectGroup/createProjectGroup";
-import { DELETE_PROJECT_GROUP } from "../constants/actions/projectGroup/deleteProjectGroup";
-import { DETAIL_DEFAULT_GROUP } from "../constants/actions/projectGroup/detailDefaultGroup";
-import { DETAIL_PROJECT_GROUP } from "../constants/actions/projectGroup/detailProjectGroup";
-import { EDIT_PROJECT_GROUP } from "../constants/actions/projectGroup/editProjectGroup";
-import { LIST_PROJECT_GROUP } from "../constants/actions/projectGroup/listProjectGroup";
-import { LIST_PROJECT_GROUP_DELETED } from "../constants/actions/projectGroup/listProjectGroup";
-import { MEMBER_PROJECT_GROUP } from "../constants/actions/projectGroup/memberProjectGroup";
-import { SORT_PROJECT_GROUP } from "../constants/actions/projectGroup/sortProjectGroup";
-import { INVITE_OTHER_PEOPLE_CREATE_ACCOUNT } from "../constants/actions/register/inviteOtherPeopleCreateAccount";
-import { CREATE_ROOM } from "../constants/actions/room/createRoom";
-import { DELETE_ROOM } from "../constants/actions/room/deleteRoom";
-import { DETAIL_ROOM } from "../constants/actions/room/detailRoom";
-import { GET_USER_OF_ROOM } from "../constants/actions/room/getUserOfRoom";
-import { LIST_ROOM } from "../constants/actions/room/listRoom";
-import { SORT_ROOM } from "../constants/actions/room/sortRoom";
-import { UPDATE_ROOM } from "../constants/actions/room/updateRoom";
-import { FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE } from "../constants/actions/setting/setting";
-import { CREATE_TASK } from "../constants/actions/task/createTask";
-import { DELETE_TASK } from "../constants/actions/task/deleteTask";
-import { LIST_TASK } from "../constants/actions/task/listTask";
-import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
-import { SORT_TASK } from "../constants/actions/task/sortTask";
-import { GET_REMIND_DETAIL } from "../constants/actions/calendar/alarmCalendar";
-import { KANBAN_DETAIL_PROJECT } from 'constants/actions/kanban/detailProject';
-import { KANBAN_LIST_TASK } from 'constants/actions/kanban/listTask';
-import { KANBAN_SORT_TASK } from 'constants/actions/kanban/sortTask';
-import { KANBAN_SORT_GROUP_TASK } from 'constants/actions/kanban/sortGroupTask';
-import { KANBAN_GET_MANAGER } from 'constants/actions/kanban/getManager';
-import { KANBAN_ADD_MANAGERS } from 'constants/actions/kanban/addManagers';
-import { KANBAN_REMOVE_MANAGERS } from 'constants/actions/kanban/removeManagers';
-import { KANBAN_UPDATE_MANAGERS } from 'constants/actions/kanban/updateManagers';
-import { KANBAN_DETAIL_TASK } from 'constants/actions/kanban/detailTask';
-import { KANBAN_UPDATE_TASK } from 'constants/actions/kanban/updateTask';
-import { GET_PROJECT_STATISTIC } from "../constants/actions/project/getStatistic";
-import { GET_WORK_TYPE } from "../constants/actions/project/getWorkType";
+import {MEMBER_PROJECT} from "../constants/actions/project/memberProject";
+import {PERMISSION_PROJECT} from "../constants/actions/project/permissionProject";
+import {REMOVE_GROUP_PERMISSION_MEMBER} from "../constants/actions/project/removeGroupPermissionMember";
+import {REMOVE_MEMBER_PROJECT} from "../constants/actions/project/removeMemberProject";
+import {REMOVE_PROJECT_ROLE_FROM_MEMBER} from "../constants/actions/project/removeProjectRoleFromMember";
+import {RESTORE_TRASH_PROJECT} from "../constants/actions/project/restoreTrashProject";
+import {DETAIL_STATUS} from "../constants/actions/project/setting/detailStatus";
+import {UPDATE_STATUS_COPY} from "../constants/actions/project/setting/updateStatusCopy";
+import {UPDATE_STATUS_DATE} from "../constants/actions/project/setting/updateStatusDate";
+import {UPDATE_STATUS_VIEW} from "../constants/actions/project/setting/updateStatusView";
+import {UPDATE_NOTIFICATION_SETTING} from "../constants/actions/project/setting/updateNotificationSetting";
+import {UPDATE_PIN_BOARD_SETTING} from "../constants/actions/project/setting/updatePinBoardSetting";
+import {SHOW_PROJECT} from "../constants/actions/project/showProject";
+import {SORT_PROJECT} from "../constants/actions/project/sortProject";
+import {UPDATE_GROUP_PERMISSION_MEMBER} from "../constants/actions/project/updateGroupPermissionMember";
+import {UPDATE_PROJECT} from "../constants/actions/project/updateProject";
+import {UPDATE_STATE_JOIN_TASK} from "../constants/actions/project/updateStateJoinTask";
+import {CREATE_PROJECT_GROUP} from "../constants/actions/projectGroup/createProjectGroup";
+import {DELETE_PROJECT_GROUP} from "../constants/actions/projectGroup/deleteProjectGroup";
+import {DETAIL_DEFAULT_GROUP} from "../constants/actions/projectGroup/detailDefaultGroup";
+import {DETAIL_PROJECT_GROUP} from "../constants/actions/projectGroup/detailProjectGroup";
+import {EDIT_PROJECT_GROUP} from "../constants/actions/projectGroup/editProjectGroup";
+import {LIST_PROJECT_GROUP, LIST_PROJECT_GROUP_DELETED} from "../constants/actions/projectGroup/listProjectGroup";
+import {MEMBER_PROJECT_GROUP} from "../constants/actions/projectGroup/memberProjectGroup";
+import {SORT_PROJECT_GROUP} from "../constants/actions/projectGroup/sortProjectGroup";
+import {INVITE_OTHER_PEOPLE_CREATE_ACCOUNT} from "../constants/actions/register/inviteOtherPeopleCreateAccount";
+import {CREATE_ROOM} from "../constants/actions/room/createRoom";
+import {DELETE_ROOM} from "../constants/actions/room/deleteRoom";
+import {DETAIL_ROOM} from "../constants/actions/room/detailRoom";
+import {GET_USER_OF_ROOM} from "../constants/actions/room/getUserOfRoom";
+import {LIST_ROOM} from "../constants/actions/room/listRoom";
+import {SORT_ROOM} from "../constants/actions/room/sortRoom";
+import {UPDATE_ROOM} from "../constants/actions/room/updateRoom";
+import {FETCH_GROUP_DETAIL, FETCH_LIST_COLOR_GROUP, GET_SETTING_DATE} from "../constants/actions/setting/setting";
+import {CREATE_TASK} from "../constants/actions/task/createTask";
+import {DELETE_TASK} from "../constants/actions/task/deleteTask";
+import {LIST_TASK} from "../constants/actions/task/listTask";
+import {LIST_TASK_MEMBER} from "../constants/actions/task/listTaskMember";
+import {SORT_TASK} from "../constants/actions/task/sortTask";
+import {KANBAN_DETAIL_PROJECT} from 'constants/actions/kanban/detailProject';
+import {KANBAN_LIST_TASK} from 'constants/actions/kanban/listTask';
+import {KANBAN_SORT_TASK} from 'constants/actions/kanban/sortTask';
+import {KANBAN_SORT_GROUP_TASK} from 'constants/actions/kanban/sortGroupTask';
+import {KANBAN_GET_MANAGER} from 'constants/actions/kanban/getManager';
+import {KANBAN_ADD_MANAGERS} from 'constants/actions/kanban/addManagers';
+import {KANBAN_REMOVE_MANAGERS} from 'constants/actions/kanban/removeManagers';
+import {KANBAN_UPDATE_MANAGERS} from 'constants/actions/kanban/updateManagers';
+import {KANBAN_DETAIL_TASK} from 'constants/actions/kanban/detailTask';
+import {KANBAN_UPDATE_TASK} from 'constants/actions/kanban/updateTask';
+import {GET_PROJECT_STATISTIC} from "../constants/actions/project/getStatistic";
+import {GET_WORK_TYPE} from "../constants/actions/project/getWorkType";
 // ==================================
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
-import { BAN_USER_FROM_GROUP } from "../constants/actions/user/banUserFromGroup";
-import { DELETE_DOCUMENTS_USER } from "../constants/actions/user/deleteDocumentsUser";
-import { DETAIL_USER } from "../constants/actions/user/detailUser";
-import { LIST_USER_OF_GROUP } from "../constants/actions/user/listUserOfGroup";
-import { PERMISSION_USER } from "../constants/actions/user/permissionUser";
-import { PRIVATE_MEMBER } from "../constants/actions/user/privateMember";
-import { PUBLIC_MEMBER } from "../constants/actions/user/publicMember";
-import { REMOVE_GROUP_PERMISSION_USER } from "../constants/actions/user/removeGroupPermissionUser";
-import { SORT_USER } from "../constants/actions/user/sortUser";
-import { UPDATE_GROUP_PERMISSION_USER } from "../constants/actions/user/updateGroupPermissionUser";
-import { UPDATE_USER } from "../constants/actions/user/updateUser";
-import { UPLOAD_DOCUMENTS_USER } from "../constants/actions/user/uploadDocumentsUser";
-import { CREATE_USER_ROLE } from "../constants/actions/userRole/createUserRole";
-import { DELETE_USER_ROLE } from "../constants/actions/userRole/deleteUserRole";
-import { LIST_USER_ROLE } from "../constants/actions/userRole/listUserRole";
-import { UPDATE_USER_ROLE } from "../constants/actions/userRole/updateUserRole";
-import { GET_PERMISSION_VIEW_DETAIL_PROJECT, GET_PERMISSION_VIEW_PROJECTS, GET_PERMISSION_VIEW_USERS } from "../constants/actions/viewPermissions";
+import {BAN_USER_FROM_GROUP} from "../constants/actions/user/banUserFromGroup";
+import {DELETE_DOCUMENTS_USER} from "../constants/actions/user/deleteDocumentsUser";
+import {DETAIL_USER} from "../constants/actions/user/detailUser";
+import {LIST_USER_OF_GROUP} from "../constants/actions/user/listUserOfGroup";
+import {PERMISSION_USER} from "../constants/actions/user/permissionUser";
+import {PRIVATE_MEMBER} from "../constants/actions/user/privateMember";
+import {PUBLIC_MEMBER} from "../constants/actions/user/publicMember";
+import {REMOVE_GROUP_PERMISSION_USER} from "../constants/actions/user/removeGroupPermissionUser";
+import {SORT_USER} from "../constants/actions/user/sortUser";
+import {UPDATE_GROUP_PERMISSION_USER} from "../constants/actions/user/updateGroupPermissionUser";
+import {UPDATE_USER} from "../constants/actions/user/updateUser";
+import {UPLOAD_DOCUMENTS_USER} from "../constants/actions/user/uploadDocumentsUser";
+import {CREATE_USER_ROLE} from "../constants/actions/userRole/createUserRole";
+import {DELETE_USER_ROLE} from "../constants/actions/userRole/deleteUserRole";
+import {LIST_USER_ROLE} from "../constants/actions/userRole/listUserRole";
+import {UPDATE_USER_ROLE} from "../constants/actions/userRole/updateUserRole";
+import {
+  GET_PERMISSION_VIEW_DETAIL_PROJECT,
+  GET_PERMISSION_VIEW_PROJECTS,
+  GET_PERMISSION_VIEW_USERS
+} from "../constants/actions/viewPermissions";
 // ==================================
-import { watchLoadTaskAssignPage, watchLoadTaskDuePage, watchLoadTaskOverviewPage, watchLoadTaskPage, watchLoadTaskRolePage, watchLoadTaskExpiredPage } from "../views/JobPage/redux/sagas";
-import { doAddMemberHandle, doAddMemberMonitor, doCreateOffer, doCreateOfferGroup, doDeleteApproval, doDeleteDocumentOffer, doDeleteGroupOffer, doDeleteMemberHandle, doDeleteMemberMonitor, doDeleteOffer, doGetCommentListOfferDetail, doGetMemberToAdd, doGetSummaryByGroup, doGetTaskRecently, doHandleOffer, doListStatusHaveNewOffers, doLoadDetailOffer, doLoadOfferByDepartmentID, doLoadOfferByGroupID, doLoadOfferByProjectID, doLoadSummaryByDepartment, doLoadSummaryOverview, doLoadSummaryProject, doPostCommentOfferDetail, doRemoveCommentOfferDetail, doSortGroupOffer, doUpdateCommentOfferDetail, doUpdateGroupOffer, doUpdateOfferApprovalCondition, doUpdateOfferDetailDescriptionSection, doUploadDocumentOffer } from '../views/OfferPage/redux/sagas';
-import { ADD_MEMBER_HANDLE, ADD_MEMBER_MONITOR, CREATE_GROUP_OFFER, CREATE_OFFER, DELETE_APPROVAL, DELETE_DOCUMENT_OFFER, DELETE_GROUP_OFFER, DELETE_MEMBER_HANDLE, DELETE_MEMBER_MONITOR, DELETE_OFFER, HANDLE_OFFER_OFFERPAGE, LIST_STATUS_HAVE_NEW_OFFER, LOAD_DETAIL_OFFER, LOAD_OFFER_BY_DEPARTMENT_ID, LOAD_OFFER_BY_GROUP_ID, LOAD_OFFER_BY_PROJECT_ID, LOAD_SUMMARY_BY_GROUP, LOAD_SUMMARY_BY_PROJECT, LOAD_SUMMARY_OFFER_BY_DEPARTMENT, LOAD_SUMMARY_OVERVIEW, LOAD_TASK_RENCENTLY, OFFER_DETAIL_GET_COMMENT_LIST, OFFER_DETAIL_POST_COMMENT, OFFER_DETAIL_REMOVE_COMMENT, OFFER_DETAIL_UPDATE_COMMENT, OFFER_GET_MEMBER_TO_ADD, SORT_GROUP_OFFER, UPDATE_GROUP_OFFER_OFFERPAGE, UPDATE_OFFER_APPROVAL_CONDITION, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION, UPLOAD_DOCUMENT_OFFER } from "../views/OfferPage/redux/types";
-import { login, loginCheckState } from "./authentications";
-import { createPersonalRemind } from "./calendar/alarmCalendar/createPersonalRemind";
-import { createPersonalRemindCategory } from "./calendar/alarmCalendar/createPersonalRemindCategory";
-import { deletePersonalRemind } from "./calendar/alarmCalendar/deletePersonalRemind";
-import { deletePersonalRemindCategory } from "./calendar/alarmCalendar/deletePersonalRemindCategory";
-import { listPersonalRemind } from "./calendar/alarmCalendar/listPersonalRemind";
-import { listPersonalRemindCategory } from "./calendar/alarmCalendar/listPersonalRemindCategory";
-import { listRemindProject } from "./calendar/alarmCalendar/listRemindProject";
-import { listRemindRecently } from "./calendar/alarmCalendar/listRemindRecently";
-import { sortPersonalRemindCategory } from "./calendar/alarmCalendar/sortPeronalRemindCategory";
-import { updatePersonalRemind } from "./calendar/alarmCalendar/updatePersonalRemind";
-import { updatePersonalRemindCategory } from "./calendar/alarmCalendar/updatePersonalRemindCategory";
-import { listCalendarPermission } from "./calendar/permission/listPermission";
-import { projectScheduleAddDayOff } from "./calendar/projectCalendar/addDayOff";
-import { projectScheduleAddWorkingDays } from "./calendar/projectCalendar/addWorkingDay";
-import { createProjectGroupSchedule } from "./calendar/projectCalendar/createProjectGroupSchedule";
-import { projectScheduleCreateShiftStage } from "./calendar/projectCalendar/createShiftStage";
-import { projectScheduleCreateShiftStageAllTime } from "./calendar/projectCalendar/createShiftStageAllTime";
-import { projectScheduleCreateWorkingStage } from "./calendar/projectCalendar/createWorkingStage";
-import { projectScheduleDeleteDayOff } from "./calendar/projectCalendar/deleteDayOff";
-import { deleteProjectGroupSchedule } from "./calendar/projectCalendar/deleteProjectGroupSchedule";
-import { projectScheduleDeleteShiftStage } from "./calendar/projectCalendar/deleteShiftStage";
-import { projectScheduleDeleteShiftStageAllTime } from "./calendar/projectCalendar/deleteShiftStageAllTime";
-import { projectScheduleDeleteWorkingDays } from "./calendar/projectCalendar/deleteWorkingDay";
-import { projectScheduleDeleteWorkingStage } from "./calendar/projectCalendar/deleteWorkingStage";
-import { projectGroupScheduleDetail } from "./calendar/projectCalendar/getGroupScheduleDetail";
-import { listProjectGroupSchedule } from "./calendar/projectCalendar/listProjectGroupSchedule";
-import { projectScheduleSettingStartingDay } from "./calendar/projectCalendar/settingStartingDay";
-import { projectScheduleSetWorkingDay } from "./calendar/projectCalendar/setWorkingDay";
-import { updateProjectGroupSchedule } from "./calendar/projectCalendar/updateProjectGroupSchedule";
-import { projectScheduleUpdateShiftStage } from "./calendar/projectCalendar/updateShiftStage";
-import { projectScheduleUpdateShiftStageAllTime } from "./calendar/projectCalendar/updateShiftStageAllTime";
-import { projectScheduleUpdateWorkingStage } from "./calendar/projectCalendar/updateWorkingStage";
-import { createSchedule } from "./calendar/weeklyCalendar/createSchedule";
-import { deleteAllSchedule } from "./calendar/weeklyCalendar/deleteAllSchedule";
-import { deleteSchedule } from "./calendar/weeklyCalendar/deleteSchedule";
-import { listWeeklySchedule } from "./calendar/weeklyCalendar/listSchedule";
-import { listScheduleOfWeek } from "./calendar/weeklyCalendar/listScheduleOfWeek";
-import { listScheduleOfWeekFromModal } from "./calendar/weeklyCalendar/listScheduleOfWeekFromModal";
-import { listWeeksInYear } from "./calendar/weeklyCalendar/listWeeksInYear";
-import { settingStartingDay } from "./calendar/weeklyCalendar/settingStartingDay";
-import { updateSchedule } from "./calendar/weeklyCalendar/updateSchedule";
+import {
+  watchLoadTaskAssignPage,
+  watchLoadTaskDuePage,
+  watchLoadTaskExpiredPage,
+  watchLoadTaskOverviewPage,
+  watchLoadTaskPage,
+  watchLoadTaskRolePage
+} from "../views/JobPage/redux/sagas";
+import {
+  doAddMemberHandle,
+  doAddMemberMonitor,
+  doCreateOffer,
+  doCreateOfferGroup,
+  doDeleteApproval,
+  doDeleteDocumentOffer,
+  doDeleteGroupOffer,
+  doDeleteMemberHandle,
+  doDeleteMemberMonitor,
+  doDeleteOffer,
+  doGetCommentListOfferDetail,
+  doGetMemberToAdd,
+  doGetSummaryByGroup,
+  doGetTaskRecently,
+  doHandleOffer,
+  doListStatusHaveNewOffers,
+  doLoadDetailOffer,
+  doLoadOfferByDepartmentID,
+  doLoadOfferByGroupID,
+  doLoadOfferByProjectID,
+  doLoadSummaryByDepartment,
+  doLoadSummaryOverview,
+  doLoadSummaryProject,
+  doPostCommentOfferDetail,
+  doRemoveCommentOfferDetail,
+  doSortGroupOffer,
+  doUpdateCommentOfferDetail,
+  doUpdateGroupOffer,
+  doUpdateOfferApprovalCondition,
+  doUpdateOfferDetailDescriptionSection,
+  doUploadDocumentOffer
+} from '../views/OfferPage/redux/sagas';
+import {
+  ADD_MEMBER_HANDLE,
+  ADD_MEMBER_MONITOR,
+  CREATE_GROUP_OFFER,
+  CREATE_OFFER,
+  DELETE_APPROVAL,
+  DELETE_DOCUMENT_OFFER,
+  DELETE_GROUP_OFFER,
+  DELETE_MEMBER_HANDLE,
+  DELETE_MEMBER_MONITOR,
+  DELETE_OFFER,
+  HANDLE_OFFER_OFFERPAGE,
+  LIST_STATUS_HAVE_NEW_OFFER,
+  LOAD_DETAIL_OFFER,
+  LOAD_OFFER_BY_DEPARTMENT_ID,
+  LOAD_OFFER_BY_GROUP_ID,
+  LOAD_OFFER_BY_PROJECT_ID,
+  LOAD_SUMMARY_BY_GROUP,
+  LOAD_SUMMARY_BY_PROJECT,
+  LOAD_SUMMARY_OFFER_BY_DEPARTMENT,
+  LOAD_SUMMARY_OVERVIEW,
+  LOAD_TASK_RENCENTLY,
+  OFFER_DETAIL_GET_COMMENT_LIST,
+  OFFER_DETAIL_POST_COMMENT,
+  OFFER_DETAIL_REMOVE_COMMENT,
+  OFFER_DETAIL_UPDATE_COMMENT,
+  OFFER_GET_MEMBER_TO_ADD,
+  SORT_GROUP_OFFER,
+  UPDATE_GROUP_OFFER_OFFERPAGE,
+  UPDATE_OFFER_APPROVAL_CONDITION,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION,
+  UPLOAD_DOCUMENT_OFFER
+} from "../views/OfferPage/redux/types";
+import {login, loginCheckState} from "./authentications";
+import {createPersonalRemind} from "./calendar/alarmCalendar/createPersonalRemind";
+import {createPersonalRemindCategory} from "./calendar/alarmCalendar/createPersonalRemindCategory";
+import {deletePersonalRemind} from "./calendar/alarmCalendar/deletePersonalRemind";
+import {deletePersonalRemindCategory} from "./calendar/alarmCalendar/deletePersonalRemindCategory";
+import {listPersonalRemind} from "./calendar/alarmCalendar/listPersonalRemind";
+import {listPersonalRemindCategory} from "./calendar/alarmCalendar/listPersonalRemindCategory";
+import {listRemindProject} from "./calendar/alarmCalendar/listRemindProject";
+import {listRemindRecently} from "./calendar/alarmCalendar/listRemindRecently";
+import {sortPersonalRemindCategory} from "./calendar/alarmCalendar/sortPeronalRemindCategory";
+import {updatePersonalRemind} from "./calendar/alarmCalendar/updatePersonalRemind";
+import {updatePersonalRemindCategory} from "./calendar/alarmCalendar/updatePersonalRemindCategory";
+import {listCalendarPermission} from "./calendar/permission/listPermission";
+import {projectScheduleAddDayOff} from "./calendar/projectCalendar/addDayOff";
+import {projectScheduleAddWorkingDays} from "./calendar/projectCalendar/addWorkingDay";
+import {createProjectGroupSchedule} from "./calendar/projectCalendar/createProjectGroupSchedule";
+import {projectScheduleCreateShiftStage} from "./calendar/projectCalendar/createShiftStage";
+import {projectScheduleCreateShiftStageAllTime} from "./calendar/projectCalendar/createShiftStageAllTime";
+import {projectScheduleCreateWorkingStage} from "./calendar/projectCalendar/createWorkingStage";
+import {projectScheduleDeleteDayOff} from "./calendar/projectCalendar/deleteDayOff";
+import {deleteProjectGroupSchedule} from "./calendar/projectCalendar/deleteProjectGroupSchedule";
+import {projectScheduleDeleteShiftStage} from "./calendar/projectCalendar/deleteShiftStage";
+import {projectScheduleDeleteShiftStageAllTime} from "./calendar/projectCalendar/deleteShiftStageAllTime";
+import {projectScheduleDeleteWorkingDays} from "./calendar/projectCalendar/deleteWorkingDay";
+import {projectScheduleDeleteWorkingStage} from "./calendar/projectCalendar/deleteWorkingStage";
+import {projectGroupScheduleDetail} from "./calendar/projectCalendar/getGroupScheduleDetail";
+import {listProjectGroupSchedule} from "./calendar/projectCalendar/listProjectGroupSchedule";
+import {projectScheduleSettingStartingDay} from "./calendar/projectCalendar/settingStartingDay";
+import {projectScheduleSetWorkingDay} from "./calendar/projectCalendar/setWorkingDay";
+import {updateProjectGroupSchedule} from "./calendar/projectCalendar/updateProjectGroupSchedule";
+import {projectScheduleUpdateShiftStage} from "./calendar/projectCalendar/updateShiftStage";
+import {projectScheduleUpdateShiftStageAllTime} from "./calendar/projectCalendar/updateShiftStageAllTime";
+import {projectScheduleUpdateWorkingStage} from "./calendar/projectCalendar/updateWorkingStage";
+import {createSchedule} from "./calendar/weeklyCalendar/createSchedule";
+import {deleteAllSchedule} from "./calendar/weeklyCalendar/deleteAllSchedule";
+import {deleteSchedule} from "./calendar/weeklyCalendar/deleteSchedule";
+import {listWeeklySchedule} from "./calendar/weeklyCalendar/listSchedule";
+import {listScheduleOfWeek} from "./calendar/weeklyCalendar/listScheduleOfWeek";
+import {listScheduleOfWeekFromModal} from "./calendar/weeklyCalendar/listScheduleOfWeekFromModal";
+import {listWeeksInYear} from "./calendar/weeklyCalendar/listWeeksInYear";
+import {settingStartingDay} from "./calendar/weeklyCalendar/settingStartingDay";
+import {updateSchedule} from "./calendar/weeklyCalendar/updateSchedule";
 import * as chatDetailSaga from "./chat/chat";
-import { listComment, listDocumentShare, listDocumentShareFromMe, listGoogleDocument, listMyDocument, listProjectDocument, listProjectDocumentOfFolder, listRecent, listTrash, listTaskDocumentOfProjectFolder } from "./documents";
-import { copyGroupTask } from "./groupTask/copyGroupTask";
-import { createGroupTask } from "./groupTask/createGroupTask";
-import { deleteGroupTask } from "./groupTask/deleteGroupTask";
-import { getAllGroupTask } from "./groupTask/getAllGroupTask";
-import { listGroupTask } from "./groupTask/listGroupTask";
-import { sortGroupTask } from "./groupTask/sortGroupTask";
-import { updateGroupTask } from "./groupTask/updateGroupTask";
-import { acceptRequirementJoinGroup } from "./groupUser/acceptRequirementUserJoinGroup";
-import { cancleInvitationJoinGroup } from "./groupUser/cancleInvitationJoinGroup";
-import { getListGroup } from "./groupUser/getListGroup";
-import { getListInvitationSent } from "./groupUser/getListInvitationSent";
-import { getRequirementJoinGroup } from "./groupUser/getRequirementUserJoinGroup";
-import { inviteUserJoinGroup } from "./groupUser/inviteUserJoinGroup";
-import { rejectRequirementJoinGroup } from "./groupUser/rejectRequirementUserJoinGroup";
-import { resendInvitationUserJoinGroup } from "./groupUser/resendInvitationUserJoinGroup";
-import { searchUser } from "./groupUser/searchUser";
-import { createIcon } from "./icon/createIcon";
-import { deleteIcon } from "./icon/deleteIcon";
-import { listIcon } from "./icon/listIcon";
-import { createLevel } from "./level/createLevel";
-import { deleteLevel } from "./level/deleteLevel";
-import { listLevel } from "./level/listLevel";
-import { updateLevel } from "./level/updateLevel";
-import { setProject, setProjectGroup } from './localStorage';
-import { createMajor } from "./major/createMajor";
-import { deleteMajor } from "./major/deleteMajor";
-import { listMajor } from "./major/listMajor";
-import { updateMajor } from "./major/updateMajor";
-import { createPosition } from "./position/createPosition";
-import { deletePosition } from "./position/deletePosition";
-import { listPosition } from "./position/listPosition";
-import { updatePosition } from "./position/updatePosition";
-import { addMemberProject } from "./project/addMemberProject";
-import { addProjectRoleToMember } from "./project/addProjectRoleToMember";
-import { assignMemberToAllTask } from "./project/assignMemberToAllTask";
-import { copyProject } from "./project/copyProject";
-import { createProject } from "./project/createProject";
-import { deleteProject } from "./project/deleteProject";
-import { deleteTrashProject } from "./project/deleteTrashProject";
-import { detailProject } from "./project/detailProject";
-import { hideProject } from "./project/hideProject";
-import { listProjectBasicInfo } from "./project/listBasicInfo";
-import { listDeletedProject, listProject } from "./project/listProject";
-import { memberProject } from "./project/memberProject";
-import { permissionProject } from "./project/permissionProject";
-import { removeGroupPermissionMember } from "./project/removeGroupPermissionMember";
-import { removeMemberProject } from "./project/removeMemberProject";
-import { removeProjectRoleFromMember } from "./project/removeProjectRoleFromMember";
-import { restoreTrashProject } from "./project/restoreTrashProject";
-import { detailStatus } from "./project/setting/detailStatus";
-import { updateStatusCopy } from "./project/setting/updateStatusCopy";
-import { updateStatusDate } from "./project/setting/updateStatusDate";
-import { updateStatusView } from "./project/setting/updateStatusView";
-import { updateNotificationSetting } from "./project/setting/updateNotificationSetting";
-import { showProject } from "./project/showProject";
-import { sortProject } from "./project/sortProject";
-import { updateGroupPermissionMember } from "./project/updateGroupPermissionMember";
-import { updateProject } from "./project/updateProject";
-import { updateStateJoinTask } from "./project/updateStateJoinTask";
-import { createProjectGroup } from "./projectGroup/createProjectGroup";
-import { deleteProjectGroup } from "./projectGroup/deleteProjectGroup";
-import { detailDefaultGroup } from "./projectGroup/detailDefaultGroup";
-import { detailProjectGroup } from "./projectGroup/detailProjectGroup";
-import { editProjectGroup } from "./projectGroup/editProjectGroup";
-import { listProjectGroup } from "./projectGroup/listProjectGroup";
-import { memberProjectGroup } from "./projectGroup/memberProjectGroup";
-import { sortProjectGroup } from "./projectGroup/sortProjectGroup";
-import { inviteOtherPeopleCreateAccount } from "./register/inviteOtherPeopleCreateAccount";
-import { createRoom } from "./room/createRoom";
-import { deleteRoom } from "./room/deleteRoom";
-import { detailRoom } from "./room/detailRoom";
-import { getUserOfRoom } from "./room/getUserOfRoom";
-import { listRoom } from "./room/listRoom";
-import { sortRoom } from "./room/sortRoom";
-import { updateRoom } from "./room/updateRoom";
-import { getGroupDetail, getListColor, getSettingDate } from "./setting/setting";
-import { createTask } from "./task/createTask";
-import { deleteTask } from "./task/deleteTask";
-import { listTask } from "./task/listTask";
-import { sortTask } from "./task/sortTask";
+import {
+  listComment,
+  listDocumentShare,
+  listDocumentShareFromMe,
+  listGoogleDocument,
+  listMyDocument,
+  listProjectDocument,
+  listProjectDocumentOfFolder,
+  listRecent,
+  listTaskDocumentOfProjectFolder,
+  listTrash
+} from "./documents";
+import {copyGroupTask} from "./groupTask/copyGroupTask";
+import {createGroupTask} from "./groupTask/createGroupTask";
+import {deleteGroupTask} from "./groupTask/deleteGroupTask";
+import {getAllGroupTask} from "./groupTask/getAllGroupTask";
+import {listGroupTask} from "./groupTask/listGroupTask";
+import {sortGroupTask} from "./groupTask/sortGroupTask";
+import {updateGroupTask} from "./groupTask/updateGroupTask";
+import {acceptRequirementJoinGroup} from "./groupUser/acceptRequirementUserJoinGroup";
+import {cancleInvitationJoinGroup} from "./groupUser/cancleInvitationJoinGroup";
+import {getListGroup} from "./groupUser/getListGroup";
+import {getListInvitationSent} from "./groupUser/getListInvitationSent";
+import {getRequirementJoinGroup} from "./groupUser/getRequirementUserJoinGroup";
+import {inviteUserJoinGroup} from "./groupUser/inviteUserJoinGroup";
+import {rejectRequirementJoinGroup} from "./groupUser/rejectRequirementUserJoinGroup";
+import {resendInvitationUserJoinGroup} from "./groupUser/resendInvitationUserJoinGroup";
+import {searchUser} from "./groupUser/searchUser";
+import {createIcon} from "./icon/createIcon";
+import {deleteIcon} from "./icon/deleteIcon";
+import {listIcon} from "./icon/listIcon";
+import {createLevel} from "./level/createLevel";
+import {deleteLevel} from "./level/deleteLevel";
+import {listLevel} from "./level/listLevel";
+import {updateLevel} from "./level/updateLevel";
+import {setProject, setProjectGroup} from './localStorage';
+import {createMajor} from "./major/createMajor";
+import {deleteMajor} from "./major/deleteMajor";
+import {listMajor} from "./major/listMajor";
+import {updateMajor} from "./major/updateMajor";
+import {createPosition} from "./position/createPosition";
+import {deletePosition} from "./position/deletePosition";
+import {listPosition} from "./position/listPosition";
+import {updatePosition} from "./position/updatePosition";
+import {addMemberProject} from "./project/addMemberProject";
+import {addProjectRoleToMember} from "./project/addProjectRoleToMember";
+import {assignMemberToAllTask} from "./project/assignMemberToAllTask";
+import {copyProject} from "./project/copyProject";
+import {createProject} from "./project/createProject";
+import {deleteProject} from "./project/deleteProject";
+import {deleteTrashProject} from "./project/deleteTrashProject";
+import {detailProject} from "./project/detailProject";
+import {hideProject} from "./project/hideProject";
+import {listProjectBasicInfo} from "./project/listBasicInfo";
+import {listDeletedProject, listProject} from "./project/listProject";
+import {memberProject} from "./project/memberProject";
+import {permissionProject} from "./project/permissionProject";
+import {removeGroupPermissionMember} from "./project/removeGroupPermissionMember";
+import {removeMemberProject} from "./project/removeMemberProject";
+import {removeProjectRoleFromMember} from "./project/removeProjectRoleFromMember";
+import {restoreTrashProject} from "./project/restoreTrashProject";
+import {detailStatus} from "./project/setting/detailStatus";
+import {updateStatusCopy} from "./project/setting/updateStatusCopy";
+import {updateStatusDate} from "./project/setting/updateStatusDate";
+import {updateStatusView} from "./project/setting/updateStatusView";
+import {updateNotificationSetting} from "./project/setting/updateNotificationSetting";
+import {showProject} from "./project/showProject";
+import {sortProject} from "./project/sortProject";
+import {updateGroupPermissionMember} from "./project/updateGroupPermissionMember";
+import {updateProject} from "./project/updateProject";
+import {updateStateJoinTask} from "./project/updateStateJoinTask";
+import {createProjectGroup} from "./projectGroup/createProjectGroup";
+import {deleteProjectGroup} from "./projectGroup/deleteProjectGroup";
+import {detailDefaultGroup} from "./projectGroup/detailDefaultGroup";
+import {detailProjectGroup} from "./projectGroup/detailProjectGroup";
+import {editProjectGroup} from "./projectGroup/editProjectGroup";
+import {listProjectGroup} from "./projectGroup/listProjectGroup";
+import {memberProjectGroup} from "./projectGroup/memberProjectGroup";
+import {sortProjectGroup} from "./projectGroup/sortProjectGroup";
+import {inviteOtherPeopleCreateAccount} from "./register/inviteOtherPeopleCreateAccount";
+import {createRoom} from "./room/createRoom";
+import {deleteRoom} from "./room/deleteRoom";
+import {detailRoom} from "./room/detailRoom";
+import {getUserOfRoom} from "./room/getUserOfRoom";
+import {listRoom} from "./room/listRoom";
+import {sortRoom} from "./room/sortRoom";
+import {updateRoom} from "./room/updateRoom";
+import {getGroupDetail, getListColor, getSettingDate} from "./setting/setting";
+import {createTask} from "./task/createTask";
+import {deleteTask} from "./task/deleteTask";
+import {listTask} from "./task/listTask";
+import {sortTask} from "./task/sortTask";
 import * as taskDetailSaga from "./taskDetail/TaskDetailSaga";
-import { banUserFromGroup } from "./user/banUserFromGroup";
-import { deleteDocumentsUser } from "./user/deleteDocumentsUser";
-import { detailUser } from "./user/detailUser";
-import { listUserOfGroup } from "./user/listUserOfGroup";
-import { permissionUser } from "./user/permissionUser";
-import { privateMember } from "./user/privateMember";
-import { publicMember } from "./user/publicMember";
-import { detailProject as kanbanDetailProject } from './kanban/detailProject';
-import { listTask as kanbanListTask } from './kanban/listTask';
-import { sortTask as kanbanSortTask } from './kanban/sortTask';
-import { sortGroupTask as kanbanSortGroupTask } from './kanban/sortGroupTask';
-import { getManager as kanbanGetManager } from './kanban/getManager';
-import { addManagers as kanbanAddManagers } from './kanban/addManagers';
-import { removeManagers as kanbanRemoveManagers } from './kanban/removeManagers';
-import { updateManagers as kanbanUpdateManagers } from './kanban/updateManagers';
-import { detailTask as kanbanDetailTask } from './kanban/detailTask';
-import { updateTask as kanbanUpdateTask } from './kanban/updateTask';
-import { removeGroupPermissionUser } from "./user/removeGroupPermissionUser";
-import { sortUser } from "./user/sortUser";
-import { updateGroupPermissionUser } from "./user/updateGroupPermissionUser";
-import { updateUser } from "./user/updateUser";
-import { uploadDocumentsUser } from "./user/uploadDocumentsUser";
-import { createUserRole } from "./userRole/createUserRole";
-import { deleteUserRole } from "./userRole/deleteUserRole";
-import { listUserRole } from "./userRole/listUserRole";
-import { updateUserRole } from "./userRole/updateUserRole";
-import { getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers } from "./viewPermissions";
+import {createPrivateChat, updateTaskStatus} from "./taskDetail/TaskDetailSaga";
+import {banUserFromGroup} from "./user/banUserFromGroup";
+import {deleteDocumentsUser} from "./user/deleteDocumentsUser";
+import {detailUser} from "./user/detailUser";
+import {listUserOfGroup} from "./user/listUserOfGroup";
+import {permissionUser} from "./user/permissionUser";
+import {privateMember} from "./user/privateMember";
+import {publicMember} from "./user/publicMember";
+import {detailProject as kanbanDetailProject} from './kanban/detailProject';
+import {listTask as kanbanListTask} from './kanban/listTask';
+import {sortTask as kanbanSortTask} from './kanban/sortTask';
+import {sortGroupTask as kanbanSortGroupTask} from './kanban/sortGroupTask';
+import {getManager as kanbanGetManager} from './kanban/getManager';
+import {addManagers as kanbanAddManagers} from './kanban/addManagers';
+import {removeManagers as kanbanRemoveManagers} from './kanban/removeManagers';
+import {updateManagers as kanbanUpdateManagers} from './kanban/updateManagers';
+import {detailTask as kanbanDetailTask} from './kanban/detailTask';
+import {updateTask as kanbanUpdateTask} from './kanban/updateTask';
+import {removeGroupPermissionUser} from "./user/removeGroupPermissionUser";
+import {sortUser} from "./user/sortUser";
+import {updateGroupPermissionUser} from "./user/updateGroupPermissionUser";
+import {updateUser} from "./user/updateUser";
+import {uploadDocumentsUser} from "./user/uploadDocumentsUser";
+import {createUserRole} from "./userRole/createUserRole";
+import {deleteUserRole} from "./userRole/deleteUserRole";
+import {listUserRole} from "./userRole/listUserRole";
+import {updateUserRole} from "./userRole/updateUserRole";
+import {getPermissionViewDetailProject, getPermissionViewProjects, getPermissionViewUsers} from "./viewPermissions";
 import {listProjectGroupDeleted} from "./projectGroup/listProjectGroupDeleted";
 import {listTaskMember} from "./task/listTaskMember";
 import {getRemindDetail} from "./calendar/alarmCalendar/getRemindDetail";
@@ -292,7 +432,6 @@ import {GET_PROJECT_STATUS_WORK} from "../constants/actions/project/getStatusWor
 import {GET_PROJECT_PERSONAL_BOARD} from "../constants/actions/project/projectOnPersonalBoard";
 import {getProjectOnBoard} from "./project/projectOnBoard";
 import {checkHasProjectRecently} from "./project/checkHasRecently";
-import {createPrivateChat, updateTaskStatus} from "./taskDetail/TaskDetailSaga";
 
 function* rootSaga() {
   // Hoang - begin

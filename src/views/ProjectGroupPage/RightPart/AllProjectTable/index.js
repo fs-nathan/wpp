@@ -23,6 +23,8 @@ import {localOptionSelector, viewPermissionsSelector} from '../../selectors';
 import AllProjectTablePresenter from './presenters';
 import {bgColorSelector, projectsSelector, showHidePendingsSelector} from './selectors';
 import {CREATE_PROJECT} from "constants/events";
+import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
+import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 
 function AllProjectTable({
   expand,
@@ -128,8 +130,12 @@ function AllProjectTable({
       projects: _projects,
     });
   }, [projects, sortType]);
+
+  const [guideLineModal, setGuideLineModal] = React.useState(true);
+  const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
+  const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const [openNoPG, setOpenNoPG] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [editProps, setEditProps] = React.useState({});
@@ -181,7 +187,18 @@ function AllProjectTable({
       default: return;
     }
   }
-
+  React.useEffect(() => {
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      setGuideLineModal(true);
+      setNewCreatedBoard(e.detail.project_id);
+    });
+    return () => {
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
+        setGuideLineModal(true);
+        setNewCreatedBoard(e.detail.project_id);
+      });
+    }
+  }, []);
   return (
     <>
       <AllProjectTablePresenter
@@ -249,6 +266,15 @@ function AllProjectTable({
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
+      />
+      <GuideLineAddUserModal
+        open={guideLineModal} setOpen={setGuideLineModal}
+        handleAddNow={() => setOpenMemberSetting(true)}
+      />
+      <MembersSettingModal
+        open={openMemberSetting}
+        setOpen={setOpenMemberSetting}
+        project_id={newCreatedBoard}
       />
     </>
   );
