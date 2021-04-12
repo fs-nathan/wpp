@@ -1,0 +1,202 @@
+.detailRemind {
+  .MuiDialogContent-root {
+    padding: 8px 0;
+    height: 30vh;
+    min-width: 600px;
+  }
+  .MuiDialogTitle-root {
+    border-bottom: 1px solid #e6e6e6;
+  }
+  .MuiDialogActions-root {
+    border-top: 1px solid transparent;
+  }
+  &--closeButton {
+    position: absolute;
+    right: 4px;
+    top: 4px;
+    color: grey;
+  }
+  &--time {
+    padding: 16px;
+    margin-right: 14px;
+    color: #ffffff;
+    background-color: rgb(0, 156, 243);
+    border-radius: 2px;
+  }
+  &--main {
+    display: flex;
+    background-color: #f0f0f0;
+    padding: 16px 20px;
+  }
+  &--day {
+    font-size: 48px;
+    font-weight: 700;
+  }
+  &--title {
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  &--avatar {
+    width: 40px;
+    height: 40px;
+    margin-right: 14px;
+  }
+  &--creator {
+    display: flex;
+  }
+  &--role {
+    font-weight: normal;
+  }
+  &--content {
+    padding: 16px 20px;
+    min-width: 500px;
+    font-size: 16px;
+    color: #111111;
+  }
+  &--remind {
+    display: flex;
+    svg {
+      margin-right: 4px;
+    }
+    .MuiChip-root {
+      border-radius: 2px;
+      margin-left: 10px;
+    }
+    .MuiChip-label {
+      padding: 0 5px;
+      border-radius: 2px;
+      font-weight: 500;
+      font-size: 12px;
+    }
+  }
+  &--data {
+    justify-content: center;
+    display: block;
+    flex-direction: column;
+    line-height: 2;
+    font-weight: bold;
+    width: 100%;
+    font-size: 14px;
+  }
+}
+
+.remindModal {
+  .MuiOutlinedInput-inputAdornedEnd,
+  .MuiOutlinedInput-input {
+    padding: 11px;
+  }
+  .MuiOutlinedInput-adornedEnd {
+    .MuiButtonBase-root {
+      padding: 0px;
+    }
+  }
+  .MuiFormControl-root {
+    margin-top: 0;
+  }
+  .TitleSectionModal {
+    margin: 0 0 10px;
+  }
+  &--dateRemind,
+  &--mileStone {
+    font-size: 13px;
+    width: 30%;
+    padding: 15px 0 3px;
+  }
+  &--timeRemind {
+    font-size: 13px;
+    width: 30%;
+    padding: 15px 0 3px;
+  }
+  &--repeatRemind {
+    font-size: 13px;
+    width: 27%;
+    padding: 15px 0 3px;
+    display: flex;
+    align-items: center;
+  }
+  &--frequencyRemind {
+    font-size: 13px;
+    width: 20%;
+    padding: 15px 0 3px;
+    display: flex;
+    align-items: center;
+  }
+  &--chipWrap {
+    margin-top: -15px;
+    margin-bottom: 20px;
+  }
+  &--chip {
+    font-size: 14px;
+    .MuiChip-deleteIcon {
+      color: rgb(176, 176, 176);
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+//RemindModal - RemindTab
+.remind-title {
+  display: flex;
+  margin: 15px 0 0 0;
+  justify-content: space-between;
+}
+.remind-body {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  .remind-date {
+    width: 25%;
+    margin-right: 8px;
+  }
+  .type-remind {
+    margin: 8px;
+    width: 25%;
+    & > div > div > div {
+      padding: 0;
+    }
+  }
+  .remind_setting_frequency {
+    width: 25%;
+    &_input {
+      background: #f8f8f8;
+      height: 38px;
+      &>input {
+        background: #fff;
+      }
+    }
+  }
+}
+.wrapper-progress {
+  display: flex;
+  margin-bottom: 20px;
+}
+
+.detail-remind-top {
+  text-align: center;
+  margin: 20px 0px;
+  .step-time-next {
+    width: 120px;
+    display: inline-block;
+    height: 120px;
+    color: #fff;
+    border-radius: 50%;
+    margin-bottom: 20px;
+    .step-time-next-month {
+      font-size: 18px;
+      line-height: 40px;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+    .step-time-next-day {
+      font-size: 40px;
+      font-weight: bold;
+      line-height: 40px;
+    }
+  }
+  img {
+    width: 60px;
+    margin-bottom: 20px;
+  }
+}

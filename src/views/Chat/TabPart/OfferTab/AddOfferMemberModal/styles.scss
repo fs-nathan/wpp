@@ -1,0 +1,57 @@
+.addOfferMemberModal {
+  .MuiDialogContent-root {
+    padding: 20px 24px;
+  }
+
+  &--selected {
+    color: orange;
+    margin-top: 10px;
+  }
+
+  &--selectAll {
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    padding: 10px 0;
+
+    &Text {
+      font-size: 14px;
+    }
+
+    .MuiCheckbox-root {
+      padding: 0;
+      margin-right: 20px;
+    }
+
+    .MuiSvgIcon-root {
+      width: 22px !important;
+      height: 22px !important;
+    }
+  }
+}
+
+.offerMemberItem {
+  display: flex;
+  margin: 15px 0;
+  padding: 0;
+
+  .MuiCheckbox-root {
+    margin-right: 20px;
+    margin-left: -10px;
+  }
+
+  .MuiSvgIcon-root {
+    width: 22px !important;
+    height: 22px !important;
+  }
+
+  &--avatar {
+    margin-left: 4px;
+    margin-right: 12px;
+  }
+
+  &--name {
+    font-size: 15px;
+    font-weight: 500;
+    columns: #222222;
+  }
+}

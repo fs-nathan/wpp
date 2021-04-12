@@ -1,0 +1,62 @@
+.CommonMessageAction {
+  display: flex;
+  opacity: 0;
+  margin-left: 20px;
+  margin-right: auto;
+  &__self {
+    margin-left: auto;
+    margin-right: 20px;
+  }
+  &--button {
+    transition: unset;
+    background-color: unset;
+    border: none;
+    height: fit-content;
+    margin: auto 0;
+    cursor: pointer;
+    &:hover {
+      background-color: unset;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  &--icon {
+    fill: #888888;
+    width: 20px;
+    path {
+      fill: inherit !important;
+    }
+  }
+  &--buttonEmo {
+    position: relative;
+    &:hover .ReactEmotionPopup {
+      display: flex;
+      z-index: 100;
+      top: -35px;
+      left: -60px;
+      right: unset;
+    }
+  }
+  // &__self &--buttonEmo:hover .ReactEmotionPopup {
+  //   left: unset;
+  //   right: -60px;
+  // }
+  // &__self &--buttonEmo__short:hover .ReactEmotionPopup {
+  //   right: -100px;
+  // }
+}
+
+.emoMenu {
+  &--list {
+    display: flex;
+  }
+  &--menuItem {
+    padding: 0;
+    margin-left: 5px;
+  }
+  &--image {
+    width: 20px;
+    height: 20px;
+  }
+}

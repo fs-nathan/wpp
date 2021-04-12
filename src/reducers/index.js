@@ -453,6 +453,7 @@ import recentlyProjects, {initialState as recentlyProjectsInitialState} from "./
 import getStatusWorkGroup, {initialState as getStatusWorkGroupInitialState} from "./project/getStatusWork";
 import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInitialState} from "./project/projectOnPersonalBoard";
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
+import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
 import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 
 const rootReducer = combineReducers({
@@ -476,7 +477,6 @@ const rootReducer = combineReducers({
     listGroupTask,
     listGroupOffer,
     listGroupPermission,
-    createPrivateChat
   }),
   room: combineReducers({
     listRoom,
@@ -566,18 +566,13 @@ const rootReducer = combineReducers({
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
-    recentlyProjects,
-    getStatusWorkGroup,
-    getProjectOnPersonalBoard,
     getWorkType,
-    checkHasRecently,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
       updateNotificationSetting,
-      updatePinBoardSetting
     }),
   }),
   groupTask: combineReducers({
@@ -675,6 +670,7 @@ const rootReducer = combineReducers({
     detailTask: kanbanDetailTask,
     updateTask: kanbanUpdateTask,
   }),
+  threadChat
 });
 
 export const DEFAULT_STATE = {
@@ -868,6 +864,7 @@ export const DEFAULT_STATE = {
     remindDetail: getRemindDetailInitialState
   },
   localStorage: localStorageInitialState,
+  threadChat: threadChatInitialState
 };
 
 export default rootReducer;

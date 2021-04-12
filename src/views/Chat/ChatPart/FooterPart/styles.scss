@@ -1,0 +1,95 @@
+.footerChat--tag {
+  color: #6397db;
+  line-height: 16px;
+  margin-right: 5px;
+}
+
+.chatBox {
+  cursor: text;
+  position: relative;
+  // height: 100%;
+  flex-basis: 61px;
+  border-radius: 2px;
+  .DraftEditor-root {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .public-DraftEditorPlaceholder-root {
+    position: absolute;
+  }
+  .public-DraftEditorPlaceholder-inner {
+    font-size: 14px;
+  }
+  .public-DraftEditorPlaceholder-hasFocus {
+    display: none;
+  }
+  &--send {
+    position: absolute;
+    right: 24px;
+    bottom: 20px;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+  &--sendIcon {
+    transform: translateY(9px);
+  }
+  &--preview {
+    display: flex;
+    overflow: hidden;
+    padding: 10px 20px;
+    border-top: 1px solid #ccc;
+    background-color: #f2f2f2;
+  }
+  &--imagePreviewWrap {
+    float: left;
+    width: 80px;
+    height: 80px;
+    margin-right: 10px;
+    position: relative;
+    display: block;
+    overflow: hidden;
+    border: 1px solid #d5d5d5;
+    border-radius: 3px;
+  }
+  &--imagePreview {
+    // width: 30px;
+    // height: 30px;
+    float: left;
+    height: 100%;
+    border-radius: 3px;
+  }
+  &--imagePreviewDelete {
+    position: absolute;
+    right: -10px;
+    top: -10px;
+    svg {
+      padding: 2px;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      fill: #ffffff;
+    }
+  }
+  &--namePreview {
+    position: absolute;
+    width: 100%;
+    left: 0px;
+    height: 23px;
+    font-size: 11px;
+    line-height: 25px;
+    display: inline-block;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    bottom: 0px;
+    background: #a7a4a4;
+    color: #fff;
+    padding: 0px 5px;
+    text-align: center;
+    opacity: 0.8;
+  }
+}

@@ -1,0 +1,21 @@
+.UpdateRoleMember {
+  &--content {
+    background-color: #ececec;
+    border-radius: 50px;
+    padding: 3px 10px 3px 3px;
+    font-size: 14px;
+    color: #795548;
+    display: flex;
+    width: fit-content;
+    margin: auto;
+    line-height: 20px;
+    text-transform: none;
+    font-weight: 500;
+    border: 1px solid #e2e2e2;
+  }
+  &--avatar {
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
+  }
+}

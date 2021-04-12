@@ -20,6 +20,7 @@
     align-items: center;
     color: #fff;
     text-decoration: none;
+    position: relative;
     &.actived {
       background-color: rgba(0, 0, 0, 0.12);
     }
@@ -36,5 +37,17 @@
   }
   .titleTab {
     font-size: 12px;
+  }
+  .bell-message {
+    position: absolute;
+    width: 22px;
+    height: 15px;
+    background: red;
+    text-align: center;
+    font-size: 10px;
+    line-height: 15px;
+    border-radius: 8px;
+    top: 5px;
+    right: 15px;
   }
 }

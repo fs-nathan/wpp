@@ -1,0 +1,23 @@
+.hide {
+  display: none;
+}
+.header-chat-avatar {
+  width: 25px;
+  height: 25px;
+}
+.footer-chat-container {
+  display: flex;
+  flex-direction: column;
+  .icon-btn {
+    margin-left: auto;
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: inline-flex;
+    svg {
+      fill: #607d8b;
+      color: #607d8b;
+    }
+  }
+}

@@ -1,0 +1,16 @@
+.RemindMessage {
+  &--icon {
+    width: 20px;
+    height: 20px;
+    transform: translate(-3px, 3px);
+  }
+  svg {
+    fill: #4fa9ff;
+  }
+  &--time {
+    text-transform: initial;
+    color: #607d8b;
+    line-height: 30px;
+    margin-bottom: 20px;
+  }
+}

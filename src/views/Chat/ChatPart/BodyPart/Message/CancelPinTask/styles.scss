@@ -1,0 +1,15 @@
+.CancelPinTask {
+  &--icon {
+    width: 40px;
+    height: 40px;
+    fill: #ff5722;
+    transform: rotate(45deg);
+    path {
+      fill: inherit !important;
+    }
+  }
+  &--notify {
+    color: #0c92f2;
+    font-size: 16px;
+  }
+}

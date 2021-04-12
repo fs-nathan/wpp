@@ -1,0 +1,33 @@
+.list-header {
+  height: 70px;
+  .job-detail-icon {
+    color: #333435;
+    opacity: 0.54;
+  }
+  .dropdown-icon {
+    // margin-left: 10px;
+    padding: 7px;
+  }
+  .setting-icon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+.chat-left-top {
+  margin: 15px 0px 10px 0px;
+  padding-right: 15px;
+  b {
+    float: left;
+    font-size: 15px;
+    font-weight: 500
+  }
+  span {
+    float: right;
+    color: #888;
+    font-size: 12px;
+  }
+}
+.header-bottom-box-chat > div {
+  padding-right: 10px
+}

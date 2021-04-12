@@ -56,13 +56,14 @@ const FooterPart = ({
   const sendButtonRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const tagMembers = useSelector(state => state.chat.tagMembers);
   const userId = useSelector(state => state.system.profile.id)
   const listStickers = useSelector(state => state.chat.listStickers);
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)
   const members = useSelector(state => state.taskDetail.taskMember.member);
-  const key = `${userId}:${lastJobSettingKey}`;
+  const key = `TASK_GIRD:${userId}:${projectId}`;
   const type = localStorage.getItem(key)
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
 

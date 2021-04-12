@@ -30,8 +30,6 @@ function JobDetailPage(props) {
   const isOpenShareFileModal = useSelector(
     (state) => state.chat.isOpenShareFileModal
   );
-  const key = `${userId}:${lastJobSettingKey}`;
-  const type = localStorage.getItem(key)
   const item = useSelector((state) => state.chat.item);
   const errorMessage = useSelector((state) => state.taskDetail.detailTask.errorMessage);
   const users_shared = item ? item.users_shared || [] : [];
@@ -54,12 +52,17 @@ function JobDetailPage(props) {
   }, [errorMessage, history, projectId]);
 
   useEffect(() => {
+    // console.log('url', url.pathname, 'projectId', projectId)
+
+    // console.log(key, type_data, ' useEffect')
     const key = `${userId}:${lastJobSettingKey}`;
     const type_data = localStorage.getItem(key) || "include-room";
     const path = url.pathname;
     const id = last(path.split("/"));
     if (id.length > 0 && userId) {
       if (id !== projectId) {
+        const key = `TASK_GIRD:${userId}:${id}`;
+        const type_data = localStorage.getItem(key) || "include-room";
         dispatch(taskDetailAction.getProjectListBasic(id));
         dispatch(taskDetailAction.getListTaskDetail(id, type_data));
         dispatch(taskDetailAction.getProjectDetail(id));
@@ -94,6 +97,8 @@ function JobDetailPage(props) {
     const key = `${userId}:${lastJobSettingKey}`;
     const type_data = localStorage.getItem(key) || "include-room";
     if (projectId !== "" && userId) {
+      const key = `TASK_GIRD:${userId}:${projectId}`;
+      const type_data = localStorage.getItem(key) || "include-room";
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
       dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
