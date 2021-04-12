@@ -1,22 +1,37 @@
-import React, { useRef, useState, useEffect } from "react";
-import { Box, Card, CardContent, IconButton, Typography, ListItemAvatar, ListItemText, CircularProgress, ButtonBase } from "@material-ui/core";
+import React, {useEffect, useState} from "react";
+import {
+  Box,
+  ButtonBase,
+  Card,
+  CardContent,
+  CircularProgress,
+  IconButton,
+  ListItemAvatar,
+  ListItemText,
+  Typography
+} from "@material-ui/core";
 import CustomAvatar from 'components/CustomAvatar';
 import ContactMailRoundedIcon from '@material-ui/icons/ContactMailRounded';
 import "./styles.scss";
 import * as images from "../../../../assets";
-import { get, isNil } from 'lodash';
-import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
+import {get, isNil} from 'lodash';
+import {useTranslation} from "react-i18next";
+import {connect} from "react-redux";
+import {Primary, Secondary, StyledList, StyledListItem} from 'components/CustomList';
 import LoadingOverlay from 'components/LoadingOverlay';
 import * as services from '../../../../components/Drawer/DrawerService';
-import { actionToast } from '../../../../actions/system/system';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { acceptRequirementJoinGroup } from 'actions/groupUser/acceptRequirementJoinGroup';
-import { rejectRequirementJoinGroup } from 'actions/groupUser/rejectRequirementJoinGroup';
-import { getPermissionViewUser } from 'actions/viewPermissions';
-import FileCopyOutlinedIcon from '@material-ui/icons/FileCopyOutlined';
-import { bgColorSelector, requireLoadingSelector, requireUsersSelector, viewPermissionsSelector } from '../../LeftPart/AddUser/selectors';
+import {actionToast} from '../../../../actions/system/system';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {acceptRequirementJoinGroup} from 'actions/groupUser/acceptRequirementJoinGroup';
+import {rejectRequirementJoinGroup} from 'actions/groupUser/rejectRequirementJoinGroup';
+import {getPermissionViewUser} from 'actions/viewPermissions';
+import FilterNoneIcon from '@material-ui/icons/FilterNone';
+import {
+  bgColorSelector,
+  requireLoadingSelector,
+  requireUsersSelector,
+  viewPermissionsSelector
+} from '../../LeftPart/AddUser/selectors';
 
 const StyledBox = ({ className = '', ...props }) =>
   <div
@@ -36,7 +51,7 @@ const OkButton = ({ className = '', ...props }) =>
     {...props}
   />;
 
-const CancleButton = ({ className = '', ...props }) =>
+const CancelButton = ({ className = '', ...props }) =>
   <ButtonBase
     className={`view_Department_MemberRequired___cancle-btn ${className}`}
     {...props}
@@ -49,10 +64,6 @@ const Header = ({ className = '', ...rest }) => (<div className={`view_Departmen
 const Title = ({ className = '', ...rest }) => (<p className={`view_Department_MemberRequired___title ${className}`} {...rest} />);
 
 const Body = ({ className = '', ...rest }) => (<Scrollbars className={`view_Department_MemberRequired___body ${className}`} {...rest} />);
-
-const StyledIconButton = ({ className = '', ...rest }) => (<IconButton className={`view_Department_MemberRequired___icon-button ${className}`} {...rest} />);
-
-const IconWrapper = ({ className = '', ...rest }) => (<div className={`view_Department_MemberRequired___icon-wrapper ${className}`} {...rest} />);
 
 const RequestingUserList = ({
   users, loading, bgColor, canModify,
@@ -87,7 +98,7 @@ const RequestingUserList = ({
               <StyledSecondary>
                 <Secondary>{get(user, 'email')}</Secondary>
                 {canModify && <span style={{ float: 'right', transform: 'translate(0, -70%)' }}>
-                  <CancleButton
+                  <CancelButton
                     disabled={loading}
                     onClick={() => onRejectRequirementJoinGroup(get(user, 'requirement_id'))}
                   >
@@ -99,7 +110,7 @@ const RequestingUserList = ({
                       />
                     )}
                     {t('DMH.VIEW.DP.LEFT.ADD.BTN.DENY')}
-                  </CancleButton>
+                  </CancelButton>
                   <OkButton
                     style={{
                       backgroundColor: bgColor.color,
@@ -128,8 +139,6 @@ const RequestingUserList = ({
 }
 
 
-
-
 const MemberRequiredIntro = props => {
   const { t } = useTranslation();
   const [groupList, setGroup] = useState(null);
@@ -142,21 +151,17 @@ const MemberRequiredIntro = props => {
   };
 
   const handleToast = (type, message) => {
-    console.log("props: ", props);
-    // props.
     actionToast(type, message);
   };
 
   const handleCopyText = text => {
-    window.navigator.clipboard.writeText(text);
+    window.navigator.clipboard.writeText(text).then(r => null);
     handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
   };
 
   useEffect(() => {
-    handleFetchData(); // eslint-disable-next-line
+    handleFetchData().then(r => null);
   }, []);
-
-
   return (
     <Box style={{ position: "relative" }}>
       <Box className={"memberRequired-header"}>
@@ -166,11 +171,11 @@ const MemberRequiredIntro = props => {
         <Card variant="outlined" className={"memberRequired-card"}>
           <CardContent>
             <Box textAlign={"center"} className={"memberRequired-card--topText"}>
-              <Typography variant={"h3"} style={{ fontWeight: 500, paddingBottom: '30px' }}>{t("LABEL_HOW_TO_REQ_JOIN")}</Typography>
-              <Typography variant={"h5"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES1")}</Typography>
-              <Typography variant={"h5"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES2")}</Typography>
-              <Typography variant={"h5"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES3")}</Typography>
-              <Typography variant={"h5"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES4")}</Typography>
+              <Typography variant={"h6"} style={{ fontWeight: 500, paddingBottom: '30px' }}>{t("LABEL_HOW_TO_REQ_JOIN")}</Typography>
+              <Typography variant={"body1"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES1")}</Typography>
+              <Typography variant={"body1"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES2")}</Typography>
+              <Typography variant={"body1"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES3")}</Typography>
+              <Typography variant={"body1"} color={"textPrimary"}>{t("LABEL_HOW_TO_REQ_JOIN_DES4")}</Typography>
             </Box>
             <Box display="flex" alignItems="center" marginTop={"15px"}>
               <Card>
@@ -178,16 +183,14 @@ const MemberRequiredIntro = props => {
                   {!isNil(groupList) && (
                     <Typography variant={"h4"} style={{ fontWeight: 700, color: '#fff' }}>{get(groupList, "group_me.code")}
                       <IconButton style={{ color: '#fff', marginTop: '-5px' }}
-                        aria-label="copy Group Id"
                         title={t('IDS_WP_COPY_TEXT_CLIPBOARD')}
                         onClick={e => {
                           handleCopyText(groupList.group_me.code);
                           e.stopPropagation();
                         }}
-                        component="span" size="medium" ><FileCopyOutlinedIcon /></IconButton>
+                        component="span" size="medium" ><FilterNoneIcon /></IconButton>
                     </Typography>
                   )}
-
                 </CardContent>
               </Card>
             </Box>

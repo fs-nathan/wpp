@@ -131,7 +131,7 @@ function AllProjectTable({
     });
   }, [projects, sortType]);
 
-  const [guideLineModal, setGuideLineModal] = React.useState(true);
+  const [guideLineModal, setGuideLineModal] = React.useState(false);
   const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});

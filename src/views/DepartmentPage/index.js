@@ -70,7 +70,7 @@ function UserPage({
             )}
           />
           <Route
-            path={`${url}/memberRequired`}
+            path={`${url}/member-required`}
             exact
             render={props => (
               <TwoColumnsLayout

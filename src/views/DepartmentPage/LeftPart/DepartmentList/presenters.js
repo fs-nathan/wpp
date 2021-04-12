@@ -65,7 +65,7 @@ function DepartmentList({
     {
       title: t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQ'),
       icon: ContactMailRoundedIcon,
-      action: () => { history.push(`${route}/memberRequired`) },
+      action: () => { history.push(`${route}/member-required`) },
       color: '#fff',
       style: { background: '#4caf50'},
     },
