@@ -1,4 +1,4 @@
-import { ListItemText, Box, IconButton } from '@material-ui/core';
+import {ListItemText, Box, IconButton, Badge, Link as MuiLink} from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ContactMailRoundedIcon from '@material-ui/icons/ContactMailRounded';
 import { mdiDragVertical } from '@mdi/js';
@@ -11,13 +11,12 @@ import { Link, useHistory } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
-import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
-import { DRAWER_TYPE } from '../../../../constants/constants';
 import SearchInput from '../../../../components/SearchInput';
 import CustomListItem from './CustomListItem';
 import './style.scss';
+import Typography from "@material-ui/core/Typography";
 
 const Banner = ({ className = '', ...props }) =>
   <div
@@ -33,26 +32,26 @@ const StyledPrimary = ({ className = '', ...props }) =>
 
 const Container = ({ className = '', ...props }) =>
   <div
-    className={`deparmentList_container${className}`}
+    className={`departmentList_container${className}`}
     {...props}
   />;
 
+const NewUserBadge = ({ className = '', ...props }) =>
+  <Badge
+    className={`view_Department_AllUserTalbe___user-badge ${className}`}
+    {...props}
+  />
 
 function DepartmentList({
   rooms, searchPatern, route, viewPermissions,
   handleSearchPatern, handleDragEnd,
-  handleOpenModal, handleVisibleDrawerMessage,
+  handleOpenModal, handleVisibleDrawerMessage, countRequirements = 0
 }) {
 
   const { t } = useTranslation();
   const history = useHistory();
   const ref = React.useRef();
-  const [searchAnchor, setSearchAnchor] = React.useState(null);
   let className = '';
-
-  function handleMoreOpen(evt) {
-    setSearchAnchor(evt.currentTarget);
-  }
 
   const listMenu = [
     {
@@ -68,6 +67,7 @@ function DepartmentList({
       action: () => { history.push(`${route}/member-required`) },
       color: '#fff',
       style: { background: '#4caf50'},
+      rightIcon: () => countRequirements > 0 ? <NewUserBadge badgeContent={countRequirements}/> : <div/>
     },
   ]
 
@@ -76,15 +76,17 @@ function DepartmentList({
   }
 
   React.useEffect(() => {
-    ref.current.focus();
-  }, []);
+    if(!history.location.pathname.includes("/member-required")) {
+      ref.current.focus();
+    }
+  });
 
   if (get(viewPermissions.permissions, 'can_modify', false)) className = 'HasHeader';
   return (
     <React.Fragment>
       <Banner>
         <SearchInput
-          fullWidth
+          fullWidth style={{background: "#fff"}}
           placeholder={t('DMH.VIEW.DP.LEFT.LIST.FIND')}
           value={searchPatern}
           onChange={handleSearchPatern}
@@ -92,15 +94,16 @@ function DepartmentList({
       </Banner>
       <Container className={className}>
         <LeftSideContainer
-          title={get(viewPermissions.permissions, 'can_modify', false) ?
-            <StyledList>
-              {listMenu.map((item, index) => (
+          title={
+            <StyledList className={"departmentList_containerHasHeader"}>
+              {get(viewPermissions.permissions, 'can_modify', false) && listMenu.map((item, index) => (
                 <StyledListItem
                   component={Link}
                   innerRef={ref}
                   onClick={() => {
                     item.action(item);
                   }}
+                  className={`${history.location.pathname.includes("/member-required") && index === 1 && "active"}`}
                 >
                   {item.icon && (
                     <IconButton style={item.style}>
@@ -109,7 +112,7 @@ function DepartmentList({
                   )}
                   <ListItemText
                     primary={
-                      <StyledPrimary style={{ fontWeight: 'normal' }}>
+                      <StyledPrimary style={{ fontWeight: 'normal', marginLeft: "10px"}}>
                         {item.title}
                       </StyledPrimary>
                     }
@@ -117,34 +120,19 @@ function DepartmentList({
                   {item.rightIcon && item.rightIcon()}
                 </StyledListItem>
               ))}
-            </StyledList> : <div></div>
+              <Box className={"departmentList_containerHasHeader__summary"}>
+                <Typography variant={"h6"}>{t("Bộ phận")} ({rooms.rooms.length})</Typography>
+                {get(viewPermissions.permissions, 'can_modify', false) && (
+                  <MuiLink onClick={() => handleOpenModal("CREATE")}>+ {t("Thêm bộ phận")}</MuiLink>
+                )}
+              </Box>
+            </StyledList>
           }
           loading={{
             bool: rooms.loading,
             component: () => <LoadingBox />,
           }}
         >
-          <Box style={{ background: "#fff" }}>
-            <Stack small style={{ display: 'block' }}>
-              <Box padding="0 1rem" style={{ display: 'inline-block', paddingTop: '15px' }}>
-                <b style={{ fontSize: "16px" }}>
-                  {t("Bộ phận")} ({rooms.rooms.length})
-              </b>
-              </Box>
-              {
-                get(viewPermissions.permissions, 'can_modify', false) && (
-                  <Box padding="0 1rem 0 3rem" style={{ display: 'inline-block', float: 'right' }}>
-                    <AddButton
-                      onClick={() => {
-                        handleOpenModal('CREATE')
-                      }}
-                      label={t("Thêm bộ phận")}
-                    />
-                  </Box>
-                )
-              }
-            </Stack>
-          </Box>
           <DragDropContext onDragEnd={handleDragEnd}>
             <Droppable droppableId={'department-list'}>
               {provided => (
@@ -152,23 +140,14 @@ function DepartmentList({
                   innerRef={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <StyledListItem
-                    to={`${route}`}
-                    component={Link}
-                    innerRef={ref}
-                  >
-                    {
-                      get(viewPermissions.permissions, 'can_modify', false) && (
-                        <div>
-                          <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                        </div>
+                  <StyledListItem to={`${route}`} component={Link} innerRef={ref}>
+                    {get(viewPermissions.permissions, 'can_modify', false) && (
+                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
                       )
                     }
                     <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
                     <ListItemText
-                      primary={
-                        <StyledPrimary>{t('DMH.VIEW.DP.LEFT.LIST.ALL')}</StyledPrimary>
-                      }
+                      primary={<StyledPrimary>{t('DMH.VIEW.DP.LEFT.LIST.ALL')}</StyledPrimary>}
                       secondary={
                         <Secondary>
                           {t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: rooms.rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0) })}

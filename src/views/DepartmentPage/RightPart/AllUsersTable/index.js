@@ -1,17 +1,25 @@
-import { getRequirementJoinGroup } from 'actions/groupUser/getRequirementJoinGroup';
-import { listPosition } from 'actions/position/listPosition';
-import { listRoom } from 'actions/room/listRoom';
-import { actionVisibleDrawerMessage } from 'actions/system/system';
-import { banUserFromGroup } from 'actions/user/banUserFromGroup';
-import { listUserOfGroup } from 'actions/user/listUserOfGroup';
-import { privateMember } from 'actions/user/privateMember';
-import { publicMember } from 'actions/user/publicMember';
-import { sortUser } from 'actions/user/sortUser';
-import { ACCEPT_REQUIREMENT_USER_JOIN_GROUP, CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP, REJECT_REQUIREMENT_USER_JOIN_GROUP, SORT_ROOM, SORT_USER } from 'constants/events';
-import { get, reduce } from 'lodash';
+import {getRequirementJoinGroup} from 'actions/groupUser/getRequirementJoinGroup';
+import {listPosition} from 'actions/position/listPosition';
+import {listRoom} from 'actions/room/listRoom';
+import {actionVisibleDrawerMessage} from 'actions/system/system';
+import {banUserFromGroup} from 'actions/user/banUserFromGroup';
+import {listUserOfGroup} from 'actions/user/listUserOfGroup';
+import {privateMember} from 'actions/user/privateMember';
+import {publicMember} from 'actions/user/publicMember';
+import {sortUser} from 'actions/user/sortUser';
+import {
+  ACCEPT_REQUIREMENT_USER_JOIN_GROUP,
+  CustomEventDispose,
+  CustomEventListener,
+  INVITE_USER_JOIN_GROUP,
+  REJECT_REQUIREMENT_USER_JOIN_GROUP,
+  SORT_ROOM,
+  SORT_USER
+} from 'constants/events';
+import {get, reduce} from 'lodash';
 import React from 'react';
-import { connect } from 'react-redux';
-import { routeSelector } from '../../../MemberPage/selectors';
+import {connect} from 'react-redux';
+import {routeSelector} from '../../../MemberPage/selectors';
 import BanUserModal from '../../Modals/BanUser';
 import CreateAccountModal from '../../Modals/CreateAccount';
 import LevelManagerModal from '../../Modals/LevelManager';
@@ -21,9 +29,9 @@ import PermissionSettingsModal from '../../Modals/PermissionSettings';
 import RoleManagerModal from '../../Modals/RoleManager';
 import TableSettingsModal from '../../Modals/TableSettings';
 import TitleManagerModal from '../../Modals/TitleManager';
-import { viewPermissionsSelector } from '../../selectors';
+import {viewPermissionsSelector} from '../../selectors';
 import AllUsersTablePresenter from './presenters';
-import { hasRequirementSelector, maxUserSelector, publicPrivatePendingsSelector, roomsSelector } from './selectors';
+import {hasRequirementSelector, maxUserSelector, publicPrivatePendingsSelector, roomsSelector} from './selectors';
 import './style.scss';
 
 function AllUsersTable({
@@ -156,8 +164,7 @@ function AllUsersTable({
   const users = React.useMemo(() => reduce(
     rooms.rooms,
     (users, room) => {
-      const newUsers = [...users, ...get(room, 'users', [])];
-      return newUsers;
+      return [...users, ...get(room, 'users', [])];
     },
     [],
   ), [rooms.rooms]);

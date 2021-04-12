@@ -1,44 +1,33 @@
-.memberRequired {
-  &-header {
-    position: absolute;
-    right: 0px;
-    bottom: 0px;
-    z-index: -1;
-    img {
-      width: 450px;
-    }
-  }
-  &-container {
-    margin-top: 50px;
-    .MuiPaper-outlined {
-      border: none;
-    }
-  }
-  &-card{
-    width: 600px;
-    background: transparent;
-    &--topText {
-      text-align: left;
-      margin-bottom: 25px;
-      & > * {
-        margin-bottom: 20px;
+.view_Department_MemberRequired {
+  &__List {
+    padding: 10px 15px;
+    .MuiListItem-root {
+      border: 1px solid rgba(0,0,0,0.22);
+      &:not(:last-child) {
+        margin-bottom: 10px;
+      }
+      .MuiTypography-colorTextSecondary {
+        color: var(--color-primary);
       }
     }
-    .MuiCardContent-root {
-      padding-left: 40px;
-      padding-right: 40px;
+    .MuiListItemAvatar-root {
+      margin-right: 10px;
     }
-    &--header {
-      position: relative;
-      height: 110px;
-      &>img {
-        max-width: 100%;
-        &:nth-child(2) {
-          position: absolute;
-          left: 35%;
-          width: 30%;
-          top: 36%;
-        }
+    .MuiListItemSecondaryAction-root {
+      display: flex;
+      align-items: center;
+      .MuiButton-contained {
+        color: #fff;
+        text-transform: unset;
+        border-radius: 2px;
+        padding: unset;
+      }
+    }
+    .MuiLink-underlineHover {
+      cursor: pointer;
+      margin-right: 20px;
+      &:hover {
+        text-decoration: none;
       }
     }
   }

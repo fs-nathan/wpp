@@ -21,7 +21,7 @@ function EmptyTasksIntro({projectName, handleOpenModal, work_type = 0}) {
           <p dangerouslySetInnerHTML={{__html: t("EMPTY_TASK_MESSAGE_3")}}/>
           <p dangerouslySetInnerHTML={{__html: t("EMPTY_TASK_MESSAGE_4")}}/>
           <p dangerouslySetInnerHTML={{__html: t("EMPTY_TASK_MESSAGE_5")}}/>
-          <Box className={"btnActionGroup"}>
+          <Box className={"introEmptyData__btnActionGroup"}>
             <Button variant={"contained"} color={"primary"} disableElevation onClick={() => handleOpenModal("CREATE")}>
               {t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}
             </Button>
