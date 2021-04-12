@@ -567,12 +567,17 @@ const rootReducer = combineReducers({
     listProjectBasicInfo,
     getProjectStatistic,
     getWorkType,
+    recentlyProjects,
+    getStatusWorkGroup,
+    getProjectOnPersonalBoard,
+    checkHasRecently,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
       updateNotificationSetting,
+      updatePinBoardSetting,
     }),
   }),
   groupTask: combineReducers({
