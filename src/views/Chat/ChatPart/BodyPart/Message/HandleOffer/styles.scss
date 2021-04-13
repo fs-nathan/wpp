@@ -1,0 +1,30 @@
+.HandleOffer {
+  border-radius: 20px;
+  width: fit-content;
+  font-size: 18px;
+  padding: 8px 50px;
+  margin: 10px auto 20px;
+  &__status0 {
+    background-color: #c3ffc2;
+    color: #02b609;
+  }
+  &__status1 {
+    background-color: #ffebee;
+    color: #f51100;
+  }
+  &--icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border-color: #03b000;
+    svg {
+      width: 35px;
+      height: 35px;
+      fill: #03b000;
+    }
+  }
+  &--subContent {
+    font-size: 15px;
+    color: #a9a9a9;
+  }
+}

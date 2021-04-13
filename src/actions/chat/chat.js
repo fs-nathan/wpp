@@ -698,3 +698,11 @@ export function clearFocus() {
     type: actionTypes.CLEAR_FOCUS,
   };
 }
+
+export const updateNameGroupChat = data => {
+  return apiService({
+    url: '/task/update-name-description',
+    method: 'put',
+    data
+  });
+};

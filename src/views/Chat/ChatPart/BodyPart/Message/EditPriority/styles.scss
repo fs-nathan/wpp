@@ -1,0 +1,22 @@
+.EditPriority {
+  width: 60px;
+  height: 30px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #d2ebd3;
+  color: #02aa09;
+  &--priority {
+    font-size: 16px;
+    &__normal {
+      background-color: #ffe5bf;
+      color: #f69200;
+    }
+    &__low {
+      background-color: #fec1c1;
+      color: #fe0000;
+    }
+  }
+  &--icon {
+    fill: #6f6f6f;
+  }
+}

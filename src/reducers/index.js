@@ -450,6 +450,7 @@ import getStatusWorkGroup, {initialState as getStatusWorkGroupInitialState} from
 import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInitialState} from "./project/projectOnPersonalBoard";
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
 import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
+import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
 
 const rootReducer = combineReducers({
   authentications,
@@ -669,6 +670,7 @@ const rootReducer = combineReducers({
     detailTask: kanbanDetailTask,
     updateTask: kanbanUpdateTask,
   }),
+  threadChat
 });
 
 export const DEFAULT_STATE = {
@@ -861,6 +863,7 @@ export const DEFAULT_STATE = {
     remindDetail: getRemindDetailInitialState
   },
   localStorage: localStorageInitialState,
+  threadChat: threadChatInitialState
 };
 
 export default rootReducer;

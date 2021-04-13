@@ -291,6 +291,8 @@ import {GET_PROJECTS_RECENTLY} from "../constants/actions/project/recentlyProjec
 import {GET_PROJECT_STATUS_WORK} from "../constants/actions/project/getStatusWork";
 import {GET_PROJECT_PERSONAL_BOARD} from "../constants/actions/project/projectOnPersonalBoard";
 import {getProjectOnBoard} from "./project/projectOnBoard";
+import {FETCH_LIST_MEMBER_NOT_CREATE_PRIVATE_CHAT, CREATE_PRIVATE_CHAT, GET_MEMBER_TO_CREATE_GROUP_CHAT, CREATE_GROUP_CHAT, VIEW_ALL_MESSAGE, GET_NUMBER_MESSAGE_NOT_VIEW} from "../constants/actions/chat/threadChat";
+import {getMembersNotCreateThreadChat, createThreadChat, getMembersToCreateGroupChat, createGroupChat, viewAllChatMessage, getMessageNotView} from "./chat/threadChat";
 
 function* rootSaga() {
   // Hoang - begin
@@ -885,6 +887,13 @@ function* rootSaga() {
   yield takeLatest(CALENDAR_PAGE_PERMISSION, listCalendarPermission);
   yield takeLatest(GET_REMIND_DETAIL, getRemindDetail)
   yield fork(watchAsyncAction);
+
+  yield takeEvery(FETCH_LIST_MEMBER_NOT_CREATE_PRIVATE_CHAT, getMembersNotCreateThreadChat);
+  yield takeEvery(CREATE_PRIVATE_CHAT, createThreadChat);
+  yield takeEvery(GET_MEMBER_TO_CREATE_GROUP_CHAT, getMembersToCreateGroupChat);
+  yield takeEvery(CREATE_GROUP_CHAT, createGroupChat);
+  yield takeEvery(VIEW_ALL_MESSAGE, viewAllChatMessage);
+  yield takeEvery(GET_NUMBER_MESSAGE_NOT_VIEW, getMessageNotView);
 }
 
 export default rootSaga;

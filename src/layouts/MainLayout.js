@@ -58,6 +58,7 @@ import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferMo
 import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
 import {getRemindDetail} from "../actions/calendar/alarmCalendar/getRemindDetail";
 import { GET_REMIND_DETAIL_FAIL, CustomEventListener, CustomEventDispose } from "constants/events";
+import { setNumberMessageNotView } from "actions/chat/threadChat";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -214,7 +215,9 @@ function MainLayout({
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView,
   visibleOfferDetailModal, loadDetailOffer, detailOffer,
-  visibleRemindDetail, detailRemind, getRemindDetail
+  visibleRemindDetail, detailRemind, getRemindDetail,
+  setNumberMessageNotView,
+  t
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
@@ -254,7 +257,7 @@ function MainLayout({
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
-        handleNewMessage()
+        handleNewMessage(res)
       );
       socket.on("WP_NEW_CHAT_EXPRESS_EMOTION_CHAT", handleReactEmotion);
       socket.on("WP_DELETE_CHAT_IN_TASK", handleDeleteChat);
@@ -299,10 +302,14 @@ function MainLayout({
       if (!task || data.type === CHAT_TYPE.UPDATE_GROUP_TASK) {
         getListTaskDetail(projectId);
       } else {
+        if (data.type === CHAT_TYPE.UPDATE_TASK_NAME) {
+          data.new_name = data.new_task_name
+        }
         // if (task_id !== taskDetails.id) {
         data.new_chat = user_create_id === profile.id ? 0 : 1;
         // }
         data.content = content[language];
+        data.updated_time = t('LABEL_JUST_NOW')
         data.updatedAt = Date.now();
         updateProjectChat(data);
       }
@@ -392,10 +399,17 @@ function MainLayout({
       parseInt(localStorage.getItem(NOTI_NUMBER)) + 1
     );
   };
-  const handleNewMessage = () => {
-    actionChangeNumMessageNotView(
-      parseInt(localStorage.getItem(MESS_NUMBER)) + 1
-    );
+  const handleNewMessage = (res) => {
+    if (res.belong_to_section === 1) {
+      actionChangeNumMessageNotView(
+        parseInt(localStorage.getItem(MESS_NUMBER)) + 1
+      );
+    } else {
+      setNumberMessageNotView({
+        type: "Plus",
+        message: 1
+      })
+    }
   };
 
   const isViewFullPage = (route) => {
@@ -499,8 +513,8 @@ function MainLayout({
 }
 
 function MainLayoutWrapper({ ...rest }) {
-  const { i18n } = useTranslation();
-  return <MainLayout key={i18n.language} {...rest} />;
+  const { t, i18n } = useTranslation();
+  return <MainLayout key={i18n.language} {...rest} t={t} />;
 }
 
 export default connect(
@@ -537,6 +551,7 @@ export default connect(
     actionChangeNumNotificationNotView,
     actionChangeNumMessageNotView,
     loadDetailOffer,
-    getRemindDetail
+    getRemindDetail,
+    setNumberMessageNotView
   }
 )(withRouter(MainLayoutWrapper));

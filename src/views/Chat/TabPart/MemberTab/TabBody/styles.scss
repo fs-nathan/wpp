@@ -1,0 +1,80 @@
+.memberTabBody {
+  grid-area: body;
+  height: 100%;
+  .MuiList-root {
+    margin-top: 15px;
+  }
+  &--search {
+    margin: auto 15px;
+  }
+}
+
+.memberItem {
+  position: relative;
+  // margin: 0 0 0 -16px;
+  padding: 10px 25px 10px 16px;
+  cursor: pointer;
+  width: calc(100% + 30px);
+  &:hover {
+    background-color: #f2f5fa;
+  }
+  &--admin {
+    color: #ffffff;
+    padding: 6px 16px;
+    border-radius: 5px;
+    font-size: 14px;
+    position: absolute;
+    right: 60px;
+  }
+  &--left {
+    color: #ff0000;
+    padding: 6px 16px;
+    border-radius: 5px;
+    font-size: 14px;
+    position: absolute;
+    right: 60px;
+  }
+  &--textWrap {
+    width: 100%;
+    float: left;
+    display: block;
+    position: relative;
+  }
+  &--avatar {
+    width: 45px;
+    height: 45px;
+    margin-right: 10px;
+  }
+  &--name {
+    font-weight: 500;
+    font-size: 15px;
+    margin-bottom: 5px;
+    color: #585858;
+  }
+  &--department {
+    color: #666666;
+  }
+  &--role {
+    color: orange;
+  }
+  &--menuButton {
+    position: absolute;
+    top: 0;
+    right: 32px;
+    display: none;
+    margin-top: 15px;
+    margin-right: 10px;
+    svg {
+      fill: #777777;
+    }
+  }
+  &:hover &--menuButton {
+    display: block;
+  }
+  &--menuItem {
+    padding-right: 30px;
+    &__disabled {
+      color: #cccccc;
+    }
+  }
+}

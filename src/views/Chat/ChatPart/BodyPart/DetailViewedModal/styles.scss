@@ -1,0 +1,56 @@
+.DetailViewedModal {
+  .MuiDialogActions-root {
+    padding: 0;
+  }
+  .MuiDialogContent-root {
+    padding: 0px;
+  }
+  .MuiTab-wrapper {
+    flex-direction: row;
+    display: initial;
+  }
+  .MuiAppBar-colorPrimary {
+    background-color: #ffffff;
+  }
+  .MuiTabs-indicator {
+    background-color: blue;
+  }
+  & > div:nth-child(3) > div {
+    width: 600px;
+    min-width: 600px;
+  }
+  &--member {
+    display: flex;
+    position: relative;
+    line-height: 20px;
+    padding: 10px 24px;
+  }
+  &--avatar {
+    margin: 5px 20px 0 0;
+    width: 30px;
+    height: 30px;
+  }
+  &--icon {
+    position: absolute;
+    right: 10px;
+  }
+  &--bottom {
+    display: flex;
+    // justify-content: space-between;
+  }
+  &--name {
+    font-weight: 500;
+    width: 100%;
+    border-bottom: 1px solid #e7e7e7;
+  }
+  &--role {
+    color: #666666;
+    font-weight: 400;
+  }
+  &--time {
+    color: #ff5722;
+    margin-left: auto;
+    font-weight: 400;
+    // margin-right: 10px;
+  }
+}

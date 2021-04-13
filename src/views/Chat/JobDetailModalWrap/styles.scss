@@ -1,0 +1,33 @@
+.JobDetailModalWrap {
+  .MuiDialog-scrollPaper {
+    .MuiDialog-paperScrollPaper {
+      min-width: 635px;
+    }
+  }
+  .comp_CustomModal___iconButton {
+    margin-right: 0px;
+  }
+  .comp_CustomModal___dialog-title > h2 > button {
+    padding: 12px 12px;
+  }
+}
+
+.modal_height_50vh .comp_LoadingOverlay___wrapper {
+  height: 50vh !important;
+}
+
+.modal_height_40vh .comp_LoadingOverlay___wrapper {
+  height: 40vh !important;
+}
+
+.modal_height_35vh .comp_LoadingOverlay___wrapper {
+  height: 35vh !important;
+}
+
+.modal_height_30vh .comp_LoadingOverlay___wrapper {
+  height: 30vh !important;
+}
+
+.modal_height_20vh .comp_LoadingOverlay___wrapper {
+  height: 20vh !important;
+}

@@ -199,8 +199,9 @@ function CustomModal({
 
   function handleConfirm() {
     onConfirm();
-    if (!notAutoCloseWhenConfirm)
+    if (!notAutoCloseWhenConfirm) {
       !manualClose && setOpen(false);
+    }
   }
 
   return (
