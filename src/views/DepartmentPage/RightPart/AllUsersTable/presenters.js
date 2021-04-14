@@ -21,11 +21,7 @@ const TooltipBody = ({ className = '', state, ...props }) =>
     {...props}
   />
 
-const NewUserBadge = ({ className = '', ...props }) =>
-  <Badge
-    className={`view_Department_AllUserTalbe___user-badge ${className}`}
-    {...props}
-  />
+
 
 const PermissionButton = ({
   handleOpenMenu,
@@ -100,13 +96,11 @@ function AllUsersTable({
   handleOpenModal,
   handleVisibleDrawerMessage,
 }) {
-
-  const history = useHistory();
   const { t } = useTranslation();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
-  const [menuMemberAnchorEl, setMenuMemberAnchorEl] = React.useState(null);
+  const history = useHistory();
 
   function doOpenMenu(anchorEl, user) {
     setMenuAnchorEl(anchorEl);
@@ -131,21 +125,6 @@ function AllUsersTable({
                 max: maxUser,
               })}
             </SubTitle>,
-          subActions: canModify ? [{
-            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
-            icon: () => hasRequirement
-              ? <NewUserBadge badgeContent={'N'}>
-                <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
-              </NewUserBadge>
-              : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
-            onClick: () => {
-              handleVisibleDrawerMessage({
-                type: DRAWER_TYPE.ADD_USER,
-                anchor: 'left'
-              })
-            },
-            noExpand: true,
-          }] : [],
           mainAction: canModify ? {          
             icon: mdiShareVariant,
             onClick: () => handleOpenModal('CREATE_ACCOUNT'),

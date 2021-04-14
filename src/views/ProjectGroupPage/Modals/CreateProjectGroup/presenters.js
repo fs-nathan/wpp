@@ -127,7 +127,7 @@ function CreateProjectGroup({
       }}
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
-      manualClose={true}
+      manualClose={true} height={"mini"}
     >
       <CustomTextbox
         value={name}

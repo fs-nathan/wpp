@@ -1,0 +1,36 @@
+.CreateGroupTaskModal {
+  .MuiDialogContent-root:first-child {
+    padding: 35px 24px 24px;
+  }
+  .MuiSvgIcon-root {
+    color: #00b707;
+  }
+  .comp_CustomModal___scrollbar-main-medium {
+    height: 200px !important;
+  }
+  .comp_CustomModal___iconButton {
+    margin-right: 0px;
+  }
+  &--title {
+    margin-top: 0px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 20px;
+    b {
+      font-size: inherit;
+    }
+  }
+  &--button {
+    margin: 15px auto;
+    background-color: #00c508;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 500;
+    width: fit-content;
+    padding: 15px;
+    border-radius: 2px;
+    cursor: pointer;
+    min-width: 200px;
+    text-align: center;
+  }
+}

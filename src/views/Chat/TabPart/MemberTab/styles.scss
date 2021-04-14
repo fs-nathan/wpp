@@ -1,0 +1,82 @@
+.MemberModal {
+  .MuiDialogContent-root {
+    padding: 0;
+    height: 100%;
+  }
+  &--file {
+    display: flex;
+    position: relative;
+    margin: 2px;
+    cursor: pointer;
+    margin-bottom: 30px;
+    padding: 10px 10px 10px 0;
+    border-radius: 3px;
+    border: 1px solid #e5e5e5;
+    &:hover {
+      background-color: #f2f5fa;
+    }
+  }
+  &--fileImg {
+    padding: 0 10px;
+    width: 40px;
+    height: 45px;
+  }
+  &--fileName {
+    color: #aeaeae;
+    line-height: 20px;
+  }
+  &--fileType {
+    color: #c0c0c0;
+  }
+  &--fileDownloadButton {
+    position: absolute;
+    right: 0px;
+    top: 10px;
+    cursor: pointer;
+  }
+  &--fileDownloadIcon {
+    margin: 12px;
+    path {
+      fill: rgb(166, 166, 166) !important;
+    }
+  }
+  &--content {
+    display: flex;
+    min-height: 100%;
+  }
+  &--description {
+    color: #111111;
+    font-weight: normal;
+    font-size: 14px;
+  }
+  .member-general-info {
+    padding-bottom: 40px;
+    display: flex;
+    .general-info {
+      padding-left: 20px;
+    }
+  }
+}
+// MemberModal - MemberTab
+.wrapper-member-modal {
+  display: flex;
+
+  .button-file {
+    & > span {
+      margin: 20px 0 0 0;
+      & > span {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 3px 10px;
+        font-size: 16px;
+        font-weight: 500;
+      }
+    }
+    .member-image {
+      width: 20px;
+      height: 20px;
+      margin-right: 10px;
+    }
+  }
+}

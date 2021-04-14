@@ -385,6 +385,7 @@ import taskCommand from "./taskDetail/command";
 import commonTaskDetail from "./taskDetail/common";
 import listGroupOffer from "./taskDetail/listGroupOffer";
 import listGroupPermission from "./taskDetail/listGroupPermission";
+import createPrivateChat from "./taskDetail/createPrivateChat";
 import listGroupTask from "./taskDetail/listGroupTask";
 import listDetailTask from "./taskDetail/listTaskDetail";
 import location from "./taskDetail/location";
@@ -452,6 +453,7 @@ import recentlyProjects, {initialState as recentlyProjectsInitialState} from "./
 import getStatusWorkGroup, {initialState as getStatusWorkGroupInitialState} from "./project/getStatusWork";
 import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInitialState} from "./project/projectOnPersonalBoard";
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
+import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
 import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 
 const rootReducer = combineReducers({
@@ -564,10 +566,10 @@ const rootReducer = combineReducers({
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
+    getWorkType,
     recentlyProjects,
     getStatusWorkGroup,
     getProjectOnPersonalBoard,
-    getWorkType,
     checkHasRecently,
     setting: combineReducers({
       detailStatus,
@@ -575,7 +577,7 @@ const rootReducer = combineReducers({
       updateStatusCopy,
       updateStatusView,
       updateNotificationSetting,
-      updatePinBoardSetting
+      updatePinBoardSetting,
     }),
   }),
   groupTask: combineReducers({
@@ -673,6 +675,7 @@ const rootReducer = combineReducers({
     detailTask: kanbanDetailTask,
     updateTask: kanbanUpdateTask,
   }),
+  threadChat
 });
 
 export const DEFAULT_STATE = {
@@ -866,6 +869,7 @@ export const DEFAULT_STATE = {
     remindDetail: getRemindDetailInitialState
   },
   localStorage: localStorageInitialState,
+  threadChat: threadChatInitialState
 };
 
 export default rootReducer;

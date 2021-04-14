@@ -12,6 +12,12 @@
       right: 0;
       top: calc(100vh - 750px);
     }
+    .bgRequestJoinIntro {
+      width: 550px;
+      position: absolute;
+      right: 0;
+      bottom: 50%;
+    }
     .MuiButton-root {
       background: var(--color-primary);
       color: #fff;
@@ -27,7 +33,7 @@
       line-height: 1.75rem;
       font-size: 14px;
     }
-    .btnActionGroup {
+    &__btnActionGroup {
       display: flex;
       align-items: center;
       &>*:not(:last-child) {
@@ -49,7 +55,7 @@
   .selectedGroup {
     display: flex;
     align-items: center;
-    margin-top: 5px;
+    margin-top: -23px;
   }
   .bgEmpty {
     top: calc(100vh - 650px);

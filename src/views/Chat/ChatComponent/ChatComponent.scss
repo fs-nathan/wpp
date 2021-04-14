@@ -1,0 +1,66 @@
+.tag-modal {
+  background: transparent;
+  .MuiBackdrop-root {
+    background: transparent;
+  }
+  .MuiPaper-root {
+    border: solid 1px #ccc;
+    box-shadow: none;
+    border-radius: 6px;
+  }
+  .MuiDialogContent-root {
+    border: none;
+    padding: 16px;
+  }
+  .tag-content {
+  }
+  .tag-item {
+    display: flex;
+    line-height: 25px;
+  }
+}
+
+.stickerModal {
+  &--list {
+    position: absolute;
+    top: 0;
+    transform: translateY(-100%);
+    display: none;
+    flex-wrap: wrap;
+    // max-height: 215px;
+    // min-height: 105px;
+    width: 100%;
+    z-index: 100;
+    background-color: #fff;
+    // overflow-y: scroll;
+    // overflow-x: hidden;
+    border-top: 1px solid #dfdfdf;
+    border-bottom: 1px solid #eeeeee;
+  }
+  &__open {
+    display: flex;
+  }
+  &--image {
+    height: 87px;
+    width: calc(100% - 10px);
+    cursor: pointer;
+    object-fit: contain;
+    padding: 10px;
+    margin: 0 !important;
+    display: block;
+    position: relative;
+  }
+  &--menuItem {
+    display: block;
+    position: relative;
+    float: left;
+    margin: 0;
+    line-height: 0;
+    height: 108px;
+    padding: 5px;
+    width: calc(20% - 10px);
+    &:hover {
+      background-color: #f2f5fa;
+    }
+  }
+}

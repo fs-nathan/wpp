@@ -11,10 +11,8 @@ import { bgColorSelector, membersSelector, updateMemberRoleSelector, userRolesSe
 function MemberRole({
   open, setOpen,
   bgColor, userRoles, updateMemberRole, members,
-  curMemberId = null,
-  doRemoveProjectRoleFromMember, doAddProjectRoleToMember,
-  doReloadMember,
-  project_id = null,
+  curMemberId = null, doAddProjectRoleToMember,
+  doReloadMember, project_id = null,
 }) {
 
   const { projectId: _projectId } = useParams();
@@ -33,19 +31,11 @@ function MemberRole({
         doReloadMember={() => doReloadMember(projectId)}
         bgColor={bgColor} userRoles={userRoles} updateMemberRole={updateMemberRole}
         handleUpdateRoleOfMember={curRole => {
-          get(find(members.members, { id: curMemberId }), 'roles', [])
-            .map(role => get(role, 'id'))
-            .includes(get(curRole, 'id'))
-            ? doRemoveProjectRoleFromMember({
+            doAddProjectRoleToMember({
               projectId,
               memberId: curMemberId,
-              roleId: get(curRole, 'id'),
-            })
-            : doAddProjectRoleToMember({
-              projectId,
-              memberId: curMemberId,
-              roleId: get(curRole, 'id'),
-            })
+              roleId: curRole,
+            });
         }}
       />
     </>

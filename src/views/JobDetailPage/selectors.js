@@ -72,3 +72,10 @@ export const allMembersSelector = createSelector(
     }
   }
 );
+
+export const getNumberChatNotView = (task_id) => createSelector(
+  listDetailTask,
+  (listDetailTasks = {}) => {
+    return listDetailTasks.listDataNotRoom.filter((task) => task_id !== task.id && task.new_chat > 0).length;
+  }
+)

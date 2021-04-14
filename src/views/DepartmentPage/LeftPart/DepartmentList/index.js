@@ -12,6 +12,8 @@ import { actionVisibleDrawerMessage } from 'actions/system/system';
 import { routeSelector, viewPermissionsSelector } from '../../selectors';
 import DepartmentListPresenter from './presenters';
 import { roomsSelector } from './selectors';
+import AddUserModal from "../../Modals/AddUserModal";
+import {hasRequirementSelector} from "../../RightPart/AllUsersTable/selectors";
 
 function DepartmentList({
   rooms, route, viewPermissions,
@@ -20,6 +22,7 @@ function DepartmentList({
   doListRoom,
   doListUserOfGroup,
   doActionVisibleDrawerMessage,
+  countRequirements
 }) {
 
   React.useEffect(() => {
@@ -85,7 +88,7 @@ function DepartmentList({
 
   const [openCreateAndUpdateDepartmentModal, setOpenCreateAndUpdateDepartmentModal] = React.useState(false);
   const [openCreateAccountModal, setOpenCreateAccountModal] = React.useState(false);
-  // const [openCreateAccountModal, setOpenCreateAccountModal] = React.useState(false);
+  const [openAddUSerModal, setOpenAddUserModal] = React.useState(false);
 
   function doOpenModal(type) {
     switch (type) {
@@ -107,6 +110,9 @@ function DepartmentList({
         }
         return;
       }
+      case 'ADD_USER':
+        setOpenAddUserModal(true);
+        return;
       default: return;
     }
   }
@@ -119,7 +125,7 @@ function DepartmentList({
           loading: rooms.loading,
           error: rooms.error,
         }}
-        route={route}
+        route={route} countRequirements={countRequirements}
         viewPermissions={viewPermissions}
         searchPatern={searchPatern}
         handleDragEnd={onDragEnd}
@@ -132,6 +138,7 @@ function DepartmentList({
         setOpen={setOpenCreateAndUpdateDepartmentModal}
       />
       <CreateAccountModal open={openCreateAccountModal} setOpen={setOpenCreateAccountModal} />
+      <AddUserModal setOpen={setOpenAddUserModal} open={openAddUSerModal}/>
     </>
   )
 }
@@ -141,6 +148,7 @@ const mapStateToProps = state => {
     viewPermissions: viewPermissionsSelector(state),
     rooms: roomsSelector(state),
     route: routeSelector(state),
+    countRequirements: hasRequirementSelector(state)
   };
 };
 

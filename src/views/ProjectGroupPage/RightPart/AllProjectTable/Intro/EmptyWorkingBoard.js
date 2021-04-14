@@ -24,7 +24,7 @@ function IntroEmptyWorkingBoard({groupID}) {
     <>
       <Box className={"introEmptyData-container longContent"}>
         <Box className={"introEmptyData-left"}>
-          <Typography variant={"h4"}>{t("LABEL_WORKING_BOARD_FIRST_CREATE")}</Typography>
+          <Typography variant={"h5"}>{t("LABEL_WORKING_BOARD_FIRST_CREATE")}</Typography>
           <div className={"selectedGroup"}>
             <CustomAvatar
               style={{marginRight: "10px", width: 25, height: 25}}

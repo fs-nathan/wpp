@@ -1,0 +1,27 @@
+.TagModal {
+  position: absolute;
+  top: 0;
+  transform: translateY(-100%);
+  background-color: #ffffff;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eeeeee;
+  display: none;
+  &--menuItem {
+    &:hover,
+    &__selected {
+      background-color: #f2f5fa;
+    }
+  }
+  &--avatar {
+    width: 30px;
+    height: 30px;
+  }
+  &__open {
+    display: block;
+    box-shadow: 0 4px 8px 0 rgba(0, 26, 51, 0.1);
+    border: solid 1px #e1e4ea;
+    border-radius: 3px;
+    border-left: unset;
+    overflow: auto;
+  }
+}

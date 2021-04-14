@@ -93,9 +93,9 @@ export const filterTaskByType = (groups, idx) => {
 }
 
 export const filterNoGroupTaskByType = (tasks, idx) => {
-    return idx === 0
-        ? tasks
-        : tasks.filter(task => Number(task.status_code) === idx - 1)
+    if(idx === 0) return tasks;
+    if(idx !== 6) return tasks.filter(task => Number(task.status_code) === idx - 1);
+    return tasks.filter(task => Number(task.new_chat) === 1);
 }
 
 export const searchTaskByTaskName = (groups, keyword) => {

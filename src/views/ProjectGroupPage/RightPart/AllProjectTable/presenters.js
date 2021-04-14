@@ -91,17 +91,17 @@ function AllProjectTable({
       case 1:
         return <>
           <AccessTimeIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h4"} bold>{t("LABEL_SEE_RECENTLY")}</Typography>
+          <Typography variant={"h5"} bold>{t("LABEL_SEE_RECENTLY")}</Typography>
         </>;
       case 2:
         return <>
           <PersonPinCircleOutlinedIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h4"} bold>{t("LABEL_PERSONAL_BOARD")}</Typography>
+          <Typography variant={"h5"} bold>{t("LABEL_PERSONAL_BOARD")}</Typography>
         </>;
       default:
         return <>
           <PeopleOutlineOutlinedIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h4"} bold>{t("LABEL_WORKING_GROUP")}</Typography>
+          <Typography variant={"h5"} bold>{t("LABEL_WORKING_GROUP")}</Typography>
         </>;
     }
   }

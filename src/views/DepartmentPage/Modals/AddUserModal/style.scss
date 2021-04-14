@@ -1,0 +1,51 @@
+.addMemberModal {
+  &-container {
+    .MuiDialog-paperWidthSm {
+      width: 550px;
+      min-height: unset;
+    }
+  }
+  &-searchBox {
+    border: 2px solid rgba(0, 0, 0, 0.12);
+    &__input {
+      width: 90%
+    }
+  }
+  &-noteWrapper {
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  &-searchResult {
+    &__item {
+      margin-top: 10px;
+      .MuiListItem-gutters {
+        padding: 0;
+      }
+      .MuiListItemText-primary {
+        font-size: 14px;
+      }
+      .MuiListItemText-secondary {
+        color: var(--color-primary);
+      }
+      .MuiListItemSecondaryAction-root {
+        display: flex;
+        align-items: center;
+        &>*:not(:last-child) {
+          margin-right: 10px;
+        }
+        .MuiButtonBase-root {
+          padding: 2px;
+          text-transform: unset;
+          border-radius: 2px;
+        }
+        .MuiButton-contained {
+          color: #fff;
+          background: var(--color-primary);
+        }
+        .MuiButton-outlined {
+          color: rgba(0,0,0,0.2);
+        }
+      }
+    }
+  }
+}

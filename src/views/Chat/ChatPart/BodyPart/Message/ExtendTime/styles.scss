@@ -1,0 +1,14 @@
+.ExtendTime {
+  &--icon {
+    width: 40px;
+    height: 40px;
+    fill: #0c92f2;
+    path {
+      fill: inherit !important;
+    }
+  }
+  &--notify {
+    color: #0c92f2;
+    font-size: 16px;
+  }
+}

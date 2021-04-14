@@ -316,7 +316,7 @@ const CreateOrder = props => {
               <p>{t('IDS_WP_ACCOUNT_NUMBER_RANGE_DES')}</p>
               <p>
                 {t('IDS_WP_PRICE_DEPEND_USER')} (
-                <a href="/">{t('IDS_WP_VIEW_PRICE')}</a>)
+                <a href="https://workplus.vn/bang-gia/bang-gia/" target="_blank">{t('IDS_WP_VIEW_PRICE')}</a>)
               </p>
               <p className="sub-title-item">{t('IDS_WP_USED_TIME_PAYMENT')}</p>
               <SliderProgess

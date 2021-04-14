@@ -99,16 +99,20 @@ export default function reducer(state = initialState, action) {
                 updatedAt,
                 complete,
                 state_code,
-                user_create_name } = payload;
+                user_create_name, updated_time, new_name } = payload;
             const chat = content ? {
                 content, user_create_avatar, user_create_name
             } : undefined;
-            const update = {
+            let update = {
                 new_chat,
                 updatedAt,
                 complete,
                 state_code,
-                chat
+                chat,
+                updated_time,
+            }
+            if (new_name) {
+                update.name = new_name
             }
             return {
                 ...state,

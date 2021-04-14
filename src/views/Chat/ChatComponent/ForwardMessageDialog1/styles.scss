@@ -1,0 +1,140 @@
+.ForwardMessageDialog {
+  &--container {
+    // min-height: 600px;
+    height: calc(100% - 104px);
+  }
+  &--content {
+    min-width: 800px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    // border: 1px solid #e0e0e0;
+  }
+  &--body {
+    height: calc(100% - 104px);
+  }
+  &--scroll {
+    // margin-bottom: 30px !important;
+    // margin-right: 0px !important;
+    // width: calc(100% + 5px) !important;
+    // scrollbar-width: none !important;
+    padding-top: 5px;
+  }
+  &--border {
+    border-right: 1px solid #e0e0e0;
+    // min-height: 660px;
+  }
+  &--title {
+    border-bottom: 1px solid #e0e0e0;
+    padding: 20px;
+    color: #555555;
+    font-size: 14px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  &--subTitle {
+    background-color: #fafafa;
+    padding: 12px 20px;
+    font-weight: 500;
+  }
+  &--taskGroup {
+    text-transform: uppercase;
+    font-weight: bold;
+    background-color: #efefef;
+    &Title {
+      // padding: 12px 20px;
+      color: #283593;
+    }
+  }
+  &--task {
+    position: relative;
+    padding: 12px 12px 12px 40px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #eaeaea;
+    font-weight: normal;
+    color: #222222;
+    text-transform: initial;
+  }
+  &--taskExpansion {
+    box-shadow: unset;
+    .MuiExpansionPanelSummary-root {
+      color: #283593;
+      display: flex;
+      justify-content: flex-start;
+      border-bottom: 1px solid #e5e5e5;
+      background-color: #fafafa;
+      border-top: 1px solid #e5e5e5;
+      min-height: unset;
+    }
+    .MuiExpansionPanelSummary-content {
+      margin: 0;
+      flex-grow: unset;
+    }
+  }
+  &--taskExpansionDetail {
+    display: block;
+    padding: 0;
+  }
+  &--sendButton {
+    position: absolute;
+    top: 6px;
+    right: 20px;
+    height: 25px;
+    text-transform: unset;
+    padding: 2px 8px;
+    border: 1px solid #dcdcdc;
+    font-weight: 400;
+    color: #444;
+    line-height: 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    :focus {
+      outline: none;
+    }
+  }
+  &--loading {
+    position: absolute;
+    top: 6px;
+    right: 20px;
+  }
+}
+
+.ForwardMessageDialogMain {
+  .MuiPaper-root {
+    width: 500px;
+    height: 220px
+  }
+  .ForwardMessageDialogMain--content {
+    .step-title {
+      float: left;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      margin: 30px 0px 20px 0px;
+      text-transform: uppercase;
+    }
+    .option-forward {
+      float: left;
+      width: 100%;
+      text-align: center;
+      div {
+        height: 50px;
+        width: 30%;
+        display: inline-block;
+        background: red;
+        margin: 0px 10px;
+        border-radius: 3px;
+        font-size: 16px;
+        color: #fff;
+        line-height: 50px;
+        cursor: pointer;
+      }
+      .option-1 {
+        background: #2ba90d
+      }
+      .option-2 {
+        background: #ff6d00
+      }
+    }
+  }
+}

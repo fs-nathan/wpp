@@ -224,3 +224,14 @@
   font-weight: 500;
   color: #222;
 }
+.per-line-modal {
+  margin-bottom: 20px;
+  p {
+    margin-top: 0px
+  }
+  .field-required {
+    margin: 0px 5px;
+    color: red;
+    cursor: help;
+  }
+}

@@ -1,4 +1,4 @@
-import { Button, Dialog, IconButton } from '@material-ui/core';
+import {Button, Dialog, Divider, IconButton} from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -51,6 +51,7 @@ function DialogWrap({
           <>{children}</>
         )}
       </div>
+      <Divider/>
       <DialogActions>
         {!isOneButton && <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >
           {t('IDS_WP_CANCEL')}

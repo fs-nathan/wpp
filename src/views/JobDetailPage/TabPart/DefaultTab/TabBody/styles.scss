@@ -1,7 +1,4 @@
 .listPartTabBody {
-  path {
-    fill: inherit !important;
-  }
   &--expired {
     background-color: red;
     color: #fff;
@@ -11,8 +8,6 @@
     font-weight: 500;
     font-size: 13px;
     line-height: unset;
-    // border: 1px solid;
-    // box-shadow: 0 1px 5px 0 rgba(0, 0, 0, 0.1), 0 2px 5px 0 rgba(0, 0, 0, 0.1);
   }
   &--paused {
     color: #607d8b;
@@ -20,10 +15,6 @@
     background-color: #fff;
   }
   &--container {
-    // margin-bottom: 0px !important;
-    // margin-right: 0px !important;
-    // width: calc(100% + 5px) !important;
-    // scrollbar-width: none !important;
     padding-top: 5px;
     padding-bottom: 30px;
   }
@@ -61,7 +52,6 @@
 .MuiTooltip-tooltip {
   background-color: #fff;
   max-width: 210px;
-  // height: 110px;
   border: 1px solid #dadde9;
 }
 
@@ -72,7 +62,7 @@
     position: absolute;
     border: 1px solid #c4c4c4;
     bottom: 33px;
-    left: 0px;
+    left: 0;
     background-color: #fff;
     border-radius: 4px;
     width: 222px;
@@ -125,6 +115,8 @@
     padding: 7px 9px;
     margin: 5px 5px 5px 1px;
     font-weight: 700;
+    display: flex;
+    align-items: center;
     &__wait {
       color: rgb(255, 152, 0);
       border: 1px solid rgb(255, 152, 0);
@@ -236,5 +228,37 @@
     font-size: 13px;
     line-height: 1.5;
     margin: 3px 5px 0 0;
+  }
+}
+.toolTipUpdateStatus {
+  .MuiPopover-paper {
+    width: 250px;
+  }
+  &-header {
+    padding: 15px;
+    text-transform: unset;
+    h6 {
+      font-size: 14px;
+    }
+  }
+  &-body {
+    padding: 5px 5px 10px;
+  }
+  &-item {
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: var(--color-primary);
+    }
+    &Header {
+      display: flex;
+      align-items: center;
+      h6 {
+        color: black !important;
+        font-size: 14px;
+      }
+    }
+    &Body {
+      margin-left: 37px;
+      margin-top: -7px;
+    }
   }
 }

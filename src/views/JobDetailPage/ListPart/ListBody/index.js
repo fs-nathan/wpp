@@ -20,7 +20,7 @@ import {Icon} from "@mdi/react";
 import {mdiMenuDown} from '@mdi/js';
 import {getViewAllMessage} from "../../../../components/Drawer/DrawerService";
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
-import {filter, map} from "lodash";
+import {map, flatten} from "lodash";
 
 const StyledList = styled(List)`
   & > li {
@@ -44,7 +44,8 @@ function ListBody() {
 
   const taskId = useSelector(taskIdSelector);
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
-  const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  //const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  const [listDataNotRoom, setListDataNotRoom] = React.useState([]);
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const searchKey = useSelector(state => state.taskDetail.listDetailTask.searchKey);
@@ -52,15 +53,26 @@ function ListBody() {
   const [selectedFilter, setSelectedFilter] = React.useState(0);
   const [anchorElFilterControl, setAnchorElFilterControl] = React.useState(null);
   const [data, setData] = useState([]);
-  const [dataFilter, setDataFilter] = useState(data);
+  const [customListTaskDataType, setCustomListTaskDataType] = React.useState(listTaskDataType);
 
   useEffect(() => {
-    if (listTaskDataType === listTaskDataTypes[1]) {
-      setData(filterTaskByType(searchTaskByTaskName(listTaskDetail, searchKey), filterTaskType))
+    if (selectedFilter === 0) {
+      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), filterTaskType));
+      setCustomListTaskDataType(listTaskDataTypes[0]);
+    } else if(selectedFilter === 1) {
+      setData(filterTaskByType(searchTaskByTaskName(listTaskDetail, searchKey), filterTaskType));
+      setCustomListTaskDataType(listTaskDataTypes[1]);
     } else {
-      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), filterTaskType))
+      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), 6));
+      setCustomListTaskDataType(listTaskDataTypes[0]);
     }
-  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey])
+  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey, selectedFilter]);
+
+  React.useEffect(() => {
+    setListDataNotRoom(flatten(map(listTaskDetail, function (group) {
+      return group.tasks;
+    })));
+  }, [listTaskDetail]);
 
   useEffect(() => {
     if (focusId) {
@@ -93,37 +105,6 @@ function ListBody() {
   const handleViewAll = async () => {
     await getViewAllMessage();
   }
-
-  React.useEffect(() => {
-    let _data = data;
-    switch (selectedFilter) {
-      case 0:
-        _data = map(data, function (item) {
-          const { tasks = [] } = item;
-          let _tasks = filter(tasks, function (task) {
-            return true;
-          });
-          return {...item, tasks: _tasks};
-        });
-        console.log(_data);
-        setDataFilter(_data);
-        return;
-      case 1:
-      case 2:
-        _data = map(data, function (item) {
-          const { tasks = [] } = item;
-          let _tasks = filter(tasks, function (task) {
-            return task.new_chat === 1;
-          });
-          return {...item, tasks: _tasks};
-        });
-        setDataFilter(_data);
-        return;
-      default:
-        setDataFilter(_data);
-        return;
-    }
-  }, [selectedFilter, data]);
 
   return (
     <Body className="listJobBody"
@@ -169,7 +150,7 @@ function ListBody() {
           </Typography>
         </Popover>
       </div>
-      {listTaskDataType === listTaskDataTypes[1] ? dataFilter.map((item, key) => {
+      {customListTaskDataType === listTaskDataTypes[1] ? data.map((item, key) => {
         const { tasks = [] } = item;
         return (
           <StyledList
@@ -190,7 +171,7 @@ function ListBody() {
           </StyledList>
         );
       }) :
-        dataFilter.map((detail, idx) => (
+        data.map((detail, idx) => (
           <ListBodyItem
             key={idx}
             {...detail}
