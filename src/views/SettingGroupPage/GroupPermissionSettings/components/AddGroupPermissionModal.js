@@ -99,7 +99,6 @@ const addGroupPermissionFormInitialValues = {
 const validateAddGroupPermissionForm = createValidate(
   Joi.object({
     name: Joi.string().required(),
-    // description: Joi.string(),
     module: Joi.string().required(),
   })
 );
@@ -108,13 +107,11 @@ export const GroupPermissionForm = ({
   initialValues = emptyObject,
   onSubmit,
 }) => {
-  // error.details[0].type
   const { t } = useTranslation();
   const validateMemo = useMemo(
     () => (values = {}) => {
       const mapError = {
-        "name.string.empty": t("required"),
-        // "module.string.empty": t("required"),
+        "name.string.empty": t("IDS_WP_REQUIRED_LABEL"),
       };
       return validateAddGroupPermissionForm(values, mapError);
     },
@@ -123,7 +120,6 @@ export const GroupPermissionForm = ({
   return (
     <Formik
       enableReinitialize
-      // validateOnMount
       initialValues={initialValues}
       onSubmit={onSubmit}
       validate={validateMemo}

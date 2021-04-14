@@ -1,37 +1,67 @@
-import {
-  Avatar,
-  Box,
-  Divider,
-  Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-  Typography,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
-import { mdiAccountKey, mdiKey } from "@mdi/js";
+import {Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography,} from "@material-ui/core";
+import {Alert} from "@material-ui/lab";
+import {mdiAccountKey, mdiDotsVertical, mdiDragVertical, mdiKey, mdiLockOutline, mdiFilterOutline, mdiMenuDown} from "@mdi/js";
 import Icon from "@mdi/react";
-import { CustomTableProvider } from "components/CustomTable";
+import {CustomTableProvider} from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
-import { bgColorSelector } from "components/LoadingOverlay/selectors";
-import React, { useContext, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { StyledTableBodyCell } from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
-import { emptyArray } from "views/JobPage/contants/defaultValue";
-import { LayoutStateLess } from "views/JobPage/Layout";
-import { template } from "views/JobPage/utils";
+import {bgColorSelector} from "components/LoadingOverlay/selectors";
+import React, {useContext, useMemo, useState} from "react";
+import {useTranslation} from "react-i18next";
+import {useSelector} from "react-redux";
+import {StyledTableBodyCell} from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
+import {emptyArray} from "views/JobPage/contants/defaultValue";
+import {LayoutStateLess} from "views/JobPage/Layout";
+import {createMapPropsFromAttrs, loginlineParams, template} from "views/JobPage/utils";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
-import { Space } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
-import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
-import { GroupPermissionSettingsContext } from "..";
+import {Space} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
+import {GroupPermissionSettingsContext} from "..";
 import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
 import TasksScrollbar from "../components/TasksScrollbar";
 import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal";
-import "./index.css";
+import "./index.scss";
+import SearchBox from "../../../../components/SearchInput";
+import AddGroupPermissionModal from "../components/AddGroupPermissionModal";
+import Chip from '@material-ui/core/Chip';
+import {size} from "lodash";
+import {StyledList, StyledListItem} from "../../../../components/CustomList";
+import {groupPermissionAttr} from "../contants";
+import IconButton from "@material-ui/core/IconButton";
+import UpdateInfoGroupPermissionModal from "../components/UpdateInfoGroupPermissionModal";
+import {ItemMenu} from "../components/ItemMenu";
+import {DraggableList} from "../../TablePart/SettingGroupRight/Home/components/DraggableList";
+
+const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
+  const { t } = useTranslation();
+  const { setModal } = useContext(GroupPermissionSettingsContext);
+  const options = useMemo(() => {
+    return [
+      { key: "edit", label: t("Chỉnh sửa") },
+      { key: "delete", label: t("Xóa") },
+    ];
+  }, [t]);
+  const handleItemClick = (key) => {
+    switch (key) {
+      case "edit":
+        setModal(<UpdateInfoGroupPermissionModal item={item} />);
+        break;
+      case "delete":
+        setModal(<DeleteGroupPermissionModal item={item} />);
+        break;
+      default:
+        break;
+    }
+  };
+  return (
+    <ItemMenu
+      onItemClick={handleItemClick}
+      menuAnchor={menuAnchor}
+      options={options}
+      onClose={() => setMenuAnchor(null)}
+    />
+  );
+};
+
 const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
   return (
     <Grid
@@ -70,7 +100,6 @@ const ColumnRight = () => {
     permissions = emptyArray,
     can_modify,
   } = useContext(GroupPermissionSettingsContext);
-  // if (!item) return null;
   return (
     <ColumnLayout
       title={t("Chi tiết quyền trong nhóm")}
@@ -78,13 +107,23 @@ const ColumnRight = () => {
         number: permissionsNumber,
       })}
       actions={
-        can_modify && (
-          <AddButton
-            disabled={!can_modify}
-            onClick={() => setModal(<UpdateGroupPermissionModal item={item} />)}
-            label={t("Thêm quyền")}
-          />
-        )
+        <Box display={"flex"} flexDirection={"column"} alignItems={"flex-start"}>
+          {can_modify && (
+            <AddButton
+              disabled={!can_modify}
+              onClick={() => setModal(<UpdateGroupPermissionModal item={item} />)}
+              label={t("Thêm quyền")}
+            />
+          )}
+          <Box marginTop={"2px"} marginBottom={"7px"} display={"flex"} alignItems={"center"}>
+            <Icon path={mdiFilterOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
+            <span style={{marginLeft: "5px"}}>{t("LABEL_PERMISSION_FILTER")}:</span>
+            <Box className={"comp_rightColumn--customSelectBox"}>
+              {t("IDS_WP_ALL")}
+              <Icon path={mdiMenuDown} size={1} color={"rgba(0,0,0,0.54)"}/>
+            </Box>
+          </Box>
+        </Box>
       }
     >
       <Table stickyHeader className="header-document">
@@ -159,77 +198,242 @@ const ColumnRight = () => {
 };
 const ColumnLeft = () => {
   const { t } = useTranslation();
+  const [filterOption, setFilterOption] = React.useState(0);
+  const [menuAnchor, setMenuAnchor] = useState(null);
+  const [keyword, setKeyword] = useState("");
   const {
-    detail,
-    permissionModules = emptyArray,
-    members_assigned = emptyArray,
-    module: groupModule,
+    select, groupPermissionDefaultList,
+    setModal, setSelect, groupPermissionList
   } = useContext(GroupPermissionSettingsContext);
-  console.log(detail)
+  function handleFilterKeyWord(value) {
+    setFilterOption(1);
+    setKeyword(value);
+  }
   return (
     <div className="comp_rightColumn">
-      <TasksScrollbar>
+      <div className={"comp_rightColumn_topBar"}>
+        <SearchBox
+          fullWidth
+          placeholder={t("Tìm nhóm quyền")}
+          onChange={(e) => handleFilterKeyWord(e.target.value)}
+        />
+        <AddButton
+          onClick={() => {
+            setModal(<AddGroupPermissionModal />);
+          }}
+          label={t("Thêm nhóm")}
+        />
+      </div>
+      <div className={"comp_rightColumn_filterBar"}>
+        <Chip
+          label={t("LABEL_GROUP_PERMISSION_DEFAULT_COUNT", {count: size(groupPermissionDefaultList)})} clickable
+          color={filterOption === 0 ? "primary" : "default"}
+          onClick={() => setFilterOption(0)}
+        />
+        <Chip
+          label={t("LABEL_GROUP_PERMISSION_EXTEND_COUNT", {count: size(groupPermissionList)})} clickable
+          color={filterOption === 1 ? "primary" : "default"}
+          onClick={() => setFilterOption(1)}
+        />
+      </div>
+      <div style={{padding: "10px"}}>
+        <Alert severity="info">
+          {filterOption === 0 ? t("LABEL_GROUP_PERMISSION_WARNING_1") : t("LABEL_GROUP_PERMISSION_WARNING_2")}
+        </Alert>
+      </div>
+      <TasksScrollbar autoHeight autoHeightMax={"calc(100vh - 375px)"}>
         <div className="comp_rightColumn_content">
-          <Stack>
-            <b className="comp_QuickViewFilter__title">
-              {t("Module được gán nhóm quyền")}
-            </b>
-            <Box>
-              {permissionModules
-                .filter(({ value }) => "" + groupModule === "" + value)
-                .map(({ name, value }) => (
-                  <Box fontSize="15px" key={value}>
-                    {t(name)}
-                  </Box>
-                ))}
-            </Box>
-            <Alert severity="info">
-              {
-                detail && (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: detail.description_detail ? detail.description_detail : detail.module_description ? detail.module_description : "",
+          {filterOption === 0 && (
+            <StyledList>
+              {groupPermissionDefaultList.map((item) => {
+                const [
+                  id,
+                  name,
+                  total_of_member_assigned,
+                  can_modify,
+                ] = createMapPropsFromAttrs([
+                  groupPermissionAttr.id,
+                  groupPermissionAttr.name,
+                  groupPermissionAttr.total_of_member_assigned,
+                  groupPermissionAttr.can_modify,
+                ])(item);
+                return (
+                  <StyledListItem
+                    className={
+                      select && item && select.id === item.id ? "active" : ""
+                    }
+                    key={id}
+                    onClick={() => {
+                      setSelect(item, true);
                     }}
                   >
-                  </div>
-                )
-              }
-              <a
-                target="_blank"
-                className="u-colorBlue text-bold cursor-pointer"
-                href={detail && detail.url_view_more}
-              >
-                <strong>{t("Tìm hiểu thêm")}</strong>
-              </a>
-            </Alert>
-            <Divider />
-            <ListItemLayout
-              title={t("Thành viên được gán nhóm quyền")}
-            />
-            <Stack>
-              {members_assigned.map(
-                ({ name, members = emptyArray, icon } = {}, i) => (
-                  <Stack key={i} small>
-                    <b style={{ fontSize: "15px", color: "#8d8d8d" }}>
-                      {name} ({members.length})
-                    </b>
-                    {members.map(({ avatar, id, name, position } = {}) => {
-                      return (
-                        <ListItemLayout
-                          key={id}
-                          left={<Avatar src={avatar}/>}
-                          title={name}
-                          subTitle={position}
+                    <div style={{ flexShrink: 0, lineHeight: 1 }}>
+                      {can_modify && (
+                        <Icon
+                          path={mdiDragVertical}
+                          size={1}
+                          color="#8d8d8d"
                         />
-                      );
-                    })}
-                  </Stack>
-                )
+                      )}
+                      <Icon
+                        style={{ flexShrink: 0, fill: "#8d8d8d" }}
+                        path={mdiAccountKey}
+                        size={1}
+                      />
+                    </div>
+
+                    <ListItemLayout
+                      title={name}
+                      subTitle={template(
+                        t("Đã gán <%= number %> thành viên")
+                      )({
+                        number: total_of_member_assigned,
+                      })}
+                      actions={
+                        can_modify ? (
+                          <IconButton
+                            title={t("thêm")}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setMenuAnchor(
+                                <GroupSettingMenu
+                                  item={item}
+                                  menuAnchor={e.currentTarget}
+                                  setMenuAnchor={setMenuAnchor}
+                                />
+                              );
+                            }}
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <Icon
+                              path={mdiDotsVertical}
+                              size={1}
+                              color="#8d8d8d"
+                            />
+                          </IconButton>
+                        ) : (
+                          <IconButton
+                            title={t("Không sửa, xóa")}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setMenuAnchor(
+                                <GroupSettingMenu
+                                  item={item}
+                                  menuAnchor={e.currentTarget}
+                                  setMenuAnchor={setMenuAnchor}
+                                />
+                              );
+                            }}
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <Icon
+                              path={mdiLockOutline}
+                              size={1}
+                              color="#8d8d8d"
+                            />
+                          </IconButton>
+                        )
+                      }
+                    />
+                  </StyledListItem>
+                );
+              })}
+            </StyledList>
+          )}
+          {filterOption === 1 && (
+            <DraggableList
+              list={groupPermissionList.filter((item) =>
+                item.name.includes(keyword)
               )}
-            </Stack>
-          </Stack>
+              getId={(item) => item.id}
+              renderListWrapper={(children) => (
+                <StyledList>{children}</StyledList>
+              )}
+              onDragEnd={loginlineParams}
+            >
+              {(item, bindDraggable, bindDragHandle) => {
+                const [
+                  name,
+                  total_of_member_assigned,
+                ] = createMapPropsFromAttrs([
+                  groupPermissionAttr.name,
+                  groupPermissionAttr.total_of_member_assigned,
+                ])(item);
+                return bindDraggable(
+                  <div>
+                    <StyledListItem
+                      className={
+                        select && item && select.id === item.id
+                          ? "active onHover"
+                          : "onHover"
+                      }
+                      onClick={() => {
+                        setSelect(item);
+                      }}
+                    >
+                      {bindDragHandle(
+                        <div style={{ flexShrink: 0, lineHeight: 1 }}>
+                          <Icon
+                            className="onHover__show"
+                            path={mdiDragVertical}
+                            size={1}
+                            color="#8d8d8d"
+                          />
+                          <Icon
+                            className="onHover__hide"
+                            style={{ fill: "#8d8d8d" }}
+                            path={mdiAccountKey}
+                            size={1}
+                          />
+                        </div>
+                      )}
+
+                      <ListItemLayout
+                        title={name}
+                        subTitle={template(
+                          t("Đã gán <%= number %> thành viên")
+                        )({
+                          number: total_of_member_assigned,
+                        })}
+                        actions={
+                          <IconButton
+                            title={t("thêm")}
+                            className="onHover__show"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setMenuAnchor(
+                                <GroupSettingMenu
+                                  item={item}
+                                  menuAnchor={e.currentTarget}
+                                  setMenuAnchor={setMenuAnchor}
+                                />
+                              );
+                            }}
+                            color="primary"
+                            aria-label="upload picture"
+                            component="span"
+                          >
+                            <Icon
+                              path={mdiDotsVertical}
+                              size={1}
+                              color="rgba(0, 0, 0, 0.7)"
+                            />
+                          </IconButton>
+                        }
+                      />
+                    </StyledListItem>
+                  </div>
+                );
+              }}
+            </DraggableList>
+          )}
         </div>
       </TasksScrollbar>
+      {menuAnchor}
     </div>
   );
 };
@@ -258,20 +462,24 @@ export default ({ ...props }) => {
   const { detail } = useContext(GroupPermissionSettingsContext);
   const options = {
     title: (
-      <Box display="flex" alignItems="center">
-        <Icon size={1.4} {...{ color: "#8d8d8d", path: mdiAccountKey }}/>
-        <Box
-          {...{
-            paddingLeft: "20px",
-            fontSize: "21px",
-            lineHeight: "1",
-            fontWeight: "600",
-          }}
-        >
-          {name}
+      <Box className={"comp_rightColumn--topHeader"}>
+        <Box className={"comp_rightColumn--topHeader-left"}>
+          <Typography variant={"h6"}>{t("LABEL_SETTING_GROUP_PERMISSION")}</Typography>
+        </Box>
+        <Box className={"comp_rightColumn--topHeader-right"}>
+          <Icon size={1.4} {...{ color: "#8d8d8d", path: mdiAccountKey }}/>
+          <Box
+            {...{
+              paddingLeft: "20px",
+              fontSize: "21px",
+              lineHeight: "1",
+              fontWeight: "600",
+            }}
+          >
+            {name}
+          </Box>
         </Box>
       </Box>
-      
     ),
     subActions: [],
     mainAction: can_modify
@@ -310,7 +518,7 @@ export default ({ ...props }) => {
             ...props,
           }}
         >
-          <Right />
+          <Right setModal={setModal}/>
         </LayoutStateLess>
       </>
     </CustomTableProvider>

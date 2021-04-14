@@ -2335,5 +2335,16 @@
   "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES1": "Hãy thêm thành viên vào Bảng công việc này và phân quyền cho họ để thực hiện và quản lý hiệu quả.",
   "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES2": "Hoặc bạn có thể thực hiện hành động này sau vào bất cứ lúc nào bạn muốn. ",
   "LABEL_SKIP": "Để sau",
-  "LABEL_SET_NOW": "Thêm ngay"
+  "LABEL_SET_NOW": "Thêm ngay",
+  "LABEL_QUICK_GUIDELINE": "Hướng dẫn nhanh",
+  "LABEL_QUICK_GUIDELINE_GROUP_PERMISSIONS_1": "Bước 1: Tạo nhóm quyền theo nhu cầu",
+  "LABEL_QUICK_GUIDELINE_GROUP_PERMISSIONS_2": "Bước 2: Gán nhóm quyền cho thành viên",
+  "LABEL_WARNING": "Chú ý",
+  "LABEL_GROUP_PERMISSION_WARNING": "Phân quyền cho Dự án/Quy trình/Chủ đề công việc được thực hiện trong chi tiết Dự án/Quy trình/Chủ đề tương ứng.",
+  "LABEL_GROUP_PERMISSION_DEFAULT_COUNT": "Mặc định ({{count}})",
+  "LABEL_GROUP_PERMISSION_WARNING_1": "Hệ thống sẽ tạo sẵn các nhóm quyền mặc định. Bạn chỉ việc sử dụng và không thể chỉnh sửa hoặc xoá bỏ.",
+  "LABEL_GROUP_PERMISSION_WARNING_2": "Nếu bạn muốn xây dựng hệ thống phân quyền riêng theo cách của bạn hãy tạo mới những nhóm quyền theo ý mình.",
+  "LABEL_GROUP_PERMISSION_EXTEND_COUNT": "Mở rộng ({{count}})",
+  "LABEL_SETTING_GROUP_PERMISSION": "Thiết lập nhóm quyền",
+  "LABEL_PERMISSION_FILTER": "Lọc quyền"
 }
