@@ -1,4 +1,4 @@
-import { ListItemText, Box, IconButton } from '@material-ui/core';
+import { ListItemText, Box, IconButton, Link } from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ContactMailRoundedIcon from '@material-ui/icons/ContactMailRounded';
 import { mdiDragVertical } from '@mdi/js';
@@ -7,7 +7,7 @@ import { get } from 'lodash';
 import React from 'react';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { useTranslation } from 'react-i18next';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
 import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
@@ -100,7 +100,7 @@ function DepartmentList({
               
               {listMenu.map((item, index) => (
                 <StyledListItem
-                  component={Link}
+                  // component={Link}
                   innerRef={ref}
                   onClick={() => {
                     item.action(item);
@@ -128,22 +128,26 @@ function DepartmentList({
             component: () => <LoadingBox />,
           }}
         >
-          <Box style={{ background: "#fff" }}>
+          <Box>
             <Stack small style={{ display: 'block' }}>
-              <Box padding="0 1rem" style={{ display: 'inline-block', paddingTop: '15px' }}>
-                <b style={{ fontSize: "16px" }}>
+              <Box padding="0 1rem" style={{ display: 'inline-block', paddingTop: '8px' }}>
+                <b style={{ fontSize: "15px", fontWeight: "500" }}>
                   {t("Bộ phận")} ({rooms.rooms.length})
               </b>
               </Box>
               {
                 get(viewPermissions.permissions, 'can_modify', false) && (
                   <Box padding="0 1rem 0 3rem" style={{ display: 'inline-block', float: 'right' }}>
-                    <AddButton
+                    {/* <AddButton
                       onClick={() => {
                         handleOpenModal('CREATE')
                       }}
                       label={t("Thêm bộ phận")}
-                    />
+                    /> */}
+                    <Link component={"button"} onClick={() => {
+                    handleOpenModal('CREATE')
+                  }}>{t("+Thêm bộ phận")}</Link>
+
                   </Box>
                 )
               }
@@ -158,7 +162,7 @@ function DepartmentList({
                 >
                   <StyledListItem
                     to={`${route}`}
-                    component={Link}
+                    // component={Link}
                     innerRef={ref}
                   >
                     {

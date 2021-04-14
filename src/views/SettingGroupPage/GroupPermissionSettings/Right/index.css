@@ -9,9 +9,28 @@
   flex: unset;
   width: 400px !important;
 }
+
+.comp_rightColumn_content {
+  padding: 20px 27px 50px 20px;
+}
+
+.comp_CustomTable___container .comp_leftColumn {
+  flex: unset;
+  width: 390px !important;
+}
+
+.comp_leftColumn_content {
+  padding: 20px 20px 50px 20px;
+}
+
+.comp_GroupPermission___container .comp_TwoColumnsLayout___container-normal .comp_TwoColumnsLayout___container-normal {
+    /* @include comp_TwoColumnsLayout___container; */
+    grid-template-columns: minmax(390px, 1fr) minmax(600px, 4fr);
+}
 .comp_ColumnLayout .comp_CustomTable___header {
   height: 70px;
 }
-.comp_rightColumn_content {
-  padding: 20px 27px 50px 20px;
+
+.header-document .aaa {
+  width: 200px;
 }

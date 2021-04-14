@@ -80,6 +80,7 @@ const RequestingUserList = ({
             <CustomAvatar style={{ width: 50, height: 50, }} src={get(user, 'avatar')} alt='avatar' />
           </ListItemAvatar>
           <ListItemText
+          style={{backgroundColor: 'fff'}}
             primary={
               <Primary>{get(user, 'name')}</Primary>
             }
@@ -214,7 +215,7 @@ const MemberRequiredStart = ({ requireLoading, bgColor, requireUsers, viewPermis
   return (
     <>
       { !usersLength && (
-        <MemberRequiredIntro />
+        <MemberRequiredIntro props/>
       )}
       {
         usersLength && (
@@ -264,22 +265,25 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    // doGetRequirementJoinGroup: (quite) => dispatch(getRequirementJoinGroup(quite)),
-    // doGetListInvitationSent: (quite) => dispatch(getListInvitationSent(quite)),
     doAcceptRequirementJoinGroup: ({ requirementId }) => dispatch(acceptRequirementJoinGroup({ requirementId })),
     doRejectRequirementJoinGroup: ({ requirementId }) => dispatch(rejectRequirementJoinGroup({ requirementId })),
     // doGetListGroup: (quite) => dispatch(getListGroup(quite)),
     // doCancleInvitationJoinGroup: ({ invitationId }) => dispatch(cancleInvitationJoinGroup({ invitationId })),
     // doActionVisibleDrawerMessage: (option) => dispatch(actionVisibleDrawerMessage(option)),
     doGetPermissionViewUser: (quite) => dispatch(getPermissionViewUser(quite)),
-    actionToast,
+    // actionToast,
     //   : () => dispatch(searchUserReset())
   }
 };
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-  // actionToast,
-  // state => ({}), { actionToast }
+  state => ({
+    bgColor: bgColorSelector(state),
+    requireUsers: requireUsersSelector(state),
+    requireLoading: requireLoadingSelector(state),
+    viewPermissions: viewPermissionsSelector(state),
+    anchorDrawer: state.system.anchorDrawer,
+  }), {
+    mapDispatchToProps, actionToast
+  }
 )(MemberRequiredStart)

@@ -5,8 +5,12 @@ import { createMapPropsFromAttrs, get } from "views/JobPage/utils/index.js";
 import { groupPermissionAttr } from "./contants.js";
 import Left from "./Left";
 import { settingGroupPermission } from "./redux/index.js";
-import Right from "./Right/index.js";
+import ColumnLeft from "./Right/columnLeft.js";
+import ColumnRight from "./Right/columnRight.js";
 export const GroupPermissionSettingsContext = React.createContext({});
+
+const Container = ({ className = '', ...rest }) => <div className={`comp_GroupPermission___container ${className}`} {...rest} />;
+
 const GroupPermissionSettings = () => {
   const [{ select, isDefault }, setSelect] = useState({
     select: undefined,
@@ -19,25 +23,25 @@ const GroupPermissionSettings = () => {
       return (state) =>
         select
           ? settingGroupPermission.selectors.detailGroupPermissionDefaultSelector(
-              state,
-              select.id
-            )
-          : get(
-              settingGroupPermission.selectors.groupPermissionDefaultListSelector(
-                state
-              ),
-              "0"
-            );
-    return (state) =>
-      select
-        ? settingGroupPermission.selectors.detailGroupPermissionSelector(
             state,
             select.id
           )
-        : get(
-            settingGroupPermission.selectors.groupPermissionListSelector(state),
+          : get(
+            settingGroupPermission.selectors.groupPermissionDefaultListSelector(
+              state
+            ),
             "0"
           );
+    return (state) =>
+      select
+        ? settingGroupPermission.selectors.detailGroupPermissionSelector(
+          state,
+          select.id
+        )
+        : get(
+          settingGroupPermission.selectors.groupPermissionListSelector(state),
+          "0"
+        );
   }, [select, isDefault]);
 
   const detail = useSelector(selectDetailGroupPermission);
@@ -132,11 +136,19 @@ const GroupPermissionSettings = () => {
       }}
     >
       <>
+      <Container>
         <TwoColumnsLayout
           leftRenders={[() => <Left />]}
-          rightRender={() => <Right />}
+          rightRender={() =>
+            <TwoColumnsLayout
+            
+              leftRenders={[() => <ColumnLeft />]}
+              rightRender={() => <ColumnRight />}
+            
+            />}
         />
         {modal}
+        </Container>
       </>
     </GroupPermissionSettingsContext.Provider>
   );

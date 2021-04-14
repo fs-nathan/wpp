@@ -14,6 +14,7 @@ import SearchBox from "components/SearchInput";
 import { Routes } from "constants/routes";
 import React, { useCallback, useContext, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Alert } from "@material-ui/lab";
 import { useHistory } from "react-router-dom";
 import {
   createMapPropsFromAttrs,
@@ -76,6 +77,7 @@ function Left({
   const history = useHistory();
   const { t } = useTranslation();
   const [menuAnchor, setMenuAnchor] = useState(null);
+  const { detail } = useContext(GroupPermissionSettingsContext);
   return (
     <>
       <LeftSideContainer
@@ -98,6 +100,26 @@ function Left({
           display="flex"
           flexDirection="column"
         >
+          <Alert severity="info">
+              {
+                detail && (
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: detail.description_detail ? detail.description_detail : detail.module_description ? detail.module_description : "",
+                    }}
+                  >
+                  </div>
+                )
+              }
+              <a
+                target="_blank"
+                className="u-colorBlue text-bold cursor-pointer"
+                href={detail && detail.url_view_more}
+              >
+                <strong>{t("Tìm hiểu thêm")}</strong>
+              </a>
+            </Alert>
+
           <Box style={{ background: "#fff" }}>
             <Stack small>
               <div />

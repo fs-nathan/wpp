@@ -1,0 +1,82 @@
+.view_GroupAccount_Modal___container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 30% 70%;
+  grid-template-areas: "side main";
+  height: 100%;
+}
+.view_GroupAccount_Modal___side-bar {
+  grid-area: side;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.view_GroupAccount_Modal___main-bar {
+  grid-area: main;
+}
+
+.view_GroupAccount_Modal > div:nth-child(3) > div {
+  overflow: hidden;
+  min-width: 60vw;
+  max-width: 70vw;
+}
+
+.view_GroupAccount_Modal .comp_CustomModal___dialog-content {
+  padding: 0px;
+  height: 100%;
+}
+
+.view_GroupAccount_Modal .avatar-item-group-account {
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 5px 5px 15px 5px;
+}
+.view_GroupAccount_Modal .item-group {
+  margin: 0px 20px 20px 10px;
+}
+
+.view_GroupAccount_Modal .view_GroupAccount_Modal___subheader {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  height: 56px;
+  padding: 10px 10px 0px 10px;
+  font-weight: 500;
+  
+}
+
+.view_GroupAccount_Modal .view_GroupAccount_Modal___subheader-item {
+  margin: 10px 0px 0px 12px;
+  font-weight: 500;
+}
+
+.view_GroupAccount_Modal .account-status-text {
+  margin-top: 3px;
+  background-color: #ccc;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 16px;
+  line-height: 16px;
+  height: 16px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.view_GroupAccount_Modal .status-item-group-account {
+  height: 20px;
+  padding: 0 5px;
+  .MuiChip-labelSmall {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 11px;
+  }
+  &.pro-color {
+    background-color: #fd7e14;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  &.expire-color {
+    background-color: #a0c1d1;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+}
