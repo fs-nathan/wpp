@@ -40,18 +40,6 @@ function CreateProjectGroup({
     url_sort: '',
   });
   const [activeLoading, setActiveLoading] = React.useState(false);
-  const [workingTypes, setWorkingTypes] = React.useState([
-    {type: t("IDS_WP_JOB"), value: 0, checked: true, disabled: false},
-    {type: t("IDS_WP_PROJECT"), value: 1, checked: true, disabled: false},
-    {type: t("IDS_WP_PROCESS"), value: 2, checked: true, disabled: false}
-  ]);
-
-  const handleWorkingTypeChange = index => {
-    const _workingTypes = [...workingTypes];
-    _workingTypes[index].checked = !_workingTypes[index].checked;
-    setWorkingTypes(_workingTypes);
-  }
-
   React.useEffect(() => {
     setName(get(updatedProjectGroup, 'name'));
     setDescription(get(updatedProjectGroup, 'description'));
@@ -59,25 +47,8 @@ function CreateProjectGroup({
       url_full: get(updatedProjectGroup, 'icon'),
       url_sort: get(updatedProjectGroup, 'sort_icon')
     });
-    const workTypes = get(updatedProjectGroup, 'work_types', []);
-    setWorkingTypes([
-      { type: t("IDS_WP_JOB"), value: 0,
-        checked: indexOf(workTypes, "0") !== -1,
-        disabled: get(updatedProjectGroup, "statistic.work_topic", 0) > 0
-      },
-      {
-        type: t("IDS_WP_PROJECT"), value: 1,
-        checked: indexOf(workTypes, "1") !== -1,
-        disabled: get(updatedProjectGroup, "statistic.project", 0) > 0
-      },
-      {
-        type: t("IDS_WP_PROCESS"), value: 2,
-        checked: indexOf(workTypes, "2") !== -1,
-        disabled: get(updatedProjectGroup, "statistic.process", 0) > 0
-      }
-    ]);
   }, [updatedProjectGroup]);
-
+  console.log(updatedProjectGroup);
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -149,14 +120,14 @@ function CreateProjectGroup({
       title={updatedProjectGroup ? t("DMH.VIEW.PGP.MODAL.CUPG.U_TITLE") : t("DMH.VIEW.PGP.MODAL.CUPG.C_TITLE")}
       open={open}
       setOpen={setOpen}
-      canConfirm={!errorName && workingTypes.filter((item) => item.checked === true).length > 0}
+      canConfirm={!errorName}
       onConfirm={() => {
-        handleCreateOrEditProjectGroup(name, description, icon, workingTypes);
+        handleCreateOrEditProjectGroup(name, description, icon);
         setActiveLoading(true);
       }}
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
-      manualClose={true}
+      manualClose={true} height={"mini"}
     >
       <CustomTextbox
         value={name}
@@ -172,30 +143,6 @@ function CreateProjectGroup({
         fullWidth
         multiline={true}
       />
-      <Box className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType"}>
-        <div className={"view_ProjectGroup_Create_ProjectGroup_applyWorkType_title"}>{t("IDS_WP_APPLY_WORK_TYPE")}<abbr title={t("IDS_WP_REQUIRED_LABEL")}>*</abbr></div>
-        <abbr title={workingTypes[0].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_WORKING_TYPE")}) : ""}>
-          <FormControlLabel
-            control={<Checkbox checked={workingTypes[0].checked} onChange={() => handleWorkingTypeChange(0)} name={workingTypes[0].type} color={"primary"}/>}
-            disabled={workingTypes[0].disabled}
-            label={workingTypes[0].type}
-          />
-        </abbr>
-        <abbr title={workingTypes[1].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROJECT")}) : ""}>
-          <FormControlLabel
-            control={<Checkbox checked={workingTypes[1].checked} onChange={() => handleWorkingTypeChange(1)} name={workingTypes[1].type} color={"primary"}/>}
-            disabled={workingTypes[1].disabled}
-            label={workingTypes[1].type}
-          />
-        </abbr>
-        <abbr title={workingTypes[2].disabled ? t("IDS_WP_ALREADY_EXIST", {"object": t("IDS_WP_PROCESS")}) : ""}>
-          <FormControlLabel
-            control={<Checkbox checked={workingTypes[2].checked} onChange={() => handleWorkingTypeChange(2)} name={workingTypes[2].type} color={"primary"}/>}
-            disabled={workingTypes[2].disabled}
-            label={workingTypes[2].type}
-          />
-        </abbr>
-      </Box>
       <LogoBox>
         <div>
           <Title>{t("DMH.VIEW.PGP.MODAL.CUPG.LOGO")}</Title>

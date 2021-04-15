@@ -24,6 +24,12 @@
   line-height: 1.4;
   white-space: pre-line;
 }
+.comp_Left__description.content-post {
+  font-size: 15px
+}
+.content-sub-post {
+  font-size: 15px;
+}
 .comp_Left__avatar .MuiAvatar-root {
   width: 140px;
   height: 140px;

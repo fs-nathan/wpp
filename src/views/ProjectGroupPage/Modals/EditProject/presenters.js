@@ -32,6 +32,7 @@ function EditProject({
   const [currency, setCurrency] = React.useState(0);
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [activeMask, setActiveMask] = React.useState(-1);
+  const [groupsWork, setGroupsWork] = React.useState([]);
 
   React.useEffect(() => {
     setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
@@ -48,6 +49,7 @@ function EditProject({
 
   React.useEffect(() => {
     if (curProject) {
+      setGroupsWork(groups.groups.filter(e => e.work_types.includes(String(curProject.work_type))))
       setName(get(curProject, 'name', ''));
       setDescription(get(curProject, 'description', ''));
       setPriority(get(curProject, 'priority_code', 0));
@@ -120,12 +122,12 @@ function EditProject({
       <StyledFormControl fullWidth>
         <MySelect
           label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
-          options={groups.groups.map(projectGroup => ({
+          options={groupsWork.map(projectGroup => ({
             label: get(projectGroup, 'name'),
             value: get(projectGroup, 'id'),
           }))}
           value={{
-            label: get(find(groups.groups, { id: curProjectGroupId }), 'name'),
+            label: get(find(groupsWork, { id: curProjectGroupId }), 'name'),
             value: curProjectGroupId,
           }}
           onChange={({ value: curProjectGroupId }) => setCurProjectGroupId(curProjectGroupId)}

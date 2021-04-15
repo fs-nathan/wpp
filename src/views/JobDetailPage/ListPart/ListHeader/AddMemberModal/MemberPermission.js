@@ -16,11 +16,6 @@ function MemberPermission({ group_permission, id, is_admin, is_in_group }) {
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
   const [openPriorityModal, setOpenPriorityModal] = React.useState(false);
-  // if (props.master) {
-  //     return (
-  //         <div style={{ color: '#fd7e14', padding: '0 30px' }}>{props.label}</div>
-  //     )
-  // }
   function openSelectPermissionModal() {
     setOpenPriorityModal(true)
     dispatch(getPermission());

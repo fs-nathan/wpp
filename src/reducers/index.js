@@ -265,6 +265,9 @@ import listDeletedProject, {
 import listProject, {
   initialState as listProjectInitialState,
 } from "./project/listProject";
+import checkHasRecently, {
+  initialState as checkHasRecentlyInitialState,
+} from "./project/checkHasRecently";
 import memberProject, {
   initialState as memberProjectInitialState,
 } from "./project/memberProject";
@@ -382,6 +385,7 @@ import taskCommand from "./taskDetail/command";
 import commonTaskDetail from "./taskDetail/common";
 import listGroupOffer from "./taskDetail/listGroupOffer";
 import listGroupPermission from "./taskDetail/listGroupPermission";
+import createPrivateChat from "./taskDetail/createPrivateChat";
 import listGroupTask from "./taskDetail/listGroupTask";
 import listDetailTask from "./taskDetail/listTaskDetail";
 import location from "./taskDetail/location";
@@ -445,8 +449,12 @@ import viewPermissions, {
 } from "./viewPermissions";
 import remindDetail, {initialState as getRemindDetailInitialState } from "./calendar/alarmCalendar/getRemindDetail";
 import getProjectStatistic, {initialState as getProjectStatisticInitialState} from "./project/getStatistic";
+import recentlyProjects, {initialState as recentlyProjectsInitialState} from "./project/recentlyProjects";
+import getStatusWorkGroup, {initialState as getStatusWorkGroupInitialState} from "./project/getStatusWork";
+import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInitialState} from "./project/projectOnPersonalBoard";
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
 import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
+import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 
 const rootReducer = combineReducers({
   authentications,
@@ -559,12 +567,17 @@ const rootReducer = combineReducers({
     listProjectBasicInfo,
     getProjectStatistic,
     getWorkType,
+    recentlyProjects,
+    getStatusWorkGroup,
+    getProjectOnPersonalBoard,
+    checkHasRecently,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
       updateNotificationSetting,
+      updatePinBoardSetting,
     }),
   }),
   groupTask: combineReducers({
@@ -751,6 +764,7 @@ export const DEFAULT_STATE = {
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
     listProject: listProjectInitialState,
+    checkHasRecently: checkHasRecentlyInitialState,
     listDeletedProject: listDeletedProjectInitialState,
     detailProject: detailProjectInitialState,
     hideProject: hideProjectInitialState,
@@ -771,6 +785,9 @@ export const DEFAULT_STATE = {
     restoreTrashProject: restoreTrashProjectInitialState,
     listProjectBasicInfo: listProjectBasicInfoInitialState,
     getProjectStatistic: getProjectStatisticInitialState,
+    recentlyProjects: recentlyProjectsInitialState,
+    getStatusWorkGroup: getStatusWorkGroupInitialState,
+    getProjectOnPersonalBoard: getProjectOnPersonalBoardInitialState,
     getWorkType: getWorkTypeInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
@@ -778,6 +795,7 @@ export const DEFAULT_STATE = {
       updateStatusCopy: updateStatusCopyInitialState,
       updateStatusView: updateStatusViewInitialState,
       updateNotificationSetting: updateNotificationSettingInitialState,
+      updatePinBoardSetting: updatePinBoardSettingInitialState
     },
   },
   groupTask: {

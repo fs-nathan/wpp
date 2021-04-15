@@ -1,0 +1,72 @@
+.comp_PermissionRow .comp_AvatarCell {
+  padding-left: 20px;
+  line-height: 0;
+}
+.comp_CustomTable___container .comp_ColumnLayout {
+  flex: 1;
+}
+.comp_CustomTable___container .comp_rightColumn {
+  flex: unset;
+  width: 400px !important;
+}
+.comp_ColumnLayout .comp_CustomTable___header {
+  height: 70px;
+}
+.comp_rightColumn_content {
+  //padding: 20px 27px 50px 20px;
+}
+
+.comp_rightColumn {
+  &_topBar {
+    padding: 10px;
+    &>*:not(:last-child) {
+      margin-bottom: 7px;
+    }
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+  }
+  &_filterBar {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    &>*:not(:last-child) {
+      margin-right: 7px;
+    }
+    .MuiChip-root {
+      color: rgba(0,0,0,0.54);
+    }
+    .MuiChip-colorPrimary {
+      color: #fff;
+    }
+  }
+  &--topHeader {
+    display: flex;
+    align-items: center;
+    &-left {
+      width: 400px;
+      text-align: center;
+      margin-left: -20px;
+      border-right: 1px solid rgba(0,0,0,0.1);
+      height: 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .MuiTypography-h6 {
+        text-transform: uppercase;
+        color: #222222;
+        font-weight: 400;
+        font-size: 15px;
+      }
+    }
+    &-right {
+      display: flex;
+      align-items: center;
+      margin-left: 15px;
+    }
+  }
+  &--customSelectBox {
+    display: flex;
+    align-items: center;
+    margin-left: 5px;
+    cursor: pointer;
+  }
+}

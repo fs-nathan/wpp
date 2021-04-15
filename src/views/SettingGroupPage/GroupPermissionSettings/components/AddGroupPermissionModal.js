@@ -41,7 +41,7 @@ export const GroupPermissionFormInner = ({
         name="description"
         label={t("Mô tả nhóm quyền")}
       />
-      <RadioGroupFormControl
+      {/* <RadioGroupFormControl
         disabled={disabled.module}
         required
         options={permissionModules.map((item) => {
@@ -57,7 +57,7 @@ export const GroupPermissionFormInner = ({
         })}
         name="module"
         label={t("Phạm vi module phân quyền")}
-      />
+      /> */}
     </VerticleList>
   );
 };
@@ -82,7 +82,7 @@ export const GroupPermissionModal = ({
         },
       ]}
     >
-      <DialogContent dividers className="dialog-content move-content">
+      <DialogContent dividers className="dialog-content move-content" style={{minHeight: '300px'}}>
         <Box padding="24px">
           <GroupPermissionFormInner permissionModules={permissionModules} />
         </Box>
@@ -99,7 +99,6 @@ const addGroupPermissionFormInitialValues = {
 const validateAddGroupPermissionForm = createValidate(
   Joi.object({
     name: Joi.string().required(),
-    // description: Joi.string(),
     module: Joi.string().required(),
   })
 );
@@ -108,13 +107,11 @@ export const GroupPermissionForm = ({
   initialValues = emptyObject,
   onSubmit,
 }) => {
-  // error.details[0].type
   const { t } = useTranslation();
   const validateMemo = useMemo(
     () => (values = {}) => {
       const mapError = {
-        "name.string.empty": t("required"),
-        // "module.string.empty": t("required"),
+        "name.string.empty": t("IDS_WP_REQUIRED_LABEL"),
       };
       return validateAddGroupPermissionForm(values, mapError);
     },
@@ -123,7 +120,6 @@ export const GroupPermissionForm = ({
   return (
     <Formik
       enableReinitialize
-      // validateOnMount
       initialValues={initialValues}
       onSubmit={onSubmit}
       validate={validateMemo}

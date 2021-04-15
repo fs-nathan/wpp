@@ -37,16 +37,9 @@ function TabHeader(props) {
   const taskId = useSelector(taskIdSelector);
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const {
-    view_task,
     update_task,
     delete_task,
     stop_task,
-    manage_member,
-    manage_chat,
-    manage_sub_task,
-    manage_remind,
-    manage_offer,
-    manage_command_decision
   } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -88,7 +81,6 @@ function TabHeader(props) {
       dispatch(pinTaskAction({ task_id: taskId, projectId }));
     }
   }
-  // console.log("task id::::", value.taskId)
   const onClickEdit = (mode) => () => {
     setOpenCreateJobModal(true);
     setAnchorEl(null);
@@ -137,7 +129,9 @@ function TabHeader(props) {
             component="div"
             variant="caption"
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
-          >{t(getAssignType(assign_code), { date_create: detailTask.date_create })}
+          >
+            {/*{t(getAssignType(assign_code), { date_create: detailTask.date_create })}*/}
+            {t("LABEL_CREATED_SHORT_FIXED")}
           </ColorTypo>
         )}
       </div>
@@ -197,12 +191,6 @@ function TabHeader(props) {
         content={t('IDS_WP_ALERT_CONTENT')}
         onConfirm={confirmDelete}
       />
-      {/* <ModalDeleteConfirm
-        confirmDelete={confirmDelete}
-        isOpen={isOpenDelete}
-        handleOpenModalDelete={handleOpenModalDelete}
-        handleCloseModalDelete={handleCloseModalDelete}
-      /> */}
     </div>
   );
 }

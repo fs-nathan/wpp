@@ -35,10 +35,12 @@ function RemindItem(props) {
     content,
     is_ghim,
     time_remind_next = '',
+    month_remind_next = '',
+    day_remind_next = ''
   } = props
   const dispatch = useDispatch();
   const groupActiveColor = useSelector(currentColorSelector)
-  const [day, month] = time_remind_next ? time_remind_next.split('/') : [];
+  const [day, month] = [day_remind_next, month_remind_next]
 
   function handleClickOpen() {
     dispatch(openDetailRemind(true, props))

@@ -15,6 +15,7 @@ import {
   TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
 } from "../../views/OfferPage/contants/localStorage";
 import "./Drawer.scss";
+import { withRouter } from 'react-router-dom';
 
 const FooterListDrawer = (props) => {
   const closeDrawer = (url) => {
@@ -29,6 +30,14 @@ const FooterListDrawer = (props) => {
       localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
       localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
       window.location.href = Routes.LOGIN;
+    } else {
+      if (props.openInNewTab) {
+        window.open(url, '_blank');
+      } else {
+        props.history.push({
+          pathname: url
+        });
+      }
     }
     props.actionVisibleDrawerMessage({
       type: "",
@@ -41,16 +50,15 @@ const FooterListDrawer = (props) => {
     <div className="footer-list-drawer">
       {actionList.map((el, index) => (
         <div className={`button-item ${el.classname}`} key={index}>
-          <Link
-              to={el.url}
-              onClick={() => closeDrawer(el.url)}
-              className={`text-btn ${
-                  typeDrawer === DRAWER_TYPE.SUPPORT ? "support-text" : ""
-              }`}
+          <div
+            className={`text-btn ${
+                typeDrawer === DRAWER_TYPE.SUPPORT ? "support-text" : ""
+            }`}
+            onClick={() => closeDrawer(el.url)}
           >
             {el.icon && <Icon path={el.icon} size={1} color="#5a5a5a" />}
             <span className="name-text">{el.name}</span>
-          </Link>
+          </div>
         </div>
       ))}
     </div>
@@ -65,4 +73,4 @@ export default connect(
   {
     actionVisibleDrawerMessage,
   }
-)(FooterListDrawer);
+)(withRouter(FooterListDrawer));

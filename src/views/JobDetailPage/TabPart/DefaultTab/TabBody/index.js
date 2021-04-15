@@ -1,22 +1,25 @@
-import { List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import {Box, Divider, List, ListItem, ListItemText, Popover, Radio, Typography} from '@material-ui/core';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { updatePriority, getMember, focusTaskGroup } from '../../../../../actions/taskDetail/taskDetailActions';
+import {
+  focusTaskGroup,
+  getMember,
+  updatePriority,
+  updateTaskStatus
+} from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
 import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
 import colorPal from '../../../../../helpers/colorPalette';
-import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper';
-import { taskIdSelector } from '../../../selectors';
+import {taskIdSelector} from '../../../selectors';
 import Description from './Description';
 import HtmlTooltip from './HtmlTooltip';
 import ModalPriority from './ModalPriority';
-import ModalStatus from './ModalStatus';
-import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS } from './StatusLabel';
+import StatusLabel, {statusLabel, TYPE_PRIORITY, TYPE_STATUS} from './StatusLabel';
 import './styles.scss';
 
 const ListItemButtonGroup = styled(ListItem)`
@@ -45,7 +48,7 @@ const ListItemTab = styled(ListItem)`
 `;
 
 const StyledList = styled(List)`
-margin-bottom: 6px;
+  margin-bottom: 0px;
   & > * {
     & > div {
       margin: 0;
@@ -55,7 +58,7 @@ margin-bottom: 6px;
 
 const BadgeItem = styled(ColorChip)`
   font-weight: 600;
-  border-radius: 3px !important
+  border-radius: 3px !important;
   & > span {
     font-size: 12px;
     padding: 0 5px;
@@ -104,15 +107,21 @@ function TabBody(props) {
     imgCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
     linkCnt: t('LABEL_CHAT_TASK_DANG_TAI')
   }
-  // console.log("Props::::", value.detailTask)
-  const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
+
+  const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC);
+  const taskStatus = [
+    {value: 0, label: statusLabel[0], des: "LABEL_PROCESS_PERCENT_WAITING"},
+    {value: 1, label: statusLabel[1], des: "LABEL_PROCESS_PERCENT_DOING"},
+    {value: 2, label: statusLabel[2], des: "LABEL_PROCESS_PERCENT_COMPLETED"},
+    {value: 4, label: statusLabel[4], des: "LABEL_PROCESS_PERCENT_PAUSED"},
+  ];
+
   let content = ""
   let data = ""
-  // let dataComplete = ""
+
   if (detailTask) {
     content = detailTask.description || ""
     data = detailTask
-    // dataComplete = value.listTaskDetail.tasks
   }
   React.useEffect(() => {
     if (!detailTask) return
@@ -152,10 +161,14 @@ function TabBody(props) {
   }
 
   function onClickGroupTask() {
-    console.log('onClickGroupTask')
     dispatch(focusTaskGroup(detailTask.group_task))
   }
+  const [tooltipChangeTaskStatus, setTooltipChangeTaskStatus] = React.useState(null);
 
+  function handleUpdateTaskStatus(status) {
+    setTooltipChangeTaskStatus(null);
+    dispatch(updateTaskStatus({task_id: taskId, status}));
+  }
   return (
     <div className="listPartTabBody">
       <Body
@@ -167,7 +180,6 @@ function TabBody(props) {
               <ColorTypo className="listPartTabBody--title">{t('LABEL_CHAT_TASK_TEN_CONG_VIEC')}</ColorTypo>
               <ContentText component='span'>
                 {detailTask && detailTask.name}
-                {/* <Icon color={'#6e6e6e'} style={{ transform: 'rotate(35deg)', margin: '-4px', marginLeft: '5px' }} path={mdiPin} size={0.8} /> */}
               </ContentText>
             </ListItemText>
           </ListItem>
@@ -182,15 +194,12 @@ function TabBody(props) {
           </ListItem>
           <ListItemButtonGroup>
             {taskStatistic.state_code !== 3 &&
-              <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
-                TransitionProps={{ timeout: 0 }}
-                title={<ModalStatus value={taskStatistic.state_code} />}
-                placement="top-start">
-                <StatusLabel
-                  type={TYPE_STATUS}
-                  value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
-                />
-              </HtmlTooltip>
+              <StatusLabel
+                type={TYPE_STATUS}
+                value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+                hasIcon={true}
+                onClick={(evt) => setTooltipChangeTaskStatus(evt.currentTarget)}
+              />
             }
             <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
               TransitionProps={{ timeout: 0 }}
@@ -249,10 +258,48 @@ function TabBody(props) {
           <ListItemTab disableRipple button onClick={onClickMember}>
             <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
             <AvatarCircleList users={members} display={9} />
-            {/* {MemberTask(taskStatistic)} */}
           </ListItemTab>
         </StyledList>
       </Body >
+      <Popover
+        anchorEl={tooltipChangeTaskStatus}
+        open={Boolean(tooltipChangeTaskStatus)}
+        onClose={() => setTooltipChangeTaskStatus(null)}
+        anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+        transformOrigin={{vertical: -10, horizontal: 'left'}}
+        className={"toolTipUpdateStatus"}
+      >
+        <Box className={"toolTipUpdateStatus-header"}>
+          <Typography variant={"h6"}>{t("LABEL_UPDATE_TASK_STATUS")}</Typography>
+        </Box>
+        <Divider/>
+        <Box className={"toolTipUpdateStatus-body"}>
+          {taskStatus.map(function (item, index) {
+            return (
+              <>
+                {index === 3 && (<Divider style={{marginTop: 10}}/>)}
+                <Box className={"toolTipUpdateStatus-item"}>
+                  <div className={"toolTipUpdateStatus-itemHeader"}>
+                    <Radio
+                      checked={getStatusCode(taskStatistic.state_code, taskStatistic.complete) === item.value}
+                      value={item.value}
+                      onChange={() => handleUpdateTaskStatus(item.value)}
+                    />
+                    <Typography variant={"h6"} color={"textSecondary"}>
+                      {t(item.label)}
+                    </Typography>
+                  </div>
+                  <div className={"toolTipUpdateStatus-itemBody"}>
+                    <Typography variant={"body1"} color={"textSecondary"}>
+                      {t(item.des)}
+                    </Typography>
+                  </div>
+                </Box>
+              </>
+            );
+          })}
+        </Box>
+      </Popover>
     </div>
   )
 }

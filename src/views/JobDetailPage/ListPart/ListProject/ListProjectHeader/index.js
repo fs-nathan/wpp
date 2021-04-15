@@ -7,13 +7,24 @@ import { useDispatch } from 'react-redux';
 import { searchProject } from '../../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../../components/SearchInput';
 import './styles.scss';
+import {workTypes} from "../../../../../constants/workTypes";
+import '../../ListProjectKanban/ListProjectHeader/styles.scss';
 
+const FilterBox = ({className = '', ...props}) =>
+  <div
+    className={`view_KanBan_ListProject_Header___filter-box ${className}`}
+    {...props}
+  />
 
-function ListProjectHeader({ setShow }) {
+const Filter = ({className = '', ...props}) =>
+  <span
+    className={`view_KanBan_ListProject_Header___filter ${className}`}
+    {...props}
+  />
+
+function ListProjectHeader({ setShow, setProjectFilter, projectFilter }) {
   const { t } = useTranslation();
-  // console.log("setShow::::", setShow);
   const dispatch = useDispatch();
-
   const closeListProject = () => {
     setShow(false);
   };
@@ -43,6 +54,23 @@ function ListProjectHeader({ setShow }) {
         placeholder={t('LABEL_CHAT_TASK_TIM_DU_AN')}
         onChange={searchListProject}
       />
+      <FilterBox>
+        <Filter
+          className={projectFilter === -1 ? 'view_KanBan_ListProject_Header___text-active' : ''}
+          onClick={evt => setProjectFilter(-1)}
+        >
+          {t("LABEL_CHAT_TASK_TAT_CA")}
+        </Filter>
+        {[0, 1, 2].map(value => (
+          <Filter
+            className={projectFilter === value ? 'view_KanBan_ListProject_Header___text-active' : ''}
+            key={value}
+            onClick={evt => setProjectFilter(value)}
+          >
+            {t(workTypes[value])}
+          </Filter>
+        ))}
+      </FilterBox>
     </div>
   );
 }

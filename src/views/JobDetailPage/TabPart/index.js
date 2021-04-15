@@ -76,7 +76,7 @@ function TabPart(props) {
         {...detailOffer}
         additionQuery={`task_id=${taskId}`}
       />
-      <MapView isOpen={isOpenMap} setOpen={setIsOpenMap} locationData={locationData} ></MapView>
+      <MapView isOpen={isOpenMap} setOpen={setIsOpenMap} locationData={locationData} />
     </Container>
   )
 }

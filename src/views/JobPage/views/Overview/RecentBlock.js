@@ -117,7 +117,7 @@ export function RecentBlock() {
   const [list] = useCustomList({
     tasks,
     statusFilter,
-    isToggleSortName,
+    isToggleSortName: false,
     keyword,
   });
   return (

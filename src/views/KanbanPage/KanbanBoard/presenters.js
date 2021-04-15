@@ -40,6 +40,7 @@ function KanbanBoard(props) {
     placeholderProps,
     projectId,
     workType,
+    canManageGroupTask
   } = props;
 
   const stageName = workType === 2 ? t("IDS_WP_PHASE") : t("LABEL_CHAT_TASK_NHOM_VIEC");
@@ -88,11 +89,19 @@ function KanbanBoard(props) {
                 />
               </Draggable>))}
           </DragContainer>
-          <NewGroupTaskDiv
-            onClick={() => handleOpenModal('CREATE_GROUPTASK')}
-          >
-            {`+ ${t("IDS_WP_ADD")} ${stageName}`}
-          </NewGroupTaskDiv>
+          {
+            canManageGroupTask ?
+            (
+              <NewGroupTaskDiv
+                onClick={() => handleOpenModal('CREATE_GROUPTASK')}
+              >
+                {`+ ${t("IDS_WP_ADD")} ${stageName}`}
+              </NewGroupTaskDiv>
+            ) :
+            (
+              <div></div>
+            )
+          }
         </Container>
       </BoardScrollbars>
     </LoadingOverlay>

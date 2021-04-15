@@ -109,6 +109,11 @@ const RegisterPage = () => {
                 {t('IDS_WP_REGISTER_EMAIL_DESCRIPTION')}
               </div>
             </div>
+            <div className="notice-content" style={{marginTop: "10px"}}>
+              <div className="lb-text">
+                {t("IDS_WP_REGISTER_NOTICE_REGISTER_DIRECT")} <a href="/confirm-registration" style={{color: "#01b374"}} > {t("IDS_WP_REGISTER_COMPLETE")}</a>
+              </div>
+            </div>
           </React.Fragment>
         )}
         {isRegistered && (

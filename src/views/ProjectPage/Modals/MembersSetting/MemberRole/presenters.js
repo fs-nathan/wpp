@@ -1,4 +1,4 @@
-import { Checkbox, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import {Checkbox, Radio, RadioGroup, Table, TableBody, TableCell, TableHead, TableRow} from '@material-ui/core';
 import CustomModal from 'components/CustomModal';
 import { ADD_PROJECT_ROLE_TO_MEMBER, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER } from 'constants/events';
 import { find, get } from 'lodash';
@@ -41,11 +41,11 @@ function MemberRole({
 
   const { t } = useTranslation();
 
-  const [roles, setRoles] = React.useState([]);
+  const [roles, setRoles] = React.useState({});
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {
-    if (curMemberId) setRoles(get(find(members.members, { id: curMemberId }), 'roles', []));
+    if (curMemberId) setRoles(get(find(members.members, { id: curMemberId }), 'role', {}));
   }, [curMemberId, members]);
 
   React.useEffect(() => {
@@ -80,7 +80,6 @@ function MemberRole({
     }
     // eslint-disable-next-line
   }, [projectId]);
-
   return (
     <CustomModal
       title={t("DMH.VIEW.PP.MODAL.MEMBER.ROLE.TITLE")}
@@ -93,7 +92,7 @@ function MemberRole({
       <StyledTable>
         <StyledTableHead>
           <TableRow>
-            <TableCell></TableCell>
+            <TableCell/>
             <StyledTableCell width='30%'>{t("DMH.VIEW.PP.MODAL.MEMBER.ROLE.TABLE.NAME")}</StyledTableCell>
             <StyledTableCell width='50%'>{t("DMH.VIEW.PP.MODAL.MEMBER.ROLE.TABLE.DESC")}</StyledTableCell>
             <TableCell width='20%' />
@@ -103,18 +102,14 @@ function MemberRole({
           {userRoles.userRoles.map(userRole => (
             <TableRow key={get(userRole, 'id')}>
               <TableCell>
-                <Checkbox
-                  checked={
-                    roles
-                      .map(role => get(role, 'id'))
-                      .includes(get(userRole, 'id'))
-                  }
-                  onChange={evt => {
-                    handleUpdateRoleOfMember(userRole);
-                    setLoading(true);
-                  }}
-                  value={get(userRole, 'name', '')}
-                  color='primary'
+                <Radio
+                    checked={get(userRole, 'id') === get(roles, "id")}
+                    onChange={evt => {
+                      handleUpdateRoleOfMember(get(userRole, 'id'));
+                      setLoading(true);
+                    }}
+                    value={get(userRole, 'name', '')}
+                    color='primary'
                 />
               </TableCell>
               <StyledTableCell>

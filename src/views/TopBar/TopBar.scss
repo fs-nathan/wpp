@@ -128,3 +128,12 @@
     }
   }
 }
+.quick-access-button {
+  cursor: pointer;
+  padding: 8px;
+  background: var(--color-primary);
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

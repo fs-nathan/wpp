@@ -22,7 +22,7 @@ function MemberRole({ roles, memberId }) {
   }
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div style={{ display: 'flex', alignItems: 'center', flexWrap: "wrap-reverse"}}>
       {roles.map((item, key) => (
         <ColorChip key={item.id} badge label={item.name}
           className="memberRole--chip" />

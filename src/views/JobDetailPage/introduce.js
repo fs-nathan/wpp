@@ -13,31 +13,9 @@ import intro2 from '../../assets/img_introduce_in_detail_2.png';
 import intro3 from '../../assets/img_introduce_in_detail_3.png';
 import intro4 from '../../assets/img_introduce_in_detail_4.png';
 import { currentColorSelector } from "./selectors";
+import NavigatorMenu from "../../components/NavigatorMenu";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
-
-const tutorialSteps = [
-    {
-        label: "Lập kế hoạch công việc, dự án",
-        content: "Khởi tạo công việc, lập kế hoạch dự án, giao việc dễ dàng, nhanh chóng",
-        imgPath: intro1
-    },
-    {
-        label: "Chát, thảo luận",
-        content: "Bám sát công việc từng giây. Tương tác 24/24 không lo hỏng việc",
-        imgPath: intro2
-    },
-    {
-        label: "File, tài liệu ?",
-        content: "Chia sẻ file, tài liệu dễ dàng bằng cách kéo, thả, chụp màn hình... Chỉnh sửa file trực tuyến.",
-        imgPath: intro3
-    },
-    {
-        label: "Trợ lí ảo!",
-        content: "Thông báo, cảnh báo, nhắc việc, nhắc hẹn...hãy để VTask lo",
-        imgPath: intro4
-    }
-];
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -70,6 +48,29 @@ const StyledName = styled.span`
 
 function Introduce() {
     const { t } = useTranslation();
+    const tutorialSteps = [
+        {
+            label: t("TASK_DETAIL_INTRO_LABEL_1"),
+            content: t("TASK_DETAIL_INTRO_CONTENT_1"),
+            imgPath: intro1
+        },
+        {
+            label: t("TASK_DETAIL_INTRO_LABEL_2"),
+            content: t("TASK_DETAIL_INTRO_CONTENT_2"),
+            imgPath: intro2
+        },
+        {
+            label: t("TASK_DETAIL_INTRO_LABEL_3"),
+            content: t("TASK_DETAIL_INTRO_CONTENT_3"),
+            imgPath: intro3
+        },
+        {
+            label: t("TASK_DETAIL_INTRO_LABEL_4"),
+            content: t("TASK_DETAIL_INTRO_CONTENT_4"),
+            imgPath: intro4
+        }
+    ];
+
     const classes = useStyles();
     const theme = useTheme();
     const userName = useSelector(state => state.system.profile.name);
@@ -77,6 +78,7 @@ function Introduce() {
 
     const [activeStep, setActiveStep] = React.useState(0);
     const maxSteps = tutorialSteps.length;
+
     const handleStepChange = step => {
         setActiveStep(step);
     };
@@ -87,10 +89,13 @@ function Introduce() {
                 <Typography>{t('LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG')}
                 &nbsp;
                 <b>Workplus PC!</b></Typography>
+                <div style={{marginBottom: 50}}>
+                    <NavigatorMenu />
+                </div>
                 <Typography>{t('LABEL_CHAT_TASK_HI')}
                 &nbsp;
                 <StyledName color={groupActiveColor}>{userName}</StyledName>
-                    {t('LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN')}
+                    &nbsp; {t('LABEL_CHAT_TASK_CHAO_MUNG_BAN_DEN')}
                 </Typography>
                 <div className={classes.root}>
                     <AutoPlaySwipeableViews

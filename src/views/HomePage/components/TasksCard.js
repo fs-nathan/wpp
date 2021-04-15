@@ -32,7 +32,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
     const hadMore = images.length && images.length >= 5;
     return (
       <div
-        className={classnames(
+        className={"area-media-content-in-post " + classnames(
           className,
           `comp_TasksCard__Media${Math.min(4, images.length)}`
         )}
@@ -77,7 +77,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
                 onClick={() => {
                   dispatch(showImagesList(true, images, 3));
                 }}
-                className="comp_TasksCard__Media__mark"
+                className="comp_TasksCard__Media__mark are-show-image-more"
               >
                 +{images.length - 4}
               </div>

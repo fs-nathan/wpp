@@ -5,3 +5,21 @@
 .view_ProjectGroup_List___primary {
   font-weight: 500;
 };
+
+.view_ProjectGroup_List {
+  &--LeftContainer {
+    height: calc(100vh - 145px);
+    .MuiListItem-root {
+      cursor: pointer;
+      &:hover {
+        background: #fafafa;
+      }
+    }
+    .active {
+      background: #fafafa;
+    }
+    a {
+      color: unset;
+    }
+  }
+}

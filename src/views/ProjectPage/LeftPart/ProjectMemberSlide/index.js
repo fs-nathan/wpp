@@ -7,6 +7,7 @@ import MembersSettingModal from '../../Modals/MembersSetting';
 import { viewPermissionsSelector } from '../../selectors';
 import ProjectMemberSlidePresenter from './presenters';
 import { membersSelector } from './selectors';
+import { useParams } from 'react-router-dom';
 import {
   EVENT_ADD_MEMBER_TO_TASK_SUCCESS,
   EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS
@@ -20,9 +21,8 @@ function ProjectMemberSlide({
   doMemberProject,
   viewPermissions,
   doGetPermissionViewDetailProject,
-  projectId,
 }) {
-
+  const { projectId } = useParams();
   React.useLayoutEffect(() => {
     if (viewPermissions.permissions === null) doGetPermissionViewDetailProject({ projectId }, true);
     // eslint-disable-next-line

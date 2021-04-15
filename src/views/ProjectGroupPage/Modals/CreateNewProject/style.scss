@@ -20,3 +20,30 @@
 .view_ProjectGroup_CreateNew_Project_Modal_formItem {
   margin-top: 0px !important;
 }
+.view_ProjectGroup_CreateNew_selectCategory {
+  display: flex;
+  align-items: center;
+  &>*:not(:last-child) {
+    margin-right: 20px;
+  }
+  &_item {
+    padding: 8px 10px;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    width: 150px;
+    background: #f4f4f4;
+    cursor: pointer;
+    &:hover {
+      background: var(--color-primary);
+      color: #fff;
+    }
+    img {
+      margin-right: 10px;
+    }
+  }
+  .active {
+    background: var(--color-primary);
+    color: #fff;
+  }
+}

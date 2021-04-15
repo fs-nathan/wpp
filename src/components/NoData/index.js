@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bgColorSelector } from './selectors';
 import './style.scss';
+import { useTranslation } from 'react-i18next';
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -11,10 +12,17 @@ const Container = ({ className = '', ...props }) =>
   />
 
 function NoData({
-  title = 'Không có dữ liệu',
-  subtitle = 'Chưa có dữ liệu, hãy tạo mới dữ liệu để bắt đầu',
+  title = '',
+  subtitle = '',
   bgColor,
 }) {
+  const { t } = useTranslation();
+  if (title === '') {
+    title = t("NO_DATA")
+  }
+  if (subtitle === '') {
+    subtitle = t("NO_DATA_SUB")
+  }
   return (
     <Container>
       <img src='/images/no-data.png' alt='no-data-logo' />

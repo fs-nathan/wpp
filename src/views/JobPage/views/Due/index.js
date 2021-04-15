@@ -56,6 +56,7 @@ const Due = () => {
           </Box>
         </Box>
       }
+      killTimeOption={true}
     >
       <PageContainer maxWidth="xl">
         <Content onPageChange={handlePageChange} />

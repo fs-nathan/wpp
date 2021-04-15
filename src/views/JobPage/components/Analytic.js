@@ -18,9 +18,9 @@ const createAnalyticButtonProps = ({ key, show, count, label, color }) => ({
   color,
   // onClick: () => setstatusFilter(string)
 });
-export function Analytic({ options = [] }) {
+export function Analytic({ options = [], totalTask = 0 }) {
   const { t } = useTranslation();
-  const allCount = options.reduce(
+  const allCount = !options.length ? totalTask : options.reduce(
     (result = 0, option) => result + option.count || 0,
     0
   );

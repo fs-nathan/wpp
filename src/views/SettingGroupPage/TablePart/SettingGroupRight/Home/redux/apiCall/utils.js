@@ -63,7 +63,9 @@ export const createListModule = (rootPath) => {
         const newState = state.map((item) => {
           if (item.id !== action.payload.id) return item;
           exited = true;
-          return merge({}, {...item, images: action.payload.images}, action.payload);
+          let newImages = action.payload.images ? action.payload.images : item.images ? item.images : []
+          let newFiles = action.payload.files ? action.payload.files : item.files ? item.files : []
+          return merge({}, {...item, images: newImages, files: newFiles}, action.payload);
         });
         if (exited) {
           return newState;

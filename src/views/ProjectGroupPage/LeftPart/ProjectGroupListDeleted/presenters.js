@@ -1,17 +1,15 @@
-import { ListItemText } from '@material-ui/core';
-import { mdiPlus } from '@mdi/js';
-import { get, isNil } from 'lodash';
+import {Box, List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
+import {get, size, isNil} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
+import {useTranslation} from 'react-i18next';
 import CustomAvatar from '../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import LeftSideContainer from '../../../../components/LeftSideContainer';
-import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
-import CustomListItem from './CustomListItem';
 import './style.scss';
-import {useLocation, Link} from "react-router-dom";
-import * as images from "../../../../assets";
+import {Link, useLocation} from "react-router-dom";
+import styled from "styled-components";
+import {Scrollbars} from "react-custom-scrollbars";
+import LoadingBox from "../../../../components/LoadingBox";
+import {Routes} from "../../../../constants/routes";
 
 const Banner = ({ className = '', ...props }) =>
   <div
@@ -19,12 +17,10 @@ const Banner = ({ className = '', ...props }) =>
     {...props}
   />;
 
-const StyledPrimary = ({ className = '', ...props }) =>
-  <Primary
-    className={`view_ProjectGroup_List___primary ${className}`}
-    {...props}
-  />;
-
+const LeftContainer = styled.div`
+  background: #F1F2F4;
+  height: 100vh;
+`;
 function ProjectListDeleted({
   groups, canModify, searchPattern, setSearchPattern, handleOpenModal,
 }) {
@@ -39,61 +35,51 @@ function ProjectListDeleted({
 
   return (
     <>
-      <LeftSideContainer
-        title={t("DMH.VIEW.PGP.LEFT.LIST.TITLE")}
-        rightAction={canModify ? {
-          iconPath: mdiPlus,
-          onClick: () => handleOpenModal('CREATE'),
-          tooltip: t("DMH.VIEW.PGP.LEFT.LIST.ADD"),
-        } : null}
-        loading={{
-          bool: groups.loading,
-          component: () => <LoadingBox />,
-        }}
-      >
+      <LeftContainer>
         <Banner>
           <SearchInput
             fullWidth
             placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND")}
             value={searchPattern}
             onChange={evt => setSearchPattern(evt.target.value)}
+            style={{background: "#fff"}}
           />
         </Banner>
-        <StyledList>
-          <StyledListItem
-            to={`/projects/deleted`}
-            component={Link}
-            className={isNil(groupID) ? "item-actived" : ""}
-          >
-            <CustomAvatar style={{marginRight: "10px"}} alt='avatar' />
-            <ListItemText
-                primary={
-                  <StyledPrimary>{t("DMH.VIEW.PGP.LEFT.LIST.ALL")}</StyledPrimary>
-                }
-                secondaryTypographyProps={{ component: 'div' }}
-                secondary={
-                  <div className={"view_ProjectGroup_List_statistic"}>
-                    <div className={"view_ProjectGroup_List_statistic_item"}>
-                      <img src={images.check_64} alt="" width={15} height={15}/>
-                      <span>{groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.work_topic', 0), 0)}</span>
-                    </div>
-                    <div className={"view_ProjectGroup_List_statistic_item"}>
-                      <img src={images.speed_64} alt="" width={15} height={15}/>
-                      <span>{groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.project', 0), 0)}</span>
-                    </div>
-                    <div className={"view_ProjectGroup_List_statistic_item"}>
-                      <img src={images.workfollow_64} alt="" width={15} height={15}/>
-                      <span>{groups.groups.reduce((sum, projectGroup) => sum + get(projectGroup, 'statistic.process', 0), 0)}</span>
-                    </div>
-                  </div>
-                }
-            />
-          </StyledListItem>
-          {groups.groups.map((projectGroup, index) => (
-              <CustomListItem key={index} projectGroup={projectGroup} index={index} groupID={groupID}/>
-          ))}
-        </StyledList>
-      </LeftSideContainer>
+        <Box className={"view_ProjectGroup_List--LeftContainer"}>
+          {groups.loading && <LoadingBox/>}
+          {!groups.loading && (
+            <>
+              <ListItem
+                component={Link} to={`${Routes.PROJECTS}/deleted`}
+                className={`${isNil(groupID) ? 'active' : ''}`}
+              >
+                <ListItemIcon/>
+                <ListItemText primary={`${t("LABEL_CHAT_TASK_TAT_CA")} (${size(groups.groups)})`}/>
+              </ListItem>
+              <Scrollbars autoHide autoHideTimeout={500}>
+                <List component={"nav"} className={""}>
+                  {groups.groups.map((projectGroup, index) => (
+                    <ListItem
+                      component={Link}
+                      to={`?group_id=${projectGroup.id}`}
+                      className={`${groupID === projectGroup.id ? 'active' : ''}`}
+                    >
+                      <ListItemIcon>
+                        <CustomAvatar
+                          style={{marginRight: "10px", width: 25, height: 25}}
+                          src={get(projectGroup, 'icon')}
+                          alt='avatar'
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary={`${get(projectGroup, "name")} (${projectGroup.number_project})`}/>
+                    </ListItem>
+                  ))}
+                </List>
+              </Scrollbars>
+            </>
+          )}
+        </Box>
+      </LeftContainer>
     </>
   )
 }

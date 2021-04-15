@@ -3,6 +3,7 @@ import {
   mdiAccountTie,
   mdiAlarm,
   mdiViewDashboard,
+  mdiClockAlert
 } from "@mdi/js";
 import React, { Suspense, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -151,6 +152,12 @@ function JobPage() {
       url: Routes.DUE,
       color: "#FF9800",
       icon: mdiAlarm,
+    },
+    {
+      title: t(labels.expired),
+      url: Routes.EXPIRED,
+      color: "#ff0000",
+      icon: mdiClockAlert,
     },
     {
       title: t(labels.mission),

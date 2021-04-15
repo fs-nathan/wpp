@@ -62,6 +62,6 @@ export const hasRequirementSelector = createSelector(
   [getRequirementJoinGroup],
   (getRequirementJoinGroup) => {
     const { data: { requirements } } = getRequirementJoinGroup;
-    return requirements.length > 0;
+    return requirements.length;
   }
 )

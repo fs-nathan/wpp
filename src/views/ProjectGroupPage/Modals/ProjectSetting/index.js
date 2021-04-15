@@ -6,7 +6,7 @@ import { updateStatusView } from 'actions/project/setting/updateStatusView';
 import { updateNotificationSetting } from "actions/project/setting/updateNotificationSetting";
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import { useTimes } from 'components/CustomPopover';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -14,17 +14,18 @@ import { localOptionSelector } from '../../selectors';
 import ProjectSettingPresenter from './presenters';
 import { permissionSelector, statusSelector } from './selectors';
 import './style.scss';
+import {updatePinBoardSetting} from "../../../../actions/project/setting/updatePinBoardSetting";
 
 function ProjectSetting({
   curProject = null, permission,
   open, setOpen,
-  status,
+  status, doUpdatePinBoardSetting,
   doDetailStatus,
   doUpdateStatusCopy, doUpdateStatusDate, doUpdateStatusView,
   doGetPermissionViewDetailProject,
   doReload, doUpdateNotificationSetting,
   projectGroupId = undefined,
-  localOption,
+  localOption, type_data = null
 }) {
 
   const times = useTimes();
@@ -44,13 +45,12 @@ function ProjectSetting({
   }, [curProject])
 
   React.useEffect(() => {
-    if (curProject) {
+    if (curProject && !isNil(curProject.id)) {
       doDetailStatus({
         projectId: get(curProject, 'id'),
       });
     }
-    // eslint-disable-next-line
-  }, [curProject]);
+  }, [curProject, doDetailStatus]);
 
   return (
     <ProjectSettingPresenter
@@ -66,6 +66,7 @@ function ProjectSetting({
         timeEnd: get(timeRange, 'timeEnd')
           ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
           : undefined,
+        type_data: type_data
       }, get(curProject, 'id'))}
       status={status}
       canChange={{
@@ -78,6 +79,7 @@ function ProjectSetting({
       handleUpdateStatusDate={status => doUpdateStatusDate({ projectId: get(curProject, 'id'), status })}
       handleUpdateStatusView={status => doUpdateStatusView({ projectId: get(curProject, 'id'), status })}
       handleUpdateNotificationSetting={status => doUpdateNotificationSetting({ projectId: get(curProject, 'id'), status })}
+      handleOnChangePinBoard={status => doUpdatePinBoardSetting({projectId: get(curProject, 'id'), status})}
     />
   )
 }
@@ -102,6 +104,7 @@ const mapDispatchToProps = dispatch => {
     doUpdateStatusView: ({ projectId, status }) => dispatch(updateStatusView({ projectId, status, })),
     doUpdateNotificationSetting: ({ projectId, status }) => dispatch(updateNotificationSetting({ projectId, status, })),
     doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
+    doUpdatePinBoardSetting: ({projectId, status}) => dispatch(updatePinBoardSetting({projectId, status}))
   }
 };
 

@@ -32,7 +32,6 @@ import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
 import CreateProjectGroup from 'views/ProjectPage/Modals/CreateGroupTask';
 import {taskIdSelector} from '../../../selectors';
 import CreateGroupTaskModal from '../CreateGroupTaskModal';
-import CommonControlForm from './CommonControlForm';
 import CommonPriorityForm from './CommonPriorityForm';
 import CommonProgressForm from './CommonProgressForm';
 import './styles.scss';
@@ -77,8 +76,6 @@ function CreateJobModal(props) {
   ], [t]);
 
   const DEFAULT_ASSIGN = assignList[0];
-  const DEFAULT_ASSIGN_ID = assignList[0].id;
-
   // Define variable using in form
   const priorityList = useMemo(() => [
     { id: 2, value: t('LABEL_CHAT_TASK_THAP') },
@@ -97,7 +94,6 @@ function CreateJobModal(props) {
     end_date: DEFAULT_DATE_TEXT,
     type_assign: DEFAULT_ASSIGN,
     priority: DEFAULT_PRIORITY_ID,
-    // group_task: DEFAULT_GROUP_TASK_VALUE,
     priorityLabel: DEFAULT_PRIORITY,
     assignValue: DEFAULT_ASSIGN
   };
@@ -135,8 +131,6 @@ function CreateJobModal(props) {
       updateData.start_time = undefined;
       updateData.end_time = undefined;
     }
-    // dispatch(updateNameDescriptionTask(dataNameDescription));
-    // console.log(data)
     switch (props.editMode) {
       case EDIT_MODE.NAME_DES:
         dispatch(updateNameDescription(taskId, data.name, updateData.description));
@@ -346,13 +340,6 @@ function CreateJobModal(props) {
       isFunction(get(props, 'doCreateTask'))
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
         : dispatch(createTask({ data, projectId: projectId }));
-      // Clear temporary data
-      // setDataMember(DEFAULT_DATA);
-      // Close modal
-      // handleClose();
-      // } else {
-      // Alert user
-      // alert('Bạn cần nhập tên công việc');
     }
   };
 
@@ -522,19 +509,6 @@ function CreateJobModal(props) {
               priority={data.priorityLabel}
               handleChangeLabel={priorityItem =>
                 handleChangeData('priority', priorityItem.id)
-              }
-            />
-          </>
-        }
-        {
-          (!isEdit || props.editMode === EDIT_MODE.ASSIGN_TYPE) &&
-          <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_HINH_THUC_GIAO_VIEC')} isRequired />
-            <CommonControlForm
-              labels={assignList}
-              assign={data.type_assign}
-              handleChangeAssign={assignItem =>
-                handleChangeData('type_assign', assignItem)
               }
             />
           </>

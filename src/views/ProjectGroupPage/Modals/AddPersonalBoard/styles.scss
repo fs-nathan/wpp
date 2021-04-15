@@ -1,0 +1,48 @@
+.pinToPanelModal {
+  min-height: 200px;
+  &--selectList {
+    margin-top: 15px;
+    .MuiListSubheader-gutters {
+      padding: 0;
+    }
+    .MuiListItem-root {
+      cursor: pointer;
+    }
+    .MuiListSubheader-root {
+      color: #545454;
+      text-transform: uppercase;
+      font-size: 14px;
+      line-height: 20px;
+      margin-bottom: 7px;
+    }
+    .MuiListItem-gutters {
+      padding: 0;
+    }
+    .MuiListItemIcon-root {
+      min-width: unset;
+      margin-right: 10px;
+    }
+  }
+  &-noDataWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    width: 300px;
+    margin: 40px auto 0;
+
+    h5 {
+      margin-top: 10px;
+    }
+    p {
+      font-size: 14px;
+    }
+    .MuiButton-root {
+      color: #fff;
+      margin-top: 50px;
+      height: 55px;
+      width: 250px;
+    }
+  }
+}

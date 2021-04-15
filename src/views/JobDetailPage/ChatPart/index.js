@@ -26,6 +26,7 @@ function ChatPart(props) {
 
   const [selectedChat, setSelectedChat] = useState();
   const [isShowSearch, setShowSearch] = useState(false);
+  const [openAddModal, setOpenAddModal] = useState(false);
   const [imagesQueue, setImagesQueue] = useState([]);
 
   useEffect(() => {
@@ -59,7 +60,6 @@ function ChatPart(props) {
   }, [imagesQueue])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop })
-
   return (
     <div className="container-chatpart chatPart"
       {...getRootProps({
@@ -67,7 +67,7 @@ function ChatPart(props) {
       })}
     >
       <div className="wrap-header">
-        <HeaderPart {...props} setShowSearch={setShowSearch} />
+        <HeaderPart {...props} setShowSearch={setShowSearch} setOpenAddModal={setOpenAddModal}/>
       </div>
       <div className={clsx("chatPart--searchWrap", { 'chatPart__showSearch': isShowSearch })}>
         <SearchInput className="chatPart--search"
@@ -108,7 +108,7 @@ function ChatPart(props) {
           </abbr>
         </div>
       }
-      <BodyPart {...props} setSelectedChat={setSelectedChat} isReply={Boolean(selectedChat)} />
+      <BodyPart {...props} setSelectedChat={setSelectedChat} openAddModal={openAddModal} setOpenAddModal={setOpenAddModal} isReply={Boolean(selectedChat)} />
       <div className="wrap-footer">
         <FooterPart {...props}
           parentMessage={selectedChat}

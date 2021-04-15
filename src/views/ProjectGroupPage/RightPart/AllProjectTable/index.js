@@ -1,29 +1,30 @@
-import { listIcon } from 'actions/icon/listIcon';
-import { setProjectGroup } from 'actions/localStorage';
-import { deleteProject } from 'actions/project/deleteProject';
-import { hideProject } from 'actions/project/hideProject';
-import { listProject } from 'actions/project/listProject';
-import { showProject } from 'actions/project/showProject';
-import { sortProject } from 'actions/project/sortProject';
-import { detailProjectGroup } from 'actions/projectGroup/detailProjectGroup';
-import { listProjectGroup } from 'actions/projectGroup/listProjectGroup';
-import { useFilters, useTimes } from 'components/CustomPopover';
-import { CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP } from 'constants/events.js';
-import { filter, get, reverse, sortBy } from 'lodash';
+import {listIcon} from 'actions/icon/listIcon';
+import {setProjectGroup} from 'actions/localStorage';
+import {deleteProject} from 'actions/project/deleteProject';
+import {hideProject} from 'actions/project/hideProject';
+import {listProject} from 'actions/project/listProject';
+import {showProject} from 'actions/project/showProject';
+import {sortProject} from 'actions/project/sortProject';
+import {detailProjectGroup} from 'actions/projectGroup/detailProjectGroup';
+import {listProjectGroup} from 'actions/projectGroup/listProjectGroup';
+import {useFilters, useTimes} from 'components/CustomPopover';
+import {CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP} from 'constants/events.js';
+import {filter, get, reverse, sortBy} from 'lodash';
 import moment from 'moment';
 import React from 'react';
-import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { routeSelector } from '../../../ProjectPage/selectors';
+import {connect} from 'react-redux';
+import {routeSelector} from '../../../ProjectPage/selectors';
 import CreateProjectModal from '../../Modals/CreateProject';
 import DeleteProjectModal from '../../Modals/DeleteProject';
 import EditProjectModal from '../../Modals/EditProject';
 import NoProjectGroupModal from '../../Modals/NoProjectGroup';
 import ProjectSettingModal from '../../Modals/ProjectSetting';
-import { localOptionSelector, viewPermissionsSelector } from '../../selectors';
+import {localOptionSelector, viewPermissionsSelector} from '../../selectors';
 import AllProjectTablePresenter from './presenters';
-import { bgColorSelector, projectsSelector, showHidePendingsSelector } from './selectors';
+import {bgColorSelector, projectsSelector, showHidePendingsSelector} from './selectors';
 import {CREATE_PROJECT} from "constants/events";
+import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
+import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 
 function AllProjectTable({
   expand,
@@ -36,12 +37,9 @@ function AllProjectTable({
   route, viewPermissions,
   doListProject,
   doListProjectGroup,
-  doListIcon,
   localOption,
-  doSetProjectGroup,
+  doSetProjectGroup, type_data = null
 }) {
-
-  const filters = useFilters();
   const times = useTimes();
   const { filterType, timeType, workType } = localOption;
   const timeRange = React.useMemo(() => {
@@ -54,29 +52,31 @@ function AllProjectTable({
 
   const [sortType, setSortType] = React.useState({});
   const [newProjects, setNewProjects] = React.useState(projects);
-
-  const { projectGroupId } = useParams();
-
+  const filters = useFilters();
+  const params = new URLSearchParams(window.location.search);
+  const groupID = params.get('groupID');
   React.useEffect(() => {
-    if (projectGroupId === 'deleted') return;
+    if (groupID === 'deleted') return;
     doListProject({
-      groupProject: projectGroupId,
+      groupProject: groupID,
       timeStart: get(timeRange, 'timeStart')
         ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
         : undefined,
       timeEnd: get(timeRange, 'timeEnd')
         ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
         : undefined,
+      type_data
     });
     const reloadListProject = () => {
       doListProject({
-        groupProject: projectGroupId,
+        groupProject: groupID,
         timeStart: get(timeRange, 'timeStart')
           ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
           : undefined,
         timeEnd: get(timeRange, 'timeEnd')
           ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
           : undefined,
+        type_data
       });
     };
     CustomEventListener(SORT_PROJECT, reloadListProject);
@@ -85,7 +85,8 @@ function AllProjectTable({
       CustomEventDispose(SORT_PROJECT, reloadListProject);
       CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProject);
     }
-  }, [projectGroupId, timeRange]);
+    // eslint-disable-next-line
+  }, [groupID, timeRange, type_data]);
 
   React.useEffect(() => {
     doListProjectGroup({
@@ -112,20 +113,16 @@ function AllProjectTable({
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
       CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     }
+    // eslint-disable-next-line
   }, [timeRange]);
-  function sort(valuePath, array){
-    let path = valuePath.split('.')
-    return array.sort((a, b) => {
-      return getValue(b,path) -  getValue(a,path)
-    });
-    function getValue(obj, path){
-      path.forEach(path => obj = obj[path])
-      return obj;
-    }
-  }
   React.useEffect(() => {
     let _projects = [...projects.projects];
-    //_projects = filter(_projects, filters[filterType].option);
+    _projects = filter(_projects, filters[filterType].option);
+    setNewProjects({...projects, projects: _projects});
+  }, [filterType, projects.projects]);
+
+  React.useEffect(() => {
+    let _projects = [...projects.projects];
     _projects = sortBy(_projects, o => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
     setNewProjects({
@@ -134,8 +131,11 @@ function AllProjectTable({
     });
   }, [projects, sortType]);
 
+  const [guideLineModal, setGuideLineModal] = React.useState(false);
+  const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
   const [openCreate, setOpenCreate] = React.useState(false);
   const [createProps, setCreateProps] = React.useState({});
+  const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const [openNoPG, setOpenNoPG] = React.useState(false);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [editProps, setEditProps] = React.useState({});
@@ -153,7 +153,7 @@ function AllProjectTable({
           else
             setOpenCreate(true);
             setCreateProps({
-              projectGroupId,
+              groupID,
               work_types: get(projects,'group_work_types'),
               ...props
             });
@@ -163,7 +163,7 @@ function AllProjectTable({
       case 'UPDATE': {
         setOpenEdit(true);
         setEditProps({
-          projectGroupId,
+          groupID,
           ...props,
         });
         return;
@@ -171,7 +171,7 @@ function AllProjectTable({
       case 'SETTING': {
         setOpenSetting(true);
         setSettingProps({
-          projectGroupId,
+          groupID,
           ...props
         });
         return;
@@ -179,7 +179,7 @@ function AllProjectTable({
       case 'ALERT': {
         setOpenAlert(true);
         setAlertProps({
-          projectGroupId,
+          groupID,
           ...props
         });
         return;
@@ -187,13 +187,24 @@ function AllProjectTable({
       default: return;
     }
   }
-
+  React.useEffect(() => {
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      setGuideLineModal(true);
+      setNewCreatedBoard(e.detail.project_id);
+    });
+    return () => {
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
+        setGuideLineModal(true);
+        setNewCreatedBoard(e.detail.project_id);
+      });
+    }
+  }, []);
   return (
     <>
       <AllProjectTablePresenter
         expand={expand} handleExpand={handleExpand} showHidePendings={showHidePendings} route={route}
         projects={newProjects}
-        bgColor={bgColor}
+        bgColor={bgColor} type_data={type_data}
         canCreate={get(viewPermissions.permissions, 'create_project', false)}
         filterType={filterType}
         handleFilterType={filterType => doSetProjectGroup({
@@ -228,6 +239,7 @@ function AllProjectTable({
           doSortProject({ sortData })
         }
         handleOpenModal={doOpenModal}
+        groupID={groupID}
       />
       <CreateProjectModal
         open={openCreate}
@@ -247,11 +259,22 @@ function AllProjectTable({
         open={openSetting}
         setOpen={setOpenSetting}
         {...settingProps}
+        type_data={type_data}
+        projectGroupId={groupID}
       />
       <DeleteProjectModal
         open={openAlert}
         setOpen={setOpenAlert}
         {...alertProps}
+      />
+      <GuideLineAddUserModal
+        open={guideLineModal} setOpen={setGuideLineModal}
+        handleAddNow={() => setOpenMemberSetting(true)}
+      />
+      <MembersSettingModal
+        open={openMemberSetting}
+        setOpen={setOpenMemberSetting}
+        project_id={newCreatedBoard}
       />
     </>
   );

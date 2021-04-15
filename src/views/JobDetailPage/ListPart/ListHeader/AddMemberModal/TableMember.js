@@ -1,13 +1,16 @@
-import { Avatar, IconButton, Menu, MenuItem, Paper, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import { mdiDotsVertical } from '@mdi/js';
+import {
+  Avatar, FormControl, IconButton, Menu, MenuItem, Paper, Select, Table, TableBody,
+  TableCell, TableHead, TableRow
+} from '@material-ui/core';
+import {makeStyles} from '@material-ui/core/styles';
+import {mdiDotsVertical} from '@mdi/js';
 import Icon from '@mdi/react';
-import { deleteMember } from 'actions/taskDetail/taskDetailActions';
+import {deleteMember} from 'actions/taskDetail/taskDetailActions';
 import AlertModal from 'components/AlertModal';
 import React from 'react';
 import Scrollbars from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import MemberDetail from './MemberDetail';
 import MemberPermission from './MemberPermission';
@@ -60,7 +63,6 @@ function TableMember(props) {
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const handleClickEliminate = (id) => (evt) => {
-    // console.log(' setSelectedItem(id)', id)
     setSelectedItem(id);
     setAnchorEl(evt.currentTarget);
   }
@@ -68,8 +70,6 @@ function TableMember(props) {
     setAnchorEl(null);
   }
   const handleOpenModalDelete = (id) => () => {
-    // console.log(' setSelectedItem(id)', id)
-    // setSelectedItem(id);
     setOpenDelete(true);
     setAnchorEl(null);
   };
@@ -84,11 +84,12 @@ function TableMember(props) {
         <Table className={classes.table}>
           <TableHead>
             <TableRow style={{ background: '#f7f7f7' }}>
-              <TableCell style={{ width: '10%' }}></TableCell>
+              <TableCell style={{ width: '10%' }}/>
               <TableCell style={{ width: '25%' }}>{t('LABEL_CHAT_TASK_THANH_VIEN')}</TableCell>
-              <TableCell style={{ width: '20%' }}>{t('LABEL_CHAT_TASK_NHOM_QUYEN')}</TableCell>
-              <TableCell style={{ width: '36%' }}>{t('LABEL_CHAT_TASK_VAI_TRO')}</TableCell>
-              <TableCell style={{ width: '10%' }}></TableCell>
+              <TableCell style={{ width: '15%', textAlign: "center"}}>{t('LABEL_ASSIGNERS')}</TableCell>
+              <TableCell style={{ width: '20%', textAlign: "center"}}>{t('LABEL_CHAT_TASK_NHOM_QUYEN')}</TableCell>
+              <TableCell style={{ width: '20%', paddingLeft: 27 }}>{t('LABEL_CHAT_TASK_VAI_TRO')}</TableCell>
+              <TableCell style={{ width: '10%' }}/>
             </TableRow>
           </TableHead>
         </Table>
@@ -105,17 +106,25 @@ function TableMember(props) {
                   <TableCell style={{ width: '25%' }}>
                     <MemberDetail name={item.name} email={item.email} />
                   </TableCell>
-                  <TableCell style={{ width: '20%' }}>
-                    <MemberPermission
-                      {...item} />
+                  <TableCell style={{ width: '15%' }}>
+                    <FormControl variant="outlined">
+                      <Select className={"TableMember--selectBox"} value={0}>
+                        <MenuItem value={0}>Giao việc</MenuItem>
+                        <MenuItem value={1}>Đề xuất</MenuItem>
+                        <MenuItem value={2}>Thực hiện</MenuItem>
+                      </Select>
+                    </FormControl>
                   </TableCell>
-                  <TableCell style={{ width: '35%' }}>
+                  <TableCell style={{ width: '20%', textAlign: "center"}}>
+                    <MemberPermission {...item} />
+                  </TableCell>
+                  <TableCell style={{ width: '20%' }}>
                     {
                       item.is_in_group &&
                       <MemberRole roles={item.roles || []} memberId={item.id} />
                     }
                   </TableCell>
-                  <StyledMenu >
+                  <StyledMenu>
                     {item.can_ban &&
                       <IconButton size='small' onClick={handleClickEliminate(item.id)} >
                         <Icon path={mdiDotsVertical} size={1} />

@@ -121,3 +121,12 @@
   position: relative;
   height: 100%;
 }
+
+.area-media-content-in-post {
+  height: auto!important;
+  padding-top: 0px;
+}
+
+.area-media-content-in-post > div{
+  position: unset;
+}

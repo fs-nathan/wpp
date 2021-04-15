@@ -1,17 +1,18 @@
-import { Badge, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { mdiAccountPlus, mdiDotsVertical } from '@mdi/js';
+import {CircularProgress, IconButton, Menu, MenuItem, Badge, Button} from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {mdiAccountPlus, mdiDotsVertical, mdiShareVariant} from '@mdi/js';
 import Icon from '@mdi/react';
-import { find, get, isNil } from 'lodash';
+import {find, get, isNil} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useHistory } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {useHistory} from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomBadge from '../../../../components/CustomBadge';
 import CustomTable from '../../../../components/CustomTable';
-import { LightTooltip, TooltipWrapper } from '../../../../components/LightTooltip';
+import {LightTooltip, TooltipWrapper} from '../../../../components/LightTooltip';
 import LoadingBox from '../../../../components/LoadingBox';
-import { Container, LinkSpan, SettingContainer, SubTitle } from '../../../../components/TableComponents';
-import { DRAWER_TYPE } from '../../../../constants/constants';
+import {Container, LinkSpan, SettingContainer, SubTitle} from '../../../../components/TableComponents';
+import {DRAWER_TYPE} from '../../../../constants/constants';
 import './style.scss';
 
 const TooltipBody = ({ className = '', state, ...props }) =>
@@ -20,11 +21,7 @@ const TooltipBody = ({ className = '', state, ...props }) =>
     {...props}
   />
 
-const NewUserBadge = ({ className = '', ...props }) =>
-  <Badge
-    className={`view_Department_AllUserTalbe___user-badge ${className}`}
-    {...props}
-  />
+
 
 const PermissionButton = ({
   handleOpenMenu,
@@ -99,12 +96,11 @@ function AllUsersTable({
   handleOpenModal,
   handleVisibleDrawerMessage,
 }) {
-
-  const history = useHistory();
   const { t } = useTranslation();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
+  const history = useHistory();
 
   function doOpenMenu(anchorEl, user) {
     setMenuAnchorEl(anchorEl);
@@ -129,23 +125,8 @@ function AllUsersTable({
                 max: maxUser,
               })}
             </SubTitle>,
-          subActions: canModify ? [{
-            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
-            icon: () => hasRequirement
-              ? <NewUserBadge badgeContent={'N'}>
-                <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
-              </NewUserBadge>
-              : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
-            onClick: () => {
-              handleVisibleDrawerMessage({
-                type: DRAWER_TYPE.ADD_USER,
-                anchor: 'left'
-              })
-            },
-            noExpand: true,
-          }] : [],
-          mainAction: canModify ? {
-            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_ACC'),
+          mainAction: canModify ? {          
+            icon: mdiShareVariant,
             onClick: () => handleOpenModal('CREATE_ACCOUNT'),
           } : null,
           expand: {

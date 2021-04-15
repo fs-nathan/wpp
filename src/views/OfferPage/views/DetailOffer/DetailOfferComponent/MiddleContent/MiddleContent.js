@@ -116,7 +116,7 @@ const MiddleContent = ({
               {
                 can_update_condition_accept && (
                   <Button
-                    className="offerDetail-approvalConditionContainer-inner-editBtn"
+                    className="offerDetail-approvalConditionContainer-inner-editBtn button-edit-condition-approved"
                     size="small"
                     onClick={() => setOpenUpdateOfferModal(true)}
                   >
@@ -205,9 +205,12 @@ const MiddleContent = ({
                 <div className="offerDetail-approvalResult-member-date">
                   {t("VIEW_OFFER_LABEL_APPROVED_AT", { time: member.hour_label, date: member.date_label })}
                 </div>
+                <div className="offerDetail-approval offerDetail-approval-content-approved">
+                  {get(member, "content_approved")}
+                </div>
               </Grid>
               <Grid item xs={3}>
-                <Grid container direction="row" alignItems="center">
+                <div style={{textAlign: "center"}}>
                   {
                     get(member, "status") === 0 &&
                     <div className="offerDetail__result_label bg--green">
@@ -220,7 +223,7 @@ const MiddleContent = ({
                       {t("VIEW_OFFER_LABEL_REJECTED")}
                     </div>
                   }
-                </Grid>
+                </div>
               </Grid>
             </Grid>
           )}

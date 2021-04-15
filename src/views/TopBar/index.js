@@ -1,29 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, {useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import Badge from '@material-ui/core/Badge';
-import { connect } from 'react-redux';
+import {connect} from 'react-redux';
 import Chip from '../../components/ColorChip';
 import SearchInput from '../../components/SearchInput';
 import Icon from '@mdi/react';
-import { mdiMenuDown, mdiHelpCircleOutline } from '@mdi/js';
-import { IconButton, Avatar } from '@material-ui/core';
-import avatar from '../../assets/avatar.jpg';
+import {mdiBookmarkMultipleOutline, mdiHelpCircleOutline, mdiMenuDown} from '@mdi/js';
+import {Avatar, IconButton} from '@material-ui/core';
 import * as icons from '../../assets';
-import { actionVisibleDrawerMessage } from '../../actions/system/system';
+import {
+  actionActiveGroup,
+  actionChangeNumMessageNotView,
+  actionChangeNumNotificationNotView,
+  actionGetProfile,
+  actionVisibleDrawerMessage,
+  getNumberMessageNotViewer,
+  getNumberNotificationNotViewer,
+  getProfileService,
+  openNoticeModal
+} from '../../actions/system/system';
 import {DRAWER_TYPE, TOKEN} from '../../constants/constants';
 import SearchModal from '../../components/SearchModal/SearchModal';
 import './TopBar.scss';
-import {
-  getProfileService,
-  actionGetProfile,
-  actionChangeNumNotificationNotView,
-  actionChangeNumMessageNotView,
-  getNumberNotificationNotViewer,
-  getNumberMessageNotViewer,
-  actionActiveGroup,
-  openNoticeModal
-} from '../../actions/system/system';
-import { isEmpty } from '../../helpers/utils/isEmpty';
+import {isEmpty} from '../../helpers/utils/isEmpty';
 
 const TopBar = props => {
   const { t, i18n } = useTranslation();
@@ -130,6 +129,16 @@ const TopBar = props => {
         )}
       </div>
       <div className="right-part">
+        <div className={"quick-access-button"}
+          onClick={() =>
+            props.actionVisibleDrawerMessage({
+              type: DRAWER_TYPE.QUICK_ACCESS,
+              anchor: 'left'
+            })
+          }
+        >
+          <Icon path={mdiBookmarkMultipleOutline} size={0.8} color={"#fff"} className="normal-icon"/>
+        </div>
         <span id="searchInputWrapper">
           <SearchInput
             className="search-input"
@@ -169,7 +178,6 @@ const TopBar = props => {
           />
           &nbsp;{t('IDS_WP_SUPPORT')}
         </IconButton>
-
         <Badge
           badgeContent={
             props.numberMessageNotView > 100
@@ -234,11 +242,16 @@ const TopBar = props => {
         </Badge>
 
         <div className="acc-box">
-          <Avatar
-            style={{ height: 25, width: 25 }}
-            src={props.profile.avatar || avatar}
-            alt="Avatar"
-          />
+          {
+            props.profile.avatar && 
+            (
+              <Avatar
+                style={{ height: 25, width: 25 }}
+                src={props.profile.avatar}
+                alt="Avatar"
+              />
+            )
+          }
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
           <img

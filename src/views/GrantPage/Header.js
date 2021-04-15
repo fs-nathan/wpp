@@ -72,7 +72,7 @@ const Header = ({
         </div>
       </Col>
       <Col offset={2} span={10}>
-        <RightHeader end={end} start={start} scheduleIdDefault={scheduleIdDefault} />
+        <RightHeader end={end} start={start} scheduleIdDefault={scheduleIdDefault} projectInfo={projectInfo}/>
       </Col>
     </Row>
   ) : (

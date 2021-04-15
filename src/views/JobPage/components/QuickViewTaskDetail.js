@@ -76,9 +76,6 @@ export function QuickViewTaskDetailStateLess({ detailTask, onClose }) {
             >
               {t("Xem chi tiết công viêc")}
             </Box>
-            {/* <Box className="comp_QuickViewTaskDetail__bottomAction__delete cursor-pointer">
-              {t("Xóa công viêc")}
-            </Box> */}
           </Box>
         }
         title={<QuickViewTaskDetailHeader detailTask={detailTask} />}
@@ -86,13 +83,6 @@ export function QuickViewTaskDetailStateLess({ detailTask, onClose }) {
         <VerticleList>
           <QuickViewRow
             title={t("TÊN CÔNG VIỆC")}
-            // actions={
-            //   <EditAction
-            //   // onClick={() => {
-            //   //   setOpenEditJob(true);
-            //   // }}
-            //   />
-            // }
           >
             {get(detailTask, taskAtrrs.name, "#########")}
           </QuickViewRow>

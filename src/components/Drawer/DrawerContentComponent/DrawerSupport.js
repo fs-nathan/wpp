@@ -37,9 +37,9 @@ const DrawerSupport = props => {
     {
       name: t('IDS_WP_VIEW_ALL_SUPPORT'),
       classname: 'primary-color',
-      url: '/'
+      url: 'https://support.workplus.vn/'
     },
-    { name: t('IDS_WP_SEND_RESPONSE'), classname: 'primary-color', url: '/' }
+    { name: t('IDS_WP_SEND_RESPONSE'), classname: 'primary-color', url: 'https://workplus.vn/yeu-cau-gop-y/' }
   ];
   const bgColor = props.colors.find(item => item.selected === true);
   return (
@@ -53,7 +53,7 @@ const DrawerSupport = props => {
               className="item-message support-item"
               key={index}
               onClick={() => {
-                props.history.push({ pathname: el.url });
+                window.open(el.url, '_blank');
                 props.actionVisibleDrawerMessage({
                   type: '',
                   anchor: props.anchorDrawer
@@ -73,7 +73,7 @@ const DrawerSupport = props => {
             </div>
           ))}
       </div>
-      <FooterListDrawer actionList={actionList} />
+      <FooterListDrawer actionList={actionList} openInNewTab={true} />
     </div>
   );
 };

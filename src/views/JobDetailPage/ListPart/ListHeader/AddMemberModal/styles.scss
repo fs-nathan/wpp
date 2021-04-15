@@ -24,7 +24,6 @@
   }
   &--permissionName {
     &::after {
-      // content: attr(icon);
       content: "arrow_right";
       font-family: Material Icons;
       font-style: normal;
@@ -43,9 +42,6 @@
   display: flex;
   align-items: center;
   padding-left: 20px;
-  // & > *:not(:last-child) {
-  //   margin-right: 8px;
-  // }
   & > *:last-child {
     margin-left: auto;
   }
@@ -68,7 +64,6 @@
     font-weight: 400;
     line-height: 20px;
     &:hover {
-      // color: #fff;
       background: #efefef;
     }
   }
@@ -79,11 +74,18 @@
 }
 
 .AddMemberModal {
+  .MuiPaper-root {
+    max-width: 40vw !important;
+  }
   .MuiDialogContent-root {
     padding: 0;
-    // min-height: 660px;
     height: 100%;
     overflow: hidden;
+  }
+  &-container {
+    display: flex;
+    flex-direction: column;
+    //padding: 10px 15px !important;
   }
   &--title {
     color: #555555;
@@ -91,14 +93,13 @@
     font-weight: 500;
     font-size: 14px;
     padding: 12px 24px;
-    margin: 0px;
+    margin: 0;
   }
   &--alert {
     display: flex;
     margin: 10px 16px;
     border-bottom: 1px solid #f0f0f0;
     padding-bottom: 5px;
-    // line-height: 15px;
     svg {
       margin-right: 5px;
     }
@@ -106,42 +107,93 @@
   &--alertText {
     font-size: 14px;
   }
+  .text-hint {
+    font-size: 13px;
+    font-style: italic;
+    margin: 10px 0;
+  }
+  &-btnGroup {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    &>*:not(:last-child) {
+      margin-right: 7px;
+    }
+    .MuiChip-root {
+      border-radius: 5px;
+      height: 25px;
+    }
+    .MuiChip-colorPrimary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+  }
+  &-listMembersItem {
+    display: flex;
+    align-items: center;
+    padding-left: 15px;
+    padding-right: 15px;
+    cursor: pointer;
+    &:hover {
+      background: #F3F5FB;
+      .MuiRadio-root {
+        color: var(--color-primary);
+      }
+      .checkIcon {
+        path {
+          fill: var(--color-primary) !important;
+        }
+      }
+    }
+    .MuiRadio-root {
+      padding: 0;
+    }
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: var(--color-primary);
+    }
+    .MuiSelect-icon {
+      top: calc(50% - 10px);
+    }
+    .memberTypeAssigned {
+      padding: 7px 12px;
+      background: #FF0000;
+      color: #fff;
+      border-radius: 2px;
+      margin-left: 15px;
+      &:hover {
+        background: #ff4c55;
+      }
+    }
+    .MuiListItemSecondaryAction-root {
+      display: flex;
+      align-items: center;
+    }
+  }
 }
 
 .table-scroll-add-member {
-  // overflow-y: scroll;
   height: calc(100% - 180px);
 }
 
-// AddMemberModal - ListHeader
 .table-scroll {
-  // overflow-y: scroll;
   height: calc(100% - 91px);
-  // scrollbar-width: thin;
-  // scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
-  // &::-webkit-scrollbar {
-  //   width: 5px;
-  //   border-radius: 5px;
-  // }
-  // &::-webkit-scrollbar-thumb {
-  //   background-color: #fff;
-  //   border: none;
-  // }
-  // &:hover {
-  //   &::-webkit-scrollbar-thumb {
-  //     background-color: rgba(0, 0, 0, 0.2);
-  //     border-radius: 10px;
-  //   }
-  // }
   .MuiTableCell-root {
     border-bottom: 1px solid #f0f0f0;
   }
 }
 
-.TableMember--cellAvatar {
-  border-bottom: 1px solid #f0f0f0;
-  .MuiAvatar-root {
-    margin-left: 10px;
+.TableMember {
+  &--cellAvatar {
+    border-bottom: 1px solid #f0f0f0;
+    .MuiAvatar-root {
+      margin-left: 10px;
+    }
+  }
+  &--selectBox {
+    .MuiInputBase-input {
+      padding: 8px 32px 8px 8px;
+    }
   }
 }
 

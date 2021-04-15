@@ -1,16 +1,17 @@
-import { IconButton, Typography } from '@material-ui/core';
-import { mdiChevronDown, mdiPlus, mdiSettingsOutline } from '@mdi/js';
+import {IconButton, Menu, MenuItem, Typography} from '@material-ui/core';
+import {mdiChevronDown, mdiPlus, mdiSettingsOutline} from '@mdi/js';
 import Icon from '@mdi/react';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { searchTask, getProjectListBasic } from '../../../../actions/taskDetail/taskDetailActions';
+import {getProjectListBasic, searchTask} from '../../../../actions/taskDetail/taskDetailActions';
 import SearchInput from '../../../../components/SearchInput';
 import '../ListPart.scss';
 import CreateJobModal from './CreateJobModal';
-import CreateJobSetting from './CreateJobSetting';
-import { get } from 'lodash';
+import {get} from 'lodash';
+import CreateGroupTask from "../../../ProjectPage/Modals/CreateGroupTask";
+import ProjectSettingModal from "../../../ProjectGroupPage/Modals/ProjectSetting";
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -32,9 +33,17 @@ const ButtonIcon = styled(IconButton)`
   }
 `;
 
-function ListHeaderSelect({ setShow }) {
+const findProjectInListBasic = (projectsBasic = [], projectId = undefined) => {
+  let projects = []
+  projectsBasic.map(e => {
+    projects = [...projects, ...e.projects]
+  })
+  const project = projects.find(e => e.id === projectId)
+  return project ? project : {}
+}
+
+function ListHeaderSelect({ setShow, projectDetail }) {
   const { t } = useTranslation();
-  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
   const dispatch = useDispatch();
 
   const openListProject = () => {
@@ -57,12 +66,22 @@ function ListHeaderSelect({ setShow }) {
 function ListHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const projectDetail = useSelector(state => state.taskDetail.commonTaskDetail.projectDetail);
+  const projectsData = useSelector(state => state.taskDetail.commonTaskDetail);
+  const projectThis = findProjectInListBasic(projectsData.projectListBasic ? projectsData.projectListBasic.projectGroups : [], projectsData.activeProjectId)
   const viewPermissions = useSelector(state => state.viewPermissions);
-  const create_task = get(viewPermissions, `data.detailProject.${projectDetail.id}.create_task`, false)
-
+  const create_task = get(viewPermissions, `data.detailProject.${projectThis.id}.create_task`, false)
+  const [anchorEl, setAnchorEl] = React.useState(null);
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
+  const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
+
+  const handleClick = (evt) => {
+    setAnchorEl(evt.currentTarget);
+  }
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  }
 
   function onClickSettings() {
     setOpenSettings(true)
@@ -79,7 +98,7 @@ function ListHeader(props) {
   return (
     <div>
       <div className="list-header">
-        <ListHeaderSelect {...props} />
+        <ListHeaderSelect {...props} projectDetail={projectThis} />
         <div className="header-bottom-box">
           <SearchInput
             placeholder={t('LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN')}
@@ -98,7 +117,7 @@ function ListHeader(props) {
             <abbr title={t('LABEL_CHAT_TASK_TAO_CONG_VIEC')}>
               < ButtonIcon
                 className="dropdown-icon"
-                onClick={onClickCreateJob}
+                onClick={handleClick}
               >
                 <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
               </ButtonIcon>
@@ -106,13 +125,37 @@ function ListHeader(props) {
           }
         </div>
       </div>
+      <Menu
+        id="simple-menu"
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        transformOrigin={{
+          vertical: -45,
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={() => {
+          handleClose();
+          onClickCreateJob();
+        }}>Tạo công việc</MenuItem>
+        <MenuItem onClick={() => {
+          handleClose();
+          setOpenCreateTaskGroup(true);
+        }}>Tạo nhóm công việc</MenuItem>
+      </Menu>
       <CreateJobModal
         isOpen={openCreateJobModal}
         setOpen={setOpenCreateJobModal}
       />
-      <CreateJobSetting
-        isOpen={isOpenSettings}
+      <CreateGroupTask
+        open={openCreateTaskGroup}
+        setOpen={setOpenCreateTaskGroup}
+      />
+      <ProjectSettingModal
+        open={isOpenSettings}
         setOpen={setOpenSettings}
+        curProject={projectThis}
       />
     </div >
   );
