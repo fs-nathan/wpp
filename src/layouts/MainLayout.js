@@ -84,6 +84,7 @@ const Container = styled.div`
     animation-duration: 1s;
     grid-template-columns: 70px minmax(0, 1fr);
   }
+ 
 `;
 
 const LogoBox = styled.div`
