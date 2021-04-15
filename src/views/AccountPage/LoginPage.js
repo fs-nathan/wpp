@@ -140,7 +140,7 @@ const LoginPage = (props) => {
               control={<Checkbox color="primary" required />}
               label={t("IDS_WP_I_AM_NOT_ROBOT")}
             />
-            <Link href="/forgot-password">
+            <Link href="/forgot-password" className="btn-link">
               {t("IDS_WP_FORGOT_PASSWORD_QUESTION")}
             </Link>
           </FormGroup>

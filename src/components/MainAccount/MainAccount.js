@@ -7,8 +7,9 @@ import './MainAccount.scss';
 const MainAccount = props => {
   const { t } = useTranslation();
   return (
+    <div className="MainAccount-background">
     <div className="MainAccount">
-      <div className="left-content">
+      <div className="left-content" >
         <img className="bg-login" alt="" src={images.bg_login} />
       </div>
       <div className="right-content">
@@ -32,6 +33,7 @@ const MainAccount = props => {
           </div>
         </Scrollbars>
       </div>
+    </div>
     </div>
   );
 };

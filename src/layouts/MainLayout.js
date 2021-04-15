@@ -72,7 +72,9 @@ const Container = styled.div`
     "left main";
   &.view-full-page {
     display: initial;
+    
   }
+ 
 `;
 
 const LogoBox = styled.div`
