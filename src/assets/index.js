@@ -1,6 +1,7 @@
 export { default as avatar_user } from './avatar-user.jpg';
 export { default as avatar_default_120 } from './avatar_default_120.png';
 export { default as bg_login } from './bg-log-in.png';
+export { default as ic_register_complete } from './ic_complete.gif';
 export { default as cover_default } from './cover_default.png';
 export { default as dis_comment } from './dis_comment.png';
 export { default as ic_file } from './file.png';

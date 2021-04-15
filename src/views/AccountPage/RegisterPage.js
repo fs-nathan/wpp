@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
-import { mdiAccountOutline } from '@mdi/js';
+import { mdiAccountOutline ,mdiLockOutline} from '@mdi/js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   FormControl,
@@ -45,13 +45,28 @@ const RegisterPage = () => {
   return (
     <MainAccount>
       <div className="AccountPage RegisterPage">
+        {!isRegistered &&
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
         </div>
-        <div className="heading-title">{t('IDS_WP_SIGN_UP')}</div>
+        }
+        {!isRegistered &&<div className="heading-title">{t('IDS_WP_SIGN_UP')}</div>}
         {!isRegistered && (
           <React.Fragment>
             <form className="form-content" onSubmit={handleRegister}>
+            <FormControl
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              className="custom-input"
+            >
+              <div className="lb-input">{t('IDS_WP_FULL_NAME')} *</div>
+              <OutlinedInput
+                id="fullname"
+                required
+                placeholder={t('IDS_WP_YOUR_FULL_NAME')}
+              />
+            </FormControl>
               <FormControl
                 fullWidth
                 margin="normal"
@@ -76,9 +91,38 @@ const RegisterPage = () => {
                 />
                 {errMsg && <div className="error-msg">{errMsg}</div>}
               </FormControl>
+              <FormControl
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                className="input-affix-wrapper custom-input item-pwd"
+              >
+                <OutlinedInput
+                  id="password"
+                  required
+                  type="password"
+                  autoComplete="new-password"
+                  placeholder={t('IDS_WP_PASSWORD')}
+                  size="small"
+                  // onBlur={handleCheckPwd}
+                  inputProps={{ maxLength: 20, minLength: 8 }}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <Icon
+                        className="icon-prefix"
+                        path={mdiLockOutline}
+                        size={1}
+                      />
+                    </InputAdornment>
+                  }
+                />
+                <div className="suggest-password">{t('IDS_WP_ENTER_REGISTER_PASSWORD_SUGGESTED')}</div>
+              </FormControl>
               <FormControlLabel
                 control={<Checkbox color="primary" required />}
-                label={t('IDS_WP_I_AM_NOT_ROBOT')}
+                label={<><span>{t('IDS_WP_I_AM_ACCEPT_TERM')}</span> <Link href="" className="btn-link">
+                {t('IDS_WP_I_AM_ACCEPT_TERM_OF_USE')}
+              </Link> {t('IDS_WP_I_AM_ACCEPT_TERM_WORK_PLUS')}</>}
               />
               <Button
                 variant="contained"
@@ -102,23 +146,12 @@ const RegisterPage = () => {
                 {t('IDS_WP_LOGIN')}
               </Link>
             </div>
-            <Divider className="divider" />
-            <div className="notice-content">
-              <div className="lb-text title">{t('IDS_WP_NOTE')}:</div>
-              <div className="lb-text">
-                {t('IDS_WP_REGISTER_EMAIL_DESCRIPTION')}
-              </div>
-            </div>
-            <div className="notice-content" style={{marginTop: "10px"}}>
-              <div className="lb-text">
-                {t("IDS_WP_REGISTER_NOTICE_REGISTER_DIRECT")} <a href="/confirm-registration" style={{color: "#01b374"}} > {t("IDS_WP_REGISTER_COMPLETE")}</a>
-              </div>
-            </div>
+            
           </React.Fragment>
         )}
         {isRegistered && (
           <div className="register-success">
-            <Divider className="divider" />
+            {/* <Divider className="divider" />
             <p className="title">{t('IDS_WP_THANK_YOU_USED_WORK_PLUS')}</p>
             <p className="description">
               {t('IDS_WP_CONFIRM_CODE_DESCRIPTION')}
@@ -137,12 +170,16 @@ const RegisterPage = () => {
               }}
             >
               {t('IDS_WP_CONFIRM_ACCOUNT')}
-            </Button>
+            </Button> */}
+            <img alt="" src={images.ic_register_complete} />
+            <div>
+              <h5 className="register-notify_title">{t('IDS_WP_REGISTER_SUCCESS_TITLE')}</h5>
+              <div className="register-notify_content">{t('IDS_WP_REGISTER_SUCCESS_TEXT')}</div>
+            </div>
             <div className="bottom-des">
-              {t('IDS_WP_BACK_PAGE')}
-              <Link href={Routes.LOGIN} className="btn-link">
-                {t('IDS_WP_LOGIN')}
-              </Link>
+              <Button variant="outlined" onClick={()=>window.location.href = `${Routes.LOGIN}`}>
+                {t('IDS_WP_LOGIN_NOW')}
+              </Button>
             </div>
           </div>
         )}
