@@ -83,6 +83,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "dev": "react-scripts start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "serve-firebase": "react-scripts build && firebase serve",
     "deploy-firebase": "react-scripts build && firebase deploy",
