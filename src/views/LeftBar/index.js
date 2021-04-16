@@ -89,6 +89,7 @@ const LeftBar = ({
   }
   console.log(menuList, 'menu')
   const isFree = groupActive.type === "Free";
+  const [collapse,setCollapse] = useState(false);
   return (
     <div className={`left-bar-container ${collapse && 'collapse'}`} style={{ background: bgColor.color }}>
       {!isEmpty(menuList) &&
@@ -115,7 +116,6 @@ const LeftBar = ({
             </Link>
           );
         })}
-        <img src="/assets/bg_logo_menu.png" alt="" />
         <div style={{ background: bgColor.color }} className="btn-collapse" onClick={()=>setCollapse(!collapse)}> <span>{collapse ? '>':'<'}</span> </div>
       {itemManage && (
         <Link
