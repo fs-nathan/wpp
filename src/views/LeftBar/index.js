@@ -1,7 +1,8 @@
-import React from "react";
+import React , {useState} from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import {Button} from '@material-ui/core';
 import {
   actionVisibleDrawerMessage,
   openNoticeModal,
@@ -17,6 +18,7 @@ import { getNumberMessageNotView } from "actions/chat/threadChat";
 const BellMessage = () => {
   const numberChatNotView = useSelector((state) => state.threadChat.numberChatNotView);
   const dispatch = useDispatch();
+  
   React.useEffect(() => {
     dispatch(getNumberMessageNotView())
   }, []);
@@ -83,8 +85,9 @@ const LeftBar = ({
     });
   }
   const isFree = groupActive.type === "Free";
+  const [collapse,setCollapse] = useState(false);
   return (
-    <div className="left-bar-container" style={{ background: bgColor.color }}>
+    <div className={`left-bar-container ${collapse && 'collapse'}`} style={{ background: bgColor.color }}>
       {!isEmpty(menuList) &&
         menuList.map((el, idx) => {
           return (
@@ -107,6 +110,7 @@ const LeftBar = ({
             </Link>
           );
         })}
+        <Button onClick={()=>setCollapse(!collapse)}> <span>{collapse ? '>':'<'}</span> </Button>
       {itemManage && (
         <Link
           to={itemManage.url_redirect}

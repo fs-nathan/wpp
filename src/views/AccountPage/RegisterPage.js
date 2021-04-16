@@ -43,7 +43,6 @@ const RegisterPage = () => {
   };
 
   return (
-    <MainAccount>
       <div className="AccountPage RegisterPage">
         {!isRegistered &&
         <div className="logo-content">
@@ -184,7 +183,6 @@ const RegisterPage = () => {
           </div>
         )}
       </div>
-    </MainAccount>
   );
 };
 

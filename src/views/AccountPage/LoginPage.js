@@ -11,6 +11,7 @@ import {
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { mdiAccountOutline, mdiLockOutline } from "@mdi/js";
 import { Icon } from "@mdi/react";
+import { Routes } from "constants/routes";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -56,8 +57,11 @@ const LoginPage = (props) => {
       localStorage.setItem(TOKEN, data.accessToken);
       localStorage.setItem(REFRESH_TOKEN, data.refreshToken);
       localStorage.setItem(GROUP_ACTIVE, data.group_active);
-
-      window.location.reload();
+      const token = localStorage.getItem(TOKEN);
+      if(token){
+        window.location.href = Routes.HOME;
+      }
+      
       return;
       //
       apiService.defaults.headers.common[
@@ -84,7 +88,6 @@ const LoginPage = (props) => {
   };
 
   return (
-    <MainAccount>
       <div className="AccountPage LoginPage">
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
@@ -140,7 +143,7 @@ const LoginPage = (props) => {
               control={<Checkbox color="primary" required />}
               label={t("IDS_WP_I_AM_NOT_ROBOT")}
             />
-            <Link href="/forgot-password" className="btn-link">
+            <Link href={Routes.FORGOT_PASSWORD} className="btn-link">
               {t("IDS_WP_FORGOT_PASSWORD_QUESTION")}
             </Link>
           </FormGroup>
@@ -173,12 +176,11 @@ const LoginPage = (props) => {
         </form>
         <div className="bottom-des">
           {t("IDS_WP_DONT_HAVE_ACCOUNT")}
-          <Link href="/register" className="btn-link">
+          <Link href="/account/register" className="btn-link">
             {t("IDS_WP_SIGN_UP")}
           </Link>
         </div>
       </div>
-    </MainAccount>
   );
 };
 
