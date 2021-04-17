@@ -1,8 +1,15 @@
 import {
+  Avatar,
   Box,
   Checkbox,
   Divider,
   Grid,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
@@ -11,30 +18,28 @@ import {
   Typography,
 } from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
-import {mdiAccountKey, mdiDotsVertical, mdiDragVertical, mdiKey, mdiLockOutline, mdiFilterOutline, mdiMenuDown} from "@mdi/js";
+import {mdiAccountKey, mdiDotsVertical, mdiDragVertical, mdiFilterOutline, mdiKey, mdiLockOutline} from "@mdi/js";
 import Icon from "@mdi/react";
 import {CustomTableProvider} from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
 import {bgColorSelector} from "components/LoadingOverlay/selectors";
 import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
-import {useSelector} from "react-redux";
-import {StyledTableBodyCell} from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
+import {useDispatch, useSelector} from "react-redux";
 import {emptyArray} from "views/JobPage/contants/defaultValue";
 import {LayoutStateLess} from "views/JobPage/Layout";
-import {createMapPropsFromAttrs, get, loginlineParams, template} from "views/JobPage/utils";
+import {createMapPropsFromAttrs, loginlineParams, template} from "views/JobPage/utils";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import {Space} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import {GroupPermissionSettingsContext} from "..";
 import DeleteGroupPermissionModal from "../components/DeleteGroupPermissionModal";
 import TasksScrollbar from "../components/TasksScrollbar";
-import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal";
 import "./index.scss";
 import SearchBox from "../../../../components/SearchInput";
 import AddGroupPermissionModal, {CustomTableBodyCell} from "../components/AddGroupPermissionModal";
 import Chip from '@material-ui/core/Chip';
-import {size} from "lodash";
+import {filter, first, get, forEach, map, set, size, isNil, find, includes} from "lodash";
 import {StyledList, StyledListItem} from "../../../../components/CustomList";
 import {groupPermissionAttr} from "../contants";
 import IconButton from "@material-ui/core/IconButton";
@@ -42,7 +47,12 @@ import UpdateInfoGroupPermissionModal from "../components/UpdateInfoGroupPermiss
 import {ItemMenu} from "../components/ItemMenu";
 import {DraggableList} from "../../TablePart/SettingGroupRight/Home/components/DraggableList";
 import {RoundSearchBox} from "../components/SearchBox";
-import {useMultipleSelect} from "../../../JobPage/hooks/useMultipleSelect";
+import {settingGroupPermission} from "../redux";
+import useAsyncTracker from "../../TablePart/SettingGroupRight/Home/redux/apiCall/useAsyncTracker";
+import List from "@material-ui/core/List";
+import ListSubheader from "@material-ui/core/ListSubheader";
+import Button from "@material-ui/core/Button";
+import UpdateUserPermissionModal from "../components/UpdateUserPermission";
 
 const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
   const { t } = useTranslation();
@@ -104,37 +114,89 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
     </Grid>
   );
 };
-const ColumnRight = () => {
+const ColumnRight = ({customPermissionList = []}) => {
   const { t } = useTranslation();
   const {
-    setModal,
     detail: item,
     permissionsNumber,
     permissions = emptyArray,
-    can_modify,
+    can_modify, mode
   } = useContext(GroupPermissionSettingsContext);
-  const allPremission = permissions.flatMap((item) =>
+
+  const permissionList = useSelector(settingGroupPermission.selectors.permissionListSelector);
+
+  const allPermissions = permissionList.flatMap((item) =>
     (item.permissions || emptyArray).flatMap((item) => item.permission)
   );
+  const dispatch = useDispatch();
+  const [isSelectAll, setIsSelectAll] = useState(false);
+  const [selected, setSelected] = useState({});
+  const [{ status }, setAsyncAction] = useAsyncTracker();
+  const [filterValue, setFilterValue] = useState(0);
+  const [filterPermission, setFilterPermission] = React.useState(permissionList);
+
   const [keyword, setKeyword] = useState("");
-  const value = emptyArray;
-  const [select, setSelect, __, selectAll] = useMultipleSelect(
-    value.reduce(
-      (result, key) => ({
-        ...result,
-        [key]: true,
-      }),
-      {}
-    ),
-    true,
-    true
-  );
-  const onInputChange = useCallback(
-    (e) => {
+  const onInputChange = useCallback((e) => {
       setKeyword(e.target.value);
     },
-    [setKeyword]
+    [setKeyword]);
+  useEffect(() => {
+    if(size(permissionList) === 0) {
+      dispatch(settingGroupPermission.actions.loadPermissionList());
+    }
+  }, [dispatch, permissionList]);
+
+  useEffect(() => {
+    const _selected = {};
+    forEach(permissions, function (item) {
+      _selected[item.permission] = true;
+    });
+    setSelected(_selected);
+  }, [permissions]);
+
+  useEffect(() => {
+    if(size(selected) === size(allPermissions) && size(selected) > 0) {
+      setIsSelectAll(true);
+    } else setIsSelectAll(false);
+  },[allPermissions, selected]);
+
+  function handleSelectPermission(permission) {
+    let _selected = selected;
+    _selected[permission] = !_selected[permission];
+    setSelected({..._selected});
+    handleSubmit(map(_selected, function (isSelected, key) {
+      if(isSelected && !isNil(key)) return key;
+    }));
+  }
+
+  const handleSubmit = (values) =>
+    setAsyncAction(
+      settingGroupPermission.actions.updateGroupPermission({
+        group_permission_id: get(item, groupPermissionAttr.id),
+        permissions: values
+      })
   );
+
+  function handleSelectAll() {
+    setIsSelectAll(true);
+  }
+
+  useEffect(() => {
+    if(filterValue === 0) setFilterPermission(size(customPermissionList) > 0 ? customPermissionList : permissionList);
+    else {
+      const _selectedIds = Object.keys(selected);
+      const _selected = map(permissionList, function (group) {
+        const permissions = filter(group.permissions, function (permission) {
+          if(filterValue === 1) {
+            return !isNil(find(_selectedIds, permission.permission));
+          }
+          return isNil(find(_selectedIds, permission.permission));
+        });
+        if(size(permissions) > 0) return {...group, permissions};
+      });
+      setFilterPermission(_selected);
+    }
+  }, [filterValue, permissionList, customPermissionList]);
   return (
     <ColumnLayout
       title={t("Chi tiết quyền trong nhóm")}
@@ -143,66 +205,45 @@ const ColumnRight = () => {
       })}
       actions={
         <Box display={"flex"} flexDirection={"column"} alignItems={"flex-start"}>
-          {can_modify && (
-            <AddButton
-              disabled={!can_modify}
-              onClick={() => setModal(<UpdateGroupPermissionModal item={item} />)}
-              label={t("Thêm quyền")}
-            />
-          )}
-          <Box marginTop={"2px"} marginBottom={"7px"} display={"flex"} alignItems={"center"}>
-            <Icon path={mdiFilterOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
-            <span style={{marginLeft: "5px"}}>{t("LABEL_PERMISSION_FILTER")}:</span>
-            <Box className={"comp_rightColumn--customSelectBox"}>
-              {t("IDS_WP_ALL")}
-              <Icon path={mdiMenuDown} size={1} color={"rgba(0,0,0,0.54)"}/>
+          {can_modify && mode === "GROUP_PERMISSION" && (
+            <Box marginTop={"2px"} marginBottom={"7px"} display={"flex"} alignItems={"center"}>
+              <Icon path={mdiFilterOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
+              <span style={{marginLeft: "5px"}}>{t("LABEL_PERMISSION_FILTER")}:</span>
+              <Box className={"comp_rightColumn--customSelectBox"}>
+                <Select
+                  value={filterValue}
+                  onChange={(e) => setFilterValue(e.target.value)}
+                >
+                  <MenuItem value={0}>{t("IDS_WP_ALL")}</MenuItem>
+                  <MenuItem value={1}>{t("LABEL_SELECTED_PERMISSION")}</MenuItem>
+                  <MenuItem value={2}>{t("LABEL_UNSELECTED_PERMISSION")}</MenuItem>
+                </Select>
+              </Box>
             </Box>
-          </Box>
+          )}
         </Box>
       }
     >
       <Box padding={"20px"}>
         <Box marginBottom={"10px"}>
           <RoundSearchBox
-            onChange={() => null}
+            onChange={onInputChange}
             placeholder={t("Tìm kiếm quyền")}
           />
         </Box>
         <Table stickyHeader className="header-document">
           <TableHead>
             <TableRow>
-              <TableCell style={{ padding: "0px" }} width="20px">
-                <Checkbox
-                  checked={
-                    !(
-                      allPremission.findIndex((item) => !select[item]) >=
-                      0
-                    )
-                  }
-                  onChange={() => {
-                    const isAll = !(
-                      allPremission.findIndex((item) => !select[item]) >=
-                      0
-                    );
-                    if (!isAll) {
-                      selectAll(
-                        allPremission.reduce((result, v) => {
-                          result[v] = true;
-                          return result;
-                        }, {})
-                      );
-                    } else {
-                      selectAll(
-                        allPremission.reduce((result, v) => {
-                          result[v] = false;
-                          return result;
-                        }, {})
-                      );
-                    }
-                  }}
-                  color="primary"
-                />
-              </TableCell>
+              {can_modify && mode === "GROUP_PERMISSION" && (
+                <TableCell style={{ padding: "0px" }} width="20px">
+                  <Checkbox
+                    checked={isSelectAll}
+                    onChange={() => handleSelectAll()}
+                    color="primary"
+                  />
+                </TableCell>
+              )}
+              <TableCell style={{ padding: "0px" }} width="20px"/>
               <TableCell width="30%" align="left">
                 {t("Tên quyền")}
               </TableCell>
@@ -210,31 +251,59 @@ const ColumnRight = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {permissions.map(({ name, description }, i) => (
+            {filterPermission.map((group, i) => (
               <React.Fragment key={i}>
-                <TableRow
-                  key={name}
-                  className="comp_RecentTableRow table-body-row"
-                >
+                <TableRow>
                   <CustomTableBodyCell
                     style={{ padding: "0px" }}
                     align="left"
+                  />
+                  <CustomTableBodyCell
+                    colSpan={12}
+                    className="comp_TitleCell"
+                    align="left"
                   >
-                    <Checkbox
-                      checked={!!select[name]}
-                      onChange={() => setSelect(name)}
-                      color="primary"
-                    />
-                  </CustomTableBodyCell>
-                  <CustomTableBodyCell align="left">
-                    <Typography title={name}>
-                      {name}
+                    <Typography fontWeight="bold">
+                      <b>{get(group, "name")}</b>
                     </Typography>
                   </CustomTableBodyCell>
-                  <CustomTableBodyCell align="left">
-                    <Typography>{description}</Typography>
-                  </CustomTableBodyCell>
                 </TableRow>
+                {get(group, "permissions", [])
+                  .filter(({ name = "" }) => name.toLowerCase().includes(keyword.toLowerCase()))
+                  .map(({ name, description, permission }) => (
+                    <TableRow
+                      key={permission}
+                      className="comp_RecentTableRow table-body-row"
+                    >
+                      {can_modify && mode === "GROUP_PERMISSION" && (
+                        <CustomTableBodyCell
+                          style={{ padding: "0px" }}
+                          align="left"
+                        >
+                          <Checkbox
+                            checked={!!selected[permission] || isSelectAll}
+                            onChange={() => handleSelectPermission(permission)}
+                            color="primary"
+                          />
+                        </CustomTableBodyCell>
+                      )}
+                      <CustomTableBodyCell align="left">
+                        <Icon
+                          color="#8d8d8d"
+                          style={{ width: "18px" }}
+                          path={mdiKey}
+                        />
+                      </CustomTableBodyCell>
+                      <CustomTableBodyCell align="left">
+                        <Typography title={name}>
+                          {name}
+                        </Typography>
+                      </CustomTableBodyCell>
+                      <CustomTableBodyCell align="left">
+                        <Typography>{description}</Typography>
+                      </CustomTableBodyCell>
+                    </TableRow>
+                  ))}
                 <TableRow>
                   <CustomTableBodyCell
                     colSpan={12}
@@ -248,83 +317,6 @@ const ColumnRight = () => {
             ))}
           </TableBody>
         </Table>
-        {/*<Table stickyHeader className="header-document">
-          <TableHead>
-            <TableRow>
-              <TableCell width="20px"/>
-              <TableCell width="300px" align="left">
-                {t("Tên quyền")}
-              </TableCell>
-              <TableCell align="left">{t("Mô tả")}</TableCell>
-              <TableCell width="20px" align="right"/>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {permissions.map(({ name, description }, i) => (
-              <TableRow
-                key={i}
-                className="comp_RecentTableRow comp_PermissionRow table-body-row "
-              >
-                <CustomTableBodyCell
-                  style={{ padding: "0px" }}
-                  align="left"
-                >
-                  <Checkbox
-                    checked={false}
-                    onChange={() => null}
-                    color="primary"
-                  />
-                </CustomTableBodyCell>
-                <StyledTableBodyCell
-                  style={{ paddingLeft: "20px" }}
-                  className="comp_AvatarCell"
-                  align="left"
-                >
-                  <Icon
-                    color="#8d8d8d"
-                    style={{ width: "18px" }}
-                    path={mdiKey}
-                  />
-                </StyledTableBodyCell>
-                <StyledTableBodyCell className="comp_TitleCell" align="left">
-                  <Typography
-                    title={name}
-                    noWrap
-                    style={{
-                      fontSize: "15px",
-                      maxWidth: 300,
-                      padding: "10px 10px 10px 0",
-                    }}
-                    className="comp_TitleCell__inner text-bold"
-                  >
-                    <b>{name}</b>
-                  </Typography>
-                </StyledTableBodyCell>
-                <StyledTableBodyCell
-                  style={{ maxWidth: 300 }}
-                  className="comp_TitleCell"
-                  align="left"
-                >
-                  <Typography
-                    title={description}
-                    className="comp_TitleCell__inner"
-                  >
-                    {description}
-                  </Typography>
-                </StyledTableBodyCell>
-                <StyledTableBodyCell align="right">
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                  </div>
-                </StyledTableBodyCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>*/}
       </Box>
     </ColumnLayout>
   );
@@ -342,6 +334,15 @@ const ColumnLeft = () => {
     setFilterOption(1);
     setKeyword(value);
   }
+  useEffect(() => {
+    if(filterOption === 0) {
+      const firstItem = first(groupPermissionDefaultList);
+      setSelect(firstItem, true);
+    } else {
+      const firstItem = first(groupPermissionList);
+      setSelect(firstItem, false);
+    }
+  }, [filterOption]);
   return (
     <div className="comp_rightColumn">
       <div className={"comp_rightColumn_topBar"}>
@@ -570,34 +571,188 @@ const ColumnLeft = () => {
     </div>
   );
 };
-const Right = () => {
+
+const ColumnLeftMembers = ({setCustomPermissionList}) => {
+  const {t} = useTranslation();
+  const [filterKeyword, setFilterKeyword] = React.useState("");
+  const [isHover, setIsHover] = React.useState({});
+  const [openModal, setOpenModal] = React.useState(false);
+  const [selectedUser, setSelectedUser] = React.useState({});
+  const [filteredGroup, setFilteredGroup] = React.useState([]);
+  const [selectedGroup, setSelectedGroup] = React.useState(null);
+  const dispatch = useDispatch();
+  const groupUsers = useSelector(settingGroupPermission.selectors.groupPermissionUsersSelector);
+  const detail = useSelector(settingGroupPermission.selectors.groupPermissionListSelector);
+  const permissionList = useSelector(settingGroupPermission.selectors.permissionListSelector);
+  const { setSelect } = useContext(
+    GroupPermissionSettingsContext
+  );
+  React.useEffect(() => {
+    dispatch(settingGroupPermission.actions.doPermissionListUsers());
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    forEach(groupUsers, function (group) {
+      if(size(get(group, "users")) > 0) {
+       setSelectedGroup(get(first(group.users), "group_permission_id"));
+       setSelectedUser(first(group.users));
+       return;
+      }
+    });
+  }, [groupUsers]);
+
+  React.useEffect(() => {
+    const _group = map(groupUsers, function (group) {
+      return {...group, users: filter(group.users, function (user) {
+          return user.name.toLowerCase().includes(filterKeyword.toLowerCase());
+        })}
+    });
+    setFilteredGroup(_group);
+  }, [filterKeyword, groupUsers]);
+
+  function handleHover(id, hover) {
+    set(isHover, id, hover);
+    setIsHover({...isHover});
+  }
+  function handleSelectUser(user) {
+    setSelectedGroup(user.group_permission_id);
+    setSelectedUser(user);
+    dispatch(
+      settingGroupPermission.actions.loadDetailGroupPermission({
+        group_permission_id: user.group_permission_id,
+      })
+    );
+  }
+  useEffect(() => {
+    let permissions = find(detail, {"id": selectedGroup});
+    if(size(permissions) > 0) {
+      setSelect(permissions, false);
+      const _filterPermissions = [];
+        forEach(permissionList, function (group) {
+        const _permissions = filter(group.permissions, function (permission) {
+          return !isNil(find(permissions.permissions, {"value": permission.permission}));
+        });
+        if(size(_permissions) > 0) {
+          _filterPermissions.push({...group, permissions: _permissions});
+        }
+      });
+      setCustomPermissionList(_filterPermissions);
+    }
+  }, [detail, permissionList, selectedGroup]);
+
+  return (
+    <div className="comp_rightColumn">
+      <div className={"comp_rightColumn_topBar"} style={{border: "none"}}>
+        <SearchBox
+          fullWidth
+          placeholder={t("LABEL_CHAT_TASK_TIM_THANH_VIEN")}
+          onChange={(e) => setFilterKeyword(e.target.value)}
+        />
+      </div>
+      <TasksScrollbar autoHeight autoHeightMax={"calc(100vh - 185px)"}>
+        <div className="comp_rightColumn_content_memberList">
+          {filteredGroup.map(function (group, i) {
+            return (
+              <List
+                component={"nav"}
+                subheader={
+                  <ListSubheader component={"div"}>
+                    <b style={{ fontSize: "15px", color: "#8d8d8d", textTransform: "uppercase"}}>
+                      {group.name} ({group.number_member})
+                    </b>
+                  </ListSubheader>
+                }
+              >
+                {group.users.map((user) => {
+                  return (
+                    <ListItem
+                      key={user.id}
+                      onMouseEnter={() => handleHover(user.id, true)}
+                      onMouseLeave={() => handleHover(user.id, false)}
+                      onClick={() => handleSelectUser(user)}
+                      className={
+                        selectedUser.id === user.id ? "active" : ""
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar src={user.avatar}/>
+                      </ListItemAvatar>
+                      <ListItemText primary={user.name} secondary={
+                        <Box display={"flex"} alignItems={"center"}>
+                          <Icon
+                            className="onHover__hide"
+                            style={{ fill: "#8d8d8d" }} path={mdiAccountKey} size={1}
+                          />
+                          <span style={{marginLeft: "7px"}}>{user.group_permission_name}</span>
+                        </Box>
+                      }/>
+                      {isHover[user.id] && (
+                        <ListItemSecondaryAction>
+                          <Button
+                            onClick={() => {
+                              setSelectedUser(user);
+                              setOpenModal(true);
+                            }}
+                            onMouseEnter={() => handleHover(user.id, true)}
+                            disableElevation color={"primary"} variant={"contained"} size={"small"}
+                          >
+                            {t("LABEL_CHANGE_PERMISSION")}
+                          </Button>
+                        </ListItemSecondaryAction>
+                      )}
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )
+          })}
+        </div>
+      </TasksScrollbar>
+      {openModal && (
+        <UpdateUserPermissionModal
+          user={selectedUser} onClose={() => setOpenModal(false)}
+          onSuccess={() => dispatch(settingGroupPermission.actions.doPermissionListUsers())}
+        />
+      )}
+    </div>
+  );
+}
+
+const Right = ({mode}) => {
+  const [customPermissionList, setCustomPermissionList] = React.useState([]);
   return (
     <Grid container>
-      <ColumnLeft />
+      {mode === "GROUP_PERMISSION" && (
+        <ColumnLeft />
+      )}
+      {mode === "MEMBERS_PERMISSION" && (
+        <ColumnLeftMembers setCustomPermissionList={setCustomPermissionList}/>
+      )}
       <div
         style={{
           width: "1px",
           background: "rgba(0, 0, 0, 0.1)",
         }}
       />
-      <ColumnRight />
+      <ColumnRight customPermissionList={customPermissionList}/>
     </Grid>
   );
 };
 export default ({ ...props }) => {
   const { t } = useTranslation();
-  const { setModal, name, can_modify } = useContext(
+  const { setModal, name, can_modify, mode, detail } = useContext(
     GroupPermissionSettingsContext
   );
   const [quickTask, setQuickTask] = useState();
   const bgColor = useSelector(bgColorSelector);
   const open = !!quickTask;
-  const { detail } = useContext(GroupPermissionSettingsContext);
   const options = {
     title: (
       <Box className={"comp_rightColumn--topHeader"}>
         <Box className={"comp_rightColumn--topHeader-left"}>
-          <Typography variant={"h6"}>{t("LABEL_SETTING_GROUP_PERMISSION")}</Typography>
+          <Typography variant={"h6"}>{
+            mode === "GROUP_PERMISSION" ? t("LABEL_SETTING_GROUP_PERMISSION") : t("IDS_WP_MEMBER")
+          }</Typography>
         </Box>
         <Box className={"comp_rightColumn--topHeader-right"}>
           <Icon size={1.4} {...{ color: "#8d8d8d", path: mdiAccountKey }}/>
@@ -615,7 +770,7 @@ export default ({ ...props }) => {
       </Box>
     ),
     subActions: [],
-    mainAction: can_modify
+    mainAction: can_modify && mode === "GROUP_PERMISSION"
       ? {
           color: "red",
           label: t("Xóa nhóm quyền"),
@@ -651,7 +806,7 @@ export default ({ ...props }) => {
             ...props,
           }}
         >
-          <Right setModal={setModal}/>
+          <Right setModal={setModal} mode={mode}/>
         </LayoutStateLess>
       </>
     </CustomTableProvider>

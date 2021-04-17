@@ -21,9 +21,6 @@ import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal
 import "./index.css";
 
 const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
-  const { t } = useTranslation();
-  const [keyword, setKeyword] = useState("");
-  const handleInputChange = useCallback((e) => setKeyword(e.target.value), []);
   return (
     <Grid
       className="comp_ColumnLayout"
@@ -55,8 +52,6 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
 };
 const ColumnRight = () => {
   const { t } = useTranslation();
-  const [keyword, setKeyword] = useState("");
-  const handleInputChange = useCallback((e) => setKeyword(e.target.value), []);
   const {
     setModal,
     detail: item,

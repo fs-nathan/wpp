@@ -1,4 +1,4 @@
-import {Avatar, Box, Grid,} from "@material-ui/core";
+import {Avatar, Box} from "@material-ui/core";
 import {CustomTableProvider} from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
 import {bgColorSelector} from "components/LoadingOverlay/selectors";
@@ -9,41 +9,10 @@ import {useSelector} from "react-redux";
 import {emptyArray} from "views/JobPage/contants/defaultValue";
 import {LayoutStateLess} from "views/JobPage/Layout";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
-import {Space} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
 import {Stack} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
 import {GroupPermissionSettingsContext} from "..";
 import TasksScrollbar from "../components/TasksScrollbar";
 import "./index.css";
-
-const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
-  return (
-    <Grid
-      className="comp_ColumnLayout"
-      item
-      container
-      direction="column"
-      {...props}
-    >
-      <Grid className="comp_CustomTable___header" item container>
-        <ListItemLayout
-          title={title}
-          subTitle={subTitle}
-          actions={actions}
-        />
-      </Grid>
-      <Grid item container style={{ flex: 1, position: "relative" }}>
-        <div style={{ position: "absolute", width: "100%", height: "100%" }}>
-          <TasksScrollbar>
-            <div>
-              {children}
-              <Space height={"50px"}/>
-            </div>
-          </TasksScrollbar>
-        </div>
-      </Grid>
-    </Grid>
-  );
-};
 
 const ColumnLeft = () => {
   const { t } = useTranslation();
@@ -53,7 +22,7 @@ const ColumnLeft = () => {
     members_assigned = emptyArray,
     module: groupModule,
   } = useContext(GroupPermissionSettingsContext);
-  console.log(detail)
+
   const [keyword, setKeyword] = useState("");
   const handleInputChange = useCallback((e) => setKeyword(e.target.value), []);
   return (

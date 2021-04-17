@@ -2356,5 +2356,9 @@
   "MESSAGE_SEARCH_GROUP_FOR_JOIN": "Nhập ID nhóm hoặc số điện thoại chủ sở hữu nhóm",
   "LABEL_SEARCHING": "Tìm",
   "MESSAGE_SEARCHING_RESULT": "Kết quả tìm được",
-  "MESSAGE_CAN_NOT_JOIN_FREE_TRAIL": "Không thể tham gia: Nhóm này chưa nâng cấp!"
+  "MESSAGE_CAN_NOT_JOIN_FREE_TRAIL": "Không thể tham gia: Nhóm này chưa nâng cấp!",
+  "LABEL_SELECTED_PERMISSION": "Quyền đã chọn",
+  "LABEL_UNSELECTED_PERMISSION": "Quyền chưa chọn",
+  "LABEL_CHANGE_PERMISSION": "Đổi quyền",
+  "LABEL_CHANGE_GROUP_PERMISSION": "Đổi nhóm quyền"
 }

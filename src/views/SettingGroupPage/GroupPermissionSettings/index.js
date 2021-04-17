@@ -14,6 +14,7 @@ const GroupPermissionSettings = () => {
   });
   const [modal, setModal] = useState(null);
   const dispatch = useDispatch();
+  const [mode, setMode] = React.useState("GROUP_PERMISSION");
   const selectDetailGroupPermission = useMemo(() => {
     if (isDefault)
       return (state) =>
@@ -128,6 +129,7 @@ const GroupPermissionSettings = () => {
         permissionsNumber,
         can_modify,
         members_assigned,
+        setMode, mode
       }}
     >
       <>
