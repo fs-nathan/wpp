@@ -20,7 +20,8 @@ const ChangePassword = props => {
         new_password: elements.new_password.value,
         re_password: elements.re_password.value
       };
-      await actionChangePassword(result);
+      const data = await actionChangePassword(result);
+      localStorage.setItem("token", data.data.accessToken);
       handleToast('success', t('IDS_WP_CHANGE_PASSWORD_SUCCESS'));
     } catch (error) {
       handleToast('error', error.message);

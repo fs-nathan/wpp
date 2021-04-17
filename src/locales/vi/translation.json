@@ -2271,5 +2271,11 @@
   "LABEL_CHAT_UPDATE_NAME_GROUP": "Đã thay đổi tên nhóm",
   "LABEL_SEARCH": "Tìm kiếm...",
   "LABEL_CHAT_CREATE_GROUP_INTRO": "{{name}} đã tạo nhóm chat",
-  "LABEL_JUST_NOW": "Vừa xong"
+  "LABEL_JUST_NOW": "Vừa xong",
+  "LABEL_SEARCH_OFFER_GROUP": "Tìm kiếm nhóm đề xuất",
+  "LABEL_TIP_IN_OFFER": "Mẹo từ chuyên gia:",
+  "LABEL_DESCRIPTION_TIP_IN_ORDER": "Tạo các nhóm đề xuất như: Sử dụng phòng họp, Tạm ứng... để phân loại các đề xuất theo từng tính chất giống nhau và giúp quản lý đề xuất dễ dàng.",
+  "CREATE_NEW_OFFER_GROUP": "Tạo mới nhóm đề xuất",
+  "LABEL_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Chưa có nhóm đề xuất nào!",
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Tạo nhóm đề xuất mới trước khi lựa chọn"
 }

@@ -69,7 +69,7 @@ export const getSummaryByGroupByKeyword = (keyword, isOfferGroupManageable, t) =
     url: Routes.OFFERBYGROUP + `/${x.id}`,
     color: "#7d99a6",
     icon: mdiEmailCheck,
-    rightIcon: (() => isOfferGroupManageable && (
+    rightIcon: (() => x.can_modify && (
       <>
         <Popover
           offer_group_id={get(x, "id")}

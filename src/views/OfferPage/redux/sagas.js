@@ -1,4 +1,4 @@
-import { CustomEventEmitter } from "constants/events";
+import { CREATE_OFFER_GROUP_SUCCESS, UPDATE_OFFER_GROUP_SUCCESS, DELETE_OFFER_GROUP_SUCCESS, CustomEventEmitter } from "constants/events";
 import moment from "moment";
 import { put } from "redux-saga/effects";
 import { apiService } from "../../../constants/axiosInstance";
@@ -39,6 +39,7 @@ export function* doCreateOfferGroup({ payload }) {
     };
     const result = yield apiService(config);
     yield put({ type: CREATE_GROUP_OFFER_SUCCESS, payload: result.data });
+    CustomEventEmitter(CREATE_OFFER_GROUP_SUCCESS);
     yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Create group offers successful", options: { variant: "success" } } })
   } catch (err) {
     yield put({ type: CREATE_GROUP_OFFER_ERROR, payload: err.message });
@@ -55,6 +56,7 @@ export function* doUpdateGroupOffer({ payload }) {
     };
     const result = yield apiService(config)
     yield put({ type: UPDATE_GROUP_OFFER_OFFERPAGE_SUCCESS, payload: result.data })
+    CustomEventEmitter(UPDATE_OFFER_GROUP_SUCCESS);
     yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Update group offers successful", options: { variant: "success" } } })
   } catch (err) {
     yield put({ type: UPDATE_GROUP_OFFER_OFFERPAGE_ERROR, payload: err.message })
@@ -142,6 +144,7 @@ export function* doDeleteGroupOffer({ payload }) {
     }
     yield apiService(config)
     yield put({ type: DELETE_GROUP_OFFER_SUCCESS, payload: id })
+    CustomEventEmitter(DELETE_OFFER_GROUP_SUCCESS);
     yield put({ type: ENQUEUE_SNACKBAR, payload: { message: "Delete group offers successful", options: { variant: "success" } } })
   } catch (err) {
     yield put({ type: ENQUEUE_SNACKBAR, payload: { message: err.message, options: { variant: "error" } } })
