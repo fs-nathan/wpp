@@ -11,9 +11,21 @@ import { getCreateModalCancelBtnTitle, getCreateModalConfirmBtnTitle, getCreateM
 export default function FormDialog({ type, open, setOpen, ...rest }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [form, setForm] = useState({ name: rest.name || "", description: rest.description || "" });
+  const [form, setForm] = useState({
+    name: rest.name || "",
+    description: rest.description || ""
+  });
   const { name, description } = form
   const { offer_group_id } = rest
+
+  React.useEffect(() => {
+    if (open && type === action.CREATE_OFFER) {
+      setForm({
+        name: "",
+        description: ""
+      })
+    }
+  }, [open]);
 
   const createGroup = () => {
     if (type === action.CREATE_OFFER) {
