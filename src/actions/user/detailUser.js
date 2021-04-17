@@ -3,6 +3,9 @@ import {
   DETAIL_USER_FAIL,
   DETAIL_USER_SUCCESS,
   DETAIL_USER_RESET,
+  CHECK_VERIFY_ACCOUNT,
+  CHECK_VERIFY_ACCOUNT_SUCCESS,
+  CHECK_VERIFY_ACCOUNT_FAIL
 } from '../../constants/actions/user/detailUser';
 
 export const detailUser = ({ userId }, quite = false) => ({
@@ -30,3 +33,17 @@ export const detailUserFail = (error, options) => ({
 export const detailUserReset = () => ({
   type: DETAIL_USER_RESET,
 });
+
+export const actionCheckVerifyAccount = () => ({
+  type: CHECK_VERIFY_ACCOUNT
+})
+
+export const actionCheckVerifyAccountFail = error => ({
+  type: CHECK_VERIFY_ACCOUNT_FAIL,
+  payload: error
+})
+
+export const actionCheckVerifyAccountSuccess = data => ({
+  type: CHECK_VERIFY_ACCOUNT_SUCCESS,
+  payload: data
+})

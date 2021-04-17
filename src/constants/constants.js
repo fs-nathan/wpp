@@ -33,6 +33,7 @@ export const SETTING_GROUP = {
   ICON_MANAGER: "icon-manager",
   ROLE_MANAGER: "role-manager",
   ORDER_DETAIL: "order-detail",
+  ACCOUNT_INTERNAL: "account-internal",
   CREATE_ORDER: "create-order",
   PAYMENT: "payment",
   LANGUAGE: "language",

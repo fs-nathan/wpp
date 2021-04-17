@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import * as images from "../../assets";
 import {
-  BrowserRouter as Router,
   Redirect,
   Route,
   Switch,
@@ -16,7 +15,6 @@ import ValidateNoLogin from "components/ValidateNoLogin/ValidateNoLogin";
 
 const MainAccount = (props) => {
   const { t } = useTranslation();
-  const history = useHistory();
   const LoginPage = loadable(() => import("../../views/AccountPage/LoginPage"), {
     fallback: <div />,
   });
@@ -42,7 +40,6 @@ const MainAccount = (props) => {
           <Scrollbars autoHide autoHideTimeout={500}>
             <div className="inner-right-content">
               <div className="main-account-container">
-                <Router>
                   <Switch>
                     <Route
                       path={Routes.LOGIN}
@@ -59,7 +56,6 @@ const MainAccount = (props) => {
                     )} />
                     <Route path={Routes.FORGOT_PASSWORD} component={ForgotPasswordPage} />
                   </Switch>
-                </Router>
               </div>
               <div className="bottom-content">
                 <a

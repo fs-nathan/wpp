@@ -2,6 +2,7 @@ import React , {useState} from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
+import ReactHtmlParser from 'react-html-parser';
 import {Button} from '@material-ui/core';
 import {
   actionVisibleDrawerMessage,
@@ -51,6 +52,8 @@ const LeftBar = ({
   profile,
   actionVisibleDrawerMessage,
   openNoticeModal,
+  collapse, 
+  setCollapse
 }) => {
   const { t } = useTranslation();
   const pathname = history.location.pathname;
@@ -84,8 +87,8 @@ const LeftBar = ({
       }
     });
   }
+  console.log(menuList, 'menu')
   const isFree = groupActive.type === "Free";
-  const [collapse,setCollapse] = useState(false);
   return (
     <div className={`left-bar-container ${collapse && 'collapse'}`} style={{ background: bgColor.color }}>
       {!isEmpty(menuList) &&
@@ -94,6 +97,7 @@ const LeftBar = ({
             <Link
               to={isFree ? "#" : el.url_redirect}
               key={idx}
+              title={collapse && t(el.name)}
               className={`menu-item ${el.isSelected ? "actived" : ""}`}
               onClick={() => {
                 if (isFree) {
@@ -102,15 +106,17 @@ const LeftBar = ({
                 onCloseDrawer();
               }}
             >
-              <img src={el.icon} alt="" className="LeftNavIcon" />
-              <span className="titleTab">{t(el.name)}</span>
+              <span className={collapse && 'LeftNavIconZoom'}>{ReactHtmlParser(el.svg_icon)}</span>
+              {/* <img src={el.icon} alt="" className={`LeftNavIcon ${collapse && 'LeftNavIconZoom'}` } /> */}
+              {!collapse && <span className="titleTab">{t(el.name)}</span>}
               {
                 el.need_bell && <BellMessage />
               }
             </Link>
           );
         })}
-        <Button onClick={()=>setCollapse(!collapse)}> <span>{collapse ? '>':'<'}</span> </Button>
+        <img src="/assets/bg_logo_menu.png" alt="" />
+        <div style={{ background: bgColor.color }} className="btn-collapse" onClick={()=>setCollapse(!collapse)}> <span>{collapse ? '>':'<'}</span> </div>
       {itemManage && (
         <Link
           to={itemManage.url_redirect}
@@ -120,7 +126,10 @@ const LeftBar = ({
           }`}
           title={itemManage.name}
         >
-          <img src={itemManage.icon} alt="" className="LeftNavIcon" />
+          <span className={collapse && 'LeftNavIconZoom'}>{ReactHtmlParser(itemManage.svg_icon)}</span>
+          {!collapse && <span className="titleTab">{t(itemManage.name)}</span>}
+
+          {/* <img src={itemManage.icon} alt="" className="LeftNavIcon" /> */}
         </Link>
       )}
     </div>

@@ -1,18 +1,33 @@
-.collapse{
-  width: 120px;
-}
+
 .left-bar-container {
   grid-area: left;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
   background: linear-gradient(45deg, rgb(51, 80, 94), rgb(76, 175, 80)) repeat
     scroll 0% 0%;
+   
   & > *:first-child {
     margin-top: 10px;
   }
   & > .menu-item-last {
     margin-top: auto;
+  }
+  .btn-collapse{
+    color: #ffffff;
+    border-radius: 50%;
+    position: absolute;
+    right: -12px;
+    z-index: 100;
+    font-weight: bold;
+    padding: 5px 5px 5px 10px;
+    top: calc(50% - 60px);
+    cursor: pointer;
+    opacity: 0;
+  }
+  &:hover .btn-collapse{
+    opacity: 1;
   }
   .menu-item {
     padding: 10px 0;
@@ -24,12 +39,23 @@
     color: #fff;
     text-decoration: none;
     position: relative;
+    opacity: 0.8;
+    svg{
+      width: 28px;
+      height: 28px;
+      fill: #fff;    }
     &.actived {
       background-color: rgba(0, 0, 0, 0.12);
+      opacity: 1;
+      svg{
+      width: 28px;
+      height: 28px;
+    }
     }
     &:hover {
       background-color: rgba(0, 0, 0, 0.12);
     }
+    
     & > *:not(:first-child) {
       margin-top: 3px;
     }
@@ -37,6 +63,11 @@
   .LeftNavIcon {
     width: 28px;
     margin-bottom: 5px;
+  }
+  .LeftNavIconZoom{
+    svg{
+      transform: translate(1.2);
+    }
   }
   .titleTab {
     font-size: 12px;
@@ -54,3 +85,4 @@
     right: 15px;
   }
 }
+

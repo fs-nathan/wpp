@@ -1,9 +1,10 @@
-import { DETAIL_USER, DETAIL_USER_FAIL, DETAIL_USER_SUCCESS } from '../../constants/actions/user/detailUser';
+import { CHECK_VERIFY_ACCOUNT, CHECK_VERIFY_ACCOUNT_FAIL, CHECK_VERIFY_ACCOUNT_SUCCESS, DETAIL_USER, DETAIL_USER_FAIL, DETAIL_USER_SUCCESS } from '../../constants/actions/user/detailUser';
 
 export const initialState = {
   data: {
     user: null,
   },
+  dateVerify: null,
   error: null,
   loading: false,
   firstTime: true,
@@ -32,6 +33,25 @@ function reducer(state = initialState, action) {
         loading: false,
         firstTime: false,
       };
+
+    case CHECK_VERIFY_ACCOUNT: 
+    return {
+      ...state,
+      loading: true
+    } 
+    case CHECK_VERIFY_ACCOUNT_SUCCESS: 
+  
+    return {
+      ...state,
+      loading: false,
+      dateVerify: action.data
+    }
+    case CHECK_VERIFY_ACCOUNT_FAIL: 
+    return {
+      ...state,
+      loading: false,
+      error: action.error
+    }
     default:
       return state;
   }

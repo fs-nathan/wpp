@@ -1,0 +1,29 @@
+.account-internal{
+    &_header{
+        display: flex;
+        justify-content: space-between;
+        padding: 0 15px;
+        border-bottom: 1px solid #ece8e8;
+        align-items: center;
+        h4{
+            font-size: 18px !important;
+        }
+    }
+    &_content{
+        padding: 50px 30px;
+        margin: 30px;
+        background-color: #f7d8cb;
+        font-size: 14px;
+        p{
+            line-height: 22px;
+        }
+    }
+    &_btn-create-account{
+        background-color: #2D88FF;
+        color: #ffffff;
+        height: 40px;
+    }
+    &_table{
+        
+    }
+}

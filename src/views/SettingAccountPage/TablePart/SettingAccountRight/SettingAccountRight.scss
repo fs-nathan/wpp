@@ -88,7 +88,7 @@
         display: flex;
         border-bottom: 1px solid #ededed;
         padding: 10px 0;
-
+        flex-wrap: wrap;
         .title-item-info {
           font-size: 14px;
           width: 25%;
@@ -99,7 +99,13 @@
             width: 85%;
           }
         }
-
+        .check_verify{
+          svg{
+            fill: #43a047;
+          background-color: #ffffff;
+          }
+          
+        }
         .value-item-info {
           text-align: right;
           width: 75%;

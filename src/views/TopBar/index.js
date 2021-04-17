@@ -24,6 +24,7 @@ import SearchModal from '../../components/SearchModal/SearchModal';
 import './TopBar.scss';
 import {isEmpty} from '../../helpers/utils/isEmpty';
 import GroupAccountModal from '../../components/GroupAccountModal/GroupAccountModal'
+import { IconVerify } from 'components/IconSvg/Verify_check';
 
 const TopBar = props => {
   const { t, i18n } = useTranslation();
@@ -31,7 +32,6 @@ const TopBar = props => {
   const [visibleGroupAccountModal, setVisibleGroupAccountModal] = useState(false);
   const [marginLeftModal, setMarginLeftModal] = useState(280);
   const [marginTopModal, setMarginTopModal] = useState(10);
-
   const handleFetchProfile = async isNotice => {
     try {
       const { data } = await getProfileService();
@@ -85,7 +85,7 @@ const TopBar = props => {
     }
     setVisibleSearch(true);
   };
-
+  
   const openGroupAccountModal = () => {
     setVisibleGroupAccountModal(true);
     handleFetchProfile(true);
@@ -268,6 +268,7 @@ const TopBar = props => {
           }
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
+          {!props.profile.is_verify ? <div className="verify_not_check">{t('IDS_WP_NOT_VERIFY_ACCOUNT')}</div>:<span className="verify_check"><IconVerify /></span>}
           <img
             title={t('IDS_WP_ACCOUNT')}
             onClick={() =>

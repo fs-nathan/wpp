@@ -129,6 +129,7 @@ function AllUsersTable({
             icon: mdiShareVariant,
             onClick: () => handleOpenModal('CREATE_ACCOUNT'),
           } : null,
+          addmember: canModify || null,
           expand: {
             bool: expand,
             toggleExpand: () => handleExpand(!expand),

@@ -41,6 +41,7 @@ export const Routes = {
   SETTING_GROUP_SETTING: "/setting-group/setting",
   SETTING_GROUP_ORDER: "/setting-group/order",
   SETTING_GROUP_CREATE_ORDER: "/setting-group/create-order",
+  SETTING_GROUP_ACCOUNT_INTERNAL: "/setting-group/account-internal",
   SETTING_GROUP_PAYMENT: "/setting-group/payment",
   CALENDAR: "/calendar",
   CALENDAR_WEEKLY: "/calendars/weekly/detail/:week/:year/:from?",

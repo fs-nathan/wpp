@@ -920,6 +920,20 @@
   "IDS_WP_MESSAGE": "Message",
   "IDS_WP_NOTICE": "Notification",
   "IDS_WP_ACCOUNT": "Account",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_TITLE": "Change account",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NOW": "Account now",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NEW": "Account new",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_PASSWORD": "Password login",
+  "IDS_WP_VERIFY_ACCOUNT_TITLE_NOTIFY": "Notify system",
+  "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY": "The system has sent the link to activate account authentication to the email",
+  "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2": "Please check your email at <strong> INBOX </strong> or <strong> SPAM </strong> to verify your account according to the instructions.",
+
+  "IDS_WP_NOT_VERIFY_ACCOUNT_NOTIFY": "Your account has not been verified. Please verify email to receive system information and get the best account protection.",
+  "IDS_WP_NOT_VERIFY_ACCOUNT": "Not verify",
+  "IDS_WP_CHANGE_ACCOUNT": "Change account",
+  "IDS_WP_VERIFY_ACCOUNT": "Verify account",
+  "IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED": "Account authenticated",
+
   "IDS_WP_LOGOUT": "Log out",
   "IDS_WP_UPGRADE_ORDER": "Upgrade account",
   "IDS_WP_VIEW_ORDER": "View orders",
@@ -2376,5 +2390,15 @@
   "LABEL_SEARCH_TASK_GROUP": "Search task group",
   "LABEL_SEARCH_PERSONAL_CATEGORY": "Search remind category",
   "LABEL_DESCRIPTION_TIP_IN_PERSONAL_CATEGORY": "Creating remind category: Customer care, Weekly metting... to classify and manage easily.",
-  "CREATE_NEW_PERSONAL_CATEGORY": "Create new remind category"
+  "CREATE_NEW_PERSONAL_CATEGORY": "Create new remind category",
+  "LABEL_ADD_MEMBER": "Add member",
+  "LABEL_ADD_MEMBER_DESCRIPTION": "Add members from the list of accounts already on the system",
+  "LABEL_CREATE_ACCOUNT_TITLE": "Create account",
+  "IDS_WP_ACCOUNT_INTERNAL": "Account internal",
+  "LABEL_CREATE_ACCOUNT_DESCRIPTION": "Add members by creating new accounts for members",
+  "IDS_WP_ACCOUNT_INTERNAL_MANAGE": "Internal account management",
+  "IDS_WP_ACCOUNT_INTERNAL_CREATE": "Create account",
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_1": "This is the function of creating an account through the Group Owner or authorized person (collectively, the Creator).",
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2": "Member will receive the login information sent by the system to the registered email including the account and password the day after the Creator (if the registration email is active and capable of receiving email sent to). \n The creator is free to manage his own accounts such as: Suspend the account, reset login password.",
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong> Note: </strong> Internal accounts are owned by the Group Owner!"
 }

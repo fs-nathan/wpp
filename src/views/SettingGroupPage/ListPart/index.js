@@ -15,6 +15,7 @@ const premissionAttr = {
   manage_info: "manage_info",
   manage_order: "manage_order",
   manage_role: "manage_role",
+  manage_user: "manage_user"
 };
 const ListPart = ({ premissions = emptyObject }) => {
   const { t } = useTranslation();
@@ -41,6 +42,10 @@ const ListPart = ({ premissions = emptyObject }) => {
         !!get(premissions, premissionAttr.manage_role) && {
           name: t("IDS_WP_ROLE"),
           url: Routes.SETTING_GROUP_ROLE_MANAGER,
+        },
+        !!get(premissions, premissionAttr.manage_user) && {
+          name: t("IDS_WP_ACCOUNT_INTERNAL"),
+          url: Routes.SETTING_GROUP_ACCOUNT_INTERNAL,
         },
       ].filter((item) => item && item !== null),
     },

@@ -61,3 +61,7 @@ export { default as bg003} from "./bg_003.png";
 export { default as bg004} from "./bg_004.png";
 export { default as ic_no_data_2021} from "./ic_no_data_2021.png";
 export { default as add_user_group} from "./15-3.add_user.png";
+export { default as bg_logo_menu} from "./bg_logo_menu.png";
+export { default as icon_add_member} from "./ic_add_member.png";
+export { default as icon_create_user} from "./ic_create_user.png";
+

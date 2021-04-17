@@ -12,15 +12,32 @@ import {
   mdiDotsVertical,
   mdiFullscreen,
   mdiFullscreenExit,
-  mdiMagnify
+  mdiMagnify,
+  mdiAccountPlus
+
 } from "@mdi/js";
+// import {
+//   desireLoadingSelector,
+//   desireUserSelector,
+//   requireLoadingSelector,
+//   requireUsersSelector
+// } from "../";
 import Icon from "@mdi/react";
 import { get, isNil } from "lodash";
+import * as images from "assets/index";
+
+import {connect} from "react-redux";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import AddUserModalPresenter from "views/DepartmentPage/Modals/AddUserModal/presenters";
 import SearchInput from "../../SearchInput";
 import { CustomTableContext } from "../index";
 import "./style.scss";
+import { desireLoadingSelector, desireUserSelector, requireLoadingSelector, requireUsersSelector } from "views/DepartmentPage/LeftPart/AddUser/selectors";
+import { searchUser, searchUserReset } from "actions/groupUser/searchUser";
+import { inviteUserJoinGroup } from "actions/groupUser/inviteUserJoinGroup";
+import CustomModal from "components/CustomModal";
+import { ImagesContent } from "views/KanbanPage/KanbanBoard/KanbanItem";
 
 export const StyledButton = ({ className = "", ...rest }) => (
   <Button
@@ -43,11 +60,12 @@ export const SearchBox = ({ className = "", ...rest }) => (
   />
 );
 
-function HeaderButtonGroup() {
+function HeaderButtonGroup({doSearchUser, desireUser, doSearchUserReset, doInviteUserJoinGroup,resetDesireUser}) {
   const { options } = React.useContext(CustomTableContext);
   const [searchAnchor, setSearchAnchor] = React.useState(null);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
-
+  const [open,setOpen] = React.useState(false);
+  const [openAddMember, setOpenAddMember] = React.useState(false);
   function handleSearchClick(evt) {
     if (searchAnchor) {
       setSearchAnchor(null);
@@ -67,7 +85,9 @@ function HeaderButtonGroup() {
       handler();
     };
   }
-
+ function handleAddMemberClick () {
+   setOpenAddMember(true);
+ }
   function handleMoreClose() {
     setMoreAnchor(null);
   }
@@ -87,6 +107,8 @@ function HeaderButtonGroup() {
             <span>{Boolean(searchAnchor) ? t("Hủy") : t("Tìm kiếm")}</span>
           </StyledButton>
         )}
+
+         
         {get(options, "subActions", []).map((subAction, index) =>
           isNil(subAction) ? null : (
             <StyledButton
@@ -113,6 +135,67 @@ function HeaderButtonGroup() {
             </StyledButton>
           )
         )}
+
+       {get(options, "addmember") && (
+         <>
+          <StyledButton onClick={handleAddMemberClick}>
+          <div>
+            <Icon
+              path={mdiAccountPlus}
+              size={1}
+              color={"rgba(0, 0, 0, 0.54)"}
+            />
+          </div>
+          <span>{t("LABEL_ADD_MEMBER")}</span>
+        </StyledButton>
+         <CustomModal
+           title={t('DMH.VIEW.DP.RIGHT.UT.ADD_USER')}
+           confirmRender={null}
+           height={"miniWide"}
+           manualClose={true}
+           maxWidth="sm"
+           open={openAddMember}
+           className="modal-add-member"
+           onCancle={()=> setOpenAddMember(false)}
+           height={`mini`}
+         >
+            <div className="modal-add-member_content">
+              <div className="modal-add-member_card" onClick={()=>{
+                setOpen(true);
+                setOpenAddMember(false)
+              }}
+                >
+                <div className="modal-add-member_card-icon">
+                  <img src={images.icon_add_member} alt=""/>
+                </div>
+                <div className="modal-add-member_card-text">
+                  <h4>{t('DMH.VIEW.DP.RIGHT.UT.ADD_USER')}</h4>
+                  <p>{t('LABEL_ADD_MEMBER_DESCRIPTION')}</p>
+                </div>
+
+              </div>
+              <div className="modal-add-member_card" onClick={()=>{setOpenAddMember(false)}}>
+                <div className="modal-add-member_card-icon">
+                <img src={images.icon_create_user} alt=""/>
+                </div>
+                <div className="modal-add-member_card-text"> 
+                  <h4>{t('LABEL_CREATE_ACCOUNT_TITLE')}</h4>
+                  <p>{t('LABEL_CREATE_ACCOUNT_DESCRIPTION')}</p>
+                </div>
+
+              </div>
+            </div>
+         </CustomModal>
+         <AddUserModalPresenter
+         open={open} setOpen={setOpen}
+         handleSearchUser={doSearchUser}
+         desireUser={desireUser}
+         handleClearDesireUsers={() => resetDesireUser()}
+         handleInviteUserJoinGroup={doInviteUserJoinGroup}
+       />
+       </>
+        )}
+
         {get(options, "expand") && (
           <StyledButton
             onClick={get(options, "expand.toggleExpand", () => null)}
@@ -211,4 +294,20 @@ function HeaderButtonGroup() {
   );
 }
 
-export default HeaderButtonGroup;
+const mapStateToProps = state => {
+  return {
+    desireUser: desireUserSelector(state),
+    desireLoading: desireLoadingSelector(state),
+    requireUsers: requireUsersSelector(state),
+    requireLoading: requireLoadingSelector(state)
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    doSearchUser: ({ info }, quite) => dispatch(searchUser({ info }, quite)),
+    doSearchUserReset: () => dispatch(searchUserReset()),
+    doInviteUserJoinGroup: ({ userId }) => dispatch(inviteUserJoinGroup({ userId })),
+  }
+};
+export default connect(mapStateToProps,mapDispatchToProps)(HeaderButtonGroup);
