@@ -32,6 +32,10 @@ const TopBar = props => {
   const [visibleGroupAccountModal, setVisibleGroupAccountModal] = useState(false);
   const [marginLeftModal, setMarginLeftModal] = useState(280);
   const [marginTopModal, setMarginTopModal] = useState(10);
+<<<<<<< HEAD
+=======
+  const [verifyAccount, setVerifyAccount] = useState(false);
+>>>>>>> 5c52f25d... feature: menu main-layout
   const handleFetchProfile = async isNotice => {
     try {
       const { data } = await getProfileService();
@@ -268,7 +272,11 @@ const TopBar = props => {
           }
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
+<<<<<<< HEAD
           {!props.profile.is_verify ? <div className="verify_not_check">{t('IDS_WP_NOT_VERIFY_ACCOUNT')}</div>:<span className="verify_check"><IconVerify /></span>}
+=======
+          {!verifyAccount ? <div className="verify_not_check">{t('IDS_WP_NOT_VERIFY_ACCOUNT')}</div>:<span className="verify_check"><IconVerify /></span>}
+>>>>>>> 5c52f25d... feature: menu main-layout
           <img
             title={t('IDS_WP_ACCOUNT')}
             onClick={() =>
