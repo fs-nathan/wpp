@@ -938,7 +938,7 @@
   "IDS_WP_DOWNLOAD": "Tải về",
   "IDS_WP_OPPS_NOT_PREVIEW_FILE": "Rất tiếc! Tài liệu không có bản xem trước trên Workplus.",
   "IDS_WP_VIEW_ORIGIN_FILE": "Xem file gốc",
-  "IDS_WP_JOINED": "Đang tham gia",
+  "IDS_WP_JOINED": "Đã tham gia",
   "IDS_WP_UPDATE_SUCCESS": "Cập nhật thành công!",
   "IDS_WP_UPDATE_ERROR": "Cập nhật thất bại!",
   "IDS_WP_ID_NOT_FOUND": "ID nhóm không chính xác",
@@ -2346,5 +2346,15 @@
   "LABEL_GROUP_PERMISSION_WARNING_2": "Nếu bạn muốn xây dựng hệ thống phân quyền riêng theo cách của bạn hãy tạo mới những nhóm quyền theo ý mình.",
   "LABEL_GROUP_PERMISSION_EXTEND_COUNT": "Mở rộng ({{count}})",
   "LABEL_SETTING_GROUP_PERMISSION": "Thiết lập nhóm quyền",
-  "LABEL_PERMISSION_FILTER": "Lọc quyền"
+  "LABEL_PERMISSION_FILTER": "Lọc quyền",
+  "LABEL_GROUP_JOINING": "Nhóm hoạt động",
+  "LABEL_GROUP_REQUIRED": "Đã gửi yêu cầu",
+  "LABEL_GROUP_INVITED": "Lời mời tham gia nhóm",
+  "LABEL_GROUP_OWNER": "Nhóm bạn sở hữu",
+  "LABEL_GROUP_JOINED": "Nhóm bạn tham gia",
+  "LABEL_WANT_TO_JOIN_GROUP": "Bạn muốn tham gia nhóm",
+  "MESSAGE_SEARCH_GROUP_FOR_JOIN": "Nhập ID nhóm hoặc số điện thoại chủ sở hữu nhóm",
+  "LABEL_SEARCHING": "Tìm",
+  "MESSAGE_SEARCHING_RESULT": "Kết quả tìm được",
+  "MESSAGE_CAN_NOT_JOIN_FREE_TRAIL": "Không thể tham gia: Nhóm này chưa nâng cấp!"
 }
