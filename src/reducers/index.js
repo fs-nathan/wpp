@@ -455,7 +455,6 @@ import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInit
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
 import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
-import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
 import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 
 const rootReducer = combineReducers({
