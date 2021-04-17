@@ -40,6 +40,7 @@ class SettingInfo extends Component {
   state = {
     mode: 'view',
     visibleCropModal: false,
+    verifyAccount: false,
     fileUpload: null,
     avatar: null,
     visible: false,
