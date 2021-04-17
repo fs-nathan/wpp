@@ -1,17 +1,28 @@
-import {Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography,} from "@material-ui/core";
+import {
+  Box,
+  Checkbox,
+  Divider,
+  Grid,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from "@material-ui/core";
 import {Alert} from "@material-ui/lab";
 import {mdiAccountKey, mdiDotsVertical, mdiDragVertical, mdiKey, mdiLockOutline, mdiFilterOutline, mdiMenuDown} from "@mdi/js";
 import Icon from "@mdi/react";
 import {CustomTableProvider} from "components/CustomTable";
 import LoadingBox from "components/LoadingBox";
 import {bgColorSelector} from "components/LoadingOverlay/selectors";
-import React, {useContext, useMemo, useState} from "react";
+import React, {useCallback, useContext, useEffect, useMemo, useState} from "react";
 import {useTranslation} from "react-i18next";
 import {useSelector} from "react-redux";
 import {StyledTableBodyCell} from "views/DocumentPage/TablePart/DocumentComponent/TableCommon";
 import {emptyArray} from "views/JobPage/contants/defaultValue";
 import {LayoutStateLess} from "views/JobPage/Layout";
-import {createMapPropsFromAttrs, loginlineParams, template} from "views/JobPage/utils";
+import {createMapPropsFromAttrs, get, loginlineParams, template} from "views/JobPage/utils";
 import AddButton from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/AddButton";
 import ListItemLayout from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/ListItemLayout";
 import {Space} from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Space";
@@ -21,7 +32,7 @@ import TasksScrollbar from "../components/TasksScrollbar";
 import UpdateGroupPermissionModal from "../components/UpdateGroupPermissionModal";
 import "./index.scss";
 import SearchBox from "../../../../components/SearchInput";
-import AddGroupPermissionModal from "../components/AddGroupPermissionModal";
+import AddGroupPermissionModal, {CustomTableBodyCell} from "../components/AddGroupPermissionModal";
 import Chip from '@material-ui/core/Chip';
 import {size} from "lodash";
 import {StyledList, StyledListItem} from "../../../../components/CustomList";
@@ -30,6 +41,8 @@ import IconButton from "@material-ui/core/IconButton";
 import UpdateInfoGroupPermissionModal from "../components/UpdateInfoGroupPermissionModal";
 import {ItemMenu} from "../components/ItemMenu";
 import {DraggableList} from "../../TablePart/SettingGroupRight/Home/components/DraggableList";
+import {RoundSearchBox} from "../components/SearchBox";
+import {useMultipleSelect} from "../../../JobPage/hooks/useMultipleSelect";
 
 const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
   const { t } = useTranslation();
@@ -100,6 +113,28 @@ const ColumnRight = () => {
     permissions = emptyArray,
     can_modify,
   } = useContext(GroupPermissionSettingsContext);
+  const allPremission = permissions.flatMap((item) =>
+    (item.permissions || emptyArray).flatMap((item) => item.permission)
+  );
+  const [keyword, setKeyword] = useState("");
+  const value = emptyArray;
+  const [select, setSelect, __, selectAll] = useMultipleSelect(
+    value.reduce(
+      (result, key) => ({
+        ...result,
+        [key]: true,
+      }),
+      {}
+    ),
+    true,
+    true
+  );
+  const onInputChange = useCallback(
+    (e) => {
+      setKeyword(e.target.value);
+    },
+    [setKeyword]
+  );
   return (
     <ColumnLayout
       title={t("Chi tiết quyền trong nhóm")}
@@ -126,73 +161,171 @@ const ColumnRight = () => {
         </Box>
       }
     >
-      <Table stickyHeader className="header-document">
-        <TableHead>
-          <TableRow>
-            <TableCell width="20px"/>
-            <TableCell width="300px" align="left">
-              {t("Tên quyền")}
-            </TableCell>
-            <TableCell align="left">{t("Mô tả")}</TableCell>
-            <TableCell width="20px" align="right"/>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {permissions.map(({ name, description }, i) => (
-            <TableRow
-              key={i}
-              className="comp_RecentTableRow comp_PermissionRow table-body-row "
-            >
-              <StyledTableBodyCell
-                style={{ paddingLeft: "20px" }}
-                className="comp_AvatarCell"
-                align="left"
-              >
-                <Icon
-                  color="#8d8d8d"
-                  style={{ width: "18px" }}
-                  path={mdiKey}
+      <Box padding={"20px"}>
+        <Box marginBottom={"10px"}>
+          <RoundSearchBox
+            onChange={() => null}
+            placeholder={t("Tìm kiếm quyền")}
+          />
+        </Box>
+        <Table stickyHeader className="header-document">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{ padding: "0px" }} width="20px">
+                <Checkbox
+                  checked={
+                    !(
+                      allPremission.findIndex((item) => !select[item]) >=
+                      0
+                    )
+                  }
+                  onChange={() => {
+                    const isAll = !(
+                      allPremission.findIndex((item) => !select[item]) >=
+                      0
+                    );
+                    if (!isAll) {
+                      selectAll(
+                        allPremission.reduce((result, v) => {
+                          result[v] = true;
+                          return result;
+                        }, {})
+                      );
+                    } else {
+                      selectAll(
+                        allPremission.reduce((result, v) => {
+                          result[v] = false;
+                          return result;
+                        }, {})
+                      );
+                    }
+                  }}
+                  color="primary"
                 />
-              </StyledTableBodyCell>
-              <StyledTableBodyCell className="comp_TitleCell" align="left">
-                <Typography
-                  title={name}
-                  noWrap
-                  style={{
-                    fontSize: "15px",
-                    maxWidth: 300,
-                    padding: "10px 10px 10px 0",
-                  }}
-                  className="comp_TitleCell__inner text-bold"
-                >
-                  <b>{name}</b>
-                </Typography>
-              </StyledTableBodyCell>
-              <StyledTableBodyCell
-                style={{ maxWidth: 300 }}
-                className="comp_TitleCell"
-                align="left"
-              >
-                <Typography
-                  title={description}
-                  className="comp_TitleCell__inner"
-                >
-                  {description}
-                </Typography>
-              </StyledTableBodyCell>
-              <StyledTableBodyCell align="right">
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                </div>
-              </StyledTableBodyCell>
+              </TableCell>
+              <TableCell width="30%" align="left">
+                {t("Tên quyền")}
+              </TableCell>
+              <TableCell align="left">{t("Mô tả")}</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {permissions.map(({ name, description }, i) => (
+              <React.Fragment key={i}>
+                <TableRow
+                  key={name}
+                  className="comp_RecentTableRow table-body-row"
+                >
+                  <CustomTableBodyCell
+                    style={{ padding: "0px" }}
+                    align="left"
+                  >
+                    <Checkbox
+                      checked={!!select[name]}
+                      onChange={() => setSelect(name)}
+                      color="primary"
+                    />
+                  </CustomTableBodyCell>
+                  <CustomTableBodyCell align="left">
+                    <Typography title={name}>
+                      {name}
+                    </Typography>
+                  </CustomTableBodyCell>
+                  <CustomTableBodyCell align="left">
+                    <Typography>{description}</Typography>
+                  </CustomTableBodyCell>
+                </TableRow>
+                <TableRow>
+                  <CustomTableBodyCell
+                    colSpan={12}
+                    style={{ padding: "5px 0px" }}
+                    align="left"
+                  >
+                    <Divider />
+                  </CustomTableBodyCell>
+                </TableRow>
+              </React.Fragment>
+            ))}
+          </TableBody>
+        </Table>
+        {/*<Table stickyHeader className="header-document">
+          <TableHead>
+            <TableRow>
+              <TableCell width="20px"/>
+              <TableCell width="300px" align="left">
+                {t("Tên quyền")}
+              </TableCell>
+              <TableCell align="left">{t("Mô tả")}</TableCell>
+              <TableCell width="20px" align="right"/>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {permissions.map(({ name, description }, i) => (
+              <TableRow
+                key={i}
+                className="comp_RecentTableRow comp_PermissionRow table-body-row "
+              >
+                <CustomTableBodyCell
+                  style={{ padding: "0px" }}
+                  align="left"
+                >
+                  <Checkbox
+                    checked={false}
+                    onChange={() => null}
+                    color="primary"
+                  />
+                </CustomTableBodyCell>
+                <StyledTableBodyCell
+                  style={{ paddingLeft: "20px" }}
+                  className="comp_AvatarCell"
+                  align="left"
+                >
+                  <Icon
+                    color="#8d8d8d"
+                    style={{ width: "18px" }}
+                    path={mdiKey}
+                  />
+                </StyledTableBodyCell>
+                <StyledTableBodyCell className="comp_TitleCell" align="left">
+                  <Typography
+                    title={name}
+                    noWrap
+                    style={{
+                      fontSize: "15px",
+                      maxWidth: 300,
+                      padding: "10px 10px 10px 0",
+                    }}
+                    className="comp_TitleCell__inner text-bold"
+                  >
+                    <b>{name}</b>
+                  </Typography>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell
+                  style={{ maxWidth: 300 }}
+                  className="comp_TitleCell"
+                  align="left"
+                >
+                  <Typography
+                    title={description}
+                    className="comp_TitleCell__inner"
+                  >
+                    {description}
+                  </Typography>
+                </StyledTableBodyCell>
+                <StyledTableBodyCell align="right">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                    }}
+                  >
+                  </div>
+                </StyledTableBodyCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>*/}
+      </Box>
     </ColumnLayout>
   );
 };

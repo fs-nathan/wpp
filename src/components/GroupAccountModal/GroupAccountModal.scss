@@ -1,0 +1,164 @@
+.view_GroupAccount_Modal___container {
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 30% 70%;
+  grid-template-areas: "side main";
+  height: 100%;
+}
+.view_GroupAccount_Modal___side-bar {
+  grid-area: side;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.view_GroupAccount_Modal___main-bar {
+  grid-area: main;
+}
+
+.view_GroupAccount_Modal > div:nth-child(3) > div {
+  overflow: hidden;
+  min-width: 60vw;
+  max-width: 70vw;
+}
+
+.view_GroupAccount_Modal .comp_CustomModal___dialog-content {
+  padding: 0;
+  height: 100%;
+}
+.view_GroupAccount_Modal {
+  &_activeMode {
+    background: #E6E7E9;
+    .MuiIconButton-root {
+      background: var(--color-primary) !important;
+      color: #fff !important;
+      .MuiIconButton-label {
+        svg > path {
+          fill: #fff !important;
+        }
+      }
+    }
+  }
+  &_joinGroup {
+    padding: 0 20px;
+    &_title {
+      font-size: 18px;
+      font-weight: 400;
+    }
+    &_searchBox {
+      padding: 10px;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      width: 100%;
+      .MuiButton-containedPrimary {
+        color: #fff;
+        background: #FF4800;
+        border-radius: 0;
+        width: 75px;
+      }
+    }
+    &_searchResult {
+      margin-top: 10px;
+      &>*:first-child {
+        margin-left: 20px;
+        font-weight: 500;
+      }
+      .view_GroupAccount_Modal__groupItem {
+        margin-left: 20px;
+      }
+    }
+  }
+}
+.view_GroupAccount_Modal__groupItem {
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  padding: 0;
+  &:hover {
+    border: 2px solid #0097FA;
+  }
+  margin: 10px 20px 20px 10px;
+  .MuiListItemText-primary {
+    font-size: 14px;
+  }
+  .MuiListItem-container {
+    width: 100%;
+  }
+  .MuiTypography-colorTextSecondary {
+    color: #0097FA;
+    font-size: 12px;
+  }
+  &_secondaryInfo {
+    display: flex;
+    align-items: center;
+    margin-top: 3px;
+    width: 80%;
+    flex-wrap: wrap;
+    &>*:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+  .MuiListItemSecondaryAction-root {
+    display: flex;
+    align-items: center;
+    &>*:not(:last-child) {
+      margin-right: 7px;
+    }
+    .MuiButton-containedPrimary {
+      background: var(--color-primary);
+      color: #fff;
+      padding: 2px 7px;
+      border-radius: 2px;
+    }
+    .MuiButton-textPrimary {
+      color: var(--color-primary);
+    }
+  }
+}
+.bg-red {
+  background: red !important;
+}
+.view_GroupAccount_Modal .view_GroupAccount_Modal___subheader {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  height: 56px;
+  padding: 10px 10px 0 10px;
+  font-weight: 500;
+}
+
+.view_GroupAccount_Modal .view_GroupAccount_Modal___subheader-item {
+  margin: 10px 0 0 12px;
+  font-weight: 500;
+}
+
+.view_GroupAccount_Modal .account-status-text {
+  margin-top: 3px;
+  background-color: #98C2D3;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 3px;
+  line-height: 16px;
+  height: 16px;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+}
+
+.view_GroupAccount_Modal .status-item-group-account {
+  height: 20px;
+  padding: 0 5px;
+  .MuiChip-labelSmall {
+    padding-left: 0;
+    padding-right: 0;
+    font-size: 11px;
+  }
+  border-radius: 3px;
+  &.pro-color {
+    background-color: #fd7e14;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  &.expire-color {
+    background-color: #a0c1d1;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+}
