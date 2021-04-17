@@ -81,7 +81,6 @@ const ModalCommon = (props) => {
 
           {props.footerAction.map((el, idx) => (
             <Button
-              autoFocus
               onClick={el.action}
               className="common-btn-modal"
               style={{

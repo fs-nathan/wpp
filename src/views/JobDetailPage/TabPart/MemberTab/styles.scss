@@ -82,30 +82,67 @@
 }
 .optionModal-container {
   .MuiDialog-paperWidthSm {
-    min-width: 300px;
+    min-width: 350px;
   }
   .btnSendMessage {
     text-transform: initial;
-    width: 150px;
+    width: 170px;
   }
   .btnLeaveWork {
     background: #FD7614;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    width: 150px;
+    height: 45px;
   }
   .memberInformation {
     margin: 15px auto;
     display: flex;
     flex-direction: column;
-    width: 180px;
+    width: 250px;
     &-item {
       display: flex;
-      margin-top: 5px;
-      margin-bottom: 5px;
+      margin-top: 10px;
+      margin-bottom: 10px;
     }
     &-itemLabel {
       width: 50%;
       font-weight: 500;
+    }
+  }
+}
+
+.customSelectBox {
+  &--paper {
+    .MuiList-root {
+      height: 140px !important;
+    }
+    .MuiPaper-rounded {
+      border-radius: 0;
+    }
+    .MuiPaper-root {
+      transform: translateY(96px) !important;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(0, 0, 0, 0.1) #f8f8f8;
+      &::-webkit-scrollbar {
+        width: 5px;
+        background-color: unset !important;
+      }
+      &::-webkit-scrollbar-thumb {
+        cursor: pointer !important;
+        min-height: 50px !important;
+        border-radius: 5px;
+      }
+      &::-webkit-scrollbar-track {
+        background-color: unset !important;
+      }
+      &:hover {
+        &::-webkit-scrollbar-thumb {
+          background-color: rgba(0, 0, 0, 0.2);
+          border-radius: 10px;
+        }
+      }
     }
   }
 }

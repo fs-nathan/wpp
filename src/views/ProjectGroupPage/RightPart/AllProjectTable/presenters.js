@@ -1,7 +1,7 @@
 import {CircularProgress, IconButton, Menu, MenuItem, Typography} from '@material-ui/core';
 import {mdiAccount, mdiCalendar, mdiCheckCircle, mdiDotsVertical, mdiDownload, mdiFilterOutline} from '@mdi/js';
 import Icon from '@mdi/react';
-import {find, get, isNil, join, remove, slice, size} from 'lodash';
+import {find, get, isNil, join, remove, size, slice} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router-dom';
@@ -24,7 +24,9 @@ import PersonPinCircleOutlinedIcon from "@material-ui/icons/PersonPinCircleOutli
 import {decodePriorityCode} from "../../../../helpers/project/commonHelpers";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
-import IntroWhenEmptyData from "./Intro";
+import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
+import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
+import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 
 const MyIcon = ({ className = '', ...props }) =>
   <Icon
@@ -58,7 +60,7 @@ function AllProjectTable({
   handleSortProject,
   handleOpenModal, bgColor,
   showHidePendings,
-  canCreate,
+  canCreate, groupID
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -89,27 +91,36 @@ function AllProjectTable({
       case 1:
         return <>
           <AccessTimeIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h4"} bold>{t("LABEL_SEE_RECENTLY")}</Typography>
+          <Typography variant={"h5"} bold>{t("LABEL_SEE_RECENTLY")}</Typography>
         </>;
       case 2:
         return <>
           <PersonPinCircleOutlinedIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h4"} bold>{t("LABEL_PERSONAL_BOARD")}</Typography>
+          <Typography variant={"h5"} bold>{t("LABEL_PERSONAL_BOARD")}</Typography>
         </>;
       default:
         return <>
           <PeopleOutlineOutlinedIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h4"} bold>{t("LABEL_WORKING_GROUP")}</Typography>
+          <Typography variant={"h5"} bold>{t("LABEL_WORKING_GROUP")}</Typography>
         </>;
+    }
+  }
+  function renderEmptyView() {
+    switch (type_data) {
+      case 2:
+        return <EmptyPersonalBoard/>;
+      default:
+        if(!isNil(groupID)) {
+          return <EmptyWorkingBoard groupID={groupID} projects={projects}/>;
+        } else return <EmptyWorkingGroup/>;
     }
   }
   return (
     <>
       <Container>
-        {size(projects.projects) === 0 && (
-          <IntroWhenEmptyData/>
-        )}
-        {size(projects.projects) > 0 && (
+        {projects.loading && <LoadingBox/>}
+        {size(projects.projects) === 0 && !projects.loading && renderEmptyView()}
+        {size(projects.projects) > 0 && !projects.loading && (
           <React.Fragment>
             <CustomTable
               options={{

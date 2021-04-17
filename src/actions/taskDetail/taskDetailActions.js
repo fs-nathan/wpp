@@ -1244,3 +1244,44 @@ export function setLocationData(location) {
         location
     };
 }
+
+export function getTaskMembers(options) {
+    return {
+        type: types.GET_TASK_MEMBERS,
+        options
+    };
+}
+
+export function getTaskMembersSuccess({members}) {
+    return {
+        type: types.GET_TASK_MEMBERS_SUCCESS,
+        members
+    };
+}
+
+export function getTaskMembersFail({error}) {
+    return {
+        type: types.GET_TASK_MEMBERS_FAILED,
+        error
+    };
+}
+
+export function threadChatCreatePrivate({memberID}) {
+    return {
+        type: types.THREAD_CHAT_CREATE_PRIVATE,
+        memberID
+    }
+}
+export function threadChatCreatePrivateSuccess({data}) {
+    return {
+        type: types.THREAD_CHAT_CREATE_PRIVATE_SUCCESS,
+        data
+    }
+}
+
+export function updateTaskStatus({task_id, status}) {
+    return {
+        type: types.UPDATE_TASK_STATUS,
+        task_id, status
+    }
+}

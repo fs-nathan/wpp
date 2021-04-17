@@ -78,7 +78,7 @@ function TabBody() {
               {t("LABEL_JOINED_USERS_COUNT", {counts: size(members)})}
             </span>
               <Typography className={"memberTabBody--joinedUsers_link"}>
-                <Link href="#" onClick={() => setOpenMemberSettingModal(true)}>
+                <Link href="#" onClick={() => handleClickPermission()}>
                   + {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
                 </Link>
               </Typography>

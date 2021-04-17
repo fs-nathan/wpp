@@ -403,7 +403,7 @@ function AddUser({
               handleCancleInvitationJoinGroup={handleCancleInvitationJoinGroup}
             />
           </StyledBox>
-          <StyledBox>
+          {/* <StyledBox>
             <ColorTypo bold>
               {t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQS')}{` (${requireUsers.users.length})`}
             </ColorTypo>
@@ -415,7 +415,7 @@ function AddUser({
               handleAcceptRequirementJoinGroup={handleAcceptRequirementJoinGroup}
               handleRejectRequirementJoinGroup={handleRejectRequirementJoinGroup}
             />
-          </StyledBox>
+          </StyledBox> */}
         </LoadingOverlay>
       </Body>
     </Container>

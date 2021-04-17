@@ -64,7 +64,7 @@ function ProjectSetting({
     setNotification(get(status.status, 'notification', true) === true ? 1 : 0);
     setPinOnBoard(get(status.status, 'is_pin_on_personal_board', false));
   }, [status]);
-  console.log(status);
+
   React.useEffect(() => {
     const fail = () => {
       setMask(-1);

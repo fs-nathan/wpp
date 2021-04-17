@@ -1,5 +1,6 @@
-import {CircularProgress, IconButton, Menu, MenuItem} from '@material-ui/core';
-import {mdiAccountPlus, mdiDotsVertical} from '@mdi/js';
+import {CircularProgress, IconButton, Menu, MenuItem, Badge, Button} from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
+import {mdiAccountPlus, mdiDotsVertical, mdiShareVariant} from '@mdi/js';
 import Icon from '@mdi/react';
 import {find, get, isNil} from 'lodash';
 import React from 'react';
@@ -20,11 +21,7 @@ const TooltipBody = ({ className = '', state, ...props }) =>
     {...props}
   />
 
-/*const NewUserBadge = ({ className = '', ...props }) =>
-  <Badge
-    className={`view_Department_AllUserTalbe___user-badge ${className}`}
-    {...props}
-  />*/
+
 
 const PermissionButton = ({
   handleOpenMenu,
@@ -99,13 +96,11 @@ function AllUsersTable({
   handleOpenModal,
   handleVisibleDrawerMessage,
 }) {
-
-  const history = useHistory();
   const { t } = useTranslation();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
-  const [menuMemberAnchorEl, setMenuMemberAnchorEl] = React.useState(null);
+  const history = useHistory();
 
   function doOpenMenu(anchorEl, user) {
     setMenuAnchorEl(anchorEl);
@@ -130,25 +125,9 @@ function AllUsersTable({
                 max: maxUser,
               })}
             </SubTitle>,
-          /*subActions: canModify ? [{
-            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_USER'),
-            icon: () => hasRequirement
-              ? <NewUserBadge badgeContent={'N'}>
-                <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />
-              </NewUserBadge>
-              : <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.54)'} />,
-            onClick: () => {
-              handleVisibleDrawerMessage({
-                type: DRAWER_TYPE.ADD_USER,
-                anchor: 'left'
-              })
-            },
-            noExpand: true,
-          }] : [],*/
-          mainAction: canModify ? {
-            label: t('DMH.VIEW.DP.RIGHT.UT.ADD_ACC'),
-            icon: mdiAccountPlus,
-            onClick: (evt) => setMenuMemberAnchorEl(evt.currentTarget),
+          mainAction: canModify ? {          
+            icon: mdiShareVariant,
+            onClick: () => handleOpenModal('CREATE_ACCOUNT'),
           } : null,
           expand: {
             bool: expand,
@@ -308,32 +287,6 @@ function AllUsersTable({
             {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
           </MenuItem>
         )}
-      </Menu>
-      <Menu
-        id="simple-menu-2"
-        anchorEl={menuMemberAnchorEl}
-        open={Boolean(menuMemberAnchorEl)}
-        onClose={() => setMenuMemberAnchorEl(null)}
-        transformOrigin={{
-          vertical: -30,
-          horizontal: 'right',
-        }}
-      >
-        <MenuItem onClick={() => {
-          handleVisibleDrawerMessage({
-            type: DRAWER_TYPE.ADD_USER,
-            anchor: 'left'
-          });
-          setMenuMemberAnchorEl(null);
-        }}>
-          {t("LABEL_ADD_MEMBER_TO_GROUP")}
-        </MenuItem>
-        <MenuItem onClick={() => {
-          handleOpenModal('CREATE_ACCOUNT');
-          setMenuMemberAnchorEl(null);
-        }}>
-          {t("LABEL_INVITE_MEMBER_OUTSIDE")}
-        </MenuItem>
       </Menu>
     </Container>
   )

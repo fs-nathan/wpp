@@ -47,7 +47,7 @@ function CreateProjectGroup({ open, setOpen, projectGroupId = null , work_types 
               <Icon path={mdiNotePlusOutline} size={2} />
             </div>
             <div>
-              <span>{`${t("IDS_WP_ADD")}`}</span>
+              <span>{`${t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.TITLE")}`}</span>
               <span>{t("DMH.VIEW.PGP.MODAL.NEWPG.CREATE.DESC")}</span>
             </div>
           </ButtonCase>

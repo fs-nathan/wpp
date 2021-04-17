@@ -1,0 +1,71 @@
+.comp_GroupPermissionSettings__List
+  .comp_CustomList___list-item
+  .MuiIconButton-root {
+}
+.comp_GroupPermissionSettings__List
+  .comp_CustomList___list-item:hover
+  .MuiIconButton-root {
+  /* display: unset; */
+}
+.comp_CustomList___list-item {
+  padding: 10px 15px;
+}
+.comp_GroupPermissionSettings__List .comp_CustomList___list-item svg {
+  color: rgb(141, 141, 141) !important;
+}
+.onHover .onHover__show {
+  display: none;
+}
+.onHover .onHover__hide {
+  display: block;
+}
+.onHover:hover .onHover__show {
+  display: block;
+}
+.onHover:hover .onHover__hide {
+  display: none;
+}
+.comp_LeftSideContainer___header {
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.comp_GroupPermissionSettings__List {
+  &_GuidelineWrapper {
+    padding: 10px;
+    &>*:not(:last-child) {
+      margin-bottom: 10px;
+    }
+    .MuiAlert-standardInfo {
+      background: #E5F4FE;
+      border: 1px solid #CFE5F4;
+    }
+    .MuiAlert-standardError {
+      background: #FFE7F1;
+      border: 1px solid #FBDAE8;
+    }
+    &_content {
+      margin-left: -30px;
+      display: flex;
+      flex-direction: column;
+      margin-top: 7px;
+    }
+  }
+  &Menu {
+    margin-top: 5px;
+    .MuiListItem-root {
+      cursor: pointer;
+      padding-top: 12px;
+      padding-bottom: 12px;
+      &:hover {
+        background: #e4edfa;
+      }
+      .MuiListItemText-root {
+        span {
+          font-weight: 500;
+        }
+      }
+    }
+    &_active {
+      background: #e4edfa;
+    }
+  }
+}

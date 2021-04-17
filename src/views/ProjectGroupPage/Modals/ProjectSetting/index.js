@@ -6,7 +6,7 @@ import { updateStatusView } from 'actions/project/setting/updateStatusView';
 import { updateNotificationSetting } from "actions/project/setting/updateNotificationSetting";
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import { useTimes } from 'components/CustomPopover';
-import { get } from 'lodash';
+import { get, isNil } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -25,7 +25,7 @@ function ProjectSetting({
   doGetPermissionViewDetailProject,
   doReload, doUpdateNotificationSetting,
   projectGroupId = undefined,
-  localOption,
+  localOption, type_data = null
 }) {
 
   const times = useTimes();
@@ -45,13 +45,12 @@ function ProjectSetting({
   }, [curProject])
 
   React.useEffect(() => {
-    if (curProject) {
+    if (curProject && !isNil(curProject.id)) {
       doDetailStatus({
         projectId: get(curProject, 'id'),
       });
     }
-    // eslint-disable-next-line
-  }, [curProject]);
+  }, [curProject, doDetailStatus]);
 
   return (
     <ProjectSettingPresenter
@@ -67,6 +66,7 @@ function ProjectSetting({
         timeEnd: get(timeRange, 'timeEnd')
           ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
           : undefined,
+        type_data: type_data
       }, get(curProject, 'id'))}
       status={status}
       canChange={{

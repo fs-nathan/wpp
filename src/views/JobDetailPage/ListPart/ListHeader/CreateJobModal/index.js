@@ -94,7 +94,6 @@ function CreateJobModal(props) {
     end_date: DEFAULT_DATE_TEXT,
     type_assign: DEFAULT_ASSIGN,
     priority: DEFAULT_PRIORITY_ID,
-    // group_task: DEFAULT_GROUP_TASK_VALUE,
     priorityLabel: DEFAULT_PRIORITY,
     assignValue: DEFAULT_ASSIGN
   };
@@ -132,8 +131,6 @@ function CreateJobModal(props) {
       updateData.start_time = undefined;
       updateData.end_time = undefined;
     }
-    // dispatch(updateNameDescriptionTask(dataNameDescription));
-    // console.log(data)
     switch (props.editMode) {
       case EDIT_MODE.NAME_DES:
         dispatch(updateNameDescription(taskId, data.name, updateData.description));
@@ -343,13 +340,6 @@ function CreateJobModal(props) {
       isFunction(get(props, 'doCreateTask'))
         ? get(props, 'doCreateTask')({ data, projectId: projectId })
         : dispatch(createTask({ data, projectId: projectId }));
-      // Clear temporary data
-      // setDataMember(DEFAULT_DATA);
-      // Close modal
-      // handleClose();
-      // } else {
-      // Alert user
-      // alert('Bạn cần nhập tên công việc');
     }
   };
 

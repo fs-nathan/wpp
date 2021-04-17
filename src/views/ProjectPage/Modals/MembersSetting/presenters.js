@@ -1,5 +1,20 @@
-import { Button, CircularProgress, IconButton, ListItemText, ListSubheader, Menu, MenuItem, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-import { mdiAccountConvert, mdiAccountMinus, mdiAlertCircleOutline, mdiCheckCircle, mdiDotsVertical, mdiMenuRight } from '@mdi/js';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  IconButton,
+  ListItemText,
+  ListSubheader,
+  Menu,
+  MenuItem, Radio,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography
+} from '@material-ui/core';
+import { mdiFlash, mdiDotsVertical, mdiMenuDown, mdiAccountKey, mdiAccountMinusOutline } from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
@@ -7,7 +22,7 @@ import { Primary, Secondary, StyledList, StyledListItem } from 'components/Custo
 import CustomModal from 'components/CustomModal';
 import SearchInput from 'components/SearchInput';
 import { ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, UPDATE_STATE_JOIN_TASK } from 'constants/events';
-import { get } from 'lodash';
+import { get, size } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
@@ -85,14 +100,6 @@ const AddButton = ({ className = '', disabled, ...props }) =>
     {...props}
   />;
 
-const CustomMenuItem = ({ className = '', selected, ...props }) =>
-  <MenuItem
-    className={`${selected
-      ? 'view_Project_MemberSetting_Modal___menu-item-selected'
-      : 'view_Project_MemberSetting_Modal___menu-item'} ${className}`}
-    {...props}
-  />;
-
 const StyledPrimary = ({ className = '', ...props }) =>
   <Primary
     className={`view_Project_MemberSetting_Modal___primary ${className}`}
@@ -123,11 +130,6 @@ const RightHeader = ({ className = '', ...props }) =>
     {...props}
   />
 
-const LeftHeader = ({ className = '', ...props }) =>
-  <p
-    className={`view_Project_MemberSetting_Modal___left-header ${className}`}
-    {...props}
-  />
 
 const CustomList = ({ className = '', ...props }) =>
   <StyledList
@@ -252,11 +254,8 @@ function MemberSetting({
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [curMemberSetting, setCurMemberSetting] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
-
+  const [anchorAssign, setAnchorAssign] = React.useState(null);
   const { t } = useTranslation();
-
-  const colors = useSelector(state => state.setting.colors)
-  const bgColor = colors.find(item => item.selected === true);
 
   React.useEffect(() => {
     const fail = () => {
@@ -318,21 +317,26 @@ function MemberSetting({
       columns={2}
       loading={members.loading || loading}
       left={{
-        title: () => <LeftHeader>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.TITLE")}</LeftHeader>,
+        title: () => null,
         content: () =>
           <LeftContainer>
             <Banner>
+              <Button
+                  variant={"contained"} color={"primary"} disableElevation
+                  className={"view_Project_MemberSetting_Modal___buttonAddMembers"}
+              >
+                {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
+              </Button>
+              <HelperText>
+                <span>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.HELPER")}</span>
+              </HelperText>
               <SearchInput
                 fullWidth
                 placeholder={t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.SEARCH")}
-                value={searchPatern}
+                value={searchPatern} style={{background: "#fff"}}
                 onChange={evt => setSearchPatern(evt.target.value)}
               />
             </Banner>
-            <HelperText>
-              <Icon path={mdiAlertCircleOutline} size={1} />
-              <span>{t("DMH.VIEW.PP.MODAL.MEMBER.LEFT.HELPER")}</span>
-            </HelperText>
             <ListContainer>
               {members.free.map(room => (
                 <UserFreeRoomList
@@ -346,9 +350,15 @@ function MemberSetting({
           </LeftContainer>,
       }}
       right={{
-        title: () => <RightHeader>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.TITLE")}</RightHeader>,
+        title: () => null,
         content: () =>
           <RightContainer>
+            <RightHeader>
+              {t("LABEL_WORKING_BOARD_MEMBERS")}
+              <Typography variant={"body2"} color={"secondary"} style={{marginTop: "5px"}}>
+                {t("LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT", {count: size(members.added)})}
+              </Typography>
+            </RightHeader>
             <Table>
               <StyledTableHead>
                 <StyledRow>
@@ -379,49 +389,34 @@ function MemberSetting({
                           isAdmin={get(member, 'is_admin', false)}
                           isNotEmpty={(get(member, 'is_admin', false) || get(member, 'group_permission_name'))}
                         >
+                          <Icon path={mdiAccountKey} size={0.8} color={"rgba(0,0,0,0.54)"} className={"permission-icon"}/>
                           {
                             (get(member, 'is_admin', false) || get(member, 'group_permission_name'))
                               ? <>
                                 <span>{get(member, 'group_permission_name')}</span>
-                                {get(member, 'is_admin', false) === false && <Icon path={mdiMenuRight} size={0.7} color={'#222'} />}
+                                {get(member, 'is_admin', false) === false && <Icon path={mdiMenuDown} size={0.8} color={'#222'} />}
                               </>
-                              : <>
-                                <span
-                                  style={{
-                                    backgroundColor: bgColor.color,
-                                  }}>+</span>
-                                <span>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PER")}</span>
-                              </>
+                              : <span>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PER")}</span>
                           }
                         </PermissionBox>)}
                     </TableCell>
                     <TableCell width='25%'>
                       {get(member, 'is_in_group', false) &&
-                        (<RolesBox>
-                          {get(member, 'roles', []).map(role => (
-                            <p key={get(role, 'id')}>{get(role, 'name', '')}</p>
-                          ))}
-                          <RoleButton
-                            size='small'
-                            onClick={evt => handleOpenModal('ROLE', {
-                              curMemberId: get(member, 'id'),
-                            })}
-                          >
-                            <span
-                              style={{
-                                backgroundColor: bgColor.color,
-                              }}>+</span>
-                            <span>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ADD")}</span>
-                          </RoleButton>
-                        </RolesBox>)}
+                      <RolesBox onClick={() => handleOpenModal('ROLE', {curMemberId: get(member, 'id')})}>
+                        <span>{get(member, "role.name", t("LABEL_SET_MEMBER_ROLE"))}</span>
+                        <Icon path={mdiMenuDown} size={0.8} color={'#222'} />
+                      </RolesBox>
+                      }
                     </TableCell>
                     <TableCell width='25%'>
                       {get(member, 'is_in_group', false)
-                        ? get(member, 'join_task_status_code') === 0
-                          ? t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")
-                          : get(member, 'join_task_status_code') === 1
-                            ? t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")
-                            : ""
+                        ? <RolesBox onClick={(evt) => {
+                          setCurMemberSetting(member);
+                          setAnchorAssign(evt.currentTarget);
+                        }}>
+                          <span>{get(member, 'join_task_status_code') === 0 ? t("LABEL_AUTO") : t("LABEL_MANUAL")}</span>
+                          <Icon path={mdiMenuDown} size={0.8} color={'#222'} />
+                        </RolesBox>
                         : <span style={{ color: 'red' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.LEA")}</span>}
                     </TableCell>
                     <TableCell width='5%'>
@@ -441,65 +436,94 @@ function MemberSetting({
               keepMounted
               open={Boolean(anchorEl)}
               onClose={evt => setAnchorEl(null)}
-              transformOrigin={{
-                vertical: -30,
-                horizontal: 'right',
-              }}
+              anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+              transformOrigin={{vertical: -70, horizontal: "right"}}
+              className={"memberWorkingBoard-moreSetting"}
             >
-              {
-                get(curMemberSetting, 'is_in_group', false) && (
-                  <MenuItem
-                    className={`${get(curMemberSetting, 'join_task_status_code') === 1
-                      ? 'view_Project_MemberSetting_Modal___menu-item-selected'
-                      : 'view_Project_MemberSetting_Modal___menu-item'}`}
-                    onClick={evt => {
-                      setAnchorEl(null);
-                      handleUpdateStateJoinTask(curMemberSetting, 1);
-                    }}
-                  >
-                    <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.ALL")}
-                  </MenuItem>
-                )
-              }
-              {
-                get(curMemberSetting, 'is_in_group', false) && (
-                  <MenuItem
-                    className={`${get(curMemberSetting, 'join_task_status_code') === 0
-                      ? 'view_Project_MemberSetting_Modal___menu-item-selected'
-                      : 'view_Project_MemberSetting_Modal___menu-item'}`}
-                    onClick={evt => {
-                      setAnchorEl(null);
+              {get(curMemberSetting, "is_in_group", false) && (
+                <Box className={"memberWorkingBoard-moreSetting-item"}>
+                  <Box className={"memberWorkingBoard-moreSetting-item__Header"}>
+                    <Icon path={mdiFlash} size={1} color={"rgba(0,0,0,0.54)"}/>
+                    <Typography variant={"h6"}>{t("LABEL_QUICK_WORKING_ASSIGN")}</Typography>
+                  </Box>
+                  <Box className={"memberWorkingBoard-moreSetting-item__Body"}>
+                    <Typography variant={"body1"} color={"textSecondary"}>{t("LABEL_QUICK_WORKING_ASSIGN_DES")}</Typography>
+                    <Button
+                      color="primary" variant={"contained"} disableElevation
+                      onClick={() => {
+                        setAnchorEl(null);
+                        handleAssignMemberToAllTask(curMemberSetting);
+                      }}
+                    >
+                      {t("LABEL_QUICK_ASSIGN")}
+                    </Button>
+                  </Box>
+                </Box>
+              )}
+              {get(curMemberSetting, "can_ban", false) && (
+                <Box className={"memberWorkingBoard-moreSetting-item"}>
+                  <Box className={"memberWorkingBoard-moreSetting-item__Header"}>
+                    <Icon path={mdiAccountMinusOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
+                    <Typography variant={"h6"}>{t("LABEL_CHAT_TASK_LOAI_TRU")}</Typography>
+                  </Box>
+                  <Box className={"memberWorkingBoard-moreSetting-item__Body"}>
+                    <Typography variant={"body1"} color={"textSecondary"}>{t("LABEL_REMOVE_MEMBER_WORKING_BOARD_DES")}</Typography>
+                    <Button
+                      color={"secondary"} variant={"contained"} disableElevation
+                      onClick={() => {
+                        setAnchorEl(null);
+                        handleRemoveMember(curMemberSetting);
+                      }}
+                    >
+                      {t("LABEL_DELETE")}
+                    </Button>
+                  </Box>
+                </Box>
+              )}
+            </Menu>
+            <Menu
+              anchorEl={anchorAssign}
+              keepMounted
+              open={Boolean(anchorAssign)}
+              onClose={evt => setAnchorAssign(null)}
+              anchorOrigin={{vertical: 'bottom', horizontal: 'center'}}
+              transformOrigin={{vertical: -45, horizontal: "right"}}
+              className={"memberWorkingBoard-moreSetting"}
+            >
+              <Typography variant={"h6"} style={{marginLeft: 7}}>
+                {t("LABEL_CHAT_TASK_HINH_THUC_GIAO_VIEC")}
+              </Typography>
+              <Box className={"memberWorkingBoard-moreSetting-item"}>
+                <Box className={"memberWorkingBoard-moreSetting-item__Header"}>
+                  <Radio
+                    checked={get(curMemberSetting, "join_task_status_code") === 0}
+                    style={{marginRight: 0}}
+                    onChange={() => {
+                      setAnchorAssign(null);
                       handleUpdateStateJoinTask(curMemberSetting, 0);
                     }}
-                  >
-                    <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.SEL")}
-                  </MenuItem>
-                )
-              }
-              {
-                get(curMemberSetting, 'is_in_group', false) && (
-                  <MenuItem
-                    className="view_Project_MemberSetting_Modal___menu-item"
-                    onClick={evt => {
-                      setAnchorEl(null);
-                      handleAssignMemberToAllTask(curMemberSetting);
+                  />
+                  <Typography variant={"h6"}>{t("LABEL_AUTO")}</Typography>
+                </Box>
+                <Box className={"memberWorkingBoard-moreSetting-item__Body"} style={{marginLeft: 37}}>
+                  <Typography variant={"body1"} color={"textSecondary"}>{t("LABEL_ASSIGN_AUTO_DES")}</Typography>
+                </Box>
+              </Box>
+              <Box className={"memberWorkingBoard-moreSetting-item"}>
+                <Box className={"memberWorkingBoard-moreSetting-item__Header"}>
+                  <Radio
+                    checked={get(curMemberSetting, "join_task_status_code") === 1} style={{marginRight: 0}}
+                    onChange={() => {
+                      setAnchorAssign(null);
+                      handleUpdateStateJoinTask(curMemberSetting, 1);
                     }}
-                  >
-                    <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.PIC")}
-                  </MenuItem>
-                )
-              }
-              {get(curMemberSetting, 'can_ban', false) && (
-                <MenuItem
-                  className="view_Project_MemberSetting_Modal___menu-item"
-                  onClick={evt => {
-                    setAnchorEl(null);
-                    handleRemoveMember(curMemberSetting);
-                  }}
-                >
-                  <Icon path={mdiCheckCircle} size={0.7} /> {t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.BAN")}
-                </MenuItem>
-              )}
+                  />
+                  <Typography variant={"h6"}>{t("LABEL_MANUAL")}</Typography>
+                </Box>
+                <Box className={"memberWorkingBoard-moreSetting-item__Body"} style={{marginLeft: 37}}>
+                  <Typography variant={"body1"} color={"textSecondary"}>{t("LABEL_ASSIGN_MANUAL_DES")}</Typography>
+                </Box>
+              </Box>
             </Menu>
           </RightContainer>,
       }}

@@ -5,9 +5,13 @@
 .view_Project_MemberSetting_Modal___list {
   margin-bottom: 20px;
 }
-
+.view_Project_MemberSetting_Modal___buttonAddMembers {
+  width: 100%;
+  color: #fff;
+  margin-bottom: 20px;
+  height: 45px;
+}
 .view_Project_MemberSetting_Modal___list-subheader {
-  background-color: #fff;
   display: flex;
   align-items: center;
   padding: 5px 0;
@@ -37,6 +41,7 @@
 .view_Project_MemberSetting_Modal___banner {
   display: flex;
   align-items: center;
+  flex-direction: column;
   justify-content: space-between;
   width: unset;
   margin: 15px 15px 15px 24px;
@@ -77,23 +82,20 @@
 }
 
 .view_Project_MemberSetting_Modal___roles-box {
-  height: 100%;
+  font-size: 12px;
+  border-radius: 3px;
+  padding: 4px 10px;
+  background: #f7f7f7;
+  width: 90px;
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   align-items: center;
-
-  &>* {
-    margin: 3px 5px 0 0;
-    padding: 2px 3px;
+  &:hover {
+    cursor: pointer;
+    background: #eee;
   }
-
-  &>p {
-    color: #222;
-    font-size: 12px;
-    border-radius: 2px;
-    padding: 2px 8px;
-    background: #ff98004f;
-    width: max-content;
+  &:active {
+    background: #ddd;
   }
 }
 
@@ -177,6 +179,7 @@
 }
 
 .view_Project_MemberSetting_Modal___right-container {
+  padding: 0 15px;
   &>* {
     &:nth-child(1) {
       font-size: 14px;
@@ -196,6 +199,7 @@
 }
 
 .view_Project_MemberSetting_Modal___right-header {
+  text-transform: unset !important;
   @include view_Project_MemberSetting_Modal___sub-header;
 }
 
@@ -208,14 +212,17 @@
 @mixin view_Project_MemberSetting_Modal___permission-box {
   font-size: 12px;
   border-radius: 2px;
-  padding: 2px 8px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background: #fff;
-  width: max-content;
+  padding: 4px 10px;
+  background: #f7f7f7;
+  width: 90px;
   display: flex;
   align-items: center;
-  width: 90px;
-
+  &>*:first-child {
+    flex: none;
+  }
+  &>*:nth-child(2) {
+    flex: 1;
+  }
   &:hover {
     cursor: pointer;
     background: #eee;
@@ -223,6 +230,9 @@
 
   &:active {
     background: #ddd;
+  }
+  .permission-icon {
+    margin-right: 5px;
   }
 }
 
@@ -304,10 +314,8 @@
   align-items: flex-start;
   justify-content: space-between;
   width: unset;
-  margin: 15px 15px 15px 24px;
   border-bottom: 1px solid #efefef;
-  padding-bottom: 5px;
-
+  margin-bottom: 15px;
   &>*:not(:first-child) {
     margin-left: 5px;
   }
@@ -317,4 +325,43 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.view_Project_MemberSetting_Modal___left-container {
+  background: #f1f2f4;
+}
+.comp_CustomModal___two-columns-container-w-lg > :first-child {
+  background: #f1f2f4;
+}
+.memberWorkingBoard-moreSetting {
+  .MuiPaper-root {
+    padding: 10px 15px 5px 15px;
+    width: 310px;
+  }
+  &-item {
+    margin-bottom: 15px;
+    .MuiRadio-colorSecondary.Mui-checked {
+      color: var(--color-primary);
+    }
+    &__Header {
+      display: flex;
+      align-items: center;
+      &>*:first-child {
+        margin-right: 10px;
+      }
+      .MuiTypography-h6 {
+        font-size: 1.10rem;
+      }
+    }
+    &__Body {
+      margin-left: 30px;
+      .MuiButton-contained {
+        color: #fff;
+        width: 150px;
+        margin-top: 15px;
+      }
+      .MuiButton-containedPrimary {
+        background: var(--color-primary);
+      }
+    }
+  }
 }

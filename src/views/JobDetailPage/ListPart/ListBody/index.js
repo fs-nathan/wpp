@@ -1,16 +1,26 @@
-import { List, Select, MenuItem } from '@material-ui/core';
-import { filterNoGroupTaskByType, filterTaskByType, searchNoGroupTaskByName, searchTaskByTaskName } from 'helpers/jobDetail/arrayHelper';
-import React, { useEffect, useState, useRef } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import {List, Popover, Typography} from '@material-ui/core';
+import {
+  filterNoGroupTaskByType,
+  filterTaskByType,
+  searchNoGroupTaskByName,
+  searchTaskByTaskName
+} from 'helpers/jobDetail/arrayHelper';
+import React, {useEffect, useRef, useState} from 'react';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { taskIdSelector } from '../../selectors';
-import { listTaskDataTypes } from '../ListHeader/CreateJobSetting';
+import {taskIdSelector} from '../../selectors';
+import {listTaskDataTypes} from '../ListHeader/CreateJobSetting';
 import ListBodyItem from './ListBodyItem';
 import ListBodySubHeader from './ListBodySubHeader';
 import './styles.scss';
-import { clearFocusTaskGroup } from 'actions/taskDetail/taskDetailActions';
+import {clearFocusTaskGroup} from 'actions/taskDetail/taskDetailActions';
+import {Icon} from "@mdi/react";
+import {mdiMenuDown} from '@mdi/js';
+import {getViewAllMessage} from "../../../../components/Drawer/DrawerService";
+import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
+import {map, flatten} from "lodash";
 
 const StyledList = styled(List)`
   & > li {
@@ -27,15 +37,6 @@ const Body = styled(Scrollbars)`
   height: 100%;
 `;
 
-const CustomSelect = styled(Select)`
-  &:before {
-    display: none;
-  }
-  .MuiSelect-selectMenu:focus {
-    background: none;
-  }
-`;
-
 function ListBody() {
   const { t } = useTranslation();
   const scrollRef = useRef();
@@ -43,72 +44,119 @@ function ListBody() {
 
   const taskId = useSelector(taskIdSelector);
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
-  const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  //const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  const [listDataNotRoom, setListDataNotRoom] = React.useState([]);
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const searchKey = useSelector(state => state.taskDetail.listDetailTask.searchKey);
   const focusId = useSelector(state => state.taskDetail.detailTask.focusId);
-
-  const [data, setData] = useState([])
+  const [selectedFilter, setSelectedFilter] = React.useState(0);
+  const [anchorElFilterControl, setAnchorElFilterControl] = React.useState(null);
+  const [data, setData] = useState([]);
+  const [customListTaskDataType, setCustomListTaskDataType] = React.useState(listTaskDataType);
 
   useEffect(() => {
-    if (listTaskDataType === listTaskDataTypes[1]) {
-      setData(filterTaskByType(searchTaskByTaskName(listTaskDetail, searchKey), filterTaskType))
+    if (selectedFilter === 0) {
+      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), filterTaskType));
+      setCustomListTaskDataType(listTaskDataTypes[0]);
+    } else if(selectedFilter === 1) {
+      setData(filterTaskByType(searchTaskByTaskName(listTaskDetail, searchKey), filterTaskType));
+      setCustomListTaskDataType(listTaskDataTypes[1]);
     } else {
-      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), filterTaskType))
+      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), 6));
+      setCustomListTaskDataType(listTaskDataTypes[0]);
     }
-  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey])
+  }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey, selectedFilter]);
+
+  React.useEffect(() => {
+    setListDataNotRoom(flatten(map(listTaskDetail, function (group) {
+      return group.tasks;
+    })));
+  }, [listTaskDetail]);
 
   useEffect(() => {
-    let rqId;
     if (focusId) {
       const ele = document.getElementById(focusId)
       if (ele) {
-        // console.log('focusId', focusId)
-        rqId = setTimeout(function () {
+        setTimeout(function () {
           scrollRef.current.scrollTop(ele.offsetTop)
           dispatch(clearFocusTaskGroup());
         }, 10)
       }
     }
-    return () => {
-      // console.log('focusTopId clearTimeout')
-      // clearTimeout(rqId);
+  });
+
+  function renderTitleSelectedFilter() {
+    switch (selectedFilter) {
+      case 0:
+        return t("IDS_WP_JOB");
+      case 1:
+        return t("LABEL_JOBS_AND_GROUP");
+      case 2:
+        return t("LABEL_DISCUSS_UNREAD");
+      default:
+        return;
     }
-  })
+  }
+  function handleSelectFilter(type) {
+    setSelectedFilter(type);
+    setAnchorElFilterControl(null);
+  }
+  const handleViewAll = async () => {
+    await getViewAllMessage();
+  }
+
   return (
     <Body className="listJobBody"
       ref={scrollRef}
       renderView={props => <div {...props} className="listJobBody--container" />}
       autoHide autoHideTimeout={500} autoHideDuration={200}>
-      {listTaskDataType === listTaskDataTypes[1] ? data.map((item, key) => {
+      <div className={"listJobBody--taskControlTop"}>
+        <div className={"listJoBody--taskControlTop_left"}>
+          <div className={"customSelectBox"} onClick={(evt) => setAnchorElFilterControl(evt.currentTarget)}>
+            {renderTitleSelectedFilter()}
+            <Icon path={mdiMenuDown} size={1.5} color={"rgba(0,0,0,0.54)"}/>
+          </div>
+        </div>
+        <div className={"listJobBody--taskControlTop_right"} onClick={() => handleViewAll().then(() => {
+          SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+        })}>
+          <span className={"mark-as-read"}>{t("LABEL_MARK_AS_READ")}</span>
+        </div>
+        <Popover
+          open={Boolean(anchorElFilterControl)} className={"listJobBody--taskControlTop-popover"}
+          anchorEl={anchorElFilterControl} elevation={1}
+          onClose={() => setAnchorElFilterControl(null)}
+          anchorOrigin={{vertical: 'bottom', horizontal: 'left'}}
+          transformOrigin={{vertical: 'top', horizontal: 'left'}}
+        >
+          <Typography
+            variant={"body1"} className={`listJobBody--taskControlTop-popoverItem ${selectedFilter === 0 && "active"}`}
+            onClick={() => handleSelectFilter(0)}
+          >
+            {t("IDS_WP_JOB")}
+          </Typography>
+          <Typography
+            variant={"body1"} className={`listJobBody--taskControlTop-popoverItem ${selectedFilter === 1 && "active"}`}
+            onClick={() => handleSelectFilter(1)}
+          >
+            {t("LABEL_JOBS_AND_GROUP")}
+          </Typography>
+          <Typography
+            variant={"body1"} className={`listJobBody--taskControlTop-popoverItem ${selectedFilter === 2 && "active"}`}
+            onClick={() => handleSelectFilter(2)}
+          >
+            {t("LABEL_DISCUSS_UNREAD")}
+          </Typography>
+        </Popover>
+      </div>
+      {customListTaskDataType === listTaskDataTypes[1] ? data.map((item, key) => {
         const { tasks = [] } = item;
         return (
           <StyledList
             key={item.id}
             id={item.id}
           >
-            <div className={"listJobBody--taskControlTop"}>
-              <div className={"listJoBody--taskControlTop_left"}>
-                <CustomSelect
-                  value={0}
-                  MenuProps={{
-                    anchorOrigin: {
-                      vertical: "bottom",
-                      horizontal: "left"
-                    },
-                    getContentAnchorEl: null
-                  }}
-                >
-                  <MenuItem value={0}>{t("IDS_WP_JOB")}</MenuItem>
-                  <MenuItem value={1}>{t("LABEL_JOBS_AND_GROUP")}</MenuItem>
-                  <MenuItem value={2}>{t("LABEL_DISCUSS_UNREAD")}</MenuItem>
-                </CustomSelect>
-              </div>
-              <div className={"listJoBody--taskControlTop_right"}>
-                <span className={"mark-as-read"}>{t("LABEL_MARK_AS_READ")}</span>
-              </div>
-            </div>
             <ListBodySubHeader
               subPrimary={item.name}
               subSecondary={t('LABEL_CHAT_TASK_VIEC', { task: tasks.length })}

@@ -26,10 +26,7 @@ function ListPart(props) {
   const [showListProject, setShow] = React.useState(false)
 
   function onClickProject(project) {
-    // console.log('Click item ', props);
     history.push(`/projects/task-chat/` + project.id);
-    // value.getDetailProject(project.id)
-    // value.chooseProject(project)
     dispatch(chooseTask(null));
     setShow(false);
   }

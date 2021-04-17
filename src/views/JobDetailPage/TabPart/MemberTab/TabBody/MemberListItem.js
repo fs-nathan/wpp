@@ -1,8 +1,6 @@
 import {Avatar, IconButton, ListItem} from '@material-ui/core';
 import {mdiDotsVertical} from '@mdi/js';
 import Icon from '@mdi/react';
-import {openDetailMember} from 'actions/chat/chat';
-import {deleteMember} from 'actions/taskDetail/taskDetailActions';
 import {detailUser} from 'actions/user/detailUser';
 import compact from 'lodash/compact';
 import React from 'react';
@@ -10,9 +8,10 @@ import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import './styles.scss';
-import {currentColorSelector} from 'views/JobDetailPage/selectors';
 import * as images from '../../../../../assets/index';
-import OptionModal from "../OptionModal";
+import {threadChatCreatePrivate} from "../../../../../actions/taskDetail/taskDetailActions";
+import {get, isNil} from "lodash";
+import {useHistory} from "react-router-dom";
 
 const ButtonIcon = styled(IconButton)`
   &:hover {
@@ -34,38 +33,32 @@ const StyledListItem = styled(ListItem)`
 const MemberListItem = ({
   id, name, avatar,
   room, position, group_permission,
-  handleClickPermission, handleClickOptionModal,
-  can_ban, is_admin, is_in_group,
+  handleClickOptionModal, is_admin, is_in_group,
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
+  const history = useHistory();
+  const privateChatData = useSelector(state => state.taskDetail.createPrivateChat.data);
   const handleClick = (evt) => {
     evt.preventDefault();
     evt.stopPropagation();
     handleClickOptionModal();
   }
 
-  /*const handleDeleteMembers = () => {
-    dispatch(openDetailMember(false))
-    dispatch(deleteMember({ task_id: taskId, member_id: id }))
-    setAnchorEl(null);
-  };*/
-
   const handleClickDetail = (evt) => {
     evt.stopPropagation();
-    setAnchorEl(null);
     dispatch(detailUser({ userId: id }))
   };
 
-  /*const onClickPermission = (evt) => {
+  function handleCreatePrivateChat(evt) {
     evt.stopPropagation();
-    setAnchorEl(null);
-    handleClickPermission()
-  };*/
-
+    dispatch(threadChatCreatePrivate({memberID: id}));
+  }
+  React.useEffect(() => {
+    if(!isNil(get(privateChatData, "task_id"))) {
+      history.push(`/chats?task_id=${get(privateChatData, "task_id")}`);
+    }
+  }, [privateChatData, history]);
   return (
     <React.Fragment>
       <StyledListItem className="memberItem">
@@ -92,8 +85,8 @@ const MemberListItem = ({
             {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
           </div>
         }
-        <div className={"memberItem--menuButton buttonChat"}>
-          <img src={images.messeger} width={20} height={20}/>
+        <div className={"memberItem--menuButton buttonChat"} onClick={(evt) => handleCreatePrivateChat(evt)}>
+          <img src={images.messeger} width={20} height={20} alt={""}/>
         </div>
         <ButtonIcon
           className="memberItem--menuButton"

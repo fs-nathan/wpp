@@ -48,7 +48,7 @@ function CreateProjectGroup({
       url_sort: get(updatedProjectGroup, 'sort_icon')
     });
   }, [updatedProjectGroup]);
-
+  console.log(updatedProjectGroup);
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -127,7 +127,7 @@ function CreateProjectGroup({
       }}
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
-      manualClose={true}
+      manualClose={true} height={"mini"}
     >
       <CustomTextbox
         value={name}

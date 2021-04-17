@@ -35,6 +35,9 @@ import {
 } from 'constants/actions/taskDetail/taskDetailConst';
 import MemberPermissionModal from "../../Modals/MembersSetting/MemberPermission";
 import AssignCalendarModal from "components/AssignCalendarModal";
+import AddMemberModal from "../../../JobDetailPage/ListPart/ListHeader/AddMemberModal";
+import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
+import {useTranslation} from "react-i18next";
 
 function AllTaskTable({
   expand, handleExpand, viewPermissions,
@@ -56,7 +59,7 @@ function AllTaskTable({
     });
   }, [timeType]);
   const { projectId, memberId } = useParams();
-
+  const {t} = useTranslation();
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
   }, [projectId]);
@@ -147,6 +150,7 @@ function AllTaskTable({
   const [permissionProps, setPermissionProps] = React.useState({});
   const [openCalendar, setOpenCalendar] = React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
+  const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -154,6 +158,8 @@ function AllTaskTable({
         if (get(viewPermissions.permissions, [projectId, 'create_task'], false)) {
           setOpenCreate(true);
           setSelectedGroup(props);
+        } else {
+          SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("MESSAGE_NO_PERMISSION"));
         }
         return;
       case 'SETTING':
@@ -170,6 +176,9 @@ function AllTaskTable({
         return;
       case 'CALENDAR':
         setOpenCalendar(true);
+        return;
+      case 'ADD_MEMBER':
+        setOpenModalAddMember(true);
         return;
       default: return;
     }
@@ -243,6 +252,7 @@ function AllTaskTable({
         setOpen={setOpenAlert}
         {...alertProps}
       />
+      <AddMemberModal isOpen={openModalAddMember} setOpen={setOpenModalAddMember}/>
     </>
   )
 }

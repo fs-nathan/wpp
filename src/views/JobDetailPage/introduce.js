@@ -13,6 +13,7 @@ import intro2 from '../../assets/img_introduce_in_detail_2.png';
 import intro3 from '../../assets/img_introduce_in_detail_3.png';
 import intro4 from '../../assets/img_introduce_in_detail_4.png';
 import { currentColorSelector } from "./selectors";
+import NavigatorMenu from "../../components/NavigatorMenu";
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 
@@ -88,6 +89,9 @@ function Introduce() {
                 <Typography>{t('LABEL_CHAT_TASK_LAM_VIEC_ME_LI_CUNG')}
                 &nbsp;
                 <b>Workplus PC!</b></Typography>
+                <div style={{marginBottom: 50}}>
+                    <NavigatorMenu />
+                </div>
                 <Typography>{t('LABEL_CHAT_TASK_HI')}
                 &nbsp;
                 <StyledName color={groupActiveColor}>{userName}</StyledName>

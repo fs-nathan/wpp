@@ -23,10 +23,12 @@ import {DRAWER_TYPE, TOKEN} from '../../constants/constants';
 import SearchModal from '../../components/SearchModal/SearchModal';
 import './TopBar.scss';
 import {isEmpty} from '../../helpers/utils/isEmpty';
+import GroupAccountModal from '../../components/GroupAccountModal/GroupAccountModal'
 
 const TopBar = props => {
   const { t, i18n } = useTranslation();
   const [visibleSearchModal, setVisibleSearch] = useState(false);
+  const [visibleGroupAccountModal, setVisibleGroupAccountModal] = useState(false);
   const [marginLeftModal, setMarginLeftModal] = useState(280);
   const [marginTopModal, setMarginTopModal] = useState(10);
 
@@ -83,6 +85,11 @@ const TopBar = props => {
     }
     setVisibleSearch(true);
   };
+
+  const openGroupAccountModal = () => {
+    setVisibleGroupAccountModal(true);
+    handleFetchProfile(true);
+  };
   const handleAccount = () => {
     if (props.typeDrawer === '') {
       props.actionVisibleDrawerMessage({
@@ -107,7 +114,7 @@ const TopBar = props => {
     <div id="topNavId" className="top-bar-container">
       <div className="left-part">
         {!isEmpty(props.groupActive) && (
-          <div className="info-box" onClick={handleAccount}>
+          <div className="info-box" onClick={openGroupAccountModal}>
             <div>
               <div className="text-group-top-bar">
                 {t('IDS_WP_GROUP')}: {props.groupActive.name}
@@ -152,6 +159,13 @@ const TopBar = props => {
               setOpen={val => setVisibleSearch(val || false)}
               marginLeft={marginLeftModal}
               marginTop={marginTopModal}
+            />
+          )}
+          {visibleGroupAccountModal && (
+            <GroupAccountModal
+            open={visibleGroupAccountModal}
+            setOpen={val => setVisibleGroupAccountModal(val || false)}
+            props
             />
           )}
         </span>

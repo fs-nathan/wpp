@@ -265,6 +265,9 @@ import listDeletedProject, {
 import listProject, {
   initialState as listProjectInitialState,
 } from "./project/listProject";
+import checkHasRecently, {
+  initialState as checkHasRecentlyInitialState,
+} from "./project/checkHasRecently";
 import memberProject, {
   initialState as memberProjectInitialState,
 } from "./project/memberProject";
@@ -382,6 +385,7 @@ import taskCommand from "./taskDetail/command";
 import commonTaskDetail from "./taskDetail/common";
 import listGroupOffer from "./taskDetail/listGroupOffer";
 import listGroupPermission from "./taskDetail/listGroupPermission";
+import createPrivateChat from "./taskDetail/createPrivateChat";
 import listGroupTask from "./taskDetail/listGroupTask";
 import listDetailTask from "./taskDetail/listTaskDetail";
 import location from "./taskDetail/location";
@@ -451,6 +455,8 @@ import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInit
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
 import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
+import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
+import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
 
 const rootReducer = combineReducers({
   authentications,
@@ -562,17 +568,18 @@ const rootReducer = combineReducers({
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
+    getWorkType,
     recentlyProjects,
     getStatusWorkGroup,
     getProjectOnPersonalBoard,
-    getWorkType,
+    checkHasRecently,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
       updateStatusCopy,
       updateStatusView,
       updateNotificationSetting,
-      updatePinBoardSetting
+      updatePinBoardSetting,
     }),
   }),
   groupTask: combineReducers({
@@ -759,6 +766,7 @@ export const DEFAULT_STATE = {
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
     listProject: listProjectInitialState,
+    checkHasRecently: checkHasRecentlyInitialState,
     listDeletedProject: listDeletedProjectInitialState,
     detailProject: detailProjectInitialState,
     hideProject: hideProjectInitialState,

@@ -43,7 +43,6 @@ const BodyPart = props => {
   const [isMyLastChat, setMyLastChat] = React.useState(false);
   const [isShowScroll, setShowScroll] = React.useState(false);
   const [openViewedModal, setOpenViewedModal] = React.useState(false);
-  const [openAddModal, setOpenAddModal] = React.useState(false);
   const [chatEmotion, setChatEmotion] = React.useState([]);
   const [openDetailEmotionModal, setOpenDetailEmotionModal] = React.useState(false);
   const [showMembers, setShowMembers] = React.useState(viewedChatMembers);
@@ -146,7 +145,7 @@ const BodyPart = props => {
   })
 
   function onClickCreateMember() {
-    setOpenAddModal(true)
+    props.setOpenAddModal(true)
     dispatch(getMember({ task_id: taskId }))
     dispatch(getMemberNotAssigned({ task_id: taskId }))
   }
@@ -307,7 +306,7 @@ const BodyPart = props => {
           <Icon path={mdiClose} size={1.5} />
         </IconButton>
       }
-      <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
+      <AddMemberModal isOpen={props.openAddModal} setOpen={props.setOpenAddModal} />
       <DetailEmotionModal isOpen={openDetailEmotionModal} setOpen={setOpenDetailEmotionModal} data_emotion={chatEmotion} />
       <DetailViewedModal isOpen={openViewedModal} setOpen={setOpenViewedModal} />
     </div>

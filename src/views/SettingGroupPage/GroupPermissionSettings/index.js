@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { createMapPropsFromAttrs, get } from "views/JobPage/utils/index.js";
 import { groupPermissionAttr } from "./contants.js";
 import Left from "./Left";
-import { settingGroupPermission } from "./redux/index.js";
+import { settingGroupPermission } from "./redux";
 import Right from "./Right/index.js";
 export const GroupPermissionSettingsContext = React.createContext({});
 const GroupPermissionSettings = () => {
@@ -39,7 +39,6 @@ const GroupPermissionSettings = () => {
             "0"
           );
   }, [select, isDefault]);
-
   const detail = useSelector(selectDetailGroupPermission);
   const permissionModules = useSelector(
     settingGroupPermission.selectors.groupModulesListSelector
