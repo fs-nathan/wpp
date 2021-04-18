@@ -13,11 +13,17 @@
     }
     &:last-child {
       margin-left: auto;
+      display: flex;
+      align-items: center;
+      img {
+        margin-right: 5px;
+      }
     }
   }
-  &:nth-child(2),
-  &:nth-child(4),
-  &:nth-child(8) {
+  &:nth-child(3),
+  &:nth-child(5),
+  &:nth-child(9),
+  &:nth-child(11){
     border-top: 1px solid #f4f4f4;
   }
 }
@@ -30,6 +36,9 @@
       & * {
         fill: #d4d4d4 !important; 
       }
+    }
+    &:hover {
+      background: #eee;
     }
   };
   &-selected {

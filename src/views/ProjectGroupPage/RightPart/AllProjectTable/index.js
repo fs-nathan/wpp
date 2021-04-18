@@ -9,7 +9,7 @@ import {detailProjectGroup} from 'actions/projectGroup/detailProjectGroup';
 import {listProjectGroup} from 'actions/projectGroup/listProjectGroup';
 import {useFilters, useTimes} from 'components/CustomPopover';
 import {CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP} from 'constants/events.js';
-import {filter, get, reverse, sortBy} from 'lodash';
+import {filter, get, reverse, sortBy, size} from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -49,7 +49,7 @@ function AllProjectTable({
       timeEnd,
     });
   }, [timeType]);
-
+  const [isFiltering, setIsFiltering] = React.useState(false);
   const [sortType, setSortType] = React.useState({});
   const [newProjects, setNewProjects] = React.useState(projects);
   const filters = useFilters();
@@ -239,7 +239,7 @@ function AllProjectTable({
           doSortProject({ sortData })
         }
         handleOpenModal={doOpenModal}
-        groupID={groupID}
+        groupID={groupID} isFiltering={isFiltering} setIsFiltering={setIsFiltering}
       />
       <CreateProjectModal
         open={openCreate}

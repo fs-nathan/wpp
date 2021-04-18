@@ -2360,5 +2360,6 @@
   "LABEL_SELECTED_PERMISSION": "Quyền đã chọn",
   "LABEL_UNSELECTED_PERMISSION": "Quyền chưa chọn",
   "LABEL_CHANGE_PERMISSION": "Đổi quyền",
-  "LABEL_CHANGE_GROUP_PERMISSION": "Đổi nhóm quyền"
+  "LABEL_CHANGE_GROUP_PERMISSION": "Đổi nhóm quyền",
+  "LABEL_FILTER_WORKING_BOARD": "Lọc bảng công việc"
 }
