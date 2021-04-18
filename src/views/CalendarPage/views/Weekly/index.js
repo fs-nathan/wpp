@@ -82,7 +82,7 @@ function Weekly({
     <>
       <WeeklyCalendarPresenter
         expand={expand} handleExpand={handleExpand}
-        canCreate={permissions['manage_week_schedule'] ?? false}
+        canCreate={true}
         handleOpenModal={doOpenModal}
         bgColor={bgColor}
         year={year} handleYearChanged={year => setYear(year)}

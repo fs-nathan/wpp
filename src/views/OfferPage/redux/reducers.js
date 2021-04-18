@@ -112,7 +112,7 @@ function taskReducer(state = initialState, action) {
     case LOAD_SUMMARY_BY_GROUP_SUCCESS:
       return { ...state, [SUMMARY_BY_GROUP]: { ...action.payload } };
     case CREATE_GROUP_OFFER_SUCCESS:
-      return { ...state, [SUMMARY_BY_GROUP]: { offers_group: [...state[SUMMARY_BY_GROUP].offers_group, { ...action.payload.offer_group, offer_waiting: 0 }] } };
+      return { ...state, [SUMMARY_BY_GROUP]: { offers_group: [{ ...action.payload.offer_group, offer_waiting: 0 }, ...state[SUMMARY_BY_GROUP].offers_group] } };
     case CREATE_GROUP_OFFER_ERROR:
       return { ...state, [CREATE_GROUP_OFFER]: { error: true, message: action.payload } };
     case LOAD_OFFER_BY_GROUP_ID_SUCCESS:

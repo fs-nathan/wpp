@@ -124,19 +124,15 @@ function CalendarAlarmLeftPartPresenter({
                   </Primary>
                 }
               />
-              {
-                havePermission && (
-                  <IconButton
-                    onClick={evt => {
-                      evt.preventDefault();
-                      evt.stopPropagation();
-                      handleOpenModal("PERSONAL_REMIND_CREATE");
-                    }}
-                  >
-                    <abbr title={t('IDS_WP_CREATE_NEW')}><Icon path={mdiPlus} size={0.85} color={"rgba(0, 0, 0, 0.54)"} /></abbr>
-                  </IconButton>
-                )
-              }
+              <IconButton
+                onClick={evt => {
+                  evt.preventDefault();
+                  evt.stopPropagation();
+                  handleOpenModal("PERSONAL_REMIND_CREATE");
+                }}
+              >
+                <abbr title={t('IDS_WP_CREATE_NEW')}><Icon path={mdiPlus} size={0.85} color={"rgba(0, 0, 0, 0.54)"} /></abbr>
+              </IconButton>
             </StyledListItem>
             <LoadingOverlay
               active={personalRemindCategories.loading}
@@ -187,7 +183,7 @@ function CalendarAlarmLeftPartPresenter({
                                         className="personal_alarm_control"
                                       >
                                         {
-                                          havePermission && (
+                                          item.can_modify && (
                                             <abbr title={t('IDS_WP_MORE')}>
                                               {
                                                 isHover.id === item.id && (

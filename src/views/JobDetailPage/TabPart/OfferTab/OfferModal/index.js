@@ -25,6 +25,7 @@ import { getMemberToAdd, updateOfferDetailDescriptionSection } from '../../../..
 import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
 import AddOfferMemberModal from '../AddOfferMemberModal';
 import OfferFile from './OfferFile';
+import SelectGroup from './SelectGroup';
 import './styles.scss';
 
 const useStyles = makeStyles((theme) => ({
@@ -61,11 +62,10 @@ const OfferModal = ({
     { id: 2, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3") }
   ];
   const { members: allMembers } = useSelector(state => allMembersSelector(state));
-  const defaultOffer = { ...DEFAULT_OFFER_ITEM, title: '', content: '', offer_group_id: "", priority: priorityList[0], file_ids: [] }
+  const defaultOffer = { ...DEFAULT_OFFER_ITEM, title: '', content: '', offer_group_id: "", offer_group_name: "", priority: priorityList[0], file_ids: [] }
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
   const [handlers, setHandlers] = React.useState([])
   const [monitors, setMonitors] = React.useState([])
-  const [offersGroup, setOffersGroup] = React.useState([])
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
   const [selectedFilesFromLibrary, setSelectedFilesFromLibrary] = React.useState([])
@@ -73,25 +73,11 @@ const OfferModal = ({
   const createId = (offerItem && offerItem.user_create_id) || currentUserId;
   const createUserIndex = findIndex(allMembers, member => member.id === createId);
   const [loading, setLoading] = React.useState(false);
-
-  const fetchOffersGroup = async () => {
-    const config = {
-      url: "/offers/list-group-offer",
-      method: "GET"
-    }
-    const result = await apiService(config)
-    const { offers_group } = result.data
-    const newArray = []
-    offers_group.forEach(e => {
-      newArray.push({ value: e.id, label: e.name })
-    })
-    setOffersGroup(newArray)
-  }
+  const [openSelectGroupOfferModal, setOpenSelectGroupOfferModal] = React.useState(false);
 
   useEffect(() => {
     if (!isUpdateOfferDetailDescriptionSection) {
       dispatch(getMemberToAdd({ additionQuery: additionQuery }));
-      fetchOffersGroup();
     }
   }, [currentUserId, isUpdateOfferDetailDescriptionSection]);
 
@@ -309,143 +295,164 @@ const OfferModal = ({
       && priority
   }
   return (
-    <JobDetailModalWrap
-      title={
-        isUpdateOfferDetailDescriptionSection || isOffer ? t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT') : t('LABEL_CHAT_TASK_TAO_DE_XUAT')
-      }
-      open={isOpen}
-      setOpen={setOpen}
-      confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
-      onConfirm={
-        isUpdateOfferDetailDescriptionSection || isOffer
-          ? onClickUpdateOffer
-          : onClickCreateOffer
-      }
-      canConfirm={validate()}
-      actionLoading={loading}
-      className="offerModal"
-      height={'medium'}
-      manualClose={true}
-      onCancle={() => setOpen(false)}
-    >
-      <React.Fragment>
-        {
-          !isUpdateOfferDetailDescriptionSection && (
-            <>
-              <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
-              <CustomSelect
-                options={offersGroup}
-                onChange={(groupOffer) => setParams('offer_group_id', groupOffer.value)}
-              />
-            </>
-          )
+    <>
+      <JobDetailModalWrap
+        title={
+          isUpdateOfferDetailDescriptionSection || isOffer ? t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT') : t('LABEL_CHAT_TASK_TAO_DE_XUAT')
         }
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
-        <TextField
-          className="offerModal--titleText"
-          placeholder={t('LABEL_CHAT_TASK_NHAP_TIEU_DE_DE_XUAT')}
-          variant="outlined"
-          fullWidth
-          value={tempSelectedItem.title}
-          onChange={e => setParams("title", e.target.value)}
-        />
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_DE_XUAT')} isRequired />
-        <TextField
-          className="offerModal--content"
-          fullWidth
-          multiline
-          rows="7"
-          placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
-          variant="outlined"
-          value={tempSelectedItem ? tempSelectedItem.content : ""}
-          onChange={e => setParams("content", e.target.value)}
-        />
-        {
-          !isUpdateOfferDetailDescriptionSection && (
-            <>
-              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} />
-              <div className={classes.listChips}>
-                {handlers.map((allMembersIdx, idx) =>
-                  <Chip
-                    key={allMembersIdx}
-                    avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
-                    label={allMembers[allMembersIdx].name}
-                    onDelete={handleDeleteHandler(idx)}
-                  />
-                )}
-                <IconButton className="offerModal-buttonAdd" onClick={openAddHandlersDialog}>
-                  <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
-                  <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
-                </IconButton>
-                {renderAddMemberModal(
-                  isOpenAddHandler,
-                  setOpenAddHandler,
-                  handlers,
-                  setHandlers,
-                  allMembers,
-                  [...monitors, createUserIndex]
-                )}
-              </div>
-              <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
-              <div className={classes.listChips}>
-                {monitors.map((allMembersIdx, idx) =>
-                  <Chip
-                    key={allMembersIdx}
-                    avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
-                    label={allMembers[allMembersIdx].name}
-                    onDelete={handleDeleteMonitor(idx)}
-                  />
-                )}
-                <IconButton className="offerModal-buttonAdd" onClick={openAddMonitorsDialog}>
-                  <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
-                  <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
-                </IconButton>
-                {renderAddMemberModal(
-                  isOpenAddMonitor,
-                  setOpenAddMonitor,
-                  monitors,
-                  setMonitors,
-                  allMembers,
-                  [...handlers, createUserIndex]
-                )}
-              </div>
-            </>
-          )
+        open={isOpen}
+        setOpen={setOpen}
+        confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
+        onConfirm={
+          isUpdateOfferDetailDescriptionSection || isOffer
+            ? onClickUpdateOffer
+            : onClickCreateOffer
         }
-        <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
-        <CommonPriorityForm
-          labels={priorityList}
-          priority={tempSelectedItem.priority.value}
-          handleChangeLabel={priorityItem =>
-            setParams('priority', priorityItem)
+        canConfirm={validate()}
+        actionLoading={loading}
+        className="offerModal"
+        height={'medium'}
+        manualClose={true}
+        onCancle={() => setOpen(false)}
+      >
+        <React.Fragment>
+          {
+            !isUpdateOfferDetailDescriptionSection && (
+              <>
+                <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
+                <TextField
+                  className="offerModal--titleText"
+                  placeholder={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')}
+                  variant="outlined"
+                  fullWidth
+                  value={tempSelectedItem.offer_group_name}
+                  onClick={() => setOpenSelectGroupOfferModal(true)}
+                  inputProps={{
+                    readOnly: true
+                  }}
+                />
+              </>
+            )
           }
+          <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />
+          <TextField
+            className="offerModal--titleText"
+            placeholder={t('LABEL_CHAT_TASK_NHAP_TIEU_DE_DE_XUAT')}
+            variant="outlined"
+            fullWidth
+            value={tempSelectedItem.title}
+            onChange={e => setParams("title", e.target.value)}
+          />
+          <TitleSectionModal label={t('LABEL_CHAT_TASK_NOI_DUNG_DE_XUAT')} isRequired />
+          <TextField
+            className="offerModal--content"
+            fullWidth
+            multiline
+            rows="7"
+            placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
+            variant="outlined"
+            value={tempSelectedItem ? tempSelectedItem.content : ""}
+            onChange={e => setParams("content", e.target.value)}
+          />
+          {
+            !isUpdateOfferDetailDescriptionSection && (
+              <>
+                <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_PHE_DUYET')}${handlers.length})`} />
+                <div className={classes.listChips}>
+                  {handlers.map((allMembersIdx, idx) =>
+                    <Chip
+                      key={allMembersIdx}
+                      avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
+                      label={allMembers[allMembersIdx].name}
+                      onDelete={handleDeleteHandler(idx)}
+                    />
+                  )}
+                  <IconButton className="offerModal-buttonAdd" onClick={openAddHandlersDialog}>
+                    <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                    <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
+                  </IconButton>
+                  {renderAddMemberModal(
+                    isOpenAddHandler,
+                    setOpenAddHandler,
+                    handlers,
+                    setHandlers,
+                    allMembers,
+                    [...monitors, createUserIndex]
+                  )}
+                </div>
+                <TitleSectionModal label={`${t('LABEL_CHAT_TASK_NGUOI_GIAM_SAT')}${monitors.length})`} />
+                <div className={classes.listChips}>
+                  {monitors.map((allMembersIdx, idx) =>
+                    <Chip
+                      key={allMembersIdx}
+                      avatar={<Avatar alt="avatar" src={allMembers[allMembersIdx].avatar} />}
+                      label={allMembers[allMembersIdx].name}
+                      onDelete={handleDeleteMonitor(idx)}
+                    />
+                  )}
+                  <IconButton className="offerModal-buttonAdd" onClick={openAddMonitorsDialog}>
+                    <Icon size={0.8} path={mdiPlusCircle} color={bgColor.color} />
+                    <span className="offerModal-buttonAdd-title">{t('LABEL_CHAT_TASK_THEM')}</span>
+                  </IconButton>
+                  {renderAddMemberModal(
+                    isOpenAddMonitor,
+                    setOpenAddMonitor,
+                    monitors,
+                    setMonitors,
+                    allMembers,
+                    [...handlers, createUserIndex]
+                  )}
+                </div>
+              </>
+            )
+          }
+          <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_MUC_DO')} isRequired />
+          <CommonPriorityForm
+            labels={priorityList}
+            priority={tempSelectedItem.priority.value}
+            handleChangeLabel={priorityItem =>
+              setParams('priority', priorityItem)
+            }
+          />
+          {
+            !isUpdateOfferDetailDescriptionSection && (
+              <>
+                <label className="offerModal--attach" >
+                  <Button variant="outlined" component="span" onClick={() => setOpenSendFileModal(true)} fullWidth className={'classes.button'}>
+                    <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
+                </label>
+                {
+                  tempSelectedItem.files &&
+                  tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+                }
+                {
+                  selectedFilesFromLibrary &&
+                  selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
+                }
+                <SendFileModal
+                  open={openSendFileModal}
+                  setOpen={setOpenSendFileModal}
+                  handleUploadFile={handleUploadSelectedFilesFromPC}
+                  onConfirmShare={handleSelectedFilesFromLibrary}
+                />
+              </>
+            )
+          }
+        </React.Fragment>
+      </JobDetailModalWrap>
+      {
+        openSelectGroupOfferModal &&
+        <SelectGroup
+          isOpen={true}
+          setOpen={(value) => setOpenSelectGroupOfferModal(value)}
+          selectedOption={(group) => {
+            setParams("offer_group_id", group.id);
+            setParams("offer_group_name", group.name)
+          }}
+          offerGroupSelected={tempSelectedItem.offer_group_id}
         />
-        {
-          !isUpdateOfferDetailDescriptionSection && (
-            <>
-              <label className="offerModal--attach" >
-                <Button variant="outlined" component="span" onClick={() => setOpenSendFileModal(true)} fullWidth className={'classes.button'}>
-                  <Icon path={mdiCloudDownloadOutline} size={1} color='gray' style={{ marginRight: 20 }} />{t('LABEL_CHAT_TASK_DINH_KEM_TAI_LIEU')}</Button>
-              </label>
-              {
-                tempSelectedItem.files &&
-                tempSelectedItem.files.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
-              }
-              {
-                selectedFilesFromLibrary &&
-                selectedFilesFromLibrary.map(file => (<OfferFile key={file.id} file={file} handleDeleteFile={handleDeleteFile} />))
-              }
-              <SendFileModal
-                open={openSendFileModal}
-                setOpen={setOpenSendFileModal}
-                handleUploadFile={handleUploadSelectedFilesFromPC}
-                onConfirmShare={handleSelectedFilesFromLibrary}
-              />
-            </>
-          )
-        }
-      </React.Fragment>
-    </JobDetailModalWrap>
+      }
+    </>
   )
 }
 

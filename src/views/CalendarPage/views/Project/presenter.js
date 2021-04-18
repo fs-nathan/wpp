@@ -58,10 +58,10 @@ function ProjectCalendarPresenter({
             options={{
               title: t('IDS_WP_PROJECT_CALENDAR'),
               subTitle: t('IDS_WP_PROJECT_CALENDAR_SUBTITLE'),
-              mainAction: havePermission ? {
+              mainAction: {
                 label: t("views.calendar_page.right_part.add"),
                 onClick: evt => handleOpenModal('CREATE'),
-              } : null,
+              },
               expand: {
                 bool: expand,
                 toggleExpand: () => handleExpand(!expand)
@@ -96,10 +96,10 @@ function ProjectCalendarPresenter({
             options={{
               title: t('IDS_WP_PROJECT_CALENDAR'),
               subTitle: t('IDS_WP_PROJECT_CALENDAR_SUBTITLE'),
-              mainAction: havePermission ? {
+              mainAction: {
                 label: t("views.calendar_page.right_part.add"),
                 onClick: evt => handleOpenModal('CREATE'),
-              } : null,
+              },
               expand: {
                 bool: expand,
                 toggleExpand: () => handleExpand(!expand)
@@ -177,7 +177,7 @@ function ProjectCalendarPresenter({
                 field: row => (
                   <SettingContainer onClick={evt => evt.stopPropagation()}>
                     {
-                      havePermission && (
+                      get(row, "can_modify", false) && (
                         <IconButton
                           aria-controls="simple-menu"
                           aria-haspopup="true"
@@ -209,31 +209,26 @@ function ProjectCalendarPresenter({
               horizontal: 'right'
             }}
           >
-            {
-              havePermission && (
-                <>
+              {
+                get(selectedSchedule, "can_modify", false) && <MenuItem
+                  onClick={() => {
+                    handleEditSchedule(selectedSchedule);
+                    setMenuAnchor(null);
+                  }}
+                >
+                  {t("views.calendar_page.right_part.edit")}
+                </MenuItem>
+              }
+              {
+                get(selectedSchedule, "can_delete", false) && get(selectedSchedule, "can_modify", false) && (
                   <MenuItem
                     onClick={() => {
-                      handleEditSchedule(selectedSchedule);
+                      handleDeleteSchedule(selectedSchedule);
                       setMenuAnchor(null);
-                    }
-                    }
-                  >
-                    {t("views.calendar_page.right_part.edit")}
-                  </MenuItem>
-                  {
-                    get(selectedSchedule, "can_delete", false) && (
-                      <MenuItem
-                        onClick={() => {
-                          handleDeleteSchedule(selectedSchedule);
-                          setMenuAnchor(null);
-                        }}
-                      >{t("views.calendar_page.right_part.delete")}</MenuItem>
-                    )
-                  }
-                </>
-              )
-            }
+                    }}
+                  >{t("views.calendar_page.right_part.delete")}</MenuItem>
+                )
+              }
           </Menu>
         </React.Fragment>
       </Container>

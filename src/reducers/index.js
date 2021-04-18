@@ -453,8 +453,8 @@ import recentlyProjects, {initialState as recentlyProjectsInitialState} from "./
 import getStatusWorkGroup, {initialState as getStatusWorkGroupInitialState} from "./project/getStatusWork";
 import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInitialState} from "./project/projectOnPersonalBoard";
 import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
-import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
 import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
+import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
 
 const rootReducer = combineReducers({
   authentications,
