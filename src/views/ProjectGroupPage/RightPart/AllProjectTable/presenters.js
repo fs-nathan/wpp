@@ -118,6 +118,7 @@ function AllProjectTable({
         } else return <EmptyWorkingGroup/>;
     }
   }
+  console.log(projectSummary);
   return (
     <>
       <Container>
