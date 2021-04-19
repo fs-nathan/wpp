@@ -155,12 +155,8 @@ function AllTaskTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE':
-        if (get(viewPermissions.permissions, [projectId, 'create_task'], false)) {
-          setOpenCreate(true);
-          setSelectedGroup(props);
-        } else {
-          SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("MESSAGE_NO_PERMISSION"));
-        }
+        setOpenCreate(true);
+        setSelectedGroup(props);
         return;
       case 'SETTING':
         setOpenSetting(true);

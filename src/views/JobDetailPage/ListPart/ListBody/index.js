@@ -21,6 +21,7 @@ import {mdiMenuDown} from '@mdi/js';
 import {getViewAllMessage} from "../../../../components/Drawer/DrawerService";
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
 import {map, flatten} from "lodash";
+import {useLocalStorage} from "react-use";
 
 const StyledList = styled(List)`
   & > li {
@@ -50,7 +51,7 @@ function ListBody() {
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const searchKey = useSelector(state => state.taskDetail.listDetailTask.searchKey);
   const focusId = useSelector(state => state.taskDetail.detailTask.focusId);
-  const [selectedFilter, setSelectedFilter] = React.useState(0);
+  const [selectedFilter, setSelectedFilter] = useLocalStorage("FILTER_GROUP_CHAT_VALUE", 0);
   const [anchorElFilterControl, setAnchorElFilterControl] = React.useState(null);
   const [data, setData] = useState([]);
   const [customListTaskDataType, setCustomListTaskDataType] = React.useState(listTaskDataType);

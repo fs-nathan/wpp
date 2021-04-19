@@ -1,11 +1,10 @@
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import CustomAvatar from 'components/CustomAvatar';
-import {ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
+import {Box, ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText} from "@material-ui/core";
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {mdiContentCopy} from '@mdi/js';
 import Icon from '@mdi/react';
-import {get} from "lodash"
 import AlertModal from 'components/AlertModal';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
@@ -19,7 +18,6 @@ import {
 } from '../../actions/system/system';
 import * as image from '../../assets/index';
 import {COLOR_ACTIVE} from '../../constants/actions/system/system';
-import {isEmpty} from '../../helpers/utils/isEmpty';
 import './GroupAccountModal.scss'
 import * as services from '../../components/Drawer/DrawerService';
 import List from "@material-ui/core/List";
@@ -164,7 +162,14 @@ const ItemGroupAccount = props => {
           <>
             {isHover && (
               <>
-                {props.groupActive.code !== item.code && (
+                <Button
+                  className={"bg-orange"} variant={"contained"} disableElevation color={"primary"}
+                  onClick={e => {leaveGroupConfirm(e, item.id); setIsHover(true)}}
+                  onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+                >
+                  {t('IDS_WP_LEAVE_GROUP')}
+                </Button>
+                {props.groupActive.code !== item.code && !item.is_expired && (
                   <Button
                     variant={"contained"} disableElevation color={"primary"}
                     onClick={() => {handleActiveGroup(item); setIsHover(true)}}
@@ -173,13 +178,6 @@ const ItemGroupAccount = props => {
                     {t('LABEL_CHAT_TASK_CHON')}
                   </Button>
                 )}
-                <Button
-                  className={"bg-red"} variant={"contained"} disableElevation color={"primary"}
-                  onClick={e => {leaveGroupConfirm(e, item.id); setIsHover(true)}}
-                  onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
-                >
-                  {t('IDS_WP_LEAVE_GROUP')}
-                </Button>
               </>
             )}
           </>
@@ -231,6 +229,7 @@ const ItemGroupAccount = props => {
       >
         <List component={"nav"} className="view_GroupAccount_Modal__groupItem">
           <ListItem onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+            {isHover && <Box className={"view_GroupAccount_Modal__actionMask"}/>}
             <ListItemAvatar>
               <CustomAvatar style={{ width: 50, height: 50, }} className="avatar" src={item.logo || image.avatar_user} alt='avatar' />
             </ListItemAvatar>

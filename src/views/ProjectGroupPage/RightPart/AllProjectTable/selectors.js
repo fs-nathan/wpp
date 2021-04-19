@@ -59,6 +59,11 @@ export const projectsSelector = createSelector(
       expired: filter(newProjects, { state_code: 3 }).length,
       created: filter(newProjects, { me_created: true }).length,
       assigned: filter(newProjects, { me_created: false }).length,
+      work_type: {
+        number_work_topic: filter(newProjects, {work_type: 0}).length,
+        number_work_project: filter(newProjects, {work_type: 1}).length,
+        number_work_process: filter(newProjects, {work_type: 2}).length,
+      }
     }
     return {
       projects: newProjects,

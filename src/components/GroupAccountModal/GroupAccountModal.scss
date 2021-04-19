@@ -16,8 +16,8 @@
 
 .view_GroupAccount_Modal > div:nth-child(3) > div {
   overflow: hidden;
-  min-width: 60vw;
-  max-width: 70vw;
+  min-width: 60vw !important;
+  max-width: 70vw !important;
 }
 
 .view_GroupAccount_Modal .comp_CustomModal___dialog-content {
@@ -63,6 +63,21 @@
       .view_GroupAccount_Modal__groupItem {
         margin-left: 20px;
       }
+    }
+  }
+  &__actionMask {
+    width: 31%;
+    height: 100%;
+    position: absolute;
+    background: #eee;
+    right: 0;
+    &:before {
+      content: "";
+      position: absolute;
+      border-width: 5px;
+      border-style: solid;
+      border-color: transparent transparent transparent #fff;
+      top: 45%;
     }
   }
 }
@@ -115,6 +130,9 @@
 }
 .bg-red {
   background: red !important;
+}
+.bg-orange {
+  background: #FF4800 !important;
 }
 .view_GroupAccount_Modal .view_GroupAccount_Modal___subheader {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);

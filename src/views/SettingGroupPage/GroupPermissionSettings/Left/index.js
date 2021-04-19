@@ -11,7 +11,7 @@ import "./index.scss";
 import {Alert, AlertTitle} from "@material-ui/lab";
 import List from "@material-ui/core/List";
 
-function Left() {
+function Left({setMode, mode}) {
   const history = useHistory();
   const { t } = useTranslation();
   return (
@@ -52,10 +52,16 @@ function Left() {
             </Alert>
           </Box>
           <List component={"nav"} className={"comp_GroupPermissionSettings__ListMenu"}>
-            <ListItem className={"comp_GroupPermissionSettings__ListMenu_active"}>
+            <ListItem
+              className={`${mode === "GROUP_PERMISSION" && "comp_GroupPermissionSettings__ListMenu_active"}`}
+              onClick={() => setMode("GROUP_PERMISSION")}
+            >
               <ListItemText primary={t("IDS_WP_PERMISSION_GROUP")}/>
             </ListItem>
-            <ListItem>
+            <ListItem
+              className={`${mode === "MEMBERS_PERMISSION" && "comp_GroupPermissionSettings__ListMenu_active"}`}
+              onClick={() => setMode("MEMBERS_PERMISSION")}
+            >
               <ListItemText primary={t("DMH.VIEW.DP.RIGHT.UT.PERMISSION")}/>
             </ListItem>
           </List>
@@ -71,12 +77,13 @@ export default () => {
     setModal,
     groupPermissionList,
     groupPermissionDefaultList,
+    setMode, mode
   } = useContext(GroupPermissionSettingsContext);
   return (
     <Left
       groupPermissionList={groupPermissionList}
       groupPermissionDefaultList={groupPermissionDefaultList}
-      {...{ setSelect, setModal, select }}
+      {...{ setSelect, setModal, select, setMode, mode }}
     />
   );
 };
