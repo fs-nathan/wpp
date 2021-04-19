@@ -9,14 +9,13 @@ import { useSelector, useDispatch } from 'react-redux';
 import CustomModal from 'components/CustomModal';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/Chat/selectors';
-import { getListGroupOffer } from "actions/offer";
+import { fetchListProjectGroup } from "actions/projectGroup/listProjectGroup";
 import { useHistory } from "react-router-dom";
-import { action } from "views/OfferPage/contants/attrs";
-import CreateOfferGroup from "views/OfferPage/views/OfferByGroup/modal";
-import { CREATE_OFFER_GROUP_SUCCESS, UPDATE_OFFER_GROUP_SUCCESS, DELETE_OFFER_GROUP_SUCCESS, CustomEventDispose, CustomEventListener } from "constants/events";
+import CreateProjectGroup from '../CreateProjectGroup';
+import { CREATE_PROJECT_GROUP, EDIT_PROJECT_GROUP, DELETE_PROJECT_GROUP, CustomEventDispose, CustomEventListener } from "constants/events";
 import AlertModal from 'components/AlertModal';
-import { deleteGroupOffer } from 'views/OfferPage/redux/actions';
-import nodata from "assets/no-data.png";
+import nodata from "assets/ic_no_data_2021.png";
+import { deleteProjectGroup } from 'actions/projectGroup/deleteProjectGroup';
 
 export const StyledDiv = styled.div`
   .line-option-selected {
@@ -34,18 +33,18 @@ const Row = (props) => {
 
   const editOfferGroup = (evt) => {
     evt.stopPropagation();
-    props.handleOpenEditOfferGroup(props.group)
+    props.handleOpenEditGroup(props.group)
   }
   const deleteOfferGroup = (evt) => {
     evt.stopPropagation();
-    props.confimDeleteOfferGroup(props.group)
+    props.confimDeleteGroup(props.group)
   }
 
   return (
     <StyledDiv selectedColor={props.appColor} onClick={handleSelect}>
       <div className={`line-option per-line-modal ${classRow}`}>
         <div className="icon-option">
-          <EmailIcon />
+          <img src={props.group.icon} />
         </div>
         <div className="name-option">
           {props.group.name}
@@ -68,7 +67,7 @@ function SelectGroup({
   setOpen,
   onSubmit = () => {},
   selectedOption = () => {},
-  offerGroupSelected
+  groupSelected
 }) {
   const timeoutRef = useRef(null); 
   const history = useHistory();
@@ -77,15 +76,14 @@ function SelectGroup({
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [searchValue, setSearchValue] = useState("");
-  const [groupOfferOriginal, setGroupOfferOriginal] = useState([]);
-  const [groupOffer, setGroupOffer] = useState(groupOfferOriginal);
+  const [groupOriginal, setGroupOriginal] = useState([]);
+  const [groupProject, setGroupProject] = useState(groupOriginal);
   const [loading, setLoading] = useState(false);
   
-  const [openModalOfferGroup, setOpenModalOfferGroup] = useState(false);
-  const [modalOfferGroupType, setModalOfferGroupType] = useState(action.CREATE_OFFER);
-  const [groupOfferUpdate, setGroupOfferUpdate] = useState(null);
-  const [openAlertDeleteOfferGroup, setOpenAlertDeleteOfferGroup] = useState(false);
-  const [groupOfferDelete, setGroupOfferDelete] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [groupUpdate, setGroupUpdate] = useState(null);
+  const [openAlertDelete, setOpenAlertDelete] = useState(false);
+  const [groupDelete, setGroupDelete] = useState(null);
 
   const appColor = useSelector(currentColorSelector)
 
@@ -97,22 +95,22 @@ function SelectGroup({
     }
     timeoutRef.current = setTimeout(()=> {
       timeoutRef.current = null;
-      let groupOfferTemp = []
-      groupOfferOriginal.map(e => {
+      let groupTemp = []
+      groupOriginal.map(e => {
         if (String(e.name).toLowerCase().indexOf(String(value).toLowerCase()) >= 0) {
-          groupOfferTemp.push(e)
+          groupTemp.push(e)
         }
       })
-      setGroupOffer(groupOfferTemp)
+      setGroupProject(groupTemp)
     }, 300);    
   }
 
-  async function fetchListOfferGroup() {
+  async function fetchListGroup() {
     try {
       if (isOpen) {
-        const groupData = await getListGroupOffer()
-        setGroupOfferOriginal(groupData.data.offers_group)
-        setGroupOffer(groupData.data.offers_group)
+        const groupData = await fetchListProjectGroup()
+        setGroupOriginal(groupData.data.project_groups)
+        setGroupProject(groupData.data.project_groups)
       }
     } catch (e){
 
@@ -120,51 +118,55 @@ function SelectGroup({
   }
 
   React.useEffect(() => {
-    fetchListOfferGroup();
+    fetchListGroup();
   }, [isOpen]);
 
   React.useEffect(() => {
-    CustomEventListener(CREATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup);
-    CustomEventListener(UPDATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup);
-    CustomEventListener(DELETE_OFFER_GROUP_SUCCESS, () => {
-      fetchListOfferGroup()
-      if (groupOfferDelete && offerGroupSelected === groupOfferDelete.id) {
+    CustomEventListener(CREATE_PROJECT_GROUP.SUCCESS, fetchListGroup);
+    CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, fetchListGroup);
+    CustomEventListener(DELETE_PROJECT_GROUP.SUCCESS, () => {
+      fetchListGroup()
+      if (groupDelete && groupSelected === groupDelete.id) {
         selectedOption(null)
       }
-      setGroupOfferDelete(null)
+      setGroupDelete(null)
     });
     return () => {
-      CustomEventDispose(CREATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup)
-      CustomEventDispose(UPDATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup)
-      CustomEventDispose(DELETE_OFFER_GROUP_SUCCESS, fetchListOfferGroup)
+      CustomEventDispose(CREATE_PROJECT_GROUP.SUCCESS, fetchListGroup)
+      CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, fetchListGroup);
+      CustomEventListener(DELETE_PROJECT_GROUP.SUCCESS, fetchListGroup);
     }
   }, []);
 
 
-  function handleOpenCreateOfferGroup() {
-    setOpenModalOfferGroup(true)
-    setModalOfferGroupType(action.CREATE_OFFER)
-    setGroupOfferUpdate(null)
+  function handleOpenCreateGroup() {
+    setOpenModal(true)
+    setGroupUpdate(null)
   }
 
-  function handleOpenEditOfferGroup(group) {
-    setOpenModalOfferGroup(true)
-    setModalOfferGroupType(action.UPDATE_OFFER)
-    setGroupOfferUpdate(group)
+  function handleOpenEditGroup(group) {
+    setOpenModal(true)
+    setGroupUpdate({
+      id: group.id,
+      name: group.name,
+      description: group.description,
+      icon: group.icon,
+      sort_icon: group.short
+    })
   }
 
-  function confimDeleteOfferGroup(group) {
-    setOpenAlertDeleteOfferGroup(true)
-    setGroupOfferDelete(group)
+  function confimDeleteGroup(group) {
+    setOpenAlertDelete(true)
+    setGroupDelete(group)
   }
-  const handleDeleteGroupOffer = () => {
-    dispatch(deleteGroupOffer({ id: groupOfferDelete.id }))
+  const handleDeleteGroup = () => {
+    dispatch(deleteProjectGroup({ projectGroupId: groupDelete.id }))
   }
 
   return (
     <>
       <CustomModal
-        title={t("LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT")}
+        title={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
         open={isOpen}
         setOpen={setOpen}
         onCancle={
@@ -183,40 +185,40 @@ function SelectGroup({
       >
         <div className="body-head">
           <div className="per-line-modal">
-            <SearchInput className={"custom-search"} placeholder={t("LABEL_SEARCH_OFFER_GROUP")}
+            <SearchInput className={"custom-search"} placeholder={t("LABEL_SEARCH_PROJECT_GROUP")}
               value={searchValue}
               onChange={handleChangeSearch}
             />   
           </div>
           <div className="per-line-modal tip-line">
             <b>{t("LABEL_TIP_IN_OFFER")}</b>
-            <span>{t("LABEL_DESCRIPTION_TIP_IN_ORDER")}</span>
+            <span>{t("LABEL_DESCRIPTION_TIP_IN_WORK_GROUP")}</span>
           </div>
           <div className="per-line-modal create-line">
-            <span onClick={handleOpenCreateOfferGroup} style={{color: appColor}}>&#43; {t("CREATE_NEW_OFFER_GROUP")}</span>
+            <span onClick={handleOpenCreateGroup} style={{color: appColor}}>&#43; {t("CREATE_NEW_WORK_GROUP")}</span>
           </div>
         </div>
         <div className="body-main">
           {
-            groupOffer.length ? groupOffer.map(e =>
+            groupProject.length ? groupProject.map(e =>
               <Row
                 appColor={appColor}
                 key={e.id}
                 group={e}
                 onSelect={selectedOption}
-                isSelected={offerGroupSelected === e.id ? true : false}
-                handleOpenEditOfferGroup={handleOpenEditOfferGroup}
-                confimDeleteOfferGroup={confimDeleteOfferGroup}
+                isSelected={groupSelected === e.id ? true : false}
+                handleOpenEditGroup={handleOpenEditGroup}
+                confimDeleteGroup={confimDeleteGroup}
               />
             ) : (
-              <div class="no-data-parent">
-                <div class="no-data-selection">
+              <div className="no-data-parent">
+                <div className="no-data-selection">
                   <img
                     className="MuiAvatar-img"
                     src={nodata}
                   />
-                  <p>{t("LABEL_NO_DATA_SELECT_MODAL_OFFER_GROUP")}</p>
-                  <p>{t("DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP")}</p>
+                  <p>{t("LABEL_NO_DATA_SELECT_MODAL_PROJECT_GROUP")}</p>
+                  <p>{t("DESCRIPTION_NO_DATA_SELECT_MODAL_PROJECT_GROUP")}</p>
                 </div>
               </div>
             )
@@ -224,23 +226,20 @@ function SelectGroup({
         </div>
       </CustomModal>
       {
-        openModalOfferGroup &&
-        <CreateOfferGroup
-          type={modalOfferGroupType}
+        openModal &&
+        <CreateProjectGroup
           open={true}
-          setOpen={(value) => setOpenModalOfferGroup(value)}
-          name={groupOfferUpdate ? groupOfferUpdate.name : ""}
-          description={groupOfferUpdate ? groupOfferUpdate.description : ""}
-          offer_group_id={groupOfferUpdate ? groupOfferUpdate.id : ""}
+          setOpen={(value) => setOpenModal(value)}
+          updatedProjectGroup={groupUpdate ? groupUpdate : null}
         />
       }
       {
-        openAlertDeleteOfferGroup &&
+        openAlertDelete &&
         <AlertModal
-          setOpen={(value) => setOpenAlertDeleteOfferGroup(value)}
-          onConfirm={() => handleDeleteGroupOffer()}
+          setOpen={(value) => setOpenAlertDelete(value)}
+          onConfirm={() => handleDeleteGroup()}
           open={true}
-          content={t("VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING")}
+          content={t("DMH.VIEW.PGP.LEFT.INFO.ALERT")}
         />
       }
     </>

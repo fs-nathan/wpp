@@ -50,18 +50,7 @@ function CreateNewOrUpdateGroupTask({
       projectId={projectId}
       timeRange={timeRange}
       doReload={() =>
-        doReload(
-          {
-            projectId,
-            timeStart: get(timeRange, "timeStart")
-              ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
-              : undefined,
-            timeEnd: get(timeRange, "timeEnd")
-              ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
-              : undefined,
-          },
-          projectId
-        )
+        setOpen(false)
       }
       handleCreateOrUpdateGroupTask={(name, description) =>
         curGroupTask
@@ -83,9 +72,9 @@ function CreateNewOrUpdateGroupTask({
 const mapDispatchToProps = (dispatch) => {
   return {
     doReload: (options, projectId) => {
-      dispatch(listGroupTask({ projectId }, true));
-      dispatch(getAllGroupTask(true));
-      dispatch(listTask(options, true));
+      // dispatch(listGroupTask({ projectId }, true));
+      // dispatch(getAllGroupTask(true));
+      // dispatch(listTask(options, true));
     },
     doCreateGroupTask: ({ projectId, name, description }) =>
       dispatch(createGroupTask({ projectId, name, description })),

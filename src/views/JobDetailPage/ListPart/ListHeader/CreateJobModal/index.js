@@ -38,6 +38,7 @@ import './styles.scss';
 import {getWorkType} from "../../../../../actions/project/getWorkType";
 import {WORKPLACE_TYPES} from "../../../../../constants/constants";
 import {getProjectSetting} from "../../../../../actions/project/setting/detailStatus";
+import SelectGroupTask from "./SelectGroupTask"
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -50,7 +51,6 @@ export const EDIT_MODE = {
 function CreateJobModal(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const listGroupTaskData = useSelector(state => state.taskDetail.listGroupTask.listGroupTask);
   const listSchedule = useSelector(state => state.taskDetail.detailTask.projectSchedules)
   const isFetching = useSelector(state => state.taskDetail.detailTask.isFetching)
   const error = useSelector(state => state.taskDetail.detailTask.error)
@@ -60,7 +60,6 @@ function CreateJobModal(props) {
     : get(props, 'projectId');
   const groupId = get(props, 'groupId');
   const taskId = useSelector(taskIdSelector);
-  const taskDetails = useSelector(state => state.taskDetail.detailTask.taskDetails) || {};
   const workType = useSelector(state => state.project.getWorkType.data.work_type);
   const [title, setTitle] = React.useState("");
   const optionsList = useMemo(() => [
@@ -100,10 +99,10 @@ function CreateJobModal(props) {
 
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   // const [openAddModal, setOpenAddModal] = React.useState(false);
-  const [listGroupTask, setListGroupTask] = React.useState([]);
   const [listSchedules, setListSchedules] = React.useState([]);
   const [scheduleValue, setScheduleValue] = React.useState(null);
   const [type, setType] = React.useState(0);
+  const [openSelectGroupTaskModal, setOpenSelectGroupTaskModal] = React.useState(false);
 
   const isEdit = props.editMode !== null && props.editMode !== undefined;
 
@@ -145,7 +144,7 @@ function CreateJobModal(props) {
         dispatch(updateTypeAssign(taskId, data.type_assign.id));
         break;
       case EDIT_MODE.GROUP:
-        dispatch(updateGroupTask(taskId, data.group_task.value));
+        dispatch(updateGroupTask(taskId, data.group_task.id));
         break;
 
       default:
@@ -168,30 +167,25 @@ function CreateJobModal(props) {
   }, [workType]);
 
   React.useEffect(() => {
-    if (listGroupTaskData) {
-      // Map task to input
-      let listTask = listGroupTaskData.group_tasks.map(item => ({
-        label:
-          item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : 'Chưa phân loại',
-        value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
-      }));
-      setListGroupTask(listTask);
-      // Set default group for input
-      let item = listTask.find(
-        item => item.value === taskDetails.group_task
-      );
-      if (item) {
-        handleChangeData('group_task', item)
-      } else if (!isNil(curGroupTask)) {
+    if (props.isOpen) {
+      if (!isNil(curGroupTask)) {
         handleChangeData('group_task', {
-          label: get(curGroupTask, 'name'),
-          value: get(curGroupTask, 'id'),
+          name: get(curGroupTask, 'name'),
+          id: get(curGroupTask, 'id'),
         })
-      } else {
-        handleChangeData('group_task', groupId)
+      } else if (groupId) {
+        handleChangeData('group_task', {
+          name: groupId.label,
+          id: groupId.value
+        })
+      } else if (props.data && props.data.group_task) {
+        handleChangeData('group_task', {
+          name: props.data.group_task_name,
+          id: props.data.group_task
+        })
       }
     }
-  }, [listGroupTaskData, taskDetails.group_task, groupId]);
+  }, [props.isOpen]);
 
   React.useEffect(() => {
     if (listSchedule) {
@@ -233,21 +227,6 @@ function CreateJobModal(props) {
       tempData.priorityLabel = priority ? priority.value : DEFAULT_PRIORITY;
       let assign = assignList.find(item => item.id === tempData.type_assign.id);
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
-      if (listGroupTaskData && props.data) {
-        // Map task to input
-        let listTask = listGroupTaskData.group_tasks.map(item => ({
-          label:
-            item.id !== DEFAULT_GROUP_TASK_VALUE ? item.name : 'Chưa phân loại',
-          value: item.id !== DEFAULT_GROUP_TASK_VALUE ? item.id : ''
-        }));
-        setListGroupTask(listTask);
-        // Set default group for input
-        let item = listTask.find(
-          item => item.value === props.data.group_task
-        );
-        // console.log('props.data', item, props.data)
-        tempData.group_task = item;
-      }
       setDataMember(tempData);
     }
     // eslint-disable-next-line
@@ -325,7 +304,7 @@ function CreateJobModal(props) {
         dataCreateJob.group_task === DEFAULT_GROUP_TASK_VALUE)
         delete data.group_task;
       else
-        data.group_task = dataCreateJob.group_task.value;
+        data.group_task = dataCreateJob.group_task.id;
       data.type = type;
       if (type === 0) {
         data.start_date = undefined;
@@ -344,177 +323,195 @@ function CreateJobModal(props) {
   };
 
   return (
-    <JobDetailModalWrap
-      title={isEdit ? t('LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC') : t('LABEL_CHAT_TASK_TAO_CONG_VIEC')}
-      open={props.isOpen}
-      setOpen={props.setOpen}
-      confirmRender={() => isEdit ? t('LABEL_CHAT_TASK_HOAN_THANH') : t('LABEL_CHAT_TASK_TAO_VIEC')}
-      onConfirm={isEdit ? updateData : handlePressConfirm}
-      canConfirm={validate(data)}
-      maxWidth='sm'
-      actionLoading={isFetching}
-      manualClose
-      onCancle={() => props.setOpen(false)}
-      className={clsx("createJob", `createJob__edit${props.editMode}`, {
-        'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES]),
-        'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE]),
-        'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.GROUP]),
-      })}
-    >
-      <React.Fragment>
-        {
-          (!isEdit || props.editMode === EDIT_MODE.GROUP) &&
-          <>
-            <TitleSectionModal label={title} isRequired />
-            <Typography component={'div'} >
-              <CustomSelect
-                options={listGroupTask}
-                value={data.group_task}
-                onChange={(group_task) => handleChangeData('group_task', group_task)}
+    <>
+      <JobDetailModalWrap
+        title={isEdit ? t('LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC') : t('LABEL_CHAT_TASK_TAO_CONG_VIEC')}
+        open={props.isOpen}
+        setOpen={props.setOpen}
+        confirmRender={() => isEdit ? t('LABEL_CHAT_TASK_HOAN_THANH') : t('LABEL_CHAT_TASK_TAO_VIEC')}
+        onConfirm={isEdit ? updateData : handlePressConfirm}
+        canConfirm={validate(data)}
+        maxWidth='sm'
+        actionLoading={isFetching}
+        manualClose
+        onCancle={() => props.setOpen(false)}
+        className={clsx("createJob", `createJob__edit${props.editMode}`, {
+          'modal_height_50vh': isOneOf(props.editMode, [EDIT_MODE.NAME_DES]),
+          'modal_height_30vh': isOneOf(props.editMode, [EDIT_MODE.WORK_DATE, EDIT_MODE.ASSIGN_TYPE]),
+          'modal_height_20vh': isOneOf(props.editMode, [EDIT_MODE.PRIORITY, EDIT_MODE.GROUP]),
+        })}
+      >
+        <React.Fragment>
+          {
+            (!isEdit || props.editMode === EDIT_MODE.GROUP) &&
+            <>
+              <TitleSectionModal label={title} isRequired />
+              <TextField
+                className="offerModal--titleText"
+                placeholder={t('LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC')}
+                variant="outlined"
+                fullWidth
+                value={data.group_task ? data.group_task.name : ""}
+                onClick={() => setOpenSelectGroupTaskModal(true)}
+                inputProps={{
+                  readOnly: true
+                }}
               />
-            </Typography>
-          </>
-        }
-        {
-          (!isEdit || props.editMode === EDIT_MODE.NAME_DES) &&
-          <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_CONG_VIEC')} isRequired />
-            <TextField
-              className="createJob--inputTextJob"
-              margin="normal"
-              variant="outlined"
-              fullWidth
-              value={data.name}
-              onChange={e => handleChangeData('name', e.target.value)}
-              placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
-            />
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')} />
-            <TextField
-              className="createJob--content"
-              margin="normal"
-              variant="outlined"
-              multiline
-              rows={3}
-              rowsMax={18}
-              fullWidth
-              value={data.description}
-              onChange={e => handleChangeData('description', e.target.value)}
-              placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
-            />
-          </>
-        }
-        {
-          (!isEdit || props.editMode === EDIT_MODE.WORK_DATE) &&
-          <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_LICH_CONG_VIEC')} isRequired />
-            <CustomSelect
-              options={listSchedules}
-              value={scheduleValue}
-              onChange={({ value: scheduleId }) => handleChangeData('schedule', scheduleId)}
-            />
-          </>
-        }
-        {!isEdit &&
-          <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
-            <CommonProgressForm
-              items={optionsList}
-              value={type}
-              handleChange={setType}
-            />
-            {type !== 0 &&
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Typography className="createJob--timeWrap" component={'span'}>
-                  <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
-                  {type === 1 ? (
-                    <KeyboardDatePicker
-                      autoOk
-                      className="createJob--inputDate"
-                      size="small"
-                      disableToolbar
-                      variant="inline"
-                      inputVariant="outlined"
-                      format="dd/MM/yyyy"
-                      value={data.start_date}
-                      onChange={e => handleChangeData('start_date', convertDate(e))}
-                    />
-                  ) : (
-                      <TimePicker
-                        className="createJob--timeSelect"
-                        value={data.start_time}
-                        onChange={(value) => handleChangeData('start_time', value)}
+            </>
+          }
+          {
+            (!isEdit || props.editMode === EDIT_MODE.NAME_DES) &&
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_CONG_VIEC')} isRequired />
+              <TextField
+                className="createJob--inputTextJob"
+                margin="normal"
+                variant="outlined"
+                fullWidth
+                value={data.name}
+                onChange={e => handleChangeData('name', e.target.value)}
+                placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
+              />
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_MO_TA_CONG_VIEC')} />
+              <TextField
+                className="createJob--content"
+                margin="normal"
+                variant="outlined"
+                multiline
+                rows={3}
+                rowsMax={18}
+                fullWidth
+                value={data.description}
+                onChange={e => handleChangeData('description', e.target.value)}
+                placeholder={t('LABEL_CHAT_TASK_NHAP_NOI_DUNG')}
+              />
+            </>
+          }
+          {
+            (!isEdit || props.editMode === EDIT_MODE.WORK_DATE) &&
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_LICH_CONG_VIEC')} isRequired />
+              <CustomSelect
+                options={listSchedules}
+                value={scheduleValue}
+                onChange={({ value: scheduleId }) => handleChangeData('schedule', scheduleId)}
+              />
+            </>
+          }
+          {!isEdit &&
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC')} isRequired />
+              <CommonProgressForm
+                items={optionsList}
+                value={type}
+                handleChange={setType}
+              />
+              {type !== 0 &&
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                  <Typography className="createJob--timeWrap" component={'span'}>
+                    <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_BAT_DAU')}</Typography>
+                    {type === 1 ? (
+                      <KeyboardDatePicker
+                        autoOk
+                        className="createJob--inputDate"
+                        size="small"
+                        disableToolbar
+                        variant="inline"
+                        inputVariant="outlined"
+                        format="dd/MM/yyyy"
+                        value={data.start_date}
+                        onChange={e => handleChangeData('start_date', convertDate(e))}
+                      />
+                    ) : (
+                        <TimePicker
+                          className="createJob--timeSelect"
+                          value={data.start_time}
+                          onChange={(value) => handleChangeData('start_time', value)}
+                        />
+                      )}
+                    {type !== 1 && (
+                      <KeyboardDatePicker
+                        autoOk
+                        className="createJob--inputDate"
+                        size="small"
+                        disableToolbar
+                        variant="inline"
+                        inputVariant="outlined"
+                        format="dd/MM/yyyy"
+                        value={data.start_date}
+                        onChange={e => handleChangeData('start_date', convertDate(e))}
                       />
                     )}
-                  {type !== 1 && (
-                    <KeyboardDatePicker
-                      autoOk
-                      className="createJob--inputDate"
-                      size="small"
-                      disableToolbar
-                      variant="inline"
-                      inputVariant="outlined"
-                      format="dd/MM/yyyy"
-                      value={data.start_date}
-                      onChange={e => handleChangeData('start_date', convertDate(e))}
-                    />
-                  )}
-                </Typography>
-                <Typography className="createJob--timeWrap" component={'span'}>
-                  <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_KET_THUC')}</Typography>
-                  {type === 1 ? (
-                    <KeyboardDatePicker
-                      autoOk
-                      className="createJob--inputDate"
-                      size="small"
-                      disableToolbar
-                      variant="inline"
-                      inputVariant="outlined"
-                      format="dd/MM/yyyy"
-                      value={data.end_date}
-                      // minDate={data.start_date}
-                      onChange={e => handleChangeData('end_date', convertDate(e))}
-                    />
-                  ) : (
-                      <TimePicker
-                        className="createJob--timeSelect"
-                        value={data.end_time}
-                        onChange={(value) => handleChangeData('end_time', value)}
+                  </Typography>
+                  <Typography className="createJob--timeWrap" component={'span'}>
+                    <Typography className="createJob--endTime" component={'span'}>{t('LABEL_CHAT_TASK_NGAY_KET_THUC')}</Typography>
+                    {type === 1 ? (
+                      <KeyboardDatePicker
+                        autoOk
+                        className="createJob--inputDate"
+                        size="small"
+                        disableToolbar
+                        variant="inline"
+                        inputVariant="outlined"
+                        format="dd/MM/yyyy"
+                        value={data.end_date}
+                        // minDate={data.start_date}
+                        onChange={e => handleChangeData('end_date', convertDate(e))}
+                      />
+                    ) : (
+                        <TimePicker
+                          className="createJob--timeSelect"
+                          value={data.end_time}
+                          onChange={(value) => handleChangeData('end_time', value)}
+                        />
+                      )}
+                    {type !== 1 && (
+                      <KeyboardDatePicker
+                        autoOk
+                        className="createJob--inputDate"
+                        size="small"
+                        disableToolbar
+                        variant="inline"
+                        inputVariant="outlined"
+                        format="dd/MM/yyyy"
+                        value={data.end_date}
+                        // minDate={data.start_date}
+                        onChange={e => handleChangeData('end_date', convertDate(e))}
                       />
                     )}
-                  {type !== 1 && (
-                    <KeyboardDatePicker
-                      autoOk
-                      className="createJob--inputDate"
-                      size="small"
-                      disableToolbar
-                      variant="inline"
-                      inputVariant="outlined"
-                      format="dd/MM/yyyy"
-                      value={data.end_date}
-                      // minDate={data.start_date}
-                      onChange={e => handleChangeData('end_date', convertDate(e))}
-                    />
-                  )}
-                </Typography>
-              </MuiPickersUtilsProvider>
-            }
-          </>
-        }
-        {
-          (!isEdit || props.editMode === EDIT_MODE.PRIORITY) &&
-          <>
-            <TitleSectionModal label={t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN_LABEL')} isRequired />
-            <CommonPriorityForm
-              labels={priorityList}
-              priority={data.priorityLabel}
-              handleChangeLabel={priorityItem =>
-                handleChangeData('priority', priorityItem.id)
+                  </Typography>
+                </MuiPickersUtilsProvider>
               }
-            />
-          </>
-        }
-      </React.Fragment>
-    </JobDetailModalWrap >
+            </>
+          }
+          {
+            (!isEdit || props.editMode === EDIT_MODE.PRIORITY) &&
+            <>
+              <TitleSectionModal label={t('LABEL_CHAT_TASK_MUC_DO_UU_TIEN_LABEL')} isRequired />
+              <CommonPriorityForm
+                labels={priorityList}
+                priority={data.priorityLabel}
+                handleChangeLabel={priorityItem =>
+                  handleChangeData('priority', priorityItem.id)
+                }
+              />
+            </>
+          }
+        </React.Fragment>
+      </JobDetailModalWrap >
+      {
+        openSelectGroupTaskModal &&
+        <SelectGroupTask
+          isOpen={true}
+          setOpen={(value) => setOpenSelectGroupTaskModal(value)}
+          selectedOption={(group) => {
+            handleChangeData('group_task', group)
+          }}
+          groupSelected={data.group_task ? data.group_task.id : null}
+          projectId={projectId}
+        />
+      }
+    </>
   );
 }
 

@@ -1,4 +1,5 @@
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
+import { apiService } from '../../constants/axiosInstance';
 
 // sub-task
 export const getSubTask = ({ taskId }) => ({
@@ -1285,3 +1286,12 @@ export function updateTaskStatus({task_id, status}) {
         task_id, status
     }
 }
+
+export const fetchListTaskGroup = params => {
+  const config = {
+    url: '/group-task/list',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};

@@ -106,6 +106,10 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
       width: 50px;
       text-align: left;
       margin: auto;
+      display: flex;
+      img {
+        width: 30px
+      }
     }
     .name-option {
       width: calc(100% - 50px);
@@ -153,5 +157,13 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
         }
       }
     }
+  }
+}
+.per-line-step-in-form {
+  margin-bottom: 20px!important
+}
+.left-group-task-no-permission {
+  > a {
+    padding: 10px 15px 10px 20px;
   }
 }

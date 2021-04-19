@@ -25,17 +25,6 @@ function CopyGroupTask({
   project_id = null,
 }) {
 
-  const times = useTimes();
-  const { timeType } = localOption;
-  const timeRange = React.useMemo(() => {
-    const [timeStart, timeEnd] = times[timeType].option();
-    return ({
-      timeStart,
-      timeEnd,
-    });
-    // eslint-disable-next-line
-  }, [timeType]);
-
   const { projectId: _projectId } = useParams();
   const [projectId, setProjectId] = React.useState(_projectId);
 
@@ -70,16 +59,7 @@ function CopyGroupTask({
       open={open} setOpen={setOpen}
       fetchChart={fetchChart}
       projectId={projectId}
-      timeRange={timeRange}
-      doReload={() => doReload({
-        projectId,
-        timeStart: get(timeRange, 'timeStart')
-          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-          : undefined,
-        timeEnd: get(timeRange, 'timeEnd')
-          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-          : undefined,
-      }, projectId)}
+      doReload={() => setOpen(false)}
       searchPattern={searchPattern} setSearchPattern={setSearchPattern}
       groupTasks={newGroupTasks}
       handleCopyGroupTask={(groupTasks) =>
@@ -102,10 +82,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    doReload: (options, projectId) => {
-      dispatch(listGroupTask({ projectId }, true));
-      dispatch(getAllGroupTask(true));
-      dispatch(listTask(options, true));
+    doReload: (projectId) => {
+      // dispatch(listGroupTask({ projectId }, true));
+      // dispatch(getAllGroupTask(true));
     },
     doCopyGroupTask: ({ groupTaskId, projectId }) => dispatch(copyGroupTask({ groupTaskId, projectId })),
     doGetAllGroupTask: (quite) => dispatch(getAllGroupTask(quite)),

@@ -31,7 +31,6 @@ function GroupTaskSlide({
   }, [projectId]);
 
   React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [id, 'update_project'], false)) return;
     if (id !== null) {
       doListGroupTask({ projectId: id });
       const reloadListGroupTask = () => {

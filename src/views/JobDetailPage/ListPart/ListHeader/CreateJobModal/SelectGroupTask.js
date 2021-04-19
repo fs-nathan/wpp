@@ -1,5 +1,5 @@
 import SearchIcon from '@material-ui/icons/Search';
-import EmailIcon from '@material-ui/icons/Email';
+import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import SearchInput from 'components/SearchInput';
@@ -9,14 +9,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import CustomModal from 'components/CustomModal';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/Chat/selectors';
-import { getListGroupOffer } from "actions/offer";
+import { fetchListTaskGroup } from 'actions/taskDetail/taskDetailActions';
 import { useHistory } from "react-router-dom";
-import { action } from "views/OfferPage/contants/attrs";
-import CreateOfferGroup from "views/OfferPage/views/OfferByGroup/modal";
-import { CREATE_OFFER_GROUP_SUCCESS, UPDATE_OFFER_GROUP_SUCCESS, DELETE_OFFER_GROUP_SUCCESS, CustomEventDispose, CustomEventListener } from "constants/events";
+import { CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK, DELETE_GROUP_TASK, CustomEventDispose, CustomEventListener } from "constants/events";
 import AlertModal from 'components/AlertModal';
-import { deleteGroupOffer } from 'views/OfferPage/redux/actions';
 import nodata from "assets/ic_no_data_2021.png";
+import { deleteGroupTask } from 'actions/groupTask/deleteGroupTask';
+import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
+import EditGroupTask from "views/ProjectPage/Modals/CreateNewGroupTask";
 
 export const StyledDiv = styled.div`
   .line-option-selected {
@@ -34,18 +34,18 @@ const Row = (props) => {
 
   const editOfferGroup = (evt) => {
     evt.stopPropagation();
-    props.handleOpenEditOfferGroup(props.group)
+    props.handleOpenEditGroup(props.group)
   }
   const deleteOfferGroup = (evt) => {
     evt.stopPropagation();
-    props.confimDeleteOfferGroup(props.group)
+    props.confimDeleteGroup(props.group)
   }
 
   return (
     <StyledDiv selectedColor={props.appColor} onClick={handleSelect}>
       <div className={`line-option per-line-modal ${classRow}`}>
         <div className="icon-option">
-          <EmailIcon />
+          <PlaylistAddCheckIcon />
         </div>
         <div className="name-option">
           {props.group.name}
@@ -63,12 +63,13 @@ const Row = (props) => {
 }
 
 
-function SelectGroup({
+function SelectGroupTask({
   isOpen,
   setOpen,
   onSubmit = () => {},
   selectedOption = () => {},
-  offerGroupSelected
+  groupSelected,
+  projectId
 }) {
   const timeoutRef = useRef(null); 
   const history = useHistory();
@@ -77,15 +78,14 @@ function SelectGroup({
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const [searchValue, setSearchValue] = useState("");
-  const [groupOfferOriginal, setGroupOfferOriginal] = useState([]);
-  const [groupOffer, setGroupOffer] = useState(groupOfferOriginal);
+  const [groupOriginal, setGroupOriginal] = useState([]);
+  const [groupTask, setGroupTask] = useState(groupOriginal);
   const [loading, setLoading] = useState(false);
   
-  const [openModalOfferGroup, setOpenModalOfferGroup] = useState(false);
-  const [modalOfferGroupType, setModalOfferGroupType] = useState(action.CREATE_OFFER);
-  const [groupOfferUpdate, setGroupOfferUpdate] = useState(null);
-  const [openAlertDeleteOfferGroup, setOpenAlertDeleteOfferGroup] = useState(false);
-  const [groupOfferDelete, setGroupOfferDelete] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [groupUpdate, setGroupUpdate] = useState(null);
+  const [openAlertDelete, setOpenAlertDelete] = useState(false);
+  const [groupDelete, setGroupDelete] = useState(null);
 
   const appColor = useSelector(currentColorSelector)
 
@@ -97,22 +97,22 @@ function SelectGroup({
     }
     timeoutRef.current = setTimeout(()=> {
       timeoutRef.current = null;
-      let groupOfferTemp = []
-      groupOfferOriginal.map(e => {
+      let groupTemp = []
+      groupOriginal.map(e => {
         if (String(e.name).toLowerCase().indexOf(String(value).toLowerCase()) >= 0) {
-          groupOfferTemp.push(e)
+          groupTemp.push(e)
         }
       })
-      setGroupOffer(groupOfferTemp)
+      setGroupTask(groupTemp)
     }, 300);    
   }
 
-  async function fetchListOfferGroup() {
+  async function fetchListGroup() {
     try {
       if (isOpen) {
-        const groupData = await getListGroupOffer()
-        setGroupOfferOriginal(groupData.data.offers_group)
-        setGroupOffer(groupData.data.offers_group)
+        const groupData = await fetchListTaskGroup({project_id: projectId})
+        setGroupOriginal(groupData.data.group_tasks)
+        setGroupTask(groupData.data.group_tasks)
       }
     } catch (e){
 
@@ -120,51 +120,56 @@ function SelectGroup({
   }
 
   React.useEffect(() => {
-    fetchListOfferGroup();
+    fetchListGroup();
   }, [isOpen]);
 
   React.useEffect(() => {
-    CustomEventListener(CREATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup);
-    CustomEventListener(UPDATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup);
-    CustomEventListener(DELETE_OFFER_GROUP_SUCCESS, () => {
-      fetchListOfferGroup()
-      if (groupOfferDelete && offerGroupSelected === groupOfferDelete.id) {
+    CustomEventListener(CREATE_GROUP_TASK.SUCCESS, fetchListGroup);
+    CustomEventListener(COPY_GROUP_TASK.SUCCESS, fetchListGroup);
+    CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, () => {
+      setGroupUpdate(null)
+      fetchListGroup()
+    });
+    CustomEventListener(DELETE_GROUP_TASK.SUCCESS, () => {
+      fetchListGroup()
+      if (groupDelete && groupSelected === groupDelete.id) {
         selectedOption(null)
       }
-      setGroupOfferDelete(null)
+      setGroupDelete(null)
     });
     return () => {
-      CustomEventDispose(CREATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup)
-      CustomEventDispose(UPDATE_OFFER_GROUP_SUCCESS, fetchListOfferGroup)
-      CustomEventDispose(DELETE_OFFER_GROUP_SUCCESS, fetchListOfferGroup)
+      CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, fetchListGroup);
+      CustomEventDispose(COPY_GROUP_TASK.SUCCESS, fetchListGroup);
+      CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, () => {
+        setGroupUpdate(null)
+        fetchListGroup()
+      });
+      CustomEventListener(DELETE_GROUP_TASK.SUCCESS, fetchListGroup);
     }
   }, []);
 
 
-  function handleOpenCreateOfferGroup() {
-    setOpenModalOfferGroup(true)
-    setModalOfferGroupType(action.CREATE_OFFER)
-    setGroupOfferUpdate(null)
+  function handleOpenCreateGroup() {
+    setOpenModal(true)
+    setGroupUpdate(null)
   }
 
-  function handleOpenEditOfferGroup(group) {
-    setOpenModalOfferGroup(true)
-    setModalOfferGroupType(action.UPDATE_OFFER)
-    setGroupOfferUpdate(group)
+  function handleOpenEditGroup(group) {
+    setGroupUpdate(group)
   }
 
-  function confimDeleteOfferGroup(group) {
-    setOpenAlertDeleteOfferGroup(true)
-    setGroupOfferDelete(group)
+  function confimDeleteGroup(group) {
+    setOpenAlertDelete(true)
+    setGroupDelete(group)
   }
-  const handleDeleteGroupOffer = () => {
-    dispatch(deleteGroupOffer({ id: groupOfferDelete.id }))
+  const handleDeleteGroup = () => {
+    dispatch(deleteGroupTask({ groupTaskId: groupDelete.id }))
   }
 
   return (
     <>
       <CustomModal
-        title={t("LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT")}
+        title={t("LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC")}
         open={isOpen}
         setOpen={setOpen}
         onCancle={
@@ -183,30 +188,30 @@ function SelectGroup({
       >
         <div className="body-head">
           <div className="per-line-modal">
-            <SearchInput className={"custom-search"} placeholder={t("LABEL_SEARCH_OFFER_GROUP")}
+            <SearchInput className={"custom-search"} placeholder={t("LABEL_SEARCH_PROJECT_GROUP")}
               value={searchValue}
               onChange={handleChangeSearch}
             />   
           </div>
           <div className="per-line-modal tip-line">
             <b>{t("LABEL_TIP_IN_OFFER")}</b>
-            <span>{t("LABEL_DESCRIPTION_TIP_IN_ORDER")}</span>
+            <span>{t("LABEL_DESCRIPTION_TIP_IN_TASK_GROUP")}</span>
           </div>
           <div className="per-line-modal create-line">
-            <span onClick={handleOpenCreateOfferGroup} style={{color: appColor}}>&#43; {t("CREATE_NEW_OFFER_GROUP")}</span>
+            <span onClick={handleOpenCreateGroup} style={{color: appColor}}>&#43; {t("CREATE_NEW_TASK_GROUP")}</span>
           </div>
         </div>
         <div className="body-main">
           {
-            groupOffer.length ? groupOffer.map(e =>
+            groupTask.length ? groupTask.map(e =>
               <Row
                 appColor={appColor}
                 key={e.id}
                 group={e}
                 onSelect={selectedOption}
-                isSelected={offerGroupSelected === e.id ? true : false}
-                handleOpenEditOfferGroup={handleOpenEditOfferGroup}
-                confimDeleteOfferGroup={confimDeleteOfferGroup}
+                isSelected={groupSelected === e.id ? true : false}
+                handleOpenEditGroup={handleOpenEditGroup}
+                confimDeleteGroup={confimDeleteGroup}
               />
             ) : (
               <div className="no-data-parent">
@@ -215,8 +220,8 @@ function SelectGroup({
                     className="MuiAvatar-img"
                     src={nodata}
                   />
-                  <p>{t("LABEL_NO_DATA_SELECT_MODAL_OFFER_GROUP")}</p>
-                  <p>{t("DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP")}</p>
+                  <p>{t("LABEL_NO_DATA_SELECT_MODAL_TASK_GROUP")}</p>
+                  <p>{t("DESCRIPTION_NO_DATA_SELECT_MODAL_TASK_GROUP")}</p>
                 </div>
               </div>
             )
@@ -224,27 +229,35 @@ function SelectGroup({
         </div>
       </CustomModal>
       {
-        openModalOfferGroup &&
-        <CreateOfferGroup
-          type={modalOfferGroupType}
+        !groupUpdate ?
+        <CreateGroupTask
+          open={openModal}
+          setOpen={(value) => setOpenModal(value)}
+          project_id={projectId}
+        /> :
+        <EditGroupTask
           open={true}
-          setOpen={(value) => setOpenModalOfferGroup(value)}
-          name={groupOfferUpdate ? groupOfferUpdate.name : ""}
-          description={groupOfferUpdate ? groupOfferUpdate.description : ""}
-          offer_group_id={groupOfferUpdate ? groupOfferUpdate.id : ""}
+          setOpen={(value) => {
+            if (!value) {
+              setGroupUpdate(null)
+            }
+          }}
+          project_id={projectId}
+          curGroupTask={groupUpdate}
         />
       }
+      
       {
-        openAlertDeleteOfferGroup &&
+        openAlertDelete &&
         <AlertModal
-          setOpen={(value) => setOpenAlertDeleteOfferGroup(value)}
-          onConfirm={() => handleDeleteGroupOffer()}
+          setOpen={(value) => setOpenAlertDelete(value)}
+          onConfirm={() => handleDeleteGroup()}
           open={true}
-          content={t("VIEW_OFFER_TEXT_DELETE_GROUP_OFFER_WARNING")}
+          content={t("DMH.VIEW.PP.MODAL.CUGT.ALERT")}
         />
       }
     </>
   )
 }
 
-export default SelectGroup
+export default SelectGroupTask

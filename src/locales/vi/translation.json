@@ -2362,5 +2362,14 @@
   "LABEL_DESCRIPTION_TIP_IN_ORDER": "Tạo các nhóm đề xuất như: Sử dụng phòng họp, Tạm ứng... để phân loại các đề xuất theo từng tính chất giống nhau và giúp quản lý đề xuất dễ dàng.",
   "CREATE_NEW_OFFER_GROUP": "Tạo mới nhóm đề xuất",
   "LABEL_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Chưa có nhóm đề xuất nào!",
-  "DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Tạo nhóm đề xuất mới trước khi lựa chọn"
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Tạo nhóm đề xuất mới trước khi lựa chọn",
+  "LABEL_SEARCH_PROJECT_GROUP": "Chọn nhóm làm việc",
+  "LABEL_DESCRIPTION_TIP_IN_WORK_GROUP": "Tạo các nhóm làm việc như: Nhóm marketing, HR... để phân biệt các loại bảng công việc(dự án, quy trình, chủ đề công việc) theo từng tính chất giống nhau giúp quản lý các mảng công việc trong tổ chức của bạn dễ dàng.",
+  "CREATE_NEW_WORK_GROUP": "Tạo mới nhóm làm việc",
+  "LABEL_NO_DATA_SELECT_MODAL_PROJECT_GROUP": "Chưa có nhóm làm việc nào!",
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_PROJECT_GROUP": "Tạo mới nhóm làm việc trước khi lựa chọn",
+  "LABEL_DESCRIPTION_TIP_IN_TASK_GROUP": "Tạo các nhóm công việc như: Nhóm chuẩn bị, nhóm hoàn thành... để phân loại các công việc trong cùng một bảng công việc theo từng tính chất giống nhau và giúp quản lý Bảng công việc chặt chẽ",
+  "CREATE_NEW_TASK_GROUP": "Tạo mới nhóm công việc",
+  "LABEL_NO_DATA_SELECT_MODAL_TASK_GROUP": "Chưa có nhóm công việc nào được tạo!",
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_TASK_GROUP": "Tạo mới nhóm công việc trước khi lựa chọn"
 }

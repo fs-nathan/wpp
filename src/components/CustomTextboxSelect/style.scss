@@ -1,0 +1,45 @@
+.comp_CustomTextBox___readonly {
+  width: 100%;
+  box-sizing: border-box;
+  word-break: break-word;
+
+  &>div>div {
+    white-space: pre-line;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: justify;
+  }
+
+  &>span {
+    color: #48bb78;
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.comp_CustomTextbox___text-box {
+  margin-top: 16px;
+  margin-bottom: 8px;
+
+  &>p {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: #222;
+
+    &>abbr {
+      color: red;
+      margin-left: 5px;
+      text-decoration: none;
+    }
+  }
+}
+
+.comp_CustomTextbox___text-field {
+  border-radius: 4px;
+}

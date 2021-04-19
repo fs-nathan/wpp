@@ -10,7 +10,7 @@ import { sortTask } from 'actions/task/sortTask';
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
 import { useTimes } from 'components/CustomPopover';
-import { CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
+import { CREATE_TASK, CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK, DELETE_GROUP_TASK, CustomEventDispose, CustomEventListener, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
 import { get, isNil } from 'lodash';
 import moment from 'moment';
 import React from 'react';
@@ -86,13 +86,27 @@ function AllTaskTable({
             : undefined,
         });
       }
+
+      const reloadListTaskAndGroupTask = () => {
+        reloadListTask()
+        doListGroupTask({ projectId })
+      }
+
       CustomEventListener(SORT_GROUP_TASK, reloadListTask);
       CustomEventListener(CREATE_TASK, reloadListTask);
       CustomEventListener(SORT_TASK, reloadListTask);
+      CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
+      CustomEventListener(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
+      CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
+      CustomEventListener(DELETE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       return () => {
-        CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+        CustomEventDispose(SORT_GROUP_TASK, reloadListTaskAndGroupTask);
         CustomEventDispose(CREATE_TASK, reloadListTask);
         CustomEventDispose(SORT_TASK, reloadListTask);
+        CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
+        CustomEventDispose(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
+        CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
+        CustomEventDispose(DELETE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       }
     }
   }, [projectId, timeRange, memberId]);
@@ -155,12 +169,8 @@ function AllTaskTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE':
-        if (get(viewPermissions.permissions, [projectId, 'create_task'], false)) {
-          setOpenCreate(true);
-          setSelectedGroup(props);
-        } else {
-          SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("MESSAGE_NO_PERMISSION"));
-        }
+        setOpenCreate(true);
+        setSelectedGroup(props);
         return;
       case 'SETTING':
         setOpenSetting(true);
@@ -196,7 +206,7 @@ function AllTaskTable({
         expand={expand} handleExpand={handleExpand}
         handleSubSlide={handleSubSlide}
         canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
-        canCreateTask={get(viewPermissions.permissions, [projectId, 'create_task'], false)}
+        canCreateTask={true}
         showHidePendings={showHidePendings}
         tasks={tasks} project={project} memberID={memberId} memberTask={memberTask}
         handleShowOrHideProject={project =>

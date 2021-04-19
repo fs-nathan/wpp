@@ -48,7 +48,6 @@ function CreateProjectGroup({
       url_sort: get(updatedProjectGroup, 'sort_icon')
     });
   }, [updatedProjectGroup]);
-  console.log(updatedProjectGroup);
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);

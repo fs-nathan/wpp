@@ -38,7 +38,7 @@ function GroupTaskSlide({
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [curGroupTask, setCurGroupTask] = React.useState(null);
-  const [title, setTitle] = React.useState("");
+  const [title, setTitle] = React.useState(t("DMH.VIEW.PP.RIGHT.ALL.LABEL.GROUP_TASK"));
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -73,11 +73,11 @@ function GroupTaskSlide({
           onClick: () => handleSubSlide(0),
           tooltip: t("DMH.VIEW.PP.LEFT.GT.BACK"),
         }}
-        rightAction={permissions ? {
+        rightAction={{
           iconPath: mdiPlus,
           onClick: () => handleOpenModal('CREATE'),
           tooltip: t("DMH.VIEW.PP.LEFT.GT.ADD"),
-        } : null}
+        }}
         loading={{
           bool: groupTasks.loading,
           component: () => <LoadingBox />
@@ -97,14 +97,18 @@ function GroupTaskSlide({
               <StyledList
                 innerRef={provided.innerRef}
                 {...provided.droppableProps}
+                className={`left-group-task-${permissions ? "have-permission" : "no-permission"}`}
               >
                 <StyledListItem
                   to={`#`}
                   component={Link}
                 >
-                  <div>
-                    <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                  </div>
+                  {
+                    permissions &&
+                    <div>
+                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
+                    </div>
+                  }
                   <ListItemText
                     primary={
                       <StyledPrimary>{t("DMH.VIEW.PP.LEFT.GT.ALL_LABLE")}</StyledPrimary>
@@ -123,6 +127,7 @@ function GroupTaskSlide({
                     index={index}
                     setAnchorEl={setAnchorEl}
                     setCurGroupTask={setCurGroupTask}
+                    havePermissionManage={permissions}
                   />
                 ))}
                 {provided.placeholder}

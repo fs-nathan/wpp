@@ -2330,5 +2330,14 @@
   "LABEL_DESCRIPTION_TIP_IN_ORDER": "Creating proposals group: Use meeting room, salary advance... to classify and manage easily.",
   "CREATE_NEW_OFFER_GROUP": "Create new proposals group",
   "LABEL_NO_DATA_SELECT_MODAL_OFFER_GROUP": "No offer group was created!",
-  "DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Create new offer group to select"
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Create new offer group to select",
+  "LABEL_SEARCH_PROJECT_GROUP": "Choose work group",
+  "LABEL_DESCRIPTION_TIP_IN_WORK_GROUP": "Creating work group: Marketing, HR... to classify and manage easily.",
+  "CREATE_NEW_WORK_GROUP": "Create new work group",
+  "LABEL_NO_DATA_SELECT_MODAL_PROJECT_GROUP": "No work group was created!",
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_PROJECT_GROUP": "Create new work group to select",
+  "LABEL_DESCRIPTION_TIP_IN_TASK_GROUP": "Creating task group: Doing, Testing... to classify and manage easily.",
+  "CREATE_NEW_TASK_GROUP": "Create new task group",
+  "LABEL_NO_DATA_SELECT_MODAL_TASK_GROUP": "No task group was created",
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_TASK_GROUP": "Create new task group to select"
 }

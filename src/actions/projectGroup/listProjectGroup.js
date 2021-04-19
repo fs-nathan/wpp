@@ -4,6 +4,7 @@ import {
   LIST_PROJECT_GROUP_SUCCESS,
   LIST_PROJECT_GROUP_RESET,
 } from '../../constants/actions/projectGroup/listProjectGroup';
+import { apiService } from '../../constants/axiosInstance';
 
 export const listProjectGroup = ({timeStart, timeEnd},quite = false) => ({
   type: LIST_PROJECT_GROUP,
@@ -26,3 +27,12 @@ export const listProjectGroupFail = (error, options) => ({
   options,
   error,
 });
+
+export const fetchListProjectGroup = params => {
+  const config = {
+    url: '/project-group/list-basic',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};
