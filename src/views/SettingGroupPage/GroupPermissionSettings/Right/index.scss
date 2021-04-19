@@ -13,7 +13,27 @@
   height: 70px;
 }
 .comp_rightColumn_content {
-  //padding: 20px 27px 50px 20px;
+  &_memberList {
+    .MuiListItem-root {
+      cursor: pointer;
+      &:hover {
+        background: #F1F5FB;
+      }
+    }
+    .MuiListItemText-primary {
+      font-weight: 500;
+    }
+    .MuiListItemSecondaryAction-root {
+      .MuiButton-containedPrimary {
+        color: #fff;
+        text-transform: unset;
+        font-weight: 400;
+      }
+    }
+    .active {
+      background: #F1F5FB;
+    }
+  }
 }
 
 .comp_rightColumn {
@@ -64,9 +84,14 @@
     }
   }
   &--customSelectBox {
-    display: flex;
-    align-items: center;
     margin-left: 5px;
-    cursor: pointer;
+    .MuiInput-underline {
+      &:before {
+        display: none;
+      }
+    }
+    .MuiSelect-select:focus {
+      background-color: unset;
+    }
   }
 }

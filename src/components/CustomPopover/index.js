@@ -5,6 +5,7 @@ import { mdiClose } from '@mdi/js';
 import Icon from '@mdi/react';
 import YearSelect from 'components/YearSelect';
 import * as FileSaver from 'file-saver';
+import * as images from "assets";
 import moment from 'moment';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
@@ -151,39 +152,66 @@ export const useFilters = () => {
     {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ALL'),
       field: 'all',
+      option_type: "radio",
       option: {},
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE'),
       field: 'active',
+      option_type: "radio",
       option: { visibility: true },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.HIDDEN'),
       field: 'hidden',
+      option_type: "radio",
       option: { visibility: false },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.WAITING'),
       field: 'waiting',
+      option_type: "radio",
       option: { visibility: true, state_code: 0 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.DOING'),
       field: 'doing',
+      option_type: "radio",
       option: { visibility: true, state_code: 1 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.COMPLETE'),
       field: 'complete',
+      option_type: "radio",
       option: { visibility: true, state_code: 2 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.EXPIRED'),
       field: 'expired',
+      option_type: "radio",
       option: { visibility: true, state_code: 3 },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.CREATED'),
       field: 'created',
+      option_type: "radio",
       option: { me_created: true },
     }, {
       title: t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ASSIGNED'),
       field: 'assigned',
+      option_type: "radio",
       option: { me_created: false },
+    }, {
+      title: t('IDS_WP_TOPICS'),
+      field: 'work_type.number_work_topic',
+      option_type: "checkbox",
+      option: { work_type: 0},
+      image: images.check_64
+    }, {
+      title: t('IDS_WP_PROJECT'),
+      field: 'work_type.number_work_project',
+      option_type: "checkbox",
+      option: { work_type: 1 },
+      image: images.speed_64
+    }, {
+      title: t('IDS_WP_PROCESS'),
+      field: 'work_type.number_work_process',
+      option_type: "checkbox",
+      option: { work_type: 2 },
+      image: images.workfollow_64
     }], [t]);
   return filters;
 };

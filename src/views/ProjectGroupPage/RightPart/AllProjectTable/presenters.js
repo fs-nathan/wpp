@@ -1,7 +1,10 @@
-import {CircularProgress, IconButton, Menu, MenuItem, Typography} from '@material-ui/core';
-import {mdiAccount, mdiCalendar, mdiCheckCircle, mdiDotsVertical, mdiDownload, mdiFilterOutline} from '@mdi/js';
+import {Box, CircularProgress, IconButton, Menu, MenuItem, Typography} from '@material-ui/core';
+import {
+  mdiAccount, mdiCalendar, mdiCheckCircle, mdiDotsVertical, mdiDownload, mdiFilterOutline,
+  mdiCheckboxBlankCircleOutline, mdiCheckboxBlankOutline, mdiCheckboxMarked
+}from '@mdi/js';
 import Icon from '@mdi/react';
-import {find, get, isNil, join, remove, size, slice} from 'lodash';
+import {find, get, isNil, join, remove, size, slice, includes, isArray} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router-dom';
@@ -60,7 +63,7 @@ function AllProjectTable({
   handleSortProject,
   handleOpenModal, bgColor,
   showHidePendings,
-  canCreate, groupID
+  canCreate, groupID, isFiltering, setIsFiltering
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -115,12 +118,13 @@ function AllProjectTable({
         } else return <EmptyWorkingGroup/>;
     }
   }
+  console.log(projectSummary);
   return (
     <>
       <Container>
         {projects.loading && <LoadingBox/>}
-        {size(projects.projects) === 0 && !projects.loading && renderEmptyView()}
-        {size(projects.projects) > 0 && !projects.loading && (
+        {size(projects.projects) === 0 && !projects.loading && !isFiltering && renderEmptyView()}
+        {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
           <React.Fragment>
             <CustomTable
               options={{
@@ -421,22 +425,40 @@ function AllProjectTable({
                 horizontal: 'right'
               }}
             >
+              <Box paddingLeft={"18px"} fontWeight={500} paddingY={"7px"} borderBottom={"1px solid #f4f4f4"}>
+                {t("LABEL_FILTER_WORKING_BOARD")}
+              </Box>
               {filters.map((filter, index) => (
                 <MenuItem
                   key={index}
                   onClick={evt => {
-                    handleFilterType(index)
-                    setFilterAnchor(null)
+                    handleFilterType(index);
+                    setFilterAnchor(null);
+                    setIsFiltering(true);
                   }}
                   button={false}
-                  className={`${filterType === index
+                  className={`${includes(!isArray(filterType) ? [filterType] : filterType, index)
                     ? 'view_ProjectGroup_Table_All___menu-item-selected'
                     : 'view_ProjectGroup_Table_All___menu-item'
                   }`}
                 >
-                  <MyIcon path={mdiCheckCircle} size={0.7} />
+                  {filterType === index && filter.option_type === "radio" && (
+                    <MyIcon path={mdiCheckCircle} size={1} />
+                  )}
+                  {filterType !== index && filter.option_type === "radio" && (
+                    <MyIcon path={mdiCheckboxBlankCircleOutline} size={1} />
+                  )}
+                  {filterType !== index && filter.option_type === "checkbox" && (
+                    <MyIcon path={mdiCheckboxBlankOutline} size={1} />
+                  )}
+                  {filterType === index && filter.option_type === "checkbox" && (
+                    <MyIcon path={mdiCheckboxMarked} size={1} />
+                  )}
                   <span>{filter.title}</span>
-                  <span>{get(projectSummary, filter.field, 0)}</span>
+                  <span>
+                    {filter.image && <img src={filter.image} width={20} height={20} alt={""}/>}
+                    {get(projectSummary, filter.field, 0)}
+                  </span>
                 </MenuItem>
               ))}
             </Menu>
