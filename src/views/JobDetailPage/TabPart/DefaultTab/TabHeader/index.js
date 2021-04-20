@@ -131,7 +131,7 @@ function TabHeader(props) {
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
           >
             {/*{t(getAssignType(assign_code), { date_create: detailTask.date_create })}*/}
-            {t("LABEL_CREATED_SHORT_FIXED")}
+            {t("LABEL_CREATED_SHORT_FIXED", {"time": detailTask.date_create})}
           </ColorTypo>
         )}
       </div>
