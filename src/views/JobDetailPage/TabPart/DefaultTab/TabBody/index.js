@@ -193,14 +193,12 @@ function TabBody(props) {
             </ListItemText>
           </ListItem>
           <ListItemButtonGroup>
-            {taskStatistic.state_code !== 3 &&
-              <StatusLabel
-                type={TYPE_STATUS}
-                value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
-                hasIcon={true}
-                onClick={(evt) => setTooltipChangeTaskStatus(evt.currentTarget)}
-              />
-            }
+            <StatusLabel
+              type={TYPE_STATUS}
+              value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+              hasIcon={true}
+              onClick={(evt) => setTooltipChangeTaskStatus(evt.currentTarget)}
+            />
             <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
               TransitionProps={{ timeout: 0 }}
               title={<ModalPriority value={taskStatistic.priority_code} />}
