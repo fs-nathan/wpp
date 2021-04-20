@@ -56,9 +56,8 @@ function ProjectList({
   const [isHideStartButton, setIsHideStartButton] = useLocalStorage(
     "WPS_HIDE_WORKING_START_BUTTON", false
   );
-  const [defaultAccessItem, setDefaultAccessItem] = useLocalStorage(
-    "WPS_WORKING_SPACE_DEFAULT_ACCESS", false
-  );
+
+  const [defaultAccessItem, setDefaultAccessItem] = useLocalStorage("WPS_WORKING_SPACE_DEFAULT_ACCESS");
   const [anchorElStartButton, setAnchorElStartButton] = React.useState(null);
   const [anchorElAddGroup, setAnchorElAddGroup] = React.useState(null);
   const [anchorElAddBoard, setAnchorElAddBoard] = React.useState(null);
@@ -68,6 +67,9 @@ function ProjectList({
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [alertConfirm, showAlertConfirm] = React.useState(false);
   const isHasProjectRecently = useSelector(state => state.project.checkHasRecently.hasRecently);
+  const params = new URLSearchParams(window.location.search);
+  const groupID = params.get('groupID');
+
   function onDragEnd(result) {
     const {source, destination, draggableId} = result;
     if (!destination) return;
@@ -109,7 +111,10 @@ function ProjectList({
         </Banner>
         <Box className={"view_ProjectGroup_List--LeftContainer"}>
           {!isHideStartButton && (
-            <Box className={"view_ProjectGroup_List--startButton"} onClick={() => history.push("/projects/start")}>
+            <Box
+              className={`view_ProjectGroup_List--startButton ${history.location.pathname.includes("/projects/start") && "active"}`}
+              onClick={() => history.push("/projects/start")}
+            >
               <Icon path={mdiPlayCircleOutline} size={1} color={"#BD3ADA"}/>
               <span>{t("LABEL_CHAT_TASK_BAT_DAU_LABEL")}</span>
               <IconButton
@@ -154,7 +159,7 @@ function ProjectList({
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
                 {isHasProjectRecently && (<ListItem
-                  className={"view_ProjectGroup_List-customListItem"}
+                  className={`view_ProjectGroup_List-customListItem ${history.location.pathname.includes("/projects/recently") && "active"}`}
                   onClick={() => history.push("/projects/recently")}
                 >
                   <ListItemIcon>
@@ -163,7 +168,7 @@ function ProjectList({
                   <ListItemText primary={t("LABEL_SEE_RECENTLY")}/>
                 </ListItem>)}
                 <ListItem
-                  className={"view_ProjectGroup_List-customListItem"}
+                  className={`view_ProjectGroup_List-customListItem ${history.location.pathname.includes("/projects/personal-board") && "active"}`}
                   onClick={() => history.push("/projects/personal-board")}
                 >
                   <ListItemIcon>
@@ -185,7 +190,7 @@ function ProjectList({
           </Box>
           <Box className={"view_ProjectGroup_List--listGroup"}>
             <Box
-              className={"view_ProjectGroup_List--listGroup-header"}
+              className={`view_ProjectGroup_List--listGroup-header ${history.location.pathname === "/projects" && "active"}`}
               onClick={() => history.push("/projects")}
             >
               <PeopleOutlineOutlinedIcon htmlColor={"#DB7B48"}/>
@@ -213,7 +218,7 @@ function ProjectList({
                                 <ListItem
                                   ref={provided.innerRef}
                                   {...provided.draggableProps}
-                                  className={"view_ProjectGroup_List-customListItem"}
+                                  className={`view_ProjectGroup_List-customListItem ${groupID === projectGroup.id && "active"}`}
                                   onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
                                 >
                                   <div
