@@ -355,12 +355,8 @@ export const settingGroupPermission = {
     updateGroupPermission,
     updateGroupPermissionInfo,
     updatePermissionList,
-<<<<<<< HEAD
     doPermissionListUsers,
     doUpdateGroupPermissionUSer
-=======
-    checkVerifyAccount,
->>>>>>> 8f8086a3... feature: menu main-layout
   },
   key: "settingGroupPermission",
   reducer: createReducer(
