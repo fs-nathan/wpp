@@ -137,6 +137,13 @@
       color: rgb(244, 67, 54);
       border: 1px solid rgb(244, 67, 54);
     }
+    &__expired {
+      color: rgb(244, 67, 54);
+      border: 1px solid rgb(244, 67, 54);
+      &>svg>path {
+        fill: rgb(244, 67, 54);
+      }
+    }
     &__avg {
       color: rgb(255, 152, 0);
       border: 1px solid rgb(255, 152, 0);
