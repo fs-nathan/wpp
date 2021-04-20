@@ -2241,7 +2241,7 @@
   "NO_DATA_SUB": "Chưa có dữ liệu, hãy tạo mới dữ liệu để bắt đầu",
   "IDS_WP_REGISTER_NOTICE_REGISTER_DIRECT": "Bạn đã nhận được mã xác thực ?",
   "IDS_WP_REGISTER_COMPLETE": "Hoàn tất đăng ký",
-  "LABEL_CREATED_SHORT_FIXED": "Đã tạo...",
+  "LABEL_CREATED_SHORT_FIXED": "Đã tạo {{time}}",
   "LABEL_JOINED_USERS_COUNT": "Đã có {{counts}} thành viên tham gia",
   "LABEL_ASSIGNERS": "Giao việc",
   "LABEL_ASSIGNEES": "Thực hiện ({{counts}})",

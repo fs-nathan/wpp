@@ -23,21 +23,26 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import './styles.scss';
 import Link from "@material-ui/core/Link";
 import SearchIcon from "@material-ui/icons/Search";
-import {filter, find, get, map, set, size, toLower, isNil, concat, differenceBy, split, last} from "lodash";
+import {concat, differenceBy, filter, find, get, isNil, last, map, set, size, split, toLower} from "lodash";
 import List from "@material-ui/core/List";
 import {withStyles} from '@material-ui/core/styles';
 import {mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle} from '@mdi/js';
 import Icon from "@mdi/react";
 import Scrollbars from "react-custom-scrollbars";
+import * as taskDetailAction from "../../../../../actions/taskDetail/taskDetailActions";
 import {
   createMember,
   deleteMember,
   getMemberNotAssigned,
   updateRolesForMember
 } from "../../../../../actions/taskDetail/taskDetailActions";
-import {CustomEventDispose, CustomEventListener} from "../../../../../constants/events";
+import {
+  ADD_MEMBER_PROJECT,
+  CustomEventDispose,
+  CustomEventListener,
+  REMOVE_MEMBER_PROJECT
+} from "../../../../../constants/events";
 import {EVENT_ADD_MEMBER_TO_TASK_SUCCESS} from "../../../../../constants/actions/taskDetail/taskDetailConst";
-import * as taskDetailAction from "../../../../../actions/taskDetail/taskDetailActions";
 import MemberSetting from "../../../../ProjectPage/Modals/MembersSetting";
 import {useHistory} from "react-router-dom";
 import {listUserRole} from "../../../../../actions/userRole/listUserRole";
@@ -133,8 +138,12 @@ function AddMemberModal({
       doListMembersNotAssign({task_id});
     }
     CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+    CustomEventListener(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+    CustomEventListener(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
     return () => {
       CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      CustomEventDispose(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+      CustomEventDispose(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
     }
   });
 
@@ -152,7 +161,7 @@ function AddMemberModal({
       scroll="body" useScrollbar={false}
     >
       <DialogContent className="AddMemberModal-container">
-        <div style={{padding: "10px 15px"}}>
+        <div style={{padding: "10px 25px"}}>
           <Paper component="form" elevation={0} variant={"outlined"} className={classes.root}>
             <IconButton  aria-label="menu">
               <SearchIcon />

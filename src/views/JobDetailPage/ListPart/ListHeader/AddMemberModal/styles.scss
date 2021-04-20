@@ -132,8 +132,8 @@
   &-listMembersItem {
     display: flex;
     align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
     cursor: pointer;
     &:hover {
       background: #F3F5FB;
@@ -168,6 +168,7 @@
     .MuiListItemSecondaryAction-root {
       display: flex;
       align-items: center;
+      right: 0;
     }
   }
 }
