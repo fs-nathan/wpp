@@ -89,6 +89,7 @@
         border-bottom: 1px solid #ededed;
         padding: 10px 0;
         flex-wrap: wrap;
+        
         .title-item-info {
           font-size: 14px;
           width: 25%;
@@ -351,5 +352,71 @@
   .MuiBadge-anchorOriginTopRightRectangle {
     top: 0;
     right: 12px;
+  }
+}
+
+.modal-verify-account{
+  .comp_CustomModal___dialog-actions{
+    display: none
+  }
+  &_content{
+    p{
+      font-size: 14px;
+    }
+  }
+  &_footer{
+    padding: 10px 0px;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-top: 1px solid #ccc;
+    text-align: right;
+    button{
+      text-transform: uppercase;
+      background-color: transparent;
+      margin-right: 30px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+  }
+}
+
+.modal-change-account{
+  .comp_CustomModal___dialog-actions{
+    display: none;
+  }
+  .form-content{
+    .lb-input{
+      font-weight: 500;
+      margin-bottom: 10px;
+      font-size: 14px;
+      span{
+        color: red;
+      }
+    }
+    .action{
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      padding: 20px 22px 15px 22px;
+      border-top: 1px solid #ccc;
+      text-align: right;
+      button{
+        text-transform: uppercase;
+        font-weight: 500;
+        font-size: 14px;
+        &:last-child{
+          color: rgb(15, 191, 204);
+          margin-left: 15px;
+        }
+      }
+    }
+    .btn-submit_change_account{
+      background-color: transparent;
+      border: none;
+     
+    }
   }
 }

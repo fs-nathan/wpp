@@ -33,12 +33,14 @@ import AddUserModalPresenter from "views/DepartmentPage/Modals/AddUserModal/pres
 import SearchInput from "../../SearchInput";
 import { CustomTableContext } from "../index";
 import "./style.scss";
+import ReactParserHtml from 'react-html-parser';
 import { desireLoadingSelector, desireUserSelector, requireLoadingSelector, requireUsersSelector } from "views/DepartmentPage/LeftPart/AddUser/selectors";
 import { searchUser, searchUserReset } from "actions/groupUser/searchUser";
 import { inviteUserJoinGroup } from "actions/groupUser/inviteUserJoinGroup";
 import CustomModal from "components/CustomModal";
 import { ImagesContent } from "views/KanbanPage/KanbanBoard/KanbanItem";
-
+import { Link } from "react-router-dom";
+import { mdiCheckDecagram } from '@mdi/js';
 export const StyledButton = ({ className = "", ...rest }) => (
   <Button
     className={`comp_CustomTable_HeaderButtonGroup___button ${className}`}
@@ -60,12 +62,14 @@ export const SearchBox = ({ className = "", ...rest }) => (
   />
 );
 
-function HeaderButtonGroup({doSearchUser, desireUser, doSearchUserReset, doInviteUserJoinGroup,resetDesireUser}) {
+function HeaderButtonGroup({doSearchUser, desireUser, doSearchUserReset, doInviteUserJoinGroup,resetDesireUser, profile}) {
   const { options } = React.useContext(CustomTableContext);
   const [searchAnchor, setSearchAnchor] = React.useState(null);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
   const [open,setOpen] = React.useState(false);
   const [openAddMember, setOpenAddMember] = React.useState(false);
+  const [openCreateAccount,setOpenCreateAccount] = React.useState(false);
+  
   function handleSearchClick(evt) {
     if (searchAnchor) {
       setSearchAnchor(null);
@@ -151,7 +155,6 @@ function HeaderButtonGroup({doSearchUser, desireUser, doSearchUserReset, doInvit
          <CustomModal
            title={t('DMH.VIEW.DP.RIGHT.UT.ADD_USER')}
            confirmRender={null}
-           height={"miniWide"}
            manualClose={true}
            maxWidth="sm"
            open={openAddMember}
@@ -174,7 +177,7 @@ function HeaderButtonGroup({doSearchUser, desireUser, doSearchUserReset, doInvit
                 </div>
 
               </div>
-              <div className="modal-add-member_card" onClick={()=>{setOpenAddMember(false)}}>
+              <div className="modal-add-member_card" onClick={()=>{setOpenAddMember(false); setOpenCreateAccount(true)}}>
                 <div className="modal-add-member_card-icon">
                 <img src={images.icon_create_user} alt=""/>
                 </div>
@@ -185,6 +188,43 @@ function HeaderButtonGroup({doSearchUser, desireUser, doSearchUserReset, doInvit
 
               </div>
             </div>
+         </CustomModal>
+         <CustomModal
+           open={openCreateAccount}
+           setOpen={setOpenCreateAccount}
+           onCancle={()=>setOpenCreateAccount(false)}
+           title={t('IDS_WP_ACCOUNT_INTERNAL_CREATE')}
+           height={`mini`}
+           confirmRender={null}
+         >
+         <div className="account-internal">
+           
+           <div className="account-internal_content">
+               <div className="account-internal_content-message">
+                   <p>{t('IDS_WP_ACCOUNT_INTERNAL_MESSAGE_1')}</p>
+                   <p style={{whiteSpace: 'break-spaces', marginTop: '20px'}}>{t('IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2')}</p>
+                   <p style={{marginTop: '20px'}}>{t('IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4')} <Link href="">{t('IDS_WP_ACCOUNT_INTERNAL_LINK_MORE')}</Link></p>
+                   <p style={{marginTop: '20px'}}>{ReactParserHtml(t('IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3'))} <Link href="">{t('IDS_WP_ACCOUNT_INTERNAL_LINK_GUIDE')}</Link></p>
+                   <p>{profile.is_verify ? 
+                   <div className="verify-account"><Icon
+                path={mdiCheckDecagram}
+                size={1}
+                color={"rgba(0, 0, 0, 0.54)"}
+              />
+                <div>{t('IDS_WP_ACCOUNT_INTERNAL_VERIFY_ACCOUNT')}</div>
+              </div> : <div className="no_verify-account">
+                <Icon
+                path={mdiCheckDecagram}
+                size={1}
+                color={"rgba(0, 0, 0, 0.54)"}
+              />
+              <div>{t('IDS_WP_ACCOUNT_INTERNAL_NO_VERIFY_ACCOUNT')}</div>
+                </div>}</p>
+                   <div style={{textAlign: 'center', marginTop: '40px'}}>
+                       <Button className="account-internal_btn-create-account" style={{height: "50px", width: "250px", fontSize: '18px'}} variant="contained" color="primary">{profile.is_verify ? t('IDS_WP_ACCOUNT_INTERNAL_CONTINUE'): t('IDS_WP_CONFIRM_ACCOUNT')}</Button></div>
+               </div>
+           </div>
+           </div>
          </CustomModal>
          <AddUserModalPresenter
          open={open} setOpen={setOpen}
@@ -299,7 +339,8 @@ const mapStateToProps = state => {
     desireUser: desireUserSelector(state),
     desireLoading: desireLoadingSelector(state),
     requireUsers: requireUsersSelector(state),
-    requireLoading: requireLoadingSelector(state)
+    requireLoading: requireLoadingSelector(state),
+    profile: state.system.profile,
   }
 };
 

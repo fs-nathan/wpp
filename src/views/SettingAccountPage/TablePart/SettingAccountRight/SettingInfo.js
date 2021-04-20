@@ -34,7 +34,9 @@ import './SettingAccountRight.scss';
 import { IconVerify } from 'components/IconSvg/Verify_check';
 import CustomModal from 'components/CustomModal';
 import ReactParserHtml from 'react-html-parser';
+import { FormControl, InputAdornment, OutlinedInput } from '@material-ui/core';
 class SettingInfo extends Component {
+
   state = {
     mode: 'view',
     visibleCropModal: false,
@@ -55,6 +57,7 @@ class SettingInfo extends Component {
   componentDidMount() {
     this.getProfile();
     
+    
   }
   
   componentDidUpdate(prevProps, prevState) {
@@ -66,6 +69,7 @@ class SettingInfo extends Component {
         ).toDate()
       });
     }
+    
   }
   getProfile = async () => {
     try {
@@ -176,7 +180,7 @@ class SettingInfo extends Component {
   };
   handleClickVerify = () => {
     this.props.actionCheckVerifyAccount()
-    // this.setState({visible: true})
+    this.setState({visible: true})
   }
   handleDateChange = date => {
     this.setState({ selectedDate: date });
@@ -234,7 +238,7 @@ class SettingInfo extends Component {
             <p className="avatar-note-text">({t('IDS_WP_SIZE')}: 120x120 px)</p>
           </div>
           <div className="info-content-setting-info ">
-            <div className="item-info row" style={{padding: '15px', backgroundColor: '#f9f9f9'}}>
+            <div className="item-info row" style={{padding: '20px', backgroundColor: '#f9f9f9'}}>
               <div className="title-item-info col-sm-3" style={{fontWeight: 'bold'}}>
                 {t('IDS_WP_ACCOUNT')}
               </div>
@@ -245,28 +249,101 @@ class SettingInfo extends Component {
                 onChange={e => this.handleChangeData('email', e.target.value)}
               />
               <div className="col-sm-12">
-                {this.props.user}
                 {this.props.profile.is_verify ? <div style={{display: 'flex', alignItems: 'center'}}><span className="check_verify"><IconVerify /></span> <div style={{color: '#43a047', marginLeft: '7px'}}>{t('IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED')}</div></div>:<span style={{color: 'red', lineHeight: '18px'}}>{t('IDS_WP_NOT_VERIFY_ACCOUNT_NOTIFY')}</span>}
                 {!this.props.profile.is_verify && <div style={{color: 'blue', marginTop: '10px', cursor: 'pointer'}} onClick={this.handleClickVerify }>{t('IDS_WP_VERIFY_ACCOUNT')}</div>}
                 <div style={{color: 'blue',marginTop: '10px', cursor: 'pointer'}} onClick={()=>this.setState({visibles : true})}>{t('IDS_WP_CHANGE_ACCOUNT')}</div>
                 <CustomModal
                  onCancle={()=>this.setState({visible: false})} 
                  open={this.state.visible} 
+                 className="modal-verify-account"
                  setOpen={()=>{this.setState({visible: true})}} 
                  title={t('IDS_WP_VERIFY_ACCOUNT_TITLE_NOTIFY')}
                  confirmRender={null}
+                 cancleRender={null}
                  height="miniWide"
                  >
-                  <p>{t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY')} <strong style={{color: 'red'}}>{data.email}</strong></p>
-                    <p>{ReactParserHtml(t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2'))}</p>
+                   <div className="modal-verify-account_content">
+                      <p>{t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY')} <strong style={{color: 'red'}}>{data.email}</strong></p>
+                      <p>{ReactParserHtml(t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2'))}</p>
+                      <div className="modal-verify-account_footer"><button onClick={()=> this.setState({visible: false})} style={{border: 'none'}}>{t('IDS_WP_BUTTON_CLOSE')}</button></div>
+                   </div>
                 </CustomModal>
                 <CustomModal
                  onCancle={()=>this.setState({visibles: false})} 
                  open={this.state.visibles} 
                  setOpen={()=>this.setState({visibles : true})}
-                title={t('IDS_WP_MODAL_CHANGE_ACCOUNT_TITLE')}
-                 >
+                 title={t('IDS_WP_MODAL_CHANGE_ACCOUNT_TITLE')}
+                 height="mini"
+                 className="modal-change-account"
+                 confirmRender={null}
+                 cancleRender={null}
+                 htmlType="submit"                 >
+                     <form className="form-content" onSubmit={this.handleChangeAccount}>
+              <FormControl
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                className="input-affix-wrapper"
+              >
+                <div className="lb-input">{t('IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NOW')} </div>
+                <OutlinedInput
+                  id="email"
+                  required
+                  type="email"
+                  disabled
+                  value={data.email}
+                  style={{color: 'red', fontWeight: '600', backgroundColor: '#E6E6E6', border: 'none'}}
+                  // onChange={handleOnchange}
+                  startAdornment={
+                    <InputAdornment position="start" />
+                      
                     
+                  }
+                />
+                {/* {errMsg && <div className="error-msg">{errMsg}</div>} */}
+              </FormControl>
+              <FormControl
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              className="custom-input"
+            >
+              <div className="lb-input">{t('IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NEW')} <span>*</span></div>
+              <OutlinedInput
+                id="email-new"
+                required
+                type="email"
+                placeholder={t('IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_NEW')}
+                startAdornment={
+                  <InputAdornment position="start" />
+                    
+                  
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              className="custom-input"
+            >
+              <div className="lb-input">{t('IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_PASSWORD')} <span>*</span></div>
+              <OutlinedInput
+                id="password"
+                required
+                placeholder={t('IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_PASSWORD')}
+                startAdornment={
+                  <InputAdornment position="start" />
+                    
+                  
+                }
+              />
+            </FormControl>
+               <div className="action">
+                 <button className="btn-submit_change_account" onClick={()=>this.setState({visibles: false})}>{t('DMH.COMP.CUSTOM_MODAL.CANCLE')}</button>
+                 <button className="btn-submit_change_account" type="submit">{t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}</button>
+               </div>
+              </form>
                 </CustomModal>
               </div>
             </div>

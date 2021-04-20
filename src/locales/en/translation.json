@@ -924,6 +924,9 @@
   "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NOW": "Account now",
   "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NEW": "Account new",
   "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_PASSWORD": "Password login",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_NEW": "Enter a new email",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_PASSWORD": "Enter current login password",
+  "IDS_WP_BUTTON_CLOSE": "Close",
   "IDS_WP_VERIFY_ACCOUNT_TITLE_NOTIFY": "Notify system",
   "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY": "The system has sent the link to activate account authentication to the email",
   "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2": "Please check your email at <strong> INBOX </strong> or <strong> SPAM </strong> to verify your account according to the instructions.",
@@ -2395,10 +2398,16 @@
   "LABEL_ADD_MEMBER_DESCRIPTION": "Add members from the list of accounts already on the system",
   "LABEL_CREATE_ACCOUNT_TITLE": "Create account",
   "IDS_WP_ACCOUNT_INTERNAL": "Account internal",
+  "IDS_WP_ACCOUNT_INTERNAL_CONTINUE": "Continue",
+  "IDS_WP_ACCOUNT_INTERNAL_LINK_MORE": "Load more",
+  "IDS_WP_ACCOUNT_INTERNAL_LINK_GUIDE": "See instructions for account verification",
+  "IDS_WP_ACCOUNT_INTERNAL_VERIFY_ACCOUNT": "Your account has been verified!",
+  "IDS_WP_ACCOUNT_INTERNAL_NO_VERIFY_ACCOUNT": "Your account not been verified!",
   "LABEL_CREATE_ACCOUNT_DESCRIPTION": "Add members by creating new accounts for members",
   "IDS_WP_ACCOUNT_INTERNAL_MANAGE": "Internal account management",
   "IDS_WP_ACCOUNT_INTERNAL_CREATE": "Create account",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_1": "This is the function of creating an account through the Group Owner or authorized person (collectively, the Creator).",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2": "Member will receive the login information sent by the system to the registered email including the account and password the day after the Creator (if the registration email is active and capable of receiving email sent to). \n The creator is free to manage his own accounts such as: Suspend the account, reset login password.",
-  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong> Note: </strong> Internal accounts are owned by the Group Owner!"
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong> Note: </strong> Internal accounts are owned by the Group Owner!",
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4": "You can create an authenticated account to be allowed to create internal accounts."
 }

@@ -17,7 +17,6 @@ import OrderDetail from "../TablePart/SettingGroupRight/OrderDetail";
 import Payment from "../TablePart/SettingGroupRight/Payment";
 import SetUp from "../TablePart/SettingGroupRight/SetUp";
 import HeaderButtonGroup from "./HeaderButtonGroup";
-import AccountInternal from "./SettingGroupRight/AccountInternal";
 import Home from "./SettingGroupRight/Home/index";
 import IconManager from "./SettingGroupRight/IconManager";
 import RoleManager from "./SettingGroupRight/RoleManager";
@@ -64,9 +63,6 @@ const TablePart = (props) => {
       case SETTING_GROUP.ORDER: {
         if (isOder) return <Order />;
         return <OrderDetail />;
-      }
-      case SETTING_GROUP.ACCOUNT_INTERNAL: {
-        return <AccountInternal />;
       }
       case SETTING_GROUP.CREATE_ORDER:
         return <CreateOrder />;

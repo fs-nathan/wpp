@@ -22,9 +22,7 @@ async function doVerifyAccount() {
   function* verifyAccount(action) {
     try {
       const data = yield call(doVerifyAccount, action.options);
-      const respone = yield data.json();
-      console.log(`dtaa`);
-      yield put(actionCheckVerifyAccountSuccess(respone));
+      yield put(actionCheckVerifyAccountSuccess(data));
      
     } catch (error) {
       yield put(actionCheckVerifyAccountFail(error, action.options));

@@ -65,8 +65,9 @@
     margin-bottom: 5px;
   }
   .LeftNavIconZoom{
+    padding: 5px 0px;
     svg{
-      transform: translate(1.2);
+      transform: scale(1.2);
     }
   }
   .titleTab {

@@ -924,6 +924,9 @@
   "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NOW": "Tài khoản hiện tại",
   "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NEW": "Tài khoản mới",
   "IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_PASSWORD": "Mật khẩu đăng nhập",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_NEW": "Nhập email mới",
+  "IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_PASSWORD": "Nhập mật khẩu đăng nhập hiện tại",
+  "IDS_WP_BUTTON_CLOSE": "Đóng",
   "IDS_WP_VERIFY_ACCOUNT_TITLE_NOTIFY": "Thông báo hệ thống",
   "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY": "Hệ thống đã gửi đường dẫn kích hoạt xác thực tài khoản về email {{value}}",
   "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2": "Bạn vui lòng kiểm tra email tại <strong>HỘP THƯ ĐẾN</strong> hoặc mục <strong>SPAM</strong> để thực hiện xác thực tài khoản theo hướng dẫn",
@@ -2407,10 +2410,16 @@
 
   "LABEL_CREATE_ACCOUNT_DESCRIPTION": "Thêm thành viên bằng cách tạo mới tài khoản cho thành viên",
   "IDS_WP_ACCOUNT_INTERNAL": "Tài khoản nội bộ",
+  "IDS_WP_ACCOUNT_INTERNAL_CONTINUE": "Tiếp tục",
+  "IDS_WP_ACCOUNT_INTERNAL_LINK_MORE": "Xem thêm",
+  "IDS_WP_ACCOUNT_INTERNAL_LINK_GUIDE": "Xem hướng dẫn xác thực tài khoản",
+  "IDS_WP_ACCOUNT_INTERNAL_VERIFY_ACCOUNT": "Tài khoản của bạn đã được xác thực!",
+  "IDS_WP_ACCOUNT_INTERNAL_NO_VERIFY_ACCOUNT": "Tài khoản của bạn chưa được xác thực!",
   "IDS_WP_ACCOUNT_INTERNAL_MANAGE": "Quản lý tài khoản nội bộ",
   "IDS_WP_ACCOUNT_INTERNAL_CREATE": "Tạo tài khoản",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_1": "Đây là chức năng tạo tài khoản thông qua Chủ sợ hữu nhóm hoặc người được phân quyền (gọi chung là Người tạo).",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2": "Thành viên sẽ nhận được thông tin đăng nhập do hệ thống chuyển tới email đăng ký bao gồm tài khoản và mật khẩu ngày sau khi Người tạo khởi tạo (nếu email đăng ký đang hoạt động và có khả năng nhận được email gửi tới). \n Người tạo được toàn quyền quản lý các tài khoản do mình tạo như: Tạm dừng hoạt động của tài khoản, cài đặt lại mật khẩu đăng nhập.",
-  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong>Lưu ý:</strong> Tài khoản nội bộ thuộc quyền sở hữu của Chủ sở hữu nhóm!"
-  
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong>Lưu ý:</strong> Tài khoản nội bộ thuộc quyền sở hữu của Chủ sở hữu nhóm!",
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4": "Bạn có thể tạo tài khoản đã được xác thực mới được phép tạo tài khoản nội bộ."
+
 }
