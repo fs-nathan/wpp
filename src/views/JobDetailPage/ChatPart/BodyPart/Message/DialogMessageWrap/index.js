@@ -58,17 +58,20 @@ const DialogMessageWrap = ({
           </div>
         }
       </div>
-      <div className="DialogMessageWrap--footer" >
-        {!isHideFooterIcon &&
-          <Icon className="DialogMessageWrap--icon" path={mdiAlarm}></Icon>
-        }
-        {
-          footerText !== "" &&
-          <span className="DialogMessageWrap--detail" onClick={onClickViewDetail}>
-            {footerText || t('LABEL_CHAT_TASK_XEM_CHI_TIET')}
-          </span>
-        }
-      </div>
+      {
+        (!isHideFooterIcon || (footerText !== "")) &&
+        <div className="DialogMessageWrap--footer" >
+          {!isHideFooterIcon &&
+            <Icon className="DialogMessageWrap--icon" path={mdiAlarm}></Icon>
+          }
+          {
+            footerText !== "" &&
+            <span className="DialogMessageWrap--detail" onClick={onClickViewDetail}>
+              {footerText || t('LABEL_CHAT_TASK_XEM_CHI_TIET')}
+            </span>
+          }
+        </div>
+      }
     </div>
   );
 }

@@ -1352,6 +1352,7 @@
   "LABEL_CHAT_TASK_KHONG_THANH_CONG": "Không thành công",
   "LABEL_CHAT_TASK_GUI_LAI": "Gửi lại",
   "LABEL_CHAT_TASK_CAP_NHAT_TIEN_DO_HOAN_THANH": "Cập nhật tiến độ hoàn thành",
+  "LABEL_CHAT_TASK_CAP_NHAT_TRANG_THAI_CONG_VIEC": "Cập nhật trạng thái công việc",
   "LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_THUC_HIEN": "điều chỉnh tiến độ thực hiện",
   "LABEL_CHAT_TASK_BAT_DAU": "Bắt đầu: {{start}}",
   "LABEL_CHAT_TASK_KET_THUC": "Kết thúc: {{end}}",

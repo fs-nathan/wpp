@@ -1351,6 +1351,7 @@
   "LABEL_CHAT_TASK_KHONG_THANH_CONG": "Unsuccessful",
   "LABEL_CHAT_TASK_GUI_LAI": "Send again ",
   "LABEL_CHAT_TASK_CAP_NHAT_TIEN_DO_HOAN_THANH": "Update progress completed",
+  "LABEL_CHAT_TASK_CAP_NHAT_TRANG_THAI_CONG_VIEC": "Update task status",
   "LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_THUC_HIEN": "Adjust the schedule",
   "LABEL_CHAT_TASK_BAT_DAU": "Start: {{start}}",
   "LABEL_CHAT_TASK_KET_THUC": "End: {{end}}",

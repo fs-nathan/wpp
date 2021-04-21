@@ -1,4 +1,4 @@
-.UpdateComplete {
+.UpdateStatus {
   &--content {
     path {
       fill: inherit !important;
@@ -6,17 +6,23 @@
     margin-bottom: 0px;
     display: flex;
     justify-content: center;
+    margin: 15px 0px;
   }
-  &--circle {
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
+  &--label {
+    min-width: 100px;
+    line-height: 25px;
     background-color: #07c040;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
     color: #ffffff;
-    border-radius: 50%;
+    border-radius: 3px;
     padding: 7px;
+    text-transform: capitalize;
+  }
+  &--label-0 {
+    background-color: #ff9800
+  }
+  &--label-1 {
+    background-color: #68cced
   }
   &--icon {
     margin: auto 20px;
