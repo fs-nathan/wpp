@@ -103,7 +103,6 @@ const RegisterPage = () => {
                   autoComplete="new-password"
                   placeholder={t('IDS_WP_PASSWORD')}
                   size="small"
-                  // onBlur={handleCheckPwd}
                   inputProps={{ maxLength: 20, minLength: 8 }}
                   startAdornment={
                     <InputAdornment position="start">

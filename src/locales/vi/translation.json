@@ -208,7 +208,7 @@
               "GENDER": "Giới tính",
               "EMAIL": "Email",
               "PHONE": "Điện thoại",
-              "ROLE": "Vai trò"
+              "ROLE": "Loại"
             },
             "PERMISSION": "Phân quyền",
             "LEAVE": "Rời nhóm",
@@ -2420,6 +2420,36 @@
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_1": "Đây là chức năng tạo tài khoản thông qua Chủ sợ hữu nhóm hoặc người được phân quyền (gọi chung là Người tạo).",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2": "Thành viên sẽ nhận được thông tin đăng nhập do hệ thống chuyển tới email đăng ký bao gồm tài khoản và mật khẩu ngày sau khi Người tạo khởi tạo (nếu email đăng ký đang hoạt động và có khả năng nhận được email gửi tới). \n Người tạo được toàn quyền quản lý các tài khoản do mình tạo như: Tạm dừng hoạt động của tài khoản, cài đặt lại mật khẩu đăng nhập.",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong>Lưu ý:</strong> Tài khoản nội bộ thuộc quyền sở hữu của Chủ sở hữu nhóm!",
-  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4": "Bạn có thể tạo tài khoản đã được xác thực mới được phép tạo tài khoản nội bộ."
-
-}
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4": "Bạn có thể tạo tài khoản đã được xác thực mới được phép tạo tài khoản nội bộ.",
+  
+  
+  "IDS_WP_ACCOUNT_INTERNAL_ADD_ROW": "Thêm hàng",
+  "IDS_WP_ACCOUNT_INTERNAL_CREATE_LIST_ACCOUNT": "Tạo danh sách tài khoản",
+  "IDS_WP_ACCOUNT_INTERNAL_UPLOAD_EXCEL": "Tải file Excel",
+  "IDS_WP_ACCOUNT_INTERNAL_TABLE_NO": "No",
+  "IDS_WP_ACCOUNT_INTERNAL_TABLE_ACCOUNT": "Tài khoản",
+  "IDS_WP_ACCOUNT_INTERNAL_TABLE_NAME_MEMBER": "Tên thành viên",
+  "IDS_WP_ACCOUNT_INTERNAL_TABLE_PART": "Bộ phận",
+  "IDS_WP_ACCOUNT_INTERNAL_TABLE_DELETE_ALL": "Xóa toàn bộ",
+  "IDS_WP_ACCOUNT_INTERNAL_ADDED": "Đã thêm",
+  "IDS_WP_ACCOUNT_INTERNAL_ADDED_NOTE": "(Được phép tạo tối đa 100 tài khoản cho từng lần)",
+  "IDS_WP_ACCOUNT_INTERNAL_SET_PASSWORD": "Đặt một mật khẩu đăng nhập cho tất cả các tài khoản khởi tạo lần này. Bạn hãy ghi nhớ mật khẩu để cung cấp cho các thành viên lần đầu. \n<strong>Khuyến nghị:</strong> Để đảm bảo an toàn, Người tạo nên thông báo tới các thành viên thay đổi mật khẩu ngay sau khi đăng nhập hệ thống Workplus từ lần đầu tiên",
+  "IDS_WP_ACCOUNT_INTERNAL_ENTER_DATA_EXCEL": "Nhập dữ liệu từ file excel",
+  "IDS_WP_ACCOUNT_INTERNAL_ENTER_DATA_EXCEL_TEXT": "Bạn có thể tạo nhanh danh sách tài khoản bằng cách tải dữ liệu lên từ file Excel theo cấu trúc file mẫu.\nLưu ý: Bạn tải file mẫu về máy và giữ nguyên mọi định dạng, chỉ thêm các hàng và nhập dữ liệu. Số lượng hàng tối đa là 100 và các hàng liên tiếp nhau.",
+  "IDS_WP_ACCOUNT_INTERNAL_DOWN_FILE_FORM": "Down file mẫu",
+  "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_TITLE": "Kết quả tạo tài khoản",
+  "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED": "Đã tạo thành công",
+  "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL": "Tài khoản nội bộ",
+  "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_DOWNLOAD_LIST": "Tải về danh sách",
+  "IDS_WP_USERS_TABLE_COLUMS_ROLE_MEMBER_TOOLTIP": "Tài khoản tham gia là tài khoản thuộc quyền sở hữu riêng của thành viên",
+  "IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER_TOOLTIP": "Chủ sở hữu là tài khoản sở hữu nhóm làm việc",
+  "IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP": "Tài khoản nội bộ là tài khoản do chủ nhóm khởi tạo và quản lý",
+   "IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER": "Chủ sở hữu",
+   "IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL": "Nội bộ",
+   "IDS_WP_FILTER_LIST_MEMBER": "Lọc danh sách thành viên",
+   "IDS_WP_ACCOUNT_MEMBER_JOIN": "Tài khoản tham gia",
+   "IDS_WP_SETTING_MEMBER": "Cài đặt thành viên",
+   "IDS_WP_LOCK_MEMBER": "Khóa thành viên",
+   "IDS_WP_LOCK_MEMBER_NOTE": "Vô hiệu hóa hoạt động của thành viên trên nhóm",
+   "IDS_WP_LOCk": "Khóa"
+  }

@@ -203,7 +203,7 @@
             "DEFAULT": "Default",
             "LABEL": {
               "NAME": "Full name",
-              "POS": "Position",
+              "POS": "Species",
               "B_DAY": "Birthday",
               "GENDER": "Gender",
               "EMAIL": "Email",
