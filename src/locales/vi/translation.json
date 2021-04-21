@@ -2376,5 +2376,9 @@
   "LABEL_DESCRIPTION_TIP_IN_TASK_GROUP": "Tạo các nhóm công việc như: Nhóm chuẩn bị, nhóm hoàn thành... để phân loại các công việc trong cùng một bảng công việc theo từng tính chất giống nhau và giúp quản lý Bảng công việc chặt chẽ",
   "CREATE_NEW_TASK_GROUP": "Tạo mới nhóm công việc",
   "LABEL_NO_DATA_SELECT_MODAL_TASK_GROUP": "Chưa có nhóm công việc nào được tạo!",
-  "DESCRIPTION_NO_DATA_SELECT_MODAL_TASK_GROUP": "Tạo mới nhóm công việc trước khi lựa chọn"
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_TASK_GROUP": "Tạo mới nhóm công việc trước khi lựa chọn",
+  "LABEL_SEARCH_TASK_GROUP": "Tìm kiếm nhóm công việc",
+  "LABEL_SEARCH_PERSONAL_CATEGORY": "Tìm kiếm nhóm nhắc hẹn",
+  "LABEL_DESCRIPTION_TIP_IN_PERSONAL_CATEGORY": "Tạo các nhóm nhắc hẹn như: Chăm sóc khách hàng, lịch họp... để phân loại các nhắc hẹn có tính chất giống nhau.",
+  "CREATE_NEW_PERSONAL_CATEGORY": "Tạo mới nhóm nhắc hẹn"
 }

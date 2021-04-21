@@ -46,7 +46,7 @@ function CalendarPersonalAlarmPresenter({
       data: filtered
     });
   }, [personalReminds, searchPattern]);
-
+  console.log(filteredRemind)
   return (
     <React.Fragment>
       <CustomTableProvider value={{
@@ -67,10 +67,10 @@ function CalendarPersonalAlarmPresenter({
               onClick: evt => setTimeAnchor(evt.currentTarget)
             }
           ],
-          mainAction: havePermission ? {
+          mainAction: {
             label: t('views.calendar_page.right_part.create_alarm'),
             onClick: evt => handleOpenModal("CREATE")
-          } : null
+          }
         },
         bgColor
       }}>

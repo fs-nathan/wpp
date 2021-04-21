@@ -26,10 +26,6 @@ function TabHeader(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
-  const {
-    manage_sub_task,
-  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
-  // console.log('header props::', props)
   useEffect(() => {
     dispatch(getSubTask({ taskId }))
     // eslint-disable-next-line react-hooks/exhaustive-deps

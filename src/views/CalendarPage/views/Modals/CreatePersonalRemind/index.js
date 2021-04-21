@@ -21,6 +21,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import OutlinedInputSelect from "../../../../JobDetailPage/TabPart/ProgressTab/OutlinedInputSelect";
 import JobDetailModalWrap from "../../../../JobDetailPage/JobDetailModalWrap";
+import SelectGroupPersonalRemind from "./SelectGroup"
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -32,6 +33,7 @@ const DEFAULT_DATA = {
   selectedTime: listTimeSelect[16],
   selectedDate: moment().toDate(),
   selectedCategory: null,
+  selectedCategoryName: "",
   selectedRepeatType: 0,
   frequency: 1,
   notifyTimeType: 0,
@@ -48,6 +50,7 @@ function CreatePersonalRemind({
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const [receiverListIndex, setReceiverListIndex] = React.useState([]);
   const [openReceiverDialog, setOpenReceiverDialog] = React.useState(false);
+  const [openSelectGroupPersonalRemindModal, setOpenSelectGroupPersonalRemindModal] = React.useState(false);
   const badges = [
     {
       value: 0,
@@ -120,12 +123,20 @@ function CreatePersonalRemind({
         <Container>
           <Box className="remind_group_container">
             <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
-              <Typography component={'span'}> {t('views.calendar_page.modal.create_personal_remind.choose_category')} </Typography>
+              <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.choose_category')} </Typography>
               <span>*</span>
             </abbr>
-            <CustomSelect
-              options={map(remindCategories, (group) => ({ label: get(group, "name"), value: get(group, "id") }))}
-              onChange={(group) => handleChangeData("selectedCategory", group.value)}
+            <TextField
+              placeholder={t('views.calendar_page.modal.create_personal_remind.choose_category')}
+              className={"remind_group_container_input"}
+              variant="outlined"
+              multiline
+              fullWidth
+              value={data.selectedCategoryName}
+              onClick={() => setOpenSelectGroupPersonalRemindModal(true)}
+              inputProps={{
+                readOnly: true
+              }}
             />
             <Typography component={'p'} className="create_remind_description"> {t('views.calendar_page.modal.create_personal_remind.description')} </Typography>
           </Box>
@@ -258,6 +269,18 @@ function CreatePersonalRemind({
         disableIndexes={[]}
         onChange={value => handleReceiverChange(value)}
       />
+      {
+        openSelectGroupPersonalRemindModal &&
+        <SelectGroupPersonalRemind
+          isOpen={true}
+          setOpen={(value) => setOpenSelectGroupPersonalRemindModal(value)}
+          selectedOption={(group) => {
+            handleChangeData("selectedCategory", group.id)
+            handleChangeData("selectedCategoryName", group.name)
+          }}
+          groupSelected={data.selectedCategory ? data.selectedCategory : null}
+        />
+      }
     </>
   )
 }

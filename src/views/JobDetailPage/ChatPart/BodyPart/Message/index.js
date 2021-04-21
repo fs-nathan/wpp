@@ -45,6 +45,7 @@ import UpdateScheduleTask from './UpdateScheduleTask';
 import UpdateSubtask from './UpdateSubtask';
 import UpdateTaskNameMessage from './UpdateTaskNameMessage';
 import UpdateTypeAssignTask from './UpdateTypeAssignTask';
+import UpdateStatus from './UpdateStatus';
 
 const Message = props => {
   if (props.type === undefined) return null;
@@ -149,6 +150,8 @@ const Message = props => {
       return <div className="wrap-time">
         <div className="time">{props.time_create}</div>
       </div>;
+    case CHAT_TYPE.UPDATE_STATUS_TASK:
+      return <UpdateStatus {...props} />;
     default:
       return <div>Tin nhắn này bị lỗi hiển thị</div>;
   }

@@ -20,6 +20,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import JobDetailModalWrap from "../../../../JobDetailPage/JobDetailModalWrap";
 import OutlinedInputSelect from "../../../../JobDetailPage/TabPart/ProgressTab/OutlinedInputSelect";
 import MySelect from "../../../../../components/MySelect";
+import SelectGroupPersonalRemind from "../CreatePersonalRemind/SelectGroup"
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -36,6 +37,7 @@ const DEFAULT_DATA = {
   selectedTime: listTimeSelect[16],
   selectedDate: moment().toDate(),
   selectedCategory: '',
+  selectedCategoryName: "",
   selectedRepeatType: 0,
   notifyTimeType: 0,
   timeBefore: 30,
@@ -52,6 +54,7 @@ function UpdatePersonalRemind({
   const [data, setDataMember] = React.useState(DEFAULT_DATA);
   const [receiverListIndex, setReceiverListIndex] = React.useState([]);
   const [openReceiverDialog, setOpenReceiverDialog] = React.useState(false);
+  const [openSelectGroupPersonalRemindModal, setOpenSelectGroupPersonalRemindModal] = React.useState(false);
   const badges = [
     {
       value: 0,
@@ -80,6 +83,7 @@ function UpdatePersonalRemind({
       handleChangeData("selectedTime", remind.time);
       handleChangeData("content", remind.content);
       handleChangeData("selectedCategory", remind.category_id);
+      handleChangeData("selectedCategoryName", remind.category_name);
       handleChangeData("timeBefore", remind.remind_before);
       handleChangeData("selectedDate", remind.date);
       handleChangeData("frequency", remind.frequency);
@@ -134,21 +138,22 @@ function UpdatePersonalRemind({
       >
         <Container>
           <Box className="remind_group_container">
-            <StyledFormControl fullWidth>
-              <MySelect
-                  label={t('views.calendar_page.modal.create_personal_remind.choose_category')}
-                  options={map(remindCategories, (group) => ({
-                    label: get(group, 'name'),
-                    value: get(group, 'id'),
-                  }))}
-                  value={{
-                    label: get(find(remindCategories, { id: data.selectedCategory }), 'name'),
-                    value: data.selectedCategory,
-                  }}
-                  isRequired={true}
-                  onChange={({ value: GroupId }) => handleChangeData("selectedCategory",GroupId)}
-              />
-            </StyledFormControl>
+            <abbr title={t('IDS_WP_REQUIRED_LABEL')} className="title">
+              <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.choose_category')} </Typography>
+              <span>*</span>
+            </abbr>
+            <TextField
+              placeholder={t('views.calendar_page.modal.create_personal_remind.choose_category')}
+              className={"remind_group_container_input"}
+              variant="outlined"
+              multiline
+              fullWidth
+              value={data.selectedCategoryName}
+              onClick={() => setOpenSelectGroupPersonalRemindModal(true)}
+              inputProps={{
+                readOnly: true
+              }}
+            />
             <Typography component={'p'} className="create_remind_description"> {t('views.calendar_page.modal.create_personal_remind.description')} </Typography>
           </Box>
           <Box className="remind_setting_container">
@@ -282,6 +287,18 @@ function UpdatePersonalRemind({
         disableIndexes={[]}
         onChange={value => handleReceiverChange(value)}
       />
+      {
+        openSelectGroupPersonalRemindModal &&
+        <SelectGroupPersonalRemind
+          isOpen={true}
+          setOpen={(value) => setOpenSelectGroupPersonalRemindModal(value)}
+          selectedOption={(group) => {
+            handleChangeData("selectedCategory", group.id)
+            handleChangeData("selectedCategoryName", group.name)
+          }}
+          groupSelected={data.selectedCategory ? data.selectedCategory : null}
+        />
+      }
     </>
   )
 }

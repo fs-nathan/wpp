@@ -1,5 +1,5 @@
 import SearchIcon from '@material-ui/icons/Search';
-import PlaylistAddCheckIcon from '@material-ui/icons/PlaylistAddCheck';
+import EventIcon from '@material-ui/icons/Event';
 import CreateIcon from '@material-ui/icons/Create';
 import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline';
 import SearchInput from 'components/SearchInput';
@@ -9,14 +9,16 @@ import { useSelector, useDispatch } from 'react-redux';
 import CustomModal from 'components/CustomModal';
 import styled from 'styled-components';
 import { currentColorSelector } from 'views/Chat/selectors';
-import { fetchListTaskGroup } from 'actions/taskDetail/taskDetailActions';
+import { fetchListCategory } from 'actions/calendar/alarmCalendar/listPersonalRemindCategory';
 import { useHistory } from "react-router-dom";
-import { CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK, DELETE_GROUP_TASK, CustomEventDispose, CustomEventListener } from "constants/events";
+import { CREATE_PERSONAL_REMIND_CATEGORY, UPDATE_PERSONAL_REMIND_CATEGORY, DELETE_PERSONAL_REMIND_CATEGORY, CustomEventDispose, CustomEventListener } from "constants/events";
 import AlertModal from 'components/AlertModal';
 import nodata from "assets/ic_no_data_2021.png";
-import { deleteGroupTask } from 'actions/groupTask/deleteGroupTask';
-import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
-import EditGroupTask from "views/ProjectPage/Modals/CreateNewGroupTask";
+import { deletePersonalRemindCategory } from 'actions/calendar/alarmCalendar/deletePersonalRemindCategory';
+import { createPersonalRemindCategory } from 'actions/calendar/alarmCalendar/createPersonalRemindCategory';
+import { updatePersonalRemindCategory } from 'actions/calendar/alarmCalendar/updatePersonalRemindCategory';
+import CreateModal from "views/CalendarPage/views/Modals/CreateGroupPersonalRemind";
+import EditModal from "views/CalendarPage/views/Modals/UpdateGroupPersonalRemind";
 
 export const StyledDiv = styled.div`
   .line-option-selected {
@@ -45,7 +47,7 @@ const Row = (props) => {
     <StyledDiv selectedColor={props.appColor} onClick={handleSelect}>
       <div className={`line-option per-line-modal ${classRow}`}>
         <div className="icon-option">
-          <PlaylistAddCheckIcon />
+          <EventIcon />
         </div>
         <div className="name-option">
           {props.group.name}
@@ -63,13 +65,12 @@ const Row = (props) => {
 }
 
 
-function SelectGroupTask({
+function SelectGroup({
   isOpen,
   setOpen,
   onSubmit = () => {},
   selectedOption = () => {},
   groupSelected,
-  projectId
 }) {
   const timeoutRef = useRef(null); 
   const history = useHistory();
@@ -80,7 +81,7 @@ function SelectGroupTask({
   const [searchValue, setSearchValue] = useState("");
   const [groupOriginal, setGroupOriginal] = useState([]);
   const [groupTask, setGroupTask] = useState(groupOriginal);
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   
   const [openModal, setOpenModal] = useState(false);
   const [groupUpdate, setGroupUpdate] = useState(null);
@@ -110,9 +111,9 @@ function SelectGroupTask({
   async function fetchListGroup() {
     try {
       if (isOpen) {
-        const groupData = await fetchListTaskGroup({project_id: projectId})
-        setGroupOriginal(groupData.data.group_tasks)
-        setGroupTask(groupData.data.group_tasks)
+        const groupData = await fetchListCategory()
+        setGroupOriginal(groupData.data.categories)
+        setGroupTask(groupData.data.categories)
       }
     } catch (e){
 
@@ -124,13 +125,12 @@ function SelectGroupTask({
   }, [isOpen]);
 
   React.useEffect(() => {
-    CustomEventListener(CREATE_GROUP_TASK.SUCCESS, fetchListGroup);
-    CustomEventListener(COPY_GROUP_TASK.SUCCESS, fetchListGroup);
-    CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, () => {
+    CustomEventListener(CREATE_PERSONAL_REMIND_CATEGORY, fetchListGroup);
+    CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, () => {
       setGroupUpdate(null)
       fetchListGroup()
     });
-    CustomEventListener(DELETE_GROUP_TASK.SUCCESS, () => {
+    CustomEventListener(DELETE_PERSONAL_REMIND_CATEGORY, () => {
       fetchListGroup()
       if (groupDelete && groupSelected === groupDelete.id) {
         selectedOption(null)
@@ -138,13 +138,18 @@ function SelectGroupTask({
       setGroupDelete(null)
     });
     return () => {
-      CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, fetchListGroup);
-      CustomEventDispose(COPY_GROUP_TASK.SUCCESS, fetchListGroup);
-      CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, () => {
+      CustomEventDispose(CREATE_PERSONAL_REMIND_CATEGORY, fetchListGroup);
+      CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, () => {
         setGroupUpdate(null)
         fetchListGroup()
       });
-      CustomEventListener(DELETE_GROUP_TASK.SUCCESS, fetchListGroup);
+      CustomEventDispose(DELETE_PERSONAL_REMIND_CATEGORY, () => {
+        fetchListGroup()
+        if (groupDelete && groupSelected === groupDelete.id) {
+          selectedOption(null)
+        }
+        setGroupDelete(null)
+      });
     }
   }, []);
 
@@ -152,10 +157,20 @@ function SelectGroupTask({
   function handleOpenCreateGroup() {
     setOpenModal(true)
     setGroupUpdate(null)
+    setIsLoading(false)
+  }
+
+  function handleCreateGroupRemind(value) {
+    dispatch(createPersonalRemindCategory({ name: value.title, color: value.color }, false))
   }
 
   function handleOpenEditGroup(group) {
     setGroupUpdate(group)
+    setIsLoading(false)
+  }
+
+  function handleUpdateCategory(value) {
+    dispatch(updatePersonalRemindCategory({ categoryID: value.id, name: value.title, color: value.color }, false))
   }
 
   function confimDeleteGroup(group) {
@@ -163,13 +178,13 @@ function SelectGroupTask({
     setGroupDelete(group)
   }
   const handleDeleteGroup = () => {
-    dispatch(deleteGroupTask({ groupTaskId: groupDelete.id }))
+    dispatch(deletePersonalRemindCategory({ categoryID: groupDelete.id }))
   }
 
   return (
     <>
       <CustomModal
-        title={t("LABEL_CHAT_TASK_CHON_NHOM_CONG_VIEC")}
+        title={t("views.calendar_page.modal.create_personal_remind.choose_category")}
         open={isOpen}
         setOpen={setOpen}
         onCancle={
@@ -179,7 +194,7 @@ function SelectGroupTask({
         }
         height='tall'
         maxWidth='sm'
-        actionLoading={loading}
+        actionLoading={false}
         manualClose={true}
         canConfirm={true}
         className="custom-select-modal"
@@ -188,17 +203,17 @@ function SelectGroupTask({
       >
         <div className="body-head">
           <div className="per-line-modal">
-            <SearchInput className={"custom-search"} placeholder={t("LABEL_SEARCH_TASK_GROUP")}
+            <SearchInput className={"custom-search"} placeholder={t("LABEL_SEARCH_PERSONAL_CATEGORY")}
               value={searchValue}
               onChange={handleChangeSearch}
             />   
           </div>
           <div className="per-line-modal tip-line">
             <b>{t("LABEL_TIP_IN_OFFER")}</b>
-            <span>{t("LABEL_DESCRIPTION_TIP_IN_TASK_GROUP")}</span>
+            <span>{t("LABEL_DESCRIPTION_TIP_IN_PERSONAL_CATEGORY")}</span>
           </div>
           <div className="per-line-modal create-line">
-            <span onClick={handleOpenCreateGroup} style={{color: appColor}}>&#43; {t("CREATE_NEW_TASK_GROUP")}</span>
+            <span onClick={handleOpenCreateGroup} style={{color: appColor}}>&#43; {t("CREATE_NEW_PERSONAL_CATEGORY")}</span>
           </div>
         </div>
         <div className="body-main">
@@ -230,20 +245,28 @@ function SelectGroupTask({
       </CustomModal>
       {
         !groupUpdate ?
-        <CreateGroupTask
+        <CreateModal
           open={openModal}
           setOpen={(value) => setOpenModal(value)}
-          project_id={projectId}
+          onConfirm={(value) => {
+            setIsLoading(true);
+            handleCreateGroupRemind(value);
+          }}
+          isLoading={isLoading}
         /> :
-        <EditGroupTask
+        <EditModal
           open={true}
           setOpen={(value) => {
             if (!value) {
               setGroupUpdate(null)
             }
           }}
-          project_id={projectId}
-          curGroupTask={groupUpdate}
+          value={groupUpdate}
+          onConfirm={(value) => {
+            setIsLoading(true);
+            handleUpdateCategory(value);
+          }}
+          isLoading={isLoading}
         />
       }
       
@@ -260,4 +283,4 @@ function SelectGroupTask({
   )
 }
 
-export default SelectGroupTask
+export default SelectGroup

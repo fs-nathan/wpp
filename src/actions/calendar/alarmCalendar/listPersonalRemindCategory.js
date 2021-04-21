@@ -1,4 +1,5 @@
 import { LIST_PERSONAL_REMIND_CATEGORY, LIST_PERSONAL_REMIND_CATEGORY_FAIL, LIST_PERSONAL_REMIND_CATEGORY_SUCCESS } from '../../../constants/actions/calendar/alarmCalendar';
+import { apiService } from '../../../constants/axiosInstance';
 
 export const listPersonalRemindCategory = ({ fromTime, toTime }, quite = false) => ({
   type: LIST_PERSONAL_REMIND_CATEGORY,
@@ -21,3 +22,12 @@ export const listPersonalRemindCategoryFail = (error, options) => ({
   options,
   error,
 });
+
+export const fetchListCategory = params => {
+  const config = {
+    url: '/personal-remind-category/list',
+    method: 'get',
+    params
+  };
+  return apiService(config);
+};

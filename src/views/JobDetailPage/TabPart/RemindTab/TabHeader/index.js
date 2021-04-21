@@ -13,9 +13,6 @@ function TabHeader({ setShow }) {
   const dispatch = useDispatch();
   const taskId = useSelector(taskIdSelector);
   const reminds = useSelector(state => state.taskDetail.taskRemind.remind);
-  const {
-    manage_remind,
-  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
 
   useEffect(() => {
     dispatch(getRemind({ taskId }))

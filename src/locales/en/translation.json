@@ -2364,5 +2364,9 @@
   "LABEL_DESCRIPTION_TIP_IN_TASK_GROUP": "Creating task group: Doing, Testing... to classify and manage easily.",
   "CREATE_NEW_TASK_GROUP": "Create new task group",
   "LABEL_NO_DATA_SELECT_MODAL_TASK_GROUP": "No task group was created",
-  "DESCRIPTION_NO_DATA_SELECT_MODAL_TASK_GROUP": "Create new task group to select"
+  "DESCRIPTION_NO_DATA_SELECT_MODAL_TASK_GROUP": "Create new task group to select",
+  "LABEL_SEARCH_TASK_GROUP": "Search task group",
+  "LABEL_SEARCH_PERSONAL_CATEGORY": "Search remind category",
+  "LABEL_DESCRIPTION_TIP_IN_PERSONAL_CATEGORY": "Creating remind category: Customer care, Weekly metting... to classify and manage easily.",
+  "CREATE_NEW_PERSONAL_CATEGORY": "Create new remind category"
 }
