@@ -24,14 +24,18 @@ const RegisterPage = () => {
   const [errMsg, setErrMsg] = useState('');
   const [loading, setLoading] = useState(false);
   const [pwdNotMatch, setPwdNotMatch] = useState(false);
-
+  const [dataRegister, setDataRegister] = useState({
+    name: '',
+    email: '',
+    password: ''
+  })
   const { t } = useTranslation();
 
   const handleRegister = async e => {
     e.preventDefault();
     try {
       setLoading(true);
-      await actionRegister(e.target.elements.email.value);
+      await actionRegister(dataRegister);
       setIsRegistered(true);
       setLoading(false);
     } catch (error) {
@@ -40,8 +44,10 @@ const RegisterPage = () => {
     }
   };
 
-  const handleOnchange = () => {
+  const handleOnchange = (key) => e => {
+    console.log(key, e)
     setErrMsg('');
+    setDataRegister({...dataRegister, [key]: e.target.value})
   };
   const handleCheckPwd = () => {
     let pwd = document.getElementById('password').value;
@@ -73,6 +79,7 @@ const RegisterPage = () => {
               <OutlinedInput
                 id="fullname"
                 required
+                onChange={handleOnchange("name")}
                 placeholder={t('IDS_WP_YOUR_FULL_NAME')}
               />
             </FormControl>
@@ -87,7 +94,7 @@ const RegisterPage = () => {
                   required
                   type="email"
                   placeholder={t('IDS_WP_ENTER_REGISTER_EMAIL')}
-                  onChange={handleOnchange}
+                  onChange={handleOnchange("email")}
                   startAdornment={
                     <InputAdornment position="start">
                       <Icon
@@ -114,6 +121,7 @@ const RegisterPage = () => {
                   placeholder={t('IDS_WP_PASSWORD')}
                   onBlur={handleCheckPwd}
                   size="small"
+                  onChange={handleOnchange("password")}
                   inputProps={{ maxLength: 20, minLength: 8 }}
                   startAdornment={
                     <InputAdornment position="start">

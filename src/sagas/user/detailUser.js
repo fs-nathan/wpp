@@ -29,7 +29,7 @@ function* detailUser(action) {
     yield put(openDetailMember(true))
     CustomEventEmitter(DETAIL_USER.SUCCESS);
   } catch (error) {
-    yield put(detailUserFail(error, action.options));
+    yield put(detailUserFail(error));
     CustomEventEmitter(DETAIL_USER.FAIL);
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }

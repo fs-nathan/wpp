@@ -5,7 +5,7 @@ import { apiService } from "constants/axiosInstance";
 async function doGetInfor(userId) {
     try {
       const config = {
-        url: `/list-user?user_id=${userId}`,
+        url: `/detail-user?user_id=${userId}`,
         method: 'get',
         // header: new Headers({
         //    'authorization': `Bearer ${accessToken}` 
@@ -20,12 +20,12 @@ async function doGetInfor(userId) {
   
   function* getUserInfor(action) {
     try {
-      const data = yield call(doGetInfor(action.userId));
-      yield put(actionGetInforSuccess(data));
+      const {user} = yield call(doGetInfor, action.userId, action.options);
+      yield put(actionGetInforSuccess(user));
      
     } catch (error) {
       yield put(actionGetInforFail(error));
     }
   }
   
-  export { getUserInfor};
+  export { getUserInfor,};

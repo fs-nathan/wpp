@@ -21,7 +21,7 @@ import {
   actionUpdateAvatar
 } from '../../../../actions/account';
 import {
-  actionCheckVerifyAccount
+  actionCheckVerifyAccount,actionChangeAccount
 } from '../../../../actions/user/detailUser';
 import {
   getProfileService,
@@ -35,6 +35,7 @@ import { IconVerify } from 'components/IconSvg/Verify_check';
 import CustomModal from 'components/CustomModal';
 import ReactParserHtml from 'react-html-parser';
 import { FormControl, InputAdornment, OutlinedInput } from '@material-ui/core';
+import { thumbVerticalStyleDefault } from 'react-custom-scrollbars/lib/Scrollbars/styles';
 class SettingInfo extends Component {
 
   state = {
@@ -47,6 +48,8 @@ class SettingInfo extends Component {
     visibles: false,
     showInputFile: true,
     data: this.props.profile,
+    errorVerify: null,
+    email: null,
     selectedDate: this.props.profile.birthday
       ? moment(
           this.props.profile.birthday,
@@ -57,21 +60,28 @@ class SettingInfo extends Component {
   };
   componentDidMount() {
     this.getProfile();
-    
-    
+    //  this.handlegetMail()
   }
-  
+
+  // handlegetMail(){
+  //   if(this.props.profile.email){
+  //     this.setState({email: this.props.profile.email})
+  //   }
+  // }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.profile !== this.props.profile && this.props.profile) {
       this.setState({
         selectedDate: moment(
           this.props.profile.birthday,
           this.props.profile.format_date
-        ).toDate()
+        ).toDate(),
+        email: this.props.profile.email
       });
     }
     
   }
+
+ 
   getProfile = async () => {
     try {
       const { data } = await getProfileService();
@@ -179,13 +189,34 @@ class SettingInfo extends Component {
       () => this.handleChangeProfile('updateImage')
     );
   };
+
+  
   handleClickVerify = () => {
-    this.props.actionCheckVerifyAccount()
-    this.setState({visible: true})
+    try {
+     this.props.actionCheckVerifyAccount();
+     this.setState({visible: true})
+      
+    } catch (error) {
+      
+      this.setState({errorVerify: error.msg})
+    }
+    
   }
+  
   handleDateChange = date => {
     this.setState({ selectedDate: date });
   };
+  handleChangeAccount = (e) =>{
+    e.preventDefault();
+    
+    const data = {
+      email: e.target.elements.email_new.value,
+      password: e.target.elements.password.value
+    }
+   this.props.actionChangeAccount(data);
+   this.setState({visibles: false})
+   this.setState({email: e.target.elements.email_new.value})
+  }
   render() {
     const {
       mode,
@@ -245,7 +276,7 @@ class SettingInfo extends Component {
               </div>
               <InputBase
                 className="value-item-info email col-sm-9"
-                value={data.email}
+                value={this.state.email}
                 disabled={true}
                 onChange={e => this.handleChangeData('email', e.target.value)}
               />
@@ -253,6 +284,7 @@ class SettingInfo extends Component {
                 {this.props.profile.is_verify ? <div style={{display: 'flex', alignItems: 'center'}}><span className="check_verify"><IconVerify /></span> <div style={{color: '#43a047', marginLeft: '7px'}}>{t('IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED')}</div></div>:<span style={{color: 'red', lineHeight: '18px'}}>{t('IDS_WP_NOT_VERIFY_ACCOUNT_NOTIFY')}</span>}
                 {!this.props.profile.is_verify && <div style={{color: 'blue', marginTop: '10px', cursor: 'pointer'}} onClick={this.handleClickVerify }>{t('IDS_WP_VERIFY_ACCOUNT')}</div>}
                 <div style={{color: 'blue',marginTop: '10px', cursor: 'pointer'}} onClick={()=>this.setState({visibles : true})}>{t('IDS_WP_CHANGE_ACCOUNT')}</div>
+                
                 <CustomModal
                  onCancle={()=>this.setState({visible: false})} 
                  open={this.state.visible} 
@@ -264,10 +296,10 @@ class SettingInfo extends Component {
                  height="miniWide"
                  >
                    <div className="modal-verify-account_content">
-                      <p>{t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY')} <strong style={{color: 'red'}}>{data.email}</strong></p>
+                      <p>{t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY')} <strong style={{color: 'red'}}>{this.state.email}</strong></p>
                       <p>{ReactParserHtml(t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2'))}</p>
                       <div className="modal-verify-account_footer"><button onClick={()=> this.setState({visible: false})} style={{border: 'none'}}>{t('IDS_WP_BUTTON_CLOSE')}</button></div>
-                   </div>
+                      </div>
                 </CustomModal>
                 <CustomModal
                  onCancle={()=>this.setState({visibles: false})} 
@@ -292,7 +324,7 @@ class SettingInfo extends Component {
                   required
                   type="email"
                   disabled
-                  value={data.email}
+                  value={this.state.email}
                   style={{color: 'red', fontWeight: '600', backgroundColor: '#E6E6E6', border: 'none'}}
                   // onChange={handleOnchange}
                   startAdornment={
@@ -311,7 +343,7 @@ class SettingInfo extends Component {
             >
               <div className="lb-input">{t('IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NEW')} <span>*</span></div>
               <OutlinedInput
-                id="email-new"
+                id="email_new"
                 required
                 type="email"
                 placeholder={t('IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_NEW')}
@@ -362,7 +394,7 @@ class SettingInfo extends Component {
               </div>
               <InputBase
                 className="value-item-info col-sm-9"
-                value={data.name}
+                value={this.props.user.name}
                 disabled={mode !== 'edit'}
                 onChange={e => this.handleChangeData('name', e.target.value)}
               />
@@ -523,11 +555,12 @@ class SettingInfo extends Component {
 export default connect(
   state => ({
     profile: state.system.profile,
-    user: state.user.detail_user
+    user: state.user.detailUser
   }),
   {
     actionGetProfile,
     actionToast,
-    actionCheckVerifyAccount
+    actionCheckVerifyAccount,
+    actionChangeAccount
   }
 )(withTranslation()(SettingInfo));

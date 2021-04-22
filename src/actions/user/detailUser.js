@@ -1,3 +1,4 @@
+import { apiService } from 'constants/axiosInstance';
 import {
   DETAIL_USER,
   DETAIL_USER_FAIL,
@@ -8,7 +9,14 @@ import {
   CHECK_VERIFY_ACCOUNT_FAIL,
   GET_USER_INFOR,
   GET_USER_INFOR_FAIL,
+<<<<<<< HEAD
   GET_USER_INFOR_SUCCESS
+=======
+  GET_USER_INFOR_SUCCESS,
+  UPDATE_ACCOUNT,
+  UPDATE_ACCOUNT_SUCCESS,
+  UPDATE_ACCOUNT_FAIL
+>>>>>>> 2c5d11ca (feature: tab config member)
 } from '../../constants/actions/user/detailUser';
 
 export const detailUser = ({ userId }, quite = false) => ({
@@ -65,4 +73,20 @@ export const actionGetInforFail = error => ({
 export const actionGetInforSuccess = data => ({
   type: GET_USER_INFOR_SUCCESS,
   payload: data
+})
+
+export const actionChangeAccount = data => ({
+  type: UPDATE_ACCOUNT,
+  payload: data
+  
+})
+export const actionChangeAccountSuccess = data => ({
+  type: UPDATE_ACCOUNT_SUCCESS,
+  payload: data
+  
+})
+export const actionChangeAccountFail = error => ({
+  type: UPDATE_ACCOUNT_FAIL,
+  payload: error
+  
 })

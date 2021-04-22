@@ -1,13 +1,11 @@
 import { apiService } from '../../constants/axiosInstance';
 import * as actionTypes from '../../constants/actions/system/system';
 
-export const actionRegister = email => {
+export const actionRegister = data => {
   const config = {
     url: '/register',
     method: 'post',
-    data: {
-      email
-    }
+    data
   };
   return apiService(config);
 };

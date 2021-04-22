@@ -47,7 +47,8 @@
           "COMPLETE": "Hoàn thành",
           "EXPIRED": "Quá hạn",
           "CREATED": "Bạn tạo",
-          "ASSIGNED": "Bạn tham gia"
+          "ASSIGNED": "Bạn tham gia",
+          "LOCK": "Đang khóa"
         }
       },
       "CUSTOM_TEXTBOX": {
