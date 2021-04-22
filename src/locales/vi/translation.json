@@ -2449,7 +2449,15 @@
    "IDS_WP_FILTER_LIST_MEMBER": "Lọc danh sách thành viên",
    "IDS_WP_ACCOUNT_MEMBER_JOIN": "Tài khoản tham gia",
    "IDS_WP_SETTING_MEMBER": "Cài đặt thành viên",
-   "IDS_WP_LOCK_MEMBER": "Khóa thành viên",
+   "IDS_WP_LOCK_MEMBER": "Khóa thành viễn",
    "IDS_WP_LOCK_MEMBER_NOTE": "Vô hiệu hóa hoạt động của thành viên trên nhóm",
-   "IDS_WP_LOCk": "Khóa"
+   "IDS_WP_LOCk": "Khóa",
+   "IDS_WP_DELETE_MEMBER": "Xóa thành viên ra khỏi nhóm",
+   "IDS_WP_RESET_PASSWORD": "Đặt lại mật khẩu",
+   "IDS_WP_RESET_PASSWORD_NOTE": "Sau khi đặt lại mật khẩu, hệ thống sẽ gửi mail thông báo tới thành viên để biết hành động này xảy ra nhưng không thể biết được mật khẩu mới tạo. Và Thành viên sử dụng tài khoản này sẽ không thể truy cập vào hệ thống!",
+   "IDS_WP_RESET": "Đặt lại",
+   "IDS_WP_SPECIES": "Loại",
+   "IDS_WP_CHECK_PASSWORD": "Mật khẩu không trùng khớp",
+   "IDS_WP_LOCK_MEMBER_FOREVER": "Thành viên sẽ bị vô hiệu hóa các hoạt động trên nhóm sau khi bị khóa và hoạt động trở lại bình thường sau khi được mở khóa."
+
   }

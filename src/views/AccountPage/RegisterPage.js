@@ -23,6 +23,8 @@ const RegisterPage = () => {
   const [isRegistered, setIsRegistered] = useState(false);
   const [errMsg, setErrMsg] = useState('');
   const [loading, setLoading] = useState(false);
+  const [pwdNotMatch, setPwdNotMatch] = useState(false);
+
   const { t } = useTranslation();
 
   const handleRegister = async e => {
@@ -41,7 +43,15 @@ const RegisterPage = () => {
   const handleOnchange = () => {
     setErrMsg('');
   };
-
+  const handleCheckPwd = () => {
+    let pwd = document.getElementById('password').value;
+    let confirmPwd = document.getElementById('confirmPassword').value;
+    if (pwd && confirmPwd && pwd !== confirmPwd) {
+      setPwdNotMatch(true);
+    } else {
+      setPwdNotMatch(false);
+    }
+  };
   return (
       <div className="AccountPage RegisterPage">
         {!isRegistered &&
@@ -102,6 +112,7 @@ const RegisterPage = () => {
                   type="password"
                   autoComplete="new-password"
                   placeholder={t('IDS_WP_PASSWORD')}
+                  onBlur={handleCheckPwd}
                   size="small"
                   inputProps={{ maxLength: 20, minLength: 8 }}
                   startAdornment={
@@ -114,8 +125,34 @@ const RegisterPage = () => {
                     </InputAdornment>
                   }
                 />
-                <div className="suggest-password">{t('IDS_WP_ENTER_REGISTER_PASSWORD_SUGGESTED')}</div>
               </FormControl>
+              <FormControl
+              margin="normal"
+              variant="outlined"
+              fullWidth
+              className="input-affix-wrapper custom-input"
+            >
+              <OutlinedInput
+                id="confirmPassword"
+                required
+                type="password"
+                autoComplete="new-password"
+                placeholder={t('IDS_WP_RE_INPUT_NEW_PASSWORD')}
+                onBlur={handleCheckPwd}
+                inputProps={{ maxLength: 20, minLength: 8 }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Icon
+                      className="icon-prefix"
+                      path={mdiLockOutline}
+                      size={1}
+                    />
+                  </InputAdornment>
+                }
+              />
+              {pwdNotMatch && <div style={{color: 'red', marginTop: '15px'}}>{t('IDS_WP_CHECK_PASSWORD')}</div>}
+            </FormControl>
+            <div className="suggest-password">{t('IDS_WP_ENTER_REGISTER_PASSWORD_SUGGESTED')}</div>
               <FormControlLabel
                 control={<Checkbox color="primary" required />}
                 label={<><span>{t('IDS_WP_I_AM_ACCEPT_TERM')}</span> <Link href="" className="btn-link">

@@ -161,7 +161,7 @@ import {GET_WORK_TYPE} from "../constants/actions/project/getWorkType";
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import {BAN_USER_FROM_GROUP} from "../constants/actions/user/banUserFromGroup";
 import {DELETE_DOCUMENTS_USER} from "../constants/actions/user/deleteDocumentsUser";
-import {DETAIL_USER , CHECK_VERIFY_ACCOUNT} from "../constants/actions/user/detailUser";
+import {DETAIL_USER , CHECK_VERIFY_ACCOUNT, GET_USER_INFOR} from "../constants/actions/user/detailUser";
 import {LIST_USER_OF_GROUP} from "../constants/actions/user/listUserOfGroup";
 import {PERMISSION_USER} from "../constants/actions/user/permissionUser";
 import {PRIVATE_MEMBER} from "../constants/actions/user/privateMember";
@@ -297,7 +297,9 @@ import {listScheduleOfWeekFromModal} from "./calendar/weeklyCalendar/listSchedul
 import {listWeeksInYear} from "./calendar/weeklyCalendar/listWeeksInYear";
 import {settingStartingDay} from "./calendar/weeklyCalendar/settingStartingDay";
 import {updateSchedule} from "./calendar/weeklyCalendar/updateSchedule";
+import {getUserInfor} from "./user/getUserInfo";
 import * as chatDetailSaga from "./chat/chat";
+
 import {
   listComment,
   listDocumentShare,
@@ -455,6 +457,7 @@ function* rootSaga() {
   yield takeEvery(UPDATE_ROOM, updateRoom);
   yield takeEvery(SORT_ROOM, sortRoom);
   yield takeLeading(DETAIL_USER, detailUser);
+  yield takeEvery(GET_USER_INFOR, getUserInfor);
   yield takeEvery(CHECK_VERIFY_ACCOUNT, verifyAccount);
   yield takeEvery(UPLOAD_DOCUMENTS_USER, uploadDocumentsUser);
   yield takeEvery(DELETE_DOCUMENTS_USER, deleteDocumentsUser);

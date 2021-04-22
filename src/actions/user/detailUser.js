@@ -5,7 +5,10 @@ import {
   DETAIL_USER_RESET,
   CHECK_VERIFY_ACCOUNT,
   CHECK_VERIFY_ACCOUNT_SUCCESS,
-  CHECK_VERIFY_ACCOUNT_FAIL
+  CHECK_VERIFY_ACCOUNT_FAIL,
+  GET_USER_INFOR,
+  GET_USER_INFOR_FAIL,
+  GET_USER_INFOR_SUCCESS
 } from '../../constants/actions/user/detailUser';
 
 export const detailUser = ({ userId }, quite = false) => ({
@@ -45,5 +48,21 @@ export const actionCheckVerifyAccountFail = error => ({
 
 export const actionCheckVerifyAccountSuccess = data => ({
   type: CHECK_VERIFY_ACCOUNT_SUCCESS,
+  payload: data
+})
+
+export const actionGetInfor = (userId) => ({
+  type: GET_USER_INFOR,
+  userId
+
+})
+
+export const actionGetInforFail = error => ({
+  type: GET_USER_INFOR_FAIL,
+  payload: error
+})
+
+export const actionGetInforSuccess = data => ({
+  type: GET_USER_INFOR_SUCCESS,
   payload: data
 })

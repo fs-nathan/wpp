@@ -1,6 +1,6 @@
 import {CircularProgress, IconButton, Menu, MenuItem, Badge, Button} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {mdiAccountCog, mdiAccountPlus, mdiDotsVertical, mdiLock, mdiShareVariant} from '@mdi/js';
+import {mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock, mdiShareVariant} from '@mdi/js';
 import Icon from '@mdi/react';
 import {find, get, isNil} from 'lodash';
 import React from 'react';
@@ -41,43 +41,42 @@ const PermissionButton = ({
 
 function TooltipRole({user}){
   const {t} = useTranslation();
-  // const getRole = get(user, 'role') ;
-  const member = "Nữ";
+  const getRole = get(user, 'user_type') ;
   function handleRender(){
-   switch (user.gender.toString()) {
-     case "Nữ":
+   switch (getRole) {
+     case 3:
        
        return (
         <LightTooltip
         placement='top'
         title={
           <TooltipBody state={0}>
-            <small style={{color: 'yelllow'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MEMBER_TOOLTIP')}</small>
+            <small style={{color: '#f1af36', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MEMBER_TOOLTIP')}</small>
           </TooltipBody>
         }
       >
         <TooltipWrapper>
-          <CustomBadge color='#FFF' background-color='yellow'>
+          <div style={{color: "#fff", backgroundColor: '#f1af36',textAlign: 'center', padding: '5px'}}>
             {t('DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE')}
-          </CustomBadge>
+          </div>
         </TooltipWrapper>
       </LightTooltip>
        )
-       case "Nam":
+       case 1:
        
         return (
           <LightTooltip
       placement='top'
       title={
         <TooltipBody state={0}>
-          <small style={{color: 'green'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER_TOOLTIP')}</small>
+          <small style={{color: '#0ed216', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER_TOOLTIP')}</small>
         </TooltipBody>
       }
     >
       <TooltipWrapper>
-        <CustomBadge color='#FFF' background-color='green'>
+        <div style={{background: '#0ed216', color: '#fff', textAlign: 'center', padding: '5px'}}>
           {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER')}
-        </CustomBadge>
+        </div>
       </TooltipWrapper>
     </LightTooltip>
         )
@@ -88,14 +87,14 @@ function TooltipRole({user}){
       title={
         <TooltipBody state={0}>
           {user.role.toString()}
-          <small style={{color: 'red'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP')}</small>
+          <small style={{color: '#950eda', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP')}</small>
         </TooltipBody>
       }
     >
       <TooltipWrapper>
-        <CustomBadge color='#48bb78' background-color = 'red'>
+        <div style={{color:'#fff', backgroundColor : '#950eda',textAlign: 'center', padding: '5px'}}>
           {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL')}
-        </CustomBadge>
+        </div>
       </TooltipWrapper>
     </LightTooltip>
        )
@@ -319,6 +318,7 @@ function AllUsersTable({
       />
       <Menu
         id="simple-menu"
+        className="more_menu"
         anchorEl={menuAnchorEl}
         open={Boolean(menuAnchorEl)}
         onClose={() => setMenuAnchorEl(null)}
@@ -339,7 +339,7 @@ function AllUsersTable({
               className="margin-circular"
               color="white"
             />}
-          {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
+         <div className="menu_icon"><Icon path={mdiAtomVariant} size={1} color={'rgba(0, 0, 0, 0.7)'}/></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}</div>
         </MenuItem>
         <MenuItem onClick={() => {
           handleOpenModal('PERMISSION_SETTING', {
@@ -348,29 +348,39 @@ function AllUsersTable({
           });
           setMenuAnchorEl(null);
         }}>
-          {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
+          <div className="menu_icon"></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}</div>
+        </MenuItem>
+        <MenuItem onClick={()=> {
+          handleOpenModal('SETTING_MEMBER', {
+            user,
+            roomId: null
+          })
+        }}>
+        <div className="menu_icon"><Icon path={mdiAccountCog} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div className="menu_label">{t('IDS_WP_SETTING_MEMBER')}</div>
         </MenuItem>
         <MenuItem>
-        <Icon path={mdiAccountCog} size={1} color={'rgba(0, 0, 0, 0.7)'} /> <div>{t('IDS_WP_SETTING_MEMBER')}</div>
-        </MenuItem>
-        <MenuItem>
-        <Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /> <div>
-          <p>{t('IDS_WP_LOCK_MEMBER')}</p>
-          <p>{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
-          <Button>{t('IDS_WP_LOCk')}</Button>
+        <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
+          <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
+          <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
+          <Button className="menu_btn-lock">{t('IDS_WP_LOCk')}</Button>
         </div>
         </MenuItem>
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
-          <MenuItem onClick={() => {
+          <MenuItem >
+            <div className="menu_icon"><Icon path={mdiAccountArrowRight} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> 
+            <div>
+              <p className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}</p>
+              <p className="menu_note">{t('IDS_WP_DELETE_MEMBER')}</p>
+              <Button className="menu_btn_out-group" onClick={() => {
             handleOpenModal('ALERT', {
               roomId: null,
               selectedUser: user,
             });
             setMenuAnchorEl(null);
-          }}>
-            {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
+          }}>{t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}</Button>
+            </div>
           </MenuItem>
-        )}
+         )}
       </Menu>
     </Container>
   )
