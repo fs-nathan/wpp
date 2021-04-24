@@ -32,10 +32,10 @@ import {
 //   requireUsersSelector
 // } from "../";
 import Icon from "@mdi/react";
-import { get, isNil } from "lodash";
+import { find, get, isNil } from "lodash";
 import * as images from "assets/index";
 import Popover from '@material-ui/core/Popover';
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import AddUserModalPresenter from "views/DepartmentPage/Modals/AddUserModal/presenters";
@@ -50,13 +50,24 @@ import {
   requireUsersSelector,
 } from "views/DepartmentPage/LeftPart/AddUser/selectors";
 import { searchUser, searchUserReset } from "actions/groupUser/searchUser";
+import { actionAddMutipleMember } from "actions/groupUser/addMembertoGroup";
 import { inviteUserJoinGroup } from "actions/groupUser/inviteUserJoinGroup";
 import CustomModal from "components/CustomModal";
 import { ImagesContent } from "views/KanbanPage/KanbanBoard/KanbanItem";
 import { Link } from "react-router-dom";
 import { mdiCheckDecagram, mdiUpload } from "@mdi/js";
+import { listRoom } from "actions/room/listRoom";
+import { CustomEventListener, CustomEventDispose } from "constants/events";
+import { detailUser } from "actions/user/detailUser";
+import { listUserOfGroup } from "actions/user/listUserOfGroup";
+import { DETAIL_USER } from "constants/actions/user/detailUser";
+import { LIST_USER_OF_GROUP } from "constants/actions/user/listUserOfGroup";
+import { UPDATE_USER } from "constants/actions/user/updateUser";
+import MySelect from "components/MySelect";
+import { actionToast } from "actions/system/system";
 export const StyledButton = ({ className = "", ...rest }) => (
   <Button
+  
     className={`comp_CustomTable_HeaderButtonGroup___button ${className}`}
     {...rest}
   />
@@ -79,10 +90,14 @@ export const SearchBox = ({ className = "", ...rest }) => (
 function HeaderButtonGroup({
   doSearchUser,
   desireUser,
+  doListRoom,
   doSearchUserReset,
   doInviteUserJoinGroup,
+  doReloadUser,
   resetDesireUser,
   profile,
+  updatedUser = null, 
+  room
 }) {
   const { options } = React.useContext(CustomTableContext);
   const [searchAnchor, setSearchAnchor] = React.useState(null);
@@ -97,6 +112,9 @@ function HeaderButtonGroup({
   const [openResultCreateAccount, setOpenResultCreateAccount] = React.useState(
     false
   );
+  const [roomList, setRoomList] = React.useState(null);
+  const [activeLoading, setActiveLoading] = React.useState(false);
+  const [activeMask, setActiveMask] = React.useState(-1);
   const [
     openContinueCreateAccount,
     setOpenContinueCreateAccount,
@@ -104,21 +122,22 @@ function HeaderButtonGroup({
   const [disable, setDisable] = React.useState(false);
   const [rowTable, setRowTable] = React.useState([
     {
-      account: "account@gmail.com",
+      email: "account@gmail.com",
       name: "Trần Văn Nam",
-      part: "Ban lãnh đạo",
+      room: "Ban lãnh đạo",
     },
     {
-      account: "",
+      email: "",
       name: "",
-      part: "",
+      room: "",
     },
     {
-      account: "",
+      email: "",
       name: "",
-      part: "",
+      room: "",
     },
   ]);
+  const dispatch = useDispatch();
   let fileInputRef = React.useRef();
 
   function onClickFromComputer() {
@@ -137,7 +156,11 @@ function HeaderButtonGroup({
   function handleMoreOpen(evt) {
     setMoreAnchor(evt.currentTarget);
   }
-
+  React.useEffect(()=>{
+    if(room){
+      setRoomList(room.data.rooms)
+    }
+  },[room])
   function handleMoreClick(handler) {
     return (evt) => {
       setMoreAnchor(null);
@@ -159,7 +182,7 @@ function HeaderButtonGroup({
     if (rowTable.length === 99) {
       setDisable(true);
     }
-    setRowTable([...rowTable, { account: "", name: "", part: "" }]);
+    setRowTable([...rowTable, { email: "", name: "", room: "" }]);
   };
   const handleDeleRowTable = (index) => {
     const newTable = rowTable.filter((el, indexEl) => indexEl !== index);
@@ -177,10 +200,25 @@ function HeaderButtonGroup({
     setRowTable(NewRowTable);
   };
 
-  const handleSubmit = (e) => {
+   const handleToast = (type, message) => {
+    dispatch(actionToast(type,message))
+   }
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setOpenContinueCreateAccount(false);
-    setOpenResultCreateAccount(true);
+
+  try {
+   const {data} = await actionAddMutipleMember({account_list: rowTable, password: e.target.elements.password.value})
+    if(data.state){
+      handleToast('success', t('IDS_WP_CREATE_ACCOUNT_SUCCESS'))
+       setOpenContinueCreateAccount(false);
+       setOpenResultCreateAccount(true);
+    }
+  } catch (error) {
+    console.log('err',error)
+    handleToast('error', t('SNACK_MUTATE_FAIL'))
+  }
+    
+   
   };
 
   const handleDeleteAllRow = () => {
@@ -201,10 +239,47 @@ function HeaderButtonGroup({
   const handleChangeFilter = (e) => {
      setValueFilter(e.target.value)
   }
+ 
+  React.useEffect(() => {
+    doListRoom();
+    // eslint-disable-next-line
+  }, []);
+  
+  React.useEffect(() => {
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    CustomEventListener(UPDATE_USER.SUCCESS, doReloadUser);
+    CustomEventListener(UPDATE_USER.FAIL, fail);
+    return () => {
+      CustomEventDispose(UPDATE_USER.SUCCESS, doReloadUser);
+      CustomEventDispose(UPDATE_USER.FAIL, fail);
+    };
+    // eslint-disable-next-line
+  }, [updatedUser]);
+
+  React.useEffect(() => {
+    const success = (bit) => () => {
+      setActiveMask((oldMask) => oldMask | (1 << bit));
+    };
+    const fail = () => {
+      setActiveMask(-1);
+    };
+    CustomEventListener(DETAIL_USER.SUCCESS, success(0));
+    CustomEventListener(LIST_USER_OF_GROUP.SUCCESS, success(1));
+    CustomEventListener(DETAIL_USER.FAIL, fail);
+    CustomEventListener(LIST_USER_OF_GROUP.FAIL, fail);
+    return () => {
+      CustomEventDispose(DETAIL_USER.SUCCESS, success(0));
+      CustomEventDispose(LIST_USER_OF_GROUP.SUCCESS, success(1));
+      CustomEventDispose(DETAIL_USER.FAIL, fail);
+      CustomEventDispose(LIST_USER_OF_GROUP.FAIL, fail);
+    };
+  }, [updatedUser]);
   const { t } = useTranslation();
   return (
     <React.Fragment>
-      <ButtonGroup size="small" variant="text">
+      <ButtonGroup className="button-Group_header" size="small" variant="text">
         {get(options, "search") && (
           <StyledButton onClick={handleSearchClick}>
             <div>
@@ -247,7 +322,7 @@ function HeaderButtonGroup({
 
         {get(options, "addmember") && (
           <div>
-            <StyledButton onClick={handleAddMemberClick}>
+            <StyledButton className="button" onClick={handleAddMemberClick}>
               <div>
                 <Icon
                   path={mdiAccountPlus}
@@ -376,9 +451,9 @@ function HeaderButtonGroup({
                             </td>
                             <td>
                               <input
-                                onChange={handleOnchange("account", index)}
+                                onChange={handleOnchange("email", index)}
                                 required
-                                value={item.account && item.account}
+                                value={item.email && item.email}
                               />
                             </td>
                             <td>
@@ -389,18 +464,17 @@ function HeaderButtonGroup({
                               />
                             </td>
                             <td>
+                      
                               <select
-                                defaultValue={item.part && item.part}
-                                onChange={handleOnchange("part", index)}
+                                defaultValue={item.room && item.room}
+                                onChange={handleOnchange("room", index)}
                               >
                                 <option value=""></option>
-                                <option value="Ban lãnh đạo">
-                                  Ban lãnh đạo
-                                </option>
-                                <option value="Trưởng phòng">
-                                  Trưởng phòng
-                                </option>
-                                <option value="Nhân viên">Nhân viên</option>
+
+                                {roomList && roomList.map((item,index)=>(
+                                  <option key={index} value={item.id}>{item.name}</option>
+                                ))}
+                                
                               </select>
                             </td>
 
@@ -651,9 +725,9 @@ function HeaderButtonGroup({
                           >
                             {index + 1}
                           </td>
-                          <td>{item.account}</td>
+                          <td>{item.email}</td>
                           <td>{item.name}</td>
-                          <td>{item.part}</td>
+                          <td>{item.room}</td>
                         </tr>
                       ))}
                   </tbody>
@@ -832,15 +906,22 @@ const mapStateToProps = (state) => {
     requireUsers: requireUsersSelector(state),
     requireLoading: requireLoadingSelector(state),
     profile: state.system.profile,
+    room: state.room.listRoom
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    actionToast,
+    doReloadUser: ({ userId }) => {
+      dispatch(detailUser({ userId }, true));
+      dispatch(listUserOfGroup(true));
+    },
     doSearchUser: ({ info }, quite) => dispatch(searchUser({ info }, quite)),
     doSearchUserReset: () => dispatch(searchUserReset()),
     doInviteUserJoinGroup: ({ userId }) =>
       dispatch(inviteUserJoinGroup({ userId })),
+      doListRoom: (quite) => dispatch(listRoom(quite)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderButtonGroup);

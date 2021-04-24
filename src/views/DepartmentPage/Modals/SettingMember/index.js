@@ -13,10 +13,10 @@ import {
 } from "@material-ui/core";
 import CustomTextbox from "components/CustomTextbox";
 import MySelect from "components/MySelect";
-import { find, get, isNil } from "lodash";
+import { find, get, _filter, isNil } from "lodash";
 import { connect, useDispatch } from "react-redux";
 import { optionsSelector } from "views/MemberPage/Modals/UpdateUser/selectors";
-import { actionGetInfor, detailUser } from "actions/user/detailUser";
+import { actionGetInfor, actionUnLockUser ,actionLockUser ,actionResetPassword, actionUpdateUser, detailUser } from "actions/user/detailUser";
 import { listUserOfGroup } from "actions/user/listUserOfGroup";
 import { listRoom } from "actions/room/listRoom";
 import { listPosition } from "actions/position/listPosition";
@@ -31,6 +31,9 @@ import {
   UPDATE_USER,
 } from "constants/events";
 import { updateUser } from "actions/user/updateUser";
+import { Alert } from "@material-ui/lab";
+import { actionToast } from "actions/system/system";
+import { SignalCellularNull } from "@material-ui/icons";
 
 const ModalSettingMember = ({
   inforUser,
@@ -47,7 +50,6 @@ const ModalSettingMember = ({
   doReloadUser,
 }) => {
   const { t } = useTranslation();
-  console.log(`data`, data);
   const [profile, setProfile] = React.useState(data.user);
   const [tab, setTab] = React.useState("1");
   const [room, setRoom] = React.useState(null);
@@ -57,15 +59,30 @@ const ModalSettingMember = ({
   const [description, setDescription] = useMaxlenString("", 500);
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [activeMask, setActiveMask] = React.useState(-1);
+  const [pwdNotMatch, setPwdNotMatch] = React.useState(false);
+  const [errorMsg,setErrorMsg] = React.useState(null);
+  const [isUpdate,setIsUpdate] = React.useState(null);
+  const [isLock, setIsLock] = React.useState(inforUser?.userInfor?.is_lock || false)
   const dispatch = useDispatch();
   React.useEffect(() => {
     setProfile(data.user);
   }, [data, data.user]);
 
   const handleChangeTab = (key) => {
-    console.log(`key`, key);
-    setTab(key);
+    setTab(key)
   };
+
+  const handleCheckPwd = () => {
+    let pwd = document.getElementById('new_password').value;
+    let confirmPwd = document.getElementById('confirm_new_password').value;
+    if (pwd && confirmPwd && pwd !== confirmPwd) {
+      setPwdNotMatch(true);
+    } else {
+      setPwdNotMatch(false);
+    }
+  };
+
+  
   React.useEffect(() => {
     setActiveLoading(activeMask === 3 || activeMask === -1 ? false : true);
     if (activeMask === 3) {
@@ -85,15 +102,81 @@ const ModalSettingMember = ({
       setLevel(get(updatedUser, "level_id"));
       setDescription(get(updatedUser, "description", ""));
     }
-    // eslint-disable-next-line
   }, [updatedUser]);
+  const handleResetPassword = async e => {
+    e.preventDefault();
+    try {
+     const {data} = await actionResetPassword({account_id: profile.id,password: e.target.elements.new_password.value});
+     if(data.state){
+      handleToast('success', t('IDS_WP_RESET_PASSWORD_SUCCESS'));
+     }
+    
+    } catch (error) {
+      handleToast('error', error);
+      setErrorMsg(error)
+    }
+  }
+  
+  const handleToast = (type, message) => {
+    dispatch(actionToast(type, message));
+    setTimeout(() => dispatch(actionToast(null, '')), 2000);
+  };
 
+  const handleUpdateAccount = async () => {
+    setOpen(true)
+    const reqData = {
+      user_id: profile.id,
+      room,
+      position,
+      level,
+      major,
+      description
+    }
+    try {
+      const {data} = await actionUpdateUser(reqData);
+      if(data.state){
+        const filt = get(find(options.positions, { id: position }), "name")
+        setIsUpdate(filt);
+        setIsLock(true);
+        doReloadUser({userId: profile.id});
+        handleToast('success', t('IDS_WP_UPDATE_USER_SUCCESS'));
+      }
+      
+     } catch (error) {
+       console.log('er', error)
+      handleToast('error', t('SNACK_MUTATE_FAIL'));
+     }
+    
+  }
+
+  const handleLockAccount = async () => {
+    try {
+       const {data} = await actionLockUser({account_id: profile.id});
+       if(data.state){
+         handleToast('success', t('IDS_WP_LOCK_ACCOUNT'));
+         setIsLock(false)
+       }
+    } catch (error) {
+       handleToast('error', error)
+    }
+  }
+
+  const handleUnLockAccount = async() => {
+    try {
+      const {data} = await actionUnLockUser({account_id: profile.id});
+      if(data.state){
+        handleToast('success', t('IDS_WP_UN_LOCK_ACCOUNT'));
+        setIsLock(true);
+      }
+   } catch (error) {
+      handleToast('error', error)
+   }
+  }
   React.useEffect(() => {
     if (data.user) {
       dispatch(actionGetInfor(data?.user?.id));
     }
   }, [data.user, dispatch]);
-  console.log(`infor`, inforUser.userInfor);
   React.useEffect(() => {
     const fail = () => {
       setActiveMask(-1);
@@ -153,9 +236,10 @@ const ModalSettingMember = ({
       className="modal_setting-member"
       title={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}
       cancleRender={
-        (tab === "2") | (tab === "3") && (() => t("LABEL_CHAT_TASK_THOAT"))
+         (tab === "2") | (tab === "3") && (() => t("LABEL_CHAT_TASK_THOAT"))
       }
       confirmRender={(tab === "2") | (tab === "3") && (() => null)}
+      onConfirm={handleUpdateAccount}
     >
       {profile && inforUser.userInfor && (
         <div className="modalSettingMember">
@@ -166,7 +250,7 @@ const ModalSettingMember = ({
             >
               <img src={inforUser.userInfor.avatar} alt="" />
               <h5>{inforUser.userInfor.name}</h5>
-              <p>{inforUser.userInfor.position_name || null}</p>
+              <p style={{textTransform: 'capitalize'}}>{isUpdate && isUpdate || inforUser.userInfor.position_name || null}</p>
               <p>
                 {t("IDS_WP_SPECIES")}:{" "}
                 <span style={{ color: "red" }}>{profile.role}</span>
@@ -294,6 +378,8 @@ const ModalSettingMember = ({
                   onChange={(newDescription) => setDescription(newDescription)}
                   multiline={true}
                 />
+                {errorMsg && <p style={{color: 'red'}}>{errorMsg}</p>}
+                
                 </form>
               </div>
             ) : tab === "2" ? (
@@ -302,16 +388,17 @@ const ModalSettingMember = ({
                 <div className="modalSettingMember-right_account-internal--note">
                   {t("IDS_WP_RESET_PASSWORD_NOTE")}
                 </div>
-                <form>
+                <form onSubmit={handleResetPassword}>
                   <FormControl
                     margin="normal"
                     variant="outlined"
                     className="input-affix-wrapper custom-input item-pwd"
                   >
                     <OutlinedInput
-                      id="password"
+                      id="new_password"
                       required
                       type="password"
+                      onBlur={handleCheckPwd}
                       autoComplete="new-password"
                       placeholder={t("IDS_WP_PASSWORD")}
                       size="small"
@@ -333,9 +420,10 @@ const ModalSettingMember = ({
                     className="input-affix-wrapper custom-input"
                   >
                     <OutlinedInput
-                      id="confirmPassword"
+                      id="confirm_new_password"
                       required
                       type="password"
+                      onBlur={handleCheckPwd}
                       autoComplete="new-password"
                       placeholder={t("IDS_WP_RE_INPUT_NEW_PASSWORD")}
                       inputProps={{ maxLength: 20, minLength: 8 }}
@@ -349,6 +437,7 @@ const ModalSettingMember = ({
                         </InputAdornment>
                       }
                     />
+                    {pwdNotMatch && <div style={{color: 'red', marginTop: '15px'}}>{t('IDS_WP_CHECK_PASSWORD')}</div>}
                   </FormControl>
                   <div style={{ fontSize: "14px", marginTop: "20px" }}>
                     {t("IDS_WP_PASSWORD_VALID_DES")}
@@ -357,7 +446,7 @@ const ModalSettingMember = ({
                     className="modalSettingMember-right_account-internal--btn_reset"
                     type="submit"
                   >
-                    {t("IDS_WP_RESET")}
+                     {t("IDS_WP_RESET")}
                   </Button>
                 </form>
               </div>
@@ -367,8 +456,8 @@ const ModalSettingMember = ({
                 <div className="modalSettingMember-right_account-internal--note">
                   {t("IDS_WP_LOCK_MEMBER_FOREVER")}
                 </div>
-                <Button className="modalSettingMember-right_account-internal--btn_reset">
-                  {t("IDS_WP_LOCk")}
+                <Button className="modalSettingMember-right_account-internal--btn_reset" onClick={!isLock ? handleUnLockAccount:  handleLockAccount}>
+                {!isLock ? t('IDS_WP_UNLOCK') : t("IDS_WP_LOCk")}
                 </Button>
               </div>
             )}
@@ -386,6 +475,7 @@ const mapStateToProps = (state) => {
 };
 const mapDispatchToProps = (dispatch) => {
   return {
+    actionToast,
     doReloadUser: ({ userId }) => {
       dispatch(detailUser({ userId }, true));
       dispatch(listUserOfGroup(true));
@@ -408,6 +498,7 @@ const mapDispatchToProps = (dispatch) => {
           description,
         })
       ),
+    
     doListRoom: (quite) => dispatch(listRoom(quite)),
     doListPosition: (quite) => dispatch(listPosition(quite)),
     doListMajor: (quite) => dispatch(listMajor(quite)),

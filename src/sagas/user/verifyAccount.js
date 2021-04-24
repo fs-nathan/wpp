@@ -32,7 +32,6 @@ async function doVerifyAccount() {
       
      
     } catch (error) {
-      console.log(error)
       yield put(actionCheckVerifyAccountFail(error));
     }
   }

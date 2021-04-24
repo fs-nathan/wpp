@@ -29,7 +29,6 @@ async function doUpdate(data) {
       }
      
     } catch (error) {
-        console.log(`err`, error);
       yield put(actionChangeAccountFail(error));
     }
   }

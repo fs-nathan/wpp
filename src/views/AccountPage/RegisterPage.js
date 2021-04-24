@@ -45,7 +45,6 @@ const RegisterPage = () => {
   };
 
   const handleOnchange = (key) => e => {
-    console.log(key, e)
     setErrMsg('');
     setDataRegister({...dataRegister, [key]: e.target.value})
   };

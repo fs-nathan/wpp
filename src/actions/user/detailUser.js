@@ -9,14 +9,10 @@ import {
   CHECK_VERIFY_ACCOUNT_FAIL,
   GET_USER_INFOR,
   GET_USER_INFOR_FAIL,
-<<<<<<< HEAD
-  GET_USER_INFOR_SUCCESS
-=======
   GET_USER_INFOR_SUCCESS,
   UPDATE_ACCOUNT,
   UPDATE_ACCOUNT_SUCCESS,
   UPDATE_ACCOUNT_FAIL
->>>>>>> 2c5d11ca (feature: tab config member)
 } from '../../constants/actions/user/detailUser';
 
 export const detailUser = ({ userId }, quite = false) => ({
@@ -78,7 +74,6 @@ export const actionGetInforSuccess = data => ({
 export const actionChangeAccount = data => ({
   type: UPDATE_ACCOUNT,
   payload: data
-  
 })
 export const actionChangeAccountSuccess = data => ({
   type: UPDATE_ACCOUNT_SUCCESS,
@@ -90,3 +85,39 @@ export const actionChangeAccountFail = error => ({
   payload: error
   
 })
+
+export const actionResetPassword = data=>{
+  const config = {
+    url: '/users/reset-password',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+}
+
+export const actionUpdateUser = data=>{
+  const config = {
+    url: '/update-user',
+    method: 'put',
+    data
+  };
+  return apiService(config);
+}
+
+export const actionLockUser = data=>{
+  const config = {
+    url: '/users/lock-account',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+}
+
+export const actionUnLockUser = data=>{
+  const config = {
+    url: '/users/unlock-account',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+}

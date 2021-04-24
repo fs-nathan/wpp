@@ -1,3 +1,8 @@
+.button-Group_header{
+  .MuiButtonGroup-groupedTextHorizontal:not(:last-child){
+    border-right: none;
+  }
+}
 .comp_CustomTable_HeaderButtonGroup___button {
   & {
     padding: 4px;
@@ -101,21 +106,25 @@
   
   &_table{
     margin-top: 20px;
-
+    min-height: 50vh;
     table{
       width: 100%;
       thead tr th, tbody tr td{
       border: 1px solid #ccc;
       border-collapse: collapse;
     }
-
+    tbody tr td {
+      input,select{
+        width: calc(100% - 10px);
+      }
+    }
     thead tr th{
       padding: 6px 0px;
     }
     tbody tr td {
       input,select{
         border: none;
-        padding: 7px 10px;
+        padding: 7px 5px;
         outline: none;
       }
     }

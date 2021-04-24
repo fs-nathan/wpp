@@ -2,6 +2,7 @@ import {CircularProgress, IconButton, Menu, MenuItem, Badge, Button} from '@mate
 import DeleteIcon from '@material-ui/icons/Delete';
 import {mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock, mdiShareVariant} from '@mdi/js';
 import Icon from '@mdi/react';
+import { actionLockUser } from 'actions/user/detailUser';
 import {find, get, isNil} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
@@ -167,6 +168,7 @@ function AllUsersTable({
 }) {
   const { t } = useTranslation();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+  const [isLock,setIsLock] = React.useState(false)
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
   const history = useHistory();
@@ -175,7 +177,29 @@ function AllUsersTable({
     setMenuAnchorEl(anchorEl);
     setUser(user);
   }
+  const handleLockAccount = async () => {
+    try {
+       const {data} = await actionLockUser({account_id: user.id});
+       if(data.state){
+        //  handleToast('success', 'success')
+         setIsLock(true)
+       }
+    } catch (error) {
+      //  handleToast('error', 'error')
+    }
+  }
 
+  // const handleUnLockAccount = async() => {
+  //   try {
+  //     const {data} = await actionUnLockUser({account_id: profile.id});
+  //     if(data.state){
+  //       handleToast('success', 'success');
+  //       setIsLock(true);
+  //     }
+  //  } catch (error) {
+  //     handleToast('error', 'error')
+  //  }
+  // }
   React.useEffect(() => {
     setPublicPrivateDisabled(!isNil(
       find(publicPrivatePendings.pendings, pending => pending === get(user, 'id'))
@@ -362,7 +386,7 @@ function AllUsersTable({
         <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
           <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
           <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
-          <Button className="menu_btn-lock">{t('IDS_WP_LOCk')}</Button>
+          <Button className="menu_btn-lock" onClick={handleLockAccount}>{t('IDS_WP_LOCk')}</Button>
         </div>
         </MenuItem>
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (

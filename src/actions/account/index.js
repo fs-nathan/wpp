@@ -3,7 +3,7 @@ import * as actionTypes from '../../constants/actions/system/system';
 
 export const actionRegister = data => {
   const config = {
-    url: '/register',
+    url: '/complete-register',
     method: 'post',
     data
   };

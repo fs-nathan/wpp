@@ -328,7 +328,6 @@ export function* doUploadDocumentOffer({ payload }) {
       headers: { 'Content-Type': 'multipart/form-data' }
     }
     const result = yield apiService(config)
-    console.log(result.data)
     yield put({ type: UPLOAD_DOCUMENT_OFFER_SUCCESS, payload: result.data })
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (err) {
