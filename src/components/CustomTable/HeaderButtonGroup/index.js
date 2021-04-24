@@ -120,11 +120,12 @@ function HeaderButtonGroup({
     setOpenContinueCreateAccount,
   ] = React.useState(false);
   const [disable, setDisable] = React.useState(false);
+  const [result, setResult] = React.useState(null);
   const [rowTable, setRowTable] = React.useState([
     {
       email: "account@gmail.com",
       name: "Trần Văn Nam",
-      room: "Ban lãnh đạo",
+      room: "",
     },
     {
       email: "",
@@ -212,9 +213,10 @@ function HeaderButtonGroup({
       handleToast('success', t('IDS_WP_CREATE_ACCOUNT_SUCCESS'))
        setOpenContinueCreateAccount(false);
        setOpenResultCreateAccount(true);
+       doReloadUser({userId: profile.id})
+       setResult(data.account_list);
     }
   } catch (error) {
-    console.log('err',error)
     handleToast('error', t('SNACK_MUTATE_FAIL'))
   }
     
@@ -469,10 +471,9 @@ function HeaderButtonGroup({
                                 defaultValue={item.room && item.room}
                                 onChange={handleOnchange("room", index)}
                               >
-                                <option value=""></option>
-
-                                {roomList && roomList.map((item,index)=>(
-                                  <option key={index} value={item.id}>{item.name}</option>
+                                 <option value=""></option>
+                                {roomList && roomList.map((items,indexs)=>(
+                                  <option key={indexs} value={items.id}>{items.name}</option>
                                 ))}
                                 
                               </select>
@@ -717,8 +718,8 @@ function HeaderButtonGroup({
                     </tr>
                   </thead>
                   <tbody>
-                    {rowTable &&
-                      rowTable.map((item, index) => (
+                    {result &&
+                      result.map((item, index) => (
                         <tr key={`${index}`}>
                           <td
                             style={{ textAlign: "center", padding: "0 10px" }}
@@ -727,7 +728,7 @@ function HeaderButtonGroup({
                           </td>
                           <td>{item.email}</td>
                           <td>{item.name}</td>
-                          <td>{item.room}</td>
+                          <td>{item.room_name}</td>
                         </tr>
                       ))}
                   </tbody>

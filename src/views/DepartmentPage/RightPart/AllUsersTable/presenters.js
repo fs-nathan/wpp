@@ -2,10 +2,13 @@ import {CircularProgress, IconButton, Menu, MenuItem, Badge, Button} from '@mate
 import DeleteIcon from '@material-ui/icons/Delete';
 import {mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock, mdiShareVariant} from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionLockUser } from 'actions/user/detailUser';
+import { actionToast } from 'actions/system/system';
+import { actionLockUser, actionUnLockUser } from 'actions/user/detailUser';
+import {listUserOfGroup} from 'actions/user/listUserOfGroup';
 import {find, get, isNil} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomBadge from '../../../../components/CustomBadge';
@@ -87,7 +90,6 @@ function TooltipRole({user}){
       placement='top'
       title={
         <TooltipBody state={0}>
-          {user.role.toString()}
           <small style={{color: '#950eda', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP')}</small>
         </TooltipBody>
       }
@@ -172,7 +174,7 @@ function AllUsersTable({
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
   const history = useHistory();
-
+  const dispatch = useDispatch()
   function doOpenMenu(anchorEl, user) {
     setMenuAnchorEl(anchorEl);
     setUser(user);
@@ -181,25 +183,27 @@ function AllUsersTable({
     try {
        const {data} = await actionLockUser({account_id: user.id});
        if(data.state){
-        //  handleToast('success', 'success')
-         setIsLock(true)
+         handleToast('success', t('SNACK_MUTATE_SUCCESS'));
+         dispatch(listUserOfGroup(true))
        }
     } catch (error) {
-      //  handleToast('error', 'error')
+       handleToast('error', t('SNACK_MUTATE_FAIL'));
     }
   }
-
-  // const handleUnLockAccount = async() => {
-  //   try {
-  //     const {data} = await actionUnLockUser({account_id: profile.id});
-  //     if(data.state){
-  //       handleToast('success', 'success');
-  //       setIsLock(true);
-  //     }
-  //  } catch (error) {
-  //     handleToast('error', 'error')
-  //  }
-  // }
+  const handleToast = (type, message) => {
+    dispatch(actionToast(type, message))
+  }
+  const handleUnLockAccount = async() => {
+    try {
+      const {data} = await actionUnLockUser({account_id: user.id});
+      if(data.state){
+        handleToast('success', 'success');
+        setIsLock(true);
+      }
+   } catch (error) {
+      handleToast('error', 'error')
+   }
+  }
   React.useEffect(() => {
     setPublicPrivateDisabled(!isNil(
       find(publicPrivatePendings.pendings, pending => pending === get(user, 'id'))
@@ -386,7 +390,7 @@ function AllUsersTable({
         <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
           <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
           <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
-          <Button className="menu_btn-lock" onClick={handleLockAccount}>{t('IDS_WP_LOCk')}</Button>
+          <Button className="menu_btn-lock" onClick={!user?.is_lock ? handleLockAccount: handleUnLockAccount}>{!user?.is_lock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
         </div>
         </MenuItem>
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (

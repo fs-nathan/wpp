@@ -1,6 +1,6 @@
 import React, { Component, useState } from 'react';
 import { mdiAccountCircle } from '@mdi/js';
-import { withTranslation } from 'react-i18next';
+import { useTranslation, withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
 import Chip from '@material-ui/core/Chip';
 import DateFnsUtils from '@date-io/date-fns';
@@ -80,7 +80,7 @@ class SettingInfo extends Component {
     }
     
   }
-
+  
  
   getProfile = async () => {
     try {
@@ -191,13 +191,17 @@ class SettingInfo extends Component {
   };
 
   
-  handleClickVerify = () => {
+  handleClickVerify = async () => {
     try {
-     this.props.actionCheckVerifyAccount();
-     this.setState({visible: true})
+    const {data} = await actionCheckVerifyAccount();
+    console.log(data)
+    if(data.state){
+      this.setState({visible: true})
+    }
       
     } catch (error) {
-      
+      console.log(error)
+      this.handleToast('error', this.props.t('SNACK_MUTATE_FAIL'))
       this.setState({errorVerify: error.msg})
     }
     
@@ -206,17 +210,28 @@ class SettingInfo extends Component {
   handleDateChange = date => {
     this.setState({ selectedDate: date });
   };
-  handleChangeAccount = (e) =>{
+  handleChangeAccount = async (e) =>{
     e.preventDefault();
     
-    const data = {
+    const account = {
       email: e.target.elements.email_new.value,
       password: e.target.elements.password.value
     }
-   this.props.actionChangeAccount(data);
-   this.setState({visibles: false})
-   this.setState({email: e.target.elements.email_new.value})
+    try {
+      const {data} = await actionChangeAccount(account);
+      if(data.state){
+        this.handleToast('success', this.props.t('SNACK_MUTATE_SUCCESS'))
+       this.setState({visibles: false})
+       this.getProfile();
+      }
+   
+    } catch (error) {
+      this.handleToast('error', this.props.t('SNACK_MUTATE_FAIL'))
+
+    }
+   
   }
+ 
   render() {
     const {
       mode,
@@ -229,6 +244,7 @@ class SettingInfo extends Component {
       loading
     } = this.state;
     const { t } = this.props;
+    
     const formatDate = this.props.profile.format_date ? 
     this.props.profile.format_date.replace(/DD/g, 'dd').replace(/YYYY/g, 'yyyy') : 'dd/MM/yyyy';
     return (
@@ -306,7 +322,7 @@ class SettingInfo extends Component {
                  open={this.state.visibles} 
                  setOpen={()=>this.setState({visibles : true})}
                  title={t('IDS_WP_MODAL_CHANGE_ACCOUNT_TITLE')}
-                 height="mini"
+                //  height="mini"
                  className="modal-change-account"
                  confirmRender={null}
                  cancleRender={null}
@@ -558,6 +574,7 @@ export default connect(
     user: state.user.detailUser
   }),
   {
+
     actionGetProfile,
     actionToast,
     actionCheckVerifyAccount,

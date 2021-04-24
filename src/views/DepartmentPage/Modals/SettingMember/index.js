@@ -456,8 +456,8 @@ const ModalSettingMember = ({
                 <div className="modalSettingMember-right_account-internal--note">
                   {t("IDS_WP_LOCK_MEMBER_FOREVER")}
                 </div>
-                <Button className="modalSettingMember-right_account-internal--btn_reset" onClick={!isLock ? handleUnLockAccount:  handleLockAccount}>
-                {!isLock ? t('IDS_WP_UNLOCK') : t("IDS_WP_LOCk")}
+                <Button className="modalSettingMember-right_account-internal--btn_reset" onClick={isLock ? handleUnLockAccount:  handleLockAccount}>
+                {isLock ? t('IDS_WP_UNLOCK') : t("IDS_WP_LOCk")}
                 </Button>
               </div>
             )}

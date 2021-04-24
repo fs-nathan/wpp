@@ -365,9 +365,10 @@
     }
   }
   &_footer{
-    padding: 10px 0px;
+    padding: 10px 0px 5px 0px;
     position: absolute;
     left: 0;
+    height: 30px;
     right: 0;
     bottom: 0;
     border-top: 1px solid #ccc;
@@ -396,9 +397,11 @@
       }
     }
     .action{
+      margin-top: 20px;
       position: absolute;
-      left: 0;
       bottom: 0;
+      left: 0;
+      height: 30px;
       right: 0;
       padding: 20px 22px 15px 22px;
       border-top: 1px solid #ccc;
