@@ -1,0 +1,91 @@
+.modalSettingMember{
+    display: flex;
+    min-height: 70vw;
+   
+    &-tab-left{
+        width: 30%;
+        background-color: rgb(236, 234, 234);
+        &_profile{
+            padding: 20px;
+            img{
+                width: 70px;
+                height: 70px;
+                border-radius: 50%;
+            }
+            h5{
+                font-size: 16px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+            p{
+                font-size: 14px;
+                font-weight: 500;
+                color: rgb(68, 68, 68);
+            }
+        }
+        &_menu{
+            padding-top: 10px;
+            &-item{
+                display: flex;
+                padding: 15px 20px;
+                align-items: center;
+                cursor: pointer;
+                &_active{
+                    background-color: #ccc;
+                }
+                div:first-child{
+                    width: 30px;
+                    svg{
+                        fill: rgb(68, 68, 68);
+                    }
+                }
+                div:last-child{
+                    font-size: 15px;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+    &-right{
+        width: 70%;
+        padding: 20px 40px;
+        &_config{
+            .MuiFormControl-fullWidth{
+                padding-bottom: 10px;
+            }
+        }
+        &_account-internal{
+            h5{
+                font-size: 16px;
+                margin-bottom: 10px;
+            }
+            &--note{
+                font-size: 14px !important;
+                color: #8e8b8b;
+                line-height: 20px;
+            }
+            .MuiFormControl-marginNormal{
+              display: block;
+              .MuiOutlinedInput-adornedStart{
+                  width: 60%;
+              }
+              
+            }
+            &--btn_reset{
+                background-color: #f38218;
+                color: #ffffff;
+                width: 120px;
+                margin-top: 30px;
+            }
+        }
+    }
+    
+}
+.modal_setting-member{
+    .comp_CustomModal___dialog-md > div:nth-child(3) > div{
+        min-width: 50vw;
+    }
+    .comp_CustomModal___dialog-content{
+        padding: 0;
+    }
+}

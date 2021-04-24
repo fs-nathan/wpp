@@ -59,6 +59,7 @@ import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemin
 import {getRemindDetail} from "../actions/calendar/alarmCalendar/getRemindDetail";
 import { GET_REMIND_DETAIL_FAIL, CustomEventListener, CustomEventDispose } from "constants/events";
 import { setNumberMessageNotView } from "actions/chat/threadChat";
+import * as images from "../assets";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -66,12 +67,22 @@ const Container = styled.div`
   width: 100vw;
   display: grid;
   grid-template-rows: 55px 1fr;
-  grid-template-columns: 80px minmax(0, 1fr);
+  grid-template-columns: 140px minmax(0, 1fr);
   grid-template-areas:
     "logo top"
     "left main";
   &.view-full-page {
     display: initial;
+    
+  }
+  @keyframes example {
+    from {grid-template-columns: 140px minmax(0, 1fr);}
+    to {grid-template-columns: 70px minmax(0, 1fr);}
+  }
+  &.menu-collapse{
+    animation-name: example;
+    animation-duration: 1s;
+    grid-template-columns: 70px minmax(0, 1fr);
   }
 `;
 
@@ -98,7 +109,6 @@ const Image = styled.img`
   background: #fff;
   border-radius: 50%;
   padding: 2px;
-  margin-top: 10px;
 `;
 
 function getTaskByChat(data, taskDetails) {
@@ -222,7 +232,7 @@ function MainLayout({
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
   const [openRemindDetail, setOpenRemindDetail] = useState(false);
-
+  const [collapse,setCollapse] = useState(false);
   function handleReactEmotion(data) {
     updateChatState(data.id, { data_emotion: data.emotions });
   }
@@ -452,7 +462,7 @@ function MainLayout({
     <>
       <Container
         className={
-          isViewFullPage(location.pathname) ? "view-full-page" : location.pathname
+          isViewFullPage(location.pathname) ? "view-full-page" : collapse ? 'menu-collapse':location.pathname
         }
       >
         {!isViewFullPage(location.pathname) && (
@@ -460,14 +470,17 @@ function MainLayout({
             <SwitchAccount />
             <LogoBox
               onClick={() => setVisibleGroupModal(true)}
-              style={{ background: bgColor.color }}
+              style={{ background: bgColor.color, backgroundImage: `url(${!collapse && images.bg_logo_menu})`, backgroundSize: '105% 100%', backgroundPositionX: '50%'}}
             >
-              <Image
+              <div style={{background: bgColor.color, padding: '4px 4px 1px',borderRadius: '50%', border: '1px solid #ffffff'}}>
+               <Image
                 src={groupDetail.logo || avatar_default_120}
                 alt="vtask-logo-menu"
-              />
+               />
+              </div>
+              
             </LogoBox>
-            <LeftBar />
+            <LeftBar collapse={collapse} setCollapse={setCollapse}/>
             <TopBar />
             <DrawerComponent />
             <NoticeModal />

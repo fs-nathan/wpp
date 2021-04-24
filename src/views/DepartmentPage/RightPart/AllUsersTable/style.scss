@@ -13,16 +13,17 @@
 }
 
 @mixin view_Department_AllUserTalbe___tooltip {
-  max-width: 110px;
+  max-width: 130px;
   display: flex;
   flex-direction: column;
   background-color: white;
   padding: 10px;
+  line-height: 18px;
   & > div {
     display: flex;
     margin-bottom: 5px;
     & > * {
-      font-size: 11px;
+      font-size: 13px;
     }
     & > *:first-child {
       color: #888;
@@ -31,7 +32,7 @@
   }
   & > small {
     text-align: left;  
-    font-size: 11px;
+    font-size: 13px;
     font-weight: normal;
   }
 }
@@ -53,4 +54,29 @@
       }
     }
   }
+}
+
+.menu_icon{
+    width: 35px;
+    align-items: top;
+}
+.menu_label{
+  font-weight: 500;
+  font-size: 14px;
+}
+.menu_btn_out-group{
+  background-color: rgb(241, 52, 52);
+  color: #fff;
+  width: 120px;
+}
+.menu_btn-lock{
+  background-color: rgb(245, 144, 56);
+  color: #fff;
+  width: 120px;
+
+}
+.menu_note{
+  color: rgb(168, 164, 164);
+  font-size: 12px;
+  
 }

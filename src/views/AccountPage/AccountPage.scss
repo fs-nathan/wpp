@@ -1,6 +1,6 @@
 /*Common Style for Account page */
 .AccountPage {
-  max-width: 400px;
+  max-width: 350px;
   padding: 0 30px;
   margin: 0 auto;
   .logo-content {
@@ -38,7 +38,11 @@
       margin-top: 16px;
       margin-bottom: 8px;
     }
-
+    .suggest-password{
+      margin-top: 15px;
+      font-size: 12px;
+      margin-bottom: 30px;
+    }
     .btn-action {
       width: 100%;
       margin-top: 15px;
@@ -67,10 +71,15 @@
 
   .btn-link {
     padding: 0 5px;
+    color: #1876F2;
   }
 
   .bottom-des {
     margin: 15px 0 25px;
+    button{
+      background-color: #1876F2;
+      color: #ffffff;
+    }
   }
 
   .notice-content {
@@ -86,11 +95,24 @@
 /*Style for register page */
 .RegisterPage {
   .register-success {
+    text-align: center;
     .title {
       color: #48bb78;
       font-size: 14px;
       margin-bottom: 20px;
       font-weight: 500;
+    }
+    .register-notify{
+      &_title{
+        font-size: 18px;
+      }
+      &_content{
+        white-space: break-spaces;
+        letter-spacing: 1.1px;
+      }
+    }
+    img{
+      width: 100%;
     }
     .description {
       line-height: 1.5;

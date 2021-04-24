@@ -1,9 +1,16 @@
+
 .MainAccount {
   display: flex;
+  background-color: #002643b8 !important;
+  background-size: cover !important;
+  &-background{
+    background: url('../../assets/login_background.jpg');
+    background-size: cover;
+  }
   .left-content {
     height: 100vh;
     width: 65%;
-    background: linear-gradient(45deg, #33505e 0%, #4caf50 100%);
+    
     .bg-login {
       max-width: 100%;
       min-height: 500px;
@@ -12,16 +19,18 @@
   }
   .right-content {
     width: 35%;
-    min-height: 100vh;
-
+    min-height: calc(100vh - 40px);
+    margin: 20px;
+    background-color: #ffffff;
+    border-radius: 4px;
     .inner-right-content {
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       min-height: 100%;
-      padding-right: 17px;
+     
     }
-
+    
     .main-account-container {
       width: 100%;
       padding-bottom: 20px;

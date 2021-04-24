@@ -28,16 +28,12 @@ const ConfirmRegistration = loadable(
   () => import("views/AccountPage/ConfirmRegistration"), {
   fallback: <div />,
 });
-const ForgotPassword = loadable(
-  () => import("views/AccountPage/ForgotPassword"), {
-  fallback: <div />,
-});
-const LoginPage = loadable(() => import("views/AccountPage/LoginPage"), {
-  fallback: <div />,
-});
-const RegisterPage = loadable(() => import("views/AccountPage/RegisterPage"), {
-  fallback: <div />,
-});
+
+const AccoutPage = loadable(
+  ()=> import("../components/MainAccount/MainAccount.js")
+)
+
+
 const ResetPassword = loadable(
   () => import("views/AccountPage/ResetPassword"), {
   fallback: <div />,
@@ -106,21 +102,8 @@ const routes = [
   { path: Routes.TEST, component: () => <TestPage /> },
   { path: Routes.SETTING_ACCOUNT, component: () => <SettingAccountPage /> },
   { path: Routes.SETTING_GROUP, component: () => <SettingGroupPage /> },
-  { path: Routes.LOGIN,
-    component: () => (
-      <ValidateNoLogin fallback={<Redirect to="/" />}>
-        <LoginPage />
-      </ValidateNoLogin>
-    ),
-  },
-  { path: Routes.REGISTER,
-    component: () => (
-      <ValidateNoLogin fallback={<Redirect to="/" />}>
-        <RegisterPage />
-      </ValidateNoLogin>
-    ),
-  },
-  { path: Routes.FORGOT_PASSWORD, component: () => <ForgotPassword /> },
+  {path: Routes.ACCOUNT, component: () => <AccoutPage />},
+  
   { path: Routes.RESET_PASSWORD, component: () => <ResetPassword /> },
   { path: Routes.CALENDAR, component: () => <CalendarPage /> },
   { path: Routes.CALENDAR_WEEKLY, component: () => <CalendarWeeklyPage /> },

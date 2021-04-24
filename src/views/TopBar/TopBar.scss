@@ -24,6 +24,19 @@
 .text-name-acc {
   font-weight: 500;
 }
+.verify_not_check{
+  color: #ffffff;
+  background-color: rgb(235, 54, 22);
+  padding: 5px;
+  font-size: 10px;
+}
+.verify_check{
+  svg{
+     background-color: #ffffff;
+     fill: #13d413
+  }
+ 
+}
 .cursor-pointer {
   cursor: pointer;
 }

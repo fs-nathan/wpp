@@ -1,6 +1,7 @@
 export { default as avatar_user } from './avatar-user.jpg';
 export { default as avatar_default_120 } from './avatar_default_120.png';
 export { default as bg_login } from './bg-log-in.png';
+export { default as ic_register_complete } from './ic_complete.gif';
 export { default as cover_default } from './cover_default.png';
 export { default as dis_comment } from './dis_comment.png';
 export { default as ic_file } from './file.png';
@@ -60,3 +61,7 @@ export { default as bg003} from "./bg_003.png";
 export { default as bg004} from "./bg_004.png";
 export { default as ic_no_data_2021} from "./ic_no_data_2021.png";
 export { default as add_user_group} from "./15-3.add_user.png";
+export { default as bg_logo_menu} from "./bg_logo_menu.png";
+export { default as icon_add_member} from "./ic_add_member.png";
+export { default as icon_create_user} from "./ic_create_user.png";
+

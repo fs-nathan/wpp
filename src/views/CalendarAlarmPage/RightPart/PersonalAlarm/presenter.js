@@ -60,6 +60,7 @@ function CalendarPersonalAlarmPresenter({
             bool: expand,
             toggleExpand: () => handleExpand(!expand)
           },
+          
           subActions: [
             {
               label: times[timeType].title,

@@ -21,6 +21,7 @@ export const types = {
   permissionListUpdated: `[${rootPath}]/permissions/list`,
   permissionListUsers: `[${rootPath}]/permissions/list-users`,
   updatePermissionGroupMember: `[${rootPath}]/permissions/update-permission-group-member`,
+  verifyAccount: `[${rootPath}]/request-verify`,
 };
 
 const updateGroupPermissionList = createAction(
@@ -49,6 +50,15 @@ export const loadPermissionViewSettingGroup = () => {
     success: createAction(types.permissionViewGroupSetting),
   });
 };
+
+export const checkVerifyAccount = () => {
+  return createAsyncAction({
+    config: {
+      url: "/request-verify",
+    },
+    success: createAction(types.permissionViewGroupSetting),
+  });
+}
 // GroupPermission
 export const loadGroupModules = () => {
   return createAsyncAction({

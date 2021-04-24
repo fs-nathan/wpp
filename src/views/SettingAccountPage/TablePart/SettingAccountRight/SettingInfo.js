@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { mdiAccountCircle } from '@mdi/js';
 import { withTranslation } from 'react-i18next';
 import { connect } from 'react-redux';
@@ -21,6 +21,9 @@ import {
   actionUpdateAvatar
 } from '../../../../actions/account';
 import {
+  actionCheckVerifyAccount,actionChangeAccount
+} from '../../../../actions/user/detailUser';
+import {
   getProfileService,
   actionGetProfile,
   actionToast
@@ -28,15 +31,25 @@ import {
 import ImageCropper from '../../../../components/ImageCropper/ImageCropper';
 
 import './SettingAccountRight.scss';
-
+import { IconVerify } from 'components/IconSvg/Verify_check';
+import CustomModal from 'components/CustomModal';
+import ReactParserHtml from 'react-html-parser';
+import { FormControl, InputAdornment, OutlinedInput } from '@material-ui/core';
+import { thumbVerticalStyleDefault } from 'react-custom-scrollbars/lib/Scrollbars/styles';
 class SettingInfo extends Component {
+
   state = {
     mode: 'view',
     visibleCropModal: false,
+    verifyAccount: false,
     fileUpload: null,
     avatar: null,
+    visible: false,
+    visibles: false,
     showInputFile: true,
     data: this.props.profile,
+    errorVerify: null,
+    email: null,
     selectedDate: this.props.profile.birthday
       ? moment(
           this.props.profile.birthday,
@@ -47,17 +60,28 @@ class SettingInfo extends Component {
   };
   componentDidMount() {
     this.getProfile();
+    //  this.handlegetMail()
   }
+
+  // handlegetMail(){
+  //   if(this.props.profile.email){
+  //     this.setState({email: this.props.profile.email})
+  //   }
+  // }
   componentDidUpdate(prevProps, prevState) {
     if (prevProps.profile !== this.props.profile && this.props.profile) {
       this.setState({
         selectedDate: moment(
           this.props.profile.birthday,
           this.props.profile.format_date
-        ).toDate()
+        ).toDate(),
+        email: this.props.profile.email
       });
     }
+    
   }
+
+ 
   getProfile = async () => {
     try {
       const { data } = await getProfileService();
@@ -126,6 +150,7 @@ class SettingInfo extends Component {
       this.setState({ mode: 'view', loading: false });
     }
   };
+  
   handleToast = (type, message) => {
     this.props.actionToast(type, message);
     setTimeout(() => this.props.actionToast(null, ''), 2000);
@@ -164,9 +189,34 @@ class SettingInfo extends Component {
       () => this.handleChangeProfile('updateImage')
     );
   };
+
+  
+  handleClickVerify = () => {
+    try {
+     this.props.actionCheckVerifyAccount();
+     this.setState({visible: true})
+      
+    } catch (error) {
+      
+      this.setState({errorVerify: error.msg})
+    }
+    
+  }
+  
   handleDateChange = date => {
     this.setState({ selectedDate: date });
   };
+  handleChangeAccount = (e) =>{
+    e.preventDefault();
+    
+    const data = {
+      email: e.target.elements.email_new.value,
+      password: e.target.elements.password.value
+    }
+   this.props.actionChangeAccount(data);
+   this.setState({visibles: false})
+   this.setState({email: e.target.elements.email_new.value})
+  }
   render() {
     const {
       mode,
@@ -216,19 +266,119 @@ class SettingInfo extends Component {
             >
               {t('IDS_WP_CHANGE_AVATAR')}
             </Button>
+            
             <p className="avatar-note-text">({t('IDS_WP_SIZE')}: 120x120 px)</p>
           </div>
           <div className="info-content-setting-info ">
-            <div className="item-info row">
-              <div className="title-item-info col-sm-3">
+            <div className="item-info row" style={{padding: '20px', backgroundColor: '#f9f9f9'}}>
+              <div className="title-item-info col-sm-3" style={{fontWeight: 'bold'}}>
                 {t('IDS_WP_ACCOUNT')}
               </div>
               <InputBase
                 className="value-item-info email col-sm-9"
-                value={data.email}
+                value={this.state.email}
                 disabled={true}
                 onChange={e => this.handleChangeData('email', e.target.value)}
               />
+              <div className="col-sm-12">
+                {this.props.profile.is_verify ? <div style={{display: 'flex', alignItems: 'center'}}><span className="check_verify"><IconVerify /></span> <div style={{color: '#43a047', marginLeft: '7px'}}>{t('IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED')}</div></div>:<span style={{color: 'red', lineHeight: '18px'}}>{t('IDS_WP_NOT_VERIFY_ACCOUNT_NOTIFY')}</span>}
+                {!this.props.profile.is_verify && <div style={{color: 'blue', marginTop: '10px', cursor: 'pointer'}} onClick={this.handleClickVerify }>{t('IDS_WP_VERIFY_ACCOUNT')}</div>}
+                <div style={{color: 'blue',marginTop: '10px', cursor: 'pointer'}} onClick={()=>this.setState({visibles : true})}>{t('IDS_WP_CHANGE_ACCOUNT')}</div>
+                
+                <CustomModal
+                 onCancle={()=>this.setState({visible: false})} 
+                 open={this.state.visible} 
+                 className="modal-verify-account"
+                 setOpen={()=>{this.setState({visible: true})}} 
+                 title={t('IDS_WP_VERIFY_ACCOUNT_TITLE_NOTIFY')}
+                 confirmRender={null}
+                 cancleRender={null}
+                 height="miniWide"
+                 >
+                   <div className="modal-verify-account_content">
+                      <p>{t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY')} <strong style={{color: 'red'}}>{this.state.email}</strong></p>
+                      <p>{ReactParserHtml(t('IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2'))}</p>
+                      <div className="modal-verify-account_footer"><button onClick={()=> this.setState({visible: false})} style={{border: 'none'}}>{t('IDS_WP_BUTTON_CLOSE')}</button></div>
+                      </div>
+                </CustomModal>
+                <CustomModal
+                 onCancle={()=>this.setState({visibles: false})} 
+                 open={this.state.visibles} 
+                 setOpen={()=>this.setState({visibles : true})}
+                 title={t('IDS_WP_MODAL_CHANGE_ACCOUNT_TITLE')}
+                 height="mini"
+                 className="modal-change-account"
+                 confirmRender={null}
+                 cancleRender={null}
+                 htmlType="submit"                 >
+                     <form className="form-content" onSubmit={this.handleChangeAccount}>
+              <FormControl
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                className="input-affix-wrapper"
+              >
+                <div className="lb-input">{t('IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NOW')} </div>
+                <OutlinedInput
+                  id="email"
+                  required
+                  type="email"
+                  disabled
+                  value={this.state.email}
+                  style={{color: 'red', fontWeight: '600', backgroundColor: '#E6E6E6', border: 'none'}}
+                  // onChange={handleOnchange}
+                  startAdornment={
+                    <InputAdornment position="start" />
+                      
+                    
+                  }
+                />
+                {/* {errMsg && <div className="error-msg">{errMsg}</div>} */}
+              </FormControl>
+              <FormControl
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              className="custom-input"
+            >
+              <div className="lb-input">{t('IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NEW')} <span>*</span></div>
+              <OutlinedInput
+                id="email_new"
+                required
+                type="email"
+                placeholder={t('IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_NEW')}
+                startAdornment={
+                  <InputAdornment position="start" />
+                    
+                  
+                }
+              />
+            </FormControl>
+            <FormControl
+              fullWidth
+              margin="normal"
+              variant="outlined"
+              className="custom-input"
+            >
+              <div className="lb-input">{t('IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_PASSWORD')} <span>*</span></div>
+              <OutlinedInput
+                id="password"
+                required
+                placeholder={t('IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_PASSWORD')}
+                startAdornment={
+                  <InputAdornment position="start" />
+                    
+                  
+                }
+              />
+            </FormControl>
+               <div className="action">
+                 <button className="btn-submit_change_account" onClick={()=>this.setState({visibles: false})}>{t('DMH.COMP.CUSTOM_MODAL.CANCLE')}</button>
+                 <button className="btn-submit_change_account" type="submit">{t('DMH.COMP.CUSTOM_MODAL.CONFIRM')}</button>
+               </div>
+              </form>
+                </CustomModal>
+              </div>
             </div>
             <div className="item-info row">
               <div className="title-item-info col-sm-3">
@@ -244,7 +394,7 @@ class SettingInfo extends Component {
               </div>
               <InputBase
                 className="value-item-info col-sm-9"
-                value={data.name}
+                value={this.props.user.name}
                 disabled={mode !== 'edit'}
                 onChange={e => this.handleChangeData('name', e.target.value)}
               />
@@ -404,10 +554,13 @@ class SettingInfo extends Component {
 
 export default connect(
   state => ({
-    profile: state.system.profile
+    profile: state.system.profile,
+    user: state.user.detailUser
   }),
   {
     actionGetProfile,
-    actionToast
+    actionToast,
+    actionCheckVerifyAccount,
+    actionChangeAccount
   }
 )(withTranslation()(SettingInfo));

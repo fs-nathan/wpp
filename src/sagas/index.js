@@ -161,7 +161,7 @@ import {GET_WORK_TYPE} from "../constants/actions/project/getWorkType";
 import * as taskDetailType from "../constants/actions/taskDetail/taskDetailConst";
 import {BAN_USER_FROM_GROUP} from "../constants/actions/user/banUserFromGroup";
 import {DELETE_DOCUMENTS_USER} from "../constants/actions/user/deleteDocumentsUser";
-import {DETAIL_USER} from "../constants/actions/user/detailUser";
+import {DETAIL_USER , CHECK_VERIFY_ACCOUNT, GET_USER_INFOR,UPDATE_ACCOUNT} from "../constants/actions/user/detailUser";
 import {LIST_USER_OF_GROUP} from "../constants/actions/user/listUserOfGroup";
 import {PERMISSION_USER} from "../constants/actions/user/permissionUser";
 import {PRIVATE_MEMBER} from "../constants/actions/user/privateMember";
@@ -297,7 +297,9 @@ import {listScheduleOfWeekFromModal} from "./calendar/weeklyCalendar/listSchedul
 import {listWeeksInYear} from "./calendar/weeklyCalendar/listWeeksInYear";
 import {settingStartingDay} from "./calendar/weeklyCalendar/settingStartingDay";
 import {updateSchedule} from "./calendar/weeklyCalendar/updateSchedule";
+import {getUserInfor} from "./user/getUserInfo";
 import * as chatDetailSaga from "./chat/chat";
+
 import {
   listComment,
   listDocumentShare,
@@ -395,6 +397,7 @@ import {createPrivateChat, updateTaskStatus} from "./taskDetail/TaskDetailSaga";
 import {banUserFromGroup} from "./user/banUserFromGroup";
 import {deleteDocumentsUser} from "./user/deleteDocumentsUser";
 import {detailUser} from "./user/detailUser";
+import {verifyAccount} from "./user/verifyAccount";
 import {listUserOfGroup} from "./user/listUserOfGroup";
 import {permissionUser} from "./user/permissionUser";
 import {privateMember} from "./user/privateMember";
@@ -434,6 +437,7 @@ import {getProjectOnBoard} from "./project/projectOnBoard";
 import {checkHasProjectRecently} from "./project/checkHasRecently";
 import {FETCH_LIST_MEMBER_NOT_CREATE_PRIVATE_CHAT, CREATE_PRIVATE_CHAT, GET_MEMBER_TO_CREATE_GROUP_CHAT, CREATE_GROUP_CHAT, VIEW_ALL_MESSAGE, GET_NUMBER_MESSAGE_NOT_VIEW} from "../constants/actions/chat/threadChat";
 import {getMembersNotCreateThreadChat, createThreadChat, getMembersToCreateGroupChat, createGroupChat, viewAllChatMessage, getMessageNotView} from "./chat/threadChat";
+import { updateAccount } from './user/updateAccount';
 
 function* rootSaga() {
   // Hoang - begin
@@ -454,6 +458,9 @@ function* rootSaga() {
   yield takeEvery(UPDATE_ROOM, updateRoom);
   yield takeEvery(SORT_ROOM, sortRoom);
   yield takeLeading(DETAIL_USER, detailUser);
+  yield takeEvery(UPDATE_ACCOUNT,updateAccount)
+  yield takeLeading(GET_USER_INFOR, getUserInfor);
+  yield takeEvery(CHECK_VERIFY_ACCOUNT, verifyAccount);
   yield takeEvery(UPLOAD_DOCUMENTS_USER, uploadDocumentsUser);
   yield takeEvery(DELETE_DOCUMENTS_USER, deleteDocumentsUser);
   yield takeLeading(LIST_MAJOR, listMajor);

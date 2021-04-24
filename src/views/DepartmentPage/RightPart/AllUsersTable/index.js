@@ -19,6 +19,7 @@ import {
 import {get, reduce} from 'lodash';
 import React from 'react';
 import {connect} from 'react-redux';
+import ModalSettingMember from 'views/DepartmentPage/Modals/SettingMember';
 import {routeSelector} from '../../../MemberPage/selectors';
 import BanUserModal from '../../Modals/BanUser';
 import CreateAccountModal from '../../Modals/CreateAccount';
@@ -109,7 +110,8 @@ function AllUsersTable({
   const [permissionProps, setPermissionProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
-
+  const [openSettingMember, setOpenSettingMember] = React.useState(false);
+  const [memberSettingProps,setMemberSettingProps] = React.useState({});
   function doOpenModal(type, props) {
     switch (type) {
       case 'TITLE': {
@@ -147,6 +149,13 @@ function AllUsersTable({
             ...oldProps,
             ...props,
           }));
+        }
+        return;
+      }
+      case 'SETTING_MEMBER': {
+        if(get(viewPermissions.permissions, 'can_modify', false)){
+          setOpenSettingMember(true);
+          setMemberSettingProps(props)
         }
         return;
       }
@@ -207,6 +216,7 @@ function AllUsersTable({
         users={users}
         {...permissionProps}
       />
+      <ModalSettingMember open={openSettingMember} setOpen={setOpenSettingMember} data={memberSettingProps} />
       <BanUserModal
         open={openAlert}
         setOpen={setOpenAlert}

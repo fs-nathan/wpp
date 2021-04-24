@@ -39,7 +39,6 @@ const ForgotPasswordPage = props => {
   };
 
   return (
-    <MainAccount>
       <div className="AccountPage ForgotPasswordPage">
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
@@ -99,7 +98,6 @@ const ForgotPasswordPage = props => {
           </Link>
         </div>
       </div>
-    </MainAccount>
   );
 };
 
