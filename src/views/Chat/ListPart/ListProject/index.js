@@ -19,13 +19,11 @@ function ListProject({
   onClickProject,
 }) {
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
-  // const groups = useSelector(groupsSelector);
-
   let data = [];
   if (projectListBasic) {
     data = projectListBasic.projectGroups;
   }
-  // console.log('ListProject', groups)
+
   return (
     <div
       className={clsx('listProject',

@@ -10,6 +10,8 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import './style.scss';
 import * as images from "assets/index";
+import { useHistory } from 'react-router-dom';
+import { Routes } from "constants/routes";
 import SelectGroupProject from '../SelectGroupProject';
 
 
@@ -35,6 +37,8 @@ function CreateNewProject({
   const [curProjectGroupName, setCurProjectGroupName] = React.useState('');
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [workingType, setWorkingType] = React.useState(0);
+  const [selectableGroup, setSelectableGroup] = React.useState([]);
+  const history = useHistory();
   const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] = React.useState(false);
   React.useEffect(() => {
     const fail = () => {
@@ -44,9 +48,13 @@ function CreateNewProject({
       doReload();
     }
     CustomEventListener(CREATE_PROJECT.FAIL, fail);
-    CustomEventListener(CREATE_PROJECT.SUCCESS, success);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
+    });
     return () => {
-      CustomEventListener(CREATE_PROJECT.SUCCESS, success);
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
+        history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
+      });
       CustomEventDispose(CREATE_PROJECT.FAIL, fail);
     }
   }, [projectGroupId, timeRange, doReload]);
@@ -75,6 +83,14 @@ function CreateNewProject({
       setWorkingType(_first);
     }
   }, [work_types]);
+  React.useEffect(() => {
+    if(!isNil(projectGroupId)) {
+      setCurProjectGroupId(projectGroupId);
+      setSelectableGroup([find(groups.groups, { id: projectGroupId })]);
+    } else {
+      setSelectableGroup(groups.groups.filter(e => e.work_types.find(c => c === String(workingType))));
+    }
+  }, [projectGroupId,groups]);
 
   return (
     <>
@@ -110,7 +126,7 @@ function CreateNewProject({
         <CustomTextbox
           value={description}
           onChange={value => setDescription(value)}
-          label={`${t("LABEL_CHAT_TASK_MO_TA_CONG_VIEC")}`}
+          label={`${t("LABEL_TASK_DETAIL")}`}
           fullWidth
           multiline={true}
           className={"per-line-step-in-form"}

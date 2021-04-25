@@ -6,7 +6,7 @@
   align-items: center;
   position: relative;
   & > * {
-    &:first-child {
+    &:last-child {
       border-top: none !important;
       display: block;
       font-weight: 500;
@@ -18,14 +18,7 @@
       height: 16px;
       line-height: 16px;
       margin-left: 5px;
-    }
-    &:last-child {
-      display: block;
-      margin-left: auto;
-      height: 16px;
-      line-height: 16px;
-      color: #c1c1c1;
-      font-weight: normal;
+      color: #535b6a;
     }
   }
   &:hover {
@@ -35,10 +28,5 @@
     background-color: #f2f5fa;
     font-weight: bold;
     color: #545454;
-  }
-  &--workingType {
-    position: absolute;
-    left: 10px;
-    bottom: 8px;
   }
 }

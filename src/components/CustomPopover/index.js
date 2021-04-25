@@ -197,19 +197,19 @@ export const useFilters = () => {
     }, {
       title: t('IDS_WP_TOPICS'),
       field: 'work_type.number_work_topic',
-      option_type: "checkbox",
+      option_type: "radio",
       option: { work_type: 0},
       image: images.check_64
     }, {
       title: t('IDS_WP_PROJECT'),
       field: 'work_type.number_work_project',
-      option_type: "checkbox",
+      option_type: "radio",
       option: { work_type: 1 },
       image: images.speed_64
     }, {
       title: t('IDS_WP_PROCESS'),
       field: 'work_type.number_work_process',
-      option_type: "checkbox",
+      option_type: "radio",
       option: { work_type: 2 },
       image: images.workfollow_64
     }], [t]);

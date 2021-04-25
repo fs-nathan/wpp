@@ -13,6 +13,11 @@
     .MuiPaper-outlined {
       border: none;
     }
+    .MuiTypography-h5 {
+      font-weight: 500;
+      font-size: 22px;
+      color: #000;
+    }
   }
   &-card{
     width: 550px;
@@ -68,7 +73,7 @@
         background: #eeeeee;
         cursor: pointer;
         .MuiSvgIcon-root {
-          background: #6AEA92;
+          background: #00dd09;
           color: white;
         }
         .projectsStart-secondaryAction {
@@ -76,6 +81,9 @@
         }
         .projectsStart--stepNumber {
           background: #afaeae;
+        }
+        .MuiTypography-body1 {
+          color: #000;
         }
       }
     }
@@ -90,6 +98,17 @@
     }
     .MuiListItemText-multiline {
       max-width: 85%;
+    }
+    .MuiTypography-colorTextSecondary {
+      color: #888;
+    }
+    &__textPrimary {
+      &--done {
+        color: #777;
+      }
+      &--unset {
+        color: #000;
+      }
     }
   }
 }

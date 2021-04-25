@@ -11,13 +11,10 @@ import {
   LIST_PROJECT_GROUP
 } from 'constants/events.js';
 import {useMaxlenString, useRequiredString} from 'hooks';
-import {get, isNil, indexOf} from 'lodash';
+import {get} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import './style.scss';
-import {Box, Checkbox} from "@material-ui/core";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import apiConstant from "../../../../constants/apiConstant";
 
 const LogoBox = ({ className = '', ...props }) =>
   <div
@@ -48,6 +45,7 @@ function CreateProjectGroup({
       url_sort: get(updatedProjectGroup, 'sort_icon')
     });
   }, [updatedProjectGroup]);
+
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);

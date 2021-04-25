@@ -22,7 +22,7 @@ const BorderLinearProgress = withStyles((theme) => ({
   },
   bar: {
     borderRadius: 5,
-    backgroundColor: '#6AEA92',
+    backgroundColor: '#00dd09',
   },
 }))(LinearProgress);
 
@@ -67,7 +67,10 @@ function ProjectsStart({statusWorkGroup, getStatusWorkGroup}) {
                     <ListItemIcon>
                       {isDone ? <DoneIcon/> : <div className={"projectsStart--stepNumber"}>{index}</div>}
                     </ListItemIcon>
-                    <ListItemText primary={t(`LABEL_START_WORK_STEP_${index}`)} secondary={t(`LABEL_START_WORK_STEP_${index}_DES`)}/>
+                    <ListItemText
+                      className={`projectsStart-listSteps__textPrimary--${isDone ? "done" : "unset"}`}
+                      primary={t(`LABEL_START_WORK_STEP_${index}`)} secondary={t(`LABEL_START_WORK_STEP_${index}_DES`)}
+                    />
                     <div className={"projectsStart-secondaryAction"}>
                       <Icon path={mdiChevronRight} size={1} color="rgba(0, 0, 0, 0.54)" />
                     </div>

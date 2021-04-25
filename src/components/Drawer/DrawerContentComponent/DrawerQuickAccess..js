@@ -1,5 +1,5 @@
 import React from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import {useTranslation} from 'react-i18next';
 import {actionVisibleDrawerMessage} from '../../../actions/system/system';
 import HeaderDrawer from '../HeaderDrawer';
@@ -7,20 +7,28 @@ import '../Drawer.scss';
 import {mdiBookmarkMultipleOutline, mdiClockOutline, mdiClose, mdiDragVertical} from "@mdi/js";
 import Icon from "@mdi/react";
 import {Scrollbars} from "react-custom-scrollbars";
-import {Divider, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
+import {Divider, IconButton, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
-import {get, map} from "lodash";
+import {get, map, forEach} from "lodash";
 import {getProjectRecently} from "../../../actions/project/recentlyProjects";
 import {getProjectOnPersonalBoard} from "../../../actions/project/projectOnPersonalBoard";
-import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import {resolvedWorkType} from "../../../helpers/project/commonHelpers";
 import {useLocalStorage} from "react-use";
 import CreateNewProject from "../../../views/ProjectGroupPage/Modals/CreateNewProject";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import {
+  CustomEventDispose,
+  CustomEventEmitterWithParams,
+  CustomEventListener,
+  UPDATE_PIN_BOARD_SETTING
+} from "../../../constants/events";
+import {updatePinBoardSetting} from "../../../actions/project/setting/updatePinBoardSetting";
 
 const DrawerQuickAccess = props => {
   const { t } = useTranslation();
   const history = useHistory();
+  const dispatch = useDispatch();
   const {
     actionVisibleDrawerMessage, anchorDrawer, getProjectRecently, recentlyProjects,
     getProjectOnPersonalBoard, onBoardProjects
@@ -39,10 +47,28 @@ const DrawerQuickAccess = props => {
   }, [getProjectRecently, getProjectOnPersonalBoard]);
   const handleUnPinBoard = () => {
     setIsHideStartButton(!isHideStartButton);
+    CustomEventEmitterWithParams("WPS_HIDE_WORKING_START_BUTTON", {detail: {isHide: !isHideStartButton}});
   }
   function handleCreateNewWorkingBoard() {
     setOpenModal(true);
   }
+  function handleDelete(e, projectID) {
+    e.stopPropagation();
+    let _projects = [];
+    forEach(onBoardProjects, function (item) {
+      if(item.id !== projectID) _projects.push(item.id);
+    })
+    dispatch(updatePinBoardSetting({projectId: _projects}));
+  }
+  React.useEffect(() => {
+    const doReload = () => {
+      getProjectOnPersonalBoard();
+    }
+    CustomEventListener(UPDATE_PIN_BOARD_SETTING.SUCCESS, doReload);
+    return () => {
+      CustomEventDispose(UPDATE_PIN_BOARD_SETTING.SUCCESS, doReload);
+    }
+  });
   return (
     <>
       <div className="drawer-content">
@@ -84,7 +110,9 @@ const DrawerQuickAccess = props => {
             <Divider/>
             <div className={"quickAccess--groupContent"}>
               <div className={"quickAccess--groupContent-header"}>
-                <PeopleAltOutlinedIcon style={{color: "#D04C01"}}/>
+                <SvgIcon htmlColor={"#DB7B48"}>
+                  <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z"/>
+                </SvgIcon>
                 <Typography component="h4">{t("LABEL_PERSONAL_BOARD")}</Typography>
                 <div className={"quickAccess--groupContent-header__controlLeft"}>
                   <Link component={"button"} onClick={() => {
@@ -124,7 +152,9 @@ const DrawerQuickAccess = props => {
                                   </ListItemIcon>
                                   <ListItemText primary={project.name} />
                                   <div className={"quickAccess--groupContent-listCustom-closeIcon"}>
-                                    <Icon path={mdiClose} size={0.8} color="rgba(0, 0, 0, 0.54)"/>
+                                    <IconButton size={"small"} onClick={(e) => handleDelete(e, get(project, "id"))}>
+                                      <Icon path={mdiClose} size={0.8} color="rgba(0, 0, 0, 0.54)"/>
+                                    </IconButton>
                                   </div>
                                 </ListItem>
                               )}

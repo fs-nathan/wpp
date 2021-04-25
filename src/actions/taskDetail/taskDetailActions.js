@@ -1279,6 +1279,11 @@ export function threadChatCreatePrivateSuccess({data}) {
         data
     }
 }
+export function threadChatCreatePrivateReset() {
+    return {
+        type: types.THREAD_CHAT_CREATE_PRIVATE_SUCCESS,
+    }
+}
 
 export function updateTaskStatus({task_id, status}) {
     return {

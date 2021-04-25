@@ -12,7 +12,7 @@ import ListProjectBody from './ListProjectBody';
 import ListProjectHeader from './ListProjectHeader';
 import ProjectItem from './ProjectItem';
 import './styles.scss';
-import {filter, map} from "lodash";
+import {filter, map, size} from "lodash";
 
 function ListProject({
   show,
@@ -58,28 +58,30 @@ function ListProject({
         renderView={props => <div {...props} className="listProject--container" />}
         autoHide autoHideTimeout={500} autoHideDuration={200}>
         {projectGroup.map(group => {
-          return (
-            <div key={group.id}>
-              <ExpansionPanel className="listProject--project-panel" defaultExpanded>
-                <ExpansionPanelSummary
-                  expandIcon={<Icon path={mdiMenuUp} size={1} />}
-                  id="panel1bh-header"
-                >
-                  <ListProjectBody subPrimary={group.name.toUpperCase()} />
-                </ExpansionPanelSummary>
-                <MuiExpansionPanelDetails className="listProject--project-panel-detail">
-                  {group.projects.map((project, projectIdx) => (
-                    <ProjectItem
-                      project={project}
-                      key={projectIdx}
-                      title={project.name}
-                      onClickProject={onClickProject}
-                    />
-                  ))}
-                </MuiExpansionPanelDetails>
-              </ExpansionPanel>
-            </div>
-          );
+          if(size(group.projects) > 0) {
+            return (
+              <div key={group.id}>
+                <ExpansionPanel className="listProject--project-panel" defaultExpanded>
+                  <ExpansionPanelSummary
+                    expandIcon={<Icon path={mdiMenuUp} size={1} />}
+                    id="panel1bh-header"
+                  >
+                    <ListProjectBody subPrimary={group.name.toUpperCase()} />
+                  </ExpansionPanelSummary>
+                  <MuiExpansionPanelDetails className="listProject--project-panel-detail">
+                    {group.projects.map((project, projectIdx) => (
+                      <ProjectItem
+                        project={project}
+                        key={projectIdx}
+                        title={project.name}
+                        onClickProject={onClickProject}
+                      />
+                    ))}
+                  </MuiExpansionPanelDetails>
+                </ExpansionPanel>
+              </div>
+            );
+          } else return;
         })}
       </Scrollbars>
     </div>

@@ -1,4 +1,4 @@
-import { ListItemText } from '@material-ui/core';
+import {ListItemSecondaryAction, ListItemText} from '@material-ui/core';
 import { mdiDragVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import { get } from 'lodash';
@@ -32,18 +32,20 @@ function CustomListItem({
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
           >
-            <div {...provided.dragHandleProps}>
-              <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
-            </div>
-            <CustomAvatar style={{ height: 50, width: 50, }} src={room.icon} alt='avatar' />
+            <CustomAvatar style={{ height: 35, width: 35, }} src={room.icon} alt='avatar' />
             <ListItemText
               primary={
-                <Primary>{get(room, 'name', '')}</Primary>
+                <Primary style={{ marginLeft: "10px"}}>{get(room, 'name', '')}</Primary>
               }
               secondary={
-                <Secondary>{t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: get(room, 'number_member', 0) })}</Secondary>
+                <Secondary style={{ marginLeft: "10px"}}>{t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: get(room, 'number_member', 0) })}</Secondary>
               }
             />
+            <ListItemSecondaryAction>
+              <div {...provided.dragHandleProps}>
+                <Icon path={mdiDragVertical} size={1} color={!isHover ? 'rgba(0, 0, 0, 0)' : 'rgba(0, 0, 0, 1)'} />
+              </div>
+            </ListItemSecondaryAction>
           </StyledListItem>
         )}
       </Draggable>

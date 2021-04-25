@@ -31,14 +31,13 @@ const ProjectItem = (props) => {
       className={clsx("projectItem", { projectItem__selected: isSelected })}
       onClick={onClickProject}
     >
-      <span>{props.title}</span>
       <div className={"projectItem--workingType"}>
         <img
           src={resolvedWorkType(get(props.project, 'work_type', 0))}
-          alt={""} width={25} height={25}
+          alt={""} width={16} height={16}
         />
       </div>
-      <span>{`[${t(workTypes[get(props.project, 'work_type', 0)])}]`}</span>
+      <span>{props.title}</span>
     </div>
   );
 };

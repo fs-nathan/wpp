@@ -21,7 +21,7 @@ const DialogActions = withStyles((theme) => ({
     padding: theme.spacing(1),
   },
 }))(MuiDialogActions);
-function GuideLineAddUserModal({open, setOpen, handleAddNow}) {
+function GuideLineAddUserModal({open, setOpen, handleAddNow, type = 1}) {
   const {t} = useTranslation();
   function handleAddUser() {
     setOpen(false);
@@ -34,12 +34,16 @@ function GuideLineAddUserModal({open, setOpen, handleAddNow}) {
       className={"GuildLineAddUserModal"}
     >
       <DialogContent>
-        <Typography variant={"h5"}>{t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD")}</Typography>
+        <Typography variant={"h5"}>{
+          type === 1 ? t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD") : t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING")
+        }</Typography>
         <Box marginTop={"10px"}>
-          <Typography variant={"body1"} color={"textSecondary"}>{t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES1")}</Typography>
+          <Typography variant={"body1"} color={"textSecondary"}>{
+            type === 1 ? t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES1") : t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_DES")
+          }</Typography>
           <Typography variant={"body1"} color={"textSecondary"}>
             {t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD_DES2")}
-            <Link href={"https://support.workplus.vn/lam-viec/gan-thanh-vien-cho-du-an-quy-trinh-chu-de/"} target={"_blank"}>
+            <Link href={type === 1 ? "https://support.workplus.vn/lam-viec/gan-thanh-vien-cho-du-an-quy-trinh-chu-de/" : "https://support.workplus.vn/lam-viec/gan-thanh-vien-tham-gia-mot-cong-viec/"} target={"_blank"}>
               {t("LABEL_CHAT_TASK_XEM_THEM")}
             </Link>
           </Typography>

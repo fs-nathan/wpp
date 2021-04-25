@@ -2241,7 +2241,7 @@
   "NO_DATA_SUB": "Chưa có dữ liệu, hãy tạo mới dữ liệu để bắt đầu",
   "IDS_WP_REGISTER_NOTICE_REGISTER_DIRECT": "Bạn đã nhận được mã xác thực ?",
   "IDS_WP_REGISTER_COMPLETE": "Hoàn tất đăng ký",
-  "LABEL_CREATED_SHORT_FIXED": "Đã tạo {{time}}",
+  "LABEL_CREATED_SHORT_FIXED": "Đã tạo lúc {{time}} ngày {{date}}",
   "LABEL_JOINED_USERS_COUNT": "Đã có {{counts}} thành viên tham gia",
   "LABEL_ASSIGNERS": "Giao việc",
   "LABEL_ASSIGNEES": "Thực hiện ({{counts}})",
@@ -2267,11 +2267,11 @@
   "LABEL_HOW_TO_REQ_JOIN_DES4": "Đây là ID nhóm của bạn:",
   "LABEL_START_WORK_STEP_1": "Tạo nhóm làm việc",
   "LABEL_START_WORK_STEP_1_DES": "Tạo nhóm làm việc như Marketing, Nhân sự, Sản xuất... để chứa các chủ đề, dự án, quy trình.",
-  "LABEL_START_WORK_STEP_2" : "Thêm chủ đề, dự dự án hoặc quy trình vào nhóm",
+  "LABEL_START_WORK_STEP_2" : "Thêm bảng công việc vào nhóm",
   "LABEL_START_WORK_STEP_2_DES" : "Tạo những chủ đề công việc, dự án hoặc quy trình của bạn để bắt đầu thực hiện và quản lý.",
   "LABEL_START_WORK_STEP_3": "Thêm công việc mới",
   "LABEL_START_WORK_STEP_3_DES": "Tạo công việc cho chủ đề, dự án hay quy trình để bắt đầu thảo luận và xử lý.",
-  "LABEL_START_WORK_STEP_4": "MỜi đồng đội của bạn",
+  "LABEL_START_WORK_STEP_4": "Mời đồng đội của bạn",
   "LABEL_START_WORK_STEP_4_DES": "Mời thành viên vào nhóm của bạn và thêm họ vào các quy trình, dự án hay chủ đề công việc của bạn để cùng nhau làm việc.",
   "LABEL_START_WORK_STEP_5": "Nâp cấp tài khoản",
   "LABEL_START_WORK_STEP_5_DES": "Nâp cấp lên gói Pro để mời thêm được nhiều đồng đội hơn và bảo lưu tài liệu lưu trữ an toàn trên đám mây.",
@@ -2304,7 +2304,7 @@
   "LABEL_CREATE_PERSONAL_BOARD": "Tạo bảng cá nhân",
   "LABEL_ALL_DELETED_WORKING_BOARD": "Tất cả bảng đã xóa",
   "LABEL_SEARCH_MEMBERS_TO_ADD": "TÌm kiếm thành viên trong danh sách dưới đây...",
-  "LABEL_SEARCH_MEMBERS_TO_ADD_DES": "Bạn chỉ được thêm những thành viên đã tham gia vào Dự án/Quy trình/Chủ đề công. Nếu bạn không thấy thành viên cần thêm ở danh sách bên  thì hãy thêm họ vào Dự án/Quy trình/Chủ  trước khi thêm vào công việc này.",
+  "LABEL_SEARCH_MEMBERS_TO_ADD_DES": "Bạn chỉ được thêm những thành viên đã tham gia Bảng công việc.",
   "LABEL_WORKING_BOARD_MEMBERS": "Thành viên bảng công việc",
   "LABEL_WORKING_BOARD_MEMBERS_ADDED_COUNT": "Đã thêm {{count}} thành viên",
   "MESSAGE_WORKING_BOARD_EMPTY": "Không có Bảng công việc nào!",
@@ -2342,7 +2342,6 @@
   "LABEL_QUICK_WORKING_ASSIGN_DES": "Thành viên sẽ được gán tham gia vào tất cả các công việc từ trước đến thời điểm hiện tại.",
   "LABEL_QUICK_ASSIGN": "Giao ngay",
   "LABEL_AUTO": "Tự động",
-  "LABEL_ADD_MEMBER": "Thêm thành viên",
   "LABEL_ASSIGN_AUTO_DES": "Thành viên này sẽ được tự động thêm vào các công việc ngay sau khi khởi tạo (bất cứ ai khởi tạo)",
   "LABEL_ASSIGN_MANUAL_DES": "Thành viên này chỉ được tham gia những công việc khi được giao việc.",
   "LABEL_MANUAL": "Thủ công",
@@ -2393,6 +2392,11 @@
   "CREATE_NEW_OFFER_GROUP": "Tạo mới nhóm đề xuất",
   "LABEL_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Chưa có nhóm đề xuất nào!",
   "DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Tạo nhóm đề xuất mới trước khi lựa chọn",
+  "LABEL_TASK_DETAIL": "Chi tiết công việc",
+  "LABEL_GROUP_ACCOUNT_EMPTY_INVITATIONS": "Không có lời mời tham gia nhóm nào!",
+  "LABEL_GROUP_ACCOUNT_EMPTY_REQUIREMENTS": "Không có yêu cầu tham gia nhóm nào!",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING": "Thêm thành viên tham gia công việc",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_DES": "Hãy thêm thành viên vào công việc này và phân quyền cho họ để thực hiện, quản lý hiệu quả.",
   "LABEL_SEARCH_PROJECT_GROUP": "Chọn nhóm làm việc",
   "LABEL_DESCRIPTION_TIP_IN_WORK_GROUP": "Tạo các nhóm làm việc như: Nhóm marketing, HR... để phân biệt các loại bảng công việc(dự án, quy trình, chủ đề công việc) theo từng tính chất giống nhau giúp quản lý các mảng công việc trong tổ chức của bạn dễ dàng.",
   "CREATE_NEW_WORK_GROUP": "Tạo mới nhóm làm việc",
@@ -2408,7 +2412,6 @@
   "CREATE_NEW_PERSONAL_CATEGORY": "Tạo mới nhóm nhắc hẹn",
   "LABEL_CREATE_ACCOUNT_TITLE": "Tạo tài khoản",
   "LABEL_ADD_MEMBER_DESCRIPTION": "Thêm thành viên từ danh sách tài khoản đã có trên hệ thống",
-
   "LABEL_CREATE_ACCOUNT_DESCRIPTION": "Thêm thành viên bằng cách tạo mới tài khoản cho thành viên",
   "IDS_WP_ACCOUNT_INTERNAL": "Tài khoản nội bộ",
   "IDS_WP_ACCOUNT_INTERNAL_CONTINUE": "Tiếp tục",
@@ -2422,8 +2425,6 @@
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2": "Thành viên sẽ nhận được thông tin đăng nhập do hệ thống chuyển tới email đăng ký bao gồm tài khoản và mật khẩu ngày sau khi Người tạo khởi tạo (nếu email đăng ký đang hoạt động và có khả năng nhận được email gửi tới). \n Người tạo được toàn quyền quản lý các tài khoản do mình tạo như: Tạm dừng hoạt động của tài khoản, cài đặt lại mật khẩu đăng nhập.",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong>Lưu ý:</strong> Tài khoản nội bộ thuộc quyền sở hữu của Chủ sở hữu nhóm!",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4": "Bạn có thể tạo tài khoản đã được xác thực mới được phép tạo tài khoản nội bộ.",
-  
-  
   "IDS_WP_ACCOUNT_INTERNAL_ADD_ROW": "Thêm hàng",
   "IDS_WP_ACCOUNT_INTERNAL_CREATE_LIST_ACCOUNT": "Tạo danh sách tài khoản",
   "IDS_WP_ACCOUNT_INTERNAL_UPLOAD_EXCEL": "Tải file Excel",
@@ -2466,5 +2467,4 @@
    "IDS_WP_UN_LOCK_ACCOUNT": "Mở khóa tài khoản thành công",
    "IDS_WP_LOCK_ACCOUNT": "Khóa tài khoản thành công",
    "IDS_WP_CREATE_ACCOUNT_SUCCESS": "Tạo tài khoản thành công"
-
-  }
+}

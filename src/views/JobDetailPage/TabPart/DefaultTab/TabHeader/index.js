@@ -116,6 +116,7 @@ function TabHeader(props) {
       onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>,
   ]
+
   return (
     <div className="container-dt-tabheader">
       <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
@@ -131,7 +132,7 @@ function TabHeader(props) {
             style={{ color: 'rgb(174, 168, 168)', fontSize: 12 }}
           >
             {/*{t(getAssignType(assign_code), { date_create: detailTask.date_create })}*/}
-            {t("LABEL_CREATED_SHORT_FIXED", {"time": detailTask.date_create})}
+            {t("LABEL_CREATED_SHORT_FIXED", {"date": detailTask.date_create, "time": detailTask.created_time})}
           </ColorTypo>
         )}
       </div>

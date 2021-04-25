@@ -42,7 +42,6 @@ const NoticeModal = props => {
   const demoMode = (e) => {
     e.preventDefault();
     closeNoticeModal();
-    //props.history.push(Routes.HOME);
     props.actionVisibleDrawerMessage({
       type: DRAWER_TYPE.GROUP_ACCOUNT,
       anchor: 'top'

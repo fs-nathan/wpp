@@ -25,6 +25,18 @@
   height: 100%;
 }
 .view_GroupAccount_Modal {
+  &__emptyView {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 80%;
+    span {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+  }
   &_activeMode {
     background: #E6E7E9;
     .MuiIconButton-root {
@@ -44,9 +56,10 @@
       font-weight: 400;
     }
     &_searchBox {
-      padding: 10px;
-      border: 1px solid rgba(0, 0, 0, 0.1);
+      padding: 15px;
+      border: 2px solid rgb(218, 218, 218);
       width: 100%;
+      border-radius: 3px;
       .MuiButton-containedPrimary {
         color: #fff;
         background: #FF4800;
@@ -71,6 +84,8 @@
     position: absolute;
     background: #eee;
     right: 0;
+    border-top-right-radius: 3px;
+    border-bottom-right-radius: 3px;
     &:before {
       content: "";
       position: absolute;
@@ -87,12 +102,18 @@
   align-items: center;
   border-radius: 3px;
   padding: 0;
+  &--Active {
+    outline: 2px solid #0097FA;
+    border-radius: 3px;
+  }
   &:hover {
     border: 2px solid #0097FA;
   }
   margin: 10px 20px 20px 10px;
   .MuiListItemText-primary {
     font-size: 14px;
+    color: #000;
+    font-weight: 500;
   }
   .MuiListItem-container {
     width: 100%;
@@ -136,13 +157,12 @@
 }
 .view_GroupAccount_Modal .view_GroupAccount_Modal___subheader {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  height: 56px;
-  padding: 10px 10px 0 10px;
+  padding: 10px 30px 10px 30px;
   font-weight: 500;
 }
 
 .view_GroupAccount_Modal .view_GroupAccount_Modal___subheader-item {
-  margin: 10px 0 0 12px;
+  margin: 20px 0 0 12px;
   font-weight: 500;
 }
 

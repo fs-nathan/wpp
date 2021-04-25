@@ -205,13 +205,13 @@ function AddMemberModal({
                   }
                 }}>
                   {get(member, "type_assign", "") !== "" && (
-                    <Icon path={mdiCheckboxMarkedCircle} size={1} color={get(bgColor, "color")}/>
+                    <Icon path={mdiCheckboxMarkedCircle} size={1.083} color={get(bgColor, "color")}/>
                   )}
                   {get(member, "type_assign", "") === "" && !selected[member.id] && (
-                    <Icon className={"checkIcon"} path={mdiCheckboxBlankCircleOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
+                    <Icon className={"checkIcon"} path={mdiCheckboxBlankCircleOutline} size={1.083} color={"rgba(0,0,0,0.54)"}/>
                   )}
                   {get(member, "type_assign", "") === "" && selected[member.id] && (
-                    <Icon path={mdiCheckboxMarkedCircle} size={1} color={get(bgColor, "color")}/>
+                    <Icon path={mdiCheckboxMarkedCircle} size={1.083} color={get(bgColor, "color")}/>
                   )}
                   <List component={"nav"} dense={true} style={{width: "100%"}}>
                     <ListItem>

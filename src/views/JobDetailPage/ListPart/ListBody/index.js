@@ -116,7 +116,7 @@ function ListBody() {
         <div className={"listJoBody--taskControlTop_left"}>
           <div className={"customSelectBox"} onClick={(evt) => setAnchorElFilterControl(evt.currentTarget)}>
             {renderTitleSelectedFilter()}
-            <Icon path={mdiMenuDown} size={1.5} color={"rgba(0,0,0,0.54)"}/>
+            <Icon path={mdiMenuDown} size={1} color={"rgba(0,0,0,0.54)"}/>
           </div>
         </div>
         <div className={"listJobBody--taskControlTop_right"} onClick={() => handleViewAll().then(() => {

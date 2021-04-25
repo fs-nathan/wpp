@@ -3,6 +3,8 @@ import { Slide } from '@material-ui/core';
 import TabHeader from './TabHeader';
 import TabBody from './TabBody';
 import styled from 'styled-components'
+import {useDispatch} from "react-redux";
+import {threadChatCreatePrivateReset} from "../../../../actions/taskDetail/taskDetailActions";
 
 const Header = styled(TabHeader)`
   grid-area: header;
@@ -18,7 +20,11 @@ const Header = styled(TabHeader)`
   z-index: 999;
 `
 function MemberTab({ show, setShow }) {
-  // const value = React.useContext(WrapperContext)
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    dispatch(threadChatCreatePrivateReset());
+  }, [dispatch]);
 
   return (
     <Slide in={show === 8}  mountOnEnter unmountOnExit>

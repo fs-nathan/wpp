@@ -1,16 +1,13 @@
-import {ListItemText, Box, IconButton, Badge, Link as MuiLink} from '@material-ui/core';
+import {Badge, Box, IconButton, Link as MuiLink, ListItemText} from '@material-ui/core';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import ContactMailRoundedIcon from '@material-ui/icons/ContactMailRounded';
-import { mdiDragVertical } from '@mdi/js';
-import Icon from '@mdi/react';
-import { get } from 'lodash';
+import {get} from 'lodash';
 import React from 'react';
-import { DragDropContext, Droppable } from 'react-beautiful-dnd';
-import { useTranslation } from 'react-i18next';
-import { Link, useHistory } from 'react-router-dom';
+import {DragDropContext, Droppable} from 'react-beautiful-dnd';
+import {useTranslation} from 'react-i18next';
+import {Link, useHistory} from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
-import { Primary, Secondary, StyledList, StyledListItem } from '../../../../components/CustomList';
-import { Stack } from "views/SettingGroupPage/TablePart/SettingGroupRight/Home/components/Stack";
+import {Primary, Secondary, StyledList, StyledListItem} from '../../../../components/CustomList';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
 import SearchInput from '../../../../components/SearchInput';
@@ -59,14 +56,14 @@ function DepartmentList({
       icon: PersonAddIcon,
       action: () => handleOpenModal("ADD_USER"),
       color: '#fff',
-      style: { background: '#f4511e'},
+      style: { background: '#f4511e', padding: "7px"},
     },
     {
       title: t('DMH.VIEW.DP.LEFT.ADD.LABEL.REQ'),
       icon: ContactMailRoundedIcon,
       action: () => { history.push(`${route}/member-required`) },
       color: '#fff',
-      style: { background: '#4caf50'},
+      style: { background: '#4caf50', padding: "7px"},
       rightIcon: () => countRequirements > 0 ? <NewUserBadge badgeContent={countRequirements}/> : <div/>
     },
   ]
@@ -99,7 +96,6 @@ function DepartmentList({
               {get(viewPermissions.permissions, 'can_modify', false) && listMenu.map((item, index) => (
                 <StyledListItem
                   component={Link}
-                  innerRef={ref}
                   onClick={() => {
                     item.action(item);
                   }}
@@ -141,15 +137,11 @@ function DepartmentList({
                   {...provided.droppableProps}
                 >
                   <StyledListItem to={`${route}`} component={Link} innerRef={ref}>
-                    {get(viewPermissions.permissions, 'can_modify', false) && (
-                      <Icon path={mdiDragVertical} size={1} color={'rgba(0, 0, 0, 0)'} />
-                      )
-                    }
-                    <CustomAvatar style={{ height: 50, width: 50, }} alt='avatar' />
+                    <CustomAvatar style={{ height: 35, width: 35, }} alt='avatar' />
                     <ListItemText
-                      primary={<StyledPrimary>{t('DMH.VIEW.DP.LEFT.LIST.ALL')}</StyledPrimary>}
+                      primary={<StyledPrimary style={{ marginLeft: "10px"}}>{t('DMH.VIEW.DP.LEFT.LIST.ALL')}</StyledPrimary>}
                       secondary={
-                        <Secondary>
+                        <Secondary style={{ marginLeft: "10px"}}>
                           {t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: rooms.rooms.reduce((sum, room) => sum += get(room, 'number_member'), 0) })}
                         </Secondary>
                       }

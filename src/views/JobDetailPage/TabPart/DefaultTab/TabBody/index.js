@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import {
   focusTaskGroup,
-  getMember,
+  getMember, stopTask,
   updatePriority,
   updateTaskStatus
 } from '../../../../../actions/taskDetail/taskDetailActions';
@@ -167,7 +167,11 @@ function TabBody(props) {
 
   function handleUpdateTaskStatus(status) {
     setTooltipChangeTaskStatus(null);
-    dispatch(updateTaskStatus({task_id: taskId, status}));
+    if(status === 4) {
+      dispatch(stopTask(taskId));
+    } else {
+      dispatch(updateTaskStatus({task_id: taskId, status}));
+    }
   }
   return (
     <div className="listPartTabBody">
@@ -195,7 +199,7 @@ function TabBody(props) {
           <ListItemButtonGroup>
             <StatusLabel
               type={TYPE_STATUS}
-              value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
+              value={taskStatistic.state_code}
               hasIcon={true}
               onClick={(evt) => setTooltipChangeTaskStatus(evt.currentTarget)}
             />
@@ -276,12 +280,15 @@ function TabBody(props) {
             return (
               <>
                 {index === 3 && (<Divider style={{marginTop: 10}}/>)}
-                <Box className={"toolTipUpdateStatus-item"}>
+                <Box className={"toolTipUpdateStatus-item"} onClick={() => {
+                  if(taskStatistic.complete !== 100) handleUpdateTaskStatus(item.value);
+                }}>
                   <div className={"toolTipUpdateStatus-itemHeader"}>
                     <Radio
-                      checked={getStatusCode(taskStatistic.state_code, taskStatistic.complete) === item.value}
+                      checked={taskStatistic.state_code === item.value}
                       value={item.value}
                       onChange={() => handleUpdateTaskStatus(item.value)}
+                      disabled={taskStatistic.complete === 100}
                     />
                     <Typography variant={"h6"} color={"textSecondary"}>
                       {t(item.label)}

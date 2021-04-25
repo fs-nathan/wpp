@@ -249,9 +249,13 @@
     }
   }
   &-body {
-    padding: 5px 5px 10px;
+    margin-bottom: 15px;
   }
   &-item {
+    cursor: pointer;
+    &:hover {
+      background: #f2f5fa;
+    }
     .MuiRadio-colorSecondary.Mui-checked {
       color: var(--color-primary);
     }

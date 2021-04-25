@@ -402,10 +402,12 @@ function MemberSetting({
                     </TableCell>
                     <TableCell width='25%'>
                       {get(member, 'is_in_group', false) &&
-                      <RolesBox onClick={() => handleOpenModal('ROLE', {curMemberId: get(member, 'id')})}>
-                        <span>{get(member, "role.name", t("LABEL_SET_MEMBER_ROLE"))}</span>
-                        <Icon path={mdiMenuDown} size={0.8} color={'#222'} />
-                      </RolesBox>
+                      <abbr title={get(member, "role.name", t("LABEL_SET_MEMBER_ROLE"))} style={{textDecoration: "none"}}>
+                        <RolesBox onClick={() => handleOpenModal('ROLE', {curMemberId: get(member, 'id')})}>
+                          <span>{get(member, "role.name", t("LABEL_SET_MEMBER_ROLE"))}</span>
+                          <Icon path={mdiMenuDown} size={0.8} color={'#222'} />
+                        </RolesBox>
+                      </abbr>
                       }
                     </TableCell>
                     <TableCell width='25%'>
