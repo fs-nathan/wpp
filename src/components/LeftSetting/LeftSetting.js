@@ -43,6 +43,7 @@ const LeftSetting = props => {
                     className={`title-setting-item ${
                       item.icon ? "" : "none-icon"
                     }`}
+                    style={{fontSize: "14px"}}
                   >
                     {item.title}
                   </Primary>

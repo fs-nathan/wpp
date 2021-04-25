@@ -31,7 +31,7 @@ const FrontBar = styled(({ width, left, color, ...rest }) => <div {...rest} />)`
 function ImprovedSmallProgressBar({ color, percentDone, data }) {
 
   const [barsData, setBarsData] = React.useState({});
-
+  console.log(barsData);
   React.useEffect(() => {
     const total = reduce(data, (sum, info) => sum += get(info, 'value', 0), 0);
     if (total === 0) {

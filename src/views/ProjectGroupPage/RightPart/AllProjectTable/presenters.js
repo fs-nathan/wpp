@@ -30,6 +30,7 @@ import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined"
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
+import SvgIcon from "@material-ui/core/SvgIcon";
 
 const MyIcon = ({ className = '', ...props }) =>
   <Icon
@@ -62,7 +63,7 @@ function AllProjectTable({
   handleShowOrHideProject,
   handleSortProject,
   handleOpenModal, bgColor,
-  showHidePendings,
+  showHidePendings, projectGroup,
   canCreate, groupID, isFiltering, setIsFiltering
 }) {
   const history = useHistory();
@@ -74,6 +75,8 @@ function AllProjectTable({
   const [curProject, setCurProject] = React.useState(null);
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
   const [projectSummary, setProjectSummary] = React.useState({});
+  const [currentGroup, setCurrentGroup] = React.useState(null);
+
   const times = useTimes();
   const filters = useFilters();
   function doOpenMenu(anchorEl, project) {
@@ -89,25 +92,34 @@ function AllProjectTable({
     setCurProject(oldProject => find(projects.projects, { id: get(oldProject, 'id') }));
     setProjectSummary(projects.summary);
   }, [projects]);
+  React.useEffect(() => {
+    setCurrentGroup(find(projectGroup, {"id": groupID}));
+  },[groupID, projectGroup]);
+
   function resolveTitle() {
     switch (type_data) {
       case 1:
-        return <>
+        return <div className={"view_ProjectGroup_Table_All_titleTop"}>
           <AccessTimeIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h5"} bold>{t("LABEL_SEE_RECENTLY")}</Typography>
-        </>;
+          <span>{t("LABEL_SEE_RECENTLY")}</span>
+        </div>;
       case 2:
-        return <>
-          <PersonPinCircleOutlinedIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h5"} bold>{t("LABEL_PERSONAL_BOARD")}</Typography>
-        </>;
+        return <div className={"view_ProjectGroup_Table_All_titleTop"}>
+          <img src={images.person_pin_circle} style={{marginRight: 20}} alt={""} width={35} height={35}/>
+          <span>{t("LABEL_PERSONAL_BOARD")}</span>
+        </div>;
       default:
-        return <>
-          <PeopleOutlineOutlinedIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <Typography variant={"h5"} bold>{t("LABEL_WORKING_GROUP")}</Typography>
-        </>;
+        return <div className={"view_ProjectGroup_Table_All_titleTop"}>
+          <SvgIcon htmlColor={"#555555"} fontSize={"large"}  style={{marginRight: 20}}>
+            <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z"/>
+          </SvgIcon>
+          <span>
+            {get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}
+          </span>
+        </div>;
     }
   }
+
   function renderEmptyView() {
     switch (type_data) {
       case 2:
@@ -118,7 +130,6 @@ function AllProjectTable({
         } else return <EmptyWorkingGroup/>;
     }
   }
-  console.log(projectSummary);
   return (
     <>
       <Container>
@@ -151,9 +162,12 @@ function AllProjectTable({
                     onClick: evt => setTimeAnchor(evt.currentTarget)
                   }
                 ],
-                mainAction: canCreate ? {
+                mainAction: canCreate && type_data !== 2 ? {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
                   onClick: evt => handleOpenModal('CREATE'),
+                } : type_data === 2 ? {
+                  label: `+ ${t("LABEL_ADD_TABLE")}`,
+                  onClick: () => handleOpenModal('ADD_PERSONAL_BOARD')
                 } : null,
                 expand: {
                   bool: expand,

@@ -228,7 +228,10 @@ const ItemGroupAccount = props => {
         }}
       >
         <List component={"nav"} className="view_GroupAccount_Modal__groupItem">
-          <ListItem onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
+          <ListItem
+            onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+            className={`${props.groupActive.code === item.code && "view_GroupAccount_Modal__groupItem--Active"}`}
+          >
             {isHover && <Box className={"view_GroupAccount_Modal__actionMask"}/>}
             <ListItemAvatar>
               <CustomAvatar style={{ width: 50, height: 50, }} className="avatar" src={item.logo || image.avatar_user} alt='avatar' />

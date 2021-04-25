@@ -27,7 +27,7 @@ function TabHeader({ setShow }) {
         buttonTooltipText={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
         onClickBack={() => setShow(0)}
         onClickOpen={onClickCreateMember}
-        rightIcon={manage_member ? 'settings' : null}
+        rightIcon={null}
       />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>

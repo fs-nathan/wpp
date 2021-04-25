@@ -1,19 +1,15 @@
-import { Radio, Avatar, Typography } from '@material-ui/core';
-import ColorTypo from 'components/ColorTypo';
+import {Avatar, Radio, Typography} from '@material-ui/core';
 import SearchInput from 'components/SearchInput';
 import compact from 'lodash/compact';
-import React, { useMemo, useState, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useSelector, useDispatch } from 'react-redux';
+import React, {useRef, useState} from 'react';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import CustomModal from 'components/CustomModal';
 import '../styles.scss';
 import styled from 'styled-components';
-import { currentColorSelector } from 'views/Chat/selectors';
-import { getMembersNotCreatePrivateChat, createPrivateChat } from "actions/chat/threadChat";
-import {
-  getListTaskDetail
-} from "actions/taskDetail/taskDetailActions";
-import { useHistory } from "react-router-dom";
+import {currentColorSelector} from 'views/Chat/selectors';
+import {createPrivateChat, getMembersNotCreatePrivateChat} from "actions/chat/threadChat";
+import {useHistory} from "react-router-dom";
 
 export const StyledDiv = styled.div`
   .Mui-checked {

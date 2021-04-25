@@ -45,7 +45,7 @@ function ProjectSetting({
   }, [curProject])
 
   React.useEffect(() => {
-    if (curProject && !isNil(curProject.id)) {
+    if (curProject && !isNil(get(curProject, "id"))) {
       doDetailStatus({
         projectId: get(curProject, 'id'),
       });

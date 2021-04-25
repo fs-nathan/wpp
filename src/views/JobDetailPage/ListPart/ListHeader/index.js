@@ -115,7 +115,7 @@ function ListHeader(props) {
           </abbr>
           {create_task &&
             <abbr title={t('LABEL_CHAT_TASK_TAO_CONG_VIEC')}>
-              < ButtonIcon
+              <ButtonIcon
                 className="dropdown-icon"
                 onClick={handleClick}
               >
@@ -157,7 +157,7 @@ function ListHeader(props) {
         setOpen={setOpenSettings}
         curProject={projectThis}
       />
-    </div >
+    </div>
   );
 }
 

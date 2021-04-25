@@ -134,6 +134,7 @@ const ColumnRight = ({customPermissionList = []}) => {
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const [filterValue, setFilterValue] = useState(0);
   const [filterPermission, setFilterPermission] = React.useState(permissionList);
+  const [filterPermissionKeyword, setFilterPermissionKeyword] = React.useState(filterPermission);
 
   const [keyword, setKeyword] = useState("");
   const onInputChange = useCallback((e) => {
@@ -197,6 +198,17 @@ const ColumnRight = ({customPermissionList = []}) => {
       setFilterPermission(_selected);
     }
   }, [filterValue, permissionList, customPermissionList]);
+
+  useEffect(() => {
+    const _permission = map(filterPermission, function (group) {
+      const permissions = filter(group.permissions, function (permission) {
+        return permission.name.toLowerCase().includes(keyword.toLowerCase());
+      });
+      if(size(permissions) > 0) return {...group, permissions};
+    });
+    setFilterPermissionKeyword(_permission);
+  }, [keyword, filterPermission]);
+
   return (
     <ColumnLayout
       title={t("Chi tiết quyền trong nhóm")}
@@ -251,7 +263,7 @@ const ColumnRight = ({customPermissionList = []}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filterPermission.map((group, i) => (
+            {filterPermissionKeyword.map((group, i) => (
               <React.Fragment key={i}>
                 <TableRow>
                   <CustomTableBodyCell
@@ -269,7 +281,6 @@ const ColumnRight = ({customPermissionList = []}) => {
                   </CustomTableBodyCell>
                 </TableRow>
                 {get(group, "permissions", [])
-                  .filter(({ name = "" }) => name.toLowerCase().includes(keyword.toLowerCase()))
                   .map(({ name, description, permission }) => (
                     <TableRow
                       key={permission}

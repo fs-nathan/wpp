@@ -9,6 +9,8 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import './style.scss';
 import * as images from "assets/index";
+import { useHistory } from 'react-router-dom';
+import { Routes } from "constants/routes";
 
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
@@ -32,6 +34,7 @@ function CreateNewProject({
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [workingType, setWorkingType] = React.useState(0);
   const [selectableGroup, setSelectableGroup] = React.useState([]);
+  const history = useHistory();
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -40,9 +43,13 @@ function CreateNewProject({
       doReload();
     }
     CustomEventListener(CREATE_PROJECT.FAIL, fail);
-    CustomEventListener(CREATE_PROJECT.SUCCESS, success);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
+    });
     return () => {
-      CustomEventListener(CREATE_PROJECT.SUCCESS, success);
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
+        history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
+      });
       CustomEventDispose(CREATE_PROJECT.FAIL, fail);
     }
   }, [projectGroupId, timeRange, doReload]);
@@ -113,7 +120,7 @@ function CreateNewProject({
       <CustomTextbox
         value={description}
         onChange={value => setDescription(value)}
-        label={`${t("LABEL_CHAT_TASK_MO_TA_CONG_VIEC")}`}
+        label={`${t("LABEL_TASK_DETAIL")}`}
         fullWidth
         multiline={true}
       />

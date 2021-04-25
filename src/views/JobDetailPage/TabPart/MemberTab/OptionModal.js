@@ -114,10 +114,10 @@ function OptionModal({
   }
 
   React.useEffect(() => {
-    if(!isNil(get(privateChatData, "task_id"))) {
+    if(!isNil(get(privateChatData, "task_id")) && open) {
       history.push(`/chats?task_id=${get(privateChatData, "task_id")}`);
     }
-  }, [privateChatData, history]);
+  }, [privateChatData, history, open]);
   return (
     <Dialog
       disableBackdropClick={true}

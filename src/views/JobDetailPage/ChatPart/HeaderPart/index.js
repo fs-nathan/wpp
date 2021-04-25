@@ -4,7 +4,7 @@ import { mdiMagnify } from '@mdi/js';
 import { ic_add_user } from 'assets';
 import Icon from '@mdi/react';
 import { getMemberTask, getMemberTaskService } from 'actions/chat/chat';
-import fakeAvatar from 'assets/avatar.jpg';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
 import clsx from 'clsx';
 import queryString from 'query-string';
 import React, { useEffect } from 'react';
@@ -136,12 +136,7 @@ const HeaderPart = props => {
       </div>
       <abbr title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}>
         <IconButton className="chatHeader--button" onClick={openAddModal}>
-        <img
-              src={ ic_add_user }
-              alt=""
-              style={{width: '23px'}}
-              className="topnav-icon message-icon"
-            />
+          <PersonAddIcon style={{fontSize: "25px"}}/>
         </IconButton>
       </abbr>
       <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>

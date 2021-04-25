@@ -8,7 +8,7 @@ import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useSelector } from "react-redux";
 import "../ListPart.scss";
-import {filter, map} from "lodash";
+import {filter, map, size} from "lodash";
 import ListProjectBody from "./ListProjectBody";
 import ListProjectHeader from "./ListProjectHeader";
 import ProjectItem from "./ProjectItem";
@@ -57,6 +57,7 @@ function ListProject(props) {
         autoHideDuration={200}
       >
         {projectGroup.map((group) => {
+          if(size(group.projects) === 0) return;
           return (
             <div key={group.id}>
               <ExpansionPanel

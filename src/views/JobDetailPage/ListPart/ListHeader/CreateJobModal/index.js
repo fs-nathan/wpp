@@ -275,7 +275,7 @@ function CreateJobModal(props) {
   }, [dispatch, isEdit, projectId, props.isOpen])
 
   useEffect(() => {
-    if (props.isOpen) {
+    if (props.isOpen && projectId) {
       async function fetchData() {
         const projectSettings = await getProjectSetting(projectId)
         if (projectSettings.data && projectSettings.data.state) {

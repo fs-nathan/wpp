@@ -7,6 +7,9 @@
     }
     .MuiListItem-root {
       cursor: pointer;
+      &:hover {
+        background: #eee;
+      }
     }
     .MuiListSubheader-root {
       color: #545454;
@@ -16,7 +19,7 @@
       margin-bottom: 7px;
     }
     .MuiListItem-gutters {
-      padding: 0;
+      padding: 8px 0 8px 16px;
     }
     .MuiListItemIcon-root {
       min-width: unset;

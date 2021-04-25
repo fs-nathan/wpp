@@ -51,7 +51,7 @@ function ListProjectHeader({ setShow, setProjectFilter, projectFilter }) {
         </abbr>
       </div>
       <SearchInput
-        placeholder={t('LABEL_CHAT_TASK_TIM_DU_AN')}
+        placeholder={t('LABEL_SEARCH_PERSONAL_BOARD')}
         onChange={searchListProject}
       />
       <FilterBox>

@@ -85,7 +85,6 @@
   &-container {
     display: flex;
     flex-direction: column;
-    //padding: 10px 15px !important;
   }
   &--title {
     color: #555555;
@@ -169,6 +168,9 @@
       display: flex;
       align-items: center;
       right: 0;
+    }
+    .MuiTypography-body2 {
+      font-size: 15px;
     }
   }
 }

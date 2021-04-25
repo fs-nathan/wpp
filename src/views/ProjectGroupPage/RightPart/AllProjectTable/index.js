@@ -25,6 +25,7 @@ import {bgColorSelector, projectsSelector, showHidePendingsSelector} from './sel
 import {CREATE_PROJECT} from "constants/events";
 import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
 import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
+import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 
 function AllProjectTable({
   expand,
@@ -52,9 +53,12 @@ function AllProjectTable({
   const [isFiltering, setIsFiltering] = React.useState(false);
   const [sortType, setSortType] = React.useState({});
   const [newProjects, setNewProjects] = React.useState(projects);
+  const [openPersonalBoard, setOpenPersonalBoard] = React.useState(false);
+
   const filters = useFilters();
   const params = new URLSearchParams(window.location.search);
   const groupID = params.get('groupID');
+
   React.useEffect(() => {
     if (groupID === 'deleted') return;
     doListProject({
@@ -184,6 +188,10 @@ function AllProjectTable({
         });
         return;
       }
+      case "ADD_PERSONAL_BOARD": {
+        setOpenPersonalBoard(true);
+        return;
+      }
       default: return;
     }
   }
@@ -276,6 +284,7 @@ function AllProjectTable({
         setOpen={setOpenMemberSetting}
         project_id={newCreatedBoard}
       />
+      <AddToPersonalBoardModal open={openPersonalBoard} setOpen={setOpenPersonalBoard}/>
     </>
   );
 }
