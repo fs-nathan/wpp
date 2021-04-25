@@ -84,9 +84,7 @@
         min-width: 47vw !important;
         min-height: 300px !important;
         max-height: 90vh !important;
-        .comp_CustomModal___dialog-actions{
-          display: none
-        }
+        
       }
  
    
@@ -131,13 +129,7 @@
     }
     
   }
-  &_footer{
-    padding: 15px 20px;
-    border-top: 1px solid #ccc;
-    margin-top: 15px;
-    text-align: right;
-    ;
-  }
+ 
   
 }
 .upload-excel {
@@ -234,7 +226,10 @@
       border-collapse: collapse;
     }
     tbody tr td{
-      padding: 6px 6px;
+      padding: 6px 8px;
+      :first-child{
+        color: blue
+      }
     }
     thead tr th{
       padding: 6px 0px;

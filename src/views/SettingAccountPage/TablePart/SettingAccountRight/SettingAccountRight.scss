@@ -356,9 +356,6 @@
 }
 
 .modal-verify-account{
-  .comp_CustomModal___dialog-actions{
-    display: none
-  }
   &_content{
     p{
       font-size: 14px;
@@ -384,9 +381,9 @@
 }
 
 .modal-change-account{
-  .comp_CustomModal___dialog-actions{
-    display: none;
-  }
+  // .comp_CustomModal___dialog-actions{
+  //   display: none;
+  // }
   .form-content{
     .lb-input{
       font-weight: 500;

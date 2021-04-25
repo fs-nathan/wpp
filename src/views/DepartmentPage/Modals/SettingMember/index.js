@@ -31,7 +31,6 @@ import {
   UPDATE_USER,
 } from "constants/events";
 import { updateUser } from "actions/user/updateUser";
-import { Alert } from "@material-ui/lab";
 import { actionToast } from "actions/system/system";
 import { SignalCellularNull } from "@material-ui/icons";
 
@@ -48,6 +47,7 @@ const ModalSettingMember = ({
   doListPosition,
   doListRoom,
   doReloadUser,
+  doReloadListUser
 }) => {
   const { t } = useTranslation();
   const [profile, setProfile] = React.useState(data.user);
@@ -62,7 +62,7 @@ const ModalSettingMember = ({
   const [pwdNotMatch, setPwdNotMatch] = React.useState(false);
   const [errorMsg,setErrorMsg] = React.useState(null);
   const [isUpdate,setIsUpdate] = React.useState(null);
-  const [isLock, setIsLock] = React.useState(inforUser?.userInfor?.is_lock || false)
+  const [isLock, setIsLock] = React.useState(inforUser?.userInfor?.is_lock)
   const dispatch = useDispatch();
   React.useEffect(() => {
     setProfile(data.user);
@@ -71,7 +71,9 @@ const ModalSettingMember = ({
   const handleChangeTab = (key) => {
     setTab(key)
   };
-
+  React.useEffect(()=>{
+    setIsLock(inforUser?.userInfor?.is_lock)
+  },[inforUser?.userInfor?.is_lock])
   const handleCheckPwd = () => {
     let pwd = document.getElementById('new_password').value;
     let confirmPwd = document.getElementById('confirm_new_password').value;
@@ -102,7 +104,7 @@ const ModalSettingMember = ({
       setLevel(get(updatedUser, "level_id"));
       setDescription(get(updatedUser, "description", ""));
     }
-  }, [updatedUser]);
+  }, [setDescription, updatedUser]);
   const handleResetPassword = async e => {
     e.preventDefault();
     try {
@@ -112,7 +114,7 @@ const ModalSettingMember = ({
      }
     
     } catch (error) {
-      handleToast('error', error);
+      handleToast('error', t('SNACK_MUTATE_FAIL'));
       setErrorMsg(error)
     }
   }
@@ -122,8 +124,8 @@ const ModalSettingMember = ({
     setTimeout(() => dispatch(actionToast(null, '')), 2000);
   };
 
-  const handleUpdateAccount = async () => {
-    setOpen(true)
+  const handleUpdateAccount = async (e) => {
+    e.preventDefault();
     const reqData = {
       user_id: profile.id,
       room,
@@ -137,8 +139,8 @@ const ModalSettingMember = ({
       if(data.state){
         const filt = get(find(options.positions, { id: position }), "name")
         setIsUpdate(filt);
-        setIsLock(true);
-        doReloadUser({userId: profile.id});
+        setIsLock(!isLock);
+        doReloadListUser();
         handleToast('success', t('IDS_WP_UPDATE_USER_SUCCESS'));
       }
       
@@ -154,10 +156,11 @@ const ModalSettingMember = ({
        const {data} = await actionLockUser({account_id: profile.id});
        if(data.state){
          handleToast('success', t('IDS_WP_LOCK_ACCOUNT'));
-         setIsLock(false)
-       }
+         dispatch(actionGetInfor(profile.id));
+         setIsLock(!isLock);
+        }
     } catch (error) {
-       handleToast('error', error)
+      handleToast('error', t('SNACK_MUTATE_FAIL'))
     }
   }
 
@@ -166,17 +169,18 @@ const ModalSettingMember = ({
       const {data} = await actionUnLockUser({account_id: profile.id});
       if(data.state){
         handleToast('success', t('IDS_WP_UN_LOCK_ACCOUNT'));
-        setIsLock(true);
+        dispatch(actionGetInfor(profile.id));
+        setIsLock(!isLock);
       }
    } catch (error) {
-      handleToast('error', error)
+      handleToast('error', t('SNACK_MUTATE_FAIL'))
    }
   }
   React.useEffect(() => {
     if (data.user) {
       dispatch(actionGetInfor(data?.user?.id));
     }
-  }, [data.user, dispatch]);
+  }, [data, dispatch]);
   React.useEffect(() => {
     const fail = () => {
       setActiveMask(-1);
@@ -233,14 +237,17 @@ const ModalSettingMember = ({
     <CustomModal
       open={open}
       setOpen={setOpen}
+      onCancle={()=>setOpen(false)}
+      manualClose={true}
       className="modal_setting-member"
       title={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}
       cancleRender={
          (tab === "2") | (tab === "3") && (() => t("LABEL_CHAT_TASK_THOAT"))
       }
       confirmRender={(tab === "2") | (tab === "3") && (() => null)}
-      onConfirm={handleUpdateAccount}
-    >
+      type="submit"
+      form="form-update-account"
+>
       {profile && inforUser.userInfor && (
         <div className="modalSettingMember">
           <div className="modalSettingMember-tab-left">
@@ -309,7 +316,7 @@ const ModalSettingMember = ({
           <div className="modalSettingMember-right">
             {tab === "1" ? (
               <div className="modalSettingMember-right_config">
-               <form id="form_create_account">
+               <form id="form-update-account" onSubmit={handleUpdateAccount}>
                 <FormControl fullWidth>
                   <MySelect
                     label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
@@ -322,6 +329,7 @@ const ModalSettingMember = ({
                       value: room,
                     }}
                     onChange={({ value: roomId }) => setRoom(roomId)}
+                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
                   />
                 </FormControl>
                 <FormControl fullWidth>
@@ -341,6 +349,8 @@ const ModalSettingMember = ({
                     onChange={({ value: positionId }) =>
                       setPosition(positionId)
                     }
+                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
+
                   />
                 </FormControl>
                 <FormControl fullWidth>
@@ -355,6 +365,7 @@ const ModalSettingMember = ({
                       value: level,
                     }}
                     onChange={({ value: levelId }) => setLevel(levelId)}
+                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
                   />
                 </FormControl>
                 <FormControl fullWidth>
@@ -369,6 +380,7 @@ const ModalSettingMember = ({
                       value: major,
                     }}
                     onChange={({ value: majorId }) => setMajor(majorId)}
+                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
                   />
                 </FormControl>
                 <CustomTextbox
@@ -400,7 +412,7 @@ const ModalSettingMember = ({
                       type="password"
                       onBlur={handleCheckPwd}
                       autoComplete="new-password"
-                      placeholder={t("IDS_WP_PASSWORD")}
+                      placeholder={t("IDS_WP_NEW_PASSWORD")}
                       size="small"
                       inputProps={{ maxLength: 20, minLength: 8 }}
                       startAdornment={
@@ -480,6 +492,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(detailUser({ userId }, true));
       dispatch(listUserOfGroup(true));
     },
+    doReloadListUser: () => dispatch(listUserOfGroup(true)),
     doUpdateUser: ({
       userId,
       roomId,

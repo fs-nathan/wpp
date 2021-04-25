@@ -27,6 +27,7 @@ const StyledDialogActions = ({ className = '', ...props }) => <DialogActions cla
 const ActionsAcceptButton = ({ className = '', disabled, ...props }) =>
   <ButtonBase
     disabled={disabled}
+    
     className={`${disabled ? 'comp_CustomModal___accept-button-disabled' : 'comp_CustomModal___accept-button'} ${className}`}
     {...props}
   />;
@@ -136,6 +137,8 @@ function CustomModal({
   height = 'medium',
   className = '',
   manualClose = false,
+  type = "button",
+  form= null,
 }) {
   const colors = useSelector(state => state.setting.colors)
 
@@ -203,6 +206,8 @@ function CustomModal({
             style={{ color: bgColor.color, opacity: !canConfirm || actionLoading || activeLoading ? 0.5 : 1 }}
             disabled={!canConfirm || actionLoading || activeLoading}
             onClick={() => handleConfirm()}
+            type={type}
+            form={form}
           >
             <CircularProgress
               size={16}
@@ -223,6 +228,8 @@ CustomModal.propTypes = {
   title: PropTypes.string,
   columns: PropTypes.number,
   children: PropTypes.node,
+  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  form: PropTypes.string,
   left: PropTypes.shape({
     title: PropTypes.any.isRequired,
     content: PropTypes.func.isRequired,

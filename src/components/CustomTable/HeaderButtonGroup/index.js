@@ -64,7 +64,13 @@ import { DETAIL_USER } from "constants/actions/user/detailUser";
 import { LIST_USER_OF_GROUP } from "constants/actions/user/listUserOfGroup";
 import { UPDATE_USER } from "constants/actions/user/updateUser";
 import MySelect from "components/MySelect";
+import ModalOptionCreateAccount from '../Modal/optionCreateAccount';
 import { actionToast } from "actions/system/system";
+import ModalCreateAccount from "../Modal/create-account";
+import ModalContinueCreateAccount from "../Modal/continue-create-account"
+import ModalUplaodExcel from "../Modal/uploadExcel";
+import ModalResultCreateAccount from "../Modal/result-create-account";
+
 export const StyledButton = ({ className = "", ...rest }) => (
   <Button
   
@@ -121,23 +127,7 @@ function HeaderButtonGroup({
   ] = React.useState(false);
   const [disable, setDisable] = React.useState(false);
   const [result, setResult] = React.useState(null);
-  const [rowTable, setRowTable] = React.useState([
-    {
-      email: "account@gmail.com",
-      name: "Trần Văn Nam",
-      room: "",
-    },
-    {
-      email: "",
-      name: "",
-      room: "",
-    },
-    {
-      email: "",
-      name: "",
-      room: "",
-    },
-  ]);
+ 
   const dispatch = useDispatch();
   let fileInputRef = React.useRef();
 
@@ -179,53 +169,15 @@ function HeaderButtonGroup({
     setFileExcel(e.target.files[0]);
   };
 
-  const handleAddRowTable = () => {
-    if (rowTable.length === 99) {
-      setDisable(true);
-    }
-    setRowTable([...rowTable, { email: "", name: "", room: "" }]);
-  };
-  const handleDeleRowTable = (index) => {
-    const newTable = rowTable.filter((el, indexEl) => indexEl !== index);
-    setRowTable(newTable);
-  };
-  const handleOnchange = (key, index) => (e) => {
-    const valueInput = e.target.value;
-    const NewRowTable = rowTable.map((item, indexItem) => {
-      if (indexItem === index) {
-        return { ...item, [key]: valueInput };
-      }
-      return item;
-    });
-    //  const newData = {...rowTable[index], [key]: valueInput};
-    setRowTable(NewRowTable);
-  };
+  
+  
 
    const handleToast = (type, message) => {
     dispatch(actionToast(type,message))
    }
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  
 
-  try {
-   const {data} = await actionAddMutipleMember({account_list: rowTable, password: e.target.elements.password.value})
-    if(data.state){
-      handleToast('success', t('IDS_WP_CREATE_ACCOUNT_SUCCESS'))
-       setOpenContinueCreateAccount(false);
-       setOpenResultCreateAccount(true);
-       doReloadUser({userId: profile.id})
-       setResult(data.account_list);
-    }
-  } catch (error) {
-    handleToast('error', t('SNACK_MUTATE_FAIL'))
-  }
-    
-   
-  };
-
-  const handleDeleteAllRow = () => {
-    setRowTable([]);
-  };
+  
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -334,305 +286,13 @@ function HeaderButtonGroup({
               </div>
               <span>{t("LABEL_ADD_MEMBER")}</span>
             </StyledButton>
-            <CustomModal
-              title={t("DMH.VIEW.DP.RIGHT.UT.ADD_USER")}
-              confirmRender={null}
-              manualClose={true}
-              maxWidth="sm"
-              open={openAddMember}
-              setOpen={setOpenAddMember}
-              className="modal-add-member"
-              onCancle={() => setOpenAddMember(false)}
-              height={`mini`}
-            >
-              <div className="modal-add-member_content">
-                <div
-                  className="modal-add-member_card"
-                  onClick={() => {
-                    setOpen(true);
-                    setOpenAddMember(false);
-                  }}
-                >
-                  <div className="modal-add-member_card-icon">
-                    <img src={images.icon_add_member} alt="" />
-                  </div>
-                  <div className="modal-add-member_card-text">
-                    <h4>{t("DMH.VIEW.DP.RIGHT.UT.ADD_USER")}</h4>
-                    <p>{t("LABEL_ADD_MEMBER_DESCRIPTION")}</p>
-                  </div>
-                </div>
-                <div
-                  className="modal-add-member_card"
-                  onClick={() => {
-                    setOpenAddMember(false);
-                    setOpenCreateAccount(true);
-                  }}
-                >
-                  <div className="modal-add-member_card-icon">
-                    <img src={images.icon_create_user} alt="" />
-                  </div>
-                  <div className="modal-add-member_card-text">
-                    <h4>{t("LABEL_CREATE_ACCOUNT_TITLE")}</h4>
-                    <p>{t("LABEL_CREATE_ACCOUNT_DESCRIPTION")}</p>
-                  </div>
-                </div>
-              </div>
-            </CustomModal>
+            <ModalCreateAccount openAddMember={openAddMember} setOpenAddMember={setOpenAddMember} setOpen={setOpen} setOpenCreateAccount={setOpenCreateAccount} />
+            <ModalContinueCreateAccount  setOpenResultCreateAccount={setOpenResultCreateAccount} setResult={setResult} openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel} />
 
-            <CustomModal
-              title={t("IDS_WP_SIGN_UP")}
-              open={openContinueCreateAccount}
-              setOpen={setOpenContinueCreateAccount}
-              onCancle={() => setOpenContinueCreateAccount(false)}
-              confirmRender={null}
-              cancleRender={null}
-              className="modal_continue-create"
-            >
-              <form onSubmit={handleSubmit}>
-                <div className="modal_continue-create_header">
-                  <Button
-                    disabled={disable}
-                    className="account-internal_btn-create-account"
-                    style={{ textTransform: "unset" }}
-                    onClick={handleAddRowTable}
-                  >
-                    + {t("IDS_WP_ACCOUNT_INTERNAL_ADD_ROW")}
-                  </Button>
-                  <h3>{t("IDS_WP_ACCOUNT_INTERNAL_CREATE_LIST_ACCOUNT")}</h3>
-                  <div
-                    className="upload-excel"
-                    onClick={() => {
-                      setOpenContinueCreateAccount(false);
-                      setOpenUploadExcel(true);
-                    }}
-                  >
-                    <input
-                      className="display-none"
-                      id="upload_file"
-                      multiple
-                      type="file"
-                      // onChange={onChangeFile}
-                    />
-                    <Icon
-                      path={mdiUpload}
-                      size={1}
-                      color={"rgba(0, 0, 0, 0.54)"}
-                    />
+            
+            <ModalOptionCreateAccount openCreateAccount={openCreateAccount} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
 
-                    <div>{t("IDS_WP_ACCOUNT_INTERNAL_UPLOAD_EXCEL")}</div>
-                  </div>
-                </div>
-                <div className="modal_continue-create_table">
-                  <table style={{ borderCollapse: "collapse" }}>
-                    <thead>
-                      <tr>
-                        <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_NO")}</th>
-                        <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_ACCOUNT")}</th>
-                        <th>
-                          {t("IDS_WP_ACCOUNT_INTERNAL_TABLE_NAME_MEMBER")}
-                        </th>
-                        <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_PART")}</th>
-                        <th>
-                          <div
-                            style={{ color: "red", cursor: "pointer" }}
-                            onClick={handleDeleteAllRow}
-                          >
-                            {t("IDS_WP_ACCOUNT_INTERNAL_TABLE_DELETE_ALL")}
-                          </div>
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rowTable &&
-                        rowTable.map((item, index) => (
-                          <tr key={`${index}`}>
-                            <td
-                              style={{ textAlign: "center", padding: "0 10px" }}
-                            >
-                              {index + 1}
-                            </td>
-                            <td>
-                              <input
-                                onChange={handleOnchange("email", index)}
-                                required
-                                value={item.email && item.email}
-                              />
-                            </td>
-                            <td>
-                              <input
-                                onChange={handleOnchange("name", index)}
-                                required
-                                value={item.name && item.name}
-                              />
-                            </td>
-                            <td>
-                      
-                              <select
-                                defaultValue={item.room && item.room}
-                                onChange={handleOnchange("room", index)}
-                              >
-                                 <option value=""></option>
-                                {roomList && roomList.map((items,indexs)=>(
-                                  <option key={indexs} value={items.id}>{items.name}</option>
-                                ))}
-                                
-                              </select>
-                            </td>
-
-                            <td>
-                              <Button onClick={() => handleDeleRowTable(index)}>
-                                <Icon
-                                  path={mdiClose}
-                                  size={1}
-                                  color={"rgba(0, 0, 0, 0.54)"}
-                                />{" "}
-                              </Button>
-                            </td>
-                          </tr>
-                        ))}
-                    </tbody>
-                  </table>
-                  <p style={{ color: "red" }}>
-                    {t("IDS_WP_ACCOUNT_INTERNAL_ADDED")}: {rowTable.length}/100{" "}
-                    {t("IDS_WP_ACCOUNT_INTERNAL_ADDED_NOTE")}
-                  </p>
-                  <h5>
-                    {t("IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_PASSWORD")}{" "}
-                    <span style={{ color: "red" }}>*</span>
-                  </h5>
-                  <div
-                    style={{ whiteSpace: "break-spaces", lineHeight: "18px" }}
-                  >
-                    {ReactParserHtml(t("IDS_WP_ACCOUNT_INTERNAL_SET_PASSWORD"))}
-                  </div>
-                  <FormControl
-                    margin="normal"
-                    variant="outlined"
-                    className="input-affix-wrapper custom-input item-pwd"
-                  >
-                    <OutlinedInput
-                      id="password"
-                      required
-                      type="password"
-                      autoComplete="new-password"
-                      placeholder={t("IDS_WP_PASSWORD")}
-                      size="small"
-                      // onBlur={handleCheckPwd}
-                      inputProps={{ maxLength: 20, minLength: 8 }}
-                      startAdornment={
-                        <InputAdornment position="start">
-                          <Icon
-                            className="icon-prefix"
-                            path={mdiLockOutline}
-                            size={1}
-                          />
-                        </InputAdornment>
-                      }
-                    />
-                    <div
-                      className="suggest-password"
-                      style={{ marginTop: "15px" }}
-                    >
-                      {t("IDS_WP_ENTER_REGISTER_PASSWORD_SUGGESTED")}
-                    </div>
-                  </FormControl>
-                </div>
-                <div className="modal_continue-create_footer">
-                  <Button
-                    style={{ fontWeight: "500" }}
-                    onClick={() => setOpenContinueCreateAccount(false)}
-                  >
-                    {t("DMH.COMP.CUSTOM_MODAL.CANCLE")}
-                  </Button>
-                  <Button
-                    style={{ color: "blue", fontWeight: "500" }}
-                    type="submit"
-                  >
-                    {t("IDS_WP_SIGN_UP")}
-                  </Button>
-                </div>
-              </form>
-            </CustomModal>
-
-            <CustomModal
-              open={openCreateAccount}
-              setOpen={setOpenCreateAccount}
-              onCancle={() => setOpenCreateAccount(false)}
-              title={t("IDS_WP_ACCOUNT_INTERNAL_CREATE")}
-              height={`mini`}
-              confirmRender={null}
-            >
-              <div className="account-internal">
-                <div className="account-internal_content">
-                  <div className="account-internal_content-message">
-                    <p>{t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_1")}</p>
-                    <p
-                      style={{ whiteSpace: "break-spaces", marginTop: "20px" }}
-                    >
-                      {t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2")}
-                    </p>
-                    <p style={{ marginTop: "20px" }}>
-                      {t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4")}{" "}
-                      <Link href="">
-                        {t("IDS_WP_ACCOUNT_INTERNAL_LINK_MORE")}
-                      </Link>
-                    </p>
-                    <p style={{ marginTop: "20px" }}>
-                      {ReactParserHtml(t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3"))}{" "}
-                      <Link href="">
-                        {t("IDS_WP_ACCOUNT_INTERNAL_LINK_GUIDE")}
-                      </Link>
-                    </p>
-                    <p>
-                      {profile.is_verify ? (
-                        <div className="verify-account">
-                          <Icon
-                            path={mdiCheckDecagram}
-                            size={1}
-                            color={"rgba(0, 0, 0, 0.54)"}
-                          />
-                          <div>
-                            {t("IDS_WP_ACCOUNT_INTERNAL_VERIFY_ACCOUNT")}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="no_verify-account">
-                          <Icon
-                            path={mdiCheckDecagram}
-                            size={1}
-                            color={"rgba(0, 0, 0, 0.54)"}
-                          />
-                          <div>
-                            {t("IDS_WP_ACCOUNT_INTERNAL_NO_VERIFY_ACCOUNT")}
-                          </div>
-                        </div>
-                      )}
-                    </p>
-                    <div style={{ textAlign: "center", marginTop: "40px" }}>
-                      <Button
-                        onClick={
-                          !profile.is_verify
-                            ? () => {setOpenCreateAccount(false);setOpenContinueCreateAccount(true)}
-                            : null
-                        }
-                        className="account-internal_btn-create-account"
-                        style={{
-                          height: "50px",
-                          width: "250px",
-                          fontSize: "18px",
-                        }}
-                        variant="contained"
-                        color="primary"
-                      >
-                        {!profile.is_verify
-                          ? t("IDS_WP_ACCOUNT_INTERNAL_CONTINUE")
-                          : t("IDS_WP_CONFIRM_ACCOUNT")}
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CustomModal>
+            
             <AddUserModalPresenter
               open={open}
               setOpen={setOpen}
@@ -643,119 +303,12 @@ function HeaderButtonGroup({
             />
 
             {/* modalOpenUploadExcel */}
+            <ModalUplaodExcel openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
 
-            <CustomModal
-              open={openUploadExcel}
-              setOpen={setOpenUploadExcel}
-              onCancle={() => setOpenUploadExcel(false)}
-              title={t("IDS_WP_SIGN_UP")}
-              confirmRender={() => (
-                <span
-                  style={{ fontSize: "16px", color: "#54abe8" }}
-                  onClick={() => {
-                    setOpenContinueCreateAccount(true);
-                    setOpenUploadExcel(false);
-                  }}
-                >
-                  {t("DMH.VIEW.PGP.LEFT.INFO.BACK")}
-                </span>
-              )}
-              className="modal_upload-file_excel"
-            >
-              <div className="modal_upload-excel">
-                <h3>{t("IDS_WP_ACCOUNT_INTERNAL_ENTER_DATA_EXCEL")}</h3>
-                <div style={{ lineHeight: "18px", whiteSpace: "break-spaces" }}>
-                  {t("IDS_WP_ACCOUNT_INTERNAL_ENTER_DATA_EXCEL_TEXT")}
-                </div>
-                <div className="modal_upload-excel_downfile">
-                  {t("IDS_WP_ACCOUNT_INTERNAL_DOWN_FILE_FORM")}
-                </div>
-                <div
-                  className="upload-excel"
-                  style={{ margin: "auto", marginTop: "40px" }}
-                  onClick={onClickFromComputer}
-                >
-                  <input
-                    className="display-none"
-                    id="upload_file"
-                    multiple
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={onChangeFileExcel}
-                  />
-                  <Icon
-                    path={mdiUpload}
-                    size={1}
-                    color={"rgba(0, 0, 0, 0.54)"}
-                  />
-
-                  <div>{t("IDS_WP_ACCOUNT_INTERNAL_UPLOAD_EXCEL")}</div>
-                </div>
-              </div>
-            </CustomModal>
-
+            
+            <ModalResultCreateAccount  result={result} openResultCreateAccount={openResultCreateAccount} setOpenResultCreateAccount={setOpenResultCreateAccount} />
             {/* modal_result_create_account */}
-            <CustomModal
-              open={openResultCreateAccount}
-              setOpen={setOpenResultCreateAccount}
-              onCancle={() => setOpenResultCreateAccount(false)}
-              title={t("IDS_WP_SIGN_UP")}
-              confirmRender={null}
-              cancleRender={()=>(t('DMH.VIEW.DP.LEFT.ADD.LABEL.CLOSE'))}
-              className="modal_result-create-account"
-            >
-              <div className="modal_result-create-account_table">
-                <h3>
-                  {t("IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_TITLE")}
-                </h3>
-                <table style={{ borderCollapse: "collapse" }}>
-                  <thead>
-                    <tr>
-                      <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_NO")}</th>
-                      <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_ACCOUNT")}</th>
-                      <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_NAME_MEMBER")}</th>
-                      <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_PART")}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {result &&
-                      result.map((item, index) => (
-                        <tr key={`${index}`}>
-                          <td
-                            style={{ textAlign: "center", padding: "0 10px" }}
-                          >
-                            {index + 1}
-                          </td>
-                          <td>{item.email}</td>
-                          <td>{item.name}</td>
-                          <td>{item.room_name}</td>
-                        </tr>
-                      ))}
-                  </tbody>
-                </table>
-              </div>
-              <div className="modal_result-create-account_action">
-                <div>
-                  {t("IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED")}{" "}
-                  {rowTable.length}{" "}
-                  {t(
-                    "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL"
-                  )}
-                </div>
-                <div
-                  className="upload-excel"
-                  // onClick={onClickFromComputer}
-                >
-                  <Icon
-                    path={mdiDownload}
-                    size={1}
-                    color={"rgba(0, 0, 0, 0.54)"}
-                  />
-
-                  <div>{t("IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_DOWNLOAD_LIST")}</div>
-                </div>
-              </div>
-            </CustomModal>
+            
           </div>
         )}
         {get(options, "filter") && (

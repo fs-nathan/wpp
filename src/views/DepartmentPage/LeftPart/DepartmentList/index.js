@@ -14,6 +14,11 @@ import DepartmentListPresenter from './presenters';
 import { roomsSelector } from './selectors';
 import AddUserModal from "../../Modals/AddUserModal";
 import {hasRequirementSelector} from "../../RightPart/AllUsersTable/selectors";
+import ModalCreateAccount from 'components/CustomTable/Modal/create-account';
+import ModalOptionCreateAccount from 'components/CustomTable/Modal/optionCreateAccount';
+import ModalContinueCreateAccount from 'components/CustomTable/Modal/continue-create-account';
+import ModalUplaodExcel from 'components/CustomTable/Modal/uploadExcel';
+import ModalResultCreateAccount from 'components/CustomTable/Modal/result-create-account';
 
 function DepartmentList({
   rooms, route, viewPermissions,
@@ -61,8 +66,10 @@ function DepartmentList({
   }, []);
 
   const [searchPatern, setSearchPatern] = React.useState('');
-  const [filteredRooms, setFilteredRooms] = React.useState([]);
-
+  const [filteredRooms, setFilteredRooms] = React.useState([]); 
+  const [open,setOpen] = React.useState(false)
+  const [openCreateAccount,setOpenCreateAccount] = React.useState(false);
+  
   React.useEffect(() => {
     setFilteredRooms(filter(
       rooms.rooms,
@@ -89,6 +96,10 @@ function DepartmentList({
   const [openCreateAndUpdateDepartmentModal, setOpenCreateAndUpdateDepartmentModal] = React.useState(false);
   const [openCreateAccountModal, setOpenCreateAccountModal] = React.useState(false);
   const [openAddUSerModal, setOpenAddUserModal] = React.useState(false);
+  const [openContinueCreateAccount,setOpenContinueCreateAccount] = React.useState(false);
+  const [openUploadExcel, setOpenUploadExcel] = React.useState(false);
+  const [result,setResult] = React.useState(null);
+  const [openResultCreateAccount, setOpenResultCreateAccount] = React.useState(false);
 
   function doOpenModal(type) {
     switch (type) {
@@ -116,7 +127,7 @@ function DepartmentList({
       default: return;
     }
   }
-
+  
   return (
     <>
       <DepartmentListPresenter
@@ -138,7 +149,13 @@ function DepartmentList({
         setOpen={setOpenCreateAndUpdateDepartmentModal}
       />
       <CreateAccountModal open={openCreateAccountModal} setOpen={setOpenCreateAccountModal} />
-      <AddUserModal setOpen={setOpenAddUserModal} open={openAddUSerModal}/>
+      <ModalCreateAccount setOpenAddMember={setOpenAddUserModal} openAddMember={openAddUSerModal} setOpen={setOpen} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
+      <AddUserModal setOpen={setOpen} open={open}/>
+      <ModalOptionCreateAccount openCreateAccount={openCreateAccount} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
+      <ModalContinueCreateAccount  setResult={setResult} setOpenResultCreateAccount={setOpenResultCreateAccount}  openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel}/>
+      <ModalUplaodExcel openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
+      <ModalResultCreateAccount result={result} openResultCreateAccount={openResultCreateAccount} setOpenResultCreateAccount={setOpenResultCreateAccount} />
+
     </>
   )
 }
