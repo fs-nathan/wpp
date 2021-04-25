@@ -176,6 +176,8 @@ function AllTaskTable({
   const [openCalendar, setOpenCalendar] = React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
+  const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
+  const [typeGuide, setTypeGuide] = React.useState(1);
 
   function doOpenModal(type, props) {
     switch (type) {

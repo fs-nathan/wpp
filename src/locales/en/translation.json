@@ -930,13 +930,11 @@
   "IDS_WP_VERIFY_ACCOUNT_TITLE_NOTIFY": "Notify system",
   "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY": "The system has sent the link to activate account authentication to the email",
   "IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2": "Please check your email at <strong> INBOX </strong> or <strong> SPAM </strong> to verify your account according to the instructions.",
-
   "IDS_WP_NOT_VERIFY_ACCOUNT_NOTIFY": "Your account has not been verified. Please verify email to receive system information and get the best account protection.",
   "IDS_WP_NOT_VERIFY_ACCOUNT": "Not verify",
   "IDS_WP_CHANGE_ACCOUNT": "Change account",
   "IDS_WP_VERIFY_ACCOUNT": "Verify account",
   "IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED": "Account authenticated",
-
   "IDS_WP_LOGOUT": "Log out",
   "IDS_WP_UPGRADE_ORDER": "Upgrade account",
   "IDS_WP_VIEW_ORDER": "View orders",
@@ -2383,7 +2381,7 @@
   "DESCRIPTION_NO_DATA_SELECT_MODAL_OFFER_GROUP": "Create new offer group to select",
   "LABEL_TASK_DETAIL": "Task detail",
   "LABEL_GROUP_ACCOUNT_EMPTY_INVITATIONS": "No invitations to join any groups!",
-  "LABEL_GROUP_ACCOUNT_EMPTY_REQUIREMENTS": "No group join required!"
+  "LABEL_GROUP_ACCOUNT_EMPTY_REQUIREMENTS": "No group join required!",
   "LABEL_SEARCH_PROJECT_GROUP": "Choose work group",
   "LABEL_DESCRIPTION_TIP_IN_WORK_GROUP": "Creating work group: Marketing, HR... to classify and manage easily.",
   "CREATE_NEW_WORK_GROUP": "Create new work group",

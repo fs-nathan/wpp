@@ -411,6 +411,7 @@ const ColumnLeft = () => {
                     onClick={() => {
                       setSelect(item, true);
                     }}
+                    style={{maxWidth: "100%"}}
                   >
                     <div style={{ flexShrink: 0, lineHeight: 1 }}>
                       {can_modify && (
@@ -426,7 +427,6 @@ const ColumnLeft = () => {
                         size={1}
                       />
                     </div>
-
                     <ListItemLayout
                       title={name}
                       subTitle={template(
