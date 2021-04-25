@@ -16,12 +16,20 @@ import MySelect from "components/MySelect";
 import { find, get, _filter, isNil } from "lodash";
 import { connect, useDispatch } from "react-redux";
 import { optionsSelector } from "views/MemberPage/Modals/UpdateUser/selectors";
-import { actionGetInfor, actionUnLockUser ,actionLockUser ,actionResetPassword, actionUpdateUser, detailUser } from "actions/user/detailUser";
+import {
+  actionGetInfor,
+  actionUnLockUser,
+  actionLockUser,
+  actionResetPassword,
+  actionUpdateUser,
+  detailUser,
+} from "actions/user/detailUser";
 import { listUserOfGroup } from "actions/user/listUserOfGroup";
 import { listRoom } from "actions/room/listRoom";
 import { listPosition } from "actions/position/listPosition";
 import { listMajor } from "actions/major/listMajor";
 import { listLevel } from "actions/level/listLevel";
+import { getUserOfRoom } from"actions/room/getUserOfRoom";
 import { useMaxlenString } from "hooks";
 import {
   CustomEventDispose,
@@ -47,7 +55,8 @@ const ModalSettingMember = ({
   doListPosition,
   doListRoom,
   doReloadUser,
-  doReloadListUser
+  doReloadListUser,
+  doGetUserOfRoom
 }) => {
   const { t } = useTranslation();
   const [profile, setProfile] = React.useState(data.user);
@@ -60,23 +69,26 @@ const ModalSettingMember = ({
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [activeMask, setActiveMask] = React.useState(-1);
   const [pwdNotMatch, setPwdNotMatch] = React.useState(false);
-  const [errorMsg,setErrorMsg] = React.useState(null);
-  const [isUpdate,setIsUpdate] = React.useState(null);
-  const [isLock, setIsLock] = React.useState(inforUser?.userInfor?.is_lock)
+  const [errorMsg, setErrorMsg] = React.useState(null);
+  const [isUpdate, setIsUpdate] = React.useState(null);
+  const [isLock, setIsLock] = React.useState(inforUser?.userInfor?.is_lock);
+  const [roomId,setRoomId] = React.useState(null);
   const dispatch = useDispatch();
+
   React.useEffect(() => {
     setProfile(data.user);
+    setRoomId(data.roomId)
   }, [data, data.user]);
-
+  
   const handleChangeTab = (key) => {
-    setTab(key)
+    setTab(key);
   };
-  React.useEffect(()=>{
-    setIsLock(inforUser?.userInfor?.is_lock)
-  },[inforUser?.userInfor?.is_lock])
+  React.useEffect(() => {
+    setIsLock(inforUser?.userInfor?.is_lock);
+  }, [inforUser?.userInfor?.is_lock]);
   const handleCheckPwd = () => {
-    let pwd = document.getElementById('new_password').value;
-    let confirmPwd = document.getElementById('confirm_new_password').value;
+    let pwd = document.getElementById("new_password").value;
+    let confirmPwd = document.getElementById("confirm_new_password").value;
     if (pwd && confirmPwd && pwd !== confirmPwd) {
       setPwdNotMatch(true);
     } else {
@@ -84,7 +96,6 @@ const ModalSettingMember = ({
     }
   };
 
-  
   React.useEffect(() => {
     setActiveLoading(activeMask === 3 || activeMask === -1 ? false : true);
     if (activeMask === 3) {
@@ -105,23 +116,25 @@ const ModalSettingMember = ({
       setDescription(get(updatedUser, "description", ""));
     }
   }, [setDescription, updatedUser]);
-  const handleResetPassword = async e => {
+  const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
-     const {data} = await actionResetPassword({account_id: profile.id,password: e.target.elements.new_password.value});
-     if(data.state){
-      handleToast('success', t('IDS_WP_RESET_PASSWORD_SUCCESS'));
-     }
-    
+      const { data } = await actionResetPassword({
+        account_id: profile.id,
+        password: e.target.elements.new_password.value,
+      });
+      if (data.state) {
+        handleToast("success", t("IDS_WP_RESET_PASSWORD_SUCCESS"));
+      }
     } catch (error) {
-      handleToast('error', t('SNACK_MUTATE_FAIL'));
-      setErrorMsg(error)
+      handleToast("error", t("SNACK_MUTATE_FAIL"));
+      setErrorMsg(error);
     }
-  }
-  
+  };
+
   const handleToast = (type, message) => {
     dispatch(actionToast(type, message));
-    setTimeout(() => dispatch(actionToast(null, '')), 2000);
+    setTimeout(() => dispatch(actionToast(null, "")), 2000);
   };
 
   const handleUpdateAccount = async (e) => {
@@ -132,50 +145,50 @@ const ModalSettingMember = ({
       position,
       level,
       major,
-      description
-    }
+      description,
+    };
     try {
-      const {data} = await actionUpdateUser(reqData);
-      if(data.state){
-        const filt = get(find(options.positions, { id: position }), "name")
+      const { data } = await actionUpdateUser(reqData);
+      if (data.state) {
+        const filt = get(find(options.positions, { id: position }), "name");
         setIsUpdate(filt);
         setIsLock(!isLock);
         doReloadListUser();
-        handleToast('success', t('IDS_WP_UPDATE_USER_SUCCESS'));
+        if(roomId){
+          doGetUserOfRoom({roomId: roomId});
+        }
+        handleToast("success", t("IDS_WP_UPDATE_USER_SUCCESS"));
       }
-      
-     } catch (error) {
-       console.log('er', error)
-      handleToast('error', t('SNACK_MUTATE_FAIL'));
-     }
-    
-  }
+    } catch (error) {
+      handleToast("error", t("SNACK_MUTATE_FAIL"));
+    }
+  };
 
   const handleLockAccount = async () => {
     try {
-       const {data} = await actionLockUser({account_id: profile.id});
-       if(data.state){
-         handleToast('success', t('IDS_WP_LOCK_ACCOUNT'));
-         dispatch(actionGetInfor(profile.id));
-         setIsLock(!isLock);
-        }
-    } catch (error) {
-      handleToast('error', t('SNACK_MUTATE_FAIL'))
-    }
-  }
-
-  const handleUnLockAccount = async() => {
-    try {
-      const {data} = await actionUnLockUser({account_id: profile.id});
-      if(data.state){
-        handleToast('success', t('IDS_WP_UN_LOCK_ACCOUNT'));
+      const { data } = await actionLockUser({ account_id: profile.id });
+      if (data.state) {
+        handleToast("success", t("IDS_WP_LOCK_ACCOUNT"));
         dispatch(actionGetInfor(profile.id));
         setIsLock(!isLock);
       }
-   } catch (error) {
-      handleToast('error', t('SNACK_MUTATE_FAIL'))
-   }
-  }
+    } catch (error) {
+      handleToast("error", t("SNACK_MUTATE_FAIL"));
+    }
+  };
+
+  const handleUnLockAccount = async () => {
+    try {
+      const { data } = await actionUnLockUser({ account_id: profile.id });
+      if (data.state) {
+        handleToast("success", t("IDS_WP_UN_LOCK_ACCOUNT"));
+        dispatch(actionGetInfor(profile.id));
+        setIsLock(!isLock);
+      }
+    } catch (error) {
+      handleToast("error", t("SNACK_MUTATE_FAIL"));
+    }
+  };
   React.useEffect(() => {
     if (data.user) {
       dispatch(actionGetInfor(data?.user?.id));
@@ -237,17 +250,17 @@ const ModalSettingMember = ({
     <CustomModal
       open={open}
       setOpen={setOpen}
-      onCancle={()=>setOpen(false)}
+      onCancle={() => setOpen(false)}
       manualClose={true}
       className="modal_setting-member"
       title={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}
       cancleRender={
-         (tab === "2") | (tab === "3") && (() => t("LABEL_CHAT_TASK_THOAT"))
+        (tab === "2") | (tab === "3") && (() => t("LABEL_CHAT_TASK_THOAT"))
       }
       confirmRender={(tab === "2") | (tab === "3") && (() => null)}
       type="submit"
       form="form-update-account"
->
+    >
       {profile && inforUser.userInfor && (
         <div className="modalSettingMember">
           <div className="modalSettingMember-tab-left">
@@ -257,20 +270,30 @@ const ModalSettingMember = ({
             >
               <img src={inforUser.userInfor.avatar} alt="" />
               <h5>{inforUser.userInfor.name}</h5>
-              <p style={{textTransform: 'capitalize'}}>{isUpdate && isUpdate || inforUser.userInfor.position_name || null}</p>
+              <p style={{ textTransform: "capitalize" }}>
+                {(isUpdate && isUpdate) ||
+                  inforUser.userInfor.position_name ||
+                  null}
+              </p>
               <p>
                 {t("IDS_WP_SPECIES")}:{" "}
                 <span style={{ color: "red" }}>{profile.role}</span>
               </p>
               <p>
                 {t("DMH.VIEW.DP.RIGHT.UT.STATE.TITLE")}:{" "}
-                <span style={{ color: "green"  ,fontSize: '14px'}}>{!inforUser.userInfor.is_locked ? t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE') : t('DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.LOCK')}</span>
+                <span style={{ color: "green", fontSize: "14px" }}>
+                  {!inforUser.userInfor.is_locked
+                    ? t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE")
+                    : t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.LOCK")}
+                </span>
               </p>
               <p>
-                {t("views.calendar_page.right_part.label.created_by")}: {inforUser.userInfor.user_create}
+                {t("views.calendar_page.right_part.label.created_by")}:{" "}
+                {inforUser.userInfor.user_create}
               </p>
               <p>
-                {t("views.calendar_page.right_part.label.created_at")}: {inforUser.userInfor.createdAt}
+                {t("views.calendar_page.right_part.label.created_at")}:{" "}
+                {inforUser.userInfor.createdAt}
               </p>
             </div>
             <div className="modalSettingMember-tab-left_menu">
@@ -316,82 +339,85 @@ const ModalSettingMember = ({
           <div className="modalSettingMember-right">
             {tab === "1" ? (
               <div className="modalSettingMember-right_config">
-               <form id="form-update-account" onSubmit={handleUpdateAccount}>
-                <FormControl fullWidth>
-                  <MySelect
-                    label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
-                    options={options.rooms.map((room) => ({
-                      label: get(room, "name"),
-                      value: get(room, "id"),
-                    }))}
-                    value={{
-                      label: get(find(options.rooms, { id: room }), "name"),
-                      value: room,
-                    }}
-                    onChange={({ value: roomId }) => setRoom(roomId)}
-                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
-                  />
-                </FormControl>
-                <FormControl fullWidth>
-                  <MySelect
-                    label={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
-                    options={options.positions.map((position) => ({
-                      label: get(position, "name"),
-                      value: get(position, "id"),
-                    }))}
-                    value={{
-                      label: get(
-                        find(options.positions, { id: position }),
-                        "name"
-                      ),
-                      value: position,
-                    }}
-                    onChange={({ value: positionId }) =>
-                      setPosition(positionId)
+                <form id="form-update-account" onSubmit={handleUpdateAccount}>
+                  <FormControl fullWidth>
+                    <MySelect
+                      label={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
+                      options={options.rooms.map((room) => ({
+                        label: get(room, "name"),
+                        value: get(room, "id"),
+                      }))}
+                      value={{
+                        label: get(find(options.rooms, { id: room }), "name"),
+                        value: room,
+                      }}
+                     
+                      onChange={({ value: roomId }) => setRoom(roomId)}
+                      placeholder={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <MySelect
+                      label={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
+                      options={options.positions.map((position) => ({
+                        label: get(position, "name"),
+                        value: get(position, "id"),
+                      }))}
+                      required
+                      value={{
+                        label: get(
+                          find(options.positions, { id: position }),
+                          "name"
+                        ),
+                        value: position,
+                      }}
+                      onChange={({ value: positionId }) =>
+                        setPosition(positionId)
+                      }
+                      placeholder={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <MySelect
+                      label={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
+                      options={options.levels.map((level) => ({
+                        label: get(level, "name"),
+                        value: get(level, "id"),
+                      }))}
+                      required
+                      value={{
+                        label: get(find(options.levels, { id: level }), "name"),
+                        value: level,
+                      }}
+                      onChange={({ value: levelId }) => setLevel(levelId)}
+                      placeholder={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
+                    />
+                  </FormControl>
+                  <FormControl fullWidth>
+                    <MySelect
+                      label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
+                      options={options.majors.map((major) => ({
+                        label: get(major, "name"),
+                        value: get(major, "id"),
+                      }))}
+                      value={{
+                        label: get(find(options.majors, { id: major }), "name"),
+                        value: major,
+                      }}
+                      onChange={({ value: majorId }) => setMajor(majorId)}
+                      placeholder={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
+                    />
+                  </FormControl>
+                  <CustomTextbox
+                    className="view_Member_UpdateUser_Modal___text-box"
+                    value={description}
+                    label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
+                    onChange={(newDescription) =>
+                      setDescription(newDescription)
                     }
-                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
-
+                    multiline={true}
                   />
-                </FormControl>
-                <FormControl fullWidth>
-                  <MySelect
-                    label={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
-                    options={options.levels.map((level) => ({
-                      label: get(level, "name"),
-                      value: get(level, "id"),
-                    }))}
-                    value={{
-                      label: get(find(options.levels, { id: level }), "name"),
-                      value: level,
-                    }}
-                    onChange={({ value: levelId }) => setLevel(levelId)}
-                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
-                  />
-                </FormControl>
-                <FormControl fullWidth>
-                  <MySelect
-                    label={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
-                    options={options.majors.map((major) => ({
-                      label: get(major, "name"),
-                      value: get(major, "id"),
-                    }))}
-                    value={{
-                      label: get(find(options.majors, { id: major }), "name"),
-                      value: major,
-                    }}
-                    onChange={({ value: majorId }) => setMajor(majorId)}
-                    placeholder={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
-                  />
-                </FormControl>
-                <CustomTextbox
-                  className="view_Member_UpdateUser_Modal___text-box"
-                  value={description}
-                  label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
-                  onChange={(newDescription) => setDescription(newDescription)}
-                  multiline={true}
-                />
-                {errorMsg && <p style={{color: 'red'}}>{errorMsg}</p>}
-                
+                  {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
                 </form>
               </div>
             ) : tab === "2" ? (
@@ -449,16 +475,22 @@ const ModalSettingMember = ({
                         </InputAdornment>
                       }
                     />
-                    {pwdNotMatch && <div style={{color: 'red', marginTop: '15px'}}>{t('IDS_WP_CHECK_PASSWORD')}</div>}
+                    {pwdNotMatch && (
+                      <div style={{ color: "red", marginTop: "15px" }}>
+                        {t("IDS_WP_CHECK_PASSWORD")}
+                      </div>
+                    )}
                   </FormControl>
                   <div style={{ fontSize: "14px", marginTop: "20px" }}>
                     {t("IDS_WP_PASSWORD_VALID_DES")}
                   </div>
                   <Button
+                    variant="contained"
+                    color="primary"
                     className="modalSettingMember-right_account-internal--btn_reset"
                     type="submit"
                   >
-                     {t("IDS_WP_RESET")}
+                    {t("IDS_WP_RESET")}
                   </Button>
                 </form>
               </div>
@@ -468,8 +500,13 @@ const ModalSettingMember = ({
                 <div className="modalSettingMember-right_account-internal--note">
                   {t("IDS_WP_LOCK_MEMBER_FOREVER")}
                 </div>
-                <Button className="modalSettingMember-right_account-internal--btn_reset" onClick={isLock ? handleUnLockAccount:  handleLockAccount}>
-                {isLock ? t('IDS_WP_UNLOCK') : t("IDS_WP_LOCk")}
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="modalSettingMember-right_account-internal--btn_reset"
+                  onClick={isLock ? handleUnLockAccount : handleLockAccount}
+                >
+                  {isLock ? t("IDS_WP_UNLOCK") : t("IDS_WP_LOCk")}
                 </Button>
               </div>
             )}
@@ -488,6 +525,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     actionToast,
+    doGetUserOfRoom: ({roomId}) => dispatch(getUserOfRoom({roomId})),
     doReloadUser: ({ userId }) => {
       dispatch(detailUser({ userId }, true));
       dispatch(listUserOfGroup(true));
@@ -511,7 +549,7 @@ const mapDispatchToProps = (dispatch) => {
           description,
         })
       ),
-    
+
     doListRoom: (quite) => dispatch(listRoom(quite)),
     doListPosition: (quite) => dispatch(listPosition(quite)),
     doListMajor: (quite) => dispatch(listMajor(quite)),

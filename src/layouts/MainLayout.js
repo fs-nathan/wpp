@@ -90,9 +90,9 @@ const LogoBox = styled.div`
   grid-area: logo;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: baseline;
   background: #e5e5e5;
-  height: 100%;
+  height: 70px;
   & > img {
     height: 90%;
   }
@@ -472,7 +472,7 @@ function MainLayout({
               onClick={() => setVisibleGroupModal(true)}
               style={{ background: bgColor.color, backgroundImage: `url(${!collapse && images.bg_logo_menu})`, backgroundSize: '105% 100%', backgroundPositionX: '50%'}}
             >
-              <div style={{background: bgColor.color, padding: '4px 4px 1px',borderRadius: '50%', border: '1px solid #ffffff'}}>
+              <div style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%', border: '1px solid #ffffff'}}>
                <Image
                 src={groupDetail.logo || avatar_default_120}
                 alt="vtask-logo-menu"

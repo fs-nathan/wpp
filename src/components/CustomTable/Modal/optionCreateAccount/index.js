@@ -39,7 +39,7 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
     setOpen={setOpenCreateAccount}
     onCancle={() => setOpenCreateAccount(false)}
     title={t("IDS_WP_ACCOUNT_INTERNAL_CREATE")}
-    height={`mini`}
+    height={`medium`}
     confirmRender={null}
   >
     <div className="account-internal">
@@ -67,6 +67,7 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
             {profile.is_verify ? (
               <div className="verify-account">
                 <Icon
+               
                   path={mdiCheckDecagram}
                   size={1}
                   color={"rgba(0, 0, 0, 0.54)"}

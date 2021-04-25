@@ -187,7 +187,6 @@ function CustomTableWrapper({ options, columns, data, bgColor }) {
       toggleExpand: () => setExpand(expand => !expand)
     }
   };
-
   const context = {
     options: {
       ...defaultOptions,

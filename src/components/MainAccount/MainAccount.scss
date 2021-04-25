@@ -9,7 +9,7 @@
   }
   .left-content {
     height: 100vh;
-    width: 65%;
+    width: 70%;
     
     .bg-login {
       max-width: 100%;
@@ -18,11 +18,12 @@
     }
   }
   .right-content {
-    width: 35%;
+    width: 30%;
     min-height: calc(100vh - 40px);
     margin: 20px;
     background-color: #ffffff;
     border-radius: 4px;
+   
     .inner-right-content {
       display: flex;
       flex-direction: column;
@@ -55,10 +56,10 @@
 @media only screen and (max-width: 1199px) {
   .MainAccount {
     .left-content {
-      width: 60%;
+      width: 70%;
     }
     .right-content {
-      width: 40%;
+      width: 30%;
     }
   }
 }

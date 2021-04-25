@@ -173,7 +173,9 @@
         display: flex;
         align-items: center;
         svg{
-          background-color: #05b50c;
+          path{
+            fill: #13d413 !important;
+          }
         }
           div{
             color: #05b50c;

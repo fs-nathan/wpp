@@ -303,7 +303,7 @@ class SettingInfo extends Component {
                     <span className="check_verify">
                       <IconVerify />
                     </span>{" "}
-                    <div style={{ color: "#43a047", marginLeft: "7px" }}>
+                    <div style={{ color: "#13d413", marginLeft: "7px" }}>
                       {t("IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED")}
                     </div>
                   </div>
@@ -386,20 +386,14 @@ class SettingInfo extends Component {
                       <div className="lb-input">
                         {t("IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_NOW")}{" "}
                       </div>
-                      <OutlinedInput
-                        id="email"
-                        required
-                        type="email"
-                        disabled
-                        value={this.state.email}
-                        style={{
-                          color: "red",
+                      <div style={{ color: "red",
                           fontWeight: "600",
                           backgroundColor: "#E6E6E6",
+                          padding: '15px',
                           border: "none",
-                        }}
-                        startAdornment={<InputAdornment position="start" />}
-                      />
+                       }}>
+                         {this.state.email}
+                      </div>
                     </FormControl>
                     <FormControl
                       fullWidth

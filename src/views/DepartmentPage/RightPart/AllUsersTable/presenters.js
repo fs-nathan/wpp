@@ -3,7 +3,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock, mdiShareVariant} from '@mdi/js';
 import Icon from '@mdi/react';
 import { actionToast } from 'actions/system/system';
-import { actionLockUser, actionUnLockUser } from 'actions/user/detailUser';
+import { actionGetInfor, actionLockUser, actionUnLockUser } from 'actions/user/detailUser';
 import {find, get, isNil} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
@@ -178,6 +178,7 @@ function AllUsersTable({
   function doOpenMenu(anchorEl, user) {
     setMenuAnchorEl(anchorEl);
     setUser(user);
+    dispatch(actionGetInfor(user?.id));
   }
  
   const handleLockAccount = async () => {
@@ -398,7 +399,7 @@ function AllUsersTable({
         <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
           <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
           <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
-          <Button className="menu_btn-lock" onClick={!islock ? handleLockAccount: handleUnLockAccount}>{!islock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
+          <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!islock ? handleLockAccount: handleUnLockAccount}>{!islock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
         </div>
         </MenuItem>
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
@@ -407,7 +408,7 @@ function AllUsersTable({
             <div>
               <p className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}</p>
               <p className="menu_note">{t('IDS_WP_DELETE_MEMBER')}</p>
-              <Button className="menu_btn_out-group" onClick={() => {
+              <Button variant="contained" color="primary" className="menu_btn_out-group" onClick={() => {
             handleOpenModal('ALERT', {
               roomId: null,
               selectedUser: user,

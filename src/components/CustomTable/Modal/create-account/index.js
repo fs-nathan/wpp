@@ -15,7 +15,6 @@ const ModalCreateAccount = ({openAddMember,setOpenAddMember,setOpen,setOpenCreat
               setOpen={setOpenAddMember}
               className="modal-add-member"
               onCancle={() => setOpenAddMember(false)}
-              height={`mini`}
             >
               <div className="modal-add-member_content">
                 <div

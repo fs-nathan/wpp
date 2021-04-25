@@ -84,8 +84,8 @@
     
 }
 .modal_setting-member{
-    .comp_CustomModal___dialog-md > div:nth-child(3) > div{
-        min-width: 50vw;
+     .MuiDialog-paperWidthSm{
+        min-width: 50vw !important;
     }
     .comp_CustomModal___dialog-content{
         padding: 0;

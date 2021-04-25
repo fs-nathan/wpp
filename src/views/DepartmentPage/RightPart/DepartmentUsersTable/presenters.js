@@ -1,6 +1,8 @@
-import { Badge, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { mdiAccountPlus, mdiDotsVertical } from '@mdi/js';
+import { Badge, Button, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
+import { mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock } from '@mdi/js';
 import Icon from '@mdi/react';
+import { actionToast } from 'actions/system/system';
+import { actionGetInfor, actionLockUser, actionUnLockUser } from 'actions/user/detailUser';
 import CustomAvatar from 'components/CustomAvatar';
 import CustomBadge from 'components/CustomBadge';
 import CustomTable from 'components/CustomTable';
@@ -11,6 +13,7 @@ import { DRAWER_TYPE } from 'constants/constants';
 import { find, get, isNil } from 'lodash';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { connect, useDispatch } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import '../AllUsersTable/style.scss';
 
@@ -41,7 +44,73 @@ const PermissionButton = ({
     </SettingContainer>
   );
 }
+function TooltipRole({user}){
+  const {t} = useTranslation();
+  const getRole = get(user, 'user_type') ;
+  function handleRender(){
+   switch (getRole) {
+     case 3:
+       
+       return (
+        <LightTooltip
+        placement='top'
+        title={
+          <TooltipBody state={0}>
+            <small style={{color: '#f1af36', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MEMBER_TOOLTIP')}</small>
+          </TooltipBody>
+        }
+      >
+        <TooltipWrapper>
+          <div style={{color: "#fff", backgroundColor: '#f1af36',textAlign: 'center', padding: '5px'}}>
+            {t('DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE')}
+          </div>
+        </TooltipWrapper>
+      </LightTooltip>
+       )
+       case 1:
+       
+        return (
+          <LightTooltip
+      placement='top'
+      title={
+        <TooltipBody state={0}>
+          <small style={{color: '#0ed216', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER_TOOLTIP')}</small>
+        </TooltipBody>
+      }
+    >
+      <TooltipWrapper>
+        <div style={{background: '#0ed216', color: '#fff', textAlign: 'center', padding: '5px'}}>
+          {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER')}
+        </div>
+      </TooltipWrapper>
+    </LightTooltip>
+        )
+     default:
+       return (
+<LightTooltip
+      placement='top'
+      title={
+        <TooltipBody state={0}>
+          <small style={{color: '#950eda', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP')}</small>
+        </TooltipBody>
+      }
+    >
+      <TooltipWrapper>
+        <div style={{color:'#fff', backgroundColor : '#950eda',textAlign: 'center', padding: '5px'}}>
+          {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL')}
+        </div>
+      </TooltipWrapper>
+    </LightTooltip>
+       )
 
+   }
+  }
+  return (
+    <>
+    {handleRender()}
+     </>
+  )
+}
 function StateBadge({ user }) {
 
   const { t } = useTranslation();
@@ -99,19 +168,25 @@ function DepartmentUsersTable({
   handleBanUserFromGroup,
   handleOpenModal,
   handleVisibleDrawerMessage,
+  inforUser
 }) {
 
   const { departmentId } = useParams();
   const history = useHistory();
+  const dispatch = useDispatch()
+  const params = useParams();
+  const groupId = params.departmentId;
   const { t } = useTranslation();
-
+  const [islock, setIslock] = React.useState(inforUser?.userInfor?.is_lock);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
 
   function doOpenMenu(anchorEl, user) {
+    console.log(anchorEl, user)
     setMenuAnchorEl(anchorEl);
     setUser(user);
+    dispatch(actionGetInfor(user?.id));
   }
 
   React.useEffect(() => {
@@ -121,6 +196,44 @@ function DepartmentUsersTable({
   }, [publicPrivatePendings, user]);
 
 
+  const handleLockAccount = async () => {
+    try {
+       const {data} = await actionLockUser({account_id: user.id});
+       if(data.state){
+         handleToast('success', t('SNACK_MUTATE_SUCCESS'));
+         setIslock(!islock);
+       }
+    } catch (error) {
+       handleToast('error', t('SNACK_MUTATE_FAIL'));
+    }
+  }
+  const handleToast = (type, message) => {
+    dispatch(actionToast(type, message));
+    setTimeout(() => {
+      dispatch(actionToast(type, message));
+    }, 2000);
+  }
+  const handleUnLockAccount = async() => {
+    try {
+      const {data} = await actionUnLockUser({account_id: user.id});
+      if(data.state){
+        handleToast('success', t('SNACK_MUTATE_SUCCESS'));
+        setIslock(!islock);
+      }
+   } catch (error) {
+    handleToast('error', t('SNACK_MUTATE_FAIL'));
+  }
+  }
+  React.useEffect(() => {
+    setPublicPrivateDisabled(!isNil(
+      find(publicPrivatePendings.pendings, pending => pending === get(user, 'id'))
+    ));
+  }, [publicPrivatePendings, user]);
+
+  React.useEffect(()=>{
+    setIslock(inforUser?.userInfor?.is_lock)
+  },
+  [inforUser?.userInfor?.is_lock])
   return (
     <Container>
       <CustomTable
@@ -228,7 +341,7 @@ function DepartmentUsersTable({
           width: '10%',
         }, {
           label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.ROLE'),
-          field: 'role',
+          field: (user) => <TooltipRole user={user} />,
           align: 'left',
           width: '10%',
         }, {
@@ -263,7 +376,7 @@ function DepartmentUsersTable({
           horizontal: 'right',
         }}
       >
-        <MenuItem onClick={() => {
+       <MenuItem onClick={() => {
           handleChangeState(user);
           setMenuAnchorEl(null);
         }}
@@ -275,31 +388,55 @@ function DepartmentUsersTable({
               className="margin-circular"
               color="white"
             />}
-          {t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}
+         <div className="menu_icon"><Icon path={mdiAtomVariant} size={1} color={'rgba(0, 0, 0, 0.7)'}/></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}</div>
         </MenuItem>
         <MenuItem onClick={() => {
           handleOpenModal('PERMISSION_SETTING', {
             curUserId: get(user, 'id'),
-            roomId: departmentId,
+            roomId: null,
           });
           setMenuAnchorEl(null);
         }}>
-          {t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}
+          <div className="menu_icon"></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}</div>
+        </MenuItem>
+        <MenuItem onClick={()=> {
+          handleOpenModal('SETTING_MEMBER', {
+            user,
+            roomId: groupId
+          })
+        }}>
+        <div className="menu_icon"><Icon path={mdiAccountCog} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div className="menu_label">{t('IDS_WP_SETTING_MEMBER')}</div>
+        </MenuItem>
+        <MenuItem>
+        <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
+          <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
+          <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
+          <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!islock ? handleLockAccount: handleUnLockAccount}>{!islock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
+        </div>
         </MenuItem>
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
-          <MenuItem onClick={() => {
+          <MenuItem >
+            <div className="menu_icon"><Icon path={mdiAccountArrowRight} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> 
+            <div>
+              <p className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}</p>
+              <p className="menu_note">{t('IDS_WP_DELETE_MEMBER')}</p>
+              <Button variant="contained" color="primary" className="menu_btn_out-group" onClick={() => {
             handleOpenModal('ALERT', {
-              roomId: departmentId,
+              roomId: null,
               selectedUser: user,
             });
             setMenuAnchorEl(null);
-          }}>
-            {t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}
+          }}>{t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}</Button>
+            </div>
           </MenuItem>
-        )}
+         )}
       </Menu>
     </Container>
   )
 }
-
-export default DepartmentUsersTable;
+const mapStateToProps = (state) => {
+  return {
+    inforUser: state.user.detailUser,
+  };
+};
+export default connect(mapStateToProps)(DepartmentUsersTable);

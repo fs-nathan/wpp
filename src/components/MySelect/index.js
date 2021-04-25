@@ -18,7 +18,7 @@ const Select = ({ className = '', ...props }) =>
   />
 
 function MySelect({
-  label, options, value, onChange, isRequired = false,
+  label, placeholder,options, value, onChange, isRequired = false,
   selectProps
 }) {
   const { t } = useTranslation();
@@ -30,6 +30,7 @@ function MySelect({
           options={options}
           value={value}
           onChange={onChange}
+          placeholder={placeholder}
         />
       </Select>
     </>
