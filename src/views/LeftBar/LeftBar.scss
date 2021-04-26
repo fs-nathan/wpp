@@ -29,6 +29,26 @@
       fill: #ffffff;
       width: 20px;
       height: 20px;
+      
+    }
+  }
+  @keyframes iconExpand {
+    0%{
+      transform: rotate3d(1, 1, 1, 180deg);
+    }
+    100%{
+      transform: rotate3d(1, 1, 1, 360deg);
+    }
+  }
+  .btn_expand{
+    svg{
+        animation: iconExpand 0.5s ease-in-out;
+    }
+  }
+
+  .btn_narrow{
+    svg{
+        animation: iconExpand 0.5s ease-in-out;
     }
   }
   &:hover .btn-collapse{
@@ -64,22 +84,54 @@
       width: 80%;
       margin: auto;
       align-items: center;
+      animation: animationlabels 1s ease;
     }
     .item-collapse{
       justify-content: center;
       width: 100% ;
       display: flex;
     }
+    @keyframes animationlabels {
+      0%{
+        margin-left: -100px;
+        display: block;
+        opacity: .7;
+      }
+      100%{
+        margin-left: 13px;
+        display: block;
+        opacity: 1;
+      }
+    }
+    .label-collapse{
     
+      display: none;
+    }
+    .label-not-collapse{
+        display: block;
+        
+    }
   }
   .LeftNavIcon {
     width: 28px;
     margin-bottom: 5px;
   }
+  @keyframes iconMenu {
+    0%{
+      margin-right: -300px;
+      opacity: 0;
+    }
+    100%{
+      margin-left: 0;
+      opacity: 1;
+    }
+  }
   .LeftNavIconZoom{
     padding: 5px 0px;
     width: auto !important;
+   
     svg{
+      animation: iconMenu 1s ease;
       transform: scale(1.2);
     }
   }

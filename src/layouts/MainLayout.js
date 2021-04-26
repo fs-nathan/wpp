@@ -76,13 +76,15 @@ const Container = styled.div`
     
   }
   @keyframes example {
-    from {grid-template-columns: 140px minmax(0, 1fr);}
-    to {grid-template-columns: 70px minmax(0, 1fr);}
+    0% {grid-template-columns: 140px; }
+    100% {grid-template-columns: 70px; }
   }
   &.menu-collapse{
-    animation-name: example;
-    animation-duration: 1s;
+    animation: example 1s ease-in-out;
+    
+    /* transition: grid-template-columns 500ms ease-out; */
     grid-template-columns: 70px minmax(0, 1fr);
+
   }
 `;
 
@@ -96,6 +98,30 @@ const LogoBox = styled.div`
   & > img {
     height: 90%;
   }
+  @keyframes logo {
+    0% { position:absolute; left: 70px; 
+}
+    100% {position:absolute; left: 7px; 
+}
+  }
+  .logo-collapse{
+    
+       animation: logo 1s ease;
+     
+  }
+  @keyframes logoDefault {
+    0% { position:absolute; left: -100px; 
+}
+    100% {position:absolute; left: 40px; 
+}
+  }
+  .logo-default{
+    
+        animation: logoDefault 1.5s ease; 
+      
+        
+  }
+  
 `;
 
 const ContentBox = styled.div`
@@ -470,9 +496,10 @@ function MainLayout({
             <SwitchAccount />
             <LogoBox
               onClick={() => setVisibleGroupModal(true)}
+              className={collapse ? 'logo-collapse' : 'logo-default'}
               style={{ background: bgColor.color, backgroundImage: `url(${!collapse && images.bg_logo_menu})`, backgroundSize: '105% 100%', backgroundPositionX: '50%'}}
             >
-              <div style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%', border: '1px solid #ffffff'}}>
+              <div className={collapse ? 'logo-collapse' : 'logo-default'} style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%', border: '1px solid #ffffff'}}>
                <Image
                 src={groupDetail.logo || avatar_default_120}
                 alt="vtask-logo-menu"

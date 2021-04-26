@@ -109,9 +109,9 @@ const LeftBar = ({
               }}
             >
               <div className={collapse ? 'item-collapse' : 'item-not-collapse'}>
-                <span style={{width: '35px'}} className={collapse && 'LeftNavIconZoom'}>{ReactHtmlParser(el.svg_icon)}</span>
+                <span style={{width: '35px'}} className={collapse ? 'LeftNavIconZoom' : 'iconDefault'}>{ReactHtmlParser(el.svg_icon)}</span>
               {/* <img src={el.icon} alt="" className={`LeftNavIcon ${collapse && 'LeftNavIconZoom'}` } /> */}
-              {!collapse && <span className="titleTab">{t(el.name)}</span>}
+              <span className={`titleTab ${collapse ?'label-collapse': 'label-not-collapse' }`}>{t(el.name)}</span>
               </div>
               {
                 el.need_bell && <BellMessage />
@@ -119,7 +119,7 @@ const LeftBar = ({
             </Link>
           );
         })}
-        <div style={{ background: bgColor.color }} className="btn-collapse" onClick={()=>setCollapse(!collapse)}> <span>{collapse ? <IconNext />: <IconBack />}</span> </div>
+        <div style={{ background: bgColor.color }} className={`btn-collapse ${collapse ?'btn_expand': 'btn_narrow'}`} onClick={()=>setCollapse(!collapse)}> <span>{collapse ? <IconNext />: <IconBack />}</span> </div>
       {itemManage && (
         <Link
           to={itemManage.url_redirect}
