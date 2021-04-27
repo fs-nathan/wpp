@@ -4,7 +4,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  margin-top: 15px;
+  height: calc(100% - 70px);
   background: linear-gradient(45deg, rgb(51, 80, 94), rgb(76, 175, 80)) repeat
     scroll 0% 0%;
    
@@ -18,11 +18,11 @@
     color: #ffffff;
     border-radius: 50%;
     position: absolute;
-    right: -17px;
+    right: -16px;
     z-index: 99;
     font-weight: bold;
     padding: 5px 0px 5px 10px;
-    top: calc(50% - 60px);
+    top: calc(50% - 50px);
     cursor: pointer;
     opacity: 0;
     svg{
@@ -84,7 +84,7 @@
       width: 80%;
       margin: auto;
       align-items: center;
-      animation: animationlabels 1s ease;
+      animation: animationlabels 0.5s ease;
     }
     .item-collapse{
       justify-content: center;
@@ -118,11 +118,11 @@
   }
   @keyframes iconMenu {
     0%{
-      margin-right: -300px;
+      margin-bottom: -20px;
       opacity: 0;
     }
     100%{
-      margin-left: 0;
+      margin-bottom: 0;
       opacity: 1;
     }
   }
@@ -131,7 +131,7 @@
     width: auto !important;
    
     svg{
-      animation: iconMenu 1s ease;
+      animation: iconMenu 0.5s ease;
       transform: scale(1.2);
     }
   }

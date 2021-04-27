@@ -303,7 +303,7 @@ class SettingInfo extends Component {
                     <span className="check_verify">
                       <IconVerify />
                     </span>{" "}
-                    <div style={{ color: "#13d413", marginLeft: "7px" }}>
+                    <div style={{ color: "#13B045", marginLeft: "7px" }}>
                       {t("IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED")}
                     </div>
                   </div>
