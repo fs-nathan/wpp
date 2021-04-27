@@ -41,6 +41,7 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
     title={t("IDS_WP_ACCOUNT_INTERNAL_CREATE")}
     height={`medium`}
     confirmRender={null}
+    className="modal-account-internal"
   >
     <div className="account-internal">
       <div className="account-internal_content">
@@ -52,13 +53,13 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
             {t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2")}
           </p>
           <p style={{ marginTop: "20px" }}>
-            {t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4")}{" "}
+            {t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4")}&nbsp;
             <Link href="">
               {t("IDS_WP_ACCOUNT_INTERNAL_LINK_MORE")}
             </Link>
           </p>
           <p style={{ marginTop: "20px" }}>
-            {ReactParserHtml(t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3"))}
+            {ReactParserHtml(t("IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3"))}&nbsp;
             <Link href="">
               {t("IDS_WP_ACCOUNT_INTERNAL_LINK_GUIDE")}
             </Link>

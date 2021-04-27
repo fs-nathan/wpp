@@ -162,12 +162,24 @@
     width: 20% !important;
   }
 }
+.modal-account-internal{
+  >div:nth-child(3)>div {
+    min-width: 55vw;
+  }
+  .comp_CustomModal___dialog-content{
+    padding: 25px;
+  }
+  .comp_CustomModal___scrollbar-main-medium{
+     height: 60vh !important;
+  }
 .account-internal{
  
   &_content{
-      padding: 15px 30px;
-      background-color: #f7d8cb;
+      padding: 20px 30px 40px;
+      background-color: #f7d8cba3;
       font-size: 14px;
+      border-radius: 3px;
+      height: 100%;
       p{
           line-height: 22px;
       }
@@ -205,6 +217,7 @@
       height: 40px;
   }
   
+}
 }
 .modal{
   &_upload-excel{

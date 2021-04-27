@@ -65,15 +65,15 @@
     position: relative;
     opacity: 0.8;
     svg{
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       fill: #fff;    }
     &.actived {
       background-color: rgba(0, 0, 0, 0.12);
       opacity: 1;
       svg{
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
     }
     }
     &:hover {
@@ -127,7 +127,6 @@
     }
   }
   .LeftNavIconZoom{
-    padding: 5px 0px;
     width: auto !important;
    
     svg{
@@ -137,6 +136,7 @@
   }
   .titleTab {
     font-size: 12px;
+    margin-top: -3px;
   }
   .bell-message {
     position: absolute;
