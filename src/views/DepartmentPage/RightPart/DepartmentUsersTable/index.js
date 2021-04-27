@@ -25,6 +25,7 @@ import TitleManagerModal from '../../Modals/TitleManager';
 import { viewPermissionsSelector } from '../../selectors';
 import DepartmentUsersTablePresenter from './presenters';
 import { hasRequirementSelector, publicPrivatePendingsSelector, roomSelector } from './selectors';
+import ModalSettingMember from 'views/DepartmentPage/Modals/SettingMember';
 
 function DepartmentUsersTable({
   room, hasRequirement, publicPrivatePendings, route, viewPermissions,
@@ -101,7 +102,8 @@ function DepartmentUsersTable({
   const [permissionProps, setPermissionProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
-
+  const [openSettingMember, setOpenSettingMember] = React.useState(false);
+  const [memberSettingProps,setMemberSettingProps] = React.useState({});
   function doOpenModal(type, props) {
     switch (type) {
       case 'TITLE': {
@@ -139,6 +141,13 @@ function DepartmentUsersTable({
             ...oldProps,
             ...props,
           }));
+        }
+        return;
+      }
+      case 'SETTING_MEMBER': {
+        if(get(viewPermissions.permissions, 'can_modify', false)){
+          setOpenSettingMember(true);
+          setMemberSettingProps(props)
         }
         return;
       }
@@ -189,6 +198,7 @@ function DepartmentUsersTable({
         setOpen={setOpenPermissionSetting}
         users={room.room.users}
         {...permissionProps} />
+        <ModalSettingMember open={openSettingMember} setOpen={setOpenSettingMember} data={memberSettingProps} />
       <BanUserModal
         open={openAlert}
         setOpen={setOpenAlert}

@@ -83,7 +83,7 @@
 
     .info-content-setting-info {
       width: 60%;
-
+      margin-bottom: 50px;
       .item-info {
         display: flex;
         border-bottom: 1px solid #ededed;
@@ -102,7 +102,7 @@
         }
         .check_verify{
           svg{
-            fill: #43a047;
+            fill: #13d413;
           background-color: #ffffff;
           }
           
@@ -356,18 +356,16 @@
 }
 
 .modal-verify-account{
-  .comp_CustomModal___dialog-actions{
-    display: none
-  }
   &_content{
     p{
       font-size: 14px;
     }
   }
   &_footer{
-    padding: 10px 0px;
+    padding: 10px 0px 5px 0px;
     position: absolute;
     left: 0;
+    height: 30px;
     right: 0;
     bottom: 0;
     border-top: 1px solid #ccc;
@@ -383,9 +381,9 @@
 }
 
 .modal-change-account{
-  .comp_CustomModal___dialog-actions{
-    display: none;
-  }
+  // .comp_CustomModal___dialog-actions{
+  //   display: none;
+  // }
   .form-content{
     .lb-input{
       font-weight: 500;
@@ -396,9 +394,11 @@
       }
     }
     .action{
+      margin-top: 20px;
       position: absolute;
-      left: 0;
       bottom: 0;
+      left: 0;
+      height: 30px;
       right: 0;
       padding: 20px 22px 15px 22px;
       border-top: 1px solid #ccc;
