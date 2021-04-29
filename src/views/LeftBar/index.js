@@ -89,7 +89,6 @@ const LeftBar = ({
       }
     });
   }
-  console.log(menuList, 'menu')
   const isFree = groupActive.type === "Free";
   return (
     <div className={`left-bar-container ${collapse && 'collapse'}`} style={{ background: bgColor.color }}>
