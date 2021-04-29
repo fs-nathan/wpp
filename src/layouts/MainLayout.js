@@ -68,10 +68,7 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 55px 1fr;
   grid-template-columns: 140px minmax(0, 1fr);
-  -o-transition: all 10s;
-    -moz-transition: all 10s;
-    -webkit-transition: all 10s;
-    transition: all 10s;
+  
   grid-template-areas:
     "logo top"
     "left main";
@@ -91,14 +88,8 @@ const Container = styled.div`
     min-height: 100vh;
     z-index: 1000;
   }
-  @keyframes example {
-    0% {grid-template-columns: 140px; }
-    100% {grid-template-columns: 70px;}
-  }
+
   &.menu-collapse{
-    
-    animation: example 2s ease;
-    animation-delay: 10s;
     grid-template-columns: 70px minmax(0, 1fr);
   }
 `;

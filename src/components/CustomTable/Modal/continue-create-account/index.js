@@ -25,6 +25,7 @@ const ModalContinueCreateAccount = ({
     setOpenUploadExcel,
     room,
     doListRoom,
+    fileExcel,
     updatedUser = null,
     openContinueCreateAccount,
       setOpenContinueCreateAccount,
@@ -41,17 +42,7 @@ const ModalContinueCreateAccount = ({
         email: "account@gmail.com",
         name: "Trần Văn Nam",
         room: "",
-      },
-      {
-        email: "",
-        name: "",
-        room: "",
-      },
-      {
-        email: "",
-        name: "",
-        room: "",
-      },
+      }
     ]);
     
     const dispatch = useDispatch();
@@ -79,7 +70,18 @@ const ModalContinueCreateAccount = ({
         setRowTable(newTable);
       };
       
-    
+      React.useEffect(()=> {
+        if(Array.isArray(fileExcel)){
+          fileExcel.map(item => {
+            if(item){
+             rowTable.push({email: item[1], name: item[2], room: ''});
+             
+            }
+            return null;
+         })
+        }
+       
+      },[fileExcel])
        const handleToast = (type, message) => {
         dispatch(actionToast(type,message))
        }
@@ -111,6 +113,11 @@ const ModalContinueCreateAccount = ({
         // eslint-disable-next-line
       }, []);
       
+      React.useEffect(()=> {
+        if(fileExcel){
+          
+        }
+  },[fileExcel])
       React.useEffect(() => {
         const fail = () => {
           setActiveMask(-1);
@@ -226,6 +233,7 @@ const ModalContinueCreateAccount = ({
                           onChange={handleOnchange("email", index)}
                           required
                           type="email"
+                          placeholder={t('IDS_WP_CREATE_ACCOUNT_ENTER_EMAIL')}
                           value={item.email && item.email}
                         />
                       </td>
@@ -233,6 +241,7 @@ const ModalContinueCreateAccount = ({
                         <input
                           onChange={handleOnchange("name", index)}
                           required
+                          placeholder={t('IDS_WP_CREATE_ACCOUNT_ENTER_NAME')}
                           value={item.name && item.name}
                         />
                       </td>

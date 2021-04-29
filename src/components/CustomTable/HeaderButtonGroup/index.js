@@ -120,6 +120,8 @@ function HeaderButtonGroup({
   );
   const [roomList, setRoomList] = React.useState(null);
   const [activeLoading, setActiveLoading] = React.useState(false);
+
+
   const [activeMask, setActiveMask] = React.useState(-1);
   const [
     openContinueCreateAccount,
@@ -199,6 +201,8 @@ function HeaderButtonGroup({
     // eslint-disable-next-line
   }, []);
   
+
+
   React.useEffect(() => {
     const fail = () => {
       setActiveMask(-1);
@@ -212,6 +216,10 @@ function HeaderButtonGroup({
     // eslint-disable-next-line
   }, [updatedUser]);
 
+const handlesetFileExcel = (file) => {
+  setFileExcel(file);
+}
+   
   React.useEffect(() => {
     const success = (bit) => () => {
       setActiveMask((oldMask) => oldMask | (1 << bit));
@@ -287,7 +295,7 @@ function HeaderButtonGroup({
               <span>{t("LABEL_ADD_MEMBER")}</span>
             </StyledButton>
             <ModalCreateAccount openAddMember={openAddMember} setOpenAddMember={setOpenAddMember} setOpen={setOpen} setOpenCreateAccount={setOpenCreateAccount} />
-            <ModalContinueCreateAccount  setOpenResultCreateAccount={setOpenResultCreateAccount} setResult={setResult} openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel} />
+            <ModalContinueCreateAccount fileExcel={fileExcel}  setOpenResultCreateAccount={setOpenResultCreateAccount} setResult={setResult} openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel} />
 
             
             <ModalOptionCreateAccount openCreateAccount={openCreateAccount} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
@@ -303,7 +311,7 @@ function HeaderButtonGroup({
             />
 
             {/* modalOpenUploadExcel */}
-            <ModalUplaodExcel openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
+            <ModalUplaodExcel handlesetFileExcel={handlesetFileExcel}  openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
 
             
             <ModalResultCreateAccount  result={result} openResultCreateAccount={openResultCreateAccount} setOpenResultCreateAccount={setOpenResultCreateAccount} />

@@ -131,12 +131,25 @@
         padding: 7px 5px;
         outline: none;
       }
+      &:nth-of-type(2){
+        input{
+          color: #2D88FF;
+        }
+        
+      }
+      &:last-child{
+        text-align: center;
+      }
     }
     }
     
   }
  
-  
+  .account-internal_btn-create-account{
+    background-color: #2D88FF;
+    color: #ffffff;
+    padding: 0 15px;
+  }
 }
 .upload-excel {
   cursor: pointer;
@@ -225,7 +238,7 @@
     padding: 30px;
     &_downfile{
       color: rgb(89, 187, 243);
-      margin-top: 15px;
+      font-size: 14px;
     }
     .MuiTouchRipple-root{
       font-size: 16px;
@@ -249,7 +262,7 @@
     tbody tr td{
       padding: 6px 8px;
       :first-child{
-        color: blue
+        color: #2D88FF;
       }
     }
     thead tr th{

@@ -16,7 +16,6 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
    const {t} = useTranslation();
    const dispatch = useDispatch();
    const [visible, setVisible] = React.useState(false);
-   console.log(profile)
    const handleVerifyAccount = async () => {
     try {
         const { data } = await actionCheckVerifyAccount();
@@ -93,7 +92,7 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
           <div style={{ textAlign: "center", marginTop: "40px" }}>
             <Button
               onClick={
-                profile.is_verify
+                !profile.is_verify
                   ? () => {setOpenCreateAccount(false);setOpenContinueCreateAccount(true)}
                   : (handleVerifyAccount)
               }
@@ -106,7 +105,7 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
               variant="contained"
               color="primary"
             >
-              {profile.is_verify
+              {!profile.is_verify
                 ? t("IDS_WP_ACCOUNT_INTERNAL_CONTINUE")
                 : t("IDS_WP_CONFIRM_ACCOUNT")}
             </Button>
