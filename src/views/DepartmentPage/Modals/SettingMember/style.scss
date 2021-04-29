@@ -1,12 +1,14 @@
 .modalSettingMember{
     display: flex;
     min-height: 70vw;
-   
+    .comp_CustomModal___dialog-md > div:nth-child(3) > div{
+        min-width: 45vw;
+    }
     &-tab-left{
         width: 30%;
         background-color: rgb(236, 234, 234);
         &_profile{
-            padding: 20px;
+            padding: 20px 0 20px 20px;
             img{
                 width: 70px;
                 height: 70px;
@@ -82,8 +84,8 @@
     
 }
 .modal_setting-member{
-    .comp_CustomModal___dialog-md > div:nth-child(3) > div{
-        min-width: 50vw;
+     .MuiDialog-paperWidthSm{
+        min-width: 50vw !important;
     }
     .comp_CustomModal___dialog-content{
         padding: 0;

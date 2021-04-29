@@ -1,0 +1,335 @@
+import { mdiClose, mdiLockOutline, mdiUpload } from '@mdi/js';
+import { actionAddMutipleMember } from 'actions/groupUser/addMembertoGroup';
+import { actionToast } from 'actions/system/system';
+import { detailUser } from 'actions/user/detailUser';
+import { listUserOfGroup } from 'actions/user/listUserOfGroup';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import { connect, useDispatch } from 'react-redux';
+import Icon from "@mdi/react";
+import CustomModal from 'components/CustomModal';
+import { Button, FormControl, InputAdornment, OutlinedInput } from '@material-ui/core';
+import { searchUser, searchUserReset } from 'actions/groupUser/searchUser';
+import { inviteUserJoinGroup } from 'actions/groupUser/inviteUserJoinGroup';
+import { listRoom } from 'actions/room/listRoom';
+import { CustomEventDispose, CustomEventListener } from 'constants/events';
+import { UPDATE_USER } from 'constants/actions/user/updateUser';
+import { DETAIL_USER } from 'constants/actions/user/detailUser';
+import { LIST_USER_OF_GROUP } from 'constants/actions/user/listUserOfGroup';
+import ReactParserHtml from 'react-html-parser';
+import '../../HeaderButtonGroup/style.scss';
+const ModalContinueCreateAccount = ({
+    doReloadUser,
+    setOpenResultCreateAccount,
+    profile,
+    setOpenUploadExcel,
+    room,
+    doListRoom,
+    updatedUser = null,
+    openContinueCreateAccount,
+      setOpenContinueCreateAccount,
+      
+      result,setResult,
+}) => {
+   
+    
+    const [disable, setDisable] = React.useState(false);
+    const [activeMask, setActiveMask] = React.useState(-1);
+    const [roomList, setRoomList] = React.useState(null);
+    const [rowTable, setRowTable] = React.useState([
+      {
+        email: "account@gmail.com",
+        name: "Trần Văn Nam",
+        room: "",
+      },
+      {
+        email: "",
+        name: "",
+        room: "",
+      },
+      {
+        email: "",
+        name: "",
+        room: "",
+      },
+    ]);
+    
+    const dispatch = useDispatch();
+    const {t} = useTranslation();
+    
+    const handleOnchange = (key, index) => (e) => {
+      const valueInput = e.target.value;
+      const NewRowTable = rowTable.map((item, indexItem) => {
+        if (indexItem === index) {
+          return { ...item, [key]: valueInput };
+        }
+        return item;
+      });
+      //  const newData = {...rowTable[index], [key]: valueInput};
+      setRowTable(NewRowTable);
+    };
+      const handleAddRowTable = () => {
+        if (rowTable.length === 99) {
+          setDisable(true);
+        }
+        setRowTable([...rowTable, { email: "", name: "", room: "" }]);
+      };
+      const handleDeleRowTable = (index) => {
+        const newTable = rowTable.filter((el, indexEl) => indexEl !== index);
+        setRowTable(newTable);
+      };
+      
+    
+       const handleToast = (type, message) => {
+        dispatch(actionToast(type,message))
+       }
+      const handleSubmit = async e => {
+        e.preventDefault();
+    
+      try {
+       const {data} = await actionAddMutipleMember({account_list: rowTable, password: e.target.elements.password.value})
+        if(data.state){
+          handleToast('success', t('IDS_WP_CREATE_ACCOUNT_SUCCESS'))
+           setOpenContinueCreateAccount(false);
+           setOpenResultCreateAccount(true);
+           doReloadUser({userId: profile.id})
+           setResult(data.account_list);
+        }
+      } catch (error) {
+        handleToast('error', t('SNACK_MUTATE_FAIL'))
+      }
+        
+       
+      };
+    
+      const handleDeleteAllRow = () => {
+        setRowTable([]);
+      };
+
+      React.useEffect(() => {
+        doListRoom();
+        // eslint-disable-next-line
+      }, []);
+      
+      React.useEffect(() => {
+        const fail = () => {
+          setActiveMask(-1);
+        };
+        CustomEventListener(UPDATE_USER.SUCCESS, doReloadUser);
+        CustomEventListener(UPDATE_USER.FAIL, fail);
+        return () => {
+          CustomEventDispose(UPDATE_USER.SUCCESS, doReloadUser);
+          CustomEventDispose(UPDATE_USER.FAIL, fail);
+        };
+        // eslint-disable-next-line
+      }, [updatedUser]);
+      React.useEffect(()=>{
+        if(room){
+          setRoomList(room.data.rooms)
+        }
+      },[room])
+      React.useEffect(() => {
+        const success = (bit) => () => {
+          setActiveMask((oldMask) => oldMask | (1 << bit));
+        };
+        const fail = () => {
+          setActiveMask(-1);
+        };
+        CustomEventListener(DETAIL_USER.SUCCESS, success(0));
+        CustomEventListener(LIST_USER_OF_GROUP.SUCCESS, success(1));
+        CustomEventListener(DETAIL_USER.FAIL, fail);
+        CustomEventListener(LIST_USER_OF_GROUP.FAIL, fail);
+        return () => {
+          CustomEventDispose(DETAIL_USER.SUCCESS, success(0));
+          CustomEventDispose(LIST_USER_OF_GROUP.SUCCESS, success(1));
+          CustomEventDispose(DETAIL_USER.FAIL, fail);
+          CustomEventDispose(LIST_USER_OF_GROUP.FAIL, fail);
+        };
+      }, [updatedUser]);
+    return (
+        <CustomModal
+        title={t("IDS_WP_SIGN_UP")}
+        open={openContinueCreateAccount}
+        manualClose={true}
+        setOpen={setOpenContinueCreateAccount}
+        onCancle={() => setOpenContinueCreateAccount(false)}
+        confirmRender={()=>(t("IDS_WP_SIGN_UP"))}
+        type="submit"
+        form="form-create-multile-account"
+        className="modal_continue-create"
+      >
+        <form id="form-create-multile-account" onSubmit={handleSubmit}>
+          <div className="modal_continue-create_header">
+            <Button
+              disabled={disable}
+              className="account-internal_btn-create-account"
+              style={{ textTransform: "unset" }}
+              onClick={handleAddRowTable}
+            >
+              + {t("IDS_WP_ACCOUNT_INTERNAL_ADD_ROW")}
+            </Button>
+            <h3>{t("IDS_WP_ACCOUNT_INTERNAL_CREATE_LIST_ACCOUNT")}</h3>
+            <div
+              className="upload-excel"
+              onClick={() => {
+                setOpenContinueCreateAccount(false);
+                setOpenUploadExcel(true);
+              }}
+            >
+              <input
+                className="display-none"
+                id="upload_file"
+                multiple
+                type="file"
+                // onChange={onChangeFile}
+              />
+              <Icon
+                path={mdiUpload}
+                size={1}
+                color={"rgba(0, 0, 0, 0.54)"}
+              />
+
+              <div>{t("IDS_WP_ACCOUNT_INTERNAL_UPLOAD_EXCEL")}</div>
+            </div>
+          </div>
+          <div className="modal_continue-create_table">
+            <table style={{ borderCollapse: "collapse" }}>
+              <thead>
+                <tr>
+                  <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_NO")}</th>
+                  <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_ACCOUNT")}</th>
+                  <th>
+                    {t("IDS_WP_ACCOUNT_INTERNAL_TABLE_NAME_MEMBER")}
+                  </th>
+                  <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_PART")}</th>
+                  <th>
+                    <div
+                      style={{ color: "red", cursor: "pointer" }}
+                      onClick={handleDeleteAllRow}
+                    >
+                      {t("IDS_WP_ACCOUNT_INTERNAL_TABLE_DELETE_ALL")}
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {rowTable &&
+                  rowTable.map((item, index) => (
+                    <tr key={`${index}`}>
+                      <td
+                        style={{ textAlign: "center", padding: "0 10px" }}
+                      >
+                        {index + 1}
+                      </td>
+                      <td>
+                        <input
+                          onChange={handleOnchange("email", index)}
+                          required
+                          type="email"
+                          value={item.email && item.email}
+                        />
+                      </td>
+                      <td>
+                        <input
+                          onChange={handleOnchange("name", index)}
+                          required
+                          value={item.name && item.name}
+                        />
+                      </td>
+                      <td>
+                        <select
+                          defaultValue={item.room && item.room}
+                          onChange={handleOnchange("room", index)}
+                        >
+                           <option value=""></option>
+                          {roomList && roomList.map((items,indexs)=>(
+                            <option key={indexs} value={items.id}>{items.name}</option>
+                          ))}
+                          
+                        </select>
+                      </td>
+
+                      <td>
+                        <Button onClick={() => handleDeleRowTable(index)}>
+                          <Icon
+                            path={mdiClose}
+                            size={1}
+                            color={"rgba(0, 0, 0, 0.54)"}
+                          />{" "}
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+            <p style={{ color: "red" }}>
+              {t("IDS_WP_ACCOUNT_INTERNAL_ADDED")}: {rowTable.length}/100{" "}
+              {t("IDS_WP_ACCOUNT_INTERNAL_ADDED_NOTE")}
+            </p>
+            <h5>
+              {t("IDS_WP_MODAL_CHANGE_ACCOUNT_LABEL_PASSWORD")}{" "}
+              <span style={{ color: "red" }}>*</span>
+            </h5>
+            <div
+              style={{ whiteSpace: "break-spaces", lineHeight: "18px" }}
+            >
+              {ReactParserHtml(t("IDS_WP_ACCOUNT_INTERNAL_SET_PASSWORD"))}
+            </div>
+            <FormControl
+              margin="normal"
+              variant="outlined"
+              className="input-affix-wrapper custom-input item-pwd"
+            >
+              <OutlinedInput
+                id="password"
+                required
+                type="password"
+                autoComplete="new-password"
+                placeholder={t("IDS_WP_PASSWORD")}
+                size="small"
+                // onBlur={handleCheckPwd}
+                inputProps={{ maxLength: 20, minLength: 8 }}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Icon
+                      className="icon-prefix"
+                      path={mdiLockOutline}
+                      size={1}
+                    />
+                  </InputAdornment>
+                }
+              />
+              <div
+                className="suggest-password"
+                style={{ marginTop: "15px" }}
+              >
+                {t("IDS_WP_ENTER_REGISTER_PASSWORD_SUGGESTED")}
+              </div>
+            </FormControl>
+          </div>
+          
+        </form>
+      </CustomModal>
+    )
+}
+const mapStateToProps = (state) => {
+    return {
+      profile: state.system.profile,
+      room: state.room.listRoom
+    };
+  };
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      actionToast,
+      doReloadUser: ({ userId }) => {
+        dispatch(detailUser({ userId }, true));
+        dispatch(listUserOfGroup(true));
+      },
+      doSearchUser: ({ info }, quite) => dispatch(searchUser({ info }, quite)),
+      doSearchUserReset: () => dispatch(searchUserReset()),
+      doInviteUserJoinGroup: ({ userId }) =>
+        dispatch(inviteUserJoinGroup({ userId })),
+        doListRoom: (quite) => dispatch(listRoom(quite)),
+    };
+  };
+export default connect(mapStateToProps,mapDispatchToProps)(ModalContinueCreateAccount);

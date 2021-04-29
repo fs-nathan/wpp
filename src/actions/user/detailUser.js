@@ -41,9 +41,17 @@ export const detailUserReset = () => ({
   type: DETAIL_USER_RESET,
 });
 
-export const actionCheckVerifyAccount = () => ({
-  type: CHECK_VERIFY_ACCOUNT
-})
+export const actionCheckVerifyAccount = () => {
+  const token = localStorage.getItem('token');
+  const config = {
+    url: '/request-verify',
+    method: 'post',
+    header: new Headers({
+      "Authorization" : `Bearer ${token}`
+    })
+  };
+  return apiService(config);
+}
 
 export const actionCheckVerifyAccountFail = error => ({
   type: CHECK_VERIFY_ACCOUNT_FAIL,
@@ -71,10 +79,14 @@ export const actionGetInforSuccess = data => ({
   payload: data
 })
 
-export const actionChangeAccount = data => ({
-  type: UPDATE_ACCOUNT,
-  payload: data
-})
+export const actionChangeAccount = data => {
+  const config = {
+    url: '/update-account',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+}
 export const actionChangeAccountSuccess = data => ({
   type: UPDATE_ACCOUNT_SUCCESS,
   payload: data

@@ -2,10 +2,12 @@ import {CircularProgress, IconButton, Menu, MenuItem, Badge, Button} from '@mate
 import DeleteIcon from '@material-ui/icons/Delete';
 import {mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock, mdiShareVariant} from '@mdi/js';
 import Icon from '@mdi/react';
-import { actionLockUser } from 'actions/user/detailUser';
+import { actionToast } from 'actions/system/system';
+import { actionGetInfor, actionLockUser, actionUnLockUser } from 'actions/user/detailUser';
 import {find, get, isNil} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
+import { connect, useDispatch } from 'react-redux';
 import {useHistory} from 'react-router-dom';
 import CustomAvatar from '../../../../components/CustomAvatar';
 import CustomBadge from '../../../../components/CustomBadge';
@@ -87,7 +89,6 @@ function TooltipRole({user}){
       placement='top'
       title={
         <TooltipBody state={0}>
-          {user.role.toString()}
           <small style={{color: '#950eda', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP')}</small>
         </TooltipBody>
       }
@@ -112,7 +113,7 @@ function TooltipRole({user}){
 function StateBadge({ user }) {
 
   const { t } = useTranslation();
-
+  
   return (
     get(user, 'state', 0) === 0
       ? (
@@ -165,47 +166,59 @@ function AllUsersTable({
   handleChangeState,
   handleOpenModal,
   handleVisibleDrawerMessage,
+  inforUser
 }) {
   const { t } = useTranslation();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
-  const [isLock,setIsLock] = React.useState(false)
   const [user, setUser] = React.useState(null);
+  const [islock, setIslock] = React.useState(inforUser?.userInfor?.is_lock);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
   const history = useHistory();
-
+  const dispatch = useDispatch()
   function doOpenMenu(anchorEl, user) {
     setMenuAnchorEl(anchorEl);
     setUser(user);
+    dispatch(actionGetInfor(user?.id));
   }
+ 
   const handleLockAccount = async () => {
     try {
        const {data} = await actionLockUser({account_id: user.id});
        if(data.state){
-        //  handleToast('success', 'success')
-         setIsLock(true)
+         handleToast('success', t('SNACK_MUTATE_SUCCESS'));
+         setIslock(!islock);
        }
     } catch (error) {
-      //  handleToast('error', 'error')
+       handleToast('error', t('SNACK_MUTATE_FAIL'));
     }
   }
-
-  // const handleUnLockAccount = async() => {
-  //   try {
-  //     const {data} = await actionUnLockUser({account_id: profile.id});
-  //     if(data.state){
-  //       handleToast('success', 'success');
-  //       setIsLock(true);
-  //     }
-  //  } catch (error) {
-  //     handleToast('error', 'error')
-  //  }
-  // }
+  const handleToast = (type, message) => {
+    dispatch(actionToast(type, message));
+    setTimeout(() => {
+      dispatch(actionToast(type, message));
+    }, 2000);
+  }
+  const handleUnLockAccount = async() => {
+    try {
+      const {data} = await actionUnLockUser({account_id: user.id});
+      if(data.state){
+        handleToast('success', t('SNACK_MUTATE_SUCCESS'));
+        setIslock(!islock);
+      }
+   } catch (error) {
+    handleToast('error', t('SNACK_MUTATE_FAIL'));
+  }
+  }
   React.useEffect(() => {
     setPublicPrivateDisabled(!isNil(
       find(publicPrivatePendings.pendings, pending => pending === get(user, 'id'))
     ));
   }, [publicPrivatePendings, user]);
 
+  React.useEffect(()=>{
+    setIslock(inforUser?.userInfor?.is_lock)
+  },
+  [inforUser?.userInfor?.is_lock])
   return (
     <Container>
       <CustomTable
@@ -386,7 +399,7 @@ function AllUsersTable({
         <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
           <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
           <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
-          <Button className="menu_btn-lock" onClick={handleLockAccount}>{t('IDS_WP_LOCk')}</Button>
+          <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!islock ? handleLockAccount: handleUnLockAccount}>{!islock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
         </div>
         </MenuItem>
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
@@ -395,7 +408,7 @@ function AllUsersTable({
             <div>
               <p className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.LEAVE')}</p>
               <p className="menu_note">{t('IDS_WP_DELETE_MEMBER')}</p>
-              <Button className="menu_btn_out-group" onClick={() => {
+              <Button variant="contained" color="primary" className="menu_btn_out-group" onClick={() => {
             handleOpenModal('ALERT', {
               roomId: null,
               selectedUser: user,
@@ -409,5 +422,9 @@ function AllUsersTable({
     </Container>
   )
 }
-
-export default AllUsersTable;
+const mapStateToProps = (state) => {
+  return {
+    inforUser: state.user.detailUser,
+  };
+};
+export default connect(mapStateToProps)(AllUsersTable);

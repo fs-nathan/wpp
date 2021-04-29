@@ -4,6 +4,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  height: calc(100% - 70px);
   background: linear-gradient(45deg, rgb(51, 80, 94), rgb(76, 175, 80)) repeat
     scroll 0% 0%;
    
@@ -17,13 +18,38 @@
     color: #ffffff;
     border-radius: 50%;
     position: absolute;
-    right: -12px;
-    z-index: 100;
+    right: -16px;
+    z-index: 99;
     font-weight: bold;
-    padding: 5px 5px 5px 10px;
-    top: calc(50% - 60px);
+    padding: 5px 0px 5px 10px;
+    top: calc(50% - 50px);
     cursor: pointer;
     opacity: 0;
+    svg{
+      fill: #ffffff;
+      width: 20px;
+      height: 20px;
+      
+    }
+  }
+  @keyframes iconExpand {
+    0%{
+      transform: rotate3d(1, 1, 1, 180deg);
+    }
+    100%{
+      transform: rotate3d(1, 1, 1, 360deg);
+    }
+  }
+  .btn_expand{
+    svg{
+        animation: iconExpand 0.5s ease-in-out;
+    }
+  }
+
+  .btn_narrow{
+    svg{
+        animation: iconExpand 0.5s ease-in-out;
+    }
   }
   &:hover .btn-collapse{
     opacity: 1;
@@ -32,45 +58,85 @@
     padding: 10px 0;
     width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
     align-items: center;
     color: #fff;
     text-decoration: none;
+    z-index: 100;
     position: relative;
     opacity: 0.8;
     svg{
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       fill: #fff;    }
     &.actived {
       background-color: rgba(0, 0, 0, 0.12);
       opacity: 1;
       svg{
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
     }
     }
     &:hover {
       background-color: rgba(0, 0, 0, 0.12);
     }
+    .item-not-collapse{
+      display: flex;
+      width: 80%;
+      margin: auto;
+      align-items: center;
+      animation: animationlabels 0.5s ease;
+    }
+    .item-collapse{
+      justify-content: center;
+      width: 100% ;
+      display: flex;
+    }
+    @keyframes animationlabels {
+      0%{
+        margin-left: -100px;
+        display: block;
+        opacity: .7;
+      }
+      100%{
+        margin-left: 13px;
+        display: block;
+        opacity: 1;
+      }
+    }
+    .label-collapse{
     
-    & > *:not(:first-child) {
-      margin-top: 3px;
+      display: none;
+    }
+    .label-not-collapse{
+        display: block;
+        
     }
   }
   .LeftNavIcon {
     width: 28px;
     margin-bottom: 5px;
   }
+  @keyframes iconMenu {
+    0%{
+      margin-bottom: -20px;
+      opacity: 0;
+    }
+    100%{
+      margin-bottom: 0;
+      opacity: 1;
+    }
+  }
   .LeftNavIconZoom{
-    padding: 5px 0px;
+    width: auto !important;
+   
     svg{
+      animation: iconMenu 0.5s ease;
       transform: scale(1.2);
     }
   }
   .titleTab {
     font-size: 12px;
+    margin-top: -3px;
   }
   .bell-message {
     position: absolute;
