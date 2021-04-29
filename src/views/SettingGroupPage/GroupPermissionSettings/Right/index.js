@@ -155,18 +155,20 @@ const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
   }, [permissions]);
 
   useEffect(() => {
-    if(size(selected) === size(allPermissions) && size(selected) > 0) {
+    if(size(selected) === size(allPermissions)) {
       setIsSelectAll(true);
-    } else setIsSelectAll(false);
+    } setIsSelectAll(false);
   },[allPermissions, selected]);
 
   function handleSelectPermission(permission) {
     let _selected = selected;
     _selected[permission] = !_selected[permission];
     setSelected({..._selected});
-    handleSubmit(map(_selected, function (isSelected, key) {
-      if(isSelected && !isNil(key)) return key;
-    }));
+    let dataIDs = [];
+    forEach(_selected, function (isSelected, key) {
+      if(isSelected && !isNil(key)) dataIDs.push(key);
+    });
+    handleSubmit(dataIDs);
   }
 
   const handleSubmit = (values) =>
@@ -179,6 +181,7 @@ const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
 
   function handleSelectAll() {
     setIsSelectAll(true);
+    handleSubmit(allPermissions);
   }
 
   useEffect(() => {
