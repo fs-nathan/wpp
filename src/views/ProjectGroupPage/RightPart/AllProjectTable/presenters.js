@@ -1,10 +1,17 @@
-import {Box, CircularProgress, IconButton, Menu, MenuItem, Typography} from '@material-ui/core';
+import {Box, CircularProgress, IconButton, Menu, MenuItem} from '@material-ui/core';
 import {
-  mdiAccount, mdiCalendar, mdiCheckCircle, mdiDotsVertical, mdiDownload, mdiFilterOutline,
-  mdiCheckboxBlankCircleOutline, mdiCheckboxBlankOutline, mdiCheckboxMarked
-}from '@mdi/js';
+  mdiAccount,
+  mdiCalendar,
+  mdiCheckboxBlankCircleOutline,
+  mdiCheckboxBlankOutline,
+  mdiCheckboxMarked,
+  mdiCheckCircle,
+  mdiDotsVertical,
+  mdiDownload,
+  mdiFilterOutline
+} from '@mdi/js';
 import Icon from '@mdi/react';
-import {find, get, isNil, join, remove, size, slice, includes, isArray} from 'lodash';
+import {find, get, includes, isArray, isNil, join, remove, size, slice} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
 import {useHistory} from 'react-router-dom';
@@ -23,10 +30,8 @@ import * as images from "assets";
 import './style.scss';
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
 import {connect} from "react-redux";
-import PersonPinCircleOutlinedIcon from "@material-ui/icons/PersonPinCircleOutlined";
 import {decodePriorityCode} from "../../../../helpers/project/commonHelpers";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import PeopleOutlineOutlinedIcon from "@material-ui/icons/PeopleOutlineOutlined";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
@@ -162,7 +167,7 @@ function AllProjectTable({
                     onClick: evt => setTimeAnchor(evt.currentTarget)
                   }
                 ],
-                mainAction: canCreate && type_data !== 2 ? {
+                mainAction: type_data !== 2 ? {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
                   onClick: evt => handleOpenModal('CREATE'),
                 } : type_data === 2 ? {

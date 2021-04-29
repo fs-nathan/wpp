@@ -74,18 +74,6 @@ const Body = styled(Scrollbars)`
   height: 100%;
 `;
 
-function getStatusCode(status_code, complete) {
-  if (complete === 100)
-    return 2;
-  if (status_code === 3)
-    return 3;
-  if (status_code === 4)
-    return 4;
-  if (complete === 0)
-    return 0;
-  return 1;
-}
-
 function TabBody(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -151,13 +139,9 @@ function TabBody(props) {
     })
   }, [detailTask, t])
 
-  function onChangeItem(idx) {
-    dispatch(updatePriority({ task_id: taskId, priority: idx }))
-  }
-
   function onClickMember() {
     props.setShow(8)
-    dispatch(getMember({ task_id: taskId }))
+    dispatch(getMember({ task_id: taskId, group_by_role: true }))
   }
 
   function onClickGroupTask() {

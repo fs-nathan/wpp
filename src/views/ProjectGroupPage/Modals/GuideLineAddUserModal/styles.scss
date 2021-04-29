@@ -23,8 +23,11 @@
     &:hover {
       background: #eee;
     }
+    .MuiButton-label {
+      font-size: 16px;
+    }
   }
   .MuiButton-textPrimary {
-    color: #0097FA;
+    color: var(--color-primary);
   }
 }

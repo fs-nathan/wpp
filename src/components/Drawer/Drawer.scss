@@ -23,7 +23,7 @@
       transform: none !important;
       margin-top: 55px;
       margin-left: 80px;
-      min-width: 300px;
+      min-width: 430px;
       border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
     .MuiPaper-elevation16 {
@@ -51,9 +51,8 @@
   }
   .drawer-content {
     position: relative;
-    // height: calc(100% - 38px);
     height: calc(100vh - 55px);
-    width: 420px;
+    width: 450px;
     display: flex;
     flex-direction: column;
     border-right: 1px solid #ededed;
@@ -664,18 +663,16 @@
   &.anchor-drawer-left {
     left: 80px !important;
     .MuiBackdrop-root {
-      margin-left: 80px;
     }
     .MuiDrawer-paper {
       transition: 5s;
-      margin-left: 80px;
-      min-width: 300px;
+      min-width: 430px;
     }
   }
   .drawer-content {
     position: relative;
     height: 100vh;
-    width: 370px;
+    width: 450px;
     display: flex;
     flex-direction: column;
   }

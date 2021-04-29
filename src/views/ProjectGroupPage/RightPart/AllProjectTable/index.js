@@ -119,21 +119,18 @@ function AllProjectTable({
     }
     // eslint-disable-next-line
   }, [timeRange]);
-  React.useEffect(() => {
-    let _projects = [...projects.projects];
-    _projects = filter(_projects, filters[filterType].option);
-    setNewProjects({...projects, projects: _projects});
-  }, [filterType, projects.projects]);
 
   React.useEffect(() => {
     let _projects = [...projects.projects];
     _projects = sortBy(_projects, o => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
+    _projects = filter(_projects, filters[filterType].option);
     setNewProjects({
       ...projects,
       projects: _projects,
     });
-  }, [projects, sortType]);
+    setIsFiltering(size(projects.projects) > 0);
+  }, [projects, sortType, filterType]);
 
   const [guideLineModal, setGuideLineModal] = React.useState(false);
   const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);

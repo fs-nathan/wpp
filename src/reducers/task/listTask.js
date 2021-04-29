@@ -11,6 +11,7 @@ export const initialState = {
   error: null,
   loading: false,
   firstTime: true,
+  newTask: {}
 };
 
 function reducer(state = initialState, action) {
@@ -62,6 +63,7 @@ function reducer(state = initialState, action) {
           ...state.data,
           tasks: newTasks,
         },
+        newTask: get(action.data, 'task')
       };
     }
     case DELETE_TASK_SUCCESS: {

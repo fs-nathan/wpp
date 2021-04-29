@@ -32,13 +32,13 @@ function CustomListItem({
             onMouseEnter={() => setIsHover(true)}
             onMouseLeave={() => setIsHover(false)}
           >
-            <CustomAvatar style={{ height: 35, width: 35, }} src={room.icon} alt='avatar' />
+            <CustomAvatar style={{ height: 35, width: 35, marginRight: "10px" }} src={room.icon} alt='avatar' />
             <ListItemText
               primary={
-                <Primary style={{ marginLeft: "10px"}}>{get(room, 'name', '')}</Primary>
+                <Primary>{get(room, 'name', '')}</Primary>
               }
               secondary={
-                <Secondary style={{ marginLeft: "10px"}}>{t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: get(room, 'number_member', 0) })}</Secondary>
+                <Secondary>{t('DMH.VIEW.DP.LEFT.LIST.NUM_MEM', { members: get(room, 'number_member', 0) })}</Secondary>
               }
             />
             <ListItemSecondaryAction>

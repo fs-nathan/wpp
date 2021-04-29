@@ -9,9 +9,20 @@ import {listTask} from 'actions/task/listTask';
 import {sortTask} from 'actions/task/sortTask';
 import {getPermissionViewDetailProject} from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
-import { useTimes } from 'components/CustomPopover';
-import { CREATE_TASK, CREATE_GROUP_TASK, COPY_GROUP_TASK, UPDATE_GROUP_TASK, DELETE_GROUP_TASK, CustomEventDispose, CustomEventListener, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
-import { get, isNil } from 'lodash';
+import {useTimes} from 'components/CustomPopover';
+import {
+  COPY_GROUP_TASK,
+  CREATE_GROUP_TASK,
+  CREATE_TASK,
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_GROUP_TASK,
+  DELETE_TASK,
+  SORT_GROUP_TASK,
+  SORT_TASK,
+  UPDATE_GROUP_TASK
+} from 'constants/events';
+import {get, isNil} from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import {connect} from 'react-redux';
@@ -36,7 +47,6 @@ import {
 import MemberPermissionModal from "../../Modals/MembersSetting/MemberPermission";
 import AssignCalendarModal from "components/AssignCalendarModal";
 import AddMemberModal from "../../../JobDetailPage/ListPart/ListHeader/AddMemberModal";
-import {useTranslation} from "react-i18next";
 import MemberSetting from "../../Modals/MembersSetting";
 import GuideLineAddUserModal from "../../../ProjectGroupPage/Modals/GuideLineAddUserModal";
 import {Routes} from "../../../../constants/routes";
@@ -68,7 +78,7 @@ function AllTaskTable({
   const query = useQuery();
   const history = useHistory();
   const [guideLineModal, setGuideLineModal] = React.useState(false);
-
+  const [createdTask, setCreatedTask] = React.useState(null);
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
   }, [projectId]);
@@ -157,10 +167,16 @@ function AllTaskTable({
       const reloadDetailProject = () => {
         doDetailProject({ projectId });
       }
-      CustomEventListener(CREATE_TASK, reloadDetailProject);
+      CustomEventListener(CREATE_TASK, (e) => {
+        doDetailProject({ projectId });
+        setCreatedTask(get(e.detail, "task"));
+      });
       CustomEventListener(DELETE_TASK, reloadDetailProject);
       return () => {
-        CustomEventDispose(CREATE_TASK, reloadDetailProject);
+        CustomEventListener(CREATE_TASK, (e) => {
+          doDetailProject({ projectId });
+          setCreatedTask(get(e.detail, "task"));
+        });
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
     }
@@ -285,14 +301,17 @@ function AllTaskTable({
         setOpen={setOpenAlert}
         {...alertProps}
       />
-      <AddMemberModal isOpen={openModalAddMember} setOpen={setOpenModalAddMember}/>
+      <AddMemberModal isOpen={openModalAddMember} setOpen={setOpenModalAddMember} task={createdTask}/>
       <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting}/>
       <GuideLineAddUserModal
         open={guideLineModal} setOpen={() => {
           history.push(`${Routes.PROJECT}/${projectId}`);
           setGuideLineModal(false);
         }} type={typeGuide}
-        handleAddNow={() => setOpenMemberSetting(true)}
+        handleAddNow={() => {
+          if(typeGuide === 1) setOpenMemberSetting(true);
+          else setOpenModalAddMember(true);
+        }}
       />
     </>
   )

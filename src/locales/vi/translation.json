@@ -2467,5 +2467,7 @@
   "IDS_WP_UN_LOCK_ACCOUNT": "Mở khóa tài khoản thành công",
   "IDS_WP_LOCK_ACCOUNT": "Khóa tài khoản thành công",
   "IDS_WP_CREATE_ACCOUNT_SUCCESS": "Tạo tài khoản thành công",
-  "LABEL_ADD_MEMBER": "Thêm thành viên"
+  "LABEL_ADD_MEMBER": "Thêm thành viên",
+  "LABEL_ASSIGNED_COUNT": "Đã gán",
+  "LABEL_PERMISSION_NOT_ASSIGN": "Chưa gán quyền"
 }

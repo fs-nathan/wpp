@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import './GroupAccountModal.scss';
 import {connect} from 'react-redux';
 import {mdiAccountMultiple, mdiClose, mdiMagnify} from '@mdi/js';
-import {get} from 'lodash';
+import {get, concat, size} from 'lodash';
 import {actionToast} from '../../actions/system/system';
 import ItemGroupAcount from './ItemGroupAccount';
 import {isEmpty} from '../../helpers/utils/isEmpty';
@@ -138,7 +138,7 @@ const RenderRightPart = props => {
       return (
         <>
           <SubHeader>
-            <IconButton style={{ marginRight: '10px', background: '#0090EF', padding: "7px"}}>
+            <IconButton style={{ marginRight: '10px', background: 'var(--color-primary)', padding: "7px"}}>
               <Icon path={mdiAccountMultiple} size={1} color={"#fff"} />
             </IconButton>
             <Primary>{t("LABEL_GROUP_JOINING")}</Primary>
@@ -177,7 +177,7 @@ const RenderRightPart = props => {
       return (
         <>
           <SubHeader>
-            <IconButton style={{ marginRight: '10px', background: '#0090EF', padding: "7px" }}>
+            <IconButton style={{ marginRight: '10px', background: 'var(--color-primary)', padding: "7px" }}>
               <Icon path={mdiAccountMultiple} size={1} color={"#fff"} />
             </IconButton>
             <Primary>{t("LABEL_GROUP_REQUIRED")}</Primary>
@@ -206,19 +206,25 @@ const RenderRightPart = props => {
         </>
       );
     case "INVITE":
+      let groupDemo = props.groupList.group_demo;
+      let groups = props.groupList.invitations;
+      if(size(groupDemo) > 0) {
+        groupDemo["is_demo"] = true;
+        groups = concat(groups, groupDemo);
+      }
       return (
         <>
           <SubHeader>
-            <IconButton style={{ marginRight: '10px', background: '#0090EF', padding: "7px" }}>
+            <IconButton style={{ marginRight: '10px', background: 'var(--color-primary)', padding: "7px" }}>
               <Icon path={mdiAccountMultiple} size={1} color={"#fff"} />
             </IconButton>
             <Primary>{t("LABEL_GROUP_INVITED")}</Primary>
           </SubHeader>
-          { isEmpty(props.groupList.invitations) && renderEmptyView("INVITATIONS")}
+          { isEmpty(groups) && renderEmptyView("INVITATIONS")}
           {
-            !isEmpty(props.groupList.invitations) && (
+            !isEmpty(groups) && (
               <Scrollbars autoHide autoHeight autoHeightMin={395}>
-                {props.groupList.invitations.map((group, idx) => (
+                {groups.map((group, idx) => (
                   <div className="item-group">
                     <ItemGroupAcount
                       item={group}
@@ -262,7 +268,7 @@ function GroupAccountModal({ open, setOpen, ...props }) {
       color: '#fff',
     },
     {
-      title: <p>{t('LABEL_GROUP_INVITED')} ({!isEmpty(groupList) ? get(groupList, "invitations").length : 0})</p>,
+      title: <p>{t('LABEL_GROUP_INVITED')} ({!isEmpty(groupList) ? parseInt((get(groupList, "invitations").length)) + (!isEmpty(get(groupList, "group_demo")) ? 1 : 0) : 0})</p>,
       action: (() => { setMode("INVITE") }),
       color: '#fff',
     }
@@ -279,23 +285,6 @@ function GroupAccountModal({ open, setOpen, ...props }) {
   useEffect(() => {
     handleFetchData().then(r => setLoading(false));
   }, []);
-
-  const handleToast = (type, message) => {
-    props.actionToast(type, message);
-  };
-
-  const handleRequestJoinDemo = async group_id => {
-    try {
-      setLoading(true);
-      await services.requestJoinGroupDemoService(group_id);
-      handleFetchData();
-      handleToast('success', 'Đã gửi yêu cầu thành công!');
-    } catch (error) {
-      handleToast('error', error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <CustomModal
@@ -316,7 +305,7 @@ function GroupAccountModal({ open, setOpen, ...props }) {
             <List>
               <OptionItem onClick={(() => { setMode("CREATE") })}>
                 <ListItemText primary={
-                  <Button className="join-group-new" style={{backgroundColor: "dodgerblue", width: "100%"}}>
+                  <Button className="join-group-new" style={{backgroundColor: "var(--color-primary)", width: "100%"}}>
                       <span className="text-join-group-new" style={{ textTransform: 'uppercase', color: "#ffffff", fontWeight: "400" }}>
                         {t('IDS_WP_JOIN_NEW_GROUP')}
                       </span>

@@ -31,7 +31,7 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
-    height: 80%;
+    height: 500px;
     span {
       margin-top: 20px;
       font-size: 14px;
@@ -79,7 +79,7 @@
     }
   }
   &__actionMask {
-    width: 31%;
+    width: 35%;
     height: 100%;
     position: absolute;
     background: #eee;
@@ -103,11 +103,11 @@
   border-radius: 3px;
   padding: 0;
   &--Active {
-    outline: 2px solid #0097FA;
+    outline: 2px solid var(--color-primary);
     border-radius: 3px;
   }
   &:hover {
-    border: 2px solid #0097FA;
+    border: 2px solid var(--color-primary);
   }
   margin: 10px 20px 20px 10px;
   .MuiListItemText-primary {
@@ -119,7 +119,7 @@
     width: 100%;
   }
   .MuiTypography-colorTextSecondary {
-    color: #0097FA;
+    color: var(--color-primary);
     font-size: 12px;
   }
   &_secondaryInfo {

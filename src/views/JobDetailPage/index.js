@@ -52,9 +52,6 @@ function JobDetailPage(props) {
   }, [errorMessage, history, projectId]);
 
   useEffect(() => {
-    // console.log('url', url.pathname, 'projectId', projectId)
-
-    // console.log(key, type_data, ' useEffect')
     const key = `${userId}:${lastJobSettingKey}`;
     const type_data = localStorage.getItem(key) || "include-room";
     const path = url.pathname;
@@ -71,7 +68,6 @@ function JobDetailPage(props) {
   }, [dispatch, projectId, url, userId]);
 
   useEffect(() => {
-    // console.log('taskId', taskId)
     if (taskId) {
       dispatch(taskDetailAction.getMemberNotAssigned({ task_id: taskId }));
       dispatch(taskDetailAction.getMember({ task_id: taskId }));
@@ -95,7 +91,6 @@ function JobDetailPage(props) {
 
   useEffect(() => {
     const key = `${userId}:${lastJobSettingKey}`;
-    const type_data = localStorage.getItem(key) || "include-room";
     if (projectId !== "" && userId) {
       const key = `TASK_GIRD:${userId}:${projectId}`;
       const type_data = localStorage.getItem(key) || "include-room";

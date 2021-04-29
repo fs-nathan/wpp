@@ -81,7 +81,8 @@ function ProjectList({
   function handleHideStartBtn(evt) {
     evt.stopPropagation();
     setAnchorElStartButton(null);
-    setIsHideStartButton(true);
+    localStorage.setItem("WPS_HIDE_WORKING_START_BUTTON", true);
+    setHideBtnState(true);
     if(history.location.pathname === "/projects/start") {
       history.push("/projects/recently");
     }

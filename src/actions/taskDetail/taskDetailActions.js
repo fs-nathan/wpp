@@ -517,6 +517,10 @@ export const getMemberSuccess = (payload) => ({
     type: types.GET_MEMBER_SUCCESS,
     payload
 });
+export const getMemberSuccessGroupByRole = (payload) => ({
+    type: types.GET_MEMBER_SUCCESS_GROUP_BY_ROLE,
+    payload
+});
 
 export const getMemberFail = (error) => ({
     type: types.GET_MEMBER_FAIL,

@@ -498,7 +498,7 @@ function MemberSetting({
               <Box className={"memberWorkingBoard-moreSetting-item"}>
                 <Box className={"memberWorkingBoard-moreSetting-item__Header"}>
                   <Radio
-                    checked={get(curMemberSetting, "join_task_status_code") === 0}
+                    checked={get(curMemberSetting, "join_task_status_code") === 1}
                     style={{marginRight: 0}}
                     onChange={() => {
                       setAnchorAssign(null);
@@ -514,7 +514,7 @@ function MemberSetting({
               <Box className={"memberWorkingBoard-moreSetting-item"}>
                 <Box className={"memberWorkingBoard-moreSetting-item__Header"}>
                   <Radio
-                    checked={get(curMemberSetting, "join_task_status_code") === 1} style={{marginRight: 0}}
+                    checked={get(curMemberSetting, "join_task_status_code") === 0} style={{marginRight: 0}}
                     onChange={() => {
                       setAnchorAssign(null);
                       handleUpdateStateJoinTask(curMemberSetting, 1);

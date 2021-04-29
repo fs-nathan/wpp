@@ -2410,5 +2410,7 @@
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_1": "This is the function of creating an account through the Group Owner or authorized person (collectively, the Creator).",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_2": "Member will receive the login information sent by the system to the registered email including the account and password the day after the Creator (if the registration email is active and capable of receiving email sent to). \n The creator is free to manage his own accounts such as: Suspend the account, reset login password.",
   "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_3": "<strong> Note: </strong> Internal accounts are owned by the Group Owner!",
-  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4": "You can create an authenticated account to be allowed to create internal accounts."
+  "IDS_WP_ACCOUNT_INTERNAL_MESSAGE_4": "You can create an authenticated account to be allowed to create internal accounts.",
+  "LABEL_ASSIGNED_COUNT": "Assigned",
+  "LABEL_PERMISSION_NOT_ASSIGN": "Not assign"
 }
