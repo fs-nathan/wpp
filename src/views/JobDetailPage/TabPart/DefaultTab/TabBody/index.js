@@ -264,14 +264,14 @@ function TabBody(props) {
             return (
               <>
                 {index === 3 && (<Divider style={{marginTop: 10}}/>)}
-                <Box className={"toolTipUpdateStatus-item"} onClick={() => {
+                <Box className={"toolTipUpdateStatus-item"} onClick={(e) => {
+                  e.stopPropagation();
                   if(taskStatistic.complete !== 100) handleUpdateTaskStatus(item.value);
                 }}>
                   <div className={"toolTipUpdateStatus-itemHeader"}>
                     <Radio
                       checked={taskStatistic.state_code === item.value}
                       value={item.value}
-                      onChange={() => handleUpdateTaskStatus(item.value)}
                       disabled={taskStatistic.complete === 100}
                     />
                     <Typography variant={"h6"} color={"textSecondary"}>

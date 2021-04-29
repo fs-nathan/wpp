@@ -34,6 +34,15 @@
       background: #F1F5FB;
     }
   }
+  .comp_CustomList___list-item {
+    background: #fff;
+    &:hover {
+      background: #eeeeee;
+    }
+  }
+  .comp_CustomList___list-item.active {
+    background: #eeeeee;
+  }
 }
 
 .comp_rightColumn {
