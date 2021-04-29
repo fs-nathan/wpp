@@ -16,6 +16,7 @@ import DrawerNotification from "./DrawerContentComponent/DrawerNotification";
 import DrawerSetting from "./DrawerContentComponent/DrawerSetting";
 import DrawerSupport from "./DrawerContentComponent/DrawerSupport";
 import DrawerQuickAccess from "./DrawerContentComponent/DrawerQuickAccess.";
+import GroupAccountModal from "../GroupAccountModal/GroupAccountModal";
 
 const generateContent = (typeDrawer, optionsDrawer) => {
   switch (typeDrawer) {
@@ -25,8 +26,6 @@ const generateContent = (typeDrawer, optionsDrawer) => {
       return <DrawerMessage />;
     case DRAWER_TYPE.NOTIFICATION:
       return <DrawerNotification />;
-    case DRAWER_TYPE.GROUP_ACCOUNT:
-      return <DrawerGroupAcount />;
     case DRAWER_TYPE.SETTING:
       return <DrawerSetting />;
     case DRAWER_TYPE.JOIN_NEW_GROUP:
@@ -51,25 +50,31 @@ const generateContent = (typeDrawer, optionsDrawer) => {
 };
 const DrawerComponent = props => {
   const { typeDrawer, actionVisibleDrawerMessage, anchorDrawer, optionsDrawer } = props;
-  return (
-    <Drawer
-      anchor={anchorDrawer}
-      open={!isEmpty(typeDrawer)}
-      onClose={() =>
-        actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer })
-      }
-      className={`${typeDrawer === DRAWER_TYPE.QUICK_ACCESS ? "Drawer-Base" : "Drawer-Compenent"} ${
-        anchorDrawer === "left"
-          ? "anchor-drawer-left"
-          : anchorDrawer === "right"
+  const [openAccountModal, setOpenAccountModal] = React.useState(true);
+
+  if(typeDrawer === DRAWER_TYPE.GROUP_ACCOUNT) {
+    return <GroupAccountModal open={openAccountModal} setOpen={setOpenAccountModal}/>
+  } else {
+    return (
+      <Drawer
+        anchor={anchorDrawer}
+        open={!isEmpty(typeDrawer)}
+        onClose={() =>
+          actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer })
+        }
+        className={`${typeDrawer === DRAWER_TYPE.QUICK_ACCESS ? "Drawer-Base" : "Drawer-Compenent"} ${
+          anchorDrawer === "left"
+            ? "anchor-drawer-left"
+            : anchorDrawer === "right"
             ? "anchor-drawer-right"
             : "anchor-drawer-top"
         }`}
-      transitionDuration={0}
-    >
-      {generateContent(typeDrawer, optionsDrawer)}
-    </Drawer>
-  );
+        transitionDuration={0}
+      >
+        {generateContent(typeDrawer, optionsDrawer)}
+      </Drawer>
+    );
+  }
 };
 
 export default connect(

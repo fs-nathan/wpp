@@ -131,7 +131,7 @@ function AllTaskTable({
                 iconPath: mdiCalendar,
                 onClick: evt => setTimeAnchor(evt.currentTarget)
               } : undefined],
-              mainAction: canCreateTask && isNil(memberID) ? {
+              mainAction: isNil(memberID) ? {
                 label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.CREATE"),
                 onClick: (evt) => handleOpenModal('CREATE'),
               } : !isNil(memberID) ? {

@@ -39,7 +39,7 @@ import "./index.scss";
 import SearchBox from "../../../../components/SearchInput";
 import AddGroupPermissionModal, {CustomTableBodyCell} from "../components/AddGroupPermissionModal";
 import Chip from '@material-ui/core/Chip';
-import {filter, first, get, forEach, map, set, size, isNil, find, includes} from "lodash";
+import {filter, first, get, forEach, map, set, size, isNil, find, findIndex, includes} from "lodash";
 import {StyledList, StyledListItem} from "../../../../components/CustomList";
 import {groupPermissionAttr} from "../contants";
 import IconButton from "@material-ui/core/IconButton";
@@ -114,7 +114,7 @@ const ColumnLayout = ({ children, title, subTitle, actions, ...props }) => {
     </Grid>
   );
 };
-const ColumnRight = ({customPermissionList = []}) => {
+const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
   const { t } = useTranslation();
   const {
     detail: item,
@@ -124,7 +124,6 @@ const ColumnRight = ({customPermissionList = []}) => {
   } = useContext(GroupPermissionSettingsContext);
 
   const permissionList = useSelector(settingGroupPermission.selectors.permissionListSelector);
-
   const allPermissions = permissionList.flatMap((item) =>
     (item.permissions || emptyArray).flatMap((item) => item.permission)
   );
@@ -134,6 +133,7 @@ const ColumnRight = ({customPermissionList = []}) => {
   const [{ status }, setAsyncAction] = useAsyncTracker();
   const [filterValue, setFilterValue] = useState(0);
   const [filterPermission, setFilterPermission] = React.useState(permissionList);
+  const [filterPermissionKeyword, setFilterPermissionKeyword] = React.useState(filterPermission);
 
   const [keyword, setKeyword] = useState("");
   const onInputChange = useCallback((e) => {
@@ -155,18 +155,20 @@ const ColumnRight = ({customPermissionList = []}) => {
   }, [permissions]);
 
   useEffect(() => {
-    if(size(selected) === size(allPermissions) && size(selected) > 0) {
+    if(size(selected) === size(allPermissions)) {
       setIsSelectAll(true);
-    } else setIsSelectAll(false);
+    } setIsSelectAll(false);
   },[allPermissions, selected]);
 
   function handleSelectPermission(permission) {
     let _selected = selected;
     _selected[permission] = !_selected[permission];
     setSelected({..._selected});
-    handleSubmit(map(_selected, function (isSelected, key) {
-      if(isSelected && !isNil(key)) return key;
-    }));
+    let dataIDs = [];
+    forEach(_selected, function (isSelected, key) {
+      if(isSelected && !isNil(key)) dataIDs.push(key);
+    });
+    handleSubmit(dataIDs);
   }
 
   const handleSubmit = (values) =>
@@ -179,24 +181,49 @@ const ColumnRight = ({customPermissionList = []}) => {
 
   function handleSelectAll() {
     setIsSelectAll(true);
+    handleSubmit(allPermissions);
   }
 
   useEffect(() => {
-    if(filterValue === 0) setFilterPermission(size(customPermissionList) > 0 ? customPermissionList : permissionList);
+    if(filterValue === 0) {
+      if(filterOption === 0) {
+        const defaultPermissions = get(item,"permissions", []);
+        const _permissions = [];
+        forEach(permissionList, function (group) {
+          const permissions = filter(group.permissions, function (permission) {
+            return !isNil(find(defaultPermissions, {"permission": permission.permission}));
+          });
+          if(size(permissions) > 0) _permissions.push({...group, permissions});
+        });
+        setFilterPermission(_permissions);
+      } else setFilterPermission(mode === "MEMBERS_PERMISSION" ? customPermissionList : permissionList);
+    }
     else {
       const _selectedIds = Object.keys(selected);
-      const _selected = map(permissionList, function (group) {
+      const _selected = [];
+      forEach(permissionList, function (group) {
         const permissions = filter(group.permissions, function (permission) {
           if(filterValue === 1) {
-            return !isNil(find(_selectedIds, permission.permission));
+            return includes(_selectedIds, permission.permission);
           }
-          return isNil(find(_selectedIds, permission.permission));
+          return !includes(_selectedIds, permission.permission);
         });
-        if(size(permissions) > 0) return {...group, permissions};
+        if(size(permissions) > 0) return _selected.push({...group, permissions});
       });
       setFilterPermission(_selected);
     }
-  }, [filterValue, permissionList, customPermissionList]);
+  }, [filterValue, permissionList, customPermissionList, selected, filterOption]);
+
+  useEffect(() => {
+    const _permission = map(filterPermission, function (group) {
+      const permissions = filter(group.permissions, function (permission) {
+        return permission.name.toLowerCase().includes(keyword.toLowerCase());
+      });
+      if(size(permissions) > 0) return {...group, permissions};
+    });
+    setFilterPermissionKeyword(_permission);
+  }, [keyword, filterPermission]);
+
   return (
     <ColumnLayout
       title={t("Chi tiết quyền trong nhóm")}
@@ -251,7 +278,7 @@ const ColumnRight = ({customPermissionList = []}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filterPermission.map((group, i) => (
+            {filterPermissionKeyword.map((group, i) => (
               <React.Fragment key={i}>
                 <TableRow>
                   <CustomTableBodyCell
@@ -269,7 +296,6 @@ const ColumnRight = ({customPermissionList = []}) => {
                   </CustomTableBodyCell>
                 </TableRow>
                 {get(group, "permissions", [])
-                  .filter(({ name = "" }) => name.toLowerCase().includes(keyword.toLowerCase()))
                   .map(({ name, description, permission }) => (
                     <TableRow
                       key={permission}
@@ -321,11 +347,11 @@ const ColumnRight = ({customPermissionList = []}) => {
     </ColumnLayout>
   );
 };
-const ColumnLeft = () => {
+const ColumnLeft = ({filterOption, setFilterOption}) => {
   const { t } = useTranslation();
-  const [filterOption, setFilterOption] = React.useState(0);
   const [menuAnchor, setMenuAnchor] = useState(null);
   const [keyword, setKeyword] = useState("");
+  const dispatch = useDispatch();
   const {
     select, groupPermissionDefaultList,
     setModal, setSelect, groupPermissionList
@@ -341,8 +367,12 @@ const ColumnLeft = () => {
     } else {
       const firstItem = first(groupPermissionList);
       setSelect(firstItem, false);
+      handlePermissionGroupClick(firstItem.id);
     }
   }, [filterOption]);
+  function handlePermissionGroupClick(id) {
+    dispatch(settingGroupPermission.actions.loadDetailGroupPermission({group_permission_id: id}));
+  }
   return (
     <div className="comp_rightColumn">
       <div className={"comp_rightColumn_topBar"}>
@@ -415,9 +445,9 @@ const ColumnLeft = () => {
                         size={1}
                       />
                     </div>
-
                     <ListItemLayout
                       title={name}
+                      style={{maxWidth: "100%"}}
                       subTitle={template(
                         t("Đã gán <%= number %> thành viên")
                       )({
@@ -506,26 +536,17 @@ const ColumnLeft = () => {
                           : "onHover"
                       }
                       onClick={() => {
-                        setSelect(item);
+                        setSelect(item, false);
+                        handlePermissionGroupClick(item.id);
                       }}
                     >
-                      {bindDragHandle(
-                        <div style={{ flexShrink: 0, lineHeight: 1 }}>
-                          <Icon
-                            className="onHover__show"
-                            path={mdiDragVertical}
-                            size={1}
-                            color="#8d8d8d"
-                          />
-                          <Icon
-                            className="onHover__hide"
-                            style={{ fill: "#8d8d8d" }}
-                            path={mdiAccountKey}
-                            size={1}
-                          />
-                        </div>
-                      )}
-
+                      <div style={{ flexShrink: 0, lineHeight: 1 }}>
+                        <Icon
+                          style={{ fill: "#8d8d8d" }}
+                          path={mdiAccountKey}
+                          size={1}
+                        />
+                      </div>
                       <ListItemLayout
                         title={name}
                         subTitle={template(
@@ -584,9 +605,7 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
   const groupUsers = useSelector(settingGroupPermission.selectors.groupPermissionUsersSelector);
   const detail = useSelector(settingGroupPermission.selectors.groupPermissionListSelector);
   const permissionList = useSelector(settingGroupPermission.selectors.permissionListSelector);
-  const { setSelect } = useContext(
-    GroupPermissionSettingsContext
-  );
+  const { setSelect } = useContext(GroupPermissionSettingsContext);
   React.useEffect(() => {
     dispatch(settingGroupPermission.actions.doPermissionListUsers());
   }, [dispatch]);
@@ -596,6 +615,11 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
       if(size(get(group, "users")) > 0) {
        setSelectedGroup(get(first(group.users), "group_permission_id"));
        setSelectedUser(first(group.users));
+        dispatch(
+          settingGroupPermission.actions.loadDetailGroupPermission({
+            group_permission_id: get(first(group.users), "group_permission_id"),
+          })
+        );
        return;
       }
     });
@@ -615,13 +639,17 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
     setIsHover({...isHover});
   }
   function handleSelectUser(user) {
-    setSelectedGroup(user.group_permission_id);
     setSelectedUser(user);
-    dispatch(
-      settingGroupPermission.actions.loadDetailGroupPermission({
-        group_permission_id: user.group_permission_id,
-      })
-    );
+    if(user.group_permission_id) {
+      setSelectedGroup(user.group_permission_id);
+      dispatch(
+        settingGroupPermission.actions.loadDetailGroupPermission({
+          group_permission_id: user.group_permission_id,
+        })
+      );
+    } else {
+      setCustomPermissionList([]);
+    }
   }
   useEffect(() => {
     let permissions = find(detail, {"id": selectedGroup});
@@ -656,7 +684,7 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
               <List
                 component={"nav"}
                 subheader={
-                  <ListSubheader component={"div"}>
+                  <ListSubheader component={"div"} disableSticky>
                     <b style={{ fontSize: "15px", color: "#8d8d8d", textTransform: "uppercase"}}>
                       {group.name} ({group.number_member})
                     </b>
@@ -683,7 +711,7 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
                             className="onHover__hide"
                             style={{ fill: "#8d8d8d" }} path={mdiAccountKey} size={1}
                           />
-                          <span style={{marginLeft: "7px"}}>{user.group_permission_name}</span>
+                          <span style={{marginLeft: "7px"}}>{user.group_permission_name ?? <span style={{fontStyle: "italic"}}>{t("LABEL_PERMISSION_NOT_ASSIGN")}</span>}</span>
                         </Box>
                       }/>
                       {isHover[user.id] && (
@@ -720,10 +748,11 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
 
 const Right = ({mode}) => {
   const [customPermissionList, setCustomPermissionList] = React.useState([]);
+  const [filterOption, setFilterOption] = React.useState(0);
   return (
     <Grid container>
       {mode === "GROUP_PERMISSION" && (
-        <ColumnLeft />
+        <ColumnLeft filterOption={filterOption} setFilterOption={setFilterOption}/>
       )}
       {mode === "MEMBERS_PERMISSION" && (
         <ColumnLeftMembers setCustomPermissionList={setCustomPermissionList}/>
@@ -734,7 +763,7 @@ const Right = ({mode}) => {
           background: "rgba(0, 0, 0, 0.1)",
         }}
       />
-      <ColumnRight customPermissionList={customPermissionList}/>
+      <ColumnRight customPermissionList={customPermissionList} filterOption={filterOption}/>
     </Grid>
   );
 };

@@ -36,6 +36,7 @@ async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, 
 function* createTask(action) {
   try {
     const { task } = yield call(doCreateTask, action.options);
+    console.log(task, "CreateTask");
     yield put(createTaskSuccess({ task }, action.options));
     CustomEventEmitter(CREATE_TASK);
     //SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);

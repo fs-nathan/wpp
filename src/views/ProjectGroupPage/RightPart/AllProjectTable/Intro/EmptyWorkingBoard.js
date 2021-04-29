@@ -31,7 +31,7 @@ function IntroEmptyWorkingBoard({groupID}) {
               src={get(group, 'icon')}
               alt='avatar'
             />
-            <strong>{get(group, "name")}</strong>
+            <strong style={{fontSize: "14px"}}>{get(group, "name")}</strong>
           </div>
           <p>{t("EMPTY_WORKING_BOARD_MESSAGE_1")}</p>
           <p>{t("EMPTY_WORKING_BOARD_MESSAGE_2")}</p>

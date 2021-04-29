@@ -57,7 +57,7 @@ const ModalCommon = (props) => {
       maxWidth={props.maxWidth || "sm"}
       aria-labelledby="customized-dialog-title"
       open={true}
-      className="modal-common-container"
+      className={`modal-common-container ${props.className}`}
     >
       <DialogTitleCus
         id="customized-dialog-title"

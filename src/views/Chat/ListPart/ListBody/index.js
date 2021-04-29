@@ -57,7 +57,6 @@ function ListBody() {
     if (focusId) {
       const ele = document.getElementById(focusId)
       if (ele) {
-        // console.log('focusId', focusId)
         rqId = setTimeout(function () {
           scrollRef.current.scrollTop(ele.offsetTop)
           dispatch(clearFocusTaskGroup());
@@ -65,8 +64,7 @@ function ListBody() {
       }
     }
     return () => {
-      // console.log('focusTopId clearTimeout')
-      // clearTimeout(rqId);
+
     }
   })
   return (

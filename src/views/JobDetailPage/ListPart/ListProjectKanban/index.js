@@ -1,18 +1,17 @@
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import MuiExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import { mdiMenuUp } from "@mdi/js";
+import {mdiMenuUp} from "@mdi/js";
 import Icon from "@mdi/react";
 import clsx from "classnames";
 import React from "react";
-import { Scrollbars } from "react-custom-scrollbars";
-import { useSelector } from "react-redux";
+import {Scrollbars} from "react-custom-scrollbars";
+import {useSelector} from "react-redux";
 import "../ListPart.scss";
 import ListProjectBody from "./ListProjectBody";
 import ListProjectHeader from "./ListProjectHeader";
 import ProjectItem from "./ProjectItem";
-import { connect } from 'react-redux';
-import { filter, map, get } from 'lodash';
+import {filter, get, map, size} from 'lodash';
 import "./styles.scss";
 
 function ListProject(props) {
@@ -65,6 +64,7 @@ function ListProject(props) {
         autoHideTimeout={500}
       >
         {data.map((group) => {
+          if(size(group.projects) === 0) return;
           return (
             <div key={group.id}>
               <ExpansionPanel

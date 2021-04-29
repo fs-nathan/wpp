@@ -85,7 +85,6 @@
   &-container {
     display: flex;
     flex-direction: column;
-    //padding: 10px 15px !important;
   }
   &--title {
     color: #555555;
@@ -132,8 +131,8 @@
   &-listMembersItem {
     display: flex;
     align-items: center;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 25px;
+    padding-right: 25px;
     cursor: pointer;
     &:hover {
       background: #F3F5FB;
@@ -168,6 +167,10 @@
     .MuiListItemSecondaryAction-root {
       display: flex;
       align-items: center;
+      right: 0;
+    }
+    .MuiTypography-body2 {
+      font-size: 15px;
     }
   }
 }

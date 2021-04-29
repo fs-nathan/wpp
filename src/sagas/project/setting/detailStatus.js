@@ -36,7 +36,7 @@ function* detailStatus(action) {
   } catch (error) {
     yield put(detailStatusFail(error, action.options));
     CustomEventEmitter(DETAIL_STATUS.FAIL);
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+    //SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }
 }
 

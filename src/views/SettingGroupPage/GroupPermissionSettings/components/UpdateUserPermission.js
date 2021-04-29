@@ -79,6 +79,7 @@ function UpdateUserPermissionModal({onClose, user, onSuccess}) {
           name: t("Hoàn thành"),
         },
       ]}
+      className={"comp_SetPermissionUsersModal_wrapper"}
     >
       <DialogContent dividers className="comp_SetPermissionUsersModal_content">
         <Scrollbars autoHide autoHeight autoHeightMin={450}>
@@ -94,7 +95,7 @@ function UpdateUserPermissionModal({onClose, user, onSuccess}) {
                       className="onHover__hide"
                       style={{ fill: "#8d8d8d" }} path={mdiAccountKey} size={1}
                     />
-                    <span style={{marginLeft: "7px"}}>{user.group_permission_name}</span>
+                    <span style={{marginLeft: "7px"}}>{user.group_permission_name ?? t("LABEL_PERMISSION_NOT_ASSIGN")}</span>
                   </Box>
                 }/>
               </ListItem>

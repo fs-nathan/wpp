@@ -36,14 +36,14 @@ function MemberSetting({
   }, [project_id, _projectId]);
 
   React.useEffect(() => {
-    if (!isNil(projectId)) {
+    if (!isNil(projectId) && open) {
       doMemberProject({ projectId });
     }
-  }, [projectId, doMemberProject, viewPermissions]);
+  }, [projectId, doMemberProject, viewPermissions, open]);
 
   React.useEffect(() => {
     doListUserRole();
-  }, [projectId, viewPermissions, doListUserRole]);
+  }, [doListUserRole]);
 
   const [searchPattern, setSearchPattern] = React.useState('');
 

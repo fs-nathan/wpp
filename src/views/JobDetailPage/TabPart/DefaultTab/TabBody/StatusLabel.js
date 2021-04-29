@@ -38,7 +38,7 @@ const StatusLabel = ({ value, type, hasIcon = false, ...rest }, ref) => {
       style={hasIcon ? {cursor: "pointer"}: {}}
     >
       {t(labelButton)}
-      {hasIcon && (<Icon path={mdiChevronDown} size={0.9} color={colorStatus[value]}/>)}
+      {hasIcon && (<Icon path={mdiChevronDown} size={0.9} color={colorStatus[value] ?? "red"}/>)}
     </span>
   )
 }

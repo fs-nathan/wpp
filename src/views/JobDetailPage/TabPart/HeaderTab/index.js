@@ -20,10 +20,13 @@ function HeaderTab({ title, onClickBack, onClickOpen, rightIcon, buttonTooltipTe
         </abbr>
       </IconButton>
       <ColorTypo className="headerTab--text" uppercase >{title}</ColorTypo>
-      <IconButton className={clsx("headerTab--button", { "headerTab--button__hidden": rightIcon === null })}>
-        {/*<abbr title={buttonTooltipText || t('LABEL_CHAT_TASK_CAI_DAT')}>
+      <IconButton
+        className={clsx("headerTab--button", { "headerTab--button__hidden": rightIcon === null })}
+        onClick={onClickOpen}
+      >
+        <abbr title={buttonTooltipText || t('LABEL_CHAT_TASK_CAI_DAT')}>
           <Icon path={rightIcon === "settings" ? mdiAccountCogOutline : mdiSettings} size={1} />
-        </abbr>*/}
+        </abbr>
       </IconButton>
     </div>
   );

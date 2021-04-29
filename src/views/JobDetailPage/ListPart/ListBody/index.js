@@ -15,7 +15,7 @@ import {listTaskDataTypes} from '../ListHeader/CreateJobSetting';
 import ListBodyItem from './ListBodyItem';
 import ListBodySubHeader from './ListBodySubHeader';
 import './styles.scss';
-import {clearFocusTaskGroup} from 'actions/taskDetail/taskDetailActions';
+import {clearFocusTaskGroup, getListTaskDetail} from 'actions/taskDetail/taskDetailActions';
 import {Icon} from "@mdi/react";
 import {mdiMenuDown} from '@mdi/js';
 import {getViewAllMessage} from "../../../../components/Drawer/DrawerService";
@@ -46,6 +46,7 @@ function ListBody() {
   const taskId = useSelector(taskIdSelector);
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
   //const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const [listDataNotRoom, setListDataNotRoom] = React.useState([]);
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
@@ -68,6 +69,13 @@ function ListBody() {
       setCustomListTaskDataType(listTaskDataTypes[0]);
     }
   }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey, selectedFilter]);
+
+  React.useEffect(() => {
+    if (selectedFilter === 0) dispatch(getListTaskDetail(projectId, listTaskDataTypes[0]));
+    else if(selectedFilter === 1) {
+      dispatch(getListTaskDetail(projectId, listTaskDataTypes[1]));
+    }
+  }, [selectedFilter, projectId, dispatch]);
 
   React.useEffect(() => {
     setListDataNotRoom(flatten(map(listTaskDetail, function (group) {
@@ -116,7 +124,7 @@ function ListBody() {
         <div className={"listJoBody--taskControlTop_left"}>
           <div className={"customSelectBox"} onClick={(evt) => setAnchorElFilterControl(evt.currentTarget)}>
             {renderTitleSelectedFilter()}
-            <Icon path={mdiMenuDown} size={1.5} color={"rgba(0,0,0,0.54)"}/>
+            <Icon path={mdiMenuDown} size={1} color={"rgba(0,0,0,0.54)"}/>
           </div>
         </div>
         <div className={"listJobBody--taskControlTop_right"} onClick={() => handleViewAll().then(() => {

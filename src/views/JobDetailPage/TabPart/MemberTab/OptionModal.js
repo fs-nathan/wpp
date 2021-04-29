@@ -114,10 +114,11 @@ function OptionModal({
   }
 
   React.useEffect(() => {
-    if(!isNil(get(privateChatData, "task_id"))) {
+    if(!isNil(get(privateChatData, "task_id")) && open) {
       history.push(`/chats?task_id=${get(privateChatData, "task_id")}`);
     }
-  }, [privateChatData, history]);
+  }, [privateChatData, history, open]);
+
   return (
     <Dialog
       disableBackdropClick={true}
@@ -169,13 +170,15 @@ function OptionModal({
               </div>
             </div>
           </Box>
-          <Button
-            color="primary" variant="contained"
-            disableElevation className={"btnLeaveWork"}
-            onClick={() => setModalConfirm(true)}
-          >
-            {t("LABEL_OUT_WORKING")}
-          </Button>
+          {get(member, "can_ban") && (
+            <Button
+              color="primary" variant="contained"
+              disableElevation className={"btnLeaveWork"}
+              onClick={() => setModalConfirm(true)}
+            >
+              {t("LABEL_OUT_WORKING")}
+            </Button>
+          )}
         </Box>
       </DialogContent>
       <DialogActions>

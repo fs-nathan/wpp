@@ -715,7 +715,7 @@ function* rootSaga() {
   );
 
   //Member::
-  yield takeLeading(
+  yield takeEvery(
     taskDetailType.GET_MEMBER_REQUEST,
     taskDetailSaga.getMember
   );

@@ -1,24 +1,20 @@
-import { Avatar, ListItemAvatar, ListItemText } from '@material-ui/core';
+import {Avatar, CircularProgress, ListItemText} from '@material-ui/core';
 import Chip from '@material-ui/core/Chip';
-import { CircularProgress } from '@material-ui/core';
-import { mdiPin } from '@mdi/js';
+import {mdiPin} from '@mdi/js';
 import Icon from '@mdi/react';
-import { viewChat } from 'actions/chat/chat';
-import { chooseTask, getTaskDetailTabPart, showTab } from 'actions/taskDetail/taskDetailActions';
+import {viewChat} from 'actions/chat/chat';
+import {showTab} from 'actions/taskDetail/taskDetailActions';
 import clsx from 'classnames';
 import ColorChip from 'components/ColorChip';
 import ColorTypo from 'components/ColorTypo';
-import SimpleDonutChart from 'components/SimpleDonutChart';
 import AvatarSquareGroup from 'components/AvatarSquareGroup';
 import React, {useState} from 'react';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
+import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
-import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
-import { lastJobSettingKey } from '../../ListHeader/CreateJobSetting';
-import { setNumberMessageNotView } from "actions/chat/threadChat";
-import { doCreateThreadChatPrivate } from "actions/chat/threadChat";
+import {currentColorSelector, makeSelectIsCanView} from 'views/JobDetailPage/selectors';
+import {doCreateThreadChatPrivate, setNumberMessageNotView} from "actions/chat/threadChat";
 import "./style.scss"
 
 const BadgeItem = styled(ColorChip)`
@@ -167,13 +163,7 @@ function ListBodyItem(props) {
 
   function onClickItem() {
     if (isLoading) return;
-    // dispatch(chooseTask(props.id));
-    // dispatch(getTaskDetailTabPart({ taskId: props.id }));
     dispatch(showTab(0))
-    // dispatch(loadChat(props.id))
-    // getMemberByTaskId(props.id)
-    // getMemberNotAssignedByTaskId(props.id)
-    // console.log('history', history.search)
     const { pathname } = history.location;
     const path = pathname.split('?')[0]
     if (props.new_chat) {
@@ -185,8 +175,6 @@ function ListBodyItem(props) {
     }
     history.push({ pathname: path, search: `?task_id=${props.id}` });
   }
-
-  const fillColor = props.complete === 100 ? '#00e690' : '#eee';
   return (
     <div
       className={clsx("container-lbd", {

@@ -1,32 +1,17 @@
-import { List, ListItem, ListItemText, Typography } from '@material-ui/core';
+import {List, ListItem} from '@material-ui/core';
 import React from 'react';
-import { Scrollbars } from 'react-custom-scrollbars';
-import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import {Scrollbars} from 'react-custom-scrollbars';
+import {useTranslation} from 'react-i18next';
+import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import { updatePriority, getMember, focusTaskGroup } from '../../../../../actions/taskDetail/taskDetailActions';
+import {getMember} from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
-import SimpleSmallProgressBar from '../../../../../components/SimpleSmallProgressBar';
-import colorPal from '../../../../../helpers/colorPalette';
-import { isExpiredDate } from '../../../../../helpers/jobDetail/stringHelper';
-import { taskIdSelector } from '../../../selectors';
-import Description from './Description';
-import HtmlTooltip from './HtmlTooltip';
-import ModalPriority from './ModalPriority';
-import ModalStatus from './ModalStatus';
-import StatusLabel, { TYPE_PRIORITY, TYPE_STATUS } from './StatusLabel';
+import {taskIdSelector} from '../../../selectors';
 import './styles.scss';
 import ConversationInfo from "./ConversationInfo"
 
-const ListItemButtonGroup = styled(ListItem)`
-  flex-wrap: wrap;  
-  & > * > *:first-child {
-    text-transform: none;
-    }
-  }
-`;
 
 const ListItemTab = styled(ListItem)`
   border-top: 1px solid #eee;
@@ -63,26 +48,11 @@ const BadgeItem = styled(ColorChip)`
     border-radius: 2px;
   }
 `
-const ContentText = styled(ColorTypo)`
-  font-weight: 500;
-  font-size: 15px;
-`
+
 const Body = styled(Scrollbars)`
   grid-area: body;
   height: 100%;
 `;
-
-function getStatusCode(status_code, complete) {
-  if (complete === 100)
-    return 2;
-  if (status_code === 3)
-    return 3;
-  if (status_code === 4)
-    return 4;
-  if (complete === 0)
-    return 0;
-  return 1;
-}
 
 function TabBody(props) {
   const { t } = useTranslation();
@@ -106,11 +76,11 @@ function TabBody(props) {
     imgCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
     linkCnt: t('LABEL_CHAT_TASK_DANG_TAI')
   }
-  // console.log("Props::::", value.detailTask)
+
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
   let content = ""
   let data = ""
-  // let dataComplete = ""
+
   if (detailTask) {
     content = detailTask.description || ""
     data = detailTask

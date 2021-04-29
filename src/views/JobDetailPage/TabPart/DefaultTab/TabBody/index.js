@@ -6,7 +6,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import {
   focusTaskGroup,
-  getMember,
+  getMember, stopTask,
   updatePriority,
   updateTaskStatus
 } from '../../../../../actions/taskDetail/taskDetailActions';
@@ -74,18 +74,6 @@ const Body = styled(Scrollbars)`
   height: 100%;
 `;
 
-function getStatusCode(status_code, complete) {
-  if (complete === 100)
-    return 2;
-  if (status_code === 3)
-    return 3;
-  if (status_code === 4)
-    return 4;
-  if (complete === 0)
-    return 0;
-  return 1;
-}
-
 function TabBody(props) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -151,13 +139,9 @@ function TabBody(props) {
     })
   }, [detailTask, t])
 
-  function onChangeItem(idx) {
-    dispatch(updatePriority({ task_id: taskId, priority: idx }))
-  }
-
   function onClickMember() {
     props.setShow(8)
-    dispatch(getMember({ task_id: taskId }))
+    dispatch(getMember({ task_id: taskId, group_by_role: true }))
   }
 
   function onClickGroupTask() {
@@ -167,7 +151,11 @@ function TabBody(props) {
 
   function handleUpdateTaskStatus(status) {
     setTooltipChangeTaskStatus(null);
-    dispatch(updateTaskStatus({task_id: taskId, status}));
+    if(status === 4) {
+      dispatch(stopTask(taskId));
+    } else {
+      dispatch(updateTaskStatus({task_id: taskId, status}));
+    }
   }
   return (
     <div className="listPartTabBody">
@@ -193,14 +181,12 @@ function TabBody(props) {
             </ListItemText>
           </ListItem>
           <ListItemButtonGroup>
-            {taskStatistic.state_code !== 3 &&
-              <StatusLabel
-                type={TYPE_STATUS}
-                value={getStatusCode(taskStatistic.state_code, taskStatistic.complete)}
-                hasIcon={true}
-                onClick={(evt) => setTooltipChangeTaskStatus(evt.currentTarget)}
-              />
-            }
+            <StatusLabel
+              type={TYPE_STATUS}
+              value={taskStatistic.state_code}
+              hasIcon={true}
+              onClick={(evt) => setTooltipChangeTaskStatus(evt.currentTarget)}
+            />
             <HtmlTooltip classes={{ tooltip: "listPartTabBody--tooltip" }}
               TransitionProps={{ timeout: 0 }}
               title={<ModalPriority value={taskStatistic.priority_code} />}
@@ -278,12 +264,15 @@ function TabBody(props) {
             return (
               <>
                 {index === 3 && (<Divider style={{marginTop: 10}}/>)}
-                <Box className={"toolTipUpdateStatus-item"}>
+                <Box className={"toolTipUpdateStatus-item"} onClick={() => {
+                  if(taskStatistic.complete !== 100) handleUpdateTaskStatus(item.value);
+                }}>
                   <div className={"toolTipUpdateStatus-itemHeader"}>
                     <Radio
-                      checked={getStatusCode(taskStatistic.state_code, taskStatistic.complete) === item.value}
+                      checked={taskStatistic.state_code === item.value}
                       value={item.value}
                       onChange={() => handleUpdateTaskStatus(item.value)}
+                      disabled={taskStatistic.complete === 100}
                     />
                     <Typography variant={"h6"} color={"textSecondary"}>
                       {t(item.label)}

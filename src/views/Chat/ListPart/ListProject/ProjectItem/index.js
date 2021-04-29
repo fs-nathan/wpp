@@ -16,7 +16,6 @@ const ProjectItem = ({
   }
 
   return (
-    // redirect ? <Redirect to='/target' /> :
     <div className={clsx("projectItem", { "projectItem__selected": isSelected })}
       onClick={onClickItem}
     >

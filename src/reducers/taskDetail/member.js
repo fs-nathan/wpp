@@ -5,6 +5,7 @@ import { searchArrayTabpart } from '../../helpers/jobDetail/arrayHelper'
 // Initial state for store
 const initialState = {
     member: [],
+    membersByRole: [],
     defaultMember: [],
     memberNotAssigned: [],
     user_roles: [],
@@ -29,6 +30,13 @@ export default function reducer(state = initialState, action) {
                 member: action.payload.members,
                 defaultMember: action.payload.members,
             };
+        case types.GET_MEMBER_SUCCESS_GROUP_BY_ROLE:
+            return {
+                ...state,
+                isFetching: false,
+                dataFetched: true,
+                membersByRole: action.payload.members
+            }
         case types.GET_MEMBER_FAIL:
             return {
                 ...state,

@@ -12,7 +12,7 @@
 }
 
 .departmentList_containerHasHeader .comp_LeftSideContainer___container {
-  grid-template-rows: 175px calc(100vh - 70px - 227px);
+  grid-template-rows: 150px calc(100vh - 70px - 200px);
 }
 
 .departmentList_containerHasHeader .comp_LeftSideContainer___header {
@@ -33,8 +33,8 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 5px;
-  margin: 10px;
-  border-top: 1px solid rgba(0,0,0,0.22);
+  margin: 10px 15px;
+  //border-top: 1px solid rgba(0,0,0,0.22);
   a {
     cursor: pointer;
   }
