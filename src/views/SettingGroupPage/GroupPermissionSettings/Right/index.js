@@ -596,7 +596,7 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
   );
 };
 
-const ColumnLeftMembers = ({setCustomPermissionList}) => {
+const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
   const {t} = useTranslation();
   const [filterKeyword, setFilterKeyword] = React.useState("");
   const [isHover, setIsHover] = React.useState({});
@@ -626,7 +626,7 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
        return;
       }
     });
-  }, [groupUsers]);
+  }, [groupUsers, dispatch]);
 
   React.useEffect(() => {
     const _group = map(groupUsers, function (group) {
@@ -642,7 +642,6 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
     setIsHover({...isHover});
   }
   function handleSelectUser(user) {
-    setSelectedUser(user);
     if(user.group_permission_id) {
       setSelectedGroup(user.group_permission_id);
       dispatch(
@@ -652,6 +651,7 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
       );
     } else {
       setCustomPermissionList([]);
+      setFilterOption(1);
     }
   }
   useEffect(() => {
@@ -758,7 +758,7 @@ const Right = ({mode}) => {
         <ColumnLeft filterOption={filterOption} setFilterOption={setFilterOption}/>
       )}
       {mode === "MEMBERS_PERMISSION" && (
-        <ColumnLeftMembers setCustomPermissionList={setCustomPermissionList}/>
+        <ColumnLeftMembers setCustomPermissionList={setCustomPermissionList} setFilterOption={setFilterOption}/>
       )}
       <div
         style={{
