@@ -116,9 +116,9 @@ const ContentBox = styled.div`
 const Image = styled.img`
   height: 40px !important;
   width: 40px;
-  background: #fff;
+  border: 1px solid #ffffff8a;
   border-radius: 50%;
-  padding: 2px;
+  padding: 3px;
 `;
 
 function getTaskByChat(data, taskDetails) {
@@ -482,9 +482,9 @@ function MainLayout({
               <LogoBox
               onClick={() => setVisibleGroupModal(true)}
               className={collapse ? 'logo-collapse' : 'logo-default'}
-              style={{ background: bgColor.color, backgroundImage: `url(${!collapse && images.bg_logo_menu})`, backgroundSize: '105% 100%', backgroundPositionX: '50%'}}
+              style={{ background: bgColor.color}}
             >
-              <div className={collapse ? 'logo-collapse' : 'logo-default'} style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%', border: '1px solid #ffffff'}}>
+              <div className={collapse ? 'logo-collapse' : 'logo-default'} style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%',marginTop: '10px'}}>
                <Image
                 src={groupDetail.logo || avatar_default_120}
                 alt="vtask-logo-menu"

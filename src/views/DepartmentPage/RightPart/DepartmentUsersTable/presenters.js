@@ -117,7 +117,7 @@ function StateBadge({ user }) {
   const { t } = useTranslation();
 
   return (
-    get(user, 'is_lock', true) === true ? <Icon path={mdiLock} size={1} color={'rgb(103 98 98 / 70%)'} />:
+    get(user, 'is_lock', true) === true ? <Icon title={t('IDS_WP_LOCKED')} path={mdiLock} size={1} color={'rgb(103 98 98 / 70%)'} />:
     get(user, 'state', 0) === 0
       ? (
         <LightTooltip
@@ -369,6 +369,7 @@ function DepartmentUsersTable({
         id="simple-menu"
         anchorEl={menuAnchorEl}
         open={Boolean(menuAnchorEl)}
+        className="more_menu"
         onClose={() => setMenuAnchorEl(null)}
         transformOrigin={{
           vertical: -30,
@@ -406,6 +407,7 @@ function DepartmentUsersTable({
         }}>
         <div className="menu_icon"><Icon path={mdiAccountCog} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div className="menu_label">{t('IDS_WP_SETTING_MEMBER')}</div>
         </MenuItem>
+        {get(user, 'is_me', false) === false &&
         <MenuItem>
         <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
           <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
@@ -413,6 +415,7 @@ function DepartmentUsersTable({
           <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!inforUser?.userInfor?.is_lock ? handleLockAccount: handleUnLockAccount}>{!inforUser?.userInfor?.is_lock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
         </div>
         </MenuItem>
+        }
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
           <MenuItem >
             <div className="menu_icon"><Icon path={mdiAccountArrowRight} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> 

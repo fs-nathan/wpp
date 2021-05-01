@@ -226,7 +226,7 @@ const ModalSettingMember = ({
     };
     // eslint-disable-next-line
   }, [updatedUser]);
-
+console.log(inforUser, 'user')
   React.useEffect(() => {
     doListRoom();
     // eslint-disable-next-line
@@ -252,12 +252,12 @@ const ModalSettingMember = ({
       setOpen={setOpen}
       onCancle={() => setOpen(false)}
       manualClose={true}
-      className="modal_setting-member"
+      className={`modal_setting-member ${(tab === "2") | (tab === "3") && 'hidden_submit'}`}
       title={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}
       cancleRender={
         (tab === "2") | (tab === "3") && (() => t("LABEL_CHAT_TASK_THOAT"))
       }
-      confirmRender={(tab === "2") | (tab === "3") && (() => null)}
+      confirmRender={(tab === "2") | (tab === "3") && (() => (null))}
       type="submit"
       form="form-update-account"
     >
@@ -281,11 +281,16 @@ const ModalSettingMember = ({
               </p>
               <p>
                 {t("DMH.VIEW.DP.RIGHT.UT.STATE.TITLE")}:{" "}
+                {!inforUser.userInfor.is_lock ?
                 <span style={{ color: "green", fontSize: "14px" }}>
-                  {!inforUser.userInfor.is_locked
-                    ? t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE")
-                    : t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.LOCK")}
+                  
+                    {t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE")}
+                    
+                </span>:
+                <span style={{ color: "red", fontSize: "14px" }}>
+                  {t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.LOCK")}
                 </span>
+                }
               </p>
               <p>
                 {t("views.calendar_page.right_part.label.created_by")}:{" "}
@@ -312,6 +317,7 @@ const ModalSettingMember = ({
                 </div>
                 <div>{t("IDS_WP_COMMON_SETUP")}</div>
               </div>
+              {inforUser.userInfor.user_type === 3 &&
               <div
                 className={`modalSettingMember-tab-left_menu-item ${
                   tab === "2" && "modalSettingMember-tab-left_menu-item_active"
@@ -323,6 +329,8 @@ const ModalSettingMember = ({
                 </div>
                 <div>{t("IDS_WP_ACCOUNT_INTERNAL")}</div>
               </div>
+              }
+              {!inforUser.userInfor.is_me && 
               <div
                 className={`modalSettingMember-tab-left_menu-item ${
                   tab === "3" && "modalSettingMember-tab-left_menu-item_active"
@@ -334,6 +342,7 @@ const ModalSettingMember = ({
                 </div>
                 <div>{t("IDS_WP_LOCK_MEMBER")}</div>
               </div>
+              }
             </div>
           </div>
           <div className="modalSettingMember-right">

@@ -2442,7 +2442,7 @@
    "IDS_WP_UNLOCK": "Unlock",
    "IDS_WP_DELETE_MEMBER": "Remove members from the group",
    "IDS_WP_RESET_PASSWORD": "Reset Password",
-   "IDS_WP_RESET_PASSWORD_NOTE": "After resetting the password, the system will send a notification email to the member to know this action has occurred but cannot know the newly created password. Members using this account will not be able to access the system!",
+   "IDS_WP_RESET_PASSWORD_NOTE": "After resetting the password, the system will send an email to inform members. However Member cannot access the Account if the Owner does not grant a new password",
    "IDS_WP_RESET": "Reset",
    "IDS_WP_SPECIES": "Species",
    "IDS_WP_CHECK_PASSWORD": "The password does not match",
@@ -2456,6 +2456,12 @@
    "IDS_WP_CREATE_ACCOUNT_ENTER_NAME": "Enter your full name",
    "IDS_WP_CREATE_ACCOUNT_FILE_EXCEL_TYPE": "The file must be in the correct excel file format",
    "IDS_WP_UPLOAD_FILE_EXCEL_ERROR_SAMPLE_FILE": "The file must be the same as the sample file",
-   "IDS_WP_UPLOAD_FILE_EXCEL_ERROR_CAPACITY_FILE": "File cannot exceed 100 lines (excluding column names)"
+   "IDS_WP_UPLOAD_FILE_EXCEL_ERROR_CAPACITY_FILE": "File cannot exceed 100 lines (excluding column names)",
+   "IDS_WP_AUTHENTICATED": "AUTHENTICATED",
+   "IDS_WP_UN_LOCK_MEMBER_NOTE": "Account is locked and membership is disabled.",
+   "IDS_WP_LOCKED": "The account is locked",
+   "IDS_WP_CREATING_ACOUNT": "Creating an account",
+   "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Please wait a second!"
+
 
 }
