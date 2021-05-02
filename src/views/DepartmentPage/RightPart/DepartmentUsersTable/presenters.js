@@ -184,7 +184,6 @@ function DepartmentUsersTable({
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
 
   function doOpenMenu(anchorEl, user) {
-    console.log(anchorEl, user)
     setMenuAnchorEl(anchorEl);
     setUser(user);
     dispatch(actionGetInfor(user?.id));

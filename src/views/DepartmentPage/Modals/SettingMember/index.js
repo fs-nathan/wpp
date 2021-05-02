@@ -226,7 +226,6 @@ const ModalSettingMember = ({
     };
     // eslint-disable-next-line
   }, [updatedUser]);
-console.log(inforUser, 'user')
   React.useEffect(() => {
     doListRoom();
     // eslint-disable-next-line

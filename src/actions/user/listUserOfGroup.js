@@ -3,6 +3,7 @@ import {
   LIST_USER_OF_GROUP_FAIL,
   LIST_USER_OF_GROUP_SUCCESS,
   LIST_USER_OF_GROUP_RESET,
+  FILTER_LIST_USER_OF_GROUP_SUCCESS
 } from '../../constants/actions/user/listUserOfGroup';
 
 export const listUserOfGroup = (quiet = false) => ({
@@ -19,6 +20,7 @@ export const listUserOfGroupSuccess = ({ rooms, maxUser }, options) => ({
   },
 });
 
+
 export const listUserOfGroupFail = (error, options) => ({
   type: LIST_USER_OF_GROUP_FAIL,
   options,
@@ -27,4 +29,13 @@ export const listUserOfGroupFail = (error, options) => ({
 
 export const listUserOfGroupReset = () => ({
   type: LIST_USER_OF_GROUP_RESET,
+});
+
+export const listUserFilterOfGroupSuccess = ({ rooms, maxUser }, options) => ({
+  type: FILTER_LIST_USER_OF_GROUP_SUCCESS,
+  options,
+  data: {
+    rooms,
+    maxUser,
+  },
 });
