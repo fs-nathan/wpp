@@ -335,32 +335,6 @@ class SettingInfo extends Component {
                   {t("IDS_WP_CHANGE_ACCOUNT")}
                 </div>
 
-                <CustomModal
-                  onCancle={() => this.setState({ visible: false })}
-                  open={this.state.visible}
-                  className="modal-verify-account"
-                  setOpen={() => {
-                    this.setState({visible: true});
-                  }}
-                  title={t("IDS_WP_VERIFY_ACCOUNT_TITLE_NOTIFY")}
-                  confirmRender={null}
-                  cancleRender={()=>(t("IDS_WP_BUTTON_CLOSE"))}
-                  height="miniWide"
-                >
-                  <div className="modal-verify-account_content">
-                    <p>
-                      {t("IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY")}{" "}
-                      <strong style={{ color: "red" }}>
-                        {this.state.email}
-                      </strong>
-                    </p>
-                    <p>
-                      {ReactParserHtml(
-                        t("IDS_WP_VERIFY_ACCOUNT_CONTENT_NOTIFY2")
-                      )}
-                    </p>
-                  </div>
-                </CustomModal>
                 <ModalVerifyAccount email={this.state.email} visible={this.state.visible}  onCancle={()=>this.setState({visible: false})}/>
                 <CustomModal
                   onCancle={() => this.setState({ visibles: false })}
@@ -388,9 +362,10 @@ class SettingInfo extends Component {
                       </div>
                       <div style={{ color: "red",
                           fontWeight: "600",
-                          backgroundColor: "#E6E6E6",
+                          backgroundColor: "rgb(242 242 242)",
                           padding: '15px',
                           border: "none",
+                          borderRadius: "5px"
                        }}>
                          {this.state.email}
                       </div>

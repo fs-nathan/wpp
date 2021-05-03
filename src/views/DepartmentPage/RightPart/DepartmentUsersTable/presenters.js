@@ -133,7 +133,7 @@ function StateBadge({ user }) {
           }
         >
           <TooltipWrapper>
-            <CustomBadge color='#ec1000'>
+            <CustomBadge weightBold="false" color='rgb(255 255 255)' backgroundColor="rgb(236 16 0)">
               {t('DMH.VIEW.DP.RIGHT.UT.STATE.PRI.NAME')}
             </CustomBadge>
           </TooltipWrapper>
@@ -153,7 +153,7 @@ function StateBadge({ user }) {
           }
         >
           <TooltipWrapper>
-            <CustomBadge color='#48bb78'>
+            <CustomBadge weightBold="false" color='rgb(255 255 255)' backgroundColor='rgb(0 191 79)'>
               {t('DMH.VIEW.DP.RIGHT.UT.STATE.PUB.NAME')}
             </CustomBadge>
           </TooltipWrapper>
@@ -340,7 +340,7 @@ function DepartmentUsersTable({
         }, {
           label: t('DMH.VIEW.DP.RIGHT.UT.LABEL.ROLE'),
           field: (user) => <TooltipRole user={user} />,
-          align: 'left',
+          align: 'center',
           width: '10%',
         }, {
           label: t('DMH.VIEW.DP.RIGHT.UT.STATE.TITLE'),

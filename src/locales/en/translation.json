@@ -2436,7 +2436,7 @@
    "IDS_WP_FILTER_LIST_MEMBER": "Filter the list of members",
    "IDS_WP_ACCOUNT_MEMBER_JOIN": "Join account",
    "IDS_WP_SETTING_MEMBER": "Membership settings",
-   "IDS_WP_LOCK_MEMBER": "Lock into long distance",
+   "IDS_WP_LOCK_MEMBER": "Lock member",
    "IDS_WP_LOCK_MEMBER_NOTE": "Disable group member activity",
    "IDS_WP_LOCk": "Lock up",
    "IDS_WP_UNLOCK": "Unlock",
@@ -2457,11 +2457,13 @@
    "IDS_WP_CREATE_ACCOUNT_FILE_EXCEL_TYPE": "The file must be in the correct excel file format",
    "IDS_WP_UPLOAD_FILE_EXCEL_ERROR_SAMPLE_FILE": "The file must be the same as the sample file",
    "IDS_WP_UPLOAD_FILE_EXCEL_ERROR_CAPACITY_FILE": "File cannot exceed 100 lines (excluding column names)",
-   "IDS_WP_AUTHENTICATED": "AUTHENTICATED",
+   "IDS_WP_AUTHENTICATED": "VERIFIED",
    "IDS_WP_UN_LOCK_MEMBER_NOTE": "Account is locked and membership is disabled.",
    "IDS_WP_LOCKED": "The account is locked",
    "IDS_WP_CREATING_ACOUNT": "Creating an account",
-   "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Please wait a second!"
+   "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Please wait a second!",
+   "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TITLE": "Your account is locked on the group {{group_name}}",
+   "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT": "Contact the Group Owner to unlock or select another Workgroup"
 
 
 }

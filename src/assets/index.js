@@ -67,3 +67,4 @@ export { default as icon_add_member} from "./ic_add_member.png";
 export { default as icon_create_user} from "./ic_create_user.png";
 export { default as person_pin_circle} from "./person_pin_circle.svg";
 export { default as upcoming} from "./upcoming.svg";
+export { default as icon_block_user} from "./ic_block_user.png";
