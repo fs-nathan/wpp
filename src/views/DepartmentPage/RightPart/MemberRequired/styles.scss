@@ -1,13 +1,28 @@
 .view_Department_MemberRequired {
   &__List {
     padding: 10px 15px;
+    .MuiListItem-container {
+      width: 45%;
+    }
     .MuiListItem-root {
       border: 1px solid rgba(0,0,0,0.22);
+      border-radius: 3px;
+      &:hover {
+        border: 1px solid var(--color-primary);
+        border-radius: 3px;
+      }
       &:not(:last-child) {
         margin-bottom: 10px;
       }
       .MuiTypography-colorTextSecondary {
-        color: var(--color-primary);
+        color: #888;
+        font-size: 14px;
+      }
+    }
+    .MuiListItemText-root{
+      .MuiTypography-body1 {
+        font-size: 18px;
+        color: #333;
       }
     }
     .MuiListItemAvatar-root {
@@ -21,6 +36,9 @@
         text-transform: unset;
         border-radius: 2px;
         padding: unset;
+        .MuiButton-label {
+          font-size: 14px;
+        }
       }
     }
     .MuiLink-underlineHover {

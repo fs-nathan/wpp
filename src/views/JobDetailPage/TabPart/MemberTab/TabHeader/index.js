@@ -12,9 +12,7 @@ function TabHeader({ setShow }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const {
-    manage_member,
-  } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
+  const {manage_member} = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
   const [openAddModal, setOpenAddModal] = React.useState(false);
   function onClickCreateMember() {
     setOpenAddModal(true)
@@ -27,7 +25,7 @@ function TabHeader({ setShow }) {
         buttonTooltipText={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
         onClickBack={() => setShow(0)}
         onClickOpen={onClickCreateMember}
-        rightIcon={manage_member ? 'settings' : null}
+        rightIcon={null}
       />
       <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
     </div>

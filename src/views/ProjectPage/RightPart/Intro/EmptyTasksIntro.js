@@ -25,7 +25,7 @@ function EmptyTasksIntro({projectName, handleOpenModal, work_type = 0}) {
             <Button variant={"contained"} color={"primary"} disableElevation onClick={() => handleOpenModal("CREATE")}>
               {t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}
             </Button>
-            <Button variant={"outlined"} disableElevation onClick={() => handleOpenModal("ADD_MEMBER")}>
+            <Button variant={"outlined"} disableElevation onClick={() => handleOpenModal("MEMBERS_SETTING")}>
               {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
             </Button>
           </Box>

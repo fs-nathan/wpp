@@ -3,7 +3,7 @@ import {useTranslation} from 'react-i18next';
 import './GroupAccountModal.scss';
 import {connect} from 'react-redux';
 import {mdiAccountMultiple, mdiClose, mdiMagnify} from '@mdi/js';
-import {get} from 'lodash';
+import {get, concat, size} from 'lodash';
 import {actionToast} from '../../actions/system/system';
 import ItemGroupAcount from './ItemGroupAccount';
 import {isEmpty} from '../../helpers/utils/isEmpty';
@@ -13,6 +13,8 @@ import Icon from '@mdi/react';
 import {Button, IconButton, InputAdornment, InputBase, List, ListItem, ListItemText} from "@material-ui/core";
 import CustomModal from 'components/CustomModal';
 import LoadingBox from "../LoadingBox";
+import { Scrollbars } from 'react-custom-scrollbars';
+import {upcoming} from "assets";
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -66,7 +68,7 @@ function RenderJoinGroup ({setMode, handleFetchData}) {
       setEmptyMess(null);
       setGroupSearch(res.data.group);
     } catch (e) {
-      setEmptyMess(e.message);
+      setEmptyMess(t("Không có nhóm nào được tìm thấy"));
       setGroupSearch({});
     }
   }, [setEmptyMess, setGroupSearch, searchValue]);
@@ -84,7 +86,7 @@ function RenderJoinGroup ({setMode, handleFetchData}) {
         <InputBase
           value={searchValue}
           className="view_GroupAccount_Modal_joinGroup_searchBox"
-          style={isFocus ? {border: "1px solid #0097FA"} : {}}
+          style={isFocus ? {border: "2px solid #0097FA"} : {}}
           placeholder={t('MESSAGE_SEARCH_GROUP_FOR_JOIN')} autoFocus
           startAdornment={
             <InputAdornment position="start">
@@ -93,9 +95,11 @@ function RenderJoinGroup ({setMode, handleFetchData}) {
           }
           endAdornment={
             <InputAdornment position={"end"}>
-              <IconButton onClick={() => handleCancel()} style={{marginRight: "5px"}}>
-                <Icon path={mdiClose} size={0.7} color={"rgba(0,0,0,0.54)"}/>
-              </IconButton>
+              {searchValue !== "" && (
+                <IconButton onClick={() => handleCancel()} style={{marginRight: "5px"}}>
+                  <Icon path={mdiClose} size={0.7} color={"rgba(0,0,0,0.54)"}/>
+                </IconButton>
+              )}
               <Button variant={"contained"} color={"primary"} size={"small"} onClick={() => handleSearchGroup()} disableElevation>
                 {t("LABEL_SEARCHING")}
               </Button>
@@ -123,55 +127,66 @@ function RenderJoinGroup ({setMode, handleFetchData}) {
 
 const RenderRightPart = props => {
   const { t } = useTranslation();
-
+  function renderEmptyView(type) {
+    return <div className={"view_GroupAccount_Modal__emptyView"}>
+      <img src={upcoming} alt={""} width={50}/>
+      <span>{t(`LABEL_GROUP_ACCOUNT_EMPTY_${type}`)}</span>
+    </div>
+  }
   switch (props.mode) {
     case "ACTIVE":
       return (
         <>
           <SubHeader>
-            <IconButton style={{ marginRight: '10px', background: '#0090EF'}}>
+            <IconButton style={{ marginRight: '10px', background: 'var(--color-primary)', padding: "7px"}}>
               <Icon path={mdiAccountMultiple} size={1} color={"#fff"} />
             </IconButton>
             <Primary>{t("LABEL_GROUP_JOINING")}</Primary>
           </SubHeader>
-          <p className="view_GroupAccount_Modal___subheader-item">{t("LABEL_GROUP_OWNER")} (1)</p>
-          {!isEmpty(props.groupList.group_me) && (
-            <ItemGroupAcount
-              item={props.groupList.group_me}
-              type="group_me"
-              handleFetchData={props.handleFetchData}
-            />
-          )}
-          {
-            !isEmpty(props.groupList.group_joins) && (
-              <>
-                <p className="view_GroupAccount_Modal___subheader-item">{t("LABEL_GROUP_JOINED")} ({parseInt((get(props.groupList, "group_joins").length))})</p>
-                {props.groupList.group_joins.map((group, idx) => (
-                  <ItemGroupAcount
-                    item={group}
-                    groupMe={props.groupList.group_me}
-                    key={idx}
-                    type="group_joins"
-                    handleFetchData={props.handleFetchData}
-                  />
-                ))}
-              </>
-            )
-          }
+          <div style={{padding: "0 20px"}}>
+            <p className="view_GroupAccount_Modal___subheader-item">{t("LABEL_GROUP_OWNER")} (1)</p>
+            <Scrollbars autoHide autoHeight autoHeightMin={395}>
+              {!isEmpty(props.groupList.group_me) && (
+                <ItemGroupAcount
+                  item={props.groupList.group_me}
+                  type="group_me"
+                  handleFetchData={props.handleFetchData}
+                />
+              )}
+              {
+                !isEmpty(props.groupList.group_joins) && (
+                  <>
+                    <p className="view_GroupAccount_Modal___subheader-item">{t("LABEL_GROUP_JOINED")} ({parseInt((get(props.groupList, "group_joins").length))})</p>
+                    {props.groupList.group_joins.map((group, idx) => (
+                      <ItemGroupAcount
+                        item={group}
+                        groupMe={props.groupList.group_me}
+                        key={idx}
+                        type="group_joins"
+                        handleFetchData={props.handleFetchData}
+                      />
+                    ))}
+                  </>
+                )
+              }
+            </Scrollbars>
+          </div>
         </>
       );
     case "REQUIRE":
       return (
         <>
           <SubHeader>
-            <IconButton style={{ marginRight: '10px', background: '#0090EF' }}>
+            <IconButton style={{ marginRight: '10px', background: 'var(--color-primary)', padding: "7px" }}>
               <Icon path={mdiAccountMultiple} size={1} color={"#fff"} />
             </IconButton>
             <Primary>{t("LABEL_GROUP_REQUIRED")}</Primary>
           </SubHeader>
+          <div style={{padding: "0 20px"}}>
+            { isEmpty(props.groupList.requirements) && renderEmptyView("REQUIREMENTS")}
           {
             !isEmpty(props.groupList.requirements) && (
-              <>
+              <Scrollbars autoHide autoHeight autoHeightMin={395}>
                 {props.groupList.requirements.map((group, idx) => (
                   <div className="item-group">
                     <ItemGroupAcount
@@ -184,24 +199,32 @@ const RenderRightPart = props => {
                     />
                   </div>
                 ))}
-              </>
+              </Scrollbars>
             )
           }
+          </div>
         </>
       );
     case "INVITE":
+      let groupDemo = props.groupList.group_demo;
+      let groups = props.groupList.invitations;
+      if(size(groupDemo) > 0) {
+        groupDemo["is_demo"] = true;
+        groups = concat(groups, groupDemo);
+      }
       return (
         <>
           <SubHeader>
-            <IconButton style={{ marginRight: '10px', background: '#0090EF' }}>
+            <IconButton style={{ marginRight: '10px', background: 'var(--color-primary)', padding: "7px" }}>
               <Icon path={mdiAccountMultiple} size={1} color={"#fff"} />
             </IconButton>
             <Primary>{t("LABEL_GROUP_INVITED")}</Primary>
           </SubHeader>
+          { isEmpty(groups) && renderEmptyView("INVITATIONS")}
           {
-            !isEmpty(props.groupList.invitations) && (
-              <>
-                {props.groupList.invitations.map((group, idx) => (
+            !isEmpty(groups) && (
+              <Scrollbars autoHide autoHeight autoHeightMin={395}>
+                {groups.map((group, idx) => (
                   <div className="item-group">
                     <ItemGroupAcount
                       item={group}
@@ -212,7 +235,7 @@ const RenderRightPart = props => {
                     />
                   </div>
                 ))}
-              </>
+              </Scrollbars>
             )
           }
         </>
@@ -245,7 +268,7 @@ function GroupAccountModal({ open, setOpen, ...props }) {
       color: '#fff',
     },
     {
-      title: <p>{t('LABEL_GROUP_INVITED')} ({!isEmpty(groupList) ? get(groupList, "invitations").length : 0})</p>,
+      title: <p>{t('LABEL_GROUP_INVITED')} ({!isEmpty(groupList) ? parseInt((get(groupList, "invitations").length)) + (!isEmpty(get(groupList, "group_demo")) ? 1 : 0) : 0})</p>,
       action: (() => { setMode("INVITE") }),
       color: '#fff',
     }
@@ -262,23 +285,6 @@ function GroupAccountModal({ open, setOpen, ...props }) {
   useEffect(() => {
     handleFetchData().then(r => setLoading(false));
   }, []);
-
-  const handleToast = (type, message) => {
-    props.actionToast(type, message);
-  };
-
-  const handleRequestJoinDemo = async group_id => {
-    try {
-      setLoading(true);
-      await services.requestJoinGroupDemoService(group_id);
-      handleFetchData();
-      handleToast('success', 'Đã gửi yêu cầu thành công!');
-    } catch (error) {
-      handleToast('error', error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <CustomModal
@@ -299,7 +305,7 @@ function GroupAccountModal({ open, setOpen, ...props }) {
             <List>
               <OptionItem onClick={(() => { setMode("CREATE") })}>
                 <ListItemText primary={
-                  <Button className="join-group-new" style={{backgroundColor: "dodgerblue", width: "100%"}}>
+                  <Button className="join-group-new" style={{backgroundColor: "var(--color-primary)", width: "100%"}}>
                       <span className="text-join-group-new" style={{ textTransform: 'uppercase', color: "#ffffff", fontWeight: "400" }}>
                         {t('IDS_WP_JOIN_NEW_GROUP')}
                       </span>

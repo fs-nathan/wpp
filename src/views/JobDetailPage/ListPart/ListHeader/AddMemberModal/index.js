@@ -23,21 +23,26 @@ import {connect, useDispatch, useSelector} from 'react-redux';
 import './styles.scss';
 import Link from "@material-ui/core/Link";
 import SearchIcon from "@material-ui/icons/Search";
-import {filter, find, get, map, set, size, toLower, isNil, concat, differenceBy, split, last} from "lodash";
+import {concat, filter, find, get, isNil, last, map, findIndex, size, split, toLower} from "lodash";
 import List from "@material-ui/core/List";
 import {withStyles} from '@material-ui/core/styles';
 import {mdiCheckboxBlankCircleOutline, mdiCheckboxMarkedCircle} from '@mdi/js';
 import Icon from "@mdi/react";
 import Scrollbars from "react-custom-scrollbars";
+import * as taskDetailAction from "../../../../../actions/taskDetail/taskDetailActions";
 import {
   createMember,
   deleteMember,
   getMemberNotAssigned,
   updateRolesForMember
 } from "../../../../../actions/taskDetail/taskDetailActions";
-import {CustomEventDispose, CustomEventListener} from "../../../../../constants/events";
+import {
+  ADD_MEMBER_PROJECT,
+  CustomEventDispose,
+  CustomEventListener,
+  REMOVE_MEMBER_PROJECT
+} from "../../../../../constants/events";
 import {EVENT_ADD_MEMBER_TO_TASK_SUCCESS} from "../../../../../constants/actions/taskDetail/taskDetailConst";
-import * as taskDetailAction from "../../../../../actions/taskDetail/taskDetailActions";
 import MemberSetting from "../../../../ProjectPage/Modals/MembersSetting";
 import {useHistory} from "react-router-dom";
 import {listUserRole} from "../../../../../actions/userRole/listUserRole";
@@ -74,71 +79,76 @@ const BootstrapInput = withStyles((theme) => ({
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
   const dispatch = useDispatch();
   const [searchPattern, setSearchPattern] = React.useState("");
   const [filteredMembers, setFilteredMembers] = React.useState([]);
-  const [selected, setSelected] = React.useState({});
   const colors = useSelector(state => state.setting.colors);
   const bgColor = find(colors, {"selected": true});
   const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const history = useHistory();
+  let projectID = last(split(history.location.pathname, "/"));
+  const [totalMembers, setTotalMembers] = React.useState([]);
+  const [selectedFilter, setSelectedFilter] = React.useState(0);
+  const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectID]);
+  const [taskIDValue, setTaskIDValue] = React.useState(null);
+
+  React.useEffect(() => {
+    setTaskIDValue(get(task, "id", task_id));
+  }, [task_id, task]);
 
   const handleClose = () => {
     setOpen(false);
   };
 
   React.useEffect(() => {
-    const _members = filter(members, function (member) {
+    const _members = filter(totalMembers, function (member) {
       return toLower(member.name).includes(toLower(searchPattern));
     });
     setFilteredMembers(_members);
-  }, [searchPattern, members]);
+  }, [searchPattern, totalMembers]);
 
   React.useEffect(() => {
-    if(!isNil(task_id) && isOpen) {
-      doListMembersNotAssign({task_id});
+    if(!isNil(taskIDValue) && isOpen) {
+      doListMembersNotAssign({task_id: taskIDValue});
       doListUserRole(true);
     }
-  }, [task_id, doListMembersNotAssign, isOpen, doListUserRole]);
-
-  function handleSelectMember(id) {
-    set(selected, id, !get(selected, id, false));
-    setSelected({...selected});
-  }
+  }, [taskIDValue, doListMembersNotAssign, isOpen, doListUserRole]);
 
   function handleRemoveMember(member_id) {
-    doDeleteMember({task_id, member_id});
+    doDeleteMember({task_id: taskIDValue, member_id});
   }
 
   function handleUpdateRoleMember(member_id, role_id) {
-    doUpdateRoleMember({task_id, member_id, role_id});
+    doUpdateRoleMember({task_id: taskIDValue, member_id, role_id});
   }
 
   function handleAddMember(member_id) {
-    doCreateMember({task_id, member_id});
+    doCreateMember({task_id: taskIDValue, member_id});
   }
-  function handleFilterSelect() {
-    const _members = filter(members, function (member) {
-      return selected.hasOwnProperty(member.id);
-    });
-    setFilteredMembers(_members);
-  }
+
   React.useEffect(() => {
     const reloadAfterActionMember = () => {
-      dispatch(taskDetailAction.getMember({task_id}));
+      dispatch(taskDetailAction.getMember({task_id: taskIDValue}));
       doListMembersNotAssign({task_id});
     }
     CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+    CustomEventListener(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+    CustomEventListener(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
     return () => {
       CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      CustomEventDispose(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+      CustomEventDispose(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
     }
   });
 
-  members = concat(members, differenceBy(membersNotAssigned, members, "id"));
+  React.useEffect(() => {
+    setTotalMembers(concat(members, membersNotAssigned));
+    setFilteredMembers(concat(members, membersNotAssigned));
+  }, [members, membersNotAssigned]);
 
   return (
     <DialogWrap
@@ -152,7 +162,7 @@ function AddMemberModal({
       scroll="body" useScrollbar={false}
     >
       <DialogContent className="AddMemberModal-container">
-        <div style={{padding: "10px 15px"}}>
+        <div style={{padding: "10px 25px"}}>
           <Paper component="form" elevation={0} variant={"outlined"} className={classes.root}>
             <IconButton  aria-label="menu">
               <SearchIcon />
@@ -168,19 +178,27 @@ function AddMemberModal({
             {t("LABEL_SEARCH_MEMBERS_TO_ADD_DES")}
           </Typography>
           <Typography>
-            <Link href={"#"} onClick={() => setOpenMemberSetting(true)}>
-              + {t("LABEL_ADD_MEMBER_TO_BOARD")}
-            </Link>
+            {get(permissions, "update_project", false) && (
+              <Link onClick={() => setOpenMemberSetting(true)} style={{cursor: "pointer"}}>
+                + {t("LABEL_ADD_MEMBER_TO_BOARD")}
+              </Link>
+            )}
           </Typography>
           <Box className={"AddMemberModal-btnGroup"}>
             <Chip
-              clickable onClick={() => setFilteredMembers(members)}
-              label={`${t("IDS_WP_ALL")} (${size(members)})`} color={"primary"}
+              clickable onClick={() => {
+                setFilteredMembers(totalMembers);
+                setSelectedFilter(0);
+              }}
+              label={`${t("IDS_WP_ALL")} (${size(totalMembers)})`} color={selectedFilter === 0 ? "primary" : "default"}
             />
-            {size(filter(selected, function (value, key) { return value;})) > 0 && (
+            {size(members) > 0 && (
               <Chip
-                clickable onClick={() => handleFilterSelect()}
-                label={`${t("GANTT_SELECTED")} (${size(filter(selected, function (value, key) { return value;}))})`}
+                clickable onClick={() => {
+                  setFilteredMembers(members);
+                  setSelectedFilter(1);
+                }} color={selectedFilter === 1 ? "primary" : "default"}
+                label={`${t("LABEL_ASSIGNED_COUNT")} (${size(members)})`}
               />
             )}
           </Box>
@@ -190,19 +208,15 @@ function AddMemberModal({
             {map(filteredMembers, function (member) {
               return (
                 <Box className={"AddMemberModal-listMembersItem"} onClick={() => {
-                  if(get(member, "type_assign", "") === "") {
-                    handleSelectMember(member.id);
+                  if(findIndex(membersNotAssigned, {"id": member.id}) >= 0) {
                     handleAddMember(member.id);
                   }
                 }}>
-                  {get(member, "type_assign", "") !== "" && (
-                    <Icon path={mdiCheckboxMarkedCircle} size={1} color={get(bgColor, "color")}/>
+                  {findIndex(members, {"id": member.id}) >= 0 && (
+                    <Icon path={mdiCheckboxMarkedCircle} size={1.083} color={get(bgColor, "color")}/>
                   )}
-                  {get(member, "type_assign", "") === "" && !selected[member.id] && (
-                    <Icon className={"checkIcon"} path={mdiCheckboxBlankCircleOutline} size={1} color={"rgba(0,0,0,0.54)"}/>
-                  )}
-                  {get(member, "type_assign", "") === "" && selected[member.id] && (
-                    <Icon path={mdiCheckboxMarkedCircle} size={1} color={get(bgColor, "color")}/>
+                  {findIndex(membersNotAssigned, {"id": member.id}) >= 0 && (
+                    <Icon className={"checkIcon"} path={mdiCheckboxBlankCircleOutline} size={1.083} color={"rgba(0,0,0,0.54)"}/>
                   )}
                   <List component={"nav"} dense={true} style={{width: "100%"}}>
                     <ListItem>
@@ -211,25 +225,30 @@ function AddMemberModal({
                       </ListItemAvatar>
                       <ListItemText primary={member.name} secondary={member.email}/>
                       <ListItemSecondaryAction>
-                        {get(member, "type_assign", "") !== "" && (
+                        {findIndex(members, {"id": member.id}) >= 0 && (
                           <>
-                            <FormControl className={classes.margin}>
-                              <Select
-                                input={<BootstrapInput />} displayEmpty
-                                value={get(member, "role.id", "")}
-                                onChange={(evt) => handleUpdateRoleMember(member.id, evt.target.value)}
-                              >
-                                {isNil(get(member, "role.id")) && (
-                                  <MenuItem value={""}>{t("LABEL_SET_MEMBER_ROLE")}</MenuItem>
-                                )}
-                                {map(userRoles, function (role) {
-                                  return <MenuItem value={role.id}>{role.name}</MenuItem>
-                                })}
-                              </Select>
-                            </FormControl>
-                            <div className={"memberTypeAssigned"} onClick={() => handleRemoveMember(member.id)}>
-                              <span>{t("LABEL_LEAVE_TASK")}</span>
-                            </div>
+                            {member.is_in_group && (
+                              <FormControl className={classes.margin}>
+                                <Select
+                                  input={<BootstrapInput />} displayEmpty
+                                  value={get(member, "role.id", "")}
+                                  onChange={(evt) => handleUpdateRoleMember(member.id, evt.target.value)}
+                                >
+                                  {isNil(get(member, "role.id")) && (
+                                    <MenuItem value={""}>{t("LABEL_SET_MEMBER_ROLE")}</MenuItem>
+                                  )}
+                                  {map(userRoles, function (role) {
+                                    return <MenuItem value={role.id}>{role.name}</MenuItem>
+                                  })}
+                                </Select>
+                              </FormControl>
+                            )}
+                            {get(member, "is_in_group") === false && <span style={{color: "red"}}>{t('LABEL_CHAT_TASK_DA_ROI_NHOM')}</span>}
+                            {get(member, "can_ban") && (
+                              <div className={"memberTypeAssigned"} onClick={() => handleRemoveMember(member.id)}>
+                                <span>{t("LABEL_LEAVE_TASK")}</span>
+                              </div>
+                            )}
                           </>
                         )}
                       </ListItemSecondaryAction>
@@ -241,7 +260,7 @@ function AddMemberModal({
           </Box>
         </Scrollbars>
       </DialogContent>
-      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting} project_id={last(split(history.location.pathname, "/"))}/>
+      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting} project_id={projectID}/>
     </DialogWrap>
   );
 }

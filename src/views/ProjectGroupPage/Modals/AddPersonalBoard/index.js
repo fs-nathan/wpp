@@ -12,14 +12,15 @@ import {
   ListItemText,
   ListSubheader,
   makeStyles,
-  Paper, Typography
+  Paper,
+  Typography
 } from "@material-ui/core";
 import "./styles.scss";
 import SearchIcon from "@material-ui/icons/Search";
 import {connect} from "react-redux";
 import {listProjectForSelect} from "../../../../actions/project/listProject";
 import {listProjectGroup} from "../../../../actions/projectGroup/listProjectGroup";
-import {filter, forEach, get, map, set, toLower, size} from "lodash";
+import {filter, forEach, get, map, size, toLower} from "lodash";
 import {updatePinBoardSetting} from "../../../../actions/project/setting/updatePinBoardSetting";
 import * as images from "assets/index";
 import LoadingBox from "../../../../components/LoadingBox";
@@ -44,6 +45,7 @@ function AddToPersonalBoardModal({
   const [selectedProjects, setSelectedProjects] = React.useState({});
   const [projectGroups, setProjectGroups] = React.useState(groups);
   const [createWorkingModal, setCreateWorkingModal] = React.useState(false);
+
   React.useEffect(() => {
     if(open === true) {
       doListProjectGroup({
@@ -75,17 +77,17 @@ function AddToPersonalBoardModal({
   }, [searchPattern, projectGroups]);
 
   React.useEffect(() => {
-    const _selectedProjects = {};
-    forEach(groups.groups, function (group) {
+    const _projects = {};
+    forEach(projectGroups, function (group) {
       forEach(group.projects, function (project) {
-        set(_selectedProjects, project.id, false);
+        _projects[project.id] = false;
       });
     });
-    setSelectedProjects({..._selectedProjects});
-  }, [groups.groups]);
+    setSelectedProjects(_projects);
+  }, [projectGroups]);
+
   function handleSelectedProject(projectID) {
-    set(selectedProjects, projectID, !selectedProjects[projectID]);
-    setSelectedProjects({...selectedProjects});
+    setSelectedProjects(({...selectedProjects, [projectID]: !selectedProjects[projectID]}));
   }
   function handlePinProjects() {
     const _projects = [];
@@ -142,7 +144,7 @@ function AddToPersonalBoardModal({
                 >
                   {map(group.projects, function (project, key) {
                     return (
-                      <ListItem id={`list-group-project-${key}`}>
+                      <ListItem id={`list-group-project-${key}`} onClick={() => handleSelectedProject(project.id)}>
                         <ListItemIcon>
                           <Checkbox
                             color={"primary"} edge="start"

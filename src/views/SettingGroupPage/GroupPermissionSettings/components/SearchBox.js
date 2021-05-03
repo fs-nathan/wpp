@@ -76,15 +76,16 @@ const useStyles2 = makeStyles({
 });
 export function RoundSearchBox({ className, ...rest }) {
   const classes = useStyles2();
+  const [focus, setFocus] = React.useState(false);
   return (
-    <div className={classnames(classes.container, className)}>
+    <div className={classnames(classes.container, className)} style={focus ? {outline: "1px solid var(--color-primary)", borderRadius: "3px"} : {}}>
       <Icon
         className={classes.icon}
         path={mdiMagnify}
         size={1}
         color="rgba(0,0,0,.3)"
       />
-      <InputBase className={classes.searchBoxBase} {...rest} />
+      <InputBase className={classes.searchBoxBase} {...rest} onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}/>
     </div>
   );
 }

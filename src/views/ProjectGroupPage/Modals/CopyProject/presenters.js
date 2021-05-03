@@ -23,18 +23,6 @@ import {useSelector} from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Routes } from "constants/routes";
 
-const Header = ({ className = '', ...props }) =>
-  <ColorTypo
-    className={`view_ProjecrGroup_Copy_Project_Modal___header ${className}`}
-    {...props}
-  />;
-
-const StyledTypo = ({ className = '', ...props }) =>
-  <Typography
-    className={`view_ProjecrGroup_Copy_Project_Modal___typography ${className}`}
-    {...props}
-  />;
-
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
     className={`view_ProjecrGroup_Copy_Project_Modal___form-control ${className}`}

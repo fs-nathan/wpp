@@ -19,6 +19,12 @@ export default function reducer(state = initialState, action) {
         data: action.data,
         loading: false
       }
+    case types.THREAD_CHAT_CREATE_PRIVATE_RESET:
+      return {
+        ...state,
+        loading: false,
+        data: {}
+      }
     default:
       return state
   }

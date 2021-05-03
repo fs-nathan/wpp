@@ -477,6 +477,7 @@ const rootReducer = combineReducers({
     listGroupTask,
     listGroupOffer,
     listGroupPermission,
+    createPrivateChat
   }),
   room: combineReducers({
     listRoom,

@@ -97,6 +97,11 @@
   &:active {
     background: #ddd;
   }
+  span {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
 
 @mixin view_Project_MemberSetting_Modal___add-button {

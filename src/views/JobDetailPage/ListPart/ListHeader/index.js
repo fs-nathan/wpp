@@ -113,16 +113,14 @@ function ListHeader(props) {
               <Icon path={mdiSettingsOutline} size={1.2} className="job-detail-icon setting-icon" />
             </ButtonIcon>
           </abbr>
-          {create_task &&
-            <abbr title={t('LABEL_CHAT_TASK_TAO_CONG_VIEC')}>
-              < ButtonIcon
-                className="dropdown-icon"
-                onClick={handleClick}
-              >
-                <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
-              </ButtonIcon>
-            </abbr>
-          }
+          <abbr title={t('LABEL_CHAT_TASK_TAO_CONG_VIEC')}>
+            <ButtonIcon
+              className="dropdown-icon"
+              onClick={handleClick}
+            >
+              <Icon path={mdiPlus} size={1.2} className="job-detail-icon" />
+            </ButtonIcon>
+          </abbr>
         </div>
       </div>
       <Menu
@@ -157,7 +155,7 @@ function ListHeader(props) {
         setOpen={setOpenSettings}
         curProject={projectThis}
       />
-    </div >
+    </div>
   );
 }
 

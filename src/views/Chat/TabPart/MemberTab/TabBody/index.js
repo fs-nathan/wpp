@@ -20,10 +20,9 @@ function TabBody() {
     dispatch(searchMember(e.target.value));
   }
   function handleClickPermission() {
-    console.log('handleClickPermission')
-    setOpen(true)
-    dispatch(getMember({ task_id: taskId }))
-    dispatch(getMemberNotAssigned({ task_id: taskId }))
+    setOpen(true);
+    dispatch(getMember({ task_id: taskId }));
+    dispatch(getMemberNotAssigned({ task_id: taskId }));
   }
   return (
     <Scrollbars className="memberTabBody"

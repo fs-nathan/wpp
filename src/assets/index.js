@@ -64,4 +64,5 @@ export { default as add_user_group} from "./15-3.add_user.png";
 export { default as bg_logo_menu} from "./bg_logo_menu.png";
 export { default as icon_add_member} from "./ic_add_member.png";
 export { default as icon_create_user} from "./ic_create_user.png";
-
+export { default as person_pin_circle} from "./person_pin_circle.svg";
+export { default as upcoming} from "./upcoming.svg";

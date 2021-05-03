@@ -19,13 +19,19 @@ import {get, size} from "lodash";
 import "./style.scss";
 import List from "@material-ui/core/List";
 import CustomModal from "../../../../components/CustomModal";
+import CloseIcon from "@material-ui/icons/Close";
 
 function AddUserModalPresenter({
-  open, setOpen, handleSearchUser, desireUser,
+  open, setOpen, handleSearchUser, desireUser, handleClearSearch,
   handleClearDesireUsers, handleInviteUserJoinGroup
 }) {
   const {t} = useTranslation();
   const [searchPattern, setSearchPattern] = React.useState("");
+  const [focus, setFocus] = React.useState(false);
+  function handleClear() {
+    setSearchPattern("");
+    handleClearSearch();
+  }
   return (
     <CustomModal
       open={open} setOpen={setOpen} onCancle={() => setOpen(false)}
@@ -35,9 +41,12 @@ function AddUserModalPresenter({
       confirmRender={() => t("IDS_WP_SEARCH")}
       onConfirm={() => handleSearchUser({info: searchPattern})}
       height={"miniWide"}
-      manualClose={true}
+      manualClose={true} className={"addMemberModal-container"}
     >
-      <Paper component="form" elevation={0} variant={"outlined"} className={"addMemberModal-searchBox"}>
+      <Paper
+        component="form" elevation={0} variant={"outlined"} className={"addMemberModal-searchBox"}
+        style={focus ? {border: "2px solid var(--color-primary)"} : {}}
+      >
         <IconButton  aria-label="menu">
           <SearchIcon />
         </IconButton>
@@ -46,7 +55,13 @@ function AddUserModalPresenter({
           placeholder={t("LABEL_SEARCH_MEMBER_TO_ADD")}
           inputProps={{ 'aria-label': 'search personal board' }}
           onChange={evt => setSearchPattern(evt.currentTarget.value)}
-          value={searchPattern}
+          value={searchPattern} autoFocus
+          onFocus={() => setFocus(true)} onBlur={() => setFocus(false)}
+          endAdornment={
+            searchPattern !== "" && <IconButton size={"small"} onClick={() => handleClear()}>
+              <CloseIcon/>
+            </IconButton>
+          }
         />
       </Paper>
       <div className={"addMemberModal-noteWrapper"}>

@@ -21,6 +21,7 @@ import {COLOR_ACTIVE} from '../../constants/actions/system/system';
 import './GroupAccountModal.scss'
 import * as services from '../../components/Drawer/DrawerService';
 import List from "@material-ui/core/List";
+import {get} from "lodash";
 
 const ItemGroupAccount = props => {
   const { t } = useTranslation();
@@ -105,17 +106,6 @@ const ItemGroupAccount = props => {
     }
   };
 
-  const resendRequireUser = async (e, requirement_id) => {
-    e.stopPropagation();
-    try {
-      await services.resendInviteUserService(requirement_id);
-      if (props.handleFetchData) props.handleFetchData();
-      handleToast('success', t('IDS_WP_RESEND_REQUEST_SUCCESS'));
-    } catch (error) {
-      handleToast('error', error.message);
-    }
-  };
-
   const handleActiveGroup = async item => {
     try {
       localStorage.setItem(COLOR_ACTIVE, item.color);
@@ -132,10 +122,35 @@ const ItemGroupAccount = props => {
     handleToast('success', `${t('IDS_WP_ALREADY_COPY')} ${text}`);
   };
 
-  const bgColor = props.colors.find(item => item.selected === true);
+  const handleRequestJoinDemo = async group_id => {
+    try {
+      setLoading(true);
+      await services.requestJoinGroupDemoService(group_id);
+      handleToast('success', 'Đã gửi yêu cầu thành công!');
+      window.location.reload();
+    } catch (error) {
+      handleToast('error', error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   function renderGroupAction(setIsHover, isHover) {
     switch (props.type) {
+      case 'group_me':
+        return (
+          <>
+            {isHover && props.groupActive.code !== item.code && (
+              <Button
+                variant={"contained"} disableElevation color={"primary"}
+                onClick={() => {handleActiveGroup(item); setIsHover(true)}}
+                onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+              >
+                {t('LABEL_CHAT_TASK_CHON')}
+              </Button>
+            )}
+          </>
+        );
       case 'join':
         return (
           <>
@@ -150,6 +165,7 @@ const ItemGroupAccount = props => {
               <Button
                 variant={"contained"} disableElevation color={"primary"}
                 onClick={e => requestJoinGroup(e, item.id)}
+                onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
               >
                 {t('IDS_WP_JOIN')}
               </Button>
@@ -157,7 +173,6 @@ const ItemGroupAccount = props => {
           </>
         );
       case 'group_joins':
-      case 'group_me':
         return (
           <>
             {isHover && (
@@ -185,12 +200,16 @@ const ItemGroupAccount = props => {
       case 'requirements':
         return (
           <>
-            <Button color={"primary"} size={"small"} onClick={e => rejectJoinGroup(e, item.requirement_id)}>
+            <Button
+              color={"primary"} size={"small"} onClick={e => rejectJoinGroup(e, item.requirement_id)}
+              onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+            >
               {t('IDS_WP_CANCEL')}
             </Button>
             <Button
               variant={"contained"} disableElevation color={"primary"}
               onClick={e => handleToast('success', t('IDS_WP_SEND_REQUEST_SUCCESS'))}
+              onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
             >
               {t('IDS_WP_RESEND')}
             </Button>
@@ -199,15 +218,32 @@ const ItemGroupAccount = props => {
       case 'invitations':
         return (
           <>
-            <Button color={"primary"} size={"small"} onClick={e => rejectInvitation(e, item.invitation_id)}>
-              {t('IDS_WP_CANCEL')}
-            </Button>
-            <Button
-              variant={"contained"} disableElevation color={"primary"}
-              onClick={e => acceptInvitation(e, item.invitation_id)}
-            >
-              {t('IDS_WP_APPROVE')}
-            </Button>
+            {!get(item, "is_demo", false) && (
+              <>
+                <Button
+                  color={"primary"} size={"small"} onClick={e => rejectInvitation(e, item.invitation_id)}
+                  onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+                >
+                  {t('IDS_WP_CANCEL')}
+                </Button>
+                <Button
+                  variant={"contained"} disableElevation color={"primary"}
+                  onClick={e => acceptInvitation(e, item.invitation_id)}
+                  onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+                >
+                  {t('IDS_WP_APPROVE')}
+                </Button>
+              </>
+            )}
+            {get(item, "is_demo", false) && (
+              <Button
+                variant={"contained"} disableElevation color={"primary"}
+                onClick={e => handleRequestJoinDemo(item.id)}
+                onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+              >
+                {t('IDS_WP_APPROVE')}
+              </Button>
+            )}
           </>
         );
       default:
@@ -228,8 +264,11 @@ const ItemGroupAccount = props => {
         }}
       >
         <List component={"nav"} className="view_GroupAccount_Modal__groupItem">
-          <ListItem onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}>
-            {isHover && <Box className={"view_GroupAccount_Modal__actionMask"}/>}
+          <ListItem
+            onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+            className={`${props.groupActive.code === item.code && "view_GroupAccount_Modal__groupItem--Active"}`}
+          >
+            {isHover && (props.groupActive.code !== item.code || props.type !== "group_me") && <Box className={"view_GroupAccount_Modal__actionMask"}/>}
             <ListItemAvatar>
               <CustomAvatar style={{ width: 50, height: 50, }} className="avatar" src={item.logo || image.avatar_user} alt='avatar' />
             </ListItemAvatar>
@@ -260,8 +299,8 @@ const ItemGroupAccount = props => {
               )}
             </div>}/>
             <ListItemSecondaryAction>
-              {props.groupActive.code === item.code && !isHover && (
-                <CheckCircleIcon fontSize={"large"} htmlColor={"#009DFA"}/>
+              {props.groupActive.code === item.code && (!isHover || props.type === "group_me") && (
+                <CheckCircleIcon fontSize={"large"} htmlColor={"var(--color-primary)"}/>
               )}
               {renderGroupAction(setIsHover, isHover)}
             </ListItemSecondaryAction>

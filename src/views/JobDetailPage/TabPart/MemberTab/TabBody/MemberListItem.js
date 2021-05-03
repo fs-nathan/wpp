@@ -9,7 +9,10 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import './styles.scss';
 import * as images from '../../../../../assets/index';
-import {threadChatCreatePrivate} from "../../../../../actions/taskDetail/taskDetailActions";
+import {
+  threadChatCreatePrivate,
+  threadChatCreatePrivateReset
+} from "../../../../../actions/taskDetail/taskDetailActions";
 import {get, isNil} from "lodash";
 import {useHistory} from "react-router-dom";
 
@@ -57,8 +60,9 @@ const MemberListItem = ({
   React.useEffect(() => {
     if(!isNil(get(privateChatData, "task_id"))) {
       history.push(`/chats?task_id=${get(privateChatData, "task_id")}`);
+      dispatch(threadChatCreatePrivateReset());
     }
-  }, [privateChatData, history]);
+  }, [privateChatData, history, dispatch]);
   return (
     <React.Fragment>
       <StyledListItem className="memberItem">

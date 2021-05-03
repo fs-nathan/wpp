@@ -1,12 +1,11 @@
-import { get } from 'lodash';
-import { call, put, select } from "redux-saga/effects";
-import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
+import {get} from 'lodash';
+import {call, put, select} from "redux-saga/effects";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
-import { apiService } from "../../constants/axiosInstance";
-import {CREATE_TASK, DELETE_TASK, CustomEventEmitter, UPDATE_TASK_STATUS_EVENT} from '../../constants/events';
-import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
-import { CREATE_OFFER } from 'views/OfferPage/redux/types';
-import { getDataPinOnTaskChat } from 'actions/chat/chat';
+import {apiService} from "../../constants/axiosInstance";
+import {CREATE_TASK, CustomEventEmitter, CustomEventEmitterWithParams, DELETE_TASK} from '../../constants/events';
+import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from '../../constants/snackbarController';
+import {CREATE_OFFER} from 'views/OfferPage/redux/types';
+import {getDataPinOnTaskChat} from 'actions/chat/chat';
 import * as types from '../../constants/actions/taskDetail/taskDetailConst';
 
 // Priority
@@ -798,10 +797,10 @@ function* deleteCommand(action) {
 }
 
 // Member
-async function doGetMember({ task_id }) {
+async function doGetMember({ task_id, group_by_role }) {
   try {
     const config = {
-      url: "task/get-member?task_id=" + task_id,
+      url: "task/get-member?task_id=" + task_id + `${group_by_role === true ? "&group_by_role=true" : ""}`,
       method: "get"
     };
     const result = await apiService(config);
@@ -813,7 +812,9 @@ async function doGetMember({ task_id }) {
 function* getMember(action) {
   try {
     const res = yield call(doGetMember, action.payload);
-    yield put(actions.getMemberSuccess(res));
+    if(get(action.payload, "group_by_role")) {
+      yield put(actions.getMemberSuccessGroupByRole(res));
+    } else yield put(actions.getMemberSuccess(res));
   } catch (error) {
     yield put(actions.getMemberFail(error));
   }
@@ -862,9 +863,10 @@ function* createMember(action) {
     if(from !== null && from === "TaskByMember") {
       CustomEventEmitter(types.EVENT_ADD_MEMBER_TO_TASK_SUCCESS);
     } else {
-      yield put(actions.getMember({ task_id: action.payload.task_id }))
-      yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
-      yield put(actions.createMemberSuccess(res))
+      yield put(actions.getMember({ task_id: action.payload.task_id }));
+      yield put(actions.getMember({ task_id: action.payload.task_id, group_by_role: true }));
+      yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }));
+      yield put(actions.createMemberSuccess(res));
     }
 
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
@@ -895,9 +897,10 @@ function* deleteMember(action) {
     if(from !== null && from === "TaskByMember") {
       CustomEventEmitter(types.EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS);
     } else {
-      yield put(actions.getMember({ task_id: action.payload.task_id }))
-      yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }))
-      yield put(actions.deleteMemberSuccess(res))
+      yield put(actions.getMember({ task_id: action.payload.task_id }));
+      yield put(actions.getMemberNotAssigned({ task_id: action.payload.task_id }));
+      yield put(actions.getMember({ task_id: action.payload.task_id, group_by_role: true }));
+      yield put(actions.deleteMemberSuccess(res));
     }
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -1064,6 +1067,7 @@ function* updateRolesForMember(action) {
     yield put(actions.updateRolesForMemberSuccess(res.data))
     yield put(actions.getMember({ task_id: action.payload.task_id }));
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    yield put(actions.getMember({ task_id: action.payload.task_id, group_by_role: true }));
   } catch (error) {
     yield put(actions.updateRolesForMemberFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1176,7 +1180,7 @@ function* createTask(action) {
     yield put(
       actions.getListTaskDetail(action.payload.projectId)
     );
-    CustomEventEmitter(CREATE_TASK);
+    CustomEventEmitterWithParams(CREATE_TASK, {detail: res});
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createTaskFail(error));

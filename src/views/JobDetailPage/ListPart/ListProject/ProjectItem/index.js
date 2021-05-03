@@ -1,10 +1,9 @@
 import clsx from 'clsx';
 import React from 'react';
-import { useSelector } from "react-redux";
+import {useSelector} from "react-redux";
 import './styles.scss';
 import {resolvedWorkType} from "../../../../../helpers/project/commonHelpers";
 import {get} from "lodash";
-import {workTypes} from "../../../../../constants/workTypes";
 import {useTranslation} from "react-i18next";
 
 const ProjectItem = ({
@@ -23,14 +22,13 @@ const ProjectItem = ({
     <div className={clsx("projectItem", { "projectItem__selected": isSelected })}
       onClick={onClickItem}
     >
-      <span>{title}</span>
       <div className={"projectItem--workingType"}>
         <img
           src={resolvedWorkType(get(project, 'work_type', 0))}
-          alt={""} width={25} height={25}
+          alt={""} width={16} height={16}
         />
       </div>
-      <span>{`[${t(workTypes[get(project, 'work_type', 0)])}]`}</span>
+      <span>{title}</span>
     </div>
   );
 };

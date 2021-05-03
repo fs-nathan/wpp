@@ -56,17 +56,7 @@ const GroupPermissionSettings = () => {
     dispatch(settingGroupPermission.actions.loadGroupPermissionList());
   }, [dispatch]);
   useEffect(() => {
-    let id;
-    id = get(select, groupPermissionAttr.id);
-    if (select) {
-      if (id) {
-        dispatch(
-          settingGroupPermission.actions.loadDetailGroupPermission({
-            group_permission_id: id,
-          })
-        );
-      }
-    }
+    let id = get(select, groupPermissionAttr.id);
     if (isDefault) {
       if (id) {
         dispatch(

@@ -1,8 +1,4 @@
-import { chooseTask } from "actions/taskDetail/taskDetailActions";
 import React from 'react';
-import { useDispatch } from "react-redux";
-import { useHistory } from 'react-router-dom';
-import ListProject from '../ListPart/ListProject';
 import ListBanner from './ListBanner';
 import ListBody from './ListBody';
 import ListHeader from './ListHeader';
@@ -21,9 +17,6 @@ function ListTask(props) {
 }
 
 function ListPart(props) {
-  const dispatch = useDispatch();
-  const history = useHistory();
-
   return (
     <div className="container-lp">
       <ListTask />

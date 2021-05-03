@@ -16,5 +16,5 @@
 }
 
 .comp_CustomList___list-item>:not(:first-child) {
-  max-width: 80%;
+  //max-width: 80%;
 }

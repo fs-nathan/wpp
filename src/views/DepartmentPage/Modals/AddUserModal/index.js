@@ -28,7 +28,7 @@ function AddUserModal({open, setOpen, doSearchUser, desireUser, doSearchUserRese
     <AddUserModalPresenter
       open={open} setOpen={setOpen}
       handleSearchUser={doSearchUser}
-      desireUser={desireUser}
+      desireUser={desireUser} handleClearSearch={doSearchUserReset}
       handleClearDesireUsers={() => resetDesireUser()}
       handleInviteUserJoinGroup={doInviteUserJoinGroup}
     />
