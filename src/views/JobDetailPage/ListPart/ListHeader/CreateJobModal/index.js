@@ -1,6 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import {TextField, Typography} from '@material-ui/core';
 import {KeyboardDatePicker, MuiPickersUtilsProvider} from '@material-ui/pickers';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import {
   createTask,
   getListGroupTask,
@@ -344,7 +345,7 @@ function CreateJobModal(props) {
         <React.Fragment>
           {
             (!isEdit || props.editMode === EDIT_MODE.GROUP) &&
-            <>
+            <div className="select-customer-from-input">
               <TitleSectionModal label={title} isRequired />
               <TextField
                 className="offerModal--titleText"
@@ -357,7 +358,8 @@ function CreateJobModal(props) {
                   readOnly: true
                 }}
               />
-            </>
+              <ArrowDropDownIcon className="icon-arrow" />
+            </div>
           }
           {
             (!isEdit || props.editMode === EDIT_MODE.NAME_DES) &&

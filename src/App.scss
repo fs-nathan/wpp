@@ -167,3 +167,16 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
     padding: 10px 15px 10px 20px;
   }
 }
+.select-customer-from-input {
+  position: relative;
+  .icon-arrow {
+    position: absolute;
+    right: 10px;
+    bottom: 12px;
+    color: #b1b1b1;
+    font-size: 30px;
+  }
+  input {
+    cursor: pointer;
+  }
+}

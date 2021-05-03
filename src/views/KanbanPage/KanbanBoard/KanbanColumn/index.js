@@ -103,7 +103,7 @@ const ManagerBox = ({ className = '', ...props }) =>
     {...props}
   />
 
-export function ColumnHeader({ groupTask, index, iconButtons = null, stageName, canUpdateProject, canManageGroupTask, canCreateTask }) {
+export function ColumnHeader({ groupTask, index, iconButtons = null, stageName, canUpdateProject }) {
   const { t } = useTranslation();
   return (
     <Title>
@@ -120,7 +120,7 @@ export function ColumnHeader({ groupTask, index, iconButtons = null, stageName, 
         </div>
         }
         <div>{`${stageName} ${index + 1}`}</div>
-        {canManageGroupTask
+        {groupTask.can_modify
         && !isNil(iconButtons) 
         && <abbr title={t("IDS_WP_MORE")}>
             <IconButton
@@ -142,9 +142,9 @@ export function ColumnHeader({ groupTask, index, iconButtons = null, stageName, 
         <abbr title={get(groupTask, 'name', '')}>
           {`${get(groupTask, 'name', '')}`}
         </abbr>
-        {canCreateTask
-        && !isNil(iconButtons) 
-        && <abbr title={t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}>
+        {
+          !isNil(iconButtons) &&
+          <abbr title={t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}>
             <IconButton
               size="small"
               onClick={iconButtons.plusClick}
@@ -240,10 +240,7 @@ function KanbanColumn({
   const [moreAnchor, setMoreAnchor] = React.useState(null);
 
   const canUpdateProject = get(viewPermissions.permissions, [projectId, 'update_project'], false);
-  const canManageGroupTask = get(viewPermissions.permissions, [projectId, 'manage_group_task'], false); 
-  const canCreateTask = get(viewPermissions.permissions, [projectId, 'create_task'], false);
-  const canUpdateTask = get(viewPermissions.permissions, [projectId, 'update_task'], false);
-  const canDeleteTask = get(viewPermissions.permissions, [projectId, 'delete_task'], false);
+  const canCreateTask = true;
 
   function handleMoreOpen(evt) {
     setMoreAnchor(evt.currentTarget);
@@ -280,8 +277,8 @@ function KanbanColumn({
           }}
           stageName={stageName}
           canUpdateProject={canUpdateProject}
-          canManageGroupTask={canManageGroupTask}
-          canCreateTask={canCreateTask}
+          canManageGroupTask={canUpdateProject}
+          canCreateTask={true}
         />
         <ListScroll
           autoHide
@@ -312,8 +309,8 @@ function KanbanColumn({
                       key={index}
                       projectId={projectId}
                       handleOpenModal={handleOpenModal}
-                      canUpdateTask={canUpdateTask}
-                      canDeleteTask={canDeleteTask}
+                      canUpdateTask={task.can_modify}
+                      canDeleteTask={task.can_modify}
                     />
                   </Draggable>
                 ))}

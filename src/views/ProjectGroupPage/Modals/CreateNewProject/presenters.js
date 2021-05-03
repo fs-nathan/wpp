@@ -11,6 +11,7 @@ import {useTranslation} from 'react-i18next';
 import './style.scss';
 import * as images from "assets/index";
 import SelectGroupProject from '../SelectGroupProject';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 
 const StyledFormControl = ({ className = '', ...props }) =>
@@ -115,15 +116,18 @@ function CreateNewProject({
           multiline={true}
           className={"per-line-step-in-form"}
         />
-        <CustomTextboxSelect
-          value={curProjectGroupName}
-          onClick={() => setOpenSelectGroupProjectModal(true)}
-          label={`${t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}`}
-          fullWidth
-          required={true}
-          className={"view_ProjectGroup_CreateNew_Project_Modal_formItem per-line-step-in-form"}
-          isReadOnly={true}
-        />
+        <div className="select-customer-from-input">
+          <CustomTextboxSelect
+            value={curProjectGroupName}
+            onClick={() => setOpenSelectGroupProjectModal(true)}
+            label={`${t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}`}
+            fullWidth
+            required={true}
+            className={"view_ProjectGroup_CreateNew_Project_Modal_formItem per-line-step-in-form"}
+            isReadOnly={true}
+          />
+          <ArrowDropDownIcon className="icon-arrow" />
+        </div>
         <StyledFormControl fullWidth>
           <Title>{t("LABEL_CATEGORY")}</Title>
           <div className={"view_ProjectGroup_CreateNew_selectCategory"}>

@@ -9,7 +9,7 @@ import { ChartBox, ChartDrawer, ChartInfoBox, ChartPlaceholder, ChartTitle, Cust
 import CustomTextbox from '../../../../components/CustomTextbox';
 import LeftSideContainer from '../../../../components/LeftSideContainer';
 import LoadingBox from '../../../../components/LoadingBox';
-import { projectColors } from 'constants/colors';
+import { projectStatusColors } from 'constants/colors';
 import './style.scss';
 
 const ProjectGroupName = ({ className = '', ...props }) =>
@@ -100,23 +100,23 @@ function DefaultGroupDetail({
                   title={t("DMH.VIEW.PGP.LEFT.INFO.STATS.TOTAL")}
                   data={
                     [{
-                      color: projectColors[0],
+                      color: projectStatusColors.waiting,
                       title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.WAITING"),
                       value: get(group.group, 'statistics.task_waiting', 0),
                     }, {
-                      color: projectColors[1],
+                      color: projectStatusColors.doing,
                       title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.DOING"),
                       value: get(group.group, 'statistics.task_doing', 0),
                     }, {
-                      color: projectColors[2],
-                      title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
-                      value: get(group.group, 'statistics.task_expired', 0),
-                    }, {
-                      color: projectColors[3],
+                      color: projectStatusColors.complete,
                       title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.COMPLETE"),
                       value: get(group.group, 'statistics.task_complete', 0),
                     }, {
-                      color: projectColors[5],
+                      color: projectStatusColors.expired,
+                      title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.EXPIRED"),
+                      value: get(group.group, 'statistics.task_expired', 0),
+                    }, {
+                      color: projectStatusColors.hidden,
                       title: t("DMH.VIEW.PGP.LEFT.INFO.STATS.HIDDEN"),
                       value: get(group.group, 'statistics.task_hidden', 0),
                     }]
