@@ -68,10 +68,7 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 55px 1fr;
   grid-template-columns: 140px minmax(0, 1fr);
-  -o-transition: all 10s;
-    -moz-transition: all 10s;
-    -webkit-transition: all 10s;
-    transition: all 10s;
+  
   grid-template-areas:
     "logo top"
     "left main";
@@ -91,14 +88,8 @@ const Container = styled.div`
     min-height: 100vh;
     z-index: 1000;
   }
-  @keyframes example {
-    0% {grid-template-columns: 140px; }
-    100% {grid-template-columns: 70px;}
-  }
+
   &.menu-collapse{
-    
-    animation: example 2s ease;
-    animation-delay: 10s;
     grid-template-columns: 70px minmax(0, 1fr);
   }
 `;
@@ -125,9 +116,9 @@ const ContentBox = styled.div`
 const Image = styled.img`
   height: 40px !important;
   width: 40px;
-  background: #fff;
+  border: 1px solid #ffffff8a;
   border-radius: 50%;
-  padding: 2px;
+  padding: 3px;
 `;
 
 function getTaskByChat(data, taskDetails) {
@@ -491,9 +482,9 @@ function MainLayout({
               <LogoBox
               onClick={() => setVisibleGroupModal(true)}
               className={collapse ? 'logo-collapse' : 'logo-default'}
-              style={{ background: bgColor.color, backgroundImage: `url(${!collapse && images.bg_logo_menu})`, backgroundSize: '105% 100%', backgroundPositionX: '50%'}}
+              style={{ background: bgColor.color}}
             >
-              <div className={collapse ? 'logo-collapse' : 'logo-default'} style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%', border: '1px solid #ffffff'}}>
+              <div className={collapse ? 'logo-collapse' : 'logo-default'} style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%',marginTop: '10px'}}>
                <Image
                 src={groupDetail.logo || avatar_default_120}
                 alt="vtask-logo-menu"

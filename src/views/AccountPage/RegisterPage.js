@@ -58,6 +58,7 @@ const RegisterPage = () => {
     }
   };
   return (
+    <MainAccount>
       <div className="AccountPage RegisterPage">
         {!isRegistered &&
         <div className="logo-content">
@@ -193,26 +194,7 @@ const RegisterPage = () => {
         )}
         {isRegistered && (
           <div className="register-success">
-            {/* <Divider className="divider" />
-            <p className="title">{t('IDS_WP_THANK_YOU_USED_WORK_PLUS')}</p>
-            <p className="description">
-              {t('IDS_WP_CONFIRM_CODE_DESCRIPTION')}
-            </p>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: t('IDS_WP_CONTACT_TO_SUPPORT')
-              }}
-            ></p>
-            <Divider className="divider" />
-            <Button
-              variant="contained"
-              className="btn-confirm-register"
-              onClick={() => {
-                window.location.href = Routes.CONFIRM_REGISTRATION;
-              }}
-            >
-              {t('IDS_WP_CONFIRM_ACCOUNT')}
-            </Button> */}
+           
             <img alt="" src={images.ic_register_complete} />
             <div>
               <h5 className="register-notify_title">{t('IDS_WP_REGISTER_SUCCESS_TITLE')}</h5>
@@ -226,6 +208,7 @@ const RegisterPage = () => {
           </div>
         )}
       </div>
+      </MainAccount>
   );
 };
 

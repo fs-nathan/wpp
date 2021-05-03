@@ -88,6 +88,7 @@ const LoginPage = (props) => {
   };
 
   return (
+    <MainAccount>
       <div className="AccountPage LoginPage">
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
@@ -181,6 +182,7 @@ const LoginPage = (props) => {
           </Link>
         </div>
       </div>
+      </MainAccount>
   );
 };
 

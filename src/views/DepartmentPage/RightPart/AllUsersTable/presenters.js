@@ -4,6 +4,7 @@ import {mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdi
 import Icon from '@mdi/react';
 import { actionToast } from 'actions/system/system';
 import { actionGetInfor, actionLockUser, actionUnLockUser } from 'actions/user/detailUser';
+import { listUserOfGroup } from 'actions/user/listUserOfGroup';
 import {find, get, isNil} from 'lodash';
 import React from 'react';
 import {useTranslation} from 'react-i18next';
@@ -59,7 +60,7 @@ function TooltipRole({user}){
         }
       >
         <TooltipWrapper>
-          <div style={{color: "#fff", backgroundColor: '#f1af36',textAlign: 'center', padding: '5px'}}>
+          <div style={{color: "#fff", backgroundColor: '#f1af36',textAlign: 'center', padding: '5px', borderRadius: '2px'}}>
             {t('DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE')}
           </div>
         </TooltipWrapper>
@@ -77,7 +78,7 @@ function TooltipRole({user}){
       }
     >
       <TooltipWrapper>
-        <div style={{background: '#0ed216', color: '#fff', textAlign: 'center', padding: '5px'}}>
+        <div style={{background: '#0ed216', color: '#fff', textAlign: 'center', padding: '5px', borderRadius: '2px'}}>
           {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER')}
         </div>
       </TooltipWrapper>
@@ -94,7 +95,7 @@ function TooltipRole({user}){
       }
     >
       <TooltipWrapper>
-        <div style={{color:'#fff', backgroundColor : '#950eda',textAlign: 'center', padding: '5px'}}>
+        <div style={{color:'#fff', backgroundColor : '#950eda',textAlign: 'center', padding: '5px', borderRadius: '2px'}}>
           {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL')}
         </div>
       </TooltipWrapper>
@@ -115,6 +116,8 @@ function StateBadge({ user }) {
   const { t } = useTranslation();
   
   return (
+    get(user, 'is_lock', true) === true ? <Icon title={t('IDS_WP_LOCKED')} path={mdiLock} size={1} color={'rgb(103 98 98 / 70%)'} />:
+
     get(user, 'state', 0) === 0
       ? (
         <LightTooltip
@@ -171,7 +174,6 @@ function AllUsersTable({
   const { t } = useTranslation();
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
-  const [islock, setIslock] = React.useState(inforUser?.userInfor?.is_lock);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
   const history = useHistory();
   const dispatch = useDispatch()
@@ -186,7 +188,8 @@ function AllUsersTable({
        const {data} = await actionLockUser({account_id: user.id});
        if(data.state){
          handleToast('success', t('SNACK_MUTATE_SUCCESS'));
-         setIslock(!islock);
+         setMenuAnchorEl(null);
+         dispatch(listUserOfGroup(true))
        }
     } catch (error) {
        handleToast('error', t('SNACK_MUTATE_FAIL'));
@@ -195,7 +198,7 @@ function AllUsersTable({
   const handleToast = (type, message) => {
     dispatch(actionToast(type, message));
     setTimeout(() => {
-      dispatch(actionToast(type, message));
+      dispatch(actionToast('', null));
     }, 2000);
   }
   const handleUnLockAccount = async() => {
@@ -203,7 +206,8 @@ function AllUsersTable({
       const {data} = await actionUnLockUser({account_id: user.id});
       if(data.state){
         handleToast('success', t('SNACK_MUTATE_SUCCESS'));
-        setIslock(!islock);
+        setMenuAnchorEl(null);
+        dispatch(listUserOfGroup(true));
       }
    } catch (error) {
     handleToast('error', t('SNACK_MUTATE_FAIL'));
@@ -215,10 +219,6 @@ function AllUsersTable({
     ));
   }, [publicPrivatePendings, user]);
 
-  React.useEffect(()=>{
-    setIslock(inforUser?.userInfor?.is_lock)
-  },
-  [inforUser?.userInfor?.is_lock])
   return (
     <Container>
       <CustomTable
@@ -378,15 +378,7 @@ function AllUsersTable({
             />}
          <div className="menu_icon"><Icon path={mdiAtomVariant} size={1} color={'rgba(0, 0, 0, 0.7)'}/></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}</div>
         </MenuItem>
-        <MenuItem onClick={() => {
-          handleOpenModal('PERMISSION_SETTING', {
-            curUserId: get(user, 'id'),
-            roomId: null,
-          });
-          setMenuAnchorEl(null);
-        }}>
-          <div className="menu_icon"></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}</div>
-        </MenuItem>
+       
         <MenuItem onClick={()=> {
           handleOpenModal('SETTING_MEMBER', {
             user,
@@ -395,13 +387,15 @@ function AllUsersTable({
         }}>
         <div className="menu_icon"><Icon path={mdiAccountCog} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div className="menu_label">{t('IDS_WP_SETTING_MEMBER')}</div>
         </MenuItem>
+        {get(user, 'is_me', false) === false &&
         <MenuItem>
         <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
           <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
-          <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
-          <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!islock ? handleLockAccount: handleUnLockAccount}>{!islock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
+          <p className="menu_note">{!inforUser?.userInfor?.is_lock ?t('IDS_WP_LOCK_MEMBER_NOTE'): t('IDS_WP_UN_LOCK_MEMBER_NOTE')}</p>
+          <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!inforUser?.userInfor?.is_lock ? handleLockAccount: handleUnLockAccount}>{!inforUser?.userInfor?.is_lock ? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
         </div>
         </MenuItem>
+        } 
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
           <MenuItem >
             <div className="menu_icon"><Icon path={mdiAccountArrowRight} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> 

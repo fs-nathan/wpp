@@ -7,6 +7,7 @@ export { default as dis_comment } from './dis_comment.png';
 export { default as ic_file } from './file.png';
 export { default as ic_file_select } from './file_select.png';
 export { default as ic_home } from './home.png';
+export { default as ic_loading} from './loading_spinner.gif';
 export { default as ic_home_select } from './home_select.png';
 export { default as ic_alarm_complete } from './ic_alarm_clock_complete.png';
 export { default as ic_menu_more } from './ic_menu_more.png';

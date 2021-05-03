@@ -16,7 +16,6 @@ const ModalOptionCreateAccount = ({profile,openCreateAccount,setOpenCreateAccoun
    const {t} = useTranslation();
    const dispatch = useDispatch();
    const [visible, setVisible] = React.useState(false);
-   console.log(profile)
    const handleVerifyAccount = async () => {
     try {
         const { data } = await actionCheckVerifyAccount();

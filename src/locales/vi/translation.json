@@ -935,6 +935,7 @@
   "IDS_WP_NOT_VERIFY_ACCOUNT_NOTIFY": "Tài khoản của bạn chưa được xác thực. Vui lòng xác thực email để nhận thông tin hệ thống và được bảo vệ tài khoản tốt nhất.",
   "IDS_WP_VERIFY_ACCOUNT": "Xác thực tài khoản",
   "IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED": "Đã xác thực tài khoản",
+  "IDS_WP_AUTHENTICATED": "Đã xác thực",
   "IDS_WP_CHANGE_ACCOUNT": "Đổi tài khoản",
   "IDS_WP_LOGOUT": "Đăng xuất",
   "IDS_WP_UPGRADE_ORDER": "Nâng cấp tài khoản",
@@ -2457,7 +2458,7 @@
   "IDS_WP_UNLOCK": "Mở khóa",
   "IDS_WP_DELETE_MEMBER": "Xóa thành viên ra khỏi nhóm",
   "IDS_WP_RESET_PASSWORD": "Đặt lại mật khẩu",
-  "IDS_WP_RESET_PASSWORD_NOTE": "Sau khi đặt lại mật khẩu, hệ thống sẽ gửi mail thông báo tới thành viên để biết hành động này xảy ra nhưng không thể biết được mật khẩu mới tạo. Và Thành viên sử dụng tài khoản này sẽ không thể truy cập vào hệ thống!",
+  "IDS_WP_RESET_PASSWORD_NOTE": "Sau khi đặt lại mật khẩu, hệ thống sẽ gửi mail để thông báo cho thành viên biết. Tuy nhiên thành viên không thể truy cập vào Tài khoản nếu Chủ sở hữu không cấp mật khẩu mới",
   "IDS_WP_RESET": "Đặt lại",
   "IDS_WP_SPECIES": "Loại",
   "IDS_WP_CHECK_PASSWORD": "Mật khẩu không trùng khớp",
@@ -2469,5 +2470,14 @@
   "IDS_WP_CREATE_ACCOUNT_SUCCESS": "Tạo tài khoản thành công",
   "LABEL_ADD_MEMBER": "Thêm thành viên",
   "LABEL_ASSIGNED_COUNT": "Đã gán",
-  "LABEL_PERMISSION_NOT_ASSIGN": "Chưa gán quyền"
-}
+  "LABEL_PERMISSION_NOT_ASSIGN": "Chưa gán quyền",
+  "IDS_WP_CREATE_ACCOUNT_ENTER_EMAIL": "Nhập email",
+  "IDS_WP_CREATE_ACCOUNT_ENTER_NAME": "Nhập họ tên",
+  "IDS_WP_CREATE_ACCOUNT_FILE_EXCEL_TYPE": "File phải đúng định dạng file excel",
+  "IDS_WP_UPLOAD_FILE_EXCEL_ERROR_SAMPLE_FILE": "File phải giống file mẫu",
+  "IDS_WP_UPLOAD_FILE_EXCEL_ERROR_CAPACITY_FILE": "File không được vượt quá 100 dòng (không tính tên cột)",
+  "IDS_WP_UN_LOCK_MEMBER_NOTE": "Tài khoản đang bị khóa và thành viên bị vô hiệu hóa.",
+  "IDS_WP_LOCKED": "Tài khoản bị khóa",
+  "IDS_WP_CREATING_ACOUNT": "Đang tạo tài khoản",
+  "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Vui lòng chờ trong giây lát!"
+  }

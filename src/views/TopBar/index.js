@@ -25,6 +25,7 @@ import './TopBar.scss';
 import {isEmpty} from '../../helpers/utils/isEmpty';
 import GroupAccountModal from '../../components/GroupAccountModal/GroupAccountModal'
 import { IconVerify } from 'components/IconSvg/Verify_check';
+import { useHistory } from 'react-router';
 
 const TopBar = props => {
   const { t, i18n } = useTranslation();
@@ -32,6 +33,7 @@ const TopBar = props => {
   const [visibleGroupAccountModal, setVisibleGroupAccountModal] = useState(false);
   const [marginLeftModal, setMarginLeftModal] = useState(280);
   const [marginTopModal, setMarginTopModal] = useState(10);
+  const history = useHistory();
   const handleFetchProfile = async isNotice => {
     try {
       const { data } = await getProfileService();
@@ -268,7 +270,7 @@ const TopBar = props => {
           }
           <p className="text-name-acc">{props.profile.name || ''}</p>
           &nbsp;
-          {!props.profile.is_verify ? <div className="verify_not_check">{t('IDS_WP_NOT_VERIFY_ACCOUNT')}</div>:<span className="verify_check"><IconVerify /></span>}
+          {!props.profile.is_verify ? <div onClick={()=>history.push('/setting-account/info')} className="verify_not_check">{t('IDS_WP_NOT_VERIFY_ACCOUNT')}</div>:<span className="verify_check" title={t('IDS_WP_AUTHENTICATED')}><IconVerify /></span>}
           <img
             title={t('IDS_WP_ACCOUNT')}
             onClick={() =>

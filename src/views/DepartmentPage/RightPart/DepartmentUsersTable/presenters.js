@@ -1,6 +1,7 @@
 import { Badge, Button, CircularProgress, IconButton, Menu, MenuItem } from '@material-ui/core';
-import { mdiAccountArrowRight, mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock } from '@mdi/js';
+import { mdiAccountArrowRight,mdiAccountCog, mdiAccountPlus, mdiAtomVariant, mdiDotsVertical, mdiLock } from '@mdi/js';
 import Icon from '@mdi/react';
+import { getUserOfRoom } from 'actions/room/getUserOfRoom';
 import { actionToast } from 'actions/system/system';
 import { actionGetInfor, actionLockUser, actionUnLockUser } from 'actions/user/detailUser';
 import CustomAvatar from 'components/CustomAvatar';
@@ -116,6 +117,7 @@ function StateBadge({ user }) {
   const { t } = useTranslation();
 
   return (
+    get(user, 'is_lock', true) === true ? <Icon title={t('IDS_WP_LOCKED')} path={mdiLock} size={1} color={'rgb(103 98 98 / 70%)'} />:
     get(user, 'state', 0) === 0
       ? (
         <LightTooltip
@@ -177,13 +179,11 @@ function DepartmentUsersTable({
   const params = useParams();
   const groupId = params.departmentId;
   const { t } = useTranslation();
-  const [islock, setIslock] = React.useState(inforUser?.userInfor?.is_lock);
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
   const [user, setUser] = React.useState(null);
   const [publicPrivateDisabled, setPublicPrivateDisabled] = React.useState(false);
 
   function doOpenMenu(anchorEl, user) {
-    console.log(anchorEl, user)
     setMenuAnchorEl(anchorEl);
     setUser(user);
     dispatch(actionGetInfor(user?.id));
@@ -201,7 +201,8 @@ function DepartmentUsersTable({
        const {data} = await actionLockUser({account_id: user.id});
        if(data.state){
          handleToast('success', t('SNACK_MUTATE_SUCCESS'));
-         setIslock(!islock);
+         setMenuAnchorEl(null)
+         dispatch(getUserOfRoom({roomId: groupId}));
        }
     } catch (error) {
        handleToast('error', t('SNACK_MUTATE_FAIL'));
@@ -210,7 +211,7 @@ function DepartmentUsersTable({
   const handleToast = (type, message) => {
     dispatch(actionToast(type, message));
     setTimeout(() => {
-      dispatch(actionToast(type, message));
+      dispatch(actionToast('', null));
     }, 2000);
   }
   const handleUnLockAccount = async() => {
@@ -218,7 +219,8 @@ function DepartmentUsersTable({
       const {data} = await actionUnLockUser({account_id: user.id});
       if(data.state){
         handleToast('success', t('SNACK_MUTATE_SUCCESS'));
-        setIslock(!islock);
+        setMenuAnchorEl(null);
+        dispatch(getUserOfRoom({roomId: groupId}));
       }
    } catch (error) {
     handleToast('error', t('SNACK_MUTATE_FAIL'));
@@ -230,10 +232,6 @@ function DepartmentUsersTable({
     ));
   }, [publicPrivatePendings, user]);
 
-  React.useEffect(()=>{
-    setIslock(inforUser?.userInfor?.is_lock)
-  },
-  [inforUser?.userInfor?.is_lock])
   return (
     <Container>
       <CustomTable
@@ -370,6 +368,7 @@ function DepartmentUsersTable({
         id="simple-menu"
         anchorEl={menuAnchorEl}
         open={Boolean(menuAnchorEl)}
+        className="more_menu"
         onClose={() => setMenuAnchorEl(null)}
         transformOrigin={{
           vertical: -30,
@@ -390,7 +389,7 @@ function DepartmentUsersTable({
             />}
          <div className="menu_icon"><Icon path={mdiAtomVariant} size={1} color={'rgba(0, 0, 0, 0.7)'}/></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.STATE.CHANGE')}</div>
         </MenuItem>
-        <MenuItem onClick={() => {
+        {/* <MenuItem onClick={() => {
           handleOpenModal('PERMISSION_SETTING', {
             curUserId: get(user, 'id'),
             roomId: null,
@@ -398,7 +397,7 @@ function DepartmentUsersTable({
           setMenuAnchorEl(null);
         }}>
           <div className="menu_icon"></div> <div className="menu_label">{t('DMH.VIEW.DP.RIGHT.UT.PERMISSION')}</div>
-        </MenuItem>
+        </MenuItem> */}
         <MenuItem onClick={()=> {
           handleOpenModal('SETTING_MEMBER', {
             user,
@@ -407,13 +406,15 @@ function DepartmentUsersTable({
         }}>
         <div className="menu_icon"><Icon path={mdiAccountCog} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div className="menu_label">{t('IDS_WP_SETTING_MEMBER')}</div>
         </MenuItem>
+        {get(user, 'is_me', false) === false &&
         <MenuItem>
         <div className="menu_icon"><Icon path={mdiLock} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> <div>
           <p className="menu_label">{t('IDS_WP_LOCK_MEMBER')}</p>
           <p className="menu_note">{t('IDS_WP_LOCK_MEMBER_NOTE')}</p>
-          <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!islock ? handleLockAccount: handleUnLockAccount}>{!islock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
+          <Button variant="contained" color="primary" className="menu_btn-lock" onClick={!inforUser?.userInfor?.is_lock ? handleLockAccount: handleUnLockAccount}>{!inforUser?.userInfor?.is_lock? t('IDS_WP_LOCk'):t('IDS_WP_UNLOCK')}</Button>
         </div>
         </MenuItem>
+        }
         {!(get(user, 'is_owner_group', false) || get(user, 'is_me', false)) && (
           <MenuItem >
             <div className="menu_icon"><Icon path={mdiAccountArrowRight} size={1} color={'rgba(0, 0, 0, 0.7)'} /></div> 

@@ -18,6 +18,7 @@ import { DETAIL_USER } from 'constants/actions/user/detailUser';
 import { LIST_USER_OF_GROUP } from 'constants/actions/user/listUserOfGroup';
 import ReactParserHtml from 'react-html-parser';
 import '../../HeaderButtonGroup/style.scss';
+import { ic_loading } from 'assets';
 const ModalContinueCreateAccount = ({
     doReloadUser,
     setOpenResultCreateAccount,
@@ -25,38 +26,30 @@ const ModalContinueCreateAccount = ({
     setOpenUploadExcel,
     room,
     doListRoom,
+    fileExcel,
     updatedUser = null,
     openContinueCreateAccount,
       setOpenContinueCreateAccount,
-      
+      colors,
       result,setResult,
 }) => {
    
-    
+    const [loading,setLoading] = React.useState(false);
     const [disable, setDisable] = React.useState(false);
     const [activeMask, setActiveMask] = React.useState(-1);
     const [roomList, setRoomList] = React.useState(null);
     const [rowTable, setRowTable] = React.useState([
       {
-        email: "account@gmail.com",
-        name: "Trần Văn Nam",
-        room: "",
-      },
-      {
         email: "",
         name: "",
         room: "",
-      },
-      {
-        email: "",
-        name: "",
-        room: "",
-      },
+      }
     ]);
     
     const dispatch = useDispatch();
     const {t} = useTranslation();
-    
+    const bgColor = colors.find((item) => item.selected === true);
+
     const handleOnchange = (key, index) => (e) => {
       const valueInput = e.target.value;
       const NewRowTable = rowTable.map((item, indexItem) => {
@@ -79,16 +72,28 @@ const ModalContinueCreateAccount = ({
         setRowTable(newTable);
       };
       
-    
+      React.useEffect(()=> {
+        if(Array.isArray(fileExcel)){
+          fileExcel.map(item => {
+            if(item){
+             rowTable.push({email: item[1], name: item[2], room: ''});
+             
+            }
+            return null;
+         })
+        }
+       
+      },[fileExcel])
        const handleToast = (type, message) => {
         dispatch(actionToast(type,message))
        }
       const handleSubmit = async e => {
         e.preventDefault();
-    
+        setLoading(true);
       try {
        const {data} = await actionAddMutipleMember({account_list: rowTable, password: e.target.elements.password.value})
         if(data.state){
+          setLoading(false);
           handleToast('success', t('IDS_WP_CREATE_ACCOUNT_SUCCESS'))
            setOpenContinueCreateAccount(false);
            setOpenResultCreateAccount(true);
@@ -96,6 +101,7 @@ const ModalContinueCreateAccount = ({
            setResult(data.account_list);
         }
       } catch (error) {
+        setLoading(false);
         handleToast('error', t('SNACK_MUTATE_FAIL'))
       }
         
@@ -111,6 +117,11 @@ const ModalContinueCreateAccount = ({
         // eslint-disable-next-line
       }, []);
       
+      React.useEffect(()=> {
+        if(fileExcel){
+          
+        }
+  },[fileExcel])
       React.useEffect(() => {
         const fail = () => {
           setActiveMask(-1);
@@ -146,6 +157,8 @@ const ModalContinueCreateAccount = ({
           CustomEventDispose(LIST_USER_OF_GROUP.FAIL, fail);
         };
       }, [updatedUser]);
+
+     
     return (
         <CustomModal
         title={t("IDS_WP_SIGN_UP")}
@@ -156,7 +169,7 @@ const ModalContinueCreateAccount = ({
         confirmRender={()=>(t("IDS_WP_SIGN_UP"))}
         type="submit"
         form="form-create-multile-account"
-        className="modal_continue-create"
+        className={`modal_continue-create ${loading && 'modal_continue-create-loading'}`}
       >
         <form id="form-create-multile-account" onSubmit={handleSubmit}>
           <div className="modal_continue-create_header">
@@ -226,6 +239,7 @@ const ModalContinueCreateAccount = ({
                           onChange={handleOnchange("email", index)}
                           required
                           type="email"
+                          placeholder={t('IDS_WP_CREATE_ACCOUNT_ENTER_EMAIL')}
                           value={item.email && item.email}
                         />
                       </td>
@@ -233,15 +247,14 @@ const ModalContinueCreateAccount = ({
                         <input
                           onChange={handleOnchange("name", index)}
                           required
+                          placeholder={t('IDS_WP_CREATE_ACCOUNT_ENTER_NAME')}
                           value={item.name && item.name}
                         />
                       </td>
                       <td>
                         <select
-                          defaultValue={item.room && item.room}
                           onChange={handleOnchange("room", index)}
                         >
-                           <option value=""></option>
                           {roomList && roomList.map((items,indexs)=>(
                             <option key={indexs} value={items.id}>{items.name}</option>
                           ))}
@@ -307,7 +320,11 @@ const ModalContinueCreateAccount = ({
               </div>
             </FormControl>
           </div>
-          
+          {loading && <div className="loading">
+          <img src={ic_loading} alt=""/>
+          <div style={{color: bgColor.color, fontSize: '16px'}}>{t('IDS_WP_CREATING_ACOUNT')}</div>
+          <div style={{marginTop: '5px'}}>{t('IDS_WP_CREATING_ACCOUNT_TIME_OUT')}</div>
+        </div>}
         </form>
       </CustomModal>
     )
@@ -315,7 +332,8 @@ const ModalContinueCreateAccount = ({
 const mapStateToProps = (state) => {
     return {
       profile: state.system.profile,
-      room: state.room.listRoom
+      room: state.room.listRoom,
+      colors: state.setting.colors
     };
   };
   const mapDispatchToProps = (dispatch) => {
