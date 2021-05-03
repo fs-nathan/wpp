@@ -17,7 +17,7 @@ export const managersSelector = createSelector(
 
 export const membersSelector = createSelector(
   [memberProject],
-  (memberProject) => {    
+  (memberProject) => {
     const { data: { membersAdded }, loading, error } = memberProject;
     return {
       members: membersAdded.map((member, index) => ({ ...member, index })),

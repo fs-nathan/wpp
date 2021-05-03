@@ -89,19 +89,11 @@ function KanbanBoard(props) {
                 />
               </Draggable>))}
           </DragContainer>
-          {
-            canManageGroupTask ?
-            (
-              <NewGroupTaskDiv
-                onClick={() => handleOpenModal('CREATE_GROUPTASK')}
-              >
-                {`+ ${t("IDS_WP_ADD")} ${stageName}`}
-              </NewGroupTaskDiv>
-            ) :
-            (
-              <div></div>
-            )
-          }
+          <NewGroupTaskDiv
+            onClick={() => handleOpenModal('CREATE_GROUPTASK')}
+          >
+            {`+ ${t("IDS_WP_ADD")} ${stageName}`}
+          </NewGroupTaskDiv>
         </Container>
       </BoardScrollbars>
     </LoadingOverlay>

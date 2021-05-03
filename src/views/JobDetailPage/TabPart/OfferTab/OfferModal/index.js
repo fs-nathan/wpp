@@ -1,4 +1,5 @@
 import { Avatar, Button, Chip, IconButton, TextField } from '@material-ui/core';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { makeStyles } from '@material-ui/core/styles';
 import { mdiCloudDownloadOutline, mdiPlusCircle } from '@mdi/js';
 import Icon from '@mdi/react';
@@ -318,7 +319,7 @@ const OfferModal = ({
         <React.Fragment>
           {
             !isUpdateOfferDetailDescriptionSection && (
-              <>
+              <div className="select-customer-from-input">
                 <TitleSectionModal label={t('LABEL_CHAT_TASK_CHON_NHOM_DE_XUAT')} isRequired />
                 <TextField
                   className="offerModal--titleText"
@@ -331,7 +332,8 @@ const OfferModal = ({
                     readOnly: true
                   }}
                 />
-              </>
+                <ArrowDropDownIcon className="icon-arrow" />
+              </div>
             )
           }
           <TitleSectionModal label={t('LABEL_CHAT_TASK_TEN_DE_XUAT')} isRequired />

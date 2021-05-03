@@ -163,6 +163,11 @@ function SelectGroup({
     dispatch(deleteProjectGroup({ projectGroupId: groupDelete.id }))
   }
 
+  function handleSelect(group) {
+    selectedOption(group)
+    setOpen(false)
+  }
+
   return (
     <>
       <CustomModal
@@ -205,7 +210,7 @@ function SelectGroup({
                 appColor={appColor}
                 key={e.id}
                 group={e}
-                onSelect={selectedOption}
+                onSelect={handleSelect}
                 isSelected={groupSelected === e.id ? true : false}
                 handleOpenEditGroup={handleOpenEditGroup}
                 confimDeleteGroup={confimDeleteGroup}

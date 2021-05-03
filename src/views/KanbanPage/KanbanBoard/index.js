@@ -36,9 +36,12 @@ function KanbanBoard({
     };
     CustomEventListener(CREATE_TASK, doKanbanListTaskHandler);
     CustomEventListener(DELETE_TASK, doKanbanListTaskHandler);
-    CustomEventListener(CREATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-    CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-    CustomEventListener(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
+    CustomEventListener(CREATE_GROUP_TASK.SUCCESS, doKanbanListGroupTaskHandler);
+    CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, () => {
+      doKanbanListTaskHandler()
+      doKanbanListGroupTaskHandler()
+    });
+    CustomEventListener(COPY_GROUP_TASK.SUCCESS, doKanbanListGroupTaskHandler);
     CustomEventListener(KANBAN.SORT_GROUP_TASK.SUCCESS, () => {
       doKanbanListTaskHandler()
       doKanbanListGroupTaskHandler()
@@ -53,9 +56,12 @@ function KanbanBoard({
     return () => {
       CustomEventDispose(CREATE_TASK, doKanbanListTaskHandler);
       CustomEventDispose(DELETE_TASK, doKanbanListTaskHandler);
-      CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-      CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
-      CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doKanbanListTaskHandler);
+      CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, doKanbanListGroupTaskHandler);
+      CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, () => {
+        doKanbanListTaskHandler()
+        doKanbanListGroupTaskHandler()
+      });
+      CustomEventDispose(COPY_GROUP_TASK.SUCCESS, doKanbanListGroupTaskHandler);
       CustomEventDispose(KANBAN.SORT_GROUP_TASK.SUCCESS, () => {
         doKanbanListTaskHandler()
         doKanbanListGroupTaskHandler()

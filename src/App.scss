@@ -108,13 +108,19 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
       margin: auto;
       display: flex;
       img {
-        width: 30px
+        width: 30px;
+        border-radius: 50%;
+      }
+      svg {
+        width: 1.2em;
+        height: 1.2em;
       }
     }
     .name-option {
       width: calc(100% - 50px);
       margin: auto;
       font-size: 13px;
+      color: #000
     }
     .control-option {
       position: absolute;
@@ -138,6 +144,11 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
       .control-option {
         display: block;
       }
+    }
+  }
+  .line-option-selected {
+    .name-option {
+      color: #fff
     }
   }
   .no-data-parent {
@@ -165,5 +176,18 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
 .left-group-task-no-permission {
   > a {
     padding: 10px 15px 10px 20px;
+  }
+}
+.select-customer-from-input {
+  position: relative;
+  .icon-arrow {
+    position: absolute;
+    right: 10px;
+    bottom: 12px;
+    color: #b1b1b1;
+    font-size: 30px;
+  }
+  input {
+    cursor: pointer;
   }
 }

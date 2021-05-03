@@ -25,7 +25,7 @@ import {LightTooltip, TooltipWrapper} from '../../../../components/LightTooltip'
 import LoadingBox from '../../../../components/LoadingBox';
 import {Container, DateBox, LinkSpan, SettingContainer, StateBox} from '../../../../components/TableComponents';
 import {Routes} from '../../../../constants/routes';
-import {taskColors} from 'constants/colors';
+import {statusTaskColors} from 'constants/colors';
 import * as images from "assets";
 import './style.scss';
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
@@ -135,6 +135,7 @@ function AllProjectTable({
         } else return <EmptyWorkingGroup/>;
     }
   }
+
   return (
     <>
       <Container>
@@ -305,23 +306,23 @@ function AllProjectTable({
                           title={t("DMH.VIEW.PGP.RIGHT.ALL.STATS.TOTAL")}
                           data={
                             [{
-                              color: taskColors[0],
+                              color: statusTaskColors.waiting,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
                               value: get(row, 'statistic.waiting', 0),
                             }, {
-                              color: taskColors[1],
+                              color: statusTaskColors.doing,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
                               value: get(row, 'statistic.doing', 0),
                             }, {
-                              color: taskColors[2],
-                              title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
-                              value: get(row, 'statistic.expired', 0),
-                            }, {
-                              color: taskColors[3],
+                              color: statusTaskColors.complete,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
                               value: get(row, 'statistic.complete', 0),
                             }, {
-                              color: taskColors[4],
+                              color: statusTaskColors.expired,
+                              title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
+                              value: get(row, 'statistic.expired', 0),
+                            }, {
+                              color: statusTaskColors.stoped,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
                               value: get(row, 'statistic.stop', 0),
                             }]

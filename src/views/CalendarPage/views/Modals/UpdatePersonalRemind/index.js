@@ -21,6 +21,7 @@ import JobDetailModalWrap from "../../../../JobDetailPage/JobDetailModalWrap";
 import OutlinedInputSelect from "../../../../JobDetailPage/TabPart/ProgressTab/OutlinedInputSelect";
 import MySelect from "../../../../../components/MySelect";
 import SelectGroupPersonalRemind from "../CreatePersonalRemind/SelectGroup"
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const Container = ({ className = '', ...props }) =>
   <div
@@ -142,18 +143,21 @@ function UpdatePersonalRemind({
               <Typography component={'span'} className="title"> {t('views.calendar_page.modal.create_personal_remind.choose_category')} </Typography>
               <span>*</span>
             </abbr>
-            <TextField
-              placeholder={t('views.calendar_page.modal.create_personal_remind.choose_category')}
-              className={"remind_group_container_input"}
-              variant="outlined"
-              multiline
-              fullWidth
-              value={data.selectedCategoryName}
-              onClick={() => setOpenSelectGroupPersonalRemindModal(true)}
-              inputProps={{
-                readOnly: true
-              }}
-            />
+            <div className="select-customer-from-input">
+              <TextField
+                placeholder={t('views.calendar_page.modal.create_personal_remind.choose_category')}
+                className={"remind_group_container_input"}
+                variant="outlined"
+                multiline
+                fullWidth
+                value={data.selectedCategoryName}
+                onClick={() => setOpenSelectGroupPersonalRemindModal(true)}
+                inputProps={{
+                  readOnly: true
+                }}
+              />
+              <ArrowDropDownIcon className="icon-arrow" />
+            </div>
             <Typography component={'p'} className="create_remind_description"> {t('views.calendar_page.modal.create_personal_remind.description')} </Typography>
           </Box>
           <Box className="remind_setting_container">

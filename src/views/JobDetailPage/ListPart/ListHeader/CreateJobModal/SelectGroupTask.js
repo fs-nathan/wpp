@@ -165,6 +165,10 @@ function SelectGroupTask({
   const handleDeleteGroup = () => {
     dispatch(deleteGroupTask({ groupTaskId: groupDelete.id }))
   }
+  function handleSelect(group) {
+    selectedOption(group)
+    setOpen(false)
+  }
 
   return (
     <>
@@ -208,7 +212,7 @@ function SelectGroupTask({
                 appColor={appColor}
                 key={e.id}
                 group={e}
-                onSelect={selectedOption}
+                onSelect={handleSelect}
                 isSelected={groupSelected === e.id ? true : false}
                 handleOpenEditGroup={handleOpenEditGroup}
                 confimDeleteGroup={confimDeleteGroup}

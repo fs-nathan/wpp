@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import React from "react";
 import Img from "react-image";
-import defaultImg from "../../assets/default.png";
+import defaultImg from "../../assets/default_new.png";
 import spinner from "../../assets/loading_spinner.gif";
 import { CustomEventDispose, CustomEventListener, DELETE_ICON } from "../../constants/events";
 
