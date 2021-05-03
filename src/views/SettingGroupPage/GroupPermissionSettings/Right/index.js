@@ -642,6 +642,7 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
     setIsHover({...isHover});
   }
   function handleSelectUser(user) {
+    setSelectedUser(user);
     if(user.group_permission_id) {
       setSelectedGroup(user.group_permission_id);
       dispatch(

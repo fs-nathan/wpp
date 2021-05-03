@@ -761,12 +761,16 @@
         cursor: pointer !important;
         background: #F8F8F8;
         &:hover {
-          background: #E0F7F5;
+          background: var(--color-primary);
+          border-radius: 3px;
+          opacity: 0.7;
+          color: #fff;
           .quickAccess--groupContent-listCustom-dragIcon, .quickAccess--groupContent-listCustom-closeIcon {
             display: block;
           }
           .quickAccess--groupContent-iconCustom {
-            background: #43CFC5;
+            background: var(--color-primary);
+            opacity: 1;
           }
         }
       }

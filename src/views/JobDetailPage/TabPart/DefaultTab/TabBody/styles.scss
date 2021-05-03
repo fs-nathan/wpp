@@ -259,6 +259,9 @@
     .MuiRadio-colorSecondary.Mui-checked {
       color: var(--color-primary);
     }
+    .MuiFormControlLabel-root {
+      margin-left: 0;
+    }
     &Header {
       display: flex;
       align-items: center;
@@ -270,6 +273,10 @@
     &Body {
       margin-left: 37px;
       margin-top: -7px;
+    }
+    .radioDisabled {
+      cursor: default;
+
     }
   }
 }
