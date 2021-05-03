@@ -6,7 +6,7 @@ import {
   ListItemText,
   ListSubheader,
   Menu,
-  MenuItem, Radio,
+  Radio,
   Table,
   TableBody,
   TableCell,
@@ -14,18 +14,27 @@ import {
   TableRow,
   Typography
 } from '@material-ui/core';
-import { mdiFlash, mdiDotsVertical, mdiMenuDown, mdiAccountKey, mdiAccountMinusOutline } from '@mdi/js';
+import {mdiAccountKey, mdiAccountMinusOutline, mdiDotsVertical, mdiFlash, mdiMenuDown} from '@mdi/js';
 import Icon from '@mdi/react';
 import ColorTypo from 'components/ColorTypo';
 import CustomAvatar from 'components/CustomAvatar';
-import { Primary, Secondary, StyledList, StyledListItem } from 'components/CustomList';
+import {Primary, Secondary, StyledList, StyledListItem} from 'components/CustomList';
 import CustomModal from 'components/CustomModal';
 import SearchInput from 'components/SearchInput';
-import { ADD_MEMBER_PROJECT, ADD_PROJECT_ROLE_TO_MEMBER, ASSIGN_MEMBER_TO_ALL_TASK, CustomEventDispose, CustomEventListener, MEMBER_PROJECT, REMOVE_MEMBER_PROJECT, REMOVE_PROJECT_ROLE_FROM_MEMBER, UPDATE_STATE_JOIN_TASK } from 'constants/events';
-import { get, size } from 'lodash';
+import {
+  ADD_MEMBER_PROJECT,
+  ADD_PROJECT_ROLE_TO_MEMBER,
+  ASSIGN_MEMBER_TO_ALL_TASK,
+  CustomEventDispose,
+  CustomEventListener,
+  MEMBER_PROJECT,
+  REMOVE_MEMBER_PROJECT,
+  REMOVE_PROJECT_ROLE_FROM_MEMBER,
+  UPDATE_STATE_JOIN_TASK
+} from 'constants/events';
+import {get, size} from 'lodash';
 import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import {useTranslation} from 'react-i18next';
 import './style.scss';
 
 const ListContainer = ({ className = '', ...props }) =>
@@ -502,7 +511,7 @@ function MemberSetting({
                     style={{marginRight: 0}}
                     onChange={() => {
                       setAnchorAssign(null);
-                      handleUpdateStateJoinTask(curMemberSetting, 0);
+                      handleUpdateStateJoinTask(curMemberSetting, 1);
                     }}
                   />
                   <Typography variant={"h6"}>{t("LABEL_AUTO")}</Typography>
@@ -517,7 +526,7 @@ function MemberSetting({
                     checked={get(curMemberSetting, "join_task_status_code") === 0} style={{marginRight: 0}}
                     onChange={() => {
                       setAnchorAssign(null);
-                      handleUpdateStateJoinTask(curMemberSetting, 1);
+                      handleUpdateStateJoinTask(curMemberSetting, 0);
                     }}
                   />
                   <Typography variant={"h6"}>{t("LABEL_MANUAL")}</Typography>

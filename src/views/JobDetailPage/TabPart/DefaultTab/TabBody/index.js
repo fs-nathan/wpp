@@ -1,4 +1,14 @@
-import {Box, Divider, List, ListItem, ListItemText, Popover, Radio, Typography} from '@material-ui/core';
+import {
+  Box,
+  Divider,
+  FormControlLabel,
+  List,
+  ListItem,
+  ListItemText,
+  Popover,
+  Radio,
+  Typography
+} from '@material-ui/core';
 import React from 'react';
 import {Scrollbars} from 'react-custom-scrollbars';
 import {useTranslation} from 'react-i18next';
@@ -6,8 +16,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
 import {
   focusTaskGroup,
-  getMember, stopTask,
-  updatePriority,
+  getMember,
+  stopTask,
   updateTaskStatus
 } from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
@@ -264,21 +274,19 @@ function TabBody(props) {
             return (
               <>
                 {index === 3 && (<Divider style={{marginTop: 10}}/>)}
-                <Box className={"toolTipUpdateStatus-item"} onClick={() => {
-                  if(taskStatistic.complete !== 100) handleUpdateTaskStatus(item.value);
+                <Box className={"toolTipUpdateStatus-item"} onClick={(e) => {
+                  e.stopPropagation();
+                  if(taskStatistic.complete !== 100 && taskStatistic.state_code !== item.value) handleUpdateTaskStatus(item.value);
                 }}>
                   <div className={"toolTipUpdateStatus-itemHeader"}>
-                    <Radio
+                    <FormControlLabel
+                      value={item.value} disabled={taskStatistic.complete === 100 || taskStatistic.state_code === item.value}
+                      control={<Radio />}
+                      label={t(item.label)}
                       checked={taskStatistic.state_code === item.value}
-                      value={item.value}
-                      onChange={() => handleUpdateTaskStatus(item.value)}
-                      disabled={taskStatistic.complete === 100}
                     />
-                    <Typography variant={"h6"} color={"textSecondary"}>
-                      {t(item.label)}
-                    </Typography>
                   </div>
-                  <div className={"toolTipUpdateStatus-itemBody"}>
+                  <div className={`toolTipUpdateStatus-itemBody ${(taskStatistic.complete === 100 || taskStatistic.state_code === item.value) ? "radioDisabled" : ""}`}>
                     <Typography variant={"body1"} color={"textSecondary"}>
                       {t(item.des)}
                     </Typography>

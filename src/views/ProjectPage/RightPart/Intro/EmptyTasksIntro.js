@@ -4,9 +4,17 @@ import {Box, Button, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
 import "../../../ProjectGroupPage/RightPart/AllProjectTable/Intro/styles.scss";
 import {resolvedWorkType} from "../../../../helpers/project/commonHelpers";
+import {isNil, get} from "lodash";
+import {getPermissionViewDetailProject} from "../../../../actions/viewPermissions";
+import {useDispatch, useSelector} from "react-redux";
 
-function EmptyTasksIntro({projectName, handleOpenModal, work_type = 0}) {
+function EmptyTasksIntro({projectName, projectID, handleOpenModal, work_type = 0}) {
   const {t} = useTranslation();
+  const dispatch = useDispatch();
+  const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectID]);
+  React.useEffect(() => {
+    if(!isNil(projectID)) dispatch(getPermissionViewDetailProject({projectId: projectID}));
+  }, [dispatch, projectID]);
   return (
     <>
       <Box className={"introEmptyData-container longContent"}>
@@ -25,9 +33,11 @@ function EmptyTasksIntro({projectName, handleOpenModal, work_type = 0}) {
             <Button variant={"contained"} color={"primary"} disableElevation onClick={() => handleOpenModal("CREATE")}>
               {t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}
             </Button>
-            <Button variant={"outlined"} disableElevation onClick={() => handleOpenModal("MEMBERS_SETTING")}>
-              {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
-            </Button>
+            {get(permissions, "update_project") && (
+              <Button variant={"outlined"} disableElevation onClick={() => handleOpenModal("MEMBERS_SETTING")}>
+                {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
+              </Button>
+            )}
           </Box>
         </Box>
         <img src={images.bg003} alt={""} className={"bgEmpty"}/>

@@ -70,6 +70,7 @@ function AllTaskTable({
           handleOpenModal={handleOpenModal}
           projectName={get(project.project, "name")}
           work_type={get(project.project, "work_type")}
+          projectID={get(project.project, "id")}
         />
       )}
       {!isEmpty && !tasks.loading && (

@@ -39,7 +39,7 @@ import "./index.scss";
 import SearchBox from "../../../../components/SearchInput";
 import AddGroupPermissionModal, {CustomTableBodyCell} from "../components/AddGroupPermissionModal";
 import Chip from '@material-ui/core/Chip';
-import {filter, first, get, forEach, map, set, size, isNil, find, findIndex, includes} from "lodash";
+import {filter, find, first, forEach, get, includes, isNil, map, set, size} from "lodash";
 import {StyledList, StyledListItem} from "../../../../components/CustomList";
 import {groupPermissionAttr} from "../contants";
 import IconButton from "@material-ui/core/IconButton";
@@ -278,69 +278,72 @@ const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filterPermissionKeyword.map((group, i) => (
-              <React.Fragment key={i}>
-                <TableRow>
-                  <CustomTableBodyCell
-                    style={{ padding: "0px" }}
-                    align="left"
-                  />
-                  <CustomTableBodyCell
-                    colSpan={12}
-                    className="comp_TitleCell"
-                    align="left"
-                  >
-                    <Typography fontWeight="bold">
-                      <b>{get(group, "name")}</b>
-                    </Typography>
-                  </CustomTableBodyCell>
-                </TableRow>
-                {get(group, "permissions", [])
-                  .map(({ name, description, permission }) => (
-                    <TableRow
-                      key={permission}
-                      className="comp_RecentTableRow table-body-row"
+            {filterPermissionKeyword.map((group, i) => {
+              if(size(get(group, "permissions", [])) === 0) return;
+              return (
+                <React.Fragment key={i}>
+                  <TableRow>
+                    <CustomTableBodyCell
+                      style={{ padding: "0px" }}
+                      align="left"
+                    />
+                    <CustomTableBodyCell
+                      colSpan={12}
+                      className="comp_TitleCell"
+                      align="left"
                     >
-                      {can_modify && mode === "GROUP_PERMISSION" && (
-                        <CustomTableBodyCell
-                          style={{ padding: "0px" }}
-                          align="left"
-                        >
-                          <Checkbox
-                            checked={!!selected[permission] || isSelectAll}
-                            onChange={() => handleSelectPermission(permission)}
-                            color="primary"
+                      <Typography fontWeight="bold">
+                        <b>{get(group, "name")}</b>
+                      </Typography>
+                    </CustomTableBodyCell>
+                  </TableRow>
+                  {get(group, "permissions", [])
+                    .map(({ name, description, permission }) => (
+                      <TableRow
+                        key={permission}
+                        className="comp_RecentTableRow table-body-row"
+                      >
+                        {can_modify && mode === "GROUP_PERMISSION" && (
+                          <CustomTableBodyCell
+                            style={{ padding: "0px" }}
+                            align="left"
+                          >
+                            <Checkbox
+                              checked={!!selected[permission] || isSelectAll}
+                              onChange={() => handleSelectPermission(permission)}
+                              color="primary"
+                            />
+                          </CustomTableBodyCell>
+                        )}
+                        <CustomTableBodyCell align="left">
+                          <Icon
+                            color="#8d8d8d"
+                            style={{ width: "18px" }}
+                            path={mdiKey}
                           />
                         </CustomTableBodyCell>
-                      )}
-                      <CustomTableBodyCell align="left">
-                        <Icon
-                          color="#8d8d8d"
-                          style={{ width: "18px" }}
-                          path={mdiKey}
-                        />
-                      </CustomTableBodyCell>
-                      <CustomTableBodyCell align="left">
-                        <Typography title={name}>
-                          {name}
-                        </Typography>
-                      </CustomTableBodyCell>
-                      <CustomTableBodyCell align="left">
-                        <Typography>{description}</Typography>
-                      </CustomTableBodyCell>
-                    </TableRow>
-                  ))}
-                <TableRow>
-                  <CustomTableBodyCell
-                    colSpan={12}
-                    style={{ padding: "5px 0px" }}
-                    align="left"
-                  >
-                    <Divider />
-                  </CustomTableBodyCell>
-                </TableRow>
-              </React.Fragment>
-            ))}
+                        <CustomTableBodyCell align="left">
+                          <Typography title={name}>
+                            {name}
+                          </Typography>
+                        </CustomTableBodyCell>
+                        <CustomTableBodyCell align="left">
+                          <Typography>{description}</Typography>
+                        </CustomTableBodyCell>
+                      </TableRow>
+                    ))}
+                  <TableRow>
+                    <CustomTableBodyCell
+                      colSpan={12}
+                      style={{ padding: "5px 0px" }}
+                      align="left"
+                    >
+                      <Divider />
+                    </CustomTableBodyCell>
+                  </TableRow>
+                </React.Fragment>
+              );
+            })}
           </TableBody>
         </Table>
       </Box>
@@ -593,7 +596,7 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
   );
 };
 
-const ColumnLeftMembers = ({setCustomPermissionList}) => {
+const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
   const {t} = useTranslation();
   const [filterKeyword, setFilterKeyword] = React.useState("");
   const [isHover, setIsHover] = React.useState({});
@@ -623,7 +626,7 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
        return;
       }
     });
-  }, [groupUsers]);
+  }, [groupUsers, dispatch]);
 
   React.useEffect(() => {
     const _group = map(groupUsers, function (group) {
@@ -649,6 +652,7 @@ const ColumnLeftMembers = ({setCustomPermissionList}) => {
       );
     } else {
       setCustomPermissionList([]);
+      setFilterOption(1);
     }
   }
   useEffect(() => {
@@ -755,7 +759,7 @@ const Right = ({mode}) => {
         <ColumnLeft filterOption={filterOption} setFilterOption={setFilterOption}/>
       )}
       {mode === "MEMBERS_PERMISSION" && (
-        <ColumnLeftMembers setCustomPermissionList={setCustomPermissionList}/>
+        <ColumnLeftMembers setCustomPermissionList={setCustomPermissionList} setFilterOption={setFilterOption}/>
       )}
       <div
         style={{

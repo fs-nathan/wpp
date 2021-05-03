@@ -85,7 +85,7 @@
   &--menuButton {
     position: absolute;
     top: 5px;
-    right: 32px;
+    right: 0;
     display: none;
     margin-top: 15px;
     margin-right: 10px;
@@ -94,7 +94,7 @@
     }
   }
   .buttonChat {
-    right: 60px;
+    right: 25px;
     top: 7px;
   }
   &:hover &--menuButton {
