@@ -2463,7 +2463,9 @@
    "IDS_WP_CREATING_ACOUNT": "Creating an account",
    "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Please wait a second!",
    "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TITLE": "Your account is locked on the group {{group_name}}",
-   "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT": "Contact the Group Owner to unlock or select another Workgroup"
+   "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT": "Contact the Group Owner to unlock or select another Workgroup",
+   "IDS_WP_RE_INPUT_CONFIRM_PASSWORD": "Enter the password"
+
 
 
 }

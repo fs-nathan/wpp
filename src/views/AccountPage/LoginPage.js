@@ -9,7 +9,7 @@ import {
   OutlinedInput,
 } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { mdiAccountOutline, mdiLockOutline } from "@mdi/js";
+import { mdiEmailOutline, mdiLockOutline } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import { Routes } from "constants/routes";
 import React, { useEffect, useState } from "react";
@@ -105,12 +105,12 @@ const LoginPage = (props) => {
               id="email"
               required
               type="text"
-              placeholder={t("IDS_WP_EMAIL_OR_PHONE_NUMBER")}
+              placeholder={t("DMH.VIEW.DP.RIGHT.UT.LABEL.EMAIL")}
               startAdornment={
                 <InputAdornment position="start">
                   <Icon
                     className="icon-prefix"
-                    path={mdiAccountOutline}
+                    path={mdiEmailOutline}
                     size={1}
                   />
                 </InputAdornment>

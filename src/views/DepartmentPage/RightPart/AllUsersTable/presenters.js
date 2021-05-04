@@ -46,63 +46,93 @@ const PermissionButton = ({
 function TooltipRole({user}){
   const {t} = useTranslation();
   const getRole = get(user, 'user_type') ;
-  function handleRender(){
-   switch (getRole) {
-     case 3:
-       
-       return (
-        <LightTooltip
-        placement='top'
-        title={
-          <TooltipBody state={0}>
-            <small style={{color: '#f1af36', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MEMBER_TOOLTIP')}</small>
-          </TooltipBody>
-        }
-      >
-        <TooltipWrapper>
-          <div style={{color: "#fff", backgroundColor: '#f1af36',textAlign: 'center', padding: '5px', borderRadius: '2px'}}>
-            {t('DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE')}
-          </div>
-        </TooltipWrapper>
-      </LightTooltip>
-       )
-       case 1:
-       
+  function handleRender() {
+    switch (getRole) {
+      case 3:
         return (
           <LightTooltip
-      placement='top'
-      title={
-        <TooltipBody state={0}>
-          <small style={{color: '#0ed216', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER_TOOLTIP')}</small>
-        </TooltipBody>
-      }
-    >
-      <TooltipWrapper>
-        <div style={{background: '#0ed216', color: '#fff', textAlign: 'center', padding: '5px', borderRadius: '2px'}}>
-          {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER')}
-        </div>
-      </TooltipWrapper>
-    </LightTooltip>
-        )
-     default:
-       return (
-<LightTooltip
-      placement='top'
-      title={
-        <TooltipBody state={0}>
-          <small style={{color: '#950eda', fontSize: '13px'}}>{t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP')}</small>
-        </TooltipBody>
-      }
-    >
-      <TooltipWrapper>
-        <div style={{color:'#fff', backgroundColor : '#950eda',textAlign: 'center', padding: '5px', borderRadius: '2px'}}>
-          {t('IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL')}
-        </div>
-      </TooltipWrapper>
-    </LightTooltip>
-       )
-
-   }
+            placement="top"
+            title={
+              <TooltipBody state={0}>
+                <small style={{ color: "#f1af36", fontSize: "13px" }}>
+                  {t("IDS_WP_USERS_TABLE_COLUMS_ROLE_MEMBER_TOOLTIP")}
+                </small>
+              </TooltipBody>
+            }
+          >
+            <TooltipWrapper>
+              <div
+                style={{
+                  color: "#fff",
+                  backgroundColor: "#f1af36",
+                  textAlign: "center",
+                  padding: "5px",
+                  fontSize: "11px",
+                  borderRadius: '2px'
+                }}
+              >
+                {t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE")}
+              </div>
+            </TooltipWrapper>
+          </LightTooltip>
+        );
+      case 1:
+        return (
+          <LightTooltip
+            placement="top"
+            title={
+              <TooltipBody state={0}>
+                <small style={{ color: "#2196f3", fontSize: "13px" }}>
+                  {t("IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER_TOOLTIP")}
+                </small>
+              </TooltipBody>
+            }
+          >
+            <TooltipWrapper>
+              <div
+                style={{
+                  background: "#2196f3",
+                  color: "rgb(255, 255, 255)",
+                  textAlign: "center",
+                  padding: "5px",
+                  fontSize: "11px",
+                  borderRadius: '2px'
+                }}
+              >
+                {t("IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER")}
+              </div>
+            </TooltipWrapper>
+          </LightTooltip>
+        );
+      default:
+        return (
+          <LightTooltip
+            placement="top"
+            title={
+              <TooltipBody state={0}>
+                <small style={{ color: "#950eda", fontSize: "13px" }}>
+                  {t("IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL_TOOLTIP")}
+                </small>
+              </TooltipBody>
+            }
+          >
+            <TooltipWrapper>
+              <div
+                style={{
+                  color: "#fff",
+                  backgroundColor: "#950eda",
+                  textAlign: "center",
+                  padding: "5px",
+                  fontSize: "11px",
+                  borderRadius: '2px'
+                }}
+              >
+                {t("IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL")}
+              </div>
+            </TooltipWrapper>
+          </LightTooltip>
+        );
+    }
   }
   return (
     <>
@@ -336,9 +366,7 @@ function AllUsersTable({
           align: 'center',
           width: '10%',
         }, canModify ? {
-          label: () => <IconButton disabled>
-            <Icon path={mdiAccountPlus} size={1} color={'rgba(0, 0, 0, 0.7)'} />
-          </IconButton>,
+          label: "",
           field: (user) => <PermissionButton
             handleOpenMenu={currentTarget =>
               doOpenMenu(

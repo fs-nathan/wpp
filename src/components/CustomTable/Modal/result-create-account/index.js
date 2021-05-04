@@ -3,9 +3,22 @@ import CustomModal from 'components/CustomModal';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '@mdi/react';
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
 import '../../HeaderButtonGroup/style.scss';
 const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAccount, result}) => {
     const {t} = useTranslation();
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+    const fileName = 'data';
+    const exportToCSV = (csvData, fileName) => {
+      const ws = XLSX.utils.json_to_sheet(csvData);
+      const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const data = new Blob([excelBuffer], { type: fileType });
+      FileSaver.saveAs(data, fileName + fileExtension);
+    }
+  
     return (
         <CustomModal
               open={openResultCreateAccount}
@@ -56,7 +69,7 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
                 </div>
                 <div
                   className="upload-excel"
-                  // onClick={onClickFromComputer}
+                  onClick={()=>exportToCSV(result,fileName)}
                 >
                   <Icon
                     path={mdiDownload}

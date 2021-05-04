@@ -29,7 +29,7 @@ import { listRoom } from "actions/room/listRoom";
 import { listPosition } from "actions/position/listPosition";
 import { listMajor } from "actions/major/listMajor";
 import { listLevel } from "actions/level/listLevel";
-import { getUserOfRoom } from"actions/room/getUserOfRoom";
+import { getUserOfRoom } from "actions/room/getUserOfRoom";
 import { useMaxlenString } from "hooks";
 import {
   CustomEventDispose,
@@ -56,7 +56,7 @@ const ModalSettingMember = ({
   doListRoom,
   doReloadUser,
   doReloadListUser,
-  doGetUserOfRoom
+  doGetUserOfRoom,
 }) => {
   const { t } = useTranslation();
   const [profile, setProfile] = React.useState(data.user);
@@ -72,14 +72,14 @@ const ModalSettingMember = ({
   const [errorMsg, setErrorMsg] = React.useState(null);
   const [isUpdate, setIsUpdate] = React.useState(null);
   const [isLock, setIsLock] = React.useState(inforUser?.userInfor?.is_lock);
-  const [roomId,setRoomId] = React.useState(null);
+  const [roomId, setRoomId] = React.useState(null);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     setProfile(data.user);
-    setRoomId(data.roomId)
+    setRoomId(data.roomId);
   }, [data, data.user]);
-  
+
   const handleChangeTab = (key) => {
     setTab(key);
   };
@@ -108,14 +108,28 @@ const ModalSettingMember = ({
     }
   }, [activeMask, setDescription, setOpen]);
   React.useEffect(() => {
-    if (updatedUser) {
-      setRoom(get(updatedUser, "room_id"));
-      setPosition(get(updatedUser, "position_id"));
-      setMajor(get(updatedUser, "major_id"));
-      setLevel(get(updatedUser, "level_id"));
-      setDescription(get(updatedUser, "description", ""));
+    if (
+      inforUser?.userInfor?.level_id &&
+      inforUser?.userInfor?.description  &&
+      inforUser?.userInfor?.room_id  &&
+      inforUser?.userInfor?.position_id  &&
+      inforUser?.userInfor?.major_id
+    ) {
+      console.log('hi')
+      setRoom(get(inforUser?.userInfor, "room_id"));
+      setPosition(get(inforUser?.userInfor, "position_id"));
+      setMajor(get(inforUser?.userInfor, "major_id"));
+      setLevel(get(inforUser?.userInfor, "level_id"));
+      setDescription(get(inforUser?.userInfor, "description", ""));
     }
-  }, [setDescription, updatedUser]);
+    else {
+      setRoom(null);
+      setPosition(null);
+      setMajor(null);
+      setLevel(null);
+      setDescription(null);
+    }
+  }, [inforUser, setDescription]);
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
@@ -154,8 +168,8 @@ const ModalSettingMember = ({
         setIsUpdate(filt);
         setIsLock(!isLock);
         doReloadListUser();
-        if(roomId){
-          doGetUserOfRoom({roomId: roomId});
+        if (roomId) {
+          doGetUserOfRoom({ roomId: roomId });
         }
         handleToast("success", t("IDS_WP_UPDATE_USER_SUCCESS"));
       }
@@ -230,7 +244,7 @@ const ModalSettingMember = ({
     doListRoom();
     // eslint-disable-next-line
   }, []);
-
+  console.log("infor", inforUser.userInfor);
   React.useEffect(() => {
     doListPosition();
     // eslint-disable-next-line
@@ -251,12 +265,14 @@ const ModalSettingMember = ({
       setOpen={setOpen}
       onCancle={() => setOpen(false)}
       manualClose={true}
-      className={`modal_setting-member ${(tab === "2") | (tab === "3") && 'hidden_submit'}`}
+      className={`modal_setting-member ${
+        (tab === "2") | (tab === "3") && "hidden_submit"
+      }`}
       title={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.MEMBER.TITLE")}
       cancleRender={
         (tab === "2") | (tab === "3") && (() => t("LABEL_CHAT_TASK_THOAT"))
       }
-      confirmRender={(tab === "2") | (tab === "3") && (() => (null))}
+      confirmRender={(tab === "2") | (tab === "3") && (() => null)}
       type="submit"
       form="form-update-account"
     >
@@ -276,20 +292,25 @@ const ModalSettingMember = ({
               </p>
               <p>
                 {t("IDS_WP_SPECIES")}:{" "}
-                <span style={{ color: "red" }}>{profile.role}</span>
+                <span style={{ color: "red" }}>
+                  {profile.user_type === 3
+                    ? t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE")
+                    : profile.user_type === 1
+                    ? t("IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER")
+                    : t("IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL")}
+                </span>
               </p>
               <p>
                 {t("DMH.VIEW.DP.RIGHT.UT.STATE.TITLE")}:{" "}
-                {!inforUser.userInfor.is_lock ?
-                <span style={{ color: "green", fontSize: "14px" }}>
-                  
+                {!inforUser.userInfor.is_lock ? (
+                  <span style={{ color: "green", fontSize: "14px" }}>
                     {t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ACTIVE")}
-                    
-                </span>:
-                <span style={{ color: "red", fontSize: "14px" }}>
-                  {t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.LOCK")}
-                </span>
-                }
+                  </span>
+                ) : (
+                  <span style={{ color: "red", fontSize: "14px" }}>
+                    {t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.LOCK")}
+                  </span>
+                )}
               </p>
               <p>
                 {t("views.calendar_page.right_part.label.created_by")}:{" "}
@@ -316,32 +337,34 @@ const ModalSettingMember = ({
                 </div>
                 <div>{t("IDS_WP_COMMON_SETUP")}</div>
               </div>
-              {inforUser.userInfor.user_type === 3 &&
-              <div
-                className={`modalSettingMember-tab-left_menu-item ${
-                  tab === "2" && "modalSettingMember-tab-left_menu-item_active"
-                }`}
-                onClick={() => handleChangeTab("2")}
-              >
-                <div>
-                  <IconAccountInternal />
+              {inforUser.userInfor.user_type === 2 && (
+                <div
+                  className={`modalSettingMember-tab-left_menu-item ${
+                    tab === "2" &&
+                    "modalSettingMember-tab-left_menu-item_active"
+                  }`}
+                  onClick={() => handleChangeTab("2")}
+                >
+                  <div>
+                    <IconAccountInternal />
+                  </div>
+                  <div>{t("IDS_WP_ACCOUNT_INTERNAL")}</div>
                 </div>
-                <div>{t("IDS_WP_ACCOUNT_INTERNAL")}</div>
-              </div>
-              }
-              {!inforUser.userInfor.is_me && 
-              <div
-                className={`modalSettingMember-tab-left_menu-item ${
-                  tab === "3" && "modalSettingMember-tab-left_menu-item_active"
-                }`}
-                onClick={() => handleChangeTab("3")}
-              >
-                <div>
-                  <Icon path={mdiLock} size={1} color="rgba(0, 0, 0, 0.54)" />
+              )}
+              {!inforUser.userInfor.is_me && (
+                <div
+                  className={`modalSettingMember-tab-left_menu-item ${
+                    tab === "3" &&
+                    "modalSettingMember-tab-left_menu-item_active"
+                  }`}
+                  onClick={() => handleChangeTab("3")}
+                >
+                  <div>
+                    <Icon path={mdiLock} size={1} color="rgba(0, 0, 0, 0.54)" />
+                  </div>
+                  <div>{t("IDS_WP_LOCK_MEMBER")}</div>
                 </div>
-                <div>{t("IDS_WP_LOCK_MEMBER")}</div>
-              </div>
-              }
+              )}
             </div>
           </div>
           <div className="modalSettingMember-right">
@@ -359,7 +382,6 @@ const ModalSettingMember = ({
                         label: get(find(options.rooms, { id: room }), "name"),
                         value: room,
                       }}
-                     
                       onChange={({ value: roomId }) => setRoom(roomId)}
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
                     />
@@ -533,7 +555,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     actionToast,
-    doGetUserOfRoom: ({roomId}) => dispatch(getUserOfRoom({roomId})),
+    doGetUserOfRoom: ({ roomId }) => dispatch(getUserOfRoom({ roomId })),
     doReloadUser: ({ userId }) => {
       dispatch(detailUser({ userId }, true));
       dispatch(listUserOfGroup(true));

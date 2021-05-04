@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
-import { mdiAccountOutline ,mdiLockOutline} from '@mdi/js';
+import { mdiEmailOutline , mdiAccountOutline  ,mdiLockOutline} from '@mdi/js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   FormControl,
@@ -75,12 +75,20 @@ const RegisterPage = () => {
               variant="outlined"
               className="custom-input"
             >
-              <div className="lb-input">{t('IDS_WP_FULL_NAME')} *</div>
               <OutlinedInput
                 id="fullname"
                 required
                 onChange={handleOnchange("name")}
                 placeholder={t('IDS_WP_YOUR_FULL_NAME')}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Icon
+                      className="icon-prefix"
+                      path={mdiAccountOutline }
+                      size={1}
+                    />
+                  </InputAdornment>
+                }
               />
             </FormControl>
               <FormControl
@@ -93,13 +101,13 @@ const RegisterPage = () => {
                   id="email"
                   required
                   type="email"
-                  placeholder={t('IDS_WP_ENTER_REGISTER_EMAIL')}
+                  placeholder={t('DMH.VIEW.DP.RIGHT.UT.LABEL.EMAIL')}
                   onChange={handleOnchange("email")}
                   startAdornment={
                     <InputAdornment position="start">
                       <Icon
                         className="icon-prefix"
-                        path={mdiAccountOutline}
+                        path={mdiEmailOutline }
                         size={1}
                       />
                     </InputAdornment>
@@ -145,7 +153,7 @@ const RegisterPage = () => {
                 required
                 type="password"
                 autoComplete="new-password"
-                placeholder={t('IDS_WP_RE_INPUT_NEW_PASSWORD')}
+                placeholder={t('IDS_WP_RE_INPUT_CONFIRM_PASSWORD')}
                 onBlur={handleCheckPwd}
                 inputProps={{ maxLength: 20, minLength: 8 }}
                 startAdornment={
@@ -163,7 +171,7 @@ const RegisterPage = () => {
             <div className="suggest-password">{t('IDS_WP_ENTER_REGISTER_PASSWORD_SUGGESTED')}</div>
               <FormControlLabel
                 control={<Checkbox color="primary" required />}
-                label={<><span>{t('IDS_WP_I_AM_ACCEPT_TERM')}</span> <Link href="" className="btn-link">
+                label={<><span>{t('IDS_WP_I_AM_ACCEPT_TERM')}</span> <Link href={Routes.ACCEPT_TERM} target="blank" className="btn-link">
                 {t('IDS_WP_I_AM_ACCEPT_TERM_OF_USE')}
               </Link> {t('IDS_WP_I_AM_ACCEPT_TERM_WORK_PLUS')}</>}
               />
