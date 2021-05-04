@@ -174,37 +174,42 @@ function HeaderButtonGroup({
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
-
+    let countAll = 0;
     if(listUser){
       // eslint-disable-next-line no-unused-expressions
       listUser?.data_filter?.rooms?.map((el,index) => {
-      const count = countAllUser + el.users.length;
-      setCountAllUser(count);
+        countAll = countAll + el.number_member;
+      
       return null;
      })
-   
+     setCountAllUser(countAll);
     }
+
     const newList = listUser?.data_filter?.rooms?.map(el => {
       
       return {...el,users: el?.users?.filter(item => item.user_type === 3)}
      });
+     let countJoin = 0;
      // eslint-disable-next-line no-unused-expressions
      newList?.map((el,index) => {
-      const count = countJoinUser + el.users.length;
-      setCountJoinUser(count);
+      countJoin = countJoin + el?.users?.length;
+      
       return null;
      })
+     setCountJoinUser(countJoin);
      setUserJoin(newList);
+     let countInternal = 0;
      const internal = listUser?.data_filter?.rooms?.map(el => {
       return {...el,users: el?.users?.filter(item => item.user_type === 2)}
      });
      console.log(internal, 'internal')
      // eslint-disable-next-line no-unused-expressions
      internal?.map((el,index) => {
-      const count = countInternalUser + el.users.length;
-      setCountInternalUser(count);
+      countInternal = countInternal + el.users.length;
+      
       return null;
      })
+     setCountInternalUser(countInternal);
      setUserInternal(internal);
   };
 
@@ -326,43 +331,7 @@ const handlesetFileExcel = (file) => {
           )
         )}
 
-        {get(options, "addmember") && (
-          <div>
-            <StyledButton className="button" onClick={handleAddMemberClick}>
-              <div>
-                <Icon
-                  path={mdiAccountPlus}
-                  size={1}
-                  color={"rgba(0, 0, 0, 0.54)"}
-                />
-              </div>
-              <span>{t("LABEL_ADD_MEMBER")}</span>
-            </StyledButton>
-            <ModalCreateAccount openAddMember={openAddMember} setOpenAddMember={setOpenAddMember} setOpen={setOpen} setOpenCreateAccount={setOpenCreateAccount} />
-            <ModalContinueCreateAccount fileExcel={fileExcel}  setOpenResultCreateAccount={setOpenResultCreateAccount} setResult={setResult} openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel} />
-
-            
-            <ModalOptionCreateAccount openCreateAccount={openCreateAccount} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
-
-            
-            <AddUserModalPresenter
-              open={open}
-              setOpen={setOpen}
-              handleSearchUser={doSearchUser}
-              desireUser={desireUser}
-              handleClearDesireUsers={() => resetDesireUser()}
-              handleInviteUserJoinGroup={doInviteUserJoinGroup}
-            />
-
-            {/* modalOpenUploadExcel */}
-            <ModalUplaodExcel handlesetFileExcel={handlesetFileExcel}  openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
-
-            
-            <ModalResultCreateAccount  result={result} openResultCreateAccount={openResultCreateAccount} setOpenResultCreateAccount={setOpenResultCreateAccount} />
-            {/* modal_result_create_account */}
-            
-          </div>
-        )}
+        
         {get(options, "filter") && (
           <div>
           <StyledButton
@@ -379,7 +348,7 @@ const handlesetFileExcel = (file) => {
             />
           </div>
           <span>
-            {get(options, "filter.label") && t('IDS_WP_ALL')}
+            {get(options, "filter.label") && valueFilter === 'all' ? t('IDS_WP_ALL'): valueFilter === 'join' ? t('IDS_WP_ACCOUNT_MEMBER_JOIN'): t('IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL')}
           </span>
         </StyledButton>
         <Popover

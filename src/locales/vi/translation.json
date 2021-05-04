@@ -935,7 +935,7 @@
   "IDS_WP_NOT_VERIFY_ACCOUNT_NOTIFY": "Tài khoản của bạn chưa được xác thực. Vui lòng xác thực email để nhận thông tin hệ thống và được bảo vệ tài khoản tốt nhất.",
   "IDS_WP_VERIFY_ACCOUNT": "Xác thực tài khoản",
   "IDS_WP_VERIFY_ACCOUNT_AUTHENTICATED": "Đã xác thực tài khoản",
-  "IDS_WP_AUTHENTICATED": "Đã xác thực",
+  "IDS_WP_AUTHENTICATED": "Đã xác minh",
   "IDS_WP_CHANGE_ACCOUNT": "Đổi tài khoản",
   "IDS_WP_LOGOUT": "Đăng xuất",
   "IDS_WP_UPGRADE_ORDER": "Nâng cấp tài khoản",
@@ -2452,7 +2452,7 @@
   "IDS_WP_FILTER_LIST_MEMBER": "Lọc danh sách thành viên",
   "IDS_WP_ACCOUNT_MEMBER_JOIN": "Tài khoản tham gia",
   "IDS_WP_SETTING_MEMBER": "Cài đặt thành viên",
-  "IDS_WP_LOCK_MEMBER": "Khóa thành viễn",
+  "IDS_WP_LOCK_MEMBER": "Khóa thành viên",
   "IDS_WP_LOCK_MEMBER_NOTE": "Vô hiệu hóa hoạt động của thành viên trên nhóm",
   "IDS_WP_LOCk": "Khóa",
   "IDS_WP_UNLOCK": "Mở khóa",
@@ -2479,5 +2479,7 @@
   "IDS_WP_UN_LOCK_MEMBER_NOTE": "Tài khoản đang bị khóa và thành viên bị vô hiệu hóa.",
   "IDS_WP_LOCKED": "Tài khoản bị khóa",
   "IDS_WP_CREATING_ACOUNT": "Đang tạo tài khoản",
-  "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Vui lòng chờ trong giây lát!"
+  "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Vui lòng chờ trong giây lát!",
+  "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TITLE": "Tài khoản của bạn đang bị khóa trên nhóm {{group_name}}",
+  "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT": "Liên hệ với Chủ sở hữu nhóm để mở khóa hoặc chọn Nhóm làm việc khác"
   }

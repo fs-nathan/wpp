@@ -177,7 +177,7 @@ const LoginPage = (props) => {
         </form>
         <div className="bottom-des">
           {t("IDS_WP_DONT_HAVE_ACCOUNT")}
-          <Link href="/account/register" className="btn-link">
+          <Link href={Routes.REGISTER} className="btn-link">
             {t("IDS_WP_SIGN_UP")}
           </Link>
         </div>

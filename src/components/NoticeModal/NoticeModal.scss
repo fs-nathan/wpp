@@ -84,6 +84,17 @@
     }
   }
 }
+.content_notify-lock-user{
+  text-align: center;
+  h5{
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  div{
+    font-size: 14px;
+    margin-bottom: 40px;
+  }
+}
 .notice-text {
   font-size: 17px;
   text-align: center;
@@ -130,6 +141,16 @@
   margin: 6px 16px;
   color: #0076f3;
   text-transform: none;
+}
+.btn-select-group{
+  background: #ff9800;
+  color: #ffffff;
+  height: 60px;
+  margin: 0;
+  width: 330px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  
 }
 .notice-icon-container {
   margin: 20px 0;
