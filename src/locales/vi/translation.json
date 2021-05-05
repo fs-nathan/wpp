@@ -2469,5 +2469,8 @@
   "IDS_WP_CREATE_ACCOUNT_SUCCESS": "Tạo tài khoản thành công",
   "LABEL_ADD_MEMBER": "Thêm thành viên",
   "LABEL_ASSIGNED_COUNT": "Đã gán",
-  "LABEL_PERMISSION_NOT_ASSIGN": "Chưa gán quyền"
+  "LABEL_PERMISSION_NOT_ASSIGN": "Chưa gán quyền",
+  "MESSAGE_DELETE_GROUP_PERMISSION_ERROR": "Không xoá được, nhóm quyền này đã gán cho thành viên",
+  "LABEL_GROUP_PERMISSION_EMPTY_TITLE": "Chưa gán quyền!",
+  "LABEL_GROUP_PERMISSION_EMPTY_DES": "Thành viên chưa được gán quyền. Click button phân quyền để gán nhóm quyền cho thành viên"
 }

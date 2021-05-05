@@ -425,7 +425,7 @@ function MemberSetting({
                           setCurMemberSetting(member);
                           setAnchorAssign(evt.currentTarget);
                         }}>
-                          <span>{get(member, 'join_task_status_code') === 0 ? t("LABEL_AUTO") : t("LABEL_MANUAL")}</span>
+                          <span>{get(member, 'join_task_status_code') === 1 ? t("LABEL_AUTO") : t("LABEL_MANUAL")}</span>
                           <Icon path={mdiMenuDown} size={0.8} color={'#222'} />
                         </RolesBox>
                         : <span style={{ color: 'red' }}>{t("DMH.VIEW.PP.MODAL.MEMBER.RIGHT.LABEL.LEA")}</span>}

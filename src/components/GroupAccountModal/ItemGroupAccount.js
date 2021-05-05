@@ -161,7 +161,7 @@ const ItemGroupAccount = props => {
               >
                 {t('IDS_WP_JOINED')}
               </Button>
-            ) : (
+            ) : (item.type_group !== "Free" && item.type_group !== "Trial") ? (
               <Button
                 variant={"contained"} disableElevation color={"primary"}
                 onClick={e => requestJoinGroup(e, item.id)}
@@ -169,7 +169,7 @@ const ItemGroupAccount = props => {
               >
                 {t('IDS_WP_JOIN')}
               </Button>
-            )}
+            ) : <div/>}
           </>
         );
       case 'group_joins':
@@ -268,7 +268,10 @@ const ItemGroupAccount = props => {
             onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
             className={`${props.groupActive.code === item.code && "view_GroupAccount_Modal__groupItem--Active"}`}
           >
-            {isHover && (props.groupActive.code !== item.code || props.type !== "group_me") && <Box className={"view_GroupAccount_Modal__actionMask"}/>}
+            {isHover && (props.groupActive.code !== item.code || props.type !== "group_me") &&
+              (item.type_group !== "Free" && item.type_group !== "Trial") &&
+              <Box className={"view_GroupAccount_Modal__actionMask"}/>
+            }
             <ListItemAvatar>
               <CustomAvatar style={{ width: 50, height: 50, }} className="avatar" src={item.logo || image.avatar_user} alt='avatar' />
             </ListItemAvatar>

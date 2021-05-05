@@ -2451,5 +2451,8 @@
   "IDS_WP_UPDATE_USER_SUCCESS": "Successful account update",
   "IDS_WP_UN_LOCK_ACCOUNT": "Account unlocked successfully",
   "IDS_WP_LOCK_ACCOUNT": "Account lock is successful",
-  "IDS_WP_CREATE_ACCOUNT_SUCCESS": "Account successfully created"
+  "IDS_WP_CREATE_ACCOUNT_SUCCESS": "Account successfully created",
+  "MESSAGE_DELETE_GROUP_PERMISSION_ERROR": "Unable to be deleted, this permission group has been assigned to the member",
+  "LABEL_GROUP_PERMISSION_EMPTY_TITLE": "Not assigned!",
+  "LABEL_GROUP_PERMISSION_EMPTY_DES": "User has not been authorized. Click the authorization button to assign the rights group to the member"
 }

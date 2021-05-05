@@ -39,7 +39,7 @@ import "./index.scss";
 import SearchBox from "../../../../components/SearchInput";
 import AddGroupPermissionModal, {CustomTableBodyCell} from "../components/AddGroupPermissionModal";
 import Chip from '@material-ui/core/Chip';
-import {filter, find, first, forEach, get, includes, isNil, map, set, size} from "lodash";
+import {filter, find, first, forEach, get, includes, isNil, map, size} from "lodash";
 import {StyledList, StyledListItem} from "../../../../components/CustomList";
 import {groupPermissionAttr} from "../contants";
 import IconButton from "@material-ui/core/IconButton";
@@ -53,8 +53,9 @@ import List from "@material-ui/core/List";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import Button from "@material-ui/core/Button";
 import UpdateUserPermissionModal from "../components/UpdateUserPermission";
+import {SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
 
-const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
+const GroupSettingMenu = ({ menuAnchor, item, numberMemberAssigned = 0, setMenuAnchor }) => {
   const { t } = useTranslation();
   const { setModal } = useContext(GroupPermissionSettingsContext);
   const options = useMemo(() => {
@@ -69,7 +70,10 @@ const GroupSettingMenu = ({ menuAnchor, item, onClose, setMenuAnchor }) => {
         setModal(<UpdateInfoGroupPermissionModal item={item} />);
         break;
       case "delete":
-        setModal(<DeleteGroupPermissionModal item={item} />);
+        console.log(numberMemberAssigned);
+        if(numberMemberAssigned > 0) {
+          SnackbarEmitter(SNACKBAR_VARIANT.ERROR, t("MESSAGE_DELETE_GROUP_PERMISSION_ERROR"));
+        } else setModal(<DeleteGroupPermissionModal item={item} />);
         break;
       default:
         break;
@@ -457,53 +461,19 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
                         number: total_of_member_assigned,
                       })}
                       actions={
-                        can_modify ? (
-                          <IconButton
-                            title={t("thêm")}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setMenuAnchor(
-                                <GroupSettingMenu
-                                  item={item}
-                                  menuAnchor={e.currentTarget}
-                                  setMenuAnchor={setMenuAnchor}
-                                />
-                              );
-                            }}
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <Icon
-                              path={mdiDotsVertical}
-                              size={1}
-                              color="#8d8d8d"
-                            />
-                          </IconButton>
-                        ) : (
-                          <IconButton
-                            title={t("Không sửa, xóa")}
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setMenuAnchor(
-                                <GroupSettingMenu
-                                  item={item}
-                                  menuAnchor={e.currentTarget}
-                                  setMenuAnchor={setMenuAnchor}
-                                />
-                              );
-                            }}
-                            color="primary"
-                            aria-label="upload picture"
-                            component="span"
-                          >
-                            <Icon
-                              path={mdiLockOutline}
-                              size={1}
-                              color="#8d8d8d"
-                            />
-                          </IconButton>
-                        )
+                        <IconButton
+                          title={t("Không sửa, xóa")}
+                          onClick={(e) => null}
+                          color="primary"
+                          aria-label="upload picture"
+                          component="span"
+                        >
+                          <Icon
+                            path={mdiLockOutline}
+                            size={1}
+                            color="#8d8d8d"
+                          />
+                        </IconButton>
                       }
                     />
                   </StyledListItem>
@@ -568,6 +538,7 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
                                   item={item}
                                   menuAnchor={e.currentTarget}
                                   setMenuAnchor={setMenuAnchor}
+                                  numberMemberAssigned={total_of_member_assigned}
                                 />
                               );
                             }}
@@ -596,11 +567,9 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
   );
 };
 
-const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
+const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption, openModal, setOpenModal}) => {
   const {t} = useTranslation();
   const [filterKeyword, setFilterKeyword] = React.useState("");
-  const [isHover, setIsHover] = React.useState({});
-  const [openModal, setOpenModal] = React.useState(false);
   const [selectedUser, setSelectedUser] = React.useState({});
   const [filteredGroup, setFilteredGroup] = React.useState([]);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
@@ -617,12 +586,7 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
     forEach(groupUsers, function (group) {
       if(size(get(group, "users")) > 0) {
        setSelectedGroup(get(first(group.users), "group_permission_id"));
-       setSelectedUser(first(group.users));
-        dispatch(
-          settingGroupPermission.actions.loadDetailGroupPermission({
-            group_permission_id: get(first(group.users), "group_permission_id"),
-          })
-        );
+       handleSelectUser(first(group.users));
        return;
       }
     });
@@ -637,10 +601,6 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
     setFilteredGroup(_group);
   }, [filterKeyword, groupUsers]);
 
-  function handleHover(id, hover) {
-    set(isHover, id, hover);
-    setIsHover({...isHover});
-  }
   function handleSelectUser(user) {
     setSelectedUser(user);
     if(user.group_permission_id) {
@@ -699,8 +659,6 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
                   return (
                     <ListItem
                       key={user.id}
-                      onMouseEnter={() => handleHover(user.id, true)}
-                      onMouseLeave={() => handleHover(user.id, false)}
                       onClick={() => handleSelectUser(user)}
                       className={
                         selectedUser.id === user.id ? "active" : ""
@@ -718,20 +676,17 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
                           <span style={{marginLeft: "7px"}}>{user.group_permission_name ?? <span style={{fontStyle: "italic"}}>{t("LABEL_PERMISSION_NOT_ASSIGN")}</span>}</span>
                         </Box>
                       }/>
-                      {isHover[user.id] && (
-                        <ListItemSecondaryAction>
-                          <Button
-                            onClick={() => {
-                              setSelectedUser(user);
-                              setOpenModal(true);
-                            }}
-                            onMouseEnter={() => handleHover(user.id, true)}
-                            disableElevation color={"primary"} variant={"contained"} size={"small"}
-                          >
-                            {t("LABEL_CHANGE_PERMISSION")}
-                          </Button>
-                        </ListItemSecondaryAction>
-                      )}
+                      <ListItemSecondaryAction>
+                        <Button
+                          onClick={() => {
+                            setSelectedUser(user);
+                            setOpenModal(true);
+                          }}
+                          disableElevation color={"primary"} variant={"contained"} size={"small"}
+                        >
+                          {t("LABEL_CHANGE_PERMISSION")}
+                        </Button>
+                      </ListItemSecondaryAction>
                     </ListItem>
                   );
                 })}
@@ -753,13 +708,18 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption}) => {
 const Right = ({mode}) => {
   const [customPermissionList, setCustomPermissionList] = React.useState([]);
   const [filterOption, setFilterOption] = React.useState(0);
+  const {t} = useTranslation();
+  const [openModal, setOpenModal] = React.useState(false);
   return (
     <Grid container>
       {mode === "GROUP_PERMISSION" && (
         <ColumnLeft filterOption={filterOption} setFilterOption={setFilterOption}/>
       )}
       {mode === "MEMBERS_PERMISSION" && (
-        <ColumnLeftMembers setCustomPermissionList={setCustomPermissionList} setFilterOption={setFilterOption}/>
+        <ColumnLeftMembers
+          setCustomPermissionList={setCustomPermissionList} setFilterOption={setFilterOption}
+          openModal={openModal} setOpenModal={setOpenModal}
+        />
       )}
       <div
         style={{
@@ -767,7 +727,19 @@ const Right = ({mode}) => {
           background: "rgba(0, 0, 0, 0.1)",
         }}
       />
-      <ColumnRight customPermissionList={customPermissionList} filterOption={filterOption}/>
+      {(mode === "MEMBERS_PERMISSION" && size(customPermissionList) === 0) ? (
+        <div className={"comp_rightColumn_content__empty"}>
+          <p>{t("LABEL_GROUP_PERMISSION_EMPTY_TITLE")}</p>
+          <p>{t("LABEL_GROUP_PERMISSION_EMPTY_DES")}</p>
+          <Button
+            onClick={() => setOpenModal(true)}
+            disableElevation color={"primary"} variant={"contained"} size={"small"}
+          >
+            {t("LABEL_CHAT_TASK_PHAN_QUYEN")}
+          </Button>
+        </div>
+      ) :
+        <ColumnRight customPermissionList={customPermissionList} filterOption={filterOption}/>}
     </Grid>
   );
 };

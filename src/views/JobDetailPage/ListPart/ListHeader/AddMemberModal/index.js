@@ -32,7 +32,7 @@ import Scrollbars from "react-custom-scrollbars";
 import * as taskDetailAction from "../../../../../actions/taskDetail/taskDetailActions";
 import {
   createMember,
-  deleteMember,
+  deleteMember, getMember,
   getMemberNotAssigned,
   updateRolesForMember
 } from "../../../../../actions/taskDetail/taskDetailActions";
@@ -79,7 +79,7 @@ const BootstrapInput = withStyles((theme) => ({
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -95,6 +95,7 @@ function AddMemberModal({
   const [selectedFilter, setSelectedFilter] = React.useState(0);
   const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectID]);
   const [taskIDValue, setTaskIDValue] = React.useState(null);
+  const [isFocus, setIsFocus] = React.useState(false);
 
   React.useEffect(() => {
     setTaskIDValue(get(task, "id", task_id));
@@ -114,9 +115,10 @@ function AddMemberModal({
   React.useEffect(() => {
     if(!isNil(taskIDValue) && isOpen) {
       doListMembersNotAssign({task_id: taskIDValue});
+      doListMembers({ task_id: taskIDValue });
       doListUserRole(true);
     }
-  }, [taskIDValue, doListMembersNotAssign, isOpen, doListUserRole]);
+  }, [taskIDValue, doListMembersNotAssign, isOpen, doListUserRole, doListMembers]);
 
   function handleRemoveMember(member_id) {
     doDeleteMember({task_id: taskIDValue, member_id});
@@ -163,7 +165,10 @@ function AddMemberModal({
     >
       <DialogContent className="AddMemberModal-container">
         <div style={{padding: "10px 25px"}}>
-          <Paper component="form" elevation={0} variant={"outlined"} className={classes.root}>
+          <Paper
+            component="form" elevation={0} variant={"outlined"} className={classes.root}
+            style={isFocus ? {border: "2px solid var(--color-primary)"} : {}}
+          >
             <IconButton  aria-label="menu">
               <SearchIcon />
             </IconButton>
@@ -172,6 +177,7 @@ function AddMemberModal({
               placeholder={t("LABEL_SEARCH_MEMBERS_TO_ADD")}
               inputProps={{ 'aria-label': 'search personal board' }}
               onChange={evt => setSearchPattern(evt.currentTarget.value)}
+              onFocus={() => setIsFocus(true)} onBlur={() => setIsFocus(false)}
             />
           </Paper>
           <Typography variant={"body2"} color={"textSecondary"} className={"text-hint"}>
@@ -281,6 +287,7 @@ const mapDispatchToProps = dispatch => {
     doUpdateRoleMember: (options) => dispatch(updateRolesForMember(options)),
     doCreateMember: (options) => dispatch(createMember(options)),
     doListUserRole: (quite) => dispatch(listUserRole(quite)),
+    doListMembers: ({task_id}) => dispatch(getMember({ task_id }))
   }
 };
 

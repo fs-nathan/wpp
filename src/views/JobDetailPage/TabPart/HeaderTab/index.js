@@ -1,5 +1,5 @@
 import {IconButton} from '@material-ui/core';
-import {mdiAccountCogOutline, mdiChevronLeft, mdiSettings} from '@mdi/js';
+import {mdiAccountCogOutline, mdiChevronLeft, mdiPlus} from '@mdi/js';
 import Icon from '@mdi/react';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -25,7 +25,7 @@ function HeaderTab({ title, onClickBack, onClickOpen, rightIcon, buttonTooltipTe
         onClick={onClickOpen}
       >
         <abbr title={buttonTooltipText || t('LABEL_CHAT_TASK_CAI_DAT')}>
-          <Icon path={rightIcon === "settings" ? mdiAccountCogOutline : mdiSettings} size={1} />
+          <Icon path={rightIcon === "settings" ? mdiAccountCogOutline : mdiPlus} size={1} />
         </abbr>
       </IconButton>
     </div>

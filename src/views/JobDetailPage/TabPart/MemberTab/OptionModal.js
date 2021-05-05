@@ -22,6 +22,7 @@ import {connect, useDispatch, useSelector} from "react-redux";
 import AlertModal from "../../../../components/AlertModal";
 import {listUserRole} from "../../../../actions/userRole/listUserRole";
 import {useHistory} from "react-router-dom";
+import CustomModal from "../../../../components/CustomModal";
 
 const styles = (theme) => ({
   title: {
@@ -120,18 +121,17 @@ function OptionModal({
   }, [privateChatData, history, open]);
 
   return (
-    <Dialog
-      disableBackdropClick={true}
-      onClose={handleClose}
-      open={open}
-      maxWidth={"sm"}
-      className={"optionModal-container"}
-    >
-      <DialogTitle id="customized-dialog-title" onClose={handleClose}>
-        {t("TIME_RANGE_POPOVER_OPTIONS")}
-      </DialogTitle>
-      <DialogContent dividers>
-        <Box display={"flex"} flexDirection={"column"} alignItems={"center"}>
+    <>
+      <CustomModal
+        open={open} setOpen={setOpen}
+        height={"short"} maxWidth={"xs"}
+        onConfirm={() => handleClose}
+        onCancle={() => handleClose}
+        confirmRender={null}
+        cancleRender={() => t("IDS_WP_EXIT")}
+        title={t("TIME_RANGE_POPOVER_OPTIONS")}
+      >
+        <Box className={"optionModal-container"}>
           <CustomAvatar src={get(member, "avatar")} style={{width: 75, height: 75}}/>
           <Typography variant={"h6"} style={{marginTop: 15}}>{get(member, "name")}</Typography>
           <Button
@@ -180,11 +180,7 @@ function OptionModal({
             </Button>
           )}
         </Box>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose}>{t("LABEL_CHAT_TASK_HUY")}</Button>
-        <Button onClick={handleClose} color="primary">{t("LABEL_GANTT_NAME_COMPLETE_TABLE")}</Button>
-      </DialogActions>
+      </CustomModal>
       <AlertModal
         open={modalConfirm}
         setOpen={setModalConfirm}
@@ -193,7 +189,7 @@ function OptionModal({
           handleRemoveMember(member.id);
         }}
       />
-    </Dialog>
+    </>
   );
 }
 

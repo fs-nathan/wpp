@@ -10,7 +10,7 @@ import {Scrollbars} from "react-custom-scrollbars";
 import {Divider, IconButton, Link, List, ListItem, ListItemIcon, ListItemText, Typography} from "@material-ui/core";
 import {DragDropContext, Draggable, Droppable} from "react-beautiful-dnd";
 import {useHistory} from "react-router-dom";
-import {get, map, forEach} from "lodash";
+import {forEach, get, map} from "lodash";
 import {getProjectRecently} from "../../../actions/project/recentlyProjects";
 import {getProjectOnPersonalBoard} from "../../../actions/project/projectOnPersonalBoard";
 import {resolvedWorkType} from "../../../helpers/project/commonHelpers";
@@ -71,7 +71,7 @@ const DrawerQuickAccess = props => {
   });
   return (
     <>
-      <div className="drawer-content">
+      <div className="drawer-content drawer-content-quick-start">
         <HeaderDrawer title={
           <div className={"header--withIcon"}>
             <Icon path={mdiBookmarkMultipleOutline} size={1} color="rgba(0, 0, 0, 0.54)"/>

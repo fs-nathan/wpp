@@ -305,7 +305,7 @@ function GroupAccountModal({ open, setOpen, ...props }) {
             <List>
               <OptionItem onClick={(() => { setMode("CREATE") })}>
                 <ListItemText primary={
-                  <Button className="join-group-new" style={{backgroundColor: "var(--color-primary)", width: "100%"}}>
+                  <Button className="join-group-new">
                       <span className="text-join-group-new" style={{ textTransform: 'uppercase', color: "#ffffff", fontWeight: "400" }}>
                         {t('IDS_WP_JOIN_NEW_GROUP')}
                       </span>

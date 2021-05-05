@@ -20,8 +20,10 @@ import {Icon} from "@mdi/react";
 import {mdiMenuDown} from '@mdi/js';
 import {getViewAllMessage} from "../../../../components/Drawer/DrawerService";
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
-import {map, flatten} from "lodash";
+import {flatten, map} from "lodash";
 import {useLocalStorage} from "react-use";
+import {CREATE_GROUP_TASK, CustomEventDispose, CustomEventListener} from "../../../../constants/events";
+import {listGroupTask} from "../../../../actions/groupTask/listGroupTask";
 
 const StyledList = styled(List)`
   & > li {
@@ -114,6 +116,15 @@ function ListBody() {
   const handleViewAll = async () => {
     await getViewAllMessage();
   }
+  React.useEffect(() => {
+    const reload = () => {
+      dispatch(listGroupTask({projectId}));
+    }
+    CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reload);
+    return () => {
+      CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, reload);
+    }
+  });
 
   return (
     <Body className="listJobBody"
