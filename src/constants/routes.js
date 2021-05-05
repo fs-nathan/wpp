@@ -2,6 +2,7 @@ export const Routes = {
   HOME: "/",
   POST: "/home",
   PROJECTS: "/projects",
+  ACCEPT_TERM: "https://workplus.vn/dieu-khoan-va-thoa-thuan-su-dung-workplus/",
   PROJECT: "/projects/task-table",
   DEPARTMENTS: "/users",
   KANBAN: "/projects/task-kanban/:projectId",
