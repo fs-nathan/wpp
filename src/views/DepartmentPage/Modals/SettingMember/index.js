@@ -109,13 +109,8 @@ const ModalSettingMember = ({
   }, [activeMask, setDescription, setOpen]);
   React.useEffect(() => {
     if (
-      inforUser?.userInfor?.level_id &&
-      inforUser?.userInfor?.description  &&
-      inforUser?.userInfor?.room_id  &&
-      inforUser?.userInfor?.position_id  &&
-      inforUser?.userInfor?.major_id
+      inforUser?.userInfor
     ) {
-      console.log('hi')
       setRoom(get(inforUser?.userInfor, "room_id"));
       setPosition(get(inforUser?.userInfor, "position_id"));
       setMajor(get(inforUser?.userInfor, "major_id"));
@@ -244,7 +239,6 @@ const ModalSettingMember = ({
     doListRoom();
     // eslint-disable-next-line
   }, []);
-  console.log("infor", inforUser.userInfor);
   React.useEffect(() => {
     doListPosition();
     // eslint-disable-next-line

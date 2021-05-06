@@ -59,21 +59,23 @@
     width: 100%;
     display: flex;
     align-items: center;
-    color: #fff;
+    color: rgba(255, 255, 255, .6);
     text-decoration: none;
     z-index: 100;
     position: relative;
-    opacity: 0.6;
+    
     svg{
       width: 26px;
       height: 26px;
-      fill: #fff;    }
+      fill: rgba(255, 255, 255, .6);
+    }
     &.actived {
       background-color: rgba(0, 0, 0, 0.12);
-      opacity: 1;
+      color: rgb(255, 255, 255);
       svg{
       width: 26px;
       height: 26px;
+      fill: rgb(255, 255, 255);
     }
     }
     &:hover {

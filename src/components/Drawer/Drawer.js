@@ -51,7 +51,11 @@ const generateContent = (typeDrawer, optionsDrawer) => {
 const DrawerComponent = props => {
   const { typeDrawer, actionVisibleDrawerMessage, anchorDrawer, optionsDrawer } = props;
   const [openAccountModal, setOpenAccountModal] = React.useState(true);
-
+   React.useEffect(()=>{
+    if(typeDrawer === DRAWER_TYPE.GROUP_ACCOUNT) {
+      setOpenAccountModal(true)
+    }
+   },[typeDrawer])
   if(typeDrawer === DRAWER_TYPE.GROUP_ACCOUNT) {
     return <GroupAccountModal open={openAccountModal} setOpen={setOpenAccountModal}/>
   } else {
