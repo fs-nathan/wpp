@@ -140,15 +140,17 @@
   }
   .bell-message {
     position: absolute;
-    width: 22px;
-    height: 15px;
-    background: red;
+    width: 20px;
+    height: 16px;
+    background: #fff;
     text-align: center;
     font-size: 10px;
-    line-height: 15px;
-    border-radius: 8px;
+    line-height: 16px;
+    border-radius: 10px;
     top: 5px;
-    right: 15px;
+    right: 5px;
+    font-weight: 500;
+    color: red
   }
 }
 
