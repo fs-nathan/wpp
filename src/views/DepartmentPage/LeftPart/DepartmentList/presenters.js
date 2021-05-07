@@ -117,9 +117,9 @@ function DepartmentList({
                 </StyledListItem>
               ))}
               <Box className={"departmentList_containerHasHeader__summary"}>
-                <Typography variant={"h6"}>{t("Bộ phận")} ({rooms.rooms.length})</Typography>
+                <Typography variant={"h6"}>{t("IDS_WP_PART")} ({rooms.rooms.length})</Typography>
                 {get(viewPermissions.permissions, 'can_modify', false) && (
-                  <MuiLink onClick={() => handleOpenModal("CREATE")}>+ {t("Thêm bộ phận")}</MuiLink>
+                  <MuiLink onClick={() => handleOpenModal("CREATE")}>+ {t("IDS_WP_ADD_PART")}</MuiLink>
                 )}
               </Box>
             </StyledList>

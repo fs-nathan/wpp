@@ -73,13 +73,13 @@ const NoticeModal = props => {
     <Dialog
       fullWidth={true}
       maxWidth="sm"
-      className="notice-modal-container"
+      className={`notice-modal-container ${props.visibleNoticeReason === "ACCOUNT_LOCKED" && 'modal-notice-locked'}`}
       onClose={closeNoticeModal}
       aria-labelledby="customized-dialog-title"
       open={props.visibleNoticeModal}
       disableBackdropClick
     >
-      {props.visibleNoticeReason === "ORDER_EXPIRED" || props.visibleNoticeReason === "ACCOUNT_FREE" &&
+      {props.visibleNoticeReason === "ORDER_EXPIRED" | props.visibleNoticeReason === "ACCOUNT_FREE" ?
       <div className="header-icon-modal">
         <IconButton
           aria-label="close"
@@ -88,7 +88,7 @@ const NoticeModal = props => {
         >
           <CloseIcon style={{ color: grey[400] }} fontSize={"small"}/>
         </IconButton>
-      </div>
+      </div>:null
       }
       <MuiDialogActions disableSpacing={true}>
         {
@@ -146,7 +146,7 @@ const NoticeModal = props => {
             ) : props.visibleNoticeReason === "ACCOUNT_LOCKED" ?(
               <div className="content_notify-lock-user">
                 <img src={icons.icon_block_user} alt="" />
-                <h5>{t('IDS_WP_NOTIFY_BLOCK_USER_GROUP_TITLE', {group_name: props.profile.group_active.name})}</h5>
+                <h5>{t('IDS_WP_NOTIFY_BLOCK_USER_GROUP_TITLE', {group_name: props?.profile?.group_active.name})}</h5>
                 <div>{t('IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT')}</div>
               </div>
             ) :(
@@ -178,14 +178,14 @@ const NoticeModal = props => {
                 </Button>
               )
             }
-            {props.visibleNoticeReason === "ACCOUNT_FREE" || props.visibleNoticeReason === "ORDER_EXPIRED" &&
+            {props.visibleNoticeReason === "ACCOUNT_FREE" | props.visibleNoticeReason === "ORDER_EXPIRED" ?
             <Button
               variant="contained"
               className="notice-btn notice-btn-green"
               onClick={upgradeAccount}
             >
               {t('IDS_WP_UPGRADE_ACC')}
-            </Button>
+            </Button>:null
             }
             {props.visibleNoticeReason === "ACCOUNT_LOCKED" ? <Button variant="contained" color="primary" className="btn-select-group" onClick={evt => demoMode(evt)}>
               {t('IDS_WP_SELECT_GROUP_ACC')}

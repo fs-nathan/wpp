@@ -461,6 +461,8 @@ class DragSortingTable extends React.Component {
                         <CustomBadge
                           style={{
                             margin: "0px 4px",
+                            padding: "2px 5px",
+                            fontWeight: "normal",
                             ...decodeStatusCode(record.status_code),
                           }}
                           {...decodeStatusCode(record.status_code)}
@@ -473,6 +475,8 @@ class DragSortingTable extends React.Component {
                         <CustomBadge
                           style={{
                             margin: "0px 4px",
+                            padding: "2px 5px",
+                            fontWeight: "normal",
                             ...decodePriorityCode(record.priority_code),
                           }}
                           {...decodePriorityCode(record.priority_code)}
@@ -484,6 +488,8 @@ class DragSortingTable extends React.Component {
                         <CustomBadge
                           style={{
                             margin: "0px 4px",
+                            padding: "2px 5px",
+                            fontWeight: "normal",
                             ...decodePriorityCode("MEMBER"),
                           }}
                           {...decodePriorityCode("MEMBER")}
@@ -491,8 +497,8 @@ class DragSortingTable extends React.Component {
                           <Icon
                             style={{
                               transform: "translateY(-50%)",
-                              width: 12,
-                              top: "57%",
+                              width: '13px',
+                              top: "50%",
                               fill: "white",
                               position: "relative",
                             }}

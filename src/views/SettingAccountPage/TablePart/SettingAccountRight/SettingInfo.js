@@ -58,6 +58,7 @@ class SettingInfo extends Component {
         ).toDate()
       : new Date(),
     loading: false,
+    errorMsg: null,
   };
   componentDidMount() {
     this.getProfile();
@@ -212,6 +213,7 @@ class SettingInfo extends Component {
     };
     try {
       const { data } = await actionChangeAccount(account);
+      console.log(data)
       if (data.state) {
         this.handleToast("success", this.props.t("SNACK_MUTATE_SUCCESS"));
         this.setState({ visibles: false }); 
@@ -220,7 +222,7 @@ class SettingInfo extends Component {
        }, 2000);
       }
     } catch (error) {
-      this.handleToast("error", this.props.t("SNACK_MUTATE_FAIL"));
+      this.setState({ errorMsg: error.message});
     }
   };
 
@@ -390,6 +392,7 @@ class SettingInfo extends Component {
                         startAdornment={<InputAdornment position="start" />}
                       />
                     </FormControl>
+                    {this.state.errorMsg ? <div style={{color: 'red', fontSize: '14px', marginTop: '10px'}}>{this.state.errorMsg}</div>:null}
                     <FormControl
                       fullWidth
                       margin="normal"
@@ -403,6 +406,8 @@ class SettingInfo extends Component {
                       <OutlinedInput
                         id="password"
                         required
+                        type="password"
+                        inputProps={{ maxLength: 20, minLength: 8 }} 
                         placeholder={t(
                           "IDS_WP_MODAL_CHANGE_ACCOUNT_PLACEHOLDER_PASSWORD"
                         )}
