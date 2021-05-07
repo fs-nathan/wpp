@@ -266,7 +266,8 @@ function AllUsersTable({
             onClick: () => handleOpenModal('CREATE_ACCOUNT'),
           } : null,
           filter: {
-            label: t('IDS_WP_ALL')
+            label: t('IDS_WP_ALL'),
+            option: 'all'
           },
           expand: {
             bool: expand,

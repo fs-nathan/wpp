@@ -10,7 +10,7 @@ const XCustomBadge = styled(({ weightBold = null,color, backgroundColor = null, 
   background: ${props =>
     props.backgroundColor ? props.backgroundColor : lighten(props.color, 0.75)};
   color: ${props => props.color};
-  font-weight: ${props => props.weightBold ? '500 !important' : '600'}
+  font-weight: ${props => props.weightBold ? 'normal !important' : '600'}
 `;
 
 const CustomBadge = ({ className = "", inline, ...props }) => (

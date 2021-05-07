@@ -13,6 +13,7 @@ import {
   mdiAtomVariant,
   mdiDotsVertical,
   mdiLock,
+  mdiShareVariant,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { getUserOfRoom } from "actions/room/getUserOfRoom";
@@ -315,41 +316,17 @@ function DepartmentUsersTable({
           subTitle: t("DMH.VIEW.DP.RIGHT.UT.NUM_MEMBER_DUT", {
             total: get(room.room, "number_member", 0),
           }),
-          subActions: canModify
-            ? [
-                {
-                  label: t("DMH.VIEW.DP.RIGHT.UT.ADD_USER"),
-                  icon: () =>
-                    hasRequirement ? (
-                      <NewUserBadge badgeContent={"N"}>
-                        <Icon
-                          path={mdiAccountPlus}
-                          size={1}
-                          color={"rgba(0, 0, 0, 0.54)"}
-                        />
-                      </NewUserBadge>
-                    ) : (
-                      <Icon
-                        path={mdiAccountPlus}
-                        size={1}
-                        color={"rgba(0, 0, 0, 0.54)"}
-                      />
-                    ),
-                  onClick: () =>
-                    handleVisibleDrawerMessage({
-                      type: DRAWER_TYPE.ADD_USER,
-                      anchor: "left",
-                    }),
-                  noExpand: true,
-                },
-              ]
-            : [],
+          
           mainAction: canModify
             ? {
-                label: t("DMH.VIEW.DP.RIGHT.UT.ADD_ACC"),
+              icon: mdiShareVariant,
                 onClick: () => handleOpenModal("CREATE_ACCOUNT"),
               }
             : null,
+            filter: {
+              label: t('IDS_WP_ALL'),
+              option: 'group'
+            },
           expand: {
             bool: expand,
             toggleExpand: () => handleExpand(!expand),
