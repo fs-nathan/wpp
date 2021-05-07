@@ -20,6 +20,11 @@
     border-radius: 10px;
   }
 }
+.modal-notice-locked{
+  .MuiDialogActions-root {
+    padding: 30px 20px;
+  }
+}
 .notice-header-blue {
   background: #6d6bff;
 }
@@ -86,9 +91,12 @@
 }
 .content_notify-lock-user{
   text-align: center;
+  img{
+    width: 200px;
+  }
   h5{
     margin-bottom: 10px;
-    font-size: 14px;
+    font-size: 17px;
   }
   div{
     font-size: 14px;
@@ -149,7 +157,9 @@
   margin: 0;
   width: 330px;
   margin-bottom: 20px;
-  font-size: 14px;
+  span{
+    font-size: 16px;
+  }
   
 }
 .notice-icon-container {

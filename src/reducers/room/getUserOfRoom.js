@@ -1,11 +1,14 @@
 import { findIndex, get, remove, slice } from 'lodash';
-import { GET_USER_OF_ROOM, GET_USER_OF_ROOM_FAIL, GET_USER_OF_ROOM_RESET, GET_USER_OF_ROOM_SUCCESS } from '../../constants/actions/room/getUserOfRoom';
+import { FILTER_USER_OF_GROUP_SUCCESS, GET_USER_OF_ROOM, GET_USER_OF_ROOM_FAIL, GET_USER_OF_ROOM_RESET, GET_USER_OF_ROOM_SUCCESS } from '../../constants/actions/room/getUserOfRoom';
 import { PRIVATE_MEMBER } from '../../constants/actions/user/privateMember';
 import { PUBLIC_MEMBER } from '../../constants/actions/user/publicMember';
 import { SORT_USER } from '../../constants/actions/user/sortUser';
 
 export const initialState = {
   data: {
+    users: [],
+  },
+  data_filter: {
     users: [],
   },
   error: null,
@@ -27,10 +30,19 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: action.data,
+        data_filter: action.data,
         error: null,
         loading: false,
         firstTime: false,
       };
+    case FILTER_USER_OF_GROUP_SUCCESS:
+       return {
+        ...state,
+        data_filter: action.data,
+        error: null,
+        loading: false,
+        firstTime: false,
+       }
     case GET_USER_OF_ROOM_FAIL:
       return {
         ...state,

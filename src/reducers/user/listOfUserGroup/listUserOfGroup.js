@@ -39,7 +39,7 @@ function reducer(state = initialState, action) {
       case FILTER_LIST_USER_OF_GROUP_SUCCESS:
       return {
         ...state,
-        data: action.data,
+        data_filter: action.data,
         error: null,
         loading: false,
         firstTime: false,

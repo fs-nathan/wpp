@@ -51,7 +51,9 @@ function* getListColor() {
       type: actionTypes.FETCH_LIST_COLOR_GROUP_SUCCESS,
       payload: colors || [{ value: '#01b374', selected: true }]
     });
-  } catch (error) {}
+  } catch (error) {
+    yield put({type: actionTypes.FETCH_LIST_COLOR_GROUP_ERROR})
+  }
 }
 
 async function doGetSettingDate() {

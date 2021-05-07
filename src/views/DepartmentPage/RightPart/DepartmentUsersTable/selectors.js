@@ -14,7 +14,7 @@ export const roomSelector = createSelector(
   (detailRoom, getUserOfRoom, listPosition, sortUser) => {
     const { loading: sortUserLoading, error: sortUserError } = sortUser;
     const { data: { room }, loading: detailRoomLoading, error: detailRoomError, firstTime: detailFirst } = detailRoom;
-    const { data: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError, firstTime: getUserFirst } = getUserOfRoom;
+    const { data_filter: { users }, loading: getUserOfRoomLoading, error: getUserOfRoomError, firstTime: getUserFirst } = getUserOfRoom;
     const { data: { positions } } = listPosition;
     const newRoom = {
       ...room,

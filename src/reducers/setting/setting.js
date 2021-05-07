@@ -8,7 +8,7 @@ export const initialState = {
   settingGroupType: SETTING_GROUP.INFO,
   notificationSelected: {},
   colors: [
-    { color: localStorage.getItem(COLOR_ACTIVE) || '#01b374', selected: true }
+    { color: localStorage.getItem(COLOR_ACTIVE) || '#01b374', selected: true }  
   ],
   settingDate: [{ date_format: 'DD/MM/YYYY', selected: true }],
   orders: [],
@@ -38,6 +38,8 @@ const settingReducer = (state = initialState, action) => {
       return { ...state, groupDetail: action.payload, isLoading: false };
     case actionTypes.FETCH_LIST_COLOR_GROUP_SUCCESS:
       return { ...state, colors: action.payload };
+    case actionTypes.FETCH_LIST_COLOR_GROUP_ERROR:  
+      return {...state, colors: [{ color: localStorage.getItem(COLOR_ACTIVE) || '#01b374', selected: true }  ]};
     case actionTypes.GET_SETTING_DATE_SUCCESS:
       return { ...state, settingDate: action.payload };
     default:

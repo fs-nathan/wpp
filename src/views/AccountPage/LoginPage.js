@@ -15,7 +15,7 @@ import { Routes } from "constants/routes";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import {
   actionlogin,
   loginFail,
@@ -41,7 +41,7 @@ const LoginPage = (props) => {
   const [isLoginFail, setLoginFail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
-
+  const history = useHistory();
   useEffect(() => {
     props.reset();
   }, [props]);
@@ -59,10 +59,8 @@ const LoginPage = (props) => {
       localStorage.setItem(GROUP_ACTIVE, data.group_active);
       const token = localStorage.getItem(TOKEN);
       if(token){
-        window.location.href = Routes.HOME;
+        history.replace(Routes.HOME);
       }
-      
-      return;
       //
       apiService.defaults.headers.common[
         "Authorization"
@@ -80,6 +78,7 @@ const LoginPage = (props) => {
         props.openNoticeModal("ACCOUNT_FREE");
       }
       props.loginSuccess(data);
+      return;
     } catch (error) {
       setLoginFail(true);
       setIsLoading(false);

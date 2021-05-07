@@ -2482,5 +2482,7 @@
   "IDS_WP_CREATING_ACCOUNT_TIME_OUT": "Vui lòng chờ trong giây lát!",
   "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TITLE": "Tài khoản của bạn đang bị khóa trên nhóm {{group_name}}",
   "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT": "Liên hệ với Chủ sở hữu nhóm để mở khóa hoặc chọn Nhóm làm việc khác",
-  "IDS_WP_RE_INPUT_CONFIRM_PASSWORD": "Nhập lại mật khẩu"
+  "IDS_WP_RE_INPUT_CONFIRM_PASSWORD": "Nhập lại mật khẩu",
+  "IDS_WP_PART": "Bộ phận",
+  "IDS_WP_ADD_PART": "Thêm bộ phận"
   }
