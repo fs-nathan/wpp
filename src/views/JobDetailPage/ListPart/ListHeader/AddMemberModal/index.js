@@ -135,7 +135,7 @@ function AddMemberModal({
   React.useEffect(() => {
     const reloadAfterActionMember = () => {
       dispatch(taskDetailAction.getMember({task_id: taskIDValue}));
-      doListMembersNotAssign({task_id});
+      doListMembersNotAssign({task_id: taskIDValue});
     }
     CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
     CustomEventListener(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);

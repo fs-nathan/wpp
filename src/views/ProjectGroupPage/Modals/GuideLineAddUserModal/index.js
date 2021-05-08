@@ -11,14 +11,14 @@ import Button from "@material-ui/core/Button";
 
 const DialogContent = withStyles((theme) => ({
   root: {
-    padding: theme.spacing(5),
+    padding: "40px",
   },
 }))(MuiDialogContent);
 const DialogActions = withStyles((theme) => ({
   root: {
     margin: 0,
     marginBottom: 10,
-    padding: theme.spacing(1),
+    padding: "8px 30px",
   },
 }))(MuiDialogActions);
 function GuideLineAddUserModal({open, setOpen, handleAddNow, type = 1}) {
@@ -34,7 +34,7 @@ function GuideLineAddUserModal({open, setOpen, handleAddNow, type = 1}) {
       className={"GuildLineAddUserModal"}
     >
       <DialogContent>
-        <Typography variant={"h5"}>{
+        <Typography variant={"h5"} style={{fontWeight: 500}}>{
           type === 1 ? t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_BOARD") : t("MESSAGE_GUIDELINE_ADD_MEMBER_WORKING")
         }</Typography>
         <Box marginTop={"10px"}>

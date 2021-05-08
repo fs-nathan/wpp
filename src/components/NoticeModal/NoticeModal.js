@@ -79,7 +79,7 @@ const NoticeModal = props => {
       open={props.visibleNoticeModal}
       disableBackdropClick
     >
-      <div className="header-icon-modal">
+      {/*<div className="header-icon-modal">
         <IconButton
           aria-label="close"
           onClick={closeNoticeModal}
@@ -87,7 +87,7 @@ const NoticeModal = props => {
         >
           <CloseIcon style={{ color: grey[400] }} fontSize={"small"}/>
         </IconButton>
-      </div>
+      </div>*/}
 
       <MuiDialogActions disableSpacing={true}>
         {

@@ -2469,5 +2469,6 @@
   "IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT": "Contact the Group Owner to unlock or select another Workgroup",
   "IDS_WP_RE_INPUT_CONFIRM_PASSWORD": "Enter the password",
   "IDS_WP_PART": "Part",
-  "IDS_WP_ADD_PART": "Add parts"
+  "IDS_WP_ADD_PART": "Add parts",
+  "MESSAGE_CAN_NOT_JOIN_ENOUGH_USERS": "Can't join: This group has enough members"
 }

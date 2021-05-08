@@ -258,7 +258,7 @@ function AllTaskTable({
               align: 'center',
               width: '10%',
             }, {
-              label: () => isNil(memberID) && <Icon path={mdiAccount} size={1} color={'rgb(102, 102, 102)'} />,
+              label: '',
               field: row => isNil(memberID) ? <AvatarCircleList
                 users={
                   get(row, 'members', [])

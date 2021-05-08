@@ -54,7 +54,7 @@ function CreateAccount({
       cancleRender={() => t('DMH.VIEW.DP.MODAL.CA.CANCLE')}
       manualClose={false}
       onCancle={() => setOpen(false)}
-      height={"mini"}
+      height={"mini"} maxWidth={"xs"}
     >
       <Container>
         <Typography variant="h4">{t('DMH.VIEW.DP.MODAL.CA.INVT')}</Typography>

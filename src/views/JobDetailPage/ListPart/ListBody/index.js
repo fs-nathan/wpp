@@ -20,10 +20,9 @@ import {Icon} from "@mdi/react";
 import {mdiMenuDown} from '@mdi/js';
 import {getViewAllMessage} from "../../../../components/Drawer/DrawerService";
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
-import {flatten, map} from "lodash";
+import {flatten, map, get} from "lodash";
 import {useLocalStorage} from "react-use";
 import {CREATE_GROUP_TASK, CustomEventDispose, CustomEventListener} from "../../../../constants/events";
-import {listGroupTask} from "../../../../actions/groupTask/listGroupTask";
 
 const StyledList = styled(List)`
   & > li {
@@ -54,10 +53,15 @@ function ListBody() {
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const searchKey = useSelector(state => state.taskDetail.listDetailTask.searchKey);
   const focusId = useSelector(state => state.taskDetail.detailTask.focusId);
-  const [selectedFilter, setSelectedFilter] = useLocalStorage("FILTER_GROUP_CHAT_VALUE", 0);
+  const [filterInStorage, setFilterInStorage] = useLocalStorage("FILTER_GROUP_CHAT_VALUE", {});
+  const [selectedFilter, setSelectedFilter] = React.useState(0);
   const [anchorElFilterControl, setAnchorElFilterControl] = React.useState(null);
   const [data, setData] = useState([]);
   const [customListTaskDataType, setCustomListTaskDataType] = React.useState(listTaskDataType);
+
+  useEffect(() => {
+    setSelectedFilter(get(filterInStorage, projectId, 0));
+  }, [filterInStorage, projectId]);
 
   useEffect(() => {
     if (selectedFilter === 0) {
@@ -111,6 +115,7 @@ function ListBody() {
   }
   function handleSelectFilter(type) {
     setSelectedFilter(type);
+    setFilterInStorage({...filterInStorage, [projectId]: type});
     setAnchorElFilterControl(null);
   }
   const handleViewAll = async () => {

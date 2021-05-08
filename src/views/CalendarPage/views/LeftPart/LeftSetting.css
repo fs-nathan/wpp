@@ -14,7 +14,9 @@
   color: #222;
   font-weight: 500;
 }
-
+.left-setting-icon {
+  flex: none;
+}
 .comp_CustomList___list-item>:not(:first-child) {
-  //max-width: 80%;
+  /*max-width: 80%;*/
 }

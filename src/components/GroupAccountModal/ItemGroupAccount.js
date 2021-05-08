@@ -173,7 +173,7 @@ const ItemGroupAccount = props => {
               >
                 {t('IDS_WP_JOINED')}
               </Button>
-            ) : (item.type_group !== "Free" && !get(item, "is_enough_user", false)) ? (
+            ) : (item.type_group !== "Free" && !get(item, "is_enough_user", false) && !item.is_expired) ? (
               <Button
                 variant={"contained"} disableElevation color={"primary"}
                 onClick={e => requestJoinGroup(e, item.id)}
@@ -285,7 +285,7 @@ const ItemGroupAccount = props => {
             className={`${props.groupActive.code === item.code && "view_GroupAccount_Modal__groupItem--Active"}`}
           >
             {isHover && (props.groupActive.code !== item.code || props.type !== "group_me") &&
-              (item.type_group !== "Free" && !get(item, "is_enough_user", false)) &&
+              (item.type_group !== "Free" && !get(item, "is_enough_user", false) && !item.is_expired) &&
               <Box className={"view_GroupAccount_Modal__actionMask"}/>
             }
             <ListItemAvatar>
@@ -313,7 +313,7 @@ const ItemGroupAccount = props => {
               {item.is_expired && (
                 <span className="red-color">{t('IDS_WP_EXPIRED')}</span>
               )}
-              {props.type === 'join' && (item.type_group === "Free") && (
+              {props.type === 'join' && (item.type_group === "Free" || item.is_expired) && (
                 <span className="red-color">{t('MESSAGE_CAN_NOT_JOIN_FREE_TRAIL')}</span>
               )}
               {props.type === "join" && get(item, "is_enough_user", false) && (

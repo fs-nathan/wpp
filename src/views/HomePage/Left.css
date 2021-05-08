@@ -33,6 +33,7 @@
 .comp_Left__avatar .MuiAvatar-root {
   width: 140px;
   height: 140px;
+  border: 6px solid #b4b4b420;
 }
 .comp_Left__shortcutIcon {
   width: 20px;

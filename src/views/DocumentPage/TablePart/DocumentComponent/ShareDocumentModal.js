@@ -282,6 +282,7 @@ const ShareDocumentModal = props => {
               placeholder={t('IDS_WP_INPUT_SEARCH')}
               value={searchValue}
               onChange={handleChangeSearch}
+              style={{background: "#fff"}}
             />
           </div>
           <div className="list-member">

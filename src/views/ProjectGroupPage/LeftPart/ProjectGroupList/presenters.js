@@ -5,7 +5,7 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemIcon,
+  ListItemIcon, ListItemSecondaryAction,
   ListItemText,
   MenuItem,
   MenuList,
@@ -188,6 +188,9 @@ function ProjectList({
                     </SvgIcon>
                   </ListItemIcon>
                   <ListItemText primary={`${t("LABEL_PERSONAL_BOARD")} (${countPersonalProjectsBoard})`}/>
+                  {defaultAccessItem === "/personal-board" && (
+                    <FlagOutlinedIcon color={"disabled"} style={{marginLeft: 10, color: "red"}}/>
+                  )}
                   <IconButton
                     className={"rightIconControlList"} size={"small"}
                     onClick={(evt) => {
@@ -406,9 +409,6 @@ function ProjectList({
             <span
               className={"title"}>
               {t("LABEL_SET_DEFAULT")}
-              {defaultAccessItem === "/personal-board" && (
-                <FlagOutlinedIcon color={"disabled"} style={{marginLeft: 10, color: "red"}}/>
-              )}
             </span>
             <Box className={"actionItem"}>
               <Typography variant={"body2"} color={"textSecondary"}>{t("LABEL_SET_DEFAULT_DES")}</Typography>

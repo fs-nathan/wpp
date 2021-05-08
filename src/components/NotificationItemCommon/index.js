@@ -101,10 +101,7 @@ const NotificationItemCommon = props => {
       case 13:
         break;
       case 17:
-        props.actionVisibleDrawerMessage({
-          type: DRAWER_TYPE.ADD_USER,
-          anchor: 'left'
-        });
+        props.history.push({ pathname: "/users/member-required"});
         break;
       case 5:
       case 7:
