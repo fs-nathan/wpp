@@ -14,7 +14,7 @@ export const roomsSelector = createSelector(
   (listRoom, listUserOfGroup, listPosition, sortUser) => {
     const { loading: sortUserLoading, error: sortUserError } = sortUser;
     const { data: { rooms } } = listRoom;
-    const { data: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading, firstTime: listFirst } = listUserOfGroup;
+    const { data_filter: { rooms: group }, error: listUserOfGroupError, loading: listUserOfGroupLoading, firstTime: listFirst } = listUserOfGroup;
     const { data: { positions } } = listPosition;
     const newRooms = group.map(curGroup => ({
       ...curGroup,

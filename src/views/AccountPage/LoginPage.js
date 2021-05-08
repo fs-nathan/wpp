@@ -9,13 +9,13 @@ import {
   OutlinedInput,
 } from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { mdiAccountOutline, mdiLockOutline } from "@mdi/js";
+import { mdiEmailOutline, mdiLockOutline } from "@mdi/js";
 import { Icon } from "@mdi/react";
 import { Routes } from "constants/routes";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { withRouter } from "react-router-dom";
+import { useHistory, withRouter } from "react-router-dom";
 import {
   actionlogin,
   loginFail,
@@ -41,7 +41,7 @@ const LoginPage = (props) => {
   const [isLoginFail, setLoginFail] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { t } = useTranslation();
-
+  const history = useHistory();
   useEffect(() => {
     props.reset();
   }, [props]);
@@ -59,10 +59,8 @@ const LoginPage = (props) => {
       localStorage.setItem(GROUP_ACTIVE, data.group_active);
       const token = localStorage.getItem(TOKEN);
       if(token){
-        window.location.href = Routes.HOME;
+        history.replace(Routes.HOME);
       }
-      
-      return;
       //
       apiService.defaults.headers.common[
         "Authorization"
@@ -80,6 +78,7 @@ const LoginPage = (props) => {
         props.openNoticeModal("ACCOUNT_FREE");
       }
       props.loginSuccess(data);
+      return;
     } catch (error) {
       setLoginFail(true);
       setIsLoading(false);
@@ -88,6 +87,7 @@ const LoginPage = (props) => {
   };
 
   return (
+    <MainAccount>
       <div className="AccountPage LoginPage">
         <div className="logo-content">
           <img className="logo-workplus" alt="" src={images.logo} />
@@ -104,12 +104,12 @@ const LoginPage = (props) => {
               id="email"
               required
               type="text"
-              placeholder={t("IDS_WP_EMAIL_OR_PHONE_NUMBER")}
+              placeholder={t("DMH.VIEW.DP.RIGHT.UT.LABEL.EMAIL")}
               startAdornment={
                 <InputAdornment position="start">
                   <Icon
                     className="icon-prefix"
-                    path={mdiAccountOutline}
+                    path={mdiEmailOutline}
                     size={1}
                   />
                 </InputAdornment>
@@ -176,11 +176,12 @@ const LoginPage = (props) => {
         </form>
         <div className="bottom-des">
           {t("IDS_WP_DONT_HAVE_ACCOUNT")}
-          <Link href="/account/register" className="btn-link">
+          <Link href={Routes.REGISTER} className="btn-link">
             {t("IDS_WP_SIGN_UP")}
           </Link>
         </div>
       </div>
+      </MainAccount>
   );
 };
 

@@ -8,8 +8,6 @@ const ModalCreateAccount = ({colors,openAddMember,setOpenAddMember,setOpen,setOp
     const {t} = useTranslation();
 
     const {color} = colors.find((item) => item.selected === true);
-    const x = document.getElementById("title1");
-    const y = document.getElementById("title2");
       function hoverCard1(event) {
         const el = event.target;
         const add_member = document.getElementById("add-member");

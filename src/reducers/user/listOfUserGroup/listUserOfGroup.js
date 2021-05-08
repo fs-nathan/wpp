@@ -1,12 +1,16 @@
 import { findIndex, get, remove, slice } from 'lodash';
 import { SORT_ROOM_SUCCESS } from '../../../constants/actions/room/sortRoom';
-import { LIST_USER_OF_GROUP, LIST_USER_OF_GROUP_FAIL, LIST_USER_OF_GROUP_RESET, LIST_USER_OF_GROUP_SUCCESS } from '../../../constants/actions/user/listUserOfGroup';
+import { FILTER_LIST_USER_OF_GROUP_SUCCESS, LIST_USER_OF_GROUP, LIST_USER_OF_GROUP_FAIL, LIST_USER_OF_GROUP_RESET, LIST_USER_OF_GROUP_SUCCESS } from '../../../constants/actions/user/listUserOfGroup';
 import { PRIVATE_MEMBER_SUCCESS } from '../../../constants/actions/user/privateMember';
 import { PUBLIC_MEMBER_SUCCESS } from '../../../constants/actions/user/publicMember';
 import { SORT_USER, SORT_USER_SUCCESS } from '../../../constants/actions/user/sortUser';
 
 export const initialState = {
   data: {
+    rooms: [],
+    maxUser: 0,
+  },
+  data_filter: {
     rooms: [],
     maxUser: 0,
   },
@@ -27,6 +31,15 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: action.data,
+        data_filter: action.data,
+        error: null,
+        loading: false,
+        firstTime: false,
+      };
+      case FILTER_LIST_USER_OF_GROUP_SUCCESS:
+      return {
+        ...state,
+        data_filter: action.data,
         error: null,
         loading: false,
         firstTime: false,

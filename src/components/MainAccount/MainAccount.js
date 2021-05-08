@@ -40,22 +40,7 @@ const MainAccount = (props) => {
           <Scrollbars autoHide autoHideTimeout={500}>
             <div className="inner-right-content">
               <div className="main-account-container">
-                  <Switch>
-                    <Route
-                      path={Routes.LOGIN}
-                      component={() => (
-                        <ValidateNoLogin fallback={<Redirect to={Routes.HOME} />}>
-                          <LoginPage />
-                        </ValidateNoLogin>
-                      )}
-                    />
-                    <Route path={Routes.REGISTER} component={() => (
-                        <ValidateNoLogin fallback={<Redirect to={Routes.HOME} />}>
-                          <RegisterPage />
-                        </ValidateNoLogin>
-                    )} />
-                    <Route path={Routes.FORGOT_PASSWORD} component={ForgotPasswordPage} />
-                  </Switch>
+                  {props.children}
               </div>
               <div className="bottom-content">
                 <a

@@ -86,6 +86,11 @@
   }
 }
 .modal_continue-create{
+  &-loading{
+    .modal_continue-create_table{
+      opacity: .4;
+    }
+  }
       >div:nth-child(3)>div {
         min-width: 47vw !important;
         min-height: 300px !important;
@@ -131,12 +136,34 @@
         padding: 7px 5px;
         outline: none;
       }
+      &:nth-of-type(2){
+        input{
+          color: #2D88FF;
+        }
+        
+      }
+      &:last-child{
+        text-align: center;
+      }
+      input{
+       
+        
+        &::placeholder {
+          color: #babbb8;
+          font-size: 12px;
+          font-weight: 100;
+        }
+      }
     }
     }
     
   }
  
-  
+  .account-internal_btn-create-account{
+    background-color: #2D88FF;
+    color: #ffffff;
+    padding: 0 15px;
+  }
 }
 .upload-excel {
   cursor: pointer;
@@ -163,8 +190,8 @@
   }
 }
 .modal-account-internal{
-  >div:nth-child(3)>div {
-    min-width: 55vw;
+  >div:nth-child(3) >div {
+    min-width: 60vw !important;
   }
   .comp_CustomModal___dialog-content{
     padding: 25px;
@@ -225,7 +252,7 @@
     padding: 30px;
     &_downfile{
       color: rgb(89, 187, 243);
-      margin-top: 15px;
+      font-size: 14px;
     }
     .MuiTouchRipple-root{
       font-size: 16px;
@@ -249,7 +276,7 @@
     tbody tr td{
       padding: 6px 8px;
       :first-child{
-        color: blue
+        color: #2D88FF;
       }
     }
     thead tr th{
@@ -269,5 +296,23 @@
     & div:last-child{
       width: 130px;
     }
+  }
+}
+
+.loading{
+  position: fixed;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  z-index: 200;
+  text-align: center;
+  img{
+    width: 100px;
+    height: 100px;
+  }
+  div{
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
   }
 }

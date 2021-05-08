@@ -69,7 +69,7 @@ function DepartmentList({
   const [filteredRooms, setFilteredRooms] = React.useState([]); 
   const [open,setOpen] = React.useState(false)
   const [openCreateAccount,setOpenCreateAccount] = React.useState(false);
-  
+  const [fileExcel,setFileExcel] = React.useState('');
   React.useEffect(() => {
     setFilteredRooms(filter(
       rooms.rooms,
@@ -80,6 +80,9 @@ function DepartmentList({
     // eslint-disable-next-line
   }, [searchPattern, rooms]);
 
+  const handlesetFileExcel = (file) => {
+    setFileExcel(file);
+  }
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
     if (!destination) return;
@@ -152,8 +155,8 @@ function DepartmentList({
       <ModalCreateAccount setOpenAddMember={setOpenAddUserModal} openAddMember={openAddUSerModal} setOpen={setOpen} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
       <AddUserModal setOpen={setOpen} open={open}/>
       <ModalOptionCreateAccount openCreateAccount={openCreateAccount} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
-      <ModalContinueCreateAccount  setResult={setResult} setOpenResultCreateAccount={setOpenResultCreateAccount}  openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel}/>
-      <ModalUplaodExcel openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
+      <ModalContinueCreateAccount fileExcel={fileExcel} setResult={setResult} setOpenResultCreateAccount={setOpenResultCreateAccount}  openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel}/>
+      <ModalUplaodExcel handlesetFileExcel={handlesetFileExcel} openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
       <ModalResultCreateAccount result={result} openResultCreateAccount={openResultCreateAccount} setOpenResultCreateAccount={setOpenResultCreateAccount} />
 
     </>

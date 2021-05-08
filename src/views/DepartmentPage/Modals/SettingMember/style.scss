@@ -1,6 +1,6 @@
 .modalSettingMember{
     display: flex;
-    min-height: 70vw;
+    min-height: 30vw;
     .comp_CustomModal___dialog-md > div:nth-child(3) > div{
         min-width: 45vw;
     }
@@ -89,5 +89,10 @@
     }
     .comp_CustomModal___dialog-content{
         padding: 0;
+    }
+}
+.hidden_submit{
+    .comp_CustomModal___accept-button{
+        display: none;
     }
 }

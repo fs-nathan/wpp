@@ -38,7 +38,6 @@ const NoticeModal = props => {
   const closeNoticeModal = () => {
     props.closeNoticeModal();
   };
-
   const demoMode = (e) => {
     e.preventDefault();
     closeNoticeModal();
@@ -80,7 +79,7 @@ const NoticeModal = props => {
       open={props.visibleNoticeModal}
       disableBackdropClick
     >
-      {/*<div className="header-icon-modal">
+      <div className="header-icon-modal">
         <IconButton
           aria-label="close"
           onClick={closeNoticeModal}
@@ -88,7 +87,7 @@ const NoticeModal = props => {
         >
           <CloseIcon style={{ color: grey[400] }} fontSize={"small"}/>
         </IconButton>
-      </div>*/}
+      </div>
 
       <MuiDialogActions disableSpacing={true}>
         {
@@ -170,16 +169,21 @@ const NoticeModal = props => {
                 </Button>
               )
             }
+            {props.visibleNoticeReason === "ACCOUNT_FREE" | props.visibleNoticeReason === "ORDER_EXPIRED" ?
             <Button
               variant="contained"
               className="notice-btn notice-btn-green"
               onClick={upgradeAccount}
             >
               {t('IDS_WP_UPGRADE_ACC')}
-            </Button>
-            <Button className={"notice-btn-text"} onClick={evt => demoMode(evt)}>
+            </Button>:null
+            }
+            {props.visibleNoticeReason === "ACCOUNT_LOCKED" ? <Button variant="contained" color="primary" className="btn-select-group" onClick={evt => demoMode(evt)}>
               {t('IDS_WP_SELECT_GROUP_ACC')}
-            </Button>
+            </Button>:
+            <Button className="notice-btn-text" onClick={evt => demoMode(evt)}>
+              {t('IDS_WP_SELECT_GROUP_ACC')}
+            </Button>}
           </div>
 
           <p className="notice-text-info">{t('IDS_WP_CONTACT_WORKPLUS_ENTER')}</p>

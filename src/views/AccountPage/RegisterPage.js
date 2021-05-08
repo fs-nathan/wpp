@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
-import { mdiAccountOutline ,mdiLockOutline} from '@mdi/js';
+import { mdiEmailOutline , mdiAccountOutline  ,mdiLockOutline} from '@mdi/js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   FormControl,
@@ -58,6 +58,7 @@ const RegisterPage = () => {
     }
   };
   return (
+    <MainAccount>
       <div className="AccountPage RegisterPage">
         {!isRegistered &&
         <div className="logo-content">
@@ -74,12 +75,20 @@ const RegisterPage = () => {
               variant="outlined"
               className="custom-input"
             >
-              <div className="lb-input">{t('IDS_WP_FULL_NAME')} *</div>
               <OutlinedInput
                 id="fullname"
                 required
                 onChange={handleOnchange("name")}
                 placeholder={t('IDS_WP_YOUR_FULL_NAME')}
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Icon
+                      className="icon-prefix"
+                      path={mdiAccountOutline }
+                      size={1}
+                    />
+                  </InputAdornment>
+                }
               />
             </FormControl>
               <FormControl
@@ -92,13 +101,13 @@ const RegisterPage = () => {
                   id="email"
                   required
                   type="email"
-                  placeholder={t('IDS_WP_ENTER_REGISTER_EMAIL')}
+                  placeholder={t('DMH.VIEW.DP.RIGHT.UT.LABEL.EMAIL')}
                   onChange={handleOnchange("email")}
                   startAdornment={
                     <InputAdornment position="start">
                       <Icon
                         className="icon-prefix"
-                        path={mdiAccountOutline}
+                        path={mdiEmailOutline }
                         size={1}
                       />
                     </InputAdornment>
@@ -144,7 +153,7 @@ const RegisterPage = () => {
                 required
                 type="password"
                 autoComplete="new-password"
-                placeholder={t('IDS_WP_RE_INPUT_NEW_PASSWORD')}
+                placeholder={t('IDS_WP_RE_INPUT_CONFIRM_PASSWORD')}
                 onBlur={handleCheckPwd}
                 inputProps={{ maxLength: 20, minLength: 8 }}
                 startAdornment={
@@ -162,7 +171,7 @@ const RegisterPage = () => {
             <div className="suggest-password">{t('IDS_WP_ENTER_REGISTER_PASSWORD_SUGGESTED')}</div>
               <FormControlLabel
                 control={<Checkbox color="primary" required />}
-                label={<><span>{t('IDS_WP_I_AM_ACCEPT_TERM')}</span> <Link href="" className="btn-link">
+                label={<><span>{t('IDS_WP_I_AM_ACCEPT_TERM')}</span> <Link href={Routes.ACCEPT_TERM} target="blank" className="btn-link">
                 {t('IDS_WP_I_AM_ACCEPT_TERM_OF_USE')}
               </Link> {t('IDS_WP_I_AM_ACCEPT_TERM_WORK_PLUS')}</>}
               />
@@ -193,26 +202,7 @@ const RegisterPage = () => {
         )}
         {isRegistered && (
           <div className="register-success">
-            {/* <Divider className="divider" />
-            <p className="title">{t('IDS_WP_THANK_YOU_USED_WORK_PLUS')}</p>
-            <p className="description">
-              {t('IDS_WP_CONFIRM_CODE_DESCRIPTION')}
-            </p>
-            <p
-              dangerouslySetInnerHTML={{
-                __html: t('IDS_WP_CONTACT_TO_SUPPORT')
-              }}
-            ></p>
-            <Divider className="divider" />
-            <Button
-              variant="contained"
-              className="btn-confirm-register"
-              onClick={() => {
-                window.location.href = Routes.CONFIRM_REGISTRATION;
-              }}
-            >
-              {t('IDS_WP_CONFIRM_ACCOUNT')}
-            </Button> */}
+           
             <img alt="" src={images.ic_register_complete} />
             <div>
               <h5 className="register-notify_title">{t('IDS_WP_REGISTER_SUCCESS_TITLE')}</h5>
@@ -226,6 +216,7 @@ const RegisterPage = () => {
           </div>
         )}
       </div>
+      </MainAccount>
   );
 };
 
