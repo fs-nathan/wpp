@@ -426,7 +426,7 @@ const handlesetFileExcel = (file) => {
                 color={"rgba(0, 0, 0, 0.54)"}
               />
             </div>
-            <span>{t("Thêm")}</span>
+            <span>{t("LABEL_MORE")}</span>
           </StyledButton>
         )}
       </ButtonGroup>

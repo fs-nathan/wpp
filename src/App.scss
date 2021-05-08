@@ -114,6 +114,7 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
       svg {
         width: 1.2em;
         height: 1.2em;
+        color: #acacac;
       }
     }
     .name-option {
@@ -128,13 +129,13 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
       display: none;
 
       svg {
-        font-size: 22px;
+        font-size: 25px;
         padding: 5px;
         background: #271e1e1f;
         border-radius: 50%;
         margin-top: 15px;
         &:first-child {
-          margin-right: 10px
+          margin-right: 13px
         }
       }
     }
@@ -183,11 +184,32 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
   .icon-arrow {
     position: absolute;
     right: 10px;
-    bottom: 12px;
+    bottom: 8px;
     color: #b1b1b1;
-    font-size: 30px;
+    font-size: 24px;
+    border-left: 1px solid #ccc;
+    padding-left: 10px
   }
   input {
     cursor: pointer;
+    padding: 12px 14px!important;
   }
+}
+.title-intro-messenger {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0px
+}
+.description-intro-messenger {
+  font-size: 14px;
+  line-height: 20px;
+}
+.btn-create-group-intro-messenger {
+  padding: 15px 30px;
+  border: 0px;
+  color: #fff;
+  border-radius: 3px;
+  margin-top: 20px;
+  cursor: pointer;
+  text-transform: uppercase;
 }

@@ -23,6 +23,9 @@ import { updateNameGroupChat } from "actions/chat/chat";
 import { getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
 import get from 'lodash/get';
 import { CircularProgress } from '@material-ui/core';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import AddMemberModal from 'views/Chat/ListPart/ListHeader/AddMemberModal';
+
 
 const StyledFormControlLabel = styled(FormControlLabel)`
   & .MuiTypography-root {
@@ -94,6 +97,8 @@ const HeaderPart = props => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [isEditName, setIsEditName] = React.useState(false);
   const appColor = useSelector(currentColorSelector)
+  const [openAddModal, setOpenAddModal] = React.useState(false);
+
   const {
     update_task
   } = get(task, 'permissions', {});
@@ -170,11 +175,23 @@ const HeaderPart = props => {
         </Typography>
         <RenderMemberOnline number_member={members.length} />
       </div>
+      {
+        task.person_chat_type == 2 &&
+        <abbr title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}>
+          <IconButton className="chatHeader--button" onClick={() => setOpenAddModal(true)}>
+            <PersonAddIcon style={{fontSize: "25px"}}/>
+          </IconButton>
+        </abbr>
+      }
       <abbr title={t('LABEL_CHAT_TASK_TIM_KIEM')}>
         <IconButton className="chatHeader--button" onClick={openSearch}>
           <Icon path={mdiMagnify} size={1.2} className="job-detail-icon" />
         </IconButton>
       </abbr>
+      {
+        task.person_chat_type == 2 && openAddModal &&
+        <AddMemberModal isOpen={openAddModal} setOpen={setOpenAddModal} />
+      }
     </div>
   );
 };

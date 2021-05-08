@@ -21,14 +21,13 @@
     flex-direction: column;
     justify-content: flex-end;
     contain: layout style;
-    min-height: 100%;
+    // min-height: 100%;
   }
   &__reply {
     // height: calc(100% - 300px);
   }
   &--project {
     width: 100%;
-    background-color: white;
     margin: 10px 45px 0;
     border: 1px solid #ececec;
     text-align: center;
@@ -46,14 +45,12 @@
     // box-shadow: 0px 0px 6px 2px rgba(0, 0, 0, 0.3);
   }
   &--project-private {
-    background-image: url("/images/intro_chat.jpg");
     .bodyChat--projectAvatar {
       background: #fff;
       border: 2px solid #fff;
     }
   }
   &--project-group {
-    background-image: url("/images/intro_chat_group.png");
     .bodyChat--projectAvatar {
       background: #fff;
       border: 2px solid #fff;
