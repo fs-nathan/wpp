@@ -89,7 +89,7 @@ function KanbanPage({
                 },
               })}
             >
-              <span>{`${isNil(get(project, 'work_type')) ? `` : `[${t(workTypes[get(project, 'work_type', 0)])}] `}${get(project, 'name', '')}`}</span>
+              <span>{get(project, 'name', '')}</span>
               <Icon path={mdiMenuDown} size={1} />
             </NameBox>
             <NavigatorMenu className="view_KanbanHeader___navigation"/>

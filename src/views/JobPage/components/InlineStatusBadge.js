@@ -13,7 +13,8 @@ const statusColorMap = {
 function InlineStatusBadge({ status, ...props }) {
   return (
     <InlineBadge
-      color={statusColorMap[status] || statusColorMap.default}
+      color={colors.white}
+      backgroundColor={statusColorMap[status] || statusColorMap.default}
       {...props}
     />
   );

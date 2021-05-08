@@ -116,14 +116,9 @@ function AllTaskTable({
               subActions: [canUpdateProject && isNil(memberID) ? {
                 label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.MEMBER"),
                 iconPath: mdiAccountCircle,
-                onClick: (evt) => handleSubSlide(1),
+                onClick: (evt) => handleOpenModal("SETTING_MEMBER"),
                 noExpand: true,
-              } : undefined, isNil(memberID) ? {
-                label: get(project, "project.work_type") === WORKPLACE_TYPES.PROCESS ? t("IDS_WP_PHASE") : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.GROUP_TASK"),
-                iconPath: mdiScatterPlot,
-                onClick: (evt) => handleSubSlide(2),
-                noExpand: true,
-              } : undefined, isNil(memberID) ?{
+              }  : undefined, isNil(memberID) ?{
                 label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
                 iconPath: mdiDownload,
                 onClick: (evt) => setDownloadAnchor(evt.currentTarget)
@@ -133,8 +128,8 @@ function AllTaskTable({
                 onClick: evt => setTimeAnchor(evt.currentTarget)
               } : undefined],
               mainAction: isNil(memberID) ? {
-                label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.CREATE"),
-                onClick: (evt) => handleOpenModal('CREATE'),
+                label: t("IDS_WP_BTN_CREATE_NEW"),
+                onClick: (evt) => handleOpenModal('MENU_CREATE'),
               } : !isNil(memberID) ? {
                 label: t("DMH.VIEW.DP.RIGHT.UT.PERMISSION"),
                 onClick: () => handleOpenModal('PERMISSION', {curMemberId: memberID}),

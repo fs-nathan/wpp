@@ -57,6 +57,7 @@ const ShortCut = ({ iconPath, url, text, extra }) => {
 const Left = React.memo(
   ({ name, code, description, address, website, phone, email, logo }) => {
     const { t } = useTranslation();
+    const notupdate = t("IDS_LABEL_NOT_UPDATE");
     return (
       <Stack large>
         <Stack className="comp_Left__profile" small>
@@ -80,7 +81,9 @@ const Left = React.memo(
             [mdiPhoneInTalk, phone],
             [mdiAt, email],
           ].map(([iconPath, text], i) => (
-            <ShortCut key={i} {...{ iconPath, text }} />
+            <>
+            {address && website && phone && email ? <ShortCut key={i} {...{ iconPath, text }} />:<ShortCut key={i} {...{ iconPath, text: notupdate }} />}
+            </>
           ))}
         </ShortcutGroup>
         <ShortcutGroup title={t("Lối tắt")}>

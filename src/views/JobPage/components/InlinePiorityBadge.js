@@ -10,7 +10,7 @@ const colorMap = {
 };
 function InlinePiorityBadge({ status, ...props }) {
   return (
-    <InlineBadge color={colorMap[status] || colorMap.default} {...props} />
+    <InlineBadge color={colors.white} backgroundColor={colorMap[status] || colorMap.default} {...props} />
   );
 }
 

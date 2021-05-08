@@ -102,8 +102,8 @@ function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 2:
       return {
-        color: "#4caf50",
-        background: "#4caf5042",
+        color: "#ffffff",
+        background: "#4caf50",
         name: "Thấp",
       };
     case 1:
@@ -144,8 +144,8 @@ function decodePriorityCode(priorityCode) {
       };
     case "MEMBER":
       return {
-        color: "#f1ff26",
-        background: "rgb(255, 218, 5)",
+        color: "#ffffff",
+        background: "#f1ff26",
         name: "Cao",
       };
     default:
@@ -160,58 +160,59 @@ function decodeStatusCode(statusCode) {
   switch (statusCode) {
     case 0:
       return {
-        color: "rgb(255,152,0)",
-        background: "rgba(255,152,0,.20)",
+        color: "#ffffff",
+        background: "rgb(255,152,0)",
       };
     case 1:
       return {
-        color: "#03a9f4",
-        background: "#ff980038",
+        color: "#ffffff",
+        background: "#03a9f4",
       };
     case 2:
       return {
-        color: "rgb(3,195,11)",
-        background: "rgba(3,195,11,0.21)",
+        color: "#ffffff",
+        background: "rgb(3,195,11)",
       };
     case 3:
       return {
-        color: "#f44336",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#f44336",
       };
 
     case 4:
       return {
-        color: "#607D8B",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#607d8b",
       };
     case "WAIT":
       return {
-        color: "#ff9800",
-        background: "#596fff",
+        color: "#ffffff",
+        background: "#ff9800",
       };
     case "DOING":
       return {
-        color: "#03a9f4",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#03a9f4",
       };
     case "DONE":
       return {
-        color: "#03c30b",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#03c30b",
       };
     case "EXPIRE":
       return {
-        color: "#f44336",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#f44336",
       };
     case "MEMBER":
       return {
-        color: "#f1ff26",
-        background: "rgb(255, 218, 5)",
+        color: "#ffffff",
+        background: "#f1ff26",
       };
     default:
       return {
-        color: "#53d7fc",
+        color: "#ffffff",
+        background: "#53d7fc",
       };
   }
 }
