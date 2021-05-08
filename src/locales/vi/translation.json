@@ -2381,6 +2381,7 @@
   "LABEL_SEARCHING": "Tìm",
   "MESSAGE_SEARCHING_RESULT": "Kết quả tìm được",
   "MESSAGE_CAN_NOT_JOIN_FREE_TRAIL": "Không thể tham gia: Nhóm này chưa nâng cấp!",
+  "MESSAGE_CAN_NOT_JOIN_ENOUGH_USERS": "Không thể tham gia! Nhóm này đã đủ thành viên",
   "LABEL_SELECTED_PERMISSION": "Quyền đã chọn",
   "LABEL_UNSELECTED_PERMISSION": "Quyền chưa chọn",
   "LABEL_CHANGE_PERMISSION": "Đổi quyền",

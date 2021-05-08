@@ -40,14 +40,13 @@ const NewUserBadge = ({ className = '', ...props }) =>
   />
 
 function DepartmentList({
-  rooms, searchPatern, route, viewPermissions,
-  handleSearchPatern, handleDragEnd,
+  rooms, searchPattern, route, viewPermissions,
+  handleSearchPattern, handleDragEnd,
   handleOpenModal, handleVisibleDrawerMessage, countRequirements = 0
 }) {
 
   const { t } = useTranslation();
   const history = useHistory();
-  const ref = React.useRef();
   let className = '';
 
   const listMenu = [
@@ -72,12 +71,6 @@ function DepartmentList({
     history.push(`${route}/room/${roomId}`);
   }
 
-  React.useEffect(() => {
-    if(!history.location.pathname.includes("/member-required")) {
-      ref.current.focus();
-    }
-  });
-
   if (get(viewPermissions.permissions, 'can_modify', false)) className = 'HasHeader';
   return (
     <React.Fragment>
@@ -85,8 +78,8 @@ function DepartmentList({
         <SearchInput
           fullWidth style={{background: "#fff"}}
           placeholder={t('DMH.VIEW.DP.LEFT.LIST.FIND')}
-          value={searchPatern}
-          onChange={handleSearchPatern}
+          value={searchPattern}
+          onChange={(e) => handleSearchPattern(e.target.value)}
         />
       </Banner>
       <Container className={className}>
@@ -136,7 +129,7 @@ function DepartmentList({
                   innerRef={provided.innerRef}
                   {...provided.droppableProps}
                 >
-                  <StyledListItem to={`${route}`} component={Link} innerRef={ref}>
+                  <StyledListItem to={`${route}`} component={Link} style={history.location.pathname === "/users" ? {background: "#E6E6E6"} : {}}>
                     <CustomAvatar style={{ height: 35, width: 35, }} alt='avatar' />
                     <ListItemText
                       primary={<StyledPrimary style={{ marginLeft: "10px"}}>{t('DMH.VIEW.DP.LEFT.LIST.ALL')}</StyledPrimary>}

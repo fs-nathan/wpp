@@ -118,7 +118,7 @@ function ListBody() {
   }
   React.useEffect(() => {
     const reload = () => {
-      dispatch(listGroupTask({projectId}));
+      dispatch(getListTaskDetail(projectId, listTaskDataTypes[selectedFilter]));
     }
     CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reload);
     return () => {

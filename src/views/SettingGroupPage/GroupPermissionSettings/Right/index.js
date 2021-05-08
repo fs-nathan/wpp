@@ -161,7 +161,7 @@ const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
   useEffect(() => {
     if(size(selected) === size(allPermissions)) {
       setIsSelectAll(true);
-    } setIsSelectAll(false);
+    } else setIsSelectAll(false);
   },[allPermissions, selected]);
 
   function handleSelectPermission(permission) {
@@ -184,8 +184,9 @@ const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
   );
 
   function handleSelectAll() {
-    setIsSelectAll(true);
-    handleSubmit(allPermissions);
+    if(size(selected) === size(allPermissions)) {
+      handleSubmit([]);
+    } else handleSubmit(allPermissions);
   }
 
   useEffect(() => {
@@ -268,7 +269,7 @@ const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
               {can_modify && mode === "GROUP_PERMISSION" && (
                 <TableCell style={{ padding: "0px" }} width="20px">
                   <Checkbox
-                    checked={isSelectAll}
+                    checked={size(selected) === size(allPermissions)}
                     onChange={() => handleSelectAll()}
                     color="primary"
                   />
@@ -313,7 +314,7 @@ const ColumnRight = ({customPermissionList = [], filterOption = 0}) => {
                             align="left"
                           >
                             <Checkbox
-                              checked={!!selected[permission] || isSelectAll}
+                              checked={!!selected[permission]}
                               onChange={() => handleSelectPermission(permission)}
                               color="primary"
                             />
@@ -583,13 +584,14 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption, openModal,
   }, [dispatch]);
 
   React.useEffect(() => {
+    let _groupUsers = [];
     forEach(groupUsers, function (group) {
-      if(size(get(group, "users")) > 0) {
-       setSelectedGroup(get(first(group.users), "group_permission_id"));
-       handleSelectUser(first(group.users));
-       return;
-      }
+      return forEach(group.users, function (user) { _groupUsers.push(user) });
     });
+    if(size(_groupUsers) > 0 ) {
+      setSelectedGroup(get(first(_groupUsers), "group_permission_id"));
+      handleSelectUser(first(_groupUsers));
+    }
   }, [groupUsers, dispatch]);
 
   React.useEffect(() => {
@@ -680,11 +682,12 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption, openModal,
                         <Button
                           onClick={() => {
                             setSelectedUser(user);
+                            handleSelectUser(user);
                             setOpenModal(true);
                           }}
                           disableElevation color={"primary"} variant={"contained"} size={"small"}
                         >
-                          {t("LABEL_CHANGE_PERMISSION")}
+                          {user.group_permission_name ? t("LABEL_CHANGE_PERMISSION") : t("LABEL_CHAT_TASK_PHAN_QUYEN")}
                         </Button>
                       </ListItemSecondaryAction>
                     </ListItem>

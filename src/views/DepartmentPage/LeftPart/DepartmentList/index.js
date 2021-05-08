@@ -65,7 +65,7 @@ function DepartmentList({
     // eslint-disable-next-line
   }, []);
 
-  const [searchPatern, setSearchPatern] = React.useState('');
+  const [searchPattern, setSearchPattern] = React.useState('');
   const [filteredRooms, setFilteredRooms] = React.useState([]); 
   const [open,setOpen] = React.useState(false)
   const [openCreateAccount,setOpenCreateAccount] = React.useState(false);
@@ -75,10 +75,10 @@ function DepartmentList({
       rooms.rooms,
       room => get(room, 'name', '')
         .toLowerCase()
-        .includes(searchPatern.toLowerCase())
+        .includes(searchPattern.toLowerCase())
     ));
     // eslint-disable-next-line
-  }, [searchPatern, rooms]);
+  }, [searchPattern, rooms]);
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -138,9 +138,9 @@ function DepartmentList({
         }}
         route={route} countRequirements={countRequirements}
         viewPermissions={viewPermissions}
-        searchPatern={searchPatern}
+        searchPattern={searchPattern}
         handleDragEnd={onDragEnd}
-        handleSearchPatern={evt => setSearchPatern(evt.target.value)}
+        handleSearchPattern={setSearchPattern}
         handleOpenModal={doOpenModal}
         handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
       />

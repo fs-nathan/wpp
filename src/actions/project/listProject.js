@@ -5,7 +5,9 @@ import {
   LIST_PROJECT_SELECT,
   LIST_PROJECT_SELECT_SUCCESS,
   CHECK_HAS_RECENTLY_PROJECT,
-  CHECK_HAS_RECENTLY_PROJECT_SUCCESS
+  CHECK_HAS_RECENTLY_PROJECT_SUCCESS,
+  COUNT_PERSONAL_PROJECTS_BOARD,
+  COUNT_PERSONAL_PROJECTS_BOARD_SUCCESS
 } from '../../constants/actions/project/listProject';
 
 export const listProject = ({ groupProject, type, status, timeStart, timeEnd, type_data, select }, quite = false) => ({
@@ -54,4 +56,15 @@ export const checkHasRecentlyProjects = () => ({
 export const checkHasRecentlyProjectsSuccess = ({isHas}) => ({
   type: CHECK_HAS_RECENTLY_PROJECT_SUCCESS,
   isHas
-})
+});
+
+export const countPersonalProjectsBoard = () => ({
+  type: COUNT_PERSONAL_PROJECTS_BOARD,
+  options: {
+    type_data: 2
+  }
+});
+export const countPersonalProjectsBoardSuccess = ({numberOfProjects}) => ({
+  type: COUNT_PERSONAL_PROJECTS_BOARD_SUCCESS,
+  numberOfProjects
+});

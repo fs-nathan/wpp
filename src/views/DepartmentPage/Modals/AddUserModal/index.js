@@ -7,23 +7,30 @@ import {
   requireUsersSelector
 } from "../../LeftPart/AddUser/selectors";
 import {searchUser, searchUserReset} from "../../../../actions/groupUser/searchUser";
-import {connect} from "react-redux";
+import {connect, useDispatch} from "react-redux";
 import {inviteUserJoinGroup} from "../../../../actions/groupUser/inviteUserJoinGroup";
 import {CustomEventDispose, CustomEventListener, INVITE_USER_JOIN_GROUP} from "../../../../constants/events";
+import {memberProject} from "../../../../actions/project/memberProject";
+import {isNil} from "lodash";
 
-function AddUserModal({open, setOpen, doSearchUser, desireUser, doSearchUserReset, doInviteUserJoinGroup}) {
+function AddUserModal({open, setOpen, doSearchUser, desireUser, doSearchUserReset, doInviteUserJoinGroup,
+                        reload = false, projectId = null}) {
+  const dispatch = useDispatch();
   const resetDesireUser = () => {
     doSearchUserReset();
   }
   React.useEffect(() => {
     const inviteUserSuccess = () => {
       setOpen(false);
+      if(reload && !isNil(projectId)) {
+        dispatch(memberProject({projectId}));
+      }
     };
     CustomEventListener(INVITE_USER_JOIN_GROUP, inviteUserSuccess);
     return () => {
       CustomEventDispose(INVITE_USER_JOIN_GROUP, inviteUserSuccess);
     }
-  }, [setOpen]);
+  }, [setOpen, projectId, reload, dispatch]);
   return (
     <AddUserModalPresenter
       open={open} setOpen={setOpen}

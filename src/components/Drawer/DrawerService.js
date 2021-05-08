@@ -11,11 +11,11 @@ export const inviteUserService = user_id => {
     data: { user_id }
   });
 };
-export const resendInviteUserService = user_id => {
+export const resendInviteUserService = group_id => {
   return apiService({
     url: '/re-send-requirement-join-group',
     method: 'post',
-    data: { user_id }
+    data: { group_id }
   });
 };
 export const acceptInviteService = invitation_id => {

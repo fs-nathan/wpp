@@ -268,6 +268,9 @@ import listProject, {
 import checkHasRecently, {
   initialState as checkHasRecentlyInitialState,
 } from "./project/checkHasRecently";
+import countPersonalProjectsBoard, {
+  initialState as countPersonalProjectsBoardInitialState,
+} from "./project/countPersonalProjectsBoard";
 import memberProject, {
   initialState as memberProjectInitialState,
 } from "./project/memberProject";
@@ -572,6 +575,7 @@ const rootReducer = combineReducers({
     getStatusWorkGroup,
     getProjectOnPersonalBoard,
     checkHasRecently,
+    countPersonalProjectsBoard,
     setting: combineReducers({
       detailStatus,
       updateStatusDate,
@@ -790,6 +794,7 @@ export const DEFAULT_STATE = {
     getStatusWorkGroup: getStatusWorkGroupInitialState,
     getProjectOnPersonalBoard: getProjectOnPersonalBoardInitialState,
     getWorkType: getWorkTypeInitialState,
+    countPersonalProjectsBoard: countPersonalProjectsBoardInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
       updateStatusDate: updateStatusDateInitialState,

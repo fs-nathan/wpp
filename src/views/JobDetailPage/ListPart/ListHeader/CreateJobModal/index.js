@@ -538,7 +538,6 @@ function CheckCreateJob(props) {
   }, [dispatch, projectId, props.isOpen])
 
   useEffect(() => {
-    // console.log(listGroupTaskData, '&& ', props.isOpen, isFetching)
     if (listGroupTaskData.group_tasks && props.isOpen && !isFetching) {
       if (listGroupTaskData.group_tasks.length === 0) {
         setOpenCreateGroup(true)

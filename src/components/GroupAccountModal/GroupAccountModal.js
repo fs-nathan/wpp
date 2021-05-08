@@ -86,7 +86,7 @@ function RenderJoinGroup ({setMode, handleFetchData}) {
         <InputBase
           value={searchValue}
           className="view_GroupAccount_Modal_joinGroup_searchBox"
-          style={isFocus ? {border: "2px solid #0097FA"} : {}}
+          style={isFocus ? {border: "2px solid var(--color-primary)"} : {}}
           placeholder={t('MESSAGE_SEARCH_GROUP_FOR_JOIN')} autoFocus
           startAdornment={
             <InputAdornment position="start">
@@ -182,7 +182,7 @@ const RenderRightPart = props => {
             </IconButton>
             <Primary>{t("LABEL_GROUP_REQUIRED")}</Primary>
           </SubHeader>
-          <div style={{padding: "0 20px"}}>
+          <div>
             { isEmpty(props.groupList.requirements) && renderEmptyView("REQUIREMENTS")}
           {
             !isEmpty(props.groupList.requirements) && (

@@ -71,7 +71,7 @@ function UserList({
           <SearchInput
             value={searchPattern}
             onChange={evt => setSearchPattern(evt.target.value)}
-            fullWidth
+            fullWidth style={{background: "#fff"}}
             placeholder={t('DMH.VIEW.MP.LEFT.UL.SEARCH')}
           />
         </Banner>
