@@ -4,7 +4,7 @@ import {
   UPDATE_PROJECT_SUCCESS,
 } from '../../constants/actions/project/updateProject';
 
-export const updateProject = ({ projectId, name, description, projectGroupId, priority, currency }) => ({
+export const updateProject = ({ projectId, name, description, projectGroupId, priority, currency, work_type }) => ({
   type: UPDATE_PROJECT,
   options: {
     projectId,
@@ -13,6 +13,7 @@ export const updateProject = ({ projectId, name, description, projectGroupId, pr
     projectGroupId,
     priority,
     currency,
+    work_type
   },
 });
 

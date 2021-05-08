@@ -271,22 +271,6 @@ const BodyPart = props => {
                   }
                 </div>
               </div>
-              <div className="bodyChat--introRow">
-                <div className="bodyChat--introImages">
-                  <div className="bodyChat--introItem bodyChat--introItem__left">
-                    <img alt="intro" src="/images/intro/intro-bg-2.png" />
-                    <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_THAO_LUAN')}</div>
-                  </div>
-                  <div className="bodyChat--introItem">
-                    <img alt="intro" src="/images/intro/intro-bg-3.png" />
-                    <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_QUAN_LY')}</div>
-                  </div>
-                  <div className="bodyChat--introItem bodyChat--introItem__right">
-                    <img alt="intro" src="/images/intro/intro-bg-4.png" />
-                    <div className="bodyChat--introTitle">{t('LABEL_CHAT_TASK_CHIA_SE')}</div>
-                  </div>
-                </div>
-              </div>
             </React.Fragment>
           }
           {isLoading && isMore &&

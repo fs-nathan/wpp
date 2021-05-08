@@ -148,7 +148,6 @@ function UpdatePersonalRemind({
                 placeholder={t('views.calendar_page.modal.create_personal_remind.choose_category')}
                 className={"remind_group_container_input"}
                 variant="outlined"
-                multiline
                 fullWidth
                 value={data.selectedCategoryName}
                 onClick={() => setOpenSelectGroupPersonalRemindModal(true)}

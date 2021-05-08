@@ -110,7 +110,7 @@
 
 .table-scroll-add-member {
   // overflow-y: scroll;
-  height: calc(100% - 180px);
+  height: calc(100% - 0px)!important;
 }
 
 // AddMemberModal - ListHeader

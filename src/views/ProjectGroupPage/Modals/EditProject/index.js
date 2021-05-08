@@ -43,11 +43,12 @@ function EditProject({
         : undefined,
     });
   }, [timeRange]);
-
   return (
     <EditProjectPresenter
       curProject={curProject}
-      projectGroupId={projectGroupId}
+      projectGroupId={curProject ? curProject.project_group_id : null}
+      projectGroupName={curProject ? curProject.project_group.name : ""}
+      workType={curProject ? curProject.work_type : 0}
       timeRange={timeRange}
       doReload={() =>
         doReload({
@@ -62,8 +63,8 @@ function EditProject({
       }
       open={open} setOpen={setOpen}
       groups={groups}
-      handleEditProject={({ name, description, projectGroupId, priority, currency }) =>
-        doUpdateProject({ projectId: get(curProject, 'id'), name, description, projectGroupId, priority, currency })
+      handleEditProject={({ name, description, projectGroupId, priority, currency, workType  }) =>
+        doUpdateProject({ projectId: get(curProject, 'id'), name, description, projectGroupId, priority, currency, work_type: workType })
       }
     />
   )
@@ -82,7 +83,7 @@ const mapDispatchToProps = dispatch => {
       options !== null && dispatch(listProject(options, true));
       dispatch(detailProject({ projectId }, true));
     },
-    doUpdateProject: ({ projectId, name, description, projectGroupId, priority, currency }) => dispatch(updateProject({ projectId, name, description, projectGroupId, priority, currency })),
+    doUpdateProject: ({ projectId, name, description, projectGroupId, priority, currency, work_type }) => dispatch(updateProject({ projectId, name, description, projectGroupId, priority, currency, work_type })),
     doListProjectGroup: (options,quite) => dispatch(listProjectGroup(options, quite)),
   }
 };

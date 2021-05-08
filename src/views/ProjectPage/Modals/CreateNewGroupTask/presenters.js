@@ -52,7 +52,7 @@ function CreateNewOrUpdateGroupTask({
       doReload();
     }
     if (curGroupTask) {
-      CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, doReload);
+      CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, success);
       CustomEventListener(UPDATE_GROUP_TASK.FAIL, fail);
     } else {
       CustomEventListener(CREATE_GROUP_TASK.SUCCESS, success);
@@ -60,7 +60,7 @@ function CreateNewOrUpdateGroupTask({
     }
     return () => {
       if (curGroupTask) {
-        CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, doReload);
+        CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, success);
         CustomEventDispose(UPDATE_GROUP_TASK.FAIL, fail);
       } else {
         CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, success);
