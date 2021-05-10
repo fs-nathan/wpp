@@ -75,6 +75,11 @@ const MemberListItem = ({
                 Admin
               </div>
             }
+            {!is_in_group &&
+              <div className="memberItem--left">
+                {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
+              </div>
+            }
           </div>
           <div className="memberItem--department">
             {group_permission && group_permission.name}
@@ -83,12 +88,6 @@ const MemberListItem = ({
             {compact([room, position]).join(' - ')}
           </div>
         </div>
-
-        {!is_in_group &&
-          <div className="memberItem--left">
-            {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
-          </div>
-        }
         <div className={"memberItem--menuButton buttonChat"} onClick={(evt) => handleCreatePrivateChat(evt)}>
           <img src={images.messeger} width={20} height={20} alt={""}/>
         </div>

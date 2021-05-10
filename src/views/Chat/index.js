@@ -36,6 +36,7 @@ function Chat(props) {
   const users_shared = item ? item.users_shared || [] : [];
   const shareItem = { ...item, users_shared }
   const viewAllMessageResponse = useSelector((state) => state.threadChat.viewAllMessageResponse);
+  const show = useSelector(state => state.taskDetail.detailTask.showIndex);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -85,6 +86,9 @@ function Chat(props) {
       dispatch(loadChat(taskId));
       dispatch(getViewedChat(taskId));
       dispatch(openDetailMember(false))
+      if (show !== 0) {
+        dispatch(taskDetailAction.showTab(0))
+      }
 
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {

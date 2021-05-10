@@ -42,12 +42,12 @@
     background-color: #f2f5fa;
   }
   &--left {
-    color: #ff0000;
-    padding: 6px 16px;
+    color: #ffffff;
+    padding: 3px 6px;
     border-radius: 5px;
-    font-size: 14px;
-    position: absolute;
-    right: 85px;
+    font-size: 10px;
+    background: red;
+    margin-left: 10px;
   }
   &--textWrap {
     width: 100%;
@@ -81,6 +81,7 @@
   }
   &--role {
     color: orange;
+    line-height: 17px;
   }
   &--menuButton {
     position: absolute;
