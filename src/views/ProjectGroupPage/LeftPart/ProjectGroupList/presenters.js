@@ -5,7 +5,7 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemIcon, ListItemSecondaryAction,
+  ListItemIcon,
   ListItemText,
   MenuItem,
   MenuList,
@@ -14,7 +14,7 @@ import {
 } from '@material-ui/core';
 import {mdiBookmarkOutline, mdiDotsVertical, mdiDragVertical, mdiPlayCircleOutline, mdiPlus} from '@mdi/js';
 import Icon from '@mdi/react';
-import {get} from 'lodash';
+import {get, size} from 'lodash';
 import React from 'react';
 import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
 import {useTranslation} from 'react-i18next';
@@ -67,8 +67,8 @@ function ProjectList({
   const isHasProjectRecently = useSelector(state => state.project.checkHasRecently.hasRecently);
   const params = new URLSearchParams(window.location.search);
   const groupID = params.get('groupID');
-  const countPersonalProjectsBoard = useSelector(state => state.project.countPersonalProjectsBoard.numberOfProjects);
-
+  const personalProjectsBoard = useSelector(state => state.project.countPersonalProjectsBoard.projects);
+  console.log(personalProjectsBoard);
   function onDragEnd(result) {
     const {source, destination, draggableId} = result;
     if (!destination) return;
@@ -187,7 +187,7 @@ function ProjectList({
                       <path d="M12 11c1.33 0 4 .67 4 2v.16c-.97 1.12-2.4 1.84-4 1.84s-3.03-.72-4-1.84V13c0-1.33 2.67-2 4-2zm0-1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 .2C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z"/>
                     </SvgIcon>
                   </ListItemIcon>
-                  <ListItemText primary={`${t("LABEL_PERSONAL_BOARD")} (${countPersonalProjectsBoard})`}/>
+                  <ListItemText primary={`${t("LABEL_PERSONAL_BOARD")} (${size(personalProjectsBoard)})`}/>
                   {defaultAccessItem === "/personal-board" && (
                     <FlagOutlinedIcon color={"disabled"} style={{marginLeft: 10, color: "red"}}/>
                   )}

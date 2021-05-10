@@ -99,6 +99,8 @@ function OptionModal({
   const privateChatData = useSelector(state => state.taskDetail.createPrivateChat.data);
   const history = useHistory();
   const dispatch = useDispatch();
+  const userId = useSelector((state) => state.system.profile.id);
+
   React.useEffect(() => {
     doListUserRole();
   }, [doListUserRole]);
@@ -134,13 +136,14 @@ function OptionModal({
         <Box className={"optionModal-container"}>
           <CustomAvatar src={get(member, "avatar")} style={{width: 75, height: 75}}/>
           <Typography variant={"h6"} style={{marginTop: 15}}>{get(member, "name")}</Typography>
-          <Button
-            variant="outlined" color="primary" style={{marginTop: 25}} className={"btnSendMessage"}
-            onClick={() => handleSendMessage()}
-          >
-            {t("LABEL_SEND_MESSAGE")}
-          </Button>
-
+          {get(member, "is_in_group", false) && get(member, "id") !== userId && (
+            <Button
+              variant="outlined" color="primary" style={{marginTop: 25}} className={"btnSendMessage"}
+              onClick={() => handleSendMessage()}
+            >
+              {t("LABEL_SEND_MESSAGE")}
+            </Button>
+          )}
           <Box className={"memberInformation"}>
             <div className={"memberInformation-item"}>
               <div className={"memberInformation-itemLabel"}>{t("VIEW_OFFER_LABEL_DEPARTMENT_TITLE")}:</div>

@@ -42,6 +42,8 @@ const MemberListItem = ({
   const dispatch = useDispatch();
   const history = useHistory();
   const privateChatData = useSelector(state => state.taskDetail.createPrivateChat.data);
+  const userId = useSelector((state) => state.system.profile.id);
+
   const handleClick = (evt) => {
     evt.preventDefault();
     evt.stopPropagation();
@@ -89,9 +91,11 @@ const MemberListItem = ({
             {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
           </div>
         }
-        <div className={"memberItem--menuButton buttonChat"} onClick={(evt) => handleCreatePrivateChat(evt)}>
-          <img src={images.messeger} width={20} height={20} alt={""}/>
-        </div>
+        {is_in_group && id !== userId &&
+          <div className={"memberItem--menuButton buttonChat"} onClick={(evt) => handleCreatePrivateChat(evt)}>
+            <img src={images.messeger} width={20} height={20} alt={""}/>
+          </div>
+        }
         <ButtonIcon
           className="memberItem--menuButton"
           size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">

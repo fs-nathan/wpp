@@ -24,8 +24,8 @@ const DialogActions = withStyles((theme) => ({
 function GuideLineAddUserModal({open, setOpen, handleAddNow, type = 1}) {
   const {t} = useTranslation();
   function handleAddUser() {
-    setOpen(false);
     handleAddNow();
+    setOpen(false);
   }
   return (
     <Dialog

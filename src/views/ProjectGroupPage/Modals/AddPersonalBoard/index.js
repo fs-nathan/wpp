@@ -18,7 +18,7 @@ import {
 import "./styles.scss";
 import SearchIcon from "@material-ui/icons/Search";
 import {connect} from "react-redux";
-import {listProjectForSelect} from "../../../../actions/project/listProject";
+import {countPersonalProjectsBoard, listProjectForSelect} from "../../../../actions/project/listProject";
 import {listProjectGroup} from "../../../../actions/projectGroup/listProjectGroup";
 import {filter, forEach, get, map, size, toLower} from "lodash";
 import {updatePinBoardSetting} from "../../../../actions/project/setting/updatePinBoardSetting";
@@ -37,7 +37,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 function AddToPersonalBoardModal({
   open = false, setOpen, doListProjectGroup, groups, doListProject, updatePinBoardSetting, projects,
-  loading = false
+  loading = false, doListProjectsInBoard, projectsInBoard
 }) {
   const {t} = useTranslation();
   const classes = useStyles();
@@ -54,8 +54,18 @@ function AddToPersonalBoardModal({
         timeEnd: null
       });
       doListProject({});
+      doListProjectsInBoard();
     }
-  }, [doListProjectGroup, open]);
+  }, [doListProjectGroup, open, doListProjectsInBoard]);
+
+  React.useEffect(() => {
+    const _projects = {};
+    forEach(projectsInBoard, function (project) {
+      _projects[project.id] = true;
+    });
+    setSelectedProjects(({..._projects}));
+  }, [projectsInBoard]);
+
   React.useEffect(() => {
     const _groups = groups.map(projectGroup => ({
       ...projectGroup,
@@ -76,16 +86,6 @@ function AddToPersonalBoardModal({
       setFilteredGroups(_groups);
     }
   }, [searchPattern, projectGroups]);
-
-  React.useEffect(() => {
-    const _projects = {};
-    forEach(projectGroups, function (group) {
-      forEach(group.projects, function (project) {
-        _projects[project.id] = false;
-      });
-    });
-    setSelectedProjects(_projects);
-  }, [projectGroups]);
 
   function handleSelectedProject(projectID) {
     setSelectedProjects(({...selectedProjects, [projectID]: !selectedProjects[projectID]}));
@@ -188,7 +188,8 @@ const mapStateToProps = state => {
   return {
     groups: state.projectGroup.listProjectGroup.data.projectGroups,
     projects: state.project.listProject.data.projectsForSelect,
-    loading: state.project.listProject.selectLoading
+    loading: state.project.listProject.selectLoading,
+    projectsInBoard: state.project.countPersonalProjectsBoard.projects
   }
 }
 
@@ -196,7 +197,8 @@ const mapDispatchToProps = dispatch => {
   return {
     doListProject: (options) => dispatch(listProjectForSelect(options)),
     doListProjectGroup: (options, quite) => dispatch(listProjectGroup(options, quite)),
-    updatePinBoardSetting: (options) => dispatch(updatePinBoardSetting(options))
+    updatePinBoardSetting: (options) => dispatch(updatePinBoardSetting(options)),
+    doListProjectsInBoard: () => dispatch(countPersonalProjectsBoard())
   }
 };
 export default connect(

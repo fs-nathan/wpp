@@ -47,7 +47,7 @@
     border-radius: 5px;
     font-size: 14px;
     position: absolute;
-    right: 85px;
+    right: 15px;
   }
   &--textWrap {
     width: 100%;
@@ -81,6 +81,10 @@
   }
   &--role {
     color: orange;
+    max-width: 60%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
   &--menuButton {
     position: absolute;
