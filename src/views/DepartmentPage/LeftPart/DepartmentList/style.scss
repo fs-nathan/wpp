@@ -5,6 +5,9 @@
 
 .view_Department_List___primary {
   font-weight: 500;
+  .comp_CustomList___primary {
+    font-size: 14px !important;
+  }
 };
 
 .departmentList_container .comp_LeftSideContainer___header {
@@ -34,11 +37,11 @@
   align-items: center;
   padding-top: 5px;
   margin: 10px 15px;
-  //border-top: 1px solid rgba(0,0,0,0.22);
   a {
     cursor: pointer;
   }
   .MuiTypography-h6 {
-    font-weight: 400;
+    font-weight: 500;
+    font-size: 14px;
   }
 }

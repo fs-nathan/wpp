@@ -29,7 +29,19 @@ const useStyles = makeStyles(theme => ({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "column",
-        textAlign: "center"
+        textAlign: "center",
+        height: "89px",
+        "& > *:first-child": {
+            fontSize: "18px",
+            fontWeight: 500,
+            cursor: "pointer",
+            margin: "5px 0",
+            color: "#ff5722"
+        },
+        "& > *:last-child": {
+            fontSize: "14px",
+            margin: "5px 0"
+        }
     },
     img: {
         height: 280,
@@ -117,7 +129,7 @@ function Introduce() {
                         ))}
                     </AutoPlaySwipeableViews>
                     <Paper square elevation={0} className={classes.header}>
-                        <Typography >{tutorialSteps[activeStep].label}</Typography>
+                        <Typography>{tutorialSteps[activeStep].label}</Typography>
                         <Typography>{tutorialSteps[activeStep].content}</Typography>
                     </Paper>
                     <MobileStepper

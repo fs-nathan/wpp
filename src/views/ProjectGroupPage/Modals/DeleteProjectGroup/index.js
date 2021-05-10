@@ -7,7 +7,7 @@ import DeleteProjectGroupPresenter from './presenters';
 
 function ProjectGroupDelete({
   selectedProjectGroup = null,
-  open, setOpen,
+  open, setOpen, redirectURL = null,
   doDeleteProjectGroup,
   doReloadProjectGroup,
 }) {
@@ -21,6 +21,7 @@ function ProjectGroupDelete({
           projectGroupId: get(selectedProjectGroup, 'id'),
         })
       }
+      redirectURL={redirectURL}
     />
   )
 }

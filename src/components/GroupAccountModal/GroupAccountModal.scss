@@ -12,6 +12,9 @@
 
 .view_GroupAccount_Modal___main-bar {
   grid-area: main;
+  .item-group {
+    padding: 0 20px;
+  }
 }
 
 .view_GroupAccount_Modal > div:nth-child(3) > div {
@@ -63,7 +66,7 @@
       .MuiButton-containedPrimary {
         color: #fff;
         background: #FF4800;
-        border-radius: 0;
+        border-radius: 3px;
         width: 75px;
       }
     }
@@ -176,6 +179,7 @@
   height: 16px;
   margin-bottom: 5px;
   text-transform: uppercase;
+  font-size: 11px;
 }
 
 .view_GroupAccount_Modal .status-item-group-account {
@@ -198,5 +202,13 @@
     color: white;
     text-transform: uppercase;
     margin-bottom: 5px;
+  }
+}
+.join-group-new {
+  width: 100%;
+  background: var(--color-primary);
+  padding: 15px 10px;
+  &:hover {
+    background: var(--color-primary);
   }
 }

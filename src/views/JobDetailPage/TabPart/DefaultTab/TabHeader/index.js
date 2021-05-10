@@ -109,9 +109,9 @@ function TabHeader(props) {
     <MenuItem key="editList3"
       onClick={onClickEdit(EDIT_MODE.GROUP)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC')}</MenuItem>,
-    <MenuItem key="editList4"
+    /*<MenuItem key="editList4"
       onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
-    >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>,
+    >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>,*/
     <MenuItem key="editList5"
       onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>,

@@ -1,15 +1,14 @@
 import Drawer from "@material-ui/core/Drawer";
 import React from "react";
-import { connect } from "react-redux";
-import { actionVisibleDrawerMessage } from "../../actions/system/system";
-import { DRAWER_TYPE } from "../../constants/constants";
-import { isEmpty } from "../../helpers/utils/isEmpty";
+import {connect} from "react-redux";
+import {actionVisibleDrawerMessage} from "../../actions/system/system";
+import {DRAWER_TYPE} from "../../constants/constants";
+import {isEmpty} from "../../helpers/utils/isEmpty";
 import AddUser from "views/DepartmentPage/LeftPart/AddUser";
 import ListProjectKanban from "views/JobDetailPage/ListPart/ListProjectKanban";
 import KanbanFilterSlider from "views/KanbanPage/Sliders/FilterSlider";
 import KanbanMemberSlider from "views/KanbanPage/Sliders/MemberSlider";
 import "./Drawer.scss";
-import DrawerGroupAcount from "./DrawerContentComponent/DrawerGroupAcount";
 import DrawerMessage from "./DrawerContentComponent/DrawerMessage";
 import DrawerNewGroup from "./DrawerContentComponent/DrawerNewGroup";
 import DrawerNotification from "./DrawerContentComponent/DrawerNotification";
@@ -72,7 +71,7 @@ const DrawerComponent = props => {
             : anchorDrawer === "right"
             ? "anchor-drawer-right"
             : "anchor-drawer-top"
-        }`}
+        } anchor-drawer-quick-access`}
         transitionDuration={0}
       >
         {generateContent(typeDrawer, optionsDrawer)}

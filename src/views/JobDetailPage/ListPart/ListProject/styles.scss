@@ -8,15 +8,9 @@
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
     position: -webkit-sticky; /* Safari */
     position: sticky;
-    top: 0px;
+    top: 0;
     background-color: #fff;
     z-index: 999;
-  }
-  &--container {
-    // margin-bottom: 30px !important;
-    // margin-right: 0px !important;
-    // width: calc(100% + 5px) !important;
-    // scrollbar-width: none !important;
   }
   &--body {
     grid-area: body;
@@ -36,12 +30,6 @@
     .MuiExpansionPanelSummary-expandIcon.Mui-expanded {
       transform: rotate(180deg);
     }
-    // .MuiCollapse-container {
-    // padding-left: 43px;
-    // &:hover {
-    //   background-color: #f2f5fa;
-    // }
-    // }
     & > *:first-child {
       flex-direction: row-reverse;
       padding: 0;

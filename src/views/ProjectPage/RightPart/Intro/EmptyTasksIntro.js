@@ -22,7 +22,7 @@ function EmptyTasksIntro({projectName, projectID, handleOpenModal, work_type = 0
           <Typography variant={"h5"}>{t("LABEL_EMPTY_TASK_FIRST_CREATE")}</Typography>
           <div className={"selectedGroup"}>
             <img src={resolvedWorkType(work_type)} width={25} height={25} style={{marginRight: 10}}/>
-            <strong>{projectName}</strong>
+            <strong style={{fontSize: "14px"}}>{projectName}</strong>
           </div>
           <p dangerouslySetInnerHTML={{__html: t("EMPTY_TASK_MESSAGE_1")}}/>
           <p dangerouslySetInnerHTML={{__html: t("EMPTY_TASK_MESSAGE_2")}}/>

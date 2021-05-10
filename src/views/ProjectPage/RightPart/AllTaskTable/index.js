@@ -104,8 +104,6 @@ function AllTaskTable({
             ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
             : undefined,
         });
-        setTypeGuide(2);
-        setGuideLineModal(true);
       }
 
       const reloadListTaskAndGroupTask = () => {
@@ -170,17 +168,21 @@ function AllTaskTable({
       CustomEventListener(CREATE_TASK, (e) => {
         doDetailProject({ projectId });
         setCreatedTask(get(e.detail, "task"));
+        setGuideLineModal(true);
+        setTypeGuide(2);
       });
       CustomEventListener(DELETE_TASK, reloadDetailProject);
       return () => {
-        CustomEventListener(CREATE_TASK, (e) => {
+        CustomEventDispose(CREATE_TASK, (e) => {
           doDetailProject({ projectId });
           setCreatedTask(get(e.detail, "task"));
+          setGuideLineModal(true);
+          setTypeGuide(2);
         });
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
     }
-  }, [projectId]);
+  }, [projectId, timeRange]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openSetting, setOpenSetting] = React.useState(false);

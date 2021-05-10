@@ -52,8 +52,6 @@ function JobDetailPage(props) {
   }, [errorMessage, history, projectId]);
 
   useEffect(() => {
-    const key = `${userId}:${lastJobSettingKey}`;
-    const type_data = localStorage.getItem(key) || "include-room";
     const path = url.pathname;
     const id = last(path.split("/"));
     if (id.length > 0 && userId) {
@@ -90,7 +88,6 @@ function JobDetailPage(props) {
   }, [dispatch, taskId]);
 
   useEffect(() => {
-    const key = `${userId}:${lastJobSettingKey}`;
     if (projectId !== "" && userId) {
       const key = `TASK_GIRD:${userId}:${projectId}`;
       const type_data = localStorage.getItem(key) || "include-room";

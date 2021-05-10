@@ -53,12 +53,12 @@
   }
   &:hover {
     cursor: pointer;
-    border: 1px solid #05b50c;  
+    border: 1px solid var(--color-primary);
     & > div:first-child > svg {
-      fill: #05b50c;
+      fill: var(--color-primary);
     }
     & > div:last-child > span:first-child {
-      color: #05b50c;
+      color: var(--color-primary);
     }
   }
 }

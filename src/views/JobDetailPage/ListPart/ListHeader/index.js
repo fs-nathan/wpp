@@ -136,11 +136,11 @@ function ListHeader(props) {
         <MenuItem onClick={() => {
           handleClose();
           onClickCreateJob();
-        }}>Tạo công việc</MenuItem>
+        }}>{t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}</MenuItem>
         <MenuItem onClick={() => {
           handleClose();
           setOpenCreateTaskGroup(true);
-        }}>Tạo nhóm công việc</MenuItem>
+        }}>{t("LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC")}</MenuItem>
       </Menu>
       <CreateJobModal
         isOpen={openCreateJobModal}
@@ -149,6 +149,7 @@ function ListHeader(props) {
       <CreateGroupTask
         open={openCreateTaskGroup}
         setOpen={setOpenCreateTaskGroup}
+        project_id={get(projectThis, "id")}
       />
       <ProjectSettingModal
         open={isOpenSettings}

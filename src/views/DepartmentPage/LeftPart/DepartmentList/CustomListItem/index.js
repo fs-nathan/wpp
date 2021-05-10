@@ -59,7 +59,7 @@ function CustomListItem({
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
       >
-        <CustomAvatar style={{ height: 50, width: 50, }} src={room.icon} alt='avatar' />
+        <CustomAvatar style={{ height: 35, width: 35, marginRight: "10px" }} src={room.icon} alt='avatar' />
         <ListItemText
           primary={
             <Primary>{get(room, 'name', '')}</Primary>

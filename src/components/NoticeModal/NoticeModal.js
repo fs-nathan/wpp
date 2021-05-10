@@ -73,14 +73,13 @@ const NoticeModal = props => {
     <Dialog
       fullWidth={true}
       maxWidth="sm"
-      className={`notice-modal-container ${props.visibleNoticeReason === "ACCOUNT_LOCKED" && 'modal-notice-locked'}`}
+      className="notice-modal-container"
       onClose={closeNoticeModal}
       aria-labelledby="customized-dialog-title"
       open={props.visibleNoticeModal}
       disableBackdropClick
     >
-      {props.visibleNoticeReason === "ORDER_EXPIRED" | props.visibleNoticeReason === "ACCOUNT_FREE" ?
-      <div className="header-icon-modal">
+      {/*<div className="header-icon-modal">
         <IconButton
           aria-label="close"
           onClick={closeNoticeModal}
@@ -88,8 +87,8 @@ const NoticeModal = props => {
         >
           <CloseIcon style={{ color: grey[400] }} fontSize={"small"}/>
         </IconButton>
-      </div>:null
-      }
+      </div>*/}
+
       <MuiDialogActions disableSpacing={true}>
         {
           props.visibleNoticeReason === "ORDER_EXPIRED" && (
@@ -123,12 +122,9 @@ const NoticeModal = props => {
         }
 
         <div className={"notice-body"}>
-        {
-            props.visibleNoticeReason === "ACCOUNT_FREE" || props.visibleNoticeReason === "ORDER_EXPIRED" &&
           <p className="notice-text header-text">
             {t('IDS_WP_WELCOME')} {props.profile.name}!
           </p>
-        }
           {
             props.visibleNoticeReason === "ACCOUNT_FREE" ? (
                 <>
@@ -143,13 +139,7 @@ const NoticeModal = props => {
                     {t("IDS_WP_LOGIN_SUCCESS_INTRO_2")}
                   </p>
                 </>
-            ) : props.visibleNoticeReason === "ACCOUNT_LOCKED" ?(
-              <div className="content_notify-lock-user">
-                <img src={icons.icon_block_user} alt="" />
-                <h5>{t('IDS_WP_NOTIFY_BLOCK_USER_GROUP_TITLE', {group_name: props?.profile?.group_active.name})}</h5>
-                <div>{t('IDS_WP_NOTIFY_BLOCK_USER_GROUP_TEXT')}</div>
-              </div>
-            ) :(
+            ) : (
                 <p className="notice-text sub-header-text">
                   <span className={"text-bold"}>{t('IDS_WP_EXPIRE_ORDER_NOTICE')}</span>
                   <br/>
@@ -159,7 +149,8 @@ const NoticeModal = props => {
           }
 
           <div className="notice-btn-container">
-            {props.visibleNoticeReason === "ACCOUNT_FREE" && (
+            {
+              props.visibleNoticeReason === "ACCOUNT_FREE" && (
                 <Button
                   variant="contained"
                   className="notice-btn notice-btn-orange"

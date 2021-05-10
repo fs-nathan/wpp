@@ -165,6 +165,7 @@
       width: 35%;
       padding: 16px 0;
       border-right: 1px solid rgba(0, 0, 0, 0.1);
+      background: #f1f2f4;
       .title-left-share {
         padding: 0 16px;
         height: 35px;
@@ -294,6 +295,10 @@
       .item-member {
         justify-content: space-between;
         padding: 10px 20px;
+        background: #fff;
+        &:hover {
+          background: #f1f2f4;
+        }
         .left-content {
           width: 50%;
           display: flex;

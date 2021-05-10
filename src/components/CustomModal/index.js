@@ -39,6 +39,7 @@ const StyledDialog = ({ className = '', maxWidth = 'md', ...props }) =>
     'comp_CustomModal___dialog-lg': maxWidth === 'lg',
     'comp_CustomModal___dialog-md': maxWidth === 'md',
     'comp_CustomModal___dialog-sm': maxWidth === 'sm',
+    'comp_CustomModal___dialog-xs': maxWidth === 'xs',
   }, className)}
     {...props}
   />;

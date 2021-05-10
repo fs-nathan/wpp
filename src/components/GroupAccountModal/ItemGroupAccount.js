@@ -135,6 +135,18 @@ const ItemGroupAccount = props => {
     }
   };
 
+  const handleResentJoinGroup = async group_id => {
+    try {
+      setLoading(true);
+      await services.resendInviteUserService(group_id);
+      handleToast('success', 'Đã gửi yêu cầu thành công!');
+    } catch (error) {
+      handleToast('error', error.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   function renderGroupAction(setIsHover, isHover) {
     switch (props.type) {
       case 'group_me':
@@ -161,7 +173,7 @@ const ItemGroupAccount = props => {
               >
                 {t('IDS_WP_JOINED')}
               </Button>
-            ) : (
+            ) : (item.type_group !== "Free" && !get(item, "is_enough_user", false) && !item.is_expired) ? (
               <Button
                 variant={"contained"} disableElevation color={"primary"}
                 onClick={e => requestJoinGroup(e, item.id)}
@@ -169,7 +181,7 @@ const ItemGroupAccount = props => {
               >
                 {t('IDS_WP_JOIN')}
               </Button>
-            )}
+            ) : <div/>}
           </>
         );
       case 'group_joins':
@@ -200,19 +212,23 @@ const ItemGroupAccount = props => {
       case 'requirements':
         return (
           <>
-            <Button
-              color={"primary"} size={"small"} onClick={e => rejectJoinGroup(e, item.requirement_id)}
-              onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
-            >
-              {t('IDS_WP_CANCEL')}
-            </Button>
-            <Button
-              variant={"contained"} disableElevation color={"primary"}
-              onClick={e => handleToast('success', t('IDS_WP_SEND_REQUEST_SUCCESS'))}
-              onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
-            >
-              {t('IDS_WP_RESEND')}
-            </Button>
+            {isHover && (
+              <>
+                <Button
+                  color={"primary"} size={"small"} onClick={e => rejectJoinGroup(e, item.requirement_id)}
+                  onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+                >
+                  {t('IDS_WP_CANCEL')}
+                </Button>
+                <Button
+                  variant={"contained"} disableElevation color={"primary"}
+                  onClick={e => handleResentJoinGroup(item.group)}
+                  onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
+                >
+                  {t('IDS_WP_RESEND')}
+                </Button>
+              </>
+            )}
           </>
         );
       case 'invitations':
@@ -268,7 +284,10 @@ const ItemGroupAccount = props => {
             onMouseEnter={() => setIsHover(true)} onMouseLeave={() => setIsHover(false)}
             className={`${props.groupActive.code === item.code && "view_GroupAccount_Modal__groupItem--Active"}`}
           >
-            {isHover && (props.groupActive.code !== item.code || props.type !== "group_me") && <Box className={"view_GroupAccount_Modal__actionMask"}/>}
+            {isHover && (props.groupActive.code !== item.code || props.type !== "group_me") &&
+              (item.type_group !== "Free" && !get(item, "is_enough_user", false) && !item.is_expired) &&
+              <Box className={"view_GroupAccount_Modal__actionMask"}/>
+            }
             <ListItemAvatar>
               <CustomAvatar style={{ width: 50, height: 50, }} className="avatar" src={item.logo || image.avatar_user} alt='avatar' />
             </ListItemAvatar>
@@ -294,8 +313,11 @@ const ItemGroupAccount = props => {
               {item.is_expired && (
                 <span className="red-color">{t('IDS_WP_EXPIRED')}</span>
               )}
-              {props.type === 'join' && (item.type_group === "Free" || item.type_group === "Trial") && (
+              {props.type === 'join' && (item.type_group === "Free" || item.is_expired) && (
                 <span className="red-color">{t('MESSAGE_CAN_NOT_JOIN_FREE_TRAIL')}</span>
+              )}
+              {props.type === "join" && get(item, "is_enough_user", false) && (
+                <span className="red-color">{t('MESSAGE_CAN_NOT_JOIN_ENOUGH_USERS')}</span>
               )}
             </div>}/>
             <ListItemSecondaryAction>

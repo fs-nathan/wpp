@@ -159,7 +159,7 @@ function JobPage() {
       color: "#ff0000",
       icon: mdiClockAlert,
     },
-    {
+    /*{
       title: t(labels.mission),
       icon: mdiAccountSwitch,
       color: "#03a9f4",
@@ -177,8 +177,7 @@ function JobPage() {
           url: Routes.MISSION.replace(":typeAssign", "2"),
         },
       ],
-    },
-
+    },*/
     {
       title: t(labels.role),
       icon: mdiAccountTie,

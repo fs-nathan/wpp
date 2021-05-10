@@ -33,7 +33,7 @@ function CreateNewOrUpdateGroupTask({
   const [activeMask, setActiveMask] = React.useState(-1);
 
   React.useEffect(() => {
-    setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
+    setActiveLoading((!(activeMask === 3 || activeMask === -1)));
     if (activeMask === 3) {
       setOpen(false);
       setOpenModal(false, true)
@@ -48,8 +48,8 @@ function CreateNewOrUpdateGroupTask({
       setActiveMask(-1);
     };
     const success = () => {
-      setActiveMask(3)
-      doReload()
+      setActiveMask(3);
+      doReload();
     }
     if (curGroupTask) {
       CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, success);

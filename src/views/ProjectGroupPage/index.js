@@ -14,17 +14,18 @@ import ProjectMemberSlide from "../ProjectPage/LeftPart/ProjectMemberSlide";
 import GroupTaskSlide from "../ProjectPage/LeftPart/GroupTaskSlide";
 import AllTaskTable from "../ProjectPage/RightPart/AllTaskTable";
 import ProjectsStart from "./RightPart/ProjectsStart";
-import {checkHasRecentlyProjects} from "../../actions/project/listProject";
+import {checkHasRecentlyProjects, countPersonalProjectsBoard} from "../../actions/project/listProject";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
-  route,
+  route, countPersonalProjectsBoard,
   checkHasRecentlyProjects
 }) {
 
   React.useLayoutEffect(() => {
     doGetPermissionViewProjects();
     checkHasRecentlyProjects();
+    countPersonalProjectsBoard();
   }, []);
 
   return (
@@ -198,7 +199,8 @@ function ProjectGroupPage({
 const mapDispatchToProps = dispatch => {
   return {
     doGetPermissionViewProjects: (quite) => dispatch(getPermissionViewProjects(quite)),
-    checkHasRecentlyProjects: () => dispatch(checkHasRecentlyProjects())
+    checkHasRecentlyProjects: () => dispatch(checkHasRecentlyProjects()),
+    countPersonalProjectsBoard: () => dispatch(countPersonalProjectsBoard())
   }
 };
 

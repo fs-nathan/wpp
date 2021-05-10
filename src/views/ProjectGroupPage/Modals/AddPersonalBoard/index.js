@@ -25,6 +25,7 @@ import {updatePinBoardSetting} from "../../../../actions/project/setting/updateP
 import * as images from "assets/index";
 import LoadingBox from "../../../../components/LoadingBox";
 import CreateProjectModal from "../CreateProject";
+import {Alert} from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -134,6 +135,19 @@ function AddToPersonalBoardModal({
                 onChange={evt => setSearchPattern(evt.currentTarget.value)}
               />
             </Paper>
+            <Alert severity="info" style={{marginTop: "10px"}}>
+              <span>
+                {t("MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_1")}
+                {t("MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_21")}
+                <span
+                  style={{textTransform: "uppercase", color: "var(--color-primary)", cursor: "pointer"}}
+                  onClick={() => handleCreateWorking()}
+                >
+                  + {t("LABEL_CREATE_WORKING_BOARD")}
+                </span>
+                {t("MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_22")}
+              </span>
+            </Alert>
             {map(filteredGroups, function (group, key) {
               if(size(group.projects) === 0) return;
               return (

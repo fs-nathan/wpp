@@ -105,7 +105,12 @@ import {DETAIL_PROJECT} from "../constants/actions/project/detailProject";
 import {HIDE_PROJECT} from "../constants/actions/project/hideProject";
 import {LIST_PROJECT_BASIC_INFO} from "../constants/actions/project/listBasic";
 import {LIST_DELETED_PROJECT} from "../constants/actions/project/listDeletedProject";
-import {CHECK_HAS_RECENTLY_PROJECT, LIST_PROJECT, LIST_PROJECT_SELECT} from "../constants/actions/project/listProject";
+import {
+  CHECK_HAS_RECENTLY_PROJECT,
+  COUNT_PERSONAL_PROJECTS_BOARD,
+  LIST_PROJECT,
+  LIST_PROJECT_SELECT
+} from "../constants/actions/project/listProject";
 import {MEMBER_PROJECT} from "../constants/actions/project/memberProject";
 import {PERMISSION_PROJECT} from "../constants/actions/project/permissionProject";
 import {REMOVE_GROUP_PERMISSION_MEMBER} from "../constants/actions/project/removeGroupPermissionMember";
@@ -438,6 +443,7 @@ import {checkHasProjectRecently} from "./project/checkHasRecently";
 import {FETCH_LIST_MEMBER_NOT_CREATE_PRIVATE_CHAT, CREATE_PRIVATE_CHAT, GET_MEMBER_TO_CREATE_GROUP_CHAT, CREATE_GROUP_CHAT, VIEW_ALL_MESSAGE, GET_NUMBER_MESSAGE_NOT_VIEW} from "../constants/actions/chat/threadChat";
 import {getMembersNotCreateThreadChat, createThreadChat, getMembersToCreateGroupChat, createGroupChat, viewAllChatMessage, getMessageNotView} from "./chat/threadChat";
 import { updateAccount } from './user/updateAccount';
+import {countPersonalProjectsBoard} from "./project/countPersonalProjectsBoard";
 
 function* rootSaga() {
   // Hoang - begin
@@ -511,6 +517,7 @@ function* rootSaga() {
   yield takeLatest(LIST_PROJECT, listProject);
   yield takeLatest(LIST_PROJECT_SELECT, listProject);
   yield takeLatest(CHECK_HAS_RECENTLY_PROJECT, checkHasProjectRecently);
+  yield takeLatest(COUNT_PERSONAL_PROJECTS_BOARD, countPersonalProjectsBoard);
   yield takeLeading(LIST_PROJECT_BASIC_INFO, listProjectBasicInfo);
   yield takeLeading(LIST_DELETED_PROJECT, listDeletedProject);
   yield takeLeading(DETAIL_PROJECT, detailProject);

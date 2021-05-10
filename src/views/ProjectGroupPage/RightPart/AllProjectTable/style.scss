@@ -65,10 +65,15 @@
   &_titleTop {
     display: flex;
     align-items: center;
-    span {
+    span, abbr {
       font-size: 21px;
       font-weight: 600;
       line-height: 26px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 350px;
+      text-decoration: none;
     }
   }
 }

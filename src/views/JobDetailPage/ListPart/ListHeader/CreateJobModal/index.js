@@ -40,6 +40,9 @@ import {getWorkType} from "../../../../../actions/project/getWorkType";
 import {WORKPLACE_TYPES} from "../../../../../constants/constants";
 import {getProjectSetting} from "../../../../../actions/project/setting/detailStatus";
 import SelectGroupTask from "./SelectGroupTask"
+import {CREATE_TASK, CustomEventDispose, CustomEventListener} from "../../../../../constants/events";
+import GuideLineAddUserModal from "../../../../ProjectGroupPage/Modals/GuideLineAddUserModal";
+import AddMemberModal from "../AddMemberModal";
 
 export const EDIT_MODE = {
   NAME_DES: 0,
@@ -104,6 +107,9 @@ function CreateJobModal(props) {
   const [scheduleValue, setScheduleValue] = React.useState(null);
   const [type, setType] = React.useState(0);
   const [openSelectGroupTaskModal, setOpenSelectGroupTaskModal] = React.useState(false);
+  const [createdTask, setCreatedTask] = React.useState(null);
+  const [showGuideLineModal, setShowGuideLineModal] = React.useState(false);
+  const [showAddMember, setShowAddMember] = React.useState(false);
 
   const isEdit = props.editMode !== null && props.editMode !== undefined;
 
@@ -323,6 +329,19 @@ function CreateJobModal(props) {
     }
   };
 
+  React.useEffect(() => {
+    CustomEventListener(CREATE_TASK, (e) => {
+      setCreatedTask(e.detail.task);
+      setShowGuideLineModal(true);
+    });
+    return () => {
+      CustomEventDispose(CREATE_TASK, (e) => {
+        setCreatedTask(e.detail.task);
+        setShowGuideLineModal(true);
+      });
+    }
+  });
+
   return (
     <>
       <JobDetailModalWrap
@@ -513,6 +532,11 @@ function CreateJobModal(props) {
           projectId={projectId}
         />
       }
+      <GuideLineAddUserModal
+        open={showGuideLineModal} setOpen={setShowGuideLineModal}
+        type={2} handleAddNow={() => setShowAddMember(true)}
+      />
+      <AddMemberModal isOpen={showAddMember} setOpen={setShowAddMember} task={createdTask}/>
     </>
   );
 }
@@ -538,7 +562,6 @@ function CheckCreateJob(props) {
   }, [dispatch, projectId, props.isOpen])
 
   useEffect(() => {
-    // console.log(listGroupTaskData, '&& ', props.isOpen, isFetching)
     if (listGroupTaskData.group_tasks && props.isOpen && !isFetching) {
       if (listGroupTaskData.group_tasks.length === 0) {
         setOpenCreateGroup(true)

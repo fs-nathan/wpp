@@ -1,6 +1,8 @@
 @mixin comp_CustomModal___scrollbar {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
+  .MuiOutlinedInput-root {
+    color: var(--color-primary);
+  }
   &>div:nth-child(3) {
     z-index: 999;
   }
@@ -64,6 +66,9 @@
   overflow: hidden;
   &>input[type="file"] {
     display: none;
+  }
+  .MuiInputBase-input {
+    font-size: 14px;
   }
 }
 
@@ -147,6 +152,14 @@
 
   &-lg {
     @include comp_CustomModal___dialog;
+  }
+
+  &-xs {
+    &>div:nth-child(3)>div {
+      overflow: hidden;
+      min-width: 27vw;
+      max-width: 40vw;
+    }
   }
 }
 

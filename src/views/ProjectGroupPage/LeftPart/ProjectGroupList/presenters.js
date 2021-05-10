@@ -5,7 +5,7 @@ import {
   IconButton,
   List,
   ListItem,
-  ListItemIcon,
+  ListItemIcon, ListItemSecondaryAction,
   ListItemText,
   MenuItem,
   MenuList,
@@ -33,7 +33,7 @@ import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import {SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
 import {useSelector} from "react-redux";
 import SvgIcon from '@material-ui/core/SvgIcon';
-import {CustomEventDispose, CustomEventEmitter, CustomEventListener} from "../../../../constants/events";
+import {CustomEventDispose, CustomEventListener} from "../../../../constants/events";
 
 const Banner = ({className = '', ...props}) =>
   <div
@@ -67,6 +67,7 @@ function ProjectList({
   const isHasProjectRecently = useSelector(state => state.project.checkHasRecently.hasRecently);
   const params = new URLSearchParams(window.location.search);
   const groupID = params.get('groupID');
+  const countPersonalProjectsBoard = useSelector(state => state.project.countPersonalProjectsBoard.numberOfProjects);
 
   function onDragEnd(result) {
     const {source, destination, draggableId} = result;
@@ -186,7 +187,10 @@ function ProjectList({
                       <path d="M12 11c1.33 0 4 .67 4 2v.16c-.97 1.12-2.4 1.84-4 1.84s-3.03-.72-4-1.84V13c0-1.33 2.67-2 4-2zm0-1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 .2C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z"/>
                     </SvgIcon>
                   </ListItemIcon>
-                  <ListItemText primary={t("LABEL_PERSONAL_BOARD")}/>
+                  <ListItemText primary={`${t("LABEL_PERSONAL_BOARD")} (${countPersonalProjectsBoard})`}/>
+                  {defaultAccessItem === "/personal-board" && (
+                    <FlagOutlinedIcon color={"disabled"} style={{marginLeft: 10, color: "red"}}/>
+                  )}
                   <IconButton
                     className={"rightIconControlList"} size={"small"}
                     onClick={(evt) => {
@@ -405,9 +409,6 @@ function ProjectList({
             <span
               className={"title"}>
               {t("LABEL_SET_DEFAULT")}
-              {defaultAccessItem === "/personal-board" && (
-                <FlagOutlinedIcon color={"disabled"} style={{marginLeft: 10}}/>
-              )}
             </span>
             <Box className={"actionItem"}>
               <Typography variant={"body2"} color={"textSecondary"}>{t("LABEL_SET_DEFAULT_DES")}</Typography>
@@ -422,7 +423,10 @@ function ProjectList({
           </Box>
         </Box>
       </Popover>
-      <ProjectGroupDelete selectedProjectGroup={selectedGroup} open={alertConfirm} setOpen={showAlertConfirm}/>
+      <ProjectGroupDelete
+        selectedProjectGroup={selectedGroup} open={alertConfirm} setOpen={showAlertConfirm}
+        redirectURL={"/projects/recently"}
+      />
     </>
   )
 }

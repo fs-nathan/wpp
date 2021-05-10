@@ -130,6 +130,7 @@ function UpdateUserPermissionModal({onClose, user, onSuccess}) {
                     groupPermissionAttr.total_of_member_assigned,
                     groupPermissionAttr.can_modify,
                   ])(item);
+                  if(!item.is_created) return;
                   return (
                     <StyledListItem key={id} onClick={() =>  setSelected(id)}>
                       <Radio value={id} checked={selected === id} onChange={() => setSelected(id)}/>

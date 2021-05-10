@@ -13,7 +13,37 @@
   height: 70px;
 }
 .comp_rightColumn_content {
+  &__empty {
+    height: 100vh;
+    width: calc(100% - 401px);
+    background: #fff;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    &>*:first-child {
+      font-weight: 500;
+      font-size: 16px;
+    }
+    &>*:nth-child(2) {
+      width: 400px;
+      text-align: center;
+      line-height: 23px;
+    }
+    .MuiButton-containedPrimary {
+      color: #fff;
+    }
+  }
   &_memberList {
+    .MuiListItem-container:hover {
+      .MuiListItemSecondaryAction-root {
+        display: block;
+      }
+    }
     .MuiListItem-root {
       cursor: pointer;
       &:hover {
@@ -24,6 +54,7 @@
       font-weight: 500;
     }
     .MuiListItemSecondaryAction-root {
+      display: none;
       .MuiButton-containedPrimary {
         color: #fff;
         text-transform: unset;

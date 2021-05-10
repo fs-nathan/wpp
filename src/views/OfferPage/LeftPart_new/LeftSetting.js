@@ -125,6 +125,7 @@ const LeftSetting = props => {
             <SearchInput
               placeholder={props.searchPlaceHolder}
               onChange={(e) => props.filter(e.target.value)}
+              style={{background: "#fff"}}
             />
           </div>
         )

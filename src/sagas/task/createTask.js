@@ -4,7 +4,6 @@ import { apiService } from '../../constants/axiosInstance';
 import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
 
 async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, scheduleId, }) {
-  console.log('x');
   try {
     const config = {
       url: '/task/create',
@@ -36,7 +35,6 @@ async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, 
 function* createTask(action) {
   try {
     const { task } = yield call(doCreateTask, action.options);
-    console.log(task, "CreateTask");
     yield put(createTaskSuccess({ task }, action.options));
     CustomEventEmitter(CREATE_TASK);
     //SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);

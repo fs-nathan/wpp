@@ -37,6 +37,7 @@ function Option(props) {
       component="span"
       style={{
         fontWeight: props.isSelected ? 500 : 400,
+        fontSize: "14px"
       }}
       {...props.innerProps}
     >
@@ -108,6 +109,13 @@ function IntegrationReactSelect({ className, options = [], placeholder = '', isM
       '& input': {
         font: 'inherit',
       },
+    }),
+    control: base => ({
+      ...base,
+      '&>*:first-child>*:first-child': {
+        fontSize: "14px",
+        color: "var(--color-primary)"
+      }
     })
   };
 
