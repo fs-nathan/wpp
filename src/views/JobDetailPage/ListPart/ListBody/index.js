@@ -20,8 +20,7 @@ import {Icon} from "@mdi/react";
 import {mdiMenuDown} from '@mdi/js';
 import {getViewAllMessage} from "../../../../components/Drawer/DrawerService";
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
-import {flatten, map, get} from "lodash";
-import {useLocalStorage} from "react-use";
+import {isNil} from "lodash";
 import {CREATE_GROUP_TASK, CustomEventDispose, CustomEventListener} from "../../../../constants/events";
 
 const StyledList = styled(List)`
@@ -46,22 +45,17 @@ function ListBody() {
 
   const taskId = useSelector(taskIdSelector);
   const listTaskDetail = useSelector(state => state.taskDetail.listDetailTask.listTaskDetail);
-  //const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  const listDataNotRoom = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
   const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
-  const [listDataNotRoom, setListDataNotRoom] = React.useState([]);
   const listTaskDataType = useSelector(state => state.taskDetail.listDetailTask.listTaskDataType)
   const filterTaskType = useSelector(state => state.taskDetail.listDetailTask.filterTaskType);
   const searchKey = useSelector(state => state.taskDetail.listDetailTask.searchKey);
   const focusId = useSelector(state => state.taskDetail.detailTask.focusId);
-  const [filterInStorage, setFilterInStorage] = useLocalStorage("FILTER_GROUP_CHAT_VALUE", {});
-  const [selectedFilter, setSelectedFilter] = React.useState(0);
+  const [selectedFilter, setSelectedFilter] = React.useState(1);
   const [anchorElFilterControl, setAnchorElFilterControl] = React.useState(null);
   const [data, setData] = useState([]);
   const [customListTaskDataType, setCustomListTaskDataType] = React.useState(listTaskDataType);
-
-  useEffect(() => {
-    setSelectedFilter(get(filterInStorage, projectId, 0));
-  }, [filterInStorage, projectId]);
+  const userId = useSelector((state) => state.system.profile.id);
 
   useEffect(() => {
     if (selectedFilter === 0) {
@@ -77,17 +71,21 @@ function ListBody() {
   }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey, selectedFilter]);
 
   React.useEffect(() => {
-    if (selectedFilter === 0) dispatch(getListTaskDetail(projectId, listTaskDataTypes[0]));
-    else if(selectedFilter === 1) {
-      dispatch(getListTaskDetail(projectId, listTaskDataTypes[1]));
+    if(!isNil(projectId) && projectId !== "") {
+      if (selectedFilter === 0) dispatch(getListTaskDetail(projectId, listTaskDataTypes[selectedFilter]));
+      else if(selectedFilter === 1) {
+        dispatch(getListTaskDetail(projectId, listTaskDataTypes[selectedFilter]));
+      }
     }
   }, [selectedFilter, projectId, dispatch]);
 
   React.useEffect(() => {
-    setListDataNotRoom(flatten(map(listTaskDetail, function (group) {
-      return group.tasks;
-    })));
-  }, [listTaskDetail]);
+    if (projectId !== "" && userId) {
+      const key = `TASK_GIRD:${userId}:${projectId}`;
+      const type_data = localStorage.getItem(key) || "include-room";
+      setSelectedFilter(type_data === listTaskDataTypes[0] ? 0 : 1);
+    }
+  }, [projectId, userId, dispatch]);
 
   useEffect(() => {
     if (focusId) {
@@ -115,7 +113,8 @@ function ListBody() {
   }
   function handleSelectFilter(type) {
     setSelectedFilter(type);
-    setFilterInStorage({...filterInStorage, [projectId]: type});
+    const key = `TASK_GIRD:${userId}:${projectId}`;
+    localStorage.setItem(key, listTaskDataTypes[type]);
     setAnchorElFilterControl(null);
   }
   const handleViewAll = async () => {

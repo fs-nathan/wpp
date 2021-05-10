@@ -2203,7 +2203,7 @@
   "REQUIRED": "Required",
   "WORK_LIST": "Work list",
   "Messages": "Messages",
-  "All": "All ({{total_all}})",
+  "All": "All",
   "Members": "Members ({{total_member}})",
   "Groups": "Groups ({{total_group}})",
   "THREAD_CHAT_CHAT_TO": "Message to",
@@ -2473,5 +2473,7 @@
   "MESSAGE_CAN_NOT_JOIN_ENOUGH_USERS": "Can't join: This group has enough members",
   "TITLE_INTRO_MESSENGER": "Workplus Messenger",
   "DESCRIPTION_INTRO_MESSENGER": "This is your family. Keeping contact and sharing information by send message and create chat group now.",
-  "LABEL_MORE": "More"
+  "LABEL_MORE": "More",
+  "LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Decentralized!",
+  "LABEL_GROUP_PERMISSION_EMPTY_DES": "This user has not been authorized. Click the assign button to assign the group of rights to the member"
 }

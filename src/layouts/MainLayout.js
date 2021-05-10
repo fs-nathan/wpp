@@ -276,6 +276,7 @@ function MainLayout({
         `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
+      socket.on("WP_PERMISSION_UPDATE", (res) => window.location.reload());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
         handleNewMessage(res)
       );
@@ -287,7 +288,6 @@ function MainLayout({
       socket.on("WP_NEW_LIKE_LOVE_POST", postModule.actions.updatePostListItem);
 
       function joinChat({ detail }) {
-        // console.log('joinChat', detail)
         socket.emit("WP_JOIN_TASK", {
           task_id: detail,
         });

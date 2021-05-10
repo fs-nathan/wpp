@@ -2491,5 +2491,7 @@
   "MESSAGE_CAN_NOT_JOIN_ENOUGH_USERS": "Không thể tham gia: Nhóm này đã đủ thành viên",
   "TITLE_INTRO_MESSENGER": "Chat nội bộ Workplus Messenger",
   "DESCRIPTION_INTRO_MESSENGER": "Đây là gia đình của bạn. Hãy luôn giữ liên lạc và chia sẻ thông tin với nhau bằng cách gửi tin nhắn, tạo nhóm chat ngay từ bây giờ!",
-  "LABEL_MORE": "Thêm"
+  "LABEL_MORE": "Thêm",
+  "LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Chưa phân quyền!",
+  "LABEL_GROUP_PERMISSION_EMPTY_DES": "Thành viên này chưa được phân quyền. Click nút phân quền để gán nhóm quyền cho thành viên"
 }

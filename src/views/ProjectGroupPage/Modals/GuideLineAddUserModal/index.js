@@ -11,7 +11,7 @@ import Button from "@material-ui/core/Button";
 
 const DialogContent = withStyles((theme) => ({
   root: {
-    padding: "40px",
+    padding: "40px !important",
   },
 }))(MuiDialogContent);
 const DialogActions = withStyles((theme) => ({
