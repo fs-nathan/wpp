@@ -262,19 +262,19 @@
   .ci-step-name {
     margin: 20px 0px 10px 0px;
     span {
-      font-size: 15px;
+      font-size: 18px;
       font-weight: 500;
       color: #212529;
     }
     > div {
       position: relative;
-      padding: 0px 20px;
+      padding: 5px 20px;
       .step-hover-edit {
         font-size: 15px;
         top: -2px;
         margin-left: 20px;
-        display: none; 
         background: red;
+        opacity: .8;
         position: absolute;
         right: 20px;
         padding: 3px;
@@ -283,7 +283,7 @@
         cursor: pointer;
       }
       &:hover .step-hover-edit {
-        display: block;
+        opacity: 1;
       };
     }
   }

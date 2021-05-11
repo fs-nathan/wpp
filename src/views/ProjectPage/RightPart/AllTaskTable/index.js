@@ -7,6 +7,7 @@ import {createTask} from 'actions/task/createTask';
 import {deleteTask} from 'actions/task/deleteTask';
 import {listTask} from 'actions/task/listTask';
 import {sortTask} from 'actions/task/sortTask';
+import MembersSettingModal from '../../Modals/MembersSetting';
 import {getPermissionViewDetailProject} from 'actions/viewPermissions';
 import AlertModal from 'components/AlertModal';
 import {useTimes} from 'components/CustomPopover';
@@ -50,6 +51,8 @@ import AddMemberModal from "../../../JobDetailPage/ListPart/ListHeader/AddMember
 import MemberSetting from "../../Modals/MembersSetting";
 import GuideLineAddUserModal from "../../../ProjectGroupPage/Modals/GuideLineAddUserModal";
 import {Routes} from "../../../../constants/routes";
+import MenuCreateNew from 'views/JobDetailPage/ListPart/ListHeader/MenuCreateNew';
+import CreateGroupTask from 'views/ProjectPage/Modals/CreateGroupTask';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -185,6 +188,7 @@ function AllTaskTable({
   }, [projectId, timeRange]);
 
   const [openCreate, setOpenCreate] = React.useState(false);
+  const [openMenuCreate, setOpenmMenuCreate] = React.useState(null);
   const [openSetting, setOpenSetting] = React.useState(false);
   const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
@@ -196,6 +200,8 @@ function AllTaskTable({
   const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
   const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const [typeGuide, setTypeGuide] = React.useState(1);
+  const [openSettingMember, setOpenSettingMember] = React.useState(false);
+  const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -203,10 +209,17 @@ function AllTaskTable({
         setOpenCreate(true);
         setSelectedGroup(props);
         return;
+        case 'MENU_CREATE':
+          setOpenmMenuCreate(true);
+          setSelectedGroup(props);
+          return;
       case 'SETTING':
         setOpenSetting(true);
         setSettingProps(props);
         return;
+      case 'SETTING_MEMBER':
+        setOpenSettingMember(true);
+      return;
       case "PERMISSION":
         setOpenPermission(true);
         setPermissionProps(props);
@@ -275,6 +288,15 @@ function AllTaskTable({
           ...localOption,
           timeType,
         })}
+      />
+      <MenuCreateNew setOpenCreateTaskGroup={setOpenCreateTaskGroup} setOpenmMenuCreate={setOpenmMenuCreate} setOpenCreate={setOpenCreate} anchorEl={openMenuCreate} setAnchorEl={setOpenmMenuCreate}/>
+      <MembersSettingModal
+        open={openSettingMember}
+        setOpen={setOpenSettingMember}
+      />
+      <CreateGroupTask
+        open={openCreateTaskGroup}
+        setOpen={setOpenCreateTaskGroup}
       />
       <CreateJobModal
         isOpen={openCreate}

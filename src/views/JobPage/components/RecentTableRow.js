@@ -121,17 +121,17 @@ export default React.memo(
           <div className="comp_LabelWrap">
             {[
               status_name && (
-                <InlineStatusBadge status={status_code}>
+                <InlineStatusBadge weightBold="normal" status={status_code}>
                   {status_name}
                 </InlineStatusBadge>
               ),
-              <InlinePiorityBadge status={priority_code}>
+              <InlinePiorityBadge weightBold="normal" status={priority_code}>
                 {priority_name}
               </InlinePiorityBadge>,
-              <InlineBadge color={colors.task_complete}>
+              <InlineBadge color={colors.white} weightBold="normal" backgroundColor={colors.task_complete}>
                 {complete}%
               </InlineBadge>,
-              <InlineBadge icon={mdiAccount} color={colors.task_waiting}>
+              <InlineBadge icon={mdiAccount} weightBold="normal" color={colors.white} backgroundColor={colors.task_waiting}>
                 {number_member}
               </InlineBadge>,
             ]

@@ -255,7 +255,7 @@ function AllProjectTable({
                     </LinkSpan>,
                   sort: evt => handleSortType('name'),
                   align: 'left',
-                  width: '20%',
+                  width: '18%',
                 },
                 {
                   label: t("IDS_WP_GROUP"),
@@ -266,7 +266,7 @@ function AllProjectTable({
                   ),
                   sort: evt => handleSortType('group'),
                   align: 'center',
-                  width: '8%'
+                  width: '10%'
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.STATE"),
@@ -292,7 +292,7 @@ function AllProjectTable({
                   ),
                   sort: evt => handleSortType('state_code'),
                   align: 'left',
-                  width: '10%',
+                  width: '13%',
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.PROGRESS"),
@@ -375,7 +375,7 @@ function AllProjectTable({
                   ),
                   sort: evt => handleSortType('duration'),
                   align: 'left',
-                  width: '18%',
+                  width: '15%',
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.PRIO"),

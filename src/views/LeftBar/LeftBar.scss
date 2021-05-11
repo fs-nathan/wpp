@@ -147,7 +147,7 @@
     position: absolute;
     width: 20px;
     height: 16px;
-    background: #fff;
+    background: #f44336 !important;
     text-align: center;
     font-size: 10px;
     line-height: 16px;
@@ -155,7 +155,8 @@
     top: 5px;
     right: 5px;
     font-weight: 500;
-    color: red
+    color: #ffffff !important;
+    opacity: 1 !important;
   }
 }
 
