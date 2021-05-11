@@ -148,17 +148,15 @@ function AllProjectTable({
   function doOpenModal(type, props) {
     switch (type) {
       case 'CREATE': {
-        if (get(viewPermissions.permissions, 'create_project', false)) {
-          if (projects.projectGroupsCount === 0)
-            setOpenNoPG(true);
-          else
-            setOpenCreate(true);
-            setCreateProps({
-              groupID,
-              work_types: get(projects,'group_work_types'),
-              ...props
-            });
-        }
+        if (projects.projectGroupsCount === 0)
+          setOpenNoPG(true);
+        else
+          setOpenCreate(true);
+          setCreateProps({
+            groupID,
+            work_types: get(projects,'group_work_types'),
+            ...props
+          });
         return;
       }
       case 'UPDATE': {

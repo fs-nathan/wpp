@@ -2486,6 +2486,10 @@
 	"IDS_WP_RE_INPUT_CONFIRM_PASSWORD": "Nhập lại mật khẩu",
 	"IDS_WP_PART": "Bộ phận",
 	"IDS_WP_ADD_PART": "Thêm bộ phận",
+  "MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_1": "Ghim Bảng công việc vào Bảng cá nhân để truy cập nhanh và quản lý dễ dàng. ",
+  "MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_21": "Nếu chưa có Bảng công việc nào dưới đây hãy ",
+  "MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_22": " trước khi thêm",
+  "MESSAGE_CAN_NOT_JOIN_ENOUGH_USERS": "Không thể tham gia: Nhóm này đã đủ thành viên",
 	"TITLE_INTRO_MESSENGER": "Chat nội bộ Workplus Messenger",
 	"DESCRIPTION_INTRO_MESSENGER": "Đây là gia đình của bạn. Hãy luôn giữ liên lạc và chia sẻ thông tin với nhau bằng cách gửi tin nhắn, tạo nhóm chat ngay từ bây giờ!",
 	"LABEL_MORE": "Thêm", 
@@ -2494,5 +2498,4 @@
 	"LABEL_CREATE_WORKING_GROUP": "Tạo nhóm việc",
   "LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Chưa phân quyền!",
   "LABEL_GROUP_PERMISSION_EMPTY_DES": "Thành viên này chưa được phân quyền. Click nút phân quền để gán nhóm quyền cho thành viên"
-
 }

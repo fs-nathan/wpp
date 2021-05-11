@@ -44,12 +44,6 @@ function Left({setMode, mode}) {
                 <span>{t("LABEL_QUICK_GUIDELINE_GROUP_PERMISSIONS_2")}</span>
               </div>
             </Alert>
-            <Alert severity="error">
-              <AlertTitle>{t("LABEL_WARNING")}</AlertTitle>
-              <div className={"comp_GroupPermissionSettings__List_GuidelineWrapper_content"}>
-                <span>{t("LABEL_GROUP_PERMISSION_WARNING")}</span>
-              </div>
-            </Alert>
           </Box>
           <List component={"nav"} className={"comp_GroupPermissionSettings__ListMenu"}>
             <ListItem

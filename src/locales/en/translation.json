@@ -2468,6 +2468,10 @@
 	"IDS_WP_RE_INPUT_CONFIRM_PASSWORD": "Enter the password",
 	"IDS_WP_PART": "Part",
 	"IDS_WP_ADD_PART": "Add parts",
+	"MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_1": "Pin Job Boards to Personal Boards for quick access and easy management. ",
+	"MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_21": "If no Job Board below please ",
+	"MESSAGE_ALERT_INFO_PIN_PERSONAL_BOARD_22": " before adding ",
+	"MESSAGE_CAN_NOT_JOIN_ENOUGH_USERS": "Can't join: This group has enough members",
 	"TITLE_INTRO_MESSENGER": "Workplus Messenger",
 	"DESCRIPTION_INTRO_MESSENGER": "This is your family. Keeping contact and sharing information by send message and create chat group now.",
 	"LABEL_MORE": "More",
@@ -2475,5 +2479,5 @@
 	"IDS_LABEL_NOT_UPDATE": "Not update",
 	"LABEL_CREATE_WORKING_GROUP": "Create workgroups",
 	"LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Decentralized!",
-  "LABEL_GROUP_PERMISSION_EMPTY_DES": "This user has not been authorized. Click the assign button to assign the group of rights to the member"
+    "LABEL_GROUP_PERMISSION_EMPTY_DES": "This user has not been authorized. Click the assign button to assign the group of rights to the member"
 }
