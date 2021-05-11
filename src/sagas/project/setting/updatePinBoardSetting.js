@@ -5,6 +5,7 @@ import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from 'constants/sn
 import { get, isArray } from 'lodash';
 import { call, put } from 'redux-saga/effects';
 import {UPDATE_PIN_BOARD_SETTING} from "../../../constants/events";
+import {countPersonalProjectsBoard} from "../../../actions/project/listProject";
 
 async function doUpdatePinBoardSetting({ projectId, status }) {
   try {
@@ -37,6 +38,7 @@ function* updatePinBoardSetting(action) {
   try {
     yield call(doUpdatePinBoardSetting, action.options);
     yield put(updatePinBoardSettingSuccess(action.options));
+    yield put(countPersonalProjectsBoard());
     CustomEventEmitter(UPDATE_PIN_BOARD_SETTING.SUCCESS);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

@@ -42,12 +42,12 @@
     background-color: #f2f5fa;
   }
   &--left {
-    color: #ffffff;
-    padding: 3px 6px;
+    color: #ff0000;
+    padding: 6px 16px;
     border-radius: 5px;
-    font-size: 10px;
-    background: red;
-    margin-left: 10px;
+    font-size: 14px;
+    position: absolute;
+    right: 15px;
   }
   &--textWrap {
     width: 100%;
@@ -81,6 +81,10 @@
   }
   &--role {
     color: orange;
+    max-width: 60%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     line-height: 17px;
   }
   &--menuButton {

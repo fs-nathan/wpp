@@ -23,7 +23,7 @@ async function doListProject({ type_data }) {
 function* countPersonalProjectsBoard(action) {
   try {
     const { projects } = yield call(doListProject, action.options);
-    yield put(countPersonalProjectsBoardSuccess({numberOfProjects: size(projects)}));
+    yield put(countPersonalProjectsBoardSuccess({projects: projects}));
   } catch (error) {
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
   }

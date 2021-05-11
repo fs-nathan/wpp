@@ -64,7 +64,7 @@ export const countPersonalProjectsBoard = () => ({
     type_data: 2
   }
 });
-export const countPersonalProjectsBoardSuccess = ({numberOfProjects}) => ({
+export const countPersonalProjectsBoardSuccess = ({projects}) => ({
   type: COUNT_PERSONAL_PROJECTS_BOARD_SUCCESS,
-  numberOfProjects
+  projects
 });

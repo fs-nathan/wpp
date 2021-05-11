@@ -4,7 +4,7 @@ import {
 } from '../../constants/actions/project/listProject';
 
 export const initialState = {
-  numberOfProjects: 0
+  projects: []
 };
 
 function reducer(state = initialState, action) {
@@ -14,7 +14,7 @@ function reducer(state = initialState, action) {
     case COUNT_PERSONAL_PROJECTS_BOARD_SUCCESS:
       return {
         ...state,
-        numberOfProjects: action.numberOfProjects
+        projects: action.projects
       }
     default:
       return state;
