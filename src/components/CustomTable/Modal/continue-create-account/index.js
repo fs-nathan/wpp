@@ -284,7 +284,7 @@ const ModalContinueCreateAccount = ({
               <span style={{ color: "red" }}>*</span>
             </h5>
             <div
-              style={{ whiteSpace: "break-spaces", lineHeight: "18px" }}
+              style={{ whiteSpace: "break-spaces", lineHeight: "24px" }}
             >
               {ReactParserHtml(t("IDS_WP_ACCOUNT_INTERNAL_SET_PASSWORD"))}
             </div>

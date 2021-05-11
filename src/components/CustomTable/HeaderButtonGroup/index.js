@@ -348,7 +348,6 @@ const handlesetFileExcel = (file) => {
             <span>{Boolean(searchAnchor) ? t("Hủy") : t("Tìm kiếm")}</span>
           </StyledButton>
         )}
-
         {get(options, "subActions", []).map((subAction, index) =>
           isNil(subAction) ? null : (
             <StyledButton
@@ -374,44 +373,6 @@ const handlesetFileExcel = (file) => {
               <span>{t(get(subAction, "label", ""))}</span>
             </StyledButton>
           )
-        )}
-
-        {get(options, "addmember") && (
-          <div>
-            <StyledButton className="button" onClick={handleAddMemberClick}>
-              <div>
-                <Icon
-                  path={mdiAccountPlus}
-                  size={1}
-                  color={"rgba(0, 0, 0, 0.54)"}
-                />
-              </div>
-              <span>{t("LABEL_ADD_MEMBER")}</span>
-            </StyledButton>
-            <ModalCreateAccount openAddMember={openAddMember} setOpenAddMember={setOpenAddMember} setOpen={setOpen} setOpenCreateAccount={setOpenCreateAccount} />
-            <ModalContinueCreateAccount  setOpenResultCreateAccount={setOpenResultCreateAccount} setResult={setResult} openContinueCreateAccount={openContinueCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount} setOpenUploadExcel={setOpenUploadExcel} />
-
-
-            <ModalOptionCreateAccount openCreateAccount={openCreateAccount} setOpenCreateAccount={setOpenCreateAccount} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
-
-
-            <AddUserModalPresenter
-              open={open}
-              setOpen={setOpen}
-              handleSearchUser={doSearchUser}
-              desireUser={desireUser}
-              handleClearDesireUsers={() => resetDesireUser()}
-              handleInviteUserJoinGroup={doInviteUserJoinGroup}
-            />
-
-            {/* modalOpenUploadExcel */}
-            <ModalUplaodExcel openUploadExcel={openUploadExcel} setOpenUploadExcel={setOpenUploadExcel} setOpenContinueCreateAccount={setOpenContinueCreateAccount}/>
-
-
-            <ModalResultCreateAccount  result={result} openResultCreateAccount={openResultCreateAccount} setOpenResultCreateAccount={setOpenResultCreateAccount} />
-            {/* modal_result_create_account */}
-
-          </div>
         )}
         {get(options, "filter") && (
           <div>

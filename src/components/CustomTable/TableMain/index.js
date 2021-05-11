@@ -64,7 +64,7 @@ function TableMain() {
         <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)} onDragUpdate={onDragUpdate}>
           {get(options, 'grouped.bool', false)
             ? (data.map((group, index) => (
-                <TableBodyGroupRow group={group} key={index} placeholderProps={placeholderProps} />
+                <TableBodyGroupRow group={group} key={index} index={index} placeholderProps={placeholderProps} />
               )))
             : (
               <Droppable

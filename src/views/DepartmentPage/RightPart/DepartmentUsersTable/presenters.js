@@ -96,7 +96,7 @@ function TooltipRole({ user }) {
                   textAlign: "center",
                   padding: "5px",
                   fontSize: "11px",
-                  borderRadius: '2px'
+                  borderRadius: "2px",
                 }}
               >
                 {t("DMH.VIEW.PGP.LEFT.INFO.MEMBER.TITLE")}
@@ -124,7 +124,7 @@ function TooltipRole({ user }) {
                   textAlign: "center",
                   padding: "5px",
                   fontSize: "11px",
-                  borderRadius: '2px'
+                  borderRadius: "2px",
                 }}
               >
                 {t("IDS_WP_USERS_TABLE_COLUMS_ROLE_MASTER")}
@@ -152,7 +152,7 @@ function TooltipRole({ user }) {
                   textAlign: "center",
                   padding: "5px",
                   fontSize: "11px",
-                  borderRadius: '2px'
+                  borderRadius: "2px",
                 }}
               >
                 {t("IDS_WP_USERS_TABLE_COLUMS_ROLE_INTERNAL")}
@@ -316,17 +316,16 @@ function DepartmentUsersTable({
           subTitle: t("DMH.VIEW.DP.RIGHT.UT.NUM_MEMBER_DUT", {
             total: get(room.room, "number_member", 0),
           }),
-          
           mainAction: canModify
             ? {
-              icon: mdiShareVariant,
+                icon: mdiShareVariant,
                 onClick: () => handleOpenModal("CREATE_ACCOUNT"),
               }
             : null,
-            filter: {
-              label: t('IDS_WP_ALL'),
-              option: 'group'
-            },
+          filter: {
+            label: t("IDS_WP_ALL"),
+            option: "group",
+          },
           expand: {
             bool: expand,
             toggleExpand: () => handleExpand(!expand),

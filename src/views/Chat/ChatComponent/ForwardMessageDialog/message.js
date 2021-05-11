@@ -16,6 +16,15 @@ import './styles.scss';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AvatarSquareGroup from 'components/AvatarSquareGroup';
 import { currentColorSelector } from 'views/Chat/selectors';
+import styled from 'styled-components';
+import {doCreateThreadChatPrivate} from "actions/chat/threadChat";
+
+const StyledDiv = styled.div`
+  .tab-selected {
+    background: ${props => props.selectedColor}!important;
+    color: #fff!important
+  }
+`
 
 function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
   const { t } = useTranslation()
@@ -27,12 +36,16 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
   const projectListBasic = useSelector(state => state.taskDetail.commonTaskDetail.projectListBasic);
   const [selectedProject, setSelectedProject] = useState(0);
   const [searchKey, setSearchKey] = useState('');
-  const [sending, setSending] = useState({});
+  const [sending, setSending] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [isCreateThread, setCreatingThread] = useState(false)
   const timeoutRef = useRef(null); 
   const membersOriginnal = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
   const [members, setMembers] = useState(membersOriginnal);
   const appColor = useSelector(currentColorSelector)
+  const [tabActive, setTabActive] = useState(1);
+  const numberMember = members ? members.filter(e => e.type_chat === 1).length : 0
+  const numberGroup = members ? members.filter(e => e.type_chat === 2).length : 0
 
   let data = [];
   if (projectListBasic) {
@@ -64,15 +77,41 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
     }
   }
 
+  const runForwardChat = (task) => {
+    dispatch(forwardChat(
+      taskId,
+      contentForward.id,
+      task
+    ))
+  }
+
+  async function onClickToCreateThreadChat(task) {
+    if (task && task.members.length) {
+      try {
+        const res = await doCreateThreadChatPrivate({ member_id: task.members[0].id });
+        return res
+      } catch (error) {
+        return false
+      }
+    }
+  }
+
   function onClickSend(task) {
     return () => {
       if (isLoading) return;
-      setSending(task)
-      dispatch(forwardChat(
-        taskId,
-        contentForward.id,
-        task
-      ))
+      setSending(task.id ? task.id : task.uuid)
+      if (task.id) {
+        runForwardChat(task.id)
+      } else {
+        setCreatingThread(true)
+        onClickToCreateThreadChat(task).then(res => {
+          if (res) {
+            runForwardChat(res.data.task_id)
+          }
+          setSending(null)
+          setCreatingThread(false)
+        })
+      }
     }
   }
 
@@ -98,7 +137,6 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
       setMembers(membersTemp)
     }, 300);    
   }
-
   return (
     <DialogWrapForwardToMessage
       title={t('LABEL_CHAT_TASK_FORWARD')}
@@ -116,54 +154,31 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
           value={searchValue}
           onChange={handleChangeSearch}
         />
+        <StyledDiv selectedColor={appColor} className="tab-category-forward-chat-to-person">
+          <button onClick={() => setTabActive(1)} className={tabActive === 1 ? "tab-selected" : ""}>{t('LABEL_FORWARD_MESSAGE_MEMBERS')} ({numberMember})</button>
+          <button onClick={() => setTabActive(2)} className={tabActive === 2 ? "tab-selected" : ""}>{t('LABEL_FORWARD_MESSAGE_GROUP')} ({numberGroup})</button>
+        </StyledDiv>
         <div className="forward-messsage-wrap">
-          <div className="forward-messsage-title">
-            {t('LABEL_FORWARD_MESSAGE_MEMBERS')}
-          </div>
           <div className="forward-messsage-list">
             {
-              members.map(e => e.type_chat === 1 && (
-                <div className="forward-messsage-list-line" key={e.id}>
-                  <div className="step-avatar avatar-member">
+              members.map(e => e.type_chat === tabActive && (
+                <div className="forward-messsage-list-line" key={e.id ? e.id : e.uuid}>
+                  <div className={`step-avatar ${tabActive === 1 ? "avatar-member" : ""}`}>
                     <AvatarSquareGroup images={e.members} />
                   </div>
                   <div className="step-name">
                     {e.name}
                   </div>
                   <div className="step-send">
-                    {isLoading && sending === e.id ?
+                    {(isLoading || isCreateThread) && (sending === e.id || sending === e.uuid) ?
                       <CircularProgress size={20} className="forward-messsage--loading" />
                       :
-                      <button style={{background: appColor}} onClick={onClickSend(e.id)}>{t('LABEL_CHAT_TASK_GUI')}</button>
+                      <button style={{background: appColor}} onClick={onClickSend(e)}>{t('LABEL_CHAT_TASK_GUI')}</button>
                     }
                   </div>
                 </div>
               ))
             }
-            <div className="forward-messsage-title">
-              {t('LABEL_FORWARD_MESSAGE_GROUP')}
-            </div>
-            <div className="forward-messsage-list">
-              {
-                members.map(e => e.type_chat === 2 && (
-                  <div className="forward-messsage-list-line" key={e.id}>
-                    <div className="step-avatar">
-                      <AvatarSquareGroup images={e.members} />
-                    </div>
-                    <div className="step-name">
-                      {e.name}
-                    </div>
-                    <div className="step-send">
-                      {isLoading && sending === e.id ?
-                        <CircularProgress size={20} className="forward-messsage--loading" />
-                        :
-                        <button style={{background: appColor}} onClick={onClickSend(e.id)}>{t('LABEL_CHAT_TASK_GUI')}</button>
-                      }
-                    </div>
-                  </div>
-                ))
-              }
-            </div>
           </div>
         </div>
       </div>

@@ -14,25 +14,25 @@
   // margin: 0 0 0 -16px;
   padding: 10px 25px 10px 16px;
   cursor: pointer;
-  width: calc(100% + 30px);
+  width: 100%;
   &:hover {
     background-color: #f2f5fa;
   }
   &--admin {
     color: #ffffff;
-    padding: 6px 16px;
+    padding: 3px 6px;
     border-radius: 5px;
-    font-size: 14px;
-    position: absolute;
-    right: 60px;
+    font-size: 10px;
+    background: #0ab711;
+    margin-left: 10px;
   }
   &--left {
-    color: #ff0000;
-    padding: 6px 16px;
+    color: #ffffff;
+    padding: 3px 6px;
     border-radius: 5px;
-    font-size: 14px;
-    position: absolute;
-    right: 60px;
+    font-size: 10px;
+    background: red;
+    margin-left: 10px;
   }
   &--textWrap {
     width: 100%;
@@ -50,17 +50,19 @@
     font-size: 15px;
     margin-bottom: 5px;
     color: #585858;
+    display: flex;
   }
   &--department {
     color: #666666;
   }
   &--role {
     color: orange;
+    line-height: 17px;
   }
   &--menuButton {
     position: absolute;
-    top: 0;
-    right: 32px;
+    top: 5px;
+    right: 0;
     display: none;
     margin-top: 15px;
     margin-right: 10px;

@@ -74,6 +74,16 @@ const MemberListItem = ({
         <div className="memberItem--textWrap" onClick={handleClickDetail}>
           <div className="memberItem--name">
             {name}
+            {is_admin &&
+              <div className="memberItem--admin">
+                Admin
+              </div>
+            }
+            {!is_in_group &&
+              <div className="memberItem--left">
+                {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
+              </div>
+            }
           </div>
           <div className="memberItem--department">
             {group_permission && group_permission.name}
@@ -82,16 +92,6 @@ const MemberListItem = ({
             {compact([room, position]).join(' - ')}
           </div>
         </div>
-        {is_admin &&
-          <div className="memberItem--admin" style={{ backgroundColor: groupActiveColor }}>
-            Admin
-        </div>
-        }
-        {!is_in_group &&
-          <div className="memberItem--left">
-            {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
-          </div>
-        }
         <ButtonIcon
           className="memberItem--menuButton"
           size='small' onClick={handleClick} aria-controls="simple-menu" aria-haspopup="true">

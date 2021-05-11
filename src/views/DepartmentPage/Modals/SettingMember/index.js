@@ -73,6 +73,8 @@ const ModalSettingMember = ({
   const [isUpdate, setIsUpdate] = React.useState(null);
   const [isLock, setIsLock] = React.useState(inforUser?.userInfor?.is_lock);
   const [roomId, setRoomId] = React.useState(null);
+  const [disable, setDisable] = React.useState(true);
+
   const dispatch = useDispatch();
 
   React.useEffect(() => {
@@ -111,11 +113,15 @@ const ModalSettingMember = ({
     if (
       inforUser?.userInfor
     ) {
+      setDisable(true);
       setRoom(get(inforUser?.userInfor, "room_id"));
       setPosition(get(inforUser?.userInfor, "position_id"));
       setMajor(get(inforUser?.userInfor, "major_id"));
       setLevel(get(inforUser?.userInfor, "level_id"));
       setDescription(get(inforUser?.userInfor, "description", ""));
+      if(inforUser?.userInfor?.room_id && inforUser?.userInfor?.position_id && inforUser?.userInfor?.major_id &&inforUser?.userInfor?.level_id){
+        setDisable(false);
+      }
     }
     else {
       setRoom(null);
@@ -258,6 +264,7 @@ const ModalSettingMember = ({
       open={open}
       setOpen={setOpen}
       onCancle={() => setOpen(false)}
+      canConfirm={disable}
       manualClose={true}
       className={`modal_setting-member ${
         (tab === "2") | (tab === "3") && "hidden_submit"
@@ -376,7 +383,7 @@ const ModalSettingMember = ({
                         label: get(find(options.rooms, { id: room }), "name"),
                         value: room,
                       }}
-                      onChange={({ value: roomId }) => setRoom(roomId)}
+                      onChange={({ value: roomId }) => {setRoom(roomId);setDisable(true)}}
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
                     />
                   </FormControl>
@@ -395,8 +402,11 @@ const ModalSettingMember = ({
                         ),
                         value: position,
                       }}
-                      onChange={({ value: positionId }) =>
-                        setPosition(positionId)
+                      onChange={({ value: positionId }) =>{
+                        setPosition(positionId);
+                        setDisable(true)
+                      }
+                        
                       }
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
                     />
@@ -413,7 +423,7 @@ const ModalSettingMember = ({
                         label: get(find(options.levels, { id: level }), "name"),
                         value: level,
                       }}
-                      onChange={({ value: levelId }) => setLevel(levelId)}
+                      onChange={({ value: levelId }) => {setLevel(levelId);setDisable(true)}}
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
                     />
                   </FormControl>
@@ -428,7 +438,7 @@ const ModalSettingMember = ({
                         label: get(find(options.majors, { id: major }), "name"),
                         value: major,
                       }}
-                      onChange={({ value: majorId }) => setMajor(majorId)}
+                      onChange={({ value: majorId }) => {setDisable(true);setMajor(majorId)}}
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
                     />
                   </FormControl>
@@ -436,8 +446,10 @@ const ModalSettingMember = ({
                     className="view_Member_UpdateUser_Modal___text-box"
                     value={description}
                     label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
-                    onChange={(newDescription) =>
-                      setDescription(newDescription)
+                    onChange={(newDescription) => {
+                      setDisable(true); setDescription(newDescription)
+                    }
+                     
                     }
                     multiline={true}
                   />

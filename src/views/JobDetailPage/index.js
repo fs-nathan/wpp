@@ -34,6 +34,7 @@ function JobDetailPage(props) {
   const errorMessage = useSelector((state) => state.taskDetail.detailTask.errorMessage);
   const users_shared = item ? item.users_shared || [] : [];
   const shareItem = { ...item, users_shared }
+  const show = useSelector(state => state.taskDetail.detailTask.showIndex);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -75,6 +76,9 @@ function JobDetailPage(props) {
       dispatch(loadChat(taskId));
       dispatch(getViewedChat(taskId));
       dispatch(openDetailMember(false))
+      if (show !== 0) {
+        dispatch(taskDetailAction.showTab(0))
+      }
 
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {

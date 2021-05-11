@@ -3,7 +3,7 @@ import { mdiMenuDown, mdiMenuUp } from '@mdi/js';
 import Icon from '@mdi/react';
 import { get } from 'lodash';
 import React from 'react';
-import { Droppable } from 'react-beautiful-dnd';
+import { Draggable, Droppable } from 'react-beautiful-dnd';
 import { CustomTableContext } from '../../index';
 import './style.scss';
 import TableBodyRow from './TableBodyRow';
@@ -14,14 +14,14 @@ const StyledTableBodyRowGroup = ({ className = '', ...rest }) => <TableRow class
 const StyledTableBodyCell = ({ className = '', ...rest }) => <TableCell className={`${className}`} {...rest} />;
 const CustomButton = ({ className = '', ...rest }) => <Button className={`comp_CustomTable_TableBodyGroup___button ${className}`} {...rest} />;
 
-function TableBodyGroupRow({ group }) {
+function TableBodyGroupRow({ group, index }) {
   const { options, columns } = React.useContext(CustomTableContext);
   const [open, setOpen] = React.useState(group[get(options, 'grouped.item')].length > 0 ? true : false);
 
   React.useEffect(() => {
     setOpen(group[get(options, 'grouped.item')].length > 0 ? true : false);
   }, [get(options, 'grouped.item'), group[get(options, 'grouped.item')]]);
-
+ console.log(options)
   return (
     <Droppable
       droppableId={group[get(options, 'grouped.id')]}

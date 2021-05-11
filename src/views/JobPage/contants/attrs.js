@@ -187,6 +187,7 @@ export const colors = {
   remain_day_0_1: "#f44336",
   remain_day_2_3: "#ff9800",
   remain_day_4_5: "#03c30b",
+  white: "#ffffff"
 };
 export const taskStatusMap = {
   waiting: "0",

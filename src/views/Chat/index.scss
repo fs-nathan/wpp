@@ -25,7 +25,10 @@
 .wrap-room-description {
   flex: 1;
   padding: 0 10px;
-  min-width: 0;
+}
+.messenger-wrap-room-description {
+  display: none;
+  min-width: 0px;
 }
 
 /* MessageParent - BodyPart - ChatPart*/

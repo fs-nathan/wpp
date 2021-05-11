@@ -213,3 +213,23 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
   cursor: pointer;
   text-transform: uppercase;
 }
+.tab-category-forward-chat-to-person {
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  button {
+    padding: 6px 20px;
+    color: #fff;
+    background: #dedede;
+    border: 0px;
+    color: #757373;
+    font-size: 13px;
+    border-radius: 3px;
+    font-size: 13px;
+    cursor: pointer;
+    &:first-child {
+      margin-right: 10px;
+    }
+  };
+}

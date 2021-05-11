@@ -6,6 +6,7 @@ import Icon from "@mdi/react";
 import '../../HeaderButtonGroup/style.scss';
 import { Link } from '@material-ui/core';
 import readXlsxFile from 'read-excel-file';
+import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 const ModalUplaodExcel = ({
     openUploadExcel,
@@ -55,7 +56,23 @@ const ModalUplaodExcel = ({
         }
         else setErrFile(t('IDS_WP_CREATE_ACCOUNT_FILE_EXCEL_TYPE'))
     }; 
-   
+    const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+    const fileExtension = '.xlsx';
+    const fileName = 'data';
+    const data_sample = [
+      {"TT": 1, "Tài khoản(Email)": "email1@gmail.com", "Tên thành viên": "Nguyễn Văn A"},
+      {"TT": 2, "Tài khoản(Email)": "email2@gmail.com", "Tên thành viên": "Nguyễn Văn B"},
+      {"TT": 3, "Tài khoản(Email)": "email3@gmail.com", "Tên thành viên": "Nguyễn Văn C"},
+
+    ]
+    const exportToCSV = (data_sample, fileName) => {
+      const ws = XLSX.utils.json_to_sheet(data_sample);
+      const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
+      const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
+      const data = new Blob([excelBuffer], { type: fileType });
+      FileSaver.saveAs(data, fileName + fileExtension);
+    }
+
   return (
     <CustomModal
     open={openUploadExcel}
@@ -76,19 +93,20 @@ const ModalUplaodExcel = ({
     className="modal_upload-file_excel"
   >
     <div className="modal_upload-excel">
-      <h3>{t("IDS_WP_ACCOUNT_INTERNAL_ENTER_DATA_EXCEL")}</h3>
+      <h3 style={{fontSize: '19px'}}>{t("IDS_WP_ACCOUNT_INTERNAL_ENTER_DATA_EXCEL")}</h3>
       <div style={{ lineHeight: "18px", whiteSpace: "break-spaces",marginBottom: '15px' }}>
         {t("IDS_WP_ACCOUNT_INTERNAL_ENTER_DATA_EXCEL_TEXT")}
       </div>
-      <Link href="https://drive.google.com/file/d/1ReixkbwdGNrnbFkjI5v05Zsvvl7mdPOp/view?usp=sharing" target="blank" className="modal_upload-excel_downfile">
+      <div onClick={()=>exportToCSV(data_sample, fileName)} className="modal_upload-excel_downfile">
         {t("IDS_WP_ACCOUNT_INTERNAL_DOWN_FILE_FORM")}
-      </Link>
+      </div>
       <div
         className="upload-excel"
-        style={{ margin: "auto", marginTop: "40px" }}
+        style={{ margin: "auto",padding: "18px", width: "300px",borderRadius: "3px", marginTop: "40px",backgroundColor: "#f0f0f0" }}
         onClick={onClickFromComputer}
       >
-        <input
+        <div style={{display: "flex", alignItems: "center"}} className="content-btn-upload-excel">
+          <input
           className="display-none"
           id="upload_file"
           multiple
@@ -104,6 +122,8 @@ const ModalUplaodExcel = ({
         />
 
         <div>{t("IDS_WP_ACCOUNT_INTERNAL_UPLOAD_EXCEL")}</div>
+        </div>
+        
       </div>
       {errFile && <div style={{color: 'red', marginTop: '10px'}}>{errFile}</div>}
       {message && <div style={{color: 'red', marginTop: '10px'}}>{message}</div>}

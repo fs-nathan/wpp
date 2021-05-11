@@ -119,6 +119,7 @@
 .comp_CustomModal___accept-button {
   & {
     @include comp_CustomModal___action-button;
+    border-radius: 3px;
   }
 
   &-disabled {
@@ -130,6 +131,7 @@
 
 .comp_CustomModal___cancle-button {
   @include comp_CustomModal___action-button;
+  border-radius: 3px;
 }
 
 @mixin comp_CustomModal___dialog {

@@ -140,7 +140,7 @@ const HeaderPart = props => {
   return (
     <div className="container-header">
       {renderAvatars({ styles: classes, images: members })}
-      <div className="wrap-room-description">
+      <div className="wrap-room-description messenger-wrap-room-description">
         <Typography className="chatHeader--title">
           {
             !isEditName ?
