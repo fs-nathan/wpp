@@ -11,7 +11,18 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
     const fileName = 'data';
-  
+    console.log(result)
+    const result_custom = 
+      result?.map(el => {
+         const newEl = {
+            email: el.email,
+            name: el.name,
+            room_name: el.room_name,
+            status: el.status ? 'Thành công': 'Thất bại',
+            password: el.password
+         }
+         return newEl;
+      })
     const exportToCSV = (csvData, fileName) => {
       const ws = XLSX.utils.json_to_sheet(csvData);
       const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
@@ -69,7 +80,7 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
                 </div>
                 <div
                   className="upload-excel"
-                  onClick={()=>exportToCSV(result,fileName)}
+                  onClick={()=>exportToCSV(result_custom,fileName)}
                 >
                   <Icon
                     path={mdiDownload}
