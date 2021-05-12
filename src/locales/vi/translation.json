@@ -2434,6 +2434,7 @@
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_ACCOUNT": "Tài khoản",
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_NAME_MEMBER": "Tên thành viên",
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_PART": "Bộ phận",
+	"IDS_WP_ACCOUNT_INTERNAL_TABLE_STATUS": "Trạng thái",
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_DELETE_ALL": "Xóa toàn bộ",
 	"IDS_WP_ACCOUNT_INTERNAL_ADDED": "Đã thêm",
 	"IDS_WP_ACCOUNT_INTERNAL_ADDED_NOTE": "(Được phép tạo tối đa 100 tài khoản cho từng lần)",
@@ -2497,5 +2498,7 @@
 	"IDS_LABEL_NOT_UPDATE": "Chưa cập nhật",
 	"LABEL_CREATE_WORKING_GROUP": "Tạo nhóm việc",
   "LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Chưa phân quyền!",
-  "LABEL_GROUP_PERMISSION_EMPTY_DES": "Thành viên này chưa được phân quyền. Click nút phân quền để gán nhóm quyền cho thành viên"
+  "LABEL_GROUP_PERMISSION_EMPTY_DES": "Thành viên này chưa được phân quyền. Click nút phân quền để gán nhóm quyền cho thành viên",
+  "LABEL_SUCCESS": "Thành công",
+  "LABEL_FAIL": "Thất bại"
 }

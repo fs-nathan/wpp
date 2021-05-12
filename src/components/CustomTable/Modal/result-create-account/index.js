@@ -11,7 +11,6 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
     const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
     const fileExtension = '.xlsx';
     const fileName = 'data';
-    console.log(result)
     const result_custom = 
       result?.map(el => {
          const newEl = {
@@ -23,6 +22,7 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
          }
          return newEl;
       })
+    const create_success = result?.filter(el => el.status === true)  
     const exportToCSV = (csvData, fileName) => {
       const ws = XLSX.utils.json_to_sheet(csvData);
       const wb = { Sheets: { 'data': ws }, SheetNames: ['data'] };
@@ -51,6 +51,7 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
                       <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_ACCOUNT")}</th>
                       <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_NAME_MEMBER")}</th>
                       <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_PART")}</th>
+                      <th>{t("IDS_WP_ACCOUNT_INTERNAL_TABLE_STATUS")}</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -65,6 +66,7 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
                           <td>{item.email}</td>
                           <td>{item.name}</td>
                           <td>{item.room_name}</td>
+                          <td>{item.status ? t('LABEL_SUCCESS'): t('LABEL_FAIL')}</td>
                         </tr>
                       ))}
                   </tbody>
@@ -73,8 +75,7 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
               <div className="modal_result-create-account_action">
                 <div>
                   {t("IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED")}{" "}
-                  {result?.length}
-                  {t(
+                  {create_success?.length} {t(
                     "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL"
                   )}
                 </div>

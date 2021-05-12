@@ -131,6 +131,20 @@ const ModalSettingMember = ({
       setDescription(null);
     }
   }, [inforUser, setDescription]);
+
+  React.useEffect(()=>{
+    if(inforUser?.userInfor?.room_id && inforUser?.userInfor?.position_id && inforUser?.userInfor?.major_id &&inforUser?.userInfor?.level_id && room && position && level && major){
+      if(room !== inforUser?.userInfor?.room_id || inforUser?.userInfor?.position_id !== position || inforUser?.userInfor?.major_id !==major || inforUser?.userInfor?.level_id !== level){
+        setDisable(true)
+      }
+    }
+    else if(inforUser?.userInfor?.room_id && room && position && major && level){
+      setDisable(true);
+    }
+    else {
+      setDisable(false)
+    }
+  },[room, position,level, major, inforUser])
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
@@ -186,6 +200,8 @@ const ModalSettingMember = ({
         handleToast("success", t("IDS_WP_LOCK_ACCOUNT"));
         dispatch(actionGetInfor(profile.id));
         setIsLock(!isLock);
+        doGetUserOfRoom({ roomId: inforUser?.userInfor?.room_id });
+        dispatch(listUserOfGroup(true))
       }
     } catch (error) {
       handleToast("error", t("SNACK_MUTATE_FAIL"));
@@ -199,6 +215,8 @@ const ModalSettingMember = ({
         handleToast("success", t("IDS_WP_UN_LOCK_ACCOUNT"));
         dispatch(actionGetInfor(profile.id));
         setIsLock(!isLock);
+        doGetUserOfRoom({ roomId: inforUser?.userInfor?.room_id });
+        dispatch(listUserOfGroup(true))
       }
     } catch (error) {
       handleToast("error", t("SNACK_MUTATE_FAIL"));
@@ -383,7 +401,7 @@ const ModalSettingMember = ({
                         label: get(find(options.rooms, { id: room }), "name"),
                         value: room,
                       }}
-                      onChange={({ value: roomId }) => {setRoom(roomId);setDisable(true)}}
+                      onChange={({ value: roomId }) => setRoom(roomId)}
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.ROOM")}
                     />
                   </FormControl>
@@ -402,11 +420,8 @@ const ModalSettingMember = ({
                         ),
                         value: position,
                       }}
-                      onChange={({ value: positionId }) =>{
-                        setPosition(positionId);
-                        setDisable(true)
-                      }
-                        
+                      onChange={({ value: positionId }) =>
+                        setPosition(positionId)
                       }
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.POSITION")}
                     />
@@ -423,7 +438,7 @@ const ModalSettingMember = ({
                         label: get(find(options.levels, { id: level }), "name"),
                         value: level,
                       }}
-                      onChange={({ value: levelId }) => {setLevel(levelId);setDisable(true)}}
+                      onChange={({ value: levelId }) => setLevel(levelId)}
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.LEVEL")}
                     />
                   </FormControl>
@@ -438,7 +453,7 @@ const ModalSettingMember = ({
                         label: get(find(options.majors, { id: major }), "name"),
                         value: major,
                       }}
-                      onChange={({ value: majorId }) => {setDisable(true);setMajor(majorId)}}
+                      onChange={({ value: majorId }) =>setMajor(majorId)}
                       placeholder={t("DMH.VIEW.MP.MODAL.UPT.MAJOR")}
                     />
                   </FormControl>
@@ -446,10 +461,7 @@ const ModalSettingMember = ({
                     className="view_Member_UpdateUser_Modal___text-box"
                     value={description}
                     label={t("DMH.VIEW.MP.MODAL.UPT.DESC")}
-                    onChange={(newDescription) => {
-                      setDisable(true); setDescription(newDescription)
-                    }
-                     
+                    onChange={(newDescription) => setDescription(newDescription)
                     }
                     multiline={true}
                   />
