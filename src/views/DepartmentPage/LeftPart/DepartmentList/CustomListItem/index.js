@@ -33,7 +33,6 @@ function CustomListItem({ room, index, handleLink, canDrag }) {
     setAnchorEl(e.currentTarget);
   };
   const open = Boolean(anchorEl);
-  console.log(room);
   const id = open ? "simple-popover" : undefined;
   if (canDrag)
     return (

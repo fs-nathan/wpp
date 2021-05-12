@@ -423,22 +423,17 @@ const Info = props => {
             <div className="heading-title">
               <span>{t('IDS_WP_COVER_IMAGE_GROUP')} (1200x400px)</span>
               <span className="action-update-img">
-                {props.profile.type === 'Pro' && (
-                  <Button
-                    className="crop-image-btn"
-                    color="primary"
-                    component="label"
-                    htmlFor="raised-button-file"
-                    disableTouchRipple
-                    onClick={() => setCropType(CROP_TYPE.COVER)}
-                  >
-                    {t('IDS_WP_CHANGE_COVER_IMAGE')}
-                  </Button>
-                )}
-                {props.profile.type === 'Pro' && (
-                  <Divider orientation="vertical" />
-                )}
-
+                <Button
+                  className="crop-image-btn"
+                  color="primary"
+                  component="label"
+                  htmlFor="raised-button-file"
+                  disableTouchRipple
+                  onClick={() => setCropType(CROP_TYPE.COVER)}
+                >
+                  {t('IDS_WP_CHANGE_COVER_IMAGE')}
+                </Button>
+                <Divider orientation="vertical" />
                 <Button
                   className="crop-image-btn"
                   color="primary"
