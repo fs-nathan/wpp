@@ -73,7 +73,7 @@ const RegisterPage = () => {
               fullWidth
               margin="normal"
               variant="outlined"
-              className="custom-input"
+              className="custom-input input-affix-wrapper"
             >
               <OutlinedInput
                 id="fullname"

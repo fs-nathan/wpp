@@ -6,6 +6,7 @@
   & > td {
     padding: 8px 20px;
     font-size: 12px;  
+    position: relative;
   }
 };
 
@@ -28,3 +29,32 @@
     background-color: #fafafa;
   }
 };
+
+.action_group{
+  display: flex;
+  position: absolute;
+  right: 15px;
+  top: 9px;
+  display: none;
+  button{
+    background-color: rgba(190, 181, 181, 0.54);
+    border-radius: 50%;
+    &:last-child{
+      margin-left: 10px;
+    }
+    svg{
+      width: 1.2rem !important;
+      height: 1.2rem !important;
+    }
+  }
+}
+.action_group_hover{
+  display: block;
+}
+#menuMoreAction{
+ 
+  .MuiList-root .MuiListItem-button:hover{
+    text-decoration: none;
+   background-color: #d8e0ef;
+}
+}

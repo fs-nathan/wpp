@@ -1,8 +1,10 @@
 import {
   ListItemSecondaryAction,
   ListItemText,
-  Popover,
+  MenuItem,
+  Menu,
 } from "@material-ui/core";
+import { SignalCellularNull } from "@material-ui/icons";
 import { mdiDotsVertical, mdiDragVertical, mdiMore } from "@mdi/js";
 import Icon from "@mdi/react";
 import { get } from "lodash";
@@ -23,14 +25,21 @@ function CustomListItem({ room, index, handleLink, canDrag }) {
   const [isHover, setIsHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openAlertModal, setOpenAlertModal] = React.useState(false);
-  const [
-    openCreateAndUpdateDepartmentModal,
-    setOpenCreateAndUpdateDepartmentModal,
-  ] = React.useState(false);
+  const [openUpdate, setOpenUpdate] = React.useState(false);
+  const [roomData, setRoomData] = React.useState({ updateDepartment: "" });
+
+  React.useEffect(() => {
+    if (room) {
+      setRoomData({ updateDepartment: room });
+    }
+  }, [room]);
 
   const { t } = useTranslation();
   const openMenu = (e) => {
     setAnchorEl(e.currentTarget);
+  };
+  const openModal = () => {
+    setOpenUpdate(true);
   };
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
@@ -82,41 +91,36 @@ function CustomListItem({ room, index, handleLink, canDrag }) {
                     }
                   />
                 </div>
-                <Popover
+                <Menu
                   id="simple"
                   open={Boolean(anchorEl)}
                   anchorEl={anchorEl}
                   onClose={() => setAnchorEl(null)}
-                  anchorOrigin={{
-                    vertical: "bottom",
-                    horizontal: "center",
-                  }}
                   transformOrigin={{
                     vertical: "top",
                     horizontal: "center",
                   }}
                 >
-                  {get(room, 'can_delete', false) &&
-                  <div onClick={() => setOpenAlertModal(true)}>
-                  {t("views.calendar_page.right_part.delete")}
-                  </div>
-                 }
-                  <div
-                    onClick={() => setOpenCreateAndUpdateDepartmentModal(true)}
-                  >
+                  <MenuItem onClick={() => setOpenUpdate(true)}>
                     {t("views.calendar_page.right_part.edit")}
-                  </div>
-                </Popover>
-
-                <DeleteDepartmentModal
-                  open={openAlertModal}
-                  setOpen={setOpenAlertModal}
-                  selectedRoom={room}
-                />
+                  </MenuItem>
+                  {get(room, "can_delete", false) && (
+                    <MenuItem onClick={() => setOpenAlertModal(true)}>
+                      {t("views.calendar_page.right_part.delete")}
+                    </MenuItem>
+                  )}
+                </Menu>
+                {openAlertModal && (
+                  <DeleteDepartmentModal
+                    open={openAlertModal}
+                    setOpen={setOpenAlertModal}
+                    selectedRoom={room}
+                  />
+                )}
                 <CreateAndUpdateDepartmentModal
-                  open={openCreateAndUpdateDepartmentModal}
-                  setOpen={setOpenCreateAndUpdateDepartmentModal}
-                  updateDepartment={room}
+                  open={openUpdate}
+                  setOpen={setOpenUpdate}
+                  {...roomData}
                 />
                 <div {...provided.dragHandleProps}>
                   <Icon
