@@ -145,31 +145,29 @@ const RenderRightPart = props => {
           </SubHeader>
           <div style={{padding: "0 20px"}}>
             <p className="view_GroupAccount_Modal___subheader-item">{t("LABEL_GROUP_OWNER")} (1)</p>
-            <Scrollbars autoHide autoHeight autoHeightMin={395}>
-              {!isEmpty(props.groupList.group_me) && (
-                <ItemGroupAcount
-                  item={props.groupList.group_me}
-                  type="group_me"
-                  handleFetchData={props.handleFetchData}
-                />
-              )}
-              {
-                !isEmpty(props.groupList.group_joins) && (
-                  <>
-                    <p className="view_GroupAccount_Modal___subheader-item">{t("LABEL_GROUP_JOINED")} ({parseInt((get(props.groupList, "group_joins").length))})</p>
-                    {props.groupList.group_joins.map((group, idx) => (
-                      <ItemGroupAcount
-                        item={group}
-                        groupMe={props.groupList.group_me}
-                        key={idx}
-                        type="group_joins"
-                        handleFetchData={props.handleFetchData}
-                      />
-                    ))}
-                  </>
-                )
-              }
-            </Scrollbars>
+            {!isEmpty(props.groupList.group_me) && (
+              <ItemGroupAcount
+                item={props.groupList.group_me}
+                type="group_me"
+                handleFetchData={props.handleFetchData}
+              />
+            )}
+            {
+              !isEmpty(props.groupList.group_joins) && (
+                <>
+                  <p className="view_GroupAccount_Modal___subheader-item">{t("LABEL_GROUP_JOINED")} ({parseInt((get(props.groupList, "group_joins").length))})</p>
+                  {props.groupList.group_joins.map((group, idx) => (
+                    <ItemGroupAcount
+                      item={group}
+                      groupMe={props.groupList.group_me}
+                      key={idx}
+                      type="group_joins"
+                      handleFetchData={props.handleFetchData}
+                    />
+                  ))}
+                </>
+              )
+            }
           </div>
         </>
       );

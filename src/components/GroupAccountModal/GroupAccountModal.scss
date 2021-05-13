@@ -12,6 +12,7 @@
 
 .view_GroupAccount_Modal___main-bar {
   grid-area: main;
+  overflow: auto;
   .item-group {
     padding: 0 20px;
   }

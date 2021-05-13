@@ -31,6 +31,7 @@ import HtmlTooltip from './HtmlTooltip';
 import ModalPriority from './ModalPriority';
 import StatusLabel, {statusLabel, TYPE_PRIORITY, TYPE_STATUS} from './StatusLabel';
 import './styles.scss';
+import {get} from "lodash";
 
 const ListItemButtonGroup = styled(ListItem)`
   flex-wrap: wrap;  
@@ -103,7 +104,8 @@ function TabBody(props) {
     priority_code: 0,
     fileCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
     imgCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
-    linkCnt: t('LABEL_CHAT_TASK_DANG_TAI')
+    linkCnt: t('LABEL_CHAT_TASK_DANG_TAI'),
+    status_label: {}
   }
 
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC);
@@ -129,7 +131,7 @@ function TabBody(props) {
       total_offer, total_offer_approved, total_command, members,
       complete, state_code,
       complete_with_time = 0,
-      duration_value, duration_unit
+      duration_value, duration_unit, status_label
     } = detailTask
     setTaskStatistic({
       progressCnt: duration_value ? `${duration_value} ${duration_unit}` : '',
@@ -145,7 +147,8 @@ function TabBody(props) {
       complete, state_code,
       complete_with_time,
       members,
-      priority_code
+      priority_code,
+      status_label: status_label
     })
   }, [detailTask, t])
 
@@ -207,7 +210,7 @@ function TabBody(props) {
               />
             </HtmlTooltip>
             {
-              taskStatistic.state_code === 3 &&
+              get(taskStatistic, "status_label.type") === "Expired" &&
               <Typography
                 className="listPartTabBody--expired"
               >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
@@ -276,6 +279,7 @@ function TabBody(props) {
                 {index === 3 && (<Divider style={{marginTop: 10}}/>)}
                 <Box className={"toolTipUpdateStatus-item"} onClick={(e) => {
                   e.stopPropagation();
+                  e.preventDefault();
                   if(taskStatistic.complete !== 100 && taskStatistic.state_code !== item.value) handleUpdateTaskStatus(item.value);
                 }}>
                   <div className={"toolTipUpdateStatus-itemHeader"}>
@@ -284,6 +288,7 @@ function TabBody(props) {
                       control={<Radio />}
                       label={t(item.label)}
                       checked={taskStatistic.state_code === item.value}
+                      onChange={() => null} onClick={() => null}
                     />
                   </div>
                   <div className={`toolTipUpdateStatus-itemBody ${(taskStatistic.complete === 100 || taskStatistic.state_code === item.value) ? "radioDisabled" : ""}`}>
