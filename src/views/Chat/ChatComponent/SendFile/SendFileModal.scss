@@ -113,7 +113,7 @@
     &:hover {
       border-width: 1px;
       border-style: solid;
-      border-color: #05b50c;
+      border-color: var(--color-primary);
       border-image: initial;
       background-color: #f7fcf0;
     }
@@ -138,6 +138,6 @@
     line-height: 18px;
   }
   &--button:hover &--title {
-    color: #05b50c;
+    color: var(--color-primary);
   }
 }

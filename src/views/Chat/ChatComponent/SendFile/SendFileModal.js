@@ -55,7 +55,7 @@ const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile }) => {
               onChange={onChangeFile}
               ref={fileInputRef}
             />
-            <Icon path={mdiLaptop} size={2} color="#ff5722"></Icon>
+            <Icon path={mdiLaptop} size={2} color="#ff5722"/>
             <div className="SendFileModal--rightButton">
               <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_TAI_TAI_LIEU_TU_MAY_TINH')}</div>
               <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_TAI_LIEU_MOI_TU')}</div>
@@ -64,7 +64,7 @@ const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile }) => {
           <div className="SendFileModal--button"
             onClick={onClickShareFromLibrary}
           >
-            <Icon path={mdiCloudUpload} size={2} color="#2196f3"></Icon>
+            <Icon path={mdiCloudUpload} size={2} color="#2196f3"/>
             <div className="SendFileModal--rightButton">
               <div className="SendFileModal--title">{t('LABEL_CHAT_TASK_CHON_TAI_LIEU_TU_KHO_LUU_TRU')}</div>
               <div className="SendFileModal--description">{t('LABEL_CHAT_TASK_SU_DUNG_TAI_LIEU')}</div>

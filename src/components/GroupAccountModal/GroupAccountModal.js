@@ -13,7 +13,6 @@ import Icon from '@mdi/react';
 import {Button, IconButton, InputAdornment, InputBase, List, ListItem, ListItemText} from "@material-ui/core";
 import CustomModal from 'components/CustomModal';
 import LoadingBox from "../LoadingBox";
-import { Scrollbars } from 'react-custom-scrollbars';
 import {upcoming} from "assets";
 
 const Container = ({ className = '', ...props }) =>
@@ -184,7 +183,7 @@ const RenderRightPart = props => {
             { isEmpty(props.groupList.requirements) && renderEmptyView("REQUIREMENTS")}
           {
             !isEmpty(props.groupList.requirements) && (
-              <Scrollbars autoHide autoHeight autoHeightMin={395}>
+              <>
                 {props.groupList.requirements.map((group, idx) => (
                   <div className="item-group">
                     <ItemGroupAcount
@@ -197,7 +196,7 @@ const RenderRightPart = props => {
                     />
                   </div>
                 ))}
-              </Scrollbars>
+              </>
             )
           }
           </div>
@@ -221,7 +220,7 @@ const RenderRightPart = props => {
           { isEmpty(groups) && renderEmptyView("INVITATIONS")}
           {
             !isEmpty(groups) && (
-              <Scrollbars autoHide autoHeight autoHeightMin={395}>
+              <>
                 {groups.map((group, idx) => (
                   <div className="item-group">
                     <ItemGroupAcount
@@ -233,7 +232,7 @@ const RenderRightPart = props => {
                     />
                   </div>
                 ))}
-              </Scrollbars>
+              </>
             )
           }
         </>

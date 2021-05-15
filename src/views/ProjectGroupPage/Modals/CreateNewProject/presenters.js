@@ -10,11 +10,10 @@ import React from 'react';
 import {useTranslation} from 'react-i18next';
 import './style.scss';
 import * as images from "assets/index";
-import { useHistory } from 'react-router-dom';
+import {useHistory, useLocation} from 'react-router-dom';
 import { Routes } from "constants/routes";
 import SelectGroupProject from '../SelectGroupProject';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-
 
 const StyledFormControl = ({ className = '', ...props }) =>
   <FormControl
@@ -22,6 +21,9 @@ const StyledFormControl = ({ className = '', ...props }) =>
     {...props}
   />;
 
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 function CreateNewProject({
   open, setOpen,
   groups, work_types,
@@ -41,13 +43,12 @@ function CreateNewProject({
   const [selectableGroup, setSelectableGroup] = React.useState([]);
   const history = useHistory();
   const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] = React.useState(false);
+  const params = useQuery();
+
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
     };
-    const success = () => {
-      doReload();
-    }
     CustomEventListener(CREATE_PROJECT.FAIL, fail);
     CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
       history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
@@ -59,6 +60,15 @@ function CreateNewProject({
       CustomEventDispose(CREATE_PROJECT.FAIL, fail);
     }
   }, [projectGroupId, timeRange, doReload]);
+
+  React.useEffect(() => {
+    const groupID = params.get("groupID");
+    if(groupID) {
+      const group = find(groups.groups, {id: groupID});
+      setCurProjectGroupName(get(group, "name", ""));
+    }
+  }, [params, groups]);
+
   React.useEffect(() => {
     const success = () => {
       setActiveLoading(false);
