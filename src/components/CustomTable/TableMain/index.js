@@ -46,7 +46,6 @@ function TableMain() {
       clientX: parseFloat(window.getComputedStyle(draggedDOM.parentNode).paddingLeft)
     });
   };
-
   return (
     <Container
       autoHide

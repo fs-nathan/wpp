@@ -175,6 +175,7 @@ const ModalContinueCreateAccount = ({
         open={openContinueCreateAccount}
         manualClose={true}
         setOpen={setOpenContinueCreateAccount}
+        activeLoading={loading}
         onCancle={() => {setRowTable([{
           email: "",
           name: "",

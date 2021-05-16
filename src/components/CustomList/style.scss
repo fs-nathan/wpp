@@ -10,7 +10,10 @@
   & > *:not(:first-child) {
     margin-left: 5px;
   }
-
+  .MuiListItemText-multiline{
+    margin-top: 2px;
+    margin-bottom: 2px;
+  }
   &:hover {
     cursor: pointer;
     background-color: #E6E6E6;

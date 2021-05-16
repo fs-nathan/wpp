@@ -1,5 +1,21 @@
 .comp_CustomTable_TableBodyRow___row {
   background-color: #ffffff;
+  position: relative;
+  .comp_CustomTable_list-action{
+    display: flex;
+    position: absolute;
+    z-index: 100;
+    right: 15px;
+    margin: 21px;
+    height: 24px;
+    width: 70px;
+    background-color: #ffffff;
+    div{
+      margin: 0 3px;
+      padding: 3px;
+      cursor: pointer;
+    }
+  }
   & > .MuiTableCell-root {
     font-size: 13px;
   };
@@ -38,4 +54,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.icon-drag-hide{
+  display: none;
+}
+.icon-drag-hover{
+  display: block;
+}
+.action-add{
+  background-color: #0f8ec0;
+  border-radius: 50%;
+}
+.action-delete{
+  background-color: rgb(240, 70, 70);
+  border-radius: 50%;
+}
+.action-more{
+  background-color: #96969c;
+  border-radius: 50%;
 }

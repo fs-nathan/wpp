@@ -108,44 +108,44 @@ function decodePriorityCode(priorityCode) {
       };
     case 1:
       return {
-        color: "#ff9800",
-        background: "#ff980038",
+        color: "#ffffff",
+        background: "#ff9800",
         name: "Trung bình",
       };
     case 0:
       return {
-        color: "#fe0707",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#fe0707",
         name: "Cao",
       };
     case "WAIT":
       return {
-        color: "#ff9800",
-        background: "#596fff",
+        color: "#ffffff",
+        background: "#ff9800",
         name: "Cao",
       };
     case "DOING":
       return {
-        color: "#03a9f4",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#03a9f4",
         name: "Cao",
       };
     case "DONE":
       return {
-        color: "#03c30b",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#03c30b",
         name: "Cao",
       };
     case "EXPIRE":
       return {
-        color: "#f44336",
-        background: "#ff050524",
+        color: "#ffffff",
+        background: "#f44336",
         name: "Cao",
       };
     case "MEMBER":
       return {
         color: "#ffffff",
-        background: "#f1ff26",
+        background: "rgb(207 30 237)",
         name: "Cao",
       };
     default:

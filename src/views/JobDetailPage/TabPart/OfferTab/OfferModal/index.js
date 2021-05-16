@@ -11,7 +11,7 @@ import { get } from 'lodash';
 import findIndex from 'lodash/findIndex';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useDispatch, useSelector } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useMountedState } from 'react-use';
 import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
@@ -47,7 +47,8 @@ const OfferModal = ({
   item: offerItem,
   isUpdateOfferDetailDescriptionSection,
   isOffer,
-  additionQuery
+  additionQuery,
+  profile
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
@@ -75,13 +76,19 @@ const OfferModal = ({
   const createUserIndex = findIndex(allMembers, member => member.id === createId);
   const [loading, setLoading] = React.useState(false);
   const [openSelectGroupOfferModal, setOpenSelectGroupOfferModal] = React.useState(false);
+  const [isCheck, setIsCheck] = React.useState(false);
 
   useEffect(() => {
     if (!isUpdateOfferDetailDescriptionSection) {
       dispatch(getMemberToAdd({ additionQuery: additionQuery }));
     }
   }, [currentUserId, isUpdateOfferDetailDescriptionSection]);
-
+  console.log(profile.group_active.storage.total_size)
+  useEffect(()=>{
+    if(profile?.group_active?.storage?.total_size === 0){
+      setIsCheck(true);
+    }
+  },[profile])
   useEffect(() => {
     if (offerItem) {
       const {
@@ -436,6 +443,7 @@ const OfferModal = ({
                   setOpen={setOpenSendFileModal}
                   handleUploadFile={handleUploadSelectedFilesFromPC}
                   onConfirmShare={handleSelectedFilesFromLibrary}
+                  isCheck={isCheck}
                 />
               </>
             )
@@ -457,5 +465,7 @@ const OfferModal = ({
     </>
   )
 }
-
-export default OfferModal
+const mapStateToProps = (state) => ({
+  profile: state.system.profile
+})
+export default connect(mapStateToProps) (OfferModal);

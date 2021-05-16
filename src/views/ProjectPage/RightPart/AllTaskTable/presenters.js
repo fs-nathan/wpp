@@ -139,6 +139,9 @@ function AllTaskTable({
                 bool: expand,
                 toggleExpand: () => handleExpand(!expand),
               },
+              actionlist: {
+                bool: true
+              },
               moreMenu: isNil(memberID) ? [{
                 label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SETTING"),
                 onClick: () => handleOpenModal('SETTING', {
@@ -150,6 +153,7 @@ function AllTaskTable({
                   }
                 }),
               },
+             
                 {
                   label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.PROJECT_CALENDAR"),
                   onClick: () => handleOpenModal('CALENDAR', {})

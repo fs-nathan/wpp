@@ -12,13 +12,14 @@ const ModalResultCreateAccount = ({openResultCreateAccount,setOpenResultCreateAc
     const fileExtension = '.xlsx';
     const fileName = 'data';
     const result_custom = 
-      result?.map(el => {
+      result?.map((el,index) => {
          const newEl = {
-            email: el.email,
-            name: el.name,
-            room_name: el.room_name,
-            status: el.status ? 'Thành công': 'Thất bại',
-            password: el.password
+            No: index + 1,
+            Email: el.email,
+            Password: el.password,
+            Name: el.name,
+            Room_name: el.room_name,
+            Status: el.status ? t('LABEL_SUCCESS'): t('LABEL_FAIL')
          }
          return newEl;
       })

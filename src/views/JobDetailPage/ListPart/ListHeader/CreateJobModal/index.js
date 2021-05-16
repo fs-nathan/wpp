@@ -137,6 +137,9 @@ function CreateJobModal(props) {
       updateData.start_time = undefined;
       updateData.end_time = undefined;
     }
+    if(props.setOnload){
+      props.setOnload(true)
+    }
     switch (props.editMode) {
       case EDIT_MODE.NAME_DES:
         dispatch(updateNameDescription(taskId, data.name, updateData.description));
@@ -563,7 +566,6 @@ function CheckCreateJob(props) {
       dispatch(getListGroupTask({ project_id: projectId }));
     }
   }, [dispatch, projectId, props.isOpen])
-
   useEffect(() => {
     if (listGroupTaskData.group_tasks && props.isOpen && !isFetching) {
       if (listGroupTaskData.group_tasks.length === 0) {

@@ -68,7 +68,7 @@ function ProjectList({
   const params = new URLSearchParams(window.location.search);
   const groupID = params.get('groupID');
   const personalProjectsBoard = useSelector(state => state.project.countPersonalProjectsBoard.projects);
-  console.log(personalProjectsBoard);
+
   function onDragEnd(result) {
     const {source, destination, draggableId} = result;
     if (!destination) return;
