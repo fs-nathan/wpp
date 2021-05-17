@@ -98,7 +98,7 @@ const LeftBar = ({
             <Link
               to={isFree ? "#" : el.url_redirect}
               key={idx}
-              title={collapse && t(el.name)}
+              title={collapse ? t(el.name) : ""}
               className={`menu-item ${el.isSelected ? "actived" : ""}`}
               onClick={() => {
                 if (isFree) {
@@ -129,7 +129,7 @@ const LeftBar = ({
           title={itemManage.name}
         >
           <div className={collapse ? 'item-collapse' : 'item-not-collapse'}>
-          <span style={{width: '35px'}} className={collapse && 'LeftNavIconZoom'}>{ReactHtmlParser(itemManage.svg_icon)}</span>
+          <span style={{width: '35px'}} className={collapse ? 'LeftNavIconZoom' : ""}>{ReactHtmlParser(itemManage.svg_icon)}</span>
           {!collapse && <span className="titleTab">{t(itemManage.name)}</span>}
           </div>
           {/* <img src={itemManage.icon} alt="" className="LeftNavIcon" /> */}

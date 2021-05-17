@@ -183,7 +183,7 @@ function JobPage() {
       icon: mdiAccountTie,
       color: "#f44336",
       sub: roles.map((role) => ({
-        name: t(get(role, roleAttrs.name)),
+        name: get(role, roleAttrs.name),
         url: Routes.ROLE.replace(":roleId", get(role, roleAttrs.id)),
       })),
     },

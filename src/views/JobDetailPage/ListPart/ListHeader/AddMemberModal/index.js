@@ -79,7 +79,7 @@ const BootstrapInput = withStyles((theme) => ({
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -90,10 +90,9 @@ function AddMemberModal({
   const bgColor = find(colors, {"selected": true});
   const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const history = useHistory();
-  let projectID = last(split(history.location.pathname, "/"));
   const [totalMembers, setTotalMembers] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState(0);
-  const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectID]);
+  const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectId]);
   const [taskIDValue, setTaskIDValue] = React.useState(null);
   const [isFocus, setIsFocus] = React.useState(false);
 
@@ -266,7 +265,7 @@ function AddMemberModal({
           </Box>
         </Scrollbars>
       </DialogContent>
-      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting} project_id={projectID}/>
+      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting} project_id={projectId}/>
     </DialogWrap>
   );
 }
@@ -276,7 +275,8 @@ const mapStateToProps = state => {
     task_id: state.taskDetail.commonTaskDetail.activeTaskId,
     membersNotAssigned: state.taskDetail.taskMember.memberNotAssigned,
     members: state.taskDetail.taskMember.member,
-    userRoles: get(state.userRole.listUserRole.data, "userRoles", [])
+    userRoles: get(state.userRole.listUserRole.data, "userRoles", []),
+    projectId: state.taskDetail.commonTaskDetail.activeProjectId
   }
 }
 

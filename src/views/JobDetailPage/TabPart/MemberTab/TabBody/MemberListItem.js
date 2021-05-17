@@ -91,11 +91,6 @@ const MemberListItem = ({
           </div>
         </div>
 
-        {!is_in_group &&
-          <div className="memberItem--left">
-            {t('LABEL_CHAT_TASK_DA_ROI_NHOM')}
-          </div>
-        }
         {is_in_group && id !== userId &&
           <div className={"memberItem--menuButton buttonChat"} onClick={(evt) => handleCreatePrivateChat(evt)}>
             <img src={images.messeger} width={20} height={20} alt={""}/>

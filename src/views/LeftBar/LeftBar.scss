@@ -5,8 +5,8 @@
   align-items: center;
   position: relative;
   height: calc(100% - 70px);
-  background: linear-gradient(45deg, rgb(51, 80, 94), rgb(76, 175, 80)) repeat
-    scroll 0% 0%;
+/*  background: linear-gradient(45deg, rgb(51, 80, 94), rgb(76, 175, 80)) repeat
+    scroll 0% 0%;*/
    
   & > *:first-child {
     margin-top: 10px;
@@ -69,6 +69,7 @@
       height: 26px;
       fill: rgba(255, 255, 255, .6);
       border: unset !important;
+      padding: 0px!important
     }
     &.actived {
       background-color: rgba(0, 0, 0, 0.12);

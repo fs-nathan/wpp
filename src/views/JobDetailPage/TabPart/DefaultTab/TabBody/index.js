@@ -113,6 +113,7 @@ function TabBody(props) {
     {value: 2, label: statusLabel[2], des: "LABEL_PROCESS_PERCENT_COMPLETED"},
     {value: 4, label: statusLabel[4], des: "LABEL_PROCESS_PERCENT_PAUSED"},
   ];
+  const [isRequesting, setIsRequesting] = React.useState(false)
 
   let content = ""
   let data = ""
@@ -147,6 +148,7 @@ function TabBody(props) {
       members,
       priority_code
     })
+    setIsRequesting(false)
   }, [detailTask, t])
 
   function onClickMember() {
@@ -161,6 +163,7 @@ function TabBody(props) {
 
   function handleUpdateTaskStatus(status) {
     setTooltipChangeTaskStatus(null);
+    setIsRequesting(true)
     if(status === 4) {
       dispatch(stopTask(taskId));
     } else {
@@ -276,6 +279,7 @@ function TabBody(props) {
                 {index === 3 && (<Divider style={{marginTop: 10}}/>)}
                 <Box className={"toolTipUpdateStatus-item"} onClick={(e) => {
                   e.stopPropagation();
+                  if (isRequesting) return false;
                   if(taskStatistic.complete !== 100 && taskStatistic.state_code !== item.value) handleUpdateTaskStatus(item.value);
                 }}>
                   <div className={"toolTipUpdateStatus-itemHeader"}>

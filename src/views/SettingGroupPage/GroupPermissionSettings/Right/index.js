@@ -678,18 +678,21 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption, openModal,
                           <span style={{marginLeft: "7px"}}>{user.group_permission_name ?? <span style={{fontStyle: "italic"}}>{t("LABEL_PERMISSION_NOT_ASSIGN")}</span>}</span>
                         </Box>
                       }/>
-                      <ListItemSecondaryAction>
-                        <Button
-                          onClick={() => {
-                            setSelectedUser(user);
-                            handleSelectUser(user);
-                            setOpenModal(true);
-                          }}
-                          disableElevation color={"primary"} variant={"contained"} size={"small"}
-                        >
-                          {user.group_permission_name ? t("LABEL_CHANGE_PERMISSION") : t("LABEL_CHAT_TASK_PHAN_QUYEN")}
-                        </Button>
-                      </ListItemSecondaryAction>
+                      {
+                        user.can_modify &&
+                        <ListItemSecondaryAction>
+                          <Button
+                            onClick={() => {
+                              setSelectedUser(user);
+                              handleSelectUser(user);
+                              setOpenModal(true);
+                            }}
+                            disableElevation color={"primary"} variant={"contained"} size={"small"}
+                          >
+                            {user.group_permission_name ? t("LABEL_CHANGE_PERMISSION") : t("LABEL_CHAT_TASK_PHAN_QUYEN")}
+                          </Button>
+                        </ListItemSecondaryAction>
+                      }
                     </ListItem>
                   );
                 })}
@@ -770,6 +773,10 @@ export default ({ ...props }) => {
               fontSize: "21px",
               lineHeight: "1",
               fontWeight: "600",
+              maxWidth: "350px",
+              overflow: "hidden",
+              whiteSpace: "nowrap",
+              textOverflow: "ellipsis"
             }}
           >
             {name}

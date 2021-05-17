@@ -74,18 +74,20 @@ function AddToPersonalBoardModal({
     setProjectGroups({..._groups});
   }, [projects, groups]);
   React.useEffect(() => {
-    if(searchPattern === "") {
-      setFilteredGroups(projectGroups);
-    } else {
-      const _groups = map(projectGroups, function (group) {
-          const _projects = filter(group.projects, function (project) {
-            return toLower(project.name).includes(toLower(searchPattern));
-          });
-          return {...group, projects: _projects};
-      });
-      setFilteredGroups(_groups);
+    if (open) {
+      if(searchPattern === "") {
+        setFilteredGroups(projectGroups);
+      } else {
+        const _groups = map(projectGroups, function (group) {
+            const _projects = filter(group.projects, function (project) {
+              return toLower(project.name).includes(toLower(searchPattern));
+            });
+            return {...group, projects: _projects};
+        });
+        setFilteredGroups(_groups);
+      }
     }
-  }, [searchPattern, projectGroups]);
+  }, [searchPattern, open, projectGroups]);
 
   function handleSelectedProject(projectID) {
     setSelectedProjects(({...selectedProjects, [projectID]: !selectedProjects[projectID]}));
@@ -130,6 +132,7 @@ function AddToPersonalBoardModal({
               </IconButton>
               <InputBase
                 className={classes.input}
+                value={searchPattern}
                 placeholder={t("LABEL_SEARCH_PERSONAL_BOARD")}
                 inputProps={{ 'aria-label': 'search personal board' }}
                 onChange={evt => setSearchPattern(evt.currentTarget.value)}
@@ -162,8 +165,7 @@ function AddToPersonalBoardModal({
                         <ListItemIcon>
                           <Checkbox
                             color={"primary"} edge="start"
-                            checked={selectedProjects[project.id]} disableRipple
-                            onChange={evt => handleSelectedProject(project.id, evt.target.value)}
+                            checked={selectedProjects[project.id] ? true : false} disableRipple
                             inputProps={{ 'aria-labelledby': `checkbox-${group.id}-${project.id}`}}
                           />
                         </ListItemIcon>
