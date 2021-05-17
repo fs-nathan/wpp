@@ -302,7 +302,6 @@ function MainLayout({
       window.addEventListener(JOIN_CHAT_EVENT, joinChat);
       window.addEventListener(JOIN_PROJECT_EVENT, joinProject);
       return () => {
-        console.log("close socket");
         window.removeEventListener(JOIN_CHAT_EVENT, joinChat);
         window.removeEventListener(JOIN_PROJECT_EVENT, joinProject);
         socket.close();

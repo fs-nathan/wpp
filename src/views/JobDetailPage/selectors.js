@@ -12,7 +12,6 @@ const listDetailTask = state => state.taskDetail.listDetailTask;
 export const selectedTaskSelector = createSelector(
   taskDetail,
   (task = {}) => {
-    // console.log('task detail', task)
     return task ? task.is_ghim : false
   }
 );
@@ -20,7 +19,6 @@ export const selectedTaskSelector = createSelector(
 export const taskIdSelector = createSelector(
   commonTask,
   (task = {}) => {
-    // console.log('task detail', task)
     return task.activeTaskId
   }
 )
@@ -28,7 +26,6 @@ export const taskIdSelector = createSelector(
 export const currentColorSelector = createSelector(
   colors,
   (colors = []) => {
-    // console.log('task detail', task)
     const selectedColor = colors.find(({ selected }) => selected)
     return selectedColor ? selectedColor.color : '#fff'
   }

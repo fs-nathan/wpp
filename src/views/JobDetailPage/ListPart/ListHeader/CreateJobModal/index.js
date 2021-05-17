@@ -534,7 +534,10 @@ function CreateJobModal(props) {
       }
       <GuideLineAddUserModal
         open={showGuideLineModal} setOpen={setShowGuideLineModal}
-        type={2} handleAddNow={() => setShowAddMember(true)}
+        type={2} handleAddNow={() => {
+          setShowAddMember(true);
+          setShowGuideLineModal(false);
+        }}
       />
       <AddMemberModal isOpen={showAddMember} setOpen={setShowAddMember} task={createdTask}/>
     </>
