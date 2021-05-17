@@ -168,20 +168,8 @@ function AllTaskTable({
       const reloadDetailProject = () => {
         doDetailProject({ projectId });
       }
-      CustomEventListener(CREATE_TASK, (e) => {
-        doDetailProject({ projectId });
-        setCreatedTask(get(e.detail, "task"));
-        setGuideLineModal(true);
-        setTypeGuide(2);
-      });
       CustomEventListener(DELETE_TASK, reloadDetailProject);
       return () => {
-        CustomEventDispose(CREATE_TASK, (e) => {
-          doDetailProject({ projectId });
-          setCreatedTask(get(e.detail, "task"));
-          setGuideLineModal(true);
-          setTypeGuide(2);
-        });
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
       }
     }
@@ -335,6 +323,7 @@ function AllTaskTable({
         handleAddNow={() => {
           if(typeGuide === 1) setOpenMemberSetting(true);
           else setOpenModalAddMember(true);
+          setGuideLineModal(false);
         }}
       />
     </>

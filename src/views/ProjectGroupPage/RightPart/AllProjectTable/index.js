@@ -272,7 +272,10 @@ function AllProjectTable({
       />
       <GuideLineAddUserModal
         open={guideLineModal} setOpen={setGuideLineModal}
-        handleAddNow={() => setOpenMemberSetting(true)}
+        handleAddNow={() => {
+          setGuideLineModal(false);
+          setOpenMemberSetting(true);
+        }}
       />
       <MembersSettingModal
         open={openMemberSetting}

@@ -22,6 +22,7 @@ function AddUserModal({open, setOpen, doSearchUser, desireUser, doSearchUserRese
   React.useEffect(() => {
     const inviteUserSuccess = () => {
       setOpen(false);
+      resetDesireUser();
       if(reload && !isNil(projectId)) {
         dispatch(memberProject({projectId}));
       }

@@ -20,6 +20,7 @@ import ModalContinueCreateAccount from "../../../../components/CustomTable/Modal
 import ModalUplaodExcel from "../../../../components/CustomTable/Modal/uploadExcel";
 import ModalResultCreateAccount from "../../../../components/CustomTable/Modal/result-create-account";
 import CreateProjectModal from "../../Modals/CreateProject";
+import {CREATE_PROJECT_GROUP, CustomEventDispose, CustomEventListener} from "../../../../constants/events";
 
 const BorderLinearProgress = withStyles((theme) => ({
   root: {
@@ -77,6 +78,17 @@ function ProjectsStart({statusWorkGroup, getStatusWorkGroup}) {
       default: return;
     }
   }
+
+  React.useEffect(() => {
+    const doReload = () => {
+      getStatusWorkGroup();
+    }
+    CustomEventListener(CREATE_PROJECT_GROUP.SUCCESS, doReload);
+    return () => {
+      CustomEventDispose(CREATE_PROJECT_GROUP.SUCCESS, doReload);
+    }
+  });
+
   return (
     <>
       <Box style={{position: "relative"}}>

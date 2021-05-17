@@ -19,6 +19,10 @@ import { LIST_USER_OF_GROUP } from 'constants/actions/user/listUserOfGroup';
 import ReactParserHtml from 'react-html-parser';
 import '../../HeaderButtonGroup/style.scss';
 import { ic_loading } from 'assets';
+import {memberProject} from "../../../../actions/project/memberProject";
+import {isNil} from "lodash";
+import {useParams} from "react-router-dom";
+
 const ModalContinueCreateAccount = ({
     doReloadUser,
     setOpenResultCreateAccount,
@@ -38,6 +42,7 @@ const ModalContinueCreateAccount = ({
     const [disable, setDisable] = React.useState(false);
     const [activeMask, setActiveMask] = React.useState(-1);
     const [roomList, setRoomList] = React.useState(null);
+    const { projectId: _projectId } = useParams();
     const [rowTable, setRowTable] = React.useState([
       {
         email: "",
@@ -97,7 +102,7 @@ const ModalContinueCreateAccount = ({
           handleToast('success', t('IDS_WP_CREATE_ACCOUNT_SUCCESS'))
            setOpenContinueCreateAccount(false);
            setOpenResultCreateAccount(true);
-           doReloadUser({userId: profile.id})
+           doReloadUser({userId: profile.id, projectId: _projectId});
            setResult(data.account_list);
         }
       } catch (error) {
@@ -339,9 +344,10 @@ const mapStateToProps = (state) => {
   const mapDispatchToProps = (dispatch) => {
     return {
       actionToast,
-      doReloadUser: ({ userId }) => {
+      doReloadUser: ({ userId, projectId = null }) => {
         dispatch(detailUser({ userId }, true));
         dispatch(listUserOfGroup(true));
+        if(!isNil(projectId)) dispatch(memberProject({projectId}));
       },
       doSearchUser: ({ info }, quite) => dispatch(searchUser({ info }, quite)),
       doSearchUserReset: () => dispatch(searchUserReset()),

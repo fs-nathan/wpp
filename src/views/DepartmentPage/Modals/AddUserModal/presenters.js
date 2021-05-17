@@ -99,7 +99,10 @@ function AddUserModalPresenter({
                   </ListItemAvatar>
                   <ListItemText primary={get(desireUser.user, "name")} secondary={get(desireUser.user, "email")}/>
                   <ListItemSecondaryAction>
-                    <Button onClick={() => handleInviteUserJoinGroup({userId: get(desireUser.user, "id")})} variant={"contained"} disableElevation>
+                    <Button onClick={() => {
+                      handleInviteUserJoinGroup({userId: get(desireUser.user, "id")});
+                      handleClear();
+                    }} variant={"contained"} disableElevation>
                       {t("IDS_WP_COMMON_ADD")}
                     </Button>
                     <Button onClick={() => {
