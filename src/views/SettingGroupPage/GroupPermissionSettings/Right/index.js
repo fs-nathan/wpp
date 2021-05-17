@@ -375,7 +375,7 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
     } else {
       const firstItem = first(groupPermissionList);
       setSelect(firstItem, false);
-      handlePermissionGroupClick(firstItem.id);
+      handlePermissionGroupClick(get(firstItem, "id"));
     }
   }, [filterOption]);
   function handlePermissionGroupClick(id) {
@@ -402,11 +402,13 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
           color={filterOption === 0 ? "primary" : "default"}
           onClick={() => setFilterOption(0)}
         />
-        <Chip
-          label={t("LABEL_GROUP_PERMISSION_EXTEND_COUNT", {count: size(groupPermissionList)})} clickable
-          color={filterOption === 1 ? "primary" : "default"}
-          onClick={() => setFilterOption(1)}
-        />
+        {size(groupPermissionList) > 0 && (
+          <Chip
+            label={t("LABEL_GROUP_PERMISSION_EXTEND_COUNT", {count: size(groupPermissionList)})} clickable
+            color={filterOption === 1 ? "primary" : "default"}
+            onClick={() => setFilterOption(1)}
+          />
+        )}
       </div>
       <div style={{padding: "10px"}}>
         <Alert severity="info">

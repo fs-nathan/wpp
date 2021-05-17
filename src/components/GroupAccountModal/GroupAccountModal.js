@@ -13,6 +13,7 @@ import Icon from '@mdi/react';
 import {Button, IconButton, InputAdornment, InputBase, List, ListItem, ListItemText} from "@material-ui/core";
 import CustomModal from 'components/CustomModal';
 import LoadingBox from "../LoadingBox";
+import {Scrollbars} from "react-custom-scrollbars";
 import {upcoming} from "assets";
 
 const Container = ({ className = '', ...props }) =>
@@ -325,11 +326,13 @@ function GroupAccountModal({ open, setOpen, ...props }) {
             </List>
           </SideBar>
           <MainBar>
-            <RenderRightPart
-              mode={mode} groupList={groupList}
-              handleFetchData={() => handleFetchData().then(r => setLoading(false))}
-              setMode={setMode}
-            />
+            <Scrollbars autoHide>
+              <RenderRightPart
+                mode={mode} groupList={groupList}
+                handleFetchData={() => handleFetchData().then(r => setLoading(false))}
+                setMode={setMode}
+              />
+            </Scrollbars>
           </MainBar>
         </Container>
       )}

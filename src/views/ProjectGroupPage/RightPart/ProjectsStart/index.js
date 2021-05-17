@@ -55,8 +55,8 @@ function ProjectsStart({statusWorkGroup, getStatusWorkGroup}) {
     getStatusWorkGroup();
   }, [getStatusWorkGroup]);
   React.useEffect(() => {
-    setStepsDone(prevState => ({...prevState, 1: get(statusWorkGroup, "status.created_project_group", false)}));
-    setStepsDone(prevState => ({...prevState, 2: get(statusWorkGroup, "status.created_work_group", false)}));
+    setStepsDone(prevState => ({...prevState, 1: get(statusWorkGroup, "status.created_work_group", false)}));
+    setStepsDone(prevState => ({...prevState, 2: get(statusWorkGroup, "status.created_project_group", false)}));
     setStepsDone(prevState => ({...prevState, 3: get(statusWorkGroup, "status.created_task", false)}));
     setStepsDone(prevState => ({...prevState, 4: get(statusWorkGroup, "status.invited_member", false)}));
     setStepsDone(prevState => ({...prevState, 5: get(statusWorkGroup, "status.created_order", false)}));
