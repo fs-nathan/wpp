@@ -1,14 +1,30 @@
 import React, { Fragment } from "react";
 import Icon from "@mdi/react";
-import { withRouter, Link } from "react-router-dom";
+import { withRouter, Link, useHistory } from "react-router-dom";
 import "./LeftSetting.scss";
-import { ListItemText } from "@material-ui/core";
+import { Button, ListItemText } from "@material-ui/core";
 import { StyledList, StyledListItem, Primary, Secondary } from "../CustomList";
 import LeftSideContainer from "../LeftSideContainer";
 import {get} from "lodash";
+import {Routes} from 'constants/routes';
+import { mdiImageFilterDrama } from "@mdi/js";
+import { useTranslation } from "react-i18next";
 
 const LeftSetting = props => {
   const { pathname } = props.location;
+  const {t} = useTranslation();
+  const history = useHistory();
+  const {color} = props?.colors && props?.colors?.find((item) => item?.selected === true) || '';
+  let isManage = false;
+  if(Array.isArray(props?.profile?.modules)){
+    // eslint-disable-next-line no-unused-expressions
+    props?.profile?.modules?.forEach((el,index)=> {
+      if(el?.is_manage_group){
+        isManage = true;
+      }
+    })
+  }
+  
   return (
     <LeftSideContainer
       title={props.title}
@@ -69,6 +85,22 @@ const LeftSetting = props => {
               ))}
           </Fragment>
         ))}
+        {props.isMemory &&
+        <div className="status-memory">
+          <div className="status-memory__title">
+            <Icon path={mdiImageFilterDrama} size={1.4}
+                  color="rgba(0, 0, 0, 0.54)"/>
+            <div className="status-memory__title-text">{t('LABEL_MEMMORY')}</div>      
+          </div>
+          <div style={{height: '5px', marginTop: '15px', borderRadius: '15px',position: 'relative',backgroundColor: '#ccc'}}>
+          <div style={{height: '5px', borderRadius: '15px',position: 'absolute',top: '0', left: '0', backgroundColor: color, width: `${props?.profile?.storage?.used_size/props?.profile?.storage?.total_size*100}%`}}></div>
+          </div>
+          
+
+          <div className="status-memory__note">{t('LABEL_STATUS_STORE_MEMORY',{use_store: props?.profile?.storage?.used_size_label, total_store: props?.profile?.storage?.total_size_label})}</div>
+          {isManage && <Button onClick={()=>history.push(`${Routes.SETTING_GROUP_CREATE_ORDER}`)} style={{color: color}}>{t('LABEL_BTN_STORE_MEMORY')}</Button>}
+        </div>
+        }
       </StyledList>
     </LeftSideContainer>
   );

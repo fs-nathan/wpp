@@ -95,3 +95,20 @@
   width: 70px;
   margin-left: 5px;
 }
+.download-popover-project{
+  .MuiPaper-root{
+    top: 125px !important;
+    left: unset !important;
+    right: 60px !important;
+  }
+
+}
+.time-range-popover{
+  .MuiPaper-root{
+    top: 125px !important;
+    left: unset !important;
+    right: 0%!important;
+  transform: translate(-50%, 0%) !important;
+  }
+ 
+}

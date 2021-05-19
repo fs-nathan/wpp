@@ -3,12 +3,9 @@
   position: relative;
   .comp_CustomTable_list-action{
     display: flex;
-    position: absolute;
     z-index: 100;
     right: 15px;
-    margin: 21px;
     height: 24px;
-    width: 70px;
     background-color: #ffffff;
     div{
       margin: 0 3px;
@@ -38,6 +35,7 @@
     &:nth-child(n+3) {
       padding: 5px 10px;
     }
+    
   }
   & {
     @include comp_CustomTable_TableBodyRow___cell;
@@ -49,7 +47,14 @@
     }
   }
 };
-
+.comp__table-cell-hover{
+  &:nth-child(n+9){
+     .comp_AvatarCircleList___container {display: none;}
+     .list-backup{
+       display: block;
+     }
+  }
+}
 .comp_CustomTable_TableBodyRow___drag-box {
   display: flex;
   align-items: center;

@@ -23,6 +23,10 @@
 }
 .text-name-acc {
   font-weight: 500;
+  white-space: nowrap;
+    text-overflow: ellipsis;
+    width: 85px;
+    overflow: hidden;
 }
 .verify_not_check{
   color: #ffffff;

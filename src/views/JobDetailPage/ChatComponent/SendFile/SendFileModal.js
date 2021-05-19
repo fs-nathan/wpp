@@ -8,19 +8,15 @@ import CustomModal from '../../../../components/CustomModal';
 import OutOfStorageDialog from '../OutOfStorageDialog';
 import './SendFileModal.scss';
 
-const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile,isCheck,setIsCheck }) => {
+const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile,store }) => {
   const { t } = useTranslation();
   const fileInputRef = useRef()
   const error = useSelector(state => state.chat.error);
   const [isShareFromLib, setShareFromLib] = useState(false);
   const [isOpenLimit, setIsOpenLimit] = useState(false);
-  console.log('true', isCheck)
   function onClickFromComputer() {
     document.getElementById('upload_file').value= null;
-    if(isCheck){
-      setIsOpenLimit(true);
-    }
-    else fileInputRef.current.click()
+    fileInputRef.current.click()
   }
   
   function onClickShareFromLibrary() {
@@ -30,7 +26,10 @@ const SendFileModal = ({ open, setOpen, onConfirmShare, handleUploadFile,isCheck
 
   function onChangeFile(evt) {
     setOpen(false)
-    handleUploadFile(evt)
+    if(store && (store.total_size - store.used_size) < evt.target.files[0].size){
+      setIsOpenLimit(true);
+    }
+   else handleUploadFile(evt)
   }
 
   function onClickConfirmShare(evt) {

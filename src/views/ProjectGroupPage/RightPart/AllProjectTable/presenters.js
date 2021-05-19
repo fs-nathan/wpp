@@ -6,6 +6,7 @@ import {
   mdiCheckboxBlankOutline,
   mdiCheckboxMarked,
   mdiCheckCircle,
+  mdiDeleteOutline,
   mdiDotsVertical,
   mdiDownload,
   mdiFilterOutline
@@ -151,23 +152,23 @@ function AllProjectTable({
                   </div>
                 ),
                 subTitle: '',
-                subActions: [
-                  {
-                    label: filters[filterType].title,
-                    iconPath: mdiFilterOutline,
-                    onClick: evt => setFilterAnchor(evt.currentTarget)
-                  },
-                  {
-                    label: t("DMH.VIEW.PGP.RIGHT.ALL.DOWN"),
-                    iconPath: mdiDownload,
-                    onClick: evt => setDownloadAnchor(evt.currentTarget)
-                  },
-                  {
-                    label: times[timeType].title,
-                    iconPath: mdiCalendar,
-                    onClick: evt => setTimeAnchor(evt.currentTarget)
-                  }
-                ],
+                // subActions: [
+                //   {
+                //     label: filters[filterType].title,
+                //     iconPath: mdiFilterOutline,
+                //     onClick: evt => setFilterAnchor(evt.currentTarget)
+                //   },
+                //   {
+                //     label: t("DMH.VIEW.PGP.RIGHT.ALL.DOWN"),
+                //     iconPath: mdiDownload,
+                //     onClick: evt => setDownloadAnchor(evt.currentTarget)
+                //   },
+                //   {
+                //     label: times[timeType].title,
+                //     iconPath: mdiCalendar,
+                //     onClick: evt => setTimeAnchor(evt.currentTarget)
+                //   }
+                // ],
                 mainAction: type_data !== 2 ? {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
                   onClick: evt => handleOpenModal('CREATE'),
@@ -181,9 +182,26 @@ function AllProjectTable({
                 },
                 moreMenu: [
                   {
+                    label: filters[filterType].title,
+                    iconPath: mdiFilterOutline,
+                    onClick: () => setFilterAnchor(true)
+                  },
+                  {
+                    label: t("DMH.VIEW.PGP.RIGHT.ALL.DOWN"),
+                    iconPath: mdiDownload,
+                    onClick: () => setDownloadAnchor(true)
+                  },
+                  {
+                    label: times[timeType].title,
+                    iconPath: mdiCalendar,
+                    onClick: () => setTimeAnchor(true)
+                  },
+                  {
+                    iconPath: mdiDeleteOutline ,
                     label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
                     onClick: () => history.push(`${Routes.PROJECTS}/deleted`)
                   }
+                
                 ],
                 grouped: {
                   bool: false
@@ -484,6 +502,7 @@ function AllProjectTable({
             </Menu>
             <DownloadPopover
               anchorEl={downloadAnchor}
+              className="download-popover-project"
               setAnchorEl={setDownloadAnchor}
               fileName='projects'
               data={projects.projects.map(project => ({
@@ -512,6 +531,7 @@ function AllProjectTable({
               bgColor={bgColor}
               anchorEl={timeAnchor}
               setAnchorEl={setTimeAnchor}
+              className="time-range-popover"
               timeOptionDefault={timeType}
               handleTimeRange={timeType => handleTimeType(timeType)}
             />

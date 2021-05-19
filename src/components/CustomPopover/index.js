@@ -220,6 +220,7 @@ export const TimeRangePopover = ({
   bgColor,
   anchorEl = null, setAnchorEl = () => null,
   timeOptionDefault = 0,
+  className = null,
   handleTimeRange = () => null,
   timeRangeDefault = {
     startDate: null,
@@ -245,6 +246,7 @@ export const TimeRangePopover = ({
       id="time-menu"
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
+      className={className ? className : ''}
       onClose={evt => setAnchorEl(null)}
       transformOrigin={{
         vertical: -30,
@@ -363,7 +365,7 @@ export const TimeRangePopover = ({
 
 export const DownloadPopover = ({
   anchorEl = null, setAnchorEl = () => null,
-  data = [], fileName = 'data',
+  data = [], fileName = 'data', className =null
 }) => {
 
   const fileType = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
@@ -381,6 +383,7 @@ export const DownloadPopover = ({
     <Popover
       id="download-menu"
       anchorEl={anchorEl}
+      className={className ? className : ''}
       open={Boolean(anchorEl)}
       onClose={evt => setAnchorEl(null)}
       transformOrigin={{

@@ -2500,5 +2500,9 @@
   "LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Chưa phân quyền!",
   "LABEL_GROUP_PERMISSION_EMPTY_DES": "Thành viên này chưa được phân quyền. Click nút phân quền để gán nhóm quyền cho thành viên",
   "LABEL_SUCCESS": "Thành công",
-  "LABEL_FAIL": "Thất bại"
+  "LABEL_FAIL": "Thất bại",
+  "LABEL_MEMMORY": "Bộ nhớ",
+  "LABEL_STATUS_STORE_MEMORY": "Đã sử dụng {{use_store}} trong tổng số {{total_store}}",
+  "LABEL_BTN_STORE_MEMORY": "Mua bộ nhớ",
+  "LABEL_CLASSIFY": "Phân loại"
 }

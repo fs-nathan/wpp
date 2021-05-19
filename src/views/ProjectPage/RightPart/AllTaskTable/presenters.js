@@ -4,9 +4,13 @@ import {
   mdiAccountKey,
   mdiAccountMinusOutline,
   mdiCalendar,
+  mdiCalendarText,
   mdiDownload,
+  mdiEye,
+  mdiEyeOff,
   mdiPlusCircle,
-  mdiScatterPlot
+  mdiScatterPlot,
+  mdiSettings
 } from '@mdi/js';
 import Icon from '@mdi/react';
 import AvatarCircleList from 'components/AvatarCircleList';
@@ -113,20 +117,7 @@ function AllTaskTable({
                   </div>
                 </div>
               ),
-              subActions: [canUpdateProject && isNil(memberID) ? {
-                label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.MEMBER"),
-                iconPath: mdiAccountCircle,
-                onClick: (evt) => handleOpenModal("SETTING_MEMBER"),
-                noExpand: true,
-              }  : undefined, isNil(memberID) ?{
-                label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
-                iconPath: mdiDownload,
-                onClick: (evt) => setDownloadAnchor(evt.currentTarget)
-              } : undefined, isNil(memberID) ? {
-                label: times[timeType].title,
-                iconPath: mdiCalendar,
-                onClick: evt => setTimeAnchor(evt.currentTarget)
-              } : undefined],
+              
               mainAction: isNil(memberID) ? {
                 label: t("IDS_WP_BTN_CREATE_NEW"),
                 onClick: (evt) => handleOpenModal('MENU_CREATE'),
@@ -142,8 +133,26 @@ function AllTaskTable({
               actionlist: {
                 bool: true
               },
-              moreMenu: isNil(memberID) ? [{
+              moreMenu: isNil(memberID) ? [canUpdateProject && isNil(memberID) ? {
+                label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.MEMBER"),
+                iconPath: mdiAccountCircle,
+                onClick: (evt) => handleOpenModal("SETTING_MEMBER"),
+                noExpand: true,
+              }  : undefined,isNil(memberID) ? {
+                label: times[timeType].title,
+                iconPath: mdiCalendar,
+                onClick: () => setTimeAnchor(true)
+              } : undefined, isNil(memberID) ?{
+                label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
+                iconPath: mdiDownload,
+                onClick: () => setDownloadAnchor(true)
+              } : undefined,  {
+                label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.PROJECT_CALENDAR"),
+                iconPath: mdiCalendarText ,
+                onClick: () => handleOpenModal('CALENDAR', {})
+              },{
                 label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SETTING"),
+                iconPath: mdiSettings ,
                 onClick: () => handleOpenModal('SETTING', {
                   curProject: project.project,
                   canChange: {
@@ -154,11 +163,9 @@ function AllTaskTable({
                 }),
               },
              
-                {
-                  label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.PROJECT_CALENDAR"),
-                  onClick: () => handleOpenModal('CALENDAR', {})
-                },canUpdateProject ? {
+               canUpdateProject ? {
                   label: `${get(project.project, 'visibility') ? t("DMH.VIEW.PP.RIGHT.ALL.LABEL.HIDE") : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SHOW")}`,
+                  iconPath: get(project.project, 'visibility') ? mdiEyeOff  : mdiEye ,
                   onClick: () => handleShowOrHideProject(project.project),
                   disabled: !isNil(find(showHidePendings.pendings, pending => pending === get(project.project, 'id'))),
                 } : undefined] : undefined,
@@ -266,6 +273,7 @@ function AllTaskTable({
                       avatar: get(member, 'avatar'),
                     }))
                 }
+                row={row}
                 display={3}
               /> : <>
                 {
@@ -298,6 +306,7 @@ function AllTaskTable({
           />
           <DownloadPopover
             anchorEl={downloadAnchor}
+            className="download-popover-project"
             setAnchorEl={setDownloadAnchor}
             fileName='tasks'
             data={flattenDeep(
@@ -326,6 +335,7 @@ function AllTaskTable({
           />
           <TimeRangePopover
             bgColor={bgColor}
+            className="time-range-popover"
             anchorEl={timeAnchor}
             setAnchorEl={setTimeAnchor}
             timeOptionDefault={timeType}

@@ -83,12 +83,6 @@ const OfferModal = ({
       dispatch(getMemberToAdd({ additionQuery: additionQuery }));
     }
   }, [currentUserId, isUpdateOfferDetailDescriptionSection]);
-  console.log(profile.group_active.storage.total_size)
-  useEffect(()=>{
-    if(profile?.group_active?.storage?.total_size === 0){
-      setIsCheck(true);
-    }
-  },[profile])
   useEffect(() => {
     if (offerItem) {
       const {
@@ -443,7 +437,7 @@ const OfferModal = ({
                   setOpen={setOpenSendFileModal}
                   handleUploadFile={handleUploadSelectedFilesFromPC}
                   onConfirmShare={handleSelectedFilesFromLibrary}
-                  isCheck={isCheck}
+                  store={profile.group_active.storage}
                 />
               </>
             )
