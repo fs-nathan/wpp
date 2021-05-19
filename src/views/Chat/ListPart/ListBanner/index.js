@@ -9,8 +9,6 @@ import { listTaskDataTypes } from '../ListHeader/CreateJobSetting';
 import PersonAddRoundedIcon from '@material-ui/icons/PersonAddRounded';
 import GroupAddRoundedIcon from '@material-ui/icons/GroupAddRounded'
 import CreateThreadChatPrivate from '../../CreateThreadChatPrivate'
-import CreateGroupChat from '../../CreateGroupChat'
-import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import './index.scss';
 
 const ListBanner = props => {
@@ -69,22 +67,6 @@ const ListBanner = props => {
           size="small"
         />
       ))}
-      <div className="chat-group-bt-create-thread">
-        {/*<span title={t("THREAD_CHAT_CHAT_TO")} onClick={() => openCreateChatPrivate(true)}>
-        <img className="chat-add-thead-member" src="/images/ic_chat_user.png" />
-        </span>*/}
-        <span title={t("THREAD_CHAT_CREATE_GROUP_CHAT")} onClick={() => openCreateGroupChat(true)}>
-        <GroupAddIcon className="chat-add-thead-group" />
-        </span>
-      </div>
-      <CreateThreadChatPrivate
-        isOpen={isOpenCreateChatPrivate}
-        setOpen={openCreateChatPrivate}
-      />
-      <CreateGroupChat
-        isOpen={isOpenCreateGroupChat}
-        setOpen={openCreateGroupChat}
-      />
     </div>
   );
 };
