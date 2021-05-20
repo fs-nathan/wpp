@@ -626,7 +626,7 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption, openModal,
       const _filterPermissions = [];
         forEach(permissionList, function (group) {
         const _permissions = filter(group.permissions, function (permission) {
-          return !isNil(find(permissions.permissions, {"value": permission.permission}));
+          return !isNil(find(permissions.permissions, {"permission": permission.permission}));
         });
         if(size(_permissions) > 0) {
           _filterPermissions.push({...group, permissions: _permissions});
