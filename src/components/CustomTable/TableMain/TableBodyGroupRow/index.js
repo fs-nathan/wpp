@@ -8,7 +8,7 @@ import {
 } from "@material-ui/core";
 import { mdiMenuDown, mdiMenuUp, mdiPlus, mdiDotsVertical } from "@mdi/js";
 import Icon from "@mdi/react";
-import { get, isNil } from "lodash";
+import { get, isNil , includes} from "lodash";
 import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { CustomTableContext } from "../../index";
@@ -53,12 +53,22 @@ function TableBodyGroupRow({ group, index }) {
   const [projectId, setProjectId] = React.useState(_projectId);
   const [openGroupTask, setOpenGroupTask] = React.useState(false);
   const dispatch = useDispatch();
+  let inSearch = false;
   React.useEffect(() => {
     setOpen(group[get(options, "grouped.item")].length > 0 ? true : false);
   }, [get(options, "grouped.item"), group[get(options, "grouped.item")]]);
   const handleDeleteGroup = () => {
     dispatch(deleteGroupTask({ groupTaskId: group.id }));
   };
+  if (get(options, 'search'))
+    for (const key in group) {
+      if (
+        group.hasOwnProperty(key) &&
+        get(group, key, '') &&
+        includes(get(group, key, '').toString().toLowerCase(), get(options, 'search.patern', '').toLowerCase())
+      ) inSearch = true;
+    }
+
   return (
     <Droppable
       droppableId={group[get(options, "grouped.id")]}
@@ -66,7 +76,7 @@ function TableBodyGroupRow({ group, index }) {
     >
       {(provided, snapshot) => (
         <TableBody ref={provided.innerRef} {...provided.droppableProps}>
-          <StyledTableBodyRowGroup
+          {!inSearch || group?.task?.length < 1 ? null :<StyledTableBodyRowGroup
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => {setAnchorEl(null);setHover(false)}}
           >
@@ -151,7 +161,7 @@ function TableBodyGroupRow({ group, index }) {
                 curGroupTask={group}
               />
             </StyledTableBodyCell>
-          </StyledTableBodyRowGroup>
+          </StyledTableBodyRowGroup>}
           {(open || snapshot.isDraggingOver) &&
             group[get(options, "grouped.item")].map((row, index) => (
               <TableBodyRow key={index} index={index} row={row} group={group} />

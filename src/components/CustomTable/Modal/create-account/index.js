@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 const ModalCreateAccount = ({colors,openAddMember,setOpenAddMember,setOpen,setOpenCreateAccount}) => {
     const {t} = useTranslation();
 
-    const {color} = colors.find((item) => item.selected === true);
+    const {color} = colors?.find((item) => item?.selected === true);
       function hoverCard1(event) {
         const el = event.target;
         const add_member = document.getElementById("add-member");

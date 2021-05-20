@@ -2418,6 +2418,7 @@
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_ACCOUNT": "Account",
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_NAME_MEMBER": "Member's name",
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_PART": "Part",
+	"IDS_WP_ACCOUNT_INTERNAL_TABLE_STATUS": "Status",
 	"IDS_WP_ACCOUNT_INTERNAL_TABLE_DELETE_ALL": "Delete all",
 	"IDS_WP_ACCOUNT_INTERNAL_ADDED": "Added",
 	"IDS_WP_ACCOUNT_INTERNAL_ADDED_NOTE": "(Allowed to create up to 100 accounts for each time)",
@@ -2479,5 +2480,11 @@
 	"IDS_LABEL_NOT_UPDATE": "Not update",
 	"LABEL_CREATE_WORKING_GROUP": "Create workgroups",
 	"LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Decentralized!",
-    "LABEL_GROUP_PERMISSION_EMPTY_DES": "This user has not been authorized. Click the assign button to assign the group of rights to the member"
+    "LABEL_GROUP_PERMISSION_EMPTY_DES": "This user has not been authorized. Click the assign button to assign the group of rights to the member",
+	"LABEL_SUCCESS": "Success",
+	"LABEL_FAIL": "Fail",
+	"LABEL_MEMMORY": "Memory",
+  "LABEL_STATUS_STORE_MEMORY": "Used {{use_store}} in total {{total_store}}",
+  "LABEL_BTN_STORE_MEMORY": "Buy memory",
+  "LABEL_CLASSIFY": "Classify"
 }

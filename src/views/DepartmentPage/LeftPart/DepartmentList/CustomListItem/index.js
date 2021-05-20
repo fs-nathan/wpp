@@ -147,7 +147,7 @@ function CustomListItem({ room, index, handleLink, canDrag }) {
         onMouseLeave={() => setIsHover(false)}
       >
         <CustomAvatar
-          style={{ height: 50, width: 50 }}
+          style={{ height: 32, width: 32, marginRight: '10px' }}
           src={room.icon}
           alt="avatar"
         />

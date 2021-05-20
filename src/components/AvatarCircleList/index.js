@@ -3,6 +3,7 @@ import { get } from 'lodash';
 import CustomAvatar from '../CustomAvatar';
 import PropTypes from 'prop-types';
 import './style.scss';
+import { ActionList } from 'components/CustomTable/TableMain/TableBodyGroupRow/TableBodyRow/ActionGroup';
 
 function AvatarCircle({ user, size }) {
   return (
@@ -13,9 +14,11 @@ function AvatarCircle({ user, size }) {
   );
 }
 
-function AvatarCircleList({ display, users = [], size = 20, className = '', }) {
+function AvatarCircleList({ row,display, users = [], size = 20, className = '', }) {
+  // const { options, columns } = React.useContext(CustomTableContext);
 
   return (
+    <>
     <div className={`comp_AvatarCircleList___container ${className}`}>
       {users.length > 0 && (
         <React.Fragment>
@@ -43,6 +46,10 @@ function AvatarCircleList({ display, users = [], size = 20, className = '', }) {
       )}
       {users.length === 0 && (null)}
     </div>
+    <div className="list-backup">
+      <ActionList row={row} />
+    </div>
+    </>
   )
 }
 

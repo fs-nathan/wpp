@@ -130,7 +130,7 @@ function DepartmentList({
                   {...provided.droppableProps}
                 >
                   <StyledListItem to={`${route}`} component={Link} style={history.location.pathname === "/users" ? {background: "#E6E6E6"} : {}}>
-                    <CustomAvatar style={{ height: 35, width: 35, }} alt='avatar' />
+                    <CustomAvatar style={{ height: 32, width: 32, }} alt='avatar' />
                     <ListItemText
                       primary={<StyledPrimary style={{ marginLeft: "10px"}}>{t('DMH.VIEW.DP.LEFT.LIST.ALL')}</StyledPrimary>}
                       secondary={
