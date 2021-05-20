@@ -233,3 +233,8 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
     }
   };
 }
+@media screen and (max-width: 1200px) {
+  .comp_CustomTable___left-header {
+    max-width: 250px;
+  }
+}
