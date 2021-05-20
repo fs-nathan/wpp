@@ -103,3 +103,24 @@
     font-weight: 500 !important;
   }
 }
+#filter-menu, .download-popover-project{
+  .MuiPaper-root{
+    top: 125px !important;
+    left: unset !important;
+    right: 60px !important;
+  }
+  .MuiPaper-root{
+    top: 125px !important;
+    left: unset !important;
+    right: 60px !important;
+  }
+}
+.time-range-popover{
+  .MuiPaper-root{
+    top: 125px !important;
+    left: unset !important;
+    right: 0%!important;
+  transform: translate(-50%, 0%) !important;
+  }
+ 
+}

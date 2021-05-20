@@ -105,13 +105,15 @@ const ListPart = props => {
     }
   ];
   return (
-    <LeftSetting title={t('IDS_WP_DOCUMENT_MANAGE')} listMenu={listMenu} />
+    <LeftSetting isMemory={true} colors={props.colors} profile={props?.profile?.group_active} title={t('IDS_WP_DOCUMENT_MANAGE')} listMenu={listMenu} />
   );
 };
 
 export default connect(
   state => ({
-    breadCrumbs: state.system.breadCrumbs
+    breadCrumbs: state.system.breadCrumbs,
+    profile: state.system.profile,
+    colors: state.setting.colors
   }),
   {
     actionChangeBreadCrumbs,

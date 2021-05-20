@@ -506,6 +506,16 @@ const handlesetFileExcel = (file) => {
                     color="white"
                   />
                 )}
+                {get(item, "iconPath") ? (
+                  <Icon
+                  style={{paddingRight: '10px'}}
+                    path={get(item, "iconPath")}
+                    size={1}
+                    color={"rgba(0, 0, 0, 0.54)"}
+                  />
+                ) : (
+                  get(item, "icon", () => null)()
+                )}
                 {get(item, "label", "")}
               </MenuItem>
             )

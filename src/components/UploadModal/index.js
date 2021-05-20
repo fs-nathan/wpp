@@ -14,6 +14,7 @@ import { actionUploadFile } from '../../actions/documents';
 import { isEmpty } from '../../helpers/utils/isEmpty';
 import ColorTypo from '../ColorTypo';
 import './UploadModal.scss';
+import OutOfStorageDialog from 'views/JobDetailPage/ChatComponent/OutOfStorageDialog';
 
 const UploadModal = props => {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ const UploadModal = props => {
   const [errorSize, setErrorSize] = useState(false);
   const [errorName, setErrorName] = useState(false);
   const [errorMaxFile, setErrorMaxFile] = useState(false);
-
+  const [errorLimit, setErrorLimit] = useState(false)
   const onUploading = percent => {
     setPercent(parseInt(percent));
   };
@@ -82,6 +83,9 @@ const UploadModal = props => {
             await actionUploadFile(formData, onUploading);
             setTotalSuccess(++total);
           } catch (error) {
+            if(error.message === 'limit_group_size'){
+              setErrorLimit(true)
+            }
             setPercent(0);
           }
         }
@@ -101,7 +105,9 @@ const UploadModal = props => {
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
   }, []);
-
+  if(errorLimit){
+    return <OutOfStorageDialog isOpen={errorLimit} setOpen={setErrorLimit}/>
+  }
   const handleClose = () => setOpen(false);
   if (!open) return null;
   const bgColor = props.colors.find(item => item.selected === true);
@@ -172,6 +178,7 @@ const UploadModal = props => {
             </div>
           </React.Fragment>
         )}
+
       </DialogContent>
     </div>
   );

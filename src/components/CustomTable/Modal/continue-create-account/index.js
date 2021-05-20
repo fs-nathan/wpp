@@ -101,6 +101,11 @@ const ModalContinueCreateAccount = ({
           setLoading(false);
           handleToast('success', t('IDS_WP_CREATE_ACCOUNT_SUCCESS'))
            setOpenContinueCreateAccount(false);
+           setRowTable([{
+            email: "",
+            name: "",
+            room: "",
+          }])
            setOpenResultCreateAccount(true);
            doReloadUser({userId: profile.id, projectId: _projectId});
            setResult(data.account_list);
@@ -170,7 +175,13 @@ const ModalContinueCreateAccount = ({
         open={openContinueCreateAccount}
         manualClose={true}
         setOpen={setOpenContinueCreateAccount}
-        onCancle={() => setOpenContinueCreateAccount(false)}
+        activeLoading={loading}
+        onCancle={() => {setRowTable([{
+          email: "",
+          name: "",
+          room: "",
+        }]);
+        setOpenContinueCreateAccount(false)}}
         confirmRender={()=>(t("IDS_WP_SIGN_UP"))}
         type="submit"
         form="form-create-multile-account"

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import Chip from '../../components/ColorChip';
 import SearchInput from '../../components/SearchInput';
 import Icon from '@mdi/react';
-import {mdiBookmarkMultipleOutline, mdiHelpCircleOutline, mdiMenuDown} from '@mdi/js';
+import {mdiBookmarkMultipleOutline, mdiHelpCircleOutline, mdiMagnify, mdiMenuDown} from '@mdi/js';
 import {Avatar, IconButton} from '@material-ui/core';
 import * as icons from '../../assets';
 import {
@@ -149,12 +149,11 @@ const TopBar = props => {
           <Icon path={mdiBookmarkMultipleOutline} size={0.8} color={"#fff"} className="normal-icon"/>
         </div>
         <span id="searchInputWrapper">
-          <SearchInput
-            className="search-input"
-            onClick={openSearchModal}
-            readOnly
-            placeholder={t('IDS_WP_FIND_JOB')}
-          />
+          <div style={{marginLeft: '10px'}}className={"quick-access-button"}
+          onClick={openSearchModal}
+        >
+          <Icon path={mdiMagnify} size={0.8} color={"#fff"} className="normal-icon"/>
+        </div>
           {visibleSearchModal && (
             <SearchModal
               open={visibleSearchModal}

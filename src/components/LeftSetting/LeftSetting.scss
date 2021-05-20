@@ -21,3 +21,35 @@
 .none-action {
   pointer-events: none;
 }
+.status-memory{
+  padding: 20px 28px;
+  width: 80%;
+  border-top: 1px solid #c7c2c2;
+  color: #383636;
+  &__title{
+    display: flex;
+    align-items: center;
+    svg{
+      width: 26px !important;
+      height: 26px !important;
+    }
+    &-text{
+      padding-left: 15px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+  &__note{
+    margin-top: 10px;
+    font-size: 14px;
+  }
+  button{
+    padding: 6px 24px;
+    text-transform: unset;
+    border: 1px solid #ccc;
+    margin-top: 15px;
+    span{
+      font-size: 14px;
+    }
+  }
+}

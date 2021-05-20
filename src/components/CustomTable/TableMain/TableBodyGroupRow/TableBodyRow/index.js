@@ -1,6 +1,6 @@
 import React from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { TableCell, TableRow } from '@material-ui/core';
+import { Menu, MenuItem, TableCell, TableRow } from '@material-ui/core';
 import { CustomTableContext } from '../../../index';
 import { includes } from 'lodash';
 import Icon from '@mdi/react';
@@ -18,14 +18,15 @@ const StyledTableBodyCell = ({ className = '', draggable, ...rest }) =>
     {...rest} 
   />;
 
+
 const DragBox = ({ className = '', ...props }) =>
   <div 
     className={`comp_CustomTable_TableBodyRow___drag-box ${className}`}
     {...props}
   />
-
+ 
 function TableBodyRow({ index, row, group }) {
-
+  const [hover, setHover] = React.useState(false);
   const { options, columns } = React.useContext(CustomTableContext);
   let inSearch = false;  
 
@@ -50,12 +51,15 @@ function TableBodyRow({ index, row, group }) {
           <StyledTableBodyRow
             innerRef={provided.innerRef}
             {...provided.draggableProps} 
+            onMouseEnter={()=>setHover(true)}
+            onMouseLeave={()=>setHover(false)}
           >
             <StyledTableBodyCell
               align={'right'}
+              onMouseEnter={()=>setHover(true)}
               draggable={true}
             >
-              <DragBox {...provided.dragHandleProps}>
+              <DragBox className={get(options, 'actionlist.bool', false) && hover && 'icon-drag-hover' || get(options, 'actionlist.bool', false) && 'icon-drag-hide'} {...provided.dragHandleProps}>
                 <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
               </DragBox>
             </StyledTableBodyCell>
@@ -65,10 +69,13 @@ function TableBodyRow({ index, row, group }) {
                 key={index}
                 align={get(column, 'align', 'left')}
                 draggable={true}
+                className={hover && get(options, 'actionlist.bool') === true 
+                ? 'comp__table-cell-hover':''}
               >
                 {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
               </StyledTableBodyCell>
             ))}
+            
           </StyledTableBodyRow>
         )}
       </Draggable>
@@ -88,3 +95,5 @@ function TableBodyRow({ index, row, group }) {
 }
 
 export default TableBodyRow;
+
+
