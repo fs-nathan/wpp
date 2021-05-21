@@ -498,7 +498,7 @@ const FooterPart = ({
         onPaste={onpaste}
       >
         <ChatBoxInput
-          placeholder={t('LABEL_CHAT_TASK_NHAP_GOI_Y_NOI')}
+          placeholder={t('LABEL_CHAT_TASK_NHAP_GOI_Y_NOI_MESSAGE')}
           innerRef={editorRef}
           value={chatText}
           onChange={onChangeChatText}

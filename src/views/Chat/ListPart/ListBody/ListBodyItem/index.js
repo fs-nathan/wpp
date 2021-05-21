@@ -24,15 +24,18 @@ const BadgeItem = styled(ColorChip)`
 const IconPin = styled(Icon)`
   display: ${props => (props.isghim === 'true' ? 'block' : 'none')};
 `;
-const ChipMes = styled(Chip)`
-  border-radius: 10px;
-  width: auto;
-  height: auto;
+const ChipMes = styled.div`
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
   color: white;
   background-color: red;
   font-weight: 500;
   margin-right: 5px;
-  display: ${props => (props.notification ? 'flex' : 'none')};
+  text-align: center;
+  line-height: 17px;
+  font-size: 11px;
+  display: ${props => (props.notification ? 'inline-block' : 'none')};
 `;
 
 const getBadgeColor = status_code => {
@@ -82,11 +85,12 @@ function JobContent(props) {
       </div>
       <div>
         <ChipMes
-          label={notification > 99 ? '99+' : notification}
           size="small"
           notification={notification}
           className="step-new-chat"
-        />
+        >
+          {notification > 99 ? '99+' : notification}
+        </ChipMes>
         <div className="step-time-chat">{time}</div>
       </div>
     </div>
