@@ -53,6 +53,7 @@ import GuideLineAddUserModal from "../../../ProjectGroupPage/Modals/GuideLineAdd
 import {Routes} from "../../../../constants/routes";
 import MenuCreateNew from 'views/JobDetailPage/ListPart/ListHeader/MenuCreateNew';
 import CreateGroupTask from 'views/ProjectPage/Modals/CreateGroupTask';
+import { sortGroupTask } from 'actions/groupTask/sortGroupTask';
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -65,7 +66,7 @@ function AllTaskTable({
   doDeleteTask, doCreateTask, doSortTask,
   doDetailProject, doListGroupTask, doListTask, doListTaskMember,
   doGetPermissionViewDetailProject, doSetProject, memberTask,
-  localOption, doDeleteMemberFromTask, doAddMemberToTask
+  localOption, doDeleteMemberFromTask, doAddMemberToTask,doSortGroupTask
 }) {
 
   const times = useTimes();
@@ -259,6 +260,9 @@ function AllTaskTable({
         handleDeleteTask={task =>
           doDeleteTask({ taskId: get(task, 'id') })
         }
+        handleSortGroupTask={(groupTaskId, sortIndex) =>
+          doSortGroupTask({ groupTaskId, sortIndex })
+        }
         handleSortTask={(taskId, groupTask, sortIndex) =>
           doSortTask({
             taskId,
@@ -344,6 +348,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
+    doSortGroupTask: ({ groupTaskId, sortIndex }) => dispatch(sortGroupTask({ groupTaskId, sortIndex })),
     doHideProject: ({ projectId }) => dispatch(hideProject({ projectId })),
     doShowProject: ({ projectId }) => dispatch(showProject({ projectId })),
     doDeleteTask: ({ taskId }) => dispatch(deleteTask({ taskId })),

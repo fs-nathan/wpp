@@ -36,6 +36,8 @@ import {
   getMemberNotAssigned,
   updateRolesForMember
 } from "../../../../../actions/taskDetail/taskDetailActions";
+import { getPermissionViewDetailProject } from "../../../../../actions/viewPermissions";
+
 import {
   ADD_MEMBER_PROJECT,
   CustomEventDispose,
@@ -46,6 +48,7 @@ import {EVENT_ADD_MEMBER_TO_TASK_SUCCESS} from "../../../../../constants/actions
 import MemberSetting from "../../../../ProjectPage/Modals/MembersSetting";
 import {useHistory} from "react-router-dom";
 import {listUserRole} from "../../../../../actions/userRole/listUserRole";
+import { listTask } from 'actions/task/listTask';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,7 +82,7 @@ const BootstrapInput = withStyles((theme) => ({
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -92,16 +95,23 @@ function AddMemberModal({
   const history = useHistory();
   const [totalMembers, setTotalMembers] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState(0);
-  const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectId]);
+  const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectId || projectActive]);
   const [taskIDValue, setTaskIDValue] = React.useState(null);
   const [isFocus, setIsFocus] = React.useState(false);
-
+  console.log(permissions)
   React.useEffect(() => {
     setTaskIDValue(get(task, "id", task_id));
   }, [task_id, task]);
+  React.useEffect(()=>{
+if(projectActive){
+    dispatch(getPermissionViewDetailProject({ projectId: projectActive }));
+  }
+  },[dispatch, projectActive])
+  
 
   const handleClose = () => {
     setOpen(false);
+    dispatch(listTask({projectId: projectActive || projectId}));
   };
 
   React.useEffect(() => {
@@ -118,7 +128,6 @@ function AddMemberModal({
       doListUserRole(true);
     }
   }, [taskIDValue, doListMembersNotAssign, isOpen, doListUserRole, doListMembers]);
-
   function handleRemoveMember(member_id) {
     doDeleteMember({task_id: taskIDValue, member_id});
   }
@@ -150,7 +159,7 @@ function AddMemberModal({
     setTotalMembers(concat(members, membersNotAssigned));
     setFilteredMembers(concat(members, membersNotAssigned));
   }, [members, membersNotAssigned]);
-
+ 
   return (
     <DialogWrap
       title={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
@@ -265,7 +274,7 @@ function AddMemberModal({
           </Box>
         </Scrollbars>
       </DialogContent>
-      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting} project_id={projectId}/>
+      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting} project_id={projectId || projectActive}/>
     </DialogWrap>
   );
 }

@@ -6,7 +6,7 @@ import {
   TableCell,
   TableRow,
 } from "@material-ui/core";
-import { mdiMenuDown, mdiMenuUp, mdiPlus, mdiDotsVertical } from "@mdi/js";
+import { mdiMenuDown, mdiMenuUp, mdiPlus, mdiDotsVertical, mdiDragVertical } from "@mdi/js";
 import Icon from "@mdi/react";
 import { get, isNil , includes} from "lodash";
 import React from "react";
@@ -23,6 +23,7 @@ import EditGroupTask from "views/ProjectPage/Modals/CreateNewGroupTask";
 import AlertModal from "components/AlertModal";
 import { useDispatch } from "react-redux";
 import { deleteGroupTask } from "actions/groupTask/deleteGroupTask";
+import { IndeterminateCheckBoxSharp } from "@material-ui/icons";
 
 const StyledTableBodyRowGroup = ({ className = "", ...rest }) => (
   <TableRow
@@ -39,7 +40,12 @@ const CustomButton = ({ className = "", ...rest }) => (
     {...rest}
   />
 );
-
+const DragBox = ({ className = '', ...props }) =>
+  <div 
+    className={`comp_CustomTable_TableBodyRow___drag-box-group ${className}`}
+    {...props}
+  />
+ 
 function TableBodyGroupRow({ group, index }) {
   const { options, columns } = React.useContext(CustomTableContext);
   const [open, setOpen] = React.useState(
@@ -76,11 +82,28 @@ function TableBodyGroupRow({ group, index }) {
     >
       {(provided, snapshot) => (
         <TableBody ref={provided.innerRef} {...provided.droppableProps}>
-          {!inSearch || group?.task?.length < 1 ? null :<StyledTableBodyRowGroup
+          {!inSearch || group?.task?.length < 1 ? null :
+          // <Draggable draggableId={group[get(options, "grouped.id")]} index={index} >
+          //   {(provided) => (
+          <StyledTableBodyRowGroup
+          // innerRef={provided.innerRef}
+          //   {...provided.draggableProps} 
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => {setAnchorEl(null);setHover(false)}}
           >
-            <StyledTableBodyCell colSpan={get(columns, "length", 0) + 1}>
+            {/* {get(options, 'grouped.draggable', false) &&
+            <StyledTableBodyCell
+              align={'left'}
+              width={'60px'}
+              onMouseEnter={()=>setHover(true)}
+              draggable={true}
+            >
+                <DragBox {...provided.dragHandleProps}>
+                <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
+              </DragBox>
+            </StyledTableBodyCell>
+            } */}
+            <StyledTableBodyCell  colSpan={get(columns, "length", 0) + 1}>
               <CustomButton
                 fullWidth
                 size="small"
@@ -134,7 +157,18 @@ function TableBodyGroupRow({ group, index }) {
                   )
                 }
               </div>
-              <Menu
+              
+            </StyledTableBodyCell>
+          </StyledTableBodyRowGroup>
+          // )}
+          // </Draggable>
+          }
+          {(open || snapshot.isDraggingOver) &&
+            group[get(options, "grouped.item")].map((row, index) => (
+              <TableBodyRow key={index} index={index} row={row} group={group} />
+            ))}
+          {provided.placeholder}
+          <Menu
                 id="menuMoreAction"
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
@@ -160,13 +194,6 @@ function TableBodyGroupRow({ group, index }) {
                 setOpen={setOpenGroupTask}
                 curGroupTask={group}
               />
-            </StyledTableBodyCell>
-          </StyledTableBodyRowGroup>}
-          {(open || snapshot.isDraggingOver) &&
-            group[get(options, "grouped.item")].map((row, index) => (
-              <TableBodyRow key={index} index={index} row={row} group={group} />
-            ))}
-          {provided.placeholder}
         </TableBody>
       )}
     </Droppable>

@@ -26,10 +26,10 @@ function TableHeaderRow() {
     <StyledTableHeadRow>
       {options.draggable.bool && (
         <StyledTableHeadCell
-          align={'right'}
+          align={'left'}
           draggable={get(options, 'draggable.bool', false)}
         >
-          <div>
+          <div style={{paddingLeft: '6px'}}>
             <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
           </div>
         </StyledTableHeadCell>
