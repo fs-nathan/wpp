@@ -24,6 +24,7 @@ import AlertModal from "components/AlertModal";
 import { useDispatch } from "react-redux";
 import { deleteGroupTask } from "actions/groupTask/deleteGroupTask";
 import { IndeterminateCheckBoxSharp } from "@material-ui/icons";
+import { isSortGroupTask } from "actions/groupTask/sortGroupTask";
 
 const StyledTableBodyRowGroup = ({ className = "", ...rest }) => (
   <TableRow
@@ -51,6 +52,7 @@ function TableBodyGroupRow({ group, index }) {
   const [open, setOpen] = React.useState(
     group[get(options, "grouped.item")].length > 0 ? true : false
   );
+  const [mouse,setMouse] = React.useState(true);
   const [hover, setHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openAlertDelete, setOpenAlertDelete] = React.useState(false);
@@ -74,7 +76,9 @@ function TableBodyGroupRow({ group, index }) {
         includes(get(group, key, '').toString().toLowerCase(), get(options, 'search.patern', '').toLowerCase())
       ) inSearch = true;
     }
-
+React.useEffect(()=>{
+ dispatch(isSortGroupTask(mouse))
+},[mouse])
   return (
     <Droppable
       droppableId={group[get(options, "grouped.id")]}
@@ -83,27 +87,30 @@ function TableBodyGroupRow({ group, index }) {
       {(provided, snapshot) => (
         <TableBody ref={provided.innerRef} {...provided.droppableProps}>
           {!inSearch || group?.task?.length < 1 ? null :
-          // <Draggable draggableId={group[get(options, "grouped.id")]} index={index} >
-          //   {(provided) => (
+          <Draggable  draggableId={group[get(options, "grouped.id")]} index={index} >
+            {(provideds,snapshots) => (
           <StyledTableBodyRowGroup
-          // innerRef={provided.innerRef}
-          //   {...provided.draggableProps} 
+          innerRef={provideds.innerRef}
+            {...provideds.draggableProps} 
+            onMouseDown={()=> setMouse(false)}
+            onMouseUp={()=> setMouse(true)}
+
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => {setAnchorEl(null);setHover(false)}}
           >
-            {/* {get(options, 'grouped.draggable', false) &&
+            {get(options, 'grouped.draggable', false) &&
             <StyledTableBodyCell
               align={'left'}
               width={'60px'}
               onMouseEnter={()=>setHover(true)}
               draggable={true}
             >
-                <DragBox {...provided.dragHandleProps}>
+                <DragBox {...provideds.dragHandleProps} className={hover ? 'icon-drag-hover': 'icon-drag-hide'}>
                 <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
               </DragBox>
             </StyledTableBodyCell>
-            } */}
-            <StyledTableBodyCell  colSpan={get(columns, "length", 0) + 1}>
+            }
+            <StyledTableBodyCell className={get(options, 'grouped.draggable', false) && 'group-task-name'}  colSpan={get(columns, "length", 0) + 1}>
               <CustomButton
                 fullWidth
                 size="small"
@@ -120,6 +127,7 @@ function TableBodyGroupRow({ group, index }) {
                 )}
               </CustomButton>
               <div
+                draggable={true}
                 onMouseEnter={() => setHover(true)}
                 className={`action_group ${hover && "action_group_hover"}`}
               >
@@ -157,18 +165,7 @@ function TableBodyGroupRow({ group, index }) {
                   )
                 }
               </div>
-              
-            </StyledTableBodyCell>
-          </StyledTableBodyRowGroup>
-          // )}
-          // </Draggable>
-          }
-          {(open || snapshot.isDraggingOver) &&
-            group[get(options, "grouped.item")].map((row, index) => (
-              <TableBodyRow key={index} index={index} row={row} group={group} />
-            ))}
-          {provided.placeholder}
-          <Menu
+              <Menu
                 id="menuMoreAction"
                 open={Boolean(anchorEl)}
                 anchorEl={anchorEl}
@@ -194,6 +191,16 @@ function TableBodyGroupRow({ group, index }) {
                 setOpen={setOpenGroupTask}
                 curGroupTask={group}
               />
+            </StyledTableBodyCell>
+          </StyledTableBodyRowGroup>
+          )}
+          </Draggable>
+          }
+          {(open || snapshot.isDraggingOver) &&
+            group[get(options, "grouped.item")].map((row, index) => (
+              <TableBodyRow key={index} index={index} row={row} group={group} />
+            ))}
+          {provided.placeholder}
         </TableBody>
       )}
     </Droppable>
