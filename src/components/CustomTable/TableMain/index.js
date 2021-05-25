@@ -15,8 +15,12 @@ function TableMain() {
 
   const { options, data } = React.useContext(CustomTableContext);
   const [placeholderProps, setPlaceholderProps] = React.useState({});
-
+console.log(options)
+const handleDragEnd = (data) => {
+  console.log(data)
+}
   const onDragUpdate = update => {
+    console.log(update, 'update')
     if (!update.destination) {
       return;
     }
@@ -60,6 +64,7 @@ function TableMain() {
         <TableHead>
           <TableHeaderRow />
         </TableHead>
+        {/* get(options, 'draggable.onDragEnd', () => null) */}
         <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)} onDragUpdate={onDragUpdate}>
           {get(options, 'grouped.bool', false)
             ? (data.map((group, index) => (

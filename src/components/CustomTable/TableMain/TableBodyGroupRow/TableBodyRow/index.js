@@ -55,7 +55,7 @@ function TableBodyRow({ index, row, group }) {
             onMouseLeave={()=>setHover(false)}
           >
             <StyledTableBodyCell
-              align={'right'}
+              align={'left'}
               onMouseEnter={()=>setHover(true)}
               draggable={true}
             >
@@ -81,11 +81,15 @@ function TableBodyRow({ index, row, group }) {
       </Draggable>
     )
     : (
-      <StyledTableBodyRow>
+      <StyledTableBodyRow 
+      onMouseEnter={()=>setHover(true)}
+      onMouseLeave={()=>setHover(false)}>
         {columns.map((column, index) => (
           <StyledTableBodyCell 
             key={index}
             align={get(column, 'align', 'left')}
+            className={hover && get(options, 'actionlist.bool') === true 
+                ? 'comp__table-cell-hover':''}
           >
             {typeof(get(column, 'field')) === 'function' ? column.field(row) : get(row, get(column, 'field', ''), '')}
           </StyledTableBodyCell>
