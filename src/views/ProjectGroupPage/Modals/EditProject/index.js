@@ -46,8 +46,8 @@ function EditProject({
   return (
     <EditProjectPresenter
       curProject={curProject}
-      projectGroupId={curProject ? curProject.project_group_id : null}
-      projectGroupName={curProject ? curProject.project_group.name : ""}
+      projectGroupId={curProject ? (curProject.project_group ? curProject.project_group.id : curProject.group_project_id) : null}
+      projectGroupName={curProject ? (curProject.project_group ? curProject.project_group.name : curProject.group_project_name) : ""}
       workType={curProject ? curProject.work_type : 0}
       timeRange={timeRange}
       doReload={() =>
