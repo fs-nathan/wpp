@@ -52,7 +52,7 @@ function AllTaskTable({
   handleOpenModal, handleRemoveMemberFromTask,
   bgColor, timeType, handleAddMemberToTask,
   handleTimeType, memberID, memberTask,
-  canUpdateProject, canCreateTask,
+  canUpdateProject, canCreateTask,handleSortGroupTask
 }) {
 
   const { t } = useTranslation();
@@ -171,6 +171,7 @@ function AllTaskTable({
                 } : undefined] : undefined,
               grouped: {
                 bool: true,
+                draggable: true,
                 id: 'id',
                 label: (group) => get(group, 'name'),
                 action: (group) => handleOpenModal('CREATE', {label: get(group, 'name'), value: get(group, 'id')}),
@@ -186,7 +187,10 @@ function AllTaskTable({
                     destination.droppableId === source.droppableId &&
                     destination.index === source.index
                   ) return;
-                  handleSortTask(draggableId, destination.droppableId, destination.index);
+                  // if(destination.droppableId === source.droppableId){
+                    handleSortTask(draggableId, destination.droppableId, destination.index);
+                  // }
+                  // else handleSortGroupTask(draggableId,destination.index)
                 },
               } : {
                 bool: false,

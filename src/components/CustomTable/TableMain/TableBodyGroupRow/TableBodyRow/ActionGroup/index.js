@@ -34,7 +34,6 @@ export const ActionList = ({index,row,group}) => {
       stop_task,
     } = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails.permissions', {}));
     const { is_ghim: isPinned, state_code, assign_code } = taskDetails || {};
-    
     const pause = state_code === 4 ;
   
     const confirmDelete = () => {
@@ -55,7 +54,6 @@ export const ActionList = ({index,row,group}) => {
         roles = compact([user_create.room, user_create.position]).join(' - ');
       }
     }
-   
     const onClickEdit = (mode) => () => {
       setOpenCreateJobModal(true);
       dispatch(getListGroupTask({ project_id: taskDetails?.project }));
@@ -89,7 +87,15 @@ export const ActionList = ({index,row,group}) => {
       }
     }
    
-  
+   const handleAddMember = () => {
+    if(row?.id){
+      dispatch(chooseTask(row?.id));
+      dispatch(getTaskDetailTabPart({ taskId: row.id }));
+      setTimeout(() => {
+        setOpenAdd(true)
+      }, 1000);
+    }
+   }
     const onClickPause = () => {
       dispatch(stopTask(taskId));
       setAnchorEl(null);
@@ -115,15 +121,16 @@ export const ActionList = ({index,row,group}) => {
       }
       
     },[onload, detailTask, dispatch])
+   
     return (
-      <div>
+      <div onMouseLeave={()=>setAnchorEl(null)}>
               <div >
                 <ListAction >
-                <div onClick={()=>setOpenAdd(true)} className="action-add"><Icon path={mdiAccountPlus} color="#ffffff" width="17px"/></div>
-                <div onClick={()=> setOpenDelete(true)} className="action-delete"><Icon path={mdiDeleteOutline} color="#ffffff" width="17px"/></div>
+                <div onClick={handleAddMember} className="action-add"><Icon path={mdiAccountPlus} color="#ffffff" width="17px"/></div>
+                {get(row, 'can_delete') === true && <div onClick={()=> setOpenDelete(true)} className="action-delete"><Icon path={mdiDeleteOutline} color="#ffffff" width="17px"/></div>}
                 <div onClick={handleClick} className="action-more"><Icon path={mdiDotsVertical} color="#ffffff" width="17px"/></div>
               </ListAction>
-              <AddMemberModal isOpen={openAdd} setOpen={setOpenAdd}/>
+              <AddMemberModal projectActive={taskDetails.project} isOpen={openAdd} setOpen={setOpenAdd}/>
               <AlertModal
           open={openDelete}
           setOpen={setOpenDelete}
@@ -140,7 +147,7 @@ export const ActionList = ({index,row,group}) => {
           onClose={handleCloseMenu}
           transformOrigin={{
             vertical: -30,
-            horizontal: 'right'
+            horizontal: "right",
           }}
         >
           {update_task && editList}
