@@ -52,7 +52,7 @@ function TableBodyGroupRow({ group, index }) {
   const [open, setOpen] = React.useState(
     group[get(options, "grouped.item")].length > 0 ? true : false
   );
-  const [mouse,setMouse] = React.useState(true);
+  const [mouse,setMouse] = React.useState(false);
   const [hover, setHover] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [openAlertDelete, setOpenAlertDelete] = React.useState(false);
@@ -79,6 +79,7 @@ function TableBodyGroupRow({ group, index }) {
 React.useEffect(()=>{
  dispatch(isSortGroupTask(mouse))
 },[mouse])
+console.log(group)
   return (
     <Droppable
       droppableId={group[get(options, "grouped.id")]}
@@ -92,30 +93,30 @@ React.useEffect(()=>{
           <StyledTableBodyRowGroup
           innerRef={provideds.innerRef}
             {...provideds.draggableProps} 
-            onMouseDown={()=> setMouse(false)}
-            onMouseUp={()=> setMouse(true)}
+            onMouseDown={()=> setMouse(true)}
+            onMouseUp={()=> setMouse(false)}
 
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => {setAnchorEl(null);setHover(false)}}
           >
-            {get(options, 'grouped.draggable', false) &&
+            {get(options, 'grouped.draggable', false) &&  get(options, 'draggable.bool', false)&&
             <StyledTableBodyCell
-              align={'left'}
-              width={'60px'}
+              align={'center'}
               onMouseEnter={()=>setHover(true)}
               draggable={true}
+              className={get(options, 'grouped.draggable', false)&& get(options, 'draggable.bool', false) && 'group-icon-drag'}
             >
-                <DragBox {...provideds.dragHandleProps} className={hover ? 'icon-drag-hover': 'icon-drag-hide'}>
+              <div {...provideds.dragHandleProps} className={hover ? 'icon-drag-hover': 'icon-drag-hide'}>
                 <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
-              </DragBox>
+              </div>
             </StyledTableBodyCell>
             }
-            <StyledTableBodyCell className={get(options, 'grouped.draggable', false) && 'group-task-name'}  colSpan={get(columns, "length", 0) + 1}>
+            <StyledTableBodyCell draggable={true} className={get(options, 'grouped.draggable', false)&& get(options, 'draggable.bool', false) && 'group-task-name'}  colSpan={get(columns, "length", 0) + 1}>
               <CustomButton
                 fullWidth
                 size="small"
                 onClick={() => setOpen((open) => !open)}
-                style={{ width: "98%" }}
+                style={{ width: "calc(100% - 60px)" }}
               >
                 {typeof get(options, "grouped.label") === "function"
                   ? options.grouped.label(group)
@@ -165,6 +166,7 @@ React.useEffect(()=>{
                   )
                 }
               </div>
+              {Boolean(anchorEl) &&
               <Menu
                 id="menuMoreAction"
                 open={Boolean(anchorEl)}
@@ -179,18 +181,23 @@ React.useEffect(()=>{
                   {t("views.calendar_page.right_part.delete")}
                 </MenuItem>
               </Menu>
+             }
+             {openAlertDelete &&
               <AlertModal
                 setOpen={setOpenAlertDelete}
                 onConfirm={() => handleDeleteGroup()}
                 open={openAlertDelete}
                 content={t("DMH.VIEW.PP.MODAL.CUGT.ALERT")}
               />
+             }
+             {projectId && openGroupTask && 
               <EditGroupTask
                 project_id={projectId}
                 open={openGroupTask}
                 setOpen={setOpenGroupTask}
                 curGroupTask={group}
               />
+             }
             </StyledTableBodyCell>
           </StyledTableBodyRowGroup>
           )}

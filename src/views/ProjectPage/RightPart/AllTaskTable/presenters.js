@@ -69,7 +69,6 @@ function AllTaskTable({
       return sum + size(item.tasks);
     }, 0) === 0);
   }, [tasks.tasks]);
-
   return (
     <Container>
       {isEmpty && !tasks.loading && (
@@ -190,16 +189,15 @@ function AllTaskTable({
                     destination.droppableId === source.droppableId &&
                     destination.index === source.index
                   ) return;
+                 if(!isShortGroup && destination.droppableId !== source.droppableId){
+                    handleSortTask(draggableId, destination.droppableId, destination.index);
+                  }
                   if(destination.droppableId === source.droppableId){
                     handleSortTask(draggableId, destination.droppableId, destination.index);
                   }
-                  else if(isShortGroup){
-                    handleSortGroupTask(draggableId,destination.index);
-                    dispatch(isSortGroupTask(false))
-                  }
-                  else {
-                    handleSortTask(draggableId, destination.droppableId, destination.index);
-                  }
+                  
+                   else if(isShortGroup) {handleSortGroupTask(draggableId,destination.index);}
+
                 },
               } : {
                 bool: false,

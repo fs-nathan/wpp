@@ -13,6 +13,7 @@ import { useTranslation } from 'react-i18next';
 import AlertModal from 'components/AlertModal';
 import { cancelStopTask, chooseTask, getListGroupTask, getTaskDetailTabPart, pinTaskAction, stopTask, unPinTaskAction } from 'actions/taskDetail/taskDetailActions';
 import { listTask } from 'actions/task/listTask';
+import ProgressModal from 'views/Chat/TabPart/ProgressTab/ProgressModal';
  
 const ListAction = ({ className = '', ...props })=> <div className="comp_CustomTable_list-action" {...props}/>
 export const ActionList = ({index,row,group}) => {
@@ -20,6 +21,9 @@ export const ActionList = ({index,row,group}) => {
     const [openDelete, setOpenDelete] = React.useState(false);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
+    const [openProgressModal, setOpenProgressModal] = React.useState(false);
+    const [onloadAddMember,setOnloadAddMember] = React.useState(false);
+
     const [editMode, setEditMode] = React.useState(null);
     const taskId = row?.id;
     const [onload, setOnload] = React.useState(false);
@@ -91,9 +95,7 @@ export const ActionList = ({index,row,group}) => {
     if(row?.id){
       dispatch(chooseTask(row?.id));
       dispatch(getTaskDetailTabPart({ taskId: row.id }));
-      setTimeout(() => {
         setOpenAdd(true)
-      }, 1000);
     }
    }
     const onClickPause = () => {
@@ -114,6 +116,9 @@ export const ActionList = ({index,row,group}) => {
     function handleCloseMenu() {
       setAnchorEl(null);
     }
+    const onClickEditProgress = () => {
+        setOpenProgressModal(true);
+    }
     React.useEffect(()=>{
       if(onload && detailTask){
         dispatch(listTask({projectId: detailTask.project}));
@@ -121,7 +126,6 @@ export const ActionList = ({index,row,group}) => {
       }
       
     },[onload, detailTask, dispatch])
-   
     return (
       <div onMouseLeave={()=>setAnchorEl(null)}>
               <div >
@@ -130,14 +134,15 @@ export const ActionList = ({index,row,group}) => {
                 {get(row, 'can_delete') === true && <div onClick={()=> setOpenDelete(true)} className="action-delete"><Icon path={mdiDeleteOutline} color="#ffffff" width="17px"/></div>}
                 <div onClick={handleClick} className="action-more"><Icon path={mdiDotsVertical} color="#ffffff" width="17px"/></div>
               </ListAction>
-              <AddMemberModal projectActive={taskDetails.project} isOpen={openAdd} setOpen={setOpenAdd}/>
-              <AlertModal
+              {openAdd && taskDetails.project && <AddMemberModal setOnloadAddMember={setOnloadAddMember} onloadAddMember={onloadAddMember} projectActive={taskDetails.project} isOpen={openAdd} setOpen={setOpenAdd}/>}
+              {openDelete &&<AlertModal
           open={openDelete}
           setOpen={setOpenDelete}
           content={t('IDS_WP_ALERT_CONTENT')}
           onConfirm={confirmDelete}
         />
-      
+          }
+      {Boolean(anchorEl) &&
         <Menu
           className="tabHeaderDefault--menu"
           id="simple-menu"
@@ -156,6 +161,11 @@ export const ActionList = ({index,row,group}) => {
           >
             {isPinned ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_CONG_VIEC')}
           </MenuItem>
+          <MenuItem
+            onClick={onClickEditProgress}
+          >
+           {t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO')}
+          </MenuItem>
           {(detailTask && detailTask.state_code === 2) || !stop_task ? null :
             !pause ? (
               <MenuItem
@@ -168,6 +178,8 @@ export const ActionList = ({index,row,group}) => {
               )}
           
         </Menu>
+       }
+        {openCreateJobModal &&
         <EditJobModal
           isOpen={openCreateJobModal}
           setOpen={setOpenCreateJobModal}
@@ -176,6 +188,8 @@ export const ActionList = ({index,row,group}) => {
           setOnload={setOnload}
           projectId={detailTask.project}
         />
+       }
+       {taskDetails && taskId && Boolean(anchorEl) && <ProgressModal setOnload={setOnload} isOpen={openProgressModal} setOpen={setOpenProgressModal} />}
               </div>
               
              </div>

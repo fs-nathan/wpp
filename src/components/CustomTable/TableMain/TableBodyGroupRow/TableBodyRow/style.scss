@@ -5,12 +5,17 @@
     display: flex;
     z-index: 100;
     right: 15px;
-    height: 24px;
+    height: 20px;
+    margin-left: -5px;
     background-color: #ffffff;
     div{
-      margin: 0 3px;
-      padding: 3px;
+      margin-left: 3px;
+      padding: 2px;
       cursor: pointer;
+      svg{
+        width: 15px;
+        height: 15px;
+      }
     }
   }
   & > .MuiTableCell-root {
@@ -57,10 +62,10 @@
     padding-left: 7px;
 }
 .icon-drag-hide{
-  display: none;
+  opacity: .8;
 }
 .icon-drag-hover{
-  display: block;
+  opacity: 1;
 }
 .action-add{
   background-color: #0f8ec0;

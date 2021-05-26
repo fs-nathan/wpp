@@ -55,13 +55,14 @@ function TableBodyRow({ index, row, group }) {
             onMouseLeave={()=>setHover(false)}
           >
             <StyledTableBodyCell
-              align={'left'}
+              align={'center'}
               onMouseEnter={()=>setHover(true)}
               draggable={true}
+              className={get(options, 'grouped.draggable', false)&& get(options, 'draggable.bool', false) && 'group-icon-drag'}
             >
-              <DragBox className={get(options, 'actionlist.bool', false) && hover && 'icon-drag-hover' || get(options, 'actionlist.bool', false) && 'icon-drag-hide'} {...provided.dragHandleProps}>
+              <div className={get(options, 'actionlist.bool', false) && hover && 'icon-drag-hover' || get(options, 'actionlist.bool', false) && 'icon-drag-hide'} {...provided.dragHandleProps}>
                 <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
-              </DragBox>
+              </div>
             </StyledTableBodyCell>
             {columns.map((column, index) => (
               <StyledTableBodyCell 
