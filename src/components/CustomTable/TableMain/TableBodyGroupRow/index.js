@@ -87,18 +87,18 @@ React.useEffect(()=>{
       {(provided, snapshot) => (
         <TableBody ref={provided.innerRef} {...provided.droppableProps}>
           {!inSearch || group?.task?.length < 1 ? null :
-          <Draggable  draggableId={group[get(options, "grouped.id")]} index={index} >
-            {(provideds,snapshots) => (
+          // <Draggable  draggableId={group[get(options, "grouped.id")]} index={index} >
+          //   {(provideds,snapshots) => (
           <StyledTableBodyRowGroup
-          innerRef={provideds.innerRef}
-            {...provideds.draggableProps} 
-            onMouseDown={()=> setMouse(true)}
-            onMouseUp={()=> setMouse(false)}
+          // innerRef={provideds.innerRef}
+          //   {...provideds.draggableProps} 
+          //   onMouseDown={()=> setMouse(true)}
+          //   onMouseUp={()=> setMouse(false)}
 
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => {setAnchorEl(null);setHover(false)}}
           >
-            {get(options, 'grouped.draggable', false) &&  get(options, 'draggable.bool', false)&&
+            {/* {get(options, 'grouped.draggable', false) &&  get(options, 'draggable.bool', false)&&
             <StyledTableBodyCell
               align={'center'}
               onMouseEnter={()=>setHover(true)}
@@ -109,8 +109,9 @@ React.useEffect(()=>{
                 <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>
               </div>
             </StyledTableBodyCell>
-            }
-            <StyledTableBodyCell draggable={true} className={get(options, 'grouped.draggable', false)&& get(options, 'draggable.bool', false) && 'group-task-name'}  colSpan={get(columns, "length", 0) + 1}>
+            } */}
+            {/* draggable={true} className={get(options, 'grouped.draggable', false)&& get(options, 'draggable.bool', false) && 'group-task-name'} */}
+            <StyledTableBodyCell   colSpan={get(columns, "length", 0) + 1}>
               <CustomButton
                 fullWidth
                 size="small"
@@ -127,7 +128,7 @@ React.useEffect(()=>{
                 )}
               </CustomButton>
               <div
-                draggable={true}
+                // draggable={true}
                 onMouseEnter={() => setHover(true)}
                 className={`action_group ${hover && "action_group_hover"}`}
               >
@@ -199,8 +200,8 @@ React.useEffect(()=>{
              }
             </StyledTableBodyCell>
           </StyledTableBodyRowGroup>
-          )}
-          </Draggable>
+          // )}
+          // </Draggable>
           }
           {(open || snapshot.isDraggingOver) &&
             group[get(options, "grouped.item")].map((row, index) => (

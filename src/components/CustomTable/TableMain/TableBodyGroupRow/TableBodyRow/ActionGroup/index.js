@@ -129,20 +129,21 @@ export const ActionList = ({ index, row, group }) => {
         }
     };
     const onClickPause = () => {
-        dispatch(stopTask(taskId));
-        setAnchorEl(null);
-        setTimeout(() => {
-            setOnload(true);
-        }, 1000);
-    };
-    const onClickResume = () => {
-        dispatch(cancelStopTask(taskId));
-        setAnchorEl(null);
-        setTimeout(() => {
-            setOnload(true);
-        }, 1000);
-    };
+      dispatch(stopTask(taskId));
+      setAnchorEl(null);
+     setTimeout(() => {
+      setOnload(true);
 
+     }, 1000);
+    }
+    const onClickResume = () => {
+      dispatch(cancelStopTask(taskId));
+      setAnchorEl(null);
+      if(state_code === 4){
+        setOnload(true);
+      }
+    }
+   
     function handleCloseMenu() {
         setAnchorEl(null);
     }
