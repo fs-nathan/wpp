@@ -141,25 +141,26 @@ const HeaderPart = props => {
     <div className="container-header">
       {renderAvatars({ styles: classes, images: members })}
       <div className="wrap-room-description messenger-wrap-room-description">
-        <Typography className="chatHeader--title">
-          {
-            !isEditName ?
-            <React.Fragment>
+        {
+          !isEditName ?
+          <>
+            <Typography className="chatHeader--title">
               {task.name}
-              <div className="edit-name-task-on-head-chat">
-                {
-                  update_task && task.person_chat_type == 2 &&
-                  <EditIcon
-                    className="step-hover-edit"
-                    style={{background: appColor}}
-                    onClick={() => {
-                      setNameInput(task.name);
-                      setIsEditName(true);
-                    }}
-                  />
-                }
-              </div>
-            </React.Fragment> :
+            </Typography>
+            <div className="edit-name-task-on-head-chat">
+              {
+                update_task && task.person_chat_type == 2 &&
+                <EditIcon
+                  className="step-hover-edit"
+                  style={{background: appColor}}
+                  onClick={() => {
+                    setNameInput(task.name);
+                    setIsEditName(true);
+                  }}
+                />
+              }
+            </div>
+          </> : (
             <div className="el-edit-name-group-chat">
               <input type="text" value={nameInput} onChange={e => setNameInput(e.target.value)} />
               {
@@ -171,8 +172,8 @@ const HeaderPart = props => {
                 </React.Fragment>
               }
             </div>
-          }
-        </Typography>
+          )
+        }
         <RenderMemberOnline number_member={members.length} />
       </div>
       {

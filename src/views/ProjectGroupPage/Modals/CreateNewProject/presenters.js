@@ -65,7 +65,8 @@ function CreateNewProject({
     const groupID = params.get("groupID");
     if(groupID) {
       const group = find(groups.groups, {id: groupID});
-      setCurProjectGroupName(get(group, "name", ""));
+      setCurProjectGroupId(group ? group.id : null)
+      setCurProjectGroupName(group ? group.name : "")
     }
   }, [params, groups]);
 

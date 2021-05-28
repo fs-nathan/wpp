@@ -11,6 +11,15 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import { currentColorSelector } from 'views/JobDetailPage/selectors';
 import './styles.scss';
+import styled from 'styled-components';
+
+export const StyledDiv = styled.div`
+  position: absolute;
+  left: 25px;
+  .Mui-checked {
+    color: ${props => props.selectedColor} !important;
+  }
+`
 
 function DialogWrap({
   title,
@@ -24,6 +33,7 @@ function DialogWrap({
   className,
   isOneButton,
   useScrollbar = true,
+  contentMarkShowModal = false,
   ...rest
 }) {
   const { t } = useTranslation();
@@ -53,6 +63,12 @@ function DialogWrap({
       </div>
       <Divider/>
       <DialogActions>
+        {
+          contentMarkShowModal &&
+          <StyledDiv selectedColor={groupActiveColor}>
+            {contentMarkShowModal()}
+          </StyledDiv>
+        }
         {!isOneButton && <Button className={clsx("dialogWrap--button", "dialogWrap--button__cancel")} autoFocus onClick={handleClickClose} style={{}} >
           {t('IDS_WP_CANCEL')}
         </Button>}

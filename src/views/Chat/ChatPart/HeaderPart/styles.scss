@@ -160,10 +160,14 @@
 .wrap-avatars-1 {
   width: auto
 }
-.chatHeader--title {
+.messenger-wrap-room-description {
   &:hover .edit-name-task-on-head-chat {
     display: inline-block;
   };
+}
+.chatHeader--title {
+  max-width: calc(100% - 40px);
+  float: left;
   .el-edit-name-group-chat input {
     height: 35px;
     line-height: 35px;
@@ -182,7 +186,7 @@
     background: rgb(0, 156, 243);
     border-radius: 50%;
     font-size: 15px;
-    top: 2px;
+    top: 7px;
     margin-left: 10px;
     display: block;
     position: relative;

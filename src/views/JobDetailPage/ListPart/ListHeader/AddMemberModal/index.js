@@ -13,7 +13,9 @@ import {
   makeStyles,
   MenuItem,
   Paper,
-  Select
+  Select,
+  Checkbox,
+  FormControlLabel
 } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import DialogWrap from 'components/DialogWrap';
@@ -80,6 +82,28 @@ const BootstrapInput = withStyles((theme) => ({
   },
 }))(InputBase);
 
+const MarkShowModal = ({t, projectId}) => {
+  let dataMarkNotShow = localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)
+  const [alwayShow, setAlwayShow] = React.useState(dataMarkNotShow ? false : true)
+  const handleChange = (event) => {
+    if (event.target.checked) { 
+      setAlwayShow(true)
+      if (dataMarkNotShow) {
+        localStorage.removeItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)
+      }
+    } else {
+      setAlwayShow(false)
+      localStorage.setItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`, true)
+    }
+  };
+  return (
+    <FormControlLabel className="modal-member-task-mark-show"
+      control={<Checkbox onChange={handleChange} checked={alwayShow} />}
+      label={t("LABEL_MARK_MODAL_MEMBER_TASK_SHOW")}
+    />
+  )
+}
+
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
   doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive
@@ -98,16 +122,14 @@ function AddMemberModal({
   const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectId || projectActive]);
   const [taskIDValue, setTaskIDValue] = React.useState(null);
   const [isFocus, setIsFocus] = React.useState(false);
-  console.log(permissions)
   React.useEffect(() => {
     setTaskIDValue(get(task, "id", task_id));
   }, [task_id, task]);
   React.useEffect(()=>{
-if(projectActive){
-    dispatch(getPermissionViewDetailProject({ projectId: projectActive }));
-  }
+    if(projectActive){
+      dispatch(getPermissionViewDetailProject({ projectId: projectActive }));
+    }
   },[dispatch, projectActive])
-  
 
   const handleClose = () => {
     setOpen(false);
@@ -141,19 +163,21 @@ if(projectActive){
   }
 
   React.useEffect(() => {
-    const reloadAfterActionMember = () => {
-      dispatch(taskDetailAction.getMember({task_id: taskIDValue}));
-      doListMembersNotAssign({task_id: taskIDValue});
+    if (taskIDValue) {
+      const reloadAfterActionMember = () => {
+        dispatch(taskDetailAction.getMember({task_id: taskIDValue}));
+        doListMembersNotAssign({task_id: taskIDValue});
+      }
+      CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+      CustomEventListener(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+      CustomEventListener(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+      return () => {
+        CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+        CustomEventDispose(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+        CustomEventDispose(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
+      }
     }
-    CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-    CustomEventListener(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
-    CustomEventListener(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
-    return () => {
-      CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-      CustomEventDispose(REMOVE_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
-      CustomEventDispose(ADD_MEMBER_PROJECT.SUCCESS, reloadAfterActionMember);
-    }
-  });
+  }, [taskIDValue]);
 
   React.useEffect(() => {
     setTotalMembers(concat(members, membersNotAssigned));
@@ -170,6 +194,7 @@ if(projectActive){
       maxWidth="sm" isOneButton
       className="AddMemberModal"
       scroll="body" useScrollbar={false}
+      contentMarkShowModal={() => <MarkShowModal t={t} projectId={projectId || projectActive} />}
     >
       <DialogContent className="AddMemberModal-container">
         <div style={{padding: "10px 25px"}}>
@@ -241,7 +266,7 @@ if(projectActive){
                       <ListItemSecondaryAction>
                         {findIndex(members, {"id": member.id}) >= 0 && (
                           <>
-                            {member.is_in_group && (
+                            {member.is_in_group && member.is_in_project && (
                               <FormControl className={classes.margin}>
                                 <Select
                                   input={<BootstrapInput />} displayEmpty
@@ -257,7 +282,13 @@ if(projectActive){
                                 </Select>
                               </FormControl>
                             )}
-                            {get(member, "is_in_group") === false && <span style={{color: "red"}}>{t('LABEL_CHAT_TASK_DA_ROI_NHOM')}</span>}
+                            {
+                              get(member, "is_in_group") === false
+                              ? <span style={{color: "red"}}>{t('LABEL_CHAT_TASK_DA_ROI_NHOM')}</span>
+                              : !get(member, "is_in_project")
+                              ? <span style={{color: "red"}}>{t('LABEL_CHAT_TASK_LEFT_PROJECT')}</span>
+                              : null
+                            }
                             {get(member, "can_ban") && (
                               <div className={"memberTypeAssigned"} onClick={() => handleRemoveMember(member.id)}>
                                 <span>{t("LABEL_LEAVE_TASK")}</span>

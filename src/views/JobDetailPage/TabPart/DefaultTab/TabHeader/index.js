@@ -28,8 +28,8 @@ function TabHeader(props) {
   const history = useHistory();
   const dispatch = useDispatch();
   const taskDetails = useSelector(state => get(state, 'taskDetail.detailTask.taskDetails'));
-  const { is_ghim: isPinned, state_code, assign_code } = taskDetails || {};
-  const pause = state_code === 4;
+  const { is_ghim: isPinned, status_label, assign_code } = taskDetails || {};
+  const pause = status_label && status_label.type === "Stop";
 
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenDelete, setOpenDelete] = React.useState(false);
@@ -46,7 +46,7 @@ function TabHeader(props) {
   const [editMode, setEditMode] = React.useState(null);
 
   function handleClick(evt) {
-    dispatch(getTaskDetailTabPart({ taskId }));
+    // dispatch(getTaskDetailTabPart({ taskId }));
     setAnchorEl(evt.currentTarget);
   }
 
@@ -63,6 +63,7 @@ function TabHeader(props) {
       roles = compact([user_create.room, user_create.position]).join(' - ');
     }
   }
+  console.log(detailTask)
   const handleOpenModalDelete = () => {
     setOpenDelete(true);
     setAnchorEl(null);
@@ -186,12 +187,15 @@ function TabHeader(props) {
         data={detailTask}
         editMode={editMode}
       />
-      <AlertModal
-        open={isOpenDelete}
-        setOpen={setOpenDelete}
-        content={t('IDS_WP_ALERT_CONTENT')}
-        onConfirm={confirmDelete}
-      />
+      {
+        isOpenDelete &&
+        <AlertModal
+          open={isOpenDelete}
+          setOpen={setOpenDelete}
+          content={t('IDS_WP_ALERT_CONTENT')}
+          onConfirm={confirmDelete}
+        />
+      }
     </div>
   );
 }

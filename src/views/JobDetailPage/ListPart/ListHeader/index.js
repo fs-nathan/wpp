@@ -12,6 +12,8 @@ import CreateJobModal from './CreateJobModal';
 import {get} from 'lodash';
 import CreateGroupTask from "../../../ProjectPage/Modals/CreateGroupTask";
 import ProjectSettingModal from "../../../ProjectGroupPage/Modals/ProjectSetting";
+import AddMemberModal from "./AddMemberModal";
+import {CREATE_TASK, CustomEventDispose, CustomEventListener} from "../../../../constants/events";
 
 const HeaderText = styled(Typography)`
   width: 315px;
@@ -74,6 +76,7 @@ function ListHeader(props) {
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenSettings, setOpenSettings] = React.useState(false);
   const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
+  const [showAddMember, setShowAddMember] = React.useState(false);
 
   const handleClick = (evt) => {
     setAnchorEl(evt.currentTarget);
@@ -94,6 +97,23 @@ function ListHeader(props) {
   const searchListTask = e => {
     dispatch(searchTask(e.target.value));
   };
+
+  React.useEffect(() => {
+    if (projectThis.id) {
+      CustomEventListener(CREATE_TASK, (e) => {
+        if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectThis.id}`)) {
+          setShowAddMember(e.detail.task);
+        }
+      });
+      return () => {
+        CustomEventDispose(CREATE_TASK, (e) => {
+          if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectThis.id}`)) {
+            setShowAddMember(e.detail.task);
+          }
+        });
+      }
+    }
+  }, [projectThis]);
 
   return (
     <div>
@@ -142,20 +162,30 @@ function ListHeader(props) {
           setOpenCreateTaskGroup(true);
         }}>{t("LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC")}</MenuItem>
       </Menu>
-      <CreateJobModal
-        isOpen={openCreateJobModal}
-        setOpen={setOpenCreateJobModal}
-      />
+      {
+        openCreateJobModal &&
+        <CreateJobModal
+          isOpen={openCreateJobModal}
+          setOpen={setOpenCreateJobModal}
+        />
+      }
+      {
+        showAddMember &&
+        <AddMemberModal isOpen={showAddMember} setOpen={setShowAddMember} task={showAddMember} projectId={projectThis.id} />
+      }
       <CreateGroupTask
         open={openCreateTaskGroup}
         setOpen={setOpenCreateTaskGroup}
         project_id={get(projectThis, "id")}
       />
-      <ProjectSettingModal
-        open={isOpenSettings}
-        setOpen={setOpenSettings}
-        curProject={projectThis}
-      />
+      {
+        isOpenSettings &&
+        <ProjectSettingModal
+          open={isOpenSettings}
+          setOpen={setOpenSettings}
+          curProject={projectThis}
+        />
+      }
     </div>
   );
 }

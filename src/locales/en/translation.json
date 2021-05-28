@@ -1716,6 +1716,7 @@
 	"LABEL_CHAT_TASK_CHU_SO_HUU_CONG": "The task owner has the following rights",
 	"LABEL_CHAT_TASK_NHOM_QUYEN_CHU_SO": "Permission group: Task owner",
 	"LABEL_CHAT_TASK_DA_ROI_NHOM": "Left group",
+	"LABEL_CHAT_TASK_LEFT_PROJECT": "Left board",
 	"LABEL_CHAT_TASK_DUNG_LUONG_LUU_TRU": "Your storage is full",
 	"LABEL_CHAT_TASK_VUI_LONG_NANG_CAP": "Please upgrade or contact Administrator",
 	"LABEL_CHAT_TASK_LUU_TRU_DAM_MAY": "W + Cloud storage is safe and economical",
@@ -2478,7 +2479,7 @@
 	"TITLE_INTRO_MESSENGER": "Workplus Messenger",
 	"DESCRIPTION_INTRO_MESSENGER": "This is your family. Keeping contact and sharing information by send message and create chat group now.",
 	"LABEL_MORE": "More",
-	"LABEL_CREATE_WORK": "Create work",
+	"LABEL_CREATE_WORK": "Create task",
 	"IDS_LABEL_NOT_UPDATE": "Not update",
 	"LABEL_CREATE_WORKING_GROUP": "Create workgroups",
 	"LABEL_GROUP_PERMISSION_EMPTY_TITLE" : "Decentralized!",
@@ -2486,7 +2487,8 @@
 	"LABEL_SUCCESS": "Success",
 	"LABEL_FAIL": "Fail",
 	"LABEL_MEMMORY": "Memory",
-  "LABEL_STATUS_STORE_MEMORY": "Used {{use_store}} in total {{total_store}}",
-  "LABEL_BTN_STORE_MEMORY": "Buy memory",
-  "LABEL_CLASSIFY": "Classify"
+	"LABEL_STATUS_STORE_MEMORY": "Used {{use_store}} in total {{total_store}}",
+	"LABEL_BTN_STORE_MEMORY": "Buy memory",
+	"LABEL_CLASSIFY": "Classify",
+	"LABEL_MARK_MODAL_MEMBER_TASK_SHOW": "Always open after create task successful"
 }

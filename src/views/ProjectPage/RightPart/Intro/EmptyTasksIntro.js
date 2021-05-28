@@ -30,7 +30,7 @@ function EmptyTasksIntro({projectName, projectID, handleOpenModal, work_type = 0
           <p dangerouslySetInnerHTML={{__html: t("EMPTY_TASK_MESSAGE_4")}}/>
           <p dangerouslySetInnerHTML={{__html: t("EMPTY_TASK_MESSAGE_5")}}/>
           <Box className={"introEmptyData__btnActionGroup"}>
-            <Button variant={"contained"} color={"primary"} disableElevation onClick={() => handleOpenModal("CREATE")}>
+            <Button variant={"contained"} color={"primary"} disableElevation onClick={() => handleOpenModal("CREATE")} style={{marginRight: "20px"}}>
               {t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}
             </Button>
             {get(permissions, "update_project") && (

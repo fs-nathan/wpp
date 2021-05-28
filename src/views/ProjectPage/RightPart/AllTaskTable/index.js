@@ -45,7 +45,6 @@ import {
   EVENT_ADD_MEMBER_TO_TASK_SUCCESS,
   EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS
 } from 'constants/actions/taskDetail/taskDetailConst';
-import MemberPermissionModal from "../../Modals/MembersSetting/MemberPermission";
 import AssignCalendarModal from "components/AssignCalendarModal";
 import AddMemberModal from "../../../JobDetailPage/ListPart/ListHeader/AddMemberModal";
 import MemberSetting from "../../Modals/MembersSetting";
@@ -68,7 +67,6 @@ function AllTaskTable({
   doGetPermissionViewDetailProject, doSetProject, memberTask,
   localOption, doDeleteMemberFromTask, doAddMemberToTask,doSortGroupTask
 }) {
-
   const times = useTimes();
   const { timeType } = localOption;
   const timeRange = React.useMemo(() => {
@@ -82,7 +80,6 @@ function AllTaskTable({
   const query = useQuery();
   const history = useHistory();
   const [guideLineModal, setGuideLineModal] = React.useState(false);
-  const [createdTask, setCreatedTask] = React.useState(null);
   React.useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
   }, [projectId]);
@@ -116,7 +113,12 @@ function AllTaskTable({
       }
 
       CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-      CustomEventListener(CREATE_TASK, reloadListTask);
+      CustomEventListener(CREATE_TASK, (event) => {
+        reloadListTask()
+        if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)) {
+          setOpenModalAddMember(event.detail.task)
+        }
+      });
       CustomEventListener(SORT_TASK, reloadListTask);
       CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       CustomEventListener(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
@@ -124,7 +126,12 @@ function AllTaskTable({
       CustomEventListener(DELETE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       return () => {
         CustomEventDispose(SORT_GROUP_TASK, reloadListTaskAndGroupTask);
-        CustomEventDispose(CREATE_TASK, reloadListTask);
+        CustomEventDispose(CREATE_TASK, (event) => {
+          reloadListTask()
+          if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)) {
+            setOpenModalAddMember(event.detail.task)
+          }
+        });
         CustomEventDispose(SORT_TASK, reloadListTask);
         CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
         CustomEventDispose(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
@@ -182,14 +189,11 @@ function AllTaskTable({
   const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
-  const [openPermission, setOpenPermission] = React.useState(false);
-  const [permissionProps, setPermissionProps] = React.useState({});
   const [openCalendar, setOpenCalendar] = React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
   const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const [typeGuide, setTypeGuide] = React.useState(1);
-  const [openSettingMember, setOpenSettingMember] = React.useState(false);
   const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
 
   function doOpenModal(type, props) {
@@ -205,13 +209,6 @@ function AllTaskTable({
       case 'SETTING':
         setOpenSetting(true);
         setSettingProps(props);
-        return;
-      case 'SETTING_MEMBER':
-        setOpenSettingMember(true);
-      return;
-      case "PERMISSION":
-        setOpenPermission(true);
-        setPermissionProps(props);
         return;
       case 'ALERT':
         setOpenAlert(true);
@@ -282,10 +279,6 @@ function AllTaskTable({
         })}
       />
       <MenuCreateNew setOpenCreateTaskGroup={setOpenCreateTaskGroup} setOpenmMenuCreate={setOpenmMenuCreate} setOpenCreate={setOpenCreate} anchorEl={openMenuCreate} setAnchorEl={setOpenmMenuCreate}/>
-      <MembersSettingModal
-        open={openSettingMember}
-        setOpen={setOpenSettingMember}
-      />
       <CreateGroupTask
         open={openCreateTaskGroup}
         setOpen={setOpenCreateTaskGroup}
@@ -302,12 +295,6 @@ function AllTaskTable({
         setOpen={setOpenSetting}
         {...settingProps}
       />
-      <MemberPermissionModal
-          open={openPermission}
-          setOpen={setOpenPermission}
-          project_id={projectId}
-          {...permissionProps}
-      />
       <AssignCalendarModal
         openModal={openCalendar}
         setopenModal={setOpenCalendar}
@@ -317,19 +304,11 @@ function AllTaskTable({
         setOpen={setOpenAlert}
         {...alertProps}
       />
-      <AddMemberModal isOpen={openModalAddMember} setOpen={setOpenModalAddMember} task={createdTask}/>
+      {
+        openModalAddMember &&
+        <AddMemberModal isOpen={openModalAddMember} setOpen={setOpenModalAddMember} task={openModalAddMember} projectActive={projectId}/>
+      }
       <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting}/>
-      <GuideLineAddUserModal
-        open={guideLineModal} setOpen={() => {
-          history.push(`${Routes.PROJECT}/${projectId}`);
-          setGuideLineModal(false);
-        }} type={typeGuide}
-        handleAddNow={() => {
-          if(typeGuide === 1) setOpenMemberSetting(true);
-          else setOpenModalAddMember(true);
-          setGuideLineModal(false);
-        }}
-      />
     </>
   )
 }

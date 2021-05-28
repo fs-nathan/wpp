@@ -69,7 +69,7 @@ function AllTaskTable({
 
   return (
     <Container>
-      {isEmpty && !tasks.loading && (
+      {isEmpty && (
         <EmptyTasksIntro
           handleOpenModal={handleOpenModal}
           projectName={get(project.project, "name")}
@@ -77,7 +77,7 @@ function AllTaskTable({
           projectID={get(project.project, "id")}
         />
       )}
-      {!isEmpty && !tasks.loading && (
+      {!isEmpty && (
         <>
           <CustomTable
             options={{

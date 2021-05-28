@@ -87,6 +87,10 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case types.UPDATE_GROUP_TASK_SUCCESS: {
       const { payload } = action;
+      if (payload.group_task) {
+        draft.taskDetails.group_task = payload.group_task.id
+        draft.taskDetails.group_task_name = payload.group_task.name
+      }
       draft.payload = payload;
       draft.isFetching = false;
       draft.error = false;

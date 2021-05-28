@@ -41,7 +41,6 @@ import {WORKPLACE_TYPES} from "../../../../../constants/constants";
 import {getProjectSetting} from "../../../../../actions/project/setting/detailStatus";
 import SelectGroupTask from "./SelectGroupTask"
 import {CREATE_TASK, CustomEventDispose, CustomEventListener} from "../../../../../constants/events";
-import GuideLineAddUserModal from "../../../../ProjectGroupPage/Modals/GuideLineAddUserModal";
 import AddMemberModal from "../AddMemberModal";
 
 export const EDIT_MODE = {
@@ -108,8 +107,7 @@ function CreateJobModal(props) {
   const [type, setType] = React.useState(0);
   const [openSelectGroupTaskModal, setOpenSelectGroupTaskModal] = React.useState(false);
   const [createdTask, setCreatedTask] = React.useState(null);
-  const [showGuideLineModal, setShowGuideLineModal] = React.useState(false);
-  const [showAddMember, setShowAddMember] = React.useState(false);
+  // const [showAddMember, setShowAddMember] = React.useState(false);
 
   const isEdit = props.editMode !== null && props.editMode !== undefined;
 
@@ -237,6 +235,10 @@ function CreateJobModal(props) {
       tempData.priorityLabel = priority ? priority.value : DEFAULT_PRIORITY;
       let assign = assignList.find(item => item.id === tempData.type_assign.id);
       tempData.assignLabel = assign ? assign : DEFAULT_ASSIGN;
+      tempData.group_task = {
+        id: tempData.group_task,
+        name: tempData.group_task_name
+      }
       setDataMember(tempData);
     }
     // eslint-disable-next-line
@@ -253,8 +255,12 @@ function CreateJobModal(props) {
   useEffect(() => {
     if (props.isOpen) {
       if (projectId) {
-        dispatch(getSchedules(projectId))
-        dispatch(getWorkType({projectId}))
+        if (!Number.isInteger(props.editMode) || props.editMode === EDIT_MODE.WORK_DATE) {
+          dispatch(getSchedules(projectId))
+        }
+        if (!Number.isInteger(props.editMode) || props.editMode === EDIT_MODE.GROUP) {
+          dispatch(getWorkType({projectId}))
+        }
         if (!isEdit) {
           handleChangeData('name', EMPTY_STRING)
           handleChangeData('description', EMPTY_STRING)
@@ -332,18 +338,26 @@ function CreateJobModal(props) {
     }
   };
 
-  React.useEffect(() => {
-    CustomEventListener(CREATE_TASK, (e) => {
-      setCreatedTask(e.detail.task);
-      setShowGuideLineModal(true);
-    });
-    return () => {
-      CustomEventDispose(CREATE_TASK, (e) => {
-        setCreatedTask(e.detail.task);
-        setShowGuideLineModal(true);
-      });
-    }
-  });
+  // React.useEffect(() => {
+  //   if (projectId) {
+  //     console.log('xxxx', projectId)
+  //     CustomEventListener(CREATE_TASK, (e) => {
+  //       console.log(e)
+  //       if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)) {
+  //         setCreatedTask(e.detail.task);
+  //         setShowAddMember(true);
+  //       }
+  //     });
+  //     return () => {
+  //       CustomEventDispose(CREATE_TASK, (e) => {
+  //         if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)) {
+  //           setCreatedTask(e.detail.task);
+  //           setShowAddMember(true);
+  //         }
+  //       });
+  //     }
+  //   }
+  // }, []);
 
   return (
     <>
@@ -535,14 +549,6 @@ function CreateJobModal(props) {
           projectId={projectId}
         />
       }
-      <GuideLineAddUserModal
-        open={showGuideLineModal} setOpen={setShowGuideLineModal}
-        type={2} handleAddNow={() => {
-          setShowAddMember(true);
-          setShowGuideLineModal(false);
-        }}
-      />
-      <AddMemberModal isOpen={showAddMember} setOpen={setShowAddMember} task={createdTask}/>
     </>
   );
 }
