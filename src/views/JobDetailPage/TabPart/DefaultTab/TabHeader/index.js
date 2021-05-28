@@ -14,6 +14,7 @@ import { getTaskDetailTabPart } from 'actions/taskDetail/taskDetailActions';
 import EditJobModal, { EDIT_MODE } from '../../../ListPart/ListHeader/CreateJobModal';
 import { taskIdSelector } from '../../../selectors';
 import './styles.scss';
+import ProgressModal from 'views/Chat/TabPart/ProgressTab/ProgressModal';
 
 function getAssignType(assign_code) {
   if (assign_code === 0)
@@ -31,6 +32,7 @@ function TabHeader(props) {
   const { is_ghim: isPinned, state_code, assign_code } = taskDetails || {};
   const pause = state_code === 4;
 
+  const [openProgressModal,setOpenProgressModal] = React.useState(false);
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [isOpenDelete, setOpenDelete] = React.useState(false);
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
@@ -116,7 +118,10 @@ function TabHeader(props) {
       onClick={onClickEdit(EDIT_MODE.WORK_DATE)}
     >{t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}</MenuItem>,
   ]
+  const onClickEditProgress = () =>{
+    setOpenProgressModal(true);
 
+  }
   return (
     <div className="container-dt-tabheader">
       <Avatar className="tabHeaderDefault--avatar" src={avatar} alt="avatar" />
@@ -164,6 +169,11 @@ function TabHeader(props) {
         >
           {isPinned ? t('LABEL_CHAT_TASK_BO_GHIM') : t('LABEL_CHAT_TASK_GHIM_CONG_VIEC')}
         </MenuItem>
+        <MenuItem
+            onClick={onClickEditProgress}
+          >
+           {t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO')}
+          </MenuItem>
         {(detailTask && detailTask.state_code === 2) || !stop_task ? null :
           !pause ? (
             <MenuItem
@@ -186,6 +196,8 @@ function TabHeader(props) {
         data={detailTask}
         editMode={editMode}
       />
+       <ProgressModal  isOpen={openProgressModal} setOpen={setOpenProgressModal} />
+
       <AlertModal
         open={isOpenDelete}
         setOpen={setOpenDelete}

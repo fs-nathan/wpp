@@ -36,7 +36,6 @@ const ModalUplaodExcel = ({
 
         /* Convert array to json*/
         const dataParse = XLSX.utils.sheet_to_json(ws, {header:1});
-        console.log(dataParse)
         if(JSON.stringify(dataParse[0])=== JSON.stringify(["TT", "Tài khoản (Email)", "Tên thành viên"])){
           if(dataParse.length <=101){
             dataParse.shift();

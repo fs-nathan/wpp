@@ -82,7 +82,7 @@ const BootstrapInput = withStyles((theme) => ({
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive,onloadAddMember, setOnloadAddMember
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -98,7 +98,6 @@ function AddMemberModal({
   const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectId || projectActive]);
   const [taskIDValue, setTaskIDValue] = React.useState(null);
   const [isFocus, setIsFocus] = React.useState(false);
-  console.log(permissions)
   React.useEffect(() => {
     setTaskIDValue(get(task, "id", task_id));
   }, [task_id, task]);
@@ -111,7 +110,8 @@ if(projectActive){
 
   const handleClose = () => {
     setOpen(false);
-    dispatch(listTask({projectId: projectActive || projectId}));
+
+    onloadAddMember && dispatch(listTask({projectId: projectActive || projectId}));
   };
 
   React.useEffect(() => {
@@ -130,6 +130,7 @@ if(projectActive){
   }, [taskIDValue, doListMembersNotAssign, isOpen, doListUserRole, doListMembers]);
   function handleRemoveMember(member_id) {
     doDeleteMember({task_id: taskIDValue, member_id});
+    setOnloadAddMember && setOnloadAddMember(true);
   }
 
   function handleUpdateRoleMember(member_id, role_id) {
@@ -138,6 +139,7 @@ if(projectActive){
 
   function handleAddMember(member_id) {
     doCreateMember({task_id: taskIDValue, member_id});
+    setOnloadAddMember && setOnloadAddMember(true);
   }
 
   React.useEffect(() => {

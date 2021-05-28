@@ -63,7 +63,7 @@ function AllTaskTable({
   expand, handleExpand, viewPermissions,
   bgColor, showHidePendings, handleSubSlide,
   tasks, project, doShowProject, doHideProject,
-  doDeleteTask, doCreateTask, doSortTask,
+  doDeleteTask, doCreateTask, doSortTask,isShortGroup,
   doDetailProject, doListGroupTask, doListTask, doListTaskMember,
   doGetPermissionViewDetailProject, doSetProject, memberTask,
   localOption, doDeleteMemberFromTask, doAddMemberToTask,doSortGroupTask
@@ -250,6 +250,7 @@ function AllTaskTable({
         handleSubSlide={handleSubSlide}
         canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
         canCreateTask={true}
+        isShortGroup={isShortGroup}
         showHidePendings={showHidePendings}
         tasks={tasks} project={project} memberID={memberId} memberTask={memberTask}
         handleShowOrHideProject={project =>
@@ -342,7 +343,9 @@ const mapStateToProps = state => {
     showHidePendings: showHidePendingsSelector(state),
     viewPermissions: viewPermissionsSelector(state),
     localOption: localOptionSelector(state),
-    memberTask: memberTaskSelector(state)
+    memberTask: memberTaskSelector(state),
+    isShortGroup: state.groupTask.sortGroupTask.sortgroup
+
   }
 }
 
