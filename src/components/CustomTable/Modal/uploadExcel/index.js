@@ -24,7 +24,8 @@ const ModalUplaodExcel = ({
       }
 
     const onChangeFileExcel = (e) => {
-        if(e.target.files[0].type === "application/vnd.ms-excel"){
+      console.log(e.target.files[0].type)
+        if(e.target.files[0].type === "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" || e.target.files[0].type === "application/vnd.ms-excel"){
           // setFileExcel(e.target.files[0]);
           var files = e.target.files, f = files[0];
     var reader = new FileReader();
@@ -36,7 +37,8 @@ const ModalUplaodExcel = ({
 
         /* Convert array to json*/
         const dataParse = XLSX.utils.sheet_to_json(ws, {header:1});
-        if(JSON.stringify(dataParse[0])=== JSON.stringify(["TT", "Tài khoản (Email)", "Tên thành viên"])){
+        console.log(dataParse[0])
+        if(JSON.stringify(dataParse[0])=== JSON.stringify(["TT", "Tài khoản (Email)", "Tên thành viên"]) || JSON.stringify(dataParse[0]) === JSON.stringify(["TT", "Tài khoản(Email)", "Tên thành viên"])){
           if(dataParse.length <=101){
             dataParse.shift();
             handlesetFileExcel(dataParse);
@@ -110,7 +112,7 @@ const ModalUplaodExcel = ({
           id="upload_file"
           multiple
           type="file"
-          accept=".xlsx, .xls"
+          accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel"
           ref={fileInputRef}
           onChange={onChangeFileExcel}
         />

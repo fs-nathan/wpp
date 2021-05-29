@@ -50,7 +50,6 @@ import {EVENT_ADD_MEMBER_TO_TASK_SUCCESS} from "../../../../../constants/actions
 import MemberSetting from "../../../../ProjectPage/Modals/MembersSetting";
 import {useHistory} from "react-router-dom";
 import {listUserRole} from "../../../../../actions/userRole/listUserRole";
-import { listTask } from 'actions/task/listTask';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -106,7 +105,7 @@ const MarkShowModal = ({t, projectId}) => {
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive,onloadAddMember, setOnloadAddMember
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive, setOnloadAddMember
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -117,6 +116,7 @@ function AddMemberModal({
   const bgColor = find(colors, {"selected": true});
   const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const history = useHistory();
+  const [loadGroup,setLoadGroup] = React.useState(false);
   const [totalMembers, setTotalMembers] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState(0);
   const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectId || projectActive]);
@@ -133,8 +133,9 @@ function AddMemberModal({
 
   const handleClose = () => {
     setOpen(false);
-
-    onloadAddMember && dispatch(listTask({projectId: projectActive || projectId}));
+    if(loadGroup && setOnloadAddMember){
+     setOnloadAddMember(true);
+    }
   };
 
   React.useEffect(() => {
@@ -153,7 +154,8 @@ function AddMemberModal({
   }, [taskIDValue, doListMembersNotAssign, isOpen, doListUserRole, doListMembers]);
   function handleRemoveMember(member_id) {
     doDeleteMember({task_id: taskIDValue, member_id});
-    setOnloadAddMember && setOnloadAddMember(true);
+    setLoadGroup(true);
+    
   }
 
   function handleUpdateRoleMember(member_id, role_id) {
@@ -162,7 +164,7 @@ function AddMemberModal({
 
   function handleAddMember(member_id) {
     doCreateMember({task_id: taskIDValue, member_id});
-    setOnloadAddMember && setOnloadAddMember(true);
+    setLoadGroup(true);
   }
 
   React.useEffect(() => {
