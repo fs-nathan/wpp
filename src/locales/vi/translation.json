@@ -2125,7 +2125,7 @@
 	"PROJECT_SETTING_MODAL_PROGRESS_OPTION_0": "Không yêu cầu (dành cho công việc không yêu cầu tiến độ) ",
 	"PROJECT_SETTING_MODAL_PROGRESS_OPTION_1": "Chỉ nhập ngày (không nhập giờ bắt đầu và kết thúc) ",
 	"PROJECT_SETTING_MODAL_PROGRESS_OPTION_2": "Ngày và giờ (nhập đầy đủ ngày và giờ) ",
-	"PROJECT_SETTING_MODAL_COPYING": "Sáo chép {{type}}",
+	"PROJECT_SETTING_MODAL_COPYING": "Sao chép {{type}}",
 	"PROJECT_SETTING_MODAL_COPYING_OPTION_0": "Không được sao chép ",
 	"PROJECT_SETTING_MODAL_COPYING_OPTION_1": "Được sao chép",
 	"PROJECT_SETTING_MODAL_VIEW_TYPE": "Chế độ xem {{type}} mặc định",
@@ -2508,5 +2508,7 @@
   "LABEL_STATUS_STORE_MEMORY": "Đã sử dụng {{use_store}} trong tổng số {{total_store}}",
   "LABEL_BTN_STORE_MEMORY": "Mua bộ nhớ",
   "LABEL_CLASSIFY": "Phân loại",
-  "LABEL_MARK_MODAL_MEMBER_TASK_SHOW": "Luôn hiển thị sau khi tạo công việc"
+  "LABEL_MARK_MODAL_MEMBER_TASK_SHOW": "Luôn hiển thị sau khi tạo công việc",
+  "IDS_WP_DISCOUNT": "Giảm giá",
+  "IDS_WP_CAN_NOT_USE": "Không thể sử dụng mã khuyển mãi này"
 }

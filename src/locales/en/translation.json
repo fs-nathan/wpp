@@ -2240,7 +2240,7 @@
 	"NO_DATA_SUB": "No data, Let create new data to start",
 	"IDS_WP_REGISTER_NOTICE_REGISTER_DIRECT": "You received verify code?",
 	"IDS_WP_REGISTER_COMPLETE": "Complete registration",
-	"LABEL_CREATED_SHORT_FIXED": "Created...",
+	"LABEL_CREATED_SHORT_FIXED": "Created at {{time}} {{date}}",
 	"LABEL_JOINED_USERS_COUNT": "There are {{counts}} members joined",
 	"LABEL_ASSIGNERS": "Assigners",
 	"LABEL_ASSIGNEES": "Assignees ({{counts}})",
@@ -2490,5 +2490,7 @@
 	"LABEL_STATUS_STORE_MEMORY": "Used {{use_store}} in total {{total_store}}",
 	"LABEL_BTN_STORE_MEMORY": "Buy memory",
 	"LABEL_CLASSIFY": "Classify",
-	"LABEL_MARK_MODAL_MEMBER_TASK_SHOW": "Always open after create task successful"
+	"LABEL_MARK_MODAL_MEMBER_TASK_SHOW": "Always open after create task successful",
+	"IDS_WP_DISCOUNT": "Discount",
+	"IDS_WP_CAN_NOT_USE": "Can not use this promo code"
 }

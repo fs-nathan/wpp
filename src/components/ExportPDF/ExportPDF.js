@@ -6,17 +6,17 @@ import './ExportPDF.scss';
 import { isEmpty } from '../../helpers/utils/isEmpty';
 
 class ExportPDF extends Component {
-  getDateGift = dateUse => {
-    if (dateUse >= 12 && dateUse < 24) {
-      return 1;
-    } else if (dateUse >= 24 && dateUse < 36) {
-      return 2;
-    } else if (dateUse >= 36) {
-      return 3;
-    } else if (dateUse < 12) {
-      return 0;
-    }
-  };
+  // getDateGift = dateUse => {
+  //   if (dateUse >= 12 && dateUse < 24) {
+  //     return 1;
+  //   } else if (dateUse >= 24 && dateUse < 36) {
+  //     return 2;
+  //   } else if (dateUse >= 36) {
+  //     return 3;
+  //   } else if (dateUse < 12) {
+  //     return 0;
+  //   }
+  // };
   showPrice = price => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
@@ -35,6 +35,8 @@ class ExportPDF extends Component {
       bonusCode,
       dataNumberOldOder,
       monthBuyPackageUser,
+      rateDiscount,
+      moneyDiscount,
       t
     } = this.props;
     // console.log('dataNumberOldOder', dataNumberOldOder);
@@ -53,11 +55,11 @@ class ExportPDF extends Component {
       : !isEmpty(orderItem.packet_user)
       ? orderItem.packet_user.buy_info.price
       : 0; //d, f
-    const dateGift = isCreate
-      ? this.getDateGift(dateUse)
-      : !isEmpty(orderItem.packet_user)
-      ? orderItem.packet_user.day_from_payment_cycle / 30
-      : 0;
+    // const dateGift = isCreate
+    //   ? this.getDateGift(dateUse)
+    //   : !isEmpty(orderItem.packet_user)
+    //   ? orderItem.packet_user.day_from_payment_cycle / 30
+    //   : 0;
     const datePlusOderBefor = isCreate
       ? isCheckedManagerWork
         ? dataNumberOldOder.packet_user
@@ -82,7 +84,7 @@ class ExportPDF extends Component {
         : (orderItem.packet_user.promotion_day / 30).toFixed(1)
       : 0;
     const totalDataUse = isCreate
-      ? dateUse + dateGift + datePlusOderBefor + parseFloat(date3MO)
+      ? dateUse + datePlusOderBefor + parseFloat(date3MO)
       : !isEmpty(orderItem.packet_user)
       ? (orderItem.packet_user.day_use / 30).toFixed(1)
       : 0; //e
@@ -109,7 +111,9 @@ class ExportPDF extends Component {
       : 0; //e
     //////
     const totalPriceBeforVAT = moneyPacketUser + moneyPacketData;
-    const totalPriceVAT = totalPriceBeforVAT * 0.1;
+    const discountValue = Math.round(totalPriceBeforVAT * rateDiscount / 100 + moneyDiscount)
+    const totalPriceVAT = (totalPriceBeforVAT - discountValue) * 0.1;
+    const totalMoney = Math.ceil(totalPriceBeforVAT + totalPriceVAT - discountValue);
     return (
       <div className="order-content k-pdf-export" id="printContent">
         <form>
@@ -154,7 +158,7 @@ class ExportPDF extends Component {
                   <div className="infor-right-oder">
                     {t('IDS_WP_VALUE_TOTAL_ORDER')}:&nbsp;
                     {isCreate
-                      ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
+                      ? this.showPrice(totalMoney)
                       : this.showPrice(orderItem.price || 0)}
                     {t('IDS_WP_CURRENT_UNIT')}
                   </div>
@@ -224,7 +228,7 @@ class ExportPDF extends Component {
                       <td className="TdStyled1">{t('IDS_WP_TM_CK')}</td>
                       <td className="TdStyled1">
                         {isCreate
-                          ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
+                          ? this.showPrice(totalMoney)
                           : this.showPrice(orderItem.price || 0)}{' '}
                       </td>
                     </tr>
@@ -348,18 +352,6 @@ class ExportPDF extends Component {
                           <td className="TdStyled4">-</td>
                           <td className="TdStyled4">-</td>
                           <td className="TdStyled4">{datePlusOderBefor}</td>
-                          <td className="TdStyled4">-</td>
-                        </tr>
-                        <tr>
-                          <td className="TdStyled2 number-stt"></td>
-                          <td className="TdStyled3 detail-order">
-                            <div className="">
-                              <div>{t('IDS_WP_TIME_DONATE', {monthBuyPackageUser})}</div>
-                            </div>
-                          </td>
-                          <td className="TdStyled4">-</td>
-                          <td className="TdStyled4">-</td>
-                          <td className="TdStyled4">{dateGift}</td>
                           <td className="TdStyled4">-</td>
                         </tr>
                         <tr>
@@ -519,11 +511,19 @@ class ExportPDF extends Component {
                     </div>
                     <div className="item-total-group">
                       <span className="order-value">
+                        {t('IDS_WP_DISCOUNT')}
+                      </span>
+                      <span>
+                        {isCreate ? this.showPrice(discountValue) : this.showPrice(String(orderItem.discount))}
+                      </span>
+                    </div>
+                    <div className="item-total-group">
+                      <span className="order-value">
                         {t('IDS_WP_VALUE_ORDER')}
                       </span>
                       <span className="price-value">
                         {isCreate
-                          ? this.showPrice(totalPriceBeforVAT + totalPriceVAT)
+                          ? this.showPrice(totalMoney)
                           : orderItem.price}
                       </span>
                     </div>

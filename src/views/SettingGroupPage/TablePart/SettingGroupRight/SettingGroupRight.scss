@@ -563,3 +563,44 @@
 .radio-container {
   margin-left: 24px;
 }
+.promotion-code-order {
+  .per-promotion {
+    padding: 0px;
+  }
+  table {
+    border-spacing: 0;
+    tr {
+      cursor: pointer;
+      &:hover {
+        background: #ddd
+      }
+    }
+  }
+  tr {
+    &:first-child {
+      td {
+        border-top: 1px solid #ddd;
+      }
+    }
+  }
+  td {
+    padding: 5px 0px;
+    border-bottom: 1px solid #ddd;
+  }
+  .name-promotion {
+    padding: 5px 10px;
+    background: #13af45;
+    color: #fff;
+    border-radius: 2px;
+    margin: 0px 10px;
+    font-size: 11px;
+    min-width: 50px;
+    display: inline-block;
+    text-align: center;
+  }
+  .des-promotion {
+    font-size: 13px;
+    font-size: 13px;
+    line-height: 18px;
+  }
+}

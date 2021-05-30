@@ -23,7 +23,9 @@ export default function reducer(state = initialState, action) {
                     old_end: end ? end.old : undefined,
                     new_end: end ? end.new : undefined,
                 }
-                state.listTime.trackings.unshift(newTrack)
+                if (state.listTime) {
+                    state.listTime.trackings.unshift(newTrack)
+                }
                 // console.log('newTrack', newTrack)
             }
             // console.log(' state.listTime.trackings', state.listTime.trackings)

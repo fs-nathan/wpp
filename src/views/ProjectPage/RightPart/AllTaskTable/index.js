@@ -21,7 +21,8 @@ import {
   DELETE_TASK,
   SORT_GROUP_TASK,
   SORT_TASK,
-  UPDATE_GROUP_TASK
+  UPDATE_GROUP_TASK,
+  UPDATE_DURATION_TASK
 } from 'constants/events';
 import {get, isNil} from 'lodash';
 import moment from 'moment';
@@ -62,7 +63,7 @@ function AllTaskTable({
   expand, handleExpand, viewPermissions,
   bgColor, showHidePendings, handleSubSlide,
   tasks, project, doShowProject, doHideProject,
-  doDeleteTask, doCreateTask, doSortTask,
+  doDeleteTask, doCreateTask, doSortTask,isShortGroup,
   doDetailProject, doListGroupTask, doListTask, doListTaskMember,
   doGetPermissionViewDetailProject, doSetProject, memberTask,
   localOption, doDeleteMemberFromTask, doAddMemberToTask,doSortGroupTask
@@ -120,6 +121,7 @@ function AllTaskTable({
         }
       });
       CustomEventListener(SORT_TASK, reloadListTask);
+      CustomEventListener(UPDATE_DURATION_TASK, reloadListTask);
       CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       CustomEventListener(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
@@ -133,6 +135,7 @@ function AllTaskTable({
           }
         });
         CustomEventDispose(SORT_TASK, reloadListTask);
+        CustomEventDispose(UPDATE_DURATION_TASK, reloadListTask);
         CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
         CustomEventDispose(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
         CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
@@ -247,6 +250,7 @@ function AllTaskTable({
         handleSubSlide={handleSubSlide}
         canUpdateProject={get(viewPermissions.permissions, [projectId, 'update_project'], false)}
         canCreateTask={true}
+        isShortGroup={isShortGroup}
         showHidePendings={showHidePendings}
         tasks={tasks} project={project} memberID={memberId} memberTask={memberTask}
         handleShowOrHideProject={project =>
@@ -321,7 +325,9 @@ const mapStateToProps = state => {
     showHidePendings: showHidePendingsSelector(state),
     viewPermissions: viewPermissionsSelector(state),
     localOption: localOptionSelector(state),
-    memberTask: memberTaskSelector(state)
+    memberTask: memberTaskSelector(state),
+    isShortGroup: state.groupTask.sortGroupTask.sortgroup
+
   }
 }
 

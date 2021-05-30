@@ -28,6 +28,8 @@ function TableHeaderRow() {
         <StyledTableHeadCell
           align={'left'}
           draggable={get(options, 'draggable.bool', false)}
+          className={get(options, 'grouped.draggable', false)&& get(options, 'draggable.bool', false) && 'group-icon-drag'}
+
         >
           <div style={{paddingLeft: '6px'}}>
             <Icon path={mdiDragVertical} size={1} color='#8d8d8d'/>

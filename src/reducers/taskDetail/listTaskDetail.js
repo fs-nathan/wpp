@@ -222,23 +222,23 @@ export default function reducer(state = initialState, action) {
             const { payload, task_id } = action;
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { status_code: 4 }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { status_code: 4 }),
+                // listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { state_code: 4 }),
+                // listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { state_code: 4 }),
             }
         }
         case types.CANCEL_STOP_TASK_SUCCESS: {
             const { payload, task_id } = action;
             return {
                 ...state,
-                listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { status_code: 1 }),
-                listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { status_code: 1 }),
+                // listTaskDetail: updateListTaskDetail(state.listTaskDetail, task_id, { status_code: 1 }),
+                // listDataNotRoom: updateListDataNotRoom(state.listDataNotRoom, task_id, { status_code: 1 }),
             }
         }
         case types.UPDATE_GROUP_TASK_SUCCESS: {
             const { task_id, group_task } = action.payload;
             return {
                 ...state,
-                listTaskDetail: changeGroupTaskDetail(state.listTaskDetail, task_id, group_task),
+                // listTaskDetail: changeGroupTaskDetail(state.listTaskDetail, task_id, group_task),
             }
         }
         case types.PIN_TASK_SUCCESS: {

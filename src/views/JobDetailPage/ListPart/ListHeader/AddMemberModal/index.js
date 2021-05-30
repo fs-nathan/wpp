@@ -106,7 +106,7 @@ const MarkShowModal = ({t, projectId}) => {
 
 function AddMemberModal({
   setOpen, isOpen, doListMembersNotAssign, task_id, membersNotAssigned, members, doDeleteMember,
-  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive
+  doUpdateRoleMember, doCreateMember, doListUserRole, userRoles, task, doListMembers, projectId , projectActive,onloadAddMember, setOnloadAddMember
 }) {
   const { t } = useTranslation();
   const classes = useStyles();
@@ -133,7 +133,8 @@ function AddMemberModal({
 
   const handleClose = () => {
     setOpen(false);
-    dispatch(listTask({projectId: projectActive || projectId}));
+
+    onloadAddMember && dispatch(listTask({projectId: projectActive || projectId}));
   };
 
   React.useEffect(() => {
@@ -152,6 +153,7 @@ function AddMemberModal({
   }, [taskIDValue, doListMembersNotAssign, isOpen, doListUserRole, doListMembers]);
   function handleRemoveMember(member_id) {
     doDeleteMember({task_id: taskIDValue, member_id});
+    setOnloadAddMember && setOnloadAddMember(true);
   }
 
   function handleUpdateRoleMember(member_id, role_id) {
@@ -160,6 +162,7 @@ function AddMemberModal({
 
   function handleAddMember(member_id) {
     doCreateMember({task_id: taskIDValue, member_id});
+    setOnloadAddMember && setOnloadAddMember(true);
   }
 
   React.useEffect(() => {
@@ -250,7 +253,7 @@ function AddMemberModal({
                   if(findIndex(membersNotAssigned, {"id": member.id}) >= 0) {
                     handleAddMember(member.id);
                   }
-                }}>
+                }} key={member.id}>
                   {findIndex(members, {"id": member.id}) >= 0 && (
                     <Icon path={mdiCheckboxMarkedCircle} size={1.083} color={get(bgColor, "color")}/>
                   )}

@@ -147,3 +147,10 @@ export const actionFetchListColor = () => ({
 export const actioGetSettingDate = () => ({
   type: actionTypes.GET_SETTING_DATE
 });
+
+export const getInfoPromotionCreateOrder = () => {
+  return apiService({
+    url: '/orders/get-promotion',
+    method: 'get'
+  });
+};

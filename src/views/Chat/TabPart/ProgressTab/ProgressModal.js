@@ -53,7 +53,6 @@ const ProgressModal = (props) => {
   const isFetching = useSelector(state => state.taskDetail.trackingTime.isFetching)
   const error = useSelector(state => state.taskDetail.trackingTime.error)
   const date_status = useSelector(state => get(state, 'project.setting.detailStatus.data.status.date'));
-
   // console.log("value time:::::", value);
   const [startTime, setStartTime] = React.useState(listTimeSelect[16])
   const [endTime, setEndTime] = React.useState(listTimeSelect[34])
@@ -118,6 +117,9 @@ const ProgressModal = (props) => {
     // console.log("data", data);
     dispatch(updateTimeDuration(data));
     // props.setOpen(false)
+    if(props.setOnload){
+      props.setOnload(true)
+    }
   }
 
   function validate() {

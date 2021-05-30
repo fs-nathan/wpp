@@ -218,6 +218,12 @@ function TabBody(props) {
                 className="listPartTabBody--expired"
               >{t('LABEL_CHAT_TASK_DA_QUA_HAN')}</Typography>
             }
+            {
+              get(taskStatistic, "status_label.type") === "Stop" &&
+              <Typography
+                className="listPartTabBody--stop"
+              >{t('LABEL_CHAT_TASK_TAM_DUNG')}</Typography>
+            }
           </ListItemButtonGroup>
           <ListItemTab disableRipple button onClick={() => props.setShow(1)}>
             <ColorTypo>{t('LABEL_CHAT_TASK_TIEN_DO')}</ColorTypo>

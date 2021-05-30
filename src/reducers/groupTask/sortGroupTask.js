@@ -1,9 +1,10 @@
-import { SORT_GROUP_TASK, SORT_GROUP_TASK_FAIL, SORT_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/sortGroupTask';
+import { IS_SORT_GROUP_TASK, SORT_GROUP_TASK, SORT_GROUP_TASK_FAIL, SORT_GROUP_TASK_SUCCESS } from '../../constants/actions/groupTask/sortGroupTask';
 
 export const initialState = {
 	data: null,
 	error: null,
 	loading: false,
+	sortgroup: false
 };
 
 function reducer(state = initialState, action) {
@@ -28,6 +29,13 @@ function reducer(state = initialState, action) {
 				error: action.error,
 				loading: false,
 			};
+		case IS_SORT_GROUP_TASK:
+			console.log(action)
+			return {
+				...state,
+				...initialState,
+				sortgroup: action.options
+			}	
 		default:
 			return state;
 	}

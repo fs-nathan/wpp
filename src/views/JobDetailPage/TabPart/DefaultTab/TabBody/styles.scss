@@ -9,6 +9,16 @@
     font-size: 13px;
     line-height: unset;
   }
+  &--stop {
+    background-color: #dae2e7;
+    color: #8ba0aa;
+    padding: 7px 9px;
+    margin: 5px 5px 5px 1px;
+    border-radius: 2px;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: unset;
+  }
   &--paused {
     color: #607d8b;
     border: 1px solid #607d8b;

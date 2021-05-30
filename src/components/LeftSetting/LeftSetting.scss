@@ -53,3 +53,23 @@
     }
   }
 }
+
+.noti-promotion {
+  position: relative;
+  .step-icon {
+    color: #f9598f;
+  }
+  .step-number {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: red;
+    color: #fff;
+    border-radius: 50%;
+    right: -10px;
+    top: -5px;
+    line-height: 15px;
+    text-align: center;
+    font-size: 10px;
+  }
+}

@@ -41,7 +41,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
         <div className="cursor-pointer">
           {one && (
             <img
-              src={one.url_thumb}
+              src={one.url}
               alt=""
               onClick={() => {
                 dispatch(showImagesList(true, images));
@@ -50,7 +50,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
           )}
           {two && (
             <img
-              src={two.url_thumb}
+              src={two.url}
               alt=""
               onClick={() => {
                 dispatch(showImagesList(true, images, 1));
@@ -59,7 +59,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
           )}
           {three && (
             <img
-              src={three.url_thumb}
+              src={three.url}
               alt=""
               onClick={() => {
                 dispatch(showImagesList(true, images, 2));
@@ -72,7 +72,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
                 dispatch(showImagesList(true, images, 3));
               }}
             >
-              <img src={four.url_thumb} alt="" />
+              <img src={four.url} alt="" />
               <div
                 onClick={() => {
                   dispatch(showImagesList(true, images, 3));
@@ -88,7 +88,7 @@ const Media = injectClassName("comp_TasksCard__Media")(
                 onClick={() => {
                   dispatch(showImagesList(true, images, 3));
                 }}
-                src={four.url_thumb}
+                src={four.url}
                 alt=""
               />
             )

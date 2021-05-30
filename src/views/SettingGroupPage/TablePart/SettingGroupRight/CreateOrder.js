@@ -5,6 +5,8 @@ import { useTranslation } from 'react-i18next';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { withRouter } from 'react-router-dom';
 import Checkbox from '@material-ui/core/Checkbox';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import { OutlinedInput } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import { Routes } from '../../../../constants/routes';
@@ -12,15 +14,26 @@ import {
   orderCreateService,
   checkPromotionCode,
   getInfoBeforeCreateOrder,
-  getNumberDayFromOldOrder
+  getNumberDayFromOldOrder,
+  getInfoPromotionCreateOrder
 } from '../../../../actions/setting/setting';
 import { actionToast } from '../../../../actions/system/system';
 import './SettingGroupRight.scss';
 import ExportPDF from '../../../../components/ExportPDF/ExportPDF';
 import OrderInit from '../../../../components/ExportPDF/OrderInit';
 import SliderProgess from '../../../../components/SliderProgess/SliderProgess';
+import { currentColorSelector } from 'views/JobDetailPage/selectors';
+import { useSelector } from 'react-redux';
+import styled from 'styled-components';
 let timeout1 = null;
 let timeout2 = null;
+
+const StyledRadio = styled.div`
+  .Mui-checked {
+    color: ${props => props.selectedColor} !important;
+  }
+`
+
 const CreateOrder = props => {
   const { t } = useTranslation();
   const [isCheckedManagerWork, setIsCheckedManagerWork] = useState(false);
@@ -30,13 +43,16 @@ const CreateOrder = props => {
   const [monthBuyPackageUser, setMonthBuyPackageUser] = useState(12);
   const [dataBuy, SetdataBuy] = useState(0);
   const [dateSave, SetdateSave] = useState(0);
-  const [inputPromotionCode, SetInputPromotionCode] = useState('');
   const [isErrorCode, SetIsErrorCode] = useState(0);
   const [dayBonus, SetDayBonus] = useState(0);
+  const [moneyDiscount, setMoneyDiscount] = useState(0);
+  const [rateDiscount, setRateDiscount] = useState(0);
   const [dataBeforOder, setDataBeforOder] = useState({});
-  const [bonusCode, setBonusCode] = useState('');
+  const [bonusCode, setBonusCode] = useState(false);
   const [dataNumberOldOder, setDataNumberOldOder] = useState({});
+  const [promotionCodes, setPromotionCodes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const appColor = useSelector(currentColorSelector)
   const marks = {
     accountNum: {
       mark: [
@@ -89,12 +105,19 @@ const CreateOrder = props => {
         unit_price_packet_user: pricePacketUser,
         unit_price_packet_storage: pricePacketData
       });
+      fetPromotionCode()
     } catch (error) {}
   };
   const fetNumberDayFromOldOrder = async params => {
     try {
       const { data } = await getNumberDayFromOldOrder(params);
       setDataNumberOldOder(data.data);
+    } catch (error) {}
+  };
+  const fetPromotionCode = async params => {
+    try {
+      const { data } = await getInfoPromotionCreateOrder(params);
+      setPromotionCodes(data.data);
     } catch (error) {}
   };
   const handleChangeCheck = (type, value) => {
@@ -226,20 +249,30 @@ const CreateOrder = props => {
     props.actionToast(type, message);
     setTimeout(() => props.actionToast(null, ''), 2000);
   };
-  const handleCheckPromotionCode = async () => {
-    try {
-      const { data } = await checkPromotionCode({ code: inputPromotionCode });
-      SetIsErrorCode(2);
-      setBonusCode(inputPromotionCode);
-      SetDayBonus(data.day_bonus);
-    } catch (error) {
-      SetIsErrorCode(1);
-      SetInputPromotionCode();
+  const handleChangePromoCode = async (code) => {
+    if (!bonusCode) {
+      try {
+        const { data } = await checkPromotionCode({ code, month_buy: monthBuyPackageUser });
+        SetIsErrorCode(2);
+        setBonusCode(code);
+        SetDayBonus(data.day_bonus);
+        setMoneyDiscount(data.value_discount)
+        setRateDiscount(data.rate_discount)
+      } catch (error) {
+        SetIsErrorCode(1);
+        setBonusCode(false);
+        SetDayBonus(0);
+        setMoneyDiscount(0)
+        setRateDiscount(0)
+      }
+    } else {
+      setBonusCode(false);
+      SetDayBonus(0);
+      setMoneyDiscount(0)
+      setRateDiscount(0)
     }
   };
-  const handleChangePromotion = e => {
-    SetInputPromotionCode(e.target.value);
-  };
+
   return (
     <div className="order-detail-container create-order">
       <div className="has-border-right detail-left">
@@ -255,6 +288,8 @@ const CreateOrder = props => {
             isCheckedBuyData={isCheckedBuyData}
             dataBeforOder={dataBeforOder}
             dayBonus={dayBonus}
+            moneyDiscount={moneyDiscount}
+            rateDiscount={rateDiscount}
             bonusCode={bonusCode}
             dataNumberOldOder={dataNumberOldOder}
           />
@@ -360,38 +395,26 @@ const CreateOrder = props => {
           )}
           <p className="sub-title-item">{t('IDS_WP_PROMOTION_CODE')}</p>
           <p className="error-text">{t('IDS_WP_PROMOTION_CODE_DES')}</p>
-          <div className="create-order-action">
-            {/* <Form.Control
-                type="text"
-                required
-                className="evoucher-input"
-              /> */}
-            <OutlinedInput
-              type="text"
-              placeholder={t('IDS_WP_INPUT_PROMOTION_CODE')}
-              className="input-voucher"
-              value={inputPromotionCode}
-              onChange={handleChangePromotion}
-            />
-            <Button
-              variant="contained"
-              color="secondary"
-              className="btn btn-warning mr-3 input-btn"
-              onClick={handleCheckPromotionCode}
-            >
-              {t('IDS_WP_INPUT')}
-            </Button>
-            {/* show message lỗi khi nhập sai mã khuyến mại */}
+          <div className="promotion-code-order">
+            <table>
+              {
+                promotionCodes.map(e => 
+                  <tr onClick={() => handleChangePromoCode(e.code)}>
+                    <td>
+                      <StyledRadio selectedColor={appColor}>
+                        <Radio checked={bonusCode == e.code ? true : false} classes={{root: "per-promotion"}} />
+                      </StyledRadio>
+                    </td>
+                    <td><span className="name-promotion">{e.code}</span></td>
+                    <td className="des-promotion">{e.description}</td>
+                  </tr>
+                )
+              }
+            </table>          
           </div>
           {isErrorCode === 1 ? (
-            <div className="error-code">{t('IDS_WP_CODE_NOT_EXIST')}</div>
-          ) : isErrorCode === 2 ? (
-            <div className="success-code">
-              {`${t('IDS_WP_PLUS')} ${dayBonus} ${t('IDS_WP_USED_DAY')}`}
-            </div>
-          ) : (
-            ''
-          )}
+            <div className="error-code">{t('IDS_WP_CAN_NOT_USE')}</div>
+          ) : ""}
           <Button
             className="create-order-btn"
             onClick={handleCreateOder}

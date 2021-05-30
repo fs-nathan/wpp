@@ -65,12 +65,17 @@ export default (state = initialState, action) => produce(state, draft => {
       break;
     case types.STOP_TASK_SUCCESS: {
       const { payload } = action;
-      draft.taskDetails.state_code = 4;
+      draft.taskDetails.is_stop = true;
+      draft.taskDetails.status_label = null;
       break;
     }
     case types.CANCEL_STOP_TASK_SUCCESS: {
       const { payload } = action;
-      draft.taskDetails.state_code = 0;
+      console.log(payload)
+      draft.taskDetails.is_stop = false;
+      draft.taskDetails.status_label = payload.status_label;
+      draft.taskDetails.state_code = payload.state_code;
+      draft.taskDetails.state_name = payload.state_name;
       break;
     }
     case types.DELETE_SHARE_LOCATION_SUCCESS: {

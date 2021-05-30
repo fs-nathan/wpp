@@ -9,11 +9,16 @@ import {get} from "lodash";
 import {Routes} from 'constants/routes';
 import { mdiImageFilterDrama } from "@mdi/js";
 import { useTranslation } from "react-i18next";
+import {
+  getInfoPromotionCreateOrder
+} from 'actions/setting/setting';
+import CardGiftcardIcon from '@material-ui/icons/CardGiftcard';
 
 const LeftSetting = props => {
   const { pathname } = props.location;
   const {t} = useTranslation();
   const history = useHistory();
+  const [numberPromotionCode, setNumberPromotionCode] = React.useState(0)
   const {color} = props?.colors && props?.colors?.find((item) => item?.selected === true) || '';
   let isManage = false;
   if(Array.isArray(props?.profile?.modules)){
@@ -24,6 +29,16 @@ const LeftSetting = props => {
       }
     })
   }
+  React.useEffect(() => {
+    fetPromotionCode(); // eslint-disable-next-line
+  }, []);
+  const fetPromotionCode = async params => {
+    try {
+      const { data } = await getInfoPromotionCreateOrder(params);
+      setNumberPromotionCode(data.data.length);
+    } catch (error) {}
+  };
+
   
   return (
     <LeftSideContainer
@@ -81,6 +96,12 @@ const LeftSetting = props => {
                       <Primary className="sub-setting-item">{el.name}</Primary>
                     }
                   />
+                  {
+                    el.noti && numberPromotionCode && <div className="noti-promotion">
+                      <CardGiftcardIcon className="step-icon" />
+                      <span className="step-number">{numberPromotionCode}</span>
+                    </div>
+                  }
                 </StyledListItem>
               ))}
           </Fragment>

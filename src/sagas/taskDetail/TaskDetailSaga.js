@@ -2,7 +2,7 @@ import {get} from 'lodash';
 import {call, put, select} from "redux-saga/effects";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import {apiService} from "../../constants/axiosInstance";
-import {CREATE_TASK, CustomEventEmitter, CustomEventEmitterWithParams, DELETE_TASK} from '../../constants/events';
+import {CREATE_TASK, CustomEventEmitter, CustomEventEmitterWithParams, DELETE_TASK, UPDATE_DURATION_TASK} from '../../constants/events';
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from '../../constants/snackbarController';
 import {CREATE_OFFER} from 'views/OfferPage/redux/types';
 import {getDataPinOnTaskChat} from 'actions/chat/chat';
@@ -1151,7 +1151,11 @@ function* updateTimeDuration(action) {
   try {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
-    yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
+    if (action.payload.from_component !== "Table") {
+      yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
+    } else {
+      CustomEventEmitter(UPDATE_DURATION_TASK);
+    }
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTimeDurationFail(error));

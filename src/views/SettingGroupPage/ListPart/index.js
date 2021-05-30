@@ -17,7 +17,6 @@ const premissionAttr = {
   manage_role: "manage_role",
 };
 const ListPart = ({ premissions = emptyObject }) => {
-  console.log(premissions)
   const { t } = useTranslation();
   const listMenu = [
     {
@@ -52,6 +51,7 @@ const ListPart = ({ premissions = emptyObject }) => {
         {
           name: t("IDS_WP_CREATE_ORDER"),
           url: Routes.SETTING_GROUP_CREATE_ORDER,
+          noti: true
         },
         { name: t("IDS_WP_ORDER_LIST"), url: Routes.SETTING_GROUP_ORDER },
         { name: t("IDS_WP_PAYMENT_INFO"), url: Routes.SETTING_GROUP_PAYMENT },

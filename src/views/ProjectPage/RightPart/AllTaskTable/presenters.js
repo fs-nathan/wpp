@@ -31,6 +31,8 @@ import NavigatorMenu from "../../../../components/NavigatorMenu";
 import {WORKPLACE_TYPES} from "../../../../constants/constants";
 import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
 import {decodePriorityCode} from "../../../../helpers/project/commonHelpers";
+import { isSortGroupTask } from 'actions/groupTask/sortGroupTask';
+import { useDispatch } from 'react-redux';
 
 function displayDate(time, date, type) {
   return (
@@ -51,7 +53,7 @@ function AllTaskTable({
   handleSortTask,
   handleOpenModal, handleRemoveMemberFromTask,
   bgColor, timeType, handleAddMemberToTask,
-  handleTimeType, memberID, memberTask,
+  handleTimeType, memberID, memberTask,isShortGroup,
   canUpdateProject, canCreateTask,handleSortGroupTask
 }) {
 
@@ -60,13 +62,13 @@ function AllTaskTable({
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
   const times = useTimes();
+  const dispatch = useDispatch();
   const [isEmpty, setIsEmpty] = React.useState(true);
   React.useEffect(() => {
     setIsEmpty(tasks.tasks.reduce((sum, item) => {
       return sum + size(item.tasks);
     }, 0) === 0);
   }, [tasks.tasks]);
-
   return (
     <Container>
       {isEmpty && (
@@ -187,10 +189,15 @@ function AllTaskTable({
                     destination.droppableId === source.droppableId &&
                     destination.index === source.index
                   ) return;
-                  // if(destination.droppableId === source.droppableId){
+                 if(!isShortGroup && destination.droppableId !== source.droppableId){
                     handleSortTask(draggableId, destination.droppableId, destination.index);
-                  // }
-                  // else handleSortGroupTask(draggableId,destination.index)
+                  }
+                  if(destination.droppableId === source.droppableId){
+                    handleSortTask(draggableId, destination.droppableId, destination.index);
+                  }
+                  
+                   else if(isShortGroup) {handleSortGroupTask(draggableId,destination.index);}
+
                 },
               } : {
                 bool: false,

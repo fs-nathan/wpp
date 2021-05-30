@@ -7,7 +7,11 @@
     padding: 8px 20px;
     font-size: 12px;  
     position: relative;
+    &:first-child{
+      width: 40px;
+    }
   }
+
 };
 
 .comp_CustomTable_TableBodyGroup___button {
@@ -57,4 +61,21 @@
     text-decoration: none;
    background-color: #d8e0ef;
 }
+}
+.icon-drag-hide{
+  opacity: .8;
+}
+.icon-drag-hover{
+  opacity: 1;
+}
+.group-task-name{
+  padding-left: 3px !important;
+}
+.group-icon-drag{
+  padding-left: 10px !important;
+  padding-right: 5px !important;
+  text-align: center !important;
+  div{
+    padding-left: 0 !important;
+  }
 }

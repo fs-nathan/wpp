@@ -105,6 +105,7 @@ const ProgressModal = (props) => {
       end_date: endDay,
       start_time: startTime,
       end_time: endTime,
+      from_component: props.fromComponent
     }
     if (type === 0) {
       data.start_date = undefined;
