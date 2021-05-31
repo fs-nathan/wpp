@@ -46,9 +46,11 @@ function AvatarCircleList({ row,display, users = [], size = 20, className = '', 
       )}
       {users.length === 0 && (null)}
     </div>
+    {row && 
     <div className="list-backup">
       <ActionList row={row} />
     </div>
+    }
     </>
   )
 }

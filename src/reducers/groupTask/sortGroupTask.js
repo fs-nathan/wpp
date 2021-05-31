@@ -30,7 +30,6 @@ function reducer(state = initialState, action) {
 				loading: false,
 			};
 		case IS_SORT_GROUP_TASK:
-			console.log(action)
 			return {
 				...state,
 				...initialState,

@@ -135,9 +135,7 @@ function CreateJobModal(props) {
       updateData.start_time = undefined;
       updateData.end_time = undefined;
     }
-    if(props.setOnload){
-      props.setOnload(true)
-    }
+    
     switch (props.editMode) {
       case EDIT_MODE.NAME_DES:
         dispatch(updateNameDescription(taskId, data.name, updateData.description));
@@ -159,6 +157,14 @@ function CreateJobModal(props) {
         break;
     }
     // props.setOpen(false);
+    if(props.setOnload){
+      
+      setTimeout(() => {
+        props.setOnload(true);
+        props.setOpen(false)
+      }, 500);
+      
+    }
   };
   React.useEffect(() => {
     switch (workType) {
