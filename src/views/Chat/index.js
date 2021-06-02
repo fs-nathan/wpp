@@ -126,7 +126,7 @@ function Chat(props) {
   }
 
   return (
-    <div className={taskId ? "container" : "container-job-introduce"}>
+    <div className={"wp-messenger " + (taskId ? "container" : "container-job-introduce")}>
       <ListPart />
       {taskId ? (
         <>

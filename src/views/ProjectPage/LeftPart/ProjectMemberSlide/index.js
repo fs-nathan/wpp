@@ -23,10 +23,10 @@ function ProjectMemberSlide({
   doGetPermissionViewDetailProject,
 }) {
   const { projectId } = useParams();
-  React.useLayoutEffect(() => {
-    if (viewPermissions.permissions === null) doGetPermissionViewDetailProject({ projectId }, true);
-    // eslint-disable-next-line
-  }, [projectId, doGetPermissionViewDetailProject]);
+  // React.useLayoutEffect(() => {
+  //   if (viewPermissions.permissions === null) doGetPermissionViewDetailProject({ projectId }, true);
+  //   // eslint-disable-next-line
+  // }, [projectId, doGetPermissionViewDetailProject]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;

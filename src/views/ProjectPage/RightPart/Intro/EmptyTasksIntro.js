@@ -12,9 +12,9 @@ function EmptyTasksIntro({projectName, projectID, handleOpenModal, work_type = 0
   const {t} = useTranslation();
   const dispatch = useDispatch();
   const permissions = useSelector(state => state.viewPermissions.data.detailProject[projectID]);
-  React.useEffect(() => {
-    if(!isNil(projectID)) dispatch(getPermissionViewDetailProject({projectId: projectID}));
-  }, [dispatch, projectID]);
+  // React.useEffect(() => {
+  //   if(!isNil(projectID)) dispatch(getPermissionViewDetailProject({projectId: projectID}));
+  // }, [dispatch, projectID]);
   return (
     <>
       <Box className={"introEmptyData-container longContent"}>
@@ -34,7 +34,7 @@ function EmptyTasksIntro({projectName, projectID, handleOpenModal, work_type = 0
               {t("LABEL_CHAT_TASK_TAO_CONG_VIEC")}
             </Button>
             {get(permissions, "update_project") && (
-              <Button variant={"outlined"} disableElevation onClick={() => handleOpenModal("MEMBERS_SETTING")}>
+              <Button variant={"outlined"} disableElevation onClick={() => handleOpenModal("SETTING_MEMBER")}>
                 {t("LABEL_CHAT_TASK_THEM_THANH_VIEN")}
               </Button>
             )}

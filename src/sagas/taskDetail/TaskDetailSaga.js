@@ -2,7 +2,7 @@ import {get} from 'lodash';
 import {call, put, select} from "redux-saga/effects";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import {apiService} from "../../constants/axiosInstance";
-import {CREATE_TASK, CustomEventEmitter, CustomEventEmitterWithParams, DELETE_TASK, UPDATE_DURATION_TASK} from '../../constants/events';
+import {CREATE_TASK, CustomEventEmitter, CustomEventEmitterWithParams, DELETE_TASK, UPDATE_DURATION_TASK, UPDATE_INFOMATION_TASK} from '../../constants/events';
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from '../../constants/snackbarController';
 import {CREATE_OFFER} from 'views/OfferPage/redux/types';
 import {getDataPinOnTaskChat} from 'actions/chat/chat';
@@ -26,8 +26,12 @@ async function doUpdatePriority(payload) {
 function* updatePriority(action) {
   try {
     const res = yield call(doUpdatePriority, action.payload);
+    if (action.payload.from_view == "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    } else {
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
     yield put(actions.updatePrioritySuccess(res));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updatePriorityFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1151,12 +1155,12 @@ function* updateTimeDuration(action) {
   try {
     const res = yield call(doUpdateTimeDuration, action.payload);
     yield put(actions.updateTimeDurationSuccess(res));
-    if (action.payload.from_component !== "Table") {
-      yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
-    } else {
+    if (action.payload.from_view === "Table") {
       CustomEventEmitter(UPDATE_DURATION_TASK);
+    } else {
+      yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     }
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateTimeDurationFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1181,11 +1185,13 @@ function* createTask(action) {
   try {
     const res = yield call(doCreateTask, action.payload.data);
     yield put(actions.createTaskSuccess(res));
-    yield put(
-      actions.getListTaskDetail(action.payload.projectId)
-    );
+    if (action.payload.data.from_view !== "Table") {
+      yield put(
+        actions.getListTaskDetail(action.payload.projectId)
+      );
+    }
     CustomEventEmitterWithParams(CREATE_TASK, {detail: res});
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.createTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1402,10 +1408,14 @@ export function* unPinTask({ payload }) {
 
 export function* stopTask(payload) {
   try {
-    const { task_id } = payload;
+    const { task_id, from_view } = payload;
     const res = yield call(apiService.post, "/task/stop-task", { task_id });
+    if (from_view == "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    } else {
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
     yield put(actions.stopTaskSuccess(res.data, task_id));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.stopTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1414,10 +1424,14 @@ export function* stopTask(payload) {
 
 export function* cancelStopTask(payload) {
   try {
-    const { task_id } = payload;
+    const { task_id, from_view } = payload;
     const res = yield call(apiService.post, "/task/cancel-stop-task", { task_id });
+    if (from_view == "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    } else {
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
     yield put(actions.cancelStopTaskSuccess(res.data, task_id));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.cancelStopTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1439,10 +1453,13 @@ export function* deleteShareLocation(payload) {
 
 export function* updateNameDescription(payload) {
   try {
-    const { task_id, name, description } = payload;
+    const { task_id, name, description, from_view } = payload;
     const res = yield call(apiService.put, "/task/update-name-description", { task_id, name, description });
+    if (from_view == "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    }
     yield put(actions.updateNameDescriptionSuccess(res.data, task_id));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateNameDescriptionFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1451,10 +1468,14 @@ export function* updateNameDescription(payload) {
 
 export function* updateGroupTask(payload) {
   try {
-    const { task_id, group_task } = payload;
+    const { task_id, group_task, from_view } = payload;
     const res = yield call(apiService.put, "/task/update-group-task", { task_id, group_task });
+    if (from_view == "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    } else {
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
     yield put(actions.updateGroupTaskSuccess({ data: res.data, task_id, group_task }));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateGroupTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1475,10 +1496,14 @@ export function* updateTypeAssign(payload) {
 
 export function* updateScheduleTask(payload) {
   try {
-    const { task_id, schedule_id } = payload;
+    const { task_id, schedule_id, from_view } = payload;
     const res = yield call(apiService.put, "/task/update-schedule-task", { task_id, schedule_id });
+    if (from_view == "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    } else {
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
     yield put(actions.updateScheduleTaskSuccess(res.data));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(actions.updateScheduleTaskFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));

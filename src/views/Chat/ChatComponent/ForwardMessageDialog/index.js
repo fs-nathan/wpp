@@ -90,7 +90,7 @@ function ForwardMessageDialog({ }) {
         onClickSuccess={handleClose}
         maxWidth="sm"
         isOneButton
-        className="ForwardMessageDialogMain"
+        className="ForwardMessageDialogMain forward-message-modal"
         scroll="body"
       // isLoading={isLoading}
       >

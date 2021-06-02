@@ -59,7 +59,7 @@ const ProgressModal = (props) => {
   const [endTime, setEndTime] = React.useState(listTimeSelect[34])
   const [startDay, setStartDay] = React.useState(DEFAULT_DATE_TEXT)
   const [endDay, setEndDay] = React.useState(DEFAULT_DATE_TEXT)
-  const [type, setType] = React.useState(date_status);
+  const [type, setType] = React.useState(props.taskData ? props.taskData.type_time : date_status);
 
   const optionsList = useMemo(() => [
     { value: 2, label: t('LABEL_CHAT_TASK_NGAY_VA_GIO') },
@@ -76,7 +76,7 @@ const ProgressModal = (props) => {
         end_time,
         end_date,
         type_time,
-      } = detailTask;
+      } = props.taskData ? props.taskData : detailTask;
       const defaultStart = convertDate(new Date());
 
       setStartDay(start_date ?
@@ -89,7 +89,7 @@ const ProgressModal = (props) => {
       else if (type_time === 1) setType(1)
       else if (type_time === 2) setType(0)
     }
-  }, [dateFormat, detailTask])
+  }, [dateFormat, detailTask, props.taskData])
 
   const handleStartDay = (startDay) => {
     setStartDay(startDay)
@@ -100,12 +100,12 @@ const ProgressModal = (props) => {
 
   const handlePressConfirm = () => {
     const data = {
-      task_id: taskId,
+      task_id: props.taskData ? props.taskData.id : taskId,
       start_date: startDay,
       end_date: endDay,
       start_time: startTime,
       end_time: endTime,
-      from_component: props.fromComponent
+      from_view: props.fromView
     }
     if (type === 0) {
       data.start_date = undefined;

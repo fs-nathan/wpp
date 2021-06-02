@@ -239,3 +239,28 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
     margin: auto;
   };
 }
+.forward-message-modal {
+  .MuiPaper-root {
+    height: auto!important;
+    .dialogWrap--container {
+      height: 150px!important
+    }
+  }
+}
+.modal-week-schedule-home-page {
+  .MuiDialog-paperScrollPaper {
+    height: calc(100% - 64px);
+    .modal-content {
+      overflow-x: hidden;
+      height: calc(100% - 120px);
+      padding: 10px 20px;
+      .view_WeeklyCalendar_rightContainer {
+        height: 100%;
+        padding: 0px;
+      }
+      .view_WeeklyCalendar_rightContainer__TableContainer {
+        height: calc(100% - 70px);
+      }
+    }
+  }
+}

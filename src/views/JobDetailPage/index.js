@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ShareDocumentModal from "views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal";
 import "../JobDetailPage/index.scss";
-import ForwardMessageDialog from './ChatComponent/ForwardMessageDialog';
+import ForwardMessageDialog from '../Chat/ChatComponent/ForwardMessageDialog';
 import ChatPart from "./ChatPart";
 import Intro from "./introduce";
 import ListPart from "./ListPart";

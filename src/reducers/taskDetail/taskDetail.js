@@ -71,7 +71,6 @@ export default (state = initialState, action) => produce(state, draft => {
     }
     case types.CANCEL_STOP_TASK_SUCCESS: {
       const { payload } = action;
-      console.log(payload)
       draft.taskDetails.is_stop = false;
       draft.taskDetails.status_label = payload.status_label;
       draft.taskDetails.state_code = payload.state_code;

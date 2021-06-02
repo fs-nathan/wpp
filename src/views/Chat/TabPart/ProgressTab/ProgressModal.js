@@ -117,9 +117,9 @@ const ProgressModal = (props) => {
     // console.log("data", data);
     dispatch(updateTimeDuration(data));
     // props.setOpen(false)
-    if(props.setOnload){
-      props.setOnload(true)
-    }
+    // if(props.setOnload){
+    //   props.setOnload(true)
+    // }
   }
 
   function validate() {

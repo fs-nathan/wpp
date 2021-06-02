@@ -1337,8 +1337,8 @@
 	"LABEL_CHAT_TASK_BIEU_CAM": "Biểu cảm",
 	"LABEL_CHAT_TASK_THANH_VIEN_DA_XEM": "Thành viên đã xem",
 	"LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC": "Thành viên công việc",
-	"LABEL_CHAT_TASK_CHON_DU_AN": "Chọn dự án",
-	"LABEL_CHAT_TASK_TIM_DU_AN": "Tìm dự án",
+	"LABEL_CHAT_TASK_CHON_DU_AN": "Chọn bảng công việc",
+	"LABEL_CHAT_TASK_TIM_DU_AN": "Tìm bảng công việc",
 	"LABEL_CHAT_TASK_DANH_SACH_CONG_VIEC": "Danh sách công việc",
 	"LABEL_CHAT_TASK_TEN_CONG_VIEC": "Tên công việc",
 	"LABEL_CHAT_TASK_GUI": "Gửi",
@@ -2510,5 +2510,7 @@
   "LABEL_CLASSIFY": "Phân loại",
   "LABEL_MARK_MODAL_MEMBER_TASK_SHOW": "Luôn hiển thị sau khi tạo công việc",
   "IDS_WP_DISCOUNT": "Giảm giá",
-  "IDS_WP_CAN_NOT_USE": "Không thể sử dụng mã khuyển mãi này"
+  "IDS_WP_CAN_NOT_USE": "Không đủ điều kiện sử dụng!",
+  "IDS_WP_VALUE_BEFORE_TAX_AFTER_DISCOUNT": "Giá trị trước thuế sau giảm giá",
+  "IDS_WP_VALUE_PAYMENT": "Giá trị thanh toán"
 }

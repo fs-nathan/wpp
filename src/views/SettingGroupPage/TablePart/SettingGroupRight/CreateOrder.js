@@ -43,7 +43,7 @@ const CreateOrder = props => {
   const [monthBuyPackageUser, setMonthBuyPackageUser] = useState(12);
   const [dataBuy, SetdataBuy] = useState(0);
   const [dateSave, SetdateSave] = useState(0);
-  const [isErrorCode, SetIsErrorCode] = useState(0);
+  const [errorCodePromotion, setErrorCodePromotion] = useState(null);
   const [dayBonus, SetDayBonus] = useState(0);
   const [moneyDiscount, setMoneyDiscount] = useState(0);
   const [rateDiscount, setRateDiscount] = useState(0);
@@ -72,10 +72,10 @@ const CreateOrder = props => {
     },
     time: {
       mark: [
-        { value: 3, label: `3 ${t('IDS_WP_MONTH')}` },
+        { value: 6, label: `6 ${t('IDS_WP_MONTH')}` },
         { value: 36, label: `36 ${t('IDS_WP_MONTH')}` }
       ],
-      min: 3,
+      min: 6,
       max: 36
     }
   };
@@ -226,7 +226,7 @@ const CreateOrder = props => {
           storage_time_use: dateSave
         };
       }
-      if (isErrorCode === 2) {
+      if (bonusCode && !errorCodePromotion) {
         dataBody = {
           ...dataBody,
           bonus_code: bonusCode
@@ -250,22 +250,23 @@ const CreateOrder = props => {
     setTimeout(() => props.actionToast(null, ''), 2000);
   };
   const handleChangePromoCode = async (code) => {
-    if (!bonusCode) {
+    if (!bonusCode || bonusCode !== code) {
       try {
         const { data } = await checkPromotionCode({ code, month_buy: monthBuyPackageUser });
-        SetIsErrorCode(2);
+        setErrorCodePromotion(null);
         setBonusCode(code);
         SetDayBonus(data.day_bonus);
         setMoneyDiscount(data.value_discount)
         setRateDiscount(data.rate_discount)
       } catch (error) {
-        SetIsErrorCode(1);
+        setErrorCodePromotion(code);
         setBonusCode(false);
         SetDayBonus(0);
         setMoneyDiscount(0)
         setRateDiscount(0)
       }
     } else {
+      setErrorCodePromotion(null);
       setBonusCode(false);
       SetDayBonus(0);
       setMoneyDiscount(0)
@@ -399,27 +400,36 @@ const CreateOrder = props => {
             <table>
               {
                 promotionCodes.map(e => 
-                  <tr onClick={() => handleChangePromoCode(e.code)}>
-                    <td>
-                      <StyledRadio selectedColor={appColor}>
-                        <Radio checked={bonusCode == e.code ? true : false} classes={{root: "per-promotion"}} />
-                      </StyledRadio>
-                    </td>
-                    <td><span className="name-promotion">{e.code}</span></td>
-                    <td className="des-promotion">{e.description}</td>
-                  </tr>
+                  <>
+                    <tr onClick={() => handleChangePromoCode(e.code)}>
+                      <td>
+                        <StyledRadio selectedColor={appColor}>
+                          <Radio checked={bonusCode == e.code ? true : false} classes={{root: "per-promotion"}} />
+                        </StyledRadio>
+                      </td>
+                      <td><span className="name-promotion">{e.code}</span></td>
+                      <td className="des-promotion">
+                        {e.description}
+                      </td>
+                    </tr>
+                    {errorCodePromotion === e.code && (
+                      <tr className="tr-error-code">
+                        <td></td>
+                        <td></td>
+                        <td><div className="error-code">{t('IDS_WP_CAN_NOT_USE')}</div></td>
+                      </tr>
+                    )}
+                  </>
                 )
               }
             </table>          
           </div>
-          {isErrorCode === 1 ? (
-            <div className="error-code">{t('IDS_WP_CAN_NOT_USE')}</div>
-          ) : ""}
           <Button
             className="create-order-btn"
             onClick={handleCreateOder}
             variant="contained"
             disabled={!(isCheckedManagerWork || isCheckedBuyData) || loading}
+            style={{background: appColor}}
           >
             {loading && (
               <CircularProgress

@@ -25,8 +25,8 @@ function ProjectPage({
                 <TwoColumnsLayout
                   leftRenders={[
                     () => <ProjectDetail {...props} />,
-                    ({ handleSubSlide }) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide} />,
-                    ({ handleSubSlide }) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide} />,
+                    ({ handleSubSlide }) => null,
+                    ({ handleSubSlide }) => null,
                   ]}
                   rightRender={
                     ({ expand, handleExpand, handleSubSlide, }) =>

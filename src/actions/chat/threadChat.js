@@ -44,3 +44,11 @@ export const doCreateThreadChatPrivate = data => {
     data
   });
 };
+
+export const getAllThreadChat = data => {
+  return apiService({
+    url: '/project/list-task-detail',
+    method: 'get',
+    params: data
+  });
+};

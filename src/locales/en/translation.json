@@ -1334,8 +1334,8 @@
 	"LABEL_CHAT_TASK_BIEU_CAM": "Emotion",
 	"LABEL_CHAT_TASK_THANH_VIEN_DA_XEM": "Members seen",
 	"LABEL_CHAT_TASK_THANH_VIEN_CONG_VIEC": "Members",
-	"LABEL_CHAT_TASK_CHON_DU_AN": "Select project",
-	"LABEL_CHAT_TASK_TIM_DU_AN": "Search project",
+	"LABEL_CHAT_TASK_CHON_DU_AN": "Select board",
+	"LABEL_CHAT_TASK_TIM_DU_AN": "Search board",
 	"LABEL_CHAT_TASK_DANH_SACH_CONG_VIEC": "Task list",
 	"LABEL_CHAT_TASK_TEN_CONG_VIEC": "Task name",
 	"LABEL_CHAT_TASK_GUI": "To send",
@@ -2492,5 +2492,7 @@
 	"LABEL_CLASSIFY": "Classify",
 	"LABEL_MARK_MODAL_MEMBER_TASK_SHOW": "Always open after create task successful",
 	"IDS_WP_DISCOUNT": "Discount",
-	"IDS_WP_CAN_NOT_USE": "Can not use this promo code"
+	"IDS_WP_CAN_NOT_USE": "Not enough conditions to use!",
+	"IDS_WP_VALUE_BEFORE_TAX_AFTER_DISCOUNT": "Value before tax after discount",
+	"IDS_WP_VALUE_PAYMENT": "Value payment"
 }

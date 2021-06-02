@@ -22,7 +22,8 @@ import {
   SORT_GROUP_TASK,
   SORT_TASK,
   UPDATE_GROUP_TASK,
-  UPDATE_DURATION_TASK
+  UPDATE_DURATION_TASK,
+  UPDATE_INFOMATION_TASK
 } from 'constants/events';
 import {get, isNil} from 'lodash';
 import moment from 'moment';
@@ -81,12 +82,12 @@ function AllTaskTable({
   const query = useQuery();
   const history = useHistory();
   const [guideLineModal, setGuideLineModal] = React.useState(false);
-  React.useLayoutEffect(() => {
-    doGetPermissionViewDetailProject({ projectId });
-  }, [projectId]);
+  // React.useLayoutEffect(() => {
+  //   doGetPermissionViewDetailProject({ projectId });
+  // }, [projectId]);
 
   React.useEffect(() => {
-    if (projectId !== null && isNil(memberId)) {
+    if (projectId !== null) {
       doListTask({
         projectId,
         timeStart: get(timeRange, 'timeStart')
@@ -113,51 +114,50 @@ function AllTaskTable({
         doListGroupTask({ projectId })
       }
 
-      CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-      CustomEventListener(CREATE_TASK, (event) => {
+      const createTaskSuccess = (event) => {
         reloadListTask()
         if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)) {
           setOpenModalAddMember(event.detail.task)
         }
-      });
+      }
+
+      CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+      CustomEventListener(CREATE_TASK, createTaskSuccess);
       CustomEventListener(SORT_TASK, reloadListTask);
       CustomEventListener(UPDATE_DURATION_TASK, reloadListTask);
+      CustomEventListener(UPDATE_INFOMATION_TASK, reloadListTask);
       CustomEventListener(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       CustomEventListener(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       CustomEventListener(UPDATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       CustomEventListener(DELETE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       return () => {
         CustomEventDispose(SORT_GROUP_TASK, reloadListTaskAndGroupTask);
-        CustomEventDispose(CREATE_TASK, (event) => {
-          reloadListTask()
-          if (!localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)) {
-            setOpenModalAddMember(event.detail.task)
-          }
-        });
+        CustomEventDispose(CREATE_TASK, createTaskSuccess);
         CustomEventDispose(SORT_TASK, reloadListTask);
         CustomEventDispose(UPDATE_DURATION_TASK, reloadListTask);
+        CustomEventDispose(UPDATE_INFOMATION_TASK, reloadListTask);
         CustomEventDispose(CREATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
         CustomEventDispose(COPY_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
         CustomEventDispose(UPDATE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
         CustomEventDispose(DELETE_GROUP_TASK.SUCCESS, reloadListTaskAndGroupTask);
       }
     }
-  }, [projectId, timeRange, memberId]);
+  }, [projectId, timeRange]);
 
-  React.useEffect(() => {
-    if(!isNil(memberId)) {
-      doListTaskMember({projectId, memberId});
-      const reloadAfterActionMember = () => {
-        doListTaskMember({projectId, memberId});
-      }
-      CustomEventListener(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
-      CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-      return () => {
-        CustomEventDispose(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
-        CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-      }
-    }
-  }, [memberId]);
+  // React.useEffect(() => {
+  //   if(!isNil(memberId)) {
+  //     doListTaskMember({projectId, memberId});
+  //     const reloadAfterActionMember = () => {
+  //       doListTaskMember({projectId, memberId});
+  //     }
+  //     CustomEventListener(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+  //     CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+  //     return () => {
+  //       CustomEventDispose(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
+  //       CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
+  //     }
+  //   }
+  // }, [memberId]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, 'update_project'], false)) return;
@@ -223,7 +223,7 @@ function AllTaskTable({
       case 'ADD_MEMBER':
         setOpenModalAddMember(true);
         return;
-      case 'MEMBERS_SETTING':
+      case 'SETTING_MEMBER':
         setOpenMemberSetting(true);
         return;
       default: return;
@@ -231,10 +231,10 @@ function AllTaskTable({
   }
 
   function handleRemoveMember(taskId) {
-    doDeleteMemberFromTask({task_id: taskId, member_id: memberId});
+    // doDeleteMemberFromTask({task_id: taskId, member_id: memberId});
   }
   function handleAddMember(taskId) {
-    doAddMemberToTask({task_id: taskId, member_id: memberId});
+    // doAddMemberToTask({task_id: taskId, member_id: memberId});
   }
 
   React.useEffect(() => {
@@ -293,12 +293,16 @@ function AllTaskTable({
         projectId={projectId}
         groupId={selectedGroup}
         project={project}
+        fromView={"Table"}
       />
-      <ProjectSettingModal
-        open={openSetting}
-        setOpen={setOpenSetting}
-        {...settingProps}
-      />
+      {
+        openSetting &&
+        <ProjectSettingModal
+          open={openSetting}
+          setOpen={setOpenSetting}
+          {...settingProps}
+        />
+      }
       <AssignCalendarModal
         openModal={openCalendar}
         setopenModal={setOpenCalendar}
@@ -312,7 +316,10 @@ function AllTaskTable({
         openModalAddMember &&
         <AddMemberModal isOpen={openModalAddMember} setOpen={setOpenModalAddMember} task={openModalAddMember} projectActive={projectId}/>
       }
-      <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting}/>
+      {
+        openMemberSetting &&
+        <MemberSetting open={openMemberSetting} setOpen={setOpenMemberSetting}/>
+      }
     </>
   )
 }

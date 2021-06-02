@@ -362,7 +362,7 @@ class ExportPDF extends Component {
                                 {t('IDS_WP_PROMOTION_CODE')}:{' '}
                                 {isCreate
                                   ? bonusCode
-                                  : orderItem.packet_user.promotion_code}
+                                  : orderItem.promotion_code}
                               </div>
                             </div>
                           </td>
@@ -491,12 +491,28 @@ class ExportPDF extends Component {
                   <div className="width-70">
                     <div className="item-total-group">
                       <span className="order-value">
-                        {t('IDS_WP_VALUE_BEFORE_TAX')} (1+2)
+                        {t('IDS_WP_VALUE_BEFORE_TAX')}
                       </span>
                       <span>
                         {isCreate
                           ? this.showPrice(totalPriceBeforVAT)
-                          : orderItem.price_after_vat}
+                          : this.showPrice(String(orderItem.price_after_vat))}
+                      </span>
+                    </div>
+                    <div className="item-total-group">
+                      <span className="order-value">
+                        {t('IDS_WP_DISCOUNT')} {isCreate ? (discountValue > 0 ? '(' + bonusCode + ")" : "") : (orderItem.discount > 0 ? '(' + orderItem.promotion_code + ")" : "")}
+                      </span>
+                      <span>
+                        {isCreate ? "-" + this.showPrice(discountValue) : "-" + this.showPrice(String(orderItem.discount))}
+                      </span>
+                    </div>
+                    <div className="item-total-group">
+                      <span className="order-value">
+                        {t('IDS_WP_VALUE_BEFORE_TAX_AFTER_DISCOUNT')}
+                      </span>
+                      <span>
+                        {isCreate ? this.showPrice(totalPriceBeforVAT - discountValue) : this.showPrice(String(orderItem.price_after_vat - orderItem.discount))}
                       </span>
                     </div>
                     <div className="item-total-group">
@@ -511,15 +527,7 @@ class ExportPDF extends Component {
                     </div>
                     <div className="item-total-group">
                       <span className="order-value">
-                        {t('IDS_WP_DISCOUNT')}
-                      </span>
-                      <span>
-                        {isCreate ? this.showPrice(discountValue) : this.showPrice(String(orderItem.discount))}
-                      </span>
-                    </div>
-                    <div className="item-total-group">
-                      <span className="order-value">
-                        {t('IDS_WP_VALUE_ORDER')}
+                        {t('IDS_WP_VALUE_PAYMENT')}
                       </span>
                       <span className="price-value">
                         {isCreate

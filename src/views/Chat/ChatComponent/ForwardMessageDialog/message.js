@@ -17,7 +17,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AvatarSquareGroup from 'components/AvatarSquareGroup';
 import { currentColorSelector } from 'views/Chat/selectors';
 import styled from 'styled-components';
-import {doCreateThreadChatPrivate} from "actions/chat/threadChat";
+import {doCreateThreadChatPrivate, getAllThreadChat} from "actions/chat/threadChat";
 
 const StyledDiv = styled.div`
   .tab-selected {
@@ -30,6 +30,9 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
   const { t } = useTranslation()
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
+  const projectId = useSelector(
+    (state) => state.system.profile.group_chat_id
+  );
   const listTasks = useSelector(state => state.chat.listTasks);
   const isLoading = useSelector(state => state.chat.isLoadingForward);
   const contentForward = useSelector(state => state.chat.contentForward);
@@ -40,7 +43,7 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
   const [searchValue, setSearchValue] = useState("");
   const [isCreateThread, setCreatingThread] = useState(false)
   const timeoutRef = useRef(null); 
-  const membersOriginnal = useSelector(state => state.taskDetail.listDetailTask.listDataNotRoom);
+  const [membersOriginnal, setMembersOriginnal] = useState([]);
   const [members, setMembers] = useState(membersOriginnal);
   const appColor = useSelector(currentColorSelector)
   const [tabActive, setTabActive] = useState(1);
@@ -60,10 +63,10 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
   }
 
   React.useEffect(() => {
-    if (membersOriginnal) {
-      setMembers(membersOriginnal)
+    if (projectId) {
+      fetchListThreadChat()
     }
-  }, [membersOriginnal]);
+  }, [projectId]);
 
 
   // const handleClose = () => {
@@ -137,6 +140,17 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
       setMembers(membersTemp)
     }, 300);    
   }
+
+  async function fetchListThreadChat() {
+    try {
+      const res = await getAllThreadChat({ project_id: projectId, type_data: "not-room" });
+      setMembersOriginnal(res.data.tasks)
+      setMembers(res.data.tasks)
+    } catch (error) {
+      return false
+    }
+  }
+
   return (
     <DialogWrapForwardToMessage
       title={t('LABEL_CHAT_TASK_FORWARD')}
@@ -158,28 +172,30 @@ function ForwardMessageDialogMessage({ isOpen, handleClickClose }) {
           <button onClick={() => setTabActive(1)} className={tabActive === 1 ? "tab-selected" : ""}>{t('LABEL_FORWARD_MESSAGE_MEMBERS')} ({numberMember})</button>
           <button onClick={() => setTabActive(2)} className={tabActive === 2 ? "tab-selected" : ""}>{t('LABEL_FORWARD_MESSAGE_GROUP')} ({numberGroup})</button>
         </StyledDiv>
-        <div className="forward-messsage-wrap">
-          <div className="forward-messsage-list">
-            {
-              members.map(e => e.type_chat === tabActive && (
-                <div className="forward-messsage-list-line" key={e.id ? e.id : e.uuid}>
-                  <div className={`step-avatar ${tabActive === 1 ? "avatar-member" : ""}`}>
-                    <AvatarSquareGroup images={e.members} />
-                  </div>
-                  <div className="step-name">
-                    {e.name}
-                  </div>
-                  <div className="step-send">
-                    {(isLoading || isCreateThread) && (sending === e.id || sending === e.uuid) ?
-                      <CircularProgress size={20} className="forward-messsage--loading" />
-                      :
-                      <button style={{background: appColor}} onClick={onClickSend(e)}>{t('LABEL_CHAT_TASK_GUI')}</button>
-                    }
-                  </div>
-                </div>
-              ))
-            }
-          </div>
+          <div className="forward-messsage-wrap">
+            <Scrollbars style={{ width: "100%", height: "100%" }}>
+              <div className="forward-messsage-list">
+                {
+                  members.map(e => e.type_chat === tabActive && (
+                    <div className="forward-messsage-list-line" key={e.id ? e.id : e.uuid}>
+                      <div className={`step-avatar ${tabActive === 1 ? "avatar-member" : ""}`}>
+                        <AvatarSquareGroup images={e.members} />
+                      </div>
+                      <div className="step-name">
+                        {e.name}
+                      </div>
+                      <div className="step-send">
+                        {(isLoading || isCreateThread) && (sending === e.id || sending === e.uuid) ?
+                          <CircularProgress size={20} className="forward-messsage--loading" />
+                          :
+                          <button style={{background: appColor}} onClick={onClickSend(e)}>{t('LABEL_CHAT_TASK_GUI')}</button>
+                        }
+                      </div>
+                    </div>
+                  ))
+                }
+              </div>
+            </Scrollbars>
         </div>
       </div>
     </DialogWrapForwardToMessage>

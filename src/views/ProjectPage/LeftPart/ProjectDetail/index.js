@@ -41,38 +41,38 @@ function ProjectDetail({
     doGetPermissionViewDetailProject({ projectId });
   }, [projectId]);
 
-  React.useEffect(() => {
-    if (projectId !== null) {
-      doListTask({
-        projectId: projectId,
-        timeStart: get(timeRange, 'timeStart')
-          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-          : undefined,
-        timeEnd: get(timeRange, 'timeEnd')
-          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-          : undefined,
-      });
-      const reloadListTask = () => {
-        doListTask({
-          projectId: projectId,
-          timeStart: get(timeRange, 'timeStart')
-            ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
-            : undefined,
-          timeEnd: get(timeRange, 'timeEnd')
-            ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
-            : undefined,
-        });
-      }
-      CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-      CustomEventListener(CREATE_TASK, reloadListTask);
-      CustomEventListener(SORT_TASK, reloadListTask);
-      return () => {
-        CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
-        CustomEventDispose(CREATE_TASK, reloadListTask);
-        CustomEventDispose(SORT_TASK, reloadListTask);
-      }
-    }
-  }, [projectId, timeRange]);
+  // React.useEffect(() => {
+  //   if (projectId !== null) {
+  //     doListTask({
+  //       projectId: projectId,
+  //       timeStart: get(timeRange, 'timeStart')
+  //         ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+  //         : undefined,
+  //       timeEnd: get(timeRange, 'timeEnd')
+  //         ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+  //         : undefined,
+  //     });
+  //     const reloadListTask = () => {
+  //       doListTask({
+  //         projectId: projectId,
+  //         timeStart: get(timeRange, 'timeStart')
+  //           ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+  //           : undefined,
+  //         timeEnd: get(timeRange, 'timeEnd')
+  //           ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+  //           : undefined,
+  //       });
+  //     }
+  //     CustomEventListener(SORT_GROUP_TASK, reloadListTask);
+  //     CustomEventListener(CREATE_TASK, reloadListTask);
+  //     CustomEventListener(SORT_TASK, reloadListTask);
+  //     return () => {
+  //       CustomEventDispose(SORT_GROUP_TASK, reloadListTask);
+  //       CustomEventDispose(CREATE_TASK, reloadListTask);
+  //       CustomEventDispose(SORT_TASK, reloadListTask);
+  //     }
+  //   }
+  // }, [projectId, timeRange]);
 
   React.useEffect(() => {
     if (projectId !== null) {

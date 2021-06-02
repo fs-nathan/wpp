@@ -162,13 +162,10 @@ function ListHeader(props) {
           setOpenCreateTaskGroup(true);
         }}>{t("LABEL_CHAT_TASK_TAO_NHOM_CONG_VIEC")}</MenuItem>
       </Menu>
-      {
-        openCreateJobModal &&
-        <CreateJobModal
-          isOpen={openCreateJobModal}
-          setOpen={setOpenCreateJobModal}
-        />
-      }
+      <CreateJobModal
+        isOpen={openCreateJobModal}
+        setOpen={setOpenCreateJobModal}
+      />
       {
         showAddMember &&
         <AddMemberModal isOpen={showAddMember} setOpen={setShowAddMember} task={showAddMember} projectId={projectThis.id} />

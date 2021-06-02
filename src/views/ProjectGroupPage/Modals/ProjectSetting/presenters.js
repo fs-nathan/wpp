@@ -197,7 +197,7 @@ function ProjectSetting({
             <CustomFormControlLabel value={0} control={<Radio color={'primary'} />} label={t("PROJECT_SETTING_MODAL_NOTIFICATION_OFF")} />
           </RadioGroup>
         </StyledFormControl>}
-        {get(canChange, 'update', false) && <StyledFormControl component='fieldset' fullWidth>
+        <StyledFormControl component='fieldset' fullWidth>
           <TitleFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PANEL_PIN")}</TitleFormLabel>
           <StyledFormLabel component='legend'>{t("PROJECT_SETTING_MODAL_PANEL_PIN_DESCRIPTION")}</StyledFormLabel>
           <CustomFormControlLabel
@@ -208,7 +208,7 @@ function ProjectSetting({
             }} checked={pinOnBoard}/>}
             label={t("PROJECT_SETTING_MODAL_PANEL_PIN")}
           />
-        </StyledFormControl>}
+        </StyledFormControl>
       </CustomModal>
     </React.Fragment>
   )

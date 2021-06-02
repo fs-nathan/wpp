@@ -164,8 +164,7 @@
   .forward-messsage-wrap {
     float: left;
     width: 100%;
-    max-height: calc(100vh - 250px);
-    overflow: auto;
+    height: calc(100vh - 300px);
   }
   .step-list-parent {
     .forward-messsage-title {

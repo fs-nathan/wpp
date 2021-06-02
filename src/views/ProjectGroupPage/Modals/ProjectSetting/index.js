@@ -6,7 +6,7 @@ import { updateStatusView } from 'actions/project/setting/updateStatusView';
 import { updateNotificationSetting } from "actions/project/setting/updateNotificationSetting";
 import { getPermissionViewDetailProject } from 'actions/viewPermissions';
 import { useTimes } from 'components/CustomPopover';
-import { get, isNil } from 'lodash';
+import { get, isNil, isEmpty } from 'lodash';
 import moment from 'moment';
 import React from 'react';
 import { connect } from 'react-redux';
@@ -40,7 +40,7 @@ function ProjectSetting({
   }, [timeType]);
 
   React.useLayoutEffect(() => {
-    if (get(curProject, 'id')) doGetPermissionViewDetailProject({ projectId: get(curProject, 'id') });
+    if (permission && isEmpty(permission) && get(curProject, 'id')) doGetPermissionViewDetailProject({ projectId: get(curProject, 'id') });
     // eslint-disable-next-line
   }, [curProject])
 

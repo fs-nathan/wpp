@@ -23,8 +23,7 @@ import {
   unPinTaskAction,
 } from "actions/taskDetail/taskDetailActions";
 import { listTask } from "actions/task/listTask";
-import ProgressModal from "views/Chat/TabPart/ProgressTab/ProgressModal";
-import { localOptionSelector } from "views/ProjectPage/selectors";
+import ProgressModal from "views/JobDetailPage/TabPart/ProgressTab/ProgressModal";
 import { useTimes } from "components/CustomPopover";
 import moment from "moment";
 
@@ -41,73 +40,42 @@ export const ActionList = ({ index, row, group }) => {
 
   const [editMode, setEditMode] = React.useState(null);
   const taskId = row?.id;
-  const [onload, setOnload] = React.useState(false);
   const taskDetails = useSelector((state) =>
     get(state, "taskDetail.detailTask.taskDetails")
   );
-  const filter = useSelector((state) => state.localStorage);
-  const localOption = useSelector((state) => localOptionSelector(state));
-  const times = useTimes();
-  const { timeType } = localOption;
-  const timeRange = React.useMemo(() => {
-    const [timeStart, timeEnd] = times[timeType].option();
-    return {
-      timeStart,
-      timeEnd,
-    };
-  }, [timeType]);
-
-  const reloadListTask = () => {
-    dispatch(
-      listTask({
-        projectId: detailTask?.project,
-        timeStart: get(timeRange, "timeStart")
-          ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
-          : undefined,
-        timeEnd: get(timeRange, "timeEnd")
-          ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
-          : undefined,
-      })
-    );
-  };
-
-  let inSearch = false;
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const detailTask = useSelector(
     (state) => state.taskDetail.detailTask.taskDetails
   );
 
-  const { update_task, delete_task, stop_task } = useSelector((state) =>
-    get(state, "taskDetail.detailTask.taskDetails.permissions", {})
-  );
   const {
     is_ghim: isPinned,
-    state_code,
-    assign_code,
     is_stop,
   } = taskDetails || {};
   const pause = is_stop;
+  const taskData = {
+    id: row.id,
+    name: row.name,
+    description: row.description,
+    priority_code: row.priority_code,
+    start_date: row.start_date,
+    start_time: row.start_time,
+    end_date: row.end_date,
+    end_time: row.end_time,
+    group_task: row.group_task,
+    group_task_name: row.group_task_name,
+    schedule_id: row.schedule_id,
+    type_time: row.type_time
+  }
   const confirmDelete = () => {
     dispatch(deleteTask({ taskId, projectId: detailTask.project }));
   };
   function handleClick(evt) {
-    dispatch(chooseTask(taskId));
-    dispatch(getTaskDetailTabPart({ taskId: row.id }));
     setAnchorEl(evt.currentTarget);
-  }
-  let avatar, name, roles;
-  if (detailTask) {
-    let user_create = detailTask.user_create;
-    if (user_create) {
-      avatar = user_create.avatar;
-      name = user_create.name;
-      roles = compact([user_create.room, user_create.position]).join(" - ");
-    }
   }
   const onClickEdit = (mode) => () => {
     setOpenCreateJobModal(true);
-    dispatch(getListGroupTask({ project_id: taskDetails?.project }));
     setAnchorEl(null);
     setEditMode(mode);
   };
@@ -125,13 +93,10 @@ export const ActionList = ({ index, row, group }) => {
     <MenuItem key="editList3" onClick={onClickEdit(EDIT_MODE.GROUP)}>
       {t("LABEL_CHAT_TASK_THAY_DOI_NHOM_VIEC")}
     </MenuItem>,
-    /*<MenuItem key="editList4"
-        onClick={onClickEdit(EDIT_MODE.ASSIGN_TYPE)}
-        >{t('LABEL_CHAT_TASK_THAY_DOI_HINH_THUC_GIAO_VIEC')}</MenuItem>,*/
     <MenuItem key="editList5" onClick={onClickEdit(EDIT_MODE.WORK_DATE)}>
       {t("LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC")}
     </MenuItem>,
-    <MenuItem onClick={onClickEditProgress}>
+    <MenuItem key="editList6" onClick={onClickEditProgress}>
       {t("LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO")}
     </MenuItem>,
   ];
@@ -162,39 +127,20 @@ export const ActionList = ({ index, row, group }) => {
     }
   };
   const onClickPause = () => {
-    dispatch(stopTask(taskId));
+    dispatch(stopTask(taskId, "Table"));
     setAnchorEl(null);
-    if (!pause) {
-      setOnload(true);
-    }
   };
   const onClickResume = () => {
-    dispatch(cancelStopTask(taskId));
+    dispatch(cancelStopTask(taskId, "Table"));
     setAnchorEl(null);
-    if (pause) {
-      setOnload(true);
-    }
   };
 
   function handleCloseMenu() {
     setAnchorEl(null);
   }
 
-  React.useEffect(() => {
-    if (onloadAddMember && detailTask?.project) {
-      reloadListTask();
-      setOnloadAddMember(false);
-    }
-  }, [onloadAddMember, detailTask]);
-  React.useEffect(() => {
-    if (onload && detailTask?.project) {
-      reloadListTask();
-      setOnload(false);
-      setEditMode(null);
-    }
-  }, [onload, detailTask, dispatch]);
   return (
-    <div onMouseLeave={() => setAnchorEl(null)}>
+    <div onMouseLeave={() => setAnchorEl(null)} className="list-view-task-list-action">
       <div>
         <ListAction>
           <div onClick={handleAddMember} className="action-add">
@@ -225,7 +171,7 @@ export const ActionList = ({ index, row, group }) => {
             onConfirm={confirmDelete}
           />
         )}
-        {Boolean(anchorEl) && update_task && (
+        {Boolean(anchorEl) && row.can_modify && (
           <Menu
             className="tabHeaderDefault--menu"
             id="simple-menu"
@@ -238,16 +184,13 @@ export const ActionList = ({ index, row, group }) => {
               horizontal: "right",
             }}
           >
-            {update_task && editList}
+            {row.can_modify && editList}
             <MenuItem onClick={onClickPin}>
               {isPinned
                 ? t("LABEL_CHAT_TASK_BO_GHIM")
                 : t("LABEL_CHAT_TASK_GHIM_CONG_VIEC")}
             </MenuItem>
-            <MenuItem onClick={onClickEditProgress}>
-              {t("LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO")}
-            </MenuItem>
-            {update_task ? (
+            {row.can_modify ? (
               !pause ? (
                 <MenuItem onClick={onClickPause}>
                   {t("LABEL_CHAT_TASK_TAM_DUNG")}
@@ -260,21 +203,22 @@ export const ActionList = ({ index, row, group }) => {
             ) : null}
           </Menu>
         )}
-        {openCreateJobModal && editMode || update_task ? (
-          <EditJobModal
+        {
+          openCreateJobModal && taskData && row.can_modify && <EditJobModal
             isOpen={openCreateJobModal}
             setOpen={setOpenCreateJobModal}
-            data={detailTask}
+            data={taskData}
             editMode={editMode}
-            setOnload={setOnload}
-            projectId={detailTask.project}
+            projectId={row.project_id}
+            fromView={"Table"}
           />
-        ) : null}
-        {taskDetails && taskId && (
+        }
+        {taskData && row.can_modify && (
           <ProgressModal
-            setOnload={setOnload}
             isOpen={openProgressModal}
             setOpen={setOpenProgressModal}
+            taskData={taskData}
+            fromView={"Table"}
           />
         )}
       </div>

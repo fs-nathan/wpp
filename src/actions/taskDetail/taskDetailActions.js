@@ -495,9 +495,9 @@ export const getTaskDetailTabPartFail = (error) => ({
 });
 
 // Update Priority
-export const updatePriority = (task_id, priority) => ({
+export const updatePriority = (task_id, priority, from_view) => ({
     type: types.UPDATE_TASK_PRIORITY_REQUEST,
-    payload: { task_id, priority }
+    payload: { task_id, priority, from_view }
 })
 export const updatePrioritySuccess = payload => ({
     type: types.UPDATE_TASK_PRIORITY_SUCCESS,
@@ -1005,10 +1005,10 @@ export const showTab = payload => ({
     payload
 })
 
-export function stopTask(task_id) {
+export function stopTask(task_id, from_view = null) {
     return {
         type: types.STOP_TASK,
-        task_id
+        task_id, from_view
     };
 }
 
@@ -1026,10 +1026,10 @@ export function stopTaskFail(error) {
     };
 }
 
-export function cancelStopTask(task_id) {
+export function cancelStopTask(task_id, from_view = null) {
     return {
         type: types.CANCEL_STOP_TASK,
-        task_id
+        task_id, from_view
     };
 }
 
@@ -1068,10 +1068,10 @@ export function deleteShareLocationFail(error) {
     };
 }
 
-export function updateNameDescription(task_id, name, description) {
+export function updateNameDescription(task_id, name, description, from_view = null) {
     return {
         type: types.UPDATE_NAME_DESCRIPTION,
-        task_id, name, description
+        task_id, name, description, from_view
     };
 }
 
@@ -1089,10 +1089,10 @@ export function updateNameDescriptionFail(error) {
     };
 }
 
-export function updateGroupTask(task_id, group_task) {
+export function updateGroupTask(task_id, group_task, from_view = null) {
     return {
         type: types.UPDATE_GROUP_TASK,
-        task_id, group_task
+        task_id, group_task, from_view
     };
 }
 
@@ -1131,10 +1131,10 @@ export function updateTypeAssignFail(error) {
     };
 }
 
-export function updateScheduleTask(task_id, schedule_id) {
+export function updateScheduleTask(task_id, schedule_id, from_view = null) {
     return {
         type: types.UPDATE_SCHEDULE_ASSIGN,
-        task_id, schedule_id
+        task_id, schedule_id, from_view
     };
 }
 

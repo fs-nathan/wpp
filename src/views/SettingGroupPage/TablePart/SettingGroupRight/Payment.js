@@ -181,7 +181,7 @@ const Payment = props => {
             <div className="payment-info">
               <h2>{t('IDS_WP_ACCOUNT_BIDV')}</h2>
               <p>{t('IDS_WP_ACCOUNT_OWNER_COMPANY')}</p>
-              <p>{t('IDS_WP_ACCOUNT_NUMBER')}: 1001.00000.24275</p>
+              <p>{t('IDS_WP_ACCOUNT_NUMBER')}: 1991.00000.24275</p>
             </div>
           </div>
           <p className="payment-title">{t('IDS_WP_ACCOUNT_PRIVATE')}</p>
