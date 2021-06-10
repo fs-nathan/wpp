@@ -23,9 +23,7 @@ function JobDetailPage(props) {
   const url = new URL(window.location.href);
   const taskId = url.searchParams.get("task_id");
   const history = useHistory();
-  const projectId = useSelector(
-    (state) => state.taskDetail.commonTaskDetail.activeProjectId
-  );
+  const projectId = last(url.pathname.split("/"));
   const userId = useSelector((state) => state.system.profile.id);
   const isOpenShareFileModal = useSelector(
     (state) => state.chat.isOpenShareFileModal
@@ -35,6 +33,7 @@ function JobDetailPage(props) {
   const users_shared = item ? item.users_shared || [] : [];
   const shareItem = { ...item, users_shared }
   const show = useSelector(state => state.taskDetail.detailTask.showIndex);
+  const isOpenForward = useSelector(state => state.chat.isOpenForward);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -52,19 +51,15 @@ function JobDetailPage(props) {
     }
   }, [errorMessage, history, projectId]);
 
-  useEffect(() => {
-    const path = url.pathname;
-    const id = last(path.split("/"));
-    if (id.length > 0 && userId) {
-      if (id !== projectId) {
-        const key = `TASK_GIRD:${userId}:${id}`;
-        const type_data = localStorage.getItem(key) || "include-room";
-        dispatch(taskDetailAction.getProjectListBasic(id));
-        dispatch(taskDetailAction.getListTaskDetail(id, type_data));
-        dispatch(taskDetailAction.getProjectDetail(id));
-      }
-    }
-  }, [dispatch, projectId, url, userId]);
+  // useEffect(() => {
+  //   if (projectId.length) {
+  //     const key = `TASK_GIRD:${userId}:${id}`;
+  //     const type_data = localStorage.getItem(key) || "include-room";
+  //     dispatch(taskDetailAction.getProjectListBasic(id));
+  //     dispatch(taskDetailAction.getListTaskDetail(id, type_data));
+  //     dispatch(taskDetailAction.getProjectDetail(id));
+  //   }
+  // }, [dispatch, projectId, userId]);
 
   useEffect(() => {
     if (taskId) {
@@ -96,7 +91,7 @@ function JobDetailPage(props) {
       const key = `TASK_GIRD:${userId}:${projectId}`;
       const type_data = localStorage.getItem(key) || "include-room";
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
-      dispatch(taskDetailAction.getStaticTask(projectId));
+      // dispatch(taskDetailAction.getStaticTask(projectId));
       dispatch(taskDetailAction.getProjectListBasic(projectId));
       dispatch(detailStatus({ projectId }));
       dispatch(getPermissionViewDetailProject({ projectId }));
@@ -125,7 +120,10 @@ function JobDetailPage(props) {
           <Intro />
         )}
       <ModalImage />
-      <ForwardMessageDialog />
+      {
+        isOpenForward &&
+        <ForwardMessageDialog />
+      }
       {isOpenShareFileModal && (
         <ShareDocumentModal onClose={onCloseShare} item={shareItem} />
       )}

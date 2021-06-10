@@ -28,7 +28,7 @@ const DrawerMessage = props => {
   const [listMessage, setListMessage] = useState([]);
   useEffect(() => {
     fetMessage({});
-    fetNumberMessageNotViewer({renderInDrawer: false}); // eslint-disable-next-line
+    fetNumberMessageNotViewer({renderInDrawer: true}); // eslint-disable-next-line
   }, []);
   const fetMessage = async params => {
     try {

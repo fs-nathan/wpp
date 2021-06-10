@@ -65,19 +65,25 @@ function ListBody() {
       setData(filterTaskByType(searchTaskByTaskName(listTaskDetail, searchKey), filterTaskType));
       setCustomListTaskDataType(listTaskDataTypes[1]);
     } else {
-      setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), 6));
-      setCustomListTaskDataType(listTaskDataTypes[0]);
+      const key = `TASK_GIRD:${userId}:${projectId}`;
+      const typeData = localStorage.getItem(key) || "include-room";
+      if (typeData == "not-room") {
+        setData(filterNoGroupTaskByType(searchNoGroupTaskByName(listDataNotRoom, searchKey), 6));
+      } else {
+        setData(filterTaskByType(searchNoGroupTaskByName(listTaskDetail, searchKey), 6));
+      }
+      // setCustomListTaskDataType(listTaskDataTypes[0]);
     }
   }, [filterTaskType, listDataNotRoom, listTaskDataType, listTaskDetail, searchKey, selectedFilter]);
-
-  React.useEffect(() => {
-    if(!isNil(projectId) && projectId !== "") {
-      if (selectedFilter === 0) dispatch(getListTaskDetail(projectId, listTaskDataTypes[selectedFilter]));
-      else if(selectedFilter === 1) {
-        dispatch(getListTaskDetail(projectId, listTaskDataTypes[selectedFilter]));
-      }
-    }
-  }, [selectedFilter, projectId, dispatch]);
+  // React.useEffect(() => {
+  //   if(!isNil(projectId) && projectId !== "") {
+  //     if (selectedFilter === 0) dispatch(getListTaskDetail(projectId, listTaskDataTypes[selectedFilter]));
+  //     else if(selectedFilter === 1) {
+  //       console.log('msg', projectId)
+  //       dispatch(getListTaskDetail(projectId, listTaskDataTypes[selectedFilter]));
+  //     }
+  //   }
+  // }, [selectedFilter, projectId, dispatch]);
 
   React.useEffect(() => {
     if (projectId !== "" && userId) {
@@ -113,8 +119,16 @@ function ListBody() {
   }
   function handleSelectFilter(type) {
     setSelectedFilter(type);
-    const key = `TASK_GIRD:${userId}:${projectId}`;
-    localStorage.setItem(key, listTaskDataTypes[type]);
+    if (type != 2) {
+      const key = `TASK_GIRD:${userId}:${projectId}`;
+      localStorage.setItem(key, listTaskDataTypes[type]);
+      if (type != selectedFilter) {
+        if (selectedFilter === 0) dispatch(getListTaskDetail(projectId, listTaskDataTypes[type]));
+        else if(selectedFilter === 1) {
+          dispatch(getListTaskDetail(projectId, listTaskDataTypes[type]));
+        }
+      }
+    }
     setAnchorElFilterControl(null);
   }
   const handleViewAll = async () => {

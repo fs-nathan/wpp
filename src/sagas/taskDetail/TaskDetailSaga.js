@@ -26,11 +26,8 @@ async function doUpdatePriority(payload) {
 function* updatePriority(action) {
   try {
     const res = yield call(doUpdatePriority, action.payload);
-    if (action.payload.from_view == "Table") {
-      CustomEventEmitter(UPDATE_INFOMATION_TASK);
-    } else {
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    }
+    CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(actions.updatePrioritySuccess(res));
   } catch (error) {
     yield put(actions.updatePriorityFail(error));
@@ -1410,11 +1407,8 @@ export function* stopTask(payload) {
   try {
     const { task_id, from_view } = payload;
     const res = yield call(apiService.post, "/task/stop-task", { task_id });
-    if (from_view == "Table") {
-      CustomEventEmitter(UPDATE_INFOMATION_TASK);
-    } else {
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    }
+    CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(actions.stopTaskSuccess(res.data, task_id));
   } catch (error) {
     yield put(actions.stopTaskFail(error));
@@ -1426,11 +1420,8 @@ export function* cancelStopTask(payload) {
   try {
     const { task_id, from_view } = payload;
     const res = yield call(apiService.post, "/task/cancel-stop-task", { task_id });
-    if (from_view == "Table") {
-      CustomEventEmitter(UPDATE_INFOMATION_TASK);
-    } else {
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    }
+    CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(actions.cancelStopTaskSuccess(res.data, task_id));
   } catch (error) {
     yield put(actions.cancelStopTaskFail(error));
@@ -1455,9 +1446,7 @@ export function* updateNameDescription(payload) {
   try {
     const { task_id, name, description, from_view } = payload;
     const res = yield call(apiService.put, "/task/update-name-description", { task_id, name, description });
-    if (from_view == "Table") {
-      CustomEventEmitter(UPDATE_INFOMATION_TASK);
-    }
+    CustomEventEmitter(UPDATE_INFOMATION_TASK);
     yield put(actions.updateNameDescriptionSuccess(res.data, task_id));
     // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -1470,11 +1459,8 @@ export function* updateGroupTask(payload) {
   try {
     const { task_id, group_task, from_view } = payload;
     const res = yield call(apiService.put, "/task/update-group-task", { task_id, group_task });
-    if (from_view == "Table") {
-      CustomEventEmitter(UPDATE_INFOMATION_TASK);
-    } else {
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    }
+    CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(actions.updateGroupTaskSuccess({ data: res.data, task_id, group_task }));
   } catch (error) {
     yield put(actions.updateGroupTaskFail(error));
@@ -1498,11 +1484,8 @@ export function* updateScheduleTask(payload) {
   try {
     const { task_id, schedule_id, from_view } = payload;
     const res = yield call(apiService.put, "/task/update-schedule-task", { task_id, schedule_id });
-    if (from_view == "Table") {
-      CustomEventEmitter(UPDATE_INFOMATION_TASK);
-    } else {
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    }
+    CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     yield put(actions.updateScheduleTaskSuccess(res.data));
   } catch (error) {
     yield put(actions.updateScheduleTaskFail(error));

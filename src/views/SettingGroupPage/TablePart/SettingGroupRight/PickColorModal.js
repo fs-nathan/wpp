@@ -5,6 +5,10 @@ import {
   actionUpdateColorGroup,
   actionFetchListColor
 } from '../../../../actions/setting/setting';
+import {
+  actionGetProfile,
+  getProfileService
+} from '../../../../actions/system/system';
 import { actionToast } from '../../../../actions/system/system';
 import CustomModal from '../../../../components/CustomModal';
 import './SettingGroupRight.scss';
@@ -16,6 +20,13 @@ function PickColorModal(props) {
   useEffect(() => {
     setColors(props.colors);
   }, [props.colors]);
+
+  const getProfile = async () => {
+    try {
+      const { data } = await getProfileService();
+      if (data.data) props.actionGetProfile(data.data);
+    } catch (error) {}
+  };
 
   const handleSelectedColor = index => {
     const newList = colors.map((item, idx) => ({
@@ -30,6 +41,7 @@ function PickColorModal(props) {
       const selectedColor = colors.find(item => item.selected === true);
       await actionUpdateColorGroup(selectedColor.color);
       props.actionFetchListColor();
+      getProfile();
       props.setOpen(false);
     } catch (error) {
       props.actionToast('error', t('IDS_WP_ERROR_CHANGE_COLOR_GROUP'));
@@ -72,6 +84,7 @@ export default connect(
   }),
   {
     actionFetchListColor,
-    actionToast
+    actionToast,
+    actionGetProfile
   }
 )(PickColorModal);

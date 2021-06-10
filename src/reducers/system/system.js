@@ -88,6 +88,9 @@ const system = (state = initialState, action) => {
       return { ...state, visibleOfferDetail: action.payload }
     case actionTypes.CHANGE_VISIBLE_REMIND_DETAIL_MODAL:
       return { ...state, visibleRemindDetail: action.payload }
+    case actionTypes.SET_NUMBER_DISCUSTION_NOT_VIEW:
+      const numberDiscustonNotView = state.numberMessageNotView + action.payload.discustion_change
+      return { ...state, numberMessageNotView: numberDiscustonNotView > 0 ? numberDiscustonNotView : 0 }
     default:
       return state;
   }

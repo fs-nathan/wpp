@@ -24,6 +24,7 @@ import QuickLikeIcon from './QuickLikeIcon';
 import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
+import { setNumberDiscustonNotView } from "actions/system/system"
 
 const StyledButton = styled.button`
   border: none;
@@ -283,6 +284,7 @@ const FooterPart = ({
     editorRef.current.focus();
     if (isCanView) {
       dispatch(viewChat(taskId))
+      dispatch(setNumberDiscustonNotView({discustion_change: -1}))
     }
   };
 
@@ -366,6 +368,7 @@ const FooterPart = ({
     } else {
       sendChatText()
     }
+    focus()
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
   function onChooseMention() {

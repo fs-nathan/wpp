@@ -157,9 +157,11 @@ const BodyPart = props => {
       if (ele) {
         // console.log('focusId', focusId)
         rqId = setTimeout(function () {
-          chatRef.current.scrollTop(ele.offsetTop)
-          // ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
-          dispatch(clearFocus());
+          if (chatRef && chatRef.current) {
+            chatRef.current.scrollTop(ele.offsetTop)
+            // ele.scrollIntoView({ block: "end", inline: "nearest", behavior: 'smooth' })
+            dispatch(clearFocus());
+          }
         }, 10)
       }
     } else if (focusTopId) {

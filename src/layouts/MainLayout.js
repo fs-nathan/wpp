@@ -39,6 +39,7 @@ import {
   actionToast,
   getNumberMessageNotViewer,
   getNumberNotificationNotViewer,
+  setNumberDiscustonNotView
 } from "../actions/system/system";
 import {loadDetailOffer} from "views/OfferPage/redux/actions";
 import { avatar_default_120 } from "../assets";
@@ -234,6 +235,7 @@ function MainLayout({
   actioGetSettingDate,
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView,
+  setNumberDiscustonNotView,
   visibleOfferDetailModal, loadDetailOffer, detailOffer,
   visibleRemindDetail, detailRemind, getRemindDetail,
   setNumberMessageNotView,
@@ -277,6 +279,7 @@ function MainLayout({
       socket = io(uri, {});
       socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
       socket.on("WP_PERMISSION_UPDATE", (res) => window.location.reload());
+      socket.on("WP_CHANGE_GROUP_ACTIVE", (res) => window.location.reload());
       socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
         handleNewMessage(res)
       );
@@ -319,7 +322,7 @@ function MainLayout({
         findTask(listTaskDetail, task_id) ||
         findIndex(listDataNotRoom, ({ id }) => id === task_id) !== -1;
       if (!task || data.type === CHAT_TYPE.UPDATE_GROUP_TASK) {
-        getListTaskDetail(projectId);
+        getListTaskDetail(data.project_id);
       } else {
         if (data.type === CHAT_TYPE.UPDATE_TASK_NAME) {
           data.new_name = data.new_task_name
@@ -373,7 +376,6 @@ function MainLayout({
         getDataPinOnTaskChat(data.task_id);
       }
     }
-
     socket.on("WP_NEW_CHAT_CREATED_IN_TASK", handleNewChat);
     socket.on("PIN_DATA_ON_CHAT", pinOnTaskChat);
     return () => {
@@ -420,8 +422,8 @@ function MainLayout({
   };
   const handleNewMessage = (res) => {
     if (res.belong_to_section === 1) {
-      actionChangeNumMessageNotView(
-        parseInt(localStorage.getItem(MESS_NUMBER)) + 1
+      setNumberDiscustonNotView(
+        {discustion_change: 1}
       );
     } else {
       setNumberMessageNotView({
@@ -578,6 +580,7 @@ export default connect(
     actionChangeNumMessageNotView,
     loadDetailOffer,
     getRemindDetail,
-    setNumberMessageNotView
+    setNumberMessageNotView,
+    setNumberDiscustonNotView
   }
 )(withRouter(MainLayoutWrapper));

@@ -370,6 +370,7 @@ const FooterPart = ({
     } else {
       sendChatText()
     }
+    focus()
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
   function onChooseMention() {

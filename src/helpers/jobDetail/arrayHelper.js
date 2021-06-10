@@ -54,6 +54,7 @@ export const CHAT_TYPE = {
     UPLOADING_IMAGES: 101,
     UPLOADING_FILE: 102,
     DATE_TIME_CHAT_HISTORY: 202,
+    LEAVE_GROUP: 48
 }
 
 export const isNotifyText = chatType => {
@@ -88,6 +89,9 @@ export const getIndividualHandleUsers =
     (arr = []) => arr.reduce((prev, next) => prev.find(item => item.id === next.id) ? prev : [...prev, next], [])
 
 export const filterTaskByType = (groups, idx) => {
+    if (idx === 6) {
+        return groups.map(item => ({ ...item, tasks: item.tasks.filter(task => Number(task.new_chat) > 0) }))
+    }
     return idx === 0
         ? groups
         : groups.map(item => ({ ...item, tasks: item.tasks.filter(task => Number(task.status_code) === idx - 1) }))
@@ -96,7 +100,7 @@ export const filterTaskByType = (groups, idx) => {
 export const filterNoGroupTaskByType = (tasks, idx) => {
     if(idx === 0) return tasks;
     if(idx !== 6) return tasks.filter(task => Number(task.status_code) === idx - 1);
-    return tasks.filter(task => Number(task.new_chat) === 1);
+    return tasks.filter(task => Number(task.new_chat) > 0);
 }
 
 export const searchTaskByTaskName = (groups, keyword) => {

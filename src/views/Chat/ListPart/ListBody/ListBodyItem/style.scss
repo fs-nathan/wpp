@@ -1,35 +1,37 @@
-.container-lbd {
-	* {
-		-moz-box-sizing: border-box; 
-	    -webkit-box-sizing: border-box; 
-	     box-sizing: border-box; 
+.wp-messenger {
+	.container-lbd {
+		* {
+			-moz-box-sizing: border-box; 
+		    -webkit-box-sizing: border-box; 
+		     box-sizing: border-box; 
+		}
+		padding: 10px 15px 10px 15px!important;
 	}
-	padding: 10px 15px 10px 15px!important;
 	.avatar-square-group {
 		margin-left: 0px;
 		padding: 0px;
 	}
-}
-.chat-left-per-line {
-	position: relative;
-    width: calc(100% - 70px);
-    padding-left: 10px;
-	.step-time-chat {
-		position: absolute;
-		top: 0px;
-		right: 0px;
-		font-size: 12px;
-	}
-	.step-new-chat {
-		margin: 0px;
-		span {
-			padding: 2px 4px!important
+	.chat-left-per-line {
+		position: relative;
+	    width: calc(100% - 70px);
+	    padding-left: 10px;
+		.step-time-chat {
+			position: absolute;
+			top: 0px;
+			right: 0px;
+			font-size: 12px;
 		}
-	}
-	.step-content-chat {
-		max-width: 90%!important;
-		p {
-			width: 100%!important;
+		.step-new-chat {
+			margin: 0px;
+			span {
+				padding: 2px 4px!important
+			}
+		}
+		.step-content-chat {
+			max-width: 90%!important;
+			p {
+				width: 100%!important;
+			}
 		}
 	}
 }

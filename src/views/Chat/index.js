@@ -37,6 +37,7 @@ function Chat(props) {
   const shareItem = { ...item, users_shared }
   const viewAllMessageResponse = useSelector((state) => state.threadChat.viewAllMessageResponse);
   const show = useSelector(state => state.taskDetail.detailTask.showIndex);
+  const isOpenForward = useSelector(state => state.chat.isOpenForward);
   // console.log('JobDetailPage', taskId);
 
   useEffect(() => {
@@ -68,10 +69,10 @@ function Chat(props) {
       if (!localStorage.getItem(key)) {
         localStorage.setItem(key, 'not-room')
       }
-      dispatch(taskDetailAction.getProjectListBasic(projectId));
+      // dispatch(taskDetailAction.getProjectListBasic(projectId));
         // dispatch(taskDetailAction.chooseProject({ projectId }))
       dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
-      dispatch(taskDetailAction.getProjectDetail(projectId));
+      // dispatch(taskDetailAction.getProjectDetail(projectId));
     }
   }, [dispatch, projectId, userId]);
 
@@ -89,7 +90,6 @@ function Chat(props) {
       if (show !== 0) {
         dispatch(taskDetailAction.showTab(0))
       }
-
       const customEvent = new CustomEvent(JOIN_CHAT_EVENT, { detail: taskId });
       requestAnimationFrame(() => {
         setTimeout(() => {
@@ -106,9 +106,9 @@ function Chat(props) {
     // console.log(key, ' useEffect', type_data)
     // console.log('projectId', projectId)
     if (projectId !== "" && userId) {
-      dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
-      dispatch(taskDetailAction.getStaticTask(projectId));
-      dispatch(taskDetailAction.getProjectListBasic(projectId));
+      // dispatch(taskDetailAction.getListTaskDetail(projectId, type_data));
+      // dispatch(taskDetailAction.getStaticTask(projectId));
+      // dispatch(taskDetailAction.getProjectListBasic(projectId));
       // dispatch(taskDetailAction.getListGroupTask({ project_id: projectId }));
       dispatch(detailStatus({ projectId }));
       dispatch(getPermissionViewDetailProject({ projectId }));
@@ -137,7 +137,10 @@ function Chat(props) {
           <Intro />
         )}
       <ModalImage />
-      <ForwardMessageDialog />
+      {
+        isOpenForward &&
+        <ForwardMessageDialog />
+      }
       {isOpenShareFileModal && (
         <ShareDocumentModal onClose={onCloseShare} item={shareItem} />
       )}

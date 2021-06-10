@@ -279,15 +279,14 @@ function CreateJobModal(props) {
 
   React.useEffect(() => {
     if (props.isOpen && Number.isInteger(props.editMode)) {
-      CustomEventListener(UPDATE_INFOMATION_TASK, () => {
+      console.log('xxxx')
+      const closeModal = () => {
         setIsUpdating(false)
         props.setOpen(false)
-      });
+      }
+      CustomEventListener(UPDATE_INFOMATION_TASK, closeModal);
       return () => {
-        CustomEventDispose(UPDATE_INFOMATION_TASK, () => {
-          setIsUpdating(false)
-          props.setOpen(false)
-        });
+        CustomEventDispose(UPDATE_INFOMATION_TASK, closeModal);
       }
     }
   }, [props.isOpen]);

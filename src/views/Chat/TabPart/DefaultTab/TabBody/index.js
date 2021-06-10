@@ -4,13 +4,15 @@ import {Scrollbars} from 'react-custom-scrollbars';
 import {useTranslation} from 'react-i18next';
 import {useDispatch, useSelector} from 'react-redux';
 import styled from 'styled-components';
-import {getMember} from '../../../../../actions/taskDetail/taskDetailActions';
+import { getMember, actionLeaveGroupChat, getListTaskDetail } from '../../../../../actions/taskDetail/taskDetailActions';
 import AvatarCircleList from '../../../../../components/AvatarCircleList';
 import ColorChip from '../../../../../components/ColorChip';
 import ColorTypo from '../../../../../components/ColorTypo';
 import {taskIdSelector} from '../../../selectors';
 import './styles.scss';
 import ConversationInfo from "./ConversationInfo"
+import AlertModal from 'components/AlertModal';
+import { useHistory } from "react-router-dom";
 
 
 const ListItemTab = styled(ListItem)`
@@ -59,6 +61,9 @@ function TabBody(props) {
   const dispatch = useDispatch();
   const detailTask = useSelector(state => state.taskDetail.detailTask.taskDetails);
   const taskId = useSelector(taskIdSelector);
+  const projectId = useSelector(
+    (state) => state.system.profile.group_chat_id
+  );
   const members = useSelector(state => state.taskDetail.taskMember.member);
   const userId = useSelector(state => state.system.profile.id);
   const DEFAULT_TASK_STATISTIC = {
@@ -78,6 +83,9 @@ function TabBody(props) {
   }
 
   const [taskStatistic, setTaskStatistic] = React.useState(DEFAULT_TASK_STATISTIC)
+  const [confirm, setConfirm] = React.useState(false);
+  const [loadingConfirm, setLoadingConfirm] = React.useState(false);
+  const history = useHistory();
   let content = ""
   let data = ""
 
@@ -119,6 +127,27 @@ function TabBody(props) {
     dispatch(getMember({ task_id: taskId }))
   }
 
+  function onClickLeaveGroup() {
+    setConfirm(true)
+  }
+
+  const handleActionLeaveGroup = async () => {
+    try {
+      setLoadingConfirm(true)
+      await actionLeaveGroupChat({
+        member_id: userId,
+        task_id: taskId
+      });
+      setConfirm(false);
+      setLoadingConfirm(false);
+      dispatch(getListTaskDetail(projectId, "not-room"));
+      history.push('/chats')
+    } catch (error) {
+      setConfirm(false)
+      setLoadingConfirm(false)
+    }
+  };
+
   return (
     <div className="listPartTabBody">
       <Body
@@ -141,14 +170,31 @@ function TabBody(props) {
             <BadgeItem badge size='small' color='indigolight' label={taskStatistic.lctCnt} />
           </ListItemTab>
           {
-            detailTask.person_chat_type == 2 &&
-            <ListItemTab disableRipple button onClick={onClickMember}>
-              <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
-              <AvatarCircleList users={members} display={9} />
-            </ListItemTab>
+            detailTask.person_chat_type == 2 && (
+              <>
+                <ListItemTab disableRipple button onClick={onClickMember}>
+                  <ColorTypo>{t('LABEL_CHAT_TASK_THANH_VIEN')}</ColorTypo>
+                  <AvatarCircleList users={members} display={9} />
+                </ListItemTab>
+                <ListItemTab disableRipple button onClick={onClickLeaveGroup}>
+                  <span style={{color: "red"}}>{t('LABEL_LEAVE_GROUP_CHAT')}</span>
+                </ListItemTab>
+              </>
+            )
           }
         </StyledList>
       </Body >
+      { confirm && (
+        <AlertModal
+          open={confirm}
+          setOpen={setConfirm}
+          content={t('CONFIRM_LEAVE_GROUP_CHAT')}
+          onConfirm={() => handleActionLeaveGroup()}
+          actionLoading={loadingConfirm}
+          manualClose={true}
+          onCancle={() => setConfirm(false)}
+        />
+      )}
     </div>
   )
 }

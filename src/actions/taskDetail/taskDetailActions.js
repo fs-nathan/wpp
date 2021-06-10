@@ -1304,3 +1304,12 @@ export const fetchListTaskGroup = params => {
   };
   return apiService(config);
 };
+
+export const actionLeaveGroupChat = data => {
+  const config = {
+    url: '/task/leave-group',
+    method: 'post',
+    data
+  };
+  return apiService(config);
+};
