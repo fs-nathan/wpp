@@ -24,7 +24,7 @@ import QuickLikeIcon from './QuickLikeIcon';
 import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
-import { setNumberMessageNotView } from "actions/chat/threadChat";
+import { setNumberDiscustonNotView } from "actions/system/system"
 
 const StyledButton = styled.button`
   border: none;
@@ -282,10 +282,7 @@ const FooterPart = ({
   const viewNewMessage = () => {
     if (isCanView) {
       dispatch(viewChat(taskId))
-      dispatch(setNumberMessageNotView({
-        type: "Assign",
-        message: numberNewChatWithoutSelf
-      }))
+      dispatch(setNumberDiscustonNotView({discustion_change: -1}))
     }
   }
 
@@ -374,7 +371,11 @@ const FooterPart = ({
     } else {
       sendChatText()
     }
+<<<<<<< HEAD
     viewNewMessage()
+=======
+    focus()
+>>>>>>> 0674c6c0ef9759c1bf36a0a1b29935db91619697
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
   function onChooseMention() {

@@ -22,10 +22,9 @@ class ChatBoxInput extends React.Component {
 
   handleChange = evt => {
     const { value } = evt.target;
-    // console.log('ChatBoxInput', value)
-    const newValue = value.replace(regFontTag, '')
-    const changeValue = newValue === '<br>' ? '' : newValue
-    this.setState({ value: changeValue })
+    // const newValue = value.replace(regFontTag, '')
+    // const changeValue = newValue === '<br>' ? '' : newValue
+    this.setState({ value: value })
   };
 
   pasteAsPlainText = event => {
