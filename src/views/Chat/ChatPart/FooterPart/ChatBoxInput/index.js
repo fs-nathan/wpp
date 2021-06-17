@@ -4,6 +4,7 @@ import React from 'react';
 import ContentEditable from 'react-contenteditable';
 import './styles.scss';
 import htmlToText from "helpers/jobDetail/jsHtmlToText";
+import QuickLikeIcon from '../QuickLikeIcon';
 
 const regFontTag = /<\/?font[^>]*>/gi;
 let isPressShift = false;
@@ -43,6 +44,7 @@ class ChatBoxInput extends React.Component {
       if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 13 && !isPressShift) {// enter
       this.props.onSendMessage();
+      this.setState({value: ""})
       event.returnValue = false;
       if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 50 && isPressShift) {// @
@@ -78,8 +80,8 @@ class ChatBoxInput extends React.Component {
           innerRef={this.props.innerRef}
           onKeyDown={this.onKeyDown}
           onKeyUp={this.onKeyUp}
-          html={this.props.value}
-          className={clsx("ChatBoxInput", { 'ChatBoxInput__empty': !this.props.value })}
+          html={this.state.value}
+          className="ChatBoxInput"
           onChange={this.handleChange}
           onPaste={this.pasteAsPlainText}
         />
@@ -88,6 +90,20 @@ class ChatBoxInput extends React.Component {
             'ChatBoxInput--placeholder__empty': !this.props.value
           })}>
           {this.props.placeholder}
+        </div>
+        <div className="chatBox--send"
+          onClick={(e) => {
+            e.stopPropagation();
+            this.props.onSendMessage() 
+            this.setState({value: ""})
+          }}
+          ref={this.props.sendButtonRef}
+          style={{ color: this.props.groupActiveColor }}
+        >
+          {this.props.isShowQuickLike ?
+            <QuickLikeIcon color={this.props.groupActiveColor} />
+            : this.props.labelButton
+          }
         </div>
       </>
     );

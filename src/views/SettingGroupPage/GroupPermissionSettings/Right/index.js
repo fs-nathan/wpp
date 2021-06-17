@@ -375,7 +375,9 @@ const ColumnLeft = ({filterOption, setFilterOption}) => {
     } else {
       const firstItem = first(groupPermissionList);
       setSelect(firstItem, false);
-      handlePermissionGroupClick(get(firstItem, "id"));
+      if (firstItem) {
+        handlePermissionGroupClick(firstItem.is_owner ? "GET_FULL" : firstItem.id);
+      }
     }
   }, [filterOption]);
   function handlePermissionGroupClick(id) {
@@ -607,13 +609,21 @@ const ColumnLeftMembers = ({setCustomPermissionList, setFilterOption, openModal,
 
   function handleSelectUser(user) {
     setSelectedUser(user);
-    if(user.group_permission_id) {
+    if(user.group_permission_id || user.is_owner) {
       setSelectedGroup(user.group_permission_id);
-      dispatch(
-        settingGroupPermission.actions.loadDetailGroupPermission({
-          group_permission_id: user.group_permission_id,
-        })
-      );
+      if (user.group_permission_id) {
+        dispatch(
+          settingGroupPermission.actions.loadDetailGroupPermission({
+            group_permission_id: user.group_permission_id,
+          })
+        );
+      } else {
+        dispatch(
+          settingGroupPermission.actions.loadDetailGroupPermission({
+            group_permission_id: "GET_FULL"
+          })
+        );
+      }
     } else {
       setCustomPermissionList([]);
       setFilterOption(1);

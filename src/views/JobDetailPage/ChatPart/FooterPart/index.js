@@ -17,13 +17,14 @@ import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
 import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
-import { currentColorSelector, makeSelectIsCanView } from 'views/JobDetailPage/selectors';
+import { currentColorSelector, makeSelectIsCanView, getNumberChatNotView } from 'views/JobDetailPage/selectors';
 import '../Chat.scss';
 import ChatBoxInput from './ChatBoxInput';
 import QuickLikeIcon from './QuickLikeIcon';
 import ReplyChatPreview from './ReplyChatPreview';
 import './styles.scss';
 import { lastJobSettingKey } from "views/JobDetailPage/ListPart/ListHeader/CreateJobSetting";
+import { setNumberMessageNotView } from "actions/chat/threadChat";
 
 const StyledButton = styled.button`
   border: none;
@@ -56,16 +57,15 @@ const FooterPart = ({
   const sendButtonRef = useRef();
   const dispatch = useDispatch();
   const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const projectId = useSelector(state => state.taskDetail.commonTaskDetail.activeProjectId);
   const tagMembers = useSelector(state => state.chat.tagMembers);
   const userId = useSelector(state => state.system.profile.id)
   const listStickers = useSelector(state => state.chat.listStickers);
   const stickerKeyWord = useSelector(state => state.chat.stickerKeyWord);
   const groupActiveColor = useSelector(currentColorSelector)
   const members = useSelector(state => state.taskDetail.taskMember.member);
-  const key = `TASK_GIRD:${userId}:${projectId}`;
-  const type = localStorage.getItem(key)
+  const type = "not-room"
   const isCanView = useSelector(makeSelectIsCanView(type, taskId));
+  const numberNewChatWithoutSelf = useSelector(getNumberChatNotView(taskId));
 
   const [visibleSendFile, setVisibleSendFile] = useState(false);
   const [keyFilter, setKeyFilter] = useState('');
@@ -279,11 +279,19 @@ const FooterPart = ({
     editorRef.current.focus()
   }, [chatText, dispatch, isOpenMention])
 
-  const focus = () => {
-    editorRef.current.focus();
+  const viewNewMessage = () => {
     if (isCanView) {
       dispatch(viewChat(taskId))
+      dispatch(setNumberMessageNotView({
+        type: "Assign",
+        message: numberNewChatWithoutSelf
+      }))
     }
+  }
+
+  const focus = () => {
+    editorRef.current.focus();
+    viewNewMessage()
   };
 
   const sendChatText = useCallback(function () {
@@ -366,6 +374,7 @@ const FooterPart = ({
     } else {
       sendChatText()
     }
+    viewNewMessage()
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
   function onChooseMention() {
@@ -469,11 +478,6 @@ const FooterPart = ({
               <Icon path={mdiPaperclip} size={1.2} />
             </StyledButton>
           </abbr>
-          <abbr title={t('LABEL_CHAT_TASK_THEM_CONG_VIEC_CON')}>
-            <StyledButton className="icon-btn" onClick={onClickSubTask} hoverColor={groupActiveColor}>
-              <Icon path={mdiFileTree} size={1.2} />
-            </StyledButton>
-          </abbr>
           <abbr title={t('LABEL_CHAT_TASK_THEM_NHAC_HEN')}>
             <StyledButton className="icon-btn" onClick={onClickRemind} hoverColor={groupActiveColor}>
               <Icon path={mdiAlarmPlus} size={1.2} />
@@ -499,7 +503,7 @@ const FooterPart = ({
         onPaste={onpaste}
       >
         <ChatBoxInput
-          placeholder={t('LABEL_CHAT_TASK_NHAP_GOI_Y_NOI')}
+          placeholder={t('LABEL_CHAT_TASK_NHAP_GOI_Y_NOI_MESSAGE')}
           innerRef={editorRef}
           value={chatText}
           onChange={onChangeChatText}
@@ -511,17 +515,11 @@ const FooterPart = ({
           onPressDown={onPressDown}
           onSendMessage={sendMessage}
           setOpenMention={setOpenMention}
+          sendButtonRef={sendButtonRef}
+          groupActiveColor={groupActiveColor}
+          labelButton={t('LABEL_CHAT_TASK_GUI')}
+          isShowQuickLike={isShowQuickLike}
         />
-        <div className="chatBox--send"
-          onClick={sendMessage}
-          ref={sendButtonRef}
-          style={{ color: groupActiveColor }}
-        >
-          {isShowQuickLike ?
-            <QuickLikeIcon color={groupActiveColor} />
-            : t('LABEL_CHAT_TASK_GUI')
-          }
-        </div>
       </StyledChatBox>
       {
         isOpenMention &&

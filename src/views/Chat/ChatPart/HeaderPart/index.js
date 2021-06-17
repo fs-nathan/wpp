@@ -72,13 +72,19 @@ const renderAvatars = props => {
   );
 };
 
-function RenderMemberOnline({number_member}){
+function RenderMemberOnline({number_member, person_chat_type}){
   const { t } = useTranslation();
   return (
     <div className="message-people-online">
-      <PersonOutlineIcon classes={{root: "mpo-icon-people"}} />
-      <span className="mpo-number-people">{number_member}</span>
-      <div className="mpo-active">
+      {
+        person_chat_type === 2 && (
+          <>
+            <PersonOutlineIcon classes={{root: "mpo-icon-people"}} />
+            <span className="mpo-number-people">{number_member}</span>
+          </>
+        )
+      }
+      <div className={`mpo-active ${person_chat_type === 2 ? "" : "mpo-active-person"}`}>
         <FiberManualRecordIcon classes={{root: "mpo-icon-circle"}} />
         <span className="mpo-label-online">{t('LABEL_ONLINE')}</span>
       </div>
@@ -174,7 +180,7 @@ const HeaderPart = props => {
             </div>
           )
         }
-        <RenderMemberOnline number_member={members.length} />
+        <RenderMemberOnline number_member={members.length} person_chat_type={task.person_chat_type} />
       </div>
       {
         task.person_chat_type == 2 &&

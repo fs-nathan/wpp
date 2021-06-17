@@ -38,6 +38,7 @@ const TagModal = ({
         >
           {!isEmpty(members) &&
             members.map((el, index) => (
+              el.is_in_group && el.is_in_project &&
               <MenuItem key={el.id}
                 className={clsx("TagModal--menuItem", { "TagModal--menuItem__selected": selectedId === index })}
                 onClick={handleClickMember(index)}>

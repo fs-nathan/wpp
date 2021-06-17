@@ -135,13 +135,12 @@ function CopyProject({
   const [title, setTitle] = React.useState("");
   const [groupFiltered, setGroupFiltered] = React.useState([]);
   const [workingGroup, setWorkingGroup] = React.useState(null);
-  let workingGroupFilter = []
-  groups.map(e => {
-    if (e.work_types.includes(String(workingTypeNew))) {
-      workingGroupFilter.push(e)
-    }
-  })
-  if (workingGroup && !workingGroupFilter.find(e => e.id == workingGroup)) {
+  // groups.map(e => {
+  //   if (e.work_types.includes(String(workingTypeNew))) {
+  //     workingGroupFilter.push(e)
+  //   }
+  // })
+  if (workingGroup && !groups.find(e => e.id == workingGroup)) {
     setWorkingGroup(null)
   }
 
@@ -317,7 +316,7 @@ function CopyProject({
             <div style={{marginTop: "10px"}}>
               <MySelect
                 label={t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}
-                options={workingGroupFilter.map(item => ({
+                options={groups.map(item => ({
                   label: item.name,
                   value: item.id,
                 }))}

@@ -242,3 +242,10 @@ export const changeVisibleRemindDetailModal = ({remind_id, visible}) => ({
   type: actionTypes.CHANGE_VISIBLE_REMIND_DETAIL_MODAL,
   payload: {remind_id, visible}
 })
+
+export const setNumberDiscustonNotView = ({discustion_change}) => ({
+  type: actionTypes.SET_NUMBER_DISCUSTION_NOT_VIEW,
+  payload: {
+    discustion_change
+  }
+});

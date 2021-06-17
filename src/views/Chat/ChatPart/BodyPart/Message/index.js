@@ -45,6 +45,7 @@ import UpdateScheduleTask from './UpdateScheduleTask';
 import UpdateSubtask from './UpdateSubtask';
 import UpdateTaskNameMessage from './UpdateTaskNameMessage';
 import UpdateTypeAssignTask from './UpdateTypeAssignTask';
+import LeaveGroup from './LeaveGroup';
 
 const Message = props => {
   if (props.type === undefined) return null;
@@ -149,6 +150,8 @@ const Message = props => {
       return <div className="wrap-time">
         <div className="time">{props.time_create}</div>
       </div>;
+    case CHAT_TYPE.LEAVE_GROUP:
+      return <LeaveGroup user_create_name={props.user_create_name} user_create_avatar={props.user_create_avatar} time_create={props.time_create} />;
     default:
       return <div>Tin nhắn này bị lỗi hiển thị</div>;
   }

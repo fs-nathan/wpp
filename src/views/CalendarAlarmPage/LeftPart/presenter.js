@@ -139,7 +139,7 @@ function CalendarAlarmLeftPartPresenter({
               spinner
               fadeSpeed={100}
             >
-              <DragDropContext onDragEnd={havePermission ? handleSortPersonalAlarm : () => null}>
+              <DragDropContext onDragEnd={handleSortPersonalAlarm}>
                 <Droppable droppableId="droppable">
                   {(provided, snapshot) => (
                     <div

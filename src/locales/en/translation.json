@@ -2494,5 +2494,9 @@
 	"IDS_WP_DISCOUNT": "Discount",
 	"IDS_WP_CAN_NOT_USE": "Not enough conditions to use!",
 	"IDS_WP_VALUE_BEFORE_TAX_AFTER_DISCOUNT": "Value before tax after discount",
-	"IDS_WP_VALUE_PAYMENT": "Value payment"
+	"IDS_WP_VALUE_PAYMENT": "Value payment",
+	"LABEL_BOARD_DETAIL": "Board details",
+	"LABEL_LEAVE_GROUP_CHAT": "Leave group chat",
+    "CONFIRM_LEAVE_GROUP_CHAT": "Are you sure leave group chat ?",
+    "LABEL_MEMBER_LEAVE_GROUP_CHAT": "{{member_name}} left group"
 }

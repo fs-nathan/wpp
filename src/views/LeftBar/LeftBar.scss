@@ -69,7 +69,8 @@
       height: 26px;
       fill: rgba(255, 255, 255, .6);
       border: unset !important;
-      padding: 0px!important
+      padding: 0px!important;
+      background: unset!important;
     }
     &.actived {
       background-color: rgba(0, 0, 0, 0.12);

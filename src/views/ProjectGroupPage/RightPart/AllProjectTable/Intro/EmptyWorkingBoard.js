@@ -25,14 +25,18 @@ function IntroEmptyWorkingBoard({groupID}) {
       <Box className={"introEmptyData-container longContent"}>
         <Box className={"introEmptyData-left"}>
           <Typography variant={"h5"}>{t("LABEL_WORKING_BOARD_FIRST_CREATE")}</Typography>
-          <div className={"selectedGroup"}>
-            <CustomAvatar
-              style={{marginRight: "10px", width: 25, height: 25}}
-              src={get(group, 'icon')}
-              alt='avatar'
-            />
-            <strong style={{fontSize: "14px"}}>{get(group, "name")}</strong>
-          </div>
+          {
+            group && (
+              <div className={"selectedGroup"}>
+                <CustomAvatar
+                  style={{marginRight: "10px", width: 25, height: 25}}
+                  src={get(group, 'icon')}
+                  alt='avatar'
+                />
+                <strong style={{fontSize: "14px"}}>{get(group, "name")}</strong>
+              </div>
+            )
+          }
           <p>{t("EMPTY_WORKING_BOARD_MESSAGE_1")}</p>
           <p>{t("EMPTY_WORKING_BOARD_MESSAGE_2")}</p>
           <p>{t("EMPTY_WORKING_BOARD_MESSAGE_3")}</p>

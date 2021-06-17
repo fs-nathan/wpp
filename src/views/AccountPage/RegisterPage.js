@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@mdi/react';
-import { mdiEmailOutline , mdiAccountOutline  ,mdiLockOutline} from '@mdi/js';
+import { mdiEmailOutline, mdiAccountOutline, mdiLockOutline, mdiCellphoneDock} from '@mdi/js';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   FormControl,
@@ -27,7 +27,8 @@ const RegisterPage = () => {
   const [dataRegister, setDataRegister] = useState({
     name: '',
     email: '',
-    password: ''
+    password: '',
+    phone: ''
   })
   const { t } = useTranslation();
 
@@ -108,6 +109,30 @@ const RegisterPage = () => {
                       <Icon
                         className="icon-prefix"
                         path={mdiEmailOutline }
+                        size={1}
+                      />
+                    </InputAdornment>
+                  }
+                />
+                {errMsg && <div className="error-msg">{errMsg}</div>}
+              </FormControl>
+              <FormControl
+                fullWidth
+                margin="normal"
+                variant="outlined"
+                className="input-affix-wrapper"
+              >
+                <OutlinedInput
+                  id="phone"
+                  required
+                  type="text"
+                  placeholder={t('DMH.VIEW.DP.RIGHT.UT.LABEL.PHONE')}
+                  onChange={handleOnchange("phone")}
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <Icon
+                        className="icon-prefix"
+                        path={mdiCellphoneDock}
                         size={1}
                       />
                     </InputAdornment>

@@ -13,7 +13,8 @@ import {
   DELETE_PERSONAL_REMIND,
   DELETE_PERSONAL_REMIND_CATEGORY,
   UPDATE_PERSONAL_REMIND,
-  UPDATE_PERSONAL_REMIND_CATEGORY
+  UPDATE_PERSONAL_REMIND_CATEGORY,
+  SORT_PERSONAL_REMIND_CATEGORY
 } from "constants/events";
 import { useLocalStorage } from "hooks";
 import get from "lodash/get";
@@ -96,12 +97,14 @@ function CalendarPersonalAlarm({
     CustomEventListener(DELETE_PERSONAL_REMIND, refreshListPersonalRemind);
     CustomEventListener(DELETE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
     CustomEventListener(UPDATE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
+    CustomEventListener(SORT_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
     return () => {
       CustomEventDispose(CREATE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(UPDATE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(DELETE_PERSONAL_REMIND, refreshListPersonalRemind);
       CustomEventDispose(DELETE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
       CustomEventDispose(UPDATE_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
+      CustomEventDispose(SORT_PERSONAL_REMIND_CATEGORY, refreshListPersonalRemind);
     }
   }, [doListPersonalRemind, timeType, timeRange]);
 

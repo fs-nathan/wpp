@@ -440,7 +440,7 @@ class SettingInfo extends Component {
               </div>
               <InputBase
                 className="value-item-info col-sm-9"
-                value={this.props.user.name}
+                value={data.name}
                 disabled={mode !== "edit"}
                 onChange={(e) => this.handleChangeData("name", e.target.value)}
               />

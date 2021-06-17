@@ -53,7 +53,7 @@ const TopBar = props => {
   };
   useEffect(() => {
     const hasToken = localStorage.getItem(TOKEN);
-    if(hasToken) {
+    if(hasToken && (!props.profile || !props.profile.id)) {
       handleFetchNumNotificationNotView();
       handleFetchNumMessageNotView();
       handleFetchProfile();

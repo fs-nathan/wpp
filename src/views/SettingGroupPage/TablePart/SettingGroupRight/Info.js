@@ -143,65 +143,18 @@ const Info = props => {
 
   const handleResetImage = async type => {
     let formData = new FormData();
-    // check image is base64 or not
-    let base64Matcher = new RegExp(
-      '^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{4})$'
-    );
-
     setUpdatingImg(true);
     try {
       if (type === CROP_TYPE.LOGO) {
-        if (base64Matcher.test(images.avatar_default_120)) {
-          formData.append(
-            'image',
-            convertBase64ToBlob(images.avatar_default_120, 'image/png')
-          );
-          const { data } = await actionUpdateLogoGroup(formData);
-          setLogoGroup(data.logo);
-          props.actionFetchGroupDetail(true);
-          setUpdatingImg(false);
-        } else {
-          convertUrlToBlob(
-            images.avatar_default_120,
-            'image/png',
-            async blob => {
-              formData.append('image', blob);
-              const { data } = await actionUpdateLogoGroup(formData);
-              setLogoGroup(data.logo);
-              props.actionFetchGroupDetail(true);
-              setUpdatingImg(false);
-            },
-            () => {
-              setUpdatingImg(false);
-            }
-          );
-        }
+        const { data } = await actionUpdateLogoGroup(formData);
+        setLogoGroup(data.logo);
+        props.actionFetchGroupDetail(true);
+        setUpdatingImg(false);
       } else {
-        if (base64Matcher.test(images.cover_default)) {
-          formData.append(
-            'image',
-            convertBase64ToBlob(images.cover_default, 'image/png')
-          );
-          const { data } = await actionUpdateCoverGroup(formData);
-          setCoverGroup(data.cover);
-          props.actionFetchGroupDetail(true);
-          setUpdatingImg(false);
-        } else {
-          convertUrlToBlob(
-            images.cover_default,
-            'image/png',
-            async blob => {
-              formData.append('image', blob);
-              const { data } = await actionUpdateCoverGroup(formData);
-              setCoverGroup(data.cover);
-              props.actionFetchGroupDetail(true);
-              setUpdatingImg(false);
-            },
-            () => {
-              setUpdatingImg(false);
-            }
-          );
-        }
+        const { data } = await actionUpdateCoverGroup(formData);
+        setCoverGroup(data.cover);
+        props.actionFetchGroupDetail(true);
+        setUpdatingImg(false);
       }
     } catch (error) {
       setUpdatingImg(false);

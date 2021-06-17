@@ -279,8 +279,7 @@ const FooterPart = ({
     editorRef.current.focus()
   }, [chatText, dispatch, isOpenMention])
 
-  const focus = () => {
-    editorRef.current.focus();
+  const viewNewMessage = () => {
     if (isCanView) {
       dispatch(viewChat(taskId))
       dispatch(setNumberMessageNotView({
@@ -288,6 +287,11 @@ const FooterPart = ({
         message: numberNewChatWithoutSelf
       }))
     }
+  }
+
+  const focus = () => {
+    editorRef.current.focus();
+    viewNewMessage()
   };
 
   const sendChatText = useCallback(function () {
@@ -370,6 +374,7 @@ const FooterPart = ({
     } else {
       sendChatText()
     }
+    viewNewMessage()
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
   function onChooseMention() {
@@ -510,17 +515,11 @@ const FooterPart = ({
           onPressDown={onPressDown}
           onSendMessage={sendMessage}
           setOpenMention={setOpenMention}
+          sendButtonRef={sendButtonRef}
+          groupActiveColor={groupActiveColor}
+          labelButton={t('LABEL_CHAT_TASK_GUI')}
+          isShowQuickLike={isShowQuickLike}
         />
-        <div className="chatBox--send"
-          onClick={sendMessage}
-          ref={sendButtonRef}
-          style={{ color: groupActiveColor }}
-        >
-          {isShowQuickLike ?
-            <QuickLikeIcon color={groupActiveColor} />
-            : t('LABEL_CHAT_TASK_GUI')
-          }
-        </div>
       </StyledChatBox>
       {
         isOpenMention &&
