@@ -65,9 +65,7 @@ function AllTaskTable({
   const dispatch = useDispatch();
   const [isEmpty, setIsEmpty] = React.useState(true);
   React.useEffect(() => {
-    setIsEmpty(tasks.tasks.reduce((sum, item) => {
-      return sum + size(item.tasks);
-    }, 0) === 0);
+    setIsEmpty(tasks.tasks.length === 0);
   }, [tasks.tasks]);
   return (
     <Container>

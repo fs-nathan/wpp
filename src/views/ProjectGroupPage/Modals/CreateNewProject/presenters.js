@@ -63,7 +63,7 @@ function CreateNewProject({
 
   React.useEffect(() => {
     const groupID = params.get("groupID");
-    if(groupID) {
+    if(groupID && !curProjectGroupId) {
       const group = find(groups.groups, {id: groupID});
       setCurProjectGroupId(group ? group.id : null)
       setCurProjectGroupName(group ? group.name : "")
@@ -146,7 +146,11 @@ function CreateNewProject({
         <div className="select-customer-from-input">
           <CustomTextboxSelect
             value={curProjectGroupName}
-            onClick={() => setOpenSelectGroupProjectModal(true)}
+            onClick={
+              () => {
+                setOpenSelectGroupProjectModal(true)
+              }
+            }
             label={`${t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}`}
             fullWidth
             required={true}

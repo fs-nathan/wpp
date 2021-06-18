@@ -38,6 +38,17 @@ import ReactParserHtml from "react-html-parser";
 import { FormControl, InputAdornment, OutlinedInput } from "@material-ui/core";
 import { thumbVerticalStyleDefault } from "react-custom-scrollbars/lib/Scrollbars/styles";
 import ModalVerifyAccount from "./Modal/VerifyAccount";
+
+const FieldRequired = ({t, isEditMode}) => {
+  return (
+    <>
+      {
+        isEditMode ? <span style={{color: "red", marginLeft: "5px", cursor: "help"}} title={t("IDS_WP_FIELD_REQUIRED")}>*</span> : null
+      }
+    </>
+  )
+}
+
 class SettingInfo extends Component {
   state = {
     mode: "view",
@@ -437,6 +448,7 @@ class SettingInfo extends Component {
             <div className="item-info row">
               <div className="title-item-info col-sm-3">
                 {t("IDS_WP_FULL_NAME")}
+                <FieldRequired t={t} isEditMode={mode === "edit" ? true : false} />
               </div>
               <InputBase
                 className="value-item-info col-sm-9"
@@ -448,6 +460,7 @@ class SettingInfo extends Component {
             <div className="item-info row">
               <div className="title-item-info col-sm-3">
                 {t("IDS_WP_BIRTHDAY")}
+                <FieldRequired t={t} isEditMode={mode === "edit" ? true : false} />
               </div>
               <div className="value-item-info col-sm-9">
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
@@ -469,26 +482,30 @@ class SettingInfo extends Component {
               </div>
             </div>
             <div className="item-info row">
-              <div className="title-item-info col-sm-9 gender-title">
+              <div className="title-item-info col-sm-7 gender-title">
                 {t("IDS_WP_GENDER")}
+                <FieldRequired t={t} isEditMode={mode === "edit" ? true : false} />
               </div>
               {mode !== "edit" ? (
                 <InputBase
-                  className="value-item-info col-sm-3 gender-content"
+                  className="value-item-info col-sm-5 gender-content"
                   value={
-                    data.gender === 1 ? t("IDS_WP_FEMALE") : t("IDS_WP_MALE")
+                    data.gender !== null ? (data.gender === 1 ? t("IDS_WP_FEMALE") : t("IDS_WP_MALE")) : ""
                   }
                   disabled={true}
                 />
               ) : (
                 <Select
                   native
-                  className="value-item-info col-sm-3 gender-content"
+                  className="value-item-info col-sm-5 gender-content"
                   value={data.gender}
                   onChange={(e) =>
                     this.handleChangeData("gender", e.target.value)
                   }
                 >
+                  {
+                    data.gender === null && <option disabled selected>{t("IDS_WP_CHOOSE_GENDER")}</option>
+                  }
                   <option value={1}>{t("IDS_WP_FEMALE")}</option>
                   <option value={0}>{t("IDS_WP_MALE")}</option>
                 </Select>
@@ -497,6 +514,7 @@ class SettingInfo extends Component {
             <div className="item-info row">
               <div className="title-item-info col-sm-3">
                 {t("IDS_WP_PHONE")}
+                <FieldRequired t={t} isEditMode={mode === "edit" ? true : false} />
               </div>
               <InputBase
                 type="number"
@@ -509,6 +527,7 @@ class SettingInfo extends Component {
             <div className="item-info row">
               <div className="title-item-info col-sm-3">
                 {t("IDS_WP_ADDRESS")}
+                <FieldRequired t={t} isEditMode={mode === "edit" ? true : false} />
               </div>
               <InputBase
                 className="value-item-info col-sm-9"

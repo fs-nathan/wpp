@@ -371,11 +371,7 @@ const FooterPart = ({
     } else {
       sendChatText()
     }
-<<<<<<< HEAD
     viewNewMessage()
-=======
-    focus()
->>>>>>> 0674c6c0ef9759c1bf36a0a1b29935db91619697
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
   function onChooseMention() {

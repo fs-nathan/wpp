@@ -2498,5 +2498,7 @@
 	"LABEL_BOARD_DETAIL": "Board details",
 	"LABEL_LEAVE_GROUP_CHAT": "Leave group chat",
     "CONFIRM_LEAVE_GROUP_CHAT": "Are you sure leave group chat ?",
-    "LABEL_MEMBER_LEAVE_GROUP_CHAT": "{{member_name}} left group"
+    "LABEL_MEMBER_LEAVE_GROUP_CHAT": "{{member_name}} left group",
+    "IDS_WP_CHOOSE_GENDER": "Choose option",
+    "IDS_WP_FIELD_REQUIRED": "Field required"
 }

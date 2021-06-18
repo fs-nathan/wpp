@@ -864,7 +864,7 @@
 	"IDS_WP_REGISTER_EMAIL_DESCRIPTION": "Email đăng ký phải đang hoạt động. Chúng tôi sẽ gửi MÃ XÁC THỰC tài khoản tới email này.",
 	"IDS_WP_THANK_YOU_USED_WORK_PLUS": "Cảm ơn bạn đã đăng ký sử dụng Workplus!",
 	"IDS_WP_CONFIRM_CODE_DESCRIPTION": "Một mã xác thực đã được gửi tới email của bạn. Vui lòng kiểm tra hộp thư đến (hoặc hòm thư Spam) để hoàn tất đăng ký.",
-	"IDS_WP_SIGN_UP": "Tạo tài khoản",
+	"IDS_WP_SIGN_UP": "Tạo tài khoản",
 	"IDS_WP_NO_COMMENT_TITLE": "Chưa có thảo luận nào!",
 	"IDS_WP_NO_COMMENT_TITLE_DES": "Tài liệu chưa có thảo luận nào. Bạn có muốn thêm thảo luận cho tài liệu này?",
 	"IDS_WP_SEND": "Gửi",
@@ -2516,5 +2516,7 @@
   "LABEL_BOARD_DETAIL": "Chi tiết bảng công việc",
   "LABEL_LEAVE_GROUP_CHAT": "Rời nhóm chat",
   "CONFIRM_LEAVE_GROUP_CHAT": "Bạn có chắc chắn muốn rời nhóm ?",
-  "LABEL_MEMBER_LEAVE_GROUP_CHAT": "{{member_name}} đã rời nhóm"
+  "LABEL_MEMBER_LEAVE_GROUP_CHAT": "{{member_name}} đã rời nhóm",
+  "IDS_WP_CHOOSE_GENDER": "Chọn giới tính",
+  "IDS_WP_FIELD_REQUIRED": "Trường bắt buộc"
 }
