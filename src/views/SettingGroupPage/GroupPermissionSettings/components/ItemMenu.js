@@ -30,7 +30,11 @@ export const ItemMenu = ({
             onClose();
           }}
         >
-          {label}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: label,
+            }}
+          ></div>
         </MenuItem>
       ))}
     </Menu>

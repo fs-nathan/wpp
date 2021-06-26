@@ -54,6 +54,8 @@ import { scheduleAttrs, weekScheduleAttrs } from "../contant/attrs";
 import { weekScheduleModule } from "../redux/weekSchedule";
 import WeekSelectMenu from "./WeekSelectMenu";
 import { Scrollbars } from 'react-custom-scrollbars';
+import PlaceIcon from '@material-ui/icons/Place';
+
 const mapStateToProps = (state) => {
   return {
     calendars: calendarsSelector(state),
@@ -68,8 +70,8 @@ const mapDispatchToProps = (dispatch) => {
     doListSchedule: ({ year }, quite) =>
       dispatch(listSchedule({ year }, quite)),
     doListPermission: (quite) => dispatch(listCalendarPermission(quite)),
-    CWPDoListScheduleOfWeek: ({ year, week }, quite) =>
-      dispatch(listScheduleOfWeek({ year, week }, quite)),
+    CWPDoListScheduleOfWeek: ({ schedule_id }, quite) =>
+      dispatch(listScheduleOfWeek({ schedule_id }, quite)),
   };
 };
 const CalendarDetailHeader = ({ className = "", ...props }) => (
@@ -108,7 +110,7 @@ const WeedDetailStateLess = ({
           <CalendarDetailHeader>
             {t("views.calendar_page.modal.create_weekly_calendar.title_right")}
             <Typography component={"span"}>
-              {t("IDS_WP_WEEK")} {week} ( {get(calendar, "start", "")} -{" "}
+              {t("IDS_WP_WEEK")} {get(calendar, "name", "")} ( {get(calendar, "start", "")} -{" "}
               {get(calendar, "end", "")})
             </Typography>
           </CalendarDetailHeader>
@@ -199,6 +201,14 @@ const WeedDetailStateLess = ({
                                 </TableCell>
                                 <TableCell className="schedule_item_content">
                                   {schedule.content}
+                                  {
+                                    schedule.place && schedule.place !== "" && (
+                                      <div className="schedule_item_content_place">
+                                        <PlaceIcon />
+                                        <span>{schedule.place}</span>
+                                      </div>
+                                    )
+                                  }
                                 </TableCell>
                                 <TableCell>
                                   {schedule.assign_to_all && (
@@ -260,6 +270,7 @@ const WeekDetail = connect(
     permissions,
     year,
     week,
+    weekScheduleDetail
   }) => {
     const { t } = useTranslation();
     const days = [
@@ -280,22 +291,19 @@ const WeekDetail = connect(
       }
     }, [doListPermission, permissions.length]);
     React.useEffect(() => {
-      CWPDoListScheduleOfWeek({ year, week });
+      CWPDoListScheduleOfWeek({ schedule_id: weekScheduleDetail.id });
     }, [CWPDoListScheduleOfWeek, week, year]);
-
     return (
       <WeedDetailStateLess
         {...{ scheduleOfWeek, week, year }}
-        calendar={calendars.data.find(
-          (item) => item.week === parseInt(week, 10)
-        )}
+        calendar={weekScheduleDetail}
         i18nDays={days}
       />
     );
   }
 );
 
-const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
+const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex, weekScheduleDetail = null }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [currentIndex, setCurrentIndex] = useState(defaultIndex);
   const [modal, setModal] = useState();
@@ -335,10 +343,12 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
               }}
               color="orange"
             >
-              {template(t("Tuần <%= week %>  năm <%= year %> "))({
-                week,
-                year,
-              })}{" "}
+              {
+                weekScheduleDetail ? weekScheduleDetail.name : t("LABEL_SCHEDULE_NAME_HOME", {
+                  week,
+                  year
+                })
+              }
               <Icon path={mdiMenuDown} size={1} />
             </StyledTypo>
           }
@@ -414,7 +424,7 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
                         {t("CHI TIẾT LỊCH TUẦN")}
                       </DialogTitleCus>
                       <div className="modal-content">
-                        <WeekDetail year={year} week={week} />
+                        <WeekDetail year={year} week={week} weekScheduleDetail={weekScheduleDetail} />
                       </div>
                       <DialogActions>
                         <Button
@@ -430,13 +440,17 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
                 }
                 style={{ float: "right" }}
               >
-                <StyledTypo
-                  className="u-fontSize12 u-colorBlue"
-                  component="span"
-                  color="blue"
-                >
-                  {t("Xem thêm")}
-                </StyledTypo>
+                {
+                  weekScheduleDetail && (
+                    <StyledTypo
+                      className="u-fontSize12 u-colorBlue"
+                      component="span"
+                      color="blue"
+                    >
+                      {t("Xem thêm")}
+                    </StyledTypo>
+                  )
+                }
               </ButtonBase>
             </div>
           </Stack>
@@ -446,17 +460,35 @@ const WeedSchedule = ({ weekScheduleNow = emptyArray, defaultIndex }) => {
       <WeekSelectMenu
         onItemClick={(week) => {
           setModal(
-            <ModalCommon
-              maxWidth="lg"
-              title={t("CHI TIẾT LỊCH TUẦN")}
-              footerAction={[]}
+            <Dialog
               onClose={() => setModal(null)}
+              fullWidth={true}
+              maxWidth={"lg"}
+              aria-labelledby="customized-dialog-title"
+              open={true}
+              className="modal-common-container modal-week-schedule-home-page"
             >
-              <div style={{ overflowX: "hidden" }}>
-                <WeekDetail year={year} week={week} />
+              <DialogTitleCus
+                id="customized-dialog-title"
+                onClose={() => setModal(null)}
+                className="modal-cus"
+              >
+                {t("CHI TIẾT LỊCH TUẦN")}
+              </DialogTitleCus>
+              <div className="modal-content">
+                <WeekDetail year={year} weekScheduleDetail={week} />
               </div>
-            </ModalCommon>
-          );
+              <DialogActions>
+                <Button
+                  onClick={() => setModal(null)}
+                  disableRipple
+                  className="common-btn-modal"
+                >
+                  {t("THOÁT")}
+                </Button>
+              </DialogActions>
+            </Dialog>
+          )
         }}
         menuAnchor={anchorEl}
         setMenuAnchor={setAnchorEl}
@@ -474,6 +506,7 @@ export default () => {
     weekScheduleModule.selectors.listOfWeekNowSelector
   );
   const weekScheduleNow = get(weekScheduleNowResponse, "data", emptyArray);
+  const weekScheduleDetail = get(weekScheduleNowResponse, "week_schedule", null);
   const defaultIndex = weekScheduleNow.findIndex(
     ({ is_date_now }) => is_date_now
   );
@@ -482,6 +515,7 @@ export default () => {
     <WeedSchedule
       weekScheduleNow={weekScheduleNow}
       defaultIndex={defaultIndex}
+      weekScheduleDetail={weekScheduleDetail}
     />
   );
 };

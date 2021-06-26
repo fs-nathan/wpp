@@ -11,9 +11,11 @@ async function doCreateSchedule({ schedule }) {
       url: '/work-schedule/create',
       method: 'post',
       data: {
+        week_schedule_id: schedule.week_schedule_id,
         schedule_date: schedule.schedule_date,
         schedule_time: schedule.schedule_time,
         title: schedule.title,
+        place: schedule.place,
         content: schedule.content,
         set_remind: schedule.set_remind,
         remind_before: schedule.remind_before,

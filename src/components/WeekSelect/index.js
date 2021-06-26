@@ -1,6 +1,6 @@
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
-import { listWeeksInYear } from "actions/calendar/weeklyCalendar/listWeeksInYear";
+import { listSchedule } from "actions/calendar/weeklyCalendar/listSchedule";
 import clsx from 'clsx';
 import React from 'react';
 import { Scrollbars } from 'react-custom-scrollbars';
@@ -19,11 +19,16 @@ function WeekSelect({
     doListWeeksInYear({ year }, false);
   }, [doListWeeksInYear, year]);
 
+  const handleChange = ({target}) => {
+    const scheduleSelected = weeks.find(e => e.id === target.value)
+    onChange(scheduleSelected ? scheduleSelected : {})
+  }
+
   return (
     <Select
       className={clsx('weekSelect', className)}
       value={value}
-      onChange={onChange}
+      onChange={handleChange}
       variant="outlined"
       MenuProps={{
         className: "weekSelect--paper",
@@ -35,8 +40,11 @@ function WeekSelect({
     >
       {
         weeks.map((week, index) => (
-          <MenuItem key={`week${index}`} value={index + 1}>
-            {t('IDS_WP_WEEK')} {index + 1} ({week.start} - {week.end})
+          <MenuItem key={`week${index}`} value={week.id} className="weekSelect-item">
+            <b className="weekSelect-item-name">{week.name}</b>
+            <p className="weekSelect-item-time">
+              {t('IDS_WP_WEEK')} {index + 1} ({week.start} - {week.end})
+            </p>
           </MenuItem>
         ))
       }
@@ -46,13 +54,13 @@ function WeekSelect({
 
 const mapDispatchToProps = dispatch => {
   return {
-    doListWeeksInYear: ({ year }, quite) => dispatch(listWeeksInYear({ year }, quite))
+    doListWeeksInYear: ({ year }, quite) => dispatch(listSchedule({ year }, quite))
   };
 };
 
 const mapStateToProps = state => {
   return {
-    weeks: state.calendar.listWeeksInYear.data.weeks,
+    weeks: state.calendar.listSchedule.data.calendars,
   };
 };
 

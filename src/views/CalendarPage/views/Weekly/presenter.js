@@ -1,4 +1,4 @@
-import { IconButton, Typography } from '@material-ui/core';
+import { IconButton, Typography, Menu, MenuItem } from '@material-ui/core';
 import { mdiCalendar, mdiDotsVertical } from '@mdi/js';
 import Icon from '@mdi/react';
 import CustomAvatar from 'components/CustomAvatar';
@@ -15,7 +15,8 @@ import { useHistory } from 'react-router-dom';
 
 
 const SettingButton = ({
-  handleOpenMenu
+  handleOpenDropdown,
+  row
 }) => {
 
   return (
@@ -23,7 +24,7 @@ const SettingButton = ({
       <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
-        onClick={evt => handleOpenMenu(evt.currentTarget)}
+        onClick={evt => handleOpenDropdown(evt.currentTarget, row)}
         size="small"
       >
         <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
@@ -35,11 +36,27 @@ const SettingButton = ({
 function WeeklyCalendarPresenter({
   expand, handleExpand, canCreate,
   calendars, handleOpenModal, handleSortType,
-  bgColor, handleYearChanged, year
+  bgColor, handleYearChanged, year, doDeleteSchedule
 }) {
   const { t } = useTranslation();
   const history = useHistory();
   const [yearAnchor, setYearAnchor] = React.useState();
+  const [selectedSchedule, setSelectedSchedule] = React.useState();
+  const [menuAnchor, setMenuAnchor] = React.useState();
+
+  const handleOpenDropdown = (anchorEl, schedule) => {
+    setSelectedSchedule(schedule);
+    setMenuAnchor(anchorEl);
+  }
+
+  const handleEditSchedule = () => {
+    handleOpenModal("UPDATE_WEEKLY_SCHEDULE", {schedule: selectedSchedule})
+  }
+
+  const handleDeleteSchedule = () => {
+    doDeleteSchedule(selectedSchedule)
+  }
+
 
   return (
     <Container>
@@ -57,7 +74,7 @@ function WeeklyCalendarPresenter({
             ],
             mainAction: canCreate ? {
               label: t("views.calendar_page.right_part.add"),
-              onClick: evt => handleOpenModal('CREATE'),
+              onClick: evt => handleOpenModal('CREATE_WEEKLY_SCHEDULE'),
             } : null,
             expand: {
               bool: expand,
@@ -92,17 +109,39 @@ function WeeklyCalendarPresenter({
             calendars.data.length !== 0 ?
               [
                 {
+                  label: t("Tuần"),
+                  field: (row) => (
+                    <>
+                      <span>{t('IDS_WP_WEEK')} {get(row, 'week')} / {get(row, 'year')}</span>
+                      {
+                        moment().isoWeek() === get(row, 'week') && (
+                          <span style={{color: "red", float: "left", width: "100%"}}>({t('IDS_WP_PRESENT')})</span>
+                        )
+                      }
+                    </>
+                  ),
+                  align: 'left',
+                  width: '15%',
+                  sort: evt => handleSortType('week')
+                },
+                {
                   label: t("views.calendar_page.right_part.label.name"),
                   field: (row) => <LinkSpan
-                    onClick={evt => history.push(`${Routes.CALENDAR_WEEKLY.replace(":week/:year/:from", `${get(row, 'week', '')}/${get(row, 'year', '')}`)}`)}
+                    onClick={evt => history.push(Routes.CALENDAR_WEEKLY.replace(":year/:schedule_id/:from", `${get(row, 'year', '')}/${get(row, 'id', '')}`))}
                   >
                     <span className="views_weeklyCalendar_calendarName">{get(row, 'name', '')}</span>
-                    {
-                      moment().isoWeek() === get(row, 'week') && (
-                        <span className="views_weeklyCalendar_calendarName_present">({t('IDS_WP_PRESENT')})</span>
-                      )
-                    }
                   </LinkSpan>,
+                  align: 'left',
+                  width: '20%',
+                  sort: evt => handleSortType('name')
+                },
+                {
+                  label: t("Mô tả"),
+                  field: (row) => (
+                    <>
+                      {get(row, 'description')}
+                    </>
+                  ),
                   align: 'left',
                   width: '15%',
                   sort: evt => handleSortType('name')
@@ -112,15 +151,14 @@ function WeeklyCalendarPresenter({
                   field: row => (
                     <DateBox>
                       <>
-                        <span>{t('IDS_WP_WEEK')} {get(row, 'week')} / {get(row, 'year')}</span>
                         <small>
-                          {t('IDS_WP_FROM')} : {get(row, 'start')} - {get(row, 'end')}
+                          {get(row, 'start')} - {get(row, 'end')}
                         </small>
                       </>
                     </DateBox>
                   ),
                   align: 'left',
-                  width: '40%',
+                  width: '15%',
                   sort: evt => handleSortType('week')
                 },
                 {
@@ -139,20 +177,57 @@ function WeeklyCalendarPresenter({
                     </Typography>
                   ),
                   align: 'left',
-                  width: '20%',
+                  width: '15%',
                   sort: evt => handleSortType('user_create.name')
                 },
                 {
                   label: t("views.calendar_page.right_part.label.created_at"),
                   field: row => <span>{get(row, 'date_create', '')}</span>,
                   align: 'left',
-                  width: '25%',
+                  width: '10%',
                   sort: evt => handleSortType('date_create')
+                },
+                {
+                  label: "",
+                  field: row => {
+                    if (row.can_modify) {
+                      return <SettingButton handleOpenDropdown={handleOpenDropdown} row={row} />
+                    }
+                    return null
+                  },
+                  align: 'left',
+                  width: '1%',
                 }
               ] : []
           }
           data={calendars.data}
         />
+        <Menu
+          id="simple-menu"
+          anchorEl={menuAnchor}
+          keepMounted
+          open={Boolean(menuAnchor)}
+          onClose={evt => setMenuAnchor(null)}
+          transformOrigin={{
+            vertical: -30,
+            horizontal: 'right'
+          }}
+        >
+          <MenuItem
+            onClick={() => {
+              handleEditSchedule(selectedSchedule);
+              setMenuAnchor(null);
+            }}
+          >
+            {t("views.calendar_page.right_part.edit")}
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              handleDeleteSchedule(selectedSchedule);
+              setMenuAnchor(null);
+            }}
+          >{t("views.calendar_page.right_part.delete")}</MenuItem>
+        </Menu>
         <YearPopover
           anchorEl={yearAnchor}
           setAnchorEl={setYearAnchor}

@@ -45,7 +45,7 @@ export const Routes = {
   SETTING_GROUP_ACCOUNT_INTERNAL: "/setting-group/account-internal",
   SETTING_GROUP_PAYMENT: "/setting-group/payment",
   CALENDAR: "/calendar",
-  CALENDAR_WEEKLY: "/calendars/weekly/detail/:week/:year/:from?",
+  CALENDAR_WEEKLY: "/calendars/weekly/detail/:year/:schedule_id/:from?",
   CALENDAR_PROJECT: "/calendars/project/detail/:scheduleID",
   CALENDAR_ALARM: "/calendars/alarm/detail/:category",
   SETTING_GROUP_HOME: "/setting-group/home",

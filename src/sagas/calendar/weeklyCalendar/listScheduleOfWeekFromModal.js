@@ -4,14 +4,13 @@ import { listScheduleOfWeekFail, listScheduleOfWeekSuccess } from '../../../acti
 import { apiService } from '../../../constants/axiosInstance';
 import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../../constants/snackbarController';
 
-async function doListScheduleOfWeek({ year, week }) {
+async function doListScheduleOfWeek({ schedule_id }) {
   try {
     const config = {
       url: '/work-schedule/list-of-week',
       method: 'get',
       params: {
-        year: year,
-        week: week
+        schedule_id: schedule_id
       }
     }
     const result = await apiService(config);

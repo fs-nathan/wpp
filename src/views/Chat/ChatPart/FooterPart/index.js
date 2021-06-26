@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
 import StickerModal from 'views/JobDetailPage/ChatComponent/StickerModal';
-import TagModal from 'views/JobDetailPage/ChatComponent/TagModal/TagModal';
+import TagModal from 'views/Chat/ChatComponent/TagModal/TagModal';
 import { currentColorSelector, makeSelectIsCanView, getNumberChatNotView } from 'views/JobDetailPage/selectors';
 import '../Chat.scss';
 import ChatBoxInput from './ChatBoxInput';
@@ -77,16 +77,15 @@ const FooterPart = ({
   const [clipBoardImages, setClipBoardImages] = useState([]);
   const [membersFiltered, setMembersFiltered] = useState([]);
   const [selectedId, setSelectedId] = useState(0);
-
   useEffect(() => {
     setMembersFiltered(filterMembersByKey(members, keyFilter));
   }, [keyFilter, members])
-
   useEffect(() => {
     if (isOpenMention) {
       const text = htmlToText(chatText)
       const lastAy = text.lastIndexOf('@')
-      const key = text.slice(lastAy + 1)
+      const textAfter = text.slice(lastAy + 1).split(" ")
+      const key = textAfter[0]
         .toLowerCase()
         .replace(/&nbsp;/g, '')
         .trim()
@@ -206,8 +205,11 @@ const FooterPart = ({
   }
 
   const openTag = (evt) => {
-    setOpenMention(true);
-    focus();
+    focus()
+    document.execCommand('insertHTML', false, '@')
+    setKeyFilter('')
+    setOpenMention(true)
+    setSelectedId(0)
   };
 
   function handleCloseTag() {
@@ -267,8 +269,13 @@ const FooterPart = ({
       // sel.addRange(preCaretRange);
       // // console.log('range', range, range.toString())
       // document.execCommand('delete', false);
-      setChatText(chatText.substr(0, atIndex) + tag)
-      // document.execCommand('insertHTML', false, tag)
+      // setChatText(chatText.substr(0, atIndex) + tag)
+      // document.execCommand('selectAll', false)
+      document.execCommand('delete', false);
+      for (let i = 0; i < keyFilter.length; i++) {
+        document.execCommand('delete', false);
+      }
+      document.execCommand('insertHTML', false, tag)
     } else if (isOpenMention) {
       document.execCommand('insertHTML', false, tag)
     }
@@ -277,7 +284,7 @@ const FooterPart = ({
     setKeyFilter('')
     setOpenMention(false)
     editorRef.current.focus()
-  }, [chatText, dispatch, isOpenMention])
+  }, [chatText, dispatch, isOpenMention, keyFilter])
 
   const viewNewMessage = () => {
     if (isCanView) {
@@ -375,6 +382,9 @@ const FooterPart = ({
       sendChatText()
     }
     viewNewMessage()
+    document.execCommand('selectAll', false)
+    document.execCommand('delete', false)
+    setOpenMention(false)
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 
   function onChooseMention() {
@@ -519,6 +529,7 @@ const FooterPart = ({
           groupActiveColor={groupActiveColor}
           labelButton={t('LABEL_CHAT_TASK_GUI')}
           isShowQuickLike={isShowQuickLike}
+          memberTagSelected={membersFiltered[selectedId] ? true : false}
         />
       </StyledChatBox>
       {

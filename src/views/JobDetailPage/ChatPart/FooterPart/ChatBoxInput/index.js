@@ -14,6 +14,11 @@ class ChatBoxInput extends React.Component {
     value: ''
   }
 
+  // componentWillReceiveProps({value}) {
+  //   console.log('xxx',value)
+  //   this.setState({ value: value })
+  // }
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.value !== this.state.value) {
       this.props.onChange(this.state.value)
@@ -22,7 +27,6 @@ class ChatBoxInput extends React.Component {
 
   handleChange = evt => {
     const { value } = evt.target;
-    // console.log('ChatBoxInput', value)
     // const newValue = value.replace(regFontTag, '')
     // const changeValue = newValue === '<br>' ? '' : newValue
     this.setState({ value: value })
@@ -39,12 +43,16 @@ class ChatBoxInput extends React.Component {
     if (keyCode === 16) {// shift
       isPressShift = true;
     } else if (keyCode === 13 && this.props.isOpenMention) {// enter
-      this.props.onChooseMention()
-      event.returnValue = false;
+      if (this.props.memberTagSelected) {
+        this.props.onChooseMention()
+        event.returnValue = false;
+      } else {
+        this.props.onSendMessage();
+        event.returnValue = false;
+      }
       if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 13 && !isPressShift) {// enter
       this.props.onSendMessage();
-      this.setState({value: ""})
       event.returnValue = false;
       if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 50 && isPressShift) {// @
@@ -55,7 +63,7 @@ class ChatBoxInput extends React.Component {
       this.props.onPressUp()
     } else if (keyCode === 40) {// down
       this.props.onPressDown()
-    } else if (keyCode === 32) {// space
+    } else if (keyCode === 27 || keyCode === 32) {// space
       this.props.setOpenMention(false)
     }
     if ((keyCode === 38 || keyCode === 40) && this.props.isOpenMention) {
@@ -122,7 +130,8 @@ ChatBoxInput.propTypes = {
   onSendMessage: PropTypes.func,
   placeholder: PropTypes.any,
   setOpenMention: PropTypes.func,
-  value: PropTypes.any
+  value: PropTypes.any,
+  memberTagSelected: PropTypes.any
 };
 
 export default ChatBoxInput;

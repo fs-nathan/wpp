@@ -45,6 +45,7 @@ const ShareDocumentModal = props => {
   const [listMemberShared, setListMemberShared] = useState([]);
   const [itemSelected, setItemSelected] = useState(props.item);
   const [isLoading, setIsLoading] = useState(false);
+  const bgColor = props.colors.find(el => el.selected === true);
 
   useEffect(() => {
     return () => {
@@ -144,7 +145,7 @@ const ShareDocumentModal = props => {
 
   const fetDataForShare = async () => {
     try {
-      if (item.isGoogleDocument || item.document_type === 2) {
+      if (item.isGoogleDocument) {
         const [data1, data2] = await Promise.all([
           getMemberShareGoogleFile({ file_id: item.id }),
           getMemberSharedGoogleFile({ file_id: item.id })
@@ -170,15 +171,15 @@ const ShareDocumentModal = props => {
       if (searchValue) {
         handleFilterData(searchValue);
       }
+      setIsLoading(false);
     } catch (error) {}
   };
 
   const handleShareMember = async (member_id, member_name, member_avatar) => {
     try {
-      console.log('test', item);
       setIsLoading(true);
       memberIdShared = member_id;
-      if (item.isGoogleDocument || item.document_type === 2) {
+      if (item.isGoogleDocument) {
         let data = {
           file_id: item.id,
           name: item.name,
@@ -193,7 +194,7 @@ const ShareDocumentModal = props => {
           file_type: item.document_type === 2 ? item.type : item.fileExtension
         };
         await actionShareGoogleFile(data);
-        setIsLoading(false);
+        // setIsLoading(false);
       } else {
         let dataDTO = {};
         if (item.type === 'folder') {
@@ -204,14 +205,24 @@ const ShareDocumentModal = props => {
           dataDTO.share_to = member_id;
         }
         const { data } = await actionShareFile(dataDTO, item.type);
-        setIsLoading(false);
+        // setIsLoading(false);
         if (data.state) {
           let itemSelectedTemp = itemSelected;
-          itemSelectedTemp.users_shared.push({
-            name: member_name,
-            avatar: member_avatar,
-            id: member_id
-          });
+          if (member_id === "SHARE_TO_ALL") {
+            data.members.map(e => {
+              itemSelectedTemp.users_shared.push({
+                id: e.id,
+                name: e.name,
+                avatar: e.avatar
+              })
+            })
+          } else {
+            itemSelectedTemp.users_shared.push({
+              name: member_name,
+              avatar: member_avatar,
+              id: member_id
+            });
+          }
           setItemSelected(itemSelectedTemp);
         }
       }
@@ -229,12 +240,12 @@ const ShareDocumentModal = props => {
     try {
       setIsLoading(true);
       memberIdShared = member_id;
-      if (item.isGoogleDocument || item.document_type === 2) {
+      if (item.isGoogleDocument) {
         await actionCancelShareGoogleFile({
           file_id: item.id,
           member_id: member_id
         });
-        setIsLoading(false);
+        // setIsLoading(false);
       } else {
         let dataDTO = {};
         if (item.type === 'folder') {
@@ -245,10 +256,14 @@ const ShareDocumentModal = props => {
           dataDTO.member_id = member_id;
         }
         const { data } = await actionCancelShareFile(dataDTO, item.type);
-        setIsLoading(false);
+        // setIsLoading(false);
         if (data.state) {
           let itemSelectedTemp = itemSelected;
-          remove(itemSelectedTemp.users_shared, { id: member_id });
+          if (member_id === "CANCEL_SHARE_ALL") {
+            itemSelectedTemp.users_shared = [];
+          } else {
+            remove(itemSelectedTemp.users_shared, { id: member_id });
+          }
           setItemSelected(itemSelectedTemp);
         }
       }
@@ -257,6 +272,7 @@ const ShareDocumentModal = props => {
       setIsLoading(false);
     }
   };
+
   return (
     <ModalCommon
       title={t('IDS_WP_SHARE_DOCUMENT')}
@@ -284,6 +300,33 @@ const ShareDocumentModal = props => {
               onChange={handleChangeSearch}
               style={{background: "#fff"}}
             />
+            {
+              listMember.length ? (
+                !isLoading || memberIdShared !== "SHARE_TO_ALL" ? (
+                  <button className="button-share-to-all" style={{
+                    backgroundColor: bgColor.color
+                  }} onClick={() =>
+                    handleShareMember(
+                      "SHARE_TO_ALL",
+                      "",
+                      ""
+                    )
+                  }>
+                    {t('IDS_SHARE_TO_ALL')}
+                  </button>
+                ) : (
+                  <button className="button-share-to-all" style={{
+                    backgroundColor: bgColor.color
+                  }}>
+                    <CircularProgress
+                      size={16}
+                      className="margin-circular"
+                      color="inherit"
+                    />
+                  </button>
+                )
+              ) : null
+            }
           </div>
           <div className="list-member">
             <Scrollbars autoHide autoHideTimeout={500}>
@@ -352,6 +395,33 @@ const ShareDocumentModal = props => {
             <span className="text-title-left-share">
               {t('IDS_WP_MEMBER_SHARED')}
             </span>
+            {
+              listMemberShared.length > 1 ? (
+                !isLoading || memberIdShared !== "CANCEL_SHARE_ALL" ? (
+                  <button className="button-cancel-share-all" style={{
+                    backgroundColor: bgColor.color
+                  }} onClick={() =>
+                    handleCancelShareMember(
+                      "CANCEL_SHARE_ALL",
+                      "",
+                      ""
+                    )
+                  }>
+                    {t('IDS_CANCEL_SHARE_TO_ALL')}
+                  </button>
+                ) : (
+                  <button className="button-cancel-share-all" style={{
+                    backgroundColor: bgColor.color
+                  }}>
+                    <CircularProgress
+                      size={16}
+                      className="margin-circular"
+                      color="inherit"
+                    />
+                  </button>
+                )
+              ) : null
+            }
           </div>
           <div className="header-share-doc">
             <div className="left-content">
@@ -471,7 +541,8 @@ export default connect(
     listProject: state.documents.listProject,
     listDocumentFromMe: state.documents.listDocumentFromMe,
     listDocumentShareToMe: state.documents.listDocumentShareToMe,
-    listMyDocument: state.documents.listMyDocument
+    listMyDocument: state.documents.listMyDocument,
+    colors: state.setting.colors,
   }),
   {
     actionFetchListRecent,

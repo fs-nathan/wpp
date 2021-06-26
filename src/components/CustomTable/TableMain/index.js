@@ -63,7 +63,7 @@ function TableMain() {
         <DragDropContext onDragEnd={get(options, 'draggable.onDragEnd', () => null)} onDragUpdate={onDragUpdate}>
           {get(options, 'grouped.bool', false)
             ? (data.map((group, index) => (
-                <TableBodyGroupRow group={group} key={index} index={index} placeholderProps={placeholderProps} />
+                <TableBodyGroupRow group={group} key={'group-user' + index} index={index} placeholderProps={placeholderProps} />
               )))
             : (
               <Droppable
@@ -77,7 +77,7 @@ function TableMain() {
                       {...provided.droppableProps}
                     >
                       {data.map((row, index) => (
-                        <TableBodyRow key={index} index={index} row={row} group={null} />
+                        <TableBodyRow key={index} index={'per-user' + index} row={row} group={null} />
                       ))}
                       {provided.placeholder}
                     </TableBody>

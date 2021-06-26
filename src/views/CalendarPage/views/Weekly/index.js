@@ -9,14 +9,19 @@ import { Context as CalendarPageContext } from '../../index';
 import { bgColorSelector } from '../../selectors';
 import CreateWeeklyCalendar from '../Modals/CreateWeeklyCalendar';
 import SettingWeeklyCalendar from '../Modals/SettingWeeklyCalendar';
+import CreateWeeklySchedule from '../Modals/CreateWeeklySchedule';
 import WeeklyCalendarPresenter from './presenter';
 import { calendarsSelector } from "./selectors";
+import AlertModal from "components/AlertModal";
+import { useTranslation } from 'react-i18next';
+import DeleteWeekSchedule from "../Modals/DeleteWeekSchedule"
 
 function Weekly({
   calendars, doListSchedule,
   bgColor, doListUserOfGroup,
   doSettingStartingDay,
 }) {
+  const { t } = useTranslation();
   const {
     expand, handleExpand, permissions
   } = React.useContext(CalendarPageContext);
@@ -26,6 +31,9 @@ function Weekly({
   const [sortType, setSortType] = React.useState({});
   const [newCalendars, setnewCalendars] = React.useState(calendars);
   const [startingDayInWeek, setStartingDayInWeek] = React.useState(null);
+  const [openCreateWeeklySchedule, setOpenCreateWeeklySchedule] = React.useState(false);
+  const [weekScheduleSelected, setWeekScheduleSelected] = React.useState(false);
+  const [scheduleDeleteSelected, setScheduleDeleteSelected] = React.useState(false);
 
   React.useEffect(() => {
     doListUserOfGroup(true);
@@ -64,12 +72,26 @@ function Weekly({
         setOpenSetting(true);
         return;
       }
+      case 'CREATE_WEEKLY_SCHEDULE': {
+        setOpenCreateWeeklySchedule(true);
+        setWeekScheduleSelected(false);
+        return;
+      }
+      case 'UPDATE_WEEKLY_SCHEDULE': {
+        setOpenCreateWeeklySchedule(true);
+        setWeekScheduleSelected(props.schedule)
+        return;
+      }
       default: return;
     }
   }
 
   function handleSettingStartingDay(day) {
     setStartingDayInWeek(day);
+  }
+
+  function doDeleteSchedule(schedule) {
+    setScheduleDeleteSelected(schedule)
   }
 
   React.useEffect(() => {
@@ -84,6 +106,7 @@ function Weekly({
         expand={expand} handleExpand={handleExpand}
         canCreate={true}
         handleOpenModal={doOpenModal}
+        doDeleteSchedule={doDeleteSchedule}
         bgColor={bgColor}
         year={year} handleYearChanged={year => setYear(year)}
         handleSortType={type => setSortType(oldType => {
@@ -106,6 +129,23 @@ function Weekly({
         permission={permissions['manage_week_schedule'] ?? false}
         onConfirm={handleSettingStartingDay}
       />
+      {
+        openCreateWeeklySchedule &&
+        <CreateWeeklySchedule
+          open={openCreateWeeklySchedule}
+          setOpen={setOpenCreateWeeklySchedule}
+          reloadList={(newYear) => {
+            if (year !== newYear) {
+              setYear(newYear)
+            }
+            doListSchedule({ year: newYear }, false)
+          }}
+          schedule={weekScheduleSelected}
+        />
+      }
+      {
+        scheduleDeleteSelected && <DeleteWeekSchedule scheduleDeleteSelected={scheduleDeleteSelected} setScheduleDeleteSelected={(value) => setScheduleDeleteSelected(value)} doReload={() => doListSchedule({ year }, false)} />
+      }
     </>
   );
 };

@@ -2500,5 +2500,16 @@
     "CONFIRM_LEAVE_GROUP_CHAT": "Are you sure leave group chat ?",
     "LABEL_MEMBER_LEAVE_GROUP_CHAT": "{{member_name}} left group",
     "IDS_WP_CHOOSE_GENDER": "Choose option",
-    "IDS_WP_FIELD_REQUIRED": "Field required"
+    "IDS_WP_FIELD_REQUIRED": "Field required",
+    "IDS_SHARE_TO_ALL": "Share to all",
+    "IDS_CANCEL_SHARE_TO_ALL": "Cancel all",
+    "LABEL_CREATE_WEEK_SCHEDULE": "Create week schedule",
+    "LABEL_CHOOSE_WEEK": "Choose week",
+    "LABEL_NNAME_SCHEDULE": "Schedule name",
+    "LABEL_DESCRIPTION_SCHEDULE": "Schedule description",
+    "LABEL_YEAR_FULL": "Year {{year}}",
+    "LABEL_SELECT_TIME": "Select time",
+    "LABEL_EXIT": "Exit",
+    "LABEL_PLACE": "Place",
+    "LABEL_SCHEDULE_NAME_HOME": "Week {{week}} of {{year}}"
 }

@@ -10,7 +10,7 @@ import { connect } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { useMountedState } from "react-use";
 import styled from "styled-components";
-import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS } from "views/OfferPage/redux/types";
+import { DELETE_OFFER_SUCCESSFULLY, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, ADD_MEMBER_MONITOR_SUCCESS, DELETE_MEMBER_MONITOR_SUCCESS, UPDATE_OFFER_SUCCESS } from "views/OfferPage/redux/types";
 import { TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW, TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW_CUSTOM } from '../../contants/localStorage';
 import { Routes } from "../../contants/routes";
 import Layout from "../../Layout";
@@ -122,12 +122,14 @@ function Department({
             CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
             CustomEventListener(ADD_MEMBER_MONITOR_SUCCESS, refreshOffersList);
             CustomEventListener(DELETE_MEMBER_MONITOR_SUCCESS, refreshOffersList);
+            CustomEventListener(UPDATE_OFFER_SUCCESS, refreshOffersList);
             return () => {
                 CustomEventDispose(DELETE_OFFER_SUCCESSFULLY, refreshData);
                 CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshData);
                 CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, refreshOffersList);
                 CustomEventDispose(ADD_MEMBER_MONITOR_SUCCESS, refreshOffersList);
                 CustomEventDispose(DELETE_MEMBER_MONITOR_SUCCESS, refreshOffersList);
+                CustomEventDispose(UPDATE_OFFER_SUCCESS, refreshOffersList);
             }
         }
     }, [id, timeRange, syncTimeType]);

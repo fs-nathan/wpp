@@ -18,7 +18,6 @@ const TagModal = ({
   // const members = useSelector(state => state.taskDetail.taskMember.member);
   // const tagMembers = useSelector(state => state.chat.tagMembers);
   // const filteredMembers = filterMembersByKey(members, keyFilter.current)
-
   function handleClickMember(index) {
     return () => {
       handleClose()

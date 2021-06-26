@@ -4,7 +4,7 @@ import CalendarWeeklyRightPartPresenter from './presenter';
 
 function CalendarWeeklyRightPart({
   year, handleYearChanged, bgColor, doOpenModal,
-  scheduleOfWeek, calendar, handleDeleteAllSchedule, permissions
+  scheduleOfWeek, calendar, handleDeleteAllSchedule, permissions, handleEditWeekSchedule, handleDeleteWeekSchedule
 }) {
 
   const { t } = useTranslation();
@@ -28,6 +28,8 @@ function CalendarWeeklyRightPart({
       handleDeleteAllSchedule={handleDeleteAllSchedule}
       bgColor={bgColor}
       doOpenModal={doOpenModal}
+      handleEditWeekSchedule={handleEditWeekSchedule}
+      handleDeleteWeekSchedule={handleDeleteWeekSchedule}
     />
   );
 }

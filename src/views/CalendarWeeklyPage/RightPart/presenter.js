@@ -11,6 +11,7 @@ import { get } from "lodash";
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import PlaceIcon from '@material-ui/icons/Place';
 import './style.scss';
 
 const CalendarDetailHeader = ({ className = '', ...props }) =>
@@ -26,7 +27,7 @@ const CalendarItemContainer = ({ className = "", ...rest }) => (
 function CalendarWeeklyRightPartPresenter({
   year, handleYearChanged, i18nDays, doOpenModal,
   bgColor, scheduleOfWeek, calendar, handleDeleteAllSchedule,
-  havePermission
+  havePermission, handleEditWeekSchedule, handleDeleteWeekSchedule
 }) {
 
   const { t } = useTranslation();
@@ -50,10 +51,16 @@ function CalendarWeeklyRightPartPresenter({
               onClick: evt => doOpenModal("EDIT")
             }
           ],
-          mainAction: havePermission ? {
-            label: t('views.calendar_page.right_part.delete_calendar'),
-            onClick: () => handleDeleteAllSchedule(params.year, params.week)
-          } : null
+          moreMenu: calendar && calendar.can_modify ? [
+            {
+              label: t("views.calendar_page.right_part.edit"),
+              onClick: evt => handleEditWeekSchedule()
+            },
+            {
+              label: t("views.calendar_page.right_part.delete"),
+              onClick: evt => handleDeleteWeekSchedule()
+            }
+          ] : null,
         },
         bgColor
       }}>
@@ -85,10 +92,10 @@ function CalendarWeeklyRightPartPresenter({
                   <>
                     <div className="view_WeeklyCalendar_rightContainer">
                       <CalendarDetailHeader>
-                        {t("views.calendar_page.modal.create_weekly_calendar.title_right")}
+                        {get(calendar, "name", "")}
                         <Typography component={'span'}>
-                          {t('IDS_WP_WEEK')} {params.week} ( {get(calendar, "start", "")} - {get(calendar, "end", "")})
-                            </Typography>
+                          {t('IDS_WP_WEEK')} {get(calendar, "week", "")} ( {get(calendar, "start", "")} - {get(calendar, "end", "")})
+                        </Typography>
                       </CalendarDetailHeader>
                       <TableContainer className="view_WeeklyCalendar_rightContainer__TableContainer">
                         <Table stickyHeader>
@@ -138,7 +145,17 @@ function CalendarWeeklyRightPartPresenter({
                                               </TableCell>
                                               <TableCell className="schedule_item_time">{schedule.time}</TableCell>
                                               <TableCell className="schedule_item_title">{schedule.title}</TableCell>
-                                              <TableCell className="schedule_item_content">{schedule.content}</TableCell>
+                                              <TableCell className="schedule_item_content">
+                                                {schedule.content}
+                                                {
+                                                  schedule.place && schedule.place !== "" && (
+                                                    <div className="are-place">
+                                                      <PlaceIcon />
+                                                      <span>{schedule.place}</span>
+                                                    </div>
+                                                  )
+                                                }
+                                              </TableCell>
                                               <TableCell>
                                                 {
                                                   schedule.assign_to_all && (

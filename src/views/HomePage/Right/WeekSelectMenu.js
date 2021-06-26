@@ -1,4 +1,4 @@
-import { listWeeksInYear } from "actions/calendar/weeklyCalendar/listWeeksInYear";
+import { listSchedule } from "actions/calendar/weeklyCalendar/listSchedule";
 import React from "react";
 import Scrollbars from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
@@ -19,7 +19,7 @@ export const WeekSelectMenu = ({
 }) => {
   return (
     <ItemMenu
-      className="comp_WeekSelectMenu"
+      className="comp_WeekSelectMenu home-week-schedule-select"
       onEntering={onEntering}
       onItemClick={handItemClick}
       menuAnchor={menuAnchor}
@@ -45,14 +45,14 @@ export const WeekSelectMenu = ({
 };
 const mapDispatchToProps = (dispatch) => {
   return {
-    doListWeeksInYear: ({ year }, quite) =>
-      dispatch(listWeeksInYear({ year }, quite)),
+    doListWeeksScheduleInYear: ({ year }, quite) =>
+      dispatch(listSchedule({ year }, quite)),
   };
 };
 
 const mapStateToProps = (state) => {
   return {
-    weeks: state.calendar.listWeeksInYear.data.weeks,
+    weeks: state.calendar.listSchedule.data.calendars,
   };
 };
 
@@ -61,7 +61,7 @@ export default connect(
   mapDispatchToProps
 )(
   ({
-    doListWeeksInYear,
+    doListWeeksScheduleInYear,
     anchorEl,
     onItemClick,
     year = 2020,
@@ -70,18 +70,20 @@ export default connect(
   }) => {
     const { t } = useTranslation();
     const onEntering = () => {
-      doListWeeksInYear({ year }, false);
+      doListWeeksScheduleInYear({ year }, false);
     };
     const options = weeks.map((week) => ({
-      key: week.week,
-      label: `${t("IDS_WP_WEEK")} ${week.week} (${week.start} - ${week.end})`,
+      key: week.id,
+      label: `<b>${week.name}</b><span>${t("IDS_WP_WEEK")} ${week.week} (${week.start} - ${week.end})</span>`,
     }));
 
     return (
       <WeekSelectMenu
         {...props}
         options={options}
-        handItemClick={onItemClick}
+        handItemClick={(scheduleId) => {
+          onItemClick(weeks.find(e => e.id === scheduleId))
+        }}
         anchorEl={anchorEl}
         onEntering={onEntering}
       />

@@ -1,6 +1,6 @@
 .weekSelect {
   min-width: 120px;
-  height: 36px;
+  height: 45px;
   width: 100%;
 
   .MuiSelect-select:focus {
@@ -14,7 +14,7 @@
 
   &--paper {
     .MuiList-root {
-      height: 140px !important;
+      height: 300px !important;
     }
 
     .MuiPaper-root {
@@ -45,5 +45,23 @@
         }
       }
     }
+  }
+  .weekSelect-item-name {
+    font-size: 13px;
+  }
+  .weekSelect-item-time {
+    font-size: 12px;
+    margin: 3px 0px 0px 0px;
+  }
+}
+.weekSelect-item {
+  display: inline-block;
+  width: 100%;
+  > b {
+    display: inline-block;
+    width: 100%;
+  }
+  > p {
+    margin: 0px;
   }
 }

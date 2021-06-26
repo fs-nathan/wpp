@@ -18,7 +18,7 @@ import "./LeftPart_new/LeftSetting.scss";
 import TabList from "./LeftPart_new/TabList";
 import {OfferPageContext} from "./OfferPageContext";
 import {deleteOffer, loadDetailOffer} from './redux/actions';
-import {DELETE_APPROVAL_SUCCESS, HANDLE_OFFER_OFFERPAGE} from "./redux/types";
+import {DELETE_APPROVAL_SUCCESS, HANDLE_OFFER_OFFERPAGE, UPDATE_OFFER_SUCCESS} from "./redux/types";
 import routes from "./routes";
 import './styles.scss';
 import {getDeleteOfferConfirmModalMsg} from './utils/i18nSelectors';
@@ -302,10 +302,12 @@ function OfferPage() {
         dispatch(loadDetailOffer({ id: currentDetailOfferId }));
       }
       CustomEventListener(HANDLE_OFFER_OFFERPAGE, refreshOfferModified);
+      CustomEventListener(UPDATE_OFFER_SUCCESS, refreshOfferModified);
       CustomEventListener(DELETE_APPROVAL_SUCCESS, refreshOfferModified);
       return () => {
         CustomEventDispose(HANDLE_OFFER_OFFERPAGE, refreshOfferModified);
         CustomEventDispose(DELETE_APPROVAL_SUCCESS, refreshOfferModified);
+        CustomEventDispose(UPDATE_OFFER_SUCCESS, refreshOfferModified);
       };
     }
   }, [currentDetailOfferId, dispatch, isDetailOfferModalOpen]);

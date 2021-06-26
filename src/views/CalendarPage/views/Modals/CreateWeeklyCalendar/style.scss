@@ -1,12 +1,14 @@
 .header_control {
-  width: 97.6%;
+  width: 100%;
   background-color: #F5F6F7;
   height: 50px;
   display: inline-flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 5px 20px 0px 20px;
-
+  padding: 5px 15px 5px 20px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   &_icon {
     align-self: flex-start;
   }
@@ -17,13 +19,15 @@
     flex-direction: column;
     width: 50%;
     margin-left: 10px;
+    .MuiTypography-h6 {
+      line-height: 20px;
+    }
   }
 
   .control_block {
     display: inline-flex;
     justify-content: space-between;
     width: 50%;
-    margin-right: 10px;
   }
 
   .yearSelect {
@@ -445,5 +449,96 @@ abbr[title] {
         margin-left: 5px;
       }
     }
+  }
+}
+.table-work-shedule-modal {
+  width: 100%;
+  td {
+    padding: 8px 5px;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+  .row-date {
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+    padding: 20px 5px;
+    span {
+      color: red;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+  }
+  .step-bell {
+    width: 20px;
+    svg {
+      width: 20px!important;
+      height: 20px!important;
+    }
+  }
+  .step-control {
+    width: 60px;
+  }
+  .step-time {
+    width: 60px;
+    span {
+      font-size: 14px;
+      color: red;
+    }
+  }
+  .step-main-info {
+    font-size: 14px;
+    b {
+      float: left;
+      width: 100%;
+      font-size: 14px;
+      margin-bottom: 5px;
+      line-height: 20px
+    }
+    span {
+      float: left;
+      width: 100%;
+      margin-bottom: 5px;
+      line-height: 18px;
+    }
+    div {
+      float: left;
+      width: 100%;
+      display: flex;
+      svg {
+        width: 16px;
+        height: 16px;
+        margin: auto;
+        margin-right: 5px;
+        color: #949090;
+      }
+      span {
+        margin: 0px;
+        line-height: 20px;
+        color: #2196f3;
+      }
+    }
+  }
+  .assign_to_all {
+    background-color: #8bc34a42;
+    padding: 5px 10px;
+    font-weight: 500;
+    border-radius: 3px;
+    font-size: 13px !important;
+    color: #539a00;
+    text-align: center;
+  }
+}
+.modal-work-schedule-of-week {
+  .comp_CustomModal___dialog-content  {
+    height: 100%;
+    .main_container {
+      height: 100%;
+      .view_Calendar_CreateWeekly_Modal_container {
+        height: calc(100% - 50px)
+      }
+    }
+  }
+  .right {
+    height: auto;
   }
 }

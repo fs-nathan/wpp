@@ -86,6 +86,27 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
       margin-right: 5px;
     }
   }
+  .section-choose-week {
+    display: flex;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 10px;
+    > div {
+      margin-top: 10px;
+      margin-right: auto;
+      > span {
+        float: left;
+        font-weight: bold;
+        margin-right: 20px;
+        line-height: 36px;
+        color: #7b7b7b
+      }
+      > div {
+        width: 200px;
+        float: left;
+      }
+    }
+  }
   .create-line {
     border-bottom: 1px solid #ddd;
     padding-bottom: 20px;
@@ -279,6 +300,7 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
   padding: 5px;
   border-radius: 20px;
   display: flex;
+  margin-bottom: 5px;
   img {
     width: 20px;
     border-radius: 50%;

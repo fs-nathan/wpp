@@ -1,10 +1,10 @@
 import { SCHEDULE_OF_WEEK_LIST_FROM_MODAL, SCHEDULE_OF_WEEK_LIST_FROM_MODAL_FAIL, SCHEDULE_OF_WEEK_LIST_FROM_MODAL_SUCCESS } from '../../../constants/actions/calendar/weeklyCalendar';
 
-export const listScheduleOfWeek = ({ year, week }, quite = false) => ({
+export const listScheduleOfWeek = ({ schedule_id }, quite = false) => ({
   type: SCHEDULE_OF_WEEK_LIST_FROM_MODAL,
   quite,
   options: {
-    year, week
+    schedule_id
   },
 });
 

@@ -157,8 +157,46 @@
       margin-top: 5px;
     }
   }
+  .are-place {
+    float: left;
+    width: 100%;
+    margin-top: 10px;
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-right: 5px;
+      color: #949090;
+      float: left;
+    }
+    span {
+      margin: 0px;
+      line-height: 16px;
+      color: #2196f3;
+    }
+  }
 }
 
 .comp_CustomTable___header {
   padding: 10px 20px 10px 20px;
+}
+.modal-week-schedule-home-page {
+  .schedule_item_content_place {
+    float: left;
+    width: 100%;
+    display: flex;
+    margin-top: 10px;
+    svg {
+      width: 16px;
+      height: 16px;
+      margin: auto;
+      margin-right: 5px;
+      color: #949090;
+      margin-left: 0px;
+    }
+    span {
+      margin: 0px;
+      line-height: 20px;
+      color: #2196f3;
+    }
+  }
 }

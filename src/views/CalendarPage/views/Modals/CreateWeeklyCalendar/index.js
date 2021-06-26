@@ -4,6 +4,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import { KeyboardDatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { mdiBellOutline, mdiCalendarMonthOutline, mdiPencilBoxMultipleOutline, mdiPlusCircleOutline, mdiTrashCanOutline } from '@mdi/js';
 import Icon from '@mdi/react';
+import PlaceIcon from '@material-ui/icons/Place';
 import { createSchedule } from 'actions/calendar/weeklyCalendar/createSchedule';
 import { deleteSchedule } from "actions/calendar/weeklyCalendar/deleteSchedule";
 import { listScheduleOfWeek } from "actions/calendar/weeklyCalendar/listScheduleOfWeekFromModal";
@@ -55,12 +56,11 @@ const DateWrapper = ({ className = '', ...props }) =>
   />
 
 const DEFAULT_DATA = {
-  selectedTime: moment().format("hh:mm"),
+  selectedTime: moment().format("HH:mm"),
   selectedDate: moment().toDate(),
   title: "",
+  place: "",
   content: "",
-  selectedYear: (new Date()).getFullYear(),
-  selectedWeek: moment().isoWeek(),
   notifyWhenDue: true,
   notifyBeforeTime: 30,
   notifyTimeType: 0
@@ -68,10 +68,10 @@ const DEFAULT_DATA = {
 
 function CreateWeeklyCalendar({
   open, setOpen, dateSetting, actionType = "CREATE",
-  members, WeeksInYear, doListScheduleOfWeek, scheduleOfWeek,
+  members, doListScheduleOfWeek, scheduleOfWeek,
   doCreateSchedule, doDeleteSchedule, doListMemebers,
   doUpdateSchedule, loadingUpdate = false, loadingCreate = false,
-  loadingDelete = false, afterYearAndWeekChange = () => null,
+  loadingDelete = false, weekSchedule = null
 }) {
   const { t } = useTranslation();
   const params = useParams();
@@ -83,6 +83,7 @@ function CreateWeeklyCalendar({
   const dateFormatSetting = get(dateSetting, "date_format", "DD/MM/YYYYY");
   const [alertConfirm, setAlertConfirm] = React.useState(false);
   const [scheduleID, setScheduleID] = React.useState();
+  const [weekScheduleSelf, setWeekScheduleSelf] = React.useState({});
 
   const [validation, setValidation] = React.useState({
     title: { error: false, message: "" },
@@ -97,21 +98,21 @@ function CreateWeeklyCalendar({
   React.useEffect(() => {
     let keys = Array.from(members.members, (v, k) => k);
     setReceiverListIndex(keys);
-    if (!isNil(params.week) && !isNil(params.year)) {
-      handleChangeData("selectedYear", parseInt(params.year));
-      handleChangeData("selectedWeek", parseInt(params.week));
+    if (weekSchedule) {
+      setWeekScheduleSelf(weekSchedule)
     }
     refreshForm();
-  }, [open, params.year, params.week]);
+  }, [open, weekSchedule]);
 
   const refreshForm = () => {
     setOperationType("CREATE");
     handleChangeData("title", '');
+    handleChangeData("place", '');
     handleChangeData("content", '');
     handleChangeData("scheduleID", null);
     setValidationState("title", { error: false, message: "" });
     setValidationState("content", { error: false, message: "" });
-    handleChangeData("selectedTime", moment().format("hh:mm"));
+    handleChangeData("selectedTime", moment().format("HH:mm"));
     handleChangeData("notifyWhenDue", true);
     handleChangeData("notifyTimeType", 0);
     handleChangeData("notifyBeforeTime", 30);
@@ -149,22 +150,22 @@ function CreateWeeklyCalendar({
   }
 
   React.useEffect(() => {
-    if (WeeksInYear.length !== 0) {
+    if (weekScheduleSelf.id) {
       setWeekSelectedLabel({
-        start: WeeksInYear[data.selectedWeek - 1].start,
-        end: WeeksInYear[data.selectedWeek - 1].end
+        start: weekScheduleSelf.start,
+        end: weekScheduleSelf.end
       });
-      handleChangeData("selectedDate", moment(WeeksInYear[data.selectedWeek - 1].start, dateFormatSetting));
+      handleChangeData("selectedDate", moment(weekScheduleSelf.start, dateFormatSetting));
     }
-  }, [WeeksInYear, data.selectedWeek]);
+  }, [weekScheduleSelf]);
 
   React.useEffect(() => {
     if (open === true) {
-      doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek });
+      doListScheduleOfWeek({ schedule_id: weekScheduleSelf.id });
     }
 
     const reloadListScheduleOfWeek = () => {
-      doListScheduleOfWeek({ year: data.selectedYear, week: data.selectedWeek }, false);
+      doListScheduleOfWeek({ schedule_id: weekScheduleSelf.id }, false);
       refreshForm();
     }
 
@@ -176,7 +177,7 @@ function CreateWeeklyCalendar({
       CustomEventDispose(DELETE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
       CustomEventDispose(UPDATE_WEEKLY_SCHEDULE, reloadListScheduleOfWeek);
     }
-  }, [open, data.selectedWeek, data.selectedYear]);
+  }, [open, weekScheduleSelf]);
 
   const setValidationState = (attName, value) => {
     setValidation(prevState => ({ ...prevState, [attName]: value }));
@@ -217,7 +218,8 @@ function CreateWeeklyCalendar({
   const handleEditSchedule = (schedule, date) => {
     handleChangeData("selectedDate", moment(date, dateFormatSetting));
     handleChangeData("selectedTime", get(schedule, "time", data.selectedTime));
-    handleChangeData("title", get(schedule, "title", data.selectedTime));
+    handleChangeData("title", get(schedule, "title", data.title));
+    handleChangeData("place", get(schedule, "place", data.place));
     handleChangeData("content", get(schedule, "content", data.selectedTime));
     handleChangeData("notifyWhenDue", get(schedule, "is_remind", data.notifyWhenDue));
     handleChangeData("scheduleID", get(schedule, "id", data.scheduleID));
@@ -258,6 +260,7 @@ function CreateWeeklyCalendar({
     if (schedule !== null) {
       doUpdateSchedule({ schedule }, false);
       handleChangeData("title", '');
+      handleChangeData("place", '');
       handleChangeData("content", '');
       handleChangeData("scheduleID", null);
     }
@@ -266,6 +269,7 @@ function CreateWeeklyCalendar({
   function hanleCancelUpdate() {
     setOperationType("CREATE");
     handleChangeData("title", '');
+    handleChangeData("place", '');
     handleChangeData("content", '');
     handleChangeData("scheduleID", null);
     setValidationState("title", { error: false, message: "" });
@@ -286,10 +290,12 @@ function CreateWeeklyCalendar({
     if (data.notifyTimeType === 1) remindBeforeTime = remindBeforeTime * 60;
     if (data.notifyTimeType === 2) remindBeforeTime = remindBeforeTime * 60 * 24;
     let schedule = {
+      week_schedule_id: weekScheduleSelf.id,
       schedule_id: data.scheduleID,
       schedule_date: date.format("YYYY-MM-DD"),
       schedule_time: data.selectedTime,
       title: data.title,
+      place: data.place,
       content: data.content,
       remind_before: remindBeforeTime,
       set_remind: data.notifyWhenDue,
@@ -306,6 +312,7 @@ function CreateWeeklyCalendar({
       setValidationState("content", { error: false, message: "" });
     }
   }
+  console.log(scheduleOfWeek)
 
   return (
     <>
@@ -313,10 +320,11 @@ function CreateWeeklyCalendar({
         title={actionType === "CREATE" ? t("views.calendar_page.modal.create_weekly_calendar.title") : t("views.calendar_page.modal.edit_weekly_calendar.title")}
         open={open}
         setOpen={setOpen}
-        canConfirm={data.title !== '' && data.content !== '' && data.selectedTime !== ''}
         height='medium'
-        className={"comp_CustomModal views_createWeeklyCalendar_CustomModal"}
+        className={"comp_CustomModal modal-work-schedule-of-week views_createWeeklyCalendar_CustomModal"}
         actionLoading={scheduleOfWeek.loading}
+        confirmRender={null}
+        cancleRender={() => t("LABEL_EXIT")}
       >
         <div className="main_container">
           <div className="header_control">
@@ -328,325 +336,324 @@ function CreateWeeklyCalendar({
               />
             </div>
             <div className="label_block">
-              <Typography variant="h6">{t('IDS_WP_CALENDAR_WEEK')}</Typography>
-              <Typography variant="subtitle1">{`${t('IDS_WP_WEEK')} ${data.selectedWeek}/${data.selectedYear} (${weekSelectedLabel.start} - ${weekSelectedLabel.end})`}</Typography>
-            </div>
-            <div className="control_block">
-              <WeekSelect
-                year={data.selectedYear}
-                value={data.selectedWeek}
-                onChange={({ target }) => {
-                  handleChangeData("selectedWeek", target.value);
-                  afterYearAndWeekChange({
-                    year: data.selectedYear,
-                    week: target.value
-                  });
-                }}
-              />
-              <YearSelect
-                value={data.selectedYear}
-                onChange={({ target }) => {
-                  handleChangeData('selectedYear', target.value);
-                  afterYearAndWeekChange({
-                    year: target.value,
-                    week: data.selectedWeek
-                  });
-                }}
-                numberOfYears={2}
-              />
+              <Typography variant="h6">{weekScheduleSelf.name}</Typography>
+              <Typography variant="subtitle1">{`${t('IDS_WP_WEEK')} ${weekScheduleSelf.week}/${weekScheduleSelf.year} (${weekScheduleSelf.start} - ${weekScheduleSelf.end})`}</Typography>
             </div>
           </div>
           <Container>
-            <div className="left">
-              <>
-                <LeftHeader>{t("views.calendar_page.modal.create_weekly_calendar.title_left")}</LeftHeader>
-                <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
-                  <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.select_time')}<span className="label_required">*</span></ColorTypo>
-                </abbr>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <DateWrapper>
-                    <TimePicker
-                      value={data.selectedTime}
-                      onChange={(value) => handleChangeData('selectedTime', value)}
-                    />
-                    <KeyboardDatePicker
-                      disableToolbar
-                      contentEditable={false}
-                      inputVariant="outlined"
-                      variant="inline"
-                      invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
-                      minDateMessage={t('DATE_ERROR_INTERVAL_MIN_MESSAGE')}
-                      maxDateMessage={t('DATE_ERROR_INTERVAL_MAX_MESSAGE')}
-                      ampm={false}
-                      value={data.selectedDate}
-                      onChange={value => handleChangeData('selectedDate', value)}
-                      format={dateFormatSetting.replace("DD", "dd").replace("YYYY", "yyyy")}
-                      className="inputDate"
-                      minDate={moment(weekSelectedLabel.start, dateFormatSetting)}
-                      maxDate={moment(weekSelectedLabel.end, dateFormatSetting)}
-                      autoOk={true}
-                    />
-                  </DateWrapper>
-                </MuiPickersUtilsProvider>
-                <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
-                  <ColorTypo className="label">
-                    {t('views.calendar_page.modal.create_weekly_calendar.label.title')}
-                    <span className="label_required">*</span>
-                  </ColorTypo>
-                </abbr>
-                <TextField
-                  size="small"
-                  variant="outlined"
-                  className="input_text"
-                  value={data.title}
-                  error={validation.title.error}
-                  helperText={validation.title.message}
-                  onChange={({ target }) => handleChangeData('title', target.value)}
-                  onFocus={() => handleFocusTextField("title")}
-                />
-                <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
-                  <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.content')}<span className="label_required">*</span></ColorTypo>
-                </abbr>
-                <TextField
-                  value={data.content}
-                  size="small"
-                  variant="outlined"
-                  className="input_text"
-                  multiline
-                  error={validation.content.error}
-                  helperText={validation.content.message}
-                  rows={3}
-                  fullWidth
-                  onChange={({ target }) => handleChangeData('content', target.value)}
-                  onFocus={() => handleFocusTextField("content")}
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={data.notifyWhenDue} color="primary"
-                      onChange={({ target }) => handleChangeData('notifyWhenDue', target.checked)}
-                    />
-                  }
-                  label={t('views.calendar_page.modal.create_weekly_calendar.notify_due')}
-                />
-                {
-                  data.notifyWhenDue && (
-                    <div>
-                      <Typography component={'div'} className="notify_setting_block block_grid">
-                        <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.notify_before')}</Typography>
-                        <TextField
-                          className="notify_setting_block__notifyBeforeTime"
-                          variant="outlined"
-                          value={data.notifyBeforeTime}
-                          onChange={({ target }) => handleChangeData('notifyBeforeTime', target.value)}
-                        />
-                        <Typography component={'span'} className="divider">-</Typography>
-                        <Select
-                          className={"notify_setting_block__timeTypeSelector"}
-                          variant="outlined"
-                          value={data.notifyTimeType}
-                          onChange={({ target }) => handleChangeData('notifyTimeType', target.value)}
-                          MenuProps={{
-                            className: "notify_setting_block__timeTypeSelector--paper",
-                            MenuListProps: {
-                              component: Scrollbars,
-                            },
-                            variant: 'menu'
-                          }}
-                        >
-                          <MenuItem key={'minues'} value={0}>{t('views.calendar_page.modal.create_weekly_calendar.minues')}</MenuItem>
-                          <MenuItem key={'hours'} value={1}>{t('views.calendar_page.modal.create_weekly_calendar.hours')}</MenuItem>
-                          <MenuItem key={'day'} value={2}>{t('views.calendar_page.modal.create_weekly_calendar.day')}</MenuItem>
-                        </Select>
-                      </Typography>
-                      <Typography component={'div'} className="receiver_block block_grid">
-                        <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.receiver')}</Typography>
-                        {
-                          (receiverListIndex.length === members.members.length) &&
-                          <Typography component={'span'} className="selected_receiver">{t('views.calendar_page.modal.create_weekly_calendar.all')}</Typography>
-                        }
-                        {
-                          (receiverListIndex.length !== 0 && receiverListIndex.length < members.members.length) &&
-                          <AvatarCircleList
-                            users={Object.values(pick(members.members, receiverListIndex)).map((member) => ({
-                              name: get(member, 'name'),
-                              avatar: get(member, 'avatar')
-                            }))}
-                            display={3}
+            <Scrollbars>
+              <div className="left">
+                <>
+                  <LeftHeader>{t("views.calendar_page.modal.create_weekly_calendar.title_left")}</LeftHeader>
+                  <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
+                    <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.select_time')}<span className="label_required">*</span></ColorTypo>
+                  </abbr>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DateWrapper>
+                      <TimePicker
+                        value={data.selectedTime}
+                        onChange={(value) => handleChangeData('selectedTime', value)}
+                      />
+                      <KeyboardDatePicker
+                        disableToolbar
+                        contentEditable={false}
+                        inputVariant="outlined"
+                        variant="inline"
+                        invalidDateMessage={t('DATE_ERROR_FORMAT_MESSAGE')}
+                        minDateMessage={t('DATE_ERROR_INTERVAL_MIN_MESSAGE')}
+                        maxDateMessage={t('DATE_ERROR_INTERVAL_MAX_MESSAGE')}
+                        ampm={false}
+                        value={data.selectedDate}
+                        onChange={value => handleChangeData('selectedDate', value)}
+                        format={dateFormatSetting.replace("DD", "dd").replace("YYYY", "yyyy")}
+                        className="inputDate"
+                        minDate={moment(weekSelectedLabel.start, dateFormatSetting)}
+                        maxDate={moment(weekSelectedLabel.end, dateFormatSetting)}
+                        autoOk={true}
+                      />
+                    </DateWrapper>
+                  </MuiPickersUtilsProvider>
+                  <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
+                    <ColorTypo className="label">
+                      {t('views.calendar_page.modal.create_weekly_calendar.label.title')}
+                      <span className="label_required">*</span>
+                    </ColorTypo>
+                  </abbr>
+                  <TextField
+                    size="small"
+                    variant="outlined"
+                    className="input_text"
+                    value={data.title}
+                    error={validation.title.error}
+                    helperText={validation.title.message}
+                    onChange={({ target }) => handleChangeData('title', target.value)}
+                    onFocus={() => handleFocusTextField("title")}
+                  />
+                  <abbr title={t('IDS_WP_REQUIRED_LABEL')}>
+                    <ColorTypo className="label">{t('views.calendar_page.modal.create_weekly_calendar.content')}<span className="label_required">*</span></ColorTypo>
+                  </abbr>
+                  <TextField
+                    value={data.content}
+                    size="small"
+                    variant="outlined"
+                    className="input_text"
+                    multiline
+                    error={validation.content.error}
+                    helperText={validation.content.message}
+                    rows={3}
+                    fullWidth
+                    onChange={({ target }) => handleChangeData('content', target.value)}
+                    onFocus={() => handleFocusTextField("content")}
+                  />
+                  <abbr>
+                    <ColorTypo className="label">
+                      {t('LABEL_PLACE')}
+                    </ColorTypo>
+                  </abbr>
+                  <TextField
+                    value={data.place}
+                    size="small"
+                    variant="outlined"
+                    className="input_text"
+                    multiline
+                    rows={2}
+                    fullWidth
+                    onChange={({ target }) => handleChangeData('place', target.value)}
+                    onFocus={() => handleFocusTextField("place")}
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={data.notifyWhenDue} color="primary"
+                        onChange={({ target }) => handleChangeData('notifyWhenDue', target.checked)}
+                      />
+                    }
+                    label={t('views.calendar_page.modal.create_weekly_calendar.notify_due')}
+                  />
+                  {
+                    data.notifyWhenDue && (
+                      <div>
+                        <Typography component={'div'} className="notify_setting_block block_grid">
+                          <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.notify_before')}</Typography>
+                          <TextField
+                            className="notify_setting_block__notifyBeforeTime"
+                            variant="outlined"
+                            value={data.notifyBeforeTime}
+                            onChange={({ target }) => handleChangeData('notifyBeforeTime', target.value)}
                           />
-                        }
-                        <Typography component={'span'} className="divider"></Typography>
-                        <Button
-                          color="primary"
-                          className="change_receiver_btn"
-                          startIcon={<Icon
-                            path={mdiPlusCircleOutline}
-                            size={0.5}
-                            color="#029CF3"
-                          />}
-                          onClick={evt => {
-                            setOpenReceiverDialog(true)
-                          }}
-                        >
-                          {t('views.calendar_page.modal.create_weekly_calendar.change')}
-                        </Button>
-                      </Typography>
-                    </div>
-                  )
-                }
-                <Typography component={'div'} className="centered_block">
-                  {
-                    operationType === "CREATE" && (
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        size="medium"
-                        onClick={handleCreateNew}
-                        disableElevation
-                        disabled={loadingCreate}
-                      >
-                        {loadingCreate && (
-                          <CircularProgress size={20} className="margin-circular" color="secondary" />
-                        )}
-                        {t('IDS_WP_ADD')}
-                      </Button>
-                    )
-                  }
-                  {
-                    operationType === "EDIT" && (
-                      <div className="centered_block_group">
-                        <Button
-                          variant="contained"
-                          color="primary"
-                          size="medium"
-                          onClick={handleUpdate}
-                          disableElevation
-                          disabled={loadingUpdate}
-                        >
-                          {loadingUpdate && (
-                            <CircularProgress size={20} className="margin-circular" color="secondary" />
-                          )}
-                          {t('IDS_WP_UPDATE')}
-                        </Button>
-                        <Button
-                          variant="contained"
-                          color="default"
-                          size="medium"
-                          onClick={() => hanleCancelUpdate()}
-                          disableElevation
-                        >
-                          {t('IDS_WP_CANCEL')}
-                        </Button>
+                          <Typography component={'span'} className="divider">-</Typography>
+                          <Select
+                            className={"notify_setting_block__timeTypeSelector"}
+                            variant="outlined"
+                            value={data.notifyTimeType}
+                            onChange={({ target }) => handleChangeData('notifyTimeType', target.value)}
+                            MenuProps={{
+                              className: "notify_setting_block__timeTypeSelector--paper",
+                              MenuListProps: {
+                                component: Scrollbars,
+                              },
+                              variant: 'menu'
+                            }}
+                          >
+                            <MenuItem key={'minues'} value={0}>{t('views.calendar_page.modal.create_weekly_calendar.minues')}</MenuItem>
+                            <MenuItem key={'hours'} value={1}>{t('views.calendar_page.modal.create_weekly_calendar.hours')}</MenuItem>
+                            <MenuItem key={'day'} value={2}>{t('views.calendar_page.modal.create_weekly_calendar.day')}</MenuItem>
+                          </Select>
+                        </Typography>
+                        <Typography component={'div'} className="receiver_block block_grid">
+                          <Typography component={'span'}>{t('views.calendar_page.modal.create_weekly_calendar.receiver')}</Typography>
+                          {
+                            (receiverListIndex.length === members.members.length) &&
+                            <Typography component={'span'} className="selected_receiver">{t('views.calendar_page.modal.create_weekly_calendar.all')}</Typography>
+                          }
+                          {
+                            (receiverListIndex.length !== 0 && receiverListIndex.length < members.members.length) &&
+                            <AvatarCircleList
+                              users={Object.values(pick(members.members, receiverListIndex)).map((member) => ({
+                                name: get(member, 'name'),
+                                avatar: get(member, 'avatar')
+                              }))}
+                              display={3}
+                            />
+                          }
+                          <Typography component={'span'} className="divider"></Typography>
+                          <Button
+                            color="primary"
+                            className="change_receiver_btn"
+                            startIcon={<Icon
+                              path={mdiPlusCircleOutline}
+                              size={0.5}
+                              color="#029CF3"
+                            />}
+                            onClick={evt => {
+                              setOpenReceiverDialog(true)
+                            }}
+                          >
+                            {t('views.calendar_page.modal.create_weekly_calendar.change')}
+                          </Button>
+                        </Typography>
                       </div>
                     )
                   }
-                </Typography>
-              </>
-            </div>
-            <div className="right">
-              <RightHeader>{t("views.calendar_page.modal.create_weekly_calendar.detail_content")}</RightHeader>
-              <React.Fragment>
-                <div className={"view_createWeeklyCalendar_list_container"}>
-                  <Scrollbars
-                    autoHide
-                    autoHideTimeout={500}
-                  >
+                  <Typography component={'div'} className="centered_block">
                     {
-                      scheduleOfWeek.data.map((item, index) => {
-                        if (item.schedules.length !== 0) {
-                          return (
-                            <CalendarItemContainer key={index}>
-                              <Typography component={'div'}>
-                                <span>{days[new Date(item.schedules[0].time_original).getDay()]}</span>
-                                <span>({item.date})</span>
-                              </Typography>
-                              <List component={'nav'} key={`views_createWeeklyCalendar_listSchedule_${index}`}>
-                                {
-                                  item.schedules.map((schedule) => {
-                                    return (
-                                      <ListItem
-                                        key={`views_createWeeklyCalendar_listSchedule_item_${schedule.id}`}
-                                        className="view_createWeeklyCalendar_list_scheduleItemContainer"
-                                      >
-                                        <ListItemIcon>
-                                          {
-                                            schedule.is_remind && (
-                                              <Tooltip title={schedule.title_remind_before} placement="right">
-                                                <Icon path={mdiBellOutline} size={0.85} color="rgba(0, 0, 0, 0.7)" />
-                                              </Tooltip>
-                                            )
-                                          }
-                                          {
-                                            !schedule.is_remind && <Icon path={''} size={0.75} color="#969696" />
-                                          }
-                                          <div className="calendar_item_time">{schedule.time}</div>
-                                        </ListItemIcon>
-                                        <ListItemText
-                                          primary={schedule.title}
-                                          secondary={schedule.content}
-                                        >
-                                        </ListItemText>
-                                        <ListItemSecondaryAction>
-                                          {
-                                            schedule.assign_to_all && (
-                                              <div className="assign_to_all">{t('views.calendar_page.modal.create_weekly_calendar.all')}</div>
-                                            )
-                                          }
-                                          {
-                                            !schedule.assign_to_all && (
-                                              <AvatarCircleList
-                                                users={schedule.members_assign.map((member) => ({
-                                                  name: get(member, 'name'),
-                                                  avatar: get(member, 'avatar')
-                                                }))}
-                                                display={3}
-                                              />
-                                            )
-                                          }
-                                          {
-                                            schedule.can_modify && (
-                                              <>
-                                                <abbr title={t('IDS_WP_EDIT')}>
-                                                  <IconButton
-                                                    edge="end"
-                                                    onClick={evt => handleEditSchedule(schedule, item.date)}
-                                                  >
-                                                    <Icon
-                                                      path={mdiPencilBoxMultipleOutline}
-                                                      size={0.75}
-                                                      color="#969696"
-                                                    />
-                                                  </IconButton>
-                                                </abbr>
-                                                <abbr title={t('IDS_WP_DELETE')}>
-                                                  <IconButton edge="end"
-                                                    key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
-                                                    onClick={evt => {
-                                                      setScheduleID(schedule.id);
-                                                      setAlertConfirm(true);
-                                                    }}
-                                                  >
-                                                    <Icon path={mdiTrashCanOutline} size={0.75} color="#969696" />
-                                                  </IconButton>
-                                                </abbr>
-                                              </>
-                                            )
-                                          }
-                                        </ListItemSecondaryAction>
-                                      </ListItem>
-                                    )
-                                  })
-                                }
-                              </List>
-                            </CalendarItemContainer>
-                          )
-                        }
-                      })
+                      operationType === "CREATE" && (
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          size="medium"
+                          onClick={handleCreateNew}
+                          disableElevation
+                          disabled={loadingCreate}
+                        >
+                          {loadingCreate && (
+                            <CircularProgress size={20} className="margin-circular" color="secondary" />
+                          )}
+                          {t('IDS_WP_ADD')}
+                        </Button>
+                      )
                     }
-                  </Scrollbars>
-                </div>
-              </React.Fragment>
-            </div>
+                    {
+                      operationType === "EDIT" && (
+                        <div className="centered_block_group">
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            size="medium"
+                            onClick={handleUpdate}
+                            disableElevation
+                            disabled={loadingUpdate}
+                          >
+                            {loadingUpdate && (
+                              <CircularProgress size={20} className="margin-circular" color="secondary" />
+                            )}
+                            {t('IDS_WP_UPDATE')}
+                          </Button>
+                          <Button
+                            variant="contained"
+                            color="default"
+                            size="medium"
+                            onClick={() => hanleCancelUpdate()}
+                            disableElevation
+                          >
+                            {t('IDS_WP_CANCEL')}
+                          </Button>
+                        </div>
+                      )
+                    }
+                  </Typography>
+                </>
+              </div>
+            </Scrollbars>
+            <Scrollbars>
+              <div className="right">
+                <RightHeader>{t("views.calendar_page.modal.create_weekly_calendar.detail_content")}</RightHeader>
+                <React.Fragment>
+                  <div className={"view_createWeeklyCalendar_list_container"}>
+                    <table className="table-work-shedule-modal">
+                      {
+                        scheduleOfWeek.data.map((item, index) => {
+                          if (item.schedules.length !== 0) {
+                            return (
+                              <>
+                                <tr key={"p" + index}>
+                                  <td colspan="5" className="row-date">
+                                    <b>{days[new Date(item.date_original).getDay()]}</b>
+                                    <span>({item.date})</span>
+                                  </td>
+                                </tr>
+                                {
+                                  item.schedules.map(schedule => (
+                                    <tr key={schedule.id}>
+                                      <td className="step-bell">
+                                        {
+                                          schedule.is_remind && (
+                                            <Tooltip title={schedule.title_remind_before} placement="right">
+                                              <Icon path={mdiBellOutline} size={0.85} color="rgba(0, 0, 0, 0.7)" />
+                                            </Tooltip>
+                                          )
+                                        }
+                                        {
+                                          !schedule.is_remind && <Icon path={''} size={0.75} color="#969696" />
+                                        }
+                                      </td>
+                                      <td className="step-time">
+                                        <span>{schedule.time}</span>
+                                      </td>
+                                      <td className="step-main-info">
+                                        <b>{schedule.title}</b>
+                                        <span>{schedule.content}</span>
+                                        {
+                                          schedule.place && schedule.place !== "" && (
+                                            <div>
+                                              <PlaceIcon />
+                                              <span>{schedule.place}</span>
+                                            </div>
+                                          )
+                                        }
+                                      </td>
+                                      <td>
+                                        {
+                                          schedule.assign_to_all && (
+                                            <div className="assign_to_all">{t('views.calendar_page.modal.create_weekly_calendar.all')}</div>
+                                          )
+                                        }
+                                        {
+                                          !schedule.assign_to_all && (
+                                            <AvatarCircleList
+                                              users={schedule.members_assign.map((member) => ({
+                                                name: get(member, 'name'),
+                                                avatar: get(member, 'avatar')
+                                              }))}
+                                              display={3}
+                                            />
+                                          )
+                                        }
+                                      </td>
+                                      <td className="step-control">
+                                        {
+                                          schedule.can_modify && (
+                                            <>
+                                              <abbr title={t('IDS_WP_EDIT')}>
+                                                <IconButton
+                                                  edge="end"
+                                                  onClick={evt => handleEditSchedule(schedule, item.date)}
+                                                >
+                                                  <Icon
+                                                    path={mdiPencilBoxMultipleOutline}
+                                                    size={0.75}
+                                                    color="#969696"
+                                                  />
+                                                </IconButton>
+                                              </abbr>
+                                              <abbr title={t('IDS_WP_DELETE')}>
+                                                <IconButton edge="end"
+                                                  key={`views_createWeeklyCalendar_delete_schedule_btn_${schedule.id}`}
+                                                  onClick={evt => {
+                                                    setScheduleID(schedule.id);
+                                                    setAlertConfirm(true);
+                                                  }}
+                                                >
+                                                  <Icon path={mdiTrashCanOutline} size={0.75} color="#969696" />
+                                                </IconButton>
+                                              </abbr>
+                                            </>
+                                          )
+                                        }
+                                      </td>
+                                    </tr>
+                                  ))
+                                }
+                              </>
+                            )
+                          }
+                        })
+                      }
+                    </table>
+                  </div>
+                </React.Fragment>
+              </div>
+            </Scrollbars>
           </Container>
         </div>
       </CustomModal>
@@ -674,7 +681,7 @@ function CreateWeeklyCalendar({
 const mapDispatchToProps = dispatch => {
   return {
     doUpdateSchedule: ({ schedule }, quite) => dispatch(updateSchedule({ schedule }, quite)),
-    doListScheduleOfWeek: ({ year, week }, quite) => dispatch(listScheduleOfWeek({ year, week }, quite)),
+    doListScheduleOfWeek: ({ schedule_id }, quite) => dispatch(listScheduleOfWeek({ schedule_id }, quite)),
     doCreateSchedule: ({ schedule }, quite) => dispatch(createSchedule({ schedule }, quite)),
     doDeleteSchedule: ({ scheduleID }, quite) => dispatch(deleteSchedule({ scheduleID }, quite)),
     doListMemebers: (quite) => dispatch(listUserOfGroup(quite)),
@@ -684,7 +691,6 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   state => ({
     members: membersSelector(state),
-    WeeksInYear: state.calendar.listWeeksInYear.data.weeks,
     scheduleOfWeek: scheduleOfWeekSelector(state),
     dateSetting: state.setting.settingDate.find(item => item.selected === true),
     loadingUpdate: state.calendar.updateSchedule.loading,

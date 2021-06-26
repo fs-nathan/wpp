@@ -4,6 +4,11 @@ import colors from "helpers/colorPalette";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import TasksCard from "../components/TasksCard";
+import {
+  actionGetProfile,
+  getProfileService
+} from 'actions/system/system';
+import {connect} from 'react-redux';
 
 const Language = ({ handleChangeLanguage, language }) => {
   return (
@@ -33,11 +38,20 @@ const Language = ({ handleChangeLanguage, language }) => {
     </TasksCard.Container>
   );
 };
-export default () => {
+export default connect(
+  null,
+  {
+    actionGetProfile
+  }
+)((props) => {
   const { i18n } = useTranslation();
   const handleChangeLanguage = async (lang = "vi") => {
     i18n.changeLanguage(lang);
     await actionChangeLanguage(lang);
+    const { data } = await getProfileService();
+    if (data.data) {
+      props.actionGetProfile(data.data);
+    }
   };
   return (
     <Language
@@ -45,4 +59,4 @@ export default () => {
       language={i18n.language}
     />
   );
-};
+});

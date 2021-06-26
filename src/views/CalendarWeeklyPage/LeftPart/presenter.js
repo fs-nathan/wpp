@@ -56,13 +56,13 @@ function CalendarWeeklyLeftPartPresenter({
           calendars.loading ? (
             <LoadingBox />
           ) : (
-              <StyledList>
+              <StyledList className="week-schedule-left">
                 {calendars.data.map((item, index) => (
                   <React.Fragment key={index}>
                     <StyledListItem
-                      to={Routes.CALENDAR_WEEKLY.replace(":week/:year/:from", `${get(item, "week", "")}/${get(item, "year", "")}`)}
+                      to={Routes.CALENDAR_WEEKLY.replace(":year/:schedule_id/:from", `${get(item, "year", "")}/${get(item, "id", "")}`)}
                       component={Link}
-                      className={`${params.week == get(item, "week", "") ? "item-actived" : ""}`}
+                      className={`${params.schedule_id == get(item, "id", "") ? "item-actived" : ""}`}
                     >
                       <Icon
                         className="view_WeeklyCalendarLeftPart_List_iconLeft"
@@ -72,18 +72,27 @@ function CalendarWeeklyLeftPartPresenter({
                       />
                       <ListItemText
                         primary={
-                          <Primary
-                            className={`title-setting-item ${
-                              item.icon ? "" : "none-icon"
-                              }`}
-                          >
-                            {get(item, "name", "")}
-                            {
-                              moment().isoWeek() === parseInt(get(item, "name", "").split(" ")[1]) && (
-                                <span className="view_WeeklyCalendarLeftPart_List_presentLabel">({t('IDS_WP_PRESENT')})</span>
-                              )
-                            }
-                          </Primary>
+                          <>
+                            <Primary
+                              className={`title-setting-item ${
+                                item.icon ? "" : "none-icon"
+                                }`}
+                            >
+                                {t('IDS_WP_WEEK')} {get(item, "week", "")}
+                                {
+                                  get(item, "is_curent", "false") && (
+                                    <span className="view_WeeklyCalendarLeftPart_List_presentLabel">({t('IDS_WP_PRESENT')})</span>
+                                  )
+                                }
+                            </Primary>
+                            <Primary
+                              className={`title-setting-item original-name ${
+                                item.icon ? "" : "none-icon"
+                                }`}
+                            >
+                                <span>{get(item, "name", "")}</span>
+                            </Primary>
+                          </>
                         }
                       />
                     </StyledListItem>

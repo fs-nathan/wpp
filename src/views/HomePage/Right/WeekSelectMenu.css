@@ -5,3 +5,10 @@
 .comp_WeekSelectMenu {
   top: 40px !important;
 }
+.home-week-schedule-select li {
+	white-space: unset!important;
+}
+.home-week-schedule-select li b{
+	float: left;
+	width: 100%;
+}

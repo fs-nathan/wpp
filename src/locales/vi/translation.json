@@ -2518,5 +2518,16 @@
   "CONFIRM_LEAVE_GROUP_CHAT": "Bạn có chắc chắn muốn rời nhóm ?",
   "LABEL_MEMBER_LEAVE_GROUP_CHAT": "{{member_name}} đã rời nhóm",
   "IDS_WP_CHOOSE_GENDER": "Chọn giới tính",
-  "IDS_WP_FIELD_REQUIRED": "Trường bắt buộc"
+  "IDS_WP_FIELD_REQUIRED": "Trường bắt buộc",
+  "IDS_SHARE_TO_ALL": "Chia sẻ toàn bộ",
+  "IDS_CANCEL_SHARE_TO_ALL": "Hủy toàn bộ",
+  "LABEL_CREATE_WEEK_SCHEDULE": "Tạo lịch tuần",
+	"LABEL_CHOOSE_WEEK": "Chọn tuần",
+	"LABEL_NNAME_SCHEDULE": "Tên lịch tuần",
+	"LABEL_DESCRIPTION_SCHEDULE": "Mô tả",
+	"LABEL_YEAR_FULL": "Năm {{year}}",
+	"LABEL_SELECT_TIME": "Chọn thời gian",
+	"LABEL_EXIT": "Exit",
+	"LABEL_PLACE": "Địa điểm",
+	"LABEL_SCHEDULE_NAME_HOME": "Tuần {{week}} năm {{year}}"
 }

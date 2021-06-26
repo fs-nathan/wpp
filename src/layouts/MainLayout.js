@@ -314,7 +314,7 @@ function MainLayout({
       };
     }
     // eslint-disable-next-line
-  }, []);
+  }, [profile && profile.id]);
 
   useEffect(() => {
     if (!socket || !profile.id || !taskDetails) return;
@@ -424,6 +424,7 @@ function MainLayout({
     );
   };
   const handleNewMessage = (res) => {
+    console.log('xxx', res)
     if (res.belong_to_section === 1) {
       setNumberDiscustonNotView(
         {discustion_change: 1}
