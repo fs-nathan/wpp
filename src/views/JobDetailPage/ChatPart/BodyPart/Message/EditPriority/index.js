@@ -10,6 +10,7 @@ const EditPriority = ({
   user_create_name,
   user_create_avatar,
   user_create_position,
+  priority,
   priority_name,
   time_create,
   chatPosition = "top",
@@ -33,16 +34,13 @@ const EditPriority = ({
       isHideFooterIcon
       footerText=""
       onClickViewDetail={onClickViewDetail}
-      taskName={t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}
+      actionName={t('LABEL_CHAT_TASK_THAY_DOI_MUC_DO_UU_TIEN')}
+      newUi={true}
     >
       <>
-        <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority_name}`)} >
+        <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority}`)} >
           {priority_name}
         </div>
-        {/* <Icon className="EditPriority--icon" path={mdiTransferRight}></Icon>
-        <div className={clsx("EditPriority--priority", `EditPriority--priority__${priority_name}`)} >
-          <div>{priority_name}</div>
-        </div> */}
       </>
     </DialogMessageWrap>
   );

@@ -35,9 +35,10 @@ const UpdateComplete = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName={t('LABEL_CHAT_TASK_CAP_NHAT_TIEN_DO_HOAN_THANH')}
+      actionName={t('LABEL_CHAT_TASK_CAP_NHAT_TIEN_DO_HOAN_THANH')}
+      newUi={true}
     >
-      <div className="UpdateComplete--content" >
+      <div className="UpdateComplete--content" onClick={onClickViewDetail}>
         <div className="UpdateComplete--circle" >
           {old_complete}%
         </div>

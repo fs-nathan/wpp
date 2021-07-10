@@ -12,6 +12,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import PlaceIcon from '@material-ui/icons/Place';
+import linkify from "linkifyjs/html";
 import './style.scss';
 
 const CalendarDetailHeader = ({ className = '', ...props }) =>
@@ -146,7 +147,11 @@ function CalendarWeeklyRightPartPresenter({
                                               <TableCell className="schedule_item_time">{schedule.time}</TableCell>
                                               <TableCell className="schedule_item_title">{schedule.title}</TableCell>
                                               <TableCell className="schedule_item_content">
-                                                {schedule.content}
+                                              <div
+                                                dangerouslySetInnerHTML={{
+                                                  __html: linkify(schedule.content.replace(/\n/g, "<br>")),
+                                                }}
+                                              ></div>
                                                 {
                                                   schedule.place && schedule.place !== "" && (
                                                     <div className="are-place">

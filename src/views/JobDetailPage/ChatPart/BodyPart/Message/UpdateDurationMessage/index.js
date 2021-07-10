@@ -4,6 +4,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { useDispatch, useSelector } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import './styles.scss';
 
 const UpdateDurationMessage = ({
@@ -40,28 +41,35 @@ const UpdateDurationMessage = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName={t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_THUC_HIEN')}
+      actionName={t('LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO_THUC_HIEN')}
+      newUi={true}
     >
       <>
         {time_changes.start &&
           <>
-            <div className="UpdateDurationMessage--title" >{t('LABEL_CHAT_TASK_BAT_DAU')}</div>
-            <div className="UpdateDurationMessage--content" >
-              {t('LABEL_CHAT_TASK_TU_SANG', {
-                from: getUpdateProgressDate(time_changes.start.old, dateFormat),
-                to: getUpdateProgressDate(time_changes.start.new, dateFormat)
-              })}
+            <div className="UpdateDurationMessage--content" onClick={onClickViewDetail}>
+              <span className="member-name">
+                {t('LABEL_CHAT_TASK_BAT_DAU')}
+                {t('LABEL_CHAT_TASK_TU_SANG', {
+                  from: getUpdateProgressDate(time_changes.start.old, dateFormat),
+                  to: getUpdateProgressDate(time_changes.start.new, dateFormat)
+                })}
+              </span>
+              <ArrowForwardIosIcon className="icon-view-more" />
             </div>
           </>
         }
         {time_changes.end &&
           <>
-            <div className="UpdateDurationMessage--title" >{t('LABEL_CHAT_TASK_KET_THUC')}</div>
-            <div className="UpdateDurationMessage--content" >
-              {t('LABEL_CHAT_TASK_TU_SANG', {
-                from: getUpdateProgressDate(time_changes.end.old, dateFormat),
-                to: getUpdateProgressDate(time_changes.end.new, dateFormat)
-              })}
+            <div className="UpdateDurationMessage--content" onClick={onClickViewDetail}>
+              <span className="member-name">
+                {t('LABEL_CHAT_TASK_KET_THUC')}
+                {t('LABEL_CHAT_TASK_TU_SANG', {
+                  from: getUpdateProgressDate(time_changes.end.old, dateFormat),
+                  to: getUpdateProgressDate(time_changes.end.new, dateFormat)
+                })}
+              </span>
+              <ArrowForwardIosIcon className="icon-view-more" />
             </div>
           </>
         }

@@ -7,6 +7,7 @@ import EditJobModal, {
   EDIT_MODE,
 } from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal";
+import UpdateTaskStatus from "views/JobDetailPage/ListPart/ListHeader/UpdateStatus";
 import "../style.scss";
 import compact from "lodash/compact";
 import { useSelector, useDispatch } from "react-redux";
@@ -24,6 +25,7 @@ import {
 } from "actions/taskDetail/taskDetailActions";
 import { listTask } from "actions/task/listTask";
 import ProgressModal from "views/JobDetailPage/TabPart/ProgressTab/ProgressModal";
+import CompleteTaskModal from "views/JobDetailPage/TabPart/ProgressTab/TabBody/ProgressSlider/ModalEdit";
 import { useTimes } from "components/CustomPopover";
 import moment from "moment";
 
@@ -37,6 +39,8 @@ export const ActionList = ({ index, row, group }) => {
   const [openCreateJobModal, setOpenCreateJobModal] = React.useState(false);
   const [openProgressModal, setOpenProgressModal] = React.useState(false);
   const [onloadAddMember, setOnloadAddMember] = React.useState(false);
+  const [updateTaskStatus, setUpdateTaskStatus] = React.useState(false);
+  const [updateTaskComplete, setUpdateTaskComplete] = React.useState(false);
 
   const [editMode, setEditMode] = React.useState(null);
   const taskId = row?.id;
@@ -83,6 +87,14 @@ export const ActionList = ({ index, row, group }) => {
     setOpenProgressModal(true);
     setAnchorEl(null);
   };
+  const onClickEditStatus = () => {
+    setUpdateTaskStatus(true);
+    setAnchorEl(null);
+  }
+  const onClickEditComplete = () => {
+    setUpdateTaskComplete(true);
+    setAnchorEl(null);
+  }
   const editList = [
     <MenuItem key="editList1" onClick={onClickEdit(EDIT_MODE.NAME_DES)}>
       {t("LABEL_CHAT_TASK_SUA_TEN_MO_TA_CONG_VIEC")}
@@ -99,6 +111,9 @@ export const ActionList = ({ index, row, group }) => {
     <MenuItem key="editList6" onClick={onClickEditProgress}>
       {t("LABEL_CHAT_TASK_DIEU_CHINH_TIEN_DO")}
     </MenuItem>,
+    <MenuItem key="editList6" onClick={onClickEditStatus}>
+      {t("LABEL_UPDATE_TASK_STATUS")}
+    </MenuItem>
   ];
   function onClickPin() {
     setAnchorEl(null);
@@ -185,6 +200,10 @@ export const ActionList = ({ index, row, group }) => {
             }}
           >
             {row.can_modify && editList}
+            {row.can_modify && !pause  && <MenuItem onClick={onClickEditComplete}>
+                Update task complete
+              </MenuItem>
+            }
             <MenuItem onClick={onClickPin}>
               {isPinned
                 ? t("LABEL_CHAT_TASK_BO_GHIM")
@@ -221,6 +240,14 @@ export const ActionList = ({ index, row, group }) => {
             fromView={"Table"}
           />
         )}
+        {
+          updateTaskStatus &&
+          <UpdateTaskStatus isOpen={updateTaskStatus} setOpen={(status) => setUpdateTaskStatus(status)} taskId={taskId} oldStatus={row ? row.original_status : ""} />
+        }
+        {
+          updateTaskComplete &&
+          <CompleteTaskModal isOpen={updateTaskComplete} setOpen={(status) => setUpdateTaskComplete(status)} taskId={taskId} oldComplete={row ? row.complete : 0} />
+        }
       </div>
     </div>
   );

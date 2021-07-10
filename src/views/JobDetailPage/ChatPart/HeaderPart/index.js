@@ -95,7 +95,7 @@ const renderAvatars = props => {
       )}
       {
         (plusImage > 0) &&
-        <Avatar className="header-chat-avatar chatHeader--avatar_plus">{`+${plusImage}`}</Avatar>
+        <Avatar className="header-chat-avatar chatHeader--avatar_plus">{`+${plusImage < 100 ? plusImage : 99}`}</Avatar>
       }
     </div>
   );

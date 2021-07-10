@@ -208,7 +208,6 @@ function AllProjectTable({
         expand={expand} handleExpand={handleExpand} showHidePendings={showHidePendings} route={route}
         projects={newProjects}
         bgColor={bgColor} type_data={type_data}
-        canCreate={get(viewPermissions.permissions, 'create_project', false)}
         filterType={filterType}
         handleFilterType={filterType => doSetProjectGroup({
           ...localOption,

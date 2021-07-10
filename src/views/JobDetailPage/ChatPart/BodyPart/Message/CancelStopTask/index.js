@@ -28,17 +28,10 @@ const CancelStopTask = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName={t('LABEL_CHAT_TASK_HUY_BO_TAM_DUNG')}
+      actionName={t('LABEL_CHAT_TASK_HUY_BO_TAM_DUNG')}
+      newUi={true}
     >
-      <>
-        <Icon className="CancelStopTask--icon" path={mdiTimer}></Icon>
-        <div className="StopTask--content" >
-          {getDialogDate(t, time_create, dateFormat)}
-        </div>
-        <div className="StopTask--notify" >
-          {t('LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY')}
-        </div>
-      </>
+      
     </DialogMessageWrap>
   );
 }

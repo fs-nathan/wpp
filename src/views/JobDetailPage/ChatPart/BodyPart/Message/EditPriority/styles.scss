@@ -1,22 +1,23 @@
 .EditPriority {
-  width: 60px;
-  height: 30px;
-  font-size: 18px;
-  font-weight: bold;
-  background-color: #d2ebd3;
-  color: #02aa09;
   &--priority {
-    font-size: 16px;
-    &__normal {
-      background-color: #ffe5bf;
-      color: #f69200;
+    background: rgb(210,235,211);
+    color: #4caf50;
+    border-radius: 50px;
+    padding: 8px 10px;
+    font-size: 13px;
+    display: flex;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    text-transform: none;
+    cursor: pointer;
+    &__0 {
+      background: rgb(254,193,193);
+      color: #fe0707;
     }
-    &__low {
-      background-color: #fec1c1;
-      color: #fe0000;
+    &__1 {
+      background: rgb(255,229,191);
+      color: #ff9800;
     }
-  }
-  &--icon {
-    fill: #6f6f6f;
   }
 }

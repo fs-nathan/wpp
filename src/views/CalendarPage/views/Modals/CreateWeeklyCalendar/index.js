@@ -27,6 +27,7 @@ import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import AddOfferMemberModal from 'views/JobDetailPage/TabPart/OfferTab/AddOfferMemberModal';
 import { membersSelector, scheduleOfWeekSelector } from './selectors';
+import linkify from "linkifyjs/html";
 import './style.scss';
 
 const Container = ({ className = '', ...props }) =>
@@ -353,6 +354,7 @@ function CreateWeeklyCalendar({
                       <TimePicker
                         value={data.selectedTime}
                         onChange={(value) => handleChangeData('selectedTime', value)}
+                        className="inputTime"
                       />
                       <KeyboardDatePicker
                         disableToolbar
@@ -582,7 +584,11 @@ function CreateWeeklyCalendar({
                                       </td>
                                       <td className="step-main-info">
                                         <b>{schedule.title}</b>
-                                        <span>{schedule.content}</span>
+                                        <span
+                                          dangerouslySetInnerHTML={{
+                                            __html: linkify(schedule.content.replace(/\n/g, "<br>")),
+                                          }}
+                                        ></span>
                                         {
                                           schedule.place && schedule.place !== "" && (
                                             <div>

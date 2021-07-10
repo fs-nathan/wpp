@@ -6,22 +6,26 @@
     margin-bottom: 0px;
     display: flex;
     justify-content: center;
+    margin: auto;
+    background: #fff;
+    padding: 5px;
+    border-radius: 30px;
+    cursor: pointer;
   }
   &--circle {
-    width: 35px;
-    height: 35px;
-    line-height: 35px;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
     background-color: #07c040;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: #ffffff;
-    border-radius: 50%;
-    padding: 7px;
+    border-radius: 30px;
+    padding: 5px;
   }
   &--icon {
     margin: auto 20px;
-    width: 40px;
-    height: 40px;
+    width: 20px;
     fill: #6f6f6f;
   }
 }

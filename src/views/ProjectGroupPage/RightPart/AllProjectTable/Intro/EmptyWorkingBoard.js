@@ -6,7 +6,7 @@ import "./styles.scss";
 import {find, get} from "lodash";
 import {useSelector} from "react-redux";
 import CustomAvatar from "../../../../../components/CustomAvatar";
-import CreateNewProjectModal from "../../../Modals/CreateNewProject";
+import CreateProjectModal from "../../../Modals/CreateProject";
 
 function IntroEmptyWorkingBoard({groupID}) {
   const {t} = useTranslation();
@@ -52,7 +52,7 @@ function IntroEmptyWorkingBoard({groupID}) {
         </Box>
         <img src={images.bg001} alt={""} className={"bgEmpty"}/>
       </Box>
-      <CreateNewProjectModal open={openModal} setOpen={setOpenModal} projectGroupId={groupID}/>
+      <CreateProjectModal open={openModal} setOpen={setOpenModal} projectGroupId={groupID}/>
     </>
   );
 }

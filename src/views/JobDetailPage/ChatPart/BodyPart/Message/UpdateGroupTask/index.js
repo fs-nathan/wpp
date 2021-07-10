@@ -22,11 +22,12 @@ const UpdateGroupTask = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName={t('LABEL_CHAT_TASK_THAY_DOI_NHOM_CONG_VIEC_THANH')}
+      actionName={t('LABEL_CHAT_TASK_THAY_DOI_NHOM_CONG_VIEC_THANH')}
+      newUi={true}
     >
-      <>
-        {group_task_name}
-      </>
+      <div className="UpdateGroupTask--content">
+         <span className="member-name">{group_task_name}</span>
+      </div>
     </DialogMessageWrap>
   );
 }

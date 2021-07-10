@@ -22,57 +22,74 @@ const DialogMessageWrap = ({
   footerText,
   onClickViewDetail,
   className,
-  children
+  children,
+  newUi = false,
+  actionName=""
 }) => {
   const { t } = useTranslation();
   const dateFormat = useSelector(state => state.system.profile.format_date);
 
   return (
-    <div
-      id={id}
-      className={clsx("DialogMessageWrap", className)} >
-      <div className="DialogMessageWrap--header" >
-        {titleHeader || t('IDS_WP_NOTICE')}
-      </div>
-      {user_create_name && <div className="DialogMessageWrap--sender" >
-        <abbr title={user_create_name}>
-          <Avatar className="DialogMessageWrap--avatar" src={user_create_avatar} />
-        </abbr>
-      </div>}
-      {taskName && <div className="DialogMessageWrap--title" >
-        <span className="DialogMessageWrap--name" >
-          {user_create_name}
-        </span>
-        <span className="DialogMessageWrap--position" >
-          {user_create_position ? ` - ${user_create_position} ` : ' '}
-        </span>
-        <span className="DialogMessageWrap--task" >
-          {t('LABEL_CHAT_TASK_DA_DO_TASK', { taskName })}
-        </span>
-      </div>}
-      <div className="DialogMessageWrap--content" >
-        {children}
-        {time_create &&
-          <div className={clsx("DialogMessageWrap--time")} >
-            {getDialogDate(t, time_create, dateFormat)}
-          </div>
-        }
-      </div>
+    <>
       {
-        (!isHideFooterIcon || (footerText !== "")) &&
-        <div className="DialogMessageWrap--footer" >
-          {!isHideFooterIcon &&
-            <Icon className="DialogMessageWrap--icon" path={mdiAlarm}></Icon>
-          }
-          {
-            footerText !== "" &&
-            <span className="DialogMessageWrap--detail" onClick={onClickViewDetail}>
-              {footerText || t('LABEL_CHAT_TASK_XEM_CHI_TIET')}
-            </span>
-          }
-        </div>
+        newUi ? (
+          <div className="section-tracking-chat">
+            <div className="infor-main-action">
+              <span className="user-name">{user_create_name}</span>
+              <span className="name-action">{actionName}</span>
+              <span className="time-action">{getDialogDate(t, time_create, dateFormat)}</span>
+            </div>
+            {children}
+          </div>
+        ) : (
+          <div
+            id={id}
+            className={clsx("DialogMessageWrap", className)} >
+            <div className="DialogMessageWrap--header" >
+              {titleHeader || t('IDS_WP_NOTICE')}
+            </div>
+            {user_create_name && <div className="DialogMessageWrap--sender" >
+              <abbr title={user_create_name}>
+                <Avatar className="DialogMessageWrap--avatar" src={user_create_avatar} />
+              </abbr>
+            </div>}
+            {taskName && <div className="DialogMessageWrap--title" >
+              <span className="DialogMessageWrap--name" >
+                {user_create_name}
+              </span>
+              <span className="DialogMessageWrap--position" >
+                {user_create_position ? ` - ${user_create_position} ` : ' '}
+              </span>
+              <span className="DialogMessageWrap--task" >
+                {t('LABEL_CHAT_TASK_DA_DO_TASK', { taskName })}
+              </span>
+            </div>}
+            <div className="DialogMessageWrap--content" >
+              {children}
+              {time_create &&
+                <div className={clsx("DialogMessageWrap--time")} >
+                  {getDialogDate(t, time_create, dateFormat)}
+                </div>
+              }
+            </div>
+            {
+              (!isHideFooterIcon || (footerText !== "")) &&
+              <div className="DialogMessageWrap--footer" >
+                {!isHideFooterIcon &&
+                  <Icon className="DialogMessageWrap--icon" path={mdiAlarm}></Icon>
+                }
+                {
+                  footerText !== "" &&
+                  <span className="DialogMessageWrap--detail" onClick={onClickViewDetail}>
+                    {footerText || t('LABEL_CHAT_TASK_XEM_CHI_TIET')}
+                  </span>
+                }
+              </div>
+            }
+          </div>
+        )
       }
-    </div>
+    </>
   );
 }
 

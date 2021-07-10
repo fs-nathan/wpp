@@ -104,7 +104,7 @@ function EditProject({
   return (
     <>
       <CustomModal
-        title={t("DMH.VIEW.PGP.MODAL.CUP.U_TITLE")}
+        title={t("LABEL_EDIT_BOARD_NAME")}
         open={open}
         setOpen={setOpen}
         canConfirm={!errorName}
@@ -139,14 +139,14 @@ function EditProject({
         <CustomTextbox
           value={name}
           onChange={value => setName(value)}
-          label={t("DMH.VIEW.PGP.MODAL.CUP.NAME")}
+          label={t("LABEL_WORKING_BOARD_NAME")}
           fullWidth
           required={true}
         />
         <CustomTextbox
           value={description}
           onChange={value => setDescription(value)}
-          label={t("DMH.VIEW.PGP.MODAL.CUP.DESC")}
+          label={t("LABEL_BOARD_DETAIL")}
           fullWidth
           multiline={true}
         />

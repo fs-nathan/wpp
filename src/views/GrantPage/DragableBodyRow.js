@@ -19,7 +19,6 @@ const DragableBodyRow = ({
     accept: type,
     collect: (monitor) => {
       const { index: dragIndex } = monitor.getItem() || {};
-      console.log(monitor)
       if (dragIndex === index) {
         return {};
       }

@@ -136,7 +136,11 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
         width: 1.2em;
         height: 1.2em;
         color: #acacac;
+        &:hover {
+          cursor: move!important;
+        }
       }
+
     }
     .name-option {
       width: calc(100% - 50px);
@@ -332,5 +336,42 @@ li.MuiButtonBase-root.MuiListItem-root.MuiMenuItem-root.MuiMenuItem-gutters.MuiL
     position: absolute;
     left: -25px;
     line-height: 20px
+  }
+}
+
+.section-tracking-chat {
+  display: flex;
+  text-align: center;
+  flex-direction: column;
+  margin-top: 20px;
+  .infor-main-action {
+    display: flex;
+    width: auto;
+    margin: auto;
+    border-radius: 20px;
+    padding: 5px;
+    color: #a0a0a0;
+    img {
+      width: 25px;
+      border-radius: 50%;
+    }
+    .user-name {
+      line-height: 25px;
+      margin: 0px 5px;
+      font-weight: bold;
+    }
+    .name-action {
+      line-height: 25px;
+    }
+    .time-action {
+      line-height: 25px;
+      margin-left: 5px;
+      text-transform: lowercase;
+    }
+  }
+  .icon-view-more {
+    font-size: 12px;
+    margin: auto;
+    margin-left: 10px;
   }
 }

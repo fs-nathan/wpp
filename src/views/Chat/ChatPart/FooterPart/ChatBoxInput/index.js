@@ -14,11 +14,6 @@ class ChatBoxInput extends React.Component {
     value: ''
   }
 
-  // componentWillReceiveProps({value}) {
-  //   console.log('xxx',value)
-  //   this.setState({ value: value })
-  // }
-
   componentDidUpdate(prevProps, prevState) {
     if (prevState.value !== this.state.value) {
       this.props.onChange(this.state.value)
@@ -27,8 +22,8 @@ class ChatBoxInput extends React.Component {
 
   handleChange = evt => {
     const { value } = evt.target;
-    // const newValue = value.replace(regFontTag, '')
-    // const changeValue = newValue === '<br>' ? '' : newValue
+    const newValue = value.replace(regFontTag, '')
+    const changeValue = newValue === '<br>' ? '' : newValue
     this.setState({ value: value })
   };
 
@@ -48,11 +43,13 @@ class ChatBoxInput extends React.Component {
         event.returnValue = false;
       } else {
         this.props.onSendMessage();
+        this.setState({value: ""})
         event.returnValue = false;
       }
       if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 13 && !isPressShift) {// enter
       this.props.onSendMessage();
+      this.setState({value: ""})
       event.returnValue = false;
       if (event.preventDefault) event.preventDefault()
     } else if (keyCode === 50 && isPressShift) {// @
@@ -100,8 +97,8 @@ class ChatBoxInput extends React.Component {
           {this.props.placeholder}
         </div>
         <div className="chatBox--send"
-          onClick={(e) => {
-            e.stopPropagation();
+          onClick={(event) => {
+            event.stopPropagation();
             this.props.onSendMessage() 
             this.setState({value: ""})
           }}

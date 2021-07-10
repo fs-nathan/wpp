@@ -1540,7 +1540,7 @@
 	"LABEL_CHAT_TASK_CHON_NGUOI_DUYET": "Chọn người duyệt...",
 	"LABEL_CHAT_TASK_HINH_ANH": "Hình ảnh",
 	"LABEL_CHAT_TASK_THA_FILE_VAO_DAY": "Thả file vào đây",
-	"LABEL_CHAT_TASK_TU_SANG": "Từ {{from}} sang {{to}}",
+	"LABEL_CHAT_TASK_TU_SANG": "{{from}} ➤ {{to}}",
 	"LABEL_CHAT_TASK_TAO_VIEC": "TẠO VIỆC",
 	"LABEL_CHAT_TASK_CHINH_SUA_CONG_VIEC": "Chỉnh sửa công việc",
 	"LABEL_CHAT_TASK_TAO_CONG_VIEC": "Tạo công việc",
@@ -2527,7 +2527,13 @@
 	"LABEL_DESCRIPTION_SCHEDULE": "Mô tả",
 	"LABEL_YEAR_FULL": "Năm {{year}}",
 	"LABEL_SELECT_TIME": "Chọn thời gian",
-	"LABEL_EXIT": "Exit",
+	"LABEL_EXIT": "Thoát",
 	"LABEL_PLACE": "Địa điểm",
-	"LABEL_SCHEDULE_NAME_HOME": "Tuần {{week}} năm {{year}}"
+	"LABEL_SCHEDULE_NAME_HOME": "Tuần {{week}} năm {{year}}",
+	"LABEL_EDIT_BOARD_NAME": "Chỉnh sửa bảng công việc",
+	"LABEL_CHOOSE_ICON_FROM_UPLOAD": "Lựa chọn biểu tượng do thành viên tải lên",
+	"LABEL_CHOOSE_ICON_FROM_SYSTEM": "Lựa chọn biểu tượng có sẵn từ hệ thống",
+	"LABEL_ICON_FROM_SYSTEM": "Biểu tượng có sẵn",
+	"LABEL_ICON_FROM_UPLOAD": "Biểu tượng tải lên",
+	"LABEL_SORT": "Sắp xếp"
 }

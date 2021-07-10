@@ -8,9 +8,16 @@
     line-height: 20px;
   }
   &--content {
+    background-color: #fff;
+    border-radius: 50px;
+    padding: 8px 10px;
     font-size: 13px;
-    color: #607d8b;
-    margin-bottom: 10px;
-    text-transform: initial;
+    display: flex;
+    width: -moz-fit-content;
+    width: fit-content;
+    margin: auto;
+    text-transform: none;
+    cursor: pointer;
+    margin-bottom: 5px;
   }
 }

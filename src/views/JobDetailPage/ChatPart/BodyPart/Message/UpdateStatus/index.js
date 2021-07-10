@@ -37,9 +37,10 @@ const UpdateStatus = ({
       isHideFooterIcon={true}
       footerText=""
       onClickViewDetail={onClickViewDetail}
-      taskName={t('LABEL_CHAT_TASK_CAP_NHAT_TRANG_THAI_CONG_VIEC')}
+      actionName={t('LABEL_CHAT_TASK_CAP_NHAT_TRANG_THAI_CONG_VIEC')}
+      newUi={true}
     >
-      <div className="UpdateStatus--content" >
+      <div className="UpdateStatus--content" onClick={onClickViewDetail}>
         <div className={`UpdateStatus--label UpdateStatus--label-${old_status_code}`} >
           {old_status_name}
         </div>

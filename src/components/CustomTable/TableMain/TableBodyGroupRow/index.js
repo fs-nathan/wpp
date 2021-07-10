@@ -25,6 +25,7 @@ import { useDispatch } from "react-redux";
 import { deleteGroupTask } from "actions/groupTask/deleteGroupTask";
 import { IndeterminateCheckBoxSharp } from "@material-ui/icons";
 import { isSortGroupTask } from "actions/groupTask/sortGroupTask";
+import SelectGroupTask from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal/SelectGroupTask"
 
 const StyledTableBodyRowGroup = ({ className = "", ...rest }) => (
   <TableRow
@@ -60,6 +61,7 @@ function TableBodyGroupRow({ group, index }) {
   const { projectId: _projectId } = useParams();
   const [projectId, setProjectId] = React.useState(_projectId);
   const [openGroupTask, setOpenGroupTask] = React.useState(false);
+  const [openSelectGroupTaskModal, setOpenSelectGroupTaskModal] = React.useState(false);
   const dispatch = useDispatch();
   let inSearch = false;
   React.useEffect(() => {
@@ -134,18 +136,16 @@ React.useEffect(()=>{
               >
                 {typeof get(options, "grouped.action") === "function" &&
                   
-                  get(options, "grouped.canCreateTask") && (
-                    <IconButton
-                      size="small"
-                      onClick={() => options.grouped.action(group)}
-                    >
-                      <Icon
-                        path={mdiPlus}
-                        size={1}
-                        color="rgba(66, 63, 63, 0.54)"
-                      />
-                    </IconButton>
-                  )
+                  <IconButton
+                    size="small"
+                    onClick={() => options.grouped.action(group)}
+                  >
+                    <Icon
+                      path={mdiPlus}
+                      size={1}
+                      color="rgba(66, 63, 63, 0.54)"
+                    />
+                  </IconButton>
                   
                   
                   }
@@ -180,6 +180,12 @@ React.useEffect(()=>{
                 <MenuItem onClick={() => setOpenAlertDelete(true)}>
                   {t("views.calendar_page.right_part.delete")}
                 </MenuItem>
+                <MenuItem onClick={() => {
+                  setOpenSelectGroupTaskModal(true)
+                  setAnchorEl(false)
+                }}>
+                  {t("LABEL_SORT")}
+                </MenuItem>
               </Menu>
              }
              {openAlertDelete &&
@@ -198,6 +204,17 @@ React.useEffect(()=>{
                 curGroupTask={group}
               />
              }
+             {
+                openSelectGroupTaskModal &&
+                <SelectGroupTask
+                  isOpen={true}
+                  setOpen={(value) => setOpenSelectGroupTaskModal(value)}
+                  selectedOption={(group) => null}
+                  groupSelected={null}
+                  projectId={projectId}
+                  skipSelect={true}
+                />
+              }
             </StyledTableBodyCell>
           </StyledTableBodyRowGroup>
           // )}

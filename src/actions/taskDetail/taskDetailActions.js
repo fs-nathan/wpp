@@ -1289,10 +1289,10 @@ export function threadChatCreatePrivateReset() {
     }
 }
 
-export function updateTaskStatus({task_id, status}) {
+export function updateTaskStatus({task_id, status, from_view}) {
     return {
         type: types.UPDATE_TASK_STATUS,
-        task_id, status
+        task_id, status, from_view
     }
 }
 

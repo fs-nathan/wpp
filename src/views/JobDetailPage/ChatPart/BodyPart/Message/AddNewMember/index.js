@@ -4,6 +4,7 @@ import { showTab } from 'actions/taskDetail/taskDetailActions';
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import DialogMessageWrap from '../DialogMessageWrap';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import './styles.scss';
 
 const AddNewMember = ({
@@ -33,11 +34,13 @@ const AddNewMember = ({
       }}
       isHideFooterIcon
       onClickViewDetail={onClickViewDetail}
-      taskName={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
+      actionName={t('LABEL_CHAT_TASK_THEM_THANH_VIEN')}
+      newUi={true}
     >
-      <div className="AddNewMember--content" >
+      <div className="AddNewMember--content" onClick={onClickViewDetail}>
         <Avatar className="AddNewMember--avatar" src={member_avatar} />
-        {member_name}
+        <span className="member-name">{member_name}</span>
+        <ArrowForwardIosIcon className="icon-view-more" />
       </div>
     </DialogMessageWrap>
   );

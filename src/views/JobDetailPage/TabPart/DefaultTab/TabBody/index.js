@@ -156,7 +156,7 @@ function TabBody(props) {
 
   function onClickMember() {
     props.setShow(8)
-    dispatch(getMember({ task_id: taskId, group_by_role: true }))
+    // dispatch(getMember({ task_id: taskId, group_by_role: true }))
   }
 
   function onClickGroupTask() {

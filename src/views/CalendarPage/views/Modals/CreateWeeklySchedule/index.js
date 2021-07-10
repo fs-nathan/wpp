@@ -50,6 +50,7 @@ function CreateWeeklySchedule({
           week: week.week,
           year: week.year
         })
+        reloadList(week.year, res.data.week_schedule.id)
       } else {
         const res = await updateWeekSchedule({
           week_schedule_id: schedule.id,
@@ -58,8 +59,8 @@ function CreateWeeklySchedule({
           week: week.week,
           year: week.year
         })
+        reloadList(week.year)
       }
-      reloadList(week.year)
       setLoading(false)
       setOpen(false)
     } catch (e){

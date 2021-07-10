@@ -114,13 +114,15 @@ const FooterPart = ({
   }, [clipBoardImages, imagesQueue]);
 
   useEffect(() => {
-    const wordsChat = words(chatText)
+    const wordsChat = chatText.split(" ")
     if (wordsChat.length > 0) {
       const lastWord = wordsChat[wordsChat.length - 1]
-      dispatch(changeStickerKeyWord(lastWord))
-      const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(lastWord) !== -1);
-      if (renderStickersList.length > 0) {
-        setOpenSticker(true)
+      if (lastWord.trim() !== "") {
+        dispatch(changeStickerKeyWord(lastWord))
+        const renderStickersList = listStickers.filter(sticker => words(sticker.host_key).indexOf(lastWord) !== -1);
+        if (renderStickersList.length > 0) {
+          setOpenSticker(true)
+        }
       }
     } else {
       setOpenSticker(false)
@@ -382,8 +384,6 @@ const FooterPart = ({
       sendChatText()
     }
     viewNewMessage()
-    document.execCommand('selectAll', false)
-    document.execCommand('delete', false)
     setOpenMention(false)
   }, [dispatch, imagesQueue.length, isShowQuickLike, sendChatText, sendMultipleFiles, taskId])
 

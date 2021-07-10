@@ -2,7 +2,7 @@ import {get} from 'lodash';
 import {call, put, select} from "redux-saga/effects";
 import * as actions from "../../actions/taskDetail/taskDetailActions";
 import {apiService} from "../../constants/axiosInstance";
-import {CREATE_TASK, CustomEventEmitter, CustomEventEmitterWithParams, DELETE_TASK, UPDATE_DURATION_TASK, UPDATE_INFOMATION_TASK} from '../../constants/events';
+import {CREATE_TASK, CustomEventEmitter, CustomEventEmitterWithParams, DELETE_TASK, UPDATE_DURATION_TASK, UPDATE_INFOMATION_TASK, UPDATE_STATUS_TASK, UPDATE_COMPLETE_TASK} from '../../constants/events';
 import {DEFAULT_MESSAGE, SNACKBAR_VARIANT, SnackbarEmitter} from '../../constants/snackbarController';
 import {CREATE_OFFER} from 'views/OfferPage/redux/types';
 import {getDataPinOnTaskChat} from 'actions/chat/chat';
@@ -1320,9 +1320,14 @@ async function doUpdateComplete(payload) {
 function* updateComplete(action) {
   try {
     const res = yield call(doUpdateComplete, action.payload.data);
-    yield put(actions.updateCompleteSuccess(res));
-    yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    if (action.payload.data.from_view === "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+      CustomEventEmitter(UPDATE_COMPLETE_TASK);
+    } else {
+      yield put(actions.updateCompleteSuccess(res));
+      yield put(actions.getTrackingTimeComplete(action.payload.data.task_id));
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
   } catch (error) {
     yield put(actions.updateCommandFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1535,10 +1540,15 @@ export function* createPrivateChat(payload) {
 
 export function* updateTaskStatus(payload) {
   try {
-    const { task_id, status } = payload;
+    const { task_id, status, from_view } = payload;
     yield call(apiService.put, "/task/update-status", { task_id, status});
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+    if (from_view === "Table") {
+      CustomEventEmitter(UPDATE_INFOMATION_TASK);
+    } else {
+      yield put(actions.getTaskDetailTabPart({ taskId: task_id }));
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
+    CustomEventEmitter(UPDATE_STATUS_TASK);
   } catch (error) {
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
   }

@@ -70,7 +70,7 @@ function AllProjectTable({
   handleSortProject,
   handleOpenModal, bgColor,
   showHidePendings, projectGroup,
-  canCreate, groupID, isFiltering, setIsFiltering
+  groupID, isFiltering, setIsFiltering
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -372,7 +372,7 @@ function AllProjectTable({
                       </TooltipWrapper>
                     </LightTooltip>
                   ),
-                  sort: evt => handleSortType('statistic.doing'),
+                  sort: evt => handleSortType('complete'),
                   align: 'center',
                   width: '17%',
                 },

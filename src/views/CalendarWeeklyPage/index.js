@@ -151,11 +151,19 @@ function CalendarWeeklyPage({
         <CreateWeeklySchedule
           open={openCreateWeeklySchedule}
           setOpen={setOpenCreateWeeklySchedule}
-          reloadList={(newYear) => {
+          reloadList={(newYear, weekScheduleId = false) => {
             if (year !== newYear) {
               setYear(newYear)
             }
             doListSchedule({ year: newYear }, false)
+            if (weekScheduleId) {
+              history.push(Routes.CALENDAR_WEEKLY.replace(
+                ":year/:schedule_id/:from",
+                `${newYear}/${weekScheduleId}`
+              ))
+              setOpenModal(true);
+              setActionType("EDIT");
+            }
           }}
           schedule={!isCreateWeekSchedule && weekScheduleSelected ? weekScheduleSelected : null}
         />

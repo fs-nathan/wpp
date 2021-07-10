@@ -46,8 +46,8 @@ const LogoMnanagerStateLess = () => {
     <Stack large>
       <Stack small>
         <ListItemLayout
-          title={t("Biểu tượng có sẵn")}
-          subTitle={t("Lựa chõn biểu tượng có sẵn từ hệ thống")}
+          title={t("LABEL_ICON_FROM_SYSTEM")}
+          subTitle={t("LABEL_CHOOSE_ICON_FROM_SYSTEM")}
         ></ListItemLayout>
         <LogoList cols={8}>
           {icons.defaults.map((icon) => (
@@ -77,8 +77,8 @@ const LogoMnanagerStateLess = () => {
       </Stack>
       <Stack small>
         <ListItemLayout
-          title={t("Biểu tượng tải lên")}
-          subTitle={t("Lựa chõn biểu tượng có sẵn từ hệ thống")}
+          title={t("LABEL_ICON_FROM_UPLOAD")}
+          subTitle={t("LABEL_CHOOSE_ICON_FROM_UPLOAD")}
         ></ListItemLayout>
         <LogoList cols={8}>
           {icons.createds.map((icon) => (
@@ -102,12 +102,12 @@ const LogoMnanagerStateLess = () => {
                 variantColor="red"
                 onClick={() =>
                   handleOpenModal("ALERT", {
-                    content: "Bạn chắc chắn muốn xóa biểu tượng?",
+                    content: t("LABEL_CHAT_TASK_BAN_CO_CHAC_MUON_XOA_KHONG"),
                     onConfirm: () => handleDeleteIcon(icon),
                   })
                 }
               >
-                {mutateIcon.loading ? <LoadingBox size={8} /> : "Xóa"}
+                {mutateIcon.loading ? <LoadingBox size={8} /> : t("IDS_WP_DELETE")}
               </ColorButton>
             </LogoBox>
           ))}
@@ -129,7 +129,7 @@ const UploadButton = () => {
         </ColorButton>
       ) : (
           <label htmlFor="raised-button-file">
-            <AddButton onClick={() => { }} label={t("Thêm mới")}></AddButton>
+            <AddButton onClick={() => { }} label={t("IDS_WP_ADD")}></AddButton>
           </label>
         )}
       <input

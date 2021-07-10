@@ -9,6 +9,7 @@ import {
   COUNT_PERSONAL_PROJECTS_BOARD,
   COUNT_PERSONAL_PROJECTS_BOARD_SUCCESS
 } from '../../constants/actions/project/listProject';
+import {apiService} from '../../constants/axiosInstance';
 
 export const listProject = ({ groupProject, type, status, timeStart, timeEnd, type_data, select }, quite = false) => ({
   type: LIST_PROJECT,
@@ -68,3 +69,11 @@ export const countPersonalProjectsBoardSuccess = ({projects}) => ({
   type: COUNT_PERSONAL_PROJECTS_BOARD_SUCCESS,
   projects
 });
+
+export const getListBasicProject = (params = {}) => {
+  return apiService({
+    url: '/project/list-basic',
+    method: 'get',
+    params
+  });
+};

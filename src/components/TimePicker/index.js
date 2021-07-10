@@ -81,7 +81,7 @@ function TimePicker({ value, onChange, width = 20 }) {
         children={() => (
           <TextField
             ref={anchorRef}
-            className={classes.textField}
+            className={classes.textField + ' input-time'}
             variant="outlined"
             size={'small'}
             value={value}

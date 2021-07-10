@@ -108,7 +108,6 @@
     vertical-align: bottom;
 
     .header_time {
-      min-width: 165px;
       display: inline-flex;
       align-items: center;
       justify-content: space-between;
@@ -122,6 +121,7 @@
         font-weight: 400;
         font-size: 15px;
         color: #ff5227;
+        margin-left: 10px;
       }
     }
   }

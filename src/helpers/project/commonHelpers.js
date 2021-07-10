@@ -14,8 +14,8 @@ export function decodePriorityCode(priorityCode) {
   switch (priorityCode) {
     case 0:
       return {
-        color: '#4caf50',
-        background: '#4caf5042',
+        color: '#fe0707',
+        background: '#ff050524',
       };
     case 1:
       return {
@@ -24,8 +24,8 @@ export function decodePriorityCode(priorityCode) {
       };
     case 2:
       return {
-        color: '#fe0707',
-        background: '#ff050524',
+        color: '#4caf50',
+        background: '#4caf5042',
       };
     default:
       return {

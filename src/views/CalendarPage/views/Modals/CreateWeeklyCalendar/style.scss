@@ -125,10 +125,21 @@
     width: 140px;
   }
 }
+.modal-work-schedule-of-week {
+  .input-time {
+    width: calc(50% - 5px);
+    margin-right: auto;
+  }
+  .inputDate {
+    width: calc(50% - 5px);
+    margin-left: auto;
+  }
+  .MuiPaper-root {
+    width: 80%!important;
+  }
+}
 
 .inputDate {
-  width: 130px;
-
   .MuiOutlinedInput-adornedEnd {
     padding-right: 0;
   }
@@ -438,6 +449,7 @@ abbr[title] {
       border-radius: 3px;
       font-size: 13px !important;
       color: #539a00;
+      width: 50px;
     }
 
     .schedule_item_created_by {
@@ -526,6 +538,7 @@ abbr[title] {
     font-size: 13px !important;
     color: #539a00;
     text-align: center;
+    width: 50px;
   }
 }
 .modal-work-schedule-of-week {

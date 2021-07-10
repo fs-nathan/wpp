@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import DialogMessageWrap from '../DialogMessageWrap';
 import './styles.scss';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 
 const UpdateTaskNameMessage = ({
   user_create_name,
@@ -26,11 +27,12 @@ const UpdateTaskNameMessage = ({
       }}
       isHideFooterIcon
       footerText=""
-      taskName={t('LABEL_CHAT_TASK_CHINH_SUA_TEN_MO_TA_CONG_VIEC')}
+      actionName={t('LABEL_CHAT_TASK_CHINH_SUA_TEN_MO_TA_CONG_VIEC')}
+      newUi={true}
     >
-      <>
-        {new_task_name}
-      </>
+      <div className="UpdateTaskNameMessage--content">
+         <span className="member-name">{new_task_name}</span>
+      </div>
     </DialogMessageWrap>
   );
 }

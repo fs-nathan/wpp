@@ -62,8 +62,8 @@ function CreateNewProject({
   }, [projectGroupId, timeRange, doReload]);
 
   React.useEffect(() => {
-    const groupID = params.get("groupID");
-    if(groupID && !curProjectGroupId) {
+    const groupID = params.get("groupID") ? params.get("groupID") : (curProjectGroupId ? curProjectGroupId : null);
+    if(groupID) {
       const group = find(groups.groups, {id: groupID});
       setCurProjectGroupId(group ? group.id : null)
       setCurProjectGroupName(group ? group.name : "")
@@ -138,7 +138,7 @@ function CreateNewProject({
         <CustomTextbox
           value={description}
           onChange={value => setDescription(value)}
-          label={`${t("LABEL_TASK_DETAIL")}`}
+          label={`${t("LABEL_BOARD_DETAIL")}`}
           fullWidth
           multiline={true}
           className={"per-line-step-in-form"}

@@ -32,11 +32,12 @@ const UpdateScheduleTask = ({
       isHideFooterIcon
       footerText=""
       onClickViewDetail={onClickViewDetail}
-      taskName={t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}
+      actionName={t('LABEL_CHAT_TASK_THAY_DOI_LICH_LAM_VIEC')}
+      newUi={true}
     >
-      <>
-        {schedule_name}
-      </>
+      <div className="UpdateScheduleTask--content">
+         <span className="member-name">{schedule_name}</span>
+      </div>
     </DialogMessageWrap>
   );
 }

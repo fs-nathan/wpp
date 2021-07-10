@@ -118,8 +118,8 @@ function CopyProject({
   searchPatern, setSearchPatern,
   groups,
   handleCopyProject,
-  doReload,
-  projectGroupId, timeRange,
+  projectGroupId,
+  projectGroupName
 }) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -134,15 +134,19 @@ function CopyProject({
   const [titleLeft, setTitleLeft] = React.useState("");
   const [title, setTitle] = React.useState("");
   const [groupFiltered, setGroupFiltered] = React.useState([]);
-  const [workingGroup, setWorkingGroup] = React.useState(null);
+  const [workingGroup, setWorkingGroup] = React.useState(projectGroupId ? projectGroupId : null);
+  groups.map(e => {
+    console.log(e.id)
+  })
+  console.log('xxxx', workingGroup)
   // groups.map(e => {
   //   if (e.work_types.includes(String(workingTypeNew))) {
   //     workingGroupFilter.push(e)
   //   }
   // })
-  if (workingGroup && !groups.find(e => e.id == workingGroup)) {
-    setWorkingGroup(null)
-  }
+  // if (workingGroup && !groups.find(e => e.id == workingGroup)) {
+  //   setWorkingGroup(null)
+  // }
 
   const formatDate = useSelector(state => state.system.profile.format_date);
 
@@ -154,7 +158,7 @@ function CopyProject({
   React.useEffect(() => {
     const _groups = groups.map(group => ({
       ...group,
-      projects: get(group, "projects", []).filter(item => item.work_type === workingType)
+      projects: get(group, "projects", []).filter(item => item.work_type === parseInt(workingType))
     }));
     setGroupFiltered(_groups);
     switch (workingType) {
@@ -201,7 +205,7 @@ function CopyProject({
       CustomEventDispose(COPY_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId, timeRange]);
+  }, [projectGroupId]);
 
   React.useEffect(() => {
     const success = () => {
@@ -223,7 +227,7 @@ function CopyProject({
       CustomEventDispose(LIST_PROJECT.FAIL, fail);
     }
     // eslint-disable-next-line
-  }, [projectGroupId, timeRange]);
+  }, [projectGroupId]);
 
   return (
     <CustomModal
