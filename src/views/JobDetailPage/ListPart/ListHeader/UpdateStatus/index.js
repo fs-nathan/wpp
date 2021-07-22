@@ -18,7 +18,8 @@ function UpdateTaskStatus({
   isOpen,
   setOpen,
   taskId,
-  oldStatus
+  oldStatus,
+  isStop
 }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -26,8 +27,18 @@ function UpdateTaskStatus({
   const [loading, setLoading] = React.useState(false)
 
   const confirmChangeStatus = () => {
-    dispatch(updateTaskStatus({task_id: taskId, status: newStatus, from_view: "Table"}))
-    setLoading(true)
+    if (isStop) {
+      dispatch(updateTaskStatus({task_id: taskId, status: newStatus, from_view: "Table"}))
+      setLoading(true)
+    } else {
+      if (newStatus !== oldStatus) {
+        dispatch(updateTaskStatus({task_id: taskId, status: newStatus, from_view: "Table"}))
+        setLoading(true)
+      } else {
+        setOpen(false)
+        setLoading(false)
+      }
+    }
   }
   React.useEffect(() => {
     function finishUpdate() {

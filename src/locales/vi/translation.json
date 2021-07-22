@@ -2535,5 +2535,6 @@
 	"LABEL_CHOOSE_ICON_FROM_SYSTEM": "Lựa chọn biểu tượng có sẵn từ hệ thống",
 	"LABEL_ICON_FROM_SYSTEM": "Biểu tượng có sẵn",
 	"LABEL_ICON_FROM_UPLOAD": "Biểu tượng tải lên",
-	"LABEL_SORT": "Sắp xếp"
+	"LABEL_SORT": "Sắp xếp",
+	"LABEL_UPDATE_TASK_COMPLETE": "Chỉnh sửa mức độ hoàn thành"
 }

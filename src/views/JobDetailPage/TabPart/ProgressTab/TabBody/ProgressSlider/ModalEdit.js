@@ -43,7 +43,7 @@ function UpdateCompleteTask({
 
   return (
     <CustomModal
-      title={t("views.calendar_page.modal.create_group_personal_remind.title_create")}
+      title={t("LABEL_UPDATE_TASK_COMPLETE")}
       open={isOpen}
       setOpen={setOpen}
       canConfirm={true}

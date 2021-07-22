@@ -201,7 +201,7 @@ export const ActionList = ({ index, row, group }) => {
           >
             {row.can_modify && editList}
             {row.can_modify && !pause  && <MenuItem onClick={onClickEditComplete}>
-                Update task complete
+                {t("LABEL_UPDATE_TASK_COMPLETE")}
               </MenuItem>
             }
             <MenuItem onClick={onClickPin}>
@@ -242,11 +242,11 @@ export const ActionList = ({ index, row, group }) => {
         )}
         {
           updateTaskStatus &&
-          <UpdateTaskStatus isOpen={updateTaskStatus} setOpen={(status) => setUpdateTaskStatus(status)} taskId={taskId} oldStatus={row ? row.original_status : ""} />
+          <UpdateTaskStatus isOpen={updateTaskStatus} setOpen={(status) => setUpdateTaskStatus(status)} taskId={taskId} oldStatus={row ? row.original_status : ""} isStop={row ? row.is_stop : false} />
         }
         {
           updateTaskComplete &&
-          <CompleteTaskModal isOpen={updateTaskComplete} setOpen={(status) => setUpdateTaskComplete(status)} taskId={taskId} oldComplete={row ? row.complete : 0} />
+          <CompleteTaskModal isOpen={updateTaskComplete} setOpen={(status) => setUpdateTaskComplete(status)} taskId={taskId} oldComplete={row ? row.complete : 0} isStop={row ? row.is_stop : false} />
         }
       </div>
     </div>

@@ -2518,5 +2518,6 @@
     "LABEL_CHOOSE_ICON_FROM_SYSTEM": "Choose available icons",
     "LABEL_ICON_FROM_SYSTEM": "Available icons",
     "LABEL_ICON_FROM_UPLOAD": "Icons from the upload",
-    "LABEL_SORT": "Sort"
+    "LABEL_SORT": "Sort",
+    "LABEL_UPDATE_TASK_COMPLETE": "Update task complete"
 }
