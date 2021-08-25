@@ -4,63 +4,67 @@ import {
   getDataPinOnTaskChat,
   getViewedChatSuccess,
   updateChatState,
-} from "actions/chat/chat";
+} from 'actions/chat/chat';
 import {
   getListTaskDetail,
   getTaskDetailTabPartSuccess,
   updateProjectChat,
-} from "actions/taskDetail/taskDetailActions";
+} from 'actions/taskDetail/taskDetailActions';
 import {
   JOIN_CHAT_EVENT,
   JOIN_PROJECT_EVENT,
-} from "constants/actions/chat/chat";
-import { differenceInDays } from "date-fns";
-import SwitchAccount from "favicon/SwitchAccount";
-import useNotificationFavicon from "favicon/useNotificationFavicon";
-import { CHAT_TYPE, findTask } from "helpers/jobDetail/arrayHelper";
-import findIndex from "lodash/findIndex";
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
-import { withRouter } from "react-router";
-import { Route, Switch } from "react-router-dom";
-import io from "socket.io-client";
-import styled from "styled-components";
-import { postModule } from "views/HomePage/redux/post";
-import useWebpush from "webpush/useWebpush";
+} from 'constants/actions/chat/chat';
+import { differenceInDays } from 'date-fns';
+import SwitchAccount from 'favicon/SwitchAccount';
+import useNotificationFavicon from 'favicon/useNotificationFavicon';
+import { CHAT_TYPE, findTask } from 'helpers/jobDetail/arrayHelper';
+import findIndex from 'lodash/findIndex';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router';
+import { Route, Switch } from 'react-router-dom';
+import io from 'socket.io-client';
+import styled from 'styled-components';
+import { postModule } from 'views/HomePage/redux/post';
+import useWebpush from 'webpush/useWebpush';
 import {
   actioGetSettingDate,
   actionFetchGroupDetail,
   actionFetchListColor,
-} from "../actions/setting/setting";
+} from '../actions/setting/setting';
 import {
   actionChangeNumMessageNotView,
   actionChangeNumNotificationNotView,
   actionToast,
   getNumberMessageNotViewer,
   getNumberNotificationNotViewer,
-  setNumberDiscustonNotView
-} from "../actions/system/system";
-import {loadDetailOffer} from "views/OfferPage/redux/actions";
-import { avatar_default_120 } from "../assets";
-import DocumentDetail from "../components/DocumentDetail/DocumentDetail";
-import DrawerComponent from "../components/Drawer/Drawer";
-import GroupModal from "../components/NoticeModal/GroupModal";
-import NoticeModal from "../components/NoticeModal/NoticeModal";
-import SnackbarComponent from "../components/Snackbars";
-import configURL from "../constants/apiConstant";
-import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
-import { Routes } from "../constants/routes";
-import routes from "../routes";
-import LeftBar from "../views/LeftBar";
-import TopBar from "../views/TopBar";
-import { get } from "lodash";
-import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
-import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
-import {getRemindDetail} from "../actions/calendar/alarmCalendar/getRemindDetail";
-import { GET_REMIND_DETAIL_FAIL, CustomEventListener, CustomEventDispose } from "constants/events";
-import { setNumberMessageNotView } from "actions/chat/threadChat";
-import * as images from "../assets";
+  setNumberDiscustonNotView,
+} from '../actions/system/system';
+import { loadDetailOffer } from 'views/OfferPage/redux/actions';
+import { avatar_default_120 } from '../assets';
+import DocumentDetail from '../components/DocumentDetail/DocumentDetail';
+import DrawerComponent from '../components/Drawer/Drawer';
+import GroupModal from '../components/NoticeModal/GroupModal';
+import NoticeModal from '../components/NoticeModal/NoticeModal';
+import SnackbarComponent from '../components/Snackbars';
+import configURL from '../constants/apiConstant';
+import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from '../constants/constants';
+import { Routes } from '../constants/routes';
+import routes from '../routes';
+import LeftBar from '../views/LeftBar';
+import TopBar from '../views/TopBar';
+import { get } from 'lodash';
+import DetailOfferModal from '../views/OfferPage/views/DetailOffer/DetailOfferModal';
+import ViewDetailRemind from '../views/CalendarPage/views/Modals/ViewDetailRemind';
+import { getRemindDetail } from '../actions/calendar/alarmCalendar/getRemindDetail';
+import {
+  GET_REMIND_DETAIL_FAIL,
+  CustomEventListener,
+  CustomEventDispose,
+} from 'constants/events';
+import { setNumberMessageNotView } from 'actions/chat/threadChat';
+import * as images from '../assets';
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -69,28 +73,27 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 55px 1fr;
   grid-template-columns: 140px minmax(0, 1fr);
-  
+
   grid-template-areas:
-    "logo top"
-    "left main";
+    'logo top'
+    'left main';
   &.view-full-page {
     display: initial;
-    
   }
-  .lefbar-collapse{
+  .lefbar-collapse {
     width: 70px;
     transition: all 0.4s ease;
     min-height: 100vh;
-    z-index: 1000
+    z-index: 1000;
   }
-  .lefbar{
+  .lefbar {
     width: 140px;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     min-height: 100vh;
     z-index: 1000;
   }
 
-  &.menu-collapse{
+  &.menu-collapse {
     grid-template-columns: 70px minmax(0, 1fr);
   }
 `;
@@ -105,8 +108,6 @@ const LogoBox = styled.div`
   & > img {
     height: 90%;
   }
- 
-  
 `;
 
 const ContentBox = styled.div`
@@ -226,7 +227,7 @@ function MainLayout({
   updateProjectChat,
   taskDetails = {},
   profile = {},
-  language = "vi",
+  language = 'vi',
   listDataNotRoom,
   listTaskDetail,
   projectId,
@@ -236,15 +237,19 @@ function MainLayout({
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView,
   setNumberDiscustonNotView,
-  visibleOfferDetailModal, loadDetailOffer, detailOffer,
-  visibleRemindDetail, detailRemind, getRemindDetail,
+  visibleOfferDetailModal,
+  loadDetailOffer,
+  detailOffer,
+  visibleRemindDetail,
+  detailRemind,
+  getRemindDetail,
   setNumberMessageNotView,
-  t
+  t,
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
   const [openRemindDetail, setOpenRemindDetail] = useState(false);
-  const [collapse,setCollapse] = useState(false);
+  const [collapse, setCollapse] = useState(true);
   function handleReactEmotion(data) {
     updateChatState(data.id, { data_emotion: data.emotions });
   }
@@ -254,7 +259,7 @@ function MainLayout({
   }
 
   function handleViewChat(data) {
-    console.log("handleViewChat", data);
+    console.log('handleViewChat', data);
     const { user_name, user_avatar, user_id } = data;
     // getViewedChatSuccess(data)
     if (user_id !== profile.id) {
@@ -272,7 +277,12 @@ function MainLayout({
     //   actionFetchListColor();
     //   actioGetSettingDate();
     // }
-    if (localStorage.getItem(TOKEN) && profile && profile.id && !isViewFullPage(location.pathname)) {
+    if (
+      localStorage.getItem(TOKEN) &&
+      profile &&
+      profile.id &&
+      !isViewFullPage(location.pathname)
+    ) {
       actionFetchGroupDetail(true);
       actionFetchListColor();
       actioGetSettingDate();
@@ -280,27 +290,27 @@ function MainLayout({
       const uri =
         `${configURL.SOCKET_URL}?token=` + localStorage.getItem(TOKEN);
       socket = io(uri, {});
-      socket.on("WP_NEW_NOTIFICATION", (res) => handleNewNoti());
-      socket.on("WP_PERMISSION_UPDATE", (res) => window.location.reload());
-      socket.on("WP_CHANGE_GROUP_ACTIVE", (res) => window.location.reload());
-      socket.on("WP_NEW_NOTIFICATION_MESSAGE_TASK", (res) =>
+      socket.on('WP_NEW_NOTIFICATION', (res) => handleNewNoti());
+      socket.on('WP_PERMISSION_UPDATE', (res) => window.location.reload());
+      socket.on('WP_CHANGE_GROUP_ACTIVE', (res) => window.location.reload());
+      socket.on('WP_NEW_NOTIFICATION_MESSAGE_TASK', (res) =>
         handleNewMessage(res)
       );
-      socket.on("WP_NEW_CHAT_EXPRESS_EMOTION_CHAT", handleReactEmotion);
-      socket.on("WP_DELETE_CHAT_IN_TASK", handleDeleteChat);
-      socket.on("WP_VIEW_CHAT_IN_TASK", handleViewChat);
+      socket.on('WP_NEW_CHAT_EXPRESS_EMOTION_CHAT', handleReactEmotion);
+      socket.on('WP_DELETE_CHAT_IN_TASK', handleDeleteChat);
+      socket.on('WP_VIEW_CHAT_IN_TASK', handleViewChat);
 
-      socket.on("WP_NEW_COMMENT_POST", postModule.actions.updatePostListItem);
-      socket.on("WP_NEW_LIKE_LOVE_POST", postModule.actions.updatePostListItem);
+      socket.on('WP_NEW_COMMENT_POST', postModule.actions.updatePostListItem);
+      socket.on('WP_NEW_LIKE_LOVE_POST', postModule.actions.updatePostListItem);
 
       function joinChat({ detail }) {
-        socket.emit("WP_JOIN_TASK", {
+        socket.emit('WP_JOIN_TASK', {
           task_id: detail,
         });
       }
 
       function joinProject({ detail }) {
-        socket.emit("WP_JOIN_PROJECT", {
+        socket.emit('WP_JOIN_PROJECT', {
           project_id: detail,
         });
       }
@@ -319,7 +329,7 @@ function MainLayout({
   useEffect(() => {
     if (!socket || !profile.id || !taskDetails) return;
     function handleChatInProject(data) {
-      console.log("handleChatInProject", data);
+      console.log('handleChatInProject', data);
       const { user_create_id, task_id, content = {} } = data;
       const task =
         findTask(listTaskDetail, task_id) ||
@@ -328,21 +338,21 @@ function MainLayout({
         getListTaskDetail(data.project_id);
       } else {
         if (data.type === CHAT_TYPE.UPDATE_TASK_NAME) {
-          data.new_name = data.new_task_name
+          data.new_name = data.new_task_name;
         }
         // if (task_id !== taskDetails.id) {
         data.new_chat = user_create_id === profile.id ? 0 : 1;
         // }
         data.content = content[language];
-        data.updated_time = t('LABEL_JUST_NOW')
+        data.updated_time = t('LABEL_JUST_NOW');
         data.updatedAt = Date.now();
         updateProjectChat(data);
       }
     }
 
-    socket.on("WP_NEW_CHAT_CREATED_IN_PROJECT", handleChatInProject);
+    socket.on('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
     return () => {
-      socket.off("WP_NEW_CHAT_CREATED_IN_PROJECT", handleChatInProject);
+      socket.off('WP_NEW_CHAT_CREATED_IN_PROJECT', handleChatInProject);
     };
     // eslint-disable-next-line
   }, [
@@ -358,7 +368,7 @@ function MainLayout({
     if (!socket || !taskDetails) return;
     // console.log("listen chat");
     const handleNewChat = (data) => {
-      console.log("handleNewChat", data, taskDetails.uuid);
+      console.log('handleNewChat', data, taskDetails.uuid);
       if (!data.uuid || (taskDetails && taskDetails.uuid !== data.uuid)) {
         const isHideSendStatus =
           data.user_create_avatar && data.user_create_avatar !== profile.avatar;
@@ -379,36 +389,36 @@ function MainLayout({
         getDataPinOnTaskChat(data.task_id);
       }
     }
-    socket.on("WP_NEW_CHAT_CREATED_IN_TASK", handleNewChat);
-    socket.on("PIN_DATA_ON_CHAT", pinOnTaskChat);
+    socket.on('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+    socket.on('PIN_DATA_ON_CHAT', pinOnTaskChat);
     return () => {
       // console.log("close socket chat");
-      socket.off("WP_NEW_CHAT_CREATED_IN_TASK", handleNewChat);
-      socket.off("PIN_DATA_ON_CHAT", pinOnTaskChat);
+      socket.off('WP_NEW_CHAT_CREATED_IN_TASK', handleNewChat);
+      socket.off('PIN_DATA_ON_CHAT', pinOnTaskChat);
     };
     // eslint-disable-next-line
   }, [taskDetails]);
 
   useEffect(() => {
-    if(get(visibleOfferDetailModal, "visible", false)) {
-      loadDetailOffer({id: visibleOfferDetailModal.offer_id});
+    if (get(visibleOfferDetailModal, 'visible', false)) {
+      loadDetailOffer({ id: visibleOfferDetailModal.offer_id });
       setOpenOfferDetail(true);
     }
   }, [visibleOfferDetailModal]);
 
   useEffect(() => {
-    if(get(visibleRemindDetail, "visible", false)) {
-      getRemindDetail({remind_id: visibleRemindDetail.remind_id});
+    if (get(visibleRemindDetail, 'visible', false)) {
+      getRemindDetail({ remind_id: visibleRemindDetail.remind_id });
       setOpenRemindDetail(true);
-      const forceCloseModal = () =>{
+      const forceCloseModal = () => {
         setOpenRemindDetail(false);
-      }
+      };
       CustomEventListener(GET_REMIND_DETAIL_FAIL, forceCloseModal);
       return () => {
         CustomEventDispose(GET_REMIND_DETAIL_FAIL, forceCloseModal);
-      }
+      };
     }
-  },[visibleRemindDetail]);
+  }, [visibleRemindDetail]);
 
   const handleFetchNoti = async () => {
     try {
@@ -424,16 +434,14 @@ function MainLayout({
     );
   };
   const handleNewMessage = (res) => {
-    console.log('xxx', res)
+    console.log('xxx', res);
     if (res.belong_to_section === 1) {
-      setNumberDiscustonNotView(
-        {discustion_change: 1}
-      );
+      setNumberDiscustonNotView({ discustion_change: 1 });
     } else {
       setNumberMessageNotView({
-        type: "Plus",
-        message: 1
-      })
+        type: 'Plus',
+        message: 1,
+      });
     }
   };
 
@@ -470,45 +478,53 @@ function MainLayout({
   useWebpush();
   useNotificationFavicon();
   useEffect(() => {
-    document.body.style.setProperty("--color-primary", bgColor.color);
+    document.body.style.setProperty('--color-primary', bgColor.color);
     // style={{ "--color-primary":  }}
   }, [bgColor]);
   return (
     <>
       <Container
         className={
-          isViewFullPage(location.pathname) ? "view-full-page" : collapse ? 'menu-collapse':location.pathname
-        }
-      >
+          isViewFullPage(location.pathname)
+            ? 'view-full-page'
+            : collapse
+            ? 'menu-collapse'
+            : location.pathname
+        }>
         {!isViewFullPage(location.pathname) && (
           <React.Fragment>
             <SwitchAccount />
-            <div className={collapse ? 'lefbar-collapse':'lefbar'}>
+            <div className={collapse ? 'lefbar-collapse' : 'lefbar'}>
               <LogoBox
-              onClick={() => setVisibleGroupModal(true)}
-              className={collapse ? 'logo-collapse' : 'logo-default'}
-              style={{ background: bgColor.color}}
-            >
-              <div className={collapse ? 'logo-collapse' : 'logo-default'} style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%',marginTop: '10px'}}>
-               <Image
-                src={groupDetail.logo || avatar_default_120}
-                alt="vtask-logo-menu"
-               />
-              </div>
-              
-            </LogoBox>
-            <LeftBar collapse={collapse} setCollapse={setCollapse}/>
+                onClick={() => setVisibleGroupModal(true)}
+                className={collapse ? 'logo-collapse' : 'logo-default'}
+                style={{ background: bgColor.color }}>
+                <div
+                  className={collapse ? 'logo-collapse' : 'logo-default'}
+                  style={{
+                    background: bgColor.color,
+                    padding: '6px 6px 3px',
+                    borderRadius: '50%',
+                    marginTop: '10px',
+                  }}>
+                  <Image
+                    src={groupDetail.logo || avatar_default_120}
+                    alt='vtask-logo-menu'
+                  />
+                </div>
+              </LogoBox>
+              <LeftBar collapse={collapse} setCollapse={setCollapse} />
             </div>
-            
+
             <TopBar />
             <DrawerComponent />
             <NoticeModal />
             {toast.type && (
               <SnackbarComponent
                 open={true}
-                handleClose={() => actionToast(null, "")}
-                vertical="bottom"
-                horizontal="right"
+                handleClose={() => actionToast(null, '')}
+                vertical='bottom'
+                horizontal='right'
                 variant={toast.type}
                 message={toast.message}
               />
@@ -525,20 +541,20 @@ function MainLayout({
         <ContentBox>{configRoute(routes)}</ContentBox>
       </Container>
       <DetailOfferModal
-          open={openOfferDetail}
-          setOpen={setOpenOfferDetail}
-          loading={false}
-          {...detailOffer}
+        open={openOfferDetail}
+        setOpen={setOpenOfferDetail}
+        loading={false}
+        {...detailOffer}
       />
       <ViewDetailRemind
         open={openRemindDetail}
         setOpen={setOpenRemindDetail}
         remind={detailRemind.remind}
         groupRemind={{
-          name: get(detailRemind.remind, "category_name", ""),
-          color: get(detailRemind.remind, "category_color", "#000")
+          name: get(detailRemind.remind, 'category_name', ''),
+          color: get(detailRemind.remind, 'category_color', '#000'),
         }}
-        remindType={"PERSONAL"}
+        remindType={'PERSONAL'}
       />
     </>
   );
@@ -564,8 +580,8 @@ export default connect(
     toast: state.system.toast,
     visibleOfferDetailModal: state.system.visibleOfferDetail,
     visibleRemindDetail: state.system.visibleRemindDetail,
-    detailOffer: state.offerPage["DETAIL_OFFER"].offer ?? [],
-    detailRemind: state.calendar.remindDetail
+    detailOffer: state.offerPage['DETAIL_OFFER'].offer ?? [],
+    detailRemind: state.calendar.remindDetail,
   }),
   {
     getListTaskDetail,
@@ -585,6 +601,6 @@ export default connect(
     loadDetailOffer,
     getRemindDetail,
     setNumberMessageNotView,
-    setNumberDiscustonNotView
+    setNumberDiscustonNotView,
   }
 )(withRouter(MainLayoutWrapper));
