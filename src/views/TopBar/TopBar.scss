@@ -1,4 +1,8 @@
 #topNavId {
+  position: fixed;
+  top: 0;
+  left: 70px;
+  height: 55px;
   #searchInputWrapper {
     margin-right: auto;
   }
@@ -24,10 +28,10 @@
 .text-name-acc {
   font-weight: 500;
   white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
-.verify_not_check{
+.verify_not_check {
   color: #ffffff;
   background-color: rgb(235, 54, 22);
   padding: 5px;
@@ -35,12 +39,11 @@
   cursor: pointer;
   border-radius: 2px;
 }
-.verify_check{
-  svg{
-     background-color: #ffffff;
-     fill: #13B045;
+.verify_check {
+  svg {
+    background-color: #ffffff;
+    fill: #13b045;
   }
- 
 }
 .cursor-pointer {
   cursor: pointer;
@@ -127,6 +130,7 @@
   align-items: center;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   z-index: 999;
+  width: calc(100% - 70px);
 }
 .left-part {
   display: flex;
