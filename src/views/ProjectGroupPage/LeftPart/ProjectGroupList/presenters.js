@@ -108,17 +108,10 @@ function ProjectList({
     React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [alertConfirm, showAlertConfirm] = React.useState(false);
-  const [open, setOpen] = React.useState(false);
-  const [groupActived, setGroupActived] = React.useState([
-    ...groups?.groups?.map((item) => {
-      return { active: false };
-    }),
-  ]);
 
   const [activeId, setActiveId] = React.useState("");
-  const [isHover, setIsHover] = React.useState(false);
+  const [activeGroupId, setActiveGroupId] = React.useState("");
 
-  console.log({ groups });
   const isHasProjectRecently = useSelector(
     (state) => state.project.checkHasRecently.hasRecently
   );
@@ -200,7 +193,7 @@ function ProjectList({
               onClick={() => history.push("/projects/start")}>
               <Icon path={mdiPlayCircleOutline} size={1} color={"#BD3ADA"} />
               <span>{t("LABEL_CHAT_TASK_BAT_DAU_LABEL")}</span>
-              {/* <IconButton
+              <IconButton
                 className={"rightIconControlList"}
                 size={"small"}
                 onClick={(evt) => {
@@ -212,7 +205,7 @@ function ProjectList({
                   size={1}
                   color={"rgba(0,0,0,0.54)"}
                 />
-              </IconButton> */}
+              </IconButton>
               <Popover
                 open={Boolean(anchorElStartButton)}
                 anchorEl={anchorElStartButton}
@@ -343,8 +336,12 @@ function ProjectList({
                               {(provided, snapshot) => (
                                 <>
                                   <ListItem
-                                    onMouseEnter={() => setIsHover(true)}
-                                    onMouseLeave={() => setIsHover(false)}
+                                    onMouseEnter={() => {
+                                      setActiveGroupId(projectGroup.id);
+                                    }}
+                                    onMouseLeave={() => {
+                                      setActiveGroupId("");
+                                    }}
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     className={`view_ProjectGroup_List-customListItem ${
@@ -381,7 +378,9 @@ function ProjectList({
                                           }>
                                           <abbr
                                             className={
-                                              isHover ? classes.groupName : null
+                                              activeGroupId === projectGroup.id
+                                                ? classes.groupName
+                                                : null
                                             }
                                             title={get(projectGroup, "name")}>
                                             {get(projectGroup, "name")}
