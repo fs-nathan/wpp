@@ -1,10 +1,10 @@
 .view_ProjectGroup_List___banner {
   padding: 15px;
-};
+}
 
 .view_ProjectGroup_List___primary {
   font-weight: 500;
-};
+}
 
 .view_ProjectGroup_List_statistic {
   display: flex;
@@ -17,7 +17,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    &>span {
+    & > span {
       margin-left: 5px;
       font-weight: 500;
     }
@@ -74,7 +74,9 @@
     }
     .textHeader {
       cursor: unset !important;
-      &:hover { background: unset; }
+      &:hover {
+        background: unset;
+      }
     }
     .scrollList {
       height: calc(100vh - 345px);
@@ -106,7 +108,7 @@
     &__textPrimary {
       display: flex;
       align-items: center;
-      &>*:first-child {
+      & > *:first-child {
         margin-right: 5px;
         max-width: 160px;
         overflow: hidden;
@@ -134,8 +136,8 @@
     .hideBtn {
       width: 50px;
       margin-top: 10px;
-      color: #969EAD;
-      background: #F5F6F8;
+      color: #969ead;
+      background: #f5f6f8;
       line-height: unset;
       min-width: 40px;
       &:hover {
@@ -160,7 +162,7 @@
       margin-bottom: 10px;
     }
     .btnAddGroup {
-      background: #F5F6F8;
+      background: #f5f6f8;
       margin-top: 10px;
       .MuiButton-label {
         text-transform: initial;
@@ -172,7 +174,7 @@
   &-container {
     padding: 20px;
     width: 280px;
-    &>div {
+    & > div {
       margin-bottom: 10px;
     }
     .MuiButtonBase-root {
@@ -197,7 +199,7 @@
       display: flex;
       flex-direction: row;
       margin-top: 10px;
-      &>*:first-child {
+      & > *:first-child {
         margin-right: 10px;
       }
     }
