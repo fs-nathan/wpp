@@ -39,9 +39,9 @@ import {
   actionToast,
   getNumberMessageNotViewer,
   getNumberNotificationNotViewer,
-  setNumberDiscustonNotView
+  setNumberDiscustonNotView,
 } from "../actions/system/system";
-import {loadDetailOffer} from "views/OfferPage/redux/actions";
+import { loadDetailOffer } from "views/OfferPage/redux/actions";
 import { avatar_default_120 } from "../assets";
 import DocumentDetail from "../components/DocumentDetail/DocumentDetail";
 import DrawerComponent from "../components/Drawer/Drawer";
@@ -57,8 +57,12 @@ import TopBar from "../views/TopBar";
 import { get } from "lodash";
 import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
 import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
-import {getRemindDetail} from "../actions/calendar/alarmCalendar/getRemindDetail";
-import { GET_REMIND_DETAIL_FAIL, CustomEventListener, CustomEventDispose } from "constants/events";
+import { getRemindDetail } from "../actions/calendar/alarmCalendar/getRemindDetail";
+import {
+  GET_REMIND_DETAIL_FAIL,
+  CustomEventListener,
+  CustomEventDispose,
+} from "constants/events";
 import { setNumberMessageNotView } from "actions/chat/threadChat";
 import * as images from "../assets";
 
@@ -69,28 +73,28 @@ const Container = styled.div`
   display: grid;
   grid-template-rows: 55px 1fr;
   grid-template-columns: 140px minmax(0, 1fr);
-  
+  overflow-y: hidden;
+
   grid-template-areas:
     "logo top"
     "left main";
   &.view-full-page {
     display: initial;
-    
   }
-  .lefbar-collapse{
+  .lefbar-collapse {
     width: 70px;
     transition: all 0.4s ease;
     min-height: 100vh;
-    z-index: 1000
+    z-index: 1000;
   }
-  .lefbar{
+  .lefbar {
     width: 140px;
-    transition: all 0.3s ease;
+    transition: all 0.4s ease;
     min-height: 100vh;
     z-index: 1000;
   }
 
-  &.menu-collapse{
+  &.menu-collapse {
     grid-template-columns: 70px minmax(0, 1fr);
   }
 `;
@@ -105,13 +109,16 @@ const LogoBox = styled.div`
   & > img {
     height: 90%;
   }
- 
-  
 `;
 
 const ContentBox = styled.div`
   grid-area: main;
   overflow: hidden;
+  position: fixed;
+  top: 55px;
+  left: 70px;
+  height: calc(100% - 55px);
+  width: calc(100% - 70px);
 `;
 
 const Image = styled.img`
@@ -236,15 +243,19 @@ function MainLayout({
   actionChangeNumNotificationNotView,
   actionChangeNumMessageNotView,
   setNumberDiscustonNotView,
-  visibleOfferDetailModal, loadDetailOffer, detailOffer,
-  visibleRemindDetail, detailRemind, getRemindDetail,
+  visibleOfferDetailModal,
+  loadDetailOffer,
+  detailOffer,
+  visibleRemindDetail,
+  detailRemind,
+  getRemindDetail,
   setNumberMessageNotView,
-  t
+  t,
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
   const [openRemindDetail, setOpenRemindDetail] = useState(false);
-  const [collapse,setCollapse] = useState(false);
+  const [collapse, setCollapse] = useState(true);
   function handleReactEmotion(data) {
     updateChatState(data.id, { data_emotion: data.emotions });
   }
@@ -272,7 +283,12 @@ function MainLayout({
     //   actionFetchListColor();
     //   actioGetSettingDate();
     // }
-    if (localStorage.getItem(TOKEN) && profile && profile.id && !isViewFullPage(location.pathname)) {
+    if (
+      localStorage.getItem(TOKEN) &&
+      profile &&
+      profile.id &&
+      !isViewFullPage(location.pathname)
+    ) {
       actionFetchGroupDetail(true);
       actionFetchListColor();
       actioGetSettingDate();
@@ -328,13 +344,13 @@ function MainLayout({
         getListTaskDetail(data.project_id);
       } else {
         if (data.type === CHAT_TYPE.UPDATE_TASK_NAME) {
-          data.new_name = data.new_task_name
+          data.new_name = data.new_task_name;
         }
         // if (task_id !== taskDetails.id) {
         data.new_chat = user_create_id === profile.id ? 0 : 1;
         // }
         data.content = content[language];
-        data.updated_time = t('LABEL_JUST_NOW')
+        data.updated_time = t("LABEL_JUST_NOW");
         data.updatedAt = Date.now();
         updateProjectChat(data);
       }
@@ -390,25 +406,25 @@ function MainLayout({
   }, [taskDetails]);
 
   useEffect(() => {
-    if(get(visibleOfferDetailModal, "visible", false)) {
-      loadDetailOffer({id: visibleOfferDetailModal.offer_id});
+    if (get(visibleOfferDetailModal, "visible", false)) {
+      loadDetailOffer({ id: visibleOfferDetailModal.offer_id });
       setOpenOfferDetail(true);
     }
   }, [visibleOfferDetailModal]);
 
   useEffect(() => {
-    if(get(visibleRemindDetail, "visible", false)) {
-      getRemindDetail({remind_id: visibleRemindDetail.remind_id});
+    if (get(visibleRemindDetail, "visible", false)) {
+      getRemindDetail({ remind_id: visibleRemindDetail.remind_id });
       setOpenRemindDetail(true);
-      const forceCloseModal = () =>{
+      const forceCloseModal = () => {
         setOpenRemindDetail(false);
-      }
+      };
       CustomEventListener(GET_REMIND_DETAIL_FAIL, forceCloseModal);
       return () => {
         CustomEventDispose(GET_REMIND_DETAIL_FAIL, forceCloseModal);
-      }
+      };
     }
-  },[visibleRemindDetail]);
+  }, [visibleRemindDetail]);
 
   const handleFetchNoti = async () => {
     try {
@@ -424,16 +440,14 @@ function MainLayout({
     );
   };
   const handleNewMessage = (res) => {
-    console.log('xxx', res)
+    console.log("xxx", res);
     if (res.belong_to_section === 1) {
-      setNumberDiscustonNotView(
-        {discustion_change: 1}
-      );
+      setNumberDiscustonNotView({ discustion_change: 1 });
     } else {
       setNumberMessageNotView({
         type: "Plus",
-        message: 1
-      })
+        message: 1,
+      });
     }
   };
 
@@ -477,29 +491,37 @@ function MainLayout({
     <>
       <Container
         className={
-          isViewFullPage(location.pathname) ? "view-full-page" : collapse ? 'menu-collapse':location.pathname
-        }
-      >
+          isViewFullPage(location.pathname)
+            ? "view-full-page"
+            : collapse
+            ? "menu-collapse"
+            : location.pathname
+        }>
         {!isViewFullPage(location.pathname) && (
           <React.Fragment>
             <SwitchAccount />
-            <div className={collapse ? 'lefbar-collapse':'lefbar'}>
+            <div className={collapse ? "lefbar-collapse" : "lefbar"}>
               <LogoBox
-              onClick={() => setVisibleGroupModal(true)}
-              className={collapse ? 'logo-collapse' : 'logo-default'}
-              style={{ background: bgColor.color}}
-            >
-              <div className={collapse ? 'logo-collapse' : 'logo-default'} style={{background: bgColor.color, padding: '6px 6px 3px',borderRadius: '50%',marginTop: '10px'}}>
-               <Image
-                src={groupDetail.logo || avatar_default_120}
-                alt="vtask-logo-menu"
-               />
-              </div>
-              
-            </LogoBox>
-            <LeftBar collapse={collapse} setCollapse={setCollapse}/>
+                onClick={() => setVisibleGroupModal(true)}
+                className={collapse ? "logo-collapse" : "logo-default"}
+                style={{ background: bgColor.color }}>
+                <div
+                  className={collapse ? "logo-collapse" : "logo-default"}
+                  style={{
+                    background: bgColor.color,
+                    padding: "6px 6px 3px",
+                    borderRadius: "50%",
+                    marginTop: "10px",
+                  }}>
+                  <Image
+                    src={groupDetail.logo || avatar_default_120}
+                    alt='vtask-logo-menu'
+                  />
+                </div>
+              </LogoBox>
+              <LeftBar collapse={collapse} setCollapse={setCollapse} />
             </div>
-            
+
             <TopBar />
             <DrawerComponent />
             <NoticeModal />
@@ -507,8 +529,8 @@ function MainLayout({
               <SnackbarComponent
                 open={true}
                 handleClose={() => actionToast(null, "")}
-                vertical="bottom"
-                horizontal="right"
+                vertical='bottom'
+                horizontal='right'
                 variant={toast.type}
                 message={toast.message}
               />
@@ -525,10 +547,10 @@ function MainLayout({
         <ContentBox>{configRoute(routes)}</ContentBox>
       </Container>
       <DetailOfferModal
-          open={openOfferDetail}
-          setOpen={setOpenOfferDetail}
-          loading={false}
-          {...detailOffer}
+        open={openOfferDetail}
+        setOpen={setOpenOfferDetail}
+        loading={false}
+        {...detailOffer}
       />
       <ViewDetailRemind
         open={openRemindDetail}
@@ -536,7 +558,7 @@ function MainLayout({
         remind={detailRemind.remind}
         groupRemind={{
           name: get(detailRemind.remind, "category_name", ""),
-          color: get(detailRemind.remind, "category_color", "#000")
+          color: get(detailRemind.remind, "category_color", "#000"),
         }}
         remindType={"PERSONAL"}
       />
@@ -565,7 +587,7 @@ export default connect(
     visibleOfferDetailModal: state.system.visibleOfferDetail,
     visibleRemindDetail: state.system.visibleRemindDetail,
     detailOffer: state.offerPage["DETAIL_OFFER"].offer ?? [],
-    detailRemind: state.calendar.remindDetail
+    detailRemind: state.calendar.remindDetail,
   }),
   {
     getListTaskDetail,
@@ -585,6 +607,6 @@ export default connect(
     loadDetailOffer,
     getRemindDetail,
     setNumberMessageNotView,
-    setNumberDiscustonNotView
+    setNumberDiscustonNotView,
   }
 )(withRouter(MainLayoutWrapper));
