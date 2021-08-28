@@ -10,72 +10,125 @@ import {
   MenuItem,
   MenuList,
   Popover,
-  Typography
-} from '@material-ui/core';
-import {mdiBookmarkOutline, mdiDotsVertical, mdiDragVertical, mdiPlayCircleOutline, mdiPlus} from '@mdi/js';
-import Icon from '@mdi/react';
-import {get, size} from 'lodash';
-import React from 'react';
-import {DragDropContext, Draggable, Droppable} from 'react-beautiful-dnd';
-import {useTranslation} from 'react-i18next';
-import SearchInput from '../../../../components/SearchInput';
-import './style.scss';
+  Typography,
+} from "@material-ui/core";
+import {
+  mdiBookmarkOutline,
+  mdiDotsVertical,
+  mdiDragVertical,
+  mdiPlayCircleOutline,
+  mdiPlus,
+} from "@mdi/js";
+
+import Icon from "@mdi/react";
+import { get, size } from "lodash";
+import React from "react";
+import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useTranslation } from "react-i18next";
+import SearchInput from "../../../../components/SearchInput";
+import "./style.scss";
 import styled from "styled-components";
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import {Scrollbars} from "react-custom-scrollbars";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import { Scrollbars } from "react-custom-scrollbars";
 import CustomAvatar from "../../../../components/CustomAvatar";
-import {useHistory} from "react-router-dom";
-import {useLocalStorage} from "react-use";
+import { useHistory } from "react-router-dom";
+import { useLocalStorage } from "react-use";
 import CreateProjectGroup from "../../Modals/CreateProjectGroup";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
-import FlagOutlinedIcon from '@material-ui/icons/FlagOutlined';
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
-import {SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
-import {useSelector} from "react-redux";
-import SvgIcon from '@material-ui/core/SvgIcon';
-import {CustomEventDispose, CustomEventListener} from "../../../../constants/events";
+import {
+  SNACKBAR_VARIANT,
+  SnackbarEmitter,
+} from "../../../../constants/snackbarController";
+import { useSelector } from "react-redux";
+import SvgIcon from "@material-ui/core/SvgIcon";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+} from "../../../../constants/events";
+import Collapse from "@material-ui/core/Collapse";
+import StarBorder from "@material-ui/icons/StarBorder";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+import { makeStyles } from "@material-ui/core/styles";
 
-const Banner = ({className = '', ...props}) =>
-  <div
-    className={`view_ProjectGroup_List___banner ${className}`}
-    {...props}
-  />;
+const useStyles = makeStyles((theme) => ({
+  projectItem: {
+    padding: "0",
+  },
+  projectText: {
+    padding: "5px 0",
+    paddingLeft: "75px",
+    "&:hover": {
+      color: "rgb(0, 145, 67)",
+      fontWeight: "bolder",
+    },
+  },
+  groupName: {
+    whiteSpace: "nowrap",
+  },
+}));
+
+const Banner = ({ className = "", ...props }) => (
+  <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
+);
 
 const LeftContainer = styled.div`
-  background: #F1F2F4;
+  background: #f1f2f4;
   height: 100vh;
 `;
 
 function ProjectList({
-  groups, route, canModify,
-  searchPattern, setSearchPattern,
-  handleSortProjectGroup, handleOpenModal,
+  groups,
+  route,
+  canModify,
+  searchPattern,
+  setSearchPattern,
+  handleSortProjectGroup,
+  handleOpenModal,
 }) {
+  const classes = useStyles();
   const history = useHistory();
-  const {t} = useTranslation();
-  const [isHideStartButton, setIsHideStartButton] = useLocalStorage("WPS_HIDE_WORKING_START_BUTTON", false);
+  const { t } = useTranslation();
+  const [isHideStartButton, setIsHideStartButton] = useLocalStorage(
+    "WPS_HIDE_WORKING_START_BUTTON",
+    false
+  );
   const [hideBtnState, setHideBtnState] = React.useState(isHideStartButton);
-  const [defaultAccessItem, setDefaultAccessItem] = useLocalStorage("WPS_WORKING_SPACE_DEFAULT_ACCESS");
+  const [defaultAccessItem, setDefaultAccessItem] = useLocalStorage(
+    "WPS_WORKING_SPACE_DEFAULT_ACCESS"
+  );
   const [anchorElStartButton, setAnchorElStartButton] = React.useState(null);
   const [anchorElAddGroup, setAnchorElAddGroup] = React.useState(null);
   const [anchorElAddBoard, setAnchorElAddBoard] = React.useState(null);
   const [anchorElGroup, setAnchorElGroup] = React.useState(null);
   const [openCreateGroup, setOpenCreateGroup] = React.useState(false);
-  const [openModalPersonalBoard, setOpenModalPersonalBoard] = React.useState(false);
+  const [openModalPersonalBoard, setOpenModalPersonalBoard] =
+    React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [alertConfirm, showAlertConfirm] = React.useState(false);
-  const isHasProjectRecently = useSelector(state => state.project.checkHasRecently.hasRecently);
+
+  const [activeId, setActiveId] = React.useState("");
+  const [activeGroupId, setActiveGroupId] = React.useState("");
+
+  const isHasProjectRecently = useSelector(
+    (state) => state.project.checkHasRecently.hasRecently
+  );
   const params = new URLSearchParams(window.location.search);
-  const groupID = params.get('groupID');
-  const personalProjectsBoard = useSelector(state => state.project.countPersonalProjectsBoard.projects);
+  const groupID = params.get("groupID");
+  const personalProjectsBoard = useSelector(
+    (state) => state.project.countPersonalProjectsBoard.projects
+  );
 
   function onDragEnd(result) {
-    const {source, destination, draggableId} = result;
+    const { source, destination, draggableId } = result;
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&
       destination.index === source.index
-    ) return;
+    )
+      return;
     handleSortProjectGroup(draggableId, destination.index);
   }
 
@@ -84,7 +137,7 @@ function ProjectList({
     setAnchorElStartButton(null);
     localStorage.setItem("WPS_HIDE_WORKING_START_BUTTON", true);
     setHideBtnState(true);
-    if(history.location.pathname === "/projects/start") {
+    if (history.location.pathname === "/projects/start") {
       history.push("/projects/recently");
     }
   }
@@ -100,13 +153,24 @@ function ProjectList({
     setAnchorElGroup(null);
   }
   React.useEffect(() => {
-    CustomEventListener('WPS_HIDE_WORKING_START_BUTTON', (e) => {
+    CustomEventListener("WPS_HIDE_WORKING_START_BUTTON", (e) => {
       setHideBtnState(e.detail.isHide);
     });
-    CustomEventDispose('WPS_HIDE_WORKING_START_BUTTON', (e) => {
+    CustomEventDispose("WPS_HIDE_WORKING_START_BUTTON", (e) => {
       setHideBtnState(e.detail.isHide);
     });
   }, []);
+
+  const expandGroup = (event, groupId) => {
+    event.stopPropagation();
+    if (activeId === groupId) {
+      setActiveId("");
+    } else {
+      setActiveId(groupId);
+    }
+    // setOpen(!open);
+  };
+
   return (
     <>
       <LeftContainer>
@@ -115,90 +179,119 @@ function ProjectList({
             fullWidth
             placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND")}
             value={searchPattern}
-            onChange={evt => setSearchPattern(evt.target.value)}
-            style={{background: "#fff"}}
+            onChange={(evt) => setSearchPattern(evt.target.value)}
+            style={{ background: "#fff" }}
           />
         </Banner>
         <Box className={"view_ProjectGroup_List--LeftContainer"}>
           {!Boolean(hideBtnState) && (
             <Box
-              className={`view_ProjectGroup_List--startButton ${history.location.pathname.includes("/projects/start") && "active"}`}
-              onClick={() => history.push("/projects/start")}
-            >
-              <Icon path={mdiPlayCircleOutline} size={1} color={"#BD3ADA"}/>
+              className={`view_ProjectGroup_List--startButton ${
+                history.location.pathname.includes("/projects/start") &&
+                "active"
+              }`}
+              onClick={() => history.push("/projects/start")}>
+              <Icon path={mdiPlayCircleOutline} size={1} color={"#BD3ADA"} />
               <span>{t("LABEL_CHAT_TASK_BAT_DAU_LABEL")}</span>
               <IconButton
-                className={"rightIconControlList"} size={"small"}
+                className={"rightIconControlList"}
+                size={"small"}
                 onClick={(evt) => {
                   evt.stopPropagation();
                   setAnchorElStartButton(evt.currentTarget);
-                }}
-              >
-                <Icon path={mdiDotsVertical} size={1} color={"rgba(0,0,0,0.54)"}/>
+                }}>
+                <Icon
+                  path={mdiDotsVertical}
+                  size={1}
+                  color={"rgba(0,0,0,0.54)"}
+                />
               </IconButton>
               <Popover
                 open={Boolean(anchorElStartButton)}
                 anchorEl={anchorElStartButton}
                 disableRestoreFocus
                 anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
+                  vertical: "bottom",
+                  horizontal: "left",
                 }}
                 transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
+                  vertical: "top",
+                  horizontal: "right",
                 }}
                 onClose={() => setAnchorElStartButton(null)}
-                elevation={1}
-              >
+                elevation={1}>
                 <Box className={"startBtnSetting-container"}>
-                  <span className={"text-primary"}>{t("LABEL_HIDE_START")}</span>
+                  <span className={"text-primary"}>
+                    {t("LABEL_HIDE_START")}
+                  </span>
                   <Typography component={"body2"} color={"textSecondary"}>
                     {t("LABEL_HIDE_START_DES")}
                   </Typography>
-                  <Button className={"hideBtn"} onClick={handleHideStartBtn}>{t("IDS_WP_HIDE")}</Button>
+                  <Button className={"hideBtn"} onClick={handleHideStartBtn}>
+                    {t("IDS_WP_HIDE")}
+                  </Button>
                 </Box>
               </Popover>
             </Box>
           )}
           <Box className={"view_ProjectGroup_List--listGroup"}>
-            <Box className={"view_ProjectGroup_List--listGroup-header textHeader"}>
-              <Icon path={mdiBookmarkOutline} size={1} color={"#009CF3"}/>
+            <Box
+              className={"view_ProjectGroup_List--listGroup-header textHeader"}>
+              <Icon path={mdiBookmarkOutline} size={1} color={"#009CF3"} />
               <span>{t("LABEL_QUICK_ACCESS_PANEL")}</span>
             </Box>
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
-                {isHasProjectRecently && (<ListItem
-                  className={`view_ProjectGroup_List-customListItem ${history.location.pathname.includes("/projects/recently") && "active"}`}
-                  onClick={() => history.push("/projects/recently")}
-                >
-                  <ListItemIcon>
-                    <AccessTimeIcon/>
-                  </ListItemIcon>
-                  <ListItemText primary={t("LABEL_SEE_RECENTLY")}/>
-                </ListItem>)}
+                {isHasProjectRecently && (
+                  <ListItem
+                    className={`view_ProjectGroup_List-customListItem ${
+                      history.location.pathname.includes(
+                        "/projects/recently"
+                      ) && "active"
+                    }`}
+                    onClick={() => history.push("/projects/recently")}>
+                    <ListItemIcon>
+                      <AccessTimeIcon />
+                    </ListItemIcon>
+                    <ListItemText primary={t("LABEL_SEE_RECENTLY")} />
+                  </ListItem>
+                )}
                 <ListItem
-                  className={`view_ProjectGroup_List-customListItem ${history.location.pathname.includes("/projects/personal-board") && "active"}`}
-                  onClick={() => history.push("/projects/personal-board")}
-                >
+                  className={`view_ProjectGroup_List-customListItem ${
+                    history.location.pathname.includes(
+                      "/projects/personal-board"
+                    ) && "active"
+                  }`}
+                  onClick={() => history.push("/projects/personal-board")}>
                   <ListItemIcon>
-                    <SvgIcon style={{fontSize: "22px"}}>
-                      <path d="M0 0h24v24H0z" fill="none"/>
-                      <path d="M12 11c1.33 0 4 .67 4 2v.16c-.97 1.12-2.4 1.84-4 1.84s-3.03-.72-4-1.84V13c0-1.33 2.67-2 4-2zm0-1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 .2C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z"/>
+                    <SvgIcon style={{ fontSize: "22px" }}>
+                      <path d='M0 0h24v24H0z' fill='none' />
+                      <path d='M12 11c1.33 0 4 .67 4 2v.16c-.97 1.12-2.4 1.84-4 1.84s-3.03-.72-4-1.84V13c0-1.33 2.67-2 4-2zm0-1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 .2C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z' />
                     </SvgIcon>
                   </ListItemIcon>
-                  <ListItemText primary={`${t("LABEL_PERSONAL_BOARD")} (${size(personalProjectsBoard)})`}/>
+                  <ListItemText
+                    primary={`${t("LABEL_PERSONAL_BOARD")} (${size(
+                      personalProjectsBoard
+                    )})`}
+                  />
                   {defaultAccessItem === "/personal-board" && (
-                    <FlagOutlinedIcon color={"disabled"} style={{marginLeft: 10, color: "red"}}/>
+                    <FlagOutlinedIcon
+                      color={"disabled"}
+                      style={{ marginLeft: 10, color: "red" }}
+                    />
                   )}
                   <IconButton
-                    className={"rightIconControlList"} size={"small"}
+                    className={"rightIconControlList"}
+                    size={"small"}
                     onClick={(evt) => {
                       evt.stopPropagation();
                       setAnchorElAddBoard(evt.currentTarget);
-                    }}
-                  >
-                    <Icon path={mdiDotsVertical} size={1} color={"rgba(0,0,0,0.54)"}/>
+                    }}>
+                    <Icon
+                      path={mdiDotsVertical}
+                      size={1}
+                      color={"rgba(0,0,0,0.54)"}
+                    />
                   </IconButton>
                 </ListItem>
               </List>
@@ -206,11 +299,12 @@ function ProjectList({
           </Box>
           <Box className={"view_ProjectGroup_List--listGroup"}>
             <Box
-              className={`view_ProjectGroup_List--listGroup-header ${history.location.pathname === "/projects" && "active"}`}
-              onClick={() => history.push("/projects")}
-            >
+              className={`view_ProjectGroup_List--listGroup-header ${
+                history.location.pathname === "/projects" && "active"
+              }`}
+              onClick={() => history.push("/projects")}>
               <SvgIcon htmlColor={"#DB7B48"}>
-                <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z"/>
+                <path d='M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z' />
               </SvgIcon>
               <span>{t("LABEL_WORKING_GROUP")}</span>
               <abbr title={t("Thêm nhóm")}>
@@ -219,62 +313,170 @@ function ProjectList({
                   onClick={(evt) => {
                     evt.stopPropagation();
                     setAnchorElAddGroup(evt.currentTarget);
-                  }}
-                >
-                  <Icon path={mdiPlus} size={1} color={"rgba(0,0,0,0.54)"}/>
+                  }}>
+                  <Icon path={mdiPlus} size={1} color={"rgba(0,0,0,0.54)"} />
                 </IconButton>
               </abbr>
             </Box>
-            <Box className={"view_ProjectGroup_List--listGroup-body scrollList"}>
+            <Box
+              className={"view_ProjectGroup_List--listGroup-body scrollList"}>
               <Scrollbars autoHide autoHideTimeout={500}>
                 <List component={"nav"} className={""}>
                   <DragDropContext onDragEnd={onDragEnd}>
-                    <Droppable droppableId="droppable">
+                    <Droppable droppableId='droppable'>
                       {(provided, snapshot) => (
-                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                        <div
+                          {...provided.droppableProps}
+                          ref={provided.innerRef}>
                           {groups.groups.map((projectGroup, index) => (
-                            <Draggable key={index} draggableId={get(projectGroup, "id")} index={index}>
+                            <Draggable
+                              key={index}
+                              draggableId={get(projectGroup, "id")}
+                              index={index}>
                               {(provided, snapshot) => (
-                                <ListItem
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  className={`view_ProjectGroup_List-customListItem ${groupID === projectGroup.id && "active"}`}
-                                  onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
-                                >
-                                  <div
-                                    {...provided.dragHandleProps}
-                                    className={"view_ProjectGroup_List-customListItem-dragIcon"}
-                                  >
-                                    <Icon path={mdiDragVertical} size={1}/>
-                                  </div>
-                                  <ListItemIcon>
-                                    <CustomAvatar
-                                      style={{marginRight: "10px", width: 25, height: 25}}
-                                      src={get(projectGroup, 'icon')}
-                                      alt='avatar'
-                                    />
-                                  </ListItemIcon>
-                                  <ListItemText
-                                    primary={<div className={"view_ProjectGroup_List-customListItem__textPrimary"}>
-                                      <abbr title={get(projectGroup, "name")}>
-                                        {get(projectGroup, "name")}
-                                      </abbr>
-                                      <div>({projectGroup.number_project})</div>
-                                    </div>}/>
-                                  {defaultAccessItem === `?groupID=${projectGroup.id}` && (
-                                    <FlagOutlinedIcon htmlColor={"red"}/>
-                                  )}
-                                  <IconButton
-                                    className={"rightIconControlList"} size={"small"}
-                                    onClick={(evt) => {
-                                      evt.stopPropagation();
-                                      setAnchorElGroup(evt.currentTarget);
-                                      setSelectedGroup(projectGroup);
+                                <>
+                                  <ListItem
+                                    onMouseEnter={() => {
+                                      setActiveGroupId(projectGroup.id);
                                     }}
-                                  >
-                                    <Icon path={mdiDotsVertical} size={1} color={"rgba(0,0,0,0.54)"}/>
-                                  </IconButton>
-                                </ListItem>
+                                    onMouseLeave={() => {
+                                      setActiveGroupId("");
+                                    }}
+                                    ref={provided.innerRef}
+                                    {...provided.draggableProps}
+                                    className={`view_ProjectGroup_List-customListItem ${
+                                      groupID === projectGroup.id && "active"
+                                    }`}
+                                    onClick={() =>
+                                      history.push(
+                                        `/projects?groupID=${projectGroup.id}`
+                                      )
+                                    }>
+                                    <div
+                                      {...provided.dragHandleProps}
+                                      className={
+                                        "view_ProjectGroup_List-customListItem-dragIcon"
+                                      }>
+                                      <Icon path={mdiDragVertical} size={1} />
+                                    </div>
+                                    <ListItemIcon>
+                                      <CustomAvatar
+                                        style={{
+                                          marginRight: "10px",
+                                          width: 25,
+                                          height: 25,
+                                        }}
+                                        src={get(projectGroup, "icon")}
+                                        alt='avatar'
+                                      />
+                                    </ListItemIcon>
+                                    <ListItemText
+                                      primary={
+                                        <div
+                                          className={
+                                            "view_ProjectGroup_List-customListItem__textPrimary"
+                                          }>
+                                          <abbr
+                                            className={
+                                              activeGroupId === projectGroup.id
+                                                ? classes.groupName
+                                                : null
+                                            }
+                                            title={get(projectGroup, "name")}>
+                                            {get(projectGroup, "name")}
+                                          </abbr>
+                                          <div>
+                                            ({projectGroup.number_project})
+                                          </div>
+                                        </div>
+                                      }
+                                    />
+                                    {defaultAccessItem ===
+                                      `?groupID=${projectGroup.id}` && (
+                                      <FlagOutlinedIcon htmlColor={"red"} />
+                                    )}
+
+                                    <IconButton
+                                      className={"rightIconControlList"}
+                                      size={"small"}>
+                                      <Icon
+                                        onClick={(evt) => {
+                                          evt.stopPropagation();
+                                          setOpenCreateGroup(true);
+                                          setAnchorElAddGroup(null);
+                                          setSelectedGroup(null);
+                                        }}
+                                        path={mdiPlus}
+                                        size={1}
+                                        color={"rgba(0,0,0,0.54)"}
+                                      />
+                                    </IconButton>
+                                    <IconButton
+                                      className={"rightIconControlList"}
+                                      size={"small"}
+                                      onClick={(evt) => {
+                                        evt.stopPropagation();
+                                        setAnchorElGroup(evt.currentTarget);
+                                        setSelectedGroup(projectGroup);
+                                      }}>
+                                      <Icon
+                                        path={mdiDotsVertical}
+                                        size={1}
+                                        color={"rgba(0,0,0,0.54)"}
+                                      />
+                                    </IconButton>
+
+                                    <IconButton
+                                      size={"small"}
+                                      className={"rightIconControlList"}>
+                                      {activeId === projectGroup.id ? (
+                                        <ExpandLess
+                                          size={1}
+                                          color={"rgba(0,0,0,0.54)"}
+                                          onClick={(event) =>
+                                            expandGroup(event, projectGroup.id)
+                                          }
+                                        />
+                                      ) : (
+                                        <ExpandMore
+                                          size={1}
+                                          color={"rgba(0,0,0,0.54)"}
+                                          onClick={(event) =>
+                                            expandGroup(event, projectGroup.id)
+                                          }
+                                        />
+                                      )}
+                                    </IconButton>
+                                  </ListItem>
+
+                                  <Collapse in={activeId === projectGroup.id}>
+                                    <List
+                                      component='div'
+                                      disablePadding
+                                      style={{
+                                        backgroundColor: "#e5e5e5",
+                                      }}>
+                                      {projectGroup.projects.map(
+                                        (item, index) => {
+                                          return (
+                                            <ListItem
+                                              className={classes.projectItem}
+                                              onClick={() =>
+                                                history.push(
+                                                  `/projects/task-table/${item.id}`
+                                                )
+                                              }>
+                                              <ListItemText
+                                                className={classes.projectText}
+                                                primary={item.name}
+                                              />
+                                            </ListItem>
+                                          );
+                                        }
+                                      )}
+                                    </List>
+                                  </Collapse>
+                                </>
                               )}
                             </Draggable>
                           ))}
@@ -289,37 +491,45 @@ function ProjectList({
           </Box>
         </Box>
       </LeftContainer>
-      <CreateProjectGroup open={openCreateGroup} setOpen={setOpenCreateGroup} updatedProjectGroup={selectedGroup}/>
-      <AddToPersonalBoardModal open={openModalPersonalBoard} setOpen={setOpenModalPersonalBoard}/>
+      <CreateProjectGroup
+        open={openCreateGroup}
+        setOpen={setOpenCreateGroup}
+        updatedProjectGroup={selectedGroup}
+      />
+      <AddToPersonalBoardModal
+        open={openModalPersonalBoard}
+        setOpen={setOpenModalPersonalBoard}
+      />
       <Popover
         open={Boolean(anchorElAddGroup)}
         anchorEl={anchorElAddGroup}
         disableRestoreFocus
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         onClose={() => setAnchorElAddGroup(null)}
-        elevation={1}
-      >
+        elevation={1}>
         <Box className={"addWorkingGroupPopover-container"}>
           <span className={"text-primary"}>{t("LABEL_WORKING_GROUP")}</span>
           <Typography component={"body2"} color={"textSecondary"}>
             {t("LABEL_CREATE_WORKING_GROUP_POPOVER")}
           </Typography>
           <Button
-            color="primary" className={"btnAddGroup"}
+            color='primary'
+            className={"btnAddGroup"}
             onClick={(evt) => {
               evt.stopPropagation();
               setOpenCreateGroup(true);
               setAnchorElAddGroup(null);
               setSelectedGroup(null);
-            }}
-          >{t("Thêm nhóm")}</Button>
+            }}>
+            {t("Thêm nhóm")}
+          </Button>
         </Box>
       </Popover>
       <Popover
@@ -327,29 +537,32 @@ function ProjectList({
         anchorEl={anchorElGroup}
         disableRestoreFocus
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         onClose={(evt) => {
           evt.stopPropagation();
           setAnchorElGroup(null);
         }}
-        elevation={0}
-      >
+        elevation={0}>
         <Box className={"personalBoard-container"}>
           <Box className={"personalBoard-actionItemWrapper"}>
             <span className={"title"}>{t("LABEL_SET_DEFAULT")}</span>
             <Box className={"actionItem"}>
-              <Typography variant={"body2"} color={"textSecondary"}>{t("LABEL_SET_DEFAULT_DES")}</Typography>
-              <Button color={"primary"} onClick={(evt) => {
-                evt.stopPropagation();
-                setAnchorElGroup(null);
-                handleSetDefault(`?groupID=${selectedGroup.id}`);
-              }}>
+              <Typography variant={"body2"} color={"textSecondary"}>
+                {t("LABEL_SET_DEFAULT_DES")}
+              </Typography>
+              <Button
+                color={"primary"}
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  setAnchorElGroup(null);
+                  handleSetDefault(`?groupID=${selectedGroup.id}`);
+                }}>
                 {t("LABEL_SET")}
               </Button>
             </Box>
@@ -357,16 +570,18 @@ function ProjectList({
         </Box>
         {canModify && (
           <>
-            <Divider/>
+            <Divider />
             <MenuList>
-              <MenuItem onClick={(evt) => {
-                evt.stopPropagation();
-                setAnchorElGroup(null);
-                setSelectedGroup(selectedGroup);
-                setOpenCreateGroup(true);
-              }}>{t("IDS_WP_EDIT_TEXT")}
+              <MenuItem
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  setAnchorElGroup(null);
+                  setSelectedGroup(selectedGroup);
+                  setOpenCreateGroup(true);
+                }}>
+                {t("IDS_WP_EDIT_TEXT")}
               </MenuItem>
-              <MenuItem onClick={evt => handleDeleteGroup(evt)}>
+              <MenuItem onClick={(evt) => handleDeleteGroup(evt)}>
                 {t("IDS_WP_DELETE")}
               </MenuItem>
             </MenuList>
@@ -378,45 +593,49 @@ function ProjectList({
         anchorEl={anchorElAddBoard}
         disableRestoreFocus
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right',
+          vertical: "top",
+          horizontal: "right",
         }}
         onClose={(evt) => {
           evt.stopPropagation();
           setAnchorElAddBoard(null);
         }}
-        elevation={1}
-      >
+        elevation={1}>
         <Box className={"personalBoard-container"}>
           <Box className={"personalBoard-actionItemWrapper"}>
             <span className={"title"}>{t("LABEL_ADD_TABLE")}</span>
             <Box className={"actionItem"}>
-              <Typography variant={"body2"} color={"textSecondary"}>{t("LABEL_ADD_TABLE_DES")}</Typography>
-              <Button color={"primary"} onClick={(evt) => {
-                evt.stopPropagation();
-                setOpenModalPersonalBoard(true);
-                setAnchorElAddBoard(null);
-              }}>
+              <Typography variant={"body2"} color={"textSecondary"}>
+                {t("LABEL_ADD_TABLE_DES")}
+              </Typography>
+              <Button
+                color={"primary"}
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  setOpenModalPersonalBoard(true);
+                  setAnchorElAddBoard(null);
+                }}>
                 {t("IDS_WP_COMMON_ADD")}
               </Button>
             </Box>
           </Box>
           <Box className={"personalBoard-actionItemWrapper"}>
-            <span
-              className={"title"}>
-              {t("LABEL_SET_DEFAULT")}
-            </span>
+            <span className={"title"}>{t("LABEL_SET_DEFAULT")}</span>
             <Box className={"actionItem"}>
-              <Typography variant={"body2"} color={"textSecondary"}>{t("LABEL_SET_DEFAULT_DES")}</Typography>
-              <Button color={"primary"} onClick={(evt) => {
-                evt.stopPropagation();
-                setAnchorElAddBoard(null);
-                handleSetDefault("/personal-board");
-              }}>
+              <Typography variant={"body2"} color={"textSecondary"}>
+                {t("LABEL_SET_DEFAULT_DES")}
+              </Typography>
+              <Button
+                color={"primary"}
+                onClick={(evt) => {
+                  evt.stopPropagation();
+                  setAnchorElAddBoard(null);
+                  handleSetDefault("/personal-board");
+                }}>
                 {t("LABEL_SET")}
               </Button>
             </Box>
@@ -424,11 +643,13 @@ function ProjectList({
         </Box>
       </Popover>
       <ProjectGroupDelete
-        selectedProjectGroup={selectedGroup} open={alertConfirm} setOpen={showAlertConfirm}
+        selectedProjectGroup={selectedGroup}
+        open={alertConfirm}
+        setOpen={showAlertConfirm}
         redirectURL={"/projects/recently"}
       />
     </>
-  )
+  );
 }
 
 export default ProjectList;
