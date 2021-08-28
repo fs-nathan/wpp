@@ -114,11 +114,11 @@ const LogoBox = styled.div`
 const ContentBox = styled.div`
   grid-area: main;
   overflow: hidden;
-  position: fixed;
+  /* position: fixed;
   top: 55px;
   left: 70px;
   height: calc(100% - 55px);
-  width: calc(100% - 70px);
+  width: calc(100% - 70px); */
 `;
 
 const Image = styled.img`
@@ -500,27 +500,10 @@ function MainLayout({
         {!isViewFullPage(location.pathname) && (
           <React.Fragment>
             <SwitchAccount />
-            <div className={collapse ? "lefbar-collapse" : "lefbar"}>
-              <LogoBox
-                onClick={() => setVisibleGroupModal(true)}
-                className={collapse ? "logo-collapse" : "logo-default"}
-                style={{ background: bgColor.color }}>
-                <div
-                  className={collapse ? "logo-collapse" : "logo-default"}
-                  style={{
-                    background: bgColor.color,
-                    padding: "6px 6px 3px",
-                    borderRadius: "50%",
-                    marginTop: "10px",
-                  }}>
-                  <Image
-                    src={groupDetail.logo || avatar_default_120}
-                    alt='vtask-logo-menu'
-                  />
-                </div>
-              </LogoBox>
-              <LeftBar collapse={collapse} setCollapse={setCollapse} />
-            </div>
+            <LeftBar
+              setVisibleGroupModal={setVisibleGroupModal}
+              logo={groupDetail.logo}
+            />
 
             <TopBar />
             <DrawerComponent />
