@@ -336,12 +336,12 @@ function ProjectList({
                               {(provided, snapshot) => (
                                 <>
                                   <ListItem
-                                    onMouseEnter={() => {
-                                      setActiveGroupId(projectGroup.id);
-                                    }}
-                                    onMouseLeave={() => {
-                                      setActiveGroupId("");
-                                    }}
+                                    // onMouseEnter={() => {
+                                    //   setActiveGroupId(projectGroup.id);
+                                    // }}
+                                    // onMouseLeave={() => {
+                                    //   setActiveGroupId("");
+                                    // }}
                                     ref={provided.innerRef}
                                     {...provided.draggableProps}
                                     className={`view_ProjectGroup_List-customListItem ${
@@ -378,9 +378,10 @@ function ProjectList({
                                           }>
                                           <abbr
                                             className={
-                                              activeGroupId === projectGroup.id
-                                                ? classes.groupName
-                                                : null
+                                              // activeGroupId === projectGroup.id
+                                              //   ? classes.groupName
+                                              //   : null
+                                              "view_ProjectGroup_List-customListItem__text"
                                             }
                                             title={get(projectGroup, "name")}>
                                             {get(projectGroup, "name")}

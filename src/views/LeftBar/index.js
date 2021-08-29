@@ -1,22 +1,22 @@
-import React, { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import { Link, withRouter } from 'react-router-dom';
-import ReactHtmlParser from 'react-html-parser';
-import { Button } from '@material-ui/core';
+import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import { Link, withRouter } from "react-router-dom";
+import ReactHtmlParser from "react-html-parser";
+import { Button } from "@material-ui/core";
 import {
   actionVisibleDrawerMessage,
   openNoticeModal,
-} from '../../actions/system/system';
-import { Routes } from '../../constants/routes';
-import { isEmpty } from '../../helpers/utils/isEmpty';
-import { useSelector, useDispatch } from 'react-redux';
-import { IconNext, IconBack } from 'components/IconSvg/Verify_check';
+} from "../../actions/system/system";
+import { Routes } from "../../constants/routes";
+import { isEmpty } from "../../helpers/utils/isEmpty";
+import { useSelector, useDispatch } from "react-redux";
+import { IconNext, IconBack } from "components/IconSvg/Verify_check";
 
 // import { useTranslation } from 'react-i18next';
 // import * as icons from '../../assets';
-import './LeftBar.scss';
-import { getNumberMessageNotView } from 'actions/chat/threadChat';
+import "./LeftBar.scss";
+import { getNumberMessageNotView } from "actions/chat/threadChat";
 
 const BellMessage = () => {
   const numberChatNotView = useSelector(
@@ -54,15 +54,15 @@ const LeftBar = ({
   profile,
   actionVisibleDrawerMessage,
   openNoticeModal,
-  collapse,
-  setCollapse,
+  setVisibleGroupModal,
+  logo,
 }) => {
   const { t } = useTranslation();
   const pathname = history.location.pathname;
   const { group_active } = profile;
   const bgColor = colors.find((item) => item.selected === true);
   const onCloseDrawer = () => {
-    actionVisibleDrawerMessage({ type: '', anchor: anchorDrawer });
+    actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer });
   };
   let menuList = [];
   let itemManage = false;
@@ -92,65 +92,40 @@ const LeftBar = ({
       }
     });
   }
-  const isFree = groupActive.type === 'Free';
+  const isFree = groupActive.type === "Free";
   return (
     <div
-      className={`left-bar-container ${collapse && 'collapse'}`}
-      onMouseEnter={() => setCollapse(false)}
-      onMouseLeave={() => setCollapse(true)}
-      style={{ background: bgColor.color }}>
-      {!isEmpty(menuList) &&
-        menuList.map((el, idx) => {
+      className={`left-bar-container`}
+      style={{
+        background: bgColor.color,
+      }}>
+      <div>
+        <div className='logo' onClick={() => setVisibleGroupModal(true)}>
+          {logo && <img src={logo} />}
+        </div>
+        {menuList.map((item, index) => {
           return (
             <Link
-              to={isFree ? '#' : el.url_redirect}
-              key={idx}
-              title={collapse ? t(el.name) : ''}
-              className={`menu-item ${el.isSelected ? 'actived' : ''}`}
-              onClick={() => {
-                if (isFree) {
-                  openNoticeModal('ACCOUNT_FREE');
-                }
-                onCloseDrawer();
-              }}>
-              <div className={collapse ? 'item-collapse' : 'item-not-collapse'}>
-                <span
-                  style={{ width: '35px' }}
-                  className={collapse ? 'LeftNavIconZoom' : 'iconDefault'}>
-                  {ReactHtmlParser(el.svg_icon)}
-                </span>
-                {/* <img src={el.icon} alt="" className={`LeftNavIcon ${collapse && 'LeftNavIconZoom'}` } /> */}
-                <span
-                  className={`titleTab ${
-                    collapse ? 'label-collapse' : 'label-not-collapse'
-                  }`}>
-                  {t(el.name)}
-                </span>
+              key={index}
+              className={`menu-item ${item.isSelected ? "actived" : ""}`}
+              to={item.url_redirect}>
+              <div className='menu-icon'>
+                {item.icon && <img src={item.icon} />}
               </div>
-              {el.need_bell && <BellMessage />}
+              <p>{t(item.name)}</p>
             </Link>
           );
         })}
+      </div>
 
       {itemManage && (
         <Link
-          to={itemManage.url_redirect}
-          onClick={onCloseDrawer}
-          className={`menu-item menu-item-last ${
-            itemManage.isSelected ? 'actived' : ''
-          }`}
-          title={itemManage.name}>
-          <div className={collapse ? 'item-collapse' : 'item-not-collapse'}>
-            <span
-              style={{ width: '35px' }}
-              className={collapse ? 'LeftNavIconZoom' : ''}>
-              {ReactHtmlParser(itemManage.svg_icon)}
-            </span>
-            {!collapse && (
-              <span className='titleTab'>{t(itemManage.name)}</span>
-            )}
+          className={`menu-item ${itemManage.isSelected ? "actived" : ""}`}
+          to={itemManage.url_redirect}>
+          <div className='menu-icon'>
+            {itemManage.icon && <img src={itemManage.icon} />}
           </div>
-          {/* <img src={itemManage.icon} alt="" className="LeftNavIcon" /> */}
+          <p>{t(itemManage.name)}</p>
         </Link>
       )}
     </div>

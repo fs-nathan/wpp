@@ -1,161 +1,63 @@
 .left-bar-container {
-  grid-area: left;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  position: relative;
-  height: calc(100% - 70px);
+  justify-content: space-between;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 70px;
+  height: 100%;
+  transition: all 0.3s ease-out;
+  overflow-x: hidden;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-  & > *:first-child {
-    margin-top: 10px;
-  }
-  & > .menu-item-last {
-    margin-top: auto;
-  }
-  .btn-collapse {
-    color: #ffffff;
-    border-radius: 50%;
-    position: absolute;
-    right: -16px;
-    z-index: 99;
-    font-weight: bold;
-    padding: 5px 0px 5px 10px;
-    top: calc(50% - 50px);
-    cursor: pointer;
-    opacity: 0;
-    svg {
-      fill: #ffffff;
-      width: 20px;
-      height: 20px;
-    }
-  }
-  @keyframes iconExpand {
-    0% {
-      transform: rotate3d(1, 1, 1, 180deg);
-    }
-    100% {
-      transform: rotate3d(1, 1, 1, 360deg);
-    }
-  }
-  .btn_expand {
-    svg {
-      animation: iconExpand 0.5s ease-in-out;
-    }
+  z-index: 1000;
+  &:hover {
+    width: 200px;
   }
 
-  .btn_narrow {
-    svg {
-      animation: iconExpand 0.5s ease-in-out;
-    }
-  }
-  &:hover .btn-collapse {
-    opacity: 1;
-  }
-  .menu-item {
-    padding: 10px 0;
-    width: 100%;
+  .logo {
+    height: 60px;
     display: flex;
     align-items: center;
-    color: rgba(255, 255, 255, 0.6);
-    text-decoration: none;
-    z-index: 100;
-    position: relative;
+    justify-content: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.54);
+    img {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.54);
+      padding: 3px;
+      cursor: pointer;
+    }
+  }
 
-    svg {
-      width: 26px;
-      height: 26px;
-      fill: rgba(255, 255, 255, 0.6);
-      border: unset !important;
-      padding: 0px !important;
-      background: unset !important;
-    }
-    &.actived {
-      background-color: rgba(0, 0, 0, 0.12);
-      color: rgb(255, 255, 255);
-      svg {
-        width: 26px;
-        height: 26px;
-        fill: rgb(255, 255, 255);
-        border: unset !important;
-      }
-    }
+  .menu-item {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    color: #fabc99;
     &:hover {
-      background-color: rgba(0, 0, 0, 0.12);
+      background-color: #d54c00;
     }
-    .item-not-collapse {
+    .menu-icon {
+      min-width: 70px;
+      height: 50px;
       display: flex;
-      width: 80%;
-      margin: auto;
-      align-items: center;
-      animation: animationlabels 0.5s ease;
-    }
-    .item-collapse {
       justify-content: center;
-      width: 100%;
-      display: flex;
-    }
-    @keyframes animationlabels {
-      0% {
-        margin-left: -100px;
-        display: block;
-        opacity: 0.7;
-      }
-      100% {
-        margin-left: 13px;
-        display: block;
-        opacity: 1;
+      align-items: center;
+      img {
+        height: 25px;
+        width: 25px;
       }
     }
-    .label-collapse {
-      display: none;
-    }
-    .label-not-collapse {
-      display: block;
+    p {
+      white-space: nowrap;
     }
   }
-  .LeftNavIcon {
-    width: 28px;
-    margin-bottom: 5px;
-  }
-  @keyframes iconMenu {
-    0% {
-      margin-bottom: -20px;
-      opacity: 0;
-    }
-    100% {
-      margin-bottom: 0;
-      opacity: 1;
-    }
-  }
-  .LeftNavIconZoom {
-    width: auto !important;
 
-    svg {
-      animation: iconMenu 0.5s ease;
-      transform: scale(1.1);
-      border: unset !important;
-    }
-  }
-  .titleTab {
-    font-size: 12px;
-    margin-top: -3px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-  }
-  .bell-message {
-    position: absolute;
-    width: 20px;
-    height: 16px;
-    background: #f44336 !important;
-    text-align: center;
-    font-size: 10px;
-    line-height: 16px;
-    border-radius: 10px;
-    top: 5px;
-    right: 5px;
-    font-weight: 500;
-    color: #ffffff !important;
-    opacity: 1 !important;
+  .actived {
+    background-color: #d54c00;
+    color: white;
   }
 }
