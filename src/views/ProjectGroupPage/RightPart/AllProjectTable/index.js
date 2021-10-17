@@ -1,28 +1,37 @@
-import {listIcon} from 'actions/icon/listIcon';
-import {setProjectGroup} from 'actions/localStorage';
-import {deleteProject} from 'actions/project/deleteProject';
-import {hideProject} from 'actions/project/hideProject';
-import {listProject} from 'actions/project/listProject';
-import {showProject} from 'actions/project/showProject';
-import {sortProject} from 'actions/project/sortProject';
-import {detailProjectGroup} from 'actions/projectGroup/detailProjectGroup';
-import {listProjectGroup} from 'actions/projectGroup/listProjectGroup';
-import {useFilters, useTimes} from 'components/CustomPopover';
-import {CustomEventDispose, CustomEventListener, SORT_PROJECT, SORT_PROJECT_GROUP} from 'constants/events.js';
-import {filter, get, reverse, sortBy, size} from 'lodash';
-import moment from 'moment';
-import React from 'react';
-import {connect} from 'react-redux';
-import {routeSelector} from '../../../ProjectPage/selectors';
-import CreateProjectModal from '../../Modals/CreateProject';
-import DeleteProjectModal from '../../Modals/DeleteProject';
-import EditProjectModal from '../../Modals/EditProject';
-import NoProjectGroupModal from '../../Modals/NoProjectGroup';
-import ProjectSettingModal from '../../Modals/ProjectSetting';
-import {localOptionSelector, viewPermissionsSelector} from '../../selectors';
-import AllProjectTablePresenter from './presenters';
-import {bgColorSelector, projectsSelector, showHidePendingsSelector} from './selectors';
-import {CREATE_PROJECT} from "constants/events";
+import { listIcon } from "actions/icon/listIcon";
+import { setProjectGroup } from "actions/localStorage";
+import { deleteProject } from "actions/project/deleteProject";
+import { hideProject } from "actions/project/hideProject";
+import { listProject } from "actions/project/listProject";
+import { showProject } from "actions/project/showProject";
+import { sortProject } from "actions/project/sortProject";
+import { detailProjectGroup } from "actions/projectGroup/detailProjectGroup";
+import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
+import { useFilters, useTimes } from "components/CustomPopover";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  SORT_PROJECT,
+  SORT_PROJECT_GROUP,
+} from "constants/events.js";
+import { filter, get, reverse, sortBy, size } from "lodash";
+import moment from "moment";
+import React from "react";
+import { connect } from "react-redux";
+import { routeSelector } from "../../../ProjectPage/selectors";
+import CreateProjectModal from "../../Modals/CreateProject";
+import DeleteProjectModal from "../../Modals/DeleteProject";
+import EditProjectModal from "../../Modals/EditProject";
+import NoProjectGroupModal from "../../Modals/NoProjectGroup";
+import ProjectSettingModal from "../../Modals/ProjectSetting";
+import { localOptionSelector, viewPermissionsSelector } from "../../selectors";
+import AllProjectTablePresenter from "./presenters";
+import {
+  bgColorSelector,
+  projectsSelector,
+  showHidePendingsSelector,
+} from "./selectors";
+import { CREATE_PROJECT } from "constants/events";
 import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
 import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
@@ -30,25 +39,29 @@ import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 function AllProjectTable({
   expand,
   handleExpand,
-  projects, bgColor, showHidePendings,
+  projects,
+  bgColor,
+  showHidePendings,
   doDeleteProject,
   doHideProject,
   doShowProject,
   doSortProject,
-  route, viewPermissions,
+  route,
+  viewPermissions,
   doListProject,
   doListProjectGroup,
   localOption,
-  doSetProjectGroup, type_data = null
+  doSetProjectGroup,
+  type_data = null,
 }) {
   const times = useTimes();
   const { filterType, timeType, workType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
-    return ({
+    return {
       timeStart,
       timeEnd,
-    });
+    };
   }, [timeType]);
   const [isFiltering, setIsFiltering] = React.useState(false);
   const [sortType, setSortType] = React.useState({});
@@ -57,30 +70,30 @@ function AllProjectTable({
 
   const filters = useFilters();
   const params = new URLSearchParams(window.location.search);
-  const groupID = params.get('groupID');
+  const groupID = params.get("groupID");
 
   React.useEffect(() => {
-    if (groupID === 'deleted') return;
+    if (groupID === "deleted") return;
     doListProject({
       groupProject: groupID,
-      timeStart: get(timeRange, 'timeStart')
-        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+      timeStart: get(timeRange, "timeStart")
+        ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
         : undefined,
-      timeEnd: get(timeRange, 'timeEnd')
-        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+      timeEnd: get(timeRange, "timeEnd")
+        ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
         : undefined,
-      type_data
+      type_data,
     });
     const reloadListProject = () => {
       doListProject({
         groupProject: groupID,
-        timeStart: get(timeRange, 'timeStart')
-          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        timeStart: get(timeRange, "timeStart")
+          ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
           : undefined,
-        timeEnd: get(timeRange, 'timeEnd')
-          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        timeEnd: get(timeRange, "timeEnd")
+          ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
           : undefined,
-        type_data
+        type_data,
       });
     };
     CustomEventListener(SORT_PROJECT, reloadListProject);
@@ -88,41 +101,41 @@ function AllProjectTable({
     return () => {
       CustomEventDispose(SORT_PROJECT, reloadListProject);
       CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProject);
-    }
+    };
     // eslint-disable-next-line
   }, [groupID, timeRange, type_data]);
 
   React.useEffect(() => {
     doListProjectGroup({
-      timeStart: get(timeRange, 'timeStart')
-        ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+      timeStart: get(timeRange, "timeStart")
+        ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
         : undefined,
-      timeEnd: get(timeRange, 'timeEnd')
-        ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+      timeEnd: get(timeRange, "timeEnd")
+        ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
         : undefined,
     });
     const reloadListProjectGroup = () => {
       doListProjectGroup({
-        timeStart: get(timeRange, 'timeStart')
-          ? moment(get(timeRange, 'timeStart')).format('YYYY-MM-DD')
+        timeStart: get(timeRange, "timeStart")
+          ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
           : undefined,
-        timeEnd: get(timeRange, 'timeEnd')
-          ? moment(get(timeRange, 'timeEnd')).format('YYYY-MM-DD')
+        timeEnd: get(timeRange, "timeEnd")
+          ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
           : undefined,
       });
-    }
+    };
     CustomEventListener(SORT_PROJECT_GROUP, reloadListProjectGroup);
     CustomEventListener(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
     return () => {
       CustomEventDispose(SORT_PROJECT_GROUP, reloadListProjectGroup);
       CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProjectGroup);
-    }
+    };
     // eslint-disable-next-line
   }, [timeRange]);
 
   React.useEffect(() => {
     let _projects = [...projects.projects];
-    _projects = sortBy(_projects, o => get(o, sortType.col));
+    _projects = sortBy(_projects, (o) => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
     _projects = filter(_projects, filters[filterType].option);
     setNewProjects({
@@ -147,19 +160,17 @@ function AllProjectTable({
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'CREATE': {
-        if (projects.projectGroupsCount === 0)
-          setOpenNoPG(true);
-        else
-          setOpenCreate(true);
-          setCreateProps({
-            groupID,
-            work_types: get(projects,'group_work_types'),
-            ...props
-          });
+      case "CREATE": {
+        if (projects.projectGroupsCount === 0) setOpenNoPG(true);
+        else setOpenCreate(true);
+        setCreateProps({
+          groupID,
+          work_types: get(projects, "group_work_types"),
+          ...props,
+        });
         return;
       }
-      case 'UPDATE': {
+      case "UPDATE": {
         setOpenEdit(true);
         setEditProps({
           groupID,
@@ -167,19 +178,19 @@ function AllProjectTable({
         });
         return;
       }
-      case 'SETTING': {
+      case "SETTING": {
         setOpenSetting(true);
         setSettingProps({
           groupID,
-          ...props
+          ...props,
         });
         return;
       }
-      case 'ALERT': {
+      case "ALERT": {
         setOpenAlert(true);
         setAlertProps({
           groupID,
-          ...props
+          ...props,
         });
         return;
       }
@@ -187,7 +198,8 @@ function AllProjectTable({
         setOpenPersonalBoard(true);
         return;
       }
-      default: return;
+      default:
+        return;
     }
   }
   React.useEffect(() => {
@@ -200,63 +212,70 @@ function AllProjectTable({
         setGuideLineModal(true);
         setNewCreatedBoard(e.detail.project_id);
       });
-    }
+    };
   }, []);
   return (
     <>
       <AllProjectTablePresenter
-        expand={expand} handleExpand={handleExpand} showHidePendings={showHidePendings} route={route}
+        expand={expand}
+        handleExpand={handleExpand}
+        showHidePendings={showHidePendings}
+        route={route}
         projects={newProjects}
-        bgColor={bgColor} type_data={type_data}
+        bgColor={bgColor}
+        type_data={type_data}
         filterType={filterType}
-        handleFilterType={filterType => doSetProjectGroup({
-          ...localOption,
-          filterType,
-        })}
+        handleFilterType={(filterType) =>
+          doSetProjectGroup({
+            ...localOption,
+            filterType,
+          })
+        }
         timeType={timeType}
         workTypeLocal={workType}
-        handleTimeType={timeType => doSetProjectGroup({
-          ...localOption,
-          timeType,
-        })}
-        handleWorkTypeChange={workType => doSetProjectGroup({
-          ...localOption,
-          workType
-        })}
-        handleSortType={type => setSortType(oldType => {
-          const newCol = type;
-          const newDir = type === oldType.col ? -oldType.dir : 1;
-          return {
-            col: newCol,
-            dir: newDir,
-          }
-        })}
-        handleShowOrHideProject={project =>
-          get(project, 'visibility', false)
-            ? doHideProject({ projectId: get(project, 'id') })
-            : doShowProject({ projectId: get(project, 'id') })
+        handleTimeType={(timeType) =>
+          doSetProjectGroup({
+            ...localOption,
+            timeType,
+          })
         }
-        handleDeleteProject={project => doDeleteProject({ projectId: get(project, 'id') })}
-        handleSortProject={sortData =>
-          doSortProject({ sortData })
+        handleWorkTypeChange={(workType) =>
+          doSetProjectGroup({
+            ...localOption,
+            workType,
+          })
         }
+        handleSortType={(type) =>
+          setSortType((oldType) => {
+            const newCol = type;
+            const newDir = type === oldType.col ? -oldType.dir : 1;
+            return {
+              col: newCol,
+              dir: newDir,
+            };
+          })
+        }
+        handleShowOrHideProject={(project) =>
+          get(project, "visibility", false)
+            ? doHideProject({ projectId: get(project, "id") })
+            : doShowProject({ projectId: get(project, "id") })
+        }
+        handleDeleteProject={(project) =>
+          doDeleteProject({ projectId: get(project, "id") })
+        }
+        handleSortProject={(sortData) => doSortProject({ sortData })}
         handleOpenModal={doOpenModal}
-        groupID={groupID} isFiltering={isFiltering} setIsFiltering={setIsFiltering}
+        groupID={groupID}
+        isFiltering={isFiltering}
+        setIsFiltering={setIsFiltering}
       />
       <CreateProjectModal
         open={openCreate}
         setOpen={setOpenCreate}
         {...createProps}
       />
-      <NoProjectGroupModal
-        open={openNoPG}
-        setOpen={setOpenNoPG}
-      />
-      <EditProjectModal
-        open={openEdit}
-        setOpen={setOpenEdit}
-        {...editProps}
-      />
+      <NoProjectGroupModal open={openNoPG} setOpen={setOpenNoPG} />
+      <EditProjectModal open={openEdit} setOpen={setOpenEdit} {...editProps} />
       <ProjectSettingModal
         open={openSetting}
         setOpen={setOpenSetting}
@@ -270,7 +289,8 @@ function AllProjectTable({
         {...alertProps}
       />
       <GuideLineAddUserModal
-        open={guideLineModal} setOpen={setGuideLineModal}
+        open={guideLineModal}
+        setOpen={setGuideLineModal}
         handleAddNow={() => {
           setGuideLineModal(false);
           setOpenMemberSetting(true);
@@ -281,12 +301,15 @@ function AllProjectTable({
         setOpen={setOpenMemberSetting}
         project_id={newCreatedBoard}
       />
-      <AddToPersonalBoardModal open={openPersonalBoard} setOpen={setOpenPersonalBoard}/>
+      <AddToPersonalBoardModal
+        open={openPersonalBoard}
+        setOpen={setOpenPersonalBoard}
+      />
     </>
   );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     projects: projectsSelector(state),
     bgColor: bgColorSelector(state),
@@ -297,10 +320,11 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
-    doListProjectGroup: (options,quite) => dispatch(listProjectGroup(options,quite)),
+    doListProjectGroup: (options, quite) =>
+      dispatch(listProjectGroup(options, quite)),
     doListIcon: (quite) => dispatch(listIcon(quite)),
     doSortProject: ({ sortData, groupId }) =>
       dispatch(sortProject({ sortData, groupId })),
