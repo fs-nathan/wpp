@@ -35,6 +35,11 @@ import { CREATE_PROJECT } from "constants/events";
 import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
 import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
+import { useLocation } from "react-router";
+
+function useQuery() {
+  return new URLSearchParams(useLocation().search);
+}
 
 function AllProjectTable({
   expand,
@@ -69,10 +74,11 @@ function AllProjectTable({
   const [openPersonalBoard, setOpenPersonalBoard] = React.useState(false);
 
   const filters = useFilters();
-  const params = new URLSearchParams(window.location.search);
-  const groupID = params.get("groupID");
+  const query = useQuery();
+  const groupID = query.get("groupID");
 
   React.useEffect(() => {
+    console.log(query.get("groupID"));
     if (groupID === "deleted") return;
     doListProject({
       groupProject: groupID,

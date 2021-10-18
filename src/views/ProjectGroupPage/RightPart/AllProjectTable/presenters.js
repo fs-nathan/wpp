@@ -1,4 +1,10 @@
-import {Box, CircularProgress, IconButton, Menu, MenuItem} from '@material-ui/core';
+import {
+  Box,
+  CircularProgress,
+  IconButton,
+  Menu,
+  MenuItem,
+} from "@material-ui/core";
 import {
   mdiAccount,
   mdiCalendar,
@@ -9,50 +15,72 @@ import {
   mdiDeleteOutline,
   mdiDotsVertical,
   mdiDownload,
-  mdiFilterOutline
-} from '@mdi/js';
-import Icon from '@mdi/react';
-import {find, get, includes, isArray, isNil, join, remove, size, slice} from 'lodash';
-import React from 'react';
-import {useTranslation} from 'react-i18next';
-import {useHistory} from 'react-router-dom';
-import AvatarCircleList from '../../../../components/AvatarCircleList';
-import CustomBadge from '../../../../components/CustomBadge';
-import {ChartInfoBox} from '../../../../components/CustomDonutChart';
-import {DownloadPopover, TimeRangePopover, useFilters, useTimes} from '../../../../components/CustomPopover';
-import CustomTable from '../../../../components/CustomTable';
-import ImprovedSmallProgressBar from '../../../../components/ImprovedSmallProgressBar';
-import {LightTooltip, TooltipWrapper} from '../../../../components/LightTooltip';
-import LoadingBox from '../../../../components/LoadingBox';
-import {Container, DateBox, LinkSpan, SettingContainer, StateBox} from '../../../../components/TableComponents';
-import {Routes} from '../../../../constants/routes';
-import {statusTaskColors} from 'constants/colors';
+  mdiFilterOutline,
+} from "@mdi/js";
+import Icon from "@mdi/react";
+import {
+  find,
+  get,
+  includes,
+  isArray,
+  isNil,
+  join,
+  remove,
+  size,
+  slice,
+} from "lodash";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
+import AvatarCircleList from "../../../../components/AvatarCircleList";
+import CustomBadge from "../../../../components/CustomBadge";
+import { ChartInfoBox } from "../../../../components/CustomDonutChart";
+import {
+  DownloadPopover,
+  TimeRangePopover,
+  useFilters,
+  useTimes,
+} from "../../../../components/CustomPopover";
+import CustomTable from "../../../../components/CustomTable";
+import ImprovedSmallProgressBar from "../../../../components/ImprovedSmallProgressBar";
+import {
+  LightTooltip,
+  TooltipWrapper,
+} from "../../../../components/LightTooltip";
+import LoadingBox from "../../../../components/LoadingBox";
+import {
+  Container,
+  DateBox,
+  LinkSpan,
+  SettingContainer,
+  StateBox,
+} from "../../../../components/TableComponents";
+import { Routes } from "../../../../constants/routes";
+import { statusTaskColors } from "constants/colors";
 import * as images from "assets";
-import './style.scss';
-import {WORKPLACE_TYPES} from "../../../../constants/constants";
-import {connect} from "react-redux";
-import {decodePriorityCode} from "../../../../helpers/project/commonHelpers";
+import "./style.scss";
+import { WORKPLACE_TYPES } from "../../../../constants/constants";
+import { connect } from "react-redux";
+import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import SvgIcon from "@material-ui/core/SvgIcon";
 
-const MyIcon = ({ className = '', ...props }) =>
+const MyIcon = ({ className = "", ...props }) => (
   <Icon
     className={`view_ProjectGroup_Table_All___icon ${className}`}
     {...props}
   />
-const SettingButton = ({
-  handleOpenMenu
-}) => {
-
+);
+const SettingButton = ({ handleOpenMenu }) => {
   return (
-    <SettingContainer onClick={evt => evt.stopPropagation()}>
+    <SettingContainer onClick={(evt) => evt.stopPropagation()}>
       <IconButton
         aria-controls="simple-menu"
         aria-haspopup="true"
-        onClick={evt => handleOpenMenu(evt.currentTarget)}
+        onClick={(evt) => handleOpenMenu(evt.currentTarget)}
         size="small"
       >
         <Icon path={mdiDotsVertical} size={1} color="rgba(0, 0, 0, 0.7)" />
@@ -62,15 +90,24 @@ const SettingButton = ({
 };
 
 function AllProjectTable({
-  expand, handleExpand,
-  projects, filterType, handleFilterType,
-  timeType, handleTimeType,
-  handleSortType, type_data = null,
+  expand,
+  handleExpand,
+  projects,
+  filterType,
+  handleFilterType,
+  timeType,
+  handleTimeType,
+  handleSortType,
+  type_data = null,
   handleShowOrHideProject,
   handleSortProject,
-  handleOpenModal, bgColor,
-  showHidePendings, projectGroup,
-  groupID, isFiltering, setIsFiltering
+  handleOpenModal,
+  bgColor,
+  showHidePendings,
+  projectGroup,
+  groupID,
+  isFiltering,
+  setIsFiltering,
 }) {
   const history = useHistory();
   const { t } = useTranslation();
@@ -86,72 +123,98 @@ function AllProjectTable({
   const times = useTimes();
   const filters = useFilters();
   function doOpenMenu(anchorEl, project) {
-    setMenuAnchor(anchorEl)
-    setCurProject(project)
+    setMenuAnchor(anchorEl);
+    setCurProject(project);
   }
   React.useEffect(() => {
     setShowHideDisabled(
-      !isNil(find(showHidePendings.pendings, pending => pending === get(curProject, 'id')))
-    )
+      !isNil(
+        find(
+          showHidePendings.pendings,
+          (pending) => pending === get(curProject, "id")
+        )
+      )
+    );
   }, [showHidePendings, curProject]);
   React.useEffect(() => {
-    setCurProject(oldProject => find(projects.projects, { id: get(oldProject, 'id') }));
+    setCurProject((oldProject) =>
+      find(projects.projects, { id: get(oldProject, "id") })
+    );
     setProjectSummary(projects.summary);
   }, [projects]);
   React.useEffect(() => {
-    setCurrentGroup(find(projectGroup, {"id": groupID}));
-  },[groupID, projectGroup]);
+    setCurrentGroup(find(projectGroup, { id: groupID }));
+  }, [groupID, projectGroup]);
 
   function resolveTitle() {
     switch (type_data) {
       case 1:
-        return <div className={"view_ProjectGroup_Table_All_titleTop"}>
-          <AccessTimeIcon fontSize={"large"} style={{marginRight: 20}}/>
-          <span>{t("LABEL_SEE_RECENTLY")}</span>
-        </div>;
+        return (
+          <div className={"view_ProjectGroup_Table_All_titleTop"}>
+            <AccessTimeIcon fontSize={"large"} style={{ marginRight: 20 }} />
+            <span>{t("LABEL_SEE_RECENTLY")}</span>
+          </div>
+        );
       case 2:
-        return <div className={"view_ProjectGroup_Table_All_titleTop"}>
-          <img src={images.person_pin_circle} style={{marginRight: 20}} alt={""} width={35} height={35}/>
-          <span>{t("LABEL_PERSONAL_BOARD")}</span>
-        </div>;
+        return (
+          <div className={"view_ProjectGroup_Table_All_titleTop"}>
+            <img
+              src={images.person_pin_circle}
+              style={{ marginRight: 20 }}
+              alt={""}
+              width={35}
+              height={35}
+            />
+            <span>{t("LABEL_PERSONAL_BOARD")}</span>
+          </div>
+        );
       default:
-        return <div className={"view_ProjectGroup_Table_All_titleTop"}>
-          <SvgIcon htmlColor={"#555555"} fontSize={"large"}  style={{marginRight: 20}}>
-            <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z"/>
-          </SvgIcon>
-          <abbr title={get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}>
-            {get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}
-          </abbr>
-        </div>;
+        return (
+          <div className={"view_ProjectGroup_Table_All_titleTop"}>
+            <SvgIcon
+              htmlColor={"#555555"}
+              fontSize={"large"}
+              style={{ marginRight: 20 }}
+            >
+              <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z" />
+            </SvgIcon>
+            <abbr title={get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}>
+              {get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}
+            </abbr>
+          </div>
+        );
     }
   }
 
   function renderEmptyView() {
     switch (type_data) {
       case 2:
-        return <EmptyPersonalBoard/>;
+        return <EmptyPersonalBoard />;
       default:
-        if(!isNil(groupID)) {
-          return <EmptyWorkingBoard groupID={groupID} projects={projects}/>;
-        } else return <EmptyWorkingGroup/>;
+        if (!isNil(groupID)) {
+          return <EmptyWorkingBoard groupID={groupID} projects={projects} />;
+        } else return <EmptyWorkingGroup />;
     }
   }
 
   return (
     <>
       <Container>
-        {projects.loading && <LoadingBox/>}
-        {size(projects.projects) === 0 && !projects.loading && !isFiltering && renderEmptyView()}
+        {projects.loading && <LoadingBox />}
+        {size(projects.projects) === 0 &&
+          !projects.loading &&
+          !isFiltering &&
+          renderEmptyView()}
         {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
           <React.Fragment>
             <CustomTable
               options={{
                 title: () => (
-                  <div style={{display: "flex", alignItems: "center"}}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     {resolveTitle()}
                   </div>
                 ),
-                subTitle: '',
+                subTitle: "",
                 // subActions: [
                 //   {
                 //     label: filters[filterType].title,
@@ -169,46 +232,50 @@ function AllProjectTable({
                 //     onClick: evt => setTimeAnchor(evt.currentTarget)
                 //   }
                 // ],
-                mainAction: type_data !== 2 ? {
-                  label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
-                  onClick: evt => handleOpenModal('CREATE'),
-                } : type_data === 2 ? {
-                  label: `+ ${t("LABEL_ADD_TABLE")}`,
-                  onClick: () => handleOpenModal('ADD_PERSONAL_BOARD')
-                } : null,
+                mainAction:
+                  type_data !== 2
+                    ? {
+                        label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
+                        onClick: (evt) => handleOpenModal("CREATE"),
+                      }
+                    : type_data === 2
+                    ? {
+                        label: `+ ${t("LABEL_ADD_TABLE")}`,
+                        onClick: () => handleOpenModal("ADD_PERSONAL_BOARD"),
+                      }
+                    : null,
                 expand: {
                   bool: expand,
-                  toggleExpand: () => handleExpand(!expand)
+                  toggleExpand: () => handleExpand(!expand),
                 },
                 moreMenu: [
                   {
                     label: filters[filterType].title,
                     iconPath: mdiFilterOutline,
-                    onClick: () => setFilterAnchor(true)
+                    onClick: () => setFilterAnchor(true),
                   },
                   {
                     label: t("DMH.VIEW.PGP.RIGHT.ALL.DOWN"),
                     iconPath: mdiDownload,
-                    onClick: () => setDownloadAnchor(true)
+                    onClick: () => setDownloadAnchor(true),
                   },
                   {
                     label: times[timeType].title,
                     iconPath: mdiCalendar,
-                    onClick: () => setTimeAnchor(true)
+                    onClick: () => setTimeAnchor(true),
                   },
                   {
-                    iconPath: mdiDeleteOutline ,
+                    iconPath: mdiDeleteOutline,
                     label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
-                    onClick: () => history.push(`${Routes.PROJECTS}/deleted`)
-                  }
-                
+                    onClick: () => history.push(`${Routes.PROJECTS}/deleted`),
+                  },
                 ],
                 grouped: {
-                  bool: false
+                  bool: false,
                 },
                 draggable: {
                   bool: true,
-                  onDragEnd: result => {
+                  onDragEnd: (result) => {
                     const { source, destination, draggableId } = result;
                     if (!destination) return;
                     if (
@@ -217,239 +284,300 @@ function AllProjectTable({
                     )
                       return;
                     let sortData = [...projects.projects];
-                    const indexes = sortData.map(data => get(data, 'sort_index'));
+                    const indexes = sortData.map((data) =>
+                      get(data, "sort_index")
+                    );
                     let removed = remove(sortData, { id: draggableId });
                     sortData = [
                       ...slice(sortData, 0, destination.index),
                       ...removed,
-                      ...slice(sortData, destination.index)
+                      ...slice(sortData, destination.index),
                     ].map((data, index) => ({
                       ...data,
                       sort_index: indexes[index],
                     }));
                     handleSortProject(sortData);
-                  }
+                  },
                 },
                 loading: {
                   bool: projects.loading,
-                  component: () => <LoadingBox />
+                  component: () => <LoadingBox />,
                 },
                 row: {
-                  id: 'id',
+                  id: "id",
                 },
                 noData: {
-                  bool: (projects.projectGroupsCount === 0),
-                  subtitle: projects.projectGroupsCount === 0
-                    ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
-                    : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK")
+                  bool: projects.projectGroupsCount === 0,
+                  subtitle:
+                    projects.projectGroupsCount === 0
+                      ? t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_PROJECT")
+                      : t("DMH.VIEW.PGP.RIGHT.ALL.NO_DATA.NO_TASK"),
                 },
               }}
               columns={[
                 {
                   label: () => null,
-                  field: row => {
-                    switch (get(row, 'work_type')) {
+                  field: (row) => {
+                    switch (get(row, "work_type")) {
                       case WORKPLACE_TYPES.JOB:
-                        return (<abbr title={t("IDS_WP_JOB")}><img src={images.check_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
+                        return (
+                          <abbr title={t("IDS_WP_JOB")}>
+                            <img
+                              src={images.check_64}
+                              alt={"work type icon"}
+                              width={30}
+                              height={30}
+                              style={{ padding: "15px 10px 7px 3px" }}
+                            />
+                          </abbr>
+                        );
                       case WORKPLACE_TYPES.PROJECT:
-                        return (<abbr title={t("IDS_WP_PROJECT")}><img src={images.speed_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
+                        return (
+                          <abbr title={t("IDS_WP_PROJECT")}>
+                            <img
+                              src={images.speed_64}
+                              alt={"work type icon"}
+                              width={30}
+                              height={30}
+                              style={{ padding: "15px 10px 7px 3px" }}
+                            />
+                          </abbr>
+                        );
                       case WORKPLACE_TYPES.PROCESS:
-                        return (<abbr title={t("IDS_WP_PROCESS")}><img src={images.workfollow_64} alt={"work type icon"} width={30} height={30} style={{padding: "15px 10px 7px 3px"}}/></abbr>);
+                        return (
+                          <abbr title={t("IDS_WP_PROCESS")}>
+                            <img
+                              src={images.workfollow_64}
+                              alt={"work type icon"}
+                              width={30}
+                              height={30}
+                              style={{ padding: "15px 10px 7px 3px" }}
+                            />
+                          </abbr>
+                        );
                       default:
                         return;
                     }
                   },
-                  align: 'left',
-                  width: '3%',
+                  align: "left",
+                  width: "3%",
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.NAME"),
-                  field: (row) =>
+                  field: (row) => (
                     <LinkSpan
-                      onClick={evt => history.push(`${get(row, 'url_redirect', '#')}`)}
+                      onClick={(evt) =>
+                        history.push(`${get(row, "url_redirect", "#")}`)
+                      }
                       className={"view_ProjectGroup_Table_All_title_bold"}
                     >
-                      {get(row, 'name', '')}
-                    </LinkSpan>,
-                  sort: evt => handleSortType('name'),
-                  align: 'left',
-                  width: '18%',
+                      {get(row, "name", "")}
+                    </LinkSpan>
+                  ),
+                  sort: (evt) => handleSortType("name"),
+                  align: "left",
+                  width: "18%",
                 },
                 {
                   label: t("IDS_WP_GROUP"),
-                  field: row => (
-                    <div title={get(row, 'project_group.name')} className="MuiAvatar-root" style={{width: "25px", height: "25px", margin: "0px auto", padding: "0px 5px"}}>
-                      <img className="MuiAvatar-img" style={{borderRadius: "50%"}} src={get(row, 'icon')} alt="project group icon" />
+                  field: (row) => (
+                    <div
+                      title={get(row, "project_group.name")}
+                      className="MuiAvatar-root"
+                      style={{
+                        width: "25px",
+                        height: "25px",
+                        margin: "0px auto",
+                        padding: "0px 5px",
+                      }}
+                    >
+                      <img
+                        className="MuiAvatar-img"
+                        style={{ borderRadius: "50%" }}
+                        src={get(row, "icon")}
+                        alt="project group icon"
+                      />
                     </div>
                   ),
-                  sort: evt => handleSortType('group'),
-                  align: 'center',
-                  width: '10%'
+                  sort: (evt) => handleSortType("group"),
+                  align: "center",
+                  width: "10%",
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.STATE"),
-                  field: row => (
-                    <StateBox
-                      stateCode={get(row, 'state_code')}
-                    >
+                  field: (row) => (
+                    <StateBox stateCode={get(row, "state_code")}>
                       <div className="project_state_wrapper">
                         <span>&#11044;</span>
                         <span>
-                      {get(row, 'state_code') === 5 ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : get(row, 'state_name')}
-                    </span>
+                          {get(row, "state_code") === 5
+                            ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE")
+                            : get(row, "state_name")}
+                        </span>
                       </div>
-                      {(get(row, 'state_code') === 3 && get(row, 'day_expired', 0) !== 0)
-                        ? (
-                          <small>
-                            {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
-                              date: get(row, 'day_expired', 0)
-                            })}
-                          </small>)
-                        : null}
+                      {get(row, "state_code") === 3 &&
+                      get(row, "day_expired", 0) !== 0 ? (
+                        <small>
+                          {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
+                            date: get(row, "day_expired", 0),
+                          })}
+                        </small>
+                      ) : null}
                     </StateBox>
                   ),
-                  sort: evt => handleSortType('state_code'),
-                  align: 'left',
-                  width: '13%',
+                  sort: (evt) => handleSortType("state_code"),
+                  align: "left",
+                  width: "13%",
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.PROGRESS"),
-                  field: row => (
+                  field: (row) => (
                     <LightTooltip
-                      className={'view_ProjectGroup_Table_All___progress'}
-                      placement='top'
+                      className={"view_ProjectGroup_Table_All___progress"}
+                      placement="top"
                       title={
                         <ChartInfoBox
-                          className='view_ProjectGroup_Table_All___tooltip'
+                          className="view_ProjectGroup_Table_All___tooltip"
                           title={t("DMH.VIEW.PGP.RIGHT.ALL.STATS.TOTAL")}
-                          data={
-                            [{
+                          data={[
+                            {
                               color: statusTaskColors.waiting,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.WAITING"),
-                              value: get(row, 'statistic.waiting', 0),
-                            }, {
+                              value: get(row, "statistic.waiting", 0),
+                            },
+                            {
                               color: statusTaskColors.doing,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.DOING"),
-                              value: get(row, 'statistic.doing', 0),
-                            }, {
+                              value: get(row, "statistic.doing", 0),
+                            },
+                            {
                               color: statusTaskColors.complete,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.COMPLETE"),
-                              value: get(row, 'statistic.complete', 0),
-                            }, {
+                              value: get(row, "statistic.complete", 0),
+                            },
+                            {
                               color: statusTaskColors.expired,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.EXPIRED"),
-                              value: get(row, 'statistic.expired', 0),
-                            }, {
+                              value: get(row, "statistic.expired", 0),
+                            },
+                            {
                               color: statusTaskColors.stoped,
                               title: t("DMH.VIEW.PGP.RIGHT.ALL.STATS.STOP"),
-                              value: get(row, 'statistic.stop', 0),
-                            }]
-                          }
+                              value: get(row, "statistic.stop", 0),
+                            },
+                          ]}
                         />
                       }
                     >
                       <TooltipWrapper>
                         <ImprovedSmallProgressBar
-                          data={[{
-                            color: '#ff9800',
-                            value: get(row, 'statistic.waiting', 0),
-                          }, {
-                            color: '#03a9f4',
-                            value: get(row, 'statistic.doing', 0),
-                          }, {
-                            color: '#f44336',
-                            value: get(row, 'statistic.expired', 0),
-                          }, {
-                            color: '#03c30b',
-                            value: get(row, 'statistic.complete', 0),
-                          }, {
-                            color: '#607d8b',
-                            value: get(row, 'statistic.stop', 0),
-                          }]}
-                          color={'#05b50c'}
-                          percentDone={get(row, 'complete', 0)}
+                          data={[
+                            {
+                              color: "#ff9800",
+                              value: get(row, "statistic.waiting", 0),
+                            },
+                            {
+                              color: "#03a9f4",
+                              value: get(row, "statistic.doing", 0),
+                            },
+                            {
+                              color: "#f44336",
+                              value: get(row, "statistic.expired", 0),
+                            },
+                            {
+                              color: "#03c30b",
+                              value: get(row, "statistic.complete", 0),
+                            },
+                            {
+                              color: "#607d8b",
+                              value: get(row, "statistic.stop", 0),
+                            },
+                          ]}
+                          color={"#05b50c"}
+                          percentDone={get(row, "complete", 0)}
                         />
                       </TooltipWrapper>
                     </LightTooltip>
                   ),
-                  sort: evt => handleSortType('complete'),
-                  align: 'center',
-                  width: '17%',
+                  sort: (evt) => handleSortType("complete"),
+                  align: "center",
+                  width: "17%",
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DURATION"),
-                  field: row => (
+                  field: (row) => (
                     <DateBox>
-                      {get(row, 'duration') ? (
+                      {get(row, "duration") ? (
                         <>
-                          <span>{t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", { date: get(row, 'duration') })}</span>
+                          <span>
+                            {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
+                              date: get(row, "duration"),
+                            })}
+                          </span>
                           <small>
-                            {get(row, 'date_start')} - {get(row, 'date_end')}
+                            {get(row, "date_start")} - {get(row, "date_end")}
                           </small>
                         </>
                       ) : null}
-
                     </DateBox>
                   ),
-                  sort: evt => handleSortType('duration'),
-                  align: 'left',
-                  width: '15%',
+                  sort: (evt) => handleSortType("duration"),
+                  align: "left",
+                  width: "15%",
                 },
                 {
                   label: t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.PRIO"),
-                  field: row => (
+                  field: (row) => (
                     <CustomBadge
                       color={
-                        decodePriorityCode(get(row, 'priority_code', 0)).color
+                        decodePriorityCode(get(row, "priority_code", 0)).color
                       }
                       background={
-                        decodePriorityCode(get(row, 'priority_code', 0))
+                        decodePriorityCode(get(row, "priority_code", 0))
                           .background
                       }
                     >
-                      {get(row, 'priority_name', '')}
+                      {get(row, "priority_name", "")}
                     </CustomBadge>
                   ),
-                  sort: evt => handleSortType('priority_code'),
-                  align: 'center',
-                  width: '10%',
+                  sort: (evt) => handleSortType("priority_code"),
+                  align: "center",
+                  width: "10%",
                 },
                 {
                   label: () => (
                     <Icon
                       path={mdiAccount}
                       size={1}
-                      color={'rgb(102, 102, 102)'}
+                      color={"rgb(102, 102, 102)"}
                     />
                   ),
-                  field: row => (
+                  field: (row) => (
                     <AvatarCircleList
-                      users={get(row, 'members', []).map(member => ({
-                        name: get(member, 'name'),
-                        avatar: get(member, 'avatar')
+                      users={get(row, "members", []).map((member) => ({
+                        name: get(member, "name"),
+                        avatar: get(member, "avatar"),
                       }))}
                       display={3}
                     />
                   ),
-                  align: 'center',
-                  width: '10%',
+                  align: "center",
+                  width: "10%",
                 },
                 {
-                  label: '',
-                  field: project => (get(project, 'can_update', false) || get(project, 'can_delete', false))
-                    ? (
+                  label: "",
+                  field: (project) =>
+                    get(project, "can_update", false) ||
+                    get(project, "can_delete", false) ? (
                       <SettingButton
-                        handleOpenMenu={currentTarget =>
-                          doOpenMenu(
-                            currentTarget,
-                            project,
-                          )
+                        handleOpenMenu={(currentTarget) =>
+                          doOpenMenu(currentTarget, project)
                         }
                       />
                     ) : null,
-                  align: 'center',
-                  width: '5%',
-                }
+                  align: "center",
+                  width: "5%",
+                },
               ]}
               data={projects.projects}
             />
@@ -457,27 +585,36 @@ function AllProjectTable({
               id="filter-menu"
               anchorEl={filterAnchor}
               open={Boolean(filterAnchor)}
-              onClose={evt => setFilterAnchor(null)}
+              onClose={(evt) => setFilterAnchor(null)}
               transformOrigin={{
                 vertical: -30,
-                horizontal: 'right'
+                horizontal: "right",
               }}
             >
-              <Box paddingLeft={"18px"} fontWeight={500} paddingY={"7px"} borderBottom={"1px solid #f4f4f4"}>
+              <Box
+                paddingLeft={"18px"}
+                fontWeight={500}
+                paddingY={"7px"}
+                borderBottom={"1px solid #f4f4f4"}
+              >
                 {t("LABEL_FILTER_WORKING_BOARD")}
               </Box>
               {filters.map((filter, index) => (
                 <MenuItem
                   key={index}
-                  onClick={evt => {
+                  onClick={(evt) => {
                     handleFilterType(index);
                     setFilterAnchor(null);
                     setIsFiltering(true);
                   }}
                   button={false}
-                  className={`${includes(!isArray(filterType) ? [filterType] : filterType, index)
-                    ? 'view_ProjectGroup_Table_All___menu-item-selected'
-                    : 'view_ProjectGroup_Table_All___menu-item'
+                  className={`${
+                    includes(
+                      !isArray(filterType) ? [filterType] : filterType,
+                      index
+                    )
+                      ? "view_ProjectGroup_Table_All___menu-item-selected"
+                      : "view_ProjectGroup_Table_All___menu-item"
                   }`}
                 >
                   {filterType === index && filter.option_type === "radio" && (
@@ -486,15 +623,19 @@ function AllProjectTable({
                   {filterType !== index && filter.option_type === "radio" && (
                     <MyIcon path={mdiCheckboxBlankCircleOutline} size={1} />
                   )}
-                  {filterType !== index && filter.option_type === "checkbox" && (
-                    <MyIcon path={mdiCheckboxBlankOutline} size={1} />
-                  )}
-                  {filterType === index && filter.option_type === "checkbox" && (
-                    <MyIcon path={mdiCheckboxMarked} size={1} />
-                  )}
+                  {filterType !== index &&
+                    filter.option_type === "checkbox" && (
+                      <MyIcon path={mdiCheckboxBlankOutline} size={1} />
+                    )}
+                  {filterType === index &&
+                    filter.option_type === "checkbox" && (
+                      <MyIcon path={mdiCheckboxMarked} size={1} />
+                    )}
                   <span>{filter.title}</span>
                   <span>
-                    {filter.image && <img src={filter.image} width={20} height={20} alt={""}/>}
+                    {filter.image && (
+                      <img src={filter.image} width={20} height={20} alt={""} />
+                    )}
                     {get(projectSummary, filter.field, 0)}
                   </span>
                 </MenuItem>
@@ -504,27 +645,32 @@ function AllProjectTable({
               anchorEl={downloadAnchor}
               className="download-popover-project"
               setAnchorEl={setDownloadAnchor}
-              fileName='projects'
-              data={projects.projects.map(project => ({
-                id: get(project, 'id', ''),
-                icon: get(project, 'icon', ''),
-                name: get(project, 'name', ''),
-                status: get(project, 'state_name', ''),
-                task_count: get(project, 'statistic.waiting', 0)
-                  + get(project, 'statistic.doing', 0)
-                  + get(project, 'statistic.expired', 0)
-                  + get(project, 'statistic.complete', 0)
-                  + get(project, 'statistic.stop', 0),
-                progress: `${get(project, 'complete', 0)}%`,
-                duration: get(project, 'duration')
-                  ? `${get(project, 'duration')} ngày (${get(project, 'date_start')} - ${get(project, 'date_end')})`
-                  : '',
-                priority: get(project, 'priority_name', ''),
+              fileName="projects"
+              data={projects.projects.map((project) => ({
+                id: get(project, "id", ""),
+                icon: get(project, "icon", ""),
+                name: get(project, "name", ""),
+                status: get(project, "state_name", ""),
+                task_count:
+                  get(project, "statistic.waiting", 0) +
+                  get(project, "statistic.doing", 0) +
+                  get(project, "statistic.expired", 0) +
+                  get(project, "statistic.complete", 0) +
+                  get(project, "statistic.stop", 0),
+                progress: `${get(project, "complete", 0)}%`,
+                duration: get(project, "duration")
+                  ? `${get(project, "duration")} ngày (${get(
+                      project,
+                      "date_start"
+                    )} - ${get(project, "date_end")})`
+                  : "",
+                priority: get(project, "priority_name", ""),
                 members: join(
-                  get(project, 'members', [])
-                    .map(member => get(member, 'name')),
-                  ','
-                )
+                  get(project, "members", []).map((member) =>
+                    get(member, "name")
+                  ),
+                  ","
+                ),
               }))}
             />
             <TimeRangePopover
@@ -533,67 +679,80 @@ function AllProjectTable({
               setAnchorEl={setTimeAnchor}
               className="time-range-popover"
               timeOptionDefault={timeType}
-              handleTimeRange={timeType => handleTimeType(timeType)}
+              handleTimeRange={(timeType) => handleTimeType(timeType)}
             />
             <Menu
               id="simple-menu"
               anchorEl={menuAnchor}
               keepMounted
               open={Boolean(menuAnchor)}
-              onClose={evt => setMenuAnchor(null)}
+              onClose={(evt) => setMenuAnchor(null)}
               transformOrigin={{
                 vertical: -30,
-                horizontal: 'right'
+                horizontal: "right",
               }}
             >
-              {get(curProject, 'can_update', false) && <MenuItem
-                onClick={evt => {
-                  setMenuAnchor(null);
-                  handleOpenModal('SETTING', {
-                    curProject,
-                    canChange: {
-                      date: true,
-                      copy: true,
-                      view: true,
-                    }
-                  });
-                }}
-              >
-                {t("DMH.VIEW.PGP.RIGHT.ALL.SETTING")}
-              </MenuItem>}
-              {get(curProject, 'can_update', false) && <MenuItem
-                onClick={evt => {
-                  setMenuAnchor(null);
-                  handleOpenModal('UPDATE', {
-                    curProject,
-                  });
-                }}
-              >
-                {t("DMH.VIEW.PGP.RIGHT.ALL.EDIT")}
-              </MenuItem>}
-              {get(curProject, 'can_update', false) && <MenuItem
-                onClick={evt => {
-                  setMenuAnchor(null);
-                  handleShowOrHideProject(curProject);
-                }}
-                disabled={showHideDisabled}
-              >
-                {showHideDisabled &&
-                <CircularProgress
-                  size={16}
-                  className="margin-circular"
-                  color="white"
-                />}
-                {get(curProject, 'visibility', false) ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE") : t("DMH.VIEW.PGP.RIGHT.ALL.SHOW")}
-              </MenuItem>}
-              {get(curProject, 'can_delete', false) && <MenuItem
-                onClick={evt => {
-                  setMenuAnchor(null)
-                  handleOpenModal('ALERT', {
-                    selectedProject: curProject,
-                  })
-                }}
-              >{t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}</MenuItem>}
+              {get(curProject, "can_update", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleOpenModal("SETTING", {
+                      curProject,
+                      canChange: {
+                        date: true,
+                        copy: true,
+                        view: true,
+                      },
+                    });
+                  }}
+                >
+                  {t("DMH.VIEW.PGP.RIGHT.ALL.SETTING")}
+                </MenuItem>
+              )}
+              {get(curProject, "can_update", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleOpenModal("UPDATE", {
+                      curProject,
+                    });
+                  }}
+                >
+                  {t("DMH.VIEW.PGP.RIGHT.ALL.EDIT")}
+                </MenuItem>
+              )}
+              {get(curProject, "can_update", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleShowOrHideProject(curProject);
+                  }}
+                  disabled={showHideDisabled}
+                >
+                  {showHideDisabled && (
+                    <CircularProgress
+                      size={16}
+                      className="margin-circular"
+                      color="white"
+                    />
+                  )}
+                  {get(curProject, "visibility", false)
+                    ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE")
+                    : t("DMH.VIEW.PGP.RIGHT.ALL.SHOW")}
+                </MenuItem>
+              )}
+              {get(curProject, "can_delete", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleOpenModal("ALERT", {
+                      selectedProject: curProject,
+                    });
+                  }}
+                >
+                  {t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}
+                </MenuItem>
+              )}
             </Menu>
           </React.Fragment>
         )}
@@ -602,8 +761,12 @@ function AllProjectTable({
   );
 }
 export default connect(
-  state => ({
-    projectGroup: get(state.projectGroup.listProjectGroup.data, "projectGroups", [])
+  (state) => ({
+    projectGroup: get(
+      state.projectGroup.listProjectGroup.data,
+      "projectGroups",
+      []
+    ),
   }),
-  {},
+  {}
 )(AllProjectTable);

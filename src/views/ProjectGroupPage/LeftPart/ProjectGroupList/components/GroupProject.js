@@ -7,23 +7,24 @@ import {
   ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
+import { mdiDotsVertical, mdiDragVertical, mdiPlus } from "@mdi/js";
+import Icon from "@mdi/react";
 import CustomAvatar from "components/CustomAvatar";
+import { Routes } from "constants/routes";
 import { get } from "lodash-es";
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { Link, useHistory } from "react-router-dom";
-import { mdiDotsVertical, mdiDragVertical, mdiPlus } from "@mdi/js";
-import Icon from "@mdi/react";
+import { NavLink, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   projectItem: {
     padding: "5px 0",
     paddingLeft: "45px",
-    "&:hover": {
+    "&:hover, &.active": {
       backgroundColor: "#e5e5e5!important",
       color: "rgb(0, 145, 67)",
       "& $projectIconChecked": {
@@ -186,8 +187,8 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
             <ListItem
               key={item.id}
               className={classes.projectItem}
-              component={Link}
-              to={`/projects/task-table/${item.id}`}
+              component={NavLink}
+              to={`${Routes.PROJECT}/${item.id}`}
             >
               <ListItemIcon
                 className={[classes.projectIcon, classes.projectIconChecked]}
