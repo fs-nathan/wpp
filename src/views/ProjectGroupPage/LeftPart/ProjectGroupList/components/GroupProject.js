@@ -13,6 +13,7 @@ import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import { mdiDotsVertical, mdiDragVertical, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
+import classNames from "classnames";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
 import { get } from "lodash-es";
@@ -51,6 +52,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const PathNavLink = (props) => {
+  const propsSearch = `?${props.to.split("?")[1]}`;
+  return (
+    <NavLink isActive={(_, { search }) => search === propsSearch} {...props} />
+  );
+};
+
 export const GroupProject = ({
   projectGroup,
   groupID,
@@ -61,7 +69,6 @@ export const GroupProject = ({
   setSelectedGroup,
   setAnchorElGroup,
 }) => {
-  const history = useHistory();
   const [isActive, setIsActive] = useState(true);
 
   const _toggleExpand = () => {
@@ -75,8 +82,9 @@ export const GroupProject = ({
           <ListItem
             ref={provided.innerRef}
             {...provided.draggableProps}
+            component={PathNavLink}
             className="view_ProjectGroup_List-customListItem"
-            onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
+            to={`/projects?groupID=${projectGroup.id}`}
           >
             <div
               {...provided.dragHandleProps}
