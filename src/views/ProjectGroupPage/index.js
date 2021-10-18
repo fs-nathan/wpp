@@ -18,11 +18,21 @@ import ProjectsStart from "./RightPart/ProjectsStart";
 import { routeSelector } from "./selectors";
 
 const useStyles = makeStyles({
-  wrapper: { display: "flex" },
-  leftSidebar: { width: 300, "&.isCollapsed": { width: 0 } },
+  wrapper: {
+    height: "100%",
+    display: "grid",
+    gridTemplateRows: "auto",
+    gridTemplateColumns: "minmax(300px,1fr) minmax(800px,4fr)",
+    "&.isCollapsed": {
+      gridTemplateRows: "auto",
+      gridTemplateColumns: "auto",
+    },
+  },
+  leftSidebar: {
+    display: "initial",
+  },
   mainContent: {
-    width: "calc(100% - 300px)",
-    "&.isCollapsed": { width: "100%" },
+    borderLeft: "1px solid rgba(0,0,0,.1)",
   },
 });
 
@@ -50,7 +60,7 @@ function ProjectGroupPage({
     <Route path={route}>
       <div className={classNames(classes.wrapper, { isCollapsed })}>
         {!isCollapsed && (
-          <div className={classes.leftSidebar}>
+          <div className={classNames(classes.leftSidebar, { isCollapsed })}>
             {isDeletedPage ? <ProjectGroupListDeleted /> : <ProjectGroupList />}
           </div>
         )}
@@ -69,7 +79,7 @@ function ProjectGroupPage({
                 handleExpand={_handleExpand}
               />
             </Route>
-            <Route exact path="/personal-board">
+            <Route exact path="/projects/personal-board">
               <AllProjectTable
                 type_data={2}
                 expand={isCollapsed}

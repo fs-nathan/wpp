@@ -5,6 +5,7 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import {
   mdiAccount,
   mdiCalendar,
@@ -12,12 +13,16 @@ import {
   mdiCheckboxBlankOutline,
   mdiCheckboxMarked,
   mdiCheckCircle,
+  mdiChevronDown,
   mdiDeleteOutline,
   mdiDotsVertical,
   mdiDownload,
   mdiFilterOutline,
+  mdiMenu,
 } from "@mdi/js";
 import Icon from "@mdi/react";
+import * as images from "assets";
+import { statusTaskColors } from "constants/colors";
 import {
   find,
   get,
@@ -29,9 +34,11 @@ import {
   size,
   slice,
 } from "lodash";
-import React from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import PopoverSetGroupDefault from "views/ProjectGroupPage/components/PopoverSetGroupDefault";
 import AvatarCircleList from "../../../../components/AvatarCircleList";
 import CustomBadge from "../../../../components/CustomBadge";
 import { ChartInfoBox } from "../../../../components/CustomDonutChart";
@@ -55,18 +62,13 @@ import {
   SettingContainer,
   StateBox,
 } from "../../../../components/TableComponents";
-import { Routes } from "../../../../constants/routes";
-import { statusTaskColors } from "constants/colors";
-import * as images from "assets";
-import "./style.scss";
 import { WORKPLACE_TYPES } from "../../../../constants/constants";
-import { connect } from "react-redux";
+import { Routes } from "../../../../constants/routes";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
-import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
-import SvgIcon from "@material-ui/core/SvgIcon";
+import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
+import "./style.scss";
 
 const MyIcon = ({ className = "", ...props }) => (
   <Icon
@@ -120,6 +122,8 @@ function AllProjectTable({
   const [projectSummary, setProjectSummary] = React.useState({});
   const [currentGroup, setCurrentGroup] = React.useState(null);
 
+  const refSetGroupDefault = useRef(null);
+
   const times = useTimes();
   const filters = useFilters();
   function doOpenMenu(anchorEl, project) {
@@ -146,6 +150,10 @@ function AllProjectTable({
     setCurrentGroup(find(projectGroup, { id: groupID }));
   }, [groupID, projectGroup]);
 
+  const _handleOpenSetGroup = (event) => {
+    refSetGroupDefault.current._open(event.currentTarget, currentGroup);
+  };
+
   function resolveTitle() {
     switch (type_data) {
       case 1:
@@ -170,17 +178,33 @@ function AllProjectTable({
         );
       default:
         return (
-          <div className={"view_ProjectGroup_Table_All_titleTop"}>
-            <SvgIcon
-              htmlColor={"#555555"}
-              fontSize={"large"}
-              style={{ marginRight: 20 }}
-            >
-              <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z" />
-            </SvgIcon>
+          <div className="view_ProjectGroup_Table_All_titleTop">
+            <Icon
+              path={mdiMenu}
+              size={1}
+              fill="#666"
+              style={{ marginRight: 10, cursor: "pointer" }}
+              onClick={() => handleExpand(!expand)}
+            />
+            <img
+              src={get(currentGroup, "icon")}
+              style={{ marginRight: 10 }}
+              alt={get(currentGroup, "name")}
+              width={35}
+              height={35}
+            />
             <abbr title={get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}>
               {get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}
+              <Icon
+                path={mdiChevronDown}
+                size={1}
+                fill="#666"
+                style={{ marginLeft: 10, cursor: "pointer" }}
+                onClick={_handleOpenSetGroup}
+              />
             </abbr>
+
+            <PopoverSetGroupDefault ref={refSetGroupDefault} />
           </div>
         );
     }
