@@ -13,13 +13,12 @@ import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import { mdiDotsVertical, mdiDragVertical, mdiPlus } from "@mdi/js";
 import Icon from "@mdi/react";
-import classNames from "classnames";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
 import { get } from "lodash-es";
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   projectItem: {
@@ -126,7 +125,7 @@ export const GroupProject = ({
             <IconButton className={"rightIconControlList"} size={"small"}>
               <Icon
                 onClick={(evt) => {
-                  evt.stopPropagation();
+                  evt.preventDefault();
                   setOpenCreateGroup(true);
                   setAnchorElAddGroup(null);
                   setSelectedGroup(null);
@@ -141,7 +140,7 @@ export const GroupProject = ({
               className={"rightIconControlList"}
               size={"small"}
               onClick={(evt) => {
-                evt.stopPropagation();
+                evt.preventDefault();
                 setAnchorElGroup(evt.currentTarget);
                 setSelectedGroup(projectGroup);
               }}
@@ -156,7 +155,7 @@ export const GroupProject = ({
             <IconButton
               size={"small"}
               className={"rightIconControlList"}
-              onClick={(e) => e.stopPropagation()}
+              onClick={(e) => e.preventDefault()}
             >
               {isActive ? (
                 <ExpandLess
