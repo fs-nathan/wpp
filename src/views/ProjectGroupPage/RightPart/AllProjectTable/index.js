@@ -8,20 +8,25 @@ import { sortProject } from "actions/project/sortProject";
 import { detailProjectGroup } from "actions/projectGroup/detailProjectGroup";
 import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
 import { useFilters, useTimes } from "components/CustomPopover";
+import { CREATE_PROJECT } from "constants/events";
 import {
   CustomEventDispose,
   CustomEventListener,
   SORT_PROJECT,
   SORT_PROJECT_GROUP,
 } from "constants/events.js";
-import { filter, get, reverse, sortBy, size } from "lodash";
+import { filter, get, reverse, size, sortBy } from "lodash";
 import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
+import { useLocation } from "react-router";
+import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 import { routeSelector } from "../../../ProjectPage/selectors";
+import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 import CreateProjectModal from "../../Modals/CreateProject";
 import DeleteProjectModal from "../../Modals/DeleteProject";
 import EditProjectModal from "../../Modals/EditProject";
+import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
 import NoProjectGroupModal from "../../Modals/NoProjectGroup";
 import ProjectSettingModal from "../../Modals/ProjectSetting";
 import { localOptionSelector, viewPermissionsSelector } from "../../selectors";
@@ -31,12 +36,6 @@ import {
   projectsSelector,
   showHidePendingsSelector,
 } from "./selectors";
-import { CREATE_PROJECT } from "constants/events";
-import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
-import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
-import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
-import { useLocation } from "react-router";
-import { useLocalStorage } from "react-use";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);

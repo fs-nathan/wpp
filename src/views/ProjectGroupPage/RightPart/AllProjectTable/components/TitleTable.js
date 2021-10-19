@@ -62,13 +62,6 @@ export const TitleTable = ({
         return (
           <div className="view_ProjectGroup_Table_All_titleTop">
             {_renderIconExpand()}
-            <img
-              src={get(currentGroup, "icon")}
-              style={{ marginRight: 10 }}
-              alt={get(currentGroup, "name")}
-              width={35}
-              height={35}
-            />
             <abbr title={get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}>
               {get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}
               <Icon
