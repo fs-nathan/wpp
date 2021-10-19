@@ -32,116 +32,121 @@ const initialState = {
   selectedGroup: null,
 };
 
-const PopoverSetGroupDefault = forwardRef((props, ref) => {
-  const { t } = useTranslation();
-  const [state, dispatchState] = useReducer(reducer, initialState);
-  const [isShowAlert, setIsShowAlert] = useState(false);
-  const [isShowCreateGroup, setIsShowCreateGroup] = useState(false);
+const PopoverSetGroupDefault = forwardRef(
+  ({ onSetDefault = () => {} }, ref) => {
+    const { t } = useTranslation();
+    const [state, dispatchState] = useReducer(reducer, initialState);
+    const [isShowAlert, setIsShowAlert] = useState(false);
+    const [isShowCreateGroup, setIsShowCreateGroup] = useState(false);
 
-  const canModify = useSelector(
-    ({ viewPermissions }) => viewPermissions.data.projects.manage_group_project
-  );
+    const canModify = useSelector(
+      ({ viewPermissions }) =>
+        viewPermissions.data.projects.manage_group_project
+    );
 
-  const [defaultAccessItem, setDefaultAccessItem] = useLocalStorage(
-    "WPS_WORKING_SPACE_DEFAULT_ACCESS"
-  );
+    const [, setDefaultAccessItem] = useLocalStorage(
+      "WPS_WORKING_SPACE_DEFAULT_ACCESS"
+    );
 
-  useImperativeHandle(ref, () => ({ _open }));
+    useImperativeHandle(ref, () => ({ _open }));
 
-  const _open = (anchorElGroup, selectedGroup) => {
-    dispatchState({ anchorElGroup, selectedGroup });
-  };
+    const _open = (anchorElGroup, selectedGroup) => {
+      dispatchState({ anchorElGroup, selectedGroup });
+    };
 
-  const _close = () => {
-    dispatchState({ anchorElGroup: null, selectedGroup: null });
-  };
+    const _close = (e) => {
+      e && e.stopPropagation();
+      dispatchState({ anchorElGroup: null, selectedGroup: null });
+    };
 
-  const _handleSetDefault = (value) => {
-    setDefaultAccessItem(value);
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, t("SNACK_MUTATE_SUCCESS"));
-  };
+    const _handleSetDefault = (value) => {
+      setDefaultAccessItem(value);
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, t("SNACK_MUTATE_SUCCESS"));
+      onSetDefault(value);
+    };
 
-  const _deleteGroup = (e) => {
-    e.stopPropagation();
-    setIsShowAlert(true);
-  };
+    const _deleteGroup = (e) => {
+      e.stopPropagation();
+      setIsShowAlert(true);
+    };
 
-  const _updateGroup = (e) => {
-    e.stopPropagation();
-    setIsShowCreateGroup(true);
-  };
+    const _updateGroup = (e) => {
+      e.stopPropagation();
+      setIsShowCreateGroup(true);
+    };
 
-  if (!state.anchorElGroup) return null;
+    if (!state.anchorElGroup) return null;
 
-  return (
-    <>
-      <Popover
-        open={Boolean(state.anchorElGroup)}
-        anchorEl={state.anchorElGroup}
-        disableRestoreFocus
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        onClose={_close}
-        elevation={0}
-      >
-        <Box className={"personalBoard-container"}>
-          <Box className={"personalBoard-actionItemWrapper"}>
-            <span className={"title"}>{t("LABEL_SET_DEFAULT")}</span>
-            <Box className={"actionItem"}>
-              <Typography variant={"body2"} color={"textSecondary"}>
-                {t("LABEL_SET_DEFAULT_DES")}
-              </Typography>
-              <Button
-                color={"primary"}
-                onClick={(evt) => {
-                  evt.stopPropagation();
-                  _handleSetDefault(`?groupID=${state.selectedGroup.id}`);
-                  _close();
-                }}
-              >
-                {t("LABEL_SET")}
-              </Button>
+    return (
+      <>
+        <Popover
+          open={Boolean(state.anchorElGroup)}
+          anchorEl={state.anchorElGroup}
+          disableRestoreFocus
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          onClose={_close}
+          elevation={0}
+        >
+          <Box className={"personalBoard-container"}>
+            <Box className={"personalBoard-actionItemWrapper"}>
+              <span className={"title"}>{t("LABEL_SET_DEFAULT")}</span>
+              <Box className={"actionItem"}>
+                <Typography variant={"body2"} color={"textSecondary"}>
+                  {t("LABEL_SET_DEFAULT_DES")}
+                </Typography>
+                <Button
+                  color={"primary"}
+                  onClick={(evt) => {
+                    evt.stopPropagation();
+                    _handleSetDefault(`?groupID=${state.selectedGroup.id}`);
+                    _close();
+                  }}
+                >
+                  {t("LABEL_SET")}
+                </Button>
+              </Box>
             </Box>
           </Box>
-        </Box>
 
-        {canModify && (
-          <>
-            <Divider />
-            <MenuList>
-              <MenuItem onClick={_updateGroup}>
-                {t("IDS_WP_EDIT_TEXT")}
-              </MenuItem>
-              <MenuItem onClick={(evt) => _deleteGroup(evt)}>
-                {t("IDS_WP_DELETE")}
-              </MenuItem>
-            </MenuList>
-          </>
-        )}
-      </Popover>
+          {canModify && (
+            <>
+              <Divider />
+              <MenuList>
+                <MenuItem onClick={_updateGroup}>
+                  {t("IDS_WP_EDIT_TEXT")}
+                </MenuItem>
+                <MenuItem onClick={(evt) => _deleteGroup(evt)}>
+                  {t("IDS_WP_DELETE")}
+                </MenuItem>
+              </MenuList>
+            </>
+          )}
+        </Popover>
 
-      {/* Delete Confirm */}
-      <ProjectGroupDelete
-        open={isShowAlert}
-        setOpen={setIsShowAlert}
-        selectedProjectGroup={state.selectedGroup}
-        redirectURL="/projects/recently"
-      />
+        {/* Delete Confirm */}
+        <ProjectGroupDelete
+          open={isShowAlert}
+          setOpen={setIsShowAlert}
+          selectedProjectGroup={state.selectedGroup}
+          redirectURL="/projects/recently"
+        />
 
-      {/* Delete Confirm */}
-      <CreateProjectGroup
-        open={isShowCreateGroup}
-        setOpen={setIsShowCreateGroup}
-        updatedProjectGroup={state.selectedGroup}
-      />
-    </>
-  );
-});
+        {/* Delete Confirm */}
+        <CreateProjectGroup
+          open={isShowCreateGroup}
+          setOpen={setIsShowCreateGroup}
+          updatedProjectGroup={state.selectedGroup}
+        />
+      </>
+    );
+  }
+);
 
 export default PopoverSetGroupDefault;

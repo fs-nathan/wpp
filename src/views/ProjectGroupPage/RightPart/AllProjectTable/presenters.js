@@ -5,7 +5,6 @@ import {
   Menu,
   MenuItem,
 } from "@material-ui/core";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import {
   mdiAccount,
   mdiCalendar,
@@ -13,12 +12,10 @@ import {
   mdiCheckboxBlankOutline,
   mdiCheckboxMarked,
   mdiCheckCircle,
-  mdiChevronDown,
   mdiDeleteOutline,
   mdiDotsVertical,
   mdiDownload,
   mdiFilterOutline,
-  mdiMenu,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import * as images from "assets";
@@ -34,11 +31,10 @@ import {
   size,
   slice,
 } from "lodash";
-import React, { useRef } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import PopoverSetGroupDefault from "views/ProjectGroupPage/components/PopoverSetGroupDefault";
 import AvatarCircleList from "../../../../components/AvatarCircleList";
 import CustomBadge from "../../../../components/CustomBadge";
 import { ChartInfoBox } from "../../../../components/CustomDonutChart";
@@ -65,6 +61,7 @@ import {
 import { WORKPLACE_TYPES } from "../../../../constants/constants";
 import { Routes } from "../../../../constants/routes";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
+import { TitleTable } from "./components";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
@@ -122,8 +119,6 @@ function AllProjectTable({
   const [projectSummary, setProjectSummary] = React.useState({});
   const [currentGroup, setCurrentGroup] = React.useState(null);
 
-  const refSetGroupDefault = useRef(null);
-
   const times = useTimes();
   const filters = useFilters();
   function doOpenMenu(anchorEl, project) {
@@ -150,66 +145,6 @@ function AllProjectTable({
     setCurrentGroup(find(projectGroup, { id: groupID }));
   }, [groupID, projectGroup]);
 
-  const _handleOpenSetGroup = (event) => {
-    refSetGroupDefault.current._open(event.currentTarget, currentGroup);
-  };
-
-  function resolveTitle() {
-    switch (type_data) {
-      case 1:
-        return (
-          <div className={"view_ProjectGroup_Table_All_titleTop"}>
-            <AccessTimeIcon fontSize={"large"} style={{ marginRight: 20 }} />
-            <span>{t("LABEL_SEE_RECENTLY")}</span>
-          </div>
-        );
-      case 2:
-        return (
-          <div className={"view_ProjectGroup_Table_All_titleTop"}>
-            <img
-              src={images.person_pin_circle}
-              style={{ marginRight: 20 }}
-              alt={""}
-              width={35}
-              height={35}
-            />
-            <span>{t("LABEL_PERSONAL_BOARD")}</span>
-          </div>
-        );
-      default:
-        return (
-          <div className="view_ProjectGroup_Table_All_titleTop">
-            <Icon
-              path={mdiMenu}
-              size={1}
-              fill="#666"
-              style={{ marginRight: 10, cursor: "pointer" }}
-              onClick={() => handleExpand(!expand)}
-            />
-            <img
-              src={get(currentGroup, "icon")}
-              style={{ marginRight: 10 }}
-              alt={get(currentGroup, "name")}
-              width={35}
-              height={35}
-            />
-            <abbr title={get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}>
-              {get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}
-              <Icon
-                path={mdiChevronDown}
-                size={1}
-                fill="#666"
-                style={{ marginLeft: 10, cursor: "pointer" }}
-                onClick={_handleOpenSetGroup}
-              />
-            </abbr>
-
-            <PopoverSetGroupDefault ref={refSetGroupDefault} />
-          </div>
-        );
-    }
-  }
-
   function renderEmptyView() {
     switch (type_data) {
       case 2:
@@ -234,9 +169,12 @@ function AllProjectTable({
             <CustomTable
               options={{
                 title: () => (
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    {resolveTitle()}
-                  </div>
+                  <TitleTable
+                    currentGroup={currentGroup}
+                    expand={expand}
+                    onExpand={handleExpand}
+                    typeData={type_data}
+                  />
                 ),
                 subTitle: "",
                 // subActions: [

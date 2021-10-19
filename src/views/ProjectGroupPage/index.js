@@ -5,6 +5,7 @@ import React, { useLayoutEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router";
 import { Route, Switch } from "react-router-dom";
+import { useLocalStorage } from "react-use";
 import {
   checkHasRecentlyProjects,
   countPersonalProjectsBoard,
@@ -44,7 +45,10 @@ function ProjectGroupPage({
 }) {
   const classes = useStyles();
   const { pathname } = useLocation();
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useLocalStorage(
+    "WPS_COLLAPSED_DEFAULT",
+    true
+  );
   const isDeletedPage = pathname.split("/")[2] === "deleted";
 
   useLayoutEffect(() => {

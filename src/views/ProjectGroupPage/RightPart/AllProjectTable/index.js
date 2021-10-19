@@ -36,6 +36,7 @@ import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
 import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 import { useLocation } from "react-router";
+import { useLocalStorage } from "react-use";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
