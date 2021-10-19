@@ -195,6 +195,10 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
               key={item.id}
               className={classes.projectItem}
               component={NavLink}
+              isActive={(match, { pathname }) => {
+                const id = pathname.split("/");
+                return id[3] === item.id;
+              }}
               to={`${Routes.PROJECT}/${item.id}`}
             >
               <ListItemIcon

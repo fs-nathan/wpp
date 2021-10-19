@@ -9,7 +9,6 @@ import { useLocalStorage } from "react-use";
 import GranttPage from "views/GrantPage/GrantTable";
 import ChatPage from "views/JobDetailPage";
 import KanbanPage from "views/KanbanPage";
-import HeaderRightPart from "views/ProjectGroupPage/RightPart/components/HeaderRightPart.js";
 import {
   checkHasRecentlyProjects,
   countPersonalProjectsBoard,
@@ -72,7 +71,6 @@ function ProjectGroupPage({
         </div>
       )}
       <div className={classNames(classes.mainContent, { isCollapsed })}>
-        <HeaderRightPart />
         <Switch>
           <Route exact path="/projects/recently">
             <AllProjectTable
