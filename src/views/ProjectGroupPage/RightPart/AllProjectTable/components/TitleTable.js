@@ -43,6 +43,8 @@ export const TitleTable = ({
   };
 
   function resolveTitle() {
+    const isAllProjects = !!!currentGroup?.name;
+    const groupName = get(currentGroup, "name", t("LABEL_WORKING_GROUP"));
     switch (typeData) {
       case 1:
         return (
@@ -62,21 +64,40 @@ export const TitleTable = ({
         return (
           <div className="view_ProjectGroup_Table_All_titleTop">
             {_renderIconExpand()}
-            <abbr title={get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}>
-              {get(currentGroup, "name", t("LABEL_WORKING_GROUP"))}
-              <Icon
-                path={mdiChevronDown}
-                size={1}
-                fill="#666"
-                style={{ margin: "0 10px", cursor: "pointer" }}
-                onClick={_handleOpenSetGroup}
+            {!isAllProjects && (
+              <img
+                src={get(currentGroup, "icon")}
+                style={{ marginRight: 10 }}
+                alt={get(currentGroup, "name")}
+                width={35}
+                height={35}
               />
-              {isDefaultGroup && <FlagOutlinedIcon style={{ color: "#666" }} />}
+            )}
+
+            <abbr title={groupName}>
+              {groupName}
+
+              {!isAllProjects && (
+                <>
+                  <Icon
+                    path={mdiChevronDown}
+                    size={1}
+                    fill="#666"
+                    style={{ margin: "0 10px", cursor: "pointer" }}
+                    onClick={_handleOpenSetGroup}
+                  />
+                  {isDefaultGroup && (
+                    <FlagOutlinedIcon style={{ color: "#666" }} />
+                  )}
+                </>
+              )}
             </abbr>
-            <PopoverSetGroupDefault
-              ref={refSetGroupDefault}
-              onSetDefault={_handleSetDefaultGroup}
-            />
+            {!isAllProjects && (
+              <PopoverSetGroupDefault
+                ref={refSetGroupDefault}
+                onSetDefault={_handleSetDefaultGroup}
+              />
+            )}
           </div>
         );
     }

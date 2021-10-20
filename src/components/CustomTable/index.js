@@ -1,14 +1,14 @@
-import { Button } from '@material-ui/core';
-import { get } from 'lodash';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { connect } from 'react-redux';
-import LoadingOverlay from '../LoadingOverlay';
-import NoData from '../NoData';
-import HeaderButtonGroup from './HeaderButtonGroup';
-import { bgColorSelector } from './selectors';
-import './style.scss';
-import TableMain from './TableMain';
+import { Button } from "@material-ui/core";
+import { get } from "lodash";
+import PropTypes from "prop-types";
+import React from "react";
+import { connect } from "react-redux";
+import LoadingOverlay from "../LoadingOverlay";
+import NoData from "../NoData";
+import HeaderButtonGroup from "./HeaderButtonGroup";
+import { bgColorSelector } from "./selectors";
+import "./style.scss";
+import TableMain from "./TableMain";
 import Icon from "@mdi/react";
 
 export const CustomTableContext = React.createContext();
@@ -118,79 +118,81 @@ function CustomTable() {
     fontSize: "21px",
     lineHeight: "26px",
     fontWeight: 600,
-    textTransform: "unset"
-  }
+    textTransform: "unset",
+  };
   return (
     <LoadingOverlay
-      active={get(options, 'loading.bool', false)}
+      active={get(options, "loading.bool", false)}
       spinner
       fadeSpeed={0}
       style={{
-        height: '100%',
+        height: "100%",
       }}
     >
       <Container>
         <Header>
           <LeftHeader>
             <div style={styleOfTitleHead}>
-              {
-                typeof get(options, 'title') === 'function'
+              {typeof get(options, "title") === "function"
                 ? options.title()
-                : get(options, 'title', '')
-              }
+                : get(options, "title", "")}
             </div>
-            {get(options, 'subTitle') ? (
-              <div>
-                {typeof get(options, 'subTitle') === 'function'
-                  ? options.subTitle()
-                  : get(options, 'subTitle', '')}
-              </div>
-            ) : null}
+            {get(options, "subTitle")
+              ? typeof get(options, "subTitle") === "function"
+                ? options.subTitle()
+                : get(options, "subTitle", "")
+              : null}
           </LeftHeader>
           <RightHeader>
             <HeaderButtonGroup />
-            {get(options, 'mainAction') && (
+            {get(options, "mainAction") && (
               <StyledButton
                 size="small"
                 onClick={get(options, "mainAction.onClick", () => null)}
               >
-                {
-                  get(options, "mainAction.icon", null) !== null && <Icon path={get(options, "mainAction.icon")} size={1} style={{marginRight: "5px", fill: "#fff"}}/>
-                }
+                {get(options, "mainAction.icon", null) !== null && (
+                  <Icon
+                    path={get(options, "mainAction.icon")}
+                    size={1}
+                    style={{ marginRight: "5px", fill: "#fff" }}
+                  />
+                )}
                 {get(options, "mainAction.label", "")}
               </StyledButton>
             )}
           </RightHeader>
         </Header>
-        {get(options, 'noData.bool', false)
-          ? <NoData
-            title={get(options, 'noData.title')}
-            subtitle={get(options, 'noData.subtitle')}
+        {get(options, "noData.bool", false) ? (
+          <NoData
+            title={get(options, "noData.title")}
+            subtitle={get(options, "noData.subtitle")}
           />
-          : <StyledTableMain />}
+        ) : (
+          <StyledTableMain />
+        )}
       </Container>
     </LoadingOverlay>
   );
 }
 
 function CustomTableWrapper({ options, columns, data, bgColor }) {
-  const [searchPatern, setSearchPatern] = React.useState('');
+  const [searchPatern, setSearchPatern] = React.useState("");
   const [expand, setExpand] = React.useState(false);
 
   const defaultOptions = {
     search: {
       patern: searchPatern,
-      onChange: str => setSearchPatern(str)
+      onChange: (str) => setSearchPatern(str),
     },
     expand: {
       bool: expand,
-      toggleExpand: () => setExpand(expand => !expand)
-    }
+      toggleExpand: () => setExpand((expand) => !expand),
+    },
   };
   const context = {
     options: {
       ...defaultOptions,
-      ...options
+      ...options,
     },
     columns: columns || [],
     data: data || [],
@@ -207,16 +209,13 @@ function CustomTableWrapper({ options, columns, data, bgColor }) {
 CustomTableWrapper.propTypes = {
   options: PropTypes.object.isRequired,
   columns: PropTypes.array.isRequired,
-  data: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     bgColor: bgColorSelector(state),
-  }
-}
+  };
+};
 
-export default connect(
-  mapStateToProps,
-  null,
-)(CustomTableWrapper);
+export default connect(mapStateToProps, null)(CustomTableWrapper);
