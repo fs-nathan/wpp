@@ -8,8 +8,8 @@
     grid-template-rows: 70px calc(100vh - 70px - 50px);
     grid-template-columns: 1fr;
     grid-template-areas:
-      'header'
-      'body';
+      "header"
+      "body";
   }
 
   &__header {
@@ -20,13 +20,13 @@
     padding: 20px 24px;
     margin: 0;
     text-align: center;
-    background-color: #F5F6F7;
+    background-color: #f5f6f7;
     height: 30px;
     display: flex;
     justify-content: center;
     flex-direction: column;
 
-    &>span {
+    & > span {
       margin-top: 5px;
       font-size: 14px;
     }
@@ -61,7 +61,7 @@
 
     .schedule_item_time {
       font-size: 14px !important;
-      color: #FF5227;
+      color: #ff5227;
       font-weight: 500;
       width: 100px;
     }
@@ -95,7 +95,7 @@
       align-items: center;
       justify-content: space-between;
 
-      &>span {
+      & > span {
         margin-left: 5px;
       }
     }
@@ -112,12 +112,12 @@
       align-items: center;
       justify-content: space-between;
 
-      &>:nth-child(1) {
+      & > :nth-child(1) {
         font-weight: 500;
         font-size: 15px;
       }
 
-      &>:nth-child(2) {
+      & > :nth-child(2) {
         font-weight: 400;
         font-size: 15px;
         color: #ff5227;
@@ -127,7 +127,7 @@
   }
 
   .MuiTypography-colorPrimary {
-    color: #009CF3 !important;
+    color: #009cf3 !important;
     display: inline-flex;
     justify-content: space-around;
     align-items: center;
@@ -135,7 +135,6 @@
   }
 
   &_No_Data_Container {
-
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -177,7 +176,7 @@
 }
 
 .comp_CustomTable___header {
-  padding: 10px 20px 10px 20px;
+  // padding: 10px 20px 10px 20px;
 }
 .modal-week-schedule-home-page {
   .schedule_item_content_place {

@@ -20,6 +20,7 @@ const useStyles = makeStyles({
     display: "grid",
     gridTemplateRows: "auto",
     gridTemplateColumns: "minmax(300px,1fr) minmax(800px,4fr)",
+    backgroundColor: "#fff!important",
     "&.isCollapsed": {
       gridTemplateRows: "auto",
       gridTemplateColumns: "auto",
@@ -28,9 +29,7 @@ const useStyles = makeStyles({
   leftSidebar: {
     display: "initial",
   },
-  mainContent: {
-    borderLeft: "1px solid rgba(0,0,0,.1)",
-  },
+  mainContent: {},
 });
 
 const ProjectsStart = React.lazy(() => import("./RightPart/ProjectsStart"));
@@ -69,7 +68,10 @@ function ProjectGroupPage({
   const _handleExpand = () => setIsCollapsed(!isCollapsed);
 
   return (
-    <div className={classNames(classes.wrapper, { isCollapsed })}>
+    <div
+      className={classNames(classes.wrapper, { isCollapsed })}
+      style={{ backgroundColor: "#fff" }}
+    >
       {!isCollapsed && (
         <div className={classNames(classes.leftSidebar, { isCollapsed })}>
           {isDeletedPage ? <ProjectGroupListDeleted /> : <ProjectGroupList />}

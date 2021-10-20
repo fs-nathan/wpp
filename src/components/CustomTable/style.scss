@@ -1,7 +1,7 @@
 .comp_CustomTable___container {
   grid-area: right;
   display: grid;
-  grid-template-rows: 70px calc(100vh - 70px - 50px);
+  grid-template-rows: 60px calc(100vh - 60px - 50px);
   grid-template-columns: 1fr;
   grid-template-areas:
     "header"

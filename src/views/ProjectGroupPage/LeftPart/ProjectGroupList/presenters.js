@@ -53,6 +53,7 @@ const Banner = ({ className = "", ...props }) => (
 const LeftContainer = styled.div`
   background: #f1f2f4;
   height: 100vh;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 function ProjectList({

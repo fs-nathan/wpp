@@ -8,7 +8,6 @@ import React from "react";
 import "../styles/header-table.scss";
 
 export const HeaderTable = ({ project, handleVisibleDrawerMessage }) => {
-  console.log(project);
   return (
     <div className="view_GroupHeader___container">
       <div className="view_GroupHeader___logo">
