@@ -1,11 +1,12 @@
 .comp_CustomTable___container {
-  grid-area: right;
-  display: grid;
-  grid-template-rows: 60px calc(100vh - 60px - 50px);
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    "header"
-    "body";
+  height: calc(100vh - 60px - 55px);
+  // grid-area: right;
+  // display: grid;
+  // grid-template-rows: 60px calc(100vh - 60px - 50px);
+  // grid-template-columns: 1fr;
+  // grid-template-areas:
+  //   "header"
+  //   "body";
 }
 
 .comp_CustomTable___header {

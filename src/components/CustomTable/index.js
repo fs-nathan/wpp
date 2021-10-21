@@ -111,7 +111,10 @@ export function CustomTableLayout({ children, className }) {
     </Container>
   );
 }
-function CustomTable() {
+function CustomTable({
+  customHeaderTable: CustomHeaderTable,
+  isCustomHeader = false,
+}) {
   const { options, data } = React.useContext(CustomTableContext);
   const styleOfTitleHead = {
     margin: 0,
@@ -130,38 +133,42 @@ function CustomTable() {
       }}
     >
       <Container>
-        <Header>
-          <LeftHeader>
-            <div style={styleOfTitleHead}>
-              {typeof get(options, "title") === "function"
-                ? options.title()
-                : get(options, "title", "")}
-            </div>
-            {get(options, "subTitle")
-              ? typeof get(options, "subTitle") === "function"
-                ? options.subTitle()
-                : get(options, "subTitle", "")
-              : null}
-          </LeftHeader>
-          <RightHeader>
-            <HeaderButtonGroup />
-            {get(options, "mainAction") && (
-              <StyledButton
-                size="small"
-                onClick={get(options, "mainAction.onClick", () => null)}
-              >
-                {get(options, "mainAction.icon", null) !== null && (
-                  <Icon
-                    path={get(options, "mainAction.icon")}
-                    size={1}
-                    style={{ marginRight: "5px", fill: "#fff" }}
-                  />
-                )}
-                {get(options, "mainAction.label", "")}
-              </StyledButton>
-            )}
-          </RightHeader>
-        </Header>
+        {isCustomHeader ? (
+          <CustomHeaderTable />
+        ) : (
+          <Header>
+            <LeftHeader>
+              <div style={styleOfTitleHead}>
+                {typeof get(options, "title") === "function"
+                  ? options.title()
+                  : get(options, "title", "")}
+              </div>
+              {get(options, "subTitle")
+                ? typeof get(options, "subTitle") === "function"
+                  ? options.subTitle()
+                  : get(options, "subTitle", "")
+                : null}
+            </LeftHeader>
+            <RightHeader>
+              <HeaderButtonGroup />
+              {get(options, "mainAction") && (
+                <StyledButton
+                  size="small"
+                  onClick={get(options, "mainAction.onClick", () => null)}
+                >
+                  {get(options, "mainAction.icon", null) !== null && (
+                    <Icon
+                      path={get(options, "mainAction.icon")}
+                      size={1}
+                      style={{ marginRight: "5px", fill: "#fff" }}
+                    />
+                  )}
+                  {get(options, "mainAction.label", "")}
+                </StyledButton>
+              )}
+            </RightHeader>
+          </Header>
+        )}
         {get(options, "noData.bool", false) ? (
           <NoData
             title={get(options, "noData.title")}
@@ -175,7 +182,14 @@ function CustomTable() {
   );
 }
 
-function CustomTableWrapper({ options, columns, data, bgColor }) {
+function CustomTableWrapper({
+  options,
+  columns,
+  data,
+  bgColor,
+  isCustomHeader = false,
+  customHeaderTable,
+}) {
   const [searchPatern, setSearchPatern] = React.useState("");
   const [expand, setExpand] = React.useState(false);
 
@@ -201,7 +215,10 @@ function CustomTableWrapper({ options, columns, data, bgColor }) {
 
   return (
     <CustomTableProvider value={context}>
-      <CustomTable />
+      <CustomTable
+        isCustomHeader={isCustomHeader}
+        customHeaderTable={customHeaderTable}
+      />
     </CustomTableProvider>
   );
 }

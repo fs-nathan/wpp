@@ -62,6 +62,7 @@ import { WORKPLACE_TYPES } from "../../../../constants/constants";
 import { Routes } from "../../../../constants/routes";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 import { TitleTable } from "./components";
+import HeaderTableAllGroup from "./components/HeaderTableAllGroup";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
@@ -166,17 +167,28 @@ function AllProjectTable({
           renderEmptyView()}
         {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
           <React.Fragment>
+            <HeaderTableAllGroup
+              currentGroup={currentGroup}
+              expand={expand}
+              onExpand={handleExpand}
+              typeData={type_data}
+              onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
+            />
             <CustomTable
+              isCustomHeader
+              customHeaderTable={() => <div />}
               options={{
-                title: () => (
-                  <TitleTable
-                    currentGroup={currentGroup}
-                    expand={expand}
-                    onExpand={handleExpand}
-                    typeData={type_data}
-                  />
-                ),
-                subTitle: "",
+                // title: () => (
+                //   <div style={{ display: "flex", alignItems: "center" }}>
+                //     <TitleTable
+                //       currentGroup={currentGroup}
+                //       expand={expand}
+                //       onExpand={handleExpand}
+                //       typeData={type_data}
+                //     />
+                //   </div>
+                // ),
+                // subTitle: "",
                 // subActions: [
                 //   {
                 //     label: filters[filterType].title,
@@ -194,47 +206,47 @@ function AllProjectTable({
                 //     onClick: evt => setTimeAnchor(evt.currentTarget)
                 //   }
                 // ],
-                mainAction:
-                  type_data !== 2
-                    ? {
-                        label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
-                        onClick: (evt) => handleOpenModal("CREATE"),
-                      }
-                    : type_data === 2
-                    ? {
-                        label: `+ ${t("LABEL_ADD_TABLE")}`,
-                        onClick: () => handleOpenModal("ADD_PERSONAL_BOARD"),
-                      }
-                    : null,
-                expand: {
-                  bool: expand,
-                  toggleExpand: () => handleExpand(!expand),
-                },
-                moreMenu: [
-                  {
-                    label: filters[filterType].title,
-                    iconPath: mdiFilterOutline,
-                    onClick: () => setFilterAnchor(true),
-                  },
-                  {
-                    label: t("DMH.VIEW.PGP.RIGHT.ALL.DOWN"),
-                    iconPath: mdiDownload,
-                    onClick: () => setDownloadAnchor(true),
-                  },
-                  {
-                    label: times[timeType].title,
-                    iconPath: mdiCalendar,
-                    onClick: () => setTimeAnchor(true),
-                  },
-                  {
-                    iconPath: mdiDeleteOutline,
-                    label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
-                    onClick: () => history.push(`${Routes.PROJECTS}/deleted`),
-                  },
-                ],
-                grouped: {
-                  bool: false,
-                },
+                // mainAction:
+                //   type_data !== 2
+                //     ? {
+                //         label: t("DMH.VIEW.PGP.RIGHT.ALL.ADD"),
+                //         onClick: (evt) => handleOpenModal("CREATE"),
+                //       }
+                //     : type_data === 2
+                //     ? {
+                //         label: `+ ${t("LABEL_ADD_TABLE")}`,
+                //         onClick: () => handleOpenModal("ADD_PERSONAL_BOARD"),
+                //       }
+                //     : null,
+                // expand: {
+                //   bool: expand,
+                //   toggleExpand: () => handleExpand(!expand),
+                // },
+                // moreMenu: [
+                //   {
+                //     label: filters[filterType].title,
+                //     iconPath: mdiFilterOutline,
+                //     onClick: () => setFilterAnchor(true),
+                //   },
+                //   {
+                //     label: t("DMH.VIEW.PGP.RIGHT.ALL.DOWN"),
+                //     iconPath: mdiDownload,
+                //     onClick: () => setDownloadAnchor(true),
+                //   },
+                //   {
+                //     label: times[timeType].title,
+                //     iconPath: mdiCalendar,
+                //     onClick: () => setTimeAnchor(true),
+                //   },
+                //   {
+                //     iconPath: mdiDeleteOutline,
+                //     label: t("DMH.VIEW.PGP.RIGHT.ALL.TRASH"),
+                //     onClick: () => history.push(`${Routes.PROJECTS}/deleted`),
+                //   },
+                // ],
+                // grouped: {
+                //   bool: false,
+                // },
                 draggable: {
                   bool: true,
                   onDragEnd: (result) => {
