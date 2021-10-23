@@ -25,8 +25,10 @@ import React, {
   useRef,
   useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 import "../styles/header-table.scss";
+import ExportTaskGroupData from "./ExportTaskGroupData";
 import { FilterDrawerAllGroup } from "./FilterDrawerAllGroup";
 import { TitleTable } from "./TitleTable";
 
@@ -35,7 +37,10 @@ const HeaderTableAllGroup = ({
   expand,
   onExpand,
   typeData,
-  onOpenCreateModal,
+  onOpenCreateModal = () => {},
+  onFilterType = () => {},
+  onSetTimeRangeAnchor = () => {},
+  ...props
 }) => {
   const classes = useStyles();
   const refMenuDrawer = useRef(null);
@@ -62,86 +67,114 @@ const HeaderTableAllGroup = ({
           <Icon path={mdiPlus} size={1} />
           <span style={{ marginLeft: 5 }}>Tạo mới</span>
         </div>
-        <MenuDrawer ref={refMenuDrawer} />
+        <MenuDrawer
+          ref={refMenuDrawer}
+          onFilterType={onFilterType}
+          onSetTimeRangeAnchor={onSetTimeRangeAnchor}
+          {...props}
+        />
       </div>
     </div>
   );
 };
 
-const MenuDrawer = forwardRef(({ anchor = "right" }, ref) => {
-  const classes = useStyles();
-  const history = useHistory();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const refFilter = useRef(null);
-
-  useImperativeHandle(ref, () => ({ _toggle: toggleDrawer }));
-
-  const toggleDrawer = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const DRAWER_MENU_ITEMS = [
+const MenuDrawer = forwardRef(
+  (
     {
-      text: "Lọc bảng việc",
-      icon: mdiFilter,
-      onClick: () => refFilter.current._toggle(),
+      anchor = "right",
+      filterType,
+      timeType,
+      onFilterType = () => {},
+      onExportData = () => {},
+      onSetTimeRangeAnchor = () => {},
     },
-    {
-      text: "Xuất dữ liệu",
-      icon: mdiDownload,
-      onClick: () => refFilter.current._toggle(),
-    },
-    {
-      text: "Thùng rác",
-      icon: mdiDeleteOutline,
-      onClick: () => history.push(`${Routes.PROJECTS}/deleted`),
-    },
-  ];
+    ref
+  ) => {
+    const { t } = useTranslation();
+    const classes = useStyles();
+    const history = useHistory();
+    const [isOpen, setIsOpen] = useState(false);
 
-  return (
-    <>
-      <Box
-        className={classNames(classes.drawerWrapper, { isCollapsed: isOpen })}
-      >
-        <div className={classes.drawerHeader}>
-          <Typography
-            variant="h3"
-            component="h3"
-            style={{ fontSize: 20, fontWeight: 500 }}
-          >
-            Menu
-          </Typography>
-          <Icon
-            path={mdiClose}
-            size={1}
-            style={{ cursor: "pointer" }}
-            onClick={toggleDrawer}
-          />
-        </div>
+    const refFilter = useRef(null);
+    const refExport = useRef(null);
 
-        <List>
-          {DRAWER_MENU_ITEMS.map(
-            ({ text, icon, onClick = () => {} }, index) => (
-              <ListItem
-                button
-                key={text}
-                className={classes.menuItem}
-                onClick={onClick}
-              >
-                <ListItemIcon className={classes.menuIcon}>
-                  <Icon path={icon} size={1} />
-                </ListItemIcon>
-                <ListItemText className={classes.menuText} primary={text} />
-              </ListItem>
-            )
-          )}
-        </List>
-      </Box>
-      <FilterDrawerAllGroup ref={refFilter} />
-    </>
-  );
-});
+    useImperativeHandle(ref, () => ({ _toggle: toggleDrawer }));
+
+    const toggleDrawer = () => {
+      setIsOpen(!isOpen);
+    };
+
+    const DRAWER_MENU_ITEMS = [
+      {
+        text: "Lọc bảng việc",
+        icon: mdiFilter,
+        onClick: () => refFilter.current._toggle(),
+      },
+      {
+        text: t("EXPORT_DATA"),
+        icon: mdiDownload,
+        onClick: () => refExport.current._toggle(),
+      },
+      {
+        text: t("TRASH"),
+        icon: mdiDeleteOutline,
+        onClick: () => history.push(`${Routes.PROJECTS}/deleted`),
+      },
+    ];
+
+    return (
+      <>
+        <Box
+          className={classNames(classes.drawerWrapper, { isCollapsed: isOpen })}
+        >
+          <div className={classes.drawerHeader}>
+            <Typography
+              variant="h3"
+              component="h3"
+              style={{ fontSize: 20, fontWeight: 500 }}
+            >
+              Menu
+            </Typography>
+            <Icon
+              path={mdiClose}
+              size={1}
+              style={{ cursor: "pointer" }}
+              onClick={toggleDrawer}
+            />
+          </div>
+
+          <List>
+            {DRAWER_MENU_ITEMS.map(
+              ({ text, icon, onClick = () => {} }, index) => (
+                <ListItem
+                  button
+                  key={text}
+                  className={classes.menuItem}
+                  onClick={onClick}
+                >
+                  <ListItemIcon className={classes.menuIcon}>
+                    <Icon path={icon} size={1} />
+                  </ListItemIcon>
+                  <ListItemText className={classes.menuText} primary={text} />
+                </ListItem>
+              )
+            )}
+          </List>
+        </Box>
+
+        <FilterDrawerAllGroup
+          ref={refFilter}
+          filterType={filterType}
+          timeType={timeType}
+          onFilter={onFilterType}
+          onCloseMainMenu={() => setIsOpen(false)}
+          onSetTimeRangeAnchor={onSetTimeRangeAnchor}
+        />
+        <ExportTaskGroupData ref={refExport} onExportData={onExportData} />
+      </>
+    );
+  }
+);
 
 const useStyles = makeStyles({
   wrapperButton: {

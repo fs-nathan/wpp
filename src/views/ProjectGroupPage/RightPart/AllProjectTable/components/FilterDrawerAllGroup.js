@@ -1,100 +1,144 @@
 import {
   Box,
+  Divider,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
   makeStyles,
   Typography,
-  Divider,
 } from "@material-ui/core";
 import {
   mdiCalendarRange,
+  mdiCheckboxBlankOutline,
+  mdiCheckboxMarked,
   mdiChevronLeft,
   mdiClose,
-  mdiDeleteOutline,
-  mdiDownload,
-  mdiFilter,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
+import { useFilters, useTimes } from "components/CustomPopover";
+import { includes, isArray } from "lodash";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-export const FilterDrawerAllGroup = forwardRef((props, ref) => {
-  const classes = useStyles();
-  const { t } = useTranslation();
-  const [isOpen, setIsOpen] = useState(false);
-
-  const DRAWER_MENU_ITEMS = [
+export const FilterDrawerAllGroup = forwardRef(
+  (
     {
-      text: t("VIEW_OFFER_LABEL_FILTER_BY_TIME"),
-      icon: mdiCalendarRange,
-      subText: "Tất cả",
-      hasDivider: true,
+      filterType,
+      timeType,
+      onFilter = () => {},
+      onCloseMainMenu = () => {},
+      onSetTimeRangeAnchor = () => {},
     },
-    { text: "Xuất dữ liệu", icon: mdiDownload },
-    { text: "Thùng rác", icon: mdiDeleteOutline, isDeleteItem: true },
-  ];
+    ref
+  ) => {
+    const classes = useStyles();
+    const { t } = useTranslation();
+    const times = useTimes();
+    const [isOpen, setIsOpen] = useState(false);
+    const filters = useFilters();
 
-  useImperativeHandle(ref, () => ({ _toggle: toggleDrawer }));
+    const DRAWER_MENU_ITEMS = [
+      {
+        text: t("VIEW_OFFER_LABEL_FILTER_BY_TIME"),
+        icon: mdiCalendarRange,
+        subText: times[timeType].title,
+        hasDivider: true,
+        onClick: (e) => {
+          onSetTimeRangeAnchor(e);
+          onCloseMainMenu();
+          setIsOpen(false);
+        },
+      },
+    ];
 
-  const toggleDrawer = () => {
-    setIsOpen(!isOpen);
-  };
-  return (
-    <Box className={classNames(classes.drawerWrapper, { isCollapsed: isOpen })}>
-      <div className={classes.drawerHeader}>
-        <Icon
-          path={mdiChevronLeft}
-          size={1}
-          style={{ cursor: "pointer" }}
-          onClick={toggleDrawer}
-        />
-        <Typography
-          variant="h3"
-          component="h3"
-          style={{ fontSize: 20, fontWeight: 500 }}
-        >
-          {t("LABEL_FILTER_WORKING_BOARD")}
-        </Typography>
-        <Icon
-          path={mdiClose}
-          size={1}
-          style={{ cursor: "pointer" }}
-          onClick={toggleDrawer}
-        />
-      </div>
+    useImperativeHandle(ref, () => ({ _toggle: toggleDrawer }));
 
-      <List>
-        {DRAWER_MENU_ITEMS.map((item, index) => (
-          <ItemMenuFilter key={index} {...item} />
-        ))}
-      </List>
-    </Box>
-  );
-});
+    const toggleDrawer = () => {
+      setIsOpen(!isOpen);
+    };
+
+    return (
+      <Box
+        className={classNames(classes.drawerWrapper, { isCollapsed: isOpen })}
+      >
+        <div className={classes.drawerHeader}>
+          <Icon
+            path={mdiChevronLeft}
+            size={1}
+            style={{ cursor: "pointer" }}
+            onClick={toggleDrawer}
+          />
+          <Typography
+            variant="h3"
+            component="h3"
+            style={{ fontSize: 20, fontWeight: 500 }}
+          >
+            {t("LABEL_FILTER_WORKING_BOARD")}
+          </Typography>
+          <Icon
+            path={mdiClose}
+            size={1}
+            style={{ cursor: "pointer" }}
+            onClick={toggleDrawer}
+          />
+        </div>
+
+        <List>
+          {DRAWER_MENU_ITEMS.map((item, index) => (
+            <ItemMenuFilter key={index} {...item} />
+          ))}
+          <Divider />
+          {filters.map((item, index) => {
+            const isActive = includes(
+              !isArray(filterType) ? [filterType] : filterType,
+              index
+            );
+            return (
+              <ItemMenuFilter
+                key={index}
+                isActive={isActive}
+                text={item.title}
+                isCheckType
+                onClick={() => onFilter(index)}
+              />
+            );
+          })}
+          <Divider />
+        </List>
+      </Box>
+    );
+  }
+);
 
 const ItemMenuFilter = ({
   text,
   icon,
   subText,
-  hasDivider = false,
+  isCheckType = false,
+  isActive = false,
   onClick = () => {},
 }) => {
   const classes = useStyles();
   return (
     <>
-      <ListItem button className={classes.menuItem} onClick={onClick}>
+      <ListItem button className={classes.menuItem} onClick={(e) => onClick(e)}>
         <ListItemIcon className={classes.menuIcon}>
-          <Icon path={icon} size={1} />
+          {isActive ? (
+            <Icon path={mdiCheckboxMarked} color="#11A159" size={1} />
+          ) : (
+            <Icon
+              path={isCheckType ? mdiCheckboxBlankOutline : icon}
+              size={1}
+            />
+          )}
         </ListItemIcon>
         <div className={classes.menuTextWrapper}>
           <ListItemText className={classes.menuText} primary={text} />
           <Typography>{subText}</Typography>
         </div>
       </ListItem>
-      {hasDivider && <Divider />}
     </>
   );
 };

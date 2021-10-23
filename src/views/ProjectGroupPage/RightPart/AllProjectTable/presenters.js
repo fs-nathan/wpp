@@ -7,19 +7,16 @@ import {
 } from "@material-ui/core";
 import {
   mdiAccount,
-  mdiCalendar,
   mdiCheckboxBlankCircleOutline,
   mdiCheckboxBlankOutline,
   mdiCheckboxMarked,
   mdiCheckCircle,
-  mdiDeleteOutline,
   mdiDotsVertical,
-  mdiDownload,
-  mdiFilterOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import * as images from "assets";
 import { statusTaskColors } from "constants/colors";
+import { exportToCSV } from "helpers/utils/exportData";
 import {
   find,
   get,
@@ -59,14 +56,12 @@ import {
   StateBox,
 } from "../../../../components/TableComponents";
 import { WORKPLACE_TYPES } from "../../../../constants/constants";
-import { Routes } from "../../../../constants/routes";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
-import { TitleTable } from "./components";
 import HeaderTableAllGroup from "./components/HeaderTableAllGroup";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
-import "./style.scss";
+import "./styles/style.scss";
 
 const MyIcon = ({ className = "", ...props }) => (
   <Icon
@@ -157,6 +152,45 @@ function AllProjectTable({
     }
   }
 
+  const _filterType = (index) => {
+    handleFilterType(index);
+    setFilterAnchor(null);
+    setIsFiltering(true);
+  };
+
+  const _setTimeRangeAnchor = (e) => {
+    setTimeAnchor(e.currentTarget);
+  };
+
+  const _exportData = () => {
+    const data = projects.projects.map((project) => ({
+      id: get(project, "id", ""),
+      icon: get(project, "icon", ""),
+      name: get(project, "name", ""),
+      status: get(project, "state_name", ""),
+      task_count:
+        get(project, "statistic.waiting", 0) +
+        get(project, "statistic.doing", 0) +
+        get(project, "statistic.expired", 0) +
+        get(project, "statistic.complete", 0) +
+        get(project, "statistic.stop", 0),
+      progress: `${get(project, "complete", 0)}%`,
+      duration: get(project, "duration")
+        ? `${get(project, "duration")} ngày (${get(
+            project,
+            "date_start"
+          )} - ${get(project, "date_end")})`
+        : "",
+      priority: get(project, "priority_name", ""),
+      members: join(
+        get(project, "members", []).map((member) => get(member, "name")),
+        ","
+      ),
+    }));
+
+    exportToCSV(data, "projects");
+  };
+
   return (
     <>
       <Container>
@@ -172,6 +206,11 @@ function AllProjectTable({
               expand={expand}
               onExpand={handleExpand}
               typeData={type_data}
+              filterType={filterType}
+              timeType={timeType}
+              onFilterType={_filterType}
+              onExportData={_exportData}
+              onSetTimeRangeAnchor={_setTimeRangeAnchor}
               onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
             />
             <CustomTable
