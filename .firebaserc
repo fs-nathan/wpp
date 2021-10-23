@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "wp-frontend-57e1f"
-  }
+    "default": "wp-frontend-57e1f",
+    "staging": "v-task-28906"
+  },
+  "targets": {}
 }

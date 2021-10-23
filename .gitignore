@@ -27,3 +27,4 @@ yarn.lock
 /.firebaserc
 /.firebase/
 /.idea
+/firebase-debug.log

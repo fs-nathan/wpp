@@ -1,19 +1,21 @@
 .comp_CustomTable___container {
-  grid-area: right;
-  display: grid;
-  grid-template-rows: 70px calc(100vh - 70px - 50px);
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    'header'
-    'body';
+  height: calc(100vh - 60px - 55px);
+  // grid-area: right;
+  // display: grid;
+  // grid-template-rows: 60px calc(100vh - 60px - 50px);
+  // grid-template-columns: 1fr;
+  // grid-template-areas:
+  //   "header"
+  //   "body";
 }
 
 .comp_CustomTable___header {
   grid-area: header;
-  padding: 10px 10px 10px 20px;
+  padding: 0 10px 0 10px;
   display: flex;
   align-items: center;
   position: -webkit-sticky;
+  height: 60px;
   /* Safari */
   position: sticky;
   top: 0px;
@@ -24,11 +26,14 @@
 
 .comp_CustomTable___left-header {
   max-width: 300px;
-  &>div:first-child {
+  height: 100%;
+  align-items: center;
+  display: flex;
+  & > div:first-child {
     display: flex;
     align-items: center;
     color: #444;
-    &>p {
+    & > p {
       margin: 0;
       font-size: 21px;
       line-height: 26px;
@@ -36,7 +41,7 @@
       text-transform: unset;
     }
   }
-  &>span:last-child {
+  & > span:last-child {
     font-size: 12px;
   }
 }
@@ -44,7 +49,7 @@
 .comp_CustomTable___right-header {
   margin-left: auto;
 
-  &>*:last-child {
+  & > *:last-child {
     margin-left: 16px;
   }
 }

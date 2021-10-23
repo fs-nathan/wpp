@@ -1,212 +1,158 @@
-import {getPermissionViewProjects} from 'actions/viewPermissions';
-import TwoColumnsLayout from 'components/TwoColumnsLayout';
-import React from 'react';
-import {connect} from 'react-redux';
-import {Route, Switch} from 'react-router-dom';
-import ProjectGroupDetail from './LeftPart/ProjectGroupDetail';
-import ProjectGroupList from './LeftPart/ProjectGroupList';
-import ProjectGroupListDeleted from './LeftPart/ProjectGroupListDeleted';
-import AllProjectTable from './RightPart/AllProjectTable';
-import DeletedProjectTable from './RightPart/DeletedProjectTable';
-import {routeSelector} from './selectors';
-import ProjectDetail from "../ProjectPage/LeftPart/ProjectDetail";
-import ProjectMemberSlide from "../ProjectPage/LeftPart/ProjectMemberSlide";
-import GroupTaskSlide from "../ProjectPage/LeftPart/GroupTaskSlide";
-import AllTaskTable from "../ProjectPage/RightPart/AllTaskTable";
-import ProjectsStart from "./RightPart/ProjectsStart";
-import {checkHasRecentlyProjects, countPersonalProjectsBoard} from "../../actions/project/listProject";
+import { makeStyles } from "@material-ui/styles";
+import { getPermissionViewProjects } from "actions/viewPermissions";
+import classNames from "classnames";
+import React, { useLayoutEffect } from "react";
+import { connect } from "react-redux";
+import { useLocation } from "react-router";
+import { Route, Switch } from "react-router-dom";
+import { useLocalStorage } from "react-use";
+import {
+  checkHasRecentlyProjects,
+  countPersonalProjectsBoard,
+} from "../../actions/project/listProject";
+import ProjectGroupList from "./LeftPart/ProjectGroupList";
+import ProjectGroupListDeleted from "./LeftPart/ProjectGroupListDeleted";
+import { routeSelector } from "./selectors";
+
+const useStyles = makeStyles({
+  wrapper: {
+    height: "100%",
+    display: "grid",
+    gridTemplateRows: "auto",
+    gridTemplateColumns: "minmax(300px,1fr) minmax(800px,4fr)",
+    backgroundColor: "#fff!important",
+    "&.isCollapsed": {
+      gridTemplateRows: "auto",
+      gridTemplateColumns: "auto",
+    },
+  },
+  leftSidebar: {
+    display: "initial",
+  },
+  mainContent: {},
+});
+
+const ProjectsStart = React.lazy(() => import("./RightPart/ProjectsStart"));
+const AllProjectTable = React.lazy(() => import("./RightPart/AllProjectTable"));
+const AllTaskTable = React.lazy(() =>
+  import("../ProjectPage/RightPart/AllTaskTable")
+);
+const DeletedProjectTable = React.lazy(() =>
+  import("./RightPart/DeletedProjectTable")
+);
+const KanbanPage = React.lazy(() => import("views/KanbanPage"));
+const ChatPage = React.lazy(() => import("views/JobDetailPage"));
+const GranttPage = React.lazy(() => import("views/GrantPage/GrantTable"));
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
-  route, countPersonalProjectsBoard,
-  checkHasRecentlyProjects
+  route,
+  countPersonalProjectsBoard,
+  checkHasRecentlyProjects,
 }) {
+  const classes = useStyles();
+  const { pathname } = useLocation();
+  const [isCollapsed, setIsCollapsed] = useLocalStorage(
+    "WPS_COLLAPSED_DEFAULT",
+    true
+  );
+  const isDeletedPage = pathname.split("/")[2] === "deleted";
 
-  React.useLayoutEffect(() => {
+  useLayoutEffect(() => {
     doGetPermissionViewProjects();
     checkHasRecentlyProjects();
     countPersonalProjectsBoard();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const _handleExpand = () => setIsCollapsed(!isCollapsed);
+
   return (
-    <Route
-      path={route}
-      render={({ match: { url } }) => (
-        <Switch>
-          <Route
-            path={`${url}`}
-            exact
-            render={props => (
-              <TwoColumnsLayout
-                leftRenders={[
-                  () =>
-                    <ProjectGroupList
-                      {...props}
-                    />,
-                ]}
-                rightRender={
-                  ({ expand, handleExpand }) =>
-                    <AllProjectTable
-                      {...props}
-                      expand={expand}
-                      handleExpand={handleExpand}
-                    />
-                }
-              />
-            )}
-          />
-          <Route
-            path={`${url}/recently`}
-            exact
-            render={props => (
-              <TwoColumnsLayout
-                leftRenders={[
-                  () =>
-                    <ProjectGroupList
-                      {...props}
-                    />,
-                ]}
-                rightRender={
-                  ({ expand, handleExpand }) =>
-                    <AllProjectTable
-                      {...props}
-                      expand={expand}
-                      handleExpand={handleExpand}
-                      type_data={1}
-                    />
-                }
-              />
-            )}
-          />
-          <Route
-            path={`${url}/start`}
-            exact
-            render={props => (
-              <TwoColumnsLayout
-                leftRenders={[
-                  () =>
-                    <ProjectGroupList
-                      {...props}
-                    />,
-                ]}
-                rightRender={
-                  ({ expand, handleExpand }) =>
-                    <ProjectsStart
-                      {...props}
-                      expand={expand}
-                      handleExpand={handleExpand}
-                    />
-                }
-              />
-            )}
-          />
-          <Route
-            path={`${url}/personal-board`}
-            exact
-            render={props => (
-              <TwoColumnsLayout
-                leftRenders={[
-                  () =>
-                    <ProjectGroupList
-                      {...props}
-                    />,
-                ]}
-                rightRender={
-                  ({ expand, handleExpand }) =>
-                    <AllProjectTable
-                      {...props}
-                      expand={expand}
-                      handleExpand={handleExpand}
-                      type_data={2}
-                    />
-                }
-              />
-            )}
-          />
-          <Route
-            path={`${url}/deleted`}
-            exact
-            render={props => (
-              <TwoColumnsLayout
-                leftRenders={[
-                  () =>
-                    <ProjectGroupListDeleted
-                      {...props}
-                    />,
-                ]}
-                rightRender={
-                  ({ expand, handleExpand }) =>
-                    <DeletedProjectTable
-                      {...props}
-                      expand={expand}
-                      handleExpand={handleExpand}
-                    />
-                }
-              />
-            )}
-          />
-          <Route
-            path={`${url}/group/:projectGroupId`}
-            render={props => (
-              <TwoColumnsLayout
-                leftRenders={[
-                  () =>
-                    <ProjectGroupDetail
-                      {...props}
-                    />,
-                ]}
-                rightRender={
-                  ({ expand, handleExpand }) =>
-                    <AllProjectTable
-                      {...props}
-                      expand={expand}
-                      handleExpand={handleExpand}
-                    />
-                }
-              />
-            )}
-          />
-          <Route
-            path={`${url}/task-table/:projectId/:memberId?`}
-            exact
-            render={props => {
-              return (
-                <TwoColumnsLayout
-                  leftRenders={[
-                    () => <ProjectDetail {...props} />,
-                    ({handleSubSlide}) => <ProjectMemberSlide {...props} handleSubSlide={handleSubSlide}/>,
-                    ({handleSubSlide}) => <GroupTaskSlide {...props} handleSubSlide={handleSubSlide}/>,
-                  ]}
-                  rightRender={
-                    ({expand, handleExpand, handleSubSlide,}) =>
-                      <AllTaskTable
-                        {...props}
-                        expand={expand}
-                        handleExpand={handleExpand}
-                        handleSubSlide={handleSubSlide}
-                      />
-                  }
-                />
-              )
-            }}
-          />
-        </Switch>
+    <div
+      className={classNames(classes.wrapper, { isCollapsed })}
+      style={{ backgroundColor: "#fff" }}
+    >
+      {!isCollapsed && (
+        <div className={classNames(classes.leftSidebar, { isCollapsed })}>
+          {isDeletedPage ? <ProjectGroupListDeleted /> : <ProjectGroupList />}
+        </div>
       )}
-    />
-  )
+      <div className={classNames(classes.mainContent, { isCollapsed })}>
+        <React.Suspense fallback={<div />}>
+          <Switch>
+            <Route exact path="/projects/recently">
+              <AllProjectTable
+                type_data={1}
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/start">
+              <ProjectsStart
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/personal-board">
+              <AllProjectTable
+                type_data={2}
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/group/:projectGroupId">
+              <AllProjectTable
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/deleted">
+              <DeletedProjectTable
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+
+            {/* Detail project */}
+            <Route exact path="/projects/task-table/:projectId/:memberId?">
+              <AllTaskTable expand={isCollapsed} handleExpand={_handleExpand} />
+            </Route>
+            <Route exact path="/projects/task-kanban/:projectId/:memberId?">
+              <KanbanPage />
+            </Route>
+            <Route exact path="/projects/task-gantt/:projectId/:memberId?">
+              <GranttPage />
+            </Route>
+            <Route exact path="/projects/task-chat/:projectId/:memberId?">
+              <ChatPage />
+            </Route>
+            {/* Detail project */}
+
+            <Route exact path="/projects">
+              <AllProjectTable
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+          </Switch>
+        </React.Suspense>
+      </div>
+    </div>
+  );
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
-    doGetPermissionViewProjects: (quite) => dispatch(getPermissionViewProjects(quite)),
+    doGetPermissionViewProjects: (quite) =>
+      dispatch(getPermissionViewProjects(quite)),
     checkHasRecentlyProjects: () => dispatch(checkHasRecentlyProjects()),
-    countPersonalProjectsBoard: () => dispatch(countPersonalProjectsBoard())
-  }
+    countPersonalProjectsBoard: () => dispatch(countPersonalProjectsBoard()),
+  };
 };
 
 export default connect(
-  state => ({
+  (state) => ({
     route: routeSelector(state),
   }),
-  mapDispatchToProps,
+  mapDispatchToProps
 )(ProjectGroupPage);

@@ -53,6 +53,7 @@ const Banner = ({ className = "", ...props }) => (
 const LeftContainer = styled.div`
   background: #f1f2f4;
   height: 100vh;
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
 `;
 
 function ProjectList({
@@ -83,8 +84,6 @@ function ProjectList({
     React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [alertConfirm, showAlertConfirm] = React.useState(false);
-
-  const [activeId, setActiveId] = React.useState("");
 
   const isHasProjectRecently = useSelector(
     (state) => state.project.checkHasRecently.hasRecently
