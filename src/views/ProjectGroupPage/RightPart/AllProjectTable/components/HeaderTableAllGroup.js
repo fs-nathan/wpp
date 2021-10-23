@@ -13,7 +13,6 @@ import {
   mdiDotsHorizontal,
   mdiDownload,
   mdiFilter,
-  mdiMagnify,
   mdiPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -30,6 +29,7 @@ import { useHistory } from "react-router";
 import "../styles/header-table.scss";
 import ExportTaskGroupData from "./ExportTaskGroupData";
 import { FilterDrawerAllGroup } from "./FilterDrawerAllGroup";
+import SearchButton from "./SearchButton";
 import { TitleTable } from "./TitleTable";
 
 const HeaderTableAllGroup = ({
@@ -56,9 +56,7 @@ const HeaderTableAllGroup = ({
         typeData={typeData}
       />
       <div className="AllGroup__header--right">
-        <div className={classes.wrapperButton}>
-          <Icon path={mdiMagnify} size={1} />
-        </div>
+        <SearchButton />
         <div className={classes.wrapperButton} onClick={_toggleDrawerMenu}>
           <Icon path={mdiDotsHorizontal} size={1} />
           <span style={{ marginLeft: 5 }}>Hiện menu</span>

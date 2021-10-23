@@ -189,6 +189,7 @@ function CustomTableWrapper({
   bgColor,
   isCustomHeader = false,
   customHeaderTable,
+  children,
 }) {
   const [searchPatern, setSearchPatern] = React.useState("");
   const [expand, setExpand] = React.useState(false);

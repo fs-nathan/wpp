@@ -41,7 +41,9 @@ import {
   useFilters,
   useTimes,
 } from "../../../../components/CustomPopover";
-import CustomTable from "../../../../components/CustomTable";
+import CustomTable, {
+  CustomTableProvider,
+} from "../../../../components/CustomTable";
 import ImprovedSmallProgressBar from "../../../../components/ImprovedSmallProgressBar";
 import {
   LightTooltip,
@@ -201,21 +203,22 @@ function AllProjectTable({
           renderEmptyView()}
         {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
           <React.Fragment>
-            <HeaderTableAllGroup
-              currentGroup={currentGroup}
-              expand={expand}
-              onExpand={handleExpand}
-              typeData={type_data}
-              filterType={filterType}
-              timeType={timeType}
-              onFilterType={_filterType}
-              onExportData={_exportData}
-              onSetTimeRangeAnchor={_setTimeRangeAnchor}
-              onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
-            />
             <CustomTable
               isCustomHeader
-              customHeaderTable={() => <div />}
+              customHeaderTable={() => (
+                <HeaderTableAllGroup
+                  currentGroup={currentGroup}
+                  expand={expand}
+                  onExpand={handleExpand}
+                  typeData={type_data}
+                  filterType={filterType}
+                  timeType={timeType}
+                  onFilterType={_filterType}
+                  onExportData={_exportData}
+                  onSetTimeRangeAnchor={_setTimeRangeAnchor}
+                  onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
+                />
+              )}
               options={{
                 // title: () => (
                 //   <div style={{ display: "flex", alignItems: "center" }}>
