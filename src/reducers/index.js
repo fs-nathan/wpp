@@ -122,17 +122,39 @@ import settingStartingDay, {
 import chat, { initialState as chatInitialState } from "./chat/chat";
 import documents from "./documents";
 import gantt, { initialState as ganttInitialState } from "./gantt";
-import kanbanDetailProject, { initialState as kanbanDetailProjectInitialState } from "./kanban/detailProject";
-import kanbanListTask, { initialState as kanbanListTaskInitialState } from "./kanban/listTasks";
-import kanbanSortTask, { initialState as kanbanSortTaskInitialState } from "./kanban/sortTask";
-import kanbanSortGroupTask, { initialState as kanbanSortGroupTaskInitialState } from "./kanban/sortGroupTask";
-import kanbanGetManager, { initialState as kanbanGetManagerInitialState } from "./kanban/getManager";
-import kanbanAddManagers, { initialState as kanbanAddManagersInitialState } from "./kanban/addManagers";
-import kanbanRemoveManagers, { initialState as kanbanRemoveManagersInitialState } from "./kanban/removeManagers";
-import kanbanUpdateManagers, { initialState as kanbanUpdateManagersInitialState } from "./kanban/updateManagers";
-import kanbanSetting, { initialState as kanbanSettingInitialState } from './kanban/setting';
-import kanbanDetailTask, { initialState as kanbanDetailTaskInitialState } from './kanban/detailTask';
-import kanbanUpdateTask, { initialState as kanbanUpdateTaskInitialState } from './kanban/updateTask';
+import kanbanDetailProject, {
+  initialState as kanbanDetailProjectInitialState,
+} from "./kanban/detailProject";
+import kanbanListTask, {
+  initialState as kanbanListTaskInitialState,
+} from "./kanban/listTasks";
+import kanbanSortTask, {
+  initialState as kanbanSortTaskInitialState,
+} from "./kanban/sortTask";
+import kanbanSortGroupTask, {
+  initialState as kanbanSortGroupTaskInitialState,
+} from "./kanban/sortGroupTask";
+import kanbanGetManager, {
+  initialState as kanbanGetManagerInitialState,
+} from "./kanban/getManager";
+import kanbanAddManagers, {
+  initialState as kanbanAddManagersInitialState,
+} from "./kanban/addManagers";
+import kanbanRemoveManagers, {
+  initialState as kanbanRemoveManagersInitialState,
+} from "./kanban/removeManagers";
+import kanbanUpdateManagers, {
+  initialState as kanbanUpdateManagersInitialState,
+} from "./kanban/updateManagers";
+import kanbanSetting, {
+  initialState as kanbanSettingInitialState,
+} from "./kanban/setting";
+import kanbanDetailTask, {
+  initialState as kanbanDetailTaskInitialState,
+} from "./kanban/detailTask";
+import kanbanUpdateTask, {
+  initialState as kanbanUpdateTaskInitialState,
+} from "./kanban/updateTask";
 import copyGroupTask, {
   initialState as copyGroupTaskInitialState,
 } from "./groupTask/copyGroupTask";
@@ -337,13 +359,18 @@ import editProjectGroup, {
 import listProjectGroup, {
   initialState as listProjectGroupInitialState,
 } from "./projectGroup/listProjectGroup";
-import listProjectGroupDeleted, { initialState as listProjectGroupDeletedInitialState} from "./projectGroup/listProjectGroupDeleted";
+import listProjectGroupDeleted, {
+  initialState as listProjectGroupDeletedInitialState,
+} from "./projectGroup/listProjectGroupDeleted";
 import memberProjectGroup, {
   initialState as memberProjectGroupInitialState,
 } from "./projectGroup/memberProjectGroup";
 import sortProjectGroup, {
   initialState as sortProjectGroupInitialState,
 } from "./projectGroup/sortProjectGroup";
+import listProjectLabels, {
+  initialState as listProjectLabelsInitialState,
+} from "./projectLabels/listProjectLabel";
 import inviteOtherPeopleCreateAccount, {
   initialState as inviteOtherPeopleCreateAccountInitialState,
 } from "./register/inviteOtherPeopleCreateAccount";
@@ -450,14 +477,30 @@ import updateUserRole, {
 import viewPermissions, {
   initialState as viewPermissionsInitialState,
 } from "./viewPermissions";
-import remindDetail, {initialState as getRemindDetailInitialState } from "./calendar/alarmCalendar/getRemindDetail";
-import getProjectStatistic, {initialState as getProjectStatisticInitialState} from "./project/getStatistic";
-import recentlyProjects, {initialState as recentlyProjectsInitialState} from "./project/recentlyProjects";
-import getStatusWorkGroup, {initialState as getStatusWorkGroupInitialState} from "./project/getStatusWork";
-import getProjectOnPersonalBoard, {initialState as getProjectOnPersonalBoardInitialState} from "./project/projectOnPersonalBoard";
-import getWorkType, {initialState as getWorkTypeInitialState} from "./project/getWorkType";
-import updatePinBoardSetting, {initialState as updatePinBoardSettingInitialState} from "./project/setting/updatePinBoardSetting";
-import threadChat, { initialState as threadChatInitialState } from "./chat/threadChat";
+import remindDetail, {
+  initialState as getRemindDetailInitialState,
+} from "./calendar/alarmCalendar/getRemindDetail";
+import getProjectStatistic, {
+  initialState as getProjectStatisticInitialState,
+} from "./project/getStatistic";
+import recentlyProjects, {
+  initialState as recentlyProjectsInitialState,
+} from "./project/recentlyProjects";
+import getStatusWorkGroup, {
+  initialState as getStatusWorkGroupInitialState,
+} from "./project/getStatusWork";
+import getProjectOnPersonalBoard, {
+  initialState as getProjectOnPersonalBoardInitialState,
+} from "./project/projectOnPersonalBoard";
+import getWorkType, {
+  initialState as getWorkTypeInitialState,
+} from "./project/getWorkType";
+import updatePinBoardSetting, {
+  initialState as updatePinBoardSettingInitialState,
+} from "./project/setting/updatePinBoardSetting";
+import threadChat, {
+  initialState as threadChatInitialState,
+} from "./chat/threadChat";
 
 const rootReducer = combineReducers({
   authentications,
@@ -480,7 +523,7 @@ const rootReducer = combineReducers({
     listGroupTask,
     listGroupOffer,
     listGroupPermission,
-    createPrivateChat
+    createPrivateChat,
   }),
   room: combineReducers({
     listRoom,
@@ -544,6 +587,9 @@ const rootReducer = combineReducers({
     detailProjectGroup,
     memberProjectGroup,
     detailDefaultGroup,
+  }),
+  projectLabels: combineReducers({
+    listProjectLabels,
   }),
   project: combineReducers({
     createProject,
@@ -664,7 +710,7 @@ const rootReducer = combineReducers({
     updateProjectGroupSchedule,
     deleteProjectGroupSchedule,
     updatePersonalRemindCategory,
-    remindDetail
+    remindDetail,
   }),
   localStorage,
   kanban: combineReducers({
@@ -680,7 +726,7 @@ const rootReducer = combineReducers({
     detailTask: kanbanDetailTask,
     updateTask: kanbanUpdateTask,
   }),
-  threadChat
+  threadChat,
 });
 
 export const DEFAULT_STATE = {
@@ -764,6 +810,9 @@ export const DEFAULT_STATE = {
     memberProjectGroup: memberProjectGroupInitialState,
     detailDefaultGroup: detailDefaultGroupInitialState,
   },
+  projectLabels: {
+    listProjectLabels: listProjectLabelsInitialState,
+  },
   project: {
     createProject: createProjectInitialState,
     updateProject: updateProjectInitialState,
@@ -801,7 +850,7 @@ export const DEFAULT_STATE = {
       updateStatusCopy: updateStatusCopyInitialState,
       updateStatusView: updateStatusViewInitialState,
       updateNotificationSetting: updateNotificationSettingInitialState,
-      updatePinBoardSetting: updatePinBoardSettingInitialState
+      updatePinBoardSetting: updatePinBoardSettingInitialState,
     },
   },
   groupTask: {
@@ -864,18 +913,26 @@ export const DEFAULT_STATE = {
     listRemindProject: listRemindProjectInitialState,
     listCalendarPermission: listCalendarPermissionInitialState,
     projectCalendarAddWorkingStage: projectCalendarAddWorkingStageInitialState,
-    projectCalendarUpdateWorkingStage: projectCalendarUpdateWorkingStageInitialState,
-    projectCalendarDeleteWorkingStage: projectCalendarDeleteWorkingStageInitialState,
-    projectCalendarCreateShiftStage: projectCalendarCreateShiftStageInitialStage,
-    projectCalendarUpdateShiftStage: projectCalendarUpdateShiftStageInitialStage,
-    projectCalendarDeleteShiftStage: projectCalendarDeleteShiftStageInitialStage,
-    projectCalendarCreateShiftStageAllTime: projectCalendarCreateShiftStageAllTimeInitialState,
-    projectCalendarUpdateShiftStageAllTime: projectCalendarUpdateShiftStageAllTimeInitialState,
-    projectCalendarDeleteShiftStageAllTime: projectCalendarDeleteShiftStageAllTimeInitialState,
-    remindDetail: getRemindDetailInitialState
+    projectCalendarUpdateWorkingStage:
+      projectCalendarUpdateWorkingStageInitialState,
+    projectCalendarDeleteWorkingStage:
+      projectCalendarDeleteWorkingStageInitialState,
+    projectCalendarCreateShiftStage:
+      projectCalendarCreateShiftStageInitialStage,
+    projectCalendarUpdateShiftStage:
+      projectCalendarUpdateShiftStageInitialStage,
+    projectCalendarDeleteShiftStage:
+      projectCalendarDeleteShiftStageInitialStage,
+    projectCalendarCreateShiftStageAllTime:
+      projectCalendarCreateShiftStageAllTimeInitialState,
+    projectCalendarUpdateShiftStageAllTime:
+      projectCalendarUpdateShiftStageAllTimeInitialState,
+    projectCalendarDeleteShiftStageAllTime:
+      projectCalendarDeleteShiftStageAllTimeInitialState,
+    remindDetail: getRemindDetailInitialState,
   },
   localStorage: localStorageInitialState,
-  threadChat: threadChatInitialState
+  threadChat: threadChatInitialState,
 };
 
 export default rootReducer;

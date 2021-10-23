@@ -19,8 +19,15 @@ import Icon from "@mdi/react";
 import classNames from "classnames";
 import { useFilters, useTimes } from "components/CustomPopover";
 import { includes, isArray } from "lodash";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import React, {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from "react";
 import { useTranslation } from "react-i18next";
+import { listProjectLabel } from "actions/projectLabels/listProjectLabels";
+import { useDispatch } from "react-redux";
 
 export const FilterDrawerAllGroup = forwardRef(
   (
@@ -38,6 +45,13 @@ export const FilterDrawerAllGroup = forwardRef(
     const times = useTimes();
     const [isOpen, setIsOpen] = useState(false);
     const filters = useFilters();
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(listProjectLabel());
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const DRAWER_MENU_ITEMS = [
       {
