@@ -28,6 +28,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { listProjectLabel } from "actions/projectLabels/listProjectLabels";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 
 export const FilterDrawerAllGroup = forwardRef(
   (
@@ -45,8 +46,13 @@ export const FilterDrawerAllGroup = forwardRef(
     const times = useTimes();
     const [isOpen, setIsOpen] = useState(false);
     const filters = useFilters();
+    const labelsProject = useSelector(
+      ({ projectLabels }) => projectLabels.listProjectLabels
+    );
 
     const dispatch = useDispatch();
+
+    console.log(labelsProject);
 
     useEffect(() => {
       dispatch(listProjectLabel());
@@ -120,11 +126,42 @@ export const FilterDrawerAllGroup = forwardRef(
             );
           })}
           <Divider />
+
+          {labelsProject.data?.labels?.map((item) => {
+            return <ItemLabelFilter key={item.id} {...item} />;
+          })}
         </List>
       </Box>
     );
   }
 );
+
+const ItemLabelFilter = ({ isActive, color, name, onClick = () => {} }) => {
+  const classes = useStyles();
+  return (
+    <ListItem button className={[classes.menuItem]} onClick={(e) => onClick(e)}>
+      <ListItemIcon className={classes.menuIcon}>
+        {isActive ? (
+          <Icon path={mdiCheckboxMarked} color="#11A159" size={1} />
+        ) : (
+          <Icon path={mdiCheckboxBlankOutline} size={1} />
+        )}
+      </ListItemIcon>
+      <div className={classNames(classes.menuTextWrapper, "labelText")}>
+        <ListItemText
+          style={{
+            background: color,
+            padding: "5px 10px",
+            borderRadius: "15px",
+            color: "#fff!important",
+          }}
+          className={classes.menuText}
+          primary={name}
+        />
+      </div>
+    </ListItem>
+  );
+};
 
 const ItemMenuFilter = ({
   text,
@@ -190,5 +227,6 @@ const useStyles = makeStyles({
     flexDirection: "column",
     color: "#666",
     "& p": { fontSize: 11 },
+    "&.labelText span": { color: "#fff" },
   },
 });
