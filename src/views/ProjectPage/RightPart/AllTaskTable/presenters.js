@@ -43,6 +43,7 @@ import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 import { isSortGroupTask } from "actions/groupTask/sortGroupTask";
 import { useDispatch } from "react-redux";
 import { HeaderTable } from "views/ProjectGroupPage/RightPart/AllProjectTable/components";
+import HeaderProject from "components/HeaderProject";
 
 function displayDate(time, date, type) {
   return (
@@ -99,8 +100,13 @@ function AllTaskTable({
       {!isEmpty && (
         <>
           <CustomTable
+            isCustomHeader
+            customHeaderTable={() => (
+              <HeaderProject project={project.project} />
+            )}
             options={{
               // title: t("DMH.VIEW.PP.RIGHT.ALL.TITLE"),
+
               subTitle: isNil(memberID)
                 ? () => <HeaderTable project={project.project} />
                 : () => (
