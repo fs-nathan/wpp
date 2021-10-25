@@ -8,7 +8,7 @@ import React from "react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useSelector } from "react-redux";
 import "../ListPart.scss";
-import {filter, map, size} from "lodash";
+import { filter, map, size } from "lodash";
 import ListProjectBody from "./ListProjectBody";
 import ListProjectHeader from "./ListProjectHeader";
 import ProjectItem from "./ProjectItem";
@@ -16,27 +16,29 @@ import "./styles.scss";
 
 function ListProject(props) {
   const { projectFilter } = props;
-  const projectListBasic = useSelector((state) => state.taskDetail.commonTaskDetail.projectListBasic);
-  const [data, setData]= React.useState([]);
+  const projectListBasic = useSelector(
+    (state) => state.taskDetail.commonTaskDetail.projectListBasic
+  );
+  const [data, setData] = React.useState([]);
   const [projectGroup, setProjectsGroup] = React.useState([]);
   React.useEffect(() => {
-    if(projectListBasic) {
+    if (projectListBasic) {
       setData(projectListBasic.projectGroups);
     }
   }, [projectListBasic]);
   React.useEffect(() => {
-    if(projectFilter === -1) {
+    if (projectFilter === -1) {
       setProjectsGroup(data);
     } else {
       let filtered = map(data, function (group) {
         let projects = filter(group.projects, function (project) {
           return project.work_type === projectFilter;
         });
-        return {...group, projects};
+        return { ...group, projects };
       });
       setProjectsGroup(filtered);
     }
-  },[projectFilter, data]);
+  }, [projectFilter, data]);
   return (
     <div
       className={clsx(
@@ -44,7 +46,7 @@ function ListProject(props) {
         "lp-container ",
         props.show ? "lp-container-block" : "lp-container-none"
       )}
-      style={{height: "66vh"}}
+      style={{ height: "66vh" }}
     >
       <ListProjectHeader className="listProject--header" props={props} />
       <Scrollbars
@@ -57,7 +59,7 @@ function ListProject(props) {
         autoHideDuration={200}
       >
         {projectGroup.map((group) => {
-          if(size(group.projects) === 0) return;
+          if (size(group.projects) === 0) return;
           return (
             <div key={group.id}>
               <ExpansionPanel

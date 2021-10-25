@@ -102,7 +102,10 @@ function AllTaskTable({
           <CustomTable
             isCustomHeader
             customHeaderTable={() => (
-              <HeaderProject project={project.project} />
+              <HeaderProject
+                onExpand={handleExpand}
+                project={project.project}
+              />
             )}
             options={{
               // title: t("DMH.VIEW.PP.RIGHT.ALL.TITLE"),
