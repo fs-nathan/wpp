@@ -1,15 +1,9 @@
 import { Button } from "@material-ui/core";
-import {
-  mdiAccountKey,
-  mdiAccountMinusOutline,
-  mdiEye,
-  mdiEyeOff,
-  mdiPlusCircle,
-} from "@mdi/js";
+import { mdiAccountKey, mdiAccountMinusOutline, mdiPlusCircle } from "@mdi/js";
 import Icon from "@mdi/react";
 import AvatarCircleList from "components/AvatarCircleList";
 import CustomBadge from "components/CustomBadge";
-import { DownloadPopover, TimeRangePopover } from "components/CustomPopover";
+import { TimeRangePopover } from "components/CustomPopover";
 import CustomTable from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import LoadingBox from "components/LoadingBox";
@@ -143,6 +137,7 @@ function AllTaskTable({
                   })
                 }
                 onExportData={_exportData}
+                onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
                 onExpand={handleExpand}
               />
             )}

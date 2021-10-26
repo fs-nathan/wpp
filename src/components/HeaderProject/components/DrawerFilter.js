@@ -133,6 +133,7 @@ const DrawerFilter = forwardRef(
             text: "Xoá bảng việc",
             icon: mdiDelete,
             onClick: (e) => {},
+            isDeleteItem: true,
           },
         ],
       },
@@ -197,6 +198,7 @@ const ItemMenuFilter = ({
   isSearchItem = false,
   isCheckType = false,
   isActive = false,
+  isDeleteItem = false,
   onClick = () => {},
 }) => {
   const classes = useStyles();
@@ -218,7 +220,12 @@ const ItemMenuFilter = ({
           )}
         </ListItemIcon>
         <div className={classes.menuTextWrapper}>
-          <ListItemText className={classes.menuText} primary={text} />
+          <ListItemText
+            className={classNames(classes.menuText, {
+              "is-delete": isDeleteItem,
+            })}
+            primary={text}
+          />
           <Typography>{subText}</Typography>
         </div>
       </ListItem>
@@ -228,7 +235,7 @@ const ItemMenuFilter = ({
 
 const ItemSearch = ({ icon, text }) => {
   const classes = useStyles();
-  const { options } = React.useContext(CustomTableContext);
+  const TableContextValue = React.useContext(CustomTableContext);
 
   const [isFocus, setIsFocus] = useState(false);
   const refInput = useRef(null);
@@ -246,6 +253,7 @@ const ItemSearch = ({ icon, text }) => {
     }
   };
 
+  if (!TableContextValue) return null;
   return (
     <ListItem button className={classes.menuItem} onClick={_handleFocus}>
       <ListItemIcon className={classes.menuIcon}>
@@ -260,9 +268,13 @@ const ItemSearch = ({ icon, text }) => {
               className={classes.inputSearch}
               placeholder="Nhập nội dung cần tìm"
               onBlur={_handleBlur}
-              value={get(options, "search.patern", "")}
+              value={get(TableContextValue.options, "search.patern", "")}
               onChange={(evt) =>
-                get(options, "search.onChange", () => null)(evt.target.value)
+                get(
+                  TableContextValue.options,
+                  "search.onChange",
+                  () => null
+                )(evt.target.value)
               }
               style={{
                 border: 0,

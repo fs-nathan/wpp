@@ -27,7 +27,10 @@ export const useStyles = makeStyles({
     fontSize: 21,
   },
   menuItem: { fontWeight: 500 },
-  menuText: { "& span": { fontWeight: 400, color: "#666" } },
+  menuText: {
+    "& span": { fontWeight: 400, color: "#666" },
+    "&.is-delete span": { color: "red" },
+  },
   menuIcon: { minWidth: 35 },
   menuTextWrapper: {
     display: "flex",
