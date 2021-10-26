@@ -112,7 +112,7 @@ function KanbanPage({
 
   return isOpen ? (
     <>
-      <HeaderProject project={project} />
+      <HeaderProject project={project} view="kanban" />
       {/* <Container>
           <LogoBox>
             <Avatar alt="Logo" src={get(project, 'group_icon', '')} style={{ width: 40, height: 40 }}/>

@@ -1,4 +1,5 @@
 import {
+  mdiBookmark,
   mdiBookmarkOutline,
   mdiCircleSmall,
   mdiDotsHorizontal,
@@ -7,21 +8,29 @@ import {
   mdiStarOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
+import { detailStatus } from "actions/project/setting/detailStatus";
+import { updatePinBoardSetting } from "actions/project/setting/updatePinBoardSetting";
 import Avatar from "components/CustomAvatar";
-import { get } from "lodash";
-import React, { useRef } from "react";
+import { get, isNil } from "lodash";
+import React, { useEffect, useRef, useState } from "react";
+import { connect } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
+import { statusSelector } from "views/ProjectGroupPage/Modals/ProjectSetting/selectors";
 import DrawerFilter from "./components/DrawerFilter";
 import { useStyles } from "./styles";
 
 const HeaderProject = ({
   project,
+  status,
   onExpand = () => {},
   onOpenCreateModal = () => {},
+  onUpdatePinBoardSetting = () => {},
+  doDetailStatus,
   ...props
 }) => {
   const classes = useStyles();
   const refFilter = useRef(null);
+  const [isPinned, setIsPinned] = useState(false);
   const projectId = get(project, "id", "");
   const total =
     get(project, "task_doing", 0) +
@@ -55,8 +64,28 @@ const HeaderProject = ({
     },
   ];
 
+  useEffect(() => {
+    if (project && !isNil(get(project, "id"))) {
+      doDetailStatus({
+        projectId: get(project, "id"),
+      });
+    }
+  }, [project, doDetailStatus]);
+
+  useEffect(() => {
+    setIsPinned(status?.status?.is_pin_on_personal_board || false);
+  }, [status]);
+
   const _toggleDrawerMenu = () => {
     refFilter.current._toggle();
+  };
+
+  const _handleUpdatePinBoard = () => {
+    setIsPinned(!isPinned);
+    onUpdatePinBoardSetting({
+      projectId: get(project, "id"),
+      status: isPinned,
+    });
   };
 
   return (
@@ -76,10 +105,12 @@ const HeaderProject = ({
               <Link to={`/projects/information/${projectId}`}>
                 {get(project, "name", "")}
               </Link>
+
               <Icon
                 className={classes.iconHeader}
-                path={mdiBookmarkOutline}
+                path={isPinned ? mdiBookmark : mdiBookmarkOutline}
                 size={1}
+                onClick={_handleUpdatePinBoard}
               />
 
               <div className={classes.progressTitle}>
@@ -143,4 +174,18 @@ const ItemNav = ({ to, id, title, icon }) => {
   );
 };
 
-export default HeaderProject;
+const mapStateToProps = (state) => {
+  return {
+    status: statusSelector(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onUpdatePinBoardSetting: ({ projectId, status }) =>
+      dispatch(updatePinBoardSetting({ projectId, status })),
+    doDetailStatus: ({ projectId }) => dispatch(detailStatus({ projectId })),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderProject);

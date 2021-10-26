@@ -1681,7 +1681,7 @@ class DragSortingTable extends React.Component {
           end={this.state.endTimeProject}
         /> */}
 
-        <HeaderProject project={this.props.projectInfo} />
+        <HeaderProject project={this.props.projectInfo} view="grantt" />
         <CreateProject
           open={this.state.openCreateProjectModal}
           project_id={this.props.match.params.projectId}
