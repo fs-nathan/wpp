@@ -1,26 +1,17 @@
+import { Button } from "@material-ui/core";
 import {
-  mdiAccount,
-  mdiAccountCircle,
   mdiAccountKey,
   mdiAccountMinusOutline,
-  mdiCalendar,
-  mdiCalendarText,
-  mdiDownload,
   mdiEye,
   mdiEyeOff,
   mdiPlusCircle,
-  mdiScatterPlot,
-  mdiSettings,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import AvatarCircleList from "components/AvatarCircleList";
 import CustomBadge from "components/CustomBadge";
-import {
-  DownloadPopover,
-  TimeRangePopover,
-  useTimes,
-} from "components/CustomPopover";
+import { DownloadPopover, TimeRangePopover } from "components/CustomPopover";
 import CustomTable from "components/CustomTable";
+import HeaderProject from "components/HeaderProject";
 import LoadingBox from "components/LoadingBox";
 import SimpleSmallProgressBar from "components/SimpleSmallProgressBar";
 import {
@@ -29,21 +20,15 @@ import {
   LinkSpan,
   StateBox,
 } from "components/TableComponents";
-import { find, flattenDeep, get, isNil, join, size } from "lodash";
+import { find, flattenDeep, get, isNil, join } from "lodash";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import "./style.scss";
-import CustomAvatar from "../../../../components/CustomAvatar";
-import NavigatorMenu from "../../../../components/NavigatorMenu";
-import { WORKPLACE_TYPES } from "../../../../constants/constants";
-import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
-import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
-import { isSortGroupTask } from "actions/groupTask/sortGroupTask";
-import { useDispatch } from "react-redux";
 import { HeaderTable } from "views/ProjectGroupPage/RightPart/AllProjectTable/components";
-import HeaderProject from "components/HeaderProject";
+import CustomAvatar from "../../../../components/CustomAvatar";
+import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
+import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
+import "./style.scss";
 
 function displayDate(time, date, type) {
   return (
@@ -81,12 +66,19 @@ function AllTaskTable({
   const history = useHistory();
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
-  const times = useTimes();
-  const dispatch = useDispatch();
   const [isEmpty, setIsEmpty] = React.useState(true);
+
   React.useEffect(() => {
     setIsEmpty(tasks.tasks.length === 0);
   }, [tasks.tasks]);
+
+  const disableShowHide = !isNil(
+    find(
+      showHidePendings.pendings,
+      (pending) => pending === get(project.project, "id")
+    )
+  );
+
   return (
     <Container>
       {isEmpty && (
@@ -103,8 +95,24 @@ function AllTaskTable({
             isCustomHeader
             customHeaderTable={() => (
               <HeaderProject
-                onExpand={handleExpand}
                 project={project.project}
+                hasMemberId={isNil(memberID)}
+                canUpdateProject={canUpdateProject && isNil(memberID)}
+                disableShowHide={disableShowHide}
+                onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
+                onUpdateTime={() => handleOpenModal("CALENDAR", {})}
+                onUpdateVisible={() => handleShowOrHideProject(project.project)}
+                onUpdateSetting={() =>
+                  handleOpenModal("SETTING", {
+                    curProject: project.project,
+                    canChange: {
+                      date: canUpdateProject,
+                      copy: canUpdateProject,
+                      view: true,
+                    },
+                  })
+                }
+                onExpand={handleExpand}
               />
             )}
             options={{
@@ -182,72 +190,6 @@ function AllTaskTable({
               actionlist: {
                 bool: true,
               },
-              moreMenu: isNil(memberID)
-                ? [
-                    canUpdateProject && isNil(memberID)
-                      ? {
-                          label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.MEMBER"),
-                          iconPath: mdiAccountCircle,
-                          onClick: (evt) => handleOpenModal("SETTING_MEMBER"),
-                          noExpand: true,
-                        }
-                      : undefined,
-                    isNil(memberID)
-                      ? {
-                          label: times[timeType].title,
-                          iconPath: mdiCalendar,
-                          onClick: () => setTimeAnchor(true),
-                        }
-                      : undefined,
-                    isNil(memberID)
-                      ? {
-                          label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
-                          iconPath: mdiDownload,
-                          onClick: () => setDownloadAnchor(true),
-                        }
-                      : undefined,
-                    {
-                      label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.PROJECT_CALENDAR"),
-                      iconPath: mdiCalendarText,
-                      onClick: () => handleOpenModal("CALENDAR", {}),
-                    },
-                    {
-                      label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SETTING"),
-                      iconPath: mdiSettings,
-                      onClick: () =>
-                        handleOpenModal("SETTING", {
-                          curProject: project.project,
-                          canChange: {
-                            date: canUpdateProject,
-                            copy: canUpdateProject,
-                            view: true,
-                          },
-                        }),
-                    },
-
-                    canUpdateProject
-                      ? {
-                          label: `${
-                            get(project.project, "visibility")
-                              ? t("DMH.VIEW.PP.RIGHT.ALL.LABEL.HIDE")
-                              : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SHOW")
-                          }`,
-                          iconPath: get(project.project, "visibility")
-                            ? mdiEyeOff
-                            : mdiEye,
-                          onClick: () =>
-                            handleShowOrHideProject(project.project),
-                          disabled: !isNil(
-                            find(
-                              showHidePendings.pendings,
-                              (pending) =>
-                                pending === get(project.project, "id")
-                            )
-                          ),
-                        }
-                      : undefined,
-                  ]
-                : undefined,
               grouped: {
                 bool: true,
                 draggable: true,

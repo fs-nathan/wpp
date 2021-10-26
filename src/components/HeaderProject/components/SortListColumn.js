@@ -78,7 +78,7 @@ const SortListColumn = () => {
                         provided.draggableProps.style
                       )}
                     >
-                      <ListItemIcon>
+                      <ListItemIcon style={{ minWidth: 36 }}>
                         <DragIndicatorIcon />
                       </ListItemIcon>
                       <ListItemText primary={item.primary} />

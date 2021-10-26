@@ -78,7 +78,6 @@ function AllProjectTable({
   const groupID = query.get("groupID");
 
   React.useEffect(() => {
-    console.log(query.get("groupID"));
     if (groupID === "deleted") return;
     doListProject({
       groupProject: groupID,

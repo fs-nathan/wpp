@@ -18,6 +18,7 @@ const HeaderProject = ({
   project,
   onExpand = () => {},
   onOpenCreateModal = () => {},
+  ...props
 }) => {
   const classes = useStyles();
   const refFilter = useRef(null);
@@ -120,7 +121,12 @@ const HeaderProject = ({
         </div>
       </div>
 
-      <DrawerFilter ref={refFilter} />
+      <DrawerFilter
+        ref={refFilter}
+        project={project}
+        isProjectVisible={get(project, "visibility")}
+        {...props}
+      />
     </div>
   );
 };
