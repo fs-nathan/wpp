@@ -20,6 +20,7 @@ import {
   LinkSpan,
   StateBox,
 } from "components/TableComponents";
+import { exportToCSV } from "helpers/utils/exportData";
 import { find, flattenDeep, get, isNil, join } from "lodash";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -79,6 +80,35 @@ function AllTaskTable({
     )
   );
 
+  const _exportData = () => {
+    const data = flattenDeep(
+      tasks.tasks.map((groupTask) =>
+        get(groupTask, "tasks", []).map((task) => ({
+          id: get(task, "id", ""),
+          groupTask: get(groupTask, "name", ""),
+          name: get(task, "name", ""),
+          status: get(task, "status_name", ""),
+          duration:
+            get(task, "duration_value", 0) +
+            " " +
+            get(task, "duration_unit", ""),
+          start_time: get(task, "start_time", ""),
+          start_date: get(task, "start_date", ""),
+          end_time: get(task, "end_time", ""),
+          end_date: get(task, "end_date", ""),
+          progress: get(task, "complete", 0) + "%",
+          priority: get(task, "priority_name", ""),
+          members: join(
+            get(task, "members", []).map((member) => get(member, "name")),
+            ","
+          ),
+        }))
+      )
+    );
+
+    exportToCSV(data, "tasks");
+  };
+
   return (
     <Container>
       {isEmpty && (
@@ -112,6 +142,7 @@ function AllTaskTable({
                     },
                   })
                 }
+                onExportData={_exportData}
                 onExpand={handleExpand}
               />
             )}
@@ -424,38 +455,7 @@ function AllTaskTable({
             ]}
             data={tasks.tasks}
           />
-          <DownloadPopover
-            anchorEl={downloadAnchor}
-            className="download-popover-project"
-            setAnchorEl={setDownloadAnchor}
-            fileName="tasks"
-            data={flattenDeep(
-              tasks.tasks.map((groupTask) =>
-                get(groupTask, "tasks", []).map((task) => ({
-                  id: get(task, "id", ""),
-                  groupTask: get(groupTask, "name", ""),
-                  name: get(task, "name", ""),
-                  status: get(task, "status_name", ""),
-                  duration:
-                    get(task, "duration_value", 0) +
-                    " " +
-                    get(task, "duration_unit", ""),
-                  start_time: get(task, "start_time", ""),
-                  start_date: get(task, "start_date", ""),
-                  end_time: get(task, "end_time", ""),
-                  end_date: get(task, "end_date", ""),
-                  progress: get(task, "complete", 0) + "%",
-                  priority: get(task, "priority_name", ""),
-                  members: join(
-                    get(task, "members", []).map((member) =>
-                      get(member, "name")
-                    ),
-                    ","
-                  ),
-                }))
-              )
-            )}
-          />
+
           <TimeRangePopover
             bgColor={bgColor}
             className="time-range-popover"

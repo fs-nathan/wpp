@@ -33,6 +33,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import EditProjectModal from "views/ProjectGroupPage/Modals/EditProject/index.js";
+import ExportTaskGroupData from "views/ProjectGroupPage/RightPart/AllProjectTable/components/ExportTaskGroupData";
 import ManageTableData from "./ManageTableData";
 import { useStyles } from "./styles";
 
@@ -48,6 +49,7 @@ const DrawerFilter = forwardRef(
       onUpdateTime = () => {},
       onUpdateVisible = () => {},
       onUpdateSetting = () => {},
+      onExportData = () => {},
       onFilter = () => {},
     },
     ref
@@ -57,6 +59,8 @@ const DrawerFilter = forwardRef(
     const [isOpenEditGroup, setIsOpenEditGroup] = useState(false);
     const { t } = useTranslation();
     const refManageTableData = useRef(null);
+    const refExport = useRef(null);
+
     useImperativeHandle(ref, () => ({ _toggle: toggleDrawer }));
 
     const toggleDrawer = () => {
@@ -71,19 +75,17 @@ const DrawerFilter = forwardRef(
           {
             text: "Tìm kiếm công việc",
             icon: mdiMagnify,
-            hasDivider: true,
+            isSearchItem: true,
             onClick: (e) => {},
           },
           {
             text: "Lọc công việc",
             icon: mdiFilter,
-            hasDivider: true,
             onClick: (e) => {},
           },
           {
             text: "Quản lý bảng dữ liệu",
             icon: mdiCalendarRange,
-            hasDivider: true,
             onClick: (e) => {
               refManageTableData.current._toggle();
             },
@@ -91,8 +93,7 @@ const DrawerFilter = forwardRef(
           {
             text: "Xuất dữ liệu",
             icon: mdiDownload,
-            hasDivider: true,
-            onClick: (e) => {},
+            onClick: (e) => refExport.current._toggle(),
           },
         ],
       },
@@ -103,38 +104,32 @@ const DrawerFilter = forwardRef(
           {
             text: "Chỉnh sửa bảng việc",
             icon: mdiPencil,
-            hasDivider: true,
             onClick: (e) => setIsOpenEditGroup(true),
           },
           {
             text: "Thành viên bảng việc",
             icon: mdiAccountSupervisor,
-            hasDivider: true,
             onClick: (e) => onUpdateMember(),
             canDisplay: canUpdateProject,
           },
           {
             text: "Lịch làm việc",
             icon: mdiCalendarText,
-            hasDivider: true,
             onClick: (e) => onUpdateTime(),
           },
           {
             text: "Cài đặt bảng việc",
             icon: mdiCogs,
-            hasDivider: true,
             onClick: (e) => onUpdateSetting(),
           },
           {
             text: isProjectVisible ? "Ẩn bảng việc" : "Hiện bảng việc",
             icon: isProjectVisible ? mdiEyeOff : mdiEye,
-            hasDivider: true,
             onClick: (e) => !disableShowHide && onUpdateVisible(),
           },
           {
             text: "Xoá bảng việc",
             icon: mdiDelete,
-            hasDivider: true,
             onClick: (e) => {},
           },
         ],
@@ -174,6 +169,7 @@ const DrawerFilter = forwardRef(
           setOpen={setIsOpenEditGroup}
           {...{ curProject: project }}
         />
+        <ExportTaskGroupData ref={refExport} onExportData={onExportData} />
         <ManageTableData ref={refManageTableData} />
       </>
     );
@@ -191,15 +187,21 @@ const GroupFilter = ({ title, hasDivider = false, items = [] }) => {
     </>
   );
 };
+
 const ItemMenuFilter = ({
   text,
   icon,
   subText,
+  isSearchItem = false,
   isCheckType = false,
   isActive = false,
   onClick = () => {},
 }) => {
   const classes = useStyles();
+
+  if (isSearchItem)
+    return <ItemSearch text={text} icon={icon} onClick={onClick} />;
+
   return (
     <>
       <ListItem button className={classes.menuItem} onClick={(e) => onClick(e)}>
@@ -219,6 +221,54 @@ const ItemMenuFilter = ({
         </div>
       </ListItem>
     </>
+  );
+};
+
+const ItemSearch = ({ icon, text }) => {
+  const classes = useStyles();
+  const [isFocus, setIsFocus] = useState(false);
+  const refInput = useRef(null);
+
+  const _handleFocus = () => {
+    setIsFocus(true);
+    setTimeout(() => {
+      refInput.current.focus();
+    }, 0);
+  };
+
+  const _handleBlur = () => {
+    if (!refInput.current.value.length) {
+      setIsFocus(false);
+    }
+  };
+
+  return (
+    <ListItem button className={classes.menuItem} onClick={_handleFocus}>
+      <ListItemIcon className={classes.menuIcon}>
+        <Icon path={icon} size={1} />
+      </ListItemIcon>
+      <div className={classes.menuTextWrapper}>
+        {isFocus ? (
+          <>
+            <input
+              ref={refInput}
+              type="text"
+              className={classes.inputSearch}
+              placeholder="Nhập nội dung cần tìm"
+              onBlur={_handleBlur}
+              style={{
+                border: 0,
+                background: "transparent",
+                outline: "none",
+                height: 25,
+              }}
+            />
+          </>
+        ) : (
+          <ListItemText className={classes.menuText} primary={text} />
+        )}
+      </div>
+    </ListItem>
   );
 };
 
