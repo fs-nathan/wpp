@@ -25,6 +25,8 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
+import { CustomTableContext } from "components/CustomTable";
+import { get } from "lodash";
 import React, {
   forwardRef,
   useImperativeHandle,
@@ -226,6 +228,8 @@ const ItemMenuFilter = ({
 
 const ItemSearch = ({ icon, text }) => {
   const classes = useStyles();
+  const { options } = React.useContext(CustomTableContext);
+
   const [isFocus, setIsFocus] = useState(false);
   const refInput = useRef(null);
 
@@ -256,6 +260,10 @@ const ItemSearch = ({ icon, text }) => {
               className={classes.inputSearch}
               placeholder="Nhập nội dung cần tìm"
               onBlur={_handleBlur}
+              value={get(options, "search.patern", "")}
+              onChange={(evt) =>
+                get(options, "search.onChange", () => null)(evt.target.value)
+              }
               style={{
                 border: 0,
                 background: "transparent",
