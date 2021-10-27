@@ -6,10 +6,10 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import BasicSwitch from "./BasicSwitch";
 
 const fakeItems = [
-  { id: 1, primary: "Nhóm" },
-  { id: 2, primary: "Tiến độ" },
-  { id: 3, primary: "Trạng thái" },
-  { id: 4, primary: "Ghi chú thêm" },
+  { id: "item-1", primary: "Nhóm" },
+  { id: "item-2", primary: "Tiến độ" },
+  { id: "item-3", primary: "Trạng thái" },
+  { id: "item-4", primary: "Ghi chú thêm" },
 ];
 
 const reorder = (list, startIndex, endIndex) => {
@@ -23,9 +23,7 @@ const reorder = (list, startIndex, endIndex) => {
 const getItemStyle = (isDragging, draggableStyle) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
-  ...(isDragging && {
-    background: "black",
-  }),
+  ...(isDragging && {}),
   paddingLeft: 16,
   paddingRight: 0,
   borderRadius: 5,
@@ -69,8 +67,7 @@ const SortListColumn = () => {
                 <Draggable key={item.id} draggableId={item.id} index={index}>
                   {(provided, snapshot) => (
                     <ListItem
-                      ContainerComponent="li"
-                      ContainerProps={{ ref: provided.innerRef }}
+                      ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       style={getItemStyle(

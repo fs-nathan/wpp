@@ -31,6 +31,7 @@ const HeaderProject = ({
   const classes = useStyles();
   const refFilter = useRef(null);
   const [isPinned, setIsPinned] = useState(false);
+  const refIsFirstTime = useRef(true);
   const projectId = get(project, "id", "");
   const total =
     get(project, "task_doing", 0) +
@@ -73,7 +74,10 @@ const HeaderProject = ({
   }, [project, doDetailStatus]);
 
   useEffect(() => {
-    setIsPinned(status?.status?.is_pin_on_personal_board || false);
+    if (status?.status && refIsFirstTime.current) {
+      setIsPinned(status?.status?.is_pin_on_personal_board || false);
+      refIsFirstTime.current = false;
+    }
   }, [status]);
 
   const _toggleDrawerMenu = () => {
