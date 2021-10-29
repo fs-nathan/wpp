@@ -24,6 +24,7 @@ import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
+import { changeKeyword } from "actions/gantt";
 import {
   changeCalendarPermisstion,
   changePreviewContent,
@@ -1654,6 +1655,7 @@ class DragSortingTable extends React.Component {
             x: "unset",
           },
         };
+
     if (this.state.isLoading) return <LoadingBox />;
     return (
       <React.Fragment>
@@ -1681,7 +1683,12 @@ class DragSortingTable extends React.Component {
           end={this.state.endTimeProject}
         /> */}
 
-        <HeaderProject project={this.props.projectInfo} view="grantt" />
+        <HeaderProject
+          project={this.props.projectInfo}
+          view="grantt"
+          valueSearch={this.props.keyword}
+          onSearch={this.props.changeKeyword}
+        />
         <CreateProject
           open={this.state.openCreateProjectModal}
           project_id={this.props.match.params.projectId}
@@ -1860,6 +1867,7 @@ const mapDispatchToProps = {
   changeDetailSubtaskDrawer,
   scrollGantt,
   changePreviewContent,
+  changeKeyword,
 };
 export default withRouter(
   withTranslation()(

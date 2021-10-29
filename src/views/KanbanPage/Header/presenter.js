@@ -1,71 +1,16 @@
-import React from "react";
-import {
-  ButtonGroup,
-  CircularProgress,
-  Grow,
-  Menu,
-  MenuItem,
-} from "@material-ui/core";
-import SearchInput from "components/SearchInput";
-import NavigatorMenu from "components/NavigatorMenu";
-import Avatar from "components/CustomAvatar";
+import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
+import { mdiChevronDown } from "@mdi/js";
 import Icon from "@mdi/react";
-import {
-  mdiChevronUp,
-  mdiChevronDown,
-  mdiMenuDown,
-  mdiClose,
-  mdiMagnify,
-  mdiAccountCircle,
-  mdiFilterOutline,
-  mdiDownload,
-  mdiDotsVertical,
-} from "@mdi/js";
-import {
-  StyledButton as _StyledButton,
-  StyledPopper,
-  SearchBox,
-} from "components/CustomTable/HeaderButtonGroup";
-import { DRAWER_TYPE } from "constants/constants";
+import HeaderProject from "components/HeaderProject";
 import { workTypes } from "constants/workTypes";
-import { get, isNil, find } from "lodash";
+import { find, get, isNil } from "lodash";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
-import HeaderProject from "components/HeaderProject";
-
-const Container = ({ className = "", ...props }) => (
-  <div className={`view_KanbanHeader___container ${className}`} {...props} />
-);
-
-const LogoBox = ({ className = "", ...props }) => (
-  <div className={`view_KanbanHeader___logo ${className}`} {...props} />
-);
-
-const InfoBox = ({ className = "", ...props }) => (
-  <div className={`view_KanbanHeader___info ${className}`} {...props} />
-);
-
-const NameBox = ({ className = "", ...props }) => (
-  <div className={`view_KanbanHeader___name ${className}`} {...props} />
-);
 
 const MiniContainer = ({ className = "", ...props }) => (
   <div
     className={`view_KanbanHeader___container-mini ${className}`}
-    {...props}
-  />
-);
-
-const StyledButtonGroup = ({ className = "", ...props }) => (
-  <ButtonGroup
-    className={`view_KanbanHeader___button-group ${className}`}
-    {...props}
-  />
-);
-
-const StyledButton = ({ className = "", ...props }) => (
-  <_StyledButton
-    className={`view_KanbanHeader___button ${className}`}
     {...props}
   />
 );
@@ -83,21 +28,8 @@ function KanbanPage({
   canUpdate,
 }) {
   const { t } = useTranslation();
-  const [searchAnchor, setSearchAnchor] = React.useState(null);
+  // const [searchAnchor] = React.useState(null);
   const [moreAnchor, setMoreAnchor] = React.useState(null);
-
-  function handleSearchClick(evt) {
-    if (searchAnchor) {
-      setSearchAnchor(null);
-      handleSearchChange("");
-    } else {
-      setSearchAnchor(evt.currentTarget);
-    }
-  }
-
-  function handleMoreOpen(evt) {
-    setMoreAnchor(evt.currentTarget);
-  }
 
   function handleMoreClick(handler) {
     return (evt) => {
@@ -112,7 +44,12 @@ function KanbanPage({
 
   return isOpen ? (
     <>
-      <HeaderProject project={project} view="kanban" />
+      <HeaderProject
+        project={project}
+        view="kanban"
+        valueSearch={search}
+        onSearch={handleSearchChange}
+      />
       {/* <Container>
           <LogoBox>
             <Avatar alt="Logo" src={get(project, 'group_icon', '')} style={{ width: 40, height: 40 }}/>
@@ -208,7 +145,7 @@ function KanbanPage({
             </StyledButton>
           </StyledButtonGroup>
         </Container> */}
-      <StyledPopper
+      {/* <StyledPopper
         open={Boolean(searchAnchor)}
         anchorEl={searchAnchor}
         transition
@@ -225,7 +162,7 @@ function KanbanPage({
             </SearchBox>
           </Grow>
         )}
-      </StyledPopper>
+      </StyledPopper> */}
       <Menu
         id="simple-menu"
         anchorEl={moreAnchor}

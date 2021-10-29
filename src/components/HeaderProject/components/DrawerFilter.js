@@ -54,16 +54,19 @@ const DrawerFilter = forwardRef(
       isProjectVisible = false,
       canUpdateProject = false,
       hasMemberId = false,
+      valueSearch,
       onUpdateMember = () => {},
       onUpdateTime = () => {},
       onUpdateVisible = () => {},
       onUpdateSetting = () => {},
       onExportData = () => {},
       onFilter = () => {},
+      onSearch = () => {},
     },
     ref
   ) => {
     const classes = useStyles();
+    const TableContextValue = React.useContext(CustomTableContext);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEditGroup, setIsOpenEditGroup] = useState(false);
     const { t } = useTranslation();
@@ -79,14 +82,40 @@ const DrawerFilter = forwardRef(
     const MORE_MENU_ITEMS = {
       list: [
         {
+          text: "Tìm kiếm công việc",
+          icon: mdiMagnify,
+          isSearchItem: true,
+          valueSearch: get(TableContextValue?.options, "search.patern", ""),
+          onSearch: (evt) =>
+            get(
+              TableContextValue?.options,
+              "search.onChange",
+              () => null
+            )(evt.target.value),
+          onClick: (e) => {},
+        },
+        {
           text: "Quản lý bảng dữ liệu",
           icon: mdiViewGridPlus,
           onClick: (e) => {
             refManageTableData.current._toggle();
           },
         },
+        {
+          text: "Xuất dữ liệu",
+          icon: mdiDownload,
+          onClick: (e) => refExport.current._toggle(),
+        },
       ],
       kanban: [
+        {
+          text: "Tìm kiếm công việc",
+          icon: mdiMagnify,
+          isSearchItem: true,
+          valueSearch: valueSearch,
+          onSearch: (evt) => onSearch(evt.target.value),
+          onClick: (e) => {},
+        },
         {
           text: "Lọc bảng dữ liệu",
           icon: mdiFilter,
@@ -94,6 +123,14 @@ const DrawerFilter = forwardRef(
         },
       ],
       grantt: [
+        {
+          text: "Tìm kiếm công việc",
+          icon: mdiMagnify,
+          isSearchItem: true,
+          valueSearch: valueSearch,
+          onSearch: (evt) => onSearch(evt.target.value),
+          onClick: (e) => {},
+        },
         {
           text: "Thiết lập trục thời gian",
           icon: mdiCalendarRange,
@@ -116,20 +153,7 @@ const DrawerFilter = forwardRef(
       {
         title: "Todo List",
         hasDivider: true,
-        items: [
-          {
-            text: "Tìm kiếm công việc",
-            icon: mdiMagnify,
-            isSearchItem: true,
-            onClick: (e) => {},
-          },
-          ...MORE_MENU_ITEMS[view],
-          {
-            text: "Xuất dữ liệu",
-            icon: mdiDownload,
-            onClick: (e) => refExport.current._toggle(),
-          },
-        ],
+        items: [...MORE_MENU_ITEMS[view]],
       },
       {
         title: "Bảng việc",
@@ -211,7 +235,7 @@ const DrawerFilter = forwardRef(
   }
 );
 
-const GroupFilter = ({ title, hasDivider = false, items = [] }) => {
+const GroupFilter = React.memo(({ title, hasDivider = false, items = [] }) => {
   return (
     <>
       <p style={{ padding: "0 16px", color: "#666", fontSize: 14 }}>{title}</p>
@@ -221,22 +245,32 @@ const GroupFilter = ({ title, hasDivider = false, items = [] }) => {
       {hasDivider && <Divider />}
     </>
   );
-};
+});
 
 const ItemMenuFilter = ({
   text,
   icon,
   subText,
+  valueSearch,
   isSearchItem = false,
   isCheckType = false,
   isActive = false,
   isDeleteItem = false,
   onClick = () => {},
+  onSearch = () => {},
 }) => {
   const classes = useStyles();
 
   if (isSearchItem)
-    return <ItemSearch text={text} icon={icon} onClick={onClick} />;
+    return (
+      <ItemSearch
+        text={text}
+        icon={icon}
+        onClick={onClick}
+        valueSearch={valueSearch}
+        onSearch={onSearch}
+      />
+    );
 
   return (
     <>
@@ -265,9 +299,8 @@ const ItemMenuFilter = ({
   );
 };
 
-const ItemSearch = ({ icon, text }) => {
+const ItemSearch = ({ icon, valueSearch, text, onSearch = () => {} }) => {
   const classes = useStyles();
-  const TableContextValue = React.useContext(CustomTableContext);
 
   const [isFocus, setIsFocus] = useState(false);
   const refInput = useRef(null);
@@ -285,7 +318,6 @@ const ItemSearch = ({ icon, text }) => {
     }
   };
 
-  if (!TableContextValue) return null;
   return (
     <ListItem button className={classes.menuItem} onClick={_handleFocus}>
       <ListItemIcon className={classes.menuIcon}>
@@ -300,14 +332,8 @@ const ItemSearch = ({ icon, text }) => {
               className={classes.inputSearch}
               placeholder="Nhập nội dung cần tìm"
               onBlur={_handleBlur}
-              value={get(TableContextValue.options, "search.patern", "")}
-              onChange={(evt) =>
-                get(
-                  TableContextValue.options,
-                  "search.onChange",
-                  () => null
-                )(evt.target.value)
-              }
+              value={valueSearch}
+              onChange={onSearch}
               style={{
                 border: 0,
                 background: "transparent",
