@@ -20,7 +20,7 @@ import moment from "moment";
 import React from "react";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
-import { withTranslation } from "react-i18next";
+import { useTranslation, withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
@@ -73,6 +73,7 @@ import "components/Drawer/DrawerPDF/drawerpdf.css";
 import "components/PreviewModal/previewModal.css";
 import "./table.css";
 import HeaderProject from "components/HeaderProject";
+import { changeVisibleConfigGantt } from "actions/system/system.js";
 
 let haveError = false;
 let checkTimeOut = null;
@@ -730,6 +731,7 @@ class DragSortingTable extends React.Component {
     };
     this.tableRef = React.createRef();
   }
+
   setRowHover = (index) => {
     this.setState({
       rowHover: index,
@@ -1624,6 +1626,17 @@ class DragSortingTable extends React.Component {
       projectFilter: type,
     });
   };
+
+  handleMileStoneClick = (textError = "") => {
+    if (
+      Date.now() - this.state.startTimeProject.toDate().getTime() > 0 ||
+      Date.now() - this.state.endTimeProject.toDate().getTime() < 0
+    ) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, textError);
+      return;
+    }
+    scrollGantt(true);
+  };
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -1687,6 +1700,8 @@ class DragSortingTable extends React.Component {
           project={this.props.projectInfo}
           view="grantt"
           valueSearch={this.props.keyword}
+          onMilestoneClick={this.handleMileStoneClick}
+          onOpenGranttConfig={this.props.changeVisibleConfigGantt}
           onSearch={this.props.changeKeyword}
         />
         <CreateProject
@@ -1868,6 +1883,7 @@ const mapDispatchToProps = {
   scrollGantt,
   changePreviewContent,
   changeKeyword,
+  changeVisibleConfigGantt,
 };
 export default withRouter(
   withTranslation()(

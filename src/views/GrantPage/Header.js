@@ -21,7 +21,7 @@ const Header = ({
   showProject,
   profileDetail,
   end,
-  start
+  start,
 }) => {
   const history = useHistory();
   const { pathname } = useLocation();
@@ -72,23 +72,28 @@ const Header = ({
         </div>
       </Col>
       <Col offset={2} span={10}>
-        <RightHeader end={end} start={start} scheduleIdDefault={scheduleIdDefault} projectInfo={projectInfo}/>
+        <RightHeader
+          end={end}
+          start={start}
+          scheduleIdDefault={scheduleIdDefault}
+          projectInfo={projectInfo}
+        />
       </Col>
     </Row>
   ) : (
-      <div className="icon-show-header">
-        <div style={{ display: "flex", justifyContent: "center" }}>
-          <IconComponent
-            onClick={() => {
-              changeShowHeader(!showHeader);
-            }}
-            size={1.3}
-            title={""}
-            path={mdiChevronDown}
-          />
-        </div>
+    <div className="icon-show-header">
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <IconComponent
+          onClick={() => {
+            changeShowHeader(!showHeader);
+          }}
+          size={1.3}
+          title={""}
+          path={mdiChevronDown}
+        />
       </div>
-    );
+    </div>
+  );
 };
 
 const mapStateToProps = (state) => ({

@@ -55,6 +55,8 @@ const DrawerFilter = forwardRef(
       canUpdateProject = false,
       hasMemberId = false,
       valueSearch,
+      onOpenGranttConfig = () => {},
+      onMilestoneClick = () => {},
       onUpdateMember = () => {},
       onUpdateTime = () => {},
       onUpdateVisible = () => {},
@@ -134,17 +136,17 @@ const DrawerFilter = forwardRef(
         {
           text: "Thiết lập trục thời gian",
           icon: mdiCalendarRange,
-          onClick: (e) => {},
+          onClick: (e) => onOpenGranttConfig(true, "TIME"),
         },
         {
           text: "Thiết lập giao diện",
           icon: pathMonitorEye,
-          onClick: (e) => {},
+          onClick: (e) => onOpenGranttConfig(true, "COMMON"),
         },
         {
           text: "Tiến độ đến ngày hôm nay",
           icon: mdiFlagTriangle,
-          onClick: (e) => {},
+          onClick: (e) => onMilestoneClick(t("GANTT_NOT_INCLUDE_PROJECT")),
         },
       ],
     };
