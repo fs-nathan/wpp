@@ -118,10 +118,10 @@ function ProjectGroupPage({
               <AllTaskTable expand={isCollapsed} handleExpand={_handleExpand} />
             </Route>
             <Route exact path="/projects/task-kanban/:projectId/:memberId?">
-              <KanbanPage />
+              <KanbanPage expand={isCollapsed} handleExpand={_handleExpand} />
             </Route>
             <Route exact path="/projects/task-gantt/:projectId/:memberId?">
-              <GranttPage />
+              <GranttPage expand={isCollapsed} handleExpand={_handleExpand} />
             </Route>
             <Route exact path="/projects/task-chat/:projectId/:memberId?">
               <ChatPage />

@@ -74,6 +74,7 @@ import "components/PreviewModal/previewModal.css";
 import "./table.css";
 import HeaderProject from "components/HeaderProject";
 import { changeVisibleConfigGantt } from "actions/system/system.js";
+import { changeVisibleExportPdfDrawer } from "actions/system/system";
 
 let haveError = false;
 let checkTimeOut = null;
@@ -1697,11 +1698,14 @@ class DragSortingTable extends React.Component {
         /> */}
 
         <HeaderProject
+          expand={this.props.expand}
+          onExpand={this.props.handleExpand}
           project={this.props.projectInfo}
           view="grantt"
           valueSearch={this.props.keyword}
           onMilestoneClick={this.handleMileStoneClick}
           onOpenGranttConfig={this.props.changeVisibleConfigGantt}
+          onOpenExportData={this.props.changeVisibleExportPdfDrawer}
           onSearch={this.props.changeKeyword}
         />
         <CreateProject
@@ -1884,6 +1888,7 @@ const mapDispatchToProps = {
   changePreviewContent,
   changeKeyword,
   changeVisibleConfigGantt,
+  changeVisibleExportPdfDrawer,
 };
 export default withRouter(
   withTranslation()(

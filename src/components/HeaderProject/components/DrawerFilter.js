@@ -62,6 +62,7 @@ const DrawerFilter = forwardRef(
       onUpdateVisible = () => {},
       onUpdateSetting = () => {},
       onExportData = () => {},
+      onOpenExportData = null,
       onFilter = () => {},
       onSearch = () => {},
     },
@@ -147,6 +148,11 @@ const DrawerFilter = forwardRef(
           text: "Tiến độ đến ngày hôm nay",
           icon: mdiFlagTriangle,
           onClick: (e) => onMilestoneClick(t("GANTT_NOT_INCLUDE_PROJECT")),
+        },
+        {
+          text: "Xuất dữ liệu",
+          icon: mdiDownload,
+          onClick: (e) => onOpenExportData && onOpenExportData(true),
         },
       ],
     };
