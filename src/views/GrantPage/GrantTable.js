@@ -75,6 +75,9 @@ import "./table.css";
 import HeaderProject from "components/HeaderProject";
 import { changeVisibleConfigGantt } from "actions/system/system.js";
 import { changeVisibleExportPdfDrawer } from "actions/system/system";
+import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
+import CustomModal from "components/CustomModalGantt";
+import CalendarProjectPage from "views/CalendarProjectPageClone";
 
 let haveError = false;
 let checkTimeOut = null;
@@ -275,6 +278,9 @@ class DragSortingTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openConfigCalendar: false,
+      openModal: false,
+      openSetting: false,
       rowHover: null,
       startTimeProject: "",
       canScroll: true,
@@ -732,6 +738,18 @@ class DragSortingTable extends React.Component {
     };
     this.tableRef = React.createRef();
   }
+
+  setOpenSetting = (value) => {
+    this.setState({ openSetting: value });
+  };
+
+  setOpenConfigCalendar = (value) => {
+    this.setState({ openConfigCalendar: value });
+  };
+
+  setOpenModal = (value) => {
+    this.setState({ openModal: value });
+  };
 
   setRowHover = (index) => {
     this.setState({
@@ -1707,7 +1725,34 @@ class DragSortingTable extends React.Component {
           onOpenGranttConfig={this.props.changeVisibleConfigGantt}
           onOpenExportData={this.props.changeVisibleExportPdfDrawer}
           onSearch={this.props.changeKeyword}
+          onUpdateSetting={() => this.setOpenSetting(true)}
+          onUpdateTime={() => this.setOpenConfigCalendar(true)}
         />
+
+        <ProjectSettingModal
+          open={this.state.openSetting}
+          setOpen={this.setOpenSetting}
+          curProject={this.props.projectInfo}
+        />
+
+        <CustomModal
+          title={"GANTT_CALENDAR_TITLE_MODAL"}
+          isLoadTranslateFromHooks
+          className="gantt--calendar-modal__container"
+          fullWidth={true}
+          open={this.state.openConfigCalendar}
+          setOpen={this.setOpenConfigCalendar}
+          style={{}}
+          height="tall"
+          confirmRender={() => null}
+          isScrollContainer={false}
+        >
+          <CalendarProjectPage
+            setopenModal={this.setOpenModal}
+            scheduleDetailGantt={this.props.scheduleDetailGantt}
+          />
+        </CustomModal>
+
         <CreateProject
           open={this.state.openCreateProjectModal}
           project_id={this.props.match.params.projectId}
@@ -1870,6 +1915,7 @@ const mapStateToProps = (state) => ({
   calendarPermisstions: state.gantt.calendarPermisstions,
   mainCalendar: state.gantt.mainCalendar,
   keyword: state.gantt.keyword,
+  scheduleDetailGantt: state.gantt.scheduleDetailGantt,
 });
 
 const mapDispatchToProps = {

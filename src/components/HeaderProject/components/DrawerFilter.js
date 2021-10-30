@@ -176,7 +176,7 @@ const DrawerFilter = forwardRef(
             text: "Thành viên bảng việc",
             icon: mdiAccountSupervisor,
             onClick: (e) => onUpdateMember(),
-            canDisplay: canUpdateProject,
+            canDisplay: canUpdateProject && view !== "grantt",
           },
           {
             text: "Lịch làm việc",
@@ -260,6 +260,7 @@ const ItemMenuFilter = ({
   icon,
   subText,
   valueSearch,
+  canDisplay = true,
   isSearchItem = false,
   isCheckType = false,
   isActive = false,
@@ -269,6 +270,7 @@ const ItemMenuFilter = ({
 }) => {
   const classes = useStyles();
 
+  if (!canDisplay) return null;
   if (isSearchItem)
     return (
       <ItemSearch

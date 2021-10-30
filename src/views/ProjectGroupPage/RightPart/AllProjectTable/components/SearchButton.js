@@ -2,14 +2,11 @@ import { makeStyles } from "@material-ui/core";
 import { mdiClose, mdiMagnify } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
-import { CustomTableContext } from "components/CustomTable";
-import { get } from "lodash";
 import React, { useState } from "react";
 
-const SearchButton = () => {
+const SearchButton = ({ valueSearch, onSearch = () => {} }) => {
   const classes = useStyles();
   const [isExpand, setIsExpand] = useState(false);
-  const { options } = React.useContext(CustomTableContext);
 
   const _toggleSearch = () => {
     setIsExpand(!isExpand);
@@ -29,10 +26,8 @@ const SearchButton = () => {
         type="text"
         className={classes.inputSearch}
         placeholder="Nhập nội dung cần tìm"
-        value={get(options, "search.patern", "")}
-        onChange={(evt) =>
-          get(options, "search.onChange", () => null)(evt.target.value)
-        }
+        value={valueSearch}
+        onChange={(evt) => onSearch(evt.target.value)}
       />
       <Icon
         className={classes.buttonClose}
@@ -80,4 +75,4 @@ const useStyles = makeStyles({
   buttonClose: {},
 });
 
-export default SearchButton;
+export default React.memo(SearchButton);

@@ -16,15 +16,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { statusSelector } from "views/ProjectGroupPage/Modals/ProjectSetting/selectors";
+import SearchButton from "views/ProjectGroupPage/RightPart/AllProjectTable/components/SearchButton";
 import DrawerFilter from "./components/DrawerFilter";
 import { useStyles } from "./styles";
 
 const HeaderProject = ({
   project,
   status,
+  valueSearch,
   onExpand = () => {},
   onOpenCreateModal = () => {},
   onUpdatePinBoardSetting = () => {},
+  onSearch = () => {},
   doDetailStatus,
   ...props
 }) => {
@@ -126,6 +129,7 @@ const HeaderProject = ({
             </div>
 
             <div className={classes.rightWrapper}>
+              <SearchButton valueSearch={valueSearch} onSearch={onSearch} />
               <div
                 className={classes.wrapperButton}
                 onClick={_toggleDrawerMenu}
@@ -160,6 +164,8 @@ const HeaderProject = ({
         ref={refFilter}
         project={project}
         isProjectVisible={get(project, "visibility")}
+        valueSearch={valueSearch}
+        onSearch={onSearch}
         {...props}
       />
     </div>

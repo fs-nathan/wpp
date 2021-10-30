@@ -17,7 +17,9 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
+import { CustomTableContext } from "components/CustomTable";
 import { Routes } from "constants/routes";
+import { get } from "lodash";
 import React, {
   forwardRef,
   useImperativeHandle,
@@ -44,6 +46,7 @@ const HeaderTableAllGroup = ({
 }) => {
   const classes = useStyles();
   const refMenuDrawer = useRef(null);
+  const { options } = React.useContext(CustomTableContext);
 
   const _toggleDrawerMenu = () => refMenuDrawer.current._toggle();
 
@@ -56,7 +59,12 @@ const HeaderTableAllGroup = ({
         typeData={typeData}
       />
       <div className="AllGroup__header--right">
-        <SearchButton />
+        <SearchButton
+          valueSearch={get(options, "search.patern", "")}
+          onSearch={(value) =>
+            get(options, "search.onChange", () => null)(value)
+          }
+        />
         <div className={classes.wrapperButton} onClick={_toggleDrawerMenu}>
           <Icon path={mdiDotsHorizontal} size={1} />
           <span style={{ marginLeft: 5 }}>Hiện menu</span>
