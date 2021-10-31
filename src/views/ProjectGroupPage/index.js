@@ -124,7 +124,7 @@ function ProjectGroupPage({
               <GranttPage expand={isCollapsed} handleExpand={_handleExpand} />
             </Route>
             <Route exact path="/projects/task-chat/:projectId/:memberId?">
-              <ChatPage />
+              <ChatPage expand={isCollapsed} handleExpand={_handleExpand} />
             </Route>
             {/* Detail project */}
 

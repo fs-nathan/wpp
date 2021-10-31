@@ -38,7 +38,7 @@ export const useStyles = makeStyles({
     marginLeft: 15,
   },
   iconHeader: {
-    padding: 5,
+    // padding: 5,
     color: "rgba(0, 0, 0, 0.54)",
     cursor: "pointer",
   },

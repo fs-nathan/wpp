@@ -12,26 +12,25 @@ import { detailStatus } from "actions/project/setting/detailStatus";
 import { closeNoticeModal } from "actions/system/system";
 import * as taskDetailAction from "actions/taskDetail/taskDetailActions";
 import { getPermissionViewDetailProject } from "actions/viewPermissions";
+import HeaderProject from "components/HeaderProject/index.js";
 import {
   JOIN_CHAT_EVENT,
   JOIN_PROJECT_EVENT,
 } from "constants/actions/chat/chat";
 import last from "lodash/last";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import ShareDocumentModal from "views/DocumentPage/TablePart/DocumentComponent/ShareDocumentModal";
-import "../JobDetailPage/index.scss";
 import ForwardMessageDialog from "../Chat/ChatComponent/ForwardMessageDialog";
+import "../JobDetailPage/index.scss";
 import ChatPart from "./ChatPart";
 import Intro from "./introduce";
 import ListPart from "./ListPart";
-import { lastJobSettingKey } from "./ListPart/ListHeader/CreateJobSetting";
-import HeaderProject from "components/HeaderProject/index.js";
 import ModalImage from "./ModalImage";
 import TabPart from "./TabPart";
 
-function JobDetailPage(props) {
+function JobDetailPage({ expand = false, handleExpand = () => {} }) {
   const dispatch = useDispatch();
   const url = new URL(window.location.href);
   const taskId = url.searchParams.get("task_id");
@@ -124,7 +123,12 @@ function JobDetailPage(props) {
 
   return (
     <>
-      <HeaderProject project={null} />
+      <HeaderProject
+        view="chat"
+        expand={expand}
+        onExpand={handleExpand}
+        project={{ id: projectId }}
+      />
       <div className={taskId ? "container" : "container-job-introduce"}>
         <ListPart />
         {taskId ? (

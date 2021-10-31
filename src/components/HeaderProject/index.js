@@ -129,25 +129,27 @@ const HeaderProject = ({
               </div>
             </div>
 
-            <div className={classes.rightWrapper}>
-              <SearchButton valueSearch={valueSearch} onSearch={onSearch} />
-              <div
-                className={classes.wrapperButton}
-                onClick={_toggleDrawerMenu}
-              >
-                <Icon path={mdiDotsHorizontal} size={1} />
-                <span style={{ marginLeft: 5 }}>Hiện menu</span>
-              </div>
-              {view !== "grantt" && (
+            {view !== "chat" && (
+              <div className={classes.rightWrapper}>
+                <SearchButton valueSearch={valueSearch} onSearch={onSearch} />
                 <div
                   className={classes.wrapperButton}
-                  onClick={onOpenCreateModal}
+                  onClick={_toggleDrawerMenu}
                 >
-                  <Icon path={mdiPlus} size={1} />
-                  <span style={{ marginLeft: 5 }}>Tạo mới</span>
+                  <Icon path={mdiDotsHorizontal} size={1} />
+                  <span style={{ marginLeft: 5 }}>Hiện menu</span>
                 </div>
-              )}
-            </div>
+                {view !== "grantt" && (
+                  <div
+                    className={classes.wrapperButton}
+                    onClick={onOpenCreateModal}
+                  >
+                    <Icon path={mdiPlus} size={1} />
+                    <span style={{ marginLeft: 5 }}>Tạo mới</span>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
           <div className={classes.navMenuRow}>
             <div className={classes.navBar}>

@@ -39,6 +39,7 @@ import React, {
 import { useTranslation } from "react-i18next";
 import EditProjectModal from "views/ProjectGroupPage/Modals/EditProject/index.js";
 import ExportTaskGroupData from "views/ProjectGroupPage/RightPart/AllProjectTable/components/ExportTaskGroupData";
+import DeleteProjectModal from "views/ProjectGroupPage/Modals/DeleteProject/index.js";
 import ManageTableData from "./ManageTableData";
 import { useStyles } from "./styles";
 
@@ -72,6 +73,7 @@ const DrawerFilter = forwardRef(
     const TableContextValue = React.useContext(CustomTableContext);
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEditGroup, setIsOpenEditGroup] = useState(false);
+    const [openAlert, setOpenAlert] = useState(false);
     const { t } = useTranslation();
     const refManageTableData = useRef(null);
     const refExport = useRef(null);
@@ -155,6 +157,7 @@ const DrawerFilter = forwardRef(
           onClick: (e) => onOpenExportData && onOpenExportData(true),
         },
       ],
+      chat: [],
     };
 
     const DRAWER_MENU_ITEMS = [
@@ -196,12 +199,16 @@ const DrawerFilter = forwardRef(
           {
             text: "Xoá bảng việc",
             icon: mdiDelete,
-            onClick: (e) => {},
+            onClick: (e) => _handleDeleteProject(project.id),
             isDeleteItem: true,
           },
         ],
       },
     ];
+
+    const _handleDeleteProject = (id) => {
+      setOpenAlert(true);
+    };
 
     return (
       <>
@@ -231,6 +238,12 @@ const DrawerFilter = forwardRef(
           </List>
         </Box>
 
+        <DeleteProjectModal
+          open={openAlert}
+          setOpen={setOpenAlert}
+          projectGroupId={project?.id}
+          selectedProject={project}
+        />
         <EditProjectModal
           open={isOpenEditGroup}
           setOpen={setIsOpenEditGroup}
