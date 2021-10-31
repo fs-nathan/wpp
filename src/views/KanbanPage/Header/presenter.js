@@ -47,6 +47,11 @@ function KanbanPage({
             curProject: project,
           })
         )}
+        onOpenCreateModal={handleMoreClick(() =>
+          handleOpenModal("MENU_CREATE", {
+            curProject: project,
+          })
+        )}
         onUpdateMember={handleMoreClick(() =>
           handleOpenModal("MEMBER_SETTING", {})
         )}

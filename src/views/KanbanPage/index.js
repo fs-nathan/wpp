@@ -18,6 +18,7 @@ import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
 import ModalImage from "views/JobDetailPage/ModalImage";
 import ManagerModal from "./Modals/ManagerModal";
 import { getPermissionViewDetailProject } from "actions/viewPermissions";
+import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 
 function KanbanPage({
   visible,
@@ -60,6 +61,10 @@ function KanbanPage({
   const [openCreateGroupTask, setOpenCreateGroupTask] = React.useState(false);
   const [openManagers, setOpenManagers] = React.useState(false);
   const [managersProps, setManagersProps] = React.useState({});
+  const [openMenuCreate, setOpenmMenuCreate] = React.useState(null);
+  const [openCreate, setOpenCreate] = React.useState(false);
+  const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
+  const [selectedGroup, setSelectedGroup] = React.useState(null);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -119,7 +124,12 @@ function KanbanPage({
       case "MANAGERS": {
         setOpenManagers(true);
         setManagersProps(props);
+        return;
       }
+      case "MENU_CREATE":
+        setOpenmMenuCreate(true);
+        setSelectedGroup(props);
+        return;
       default:
         return;
     }
@@ -133,6 +143,13 @@ function KanbanPage({
         isOpen={visible}
         expand={expand}
         handleExpand={handleExpand}
+      />
+      <MenuCreateNew
+        setOpenCreateTaskGroup={setOpenCreateTaskGroup}
+        setOpenmMenuCreate={setOpenmMenuCreate}
+        setOpenCreate={setOpenCreate}
+        anchorEl={openMenuCreate}
+        setAnchorEl={setOpenmMenuCreate}
       />
       <StageSettingModal
         open={openStageSettingModal}
