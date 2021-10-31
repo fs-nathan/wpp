@@ -62,8 +62,6 @@ function KanbanPage({
   const [openManagers, setOpenManagers] = React.useState(false);
   const [managersProps, setManagersProps] = React.useState({});
   const [openMenuCreate, setOpenmMenuCreate] = React.useState(null);
-  const [openCreate, setOpenCreate] = React.useState(false);
-  const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
   const [selectedGroup, setSelectedGroup] = React.useState(null);
 
   function doOpenModal(type, props) {
@@ -145,9 +143,9 @@ function KanbanPage({
         handleExpand={handleExpand}
       />
       <MenuCreateNew
-        setOpenCreateTaskGroup={setOpenCreateTaskGroup}
+        setOpenCreateTaskGroup={setOpenCreateGroupTask}
         setOpenmMenuCreate={setOpenmMenuCreate}
-        setOpenCreate={setOpenCreate}
+        setOpenCreate={setOpenCreateTask}
         anchorEl={openMenuCreate}
         setAnchorEl={setOpenmMenuCreate}
       />

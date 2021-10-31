@@ -21,6 +21,7 @@ import DrawerFilter from "./components/DrawerFilter";
 import { useStyles } from "./styles";
 
 const HeaderProject = ({
+  view = "list",
   project,
   status,
   valueSearch,
@@ -137,13 +138,15 @@ const HeaderProject = ({
                 <Icon path={mdiDotsHorizontal} size={1} />
                 <span style={{ marginLeft: 5 }}>Hiện menu</span>
               </div>
-              <div
-                className={classes.wrapperButton}
-                onClick={onOpenCreateModal}
-              >
-                <Icon path={mdiPlus} size={1} />
-                <span style={{ marginLeft: 5 }}>Tạo mới</span>
-              </div>
+              {view !== "grantt" && (
+                <div
+                  className={classes.wrapperButton}
+                  onClick={onOpenCreateModal}
+                >
+                  <Icon path={mdiPlus} size={1} />
+                  <span style={{ marginLeft: 5 }}>Tạo mới</span>
+                </div>
+              )}
             </div>
           </div>
           <div className={classes.navMenuRow}>
@@ -162,6 +165,7 @@ const HeaderProject = ({
 
       <DrawerFilter
         ref={refFilter}
+        view={view}
         project={project}
         isProjectVisible={get(project, "visibility")}
         valueSearch={valueSearch}
