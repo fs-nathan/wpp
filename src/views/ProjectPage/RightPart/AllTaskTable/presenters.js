@@ -4,7 +4,7 @@ import Icon from "@mdi/react";
 import AvatarCircleList from "components/AvatarCircleList";
 import CustomBadge from "components/CustomBadge";
 import { TimeRangePopover } from "components/CustomPopover";
-import CustomTable from "components/CustomTable";
+import CustomTable, { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import LoadingBox from "components/LoadingBox";
 import SimpleSmallProgressBar from "components/SimpleSmallProgressBar";
@@ -118,27 +118,15 @@ function AllTaskTable({
           <CustomTable
             isCustomHeader
             customHeaderTable={() => (
-              <HeaderProject
-                project={project.project}
-                hasMemberId={isNil(memberID)}
-                canUpdateProject={canUpdateProject && isNil(memberID)}
+              <HeaderTableCustom
+                project={project}
+                memberID={memberID}
+                canUpdateProject={canUpdateProject}
                 disableShowHide={disableShowHide}
-                onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
-                onUpdateTime={() => handleOpenModal("CALENDAR", {})}
-                onUpdateVisible={() => handleShowOrHideProject(project.project)}
-                onUpdateSetting={() =>
-                  handleOpenModal("SETTING", {
-                    curProject: project.project,
-                    canChange: {
-                      date: canUpdateProject,
-                      copy: canUpdateProject,
-                      view: true,
-                    },
-                  })
-                }
-                onExportData={_exportData}
-                onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
-                onExpand={handleExpand}
+                handleOpenModal={handleOpenModal}
+                handleShowOrHideProject={handleShowOrHideProject}
+                _exportData={_exportData}
+                handleExpand={handleExpand}
               />
             )}
             options={{
@@ -466,5 +454,44 @@ function AllTaskTable({
     </Container>
   );
 }
+
+const HeaderTableCustom = ({
+  project,
+  memberID,
+  canUpdateProject,
+  disableShowHide,
+  handleOpenModal,
+  handleShowOrHideProject,
+  _exportData,
+  handleExpand,
+}) => {
+  const { options } = React.useContext(CustomTableContext);
+  return (
+    <HeaderProject
+      project={project.project}
+      valueSearch={get(options, "search.patern", "")}
+      onSearch={(value) => get(options, "search.onChange", () => null)(value)}
+      hasMemberId={isNil(memberID)}
+      canUpdateProject={canUpdateProject && isNil(memberID)}
+      disableShowHide={disableShowHide}
+      onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
+      onUpdateTime={() => handleOpenModal("CALENDAR", {})}
+      onUpdateVisible={() => handleShowOrHideProject(project.project)}
+      onUpdateSetting={() =>
+        handleOpenModal("SETTING", {
+          curProject: project.project,
+          canChange: {
+            date: canUpdateProject,
+            copy: canUpdateProject,
+            view: true,
+          },
+        })
+      }
+      onExportData={_exportData}
+      onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
+      onExpand={handleExpand}
+    />
+  );
+};
 
 export default AllTaskTable;
