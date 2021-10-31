@@ -1,15 +1,22 @@
-import AlertModal from 'components/AlertModal';
-import { CustomEventDispose, CustomEventListener, DELETE_PROJECT, LIST_PROJECT } from 'constants/events';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import AlertModal from "components/AlertModal";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_PROJECT,
+  LIST_PROJECT,
+} from "constants/events";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 function ProjectDelete({
-  open, setOpen,
+  open,
+  setOpen,
   handleDeleteProject,
   doReloadProject,
-  projectGroupId, timeRange,
+  projectGroupId,
+  timeRange,
+  doAfterSuccess = () => {},
 }) {
-
   const { t } = useTranslation();
   const [activeLoading, setActiveLoading] = React.useState(false);
 
@@ -22,7 +29,7 @@ function ProjectDelete({
     return () => {
       CustomEventDispose(DELETE_PROJECT.SUCCESS, doReloadProject);
       CustomEventDispose(DELETE_PROJECT.FAIL, fail);
-    }
+    };
     // eslint-disable-next-line
   }, [projectGroupId, timeRange]);
 
@@ -30,6 +37,7 @@ function ProjectDelete({
     const success = () => {
       setActiveLoading(false);
       setOpen(false);
+      doAfterSuccess();
     };
     const fail = () => {
       setActiveLoading(false);
@@ -39,7 +47,7 @@ function ProjectDelete({
     return () => {
       CustomEventDispose(LIST_PROJECT.SUCCESS, success);
       CustomEventDispose(LIST_PROJECT.FAIL, fail);
-    }
+    };
     // eslint-disable-next-line
   }, [projectGroupId, timeRange]);
 
@@ -47,7 +55,7 @@ function ProjectDelete({
     <AlertModal
       open={open}
       setOpen={setOpen}
-      content={t('DMH.VIEW.PGP.RIGHT.ALL.ALERT')}
+      content={t("DMH.VIEW.PGP.RIGHT.ALL.ALERT")}
       onConfirm={() => {
         handleDeleteProject();
         setActiveLoading(true);
@@ -56,16 +64,12 @@ function ProjectDelete({
       manualClose={true}
       activeLoading={activeLoading}
     />
-  )
+  );
 }
 
 export default ProjectDelete;
 
-export function DeleteProjectNoReload({
-  open, setOpen,
-  handleDeleteProject,
-}) {
-
+export function DeleteProjectNoReload({ open, setOpen, handleDeleteProject }) {
   const { t } = useTranslation();
   const [activeLoading, setActiveLoading] = React.useState(false);
 
@@ -82,7 +86,7 @@ export function DeleteProjectNoReload({
     return () => {
       CustomEventDispose(DELETE_PROJECT.SUCCESS, success);
       CustomEventDispose(DELETE_PROJECT.FAIL, fail);
-    }
+    };
     // eslint-disable-next-line
   }, []);
 
@@ -90,7 +94,7 @@ export function DeleteProjectNoReload({
     <AlertModal
       open={open}
       setOpen={setOpen}
-      content={t('DMH.VIEW.PGP.RIGHT.ALL.ALERT')}
+      content={t("DMH.VIEW.PGP.RIGHT.ALL.ALERT")}
       onConfirm={() => {
         handleDeleteProject();
         setActiveLoading(true);
@@ -99,5 +103,5 @@ export function DeleteProjectNoReload({
       manualClose={true}
       activeLoading={activeLoading}
     />
-  )
+  );
 }

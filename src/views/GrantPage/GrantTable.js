@@ -78,6 +78,7 @@ import { changeVisibleExportPdfDrawer } from "actions/system/system";
 import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
 import CustomModal from "components/CustomModalGantt";
 import CalendarProjectPage from "views/CalendarProjectPageClone";
+import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 
 let haveError = false;
 let checkTimeOut = null;
@@ -278,6 +279,7 @@ class DragSortingTable extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      openMenuCreate: false,
       openConfigCalendar: false,
       openModal: false,
       openSetting: false,
@@ -1645,6 +1647,9 @@ class DragSortingTable extends React.Component {
       projectFilter: type,
     });
   };
+  handleOpenMenuCreate = (openMenuCreate) => {
+    this.setState({ openMenuCreate });
+  };
 
   handleMileStoneClick = (textError = "") => {
     if (
@@ -1727,6 +1732,15 @@ class DragSortingTable extends React.Component {
           onSearch={this.props.changeKeyword}
           onUpdateSetting={() => this.setOpenSetting(true)}
           onUpdateTime={() => this.setOpenConfigCalendar(true)}
+          onOpenCreateModal={() => this.handleOpenMenuCreate(true)}
+        />
+
+        <MenuCreateNew
+          setOpenCreateTaskGroup={this.handleOpenCreateProjectModal}
+          setOpenmMenuCreate={this.handleOpenMenuCreate}
+          setOpenCreate={this.handleOpenCraeteJobModal}
+          anchorEl={this.state.openMenuCreate}
+          setAnchorEl={this.handleOpenMenuCreate}
         />
 
         <ProjectSettingModal
@@ -1759,6 +1773,7 @@ class DragSortingTable extends React.Component {
           setOpen={this.handleOpenCreateProjectModal}
           fetchChart={this.handleOpenCreateProjectModal}
         />
+
         {this.props.keyword &&
         !this.state.data.filter((item) => {
           if (this.props.keyword) {

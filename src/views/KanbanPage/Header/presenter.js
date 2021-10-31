@@ -1,6 +1,7 @@
 import { mdiChevronDown } from "@mdi/js";
 import Icon from "@mdi/react";
 import HeaderProject from "components/HeaderProject";
+import { DRAWER_TYPE } from "constants/constants";
 import React from "react";
 import "./style.scss";
 
@@ -47,6 +48,13 @@ function KanbanPage({
             curProject: project,
           })
         )}
+        onOpenFilterKanban={() =>
+          handleVisibleDrawerMessage({
+            type: DRAWER_TYPE.KANBAN.FILTER,
+            anchor: "right",
+            options: {},
+          })
+        }
         onOpenCreateModal={handleMoreClick(() =>
           handleOpenModal("MENU_CREATE", {
             curProject: project,

@@ -139,15 +139,13 @@ const HeaderProject = ({
                   <Icon path={mdiDotsHorizontal} size={1} />
                   <span style={{ marginLeft: 5 }}>Hiện menu</span>
                 </div>
-                {view !== "grantt" && (
-                  <div
-                    className={classes.wrapperButton}
-                    onClick={onOpenCreateModal}
-                  >
-                    <Icon path={mdiPlus} size={1} />
-                    <span style={{ marginLeft: 5 }}>Tạo mới</span>
-                  </div>
-                )}
+                <div
+                  className={classes.wrapperButton}
+                  onClick={onOpenCreateModal}
+                >
+                  <Icon path={mdiPlus} size={1} />
+                  <span style={{ marginLeft: 5 }}>Tạo mới</span>
+                </div>
               </div>
             )}
           </div>
