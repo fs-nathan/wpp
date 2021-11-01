@@ -2,10 +2,68 @@ import { Card, makeStyles, Popover } from "@material-ui/core";
 import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
 import CircleIcon from "@mui/icons-material/Circle";
 import CloseIcon from "@mui/icons-material/Close";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { ListTagSelect } from "./ListTagSelect";
-import React, { useState } from "react";
 
 export const ListTagsCreateProject = () => {
+  const classes = useStyles();
+  const refListSelected = useRef(null);
+  const _selectTag = (tag) => {
+    refListSelected.current._addTag(tag);
+  };
+
+  return (
+    <>
+      <div className={classes.wrapper}>
+        <div className={classes.wrapperList}>
+          <ListTagSelected ref={refListSelected} />
+        </div>
+        <ListTagSelect title="Thêm lựa chọn" onSelect={_selectTag} />
+      </div>
+    </>
+  );
+};
+
+const ListTagSelected = forwardRef((props, ref) => {
+  const [tags, setTags] = useState([]);
+
+  useImperativeHandle(ref, () => ({
+    _addTag: (tag) => setTags((prevState) => [...prevState, tag]),
+    _getValue: () => tags,
+  }));
+
+  const _deleteTag = (id) => {
+    setTags((prevState) => [...prevState].filter((item) => item.id !== id));
+  };
+
+  const _editTag = (id, data = {}) => {
+    setTags((prevState) => {
+      const newState = [...prevState];
+      const index = newState.findIndex((item) => item.id === id);
+      newState[index] = { ...newState[index], ...data };
+      return newState;
+    });
+  };
+
+  return tags.map((item, index) => {
+    return (
+      <ItemTag key={index} onDelete={_deleteTag} onEdit={_editTag} {...item} />
+    );
+  });
+});
+
+const ItemTag = ({
+  id,
+  name,
+  color,
+  onDelete = () => {},
+  onEdit = () => {},
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -17,56 +75,45 @@ export const ListTagsCreateProject = () => {
     setAnchorEl(null);
   };
 
+  const _handleEdit = (data) => {
+    onEdit(id, { ...data });
+  };
+
   return (
     <>
-      <div className={classes.wrapper}>
-        <div className={classes.wrapperList}>
-          <ListTagSelected onOpenListColor={_handleOpenPopover} />
+      <div className={classes.item}>
+        <div className={classes.leftItem}>
+          <CircleIcon
+            className={classes.icon}
+            sx={{ color }}
+            onClick={_handleOpenPopover}
+          />
+          <p>{name}</p>
         </div>
-        <ListTagSelect title="Thêm lựa chọn" />
+        <div className={classes.rightItem} onClick={() => onDelete(id)}>
+          <CloseIcon />
+        </div>
       </div>
-      <ListColorLabel anchorEl={anchorEl} onClose={_handleClosePopover} />
+      <ListColorLabel
+        anchorEl={anchorEl}
+        activeColor={color}
+        onClose={_handleClosePopover}
+        onSelect={_handleEdit}
+      />
     </>
-  );
-};
-
-const ListTagSelected = ({ onOpenListColor }) => {
-  const [tags, setTags] = useState([1]);
-
-  return tags.map((item, index) => {
-    return <ItemTag key={index} onOpenListColor={onOpenListColor} />;
-  });
-};
-
-const ItemTag = ({ onOpenListColor = () => {} }) => {
-  const classes = useStyles();
-  return (
-    <div className={classes.item}>
-      <div className={classes.leftItem}>
-        <CircleIcon
-          className={classes.icon}
-          sx={{ color: "#373839" }}
-          onClick={onOpenListColor}
-        />
-        <p>Lựa chọn 1</p>
-      </div>
-      <div className={classes.rightItem}>
-        <CloseIcon />
-      </div>
-    </div>
   );
 };
 
 const ListColorLabel = ({
   anchorEl,
-  activeColor = "#373839",
+  activeColor = "red",
   onSelect = () => {},
   onClose = () => {},
 }) => {
   const classes = useStyles();
 
   const _handleSelect = (color) => {
-    onSelect(color);
+    onSelect({ color });
     onClose();
   };
 
@@ -103,8 +150,8 @@ const ListColorLabel = ({
 };
 
 const LIST_COLORS = [
-  "#373839",
-  "#fb5779",
+  "red",
+  "blue",
   "#ff7511",
   "#ffa800",
   "#ffd100",

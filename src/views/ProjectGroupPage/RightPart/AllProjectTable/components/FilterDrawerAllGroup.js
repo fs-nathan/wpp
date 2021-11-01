@@ -52,7 +52,7 @@ export const FilterDrawerAllGroup = forwardRef(
     const dispatch = useDispatch();
 
     useEffect(() => {
-      dispatch(listProjectLabel());
+      if (labelsProject.firstTime) dispatch(listProjectLabel());
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
