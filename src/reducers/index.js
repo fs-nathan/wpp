@@ -338,6 +338,9 @@ import updateGroupPermissionMember, {
 import updateProject, {
   initialState as updateProjectInitialState,
 } from "./project/updateProject";
+import updateProjectLabels, {
+  initialState as updateProjectLabelsInitialState,
+} from "./projectLabels/editProjectLabels";
 import updateStateJoinTask, {
   initialState as updateStateJoinTaskInitialState,
 } from "./project/updateStateJoinTask";
@@ -590,6 +593,7 @@ const rootReducer = combineReducers({
   }),
   projectLabels: combineReducers({
     listProjectLabels,
+    updateProjectLabels,
   }),
   project: combineReducers({
     createProject,
@@ -812,6 +816,7 @@ export const DEFAULT_STATE = {
   },
   projectLabels: {
     listProjectLabels: listProjectLabelsInitialState,
+    updateProjectLabels: updateProjectLabelsInitialState,
   },
   project: {
     createProject: createProjectInitialState,

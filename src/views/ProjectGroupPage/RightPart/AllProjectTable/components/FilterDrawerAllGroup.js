@@ -124,7 +124,7 @@ export const FilterDrawerAllGroup = forwardRef(
           })}
           <Divider />
 
-          {labelsProject.data?.labels?.map((item) => {
+          {labelsProject.data?.projectLabels?.map((item) => {
             return <ItemLabelFilter key={item.id} {...item} />;
           })}
         </List>

@@ -127,6 +127,7 @@ import { SHOW_PROJECT } from "../constants/actions/project/showProject";
 import { SORT_PROJECT } from "../constants/actions/project/sortProject";
 import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
 import { UPDATE_PROJECT } from "../constants/actions/project/updateProject";
+import { EDIT_PROJECT_LABELS } from "../constants/actions/projectLabels/editProjectLabels";
 import { UPDATE_STATE_JOIN_TASK } from "../constants/actions/project/updateStateJoinTask";
 import { CREATE_PROJECT_GROUP } from "../constants/actions/projectGroup/createProjectGroup";
 import { DELETE_PROJECT_GROUP } from "../constants/actions/projectGroup/deleteProjectGroup";
@@ -483,6 +484,7 @@ import {
 } from "./chat/threadChat";
 import { updateAccount } from "./user/updateAccount";
 import { countPersonalProjectsBoard } from "./project/countPersonalProjectsBoard";
+import { updateProjectLabels } from "./projectLabels/editProjectLabels";
 
 function* rootSaga() {
   // Hoang - begin
@@ -556,6 +558,7 @@ function* rootSaga() {
   yield takeEvery(COPY_PROJECT, copyProject);
   yield takeEvery(SORT_PROJECT, sortProject);
   yield takeEvery(UPDATE_PROJECT, updateProject);
+  yield takeEvery(EDIT_PROJECT_LABELS, updateProjectLabels);
   yield takeEvery(DELETE_PROJECT, deleteProject);
   yield takeLatest(LIST_PROJECT, listProject);
   yield takeLatest(LIST_PROJECT_SELECT, listProject);

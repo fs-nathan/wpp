@@ -2,12 +2,14 @@ import { Card, makeStyles, Popover } from "@material-ui/core";
 import CheckTwoToneIcon from "@mui/icons-material/CheckTwoTone";
 import CircleIcon from "@mui/icons-material/Circle";
 import CloseIcon from "@mui/icons-material/Close";
+import { updateProjectLabels } from "actions/projectLabels/editProjectLabels";
 import React, {
   forwardRef,
   useImperativeHandle,
   useRef,
   useState,
 } from "react";
+import { useDispatch } from "react-redux";
 import { ListTagSelect } from "./ListTagSelect";
 
 export const ListTagsCreateProject = () => {
@@ -33,7 +35,11 @@ const ListTagSelected = forwardRef((props, ref) => {
   const [tags, setTags] = useState([]);
 
   useImperativeHandle(ref, () => ({
-    _addTag: (tag) => setTags((prevState) => [...prevState, tag]),
+    _addTag: (tag) =>
+      setTags((prevState) => {
+        if (prevState.some((item) => item.id === tag.id)) return prevState;
+        return [...prevState, tag];
+      }),
     _getValue: () => tags,
   }));
 
@@ -66,6 +72,7 @@ const ItemTag = ({
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const dispatch = useDispatch();
 
   const _handleOpenPopover = (event) => {
     setAnchorEl(event.currentTarget);
@@ -77,6 +84,7 @@ const ItemTag = ({
 
   const _handleEdit = (data) => {
     onEdit(id, { ...data });
+    dispatch(updateProjectLabels({ label_id: id, name, color, ...data }));
   };
 
   return (

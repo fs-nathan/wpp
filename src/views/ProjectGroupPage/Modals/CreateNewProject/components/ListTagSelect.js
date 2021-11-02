@@ -39,7 +39,7 @@ export const ListTagSelect = ({
 
 const ListTag = ({
   anchorEl,
-  activeColor = "#373839",
+  activeColor = "red",
   onSelect = () => {},
   onClose = () => {},
 }) => {
@@ -48,10 +48,11 @@ const ListTag = ({
   const labelsProject = useSelector(
     ({ projectLabels }) => projectLabels.listProjectLabels
   );
+
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setTags(labelsProject?.data?.labels);
+    setTags(labelsProject?.data?.projectLabels || []);
   }, [labelsProject]);
 
   useEffect(() => {
