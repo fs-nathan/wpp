@@ -1,10 +1,9 @@
 import { Card, makeStyles, Popover } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
 import { listProjectLabel } from "actions/projectLabels/listProjectLabels";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-const MAX_LENGTH_LABEL = 3;
+import ItemTag from "./ItemTag";
 
 export const ListTagSelect = ({
   title = "Thêm lựa chọn",
@@ -12,24 +11,70 @@ export const ListTagSelect = ({
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [tags, setTags] = useState([]);
+  const [isAddingTag, setIsAddingTag] = useState(false);
+  const [currentNewName, setCurrentNewName] = useState("");
+  const refTarget = useRef(null);
+  const dispatch = useDispatch();
 
-  const _handleOpenPopover = (event) => {
-    setAnchorEl(event.currentTarget);
+  const labelsProject = useSelector(
+    ({ projectLabels }) => projectLabels.listProjectLabels
+  );
+
+  useEffect(() => {
+    setTags(labelsProject?.data?.projectLabels || []);
+  }, [labelsProject]);
+
+  useEffect(() => {
+    if (labelsProject.firstTime) dispatch(listProjectLabel());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const _handleOpenPopover = () => {
+    setIsAddingTag(true);
   };
 
   const _handleClosePopover = (event) => {
     setAnchorEl(null);
+    setIsAddingTag(false);
+  };
+
+  const _handleFocus = (event) => {
+    setAnchorEl(refTarget.current);
+  };
+
+  const _handleChange = (event) => {
+    const value = event.target.value;
+    setCurrentNewName(value);
+    setTags(() => {
+      const data = labelsProject?.data?.projectLabels || [];
+      if (!value.length) return data;
+      return [...data].filter((item) => item.name.toLowerCase().match(value));
+    });
   };
 
   return (
-    <div>
-      <div className={classes.wrapperAdd} onClick={_handleOpenPopover}>
-        <AddIcon sx={{ fontSize: 18 }} />
-        <p> {title}</p>
-      </div>
+    <div ref={refTarget}>
+      {isAddingTag ? (
+        <ItemTag
+          color="red"
+          id="null"
+          isNewTag
+          name={currentNewName}
+          onFocus={_handleFocus}
+          onChange={_handleChange}
+        />
+      ) : (
+        <div className={classes.wrapperAdd} onClick={_handleOpenPopover}>
+          <AddIcon sx={{ fontSize: 18 }} />
+          <p> {title}</p>
+        </div>
+      )}
 
       <ListTag
+        listTags={tags}
         anchorEl={anchorEl}
+        currentNewName={currentNewName}
         onClose={_handleClosePopover}
         onSelect={onSelect}
       />
@@ -40,25 +85,12 @@ export const ListTagSelect = ({
 const ListTag = ({
   anchorEl,
   activeColor = "red",
+  currentNewName = "",
+  listTags = [],
   onSelect = () => {},
   onClose = () => {},
 }) => {
   const classes = useStyles();
-  const [tags, setTags] = useState([]);
-  const labelsProject = useSelector(
-    ({ projectLabels }) => projectLabels.listProjectLabels
-  );
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    setTags(labelsProject?.data?.projectLabels || []);
-  }, [labelsProject]);
-
-  useEffect(() => {
-    if (labelsProject.firstTime) dispatch(listProjectLabel());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const _handleSelect = (item) => {
     onSelect(item);
@@ -71,13 +103,15 @@ const ListTag = ({
       open={Boolean(anchorEl)}
       anchorEl={anchorEl}
       onClose={onClose}
+      disableAutoFocus={true}
+      disableEnforceFocus={true}
       anchorOrigin={{
         vertical: "bottom",
         horizontal: "left",
       }}
     >
       <Card className={classes.wrapperTagList}>
-        {tags.map((item) => {
+        {listTags.map((item) => {
           return (
             <div
               key={item.id}
@@ -89,6 +123,19 @@ const ListTag = ({
             </div>
           );
         })}
+        {currentNewName && (
+          <p
+            style={{
+              cursor: "pointer",
+              color: "rgb(0, 118, 243)",
+              display: "flex",
+              alignItems: "center",
+            }}
+          >
+            <AddIcon sx={{ fontSize: 18 }} />
+            Tạo nhãn cho "{currentNewName}"
+          </p>
+        )}
       </Card>
     </Popover>
   );
@@ -115,4 +162,18 @@ const useStyles = makeStyles({
     fontWeight: 500,
     cursor: "pointer",
   },
+  item: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: "10px 15px",
+    borderBottom: "1px solid #e0e0e0",
+    "& p": { margin: 0 },
+  },
+  leftItem: {
+    display: "flex",
+    alignItems: "center",
+  },
+  rightItem: { cursor: "pointer" },
+  icon: { marginRight: 10, cursor: "pointer" },
 });
