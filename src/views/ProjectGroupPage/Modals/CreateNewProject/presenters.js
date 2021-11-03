@@ -60,6 +60,7 @@ function CreateNewProject({
   const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] =
     React.useState(false);
   const params = useQuery();
+  const refListTag = React.useRef(null);
 
   React.useEffect(() => {
     const fail = () => {
@@ -142,7 +143,7 @@ function CreateNewProject({
             description,
             priority,
             currency,
-            work_type: workingType,
+            project_label_id: refListTag.current._getValue()[0]?.id,
           });
           setActiveLoading(true);
         }}
@@ -187,36 +188,7 @@ function CreateNewProject({
         </div>
         <StyledFormControl fullWidth>
           <Title>{t("LABEL_CATEGORY")}</Title>
-          <ListTagsCreateProject />
-          {/* <div className={"view_ProjectGroup_CreateNew_selectCategory"}>
-            <div
-              className={`view_ProjectGroup_CreateNew_selectCategory_item ${
-                workingType === 0 && "active"
-              }`}
-              onClick={() => setWorkingType(0)}
-            >
-              <img src={images.check_64} width={20} height={20} alt={""} />
-              <span>{t("IDS_WP_TOPICS")}</span>
-            </div>
-            <div
-              className={`view_ProjectGroup_CreateNew_selectCategory_item ${
-                workingType === 1 && "active"
-              }`}
-              onClick={() => setWorkingType(1)}
-            >
-              <img src={images.speed_64} width={20} height={20} alt={""} />
-              <span>{t("LABEL_REMIND_PROJECT")}</span>
-            </div>
-            <div
-              className={`view_ProjectGroup_CreateNew_selectCategory_item ${
-                workingType === 2 && "active"
-              }`}
-              onClick={() => setWorkingType(2)}
-            >
-              <img src={images.workfollow_64} width={20} height={20} alt={""} />
-              <span>{t("IDS_WP_PROCESS")}</span>
-            </div>
-          </div> */}
+          <ListTagsCreateProject ref={refListTag} />
         </StyledFormControl>
         <StyledFormControl fullWidth>
           <Title>{t("DMH.VIEW.PGP.MODAL.CUP.PRIO.TITLE")}</Title>

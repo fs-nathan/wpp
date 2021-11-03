@@ -5,6 +5,7 @@ import {
 } from "../../constants/actions/projectLabels/listProjectLabels";
 
 import { EDIT_PROJECT_LABELS_SUCCESS } from "../../constants/actions/projectLabels/editProjectLabels";
+import { CREATE_PROJECT_LABELS_SUCCESS } from "../../constants/actions/projectLabels/createProjectLabels";
 
 export const initialState = {
   data: {
@@ -48,6 +49,14 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         data: { projectLabels: newProjectLabels },
+        error: null,
+        loading: false,
+        firstTime: false,
+      };
+    case CREATE_PROJECT_LABELS_SUCCESS:
+      return {
+        ...state,
+        data: { projectLabels: [...newProjectLabels, action.data.label] },
         error: null,
         loading: false,
         firstTime: false,

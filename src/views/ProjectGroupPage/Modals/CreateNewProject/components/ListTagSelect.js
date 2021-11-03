@@ -1,5 +1,6 @@
 import { Card, makeStyles, Popover } from "@material-ui/core";
 import AddIcon from "@mui/icons-material/Add";
+import { createProjectLabels } from "actions/projectLabels/createProjectLabels";
 import { listProjectLabel } from "actions/projectLabels/listProjectLabels";
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -53,6 +54,13 @@ export const ListTagSelect = ({
     });
   };
 
+  const _handleSubmitAdd = (event) => {
+    if (currentNewName.trim().length) {
+      dispatch(createProjectLabels({ name: currentNewName, color: "red" }));
+      setCurrentNewName("");
+    }
+  };
+
   return (
     <div ref={refTarget}>
       {isAddingTag ? (
@@ -77,6 +85,7 @@ export const ListTagSelect = ({
         currentNewName={currentNewName}
         onClose={_handleClosePopover}
         onSelect={onSelect}
+        onSubmitAdd={_handleSubmitAdd}
       />
     </div>
   );
@@ -89,6 +98,7 @@ const ListTag = ({
   listTags = [],
   onSelect = () => {},
   onClose = () => {},
+  onSubmitAdd = () => {},
 }) => {
   const classes = useStyles();
 
@@ -123,15 +133,8 @@ const ListTag = ({
             </div>
           );
         })}
-        {currentNewName && (
-          <p
-            style={{
-              cursor: "pointer",
-              color: "rgb(0, 118, 243)",
-              display: "flex",
-              alignItems: "center",
-            }}
-          >
+        {currentNewName && !listTags.length > 3 && (
+          <p onClick={onSubmitAdd} className={classes.linkAdd}>
             <AddIcon sx={{ fontSize: 18 }} />
             Tạo nhãn cho "{currentNewName}"
           </p>
@@ -176,4 +179,10 @@ const useStyles = makeStyles({
   },
   rightItem: { cursor: "pointer" },
   icon: { marginRight: 10, cursor: "pointer" },
+  linkAdd: {
+    cursor: "pointer",
+    color: "rgb(0, 118, 243)",
+    display: "flex",
+    alignItems: "center",
+  },
 });

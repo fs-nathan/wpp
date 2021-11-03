@@ -341,6 +341,9 @@ import updateProject, {
 import updateProjectLabels, {
   initialState as updateProjectLabelsInitialState,
 } from "./projectLabels/editProjectLabels";
+import createProjectLabels, {
+  initialState as createProjectLabelsInitialState,
+} from "./projectLabels/editProjectLabels";
 import updateStateJoinTask, {
   initialState as updateStateJoinTaskInitialState,
 } from "./project/updateStateJoinTask";
@@ -594,6 +597,7 @@ const rootReducer = combineReducers({
   projectLabels: combineReducers({
     listProjectLabels,
     updateProjectLabels,
+    createProjectLabels,
   }),
   project: combineReducers({
     createProject,
@@ -817,6 +821,7 @@ export const DEFAULT_STATE = {
   projectLabels: {
     listProjectLabels: listProjectLabelsInitialState,
     updateProjectLabels: updateProjectLabelsInitialState,
+    createProjectLabels: createProjectLabelsInitialState,
   },
   project: {
     createProject: createProjectInitialState,

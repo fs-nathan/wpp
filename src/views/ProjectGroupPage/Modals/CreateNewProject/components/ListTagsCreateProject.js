@@ -8,12 +8,16 @@ import React, {
 import ItemTag from "./ItemTag";
 import { ListTagSelect } from "./ListTagSelect";
 
-export const ListTagsCreateProject = () => {
+export const ListTagsCreateProject = forwardRef((props, ref) => {
   const classes = useStyles();
   const refListSelected = useRef(null);
   const _selectTag = (tag) => {
     refListSelected.current._addTag(tag);
   };
+
+  useImperativeHandle(ref, () => ({
+    _getValue: () => refListSelected.current._getValue(),
+  }));
 
   return (
     <>
@@ -25,7 +29,7 @@ export const ListTagsCreateProject = () => {
       </div>
     </>
   );
-};
+});
 
 const ListTagSelected = forwardRef((props, ref) => {
   const [tags, setTags] = useState([]);
