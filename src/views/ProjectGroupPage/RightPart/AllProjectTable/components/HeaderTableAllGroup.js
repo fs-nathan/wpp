@@ -46,7 +46,7 @@ const HeaderTableAllGroup = ({
 }) => {
   const classes = useStyles();
   const refMenuDrawer = useRef(null);
-  const { options } = React.useContext(CustomTableContext);
+  const TableContext = React.useContext(CustomTableContext);
 
   const _toggleDrawerMenu = () => refMenuDrawer.current._toggle();
 
@@ -60,9 +60,9 @@ const HeaderTableAllGroup = ({
       />
       <div className="AllGroup__header--right">
         <SearchButton
-          valueSearch={get(options, "search.patern", "")}
+          valueSearch={get(TableContext?.options, "search.patern", "")}
           onSearch={(value) =>
-            get(options, "search.onChange", () => null)(value)
+            get(TableContext?.options, "search.onChange", () => null)(value)
           }
         />
         <div className={classes.wrapperButton} onClick={_toggleDrawerMenu}>

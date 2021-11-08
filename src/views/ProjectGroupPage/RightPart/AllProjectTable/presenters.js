@@ -15,6 +15,7 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import * as images from "assets";
+import WPReactTable from "components/WPReactTable";
 import { statusTaskColors } from "constants/colors";
 import { exportToCSV } from "helpers/utils/exportData";
 import {
@@ -60,6 +61,7 @@ import {
 import { WORKPLACE_TYPES } from "../../../../constants/constants";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 import HeaderTableAllGroup from "./components/HeaderTableAllGroup";
+import { COLUMNS_PROJECT_TABLE } from "./constants/Columns";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
@@ -121,6 +123,7 @@ function AllProjectTable({
   const filters = useFilters();
   function doOpenMenu(anchorEl, project) {
     setMenuAnchor(anchorEl);
+    console.log(project, "project", project);
     setCurProject(project);
   }
   React.useEffect(() => {
@@ -142,6 +145,14 @@ function AllProjectTable({
   React.useEffect(() => {
     setCurrentGroup(find(projectGroup, { id: groupID }));
   }, [groupID, projectGroup]);
+
+  const columns = React.useMemo(
+    () =>
+      COLUMNS_PROJECT_TABLE({
+        onEdit: (evt, project) => doOpenMenu(evt, project),
+      }),
+    []
+  );
 
   function renderEmptyView() {
     switch (type_data) {
@@ -203,7 +214,20 @@ function AllProjectTable({
           renderEmptyView()}
         {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
           <React.Fragment>
-            <CustomTable
+            <HeaderTableAllGroup
+              currentGroup={currentGroup}
+              expand={expand}
+              onExpand={handleExpand}
+              typeData={type_data}
+              filterType={filterType}
+              timeType={timeType}
+              onFilterType={_filterType}
+              onExportData={_exportData}
+              onSetTimeRangeAnchor={_setTimeRangeAnchor}
+              onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
+            />
+            <WPReactTable columns={columns || []} data={projects.projects} />
+            {/* <CustomTable
               isCustomHeader
               customHeaderTable={() => (
                 <HeaderTableAllGroup
@@ -697,6 +721,7 @@ function AllProjectTable({
               timeOptionDefault={timeType}
               handleTimeRange={(timeType) => handleTimeType(timeType)}
             />
+            */}
             <Menu
               id="simple-menu"
               anchorEl={menuAnchor}

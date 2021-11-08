@@ -23,7 +23,9 @@ import { HeaderTable } from "views/ProjectGroupPage/RightPart/AllProjectTable/co
 import CustomAvatar from "../../../../components/CustomAvatar";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
+import WPReactTable from "components/WPReactTable";
 import "./style.scss";
+import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 
 function displayDate(time, date, type) {
   return (
@@ -64,8 +66,11 @@ function AllTaskTable({
   const [isEmpty, setIsEmpty] = React.useState(true);
 
   React.useEffect(() => {
+    console.log(tasks.tasks);
     setIsEmpty(tasks.tasks.length === 0);
   }, [tasks.tasks]);
+
+  const columns = React.useMemo(() => COLUMNS_TASK_TABLE, []);
 
   const disableShowHide = !isNil(
     find(
@@ -115,6 +120,17 @@ function AllTaskTable({
       )}
       {!isEmpty && (
         <>
+          {/* <HeaderTableCustom
+            project={project}
+            memberID={memberID}
+            canUpdateProject={canUpdateProject}
+            disableShowHide={disableShowHide}
+            handleOpenModal={handleOpenModal}
+            handleShowOrHideProject={handleShowOrHideProject}
+            _exportData={_exportData}
+            handleExpand={handleExpand}
+          /> */}
+          {/* <WPReactTable columns={columns} data={tasks.tasks} /> */}
           <CustomTable
             isCustomHeader
             customHeaderTable={() => (
@@ -465,12 +481,14 @@ const HeaderTableCustom = ({
   _exportData,
   handleExpand,
 }) => {
-  const { options } = React.useContext(CustomTableContext);
+  const TableContext = React.useContext(CustomTableContext);
   return (
     <HeaderProject
       project={project.project}
-      valueSearch={get(options, "search.patern", "")}
-      onSearch={(value) => get(options, "search.onChange", () => null)(value)}
+      valueSearch={get(TableContext?.options, "search.patern", "")}
+      onSearch={(value) =>
+        get(TableContext?.options, "search.onChange", () => null)(value)
+      }
       hasMemberId={isNil(memberID)}
       canUpdateProject={canUpdateProject && isNil(memberID)}
       disableShowHide={disableShowHide}
