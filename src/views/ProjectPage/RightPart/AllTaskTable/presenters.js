@@ -1,26 +1,11 @@
-import {
-  mdiAccount,
-  mdiAccountCircle,
-  mdiAccountKey,
-  mdiAccountMinusOutline,
-  mdiCalendar,
-  mdiCalendarText,
-  mdiDownload,
-  mdiEye,
-  mdiEyeOff,
-  mdiPlusCircle,
-  mdiScatterPlot,
-  mdiSettings,
-} from "@mdi/js";
+import { Button } from "@material-ui/core";
+import { mdiAccountKey, mdiAccountMinusOutline, mdiPlusCircle } from "@mdi/js";
 import Icon from "@mdi/react";
 import AvatarCircleList from "components/AvatarCircleList";
 import CustomBadge from "components/CustomBadge";
-import {
-  DownloadPopover,
-  TimeRangePopover,
-  useTimes,
-} from "components/CustomPopover";
-import CustomTable from "components/CustomTable";
+import { TimeRangePopover } from "components/CustomPopover";
+import CustomTable, { CustomTableContext } from "components/CustomTable";
+import HeaderProject from "components/HeaderProject";
 import LoadingBox from "components/LoadingBox";
 import SimpleSmallProgressBar from "components/SimpleSmallProgressBar";
 import {
@@ -29,20 +14,18 @@ import {
   LinkSpan,
   StateBox,
 } from "components/TableComponents";
-import { find, flattenDeep, get, isNil, join, size } from "lodash";
+import { exportToCSV } from "helpers/utils/exportData";
+import { find, flattenDeep, get, isNil, join } from "lodash";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import "./style.scss";
-import CustomAvatar from "../../../../components/CustomAvatar";
-import NavigatorMenu from "../../../../components/NavigatorMenu";
-import { WORKPLACE_TYPES } from "../../../../constants/constants";
-import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
-import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
-import { isSortGroupTask } from "actions/groupTask/sortGroupTask";
-import { useDispatch } from "react-redux";
 import { HeaderTable } from "views/ProjectGroupPage/RightPart/AllProjectTable/components";
+import CustomAvatar from "../../../../components/CustomAvatar";
+import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
+import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
+import WPReactTable from "components/WPReactTable";
+import "./style.scss";
+import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 
 function displayDate(time, date, type) {
   return (
@@ -80,12 +63,51 @@ function AllTaskTable({
   const history = useHistory();
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [downloadAnchor, setDownloadAnchor] = React.useState(null);
-  const times = useTimes();
-  const dispatch = useDispatch();
   const [isEmpty, setIsEmpty] = React.useState(true);
+
   React.useEffect(() => {
+    console.log(tasks.tasks);
     setIsEmpty(tasks.tasks.length === 0);
   }, [tasks.tasks]);
+
+  const columns = React.useMemo(() => COLUMNS_TASK_TABLE, []);
+
+  const disableShowHide = !isNil(
+    find(
+      showHidePendings.pendings,
+      (pending) => pending === get(project.project, "id")
+    )
+  );
+
+  const _exportData = () => {
+    const data = flattenDeep(
+      tasks.tasks.map((groupTask) =>
+        get(groupTask, "tasks", []).map((task) => ({
+          id: get(task, "id", ""),
+          groupTask: get(groupTask, "name", ""),
+          name: get(task, "name", ""),
+          status: get(task, "status_name", ""),
+          duration:
+            get(task, "duration_value", 0) +
+            " " +
+            get(task, "duration_unit", ""),
+          start_time: get(task, "start_time", ""),
+          start_date: get(task, "start_date", ""),
+          end_time: get(task, "end_time", ""),
+          end_date: get(task, "end_date", ""),
+          progress: get(task, "complete", 0) + "%",
+          priority: get(task, "priority_name", ""),
+          members: join(
+            get(task, "members", []).map((member) => get(member, "name")),
+            ","
+          ),
+        }))
+      )
+    );
+
+    exportToCSV(data, "tasks");
+  };
+
   return (
     <Container>
       {isEmpty && (
@@ -98,9 +120,34 @@ function AllTaskTable({
       )}
       {!isEmpty && (
         <>
+          {/* <HeaderTableCustom
+            project={project}
+            memberID={memberID}
+            canUpdateProject={canUpdateProject}
+            disableShowHide={disableShowHide}
+            handleOpenModal={handleOpenModal}
+            handleShowOrHideProject={handleShowOrHideProject}
+            _exportData={_exportData}
+            handleExpand={handleExpand}
+          /> */}
+          {/* <WPReactTable columns={columns} data={tasks.tasks} /> */}
           <CustomTable
+            isCustomHeader
+            customHeaderTable={() => (
+              <HeaderTableCustom
+                project={project}
+                memberID={memberID}
+                canUpdateProject={canUpdateProject}
+                disableShowHide={disableShowHide}
+                handleOpenModal={handleOpenModal}
+                handleShowOrHideProject={handleShowOrHideProject}
+                _exportData={_exportData}
+                handleExpand={handleExpand}
+              />
+            )}
             options={{
               // title: t("DMH.VIEW.PP.RIGHT.ALL.TITLE"),
+
               subTitle: isNil(memberID)
                 ? () => <HeaderTable project={project.project} />
                 : () => (
@@ -173,72 +220,6 @@ function AllTaskTable({
               actionlist: {
                 bool: true,
               },
-              moreMenu: isNil(memberID)
-                ? [
-                    canUpdateProject && isNil(memberID)
-                      ? {
-                          label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.MEMBER"),
-                          iconPath: mdiAccountCircle,
-                          onClick: (evt) => handleOpenModal("SETTING_MEMBER"),
-                          noExpand: true,
-                        }
-                      : undefined,
-                    isNil(memberID)
-                      ? {
-                          label: times[timeType].title,
-                          iconPath: mdiCalendar,
-                          onClick: () => setTimeAnchor(true),
-                        }
-                      : undefined,
-                    isNil(memberID)
-                      ? {
-                          label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.DOWNLOAD"),
-                          iconPath: mdiDownload,
-                          onClick: () => setDownloadAnchor(true),
-                        }
-                      : undefined,
-                    {
-                      label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.PROJECT_CALENDAR"),
-                      iconPath: mdiCalendarText,
-                      onClick: () => handleOpenModal("CALENDAR", {}),
-                    },
-                    {
-                      label: t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SETTING"),
-                      iconPath: mdiSettings,
-                      onClick: () =>
-                        handleOpenModal("SETTING", {
-                          curProject: project.project,
-                          canChange: {
-                            date: canUpdateProject,
-                            copy: canUpdateProject,
-                            view: true,
-                          },
-                        }),
-                    },
-
-                    canUpdateProject
-                      ? {
-                          label: `${
-                            get(project.project, "visibility")
-                              ? t("DMH.VIEW.PP.RIGHT.ALL.LABEL.HIDE")
-                              : t("DMH.VIEW.PP.RIGHT.ALL.LABEL.SHOW")
-                          }`,
-                          iconPath: get(project.project, "visibility")
-                            ? mdiEyeOff
-                            : mdiEye,
-                          onClick: () =>
-                            handleShowOrHideProject(project.project),
-                          disabled: !isNil(
-                            find(
-                              showHidePendings.pendings,
-                              (pending) =>
-                                pending === get(project.project, "id")
-                            )
-                          ),
-                        }
-                      : undefined,
-                  ]
-                : undefined,
               grouped: {
                 bool: true,
                 draggable: true,
@@ -473,38 +454,7 @@ function AllTaskTable({
             ]}
             data={tasks.tasks}
           />
-          <DownloadPopover
-            anchorEl={downloadAnchor}
-            className="download-popover-project"
-            setAnchorEl={setDownloadAnchor}
-            fileName="tasks"
-            data={flattenDeep(
-              tasks.tasks.map((groupTask) =>
-                get(groupTask, "tasks", []).map((task) => ({
-                  id: get(task, "id", ""),
-                  groupTask: get(groupTask, "name", ""),
-                  name: get(task, "name", ""),
-                  status: get(task, "status_name", ""),
-                  duration:
-                    get(task, "duration_value", 0) +
-                    " " +
-                    get(task, "duration_unit", ""),
-                  start_time: get(task, "start_time", ""),
-                  start_date: get(task, "start_date", ""),
-                  end_time: get(task, "end_time", ""),
-                  end_date: get(task, "end_date", ""),
-                  progress: get(task, "complete", 0) + "%",
-                  priority: get(task, "priority_name", ""),
-                  members: join(
-                    get(task, "members", []).map((member) =>
-                      get(member, "name")
-                    ),
-                    ","
-                  ),
-                }))
-              )
-            )}
-          />
+
           <TimeRangePopover
             bgColor={bgColor}
             className="time-range-popover"
@@ -520,5 +470,46 @@ function AllTaskTable({
     </Container>
   );
 }
+
+const HeaderTableCustom = ({
+  project,
+  memberID,
+  canUpdateProject,
+  disableShowHide,
+  handleOpenModal,
+  handleShowOrHideProject,
+  _exportData,
+  handleExpand,
+}) => {
+  const TableContext = React.useContext(CustomTableContext);
+  return (
+    <HeaderProject
+      project={project.project}
+      valueSearch={get(TableContext?.options, "search.patern", "")}
+      onSearch={(value) =>
+        get(TableContext?.options, "search.onChange", () => null)(value)
+      }
+      hasMemberId={isNil(memberID)}
+      canUpdateProject={canUpdateProject && isNil(memberID)}
+      disableShowHide={disableShowHide}
+      onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
+      onUpdateTime={() => handleOpenModal("CALENDAR", {})}
+      onUpdateVisible={() => handleShowOrHideProject(project.project)}
+      onUpdateSetting={() =>
+        handleOpenModal("SETTING", {
+          curProject: project.project,
+          canChange: {
+            date: canUpdateProject,
+            copy: canUpdateProject,
+            view: true,
+          },
+        })
+      }
+      onExportData={_exportData}
+      onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
+      onExpand={handleExpand}
+    />
+  );
+};
 
 export default AllTaskTable;

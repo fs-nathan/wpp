@@ -27,8 +27,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import { listProjectLabel } from "actions/projectLabels/listProjectLabels";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 export const FilterDrawerAllGroup = forwardRef(
   (
@@ -52,10 +51,8 @@ export const FilterDrawerAllGroup = forwardRef(
 
     const dispatch = useDispatch();
 
-    console.log(labelsProject);
-
     useEffect(() => {
-      dispatch(listProjectLabel());
+      if (labelsProject.firstTime) dispatch(listProjectLabel());
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
@@ -127,7 +124,7 @@ export const FilterDrawerAllGroup = forwardRef(
           })}
           <Divider />
 
-          {labelsProject.data?.labels?.map((item) => {
+          {labelsProject.data?.projectLabels?.map((item) => {
             return <ItemLabelFilter key={item.id} {...item} />;
           })}
         </List>
