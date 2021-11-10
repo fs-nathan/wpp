@@ -15,6 +15,7 @@ import AvatarCircleList from "components/AvatarCircleList";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
+import CustomAvatar from "components/CustomAvatar";
 
 const CellLabel = ({ value }) => {
   if (!value) return null;
@@ -36,9 +37,16 @@ const CellNameProject = ({ props }) => {
   return (
     <WrapperCellName>
       <DragIndicatorIcon className="drag-icon" style={{ cursor: "pointer" }} />
+
       <StarOutlineRoundedIcon
         className="star-icon"
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer", margin: "0 5px" }}
+      />
+      <CustomAvatar
+        style={{ width: 25, height: 25 }}
+        className="avatar"
+        src={props.row.original.icon}
+        alt="avatar"
       />
       <Link
         to={props.row.original.url_redirect}
@@ -310,7 +318,7 @@ const WrapperCellName = styled.div`
   a {
     color: #666;
     display: inline-flex;
-    margin-left: 15px;
+    margin-left: 8px;
     font-weight: 400 !important;
     &:hover {
       color: #666;

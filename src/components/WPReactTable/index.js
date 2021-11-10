@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import WPTable from "./components/Table";
 
-const WPReactTable = ({ columns, data }) => {
+const WPReactTable = ({ columns, data, onDragEnd = () => {} }) => {
   return (
     <Styles>
-      <WPTable data={data} columns={columns} />
+      <WPTable data={data} columns={columns} onDragEnd={onDragEnd} />
     </Styles>
   );
 };
