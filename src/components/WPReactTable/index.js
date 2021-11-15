@@ -1,11 +1,32 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import WPTable from "./components/Table";
+import WPTableGroup from "./components/TableGroup";
 
-const WPReactTable = ({ columns, data, onDragEnd = () => {} }) => {
+const WPReactTable = ({
+  columns,
+  data,
+  isGroup = false,
+  onDragEnd = () => {},
+  ...props
+}) => {
   return (
     <Styles>
-      <WPTable data={data} columns={columns} onDragEnd={onDragEnd} />
+      {isGroup ? (
+        <WPTableGroup
+          data={data}
+          columns={columns}
+          onDragEnd={onDragEnd}
+          {...props}
+        />
+      ) : (
+        <WPTable
+          data={data}
+          columns={columns}
+          onDragEnd={onDragEnd}
+          {...props}
+        />
+      )}
     </Styles>
   );
 };

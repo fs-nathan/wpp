@@ -1,45 +1,70 @@
 import classNames from "classnames";
-import React, { useMemo } from "react";
+import React, { useCallback, useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useBlockLayout, useResizeColumns, useTable } from "react-table";
+import {
+  useBlockLayout,
+  useResizeColumns,
+  useTable,
+  useExpanded,
+} from "react-table";
 import { useSticky } from "react-table-sticky";
 import styled from "styled-components";
+import ServiceCommandUnit from "./ServiceCommandUnit";
 
-const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
+const getItemStyle = (isDragging, draggableStyle, rowStyle, over) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
   ...(isDragging && {}),
   ...rowStyle,
+  backgroundColor: over ? "black" : "white",
 });
 
-const WPTable = ({
+const WPTableGroup = ({
   columns,
   data,
   displayAddColumn = false,
   onDragEnd = () => {},
 }) => {
-  const defaultColumn = useMemo(
-    () => ({
-      minWidth: 120,
-      width: 150,
-      maxWidth: 450,
-    }),
-    []
+  const getSubRows = useCallback((row) => {
+    return row.tasks || [];
+  }, []);
+
+  const getInitialExpand = useMemo(
+    () => () => {
+      const result = {};
+      for (let index = 0; index < data.length; index++) {
+        result[`${index}`] = true;
+      }
+      return result;
+    },
+    [data.length]
   );
 
   const table = useTable(
     {
       columns,
       data,
-      defaultColumn,
+      getSubRows,
+      initialState: {
+        expanded: getInitialExpand(),
+      },
+      // expandSubRows: false,
     },
     useBlockLayout,
     useResizeColumns,
-    useSticky
+    useSticky,
+    useExpanded
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    table;
+  const { getTableProps, headerGroups, rows, prepareRow } = table;
+
+  const _handleDragEnd = (result) => {
+    onDragEnd(
+      result.draggableId,
+      result.destination.droppableId,
+      result.destination.index
+    );
+  };
 
   return (
     <div>
@@ -61,9 +86,9 @@ const WPTable = ({
         {/*End header table */}
 
         {/* Body of table */}
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable droppableId="table-body">
-            {(provided) => (
+        <DragDropContext onDragEnd={_handleDragEnd}>
+          <Droppable droppableId="table-body-group">
+            {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
                 className="tbody"
@@ -74,6 +99,9 @@ const WPTable = ({
               >
                 {rows.map((row, i) => {
                   prepareRow(row);
+
+                  if (row.depth !== 0) return null;
+
                   return (
                     <Draggable
                       key={row.id}
@@ -81,7 +109,7 @@ const WPTable = ({
                       index={i}
                     >
                       {(provided, snapshot) => (
-                        <div>
+                        <div onDragOver={(e) => console.log(e)}>
                           <div
                             ref={provided.innerRef}
                             {...row.getRowProps()}
@@ -91,13 +119,22 @@ const WPTable = ({
                             style={getItemStyle(
                               snapshot.isDragging,
                               provided.draggableProps.style,
-                              row.getRowProps().style
+                              row.getRowProps().style,
+                              snapshot.isDraggingOver
                             )}
+                            onDragOver={(e) => console.log(e)}
                           >
                             {row.cells.map((cell) => {
                               return <ContentColumn cell={cell} />;
                             })}
                           </div>
+                          {row.isExpanded && (
+                            <ServiceCommandUnit
+                              id={row.original.id}
+                              data={row.subRows}
+                            />
+                          )}
+
                           {provided.placeholder}
                         </div>
                       )}
@@ -208,4 +245,4 @@ const ResizeDiv = styled.div`
 
 const Heading = styled.div``;
 
-export default WPTable;
+export default WPTableGroup;
