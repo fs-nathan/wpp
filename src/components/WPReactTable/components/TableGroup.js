@@ -60,9 +60,9 @@ const WPTableGroup = ({
 
   const _handleDragEnd = (result) => {
     onDragEnd(
-      result.draggableId,
-      result.destination.droppableId,
-      result.destination.index
+      result?.draggableId,
+      result?.destination?.droppableId,
+      result?.destination?.index
     );
   };
 
@@ -93,7 +93,7 @@ const WPTableGroup = ({
                 ref={provided.innerRef}
                 className="tbody"
                 style={{
-                  maxHeight: "calc(100vh - 37px - 60px - 55px)",
+                  maxHeight: "calc(100vh - 37px - 60px - 55px - 17px)",
                   overflow: "visible",
                 }}
               >

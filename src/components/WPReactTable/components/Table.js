@@ -38,8 +38,7 @@ const WPTable = ({
     useSticky
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    table;
+  const { getTableProps, headerGroups, rows, prepareRow } = table;
 
   return (
     <div>
@@ -68,7 +67,7 @@ const WPTable = ({
                 ref={provided.innerRef}
                 className="tbody"
                 style={{
-                  maxHeight: "calc(100vh - 37px - 60px - 55px)",
+                  maxHeight: "calc(100vh - 37px - 60px - 55px - 17px)",
                   overflow: "visible",
                 }}
               >
