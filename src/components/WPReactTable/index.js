@@ -48,6 +48,13 @@ const Styles = styled.div`
       overflow-x: hidden;
       height: 100vh;
     }
+    .tr {
+      &:hover {
+        .td {
+          background-color: #f9f8f8;
+        }
+      }
+    }
 
     .td {
       background-color: #fff;
@@ -61,6 +68,12 @@ const Styles = styled.div`
       overflow: hidden;
       justify-content: space-between;
       color: #666;
+      &:hover {
+        .drag-icon,
+        .detail-info {
+          visibility: visible;
+        }
+      }
     }
     [data-sticky-td] {
       position: sticky;

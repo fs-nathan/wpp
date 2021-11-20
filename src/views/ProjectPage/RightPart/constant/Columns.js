@@ -4,6 +4,8 @@ import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomBadge from "components/CustomBadge";
 import { StateBox } from "components/TableComponents";
 import { get } from "lodash";
@@ -11,6 +13,22 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
+
+const IconDrag = () => (
+  <svg
+    viewBox="0 0 24 24"
+    role="presentation"
+    style={{
+      width: "1.5rem",
+      height: "1.5rem",
+    }}
+  >
+    <path
+      d="M9,3H11V5H9V3M13,3H15V5H13V3M9,7H11V9H9V7M13,7H15V9H13V7M9,11H11V13H9V11M13,11H15V13H13V11M9,15H11V17H9V15M13,15H15V17H13V15M9,19H11V21H9V19M13,19H15V21H13V19Z"
+      style={{ fill: "currentcolor" }}
+    />
+  </svg>
+);
 
 const CellMainGroup = ({ row, value }) => {
   return (
@@ -33,22 +51,35 @@ const CellMainGroup = ({ row, value }) => {
   );
 };
 
-const CellItemGroup = ({ value, row }) => {
+const CellItemGroup = React.memo(({ value, row, dragHandle = {} }) => {
   return (
     <WrapperItemName>
       <div style={{ width: "30px" }} />
+      <WrapperIconDrag className="drag-icon" {...dragHandle}>
+        <IconDrag />
+      </WrapperIconDrag>
+
       {row.original.status_code === 3 && <AccessTimeRoundedIcon />}
 
       <span style={{ marginLeft: "5px" }}> {value}</span>
+
+      <WrapperDetailInfo className="detail-info">
+        <MoreVertIcon sx={{ fontSize: 16, marginRight: "5px" }} />
+        <div className="detail">
+          <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
+        </div>
+      </WrapperDetailInfo>
     </WrapperItemName>
   );
-};
+});
 
 const CellNameTask = ({ row, value, ...props }) => {
   if (row.depth === 0) {
     return <CellMainGroup row={row} value={value} />;
   }
-  return <CellItemGroup row={row} value={value} />;
+  return (
+    <CellItemGroup row={row} value={value} dragHandle={props.dragHandle} />
+  );
 };
 
 const CellStatus = ({ props }) => {
@@ -124,6 +155,7 @@ const CellPriority = ({ props }) => {
 
 export const COLUMNS_TASK_TABLE = [
   {
+    id: "name",
     Header: "Tên công việc",
     headerClassName: "sticky",
     minWidth: 420,
@@ -221,7 +253,41 @@ const DurationUnit = styled.div`
   color: #333;
   margin-top: 4px;
 `;
+const WrapperIconDrag = styled.div`
+  position: absolute;
+  top: 50%;
+  height: 19.5px;
+  transform: translateY(-50%);
+  visibility: hidden;
+`;
+const WrapperDetailInfo = styled.div`
+  display: flex;
+  align-items: center;
+  position: absolute;
+  right: 0;
+  z-index: 2;
+  cursor: pointer;
+  height: 100%;
+  padding: 0 15px;
+  visibility: hidden;
+  .detail {
+    span {
+      font-size: 11px;
+      font-weight: 400;
+    }
+    display: flex;
+    align-items: center;
+  }
+  &:hover {
+    background-color: #f9f8f8;
+  }
+`;
 const WrapperItemName = styled.div`
   display: flex;
   align-items: center;
+  &:hover {
+    ${WrapperIconDrag} {
+      visibility: visible;
+    }
+  }
 `;

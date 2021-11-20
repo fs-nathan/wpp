@@ -9,6 +9,8 @@ import {
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import styled from "styled-components";
+import ContentColumn from "./ContentColumn";
+import ListContentColumn from "./ListContentColumn";
 import ServiceCommandUnit from "./ServiceCommandUnit";
 
 const getItemStyle = (isDragging, draggableStyle, rowStyle, over) => ({
@@ -109,12 +111,11 @@ const WPTableGroup = ({
                       index={i}
                     >
                       {(provided, snapshot) => (
-                        <div onDragOver={(e) => console.log(e)}>
+                        <div>
                           <div
                             ref={provided.innerRef}
                             {...row.getRowProps()}
                             {...provided.draggableProps}
-                            {...provided.dragHandleProps}
                             className="tr"
                             style={getItemStyle(
                               snapshot.isDragging,
@@ -122,11 +123,11 @@ const WPTableGroup = ({
                               row.getRowProps().style,
                               snapshot.isDraggingOver
                             )}
-                            onDragOver={(e) => console.log(e)}
                           >
-                            {row.cells.map((cell) => {
-                              return <ContentColumn cell={cell} />;
-                            })}
+                            <ListContentColumn
+                              data={row.cells}
+                              dragHandle={{ ...provided.dragHandleProps }}
+                            />
                           </div>
                           {row.isExpanded && (
                             <ServiceCommandUnit
@@ -170,14 +171,6 @@ const HeaderColumn = ({ column, isSticky = false, isLastColumn = false }) => {
         />
       )}
     </HeaderColumnWrapper>
-  );
-};
-
-const ContentColumn = ({ cell }) => {
-  return (
-    <div {...cell.getCellProps()} className="td">
-      {cell.render("Cell")}
-    </div>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
+import ListContentColumn from "./ListContentColumn";
 
 const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
   // styles we need to apply on draggables
@@ -22,7 +23,6 @@ const ServiceCommandUnit = ({ id, data = [] }) => {
                       ref={provided.innerRef}
                       {...row.getRowProps()}
                       {...provided.draggableProps}
-                      {...provided.dragHandleProps}
                       className="tr"
                       style={getItemStyle(
                         snapshot.isDragging,
@@ -30,9 +30,10 @@ const ServiceCommandUnit = ({ id, data = [] }) => {
                         row.getRowProps().style
                       )}
                     >
-                      {row.cells.map((cell) => {
-                        return <ContentColumn cell={cell} />;
-                      })}
+                      <ListContentColumn
+                        data={row.cells}
+                        dragHandle={{ ...provided.dragHandleProps }}
+                      />
                     </div>
                     {provided.placeholder}
                   </>
@@ -44,14 +45,6 @@ const ServiceCommandUnit = ({ id, data = [] }) => {
         </div>
       )}
     </Droppable>
-  );
-};
-
-const ContentColumn = ({ cell }) => {
-  return (
-    <div {...cell.getCellProps()} className="td">
-      {cell.render("Cell")}
-    </div>
   );
 };
 
