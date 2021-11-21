@@ -3,23 +3,13 @@ import React, { useCallback, useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import {
   useBlockLayout,
+  useExpanded,
   useResizeColumns,
   useTable,
-  useExpanded,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import styled from "styled-components";
-import ContentColumn from "./ContentColumn";
-import ListContentColumn from "./ListContentColumn";
-import ServiceCommandUnit from "./ServiceCommandUnit";
-
-const getItemStyle = (isDragging, draggableStyle, rowStyle, over) => ({
-  // styles we need to apply on draggables
-  ...draggableStyle,
-  ...(isDragging && {}),
-  ...rowStyle,
-  backgroundColor: over ? "black" : "white",
-});
+import GroupColumn from "./GroupColumn";
 
 const WPTableGroup = ({
   columns,
@@ -95,7 +85,7 @@ const WPTableGroup = ({
                 ref={provided.innerRef}
                 className="tbody"
                 style={{
-                  maxHeight: "calc(100vh - 37px - 60px - 55px - 17px)",
+                  maxHeight: "calc((((100vh - 55px) - 60px) - 55px) - 12px)",
                   overflow: "visible",
                 }}
               >
@@ -111,33 +101,11 @@ const WPTableGroup = ({
                       index={i}
                     >
                       {(provided, snapshot) => (
-                        <div>
-                          <div
-                            ref={provided.innerRef}
-                            {...row.getRowProps()}
-                            {...provided.draggableProps}
-                            className="tr"
-                            style={getItemStyle(
-                              snapshot.isDragging,
-                              provided.draggableProps.style,
-                              row.getRowProps().style,
-                              snapshot.isDraggingOver
-                            )}
-                          >
-                            <ListContentColumn
-                              data={row.cells}
-                              dragHandle={{ ...provided.dragHandleProps }}
-                            />
-                          </div>
-                          {row.isExpanded && (
-                            <ServiceCommandUnit
-                              id={row.original.id}
-                              data={row.subRows}
-                            />
-                          )}
-
-                          {provided.placeholder}
-                        </div>
+                        <GroupColumn
+                          row={row}
+                          provided={provided}
+                          snapshot={snapshot}
+                        />
                       )}
                     </Draggable>
                   );

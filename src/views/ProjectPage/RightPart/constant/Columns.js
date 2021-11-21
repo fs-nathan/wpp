@@ -30,7 +30,7 @@ const IconDrag = () => (
   </svg>
 );
 
-const CellMainGroup = ({ row, value }) => {
+const CellMainGroup = ({ row, value, onVisibleAddRow = () => {} }) => {
   return (
     <WrapperMainGroup>
       <WrapperButton {...row.getToggleRowExpandedProps()}>
@@ -41,7 +41,7 @@ const CellMainGroup = ({ row, value }) => {
         )}
       </WrapperButton>
       <WrapperName>{value}</WrapperName>
-      <WrapperButton className="right-side">
+      <WrapperButton className="right-side" onClick={onVisibleAddRow}>
         <AddRoundedIcon />
       </WrapperButton>
       <WrapperButton className="right-side">
@@ -75,7 +75,13 @@ const CellItemGroup = React.memo(({ value, row, dragHandle = {} }) => {
 
 const CellNameTask = ({ row, value, ...props }) => {
   if (row.depth === 0) {
-    return <CellMainGroup row={row} value={value} />;
+    return (
+      <CellMainGroup
+        row={row}
+        value={value}
+        onVisibleAddRow={props.onVisibleAddRow}
+      />
+    );
   }
   return (
     <CellItemGroup row={row} value={value} dragHandle={props.dragHandle} />
