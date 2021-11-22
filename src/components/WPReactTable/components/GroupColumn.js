@@ -44,13 +44,11 @@ const GroupColumn = ({ row, provided, snapshot }) => {
         <div style={{ display: "flex" }} className="tr">
           {row.cells.map((item, index) => (
             <div {...item.getCellProps()} className="td add-cell">
-              {index === 0 ? (
+              {index === 0 && (
                 <div>
                   <AddIcon sx={{ fontSize: 16, marginRight: "5px" }} />
-                  <span>Thêm công việc</span>
+                  <span contentEditable>Thêm công việc</span>
                 </div>
-              ) : (
-                ""
               )}
             </div>
           ))}

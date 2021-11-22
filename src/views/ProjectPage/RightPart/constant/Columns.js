@@ -116,7 +116,6 @@ const CellStatus = ({ props }) => {
 
 const CellProgressUnit = ({ props }) => {
   const row = props.row.original;
-
   return (
     <div>
       {row?.duration_value} {row?.duration_unit}

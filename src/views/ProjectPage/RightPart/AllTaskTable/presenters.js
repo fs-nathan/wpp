@@ -8,6 +8,7 @@ import { find, flattenDeep, get, isNil, join } from "lodash";
 import React from "react";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
+import { getTaskToTable } from "../utils";
 import "./style.scss";
 
 function AllTaskTable({
@@ -76,6 +77,10 @@ function AllTaskTable({
 
     exportToCSV(data, "tasks");
   };
+
+  React.useEffect(() => {
+    getTaskToTable(tasks.tasks);
+  }, [tasks]);
 
   return (
     <Container>
