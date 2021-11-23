@@ -14,6 +14,7 @@ import {
 } from "@material-ui/core";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import {
   mdiBookmarkOutline,
@@ -28,7 +29,7 @@ import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { Link, NavLink, useHistory } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import styled from "styled-components";
 import SearchInput from "../../../../components/SearchInput";
@@ -211,27 +212,19 @@ function ProjectList({
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
                 {isHasProjectRecently && (
-                  <ListItem
-                    className={`view_ProjectGroup_List-customListItem ${
-                      history.location.pathname.includes(
-                        "/projects/recently"
-                      ) && "active"
-                    }`}
-                    onClick={() => history.push("/projects/recently")}
+                  <NavLink
+                    to="/projects/recently"
+                    className="MuiListItem-root view_ProjectGroup_List-customListItem MuiListItem-gutters"
                   >
                     <ListItemIcon>
-                      <AccessTimeIcon />
+                      <StarBorderIcon />
                     </ListItemIcon>
                     <ListItemText primary={t("LABEL_SEE_RECENTLY")} />
-                  </ListItem>
+                  </NavLink>
                 )}
-                <ListItem
-                  className={`view_ProjectGroup_List-customListItem ${
-                    history.location.pathname.includes(
-                      "/projects/personal-board"
-                    ) && "active"
-                  }`}
-                  onClick={() => history.push("/projects/personal-board")}
+                <NavLink
+                  to="/projects/personal-board"
+                  className="MuiListItem-root view_ProjectGroup_List-customListItem MuiListItem-gutters"
                 >
                   <ListItemIcon>
                     <SvgIcon style={{ fontSize: "22px" }}>
@@ -255,6 +248,7 @@ function ProjectList({
                     size={"small"}
                     onClick={(evt) => {
                       evt.stopPropagation();
+                      evt.preventDefault();
                       setAnchorElAddBoard(evt.currentTarget);
                     }}
                   >
@@ -264,7 +258,7 @@ function ProjectList({
                       color={"rgba(0,0,0,0.54)"}
                     />
                   </IconButton>
-                </ListItem>
+                </NavLink>
               </List>
             </Box>
           </Box>

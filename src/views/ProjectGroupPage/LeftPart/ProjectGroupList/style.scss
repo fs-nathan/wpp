@@ -27,6 +27,12 @@
   }
 }
 
+a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
+  &:hover {
+    background: #e5e5e5 !important;
+  }
+}
+
 .view_ProjectGroup_List {
   &--LeftContainer {
     .active {

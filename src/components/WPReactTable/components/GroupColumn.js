@@ -3,10 +3,11 @@ import ListContentColumn from "./ListContentColumn";
 import ServiceCommandUnit from "./ServiceCommandUnit";
 import AddIcon from "@mui/icons-material/Add";
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
   ...(isDragging && {}),
+  minHeight: isDraggingOver ? "unset" : 30,
 });
 
 const GroupColumn = ({ row, provided, snapshot }) => {
@@ -17,7 +18,11 @@ const GroupColumn = ({ row, provided, snapshot }) => {
       ref={provided.innerRef}
       {...row.getRowProps()}
       {...provided.draggableProps}
-      style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+      style={getItemStyle(
+        snapshot.isDragging,
+        provided.draggableProps.style,
+        snapshot.isDraggingOver
+      )}
     >
       <div className="tr" {...row.getRowProps()}>
         <div className="drag-placeholder" />
