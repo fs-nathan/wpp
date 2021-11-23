@@ -30,9 +30,14 @@ const IconDrag = () => (
   </svg>
 );
 
-const CellMainGroup = ({ row, value, onVisibleAddRow = () => {} }) => {
+const CellMainGroup = ({
+  row,
+  value,
+  dragHandle = {},
+  onVisibleAddRow = () => {},
+}) => {
   return (
-    <WrapperMainGroup>
+    <WrapperMainGroup {...dragHandle}>
       <WrapperButton {...row.getToggleRowExpandedProps()}>
         {!row.isExpanded ? (
           <ArrowRightRoundedIcon sx={{ fontSize: 28 }} />
@@ -79,6 +84,7 @@ const CellNameTask = ({ row, value, ...props }) => {
       <CellMainGroup
         row={row}
         value={value}
+        dragHandle={props.dragHandle}
         onVisibleAddRow={props.onVisibleAddRow}
       />
     );
@@ -158,6 +164,18 @@ const CellPriority = ({ props }) => {
   );
 };
 
+const CellCompleted = ({ props }) => {
+  const row = props.row.original;
+  console.log(row);
+
+  if (!row.data["pfd-complete"]) return null;
+  return (
+    <WrapperCompleted>
+      {row.data["pfd-complete"].value} {row.data["pfd-complete"].format}
+    </WrapperCompleted>
+  );
+};
+
 export const COLUMNS_TASK_TABLE = [
   {
     id: "name",
@@ -193,7 +211,7 @@ export const COLUMNS_TASK_TABLE = [
   {
     id: "complete",
     Header: "Hoàn thành",
-    Cell: (props) => <CellEndTime props={props} />,
+    Cell: (props) => <CellCompleted props={props} />,
   },
   {
     id: "priority",
@@ -295,4 +313,9 @@ const WrapperItemName = styled.div`
       visibility: visible;
     }
   }
+`;
+const WrapperCompleted = styled.div`
+  display: flex;
+  align-items: center;
+  color: #4caf50;
 `;

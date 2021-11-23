@@ -3,31 +3,23 @@ import ListContentColumn from "./ListContentColumn";
 import ServiceCommandUnit from "./ServiceCommandUnit";
 import AddIcon from "@mui/icons-material/Add";
 
-const getItemStyle = (isDragging, draggableStyle, rowStyle, over) => ({
+const getItemStyle = (isDragging, draggableStyle) => ({
   // styles we need to apply on draggables
   ...draggableStyle,
   ...(isDragging && {}),
-  ...rowStyle,
-  backgroundColor: over ? "black" : "white",
 });
 
 const GroupColumn = ({ row, provided, snapshot }) => {
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
 
   return (
-    <div>
-      <div
-        ref={provided.innerRef}
-        {...row.getRowProps()}
-        {...provided.draggableProps}
-        className="tr"
-        style={getItemStyle(
-          snapshot.isDragging,
-          provided.draggableProps.style,
-          row.getRowProps().style,
-          snapshot.isDraggingOver
-        )}
-      >
+    <div
+      ref={provided.innerRef}
+      {...row.getRowProps()}
+      {...provided.draggableProps}
+      style={getItemStyle(snapshot.isDragging, provided.draggableProps.style)}
+    >
+      <div className="tr" {...row.getRowProps()}>
         <div className="drag-placeholder" />
         <ListContentColumn
           data={row.cells}
