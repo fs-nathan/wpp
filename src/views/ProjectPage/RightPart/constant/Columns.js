@@ -58,8 +58,8 @@ const CellMainGroup = ({
         </WrapperName>
       </div>
       <div
+        className="wrapper-right"
         style={{
-          display: "flex",
           alignItems: "center",
         }}
       >
@@ -252,6 +252,14 @@ const WrapperMainGroup = styled.div`
   align-items: center;
   width: 100%;
   justify-content: space-between;
+  .wrapper-right {
+    display: none;
+  }
+  &:hover {
+    .wrapper-right {
+      display: flex;
+    }
+  }
 `;
 
 const WrapperButton = styled.div`
