@@ -38,20 +38,38 @@ const CellMainGroup = ({
 }) => {
   return (
     <WrapperMainGroup {...dragHandle}>
-      <WrapperButton {...row.getToggleRowExpandedProps()}>
-        {!row.isExpanded ? (
-          <ArrowRightRoundedIcon sx={{ fontSize: 28 }} />
-        ) : (
-          <ArrowDropDownRoundedIcon sx={{ fontSize: 28 }} />
-        )}
-      </WrapperButton>
-      <WrapperName>{value}</WrapperName>
-      <WrapperButton className="right-side" onClick={onVisibleAddRow}>
-        <AddRoundedIcon />
-      </WrapperButton>
-      <WrapperButton className="right-side">
-        <MoreHorizRoundedIcon />
-      </WrapperButton>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          maxWidth: "calc(100% - 72px)",
+        }}
+      >
+        <WrapperButton {...row.getToggleRowExpandedProps()}>
+          {!row.isExpanded ? (
+            <ArrowRightRoundedIcon sx={{ fontSize: 28 }} />
+          ) : (
+            <ArrowDropDownRoundedIcon sx={{ fontSize: 28 }} />
+          )}
+        </WrapperButton>
+        <WrapperName>
+          <TextEllipsis>{value}</TextEllipsis>
+        </WrapperName>
+      </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <WrapperButton className="right-side" onClick={onVisibleAddRow}>
+          <AddRoundedIcon />
+        </WrapperButton>
+        <WrapperButton className="right-side">
+          <MoreHorizRoundedIcon />
+        </WrapperButton>
+      </div>
     </WrapperMainGroup>
   );
 };
@@ -66,7 +84,11 @@ const CellItemGroup = React.memo(({ value, row, dragHandle = {} }) => {
 
       {row.original.status_code === 3 && <AccessTimeRoundedIcon />}
 
-      <span style={{ marginLeft: "5px" }}> {value}</span>
+      <TextEllipsis
+        style={{ marginLeft: "5px", maxWidth: "calc(100% - 55px)" }}
+      >
+        {value}
+      </TextEllipsis>
 
       <WrapperDetailInfo className="detail-info">
         <MoreVertIcon sx={{ fontSize: 16, marginRight: "5px" }} />
@@ -228,6 +250,8 @@ export const COLUMNS_TASK_TABLE = [
 const WrapperMainGroup = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
 `;
 
 const WrapperButton = styled.div`
@@ -258,11 +282,6 @@ const WrapperName = styled.div`
   margin-left: 0;
   min-width: 1px;
   outline: none;
-  overflow: hidden;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #44485e;
 `;
 
 const WrapperTime = styled.div`
@@ -308,6 +327,7 @@ const WrapperDetailInfo = styled.div`
 const WrapperItemName = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   &:hover {
     ${WrapperIconDrag} {
       visibility: visible;
@@ -318,4 +338,14 @@ const WrapperCompleted = styled.div`
   display: flex;
   align-items: center;
   color: #4caf50;
+`;
+
+const TextEllipsis = styled.span`
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #44485e;
+  max-width: 100%;
+  display: block;
 `;

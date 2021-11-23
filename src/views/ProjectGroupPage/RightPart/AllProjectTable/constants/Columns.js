@@ -51,6 +51,13 @@ const CellNameProject = ({ props }) => {
       <Link
         to={props.row.original.url_redirect}
         className={"view_ProjectGroup_Table_All_title_bold"}
+        style={{
+          maxWidth: `calc(100% - 65px)`,
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          display: "block",
+        }}
       >
         {props.value}
       </Link>

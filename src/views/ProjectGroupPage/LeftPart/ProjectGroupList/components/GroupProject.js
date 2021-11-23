@@ -12,6 +12,8 @@ import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
 import { mdiDotsVertical, mdiDragVertical, mdiPlus } from "@mdi/js";
+import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
 import Icon from "@mdi/react";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
@@ -19,6 +21,8 @@ import { get } from "lodash-es";
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { NavLink } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 const useStyles = makeStyles((theme) => ({
   projectItem: {
@@ -38,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
   projectText: {
     "& span": {
       whiteSpace: "nowrap",
-      width: 220,
+      width: 180,
       overflow: "hidden",
       textOverflow: "ellipsis",
     },
@@ -83,6 +87,7 @@ export const GroupProject = ({
             {...provided.draggableProps}
             component={PathNavLink}
             className="view_ProjectGroup_List-customListItem"
+            style={{ paddingLeft: 42 }}
             to={`/projects?groupID=${projectGroup.id}`}
           >
             <div
@@ -122,55 +127,45 @@ export const GroupProject = ({
               <FlagOutlinedIcon htmlColor={"red"} />
             )}
 
-            <IconButton className={"rightIconControlList"} size={"small"}>
-              <Icon
-                onClick={(evt) => {
-                  evt.preventDefault();
-                  setOpenCreateGroup(true);
-                  setAnchorElAddGroup(null);
-                  setSelectedGroup(null);
-                }}
-                path={mdiPlus}
-                size={1}
-                color={"rgba(0,0,0,0.54)"}
-              />
-            </IconButton>
+            <div
+              className="wp-wrapper-button"
+              onClick={(evt) => {
+                evt.preventDefault();
+                setOpenCreateGroup(true);
+                setAnchorElAddGroup(null);
+                setSelectedGroup(null);
+              }}
+            >
+              <AddIcon sx={{ color: "rgba(0,0,0,0.54)" }} />
+            </div>
 
-            <IconButton
-              className={"rightIconControlList"}
-              size={"small"}
+            <div
+              className="wp-wrapper-button"
               onClick={(evt) => {
                 evt.preventDefault();
                 setAnchorElGroup(evt.currentTarget);
                 setSelectedGroup(projectGroup);
               }}
             >
-              <Icon
-                path={mdiDotsVertical}
-                size={1}
-                color={"rgba(0,0,0,0.54)"}
-              />
-            </IconButton>
+              <MoreVertIcon sx={{ color: "rgba(0,0,0,0.54)" }} />
+            </div>
 
-            <IconButton
-              size={"small"}
-              className={"rightIconControlList"}
+            <div
+              className="wp-wrapper-button"
               onClick={(e) => e.preventDefault()}
             >
               {isActive ? (
-                <ExpandLess
-                  size={1}
-                  color={"rgba(0,0,0,0.54)"}
+                <KeyboardArrowUpOutlinedIcon
+                  sx={{ color: "rgba(0,0,0,0.54)" }}
                   onClick={_toggleExpand}
                 />
               ) : (
-                <ExpandMore
-                  size={1}
-                  color={"rgba(0,0,0,0.54)"}
+                <KeyboardArrowDownOutlinedIcon
+                  sx={{ color: "rgba(0,0,0,0.54)" }}
                   onClick={_toggleExpand}
                 />
               )}
-            </IconButton>
+            </div>
           </ListItem>
 
           <CollapseListProject
@@ -199,6 +194,7 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
                 const id = pathname.split("/");
                 return id[3] === item.id;
               }}
+              style={{ paddingLeft: 80 }}
               to={`${Routes.PROJECT}/${item.id}`}
             >
               <ListItemIcon
