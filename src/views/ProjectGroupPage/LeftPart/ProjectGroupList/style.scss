@@ -98,6 +98,12 @@ a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
       left: 0;
       display: none;
     }
+    &-nav {
+      display: flex;
+      align-items: center;
+      height: 44px;
+      padding-left: 42px;
+    }
     &:hover {
       background: #f1f2f4 !important;
       .rightIconControlList {

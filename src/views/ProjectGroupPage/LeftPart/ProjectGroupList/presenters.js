@@ -291,8 +291,8 @@ function ProjectList({
                     <Droppable droppableId="droppable">
                       {(provided, snapshot) => (
                         <div
-                          {...provided.droppableProps}
                           ref={provided.innerRef}
+                          {...provided.droppableProps}
                         >
                           {groups.groups.map((projectGroup, index) => (
                             <GroupProject

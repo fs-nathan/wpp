@@ -23,6 +23,7 @@ import { Draggable } from "react-beautiful-dnd";
 import { NavLink } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   projectItem: {
@@ -72,6 +73,7 @@ export const GroupProject = ({
   setSelectedGroup,
   setAnchorElGroup,
 }) => {
+  const history = useHistory();
   const [isActive, setIsActive] = useState(true);
 
   const _toggleExpand = () => {
@@ -81,14 +83,12 @@ export const GroupProject = ({
   return (
     <Draggable draggableId={get(projectGroup, "id")} index={index}>
       {(provided, snapshot) => (
-        <>
+        <div ref={provided.innerRef} {...provided.draggableProps}>
           <ListItem
-            ref={provided.innerRef}
-            {...provided.draggableProps}
+            className="view_ProjectGroup_List-customListItem view_ProjectGroup_List-customListItem-nav"
             component={PathNavLink}
-            className="view_ProjectGroup_List-customListItem"
-            style={{ paddingLeft: 42 }}
             to={`/projects?groupID=${projectGroup.id}`}
+            // onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
           >
             <div
               {...provided.dragHandleProps}
@@ -121,6 +121,7 @@ export const GroupProject = ({
                   <div>({projectGroup.number_project})</div>
                 </div>
               }
+              {...provided.dragHandleProps}
             />
 
             {defaultAccessItem === `?groupID=${projectGroup.id}` && (
@@ -172,7 +173,8 @@ export const GroupProject = ({
             data={projectGroup.projects}
             isActive={isActive}
           />
-        </>
+          {provided.placeholder}
+        </div>
       )}
     </Draggable>
   );
