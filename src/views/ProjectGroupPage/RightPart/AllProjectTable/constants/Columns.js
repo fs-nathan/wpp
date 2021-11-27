@@ -55,7 +55,8 @@ const CellNameProject = ({ props, onEdit = () => {} }) => {
         to={props.row.original.url_redirect}
         className={"view_ProjectGroup_Table_All_title_bold"}
         style={{
-          maxWidth: `calc(100% - 65px)`,
+          maxWidth: "calc(100% - 65px)",
+          width: "calc(100% - 65px)",
           whiteSpace: "nowrap",
           overflow: "hidden",
           textOverflow: "ellipsis",
@@ -288,15 +289,6 @@ const WrapperCellTotal = styled.div`
   }
 `;
 
-const WrapperAdd = styled.div`
-  display: flex;
-  align-items: center;
-  color: #6f7782;
-  justify-content: center;
-  width: 100%;
-  cursor: pointer;
-`;
-
 const WrapperCellName = styled.div`
   display: flex;
   align-items: center;
@@ -304,12 +296,14 @@ const WrapperCellName = styled.div`
   justify-content: flex-start;
   width: 100%;
   .drag-icon,
-  .star-icon {
+  .star-icon,
+  .wp-wrapper-button {
     opacity: 0;
   }
   &:hover {
     .drag-icon,
-    .star-icon {
+    .star-icon,
+    .wp-wrapper-button {
       opacity: 1;
     }
   }
