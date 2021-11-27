@@ -49,7 +49,6 @@ const WPTable = ({
             <div {...headerGroup.getHeaderGroupProps()} className="tr">
               {headerGroup.headers.map((column, index) => (
                 <HeaderColumn
-                  isSticky={!index}
                   column={column}
                   isLastColumn={index === headerGroup.headers.length - 1}
                 />

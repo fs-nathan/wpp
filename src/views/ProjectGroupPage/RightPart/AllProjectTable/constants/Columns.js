@@ -33,11 +33,14 @@ const CellProgressDay = ({ value }) => {
   return `${currentDay.diff(startDate, "days")} ngày`;
 };
 
-const CellNameProject = ({ props }) => {
+const CellNameProject = ({ props, onEdit = () => {} }) => {
+  const row = props.row.original;
+  const isDisplayUpdate =
+    !get(row, "can_update", false) || !get(row, "can_delete", false);
+
   return (
     <WrapperCellName>
       <DragIndicatorIcon className="drag-icon" style={{ cursor: "pointer" }} />
-
       <StarOutlineRoundedIcon
         className="star-icon"
         style={{ cursor: "pointer", margin: "0 5px" }}
@@ -61,6 +64,14 @@ const CellNameProject = ({ props }) => {
       >
         {props.value}
       </Link>
+      {!isDisplayUpdate && (
+        <div
+          className="wp-wrapper-button"
+          onClick={(evt) => onEdit(evt.currentTarget, row)}
+        >
+          <MoreVertIcon />
+        </div>
+      )}
     </WrapperCellName>
   );
 };
@@ -196,17 +207,6 @@ const CellMembers = ({ value = [] }) => {
   );
 };
 
-const CellEdit = ({ props, onEdit }) => {
-  const row = props.row.original;
-  if (!get(row, "can_update", false) || !get(row, "can_delete", false))
-    return null;
-  return (
-    <WrapperAdd>
-      <MoreVertIcon onClick={(evt) => onEdit(evt.currentTarget, row)} />
-    </WrapperAdd>
-  );
-};
-
 export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
   return [
     {
@@ -216,7 +216,7 @@ export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
       minWidth: 420,
       maxWidth: 620,
       sticky: "left",
-      Cell: (props) => <CellNameProject props={props} />,
+      Cell: (props) => <CellNameProject props={props} onEdit={onEdit} />,
     },
     {
       Header: "Nhãn",
@@ -264,14 +264,6 @@ export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
       accessor: "members",
       Cell: CellMembers,
     },
-    {
-      Header: "",
-      accessor: "project_group",
-      width: 50,
-      maxWidth: 50,
-      minWidth: 50,
-      Cell: (props) => <CellEdit props={props} onEdit={onEdit} />,
-    },
   ];
 };
 
@@ -311,11 +303,13 @@ const WrapperCellName = styled.div`
   color: #666;
   justify-content: flex-start;
   width: 100%;
-  .drag-icon {
+  .drag-icon,
+  .star-icon {
     opacity: 0;
   }
   &:hover {
-    .drag-icon {
+    .drag-icon,
+    .star-icon {
       opacity: 1;
     }
   }
