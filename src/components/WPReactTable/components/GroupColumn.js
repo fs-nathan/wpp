@@ -2,16 +2,22 @@ import React, { useState } from "react";
 import ListContentColumn from "./ListContentColumn";
 import ServiceCommandUnit from "./ServiceCommandUnit";
 import AddIcon from "@mui/icons-material/Add";
+import { useTranslation } from "react-i18next";
+import ContentColumn from "./ContentColumn";
 
 const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
-  // styles we need to apply on draggables
   ...draggableStyle,
   ...(isDragging && {}),
-  minHeight: isDraggingOver ? "unset" : 30,
 });
 
 const GroupColumn = ({ row, provided, snapshot }) => {
+  const { t } = useTranslation();
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
+  const [isVisibleNewRow, setIsVisibleNewRow] = useState(false);
+
+  const _handleAddNewRow = () => {
+    setIsVisibleNewRow(true);
+  };
 
   return (
     <div
@@ -33,6 +39,14 @@ const GroupColumn = ({ row, provided, snapshot }) => {
         />
       </div>
 
+      {isVisibleNewRow && (
+        <div style={{ display: "flex" }} className="tr">
+          {row.cells.map((cell, index) => (
+            <ContentColumn key={index} cell={cell} isNewRow />
+          ))}
+        </div>
+      )}
+
       {row.isExpanded && (
         <ServiceCommandUnit id={row.original.id} data={row.subRows} />
       )}
@@ -42,9 +56,9 @@ const GroupColumn = ({ row, provided, snapshot }) => {
           {row.cells.map((item, index) => (
             <div {...item.getCellProps()} className="td add-cell">
               {index === 0 && (
-                <div>
+                <div onClick={_handleAddNewRow}>
                   <AddIcon sx={{ fontSize: 16, marginRight: "5px" }} />
-                  <span contentEditable>Thêm công việc</span>
+                  <div>{t("ADD_NEW_TASK")}</div>
                 </div>
               )}
             </div>

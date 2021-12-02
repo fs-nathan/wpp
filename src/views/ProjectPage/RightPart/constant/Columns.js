@@ -74,34 +74,48 @@ const CellMainGroup = ({
   );
 };
 
-const CellItemGroup = React.memo(({ value, row, dragHandle = {} }) => {
-  return (
-    <WrapperItemName>
-      <div style={{ width: "30px" }} />
-      <WrapperIconDrag className="drag-icon" {...dragHandle}>
-        <IconDrag />
-      </WrapperIconDrag>
+const CellItemGroup = React.memo(
+  ({ value, row, isNewRow = false, dragHandle = {} }) => {
+    const isDisplayReminder = row.original.status_code === 3;
+    return (
+      <WrapperItemName>
+        <div style={{ width: "30px" }} />
+        <WrapperIconDrag className="drag-icon" {...dragHandle}>
+          <IconDrag />
+        </WrapperIconDrag>
 
-      {row.original.status_code === 3 && <AccessTimeRoundedIcon />}
+        {isDisplayReminder && <AccessTimeRoundedIcon />}
 
-      <TextEllipsis
-        style={{ marginLeft: "5px", maxWidth: "calc(100% - 55px)" }}
-      >
-        {value}
-      </TextEllipsis>
+        <TextAreaCustom
+          placeholder={isNewRow ? "Write a task name" : value}
+          rows="1"
+          tabindex="-1"
+          wrap="off"
+          defaultValue={isNewRow ? "" : value}
+          style={{
+            marginLeft: isDisplayReminder ? "5px" : 0,
+            width: isDisplayReminder
+              ? "calc(100% - 160px)"
+              : "calc(100% - 140px)",
+          }}
+        />
 
-      <WrapperDetailInfo className="detail-info">
-        <MoreVertIcon sx={{ fontSize: 16, marginRight: "5px" }} />
-        <div className="detail">
-          <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
-        </div>
-      </WrapperDetailInfo>
-    </WrapperItemName>
-  );
-});
+        <WrapperDetailInfo className="detail-info">
+          <div className="wp-wrapper-button">
+            <MoreVertIcon sx={{ fontSize: 16 }} />
+          </div>
+
+          <div className="detail">
+            <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
+          </div>
+        </WrapperDetailInfo>
+      </WrapperItemName>
+    );
+  }
+);
 
 const CellNameTask = ({ row, value, ...props }) => {
-  if (row.depth === 0) {
+  if (row.depth === 0 && !props.isNewRow) {
     return (
       <CellMainGroup
         row={row}
@@ -112,7 +126,12 @@ const CellNameTask = ({ row, value, ...props }) => {
     );
   }
   return (
-    <CellItemGroup row={row} value={value} dragHandle={props.dragHandle} />
+    <CellItemGroup
+      row={row}
+      value={value}
+      isNewRow={props.isNewRow}
+      dragHandle={props.dragHandle}
+    />
   );
 };
 
@@ -188,7 +207,6 @@ const CellPriority = ({ props }) => {
 
 const CellCompleted = ({ props }) => {
   const row = props.row.original;
-  console.log(row);
 
   if (!row.data["pfd-complete"]) return null;
   return (
@@ -356,4 +374,29 @@ const TextEllipsis = styled.span`
   color: #44485e;
   max-width: 100%;
   display: block;
+`;
+const TextAreaCustom = styled.textarea`
+  white-space: pre;
+  background: transparent;
+  border-radius: 3px;
+  display: block;
+  outline: 0;
+  overflow: hidden;
+  resize: none;
+  width: calc(100% - 160px);
+  margin-left: 5px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+  min-width: 20px;
+  padding: 0 4px;
+  text-rendering: optimizeSpeed;
+  color: #666;
+  &:hover {
+    border: 1px solid #666;
+  }
+  &:focus {
+    border-color: transparent;
+  }
 `;
