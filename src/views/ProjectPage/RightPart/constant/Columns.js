@@ -9,7 +9,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomBadge from "components/CustomBadge";
 import { StateBox } from "components/TableComponents";
 import { get } from "lodash";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
@@ -75,8 +75,32 @@ const CellMainGroup = ({
 };
 
 const CellItemGroup = React.memo(
-  ({ value, row, isNewRow = false, dragHandle = {} }) => {
+  ({
+    value,
+    row,
+    isNewRow = false,
+    dragHandle = {},
+    onSubmitAdd = () => {},
+    isFocus = true,
+  }) => {
     const isDisplayReminder = row.original.status_code === 3;
+    const refText = useRef(null);
+
+    useEffect(() => {
+      if (isFocus && isNewRow) {
+        setTimeout(() => {
+          refText.current.focus();
+        }, 0);
+      }
+    }, [isFocus, isNewRow]);
+
+    const _handleKeyPress = (e) => {
+      if (e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+        onSubmitAdd();
+      }
+    };
+
     return (
       <WrapperItemName>
         <div style={{ width: "30px" }} />
@@ -87,11 +111,13 @@ const CellItemGroup = React.memo(
         {isDisplayReminder && <AccessTimeRoundedIcon />}
 
         <TextAreaCustom
+          ref={refText}
           placeholder={isNewRow ? "Write a task name" : value}
           rows="1"
           tabindex="-1"
           wrap="off"
           defaultValue={isNewRow ? "" : value}
+          onKeyPress={_handleKeyPress}
           style={{
             marginLeft: isDisplayReminder ? "5px" : 0,
             width: isDisplayReminder
@@ -122,6 +148,7 @@ const CellNameTask = ({ row, value, ...props }) => {
         value={value}
         dragHandle={props.dragHandle}
         onVisibleAddRow={props.onVisibleAddRow}
+        {...props}
       />
     );
   }
@@ -131,6 +158,7 @@ const CellNameTask = ({ row, value, ...props }) => {
       value={value}
       isNewRow={props.isNewRow}
       dragHandle={props.dragHandle}
+      {...props}
     />
   );
 };

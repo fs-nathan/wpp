@@ -1,9 +1,11 @@
+import AddIcon from "@mui/icons-material/Add";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router";
+import ContentColumn from "./ContentColumn";
 import ListContentColumn from "./ListContentColumn";
 import ServiceCommandUnit from "./ServiceCommandUnit";
-import AddIcon from "@mui/icons-material/Add";
-import { useTranslation } from "react-i18next";
-import ContentColumn from "./ContentColumn";
 
 const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   ...draggableStyle,
@@ -12,10 +14,22 @@ const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
 
 const GroupColumn = ({ row, provided, snapshot }) => {
   const { t } = useTranslation();
+  const { projectId } = useParams();
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
   const [isVisibleNewRow, setIsVisibleNewRow] = useState(false);
+  const dispatch = useDispatch();
 
   const _handleAddNewRow = () => {
+    setIsVisibleNewRow(true);
+  };
+
+  const _handleSubmit = () => {
+    const groupTask = provided.draggableProps["data-rbd-draggable-id"];
+    console.log(projectId, groupTask);
+  };
+
+  const _handleAddNewTask = () => {
+    setIsVisibleAddRow(true);
     setIsVisibleNewRow(true);
   };
 
@@ -34,7 +48,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
         <div className="drag-placeholder" />
         <ListContentColumn
           data={row.cells}
-          onVisibleAddRow={() => setIsVisibleAddRow(!isVisibleAddRow)}
+          onVisibleAddRow={_handleAddNewTask}
           dragHandle={{ ...provided.dragHandleProps }}
         />
       </div>
@@ -42,7 +56,13 @@ const GroupColumn = ({ row, provided, snapshot }) => {
       {isVisibleNewRow && (
         <div style={{ display: "flex" }} className="tr">
           {row.cells.map((cell, index) => (
-            <ContentColumn key={index} cell={cell} isNewRow />
+            <ContentColumn
+              key={index}
+              cell={cell}
+              isNewRow
+              isFocus
+              onSubmitAdd={_handleSubmit}
+            />
           ))}
         </div>
       )}
@@ -51,7 +71,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
         <ServiceCommandUnit id={row.original.id} data={row.subRows} />
       )}
 
-      {isVisibleAddRow && (
+      {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
         <div style={{ display: "flex" }} className="tr">
           {row.cells.map((item, index) => (
             <div {...item.getCellProps()} className="td add-cell">
