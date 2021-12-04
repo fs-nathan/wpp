@@ -28,7 +28,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const CellLabel = ({ value }) => {
+const CellLabel = ({ props, value, onEdit = () => {} }) => {
+  const project = props.row.original;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(value);
   const labelsProject = useSelector(
@@ -75,8 +76,18 @@ const CellLabel = ({ value }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem style={{ width: 200 }}>
-          <Typography style={{ marginLeft: 30, color: "#666" }}>—</Typography>
+        <MenuItem
+          style={{ width: 200, color: "#666" }}
+          onClick={() => setSelected(null)}
+        >
+          <DoneIcon
+            style={{
+              marginRight: 10,
+              color: "#666",
+              visibility: !selected ? "visible" : "hidden",
+            }}
+          />
+          <Typography>—</Typography>
         </MenuItem>
         {labelsProject.data?.projectLabels?.map((item) => (
           <MenuItem style={{ width: 200 }} onClick={() => setSelected(item)}>
@@ -112,7 +123,7 @@ const CellLabel = ({ value }) => {
             color: "#666",
           }}
         >
-          <ListItem>
+          <ListItem onClick={() => onEdit(project)}>
             <ListItemIcon style={{ minWidth: 20 }}>
               <EditIcon />
             </ListItemIcon>
@@ -306,7 +317,10 @@ const CellMembers = ({ value = [] }) => {
   );
 };
 
-export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
+export const COLUMNS_PROJECT_TABLE = ({
+  onEdit = () => {},
+  onOpenEditModal = () => {},
+}) => {
   return [
     {
       Header: "Bảng việc",
@@ -320,7 +334,9 @@ export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
     {
       Header: "Nhãn",
       accessor: "project_label",
-      Cell: CellLabel,
+      Cell: (props) => (
+        <CellLabel value={props.value} props={props} onEdit={onOpenEditModal} />
+      ),
     },
     {
       Header: "Tiến độ",

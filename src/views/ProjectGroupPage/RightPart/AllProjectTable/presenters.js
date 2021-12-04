@@ -45,7 +45,6 @@ function AllProjectTable({
 
   function doOpenMenu(anchorEl, project) {
     setMenuAnchor(anchorEl);
-    console.log(project, "project", project);
     setCurProject(project);
   }
   React.useEffect(() => {
@@ -72,6 +71,11 @@ function AllProjectTable({
     () =>
       COLUMNS_PROJECT_TABLE({
         onEdit: (evt, project) => doOpenMenu(evt, project),
+        onOpenEditModal: (curProject) => {
+          handleOpenModal("UPDATE", {
+            curProject,
+          });
+        },
       }),
     []
   );
