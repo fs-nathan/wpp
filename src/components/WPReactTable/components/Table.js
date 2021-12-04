@@ -84,7 +84,6 @@ const WPTable = ({
                             ref={provided.innerRef}
                             {...row.getRowProps()}
                             {...provided.draggableProps}
-                            {...provided.dragHandleProps}
                             className="tr"
                             style={getItemStyle(
                               snapshot.isDragging,
@@ -93,7 +92,12 @@ const WPTable = ({
                             )}
                           >
                             {row.cells.map((cell) => {
-                              return <ContentColumn cell={cell} />;
+                              return (
+                                <ContentColumn
+                                  cell={cell}
+                                  dragHandle={{ ...provided.dragHandleProps }}
+                                />
+                              );
                             })}
                           </div>
                           {provided.placeholder}
@@ -134,10 +138,13 @@ const HeaderColumn = ({ column, isSticky = false, isLastColumn = false }) => {
   );
 };
 
-const ContentColumn = ({ cell }) => {
+const ContentColumn = ({ cell, dragHandle = {} }) => {
+  const canDragColumn = cell?.column?.id === "name";
   return (
     <div {...cell.getCellProps()} className="td">
-      {cell.render("Cell")}
+      {cell.render("Cell", {
+        dragHandle: canDragColumn ? dragHandle : {},
+      })}
     </div>
   );
 };

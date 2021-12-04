@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 
-const IconDrag = () => (
+export const IconDrag = () => (
   <svg
     viewBox="0 0 24 24"
     role="presentation"

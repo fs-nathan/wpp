@@ -28,6 +28,8 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
+
 const CellLabel = ({ props, value, onEdit = () => {} }) => {
   const project = props.row.original;
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -149,7 +151,10 @@ const CellNameProject = ({ props, onEdit = () => {} }) => {
 
   return (
     <WrapperCellName>
-      <DragIndicatorIcon className="drag-icon" style={{ cursor: "pointer" }} />
+      <div className="drag-icon" {...props.dragHandle}>
+        <IconDrag style={{ cursor: "pointer" }} />
+      </div>
+
       <StarOutlineRoundedIcon
         className="star-icon"
         style={{ cursor: "pointer", margin: "0 5px" }}
@@ -409,6 +414,10 @@ const WrapperCellName = styled.div`
   color: #666;
   justify-content: flex-start;
   width: 100%;
+
+  .drag-icon {
+    height: 19.5px;
+  }
   .drag-icon,
   .star-icon,
   .wp-wrapper-button {
@@ -440,6 +449,7 @@ const BoxColLabel = styled(Box)`
   text-align: center;
   justify-content: space-between;
   width: 100%;
+  cursor: pointer;
   .default_tag,
   .icon {
     visibility: hidden;
