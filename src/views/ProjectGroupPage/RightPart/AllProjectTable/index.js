@@ -8,6 +8,7 @@ import { sortProject } from "actions/project/sortProject";
 import { detailProjectGroup } from "actions/projectGroup/detailProjectGroup";
 import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
 import { useFilters, useTimes } from "components/CustomPopover";
+import { CustomTableWrapper } from "components/CustomTable";
 import { CREATE_PROJECT } from "constants/events";
 import {
   CustomEventDispose,
@@ -221,59 +222,61 @@ function AllProjectTable({
   }, []);
   return (
     <>
-      <AllProjectTablePresenter
-        expand={expand}
-        handleExpand={handleExpand}
-        showHidePendings={showHidePendings}
-        route={route}
-        projects={newProjects}
-        bgColor={bgColor}
-        type_data={type_data}
-        filterType={filterType}
-        handleFilterType={(filterType) =>
-          doSetProjectGroup({
-            ...localOption,
-            filterType,
-          })
-        }
-        timeType={timeType}
-        workTypeLocal={workType}
-        handleTimeType={(timeType) =>
-          doSetProjectGroup({
-            ...localOption,
-            timeType,
-          })
-        }
-        handleWorkTypeChange={(workType) =>
-          doSetProjectGroup({
-            ...localOption,
-            workType,
-          })
-        }
-        handleSortType={(type) =>
-          setSortType((oldType) => {
-            const newCol = type;
-            const newDir = type === oldType.col ? -oldType.dir : 1;
-            return {
-              col: newCol,
-              dir: newDir,
-            };
-          })
-        }
-        handleShowOrHideProject={(project) =>
-          get(project, "visibility", false)
-            ? doHideProject({ projectId: get(project, "id") })
-            : doShowProject({ projectId: get(project, "id") })
-        }
-        handleDeleteProject={(project) =>
-          doDeleteProject({ projectId: get(project, "id") })
-        }
-        handleSortProject={(sortData) => doSortProject({ sortData })}
-        handleOpenModal={doOpenModal}
-        groupID={groupID}
-        isFiltering={isFiltering}
-        setIsFiltering={setIsFiltering}
-      />
+      <CustomTableWrapper>
+        <AllProjectTablePresenter
+          expand={expand}
+          handleExpand={handleExpand}
+          showHidePendings={showHidePendings}
+          route={route}
+          projects={newProjects}
+          bgColor={bgColor}
+          type_data={type_data}
+          filterType={filterType}
+          handleFilterType={(filterType) =>
+            doSetProjectGroup({
+              ...localOption,
+              filterType,
+            })
+          }
+          timeType={timeType}
+          workTypeLocal={workType}
+          handleTimeType={(timeType) =>
+            doSetProjectGroup({
+              ...localOption,
+              timeType,
+            })
+          }
+          handleWorkTypeChange={(workType) =>
+            doSetProjectGroup({
+              ...localOption,
+              workType,
+            })
+          }
+          handleSortType={(type) =>
+            setSortType((oldType) => {
+              const newCol = type;
+              const newDir = type === oldType.col ? -oldType.dir : 1;
+              return {
+                col: newCol,
+                dir: newDir,
+              };
+            })
+          }
+          handleShowOrHideProject={(project) =>
+            get(project, "visibility", false)
+              ? doHideProject({ projectId: get(project, "id") })
+              : doShowProject({ projectId: get(project, "id") })
+          }
+          handleDeleteProject={(project) =>
+            doDeleteProject({ projectId: get(project, "id") })
+          }
+          handleSortProject={(sortData) => doSortProject({ sortData })}
+          handleOpenModal={doOpenModal}
+          groupID={groupID}
+          isFiltering={isFiltering}
+          setIsFiltering={setIsFiltering}
+        />
+      </CustomTableWrapper>
       <CreateProjectModal
         open={openCreate}
         setOpen={setOpenCreate}

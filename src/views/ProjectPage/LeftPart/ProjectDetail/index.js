@@ -1,39 +1,48 @@
-import { deleteProject } from 'actions/project/deleteProject';
-import { detailProject } from 'actions/project/detailProject';
-import { listTask } from 'actions/task/listTask';
-import { getPermissionViewDetailProject } from 'actions/viewPermissions';
-import { useTimes } from 'components/CustomPopover';
-import { CREATE_TASK, CustomEventDispose, CustomEventListener, DELETE_PROJECT, DELETE_TASK, SORT_GROUP_TASK, SORT_TASK } from 'constants/events';
-import { get, find } from 'lodash';
-import moment from 'moment';
-import React from 'react';
-import { connect } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import DeleteProjectModal from '../../../ProjectGroupPage/Modals/DeleteProject';
-import EditProjectModal from '../../../ProjectGroupPage/Modals/EditProject';
-import { routeSelector } from '../../../ProjectGroupPage/selectors';
-import { localOptionSelector } from '../../selectors';
-import ProjectDetailPresenter from './presenters';
-import { projectSelector } from './selectors';
-import {groupsSelector} from "../../../ProjectGroupPage/LeftPart/ProjectGroupList/selectors";
+import { deleteProject } from "actions/project/deleteProject";
+import { detailProject } from "actions/project/detailProject";
+import { listTask } from "actions/task/listTask";
+import { getPermissionViewDetailProject } from "actions/viewPermissions";
+import { useTimes } from "components/CustomPopover";
+import {
+  CREATE_TASK,
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_PROJECT,
+  DELETE_TASK,
+  SORT_GROUP_TASK,
+  SORT_TASK,
+} from "constants/events";
+import { get, find } from "lodash";
+import moment from "moment";
+import React from "react";
+import { connect } from "react-redux";
+import { useHistory, useParams } from "react-router-dom";
+import DeleteProjectModal from "../../../ProjectGroupPage/Modals/DeleteProject";
+import EditProjectModal from "../../../ProjectGroupPage/Modals/EditProject";
+import { routeSelector } from "../../../ProjectGroupPage/selectors";
+import { localOptionSelector } from "../../selectors";
+import ProjectDetailPresenter from "./presenters";
+import { projectSelector } from "./selectors";
+import { groupsSelector } from "../../../ProjectGroupPage/LeftPart/ProjectGroupList/selectors";
 
 function ProjectDetail({
-  project, route,
+  project,
+  route,
   doDeleteProject,
   doListTask,
   doDetailProject,
   doGetPermissionViewDetailProject,
-  localOption, groups
+  localOption,
+  groups,
 }) {
-
   const times = useTimes();
   const { timeType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
-    return ({
+    return {
       timeStart,
       timeEnd,
-    });
+    };
   }, [timeType]);
   const { projectId } = useParams();
 
@@ -79,13 +88,13 @@ function ProjectDetail({
       doDetailProject({ projectId: projectId });
       const reloadDetailProject = () => {
         doDetailProject({ projectId: projectId });
-      }
+      };
       CustomEventListener(CREATE_TASK, reloadDetailProject);
       CustomEventListener(DELETE_TASK, reloadDetailProject);
       return () => {
         CustomEventDispose(CREATE_TASK, reloadDetailProject);
         CustomEventDispose(DELETE_TASK, reloadDetailProject);
-      }
+      };
     }
   }, [projectId]);
 
@@ -110,26 +119,28 @@ function ProjectDetail({
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'UPDATE': {
+      case "UPDATE": {
         setOpenUpdate(true);
         setUpdateProps(props);
         return;
       }
-      case 'ALERT': {
+      case "ALERT": {
         setOpenAlert(true);
         setAlertProps(props);
         return;
       }
-      default: return;
+      default:
+        return;
     }
   }
 
   return (
     <>
       <ProjectDetailPresenter
-        project={project} route={route}
+        project={project}
+        route={route}
         handleDeleteProject={(project) =>
-          doDeleteProject({ projectId: get(project, 'id') })
+          doDeleteProject({ projectId: get(project, "id") })
         }
         handleOpenModal={doOpenModal}
       />
@@ -144,10 +155,10 @@ function ProjectDetail({
         {...alertProps}
       />
     </>
-  )
+  );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     project: projectSelector(state),
     route: routeSelector(state),
@@ -155,16 +166,16 @@ const mapStateToProps = state => {
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     doDeleteProject: ({ projectId }) => dispatch(deleteProject({ projectId })),
-    doListTask: ({ projectId, timeStart, timeEnd, }, quite) => dispatch(listTask({ projectId, timeStart, timeEnd, }, quite)),
-    doDetailProject: ({ projectId }, quite) => dispatch(detailProject({ projectId }, quite)),
-    doGetPermissionViewDetailProject: ({ projectId }, quite) => dispatch(getPermissionViewDetailProject({ projectId }, quite)),
+    doListTask: ({ projectId, timeStart, timeEnd }, quite) =>
+      dispatch(listTask({ projectId, timeStart, timeEnd }, quite)),
+    doDetailProject: ({ projectId }, quite) =>
+      dispatch(detailProject({ projectId }, quite)),
+    doGetPermissionViewDetailProject: ({ projectId }, quite) =>
+      dispatch(getPermissionViewDetailProject({ projectId }, quite)),
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(ProjectDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(ProjectDetail);

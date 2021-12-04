@@ -16,6 +16,7 @@ import { getPermissionViewDetailProject } from "actions/viewPermissions";
 import AlertModal from "components/AlertModal";
 import AssignCalendarModal from "components/AssignCalendarModal";
 import { useTimes } from "components/CustomPopover";
+import { CustomTableWrapper } from "components/CustomTable";
 import {
   COPY_GROUP_TASK,
   CREATE_GROUP_TASK,
@@ -281,51 +282,53 @@ function AllTaskTable({
 
   return (
     <>
-      <AllTaskTablePresenter
-        expand={expand}
-        handleExpand={handleExpand}
-        handleSubSlide={handleSubSlide}
-        canUpdateProject={get(
-          viewPermissions.permissions,
-          [projectId, "update_project"],
-          false
-        )}
-        canCreateTask={true}
-        isShortGroup={isShortGroup}
-        showHidePendings={showHidePendings}
-        tasks={tasks}
-        project={project}
-        memberID={memberId}
-        memberTask={memberTask}
-        handleShowOrHideProject={(project) =>
-          get(project, "visibility", false)
-            ? doHideProject({ projectId: get(project, "id") })
-            : doShowProject({ projectId: get(project, "id") })
-        }
-        handleDeleteTask={(task) => doDeleteTask({ taskId: get(task, "id") })}
-        handleSortGroupTask={(groupTaskId, sortIndex) =>
-          doSortGroupTask({ groupTaskId, sortIndex })
-        }
-        handleSortTask={(taskId, groupTask, sortIndex) =>
-          doSortTask({
-            taskId,
-            projectId,
-            groupTask: groupTask === "default" ? undefined : groupTask,
-            sortIndex,
-          })
-        }
-        handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
-        handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
-        handleOpenModal={doOpenModal}
-        bgColor={bgColor}
-        timeType={timeType}
-        handleTimeType={(timeType) =>
-          doSetProject({
-            ...localOption,
-            timeType,
-          })
-        }
-      />
+      <CustomTableWrapper>
+        <AllTaskTablePresenter
+          expand={expand}
+          handleExpand={handleExpand}
+          handleSubSlide={handleSubSlide}
+          canUpdateProject={get(
+            viewPermissions.permissions,
+            [projectId, "update_project"],
+            false
+          )}
+          canCreateTask={true}
+          isShortGroup={isShortGroup}
+          showHidePendings={showHidePendings}
+          tasks={tasks}
+          project={project}
+          memberID={memberId}
+          memberTask={memberTask}
+          handleShowOrHideProject={(project) =>
+            get(project, "visibility", false)
+              ? doHideProject({ projectId: get(project, "id") })
+              : doShowProject({ projectId: get(project, "id") })
+          }
+          handleDeleteTask={(task) => doDeleteTask({ taskId: get(task, "id") })}
+          handleSortGroupTask={(groupTaskId, sortIndex) =>
+            doSortGroupTask({ groupTaskId, sortIndex })
+          }
+          handleSortTask={(taskId, groupTask, sortIndex) =>
+            doSortTask({
+              taskId,
+              projectId,
+              groupTask: groupTask === "default" ? undefined : groupTask,
+              sortIndex,
+            })
+          }
+          handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
+          handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
+          handleOpenModal={doOpenModal}
+          bgColor={bgColor}
+          timeType={timeType}
+          handleTimeType={(timeType) =>
+            doSetProject({
+              ...localOption,
+              timeType,
+            })
+          }
+        />
+      </CustomTableWrapper>
       <MenuCreateNew
         setOpenCreateTaskGroup={setOpenCreateTaskGroup}
         setOpenmMenuCreate={setOpenmMenuCreate}

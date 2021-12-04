@@ -102,6 +102,7 @@ const CellItemGroup = React.memo(
       if (e.which === 13 && !e.shiftKey) {
         e.preventDefault();
         _handleSubmit();
+        refText.current.value = "";
       }
     };
 

@@ -182,7 +182,7 @@ function CustomTable({
   );
 }
 
-function CustomTableWrapper({
+export function CustomTableWrapper({
   options,
   columns,
   data,
@@ -216,10 +216,12 @@ function CustomTableWrapper({
 
   return (
     <CustomTableProvider value={context}>
-      <CustomTable
-        isCustomHeader={isCustomHeader}
-        customHeaderTable={customHeaderTable}
-      />
+      {children || (
+        <CustomTable
+          isCustomHeader={isCustomHeader}
+          customHeaderTable={customHeaderTable}
+        />
+      )}
     </CustomTableProvider>
   );
 }
