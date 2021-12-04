@@ -86,6 +86,10 @@ const CellItemGroup = React.memo(
     const isDisplayReminder = row.original.status_code === 3;
     const refText = useRef(null);
 
+    const _handleSubmit = () => {
+      onSubmitAdd(refText.current.value);
+    };
+
     useEffect(() => {
       if (isFocus && isNewRow) {
         setTimeout(() => {
@@ -97,7 +101,7 @@ const CellItemGroup = React.memo(
     const _handleKeyPress = (e) => {
       if (e.which === 13 && !e.shiftKey) {
         e.preventDefault();
-        onSubmitAdd();
+        _handleSubmit();
       }
     };
 
@@ -112,7 +116,7 @@ const CellItemGroup = React.memo(
 
         <TextAreaCustom
           ref={refText}
-          placeholder={isNewRow ? "Write a task name" : value}
+          placeholder={"Write a task name"}
           rows="1"
           tabindex="-1"
           wrap="off"
