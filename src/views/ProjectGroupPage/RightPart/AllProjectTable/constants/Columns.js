@@ -1,28 +1,109 @@
+import { ListItem, ListItemIcon } from "@material-ui/core";
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import EditIcon from "@mui/icons-material/Edit";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
+import { Divider } from "@mui/material";
+import Box from "@mui/material/Box";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import AvatarCircleList from "components/AvatarCircleList";
+import CustomAvatar from "components/CustomAvatar";
+import CustomBadge from "components/CustomBadge";
 import { ChartInfoBox } from "components/CustomDonutChart";
+import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
 import { LightTooltip, TooltipWrapper } from "components/LightTooltip";
+import { StateBox } from "components/TableComponents";
+import { statusTaskColors } from "constants/colors";
+import { decodePriorityCode } from "helpers/project/commonHelpers";
+import { get } from "lodash";
 import moment from "moment";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { statusTaskColors } from "constants/colors";
-import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
-import { get } from "lodash";
-import { StateBox } from "components/TableComponents";
-import DonutSmallIcon from "@mui/icons-material/DonutSmall";
-import { decodePriorityCode } from "helpers/project/commonHelpers";
-import CustomBadge from "components/CustomBadge";
-import AvatarCircleList from "components/AvatarCircleList";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
-import CustomAvatar from "components/CustomAvatar";
 
 const CellLabel = ({ value }) => {
-  if (!value) return null;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selected, setSelected] = React.useState(value);
+  const labelsProject = useSelector(
+    ({ projectLabels }) => projectLabels.listProjectLabels
+  );
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const _renderSelected = () => {
+    if (!selected) return <Typography>—</Typography>;
+    return (
+      <Label
+        style={{ background: selected.color, maxWidth: 85 }}
+        onClick={handleClick}
+      >
+        {selected.name}
+      </Label>
+    );
+  };
+
   return (
-    <Label style={{ background: value.color, maxWidth: 85 }}>
-      {value.name}
-    </Label>
+    <>
+      <BoxColLabel onClick={handleClick}>
+        {_renderSelected()}
+        <KeyboardArrowDownIcon />
+      </BoxColLabel>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem style={{ width: 150 }}>
+          <Typography>—</Typography>
+        </MenuItem>
+        {labelsProject.data?.projectLabels?.map((item) => (
+          <MenuItem style={{ width: 150 }} onClick={() => setSelected(item)}>
+            <Typography
+              style={{
+                background: item.color,
+                padding: "5px 10px",
+                borderRadius: "15px",
+                color: "#fff",
+              }}
+            >
+              {item.name}
+            </Typography>
+          </MenuItem>
+        ))}
+        <Divider light />
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+            color: "#666",
+          }}
+        >
+          <ListItem>
+            <ListItemIcon style={{ minWidth: 20 }}>
+              <EditIcon />
+            </ListItemIcon>
+            <span style={{ marginLeft: "5px" }}>Chỉnh sửa</span>
+          </ListItem>
+        </div>
+      </Menu>
+    </>
   );
 };
 
@@ -319,4 +400,11 @@ const WrapperCellName = styled.div`
       color: #666;
     }
   }
+`;
+const BoxColLabel = styled(Box)`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  width: 100%;
 `;
