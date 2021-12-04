@@ -1,4 +1,5 @@
 import { ListItem, ListItemIcon } from "@material-ui/core";
+import DoneIcon from "@mui/icons-material/Done";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
@@ -44,7 +45,12 @@ const CellLabel = ({ value }) => {
   };
 
   const _renderSelected = () => {
-    if (!selected) return <Typography>—</Typography>;
+    if (!selected)
+      return (
+        <Typography className="default_tag" style={{ marginLeft: 5 }}>
+          —
+        </Typography>
+      );
     return (
       <Label
         style={{ background: selected.color, maxWidth: 85 }}
@@ -59,7 +65,7 @@ const CellLabel = ({ value }) => {
     <>
       <BoxColLabel onClick={handleClick}>
         {_renderSelected()}
-        <KeyboardArrowDownIcon />
+        <KeyboardArrowDownIcon className="icon" />
       </BoxColLabel>
       <Menu
         anchorEl={anchorEl}
@@ -69,18 +75,29 @@ const CellLabel = ({ value }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem style={{ width: 150 }}>
-          <Typography>—</Typography>
+        <MenuItem style={{ width: 200 }}>
+          <Typography style={{ marginLeft: 30, color: "#666" }}>—</Typography>
         </MenuItem>
         {labelsProject.data?.projectLabels?.map((item) => (
-          <MenuItem style={{ width: 150 }} onClick={() => setSelected(item)}>
+          <MenuItem style={{ width: 200 }} onClick={() => setSelected(item)}>
+            <DoneIcon
+              style={{
+                marginRight: 10,
+                color: "#666",
+                visibility: selected?.id === item.id ? "visible" : "hidden",
+              }}
+            />
             <Typography
               style={{
                 background: item.color,
-                padding: "5px 10px",
+                padding: "5px 15px",
                 borderRadius: "15px",
                 color: "#fff",
+                fontSize: "12px",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
               }}
+              nowrap
             >
               {item.name}
             </Typography>
@@ -407,4 +424,14 @@ const BoxColLabel = styled(Box)`
   text-align: center;
   justify-content: space-between;
   width: 100%;
+  .default_tag,
+  .icon {
+    visibility: hidden;
+  }
+  &:hover {
+    .default_tag,
+    .icon {
+      visibility: visible;
+    }
+  }
 `;
