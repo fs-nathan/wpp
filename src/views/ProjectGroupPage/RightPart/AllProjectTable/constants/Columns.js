@@ -5,7 +5,6 @@ import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
-import { Divider } from "@mui/material";
 import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
