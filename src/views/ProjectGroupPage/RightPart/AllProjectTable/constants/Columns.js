@@ -1,7 +1,6 @@
 import { ListItem, ListItemIcon } from "@material-ui/core";
 import DoneIcon from "@mui/icons-material/Done";
 import DonutSmallIcon from "@mui/icons-material/DonutSmall";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import EditIcon from "@mui/icons-material/Edit";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MoreVertIcon from "@mui/icons-material/MoreVert";

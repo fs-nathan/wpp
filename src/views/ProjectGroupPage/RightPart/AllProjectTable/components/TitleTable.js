@@ -5,6 +5,7 @@ import { get } from "lodash-es";
 import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useLocalStorage } from "react-use";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import PopoverSetGroupDefault from "views/ProjectGroupPage/components/PopoverSetGroupDefault";
 
 export const TitleTable = React.memo(
@@ -66,23 +67,25 @@ export const TitleTable = React.memo(
             height={35}
           />
         )}
-
-        <abbr title={groupName}>
-          {groupName}
+        <div style={{ display: "flex" }}>
+          <abbr title={groupName}>{groupName}</abbr>
           {!isAllProjects && (
             <>
-              <Icon
-                path={mdiChevronDown}
-                size={1}
-                fill="#666"
-                style={{ margin: "0 10px", cursor: "pointer" }}
-                onClick={_handleOpenSetGroup}
-              />
-              {isDefaultGroup && <FlagOutlinedIcon style={{ color: "#666" }} />}
+              <div className="wp-wrapper-button" style={{ marginLeft: 10 }}>
+                <KeyboardArrowDownIcon
+                  sx={{ cursor: "pointer", color: "#666" }}
+                  onClick={_handleOpenSetGroup}
+                />
+              </div>
+
+              {isDefaultGroup && (
+                <div className="wp-wrapper-button">
+                  <FlagOutlinedIcon style={{ color: "#666" }} />
+                </div>
+              )}
             </>
           )}
-        </abbr>
-
+        </div>
         {!isAllProjects && (
           <PopoverSetGroupDefault
             ref={refSetGroupDefault}
