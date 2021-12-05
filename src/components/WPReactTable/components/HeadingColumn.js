@@ -26,6 +26,8 @@ const HeadingColumn = ({
 
   const handleSelect = (key) => {
     setSelected(key);
+    console.log(column);
+    onSort(key, column.id);
   };
 
   return (

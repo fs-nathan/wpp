@@ -2,7 +2,7 @@ import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, get, isNil, join, remove, size, slice } from "lodash";
-import React from "react";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import LoadingBox from "../../../../components/LoadingBox";
@@ -35,18 +35,27 @@ function AllProjectTable({
   setIsFiltering,
 }) {
   const { t } = useTranslation();
-
+  const [data, setData] = React.useState(projects?.projects || []);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
   const [projectSummary, setProjectSummary] = React.useState({});
   const [currentGroup, setCurrentGroup] = React.useState(null);
+  const refData = useRef([]);
 
   function doOpenMenu(anchorEl, project) {
     setMenuAnchor(anchorEl);
     setCurProject(project);
   }
+  React.useEffect(() => {
+    if (projects) {
+      const newData = projects?.projects || [];
+      setData(newData);
+      refData.current = newData;
+    }
+  }, [projects]);
+
   React.useEffect(() => {
     setShowHideDisabled(
       !isNil(
@@ -98,6 +107,53 @@ function AllProjectTable({
 
   const _setTimeRangeAnchor = (e) => {
     setTimeAnchor(e.currentTarget);
+  };
+
+  const _handleSort = (key, idSort) => {
+    console.log(key);
+    switch (key) {
+      case "ASC":
+        _sortByAsc(idSort);
+        break;
+      case "DECS":
+        _sortByDesc(idSort);
+        break;
+      default:
+        setData(refData.current);
+        break;
+    }
+  };
+
+  const _sortByDesc = (key) => {
+    switch (key) {
+      case "name":
+        setData((prevState) => {
+          const result = [...prevState].sort((a, b) =>
+            b["name"].localeCompare(a["name"])
+          );
+          return result;
+        });
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const _sortByAsc = (key) => {
+    switch (key) {
+      case "name":
+        setData((prevState) => {
+          const result = [...prevState].sort((a, b) =>
+            a["name"].localeCompare(b["name"])
+          );
+          return result;
+        });
+        break;
+
+      default:
+        break;
+    }
   };
 
   const _handleDragEnd = (result) => {
@@ -175,8 +231,9 @@ function AllProjectTable({
           <React.Fragment>
             <WPReactTable
               columns={columns || []}
-              data={projects.projects}
+              data={data}
               onDragEnd={_handleDragEnd}
+              onSort={_handleSort}
             />
 
             <Menu

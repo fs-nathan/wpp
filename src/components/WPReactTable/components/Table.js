@@ -1,9 +1,7 @@
-import classNames from "classnames";
 import React, { useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useBlockLayout, useResizeColumns, useTable } from "react-table";
 import { useSticky } from "react-table-sticky";
-import styled from "styled-components";
 import HeadingColumn from "./HeadingColumn";
 
 const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
@@ -18,6 +16,7 @@ const WPTable = ({
   data,
   displayAddColumn = false,
   onDragEnd = () => {},
+  onSort = () => {},
 }) => {
   const defaultColumn = useMemo(
     () => ({
@@ -52,6 +51,7 @@ const WPTable = ({
                 <HeadingColumn
                   column={column}
                   isLastColumn={index === headerGroup.headers.length - 1}
+                  onSort={onSort}
                 />
               ))}
             </div>

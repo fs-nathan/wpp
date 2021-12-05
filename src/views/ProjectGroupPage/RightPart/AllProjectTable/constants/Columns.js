@@ -326,6 +326,7 @@ export const COLUMNS_PROJECT_TABLE = ({
 }) => {
   return [
     {
+      id: "name",
       Header: "Bảng việc",
       accessor: "name",
       headerClassName: "sticky",
@@ -335,6 +336,7 @@ export const COLUMNS_PROJECT_TABLE = ({
       Cell: (props) => <CellNameProject props={props} onEdit={onEdit} />,
     },
     {
+      id: "label",
       Header: "Nhãn",
       accessor: "project_label",
       Cell: (props) => (
@@ -342,6 +344,7 @@ export const COLUMNS_PROJECT_TABLE = ({
       ),
     },
     {
+      id: "progress",
       Header: "Tiến độ",
       accessor: "date_start",
       Cell: CellProgressDay,
@@ -351,21 +354,21 @@ export const COLUMNS_PROJECT_TABLE = ({
       Header: "Bắt đầu",
       accessor: "date_start",
     },
+    { id: "end_date", Header: "Kết thúc", accessor: "date_end" },
     {
-      Header: "Kết thúc",
-      accessor: "date_end",
-    },
-    {
+      id: "status",
       Header: "Trạng thái",
       accessor: "status",
       Cell: (props) => <CellStatus props={props} />,
     },
     {
+      id: "count_task",
       Header: "Công việc",
       accessor: "statistic",
       Cell: CellTotalTask,
     },
     {
+      id: "completed",
       Header: "Hoàn thành",
       accessor: (row) => {
         return row.name;
@@ -373,11 +376,13 @@ export const COLUMNS_PROJECT_TABLE = ({
       Cell: (props) => <CellProgressSuccess props={props} />,
     },
     {
+      id: "priority , completed",
       Header: "Ưu tiên",
       accessor: "priority_name",
       Cell: (props) => <CellPriority props={props} />,
     },
     {
+      id: "members",
       Header: "Thành viên",
       accessor: "members",
       Cell: CellMembers,
