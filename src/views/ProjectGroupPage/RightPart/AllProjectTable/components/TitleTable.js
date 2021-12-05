@@ -1,5 +1,5 @@
 import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
-import { mdiChevronDown, mdiMenu } from "@mdi/js";
+import { mdiMenu } from "@mdi/js";
 import Icon from "@mdi/react";
 import { get } from "lodash-es";
 import React, { useRef, useState } from "react";

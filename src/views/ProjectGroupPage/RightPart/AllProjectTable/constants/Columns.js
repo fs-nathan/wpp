@@ -115,13 +115,13 @@ const CellLabel = ({ props, value, onEdit = () => {} }) => {
             </Typography>
           </MenuItem>
         ))}
-        <Divider light />
         <div
           style={{
             display: "flex",
             alignItems: "center",
             cursor: "pointer",
             color: "#666",
+            borderTop: "1px solid#e8ecee",
           }}
         >
           <ListItem onClick={() => onEdit(project)}>
