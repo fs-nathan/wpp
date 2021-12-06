@@ -1,7 +1,7 @@
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
-import { find, get, isNil, join, remove, size, slice } from "lodash";
+import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
@@ -14,6 +14,8 @@ import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import "./styles/style.scss";
 import { _sortByAscGroupTable, _sortByDescGroupTable } from "./utils";
+
+const KEY_LOCAL_STORAGE_SORT = "sort_project_table";
 
 function AllProjectTable({
   expand,
@@ -35,6 +37,8 @@ function AllProjectTable({
   isFiltering,
   setIsFiltering,
 }) {
+  const dataSort = localStorage.getItem(KEY_LOCAL_STORAGE_SORT);
+  const sortLocal = JSON.parse(dataSort);
   const { t } = useTranslation();
   const [data, setData] = React.useState(projects?.projects || []);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
@@ -43,18 +47,23 @@ function AllProjectTable({
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
   const [projectSummary, setProjectSummary] = React.useState({});
   const [currentGroup, setCurrentGroup] = React.useState(null);
+  const [selectedSort, setSelectedSort] = React.useState(sortLocal || null);
   const refData = useRef([]);
 
   function doOpenMenu(anchorEl, project) {
     setMenuAnchor(anchorEl);
     setCurProject(project);
   }
+
   React.useEffect(() => {
     if (projects) {
       const newData = projects?.projects || [];
-      setData(newData);
+      isObject(sortLocal)
+        ? setData(() => _handleSort(sortLocal.key, sortLocal.idSort, newData))
+        : setData(newData);
       refData.current = newData;
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projects]);
 
   React.useEffect(() => {
@@ -110,16 +119,31 @@ function AllProjectTable({
     setTimeAnchor(e.currentTarget);
   };
 
-  const _handleSort = (key, idSort) => {
+  const _handleSort = (key, idSort, array = null) => {
     switch (key) {
       case "ASC":
-        setData((prevState) => _sortByAscGroupTable(prevState, idSort));
-        break;
+        localStorage.setItem(
+          KEY_LOCAL_STORAGE_SORT,
+          JSON.stringify({ key, idSort })
+        );
+        setSelectedSort({ key, idSort });
+
+        return !array
+          ? setData((prevState) => _sortByAscGroupTable(prevState, idSort))
+          : _sortByAscGroupTable(array, idSort);
       case "DECS":
-        setData((prevState) => _sortByDescGroupTable(prevState, idSort));
-        break;
+        localStorage.setItem(
+          KEY_LOCAL_STORAGE_SORT,
+          JSON.stringify({ key, idSort })
+        );
+        setSelectedSort({ key, idSort });
+        return !array
+          ? setData((prevState) => _sortByDescGroupTable(prevState, idSort))
+          : _sortByDescGroupTable(array, idSort);
       default:
         setData(refData.current);
+        setSelectedSort(null);
+        localStorage.setItem(KEY_LOCAL_STORAGE_SORT, null);
         break;
     }
   };
@@ -200,6 +224,7 @@ function AllProjectTable({
             <WPReactTable
               columns={columns || []}
               data={data}
+              selectedSort={selectedSort}
               onDragEnd={_handleDragEnd}
               onSort={_handleSort}
             />

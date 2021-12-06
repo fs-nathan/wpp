@@ -14,6 +14,7 @@ const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
 const WPTable = ({
   columns,
   data,
+  selectedSort = null,
   displayAddColumn = false,
   onDragEnd = () => {},
   onSort = () => {},
@@ -50,6 +51,7 @@ const WPTable = ({
               {headerGroup.headers.map((column, index) => (
                 <HeadingColumn
                   column={column}
+                  selectedSort={selectedSort}
                   isLastColumn={index === headerGroup.headers.length - 1}
                   onSort={onSort}
                 />

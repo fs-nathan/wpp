@@ -8,12 +8,12 @@ import styled from "styled-components";
 
 const HeadingColumn = ({
   column,
+  selectedSort,
   isSticky = false,
   isLastColumn = false,
   onSort = () => {},
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState(null);
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -25,7 +25,6 @@ const HeadingColumn = ({
   };
 
   const handleSelect = (key) => {
-    setSelected(key);
     onSort(key, column.id);
   };
 
@@ -40,9 +39,9 @@ const HeadingColumn = ({
           <Heading>
             {column.render("Header")}
 
-            {selected && (
+            {selectedSort && selectedSort.idSort === column.id && (
               <>
-                {selected === "ASC" ? (
+                {selectedSort.key === "ASC" ? (
                   <ListItemIcon style={{ minWidth: 25, marginLeft: 5 }}>
                     <UpgradeIcon />
                   </ListItemIcon>
@@ -90,7 +89,7 @@ const HeadingColumn = ({
       >
         <MenuItem
           onClick={() => handleSelect("ASC")}
-          style={{ color: selected === "ASC" ? "#666" : "#333" }}
+          style={{ color: selectedSort?.key === "ASC" ? "#666" : "#333" }}
         >
           <ListItemIcon
             style={{
@@ -103,7 +102,7 @@ const HeadingColumn = ({
         </MenuItem>
         <MenuItem
           onClick={() => handleSelect("DECS")}
-          style={{ color: selected === "DECS" ? "#666" : "#333" }}
+          style={{ color: selectedSort?.key === "DECS" ? "#666" : "#333" }}
         >
           <ListItemIcon
             style={{
@@ -119,7 +118,7 @@ const HeadingColumn = ({
         </MenuItem>
         <MenuItem
           onClick={() => handleSelect(null)}
-          style={{ color: !selected ? "#666" : "#333" }}
+          style={{ color: !selectedSort ? "#666" : "#333" }}
         >
           <ListItemIcon style={{ minWidth: 25 }}>
             <SearchOffIcon />
