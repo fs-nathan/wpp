@@ -10,6 +10,10 @@ const WPReactTable = ({
   onDragEnd = () => {},
   ...props
 }) => {
+  React.useEffect(() => {
+    console.log(data, " new data");
+  }, [data]);
+
   return (
     <Styles>
       {isGroup ? (

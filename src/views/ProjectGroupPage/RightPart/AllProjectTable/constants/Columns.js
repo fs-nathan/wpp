@@ -37,6 +37,10 @@ const CellLabel = ({ props, value, onEdit = () => {} }) => {
   );
   const open = Boolean(anchorEl);
 
+  React.useEffect(() => {
+    setSelected(value);
+  }, [value]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -376,7 +380,7 @@ export const COLUMNS_PROJECT_TABLE = ({
       Cell: (props) => <CellProgressSuccess props={props} />,
     },
     {
-      id: "priority , completed",
+      id: "priority",
       Header: "Ưu tiên",
       accessor: "priority_name",
       Cell: (props) => <CellPriority props={props} />,

@@ -13,6 +13,7 @@ import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import "./styles/style.scss";
+import { _sortByAscGroupTable, _sortByDescGroupTable } from "./utils";
 
 function AllProjectTable({
   expand,
@@ -110,48 +111,15 @@ function AllProjectTable({
   };
 
   const _handleSort = (key, idSort) => {
-    console.log(key);
     switch (key) {
       case "ASC":
-        _sortByAsc(idSort);
+        setData((prevState) => _sortByAscGroupTable(prevState, idSort));
         break;
       case "DECS":
-        _sortByDesc(idSort);
+        setData((prevState) => _sortByDescGroupTable(prevState, idSort));
         break;
       default:
         setData(refData.current);
-        break;
-    }
-  };
-
-  const _sortByDesc = (key) => {
-    switch (key) {
-      case "name":
-        setData((prevState) => {
-          const result = [...prevState].sort((a, b) =>
-            b["name"].localeCompare(a["name"])
-          );
-          return result;
-        });
-        break;
-
-      default:
-        break;
-    }
-  };
-
-  const _sortByAsc = (key) => {
-    switch (key) {
-      case "name":
-        setData((prevState) => {
-          const result = [...prevState].sort((a, b) =>
-            a["name"].localeCompare(b["name"])
-          );
-          return result;
-        });
-        break;
-
-      default:
         break;
     }
   };
