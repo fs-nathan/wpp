@@ -1,8 +1,8 @@
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
-import { find, get, isNil, join, remove, size, slice } from "lodash";
-import React from "react";
+import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import LoadingBox from "../../../../components/LoadingBox";
@@ -13,6 +13,9 @@ import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import "./styles/style.scss";
+import { _sortByAscGroupTable, _sortByDescGroupTable } from "./utils";
+
+const KEY_LOCAL_STORAGE_SORT = "sort_project_table";
 
 function AllProjectTable({
   expand,
@@ -34,20 +37,35 @@ function AllProjectTable({
   isFiltering,
   setIsFiltering,
 }) {
+  const dataSort = localStorage.getItem(KEY_LOCAL_STORAGE_SORT);
+  const sortLocal = JSON.parse(dataSort);
   const { t } = useTranslation();
-
+  const [data, setData] = React.useState(projects?.projects || []);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
   const [projectSummary, setProjectSummary] = React.useState({});
   const [currentGroup, setCurrentGroup] = React.useState(null);
+  const [selectedSort, setSelectedSort] = React.useState(sortLocal || null);
+  const refData = useRef([]);
 
   function doOpenMenu(anchorEl, project) {
     setMenuAnchor(anchorEl);
-    console.log(project, "project", project);
     setCurProject(project);
   }
+
+  React.useEffect(() => {
+    if (projects) {
+      const newData = projects?.projects || [];
+      isObject(sortLocal)
+        ? setData(() => _handleSort(sortLocal.key, sortLocal.idSort, newData))
+        : setData(newData);
+      refData.current = newData;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projects]);
+
   React.useEffect(() => {
     setShowHideDisabled(
       !isNil(
@@ -72,6 +90,11 @@ function AllProjectTable({
     () =>
       COLUMNS_PROJECT_TABLE({
         onEdit: (evt, project) => doOpenMenu(evt, project),
+        onOpenEditModal: (curProject) => {
+          handleOpenModal("UPDATE", {
+            curProject,
+          });
+        },
       }),
     []
   );
@@ -94,6 +117,35 @@ function AllProjectTable({
 
   const _setTimeRangeAnchor = (e) => {
     setTimeAnchor(e.currentTarget);
+  };
+
+  const _handleSort = (key, idSort, array = null) => {
+    switch (key) {
+      case "ASC":
+        localStorage.setItem(
+          KEY_LOCAL_STORAGE_SORT,
+          JSON.stringify({ key, idSort })
+        );
+        setSelectedSort({ key, idSort });
+
+        return !array
+          ? setData((prevState) => _sortByAscGroupTable(prevState, idSort))
+          : _sortByAscGroupTable(array, idSort);
+      case "DECS":
+        localStorage.setItem(
+          KEY_LOCAL_STORAGE_SORT,
+          JSON.stringify({ key, idSort })
+        );
+        setSelectedSort({ key, idSort });
+        return !array
+          ? setData((prevState) => _sortByDescGroupTable(prevState, idSort))
+          : _sortByDescGroupTable(array, idSort);
+      default:
+        setData(refData.current);
+        setSelectedSort(null);
+        localStorage.setItem(KEY_LOCAL_STORAGE_SORT, null);
+        break;
+    }
   };
 
   const _handleDragEnd = (result) => {
@@ -171,8 +223,10 @@ function AllProjectTable({
           <React.Fragment>
             <WPReactTable
               columns={columns || []}
-              data={projects.projects}
+              data={data}
+              selectedSort={selectedSort}
               onDragEnd={_handleDragEnd}
+              onSort={_handleSort}
             />
 
             <Menu

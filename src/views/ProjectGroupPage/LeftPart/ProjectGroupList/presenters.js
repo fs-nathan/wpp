@@ -4,7 +4,6 @@ import {
   Divider,
   IconButton,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   MenuItem,
@@ -15,6 +14,7 @@ import {
 import SvgIcon from "@material-ui/core/SvgIcon";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
+import AddIcon from "@mui/icons-material/Add";
 import {
   mdiBookmarkOutline,
   mdiDotsVertical,
@@ -22,13 +22,15 @@ import {
   mdiPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { size } from "lodash";
 import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import styled from "styled-components";
 import SearchInput from "../../../../components/SearchInput";
@@ -211,33 +213,24 @@ function ProjectList({
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
                 {isHasProjectRecently && (
-                  <ListItem
-                    className={`view_ProjectGroup_List-customListItem ${
-                      history.location.pathname.includes(
-                        "/projects/recently"
-                      ) && "active"
-                    }`}
-                    onClick={() => history.push("/projects/recently")}
+                  <NavLink
+                    to="/projects/recently"
+                    className="MuiListItem-root view_ProjectGroup_List-customListItem MuiListItem-gutters"
+                    style={{ paddingLeft: 42 }}
                   >
                     <ListItemIcon>
                       <AccessTimeIcon />
                     </ListItemIcon>
                     <ListItemText primary={t("LABEL_SEE_RECENTLY")} />
-                  </ListItem>
+                  </NavLink>
                 )}
-                <ListItem
-                  className={`view_ProjectGroup_List-customListItem ${
-                    history.location.pathname.includes(
-                      "/projects/personal-board"
-                    ) && "active"
-                  }`}
-                  onClick={() => history.push("/projects/personal-board")}
+                <NavLink
+                  to="/projects/personal-board"
+                  className="MuiListItem-root view_ProjectGroup_List-customListItem MuiListItem-gutters"
+                  style={{ paddingLeft: 42 }}
                 >
                   <ListItemIcon>
-                    <SvgIcon style={{ fontSize: "22px" }}>
-                      <path d="M0 0h24v24H0z" fill="none" />
-                      <path d="M12 11c1.33 0 4 .67 4 2v.16c-.97 1.12-2.4 1.84-4 1.84s-3.03-.72-4-1.84V13c0-1.33 2.67-2 4-2zm0-1c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm6 .2C18 6.57 15.35 4 12 4s-6 2.57-6 6.2c0 2.34 1.95 5.44 6 9.14 4.05-3.7 6-6.8 6-9.14zM12 2c4.2 0 8 3.22 8 8.2 0 3.32-2.67 7.25-8 11.8-5.33-4.55-8-8.48-8-11.8C4 5.22 7.8 2 12 2z" />
-                    </SvgIcon>
+                    <StarBorderIcon />
                   </ListItemIcon>
                   <ListItemText
                     primary={`${t("LABEL_PERSONAL_BOARD")} (${size(
@@ -250,21 +243,17 @@ function ProjectList({
                       style={{ marginLeft: 10, color: "red" }}
                     />
                   )}
-                  <IconButton
-                    className={"rightIconControlList"}
-                    size={"small"}
-                    onClick={(evt) => {
-                      evt.stopPropagation();
-                      setAnchorElAddBoard(evt.currentTarget);
-                    }}
-                  >
-                    <Icon
-                      path={mdiDotsVertical}
-                      size={1}
-                      color={"rgba(0,0,0,0.54)"}
+                  <div className="wp-wrapper-button">
+                    <MoreVertIcon
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        evt.preventDefault();
+                        setAnchorElAddBoard(evt.currentTarget);
+                      }}
+                      sx={{ color: "rgba(0, 0, 0, 0.54)" }}
                     />
-                  </IconButton>
-                </ListItem>
+                  </div>
+                </NavLink>
               </List>
             </Box>
           </Box>
@@ -280,15 +269,17 @@ function ProjectList({
               </SvgIcon>
               <span>{t("LABEL_WORKING_GROUP")}</span>
               <abbr title={t("Thêm nhóm")}>
-                <IconButton
-                  size={"small"}
-                  onClick={(evt) => {
-                    evt.stopPropagation();
-                    setAnchorElAddGroup(evt.currentTarget);
-                  }}
-                >
-                  <Icon path={mdiPlus} size={1} color={"rgba(0,0,0,0.54)"} />
-                </IconButton>
+                <div className="wp-wrapper-button">
+                  <AddIcon
+                    onClick={(evt) => {
+                      evt.stopPropagation();
+                      setAnchorElAddGroup(evt.currentTarget);
+                    }}
+                    sx={{ color: "rgba(0,0,0,0.54)" }}
+                  >
+                    <Icon path={mdiPlus} size={1} />
+                  </AddIcon>
+                </div>
               </abbr>
             </Box>
             <Box
@@ -300,8 +291,8 @@ function ProjectList({
                     <Droppable droppableId="droppable">
                       {(provided, snapshot) => (
                         <div
-                          {...provided.droppableProps}
                           ref={provided.innerRef}
+                          {...provided.droppableProps}
                         >
                           {groups.groups.map((projectGroup, index) => (
                             <GroupProject

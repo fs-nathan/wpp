@@ -2539,5 +2539,6 @@
   "LABEL_SORT": "Sắp xếp",
   "LABEL_UPDATE_TASK_COMPLETE": "Chỉnh sửa mức độ hoàn thành",
   "EXPORT_DATA": "Xuất dữ liệu",
-  "TRASH": "Thùng rác"
+  "TRASH": "Thùng rác",
+  "ADD_NEW_TASK": "Thêm công việc"
 }

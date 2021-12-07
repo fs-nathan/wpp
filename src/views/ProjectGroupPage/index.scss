@@ -1,0 +1,28 @@
+.wp-wrapper-button {
+  height: 28px;
+  min-height: 28px;
+  min-width: 28px;
+  width: 28px;
+  border-radius: 6px;
+  margin-right: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  fill: #6f7782;
+  &:hover {
+    background: #1507260a;
+    fill: #151b26;
+    cursor: pointer;
+  }
+}
+.view_ProjectGroup_List--LeftContainer .MuiListItem-root {
+  height: 44px;
+  .wp-wrapper-button {
+    display: none;
+  }
+  &:hover {
+    .wp-wrapper-button {
+      display: flex;
+    }
+  }
+}

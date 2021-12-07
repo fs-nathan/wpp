@@ -1,28 +1,141 @@
+import { ListItem, ListItemIcon } from "@material-ui/core";
+import DoneIcon from "@mui/icons-material/Done";
+import DonutSmallIcon from "@mui/icons-material/DonutSmall";
+import EditIcon from "@mui/icons-material/Edit";
+import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
+import Box from "@mui/material/Box";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Typography from "@mui/material/Typography";
+import AvatarCircleList from "components/AvatarCircleList";
+import CustomAvatar from "components/CustomAvatar";
+import CustomBadge from "components/CustomBadge";
 import { ChartInfoBox } from "components/CustomDonutChart";
+import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
 import { LightTooltip, TooltipWrapper } from "components/LightTooltip";
+import { StateBox } from "components/TableComponents";
+import { statusTaskColors } from "constants/colors";
+import { decodePriorityCode } from "helpers/project/commonHelpers";
+import { get } from "lodash";
 import moment from "moment";
+import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { statusTaskColors } from "constants/colors";
-import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
-import { get } from "lodash";
-import { StateBox } from "components/TableComponents";
-import DonutSmallIcon from "@mui/icons-material/DonutSmall";
-import { decodePriorityCode } from "helpers/project/commonHelpers";
-import CustomBadge from "components/CustomBadge";
-import AvatarCircleList from "components/AvatarCircleList";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import StarOutlineRoundedIcon from "@mui/icons-material/StarOutlineRounded";
-import CustomAvatar from "components/CustomAvatar";
 
-const CellLabel = ({ value }) => {
-  if (!value) return null;
+import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
+
+const CellLabel = ({ props, value, onEdit = () => {} }) => {
+  const project = props.row.original;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selected, setSelected] = React.useState(value);
+  const labelsProject = useSelector(
+    ({ projectLabels }) => projectLabels.listProjectLabels
+  );
+  const open = Boolean(anchorEl);
+
+  React.useEffect(() => {
+    setSelected(value);
+  }, [value]);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const _renderSelected = () => {
+    if (!selected)
+      return (
+        <Typography className="default_tag" style={{ marginLeft: 5 }}>
+          —
+        </Typography>
+      );
+    return (
+      <Label
+        style={{ background: selected.color, maxWidth: 85 }}
+        onClick={handleClick}
+      >
+        {selected.name}
+      </Label>
+    );
+  };
+
   return (
-    <Label style={{ background: value.color, maxWidth: 85 }}>
-      {value.name}
-    </Label>
+    <>
+      <BoxColLabel onClick={handleClick}>
+        {_renderSelected()}
+        <KeyboardArrowDownIcon className="icon" />
+      </BoxColLabel>
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      >
+        <MenuItem
+          style={{ width: 200, color: "#666" }}
+          onClick={() => setSelected(null)}
+        >
+          <DoneIcon
+            style={{
+              marginRight: 10,
+              color: "#666",
+              visibility: !selected ? "visible" : "hidden",
+            }}
+          />
+          <Typography>—</Typography>
+        </MenuItem>
+        {labelsProject.data?.projectLabels?.map((item) => (
+          <MenuItem style={{ width: 200 }} onClick={() => setSelected(item)}>
+            <DoneIcon
+              style={{
+                marginRight: 10,
+                color: "#666",
+                visibility: selected?.id === item.id ? "visible" : "hidden",
+              }}
+            />
+            <Typography
+              style={{
+                background: item.color,
+                padding: "5px 15px",
+                borderRadius: "15px",
+                color: "#fff",
+                fontSize: "12px",
+                textOverflow: "ellipsis",
+                overflow: "hidden",
+              }}
+              nowrap
+            >
+              {item.name}
+            </Typography>
+          </MenuItem>
+        ))}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            cursor: "pointer",
+            color: "#666",
+            borderTop: "1px solid#e8ecee",
+          }}
+        >
+          <ListItem onClick={() => onEdit(project)}>
+            <ListItemIcon style={{ minWidth: 20 }}>
+              <EditIcon />
+            </ListItemIcon>
+            <span style={{ marginLeft: "5px" }}>Chỉnh sửa</span>
+          </ListItem>
+        </div>
+      </Menu>
+    </>
   );
 };
 
@@ -33,10 +146,16 @@ const CellProgressDay = ({ value }) => {
   return `${currentDay.diff(startDate, "days")} ngày`;
 };
 
-const CellNameProject = ({ props }) => {
+const CellNameProject = ({ props, onEdit = () => {} }) => {
+  const row = props.row.original;
+  const isDisplayUpdate =
+    !get(row, "can_update", false) || !get(row, "can_delete", false);
+
   return (
     <WrapperCellName>
-      <DragIndicatorIcon className="drag-icon" style={{ cursor: "pointer" }} />
+      <div className="drag-icon" {...props.dragHandle}>
+        <IconDrag style={{ cursor: "pointer" }} />
+      </div>
 
       <StarOutlineRoundedIcon
         className="star-icon"
@@ -51,9 +170,25 @@ const CellNameProject = ({ props }) => {
       <Link
         to={props.row.original.url_redirect}
         className={"view_ProjectGroup_Table_All_title_bold"}
+        style={{
+          maxWidth: "calc(100% - 65px)",
+          width: "calc(100% - 65px)",
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          display: "block",
+        }}
       >
         {props.value}
       </Link>
+      {!isDisplayUpdate && (
+        <div
+          className="wp-wrapper-button"
+          onClick={(evt) => onEdit(evt.currentTarget, row)}
+        >
+          <MoreVertIcon />
+        </div>
+      )}
     </WrapperCellName>
   );
 };
@@ -189,34 +324,31 @@ const CellMembers = ({ value = [] }) => {
   );
 };
 
-const CellEdit = ({ props, onEdit }) => {
-  const row = props.row.original;
-  if (!get(row, "can_update", false) || !get(row, "can_delete", false))
-    return null;
-  return (
-    <WrapperAdd>
-      <MoreVertIcon onClick={(evt) => onEdit(evt.currentTarget, row)} />
-    </WrapperAdd>
-  );
-};
-
-export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
+export const COLUMNS_PROJECT_TABLE = ({
+  onEdit = () => {},
+  onOpenEditModal = () => {},
+}) => {
   return [
     {
+      id: "name",
       Header: "Bảng việc",
       accessor: "name",
       headerClassName: "sticky",
       minWidth: 420,
       maxWidth: 620,
       sticky: "left",
-      Cell: (props) => <CellNameProject props={props} />,
+      Cell: (props) => <CellNameProject props={props} onEdit={onEdit} />,
     },
     {
+      id: "label",
       Header: "Nhãn",
       accessor: "project_label",
-      Cell: CellLabel,
+      Cell: (props) => (
+        <CellLabel value={props.value} props={props} onEdit={onOpenEditModal} />
+      ),
     },
     {
+      id: "progress",
       Header: "Tiến độ",
       accessor: "date_start",
       Cell: CellProgressDay,
@@ -226,21 +358,21 @@ export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
       Header: "Bắt đầu",
       accessor: "date_start",
     },
+    { id: "end_date", Header: "Kết thúc", accessor: "date_end" },
     {
-      Header: "Kết thúc",
-      accessor: "date_end",
-    },
-    {
+      id: "status",
       Header: "Trạng thái",
       accessor: "status",
       Cell: (props) => <CellStatus props={props} />,
     },
     {
+      id: "count_task",
       Header: "Công việc",
       accessor: "statistic",
       Cell: CellTotalTask,
     },
     {
+      id: "completed",
       Header: "Hoàn thành",
       accessor: (row) => {
         return row.name;
@@ -248,22 +380,16 @@ export const COLUMNS_PROJECT_TABLE = ({ onEdit = () => {} }) => {
       Cell: (props) => <CellProgressSuccess props={props} />,
     },
     {
+      id: "priority",
       Header: "Ưu tiên",
       accessor: "priority_name",
       Cell: (props) => <CellPriority props={props} />,
     },
     {
+      id: "members",
       Header: "Thành viên",
       accessor: "members",
       Cell: CellMembers,
-    },
-    {
-      Header: "",
-      accessor: "project_group",
-      width: 50,
-      maxWidth: 50,
-      minWidth: 50,
-      Cell: (props) => <CellEdit props={props} onEdit={onEdit} />,
     },
   ];
 };
@@ -289,26 +415,25 @@ const WrapperCellTotal = styled.div`
   }
 `;
 
-const WrapperAdd = styled.div`
-  display: flex;
-  align-items: center;
-  color: #6f7782;
-  justify-content: center;
-  width: 100%;
-  cursor: pointer;
-`;
-
 const WrapperCellName = styled.div`
   display: flex;
   align-items: center;
   color: #666;
   justify-content: flex-start;
   width: 100%;
+
   .drag-icon {
+    height: 19.5px;
+  }
+  .drag-icon,
+  .star-icon,
+  .wp-wrapper-button {
     opacity: 0;
   }
   &:hover {
-    .drag-icon {
+    .drag-icon,
+    .star-icon,
+    .wp-wrapper-button {
       opacity: 1;
     }
   }
@@ -322,6 +447,24 @@ const WrapperCellName = styled.div`
     font-weight: 400 !important;
     &:hover {
       color: #666;
+    }
+  }
+`;
+const BoxColLabel = styled(Box)`
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  width: 100%;
+  cursor: pointer;
+  .default_tag,
+  .icon {
+    visibility: hidden;
+  }
+  &:hover {
+    .default_tag,
+    .icon {
+      visibility: visible;
     }
   }
 `;

@@ -9,12 +9,12 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomBadge from "components/CustomBadge";
 import { StateBox } from "components/TableComponents";
 import { get } from "lodash";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 
-const IconDrag = () => (
+export const IconDrag = () => (
   <svg
     viewBox="0 0 24 24"
     role="presentation"
@@ -30,61 +30,141 @@ const IconDrag = () => (
   </svg>
 );
 
-const CellMainGroup = ({ row, value, onVisibleAddRow = () => {} }) => {
+const CellMainGroup = ({
+  row,
+  value,
+  dragHandle = {},
+  onVisibleAddRow = () => {},
+}) => {
   return (
-    <WrapperMainGroup>
-      <WrapperButton {...row.getToggleRowExpandedProps()}>
-        {!row.isExpanded ? (
-          <ArrowRightRoundedIcon sx={{ fontSize: 28 }} />
-        ) : (
-          <ArrowDropDownRoundedIcon sx={{ fontSize: 28 }} />
-        )}
-      </WrapperButton>
-      <WrapperName>{value}</WrapperName>
-      <WrapperButton className="right-side" onClick={onVisibleAddRow}>
-        <AddRoundedIcon />
-      </WrapperButton>
-      <WrapperButton className="right-side">
-        <MoreHorizRoundedIcon />
-      </WrapperButton>
+    <WrapperMainGroup {...dragHandle}>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          maxWidth: "calc(100% - 72px)",
+        }}
+      >
+        <WrapperButton {...row.getToggleRowExpandedProps()}>
+          {!row.isExpanded ? (
+            <ArrowRightRoundedIcon sx={{ fontSize: 28 }} />
+          ) : (
+            <ArrowDropDownRoundedIcon sx={{ fontSize: 28 }} />
+          )}
+        </WrapperButton>
+        <WrapperName>
+          <TextEllipsis>{value}</TextEllipsis>
+        </WrapperName>
+      </div>
+      <div
+        className="wrapper-right"
+        style={{
+          alignItems: "center",
+        }}
+      >
+        <WrapperButton className="right-side" onClick={onVisibleAddRow}>
+          <AddRoundedIcon />
+        </WrapperButton>
+        <WrapperButton className="right-side">
+          <MoreHorizRoundedIcon />
+        </WrapperButton>
+      </div>
     </WrapperMainGroup>
   );
 };
 
-const CellItemGroup = React.memo(({ value, row, dragHandle = {} }) => {
-  return (
-    <WrapperItemName>
-      <div style={{ width: "30px" }} />
-      <WrapperIconDrag className="drag-icon" {...dragHandle}>
-        <IconDrag />
-      </WrapperIconDrag>
+const CellItemGroup = React.memo(
+  ({
+    value,
+    row,
+    isNewRow = false,
+    dragHandle = {},
+    onSubmitAdd = () => {},
+    isFocus = true,
+  }) => {
+    const isDisplayReminder = row.original.status_code === 3;
+    const refText = useRef(null);
 
-      {row.original.status_code === 3 && <AccessTimeRoundedIcon />}
+    const _handleSubmit = () => {
+      onSubmitAdd(refText.current.value);
+    };
 
-      <span style={{ marginLeft: "5px" }}> {value}</span>
+    useEffect(() => {
+      if (isFocus && isNewRow) {
+        setTimeout(() => {
+          refText.current.focus();
+        }, 0);
+      }
+    }, [isFocus, isNewRow]);
 
-      <WrapperDetailInfo className="detail-info">
-        <MoreVertIcon sx={{ fontSize: 16, marginRight: "5px" }} />
-        <div className="detail">
-          <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
-        </div>
-      </WrapperDetailInfo>
-    </WrapperItemName>
-  );
-});
+    const _handleKeyPress = (e) => {
+      if (e.which === 13 && !e.shiftKey) {
+        e.preventDefault();
+        _handleSubmit();
+        refText.current.value = "";
+      }
+    };
+
+    return (
+      <WrapperItemName>
+        <div style={{ width: "30px" }} />
+        <WrapperIconDrag className="drag-icon" {...dragHandle}>
+          <IconDrag />
+        </WrapperIconDrag>
+
+        {isDisplayReminder && <AccessTimeRoundedIcon />}
+
+        <TextAreaCustom
+          ref={refText}
+          placeholder={"Write a task name"}
+          rows="1"
+          tabindex="-1"
+          wrap="off"
+          defaultValue={isNewRow ? "" : value}
+          onKeyPress={_handleKeyPress}
+          style={{
+            marginLeft: isDisplayReminder ? "5px" : 0,
+            width: isDisplayReminder
+              ? "calc(100% - 160px)"
+              : "calc(100% - 140px)",
+          }}
+        />
+
+        <WrapperDetailInfo className="detail-info">
+          <div className="wp-wrapper-button">
+            <MoreVertIcon sx={{ fontSize: 16 }} />
+          </div>
+
+          <div className="detail">
+            <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
+          </div>
+        </WrapperDetailInfo>
+      </WrapperItemName>
+    );
+  }
+);
 
 const CellNameTask = ({ row, value, ...props }) => {
-  if (row.depth === 0) {
+  if (row.depth === 0 && !props.isNewRow) {
     return (
       <CellMainGroup
         row={row}
         value={value}
+        dragHandle={props.dragHandle}
         onVisibleAddRow={props.onVisibleAddRow}
+        {...props}
       />
     );
   }
   return (
-    <CellItemGroup row={row} value={value} dragHandle={props.dragHandle} />
+    <CellItemGroup
+      row={row}
+      value={value}
+      isNewRow={props.isNewRow}
+      dragHandle={props.dragHandle}
+      {...props}
+    />
   );
 };
 
@@ -158,6 +238,17 @@ const CellPriority = ({ props }) => {
   );
 };
 
+const CellCompleted = ({ props }) => {
+  const row = props.row.original;
+
+  if (!row.data["pfd-complete"]) return null;
+  return (
+    <WrapperCompleted>
+      {row.data["pfd-complete"].value} {row.data["pfd-complete"].format}
+    </WrapperCompleted>
+  );
+};
+
 export const COLUMNS_TASK_TABLE = [
   {
     id: "name",
@@ -193,7 +284,7 @@ export const COLUMNS_TASK_TABLE = [
   {
     id: "complete",
     Header: "Hoàn thành",
-    Cell: (props) => <CellEndTime props={props} />,
+    Cell: (props) => <CellCompleted props={props} />,
   },
   {
     id: "priority",
@@ -210,6 +301,16 @@ export const COLUMNS_TASK_TABLE = [
 const WrapperMainGroup = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  .wrapper-right {
+    display: none;
+  }
+  &:hover {
+    .wrapper-right {
+      display: flex;
+    }
+  }
 `;
 
 const WrapperButton = styled.div`
@@ -240,11 +341,6 @@ const WrapperName = styled.div`
   margin-left: 0;
   min-width: 1px;
   outline: none;
-  overflow: hidden;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #44485e;
 `;
 
 const WrapperTime = styled.div`
@@ -290,9 +386,50 @@ const WrapperDetailInfo = styled.div`
 const WrapperItemName = styled.div`
   display: flex;
   align-items: center;
+  width: 100%;
   &:hover {
     ${WrapperIconDrag} {
       visibility: visible;
     }
+  }
+`;
+const WrapperCompleted = styled.div`
+  display: flex;
+  align-items: center;
+  color: #4caf50;
+`;
+
+const TextEllipsis = styled.span`
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #44485e;
+  max-width: 100%;
+  display: block;
+`;
+const TextAreaCustom = styled.textarea`
+  white-space: pre;
+  background: transparent;
+  border-radius: 3px;
+  display: block;
+  outline: 0;
+  overflow: hidden;
+  resize: none;
+  width: calc(100% - 160px);
+  margin-left: 5px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+  min-width: 20px;
+  padding: 0 4px;
+  text-rendering: optimizeSpeed;
+  color: #666;
+  &:hover {
+    border: 1px solid #666;
+  }
+  &:focus {
+    border-color: transparent;
   }
 `;

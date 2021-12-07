@@ -33,10 +33,10 @@ const WPReactTable = ({
 
 const Styles = styled.div`
   display: block;
-  overflow: auto;
 
   .table {
     border-spacing: 0;
+    overflow: scroll;
 
     .thead {
       overflow-y: auto;

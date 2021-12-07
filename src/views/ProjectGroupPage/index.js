@@ -10,6 +10,7 @@ import {
   checkHasRecentlyProjects,
   countPersonalProjectsBoard,
 } from "../../actions/project/listProject";
+import "./index.scss";
 import ProjectGroupList from "./LeftPart/ProjectGroupList";
 import ProjectGroupListDeleted from "./LeftPart/ProjectGroupListDeleted";
 import { routeSelector } from "./selectors";
