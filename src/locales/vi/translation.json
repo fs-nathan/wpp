@@ -2540,5 +2540,19 @@
   "LABEL_UPDATE_TASK_COMPLETE": "Chỉnh sửa mức độ hoàn thành",
   "EXPORT_DATA": "Xuất dữ liệu",
   "TRASH": "Thùng rác",
-  "ADD_NEW_TASK": "Thêm công việc"
+  "ADD_NEW_TASK": "Thêm công việc",
+  "ADD_FIELDS_DATA": "Thêm trường dữ liệu",
+  "CREATE_FIELDS": "Tạo trường",
+  "LABEL_CREATE_FIELDS": "Tiêu đề trường",
+  "DATA_TYPES": "Loại dữ liệu",
+  "SELECT_FROM_LIBRARY": "Chọn từ thư viện",
+  "DECIMAL": "Số thập phân",
+  "FORMAT": "Định dạng",
+  "PREVIEW": "Xem trước",
+  "ADD_FILED_TO_LIBRARY": "Thêm trường nội dung này vào thư viện",
+  "NOTIFY_MEMBER_CHANGE_FIELD": "Thông báo cho thành viên thay đổi giá trị trong trường này",
+  "LABEL_NAME": "Tên nhãn",
+  "POSITION": "Vị trí",
+  "FIND_FIELD_DATA": "Tìm kiếm trường dữ liệu",
+  "DATA_FIELD_EXITS": "Trường dữ liệu có sẵn"
 }

@@ -1,10 +1,19 @@
 import { ListItemIcon, ListItemText, Menu, MenuItem } from "@material-ui/core";
+import PercentIcon from "@mui/icons-material/Percent";
+import AddIcon from "@mui/icons-material/Add";
+import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import ArticleIcon from "@mui/icons-material/Article";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
+import FunctionsIcon from "@mui/icons-material/Functions";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
+import TagIcon from "@mui/icons-material/Tag";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import classNames from "classnames";
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
+import AddColumnModal from "./AddColumnModal";
 
 const HeadingColumn = ({
   column,
@@ -38,7 +47,6 @@ const HeadingColumn = ({
         <LeftStructure isLastColumn={isLastColumn}>
           <Heading>
             {column.render("Header")}
-
             {selectedSort && selectedSort.idSort === column.id && (
               <>
                 {selectedSort.key === "ASC" ? (
@@ -129,6 +137,100 @@ const HeadingColumn = ({
     </>
   );
 };
+
+export const AddHeading = (props) => {
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const refModal = useRef(null);
+  const open = Boolean(anchorEl);
+
+  const handleOpenModal = () => {
+    refModal.current._open();
+  };
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <div {...props}>
+      <AddColumnModal ref={refModal} />
+      <AddIcon onClick={handleClick} />
+      <Menu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      >
+        <ListItemText style={{ padding: "6px 18px", fontWeight: "bold" }}>
+          Thêm trường dữ liệu
+        </ListItemText>
+
+        {OPTIONS_ADD_COLUMN.map((item, index) => (
+          <MenuItem
+            key={index}
+            onClick={() => handleOpenModal(item.type)}
+            {...item}
+          >
+            <ListItemIcon style={{ minWidth: 25 }}>
+              <item.icon />
+            </ListItemIcon>
+            <ListItemText>{item.text}</ListItemText>
+          </MenuItem>
+        ))}
+      </Menu>
+    </div>
+  );
+};
+
+export const OPTIONS_ADD_COLUMN = [
+  {
+    icon: () => <ArrowCircleDownIcon />,
+    text: "Danh sách chọn",
+    type: "list",
+  },
+  {
+    icon: () => <FormatColorTextIcon />,
+    text: "Dữ liệu văn bản",
+    type: "text",
+  },
+  {
+    icon: () => <TagIcon />,
+    text: "Con số",
+    type: "number",
+  },
+  {
+    icon: () => <PercentIcon />,
+    text: "Phần trăm",
+    type: "percent",
+  },
+  {
+    icon: () => <AttachMoneyIcon />,
+    text: "Tiền tệ",
+    type: "currency",
+  },
+  {
+    icon: () => <FunctionsIcon />,
+    text: "Công thức",
+    type: "hash",
+  },
+  {
+    icon: () => <ArticleIcon />,
+    text: "Chọn từ thư viện",
+    type: "library",
+  },
+];
 
 const ResizeDiv = styled.div`
   display: inline-block;

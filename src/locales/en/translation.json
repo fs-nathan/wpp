@@ -2520,5 +2520,19 @@
   "LABEL_ICON_FROM_UPLOAD": "Icons from the upload",
   "LABEL_SORT": "Sort",
   "LABEL_UPDATE_TASK_COMPLETE": "Update task complete",
-  "EXPORT_DATA": "Export Data"
+  "EXPORT_DATA": "Export Data",
+  "ADD_FIELDS_DATA": "Add fields data",
+  "CREATE_FIELDS": "Create field",
+  "LABEL_CREATE_FIELDS": "Label fields",
+  "DATA_TYPES": "Data types",
+  "SELECT_FROM_LIBRARY": "Select from library",
+  "DECIMAL": "Decimal",
+  "FORMAT": "Format",
+  "PREVIEW": "Preview",
+  "ADD_FILED_TO_LIBRARY": "Add field to library",
+  "NOTIFY_MEMBER_CHANGE_FIELD": "Notify the member to change the value in this field",
+  "LABEL_NAME": "Label name",
+  "POSITION": "Position",
+  "FIND_FIELD_DATA": "Find data fields",
+  "DATA_FIELD_EXITS": "Data exists"
 }
