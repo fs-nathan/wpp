@@ -1,41 +1,52 @@
-import { Avatar, Button, Chip, IconButton, TextField } from '@material-ui/core';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { makeStyles } from '@material-ui/core/styles';
-import { mdiCloudDownloadOutline, mdiPlusCircle } from '@mdi/js';
-import Icon from '@mdi/react';
-import { deleteDocumentToOffer, getMember, updateOffer } from 'actions/taskDetail/taskDetailActions';
-import CustomSelect from 'components/CustomSelect';
-import { CustomEventDispose, CustomEventListener } from 'constants/events';
-import { DEFAULT_OFFER_ITEM } from 'helpers/jobDetail/arrayHelper';
-import { get } from 'lodash';
-import findIndex from 'lodash/findIndex';
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useMountedState } from 'react-use';
-import JobDetailModalWrap from 'views/JobDetailPage/JobDetailModalWrap';
-import CommonPriorityForm from 'views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm';
-import { allMembersSelector } from 'views/JobDetailPage/selectors';
-import { Routes } from 'views/OfferPage/contants/routes';
-import { CREATE_OFFER, CREATE_OFFER_SUCCESSFULLY, UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS } from 'views/OfferPage/redux/types';
-import TitleSectionModal from '../../../../../components/TitleSectionModal';
-import { apiService } from '../../../../../constants/axiosInstance';
-import { bgColorSelector } from '../../../../../reducers/setting/selectors';
-import { getMemberToAdd, updateOfferDetailDescriptionSection } from '../../../../OfferPage/redux/actions';
-import SendFileModal from '../../../ChatComponent/SendFile/SendFileModal';
-import AddOfferMemberModal from '../AddOfferMemberModal';
-import OfferFile from './OfferFile';
-import SelectGroup from './SelectGroup';
-import './styles.scss';
+import { Avatar, Button, Chip, IconButton, TextField } from "@material-ui/core";
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import { makeStyles } from "@material-ui/core/styles";
+import { mdiCloudDownloadOutline, mdiPlusCircle } from "@mdi/js";
+import Icon from "@mdi/react";
+import {
+  deleteDocumentToOffer,
+  getMember,
+  updateOffer,
+} from "actions/taskDetail/taskDetailActions";
+import CustomSelect from "components/CustomSelect";
+import { CustomEventDispose, CustomEventListener } from "constants/events";
+import { DEFAULT_OFFER_ITEM } from "helpers/jobDetail/arrayHelper";
+import { get } from "lodash";
+import findIndex from "lodash/findIndex";
+import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { useMountedState } from "react-use";
+import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
+import CommonPriorityForm from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonPriorityForm";
+import { allMembersSelector } from "views/JobDetailPage/selectors";
+import { Routes } from "views/OfferPage/contants/routes";
+import {
+  CREATE_OFFER,
+  CREATE_OFFER_SUCCESSFULLY,
+  UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
+} from "views/OfferPage/redux/types";
+import TitleSectionModal from "../../../../../components/TitleSectionModal";
+import { apiService } from "../../../../../constants/axiosInstance";
+import { bgColorSelector } from "../../../../../reducers/setting/selectors";
+import {
+  getMemberToAdd,
+  updateOfferDetailDescriptionSection,
+} from "../../../../OfferPage/redux/actions";
+import SendFileModal from "../../../ChatComponent/SendFile/SendFileModal";
+import AddOfferMemberModal from "../AddOfferMemberModal";
+import OfferFile from "./OfferFile";
+import SelectGroup from "./SelectGroup";
+import "./styles.scss";
 
 const useStyles = makeStyles((theme) => ({
   listChips: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    flexWrap: 'wrap',
-    '& > *': {
-      margin: theme.spacing(0.5)
+    display: "flex",
+    justifyContent: "flex-start",
+    flexWrap: "wrap",
+    "& > *": {
+      margin: theme.spacing(0.5),
     },
   },
 }));
@@ -48,34 +59,51 @@ const OfferModal = ({
   isUpdateOfferDetailDescriptionSection,
   isOffer,
   additionQuery,
-  profile
+  profile,
 }) => {
   const classes = useStyles();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
-  const bgColor = useSelector(state => bgColorSelector(state));
+  const bgColor = useSelector((state) => bgColorSelector(state));
   const isMounted = useMountedState();
-  const taskId = useSelector(state => state.taskDetail.commonTaskDetail.activeTaskId);
-  const currentUserId = useSelector(state => state.system.profile.id);
+  const taskId = useSelector(
+    (state) => state.taskDetail.commonTaskDetail.activeTaskId
+  );
+  const currentUserId = useSelector((state) => state.system.profile.id);
   const priorityList = [
     { id: 0, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_1") },
     { id: 1, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_2") },
-    { id: 2, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3") }
+    { id: 2, value: t("VIEW_OFFER_LABEL_FILTER_BY_PRIORITY_LEVEL_3") },
   ];
-  const { members: allMembers } = useSelector(state => allMembersSelector(state));
-  const defaultOffer = { ...DEFAULT_OFFER_ITEM, title: '', content: '', offer_group_id: "", offer_group_name: "", priority: priorityList[0], file_ids: [] }
+  const { members: allMembers } = useSelector((state) =>
+    allMembersSelector(state)
+  );
+  const defaultOffer = {
+    ...DEFAULT_OFFER_ITEM,
+    title: "",
+    content: "",
+    offer_group_id: "",
+    offer_group_name: "",
+    priority: priorityList[0],
+    file_ids: [],
+  };
   const [tempSelectedItem, setTempSelectedItem] = React.useState(defaultOffer);
-  const [handlers, setHandlers] = React.useState([])
-  const [monitors, setMonitors] = React.useState([])
+  const [handlers, setHandlers] = React.useState([]);
+  const [monitors, setMonitors] = React.useState([]);
   const [isOpenAddHandler, setOpenAddHandler] = React.useState(false);
   const [isOpenAddMonitor, setOpenAddMonitor] = React.useState(false);
-  const [selectedFilesFromLibrary, setSelectedFilesFromLibrary] = React.useState([])
+  const [selectedFilesFromLibrary, setSelectedFilesFromLibrary] =
+    React.useState([]);
   const [openSendFileModal, setOpenSendFileModal] = useState(false);
   const createId = (offerItem && offerItem.user_create_id) || currentUserId;
-  const createUserIndex = findIndex(allMembers, member => member.id === createId);
+  const createUserIndex = findIndex(
+    allMembers,
+    (member) => member.id === createId
+  );
   const [loading, setLoading] = React.useState(false);
-  const [openSelectGroupOfferModal, setOpenSelectGroupOfferModal] = React.useState(false);
+  const [openSelectGroupOfferModal, setOpenSelectGroupOfferModal] =
+    React.useState(false);
   const [isCheck, setIsCheck] = React.useState(false);
 
   useEffect(() => {
@@ -90,85 +118,116 @@ const OfferModal = ({
         user_monitors,
         priority_code,
         id,
-        handlers,   // member object
-        approvers,  // member object
+        handlers, // member object
+        approvers, // member object
       } = offerItem;
       if (user_can_handers) {
-        const handlerIndexes = user_can_handers.map(
-          handler => findIndex(allMembers, member => member.id === handler.id))
-        setHandlers(handlerIndexes.filter(idx => idx !== -1))
+        const handlerIndexes = user_can_handers.map((handler) =>
+          findIndex(allMembers, (member) => member.id === handler.id)
+        );
+        setHandlers(handlerIndexes.filter((idx) => idx !== -1));
       }
       if (user_monitors) {
-        const monitorsIndexes = user_monitors.map(monitor => findIndex(allMembers, member => member.id === monitor.id))
-        setMonitors(monitorsIndexes.filter(idx => idx !== -1))
+        const monitorsIndexes = user_monitors.map((monitor) =>
+          findIndex(allMembers, (member) => member.id === monitor.id)
+        );
+        setMonitors(monitorsIndexes.filter((idx) => idx !== -1));
       }
       // handlers & approvers are used when editing approval conditions
       if (handlers) {
-        const handlerIndexes = handlers.map(
-          handler => findIndex(allMembers, member => member.id === handler.id));
-        setHandlers(handlerIndexes.filter(idx => idx !== -1)); // use indexes of all members to set
+        const handlerIndexes = handlers.map((handler) =>
+          findIndex(allMembers, (member) => member.id === handler.id)
+        );
+        setHandlers(handlerIndexes.filter((idx) => idx !== -1)); // use indexes of all members to set
       }
-      if (priority_code != null) offerItem.priority = priorityList[priority_code];
+      if (priority_code != null)
+        offerItem.priority = priorityList[priority_code];
       if (id != null) offerItem.offer_id = id;
       setTempSelectedItem(offerItem);
     }
   }, [offerItem, allMembers]);
 
   const setParams = (nameParam, value) => {
-    setTempSelectedItem(prevState => ({ ...prevState, [nameParam]: value }))
-  }
+    setTempSelectedItem((prevState) => ({ ...prevState, [nameParam]: value }));
+  };
 
-  const handleDeleteFile = fileId => {
+  const handleDeleteFile = (fileId) => {
     let removeFileCallBack = () => {
-      setParams("files", tempSelectedItem.files.filter(file => file.id !== fileId))
-      setParams("file_ids", tempSelectedItem.file_ids.filter(file => file.id !== fileId));
-      setSelectedFilesFromLibrary(prevSelectedFiles => prevSelectedFiles.filter(file => file.id !== fileId));
-    }
+      setParams(
+        "files",
+        tempSelectedItem.files.filter((file) => file.id !== fileId)
+      );
+      setParams(
+        "file_ids",
+        tempSelectedItem.file_ids.filter((file) => file.id !== fileId)
+      );
+      setSelectedFilesFromLibrary((prevSelectedFiles) =>
+        prevSelectedFiles.filter((file) => file.id !== fileId)
+      );
+    };
     if (isUpdateOfferDetailDescriptionSection) {
-      let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId }
-      dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId))
+      let payload = { offer_id: tempSelectedItem.offer_id, file_id: fileId };
+      dispatch(deleteDocumentToOffer(payload, removeFileCallBack, taskId));
     } else {
-      removeFileCallBack()
+      removeFileCallBack();
     }
-  }
+  };
 
   const handleUploadSelectedFilesFromPC = async (e) => {
     const { files } = e.target;
     setParams("files", [...tempSelectedItem.files, ...files]);
-  }
+  };
   const handleSelectedFilesFromLibrary = (selectedFiles) => {
     if (selectedFiles) {
-      setParams("file_ids", [...tempSelectedItem.file_ids, ...selectedFiles.map(file => (file.id))]);
-      setSelectedFilesFromLibrary([...selectedFilesFromLibrary, ...selectedFiles]);
+      setParams("file_ids", [
+        ...tempSelectedItem.file_ids,
+        ...selectedFiles.map((file) => file.id),
+      ]);
+      setSelectedFilesFromLibrary([
+        ...selectedFilesFromLibrary,
+        ...selectedFiles,
+      ]);
     }
-  }
+  };
   const getFormData = () => {
-    let dataCreateOfferFormData = new FormData()
+    let dataCreateOfferFormData = new FormData();
     // add content and task id to form data
-    dataCreateOfferFormData.append('title', tempSelectedItem.title)
-    dataCreateOfferFormData.append('content', tempSelectedItem.content)
-    dataCreateOfferFormData.append('task_id', taskId)
-    dataCreateOfferFormData.append('min_rate_accept', tempSelectedItem.min_rate_accept)
-    dataCreateOfferFormData.append('priority', tempSelectedItem.priority.id)
-    dataCreateOfferFormData.append("offer_group_id", tempSelectedItem.offer_group_id)
+    dataCreateOfferFormData.append("title", tempSelectedItem.title);
+    dataCreateOfferFormData.append("content", tempSelectedItem.content);
+    dataCreateOfferFormData.append("task_id", taskId);
+    dataCreateOfferFormData.append(
+      "min_rate_accept",
+      tempSelectedItem.min_rate_accept
+    );
+    dataCreateOfferFormData.append("priority", tempSelectedItem.priority.id);
+    dataCreateOfferFormData.append(
+      "offer_group_id",
+      tempSelectedItem.offer_group_id
+    );
 
     // add each user to form data
     handlers.forEach((value, index) => {
-      dataCreateOfferFormData.append("user_handle[" + index + "]", allMembers[value].id)
-    })
+      dataCreateOfferFormData.append(
+        "user_handle[" + index + "]",
+        allMembers[value].id
+      );
+    });
     monitors.forEach((value, index) => {
-      dataCreateOfferFormData.append("user_monitor[" + index + "]", allMembers[value].id)
-    })
+      dataCreateOfferFormData.append(
+        "user_monitor[" + index + "]",
+        allMembers[value].id
+      );
+    });
     // add uploaded files to form data
-    tempSelectedItem.files.forEach(file => {
+    tempSelectedItem.files.forEach((file) => {
       dataCreateOfferFormData.append("file", file, file.name);
     });
     // add selected file ids from library to form data
     tempSelectedItem.file_ids.forEach((id, index) => {
       dataCreateOfferFormData.append(`file_ids[${index}]`, id);
-    })
+    });
     return dataCreateOfferFormData;
-  }
+  };
 
   const handleCreateOffer = () => {
     if (actionCreateOffer) {
@@ -178,8 +237,8 @@ const OfferModal = ({
       } else {
         actionCreateOffer.payload = {
           data: getFormData(),
-          additionQuery: additionQuery
-        }
+          additionQuery: additionQuery,
+        };
       }
       setLoading(true);
       dispatch(actionCreateOffer);
@@ -189,90 +248,115 @@ const OfferModal = ({
   const afterDoOfferOperations = () => {
     setLoading(false);
     setOpen(false);
-  }
+  };
 
   const redirectAfterCreateOfferSuccess = () => {
     setTimeout(() => {
-      history.push(`${Routes.OFFERBYGROUP}/${tempSelectedItem.offer_group_id}?referrer=${history.location.pathname}`);
+      history.push(
+        `${Routes.OFFERBYGROUP}/${tempSelectedItem.offer_group_id}?referrer=${history.location.pathname}`
+      );
     }, 1000);
-  }
+  };
 
   React.useEffect(() => {
     if (isMounted) {
-      CustomEventListener(CREATE_OFFER_SUCCESSFULLY, redirectAfterCreateOfferSuccess);
+      CustomEventListener(
+        CREATE_OFFER_SUCCESSFULLY,
+        redirectAfterCreateOfferSuccess
+      );
       return () => {
-        CustomEventDispose(CREATE_OFFER_SUCCESSFULLY, redirectAfterCreateOfferSuccess);
-      }
+        CustomEventDispose(
+          CREATE_OFFER_SUCCESSFULLY,
+          redirectAfterCreateOfferSuccess
+        );
+      };
     }
   }, [isMounted, tempSelectedItem]);
 
   React.useEffect(() => {
     if (isMounted) {
       CustomEventListener(CREATE_OFFER, afterDoOfferOperations);
-      CustomEventListener(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
+      CustomEventListener(
+        UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
+        afterDoOfferOperations
+      );
       return () => {
         CustomEventDispose(CREATE_OFFER, afterDoOfferOperations);
-        CustomEventDispose(UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS, afterDoOfferOperations);
-      }
+        CustomEventDispose(
+          UPDATE_OFFER_DETAIL_DESCRIPTION_SECTION_SUCCESS,
+          afterDoOfferOperations
+        );
+      };
     }
   }, [isMounted]);
 
   function onClickCreateOffer() {
-    if (tempSelectedItem.content)
-      handleCreateOffer()
-    setParams("content", '')
+    if (tempSelectedItem.content) handleCreateOffer();
+    setParams("content", "");
   }
 
   function onClickUpdateOffer() {
     if (isUpdateOfferDetailDescriptionSection) {
       if (validate()) {
-        dispatch(updateOfferDetailDescriptionSection({
-          offerId: tempSelectedItem.offer_id,
-          title: tempSelectedItem.title,
-          content: tempSelectedItem.content,
-          offerGroupId: tempSelectedItem.offer_group_id,
-          priorityCode: tempSelectedItem.priority.id,
-          additionQuery
-        }));
+        dispatch(
+          updateOfferDetailDescriptionSection({
+            offerId: tempSelectedItem.offer_id,
+            title: tempSelectedItem.title,
+            content: tempSelectedItem.content,
+            offerGroupId: tempSelectedItem.offer_group_id,
+            priorityCode: tempSelectedItem.priority.id,
+            additionQuery,
+          })
+        );
         setLoading(true);
       }
     } else if (tempSelectedItem.content) {
-      dispatch(updateOffer({
-        task_id: taskId,
-        offer_id: tempSelectedItem.offer_id,
-        user_hander: handlers.map((idx) => allMembers[idx].id),
-        user_monitor: monitors.map((idx) => allMembers[idx].id),
-        title: tempSelectedItem.title,
-        content: tempSelectedItem.content,
-        offer_group_id: get(tempSelectedItem, 'offer_group_id.value'),
-        priority: get(tempSelectedItem, 'priority.id'),
-      }))
+      dispatch(
+        updateOffer({
+          task_id: taskId,
+          offer_id: tempSelectedItem.offer_id,
+          user_hander: handlers.map((idx) => allMembers[idx].id),
+          user_monitor: monitors.map((idx) => allMembers[idx].id),
+          title: tempSelectedItem.title,
+          content: tempSelectedItem.content,
+          offer_group_id: get(tempSelectedItem, "offer_group_id.value"),
+          priority: get(tempSelectedItem, "priority.id"),
+        })
+      );
     }
   }
 
   function handleDeleteHandler(i) {
     return () => {
-      handlers.splice(i, 1)
+      handlers.splice(i, 1);
       setHandlers([...handlers]);
-    }
+    };
   }
 
   function handleDeleteMonitor(i) {
     return () => {
-      monitors.splice(i, 1)
-      setMonitors([...monitors])
-    }
+      monitors.splice(i, 1);
+      setMonitors([...monitors]);
+    };
   }
 
   function openAddHandlersDialog() {
-    dispatch(getMember())
-    setOpenAddHandler(true)
+    dispatch(getMember());
+    setOpenAddHandler(true);
   }
   function openAddMonitorsDialog() {
-    setOpenAddMonitor(true)
+    setOpenAddMonitor(true);
   }
 
-  function renderAddMemberModal(isOpen, setOpen, value, onChange, members, disabledIndexes, isUpdate) {
+  function renderAddMemberModal(
+    isOpen,
+    setOpen,
+    value,
+    onChange,
+    members,
+    disabledIndexes,
+    isUpdate
+  ) {
     return (
       <AddOfferMemberModal
         isOpen={isOpen}
@@ -291,20 +375,19 @@ const OfferModal = ({
     if (isUpdateOfferDetailDescriptionSection) {
       return title && content;
     }
-    return actionCreateOffer
-      && title && content
-      && offer_group_id
-      && priority
+    return actionCreateOffer && title && content && offer_group_id && priority;
   }
   return (
     <>
       <JobDetailModalWrap
         title={
-          isUpdateOfferDetailDescriptionSection || isOffer ? t('LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT') : t('LABEL_CHAT_TASK_TAO_DE_XUAT')
+          isUpdateOfferDetailDescriptionSection || isOffer
+            ? t("LABEL_CHAT_TASK_CHINH_SUA_DE_XUAT")
+            : t("LABEL_CHAT_TASK_TAO_DE_XUAT")
         }
         open={isOpen}
         setOpen={setOpen}
-        confirmRender={() => t('LABEL_CHAT_TASK_HOAN_THANH')}
+        confirmRender={() => t("LABEL_CHAT_TASK_HOAN_THANH")}
         onConfirm={
           isUpdateOfferDetailDescriptionSection || isOffer
             ? onClickUpdateOffer
@@ -313,11 +396,11 @@ const OfferModal = ({
         canConfirm={validate()}
         actionLoading={loading}
         className="offerModal"
-        height={'medium'}
+        height={"medium"}
         manualClose={true}
         onCancle={() => setOpen(false)}
       >
-        <React.Fragment>
+        {/* <React.Fragment>
           {
             !isUpdateOfferDetailDescriptionSection && (
               <div className="select-customer-from-input">
@@ -442,24 +525,23 @@ const OfferModal = ({
               </>
             )
           }
-        </React.Fragment>
+        </React.Fragment> */}
       </JobDetailModalWrap>
-      {
-        openSelectGroupOfferModal &&
+      {openSelectGroupOfferModal && (
         <SelectGroup
           isOpen={true}
           setOpen={(value) => setOpenSelectGroupOfferModal(value)}
           selectedOption={(group) => {
             setParams("offer_group_id", group.id);
-            setParams("offer_group_name", group.name)
+            setParams("offer_group_name", group.name);
           }}
           offerGroupSelected={tempSelectedItem.offer_group_id}
         />
-      }
+      )}
     </>
-  )
-}
+  );
+};
 const mapStateToProps = (state) => ({
-  profile: state.system.profile
-})
-export default connect(mapStateToProps) (OfferModal);
+  profile: state.system.profile,
+});
+export default connect(mapStateToProps)(OfferModal);

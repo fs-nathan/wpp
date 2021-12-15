@@ -1,4 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
@@ -13,6 +12,7 @@ import React, { useEffect, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
+import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
 
 export const IconDrag = () => (
   <svg
@@ -293,7 +293,7 @@ export const COLUMNS_TASK_TABLE = [
   },
 
   {
-    Header: (props) => <AddIcon {...props} />,
+    Header: (props) => <AddHeading props={props} />,
     accessor: "add",
   },
 ];
