@@ -2554,5 +2554,6 @@
   "LABEL_NAME": "Tên nhãn",
   "POSITION": "Vị trí",
   "FIND_FIELD_DATA": "Tìm kiếm trường dữ liệu",
-  "DATA_FIELD_EXITS": "Trường dữ liệu có sẵn"
+  "DATA_FIELD_EXITS": "Trường dữ liệu có sẵn",
+  "ADD_DESCRIPTION": "Thêm mô tả"
 }

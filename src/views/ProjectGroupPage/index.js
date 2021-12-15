@@ -43,6 +43,8 @@ const DeletedProjectTable = React.lazy(() =>
 );
 const KanbanPage = React.lazy(() => import("views/KanbanPage"));
 const ChatPage = React.lazy(() => import("views/JobDetailPage"));
+const DashboardPage = React.lazy(() => import("views/JobDetailPage/Dashboard"));
+const ReportPage = React.lazy(() => import("views/JobDetailPage/Report"));
 const GranttPage = React.lazy(() => import("views/GrantPage/GrantTable"));
 
 function ProjectGroupPage({
@@ -126,6 +128,15 @@ function ProjectGroupPage({
             </Route>
             <Route exact path="/projects/task-chat/:projectId/:memberId?">
               <ChatPage expand={isCollapsed} handleExpand={_handleExpand} />
+            </Route>
+            <Route exact path="/projects/dashboard/:projectId/:memberId?">
+              <DashboardPage
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/report/:projectId/:memberId?">
+              <ReportPage expand={isCollapsed} handleExpand={_handleExpand} />
             </Route>
             {/* Detail project */}
 
