@@ -6,7 +6,7 @@ import ListInformation from "./ListInformation";
 const RightPart = () => {
   return (
     <WrapperRightPart>
-      <Title variant="h5" component="div">
+      <Title variant="h5" component="div" style={{ fontSize: 20 }}>
         Thông tin bổ sung
       </Title>
       <ListInformation />

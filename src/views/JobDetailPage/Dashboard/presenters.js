@@ -3,6 +3,7 @@ import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import { get, isNil, find } from "lodash";
 import React from "react";
+import LeftPart from "./components/LeftPart";
 import RightPart from "./components/RightPart";
 
 const DashboardPresenters = ({
@@ -33,7 +34,7 @@ const DashboardPresenters = ({
       />
       <Grid container spacing={2}>
         <Grid item xs={7}>
-          Left content
+          <LeftPart />
         </Grid>
         <Grid item xs={5}>
           <RightPart />
