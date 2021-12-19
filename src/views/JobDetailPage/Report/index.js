@@ -15,7 +15,7 @@ import {
   viewPermissionsSelector,
 } from "views/ProjectPage/selectors.js";
 import WrapperReport from "./components/WrapperReport";
-import DashboardPresenter from "./presenters";
+import ReportPresenter from "./presenters";
 
 function Report({
   expand,
@@ -44,7 +44,7 @@ function Report({
   return (
     <>
       <CustomTableWrapper>
-        <DashboardPresenter
+        <ReportPresenter
           expand={expand}
           handleExpand={handleExpand}
           handleSubSlide={handleSubSlide}

@@ -14,7 +14,7 @@ import {
   localOptionSelector,
   viewPermissionsSelector,
 } from "views/ProjectPage/selectors.js";
-import ReportPresenter from "../Report/presenters";
+import DashboardPresenters from "./presenters";
 
 function Dashboard({
   expand,
@@ -43,7 +43,7 @@ function Dashboard({
   return (
     <>
       <CustomTableWrapper>
-        <ReportPresenter
+        <DashboardPresenters
           expand={expand}
           handleExpand={handleExpand}
           handleSubSlide={handleSubSlide}
