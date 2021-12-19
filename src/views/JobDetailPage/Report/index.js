@@ -14,6 +14,7 @@ import {
   localOptionSelector,
   viewPermissionsSelector,
 } from "views/ProjectPage/selectors.js";
+import WrapperReport from "./components/WrapperReport";
 import DashboardPresenter from "./presenters";
 
 function Report({
@@ -62,6 +63,7 @@ function Report({
           bgColor={bgColor}
           timeType={timeType}
         />
+        <WrapperReport />
       </CustomTableWrapper>
     </>
   );
