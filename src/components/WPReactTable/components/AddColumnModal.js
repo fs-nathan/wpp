@@ -7,19 +7,19 @@ import {
   TextField,
   Typography,
 } from "@material-ui/core";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
 import { mdiClose } from "@mdi/js";
 import Icon from "@mdi/react";
+import SearchIcon from "@mui/icons-material/Search";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import ColorTypo from "components/ColorTypo";
+import { StyledDialogTitle } from "components/CustomModal";
 import TitleSectionModal from "components/TitleSectionModal";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
-import { StyledDialogTitle } from "components/CustomModal";
 import styled from "styled-components";
-import ColorTypo from "components/ColorTypo";
+import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
 import SelectFieldTypeDropdown from "./Dropdown";
-import SearchIcon from "@mui/icons-material/Search";
 import TabNumber from "./TabNumber";
 
 const AddColumnModal = React.forwardRef((props, ref) => {
@@ -27,6 +27,7 @@ const AddColumnModal = React.forwardRef((props, ref) => {
   const [type, setType] = React.useState("list");
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(0);
+  const [isShowDescription, setIsShowDescription] = React.useState(false);
 
   const handleChangeTab = (event, newValue) => {
     setValue(newValue);
@@ -117,6 +118,40 @@ const AddColumnModal = React.forwardRef((props, ref) => {
               <TitleSectionModal label={t("DATA_TYPES")} />
               <SelectFieldTypeDropdown onSelect={(type) => setType(type)} />
             </Grid>
+
+            <Grid item xs={12}>
+              {isShowDescription ? (
+                <>
+                  <TitleSectionModal
+                    label={t("ADD_DESCRIPTION")}
+                    style={{ margin: 0 }}
+                  />
+                  <TextField
+                    className="offerModal--titleText"
+                    placeholder={t("ADD_DESCRIPTION")}
+                    variant="outlined"
+                    fullWidth
+                    InputProps={{
+                      style: { color: "#666", marginTop: "15px" },
+                    }}
+                  />
+                </>
+              ) : (
+                <Typography
+                  style={{
+                    color: "#666",
+                    lineHeight: "15px",
+                    fontSize: "14px",
+                    fontWeight: "500",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => setIsShowDescription(true)}
+                >
+                  + {t("ADD_DESCRIPTION")}
+                </Typography>
+              )}
+            </Grid>
+
             {_renderTabContent()}
             <Grid item>
               <WrapperCheckbox

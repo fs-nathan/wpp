@@ -64,16 +64,6 @@ function JobDetailPage({ expand = false, handleExpand = () => {} }) {
     }
   }, [errorMessage, history, projectId]);
 
-  // useEffect(() => {
-  //   if (projectId.length) {
-  //     const key = `TASK_GIRD:${userId}:${id}`;
-  //     const type_data = localStorage.getItem(key) || "include-room";
-  //     dispatch(taskDetailAction.getProjectListBasic(id));
-  //     dispatch(taskDetailAction.getListTaskDetail(id, type_data));
-  //     dispatch(taskDetailAction.getProjectDetail(id));
-  //   }
-  // }, [dispatch, projectId, userId]);
-
   useEffect(() => {
     if (taskId) {
       dispatch(taskDetailAction.getMemberNotAssigned({ task_id: taskId }));

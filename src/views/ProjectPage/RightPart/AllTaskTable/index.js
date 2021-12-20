@@ -31,11 +31,11 @@ import {
   UPDATE_GROUP_TASK,
   UPDATE_INFOMATION_TASK,
 } from "constants/events";
-import { get, isNil } from "lodash";
+import { get } from "lodash";
 import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
@@ -95,8 +95,7 @@ function AllTaskTable({
   }, [timeType]);
   const { projectId, memberId } = useParams();
   const query = useQuery();
-  const history = useHistory();
-  const [guideLineModal, setGuideLineModal] = React.useState(false);
+
   // React.useLayoutEffect(() => {
   //   doGetPermissionViewDetailProject({ projectId });
   // }, [projectId]);
@@ -232,7 +231,6 @@ function AllTaskTable({
   const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
   const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
-  const [typeGuide, setTypeGuide] = React.useState(1);
   const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
 
   function doOpenModal(type, props) {
@@ -273,12 +271,6 @@ function AllTaskTable({
   function handleAddMember(taskId) {
     // doAddMemberToTask({task_id: taskId, member_id: memberId});
   }
-
-  React.useEffect(() => {
-    if (!isNil(query.get("guideline"))) {
-      setGuideLineModal(true);
-    }
-  }, [query]);
 
   return (
     <>

@@ -67,6 +67,16 @@ const HeaderProject = ({
       to: `/projects/task-chat/${projectId}`,
       icon: mdiStarOutline,
     },
+    {
+      id: 5,
+      title: "Tổng quan",
+      to: `/projects/dashboard/${projectId}`,
+    },
+    {
+      id: 6,
+      title: "Báo cáo",
+      to: `/projects/report/${projectId}`,
+    },
   ];
 
   useEffect(() => {
