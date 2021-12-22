@@ -25,20 +25,26 @@ const initialState = {
   type: "list",
   open: false,
   value: 0,
+  defaultLabel: "",
+  defaultPosition: "right",
+  defaultFormat: "number",
+  defaultNumFix: 0,
 };
 
 const AddColumnModal = React.forwardRef((props, ref) => {
   const { t } = useTranslation();
   const [state, dispatchState] = React.useReducer(reducer, initialState);
 
-  React.useImperativeHandle(ref, () => ({ _open: () => handleClickOpen() }));
+  React.useImperativeHandle(ref, () => ({
+    _open: (type, data) => handleClickOpen(type, data),
+  }));
 
   const handleChangeTab = (event, value) => {
     dispatchState({ value });
   };
 
-  const handleClickOpen = () => {
-    dispatchState({ open: true });
+  const handleClickOpen = (type, data) => {
+    dispatchState({ open: true, type, ...data });
   };
 
   const handleChangeType = (type) => {
@@ -85,13 +91,24 @@ const AddColumnModal = React.forwardRef((props, ref) => {
             </Grid>
             <Grid item xs={6}>
               <TitleSectionModal label={t("DATA_TYPES")} />
-              <SelectFieldTypeDropdown onSelect={handleChangeType} />
+              <SelectFieldTypeDropdown
+                defaultValue={state.type}
+                onSelect={handleChangeType}
+              />
             </Grid>
 
             <Grid item xs={12}>
               <ToggleInput />
             </Grid>
-            <TabContentColumn type={state.type} />
+
+            <TabContentColumn
+              type={state.type}
+              defaultLabel={state.defaultLabel}
+              defaultPosition={state.defaultPosition}
+              defaultFormat={state.defaultFormat}
+              defaultNumFix={state.defaultNumFix}
+            />
+
             <Grid item>
               <WrapperCheckbox
                 control={<Checkbox name="gilad" />}

@@ -143,8 +143,8 @@ export const AddHeading = (props) => {
   const refModal = useRef(null);
   const open = Boolean(anchorEl);
 
-  const handleOpenModal = () => {
-    refModal.current._open();
+  const handleOpenModal = (type, data = {}) => {
+    refModal.current._open(type, { ...data });
   };
 
   const handleClick = (event) => {
@@ -186,7 +186,7 @@ export const AddHeading = (props) => {
         {OPTIONS_ADD_COLUMN.map((item, index) => (
           <MenuItem
             key={index}
-            onClick={() => handleOpenModal(item.type)}
+            onClick={() => handleOpenModal(item.type, item.data)}
             {...item}
           >
             <ListItemIcon style={{ minWidth: 25 }}>
@@ -215,26 +215,31 @@ export const OPTIONS_ADD_COLUMN = [
     icon: () => <TagIcon />,
     text: "Con số",
     type: "number",
+    data: { defaultFormat: "number" },
   },
   {
     icon: () => <PercentIcon />,
     text: "Phần trăm",
-    type: "percent",
+    type: "number",
+    data: { defaultFormat: "percent" },
   },
   {
     icon: () => <AttachMoneyIcon />,
     text: "Tiền tệ",
-    type: "currency",
+    type: "number",
+    data: { defaultFormat: "vnd" },
   },
   {
     icon: () => <FunctionsIcon />,
     text: "Công thức",
-    type: "hash",
+    type: "number",
+    data: { defaultFormat: "hash" },
   },
   {
     icon: () => <ArticleIcon />,
     text: "Chọn từ thư viện",
     type: "library",
+    data: { defaultFormat: "number" },
   },
 ];
 

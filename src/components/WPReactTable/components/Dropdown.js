@@ -80,5 +80,5 @@ const WrapperSelect = styled(Select)`
 `;
 
 const WrapperMenu = styled(MenuItem)`
-  padding: 10px 15px !important;
+  padding: 12.5px 14px !important;
 `;

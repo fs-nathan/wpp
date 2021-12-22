@@ -9,12 +9,17 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import SelectFieldTypeDropdown from "./Dropdown";
 
-const TabNumber = () => {
+const TabNumber = ({
+  defaultLabel = "",
+  defaultPosition = "right",
+  defaultFormat = "number",
+  defaultNumFix = 0,
+}) => {
   const { t } = useTranslation();
-  const [numToFix, setNumToFix] = useState(0);
-  const [labelName, setLabelName] = useState("");
-  const [position, setPosition] = useState("right");
-  const [format, setFormat] = useState("number");
+  const [numToFix, setNumToFix] = useState(defaultNumFix);
+  const [labelName, setLabelName] = useState(defaultLabel);
+  const [position, setPosition] = useState(defaultPosition);
+  const [format, setFormat] = useState(defaultFormat);
 
   const isAdditionLabel = format === "other_label";
 
@@ -98,7 +103,7 @@ const TabNumber = () => {
                 },
                 { text: "Nhãn khác", type: "other_label" },
               ]}
-              defaultValue="number"
+              defaultValue={defaultFormat}
               onSelect={_handleSelectFormat}
             />
           </Grid>
