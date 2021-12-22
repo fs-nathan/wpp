@@ -13,9 +13,9 @@ import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
 import SelectFieldTypeDropdown from "./Dropdown";
+import TabContentColumn from "./TabContentColumn";
 import TitleModalAdd from "./TitleModalAdd";
 import ToggleInput from "./ToggleInput";
-import TabContentColumn from "./TabContentColumn";
 
 const reducer = (state, action) => {
   return { ...state, ...action };
