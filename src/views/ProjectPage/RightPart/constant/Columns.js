@@ -295,6 +295,7 @@ export const COLUMNS_TASK_TABLE = [
   {
     Header: (props) => <AddHeading props={props} />,
     accessor: "add",
+    width: 50,
   },
 ];
 

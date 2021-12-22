@@ -156,9 +156,15 @@ export const AddHeading = (props) => {
   };
 
   return (
-    <div {...props}>
+    <div {...props} style={{ marginLeft: -24 }}>
       <AddColumnModal ref={refModal} />
-      <AddIcon onClick={handleClick} />
+      <div
+        className="wp-wrapper-button"
+        style={{ marginRight: 0, height: "100%" }}
+        onClick={handleClick}
+      >
+        <AddIcon />
+      </div>
       <Menu
         anchorEl={anchorEl}
         open={open}
