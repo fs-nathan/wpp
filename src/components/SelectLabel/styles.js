@@ -166,4 +166,7 @@ export const ItemSelectColor = styled.div`
   font-size: 100%;
   font-family: inherit;
   vertical-align: baseline;
+  svg {
+    color: #fff;
+  }
 `;

@@ -1,26 +1,27 @@
-import { Fade, Paper, Popover, Popper, Typography } from "@material-ui/core";
+import { Popover } from "@material-ui/core";
 import React, { useRef } from "react";
 import {
+  ButtonAddMore,
+  ItemSelectColor,
+  WPSelectIconSelect,
+  WPSelectInput,
   WPSelectItem,
   WPSelectItemLeft,
   WPSelectItemLeftChildren,
-  WPSelectList,
-  WPSelectRowTarget,
-  WPWrapperSelectList,
-  WrapperWPSelectLabel,
-  WPSelectRowNameContainer,
-  WPSelectIconSelect,
-  WPSelectInput,
   WPSelectItemRight,
   WPSelectItemRightIcon,
-  ButtonAddMore,
+  WPSelectList,
+  WPSelectRowNameContainer,
+  WPSelectRowTarget,
+  WPWrapperSelectList,
   WrapperSelectColor,
-  ItemSelectColor,
+  WrapperSelectColorItem,
+  WrapperWPSelectLabel,
 } from "./styles";
 
 const WPSelectLabel = () => {
-  const [open, setOpen] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [itemSelect, setItemSelect] = React.useState({});
   const [listColors, setListColors] = React.useState(DEFAULT_LIST_COLORS);
   const [listSelect, setListSelect] = React.useState([
     { id: "1", name: "Lựa chọn 1", color: DEFAULT_LIST_COLORS[0] },
@@ -29,24 +30,47 @@ const WPSelectLabel = () => {
   const refInput = useRef(null);
 
   const _handleAddMore = () => {
-    setListSelect((list) => [
-      ...list,
-      {
+    setListSelect((list) => {
+      let isSetted = false;
+      const newList = [...list];
+      const newItem = {
         id: list.length + 1,
         name: "",
-        color: "#f06a6a",
-      },
-    ]);
+        color: listColors[0],
+      };
+
+      listColors.forEach((item) => {
+        if (!list.some((el) => el.color === item) && !isSetted) {
+          newItem["color"] = item;
+          isSetted = true;
+        }
+      });
+
+      return [...newList, newItem];
+    });
 
     setTimeout(() => {
       refInput.current.focus();
     }, 100);
   };
 
-  const handleClick = (event) => {
-    console.log(event.currentTarget);
+  const handleClick = (event, item) => {
     setAnchorEl(event.currentTarget);
-    setOpen(true);
+    setItemSelect(item);
+  };
+
+  const _handleRemove = (id) => {
+    setListSelect((list) => [...list].filter((item) => item.id !== id));
+  };
+
+  const _handleSelect = (color) => {
+    setListSelect((list) => {
+      const newList = [...list];
+      const indexUpdate = newList.findIndex(({ id }) => id === itemSelect.id);
+      newList[indexUpdate] = { ...newList[indexUpdate], color };
+      return newList;
+    });
+    setAnchorEl(null);
   };
 
   return (
@@ -68,7 +92,21 @@ const WPSelectLabel = () => {
       >
         <WrapperSelectColor>
           {listColors.map((item) => (
-            <ItemSelectColor key={item} color={item} />
+            <ItemSelectColor
+              key={item}
+              color={item}
+              onClick={() => _handleSelect(item)}
+            >
+              {itemSelect.color === item && (
+                <svg
+                  className="MiniIcon--small MiniIcon ColorPickerCell-checkIcon DeprecatedSmallCheckMiniIcon"
+                  focusable="false"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M9.5,18.2c-0.4,0.4-1,0.4-1.4,0l-3.8-3.8C4,14,4,13.4,4.3,13s1-0.4,1.4,0l3.1,3.1l8.6-8.6c0.4-0.4,1-0.4,1.4,0s0.4,1,0,1.4 L9.5,18.2z" />
+                </svg>
+              )}
+            </ItemSelectColor>
           ))}
         </WrapperSelectColor>
       </Popover>
@@ -76,14 +114,14 @@ const WPSelectLabel = () => {
         <WPWrapperSelectList>
           <WPSelectList>
             {listSelect.map((item) => (
-              <WPSelectRowTarget>
+              <WPSelectRowTarget key={item.id}>
                 <WPSelectItem>
                   <WPSelectItemLeft>
                     <WPSelectItemLeftChildren>
                       <WPSelectRowNameContainer>
                         <WPSelectIconSelect
                           color={item.color}
-                          onClick={handleClick}
+                          onClick={(e) => handleClick(e, item)}
                         />
                         <WPSelectInput
                           ref={refInput}
@@ -94,7 +132,9 @@ const WPSelectLabel = () => {
                     </WPSelectItemLeftChildren>
                   </WPSelectItemLeft>
                   <WPSelectItemRight>
-                    <WPSelectItemRightIcon>
+                    <WPSelectItemRightIcon
+                      onClick={() => _handleRemove(item.id)}
+                    >
                       <svg
                         className="MiniIcon XMiniIcon"
                         focusable="false"
