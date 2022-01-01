@@ -4,7 +4,7 @@ import HeaderProject from "components/HeaderProject";
 import { Container } from "components/TableComponents";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
-import { find, flattenDeep, get, isNil, join } from "lodash";
+import { cloneDeep, find, flattenDeep, get, isNil, join } from "lodash";
 import React from "react";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 import EmptyTasksIntro from "../Intro/EmptyTasksIntro";
@@ -33,14 +33,28 @@ function AllTaskTable({
   canCreateTask,
   handleSortGroupTask,
 }) {
+  const [arrColumns, setArrColumns] = React.useState(COLUMNS_TASK_TABLE);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [isEmpty, setIsEmpty] = React.useState(true);
+
+  const columns = React.useMemo(() => cloneDeep(arrColumns), [arrColumns]);
 
   React.useEffect(() => {
     setIsEmpty(tasks.tasks.length === 0);
   }, [tasks.tasks]);
 
-  const columns = React.useMemo(() => COLUMNS_TASK_TABLE, []);
+  React.useEffect(() => {
+    getTaskToTable(tasks.tasks);
+  }, [tasks]);
+
+  const _handleAddNewColumns = (dataColumn) => {
+    if (!dataColumn) return;
+    setArrColumns((prevState) => {
+      const newList = cloneDeep(prevState);
+      newList.splice(newList.length - 1, 0, dataColumn);
+      return newList;
+    });
+  };
 
   const disableShowHide = !isNil(
     find(
@@ -78,10 +92,6 @@ function AllTaskTable({
     exportToCSV(data, "tasks");
   };
 
-  React.useEffect(() => {
-    getTaskToTable(tasks.tasks);
-  }, [tasks]);
-
   return (
     <Container>
       {isEmpty && (
@@ -108,6 +118,7 @@ function AllTaskTable({
             columns={columns}
             data={tasks.tasks}
             isGroup
+            onAddNewColumns={_handleAddNewColumns}
             onDragEnd={handleSortTask}
           />
           <TimeRangePopover

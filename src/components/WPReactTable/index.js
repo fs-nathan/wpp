@@ -8,6 +8,7 @@ const WPReactTable = ({
   data,
   isGroup = false,
   onDragEnd = () => {},
+  onAddNewColumns = () => {},
   ...props
 }) => {
   return (
@@ -17,6 +18,7 @@ const WPReactTable = ({
           data={data}
           columns={columns}
           onDragEnd={onDragEnd}
+          onAddNewColumns={onAddNewColumns}
           {...props}
         />
       ) : (

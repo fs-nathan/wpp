@@ -15,7 +15,6 @@ import {
   WPSelectRowTarget,
   WPWrapperSelectList,
   WrapperSelectColor,
-  WrapperSelectColorItem,
   WrapperWPSelectLabel,
 } from "./styles";
 

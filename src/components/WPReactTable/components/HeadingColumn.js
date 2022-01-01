@@ -157,7 +157,10 @@ export const AddHeading = (props) => {
 
   return (
     <div {...props} style={{ marginLeft: -24 }}>
-      <AddColumnModal ref={refModal} />
+      <AddColumnModal
+        ref={refModal}
+        onAddColumns={props.props.onAddNewColumns}
+      />
       <div
         className="wp-wrapper-button"
         style={{ marginRight: 0, height: "100%" }}

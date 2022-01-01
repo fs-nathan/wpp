@@ -48,7 +48,6 @@ const GroupColumn = ({ row, provided, snapshot }) => {
         projectId,
       })
     );
-    console.log(projectId, groupTask);
   };
 
   const _handleAddNewTask = () => {

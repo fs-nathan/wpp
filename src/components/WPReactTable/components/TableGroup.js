@@ -16,6 +16,7 @@ const WPTableGroup = ({
   data,
   displayAddColumn = false,
   onDragEnd = () => {},
+  onAddNewColumns = () => {},
 }) => {
   const getSubRows = useCallback((row) => {
     return row.tasks || [];
@@ -40,7 +41,6 @@ const WPTableGroup = ({
       initialState: {
         expanded: getInitialExpand(),
       },
-      // expandSubRows: false,
     },
     useBlockLayout,
     useResizeColumns,
@@ -70,6 +70,7 @@ const WPTableGroup = ({
                   isSticky={!index}
                   column={column}
                   isLastColumn={index === headerGroup.headers.length - 1}
+                  onAddNewColumns={onAddNewColumns}
                 />
               ))}
             </div>
@@ -122,7 +123,12 @@ const WPTableGroup = ({
   );
 };
 
-const HeaderColumn = ({ column, isSticky = false, isLastColumn = false }) => {
+const HeaderColumn = ({
+  column,
+  isSticky = false,
+  isLastColumn = false,
+  onAddNewColumns = () => {},
+}) => {
   return (
     <HeaderColumnWrapper
       {...column.getHeaderProps()}
@@ -130,7 +136,7 @@ const HeaderColumn = ({ column, isSticky = false, isLastColumn = false }) => {
       className={classNames({ isSticky })}
     >
       <LeftStructure isLastColumn={isLastColumn}>
-        <Heading>{column.render("Header")}</Heading>
+        <Heading>{column.render("Header", { onAddNewColumns })}</Heading>
       </LeftStructure>
       {!isLastColumn && (
         <ResizeDiv

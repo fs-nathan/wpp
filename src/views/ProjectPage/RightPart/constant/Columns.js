@@ -291,10 +291,9 @@ export const COLUMNS_TASK_TABLE = [
     Header: "Ưu tiên",
     Cell: (props) => <CellPriority props={props} />,
   },
-
   {
+    id: "add-column",
     Header: (props) => <AddHeading props={props} />,
-    accessor: "add",
     width: 50,
   },
 ];
