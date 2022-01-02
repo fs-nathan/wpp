@@ -4,6 +4,7 @@ import WPTable from "./components/Table";
 import WPTableGroup from "./components/TableGroup";
 
 const WPReactTable = ({
+  isCollapsed = false,
   columns,
   data,
   isGroup = false,
@@ -12,7 +13,7 @@ const WPReactTable = ({
   ...props
 }) => {
   return (
-    <Styles>
+    <Styles isCollapsed={isCollapsed}>
       {isGroup ? (
         <WPTableGroup
           data={data}
@@ -39,6 +40,8 @@ const Styles = styled.div`
   .table {
     border-spacing: 0;
     overflow: scroll;
+    max-width: ${({ isCollapsed }) =>
+      !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
     .thead {
       overflow-y: auto;

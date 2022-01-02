@@ -115,6 +115,7 @@ function AllTaskTable({
             handleExpand={handleExpand}
           />
           <WPReactTable
+            isCollapsed={expand}
             columns={columns}
             data={tasks.tasks}
             isGroup

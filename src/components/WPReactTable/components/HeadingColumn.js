@@ -1,5 +1,4 @@
 import { ListItemIcon, ListItemText, Menu, MenuItem } from "@material-ui/core";
-import PercentIcon from "@mui/icons-material/Percent";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -7,6 +6,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import FunctionsIcon from "@mui/icons-material/Functions";
+import PercentIcon from "@mui/icons-material/Percent";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import TagIcon from "@mui/icons-material/Tag";
 import UpgradeIcon from "@mui/icons-material/Upgrade";

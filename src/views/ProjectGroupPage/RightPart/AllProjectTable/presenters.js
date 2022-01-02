@@ -222,6 +222,7 @@ function AllProjectTable({
         {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
           <React.Fragment>
             <WPReactTable
+              isCollapsed={expand}
               columns={columns || []}
               data={data}
               selectedSort={selectedSort}

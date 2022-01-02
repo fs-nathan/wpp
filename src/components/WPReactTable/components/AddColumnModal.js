@@ -8,8 +8,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TitleSectionModal from "components/TitleSectionModal";
+import { apiService } from "constants/axiosInstance";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
 import { CellLabel } from "views/ProjectGroupPage/RightPart/AllProjectTable/constants/Columns";
@@ -23,6 +25,7 @@ const reducer = (state, action) => {
 };
 
 const initialState = {
+  name: "",
   type: "list",
   open: false,
   value: 0,
@@ -36,7 +39,8 @@ const AddColumnModal = React.forwardRef(
   ({ onAddSuccess = () => {}, onAddColumns = () => {} }, ref) => {
     const { t } = useTranslation();
     const [state, dispatchState] = React.useReducer(reducer, initialState);
-    const refInput = React.useRef(null);
+    const { projectId } = useParams();
+    const refContent = React.useRef(null);
 
     React.useImperativeHandle(ref, () => ({
       _open: (type, data) => handleClickOpen(type, data),
@@ -58,18 +62,58 @@ const AddColumnModal = React.forwardRef(
       dispatchState({ open });
     };
 
-    const _handleConfirm = () => {
+    const _handleChange = (e) => {
+      dispatchState({ name: e.target.value });
+    };
+
+    const _handleConfirm = async () => {
+      const data_type = _getDataType();
+      const contentValue = refContent.current._getValue();
+      const data = { project_id: projectId, name: state.name };
       const dataColumn = {
         id: new Date().getTime(),
-        Header: refInput.current.value,
+        Header: state.name,
       };
+
+      switch (data_type) {
+        case 2:
+          data["format"] = contentValue.format;
+          data["decimal"] = contentValue.decimal;
+          data["position_format"] = contentValue.position_format;
+          data["data_type"] = data_type;
+          break;
+        case 3:
+          data["options"] = contentValue.current._getValue();
+          break;
+        default:
+          break;
+      }
+
       if (state.type === "list") {
         dataColumn["Cell"] = (props) => (
           <CellLabel value={props.value} props={props} />
         );
       }
 
-      onAddColumns(dataColumn);
+      const response = await apiService({
+        url: "/project-field/create",
+        method: "POST",
+        data,
+      });
+      console.log(response);
+
+      if (response) onAddColumns(dataColumn);
+    };
+
+    const _getDataType = () => {
+      switch (state.type) {
+        case "list":
+          return 3;
+        case "number":
+          return 2;
+        default:
+          return 1;
+      }
     };
 
     return (
@@ -85,7 +129,7 @@ const AddColumnModal = React.forwardRef(
             setOpen={handleOpen}
           />
         }
-        canConfirm
+        canConfirm={!!state.name}
         className="offerModal"
         height={"medium"}
         manualClose={true}
@@ -98,7 +142,7 @@ const AddColumnModal = React.forwardRef(
               <Grid item xs={6}>
                 <TitleSectionModal label={t("LABEL_CREATE_FIELDS")} />
                 <TextField
-                  inputRef={refInput}
+                  onChange={_handleChange}
                   className="offerModal--titleText"
                   placeholder={t("LABEL_CREATE_FIELDS")}
                   variant="outlined"
@@ -121,6 +165,7 @@ const AddColumnModal = React.forwardRef(
               </Grid>
 
               <TabContentColumn
+                ref={refContent}
                 type={state.type}
                 defaultLabel={state.defaultLabel}
                 defaultPosition={state.defaultPosition}

@@ -1,5 +1,5 @@
 import { Popover } from "@material-ui/core";
-import React, { useRef } from "react";
+import React, { useRef, forwardRef, useImperativeHandle } from "react";
 import {
   ButtonAddMore,
   ItemSelectColor,
@@ -18,15 +18,16 @@ import {
   WrapperWPSelectLabel,
 } from "./styles";
 
-const WPSelectLabel = () => {
+const WPSelectLabel = forwardRef((props, ref) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [itemSelect, setItemSelect] = React.useState({});
-  const [listColors, setListColors] = React.useState(DEFAULT_LIST_COLORS);
   const [listSelect, setListSelect] = React.useState([
     { id: "1", name: "Lựa chọn 1", color: DEFAULT_LIST_COLORS[0] },
     { id: "2", name: "Lựa chọn 2", color: DEFAULT_LIST_COLORS[1] },
   ]);
   const refInput = useRef(null);
+
+  useImperativeHandle(ref, () => ({ _getValue: () => itemSelect }));
 
   const _handleAddMore = () => {
     setListSelect((list) => {
@@ -35,10 +36,10 @@ const WPSelectLabel = () => {
       const newItem = {
         id: list.length + 1,
         name: "",
-        color: listColors[0],
+        color: DEFAULT_LIST_COLORS[0],
       };
 
-      listColors.forEach((item) => {
+      DEFAULT_LIST_COLORS.forEach((item) => {
         if (!list.some((el) => el.color === item) && !isSetted) {
           newItem["color"] = item;
           isSetted = true;
@@ -90,7 +91,7 @@ const WPSelectLabel = () => {
         elevation={1}
       >
         <WrapperSelectColor>
-          {listColors.map((item) => (
+          {DEFAULT_LIST_COLORS.map((item) => (
             <ItemSelectColor
               key={item}
               color={item}
@@ -155,7 +156,7 @@ const WPSelectLabel = () => {
       </WrapperWPSelectLabel>
     </>
   );
-};
+});
 
 const DEFAULT_LIST_COLORS = [
   "#c7c4c4",
