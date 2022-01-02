@@ -8,9 +8,10 @@ import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import TitleSectionModal from "components/TitleSectionModal";
-import { apiService } from "constants/axiosInstance";
+import { createColumns } from "actions/columns/createColumns";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
@@ -38,9 +39,10 @@ const initialState = {
 const AddColumnModal = React.forwardRef(
   ({ onAddSuccess = () => {}, onAddColumns = () => {} }, ref) => {
     const { t } = useTranslation();
-    const [state, dispatchState] = React.useReducer(reducer, initialState);
     const { projectId } = useParams();
+    const [state, dispatchState] = React.useReducer(reducer, initialState);
     const refContent = React.useRef(null);
+    const dispatch = useDispatch();
 
     React.useImperativeHandle(ref, () => ({
       _open: (type, data) => handleClickOpen(type, data),
@@ -95,14 +97,9 @@ const AddColumnModal = React.forwardRef(
         );
       }
 
-      const response = await apiService({
-        url: "/project-field/create",
-        method: "POST",
-        data,
-      });
-      console.log(response);
+      dispatch(createColumns(data, () => onAddColumns(dataColumn)));
 
-      if (response) onAddColumns(dataColumn);
+      // if (response) onAddColumns(dataColumn);
     };
 
     const _getDataType = () => {

@@ -8,8 +8,6 @@ const TabContentColumn = forwardRef(({ type, ...props }, ref) => {
   const refOptions = useRef(null);
   const refNumber = useRef(null);
 
-  console.log(type, "type");
-
   useImperativeHandle(ref, () => ({
     _getValue: () =>
       type === "list"

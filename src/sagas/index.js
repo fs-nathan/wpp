@@ -156,6 +156,7 @@ import {
   GET_SETTING_DATE,
 } from "../constants/actions/setting/setting";
 import { CREATE_TASK } from "../constants/actions/task/createTask";
+import { CREATE_COLUMNS } from "../constants/actions/columns/createColumns";
 import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
 import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
@@ -414,6 +415,7 @@ import {
   getSettingDate,
 } from "./setting/setting";
 import { createTask } from "./task/createTask";
+import { createColumns } from "./columns/createColumns";
 import { deleteTask } from "./task/deleteTask";
 import { listTask } from "./task/listTask";
 import { sortTask } from "./task/sortTask";
@@ -600,6 +602,7 @@ function* rootSaga() {
   yield takeLeading(LIST_TASK, listTask);
   yield takeLeading(LIST_TASK_MEMBER, listTaskMember);
   yield takeEvery(CREATE_TASK, createTask);
+  yield takeEvery(CREATE_COLUMNS, createColumns);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
   yield takeEvery(
