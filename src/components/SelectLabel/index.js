@@ -26,8 +26,20 @@ const WPSelectLabel = forwardRef((props, ref) => {
     { id: "2", name: "Lựa chọn 2", color: DEFAULT_LIST_COLORS[1] },
   ]);
   const refInput = useRef(null);
+  const refForm = useRef(null);
 
-  useImperativeHandle(ref, () => ({ _getValue: () => itemSelect }));
+  useImperativeHandle(ref, () => ({ _getValue }));
+
+  const _getValue = () => {
+    const result = [];
+    const elements = refForm.current.elements;
+    for (let index = 0; index < elements.length; index++) {
+      const { value } = elements[index];
+      result.push({ name: value, color: listSelect[index]["color"] });
+    }
+
+    return result;
+  };
 
   const _handleAddMore = () => {
     setListSelect((list) => {
@@ -112,7 +124,7 @@ const WPSelectLabel = forwardRef((props, ref) => {
       </Popover>
       <WrapperWPSelectLabel>
         <WPWrapperSelectList>
-          <WPSelectList>
+          <WPSelectList ref={refForm} onSubmit={(e) => e.preventDefault()}>
             {listSelect.map((item) => (
               <WPSelectRowTarget key={item.id}>
                 <WPSelectItem>

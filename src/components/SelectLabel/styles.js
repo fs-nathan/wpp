@@ -9,7 +9,7 @@ export const WPWrapperSelectList = styled.div`
   flex: 0 0 auto;
   flex-direction: column;
 `;
-export const WPSelectList = styled.div`
+export const WPSelectList = styled.form`
   flex: 1 1 auto;
 `;
 export const WPSelectRowTarget = styled.div``;

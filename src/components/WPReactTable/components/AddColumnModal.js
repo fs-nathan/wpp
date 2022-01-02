@@ -85,7 +85,8 @@ const AddColumnModal = React.forwardRef(
           data["data_type"] = data_type;
           break;
         case 3:
-          data["options"] = contentValue.current._getValue();
+          data["options"] = contentValue;
+          data["data_type"] = data_type;
           break;
         default:
           break;
@@ -98,8 +99,6 @@ const AddColumnModal = React.forwardRef(
       }
 
       dispatch(createColumns(data, () => onAddColumns(dataColumn)));
-
-      // if (response) onAddColumns(dataColumn);
     };
 
     const _getDataType = () => {
