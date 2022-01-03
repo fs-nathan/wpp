@@ -159,6 +159,7 @@ import { CREATE_TASK } from "../constants/actions/task/createTask";
 import { CREATE_COLUMNS } from "../constants/actions/columns/createColumns";
 import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
+import { GET_LIST_COLUMNS } from "../constants/actions/columns/listColumns";
 import { LIST_TASK_MEMBER } from "../constants/actions/task/listTaskMember";
 import { SORT_TASK } from "../constants/actions/task/sortTask";
 import { KANBAN_DETAIL_PROJECT } from "constants/actions/kanban/detailProject";
@@ -489,6 +490,7 @@ import { updateAccount } from "./user/updateAccount";
 import { countPersonalProjectsBoard } from "./project/countPersonalProjectsBoard";
 import { updateProjectLabels } from "./projectLabels/editProjectLabels";
 import { createProjectLabels } from "./projectLabels/createProjectLabels";
+import { listColumns } from "actions/columns/listColumns";
 
 function* rootSaga() {
   // Hoang - begin
@@ -600,6 +602,7 @@ function* rootSaga() {
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);
   yield takeLeading(GET_ALL_GROUP_TASK, getAllGroupTask);
   yield takeLeading(LIST_TASK, listTask);
+  yield takeLeading(GET_LIST_COLUMNS, listColumns);
   yield takeLeading(LIST_TASK_MEMBER, listTaskMember);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(CREATE_COLUMNS, createColumns);

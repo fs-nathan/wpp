@@ -414,6 +414,9 @@ import deleteTask, {
 import listTask, {
   initialState as listTaskInitialState,
 } from "./task/listTask";
+import listColumns, {
+  initialState as listColumnsInitialState,
+} from "./columns/listColumns";
 import sortTask, {
   initialState as sortTaskInitialState,
 } from "./task/sortTask";
@@ -654,6 +657,9 @@ const rootReducer = combineReducers({
     deleteTask,
     sortTask,
   }),
+  columns: combineReducers({
+    listColumns,
+  }),
   taskPage: taskReducer,
   offerPage: offerReducer,
   groupUser: combineReducers({
@@ -877,6 +883,9 @@ export const DEFAULT_STATE = {
     createTask: createTaskInitialState,
     deleteTask: deleteTaskInitialState,
     sortTask: sortTaskInitialState,
+  },
+  columns: {
+    listColumns: listColumnsInitialState,
   },
   groupUser: {
     searchUser: searchUserInitialState,
