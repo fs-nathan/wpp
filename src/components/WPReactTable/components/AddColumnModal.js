@@ -36,6 +36,22 @@ const initialState = {
   defaultNumFix: 0,
 };
 
+const data = [
+  {
+    id: "pfd-name",
+    name: "Taskname",
+    data_type: 1,
+    description: "",
+    format: null,
+    position_format: 2,
+    decimal: null,
+    options: null,
+    data_from: null,
+    action: null,
+    is_default: true,
+  },
+];
+
 const AddColumnModal = React.forwardRef(
   ({ onAddSuccess = () => {}, onAddColumns = () => {} }, ref) => {
     const { t } = useTranslation();

@@ -7,7 +7,7 @@ import {
 
 export const initialState = {
   data: {
-    tasks: [],
+    columns: [],
   },
   error: null,
   loading: false,

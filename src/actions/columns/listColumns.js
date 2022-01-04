@@ -5,11 +5,11 @@ import {
   GET_LIST_COLUMNS_FAIL,
 } from "constants/actions/columns/listColumns";
 
-export const listColumns = ({ projectId }, quite = false) => ({
+export const listColumns = ({ project_id }, quite = false) => ({
   type: GET_LIST_COLUMNS,
   quite,
   options: {
-    projectId,
+    project_id,
   },
 });
 

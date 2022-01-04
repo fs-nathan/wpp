@@ -490,7 +490,7 @@ import { updateAccount } from "./user/updateAccount";
 import { countPersonalProjectsBoard } from "./project/countPersonalProjectsBoard";
 import { updateProjectLabels } from "./projectLabels/editProjectLabels";
 import { createProjectLabels } from "./projectLabels/createProjectLabels";
-import { listColumns } from "actions/columns/listColumns";
+import { listColumns } from "./columns/listColumns";
 
 function* rootSaga() {
   // Hoang - begin

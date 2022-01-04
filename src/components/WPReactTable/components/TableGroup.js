@@ -64,7 +64,7 @@ const WPTableGroup = ({
         {/* Header table */}
         <div style={{ position: "sticky", top: 0, zIndex: 9 }}>
           {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()} className="tr">
+            <div {...headerGroup.getHeaderGroupProps()} className="tr header">
               {headerGroup.headers.map((column, index) => (
                 <HeaderColumn
                   isSticky={!index}
@@ -149,17 +149,21 @@ const HeaderColumn = ({
 };
 
 const HeaderColumnWrapper = styled.div`
-  align-items: stretch;
+  align-items: center;
   background-color: #f1f2f4;
+  border-right: 1px solid #edeae9;
+  border-top: 1px solid #edeae9;
   display: flex;
-  flex-direction: column;
-  height: 37px;
-  left: 0;
-  position: absolute;
-  border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
-  border-bottom: 1px solid #e8ecee;
-  &.isSticky {
-    position: sticky !important;
+  flex: 1 0 auto;
+  justify-content: space-between;
+  z-index: 0;
+  margin: 0;
+  color: #6d6e6f;
+  margin-right: -1px;
+  position: relative;
+
+  &[data-sticky-td="true"] {
+    z-index: 3;
   }
 `;
 const LeftStructure = styled.div`
@@ -169,7 +173,6 @@ const LeftStructure = styled.div`
   display: flex;
   flex: 1 0 auto;
   font-size: 12px;
-  margin-right: -1px;
   padding-left: 24px;
   height: 100%;
   position: relative;
@@ -185,27 +188,26 @@ const LeftStructure = styled.div`
 `;
 
 const ResizeDiv = styled.div`
-  display: inline-block;
-  background: transparent;
-  width: 8px;
   height: 100%;
   position: absolute;
-  right: 0;
+  right: -5px;
   top: 0;
-  transform: translateX(50%);
-  z-index: 3;
-  touch-action: none;
+  width: 10px;
+  z-index: 100;
+
   &:hover {
     background: #008ce3;
+    &:after {
+      content: "";
+    }
   }
   &:after {
-    content: "";
+    content: none;
     position: absolute;
     height: 100vh;
-    background: ${(props) => (!props.isResizing ? "transparent" : "#008ce3")};
+    background: ${(props) => (!props.isResizing ? "#008ce3" : "#008ce3")};
     width: 1px;
-    left: 50%;
-    transform: translateX(50%);
+    left: 4px;
     z-index: 3;
   }
 `;
