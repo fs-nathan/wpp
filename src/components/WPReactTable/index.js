@@ -86,6 +86,9 @@ const Styles = styled.div`
       overflow: hidden;
       justify-content: space-between;
       margin-left: -1px;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: flex-start;
       &[data-sticky-td="true"] {
         z-index: 300;
         border-left: 0;

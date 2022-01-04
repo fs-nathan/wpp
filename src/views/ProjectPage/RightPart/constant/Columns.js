@@ -113,7 +113,9 @@ const CellItemGroup = React.memo(
           <IconDrag />
         </WrapperIconDrag>
 
-        {isDisplayReminder && <AccessTimeRoundedIcon />}
+        {isDisplayReminder && (
+          <AccessTimeRoundedIcon sx={{ fontSize: 16, color: "#6d6e6f" }} />
+        )}
 
         <TextAreaCustom
           ref={refText}
@@ -411,7 +413,7 @@ const TextEllipsis = styled.span`
 const TextAreaCustom = styled.textarea`
   white-space: pre;
   background: transparent;
-  border-radius: 3px;
+  border-radius: 1.5px;
   display: block;
   outline: 0;
   overflow: hidden;
@@ -425,9 +427,9 @@ const TextAreaCustom = styled.textarea`
   min-width: 20px;
   padding: 0 4px;
   text-rendering: optimizeSpeed;
-  color: #666;
+  color: #1e1f21;
   &:hover {
-    border: 1px solid #666;
+    border: 1px solid #edeae9;
   }
   &:focus {
     border-color: transparent;

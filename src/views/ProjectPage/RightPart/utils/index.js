@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 
 export const getTaskToTable = (data) => {
-  console.log(data);
+  // console.log(data);
 };
 
 export const convertFieldsToTable = (data) => {
@@ -15,7 +15,6 @@ export const convertFieldsToTable = (data) => {
 
 const CellRender = ({ props }) => {
   const data = props?.row?.original?.data[props.column.id] || {};
-  console.log(data);
 
   if (props.row.depth === 0) return null;
 
