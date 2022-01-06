@@ -1,5 +1,6 @@
+import classNames from "classnames";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import React from "react";
 
 export const getTaskToTable = (data) => {
   // console.log(data);
@@ -20,7 +21,13 @@ const CellRender = ({ props }) => {
 
   switch (data?.data_type) {
     case 1:
-      return <InputColumn placeholder="—" defaultValue={data?.value || ""} />;
+      return (
+        <InputColumn
+          className={classNames({ canHide: !!!data?.value })}
+          placeholder="—"
+          defaultValue={data?.value || ""}
+        />
+      );
     case 2:
       return <ColumnNumber {...data} />;
     default:
@@ -31,11 +38,50 @@ const CellRender = ({ props }) => {
   return <div>{data?.value}</div>;
 };
 
-const ColumnNumber = ({ value }) => {
+const ColumnNumber = ({
+  value: defaultValue = "",
+  position_format = 1,
+  format = "",
+  ...props
+}) => {
+  const [value, setValue] = React.useState(defaultValue);
+  const [isFocus, setIsFocus] = React.useState(false);
+  const refValue = useRef(defaultValue);
+
+  const _handleChange = (e) => {
+    setValue(e.target.value);
+    if (!isFocus) refValue.current = e.target.value;
+  };
+
+  const _handleBlur = (e) => {
+    setIsFocus(false);
+    if (isNaN(e.target.value)) setValue(refValue.current);
+  };
+
+  const _handleFocus = (e) => {
+    setIsFocus(true);
+  };
+
+  const finalValue = () => {
+    if (!isFocus)
+      return `${position_format === 1 ? format : ""} ${value} ${
+        position_format === 2 && format
+      }`;
+    return value;
+  };
+
   return (
-    <WrapperColumn>
-      <InputColumn placeholder="—" defaultValue={value || ""} />
-    </WrapperColumn>
+    <InputColumn
+      className={classNames({
+        canHide: !String(value).length,
+        textRight: position_format === 2,
+      })}
+      onChange={_handleChange}
+      onBlur={_handleBlur}
+      onFocus={_handleFocus}
+      placeholder="—"
+      value={finalValue()}
+    />
   );
 };
 
@@ -43,13 +89,19 @@ const InputColumn = styled.input`
   height: 100%;
   border: 0;
   outline: 0;
-  padding: 0 7px;
   border-radius: 0;
   border-width: 0;
   box-sizing: border-box;
   background-color: transparent;
+  width: 100%;
   &:focus {
     background-color: #fff;
+  }
+  &.canHide {
+    visibility: hidden;
+  }
+  &.textRight {
+    text-align: right;
   }
 `;
 const WrapperColumn = styled.div`

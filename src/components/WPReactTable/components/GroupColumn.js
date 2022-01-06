@@ -73,6 +73,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
           data={row.cells}
           onVisibleAddRow={_handleAddNewTask}
           dragHandle={{ ...provided.dragHandleProps }}
+          isGroupColumn
         />
       </div>
 
@@ -99,7 +100,14 @@ const GroupColumn = ({ row, provided, snapshot }) => {
       {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
         <div className="tr" {...row.getRowProps()}>
           {row.cells.map((item, index) => (
-            <div {...item.getCellProps()} className="td add-cell">
+            <div
+              {...item.getCellProps()}
+              style={{
+                ...item.getCellProps().style,
+                maxWidth: item.getCellProps().style.width,
+              }}
+              className="td add-cell"
+            >
               {index === 0 && (
                 <CellAddIcon onClick={_handleAddNewRow}>
                   <div style={{ minWidth: "30px" }} />

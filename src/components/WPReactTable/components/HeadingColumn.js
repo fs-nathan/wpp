@@ -304,7 +304,7 @@ const HeaderColumnWrapper = styled.div`
   background-color: #f1f2f4;
   display: flex;
   flex-direction: column;
-  height: 37px;
+  height: 47px;
   left: 0;
   position: absolute;
   border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};

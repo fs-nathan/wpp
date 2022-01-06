@@ -56,8 +56,7 @@ const Styles = styled.div`
 
     .tr {
       display: flex;
-      height: 37px;
-      padding-right: 24px;
+      height: 47px;
       transition: box-shadow 100ms ease-in-out;
       contain: style;
       margin-bottom: -1px;
@@ -82,7 +81,7 @@ const Styles = styled.div`
       z-index: 0;
       align-items: center;
       display: flex;
-      height: 37px;
+      height: 47px;
       overflow: hidden;
       justify-content: space-between;
       margin-left: -1px;
@@ -98,6 +97,14 @@ const Styles = styled.div`
         min-width: 1px;
         box-shadow: none;
         max-width: 420px;
+      }
+      &.isGroupColumn {
+        border-left: 0;
+      }
+      &:hover {
+        .canHide {
+          visibility: visible;
+        }
       }
     }
   }
