@@ -8,6 +8,7 @@ import ListContentColumn from "./ListContentColumn";
 import ServiceCommandUnit from "./ServiceCommandUnit";
 import { createTask } from "actions/taskDetail/taskDetailActions";
 import moment from "moment";
+import styled from "styled-components";
 
 const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   ...draggableStyle,
@@ -48,7 +49,6 @@ const GroupColumn = ({ row, provided, snapshot }) => {
         projectId,
       })
     );
-    console.log(projectId, groupTask);
   };
 
   const _handleAddNewTask = () => {
@@ -73,6 +73,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
           data={row.cells}
           onVisibleAddRow={_handleAddNewTask}
           dragHandle={{ ...provided.dragHandleProps }}
+          isGroupColumn
         />
       </div>
 
@@ -81,28 +82,38 @@ const GroupColumn = ({ row, provided, snapshot }) => {
       )}
 
       {isVisibleNewRow && (
-        <div style={{ display: "flex" }} className="tr">
-          {row.cells.map((cell, index) => (
-            <ContentColumn
-              key={index}
-              cell={cell}
-              isNewRow
-              isFocus
-              onSubmitAdd={_handleSubmit}
-            />
-          ))}
+        <div className="tr" {...row.getRowProps()}>
+          {row.cells.map((cell, index) => {
+            return (
+              <ContentColumn
+                key={index}
+                cell={cell}
+                isNewRow
+                isFocus
+                onSubmitAdd={_handleSubmit}
+              />
+            );
+          })}
         </div>
       )}
 
       {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
-        <div style={{ display: "flex" }} className="tr">
+        <div className="tr" {...row.getRowProps()}>
           {row.cells.map((item, index) => (
-            <div {...item.getCellProps()} className="td add-cell">
+            <div
+              {...item.getCellProps()}
+              style={{
+                ...item.getCellProps().style,
+                maxWidth: item.getCellProps().style.width,
+              }}
+              className="td add-cell"
+            >
               {index === 0 && (
-                <div onClick={_handleAddNewRow}>
+                <CellAddIcon onClick={_handleAddNewRow}>
+                  <div style={{ minWidth: "30px" }} />
                   <AddIcon sx={{ fontSize: 16, marginRight: "5px" }} />
                   <div>{t("ADD_NEW_TASK")}</div>
-                </div>
+                </CellAddIcon>
               )}
             </div>
           ))}
@@ -113,5 +124,13 @@ const GroupColumn = ({ row, provided, snapshot }) => {
     </div>
   );
 };
+
+const CellAddIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 100%;
+  cursor: pointer;
+`;
 
 export default GroupColumn;

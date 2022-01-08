@@ -28,7 +28,7 @@ import styled from "styled-components";
 
 import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
 
-const CellLabel = ({ props, value, onEdit = () => {} }) => {
+export const CellLabel = ({ props, value, onEdit = () => {} }) => {
   const project = props.row.original;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(value);

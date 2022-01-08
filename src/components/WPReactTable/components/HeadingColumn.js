@@ -1,5 +1,4 @@
 import { ListItemIcon, ListItemText, Menu, MenuItem } from "@material-ui/core";
-import PercentIcon from "@mui/icons-material/Percent";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -7,6 +6,7 @@ import ArticleIcon from "@mui/icons-material/Article";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import FormatColorTextIcon from "@mui/icons-material/FormatColorText";
 import FunctionsIcon from "@mui/icons-material/Functions";
+import PercentIcon from "@mui/icons-material/Percent";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import TagIcon from "@mui/icons-material/Tag";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
@@ -143,8 +143,8 @@ export const AddHeading = (props) => {
   const refModal = useRef(null);
   const open = Boolean(anchorEl);
 
-  const handleOpenModal = () => {
-    refModal.current._open();
+  const handleOpenModal = (type, data = {}) => {
+    refModal.current._open(type, { ...data });
   };
 
   const handleClick = (event) => {
@@ -156,9 +156,18 @@ export const AddHeading = (props) => {
   };
 
   return (
-    <div {...props}>
-      <AddColumnModal ref={refModal} />
-      <AddIcon onClick={handleClick} />
+    <div {...props} style={{ marginLeft: -24 }}>
+      <AddColumnModal
+        ref={refModal}
+        onAddColumns={props.props.onAddNewColumns}
+      />
+      <div
+        className="wp-wrapper-button"
+        style={{ marginRight: 0, height: "100%" }}
+        onClick={handleClick}
+      >
+        <AddIcon />
+      </div>
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -180,7 +189,7 @@ export const AddHeading = (props) => {
         {OPTIONS_ADD_COLUMN.map((item, index) => (
           <MenuItem
             key={index}
-            onClick={() => handleOpenModal(item.type)}
+            onClick={() => handleOpenModal(item.type, item.data)}
             {...item}
           >
             <ListItemIcon style={{ minWidth: 25 }}>
@@ -209,26 +218,31 @@ export const OPTIONS_ADD_COLUMN = [
     icon: () => <TagIcon />,
     text: "Con số",
     type: "number",
+    data: { defaultFormat: "number" },
   },
   {
     icon: () => <PercentIcon />,
     text: "Phần trăm",
-    type: "percent",
+    type: "number",
+    data: { defaultFormat: "percent" },
   },
   {
     icon: () => <AttachMoneyIcon />,
     text: "Tiền tệ",
-    type: "currency",
+    type: "number",
+    data: { defaultFormat: "vnd" },
   },
   {
     icon: () => <FunctionsIcon />,
     text: "Công thức",
-    type: "hash",
+    type: "number",
+    data: { defaultFormat: "hash" },
   },
   {
     icon: () => <ArticleIcon />,
     text: "Chọn từ thư viện",
     type: "library",
+    data: { defaultFormat: "number" },
   },
 ];
 
@@ -290,7 +304,7 @@ const HeaderColumnWrapper = styled.div`
   background-color: #f1f2f4;
   display: flex;
   flex-direction: column;
-  height: 37px;
+  height: 47px;
   left: 0;
   position: absolute;
   border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};

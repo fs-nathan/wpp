@@ -1,208 +1,237 @@
 import {
   Checkbox,
   FormControlLabel,
-  IconButton,
-  Tab,
-  Tabs,
   TextField,
   Typography,
 } from "@material-ui/core";
-import { mdiClose } from "@mdi/js";
-import Icon from "@mdi/react";
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import ColorTypo from "components/ColorTypo";
-import { StyledDialogTitle } from "components/CustomModal";
 import TitleSectionModal from "components/TitleSectionModal";
+import { createColumns } from "actions/columns/createColumns";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
+import { CellLabel } from "views/ProjectGroupPage/RightPart/AllProjectTable/constants/Columns";
 import SelectFieldTypeDropdown from "./Dropdown";
-import TabNumber from "./TabNumber";
+import TabContentColumn from "./TabContentColumn";
+import TitleModalAdd from "./TitleModalAdd";
+import ToggleInput from "./ToggleInput";
 
-const AddColumnModal = React.forwardRef((props, ref) => {
-  const { t } = useTranslation();
-  const [type, setType] = React.useState("list");
-  const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState(0);
-  const [isShowDescription, setIsShowDescription] = React.useState(false);
+const reducer = (state, action) => {
+  return { ...state, ...action };
+};
 
-  const handleChangeTab = (event, newValue) => {
-    setValue(newValue);
-  };
+const initialState = {
+  name: "",
+  type: "list",
+  open: false,
+  value: 0,
+  defaultLabel: "",
+  defaultPosition: "right",
+  defaultFormat: "number",
+  defaultNumFix: 0,
+};
 
-  React.useImperativeHandle(ref, () => ({ _open: () => handleClickOpen() }));
+const data = [
+  {
+    id: "pfd-name",
+    name: "Taskname",
+    data_type: 1,
+    description: "",
+    format: null,
+    position_format: 2,
+    decimal: null,
+    options: null,
+    data_from: null,
+    action: null,
+    is_default: true,
+  },
+];
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+const AddColumnModal = React.forwardRef(
+  ({ onAddSuccess = () => {}, onAddColumns = () => {} }, ref) => {
+    const { t } = useTranslation();
+    const { projectId } = useParams();
+    const [state, dispatchState] = React.useReducer(reducer, initialState);
+    const refContent = React.useRef(null);
+    const dispatch = useDispatch();
 
-  const _renderTabContent = () => {
-    switch (type) {
-      case "number":
-        return <TabNumber />;
-      default:
-        break;
-    }
-  };
+    React.useImperativeHandle(ref, () => ({
+      _open: (type, data) => handleClickOpen(type, data),
+    }));
 
-  return (
-    <JobDetailModalWrap
-      title={t("ADD_FIELDS_DATA")}
-      open={open}
-      setOpen={setOpen}
-      confirmRender={() => t("CREATE_FIELDS")}
-      titleComponent={
-        <>
-          <WrapperTitle
-            className="comp_CustomModal__renderTitle"
-            id="alert-dialog-slide-title"
-          >
-            <ColorTypo
-              uppercase
-              style={{
-                overflow: "hidden",
-                position: "relative",
-                fontSize: "1.1rem",
-                boxSizing: "border-box",
-                fontWeight: "500",
-              }}
-            >
-              {t("ADD_FIELDS_DATA")}
-            </ColorTypo>
-            <IconButton
-              className="comp_CustomModal___iconButton"
-              onClick={() => setOpen(false)}
-            >
-              <Icon path={mdiClose} size={1} color={"rgba(0, 0, 0, 0.54)"} />
-            </IconButton>
-          </WrapperTitle>
-          <WrapperTabs
-            value={value}
-            onChange={handleChangeTab}
-            TabIndicatorProps={{
-              style: {
-                backgroundColor: "#4caf50",
-              },
-            }}
-          >
-            <Tab label={t("IDS_WP_CREATE_NEW")} {...a11yProps(0)} />
-            <Tab label={t("SELECT_FROM_LIBRARY")} {...a11yProps(1)} />
-          </WrapperTabs>
-        </>
+    const handleChangeTab = (event, value) => {
+      dispatchState({ value });
+    };
+
+    const handleClickOpen = (type, data) => {
+      dispatchState({ open: true, type, ...data });
+    };
+
+    const handleChangeType = (type) => {
+      dispatchState({ type });
+    };
+
+    const handleOpen = (open) => {
+      dispatchState({ open });
+    };
+
+    const _handleChange = (e) => {
+      dispatchState({ name: e.target.value });
+    };
+
+    const _handleConfirm = async () => {
+      const data_type = _getDataType();
+      const contentValue = refContent.current._getValue();
+      const data = { project_id: projectId, name: state.name };
+      const dataColumn = {
+        id: new Date().getTime(),
+        Header: state.name,
+      };
+
+      switch (data_type) {
+        case 2:
+          data["format"] = contentValue.format;
+          data["decimal"] = contentValue.decimal;
+          data["position_format"] = contentValue.position_format;
+          data["data_type"] = data_type;
+          break;
+        case 3:
+          data["options"] = contentValue;
+          data["data_type"] = data_type;
+          break;
+        case 1:
+          data["data_type"] = data_type;
+          break;
+        default:
+          break;
       }
-      canConfirm
-      className="offerModal"
-      height={"medium"}
-      manualClose={true}
-      onCancle={() => setOpen(false)}
-    >
-      <Box sx={{ flexGrow: 1 }}>
-        <TabPanel value={value} index={0}>
-          <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <TitleSectionModal label={t("LABEL_CREATE_FIELDS")} />
-              <TextField
-                className="offerModal--titleText"
-                placeholder={t("LABEL_CREATE_FIELDS")}
-                variant="outlined"
-                InputProps={{
-                  style: { color: "#666" },
-                }}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TitleSectionModal label={t("DATA_TYPES")} />
-              <SelectFieldTypeDropdown onSelect={(type) => setType(type)} />
-            </Grid>
 
-            <Grid item xs={12}>
-              {isShowDescription ? (
-                <>
-                  <TitleSectionModal
-                    label={t("ADD_DESCRIPTION")}
-                    style={{ margin: 0 }}
-                  />
-                  <TextField
-                    className="offerModal--titleText"
-                    placeholder={t("ADD_DESCRIPTION")}
-                    variant="outlined"
-                    fullWidth
-                    InputProps={{
-                      style: { color: "#666", marginTop: "15px" },
-                    }}
-                  />
-                </>
-              ) : (
-                <Typography
-                  style={{
-                    color: "#666",
-                    lineHeight: "15px",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    cursor: "pointer",
-                  }}
-                  onClick={() => setIsShowDescription(true)}
-                >
-                  + {t("ADD_DESCRIPTION")}
-                </Typography>
-              )}
-            </Grid>
+      if (state.type === "list") {
+        dataColumn["Cell"] = (props) => (
+          <CellLabel value={props.value} props={props} />
+        );
+      }
 
-            {_renderTabContent()}
-            <Grid item>
-              <WrapperCheckbox
-                control={<Checkbox name="gilad" />}
-                label={t("ADD_FILED_TO_LIBRARY")}
-              />
-              <WrapperCheckbox
-                control={<Checkbox name="gilad" />}
-                label={t("NOTIFY_MEMBER_CHANGE_FIELD")}
-              />
-            </Grid>
-          </Grid>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <TextField
-            className="offerModal--titleText"
-            placeholder={t("FIND_FIELD_DATA")}
-            variant="outlined"
-            fullWidth
-            InputProps={{
-              startAdornment: <SearchIcon style={{ marginRight: "10px" }} />,
-              style: { color: "#666", marginTop: "15px" },
-            }}
+      dispatch(createColumns(data, () => onAddColumns(dataColumn)));
+    };
+
+    const _getDataType = () => {
+      switch (state.type) {
+        case "list":
+          return 3;
+        case "number":
+          return 2;
+        default:
+          return 1;
+      }
+    };
+
+    return (
+      <JobDetailModalWrap
+        title={t("ADD_FIELDS_DATA")}
+        open={state.open}
+        setOpen={handleOpen}
+        confirmRender={() => t("CREATE_FIELDS")}
+        titleComponent={
+          <TitleModalAdd
+            value={state.value}
+            handleChangeTab={handleChangeTab}
+            setOpen={handleOpen}
           />
-          <TitleSectionModal label={t("DATA_FIELD_EXITS")} />
-          <Grid container>
-            <Grid item xs={12}>
-              <WrapperCheckbox
-                control={<Checkbox name="gilad" />}
-                label="Lưu ý về dự án"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <WrapperCheckbox
-                control={<Checkbox disabled name="gilad" />}
-                label="Rủi ro dự án"
-              />
-            </Grid>
-          </Grid>
-        </TabPanel>
-      </Box>
-    </JobDetailModalWrap>
-  );
-});
+        }
+        canConfirm={!!state.name}
+        className="offerModal"
+        height={"medium"}
+        manualClose={true}
+        onCancle={() => handleOpen(false)}
+        onConfirm={_handleConfirm}
+      >
+        <Box sx={{ flexGrow: 1 }}>
+          <TabPanel value={state.value} index={0}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TitleSectionModal label={t("LABEL_CREATE_FIELDS")} />
+                <TextField
+                  onChange={_handleChange}
+                  className="offerModal--titleText"
+                  placeholder={t("LABEL_CREATE_FIELDS")}
+                  variant="outlined"
+                  InputProps={{
+                    style: { color: "#666" },
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TitleSectionModal label={t("DATA_TYPES")} />
+                <SelectFieldTypeDropdown
+                  defaultValue={state.type}
+                  onSelect={handleChangeType}
+                />
+              </Grid>
 
-function a11yProps(index) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
+              <Grid item xs={12}>
+                <ToggleInput />
+              </Grid>
+
+              <TabContentColumn
+                ref={refContent}
+                type={state.type}
+                defaultLabel={state.defaultLabel}
+                defaultPosition={state.defaultPosition}
+                defaultFormat={state.defaultFormat}
+                defaultNumFix={state.defaultNumFix}
+              />
+
+              <Grid item>
+                <WrapperCheckbox
+                  control={<Checkbox name="gilad" />}
+                  label={t("ADD_FILED_TO_LIBRARY")}
+                />
+                <WrapperCheckbox
+                  control={<Checkbox name="gilad" />}
+                  label={t("NOTIFY_MEMBER_CHANGE_FIELD")}
+                />
+              </Grid>
+            </Grid>
+          </TabPanel>
+          <TabPanel value={state.value} index={1}>
+            <TextField
+              className="offerModal--titleText"
+              placeholder={t("FIND_FIELD_DATA")}
+              variant="outlined"
+              fullWidth
+              InputProps={{
+                startAdornment: <SearchIcon style={{ marginRight: "10px" }} />,
+                style: { color: "#666", marginTop: "15px" },
+              }}
+            />
+            <TitleSectionModal label={t("DATA_FIELD_EXITS")} />
+            <Grid container>
+              <Grid item xs={12}>
+                <WrapperCheckbox
+                  control={<Checkbox name="gilad" />}
+                  label="Lưu ý về dự án"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <WrapperCheckbox
+                  control={<Checkbox disabled name="gilad" />}
+                  label="Rủi ro dự án"
+                />
+              </Grid>
+            </Grid>
+          </TabPanel>
+        </Box>
+      </JobDetailModalWrap>
+    );
+  }
+);
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -224,18 +253,6 @@ function TabPanel(props) {
   );
 }
 
-const WrapperTitle = styled(StyledDialogTitle)`
-  background: #fff !important;
-  border: 0 !important;
-  padding-bottom: 0 !important;
-`;
-
-const WrapperTabs = styled(Tabs)`
-  border-bottom: 1px solid #0000001a;
-  .Mui-selected span {
-    color: #4caf50;
-  }
-`;
 const WrapperCheckbox = styled(FormControlLabel)`
   span.Mui-checked {
     color: #4caf50 !important;

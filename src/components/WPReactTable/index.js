@@ -4,19 +4,22 @@ import WPTable from "./components/Table";
 import WPTableGroup from "./components/TableGroup";
 
 const WPReactTable = ({
+  isCollapsed = false,
   columns,
   data,
   isGroup = false,
   onDragEnd = () => {},
+  onAddNewColumns = () => {},
   ...props
 }) => {
   return (
-    <Styles>
+    <Styles isCollapsed={isCollapsed}>
       {isGroup ? (
         <WPTableGroup
           data={data}
           columns={columns}
           onDragEnd={onDragEnd}
+          onAddNewColumns={onAddNewColumns}
           {...props}
         />
       ) : (
@@ -37,6 +40,8 @@ const Styles = styled.div`
   .table {
     border-spacing: 0;
     overflow: scroll;
+    max-width: ${({ isCollapsed }) =>
+      !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
     .thead {
       overflow-y: auto;
@@ -48,53 +53,60 @@ const Styles = styled.div`
       overflow-x: hidden;
       height: 100vh;
     }
+
     .tr {
+      display: flex;
+      height: 47px;
+      padding-right: 25px;
+      transition: box-shadow 100ms ease-in-out;
+      contain: style;
+      margin-bottom: -1px;
+      margin-top: -1px;
+      line-height: normal;
       &:hover {
-        .td,
-        .add-cell {
-          background-color: #f9f8f8;
-        }
+        background-color: #f9f8f8;
+      }
+      &.header {
+        background-color: #f1f2f4;
+        box-sizing: border-box;
+        flex: 0 0 auto;
+        height: 37px;
       }
     }
 
     .td {
       background-color: #fff;
-      border-bottom: 1px solid #e8ecee;
+      border: 1px solid #edeae9;
       box-sizing: border-box;
       padding: 0 8px;
-      flex-shrink: 0;
       z-index: 0;
       align-items: center;
-      display: flex !important;
-      height: 50px;
+      display: flex;
+      height: 47px;
       overflow: hidden;
       justify-content: space-between;
-      color: #666;
-      &.add-cell {
-        height: 35px;
-        padding-left: 30px;
-        > div {
-          font-size: 13px;
-          line-height: 22px;
-          color: #666;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-        }
+      margin-left: -1px;
+      display: inline-flex !important;
+      align-items: center;
+      justify-content: flex-start;
+      &[data-sticky-td="true"] {
+        z-index: 300;
+        border-left: 0;
+        padding: 0 4px 0 24px;
+        justify-content: space-between;
+        flex: 1 1 auto;
+        min-width: 1px;
+        box-shadow: none;
+        max-width: 420px;
+      }
+      &.isGroupColumn {
+        border-left: 0;
       }
       &:hover {
-        .drag-icon,
-        .detail-info {
+        .canHide {
           visibility: visible;
         }
       }
-    }
-    [data-sticky-td] {
-      position: sticky;
-    }
-
-    [data-sticky-last-left-td] {
-      box-shadow: 0 1px 4px 0 rgba(21, 7, 38, 0.08);
     }
   }
 `;
