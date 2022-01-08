@@ -57,6 +57,7 @@ const Styles = styled.div`
     .tr {
       display: flex;
       height: 47px;
+      padding-right: 25px;
       transition: box-shadow 100ms ease-in-out;
       contain: style;
       margin-bottom: -1px;
