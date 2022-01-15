@@ -31,7 +31,7 @@ const ColumnNumber = ({
   const finalValue = () => {
     if (!isFocus)
       return `${position_format === 1 ? format : ""} ${value} ${
-        position_format === 2 && format
+        position_format === 2 ? format : ""
       }`;
     return value;
   };

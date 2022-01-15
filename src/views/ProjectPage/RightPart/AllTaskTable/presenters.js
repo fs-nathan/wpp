@@ -68,7 +68,6 @@ function AllTaskTable({
     if (columnsStore.length && !state.isSetted) {
       const result = cloneDeep(state.arrColumns);
       const moreColumns = convertFieldsToTable(columnsStore);
-      console.log(moreColumns, "data");
       result.splice(result.length - 1, 0, ...moreColumns);
       dispatchState({
         arrColumns: result,
