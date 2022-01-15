@@ -55,10 +55,12 @@ const ColumnNumber = ({
 
   const _handleBlur = (e) => {
     setIsFocus(false);
+    e.target.closest(".td")?.classList?.remove("focus");
     if (isNaN(e.target.value)) setValue(refValue.current);
   };
 
   const _handleFocus = (e) => {
+    e.target.closest(".td").classList.add("focus");
     setIsFocus(true);
   };
 
@@ -94,25 +96,11 @@ const InputColumn = styled.input`
   box-sizing: border-box;
   background-color: transparent;
   width: 100%;
-  &:focus {
-    background-color: #fff;
-  }
+
   &.canHide {
     visibility: hidden;
   }
   &.textRight {
     text-align: right;
   }
-`;
-const WrapperColumn = styled.div`
-  margin-right: -1px;
-  background-color: #fff;
-  border: 1px solid #edeae9;
-  box-sizing: border-box;
-  padding: 0 8px;
-  z-index: 0;
-  align-items: center;
-  display: flex;
-  height: 37px;
-  overflow: hidden;
 `;

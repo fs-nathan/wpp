@@ -62,9 +62,18 @@ const WPTableGroup = ({
     <div>
       <div {...getTableProps()} className="table">
         {/* Header table */}
-        <div style={{ position: "sticky", top: 0, zIndex: 9 }}>
+        <div style={{ position: "sticky", top: 0, zIndex: 350 }}>
           {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()} className="tr header">
+            <div
+              {...headerGroup.getHeaderGroupProps()}
+              style={{
+                ...headerGroup.getHeaderGroupProps().style,
+                width: `calc(${
+                  headerGroup.getHeaderGroupProps().style.width
+                } - 15px)`,
+              }}
+              className="tr header"
+            >
               {headerGroup.headers.map((column, index) => (
                 <HeaderColumn
                   isSticky={!index}
