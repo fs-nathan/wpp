@@ -70,7 +70,7 @@ const WPTableGroup = ({
                 ...headerGroup.getHeaderGroupProps().style,
                 width: `calc(${
                   headerGroup.getHeaderGroupProps().style.width
-                } - 15px)`,
+                } - 20px)`,
               }}
               className="tr header"
             >

@@ -57,7 +57,6 @@ const Styles = styled.div`
     .tr {
       display: flex;
       height: 47px;
-
       transition: box-shadow 100ms ease-in-out;
       contain: style;
       margin-bottom: -1px;
@@ -119,7 +118,9 @@ const Styles = styled.div`
       &:hover {
         z-index: 200 !important;
         border-color: #afabac;
-        .canHide {
+        .canHide,
+        .default_tag,
+        .icon {
           visibility: visible;
         }
       }

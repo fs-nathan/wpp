@@ -98,7 +98,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
       )}
 
       {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
-        <div className="tr" {...row.getRowProps()}>
+        <div className="tr row-add" {...row.getRowProps()}>
           {row.cells.map((item, index) => (
             <div
               {...item.getCellProps()}
