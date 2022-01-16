@@ -63,27 +63,28 @@ const WPTableGroup = ({
       <div {...getTableProps()} className="table">
         {/* Header table */}
         <div style={{ position: "sticky", top: 0, zIndex: 350 }}>
-          {headerGroups.map((headerGroup) => (
-            <div
-              {...headerGroup.getHeaderGroupProps()}
-              style={{
-                ...headerGroup.getHeaderGroupProps().style,
-                width: `calc(${
-                  headerGroup.getHeaderGroupProps().style.width
-                } - 20px)`,
-              }}
-              className="tr header"
-            >
-              {headerGroup.headers.map((column, index) => (
-                <HeaderColumn
-                  isSticky={!index}
-                  column={column}
-                  isLastColumn={index === headerGroup.headers.length - 1}
-                  onAddNewColumns={onAddNewColumns}
-                />
-              ))}
-            </div>
-          ))}
+          {headerGroups.map((headerGroup) => {
+            const headerProps = headerGroup.getHeaderGroupProps();
+            return (
+              <div
+                {...headerProps}
+                style={{
+                  ...headerProps.style,
+                  width: `calc(${headerProps.style.width} - 20px)`,
+                }}
+                className="tr header"
+              >
+                {headerGroup.headers.map((column, index) => (
+                  <HeaderColumn
+                    isSticky={!index}
+                    column={column}
+                    isLastColumn={index === headerGroup.headers.length - 1}
+                    onAddNewColumns={onAddNewColumns}
+                  />
+                ))}
+              </div>
+            );
+          })}
         </div>
         {/*End header table */}
 
@@ -145,7 +146,9 @@ const HeaderColumn = ({
       className={classNames({ isSticky })}
     >
       <LeftStructure isLastColumn={isLastColumn}>
-        <Heading>{column.render("Header", { onAddNewColumns })}</Heading>
+        <Heading className={classNames({ "not-add-column": !isLastColumn })}>
+          {column.render("Header", { onAddNewColumns })}
+        </Heading>
       </LeftStructure>
       {!isLastColumn && (
         <ResizeDiv
@@ -183,9 +186,11 @@ const LeftStructure = styled.div`
   flex: 1 0 auto;
   font-size: 12px;
   padding-left: 24px;
+  padding-right: 10px;
   height: 100%;
   position: relative;
   align-items: center;
+
   border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
   justify-content: ${(props) => (props.isLastColumn ? "center" : "start")};
 
@@ -221,6 +226,12 @@ const ResizeDiv = styled.div`
   }
 `;
 
-const Heading = styled.div``;
+const Heading = styled.div`
+  &.not-add-column {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+`;
 
 export default WPTableGroup;

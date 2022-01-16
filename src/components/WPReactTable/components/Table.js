@@ -47,7 +47,7 @@ const WPTable = ({
         {/* Header table */}
         <div style={{ position: "sticky", top: 0, zIndex: 9 }}>
           {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()} className="tr">
+            <div {...headerGroup.getHeaderGroupProps()} className="tr header">
               {headerGroup.headers.map((column, index) => (
                 <HeadingColumn
                   column={column}

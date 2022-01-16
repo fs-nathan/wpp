@@ -61,7 +61,7 @@ const ColumnOptions = ({ props, value, option_color, onEdit = () => {} }) => {
     <>
       <BoxColLabel onClick={handleClick}>
         {_renderSelected()}
-        <KeyboardArrowDownIcon className="icon" />
+        <KeyboardArrowDownIcon className="icon" xs={{ color: "#6d6e6f" }} />
       </BoxColLabel>
       <Menu
         anchorEl={anchorEl}
@@ -72,13 +72,13 @@ const ColumnOptions = ({ props, value, option_color, onEdit = () => {} }) => {
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem
-          style={{ width: 200, color: "#666" }}
+          style={{ width: 200, color: "#6d6e6f" }}
           onClick={() => setSelected(null)}
         >
           <DoneIcon
             style={{
               marginRight: 10,
-              color: "#666",
+              color: "#6d6e6f",
               visibility: !selected ? "visible" : "hidden",
             }}
           />
@@ -89,7 +89,7 @@ const ColumnOptions = ({ props, value, option_color, onEdit = () => {} }) => {
             <DoneIcon
               style={{
                 marginRight: 10,
-                color: "#666",
+                color: "#6d6e6f",
                 visibility: selected?.id === item.id ? "visible" : "hidden",
               }}
             />
@@ -114,7 +114,7 @@ const ColumnOptions = ({ props, value, option_color, onEdit = () => {} }) => {
             display: "flex",
             alignItems: "center",
             cursor: "pointer",
-            color: "#666",
+            color: "#6d6e6f",
             borderTop: "1px solid#e8ecee",
           }}
         >

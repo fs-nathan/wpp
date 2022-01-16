@@ -315,8 +315,9 @@ const HeaderColumnWrapper = styled.div`
 `;
 
 const Heading = styled.div`
-  display: flex;
-  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export default HeadingColumn;

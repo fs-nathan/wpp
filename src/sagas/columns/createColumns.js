@@ -30,7 +30,7 @@ function* createColumns(action) {
     const { task } = yield call(doCreateColumns, action.options);
     yield put(createColumnsSuccess({ task }, action.options));
     action.callbackSuccess();
-    //SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(createColumnsFail(error, action.options));
     SnackbarEmitter(
