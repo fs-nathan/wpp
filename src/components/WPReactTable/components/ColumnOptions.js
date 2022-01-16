@@ -1,59 +1,75 @@
-import {
-  Box,
-  ListItem,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  Typography,
-} from "@material-ui/core";
-import DoneIcon from "@mui/icons-material/Done";
-import EditIcon from "@mui/icons-material/Edit";
+import { Box, Typography } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
+import { updateValueColumns } from "actions/columns/updateValueColumns";
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import ColumnOptionsList from "./ColumnOptionsList";
 
-const ColumnOptions = ({ props, value, option_color, onEdit = () => {} }) => {
-  const project = props?.row?.original;
+const ColumnOptions = ({
+  taskId,
+  idType,
+  dataType,
+  optionsType = [],
+  props,
+  value,
+  option_color,
+  option_value,
+  onEdit = () => {},
+}) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState({
     name: value,
     color: option_color,
+    _id: option_value,
   });
-  const labelsProject = useSelector(
-    ({ projectLabels }) => projectLabels.listProjectLabels
-  );
-  const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     setSelected({
       name: value,
       color: option_color,
+      _id: option_value,
     });
-  }, [value, option_color]);
+  }, [value, option_color, option_value]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const _handleClose = () => {
     setAnchorEl(null);
   };
 
+  const _handleSelect = (item) => {
+    setSelected(item);
+    dispatch(
+      updateValueColumns(
+        {
+          task_id: taskId,
+          field_id: idType,
+          dataType,
+          value: item._id,
+        },
+        () => {}
+      )
+    );
+  };
+
   const _renderSelected = () => {
-    if (!selected)
+    if (!selected?._id)
       return (
         <Typography className="default_tag" style={{ marginLeft: 5 }}>
           —
         </Typography>
       );
     return (
-      <Label
+      <LabelColumnOption
         style={{ background: selected.color, maxWidth: 85 }}
         onClick={handleClick}
       >
         {selected.name}
-      </Label>
+      </LabelColumnOption>
     );
   };
 
@@ -63,72 +79,13 @@ const ColumnOptions = ({ props, value, option_color, onEdit = () => {} }) => {
         {_renderSelected()}
         <KeyboardArrowDownIcon className="icon" xs={{ color: "#6d6e6f" }} />
       </BoxColLabel>
-      <Menu
+      <ColumnOptionsList
+        selected={selected}
         anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        onClick={handleClose}
-        transformOrigin={{ horizontal: "right", vertical: "top" }}
-        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-      >
-        <MenuItem
-          style={{ width: 200, color: "#6d6e6f" }}
-          onClick={() => setSelected(null)}
-        >
-          <DoneIcon
-            style={{
-              marginRight: 10,
-              color: "#6d6e6f",
-              visibility: !selected ? "visible" : "hidden",
-            }}
-          />
-          <Typography>—</Typography>
-        </MenuItem>
-        {labelsProject.data?.projectLabels?.map((item) => (
-          <MenuItem style={{ width: 200 }} onClick={() => setSelected(item)}>
-            <DoneIcon
-              style={{
-                marginRight: 10,
-                color: "#6d6e6f",
-                visibility: selected?.id === item.id ? "visible" : "hidden",
-              }}
-            />
-            <Typography
-              style={{
-                background: item.color,
-                padding: "5px 15px",
-                borderRadius: "15px",
-                color: "#fff",
-                fontSize: "12px",
-                textOverflow: "ellipsis",
-                overflow: "hidden",
-              }}
-              nowrap
-            >
-              {item.name}
-            </Typography>
-          </MenuItem>
-        ))}
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            cursor: "pointer",
-            color: "#6d6e6f",
-            borderTop: "1px solid#e8ecee",
-          }}
-        >
-          <MenuItem
-            onClick={() => onEdit(project)}
-            style={{ width: "100%", marginTop: 5 }}
-          >
-            <ListItemIcon style={{ minWidth: 20 }}>
-              <EditIcon />
-            </ListItemIcon>
-            <span style={{ marginLeft: "5px" }}>Chỉnh sửa</span>
-          </MenuItem>
-        </div>
-      </Menu>
+        options={optionsType}
+        onClose={_handleClose}
+        onSelect={_handleSelect}
+      />
     </>
   );
 };
@@ -152,16 +109,21 @@ const BoxColLabel = styled(Box)`
   }
 `;
 
-const Label = styled.div`
-  padding: 5px 10px;
-  border-radius: 15px;
-  color: #fff;
-  max-width: 100%;
-  margin: 5px 10px;
-  font-weight: 500;
-  white-space: nowrap;
+const LabelColumnOption = styled.div`
+  border-radius: 10px;
+  box-sizing: border-box;
+  -webkit-print-color-adjust: exact;
+  color-adjust: exact;
+  display: block;
+  font-size: 12px;
+  font-weight: 400;
+  height: 20px;
+  line-height: 20px;
   overflow: hidden;
-  text-overflow: ellipsis;
+  padding: 0 8px;
+  text-align: left;
+  white-space: nowrap;
+  color: #fff;
 `;
 
 export default ColumnOptions;

@@ -40,6 +40,7 @@ const CellRender = ({ dataType, idType, optionsType = [], props }) => {
     case 3:
       return (
         <ColumnOptions
+          taskId={taskId}
           idType={idType}
           dataType={dataType}
           optionsType={optionsType}
