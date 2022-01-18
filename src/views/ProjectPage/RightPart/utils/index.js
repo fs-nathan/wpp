@@ -3,20 +3,25 @@ import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
 import React from "react";
 
 export const convertFieldsToTable = (data) => {
-  return data.map((item) => {
-    return {
-      ...item,
-      Header: item.name,
-      Cell: (props) => (
-        <CellRender
-          idType={item.id}
-          optionsType={item.options}
-          dataType={item.data_type}
-          props={props}
-        />
-      ),
-    };
+  const result = [];
+  data.forEach((item) => {
+    if (item.id !== "pfd-name") {
+      result.push({
+        ...item,
+        Header: item.name,
+        Cell: (props) => (
+          <CellRender
+            idType={item.id}
+            optionsType={item.options}
+            dataType={item.data_type}
+            props={props}
+          />
+        ),
+      });
+    }
   });
+
+  return result;
 };
 
 const CellRender = ({ dataType, idType, optionsType = [], props }) => {

@@ -262,37 +262,37 @@ export const COLUMNS_TASK_TABLE = [
     accessor: "name",
     Cell: CellNameTask,
   },
-  {
-    Header: "Trạng thái",
-    accessor: "status_code",
-    Cell: (props) => <CellStatus props={props} />,
-  },
+  // {
+  //   Header: "Trạng thái",
+  //   accessor: "status_code",
+  //   Cell: (props) => <CellStatus props={props} />,
+  // },`
 
-  {
-    id: "progress_unit",
-    Header: "Tiến độ",
-    Cell: (props) => <CellProgressUnit props={props} />,
-  },
-  {
-    id: "start_column",
-    Header: "Bắt đầu",
-    Cell: (props) => <CellStartTime props={props} />,
-  },
-  {
-    id: "end_column",
-    Header: "Kết thúc",
-    Cell: (props) => <CellEndTime props={props} />,
-  },
-  {
-    id: "complete",
-    Header: "Hoàn thành",
-    Cell: (props) => <CellCompleted props={props} />,
-  },
-  {
-    id: "priority",
-    Header: "Ưu tiên",
-    Cell: (props) => <CellPriority props={props} />,
-  },
+  // {
+  //   id: "progress_unit",
+  //   Header: "Tiến độ",
+  //   Cell: (props) => <CellProgressUnit props={props} />,
+  // },
+  // {
+  //   id: "start_column",
+  //   Header: "Bắt đầu",
+  //   Cell: (props) => <CellStartTime props={props} />,
+  // },
+  // {
+  //   id: "end_column",
+  //   Header: "Kết thúc",
+  //   Cell: (props) => <CellEndTime props={props} />,
+  // },
+  // {
+  //   id: "complete",
+  //   Header: "Hoàn thành",
+  //   Cell: (props) => <CellCompleted props={props} />,
+  // },
+  // {
+  //   id: "priority",
+  //   Header: "Ưu tiên",
+  //   Cell: (props) => <CellPriority props={props} />,
+  // },
   {
     id: "add-column",
     Header: (props) => <AddHeading props={props} />,
