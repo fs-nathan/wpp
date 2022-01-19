@@ -4,9 +4,10 @@ import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import { Container } from "components/TableComponents";
 import WPReactTable from "components/WPReactTable";
+import EditColumnModal from "components/WPReactTable/components/EditColumnModal";
 import { exportToCSV } from "helpers/utils/exportData";
 import { cloneDeep, find, flattenDeep, get, isNil, join } from "lodash";
-import React, { useReducer } from "react";
+import React, { useReducer, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
@@ -52,6 +53,8 @@ function AllTaskTable({
   const columnsStore = useSelector(
     ({ columns }) => columns?.listColumns?.data || []
   );
+  const refEdit = useRef(null);
+
   const dispatch = useDispatch();
 
   const columns = React.useMemo(
@@ -67,7 +70,10 @@ function AllTaskTable({
   React.useEffect(() => {
     if (columnsStore.length && !state.isSetted) {
       const result = cloneDeep(state.arrColumns);
-      const moreColumns = convertFieldsToTable(columnsStore);
+      const moreColumns = convertFieldsToTable(
+        columnsStore,
+        _handleOpenEditModal
+      );
       result.splice(result.length - 1, 0, ...moreColumns);
       dispatchState({
         arrColumns: result,
@@ -80,6 +86,10 @@ function AllTaskTable({
   React.useEffect(() => {
     dispatchState({ isEmpty: tasks.tasks.length === 0 });
   }, [tasks.tasks]);
+
+  const _handleOpenEditModal = () => {
+    refEdit.current._open("list", {});
+  };
 
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
@@ -154,6 +164,7 @@ function AllTaskTable({
             onAddNewColumns={_handleAddNewColumns}
             onDragEnd={handleSortTask}
           />
+          <EditColumnModal ref={refEdit} />
           <TimeRangePopover
             bgColor={bgColor}
             className="time-range-popover"

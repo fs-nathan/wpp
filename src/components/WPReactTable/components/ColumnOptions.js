@@ -84,6 +84,7 @@ const ColumnOptions = ({
         anchorEl={anchorEl}
         options={optionsType}
         onClose={_handleClose}
+        onEdit={onEdit}
         onSelect={_handleSelect}
       />
     </>

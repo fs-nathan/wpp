@@ -2,21 +2,26 @@ import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
 import React from "react";
 
-export const convertFieldsToTable = (data) => {
+export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
   const result = [];
   data.forEach((item) => {
     if (item.id !== "pfd-name") {
       result.push({
         ...item,
+        minWidth: 150,
+        maxWidth: 480,
         Header: item.name,
-        Cell: (props) => (
-          <CellRender
-            idType={item.id}
-            optionsType={item.options}
-            dataType={item.data_type}
-            props={props}
-          />
-        ),
+        Cell: (props) => {
+          return (
+            <CellRender
+              idType={item.id}
+              optionsType={item.options}
+              dataType={item.data_type}
+              onOpenEditColumnModal={onOpenEditColumnModal}
+              {...props}
+            />
+          );
+        },
       });
     }
   });
@@ -24,11 +29,18 @@ export const convertFieldsToTable = (data) => {
   return result;
 };
 
-const CellRender = ({ dataType, idType, optionsType = [], props }) => {
-  const taskId = props?.row?.original?.id;
-  const data = props?.row?.original?.data[props.column.id] || {};
+const CellRender = ({
+  dataType,
+  idType,
+  optionsType = [],
+  row,
+  onOpenEditColumnModal = () => {},
+  ...props
+}) => {
+  const taskId = row?.original?.id;
+  const data = row?.original?.data[props.column.id] || {};
 
-  if (props.row.depth === 0) return null;
+  if (row.depth === 0) return null;
 
   switch (dataType) {
     case 1:
@@ -49,6 +61,7 @@ const CellRender = ({ dataType, idType, optionsType = [], props }) => {
           idType={idType}
           dataType={dataType}
           optionsType={optionsType}
+          onEdit={onOpenEditColumnModal}
           {...data}
         />
       );

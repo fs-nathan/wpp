@@ -1,4 +1,10 @@
-import { ListItemIcon, Menu, MenuItem, Typography } from "@material-ui/core";
+import {
+  Divider,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@material-ui/core";
 import DoneIcon from "@mui/icons-material/Done";
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
@@ -45,13 +51,9 @@ const ColumnOptionsList = ({
           </StyledTypo>
         </MenuItem>
       ))}
+      <Divider light />
       <WrapperMenuItem>
-        <MenuItem
-          onClick={() => {
-            alert("Open modal edit here");
-          }}
-          style={{ width: "100%", marginTop: 5 }}
-        >
+        <MenuItem onClick={onEdit} style={{ width: "100%", marginTop: 5 }}>
           <ListItemIcon style={{ minWidth: 20 }}>
             <EditIcon />
           </ListItemIcon>

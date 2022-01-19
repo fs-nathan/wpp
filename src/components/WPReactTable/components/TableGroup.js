@@ -17,6 +17,7 @@ const WPTableGroup = ({
   displayAddColumn = false,
   onDragEnd = () => {},
   onAddNewColumns = () => {},
+  ...props
 }) => {
   const getSubRows = useCallback((row) => {
     return row.tasks || [];
@@ -116,6 +117,7 @@ const WPTableGroup = ({
                           row={row}
                           provided={provided}
                           snapshot={snapshot}
+                          {...props}
                         />
                       )}
                     </Draggable>

@@ -8,6 +8,7 @@ const ContentColumn = ({
   ...props
 }) => {
   const canDragColumn = cell?.column?.id === "name";
+
   const cellProps = cell.getCellProps();
   return (
     <div

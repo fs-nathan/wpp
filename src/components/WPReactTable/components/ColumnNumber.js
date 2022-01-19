@@ -11,7 +11,7 @@ const ColumnNumber = ({
   format = "",
   idType,
   dataType,
-  optionsType,
+  optionsType = [],
   ...props
 }) => {
   const [value, setValue] = React.useState(defaultValue);
@@ -29,7 +29,7 @@ const ColumnNumber = ({
     e.target.closest(".td")?.classList?.remove("focus");
     if (isNaN(e.target.value) && dataType === 2) setValue(refValue.current);
 
-    if (e.target.value.length) {
+    if (e.target.value !== refValue.current.toString()) {
       dispatch(
         updateValueColumns(
           {

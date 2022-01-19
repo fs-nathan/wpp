@@ -36,7 +36,7 @@ const initialState = {
   defaultNumFix: 0,
 };
 
-const AddColumnModal = React.forwardRef(
+const EditColumnModal = React.forwardRef(
   ({ onAddSuccess = () => {}, onAddColumns = () => {} }, ref) => {
     const { t } = useTranslation();
     const { projectId } = useParams();
@@ -245,4 +245,4 @@ const WrapperCheckbox = styled(FormControlLabel)`
   }
 `;
 
-export default AddColumnModal;
+export default EditColumnModal;

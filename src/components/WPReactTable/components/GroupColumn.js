@@ -15,7 +15,7 @@ const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   ...(isDragging && {}),
 });
 
-const GroupColumn = ({ row, provided, snapshot }) => {
+const GroupColumn = ({ row, provided, snapshot, ...props }) => {
   const { t } = useTranslation();
   const { projectId } = useParams();
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
@@ -74,6 +74,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
           onVisibleAddRow={_handleAddNewTask}
           dragHandle={{ ...provided.dragHandleProps }}
           isGroupColumn
+          {...props}
         />
       </div>
 
