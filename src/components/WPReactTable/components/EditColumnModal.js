@@ -41,7 +41,7 @@ const initialState = {
 };
 
 const EditColumnModal = React.forwardRef(
-  ({ onAddSuccess = () => {}, onAddColumns = () => {} }, ref) => {
+  ({ onUpdateSuccess = () => {} }, ref) => {
     const { t } = useTranslation();
     const { projectId } = useParams();
     const [state, dispatchState] = React.useReducer(reducer, initialState);
@@ -82,11 +82,16 @@ const EditColumnModal = React.forwardRef(
         project_field_id: state.idType,
         project_id: projectId,
         data_type: state.dataType,
-        name: "new column update",
+        name: state.name,
       };
 
       if (data_type === 3) dataUpdate["options"] = contentValue;
-      dispatch(updateColumns(dataUpdate, () => {}));
+      dispatch(
+        updateColumns(dataUpdate, () => {
+          dispatchState(initialState);
+          onUpdateSuccess(dataUpdate);
+        })
+      );
     };
 
     /* The `_getDataType` function returns the data type of the state. */

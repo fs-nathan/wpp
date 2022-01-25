@@ -48,19 +48,21 @@ function AllTaskTable({
   handleSortGroupTask,
 }) {
   const { projectId } = useParams();
-  const [state, dispatchState] = useReducer(reducer, initialState);
+  const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
-  const columnsStore = useSelector(
-    ({ columns }) => columns?.listColumns?.data || []
-  );
+  const [state, dispatchState] = useReducer(reducer, {
+    ...initialState,
+    columnsFields: fields,
+  });
+
   const refEdit = useRef(null);
-
   const dispatch = useDispatch();
+  const { columnsFields } = state;
 
-  const columns = React.useMemo(
-    () => cloneDeep(state.arrColumns),
-    [state.arrColumns]
-  );
+  const columns = React.useMemo(() => {
+    console.log("run");
+    return cloneDeep(state.arrColumns);
+  }, [state.arrColumns]);
 
   React.useEffect(() => {
     dispatch(listColumns({ project_id: projectId }));
@@ -68,10 +70,10 @@ function AllTaskTable({
   }, [projectId]);
 
   React.useEffect(() => {
-    if (columnsStore.length && !state.isSetted) {
+    if (columnsFields.length && !state.isSetted) {
       const result = cloneDeep(state.arrColumns);
       const moreColumns = convertFieldsToTable(
-        columnsStore,
+        columnsFields,
         _handleOpenEditModal
       );
       result.splice(result.length - 1, 0, ...moreColumns);
@@ -81,7 +83,13 @@ function AllTaskTable({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columnsStore]);
+  }, [columnsFields]);
+
+  React.useEffect(() => {
+    if (fields.length && !state.isSetted) {
+      dispatchState({ columnsFields: fields });
+    }
+  }, [fields, state.isSetted]);
 
   React.useEffect(() => {
     dispatchState({ isEmpty: tasks.tasks.length === 0 });
@@ -150,6 +158,30 @@ function AllTaskTable({
     exportToCSV(data, "tasks");
   };
 
+  const _handleUpdateFieldSuccess = (data) => {
+    if (data.data_type === 3) {
+      const newColumnsFields = state.arrColumns.map((item) => {
+        if (item.id === data.project_field_id) {
+          return {
+            ...item,
+            name: data.name,
+            options: data.options.map((item) => ({ ...item, _id: item.id })),
+          };
+        }
+        return item;
+      });
+
+      /* Creating a new array of columns and setting it to the state. */
+      dispatchState({
+        arrColumns: convertFieldsToTable(
+          newColumnsFields,
+          _handleOpenEditModal
+        ),
+        isSetted: true,
+      });
+    }
+  };
+
   return (
     <Container>
       {state.isEmpty && (
@@ -180,7 +212,10 @@ function AllTaskTable({
             onAddNewColumns={_handleAddNewColumns}
             onDragEnd={handleSortTask}
           />
-          <EditColumnModal ref={refEdit} />
+          <EditColumnModal
+            ref={refEdit}
+            onUpdateSuccess={_handleUpdateFieldSuccess}
+          />
           <TimeRangePopover
             bgColor={bgColor}
             className="time-range-popover"

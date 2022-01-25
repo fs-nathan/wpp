@@ -1,6 +1,7 @@
 import { Box, Typography } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import { updateValueColumns } from "actions/columns/updateValueColumns";
+import { isArray } from "lodash";
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
@@ -28,12 +29,10 @@ const ColumnOptions = ({
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    setSelected({
-      name: value,
-      color: option_color,
-      _id: option_value,
-    });
-  }, [value, option_color, option_value]);
+    if (!isArray(optionsType)) return;
+    const newSelected = optionsType.find((item) => item._id === option_value);
+    if (selected) setSelected(newSelected);
+  }, [value, option_color, option_value, optionsType, selected]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -76,6 +75,7 @@ const ColumnOptions = ({
           —
         </Typography>
       );
+
     return (
       <LabelColumnOption
         style={{ background: selected.color, maxWidth: 85 }}
@@ -138,6 +138,9 @@ const LabelColumnOption = styled.div`
   text-align: left;
   white-space: nowrap;
   color: #fff;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
-export default ColumnOptions;
+export default React.memo(ColumnOptions);

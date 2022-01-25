@@ -5,7 +5,11 @@ import React from "react";
 export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
   const result = [];
   data.forEach((item) => {
-    if (item.id !== "pfd-name") {
+    if (
+      item.id !== "pfd-name" &&
+      item.id !== "name" &&
+      item.id !== "add-column"
+    ) {
       result.push({
         ...item,
         minWidth: 150,
@@ -24,6 +28,10 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
           );
         },
       });
+    }
+
+    if (item.id === "name" || item.id === "add-column") {
+      result.push(item);
     }
   });
 
