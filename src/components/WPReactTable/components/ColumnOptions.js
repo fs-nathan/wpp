@@ -32,7 +32,8 @@ const ColumnOptions = ({
     if (!isArray(optionsType)) return;
     const newSelected = optionsType.find((item) => item._id === option_value);
     if (selected) setSelected(newSelected);
-  }, [value, option_color, option_value, optionsType, selected]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
