@@ -13,6 +13,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { updateColumns } from "actions/columns/updateColumns";
+import AlertModal from "components/AlertModal";
 import TitleSectionModal from "components/TitleSectionModal";
 import { apiService } from "constants/axiosInstance";
 import {
@@ -40,6 +41,7 @@ const initialState = {
   type: "list",
   selectedType: { text: "", icon: () => <ArrowCircleDownIcon /> },
   open: false,
+  openConfirm: false,
   value: 0,
   defaultLabel: "",
   defaultPosition: "right",
@@ -107,7 +109,9 @@ const EditColumnModal = React.forwardRef(
       );
     };
 
-    const _handleDelete = async () => {
+    const _handleDelete = (data = true) => dispatchState({ openConfirm: data });
+
+    const _handleConfirmDelete = async () => {
       const dataDelete = {
         project_field_id: state.idType,
         project_id: projectId,
@@ -161,6 +165,12 @@ const EditColumnModal = React.forwardRef(
         onCancle={_handleDelete}
         onConfirm={_handleConfirm}
       >
+        <AlertModal
+          setOpen={_handleDelete}
+          onConfirm={_handleConfirmDelete}
+          open={state.openConfirm}
+          content="This will permanently delete the Custom Field and remove its values from any tasks in this project. This cannot be undone."
+        />
         <Box sx={{ flexGrow: 1 }}>
           {/* Tabs panel */}
           <TabPanel value={state.value} index={0}>
