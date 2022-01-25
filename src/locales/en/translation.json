@@ -2522,6 +2522,7 @@
   "LABEL_UPDATE_TASK_COMPLETE": "Update task complete",
   "EXPORT_DATA": "Export Data",
   "ADD_FIELDS_DATA": "Add fields data",
+  "EDIT_FIELDS_DATA": "Edit fields data",
   "CREATE_FIELDS": "Create field",
   "LABEL_CREATE_FIELDS": "Label fields",
   "DATA_TYPES": "Data types",

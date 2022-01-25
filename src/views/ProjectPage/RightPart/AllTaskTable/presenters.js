@@ -87,8 +87,24 @@ function AllTaskTable({
     dispatchState({ isEmpty: tasks.tasks.length === 0 });
   }, [tasks.tasks]);
 
-  const _handleOpenEditModal = () => {
-    refEdit.current._open("list", {});
+  const _handleOpenEditModal = (type, data) => {
+    let data_type = 3;
+
+    switch (type) {
+      case 1:
+        data_type = "text";
+        break;
+      case 2:
+        data_type = "number";
+        break;
+      case 3:
+        data_type = "list";
+        break;
+      default:
+        break;
+    }
+
+    refEdit.current._open(data_type, data);
   };
 
   const _handleAddNewColumns = (dataColumn) => {

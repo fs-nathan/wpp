@@ -7,8 +7,10 @@ import styled from "styled-components";
 import ColumnOptionsList from "./ColumnOptionsList";
 
 const ColumnOptions = ({
+  projectId,
   taskId,
   idType,
+  nameType,
   dataType,
   optionsType = [],
   props,
@@ -56,6 +58,17 @@ const ColumnOptions = ({
     );
   };
 
+  const _handleOpenModalEdit = () => {
+    onEdit(dataType, {
+      idType,
+      projectId,
+      taskId,
+      dataType,
+      name: nameType,
+      optionsType: optionsType || [],
+    });
+  };
+
   const _renderSelected = () => {
     if (!selected?._id)
       return (
@@ -84,7 +97,7 @@ const ColumnOptions = ({
         anchorEl={anchorEl}
         options={optionsType}
         onClose={_handleClose}
-        onEdit={onEdit}
+        onEdit={_handleOpenModalEdit}
         onSelect={_handleSelect}
       />
     </>

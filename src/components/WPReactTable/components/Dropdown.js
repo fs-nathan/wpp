@@ -8,7 +8,7 @@ import Select from "@mui/material/Select";
 import * as React from "react";
 import styled from "styled-components";
 
-const OPTIONS_FIELDS_TYPE = [
+export const OPTIONS_FIELDS_TYPE = [
   {
     icon: () => <ArrowCircleDownIcon />,
     text: "Danh sách chọn",
@@ -38,29 +38,27 @@ export default function MultipleSelectPlaceholder({
   };
 
   return (
-    <div>
-      <FormControl sx={{ width: "100%" }}>
-        <WrapperSelect
-          labelId="demo-customized-select-label"
-          id="demo-customized-select"
-          value={value}
-          onChange={handleChange}
-          input={<OutlinedInput />}
-          inputProps={{ "aria-label": "Without label" }}
-        >
-          {options.map((item, index) => (
-            <WrapperMenu key={index} value={item.type} {...item}>
-              {item.icon && (
-                <ListItemIcon style={{ minWidth: 25 }}>
-                  <item.icon />
-                </ListItemIcon>
-              )}
-              <ListItemText>{item.text}</ListItemText>
-            </WrapperMenu>
-          ))}
-        </WrapperSelect>
-      </FormControl>
-    </div>
+    <FormControl sx={{ width: "100%" }}>
+      <WrapperSelect
+        labelId="demo-customized-select-label"
+        id="demo-customized-select"
+        value={value}
+        onChange={handleChange}
+        input={<OutlinedInput />}
+        inputProps={{ "aria-label": "Without label" }}
+      >
+        {options.map((item, index) => (
+          <WrapperMenu key={index} value={item.type} {...item}>
+            {item.icon && (
+              <ListItemIcon style={{ minWidth: 25 }}>
+                <item.icon />
+              </ListItemIcon>
+            )}
+            <ListItemText>{item.text}</ListItemText>
+          </WrapperMenu>
+        ))}
+      </WrapperSelect>
+    </FormControl>
   );
 }
 

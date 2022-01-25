@@ -35,7 +35,7 @@ const ColumnNumber = ({
           {
             task_id: taskId,
             field_id: idType,
-            dataType,
+            data_type: dataType,
             value: e.target.value,
           },
           () => {}

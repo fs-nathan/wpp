@@ -2542,6 +2542,7 @@
   "TRASH": "Thùng rác",
   "ADD_NEW_TASK": "Thêm công việc",
   "ADD_FIELDS_DATA": "Thêm trường dữ liệu",
+  "EDIT_FIELDS_DATA": "Chỉnh sửa trường dữ liệu",
   "CREATE_FIELDS": "Tạo trường",
   "LABEL_CREATE_FIELDS": "Tiêu đề trường",
   "DATA_TYPES": "Loại dữ liệu",
@@ -2555,5 +2556,6 @@
   "POSITION": "Vị trí",
   "FIND_FIELD_DATA": "Tìm kiếm trường dữ liệu",
   "DATA_FIELD_EXITS": "Trường dữ liệu có sẵn",
-  "ADD_DESCRIPTION": "Thêm mô tả"
+  "ADD_DESCRIPTION": "Thêm mô tả",
+  "EDIT": "Chỉnh sửa"
 }

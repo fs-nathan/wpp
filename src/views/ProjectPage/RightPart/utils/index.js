@@ -15,6 +15,7 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
           return (
             <CellRender
               idType={item.id}
+              nameType={item.name}
               optionsType={item.options}
               dataType={item.data_type}
               onOpenEditColumnModal={onOpenEditColumnModal}
@@ -32,6 +33,7 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
 const CellRender = ({
   dataType,
   idType,
+  nameType,
   optionsType = [],
   row,
   onOpenEditColumnModal = () => {},
@@ -59,6 +61,7 @@ const CellRender = ({
         <ColumnOptions
           taskId={taskId}
           idType={idType}
+          nameType={nameType}
           dataType={dataType}
           optionsType={optionsType}
           onEdit={onOpenEditColumnModal}
