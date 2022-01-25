@@ -69,25 +69,22 @@ function AllTaskTable({
   }, [projectId]);
 
   React.useEffect(() => {
-    if (columnsFields.length && !state.isSetted) {
-      const result = cloneDeep(state.arrColumns);
+    if (columnsFields.length) {
       const moreColumns = convertFieldsToTable(
         columnsFields,
         _handleOpenEditModal
       );
-      result.splice(result.length - 1, 0, ...moreColumns);
+
       dispatchState({
-        arrColumns: result,
+        arrColumns: moreColumns,
         isSetted: true,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columnsFields]);
+  }, [columnsFields, fields]);
 
   React.useEffect(() => {
-    if (fields.length && !state.isSetted) {
-      dispatchState({ columnsFields: fields });
-    }
+    if (fields.length) dispatchState({ columnsFields: fields });
   }, [fields, state.isSetted]);
 
   React.useEffect(() => {
@@ -116,9 +113,7 @@ function AllTaskTable({
 
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
-    const result = cloneDeep(state.arrColumns);
-    result.splice(result.length - 1, 0, dataColumn);
-    dispatchState({ arrColumns: result });
+    dispatch(listColumns({ project_id: projectId }));
   };
 
   const disableShowHide = !isNil(

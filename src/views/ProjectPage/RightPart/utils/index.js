@@ -1,6 +1,7 @@
 import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
 import React from "react";
+import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 
 export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
   const result = [];
@@ -29,13 +30,13 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
         },
       });
     }
-
-    if (item.id === "name" || item.id === "add-column") {
-      result.push(item);
-    }
   });
 
-  return result;
+  return [
+    COLUMNS_TASK_TABLE[0],
+    ...result,
+    COLUMNS_TASK_TABLE[COLUMNS_TASK_TABLE.length - 1],
+  ];
 };
 
 const CellRender = React.memo(
