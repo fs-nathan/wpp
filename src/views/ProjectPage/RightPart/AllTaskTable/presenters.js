@@ -60,7 +60,6 @@ function AllTaskTable({
   const { columnsFields } = state;
 
   const columns = React.useMemo(() => {
-    console.log("run");
     return cloneDeep(state.arrColumns);
   }, [state.arrColumns]);
 

@@ -33,7 +33,7 @@ const ColumnOptions = ({
     const newSelected = optionsType.find((item) => item._id === option_value);
     if (selected) setSelected(newSelected);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [option_value, optionsType]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -79,7 +79,7 @@ const ColumnOptions = ({
 
     return (
       <LabelColumnOption
-        style={{ background: selected.color, maxWidth: 85 }}
+        style={{ background: selected.color, maxWidth: "100%" }}
         onClick={handleClick}
       >
         {selected.name}

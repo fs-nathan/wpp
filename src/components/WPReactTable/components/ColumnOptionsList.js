@@ -34,7 +34,7 @@ const ColumnOptionsList = ({
       anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
     >
       <MenuItem
-        style={{ width: 200, color: "#6d6e6f" }}
+        style={{ width: 200, color: "#6d6e6f", height: 35 }}
         onClick={() => onClose(null)}
       >
         <StyledIconSelected
@@ -44,16 +44,24 @@ const ColumnOptionsList = ({
         <Typography>—</Typography>
       </MenuItem>
       {options?.map((item) => (
-        <MenuItem style={{ width: 200 }} onClick={() => _handleSelect(item)}>
+        <MenuItem
+          title={item.name}
+          style={{ width: 200, height: 35 }}
+          onClick={() => _handleSelect(item)}
+        >
           <StyledIconSelected selected={selected?._id === item._id} />
           <StyledTypo nowrap color={item.color}>
             {item.name}
           </StyledTypo>
         </MenuItem>
       ))}
+      <div style={{ marginBottom: 5 }} />
       <Divider light />
       <WrapperMenuItem>
-        <MenuItem onClick={onEdit} style={{ width: "100%", marginTop: 5 }}>
+        <MenuItem
+          onClick={onEdit}
+          style={{ width: "100%", marginTop: 5, height: 35 }}
+        >
           <ListItemIcon style={{ minWidth: 20 }}>
             <EditIcon />
           </ListItemIcon>
@@ -92,6 +100,10 @@ const StyledTypo = styled(Typography)`
   text-align: left;
   white-space: nowrap;
   color: #fff;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export default ColumnOptionsList;

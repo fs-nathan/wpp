@@ -77,6 +77,12 @@ const EditColumnModal = React.forwardRef(
       const data_type = _getDataType();
       const contentValue = refContent.current._getValue();
 
+      /* The dataUpdate object is a JavaScript object that contains the following properties:
+      /* task_id: The task ID of the task that is currently being edited.
+      /* project_field_id: The ID of the project field that is currently being edited.
+      /* project_id: The ID of the project that is currently being edited.
+      /* data_type: The data type of the project field that is currently being edited.
+      /* name: The name of the project field that is currently being edited. */
       const dataUpdate = {
         task_id: state.taskId,
         project_field_id: state.idType,
