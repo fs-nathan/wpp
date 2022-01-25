@@ -1,4 +1,5 @@
 import {
+  Button,
   Checkbox,
   FormControlLabel,
   ListItemIcon,
@@ -13,6 +14,12 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { updateColumns } from "actions/columns/updateColumns";
 import TitleSectionModal from "components/TitleSectionModal";
+import { apiService } from "constants/axiosInstance";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -41,7 +48,7 @@ const initialState = {
 };
 
 const EditColumnModal = React.forwardRef(
-  ({ onUpdateSuccess = () => {} }, ref) => {
+  ({ onUpdateSuccess = () => {}, onDeleteSuccess = () => {} }, ref) => {
     const { t } = useTranslation();
     const { projectId } = useParams();
     const [state, dispatchState] = React.useReducer(reducer, initialState);
@@ -73,7 +80,7 @@ const EditColumnModal = React.forwardRef(
       dispatchState({ name: e.target.value });
     };
 
-    const _handleConfirm = async () => {
+    const _handleConfirm = () => {
       const data_type = _getDataType();
       const contentValue = refContent.current._getValue();
 
@@ -100,6 +107,27 @@ const EditColumnModal = React.forwardRef(
       );
     };
 
+    const _handleDelete = async () => {
+      const dataDelete = {
+        project_field_id: state.idType,
+        project_id: projectId,
+      };
+      const { status } = await apiService({
+        data: dataDelete,
+        url: "/project-field/delete",
+        method: "POST",
+      });
+
+      if (status === 200) {
+        dispatchState(initialState);
+        onDeleteSuccess(dataDelete);
+        SnackbarEmitter(
+          SNACKBAR_VARIANT.SUCCESS,
+          DEFAULT_MESSAGE.MUTATE.SUCCESS
+        );
+      }
+    };
+
     /* The `_getDataType` function returns the data type of the state. */
     const _getDataType = () => {
       switch (state.type) {
@@ -118,6 +146,7 @@ const EditColumnModal = React.forwardRef(
         open={state.open}
         setOpen={handleOpen}
         confirmRender={() => t("EDIT")}
+        cancleRender={() => "Delete field"}
         titleComponent={
           <TitleModalAdd
             value={state.value}
@@ -129,7 +158,7 @@ const EditColumnModal = React.forwardRef(
         className="offerModal"
         height={"medium"}
         manualClose={true}
-        onCancle={() => handleOpen(false)}
+        onCancle={_handleDelete}
         onConfirm={_handleConfirm}
       >
         <Box sx={{ flexGrow: 1 }}>
@@ -196,7 +225,7 @@ const EditColumnModal = React.forwardRef(
               fullWidth
               InputProps={{
                 startAdornment: <SearchIcon style={{ marginRight: "10px" }} />,
-                style: { marginTop: "15px" },
+                style: { marginTop: "15px", color: "rgb(102, 102, 102)" },
               }}
             />
 

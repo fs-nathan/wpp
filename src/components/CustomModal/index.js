@@ -57,7 +57,7 @@ const StyledDialogActions = ({ className = "", ...props }) => (
   />
 );
 
-const ActionsAcceptButton = ({ className = "", disabled, ...props }) => (
+export const ActionsAcceptButton = ({ className = "", disabled, ...props }) => (
   <ButtonBase
     disabled={disabled}
     className={`${

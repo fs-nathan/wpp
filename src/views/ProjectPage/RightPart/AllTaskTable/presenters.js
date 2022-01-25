@@ -181,6 +181,17 @@ function AllTaskTable({
     }
   };
 
+  const _handleDeleteFieldSuccess = (data) => {
+    const newColumnsFields = state.arrColumns.filter(
+      (item) => item.id !== data.project_field_id
+    );
+    /* Creating a new array of columns and setting it to the state. */
+    dispatchState({
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleOpenEditModal),
+      isSetted: true,
+    });
+  };
+
   return (
     <Container>
       {state.isEmpty && (
@@ -214,6 +225,7 @@ function AllTaskTable({
           <EditColumnModal
             ref={refEdit}
             onUpdateSuccess={_handleUpdateFieldSuccess}
+            onDeleteSuccess={_handleDeleteFieldSuccess}
           />
           <TimeRangePopover
             bgColor={bgColor}
