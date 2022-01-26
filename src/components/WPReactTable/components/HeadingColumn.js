@@ -162,11 +162,11 @@ export const AddHeading = (props) => {
         onAddColumns={props.props.onAddNewColumns}
       />
       <div
-        className="wp-wrapper-button active"
+        className="wp-wrapper-button"
         style={{
           marginRight: 0,
           height: "100%",
-          visibility: "visible!important",
+          visibility: "visible",
         }}
         onClick={handleClick}
       >
