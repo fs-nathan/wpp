@@ -1,10 +1,10 @@
+import { Box, CircularProgress } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
 import { TimeRangePopover } from "components/CustomPopover";
 import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import { Container } from "components/TableComponents";
 import WPReactTable from "components/WPReactTable";
-
 import EditColumnModal from "components/WPReactTable/components/EditColumnModal";
 import { apiService } from "constants/axiosInstance";
 import {
@@ -29,6 +29,7 @@ const reducer = (state, action) => {
 const initialState = {
   arrColumns: COLUMNS_TASK_TABLE,
   isEmpty: true,
+  isLoading: false,
   isSetted: false,
 };
 
@@ -61,8 +62,6 @@ function AllTaskTable({
     ...initialState,
     columnsFields: fields,
   });
-
-  const refAdd = useRef(null);
   const refEdit = useRef(null);
   const dispatch = useDispatch();
   const { columnsFields } = state;
@@ -92,6 +91,7 @@ function AllTaskTable({
       dispatchState({
         arrColumns: moreColumns,
         isSetted: true,
+        isLoading: false,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -102,6 +102,7 @@ function AllTaskTable({
     if (fields.length) dispatchState({ columnsFields: fields });
   }, [fields, state.isSetted]);
 
+  /* This code is checking to see if the tasks array is empty. If it is, then it will dispatch the state to set isEmpty to true. */
   React.useEffect(() => {
     dispatchState({ isEmpty: tasks.tasks.length === 0 });
   }, [tasks.tasks]);
@@ -126,6 +127,10 @@ function AllTaskTable({
     refEdit.current._open(data_type, data);
   };
 
+  /**
+   * It takes a dataColumn object as an argument, and then dispatches an action to the Redux store.
+   * @returns The list of columns.
+   */
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
     /* Dispatching an action to the Redux store. */
@@ -228,6 +233,7 @@ function AllTaskTable({
 
   const _handleSortColumn = async (id, method) => {
     try {
+      dispatchState({ isLoading: true });
       /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
       const { status } = await apiService({
         data: {
@@ -239,12 +245,8 @@ function AllTaskTable({
         method: "POST",
       });
 
-      if (status === 200) {
-        SnackbarEmitter(
-          SNACKBAR_VARIANT.SUCCESS,
-          DEFAULT_MESSAGE.MUTATE.SUCCESS
-        );
-      }
+      /* Fetching the list of columns from the server. */
+      if (status === 200) dispatch(listColumns({ project_id: projectId }));
     } catch (error) {}
   };
 
@@ -260,6 +262,7 @@ function AllTaskTable({
           projectID={get(project.project, "id")}
         />
       )}
+
       {!state.isEmpty && (
         <>
           <HeaderTableCustom
@@ -274,16 +277,24 @@ function AllTaskTable({
             onReOrderColumns={_handleReOrderColumns}
             onAddColumns={_handleAddNewColumns}
           />
-          <WPReactTable
-            isCollapsed={expand}
-            columns={columns}
-            data={tasks.tasks}
-            isGroup
-            onAddNewColumns={_handleAddNewColumns}
-            onDragEnd={handleSortTask}
-            onHideColumn={_handleHideColumn}
-            onSortColumn={_handleSortColumn}
-          />
+
+          {state.isLoading ? (
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <CircularProgress />
+            </Box>
+          ) : (
+            <WPReactTable
+              isCollapsed={expand}
+              columns={columns}
+              data={tasks.tasks}
+              isGroup
+              onAddNewColumns={_handleAddNewColumns}
+              onDragEnd={handleSortTask}
+              onHideColumn={_handleHideColumn}
+              onSortColumn={_handleSortColumn}
+            />
+          )}
+
           <EditColumnModal
             ref={refEdit}
             onUpdateSuccess={_handleUpdateFieldSuccess}

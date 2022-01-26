@@ -12,6 +12,13 @@ import UpgradeIcon from "@mui/icons-material/Upgrade";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
+/**
+ * It takes the previous state and the new state as arguments. If the new state is an object, it
+ * returns a new object containing the previous state and the new state. If the new state is a
+ * function, it returns the result of calling the function with the previous state as an argument.
+ * Otherwise, it returns false.
+ * @returns The object that is being returned is the new state.
+ */
 const reducer = (prevState, newState) => {
   if (typeof newState === "object") return { ...prevState, ...newState };
   if (typeof newState === "function") return newState(prevState);
@@ -28,6 +35,7 @@ const HeaderColumn = ({
   onSortColumn = () => {},
   onAddNewColumns = () => {},
 }) => {
+  /* The above code is creating a state and dispatch function. */
   const [state, dispatchState] = useReducer(reducer, initialState);
 
   /**
@@ -111,14 +119,21 @@ const HeaderColumn = ({
         </StyledMenuItem>
         <Divider />
 
-        <StyledMenuItem onClick={() => _handleSort(1)} style={{ marginTop: 5 }}>
+        <StyledMenuItem
+          isActive={column.sort_method === "ASC"}
+          onClick={() => _handleSort(1)}
+          style={{ marginTop: 5 }}
+        >
           <StyledListItemIcon>
             <UpgradeIcon />
           </StyledListItemIcon>
           <Typography textAlign="center">Lọc tăng dần</Typography>
         </StyledMenuItem>
 
-        <StyledMenuItem onClick={() => _handleSort(2)}>
+        <StyledMenuItem
+          isActive={column.sort_method === "DESC"}
+          onClick={() => _handleSort(2)}
+        >
           <StyledListItemIcon transform>
             <UpgradeIcon />
           </StyledListItemIcon>
@@ -153,6 +168,9 @@ const StyledMenuItem = styled(MenuItem)`
   color: ${(props) => (props.isDelete ? "#f44336" : "#1e1f21")};
   width: 200px;
   height: 35px;
+  ${(props) => {
+    if (props.isActive) return { backgroundColor: "rgba(0, 0, 0, 0.08)" };
+  }}
 
   p {
     text-overflow: ellipsis;
