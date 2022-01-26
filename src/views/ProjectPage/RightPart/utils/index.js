@@ -9,7 +9,8 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
     if (
       item.id !== "pfd-name" &&
       item.id !== "name" &&
-      item.id !== "add-column"
+      item.id !== "add-column" &&
+      item.is_show
     ) {
       result.push({
         ...item,

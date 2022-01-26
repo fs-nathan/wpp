@@ -5,6 +5,12 @@ import HeaderProject from "components/HeaderProject";
 import { Container } from "components/TableComponents";
 import WPReactTable from "components/WPReactTable";
 import EditColumnModal from "components/WPReactTable/components/EditColumnModal";
+import { apiService } from "constants/axiosInstance";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
 import { exportToCSV } from "helpers/utils/exportData";
 import { cloneDeep, find, flattenDeep, get, isNil, join } from "lodash";
 import React, { useReducer, useRef } from "react";
@@ -187,6 +193,51 @@ function AllTaskTable({
     });
   };
 
+  const _handleHideColumn = async (idHide) => {
+    /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
+    const newColumnsFields = state.arrColumns.filter(({ id }) => id !== idHide);
+    dispatchState({
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleOpenEditModal),
+      isSetted: true,
+    });
+
+    const { status } = await apiService({
+      data: {
+        project_field_id: idHide,
+        project_id: projectId,
+        status: 0,
+      },
+      url: "/project-field/set-status",
+      method: "POST",
+    });
+
+    if (status === 200) {
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    }
+  };
+
+  const _handleSortColumn = async (id, method) => {
+    try {
+      /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
+      const { status } = await apiService({
+        data: {
+          project_field_id: id,
+          project_id: projectId,
+          method,
+        },
+        url: "/project-field/set-sort-method",
+        method: "POST",
+      });
+
+      if (status === 200) {
+        SnackbarEmitter(
+          SNACKBAR_VARIANT.SUCCESS,
+          DEFAULT_MESSAGE.MUTATE.SUCCESS
+        );
+      }
+    } catch (error) {}
+  };
+
   return (
     <Container>
       {state.isEmpty && (
@@ -216,6 +267,8 @@ function AllTaskTable({
             isGroup
             onAddNewColumns={_handleAddNewColumns}
             onDragEnd={handleSortTask}
+            onHideColumn={_handleHideColumn}
+            onSortColumn={_handleSortColumn}
           />
           <EditColumnModal
             ref={refEdit}

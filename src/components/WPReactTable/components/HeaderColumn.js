@@ -24,6 +24,8 @@ const HeaderColumn = ({
   column,
   isSticky = false,
   isLastColumn = false,
+  onHideColumn = () => {},
+  onSortColumn = () => {},
   onAddNewColumns = () => {},
 }) => {
   const [state, dispatchState] = useReducer(reducer, initialState);
@@ -44,8 +46,21 @@ const HeaderColumn = ({
   };
 
   const _handleEditField = (event) => {};
-  const _handleHideField = (event) => {};
+
+  /**
+   * When the user clicks the "Hide" button, the column is hidden and the state is updated.
+   */
+  const _handleHideField = () => {
+    dispatchState(initialState);
+    onHideColumn(column.id);
+  };
+
   const _handleDeleteField = (event) => {};
+
+  const _handleSort = (valueSort) => {
+    dispatchState(initialState);
+    onSortColumn(column.id, valueSort);
+  };
 
   return (
     <HeaderColumnWrapper
@@ -96,21 +111,24 @@ const HeaderColumn = ({
         </StyledMenuItem>
         <Divider />
 
-        <StyledMenuItem onClick={_handleCloseMenu} style={{ marginTop: 5 }}>
+        <StyledMenuItem onClick={() => _handleSort(1)} style={{ marginTop: 5 }}>
           <StyledListItemIcon>
             <UpgradeIcon />
           </StyledListItemIcon>
           <Typography textAlign="center">Lọc tăng dần</Typography>
         </StyledMenuItem>
 
-        <StyledMenuItem onClick={_handleCloseMenu}>
+        <StyledMenuItem onClick={() => _handleSort(2)}>
           <StyledListItemIcon transform>
             <UpgradeIcon />
           </StyledListItemIcon>
           <Typography textAlign="center">Lọc giảm dần</Typography>
         </StyledMenuItem>
 
-        <StyledMenuItem onClick={_handleCloseMenu} style={{ marginBottom: 5 }}>
+        <StyledMenuItem
+          onClick={() => _handleSort(0)}
+          style={{ marginBottom: 5 }}
+        >
           <StyledListItemIcon>
             <SearchOffIcon />
           </StyledListItemIcon>

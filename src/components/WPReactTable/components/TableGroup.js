@@ -15,6 +15,8 @@ const WPTableGroup = ({
   data,
   displayAddColumn = false,
   onDragEnd = () => {},
+  onHideColumn = () => {},
+  onSortColumn = () => {},
   onAddNewColumns = () => {},
   ...props
 }) => {
@@ -80,6 +82,8 @@ const WPTableGroup = ({
                     column={column}
                     isLastColumn={index === headerGroup.headers.length - 1}
                     onAddNewColumns={onAddNewColumns}
+                    onHideColumn={onHideColumn}
+                    onSortColumn={onSortColumn}
                   />
                 ))}
               </div>
