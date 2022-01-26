@@ -1,7 +1,15 @@
-import { Menu, MenuItem, Typography } from "@material-ui/core";
+import {
+  Divider,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  Typography,
+} from "@material-ui/core";
 import classNames from "classnames";
 import React, { useReducer } from "react";
 import styled from "styled-components";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 
 const reducer = (prevState, newState) => {
@@ -35,6 +43,10 @@ const HeaderColumn = ({
     dispatchState({ anchorEl: null });
   };
 
+  const _handleEditField = (event) => {};
+  const _handleHideField = (event) => {};
+  const _handleDeleteField = (event) => {};
+
   return (
     <HeaderColumnWrapper
       {...column.getHeaderProps()}
@@ -48,6 +60,7 @@ const HeaderColumn = ({
         <Heading className={classNames({ "not-add-column": !isLastColumn })}>
           {column.render("Header", { onAddNewColumns })}
         </Heading>
+
         {!isLastColumn && (
           <StyledWrapperButton
             className={classNames("wp-wrapper-button", {
@@ -59,6 +72,7 @@ const HeaderColumn = ({
           </StyledWrapperButton>
         )}
       </LeftStructure>
+
       {!isLastColumn && (
         <ResizeDiv
           {...column.getResizerProps()}
@@ -77,16 +91,74 @@ const HeaderColumn = ({
         open={Boolean(state.anchorEl)}
         onClose={_handleCloseMenu}
       >
-        <MenuItem onClick={_handleCloseMenu}>
-          <Typography textAlign="center">Sort alphabetically</Typography>
-        </MenuItem>
-        <MenuItem onClick={_handleCloseMenu}>
-          <Typography textAlign="center">Sort by likes</Typography>
-        </MenuItem>
+        <StyledMenuItem onClick={_handleEditField} style={{ marginBottom: 5 }}>
+          <Typography textAlign="center">Chỉnh sửa trường</Typography>
+        </StyledMenuItem>
+        <Divider />
+
+        <StyledMenuItem onClick={_handleCloseMenu} style={{ marginTop: 5 }}>
+          <StyledListItemIcon>
+            <UpgradeIcon />
+          </StyledListItemIcon>
+          <Typography textAlign="center">Lọc tăng dần</Typography>
+        </StyledMenuItem>
+
+        <StyledMenuItem onClick={_handleCloseMenu}>
+          <StyledListItemIcon transform>
+            <UpgradeIcon />
+          </StyledListItemIcon>
+          <Typography textAlign="center">Lọc giảm dần</Typography>
+        </StyledMenuItem>
+
+        <StyledMenuItem onClick={_handleCloseMenu} style={{ marginBottom: 5 }}>
+          <StyledListItemIcon>
+            <SearchOffIcon />
+          </StyledListItemIcon>
+          <Typography textAlign="center">Huỷ sắp xếp</Typography>
+        </StyledMenuItem>
+
+        <Divider />
+
+        <StyledMenuItem onClick={_handleHideField} style={{ marginTop: 5 }}>
+          <Typography textAlign="center">Ẩn trường</Typography>
+        </StyledMenuItem>
+
+        <StyledMenuItem isDelete onClick={_handleDeleteField}>
+          <Typography textAlign="center">Xoá trường</Typography>
+        </StyledMenuItem>
       </Menu>
     </HeaderColumnWrapper>
   );
 };
+
+const StyledMenuItem = styled(MenuItem)`
+  color: ${(props) => (props.isDelete ? "#f44336" : "#1e1f21")};
+  width: 200px;
+  height: 35px;
+
+  p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: calc(100% - 30px);
+  }
+`;
+
+const StyledListItemIcon = styled(ListItemIcon)`
+  min-width: 25px;
+  text-align: left;
+  color: #1e1f21;
+
+  ${(props) => {
+    if (props.transform) {
+      return {
+        transform: "rotate(180deg)",
+        display: "flex",
+        "justify-content": "flex-end",
+      };
+    }
+  }}
+`;
 
 const HeaderColumnWrapper = styled.div`
   align-items: center;

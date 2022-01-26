@@ -162,12 +162,18 @@ export const AddHeading = (props) => {
         onAddColumns={props.props.onAddNewColumns}
       />
       <div
-        className="wp-wrapper-button"
-        style={{ marginRight: 0, height: "100%" }}
+        className="wp-wrapper-button active"
+        style={{
+          marginRight: 0,
+          height: "100%",
+          visibility: "visible!important",
+        }}
         onClick={handleClick}
       >
         <AddIcon />
       </div>
+
+      {/* Menu */}
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -177,10 +183,7 @@ export const AddHeading = (props) => {
           vertical: "bottom",
           horizontal: "left",
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
+        style={{ marginTop: "42px" }}
       >
         <ListItemText style={{ padding: "6px 18px", fontWeight: "bold" }}>
           Thêm trường dữ liệu
