@@ -29,6 +29,8 @@ const HeaderProject = ({
   onOpenCreateModal = () => {},
   onUpdatePinBoardSetting = () => {},
   onSearch = () => {},
+  onAddColumns = () => {},
+  onReOrderColumns = () => {},
   doDetailStatus,
   ...props
 }) => {
@@ -180,6 +182,8 @@ const HeaderProject = ({
         isProjectVisible={get(project, "visibility")}
         valueSearch={valueSearch}
         onSearch={onSearch}
+        onReOrderColumns={onReOrderColumns}
+        onAddColumns={onAddColumns}
         {...props}
       />
     </div>

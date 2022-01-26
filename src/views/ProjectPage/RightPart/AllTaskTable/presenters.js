@@ -4,6 +4,7 @@ import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import { Container } from "components/TableComponents";
 import WPReactTable from "components/WPReactTable";
+
 import EditColumnModal from "components/WPReactTable/components/EditColumnModal";
 import { apiService } from "constants/axiosInstance";
 import {
@@ -61,19 +62,26 @@ function AllTaskTable({
     columnsFields: fields,
   });
 
+  const refAdd = useRef(null);
   const refEdit = useRef(null);
   const dispatch = useDispatch();
   const { columnsFields } = state;
 
+  /* Cloning the state.arrColumns array and storing it in the columns variable. */
   const columns = React.useMemo(() => {
     return cloneDeep(state.arrColumns);
   }, [state.arrColumns]);
 
+  /* When the projectId changes, dispatch the listColumns action. */
   React.useEffect(() => {
     dispatch(listColumns({ project_id: projectId }));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
+  /* The useEffect hook is used to run a function when the component is mounted.
+  /* In this case, the function is used to convert the fields array into a table.
+  /* The function is passed to the convertFieldsToTable function, which returns an array of columns.
+  /* The columns are then passed to the dispatchState function, which sets the state. */
   React.useEffect(() => {
     if (columnsFields.length) {
       const moreColumns = convertFieldsToTable(
@@ -89,6 +97,7 @@ function AllTaskTable({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columnsFields, fields]);
 
+  /* When the fields array changes, update the state.columnsFields. */
   React.useEffect(() => {
     if (fields.length) dispatchState({ columnsFields: fields });
   }, [fields, state.isSetted]);
@@ -119,6 +128,7 @@ function AllTaskTable({
 
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
+    /* Dispatching an action to the Redux store. */
     dispatch(listColumns({ project_id: projectId }));
   };
 
@@ -238,6 +248,8 @@ function AllTaskTable({
     } catch (error) {}
   };
 
+  const _handleReOrderColumns = () => {};
+
   return (
     <Container>
       {state.isEmpty && (
@@ -259,6 +271,8 @@ function AllTaskTable({
             handleShowOrHideProject={handleShowOrHideProject}
             _exportData={_exportData}
             handleExpand={handleExpand}
+            onReOrderColumns={_handleReOrderColumns}
+            onAddColumns={_handleAddNewColumns}
           />
           <WPReactTable
             isCollapsed={expand}
@@ -275,6 +289,7 @@ function AllTaskTable({
             onUpdateSuccess={_handleUpdateFieldSuccess}
             onDeleteSuccess={_handleDeleteFieldSuccess}
           />
+
           <TimeRangePopover
             bgColor={bgColor}
             className="time-range-popover"
@@ -300,6 +315,8 @@ const HeaderTableCustom = ({
   handleShowOrHideProject,
   _exportData,
   handleExpand,
+  onReOrderColumns,
+  onAddColumns,
 }) => {
   const TableContext = React.useContext(CustomTableContext);
   return (
@@ -328,6 +345,8 @@ const HeaderTableCustom = ({
       onExportData={_exportData}
       onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
       onExpand={handleExpand}
+      onReOrderColumns={onReOrderColumns}
+      onAddColumns={onAddColumns}
     />
   );
 };

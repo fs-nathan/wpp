@@ -68,6 +68,8 @@ const DrawerFilter = forwardRef(
       onOpenExportData = null,
       onFilter = () => {},
       onSearch = () => {},
+      onAddColumns = () => {},
+      onReOrderColumns = () => {},
     },
     ref
   ) => {
@@ -258,7 +260,11 @@ const DrawerFilter = forwardRef(
           {...{ curProject: project }}
         />
         <ExportTaskGroupData ref={refExport} onExportData={onExportData} />
-        <ManageTableData ref={refManageTableData} />
+        <ManageTableData
+          ref={refManageTableData}
+          onReOrderColumns={onReOrderColumns}
+          onAddColumns={onAddColumns}
+        />
       </>
     );
   }
