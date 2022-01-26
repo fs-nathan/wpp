@@ -264,4 +264,4 @@ const StyledWrapperButton = styled.div`
   margin-right: 5px;
 `;
 
-export default React.memo(HeaderColumn);
+export default HeaderColumn;

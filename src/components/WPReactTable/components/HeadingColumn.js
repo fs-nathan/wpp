@@ -161,17 +161,10 @@ export const AddHeading = (props) => {
         ref={refModal}
         onAddColumns={props.props.onAddNewColumns}
       />
-      <div
-        className="wp-wrapper-button"
-        style={{
-          marginRight: 0,
-          height: "100%",
-          visibility: "visible",
-        }}
-        onClick={handleClick}
-      >
+
+      <StyledAddIcon className="wp-wrapper-button" onClick={handleClick}>
         <AddIcon />
-      </div>
+      </StyledAddIcon>
 
       {/* Menu */}
       <Menu
@@ -248,6 +241,12 @@ export const OPTIONS_ADD_COLUMN = [
     data: { defaultFormat: "number" },
   },
 ];
+
+const StyledAddIcon = styled.div`
+  margin-right: 0;
+  height: 100%;
+  visibility: visible !important;
+`;
 
 const ResizeDiv = styled.div`
   display: inline-block;
