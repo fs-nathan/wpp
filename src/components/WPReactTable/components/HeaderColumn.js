@@ -32,6 +32,7 @@ const HeaderColumn = ({
   isSticky = false,
   isLastColumn = false,
   onHideColumn = () => {},
+  onEditColumn = () => {},
   onSortColumn = () => {},
   onAddNewColumns = () => {},
 }) => {
@@ -53,7 +54,18 @@ const HeaderColumn = ({
     dispatchState({ anchorEl: null });
   };
 
-  const _handleEditField = (event) => {};
+  /**
+   * This function is called when the user clicks the edit button.
+   */
+  const _handleEditField = () => {
+    dispatchState(initialState);
+    onEditColumn(column.data_type, {
+      dataType: column.data_type,
+      idType: column.id,
+      name: column.name,
+      optionsType: column.options || [],
+    });
+  };
 
   /**
    * When the user clicks the "Hide" button, the column is hidden and the state is updated.

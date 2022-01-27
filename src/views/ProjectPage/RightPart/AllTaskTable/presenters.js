@@ -85,7 +85,7 @@ function AllTaskTable({
     if (columnsFields.length) {
       const moreColumns = convertFieldsToTable(
         columnsFields,
-        _handleOpenEditModal
+        _handleEditColumn
       );
 
       dispatchState({
@@ -107,7 +107,7 @@ function AllTaskTable({
     dispatchState({ isEmpty: tasks.tasks.length === 0 });
   }, [tasks.tasks]);
 
-  const _handleOpenEditModal = (type, data) => {
+  const _handleEditColumn = (type, data) => {
     let data_type = 3;
 
     switch (type) {
@@ -174,27 +174,26 @@ function AllTaskTable({
   };
 
   const _handleUpdateFieldSuccess = (data) => {
-    if (data.data_type === 3) {
-      const newColumnsFields = state.arrColumns.map((item) => {
-        if (item.id === data.project_field_id) {
-          return {
+    const newColumnsFields = state.arrColumns.map((item) => {
+      if (item.id === data.project_field_id) {
+        const newItem = { ...item, name: data.name };
+        if (data.data_type === 3) {
+          newItem["options"] = data.options.map((item) => ({
             ...item,
-            name: data.name,
-            options: data.options.map((item) => ({ ...item, _id: item.id })),
-          };
+            _id: item.id,
+          }));
         }
-        return item;
-      });
 
-      /* Creating a new array of columns and setting it to the state. */
-      dispatchState({
-        arrColumns: convertFieldsToTable(
-          newColumnsFields,
-          _handleOpenEditModal
-        ),
-        isSetted: true,
-      });
-    }
+        return newItem;
+      }
+      return item;
+    });
+
+    /* Creating a new array of columns and setting it to the state. */
+    dispatchState({
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
+      isSetted: true,
+    });
   };
 
   const _handleDeleteFieldSuccess = (data) => {
@@ -203,7 +202,7 @@ function AllTaskTable({
     );
     /* Creating a new array of columns and setting it to the state. */
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleOpenEditModal),
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
       isSetted: true,
     });
   };
@@ -212,7 +211,7 @@ function AllTaskTable({
     /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
     const newColumnsFields = state.arrColumns.filter(({ id }) => id !== idHide);
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleOpenEditModal),
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
       isSetted: true,
     });
 
@@ -250,7 +249,7 @@ function AllTaskTable({
     } catch (error) {}
   };
 
-  const _handleReOrderColumns = () => {};
+  const _handleReOrderColumn = () => {};
 
   return (
     <Container>
@@ -274,7 +273,7 @@ function AllTaskTable({
             handleShowOrHideProject={handleShowOrHideProject}
             _exportData={_exportData}
             handleExpand={handleExpand}
-            onReOrderColumns={_handleReOrderColumns}
+            onReOrderColumns={_handleReOrderColumn}
             onAddColumns={_handleAddNewColumns}
           />
 
@@ -290,6 +289,7 @@ function AllTaskTable({
               isGroup
               onAddNewColumns={_handleAddNewColumns}
               onDragEnd={handleSortTask}
+              onEditColumn={_handleEditColumn}
               onHideColumn={_handleHideColumn}
               onSortColumn={_handleSortColumn}
             />

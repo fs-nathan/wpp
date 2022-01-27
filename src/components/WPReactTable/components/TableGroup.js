@@ -17,6 +17,7 @@ const WPTableGroup = ({
   onDragEnd = () => {},
   onHideColumn = () => {},
   onSortColumn = () => {},
+  onEditColumn = () => {},
   onAddNewColumns = () => {},
   ...props
 }) => {
@@ -84,6 +85,7 @@ const WPTableGroup = ({
                     onAddNewColumns={onAddNewColumns}
                     onHideColumn={onHideColumn}
                     onSortColumn={onSortColumn}
+                    onEditColumn={onEditColumn}
                   />
                 ))}
               </div>
