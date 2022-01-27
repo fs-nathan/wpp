@@ -157,6 +157,8 @@ import {
 } from "../constants/actions/setting/setting";
 import { CREATE_TASK } from "../constants/actions/task/createTask";
 import { CREATE_COLUMNS } from "../constants/actions/columns/createColumns";
+import { UPDATE_COLUMNS } from "../constants/actions/columns/updateColumns";
+import { UPDATE_VALUE_COLUMNS } from "../constants/actions/columns/updateValueColumns";
 import { DELETE_TASK } from "../constants/actions/task/deleteTask";
 import { LIST_TASK } from "../constants/actions/task/listTask";
 import { GET_LIST_COLUMNS } from "../constants/actions/columns/listColumns";
@@ -491,6 +493,8 @@ import { countPersonalProjectsBoard } from "./project/countPersonalProjectsBoard
 import { updateProjectLabels } from "./projectLabels/editProjectLabels";
 import { createProjectLabels } from "./projectLabels/createProjectLabels";
 import { listColumns } from "./columns/listColumns";
+import { updateColumnsSaga } from "./columns/updateValueColumns";
+import { updateColumnsFieldSaga } from "./columns/updateColumns";
 
 function* rootSaga() {
   // Hoang - begin
@@ -606,6 +610,8 @@ function* rootSaga() {
   yield takeLeading(LIST_TASK_MEMBER, listTaskMember);
   yield takeEvery(CREATE_TASK, createTask);
   yield takeEvery(CREATE_COLUMNS, createColumns);
+  yield takeEvery(UPDATE_COLUMNS, updateColumnsFieldSaga);
+  yield takeEvery(UPDATE_VALUE_COLUMNS, updateColumnsSaga);
   yield takeEvery(DELETE_TASK, deleteTask);
   yield takeEvery(SORT_TASK, sortTask);
   yield takeEvery(

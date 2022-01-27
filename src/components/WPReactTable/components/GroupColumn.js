@@ -15,7 +15,7 @@ const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   ...(isDragging && {}),
 });
 
-const GroupColumn = ({ row, provided, snapshot }) => {
+const GroupColumn = ({ row, provided, snapshot, ...props }) => {
   const { t } = useTranslation();
   const { projectId } = useParams();
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
@@ -74,6 +74,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
           onVisibleAddRow={_handleAddNewTask}
           dragHandle={{ ...provided.dragHandleProps }}
           isGroupColumn
+          {...props}
         />
       </div>
 
@@ -98,7 +99,7 @@ const GroupColumn = ({ row, provided, snapshot }) => {
       )}
 
       {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
-        <div className="tr" {...row.getRowProps()}>
+        <div className="tr row-add" {...row.getRowProps()}>
           {row.cells.map((item, index) => (
             <div
               {...item.getCellProps()}

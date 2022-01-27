@@ -11,11 +11,11 @@ import {
 } from "../../actions/columns/createColumns";
 import { apiService } from "../../constants/axiosInstance";
 
-async function doCreateColumns(data = {}) {
+async function doUpdateColumns(data = {}) {
   try {
     const config = {
       data,
-      url: "/project-field/create",
+      url: "/project-field/update",
       method: "POST",
     };
     const result = await apiService(config);
@@ -25,9 +25,9 @@ async function doCreateColumns(data = {}) {
   }
 }
 
-function* createColumns(action) {
+function* updateColumnsFieldSaga(action) {
   try {
-    const { task } = yield call(doCreateColumns, action.options);
+    const { task } = yield call(doUpdateColumns, action.options);
     yield put(createColumnsSuccess({ task }, action.options));
     action.callbackSuccess();
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
@@ -40,4 +40,4 @@ function* createColumns(action) {
   }
 }
 
-export { createColumns };
+export { updateColumnsFieldSaga };

@@ -161,13 +161,12 @@ export const AddHeading = (props) => {
         ref={refModal}
         onAddColumns={props.props.onAddNewColumns}
       />
-      <div
-        className="wp-wrapper-button"
-        style={{ marginRight: 0, height: "100%" }}
-        onClick={handleClick}
-      >
+
+      <StyledAddIcon className="wp-wrapper-button" onClick={handleClick}>
         <AddIcon />
-      </div>
+      </StyledAddIcon>
+
+      {/* Menu */}
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -177,10 +176,7 @@ export const AddHeading = (props) => {
           vertical: "bottom",
           horizontal: "left",
         }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "left",
-        }}
+        style={{ marginTop: "42px" }}
       >
         <ListItemText style={{ padding: "6px 18px", fontWeight: "bold" }}>
           Thêm trường dữ liệu
@@ -245,6 +241,12 @@ export const OPTIONS_ADD_COLUMN = [
     data: { defaultFormat: "number" },
   },
 ];
+
+const StyledAddIcon = styled.div`
+  margin-right: 0;
+  height: 100%;
+  visibility: visible !important;
+`;
 
 const ResizeDiv = styled.div`
   display: inline-block;
@@ -315,8 +317,9 @@ const HeaderColumnWrapper = styled.div`
 `;
 
 const Heading = styled.div`
-  display: flex;
-  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export default HeadingColumn;

@@ -57,7 +57,6 @@ const Styles = styled.div`
     .tr {
       display: flex;
       height: 47px;
-      padding-right: 25px;
       transition: box-shadow 100ms ease-in-out;
       contain: style;
       margin-bottom: -1px;
@@ -65,12 +64,18 @@ const Styles = styled.div`
       line-height: normal;
       &:hover {
         background-color: #f9f8f8;
+        .td {
+          background-color: #f9f8f8;
+        }
       }
       &.header {
         background-color: #f1f2f4;
         box-sizing: border-box;
         flex: 0 0 auto;
         height: 37px;
+      }
+      .td:last-child {
+        border-right-color: transparent;
       }
     }
 
@@ -90,7 +95,7 @@ const Styles = styled.div`
       align-items: center;
       justify-content: flex-start;
       &[data-sticky-td="true"] {
-        z-index: 300;
+        z-index: 300 !important;
         border-left: 0;
         padding: 0 4px 0 24px;
         justify-content: space-between;
@@ -98,14 +103,30 @@ const Styles = styled.div`
         min-width: 1px;
         box-shadow: none;
         max-width: 420px;
+        &:hover {
+          border-right-color: #edeae9;
+        }
       }
       &.isGroupColumn {
         border-left: 0;
+        &:hover {
+          border-right-color: transparent;
+          border-top-color: #edeae9;
+          border-bottom-color: #edeae9;
+        }
       }
       &:hover {
-        .canHide {
+        z-index: 200 !important;
+        border-color: #afabac;
+        .canHide,
+        .default_tag,
+        .icon {
           visibility: visible;
         }
+      }
+      &.focus {
+        z-index: 200;
+        border-color: #4573d2 !important;
       }
     }
   }

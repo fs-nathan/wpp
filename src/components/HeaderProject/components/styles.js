@@ -4,10 +4,10 @@ export const useStyles = makeStyles({
   drawerWrapper: {
     position: "fixed",
     bottom: 0,
-    right: -300,
+    right: -350,
     backgroundColor: "#fff",
     height: "calc(100% - 55px)",
-    width: 300,
+    width: 350,
     transition: "0.3s all ease-in-out",
     boxShadow:
       "rgb(0 0 0 / 20%) 0px 2px 4px -1px, rgb(0 0 0 / 14%) 0px 4px 5px 0px, rgb(0 0 0 / 12%) 0px 1px 10px 0px",
@@ -43,6 +43,7 @@ export const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center",
     cursor: "pointer",
+    fontWeight: 500,
   },
   wrapperHeader: {
     display: "flex",

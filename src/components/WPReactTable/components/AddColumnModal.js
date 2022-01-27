@@ -36,202 +36,191 @@ const initialState = {
   defaultNumFix: 0,
 };
 
-const data = [
-  {
-    id: "pfd-name",
-    name: "Taskname",
-    data_type: 1,
-    description: "",
-    format: null,
-    position_format: 2,
-    decimal: null,
-    options: null,
-    data_from: null,
-    action: null,
-    is_default: true,
-  },
-];
+const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
+  const { t } = useTranslation();
+  const { projectId } = useParams();
+  const [state, dispatchState] = React.useReducer(reducer, initialState);
+  const refContent = React.useRef(null);
+  const dispatch = useDispatch();
 
-const AddColumnModal = React.forwardRef(
-  ({ onAddSuccess = () => {}, onAddColumns = () => {} }, ref) => {
-    const { t } = useTranslation();
-    const { projectId } = useParams();
-    const [state, dispatchState] = React.useReducer(reducer, initialState);
-    const refContent = React.useRef(null);
-    const dispatch = useDispatch();
+  React.useImperativeHandle(ref, () => ({
+    _open: (type, data) => handleClickOpen(type, data),
+  }));
 
-    React.useImperativeHandle(ref, () => ({
-      _open: (type, data) => handleClickOpen(type, data),
-    }));
+  const handleChangeTab = (event, value) => {
+    dispatchState({ value });
+  };
 
-    const handleChangeTab = (event, value) => {
-      dispatchState({ value });
+  const handleClickOpen = (type, data) => {
+    console.log(type, data);
+
+    dispatchState({ open: true, type, ...data });
+  };
+
+  const handleChangeType = (type) => {
+    dispatchState({ type });
+  };
+
+  const handleOpen = (open) => {
+    dispatchState({ open });
+  };
+
+  const _handleChange = (e) => {
+    dispatchState({ name: e.target.value });
+  };
+
+  const _handleConfirm = async () => {
+    const data_type = _getDataType();
+    const contentValue = refContent.current._getValue();
+    const data = { project_id: projectId, name: state.name };
+    const dataColumn = {
+      id: new Date().getTime(),
+      Header: state.name,
     };
 
-    const handleClickOpen = (type, data) => {
-      dispatchState({ open: true, type, ...data });
-    };
+    switch (data_type) {
+      case 2:
+        data["format"] = contentValue.format;
+        data["decimal"] = contentValue.decimal;
+        data["position_format"] = contentValue.position_format;
+        data["data_type"] = data_type;
+        break;
+      case 3:
+        data["options"] = contentValue;
+        data["data_type"] = data_type;
+        break;
+      case 1:
+        data["data_type"] = data_type;
+        break;
+      default:
+        break;
+    }
 
-    const handleChangeType = (type) => {
-      dispatchState({ type });
-    };
+    if (state.type === "list") {
+      dataColumn["Cell"] = (props) => (
+        <CellLabel value={props.value} props={props} />
+      );
+    }
 
-    const handleOpen = (open) => {
-      dispatchState({ open });
-    };
-
-    const _handleChange = (e) => {
-      dispatchState({ name: e.target.value });
-    };
-
-    const _handleConfirm = async () => {
-      const data_type = _getDataType();
-      const contentValue = refContent.current._getValue();
-      const data = { project_id: projectId, name: state.name };
-      const dataColumn = {
-        id: new Date().getTime(),
-        Header: state.name,
-      };
-
-      switch (data_type) {
-        case 2:
-          data["format"] = contentValue.format;
-          data["decimal"] = contentValue.decimal;
-          data["position_format"] = contentValue.position_format;
-          data["data_type"] = data_type;
-          break;
-        case 3:
-          data["options"] = contentValue;
-          data["data_type"] = data_type;
-          break;
-        case 1:
-          data["data_type"] = data_type;
-          break;
-        default:
-          break;
-      }
-
-      if (state.type === "list") {
-        dataColumn["Cell"] = (props) => (
-          <CellLabel value={props.value} props={props} />
-        );
-      }
-
-      dispatch(createColumns(data, () => onAddColumns(dataColumn)));
-    };
-
-    const _getDataType = () => {
-      switch (state.type) {
-        case "list":
-          return 3;
-        case "number":
-          return 2;
-        default:
-          return 1;
-      }
-    };
-
-    return (
-      <JobDetailModalWrap
-        title={t("ADD_FIELDS_DATA")}
-        open={state.open}
-        setOpen={handleOpen}
-        confirmRender={() => t("CREATE_FIELDS")}
-        titleComponent={
-          <TitleModalAdd
-            value={state.value}
-            handleChangeTab={handleChangeTab}
-            setOpen={handleOpen}
-          />
-        }
-        canConfirm={!!state.name}
-        className="offerModal"
-        height={"medium"}
-        manualClose={true}
-        onCancle={() => handleOpen(false)}
-        onConfirm={_handleConfirm}
-      >
-        <Box sx={{ flexGrow: 1 }}>
-          <TabPanel value={state.value} index={0}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TitleSectionModal label={t("LABEL_CREATE_FIELDS")} />
-                <TextField
-                  onChange={_handleChange}
-                  className="offerModal--titleText"
-                  placeholder={t("LABEL_CREATE_FIELDS")}
-                  variant="outlined"
-                  InputProps={{
-                    style: { color: "#666" },
-                  }}
-                  fullWidth
-                />
-              </Grid>
-              <Grid item xs={6}>
-                <TitleSectionModal label={t("DATA_TYPES")} />
-                <SelectFieldTypeDropdown
-                  defaultValue={state.type}
-                  onSelect={handleChangeType}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <ToggleInput />
-              </Grid>
-
-              <TabContentColumn
-                ref={refContent}
-                type={state.type}
-                defaultLabel={state.defaultLabel}
-                defaultPosition={state.defaultPosition}
-                defaultFormat={state.defaultFormat}
-                defaultNumFix={state.defaultNumFix}
-              />
-
-              <Grid item>
-                <WrapperCheckbox
-                  control={<Checkbox name="gilad" />}
-                  label={t("ADD_FILED_TO_LIBRARY")}
-                />
-                <WrapperCheckbox
-                  control={<Checkbox name="gilad" />}
-                  label={t("NOTIFY_MEMBER_CHANGE_FIELD")}
-                />
-              </Grid>
-            </Grid>
-          </TabPanel>
-          <TabPanel value={state.value} index={1}>
-            <TextField
-              className="offerModal--titleText"
-              placeholder={t("FIND_FIELD_DATA")}
-              variant="outlined"
-              fullWidth
-              InputProps={{
-                startAdornment: <SearchIcon style={{ marginRight: "10px" }} />,
-                style: { color: "#666", marginTop: "15px" },
-              }}
-            />
-            <TitleSectionModal label={t("DATA_FIELD_EXITS")} />
-            <Grid container>
-              <Grid item xs={12}>
-                <WrapperCheckbox
-                  control={<Checkbox name="gilad" />}
-                  label="Lưu ý về dự án"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <WrapperCheckbox
-                  control={<Checkbox disabled name="gilad" />}
-                  label="Rủi ro dự án"
-                />
-              </Grid>
-            </Grid>
-          </TabPanel>
-        </Box>
-      </JobDetailModalWrap>
+    dispatch(
+      createColumns(data, () => {
+        dispatchState(initialState);
+        onAddColumns({ data, _id: new Date().getTime() });
+      })
     );
-  }
-);
+  };
+
+  const _getDataType = () => {
+    switch (state.type) {
+      case "list":
+        return 3;
+      case "number":
+        return 2;
+      default:
+        return 1;
+    }
+  };
+
+  return (
+    <JobDetailModalWrap
+      title={t("ADD_FIELDS_DATA")}
+      open={state.open}
+      setOpen={handleOpen}
+      confirmRender={() => t("CREATE_FIELDS")}
+      titleComponent={
+        <TitleModalAdd
+          value={state.value}
+          handleChangeTab={handleChangeTab}
+          setOpen={handleOpen}
+        />
+      }
+      canConfirm={!!state.name}
+      className="offerModal"
+      height={"medium"}
+      manualClose={true}
+      onCancle={() => handleOpen(false)}
+      onConfirm={_handleConfirm}
+    >
+      <Box sx={{ flexGrow: 1 }}>
+        <TabPanel value={state.value} index={0}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TitleSectionModal label={t("LABEL_CREATE_FIELDS")} />
+              <TextField
+                onChange={_handleChange}
+                className="offerModal--titleText"
+                placeholder={t("LABEL_CREATE_FIELDS")}
+                variant="outlined"
+                InputProps={{
+                  style: { color: "#666" },
+                }}
+                fullWidth
+              />
+            </Grid>
+            <Grid item xs={6}>
+              <TitleSectionModal label={t("DATA_TYPES")} />
+              <SelectFieldTypeDropdown
+                defaultValue={state.type}
+                onSelect={handleChangeType}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <ToggleInput />
+            </Grid>
+
+            <TabContentColumn
+              ref={refContent}
+              type={state.type}
+              defaultLabel={state.defaultLabel}
+              defaultPosition={state.defaultPosition}
+              defaultFormat={state.defaultFormat}
+              defaultNumFix={state.defaultNumFix}
+            />
+
+            <Grid item>
+              <WrapperCheckbox
+                control={<Checkbox name="gilad" />}
+                label={t("ADD_FILED_TO_LIBRARY")}
+              />
+              <WrapperCheckbox
+                control={<Checkbox name="gilad" />}
+                label={t("NOTIFY_MEMBER_CHANGE_FIELD")}
+              />
+            </Grid>
+          </Grid>
+        </TabPanel>
+        <TabPanel value={state.value} index={1}>
+          <TextField
+            className="offerModal--titleText"
+            placeholder={t("FIND_FIELD_DATA")}
+            variant="outlined"
+            fullWidth
+            InputProps={{
+              startAdornment: <SearchIcon style={{ marginRight: "10px" }} />,
+              style: { color: "#666", marginTop: "15px" },
+            }}
+          />
+          <TitleSectionModal label={t("DATA_FIELD_EXITS")} />
+          <Grid container>
+            <Grid item xs={12}>
+              <WrapperCheckbox
+                control={<Checkbox name="gilad" />}
+                label="Lưu ý về dự án"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <WrapperCheckbox
+                control={<Checkbox disabled name="gilad" />}
+                label="Rủi ro dự án"
+              />
+            </Grid>
+          </Grid>
+        </TabPanel>
+      </Box>
+    </JobDetailModalWrap>
+  );
+});
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;

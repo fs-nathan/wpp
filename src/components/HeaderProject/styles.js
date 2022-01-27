@@ -10,7 +10,7 @@ export const useStyles = makeStyles({
     minHeight: "72px",
     padding: "0 24px",
     position: "relative",
-    zIndex: 200,
+    zIndex: 400,
     borderBottom: " 1px solid rgb(232, 232, 232)",
   },
   burger: {
