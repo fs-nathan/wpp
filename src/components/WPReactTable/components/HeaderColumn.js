@@ -33,6 +33,7 @@ const HeaderColumn = ({
   isLastColumn = false,
   onHideColumn = () => {},
   onEditColumn = () => {},
+  onDeleteColumn = () => {},
   onSortColumn = () => {},
   onAddNewColumns = () => {},
 }) => {
@@ -75,8 +76,19 @@ const HeaderColumn = ({
     onHideColumn(column.id);
   };
 
-  const _handleDeleteField = (event) => {};
+  /**
+   * This function is called when the user clicks the delete button.
+   */
+  const _handleDeleteField = () => {
+    dispatchState(initialState);
+    onDeleteColumn({ project_field_id: column.id });
+  };
 
+  /**
+   * This function is called when the user clicks on a column header.
+   * It sets the state of the table to the initial state, and then calls the onSortColumn function with
+   * the column id and the value of the sort.
+   */
   const _handleSort = (valueSort) => {
     dispatchState(initialState);
     onSortColumn(column.id, valueSort);

@@ -1,5 +1,6 @@
 import { Box, CircularProgress } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
+import AlertModal from "components/AlertModal";
 import { TimeRangePopover } from "components/CustomPopover";
 import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
@@ -63,6 +64,7 @@ function AllTaskTable({
     columnsFields: fields,
   });
   const refEdit = useRef(null);
+  const refAlert = useRef(null);
   const dispatch = useDispatch();
   const { columnsFields } = state;
 
@@ -249,6 +251,30 @@ function AllTaskTable({
     } catch (error) {}
   };
 
+  const _handleDeleteColumn = (data) => {
+    refAlert.current._open(data);
+  };
+
+  const _handleConfirmDelete = async (dataDelete) => {
+    try {
+      const { status } = await apiService({
+        data: dataDelete,
+        url: "/project-field/delete",
+        method: "POST",
+      });
+
+      if (status === 200) {
+        _handleDeleteFieldSuccess(dataDelete);
+        SnackbarEmitter(
+          SNACKBAR_VARIANT.SUCCESS,
+          DEFAULT_MESSAGE.MUTATE.SUCCESS
+        );
+      }
+    } catch (error) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, DEFAULT_MESSAGE.MUTATE.ERROR);
+    }
+  };
+
   const _handleReOrderColumn = () => {};
 
   return (
@@ -290,6 +316,7 @@ function AllTaskTable({
               onAddNewColumns={_handleAddNewColumns}
               onDragEnd={handleSortTask}
               onEditColumn={_handleEditColumn}
+              onDeleteColumn={_handleDeleteColumn}
               onHideColumn={_handleHideColumn}
               onSortColumn={_handleSortColumn}
             />
@@ -313,9 +340,32 @@ function AllTaskTable({
           />
         </>
       )}
+      <ModalAlert ref={refAlert} onConfirm={_handleConfirmDelete} />
     </Container>
   );
 }
+
+const ModalAlert = React.forwardRef(({ onConfirm = () => {} }, ref) => {
+  const { projectId } = useParams();
+  const [open, setOpen] = React.useState(false);
+  const [dataDelete, setDataDelete] = React.useState({});
+
+  React.useImperativeHandle(ref, () => ({
+    _open: (data) => {
+      setOpen(true);
+      setDataDelete(data);
+    },
+  }));
+
+  return (
+    <AlertModal
+      setOpen={setOpen}
+      onConfirm={() => onConfirm({ ...dataDelete, project_id: projectId })}
+      open={open}
+      content="This will permanently delete the Custom Field and remove its values from any tasks in this project. This cannot be undone."
+    />
+  );
+});
 
 const HeaderTableCustom = ({
   project,

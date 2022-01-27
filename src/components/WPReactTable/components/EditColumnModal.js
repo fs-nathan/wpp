@@ -175,11 +175,11 @@ const EditColumnModal = React.forwardRef(
           <TabPanel value={state.value} index={0}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
-                <TitleSectionModal label={t("LABEL_CREATE_FIELDS")} />
+                <TitleSectionModal label={"Chỉnh sửa trường"} />
                 <TextField
                   onChange={_handleChange}
                   className="offerModal--titleText"
-                  placeholder={t("LABEL_CREATE_FIELDS")}
+                  placeholder={"Chỉnh sửa trường"}
                   variant="outlined"
                   InputProps={{ style: { color: "#666" } }}
                   defaultValue={state.name}
