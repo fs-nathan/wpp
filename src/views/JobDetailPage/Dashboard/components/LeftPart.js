@@ -1,10 +1,26 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import MembersList from "./MembersList";
 import PriorityList from "./PriorityList";
 
-const LeftPart = ({ projectInfo = {}, status = {} }) => {
+const LeftPart = ({
+  projectInfo = {},
+  status = {},
+  handleOpenModal = () => {},
+}) => {
+  const { membersAdded } = useSelector(
+    ({ project }) => project.memberProject.data
+  );
+  const _handleAddMember = () => {
+    handleOpenModal("ADD_MEMBER");
+  };
+
+  const dataMembers = membersAdded.length
+    ? membersAdded
+    : projectInfo?.members || [];
+
   return (
     <WrapperLeftPart>
       <Typography variant="p" component="div">
@@ -29,7 +45,7 @@ const LeftPart = ({ projectInfo = {}, status = {} }) => {
       </WrapperInformation>
 
       <WrapperInformation title="Thành viên" component="div">
-        <MembersList data={projectInfo?.members || []} />
+        <MembersList data={dataMembers || []} onAddMember={_handleAddMember} />
       </WrapperInformation>
 
       <WrapperInformation title="Mức độ ưu tiên" component="div">
@@ -65,7 +81,9 @@ const LeftPart = ({ projectInfo = {}, status = {} }) => {
           <span>Thay đổi</span>
         </WrapperSetting>
         <WrapperSetting>
-          <span>Xem toàn bộ cài đặt</span>
+          <span onClick={() => handleOpenModal("SETTING")}>
+            Xem toàn bộ cài đặt
+          </span>
         </WrapperSetting>
       </WrapperInformation>
     </WrapperLeftPart>
@@ -115,6 +133,7 @@ const WrapperSetting = styled.div`
   > span {
     color: #4284f3ff;
     font-weight: 500;
+    cursor: pointer;
   }
 `;
 const WrapperLeftPart = styled.div`

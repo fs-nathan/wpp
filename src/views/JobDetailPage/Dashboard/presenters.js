@@ -3,6 +3,8 @@ import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import { find, get, isNil } from "lodash";
 import React from "react";
+import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
+import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal/index.js";
 import LeftPart from "./components/LeftPart";
 import RightPart from "./components/RightPart";
 
@@ -21,7 +23,52 @@ const DashboardPresenters = ({
     )
   );
 
-  const handleOpenModal = () => {};
+  const [modalSetting, setModalSetting] = React.useState({
+    isOpen: false,
+    props: {},
+  });
+  const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
+
+  const _handleOpenModal = (type, props) => {
+    console.log("@Pham_Tinh_Console:", type, props);
+    switch (type) {
+      // case "CREATE":
+      //   setOpenCreate(true);
+      //   setSelectedGroup(props);
+      //   return;
+      // case "MENU_CREATE":
+      //   setOpenmMenuCreate(true);
+      //   setSelectedGroup(props);
+      //   return;
+      // case "ALERT":
+      //   setOpenAlert(true);
+      //   setAlertProps(props);
+      //   return;
+      // case "CALENDAR":
+      //   setOpenCalendar(true);
+      //   return;
+      // case "ADD_MEMBER":
+      //   setOpenModalAddMember(true);
+      //   return;
+      // case "SETTING_MEMBER":
+      //   setOpenMemberSetting(true);
+      //   return;
+      case "SETTING":
+        setModalSetting({
+          isOpen: true,
+          props: { curProject: project?.project },
+        });
+        return;
+      case "ADD_MEMBER":
+        setOpenModalAddMember(true);
+        return;
+      default:
+        return;
+    }
+  };
+
+  const _handleSetOpenSetting = (value) =>
+    setModalSetting((prevState) => ({ ...prevState, isOpen: value }));
 
   return (
     <div>
@@ -30,18 +77,40 @@ const DashboardPresenters = ({
         memberID={memberID}
         canUpdateProject={canUpdateProject}
         disableShowHide={disableShowHide}
-        handleOpenModal={handleOpenModal}
+        handleOpenModal={_handleOpenModal}
         handleExpand={handleExpand}
       />
 
       <Grid container spacing={2}>
         <Grid item xs={7}>
-          <LeftPart projectInfo={project?.project || {}} status={status} />
+          <LeftPart
+            projectInfo={project?.project || {}}
+            status={status}
+            handleOpenModal={_handleOpenModal}
+          />
         </Grid>
         <Grid item xs={5}>
           <RightPart />
         </Grid>
       </Grid>
+
+      {modalSetting.isOpen && (
+        <ProjectSettingModal
+          open={modalSetting.isOpen}
+          setOpen={_handleSetOpenSetting}
+          {...modalSetting.props}
+        />
+      )}
+
+      {openModalAddMember && (
+        <AddMemberModal
+          isOpen={openModalAddMember}
+          setOpen={setOpenModalAddMember}
+          task={openModalAddMember}
+          members={project?.project?.members || []}
+          projectActive={project?.project?.id || null}
+        />
+      )}
     </div>
   );
 };

@@ -3,7 +3,11 @@ import React from "react";
 import styled from "styled-components";
 import AddIcon from "@mui/icons-material/Add";
 
-const MembersList = ({ data = [], total = data.length || 0 }) => {
+const MembersList = ({
+  data = [],
+  total = data.length || 0,
+  onAddMember = () => {},
+}) => {
   return (
     <WrapperList>
       <MemberItem
@@ -12,14 +16,14 @@ const MembersList = ({ data = [], total = data.length || 0 }) => {
         role="Chủ sở hữu"
       />
       {total > 1 && <CountItem total={total} />}
-      <AddMemberButton />
+      <AddMemberButton onAddMember={onAddMember} />
     </WrapperList>
   );
 };
 
-const MemberItem = ({ customCircle = null, name, role, avatar }) => {
+const MemberItem = ({ customCircle = null, name, role, avatar, ...props }) => {
   return (
-    <WrapperItem>
+    <WrapperItem {...props}>
       {customCircle || <Avatar alt="Avatar" src={avatar} />}
       <div className="information">
         <div className="name">{name}</div>
@@ -47,9 +51,14 @@ const CountItem = ({ total = 0 }) => {
   );
 };
 
-const AddMemberButton = () => {
+const AddMemberButton = ({ onAddMember = () => {} }) => {
   return (
-    <MemberItem customCircle={<AddCircle />} name="Thêm" role="Thành viên" />
+    <MemberItem
+      customCircle={<AddCircle />}
+      name="Thêm"
+      role="Thành viên"
+      onClick={onAddMember}
+    />
   );
 };
 
