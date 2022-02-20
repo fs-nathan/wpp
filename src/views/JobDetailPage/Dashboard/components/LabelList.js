@@ -9,7 +9,6 @@ const LabelList = () => {
   React.useEffect(() => {
     const _getData = async () => {
       const result = await apiService({ url: "/project-label/list" });
-      console.log("@Pham_Tinh_Console:", result.data.labels);
       setData(result.data.labels);
     };
 

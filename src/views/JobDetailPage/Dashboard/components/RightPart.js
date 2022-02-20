@@ -5,7 +5,7 @@ import ListInformation from "./ListInformation";
 import { apiService } from "constants/axiosInstance.js";
 import { useParams } from "react-router-dom";
 
-const RightPart = () => {
+const RightPart = ({ handleOpenModal = () => {} }) => {
   const { projectId } = useParams();
   const [moreData, setMoreData] = React.useState([]);
 
@@ -29,7 +29,9 @@ const RightPart = () => {
         Thông tin bổ sung
       </Title>
       <ListInformation list={moreData} />
-      <DeleteGroup>Xoá bảng việc</DeleteGroup>
+      <DeleteGroup onClick={() => handleOpenModal("ALERT")}>
+        Xoá bảng việc
+      </DeleteGroup>
     </WrapperRightPart>
   );
 };

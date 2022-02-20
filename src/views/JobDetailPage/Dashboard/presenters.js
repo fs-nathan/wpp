@@ -4,9 +4,11 @@ import HeaderProject from "components/HeaderProject";
 import { find, get, isNil } from "lodash";
 import React from "react";
 import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
-import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal/index.js";
+import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal";
+import DeleteProjectModal from "views/ProjectGroupPage/Modals/DeleteProject";
 import LeftPart from "./components/LeftPart";
 import RightPart from "./components/RightPart";
+import { useHistory } from "react-router-dom";
 
 const DashboardPresenters = ({
   project,
@@ -23,14 +25,18 @@ const DashboardPresenters = ({
     )
   );
 
+  const history = useHistory();
   const [modalSetting, setModalSetting] = React.useState({
+    isOpen: false,
+    props: {},
+  });
+  const [openModalAlert, setOpenModalAlert] = React.useState({
     isOpen: false,
     props: {},
   });
   const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
 
   const _handleOpenModal = (type, props) => {
-    console.log("@Pham_Tinh_Console:", type, props);
     switch (type) {
       // case "CREATE":
       //   setOpenCreate(true);
@@ -40,10 +46,9 @@ const DashboardPresenters = ({
       //   setOpenmMenuCreate(true);
       //   setSelectedGroup(props);
       //   return;
-      // case "ALERT":
-      //   setOpenAlert(true);
-      //   setAlertProps(props);
-      //   return;
+      case "ALERT":
+        setOpenModalAlert({ isOpen: true, alertProps: props });
+        return;
       // case "CALENDAR":
       //   setOpenCalendar(true);
       //   return;
@@ -69,6 +74,9 @@ const DashboardPresenters = ({
 
   const _handleSetOpenSetting = (value) =>
     setModalSetting((prevState) => ({ ...prevState, isOpen: value }));
+  const _handleSetOpenAlert = (value) =>
+    setModalSetting((prevState) => ({ ...prevState, isOpen: value }));
+  const _handleDeleted = (id) => history.replace(`/projects`);
 
   return (
     <div>
@@ -90,7 +98,7 @@ const DashboardPresenters = ({
           />
         </Grid>
         <Grid item xs={5}>
-          <RightPart />
+          <RightPart handleOpenModal={_handleOpenModal} />
         </Grid>
       </Grid>
 
@@ -111,6 +119,14 @@ const DashboardPresenters = ({
           projectActive={project?.project?.id || null}
         />
       )}
+
+      <DeleteProjectModal
+        open={openModalAlert.isOpen}
+        setOpen={_handleSetOpenAlert}
+        projectGroupId={project?.id}
+        selectedProject={project?.project}
+        doAfterSuccess={_handleDeleted}
+      />
     </div>
   );
 };
