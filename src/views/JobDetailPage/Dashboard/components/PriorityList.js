@@ -1,19 +1,21 @@
 import { Button, Menu, MenuItem } from "@material-ui/core";
-import styled from "styled-components";
-import React from "react";
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import classNames from "classnames";
+import React from "react";
+import styled from "styled-components";
 
 const options = [
-  { id: 1, name: "At Risk", value: "at_risk", color: "#f1bd6c" },
-  { id: 2, name: "Off Track", value: "off_track", color: "#f06a6f" },
-  { id: 3, name: "On Hold", value: "on_hold", color: "#4573d2" },
+  { id: 0, name: "Thấp", value: 0, color: "#d2ebd3" },
+  { id: 1, name: "Trung bình", value: 1, color: "#ffe5bf" },
+  { id: 2, name: "Cao", value: 2, color: "#fec1c1" },
 ];
 
-const PriorityList = () => {
+const PriorityList = ({ projectId = null, defaultPriority = 0 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState(options[0]);
+  const [selected, setSelected] = React.useState(() =>
+    options.find((item) => item.id === defaultPriority)
+  );
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -24,7 +26,7 @@ const PriorityList = () => {
     setAnchorEl(null);
   };
 
-  const _handleSelect = (idSelect) => {
+  const _handleSelect = async (idSelect) => {
     setSelected(() => options.find((item) => item.id === idSelect));
     handleClose();
   };

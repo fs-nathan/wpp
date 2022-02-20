@@ -2,6 +2,7 @@ import { Typography } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import LabelList from "./LabelList";
 import MembersList from "./MembersList";
 import PriorityList from "./PriorityList";
 
@@ -41,7 +42,7 @@ const LeftPart = ({
       <WrapperInformation title="Mô tả" description={projectInfo.description} />
 
       <WrapperInformation title="Phân loại" component="div">
-        Phân loại
+        <LabelList />
       </WrapperInformation>
 
       <WrapperInformation title="Thành viên" component="div">
@@ -49,7 +50,10 @@ const LeftPart = ({
       </WrapperInformation>
 
       <WrapperInformation title="Mức độ ưu tiên" component="div">
-        <PriorityList />
+        <PriorityList
+          projectId={projectInfo?.id || null}
+          defaultPriority={projectInfo.priority_code}
+        />
       </WrapperInformation>
 
       <WrapperInformation title="Tiến độ" component="div">
@@ -72,13 +76,13 @@ const LeftPart = ({
       >
         <WrapperSetting>
           <p>Sao chép bảng việc: {status.copy ? "Có" : "Không"}</p>
-          <span>Thay đổi</span>
+          <span onClick={() => handleOpenModal("SETTING")}>Thay đổi</span>
         </WrapperSetting>
         <WrapperSetting>
           <p>
             Thông báo tới thành viên: {status.notification ? "Có" : "Không"}
           </p>
-          <span>Thay đổi</span>
+          <span onClick={() => handleOpenModal("SETTING")}>Thay đổi</span>
         </WrapperSetting>
         <WrapperSetting>
           <span onClick={() => handleOpenModal("SETTING")}>

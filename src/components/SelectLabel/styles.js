@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const WrapperWPSelectLabel = styled.div`
   width: 100%;
-  margin-top: 20px;
+  margin-top: ${(props) => (!props.isShowList ? "20px" : 0)};
 `;
 export const WPWrapperSelectList = styled.div`
   display: flex;

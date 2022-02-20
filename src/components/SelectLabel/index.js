@@ -44,7 +44,11 @@ const DEFAULT_SELECT = [
 
 const WPSelectLabel = forwardRef(
   (
-    { isEditForm = false, defaultSelect = isEditForm ? [] : DEFAULT_SELECT },
+    {
+      isEditForm = false,
+      isShowList = false,
+      defaultSelect = isEditForm ? [] : DEFAULT_SELECT,
+    },
     ref
   ) => {
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -54,6 +58,10 @@ const WPSelectLabel = forwardRef(
     const refForm = useRef(null);
 
     useImperativeHandle(ref, () => ({ _getValue }));
+
+    React.useEffect(() => {
+      isShowList && setListSelect(defaultSelect);
+    }, [defaultSelect, isShowList]);
 
     const _getValue = () => {
       const result = [];
@@ -97,6 +105,7 @@ const WPSelectLabel = forwardRef(
     };
 
     const handleClick = (event, item) => {
+      if (isShowList) return;
       setAnchorEl(event.currentTarget);
       setItemSelect(item);
     };
@@ -152,7 +161,8 @@ const WPSelectLabel = forwardRef(
             ))}
           </WrapperSelectColor>
         </Popover>
-        <WrapperWPSelectLabel>
+
+        <WrapperWPSelectLabel isShowList={isShowList}>
           <WPWrapperSelectList>
             <WPSelectList ref={refForm} onSubmit={(e) => e.preventDefault()}>
               {listSelect.map((item) => (
@@ -170,30 +180,35 @@ const WPSelectLabel = forwardRef(
                             data-id={item._id}
                             defaultValue={item.name}
                             placeholder="Type an option name"
+                            disabled={isShowList}
                           />
                         </WPSelectRowNameContainer>
                       </WPSelectItemLeftChildren>
                     </WPSelectItemLeft>
                     <WPSelectItemRight>
-                      <WPSelectItemRightIcon
-                        onClick={() => _handleRemove(item.id)}
-                      >
-                        <svg
-                          className="MiniIcon XMiniIcon"
-                          focusable="false"
-                          viewBox="0 0 24 24"
+                      {!isShowList && (
+                        <WPSelectItemRightIcon
+                          onClick={() => _handleRemove(item.id)}
                         >
-                          <path d="M13.4,12l7.5-7.5c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0L12,10.6L4.5,3.1c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4l7.5,7.5l-7.5,7.5 c-0.4,0.4-0.4,1,0,1.4c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l7.5-7.5l7.5,7.5c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3 c0.4-0.4,0.4-1,0-1.4L13.4,12z" />
-                        </svg>
-                      </WPSelectItemRightIcon>
+                          <svg
+                            className="MiniIcon XMiniIcon"
+                            focusable="false"
+                            viewBox="0 0 24 24"
+                          >
+                            <path d="M13.4,12l7.5-7.5c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0L12,10.6L4.5,3.1c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4l7.5,7.5l-7.5,7.5 c-0.4,0.4-0.4,1,0,1.4c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l7.5-7.5l7.5,7.5c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3 c0.4-0.4,0.4-1,0-1.4L13.4,12z" />
+                          </svg>
+                        </WPSelectItemRightIcon>
+                      )}
                     </WPSelectItemRight>
                   </WPSelectItem>
                 </WPSelectRowTarget>
               ))}
 
-              <ButtonAddMore onClick={_handleAddMore}>
-                + Add an option
-              </ButtonAddMore>
+              {!isShowList && (
+                <ButtonAddMore onClick={_handleAddMore}>
+                  + Add an option
+                </ButtonAddMore>
+              )}
             </WPSelectList>
           </WPWrapperSelectList>
         </WrapperWPSelectLabel>
