@@ -2,14 +2,33 @@ import { Typography } from "@material-ui/core";
 import React from "react";
 import styled from "styled-components";
 import ListInformation from "./ListInformation";
+import { apiService } from "constants/axiosInstance.js";
+import { useParams } from "react-router-dom";
 
 const RightPart = () => {
+  const { projectId } = useParams();
+  const [moreData, setMoreData] = React.useState([]);
+
+  React.useEffect(() => {
+    const _getMoreData = async (data) => {
+      const result = await apiService({
+        url: "/project/get-list-more-data",
+        method: "get",
+        params: { project_id: projectId },
+      });
+
+      setMoreData(result.data.data);
+    };
+
+    _getMoreData();
+  }, [projectId]);
+
   return (
     <WrapperRightPart>
       <Title variant="h5" component="div" style={{ fontSize: 20 }}>
         Thông tin bổ sung
       </Title>
-      <ListInformation />
+      <ListInformation list={moreData} />
       <DeleteGroup>Xoá bảng việc</DeleteGroup>
     </WrapperRightPart>
   );

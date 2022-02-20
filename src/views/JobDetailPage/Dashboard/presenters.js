@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
-import { get, isNil, find } from "lodash";
+import { find, get, isNil } from "lodash";
 import React from "react";
 import LeftPart from "./components/LeftPart";
 import RightPart from "./components/RightPart";
@@ -32,9 +32,10 @@ const DashboardPresenters = ({
         handleOpenModal={handleOpenModal}
         handleExpand={handleExpand}
       />
+
       <Grid container spacing={2}>
         <Grid item xs={7}>
-          <LeftPart />
+          <LeftPart projectInfo={project?.project || {}} />
         </Grid>
         <Grid item xs={5}>
           <RightPart />
