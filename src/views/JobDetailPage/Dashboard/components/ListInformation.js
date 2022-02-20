@@ -64,14 +64,24 @@ const ListInformation = ({ list = [] }) => {
     setIsHideAddLink(false);
   };
 
+  const _handleDelete = async (data_id) => {
+    setData((data) => data.filter((item) => item.id !== data_id));
+    await apiService({
+      url: "/project/delete-more-data",
+      method: "POST",
+      data: { data_id, project_id: projectId },
+    });
+  };
+
   return (
     <>
       {data.map((item, index) => (
         <CardInfo
-          key={index}
+          key={item.id}
           {...item}
           onCloseAdd={_handleCloseAdd}
           onSubmit={_handleSubmit}
+          onDelete={_handleDelete}
         />
       ))}
       {!data.length && <p style={{ textAlign: "center" }}>No Data</p>}

@@ -15,11 +15,16 @@ const CardInfo = ({
   isNewData = false,
   onCloseAdd = () => {},
   onSubmit = () => {},
+  onDelete = () => {},
 }) => {
   const refForm = useRef(null);
 
   const _handleClear = () => {
-    if (isNewData) onCloseAdd();
+    if (isNewData) {
+      onCloseAdd();
+    } else {
+      onDelete(id);
+    }
   };
 
   const _handleSubmit = () => {
