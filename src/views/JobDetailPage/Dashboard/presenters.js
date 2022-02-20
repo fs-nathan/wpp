@@ -12,6 +12,7 @@ const DashboardPresenters = ({
   canUpdateProject,
   showHidePendings,
   handleExpand,
+  status = {},
 }) => {
   const disableShowHide = !isNil(
     find(
@@ -35,7 +36,7 @@ const DashboardPresenters = ({
 
       <Grid container spacing={2}>
         <Grid item xs={7}>
-          <LeftPart projectInfo={project?.project || {}} />
+          <LeftPart projectInfo={project?.project || {}} status={status} />
         </Grid>
         <Grid item xs={5}>
           <RightPart />

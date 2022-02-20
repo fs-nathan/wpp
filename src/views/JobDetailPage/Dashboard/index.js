@@ -4,6 +4,7 @@ import { get } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
+import { statusSelector } from "views/ProjectGroupPage/Modals/ProjectSetting/selectors.js";
 import {
   bgColorSelector,
   memberTaskSelector,
@@ -27,8 +28,10 @@ function Dashboard({
   tasks,
   project,
   doDetailProject,
+  doDetailStatus,
   localOption,
   memberTask,
+  status,
 }) {
   const { timeType } = localOption;
   const { projectId, memberId } = useParams();
@@ -36,6 +39,7 @@ function Dashboard({
   React.useEffect(() => {
     if (projectId !== null) {
       doDetailProject({ projectId });
+      doDetailStatus({ projectId });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
@@ -47,6 +51,7 @@ function Dashboard({
           expand={expand}
           handleExpand={handleExpand}
           handleSubSlide={handleSubSlide}
+          status={status.status || {}}
           canUpdateProject={get(
             viewPermissions.permissions,
             [projectId, "update_project"],
@@ -69,6 +74,7 @@ function Dashboard({
 
 const mapStateToProps = (state) => {
   return {
+    status: statusSelector(state),
     project: projectSelector(state),
     bgColor: bgColorSelector(state),
     showHidePendings: showHidePendingsSelector(state),

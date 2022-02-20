@@ -4,7 +4,7 @@ import styled from "styled-components";
 import MembersList from "./MembersList";
 import PriorityList from "./PriorityList";
 
-const LeftPart = ({ projectInfo = {} }) => {
+const LeftPart = ({ projectInfo = {}, status = {} }) => {
   return (
     <WrapperLeftPart>
       <Typography variant="p" component="div">
@@ -55,11 +55,13 @@ const LeftPart = ({ projectInfo = {} }) => {
         style={{ color: "black", fontWeight: "400" }}
       >
         <WrapperSetting>
-          <p>Sao chép bảng việc: Không</p>
+          <p>Sao chép bảng việc: {status.copy ? "Có" : "Không"}</p>
           <span>Thay đổi</span>
         </WrapperSetting>
         <WrapperSetting>
-          <p>Thông báo tới thành viên: Có</p>
+          <p>
+            Thông báo tới thành viên: {status.notification ? "Có" : "Không"}
+          </p>
           <span>Thay đổi</span>
         </WrapperSetting>
         <WrapperSetting>
