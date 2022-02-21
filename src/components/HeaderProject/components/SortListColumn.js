@@ -5,6 +5,7 @@ import {
   ListItemText,
   Switch,
 } from "@material-ui/core";
+import { isArray } from "lodash";
 import RootRef from "@material-ui/core/RootRef";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { listColumns } from "actions/columns/listColumns";
@@ -54,6 +55,7 @@ const SortListColumn = React.forwardRef((props, ref) => {
     setItems(newItems);
   };
 
+  if (!isArray(items)) return null;
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">

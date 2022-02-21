@@ -1,10 +1,14 @@
 import { Grid } from "@material-ui/core";
 import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
-import { get, isNil, find } from "lodash";
+import { find, get, isNil } from "lodash";
 import React from "react";
+import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
+import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal";
+import DeleteProjectModal from "views/ProjectGroupPage/Modals/DeleteProject";
 import LeftPart from "./components/LeftPart";
 import RightPart from "./components/RightPart";
+import { useHistory } from "react-router-dom";
 
 const DashboardPresenters = ({
   project,
@@ -12,6 +16,7 @@ const DashboardPresenters = ({
   canUpdateProject,
   showHidePendings,
   handleExpand,
+  status = {},
 }) => {
   const disableShowHide = !isNil(
     find(
@@ -20,7 +25,58 @@ const DashboardPresenters = ({
     )
   );
 
-  const handleOpenModal = () => {};
+  const history = useHistory();
+  const [modalSetting, setModalSetting] = React.useState({
+    isOpen: false,
+    props: {},
+  });
+  const [openModalAlert, setOpenModalAlert] = React.useState({
+    isOpen: false,
+    props: {},
+  });
+  const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
+
+  const _handleOpenModal = (type, props) => {
+    switch (type) {
+      // case "CREATE":
+      //   setOpenCreate(true);
+      //   setSelectedGroup(props);
+      //   return;
+      // case "MENU_CREATE":
+      //   setOpenmMenuCreate(true);
+      //   setSelectedGroup(props);
+      //   return;
+      case "ALERT":
+        setOpenModalAlert({ isOpen: true, alertProps: props });
+        return;
+      // case "CALENDAR":
+      //   setOpenCalendar(true);
+      //   return;
+      // case "ADD_MEMBER":
+      //   setOpenModalAddMember(true);
+      //   return;
+      // case "SETTING_MEMBER":
+      //   setOpenMemberSetting(true);
+      //   return;
+      case "SETTING":
+        setModalSetting({
+          isOpen: true,
+          props: { curProject: project?.project },
+        });
+        return;
+      case "ADD_MEMBER":
+        setOpenModalAddMember(true);
+        return;
+      default:
+        return;
+    }
+  };
+
+  const _handleSetOpenSetting = (value) =>
+    setModalSetting((prevState) => ({ ...prevState, isOpen: value }));
+  const _handleSetOpenAlert = (value) =>
+    setModalSetting((prevState) => ({ ...prevState, isOpen: value }));
+  const _handleDeleted = (id) => history.replace(`/projects`);
 
   return (
     <div>
@@ -29,17 +85,48 @@ const DashboardPresenters = ({
         memberID={memberID}
         canUpdateProject={canUpdateProject}
         disableShowHide={disableShowHide}
-        handleOpenModal={handleOpenModal}
+        handleOpenModal={_handleOpenModal}
         handleExpand={handleExpand}
       />
+
       <Grid container spacing={2}>
         <Grid item xs={7}>
-          <LeftPart />
+          <LeftPart
+            projectInfo={project?.project || {}}
+            status={status}
+            handleOpenModal={_handleOpenModal}
+          />
         </Grid>
         <Grid item xs={5}>
-          <RightPart />
+          <RightPart handleOpenModal={_handleOpenModal} />
         </Grid>
       </Grid>
+
+      {modalSetting.isOpen && (
+        <ProjectSettingModal
+          open={modalSetting.isOpen}
+          setOpen={_handleSetOpenSetting}
+          {...modalSetting.props}
+        />
+      )}
+
+      {openModalAddMember && (
+        <AddMemberModal
+          isOpen={openModalAddMember}
+          setOpen={setOpenModalAddMember}
+          task={openModalAddMember}
+          members={project?.project?.members || []}
+          projectActive={project?.project?.id || null}
+        />
+      )}
+
+      <DeleteProjectModal
+        open={openModalAlert.isOpen}
+        setOpen={_handleSetOpenAlert}
+        projectGroupId={project?.id}
+        selectedProject={project?.project}
+        doAfterSuccess={_handleDeleted}
+      />
     </div>
   );
 };

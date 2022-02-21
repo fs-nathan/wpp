@@ -5,12 +5,14 @@ import EditIcon from "@mui/icons-material/Edit";
 
 const TextWithEdit = ({
   variant = "p",
-  isTitle = false,
+  name = null,
   isNewData = false,
+  isTitle = false,
   defaultValue = "",
   styleTitle = {},
   styleInput = {},
   placeholder = "",
+  onSubmit = () => {},
 }) => {
   const refInput = useRef(null);
   const [value, setValue] = useState(defaultValue);
@@ -30,16 +32,20 @@ const TextWithEdit = ({
     }, 100);
   };
 
-  const _handleChange = (e) => setValue(e.target.value);
+  const _handleChange = (e) => {
+    setValue(e.target.value);
+  };
 
   const _handleKeyDown = (e) => {
     if (e.key === "Enter") {
       setIsEditing(false);
+      onSubmit(value);
     }
   };
 
   const _handleBlur = (e) => {
     if (value) setIsEditing(false);
+    // onSubmit(value);
   };
 
   return (
@@ -49,6 +55,7 @@ const TextWithEdit = ({
         ref={refInput}
         placeholder={placeholder}
         value={value}
+        name={name}
         style={{ ...styleInput, display: isEditing ? "block" : "none" }}
         onChange={_handleChange}
         onKeyDown={_handleKeyDown}

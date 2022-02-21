@@ -1,48 +1,72 @@
 import { Typography } from "@material-ui/core";
 import React from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import LabelList from "./LabelList";
+import MembersList from "./MembersList";
+import PriorityList from "./PriorityList";
 
-const LeftPart = () => {
+const LeftPart = ({
+  projectInfo = {},
+  status = {},
+  handleOpenModal = () => {},
+}) => {
+  const { membersAdded } = useSelector(
+    ({ project }) => project.memberProject.data
+  );
+  const _handleAddMember = () => {
+    handleOpenModal("ADD_MEMBER");
+  };
+
+  const dataMembers = membersAdded.length
+    ? membersAdded
+    : projectInfo?.members || [];
+
   return (
     <WrapperLeftPart>
       <Typography variant="p" component="div">
-        Được tạo bởi Viet App lúc 09:21 ngày 08/01/2021
+        Được tạo bởi {projectInfo?.user_create?.name} ngày{" "}
+        {projectInfo?.date_start}
       </Typography>
 
       <WrapperInformation
         title="Bảng việc"
-        description="Dự án phát triển phần mềm quản lý công việc trực tuyến"
-        styleDescription={{ fontSize: "18px", color: "black", fontWeight: 500 }}
+        description={projectInfo.name}
+        styleDescription={{
+          fontSize: "17px",
+          fontWeight: 500,
+          color: "#1e1f21",
+        }}
       />
 
-      <WrapperInformation
-        title="Mô tả"
-        description="Xây dựng và phát triển phần mềm quản lý công việc trực tuyến"
-      />
+      <WrapperInformation title="Mô tả" description={projectInfo.description} />
 
       <WrapperInformation title="Phân loại" component="div">
-        Phân loại
+        <LabelList />
       </WrapperInformation>
 
       <WrapperInformation title="Thành viên" component="div">
-        Thành viên
+        <MembersList data={dataMembers || []} onAddMember={_handleAddMember} />
       </WrapperInformation>
 
       <WrapperInformation title="Mức độ ưu tiên" component="div">
-        Mức độ ưu tiên
+        <PriorityList
+          projectId={projectInfo?.id || null}
+          defaultPriority={projectInfo.priority_code}
+        />
       </WrapperInformation>
 
       <WrapperInformation title="Tiến độ" component="div">
         <Typography variant="p" style={{ color: "black", fontWeight: 500 }}>
-          120 ngày
+          {projectInfo?.duration} ngày
         </Typography>
         <p style={{ fontWeight: 500 }}>
-          Bắt đầu: 08:00 ngày 10/01/2021 (ngày bắt đầu của công việc bắt đầu sớm
-          nhất)
+          Bắt đầu: Ngày {projectInfo?.date_start} (ngày bắt đầu của công việc
+          bắt đầu sớm nhất)
         </p>
         <Typography variant="p" style={{ fontWeight: 500 }}>
-          Kết thúc: 08:00 ngày 10/01/2021 (ngày kết thúc của công việc kết thúc
-          muộn nhất)
+          Kết thúc: Ngày {projectInfo?.date_end} (ngày kết thúc của công việc
+          kết thúc muộn nhất)
         </Typography>
       </WrapperInformation>
 
@@ -51,15 +75,19 @@ const LeftPart = () => {
         style={{ color: "black", fontWeight: "400" }}
       >
         <WrapperSetting>
-          <p>Sao chép bảng việc: Không</p>
-          <span>Thay đổi</span>
+          <p>Sao chép bảng việc: {status.copy ? "Có" : "Không"}</p>
+          <span onClick={() => handleOpenModal("SETTING")}>Thay đổi</span>
         </WrapperSetting>
         <WrapperSetting>
-          <p>Thông báo tới thành viên: Có</p>
-          <span>Thay đổi</span>
+          <p>
+            Thông báo tới thành viên: {status.notification ? "Có" : "Không"}
+          </p>
+          <span onClick={() => handleOpenModal("SETTING")}>Thay đổi</span>
         </WrapperSetting>
         <WrapperSetting>
-          <span>Xem toàn bộ cài đặt</span>
+          <span onClick={() => handleOpenModal("SETTING")}>
+            Xem toàn bộ cài đặt
+          </span>
         </WrapperSetting>
       </WrapperInformation>
     </WrapperLeftPart>
@@ -84,8 +112,8 @@ const WrapperInformation = ({
         component="div"
         style={{
           fontSize: "14px",
-          color: "black",
-          fontWeight: 400,
+          lineHeight: "22px",
+          color: "#1e1f21",
           ...styleDescription,
         }}
       >
@@ -109,6 +137,7 @@ const WrapperSetting = styled.div`
   > span {
     color: #4284f3ff;
     font-weight: 500;
+    cursor: pointer;
   }
 `;
 const WrapperLeftPart = styled.div`
@@ -118,9 +147,14 @@ const WrapperLeftPart = styled.div`
   color: #878787;
 `;
 const StyledLabel = styled(Typography)`
-  font-size: 16px;
-  font-weight: 500;
-  margin: 10px 0;
+  font-size: 20px;
+  line-height: 28px;
+  margin-bottom: 4px;
+  margin-top: 24px;
+  width: 280px;
+  color: #878787;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
 `;
 
 export default LeftPart;

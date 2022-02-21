@@ -1,4 +1,5 @@
 import { makeStyles } from "@material-ui/styles";
+import { detailStatus } from "actions/project/setting/detailStatus";
 import { getPermissionViewProjects } from "actions/viewPermissions";
 import classNames from "classnames";
 import React, { useLayoutEffect } from "react";
@@ -52,6 +53,7 @@ function ProjectGroupPage({
   route,
   countPersonalProjectsBoard,
   checkHasRecentlyProjects,
+  doDetailStatus,
 }) {
   const classes = useStyles();
   const { pathname } = useLocation();
@@ -133,6 +135,7 @@ function ProjectGroupPage({
               <DashboardPage
                 expand={isCollapsed}
                 handleExpand={_handleExpand}
+                doDetailStatus={doDetailStatus}
               />
             </Route>
             <Route exact path="/projects/report/:projectId/:memberId?">
@@ -159,6 +162,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(getPermissionViewProjects(quite)),
     checkHasRecentlyProjects: () => dispatch(checkHasRecentlyProjects()),
     countPersonalProjectsBoard: () => dispatch(countPersonalProjectsBoard()),
+    doDetailStatus: ({ projectId }) => dispatch(detailStatus({ projectId })),
   };
 };
 

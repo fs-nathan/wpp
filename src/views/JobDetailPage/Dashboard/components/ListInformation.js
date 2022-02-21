@@ -1,21 +1,17 @@
+import { apiService } from "constants/axiosInstance";
 import React, { useState } from "react";
-import CardInfo from "./CardInfo";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import CardInfo from "./CardInfo";
 
-const fakeData = [
-  {
-    title: "Mục tiêu thực hiện",
-    description: "Hoàn thành nhanh sản phẩn để tung ra thị trường kịp thời",
-  },
-  {
-    title: "Ngân sách tối đa",
-    description: "100 triệu đồng",
-  },
-];
-
-const ListInformation = () => {
-  const [data, setData] = useState(fakeData);
+const ListInformation = ({ list = [] }) => {
+  const { projectId } = useParams();
+  const [data, setData] = useState(list);
   const [isHideAddLink, setIsHideAddLink] = useState(false);
+
+  React.useEffect(() => {
+    setData(list || []);
+  }, [list]);
 
   const _handleAdd = () => {
     setData((data) => [
@@ -30,11 +26,65 @@ const ListInformation = () => {
     setData((data) => [...data].filter((item) => !item.isNewData));
   };
 
+  const _handleSubmit = (valueSubmit, isNewData) => {
+    if (isNewData) return _handleSubmitAdd(valueSubmit);
+    _handleSubmitUpdate(valueSubmit);
+  };
+
+  const _handleSubmitAdd = async (valueSubmit) => {
+    const result = await apiService({
+      url: "/project/create-more-data",
+      method: "POST",
+      data: { ...valueSubmit, project_id: projectId },
+    });
+
+    setData((data) => {
+      const removedNewBox = data.filter((item) => !item.isNewData);
+      return [...removedNewBox, result.data.data];
+    });
+
+    setIsHideAddLink(false);
+  };
+
+  const _handleSubmitUpdate = async (valueSubmit) => {
+    const result = await apiService({
+      url: "/project/update-more-data",
+      method: "POST",
+      data: { ...valueSubmit, project_id: projectId },
+    });
+
+    setData((data) => {
+      return data.map((item) => {
+        if (item.id === valueSubmit.data_id)
+          return { ...item, ...result.data.data };
+        return item;
+      });
+    });
+
+    setIsHideAddLink(false);
+  };
+
+  const _handleDelete = async (data_id) => {
+    setData((data) => data.filter((item) => item.id !== data_id));
+    await apiService({
+      url: "/project/delete-more-data",
+      method: "POST",
+      data: { data_id, project_id: projectId },
+    });
+  };
+
   return (
     <>
       {data.map((item, index) => (
-        <CardInfo key={index} {...item} onCloseAdd={_handleCloseAdd} />
+        <CardInfo
+          key={item.id}
+          {...item}
+          onCloseAdd={_handleCloseAdd}
+          onSubmit={_handleSubmit}
+          onDelete={_handleDelete}
+        />
       ))}
+      {!data.length && <p style={{ textAlign: "center" }}>No Data</p>}
       {!isHideAddLink && (
         <AddInformation onClick={_handleAdd}>+ Thêm thông tin</AddInformation>
       )}
