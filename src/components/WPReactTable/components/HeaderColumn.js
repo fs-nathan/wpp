@@ -37,6 +37,7 @@ const HeaderColumn = ({
   onSortColumn = () => {},
   onAddNewColumns = () => {},
 }) => {
+  console.log("@Pham_Tinh_Console:", column);
   /* The above code is creating a state and dispatch function. */
   const [state, dispatchState] = useReducer(reducer, initialState);
 
@@ -128,7 +129,7 @@ const HeaderColumn = ({
       )}
 
       <Menu
-        style={{ marginTop: "42px" }}
+        style={{ marginTop: "45px" }}
         id="menu-appbar"
         anchorEl={state.anchorEl}
         anchorOrigin={{
@@ -138,10 +139,17 @@ const HeaderColumn = ({
         open={Boolean(state.anchorEl)}
         onClose={_handleCloseMenu}
       >
-        <StyledMenuItem onClick={_handleEditField} style={{ marginBottom: 5 }}>
-          <Typography textAlign="center">Chỉnh sửa trường</Typography>
-        </StyledMenuItem>
-        <Divider />
+        {!column.is_default && (
+          <>
+            <StyledMenuItem
+              onClick={_handleEditField}
+              style={{ marginBottom: 5 }}
+            >
+              <Typography textAlign="center">Chỉnh sửa trường</Typography>
+            </StyledMenuItem>
+            <Divider />
+          </>
+        )}
 
         <StyledMenuItem
           isActive={column.sort_method === "ASC"}
@@ -240,7 +248,6 @@ const HeaderColumnWrapper = styled.div`
 `;
 const LeftStructure = styled.div`
   cursor: pointer;
-  align-items: stretch;
   color: #666;
   display: flex;
   flex: 1 0 auto;

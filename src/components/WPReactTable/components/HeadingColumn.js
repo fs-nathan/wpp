@@ -94,6 +94,7 @@ const HeadingColumn = ({
           vertical: "top",
           horizontal: "left",
         }}
+        style={{ marginTop: "45px" }}
       >
         <MenuItem
           onClick={() => handleSelect("ASC")}
@@ -276,7 +277,6 @@ const ResizeDiv = styled.div`
 
 const LeftStructure = styled.div`
   cursor: pointer;
-  align-items: stretch;
   color: #666;
   display: flex;
   flex: 1 0 auto;
