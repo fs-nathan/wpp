@@ -81,6 +81,7 @@ const CellItemGroup = React.memo(
     isNewRow = false,
     dragHandle = {},
     onSubmitAdd = () => {},
+    onBlur = () => {},
     isFocus = true,
   }) => {
     const isDisplayReminder = row.original.status_code === 3;
@@ -125,6 +126,7 @@ const CellItemGroup = React.memo(
           wrap="off"
           defaultValue={isNewRow ? "" : value}
           onKeyPress={_handleKeyPress}
+          onBlur={onBlur}
           style={{
             marginLeft: isDisplayReminder ? "5px" : 0,
             width: isDisplayReminder

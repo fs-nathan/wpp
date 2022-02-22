@@ -306,7 +306,6 @@ const HeaderColumnWrapper = styled.div`
   background-color: #f1f2f4;
   display: flex;
   flex-direction: column;
-  height: 47px;
   left: 0;
   position: absolute;
   border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
@@ -317,9 +316,13 @@ const HeaderColumnWrapper = styled.div`
 `;
 
 const Heading = styled.div`
+  width: 100%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export default HeadingColumn;
