@@ -96,6 +96,7 @@
     "serve-firebase": "react-scripts build && firebase serve",
     "deploy-firebase": "react-scripts build && firebase deploy",
     "deploy": "yarn build && firebase deploy",
+    "deploy-staging": "yarn build && firebase deploy -P staging",
     "surge": "yarn build && surge build v-task.surge.sh",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

@@ -81,18 +81,14 @@ const Styles = styled.div`
 
     .td {
       background-color: #fff;
-      border: 1px solid #edeae9;
+      box-shadow:  0 0 0 1px #edeae9;
       box-sizing: border-box;
       padding: 0 8px;
       z-index: 0;
       align-items: center;
-      display: flex;
       height: 47px;
       overflow: hidden;
-      justify-content: space-between;
-      margin-left: -1px;
       display: inline-flex !important;
-      align-items: center;
       justify-content: flex-start;
       &[data-sticky-td="true"] {
         z-index: 300 !important;
@@ -101,10 +97,10 @@ const Styles = styled.div`
         justify-content: space-between;
         flex: 1 1 auto;
         min-width: 1px;
-        box-shadow: none;
         max-width: 420px;
+        box-shadow: inset 0 0 0 1px #edeae9;
         &:hover {
-          border-right-color: #edeae9;
+          box-shadow: 1px 0 0 0 #edeae9;
         }
       }
       &.isGroupColumn {
