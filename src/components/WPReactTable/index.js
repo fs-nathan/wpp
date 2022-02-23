@@ -105,23 +105,27 @@ const Styles = styled.div`
       }
       &.isGroupColumn {
         border-left: 0;
+
         &:hover {
           border-right-color: transparent;
           border-top-color: #edeae9;
           border-bottom-color: #edeae9;
         }
       }
+
       &:hover {
-        box-shadow:inset 0 0 0 1px #afabac;
+        box-shadow: inset 0 0 0 1px #afabac;
         overflow: unset;
-        height: 46px;
         z-index: 200;
+        border: 0;
+
         .canHide,
         .default_tag,
         .icon {
           visibility: visible;
         }
       }
+
       &.focus {
         z-index: 200;
         border-color: #4573d2 !important;
