@@ -98,9 +98,9 @@ const Styles = styled.div`
         flex: 1 1 auto;
         min-width: 1px;
         max-width: 420px;
-        box-shadow: inset 0 0 0 1px #edeae9;
+        box-shadow: 0 0 0 1px #edeae9;
         &:hover {
-          box-shadow: 1px 0 0 0 #edeae9;
+          box-shadow: 0 0 0 1px #edeae9;
         }
       }
       &.isGroupColumn {
@@ -112,8 +112,10 @@ const Styles = styled.div`
         }
       }
       &:hover {
-        z-index: 200 !important;
-        border-color: #afabac;
+        box-shadow:inset 0 0 0 1px #afabac;
+        overflow: unset;
+        height: 46px;
+        z-index: 200;
         .canHide,
         .default_tag,
         .icon {
