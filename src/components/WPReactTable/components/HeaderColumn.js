@@ -231,15 +231,13 @@ const StyledListItemIcon = styled(ListItemIcon)`
 const HeaderColumnWrapper = styled.div`
   align-items: center;
   background-color: #f1f2f4;
-  border-right: 1px solid #edeae9;
-  border-top: 1px solid #edeae9;
+  box-shadow: 0 0 0 1px #edeae9;
   display: flex;
   flex: 1 0 auto;
   justify-content: space-between;
   z-index: 0;
   margin: 0;
   color: #6d6e6f;
-  margin-right: -1px;
   position: relative;
 
   &[data-sticky-td="true"] {
