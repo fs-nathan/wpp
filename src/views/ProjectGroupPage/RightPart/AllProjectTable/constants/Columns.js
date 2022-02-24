@@ -16,6 +16,7 @@ import { ChartInfoBox } from "components/CustomDonutChart";
 import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
 import { LightTooltip, TooltipWrapper } from "components/LightTooltip";
 import { StateBox } from "components/TableComponents";
+import ColumnOptionsGroup from "components/WPReactTable/components/ColumnOptionsGroup";
 import { statusTaskColors } from "constants/colors";
 import { decodePriorityCode } from "helpers/project/commonHelpers";
 import { get } from "lodash";
@@ -290,17 +291,17 @@ const CellStatus = ({ props }) => {
   );
 };
 
-const CellPriority = ({ props }) => {
-  const row = props.row.original;
-  return (
-    <CustomBadge
-      color={decodePriorityCode(get(row, "priority_code", 0)).color}
-      background={decodePriorityCode(get(row, "priority_code", 0)).background}
-    >
-      {get(row, "priority_name", "")}
-    </CustomBadge>
-  );
-};
+// const CellPriority = ({ props }) => {
+//   const row = props.row.original;
+//   return (
+//     <CustomBadge
+//       color={decodePriorityCode(get(row, "priority_code", 0)).color}
+//       background={decodePriorityCode(get(row, "priority_code", 0)).background}
+//     >
+//       {get(row, "priority_name", "")}
+//     </CustomBadge>
+//   );
+// };
 
 const CellTotalTask = ({ value }) => {
   if (!value.total_task) return null;
@@ -322,6 +323,12 @@ const CellMembers = ({ value = [] }) => {
       display={3}
     />
   );
+};
+
+const CellPriority = ({ value }) => {
+  const options = [];
+  return <h2>hello</h2>;
+  return <ColumnOptionsGroup options={options} />;
 };
 
 export const COLUMNS_PROJECT_TABLE = ({

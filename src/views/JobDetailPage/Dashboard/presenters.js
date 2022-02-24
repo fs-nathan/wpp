@@ -89,7 +89,16 @@ const DashboardPresenters = ({
         handleExpand={handleExpand}
       />
 
-      <Grid container spacing={2}>
+      <Grid
+        container
+        spacing={2}
+        style={{
+          width: "100%",
+          margin: "0",
+          overflowY: "scroll",
+          maxHeight: "calc(100vh - 130px)",
+        }}
+      >
         <Grid item xs={7}>
           <LeftPart
             projectInfo={project?.project || {}}
@@ -97,7 +106,7 @@ const DashboardPresenters = ({
             handleOpenModal={_handleOpenModal}
           />
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={5} style={{ padding: 0 }}>
           <RightPart handleOpenModal={_handleOpenModal} />
         </Grid>
       </Grid>
