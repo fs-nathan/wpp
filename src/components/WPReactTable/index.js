@@ -81,7 +81,7 @@ const Styles = styled.div`
 
     .td {
       background-color: #fff;
-      box-shadow:  0 0 0 1px #edeae9;
+      box-shadow: inset 0 0 0 0.5px #edeae9;
       box-sizing: border-box;
       padding: 0 8px;
       z-index: 0;
@@ -98,23 +98,20 @@ const Styles = styled.div`
         flex: 1 1 auto;
         min-width: 1px;
         max-width: 420px;
-        box-shadow: 0 0 0 1px #edeae9;
+        box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
-          box-shadow: 0 0 0 1px #edeae9;
+          box-shadow: inset 0 0 0 1px #afabac;
         }
       }
       &.isGroupColumn {
-        border-left: 0;
-
+        box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
-          border-right-color: transparent;
-          border-top-color: #edeae9;
-          border-bottom-color: #edeae9;
+          box-shadow: inset 0 0 0 1px #afabac;
         }
       }
 
       &:hover {
-        box-shadow: inset 0 0 0 1px #afabac;
+        box-shadow: inset 0 0 0 0.75px #afabac;
         overflow: unset;
         z-index: 200;
         border: 0;
