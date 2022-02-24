@@ -37,7 +37,6 @@ const HeaderColumn = ({
   onSortColumn = () => {},
   onAddNewColumns = () => {},
 }) => {
-  console.log("@Pham_Tinh_Console:", column);
   /* The above code is creating a state and dispatch function. */
   const [state, dispatchState] = useReducer(reducer, initialState);
 
@@ -129,15 +128,13 @@ const HeaderColumn = ({
       )}
 
       <Menu
-        style={{ marginTop: "45px" }}
         id="menu-appbar"
         anchorEl={state.anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
         open={Boolean(state.anchorEl)}
         onClose={_handleCloseMenu}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
+        transformOrigin={{ vertical: "top", horizontal: "start" }}
       >
         {!column.is_default && (
           <>
@@ -151,21 +148,14 @@ const HeaderColumn = ({
           </>
         )}
 
-        <StyledMenuItem
-          isActive={column.sort_method === "ASC"}
-          onClick={() => _handleSort(1)}
-          style={{ marginTop: 5 }}
-        >
+        <StyledMenuItem onClick={() => _handleSort(1)} style={{ marginTop: 5 }}>
           <StyledListItemIcon>
             <UpgradeIcon />
           </StyledListItemIcon>
           <Typography textAlign="center">Lọc tăng dần</Typography>
         </StyledMenuItem>
 
-        <StyledMenuItem
-          isActive={column.sort_method === "DESC"}
-          onClick={() => _handleSort(2)}
-        >
+        <StyledMenuItem onClick={() => _handleSort(2)}>
           <StyledListItemIcon transform>
             <UpgradeIcon />
           </StyledListItemIcon>
