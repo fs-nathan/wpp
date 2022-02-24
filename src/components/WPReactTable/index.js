@@ -100,20 +100,20 @@ const Styles = styled.div`
         max-width: 420px;
         box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
-          box-shadow: inset 0 0 0 1px #afabac;
+          box-shadow: inset 0 0 0 1px #edeae9;
         }
       }
       &.isGroupColumn {
         box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
-          box-shadow: inset 0 0 0 1px #afabac;
+          box-shadow: inset 0 0 0 1px #edeae9;
         }
       }
 
       &:hover {
         box-shadow: inset 0 0 0 0.75px #afabac;
         overflow: unset;
-        z-index: 200;
+        z-index: 201;
         border: 0;
 
         .canHide,
