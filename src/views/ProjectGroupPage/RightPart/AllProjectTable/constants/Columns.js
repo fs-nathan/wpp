@@ -11,14 +11,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import AvatarCircleList from "components/AvatarCircleList";
 import CustomAvatar from "components/CustomAvatar";
-import CustomBadge from "components/CustomBadge";
 import { ChartInfoBox } from "components/CustomDonutChart";
 import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
 import { LightTooltip, TooltipWrapper } from "components/LightTooltip";
 import { StateBox } from "components/TableComponents";
+import ColumnMembers from "components/WPReactTable/components/ColumnMembers.js";
 import ColumnOptionsGroup from "components/WPReactTable/components/ColumnOptionsGroup";
 import { statusTaskColors } from "constants/colors";
-import { decodePriorityCode } from "helpers/project/commonHelpers";
 import { get } from "lodash";
 import moment from "moment";
 import * as React from "react";
@@ -26,7 +25,6 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
 import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
 
 export const CellLabel = ({ props, value, onEdit = () => {} }) => {
@@ -406,7 +404,7 @@ export const COLUMNS_PROJECT_TABLE = ({
       id: "members",
       Header: "Thành viên",
       accessor: "members",
-      Cell: CellMembers,
+      Cell: ColumnMembers,
     },
   ];
 };

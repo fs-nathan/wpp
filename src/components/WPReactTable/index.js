@@ -90,6 +90,7 @@ const Styles = styled.div`
       overflow: hidden;
       display: inline-flex !important;
       justify-content: flex-start;
+
       &[data-sticky-td="true"] {
         z-index: 300 !important;
         border-left: 0;
@@ -103,6 +104,11 @@ const Styles = styled.div`
           box-shadow: inset 0 0 0 1px #edeae9;
         }
       }
+
+      .icon_add {
+        visibility: hidden;
+      }
+
       &.isGroupColumn {
         box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
@@ -118,7 +124,8 @@ const Styles = styled.div`
 
         .canHide,
         .default_tag,
-        .icon {
+        .icon,
+        .icon_add {
           visibility: visible;
         }
       }
