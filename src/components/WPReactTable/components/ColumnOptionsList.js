@@ -30,8 +30,9 @@ const ColumnOptionsList = ({
       open={open}
       onClose={onClose}
       onClick={onClose}
-      transformOrigin={{ horizontal: "right", vertical: "top" }}
-      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+      getContentAnchorEl={null}
+      anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
+      transformOrigin={{ vertical: "top", horizontal: "start" }}
     >
       <MenuItem
         style={{ width: 200, color: "#6d6e6f", height: 35 }}
