@@ -14,6 +14,7 @@ const ColumnOptionsList = ({
   anchorEl,
   selected = null,
   options = [],
+  isDisplayEditField = true,
   onClose = () => {},
   onEdit = () => {},
   onSelect = () => {},
@@ -36,7 +37,7 @@ const ColumnOptionsList = ({
     >
       <MenuItem
         style={{ width: 200, color: "#6d6e6f", height: 35 }}
-        onClick={() => onClose(null)}
+        onClick={() => _handleSelect(null)}
       >
         <StyledIconSelected
           selected={!selected?._id}
@@ -44,8 +45,9 @@ const ColumnOptionsList = ({
         />
         <Typography>—</Typography>
       </MenuItem>
-      {options?.map((item) => (
+      {options?.map((item, index) => (
         <MenuItem
+          key={index}
           title={item.name}
           style={{ width: 200, height: 35 }}
           onClick={() => _handleSelect(item)}
@@ -57,18 +59,22 @@ const ColumnOptionsList = ({
         </MenuItem>
       ))}
       <div style={{ marginBottom: 5 }} />
-      <Divider light />
-      <WrapperMenuItem>
-        <MenuItem
-          onClick={onEdit}
-          style={{ width: "100%", marginTop: 5, height: 35 }}
-        >
-          <ListItemIcon style={{ minWidth: 20 }}>
-            <EditIcon />
-          </ListItemIcon>
-          <span style={{ marginLeft: "5px" }}>Chỉnh sửa</span>
-        </MenuItem>
-      </WrapperMenuItem>
+      {isDisplayEditField && (
+        <>
+          <Divider light />
+          <WrapperMenuItem>
+            <MenuItem
+              onClick={onEdit}
+              style={{ width: "100%", marginTop: 5, height: 35 }}
+            >
+              <ListItemIcon style={{ minWidth: 20 }}>
+                <EditIcon />
+              </ListItemIcon>
+              <span style={{ marginLeft: "5px" }}>Chỉnh sửa</span>
+            </MenuItem>
+          </WrapperMenuItem>
+        </>
+      )}
     </Menu>
   );
 };

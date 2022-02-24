@@ -94,8 +94,12 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
           />
           <Typography>—</Typography>
         </MenuItem>
-        {labelsProject.data?.projectLabels?.map((item) => (
-          <MenuItem style={{ width: 200 }} onClick={() => setSelected(item)}>
+        {labelsProject.data?.projectLabels?.map((item, index) => (
+          <MenuItem
+            key={index}
+            style={{ width: 200 }}
+            onClick={() => setSelected(item)}
+          >
             <DoneIcon
               style={{
                 marginRight: 10,
@@ -325,10 +329,16 @@ const CellMembers = ({ value = [] }) => {
   );
 };
 
-const CellPriority = ({ value }) => {
-  const options = [];
-  return <h2>hello</h2>;
-  return <ColumnOptionsGroup options={options} />;
+const CellPriority = ({ value, props }) => {
+  const row = props.row.original;
+  const options = [
+    { id: 1, _id: 1, name: "Thấp", value: 0, color: "#d2ebd3" },
+    { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#ffe5bf" },
+    { id: 3, _id: 3, name: "Cao", value: 2, color: "#fec1c1" },
+  ];
+  const selected =
+    options.find((item) => item.value === row.priority_code) || {};
+  return <ColumnOptionsGroup defaultSelected={selected} options={options} />;
 };
 
 export const COLUMNS_PROJECT_TABLE = ({

@@ -1,6 +1,5 @@
 import { Box, Typography } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { updateValueColumns } from "actions/columns/updateValueColumns";
 import { isArray } from "lodash";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -10,30 +9,13 @@ import ColumnOptionsList from "./ColumnOptionsList";
 const ColumnOptionsGroup = ({
   projectId,
   taskId,
-  idType,
-  nameType,
-  dataType,
-  optionsType = [],
-  props,
-  value,
-  option_color,
-  option_value,
+  defaultSelected = {},
+  options = [],
   onEdit = () => {},
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selected, setSelected] = React.useState({
-    name: value,
-    color: option_color,
-    _id: option_value,
-  });
+  const [selected, setSelected] = React.useState(defaultSelected);
   const dispatch = useDispatch();
-
-  React.useEffect(() => {
-    if (!isArray(optionsType)) return;
-    const newSelected = optionsType.find((item) => item._id === option_value);
-    if (selected) setSelected(newSelected);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [option_value, optionsType]);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -45,28 +27,17 @@ const ColumnOptionsGroup = ({
 
   const _handleSelect = (item) => {
     setSelected(item);
-    dispatch(
-      updateValueColumns(
-        {
-          task_id: taskId,
-          field_id: idType,
-          dataType,
-          value: item._id,
-        },
-        () => {}
-      )
-    );
-  };
-
-  const _handleOpenModalEdit = () => {
-    onEdit(dataType, {
-      idType,
-      projectId,
-      taskId,
-      dataType,
-      name: nameType,
-      optionsType: optionsType || [],
-    });
+    // dispatch(
+    //   updateValueColumns(
+    //     {
+    //       task_id: taskId,
+    //       field_id: idType,
+    //       dataType,
+    //       value: item._id,
+    //     },
+    //     () => {}
+    //   )
+    // );
   };
 
   const _renderSelected = () => {
@@ -96,9 +67,9 @@ const ColumnOptionsGroup = ({
       <ColumnOptionsList
         selected={selected}
         anchorEl={anchorEl}
-        options={optionsType}
+        options={options}
+        isDisplayEditField={false}
         onClose={_handleClose}
-        onEdit={_handleOpenModalEdit}
         onSelect={_handleSelect}
       />
     </>
