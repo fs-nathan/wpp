@@ -230,7 +230,6 @@ function AllProjectTable({
               onSort={_handleSort}
             />
 
-
             <Menu
               id="simple-menu"
               anchorEl={menuAnchor}

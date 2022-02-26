@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
+import { updatePinBoardSetting } from "actions/project/setting/updatePinBoardSetting";
 import { updateProject } from "actions/project/updateProject";
 import CustomAvatar from "components/CustomAvatar";
 import { ChartInfoBox } from "components/CustomDonutChart";
@@ -181,6 +182,11 @@ const CellNameProject = ({ props, onEdit = () => {} }) => {
   const row = props.row.original;
   const isDisplayUpdate =
     !get(row, "can_update", false) || !get(row, "can_delete", false);
+  const dispatch = useDispatch();
+
+  const _handlePin = () => {
+    dispatch(updatePinBoardSetting({ projectId: row.id, status: 0 }));
+  };
 
   return (
     <WrapperCellName>
@@ -190,8 +196,10 @@ const CellNameProject = ({ props, onEdit = () => {} }) => {
 
       <StarOutlineRoundedIcon
         className="star-icon"
+        onClick={_handlePin}
         style={{ cursor: "pointer", margin: "0 5px" }}
       />
+
       <CustomAvatar
         style={{ width: 25, height: 25 }}
         className="avatar"
@@ -409,7 +417,7 @@ export const COLUMNS_PROJECT_TABLE = ({
       Header: "Thành viên",
       accessor: "members",
       Cell: (props) => {
-        const valueCell=props.row.original
+        const valueCell = props.row.original;
         return <ColumnMembers dataCell={valueCell} value={props.value} />;
       },
     },
