@@ -46,7 +46,6 @@ async function doUpdateProject({
 
 function* updateProject(action) {
   try {
-    console.log("@Pham_Tinh_Console:", action.options);
     const { project } = yield call(doUpdateProject, action.options);
     yield put(updateProjectSuccess({ project }, action.options));
     CustomEventEmitter(UPDATE_PROJECT.SUCCESS);

@@ -408,7 +408,10 @@ export const COLUMNS_PROJECT_TABLE = ({
       id: "members",
       Header: "Thành viên",
       accessor: "members",
-      Cell: ColumnMembers,
+      Cell: (props) => {
+        const valueCell=props.row.original
+        return <ColumnMembers dataCell={valueCell} value={props.value} />;
+      },
     },
   ];
 };

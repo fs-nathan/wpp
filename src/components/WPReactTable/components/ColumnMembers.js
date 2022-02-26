@@ -3,9 +3,9 @@ import AvatarCircleList from "components/AvatarCircleList";
 import { get } from "lodash";
 import React from "react";
 import styled from "styled-components";
-import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal";
+import MembersSettingModal from "views/ProjectPage/Modals/MembersSetting";
 
-const ColumnMembers = ({ value = [] }) => {
+const ColumnMembers = ({ value = [], dataCell }) => {
   const [isOpenAddModal, setIsOpenAddModal] = React.useState(false);
 
   return (
@@ -25,12 +25,10 @@ const ColumnMembers = ({ value = [] }) => {
         <AddIcon />
       </WrapperCircle>
 
-      <AddMemberModal
-        isOpen={isOpenAddModal}
+      <MembersSettingModal
+        open={isOpenAddModal}
         setOpen={setIsOpenAddModal}
-        // task={openModalAddMember}
-        members={value || []}
-        // projectActive={project?.project?.id || null}
+        project_id={dataCell.id}
       />
     </>
   );
