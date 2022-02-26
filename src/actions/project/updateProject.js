@@ -12,6 +12,7 @@ export const updateProject = ({
   priority,
   currency,
   work_type,
+  project_label_id,
 }) => ({
   type: UPDATE_PROJECT,
   options: {
@@ -22,6 +23,7 @@ export const updateProject = ({
     priority,
     currency,
     work_type,
+    project_label_id,
   },
 });
 

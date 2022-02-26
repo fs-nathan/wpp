@@ -41,7 +41,7 @@ const PopoverSetGroupDefault = forwardRef(
 
     const canModify = useSelector(
       ({ viewPermissions }) =>
-        viewPermissions.data.projects.manage_group_project
+        viewPermissions?.data?.projects?.manage_group_project || {}
     );
 
     const [, setDefaultAccessItem] = useLocalStorage(

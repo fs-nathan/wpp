@@ -59,8 +59,7 @@ const Styles = styled.div`
       height: 47px;
       transition: box-shadow 100ms ease-in-out;
       contain: style;
-      margin-bottom: -1px;
-      margin-top: -1px;
+
       line-height: normal;
       &:hover {
         background-color: #f9f8f8;

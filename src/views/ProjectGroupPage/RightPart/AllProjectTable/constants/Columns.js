@@ -9,6 +9,7 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
+import { updateProject } from "actions/project/updateProject";
 import CustomAvatar from "components/CustomAvatar";
 import { ChartInfoBox } from "components/CustomDonutChart";
 import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
@@ -16,17 +17,29 @@ import { LightTooltip, TooltipWrapper } from "components/LightTooltip";
 import { StateBox } from "components/TableComponents";
 import ColumnMembers from "components/WPReactTable/components/ColumnMembers.js";
 import ColumnOptionsGroup from "components/WPReactTable/components/ColumnOptionsGroup";
+import { UPDATE_PROJECT } from "constants/actions/project/updateProject";
+import { apiService } from "constants/axiosInstance";
 import { statusTaskColors } from "constants/colors";
+import { CustomEventEmitter } from "constants/events";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
 import { get } from "lodash";
 import moment from "moment";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
 
 export const CellLabel = ({ props, value, onEdit = () => {} }) => {
+  const location = useLocation();
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const projectId = params.get("groupID"); // bar
   const project = props.row.original;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(value);
@@ -45,6 +58,35 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const _handleSelect = (item) => {
+    setSelected(item);
+
+    _handleUpdateProject({
+      project_id: project.id,
+      project_group_id: projectId,
+      name: project.name,
+      description: project.description,
+      priority: project.priority_code,
+      project_label_id: item?.id || null,
+    });
+  };
+
+  const _handleUpdateProject = async (data) => {
+    try {
+      await apiService({
+        url: "/project/update",
+        method: "PUT",
+        data,
+      });
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    } catch (error) {
+      SnackbarEmitter(
+        SNACKBAR_VARIANT.ERROR,
+        get(error, "messaage", DEFAULT_MESSAGE.MUTATE.ERROR)
+      );
+    }
   };
 
   const _renderSelected = () => {
@@ -78,24 +120,11 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem
-          style={{ width: 200, color: "#666" }}
-          onClick={() => setSelected(null)}
-        >
-          <DoneIcon
-            style={{
-              marginRight: 10,
-              color: "#666",
-              visibility: !selected ? "visible" : "hidden",
-            }}
-          />
-          <Typography>—</Typography>
-        </MenuItem>
         {labelsProject.data?.projectLabels?.map((item, index) => (
           <MenuItem
             key={index}
             style={{ width: 200 }}
-            onClick={() => setSelected(item)}
+            onClick={() => _handleSelect(item)}
           >
             <DoneIcon
               style={{
