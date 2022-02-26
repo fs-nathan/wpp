@@ -70,7 +70,6 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
       )}
     >
       <div className="tr" {...row.getRowProps()}>
-        <div className="drag-placeholder" />
         <ListContentColumn
           data={row.cells}
           onVisibleAddRow={_handleAddNewTask}

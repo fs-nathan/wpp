@@ -113,6 +113,9 @@ const Styles = styled.div`
         box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
           box-shadow: inset 0 0 0 1px #edeae9;
+          .drag-icon {
+            visibility: visible !important;
+          }
         }
       }
 

@@ -1,18 +1,13 @@
+import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CustomBadge from "components/CustomBadge";
-import { StateBox } from "components/TableComponents";
-import { get } from "lodash";
-import React, { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import styled from "styled-components";
-import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
+import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
 
 export const IconDrag = () => (
   <svg
@@ -37,7 +32,7 @@ const CellMainGroup = ({
   onVisibleAddRow = () => {},
 }) => {
   return (
-    <WrapperMainGroup {...dragHandle}>
+    <WrapperMainGroup>
       <div
         style={{
           width: "100%",
@@ -46,15 +41,18 @@ const CellMainGroup = ({
           maxWidth: "calc(100% - 72px)",
         }}
       >
+        <WrapperIconDrag className="drag-icon" {...dragHandle}>
+          <IconDrag />
+        </WrapperIconDrag>
         <WrapperButton {...row.getToggleRowExpandedProps()}>
           {!row.isExpanded ? (
-            <ArrowRightRoundedIcon sx={{ fontSize: 28 }} />
+            <ArrowRightRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
           ) : (
-            <ArrowDropDownRoundedIcon sx={{ fontSize: 28 }} />
+            <ArrowDropDownRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
           )}
         </WrapperButton>
         <WrapperName>
-          <TextEllipsis>{value}</TextEllipsis>
+          <StyledHeadingGroup>{value}</StyledHeadingGroup>
         </WrapperName>
       </div>
       <div
@@ -64,10 +62,10 @@ const CellMainGroup = ({
         }}
       >
         <WrapperButton className="right-side" onClick={onVisibleAddRow}>
-          <AddRoundedIcon />
+          <AddRoundedIcon sx={{ fill: "#6d6e6f" }} />
         </WrapperButton>
         <WrapperButton className="right-side">
-          <MoreHorizRoundedIcon />
+          <MoreHorizRoundedIcon sx={{ fill: "#6d6e6f" }} />
         </WrapperButton>
       </div>
     </WrapperMainGroup>
@@ -172,87 +170,6 @@ const CellNameTask = ({ row, value, ...props }) => {
   );
 };
 
-const CellStatus = ({ props }) => {
-  const { t } = useTranslation();
-
-  const row = props.row.original;
-  if (!row.status_code) return null;
-  return (
-    <StateBox stateCode={get(row, "status_code")}>
-      <div className="project_state_wrapper">
-        <span>&#11044;</span>
-        <span>
-          {get(row, "status_code") === 5
-            ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE")
-            : get(row, "status_name")}
-        </span>
-      </div>
-      {get(row, "status_code") === 3 && get(row, "day_expired", 0) !== 0 ? (
-        <small>
-          {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
-            date: get(row, "day_expired", 0),
-          })}
-        </small>
-      ) : null}
-    </StateBox>
-  );
-};
-
-const CellProgressUnit = ({ props }) => {
-  const row = props.row.original;
-  return (
-    <div>
-      {row?.duration_value} {row?.duration_unit}
-    </div>
-  );
-};
-
-const CellStartTime = ({ props }) => {
-  const row = props.row.original;
-
-  return (
-    <WrapperTime>
-      <TimeUnit>{row?.start_time}</TimeUnit>
-      <DurationUnit>{row?.start_date}</DurationUnit>
-    </WrapperTime>
-  );
-};
-
-const CellEndTime = ({ props }) => {
-  const row = props.row.original;
-
-  return (
-    <WrapperTime>
-      <TimeUnit>{row?.end_time}</TimeUnit>
-      <DurationUnit>{row?.end_date}</DurationUnit>
-    </WrapperTime>
-  );
-};
-
-const CellPriority = ({ props }) => {
-  const row = props.row.original;
-  if (!row.priority_code) return null;
-  return (
-    <CustomBadge
-      color={decodePriorityCode(get(row, "priority_code", 0)).color}
-      background={decodePriorityCode(get(row, "priority_code", 0)).background}
-    >
-      {get(row, "priority_name", "")}
-    </CustomBadge>
-  );
-};
-
-const CellCompleted = ({ props }) => {
-  const row = props.row.original;
-
-  if (!row.data["pfd-complete"]) return null;
-  return (
-    <WrapperCompleted>
-      {row.data["pfd-complete"].value} {row.data["pfd-complete"].format}
-    </WrapperCompleted>
-  );
-};
-
 export const COLUMNS_TASK_TABLE = [
   {
     id: "name",
@@ -316,23 +233,14 @@ const WrapperName = styled.div`
   outline: none;
 `;
 
-const WrapperTime = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const TimeUnit = styled.div`
-  font-size: 12px;
-`;
-const DurationUnit = styled.div`
-  color: #333;
-  margin-top: 4px;
-`;
 const WrapperIconDrag = styled.div`
   position: absolute;
   top: 50%;
   height: 19.5px;
   transform: translateY(-50%);
   visibility: hidden;
+  position: absolute;
+  left: 8px;
 `;
 const WrapperDetailInfo = styled.div`
   display: flex;
@@ -366,21 +274,31 @@ const WrapperItemName = styled.div`
     }
   }
 `;
-const WrapperCompleted = styled.div`
-  display: flex;
-  align-items: center;
-  color: #4caf50;
-`;
 
 const TextEllipsis = styled.span`
   overflow: hidden;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: #44485e;
+  color: #1e1f21;
   max-width: 100%;
   display: block;
 `;
+
+const StyledHeadingGroup = styled(TextEllipsis)`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 36px;
+  height: 36px;
+  margin-left: 0;
+  min-width: 1px;
+  outline: none;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
 const TextAreaCustom = styled.textarea`
   white-space: pre;
   background: transparent;

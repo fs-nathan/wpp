@@ -9,7 +9,6 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import AvatarCircleList from "components/AvatarCircleList";
 import CustomAvatar from "components/CustomAvatar";
 import { ChartInfoBox } from "components/CustomDonutChart";
 import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
@@ -293,18 +292,6 @@ const CellStatus = ({ props }) => {
   );
 };
 
-// const CellPriority = ({ props }) => {
-//   const row = props.row.original;
-//   return (
-//     <CustomBadge
-//       color={decodePriorityCode(get(row, "priority_code", 0)).color}
-//       background={decodePriorityCode(get(row, "priority_code", 0)).background}
-//     >
-//       {get(row, "priority_name", "")}
-//     </CustomBadge>
-//   );
-// };
-
 const CellTotalTask = ({ value }) => {
   if (!value.total_task) return null;
   return (
@@ -312,18 +299,6 @@ const CellTotalTask = ({ value }) => {
       <DonutSmallIcon />
       <span>{value.total_task}</span>
     </WrapperCellTotal>
-  );
-};
-
-const CellMembers = ({ value = [] }) => {
-  return (
-    <AvatarCircleList
-      users={value.map((member) => ({
-        name: get(member, "name"),
-        avatar: get(member, "avatar"),
-      }))}
-      display={3}
-    />
   );
 };
 
@@ -439,6 +414,8 @@ const WrapperCellName = styled.div`
 
   .drag-icon {
     height: 19.5px;
+    position: absolute;
+    left: 0;
   }
   .drag-icon,
   .star-icon,
