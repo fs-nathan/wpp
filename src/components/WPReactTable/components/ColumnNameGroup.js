@@ -1,0 +1,189 @@
+import { TextareaAutosize } from "@material-ui/core";
+import AddRoundedIcon from "@mui/icons-material/AddRounded";
+import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
+import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
+import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
+import React from "react";
+import styled from "styled-components";
+import {
+  IconDrag,
+  TextAreaCustom,
+} from "views/ProjectPage/RightPart/constant/Columns";
+
+const ColumnNameGroup = ({
+  row,
+  value,
+  dragHandle = {},
+  onVisibleAddRow = () => {},
+}) => {
+  return (
+    <WrapperMainGroup>
+      <WrapperLeft>
+        <WrapperIconDrag className="drag-icon" {...dragHandle}>
+          <IconDrag />
+        </WrapperIconDrag>
+        <WrapperButton {...row.getToggleRowExpandedProps()}>
+          {!row.isExpanded ? (
+            <ArrowRightRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
+          ) : (
+            <ArrowDropDownRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
+          )}
+        </WrapperButton>
+
+        {/* Name group */}
+        <NameGroup name={value} />
+        {/* End name group */}
+      </WrapperLeft>
+      <WrapperRight className="wrapper-right">
+        <WrapperButton className="right-side" onClick={onVisibleAddRow}>
+          <AddRoundedIcon sx={{ fill: "#6d6e6f" }} />
+        </WrapperButton>
+        <WrapperButton className="right-side">
+          <MoreHorizRoundedIcon sx={{ fill: "#6d6e6f" }} />
+        </WrapperButton>
+      </WrapperRight>
+    </WrapperMainGroup>
+  );
+};
+
+const NameGroup = ({ name = "" }) => {
+  const [isEditing, setIsEditing] = React.useState(false);
+  const refInput = React.useRef(null);
+
+  React.useEffect(() => {
+    let timeout = setTimeout(() => {
+      if (isEditing) {
+        refInput.current.focus();
+        refInput.current.selectionStart = refInput.current.selectionEnd = 10000;
+        refInput.current.value = name;
+      }
+    }, 0);
+    return () => clearTimeout(timeout);
+  }, [isEditing]);
+
+  const _handleEditing = () => setIsEditing(true);
+
+  const _handleBlur = () => {
+    setIsEditing(false);
+  };
+
+  const _handleKeyPress = (e) => {
+    if (e.which === 13 && !e.shiftKey) {
+      e.preventDefault();
+      alert("Entered");
+    }
+  };
+
+  if (isEditing)
+    return (
+      <TextAreaCustom
+        ref={refInput}
+        isGroup
+        placeholder={"Write a task name"}
+        rows="1"
+        tabindex="-1"
+        wrap="off"
+        onBlur={_handleBlur}
+        defaultValue={name}
+        onKeyPress={_handleKeyPress}
+      />
+    );
+  return (
+    <WrapperName onClick={_handleEditing}>
+      <StyledHeadingGroup>{name}</StyledHeadingGroup>
+    </WrapperName>
+  );
+};
+
+const WrapperLeft = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  max-width: calc(100% - 72px);
+`;
+
+const WrapperRight = styled.div`
+  align-items: "center";
+`;
+
+const WrapperIconDrag = styled.div`
+  position: absolute;
+  top: 50%;
+  height: 19.5px;
+  transform: translateY(-50%);
+  visibility: hidden;
+  position: absolute;
+  left: 8px;
+`;
+
+const WrapperMainGroup = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  .wrapper-right {
+    display: none;
+  }
+  &:hover {
+    .wrapper-right {
+      display: flex;
+    }
+  }
+`;
+
+const WrapperButton = styled.div`
+  height: 28px;
+  min-height: 28px;
+  min-width: 28px;
+  width: 28px;
+  border-radius: 6px;
+  margin-right: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  fill: #6f7782;
+
+  &.right-side {
+    margin-left: 4px;
+  }
+  &:hover {
+    background: #1507260a;
+    fill: #151b26;
+    cursor: pointer;
+  }
+`;
+
+const TextEllipsis = styled.span`
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #1e1f21;
+  max-width: 100%;
+  display: block;
+`;
+
+const StyledHeadingGroup = styled(TextEllipsis)`
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 36px;
+  height: 36px;
+  margin-left: 0;
+  min-width: 1px;
+  outline: none;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+`;
+
+const WrapperName = styled.div`
+  font-size: 15px;
+  font-weight: 400;
+  margin-left: 0;
+  min-width: 1px;
+  outline: none;
+  cursor: pointer;
+`;
+
+export default ColumnNameGroup;

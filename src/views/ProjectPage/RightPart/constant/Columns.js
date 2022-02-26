@@ -1,10 +1,7 @@
 import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
-import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ColumnNameGroup from "components/WPReactTable/components/ColumnNameGroup";
 import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
@@ -24,53 +21,6 @@ export const IconDrag = () => (
     />
   </svg>
 );
-
-const CellMainGroup = ({
-  row,
-  value,
-  dragHandle = {},
-  onVisibleAddRow = () => {},
-}) => {
-  return (
-    <WrapperMainGroup>
-      <div
-        style={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          maxWidth: "calc(100% - 72px)",
-        }}
-      >
-        <WrapperIconDrag className="drag-icon" {...dragHandle}>
-          <IconDrag />
-        </WrapperIconDrag>
-        <WrapperButton {...row.getToggleRowExpandedProps()}>
-          {!row.isExpanded ? (
-            <ArrowRightRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
-          ) : (
-            <ArrowDropDownRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
-          )}
-        </WrapperButton>
-        <WrapperName>
-          <StyledHeadingGroup>{value}</StyledHeadingGroup>
-        </WrapperName>
-      </div>
-      <div
-        className="wrapper-right"
-        style={{
-          alignItems: "center",
-        }}
-      >
-        <WrapperButton className="right-side" onClick={onVisibleAddRow}>
-          <AddRoundedIcon sx={{ fill: "#6d6e6f" }} />
-        </WrapperButton>
-        <WrapperButton className="right-side">
-          <MoreHorizRoundedIcon sx={{ fill: "#6d6e6f" }} />
-        </WrapperButton>
-      </div>
-    </WrapperMainGroup>
-  );
-};
 
 const CellItemGroup = React.memo(
   ({
@@ -150,7 +100,7 @@ const CellItemGroup = React.memo(
 const CellNameTask = ({ row, value, ...props }) => {
   if (row.depth === 0 && !props.isNewRow) {
     return (
-      <CellMainGroup
+      <ColumnNameGroup
         row={row}
         value={value}
         dragHandle={props.dragHandle}
@@ -187,51 +137,6 @@ export const COLUMNS_TASK_TABLE = [
     width: 50,
   },
 ];
-
-const WrapperMainGroup = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  .wrapper-right {
-    display: none;
-  }
-  &:hover {
-    .wrapper-right {
-      display: flex;
-    }
-  }
-`;
-
-const WrapperButton = styled.div`
-  height: 28px;
-  min-height: 28px;
-  min-width: 28px;
-  width: 28px;
-  border-radius: 6px;
-  margin-right: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  fill: #6f7782;
-
-  &.right-side {
-    margin-left: 4px;
-  }
-  &:hover {
-    background: #1507260a;
-    fill: #151b26;
-    cursor: pointer;
-  }
-`;
-
-const WrapperName = styled.div`
-  font-size: 15px;
-  font-weight: 400;
-  margin-left: 0;
-  min-width: 1px;
-  outline: none;
-`;
 
 const WrapperIconDrag = styled.div`
   position: absolute;
@@ -275,31 +180,7 @@ const WrapperItemName = styled.div`
   }
 `;
 
-const TextEllipsis = styled.span`
-  overflow: hidden;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #1e1f21;
-  max-width: 100%;
-  display: block;
-`;
-
-const StyledHeadingGroup = styled(TextEllipsis)`
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 36px;
-  height: 36px;
-  margin-left: 0;
-  min-width: 1px;
-  outline: none;
-  overflow: hidden;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
-const TextAreaCustom = styled.textarea`
+export const TextAreaCustom = styled.textarea`
   white-space: pre;
   background: transparent;
   border-radius: 1.5px;
@@ -314,13 +195,23 @@ const TextAreaCustom = styled.textarea`
   line-height: 20px;
   margin: 0;
   min-width: 20px;
-  padding: 0 4px;
+  padding: 0 5px;
   text-rendering: optimizeSpeed;
   color: #1e1f21;
+  ${(props) => {
+    if (props.isGroup) {
+      return {
+        fontWeight: 500,
+        fontSize: 16,
+        padding: 5,
+        borderColor: "#edeae9",
+      };
+    }
+  }}
   &:hover {
     border: 1px solid #edeae9;
   }
   &:focus {
-    border-color: transparent;
+    border-color: ${(props) => (props.isGroup ? "#edeae9" : "transparent")};
   }
 `;
