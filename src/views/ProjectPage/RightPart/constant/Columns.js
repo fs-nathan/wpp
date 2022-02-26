@@ -32,7 +32,6 @@ const CellItemGroup = React.memo(
     onBlur = () => {},
     isFocus = true,
   }) => {
-    const isDisplayReminder = row.original.status_code === 3;
     const refText = useRef(null);
 
     const _handleSubmit = () => {
@@ -62,10 +61,6 @@ const CellItemGroup = React.memo(
           <IconDrag />
         </WrapperIconDrag>
 
-        {isDisplayReminder && (
-          <AccessTimeRoundedIcon sx={{ fontSize: 16, color: "#6d6e6f" }} />
-        )}
-
         <TextAreaCustom
           ref={refText}
           placeholder={"Write a task name"}
@@ -76,10 +71,8 @@ const CellItemGroup = React.memo(
           onKeyPress={_handleKeyPress}
           onBlur={onBlur}
           style={{
-            marginLeft: isDisplayReminder ? "5px" : 0,
-            width: isDisplayReminder
-              ? "calc(100% - 160px)"
-              : "calc(100% - 140px)",
+            marginLeft:  0,
+            width: "calc(100% - 140px)",
           }}
         />
 
