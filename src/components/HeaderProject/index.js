@@ -44,8 +44,9 @@ const HeaderProject = ({
     get(project, "task_complete", 0) +
     get(project, "task_expired", 0) +
     get(project, "task_waiting", 0);
-  const percentComplete =
-    (get(project, "task_complete", 0) / (total || 1)) * 100;
+  const percentComplete = Math.round(
+    (get(project, "task_complete", 0) / (total || 1)) * 100
+  );
 
   const NAV_BARS_LIST = [
     {
