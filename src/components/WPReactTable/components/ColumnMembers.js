@@ -1,12 +1,38 @@
 import AddIcon from "@mui/icons-material/Add";
+import {
+  chooseTask,
+  getMemberNotAssigned,
+} from "actions/taskDetail/taskDetailActions";
+import ErrorBoundary from "antd/lib/alert/ErrorBoundary";
 import AvatarCircleList from "components/AvatarCircleList";
 import { get } from "lodash";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal";
 import MembersSettingModal from "views/ProjectPage/Modals/MembersSetting";
 
-const ColumnMembers = ({ value = [], dataCell }) => {
+const ColumnMembers = ({
+  value = [],
+  dataCell,
+  taskId = null,
+  isGetDataUser = false,
+}) => {
   const [isOpenAddModal, setIsOpenAddModal] = React.useState(false);
+  // const usersList = useSelector(({ userRole }) => userRole.listUserRole.data.userRoles.data);
+  const project = useSelector(
+    ({ project }) => project.detailProject.data.project
+  );
+  const dispatch = useDispatch();
+
+  const _handleAddMember = () => {
+    setIsOpenAddModal(true);
+
+    if (isGetDataUser) {
+      dispatch(chooseTask(taskId));
+      dispatch(getMemberNotAssigned({ task_id: taskId }));
+    }
+  };
 
   return (
     <>
@@ -18,18 +44,26 @@ const ColumnMembers = ({ value = [], dataCell }) => {
         display={3}
       />
 
-      <WrapperCircle
-        className="icon_add"
-        onClick={() => setIsOpenAddModal(true)}
-      >
+      <WrapperCircle className="icon_add" onClick={_handleAddMember}>
         <AddIcon />
       </WrapperCircle>
 
-      <MembersSettingModal
-        open={isOpenAddModal}
-        setOpen={setIsOpenAddModal}
-        project_id={dataCell.id}
-      />
+      {isGetDataUser ? (
+        <ErrorBoundary>
+          <AddMemberModal
+            isOpen={isOpenAddModal}
+            setOpen={setIsOpenAddModal}
+            task_id={taskId}
+            projectActive={project.id}
+          />
+        </ErrorBoundary>
+      ) : (
+        <MembersSettingModal
+          open={isOpenAddModal}
+          setOpen={setIsOpenAddModal}
+          project_id={dataCell.id}
+        />
+      )}
     </>
   );
 };

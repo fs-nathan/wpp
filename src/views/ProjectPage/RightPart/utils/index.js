@@ -1,3 +1,4 @@
+import ColumnMembers from "components/WPReactTable/components/ColumnMembers";
 import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
 import React from "react";
@@ -63,6 +64,37 @@ const CellRender = ({
   if (row.depth === 0) return null;
 
   // eslint-disable-next-line default-case
+  switch (idType) {
+    case "pfd-priority":
+      return (
+        <ColumnOptions
+          taskId={taskId}
+          idType={idType}
+          nameType={nameType}
+          dataType={dataType}
+          isDisplayEditField={false}
+          optionsType={[
+            { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
+            { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
+            { id: 3, _id: 3, name: "Cao", value: 2, color: "#ff0000" },
+          ]}
+          isDisplay
+          onEdit={onOpenEditColumnModal}
+          {...data}
+        />
+      );
+    case "pfd-member":
+      return (
+        <ColumnMembers
+          value={data.value}
+          taskId={taskId}
+          dataCell={data}
+          isGetDataUser
+        />
+      );
+  }
+
+  // eslint-disable-next-line default-case
   switch (dataType) {
     case 1:
     case 2:
@@ -83,28 +115,6 @@ const CellRender = ({
           nameType={nameType}
           dataType={dataType}
           optionsType={optionsType}
-          onEdit={onOpenEditColumnModal}
-          {...data}
-        />
-      );
-  }
-
-  // eslint-disable-next-line default-case
-  switch (idType) {
-    case "pfd-priority":
-      return (
-        <ColumnOptions
-          taskId={taskId}
-          idType={idType}
-          nameType={nameType}
-          dataType={dataType}
-          isDisplayEditField={false}
-          optionsType={[
-            { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
-            { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
-            { id: 3, _id: 3, name: "Cao", value: 2, color: "#ff0000" },
-          ]}
-          isDisplay
           onEdit={onOpenEditColumnModal}
           {...data}
         />

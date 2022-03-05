@@ -60,7 +60,7 @@ const ColumnOptionsList = ({
       ))}
       <div style={{ marginBottom: 5 }} />
       {isDisplayEditField && (
-        <>
+        <div>
           <Divider light />
           <WrapperMenuItem>
             <MenuItem
@@ -73,7 +73,7 @@ const ColumnOptionsList = ({
               <span style={{ marginLeft: "5px" }}>Chỉnh sửa</span>
             </MenuItem>
           </WrapperMenuItem>
-        </>
+        </div>
       )}
     </Menu>
   );
