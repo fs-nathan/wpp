@@ -48,50 +48,48 @@ const RenderHeader = ({ name, ...props }) => {
   return t(name);
 };
 
-const CellRender = React.memo(
-  ({
-    dataType,
-    idType,
-    nameType,
-    optionsType = [],
-    row,
-    onOpenEditColumnModal = () => {},
-    ...props
-  }) => {
-    const taskId = row?.original?.id;
-    const data = row?.original?.data[props.column.id] || {};
+const CellRender = ({
+  dataType,
+  idType,
+  nameType,
+  optionsType = [],
+  row,
+  onOpenEditColumnModal = () => {},
+  ...props
+}) => {
+  const taskId = row?.original?.id;
+  const data = row?.original?.data[props.column.id] || {};
 
-    if (row.depth === 0) return null;
+  if (row.depth === 0) return null;
 
-    switch (dataType) {
-      case 1:
-      case 2:
-        return (
-          <ColumnNumber
-            taskId={taskId}
-            idType={idType}
-            dataType={dataType}
-            optionsType={optionsType}
-            {...data}
-          />
-        );
-      case 3:
-        return (
-          <ColumnOptions
-            taskId={taskId}
-            idType={idType}
-            nameType={nameType}
-            dataType={dataType}
-            optionsType={optionsType}
-            onEdit={onOpenEditColumnModal}
-            {...data}
-          />
-        );
-      default:
-        return null;
-    }
-
-    // eslint-disable-next-line no-unreachable
-    return <div>{data?.value}</div>;
+  switch (dataType) {
+    case 1:
+    case 2:
+      return (
+        <ColumnNumber
+          taskId={taskId}
+          idType={idType}
+          dataType={dataType}
+          optionsType={optionsType}
+          {...data}
+        />
+      );
+    case 3:
+      return (
+        <ColumnOptions
+          taskId={taskId}
+          idType={idType}
+          nameType={nameType}
+          dataType={dataType}
+          optionsType={optionsType}
+          onEdit={onOpenEditColumnModal}
+          {...data}
+        />
+      );
+    default:
+      return null;
   }
-);
+
+  // eslint-disable-next-line no-unreachable
+  return <div>{data?.value}</div>;
+};

@@ -43,8 +43,8 @@ const ColumnOptionsGroup = ({
       project_group_id: projectId,
       name: project.name,
       description: project.description,
-      priority: project.priority_code,
-      project_label_id: item?.id || null,
+      priority: item?.value || 0,
+      project_label_id: project.project_label.id || null,
     });
   };
 
