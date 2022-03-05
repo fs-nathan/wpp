@@ -1,29 +1,26 @@
 import {
-  Collapse,
-  IconButton,
-  List,
+  Collapse, List,
   ListItem,
   ListItemIcon,
-  ListItemText,
+  ListItemText
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { ExpandLess, ExpandMore } from "@material-ui/icons";
 import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import RadioButtonCheckedIcon from "@material-ui/icons/RadioButtonChecked";
 import RadioButtonUncheckedIcon from "@material-ui/icons/RadioButtonUnchecked";
-import { mdiDotsVertical, mdiDragVertical, mdiPlus } from "@mdi/js";
+import { mdiDragVertical } from "@mdi/js";
+import Icon from "@mdi/react";
+import AddIcon from "@mui/icons-material/Add";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
-import Icon from "@mdi/react";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
 import { get } from "lodash-es";
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-import AddIcon from "@mui/icons-material/Add";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   projectItem: {
@@ -66,15 +63,24 @@ const PathNavLink = (props) => {
 export const GroupProject = ({
   projectGroup,
   groupID,
-  defaultAccessItem,
   index,
   setOpenCreateGroup,
   setAnchorElAddGroup,
   setSelectedGroup,
   setAnchorElGroup,
 }) => {
-  const history = useHistory();
+  const idGroupDefault = useSelector(
+    ({ groupTask }) => groupTask.defaultGroupTask.data || ""
+  );
+  const idGroupDefaultLocal = localStorage.getItem(
+    "WPS_WORKING_SPACE_DEFAULT_ACCESS"
+  );
+
   const [isActive, setIsActive] = useState(true);
+
+  const isDefaultGroup =
+    idGroupDefault === `?groupID=${projectGroup.id}` ||
+    `?groupID=${projectGroup.id}` === idGroupDefaultLocal;
 
   const _toggleExpand = () => {
     setIsActive(!isActive);
@@ -124,9 +130,7 @@ export const GroupProject = ({
               {...provided.dragHandleProps}
             />
 
-            {defaultAccessItem === `?groupID=${projectGroup.id}` && (
-              <FlagOutlinedIcon htmlColor={"red"} />
-            )}
+            {isDefaultGroup && <FlagOutlinedIcon htmlColor={"red"} />}
 
             <div
               className="wp-wrapper-button"

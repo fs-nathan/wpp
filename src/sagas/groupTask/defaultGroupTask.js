@@ -2,17 +2,18 @@ import { get } from "lodash";
 import { put } from "redux-saga/effects";
 import {
   defaultGroupTaskFail,
-  defaultGroupTaskSuccess
+  defaultGroupTaskSuccess,
 } from "../../actions/groupTask/defaultGroupTask";
 import {
   DEFAULT_MESSAGE,
   SnackbarEmitter,
-  SNACKBAR_VARIANT
+  SNACKBAR_VARIANT,
 } from "../../constants/snackbarController";
 
 function* defaultGroupTask(action) {
   try {
     yield put(defaultGroupTaskSuccess(action.payload));
+    localStorage.setItem("WPS_WORKING_SPACE_DEFAULT_ACCESS", action.payload);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(defaultGroupTaskFail(error));
