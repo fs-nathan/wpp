@@ -59,7 +59,6 @@ const Styles = styled.div`
       height: 47px;
       transition: box-shadow 100ms ease-in-out;
       contain: style;
-
       line-height: normal;
       &:hover {
         background-color: #f9f8f8;
@@ -67,6 +66,14 @@ const Styles = styled.div`
           background-color: #f9f8f8;
         }
       }
+
+      &.row-add {
+        .td,
+        &:hover {
+          box-shadow: none!important;
+        }
+      }
+
       &.header {
         background-color: #f1f2f4;
         box-sizing: border-box;
@@ -109,9 +116,9 @@ const Styles = styled.div`
       }
 
       &.isGroupColumn {
-        box-shadow: inset 0 0 0 0.5px #edeae9;
+        box-shadow: none;
         &:hover {
-          box-shadow: inset 0 0 0 1px #edeae9;
+          box-shadow: none;
           .drag-icon {
             visibility: visible !important;
           }

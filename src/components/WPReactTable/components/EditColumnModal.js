@@ -1,4 +1,5 @@
 import {
+  ButtonBase,
   Checkbox,
   FormControlLabel,
   ListItemIcon,
@@ -168,7 +169,16 @@ const EditColumnModal = React.forwardRef(
           setOpen={_handleDelete}
           onConfirm={_handleConfirmDelete}
           open={state.openConfirm}
-          content="This will permanently delete the Custom Field and remove its values from any tasks in this project. This cannot be undone."
+          customFooter={({ bg }) => (
+            <ButtonBase
+              style={{ color: bg }}
+              className="comp_AlertModal___accept-button"
+              onClick={() => dispatchState({ openConfirm: null })}
+            >
+              {t("DMH.VIEW.DP.LEFT.ADD.CLOSE")}
+            </ButtonBase>
+          )}
+          content={t("alert_delete_fields")}
         />
         <Box sx={{ flexGrow: 1 }}>
           {/* Tabs panel */}

@@ -1,6 +1,7 @@
 import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 
 export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
@@ -16,7 +17,9 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
         ...item,
         minWidth: 150,
         maxWidth: 480,
-        Header: item.name,
+        Header: (props) => {
+          return <RenderHeader name={item.name} {...props} />;
+        },
         Cell: (props) => {
           return (
             <CellRender
@@ -38,6 +41,11 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
     ...result,
     COLUMNS_TASK_TABLE[COLUMNS_TASK_TABLE.length - 1],
   ];
+};
+
+const RenderHeader = ({ name, ...props }) => {
+  const { t } = useTranslation();
+  return t(name);
 };
 
 const CellRender = React.memo(

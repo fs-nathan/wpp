@@ -14,7 +14,7 @@ const WPTableGroup = ({
   columns,
   data,
   displayAddColumn = false,
-  onDragEnd  = () => {},
+  onDragEnd = () => {},
   onHideColumn = () => {},
   onSortColumn = () => {},
   onEditColumn = () => {},
@@ -119,6 +119,7 @@ const WPTableGroup = ({
                     >
                       {(provided, snapshot) => (
                         <GroupColumn
+                          key={row.id}
                           row={row}
                           provided={provided}
                           snapshot={snapshot}

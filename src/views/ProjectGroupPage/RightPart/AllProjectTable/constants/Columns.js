@@ -10,7 +10,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import { updatePinBoardSetting } from "actions/project/setting/updatePinBoardSetting";
-import { updateProject } from "actions/project/updateProject";
 import CustomAvatar from "components/CustomAvatar";
 import { ChartInfoBox } from "components/CustomDonutChart";
 import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
@@ -18,10 +17,8 @@ import { LightTooltip, TooltipWrapper } from "components/LightTooltip";
 import { StateBox } from "components/TableComponents";
 import ColumnMembers from "components/WPReactTable/components/ColumnMembers.js";
 import ColumnOptionsGroup from "components/WPReactTable/components/ColumnOptionsGroup";
-import { UPDATE_PROJECT } from "constants/actions/project/updateProject";
 import { apiService } from "constants/axiosInstance";
 import { statusTaskColors } from "constants/colors";
-import { CustomEventEmitter } from "constants/events";
 import {
   DEFAULT_MESSAGE,
   SnackbarEmitter,
@@ -40,7 +37,7 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
   const location = useLocation();
   const search = location.search;
   const params = new URLSearchParams(search);
-  const projectId = params.get("groupID"); // bar
+  const projectId = params.get("groupID");
   const project = props.row.original;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(value);
@@ -172,8 +169,8 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
 };
 
 const CellProgressDay = ({ value }) => {
-  if (!value) return null;
-  const startDate = moment(value, "DD/MM/YYYY");
+  if (!value.trim().length) return null;
+  const startDate = moment(value, "YYYY/MM/DD");
   const currentDay = moment().startOf("day");
   return `${currentDay.diff(startDate, "days")} ngày`;
 };
@@ -342,13 +339,13 @@ const CellTotalTask = ({ value }) => {
 const CellPriority = ({ value, props }) => {
   const row = props.row.original;
   const options = [
-    { id: 1, _id: 1, name: "Thấp", value: 0, color: "#d2ebd3" },
-    { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#ffe5bf" },
-    { id: 3, _id: 3, name: "Cao", value: 2, color: "#fec1c1" },
+    { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
+    { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
+    { id: 3, _id: 3, name: "Cao", value: 2, color: "#ff0000" },
   ];
   const selected =
     options.find((item) => item.value === row.priority_code) || {};
-  return <ColumnOptionsGroup defaultSelected={selected} options={options} />;
+  return <ColumnOptionsGroup defaultSelected={selected} options={options} project={row} />;
 };
 
 export const COLUMNS_PROJECT_TABLE = ({
@@ -455,7 +452,7 @@ const WrapperCellName = styled.div`
   .drag-icon {
     height: 19.5px;
     position: absolute;
-    left: 0;
+    left: 5px;
   }
   .drag-icon,
   .star-icon,

@@ -1,21 +1,30 @@
 import { Box, Typography } from "@material-ui/core";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import { isArray } from "lodash";
+import { apiService } from "constants/axiosInstance";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
+import { get } from "lodash";
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import ColumnOptionsList from "./ColumnOptionsList";
 
 const ColumnOptionsGroup = ({
-  projectId,
+  project,
   taskId,
   defaultSelected = {},
   options = [],
   onEdit = () => {},
 }) => {
+  const location = useLocation();
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const projectId = params.get("groupID");
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(defaultSelected);
-  const dispatch = useDispatch();
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -27,17 +36,32 @@ const ColumnOptionsGroup = ({
 
   const _handleSelect = (item) => {
     setSelected(item);
-    // dispatch(
-    //   updateValueColumns(
-    //     {
-    //       task_id: taskId,
-    //       field_id: idType,
-    //       dataType,
-    //       value: item._id,
-    //     },
-    //     () => {}
-    //   )
-    // );
+    setSelected(item);
+
+    _handleUpdateProject({
+      project_id: project.id,
+      project_group_id: projectId,
+      name: project.name,
+      description: project.description,
+      priority: project.priority_code,
+      project_label_id: item?.id || null,
+    });
+  };
+
+  const _handleUpdateProject = async (data) => {
+    try {
+      await apiService({
+        url: "/project/update",
+        method: "PUT",
+        data,
+      });
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    } catch (error) {
+      SnackbarEmitter(
+        SNACKBAR_VARIANT.ERROR,
+        get(error, "messaage", DEFAULT_MESSAGE.MUTATE.ERROR)
+      );
+    }
   };
 
   const _renderSelected = () => {

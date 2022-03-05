@@ -155,6 +155,7 @@ const CellAddIcon = styled.div`
   justify-content: flex-start;
   height: 100%;
   cursor: pointer;
+  color: #9e939e;
 `;
 
 export default GroupColumn;

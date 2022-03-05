@@ -27,4 +27,4 @@ const ContentColumn = ({
   );
 };
 
-export default React.memo(ContentColumn);
+export default ContentColumn

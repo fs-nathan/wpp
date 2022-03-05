@@ -18,7 +18,7 @@ const ServiceCommandUnit = ({ id, data = [] }) => {
             return (
               <Draggable key={row.id} draggableId={row.original.id} index={i}>
                 {(provided, snapshot) => (
-                  <>
+                  <React.Fragment key={`${row.id}_item`}>
                     <div
                       ref={provided.innerRef}
                       {...row.getRowProps()}
@@ -36,7 +36,7 @@ const ServiceCommandUnit = ({ id, data = [] }) => {
                       />
                     </div>
                     {provided.placeholder}
-                  </>
+                  </React.Fragment>
                 )}
               </Draggable>
             );

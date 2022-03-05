@@ -20,4 +20,4 @@ const ListContentColumn = ({
   });
 };
 
-export default React.memo(ListContentColumn);
+export default ListContentColumn

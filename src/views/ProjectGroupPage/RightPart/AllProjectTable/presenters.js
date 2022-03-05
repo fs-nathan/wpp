@@ -96,7 +96,7 @@ function AllProjectTable({
           });
         },
       }),
-    []
+    [handleOpenModal]
   );
 
   function renderEmptyView() {
