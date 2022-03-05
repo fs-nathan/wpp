@@ -80,6 +80,7 @@ const WPTableGroup = ({
               >
                 {headerGroup.headers.map((column, index) => (
                   <HeaderColumn
+                    zIndex={headerGroup.headers.length - index}
                     isSticky={!index}
                     column={column}
                     isLastColumn={index === headerGroup.headers.length - 1}

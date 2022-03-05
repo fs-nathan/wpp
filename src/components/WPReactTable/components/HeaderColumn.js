@@ -29,6 +29,7 @@ const initialState = { openMenu: false, anchorEl: null };
 
 const HeaderColumn = ({
   column,
+  zIndex = 0,
   isSticky = false,
   isLastColumn = false,
   onHideColumn = () => {},
@@ -97,6 +98,7 @@ const HeaderColumn = ({
   return (
     <HeaderColumnWrapper
       {...column.getHeaderProps()}
+      zIndex={zIndex}
       isLastColumn={isLastColumn}
       className={classNames({ isSticky })}
     >
@@ -118,14 +120,13 @@ const HeaderColumn = ({
             <KeyboardArrowDownRoundedIcon />
           </StyledWrapperButton>
         )}
+        {!isLastColumn && (
+          <ResizeDiv
+            {...column.getResizerProps()}
+            isResizing={column.isResizing}
+          />
+        )}
       </LeftStructure>
-
-      {!isLastColumn && (
-        <ResizeDiv
-          {...column.getResizerProps()}
-          isResizing={column.isResizing}
-        />
-      )}
 
       <Menu
         id="menu-appbar"
@@ -228,8 +229,7 @@ const HeaderColumnWrapper = styled.div`
   z-index: 0;
   margin: 0;
   color: #6d6e6f;
-  position: relative;
-
+  z-index: ${(props) => props.zIndex};
   &[data-sticky-td="true"] {
     z-index: 3;
   }
@@ -244,6 +244,7 @@ const LeftStructure = styled.div`
   padding-right: 0;
   height: 100%;
   position: relative;
+  z-index: 0;
   align-items: center;
 
   border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
@@ -270,7 +271,7 @@ const ResizeDiv = styled.div`
   right: -5px;
   top: 0;
   width: 10px;
-  z-index: 100;
+  z-index: 9999999;
 
   &:hover {
     background: #008ce3;
