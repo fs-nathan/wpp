@@ -345,7 +345,6 @@ const CellPriority = ({ value, props }) => {
   ];
   const selected =
     options.find((item) => item.value === row.priority_code) || {};
-    console.log('@Pham_Tinh_Console:',row)
   return <ColumnOptionsGroup defaultSelected={selected} options={options} project={row} />;
 };
 

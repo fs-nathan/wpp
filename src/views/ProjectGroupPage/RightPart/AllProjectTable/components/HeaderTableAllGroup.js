@@ -89,8 +89,10 @@ const MenuDrawer = forwardRef(
     {
       anchor = "right",
       filterType,
+      labelType,
       timeType,
       onFilterType = () => {},
+      onFilterLabel = () => {},
       onExportData = () => {},
       onSetTimeRangeAnchor = () => {},
     },
@@ -171,8 +173,10 @@ const MenuDrawer = forwardRef(
         <FilterDrawerAllGroup
           ref={refFilter}
           filterType={filterType}
+          labelType={labelType}
           timeType={timeType}
           onFilter={onFilterType}
+          onFilterLabel={onFilterLabel}
           onCloseMainMenu={() => setIsOpen(false)}
           onSetTimeRangeAnchor={onSetTimeRangeAnchor}
         />

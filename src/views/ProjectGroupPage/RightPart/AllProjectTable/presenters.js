@@ -22,7 +22,9 @@ function AllProjectTable({
   handleExpand,
   projects,
   filterType,
+  labelType,
   handleFilterType,
+  handleFilterLabel,
   timeType,
   handleTimeType,
   handleSortType,
@@ -41,11 +43,11 @@ function AllProjectTable({
   const sortLocal = JSON.parse(dataSort);
   const { t } = useTranslation();
   const [data, setData] = React.useState(projects?.projects || []);
-  const [timeAnchor, setTimeAnchor] = React.useState(null);
+  const [, setTimeAnchor] = React.useState(null);
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
-  const [projectSummary, setProjectSummary] = React.useState({});
+  const [, setProjectSummary] = React.useState({});
   const [currentGroup, setCurrentGroup] = React.useState(null);
   const [selectedSort, setSelectedSort] = React.useState(sortLocal || null);
   const refData = useRef([]);
@@ -112,6 +114,11 @@ function AllProjectTable({
 
   const _filterType = (index) => {
     handleFilterType(index);
+    setIsFiltering(true);
+  };
+
+  const _filterLabel = (labelId) => {
+    handleFilterLabel(labelId);
     setIsFiltering(true);
   };
 
@@ -212,8 +219,10 @@ function AllProjectTable({
           onExpand={handleExpand}
           typeData={type_data}
           filterType={filterType}
+          labelType={labelType}
           timeType={timeType}
           onFilterType={_filterType}
+          onFilterLabel={_filterLabel}
           onExportData={_exportData}
           onSetTimeRangeAnchor={_setTimeRangeAnchor}
           onOpenCreateModal={(evt) => handleOpenModal("CREATE")}

@@ -28,13 +28,16 @@ import React, {
 import { useTranslation } from "react-i18next";
 import { listProjectLabel } from "actions/projectLabels/listProjectLabels";
 import { useDispatch, useSelector } from "react-redux";
+import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 
 export const FilterDrawerAllGroup = forwardRef(
   (
     {
       filterType,
+      labelType,
       timeType,
       onFilter = () => {},
+      onFilterLabel = () => {},
       onCloseMainMenu = () => {},
       onSetTimeRangeAnchor = () => {},
     },
@@ -101,8 +104,7 @@ export const FilterDrawerAllGroup = forwardRef(
             onClick={toggleDrawer}
           />
         </div>
-
-        <List>
+        <TasksScrollbar style={{ height: "calc(100% - 62px)" }}>
           {DRAWER_MENU_ITEMS.map((item, index) => (
             <ItemMenuFilter key={index} {...item} />
           ))}
@@ -125,9 +127,16 @@ export const FilterDrawerAllGroup = forwardRef(
           <Divider />
 
           {labelsProject.data?.projectLabels?.map((item) => {
-            return <ItemLabelFilter key={item.id} {...item} />;
+            return (
+              <ItemLabelFilter
+                key={item.id}
+                isActive={labelType === item.id}
+                onClick={() => onFilterLabel(item.id)}
+                {...item}
+              />
+            );
           })}
-        </List>
+        </TasksScrollbar>
       </Box>
     );
   }
@@ -136,7 +145,7 @@ export const FilterDrawerAllGroup = forwardRef(
 const ItemLabelFilter = ({ isActive, color, name, onClick = () => {} }) => {
   const classes = useStyles();
   return (
-    <ListItem button className={[classes.menuItem]} onClick={(e) => onClick(e)}>
+    <ListItem button className={[classes.menuItem]} onClick={() => onClick()}>
       <ListItemIcon className={classes.menuIcon}>
         {isActive ? (
           <Icon path={mdiCheckboxMarked} color="#11A159" size={1} />

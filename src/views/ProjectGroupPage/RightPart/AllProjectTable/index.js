@@ -61,7 +61,7 @@ function AllProjectTable({
   type_data = null,
 }) {
   const times = useTimes();
-  const { filterType, timeType, workType } = localOption;
+  const { filterType, timeType, workType, labelType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
     return {
@@ -143,13 +143,17 @@ function AllProjectTable({
     let _projects = [...projects.projects];
     _projects = sortBy(_projects, (o) => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
-    _projects = filter(_projects, filters[filterType].option);
+    if (filters?.[filterType]?.option)
+      _projects = filter(_projects, filters[filterType].option);
+    if (labelType)
+      _projects = filter(_projects, { project_label: { id: labelType } });
+
     setNewProjects({
       ...projects,
       projects: _projects,
     });
     setIsFiltering(size(projects.projects) > 0);
-  }, [projects, sortType, filterType]);
+  }, [projects, sortType, filterType, labelType]);
 
   const [guideLineModal, setGuideLineModal] = React.useState(false);
   const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
@@ -220,6 +224,7 @@ function AllProjectTable({
       });
     };
   }, []);
+
   return (
     <>
       <CustomTableWrapper>
@@ -232,10 +237,17 @@ function AllProjectTable({
           bgColor={bgColor}
           type_data={type_data}
           filterType={filterType}
+          labelType={labelType}
           handleFilterType={(filterType) =>
             doSetProjectGroup({
               ...localOption,
               filterType,
+            })
+          }
+          handleFilterLabel={(labelID) =>
+            doSetProjectGroup({
+              ...localOption,
+              labelType: labelID,
             })
           }
           timeType={timeType}
