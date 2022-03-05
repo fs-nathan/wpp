@@ -158,6 +158,9 @@ import kanbanUpdateTask, {
 import copyGroupTask, {
   initialState as copyGroupTaskInitialState,
 } from "./groupTask/copyGroupTask";
+import defaultGroupTask, {
+  initialState as defaultGroupTaskInitialState,
+} from "./groupTask/defaultGroupTask";
 import createGroupTask, {
   initialState as createGroupTaskInitialState,
 } from "./groupTask/createGroupTask";
@@ -646,6 +649,7 @@ const rootReducer = combineReducers({
     listGroupTask: listGroupTask1,
     createGroupTask,
     copyGroupTask,
+    defaultGroupTask,
     deleteGroupTask,
     updateGroupTask,
     sortGroupTask,
@@ -874,6 +878,7 @@ export const DEFAULT_STATE = {
     updateGroupTask: updateGroupTaskInitialState,
     createGroupTask: createGroupTaskInitialState,
     copyGroupTask: copyGroupTaskInitialState,
+    defaultGroupTask: copyGroupTaskInitialState,
     deleteGroupTask: deleteGroupTaskInitialState,
     sortGroupTask: sortGroupTaskInitialState,
     getAllGroupTask: getAllGroupTaskInitialState,
