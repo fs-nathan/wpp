@@ -39,7 +39,7 @@ const Styles = styled.div`
 
   .table {
     border-spacing: 0;
-    overflow: scroll;
+    overflow: auto;
     max-width: ${({ isCollapsed }) =>
       !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
