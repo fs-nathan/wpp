@@ -1,4 +1,3 @@
-import { TextareaAutosize } from "@material-ui/core";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";

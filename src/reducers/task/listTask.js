@@ -60,8 +60,8 @@ function reducer(state = initialState, action) {
       )
       return {        ...state,
         data: {
-          ...state.data,
           tasks: newTasks,
+          ...state.data,
         },
         newTask: get(action.data, 'task')
       };

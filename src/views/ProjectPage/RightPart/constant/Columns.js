@@ -1,4 +1,3 @@
-import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ColumnNameGroup from "components/WPReactTable/components/ColumnNameGroup";
@@ -22,73 +21,82 @@ export const IconDrag = () => (
   </svg>
 );
 
-const CellItemGroup = React.memo(
-  ({
-    value,
-    row,
-    isNewRow = false,
-    dragHandle = {},
-    onSubmitAdd = () => {},
-    onBlur = () => {},
-    isFocus = true,
-  }) => {
-    const refText = useRef(null);
+const CellItemGroup = ({
+  value,
+  row,
+  isNewRow = false,
+  dragHandle = {},
+  onSubmitAdd = () => {},
+  onBlur = () => {},
+  isFocus = true,
+}) => {
+  const refText = useRef(null);
+  const [name, setName] = React.useState(isNewRow ? "" : value);
 
-    const _handleSubmit = () => {
-      onSubmitAdd(refText.current.value);
-    };
+  useEffect(() => {
+    isNewRow ? setName("") : setName(value);
+  }, [value, isNewRow]);
 
-    useEffect(() => {
-      if (isFocus && isNewRow) {
-        setTimeout(() => {
-          refText.current.focus();
-        }, 0);
-      }
-    }, [isFocus, isNewRow]);
+  const _handleSubmit = () => {
+    onSubmitAdd(refText.current.value);
+  };
 
-    const _handleKeyPress = (e) => {
-      if (e.which === 13 && !e.shiftKey) {
-        e.preventDefault();
-        _handleSubmit();
-        refText.current.value = "";
-      }
-    };
+  useEffect(() => {
+    if (isFocus && isNewRow) {
+      setTimeout(() => {
+        refText.current.focus();
+      }, 0);
+    }
+  }, [isFocus, isNewRow]);
 
-    return (
-      <WrapperItemName>
-        <div style={{ width: "30px" }} />
-        <WrapperIconDrag className="drag-icon" {...dragHandle}>
-          <IconDrag />
-        </WrapperIconDrag>
+  const _handleKeyPress = (e) => {
+    if (e.which === 13 && !e.shiftKey) {
+      e.preventDefault();
+      _handleSubmit();
+      refText.current.value = "";
+    }
+  };
 
-        <TextAreaCustom
-          ref={refText}
-          placeholder={"Write a task name"}
-          rows="1"
-          tabindex="-1"
-          wrap="off"
-          defaultValue={isNewRow ? "" : value}
-          onKeyPress={_handleKeyPress}
-          onBlur={onBlur}
-          style={{
-            marginLeft:  0,
-            width: "calc(100% - 140px)",
-          }}
-        />
+  const _handleChange = (e) => {
+    setName(e.target.value);
+  };
 
-        <WrapperDetailInfo className="detail-info">
-          <div className="wp-wrapper-button">
-            <MoreVertIcon sx={{ fontSize: 16 }} />
-          </div>
+  return (
+    <WrapperItemName>
+      <div style={{ width: "30px" }} />
+      <WrapperIconDrag className="drag-icon" {...dragHandle}>
+        <IconDrag />
+      </WrapperIconDrag>
 
-          <div className="detail">
-            <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
-          </div>
-        </WrapperDetailInfo>
-      </WrapperItemName>
-    );
-  }
-);
+      <TextAreaCustom
+        ref={refText}
+        placeholder={"Write a task name"}
+        rows="1"
+        tabindex="-1"
+        wrap="off"
+        value={name}
+        defaultValue={isNewRow ? "" : value}
+        onKeyPress={_handleKeyPress}
+        onChange={_handleChange}
+        onBlur={onBlur}
+        style={{
+          marginLeft: 0,
+          width: "calc(100% - 140px)",
+        }}
+      />
+
+      <WrapperDetailInfo className="detail-info">
+        <div className="wp-wrapper-button">
+          <MoreVertIcon sx={{ fontSize: 16 }} />
+        </div>
+
+        <div className="detail">
+          <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
+        </div>
+      </WrapperDetailInfo>
+    </WrapperItemName>
+  );
+};
 
 const CellNameTask = ({ row, value, ...props }) => {
   if (row.depth === 0 && !props.isNewRow) {
