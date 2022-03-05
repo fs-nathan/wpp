@@ -30,7 +30,9 @@ const initialState = { openMenu: false, anchorEl: null };
 const HeaderColumn = ({
   column,
   zIndex = 0,
+  length = 0,
   isSticky = false,
+  isFirstColumn = false,
   isLastColumn = false,
   onHideColumn = () => {},
   onEditColumn = () => {},
@@ -98,7 +100,8 @@ const HeaderColumn = ({
   return (
     <HeaderColumnWrapper
       {...column.getHeaderProps()}
-      zIndex={zIndex}
+      zIndex={isFirstColumn ? length + 3 : zIndex}
+      isFirstColumn={isFirstColumn}
       isLastColumn={isLastColumn}
       className={classNames({ isSticky })}
     >
@@ -231,7 +234,7 @@ const HeaderColumnWrapper = styled.div`
   color: #6d6e6f;
   z-index: ${(props) => props.zIndex};
   &[data-sticky-td="true"] {
-    z-index: 3;
+    z-index: ${(props) => props.zIndex + 3}!important;
   }
 `;
 const LeftStructure = styled.div`

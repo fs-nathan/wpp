@@ -144,4 +144,4 @@ const LabelColumnOption = styled.div`
   white-space: nowrap;
 `;
 
-export default React.memo(ColumnOptions);
+export default ColumnOptions

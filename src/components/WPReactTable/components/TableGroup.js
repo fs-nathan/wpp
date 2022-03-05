@@ -69,6 +69,8 @@ const WPTableGroup = ({
         <div style={{ position: "sticky", top: 0, zIndex: 350 }}>
           {headerGroups.map((headerGroup) => {
             const headerProps = headerGroup.getHeaderGroupProps();
+            const listHeaders = headerGroup.headers;
+
             return (
               <div
                 {...headerProps}
@@ -78,12 +80,14 @@ const WPTableGroup = ({
                 }}
                 className="tr header"
               >
-                {headerGroup.headers.map((column, index) => (
+                {listHeaders.map((column, index) => (
                   <HeaderColumn
-                    zIndex={headerGroup.headers.length - index}
+                    zIndex={listHeaders.length - index}
                     isSticky={!index}
+                    length={listHeaders.length}
                     column={column}
-                    isLastColumn={index === headerGroup.headers.length - 1}
+                    isFirstColumn={index === 0}
+                    isLastColumn={index === listHeaders.length - 1}
                     onAddNewColumns={onAddNewColumns}
                     onHideColumn={onHideColumn}
                     onSortColumn={onSortColumn}

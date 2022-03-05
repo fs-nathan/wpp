@@ -2,7 +2,9 @@ import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
 import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
 import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
+import { updateGroupTask } from "actions/groupTask/updateGroupTask";
 import React from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import {
   IconDrag,
@@ -15,6 +17,7 @@ const ColumnNameGroup = ({
   dragHandle = {},
   onVisibleAddRow = () => {},
 }) => {
+  const group = row.original;
   return (
     <WrapperMainGroup>
       <WrapperLeft>
@@ -30,7 +33,7 @@ const ColumnNameGroup = ({
         </WrapperButton>
 
         {/* Name group */}
-        <NameGroup name={value} />
+        <NameGroup id={group.id} name={value} />
         {/* End name group */}
       </WrapperLeft>
       <WrapperRight className="wrapper-right">
@@ -45,16 +48,17 @@ const ColumnNameGroup = ({
   );
 };
 
-const NameGroup = ({ name = "" }) => {
+const NameGroup = ({ id = "", name = "" }) => {
   const [isEditing, setIsEditing] = React.useState(false);
+  const [value, setValue] = React.useState(name || "");
   const refInput = React.useRef(null);
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
     let timeout = setTimeout(() => {
       if (isEditing) {
         refInput.current.focus();
         refInput.current.selectionStart = refInput.current.selectionEnd = 10000;
-        refInput.current.value = name;
       }
     }, 0);
     return () => clearTimeout(timeout);
@@ -68,28 +72,34 @@ const NameGroup = ({ name = "" }) => {
 
   const _handleKeyPress = (e) => {
     if (e.which === 13 && !e.shiftKey) {
-      e.preventDefault();
-      alert("Entered");
+      refInput.current.blur();
+      setValue(e.target.value);
+      dispatch(updateGroupTask({ groupTaskId: id, name: e.target.value }));
     }
+  };
+
+  const _handleChange = (e) => {
+    setValue(e.target.value);
   };
 
   if (isEditing)
     return (
-      <TextAreaCustom
+      <InputCustom
         ref={refInput}
         isGroup
         placeholder={"Write a task name"}
         rows="1"
         tabindex="-1"
         wrap="off"
+        value={value}
         onBlur={_handleBlur}
-        defaultValue={name}
+        onChange={_handleChange}
         onKeyPress={_handleKeyPress}
       />
     );
   return (
     <WrapperName onClick={_handleEditing}>
-      <StyledHeadingGroup>{name}</StyledHeadingGroup>
+      <StyledHeadingGroup>{value}</StyledHeadingGroup>
     </WrapperName>
   );
 };
@@ -183,6 +193,42 @@ const WrapperName = styled.div`
   min-width: 1px;
   outline: none;
   cursor: pointer;
+`;
+
+const InputCustom = styled.input`
+  white-space: pre;
+  background: transparent;
+  border-radius: 1.5px;
+  display: block;
+  outline: 0;
+  overflow: hidden;
+  resize: none;
+  width: calc(100% - 160px);
+  margin-left: 5px;
+  border: 1px solid transparent;
+  font-size: 14px;
+  line-height: 20px;
+  margin: 0;
+  min-width: 20px;
+  padding: 0 5px;
+  text-rendering: optimizeSpeed;
+  color: #1e1f21;
+  ${(props) => {
+    if (props.isGroup) {
+      return {
+        fontWeight: 500,
+        fontSize: 16,
+        padding: 5,
+        borderColor: "#edeae9",
+      };
+    }
+  }}
+  &:hover {
+    border: 1px solid #edeae9;
+  }
+  &:focus {
+    border-color: ${(props) => (props.isGroup ? "#edeae9" : "transparent")};
+  }
 `;
 
 export default ColumnNameGroup;
