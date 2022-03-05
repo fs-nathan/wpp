@@ -24,6 +24,7 @@ function AllProjectTable({
   filterType,
   labelType,
   handleFilterType,
+  handleSearch,
   handleFilterLabel,
   timeType,
   handleTimeType,
@@ -221,6 +222,7 @@ function AllProjectTable({
           filterType={filterType}
           labelType={labelType}
           timeType={timeType}
+          onSearch={handleSearch}
           onFilterType={_filterType}
           onFilterLabel={_filterLabel}
           onExportData={_exportData}

@@ -7,9 +7,21 @@ import React, { useState } from "react";
 const SearchButton = ({ valueSearch, onSearch = () => {} }) => {
   const classes = useStyles();
   const [isExpand, setIsExpand] = useState(false);
+  const [value, setValue] = useState(valueSearch || "");
 
   const _toggleSearch = () => {
     setIsExpand(!isExpand);
+  };
+
+  const _handleChange = (evt) => {
+    onSearch(evt.target.value);
+    setValue(evt.target.value);
+  };
+
+  const _handleClearSearch = () => {
+    setValue("");
+    onSearch("");
+    setIsExpand(false);
   };
 
   const _divClick = () => {
@@ -26,14 +38,14 @@ const SearchButton = ({ valueSearch, onSearch = () => {} }) => {
         type="text"
         className={classes.inputSearch}
         placeholder="Nhập nội dung cần tìm"
-        value={valueSearch}
-        onChange={(evt) => onSearch(evt.target.value)}
+        value={value}
+        onChange={_handleChange}
       />
       <Icon
         className={classes.buttonClose}
         path={mdiClose}
         size={1}
-        onClick={_toggleSearch}
+        onClick={_handleClearSearch}
       />
     </div>
   );

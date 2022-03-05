@@ -71,6 +71,7 @@ function AllProjectTable({
   }, [timeType]);
   const [isFiltering, setIsFiltering] = React.useState(false);
   const [sortType, setSortType] = React.useState({});
+  const [searchValue, setSearchValue] = React.useState("");
   const [newProjects, setNewProjects] = React.useState(projects);
   const [openPersonalBoard, setOpenPersonalBoard] = React.useState(false);
 
@@ -147,13 +148,29 @@ function AllProjectTable({
       _projects = filter(_projects, filters[filterType].option);
     if (labelType)
       _projects = filter(_projects, { project_label: { id: labelType } });
+    if (searchValue.trim().length)
+      _projects = _projects.filter((obj) =>
+        JSON.stringify(obj.name)
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
+      );
 
-    setNewProjects({
-      ...projects,
-      projects: _projects,
-    });
+    setNewProjects({ ...projects, projects: _projects });
     setIsFiltering(size(projects.projects) > 0);
-  }, [projects, sortType, filterType, labelType]);
+  }, [projects, sortType, filterType, labelType, searchValue]);
+
+  React.useEffect(() => {
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      setGuideLineModal(true);
+      setNewCreatedBoard(e.detail.project_id);
+    });
+    return () => {
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
+        setGuideLineModal(true);
+        setNewCreatedBoard(e.detail.project_id);
+      });
+    };
+  }, []);
 
   const [guideLineModal, setGuideLineModal] = React.useState(false);
   const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
@@ -212,18 +229,10 @@ function AllProjectTable({
         return;
     }
   }
-  React.useEffect(() => {
-    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
-      setGuideLineModal(true);
-      setNewCreatedBoard(e.detail.project_id);
-    });
-    return () => {
-      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
-        setGuideLineModal(true);
-        setNewCreatedBoard(e.detail.project_id);
-      });
-    };
-  }, []);
+
+  const _handleSearch = (value) => {
+    setSearchValue(value);
+  };
 
   return (
     <>
@@ -238,6 +247,7 @@ function AllProjectTable({
           type_data={type_data}
           filterType={filterType}
           labelType={labelType}
+          handleSearch={_handleSearch}
           handleFilterType={(filterType) =>
             doSetProjectGroup({
               ...localOption,

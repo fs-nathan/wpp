@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import {
   mdiClose,
@@ -13,7 +13,7 @@ import {
   mdiDotsHorizontal,
   mdiDownload,
   mdiFilter,
-  mdiPlus,
+  mdiPlus
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
@@ -24,7 +24,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useRef,
-  useState,
+  useState
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
@@ -41,6 +41,7 @@ const HeaderTableAllGroup = ({
   typeData,
   onOpenCreateModal = () => {},
   onFilterType = () => {},
+  onSearch = () => {},
   onSetTimeRangeAnchor = () => {},
   ...props
 }) => {
@@ -61,9 +62,7 @@ const HeaderTableAllGroup = ({
       <div className="AllGroup__header--right">
         <SearchButton
           valueSearch={get(TableContext?.options, "search.patern", "")}
-          onSearch={(value) =>
-            get(TableContext?.options, "search.onChange", () => null)(value)
-          }
+          onSearch={(value) => onSearch(value)}
         />
         <div className={classes.wrapperButton} onClick={_toggleDrawerMenu}>
           <Icon path={mdiDotsHorizontal} size={1} />
@@ -231,4 +230,4 @@ const useStyles = makeStyles({
   menuIcon: { minWidth: 35 },
 });
 
-export default React.memo(HeaderTableAllGroup);
+export default HeaderTableAllGroup;
