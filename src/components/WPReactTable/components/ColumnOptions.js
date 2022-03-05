@@ -18,6 +18,7 @@ const ColumnOptions = ({
   value,
   option_color,
   option_value,
+  isDisplayEditField = true,
   onEdit = () => {},
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -97,6 +98,7 @@ const ColumnOptions = ({
         selected={selected}
         anchorEl={anchorEl}
         options={optionsType}
+        isDisplayEditField={isDisplayEditField}
         onClose={_handleClose}
         onEdit={_handleOpenModalEdit}
         onSelect={_handleSelect}

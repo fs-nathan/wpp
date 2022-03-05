@@ -62,6 +62,7 @@ const CellRender = ({
 
   if (row.depth === 0) return null;
 
+  // eslint-disable-next-line default-case
   switch (dataType) {
     case 1:
     case 2:
@@ -86,10 +87,29 @@ const CellRender = ({
           {...data}
         />
       );
-    default:
-      return null;
   }
 
   // eslint-disable-next-line no-unreachable
+  if (idType === "pfd-priority") {
+    console.log('@Pham_Tinh_Console:',data )
+    return (
+      <ColumnOptions
+        taskId={taskId}
+        idType={idType}
+        nameType={nameType}
+        dataType={dataType}
+        isDisplayEditField={false}
+        optionsType={[
+          { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
+          { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
+          { id: 3, _id: 3, name: "Cao", value: 2, color: "#ff0000" },
+        ]}
+        isDisplay
+        onEdit={onOpenEditColumnModal}
+        {...data}
+      />
+    );
+  }
+
   return <div>{data?.value}</div>;
 };
