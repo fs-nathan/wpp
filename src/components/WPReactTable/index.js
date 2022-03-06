@@ -104,7 +104,6 @@ const Styles = styled.div`
         justify-content: space-between;
         flex: 1 1 auto;
         min-width: 1px;
-        max-width: 420px;
         box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
           box-shadow: inset 0 0 0 1px #edeae9;

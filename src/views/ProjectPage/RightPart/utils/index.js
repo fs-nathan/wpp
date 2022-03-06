@@ -1,6 +1,7 @@
 import ColumnMembers from "components/WPReactTable/components/ColumnMembers";
 import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
+import ColumnStatusTask from "components/WPReactTable/components/ColumnStatusTask";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
@@ -90,6 +91,15 @@ const CellRender = ({
           taskId={taskId}
           dataCell={data}
           isGetDataUser
+        />
+      );
+    case "pfd-status":
+      return (
+        <ColumnStatusTask
+          statusCode={data.option_value}
+          fieldLabel={data.field_label}
+          taskId={taskId}
+          complete={row.original.complete}
         />
       );
   }

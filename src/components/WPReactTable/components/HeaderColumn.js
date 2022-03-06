@@ -191,7 +191,7 @@ const HeaderColumn = ({
 };
 
 const StyledMenuItem = styled(MenuItem)`
-  color: ${(props) => (props.isDelete ? "#f44336" : "#1e1f21")};
+  color: ${(props) => (props.isDelete ? "#f44336" : "#333")};
   width: 200px;
   height: 35px;
   ${(props) => {

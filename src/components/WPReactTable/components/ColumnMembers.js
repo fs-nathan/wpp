@@ -1,9 +1,8 @@
 import AddIcon from "@mui/icons-material/Add";
 import {
   chooseTask,
-  getMemberNotAssigned,
+  getMemberNotAssigned
 } from "actions/taskDetail/taskDetailActions";
-import ErrorBoundary from "antd/lib/alert/ErrorBoundary";
 import AvatarCircleList from "components/AvatarCircleList";
 import { get } from "lodash";
 import React from "react";
@@ -49,14 +48,12 @@ const ColumnMembers = ({
       </WrapperCircle>
 
       {isGetDataUser ? (
-        <ErrorBoundary>
           <AddMemberModal
             isOpen={isOpenAddModal}
             setOpen={setIsOpenAddModal}
             task_id={taskId}
-            projectActive={project.id}
+            projectActive={project?.id}
           />
-        </ErrorBoundary>
       ) : (
         <MembersSettingModal
           open={isOpenAddModal}

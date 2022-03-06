@@ -107,7 +107,7 @@ const ColumnOptions = ({
   );
 };
 
-const BoxColLabel = styled(Box)`
+export const BoxColLabel = styled(Box)`
   display: flex;
   align-items: center;
   text-align: center;
@@ -126,7 +126,7 @@ const BoxColLabel = styled(Box)`
   }
 `;
 
-const LabelColumnOption = styled.div`
+export const LabelColumnOption = styled.div`
   border-radius: 10px;
   box-sizing: border-box;
   -webkit-print-color-adjust: exact;
@@ -146,4 +146,4 @@ const LabelColumnOption = styled.div`
   white-space: nowrap;
 `;
 
-export default ColumnOptions
+export default ColumnOptions;
