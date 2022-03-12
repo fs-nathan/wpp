@@ -123,8 +123,15 @@ const WPTable = ({
 
 const ContentColumn = ({ cell, dragHandle = {} }) => {
   const canDragColumn = cell?.column?.id === "name";
+  const cellProps = cell.getCellProps();
+  const styleProps = cellProps.style;
+
   return (
-    <div {...cell.getCellProps()} className="td">
+    <div
+      {...cellProps}
+      style={{ ...styleProps, maxWidth: styleProps.width }}
+      className="td"
+    >
       {cell.render("Cell", {
         dragHandle: canDragColumn ? dragHandle : {},
       })}

@@ -276,23 +276,21 @@ const ResizeDiv = styled.div`
 `;
 
 const LeftStructure = styled.div`
+  width: calc(100% - 42px);
   cursor: pointer;
   color: #666;
   display: flex;
   flex: 1 0 auto;
   font-size: 12px;
-  margin-right: -1px;
   padding-left: 24px;
-  height: 100%;
+  padding-right: 0;
   position: relative;
+  z-index: 0;
   align-items: center;
-  border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
-  justify-content: space-between;
   .wp-wrapper-button {
     visibility: hidden;
   }
   &:hover {
-    background-color: #f6f8f9;
     color: #151b26;
     fill: #151b26;
     .wp-wrapper-button {
@@ -302,16 +300,26 @@ const LeftStructure = styled.div`
 `;
 
 const HeaderColumnWrapper = styled.div`
-  align-items: stretch;
-  background-color: #f1f2f4;
-  display: flex;
-  flex-direction: column;
-  left: 0;
-  position: absolute;
-  border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
-  border-bottom: 1px solid #e8ecee;
+  align-items: center;
+  border: 1px solid #e8ecee;
+  border-bottom: 0;
+  box-sizing: border-box;
+  color: #151b26;
+  cursor: pointer;
+  display: inline-flex !important;
+  fill: #151b26;
+  flex: 0 0 auto;
+  font-size: 12px;
+  justify-content: space-between;
+  margin-right: -1px;
+  padding: 0 8px;
+  position: relative;
+  background: #f1f2f4;
   &.isSticky {
     position: sticky !important;
+  }
+  &:hover {
+    background-color: #f9f8f8;
   }
 `;
 

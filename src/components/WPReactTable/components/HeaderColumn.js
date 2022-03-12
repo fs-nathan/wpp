@@ -123,13 +123,14 @@ const HeaderColumn = ({
             <KeyboardArrowDownRoundedIcon />
           </StyledWrapperButton>
         )}
-        {!isLastColumn && (
-          <ResizeDiv
-            {...column.getResizerProps()}
-            isResizing={column.isResizing}
-          />
-        )}
       </LeftStructure>
+
+      {!isLastColumn && (
+        <ResizeDiv
+          {...column.getResizerProps()}
+          isResizing={column.isResizing}
+        />
+      )}
 
       <Menu
         id="menu-appbar"
@@ -223,21 +224,30 @@ const StyledListItemIcon = styled(ListItemIcon)`
 `;
 
 const HeaderColumnWrapper = styled.div`
-  align-items: center;
-  background-color: #f1f2f4;
-  box-shadow: 0 0 0 1px #edeae9;
-  display: flex;
-  flex: 1 0 auto;
-  justify-content: space-between;
-  z-index: 0;
-  margin: 0;
   color: #6d6e6f;
-  z-index: ${(props) => props.zIndex};
+  z-index: ${(props) => props?.zIndex || 0};
+  align-items: center;
+  border: 1px solid #edeae9;
+  border-bottom: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex !important;
+  flex: 0 0 auto;
+  font-size: 12px;
+  justify-content: space-between;
+  margin-right: -1px;
+  padding: 0 8px;
+  position: relative;
+  background: #f1f2f4;
+  &:hover {
+    background-color: #f9f8f8;
+  }
   &[data-sticky-td="true"] {
     z-index: ${(props) => props.zIndex + 3}!important;
   }
 `;
 const LeftStructure = styled.div`
+  width: calc(100% - 42px);
   cursor: pointer;
   color: #666;
   display: flex;
@@ -245,12 +255,9 @@ const LeftStructure = styled.div`
   font-size: 12px;
   padding-left: 24px;
   padding-right: 0;
-  height: 100%;
   position: relative;
   z-index: 0;
   align-items: center;
-
-  border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
   justify-content: ${({ isLastColumn }) =>
     isLastColumn ? "center" : "space-between"};
 
@@ -259,7 +266,6 @@ const LeftStructure = styled.div`
   }
 
   &:hover {
-    background-color: #f6f8f9;
     color: #151b26;
     fill: #151b26;
     .wp-wrapper-button {
@@ -284,12 +290,13 @@ const ResizeDiv = styled.div`
   }
   &:after {
     content: none;
-    position: absolute;
     height: 100vh;
     background: ${(props) => (!props.isResizing ? "#008ce3" : "#008ce3")};
     width: 1px;
-    left: 4px;
     z-index: 3;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 `;
 

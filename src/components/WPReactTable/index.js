@@ -57,9 +57,9 @@ const Styles = styled.div`
     .tr {
       display: flex;
       height: 47px;
-      transition: box-shadow 100ms ease-in-out;
       contain: style;
-      line-height: normal;
+      margin-bottom: -1px;
+      margin-top: -1px;
       &:hover {
         background-color: #f9f8f8;
         .td {
@@ -68,9 +68,17 @@ const Styles = styled.div`
       }
 
       &.row-add {
-        .td,
-        &:hover {
-          box-shadow: none!important;
+        .td {
+          border-right: 1px solid #edeae9 !important;
+          border-top: 1px solid #edeae9 !important;
+          z-index: 201;
+          &:last-child {
+            border-right: 0 !important;
+          }
+        }
+
+        .td:not(:first-child) {
+          border: 0;
         }
       }
 
@@ -87,26 +95,29 @@ const Styles = styled.div`
 
     .td {
       background-color: #fff;
-      box-shadow: inset 0 0 0 0.5px #edeae9;
+      border: 1px solid #edeae9;
       box-sizing: border-box;
       padding: 0 8px;
       z-index: 0;
       align-items: center;
+      display: inline-flex !important;
       height: 47px;
       overflow: hidden;
-      display: inline-flex !important;
       justify-content: flex-start;
+      margin-right: -1px;
 
       &[data-sticky-td="true"] {
         z-index: 300 !important;
-        border-left: 0;
+        border: 1px solid #edeae9;
         padding: 0 4px 0 24px;
         justify-content: space-between;
         flex: 1 1 auto;
         min-width: 1px;
-        box-shadow: inset 0 0 0 0.5px #edeae9;
         &:hover {
-          box-shadow: inset 0 0 0 1px #edeae9;
+          border: 1px solid #edeae9;
+        }
+        &.isGroupColumn {
+          border-right: 1px solid #edeae9;
         }
       }
 
@@ -115,9 +126,9 @@ const Styles = styled.div`
       }
 
       &.isGroupColumn {
-        box-shadow: none;
+        border: 0;
         &:hover {
-          box-shadow: none;
+          border: 0;
           .drag-icon {
             visibility: visible !important;
           }
@@ -125,10 +136,9 @@ const Styles = styled.div`
       }
 
       &:hover {
-        box-shadow: inset 0 0 0 0.75px #afabac;
+        border: 1px solid #edeae9;
         overflow: unset;
         z-index: 201;
-        border: 0;
 
         .canHide,
         .default_tag,
