@@ -146,8 +146,10 @@ function AllProjectTable({
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
     if (filters?.[filterType]?.option)
       _projects = filter(_projects, filters[filterType].option);
-    if (labelType)
+    if (labelType && labelType !== -1)
       _projects = filter(_projects, { project_label: { id: labelType } });
+    if (labelType && labelType === -1)
+      _projects = filter(_projects, { project_label: {} });
     if (searchValue.trim().length)
       _projects = _projects.filter((obj) =>
         JSON.stringify(obj.name)

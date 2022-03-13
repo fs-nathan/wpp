@@ -74,7 +74,6 @@ const DrawerFilter = forwardRef(
     ref
   ) => {
     const classes = useStyles();
-    const TableContextValue = React.useContext(CustomTableContext);
     const history = useHistory();
     const [isOpen, setIsOpen] = useState(false);
     const [isOpenEditGroup, setIsOpenEditGroup] = useState(false);
@@ -92,19 +91,6 @@ const DrawerFilter = forwardRef(
     const MORE_MENU_ITEMS = {
       list: [
         {
-          text: "Tìm kiếm công việc",
-          icon: mdiMagnify,
-          isSearchItem: true,
-          valueSearch: get(TableContextValue?.options, "search.patern", ""),
-          onSearch: (evt) =>
-            get(
-              TableContextValue?.options,
-              "search.onChange",
-              () => null
-            )(evt.target.value),
-          onClick: (e) => {},
-        },
-        {
           text: "Quản lý bảng dữ liệu",
           icon: mdiViewGridPlus,
           onClick: (e) => {
@@ -119,28 +105,12 @@ const DrawerFilter = forwardRef(
       ],
       kanban: [
         {
-          text: "Tìm kiếm công việc",
-          icon: mdiMagnify,
-          isSearchItem: true,
-          valueSearch: valueSearch,
-          onSearch: (evt) => onSearch(evt.target.value),
-          onClick: (e) => {},
-        },
-        {
           text: "Lọc bảng dữ liệu",
           icon: mdiFilter,
           onClick: (e) => onOpenFilterKanban(),
         },
       ],
       grantt: [
-        {
-          text: "Tìm kiếm công việc",
-          icon: mdiMagnify,
-          isSearchItem: true,
-          valueSearch: valueSearch,
-          onSearch: (evt) => onSearch(evt.target.value),
-          onClick: (e) => {},
-        },
         {
           text: "Thiết lập trục thời gian",
           icon: mdiCalendarRange,

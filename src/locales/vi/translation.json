@@ -2567,5 +2567,6 @@
   "Priority": "Ưu tiên",
   "Member": "Thành viên",
   "alert_delete_fields": "Trường nội dung này thuộc mặc định của hệ thống, bạn không thể xoá nó!",
-  "CLOSE": "Đóng"
+  "CLOSE": "Đóng",
+  "DELETE_FIELDS": "Xoá trường"
 }

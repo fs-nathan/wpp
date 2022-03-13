@@ -126,6 +126,13 @@ export const FilterDrawerAllGroup = forwardRef(
           })}
           <Divider />
 
+          <ItemMenuFilter
+            isActive={labelType === -1}
+            text={t("DMH.COMP.CUSTOM_POPOVER.FILTER_FUNC.ALL")}
+            isCheckType
+            onClick={() => onFilterLabel(-1)}
+          />
+
           {labelsProject.data?.projectLabels?.map((item) => {
             return (
               <ItemLabelFilter

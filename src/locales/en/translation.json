@@ -2538,5 +2538,6 @@
   "DATA_FIELD_EXITS": "Data exists",
   "ADD_DESCRIPTION": "Add description",
   "alert_delete_fields": "This content is default of the system, you cannot delete it!",
-  "CLOSE": "CLOSE"
+  "CLOSE": "CLOSE",
+  "DELETE_FIELDS": "Delete field"
 }

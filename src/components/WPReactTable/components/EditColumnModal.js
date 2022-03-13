@@ -150,7 +150,7 @@ const EditColumnModal = React.forwardRef(
         open={state.open}
         setOpen={handleOpen}
         confirmRender={() => t("EDIT")}
-        cancleRender={() => "Delete field"}
+        cancleRender={() => t("DELETE_FIELDS")}
         titleComponent={
           <TitleModalAdd
             value={state.value}
@@ -175,7 +175,7 @@ const EditColumnModal = React.forwardRef(
               className="comp_AlertModal___accept-button"
               onClick={() => dispatchState({ openConfirm: null })}
             >
-              {t("DMH.VIEW.DP.LEFT.ADD.CLOSE")}
+              {t("IDS_WP_BUTTON_CLOSE")}
             </ButtonBase>
           )}
           content={t("alert_delete_fields")}
