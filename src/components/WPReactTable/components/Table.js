@@ -69,7 +69,7 @@ const WPTable = ({
                 ref={provided.innerRef}
                 className="tbody"
                 style={{
-                  maxHeight: "calc(100vh - 37px - 60px - 55px - 17px)",
+                  maxHeight: "calc(100vh - 37px - 60px - 55px - 15px)",
                   overflow: "visible",
                 }}
               >

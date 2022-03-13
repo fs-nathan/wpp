@@ -71,7 +71,11 @@ const Styles = styled.div`
         .td {
           border-right: 1px solid #edeae9 !important;
           border-top: 1px solid #edeae9 !important;
+          border-bottom: 0;
           z-index: 201;
+          &:hover {
+            border-bottom: 0;
+          }
           &:last-child {
             border-right: 0 !important;
           }
