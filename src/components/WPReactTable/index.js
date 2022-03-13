@@ -147,8 +147,10 @@ const Styles = styled.div`
         .canHide,
         .default_tag,
         .icon,
-        .icon_add {
-          visibility: visible;
+        .icon_add,
+        .drag-icon,
+        .detail-info {
+          visibility: visible !important;
         }
       }
 
