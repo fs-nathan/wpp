@@ -183,10 +183,6 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
                 control={<Checkbox name="gilad" />}
                 label={t("ADD_FILED_TO_LIBRARY")}
               />
-              <WrapperCheckbox
-                control={<Checkbox name="gilad" />}
-                label={t("NOTIFY_MEMBER_CHANGE_FIELD")}
-              />
             </Grid>
           </Grid>
         </TabPanel>
