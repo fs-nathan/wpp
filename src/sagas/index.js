@@ -64,6 +64,7 @@ import {
   LIST_TRASH,
 } from "../constants/actions/documents";
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
+import { DEFAULT_GROUP_TASK } from "../constants/actions/groupTask/defaultGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
 import { GET_ALL_GROUP_TASK } from "../constants/actions/groupTask/getAllGroupTask";
@@ -495,6 +496,7 @@ import { createProjectLabels } from "./projectLabels/createProjectLabels";
 import { listColumns } from "./columns/listColumns";
 import { updateColumnsSaga } from "./columns/updateValueColumns";
 import { updateColumnsFieldSaga } from "./columns/updateColumns";
+import { defaultGroupTask } from "./groupTask/defaultGroupTask";
 
 function* rootSaga() {
   // Hoang - begin
@@ -601,6 +603,7 @@ function* rootSaga() {
   yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
+  yield takeEvery(DEFAULT_GROUP_TASK, defaultGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
   yield takeEvery(DELETE_GROUP_TASK, deleteGroupTask);
   yield takeEvery(SORT_GROUP_TASK, sortGroupTask);

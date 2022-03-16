@@ -34,7 +34,7 @@ import './styles.scss';
 import {get} from "lodash";
 
 const ListItemButtonGroup = styled(ListItem)`
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
   & > * > *:first-child {
     text-transform: none;
     }
@@ -53,7 +53,7 @@ const ListItemTab = styled(ListItem)`
     font-size: 15px;
     margin-right: 10px;
   }
-  &:last-child { 
+  &:last-child {
     border-bottom: 1px solid rgba(0, 0, 0, .1);
   }
 `;
@@ -173,6 +173,7 @@ function TabBody(props) {
       dispatch(updateTaskStatus({task_id: taskId, status}));
     }
   }
+
   return (
     <div className="listPartTabBody">
       <Body

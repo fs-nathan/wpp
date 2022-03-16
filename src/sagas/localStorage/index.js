@@ -17,4 +17,3 @@ function setProjectGroup(action) {
 }
 
 export { setProject, setProjectGroup, };
-

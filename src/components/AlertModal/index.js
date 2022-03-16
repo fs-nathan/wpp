@@ -16,6 +16,7 @@ function AlertModal({
   open, setOpen,
   content = '', onConfirm = () => null, onCancle = () => null,
   colors, canConfirm = true,
+  customFooter: CustomFooter,
   manualClose = false,
   actionLoading = false,
   activeLoading = false,
@@ -36,8 +37,8 @@ function AlertModal({
 
   return (
     <Dialog
-      className='comp_AlertModal___dialog'
-      maxWidth='sm'
+      className="comp_AlertModal___dialog"
+      maxWidth="sm"
       open={open}
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
@@ -45,40 +46,51 @@ function AlertModal({
       disableBackdropClick={true}
       disableEscapeKeyDown={true}
     >
-      <DialogTitle className='comp_AlertModal___dialog-title' id="alert-dialog-slide-title">
-        <ColorTypo uppercase>{t('DMH.COMP.ALERT_MODAL.TITLE')}</ColorTypo>
+      <DialogTitle
+        className="comp_AlertModal___dialog-title"
+        id="alert-dialog-slide-title"
+      >
+        <ColorTypo uppercase>{t("DMH.COMP.ALERT_MODAL.TITLE")}</ColorTypo>
         <IconButton onClick={() => handleCancle()}>
-          <Icon path={mdiClose} size={1} color={'rgba(0, 0, 0, 0.54)'} />
+          <Icon path={mdiClose} size={1} color={"rgba(0, 0, 0, 0.54)"} />
         </IconButton>
       </DialogTitle>
-      <DialogContent className='comp_AlertModal___dialog-content'>
+      <DialogContent className="comp_AlertModal___dialog-content">
         {content}
       </DialogContent>
-      <DialogActions className='comp_AlertModal___dialog-actions'>
-        <ButtonBase className='comp_AlertModal___cancle-button' onClick={() => handleCancle()}>
-          {t('DMH.COMP.ALERT_MODAL.CANCLE_BTN')}
-        </ButtonBase>
-        <ButtonBase
-          style={{
-            color: bgColor.color,
-            opacity: !canConfirm || actionLoading || activeLoading ? 0.5 : 1,
-          }}
-          className='comp_AlertModal___accept-button'
-          onClick={() => handleConfirm()}
-          disabled={!canConfirm || actionLoading || activeLoading}
-        >
-          <CircularProgress
-            size={16}
-            className="margin-circular"
-            style={{
-              display: (actionLoading || activeLoading) ? 'initial' : 'none'
-            }}
-          />
-          {t('DMH.COMP.ALERT_MODAL.ACCEPT_BTN')}
-        </ButtonBase>
+      <DialogActions className="comp_AlertModal___dialog-actions">
+        {<CustomFooter bg={bgColor.color} /> || (
+          <>
+            <ButtonBase
+              className="comp_AlertModal___cancle-button"
+              onClick={() => handleCancle()}
+            >
+              {t("DMH.COMP.ALERT_MODAL.CANCLE_BTN")}
+            </ButtonBase>
+            <ButtonBase
+              style={{
+                color: bgColor.color,
+                opacity:
+                  !canConfirm || actionLoading || activeLoading ? 0.5 : 1,
+              }}
+              className="comp_AlertModal___accept-button"
+              onClick={() => handleConfirm()}
+              disabled={!canConfirm || actionLoading || activeLoading}
+            >
+              <CircularProgress
+                size={16}
+                className="margin-circular"
+                style={{
+                  display: actionLoading || activeLoading ? "initial" : "none",
+                }}
+              />
+              {t("DMH.COMP.ALERT_MODAL.ACCEPT_BTN")}
+            </ButtonBase>
+          </>
+        )}
       </DialogActions>
     </Dialog>
-  )
+  );
 }
 
 AlertModal.propTypes = {

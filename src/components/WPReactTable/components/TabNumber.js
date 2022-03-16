@@ -40,7 +40,6 @@ const TabNumber = forwardRef(
     };
 
     const _handleSelectFormat = (value) => {
-      console.log(value);
       setFormat(value);
     };
 

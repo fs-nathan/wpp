@@ -5,21 +5,17 @@ import {
   MenuItem,
   MenuList,
   Popover,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import {
-  SnackbarEmitter,
-  SNACKBAR_VARIANT,
-} from "constants/snackbarController";
+import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 import React, {
   forwardRef,
   useImperativeHandle,
   useReducer,
-  useState,
+  useState
 } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { useLocalStorage } from "react-use";
+import { useDispatch, useSelector } from "react-redux";
 import CreateProjectGroup from "views/ProjectGroupPage/Modals/CreateProjectGroup/index.js";
 import ProjectGroupDelete from "views/ProjectGroupPage/Modals/DeleteProjectGroup/index.js";
 
@@ -38,15 +34,14 @@ const PopoverSetGroupDefault = forwardRef(
     const [state, dispatchState] = useReducer(reducer, initialState);
     const [isShowAlert, setIsShowAlert] = useState(false);
     const [isShowCreateGroup, setIsShowCreateGroup] = useState(false);
+    const dispatch = useDispatch();
 
     const canModify = useSelector(
       ({ viewPermissions }) =>
-        viewPermissions.data.projects.manage_group_project
+        viewPermissions?.data?.projects?.manage_group_project || {}
     );
 
-    const [, setDefaultAccessItem] = useLocalStorage(
-      "WPS_WORKING_SPACE_DEFAULT_ACCESS"
-    );
+
 
     useImperativeHandle(ref, () => ({ _open }));
 
@@ -60,9 +55,10 @@ const PopoverSetGroupDefault = forwardRef(
     };
 
     const _handleSetDefault = (value) => {
-      setDefaultAccessItem(value);
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, t("SNACK_MUTATE_SUCCESS"));
-      onSetDefault(value);
+      // setDefaultAccessItem(value);
+      // SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, t("SNACK_MUTATE_SUCCESS"));
+      // onSetDefault(value);
+      dispatch(defaultGroupTask(value));
     };
 
     const _deleteGroup = (e) => {

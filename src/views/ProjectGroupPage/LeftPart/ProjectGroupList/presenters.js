@@ -29,7 +29,7 @@ import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useHistory } from "react-router-dom";
 import { useLocalStorage } from "react-use";
 import styled from "styled-components";
@@ -47,6 +47,7 @@ import CreateProjectGroup from "../../Modals/CreateProjectGroup";
 import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import { GroupProject } from "./components";
 import "./style.scss";
+import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -69,14 +70,12 @@ function ProjectList({
 }) {
   const history = useHistory();
   const { t } = useTranslation();
-  const [isHideStartButton, setIsHideStartButton] = useLocalStorage(
+  const [isHideStartButton] = useLocalStorage(
     "WPS_HIDE_WORKING_START_BUTTON",
     false
   );
   const [hideBtnState, setHideBtnState] = React.useState(isHideStartButton);
-  const [defaultAccessItem, setDefaultAccessItem] = useLocalStorage(
-    "WPS_WORKING_SPACE_DEFAULT_ACCESS"
-  );
+  const dispatch = useDispatch();
   const [anchorElStartButton, setAnchorElStartButton] = React.useState(null);
   const [anchorElAddGroup, setAnchorElAddGroup] = React.useState(null);
   const [anchorElAddBoard, setAnchorElAddBoard] = React.useState(null);
@@ -118,8 +117,7 @@ function ProjectList({
   }
 
   function handleSetDefault(value) {
-    setDefaultAccessItem(value);
-    SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, t("SNACK_MUTATE_SUCCESS"));
+    if (value) dispatch(defaultGroupTask(value));
   }
 
   function handleDeleteGroup(evt) {
@@ -237,12 +235,12 @@ function ProjectList({
                       personalProjectsBoard
                     )})`}
                   />
-                  {defaultAccessItem === "/personal-board" && (
+                  {/* {defaultAccessItem === "/personal-board" && (
                     <FlagOutlinedIcon
                       color={"disabled"}
                       style={{ marginLeft: 10, color: "red" }}
                     />
-                  )}
+                  )} */}
                   <div className="wp-wrapper-button">
                     <MoreVertIcon
                       onClick={(evt) => {
@@ -299,7 +297,7 @@ function ProjectList({
                               key={index}
                               index={index}
                               groupID={groupID}
-                              defaultAccessItem={defaultAccessItem}
+                              // defaultAccessItem={defaultAccessItem}
                               projectGroup={projectGroup}
                               setOpenCreateGroup={setOpenCreateGroup}
                               setAnchorElAddGroup={setAnchorElAddGroup}

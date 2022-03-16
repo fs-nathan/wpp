@@ -2558,5 +2558,15 @@
   "FIND_FIELD_DATA": "Tìm kiếm trường dữ liệu",
   "DATA_FIELD_EXITS": "Trường dữ liệu có sẵn",
   "ADD_DESCRIPTION": "Thêm mô tả",
-  "EDIT": "Chỉnh sửa"
+  "EDIT": "Chỉnh sửa",
+  "Time start": "Bắt đầu",
+  "Time end": "Kết thúc",
+  "Status": "Trạng thái",
+  "Duration": "Tiến độ",
+  "Complete": "Hoàn thành",
+  "Priority": "Ưu tiên",
+  "Member": "Thành viên",
+  "alert_delete_fields": "Trường nội dung này thuộc mặc định của hệ thống, bạn không thể xoá nó!",
+  "CLOSE": "Đóng",
+  "DELETE_FIELDS": "Xoá trường"
 }

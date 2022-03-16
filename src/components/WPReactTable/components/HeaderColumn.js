@@ -29,7 +29,10 @@ const initialState = { openMenu: false, anchorEl: null };
 
 const HeaderColumn = ({
   column,
+  zIndex = 0,
+  length = 0,
   isSticky = false,
+  isFirstColumn = false,
   isLastColumn = false,
   onHideColumn = () => {},
   onEditColumn = () => {},
@@ -97,6 +100,8 @@ const HeaderColumn = ({
   return (
     <HeaderColumnWrapper
       {...column.getHeaderProps()}
+      zIndex={isFirstColumn ? length + 3 : zIndex}
+      isFirstColumn={isFirstColumn}
       isLastColumn={isLastColumn}
       className={classNames({ isSticky })}
     >
@@ -128,36 +133,34 @@ const HeaderColumn = ({
       )}
 
       <Menu
-        style={{ marginTop: "42px" }}
         id="menu-appbar"
         anchorEl={state.anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
         open={Boolean(state.anchorEl)}
         onClose={_handleCloseMenu}
+        getContentAnchorEl={null}
+        anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
+        transformOrigin={{ vertical: "top", horizontal: "start" }}
       >
-        <StyledMenuItem onClick={_handleEditField} style={{ marginBottom: 5 }}>
-          <Typography textAlign="center">Chỉnh sửa trường</Typography>
-        </StyledMenuItem>
-        <Divider />
+        {!column.is_default && (
+          <>
+            <StyledMenuItem
+              onClick={_handleEditField}
+              style={{ marginBottom: 5 }}
+            >
+              <Typography textAlign="center">Chỉnh sửa trường</Typography>
+            </StyledMenuItem>
+            <Divider />
+          </>
+        )}
 
-        <StyledMenuItem
-          isActive={column.sort_method === "ASC"}
-          onClick={() => _handleSort(1)}
-          style={{ marginTop: 5 }}
-        >
+        <StyledMenuItem onClick={() => _handleSort(1)} style={{ marginTop: 5 }}>
           <StyledListItemIcon>
             <UpgradeIcon />
           </StyledListItemIcon>
           <Typography textAlign="center">Lọc tăng dần</Typography>
         </StyledMenuItem>
 
-        <StyledMenuItem
-          isActive={column.sort_method === "DESC"}
-          onClick={() => _handleSort(2)}
-        >
+        <StyledMenuItem onClick={() => _handleSort(2)}>
           <StyledListItemIcon transform>
             <UpgradeIcon />
           </StyledListItemIcon>
@@ -189,7 +192,7 @@ const HeaderColumn = ({
 };
 
 const StyledMenuItem = styled(MenuItem)`
-  color: ${(props) => (props.isDelete ? "#f44336" : "#1e1f21")};
+  color: ${(props) => (props.isDelete ? "#f44336" : "#333")};
   width: 200px;
   height: 35px;
   ${(props) => {
@@ -221,37 +224,40 @@ const StyledListItemIcon = styled(ListItemIcon)`
 `;
 
 const HeaderColumnWrapper = styled.div`
-  align-items: center;
-  background-color: #f1f2f4;
-  border-right: 1px solid #edeae9;
-  border-top: 1px solid #edeae9;
-  display: flex;
-  flex: 1 0 auto;
-  justify-content: space-between;
-  z-index: 0;
-  margin: 0;
   color: #6d6e6f;
+  z-index: ${(props) => props?.zIndex || 0};
+  align-items: center;
+  border: 1px solid #edeae9;
+  border-bottom: 0;
+  box-sizing: border-box;
+  cursor: pointer;
+  display: inline-flex !important;
+  flex: 0 0 auto;
+  font-size: 12px;
+  justify-content: space-between;
   margin-right: -1px;
+  padding: 0 8px;
   position: relative;
-
+  background: #f1f2f4;
+  &:hover {
+    background-color: #f9f8f8;
+  }
   &[data-sticky-td="true"] {
-    z-index: 3;
+    z-index: ${(props) => props.zIndex + 3}!important;
   }
 `;
 const LeftStructure = styled.div`
+  width: calc(100% - 42px);
   cursor: pointer;
-  align-items: stretch;
   color: #666;
   display: flex;
   flex: 1 0 auto;
   font-size: 12px;
   padding-left: 24px;
   padding-right: 0;
-  height: 100%;
   position: relative;
+  z-index: 0;
   align-items: center;
-
-  border-right: ${(props) => (props.isLastColumn ? "0" : "1px solid #e8ecee")};
   justify-content: ${({ isLastColumn }) =>
     isLastColumn ? "center" : "space-between"};
 
@@ -260,7 +266,6 @@ const LeftStructure = styled.div`
   }
 
   &:hover {
-    background-color: #f6f8f9;
     color: #151b26;
     fill: #151b26;
     .wp-wrapper-button {
@@ -275,7 +280,7 @@ const ResizeDiv = styled.div`
   right: -5px;
   top: 0;
   width: 10px;
-  z-index: 100;
+  z-index: 9999999;
 
   &:hover {
     background: #008ce3;
@@ -285,12 +290,13 @@ const ResizeDiv = styled.div`
   }
   &:after {
     content: none;
-    position: absolute;
     height: 100vh;
     background: ${(props) => (!props.isResizing ? "#008ce3" : "#008ce3")};
     width: 1px;
-    left: 4px;
     z-index: 3;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
   }
 `;
 

@@ -8,7 +8,7 @@ export const useStyles = makeStyles({
     display: "flex",
     flexShrink: 0,
     minHeight: "72px",
-    padding: "0 24px",
+    padding: "0 10px",
     position: "relative",
     zIndex: 400,
     borderBottom: " 1px solid rgb(232, 232, 232)",

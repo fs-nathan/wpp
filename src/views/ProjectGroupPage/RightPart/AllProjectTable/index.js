@@ -61,7 +61,7 @@ function AllProjectTable({
   type_data = null,
 }) {
   const times = useTimes();
-  const { filterType, timeType, workType } = localOption;
+  const { filterType, timeType, workType, labelType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
     return {
@@ -71,6 +71,7 @@ function AllProjectTable({
   }, [timeType]);
   const [isFiltering, setIsFiltering] = React.useState(false);
   const [sortType, setSortType] = React.useState({});
+  const [searchValue, setSearchValue] = React.useState("");
   const [newProjects, setNewProjects] = React.useState(projects);
   const [openPersonalBoard, setOpenPersonalBoard] = React.useState(false);
 
@@ -143,13 +144,35 @@ function AllProjectTable({
     let _projects = [...projects.projects];
     _projects = sortBy(_projects, (o) => get(o, sortType.col));
     _projects = sortType.dir === -1 ? reverse(_projects) : _projects;
-    _projects = filter(_projects, filters[filterType].option);
-    setNewProjects({
-      ...projects,
-      projects: _projects,
-    });
+    if (filters?.[filterType]?.option)
+      _projects = filter(_projects, filters[filterType].option);
+    if (labelType && labelType !== -1)
+      _projects = filter(_projects, { project_label: { id: labelType } });
+    if (labelType && labelType === -1)
+      _projects = filter(_projects, { project_label: {} });
+    if (searchValue.trim().length)
+      _projects = _projects.filter((obj) =>
+        JSON.stringify(obj.name)
+          .toLowerCase()
+          .includes(searchValue.toLowerCase())
+      );
+
+    setNewProjects({ ...projects, projects: _projects });
     setIsFiltering(size(projects.projects) > 0);
-  }, [projects, sortType, filterType]);
+  }, [projects, sortType, filterType, labelType, searchValue]);
+
+  React.useEffect(() => {
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      setGuideLineModal(true);
+      setNewCreatedBoard(e.detail.project_id);
+    });
+    return () => {
+      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
+        setGuideLineModal(true);
+        setNewCreatedBoard(e.detail.project_id);
+      });
+    };
+  }, []);
 
   const [guideLineModal, setGuideLineModal] = React.useState(false);
   const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
@@ -208,18 +231,11 @@ function AllProjectTable({
         return;
     }
   }
-  React.useEffect(() => {
-    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
-      setGuideLineModal(true);
-      setNewCreatedBoard(e.detail.project_id);
-    });
-    return () => {
-      CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
-        setGuideLineModal(true);
-        setNewCreatedBoard(e.detail.project_id);
-      });
-    };
-  }, []);
+
+  const _handleSearch = (value) => {
+    setSearchValue(value);
+  };
+
   return (
     <>
       <CustomTableWrapper>
@@ -232,10 +248,18 @@ function AllProjectTable({
           bgColor={bgColor}
           type_data={type_data}
           filterType={filterType}
+          labelType={labelType}
+          handleSearch={_handleSearch}
           handleFilterType={(filterType) =>
             doSetProjectGroup({
               ...localOption,
               filterType,
+            })
+          }
+          handleFilterLabel={(labelID) =>
+            doSetProjectGroup({
+              ...localOption,
+              labelType: labelID,
             })
           }
           timeType={timeType}

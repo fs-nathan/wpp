@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from "@material-ui/core";
+import { Box, ButtonBase, CircularProgress } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
 import AlertModal from "components/AlertModal";
 import { TimeRangePopover } from "components/CustomPopover";
@@ -16,6 +16,7 @@ import {
 import { exportToCSV } from "helpers/utils/exportData";
 import { cloneDeep, find, flattenDeep, get, isNil, join } from "lodash";
 import React, { useReducer, useRef } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
@@ -346,6 +347,7 @@ function AllTaskTable({
 }
 
 const ModalAlert = React.forwardRef(({ onConfirm = () => {} }, ref) => {
+  const { t } = useTranslation();
   const { projectId } = useParams();
   const [open, setOpen] = React.useState(false);
   const [dataDelete, setDataDelete] = React.useState({});
@@ -362,7 +364,16 @@ const ModalAlert = React.forwardRef(({ onConfirm = () => {} }, ref) => {
       setOpen={setOpen}
       onConfirm={() => onConfirm({ ...dataDelete, project_id: projectId })}
       open={open}
-      content="This will permanently delete the Custom Field and remove its values from any tasks in this project. This cannot be undone."
+      customFooter={({ bg }) => (
+        <ButtonBase
+          style={{ color: bg }}
+          className="comp_AlertModal___accept-button"
+          onClick={() => setOpen(false)}
+        >
+          {t("CLOSE")}
+        </ButtonBase>
+      )}
+      content={t("alert_delete_fields")}
     />
   );
 });

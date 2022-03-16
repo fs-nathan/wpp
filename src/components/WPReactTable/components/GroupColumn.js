@@ -21,9 +21,11 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
   const [isVisibleNewRow, setIsVisibleNewRow] = useState(false);
   const dispatch = useDispatch();
+  const refD = React.useRef(null);
 
   const _handleAddNewRow = () => {
     setIsVisibleNewRow(true);
+    refD.current._set(!isVisibleNewRow);
   };
 
   const _handleSubmit = (name) => {
@@ -68,7 +70,6 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
       )}
     >
       <div className="tr" {...row.getRowProps()}>
-        <div className="drag-placeholder" />
         <ListContentColumn
           data={row.cells}
           onVisibleAddRow={_handleAddNewTask}
@@ -82,21 +83,12 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
         <ServiceCommandUnit id={row.original.id} data={row.subRows} />
       )}
 
-      {isVisibleNewRow && (
-        <div className="tr" {...row.getRowProps()}>
-          {row.cells.map((cell, index) => {
-            return (
-              <ContentColumn
-                key={index}
-                cell={cell}
-                isNewRow
-                isFocus
-                onSubmitAdd={_handleSubmit}
-              />
-            );
-          })}
-        </div>
-      )}
+      <RowNew
+        ref={refD}
+        data={row.cells}
+        row={{ ...row.getRowProps() }}
+        onSubmit={_handleSubmit}
+      />
 
       {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
         <div className="tr row-add" {...row.getRowProps()}>
@@ -126,12 +118,44 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
   );
 };
 
+const RowNew = React.forwardRef(
+  ({ data = [], row = {}, onSubmit = () => {} }, ref) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    React.useImperativeHandle(ref, (va) => ({
+      _set: () => setIsVisible(!isVisible),
+    }));
+
+    if (!isVisible) return null;
+
+    return (
+      <div className="tr" {...row}>
+        {data.map((cell, index) => {
+          return (
+            <ContentColumn
+              key={index}
+              cell={cell}
+              isNewRow
+              isFocus
+              onSubmitAdd={onSubmit}
+              onBlur={() => {
+                setIsVisible(!isVisible);
+              }}
+            />
+          );
+        })}
+      </div>
+    );
+  }
+);
+
 const CellAddIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
   height: 100%;
   cursor: pointer;
+  color: #9e939e;
 `;
 
 export default GroupColumn;

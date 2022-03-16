@@ -1,18 +1,9 @@
-import AddRoundedIcon from "@mui/icons-material/AddRounded";
-import ArrowDropDownRoundedIcon from "@mui/icons-material/ArrowDropDownRounded";
-import ArrowRightRoundedIcon from "@mui/icons-material/ArrowRightRounded";
-import MoreHorizRoundedIcon from "@mui/icons-material/MoreHorizRounded";
-import AccessTimeRoundedIcon from "@mui/icons-material/AccessTimeRounded";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import CustomBadge from "components/CustomBadge";
-import { StateBox } from "components/TableComponents";
-import { get } from "lodash";
-import React, { useEffect, useRef } from "react";
-import { useTranslation } from "react-i18next";
-import styled from "styled-components";
-import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
+import ColumnNameGroup from "components/WPReactTable/components/ColumnNameGroup";
 import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
+import React, { useEffect, useRef } from "react";
+import styled from "styled-components";
 
 export const IconDrag = () => (
   <svg
@@ -30,127 +21,87 @@ export const IconDrag = () => (
   </svg>
 );
 
-const CellMainGroup = ({
-  row,
+const CellItemGroup = ({
   value,
+  row,
+  isNewRow = false,
   dragHandle = {},
-  onVisibleAddRow = () => {},
+  onSubmitAdd = () => {},
+  onBlur = () => {},
+  isFocus = true,
 }) => {
+  const refText = useRef(null);
+  const [name, setName] = React.useState(isNewRow ? "" : value);
+
+  useEffect(() => {
+    isNewRow ? setName("") : setName(value);
+  }, [value, isNewRow]);
+
+  const _handleSubmit = () => {
+    onSubmitAdd(refText.current.value);
+  };
+
+  useEffect(() => {
+    if (isFocus && isNewRow) {
+      setTimeout(() => {
+        refText.current.focus();
+      }, 0);
+    }
+  }, [isFocus, isNewRow]);
+
+  const _handleKeyPress = (e) => {
+    if (e.which === 13 && !e.shiftKey) {
+      e.preventDefault();
+      _handleSubmit();
+      refText.current.value = "";
+    }
+  };
+
+  const _handleChange = (e) => {
+    setName(e.target.value);
+  };
+
   return (
-    <WrapperMainGroup {...dragHandle}>
-      <div
+    <WrapperItemName>
+      <div style={{ width: "30px" }} />
+      <WrapperIconDrag className="drag-icon" {...dragHandle}>
+        <IconDrag />
+      </WrapperIconDrag>
+
+      <TextAreaCustom
+        ref={refText}
+        placeholder={"Write a task name"}
+        rows="1"
+        tabindex="-1"
+        wrap="off"
+        value={name}
+        defaultValue={isNewRow ? "" : value}
+        onKeyPress={_handleKeyPress}
+        onChange={_handleChange}
+        onBlur={onBlur}
         style={{
-          width: "100%",
-          display: "flex",
-          alignItems: "center",
-          maxWidth: "calc(100% - 72px)",
+          marginLeft: 0,
+          width: "calc(100% - 140px)",
         }}
-      >
-        <WrapperButton {...row.getToggleRowExpandedProps()}>
-          {!row.isExpanded ? (
-            <ArrowRightRoundedIcon sx={{ fontSize: 28 }} />
-          ) : (
-            <ArrowDropDownRoundedIcon sx={{ fontSize: 28 }} />
-          )}
-        </WrapperButton>
-        <WrapperName>
-          <TextEllipsis>{value}</TextEllipsis>
-        </WrapperName>
-      </div>
-      <div
-        className="wrapper-right"
-        style={{
-          alignItems: "center",
-        }}
-      >
-        <WrapperButton className="right-side" onClick={onVisibleAddRow}>
-          <AddRoundedIcon />
-        </WrapperButton>
-        <WrapperButton className="right-side">
-          <MoreHorizRoundedIcon />
-        </WrapperButton>
-      </div>
-    </WrapperMainGroup>
+      />
+
+      <WrapperDetailInfo className="detail-info">
+        <div className="wp-wrapper-button">
+          <MoreVertIcon sx={{ fontSize: 16 }} />
+        </div>
+
+        <div className="detail">
+          <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
+        </div>
+      </WrapperDetailInfo>
+    </WrapperItemName>
   );
 };
-
-const CellItemGroup = React.memo(
-  ({
-    value,
-    row,
-    isNewRow = false,
-    dragHandle = {},
-    onSubmitAdd = () => {},
-    isFocus = true,
-  }) => {
-    const isDisplayReminder = row.original.status_code === 3;
-    const refText = useRef(null);
-
-    const _handleSubmit = () => {
-      onSubmitAdd(refText.current.value);
-    };
-
-    useEffect(() => {
-      if (isFocus && isNewRow) {
-        setTimeout(() => {
-          refText.current.focus();
-        }, 0);
-      }
-    }, [isFocus, isNewRow]);
-
-    const _handleKeyPress = (e) => {
-      if (e.which === 13 && !e.shiftKey) {
-        e.preventDefault();
-        _handleSubmit();
-        refText.current.value = "";
-      }
-    };
-
-    return (
-      <WrapperItemName>
-        <div style={{ width: "30px" }} />
-        <WrapperIconDrag className="drag-icon" {...dragHandle}>
-          <IconDrag />
-        </WrapperIconDrag>
-
-        {isDisplayReminder && (
-          <AccessTimeRoundedIcon sx={{ fontSize: 16, color: "#6d6e6f" }} />
-        )}
-
-        <TextAreaCustom
-          ref={refText}
-          placeholder={"Write a task name"}
-          rows="1"
-          tabindex="-1"
-          wrap="off"
-          defaultValue={isNewRow ? "" : value}
-          onKeyPress={_handleKeyPress}
-          style={{
-            marginLeft: isDisplayReminder ? "5px" : 0,
-            width: isDisplayReminder
-              ? "calc(100% - 160px)"
-              : "calc(100% - 140px)",
-          }}
-        />
-
-        <WrapperDetailInfo className="detail-info">
-          <div className="wp-wrapper-button">
-            <MoreVertIcon sx={{ fontSize: 16 }} />
-          </div>
-
-          <div className="detail">
-            <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
-          </div>
-        </WrapperDetailInfo>
-      </WrapperItemName>
-    );
-  }
-);
 
 const CellNameTask = ({ row, value, ...props }) => {
   if (row.depth === 0 && !props.isNewRow) {
     return (
-      <CellMainGroup
+      <ColumnNameGroup
         row={row}
         value={value}
         dragHandle={props.dragHandle}
@@ -167,87 +118,6 @@ const CellNameTask = ({ row, value, ...props }) => {
       dragHandle={props.dragHandle}
       {...props}
     />
-  );
-};
-
-const CellStatus = ({ props }) => {
-  const { t } = useTranslation();
-
-  const row = props.row.original;
-  if (!row.status_code) return null;
-  return (
-    <StateBox stateCode={get(row, "status_code")}>
-      <div className="project_state_wrapper">
-        <span>&#11044;</span>
-        <span>
-          {get(row, "status_code") === 5
-            ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE")
-            : get(row, "status_name")}
-        </span>
-      </div>
-      {get(row, "status_code") === 3 && get(row, "day_expired", 0) !== 0 ? (
-        <small>
-          {t("DMH.VIEW.PGP.RIGHT.ALL.LABEL.DATE", {
-            date: get(row, "day_expired", 0),
-          })}
-        </small>
-      ) : null}
-    </StateBox>
-  );
-};
-
-const CellProgressUnit = ({ props }) => {
-  const row = props.row.original;
-  return (
-    <div>
-      {row?.duration_value} {row?.duration_unit}
-    </div>
-  );
-};
-
-const CellStartTime = ({ props }) => {
-  const row = props.row.original;
-
-  return (
-    <WrapperTime>
-      <TimeUnit>{row?.start_time}</TimeUnit>
-      <DurationUnit>{row?.start_date}</DurationUnit>
-    </WrapperTime>
-  );
-};
-
-const CellEndTime = ({ props }) => {
-  const row = props.row.original;
-
-  return (
-    <WrapperTime>
-      <TimeUnit>{row?.end_time}</TimeUnit>
-      <DurationUnit>{row?.end_date}</DurationUnit>
-    </WrapperTime>
-  );
-};
-
-const CellPriority = ({ props }) => {
-  const row = props.row.original;
-  if (!row.priority_code) return null;
-  return (
-    <CustomBadge
-      color={decodePriorityCode(get(row, "priority_code", 0)).color}
-      background={decodePriorityCode(get(row, "priority_code", 0)).background}
-    >
-      {get(row, "priority_name", "")}
-    </CustomBadge>
-  );
-};
-
-const CellCompleted = ({ props }) => {
-  const row = props.row.original;
-
-  if (!row.data["pfd-complete"]) return null;
-  return (
-    <WrapperCompleted>
-      {row.data["pfd-complete"].value} {row.data["pfd-complete"].format}
-    </WrapperCompleted>
   );
 };
 
@@ -269,68 +139,14 @@ export const COLUMNS_TASK_TABLE = [
   },
 ];
 
-const WrapperMainGroup = styled.div`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  justify-content: space-between;
-  .wrapper-right {
-    display: none;
-  }
-  &:hover {
-    .wrapper-right {
-      display: flex;
-    }
-  }
-`;
-
-const WrapperButton = styled.div`
-  height: 28px;
-  min-height: 28px;
-  min-width: 28px;
-  width: 28px;
-  border-radius: 6px;
-  margin-right: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  fill: #6f7782;
-
-  &.right-side {
-    margin-left: 4px;
-  }
-  &:hover {
-    background: #1507260a;
-    fill: #151b26;
-    cursor: pointer;
-  }
-`;
-
-const WrapperName = styled.div`
-  font-size: 15px;
-  font-weight: 400;
-  margin-left: 0;
-  min-width: 1px;
-  outline: none;
-`;
-
-const WrapperTime = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const TimeUnit = styled.div`
-  font-size: 12px;
-`;
-const DurationUnit = styled.div`
-  color: #333;
-  margin-top: 4px;
-`;
 const WrapperIconDrag = styled.div`
   position: absolute;
   top: 50%;
   height: 19.5px;
   transform: translateY(-50%);
   visibility: hidden;
+  position: absolute;
+  left: 8px;
 `;
 const WrapperDetailInfo = styled.div`
   display: flex;
@@ -364,22 +180,8 @@ const WrapperItemName = styled.div`
     }
   }
 `;
-const WrapperCompleted = styled.div`
-  display: flex;
-  align-items: center;
-  color: #4caf50;
-`;
 
-const TextEllipsis = styled.span`
-  overflow: hidden;
-  text-align: left;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #44485e;
-  max-width: 100%;
-  display: block;
-`;
-const TextAreaCustom = styled.textarea`
+export const TextAreaCustom = styled.textarea`
   white-space: pre;
   background: transparent;
   border-radius: 1.5px;
@@ -394,13 +196,23 @@ const TextAreaCustom = styled.textarea`
   line-height: 20px;
   margin: 0;
   min-width: 20px;
-  padding: 0 4px;
+  padding: 0 5px;
   text-rendering: optimizeSpeed;
   color: #1e1f21;
+  ${(props) => {
+    if (props.isGroup) {
+      return {
+        fontWeight: 500,
+        fontSize: 16,
+        padding: 5,
+        borderColor: "#edeae9",
+      };
+    }
+  }}
   &:hover {
     border: 1px solid #edeae9;
   }
   &:focus {
-    border-color: transparent;
+    border-color: ${(props) => (props.isGroup ? "#edeae9" : "transparent")};
   }
 `;

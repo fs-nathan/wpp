@@ -45,7 +45,7 @@ const StyledFrameMess = styled(Typography)`
     margin-bottom: 10px;
 `
 // const StyledSubText = styled(Typography)`
-//     color: 
+//     color:
 // `
 // const Content = styled.div`
 //     display: flex;
@@ -242,7 +242,7 @@ const DeleteMember = ({ name }) => {
 }
 // Adjustment progress
 const AdjustmentProgressMess = styled(Typography)`
-    margin-bottom: 20px; 
+    margin-bottom: 20px;
     & > p {
         font-size: 13px;
         color: #6e6d6d;
@@ -313,7 +313,7 @@ const UpdateNameWork = () => {
 // update status
 const UpdateStatusWorkMess = styled(Typography)`
     margin-bottom: 20px;
-    & > div:nth-child(2) {    
+    & > div:nth-child(2) {
         display: flex;
         align-items: center;
         margin-top: 10px;
@@ -334,7 +334,7 @@ const UpdateStatusWork = () => {
     )
 }
 
-// work 
+// work
 const WorkChildMess = styled(Typography)`
     & > p:nth-child(1) {
         font-size: 14px;
@@ -355,7 +355,7 @@ const WorkChildMess = styled(Typography)`
             align-items: center;
         }
     }
-    
+
 `
 
 const WorkChild = () => {

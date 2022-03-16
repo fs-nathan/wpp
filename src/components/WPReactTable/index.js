@@ -39,7 +39,7 @@ const Styles = styled.div`
 
   .table {
     border-spacing: 0;
-    overflow: scroll;
+    overflow: auto;
     max-width: ${({ isCollapsed }) =>
       !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
@@ -57,17 +57,35 @@ const Styles = styled.div`
     .tr {
       display: flex;
       height: 47px;
-      transition: box-shadow 100ms ease-in-out;
       contain: style;
       margin-bottom: -1px;
       margin-top: -1px;
-      line-height: normal;
       &:hover {
         background-color: #f9f8f8;
         .td {
           background-color: #f9f8f8;
         }
       }
+
+      &.row-add {
+        .td {
+          border-right: 1px solid #edeae9 !important;
+          border-top: 1px solid #edeae9 !important;
+          border-bottom: 0;
+          z-index: 201;
+          &:hover {
+            border-bottom: 0;
+          }
+          &:last-child {
+            border-right: 0 !important;
+          }
+        }
+
+        .td:not(:first-child) {
+          border: 0;
+        }
+      }
+
       &.header {
         background-color: #f1f2f4;
         box-sizing: border-box;
@@ -86,44 +104,56 @@ const Styles = styled.div`
       padding: 0 8px;
       z-index: 0;
       align-items: center;
-      display: flex;
+      display: inline-flex !important;
       height: 47px;
       overflow: hidden;
-      justify-content: space-between;
-      margin-left: -1px;
-      display: inline-flex !important;
-      align-items: center;
       justify-content: flex-start;
+      margin-right: -1px;
+
       &[data-sticky-td="true"] {
         z-index: 300 !important;
-        border-left: 0;
+        border: 1px solid #edeae9;
         padding: 0 4px 0 24px;
         justify-content: space-between;
         flex: 1 1 auto;
         min-width: 1px;
-        box-shadow: none;
-        max-width: 420px;
         &:hover {
-          border-right-color: #edeae9;
+          border: 1px solid #edeae9;
+        }
+        &.isGroupColumn {
+          border-right: 1px solid #edeae9;
         }
       }
+
+      .icon_add {
+        visibility: hidden;
+      }
+
       &.isGroupColumn {
-        border-left: 0;
+        border: 0;
         &:hover {
-          border-right-color: transparent;
-          border-top-color: #edeae9;
-          border-bottom-color: #edeae9;
+          border: 0;
+          .drag-icon {
+            visibility: visible !important;
+          }
         }
       }
+
       &:hover {
-        z-index: 200 !important;
-        border-color: #afabac;
+        border: 1px solid #edeae9;
+        overflow: unset;
+        z-index: 201;
+
         .canHide,
         .default_tag,
-        .icon {
-          visibility: visible;
+        .icon,
+        .icon_add,
+        .drag-icon,
+        .detail-info {
+          visibility: visible !important;
         }
       }
+
       &.focus {
         z-index: 200;
         border-color: #4573d2 !important;

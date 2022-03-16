@@ -9,26 +9,35 @@ import Box from "@mui/material/Box";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
-import AvatarCircleList from "components/AvatarCircleList";
+import { updatePinBoardSetting } from "actions/project/setting/updatePinBoardSetting";
 import CustomAvatar from "components/CustomAvatar";
-import CustomBadge from "components/CustomBadge";
 import { ChartInfoBox } from "components/CustomDonutChart";
 import ImprovedSmallProgressBar from "components/ImprovedSmallProgressBar";
 import { LightTooltip, TooltipWrapper } from "components/LightTooltip";
 import { StateBox } from "components/TableComponents";
+import ColumnMembers from "components/WPReactTable/components/ColumnMembers.js";
+import ColumnOptionsGroup from "components/WPReactTable/components/ColumnOptionsGroup";
+import { apiService } from "constants/axiosInstance";
 import { statusTaskColors } from "constants/colors";
-import { decodePriorityCode } from "helpers/project/commonHelpers";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
 import { get } from "lodash";
 import moment from "moment";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
 import styled from "styled-components";
-
 import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
 
 export const CellLabel = ({ props, value, onEdit = () => {} }) => {
+  const location = useLocation();
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const projectId = params.get("groupID");
   const project = props.row.original;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(value);
@@ -47,6 +56,35 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  const _handleSelect = (item) => {
+    setSelected(item);
+
+    _handleUpdateProject({
+      project_id: project.id,
+      project_group_id: projectId,
+      name: project.name,
+      description: project.description,
+      priority: project.priority_code,
+      project_label_id: item?.id || null,
+    });
+  };
+
+  const _handleUpdateProject = async (data) => {
+    try {
+      await apiService({
+        url: "/project/update",
+        method: "PUT",
+        data,
+      });
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    } catch (error) {
+      SnackbarEmitter(
+        SNACKBAR_VARIANT.ERROR,
+        get(error, "messaage", DEFAULT_MESSAGE.MUTATE.ERROR)
+      );
+    }
   };
 
   const _renderSelected = () => {
@@ -80,21 +118,12 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem
-          style={{ width: 200, color: "#666" }}
-          onClick={() => setSelected(null)}
-        >
-          <DoneIcon
-            style={{
-              marginRight: 10,
-              color: "#666",
-              visibility: !selected ? "visible" : "hidden",
-            }}
-          />
-          <Typography>—</Typography>
-        </MenuItem>
-        {labelsProject.data?.projectLabels?.map((item) => (
-          <MenuItem style={{ width: 200 }} onClick={() => setSelected(item)}>
+        {labelsProject.data?.projectLabels?.map((item, index) => (
+          <MenuItem
+            key={index}
+            style={{ width: 200 }}
+            onClick={() => _handleSelect(item)}
+          >
             <DoneIcon
               style={{
                 marginRight: 10,
@@ -140,8 +169,8 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
 };
 
 const CellProgressDay = ({ value }) => {
-  if (!value) return null;
-  const startDate = moment(value, "DD/MM/YYYY");
+  if (!value.trim().length) return null;
+  const startDate = moment(value, "YYYY/MM/DD");
   const currentDay = moment().startOf("day");
   return `${currentDay.diff(startDate, "days")} ngày`;
 };
@@ -150,6 +179,11 @@ const CellNameProject = ({ props, onEdit = () => {} }) => {
   const row = props.row.original;
   const isDisplayUpdate =
     !get(row, "can_update", false) || !get(row, "can_delete", false);
+  const dispatch = useDispatch();
+
+  const _handlePin = () => {
+    dispatch(updatePinBoardSetting({ projectId: row.id, status: 0 }));
+  };
 
   return (
     <WrapperCellName>
@@ -159,8 +193,10 @@ const CellNameProject = ({ props, onEdit = () => {} }) => {
 
       <StarOutlineRoundedIcon
         className="star-icon"
+        onClick={_handlePin}
         style={{ cursor: "pointer", margin: "0 5px" }}
       />
+
       <CustomAvatar
         style={{ width: 25, height: 25 }}
         className="avatar"
@@ -290,18 +326,6 @@ const CellStatus = ({ props }) => {
   );
 };
 
-const CellPriority = ({ props }) => {
-  const row = props.row.original;
-  return (
-    <CustomBadge
-      color={decodePriorityCode(get(row, "priority_code", 0)).color}
-      background={decodePriorityCode(get(row, "priority_code", 0)).background}
-    >
-      {get(row, "priority_name", "")}
-    </CustomBadge>
-  );
-};
-
 const CellTotalTask = ({ value }) => {
   if (!value.total_task) return null;
   return (
@@ -312,16 +336,16 @@ const CellTotalTask = ({ value }) => {
   );
 };
 
-const CellMembers = ({ value = [] }) => {
-  return (
-    <AvatarCircleList
-      users={value.map((member) => ({
-        name: get(member, "name"),
-        avatar: get(member, "avatar"),
-      }))}
-      display={3}
-    />
-  );
+const CellPriority = ({ value, props }) => {
+  const row = props.row.original;
+  const options = [
+    { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
+    { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
+    { id: 3, _id: 3, name: "Cao", value: 2, color: "#ff0000" },
+  ];
+  const selected =
+    options.find((item) => item.value === row.priority_code) || {};
+  return <ColumnOptionsGroup defaultSelected={selected} options={options} project={row} />;
 };
 
 export const COLUMNS_PROJECT_TABLE = ({
@@ -389,7 +413,10 @@ export const COLUMNS_PROJECT_TABLE = ({
       id: "members",
       Header: "Thành viên",
       accessor: "members",
-      Cell: CellMembers,
+      Cell: (props) => {
+        const valueCell = props.row.original;
+        return <ColumnMembers dataCell={valueCell} value={props.value} />;
+      },
     },
   ];
 };
@@ -424,6 +451,8 @@ const WrapperCellName = styled.div`
 
   .drag-icon {
     height: 19.5px;
+    position: absolute;
+    left: 5px;
   }
   .drag-icon,
   .star-icon,

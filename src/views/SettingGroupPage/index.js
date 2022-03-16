@@ -6,6 +6,7 @@ import GroupPermissionSettings from "./GroupPermissionSettings";
 import { settingGroupPermission } from "./GroupPermissionSettings/redux";
 import ListPart from "./ListPart";
 import TablePart from "./TablePart";
+
 const SettingGroupPage = () => {
   return (
     <div className="page-container">

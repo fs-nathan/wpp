@@ -1,15 +1,31 @@
-import { get } from 'lodash';
-import { call, put } from 'redux-saga/effects';
-import { updateProjectFail, updateProjectSuccess } from '../../actions/project/updateProject';
-import { apiService } from '../../constants/axiosInstance';
-import { CustomEventEmitter, UPDATE_PROJECT } from '../../constants/events';
-import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
+import { get } from "lodash";
+import { call, put } from "redux-saga/effects";
+import {
+  updateProjectFail,
+  updateProjectSuccess,
+} from "../../actions/project/updateProject";
+import { apiService } from "../../constants/axiosInstance";
+import { CustomEventEmitter, UPDATE_PROJECT } from "../../constants/events";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "../../constants/snackbarController";
 
-async function doUpdateProject({ projectId, name, description, projectGroupId, priority, currency, work_type }) {
+async function doUpdateProject({
+  projectId,
+  name,
+  description,
+  projectGroupId,
+  priority,
+  currency,
+  work_type,
+  project_label_id,
+}) {
   try {
     const config = {
-      url: '/project/update',
-      method: 'put',
+      url: "/project/update",
+      method: "put",
       data: {
         project_id: projectId,
         name,
@@ -17,9 +33,10 @@ async function doUpdateProject({ projectId, name, description, projectGroupId, p
         project_group_id: projectGroupId,
         priority,
         currency,
-        work_type
+        work_type,
+        project_label_id,
       },
-    }
+    };
     const result = await apiService(config);
     return result.data;
   } catch (error) {
@@ -36,9 +53,11 @@ function* updateProject(action) {
   } catch (error) {
     yield put(updateProjectFail(error, action.options));
     CustomEventEmitter(UPDATE_PROJECT.FAIL);
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'messaage', DEFAULT_MESSAGE.MUTATE.ERROR));
+    SnackbarEmitter(
+      SNACKBAR_VARIANT.ERROR,
+      get(error, "messaage", DEFAULT_MESSAGE.MUTATE.ERROR)
+    );
   }
 }
 
-export { updateProject, };
-
+export { updateProject };

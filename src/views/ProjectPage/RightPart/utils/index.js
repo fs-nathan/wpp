@@ -1,6 +1,9 @@
+import ColumnMembers from "components/WPReactTable/components/ColumnMembers";
 import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
+import ColumnStatusTask from "components/WPReactTable/components/ColumnStatusTask";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 
 export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
@@ -16,7 +19,9 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
         ...item,
         minWidth: 150,
         maxWidth: 480,
-        Header: item.name,
+        Header: (props) => {
+          return <RenderHeader name={item.name} {...props} />;
+        },
         Cell: (props) => {
           return (
             <CellRender
@@ -40,50 +45,91 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
   ];
 };
 
-const CellRender = React.memo(
-  ({
-    dataType,
-    idType,
-    nameType,
-    optionsType = [],
-    row,
-    onOpenEditColumnModal = () => {},
-    ...props
-  }) => {
-    const taskId = row?.original?.id;
-    const data = row?.original?.data[props.column.id] || {};
+const RenderHeader = ({ name, ...props }) => {
+  const { t } = useTranslation();
+  return t(name);
+};
 
-    if (row.depth === 0) return null;
+const CellRender = ({
+  dataType,
+  idType,
+  nameType,
+  optionsType = [],
+  row,
+  onOpenEditColumnModal = () => {},
+  ...props
+}) => {
+  const taskId = row?.original?.id;
+  const data = row?.original?.data[props.column.id] || {};
 
-    switch (dataType) {
-      case 1:
-      case 2:
-        return (
-          <ColumnNumber
-            taskId={taskId}
-            idType={idType}
-            dataType={dataType}
-            optionsType={optionsType}
-            {...data}
-          />
-        );
-      case 3:
-        return (
-          <ColumnOptions
-            taskId={taskId}
-            idType={idType}
-            nameType={nameType}
-            dataType={dataType}
-            optionsType={optionsType}
-            onEdit={onOpenEditColumnModal}
-            {...data}
-          />
-        );
-      default:
-        return null;
-    }
+  if (row.depth === 0) return null;
 
-    // eslint-disable-next-line no-unreachable
-    return <div>{data?.value}</div>;
+  // eslint-disable-next-line default-case
+  switch (idType) {
+    case "pfd-priority":
+      return (
+        <ColumnOptions
+          taskId={taskId}
+          idType={idType}
+          nameType={nameType}
+          dataType={dataType}
+          isDisplayEditField={false}
+          optionsType={[
+            { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
+            { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
+            { id: 3, _id: 3, name: "Cao", value: 2, color: "#ff0000" },
+          ]}
+          isDisplay
+          onEdit={onOpenEditColumnModal}
+          {...data}
+        />
+      );
+    case "pfd-member":
+      return (
+        <ColumnMembers
+          value={data.value}
+          taskId={taskId}
+          dataCell={data}
+          isGetDataUser
+        />
+      );
+    case "pfd-status":
+      return (
+        <ColumnStatusTask
+          statusCode={data.option_value}
+          fieldLabel={data.field_label}
+          taskId={taskId}
+          complete={row.original.complete}
+        />
+      );
   }
-);
+
+  // eslint-disable-next-line default-case
+  switch (dataType) {
+    case 1:
+    case 2:
+      return (
+        <ColumnNumber
+          taskId={taskId}
+          idType={idType}
+          dataType={dataType}
+          optionsType={optionsType}
+          {...data}
+        />
+      );
+    case 3:
+      return (
+        <ColumnOptions
+          taskId={taskId}
+          idType={idType}
+          nameType={nameType}
+          dataType={dataType}
+          optionsType={optionsType}
+          onEdit={onOpenEditColumnModal}
+          {...data}
+        />
+      );
+  }
+
+  return <div>{data?.value}</div>;
+};

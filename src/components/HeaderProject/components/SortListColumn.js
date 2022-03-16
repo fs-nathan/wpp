@@ -175,4 +175,4 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default React.memo(SortListColumn);
+export default SortListColumn

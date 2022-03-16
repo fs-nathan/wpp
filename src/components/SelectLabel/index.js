@@ -19,22 +19,22 @@ import {
 } from "./styles";
 
 const DEFAULT_LIST_COLORS = [
-  "#c7c4c4",
-  "#f06a6a",
-  "#ec8d71",
-  "#f1bd6c",
-  "#f8df72",
-  "#aecf55",
-  "#5da283",
-  "#4ecbc4",
-  "#9ee7e3",
-  "#4573d2",
-  "#8d84e8",
-  "#b36bd4",
-  "#f9aaef",
-  "#f26fb2",
-  "#fc979a",
-  "#6d6e6f",
+  "red",
+  "blue",
+  "#ff7511",
+  "#ffa800",
+  "#ffd100",
+  "#ace60f",
+  "#19db7e",
+  "#00d4c8",
+  "#48dafd",
+  "#0064fb",
+  "#6457f9",
+  "#9f46e4",
+  "#ff78ff",
+  "#ff4ba6",
+  "#ff93af",
+  "#5a7896",
 ];
 
 const DEFAULT_SELECT = [

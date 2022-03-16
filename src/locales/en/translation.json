@@ -2536,5 +2536,8 @@
   "POSITION": "Position",
   "FIND_FIELD_DATA": "Find data fields",
   "DATA_FIELD_EXITS": "Data exists",
-  "ADD_DESCRIPTION": "Add description"
+  "ADD_DESCRIPTION": "Add description",
+  "alert_delete_fields": "This content is default of the system, you cannot delete it!",
+  "CLOSE": "CLOSE",
+  "DELETE_FIELDS": "Delete field"
 }

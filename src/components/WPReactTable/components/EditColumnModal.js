@@ -1,4 +1,5 @@
 import {
+  ButtonBase,
   Checkbox,
   FormControlLabel,
   ListItemIcon,
@@ -149,7 +150,7 @@ const EditColumnModal = React.forwardRef(
         open={state.open}
         setOpen={handleOpen}
         confirmRender={() => t("EDIT")}
-        cancleRender={() => "Delete field"}
+        cancleRender={() => t("DELETE_FIELDS")}
         titleComponent={
           <TitleModalAdd
             value={state.value}
@@ -168,7 +169,16 @@ const EditColumnModal = React.forwardRef(
           setOpen={_handleDelete}
           onConfirm={_handleConfirmDelete}
           open={state.openConfirm}
-          content="This will permanently delete the Custom Field and remove its values from any tasks in this project. This cannot be undone."
+          customFooter={({ bg }) => (
+            <ButtonBase
+              style={{ color: bg }}
+              className="comp_AlertModal___accept-button"
+              onClick={() => dispatchState({ openConfirm: null })}
+            >
+              {t("IDS_WP_BUTTON_CLOSE")}
+            </ButtonBase>
+          )}
+          content={t("alert_delete_fields")}
         />
         <Box sx={{ flexGrow: 1 }}>
           {/* Tabs panel */}
@@ -216,10 +226,6 @@ const EditColumnModal = React.forwardRef(
                 <WrapperCheckbox
                   control={<Checkbox name="gilad" />}
                   label={t("ADD_FILED_TO_LIBRARY")}
-                />
-                <WrapperCheckbox
-                  control={<Checkbox name="gilad" />}
-                  label={t("NOTIFY_MEMBER_CHANGE_FIELD")}
                 />
               </Grid>
             </Grid>
