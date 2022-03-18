@@ -2,6 +2,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ColumnNameGroup from "components/WPReactTable/components/ColumnNameGroup";
 import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
+import { apiService } from "constants/axiosInstance";
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 
@@ -31,14 +32,30 @@ const CellItemGroup = ({
   isFocus = true,
 }) => {
   const refText = useRef(null);
+  const refFocus = useRef(false);
   const [name, setName] = React.useState(isNewRow ? "" : value);
 
   useEffect(() => {
     isNewRow ? setName("") : setName(value);
   }, [value, isNewRow]);
 
-  const _handleSubmit = () => {
-    onSubmitAdd(refText.current.value);
+  const _handleSubmit = async () => {
+    if (isNewRow) onSubmitAdd(name);
+    try {
+      const config = {
+        url: "/task/update-name-description",
+        method: "PUT",
+        data: {
+          task_id: row?.original?.id || null,
+          name,
+        },
+      };
+      await apiService(config);
+      refFocus.current = true;
+      refText.current.blur();
+    } catch (error) {
+      throw error;
+    }
   };
 
   useEffect(() => {
@@ -53,7 +70,15 @@ const CellItemGroup = ({
     if (e.which === 13 && !e.shiftKey) {
       e.preventDefault();
       _handleSubmit();
-      refText.current.value = "";
+      if (isNewRow) refText.current.value = "";
+    }
+  };
+
+  const _handleBlur = (e) => {
+    if (!refFocus.current) {
+      onBlur(e);
+      _handleSubmit();
+      refFocus.current = false;
     }
   };
 
@@ -78,7 +103,7 @@ const CellItemGroup = ({
         defaultValue={isNewRow ? "" : value}
         onKeyPress={_handleKeyPress}
         onChange={_handleChange}
-        onBlur={onBlur}
+        onBlur={_handleBlur}
         style={{
           marginLeft: 0,
           width: "calc(100% - 140px)",
