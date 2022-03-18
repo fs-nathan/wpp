@@ -210,7 +210,7 @@ const StyledMenuItem = styled(MenuItem)`
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 25px;
   text-align: left;
-  color: #1e1f21;
+  color: rgb(102, 102, 102);
 
   ${(props) => {
     if (props.transform) {
