@@ -138,6 +138,12 @@ const Styles = styled.div`
         visibility: hidden;
       }
 
+      &.add-cell {
+        &:hover {
+          border-color: #edeae9 !important;
+        }
+      }
+
       &.isGroupColumn {
         border: 0;
         &:hover {
