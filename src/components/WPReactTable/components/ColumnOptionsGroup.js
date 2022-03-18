@@ -26,6 +26,17 @@ const ColumnOptionsGroup = ({
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selected, setSelected] = React.useState(defaultSelected);
 
+  React.useEffect(() => {
+    if (!anchorEl) return;
+    const cellHTML = anchorEl.closest(".td");
+    if (Boolean(anchorEl)) {
+      cellHTML && cellHTML.classList.add("focus");
+    }
+    return () => {
+      cellHTML && cellHTML.classList.remove("focus");
+    };
+  }, [anchorEl]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -44,7 +55,7 @@ const ColumnOptionsGroup = ({
       name: project.name,
       description: project.description,
       priority: item?.value || 0,
-      project_label_id: project.project_label.id || null,
+      project_label_id: project?.project_label?.id || null,
     });
   };
 

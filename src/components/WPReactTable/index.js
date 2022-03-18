@@ -118,10 +118,19 @@ const Styles = styled.div`
         flex: 1 1 auto;
         min-width: 1px;
         &:hover {
-          border: 1px solid #edeae9;
+          border: 1px solid #afabac;
+          z-index: 500 !important;
         }
         &.isGroupColumn {
           border-right: 1px solid #edeae9;
+          &.focus {
+            z-index: 500 !important;
+            border: 1px solid #4573d2 !important;
+          }
+        }
+        &.focus {
+          z-index: 202;
+          border-color: #4573d2 !important;
         }
       }
 
@@ -140,9 +149,9 @@ const Styles = styled.div`
       }
 
       &:hover {
-        border: 1px solid #edeae9;
+        border: 1px solid #afabac;
         overflow: unset;
-        z-index: 201;
+        z-index: 202;
 
         .canHide,
         .default_tag,
@@ -155,7 +164,7 @@ const Styles = styled.div`
       }
 
       &.focus {
-        z-index: 200;
+        z-index: 202;
         border-color: #4573d2 !important;
       }
     }

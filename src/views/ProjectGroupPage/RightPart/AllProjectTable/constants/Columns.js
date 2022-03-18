@@ -50,6 +50,17 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
     setSelected(value);
   }, [value]);
 
+  React.useEffect(() => {
+    if (!anchorEl) return;
+    const cellHTML = anchorEl.closest(".td");
+    if (Boolean(anchorEl)) {
+      cellHTML && cellHTML.classList.add("focus");
+    }
+    return () => {
+      cellHTML && cellHTML.classList.remove("focus");
+    };
+  }, [anchorEl]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -345,7 +356,13 @@ const CellPriority = ({ value, props }) => {
   ];
   const selected =
     options.find((item) => item.value === row.priority_code) || {};
-  return <ColumnOptionsGroup defaultSelected={selected} options={options} project={row} />;
+  return (
+    <ColumnOptionsGroup
+      defaultSelected={selected}
+      options={options}
+      project={row}
+    />
+  );
 };
 
 export const COLUMNS_PROJECT_TABLE = ({

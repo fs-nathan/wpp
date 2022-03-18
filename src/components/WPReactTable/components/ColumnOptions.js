@@ -36,6 +36,17 @@ const ColumnOptions = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [option_value, optionsType]);
 
+  React.useEffect(() => {
+    if (!anchorEl) return;
+    const cellHTML = anchorEl.closest(".td");
+    if (Boolean(anchorEl)) {
+      cellHTML && cellHTML.classList.add("focus");
+    }
+    return () => {
+      cellHTML && cellHTML.classList.remove("focus");
+    };
+  }, [anchorEl]);
+
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };

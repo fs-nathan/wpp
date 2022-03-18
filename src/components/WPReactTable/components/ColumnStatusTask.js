@@ -45,6 +45,17 @@ const ColumnStatusTask = ({ taskId, statusCode, complete, fieldLabel }) => {
   const [tooltipChangeTaskStatus, setTooltipChangeTaskStatus] =
     React.useState(null);
 
+  React.useEffect(() => {
+    if (!tooltipChangeTaskStatus) return;
+    const cellHTML = tooltipChangeTaskStatus.closest(".td");
+    if (Boolean(tooltipChangeTaskStatus)) {
+      cellHTML && cellHTML.classList.add("focus");
+    }
+    return () => {
+      cellHTML && cellHTML.classList.remove("focus");
+    };
+  }, [tooltipChangeTaskStatus]);
+
   function handleUpdateTaskStatus(status) {
     setTooltipChangeTaskStatus(null);
     if (status === 4) {
