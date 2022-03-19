@@ -2550,5 +2550,7 @@
   "align_item": "Align",
   "left": "Left",
   "right": "Right",
-  "center": "Center"
+  "center": "Center",
+  "see_time": "Watch time",
+  "date_and_time": "Date and time"
 }

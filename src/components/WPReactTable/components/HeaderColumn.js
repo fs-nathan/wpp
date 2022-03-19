@@ -47,6 +47,7 @@ const HeaderColumn = ({
   /* The above code is creating a state and dispatch function. */
   const [state, dispatchState] = useReducer(reducer, initialState);
   const isDuration = column.id === "pfd-duration";
+  const isTime = column.id === "pfd-time-end" || column.id === "pfd-time-start";
 
   /**
    * When the user clicks on the user icon, the function sets the anchorElUser variable to the current
@@ -218,6 +219,23 @@ const HeaderColumn = ({
             );
           })}
 
+        {isTime &&
+          TIMES_SUBMENU.map((item, index) => {
+            const { id, name, children } = item;
+            return (
+              <NestedMenuItem
+                key={id}
+                id={id}
+                name={name}
+                isFirstColumn={index === 0}
+                activeKey="value"
+                activeValue={1}
+                isAlignItem={false}
+                childrenItems={children}
+              />
+            );
+          })}
+
         <StyledMenuItem onClick={_handleHideField} style={{ marginTop: 5 }}>
           <Typography textAlign="center">Ẩn trường</Typography>
         </StyledMenuItem>
@@ -241,6 +259,17 @@ const DURATION_SUBMENU = [
       { id: 3, name: "month", value: 3 },
       { id: 4, name: "quater", value: 4 },
       { id: 5, name: "year", value: 5 },
+    ],
+  },
+];
+
+const TIMES_SUBMENU = [
+  {
+    id: 1,
+    name: "see_time",
+    children: [
+      { id: 0, name: "date_and_time", value: 0 },
+      { id: 1, name: "day", value: 1 },
     ],
   },
 ];

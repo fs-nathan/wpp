@@ -63,7 +63,7 @@ const ColumnOptions = ({
           task_id: taskId,
           field_id: idType,
           dataType,
-          value: item._id,
+          value: item?._id,
         },
         () => {}
       )

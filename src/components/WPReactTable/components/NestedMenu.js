@@ -70,8 +70,6 @@ const NestedMenuItem = React.forwardRef(
       }
     };
 
-    console.log("@Pham_Tinh_Console:", isAlignItem);
-
     return (
       <StyledMenuItem
         ref={ref}
@@ -81,7 +79,7 @@ const NestedMenuItem = React.forwardRef(
         }}
         onClick={handleClick}
         onMouseEnter={handleMouseEnter}
-        // onMouseLeave={handleClose}
+        onMouseLeave={handleClose}
       >
         {!isAlignItem && !!isLeafNode && (
           <StyledListItemIcon>
@@ -90,9 +88,7 @@ const NestedMenuItem = React.forwardRef(
         )}
 
         {isAlignItem && !hasChildrenItems && (
-          <StyledListItemIcon style={{ marginRight: 5 }}>
-            {icon}
-          </StyledListItemIcon>
+          <StyledListItemIcon>{icon}</StyledListItemIcon>
         )}
         <Typography textAlign="center">{t(parentName)}</Typography>
 

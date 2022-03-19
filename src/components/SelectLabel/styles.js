@@ -143,9 +143,8 @@ export const ButtonAddMore = styled.div`
 `;
 
 export const WrapperSelectColor = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: -2px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
   padding: 8px;
   width: 200px;
 `;
