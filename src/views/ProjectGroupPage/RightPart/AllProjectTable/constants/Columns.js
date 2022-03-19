@@ -47,10 +47,6 @@ export const CellLabel = ({ props, value, onEdit = () => {} }) => {
   const open = Boolean(anchorEl);
 
   React.useEffect(() => {
-    setSelected(value);
-  }, [value]);
-
-  React.useEffect(() => {
     if (!anchorEl) return;
     const cellHTML = anchorEl.closest(".td");
     if (Boolean(anchorEl)) {
