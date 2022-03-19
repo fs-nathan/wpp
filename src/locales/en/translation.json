@@ -2539,5 +2539,16 @@
   "ADD_DESCRIPTION": "Add description",
   "alert_delete_fields": "This content is default of the system, you cannot delete it!",
   "CLOSE": "CLOSE",
-  "DELETE_FIELDS": "Delete field"
+  "DELETE_FIELDS": "Delete field",
+  "hour": "Hour",
+  "day": "Day",
+  "week": "Week",
+  "month": "Month",
+  "quater": "Quater",
+  "year": "Year",
+  "pfd-duration": "Duration",
+  "align_item": "Align",
+  "left": "Left",
+  "right": "Right",
+  "center": "Center"
 }

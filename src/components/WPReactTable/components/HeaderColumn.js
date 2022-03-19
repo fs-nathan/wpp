@@ -5,12 +5,16 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import SearchOffIcon from "@mui/icons-material/SearchOff";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
 import classNames from "classnames";
 import React, { useReducer } from "react";
 import styled from "styled-components";
-import UpgradeIcon from "@mui/icons-material/Upgrade";
-import SearchOffIcon from "@mui/icons-material/SearchOff";
-import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
+import { default as NestedMenuItem } from "./NestedMenu";
 
 /**
  * It takes the previous state and the new state as arguments. If the new state is an object, it
@@ -42,6 +46,7 @@ const HeaderColumn = ({
 }) => {
   /* The above code is creating a state and dispatch function. */
   const [state, dispatchState] = useReducer(reducer, initialState);
+  const isDuration = column.id === "pfd-duration";
 
   /**
    * When the user clicks on the user icon, the function sets the anchorElUser variable to the current
@@ -179,6 +184,40 @@ const HeaderColumn = ({
 
         <Divider />
 
+        {ALIGN_SUBMENU.map((item, index) => {
+          const { id, name, children, icon } = item;
+          return (
+            <NestedMenuItem
+              key={id}
+              id={id}
+              name={name}
+              icon={icon}
+              isFirstColumn={index === 0}
+              activeKey="value"
+              isAlignItem={true}
+              activeValue={column?.duration_show || null}
+              childrenItems={children}
+            />
+          );
+        })}
+
+        {isDuration &&
+          DURATION_SUBMENU.map((item, index) => {
+            const { id, name, children } = item;
+            return (
+              <NestedMenuItem
+                key={id}
+                id={id}
+                name={name}
+                isFirstColumn={index === 0}
+                activeKey="value"
+                activeValue={column?.duration_show || null}
+                isAlignItem={false}
+                childrenItems={children}
+              />
+            );
+          })}
+
         <StyledMenuItem onClick={_handleHideField} style={{ marginTop: 5 }}>
           <Typography textAlign="center">Ẩn trường</Typography>
         </StyledMenuItem>
@@ -191,13 +230,37 @@ const HeaderColumn = ({
   );
 };
 
-const StyledMenuItem = styled(MenuItem)`
+const DURATION_SUBMENU = [
+  {
+    id: 1,
+    name: "pfd-duration",
+    children: [
+      { id: 0, name: "hour", value: 0 },
+      { id: 1, name: "day", value: 1 },
+      { id: 2, name: "week", value: 2 },
+      { id: 3, name: "month", value: 3 },
+      { id: 4, name: "quater", value: 4 },
+      { id: 5, name: "year", value: 5 },
+    ],
+  },
+];
+
+const ALIGN_SUBMENU = [
+  {
+    id: 1,
+    name: "align_item",
+    children: [
+      { id: 0, name: "left", value: 1, icon: <FormatAlignLeftIcon /> },
+      { id: 1, name: "center", value: 2, icon: <FormatAlignCenterIcon /> },
+      { id: 2, name: "right", value: 3, icon: <FormatAlignRightIcon /> },
+    ],
+  },
+];
+
+export const StyledMenuItem = styled(MenuItem)`
   color: ${(props) => (props.isDelete ? "#f44336" : "#333")};
   width: 200px;
   height: 35px;
-  ${(props) => {
-    if (props.isActive) return { backgroundColor: "rgba(0, 0, 0, 0.08)" };
-  }}
 
   p {
     text-overflow: ellipsis;
@@ -207,7 +270,7 @@ const StyledMenuItem = styled(MenuItem)`
   }
 `;
 
-const StyledListItemIcon = styled(ListItemIcon)`
+export const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 25px;
   text-align: left;
   color: rgb(102, 102, 102);

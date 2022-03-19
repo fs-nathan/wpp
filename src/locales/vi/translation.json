@@ -2568,5 +2568,16 @@
   "Member": "Thành viên",
   "alert_delete_fields": "Trường nội dung này thuộc mặc định của hệ thống, bạn không thể xoá nó!",
   "CLOSE": "Đóng",
-  "DELETE_FIELDS": "Xoá trường"
+  "DELETE_FIELDS": "Xoá trường",
+  "hour": "Giờ",
+  "day": "Ngày",
+  "week": "Tuần",
+  "month": "Tháng",
+  "quater": "Quý",
+  "year": "Năm",
+  "pfd-duration": "Tiến độ",
+  "align_item": "Căn lề",
+  "left": "Trái",
+  "right": "Phải",
+  "center": "Giữa"
 }
