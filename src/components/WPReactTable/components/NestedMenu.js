@@ -32,6 +32,7 @@ const NestedMenuItem = React.forwardRef(
     {
       id: parentId,
       name: parentName,
+      value = null,
       isActive = false,
       activeValue = null,
       isAlignItem = false,
@@ -66,7 +67,7 @@ const NestedMenuItem = React.forwardRef(
     const handleClick = (event) => {
       event.stopPropagation();
       if (isLeafNode) {
-        onClick(parentId);
+        onClick(value);
       }
     };
 
@@ -124,7 +125,7 @@ const NestedMenuItem = React.forwardRef(
               {/* reset pointer event here so that the menu items could receive mouse events */}
               <div style={{ pointerEvents: "auto" }}>
                 {parentChildrenItems.map((item) => {
-                  const { id, name, children, icon } = item;
+                  const { id, name, children, value, icon } = item;
                   const isActive = item?.[activeKey] === activeValue;
                   return (
                     <NestedMenuItem
@@ -133,6 +134,7 @@ const NestedMenuItem = React.forwardRef(
                       name={name}
                       icon={icon}
                       isActive={isActive}
+                      value={value}
                       childrenItems={children}
                       isAlignItem={isAlignItem}
                       onClick={onClick}

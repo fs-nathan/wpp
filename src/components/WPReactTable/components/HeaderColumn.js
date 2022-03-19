@@ -15,6 +15,12 @@ import styled from "styled-components";
 import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import { default as NestedMenuItem } from "./NestedMenu";
+import { apiService } from "constants/axiosInstance";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
 
 /**
  * It takes the previous state and the new state as arguments. If the new state is an object, it
@@ -101,6 +107,44 @@ const HeaderColumn = ({
   const _handleSort = (valueSort) => {
     dispatchState(initialState);
     onSortColumn(column.id, valueSort);
+  };
+
+  const _handleSetAlign = async (alignment) => {
+    try {
+      await apiService({
+        url: "/project-field/set-alignment",
+        method: "POST",
+        data: {
+          project_field_id: column.id,
+          alignment: alignment,
+          project_id: "5f069ab0fe91b50bf7a2e9b2",
+        },
+      });
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    } catch (error) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, error.message);
+    }
+  };
+
+  const _handleSetDuration = async (type) => {
+    try {
+      await apiService({
+        url: "/project/update-duration-show-type",
+        method: "POST",
+        data: {
+          type,
+          project_field_id: column.id,
+          project_id: "5f069ab0fe91b50bf7a2e9b2",
+        },
+      });
+      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
+    } catch (error) {
+      SnackbarEmitter(SNACKBAR_VARIANT.ERROR, error.message);
+    }
+  };
+
+  const _handleSetTime = (Value) => {
+    console.log("@Pham_Tinh_Console:", Value);
   };
 
   return (
@@ -196,7 +240,8 @@ const HeaderColumn = ({
               isFirstColumn={index === 0}
               activeKey="value"
               isAlignItem={true}
-              activeValue={column?.duration_show || null}
+              activeValue={column?.alignment || null}
+              onClick={_handleSetAlign}
               childrenItems={children}
             />
           );
@@ -213,6 +258,7 @@ const HeaderColumn = ({
                 isFirstColumn={index === 0}
                 activeKey="value"
                 activeValue={column?.duration_show || null}
+                onClick={_handleSetDuration}
                 isAlignItem={false}
                 childrenItems={children}
               />
@@ -228,6 +274,7 @@ const HeaderColumn = ({
                 id={id}
                 name={name}
                 isFirstColumn={index === 0}
+                onClick={_handleSetTime}
                 activeKey="value"
                 activeValue={1}
                 isAlignItem={false}
