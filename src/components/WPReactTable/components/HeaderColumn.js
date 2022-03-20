@@ -21,6 +21,7 @@ import {
   SnackbarEmitter,
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
+import { useTranslation } from "react-i18next";
 
 /**
  * It takes the previous state and the new state as arguments. If the new state is an object, it
@@ -44,12 +45,15 @@ const HeaderColumn = ({
   isSticky = false,
   isFirstColumn = false,
   isLastColumn = false,
+  selectedSort = null,
+  typeMenu = "group",
   onHideColumn = () => {},
   onEditColumn = () => {},
   onDeleteColumn = () => {},
   onSortColumn = () => {},
   onAddNewColumns = () => {},
 }) => {
+  const { t } = useTranslation();
   /* The above code is creating a state and dispatch function. */
   const [state, dispatchState] = useReducer(reducer, initialState);
   const isDuration = column.id === "pfd-duration";
@@ -106,7 +110,178 @@ const HeaderColumn = ({
    */
   const _handleSort = (valueSort) => {
     dispatchState(initialState);
-    onSortColumn(column.id, valueSort);
+    switch (typeMenu) {
+      case "group":
+        onSortColumn(column.id, valueSort);
+        break;
+      case "default":
+        onSortColumn(valueSort, column.id);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const renderMenu = () => {
+    switch (typeMenu) {
+      case "group":
+        return (
+          <Menu
+            id="menu-appbar"
+            anchorEl={state.anchorEl}
+            open={Boolean(state.anchorEl)}
+            onClose={_handleCloseMenu}
+            getContentAnchorEl={null}
+            anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
+            transformOrigin={{ vertical: "top", horizontal: "start" }}
+          >
+            {!column.is_default && (
+              <>
+                <StyledMenuItem
+                  onClick={_handleEditField}
+                  style={{ marginBottom: 5 }}
+                >
+                  <Typography textAlign="center">Chỉnh sửa trường</Typography>
+                </StyledMenuItem>
+                <Divider />
+              </>
+            )}
+
+            <StyledMenuItem
+              onClick={() => _handleSort(1)}
+              style={{ marginTop: 5 }}
+            >
+              <StyledListItemIcon>
+                <UpgradeIcon />
+              </StyledListItemIcon>
+              <Typography textAlign="center">Lọc tăng dần</Typography>
+            </StyledMenuItem>
+
+            <StyledMenuItem onClick={() => _handleSort(2)}>
+              <StyledListItemIcon transform>
+                <UpgradeIcon />
+              </StyledListItemIcon>
+              <Typography textAlign="center">Lọc giảm dần</Typography>
+            </StyledMenuItem>
+
+            <StyledMenuItem
+              onClick={() => _handleSort(0)}
+              style={{ marginBottom: 5 }}
+            >
+              <StyledListItemIcon>
+                <SearchOffIcon />
+              </StyledListItemIcon>
+              <Typography textAlign="center">Huỷ sắp xếp</Typography>
+            </StyledMenuItem>
+
+            <Divider />
+
+            {ALIGN_SUBMENU.map((item, index) => {
+              const { id, name, children, icon } = item;
+              return (
+                <NestedMenuItem
+                  key={id}
+                  id={id}
+                  name={name}
+                  icon={icon}
+                  isFirstColumn={index === 0}
+                  activeKey="value"
+                  isAlignItem={true}
+                  activeValue={column?.alignment || null}
+                  onClick={_handleSetAlign}
+                  childrenItems={children}
+                />
+              );
+            })}
+
+            {isDuration &&
+              DURATION_SUBMENU.map((item, index) => {
+                const { id, name, children } = item;
+                return (
+                  <NestedMenuItem
+                    key={id}
+                    id={id}
+                    name={name}
+                    isFirstColumn={index === 0}
+                    activeKey="value"
+                    activeValue={column?.duration_show || null}
+                    onClick={_handleSetDuration}
+                    isAlignItem={false}
+                    childrenItems={children}
+                  />
+                );
+              })}
+
+            {isTime &&
+              TIMES_SUBMENU.map((item, index) => {
+                const { id, name, children } = item;
+                return (
+                  <NestedMenuItem
+                    key={id}
+                    id={id}
+                    name={name}
+                    isFirstColumn={index === 0}
+                    onClick={_handleSetTime}
+                    activeKey="value"
+                    activeValue={1}
+                    isAlignItem={false}
+                    childrenItems={children}
+                  />
+                );
+              })}
+
+            <StyledMenuItem onClick={_handleHideField} style={{ marginTop: 5 }}>
+              <Typography textAlign="center">Ẩn trường</Typography>
+            </StyledMenuItem>
+
+            <StyledMenuItem isDelete onClick={_handleDeleteField}>
+              <Typography textAlign="center">Xoá trường</Typography>
+            </StyledMenuItem>
+          </Menu>
+        );
+      case "default":
+        return (
+          <Menu
+            id="menu-appbar"
+            anchorEl={state.anchorEl}
+            open={Boolean(state.anchorEl)}
+            onClose={_handleCloseMenu}
+            getContentAnchorEl={null}
+            anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
+            transformOrigin={{ vertical: "top", horizontal: "start" }}
+          >
+            {LIST_SORT_MENU.map((item) => (
+              <StyledMenuItem onClick={() => _handleSort(item.value)}>
+                <StyledListItemIcon transform={item.isTransform}>
+                  {item.icon}
+                </StyledListItemIcon>
+                <Typography textAlign="center">{t(item.name)}</Typography>
+              </StyledMenuItem>
+            ))}
+          </Menu>
+        );
+      default:
+        break;
+    }
+  };
+
+  const renderSelectedSort = (selectedSort) => {
+    if (
+      !selectedSort ||
+      typeMenu !== "default" ||
+      selectedSort.idSort !== column.id
+    ) {
+      return null;
+    }
+    const iconSort = LIST_SORT_MENU.find(({ value }) => {
+      return value === selectedSort.key;
+    });
+    if (!iconSort) return null;
+    return (
+      <StyledListItemIcon transform={iconSort.isTransform}>
+        {iconSort.icon}
+      </StyledListItemIcon>
+    );
   };
 
   const _handleSetAlign = async (alignment) => {
@@ -158,16 +333,20 @@ const HeaderColumn = ({
       <LeftStructure
         isLastColumn={isLastColumn}
         isOpening={Boolean(state.anchorEl)}
+        isDefaultMenu={typeMenu === "default"}
       >
         <Heading className={classNames({ "not-add-column": !isLastColumn })}>
           {column.render("Header", { onAddNewColumns })}
         </Heading>
+
+        {renderSelectedSort(selectedSort)}
 
         {!isLastColumn && (
           <StyledWrapperButton
             className={classNames("wp-wrapper-button", {
               active: Boolean(state.anchorEl),
             })}
+            isDefaultMenu={typeMenu === "default"}
             onClick={_handleOpenMenu}
           >
             <KeyboardArrowDownRoundedIcon />
@@ -182,115 +361,7 @@ const HeaderColumn = ({
         />
       )}
 
-      <Menu
-        id="menu-appbar"
-        anchorEl={state.anchorEl}
-        open={Boolean(state.anchorEl)}
-        onClose={_handleCloseMenu}
-        getContentAnchorEl={null}
-        anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
-        transformOrigin={{ vertical: "top", horizontal: "start" }}
-      >
-        {!column.is_default && (
-          <>
-            <StyledMenuItem
-              onClick={_handleEditField}
-              style={{ marginBottom: 5 }}
-            >
-              <Typography textAlign="center">Chỉnh sửa trường</Typography>
-            </StyledMenuItem>
-            <Divider />
-          </>
-        )}
-
-        <StyledMenuItem onClick={() => _handleSort(1)} style={{ marginTop: 5 }}>
-          <StyledListItemIcon>
-            <UpgradeIcon />
-          </StyledListItemIcon>
-          <Typography textAlign="center">Lọc tăng dần</Typography>
-        </StyledMenuItem>
-
-        <StyledMenuItem onClick={() => _handleSort(2)}>
-          <StyledListItemIcon transform>
-            <UpgradeIcon />
-          </StyledListItemIcon>
-          <Typography textAlign="center">Lọc giảm dần</Typography>
-        </StyledMenuItem>
-
-        <StyledMenuItem
-          onClick={() => _handleSort(0)}
-          style={{ marginBottom: 5 }}
-        >
-          <StyledListItemIcon>
-            <SearchOffIcon />
-          </StyledListItemIcon>
-          <Typography textAlign="center">Huỷ sắp xếp</Typography>
-        </StyledMenuItem>
-
-        <Divider />
-
-        {ALIGN_SUBMENU.map((item, index) => {
-          const { id, name, children, icon } = item;
-          return (
-            <NestedMenuItem
-              key={id}
-              id={id}
-              name={name}
-              icon={icon}
-              isFirstColumn={index === 0}
-              activeKey="value"
-              isAlignItem={true}
-              activeValue={column?.alignment || null}
-              onClick={_handleSetAlign}
-              childrenItems={children}
-            />
-          );
-        })}
-
-        {isDuration &&
-          DURATION_SUBMENU.map((item, index) => {
-            const { id, name, children } = item;
-            return (
-              <NestedMenuItem
-                key={id}
-                id={id}
-                name={name}
-                isFirstColumn={index === 0}
-                activeKey="value"
-                activeValue={column?.duration_show || null}
-                onClick={_handleSetDuration}
-                isAlignItem={false}
-                childrenItems={children}
-              />
-            );
-          })}
-
-        {isTime &&
-          TIMES_SUBMENU.map((item, index) => {
-            const { id, name, children } = item;
-            return (
-              <NestedMenuItem
-                key={id}
-                id={id}
-                name={name}
-                isFirstColumn={index === 0}
-                onClick={_handleSetTime}
-                activeKey="value"
-                activeValue={1}
-                isAlignItem={false}
-                childrenItems={children}
-              />
-            );
-          })}
-
-        <StyledMenuItem onClick={_handleHideField} style={{ marginTop: 5 }}>
-          <Typography textAlign="center">Ẩn trường</Typography>
-        </StyledMenuItem>
-
-        <StyledMenuItem isDelete onClick={_handleDeleteField}>
-          <Typography textAlign="center">Xoá trường</Typography>
-        </StyledMenuItem>
-      </Menu>
+      {renderMenu()}
     </HeaderColumnWrapper>
   );
 };
@@ -330,6 +401,30 @@ const ALIGN_SUBMENU = [
       { id: 1, name: "center", value: 2, icon: <FormatAlignCenterIcon /> },
       { id: 2, name: "right", value: 3, icon: <FormatAlignRightIcon /> },
     ],
+  },
+];
+
+const LIST_SORT_MENU = [
+  {
+    id: "ASC",
+    name: "sort_asc",
+    value: "ASC",
+    icon: <UpgradeIcon />,
+    isTransform: false,
+  },
+  {
+    id: "DECS",
+    name: "sort_decs",
+    value: "DECS",
+    icon: <UpgradeIcon />,
+    isTransform: true,
+  },
+  {
+    id: "cancel_sort",
+    name: "cancel_sort",
+    value: null,
+    icon: <SearchOffIcon />,
+    isTransform: false,
   },
 ];
 
@@ -389,7 +484,8 @@ const LeftStructure = styled.div`
   width: calc(100% - 42px);
   cursor: pointer;
   color: #666;
-  display: flex;
+  display: ${(props) => (props.isDefaultMenu ? "grid" : "flex")};
+  grid-template-columns: 1fr auto auto;
   flex: 1 0 auto;
   font-size: 12px;
   padding-left: 24px;
@@ -447,8 +543,8 @@ const Heading = styled.div`
   }
 `;
 const StyledWrapperButton = styled.div`
-  margin-left: 10px;
   margin-right: 5px;
+  margin-left: ${(props) => (props.isDefaultMenu ? "0px" : "10px")};
 `;
 
 export default HeaderColumn;

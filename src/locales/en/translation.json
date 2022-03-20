@@ -2552,5 +2552,8 @@
   "right": "Right",
   "center": "Center",
   "see_time": "Watch time",
-  "date_and_time": "Date and time"
+  "date_and_time": "Date and time",
+  "sort_asc": "Sort up ascending",
+  "sort_decs": "Sort descending",
+  "cancel_sort": "Cancel sorting"
 }

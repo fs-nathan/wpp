@@ -2581,5 +2581,8 @@
   "right": "Phải",
   "center": "Giữa",
   "see_time": "Xem thời gian",
-  "date_and_time": "Ngày và giờ"
+  "date_and_time": "Ngày và giờ",
+  "sort_asc": "Sắp xếp tăng dần",
+  "sort_decs": "Sắp xếp giảm dần",
+  "cancel_sort": "Huỷ sắp xếp"
 }

@@ -2,6 +2,7 @@ import React, { useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useBlockLayout, useResizeColumns, useTable } from "react-table";
 import { useSticky } from "react-table-sticky";
+import HeaderColumn from "./HeaderColumn";
 import HeadingColumn from "./HeadingColumn";
 
 const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
@@ -46,18 +47,34 @@ const WPTable = ({
       <div {...getTableProps()} className="table">
         {/* Header table */}
         <div style={{ position: "sticky", top: 0, zIndex: 350 }}>
-          {headerGroups.map((headerGroup) => (
-            <div {...headerGroup.getHeaderGroupProps()} className="tr header">
-              {headerGroup.headers.map((column, index) => (
-                <HeadingColumn
-                  column={column}
-                  selectedSort={selectedSort}
-                  isLastColumn={index === headerGroup.headers.length - 1}
-                  onSort={onSort}
-                />
-              ))}
-            </div>
-          ))}
+          {headerGroups.map((headerGroup) => {
+            const headerProps = headerGroup.getHeaderGroupProps();
+            const listHeaders = headerGroup.headers;
+
+            return (
+              <div
+                {...headerProps}
+                style={{
+                  ...headerProps.style,
+                  width: `calc(${headerProps.style.width} - 20px)`,
+                }}
+                className="tr header"
+              >
+                {listHeaders.map((column, index) => (
+                  <HeaderColumn
+                    zIndex={listHeaders.length - index}
+                    isSticky={!index}
+                    length={listHeaders.length}
+                    column={column}
+                    isFirstColumn={index === 0}
+                    selectedSort={selectedSort}
+                    typeMenu="default"
+                    onSortColumn={onSort}
+                  />
+                ))}
+              </div>
+            );
+          })}
         </div>
         {/*End header table */}
 
