@@ -1,3 +1,4 @@
+import ColumnDateSelect from "components/WPReactTable/components/ColumnDateSelect";
 import ColumnMembers from "components/WPReactTable/components/ColumnMembers";
 import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
@@ -92,6 +93,11 @@ const CellRender = ({
           dataCell={data}
           isGetDataUser
         />
+      );
+    case "pfd-time-start":
+    case "pfd-time-end":
+      return (
+        <ColumnDateSelect value={data.value} taskId={taskId} dataCell={data} />
       );
     case "pfd-status":
       return (
