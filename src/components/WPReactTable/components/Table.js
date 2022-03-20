@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useBlockLayout, useResizeColumns, useTable } from "react-table";
@@ -147,7 +148,11 @@ const ContentColumn = ({ cell, dragHandle = {} }) => {
     <div
       {...cellProps}
       style={{ ...styleProps, maxWidth: styleProps.width }}
-      className="td"
+      className={classNames("td", {
+        "column-align-right": cell?.column?.id === "progress",
+        "column-align-center":
+          cell?.column?.id === "start_date" || cell?.column?.id === "end_date",
+      })}
     >
       {cell.render("Cell", {
         dragHandle: canDragColumn ? dragHandle : {},

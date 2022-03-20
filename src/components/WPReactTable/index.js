@@ -138,6 +138,16 @@ const Styles = styled.div`
         visibility: hidden;
       }
 
+      &.column-align-left {
+        justify-content: flex-start;
+      }
+      &.column-align-right {
+        justify-content: flex-end;
+      }
+      &.column-align-center {
+        justify-content: center;
+      }
+
       &.add-cell {
         &:hover {
           border-color: #edeae9 !important;

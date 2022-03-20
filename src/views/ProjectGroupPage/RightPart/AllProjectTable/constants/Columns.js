@@ -387,6 +387,7 @@ export const COLUMNS_PROJECT_TABLE = ({
     {
       id: "progress",
       Header: "Tiến độ",
+      className: "column-align-center",
       accessor: "date_start",
       Cell: CellProgressDay,
     },
