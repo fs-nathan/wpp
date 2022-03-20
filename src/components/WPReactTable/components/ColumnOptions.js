@@ -48,7 +48,7 @@ const ColumnOptions = ({
   }, [anchorEl]);
 
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget.closest(".td"));
   };
 
   const _handleClose = () => {
