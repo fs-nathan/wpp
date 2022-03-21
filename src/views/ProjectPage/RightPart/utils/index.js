@@ -75,6 +75,7 @@ const CellRender = ({
           nameType={nameType}
           dataType={dataType}
           isDisplayEditField={false}
+          isRenderNullField={false}
           optionsType={[
             { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
             { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
@@ -97,7 +98,11 @@ const CellRender = ({
     case "pfd-time-start":
     case "pfd-time-end":
       return (
-        <ColumnDateSelect value={data.value} taskId={taskId} dataCell={data} />
+        <ColumnDateSelect
+          value={data.value}
+          taskId={taskId}
+          dataCell={row?.original}
+        />
       );
     case "pfd-status":
       return (

@@ -8,7 +8,8 @@
       },
       "CUSTOM_MODAL": {
         "CONFIRM": "Hoàn thành",
-        "CANCLE": "Hủy"
+        "CANCLE": "Hủy",
+        "UPDATE": "Cập nhật"
       },
       "CUSTOM_POPOVER": {
         "TIME_FUNC": {

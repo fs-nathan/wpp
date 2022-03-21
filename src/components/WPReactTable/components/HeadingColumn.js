@@ -282,7 +282,6 @@ const LeftStructure = styled.div`
   display: flex;
   flex: 1 0 auto;
   font-size: 12px;
-  padding-left: 24px;
   padding-right: 0;
   position: relative;
   z-index: 0;

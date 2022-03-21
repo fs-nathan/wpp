@@ -4,23 +4,37 @@ import {
   KeyboardDatePicker,
   MuiPickersUtilsProvider,
 } from "@material-ui/pickers";
+import { updateTimeDuration } from "actions/taskDetail/taskDetailActions";
+import {
+  ActionsAcceptButton,
+  ActionsCancleButton,
+  StyledDialogActions,
+} from "components/CustomModal";
 import TimePicker from "components/TimePicker";
 import { listTimeSelect } from "components/TimeSelect";
 import TitleSectionModal from "components/TitleSectionModal";
-import { convertDate, DEFAULT_DATE_TEXT } from "helpers/jobDetail/stringHelper";
+import {
+  compareDateTime,
+  convertDate,
+  convertDateByFormat,
+  DEFAULT_DATE_TEXT,
+} from "helpers/jobDetail/stringHelper";
 import { get } from "lodash";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import CommonProgressForm from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonProgressForm";
 
-const ColumnDateSelect = ({ value }) => {
+const ColumnDateSelect = ({ value, taskId, dataCell = {} }) => {
   const refDiv = useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   React.useLayoutEffect(() => {
-    if (refDiv.current) refDiv.current.closest(".td").style.cursor = "pointer";
+    if (refDiv.current) {
+      refDiv.current.closest(".td").style.cursor = "pointer";
+      refDiv.current.closest(".td").addEventListener("click", handleClick);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -43,18 +57,40 @@ const ColumnDateSelect = ({ value }) => {
   };
 
   return (
-    <div ref={refDiv} onClick={handleClick}>
+    <div ref={refDiv}>
       {value}
-      <ProgressPanel anchorEl={anchorEl} onClose={_handleClose} />
+      <ProgressPanel
+        anchorEl={anchorEl}
+        taskData={{
+          start_time: dataCell.start_time,
+          start_date: dataCell.start_date,
+          end_time: dataCell.end_time,
+          end_date: dataCell.end_date,
+          type_time: dataCell.type_time,
+        }}
+        taskId={taskId}
+        onClose={_handleClose}
+      />
     </div>
   );
 };
 
-const ProgressPanel = ({ anchorEl, taskData, onClose = () => {} }) => {
+const SELECT_STRING = "project.setting.detailStatus.data.status.date";
+
+const ProgressPanel = ({
+  anchorEl,
+  taskData,
+  taskId,
+  fromView,
+  onClose = () => {},
+}) => {
   const { t } = useTranslation();
-  const date_status = useSelector((state) =>
-    get(state, "project.setting.detailStatus.data.status.date")
-  );
+  const dispatch = useDispatch();
+  const date_status = useSelector((state) => get(state, SELECT_STRING));
+  const dateFormat = useSelector((state) => state.system.profile.format_date);
+  const colors = useSelector((state) => state.setting.colors);
+  const bgColor = colors.find((item) => item.selected === true);
+
   const optionsList = React.useMemo(
     () => [
       { value: 2, label: t("LABEL_CHAT_TASK_NGAY_VA_GIO") },
@@ -72,6 +108,24 @@ const ProgressPanel = ({ anchorEl, taskData, onClose = () => {} }) => {
   const [startDay, setStartDay] = React.useState(DEFAULT_DATE_TEXT);
   const [endDay, setEndDay] = React.useState(DEFAULT_DATE_TEXT);
 
+  React.useEffect(() => {
+    const { start_time, start_date, end_time, end_date, type_time } = taskData;
+    const defaultStart = convertDate(new Date());
+
+    setStartDay(
+      start_date ? convertDateByFormat(start_date, dateFormat) : defaultStart
+    );
+    if (start_time) setStartTime(start_time);
+    setEndDay(
+      end_date ? convertDateByFormat(end_date, dateFormat) : defaultStart
+    );
+
+    if (end_time) setEndTime(end_time);
+    if (type_time === 0) setType(2);
+    else if (type_time === 1) setType(1);
+    else if (type_time === 2) setType(0);
+  }, [dateFormat, anchorEl, taskData]);
+
   const handleStartDay = (startDay) => {
     setStartDay(startDay);
   };
@@ -80,12 +134,48 @@ const ProgressPanel = ({ anchorEl, taskData, onClose = () => {} }) => {
     setEndDay(endDay);
   };
 
+  const handlePressConfirm = () => {
+    const data = {
+      task_id: taskId,
+      start_date: startDay,
+      end_date: endDay,
+      start_time: startTime,
+      end_time: endTime,
+      from_view: fromView,
+    };
+    if (type === 0) {
+      data.start_date = undefined;
+      data.start_time = undefined;
+      data.end_date = undefined;
+      data.end_time = undefined;
+    } else if (type === 1) {
+      data.start_time = undefined;
+      data.end_time = undefined;
+    }
+
+    onClose();
+    dispatch(updateTimeDuration(data));
+  };
+
+  function validate() {
+    try {
+      const result = compareDateTime(
+        `${startDay} ${startTime || "00:00"}`,
+        `${endDay} ${endTime || "00:00"}`
+      );
+      // console.log('validate', result)
+      return result < 0; // && type > 0;
+    } catch (error) {
+      // console.log('error', error)
+      return false;
+    }
+  }
+
   return (
     <Menu
       anchorEl={anchorEl}
       open={Boolean(anchorEl)}
       onClose={onClose}
-      onClick={onClose}
       getContentAnchorEl={null}
       anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
       transformOrigin={{ vertical: "top", horizontal: "start" }}
@@ -129,9 +219,6 @@ const ProgressPanel = ({ anchorEl, taskData, onClose = () => {} }) => {
                     "aria-label": "change date",
                   }}
                   invalidDateMessage={t("LABEL_CHAT_TASK_INVALID_DATE_FORMAT")}
-                  // invalidLabel="invalidLabel"
-                  // maxDateMessage="maxDateMessage"
-                  // minDateMessage="minDateMessage"
                 />
               </MuiPickersUtilsProvider>
             </StartEndDay>
@@ -167,6 +254,24 @@ const ProgressPanel = ({ anchorEl, taskData, onClose = () => {} }) => {
           </>
         )}
       </WrapperProgressForm>
+      <StyledDialogActions
+        style={{ paddingBottom: 5, borderTop: "1px solid rgba(0,0,0,.1)" }}
+      >
+        <ActionsCancleButton onClick={onClose}>
+          {t("DMH.COMP.CUSTOM_MODAL.CANCLE")}
+        </ActionsCancleButton>
+        <ActionsAcceptButton
+          style={{
+            color: bgColor.color,
+            opacity: !validate() ? 0.5 : 1,
+          }}
+          disabled={!validate()}
+          onClick={handlePressConfirm}
+          type={type}
+        >
+          {t("DMH.COMP.CUSTOM_MODAL.UPDATE")}
+        </ActionsAcceptButton>
+      </StyledDialogActions>
     </Menu>
   );
 };

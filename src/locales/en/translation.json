@@ -8,7 +8,8 @@
       },
       "CUSTOM_MODAL": {
         "CANCLE": "Cancel",
-        "CONFIRM": "Confirm"
+        "CONFIRM": "Confirm",
+        "UPDATE": "Update"
       },
       "CUSTOM_POPOVER": {
         "TIME_FUNC": {

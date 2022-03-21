@@ -331,6 +331,7 @@ const HeaderColumn = ({
       className={classNames({ isSticky })}
     >
       <LeftStructure
+        isFirstColumn={isFirstColumn}
         isLastColumn={isLastColumn}
         isOpening={Boolean(state.anchorEl)}
         isDefaultMenu={typeMenu === "default"}
@@ -488,7 +489,7 @@ const LeftStructure = styled.div`
   grid-template-columns: 1fr auto auto;
   flex: 1 0 auto;
   font-size: 12px;
-  padding-left: 24px;
+  padding-left: ${(props) => (props.isFirstColumn ? "5px" : 0)}
   padding-right: 0;
   position: relative;
   z-index: 0;
