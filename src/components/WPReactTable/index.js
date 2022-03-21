@@ -91,6 +91,9 @@ const Styles = styled.div`
         box-sizing: border-box;
         flex: 0 0 auto;
         height: 37px;
+        & > div {
+          border-top: 0 !important;
+        }
       }
       .td:last-child {
         border-right-color: transparent;
