@@ -489,7 +489,11 @@ const LeftStructure = styled.div`
   grid-template-columns: 1fr auto auto;
   flex: 1 0 auto;
   font-size: 12px;
-  padding-left: ${(props) => (props.isFirstColumn ? "5px" : 0)}
+  padding-left: ${(props) => {
+    if (props.isFirstColumn) return "5px";
+    if (props.isLastColumn) return "24px";
+    return 0;
+  }}
   padding-right: 0;
   position: relative;
   z-index: 0;
