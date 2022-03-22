@@ -16,9 +16,13 @@ const ServiceCommandUnit = ({ id, data = [], onReload = () => {} }) => {
         <div ref={provided.innerRef}>
           {data.map((row, i) => {
             return (
-              <Draggable key={row.id} draggableId={row.original.id} index={i}>
+              <Draggable
+                key={row.original.id}
+                draggableId={row.original.id}
+                index={i}
+              >
                 {(provided, snapshot) => (
-                  <React.Fragment key={`${row.id}_item`}>
+                  <React.Fragment key={row.original.id}>
                     <div
                       ref={provided.innerRef}
                       {...row.getRowProps()}

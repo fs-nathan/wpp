@@ -67,7 +67,7 @@ const WPTableGroup = ({
       <div {...getTableProps()} className="table">
         {/* Header table */}
         <div style={{ position: "sticky", top: 0, zIndex: 350 }}>
-          {headerGroups.map((headerGroup) => {
+          {headerGroups.map((headerGroup, index) => {
             const headerProps = headerGroup.getHeaderGroupProps();
             const listHeaders = headerGroup.headers;
 
@@ -78,23 +78,28 @@ const WPTableGroup = ({
                   ...headerProps.style,
                   width: `calc(${headerProps.style.width} - 20px)`,
                 }}
+                key={`header_group_${index}`}
                 className="tr header"
               >
-                {listHeaders.map((column, index) => (
-                  <HeaderColumn
-                    zIndex={listHeaders.length - index}
-                    isSticky={!index}
-                    length={listHeaders.length}
-                    column={column}
-                    isFirstColumn={index === 0}
-                    isLastColumn={index === listHeaders.length - 1}
-                    onAddNewColumns={onAddNewColumns}
-                    onHideColumn={onHideColumn}
-                    onSortColumn={onSortColumn}
-                    onEditColumn={onEditColumn}
-                    onDeleteColumn={onDeleteColumn}
-                  />
-                ))}
+                {listHeaders.map((column, index) => {
+                  const key = column?.original?.id || index;
+                  return (
+                    <HeaderColumn
+                      key={`column_header_${key}`}
+                      zIndex={listHeaders.length - index}
+                      isSticky={!index}
+                      length={listHeaders.length}
+                      column={column}
+                      isFirstColumn={index === 0}
+                      isLastColumn={index === listHeaders.length - 1}
+                      onAddNewColumns={onAddNewColumns}
+                      onHideColumn={onHideColumn}
+                      onSortColumn={onSortColumn}
+                      onEditColumn={onEditColumn}
+                      onDeleteColumn={onDeleteColumn}
+                    />
+                  );
+                })}
               </div>
             );
           })}
@@ -114,17 +119,21 @@ const WPTableGroup = ({
                 }}
               >
                 {rows.map((row, i) => {
+                  /* Just a debugging tool. */
+                  {
+                    /* console.log(row); */
+                  }
                   prepareRow(row);
                   if (row.depth !== 0) return null;
                   return (
                     <Draggable
-                      key={row.id}
+                      key={row.original.id}
                       draggableId={row.original.id}
                       index={i}
                     >
                       {(provided, snapshot) => (
                         <GroupColumn
-                          key={row.id}
+                          key={row.original.id}
                           row={row}
                           provided={provided}
                           snapshot={snapshot}

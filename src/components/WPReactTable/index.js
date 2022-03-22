@@ -69,7 +69,7 @@ const Styles = styled.div`
 
       &.row-add {
         .td {
-          border-right: 1px solid #edeae9 !important;
+          border-right: 0!important;
           border-top: 1px solid #edeae9 !important;
           border-bottom: 0;
           z-index: 201;
@@ -125,7 +125,7 @@ const Styles = styled.div`
           z-index: 500 !important;
         }
         &.isGroupColumn {
-          border-right: 1px solid #edeae9;
+          border-right: 0;
           &.focus {
             z-index: 500 !important;
             border: 1px solid #4573d2 !important;

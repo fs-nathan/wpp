@@ -22,6 +22,7 @@ const GroupColumn = ({
   ...props
 }) => {
   const { t } = useTranslation();
+  const rowProps = row.getRowProps();
   const { projectId } = useParams();
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
   const [isVisibleNewRow, setIsVisibleNewRow] = useState(false);
@@ -66,15 +67,16 @@ const GroupColumn = ({
   return (
     <div
       ref={provided.innerRef}
-      {...row.getRowProps()}
+      {...rowProps}
       {...provided.draggableProps}
+      key={row.original.id}
       style={getItemStyle(
         snapshot.isDragging,
         provided.draggableProps.style,
         snapshot.isDraggingOver
       )}
     >
-      <div className="tr" {...row.getRowProps()}>
+      <div className="tr" {...rowProps} key={row.original.id}>
         <ListContentColumn
           data={row.cells}
           onVisibleAddRow={_handleAddNewTask}
@@ -85,7 +87,11 @@ const GroupColumn = ({
       </div>
 
       {row.isExpanded && (
-        <ServiceCommandUnit id={row.original.id} data={row.subRows} onReload={props.onReload} />
+        <ServiceCommandUnit
+          id={row.original.id}
+          data={row.subRows}
+          onReload={props.onReload}
+        />
       )}
 
       <RowNew
@@ -96,7 +102,7 @@ const GroupColumn = ({
       />
 
       {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
-        <div className="tr row-add" {...row.getRowProps()}>
+        <div className="tr row-add" {...rowProps}>
           {row.cells.map((item, index) => (
             <div
               {...item.getCellProps()}
