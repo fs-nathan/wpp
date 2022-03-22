@@ -9,7 +9,7 @@ const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
   ...rowStyle,
 });
 
-const ServiceCommandUnit = ({ id, data = [] }) => {
+const ServiceCommandUnit = ({ id, data = [], onReload = () => {} }) => {
   return (
     <Droppable droppableId={id} type={`droppableSubItem`}>
       {(provided, snapshot) => (
@@ -33,6 +33,7 @@ const ServiceCommandUnit = ({ id, data = [] }) => {
                       <ListContentColumn
                         data={row.cells}
                         dragHandle={{ ...provided.dragHandleProps }}
+                        onReload={onReload}
                       />
                     </div>
                     {provided.placeholder}

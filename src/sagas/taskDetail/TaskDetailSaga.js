@@ -1158,6 +1158,7 @@ function* updateTimeDuration(action) {
       yield put(actions.getTaskDetailTabPart({ taskId: action.payload.task_id }));
       SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     }
+    if (action.actionSuccess) action.actionSuccess();
   } catch (error) {
     yield put(actions.updateTimeDurationFail(error));
     SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(error, 'message', DEFAULT_MESSAGE.MUTATE.ERROR));
@@ -1596,4 +1597,3 @@ export {
   // delete task
   deleteTask
 };
-

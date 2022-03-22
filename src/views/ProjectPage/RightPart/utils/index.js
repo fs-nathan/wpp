@@ -7,7 +7,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 
-export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
+export const convertFieldsToTable = (
+  data,
+  onOpenEditColumnModal,
+  handleReload = () => {}
+) => {
   const result = [];
   data.forEach((item) => {
     if (
@@ -31,6 +35,7 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
               optionsType={item.options}
               dataType={item.data_type}
               onOpenEditColumnModal={onOpenEditColumnModal}
+              handleReload={handleReload}
               {...props}
             />
           );
@@ -58,6 +63,7 @@ const CellRender = ({
   optionsType = [],
   row,
   onOpenEditColumnModal = () => {},
+  handleReload = () => {},
   ...props
 }) => {
   const taskId = row?.original?.id;
@@ -102,6 +108,7 @@ const CellRender = ({
           value={data.value}
           taskId={taskId}
           dataCell={row?.original}
+          handleReload={handleReload}
         />
       );
     case "pfd-status":

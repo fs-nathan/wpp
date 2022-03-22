@@ -15,7 +15,12 @@ const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   ...(isDragging && {}),
 });
 
-const GroupColumn = ({ row, provided, snapshot, ...props }) => {
+const GroupColumn = ({
+  row,
+  provided,
+  snapshot,
+  ...props
+}) => {
   const { t } = useTranslation();
   const { projectId } = useParams();
   const [isVisibleAddRow, setIsVisibleAddRow] = useState(false);
@@ -80,7 +85,7 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
       </div>
 
       {row.isExpanded && (
-        <ServiceCommandUnit id={row.original.id} data={row.subRows} />
+        <ServiceCommandUnit id={row.original.id} data={row.subRows} onReload={props.onReload} />
       )}
 
       <RowNew

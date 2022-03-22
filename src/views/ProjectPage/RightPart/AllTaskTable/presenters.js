@@ -45,6 +45,7 @@ function AllTaskTable({
   handleShowOrHideProject,
   handleSortTask,
   handleOpenModal,
+  handleReload,
   handleRemoveMemberFromTask,
   bgColor,
   timeType,
@@ -59,6 +60,7 @@ function AllTaskTable({
 }) {
   const { projectId } = useParams();
   const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
+  const isLoading = useSelector(({ task }) => task?.listTask?.loading);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [state, dispatchState] = useReducer(reducer, {
     ...initialState,
@@ -88,7 +90,8 @@ function AllTaskTable({
     if (columnsFields.length) {
       const moreColumns = convertFieldsToTable(
         columnsFields,
-        _handleEditColumn
+        _handleEditColumn,
+        handleReload
       );
 
       dispatchState({
@@ -194,7 +197,7 @@ function AllTaskTable({
 
     /* Creating a new array of columns and setting it to the state. */
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn, handleReload),
       isSetted: true,
     });
   };
@@ -205,7 +208,7 @@ function AllTaskTable({
     );
     /* Creating a new array of columns and setting it to the state. */
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn, handleReload),
       isSetted: true,
     });
   };
@@ -214,7 +217,7 @@ function AllTaskTable({
     /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
     const newColumnsFields = state.arrColumns.filter(({ id }) => id !== idHide);
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
+      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn, handleReload),
       isSetted: true,
     });
 
@@ -304,7 +307,7 @@ function AllTaskTable({
             onAddColumns={_handleAddNewColumns}
           />
 
-          {state.isLoading ? (
+          {isLoading ? (
             <Box sx={{ display: "flex", justifyContent: "center" }}>
               <CircularProgress />
             </Box>
@@ -314,6 +317,7 @@ function AllTaskTable({
               columns={columns}
               data={tasks.tasks}
               isGroup
+              onReload={handleReload}
               onAddNewColumns={_handleAddNewColumns}
               onDragEnd={handleSortTask}
               onEditColumn={_handleEditColumn}

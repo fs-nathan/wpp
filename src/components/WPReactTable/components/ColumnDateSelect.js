@@ -2,13 +2,13 @@ import DateFnsUtils from "@date-io/date-fns";
 import { Menu, Typography } from "@material-ui/core";
 import {
   KeyboardDatePicker,
-  MuiPickersUtilsProvider,
+  MuiPickersUtilsProvider
 } from "@material-ui/pickers";
 import { updateTimeDuration } from "actions/taskDetail/taskDetailActions";
 import {
   ActionsAcceptButton,
   ActionsCancleButton,
-  StyledDialogActions,
+  StyledDialogActions
 } from "components/CustomModal";
 import TimePicker from "components/TimePicker";
 import { listTimeSelect } from "components/TimeSelect";
@@ -17,7 +17,7 @@ import {
   compareDateTime,
   convertDate,
   convertDateByFormat,
-  DEFAULT_DATE_TEXT,
+  DEFAULT_DATE_TEXT
 } from "helpers/jobDetail/stringHelper";
 import { get } from "lodash";
 import React, { useRef } from "react";
@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import CommonProgressForm from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal/CommonProgressForm";
 
-const ColumnDateSelect = ({ value, taskId, dataCell = {} }) => {
+const ColumnDateSelect = ({ value, taskId, dataCell = {}, handleReload }) => {
   const refDiv = useRef(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -69,6 +69,7 @@ const ColumnDateSelect = ({ value, taskId, dataCell = {} }) => {
           type_time: dataCell.type_time,
         }}
         taskId={taskId}
+        onReload={handleReload}
         onClose={_handleClose}
       />
     </div>
@@ -83,6 +84,7 @@ const ProgressPanel = ({
   taskId,
   fromView,
   onClose = () => {},
+  onReload = () => {},
 }) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -154,7 +156,7 @@ const ProgressPanel = ({
     }
 
     onClose();
-    dispatch(updateTimeDuration(data));
+    dispatch(updateTimeDuration(data, onReload));
   };
 
   function validate() {

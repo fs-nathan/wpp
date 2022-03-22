@@ -35,7 +35,7 @@ import { get } from "lodash";
 import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
@@ -52,10 +52,6 @@ import {
   showHidePendingsSelector,
   tasksSelector,
 } from "./selectors";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
 
 function AllTaskTable({
   expand,
@@ -94,11 +90,23 @@ function AllTaskTable({
     };
   }, [timeType]);
   const { projectId, memberId } = useParams();
-  const query = useQuery();
 
-  // React.useLayoutEffect(() => {
-  //   doGetPermissionViewDetailProject({ projectId });
-  // }, [projectId]);
+  const reloadListTask = () => {
+    doListTask({
+      projectId,
+      timeStart: get(timeRange, "timeStart")
+        ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
+        : undefined,
+      timeEnd: get(timeRange, "timeEnd")
+        ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
+        : undefined,
+    });
+  };
+
+  const reloadListTaskAndGroupTask = () => {
+    reloadListTask();
+    doListGroupTask({ projectId });
+  };
 
   React.useEffect(() => {
     if (projectId !== null) {
@@ -111,22 +119,6 @@ function AllTaskTable({
           ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
           : undefined,
       });
-      const reloadListTask = () => {
-        doListTask({
-          projectId,
-          timeStart: get(timeRange, "timeStart")
-            ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
-            : undefined,
-          timeEnd: get(timeRange, "timeEnd")
-            ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
-            : undefined,
-        });
-      };
-
-      const reloadListTaskAndGroupTask = () => {
-        reloadListTask();
-        doListGroupTask({ projectId });
-      };
 
       const createTaskSuccess = (event) => {
         reloadListTask();
@@ -177,21 +169,6 @@ function AllTaskTable({
       };
     }
   }, [projectId, timeRange]);
-
-  // React.useEffect(() => {
-  //   if(!isNil(memberId)) {
-  //     doListTaskMember({projectId, memberId});
-  //     const reloadAfterActionMember = () => {
-  //       doListTaskMember({projectId, memberId});
-  //     }
-  //     CustomEventListener(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
-  //     CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-  //     return () => {
-  //       CustomEventDispose(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
-  //       CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-  //     }
-  //   }
-  // }, [memberId]);
 
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, "update_project"], false))
@@ -311,6 +288,7 @@ function AllTaskTable({
           handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
           handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
           handleOpenModal={doOpenModal}
+          handleReload={reloadListTaskAndGroupTask}
           bgColor={bgColor}
           timeType={timeType}
           handleTimeType={(timeType) =>
