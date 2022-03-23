@@ -40,7 +40,7 @@ const CellItemGroup = ({
   }, [value, isNewRow]);
 
   const _handleSubmit = async () => {
-    if (isNewRow) onSubmitAdd(name);
+    if (isNewRow) return onSubmitAdd(name);
     try {
       const config = {
         url: "/task/update-name-description",
@@ -80,6 +80,13 @@ const CellItemGroup = ({
       _handleSubmit();
       refFocus.current = false;
     }
+    const columnHTML = e.target.closest(".td");
+    columnHTML.classList.remove("focus");
+  };
+
+  const _handleFocus = (e) => {
+    const columnHTML = e.target.closest(".td");
+    columnHTML.classList.add("focus");
   };
 
   const _handleChange = (e) => {
@@ -101,6 +108,7 @@ const CellItemGroup = ({
         wrap="off"
         value={name}
         defaultValue={isNewRow ? "" : value}
+        onFocus={_handleFocus}
         onKeyPress={_handleKeyPress}
         onChange={_handleChange}
         onBlur={_handleBlur}

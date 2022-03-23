@@ -69,7 +69,7 @@ const Styles = styled.div`
 
       &.row-add {
         .td {
-          border-right: 0!important;
+          border-right: 0 !important;
           border-top: 1px solid #edeae9 !important;
           border-bottom: 0;
           z-index: 201;
@@ -132,7 +132,7 @@ const Styles = styled.div`
           }
         }
         &.focus {
-          z-index: 202;
+          z-index: 500 !important;
           border-color: #4573d2 !important;
         }
       }
