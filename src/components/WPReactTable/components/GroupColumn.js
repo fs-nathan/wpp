@@ -14,13 +14,7 @@ const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   ...(isDragging && {}),
 });
 
-const GroupColumn = ({
-  row,
-  provided,
-  snapshot,
-  onAddNewGroup = () => {},
-  ...props
-}) => {
+const GroupColumn = ({ row, provided, snapshot, ...props }) => {
   const { t } = useTranslation();
   const rowProps = row.getRowProps();
   const { projectId } = useParams();
@@ -122,28 +116,6 @@ const GroupColumn = ({
         </div>
       )}
 
-      <div className="tr row-add row-add-group" {...rowProps}>
-        {row.cells.map((item, index) => {
-          if (index !== 0) return null;
-          const cellProps = item.getCellProps();
-          return (
-            <div
-              {...cellProps}
-              style={{
-                ...cellProps.style,
-                maxWidth: cellProps.style.width,
-              }}
-              className="td add-cell"
-            >
-              <CellAddGroup onClick={onAddNewGroup}>
-                <AddIcon sx={{ fontSize: 18, marginRight: "5px" }} />
-                <div>{t("add_group")}</div>
-              </CellAddGroup>
-            </div>
-          );
-        })}
-      </div>
-
       {provided.placeholder}
     </div>
   );
@@ -187,35 +159,6 @@ const CellAddIcon = styled.div`
   height: 100%;
   cursor: pointer;
   color: #9e939e;
-`;
-
-const CellAddGroup = styled.div`
-  font-size: 16px;
-  padding: 0 8px;
-  align-items: center;
-  background-color: #00000000;
-  border-radius: 6px;
-  box-sizing: border-box;
-  color: #6d6e6f;
-  cursor: pointer;
-  display: inline-flex;
-  flex-shrink: 0;
-  font-weight: 500;
-  height: 36px;
-  justify-content: center;
-  line-height: 36px;
-  transition-duration: 0.2s;
-  transition-property: background, border, box-shadow, color, fill;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  &:hover {
-    background-color: #37171708;
-    border-color: #00000000;
-    color: #1e1f21;
-    fill: #1e1f21;
-  }
 `;
 
 export default GroupColumn;

@@ -1,5 +1,7 @@
+import AddIcon from "@mui/icons-material/Add";
 import React, { useCallback, useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { useTranslation } from "react-i18next";
 import {
   useBlockLayout,
   useExpanded,
@@ -7,8 +9,14 @@ import {
   useTable,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
+import styled from "styled-components";
 import GroupColumn from "./GroupColumn";
 import HeaderColumn from "./HeaderColumn";
+
+const customStyleTable = {
+  maxHeight: "calc((((100vh - 55px) - 60px) - 55px) - 12px)",
+  overflow: "visible",
+};
 
 const WPTableGroup = ({
   columns,
@@ -23,6 +31,7 @@ const WPTableGroup = ({
   onAddNewGroup = () => {},
   ...props
 }) => {
+  const { t } = useTranslation();
   const getSubRows = useCallback((row) => {
     return row.tasks || [];
   }, []);
@@ -60,6 +69,33 @@ const WPTableGroup = ({
       result?.draggableId,
       result?.destination?.droppableId,
       result?.destination?.index
+    );
+  };
+
+  const _renderRowAddGroup = (row) => {
+    const rowProps = row.getRowProps();
+    return (
+      <div className="tr row-add row-add-group" {...rowProps}>
+        {row.cells.map((item, index) => {
+          if (index !== 0) return null;
+          const cellProps = item.getCellProps();
+          return (
+            <div
+              {...cellProps}
+              style={{
+                ...cellProps.style,
+                maxWidth: cellProps.style.width,
+              }}
+              className="td add-cell"
+            >
+              <CellAddGroup onClick={onAddNewGroup}>
+                <AddIcon sx={{ fontSize: 18, marginRight: "5px" }} />
+                <div>{t("add_group")}</div>
+              </CellAddGroup>
+            </div>
+          );
+        })}
+      </div>
     );
   };
 
@@ -110,40 +146,40 @@ const WPTableGroup = ({
         {/* Body of table */}
         <DragDropContext onDragEnd={_handleDragEnd}>
           <Droppable droppableId="table-body-group">
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                className="tbody"
-                style={{
-                  maxHeight: "calc((((100vh - 55px) - 60px) - 55px) - 12px)",
-                  overflow: "visible",
-                }}
-              >
-                {rows.map((row, i) => {
-                  prepareRow(row);
-                  if (row.depth !== 0) return null;
-                  return (
-                    <Draggable
-                      key={row.original.id}
-                      draggableId={row.original.id}
-                      index={i}
-                    >
-                      {(provided, snapshot) => (
-                        <GroupColumn
-                          key={row.original.id}
-                          row={row}
-                          provided={provided}
-                          snapshot={snapshot}
-                          onAddNewGroup={onAddNewGroup}
-                          {...props}
-                        />
-                      )}
-                    </Draggable>
-                  );
-                })}
-                {provided.placeholder}
-              </div>
-            )}
+            {(provided, snapshot) => {
+              const rowAddGroup = rows[0];
+              return (
+                <div
+                  ref={provided.innerRef}
+                  className="tbody"
+                  style={customStyleTable}
+                >
+                  {rows.map((row, i) => {
+                    prepareRow(row);
+                    if (row.depth !== 0) return null;
+                    return (
+                      <Draggable
+                        key={row.original.id}
+                        draggableId={row.original.id}
+                        index={i}
+                      >
+                        {(provided, snapshot) => (
+                          <GroupColumn
+                            row={row}
+                            provided={provided}
+                            snapshot={snapshot}
+                            onAddNewGroup={onAddNewGroup}
+                            {...props}
+                          />
+                        )}
+                      </Draggable>
+                    );
+                  })}
+                  {provided.placeholder}
+                  {_renderRowAddGroup(rowAddGroup)}
+                </div>
+              );
+            }}
           </Droppable>
         </DragDropContext>
 
@@ -152,5 +188,34 @@ const WPTableGroup = ({
     </div>
   );
 };
+
+const CellAddGroup = styled.div`
+  font-size: 16px;
+  padding: 0 8px;
+  align-items: center;
+  background-color: #00000000;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #6d6e6f;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-weight: 500;
+  height: 36px;
+  justify-content: center;
+  line-height: 36px;
+  transition-duration: 0.2s;
+  transition-property: background, border, box-shadow, color, fill;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  &:hover {
+    background-color: #37171708;
+    border-color: #00000000;
+    color: #1e1f21;
+    fill: #1e1f21;
+  }
+`;
 
 export default WPTableGroup;
