@@ -3,14 +3,15 @@ import {
   LIST_TASK_FAIL,
   LIST_TASK_SUCCESS,
   LIST_TASK_RESET,
-} from '../../constants/actions/task/listTask';
+  ADD_GROUP_TASK,
+} from "../../constants/actions/task/listTask";
 
 export const listTask = ({ projectId, timeStart, timeEnd }, quite = false) => ({
   type: LIST_TASK,
   quite,
   options: {
     projectId,
-    timeStart, 
+    timeStart,
     timeEnd,
   },
 });
@@ -20,7 +21,7 @@ export const listTaskSuccess = ({ tasks }, options) => ({
   options,
   data: {
     tasks,
-  }
+  },
 });
 
 export const listTaskFail = (error, options) => ({
@@ -31,4 +32,9 @@ export const listTaskFail = (error, options) => ({
 
 export const listTaskReset = () => ({
   type: LIST_TASK_RESET,
+});
+
+export const addNewGroupTask = (payload) => ({
+  type: ADD_GROUP_TASK,
+  payload,
 });

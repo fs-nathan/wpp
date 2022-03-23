@@ -1,5 +1,6 @@
 import { Box, ButtonBase, CircularProgress } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
+import { addNewGroupTask } from "actions/task/listTask";
 import AlertModal from "components/AlertModal";
 import { TimeRangePopover } from "components/CustomPopover";
 import { CustomTableContext } from "components/CustomTable";
@@ -14,7 +15,15 @@ import {
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
 import { exportToCSV } from "helpers/utils/exportData";
-import { cloneDeep, find, flattenDeep, get, isNil, join } from "lodash";
+import {
+  cloneDeep,
+  find,
+  flattenDeep,
+  get,
+  isNil,
+  join,
+  uniqueId,
+} from "lodash";
 import React, { useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -197,7 +206,11 @@ function AllTaskTable({
 
     /* Creating a new array of columns and setting it to the state. */
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn, handleReload),
+      arrColumns: convertFieldsToTable(
+        newColumnsFields,
+        _handleEditColumn,
+        handleReload
+      ),
       isSetted: true,
     });
   };
@@ -208,7 +221,11 @@ function AllTaskTable({
     );
     /* Creating a new array of columns and setting it to the state. */
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn, handleReload),
+      arrColumns: convertFieldsToTable(
+        newColumnsFields,
+        _handleEditColumn,
+        handleReload
+      ),
       isSetted: true,
     });
   };
@@ -217,7 +234,11 @@ function AllTaskTable({
     /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
     const newColumnsFields = state.arrColumns.filter(({ id }) => id !== idHide);
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn, handleReload),
+      arrColumns: convertFieldsToTable(
+        newColumnsFields,
+        _handleEditColumn,
+        handleReload
+      ),
       isSetted: true,
     });
 
@@ -279,6 +300,21 @@ function AllTaskTable({
     }
   };
 
+  const _handleAddNewGroup = () => {
+    const result = cloneDeep(columns);
+    result.splice(0, 1);
+    result.splice(result.length - 1, 1);
+    dispatch(
+      addNewGroupTask({
+        projectId,
+        name: "Untitled Section",
+        id: uniqueId(),
+        tasks: [],
+        data: result,
+      })
+    );
+  };
+
   const _handleReOrderColumn = () => {};
 
   return (
@@ -318,6 +354,7 @@ function AllTaskTable({
               columns={columns}
               data={tasks.tasks}
               onReload={handleReload}
+              onAddNewGroup={_handleAddNewGroup}
               onAddNewColumns={_handleAddNewColumns}
               onDragEnd={handleSortTask}
               onEditColumn={_handleEditColumn}

@@ -137,7 +137,7 @@ const Styles = styled.div`
           z-index: 500 !important;
         }
         &.isGroupColumn {
-          border-right: 0;
+          border-color: transparent !important;
           &.focus {
             z-index: 500 !important;
             border: 1px solid #4573d2 !important;
@@ -170,9 +170,14 @@ const Styles = styled.div`
       }
 
       &.isGroupColumn {
-        border: 0;
+        border-color: transparent !important;
+        &.hasSub {
+          &:hover {
+            border-bottom: 1px solid #edeae9 !important;
+          }
+        }
         &:hover {
-          border: 0;
+          border-color: transparent !important;
           .drag-icon {
             visibility: visible !important;
           }

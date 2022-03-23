@@ -70,6 +70,7 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
           onVisibleAddRow={_handleAddNewTask}
           dragHandle={{ ...provided.dragHandleProps }}
           isGroupColumn
+          hasSub={!!row.subRows.length}
           {...props}
         />
       </div>
