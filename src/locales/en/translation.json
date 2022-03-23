@@ -2556,5 +2556,6 @@
   "date_and_time": "Date and time",
   "sort_asc": "Sort up ascending",
   "sort_decs": "Sort descending",
-  "cancel_sort": "Cancel sorting"
+  "cancel_sort": "Cancel sorting",
+  "add_group": "Add new group"
 }

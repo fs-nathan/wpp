@@ -1,14 +1,13 @@
 import AddIcon from "@mui/icons-material/Add";
+import { createTask } from "actions/taskDetail/taskDetailActions";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router";
+import styled from "styled-components";
 import ContentColumn from "./ContentColumn";
 import ListContentColumn from "./ListContentColumn";
 import ServiceCommandUnit from "./ServiceCommandUnit";
-import { createTask } from "actions/taskDetail/taskDetailActions";
-import moment from "moment";
-import styled from "styled-components";
 
 const getItemStyle = (isDragging, draggableStyle, isDraggingOver) => ({
   ...draggableStyle,
@@ -19,6 +18,7 @@ const GroupColumn = ({
   row,
   provided,
   snapshot,
+  onAddNewGroup = () => {},
   ...props
 }) => {
   const { t } = useTranslation();
@@ -36,23 +36,17 @@ const GroupColumn = ({
 
   const _handleSubmit = (name) => {
     const groupTask = provided.draggableProps["data-rbd-draggable-id"];
-    const currentDate = moment().format("YYYY-MM-DD");
     dispatch(
       createTask({
         data: {
-          name,
+          description: "",
+          from_view: "Table",
           group_task: groupTask,
-          type_assign: 2,
+          name,
           priority: 2,
           project_id: projectId,
-          description: "",
-          end_date: currentDate,
-          end_time: "17:00",
-          from_view: "Table",
           schedule_id: "5edda26e6701cf16239a4341",
-          start_date: currentDate,
-          start_time: "08:00",
-          type: 2,
+          type: 0,
         },
         projectId,
       })
@@ -97,32 +91,58 @@ const GroupColumn = ({
       <RowNew
         ref={refD}
         data={row.cells}
-        row={{ ...row.getRowProps() }}
+        row={{ ...rowProps }}
         onSubmit={_handleSubmit}
       />
 
       {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
         <div className="tr row-add" {...rowProps}>
-          {row.cells.map((item, index) => (
+          {row.cells.map((item, index) => {
+            if (index !== 0) return null;
+            const cellProps = item.getCellProps();
+            return (
+              <div
+                {...cellProps}
+                style={{
+                  ...cellProps.style,
+                  maxWidth: cellProps.style.width,
+                }}
+                className="td add-cell"
+              >
+                {index === 0 && (
+                  <CellAddIcon onClick={_handleAddNewRow}>
+                    <div style={{ minWidth: "30px" }} />
+                    <AddIcon sx={{ fontSize: 16, marginRight: "5px" }} />
+                    <div>{t("ADD_NEW_TASK")}</div>
+                  </CellAddIcon>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      <div className="tr row-add row-add-group" {...rowProps}>
+        {row.cells.map((item, index) => {
+          if (index !== 0) return null;
+          const cellProps = item.getCellProps();
+          return (
             <div
-              {...item.getCellProps()}
+              {...cellProps}
               style={{
-                ...item.getCellProps().style,
-                maxWidth: item.getCellProps().style.width,
+                ...cellProps.style,
+                maxWidth: cellProps.style.width,
               }}
               className="td add-cell"
             >
-              {index === 0 && (
-                <CellAddIcon onClick={_handleAddNewRow}>
-                  <div style={{ minWidth: "30px" }} />
-                  <AddIcon sx={{ fontSize: 16, marginRight: "5px" }} />
-                  <div>{t("ADD_NEW_TASK")}</div>
-                </CellAddIcon>
-              )}
+              <CellAddGroup onClick={onAddNewGroup}>
+                <AddIcon sx={{ fontSize: 18, marginRight: "5px" }} />
+                <div>{t("add_group")}</div>
+              </CellAddGroup>
             </div>
-          ))}
-        </div>
-      )}
+          );
+        })}
+      </div>
 
       {provided.placeholder}
     </div>
@@ -167,6 +187,35 @@ const CellAddIcon = styled.div`
   height: 100%;
   cursor: pointer;
   color: #9e939e;
+`;
+
+const CellAddGroup = styled.div`
+  font-size: 16px;
+  padding: 0 8px;
+  align-items: center;
+  background-color: #00000000;
+  border-radius: 6px;
+  box-sizing: border-box;
+  color: #6d6e6f;
+  cursor: pointer;
+  display: inline-flex;
+  flex-shrink: 0;
+  font-weight: 500;
+  height: 36px;
+  justify-content: center;
+  line-height: 36px;
+  transition-duration: 0.2s;
+  transition-property: background, border, box-shadow, color, fill;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  &:hover {
+    background-color: #37171708;
+    border-color: #00000000;
+    color: #1e1f21;
+    fill: #1e1f21;
+  }
 `;
 
 export default GroupColumn;

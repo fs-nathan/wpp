@@ -20,6 +20,7 @@ const WPTableGroup = ({
   onEditColumn = () => {},
   onDeleteColumn = () => {},
   onAddNewColumns = () => {},
+  onAddNewGroup = () => {},
   ...props
 }) => {
   const getSubRows = useCallback((row) => {
@@ -119,10 +120,6 @@ const WPTableGroup = ({
                 }}
               >
                 {rows.map((row, i) => {
-                  /* Just a debugging tool. */
-                  {
-                    /* console.log(row); */
-                  }
                   prepareRow(row);
                   if (row.depth !== 0) return null;
                   return (
@@ -137,6 +134,7 @@ const WPTableGroup = ({
                           row={row}
                           provided={provided}
                           snapshot={snapshot}
+                          onAddNewGroup={onAddNewGroup}
                           {...props}
                         />
                       )}

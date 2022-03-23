@@ -84,6 +84,18 @@ const Styles = styled.div`
         .td:not(:first-child) {
           border: 0;
         }
+
+        &.row-add-group {
+          .td {
+            border: 0 !important;
+          }
+          &:hover {
+            background-color: transparent;
+            .td {
+              background-color: transparent;
+            }
+          }
+        }
       }
 
       &.header {

@@ -313,10 +313,10 @@ function AllTaskTable({
             </Box>
           ) : (
             <WPReactTable
+              isGroup
               isCollapsed={expand}
               columns={columns}
               data={tasks.tasks}
-              isGroup
               onReload={handleReload}
               onAddNewColumns={_handleAddNewColumns}
               onDragEnd={handleSortTask}

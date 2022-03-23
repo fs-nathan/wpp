@@ -2585,5 +2585,6 @@
   "date_and_time": "Ngày và giờ",
   "sort_asc": "Sắp xếp tăng dần",
   "sort_decs": "Sắp xếp giảm dần",
-  "cancel_sort": "Huỷ sắp xếp"
+  "cancel_sort": "Huỷ sắp xếp",
+  "add_group": "Thêm nhóm việc"
 }
