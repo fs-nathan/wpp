@@ -163,15 +163,17 @@ const WPTableGroup = ({
                         draggableId={row.original.id}
                         index={i}
                       >
-                        {(provided, snapshot) => (
-                          <GroupColumn
-                            row={row}
-                            provided={provided}
-                            snapshot={snapshot}
-                            onAddNewGroup={onAddNewGroup}
-                            {...props}
-                          />
-                        )}
+                        {(provided, snapshot) => {
+                          return (
+                            <GroupColumn
+                              row={row}
+                              provided={provided}
+                              snapshot={snapshot}
+                              onAddNewGroup={onAddNewGroup}
+                              {...props}
+                            />
+                          );
+                        }}
                       </Draggable>
                     );
                   })}

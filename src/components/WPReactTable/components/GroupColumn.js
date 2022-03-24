@@ -75,7 +75,7 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
         />
       </div>
 
-      {row.isExpanded && (
+      {row.isExpanded && !snapshot.isDragging && (
         <ServiceCommandUnit
           id={row.original.id}
           data={row.subRows}
@@ -90,32 +90,33 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
         onSubmit={_handleSubmit}
       />
 
-      {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) && (
-        <div className="tr row-add" {...rowProps}>
-          {row.cells.map((item, index) => {
-            if (index !== 0) return null;
-            const cellProps = item.getCellProps();
-            return (
-              <div
-                {...cellProps}
-                style={{
-                  ...cellProps.style,
-                  maxWidth: cellProps.style.width,
-                }}
-                className="td add-cell"
-              >
-                {index === 0 && (
-                  <CellAddIcon onClick={_handleAddNewRow}>
-                    <div style={{ minWidth: "30px" }} />
-                    <AddIcon sx={{ fontSize: 16, marginRight: "5px" }} />
-                    <div>{t("ADD_NEW_TASK")}</div>
-                  </CellAddIcon>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      )}
+      {(isVisibleAddRow || (row.isExpanded && !!row.subRows.length)) &&
+        !snapshot.isDragging && (
+          <div className="tr row-add" {...rowProps}>
+            {row.cells.map((item, index) => {
+              if (index !== 0) return null;
+              const cellProps = item.getCellProps();
+              return (
+                <div
+                  {...cellProps}
+                  style={{
+                    ...cellProps.style,
+                    maxWidth: cellProps.style.width,
+                  }}
+                  className="td add-cell"
+                >
+                  {index === 0 && (
+                    <CellAddIcon onClick={_handleAddNewRow}>
+                      <div style={{ minWidth: "30px" }} />
+                      <AddIcon sx={{ fontSize: 16, marginRight: "5px" }} />
+                      <div>{t("ADD_NEW_TASK")}</div>
+                    </CellAddIcon>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
 
       {provided.placeholder}
     </div>
