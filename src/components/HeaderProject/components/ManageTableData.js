@@ -83,11 +83,6 @@ const ManageTableData = forwardRef(
             />
 
             <div className={classes.wrapperOption}>
-              <p>Hiện dữ liệu tổng hợp của nhóm việc</p>
-              <AntSwitch defaultChecked />
-            </div>
-
-            <div className={classes.wrapperOption}>
               <p>Hiện dữ liệu tổng hợp của bảng việc</p>
               <AntSwitch defaultChecked />
             </div>

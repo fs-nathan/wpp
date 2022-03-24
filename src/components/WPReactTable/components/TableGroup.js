@@ -2,6 +2,7 @@ import AddIcon from "@mui/icons-material/Add";
 import React, { useCallback, useMemo } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
+import { useParams } from "react-router-dom";
 import {
   useBlockLayout,
   useExpanded,
@@ -61,7 +62,7 @@ const WPTableGroup = ({
     useSticky,
     useExpanded
   );
-
+  const {projectId} = useParams();
   const { getTableProps, headerGroups, rows, prepareRow } = table;
 
   const _handleDragEnd = (result) => {
@@ -123,6 +124,7 @@ const WPTableGroup = ({
                   return (
                     <HeaderColumn
                       key={`column_header_${key}`}
+                      projectId={projectId}
                       zIndex={listHeaders.length - index}
                       isSticky={!index}
                       length={listHeaders.length}

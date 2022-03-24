@@ -153,6 +153,7 @@ const EditColumnModal = React.forwardRef(
         cancleRender={() => t("DELETE_FIELDS")}
         titleComponent={
           <TitleModalAdd
+            isEditForm
             value={state.value}
             handleChangeTab={handleChangeTab}
             setOpen={handleOpen}

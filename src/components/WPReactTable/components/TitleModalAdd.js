@@ -7,7 +7,12 @@ import Icon from "@mdi/react";
 import { mdiClose } from "@mdi/js";
 import { StyledDialogTitle } from "components/CustomModal";
 
-const TitleModalAdd = ({ value, handleChangeTab, setOpen }) => {
+const TitleModalAdd = ({
+  value,
+  handleChangeTab,
+  setOpen,
+  isEditForm = false,
+}) => {
   const { t } = useTranslation();
   return (
     <>
@@ -25,7 +30,7 @@ const TitleModalAdd = ({ value, handleChangeTab, setOpen }) => {
             fontWeight: "500",
           }}
         >
-          {t("ADD_FIELDS_DATA")}
+          {isEditForm ? t("EDIT_FIELDS_DATA") : t("ADD_FIELDS_DATA")}
         </ColorTypo>
         <IconButton
           className="comp_CustomModal___iconButton"

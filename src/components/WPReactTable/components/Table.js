@@ -4,7 +4,6 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useBlockLayout, useResizeColumns, useTable } from "react-table";
 import { useSticky } from "react-table-sticky";
 import HeaderColumn from "./HeaderColumn";
-import HeadingColumn from "./HeadingColumn";
 
 const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
   // styles we need to apply on draggables
