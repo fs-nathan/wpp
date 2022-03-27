@@ -132,7 +132,6 @@ const Styles = styled.div`
         justify-content: space-between;
         flex: 1 1 auto;
         min-width: 1px;
-        margin-right: 0px !important;
         &:hover {
           border: 1px solid #afabac;
           z-index: 500 !important;
