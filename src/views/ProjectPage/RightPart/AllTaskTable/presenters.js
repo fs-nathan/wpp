@@ -1,4 +1,4 @@
-import { Box, ButtonBase, CircularProgress } from "@material-ui/core";
+import { ButtonBase } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
 import { addNewGroupTask } from "actions/task/listTask";
 import AlertModal from "components/AlertModal";
@@ -12,7 +12,7 @@ import { apiService } from "constants/axiosInstance";
 import {
   DEFAULT_MESSAGE,
   SnackbarEmitter,
-  SNACKBAR_VARIANT,
+  SNACKBAR_VARIANT
 } from "constants/snackbarController";
 import { exportToCSV } from "helpers/utils/exportData";
 import {
@@ -22,7 +22,7 @@ import {
   get,
   isNil,
   join,
-  uniqueId,
+  uniqueId
 } from "lodash";
 import React, { useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
@@ -343,26 +343,20 @@ function AllTaskTable({
             onAddColumns={_handleAddNewColumns}
           />
 
-          {isLoading ? (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <CircularProgress />
-            </Box>
-          ) : (
-            <WPReactTable
-              isGroup
-              isCollapsed={expand}
-              columns={columns}
-              data={tasks.tasks}
-              onReload={handleReload}
-              onAddNewGroup={_handleAddNewGroup}
-              onAddNewColumns={_handleAddNewColumns}
-              onDragEnd={handleSortTask}
-              onEditColumn={_handleEditColumn}
-              onDeleteColumn={_handleDeleteColumn}
-              onHideColumn={_handleHideColumn}
-              onSortColumn={_handleSortColumn}
-            />
-          )}
+          <WPReactTable
+            isGroup
+            isCollapsed={expand}
+            columns={columns}
+            data={tasks.tasks}
+            onReload={handleReload}
+            onAddNewGroup={_handleAddNewGroup}
+            onAddNewColumns={_handleAddNewColumns}
+            onDragEnd={handleSortTask}
+            onEditColumn={_handleEditColumn}
+            onDeleteColumn={_handleDeleteColumn}
+            onHideColumn={_handleHideColumn}
+            onSortColumn={_handleSortColumn}
+          />
 
           <EditColumnModal
             ref={refEdit}
