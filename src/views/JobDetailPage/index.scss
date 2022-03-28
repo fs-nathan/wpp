@@ -3,7 +3,10 @@
   height: 100%;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(200px, 29%);
+  grid-template-columns: minmax(200px, 27%) minmax(400px, 44%) minmax(
+      200px,
+      29%
+    );
   grid-template-areas: "list chat tab";
 }
 .container-job-introduce {
@@ -17,7 +20,11 @@
 .container-header {
   display: flex;
   align-items: center;
-  height: 85px;
+  height: 56px;
+  padding: 0 10px;
+  background: #fff;
+  border: 1px solid #e5e5e9;
+  border-radius: 5px;
 }
 .wrap-avatars {
   width: 64px;

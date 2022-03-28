@@ -82,8 +82,6 @@ function ProjectGroupPage({
           {isDeletedPage ? <ProjectGroupListDeleted /> : <ProjectGroupList />}
         </div>
       )}
-
-
       <div className={classNames(classes.mainContent, { isCollapsed })}>
         <React.Suspense fallback={<div />}>
           <Switch>

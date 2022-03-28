@@ -6,8 +6,13 @@
   display: flex;
   flex-direction: column;
   .wrap-header {
-    border-bottom: 1px solid #e5e5e9;
-    padding: 0 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    z-index: 10;
+    // border-bottom: 1px solid #e5e5e9;
+    // padding: 0 10px;
     // height: 85px;
   }
   .wrap-body {
@@ -25,6 +30,7 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
     // height: 100px;
     position: relative;
+    margin-bottom: 75px;
   }
   .drop-area {
     position: absolute;
@@ -67,8 +73,12 @@
 
 .chatPart {
   &--searchWrap {
-    position: relative;
-    display: none;
+    display: block;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: calc(100% - 20px);
+    z-index: 10;
   }
   &--search {
     .MuiInputBase-root {
@@ -94,10 +104,10 @@
     }
   }
   &__showSearch {
-    display: block;
-    position: relative;
     padding: 10px;
-    border-bottom: 1px solid #eeeeee;
+    background: #fff;
+    border: 1px solid #eeeeee;
+    border-radius: 5px;
   }
   &--pinRemind {
     display: flex;
