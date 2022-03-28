@@ -11,12 +11,11 @@ import {
 import { Routes } from "../../constants/routes";
 import { isEmpty } from "../../helpers/utils/isEmpty";
 import { useSelector, useDispatch } from "react-redux";
-import { IconNext, IconBack } from "components/IconSvg/Verify_check";
-
 // import { useTranslation } from 'react-i18next';
 // import * as icons from '../../assets';
 import "./LeftBar.scss";
 import { getNumberMessageNotView } from "actions/chat/threadChat";
+import PopoverMenu from "./PopoverMenu";
 
 const BellMessage = () => {
   const numberChatNotView = useSelector(
@@ -28,7 +27,7 @@ const BellMessage = () => {
     dispatch(getNumberMessageNotView());
   }, []);
   return numberChatNotView > 0 ? (
-    <div className='bell-message'>{numberChatNotView}</div>
+    <div className="bell-message">{numberChatNotView}</div>
   ) : null;
 };
 
@@ -46,6 +45,7 @@ const isDocument = (type) => {
       return false;
   }
 };
+
 const LeftBar = ({
   colors,
   history,
@@ -56,18 +56,20 @@ const LeftBar = ({
   openNoticeModal,
   setVisibleGroupModal,
   logo,
+  sidebar,
 }) => {
   const { t } = useTranslation();
   const pathname = history.location.pathname;
-  const { group_active } = profile;
+  // const { group_active } = profile;
   const bgColor = colors.find((item) => item.selected === true);
   const onCloseDrawer = () => {
     actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer });
   };
   let menuList = [];
-  let itemManage = false;
-  if (!isEmpty(group_active) && !isEmpty(group_active.modules)) {
-    group_active.modules.forEach((el, idx) => {
+  let bottomList = [];
+
+  if (!isEmpty(sidebar)) {
+    sidebar.forEach((el, idx) => {
       let isActived = false;
       if (pathname.indexOf(el.path_search) == 0) {
         isActived = true;
@@ -77,12 +79,12 @@ const LeftBar = ({
       ) {
         isActived = true;
       }
-      if (el.is_manage_group) {
-        itemManage = {
+      if (el.isBottom) {
+        bottomList.push({
           ...el,
           isSelected: isActived,
           icon: isActived ? el.url_icon_selected : el.url_icon,
-        };
+        });
       } else {
         menuList.push({
           ...el,
@@ -98,9 +100,10 @@ const LeftBar = ({
       className={`left-bar-container`}
       style={{
         background: bgColor.color,
-      }}>
+      }}
+    >
       <div>
-        <div className='logo' onClick={() => setVisibleGroupModal(true)}>
+        <div className="logo" onClick={() => setVisibleGroupModal(true)}>
           {logo && <img src={logo} />}
         </div>
         {menuList.map((item, index) => {
@@ -108,9 +111,10 @@ const LeftBar = ({
             <Link
               key={index}
               className={`menu-item ${item.isSelected ? "actived" : ""}`}
-              to={item.url_redirect}>
-              <div className='menu-icon'>
-                {item.icon && <img src={item.icon} />}
+              to={item.url_redirect}
+            >
+              <div className="menu-icon">
+                {item.icon && <img src={item.icon.default} />}
               </div>
               <p>{t(item.name)}</p>
             </Link>
@@ -118,16 +122,11 @@ const LeftBar = ({
         })}
       </div>
 
-      {itemManage && (
-        <Link
-          className={`menu-item ${itemManage.isSelected ? "actived" : ""}`}
-          to={itemManage.url_redirect}>
-          <div className='menu-icon'>
-            {itemManage.icon && <img src={itemManage.icon} />}
-          </div>
-          <p>{t(itemManage.name)}</p>
-        </Link>
-      )}
+      <div>
+        {bottomList.map((item, index) => {
+          return <PopoverMenu key={index} {...item} profile={profile} />;
+        })}
+      </div>
     </div>
   );
 };
@@ -138,6 +137,7 @@ export default connect(
     anchorDrawer: state.system.anchorDrawer,
     groupActive: state.system.groupActive,
     profile: state.system.profile,
+    sidebar: state.system.sidebar,
   }),
   { actionVisibleDrawerMessage, openNoticeModal }
 )(withRouter(LeftBar));

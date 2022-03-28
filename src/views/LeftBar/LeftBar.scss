@@ -36,9 +36,11 @@
     height: 50px;
     display: flex;
     align-items: center;
-    color: #fabc99;
+    // color: #fabc99;
+    color: hsla(0,0%,100%,.6);
     &:hover {
-      background-color: #d54c00;
+      // background-color: #d54c00;
+      background-color: rgba(0,0,0,.12);
     }
     .menu-icon {
       min-width: 70px;
@@ -57,7 +59,8 @@
   }
 
   .actived {
-    background-color: #d54c00;
+    // background-color: #d54c00;
+    background-color: rgba(0,0,0,.12);
     color: white;
   }
 }
