@@ -56,6 +56,7 @@ export const initialState = {
     visible: false,
     remind_id: null,
   },
+  closeLeftPart: false,
   sidebar: [
     {
       name: "Trang Chủ",
@@ -200,6 +201,11 @@ export const initialState = {
 
 const system = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.CLOSE_LEFT_PART:
+      return {
+        ...state,
+        closeLeftPart: !state.closeLeftPart
+      };
     case actionTypes.CHANGE_DRAWER:
       return {
         ...state,

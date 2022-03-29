@@ -1,29 +1,40 @@
-import React from 'react';
-import './style.scss';
-import { useParams } from 'react-router-dom';
+import React from "react";
+import "./style.scss";
+import { useParams } from "react-router-dom";
 
-const Container = ({ className = '', expand, ...rest }) =>
-  <div className={`${expand
-    ? 'comp_TwoColumnsLayout___container-expanded'
-    : 'comp_TwoColumnsLayout___container-normal'} 
+const Container = ({ className = "", expand, ...rest }) => (
+  <div
+    className={`${
+      expand
+        ? "comp_TwoColumnsLayout___container-expanded"
+        : "comp_TwoColumnsLayout___container-normal"
+    } 
     ${className}`}
-    {...rest} />;
+    {...rest}
+  />
+);
 
 const LeftDiv = ({ ...rest }) => <div {...rest} />;
 
-const RightDiv = ({ className = '', ...rest }) => <div className={`comp_TwoColumnsLayout___right ${className}`} {...rest} />;
+const RightDiv = ({ className = "", ...rest }) => (
+  <div className={`comp_TwoColumnsLayout___right ${className}`} {...rest} />
+);
 
 function TwoColumnsLayout({
   leftRenders = [() => <div />],
   rightRender = () => <div />,
+  closeLeft,
 }) {
-  const {memberId} = useParams();
-  const [expand, setExpand] = React.useState(false);
+  const { memberId } = useParams();
+  const [expand, setExpand] = React.useState(closeLeft);
   const [subSlide, setSubSlide] = React.useState(memberId ? 1 : 0);
-
   function handleExpand(expand) {
     setExpand(expand);
   }
+
+  React.useEffect(() => {
+    setExpand(closeLeft);
+  }, [closeLeft]);
 
   function handleSubSlide(subSlide) {
     setSubSlide(subSlide);
@@ -32,8 +43,9 @@ function TwoColumnsLayout({
   return (
     <Container expand={expand}>
       <LeftDiv
+        className="left-div"
         style={{
-          display: expand ? 'none' : 'initial'
+          display: expand ? "none" : "initial",
         }}
       >
         {leftRenders[subSlide]({ handleSubSlide })}

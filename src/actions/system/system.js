@@ -2,6 +2,11 @@ import * as actionTypes from '../../constants/actions/system/system';
 import { apiService } from '../../constants/axiosInstance';
 import { MESS_NUMBER, NOTI_NUMBER } from '../../constants/constants';
 
+export const closeLeftPart = (option) => {
+  return {
+    type: actionTypes.CLOSE_LEFT_PART,
+  };
+};
 export const actionVisibleDrawerMessage = option => {
   return {
     type: actionTypes.CHANGE_DRAWER,

@@ -24,8 +24,8 @@ function Right() {
       {pluginSettings.map((item) => {
         if (item.status === "OFF") return null;
         switch (item.value) {
-          case 1:
-            return <WeedSchedule key={item.value} />;
+          // case 1:
+          //   return <WeedSchedule key={item.value} />;
           case 2:
             return <HightLight key={item.value} />;
           case 3:

@@ -195,7 +195,7 @@
                 "DESC": "Chỉ tương tác được với các thành viên có trạng thái Công khai khác"
               }
             },
-            "TITLE": "Danh sách nhân sự",
+            "TITLE": "Thành viên",
             "NUM_MEMBER_AUT": "Đã có {{total}}/{{max}} thành viên",
             "NUM_MEMBER_DUT": "Đã có {{total}} thành viên",
             "ADD_USER": "Thêm thành viên",
