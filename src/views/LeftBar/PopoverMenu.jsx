@@ -7,11 +7,21 @@ import "./PopoverMenu.scss";
 
 import { Link, withRouter } from "react-router-dom";
 import { connect } from "react-redux";
-import { DRAWER_TYPE } from "constants/constants";
+import { DRAWER_TYPE, REFRESH_TOKEN, TOKEN } from "constants/constants";
+import {
+  TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
+  TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
+} from 'views/OfferPage/contants/localStorage';
+import {
+  LOCAL_PERSONAL_REMINDS_STORAGE,
+  LOCAL_PROJECT_REMINDS_STORAGE,
+} from "views/CalendarPage/constants/attrs";
 import SearchModal from "../../components/SearchModal/SearchModal";
 import Badge from "@material-ui/core/Badge";
 import { IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { Routes } from 'constants/routes';
 
 import {
   actionVisibleDrawerMessage,
@@ -63,6 +73,18 @@ function PopoverMenu(props) {
       openDrawer(props);
     }
   };
+  const onLogout = () => {
+          localStorage.removeItem(TOKEN);
+          localStorage.removeItem(REFRESH_TOKEN);
+          localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW);
+          localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW);
+          localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW);
+          localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+          localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+          localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+          localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+          history.push(Routes.LOGIN)
+  }
   const onCloseDrawer = () => {
     props.actionVisibleDrawerMessage({ type: "", anchor: "right" });
   };
@@ -191,7 +213,13 @@ function PopoverMenu(props) {
                 {childItem.url_redirect ? (
                   <div
                     className="menu-sub-item"
-                    onClick={() => history.push(childItem.url_redirect)}
+                    onClick={() => {
+                      if (childItem.isLogout) {
+                        onLogout()
+                        return
+                      }
+                        history.push(childItem.url_redirect);
+                    }}
                   >
                     <div className="menu-icon-popover">
                       <span className="icon">

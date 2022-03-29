@@ -163,17 +163,17 @@ export const initialState = {
       child_menu: [
         {
           name: "Tài khoản",
-          path_search: "/chats",
+          path_search: "/setting-account/info",
           path_search_more: false,
           icon: ManageAccountsOutlinedIcon,
-          url_redirect: "/chats",
+          url_redirect: "/setting-account/info",
         },
         {
           name: "Ngôn Ngữ",
-          path_search: "/chats",
+          path_search: "/setting-account/language",
           path_search_more: false,
           icon: LanguageOutlinedIcon,
-          url_redirect: "/chats",
+          url_redirect: "/setting-account/language",
         },
         {
           name: "Đăng xuất",
@@ -181,9 +181,10 @@ export const initialState = {
           path_search: "/chats",
           path_search_more: false,
           icon: LogoutOutlinedIcon,
+          isLogout:true,
           url_redirect: "/chats",
         },
-        {
+        { 
           name: "Nầng cấp tài khoản",
           need_bell: true,
           path_search: "/chats",
