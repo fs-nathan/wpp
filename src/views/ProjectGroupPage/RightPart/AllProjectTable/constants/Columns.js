@@ -182,7 +182,7 @@ const CellProgressDay = ({ value }) => {
   return `${currentDay.diff(startDate, "days")} ngày`;
 };
 
-const CellNameProject = ({ props, onEdit = () => {} }) => {
+const CellNameProject = React.memo(({ props, onEdit = () => {} }) => {
   const row = props.row.original;
   const isDisplayUpdate =
     !get(row, "can_update", false) || !get(row, "can_delete", false);
@@ -234,7 +234,7 @@ const CellNameProject = ({ props, onEdit = () => {} }) => {
       )}
     </WrapperCellName>
   );
-};
+});
 
 const CellProgressSuccess = ({ props }) => {
   const { t } = useTranslation();

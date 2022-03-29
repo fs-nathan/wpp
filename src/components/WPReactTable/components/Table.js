@@ -7,7 +7,7 @@ import { FixedSizeList } from "react-window";
 import ItemClone, { getStyle } from "../ItemClone";
 import HeaderColumn from "./HeaderColumn";
 
-function reorder(list, startIndex, endIndex) {
+export function reorder(list, startIndex, endIndex) {
   const result = Array.from(list);
   const [removed] = result.splice(startIndex, 1);
   result.splice(endIndex, 0, removed);
@@ -42,12 +42,15 @@ function Item({ provided, item, style, isDragging }) {
 
 const WPTable = ({
   columns,
-  data,
+  data = [],
   selectedSort = null,
   displayAddColumn = false,
   onDragEnd = () => {},
   onSort = () => {},
 }) => {
+  const [dataRows, setDataRows] = React.useState(data);
+  const refSetted = React.useRef(false);
+
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 120,
@@ -56,6 +59,13 @@ const WPTable = ({
     }),
     []
   );
+
+  React.useEffect(() => {
+    if (!refSetted.current || !dataRows.length) {
+      setDataRows(data);
+      refSetted.current = true;
+    }
+  }, [data, dataRows]);
 
   const {
     getTableProps,
@@ -67,7 +77,7 @@ const WPTable = ({
   } = useTable(
     {
       columns,
-      data,
+      data: dataRows,
       defaultColumn,
     },
     useBlockLayout,
@@ -88,10 +98,19 @@ const WPTable = ({
         </Draggable>
       );
     },
-    [prepareRow]
+    []
   );
 
-  const _handleDragEnd = (e) => {};
+  const _handleDragEnd = (result) => {
+    if (!result) return;
+    const resultSort = reorder(
+      dataRows,
+      result.source.index,
+      result.destination.index
+    );
+    setDataRows(resultSort);
+    onDragEnd(resultSort);
+  };
 
   return (
     <div>

@@ -12,7 +12,7 @@ function reducer(state = initialState, action) {
       return {
         ...state,
         error: null,
-        loading: true,
+        loading: false,
       };
     case SORT_PROJECT_SUCCESS:
       return {

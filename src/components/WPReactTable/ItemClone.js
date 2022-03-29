@@ -1,11 +1,8 @@
+import classNames from "classnames";
 import React from "react";
 import styled from "styled-components";
 
 export function getStyle({ draggableStyle, virtualStyle, isDragging }) {
-  // If you don't want any spacing between your items
-  // then you could just return this.
-  // I do a little bit of magic to have some nice visual space
-  // between the row items
   const combined = {
     ...virtualStyle,
     ...draggableStyle,
@@ -14,42 +11,80 @@ export function getStyle({ draggableStyle, virtualStyle, isDragging }) {
   return combined;
 }
 
+export function getStyleClone({ draggableStyle, virtualStyle, isDragging }) {
+  const combined = {
+    ...virtualStyle,
+    ...draggableStyle,
+  };
+
+  return {
+    ...combined,
+    width: isDragging ? draggableStyle.width : combined.width,
+    left: isDragging ? combined.left : combined.left + 20,
+  };
+}
+
 const ItemClone = ({ provided, item, style, isDragging }) => {
   return (
     <StyledItem
       {...provided.draggableProps}
       {...provided.dragHandleProps}
       ref={provided.innerRef}
-      style={getStyle({
+      style={getStyleClone({
         draggableStyle: provided.draggableProps.style,
         virtualStyle: style,
         isDragging,
       })}
-      className={`item ${isDragging ? "is-dragging" : ""}`}
+      className={classNames({ "is-dragging": isDragging })}
     >
-      {item.text}
+      <span>{item.name}</span>
     </StyledItem>
   );
 };
 
 const StyledItem = styled.div`
-  background: #333851;
-  border: 1px solid mediumpurple;
+  background-color: #fff;
+  border-radius: 5px;
   box-sizing: border-box;
-  border-radius: 2px;
-  color: #cdd5ee;
-  font-size: 30px;
+  text-align: left;
+  width: 120px;
+  color: #fff !important;
   user-select: none;
 
-  /* center align text */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   &.is-dragging {
-    background: #515b7d;
-    border-color: #08ff08;
-    box-shadow: 0px 0px 2px rgb(8, 58, 30), 0px 0px 10px MediumSeaGreen;
+    z-index: 300 !important;
+    border: 1px solid #edeae9;
+    padding: 0 4px 0 24px;
+    -webkit-box-pack: justify;
+    -webkit-justify-content: space-between;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+    -webkit-flex: 1 1 auto;
+    -ms-flex: 1 1 auto;
+    flex: 1 1 auto;
+    min-width: 1px;
+    display: inline-flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    width: 420px;
+    position: sticky;
+    z-index: 3;
+    left: 0px;
+    max-width: 420px;
+
+    span {
+      color: #666;
+      display: -webkit-inline-box;
+      display: -webkit-inline-flex;
+      display: -ms-inline-flexbox;
+      display: inline-flex;
+      margin-left: 8px;
+      font-weight: 400 !important;
+      padding-left: 50px;
+    }
+
+    user-select: none;
   }
 `;
 
