@@ -120,10 +120,10 @@ const Styles = styled.div`
       z-index: 0;
       align-items: center;
       display: inline-flex !important;
-      height: 47px;
       overflow: hidden;
       justify-content: flex-start;
       margin-right: -1px;
+      margin-bottom: -1px;
 
       &[data-sticky-td="true"] {
         z-index: 300 !important;
