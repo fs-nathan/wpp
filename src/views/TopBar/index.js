@@ -51,26 +51,26 @@ const TopBar = props => {
       }
     } catch (err) {}
   };
-  useEffect(() => {
-    const hasToken = localStorage.getItem(TOKEN);
-    if(hasToken && (!props.profile || !props.profile.id)) {
-      handleFetchNumNotificationNotView();
-      handleFetchNumMessageNotView();
-      handleFetchProfile();
-    }
-  }, []);
-  const handleFetchNumNotificationNotView = async () => {
-    try {
-      const { data } = await getNumberNotificationNotViewer();
-      props.actionChangeNumNotificationNotView(data.number_notification);
-    } catch (err) {}
-  };
-  const handleFetchNumMessageNotView = async () => {
-    try {
-      const { data } = await getNumberMessageNotViewer();
-      props.getNumberMessageNotViewer(data.number_chat);
-    } catch (err) {}
-  };
+  // useEffect(() => {
+  //   const hasToken = localStorage.getItem(TOKEN);
+  //   if(hasToken && (!props.profile || !props.profile.id)) {
+  //     handleFetchNumNotificationNotView();
+  //     handleFetchNumMessageNotView();
+  //     handleFetchProfile();
+  //   }
+  // }, []);
+  // const handleFetchNumNotificationNotView = async () => {
+  //   try {
+  //     const { data } = await getNumberNotificationNotViewer();
+  //     props.actionChangeNumNotificationNotView(data.number_notification);
+  //   } catch (err) {}
+  // };
+  // const handleFetchNumMessageNotView = async () => {
+  //   try {
+  //     const { data } = await getNumberMessageNotViewer();
+  //     props.getNumberMessageNotViewer(data.number_chat);
+  //   } catch (err) {}
+  // };
   const openSearchModal = () => {
     // Handle position of search modal
     const searchInputWrapperElm = document.getElementById('searchInputWrapper');
@@ -208,7 +208,7 @@ const TopBar = props => {
             onClick={() =>
               props.actionVisibleDrawerMessage({
                 type: DRAWER_TYPE.MESSAGE,
-                anchor: 'right'
+                anchor: 'left'
               })
             }
           >

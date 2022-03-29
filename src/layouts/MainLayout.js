@@ -57,7 +57,7 @@ import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
 import { Routes } from "../constants/routes";
 import routes from "../routes";
 import LeftBar from "../views/LeftBar";
-// import TopBar from "../views/TopBar";
+import TopBar from "../views/TopBar";
 import { get } from "lodash";
 import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
 import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";

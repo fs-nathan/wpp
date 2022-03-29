@@ -12,3 +12,5 @@ export const icon_search = require("assets/icon/ic_search.png");
 export const icon_search_sl = require("assets/icon/ic_search_sl.png");
 export const icon_noti = require("assets/icon/ic_noti.png");
 export const icon_noti_sl = require("assets/icon/ic_noti_sl.png");
+export const icon_member = require("assets/icon/ic_member.png");
+export const icon_member_sl = require("assets/icon/ic_member_sl.png");

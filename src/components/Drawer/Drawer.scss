@@ -4,7 +4,7 @@
       background-color: initial;
     }
     .MuiDrawer-paper {
-      margin-top: 55px;
+      // margin-top: 55px;
       width: 420px;
     }
     .MuiPaper-elevation16 {
@@ -18,11 +18,13 @@
       background-color: initial;
       margin-top: 55px;
       margin-left: 80px;
+      // margin-left: 70px;
     }
     .MuiDrawer-paper {
       transform: none !important;
-      margin-top: 55px;
-      margin-left: 140px;
+      // margin-top: 55px;
+      width: 600px;
+      margin-left: 70px;
       border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
     .MuiPaper-elevation16 {
@@ -50,7 +52,8 @@
   }
   .drawer-content {
     position: relative;
-    height: calc(100vh - 55px);
+    // height: calc(100vh - 55px);
+    height: 100vh;
     display: flex;
     flex-direction: column;
     border-right: 1px solid #ededed;
@@ -654,7 +657,7 @@
     }
   }
 }
-.Drawer-Base {
+.drawer-content-quick-start {
   .MuiLink-root {
     cursor: pointer;
   }

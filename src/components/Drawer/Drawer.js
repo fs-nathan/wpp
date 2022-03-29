@@ -65,7 +65,11 @@ const DrawerComponent = props => {
         onClose={() =>
           actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer })
         }
-        className={`${typeDrawer === DRAWER_TYPE.QUICK_ACCESS ? "Drawer-Base" : "Drawer-Compenent"} ${
+        className={`${
+          typeDrawer === DRAWER_TYPE.QUICK_ACCESS
+            ? "Drawer-Compenent"
+            : "Drawer-Compenent"
+        } ${
           anchorDrawer === "left"
             ? "anchor-drawer-left"
             : anchorDrawer === "right"

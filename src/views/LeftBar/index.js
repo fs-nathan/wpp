@@ -5,7 +5,10 @@ import { Link, withRouter } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
 import { Button } from "@material-ui/core";
 import {
+  actionChangeNumNotificationNotView,
   actionVisibleDrawerMessage,
+  getNumberMessageNotViewer,
+  getNumberNotificationNotViewer,
   openNoticeModal,
 } from "../../actions/system/system";
 import { Routes } from "../../constants/routes";
@@ -16,6 +19,7 @@ import { useSelector, useDispatch } from "react-redux";
 import "./LeftBar.scss";
 import { getNumberMessageNotView } from "actions/chat/threadChat";
 import PopoverMenu from "./PopoverMenu";
+import { TOKEN } from "constants/constants";
 
 const BellMessage = () => {
   const numberChatNotView = useSelector(
@@ -57,17 +61,35 @@ const LeftBar = ({
   setVisibleGroupModal,
   logo,
   sidebar,
+  ...props
 }) => {
   const { t } = useTranslation();
   const pathname = history.location.pathname;
   // const { group_active } = profile;
   const bgColor = colors.find((item) => item.selected === true);
-  const onCloseDrawer = () => {
-    actionVisibleDrawerMessage({ type: "", anchor: anchorDrawer });
+
+  const handleFetchNumNotificationNotView = async () => {
+    try {
+      const { data } = await getNumberNotificationNotViewer();
+      actionChangeNumNotificationNotView(data.number_notification);
+    } catch (err) {}
   };
+  const handleFetchNumMessageNotView = async () => {
+    try {
+      const { data } = await getNumberMessageNotViewer();
+      props.getNumberMessageNotViewer(data.number_chat);
+    } catch (err) {}
+  };
+  React.useEffect(() => {
+    const hasToken = localStorage.getItem(TOKEN);
+    if (hasToken && (!profile || !profile.id)) {
+      handleFetchNumNotificationNotView();
+      handleFetchNumMessageNotView();
+    }
+  }, []);
+
   let menuList = [];
   let bottomList = [];
-
   if (!isEmpty(sidebar)) {
     sidebar.forEach((el, idx) => {
       let isActived = false;
@@ -124,7 +146,7 @@ const LeftBar = ({
 
       <div>
         {bottomList.map((item, index) => {
-          return <PopoverMenu key={index} {...item} profile={profile} />;
+          return <PopoverMenu key={index} {...item} />;
         })}
       </div>
     </div>
