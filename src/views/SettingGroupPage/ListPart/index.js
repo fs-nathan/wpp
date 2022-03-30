@@ -52,16 +52,16 @@ const ListPart = ({ premissions = emptyObject }) => {
       title: t("IDS_WP_ORDER_MANAGE"),
       sub: [
         {
+          name: t("IDS_WP_UPGRADE_ACCOUNT"),
+          url: Routes.UPGRADE_ACCOUNT,
+        },
+        {
           name: t("IDS_WP_CREATE_ORDER"),
           url: Routes.SETTING_GROUP_CREATE_ORDER,
           noti: true,
         },
         { name: t("IDS_WP_ORDER_LIST"), url: Routes.SETTING_GROUP_ORDER },
         { name: t("IDS_WP_PAYMENT_INFO"), url: Routes.SETTING_GROUP_PAYMENT },
-        {
-          name: t("IDS_WP_UPGRADE_ACCOUNT"),
-          url: Routes.UPGRADE_ACCOUNT,
-        },
       ],
     },
   ];
@@ -71,9 +71,10 @@ const ListPart = ({ premissions = emptyObject }) => {
 export default withRouter(
   connect((state) => {
     return {
-      premissions: settingGroupPermission.selectors.permissionViewSettingGroupSelector(
-        state
-      ),
+      premissions:
+        settingGroupPermission.selectors.permissionViewSettingGroupSelector(
+          state
+        ),
     };
   })(ListPart)
 );
