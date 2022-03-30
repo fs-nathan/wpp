@@ -57,4 +57,5 @@ export const Routes = {
   WORKPLACE: "/workplace",
   CHAT: "/chats",
   CALENDAR_PROJECT_MANAGE: "/calendars/project/detail",
+  UPGRADE_ACCOUNT: "/setting-group/upgrade-account",
 };

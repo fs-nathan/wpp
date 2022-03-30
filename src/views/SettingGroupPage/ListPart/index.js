@@ -58,6 +58,10 @@ const ListPart = ({ premissions = emptyObject }) => {
         },
         { name: t("IDS_WP_ORDER_LIST"), url: Routes.SETTING_GROUP_ORDER },
         { name: t("IDS_WP_PAYMENT_INFO"), url: Routes.SETTING_GROUP_PAYMENT },
+        {
+          name: t("IDS_WP_UPGRADE_ACCOUNT"),
+          url: Routes.UPGRADE_ACCOUNT,
+        },
       ],
     },
   ];

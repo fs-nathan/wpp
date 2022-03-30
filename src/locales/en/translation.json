@@ -1007,6 +1007,7 @@
   "IDS_WP_PAYMENT_INFO": "Billing Information",
   "IDS_WP_PAYMENT_INFO_DES_1": "All orders on WorkPlus are paid by bank transfer.",
   "IDS_WP_PAYMENT_INFO_DES_2": "Please transfer payment to the following accounts",
+  "IDS_WP_UPGRADE_ACCOUNT": "Upgrade account",
   "IDS_WP_ACCOUNT_COMPANY": "COMPANY ACCOUNT",
   "IDS_WP_ACCOUNT_BIDV": "BIDV BRANCH OF TRANSACTION 1, HANOI",
   "IDS_WP_ACCOUNT_OWNER_COMPANY": "Account holder: Phuc An Technology and Trading Co., Ltd",
