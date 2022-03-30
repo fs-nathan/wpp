@@ -10,7 +10,9 @@ import {
   actionVisibleDrawerMessage,
   getNumberMessageNotViewer,
   getNumberNotificationNotViewer,
+  getProfileService,
   openNoticeModal,
+  actionActiveGroup,
 } from "../../actions/system/system";
 import { Routes } from "../../constants/routes";
 import { isEmpty } from "../../helpers/utils/isEmpty";
@@ -64,10 +66,18 @@ const LeftBar = ({
   sidebar,
   ...props
 }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const pathname = history.location.pathname;
   // const { group_active } = profile;
   const bgColor = colors.find((item) => item.selected === true);
+
+  const [profileState, setProfile] = React.useState(profile);
+
+  React.useEffect(() => {
+    if (profile) {
+      setProfile(profile);
+    }
+  }, [profile]);
 
   const handleFetchNumNotificationNotView = async () => {
     try {
@@ -81,11 +91,29 @@ const LeftBar = ({
       props.getNumberMessageNotViewer(data.number_chat);
     } catch (err) {}
   };
+  const handleFetchProfile = async (isNotice) => {
+    try {
+      const { data } = await getProfileService();
+      if (data.data) {
+        props.actionGetProfile(data.data);
+        i18n.changeLanguage((data.data && data.data.language) || "vi");
+        props.actionActiveGroup(data.data.group_active);
+        if (
+          data.data.group_active &&
+          data.data.group_active.type === "Free" &&
+          !isNotice
+        ) {
+          openNoticeModal("ACCOUNT_FREE");
+        }
+      }
+    } catch (err) {}
+  };
   React.useEffect(() => {
     const hasToken = localStorage.getItem(TOKEN);
     if (hasToken && (!profile || !profile.id)) {
       handleFetchNumNotificationNotView();
       handleFetchNumMessageNotView();
+      handleFetchProfile()
     }
   }, []);
 
@@ -166,7 +194,7 @@ const LeftBar = ({
 
       <div>
         {bottomList.map((item, index) => {
-          return <PopoverMenu key={index} {...item} />;
+          return <PopoverMenu key={index} {...item} profile={profileState}/>;
         })}
       </div>
     </div>
@@ -182,5 +210,5 @@ export default connect(
     sidebar: state.system.sidebar,
     newMessage: state.taskDetail.listDetailTask.newMessage,
   }),
-  { actionVisibleDrawerMessage, openNoticeModal }
+  { actionVisibleDrawerMessage, openNoticeModal, actionActiveGroup }
 )(withRouter(LeftBar));

@@ -57,7 +57,7 @@ import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
 import { Routes } from "../constants/routes";
 import routes from "../routes";
 import LeftBar from "../views/LeftBar";
-import TopBar from "../views/TopBar";
+// import TopBar from "../views/TopBar";
 import { get } from "lodash";
 import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
 import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
@@ -256,12 +256,14 @@ function MainLayout({
   getRemindDetail,
   setNumberMessageNotView,
   t,
+  isAuthenticated,
   ...props
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
   const [openRemindDetail, setOpenRemindDetail] = useState(false);
   const [collapse, setCollapse] = useState(true);
+  // const token = useGetToken()
   function handleReactEmotion(data) {
     updateChatState(data.id, { data_emotion: data.emotions });
   }
@@ -269,6 +271,8 @@ function MainLayout({
   function handleDeleteChat(data) {
     updateChatState(data.id, { type: CHAT_TYPE.TEXT, is_deleted: true });
   }
+
+
 
   function handleViewChat(data) {
     console.log("handleViewChat", data);
@@ -315,12 +319,12 @@ function MainLayout({
 
   useEffect(() => {
     const hasToken = localStorage.getItem(TOKEN);
-    if (hasToken && (!props.profile || !props.profile.id)) {
+    if (isAuthenticated && (!profile || !profile.id)) {
       handleFetchNumNotificationNotView();
       handleFetchNumMessageNotView();
       handleFetchProfile();
     }
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     // if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
@@ -617,6 +621,7 @@ export default connect(
     visibleRemindDetail: state.system.visibleRemindDetail,
     detailOffer: state.offerPage["DETAIL_OFFER"].offer ?? [],
     detailRemind: state.calendar.remindDetail,
+    isAuthenticated: state.authentications.isAuthenticated,
   }),
   {
     getListTaskDetail,

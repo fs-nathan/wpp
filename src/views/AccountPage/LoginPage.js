@@ -58,9 +58,6 @@ const LoginPage = (props) => {
       localStorage.setItem(REFRESH_TOKEN, data.refreshToken);
       localStorage.setItem(GROUP_ACTIVE, data.group_active);
       const token = localStorage.getItem(TOKEN);
-      if(token){
-        history.replace(Routes.HOME);
-      }
       //
       apiService.defaults.headers.common[
         "Authorization"
@@ -78,6 +75,7 @@ const LoginPage = (props) => {
         props.openNoticeModal("ACCOUNT_FREE");
       }
       props.loginSuccess(data);
+      history.replace(Routes.HOME);
       return;
     } catch (error) {
       setLoginFail(true);
@@ -181,7 +179,7 @@ const LoginPage = (props) => {
           </Link>
         </div>
       </div>
-      </MainAccount>
+    </MainAccount>
   );
 };
 
