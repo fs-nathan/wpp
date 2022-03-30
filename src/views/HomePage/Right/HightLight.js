@@ -1,3 +1,4 @@
+/* eslint-disable import/no-anonymous-default-export */
 import { Avatar, Box, ButtonBase } from "@material-ui/core";
 import { mdiStarHalf } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -65,13 +66,11 @@ export const HightLight = ({ posts, isToggle, onMoreClick }) => {
       <Box borderBottom="1px solid rgba(0, 0, 0, 0.12)"></Box>
       <TasksCard.Content>
         <Stack small>
-          {
-            posts.map((item, i) => {
-              return (
-                <HighlightItem key={i} {...{ item, history }}></HighlightItem>
-              );
-            })
-          }
+          {posts.map((item, i) => {
+            return (
+              <HighlightItem key={i} {...{ item, history }}></HighlightItem>
+            );
+          })}
           {posts.length === 0 && (
             <EmptyHolder title={"Không tìm thấy bài post nào"} description="" />
           )}
@@ -108,12 +107,15 @@ export default (props) => {
   }, [location, toggle]);
   return (
     <>
-      <HightLight
-        posts={posts.filter((item, i) => isToggle || i < 3)}
-        {...props}
-        isToggle={posts.length <= 3 || isToggle}
-        onMoreClick={() => toggle()}
-      />
+      {posts?.length > 0 ? (
+        <HightLight
+          posts={posts.filter((item, i) => isToggle || i < 3)}
+          {...props}
+          isToggle={posts.length <= 3 || isToggle}
+          onMoreClick={() => toggle()}
+        />
+      ) : null}
+
       {/* {isToggle && (
         <Dialog
           onClose={() => toggle()}

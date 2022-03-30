@@ -42,7 +42,10 @@ const ListPart = ({ premissions = emptyObject }) => {
           name: t("IDS_WP_ROLE"),
           url: Routes.SETTING_GROUP_ROLE_MANAGER,
         },
-        
+        !!get(premissions, premissionAttr.manage_role) && {
+          name: t("IDS_WP_PROJECT_CALENDAR"),
+          url: Routes.CALENDAR_PROJECT_MANAGE,
+        },
       ].filter((item) => item && item !== null),
     },
     !!get(premissions, premissionAttr.manage_order) && {
@@ -51,7 +54,7 @@ const ListPart = ({ premissions = emptyObject }) => {
         {
           name: t("IDS_WP_CREATE_ORDER"),
           url: Routes.SETTING_GROUP_CREATE_ORDER,
-          noti: true
+          noti: true,
         },
         { name: t("IDS_WP_ORDER_LIST"), url: Routes.SETTING_GROUP_ORDER },
         { name: t("IDS_WP_PAYMENT_INFO"), url: Routes.SETTING_GROUP_PAYMENT },

@@ -56,4 +56,5 @@ export const Routes = {
   PROJECT_GRANT: "/projects/task-gantt/:projectId",
   WORKPLACE: "/workplace",
   CHAT: "/chats",
+  CALENDAR_PROJECT_MANAGE: "/calendars/project/detail",
 };

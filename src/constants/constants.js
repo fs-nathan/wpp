@@ -38,6 +38,7 @@ export const SETTING_GROUP = {
   PAYMENT: "payment",
   LANGUAGE: "language",
   NOTIFICATION: "notification",
+  WORK_CALENDAR: "workCalendar"
 };
 export const MESSAGE = {
   ALL: "message-all",
