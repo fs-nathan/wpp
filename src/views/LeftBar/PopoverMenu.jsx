@@ -12,7 +12,7 @@ import {
   TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW,
   TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW,
   TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW,
-} from 'views/OfferPage/contants/localStorage';
+} from "views/OfferPage/contants/localStorage";
 import {
   LOCAL_PERSONAL_REMINDS_STORAGE,
   LOCAL_PROJECT_REMINDS_STORAGE,
@@ -21,7 +21,7 @@ import SearchModal from "../../components/SearchModal/SearchModal";
 import Badge from "@material-ui/core/Badge";
 import { IconButton } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { Routes } from 'constants/routes';
+import { Routes } from "constants/routes";
 
 import {
   actionVisibleDrawerMessage,
@@ -68,23 +68,25 @@ function PopoverMenu(props) {
     setAnchorEl(event.currentTarget);
     if (props?.isSearchModal) {
       openSearchModal();
+      setAnchorEl(null)
     }
     if (props?.drawer_type) {
       openDrawer(props);
+      setAnchorEl(null)
     }
   };
   const onLogout = () => {
-          localStorage.removeItem(TOKEN);
-          localStorage.removeItem(REFRESH_TOKEN);
-          localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW);
-          localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW);
-          localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW);
-          localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
-          localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
-          localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
-          localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
-          history.push(Routes.LOGIN)
-  }
+    localStorage.removeItem(TOKEN);
+    localStorage.removeItem(REFRESH_TOKEN);
+    localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_GROUP_VIEW);
+    localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_PROJECT_VIEW);
+    localStorage.removeItem(TIME_FILTER_TYPE_OFFER_BY_DEPARTMENT_VIEW);
+    localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+    localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+    localStorage.removeItem(LOCAL_PERSONAL_REMINDS_STORAGE);
+    localStorage.removeItem(LOCAL_PROJECT_REMINDS_STORAGE);
+    history.push(Routes.LOGIN);
+  };
   const onCloseDrawer = () => {
     props.actionVisibleDrawerMessage({ type: "", anchor: "right" });
   };
@@ -215,10 +217,10 @@ function PopoverMenu(props) {
                     className="menu-sub-item"
                     onClick={() => {
                       if (childItem.isLogout) {
-                        onLogout()
-                        return
+                        onLogout();
+                        return;
                       }
-                        history.push(childItem.url_redirect);
+                      history.push(childItem.url_redirect);
                     }}
                   >
                     <div className="menu-icon-popover">

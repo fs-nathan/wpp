@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import ReactHtmlParser from "react-html-parser";
 import { Button } from "@material-ui/core";
+import Badge from "@material-ui/core/Badge";
 import {
   actionChangeNumNotificationNotView,
   actionVisibleDrawerMessage,
@@ -129,7 +130,26 @@ const LeftBar = ({
           {logo && <img src={logo} />}
         </div>
         {menuList.map((item, index) => {
-          return (
+          return item.need_bell ? (
+            <Link
+              key={index}
+              className={`menu-item ${item.isSelected ? "actived" : ""}`}
+              to={item.url_redirect}
+            >
+              <Badge
+                badgeContent={props.newMessage > 0 ? "" : null}
+                color="error"
+                className={`menu-badge-leftbar ${
+                  props.newMessage <= 0 ? "none-view" : ""
+                }`}
+              >
+                <div className="menu-icon">
+                  {item.icon && <img src={item.icon.default} />}
+                </div>
+              </Badge>
+              <p>{t(item.name)}</p>
+            </Link>
+          ) : (
             <Link
               key={index}
               className={`menu-item ${item.isSelected ? "actived" : ""}`}
@@ -160,6 +180,7 @@ export default connect(
     groupActive: state.system.groupActive,
     profile: state.system.profile,
     sidebar: state.system.sidebar,
+    newMessage: state.taskDetail.listDetailTask.newMessage,
   }),
   { actionVisibleDrawerMessage, openNoticeModal }
 )(withRouter(LeftBar));

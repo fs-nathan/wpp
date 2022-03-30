@@ -85,6 +85,7 @@ export const initialState = {
     {
       name: "Tin nhắn",
       path_search: "/chats",
+      need_bell: true,
       path_search_more: false,
       url_icon: icon_messenger,
       url_icon_selected: icon_messenger_sl,
@@ -119,7 +120,6 @@ export const initialState = {
     },
     {
       name: "Thông báo",
-      need_bell: true,
       isBottom: true,
       // path_search: "/chats",
       path_search_more: false,
