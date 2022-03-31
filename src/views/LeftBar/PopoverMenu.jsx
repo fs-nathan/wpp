@@ -240,7 +240,7 @@ function PopoverMenu(props) {
                               width: "25px",
                               height: "25px",
                               fill: `${!childItem.backgroundApply
-                                  ? "#6d6e6f"
+                                  ? "#7a7a7a"
                                   : "#ffffff"
                                 }`,
                             }}

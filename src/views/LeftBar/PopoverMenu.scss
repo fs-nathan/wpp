@@ -16,7 +16,7 @@
       svg {
         width: 22px !important;
         height: 22px !important;
-        fill: rgb(122, 122, 122) !important;
+        // fill: rgb(122, 122, 122) !important;
       }
     }
     img {
@@ -66,4 +66,11 @@
 
 .MuiList-root {
   padding: 0 0 !important;
+}
+
+.background-boolean {
+  background-repeat: no-repeat;
+  background-position: center center, center top;
+  background-size: cover !important;
+  background: url("../../assets/home_baner_right1.png") 100%;
 }
