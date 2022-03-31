@@ -28,8 +28,9 @@ const BannerInviteContainer = styled.div`
     top: 4vh;
     left: 2vh;
     color: #fff;
-    font-size: 22px;
+    font-size: 15px;
     width: 30vh;
+    line-height: 20px;
   }
 `;
 

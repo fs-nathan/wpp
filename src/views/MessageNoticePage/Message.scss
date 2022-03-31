@@ -61,6 +61,9 @@
           font-size: 14px;
           font-weight: 500;
           margin-bottom: 5px;
+          span {
+            font-size: 14px !important;
+          }
           &.content-text {
             font-weight: 400;
           }
@@ -156,6 +159,9 @@
           font-size: 14px;
           font-weight: 500;
           margin-bottom: 5px;
+          span {
+            font-size: 14px !important;
+          }
           &.content-text {
             font-weight: 400;
           }
@@ -190,7 +196,7 @@
   box-sizing: border-box;
   transition: transform 225ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
   align-items: center;
-  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
   font-weight: 500;
   line-height: 1;
   align-content: center;

@@ -40,14 +40,15 @@ function TwoColumnsLayout({
     setSubSlide(subSlide);
   }
 
+  const cardStyle = {
+    display: expand ? "none" : "initial",
+    opacity: expand ? "0" : "100",
+    transition: "transform 0ms cubic-bezier(0, 0, 0.2, 1) 0ms",
+  };
+
   return (
     <Container expand={expand}>
-      <LeftDiv
-        className="left-div"
-        style={{
-          display: expand ? "none" : "initial",
-        }}
-      >
+      <LeftDiv className="left-div" style={cardStyle}>
         {leftRenders[subSlide]({ handleSubSlide })}
       </LeftDiv>
       <RightDiv>

@@ -71,6 +71,7 @@ export const initialState = {
       path_search: "/projects",
       path_search_more: ["/workplace"],
       url_icon: icon_work,
+      isCheckServer: true,
       url_icon_selected: icon_work_sl,
       url_redirect: "/workplace",
     },

@@ -165,7 +165,19 @@ function CustomTable({
                     ))
                 }
               >
-                <MenuOutlinedIcon sx={{ fontSize: 28 }} />
+                <MenuOutlinedIcon
+                  sx={{
+                    fontSize: '35px',
+                    padding: '3px',
+                    cursor: "pointer",
+                    color: "#8a8a8a",
+                    borderRadius: '3px',
+                    marginLeft: '5px',
+                    "&:hover": {
+                      background: "#f7f7f7",
+                    },
+                  }}
+                />
               </div>
               <div>
                 <div style={styleOfTitleHead}>

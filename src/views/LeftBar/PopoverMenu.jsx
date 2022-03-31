@@ -20,7 +20,7 @@ import {
 import SearchModal from "../../components/SearchModal/SearchModal";
 import Badge from "@material-ui/core/Badge";
 import { IconButton } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 import { Routes } from "constants/routes";
 
 import {
@@ -49,7 +49,7 @@ const StyledMenu = styled((props) => (
     boxShadow:
       "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
     "& .MuiMenu-list": {
-      padding: "4px 0",
+      padding: "8px 0 !important",
     },
     "& .MuiMenuItem-root": {
       "& .MuiSvgIcon-root": {
@@ -64,6 +64,8 @@ function PopoverMenu(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const history = useHistory();
+  const location = useLocation();
+  const [currentRoute, setRoute] = React.useState(location.pathname)
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
     if (props?.isSearchModal) {
@@ -75,6 +77,14 @@ function PopoverMenu(props) {
       setAnchorEl(null)
     }
   };
+
+  React.useEffect(() => {
+    if (location.pathname !== currentRoute) {
+      setAnchorEl(null)
+      setRoute(location.pathname)
+    }
+  }, [location.pathname])
+
   const onLogout = () => {
     localStorage.removeItem(TOKEN);
     localStorage.removeItem(REFRESH_TOKEN);
@@ -146,7 +156,7 @@ function PopoverMenu(props) {
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
-        // to={bottomList.url_redirect}
+      // to={bottomList.url_redirect}
       >
         {!props?.component ? (
           <>
@@ -157,13 +167,12 @@ function PopoverMenu(props) {
                 <>
                   {props.numberNotificationNotView +
                     props.numberMessageNotView >
-                  0 ? (
+                    0 ? (
                     <Badge
                       badgeContent={"N"}
                       color="error"
-                      className={`bag-cus ${
-                        props.numberNotificationNotView ? "none-view" : ""
-                      }`}
+                      className={`bag-cus ${props.numberNotificationNotView ? "none-view" : ""
+                        }`}
                     >
                       <IconButton className="cursor-pointer top-icon">
                         <>{props.icon && <img src={props.icon.default} />}</>
@@ -182,9 +191,10 @@ function PopoverMenu(props) {
             <div className="menu-icon ">
               {/* {props.icon && <img src={props.icon.default} />} */}
               <span className="menu-icon-profile">
-                {props?.profile?.name
+                {/* {props?.profile?.name
                   ? props?.profile?.name.substring(0, 1)
-                  : null}
+                  : null} */}
+                  <img src={props.profile?.avatar} />
               </span>
             </div>
             <p>{props?.profile?.name}</p>
@@ -208,9 +218,8 @@ function PopoverMenu(props) {
                 key={`${index}${childItem.name}`}
                 disableRipple
                 onClick={() => openDrawer(childItem)}
-                className={`${
-                  childItem.backgroundApply ? "background-apply" : ""
-                }`}
+                className={`${childItem.backgroundApply ? "background-apply" : ""
+                  }`}
               >
                 {childItem.url_redirect ? (
                   <div
@@ -230,11 +239,10 @@ function PopoverMenu(props) {
                             style={{
                               width: "25px",
                               height: "25px",
-                              fill: `${
-                                !childItem.backgroundApply
+                              fill: `${!childItem.backgroundApply
                                   ? "#6d6e6f"
                                   : "#ffffff"
-                              }`,
+                                }`,
                             }}
                           />
                         )}
@@ -251,11 +259,10 @@ function PopoverMenu(props) {
                             style={{
                               width: "25px",
                               height: "25px",
-                              fill: `${
-                                !childItem.backgroundApply
+                              fill: `${!childItem.backgroundApply
                                   ? "#6d6e6f"
                                   : "#ffffff"
-                              }`,
+                                }`,
                             }}
                           />
                         )}

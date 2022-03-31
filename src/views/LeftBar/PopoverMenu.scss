@@ -13,6 +13,11 @@
       margin-right: 10px;
       display: flex;
       align-items: center;
+      svg {
+        width: 22px !important;
+        height: 22px !important;
+        fill: rgb(122, 122, 122) !important;
+      }
     }
     img {
       height: 25px;
@@ -38,10 +43,16 @@
 }
 
 .menu-icon-profile {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  background: #01f3d9;
+  background: transparent;
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50%;
+    object-fit: cover;
+  }
   display: flex;
   align-items: center;
   justify-content: center;

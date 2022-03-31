@@ -113,7 +113,7 @@ const LeftBar = ({
     if (hasToken && (!profile || !profile.id)) {
       handleFetchNumNotificationNotView();
       handleFetchNumMessageNotView();
-      handleFetchProfile()
+      handleFetchProfile();
     }
   }, []);
 
@@ -146,6 +146,18 @@ const LeftBar = ({
     });
   }
   const isFree = groupActive.type === "Free";
+  const findurlDirect = (item) => {
+    const findServer = profile?.group_active?.modules?.find(
+      (group) => group.name === item.name
+    );
+    let urlDirect = "";
+    if (findServer) {
+      urlDirect = findServer.url_redirect;
+    } else {
+      urlDirect = item.url_redirect;
+    }
+    return urlDirect;
+  };
   return (
     <div
       className={`left-bar-container`}
@@ -177,6 +189,17 @@ const LeftBar = ({
               </Badge>
               <p>{t(item.name)}</p>
             </Link>
+          ) : item.isCheckServer ? (
+            <Link
+              key={index}
+              className={`menu-item ${item.isSelected ? "actived" : ""}`}
+              to={findurlDirect(item)}
+            >
+              <div className="menu-icon">
+                {item.icon && <img src={item.icon.default} />}
+              </div>
+              <p>{t(item.name)}</p>
+            </Link>
           ) : (
             <Link
               key={index}
@@ -194,7 +217,7 @@ const LeftBar = ({
 
       <div>
         {bottomList.map((item, index) => {
-          return <PopoverMenu key={index} {...item} profile={profileState}/>;
+          return <PopoverMenu key={index} {...item} profile={profileState} />;
         })}
       </div>
     </div>

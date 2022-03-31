@@ -11,16 +11,16 @@ const BannerDownloadContainer = styled.div`
   background-repeat: no-repeat;
   background-position: center center, center top;
   background-size: cover;
-  border-radius: 15px;
+  border-radius: 5px;
   background-image: url(${bannerdownload});
   position: relative;
   cursor: pointer;
   p {
     position: absolute;
-    top: 0.5vh;
+    top: 1vh;
     left: 3vh;
     color: #fff;
-    font-size: 20px;
+    font-size: 15px;
     width: 20vh;
   }
 `;
