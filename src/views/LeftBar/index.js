@@ -39,7 +39,7 @@ import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import backgroundmenu from "assets/home_baner_right1.png";
 import GroupAccountModal from "components/GroupAccountModal/GroupAccountModal";
-
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 const BellMessage = () => {
   const numberChatNotView = useSelector(
     (state) => state.threadChat.numberChatNotView
@@ -91,7 +91,13 @@ const StyledMenu = styled((props) => (
     boxShadow:
       "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
     "& .MuiMenu-list": {
-      padding: "8px 0 !important",
+      // padding: "8px 0 !important",
+    },
+    ".MuiListItem-button": {
+      "&:hover": {
+        background: "#f2f5fa",
+        transition: "background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+      },
     },
     "& .MuiMenuItem-root": {
       "& .MuiSvgIcon-root": {
@@ -153,20 +159,30 @@ const LeftBar = ({
   logo,
   detailProfile,
   sidebar,
+  numberMessageNotView,
   ...props
 }) => {
   const { t, i18n } = useTranslation();
   const pathname = history.location.pathname;
   // const { group_active } = profile;
   const bgColor = colors.find((item) => item.selected === true);
-
+  const [numberMessageNotViewState, setNumberMessageNotView] =
+    React.useState(numberMessageNotView);
   const [profileState, setProfile] = React.useState(profile);
-
+  const [detailProfileState, setDetailProfile] = React.useState(detailProfile);
   React.useEffect(() => {
     if (profile) {
       setProfile(profile);
     }
   }, [profile]);
+  React.useEffect(() => {
+    setNumberMessageNotView(numberMessageNotView);
+  }, [numberMessageNotView]);
+  React.useEffect(() => {
+    if (detailProfile) {
+      setDetailProfile(detailProfile);
+    }
+  }, [detailProfile]);
 
   const handleFetchNumNotificationNotView = async () => {
     try {
@@ -279,7 +295,7 @@ const LeftBar = ({
   }, [location.pathname]);
 
   const [currentRoute, setRoute] = React.useState(location.pathname);
-
+  console.log(numberMessageNotViewState);
   const [openCreateAccount, setOpenCreateAccount] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [openAddUSerModal, setOpenAddUserModal] = React.useState(false);
@@ -350,7 +366,7 @@ const LeftBar = ({
       >
         <div>
           <div
-            className="logo menu-item"
+            className="logo menu-item menu-top-avatar-item"
             // onClick={() => setVisibleGroupModal(true)}
             onClick={handleClick}
             variant="logo-avatar"
@@ -360,8 +376,10 @@ const LeftBar = ({
           >
             <div className="menu-icon">{logo && <img src={logo} />}</div>
             <div className="logo-name">
-              <p className="title">{detailProfile.name}</p>
-              <p className="id">ID: {detailProfile.code}</p>
+              <p className="title">{detailProfileState.name}</p>
+              <p className="id">
+                ID: {detailProfileState.code} <ArrowRightIcon />
+              </p>
             </div>
           </div>
           <StyledMenu
@@ -422,10 +440,10 @@ const LeftBar = ({
                 to={item.url_redirect}
               >
                 <Badge
-                  badgeContent={props.newMessage > 0 ? "" : null}
+                  badgeContent={numberMessageNotViewState > 0 ? "" : null}
                   color="error"
                   className={`menu-badge-leftbar ${
-                    props.newMessage <= 0 ? "none-view" : ""
+                    numberMessageNotViewState <= 0 ? "none-view" : ""
                   }`}
                 >
                   <div className="menu-icon">
@@ -479,6 +497,7 @@ export default connect(
     sidebar: state.system.sidebar,
     detailProfile: state.setting.groupDetail,
     newMessage: state.taskDetail.listDetailTask.newMessage,
+    numberMessageNotView: state.system.numberMessageNotView,
   }),
   { actionVisibleDrawerMessage, openNoticeModal, actionActiveGroup }
 )(withRouter(LeftBar));

@@ -22,6 +22,7 @@ import Badge from "@material-ui/core/Badge";
 import { IconButton } from "@material-ui/core";
 import { useLocation, useHistory } from "react-router-dom";
 import { Routes } from "constants/routes";
+import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 
 import {
   actionVisibleDrawerMessage,
@@ -41,6 +42,14 @@ const StyledMenu = styled((props) => (
     {...props}
   />
 ))(({ theme }) => ({
+  ".MuiMenuItem-root": {
+    paddingTop: 0,
+    paddingBottom: 0,
+    transition: "background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
+    "&:hover": {
+      background: "#f2f5fa"
+    }
+  },
   "& .MuiPaper-root": {
     borderRadius: 6,
     minWidth: 180,
@@ -49,7 +58,7 @@ const StyledMenu = styled((props) => (
     boxShadow:
       "rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px",
     "& .MuiMenu-list": {
-      padding: "8px 0 !important",
+      // padding: "8px 0 !important",
     },
     "& .MuiMenuItem-root": {
       "& .MuiSvgIcon-root": {
@@ -151,7 +160,7 @@ function PopoverMenu(props) {
       )}
       <div
         variant={props.name}
-        className={`menu-item ${props.isSelected ? "actived" : ""}`}
+        className={`menu-item ${props.isSelected ? "actived" : ""}  ${props.component ? "menu-avatar-item" : ""}`}
         aria-controls={open ? "demo-customized-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
@@ -165,13 +174,13 @@ function PopoverMenu(props) {
                 <>{props.icon && <img src={props.icon.default} />}</>
               ) : (
                 <>
-                  {props.numberNotificationNotView +
+                  {props.numberNotificationNotView > 0 ||
                     props.numberMessageNotView >
                     0 ? (
                     <Badge
-                      badgeContent={"N"}
+                      badgeContent={""}
                       color="error"
-                      className={`bag-cus ${props.numberNotificationNotView ? "none-view" : ""
+                      className={`menu-badge-leftbar ${props.numberNotificationNotView ? "none-view" : ""
                         }`}
                     >
                       <IconButton className="cursor-pointer top-icon">
@@ -194,10 +203,12 @@ function PopoverMenu(props) {
                 {/* {props?.profile?.name
                   ? props?.profile?.name.substring(0, 1)
                   : null} */}
-                  <img src={props.profile?.avatar} />
+                <img src={props.profile?.avatar} />
+
               </span>
             </div>
             <p>{props?.profile?.name}</p>
+            <ArrowRightIcon />
           </>
         )}
       </div>
@@ -213,6 +224,7 @@ function PopoverMenu(props) {
           onClose={handleClose}
         >
           {props.child_menu.map((childItem, index) => {
+            // console.log(props[childItem.bell_id], childItem.bell_id)
             return (
               <MenuItem
                 key={`${index}${childItem.name}`}
@@ -240,8 +252,8 @@ function PopoverMenu(props) {
                               width: "25px",
                               height: "25px",
                               fill: `${!childItem.backgroundApply
-                                  ? "#7a7a7a"
-                                  : "#ffffff"
+                                ? "#7a7a7a"
+                                : "#ffffff"
                                 }`,
                             }}
                           />
@@ -260,8 +272,8 @@ function PopoverMenu(props) {
                               width: "25px",
                               height: "25px",
                               fill: `${!childItem.backgroundApply
-                                  ? "#6d6e6f"
-                                  : "#ffffff"
+                                ? "#6d6e6f"
+                                : "#ffffff"
                                 }`,
                             }}
                           />

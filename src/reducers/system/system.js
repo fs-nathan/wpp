@@ -127,6 +127,7 @@ export const initialState = {
       url_icon: icon_noti,
       url_icon_selected: icon_noti_sl,
       // url_redirect: "/chats",
+      need_bell: true,
       child_menu: [
         {
           name: "Thảo luận",
