@@ -446,7 +446,7 @@ const LeftBar = ({
                     numberMessageNotViewState <= 0 ? "none-view" : ""
                   }`}
                 >
-                  <div className="menu-icon">
+                  <div className="menu-icon menu-icon-navbar">
                     {item.icon && <img src={item.icon.default} />}
                   </div>
                 </Badge>
@@ -458,7 +458,7 @@ const LeftBar = ({
                 className={`menu-item ${item.isSelected ? "actived" : ""}`}
                 to={findurlDirect(item)}
               >
-                <div className="menu-icon">
+                <div className="menu-icon menu-icon-navbar">
                   {item.icon && <img src={item.icon.default} />}
                 </div>
                 <p>{t(item.name)}</p>
@@ -469,7 +469,7 @@ const LeftBar = ({
                 className={`menu-item ${item.isSelected ? "actived" : ""}`}
                 to={item.url_redirect}
               >
-                <div className="menu-icon">
+                <div className="menu-icon menu-icon-navbar">
                   {item.icon && <img src={item.icon.default} />}
                 </div>
                 <p>{t(item.name)}</p>
