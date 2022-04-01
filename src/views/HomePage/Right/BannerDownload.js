@@ -17,11 +17,12 @@ const BannerDownloadContainer = styled.div`
   cursor: pointer;
   p {
     position: absolute;
-    top: 1vh;
+    top: 0vh;
     left: 3vh;
     color: #fff;
-    font-size: 15px;
-    width: 20vh;
+    font-size: 2vh;
+    width: 30vh;
+    height: 50vh;
   }
 `;
 
@@ -32,7 +33,11 @@ function BannerDownload() {
     <BannerDownloadContainer
       onClick={() => window.open("https://workplus.vn/mobile-app/", "_blank")}
     >
-      <p>{t("Tải app Workplus dành cho điện thoại")}</p>
+      <p
+        dangerouslySetInnerHTML={{
+          __html: t("Tải app Workplus <br>dành cho điện thoại"),
+        }}
+      ></p>
     </BannerDownloadContainer>
   );
 }

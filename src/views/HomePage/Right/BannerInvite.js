@@ -28,7 +28,7 @@ const BannerInviteContainer = styled.div`
     top: 4vh;
     left: 2vh;
     color: #fff;
-    font-size: 15px;
+    font-size: 2vh;
     width: 30vh;
     line-height: 20px;
   }
@@ -80,7 +80,12 @@ function BannerInvite() {
         setOpenUploadExcel={setOpenUploadExcel}
       />
       <BannerInviteContainer onClick={() => setOpenAddUserModal(true)}>
-        <p>{t("Mời đồng nghiệp tham gia làm việc nhóm")}</p>
+        <p
+          dangerouslySetInnerHTML={{
+            __html:  t("Mời đồng nghiệp tham gia <br>làm việc nhóm"),
+          }}
+        >
+        </p>
       </BannerInviteContainer>
       <ModalResultCreateAccount
         result={result}
