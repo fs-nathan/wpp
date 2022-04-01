@@ -206,7 +206,7 @@ const system = (state = initialState, action) => {
     case actionTypes.CLOSE_LEFT_PART:
       return {
         ...state,
-        closeLeftPart: !state.closeLeftPart
+        closeLeftPart: !state.closeLeftPart,
       };
     case actionTypes.CHANGE_DRAWER:
       return {
@@ -223,7 +223,11 @@ const system = (state = initialState, action) => {
       };
     case actionTypes.GROUP_ACTIVE:
       localStorage.setItem(actionTypes.COLOR_ACTIVE, action.payload.color);
-      return { ...state, groupActive: action.payload };
+      const data = { ...action.payload };
+      return {
+        ...state,
+        groupActive: { ...data },
+      };
     case actionTypes.CHANGE_DOCUMENT_DETAIL:
       return {
         ...state,

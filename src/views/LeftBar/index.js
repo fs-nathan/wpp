@@ -169,7 +169,7 @@ const LeftBar = ({
   const [numberMessageNotViewState, setNumberMessageNotView] =
     React.useState(numberMessageNotView);
   const [profileState, setProfile] = React.useState(profile);
-  const [detailProfileState, setDetailProfile] = React.useState(detailProfile);
+  const [detailProfileState, setDetailProfile] = React.useState(groupActive);
   React.useEffect(() => {
     if (profile) {
       setProfile(profile);
@@ -179,10 +179,10 @@ const LeftBar = ({
     setNumberMessageNotView(numberMessageNotView);
   }, [numberMessageNotView]);
   React.useEffect(() => {
-    if (detailProfile) {
-      setDetailProfile(detailProfile);
-    }
-  }, [detailProfile]);
+    // console.log(detailProfile);
+    // console.log(detailProfileState);
+    setDetailProfile(groupActive);
+  }, [groupActive]);
 
   const handleFetchNumNotificationNotView = async () => {
     try {
