@@ -1,10 +1,10 @@
 .upgrade-account-container {
-    padding: 80px 100px;
+    padding: 8vh 10vh;
     display: flex;
     align-items: center;
     .card {
-        width: 30%;
-        max-width: 34vh;
+        width: 32vh;
+        // max-width: 34vh;
         position: relative;
         display: flex;
         flex-direction: column;
@@ -16,7 +16,7 @@
         border-radius: 0.25rem;
         margin: 0 40px;
         .card-header {
-            padding: 30px 80px;
+            padding: 5vh 8vh;
             margin-bottom: 0;
             border-bottom: 1px solid rgba(0, 0, 0, 0.125);
             display: flex;
@@ -37,7 +37,7 @@
                 }
             }
             .card-content-value {
-                font-size: 30px;
+                font-size: 4vh;
             }
             .card-content-user {
                 margin-bottom: 20px!important;

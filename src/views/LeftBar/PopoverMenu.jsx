@@ -46,9 +46,9 @@ const StyledMenu = styled((props) => (
     paddingTop: 0,
     paddingBottom: 0,
     transition: "background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms",
-    "&:hover": {
-      background: "#f2f5fa"
-    }
+    // "&:hover": {
+    // background: "#f2f5fa"
+    // }
   },
   "& .MuiPaper-root": {
     borderRadius: 6,

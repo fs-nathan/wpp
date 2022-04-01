@@ -82,7 +82,7 @@ function UpgradeAccount() {
             <p className="card-content-value">55.0000</p>
             <p className="card-content-user">vnđ/người dùng/tháng</p>
             <StyledButton
-              size="large"
+              style={{padding:'1.2vh 3vh'}}
               onClick={() => history.push(Routes.SETTING_GROUP_CREATE_ORDER)}
             >
               Bắt đầu

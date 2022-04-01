@@ -11,12 +11,24 @@
   overflow-x: hidden;
   overflow: hidden;
   z-index: 1000;
+  .menu-top-avatar-item {
+    transition: all 0.3s ease-out;
+    img {
+      width: 45px !important;
+      height: 45px !important;
+    }
+  }
   &:hover {
     width: 200px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    .menu-avatar-item,
-    .menu-top-avatar-item {
+    .menu-avatar-item .menu-top-avatar-item {
       background: #00000014;
+    }
+    .menu-top-avatar-item {
+      img {
+        width: 32px !important;
+        height: 32px !important;
+      }
     }
   }
 

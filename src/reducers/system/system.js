@@ -132,14 +132,14 @@ export const initialState = {
         {
           name: "Thảo luận",
           need_bell: true,
-          bell_id: "numberNotificationNotView",
+          bell_id: "numberMessageNotView",
           path_search_more: false,
           icon: ForumOutlinedIcon,
           drawer_type: DRAWER_TYPE.MESSAGE,
         },
         {
           name: "Thông báo nhóm",
-          bell_id: "numberMessageNotView",
+          bell_id: "numberNotificationNotView",
           need_bell: true,
           icon: NotificationsNoneOutlinedIcon,
           path_search_more: false,
