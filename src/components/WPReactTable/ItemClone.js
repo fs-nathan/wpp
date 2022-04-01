@@ -2,10 +2,11 @@ import classNames from "classnames";
 import React from "react";
 import styled from "styled-components";
 
-export function getStyle({ draggableStyle, virtualStyle, isDragging }) {
+export function getStyle({ draggableStyle, virtualStyle, isDragging, width }) {
   const combined = {
     ...virtualStyle,
     ...draggableStyle,
+    width,
   };
 
   return combined;

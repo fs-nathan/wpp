@@ -20,6 +20,8 @@ const ManageTableData = forwardRef(
     {
       onFilter = () => {},
       onAddColumns = () => {},
+      onHideColumn = () => {},
+      setItemLocation = () => {},
       onReOrderColumns = () => {},
     },
     ref
@@ -80,6 +82,8 @@ const ManageTableData = forwardRef(
             <SortListColumn
               ref={refSortColumns}
               onReOrderColumns={onReOrderColumns}
+              onHideColumn={onHideColumn}
+              setItemLocation={setItemLocation}
             />
 
             <div className={classes.wrapperOption}>

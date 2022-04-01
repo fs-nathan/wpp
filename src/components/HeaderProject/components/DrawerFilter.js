@@ -69,6 +69,8 @@ const DrawerFilter = forwardRef(
       onFilter = () => {},
       onSearch = () => {},
       onAddColumns = () => {},
+      onHideColumn = () => {},
+      setItemLocation = () => {},
       onReOrderColumns = () => {},
     },
     ref
@@ -234,6 +236,8 @@ const DrawerFilter = forwardRef(
           ref={refManageTableData}
           onReOrderColumns={onReOrderColumns}
           onAddColumns={onAddColumns}
+          onHideColumn={onHideColumn}
+          setItemLocation={setItemLocation}
         />
       </>
     );

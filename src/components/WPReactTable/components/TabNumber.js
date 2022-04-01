@@ -35,6 +35,10 @@ const TabNumber = forwardRef(
       }),
     }));
 
+    const formatter = new Intl.NumberFormat(undefined, {
+      minimumFractionDigits: decimal,
+    });
+
     const _handleSelect = (value) => {
       setDecimal(value);
     };
@@ -94,9 +98,9 @@ const TabNumber = forwardRef(
 
     return (
       <>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={7} pt={0}>
+            <Grid item xs={3} pt={0}>
               <TitleSectionModal label={t("FORMAT")} style={{ marginTop: 0 }} />
               <SelectFieldTypeDropdown
                 options={[
@@ -119,37 +123,30 @@ const TabNumber = forwardRef(
                 onSelect={_handleSelectFormat}
               />
             </Grid>
-            <Grid item xs={5} pt={0}>
-              {isAdditionLabel
-                ? _renderLabelNameInput()
-                : _renderDemicalNumber()}
+            {isAdditionLabel && (
+              <Grid item xs={3} pt={0}>
+                {_renderLabelNameInput()}
+              </Grid>
+            )}
+            <Grid item xs={3} pt={0}>
+              <TitleSectionModal
+                label={t("POSITION")}
+                style={{ marginTop: 0 }}
+              />
+              <SelectFieldTypeDropdown
+                options={[
+                  { text: "Trái", type: "left" },
+                  { text: "Phải", type: "right" },
+                ]}
+                defaultValue="right"
+                onSelect={_handleSelectPosition}
+              />
+            </Grid>
+            <Grid item xs={3} pt={0}>
+              {_renderDemicalNumber()}
             </Grid>
           </Grid>
         </Grid>
-
-        {isAdditionLabel && (
-          <Grid item xs={6}>
-            <Grid container spacing={2}>
-              <Grid item xs={7} pt={0}>
-                <TitleSectionModal
-                  label={t("POSITION")}
-                  style={{ marginTop: 0 }}
-                />
-                <SelectFieldTypeDropdown
-                  options={[
-                    { text: "Trái", type: "left" },
-                    { text: "Phải", type: "right" },
-                  ]}
-                  defaultValue="right"
-                  onSelect={_handleSelectPosition}
-                />
-              </Grid>
-              <Grid item xs={5} pt={0}>
-                {_renderDemicalNumber()}
-              </Grid>
-            </Grid>
-          </Grid>
-        )}
 
         <Grid item xs={6}>
           <Grid container spacing={2}>
@@ -170,11 +167,9 @@ const TabNumber = forwardRef(
                   fontSize: 18,
                 }}
               >
-                {position === "left" && isAdditionLabel && _renderFormatType()}{" "}
-                {parseFloat(1000).toFixed(decimal)}{" "}
-                {(!isAdditionLabel ||
-                  (isAdditionLabel && position === "right")) &&
-                  _renderFormatType()}
+                {position === "left" && _renderFormatType()}{" "}
+                {formatter.format(1000)}{" "}
+                {position === "right" && _renderFormatType()}
               </Typography>
             </Grid>
           </Grid>

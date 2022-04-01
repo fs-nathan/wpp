@@ -12,7 +12,7 @@ import { apiService } from "constants/axiosInstance";
 import {
   DEFAULT_MESSAGE,
   SnackbarEmitter,
-  SNACKBAR_VARIANT
+  SNACKBAR_VARIANT,
 } from "constants/snackbarController";
 import { exportToCSV } from "helpers/utils/exportData";
 import {
@@ -22,9 +22,9 @@ import {
   get,
   isNil,
   join,
-  uniqueId
+  uniqueId,
 } from "lodash";
-import React, { useReducer, useRef } from "react";
+import React, { useEffect, useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -71,6 +71,11 @@ function AllTaskTable({
   const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
   const isLoading = useSelector(({ task }) => task?.listTask?.loading);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
+  const [itemLocation, setItemLocation] = React.useState({
+    id: "",
+    startIndex: 0,
+    endIndex: 0,
+  });
   const [state, dispatchState] = useReducer(reducer, {
     ...initialState,
     columnsFields: fields,
@@ -79,7 +84,6 @@ function AllTaskTable({
   const refAlert = useRef(null);
   const dispatch = useDispatch();
   const { columnsFields } = state;
-
   /* Cloning the state.arrColumns array and storing it in the columns variable. */
   const columns = React.useMemo(() => {
     return cloneDeep(state.arrColumns);
@@ -97,8 +101,13 @@ function AllTaskTable({
   /* The columns are then passed to the dispatchState function, which sets the state. */
   React.useEffect(() => {
     if (columnsFields.length) {
+      const result = [...columnsFields];
+      if (itemLocation.id) {
+        const [removed] = result.splice(itemLocation.startIndex, 1);
+        result.splice(itemLocation.endIndex, 0, removed);
+      }
       const moreColumns = convertFieldsToTable(
-        columnsFields,
+        result,
         _handleEditColumn,
         handleReload
       );
@@ -110,7 +119,13 @@ function AllTaskTable({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columnsFields, fields]);
+  }, [
+    columnsFields,
+    fields,
+    itemLocation.startIndex,
+    itemLocation.endIndex,
+    itemLocation.id,
+  ]);
 
   /* When the fields array changes, update the state.columnsFields. */
   React.useEffect(() => {
@@ -124,7 +139,6 @@ function AllTaskTable({
 
   const _handleEditColumn = (type, data) => {
     let data_type = 3;
-
     switch (type) {
       case 1:
         data_type = "text";
@@ -230,9 +244,14 @@ function AllTaskTable({
     });
   };
 
-  const _handleHideColumn = async (idHide) => {
+  const _handleHideColumn = async (idHide, statusUpdate = 0, index) => {
     /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
     const newColumnsFields = state.arrColumns.filter(({ id }) => id !== idHide);
+    const columnHidden =
+      (!!statusUpdate && fields.filter(({ id }) => id === idHide)) || [];
+    if (columnHidden.length) {
+      newColumnsFields.splice(index, 0, { ...columnHidden[0], is_show: true });
+    }
     dispatchState({
       arrColumns: convertFieldsToTable(
         newColumnsFields,
@@ -241,20 +260,15 @@ function AllTaskTable({
       ),
       isSetted: true,
     });
-
-    const { status } = await apiService({
+    await apiService({
       data: {
         project_field_id: idHide,
         project_id: projectId,
-        status: 0,
+        status: statusUpdate,
       },
       url: "/project-field/set-status",
       method: "POST",
     });
-
-    if (status === 200) {
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    }
   };
 
   const _handleSortColumn = async (id, method) => {
@@ -315,7 +329,9 @@ function AllTaskTable({
     );
   };
 
-  const _handleReOrderColumn = () => {};
+  const _handleReOrderColumn = (id) => {
+    console.log("aaaa", id);
+  };
 
   return (
     <Container>
@@ -341,6 +357,8 @@ function AllTaskTable({
             handleExpand={handleExpand}
             onReOrderColumns={_handleReOrderColumn}
             onAddColumns={_handleAddNewColumns}
+            onHideColumn={_handleHideColumn}
+            setItemLocation={setItemLocation}
           />
 
           <WPReactTable
@@ -424,6 +442,8 @@ const HeaderTableCustom = ({
   handleExpand,
   onReOrderColumns,
   onAddColumns,
+  onHideColumn,
+  setItemLocation,
 }) => {
   const TableContext = React.useContext(CustomTableContext);
   return (
@@ -454,6 +474,8 @@ const HeaderTableCustom = ({
       onExpand={handleExpand}
       onReOrderColumns={onReOrderColumns}
       onAddColumns={onAddColumns}
+      onHideColumn={onHideColumn}
+      setItemLocation={setItemLocation}
     />
   );
 };

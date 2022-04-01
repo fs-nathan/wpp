@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import styled from "styled-components";
 import WPTable from "./components/Table";
@@ -13,7 +14,10 @@ const WPReactTable = ({
   ...props
 }) => {
   return (
-    <Styles isCollapsed={isCollapsed}>
+    <Styles
+      className={classNames({ "not-group-table": !isGroup })}
+      isCollapsed={isCollapsed}
+    >
       {isGroup ? (
         <WPTableGroup
           data={data}
@@ -37,9 +41,28 @@ const WPReactTable = ({
 const Styles = styled.div`
   display: block;
 
+  &.not-group-table {
+    .table {
+      overflow: hidden !important;
+      .wrapper-row-header {
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+          display: none; /* for Chrome, Safari, and Opera */
+        }
+      }
+    }
+    .tbody {
+      max-width: 100% !important;
+    }
+  }
+
   .table {
     border-spacing: 0;
     overflow: auto;
+
     max-width: ${({ isCollapsed }) =>
       !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 

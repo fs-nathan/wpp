@@ -178,7 +178,7 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
               defaultNumFix={state.defaultNumFix}
             />
 
-            <Grid item>
+            <Grid item xs={12}>
               <WrapperCheckbox
                 control={<Checkbox name="gilad" />}
                 label={t("ADD_FILED_TO_LIBRARY")}

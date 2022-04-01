@@ -30,6 +30,8 @@ const HeaderProject = ({
   onUpdatePinBoardSetting = () => {},
   onSearch = () => {},
   onAddColumns = () => {},
+  onHideColumn = () => {},
+  setItemLocation = () => {},
   onReOrderColumns = () => {},
   doDetailStatus,
   ...props
@@ -185,6 +187,8 @@ const HeaderProject = ({
         onSearch={onSearch}
         onReOrderColumns={onReOrderColumns}
         onAddColumns={onAddColumns}
+        onHideColumn={onHideColumn}
+        setItemLocation={setItemLocation}
         {...props}
       />
     </div>
