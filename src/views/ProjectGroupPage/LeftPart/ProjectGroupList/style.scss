@@ -135,14 +135,24 @@ a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
 .startBtnSetting {
   &-container {
     padding: 15px;
-    text-align: center;
+    text-align: left;
     display: flex;
     align-items: center;
     flex-direction: column;
-    width: 190px;
+    // width: 190px;
     .text-primary {
       font-weight: 500;
       margin-bottom: 10px;
+      width: 100%;
+    }
+    .description-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .text-secondary {
+      width: 100%;
+      max-width: 250px;
     }
     .hideBtn {
       width: 50px;

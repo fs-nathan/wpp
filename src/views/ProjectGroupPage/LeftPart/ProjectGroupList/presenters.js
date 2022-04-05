@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Divider,
   IconButton,
   List,
@@ -24,6 +25,7 @@ import {
 import Icon from "@mdi/react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import LibraryAddCheckOutlined from "@mui/icons-material/LibraryAddCheckOutlined";
 import { size } from "lodash";
 import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -48,7 +50,6 @@ import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import { GroupProject } from "./components";
 import "./style.scss";
 import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
-import { LibraryAddCheck, LibraryAddCheckOutlined } from "@material-ui/icons";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -226,19 +227,71 @@ function ProjectList({
                 <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z" />
               </SvgIcon>
               <span>{t("LABEL_WORKING_GROUP")}</span>
-              <abbr title={t("Thêm nhóm")}>
+
+              <div className="wp-wrapper">
                 <div className="wp-wrapper-button">
-                  <AddIcon
-                    onClick={(evt) => {
-                      evt.stopPropagation();
-                      setAnchorElAddGroup(evt.currentTarget);
-                    }}
-                    sx={{ color: "rgba(0,0,0,0.54)" }}
-                  >
-                    <Icon path={mdiPlus} size={1} />
-                  </AddIcon>
+                  <abbr title={t("Thêm nhóm")}>
+                    <AddIcon
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        setAnchorElAddGroup(evt.currentTarget);
+                      }}
+                      sx={{ color: "rgba(0,0,0,0.54)" }}
+                    >
+                      <Icon path={mdiPlus} size={1} />
+                    </AddIcon>
+                  </abbr>
                 </div>
-              </abbr>
+                <div className="wp-wrapper-button">
+                  <abbr title={t("Thêm nhóm")}>
+                    <SvgIcon
+                      size={"small"}
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        setAnchorElStartButton(evt.currentTarget);
+                      }}
+                    >
+                      <Icon
+                        path={mdiDotsVertical}
+                        size={1}
+                        color={"rgba(0,0,0,0.54)"}
+                      />
+                    </SvgIcon>
+                  </abbr>
+                </div>
+              </div>
+              <Popover
+                open={Boolean(anchorElStartButton)}
+                anchorEl={anchorElStartButton}
+                disableRestoreFocus
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                onClose={() => setAnchorElStartButton(null)}
+                elevation={1}
+              >
+                <Box className={"startBtnSetting-container"}>
+                  <span className={"text-primary"}>
+                    {t("LABEL_SET_DEFAULT")}
+                  </span>
+                  <div className="description-container">
+                    <Typography
+                      color={"textSecondary"}
+                      className="text-secondary"
+                    >
+                      {t("LABEL_SET_DEFAULT_DES")}
+                    </Typography>
+                    <Button className={"hideBtn"} onClick={handleSetDefault}>
+                      {t("LABEL_SET")}
+                    </Button>
+                  </div>
+                </Box>
+              </Popover>
             </Box>
             <Box
               className={"view_ProjectGroup_List--listGroup-body scrollList"}
