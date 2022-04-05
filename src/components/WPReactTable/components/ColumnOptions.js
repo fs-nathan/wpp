@@ -19,6 +19,7 @@ const ColumnOptions = ({
   option_color,
   option_value,
   isDisplayEditField = true,
+  isRenderNullField = true,
   onEdit = () => {},
 }) => {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -36,8 +37,19 @@ const ColumnOptions = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [option_value, optionsType]);
 
+  React.useEffect(() => {
+    if (!anchorEl) return;
+    const cellHTML = anchorEl.closest(".td");
+    if (Boolean(anchorEl)) {
+      cellHTML && cellHTML.classList.add("focus");
+    }
+    return () => {
+      cellHTML && cellHTML.classList.remove("focus");
+    };
+  }, [anchorEl]);
+
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget.closest(".td"));
   };
 
   const _handleClose = () => {
@@ -52,7 +64,7 @@ const ColumnOptions = ({
           task_id: taskId,
           field_id: idType,
           dataType,
-          value: item._id,
+          value: item?._id,
         },
         () => {}
       )
@@ -98,6 +110,7 @@ const ColumnOptions = ({
         selected={selected}
         anchorEl={anchorEl}
         options={optionsType}
+        isRenderNullField={isRenderNullField}
         isDisplayEditField={isDisplayEditField}
         onClose={_handleClose}
         onEdit={_handleOpenModalEdit}

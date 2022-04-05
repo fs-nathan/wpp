@@ -1306,6 +1306,7 @@ function* updateTimeDuration(action) {
       );
       SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
     }
+    if (action.actionSuccess) action.actionSuccess();
   } catch (error) {
     yield put(actions.updateTimeDurationFail(error));
     SnackbarEmitter(

@@ -43,28 +43,26 @@ function Report({
 
   return (
     <>
-      <CustomTableWrapper>
-        <ReportPresenter
-          expand={expand}
-          handleExpand={handleExpand}
-          handleSubSlide={handleSubSlide}
-          canUpdateProject={get(
-            viewPermissions.permissions,
-            [projectId, "update_project"],
-            false
-          )}
-          canCreateTask={true}
-          isShortGroup={isShortGroup}
-          showHidePendings={showHidePendings}
-          tasks={tasks}
-          project={project}
-          memberID={memberId}
-          memberTask={memberTask}
-          bgColor={bgColor}
-          timeType={timeType}
-        />
-        <WrapperReport />
-      </CustomTableWrapper>
+      {/* <ReportPresenter
+        expand={expand}
+        handleExpand={handleExpand}
+        handleSubSlide={handleSubSlide}
+        canUpdateProject={get(
+          viewPermissions.permissions,
+          [projectId, "update_project"],
+          false
+        )}
+        canCreateTask={true}
+        isShortGroup={isShortGroup}
+        showHidePendings={showHidePendings}
+        tasks={tasks}
+        project={project}
+        memberID={memberId}
+        memberTask={memberTask}
+        bgColor={bgColor}
+        timeType={timeType}
+      /> */}
+      <WrapperReport />
     </>
   );
 }

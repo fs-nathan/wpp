@@ -24,86 +24,104 @@ const reorder = (list, startIndex, endIndex) => {
   return result;
 };
 
-const SortListColumn = React.forwardRef((props, ref) => {
-  const { projectId } = useParams();
-  const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
-  const [items, setItems] = useState(fields);
-  const dispatch = useDispatch();
-
-  React.useImperativeHandle(ref, () => ({ _addColumns }));
-
-  React.useEffect(() => {
-    setItems(fields);
-  }, [fields]);
-
-  const _addColumns = (dataColumn) => {
-    if (!dataColumn) return;
-    /* Dispatching an action to the Redux store. */
-    dispatch(listColumns({ project_id: projectId }));
-  };
-
-  const onDragEnd = (result) => {
-    // dropped outside the list
-    if (!result.destination) return;
-
-    const newItems = reorder(
-      items,
-      result.source.index,
-      result.destination.index
+const SortListColumn = React.forwardRef(
+  ({ onReOrderColumns, onHideColumn, setItemLocation }, ref) => {
+    const { projectId } = useParams();
+    const fields = useSelector(
+      ({ columns }) => columns?.listColumns?.data || []
     );
+    const [items, setItems] = useState(fields);
+    const dispatch = useDispatch();
 
-    setItems(newItems);
-  };
+    React.useImperativeHandle(ref, () => ({ _addColumns }));
 
-  if (!isArray(items)) return null;
-  return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided, snapshot) => (
-          <RootRef rootRef={provided.innerRef}>
-            <List style={getListStyle(snapshot.isDraggingOver)}>
-              {items.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <ListItem
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
+    React.useEffect(() => {
+      setItems(fields);
+    }, [fields]);
+
+    const _addColumns = (dataColumn) => {
+      if (!dataColumn) return;
+      /* Dispatching an action to the Redux store. */
+      dispatch(listColumns({ project_id: projectId }));
+    };
+    const onChangeCheck = (e, id, index) => {
+      const statusUpdate = e.target.checked ? 1 : 0;
+      onHideColumn(id, statusUpdate, index);
+    };
+    const onDragEnd = (result) => {
+      // dropped outside the list
+      if (!result.destination) return;
+      const newItems = reorder(
+        items,
+        result.source.index,
+        result.destination.index
+      );
+
+      setItemLocation({
+        id: items[result.source.index].id,
+        startIndex: result.source.index,
+        endIndex: result.destination.index,
+      });
+      setItems(newItems);
+    };
+
+    if (!isArray(items)) return null;
+    return (
+      <DragDropContext onDragEnd={onDragEnd}>
+        <Droppable droppableId="droppable">
+          {(provided, snapshot) => (
+            <RootRef rootRef={provided.innerRef}>
+              <List style={getListStyle(snapshot.isDraggingOver)}>
+                {items.map((item, index) => {
+                  return (
+                    <Draggable
+                      key={item.id}
+                      draggableId={item.id}
+                      index={index}
                     >
-                      <ListItemIcon style={{ minWidth: "20px" }}>
-                        <DragIndicatorIcon
-                          style={{
-                            width: "18px",
-                            height: "18px",
-                            fill: "#6d6e6f",
-                          }}
-                        />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={item.name}
-                        style={{ color: "#1e1f21" }}
-                      />
-                      <AntSwitch
-                        defaultChecked={item.is_show}
-                        style={{ marginRight: 5 }}
-                        inputProps={{ "aria-label": "ant design" }}
-                      />
-                    </ListItem>
-                  )}
-                </Draggable>
-              ))}
-              {provided.placeholder}
-            </List>
-          </RootRef>
-        )}
-      </Droppable>
-    </DragDropContext>
-  );
-});
+                      {(provided, snapshot) => (
+                        <ListItem
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
+                          <ListItemIcon style={{ minWidth: "20px" }}>
+                            <DragIndicatorIcon
+                              style={{
+                                width: "18px",
+                                height: "18px",
+                                fill: "#6d6e6f",
+                              }}
+                            />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={item.name}
+                            style={{ color: "#1e1f21" }}
+                          />
+                          <AntSwitch
+                            onChange={(e) => onChangeCheck(e, item.id, index)}
+                            defaultChecked={item.is_show}
+                            style={{ marginRight: 5 }}
+                            inputProps={{ "aria-label": "ant design" }}
+                          />
+                        </ListItem>
+                      )}
+                    </Draggable>
+                  );
+                })}
+                {provided.placeholder}
+              </List>
+            </RootRef>
+          )}
+        </Droppable>
+      </DragDropContext>
+    );
+  }
+);
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // styles we need to apply on draggables
@@ -175,4 +193,4 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default SortListColumn
+export default SortListColumn;

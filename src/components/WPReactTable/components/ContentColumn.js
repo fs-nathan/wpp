@@ -5,6 +5,7 @@ const ContentColumn = ({
   cell,
   dragHandle = {},
   isGroupColumn = false,
+  hasSub = false,
   ...props
 }) => {
   const canDragColumn = cell?.column?.id === "name";
@@ -17,7 +18,7 @@ const ContentColumn = ({
         ...cellProps.style,
         maxWidth: cellProps.style.width,
       }}
-      className={classNames("td", { isGroupColumn })}
+      className={classNames("td", { isGroupColumn, hasSub })}
     >
       {cell.render("Cell", {
         dragHandle: canDragColumn ? dragHandle : {},
@@ -27,4 +28,4 @@ const ContentColumn = ({
   );
 };
 
-export default ContentColumn
+export default ContentColumn;

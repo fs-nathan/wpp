@@ -1,20 +1,32 @@
-import { createSelector } from 'reselect';
-import { concat } from 'lodash';
+import { createSelector } from "reselect";
+import { concat } from "lodash";
 
-const kanbanDetailProject = state => state.kanban.detailProject;
-const memberProject = state => state.project.memberProject;
-const detailProject = state => state.project.detailProject;
-const kanbanSetting = state => state.kanban.setting;
-const showProject = state => state.project.showProject;
-const hideProject = state => state.project.hideProject;
-const viewPermissions = state => state.viewPermissions;
+const kanbanDetailProject = (state) => state.kanban.detailProject;
+const memberProject = (state) => state.project.memberProject;
+const detailProject = (state) => state.project.detailProject;
+const kanbanSetting = (state) => state.kanban.setting;
+const showProject = (state) => state.project.showProject;
+const hideProject = (state) => state.project.hideProject;
+const viewPermissions = (state) => state.viewPermissions;
 
 export const projectSelector = createSelector(
   [kanbanDetailProject, memberProject, detailProject],
   (kanbanDetailProject, memberProject, detailProject) => {
-    const { data: { project: kanbanProject }, loading: kanbanDetailLoading, error: kanbanDetailError } = kanbanDetailProject;
-    const { data: { membersAdded }, loading: memberLoading, error: memberError } = memberProject;
-    const { data: { project }, loading: detailLoading, error: detailError } = detailProject;
+    const {
+      data: { project: kanbanProject },
+      loading: kanbanDetailLoading,
+      error: kanbanDetailError,
+    } = kanbanDetailProject;
+    const {
+      data: { membersAdded },
+      loading: memberLoading,
+      error: memberError,
+    } = memberProject;
+    const {
+      data: { project },
+      loading: detailLoading,
+      error: detailError,
+    } = detailProject;
     return {
       project: {
         ...project,
@@ -23,14 +35,16 @@ export const projectSelector = createSelector(
       },
       loading: detailLoading || kanbanDetailLoading || memberLoading,
       error: detailError || kanbanDetailError || memberError,
-    }
+    };
   }
-)
+);
 
 export const visibleSelector = createSelector(
   [kanbanSetting],
   (kanbanSetting) => {
-    const { setting: { visible } } = kanbanSetting;
+    const {
+      setting: { visible },
+    } = kanbanSetting;
     return visible;
   }
 );
@@ -43,26 +57,32 @@ export const showHidePendingsSelector = createSelector(
     return {
       pendings: concat(showPendings, hidePendings),
       error: showError || hideError,
-    }
+    };
   }
-)
+);
 
 export const taskSearchSelector = createSelector(
   [kanbanSetting],
   (kanbanSetting) => {
-    const { setting: { taskSearchStr } } = kanbanSetting;
+    const {
+      setting: { taskSearchStr },
+    } = kanbanSetting;
     return taskSearchStr;
   }
-)
+);
 
 export const viewPermissionsSelector = createSelector(
   [viewPermissions],
   (viewPermissions) => {
-    const { data: { detailProject }, loading, error } = viewPermissions;
-    return ({
+    const {
+      data: { detailProject },
+      loading,
+      error,
+    } = viewPermissions;
+    return {
       permissions: detailProject,
       loading,
       error,
-    });
+    };
   }
 );

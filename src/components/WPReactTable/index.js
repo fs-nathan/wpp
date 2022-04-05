@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React from "react";
 import styled from "styled-components";
 import WPTable from "./components/Table";
@@ -13,7 +14,10 @@ const WPReactTable = ({
   ...props
 }) => {
   return (
-    <Styles isCollapsed={isCollapsed}>
+    <Styles
+      className={classNames({ "not-group-table": !isGroup })}
+      isCollapsed={isCollapsed}
+    >
       {isGroup ? (
         <WPTableGroup
           data={data}
@@ -37,9 +41,28 @@ const WPReactTable = ({
 const Styles = styled.div`
   display: block;
 
+  &.not-group-table {
+    .table {
+      overflow: hidden !important;
+      .wrapper-row-header {
+        -ms-overflow-style: none; /* for Internet Explorer, Edge */
+        scrollbar-width: none; /* for Firefox */
+        overflow-y: scroll;
+
+        &::-webkit-scrollbar {
+          display: none; /* for Chrome, Safari, and Opera */
+        }
+      }
+    }
+    .tbody {
+      max-width: 100% !important;
+    }
+  }
+
   .table {
     border-spacing: 0;
     overflow: auto;
+
     max-width: ${({ isCollapsed }) =>
       !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
@@ -69,7 +92,7 @@ const Styles = styled.div`
 
       &.row-add {
         .td {
-          border-right: 1px solid #edeae9 !important;
+          border-right: 0 !important;
           border-top: 1px solid #edeae9 !important;
           border-bottom: 0;
           z-index: 201;
@@ -84,6 +107,18 @@ const Styles = styled.div`
         .td:not(:first-child) {
           border: 0;
         }
+
+        &.row-add-group {
+          .td {
+            border: 0 !important;
+          }
+          &:hover {
+            background-color: transparent;
+            .td {
+              background-color: transparent;
+            }
+          }
+        }
       }
 
       &.header {
@@ -91,6 +126,9 @@ const Styles = styled.div`
         box-sizing: border-box;
         flex: 0 0 auto;
         height: 37px;
+        & > div {
+          border-top: 0 !important;
+        }
       }
       .td:last-child {
         border-right-color: transparent;
@@ -105,10 +143,10 @@ const Styles = styled.div`
       z-index: 0;
       align-items: center;
       display: inline-flex !important;
-      height: 47px;
       overflow: hidden;
       justify-content: flex-start;
       margin-right: -1px;
+      margin-bottom: -1px;
 
       &[data-sticky-td="true"] {
         z-index: 300 !important;
@@ -118,10 +156,19 @@ const Styles = styled.div`
         flex: 1 1 auto;
         min-width: 1px;
         &:hover {
-          border: 1px solid #edeae9;
+          border: 1px solid #afabac;
+          z-index: 500 !important;
         }
         &.isGroupColumn {
-          border-right: 1px solid #edeae9;
+          border-color: transparent !important;
+          &.focus {
+            z-index: 500 !important;
+            border: 1px solid #4573d2 !important;
+          }
+        }
+        &.focus {
+          z-index: 500 !important;
+          border-color: #4573d2 !important;
         }
       }
 
@@ -129,10 +176,31 @@ const Styles = styled.div`
         visibility: hidden;
       }
 
-      &.isGroupColumn {
-        border: 0;
+      &.column-align-left {
+        justify-content: flex-start;
+      }
+      &.column-align-right {
+        justify-content: flex-end;
+      }
+      &.column-align-center {
+        justify-content: center;
+      }
+
+      &.add-cell {
         &:hover {
-          border: 0;
+          border-color: #edeae9 !important;
+        }
+      }
+
+      &.isGroupColumn {
+        border-color: transparent !important;
+        &.hasSub {
+          &:hover {
+            border-bottom: 1px solid #edeae9 !important;
+          }
+        }
+        &:hover {
+          border-color: transparent !important;
           .drag-icon {
             visibility: visible !important;
           }
@@ -140,9 +208,9 @@ const Styles = styled.div`
       }
 
       &:hover {
-        border: 1px solid #edeae9;
+        border: 1px solid #afabac;
         overflow: unset;
-        z-index: 201;
+        z-index: 202;
 
         .canHide,
         .default_tag,
@@ -155,7 +223,7 @@ const Styles = styled.div`
       }
 
       &.focus {
-        z-index: 200;
+        z-index: 202;
         border-color: #4573d2 !important;
       }
     }

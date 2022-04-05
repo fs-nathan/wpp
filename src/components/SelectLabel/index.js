@@ -1,18 +1,12 @@
 import { Popover } from "@material-ui/core";
-import React, { useRef, forwardRef, useImperativeHandle } from "react";
+import Item from "components/SelectLabel/Item";
+import { uniqueId } from "lodash";
+import React, { forwardRef, useImperativeHandle, useRef } from "react";
+import { DragDropContext, Droppable } from "react-beautiful-dnd";
 import {
   ButtonAddMore,
   ItemSelectColor,
-  WPSelectIconSelect,
-  WPSelectInput,
-  WPSelectItem,
-  WPSelectItemLeft,
-  WPSelectItemLeftChildren,
-  WPSelectItemRight,
-  WPSelectItemRightIcon,
   WPSelectList,
-  WPSelectRowNameContainer,
-  WPSelectRowTarget,
   WPWrapperSelectList,
   WrapperSelectColor,
   WrapperWPSelectLabel,
@@ -38,8 +32,8 @@ const DEFAULT_LIST_COLORS = [
 ];
 
 const DEFAULT_SELECT = [
-  { id: "1", name: "Lựa chọn 1", color: DEFAULT_LIST_COLORS[0] },
-  { id: "2", name: "Lựa chọn 2", color: DEFAULT_LIST_COLORS[1] },
+  { id: uniqueId(), name: "Lựa chọn 1", color: DEFAULT_LIST_COLORS[0] },
+  { id: uniqueId(), name: "Lựa chọn 2", color: DEFAULT_LIST_COLORS[1] },
 ];
 
 const WPSelectLabel = forwardRef(
@@ -54,7 +48,6 @@ const WPSelectLabel = forwardRef(
     const [anchorEl, setAnchorEl] = React.useState(null);
     const [itemSelect, setItemSelect] = React.useState({});
     const [listSelect, setListSelect] = React.useState(defaultSelect);
-    const refInput = useRef(null);
     const refForm = useRef(null);
 
     useImperativeHandle(ref, () => ({ _getValue }));
@@ -84,8 +77,8 @@ const WPSelectLabel = forwardRef(
         let isSetted = false;
         const newList = [...list];
         const newItem = {
-          id: list.length + 1,
-          name: "",
+          id: uniqueId(),
+          name: "Type an option name",
           color: DEFAULT_LIST_COLORS[0],
         };
 
@@ -98,10 +91,6 @@ const WPSelectLabel = forwardRef(
 
         return [...newList, newItem];
       });
-
-      setTimeout(() => {
-        refInput.current.focus();
-      }, 100);
     };
 
     const handleClick = (event, item) => {
@@ -122,6 +111,15 @@ const WPSelectLabel = forwardRef(
         return newList;
       });
       setAnchorEl(null);
+    };
+
+    const _handleDragEnd = (result) => {
+      // dropped outside the list
+      if (!result.destination) return;
+
+      setListSelect((listSelect) =>
+        reorder(listSelect, result.source.index, result.destination.index)
+      );
     };
 
     return (
@@ -165,45 +163,25 @@ const WPSelectLabel = forwardRef(
         <WrapperWPSelectLabel isShowList={isShowList}>
           <WPWrapperSelectList>
             <WPSelectList ref={refForm} onSubmit={(e) => e.preventDefault()}>
-              {listSelect.map((item) => (
-                <WPSelectRowTarget key={item.id}>
-                  <WPSelectItem>
-                    <WPSelectItemLeft>
-                      <WPSelectItemLeftChildren>
-                        <WPSelectRowNameContainer>
-                          <WPSelectIconSelect
-                            color={item.color}
-                            onClick={(e) => handleClick(e, item)}
-                          />
-                          <WPSelectInput
-                            ref={refInput}
-                            data-id={item._id}
-                            defaultValue={item.name}
-                            placeholder="Type an option name"
-                            disabled={isShowList}
-                          />
-                        </WPSelectRowNameContainer>
-                      </WPSelectItemLeftChildren>
-                    </WPSelectItemLeft>
-                    <WPSelectItemRight>
-                      {!isShowList && (
-                        <WPSelectItemRightIcon
-                          onClick={() => _handleRemove(item.id)}
-                        >
-                          <svg
-                            className="MiniIcon XMiniIcon"
-                            focusable="false"
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M13.4,12l7.5-7.5c0.4-0.4,0.4-1,0-1.4s-1-0.4-1.4,0L12,10.6L4.5,3.1c-0.4-0.4-1-0.4-1.4,0s-0.4,1,0,1.4l7.5,7.5l-7.5,7.5 c-0.4,0.4-0.4,1,0,1.4c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3l7.5-7.5l7.5,7.5c0.2,0.2,0.5,0.3,0.7,0.3s0.5-0.1,0.7-0.3 c0.4-0.4,0.4-1,0-1.4L13.4,12z" />
-                          </svg>
-                        </WPSelectItemRightIcon>
-                      )}
-                    </WPSelectItemRight>
-                  </WPSelectItem>
-                </WPSelectRowTarget>
-              ))}
-
+              <DragDropContext onDragEnd={_handleDragEnd}>
+                <Droppable droppableId="droppable-list-options">
+                  {(provided) => (
+                    <div {...provided.droppableProps} ref={provided.innerRef}>
+                      {listSelect.map((item, index) => (
+                        <Item
+                          key={item.id}
+                          index={index}
+                          item={item}
+                          isShowList={isShowList}
+                          onClick={handleClick}
+                          onRemove={_handleRemove}
+                        />
+                      ))}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
               {!isShowList && (
                 <ButtonAddMore onClick={_handleAddMore}>
                   + Add an option
@@ -216,5 +194,14 @@ const WPSelectLabel = forwardRef(
     );
   }
 );
+
+// a little function to help us with reordering the result
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const [removed] = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 export default WPSelectLabel;

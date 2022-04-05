@@ -1,13 +1,13 @@
-import { Grid, TextField, Typography } from "@material-ui/core";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import PercentIcon from "@mui/icons-material/Percent";
-import PaidIcon from "@mui/icons-material/Paid";
-import FunctionsIcon from "@mui/icons-material/Functions";
-import TagIcon from "@mui/icons-material/Tag";
+import { Grid, TextField } from "@material-ui/core";
 import TitleSectionModal from "components/TitleSectionModal";
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { useTranslation } from "react-i18next";
+import ContentNumberColumn from "./ContentNumberColumn";
 import SelectFieldTypeDropdown from "./Dropdown";
+import SelectCalculate from "./SelectCalculate";
+import SelectLabel from "./SelectLabel";
+import SelectOptionsNumber, { SelectPosition } from "./SelectOptionsNumber";
+import SourceNumberSelect from "./SourceNumberSelect";
 
 const TabNumber = forwardRef(
   (
@@ -24,16 +24,25 @@ const TabNumber = forwardRef(
     const [labelName, setLabelName] = useState(defaultLabel);
     const [position, setPosition] = useState(defaultPosition);
     const [format, setFormat] = useState(defaultFormat);
+    const [optionsLabelSelect, setOptionsLabelSelect] = useState([]);
 
     const isAdditionLabel = format === "other_label";
+    const isHashFormat = format === "hash";
 
     useImperativeHandle(ref, () => ({
       _getValue: () => ({
-        format,
+        format: _handleGetFormat(),
         decimal,
         position_format: position === "left" ? 1 : 2,
       }),
     }));
+
+    const _handleGetFormat = () => {
+      if (format === "percent") return "%";
+      if (format === "vnd") return "VND";
+      if (format === "usd") return "USD";
+      return labelName;
+    };
 
     const _handleSelect = (value) => {
       setDecimal(value);
@@ -45,6 +54,14 @@ const TabNumber = forwardRef(
 
     const _handleSelectPosition = (value) => {
       setPosition(value);
+    };
+
+    const _handleSelectLabel = (value) => {
+      setLabelName(value);
+    };
+
+    const _handleSelectLabelSelect = (selected) => {
+      setOptionsLabelSelect(selected);
     };
 
     const _renderLabelNameInput = () => (
@@ -79,106 +96,76 @@ const TabNumber = forwardRef(
       </>
     );
 
-    const _renderFormatType = () => {
-      switch (format) {
-        case "percent":
-          return "%";
-        case "vnd":
-          return "VND";
-        case "usd":
-          return "USD";
-        default:
-          if (isAdditionLabel) return labelName;
-      }
-    };
-
     return (
       <>
-        <Grid item xs={6}>
+        <Grid item xs={12}>
           <Grid container spacing={2}>
-            <Grid item xs={7} pt={0}>
-              <TitleSectionModal label={t("FORMAT")} style={{ marginTop: 0 }} />
-              <SelectFieldTypeDropdown
-                options={[
-                  { text: "Con số", type: "number", icon: () => <TagIcon /> },
-                  {
-                    text: "Phần trăm",
-                    type: "percent",
-                    icon: () => <PercentIcon />,
-                  },
-                  { text: "VND", type: "vnd", icon: () => <PaidIcon /> },
-                  { text: "USD", type: "usd", icon: () => <AttachMoneyIcon /> },
-                  {
-                    icon: () => <FunctionsIcon />,
-                    text: "Công thức",
-                    type: "hash",
-                  },
-                  { text: "Nhãn khác", type: "other_label" },
-                ]}
-                defaultValue={defaultFormat}
-                onSelect={_handleSelectFormat}
-              />
-            </Grid>
-            <Grid item xs={5} pt={0}>
-              {isAdditionLabel
-                ? _renderLabelNameInput()
-                : _renderDemicalNumber()}
+            <SelectOptionsNumber
+              defaultFormat={defaultFormat}
+              handleSelectFormat={_handleSelectFormat}
+            />
+            {isAdditionLabel && (
+              <Grid item xs={3} pt={0}>
+                {_renderLabelNameInput()}
+              </Grid>
+            )}
+            {isHashFormat ? (
+              <SelectCalculate />
+            ) : (
+              format !== "number" && (
+                <SelectPosition handleSelectPosition={_handleSelectPosition} />
+              )
+            )}
+            <Grid item xs={3} pt={0}>
+              {isHashFormat ? (
+                <SourceNumberSelect
+                  defaultSelected={optionsLabelSelect}
+                  onSelectSource={_handleSelectLabelSelect}
+                />
+              ) : (
+                _renderDemicalNumber()
+              )}
             </Grid>
           </Grid>
         </Grid>
 
-        {isAdditionLabel && (
-          <Grid item xs={6}>
+        {isHashFormat && (
+          <Grid item xs={12}>
             <Grid container spacing={2}>
-              <Grid item xs={7} pt={0}>
-                <TitleSectionModal
-                  label={t("POSITION")}
-                  style={{ marginTop: 0 }}
-                />
-                <SelectFieldTypeDropdown
-                  options={[
-                    { text: "Trái", type: "left" },
-                    { text: "Phải", type: "right" },
-                  ]}
-                  defaultValue="right"
-                  onSelect={_handleSelectPosition}
-                />
-              </Grid>
-              <Grid item xs={5} pt={0}>
+              <Grid item xs={3} pt={0}>
                 {_renderDemicalNumber()}
               </Grid>
+              <Grid item xs={3} pt={0}>
+                <SelectLabel
+                  options={optionsLabelSelect.map((item) => ({
+                    id: item.id,
+                    value: item.format,
+                    text: item.format,
+                  }))}
+                  handleSelectLabel={_handleSelectLabel}
+                />
+              </Grid>
+              <ContentNumberColumn
+                isAdditionLabel
+                title={t("FORMAT")}
+                position={position}
+                labelName={labelName}
+                decimal={decimal}
+                format={format}
+              />
             </Grid>
           </Grid>
         )}
 
-        <Grid item xs={6}>
-          <Grid container spacing={2}>
-            <Grid item xs={6} pt={0}>
-              <TitleSectionModal
-                label={t("PREVIEW")}
-                style={{ marginTop: 0 }}
-              />
-              <Typography
-                variant="p"
-                gutterBottom
-                component="div"
-                style={{
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  margin: 0,
-                  fontSize: 18,
-                }}
-              >
-                {position === "left" && isAdditionLabel && _renderFormatType()}{" "}
-                {parseFloat(1000).toFixed(decimal)}{" "}
-                {(!isAdditionLabel ||
-                  (isAdditionLabel && position === "right")) &&
-                  _renderFormatType()}
-              </Typography>
-            </Grid>
-          </Grid>
-        </Grid>
+        {!isHashFormat && (
+          <ContentNumberColumn
+            position={position}
+            format={format}
+            isAdditionLabel={isAdditionLabel}
+            labelName={labelName}
+            decimal={decimal}
+          />
+        )}
       </>
     );
   }

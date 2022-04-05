@@ -8,7 +8,8 @@
       },
       "CUSTOM_MODAL": {
         "CONFIRM": "Hoàn thành",
-        "CANCLE": "Hủy"
+        "CANCLE": "Hủy",
+        "UPDATE": "Cập nhật"
       },
       "CUSTOM_POPOVER": {
         "TIME_FUNC": {
@@ -2571,5 +2572,26 @@
   "Member": "Thành viên",
   "alert_delete_fields": "Trường nội dung này thuộc mặc định của hệ thống, bạn không thể xoá nó!",
   "CLOSE": "Đóng",
-  "DELETE_FIELDS": "Xoá trường"
+  "DELETE_FIELDS": "Xoá trường",
+  "hour": "Giờ",
+  "day": "Ngày",
+  "week": "Tuần",
+  "month": "Tháng",
+  "quater": "Quý",
+  "year": "Năm",
+  "pfd-duration": "Tiến độ",
+  "align_item": "Căn lề",
+  "left": "Trái",
+  "right": "Phải",
+  "center": "Giữa",
+  "see_time": "Xem thời gian",
+  "date_and_time": "Ngày và giờ",
+  "sort_asc": "Sắp xếp tăng dần",
+  "sort_decs": "Sắp xếp giảm dần",
+  "cancel_sort": "Huỷ sắp xếp",
+  "add_group": "Thêm nhóm việc",
+  "update": "Chỉnh sửa",
+  "total": "Tính tổng",
+  "averaged": "Tính trung bình",
+  "label": "Nhãn"
 }

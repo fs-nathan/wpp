@@ -1,3 +1,4 @@
+import ColumnDateSelect from "components/WPReactTable/components/ColumnDateSelect";
 import ColumnMembers from "components/WPReactTable/components/ColumnMembers";
 import ColumnNumber from "components/WPReactTable/components/ColumnNumber";
 import ColumnOptions from "components/WPReactTable/components/ColumnOptions";
@@ -6,7 +7,11 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { COLUMNS_TASK_TABLE } from "../constant/Columns";
 
-export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
+export const convertFieldsToTable = (
+  data,
+  onOpenEditColumnModal,
+  handleReload = () => {}
+) => {
   const result = [];
   data.forEach((item) => {
     if (
@@ -30,6 +35,7 @@ export const convertFieldsToTable = (data, onOpenEditColumnModal) => {
               optionsType={item.options}
               dataType={item.data_type}
               onOpenEditColumnModal={onOpenEditColumnModal}
+              handleReload={handleReload}
               {...props}
             />
           );
@@ -57,6 +63,7 @@ const CellRender = ({
   optionsType = [],
   row,
   onOpenEditColumnModal = () => {},
+  handleReload = () => {},
   ...props
 }) => {
   const taskId = row?.original?.id;
@@ -74,6 +81,7 @@ const CellRender = ({
           nameType={nameType}
           dataType={dataType}
           isDisplayEditField={false}
+          isRenderNullField={false}
           optionsType={[
             { id: 1, _id: 1, name: "Thấp", value: 0, color: "#03C30B" },
             { id: 2, _id: 2, name: "Trung bình", value: 1, color: "#FF9800" },
@@ -91,6 +99,16 @@ const CellRender = ({
           taskId={taskId}
           dataCell={data}
           isGetDataUser
+        />
+      );
+    case "pfd-time-start":
+    case "pfd-time-end":
+      return (
+        <ColumnDateSelect
+          value={data.value}
+          taskId={taskId}
+          dataCell={row?.original}
+          handleReload={handleReload}
         />
       );
     case "pfd-status":

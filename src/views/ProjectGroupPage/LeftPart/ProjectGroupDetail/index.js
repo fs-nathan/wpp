@@ -72,10 +72,10 @@ function ProjectGroupDetail({
             : undefined,
         });
       };
-      CustomEventListener(SORT_PROJECT, reloadListProject);
-      return () => {
-        CustomEventDispose(SORT_PROJECT, reloadListProject);
-      }
+      // CustomEventListener(SORT_PROJECT, reloadListProject);
+      // return () => {
+      //   CustomEventDispose(SORT_PROJECT, reloadListProject);
+      // }
     }
   }, [id, timeRange]);
 
