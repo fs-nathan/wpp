@@ -5,10 +5,10 @@ import { isNil } from "lodash";
 import { useLocalStorage } from "../../hooks";
 
 function WorkplacePage() {
-  const [defaultAccessItem] = useLocalStorage(
-    "WPS_WORKING_SPACE_DEFAULT_ACCESS",
-    null
+  const defaultAccessItem = localStorage.getItem(
+    "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
+
   const [isHideStartButton, setValue] = useLocalStorage(
     "WPS_HIDE_WORKING_START_BUTTON",
     false
