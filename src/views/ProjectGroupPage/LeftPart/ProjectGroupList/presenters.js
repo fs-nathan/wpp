@@ -48,6 +48,7 @@ import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import { GroupProject } from "./components";
 import "./style.scss";
 import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
+import { LibraryAddCheck, LibraryAddCheckOutlined } from "@material-ui/icons";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -156,49 +157,8 @@ function ProjectList({
               }`}
               onClick={() => history.push("/projects/start")}
             >
-              <Icon path={mdiPlayCircleOutline} size={1} color={"#BD3ADA"} />
-              <span>{t("LABEL_CHAT_TASK_BAT_DAU_LABEL")}</span>
-              <IconButton
-                className={"rightIconControlList"}
-                size={"small"}
-                onClick={(evt) => {
-                  evt.stopPropagation();
-                  setAnchorElStartButton(evt.currentTarget);
-                }}
-              >
-                <Icon
-                  path={mdiDotsVertical}
-                  size={1}
-                  color={"rgba(0,0,0,0.54)"}
-                />
-              </IconButton>
-              <Popover
-                open={Boolean(anchorElStartButton)}
-                anchorEl={anchorElStartButton}
-                disableRestoreFocus
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                onClose={() => setAnchorElStartButton(null)}
-                elevation={1}
-              >
-                <Box className={"startBtnSetting-container"}>
-                  <span className={"text-primary"}>
-                    {t("LABEL_HIDE_START")}
-                  </span>
-                  <Typography component={"body2"} color={"textSecondary"}>
-                    {t("LABEL_HIDE_START_DES")}
-                  </Typography>
-                  <Button className={"hideBtn"} onClick={handleHideStartBtn}>
-                    {t("IDS_WP_HIDE")}
-                  </Button>
-                </Box>
-              </Popover>
+              <LibraryAddCheckOutlined htmlColor="#d46ffb" />
+              <span>{t("LABEL_CHAT_TASK_THU_VIEN_MAU_LABEL")}</span>
             </Box>
           )}
           <Box className={"view_ProjectGroup_List--listGroup"}>

@@ -1590,6 +1590,7 @@
   "LABEL_CHAT_TASK_KEO_THA_TIEN_DO_DE_CAP_NHAT": "Drag and drop progress to update",
   "LABEL_CHAT_TASK_BAT_DAU_LABEL": "Start",
   "LABEL_CHAT_TASK_KET_THUC_LABEL": "End",
+  "LABEL_CHAT_TASK_THU_VIEN_MAU_LABEL": "Sample Templates",
   "LABEL_CHAT_TASK_TIEN_DO_KE_HOACH": "Plan duration",
   "LABEL_CHAT_TASK_TU_DONG_XAC_DINH": "Automatically determined to the current time",
   "LABEL_CHAT_TASK_BIEU_DO_CAP_NHAT_TIEN_DO": "The tracking of duration change",

@@ -28,3 +28,7 @@ yarn.lock
 /.firebase/
 /.idea
 /firebase-debug.log
+
+#local
+/.vs-code/*
+.vscode/settings.json
