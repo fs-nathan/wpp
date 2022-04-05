@@ -138,6 +138,10 @@ const routes = [
   { path: Routes.CALENDAR, component: () => <CalendarPage /> },
   { path: Routes.CALENDAR_WEEKLY, component: () => <CalendarWeeklyPage /> },
   { path: Routes.CALENDAR_PROJECT, component: () => <CalendarProjectPage /> },
+  {
+    path: Routes.CALENDAR_PROJECT_MANAGE,
+    component: () => <CalendarProjectPage />,
+  },
   { path: Routes.CALENDAR_ALARM, component: () => <CalendarAlarmPage /> },
   {
     path: Routes.CONFIRM_REGISTRATION,

@@ -39,7 +39,11 @@ import {
   actionToast,
   getNumberMessageNotViewer,
   getNumberNotificationNotViewer,
+  getProfileService,
   setNumberDiscustonNotView,
+  actionGetProfile,
+  actionActiveGroup,
+  openNoticeModal,
 } from "../actions/system/system";
 import { loadDetailOffer } from "views/OfferPage/redux/actions";
 import { avatar_default_120 } from "../assets";
@@ -53,7 +57,7 @@ import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
 import { Routes } from "../constants/routes";
 import routes from "../routes";
 import LeftBar from "../views/LeftBar";
-import TopBar from "../views/TopBar";
+// import TopBar from "../views/TopBar";
 import { get } from "lodash";
 import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
 import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
@@ -71,7 +75,8 @@ const Container = styled.div`
   height: 100vh;
   width: 100vw;
   display: grid;
-  grid-template-rows: 55px 1fr;
+  // grid-template-rows: 55px 1fr;
+  grid-template-rows: 0px 1fr;
   grid-template-columns: 140px minmax(0, 1fr);
   overflow-y: hidden;
 
@@ -251,18 +256,23 @@ function MainLayout({
   getRemindDetail,
   setNumberMessageNotView,
   t,
+  isAuthenticated,
+  ...props
 }) {
   const [visibleGroupModal, setVisibleGroupModal] = useState(false);
   const [openOfferDetail, setOpenOfferDetail] = useState(false);
   const [openRemindDetail, setOpenRemindDetail] = useState(false);
   const [collapse, setCollapse] = useState(true);
+  // const token = useGetToken()
   function handleReactEmotion(data) {
     updateChatState(data.id, { data_emotion: data.emotions });
   }
-
+  const { i18n } = useTranslation();
   function handleDeleteChat(data) {
     updateChatState(data.id, { type: CHAT_TYPE.TEXT, is_deleted: true });
   }
+
+
 
   function handleViewChat(data) {
     console.log("handleViewChat", data);
@@ -276,6 +286,45 @@ function MainLayout({
       });
     }
   }
+
+  const handleFetchProfile = async (isNotice) => {
+    try {
+      const { data } = await getProfileService();
+      if (data.data) {
+        props.actionGetProfile(data.data);
+        i18n.changeLanguage((data.data && data.data.language) || "vi");
+        props.actionActiveGroup(data.data.group_active);
+        if (
+          data.data.group_active &&
+          data.data.group_active.type === "Free" &&
+          !isNotice
+        ) {
+          props.openNoticeModal("ACCOUNT_FREE");
+        }
+      }
+    } catch (err) {}
+  };
+  const handleFetchNumMessageNotView = async () => {
+    try {
+      const { data } = await getNumberMessageNotViewer();
+      props.getNumberMessageNotViewer(data.number_chat);
+    } catch (err) {}
+  };
+  const handleFetchNumNotificationNotView = async () => {
+    try {
+      const { data } = await getNumberNotificationNotViewer();
+      props.actionChangeNumNotificationNotView(data.number_notification);
+    } catch (err) {}
+  };
+
+  useEffect(() => {
+    const hasToken = localStorage.getItem(TOKEN);
+    if (isAuthenticated && (!profile || !profile.id)) {
+      handleFetchNumNotificationNotView();
+      handleFetchNumMessageNotView();
+      handleFetchProfile();
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     // if (localStorage.getItem(TOKEN) && !isViewFullPage(location.pathname)) {
@@ -496,7 +545,8 @@ function MainLayout({
             : collapse
             ? "menu-collapse"
             : location.pathname
-        }>
+        }
+      >
         {!isViewFullPage(location.pathname) && (
           <React.Fragment>
             <SwitchAccount />
@@ -505,15 +555,15 @@ function MainLayout({
               logo={groupDetail.logo}
             />
 
-            <TopBar />
+            {/* <TopBar /> */}
             <DrawerComponent />
             <NoticeModal />
             {toast.type && (
               <SnackbarComponent
                 open={true}
                 handleClose={() => actionToast(null, "")}
-                vertical='bottom'
-                horizontal='right'
+                vertical="bottom"
+                horizontal="right"
                 variant={toast.type}
                 message={toast.message}
               />
@@ -571,6 +621,7 @@ export default connect(
     visibleRemindDetail: state.system.visibleRemindDetail,
     detailOffer: state.offerPage["DETAIL_OFFER"].offer ?? [],
     detailRemind: state.calendar.remindDetail,
+    isAuthenticated: state.authentications.isAuthenticated,
   }),
   {
     getListTaskDetail,
@@ -591,5 +642,8 @@ export default connect(
     getRemindDetail,
     setNumberMessageNotView,
     setNumberDiscustonNotView,
+    actionGetProfile,
+    actionActiveGroup,
+    openNoticeModal,
   }
 )(withRouter(MainLayoutWrapper));

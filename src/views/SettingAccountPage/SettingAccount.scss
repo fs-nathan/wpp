@@ -1,6 +1,6 @@
 .header-setting-container {
   grid-area: table;
-  overflow: auto;
+  overflow: hidden;
   border-left: 1px solid rgba(0, 0, 0, 0.1);
 
   .header-setting {

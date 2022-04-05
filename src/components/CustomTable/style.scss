@@ -1,5 +1,5 @@
 .comp_CustomTable___container {
-  height: calc(100vh - 60px - 55px);
+  height: calc(100vh - 60px);
   // grid-area: right;
   // display: grid;
   // grid-template-rows: 60px calc(100vh - 60px - 50px);
@@ -29,6 +29,9 @@
   height: 100%;
   align-items: center;
   display: flex;
+  .menu-open-close {
+    margin-right: 20px;
+  }
   & > div:first-child {
     display: flex;
     align-items: center;

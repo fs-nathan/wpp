@@ -1,0 +1,16 @@
+export const icon_home = require('assets/icon/ic_home.png')
+export const icon_home_sl = require('assets/icon/ic_home_sl.png')
+export const icon_cloud = require('assets/icon/ic_cloud.png')
+export const icon_cloud_sl = require('assets/icon/ic_cloud_sl.png')
+export const icon_messenger = require('assets/icon/ic_messeger.png')
+export const icon_messenger_sl = require('assets/icon/ic_messeger_sl.png')
+export const icon_work = require('assets/icon/ic_work.png')
+export const icon_work_sl = require('assets/icon/ic_work_sl.png')
+export const icon_star = require("assets/icon/ic_star.png");
+export const icon_star_sl = require("assets/icon/ic_star_sl.png");
+export const icon_search = require("assets/icon/ic_search.png");
+export const icon_search_sl = require("assets/icon/ic_search_sl.png");
+export const icon_noti = require("assets/icon/ic_noti.png");
+export const icon_noti_sl = require("assets/icon/ic_noti_sl.png");
+export const icon_member = require("assets/icon/ic_member.png");
+export const icon_member_sl = require("assets/icon/ic_member_sl.png");

@@ -14,6 +14,12 @@ export const getSubTaskSuccess = (payload) => ({
     payload
 });
 
+
+export const getNewMessage = (payload) => ({
+  type: types.GET_NEW_MESSAGE,
+  payload,
+});
+
 export const getSubTaskFail = (error) => ({
     type: types.GET_SUBTASK_FAIL,
     error: error,

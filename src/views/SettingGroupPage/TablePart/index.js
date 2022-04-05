@@ -20,6 +20,7 @@ import HeaderButtonGroup from "./HeaderButtonGroup";
 import Home from "./SettingGroupRight/Home/index";
 import IconManager from "./SettingGroupRight/IconManager";
 import RoleManager from "./SettingGroupRight/RoleManager";
+import UpgradeAccount from "./SettingGroupRight/UpgradeAccount";
 
 const getHeaderText = (type, search, t) => {
   const isOder = isEmpty(search);
@@ -33,6 +34,8 @@ const getHeaderText = (type, search, t) => {
       return t("IDS_WP_SETUP_SOFTWARE");
     case SETTING_GROUP.NOTIFICATION:
       return t("IDS_WP_SETTING_NOTI");
+    case SETTING_GROUP.UPGRADE_ACCOUNT:
+      return t("IDS_WP_UPGRADE_ORDER");
     case SETTING_GROUP.ORDER: {
       if (isOder) return t("IDS_WP_ORDER");
       return t("IDS_WP_ORDER_DETAIL");
@@ -45,6 +48,7 @@ const getHeaderText = (type, search, t) => {
       return t("Thiết lập biểu tượng");
     case SETTING_GROUP.ROLE_MANAGER:
       return t("Thiết lập vai trò");
+
     default:
       return null;
   }
@@ -64,6 +68,8 @@ const TablePart = (props) => {
         if (isOder) return <Order />;
         return <OrderDetail />;
       }
+      case SETTING_GROUP.UPGRADE_ACCOUNT:
+        return <UpgradeAccount />;
       case SETTING_GROUP.CREATE_ORDER:
         return <CreateOrder />;
 
@@ -75,6 +81,7 @@ const TablePart = (props) => {
         return <IconManager />;
       case SETTING_GROUP.ROLE_MANAGER:
         return <RoleManager setHackHeader={setHackHeader} />;
+
       default:
         return null;
     }

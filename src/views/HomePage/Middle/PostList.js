@@ -11,7 +11,8 @@ import useAsyncTracker from "views/SettingGroupPage/TablePart/SettingGroupRight/
 import nodataimg from "../components/ic_no_data.png";
 import Post from "../components/Post";
 import { postModule } from "../redux/post";
-
+import TasksCard from "../components/TasksCard";
+import "./PostList.scss";
 function PostList({ postList }) {
   return (
     <>
@@ -86,16 +87,51 @@ export default React.memo(({ category_id, title }) => {
       <PostList postList={postList} />
       {status === apiCallStatus.success && postList.length === 0 && (
         <Box textAlign="center">
-          <EmptyHolder
-            image={
-              <img style={{ width: "80%" }} src={nodataimg} alt="empty"></img>
-            }
-            title={""}
-            description={""}
-          />
-          <Typography color="textSecondary" component="div">
-            {t("Không tìm thấy kết quả!")}
-          </Typography>
+          <TasksCard.Container>
+            <div className="introduction_workplus_platform">
+              <h3>{t("Workplus Platform")}</h3>
+            </div>
+            <TasksCard.Content style={{ padding: 0 }}>
+              <div className="introduction_workplus_platform__body">
+                <p>
+                  {t(
+                    "Chào mừng bạn đến với nền tảng phần mềm quản lý công việc làm việc nhóm trực tuyến Workplus!"
+                  )}
+                </p>
+                <p>
+                  {t(
+                    "Hãy bắt đầu sử dụng Workplus bằng cách thực hiện tiếp các bước sau"
+                  )}
+                  :
+                </p>
+                <ul>
+                  <li>
+                    <p>{t("Thiết lập tài khoản")}</p>
+                  </li>
+                  <li>
+                    <p>{t("Thiết lập nhóm làm việc")}</p>
+                  </li>
+                  <li>
+                    <p>{t("Mời thành viên tham gia nhóm làm việc của bạn")}</p>
+                  </li>
+                </ul>
+                <p>
+                  {t("Bạn có thể tìm hiểu thêm về cách sử dụng Workplus tại")}:{" "}
+                  <a href="support.workplus.vn">{t("support.workplus.vn")}</a>
+                </p>
+                <p>
+                  {t("Hoặc liên hệ tới")}{" "}
+                  <a href="support.workplus.vn">{t("Trung tâm hỗ trợ")}</a>{" "}
+                  {t("của Workplus để được tư vấn miễn phí 24/7")}
+                </p>
+                <p>
+                  {t(
+                    "Hãy lựa chọn cách làm việc thông minh và Workplus cam kết chung tay xây dựng môi trường làm việc hiệu quả, tiết kiệm"
+                  )}
+                </p>
+              </div>
+            </TasksCard.Content>
+          </TasksCard.Container>
         </Box>
       )}
       {status === apiCallStatus.loading && <LoadingBox />}

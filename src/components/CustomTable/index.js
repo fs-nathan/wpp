@@ -10,7 +10,10 @@ import { bgColorSelector } from "./selectors";
 import "./style.scss";
 import TableMain from "./TableMain";
 import Icon from "@mdi/react";
-
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import ReactDOMServer from "react-dom/server";
+import MenuOpenOutlinedIcon from "@mui/icons-material/MenuOpenOutlined";
+import { closeLeftPart } from "actions/system/system";
 export const CustomTableContext = React.createContext();
 export const CustomTableProvider = CustomTableContext.Provider;
 export const CustomTableConsumer = CustomTableContext.Consumer;
@@ -76,6 +79,7 @@ export const TableHeader = () => {
 };
 export function CustomTableLayout({ children, className }) {
   const { options } = React.useContext(CustomTableContext);
+
   return (
     <Container className={className}>
       <Header>
@@ -114,6 +118,8 @@ export function CustomTableLayout({ children, className }) {
 function CustomTable({
   customHeaderTable: CustomHeaderTable,
   isCustomHeader = false,
+  closeLeftPart,
+  closeLeftBoolean,
 }) {
   const { options, data } = React.useContext(CustomTableContext);
   const styleOfTitleHead = {
@@ -138,16 +144,53 @@ function CustomTable({
         ) : (
           <Header>
             <LeftHeader>
-              <div style={styleOfTitleHead}>
-                {typeof get(options, "title") === "function"
-                  ? options.title()
-                  : get(options, "title", "")}
+              <div
+                className="menu-open-close"
+                onClick={closeLeftPart}
+                style={{
+                  transform: `${
+                    closeLeftBoolean ? "scale(-1, -1)" : "scale(1, 1)"
+                  }`,
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.firstElementChild.innerHTML =
+                    ReactDOMServer.renderToString(
+                      <MenuOpenOutlinedIcon sx={{ fontSize: 28 }} />
+                    ))
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.firstElementChild.innerHTML =
+                    ReactDOMServer.renderToString(
+                      <MenuOutlinedIcon sx={{ fontSize: 28 }} />
+                    ))
+                }
+              >
+                <MenuOutlinedIcon
+                  sx={{
+                    fontSize: '35px',
+                    padding: '3px',
+                    cursor: "pointer",
+                    color: "#8a8a8a",
+                    borderRadius: '3px',
+                    marginLeft: '5px',
+                    "&:hover": {
+                      background: "#f7f7f7",
+                    },
+                  }}
+                />
               </div>
-              {get(options, "subTitle")
-                ? typeof get(options, "subTitle") === "function"
-                  ? options.subTitle()
-                  : get(options, "subTitle", "")
-                : null}
+              <div>
+                <div style={styleOfTitleHead}>
+                  {typeof get(options, "title") === "function"
+                    ? options.title()
+                    : get(options, "title", "")}
+                </div>
+                {get(options, "subTitle")
+                  ? typeof get(options, "subTitle") === "function"
+                    ? options.subTitle()
+                    : get(options, "subTitle", "")
+                  : null}
+              </div>
             </LeftHeader>
             <RightHeader>
               <HeaderButtonGroup />
@@ -190,6 +233,8 @@ export function CustomTableWrapper({
   isCustomHeader = false,
   customHeaderTable,
   children,
+  closeLeft,
+  closeLeftBoolean,
 }) {
   const [searchPatern, setSearchPatern] = React.useState("");
   const [expand, setExpand] = React.useState(false);
@@ -220,6 +265,8 @@ export function CustomTableWrapper({
         <CustomTable
           isCustomHeader={isCustomHeader}
           customHeaderTable={customHeaderTable}
+          closeLeftPart={closeLeft}
+          closeLeftBoolean={closeLeftBoolean}
         />
       )}
     </CustomTableProvider>
@@ -235,7 +282,13 @@ CustomTableWrapper.propTypes = {
 const mapStateToProps = (state) => {
   return {
     bgColor: bgColorSelector(state),
+    closeLeftBoolean: state.system.closeLeftPart,
   };
 };
 
-export default connect(mapStateToProps, null)(CustomTableWrapper);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    closeLeft: () => dispatch(closeLeftPart()),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CustomTableWrapper);

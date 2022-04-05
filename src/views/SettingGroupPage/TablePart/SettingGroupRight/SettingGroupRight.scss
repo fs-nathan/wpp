@@ -18,8 +18,8 @@
   width: calc(100% - 10px);
 }
 .setting-right-content {
-  overflow: auto;
-  height: calc(100vh - 125px);
+  overflow: none;
+  height: 100vh;
   .action-btn {
     width: 60px;
     height: 28px;

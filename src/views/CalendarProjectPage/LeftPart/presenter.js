@@ -42,7 +42,7 @@ function CalendarProjectLeftPartPresenter({
           title={t('IDS_WP_PROJECT_CALENDAR')}
           leftAction={{
             iconPath: mdiChevronLeft,
-            onClick: () => history.push(`${Routes.CALENDAR}/project`),
+            onClick: () => history.push(Routes.SETTING_GROUP_INFO),
             tooltip: t("IDS_WP_BACK"),
           }}
           rightAction={{

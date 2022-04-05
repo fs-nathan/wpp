@@ -1,0 +1,76 @@
+.menu-sub-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  .menu-icon-popover {
+    min-width: 70px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .icon {
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      svg {
+        width: 22px !important;
+        height: 22px !important;
+        // fill: rgb(122, 122, 122) !important;
+      }
+    }
+    img {
+      height: 25px;
+      width: 25px;
+    }
+  }
+  .badge-menu-item {
+    color: #fff;
+    background-color: #f44336;
+    height: 20px;
+    width: 23px;
+    font-size: 10px;
+    font-weight: 500;
+    line-height: 1;
+    display: flex;
+    align-content: center;
+    border-radius: 10px;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-left: 20px;
+  }
+}
+
+.menu-icon-profile {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: transparent;
+  img {
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.background-apply {
+  background: rgb(255, 150, 1);
+  background: linear-gradient(90deg, rgba(255, 150, 1, 1) 52%, rgba(235, 138, 1, 1) 100%);
+  color: white !important;
+}
+
+.MuiList-root {
+  padding: 0 0 !important;
+}
+
+.background-boolean {
+  background-repeat: no-repeat;
+  background-position: center center, center top;
+  background-size: cover !important;
+  background: url("../../assets/home_baner_right1.png") 100%;
+}

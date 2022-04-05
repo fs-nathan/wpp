@@ -9,6 +9,9 @@ import HightLight from "./HightLight";
 import Language from "./Language";
 import Statistic from "./Statistic";
 import WeedSchedule from "./WeedSchedule";
+import BannerInvite from "./BannerInvite"
+import BannerDownload from "./BannerDownload";
+
 function Right() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -21,11 +24,13 @@ function Right() {
   }, [dispatch]);
   return (
     <Stack>
+      <BannerInvite />
+      <BannerDownload />
       {pluginSettings.map((item) => {
         if (item.status === "OFF") return null;
         switch (item.value) {
-          case 1:
-            return <WeedSchedule key={item.value} />;
+          // case 1:
+          //   return <WeedSchedule key={item.value} />;
           case 2:
             return <HightLight key={item.value} />;
           case 3:
