@@ -180,7 +180,8 @@ const DrawerFilter = forwardRef(
     };
 
     const _handleDeleted = (id) => {
-      history.replace(`/projects?groupID=${project.group_project_id}`);
+      if (project)
+        history.replace(`/projects?groupID=${project.group_project_id}`);
     };
 
     return (

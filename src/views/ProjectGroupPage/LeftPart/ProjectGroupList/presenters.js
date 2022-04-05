@@ -76,10 +76,19 @@ function ProjectList({
     "WPS_HIDE_WORKING_START_BUTTON",
     false
   );
+  const idGroupDefault = useSelector(
+    ({ groupTask }) => groupTask.defaultGroupTask.data || ""
+  );
+  const idGroupDefaultLocal = localStorage.getItem(
+    "WPS_WORKING_SPACE_DEFAULT_ACCESS"
+  );
+
+  const isDefaultGroup = idGroupDefault === "?" || "?" === idGroupDefaultLocal;
   const [hideBtnState, setHideBtnState] = React.useState(isHideStartButton);
   const dispatch = useDispatch();
   const [anchorElStartButton, setAnchorElStartButton] = React.useState(null);
   const [anchorElAddGroup, setAnchorElAddGroup] = React.useState(null);
+  const [anchorElSetDefault, setAnchorElSetDefault] = React.useState(null);
   const [anchorElAddBoard, setAnchorElAddBoard] = React.useState(null);
   const [anchorElGroup, setAnchorElGroup] = React.useState(null);
   const [openCreateGroup, setOpenCreateGroup] = React.useState(false);
@@ -119,7 +128,17 @@ function ProjectList({
   }
 
   function handleSetDefault(value) {
-    if (value) dispatch(defaultGroupTask(value));
+    console.log(
+      "🚀 --------------------------------------------------------------------"
+    );
+    console.log(
+      "🚀 ~ file: presenters.js ~ line 130 ~ handleSetDefault ~ value",
+      value
+    );
+    console.log(
+      "🚀 --------------------------------------------------------------------"
+    );
+    if (value !== null) dispatch(defaultGroupTask(value));
   }
 
   function handleDeleteGroup(evt) {
@@ -229,6 +248,7 @@ function ProjectList({
               <span>{t("LABEL_WORKING_GROUP")}</span>
 
               <div className="wp-wrapper">
+                {isDefaultGroup && <FlagOutlinedIcon htmlColor={"red"} />}
                 <div className="wp-wrapper-button">
                   <abbr title={t("Thêm nhóm")}>
                     <AddIcon
@@ -243,12 +263,12 @@ function ProjectList({
                   </abbr>
                 </div>
                 <div className="wp-wrapper-button">
-                  <abbr title={t("Thêm nhóm")}>
+                  <abbr title={t("Tuỳ chọn")}>
                     <SvgIcon
                       size={"small"}
                       onClick={(evt) => {
                         evt.stopPropagation();
-                        setAnchorElStartButton(evt.currentTarget);
+                        setAnchorElSetDefault(evt.currentTarget);
                       }}
                     >
                       <Icon
@@ -261,8 +281,8 @@ function ProjectList({
                 </div>
               </div>
               <Popover
-                open={Boolean(anchorElStartButton)}
-                anchorEl={anchorElStartButton}
+                open={Boolean(anchorElSetDefault)}
+                anchorEl={anchorElSetDefault}
                 disableRestoreFocus
                 anchorOrigin={{
                   vertical: "bottom",
@@ -272,7 +292,7 @@ function ProjectList({
                   vertical: "top",
                   horizontal: "right",
                 }}
-                onClose={() => setAnchorElStartButton(null)}
+                onClose={() => setAnchorElSetDefault(null)}
                 elevation={1}
               >
                 <Box className={"startBtnSetting-container"}>
@@ -286,7 +306,14 @@ function ProjectList({
                     >
                       {t("LABEL_SET_DEFAULT_DES")}
                     </Typography>
-                    <Button className={"hideBtn"} onClick={handleSetDefault}>
+                    <Button
+                      color={"primary"}
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        setAnchorElSetDefault(null);
+                        handleSetDefault("?");
+                      }}
+                    >
                       {t("LABEL_SET")}
                     </Button>
                   </div>

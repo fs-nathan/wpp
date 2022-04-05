@@ -19,7 +19,12 @@ const getTableHeight = () => {
   const height = rootDocument.offsetHeight;
   const headerNav = document.getElementById("topNavId");
   const headerTableNav = document.getElementById("header-table-group");
-  return height - (headerNav.offsetHeight + headerTableNav.offsetHeight + 37);
+  if (headerNav) {
+    return height - (headerNav.offsetHeight + headerTableNav.offsetHeight + 37);
+  } else if (headerTableNav) {
+    return height - (headerTableNav.offsetHeight + 37);
+  }
+  return height - 37;
 };
 
 const WPTable = ({
@@ -67,8 +72,11 @@ const WPTable = ({
     useSticky
   );
 
-  const scrollBarSize = React.useMemo(() => scrollbarWidth(), []);
-  const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
+  const scrollBarSize = React.useMemo(() => scrollbarWidth(), [scrollbarWidth]);
+  const scrollTableHeight = React.useMemo(
+    () => getTableHeight(),
+    [getTableHeight]
+  );
 
   React.useLayoutEffect(() => {
     const tbody = document.querySelectorAll(".tbody")[0];
