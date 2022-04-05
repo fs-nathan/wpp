@@ -2253,6 +2253,7 @@
   "LABEL_INVITE_MEMBER_OUTSIDE": "Invite member use Workplus",
   "LABEL_ADD_MEMBER_TO_GROUP": "Add members to group",
   "LABEL_QUICK_ACCESS_PANEL": "Quick access",
+  "LABEL_SHORTCUT_PANEL": "Shortcut",
   "LABEL_PERSONAL_BOARD": "Personal board",
   "LABEL_HIDE_PERSONAL_BOARD_FROM_WORK_CATEGORY": "Hide starting view on working space",
   "LABEL_VISIBLE_PERSONAL_BOARD_FROM_WORK_CATEGORY": "UnHide starting view on working space",

@@ -166,7 +166,7 @@ function ProjectList({
               className={"view_ProjectGroup_List--listGroup-header textHeader"}
             >
               <Icon path={mdiBookmarkOutline} size={1} color={"#009CF3"} />
-              <span>{t("LABEL_QUICK_ACCESS_PANEL")}</span>
+              <span>{t("LABEL_SHORTCUT_PANEL")}</span>
             </Box>
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
