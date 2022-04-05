@@ -2,9 +2,8 @@ import { ButtonBase } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
 import { addNewGroupTask } from "actions/task/listTask";
 import AlertModal from "components/AlertModal";
+import { CustomLayoutContext } from "components/CustomLayout";
 import { TimeRangePopover } from "components/CustomPopover";
-import { CustomTableContext } from "components/CustomTable";
-import HeaderProject from "components/HeaderProject";
 import { Container } from "components/TableComponents";
 import WPReactTable from "components/WPReactTable";
 import EditColumnModal from "components/WPReactTable/components/EditColumnModal";
@@ -24,7 +23,7 @@ import {
   join,
   uniqueId,
 } from "lodash";
-import React, { useEffect, useReducer, useRef } from "react";
+import React, { useContext, useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -67,15 +66,11 @@ function AllTaskTable({
   canCreateTask,
   handleSortGroupTask,
 }) {
+  const { itemLocation } = useContext(CustomLayoutContext);
   const { projectId } = useParams();
   const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
   const isLoading = useSelector(({ task }) => task?.listTask?.loading);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
-  const [itemLocation, setItemLocation] = React.useState({
-    id: "",
-    startIndex: 0,
-    endIndex: 0,
-  });
   const [state, dispatchState] = useReducer(reducer, {
     ...initialState,
     columnsFields: fields,
@@ -346,7 +341,7 @@ function AllTaskTable({
 
       {!state.isEmpty && (
         <>
-          <HeaderTableCustom
+          {/* <HeaderTableCustom
             project={project}
             memberID={memberID}
             canUpdateProject={canUpdateProject}
@@ -359,7 +354,7 @@ function AllTaskTable({
             onAddColumns={_handleAddNewColumns}
             onHideColumn={_handleHideColumn}
             setItemLocation={setItemLocation}
-          />
+          /> */}
 
           <WPReactTable
             isGroup
@@ -431,53 +426,53 @@ const ModalAlert = React.forwardRef(({ onConfirm = () => {} }, ref) => {
   );
 });
 
-const HeaderTableCustom = ({
-  project,
-  memberID,
-  canUpdateProject,
-  disableShowHide,
-  handleOpenModal,
-  handleShowOrHideProject,
-  _exportData,
-  handleExpand,
-  onReOrderColumns,
-  onAddColumns,
-  onHideColumn,
-  setItemLocation,
-}) => {
-  const TableContext = React.useContext(CustomTableContext);
-  return (
-    <HeaderProject
-      project={project.project}
-      valueSearch={get(TableContext?.options, "search.patern", "")}
-      onSearch={(value) =>
-        get(TableContext?.options, "search.onChange", () => null)(value)
-      }
-      hasMemberId={isNil(memberID)}
-      canUpdateProject={canUpdateProject && isNil(memberID)}
-      disableShowHide={disableShowHide}
-      onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
-      onUpdateTime={() => handleOpenModal("CALENDAR", {})}
-      onUpdateVisible={() => handleShowOrHideProject(project.project)}
-      onUpdateSetting={() =>
-        handleOpenModal("SETTING", {
-          curProject: project.project,
-          canChange: {
-            date: canUpdateProject,
-            copy: canUpdateProject,
-            view: true,
-          },
-        })
-      }
-      onExportData={_exportData}
-      onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
-      onExpand={handleExpand}
-      onReOrderColumns={onReOrderColumns}
-      onAddColumns={onAddColumns}
-      onHideColumn={onHideColumn}
-      setItemLocation={setItemLocation}
-    />
-  );
-};
+// export const HeaderTableCustom = ({
+//   project,
+//   memberID,
+//   canUpdateProject,
+//   disableShowHide,
+//   handleOpenModal,
+//   handleShowOrHideProject,
+//   _exportData,
+//   handleExpand,
+//   onReOrderColumns,
+//   onAddColumns,
+//   onHideColumn,
+//   setItemLocation,
+// }) => {
+//   const TableContext = React.useContext(CustomTableContext);
+//   return (
+//     <HeaderProject
+//       project={project.project}
+//       valueSearch={get(TableContext?.options, "search.patern", "")}
+//       onSearch={(value) =>
+//         get(TableContext?.options, "search.onChange", () => null)(value)
+//       }
+//       hasMemberId={isNil(memberID)}
+//       canUpdateProject={canUpdateProject && isNil(memberID)}
+//       disableShowHide={disableShowHide}
+//       onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
+//       onUpdateTime={() => handleOpenModal("CALENDAR", {})}
+//       onUpdateVisible={() => handleShowOrHideProject(project.project)}
+//       onUpdateSetting={() =>
+//         handleOpenModal("SETTING", {
+//           curProject: project.project,
+//           canChange: {
+//             date: canUpdateProject,
+//             copy: canUpdateProject,
+//             view: true,
+//           },
+//         })
+//       }
+//       onExportData={_exportData}
+//       onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
+//       onExpand={handleExpand}
+//       onReOrderColumns={onReOrderColumns}
+//       onAddColumns={onAddColumns}
+//       onHideColumn={onHideColumn}
+//       setItemLocation={setItemLocation}
+//     />
+//   );
+// };
 
 export default AllTaskTable;

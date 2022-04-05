@@ -16,11 +16,12 @@ export const listTask = ({ projectId, timeStart, timeEnd }, quite = false) => ({
   },
 });
 
-export const listTaskSuccess = ({ tasks }, options) => ({
+export const listTaskSuccess = ({ tasks, summary_row }, options) => ({
   type: LIST_TASK_SUCCESS,
   options,
   data: {
     tasks,
+    summary_row,
   },
 });
 

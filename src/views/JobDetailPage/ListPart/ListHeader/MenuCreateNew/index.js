@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import "./style.scss";
 const MenuCreateNew = ({
   setOpenCreateTaskGroup,
-  setOpenmMenuCreate,
+  setOpenMenuCreate,
   anchorEl,
   setAnchorEl,
   setOpenCreate,
@@ -33,7 +33,7 @@ const MenuCreateNew = ({
         <div
           className="create-work-item"
           onClick={() => {
-            setOpenmMenuCreate(false);
+            setOpenMenuCreate(false);
             setOpenCreate(true);
           }}
         >
@@ -42,7 +42,7 @@ const MenuCreateNew = ({
         <div
           className="create-work-item"
           onClick={() => {
-            setOpenmMenuCreate(false);
+            setOpenMenuCreate(false);
             setOpenCreateTaskGroup(true);
           }}
         >

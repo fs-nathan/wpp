@@ -2557,5 +2557,9 @@
   "sort_asc": "Sort up ascending",
   "sort_decs": "Sort descending",
   "cancel_sort": "Cancel sorting",
-  "add_group": "Add new group"
+  "add_group": "Add new group",
+  "update": "Update",
+  "total": "Total",
+  "averaged": "Averaged",
+  "label": "Label"
 }

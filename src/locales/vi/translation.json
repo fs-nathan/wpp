@@ -2586,5 +2586,9 @@
   "sort_asc": "Sắp xếp tăng dần",
   "sort_decs": "Sắp xếp giảm dần",
   "cancel_sort": "Huỷ sắp xếp",
-  "add_group": "Thêm nhóm việc"
+  "add_group": "Thêm nhóm việc",
+  "update": "Chỉnh sửa",
+  "total": "Tính tổng",
+  "averaged": "Tính trung bình",
+  "label": "Nhãn"
 }

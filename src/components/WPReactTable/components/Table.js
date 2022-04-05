@@ -30,7 +30,7 @@ const WPTable = ({
   onDragEnd = () => {},
   onSort = () => {},
 }) => {
-  const [dataRows, setDataRows] = React.useState(data);
+  const [dataRows, setDataRows] = React.useState([]);
   const refSetted = React.useRef(false);
 
   const defaultColumn = React.useMemo(
@@ -43,11 +43,11 @@ const WPTable = ({
   );
 
   React.useEffect(() => {
-    if (!refSetted.current || !dataRows.length) {
-      setDataRows(data);
-      refSetted.current = true;
-    }
-  }, [data, dataRows]);
+    // if (!refSetted.current || !dataRows.length) {
+    setDataRows(data);
+    //   refSetted.current = true;
+    // }
+  }, [data]);
 
   const {
     getTableProps,
@@ -205,6 +205,7 @@ const WPTable = ({
               >
                 {RenderRow}
               </FixedSizeList>
+              {provided.placeholder}
             </div>
           )}
         </Droppable>

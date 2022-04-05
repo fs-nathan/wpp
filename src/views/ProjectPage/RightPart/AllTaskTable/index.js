@@ -15,9 +15,8 @@ import {
 import { getPermissionViewDetailProject } from "actions/viewPermissions";
 import AlertModal from "components/AlertModal";
 import AssignCalendarModal from "components/AssignCalendarModal";
+import { CustomLayoutContext } from "components/CustomLayout";
 import { useTimes } from "components/CustomPopover";
-import { CustomTableWrapper } from "components/CustomTable";
-import LoadingOverlay from "components/LoadingOverlay";
 import {
   COPY_GROUP_TASK,
   CREATE_GROUP_TASK,
@@ -34,7 +33,7 @@ import {
 } from "constants/events";
 import { get } from "lodash";
 import moment from "moment";
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
@@ -199,16 +198,24 @@ function AllTaskTable({
     }
   }, [projectId, timeRange]);
 
+  const {
+    openMemberSetting,
+    setOpenMemberSetting,
+    openCalendar,
+    setOpenCalendar,
+    openSetting,
+    setOpenSetting,
+    settingProps,
+    openMenuCreate,
+    setOpenMenuCreate,
+    selectedGroup,
+    setSelectedGroup,
+  } = useContext(CustomLayoutContext);
+
   const [openCreate, setOpenCreate] = React.useState(false);
-  const [openMenuCreate, setOpenmMenuCreate] = React.useState(null);
-  const [openSetting, setOpenSetting] = React.useState(false);
-  const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
-  const [openCalendar, setOpenCalendar] = React.useState(false);
-  const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
-  const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
 
   function doOpenModal(type, props) {
@@ -218,25 +225,15 @@ function AllTaskTable({
         setSelectedGroup(props);
         return;
       case "MENU_CREATE":
-        setOpenmMenuCreate(true);
+        setOpenMenuCreate(true);
         setSelectedGroup(props);
-        return;
-      case "SETTING":
-        setOpenSetting(true);
-        setSettingProps(props);
         return;
       case "ALERT":
         setOpenAlert(true);
         setAlertProps(props);
         return;
-      case "CALENDAR":
-        setOpenCalendar(true);
-        return;
       case "ADD_MEMBER":
         setOpenModalAddMember(true);
-        return;
-      case "SETTING_MEMBER":
-        setOpenMemberSetting(true);
         return;
       default:
         return;
@@ -252,60 +249,58 @@ function AllTaskTable({
 
   return (
     <>
-      <CustomTableWrapper>
-        <AllTaskTablePresenter
-          expand={expand}
-          handleExpand={handleExpand}
-          handleSubSlide={handleSubSlide}
-          canUpdateProject={get(
-            viewPermissions.permissions,
-            [projectId, "update_project"],
-            false
-          )}
-          canCreateTask={true}
-          isShortGroup={isShortGroup}
-          showHidePendings={showHidePendings}
-          tasks={tasks}
-          project={project}
-          memberID={memberId}
-          memberTask={memberTask}
-          handleShowOrHideProject={(project) =>
-            get(project, "visibility", false)
-              ? doHideProject({ projectId: get(project, "id") })
-              : doShowProject({ projectId: get(project, "id") })
-          }
-          handleDeleteTask={(task) => doDeleteTask({ taskId: get(task, "id") })}
-          handleSortGroupTask={(groupTaskId, sortIndex) =>
-            doSortGroupTask({ groupTaskId, sortIndex })
-          }
-          handleSortTask={(taskId, groupTask, sortIndex) =>
-            doSortTask({
-              taskId,
-              projectId,
-              groupTask: groupTask === "default" ? undefined : groupTask,
-              sortIndex,
-            })
-          }
-          handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
-          handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
-          handleOpenModal={doOpenModal}
-          handleReload={reloadListTaskAndGroupTask}
-          bgColor={bgColor}
-          timeType={timeType}
-          handleTimeType={(timeType) =>
-            doSetProject({
-              ...localOption,
-              timeType,
-            })
-          }
-        />
-      </CustomTableWrapper>
+      <AllTaskTablePresenter
+        expand={expand}
+        handleExpand={handleExpand}
+        handleSubSlide={handleSubSlide}
+        canUpdateProject={get(
+          viewPermissions.permissions,
+          [projectId, "update_project"],
+          false
+        )}
+        canCreateTask={true}
+        isShortGroup={isShortGroup}
+        showHidePendings={showHidePendings}
+        tasks={tasks}
+        project={project}
+        memberID={memberId}
+        memberTask={memberTask}
+        handleShowOrHideProject={(project) =>
+          get(project, "visibility", false)
+            ? doHideProject({ projectId: get(project, "id") })
+            : doShowProject({ projectId: get(project, "id") })
+        }
+        handleDeleteTask={(task) => doDeleteTask({ taskId: get(task, "id") })}
+        handleSortGroupTask={(groupTaskId, sortIndex) =>
+          doSortGroupTask({ groupTaskId, sortIndex })
+        }
+        handleSortTask={(taskId, groupTask, sortIndex) =>
+          doSortTask({
+            taskId,
+            projectId,
+            groupTask: groupTask === "default" ? undefined : groupTask,
+            sortIndex,
+          })
+        }
+        handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
+        handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
+        handleOpenModal={doOpenModal}
+        handleReload={reloadListTaskAndGroupTask}
+        bgColor={bgColor}
+        timeType={timeType}
+        handleTimeType={(timeType) =>
+          doSetProject({
+            ...localOption,
+            timeType,
+          })
+        }
+      />
       <MenuCreateNew
         setOpenCreateTaskGroup={setOpenCreateTaskGroup}
-        setOpenmMenuCreate={setOpenmMenuCreate}
+        setOpenMenuCreate={setOpenMenuCreate}
         setOpenCreate={setOpenCreate}
         anchorEl={openMenuCreate}
-        setAnchorEl={setOpenmMenuCreate}
+        setAnchorEl={setOpenMenuCreate}
       />
       <CreateGroupTask
         open={openCreateTaskGroup}

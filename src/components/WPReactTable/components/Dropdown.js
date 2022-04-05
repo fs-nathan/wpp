@@ -30,6 +30,7 @@ export default function MultipleSelectPlaceholder({
   options = OPTIONS_FIELDS_TYPE,
   defaultValue = OPTIONS_FIELDS_TYPE[0].type,
   onSelect = () => {},
+  ...props
 }) {
   const [value, setValue] = React.useState(defaultValue);
   const handleChange = (event) => {
@@ -46,6 +47,7 @@ export default function MultipleSelectPlaceholder({
         onChange={handleChange}
         input={<OutlinedInput />}
         inputProps={{ "aria-label": "Without label" }}
+        {...props}
       >
         {options.map((item, index) => (
           <WrapperMenu key={index} value={item.type} {...item}>

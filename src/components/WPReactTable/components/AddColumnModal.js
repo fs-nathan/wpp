@@ -7,8 +7,12 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import TitleSectionModal from "components/TitleSectionModal";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemText from "@mui/material/ListItemText";
 import { createColumns } from "actions/columns/createColumns";
+import TitleSectionModal from "components/TitleSectionModal";
 import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
@@ -37,6 +41,8 @@ const initialState = {
 };
 
 const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
+  const typingTimeoutRef = React.useRef();
+  const [dataSearch, setDataSearch] = React.useState([]);
   const { t } = useTranslation();
   const { projectId } = useParams();
   const [state, dispatchState] = React.useReducer(reducer, initialState);
@@ -67,6 +73,19 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
 
   const _handleChange = (e) => {
     dispatchState({ name: e.target.value });
+  };
+
+  const _handleChangeSearch = (e) => {
+    const { value } = e.target;
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
+
+    typingTimeoutRef.current = setTimeout(() => {
+      console.log(value);
+    }, 500);
+    // dispatchState({ name: e.target.value });
   };
 
   const _handleConfirm = async () => {
@@ -188,6 +207,7 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
         </TabPanel>
         <TabPanel value={state.value} index={1}>
           <TextField
+            onChange={_handleChangeSearch}
             className="offerModal--titleText"
             placeholder={t("FIND_FIELD_DATA")}
             variant="outlined"
@@ -197,6 +217,24 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
               style: { color: "#666", marginTop: "15px" },
             }}
           />
+          {/* show search */}
+          {dataSearch.length > 0 && (
+            <Box style={{ backgroundColor: "#f1f2f4" }}>
+              <List>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemText primary="Trash" />
+                  </ListItemButton>
+                </ListItem>
+                <ListItem disablePadding>
+                  <ListItemButton component="a" href="#simple-list">
+                    <ListItemText primary="Spam" />
+                  </ListItemButton>
+                </ListItem>
+              </List>
+            </Box>
+          )}
+          {/* show search */}
           <TitleSectionModal label={t("DATA_FIELD_EXITS")} />
           <Grid container>
             <Grid item xs={12}>

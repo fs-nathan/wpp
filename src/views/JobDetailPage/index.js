@@ -113,12 +113,12 @@ function JobDetailPage({ expand = false, handleExpand = () => {} }) {
 
   return (
     <>
-      <HeaderProject
+      {/* <HeaderProject
         view="chat"
         expand={expand}
         onExpand={handleExpand}
         project={{ id: projectId }}
-      />
+      /> */}
       <div className={taskId ? "container" : "container-job-introduce"}>
         <ListPart />
         {taskId ? (

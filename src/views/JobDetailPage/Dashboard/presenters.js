@@ -2,13 +2,14 @@ import { Grid } from "@material-ui/core";
 import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
 import { find, get, isNil } from "lodash";
-import React from "react";
+import React, { useContext } from "react";
 import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
 import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal";
 import DeleteProjectModal from "views/ProjectGroupPage/Modals/DeleteProject";
 import LeftPart from "./components/LeftPart";
 import RightPart from "./components/RightPart";
 import { useHistory } from "react-router-dom";
+import { CustomLayoutContext } from "components/CustomLayout";
 
 const DashboardPresenters = ({
   project,
@@ -18,18 +19,15 @@ const DashboardPresenters = ({
   handleExpand,
   status = {},
 }) => {
+  const { modalSetting, setModalSetting } = useContext(CustomLayoutContext);
+
   const disableShowHide = !isNil(
     find(
       showHidePendings.pendings,
       (pending) => pending === get(project.project, "id")
     )
   );
-
   const history = useHistory();
-  const [modalSetting, setModalSetting] = React.useState({
-    isOpen: false,
-    props: {},
-  });
   const [openModalAlert, setOpenModalAlert] = React.useState({
     isOpen: false,
     props: {},
@@ -80,14 +78,14 @@ const DashboardPresenters = ({
 
   return (
     <div>
-      <HeaderTableCustom
+      {/* <HeaderTableCustom
         project={project}
         memberID={memberID}
         canUpdateProject={canUpdateProject}
         disableShowHide={disableShowHide}
         handleOpenModal={_handleOpenModal}
         handleExpand={handleExpand}
-      />
+      /> */}
 
       <Grid
         container
@@ -140,45 +138,45 @@ const DashboardPresenters = ({
   );
 };
 
-const HeaderTableCustom = ({
-  project,
-  memberID,
-  canUpdateProject,
-  disableShowHide,
-  handleOpenModal,
-  handleShowOrHideProject,
-  _exportData,
-  handleExpand,
-}) => {
-  const TableContext = React.useContext(CustomTableContext);
-  return (
-    <HeaderProject
-      project={project.project}
-      valueSearch={get(TableContext?.options, "search.patern", "")}
-      onSearch={(value) =>
-        get(TableContext?.options, "search.onChange", () => null)(value)
-      }
-      hasMemberId={isNil(memberID)}
-      canUpdateProject={canUpdateProject && isNil(memberID)}
-      disableShowHide={disableShowHide}
-      onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
-      onUpdateTime={() => handleOpenModal("CALENDAR", {})}
-      onUpdateVisible={() => handleShowOrHideProject(project.project)}
-      onUpdateSetting={() =>
-        handleOpenModal("SETTING", {
-          curProject: project.project,
-          canChange: {
-            date: canUpdateProject,
-            copy: canUpdateProject,
-            view: true,
-          },
-        })
-      }
-      onExportData={_exportData}
-      onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
-      onExpand={handleExpand}
-    />
-  );
-};
+// const HeaderTableCustom = ({
+//   project,
+//   memberID,
+//   canUpdateProject,
+//   disableShowHide,
+//   handleOpenModal,
+//   handleShowOrHideProject,
+//   _exportData,
+//   handleExpand,
+// }) => {
+//   const TableContext = React.useContext(CustomTableContext);
+//   return (
+//     <HeaderProject
+//       project={project.project}
+//       valueSearch={get(TableContext?.options, "search.patern", "")}
+//       onSearch={(value) =>
+//         get(TableContext?.options, "search.onChange", () => null)(value)
+//       }
+//       hasMemberId={isNil(memberID)}
+//       canUpdateProject={canUpdateProject && isNil(memberID)}
+//       disableShowHide={disableShowHide}
+//       onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
+//       onUpdateTime={() => handleOpenModal("CALENDAR", {})}
+//       onUpdateVisible={() => handleShowOrHideProject(project.project)}
+//       onUpdateSetting={() =>
+//         handleOpenModal("SETTING", {
+//           curProject: project.project,
+//           canChange: {
+//             date: canUpdateProject,
+//             copy: canUpdateProject,
+//             view: true,
+//           },
+//         })
+//       }
+//       onExportData={_exportData}
+//       onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
+//       onExpand={handleExpand}
+//     />
+//   );
+// };
 
 export default DashboardPresenters;

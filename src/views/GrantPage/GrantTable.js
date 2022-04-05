@@ -10,21 +10,32 @@ import {
   mdiPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
+import { changeKeyword } from "actions/gantt";
+import { changeVisibleExportPdfDrawer } from "actions/system/system";
+import { changeVisibleConfigGantt } from "actions/system/system.js";
 import { Table } from "antd";
 import "antd/lib/grid/style/index.css";
 import "antd/lib/table/style/index.css";
+import CustomModal from "components/CustomModalGantt";
+import "components/Drawer/DrawerPDF/drawerpdf.css";
+import HeaderProject from "components/HeaderProject";
 import LoadingBox from "components/LoadingBox";
+import "components/PreviewModal/previewModal.css";
 import update from "immutability-helper";
 import { get } from "lodash";
 import moment from "moment";
 import React from "react";
 import { DndProvider } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
-import { useTranslation, withTranslation } from "react-i18next";
+import { withTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { Resizable } from "react-resizable";
 import { withRouter } from "react-router-dom";
-import { changeKeyword } from "actions/gantt";
+import CalendarProjectPage from "views/CalendarProjectPageClone";
+import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
+import "views/JobPage/components/QuickViewFilter.css";
+import "views/JobPage/Layout/QuickView.css";
+import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
 import {
   changeCalendarPermisstion,
   changePreviewContent,
@@ -67,18 +78,7 @@ import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import EditCell from "./EditCell";
 import Header from "./Header";
-import "views/JobPage/components/QuickViewFilter.css";
-import "views/JobPage/Layout/QuickView.css";
-import "components/Drawer/DrawerPDF/drawerpdf.css";
-import "components/PreviewModal/previewModal.css";
 import "./table.css";
-import HeaderProject from "components/HeaderProject";
-import { changeVisibleConfigGantt } from "actions/system/system.js";
-import { changeVisibleExportPdfDrawer } from "actions/system/system";
-import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
-import CustomModal from "components/CustomModalGantt";
-import CalendarProjectPage from "views/CalendarProjectPageClone";
-import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 
 let haveError = false;
 let checkTimeOut = null;
@@ -1719,21 +1719,6 @@ class DragSortingTable extends React.Component {
           start={this.state.startTimeProject}
           end={this.state.endTimeProject}
         /> */}
-
-        <HeaderProject
-          expand={this.props.expand}
-          onExpand={this.props.handleExpand}
-          project={this.props.projectInfo}
-          view="grantt"
-          valueSearch={this.props.keyword}
-          onMilestoneClick={this.handleMileStoneClick}
-          onOpenGranttConfig={this.props.changeVisibleConfigGantt}
-          onOpenExportData={this.props.changeVisibleExportPdfDrawer}
-          onSearch={this.props.changeKeyword}
-          onUpdateSetting={() => this.setOpenSetting(true)}
-          onUpdateTime={() => this.setOpenConfigCalendar(true)}
-          onOpenCreateModal={() => this.handleOpenMenuCreate(true)}
-        />
 
         <MenuCreateNew
           setOpenCreateTaskGroup={this.handleOpenCreateProjectModal}

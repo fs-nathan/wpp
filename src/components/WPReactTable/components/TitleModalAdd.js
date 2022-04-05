@@ -11,7 +11,10 @@ const TitleModalAdd = ({
   value,
   handleChangeTab,
   setOpen,
+  titleText = "",
+  customStyle = {},
   isEditForm = false,
+  isHideTab = false,
 }) => {
   const { t } = useTranslation();
   return (
@@ -19,6 +22,7 @@ const TitleModalAdd = ({
       <WrapperTitle
         className="comp_CustomModal__renderTitle"
         id="alert-dialog-slide-title"
+        style={{...customStyle}}
       >
         <ColorTypo
           uppercase
@@ -30,7 +34,9 @@ const TitleModalAdd = ({
             fontWeight: "500",
           }}
         >
-          {isEditForm ? t("EDIT_FIELDS_DATA") : t("ADD_FIELDS_DATA")}
+          {titleText}
+          {isEditForm && !titleText && t("EDIT_FIELDS_DATA")}
+          {!isEditForm && !titleText && t("ADD_FIELDS_DATA")}
         </ColorTypo>
         <IconButton
           className="comp_CustomModal___iconButton"
@@ -39,18 +45,25 @@ const TitleModalAdd = ({
           <Icon path={mdiClose} size={1} color={"rgba(0, 0, 0, 0.54)"} />
         </IconButton>
       </WrapperTitle>
-      <WrapperTabs
-        value={value}
-        onChange={handleChangeTab}
-        TabIndicatorProps={{
-          style: {
-            backgroundColor: "#4caf50",
-          },
-        }}
-      >
-        <Tab label={t("IDS_WP_CREATE_NEW")} {...a11yProps(0)} />
-        <Tab label={t("SELECT_FROM_LIBRARY")} {...a11yProps(1)} />
-      </WrapperTabs>
+      {!isHideTab && (
+        <WrapperTabs
+          value={value}
+          onChange={handleChangeTab}
+          TabIndicatorProps={{
+            style: {
+              backgroundColor: "#4caf50",
+            },
+          }}
+        >
+          <Tab
+            label={isEditForm ? t("update") : t("IDS_WP_CREATE_NEW")}
+            {...a11yProps(0)}
+          />
+          {!isEditForm && (
+            <Tab label={t("SELECT_FROM_LIBRARY")} {...a11yProps(1)} />
+          )}
+        </WrapperTabs>
+      )}
     </>
   );
 };
