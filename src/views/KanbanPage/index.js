@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import KanbanPresenter from "./presenters";
 import StageSettingModal from "./Modals/StageSettingModal";
 import MembersSettingModal from "views/ProjectPage/Modals/MembersSetting";
@@ -19,6 +19,7 @@ import ModalImage from "views/JobDetailPage/ModalImage";
 import ManagerModal from "./Modals/ManagerModal";
 import { getPermissionViewDetailProject } from "actions/viewPermissions";
 import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
+import { CustomLayoutContext } from "components/CustomLayout";
 
 function KanbanPage({
   visible,
@@ -26,43 +27,41 @@ function KanbanPage({
   handleExpand,
   expand,
 }) {
-  const { projectId } = useParams();
+  const {
+    openMemberSettingModal,
+    setOpenMemberSettingModal,
+    openMemberSettingProps,
+    openSettingProjectModal,
+    setOpenSettingProjectModal,
+    openSettingProjectProps,
+    openCalendar,
+    setOpenCalendar,
+    openMenuCreate,
+    setOpenMenuCreate,
+  } = useContext(CustomLayoutContext);
 
-  React.useLayoutEffect(() => {
+  const { projectId } = useParams();
+  useLayoutEffect(() => {
     doGetPermissionViewDetailProject({ projectId });
   }, [projectId]);
 
-  const [openStageSettingModal, setOpenStageSettingModal] =
-    React.useState(false);
-  const [openStageSettingProps, setOpenStageSettingProps] = React.useState({});
-  const [openMemberSettingModal, setOpenMemberSettingModal] =
-    React.useState(false);
-  const [openMemberSettingProps, setOpenMemberSettingProps] = React.useState(
-    {}
-  );
-  const [openEditProjectModal, setOpenEditProjectModal] = React.useState(false);
-  const [openEditProjectProps, setOpenEditProjectProps] = React.useState({});
-  const [openSettingProjectModal, setOpenSettingProjectModal] =
-    React.useState(false);
-  const [openSettingProjectProps, setOpenSettingProjectProps] = React.useState(
-    {}
-  );
-  const [openCalendar, setOpenCalendar] = React.useState(false);
-  const [openUpdateGroupTask, setOpenUpdateGroupTask] = React.useState(false);
-  const [updateGroupTaskProps, setUpdateGroupTaskProps] = React.useState({});
-  const [openDeleteGroupTask, setOpenDeleteGroupTask] = React.useState(false);
-  const [deleteGroupTaskProps, setDeleteGroupTaskProps] = React.useState({});
-  const [openCreateTask, setOpenCreateTask] = React.useState(false);
-  const [createTaskProps, setCreateTaskProps] = React.useState({});
-  const [openEditTask, setOpenEditTask] = React.useState(false);
-  const [editTaskProps, setEditTaskProps] = React.useState({});
-  const [openDeleteTask, setOpenDeleteTask] = React.useState(false);
-  const [deleteTaskProps, setDeleteTaskProps] = React.useState({});
-  const [openCreateGroupTask, setOpenCreateGroupTask] = React.useState(false);
-  const [openManagers, setOpenManagers] = React.useState(false);
-  const [managersProps, setManagersProps] = React.useState({});
-  const [openMenuCreate, setOpenmMenuCreate] = React.useState(null);
-  const [selectedGroup, setSelectedGroup] = React.useState(null);
+  const [openStageSettingModal, setOpenStageSettingModal] = useState(false);
+  const [openStageSettingProps, setOpenStageSettingProps] = useState({});
+  const [openEditProjectModal, setOpenEditProjectModal] = useState(false);
+  const [openEditProjectProps, setOpenEditProjectProps] = useState({});
+  const [openUpdateGroupTask, setOpenUpdateGroupTask] = useState(false);
+  const [updateGroupTaskProps, setUpdateGroupTaskProps] = useState({});
+  const [openDeleteGroupTask, setOpenDeleteGroupTask] = useState(false);
+  const [deleteGroupTaskProps, setDeleteGroupTaskProps] = useState({});
+  const [openCreateTask, setOpenCreateTask] = useState(false);
+  const [createTaskProps, setCreateTaskProps] = useState({});
+  const [openEditTask, setOpenEditTask] = useState(false);
+  const [editTaskProps, setEditTaskProps] = useState({});
+  const [openDeleteTask, setOpenDeleteTask] = useState(false);
+  const [deleteTaskProps, setDeleteTaskProps] = useState({});
+  const [openCreateGroupTask, setOpenCreateGroupTask] = useState(false);
+  const [openManagers, setOpenManagers] = useState(false);
+  const [managersProps, setManagersProps] = useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -71,23 +70,9 @@ function KanbanPage({
         setOpenStageSettingProps(props);
         return;
       }
-      case "MEMBER_SETTING": {
-        setOpenMemberSettingModal(true);
-        setOpenMemberSettingProps(props);
-        return;
-      }
       case "EDIT_PROJECT": {
         setOpenEditProjectModal(true);
         setOpenEditProjectProps(props);
-        return;
-      }
-      case "SETTING_PROJECT": {
-        setOpenSettingProjectModal(true);
-        setOpenSettingProjectProps(props);
-        return;
-      }
-      case "CALENDAR": {
-        setOpenCalendar(true);
         return;
       }
       case "CREATE_GROUPTASK": {
@@ -124,10 +109,7 @@ function KanbanPage({
         setManagersProps(props);
         return;
       }
-      case "MENU_CREATE":
-        setOpenmMenuCreate(true);
-        setSelectedGroup(props);
-        return;
+
       default:
         return;
     }
@@ -144,10 +126,10 @@ function KanbanPage({
       />
       <MenuCreateNew
         setOpenCreateTaskGroup={setOpenCreateGroupTask}
-        setOpenmMenuCreate={setOpenmMenuCreate}
+        setOpenMenuCreate={setOpenMenuCreate}
         setOpenCreate={setOpenCreateTask}
         anchorEl={openMenuCreate}
-        setAnchorEl={setOpenmMenuCreate}
+        setAnchorEl={setOpenMenuCreate}
       />
       <StageSettingModal
         open={openStageSettingModal}

@@ -9,16 +9,20 @@ const getItemStyle = (isDragging, draggableStyle, rowStyle) => ({
   ...rowStyle,
 });
 
-const ServiceCommandUnit = ({ id, data = [] }) => {
+const ServiceCommandUnit = ({ id, data = [], onReload = () => {} }) => {
   return (
     <Droppable droppableId={id} type={`droppableSubItem`}>
       {(provided, snapshot) => (
         <div ref={provided.innerRef}>
           {data.map((row, i) => {
             return (
-              <Draggable key={row.id} draggableId={row.original.id} index={i}>
+              <Draggable
+                key={row.original.id}
+                draggableId={row.original.id}
+                index={i}
+              >
                 {(provided, snapshot) => (
-                  <React.Fragment key={`${row.id}_item`}>
+                  <React.Fragment key={row.original.id}>
                     <div
                       ref={provided.innerRef}
                       {...row.getRowProps()}
@@ -33,6 +37,7 @@ const ServiceCommandUnit = ({ id, data = [] }) => {
                       <ListContentColumn
                         data={row.cells}
                         dragHandle={{ ...provided.dragHandleProps }}
+                        onReload={onReload}
                       />
                     </div>
                     {provided.placeholder}

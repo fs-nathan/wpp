@@ -1,5 +1,4 @@
 import { detailProject } from "actions/project/detailProject";
-import { CustomTableWrapper } from "components/CustomTable";
 import { get } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
@@ -46,28 +45,26 @@ function Dashboard({
 
   return (
     <>
-      <CustomTableWrapper>
-        <DashboardPresenters
-          expand={expand}
-          handleExpand={handleExpand}
-          handleSubSlide={handleSubSlide}
-          status={status.status || {}}
-          canUpdateProject={get(
-            viewPermissions.permissions,
-            [projectId, "update_project"],
-            false
-          )}
-          canCreateTask={true}
-          isShortGroup={isShortGroup}
-          showHidePendings={showHidePendings}
-          tasks={tasks}
-          project={project}
-          memberID={memberId}
-          memberTask={memberTask}
-          bgColor={bgColor}
-          timeType={timeType}
-        />
-      </CustomTableWrapper>
+      <DashboardPresenters
+        expand={expand}
+        handleExpand={handleExpand}
+        handleSubSlide={handleSubSlide}
+        status={status.status || {}}
+        canUpdateProject={get(
+          viewPermissions.permissions,
+          [projectId, "update_project"],
+          false
+        )}
+        canCreateTask={true}
+        isShortGroup={isShortGroup}
+        showHidePendings={showHidePendings}
+        tasks={tasks}
+        project={project}
+        memberID={memberId}
+        memberTask={memberTask}
+        bgColor={bgColor}
+        timeType={timeType}
+      />
     </>
   );
 }

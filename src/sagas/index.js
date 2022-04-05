@@ -66,6 +66,7 @@ import {
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
 import { DEFAULT_GROUP_TASK } from "../constants/actions/groupTask/defaultGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
+import { ADD_GROUP_TASK } from "../constants/actions/task/listTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
 import { GET_ALL_GROUP_TASK } from "../constants/actions/groupTask/getAllGroupTask";
 import { LIST_GROUP_TASK } from "../constants/actions/groupTask/listGroupTask";
@@ -497,6 +498,7 @@ import { listColumns } from "./columns/listColumns";
 import { updateColumnsSaga } from "./columns/updateValueColumns";
 import { updateColumnsFieldSaga } from "./columns/updateColumns";
 import { defaultGroupTask } from "./groupTask/defaultGroupTask";
+import { createGroupTaskList } from "./task/createGroupTask";
 
 function* rootSaga() {
   // Hoang - begin
@@ -602,6 +604,7 @@ function* rootSaga() {
   yield takeLatest(UPDATE_PIN_BOARD_SETTING, updatePinBoardSetting);
   yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
+  yield takeEvery(ADD_GROUP_TASK, createGroupTaskList);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
   yield takeEvery(DEFAULT_GROUP_TASK, defaultGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);

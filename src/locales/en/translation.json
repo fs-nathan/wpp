@@ -8,7 +8,8 @@
       },
       "CUSTOM_MODAL": {
         "CANCLE": "Cancel",
-        "CONFIRM": "Confirm"
+        "CONFIRM": "Confirm",
+        "UPDATE": "Update"
       },
       "CUSTOM_POPOVER": {
         "TIME_FUNC": {
@@ -2540,5 +2541,26 @@
   "ADD_DESCRIPTION": "Add description",
   "alert_delete_fields": "This content is default of the system, you cannot delete it!",
   "CLOSE": "CLOSE",
-  "DELETE_FIELDS": "Delete field"
+  "DELETE_FIELDS": "Delete field",
+  "hour": "Hour",
+  "day": "Day",
+  "week": "Week",
+  "month": "Month",
+  "quater": "Quater",
+  "year": "Year",
+  "pfd-duration": "Duration",
+  "align_item": "Align",
+  "left": "Left",
+  "right": "Right",
+  "center": "Center",
+  "see_time": "Watch time",
+  "date_and_time": "Date and time",
+  "sort_asc": "Sort up ascending",
+  "sort_decs": "Sort descending",
+  "cancel_sort": "Cancel sorting",
+  "add_group": "Add new group",
+  "update": "Update",
+  "total": "Total",
+  "averaged": "Averaged",
+  "label": "Label"
 }

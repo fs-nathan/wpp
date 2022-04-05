@@ -97,17 +97,18 @@ function reducer(state = initialState, action) {
         },
       };
     }
-    case SORT_PROJECT:
-    case SORT_PROJECT_SUCCESS: {
-      let newProjects = action.options.sortData;
-      return {
-        ...state,
-        data: {
-          ...state.data,
-          projects: newProjects
-        },
-      };
-    }
+    // case SORT_PROJECT:
+    // case SORT_PROJECT_SUCCESS: {
+    //   let newProjects = action.options.sortData;
+    //   return {
+    //     ...state,
+    //     loading: false,
+    //     data: {
+    //       ...state.data,
+    //       projects: newProjects
+    //     },
+    //   };
+    // }
     default:
       return state;
   }

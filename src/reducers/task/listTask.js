@@ -1,9 +1,31 @@
-import { find, findIndex, get, remove, slice } from 'lodash';
-import { CREATE_TASK_SUCCESS } from '../../constants/actions/task/createTask';
-import { DELETE_TASK_SUCCESS } from '../../constants/actions/task/deleteTask';
-import { LIST_TASK, LIST_TASK_FAIL, LIST_TASK_RESET, LIST_TASK_SUCCESS } from '../../constants/actions/task/listTask';
-import { SORT_TASK, SORT_TASK_SUCCESS } from '../../constants/actions/task/sortTask';
-import { LIST_TASK_MEMBER_SUCCESS, LIST_TASK_MEMBER_FAIL, LIST_TASK_MEMBER } from '../../constants/actions/task/listTaskMember';
+import {
+  cloneDeep,
+  find,
+  findIndex,
+  get,
+  remove,
+  slice,
+  uniqueId,
+} from "lodash";
+import { CREATE_TASK_SUCCESS } from "../../constants/actions/task/createTask";
+import { DELETE_TASK_SUCCESS } from "../../constants/actions/task/deleteTask";
+import {
+  ADD_GROUP_TASK,
+  ADD_GROUP_TASK_SUCCESS,
+  LIST_TASK,
+  LIST_TASK_FAIL,
+  LIST_TASK_RESET,
+  LIST_TASK_SUCCESS,
+} from "../../constants/actions/task/listTask";
+import {
+  SORT_TASK,
+  SORT_TASK_SUCCESS,
+} from "../../constants/actions/task/sortTask";
+import {
+  LIST_TASK_MEMBER_SUCCESS,
+  LIST_TASK_MEMBER_FAIL,
+  LIST_TASK_MEMBER,
+} from "../../constants/actions/task/listTaskMember";
 export const initialState = {
   data: {
     tasks: [],
@@ -11,7 +33,7 @@ export const initialState = {
   error: null,
   loading: false,
   firstTime: true,
-  newTask: {}
+  newTask: {},
 };
 
 function reducer(state = initialState, action) {
@@ -50,31 +72,32 @@ function reducer(state = initialState, action) {
     case LIST_TASK_RESET:
       return initialState;
     case CREATE_TASK_SUCCESS: {
-      const newTasks = state.data.tasks.map(groupTask =>
-        get(groupTask, 'id') === get(action.data, 'task.group_task')
-          ? ({
-            ...groupTask,
-            tasks: [...groupTask.tasks, get(action.data, 'task')]
-          })
+      const newTasks = state.data.tasks.map((groupTask) =>
+        get(groupTask, "id") === get(action.data, "task.group_task")
+          ? {
+              ...groupTask,
+              tasks: [...groupTask.tasks, get(action.data, "task")],
+            }
           : groupTask
-      )
-      return {        ...state,
+      );
+      return {
+        ...state,
         data: {
           tasks: newTasks,
           ...state.data,
         },
-        newTask: get(action.data, 'task')
+        newTask: get(action.data, "task"),
       };
     }
     case DELETE_TASK_SUCCESS: {
-      const newTasks = state.data.tasks.map(groupTask => {
-        let _newTasks = get(groupTask, 'tasks', [])
-        if (find(_newTasks, { id: get(action.options, 'taskId') }))
-          remove(_newTasks, { id: get(action.options, 'taskId') })
+      const newTasks = state.data.tasks.map((groupTask) => {
+        let _newTasks = get(groupTask, "tasks", []);
+        if (find(_newTasks, { id: get(action.options, "taskId") }))
+          remove(_newTasks, { id: get(action.options, "taskId") });
         return {
           ...groupTask,
-          tasks: _newTasks
-        }
+          tasks: _newTasks,
+        };
       });
       return {
         ...state,
@@ -87,24 +110,28 @@ function reducer(state = initialState, action) {
     case SORT_TASK:
     case SORT_TASK_SUCCESS: {
       let removed = [];
-      let tasks = state.data.tasks.map(task => {
-        let _tasks = get(task, 'tasks', []);
-        if (findIndex(_tasks, { id: get(action.options, 'taskId') }) > -1)
-          removed = remove(_tasks, { id: get(action.options, 'taskId') });
-        return ({
+      let tasks = state.data.tasks.map((task) => {
+        let _tasks = get(task, "tasks", []);
+        if (findIndex(_tasks, { id: get(action.options, "taskId") }) > -1)
+          removed = remove(_tasks, { id: get(action.options, "taskId") });
+        return {
           ...task,
           tasks: _tasks,
-        });
-      });
-      tasks = tasks.map(task => {
-        let _tasks = get(task, 'tasks', []);
-        if (get(action.options, 'groupTask') === get(task, 'id')) {
-          _tasks = [...slice(_tasks, 0, action.options.sortIndex), ...removed, ...slice(_tasks, action.options.sortIndex)];
         };
-        return ({
+      });
+      tasks = tasks.map((task) => {
+        let _tasks = get(task, "tasks", []);
+        if (get(action.options, "groupTask") === get(task, "id")) {
+          _tasks = [
+            ...slice(_tasks, 0, action.options.sortIndex),
+            ...removed,
+            ...slice(_tasks, action.options.sortIndex),
+          ];
+        }
+        return {
           ...task,
           tasks: _tasks,
-        });
+        };
       });
       return {
         ...state,
@@ -113,6 +140,28 @@ function reducer(state = initialState, action) {
         },
       };
     }
+    case ADD_GROUP_TASK:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          tasks: [...state.data.tasks, action.payload],
+        },
+      };
+    case ADD_GROUP_TASK_SUCCESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          tasks: cloneDeep(state.data.tasks).map((item) => {
+            if (action.data.oldId === item.id) {
+              return { ...item, ...action.data.groupTask };
+            }
+            return item;
+          }),
+        },
+      };
+
     default:
       return state;
   }

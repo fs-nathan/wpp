@@ -15,6 +15,7 @@ const ColumnOptionsList = ({
   selected = null,
   options = [],
   isDisplayEditField = true,
+  isRenderNullField = true,
   onClose = () => {},
   onEdit = () => {},
   onSelect = () => {},
@@ -35,16 +36,18 @@ const ColumnOptionsList = ({
       anchorOrigin={{ vertical: "bottom", horizontal: "start" }}
       transformOrigin={{ vertical: "top", horizontal: "start" }}
     >
-      <MenuItem
-        style={{ width: 200, color: "#6d6e6f", height: 35 }}
-        onClick={() => _handleSelect(null)}
-      >
-        <StyledIconSelected
-          selected={!selected?._id}
-          xs={{ color: "#6d6e6f" }}
-        />
-        <Typography>—</Typography>
-      </MenuItem>
+      {isRenderNullField && (
+        <MenuItem
+          style={{ width: 200, color: "#6d6e6f", height: 35 }}
+          onClick={() => _handleSelect(null)}
+        >
+          <StyledIconSelected
+            selected={!selected?._id}
+            xs={{ color: "#6d6e6f" }}
+          />
+          <Typography>—</Typography>
+        </MenuItem>
+      )}
       {options?.map((item, index) => (
         <MenuItem
           key={index}

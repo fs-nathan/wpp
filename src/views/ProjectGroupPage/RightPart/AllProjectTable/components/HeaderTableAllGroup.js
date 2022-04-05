@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import {
   mdiClose,
@@ -13,7 +13,7 @@ import {
   mdiDotsHorizontal,
   mdiDownload,
   mdiFilter,
-  mdiPlus
+  mdiPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
@@ -24,7 +24,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useRef,
-  useState
+  useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
@@ -52,7 +52,7 @@ const HeaderTableAllGroup = ({
   const _toggleDrawerMenu = () => refMenuDrawer.current._toggle();
 
   return (
-    <div className="AllGroup__header--wrapper">
+    <div id="header-table-group" className="AllGroup__header--wrapper">
       <TitleTable
         currentGroup={currentGroup}
         expand={expand}

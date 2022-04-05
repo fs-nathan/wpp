@@ -708,9 +708,10 @@ export const getTrackingTimeCompleteFail = (error) => ({
     type: types.GET_TRACKING_TIME_COMPLETE_FAIl,
     error: error
 });
-export const updateTimeDuration = (payload) => ({
-    type: types.UPDATE_TIME_DURATION_REQUEST,
-    payload
+export const updateTimeDuration = (payload, actionSuccess) => ({
+  type: types.UPDATE_TIME_DURATION_REQUEST,
+  payload,
+  actionSuccess,
 });
 export const updateTimeDurationSuccess = (payload) => ({
     type: types.UPDATE_TIME_DURATION_SUCCESS,
@@ -873,7 +874,7 @@ export const getProjectListBasicFail = (error) => ({
     type: types.GET_PROJECT_LIST_BASIC_FAIL,
     error: error,
 });
-// 
+//
 
 export const chooseProject = payload => ({
     type: types.CHOOSE_PROJECT,
