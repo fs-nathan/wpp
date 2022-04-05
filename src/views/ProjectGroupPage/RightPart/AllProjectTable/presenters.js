@@ -1,8 +1,11 @@
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
+import ProjectGroupGrid from "components/PropjectGroupGrid";
+import ProjectGroupList from "components/PropjectGroupGrid";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
 import React, { useRef } from "react";
+import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import LoadingBox from "../../../../components/LoadingBox";
@@ -58,75 +61,6 @@ function AllProjectTable({
     setCurProject(project);
   }
 
-  React.useEffect(() => {
-    if (projects) {
-      const newData = projects?.projects || [];
-      isObject(sortLocal)
-        ? setData(() => _handleSort(sortLocal.key, sortLocal.idSort, newData))
-        : setData(newData);
-      refData.current = newData;
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [projects]);
-
-  React.useEffect(() => {
-    setShowHideDisabled(
-      !isNil(
-        find(
-          showHidePendings.pendings,
-          (pending) => pending === get(curProject, "id")
-        )
-      )
-    );
-  }, [showHidePendings, curProject]);
-  React.useEffect(() => {
-    setCurProject((oldProject) =>
-      find(projects.projects, { id: get(oldProject, "id") })
-    );
-    setProjectSummary(projects.summary);
-  }, [projects]);
-  React.useEffect(() => {
-    setCurrentGroup(find(projectGroup, { id: groupID }));
-  }, [groupID, projectGroup]);
-
-  const columns = React.useMemo(
-    () =>
-      COLUMNS_PROJECT_TABLE({
-        onEdit: (evt, project) => doOpenMenu(evt, project),
-        onOpenEditModal: (curProject) => {
-          handleOpenModal("UPDATE", {
-            curProject,
-          });
-        },
-      }),
-    [handleOpenModal]
-  );
-
-  function renderEmptyView() {
-    switch (type_data) {
-      case 2:
-        return <EmptyPersonalBoard />;
-      default:
-        if (!isNil(groupID)) {
-          return <EmptyWorkingBoard groupID={groupID} projects={projects} />;
-        } else return <EmptyWorkingGroup />;
-    }
-  }
-
-  const _filterType = (index) => {
-    handleFilterType(index);
-    setIsFiltering(true);
-  };
-
-  const _filterLabel = (labelId) => {
-    handleFilterLabel(labelId);
-    setIsFiltering(true);
-  };
-
-  const _setTimeRangeAnchor = (e) => {
-    setTimeAnchor(e.currentTarget);
-  };
-
   const _handleSort = (key, idSort, array = null) => {
     switch (key) {
       case "ASC":
@@ -176,6 +110,69 @@ function AllProjectTable({
       sort_index: indexes[index],
     }));
     handleSortProject(sortData);
+  };
+
+  React.useEffect(() => {
+    if (projects) {
+      const newData = projects?.projects || [];
+      isObject(sortLocal)
+        ? setData(() => _handleSort(sortLocal.key, sortLocal.idSort, newData))
+        : setData(newData);
+      refData.current = newData;
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [projects]);
+
+  React.useEffect(() => {
+    setShowHideDisabled(
+      !isNil(
+        find(
+          showHidePendings.pendings,
+          (pending) => pending === get(curProject, "id")
+        )
+      )
+    );
+  }, [showHidePendings, curProject]);
+  React.useEffect(() => {
+    setCurProject((oldProject) =>
+      find(projects.projects, { id: get(oldProject, "id") })
+    );
+    setProjectSummary(projects.summary);
+  }, [projects]);
+  React.useEffect(() => {
+    setCurrentGroup(find(projectGroup, { id: groupID }));
+  }, [groupID, projectGroup]);
+
+  const onEdit = (evt, project) => doOpenMenu(evt, project);
+
+  const onOpenEditModal = (curProject) =>
+    handleOpenModal("UPDATE", {
+      curProject,
+    });
+
+  function renderEmptyView() {
+    switch (type_data) {
+      case 2:
+        return <EmptyPersonalBoard />;
+      default:
+        if (!isNil(groupID)) {
+          return <EmptyWorkingBoard groupID={groupID} projects={projects} />;
+        } else return <EmptyWorkingGroup />;
+    }
+  }
+
+  const _filterType = (index) => {
+    handleFilterType(index);
+    setIsFiltering(true);
+  };
+
+  const _filterLabel = (labelId) => {
+    handleFilterLabel(labelId);
+    setIsFiltering(true);
+  };
+
+  const _setTimeRangeAnchor = (e) => {
+    setTimeAnchor(e.currentTarget);
   };
 
   const _exportData = () => {
@@ -230,15 +227,13 @@ function AllProjectTable({
           onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
         />
         {projects.loading && <LoadingBox />}
+
         {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
-          <React.Fragment>
-            <WPReactTable
-              isCollapsed={expand}
-              columns={columns || []}
-              data={data}
-              selectedSort={selectedSort}
-              onDragEnd={_handleDragEnd}
-              onSort={_handleSort}
+          <>
+            <ProjectGroupGrid
+              projects={data}
+              onEdit={onEdit}
+              onOpenEditModal={onOpenEditModal}
             />
 
             <Menu
@@ -256,23 +251,6 @@ function AllProjectTable({
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
-                    handleOpenModal("SETTING", {
-                      curProject,
-                      canChange: {
-                        date: true,
-                        copy: true,
-                        view: true,
-                      },
-                    });
-                  }}
-                >
-                  {t("DMH.VIEW.PGP.RIGHT.ALL.SETTING")}
-                </MenuItem>
-              )}
-              {get(curProject, "can_update", false) && (
-                <MenuItem
-                  onClick={(evt) => {
-                    setMenuAnchor(null);
                     handleOpenModal("UPDATE", {
                       curProject,
                     });
@@ -281,24 +259,53 @@ function AllProjectTable({
                   {t("DMH.VIEW.PGP.RIGHT.ALL.EDIT")}
                 </MenuItem>
               )}
+
               {get(curProject, "can_update", false) && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
-                    handleShowOrHideProject(curProject);
+                    handleOpenModal("ALERT", {
+                      selectedProject: curProject,
+                    });
                   }}
-                  disabled={showHideDisabled}
                 >
-                  {showHideDisabled && (
-                    <CircularProgress
-                      size={16}
-                      className="margin-circular"
-                      color="white"
-                    />
-                  )}
-                  {get(curProject, "visibility", false)
-                    ? t("DMH.VIEW.PGP.RIGHT.ALL.HIDE")
-                    : t("DMH.VIEW.PGP.RIGHT.ALL.SHOW")}
+                  {t("DMH.VIEW.PGP.RIGHT.ALL.ADD_TABLE_TASKS")}
+                </MenuItem>
+              )}
+              {get(curProject, "can_update", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleOpenModal("ALERT", {
+                      selectedProject: curProject,
+                    });
+                  }}
+                >
+                  {t("DMH.VIEW.PGP.RIGHT.ALL.CHANGE_COLOR")}
+                </MenuItem>
+              )}
+              {get(curProject, "can_update", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleOpenModal("ALERT", {
+                      selectedProject: curProject,
+                    });
+                  }}
+                >
+                  {t("DMH.VIEW.PGP.RIGHT.ALL.CHANGE_ICON")}
+                </MenuItem>
+              )}
+              {get(curProject, "can_update", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleOpenModal("ALERT", {
+                      selectedProject: curProject,
+                    });
+                  }}
+                >
+                  {t("DMH.VIEW.PGP.RIGHT.ALL.SET_DEFAULT")}
                 </MenuItem>
               )}
               {get(curProject, "can_delete", false) && (
@@ -314,12 +321,13 @@ function AllProjectTable({
                 </MenuItem>
               )}
             </Menu>
-          </React.Fragment>
+          </>
         )}
       </Container>
     </>
   );
 }
+
 export default connect(
   (state) => ({
     projectGroup: get(

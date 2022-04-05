@@ -387,10 +387,14 @@
               "PRIO": "Ưu tiên"
             },
             "SETTING": "Cài đặt",
-            "EDIT": "Chỉnh sửa",
             "HIDE": "Ẩn",
             "SHOW": "Bỏ ẩn",
-            "DEL": "Xóa",
+            "EDIT": "Sửa tên, mô tả",
+            "ADD_TABLE_TASKS": "Tạo bảng việc",
+            "CHANGE_COLOR": "Thay đổi màu",
+            "CHANGE_ICON": "Thay đổi biểu tượng",
+            "SET_DEFAULT": "Đặt làm mặc định",
+            "DEL": "Xóa nhóm làm việc",
             "ALERT": "Bạn chắc chắn muốn xóa dự án?",
             "NO_DATA": {
               "NO_PROJECT": "Chưa có dự án nào được khởi tạo. Hãy click vào nút + TẠO DỰ ÁN để bắt đầu quản lý dự án và công việc của bạn.",
