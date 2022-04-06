@@ -32,3 +32,4 @@ yarn.lock
 #local
 /.vs-code/*
 .vscode/settings.json
+/.VSCodeCounter/
