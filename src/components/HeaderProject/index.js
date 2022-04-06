@@ -183,6 +183,7 @@ const HeaderProject = ({
         view={view}
         project={project}
         isProjectVisible={get(project, "visibility")}
+        isShareProject={get(project, "is_shared")}
         valueSearch={valueSearch}
         onSearch={onSearch}
         onReOrderColumns={onReOrderColumns}

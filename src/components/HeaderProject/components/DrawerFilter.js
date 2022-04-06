@@ -16,12 +16,14 @@ import {
   mdiClose,
   mdiCogs,
   mdiDelete,
+  mdiDoNotDisturb,
   mdiDownload,
   mdiEye,
   mdiEyeOff,
   mdiFilter,
   mdiFlagTriangle,
   mdiPencil,
+  mdiShare,
   mdiViewGridPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -50,6 +52,7 @@ const DrawerFilter = forwardRef(
       view = "list",
       disableShowHide,
       isProjectVisible = false,
+      isProjectShared = false,
       canUpdateProject = false,
       onOpenFilterKanban = () => {},
       onOpenGranttConfig = () => {},
@@ -64,6 +67,7 @@ const DrawerFilter = forwardRef(
       onHideColumn = () => {},
       setItemLocation = () => {},
       onReOrderColumns = () => {},
+      onShareProject = () => {},
     },
     ref
   ) => {
@@ -164,6 +168,12 @@ const DrawerFilter = forwardRef(
             text: isProjectVisible ? "Ẩn bảng việc" : "Hiện bảng việc",
             icon: isProjectVisible ? mdiEyeOff : mdiEye,
             onClick: (e) => !disableShowHide && onUpdateVisible(),
+          },
+          {
+            text: !isProjectShared ? "Chia sẻ bảng việc" : "Huỷ chia sẻ",
+            icon: !isProjectShared ? mdiShare : mdiDoNotDisturb,
+            isDeleteItem: isProjectShared,
+            onClick: (e) => onShareProject(),
           },
           {
             text: "Xoá bảng việc",

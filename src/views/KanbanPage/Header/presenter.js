@@ -43,6 +43,9 @@ function KanbanPage({
         onExpand={onExpand}
         canUpdateProject={canUpdate}
         onUpdateTime={handleMoreClick(() => handleOpenModal("CALENDAR", {}))}
+        onShareProject={handleMoreClick(() =>
+          handleOpenModal("SHARE_PROJECT", {})
+        )}
         onUpdateSetting={handleMoreClick(() =>
           handleOpenModal("SETTING_PROJECT", {
             curProject: project,

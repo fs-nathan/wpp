@@ -17,6 +17,7 @@ import AlertModal from "components/AlertModal";
 import AssignCalendarModal from "components/AssignCalendarModal";
 import { CustomLayoutContext } from "components/CustomLayout";
 import { useTimes } from "components/CustomPopover";
+import ShareProjectModal from "components/ShareProjectModal/ShareProjectModal";
 import {
   COPY_GROUP_TASK,
   CREATE_GROUP_TASK,
@@ -210,6 +211,8 @@ function AllTaskTable({
     setOpenMenuCreate,
     selectedGroup,
     setSelectedGroup,
+    openShareProject,
+    setOpenShareProject,
   } = useContext(CustomLayoutContext);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -324,6 +327,10 @@ function AllTaskTable({
       <AssignCalendarModal
         openModal={openCalendar}
         setopenModal={setOpenCalendar}
+      />
+      <ShareProjectModal
+        openModal={openShareProject}
+        setopenModal={setOpenShareProject}
       />
       <AlertModal open={openAlert} setOpen={setOpenAlert} {...alertProps} />
       {openModalAddMember && (

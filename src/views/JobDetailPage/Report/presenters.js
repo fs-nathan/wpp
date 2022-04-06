@@ -56,6 +56,7 @@ const HeaderTableCustom = ({
       disableShowHide={disableShowHide}
       onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
       onUpdateTime={() => handleOpenModal("CALENDAR", {})}
+      onShareProject={() => handleOpenModal("SHARE_PROJECT", {})}
       onUpdateVisible={() => handleShowOrHideProject(project.project)}
       onUpdateSetting={() =>
         handleOpenModal("SETTING", {

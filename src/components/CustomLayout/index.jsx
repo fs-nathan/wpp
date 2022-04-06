@@ -16,6 +16,7 @@ function CustomLayoutProvider({ children }) {
   const [openSettingProjectModal, setOpenSettingProjectModal] = useState(false);
   const [openSettingProjectProps, setOpenSettingProjectProps] = useState({});
   const [openCalendar, setOpenCalendar] = useState(false);
+  const [openShareProject, setOpenShareProject] = useState(false);
   const [openMenuCreate, setOpenMenuCreate] = useState(null);
   const [modalSetting, setModalSetting] = React.useState({
     isOpen: false,
@@ -39,6 +40,10 @@ function CustomLayoutProvider({ children }) {
       }
       case "CALENDAR": {
         setOpenCalendar(true);
+        return;
+      }
+      case "SHARE_PROJECT": {
+        setOpenShareProject(true);
         return;
       }
       case "SETTING_PROJECT": {
@@ -69,6 +74,10 @@ function CustomLayoutProvider({ children }) {
       case "CALENDAR":
         setOpenCalendar(true);
         return;
+      case "SHARE_PROJECT":
+        setOpenShareProject(true);
+        return;
+
       case "SETTING":
         setOpenSetting(true);
         setSettingProps(props);
@@ -97,6 +106,8 @@ function CustomLayoutProvider({ children }) {
           setOpenCalendar,
           openMenuCreate,
           setOpenMenuCreate,
+          openShareProject,
+          setOpenShareProject,
         };
       case "task-gantt":
         return;
@@ -126,6 +137,8 @@ function CustomLayoutProvider({ children }) {
           setOpenMenuCreate,
           selectedGroup,
           setSelectedGroup,
+          openShareProject,
+          setOpenShareProject,
         };
     }
   };

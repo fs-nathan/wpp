@@ -1,0 +1,81 @@
+.share-project--modal__body table {
+  width: 100%;
+}
+
+.share-project--modal__body td {
+  padding: 16px 0px;
+  border-bottom: 1px solid #b9b9b9;
+}
+
+.share-project--modal__body th {
+  padding: 6px 0px;
+  border-bottom: 2px solid #b9b9b9;
+  color: black;
+  font-weight: 500;
+}
+.share-project--modal__body th div {
+  font-size: 15px;
+}
+.share-project--modal__body th:first-child svg {
+  fill: #48bb78;
+}
+.share-project--modal__body th:last-child svg {
+  fill: #eb2a2a;
+}
+.share-project--modal__header {
+  margin-bottom: 10px;
+}
+.share-project--modal__header div:first-of-type {
+  font-size: 16px;
+  font-weight: 500;
+}
+.share-project--modal__header div:last-of-type {
+  font-size: 14px;
+  font-weight: 500;
+  color: orange;
+}
+.share-project--modal__container {
+  padding: 30px;
+}
+.share-project--modal__body th:first-of-type {
+  width: 150px;
+}
+
+.share-project-card {
+  padding: 10px 20px;
+  transition: all 200ms ease-in-out;
+  display: flex;
+  gap: 16px;
+  border: none;
+}
+
+.share-project-card-icon {
+  margin-top: 16px;
+  height: 100%;
+  transition: all 200ms ease-in-out;
+  visibility: hidden;
+}
+
+.share-project-card-icon--active {
+  visibility: visible;
+}
+
+.share-project-card-content {
+  flex-grow: 1;
+}
+
+.share-project-card h2 {
+  font-size: 24px;
+  font-weight: 400;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.share-project-card p {
+  font-size: 12px;
+  color: #969ead;
+}
+
+.share-project-card--active {
+  background-color: #f8f8f8;
+  border: 1px solid #596cd8;
+}
