@@ -128,16 +128,6 @@ function ProjectList({
   }
 
   function handleSetDefault(value) {
-    console.log(
-      "🚀 --------------------------------------------------------------------"
-    );
-    console.log(
-      "🚀 ~ file: presenters.js ~ line 130 ~ handleSetDefault ~ value",
-      value
-    );
-    console.log(
-      "🚀 --------------------------------------------------------------------"
-    );
     if (value !== null) dispatch(defaultGroupTask(value));
   }
 
