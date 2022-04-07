@@ -24,6 +24,7 @@ import ProjectGroupListDeleted from "./LeftPart/ProjectGroupListDeleted";
 import AllProjectTable from "./RightPart/AllProjectTable";
 import DeletedProjectTable from "./RightPart/DeletedProjectTable";
 import ProjectsStart from "./RightPart/ProjectsStart";
+import ProjectAddNew from "./RightPart/ProjectAddNew";
 import { routeSelector } from "./selectors";
 import { CustomTableWrapper } from "components/CustomTable";
 import { CustomLayoutProvider } from "components/CustomLayout";
@@ -41,6 +42,7 @@ function ProjectGroupPage({
     "WPS_COLLAPSED_DEFAULT",
     true
   );
+
   const [test, setTest] = useState([]);
   const isDeletedPage = pathname.split("/")[2] === "deleted";
 
@@ -71,6 +73,9 @@ function ProjectGroupPage({
               expand={isCollapsed}
               handleExpand={_handleExpand}
             />
+          </Route>
+          <Route exact path="/projects/add-new">
+            <ProjectAddNew handleExpand={_handleExpand} />
           </Route>
           <Route exact path="/projects/start">
             <ProjectsStart expand={isCollapsed} handleExpand={_handleExpand} />
