@@ -1,19 +1,17 @@
-import { apiService } from 'constants/axiosInstance';
+import { apiService } from "constants/axiosInstance";
 import {
   DETAIL_USER,
   DETAIL_USER_FAIL,
   DETAIL_USER_SUCCESS,
   DETAIL_USER_RESET,
-  CHECK_VERIFY_ACCOUNT,
   CHECK_VERIFY_ACCOUNT_SUCCESS,
   CHECK_VERIFY_ACCOUNT_FAIL,
   GET_USER_INFOR,
   GET_USER_INFOR_FAIL,
   GET_USER_INFOR_SUCCESS,
-  UPDATE_ACCOUNT,
   UPDATE_ACCOUNT_SUCCESS,
-  UPDATE_ACCOUNT_FAIL
-} from '../../constants/actions/user/detailUser';
+  UPDATE_ACCOUNT_FAIL,
+} from "../../constants/actions/user/detailUser";
 
 export const detailUser = ({ userId }, quite = false) => ({
   type: DETAIL_USER,
@@ -42,94 +40,91 @@ export const detailUserReset = () => ({
 });
 
 export const actionCheckVerifyAccount = () => {
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const config = {
-    url: '/request-verify',
-    method: 'post',
+    url: "/request-verify",
+    method: "post",
     header: new Headers({
-      "Authorization" : `Bearer ${token}`
-    })
+      Authorization: `Bearer ${token}`,
+    }),
   };
   return apiService(config);
-}
+};
 
-export const actionCheckVerifyAccountFail = error => ({
+export const actionCheckVerifyAccountFail = (error) => ({
   type: CHECK_VERIFY_ACCOUNT_FAIL,
-  payload: error
-})
+  payload: error,
+});
 
-export const actionCheckVerifyAccountSuccess = data => ({
+export const actionCheckVerifyAccountSuccess = (data) => ({
   type: CHECK_VERIFY_ACCOUNT_SUCCESS,
-  payload: data
-})
+  payload: data,
+});
 
 export const actionGetInfor = (userId) => ({
   type: GET_USER_INFOR,
-  userId
+  userId,
+});
 
-})
-
-export const actionGetInforFail = error => ({
+export const actionGetInforFail = (error) => ({
   type: GET_USER_INFOR_FAIL,
-  payload: error
-})
+  payload: error,
+});
 
-export const actionGetInforSuccess = data => ({
+export const actionGetInforSuccess = (data) => ({
   type: GET_USER_INFOR_SUCCESS,
-  payload: data
-})
+  payload: data,
+});
 
-export const actionChangeAccount = data => {
+export const actionChangeAccount = (data) => {
   const config = {
-    url: '/update-account',
-    method: 'post',
-    data
+    url: "/update-account",
+    method: "post",
+    data,
   };
   return apiService(config);
-}
-export const actionChangeAccountSuccess = data => ({
+};
+export const actionChangeAccountSuccess = (data) => ({
   type: UPDATE_ACCOUNT_SUCCESS,
-  payload: data
-  
-})
-export const actionChangeAccountFail = error => ({
+  payload: data,
+});
+export const actionChangeAccountFail = (error) => ({
   type: UPDATE_ACCOUNT_FAIL,
-  payload: error
-  
-})
+  payload: error,
+});
 
-export const actionResetPassword = data=>{
+export const actionResetPassword = (data) => {
   const config = {
-    url: '/users/reset-password',
-    method: 'post',
-    data
+    url: "/users/reset-password",
+    method: "post",
+    data,
   };
   return apiService(config);
-}
+};
 
-export const actionUpdateUser = data=>{
+export const actionUpdateUser = (data) => {
   const config = {
-    url: '/update-user',
-    method: 'put',
-    data
+    url: "/update-user",
+    method: "put",
+    data,
   };
   return apiService(config);
-}
+};
 
-export const actionLockUser = data=>{
+export const actionLockUser = (data) => {
   const config = {
-    url: '/users/lock-account',
-    method: 'post',
-    data
+    url: "/users/lock-account",
+    method: "post",
+    data,
   };
   return apiService(config);
-}
+};
 
-export const actionUnLockUser = data=>{
+export const actionUnLockUser = (data) => {
   const config = {
-    url: '/users/unlock-account',
-    method: 'post',
-    data
+    url: "/users/unlock-account",
+    method: "post",
+    data,
   };
   return apiService(config);
-}
+};

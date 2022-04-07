@@ -1,23 +1,29 @@
-import AlertModal from 'components/AlertModal';
-import { CustomEventDispose, CustomEventListener, DELETE_GROUP_TASK, GET_ALL_GROUP_TASK, LIST_GROUP_TASK } from 'constants/events';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
+import AlertModal from "components/AlertModal";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  DELETE_GROUP_TASK,
+  GET_ALL_GROUP_TASK,
+  LIST_GROUP_TASK,
+} from "constants/events";
+import React from "react";
+import { useTranslation } from "react-i18next";
 
 function GroupTaskDelete({
-  open, setOpen,
+  open,
+  setOpen,
   handleDeleteGroupTask,
   doReload,
   projectId,
   timeRange,
 }) {
-
   const { t } = useTranslation();
 
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [activeMask, setActiveMask] = React.useState(-1);
 
   React.useEffect(() => {
-    setActiveLoading((activeMask === 3 || activeMask === -1) ? false : true);
+    setActiveLoading(activeMask === 3 || activeMask === -1 ? false : true);
     if (activeMask === 3) {
       setOpen(false);
     }
@@ -33,13 +39,13 @@ function GroupTaskDelete({
     return () => {
       CustomEventDispose(DELETE_GROUP_TASK.SUCCESS, doReload);
       CustomEventDispose(DELETE_GROUP_TASK.FAIL, fail);
-    }
+    };
     // eslint-disable-next-line
   }, [projectId, timeRange]);
 
   React.useEffect(() => {
-    const success = bit => () => {
-      setActiveMask(oldMask => oldMask | (1 << bit));
+    const success = (bit) => () => {
+      setActiveMask((oldMask) => oldMask | (1 << bit));
     };
     const fail = () => {
       setActiveMask(-1);
@@ -53,7 +59,7 @@ function GroupTaskDelete({
       CustomEventListener(GET_ALL_GROUP_TASK.SUCCESS, success(1));
       CustomEventListener(LIST_GROUP_TASK.FAIL, fail);
       CustomEventListener(GET_ALL_GROUP_TASK.FAIL, fail);
-    }
+    };
     // eslint-disable-next-line
   }, [projectId, timeRange]);
 
@@ -70,7 +76,7 @@ function GroupTaskDelete({
       manualClose={true}
       activeLoading={activeLoading}
     />
-  )
+  );
 }
 
 export default GroupTaskDelete;

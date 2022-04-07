@@ -88,8 +88,8 @@
     "xlsx": "^0.17.3"
   },
   "scripts": {
-    "start": "set PORT=3001 && react-scripts start",
-    "dev": "set PORT=3001 && react-scripts start",
+    "start": "PORT=3001 react-scripts start",
+    "dev": "PORT=3001 react-scripts start",
     "build": "react-scripts --max_old_space_size=4096 build",
     "serve-firebase": "react-scripts build && firebase serve",
     "deploy-firebase": "react-scripts build && firebase deploy",
