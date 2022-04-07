@@ -475,6 +475,9 @@
               "DESC": "Sao chép các nhóm công việc, giai đoạn có sẵn"
             }
           },
+          "COLOR_PICKER": {
+            "TITLE": "Thay đổi màu nhóm"
+          },
           "CUGT": {
             "C_TITLE": "Tạo mới nhóm công việc, giai đoạn",
             "U_TITLE": "Chỉnh sửa nhóm công việc, giai đoạn",

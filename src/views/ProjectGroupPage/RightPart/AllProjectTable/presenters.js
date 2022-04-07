@@ -1,22 +1,24 @@
-import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
+import { Menu, MenuItem } from "@material-ui/core";
 import ProjectGroupGrid from "components/PropjectGroupGrid";
-import ProjectGroupList from "components/PropjectGroupGrid";
-import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
 import React, { useRef } from "react";
-import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import LoadingBox from "../../../../components/LoadingBox";
 import { Container } from "../../../../components/TableComponents";
 import HeaderTableAllGroup from "./components/HeaderTableAllGroup";
-import { COLUMNS_PROJECT_TABLE } from "./constants/Columns";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import "./styles/style.scss";
 import { _sortByAscGroupTable, _sortByDescGroupTable } from "./utils";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
+import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const KEY_LOCAL_STORAGE_SORT = "sort_project_table";
 
@@ -256,7 +258,10 @@ function AllProjectTable({
                     });
                   }}
                 >
-                  {t("DMH.VIEW.PGP.RIGHT.ALL.EDIT")}
+                  <span>
+                    <ModeEditOutlineOutlinedIcon />
+                    {t("DMH.VIEW.PGP.RIGHT.ALL.EDIT")}
+                  </span>
                 </MenuItem>
               )}
 
@@ -264,12 +269,30 @@ function AllProjectTable({
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
-                    handleOpenModal("ALERT", {
+                    handleOpenModal("CREATE", {
                       selectedProject: curProject,
                     });
                   }}
                 >
-                  {t("DMH.VIEW.PGP.RIGHT.ALL.ADD_TABLE_TASKS")}
+                  <span>
+                    <AddCircleOutlineOutlinedIcon />
+                    {t("DMH.VIEW.PGP.RIGHT.ALL.ADD_TABLE_TASKS")}
+                  </span>
+                </MenuItem>
+              )}
+              {get(curProject, "can_update", false) && (
+                <MenuItem
+                  onClick={(evt) => {
+                    setMenuAnchor(null);
+                    handleOpenModal("COLOR_PICKER", {
+                      selectedProject: curProject,
+                    });
+                  }}
+                >
+                  <span>
+                    <PaletteOutlinedIcon />
+                    {t("DMH.VIEW.PGP.RIGHT.ALL.CHANGE_COLOR")}
+                  </span>
                 </MenuItem>
               )}
               {get(curProject, "can_update", false) && (
@@ -281,7 +304,10 @@ function AllProjectTable({
                     });
                   }}
                 >
-                  {t("DMH.VIEW.PGP.RIGHT.ALL.CHANGE_COLOR")}
+                  <span>
+                    <InsertEmoticonOutlinedIcon />
+                    {t("DMH.VIEW.PGP.RIGHT.ALL.CHANGE_ICON")}
+                  </span>
                 </MenuItem>
               )}
               {get(curProject, "can_update", false) && (
@@ -293,19 +319,10 @@ function AllProjectTable({
                     });
                   }}
                 >
-                  {t("DMH.VIEW.PGP.RIGHT.ALL.CHANGE_ICON")}
-                </MenuItem>
-              )}
-              {get(curProject, "can_update", false) && (
-                <MenuItem
-                  onClick={(evt) => {
-                    setMenuAnchor(null);
-                    handleOpenModal("ALERT", {
-                      selectedProject: curProject,
-                    });
-                  }}
-                >
-                  {t("DMH.VIEW.PGP.RIGHT.ALL.SET_DEFAULT")}
+                  <span>
+                    <FlagOutlinedIcon />
+                    {t("DMH.VIEW.PGP.RIGHT.ALL.SET_DEFAULT")}
+                  </span>
                 </MenuItem>
               )}
               {get(curProject, "can_delete", false) && (
@@ -317,7 +334,10 @@ function AllProjectTable({
                     });
                   }}
                 >
-                  {t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}
+                  <span className="task-group__menu-item--delete">
+                    <DeleteOutlineOutlinedIcon />
+                    {t("DMH.VIEW.PGP.RIGHT.ALL.DEL")}
+                  </span>
                 </MenuItem>
               )}
             </Menu>

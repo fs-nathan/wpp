@@ -474,6 +474,9 @@
               "DESC": "Copy available task group, phrase"
             }
           },
+          "COLOR_PICKER": {
+            "TITLE": "Change group color"
+          },
           "CUGT": {
             "C_TITLE": "Create task group, phrase",
             "U_TITLE": "Edit task group, phrase",

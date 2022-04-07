@@ -21,6 +21,7 @@ import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router";
+import ColorGroupPickerModal from "views/ProjectGroupPage/Modals/ColorGroupPickerModal";
 import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 import { routeSelector } from "../../../ProjectPage/selectors";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
@@ -186,6 +187,8 @@ function AllProjectTable({
   const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+  const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
+  const [colorPickerProps, setColorPickerProps] = React.useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -199,6 +202,7 @@ function AllProjectTable({
         });
         return;
       }
+
       case "UPDATE": {
         setOpenEdit(true);
         setEditProps({
@@ -227,6 +231,14 @@ function AllProjectTable({
         setOpenPersonalBoard(true);
         return;
       }
+      case "COLOR_PICKER": {
+        setOpenColorPickerGroup(true);
+        setEditProps({
+          groupID,
+          ...props,
+        });
+        return;
+      }
       default:
         return;
     }
@@ -235,6 +247,7 @@ function AllProjectTable({
   const _handleSearch = (value) => {
     setSearchValue(value);
   };
+  console.log("alertProps", alertProps);
 
   return (
     <>
@@ -336,6 +349,14 @@ function AllProjectTable({
       <AddToPersonalBoardModal
         open={openPersonalBoard}
         setOpen={setOpenPersonalBoard}
+      />
+      <ColorGroupPickerModal
+        open={openColorPickerGroup}
+        setOpen={setOpenColorPickerGroup}
+        // projectId={projectId}
+        // groupId={selectedGroup}
+        // project={project}
+        {...colorPickerProps}
       />
     </>
   );
