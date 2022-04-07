@@ -35,6 +35,7 @@ import {
 import { get } from "lodash";
 import moment from "moment";
 import React, { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
@@ -82,6 +83,7 @@ function AllTaskTable({
   doSortGroupTask,
 }) {
   const times = useTimes();
+  const { t } = useTranslation();
   const { timeType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
@@ -213,6 +215,8 @@ function AllTaskTable({
     setSelectedGroup,
     openShareProject,
     setOpenShareProject,
+    openUnShareProject,
+    setOpenUnShareProject,
   } = useContext(CustomLayoutContext);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -248,6 +252,11 @@ function AllTaskTable({
   }
   function handleAddMember(taskId) {
     // doAddMemberToTask({task_id: taskId, member_id: memberId});
+  }
+
+  function handleUnShare() {
+    // get(project, "id")
+    setOpenUnShareProject(false);
   }
 
   return (
@@ -331,6 +340,16 @@ function AllTaskTable({
       <ShareProjectModal
         openModal={openShareProject}
         setopenModal={setOpenShareProject}
+      />
+      <AlertModal
+        open={openUnShareProject}
+        setOpen={setOpenUnShareProject}
+        content={t("UN_SHARE_PROJECT_TITLE")}
+        onConfirm={() => {
+          handleUnShare();
+        }}
+        onCancle={() => setOpenUnShareProject(false)}
+        manualClose
       />
       <AlertModal open={openAlert} setOpen={setOpenAlert} {...alertProps} />
       {openModalAddMember && (

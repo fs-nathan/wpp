@@ -68,6 +68,7 @@ const DrawerFilter = forwardRef(
       setItemLocation = () => {},
       onReOrderColumns = () => {},
       onShareProject = () => {},
+      onUnShareProject = () => {},
     },
     ref
   ) => {
@@ -173,7 +174,8 @@ const DrawerFilter = forwardRef(
             text: !isProjectShared ? "Chia sẻ bảng việc" : "Huỷ chia sẻ",
             icon: !isProjectShared ? mdiShare : mdiDoNotDisturb,
             isDeleteItem: isProjectShared,
-            onClick: (e) => onShareProject(),
+            onClick: (e) =>
+              !isProjectShared ? onShareProject() : onUnShareProject(),
           },
           {
             text: "Xoá bảng việc",

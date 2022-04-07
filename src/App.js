@@ -1,42 +1,55 @@
-import IconButton from '@material-ui/core/IconButton';
-import NoSsr from '@material-ui/core/NoSsr';
-import { createMuiTheme, darken, lighten, MuiThemeProvider } from '@material-ui/core/styles';
-import CloseIcon from '@material-ui/icons/Close';
-import { get } from 'lodash';
-import { SnackbarProvider } from 'notistack';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import { ThemeProvider } from 'styled-components';
-import './App.scss';
-import SnackbarHandler from './components/SnackbarHandler';
-import { makeStyles } from '@material-ui/core/styles';
-import MainLayout from './layouts/MainLayout';
+import IconButton from "@material-ui/core/IconButton";
+import NoSsr from "@material-ui/core/NoSsr";
+import {
+  createTheme,
+  darken,
+  lighten,
+  MuiThemeProvider,
+} from "@material-ui/core/styles";
+import CloseIcon from "@material-ui/icons/Close";
+import { get } from "lodash";
+import { SnackbarProvider } from "notistack";
+import React from "react";
+import { useSelector } from "react-redux";
+import { ThemeProvider } from "styled-components";
+import "./App.scss";
+import SnackbarHandler from "./components/SnackbarHandler";
+import { makeStyles } from "@material-ui/core/styles";
+import MainLayout from "./layouts/MainLayout";
 const useStyles = makeStyles({
-  success: { backgroundColor: '#00bd66' },
+  success: { backgroundColor: "#00bd66" },
 });
 function App() {
   const notistackRef = React.createRef();
-  const _colors = useSelector(state => state.setting.colors);
-  const colors = get(_colors.find(item => item.selected === true), 'color', '#48bb78');
+  const _colors = useSelector((state) => state.setting.colors);
+  const colors = get(
+    _colors.find((item) => item.selected === true),
+    "color",
+    "#48bb78"
+  );
   const classes = useStyles();
-  const defaultTheme = React.useMemo(() => createMuiTheme({
-    palette: {
-      primary: {
-        main: colors,
-        light: lighten(colors, 0.2),
-        dark: darken(colors, 0.2),
-      },
-      secondary: {
-        main: '#fd7e14',
-        light: lighten('#fd7e14', 0.2),
-        dark: darken('#fd7e14', 0.2),
-      }
-    }
-  }), [colors]);
+  const defaultTheme = React.useMemo(
+    () =>
+      createTheme({
+        palette: {
+          primary: {
+            main: colors,
+            light: lighten(colors, 0.2),
+            dark: darken(colors, 0.2),
+          },
+          secondary: {
+            main: "#fd7e14",
+            light: lighten("#fd7e14", 0.2),
+            dark: darken("#fd7e14", 0.2),
+          },
+        },
+      }),
+    [colors]
+  );
 
-  const onClickDismiss = key => () => {
+  const onClickDismiss = (key) => () => {
     notistackRef.current.closeSnackbar(key);
-  }
+  };
 
   return (
     <NoSsr>
@@ -50,12 +63,12 @@ function App() {
               </IconButton>
             )}
             maxSnack={8}
-            anchorOrigin={{ vertical: 'bottom', horizontal: 'right', }}
+            anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             disableWindowBlurListener
             autoHideDuration={3000}
             dense
             classes={{
-              variantSuccess: classes.success
+              variantSuccess: classes.success,
             }}
           >
             <SnackbarHandler>

@@ -46,6 +46,9 @@ function KanbanPage({
         onShareProject={handleMoreClick(() =>
           handleOpenModal("SHARE_PROJECT", {})
         )}
+        onUnShareProject={handleMoreClick(() =>
+          handleOpenModal("UN_SHARE_PROJECT", {})
+        )}
         onUpdateSetting={handleMoreClick(() =>
           handleOpenModal("SETTING_PROJECT", {
             curProject: project,

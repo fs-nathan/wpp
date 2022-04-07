@@ -132,6 +132,7 @@ const LayoutDetail = ({
           onUpdateMember: () => doOpenModal("MEMBER_SETTING", {}),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
           onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
           onUpdateVisible: () =>
             get(project, "visibility", false)
               ? doHideProject({ projectId: get(project?.project, "id") })
@@ -158,6 +159,8 @@ const LayoutDetail = ({
           onOpenCreateModal: () => console.log("onOpenCreateModal"),
           onUpdateTime: () => console.log("CALENDAR"),
           onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateSetting: () => console.log("SETTING"),
           expand: expand,
           onExpand: handleExpand,
@@ -188,6 +191,8 @@ const LayoutDetail = ({
           onUpdateMember: () => doOpenModal("SETTING_MEMBER"),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
           onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateSetting: () =>
             doOpenModal("SETTING", {
               curProject: project.project,
@@ -233,6 +238,8 @@ const LayoutDetail = ({
           onUpdateMember: () => doOpenModal("SETTING_MEMBER"),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
           onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateVisible: () =>
             get(project, "visibility", false)
               ? doHideProject({ projectId: get(project?.project, "id") })

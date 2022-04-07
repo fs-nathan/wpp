@@ -2548,6 +2548,7 @@
   "SHARE_PROJECT_TITLE_INTERNAL_CONTENT": "Share this board to all members who are joining your group (for official members of your organization only).",
   "SHARE_PROJECT_TITLE_PUBLIC": "Public",
   "SHARE_PROJECT_TITLE_PUBLIC_CONTENT": "Any member on Workplus can view and copy this use of the board as their own (sharing does not include discussions, documents and board members). Here's how you contribute sample boards to the user community on Workplus.",
+  "UN_SHARE_PROJECT_TITLE": "Are you sure?",
   "DELETE_FIELDS": "Delete field",
   "hour": "Hour",
   "day": "Day",
