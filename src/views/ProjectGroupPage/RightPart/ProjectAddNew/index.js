@@ -11,7 +11,7 @@ const STEP = {
 };
 
 const ProjectAddNew = ({ handleExpand }) => {
-  const [step, setStep] = useState(STEP.INITIAL);
+  const [step, setStep] = useState(STEP.CREATE);
 
   useEffect(() => {
     handleExpand();

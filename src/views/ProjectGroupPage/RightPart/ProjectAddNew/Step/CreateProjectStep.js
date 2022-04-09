@@ -4,8 +4,12 @@ import {
   Radio,
   RadioGroup,
 } from "@material-ui/core";
+import { Add, Forum, List } from "@material-ui/icons";
+import ViewKanbanRoundedIcon from "@mui/icons-material/ViewKanbanRounded";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import ViewTimelineRoundedIcon from "@mui/icons-material/ViewTimelineRounded";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import { Box, Typography } from "@mui/material";
+import { Box, Button, ButtonGroup, Typography } from "@mui/material";
 import * as images from "assets/index";
 import CustomModal, { Title } from "components/CustomModal";
 import CustomTextbox from "components/CustomTextbox";
@@ -24,117 +28,39 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
 import SelectGroupProject from "./SelectGroupProject";
-// import { ListTagsCreateProject } from "./components";
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
+import { connect, useSelector } from "react-redux";
+import { createProject } from "actions/project/createProject";
 
-const StyledFormControl = ({ className = "", ...props }) => (
-  <FormControl
-    className={`view_ProjectGroup_CreateNew_Project_Modal___form-control ${className} per-line-step-in-form`}
-    {...props}
-  />
-);
-const CreateProjectStep = ({
-  onNext,
-  groups = [],
-  work_types,
-  handleCreateProject,
-  doReload,
-  projectGroupId,
-  timeRange,
-}) => {
+// import { ListTagsCreateProject } from "./components";
+
+const CreateProjectStep = ({ onNext, doCreateProject }) => {
   const { t } = useTranslation();
+  const [haveDescription, setHaveDescription] = useState(false);
   const [name, setName, errorName] = useRequiredString("", 200);
   const [description, setDescription] = useMaxlenString("", 500);
-  const [priority, setPriority] = useState(0);
-  const [currency] = useState(0);
-  const [curProjectGroupId, setCurProjectGroupId] = useState(projectGroupId);
+  const [curProjectGroupId, setCurProjectGroupId] = useState("");
   const [curProjectGroupName, setCurProjectGroupName] = useState("");
-  const [activeLoading, setActiveLoading] = useState(false);
-  const [workingType, setWorkingType] = useState(0);
-  const [selectableGroup, setSelectableGroup] = useState([]);
   const history = useHistory();
   const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] =
     useState(false);
-  const params = useQuery();
-  const refListTag = useRef(null);
+  const [view_default, setViewDefault] = useState(1);
 
-  // useEffect(() => {
-  //   const fail = () => {
-  //     setActiveLoading(false);
-  //   };
-  //   CustomEventListener(CREATE_PROJECT.FAIL, fail);
-  //   CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
-  //     history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
-  //   });
-  //   return () => {
-  //     CustomEventDispose(CREATE_PROJECT.SUCCESS, (e) => {
-  //       history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
-  //     });
-  //     CustomEventDispose(CREATE_PROJECT.FAIL, fail);
-  //   };
-  // }, [projectGroupId, timeRange, doReload]);
-
-  // useEffect(() => {
-  //   const groupID = params.get("groupID")
-  //     ? params.get("groupID")
-  //     : curProjectGroupId
-  //     ? curProjectGroupId
-  //     : null;
-  //   if (groupID) {
-  //     const group = find(groups.groups, { id: groupID });
-  //     setCurProjectGroupId(group ? group.id : null);
-  //     setCurProjectGroupName(group ? group.name : "");
-  //   }
-  // }, [params, groups]);
-
-  // useEffect(() => {
-  //   const success = () => {
-  //     setActiveLoading(false);
-  //     setOpen(false);
-  //     setName("");
-  //     setDescription("");
-  //     setPriority(0);
-  //     setCurProjectGroupId(projectGroupId);
-  //   };
-  //   const fail = () => {
-  //     setActiveLoading(false);
-  //   };
-  //   CustomEventListener(LIST_PROJECT.SUCCESS, success);
-  //   CustomEventListener(LIST_PROJECT.FAIL, fail);
-  //   return () => {
-  //     CustomEventDispose(LIST_PROJECT.SUCCESS, success);
-  //     CustomEventDispose(LIST_PROJECT.FAIL, fail);
-  //   };
-  // }, [projectGroupId, timeRange]);
-
-  // useEffect(() => {
-  //   if (!isNil(work_types) && work_types.length > 0) {
-  //     const _first = parseInt(first(work_types));
-  //     setWorkingType(_first);
-  //   }
-  // }, [work_types]);
-
-  // useEffect(() => {
-  //   if (!isNil(projectGroupId)) {
-  //     setCurProjectGroupId(projectGroupId);
-  //     setSelectableGroup([find(groups.groups, { id: projectGroupId })]);
-  //   } else {
-  //     setSelectableGroup(
-  //       groups.groups.filter((e) =>
-  //         e.work_types.find((c) => c === String(workingType))
-  //       )
-  //     );
-  //   }
-  // }, [projectGroupId, groups]);
+  function onNextHandler() {
+    // doCreateProject({
+    //   name,
+    //   description,
+    //   project_label_id: curProjectGroupId,
+    //   view_default,
+    // });
+    onNext();
+  }
 
   return (
     <>
       <Box className="create-project-step">
         <div className="create-project-step-form">
           <Typography variant="h4" marginBottom={12}>
-            Tạo một bảng việc mới
+            {t("CREATE_NEW_PROJECT")}
           </Typography>
           <CustomTextbox
             value={name}
@@ -146,15 +72,28 @@ const CreateProjectStep = ({
               "view_ProjectGroup_CreateNew_Project_Modal_formItem per-line-step-in-form"
             }
           />
-          <CustomTextbox
-            value={description}
-            onChange={(value) => setDescription(value)}
-            label={`${t("LABEL_BOARD_DETAIL")}`}
-            fullWidth
-            multiline={true}
-            className={"per-line-step-in-form"}
-          />
-          <div className="select-customer-from-input">
+
+          {haveDescription ? (
+            <CustomTextbox
+              value={description}
+              onChange={(value) => setDescription(value)}
+              label={`${t("LABEL_BOARD_DETAIL")}`}
+              fullWidth
+              multiline={true}
+              className="per-line-step-in-form"
+            />
+          ) : (
+            <Button
+              className="per-line-step-in-form"
+              variant="text"
+              startIcon={<Add />}
+              onClick={() => setHaveDescription(true)}
+            >
+              Thêm mô tả
+            </Button>
+          )}
+
+          <div className="select-customer-from-input per-line-step-in-form">
             <CustomTextboxSelect
               value={curProjectGroupName}
               onClick={() => {
@@ -163,15 +102,83 @@ const CreateProjectStep = ({
               label={`${t("DMH.VIEW.PGP.MODAL.CUP.GROUPS")}`}
               fullWidth
               required={true}
-              className={
-                "view_ProjectGroup_CreateNew_Project_Modal_formItem per-line-step-in-form"
-              }
+              className={"view_ProjectGroup_CreateNew_Project_Modal_formItem "}
               isReadOnly={true}
             />
             <ArrowDropDownIcon className="icon-arrow" />
           </div>
+
+          <div className="choose-view per-line-step-in-form">
+            <p>{t("CREATE_DEFAULT_VIEW")}</p>
+            <ButtonGroup
+              variant="outlined"
+              size="large"
+              aria-label="outlined primary button group "
+              className="choose-view-options per-line-step-in-form"
+            >
+              <Button
+                variant="outline"
+                size="large"
+                startIcon={<List htmlColor="#f8949e" />}
+                className={`${
+                  view_default === 1 && "choose-view-button--active"
+                }`}
+                onClick={() => setViewDefault(1)}
+              >
+                List
+              </Button>
+              <Button
+                variant="outline"
+                size="large"
+                startIcon={<ViewKanbanRoundedIcon sx={{ color: "#3aaff5" }} />}
+                className={`${
+                  view_default === 2 && "choose-view-button--active"
+                }`}
+                onClick={() => setViewDefault(2)}
+              >
+                Board
+              </Button>
+              <Button
+                variant="outline"
+                size="large"
+                startIcon={
+                  <ViewTimelineRoundedIcon sx={{ color: "#2fbf9c" }} />
+                }
+                className={`${
+                  view_default === 3 && "choose-view-button--active"
+                }`}
+                onClick={() => setViewDefault(3)}
+              >
+                Timeline
+              </Button>
+              <Button
+                variant="outline"
+                size="large"
+                startIcon={<Forum htmlColor="#f7cd55" />}
+                className={`${
+                  view_default === 4 && "choose-view-button--active"
+                }`}
+                onClick={() => setViewDefault(4)}
+              >
+                Discuss
+              </Button>
+            </ButtonGroup>
+            <div className="submit-button">
+              <Button
+                size="large"
+                endIcon={<ArrowRightAltIcon />}
+                variant="contained"
+                color="primary"
+                onClick={onNextHandler}
+              >
+                {t("CREATE_NEXT")}
+              </Button>
+            </div>
+          </div>
         </div>
       </Box>
+
+      {/* Select Group */}
       {openSelectGroupProjectModal && (
         <SelectGroupProject
           isOpen={true}
@@ -186,4 +193,18 @@ const CreateProjectStep = ({
     </>
   );
 };
-export default CreateProjectStep;
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => {
+  return {
+    doCreateProject: ({ name, description, project_label_id, view_default }) =>
+      dispatch(
+        createProject({
+          name,
+          description,
+          project_label_id,
+          view_default,
+        })
+      ),
+  };
+};
+export default connect(mapStateToProps, mapDispatchToProps)(CreateProjectStep);
