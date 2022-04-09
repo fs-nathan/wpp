@@ -329,8 +329,9 @@
             "U_TITLE": "Edit work team",
             "NAME": "Work team name",
             "DESC": "Work team descriptions",
-            "LOGO": "Work team icon",
-            "LOGO_SELECT": "Change icon"
+            "LOGO_THEME": "Work team themes, work team icons",
+            "LOGO_SELECT": "Change icon",
+            "ADD_DESC": "Add description"
           },
           "CUP": {
             "C_TITLE": "Create project",

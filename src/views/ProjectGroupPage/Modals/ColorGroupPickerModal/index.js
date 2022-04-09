@@ -1,14 +1,14 @@
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import CustomModal from "components/CustomModal";
-import { isElement, isNil } from "lodash";
+import { isNil } from "lodash";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { currentColorSelector } from "views/Chat/selectors";
-import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import "./style.scss";
 
-const colors = [
+export const colors = [
   "#004393",
   "#3682f9",
   "#9fa5c2",

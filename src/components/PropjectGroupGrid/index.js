@@ -10,8 +10,7 @@ import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import { get } from "lodash";
 
-const DEFAULT_GROUP_BACKGROUND_COLOR = "#da4bbe";
-
+export const DEFAULT_GROUP_BACKGROUND_COLOR = "#e7e8e9";
 const TooltipContent = ({ groupName, groupDescription }) => {
   return (
     <div className="projectGroup__tooltip--body">
@@ -86,7 +85,10 @@ const ProjectGroupGrid = ({ projects = [], onEdit, onOpenEditModal }) => {
         );
       })}
 
-      <div className="projectGroupListGrid__item">
+      <div
+        className="projectGroupListGrid__item"
+        style={{ backgroundColor: DEFAULT_GROUP_BACKGROUND_COLOR }}
+      >
         <AddOutlinedIcon />
       </div>
     </div>

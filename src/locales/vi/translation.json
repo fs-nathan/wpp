@@ -330,8 +330,9 @@
             "U_TITLE": "Cập nhật nhóm làm việc",
             "NAME": "Tên nhóm làm việc",
             "DESC": "Mô tả nhóm làm việc",
-            "LOGO": "Biểu tượng nhóm",
-            "LOGO_SELECT": "Thay đổi biểu tượng"
+            "LOGO_THEME": "Phông nền, biểu tượng nhóm",
+            "LOGO_SELECT": "Thay đổi biểu tượng",
+            "ADD_DESC": "Thêm mô tả"
           },
           "CUP": {
             "C_TITLE": "Tạo mới dự án",

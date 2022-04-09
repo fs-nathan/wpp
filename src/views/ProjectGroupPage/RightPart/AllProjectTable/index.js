@@ -233,7 +233,7 @@ function AllProjectTable({
       }
       case "COLOR_PICKER": {
         setOpenColorPickerGroup(true);
-        setEditProps({
+        setColorPickerProps({
           groupID,
           ...props,
         });
