@@ -110,6 +110,7 @@ function CreateNewProject({
       CustomEventDispose(LIST_PROJECT.FAIL, fail);
     };
   }, [projectGroupId, timeRange]);
+
   React.useEffect(() => {
     if (!isNil(work_types) && work_types.length > 0) {
       const _first = parseInt(first(work_types));
