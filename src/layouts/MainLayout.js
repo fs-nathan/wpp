@@ -75,7 +75,7 @@ const Container = styled.div`
   width: 100vw;
   display: grid;
   // grid-template-rows: 55px 1fr;
-  grid-template-rows: 0px 1fr;
+  grid-template-rows: 55px 1fr;
   grid-template-columns: 140px minmax(0, 1fr);
   overflow-y: hidden;
 
