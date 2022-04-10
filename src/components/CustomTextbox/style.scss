@@ -3,14 +3,14 @@
   box-sizing: border-box;
   word-break: break-word;
 
-  &>div>div {
+  & > div > div {
     white-space: pre-line;
     font-size: 14px;
     line-height: 1.5;
     text-align: justify;
   }
 
-  &>span {
+  & > span {
     color: #48bb78;
     display: inline-block;
     width: 100%;
@@ -26,17 +26,22 @@
   margin-top: 16px;
   margin-bottom: 8px;
 
-  &>p {
+  & > p {
     margin: 0 0 8px 0;
     font-size: 14px;
     font-weight: 500;
     color: #222;
 
-    &>abbr {
+    & > abbr {
       color: red;
       margin-left: 5px;
       text-decoration: none;
     }
+  }
+  .custom-text-box-description {
+    color: #969ead;
+    font-weight: 400;
+    margin-bottom: 16px;
   }
 }
 

@@ -2602,5 +2602,11 @@
   "update": "Chỉnh sửa",
   "total": "Tính tổng",
   "averaged": "Tính trung bình",
-  "label": "Nhãn"
+  "label": "Nhãn",
+  "SHARE_STEP_DESCRIPTION_CONTENT": "Hãy mô tả thêm về bảng bạn muốn chia sẻ giúp người dùng hiểu hơn về nó và thu hút nhiều người sử dụng mẫu của bạn hơn.",
+  "SHARE_STEP_DESCRIPTION_LABEL": "Mô tả thêm về bảng",
+  "SHARE_STEP_DESCRIPTION_PLACEHOLDER": "Nhập nội dung (Không bắt buộc)",
+  "SHARE_STEP_SELECT_GROUP_LABEL": "Mẫu thuộc nhóm",
+  "SHARE_STEP_SELECT_BG_LABEL": "Chọn giao diện chia sẻ",
+  "SHARE_STEP_CHANGE": "Thay đổi"
 }
