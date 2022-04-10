@@ -2573,5 +2573,11 @@
   "update": "Update",
   "total": "Total",
   "averaged": "Averaged",
-  "label": "Label"
+  "label": "Label",
+  "SHARE_STEP_DESCRIPTION_CONTENT": "Describe more of the board you want to share to help users understand it better and get more people to use your template.",
+  "SHARE_STEP_DESCRIPTION_LABEL": "More description",
+  "SHARE_STEP_DESCRIPTION_PLACEHOLDER": "Description (Optional)",
+  "SHARE_STEP_SELECT_GROUP_LABEL": "Template group",
+  "SHARE_STEP_SELECT_BG_LABEL": "Choose thumbnail",
+  "SHARE_STEP_CHANGE": "Change"
 }
