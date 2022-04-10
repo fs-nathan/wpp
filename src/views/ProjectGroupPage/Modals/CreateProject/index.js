@@ -31,7 +31,7 @@ function CreateProjectGroup({
     if (open) {
       push("/projects/add-new");
     }
-  }, [open]);
+  }, [open, push]);
 
   const { t } = useTranslation();
   const [createNew, setCreateNew] = React.useState(false);

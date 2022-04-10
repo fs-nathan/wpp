@@ -2608,5 +2608,11 @@
   "SHARE_STEP_DESCRIPTION_PLACEHOLDER": "Nhập nội dung (Không bắt buộc)",
   "SHARE_STEP_SELECT_GROUP_LABEL": "Mẫu thuộc nhóm",
   "SHARE_STEP_SELECT_BG_LABEL": "Chọn giao diện chia sẻ",
-  "SHARE_STEP_CHANGE": "Thay đổi"
+  "SHARE_STEP_CHANGE": "Thay đổi",
+  "CREATE_PROJECT_DONE_TITLE": "Bạn muốn làm gì đầu tiên?",
+  "CREATE_PROJECT_DONE_NEW_LABEL": "Bắt đầu thêm nhiệm vụ, công việc",
+  "CREATE_PROJECT_DONE_NEW_CONTENT": "Chỉ định, đặt ngày đến hạn và bắt đầu làm việc",
+  "CREATE_PROJECT_DONE_SHARE_LABEL": "Chia sẻ với đồng đội",
+  "CREATE_PROJECT_DONE_SHARE_CONTENT": "Mời thành viên tham gia cùng làm việc nhóm hiệu quả",
+  "BEGIN": "Bắt đầu"
 }

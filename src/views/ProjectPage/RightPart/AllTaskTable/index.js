@@ -34,10 +34,10 @@ import {
 } from "constants/events";
 import { get } from "lodash";
 import moment from "moment";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
@@ -93,7 +93,6 @@ function AllTaskTable({
     };
   }, [timeType]);
   const { projectId, memberId } = useParams();
-
   const reloadListTask = () => {
     doListTask({
       projectId,
