@@ -92,7 +92,6 @@ function ProjectList({
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
-    console.log("destination", destination);
 
     if (!destination) return;
     if (

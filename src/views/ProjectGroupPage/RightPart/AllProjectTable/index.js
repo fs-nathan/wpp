@@ -6,7 +6,9 @@ import { listProject } from "actions/project/listProject";
 import { showProject } from "actions/project/showProject";
 import { sortProject } from "actions/project/sortProject";
 import { detailProjectGroup } from "actions/projectGroup/detailProjectGroup";
+import { editProjectGroup } from "actions/projectGroup/editProjectGroup";
 import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
+import { sortProjectGroup } from "actions/projectGroup/sortProjectGroup";
 import { useFilters, useTimes } from "components/CustomPopover";
 import { CustomTableWrapper } from "components/CustomTable";
 import { CREATE_PROJECT } from "constants/events";
@@ -14,7 +16,7 @@ import {
   CustomEventDispose,
   CustomEventListener,
   SORT_PROJECT,
-  SORT_PROJECT_GROUP,
+  SORT_PROJECT_GROUP
 } from "constants/events.js";
 import { filter, get, reverse, size, sortBy } from "lodash";
 import moment from "moment";
@@ -22,12 +24,14 @@ import React from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router";
 import ColorGroupPickerModal from "views/ProjectGroupPage/Modals/ColorGroupPickerModal";
+import CreateProjectGroup from "views/ProjectGroupPage/Modals/CreateProjectGroup";
+import DeleteProjectGroup from "views/ProjectGroupPage/Modals/DeleteProjectGroup";
+import LogoManagerModal from "../../../DepartmentPage/Modals/LogoManager";
 import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 import { routeSelector } from "../../../ProjectPage/selectors";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 import CreateProjectModal from "../../Modals/CreateProject";
 import DeleteProjectModal from "../../Modals/DeleteProject";
-import EditProjectModal from "../../Modals/EditProject";
 import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
 import NoProjectGroupModal from "../../Modals/NoProjectGroup";
 import ProjectSettingModal from "../../Modals/ProjectSetting";
@@ -36,15 +40,9 @@ import AllProjectTablePresenter from "./presenters";
 import {
   bgColorSelector,
   projectsSelector,
-  showHidePendingsSelector,
+  showHidePendingsSelector
 } from "./selectors";
 
-import LogoManagerModal from "../../../DepartmentPage/Modals/LogoManager";
-import { sortProjectGroup } from "actions/projectGroup/sortProjectGroup";
-import DeleteProjectGroup from "views/ProjectGroupPage/Modals/DeleteProjectGroup";
-import { editProjectGroup } from "actions/projectGroup/editProjectGroup";
-import CreateProjectGroup from "views/ProjectGroupPage/Modals/CreateProjectGroup";
-import { useHistory } from "react-router-dom";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -282,7 +280,6 @@ function AllProjectTable({
   const _handleSearch = (value) => {
     setSearchValue(value);
   };
-  console.log("alertProps", alertProps);
 
   return (
     <>

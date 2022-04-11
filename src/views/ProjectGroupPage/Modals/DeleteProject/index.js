@@ -29,17 +29,6 @@ function ProjectDelete({
     // eslint-disable-next-line
   }, [timeType]);
 
-  console.log("props", {
-    selectedProject,
-    open,
-    setOpen,
-    doDeleteProject,
-    doReloadProject,
-    projectGroupId,
-    localOption,
-    doAfterSuccess,
-  });
-
   return (
     <DeleteProjectPresenter
       projectGroupId={projectGroupId}

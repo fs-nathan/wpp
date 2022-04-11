@@ -1,10 +1,8 @@
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import CustomModal from "components/CustomModal";
-import { isNil } from "lodash";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import { currentColorSelector } from "views/Chat/selectors";
 import "./style.scss";
 
@@ -50,8 +48,6 @@ function ColorGroupPickerModal({
   useEffect(() => {
     setSelectedColor(projectGroupColor);
   }, [projectGroupColor]);
-
-  console.log("projectGroupId color", projectGroupId);
 
   return (
     <>

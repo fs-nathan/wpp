@@ -241,8 +241,6 @@ function AllProjectTable({
     exportToCSV(data, "projects");
   };
 
-  console.log("currentGroup", currentGroup);
-
   const MenuProject = () => {
     return (
       <Menu

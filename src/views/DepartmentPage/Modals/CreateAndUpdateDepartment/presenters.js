@@ -57,10 +57,6 @@ function CreateAndUpdateDepartment({
   const [activeMask, setActiveMask] = React.useState(3);
   const { icons, isSelect, selectedIcon, setSelectedIcon } =
     useContext(LogoManagerContext);
-
-    console.log("icons", icons);
-    console.log("isSelect", isSelect);
-    console.log("selectedIcon", selectedIcon);
   React.useEffect(() => {
     setActiveLoading(activeMask === 3 || activeMask === -1 ? false : true);
     if (activeMask === 3) {
@@ -189,7 +185,6 @@ function CreateAndUpdateDepartment({
 
           <div>
             {icons.defaults.map((icon) => {
-              console.log("icon", icon);
               return (
                 <LogoBox
                   key={get(icon, "url_icon")}

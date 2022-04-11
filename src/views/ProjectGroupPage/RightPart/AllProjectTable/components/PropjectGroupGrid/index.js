@@ -8,15 +8,15 @@ import {
   CustomEventDispose,
   CustomEventListener,
   EDIT_PROJECT_GROUP,
-  LIST_PROJECT_GROUP,
+  LIST_PROJECT_GROUP
 } from "constants/events";
 import { get } from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
-import "./projectGroupGrid.scss";
 import { NavLink } from "react-router-dom";
+import "./projectGroupGrid.scss";
 
 export const DISABLED_GROUP_BACKGROUND_COLOR = "#e7e8e9";
 export const DEFAULT_GROUP_BACKGROUND_COLOR = "#da4bbe";
@@ -77,9 +77,6 @@ const ProjectGroupGrid = ({
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
-    console.log("source", source);
-    console.log("destination", destination);
-
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&
@@ -89,8 +86,6 @@ const ProjectGroupGrid = ({
 
     handleSortProjectGroup(draggableId, destination.index);
   }
-
-  console.log("activeLoading", activeLoading);
 
   if (activeLoading) return <LoadingBox />;
 
