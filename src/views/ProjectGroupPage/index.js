@@ -28,6 +28,8 @@ import ProjectAddNew from "./RightPart/ProjectAddNew";
 import { routeSelector } from "./selectors";
 import { CustomTableWrapper } from "components/CustomTable";
 import { CustomLayoutProvider } from "components/CustomLayout";
+import ProjectsTemplate from "./RightPart/ProjectsTemplate/ProjectsTemplate";
+import ProjectTemplateList from "./LeftPart/ProjectTemplateList/ProjectTemplateList";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -45,6 +47,7 @@ function ProjectGroupPage({
 
   const [test, setTest] = useState([]);
   const isDeletedPage = pathname.split("/")[2] === "deleted";
+  const isTemplatePage = pathname.split("/")[2] === "template";
 
   useLayoutEffect(() => {
     doGetPermissionViewProjects();
@@ -62,7 +65,13 @@ function ProjectGroupPage({
     >
       {!isCollapsed && (
         <div className={classNames(classes.leftSidebar, { isCollapsed })}>
-          {isDeletedPage ? <ProjectGroupListDeleted /> : <ProjectGroupList />}
+          {isTemplatePage ? (
+            <ProjectTemplateList />
+          ) : isDeletedPage ? (
+            <ProjectGroupListDeleted />
+          ) : (
+            <ProjectGroupList />
+          )}
         </div>
       )}
       <div className={classNames(classes.mainContent, { isCollapsed })}>
@@ -77,6 +86,7 @@ function ProjectGroupPage({
           <Route exact path="/projects/add-new">
             <ProjectAddNew handleExpand={_handleExpand} />
           </Route>
+
           <Route exact path="/projects/start">
             <ProjectsStart expand={isCollapsed} handleExpand={_handleExpand} />
           </Route>
@@ -86,6 +96,9 @@ function ProjectGroupPage({
               expand={isCollapsed}
               handleExpand={_handleExpand}
             />
+          </Route>
+          <Route exact path="/projects/template">
+            <ProjectsTemplate />
           </Route>
           <Route exact path="/projects/group/:projectGroupId">
             <AllProjectTable
