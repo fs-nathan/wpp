@@ -35,7 +35,7 @@ const useStyles = makeStyles({
 });
 
 const ProjectsStart = React.lazy(() => import("./RightPart/ProjectsStart"));
-const AllProjectTable = React.lazy(() => import("./RightPart/AllProjectTable"));
+const AllProjectGrid = React.lazy(() => import("./RightPart/AllProjectGrid"));
 const AllTaskTable = React.lazy(() =>
   import("../ProjectPage/RightPart/AllTaskTable")
 );
@@ -86,7 +86,7 @@ function ProjectGroupPage({
         <React.Suspense fallback={<div />}>
           <Switch>
             <Route exact path="/projects/recently">
-              <AllProjectTable
+              <AllProjectGrid
                 type_data={1}
                 expand={isCollapsed}
                 handleExpand={_handleExpand}
@@ -99,14 +99,14 @@ function ProjectGroupPage({
               />
             </Route>
             <Route exact path="/projects/personal-board">
-              <AllProjectTable
+              <AllProjectGrid
                 type_data={2}
                 expand={isCollapsed}
                 handleExpand={_handleExpand}
               />
             </Route>
             <Route exact path="/projects/group/:projectGroupId">
-              <AllProjectTable
+              <AllProjectGrid
                 expand={isCollapsed}
                 handleExpand={_handleExpand}
               />
@@ -144,7 +144,7 @@ function ProjectGroupPage({
             {/* Detail project */}
 
             <Route exact path="/projects">
-              <AllProjectTable
+              <AllProjectGrid
                 expand={isCollapsed}
                 handleExpand={_handleExpand}
               />

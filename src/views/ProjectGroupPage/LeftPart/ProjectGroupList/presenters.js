@@ -9,21 +9,21 @@ import {
   MenuItem,
   MenuList,
   Popover,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
-import AddIcon from "@mui/icons-material/Add";
 import {
   mdiBookmarkOutline,
   mdiDotsVertical,
   mdiPlayCircleOutline,
-  mdiPlus,
+  mdiPlus
 } from "@mdi/js";
 import Icon from "@mdi/react";
+import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 import { size } from "lodash";
 import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -36,18 +36,13 @@ import styled from "styled-components";
 import SearchInput from "../../../../components/SearchInput";
 import {
   CustomEventDispose,
-  CustomEventListener,
+  CustomEventListener
 } from "../../../../constants/events";
-import {
-  SnackbarEmitter,
-  SNACKBAR_VARIANT,
-} from "../../../../constants/snackbarController";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 import CreateProjectGroup from "../../Modals/CreateProjectGroup";
 import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import { GroupProject } from "./components";
 import "./style.scss";
-import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -97,6 +92,8 @@ function ProjectList({
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
+    console.log("destination", destination);
+
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&

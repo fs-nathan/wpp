@@ -15,7 +15,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
-import { CellLabel } from "views/ProjectGroupPage/RightPart/AllProjectTable/constants/Columns";
+import { CellLabel } from "views/ProjectGroupPage/RightPart/AllProjectGrid/constants/Columns";
 import SelectFieldTypeDropdown from "./Dropdown";
 import TabContentColumn from "./TabContentColumn";
 import TitleModalAdd from "./TitleModalAdd";

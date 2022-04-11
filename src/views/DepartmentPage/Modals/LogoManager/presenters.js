@@ -271,13 +271,13 @@ const LogoManagerModalWrapper = ({ children }) => {
               }
             />
             {mutateIcon.loading ? (
-              <ColorButton variant="text" variantColor="green" size="small">
+              <ColorButton variant="text" variantColor="blue" size="small">
                 <LoadingBox size={16} />
               </ColorButton>
             ) : (
                 <ColorButton
                   variant="text"
-                  variantColor="green"
+                  variantColor="blue"
                   size="small"
                   component="label"
                   htmlFor="raised-button-file"

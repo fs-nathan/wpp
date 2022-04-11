@@ -10,7 +10,7 @@ import { useHistory } from 'react-router-dom';
 import { useMountedState } from "react-use";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import OfferModal from '../../JobDetailPage/TabPart/OfferTab/OfferModal';
-import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
+import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectGrid/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
 import RedirectModal from "../components/RedirectModal";
 import { Routes } from '../contants/routes';

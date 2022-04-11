@@ -2,7 +2,7 @@ import noDataImg from "assets/no-data.png";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { bgColorSelector } from "views/ProjectGroupPage/RightPart/AllProjectTable/selectors";
+import { bgColorSelector } from "views/ProjectGroupPage/RightPart/AllProjectGrid/selectors";
 import "./EmptyHolder.css";
 function EmptyHolder({
   image,

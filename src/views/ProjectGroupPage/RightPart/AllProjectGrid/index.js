@@ -39,11 +39,14 @@ import {
   showHidePendingsSelector,
 } from "./selectors";
 
+import LogoManagerModal from "../../../DepartmentPage/Modals/LogoManager";
+import { sortProjectGroup } from "actions/projectGroup/sortProjectGroup";
+
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-function AllProjectTable({
+function AllProjectGrid({
   expand,
   handleExpand,
   projects,
@@ -53,6 +56,7 @@ function AllProjectTable({
   doHideProject,
   doShowProject,
   doSortProject,
+  doSortProjectGroup,
   route,
   viewPermissions,
   doListProject,
@@ -189,6 +193,8 @@ function AllProjectTable({
   const [alertProps, setAlertProps] = React.useState({});
   const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
   const [colorPickerProps, setColorPickerProps] = React.useState({});
+  const [openLogo, setOpenLogo] = React.useState(false);
+  const [logoProps, setLogoProps] = React.useState({});
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -234,6 +240,14 @@ function AllProjectTable({
       case "COLOR_PICKER": {
         setOpenColorPickerGroup(true);
         setColorPickerProps({
+          groupID,
+          ...props,
+        });
+        return;
+      }
+      case "LOGO": {
+        setOpenLogo(true);
+        setLogoProps({
           groupID,
           ...props,
         });
@@ -308,6 +322,9 @@ function AllProjectTable({
             doDeleteProject({ projectId: get(project, "id") })
           }
           handleSortProject={(sortData) => doSortProject({ sortData })}
+          handleSortProjectGroup={(projectGroupId, sortIndex) =>
+            doSortProjectGroup(projectGroupId, sortIndex)
+          }
           handleOpenModal={doOpenModal}
           groupID={groupID}
           isFiltering={isFiltering}
@@ -353,11 +370,9 @@ function AllProjectTable({
       <ColorGroupPickerModal
         open={openColorPickerGroup}
         setOpen={setOpenColorPickerGroup}
-        // projectId={projectId}
-        // groupId={selectedGroup}
-        // project={project}
         {...colorPickerProps}
       />
+      <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />
     </>
   );
 }
@@ -387,7 +402,9 @@ const mapDispatchToProps = (dispatch) => {
     doDetailProjectGroup: ({ projectGroupId }, quite) =>
       dispatch(detailProjectGroup({ projectGroupId }, quite)),
     doSetProjectGroup: (value) => dispatch(setProjectGroup(value)),
+    doSortProjectGroup: (projectGroupId, sortIndex) =>
+      dispatch(sortProjectGroup({ projectGroupId, sortIndex })),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllProjectTable);
+export default connect(mapStateToProps, mapDispatchToProps)(AllProjectGrid);

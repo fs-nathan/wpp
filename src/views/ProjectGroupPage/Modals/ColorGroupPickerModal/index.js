@@ -33,8 +33,6 @@ function ColorGroupPickerModal({
   project_id = null,
   projectColor,
 }) {
-  const [createNew, setCreateNew] = React.useState(false);
-  const [copy, setCopy] = React.useState(false);
   const { t } = useTranslation();
   const { projectId: _projectId } = useParams();
   const [projectId, setProjectId] = React.useState(_projectId);
@@ -46,19 +44,18 @@ function ColorGroupPickerModal({
     setProjectId(isNil(project_id) ? _projectId : project_id);
   }, [project_id, _projectId]);
 
-  console.log("open", open);
   return (
     <>
       <CustomModal
         open={open}
         setOpen={setOpen}
-        confirmRender={null}
         titleRender={null}
         height="short"
         className={"colorGroupPicker__modal"}
         id={"color-picker-modal"}
-        maxWidth={"xs"}
-        canConfirm={false}
+        maxWidth={"sm"}
+        canConfirm={true}
+        onConfirm={() => {}}
       >
         <h4 className={"colorGroupPicker__modal--title"}>
           {t("DMH.VIEW.PP.MODAL.COLOR_PICKER.TITLE")}

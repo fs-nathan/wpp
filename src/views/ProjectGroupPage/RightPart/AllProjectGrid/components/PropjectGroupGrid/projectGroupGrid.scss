@@ -3,7 +3,7 @@
   grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
   gap: 25px;
   padding: 45px 80px;
-  overflow-y: auto;
+  // overflow-y: auto;
   max-height: calc(100vh - 60px);
   box-sizing: border-box;
   &__item {
@@ -21,7 +21,7 @@
       font-size: 18px;
     }
     &:hover {
-      cursor: pointer;
+      // cursor: pointer;
       &::before {
         position: absolute;
         content: "";

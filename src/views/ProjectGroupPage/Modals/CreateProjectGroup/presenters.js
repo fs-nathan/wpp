@@ -25,7 +25,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Typography } from "antd";
 import { colors } from "../ColorGroupPickerModal";
-import { DEFAULT_GROUP_BACKGROUND_COLOR } from "components/PropjectGroupGrid";
+import { DEFAULT_GROUP_BACKGROUND_COLOR } from "../../RightPart/AllProjectGrid/components/PropjectGroupGrid";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { LogoManagerContext } from "views/DepartmentPage/Modals/LogoManager/presenters";
@@ -230,7 +230,6 @@ function CreateProjectGroup({
 
         <div className="createProjectGroup__logo-box--list">
           {iconList.map((icon) => {
-            console.log("icon", icon);
             return (
               <LogoBox
                 key={get(icon, "url_icon")}
@@ -267,6 +266,7 @@ function CreateProjectGroup({
               handleOpenModal("LOGO", {
                 doSelectIcon: (icon) => setIcon(icon),
                 selectedIcon: icon,
+                canUpload: true,
               })
             }
           >

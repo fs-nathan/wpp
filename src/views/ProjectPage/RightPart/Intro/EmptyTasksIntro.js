@@ -2,7 +2,7 @@ import React from "react";
 import * as images from "assets";
 import {Box, Button, Typography} from "@material-ui/core";
 import {useTranslation} from "react-i18next";
-import "../../../ProjectGroupPage/RightPart/AllProjectTable/Intro/styles.scss";
+import "../../../ProjectGroupPage/RightPart/AllProjectGrid/Intro/styles.scss";
 import {resolvedWorkType} from "../../../../helpers/project/commonHelpers";
 import {isNil, get} from "lodash";
 import {getPermissionViewDetailProject} from "../../../../actions/viewPermissions";

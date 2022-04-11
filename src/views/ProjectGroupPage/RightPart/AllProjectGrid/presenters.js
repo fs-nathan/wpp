@@ -1,28 +1,29 @@
 import { Menu, MenuItem } from "@material-ui/core";
-import ProjectGroupGrid from "components/PropjectGroupGrid";
+import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
+import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
 import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
+import { connect, useDispatch } from "react-redux";
 import LoadingBox from "../../../../components/LoadingBox";
 import { Container } from "../../../../components/TableComponents";
 import HeaderTableAllGroup from "./components/HeaderTableAllGroup";
+import ProjectGroupGrid from "./components/PropjectGroupGrid";
 import EmptyPersonalBoard from "./Intro/EmptyPersonalBoard";
 import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import "./styles/style.scss";
 import { _sortByAscGroupTable, _sortByDescGroupTable } from "./utils";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
-import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
-import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 
 const KEY_LOCAL_STORAGE_SORT = "sort_project_table";
 
-function AllProjectTable({
+function AllProjectGrid({
   expand,
   handleExpand,
   projects,
@@ -37,6 +38,7 @@ function AllProjectTable({
   type_data = null,
   handleShowOrHideProject,
   handleSortProject,
+  handleSortProjectGroup,
   handleOpenModal,
   bgColor,
   showHidePendings,
@@ -57,6 +59,7 @@ function AllProjectTable({
   const [currentGroup, setCurrentGroup] = React.useState(null);
   const [selectedSort, setSelectedSort] = React.useState(sortLocal || null);
   const refData = useRef([]);
+  const dispatch = useDispatch();
 
   function doOpenMenu(anchorEl, project) {
     setMenuAnchor(anchorEl);
@@ -163,6 +166,10 @@ function AllProjectTable({
     }
   }
 
+  function _handleSetDefault(value) {
+    if (value) dispatch(defaultGroupTask(value));
+  }
+
   const _filterType = (index) => {
     handleFilterType(index);
     setIsFiltering(true);
@@ -233,9 +240,11 @@ function AllProjectTable({
         {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
           <>
             <ProjectGroupGrid
-              projects={data}
+              projectGroups={projectGroup}
               onEdit={onEdit}
               onOpenEditModal={onOpenEditModal}
+              handleDragEnd={_handleDragEnd}
+              handleSortProjectGroup={handleSortProjectGroup}
             />
 
             <Menu
@@ -265,7 +274,7 @@ function AllProjectTable({
                 </MenuItem>
               )}
 
-              {get(curProject, "can_update", false) && (
+              {get(curProject, "can_modify", false) && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
@@ -280,7 +289,7 @@ function AllProjectTable({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_update", false) && (
+              {get(curProject, "can_modify", false) && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
@@ -295,11 +304,11 @@ function AllProjectTable({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_update", false) && (
+              {get(curProject, "can_modify", false) && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
-                    handleOpenModal("ALERT", {
+                    handleOpenModal("LOGO", {
                       selectedProject: curProject,
                     });
                   }}
@@ -310,13 +319,11 @@ function AllProjectTable({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_update", false) && (
+              {get(curProject, "can_modify", false) && (
                 <MenuItem
                   onClick={(evt) => {
-                    setMenuAnchor(null);
-                    handleOpenModal("ALERT", {
-                      selectedProject: curProject,
-                    });
+                    evt.stopPropagation();
+                    _handleSetDefault(`?groupID=${curProject.id}`);
                   }}
                 >
                   <span>
@@ -325,7 +332,7 @@ function AllProjectTable({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_delete", false) && (
+              {get(curProject, "can_modify", false) && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
@@ -357,4 +364,4 @@ export default connect(
     ),
   }),
   {}
-)(AllProjectTable);
+)(AllProjectGrid);

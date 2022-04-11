@@ -16,7 +16,7 @@ import { connect } from "react-redux";
 import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { TimeRangePopover, useTimes } from "../../../components/CustomPopover";
 import LoadingBox from "../../../components/LoadingBox";
-import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectTable/selectors";
+import { bgColorSelector } from "../../ProjectGroupPage/RightPart/AllProjectGrid/selectors";
 import QuickViewFilter from "../components/QuickViewFilter";
 import RedirectModal from "../components/RedirectModal";
 import { JobPageContext } from "../JobPageContext";
