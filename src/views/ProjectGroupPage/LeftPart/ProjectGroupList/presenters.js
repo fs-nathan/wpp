@@ -50,6 +50,9 @@ import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import { GroupProject } from "./components";
 import "./style.scss";
 import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
+import { TEMPLATE } from "mocks/template";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { Collapse, ListItem, ListItemButton } from "@mui/material";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -106,6 +109,12 @@ function ProjectList({
     (state) => state.project.countPersonalProjectsBoard.projects
   );
 
+  const [open, setOpen] = React.useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
     if (!destination) return;
@@ -145,7 +154,6 @@ function ProjectList({
       setHideBtnState(e.detail.isHide);
     });
   }, []);
-
   return (
     <>
       <LeftContainer>
@@ -159,18 +167,62 @@ function ProjectList({
           />
         </Banner>
         <Box className={"view_ProjectGroup_List--LeftContainer"}>
-          {!Boolean(hideBtnState) && (
+          <Box>
             <Box
               className={`view_ProjectGroup_List--startButton ${
-                history.location.pathname.includes("/projects/start") &&
+                history.location.pathname.includes("/projects/template") &&
                 "active"
               }`}
-              onClick={() => history.push("/projects/start")}
+              onClick={() => history.push("/projects/template")}
             >
               <LibraryAddCheckOutlined htmlColor="#d46ffb" />
               <span>{t("LABEL_CHAT_TASK_THU_VIEN_MAU_LABEL")}</span>
             </Box>
-          )}
+
+            {history.location.pathname.includes("/projects/template") && (
+              <Box
+              // className={"view_ProjectGroup_List--listGroup-body scrollList"}
+              >
+                <List>
+                  {TEMPLATE.map((temp) => (
+                    <>
+                      <ListItem
+                        disablePadding
+                        disableGutters
+                        key={temp.id}
+                        // className="view_ProjectGroup_List-customListItem view_ProjectGroup_List-customListItem-nav"
+                      >
+                        <ListItemButton onClick={handleClick} sx={{ pl: 6 }}>
+                          <ListItemText primary={temp.name} />
+                          {temp.templates &&
+                            temp.templates.length > 0 &&
+                            (open ? <ExpandLess /> : <ExpandMore />)}
+                        </ListItemButton>
+                      </ListItem>
+                      {temp.templates && temp.templates.length > 0 && (
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                          <List component="div">
+                            {temp.templates.map((child) => (
+                              <ListItem
+                                disablePadding
+                                disableGutters
+                                key={child.id}
+                              >
+                                <ListItemButton sx={{ pl: 8 }}>
+                                  <ListItemText primary={child.name} />
+                                </ListItemButton>
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Collapse>
+                      )}
+                    </>
+                  ))}
+                </List>
+              </Box>
+            )}
+          </Box>
+
           <Box className={"view_ProjectGroup_List--listGroup"}>
             <Box
               className={"view_ProjectGroup_List--listGroup-header textHeader"}
