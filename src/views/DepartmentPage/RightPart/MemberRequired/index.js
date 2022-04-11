@@ -23,7 +23,7 @@ import {rejectRequirementJoinGroup} from 'actions/groupUser/rejectRequirementJoi
 import {getPermissionViewUser} from 'actions/viewPermissions';
 import FilterNoneIcon from '@material-ui/icons/FilterNone';
 import {requireLoadingSelector, requireUsersSelector, viewPermissionsSelector} from '../../LeftPart/AddUser/selectors';
-import "../../../ProjectGroupPage/RightPart/AllProjectGrid/Intro/styles.scss";
+import "../../../ProjectGroupPage/RightPart/AllProjectTable/Intro/styles.scss";
 import {SNACKBAR_VARIANT, SnackbarEmitter} from "../../../../constants/snackbarController";
 import {getRequirementJoinGroup} from "../../../../actions/groupUser/getRequirementJoinGroup";
 import LoadingBox from "../../../../components/LoadingBox";

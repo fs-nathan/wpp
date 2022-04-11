@@ -25,7 +25,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { Typography } from "antd";
 import { colors } from "../ColorGroupPickerModal";
-import { DEFAULT_GROUP_BACKGROUND_COLOR } from "../../RightPart/AllProjectGrid/components/PropjectGroupGrid";
+import { DEFAULT_GROUP_BACKGROUND_COLOR } from "../../RightPart/AllProjectTable/components/PropjectGroupGrid";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { LogoManagerContext } from "views/DepartmentPage/Modals/LogoManager/presenters";

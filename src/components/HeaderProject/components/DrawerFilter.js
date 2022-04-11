@@ -38,7 +38,7 @@ import React, {
 } from "react";
 import { useTranslation } from "react-i18next";
 import EditProjectModal from "views/ProjectGroupPage/Modals/EditProject/index.js";
-import ExportTaskGroupData from "views/ProjectGroupPage/RightPart/AllProjectGrid/components/ExportTaskGroupData";
+import ExportTaskGroupData from "views/ProjectGroupPage/RightPart/AllProjectTable/components/ExportTaskGroupData";
 import DeleteProjectModal from "views/ProjectGroupPage/Modals/DeleteProject/index.js";
 import ManageTableData from "./ManageTableData";
 import { useStyles } from "./styles";

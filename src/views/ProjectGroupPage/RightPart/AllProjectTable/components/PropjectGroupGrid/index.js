@@ -16,6 +16,7 @@ import React from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import "./projectGroupGrid.scss";
+import { NavLink } from "react-router-dom";
 
 export const DISABLED_GROUP_BACKGROUND_COLOR = "#e7e8e9";
 export const DEFAULT_GROUP_BACKGROUND_COLOR = "#da4bbe";
@@ -121,12 +122,13 @@ const ProjectGroupGrid = ({
                   >
                     {(provided) => {
                       return (
-                        <div
+                        <NavLink
                           ref={provided.innerRef}
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                           className="projectGroupListGrid__item"
                           style={{ backgroundColor: backgroundColor }}
+                          to={`/projects?groupID=${projectGroup.id}`}
                         >
                           <div>{projectGroup?.name}</div>
 
@@ -179,7 +181,7 @@ const ProjectGroupGrid = ({
                               )}
                             </div>
                           </div>
-                        </div>
+                        </NavLink>
                       );
                     }}
                   </Draggable>

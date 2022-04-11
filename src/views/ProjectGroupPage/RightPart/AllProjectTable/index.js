@@ -44,12 +44,13 @@ import { sortProjectGroup } from "actions/projectGroup/sortProjectGroup";
 import DeleteProjectGroup from "views/ProjectGroupPage/Modals/DeleteProjectGroup";
 import { editProjectGroup } from "actions/projectGroup/editProjectGroup";
 import CreateProjectGroup from "views/ProjectGroupPage/Modals/CreateProjectGroup";
+import { useHistory } from "react-router-dom";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
 }
 
-function AllProjectGrid({
+function AllProjectTable({
   expand,
   handleExpand,
   projects,
@@ -88,6 +89,7 @@ function AllProjectGrid({
   const filters = useFilters();
   const query = useQuery();
   const groupID = query.get("groupID");
+  const isCreatingTask = query.has("createTask");
 
   React.useEffect(() => {
     if (groupID === "deleted") return;
@@ -182,6 +184,9 @@ function AllProjectGrid({
         setNewCreatedBoard(e.detail.project_id);
       });
     };
+  }, []);
+  React.useEffect(() => {
+    setOpenCreate(isCreatingTask);
   }, []);
 
   const [guideLineModal, setGuideLineModal] = React.useState(false);
@@ -349,7 +354,7 @@ function AllProjectGrid({
           setIsFiltering={setIsFiltering}
           activeLoading={activeLoading}
           setActiveLoading={setActiveLoading}
-          canModify={get(
+          canModifyProjectGroup={get(
             viewPermissions.permissions,
             "manage_group_project",
             false
@@ -461,4 +466,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllProjectGrid);
+export default connect(mapStateToProps, mapDispatchToProps)(AllProjectTable);

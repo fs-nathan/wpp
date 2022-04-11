@@ -16,7 +16,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { connect } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { statusSelector } from "views/ProjectGroupPage/Modals/ProjectSetting/selectors";
-import SearchButton from "views/ProjectGroupPage/RightPart/AllProjectGrid/components/SearchButton";
+import SearchButton from "views/ProjectGroupPage/RightPart/AllProjectTable/components/SearchButton";
 import DrawerFilter from "./components/DrawerFilter";
 import { useStyles } from "./styles";
 
