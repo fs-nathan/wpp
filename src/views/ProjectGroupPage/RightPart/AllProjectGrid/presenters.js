@@ -39,6 +39,7 @@ function AllProjectGrid({
   handleShowOrHideProject,
   handleSortProject,
   handleSortProjectGroup,
+  handleUpdateProjectGroup,
   handleOpenModal,
   bgColor,
   showHidePendings,
@@ -46,6 +47,10 @@ function AllProjectGrid({
   groupID,
   isFiltering,
   setIsFiltering,
+  doReloadList,
+  activeLoading,
+  setActiveLoading,
+  canModify = false,
 }) {
   const dataSort = localStorage.getItem(KEY_LOCAL_STORAGE_SORT);
   const sortLocal = JSON.parse(dataSort);
@@ -58,6 +63,7 @@ function AllProjectGrid({
   const [, setProjectSummary] = React.useState({});
   const [currentGroup, setCurrentGroup] = React.useState(null);
   const [selectedSort, setSelectedSort] = React.useState(sortLocal || null);
+
   const refData = useRef([]);
   const dispatch = useDispatch();
 
@@ -213,11 +219,13 @@ function AllProjectGrid({
     exportToCSV(data, "projects");
   };
 
+  console.log("currentGroup", currentGroup);
+
   return (
     <>
       <Container>
-        {size(projects.projects) === 0 &&
-          !projects.loading &&
+        {size(projectGroup) === 0 &&
+          // !projects.loading &&
           !isFiltering &&
           renderEmptyView()}
         <HeaderTableAllGroup
@@ -235,16 +243,19 @@ function AllProjectGrid({
           onSetTimeRangeAnchor={_setTimeRangeAnchor}
           onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
         />
-        {projects.loading && <LoadingBox />}
+        {projectGroup.loading && <LoadingBox />}
 
-        {(size(projects.projects) > 0 || isFiltering) && !projects.loading && (
+        {(size(projectGroup) > 0 || isFiltering) && !projects.loading && (
           <>
             <ProjectGroupGrid
               projectGroups={projectGroup}
               onEdit={onEdit}
-              onOpenEditModal={onOpenEditModal}
               handleDragEnd={_handleDragEnd}
               handleSortProjectGroup={handleSortProjectGroup}
+              setCurrentGroup={setCurrentGroup}
+              doReloadList={doReloadList}
+              setActiveLoading={setActiveLoading}
+              activeLoading={activeLoading}
             />
 
             <Menu
@@ -258,12 +269,12 @@ function AllProjectGrid({
                 horizontal: "right",
               }}
             >
-              {get(curProject, "can_update", false) && (
+              {canModify && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
                     handleOpenModal("UPDATE", {
-                      curProject,
+                      updatedProjectGroup: currentGroup,
                     });
                   }}
                 >
@@ -274,7 +285,7 @@ function AllProjectGrid({
                 </MenuItem>
               )}
 
-              {get(curProject, "can_modify", false) && (
+              {canModify && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
@@ -289,12 +300,15 @@ function AllProjectGrid({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_modify", false) && (
+              {canModify && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
                     handleOpenModal("COLOR_PICKER", {
-                      selectedProject: curProject,
+                      projectGroup_id: currentGroup.id,
+                      projectGroupColor: currentGroup.color,
+                      handleUpdateProjectGroup: handleUpdateProjectGroup,
+                      setActiveLoading: setActiveLoading,
                     });
                   }}
                 >
@@ -304,12 +318,17 @@ function AllProjectGrid({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_modify", false) && (
+              {canModify && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
                     handleOpenModal("LOGO", {
-                      selectedProject: curProject,
+                      selectedProjectGroup: currentGroup,
+                      doSelectIcon: (icon) =>
+                        handleUpdateProjectGroup({
+                          projectGroupId: currentGroup.id,
+                          icon: icon.url_full,
+                        }),
                     });
                   }}
                 >
@@ -319,11 +338,11 @@ function AllProjectGrid({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_modify", false) && (
+              {canModify && (
                 <MenuItem
                   onClick={(evt) => {
                     evt.stopPropagation();
-                    _handleSetDefault(`?groupID=${curProject.id}`);
+                    _handleSetDefault(`?groupID=${currentGroup.id}`);
                   }}
                 >
                   <span>
@@ -332,12 +351,12 @@ function AllProjectGrid({
                   </span>
                 </MenuItem>
               )}
-              {get(curProject, "can_modify", false) && (
+              {canModify && (
                 <MenuItem
                   onClick={(evt) => {
                     setMenuAnchor(null);
-                    handleOpenModal("ALERT", {
-                      selectedProject: curProject,
+                    handleOpenModal("DELETE_GROUP", {
+                      selectedProjectGroup: currentGroup,
                     });
                   }}
                 >

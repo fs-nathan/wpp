@@ -41,6 +41,9 @@ import {
 
 import LogoManagerModal from "../../../DepartmentPage/Modals/LogoManager";
 import { sortProjectGroup } from "actions/projectGroup/sortProjectGroup";
+import DeleteProjectGroup from "views/ProjectGroupPage/Modals/DeleteProjectGroup";
+import { editProjectGroup } from "actions/projectGroup/editProjectGroup";
+import CreateProjectGroup from "views/ProjectGroupPage/Modals/CreateProjectGroup";
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -63,6 +66,8 @@ function AllProjectGrid({
   doListProjectGroup,
   localOption,
   doSetProjectGroup,
+  doEditProjectGroup,
+  doReloadList,
   type_data = null,
 }) {
   const times = useTimes();
@@ -191,10 +196,13 @@ function AllProjectGrid({
   const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
+  const [openDeleteGroup, setOpenDeleteGroup] = React.useState(false);
+  const [deleteGroupProps, setDeleteGroupProps] = React.useState({});
   const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
   const [colorPickerProps, setColorPickerProps] = React.useState({});
   const [openLogo, setOpenLogo] = React.useState(false);
   const [logoProps, setLogoProps] = React.useState({});
+  const [activeLoading, setActiveLoading] = React.useState(false);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -228,6 +236,14 @@ function AllProjectGrid({
       case "ALERT": {
         setOpenAlert(true);
         setAlertProps({
+          groupID,
+          ...props,
+        });
+        return;
+      }
+      case "DELETE_GROUP": {
+        setOpenDeleteGroup(true);
+        setDeleteGroupProps({
           groupID,
           ...props,
         });
@@ -276,6 +292,7 @@ function AllProjectGrid({
           type_data={type_data}
           filterType={filterType}
           labelType={labelType}
+          doReloadList={() => doReloadList()}
           handleSearch={_handleSearch}
           handleFilterType={(filterType) =>
             doSetProjectGroup({
@@ -325,10 +342,18 @@ function AllProjectGrid({
           handleSortProjectGroup={(projectGroupId, sortIndex) =>
             doSortProjectGroup(projectGroupId, sortIndex)
           }
+          handleUpdateProjectGroup={doEditProjectGroup}
           handleOpenModal={doOpenModal}
           groupID={groupID}
           isFiltering={isFiltering}
           setIsFiltering={setIsFiltering}
+          activeLoading={activeLoading}
+          setActiveLoading={setActiveLoading}
+          canModify={get(
+            viewPermissions.permissions,
+            "manage_group_project",
+            false
+          )}
         />
       </CustomTableWrapper>
       <CreateProjectModal
@@ -336,8 +361,12 @@ function AllProjectGrid({
         setOpen={setOpenCreate}
         {...createProps}
       />
+      <CreateProjectGroup
+        open={openEdit}
+        setOpen={setOpenEdit}
+        {...editProps}
+      />
       <NoProjectGroupModal open={openNoPG} setOpen={setOpenNoPG} />
-      <EditProjectModal open={openEdit} setOpen={setOpenEdit} {...editProps} />
       <ProjectSettingModal
         open={openSetting}
         setOpen={setOpenSetting}
@@ -350,6 +379,12 @@ function AllProjectGrid({
         setOpen={setOpenAlert}
         {...alertProps}
       />
+      <DeleteProjectGroup
+        open={openDeleteGroup}
+        setOpen={setOpenDeleteGroup}
+        {...deleteGroupProps}
+      />
+
       <GuideLineAddUserModal
         open={guideLineModal}
         setOpen={setGuideLineModal}
@@ -390,6 +425,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    doReloadList: () => dispatch(listProjectGroup(true)),
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
     doListProjectGroup: (options, quite) =>
       dispatch(listProjectGroup(options, quite)),
@@ -404,6 +440,24 @@ const mapDispatchToProps = (dispatch) => {
     doSetProjectGroup: (value) => dispatch(setProjectGroup(value)),
     doSortProjectGroup: (projectGroupId, sortIndex) =>
       dispatch(sortProjectGroup({ projectGroupId, sortIndex })),
+    doEditProjectGroup: ({
+      projectGroupId,
+      name,
+      icon,
+      description,
+      work_types,
+      color,
+    }) =>
+      dispatch(
+        editProjectGroup({
+          projectGroupId,
+          name,
+          icon,
+          description,
+          work_types,
+          color,
+        })
+      ),
   };
 };
 

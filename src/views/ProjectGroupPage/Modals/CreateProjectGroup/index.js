@@ -87,14 +87,17 @@ const mapDispatchToProps = (dispatch) => {
     doReloadList: () => dispatch(listProjectGroup(true)),
     doReloadDetail: ({ projectGroupId }) =>
       dispatch(detailProjectGroup({ projectGroupId }, true)),
-    doCreateProjectGroup: ({ name, icon, description, work_types }) =>
-      dispatch(createProjectGroup({ name, icon, description, work_types })),
+    doCreateProjectGroup: ({ name, icon, description, work_types, color }) =>
+      dispatch(
+        createProjectGroup({ name, icon, description, work_types, color })
+      ),
     doEditProjectGroup: ({
       projectGroupId,
       name,
       icon,
       description,
       work_types,
+      color,
     }) =>
       dispatch(
         editProjectGroup({
@@ -103,6 +106,7 @@ const mapDispatchToProps = (dispatch) => {
           icon,
           description,
           work_types,
+          color,
         })
       ),
   };

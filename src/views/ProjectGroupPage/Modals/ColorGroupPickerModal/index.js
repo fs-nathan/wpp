@@ -1,7 +1,7 @@
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import CustomModal from "components/CustomModal";
 import { isNil } from "lodash";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -30,19 +30,28 @@ export const colors = [
 function ColorGroupPickerModal({
   open,
   setOpen,
-  project_id = null,
-  projectColor,
+  projectGroup_id = null,
+  projectGroupColor,
+  handleUpdateProjectGroup,
+  setActiveLoading,
 }) {
   const { t } = useTranslation();
-  const { projectId: _projectId } = useParams();
-  const [projectId, setProjectId] = React.useState(_projectId);
+  const [projectGroupId, setProjectGroupId] = React.useState(projectGroup_id);
   const appColor = useSelector(currentColorSelector);
 
-  const [selectedColor, setSelectedColor] = useState(projectColor || colors[0]);
+  const [selectedColor, setSelectedColor] = useState(
+    projectGroupColor || colors[0]
+  );
 
-  React.useEffect(() => {
-    setProjectId(isNil(project_id) ? _projectId : project_id);
-  }, [project_id, _projectId]);
+  useEffect(() => {
+    setProjectGroupId(projectGroup_id);
+  }, [projectGroup_id]);
+
+  useEffect(() => {
+    setSelectedColor(projectGroupColor);
+  }, [projectGroupColor]);
+
+  console.log("projectGroupId color", projectGroupId);
 
   return (
     <>
@@ -55,7 +64,13 @@ function ColorGroupPickerModal({
         id={"color-picker-modal"}
         maxWidth={"sm"}
         canConfirm={true}
-        onConfirm={() => {}}
+        onConfirm={(e) => {
+          handleUpdateProjectGroup({
+            projectGroupId: projectGroupId,
+            color: selectedColor,
+          });
+          setActiveLoading(true);
+        }}
       >
         <h4 className={"colorGroupPicker__modal--title"}>
           {t("DMH.VIEW.PP.MODAL.COLOR_PICKER.TITLE")}

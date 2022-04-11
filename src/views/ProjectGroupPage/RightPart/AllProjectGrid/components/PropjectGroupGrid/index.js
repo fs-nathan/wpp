@@ -3,6 +3,13 @@ import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import Tooltip from "@mui/material/Tooltip";
+import LoadingBox from "components/LoadingBox";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  EDIT_PROJECT_GROUP,
+  LIST_PROJECT_GROUP,
+} from "constants/events";
 import { get } from "lodash";
 import PropTypes from "prop-types";
 import React from "react";
@@ -26,9 +33,40 @@ const TooltipContent = ({ groupName, groupDescription }) => {
 const ProjectGroupGrid = ({
   projectGroups = [],
   onEdit,
-  onOpenEditModal,
   handleSortProjectGroup,
+  setCurrentGroup,
+  doReloadList,
+  setActiveLoading,
+  activeLoading,
 }) => {
+  React.useEffect(() => {
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, doReloadList);
+    CustomEventListener(EDIT_PROJECT_GROUP.FAIL, fail);
+
+    return () => {
+      CustomEventDispose(EDIT_PROJECT_GROUP.SUCCESS, doReloadList);
+      CustomEventDispose(EDIT_PROJECT_GROUP.FAIL, fail);
+    };
+    // eslint-disable-next-line
+  }, []);
+
+  React.useEffect(() => {
+    const success = () => {
+      setActiveLoading(false);
+    };
+    const fail = () => {
+      setActiveLoading(false);
+    };
+    CustomEventListener(LIST_PROJECT_GROUP.SUCCESS, success);
+    CustomEventListener(LIST_PROJECT_GROUP.FAIL, fail);
+    return () => {
+      CustomEventDispose(LIST_PROJECT_GROUP.SUCCESS, success);
+      CustomEventDispose(LIST_PROJECT_GROUP.FAIL, fail);
+    };
+  }, []);
   const idGroupDefault = useSelector(
     ({ groupTask }) => groupTask.defaultGroupTask.data || ""
   );
@@ -50,6 +88,10 @@ const ProjectGroupGrid = ({
 
     handleSortProjectGroup(draggableId, destination.index);
   }
+
+  console.log("activeLoading", activeLoading);
+
+  if (activeLoading) return <LoadingBox />;
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
@@ -125,9 +167,11 @@ const ProjectGroupGrid = ({
 
                               {isDisplayUpdate && (
                                 <div
-                                  onClick={(e) =>
-                                    onEdit(e.currentTarget, projectGroup)
-                                  }
+                                  onClick={(e) => {
+                                    e.preventDefault();
+                                    onEdit(e.currentTarget, projectGroup);
+                                    setCurrentGroup(projectGroup);
+                                  }}
                                   className="wp-wrapper-button"
                                 >
                                   <MoreVertOutlinedIcon />

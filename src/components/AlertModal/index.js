@@ -1,29 +1,41 @@
-import { ButtonBase, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
-import { mdiClose } from '@mdi/js';
-import Icon from '@mdi/react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import ColorTypo from '../ColorTypo';
-import './style.scss';
+import {
+  ButtonBase,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Fade,
+  IconButton,
+} from "@material-ui/core";
+import { mdiClose } from "@mdi/js";
+import Icon from "@mdi/react";
+import PropTypes from "prop-types";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import ColorTypo from "../ColorTypo";
+import "./style.scss";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Fade direction='down' ref={ref} {...props} />;
+  return <Fade direction="down" ref={ref} {...props} />;
 });
 
 function AlertModal({
-  open, setOpen,
-  content = '', onConfirm = () => null, onCancle = () => null,
-  colors, canConfirm = true,
+  open,
+  setOpen,
+  content = "",
+  onConfirm = () => null,
+  onCancle = () => null,
+  colors,
+  canConfirm = true,
   customFooter: CustomFooter,
   manualClose = false,
   actionLoading = false,
   activeLoading = false,
 }) {
-
   const { t } = useTranslation();
-  const bgColor = colors.find(item => item.selected === true);
+  const bgColor = colors.find((item) => item.selected === true);
 
   function handleCancle() {
     !manualClose && setOpen(false);
@@ -59,7 +71,7 @@ function AlertModal({
         {content}
       </DialogContent>
       <DialogActions className="comp_AlertModal___dialog-actions">
-        {<CustomFooter bg={bgColor.color} /> || (
+        {
           <>
             <ButtonBase
               className="comp_AlertModal___cancle-button"
@@ -87,7 +99,7 @@ function AlertModal({
               {t("DMH.COMP.ALERT_MODAL.ACCEPT_BTN")}
             </ButtonBase>
           </>
-        )}
+        }
       </DialogActions>
     </Dialog>
   );
@@ -102,8 +114,9 @@ AlertModal.propTypes = {
   onCancle: PropTypes.func,
 };
 
-export default connect(state => ({
-  colors: state.setting.colors
-}),
-  {},
+export default connect(
+  (state) => ({
+    colors: state.setting.colors,
+  }),
+  {}
 )(AlertModal);
