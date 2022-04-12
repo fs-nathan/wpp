@@ -4,8 +4,9 @@ import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
 import { useTimes } from "components/CustomPopover";
 import { get } from "lodash";
 import moment from "moment";
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { localOptionSelector } from "../../selectors";
 import CreateNewProjectPresenter from "./presenters";
 import { groupsSelector } from "./selectors";
@@ -21,6 +22,11 @@ function CreateNewProject({
   projectGroupId = undefined,
   localOption,
 }) {
+  const history = useHistory();
+  useEffect(() => {
+    if (open) history.push("/projects/add-new");
+  }, [history, open]);
+
   const times = useTimes();
   const { timeType } = localOption;
   const timeRange = React.useMemo(() => {

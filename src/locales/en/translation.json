@@ -2579,5 +2579,11 @@
   "SHARE_STEP_DESCRIPTION_PLACEHOLDER": "Description (Optional)",
   "SHARE_STEP_SELECT_GROUP_LABEL": "Template group",
   "SHARE_STEP_SELECT_BG_LABEL": "Choose thumbnail",
-  "SHARE_STEP_CHANGE": "Change"
+  "SHARE_STEP_CHANGE": "Change",
+  "CREATE_PROJECT_DONE_TITLE": "What do you want to do?",
+  "CREATE_PROJECT_DONE_NEW_LABEL": "Begin a task",
+  "CREATE_PROJECT_DONE_NEW_CONTENT": "Specify, set due date and start working",
+  "CREATE_PROJECT_DONE_SHARE_LABEL": "Share with teams",
+  "CREATE_PROJECT_DONE_SHARE_CONTENT": "Invite members to join in effective teamwork",
+  "BEGIN": "Begin"
 }

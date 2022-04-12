@@ -9,6 +9,7 @@ import ViewKanbanRoundedIcon from "@mui/icons-material/ViewKanbanRounded";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ViewTimelineRoundedIcon from "@mui/icons-material/ViewTimelineRounded";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Box, Button, ButtonGroup, Typography } from "@mui/material";
 import * as images from "assets/index";
 import CustomModal, { Title } from "components/CustomModal";
@@ -33,7 +34,7 @@ import { createProject } from "actions/project/createProject";
 
 // import { ListTagsCreateProject } from "./components";
 
-const CreateProjectStep = ({ onNext, doCreateProject }) => {
+const CreateProjectStep = ({ onNext, doCreateProject, onBack }) => {
   const { t } = useTranslation();
   const [haveDescription, setHaveDescription] = useState(false);
   const [name, setName, errorName] = useRequiredString("", 200);
@@ -58,6 +59,9 @@ const CreateProjectStep = ({ onNext, doCreateProject }) => {
   return (
     <>
       <Box className="create-project-step">
+        <div className="back-button" onClick={onBack}>
+          <ArrowBackIcon fontSize="large" htmlColor="#969ead" />
+        </div>
         <div className="create-project-step-form">
           <Typography variant="h4" marginBottom={12}>
             {t("CREATE_NEW_PROJECT")}

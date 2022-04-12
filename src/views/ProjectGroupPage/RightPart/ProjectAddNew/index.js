@@ -11,7 +11,7 @@ const STEP = {
 };
 
 const ProjectAddNew = ({ handleExpand }) => {
-  const [step, setStep] = useState(STEP.INITIAL);
+  const [step, setStep] = useState(STEP.DONE);
 
   useEffect(() => {
     handleExpand();
@@ -32,7 +32,12 @@ const ProjectAddNew = ({ handleExpand }) => {
       case STEP.INITIAL:
         return <InitialStep onNext={onInitialDone} />;
       case STEP.CREATE:
-        return <CreateProjectStep onNext={onCreateProjectDone} />;
+        return (
+          <CreateProjectStep
+            onNext={onCreateProjectDone}
+            onBack={() => setStep(STEP.INITIAL)}
+          />
+        );
       case STEP.DONE:
         return <AddNewDoneStep onNext={onAddNewDone} />;
     }

@@ -27,6 +27,12 @@ import {
   visibleSelector,
 } from "../KanbanPage/Header/selectors";
 
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 const MiniContainer = ({ className = "", ...props }) => (
   <div
     className={`view_KanbanHeader___container-mini ${className}`}
@@ -64,6 +70,12 @@ const LayoutDetail = ({
       (pending) => pending === get(project.project, "id")
     )
   );
+  const query = useQuery();
+  React.useEffect(() => {
+    if (query.get("open-employee")) {
+      doOpenModal("SETTING_MEMBER", {});
+    }
+  }, [query]);
 
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
