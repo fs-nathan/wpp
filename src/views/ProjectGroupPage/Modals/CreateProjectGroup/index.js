@@ -10,6 +10,7 @@ import LogoManagerModal, {
 } from "../../../DepartmentPage/Modals/LogoManager";
 import ColorGroupPickerModal from "../ColorGroupPickerModal";
 import CreateProjectGroupPresenter from "./presenters";
+import { colors } from "../ColorGroupPickerModal";
 
 function CreateProjectGroup({
   updatedProjectGroup = null,
@@ -24,6 +25,9 @@ function CreateProjectGroup({
   const [logoProps, setLogoProps] = React.useState({});
   const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
   const [colorPickerProps, setColorPickerProps] = React.useState({});
+  const [selectedColor, setSelectedColor] = React.useState(
+    updatedProjectGroup?.color || null
+  );
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -41,6 +45,8 @@ function CreateProjectGroup({
         return;
     }
   }
+
+  console.log("selectedColor", selectedColor);
   return (
     <>
       <LogoManagerContainer {...logoProps}>
@@ -59,20 +65,28 @@ function CreateProjectGroup({
                   name,
                   description,
                   icon: icon.url_sort,
+                  color: selectedColor,
                 })
               : doCreateProjectGroup({
                   name,
                   description,
                   icon: icon.url_sort,
+                  color: selectedColor,
                 })
           }
           handleOpenModal={doOpenModal}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          defaultFirstColor={updatedProjectGroup?.color || colors[0]}
         />
       </LogoManagerContainer>
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />
       <ColorGroupPickerModal
         open={openColorPickerGroup}
         setOpen={setOpenColorPickerGroup}
+        handleSelectColor={({ color }) => {
+          setSelectedColor(color);
+        }}
         // projectId={projectId}
         // groupId={selectedGroup}
         // project={project}

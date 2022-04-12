@@ -56,6 +56,9 @@ function CreateProjectGroup({
   handleOpenModal,
   doReloadDetail,
   doReloadList,
+  selectedColor,
+  setSelectedColor,
+  defaultFirstColor,
   createSuccessCallBack = () => {},
 }) {
   const { t } = useTranslation();
@@ -67,7 +70,7 @@ function CreateProjectGroup({
   });
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [isAddingDescription, setIsAddingDescription] = React.useState(false);
-  const [selectedColor, setSelectedColor] = React.useState(colors[0]);
+  // const [selectedColor, setSelectedColor] = React.useState(colors[0]);
   const { icons, isSelect, selectedIcon, setSelectedIcon } =
     useContext(LogoManagerContext);
   React.useEffect(() => {
@@ -77,6 +80,7 @@ function CreateProjectGroup({
       url_full: get(updatedProjectGroup, "icon"),
       url_sort: get(updatedProjectGroup, "sort_icon"),
     });
+    setSelectedColor(get(updatedProjectGroup, "color"));
   }, [updatedProjectGroup]);
 
   React.useEffect(() => {
@@ -150,6 +154,8 @@ function CreateProjectGroup({
     setIsAddingDescription(isExpanded ? panel : false);
   };
 
+  console.log([selectedColor, updatedProjectGroup?.color]);
+
   return (
     <CustomModal
       title={
@@ -168,6 +174,8 @@ function CreateProjectGroup({
       activeLoading={activeLoading}
       manualClose={true}
       height={"mini"}
+      maxWidth={"sm"}
+      className=""
     >
       <CustomTextbox
         value={name}
@@ -205,6 +213,19 @@ function CreateProjectGroup({
         </Title>
 
         <div className="createProjectGroup__theme--list">
+          {/* <div
+            className={`createProjectGroup__theme--item ${
+              selectedColor && selectedColor === updatedProjectGroup.color
+                ? "selected"
+                : ""
+            }`}
+            style={{ backgroundColor: updatedProjectGroup?.color || colors[0] }}
+            onClick={() => setSelectedColor(defaultFirstColor)}
+          >
+            {selectedColor && selectedColor === updatedProjectGroup.color && (
+              <DoneOutlinedIcon />
+            )}
+          </div> */}
           {COLOR_LIST.map((color) => {
             const isSelected = selectedColor === color;
             return (
@@ -214,6 +235,7 @@ function CreateProjectGroup({
                 }`}
                 style={{ backgroundColor: color }}
                 onClick={() => setSelectedColor(color)}
+                key={color}
               >
                 {isSelected && <DoneOutlinedIcon />}
               </div>
@@ -222,7 +244,11 @@ function CreateProjectGroup({
           <div
             className="createProjectGroup__theme--item"
             style={{ backgroundColor: "#f5f6f8" }}
-            onClick={() => handleOpenModal("COLOR_PICKER")}
+            onClick={() =>
+              handleOpenModal("COLOR_PICKER", {
+                projectGroupColor: selectedColor,
+              })
+            }
           >
             <MoreHorizIcon />
           </div>

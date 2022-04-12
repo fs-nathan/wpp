@@ -469,6 +469,7 @@ function AllProjectTable({
           onExportData={_exportData}
           onSetTimeRangeAnchor={_setTimeRangeAnchor}
           onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
+          isDisplayGroupGrid={isDisplayGroupGrid}
         />
         {projects.loading && <LoadingBox />}
 

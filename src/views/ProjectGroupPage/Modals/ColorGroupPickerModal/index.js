@@ -1,3 +1,4 @@
+import { Dialog } from "@material-ui/core";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import CustomModal from "components/CustomModal";
 import React, { useEffect, useState } from "react";
@@ -32,10 +33,10 @@ function ColorGroupPickerModal({
   projectGroupColor,
   handleUpdateProjectGroup,
   setActiveLoading,
+  handleSelectColor,
 }) {
   const { t } = useTranslation();
   const [projectGroupId, setProjectGroupId] = React.useState(projectGroup_id);
-  const appColor = useSelector(currentColorSelector);
 
   const [selectedColor, setSelectedColor] = useState(
     projectGroupColor || colors[0]
@@ -51,21 +52,15 @@ function ColorGroupPickerModal({
 
   return (
     <>
-      <CustomModal
+      <Dialog
         open={open}
         setOpen={setOpen}
-        titleRender={null}
         height="short"
         className={"colorGroupPicker__modal"}
         id={"color-picker-modal"}
-        maxWidth={"sm"}
-        canConfirm={true}
-        onConfirm={(e) => {
-          handleUpdateProjectGroup({
-            projectGroupId: projectGroupId,
-            color: selectedColor,
-          });
-          setActiveLoading(true);
+        maxWidth={"md"}
+        onBackdropClick={() => {
+          setOpen(false);
         }}
       >
         <h4 className={"colorGroupPicker__modal--title"}>
@@ -82,14 +77,21 @@ function ColorGroupPickerModal({
                 className={`colorGroupPicker__modal--roundedColor ${
                   isSelected ? "selected" : ""
                 }`}
-                onClick={() => setSelectedColor(color)}
+                onClick={() => {
+                  setSelectedColor(color);
+                  handleSelectColor({
+                    projectGroupId: projectGroupId,
+                    color: color,
+                  });
+                  setOpen(false);
+                }}
               >
                 {isSelected && <DoneOutlinedIcon />}
               </div>
             );
           })}
         </div>
-      </CustomModal>
+      </Dialog>
     </>
   );
 }

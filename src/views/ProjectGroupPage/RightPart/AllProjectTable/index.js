@@ -16,7 +16,7 @@ import {
   CustomEventDispose,
   CustomEventListener,
   SORT_PROJECT,
-  SORT_PROJECT_GROUP
+  SORT_PROJECT_GROUP,
 } from "constants/events.js";
 import { filter, get, reverse, size, sortBy } from "lodash";
 import moment from "moment";
@@ -40,9 +40,8 @@ import AllProjectTablePresenter from "./presenters";
 import {
   bgColorSelector,
   projectsSelector,
-  showHidePendingsSelector
+  showHidePendingsSelector,
 } from "./selectors";
-
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -407,6 +406,13 @@ function AllProjectTable({
       <ColorGroupPickerModal
         open={openColorPickerGroup}
         setOpen={setOpenColorPickerGroup}
+        handleSelectColor={({ projectGroupId, color }) => {
+          doEditProjectGroup({
+            projectGroupId: projectGroupId,
+            color: color,
+          });
+          setActiveLoading(true);
+        }}
         {...colorPickerProps}
       />
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />

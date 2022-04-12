@@ -97,13 +97,14 @@
       align-items: center;
       justify-content: center;
       color: white;
+      transition-duration: 0.5s;
       &:last-child {
         color: #42526e;
       }
 
       &:hover {
-        opacity: 60%;
         cursor: pointer;
+        transform: scale(1.2);
       }
     }
   }

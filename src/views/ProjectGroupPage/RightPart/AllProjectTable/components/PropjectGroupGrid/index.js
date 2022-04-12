@@ -8,7 +8,7 @@ import {
   CustomEventDispose,
   CustomEventListener,
   EDIT_PROJECT_GROUP,
-  LIST_PROJECT_GROUP
+  LIST_PROJECT_GROUP,
 } from "constants/events";
 import { get } from "lodash";
 import PropTypes from "prop-types";
@@ -149,6 +149,10 @@ const ProjectGroupGrid = ({
                                   <TooltipContent
                                     groupName={projectGroup.name}
                                     groupDescription={projectGroup.description}
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      return;
+                                    }}
                                   />
                                 }
                                 arrow

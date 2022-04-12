@@ -1,11 +1,12 @@
 .projectGroupListGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+  grid-template-columns: repeat(4, 265px);
   gap: 25px;
   padding: 45px 80px;
   overflow-y: auto;
   max-height: calc(100vh - 60px);
   box-sizing: border-box;
+  background-color: #f5f7f9;
   &__item {
     display: flex;
     flex-direction: column;
@@ -18,8 +19,9 @@
     font-family: "Tahoma", "sans-serif";
     position: relative;
     cursor: pointer;
+    font-weight: 500;
     & > * {
-      font-size: 18px;
+      font-size: 16px;
     }
     &:hover {
       &::before {

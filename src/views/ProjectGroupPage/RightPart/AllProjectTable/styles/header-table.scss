@@ -127,9 +127,16 @@
     background-color: #fff;
     z-index: 400;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    &.isAllGroup {
+      border: none;
+      background-color: #f5f7f9;
+    }
   }
   &--right {
     margin-left: auto;
     display: flex;
+    &.isAllGroup {
+      margin-right: calc(100% - (265px * 4) - (20px * 3) - 80px - 10px);
+    }
   }
 }

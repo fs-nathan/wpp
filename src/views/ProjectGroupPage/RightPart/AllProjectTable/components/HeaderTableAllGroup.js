@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   ListItemText,
   makeStyles,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import {
   mdiClose,
@@ -13,7 +13,7 @@ import {
   mdiDotsHorizontal,
   mdiDownload,
   mdiFilter,
-  mdiPlus
+  mdiPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
@@ -24,7 +24,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useRef,
-  useState
+  useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
@@ -43,6 +43,7 @@ const HeaderTableAllGroup = ({
   onFilterType = () => {},
   onSearch = () => {},
   onSetTimeRangeAnchor = () => {},
+  isDisplayGroupGrid,
   ...props
 }) => {
   const classes = useStyles();
@@ -52,33 +53,56 @@ const HeaderTableAllGroup = ({
   const _toggleDrawerMenu = () => refMenuDrawer.current._toggle();
 
   return (
-    <div className="AllGroup__header--wrapper">
+    <div
+      className={`AllGroup__header--wrapper ${
+        isDisplayGroupGrid ? "isAllGroup" : ""
+      }`}
+    >
       <TitleTable
-        currentGroup={currentGroup}
+        // don't show tilte when click on info icon
+        currentGroup={!isDisplayGroupGrid && currentGroup}
         expand={expand}
         onExpand={onExpand}
         typeData={typeData}
       />
-      <div className="AllGroup__header--right">
-        <SearchButton
-          valueSearch={get(TableContext?.options, "search.patern", "")}
-          onSearch={(value) => onSearch(value)}
-        />
-        <div className={classes.wrapperButton} onClick={_toggleDrawerMenu}>
-          <Icon path={mdiDotsHorizontal} size={1} />
-          <span style={{ marginLeft: 5 }}>Hiện menu</span>
+      {!isDisplayGroupGrid ? (
+        <div className={`AllGroup__header--right`}>
+          <SearchButton
+            valueSearch={get(TableContext?.options, "search.patern", "")}
+            onSearch={(value) => onSearch(value)}
+          />
+          <div className={classes.wrapperButton} onClick={_toggleDrawerMenu}>
+            <Icon path={mdiDotsHorizontal} size={1} />
+            <span style={{ marginLeft: 5 }}>Hiện menu</span>
+          </div>
+          <div className={classes.wrapperButton} onClick={onOpenCreateModal}>
+            <Icon path={mdiPlus} size={1} />
+            <span style={{ marginLeft: 5 }}>Tạo mới</span>
+          </div>
+          <MenuDrawer
+            ref={refMenuDrawer}
+            onFilterType={onFilterType}
+            onSetTimeRangeAnchor={onSetTimeRangeAnchor}
+            {...props}
+          />
         </div>
-        <div className={classes.wrapperButton} onClick={onOpenCreateModal}>
-          <Icon path={mdiPlus} size={1} />
-          <span style={{ marginLeft: 5 }}>Tạo mới</span>
+      ) : (
+        <div className={`AllGroup__header--right isAllGroup`}>
+          <SearchButton
+            valueSearch={get(TableContext?.options, "search.patern", "")}
+            onSearch={(value) => onSearch(value)}
+          />
+          <div className={classes.wrapperButton} onClick={onOpenCreateModal}>
+            <Icon path={mdiPlus} size={1} />
+          </div>
+          <MenuDrawer
+            ref={refMenuDrawer}
+            onFilterType={onFilterType}
+            onSetTimeRangeAnchor={onSetTimeRangeAnchor}
+            {...props}
+          />
         </div>
-        <MenuDrawer
-          ref={refMenuDrawer}
-          onFilterType={onFilterType}
-          onSetTimeRangeAnchor={onSetTimeRangeAnchor}
-          {...props}
-        />
-      </div>
+      )}
     </div>
   );
 };
@@ -191,13 +215,14 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
     cursor: "pointer",
-    backgroundColor: "#f4f4f4",
-    color: "#666",
+    backgroundColor: "#ebedef",
+    color: "#adaeba",
     marginLeft: 10,
     fontWeight: 500,
-    padding: "7.75px 9.5px",
+    padding: "10px 14px",
     borderRadius: 3,
     transition: "0.3s all ease-in-out",
+
     "&:hover": {
       backgroundColor: "#e5e5e5",
     },
