@@ -58,20 +58,20 @@ function CreateProjectGroup({
           doReloadList={() => doReloadList()}
           open={open}
           setOpen={setOpen}
-          handleCreateOrEditProjectGroup={(name, description, icon) =>
+          handleCreateOrEditProjectGroup={(name, description, icon, color) =>
             updatedProjectGroup
               ? doEditProjectGroup({
                   projectGroupId: get(updatedProjectGroup, "id"),
                   name,
                   description,
-                  icon: icon.url_sort,
-                  color: selectedColor,
+                  icon: icon.url_full,
+                  color: color,
                 })
               : doCreateProjectGroup({
                   name,
                   description,
-                  icon: icon.url_sort,
-                  color: selectedColor,
+                  icon: icon.url_full,
+                  color: color,
                 })
           }
           handleOpenModal={doOpenModal}

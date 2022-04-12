@@ -2,6 +2,7 @@ import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import LoadingBox from "components/LoadingBox";
 import {
@@ -39,6 +40,7 @@ const ProjectGroupGrid = ({
   doReloadList,
   setActiveLoading,
   activeLoading,
+  onOpenCreateModal,
 }) => {
   React.useEffect(() => {
     const fail = () => {
@@ -186,12 +188,15 @@ const ProjectGroupGrid = ({
                   </Draggable>
                 );
               })}
-              {/* <div
+
+              <div
                 className="projectGroupListGrid__item"
                 style={{ backgroundColor: DISABLED_GROUP_BACKGROUND_COLOR }}
+                onClick={onOpenCreateModal}
               >
                 <AddOutlinedIcon />
-              </div> */}
+              </div>
+
               {provided.placeholder}
             </div>
           );

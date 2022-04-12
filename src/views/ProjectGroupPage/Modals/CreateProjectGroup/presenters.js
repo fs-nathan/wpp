@@ -154,7 +154,7 @@ function CreateProjectGroup({
     setIsAddingDescription(isExpanded ? panel : false);
   };
 
-  console.log([selectedColor, updatedProjectGroup?.color]);
+  console.log("icon", icon);
 
   return (
     <CustomModal
@@ -167,7 +167,12 @@ function CreateProjectGroup({
       setOpen={setOpen}
       canConfirm={!errorName}
       onConfirm={() => {
-        handleCreateOrEditProjectGroup(name, description, icon);
+        handleCreateOrEditProjectGroup(
+          name,
+          description,
+          selectedIcon,
+          selectedColor
+        );
         setActiveLoading(true);
       }}
       onCancle={() => setOpen(false)}

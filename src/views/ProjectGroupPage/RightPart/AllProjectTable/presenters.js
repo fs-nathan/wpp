@@ -468,7 +468,11 @@ function AllProjectTable({
           onFilterLabel={_filterLabel}
           onExportData={_exportData}
           onSetTimeRangeAnchor={_setTimeRangeAnchor}
-          onOpenCreateModal={(evt) => handleOpenModal("CREATE")}
+          onOpenCreateModal={(evt) =>
+            isDisplayGroupGrid
+              ? handleOpenModal("UPDATE")
+              : handleOpenModal("CREATE")
+          }
           isDisplayGroupGrid={isDisplayGroupGrid}
         />
         {projects.loading && <LoadingBox />}
@@ -485,6 +489,7 @@ function AllProjectTable({
                 doReloadList={doReloadList}
                 setActiveLoading={setActiveLoading}
                 activeLoading={activeLoading}
+                onOpenCreateModal={(evt) => handleOpenModal("UPDATE")}
               />
             ) : (
               <WPReactTable
