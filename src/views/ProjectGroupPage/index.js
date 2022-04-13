@@ -74,7 +74,12 @@ function ProjectGroupPage({
           )}
         </div>
       )}
-      <div className={classNames(classes.mainContent, { isCollapsed })}>
+      <div
+        className={classNames(
+          isTemplatePage ? classes.mainContentOverflow : classes.mainContent,
+          { isCollapsed }
+        )}
+      >
         <Switch>
           <Route exact path="/projects/recently">
             <AllProjectTable
@@ -235,4 +240,8 @@ const useStyles = makeStyles({
     display: "initial",
   },
   mainContent: {},
+  mainContentOverflow: {
+    height: "100%",
+    overflowY: "auto",
+  },
 });

@@ -296,6 +296,7 @@
             "TITLE": "Work team",
             "ADD": "Add work team",
             "FIND": "Search work team",
+            "FIND_TEMPLATE": "Search template group",
             "ALL": "All",
             "DEFAULT": "Not categorized"
           }

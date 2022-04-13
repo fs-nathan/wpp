@@ -11,7 +11,8 @@ const ProjectModeStep = ({ onNext, setopenModal, openModal }) => {
   return (
     <CustomModal
       maxWidth="sm"
-      height="short"
+      height="mini"
+      className="h-full"
       setOpen={setopenModal}
       open={openModal}
       confirmRender={() => "Tiếp theo"}
