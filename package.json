@@ -67,6 +67,7 @@
     "react-resizable": "^1.10.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.3",
+    "react-search-autocomplete": "^6.1.1",
     "react-select": "^3.0.8",
     "react-simple-timefield": "^3.0.0",
     "react-slick": "^0.25.2",
