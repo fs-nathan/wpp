@@ -48,15 +48,15 @@ const ProjectTemplateList = ({
 
   return (
     <LeftContainer>
-      {/* <Banner>
+      <Banner>
         <SearchInput
           fullWidth
-          placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND")}
+          placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND_TEMPLATE")}
           value={searchPattern}
           onChange={(evt) => setSearchPattern(evt.target.value)}
           style={{ background: "#fff" }}
         />
-      </Banner> */}
+      </Banner>
       <Box className={"view_ProjectGroup_List--LeftContainer"}>
         <Box className={"view_ProjectGroup_List--listGroup"}>
           <Box

@@ -46,42 +46,39 @@
   display: flex;
   gap: 16px;
   border: none;
-}
-
-.share-project-card-icon {
-  margin-top: 16px;
-  height: 100%;
-  transition: all 200ms ease-in-out;
-  visibility: hidden;
-}
-
-.share-project-card-icon--active {
-  visibility: visible;
-}
-
-.share-project-card-content {
-  flex-grow: 1;
-}
-
-.share-project-card h2 {
-  font-size: 24px;
-  font-weight: 400;
-  margin-top: 16px;
-  margin-bottom: 16px;
-}
-.share-project-card p {
-  font-size: 12px;
-  color: #969ead;
-}
-
-.share-project-card--active {
-  background-color: #f8f8f8;
-  border: 1px solid #596cd8;
+  &-icon {
+    margin-top: 8px;
+    height: 100%;
+    transition: all 200ms ease-in-out;
+    visibility: hidden;
+    &--active {
+      visibility: visible;
+    }
+  }
+  &-content {
+    flex-grow: 1;
+  }
+  h2 {
+    font-size: 24px;
+    font-weight: 400;
+    margin-top: 8px;
+    margin-bottom: 16px;
+  }
+  p {
+    font-size: 12px;
+    color: #969ead;
+  }
+  &--active {
+    background-color: #f8f8f8;
+    border: 1px solid #596cd8;
+  }
 }
 
 .share-step__container {
   .choose-bg {
     img {
+      border-radius: 10px;
+      width: 150px;
       object-fit: cover;
       aspect-ratio: 16 / 9;
     }
