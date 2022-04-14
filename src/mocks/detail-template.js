@@ -9,4 +9,5 @@ export const DETAIL_TEMPLATE = {
   copied: "17,6 N",
   views: "107,5 N",
   thumbnail: "https://images.unsplash.com/photo-1522770179533-24471fcdba45",
+  parent: "Bussiness",
 };

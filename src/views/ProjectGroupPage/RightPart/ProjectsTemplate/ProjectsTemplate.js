@@ -8,38 +8,28 @@ import TemplateCard from "./components/TemplateCard/TemplateCard";
 import { DETAIL_TEMPLATE } from "mocks/detail-template";
 import TemplateSection from "./components/TemplateSection/TemplateSection";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
-const searchResult = (query: string) =>
-  SUGGESTION.map((suggestion) => {
-    // const category = `${query}${idx}`;
-    return {
-      value: suggestion.id,
-      label: (
-        <div className="suggestion">
-          <div className="suggestion__image">
-            <img src={suggestion.thumbnail} alt="" />
-          </div>
-          <div className="suggestion__content">
-            <h3>{suggestion.title}</h3>
-            <p>bởi {suggestion.author}</p>
-          </div>
-        </div>
-      ),
-    };
-  });
+import { Button } from "@mui/material";
+import { TEMPLATE_GROUP } from "mocks/template-group";
+import SearchBar from "./components/SearchBar/SearchBar";
 
-const Suggestion = ({ item }) => {
-  return (
-    <div className="suggestion">
-      <div className="suggestion__image">
-        <img src={item.thumbnail} alt="" />
-      </div>
-      <div className="suggestion__content">
-        <h3>{item.title}</h3>
-        <p>bởi {item.author}</p>
-      </div>
-    </div>
-  );
-};
+// const searchResult = (query: string) =>
+//   SUGGESTION.map((suggestion) => {
+//     // const category = `${query}${idx}`;
+//     return {
+//       value: suggestion.id,
+//       label: (
+//         <div className="suggestion">
+//           <div className="suggestion__image">
+//             <img src={suggestion.thumbnail} alt="" />
+//           </div>
+//           <div className="suggestion__content">
+//             <h3>{suggestion.title}</h3>
+//             <p>bởi {suggestion.author}</p>
+//           </div>
+//         </div>
+//       ),
+//     };
+//   });
 
 const ProjectsTemplate = () => {
   const handleOnSearch = (string, results) => {
@@ -62,32 +52,17 @@ const ProjectsTemplate = () => {
     console.log("Focused");
   };
 
-  const formatResult = (item) => {
-    return <Suggestion item={item} />;
-  };
   return (
     <div className="project-template-page__wrapper">
       <div className="project-template-page">
         <div className="project-template-page__header">
           <h1>Nhóm mẫu nổi bật</h1>
           <div style={{ width: 300 }}>
-            <ReactSearchAutocomplete
-              items={SUGGESTION}
-              showIcon={false}
-              resultStringKeyName="title"
-              fuseOptions={{ keys: ["title", "author"] }}
-              onSearch={handleOnSearch}
-              onHover={handleOnHover}
-              onSelect={handleOnSelect}
-              onFocus={handleOnFocus}
-              formatResult={formatResult}
-              placeholder="Tìm mẫu"
-              maxResults={5}
-              styling={{
-                clearIconMargin: "3px 8px 0 0",
-                borderRadius: 0,
-                boxShadow: "none",
-              }}
+            <SearchBar
+              handleOnSearch={handleOnSearch}
+              handleOnHover={handleOnHover}
+              handleOnSelect={handleOnSelect}
+              handleOnFocus={handleOnFocus}
             />
           </div>
         </div>
@@ -107,26 +82,30 @@ const ProjectsTemplate = () => {
           title="Mẫu mới chia sẻ"
           templates={new Array(3).fill(DETAIL_TEMPLATE)}
         />
-        <TemplateSection
-          icon={<AcUnitIcon fontSize="large" />}
-          title="Mẫu mới chia sẻ"
-          templates={new Array(3).fill(DETAIL_TEMPLATE)}
-        />
-        <TemplateSection
-          icon={<AcUnitIcon fontSize="large" />}
-          title="Mẫu mới chia sẻ"
-          templates={new Array(3).fill(DETAIL_TEMPLATE)}
-        />
-        <TemplateSection
-          icon={<AcUnitIcon fontSize="large" />}
-          title="Mẫu mới chia sẻ"
-          templates={new Array(3).fill(DETAIL_TEMPLATE)}
-        />
-        <TemplateSection
-          icon={<AcUnitIcon fontSize="large" />}
-          title="Mẫu mới chia sẻ"
-          templates={new Array(3).fill(DETAIL_TEMPLATE)}
-        />
+
+        {TEMPLATE_GROUP.map((group) => (
+          <TemplateSection
+            key={group.id}
+            icon={<AcUnitIcon fontSize="large" />}
+            title={group.name}
+            templates={new Array(3).fill({
+              ...DETAIL_TEMPLATE,
+              thumbnail: group.thumbnail,
+            })}
+            extra={
+              <Button
+                variant="text"
+                sx={{
+                  color: "#969ead",
+                  backgroundColor: "#fafbfc",
+                  textTransform: "initial",
+                }}
+              >
+                Thêm mẫu cho {group.name}
+              </Button>
+            }
+          />
+        ))}
       </div>
     </div>
   );

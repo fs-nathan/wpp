@@ -9,12 +9,13 @@ import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import React from "react";
 import "./index.scss";
+import { useHistory } from "react-router-dom";
 
 const TemplateCard = ({ template }) => {
   const history = useHistory();
 
   function onTemplateClick() {
-    history.push("/project/template/" + template.id);
+    history.push("/projects/template/" + template.id);
   }
 
   return (
