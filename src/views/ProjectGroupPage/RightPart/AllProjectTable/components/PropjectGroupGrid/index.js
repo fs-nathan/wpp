@@ -1,35 +1,52 @@
-import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
-import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
-import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
-import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import Tooltip from "@mui/material/Tooltip";
 import LoadingBox from "components/LoadingBox";
+import {
+  Container as DragContainer,
+  Draggable,
+} from "components/react-smooth-dnd";
+import { get } from "lodash";
+import PropTypes from "prop-types";
+import React from "react";
+import { useSelector } from "react-redux";
+import "./projectGroupGrid.scss";
+import Scrollbars from "components/Scrollbars";
+import ProjectGroupItem from "./ProjectGroupItem/ProjectGroupItem";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import {
   CustomEventDispose,
   CustomEventListener,
   EDIT_PROJECT_GROUP,
   LIST_PROJECT_GROUP,
 } from "constants/events";
-import { get } from "lodash";
-import PropTypes from "prop-types";
-import React from "react";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-import "./projectGroupGrid.scss";
+
+const reorder = (list, startIndex, endIndex) => {
+  const result = Array.from(list);
+  const removed = result.splice(startIndex, 1);
+  result.splice(endIndex, 0, removed);
+
+  return result;
+};
 
 export const DISABLED_GROUP_BACKGROUND_COLOR = "#e7e8e9";
 export const DEFAULT_GROUP_BACKGROUND_COLOR = "#da4bbe";
-const TooltipContent = ({ groupName, groupDescription }) => {
-  return (
-    <div className="projectGroup__tooltip--body">
-      <div className="projectGroup__tooltip--title">{groupName || ""}</div>
-      <p className="projectGroup__tooltip--description">
-        {groupDescription || ""}
-      </p>
-    </div>
-  );
+/**
+ * convert to 4columns  grid
+ * @param {normal array} inputArray
+ */
+const convertToGridLayout = (inputArray) => {
+  return inputArray.reduce((outputArr, current, index) => {
+    const rowIndex = Math.floor(index / 4);
+    let newArr = JSON.parse(JSON.stringify(outputArr));
+
+    const rowArr = outputArr[rowIndex] ?? [];
+    const updatedRowArr = [...rowArr, current];
+
+    newArr.splice(rowIndex, 1, updatedRowArr);
+    return newArr;
+  }, []);
+};
+
+const convertFromGridLayoutToArray = (inputArray) => {
+  return inputArray.flat();
 };
 
 const ProjectGroupGrid = ({
@@ -42,6 +59,13 @@ const ProjectGroupGrid = ({
   activeLoading,
   onOpenCreateModal,
 }) => {
+  const [groupLayout, setGroupLayout] = React.useState([]);
+
+  React.useEffect(() => {
+    const projLayout = convertToGridLayout(projectGroups);
+    setGroupLayout(projLayout);
+  }, [projectGroups]);
+
   React.useEffect(() => {
     const fail = () => {
       setActiveLoading(false);
@@ -70,6 +94,7 @@ const ProjectGroupGrid = ({
       CustomEventDispose(LIST_PROJECT_GROUP.FAIL, fail);
     };
   }, []);
+
   const idGroupDefault = useSelector(
     ({ groupTask }) => groupTask.defaultGroupTask.data || ""
   );
@@ -77,31 +102,62 @@ const ProjectGroupGrid = ({
     "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
 
-  function onDragEnd(result) {
-    const { source, destination, draggableId } = result;
-    if (!destination) return;
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    )
-      return;
+  const applyDrag = (arr, dragResult) => {
+    const { removedIndex, addedIndex, payload } = dragResult;
+    if (removedIndex === null && addedIndex === null) return arr;
 
-    handleSortProjectGroup(draggableId, destination.index);
-  }
+    const result = [...arr];
+    let itemToAdd = payload;
+
+    if (removedIndex !== null) {
+      itemToAdd = result.splice(removedIndex, 1)[0];
+    }
+
+    if (addedIndex !== null) {
+      result.splice(addedIndex, 0, itemToAdd);
+    }
+
+    return result;
+  };
 
   if (activeLoading) return <LoadingBox />;
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided, snapshot) => {
-          return (
-            <div
-              ref={provided.innerRef}
-              {...provided.droppableProps}
-              className="projectGroupListGrid"
+    <div className="projectGroupListGrid">
+      {groupLayout.map((row, index) => {
+        return (
+          <div className="projectGroupListGrid__row">
+            <DragContainer
+              groupName="1"
+              orientation="horizontal"
+              onDrop={(e) => {
+                const { removedIndex, addedIndex, payload } = e;
+                if (removedIndex === null && addedIndex === null) return;
+
+                const arrRow = [...groupLayout[index]];
+
+                const updatedRow = applyDrag(arrRow, e);
+
+                const updatedLayout = JSON.parse(JSON.stringify(groupLayout));
+                updatedLayout.splice(index, 1, updatedRow);
+
+                // reconstruct layout
+                const result = convertToGridLayout(
+                  convertFromGridLayoutToArray(updatedLayout)
+                );
+
+                console.log("addedIndex", addedIndex);
+                if (addedIndex !== null) {
+                  handleSortProjectGroup(
+                    payload.id,
+                    groupLayout[index][addedIndex].sort_index
+                  );
+                  setGroupLayout(result);
+                }
+              }}
+              getChildPayload={(i) => groupLayout[index][i]}
             >
-              {projectGroups.map((projectGroup, index) => {
+              {row.map((projectGroup) => {
                 const isDefaultGroup =
                   idGroupDefault === `?groupID=${projectGroup.id}` ||
                   `?groupID=${projectGroup.id}` === idGroupDefaultLocal;
@@ -110,102 +166,34 @@ const ProjectGroupGrid = ({
                 const backgroundColor =
                   projectGroup.color || DEFAULT_GROUP_BACKGROUND_COLOR;
                 return (
-                  <Draggable
-                    key={projectGroup.id}
-                    draggableId={projectGroup.id}
-                    index={index}
-                    className="projectGroupListGrid__item"
-                    style={{ backgroundColor: backgroundColor }}
-                  >
-                    {(provided) => {
-                      return (
-                        <NavLink
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          className="projectGroupListGrid__item"
-                          style={{ backgroundColor: backgroundColor }}
-                          to={`/projects?groupID=${projectGroup.id}`}
-                        >
-                          <div>{projectGroup?.name}</div>
-
-                          <div className="projectGroupListGrid__icon">
-                            <div className="projectGroupListGrid__icon--list">
-                              <div className="projectGroupListGrid__icon--item">
-                                <ArticleOutlinedIcon />
-                                <span className="projectGroupListGrid__icon--number">
-                                  {projectGroup?.number_project || 0}
-                                </span>
-                              </div>
-
-                              {isDefaultGroup && (
-                                <div className="projectGroupListGrid__icon--item">
-                                  <FlagOutlinedIcon />
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="projectGroupListGrid__icon--list ">
-                              <Tooltip
-                                title={
-                                  <TooltipContent
-                                    groupName={projectGroup.name}
-                                    groupDescription={projectGroup.description}
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      return;
-                                    }}
-                                  />
-                                }
-                                arrow
-                                classes={{
-                                  tooltip: "Custom-MuiTooltip-tooltip",
-                                }}
-                                placement="top"
-                              >
-                                <div className="wp-wrapper-button">
-                                  <InfoOutlinedIcon />
-                                </div>
-                              </Tooltip>
-
-                              {isDisplayUpdate && (
-                                <div
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    onEdit(e.currentTarget, projectGroup);
-                                    setCurrentGroup(projectGroup);
-                                  }}
-                                  className="wp-wrapper-button"
-                                >
-                                  <MoreVertOutlinedIcon />
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </NavLink>
-                      );
-                    }}
+                  <Draggable key={projectGroup.id}>
+                    <ProjectGroupItem
+                      backgroundColor={backgroundColor}
+                      projectGroup={projectGroup}
+                      handleClickEdit={(e) => {
+                        onEdit(e.currentTarget, projectGroup);
+                        setCurrentGroup(projectGroup);
+                      }}
+                      isDefaultGroup={isDefaultGroup}
+                      isDisplayUpdate={isDisplayUpdate}
+                    />
                   </Draggable>
                 );
               })}
-
-              <div
-                className="projectGroupListGrid__item"
-                style={{ backgroundColor: DISABLED_GROUP_BACKGROUND_COLOR }}
-                onClick={onOpenCreateModal}
-              >
-                <AddOutlinedIcon />
-              </div>
-
-              {provided.placeholder}
-            </div>
-          );
-        }}
-      </Droppable>
-    </DragDropContext>
+            </DragContainer>
+          </div>
+        );
+      })}
+      <div
+        className="projectGroupListGrid__item projectGroupListGrid__item--add"
+        style={{ backgroundColor: DISABLED_GROUP_BACKGROUND_COLOR }}
+        onClick={onOpenCreateModal}
+      >
+        <AddOutlinedIcon />
+      </div>
+    </div>
   );
 };
-
 ProjectGroupGrid.propTypes = {
   projects: PropTypes.array,
 };

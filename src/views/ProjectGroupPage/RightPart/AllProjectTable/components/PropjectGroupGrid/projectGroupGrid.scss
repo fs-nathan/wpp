@@ -1,18 +1,40 @@
 .projectGroupListGrid {
-  display: grid;
-  grid-template-columns: repeat(4, 265px);
-  gap: 25px;
+  // display: grid;
+  // grid-template-columns: repeat(4, 265px);
   padding: 45px 80px;
+  width: 100%;
+  height: 100%;
   overflow-y: auto;
   max-height: calc(100vh - 60px);
   box-sizing: border-box;
   background-color: #f5f7f9;
+  &__row {
+    display: flex;
+    margin-bottom: 25px;
+    width: 100%;
+
+    .smooth-dnd-container {
+      width: 100%;
+      display: flex;
+    }
+    .smooth-dnd-draggable-wrapper {
+      justify-content: start;
+      flex: 1;
+      max-width: 265px;
+    }
+  }
+  &__item--add {
+    justify-content: center;
+  }
   &__item {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-radius: 5px;
+    max-width: 265px;
     min-height: 136px;
+    margin-right: 25px;
+    flex-grow: 1;
     // background-color: #da4bbe;
     padding: 18px;
     color: white;
@@ -45,16 +67,16 @@
     &:first-child {
       background-color: #da4bbe;
     }
-    &:last-child {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      & > svg {
-        color: #adaeba;
-        height: 25px;
-        width: 25px;
-      }
-    }
+    // &:last-child {
+    //   display: flex;
+    //   justify-content: center;
+    //   align-items: center;
+    //   & > svg {
+    //     color: #adaeba;
+    //     height: 25px;
+    //     width: 25px;
+    //   }
+    // }
   }
 
   &__icon {
@@ -80,6 +102,7 @@
       background-color: rgba(0, 0, 0, 0.1);
       border-radius: 5px;
     }
+    
     &--number {
       margin-left: 5px;
       font-size: 15px;

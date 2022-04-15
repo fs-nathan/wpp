@@ -154,8 +154,6 @@ function CreateProjectGroup({
     setIsAddingDescription(isExpanded ? panel : false);
   };
 
-  console.log("icon", icon);
-
   return (
     <CustomModal
       title={
