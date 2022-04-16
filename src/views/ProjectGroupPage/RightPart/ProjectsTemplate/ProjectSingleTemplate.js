@@ -1,14 +1,23 @@
-import { Avatar, Breadcrumbs, Button, Link, Typography } from "@mui/material";
+import {
+  Avatar,
+  Breadcrumbs,
+  Button,
+  Link,
+  Popover,
+  Typography,
+} from "@mui/material";
 import { DETAIL_TEMPLATE } from "mocks/detail-template";
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import "./index.scss";
+import SingleAction from "./components/SingleAction/SingleAction";
 
 const ProjectSingleTemplate = () => {
   const history = useHistory();
+
   function handleClick() {}
 
   return (
@@ -73,40 +82,7 @@ const ProjectSingleTemplate = () => {
             </div>
           </div>
           <div className="project-single-template__overview__action">
-            <div>
-              <Button
-                variant="contained"
-                sx={{
-                  backgroundColor: "#e7e9ec",
-                  color: "red",
-                  "&:hover": {
-                    backgroundColor: "#e7e9ec",
-                  },
-                }}
-              >
-                Huỷ chia sẻ
-              </Button>
-            </div>
-            <div>
-              <Button
-                variant="contained"
-                color="info"
-                sx={{
-                  backgroundColor: "#e7e9ec",
-                  color: "black",
-                  "&:hover": {
-                    backgroundColor: "#e7e9ec",
-                  },
-                }}
-              >
-                Giới thiệu
-              </Button>
-            </div>
-            <div>
-              <Button variant="contained" color="primary">
-                Sử dụng mẫu
-              </Button>
-            </div>
+            <SingleAction />
           </div>
         </div>
 
@@ -115,7 +91,7 @@ const ProjectSingleTemplate = () => {
             Về mẫu này
           </Typography>
           <div
-            dangerouslySetInnerHTML={{ __html: DETAIL_TEMPLATE.description }}
+            dangerouslySetInnerHTML={{ __html: DETAIL_TEMPLATE.detail }}
           ></div>
           <Typography variant="h6" color="black">
             <Link href="#" variant="h6" color="inherit" underline="always">
