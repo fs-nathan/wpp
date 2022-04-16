@@ -329,6 +329,9 @@ import updateStatusView, {
 import updateNotificationSetting, {
   initialState as updateNotificationSettingInitialState,
 } from "./project/setting/updateNotificationSetting";
+import shareProject, {
+  initialState as shareProjectInitialState,
+} from "./project/shareProject";
 import showProject, {
   initialState as showProjectInitialState,
 } from "./project/showProject";
@@ -507,6 +510,9 @@ import getProjectOnPersonalBoard, {
 import getWorkType, {
   initialState as getWorkTypeInitialState,
 } from "./project/getWorkType";
+import getTemplateCategory, {
+  initialState as getTemplateCategoryInitialState,
+} from "./project/getTemplateCategory";
 import updatePinBoardSetting, {
   initialState as updatePinBoardSettingInitialState,
 } from "./project/setting/updatePinBoardSetting";
@@ -624,12 +630,14 @@ const rootReducer = combineReducers({
     updateGroupPermissionMember,
     removeGroupPermissionMember,
     assignMemberToAllTask,
+    shareProject,
     sortProject,
     copyProject,
     deleteTrashProject,
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
+    getTemplateCategory,
     getWorkType,
     recentlyProjects,
     getStatusWorkGroup,
@@ -853,6 +861,7 @@ export const DEFAULT_STATE = {
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
     removeGroupPermissionMember: removeGroupPermissionMemberInitialState,
     assignMemberToAllTask: assignMemberToAllTaskInitialState,
+    shareProject: shareProjectInitialState,
     sortProject: sortProjectInitialState,
     copyProject: copyProjectInitialState,
     deleteTrashProject: deleteTrashProjectInitialState,
@@ -863,6 +872,7 @@ export const DEFAULT_STATE = {
     getStatusWorkGroup: getStatusWorkGroupInitialState,
     getProjectOnPersonalBoard: getProjectOnPersonalBoardInitialState,
     getWorkType: getWorkTypeInitialState,
+    getTemplateCategory: getTemplateCategoryInitialState,
     countPersonalProjectsBoard: countPersonalProjectsBoardInitialState,
     setting: {
       detailStatus: detailStatusInitialState,
