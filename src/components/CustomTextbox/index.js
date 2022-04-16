@@ -24,6 +24,7 @@ function CustomTextbox({
   placeholder = null,
   multiline = false,
   required = false,
+  size = "medium",
 }) {
   const { t } = useTranslation();
   if (isReadOnly) {
@@ -61,6 +62,7 @@ function CustomTextbox({
           fullWidth
           rows={multiline ? 3 : undefined}
           variant="outlined"
+          size={size}
           value={value}
           onChange={(evt) => onChange(evt.target.value)}
           placeholder={placeholder ?? t("CUSTOM_TEXTBOX_CONTENT_LABEL")}
