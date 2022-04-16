@@ -3,23 +3,52 @@ import { Box } from "@mui/system";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CustomTextbox from "components/CustomTextbox";
 import CustomTextboxSelect from "components/CustomTextboxSelect";
-import { useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import CustomModal from "components/CustomModal";
 import Modal from "@mui/material/Modal";
 import { BACKGROUND } from "mocks/background";
+import { useDispatch, useSelector } from "react-redux";
+import { getTemplateCategory } from "actions/project/getTemplateCategory";
+import TitleSectionModal from "components/TitleSectionModal";
+import CustomSelect from "components/CustomSelect";
 
 const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
   const { t } = useTranslation();
   const [description, setDescription] = useState("");
+  const [curTemplateCategoryName, setCurTemplateCategoryName] = useState("");
+  const [curTemplateCategoryId, setCurTemplateCategoryId] = useState("");
   const [open, setOpen] = useState(false);
-
+  const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] =
+    useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
+
+  const dispatch = useDispatch();
+  const categories = useSelector(
+    (state) => state.project.getTemplateCategory.data
+  );
+  console.log(
+    "🚀 ---------------------------------------------------------------------"
+  );
+  console.log(
+    "🚀 ~ file: ShareStep.js ~ line 35 ~ ShareStep ~ categories",
+    categories
+  );
+  console.log(
+    "🚀 ---------------------------------------------------------------------"
+  );
+  const fetchData = useCallback(async () => {
+    dispatch(getTemplateCategory());
+  }, [dispatch, getTemplateCategory]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <>
@@ -52,18 +81,35 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
             />
           </div>
           <div className="select-customer-from-input per-line-step-in-form">
-            <CustomTextboxSelect
+            <TitleSectionModal
+              label={`${t("SHARE_STEP_SELECT_GROUP_LABEL")}`}
+              isRequired
+            />
+            {categories && categories.length > 0 && (
+              <CustomSelect
+                options={categories.map((c) => ({
+                  label: c.name,
+                  value: c.id,
+                }))}
+                value={curTemplateCategoryName}
+                onChange={(category) => {
+                  console.log(category);
+                  setCurTemplateCategoryId(category.value);
+                }}
+              />
+            )}
+            {/* <CustomTextboxSelect
               // value={curProjectGroupName}
               // onClick={() => {
               //   setOpenSelectGroupProjectModal(true);
               // }}
-              label={`${t("SHARE_STEP_SELECT_GROUP_LABEL")}`}
+              label={}
               fullWidth
               required={true}
               className={"view_ProjectGroup_CreateNew_Project_Modal_formItem "}
               isReadOnly
             />
-            <ArrowDropDownIcon className="icon-arrow" />
+            <ArrowDropDownIcon className="icon-arrow" /> */}
           </div>
           <div className="choose-bg per-line-step-in-form">
             <p className="choose-bg-label">{t("SHARE_STEP_SELECT_BG_LABEL")}</p>
