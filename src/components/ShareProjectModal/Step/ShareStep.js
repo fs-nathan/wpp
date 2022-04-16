@@ -3,7 +3,7 @@ import { Box } from "@mui/system";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import CustomTextbox from "components/CustomTextbox";
 import CustomTextboxSelect from "components/CustomTextboxSelect";
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState, useEffect, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import CustomModal from "components/CustomModal";
 import Modal from "@mui/material/Modal";
@@ -16,8 +16,7 @@ import CustomSelect from "components/CustomSelect";
 const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
   const { t } = useTranslation();
   const [description, setDescription] = useState("");
-  const [curTemplateCategoryName, setCurTemplateCategoryName] = useState("");
-  const [curTemplateCategoryId, setCurTemplateCategoryId] = useState("");
+  const [curTemplateCategory, setCurTemplateCategory] = useState(null);
   const [open, setOpen] = useState(false);
   const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] =
     useState(false);
@@ -32,16 +31,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
   const categories = useSelector(
     (state) => state.project.getTemplateCategory.data
   );
-  console.log(
-    "🚀 ---------------------------------------------------------------------"
-  );
-  console.log(
-    "🚀 ~ file: ShareStep.js ~ line 35 ~ ShareStep ~ categories",
-    categories
-  );
-  console.log(
-    "🚀 ---------------------------------------------------------------------"
-  );
+
   const fetchData = useCallback(async () => {
     dispatch(getTemplateCategory());
   }, [dispatch, getTemplateCategory]);
@@ -49,6 +39,21 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  const categoryData = useMemo(() => {
+    if (categories && categories.length > 0) {
+      return categories.map((c) => ({
+        label: c.name,
+        value: c.id,
+      }));
+    }
+  }, [categories]);
+
+  useEffect(() => {
+    if (categoryData && categoryData.length > 0) {
+      setCurTemplateCategory(categoryData[0]);
+    }
+  }, [categoryData]);
 
   return (
     <>
@@ -87,29 +92,14 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
             />
             {categories && categories.length > 0 && (
               <CustomSelect
-                options={categories.map((c) => ({
-                  label: c.name,
-                  value: c.id,
-                }))}
-                value={curTemplateCategoryName}
+                options={categoryData}
+                value={curTemplateCategory}
                 onChange={(category) => {
                   console.log(category);
-                  setCurTemplateCategoryId(category.value);
+                  setCurTemplateCategory(category);
                 }}
               />
             )}
-            {/* <CustomTextboxSelect
-              // value={curProjectGroupName}
-              // onClick={() => {
-              //   setOpenSelectGroupProjectModal(true);
-              // }}
-              label={}
-              fullWidth
-              required={true}
-              className={"view_ProjectGroup_CreateNew_Project_Modal_formItem "}
-              isReadOnly
-            />
-            <ArrowDropDownIcon className="icon-arrow" /> */}
           </div>
           <div className="choose-bg per-line-step-in-form">
             <p className="choose-bg-label">{t("SHARE_STEP_SELECT_BG_LABEL")}</p>
