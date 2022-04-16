@@ -30,6 +30,8 @@ import { CustomTableWrapper } from "components/CustomTable";
 import { CustomLayoutProvider } from "components/CustomLayout";
 import ProjectsTemplate from "./RightPart/ProjectsTemplate/ProjectsTemplate";
 import ProjectTemplateList from "./LeftPart/ProjectTemplateList/ProjectTemplateList";
+import ProjectSingleTemplate from "./RightPart/ProjectsTemplate/ProjectSingleTemplate";
+import ProjectGroupTemplate from "./RightPart/ProjectsTemplate/ProjectGroupTemplate";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -104,6 +106,12 @@ function ProjectGroupPage({
           </Route>
           <Route exact path="/projects/template">
             <ProjectsTemplate />
+          </Route>
+          <Route exact path="/projects/template/:id">
+            <ProjectSingleTemplate />
+          </Route>
+          <Route exact path="/projects/template/group/:id">
+            <ProjectGroupTemplate />
           </Route>
           <Route exact path="/projects/group/:projectGroupId">
             <AllProjectTable
