@@ -21,7 +21,8 @@ const TemplateCard = ({ template }) => {
   return (
     <Card
       sx={{
-        maxWidth: 345,
+        position: "relative",
+        width: 345,
         boxShadow: "none",
         border: "none",
         backgroundColor: "transparent",
@@ -30,10 +31,10 @@ const TemplateCard = ({ template }) => {
       className="template-card"
       onClick={onTemplateClick}
     >
-      <CardMedia component="img" height="194" image={template.thumbnail} />
+      <CardMedia component="img" height="194" image={template.banner} />
       <Avatar
-        alt="Remy Sharp"
-        src="/images/avatar.jpeg"
+        alt={template.user_share_name}
+        src={template.user_share_avatar}
         sx={{
           width: 56,
           height: 56,
@@ -44,10 +45,10 @@ const TemplateCard = ({ template }) => {
       />
       <CardContent>
         <Typography variant="h6" color="black" mb={2}>
-          {template.title}
+          {template.name}
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={1}>
-          Chia sẻ bởi @{template.author}
+          Chia sẻ bởi @{template.user_share_name}
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={2}>
           {template.description}
@@ -56,13 +57,13 @@ const TemplateCard = ({ template }) => {
           <div className="template-card__action__copied">
             <ContentCopyRoundedIcon />
             <Typography variant="body2" color="text.secondary">
-              {template.copied}
+              {template.total_use}
             </Typography>
           </div>
           <div className="template-card__action__views">
             <RemoveRedEyeIcon />
             <Typography variant="body2" color="text.secondary">
-              {template.views}
+              {template.total_view}
             </Typography>
           </div>
         </div>
