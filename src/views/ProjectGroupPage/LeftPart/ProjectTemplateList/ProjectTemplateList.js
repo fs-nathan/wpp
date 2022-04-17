@@ -71,6 +71,14 @@ const ProjectTemplateList = ({
     (state) => state.project.getListTemplateMeShared.data
   );
 
+  function handleTemplateChoose(id) {
+    history.push("/projects/template/" + id);
+  }
+
+  function handleCategoryChoose(id) {
+    history.push("/projects/template/group/" + id);
+  }
+
   return (
     <LeftContainer>
       <Banner>
@@ -94,7 +102,10 @@ const ProjectTemplateList = ({
             <span>{t("LABEL_WORKING_GROUP")}</span>
           </Box>
         </Box>
-        <Box className={`view_ProjectGroup_List--startButton active`}>
+        <Box
+          className={`view_ProjectGroup_List--startButton active`}
+          onClick={() => history.push("/projects/template")}
+        >
           <LibraryAddCheckOutlined htmlColor="#d46ffb" />
           <span>{t("LABEL_CHAT_TASK_THU_VIEN_MAU_LABEL")}</span>
         </Box>
@@ -118,7 +129,10 @@ const ProjectTemplateList = ({
                   templates.length > 0 &&
                   templates.map((child) => (
                     <ListItem disablePadding disableGutters key={child.id}>
-                      <ListItemButton sx={{ pl: 8 }}>
+                      <ListItemButton
+                        sx={{ pl: 8 }}
+                        onClick={() => handleTemplateChoose(child.id)}
+                      >
                         <ListItemText primary={child.name} />
                       </ListItemButton>
                     </ListItem>
@@ -155,7 +169,10 @@ const ProjectTemplateList = ({
                   categories.length > 0 &&
                   categories.map((child) => (
                     <ListItem disablePadding disableGutters key={child.id}>
-                      <ListItemButton sx={{ pl: 8 }}>
+                      <ListItemButton
+                        sx={{ pl: 8 }}
+                        onClick={() => handleCategoryChoose(child.id)}
+                      >
                         <ListItemText primary={child.name} />
                       </ListItemButton>
                     </ListItem>

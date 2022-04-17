@@ -272,6 +272,9 @@ import createProject, {
 import deleteProject, {
   initialState as deleteProjectInitialState,
 } from "./project/deleteProject";
+import cancelShare, {
+  initialState as cancelShareInitialState,
+} from "./project/cancelShare";
 import deleteTrashProject, {
   initialState as deleteTrashProjectInitialState,
 } from "./project/deleteTrashProject";
@@ -627,6 +630,7 @@ const rootReducer = combineReducers({
     createProject,
     updateProject,
     deleteProject,
+    cancelShare,
     listProject,
     listDeletedProject,
     detailProject,
@@ -861,6 +865,7 @@ export const DEFAULT_STATE = {
     createProject: createProjectInitialState,
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
+    cancelShare: cancelShareInitialState,
     listProject: listProjectInitialState,
     checkHasRecently: checkHasRecentlyInitialState,
     listDeletedProject: listDeletedProjectInitialState,
