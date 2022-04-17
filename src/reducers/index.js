@@ -510,6 +510,9 @@ import getProjectOnPersonalBoard, {
 import getWorkType, {
   initialState as getWorkTypeInitialState,
 } from "./project/getWorkType";
+import getBanner, {
+  initialState as getBannerInitialState,
+} from "./project/getBanner";
 import getTemplateCategory, {
   initialState as getTemplateCategoryInitialState,
 } from "./project/getTemplateCategory";
@@ -637,6 +640,7 @@ const rootReducer = combineReducers({
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
+    getBanner,
     getTemplateCategory,
     getWorkType,
     recentlyProjects,
@@ -872,6 +876,7 @@ export const DEFAULT_STATE = {
     getStatusWorkGroup: getStatusWorkGroupInitialState,
     getProjectOnPersonalBoard: getProjectOnPersonalBoardInitialState,
     getWorkType: getWorkTypeInitialState,
+    getBanner: getBannerInitialState,
     getTemplateCategory: getTemplateCategoryInitialState,
     countPersonalProjectsBoard: countPersonalProjectsBoardInitialState,
     setting: {
