@@ -102,6 +102,10 @@ import { ASSIGN_MEMBER_TO_ALL_TASK } from "../constants/actions/project/assignMe
 import { COPY_PROJECT } from "../constants/actions/project/copyProject";
 import { CREATE_PROJECT } from "../constants/actions/project/createProject";
 import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
+import {
+  CANCEL_SHARE,
+  CANCEL_SHARE_SUCCESS,
+} from "../constants/actions/project/cancelShare";
 import { DELETE_TRASH_PROJECT } from "../constants/actions/project/deleteTrashProject";
 import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
 import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
@@ -378,6 +382,7 @@ import { copyProject } from "./project/copyProject";
 import { shareProject } from "./project/shareProject";
 import { createProject } from "./project/createProject";
 import { deleteProject } from "./project/deleteProject";
+import { cancelShare } from "./project/cancelShare";
 import { deleteTrashProject } from "./project/deleteTrashProject";
 import { detailProject } from "./project/detailProject";
 import { hideProject } from "./project/hideProject";
@@ -588,6 +593,7 @@ function* rootSaga() {
   yield takeEvery(EDIT_PROJECT_LABELS, updateProjectLabels);
   yield takeEvery(CREATE_PROJECT_LABELS, createProjectLabels);
   yield takeEvery(DELETE_PROJECT, deleteProject);
+  yield takeEvery(CANCEL_SHARE, cancelShare);
   yield takeLatest(LIST_PROJECT, listProject);
   yield takeLatest(LIST_PROJECT_SELECT, listProject);
   yield takeLatest(CHECK_HAS_RECENTLY_PROJECT, checkHasProjectRecently);
@@ -1068,7 +1074,10 @@ function* rootSaga() {
   yield takeLatest(GET_TEMPLATE_CATEGORY, getTemplateCategory);
   yield takeLatest(GET_TEMPLATE_BY_CATEGORY, getTemplateByCategory);
   yield takeLatest(GET_LIST_TEMPLATE, getListTemplate);
-  yield takeLatest(GET_LIST_TEMPLATE_ME_SHARED, getListTemplateMeShared);
+  yield takeLatest(
+    [GET_LIST_TEMPLATE_ME_SHARED, CANCEL_SHARE_SUCCESS],
+    getListTemplateMeShared
+  );
   yield takeLatest(GET_BANNER, getBanner);
   //
 

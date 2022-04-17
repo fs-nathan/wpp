@@ -1,13 +1,10 @@
 import {
-  CREATE_PROJECT,
-  CREATE_PROJECT_FAIL,
-  CREATE_PROJECT_SUCCESS,
-} from "../../constants/actions/project/createProject";
+  CANCEL_SHARE,
+  CANCEL_SHARE_FAIL,
+  CANCEL_SHARE_SUCCESS,
+} from "../../constants/actions/project/cancelShare";
 
 export const initialState = {
-  data: {
-    project: null,
-  },
   status: "",
   error: null,
   loading: false,
@@ -15,25 +12,25 @@ export const initialState = {
 
 function reducer(state = initialState, action) {
   switch (action.type) {
-    case CREATE_PROJECT:
+    case CANCEL_SHARE:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case CREATE_PROJECT_SUCCESS:
+    case CANCEL_SHARE_SUCCESS:
       return {
         ...state,
         ...initialState,
-        data: action.data,
-        status: CREATE_PROJECT_SUCCESS,
+        status: CANCEL_SHARE_SUCCESS,
         error: null,
         loading: false,
       };
-    case CREATE_PROJECT_FAIL:
+    case CANCEL_SHARE_FAIL:
       return {
         ...state,
         ...initialState,
+        status: CANCEL_SHARE_FAIL,
         error: action.error,
         loading: false,
       };
