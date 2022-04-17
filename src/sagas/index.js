@@ -469,6 +469,10 @@ import { getRemindDetail } from "./calendar/alarmCalendar/getRemindDetail";
 import { getProjectStatistic } from "./project/getStatistic";
 import { getWorkType } from "./project/getWorkType";
 import { getTemplateCategory } from "./project/getTemplateCategory";
+import { getTemplateByCategory } from "./project/getTemplateByCategory";
+import { getListTemplate } from "./project/getListTemplate";
+import { getListTemplateMeShared } from "./project/getListTemplateMeShared";
+import { getBanner } from "./project/getBanner";
 import { updatePinBoardSetting } from "./project/setting/updatePinBoardSetting";
 import { recentlyProjects } from "./project/recentlyProjects";
 import { getStatusWorkGroup } from "./project/getStatusWork";
@@ -503,6 +507,10 @@ import { updateColumnsFieldSaga } from "./columns/updateColumns";
 import { defaultGroupTask } from "./groupTask/defaultGroupTask";
 import { createGroupTaskList } from "./task/createGroupTask";
 import { GET_TEMPLATE_CATEGORY } from "constants/actions/project/getTemplateCategory";
+import { GET_TEMPLATE_BY_CATEGORY } from "constants/actions/project/getTemplateByCategory";
+import { GET_LIST_TEMPLATE } from "constants/actions/project/getListTemplate";
+import { GET_LIST_TEMPLATE_ME_SHARED } from "constants/actions/project/getListTemplateMeShared";
+import { GET_BANNER } from "constants/actions/project/getBanner";
 
 function* rootSaga() {
   // Hoang - begin
@@ -1058,6 +1066,10 @@ function* rootSaga() {
   yield takeLatest(GET_PROJECT_PERSONAL_BOARD, getProjectOnBoard);
   yield takeLatest(GET_WORK_TYPE, getWorkType);
   yield takeLatest(GET_TEMPLATE_CATEGORY, getTemplateCategory);
+  yield takeLatest(GET_TEMPLATE_BY_CATEGORY, getTemplateByCategory);
+  yield takeLatest(GET_LIST_TEMPLATE, getListTemplate);
+  yield takeLatest(GET_LIST_TEMPLATE_ME_SHARED, getListTemplateMeShared);
+  yield takeLatest(GET_BANNER, getBanner);
   //
 
   //calendar

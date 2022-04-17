@@ -1,40 +1,54 @@
-import { Button, ImageList, ImageListItem } from "@mui/material";
+import { BACKGROUND } from "mocks/background";
 import { Box } from "@mui/system";
+import { Button, ImageList, ImageListItem } from "@mui/material";
+import { getBanner } from "actions/project/getBanner";
+import { getTemplateCategory } from "actions/project/getTemplateCategory";
+import { useCallback, useState, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import CustomModal from "components/CustomModal";
+import CustomSelect from "components/CustomSelect";
 import CustomTextbox from "components/CustomTextbox";
 import CustomTextboxSelect from "components/CustomTextboxSelect";
-import { useCallback, useState, useEffect, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import CustomModal from "components/CustomModal";
 import Modal from "@mui/material/Modal";
-import { BACKGROUND } from "mocks/background";
-import { useDispatch, useSelector } from "react-redux";
-import { getTemplateCategory } from "actions/project/getTemplateCategory";
 import TitleSectionModal from "components/TitleSectionModal";
-import CustomSelect from "components/CustomSelect";
+import { shareProject } from "actions/project/shareProject";
 
 const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
   const { t } = useTranslation();
   const [description, setDescription] = useState("");
   const [curTemplateCategory, setCurTemplateCategory] = useState(null);
+  const [banner, setBanner] = useState(null);
   const [open, setOpen] = useState(false);
   const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] =
     useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };
+
   const handleClose = () => {
     setOpen(false);
   };
+
+  function handleChangeBanner(banner) {
+    setBanner(banner);
+    handleClose();
+  }
 
   const dispatch = useDispatch();
   const categories = useSelector(
     (state) => state.project.getTemplateCategory.data
   );
+  const banners = useSelector((state) => state.project.getBanner.data);
+  const {
+    project: { id: project_id, name },
+  } = useSelector((state) => state.project.detailProject.data);
 
   const fetchData = useCallback(async () => {
-    dispatch(getTemplateCategory());
-  }, [dispatch, getTemplateCategory]);
+    await Promise.all[(dispatch(getTemplateCategory()), dispatch(getBanner()))];
+  }, [dispatch, getTemplateCategory, getBanner]);
 
   useEffect(() => {
     fetchData();
@@ -55,6 +69,26 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
     }
   }, [categoryData]);
 
+  useEffect(() => {
+    if (banners && banners.length > 0) {
+      setBanner(banners[0]);
+    }
+  }, [banners]);
+
+  async function onShareProject() {
+    try {
+      await dispatch(
+        shareProject({
+          project_id,
+          banner: banner.value,
+          category_id: curTemplateCategory.value,
+          description,
+          name,
+        })
+      );
+      onNext();
+    } catch (error) {}
+  }
   return (
     <>
       <CustomModal
@@ -64,9 +98,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
         confirmRender={() => "Chia sẻ"}
         cancleRender={() => "Quay lại"}
         manualClose={true}
-        onConfirm={() => {
-          onNext();
-        }}
+        onConfirm={onShareProject}
         onCancle={() => {
           onBack();
         }}
@@ -95,7 +127,6 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
                 options={categoryData}
                 value={curTemplateCategory}
                 onChange={(category) => {
-                  console.log(category);
                   setCurTemplateCategory(category);
                 }}
               />
@@ -111,7 +142,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
                 borderRadius: "10px",
               }}
             >
-              <img src="/images/temp-share.jpeg" alt="Temp" loading="lazy" />
+              <img src={banner ? banner.url : ""} alt="Temp" loading="lazy" />
             </div>
             <Button variant="text" onClick={handleOpen}>
               Thay đổi
@@ -119,6 +150,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
           </div>
         </Box>
       </CustomModal>
+
       <Modal keepMounted open={open} onClose={handleClose}>
         <Box
           sx={{
@@ -136,15 +168,21 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
             sx={{ width: "100%", height: "100%", overflowY: "unset" }}
             cols={3}
           >
-            {BACKGROUND.map((item) => (
-              <ImageListItem
-                key={item.img}
-                onClick={handleClose}
-                sx={{ cursor: "pointer" }}
-              >
-                <img src={`${item.img}`} alt={item.title} loading="lazy" />
-              </ImageListItem>
-            ))}
+            {banners &&
+              banners.length > 0 &&
+              banners.map((banner) => (
+                <ImageListItem
+                  key={banner.value}
+                  onClick={() => handleChangeBanner(banner)}
+                  sx={{ cursor: "pointer" }}
+                >
+                  <img
+                    src={`${banner.url}`}
+                    alt={banner.value}
+                    loading="lazy"
+                  />
+                </ImageListItem>
+              ))}
           </ImageList>
         </Box>
       </Modal>
