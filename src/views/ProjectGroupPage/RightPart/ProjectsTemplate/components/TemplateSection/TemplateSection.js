@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import TemplateCard from "../TemplateCard/TemplateCard";
 import "./index.scss";
 
-const TemplateSection = ({ categoryId, icon, title, extra }) => {
+const TemplateSection = ({ categoryId, icon, title, extra, isEmpty }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.project.getListTemplate.data);
 
@@ -43,6 +43,7 @@ const TemplateSection = ({ categoryId, icon, title, extra }) => {
             {templates.map((template) => (
               <TemplateCard key={template.id} template={template} />
             ))}
+            {isEmpty && <TemplateCard isEmpty />}
           </div>
         </>
       )}
