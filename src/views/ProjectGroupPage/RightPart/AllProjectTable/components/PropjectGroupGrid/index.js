@@ -8,7 +8,8 @@ import PropTypes from "prop-types";
 import React from "react";
 import { useSelector } from "react-redux";
 import "./projectGroupGrid.scss";
-import Scrollbars from "components/Scrollbars";
+import { Scrollbars } from "react-custom-scrollbars";
+
 import ProjectGroupItem from "./ProjectGroupItem/ProjectGroupItem";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import {
@@ -29,10 +30,11 @@ const reorder = (list, startIndex, endIndex) => {
 export const DISABLED_GROUP_BACKGROUND_COLOR = "#e7e8e9";
 export const DEFAULT_GROUP_BACKGROUND_COLOR = "#da4bbe";
 /**
- * convert to 4columns  grid
+ * convert to 4-columns  grid
  * @param {normal array} inputArray
  */
-const convertToGridLayout = (inputArray) => {
+const convertToGridLayout = (inputArray = []) => {
+  inputArray.length > 0 && inputArray.push({ ...inputArray[0], idAdd: "add" });
   return inputArray.reduce((outputArr, current, index) => {
     const rowIndex = Math.floor(index / 4);
     let newArr = JSON.parse(JSON.stringify(outputArr));
@@ -123,75 +125,96 @@ const ProjectGroupGrid = ({
   if (activeLoading) return <LoadingBox />;
 
   return (
-    <div className="projectGroupListGrid">
-      {groupLayout.map((row, index) => {
-        return (
-          <div className="projectGroupListGrid__row">
-            <DragContainer
-              groupName="1"
-              orientation="horizontal"
-              onDrop={(e) => {
-                const { removedIndex, addedIndex, payload } = e;
-                if (removedIndex === null && addedIndex === null) return;
+    <Scrollbars
+      autoHide
+      autoHideTimeout={500}
+      autoHeight
+      autoHeightMax={"100vh"}
+    >
+      <div className="projectGroupListGrid">
+        {groupLayout.map((row, index) => {
+          return (
+            <div className="projectGroupListGrid__row" key={index}>
+              <DragContainer
+                groupName="1"
+                orientation="horizontal"
+                onDrop={(e) => {
+                  const { removedIndex, addedIndex, payload } = e;
+                  if (removedIndex === null && addedIndex === null) return;
 
-                const arrRow = [...groupLayout[index]];
+                  const arrRow = [...groupLayout[index]];
 
-                const updatedRow = applyDrag(arrRow, e);
+                  const updatedRow = applyDrag(arrRow, e);
 
-                const updatedLayout = JSON.parse(JSON.stringify(groupLayout));
-                updatedLayout.splice(index, 1, updatedRow);
+                  const updatedLayout = JSON.parse(JSON.stringify(groupLayout));
+                  updatedLayout.splice(index, 1, updatedRow);
 
-                // reconstruct layout
-                const result = convertToGridLayout(
-                  convertFromGridLayoutToArray(updatedLayout)
-                );
-
-                console.log("addedIndex", addedIndex);
-                if (addedIndex !== null) {
-                  handleSortProjectGroup(
-                    payload.id,
-                    groupLayout[index][addedIndex].sort_index
+                  // reconstruct layout
+                  const result = convertToGridLayout(
+                    convertFromGridLayoutToArray(updatedLayout)
                   );
-                  setGroupLayout(result);
-                }
-              }}
-              getChildPayload={(i) => groupLayout[index][i]}
-            >
-              {row.map((projectGroup) => {
-                const isDefaultGroup =
-                  idGroupDefault === `?groupID=${projectGroup.id}` ||
-                  `?groupID=${projectGroup.id}` === idGroupDefaultLocal;
-                const isDisplayUpdate = get(projectGroup, "can_modify", false);
 
-                const backgroundColor =
-                  projectGroup.color || DEFAULT_GROUP_BACKGROUND_COLOR;
-                return (
-                  <Draggable key={projectGroup.id}>
-                    <ProjectGroupItem
-                      backgroundColor={backgroundColor}
-                      projectGroup={projectGroup}
-                      handleClickEdit={(e) => {
-                        onEdit(e.currentTarget, projectGroup);
-                        setCurrentGroup(projectGroup);
-                      }}
-                      isDefaultGroup={isDefaultGroup}
-                      isDisplayUpdate={isDisplayUpdate}
-                    />
-                  </Draggable>
-                );
-              })}
-            </DragContainer>
-          </div>
-        );
-      })}
-      <div
-        className="projectGroupListGrid__item projectGroupListGrid__item--add"
-        style={{ backgroundColor: DISABLED_GROUP_BACKGROUND_COLOR }}
-        onClick={onOpenCreateModal}
-      >
-        <AddOutlinedIcon />
+                  if (addedIndex !== null) {
+                    if (!groupLayout[index][addedIndex].sort_index) return;
+                    handleSortProjectGroup(
+                      payload.id,
+                      groupLayout[index][addedIndex].sort_index
+                    );
+                    setGroupLayout(result);
+                  }
+                }}
+                getChildPayload={(i) => groupLayout[index][i]}
+              >
+                {row.map((projectGroup) => {
+                  if (projectGroup.idAdd === "add") {
+                    console.log("go here");
+                    return (
+                      <div className="smooth-dnd-draggable-wrapper">
+                        <div
+                          className="projectGroupListGrid__item projectGroupListGrid__item--add "
+                          style={{
+                            backgroundColor: DISABLED_GROUP_BACKGROUND_COLOR,
+                          }}
+                          onClick={onOpenCreateModal}
+                        >
+                          <AddOutlinedIcon />
+                        </div>
+                      </div>
+                    );
+                  }
+
+                  const isDefaultGroup =
+                    idGroupDefault === `?groupID=${projectGroup.id}` ||
+                    `?groupID=${projectGroup.id}` === idGroupDefaultLocal;
+                  const isDisplayUpdate = get(
+                    projectGroup,
+                    "can_modify",
+                    false
+                  );
+
+                  const backgroundColor =
+                    projectGroup.color || DEFAULT_GROUP_BACKGROUND_COLOR;
+                  return (
+                    <Draggable key={projectGroup.id}>
+                      <ProjectGroupItem
+                        backgroundColor={backgroundColor}
+                        projectGroup={projectGroup}
+                        handleClickEdit={(e) => {
+                          onEdit(e.currentTarget, projectGroup);
+                          setCurrentGroup(projectGroup);
+                        }}
+                        isDefaultGroup={isDefaultGroup}
+                        isDisplayUpdate={isDisplayUpdate}
+                      />
+                    </Draggable>
+                  );
+                })}
+              </DragContainer>
+            </div>
+          );
+        })}
       </div>
-    </div>
+    </Scrollbars>
   );
 };
 ProjectGroupGrid.propTypes = {

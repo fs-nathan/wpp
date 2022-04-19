@@ -4,6 +4,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import React from "react";
+import { NavLink } from "react-router-dom";
 import "../projectGroupGrid.scss";
 
 const TooltipContent = ({ groupName, groupDescription }) => {
@@ -30,16 +31,21 @@ function ProjectGroupItem({
       style={{ backgroundColor: backgroundColor }}
       // to={`/projects?groupID=${projectGroup.id}`}
     >
-      <div>{projectGroup?.name}</div>
+      <div className="projectGroupListGrid__item--title">
+        {projectGroup?.name}
+      </div>
 
       <div className="projectGroupListGrid__icon">
         <div className="projectGroupListGrid__icon--list">
-          <div className="projectGroupListGrid__icon--item">
+          <label
+            className="projectGroupListGrid__icon--item"
+            title={`${projectGroup?.number_project || 0} bảng việc`}
+          >
             <ArticleOutlinedIcon />
             <span className="projectGroupListGrid__icon--number">
               {projectGroup?.number_project || 0}
             </span>
-          </div>
+          </label>
 
           {isDefaultGroup && (
             <div className="projectGroupListGrid__icon--item">
@@ -58,7 +64,7 @@ function ProjectGroupItem({
             }
             arrow
             classes={{
-              tooltip: "Custom-MuiTooltip-tooltip",
+              tooltip: "projectGroupListGrid__tooltip",
             }}
             placement="top"
           >

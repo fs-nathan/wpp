@@ -421,6 +421,7 @@ function AllProjectTable({
             onClick={(evt) => {
               evt.stopPropagation();
               _handleSetDefault(`?groupID=${currentGroup.id}`);
+              setMenuAnchor(null);
             }}
           >
             <span>

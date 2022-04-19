@@ -184,7 +184,7 @@ function AllProjectTable({
   }, []);
   React.useEffect(() => {
     setOpenCreate(isCreatingTask);
-  }, []);
+  }, [isCreatingTask]);
 
   const [guideLineModal, setGuideLineModal] = React.useState(false);
   const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
