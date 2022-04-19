@@ -475,6 +475,8 @@ import { getProjectStatistic } from "./project/getStatistic";
 import { getWorkType } from "./project/getWorkType";
 import { getTemplateCategory } from "./project/getTemplateCategory";
 import { getTemplateByCategory } from "./project/getTemplateByCategory";
+import { getNewestTemplate } from "./project/getNewestTemplate";
+import { getDetailTemplate } from "./project/getDetailTemplate";
 import { getListTemplate } from "./project/getListTemplate";
 import { getListTemplateMeShared } from "./project/getListTemplateMeShared";
 import { getBanner } from "./project/getBanner";
@@ -514,6 +516,8 @@ import { createGroupTaskList } from "./task/createGroupTask";
 import { GET_TEMPLATE_CATEGORY } from "constants/actions/project/getTemplateCategory";
 import { GET_TEMPLATE_BY_CATEGORY } from "constants/actions/project/getTemplateByCategory";
 import { GET_LIST_TEMPLATE } from "constants/actions/project/getListTemplate";
+import { GET_NEWEST_TEMPLATE } from "constants/actions/project/getNewestTemplate";
+import { GET_DETAIL_TEMPLATE } from "constants/actions/project/getDetailTemplate";
 import { GET_LIST_TEMPLATE_ME_SHARED } from "constants/actions/project/getListTemplateMeShared";
 import { GET_BANNER } from "constants/actions/project/getBanner";
 
@@ -1074,6 +1078,8 @@ function* rootSaga() {
   yield takeLatest(GET_TEMPLATE_CATEGORY, getTemplateCategory);
   yield takeLatest(GET_TEMPLATE_BY_CATEGORY, getTemplateByCategory);
   yield takeLatest(GET_LIST_TEMPLATE, getListTemplate);
+  yield takeLatest(GET_NEWEST_TEMPLATE, getNewestTemplate);
+  yield takeLatest(GET_DETAIL_TEMPLATE, getDetailTemplate);
   yield takeLatest(
     [GET_LIST_TEMPLATE_ME_SHARED, CANCEL_SHARE_SUCCESS],
     getListTemplateMeShared

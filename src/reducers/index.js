@@ -519,9 +519,15 @@ import getBanner, {
 import getTemplateCategory, {
   initialState as getTemplateCategoryInitialState,
 } from "./project/getTemplateCategory";
+import getNewestTemplate, {
+  initialState as getNewestTemplateInitialState,
+} from "./project/getNewestTemplate";
 import getTemplateByCategory, {
   initialState as getTemplateByCategoryInitialState,
 } from "./project/getTemplateByCategory";
+import getDetailTemplate, {
+  initialState as getDetailTemplateInitialState,
+} from "./project/getDetailTemplate";
 import getListTemplate, {
   initialState as getListTemplateInitialState,
 } from "./project/getListTemplate";
@@ -655,7 +661,9 @@ const rootReducer = combineReducers({
     getProjectStatistic,
     getBanner,
     getTemplateCategory,
+    getNewestTemplate,
     getTemplateByCategory,
+    getDetailTemplate,
     getListTemplate,
     getListTemplateMeShared,
     getWorkType,
@@ -895,7 +903,9 @@ export const DEFAULT_STATE = {
     getWorkType: getWorkTypeInitialState,
     getBanner: getBannerInitialState,
     getTemplateCategory: getTemplateCategoryInitialState,
+    getNewestTemplate: getNewestTemplateInitialState,
     getTemplateByCategory: getTemplateByCategoryInitialState,
+    getDetailTemplate: getDetailTemplateInitialState,
     getListTemplate: getListTemplateInitialState,
     getListTemplateMeShared: getListTemplateMeSharedInitialState,
     countPersonalProjectsBoard: countPersonalProjectsBoardInitialState,

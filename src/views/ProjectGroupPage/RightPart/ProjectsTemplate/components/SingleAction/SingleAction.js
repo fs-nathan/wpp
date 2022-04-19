@@ -28,6 +28,7 @@ const SingleAction = () => {
   const { id: projectId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  const template = useSelector((state) => state.project.getDetailTemplate.data);
 
   const { t } = useTranslation();
   const handleUnShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +71,6 @@ const SingleAction = () => {
   const status = useSelector((state) => state.project.cancelShare.status);
 
   useEffect(() => {
-    console.log(status);
     if (status === CANCEL_SHARE_SUCCESS) {
       dispatch(getListTemplateMeShared());
     }
@@ -87,34 +87,36 @@ const SingleAction = () => {
 
   return (
     <>
-      <div>
-        <Button
-          aria-describedby={unShareId}
-          variant="contained"
-          sx={{
-            backgroundColor: "#f0f2f5",
-            color: "red",
-            "&:hover": {
+      {template.is_me_share && (
+        <div>
+          <Button
+            aria-describedby={unShareId}
+            variant="contained"
+            sx={{
               backgroundColor: "#f0f2f5",
-            },
-          }}
-          onClick={handleUnShareClick}
-        >
-          Huỷ chia sẻ
-        </Button>
-        <Popover
-          id={unShareId}
-          open={openUnShare}
-          anchorEl={anchorUnShareEl}
-          onClose={handleUnShareClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-        >
-          <DialogUnShare onClose={handleUnShareClose} onOk={handleUnShare} />
-        </Popover>
-      </div>
+              color: "red",
+              "&:hover": {
+                backgroundColor: "#f0f2f5",
+              },
+            }}
+            onClick={handleUnShareClick}
+          >
+            Huỷ chia sẻ
+          </Button>
+          <Popover
+            id={unShareId}
+            open={openUnShare}
+            anchorEl={anchorUnShareEl}
+            onClose={handleUnShareClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <DialogUnShare onClose={handleUnShareClose} onOk={handleUnShare} />
+          </Popover>
+        </div>
+      )}
       <div>
         <Button
           aria-describedby={refferId}

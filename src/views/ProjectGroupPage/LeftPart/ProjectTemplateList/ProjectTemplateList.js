@@ -67,14 +67,6 @@ const ProjectTemplateList = ({
     (state) => state.project.getTemplateCategory.data
   );
 
-  const templates = useSelector(
-    (state) => state.project.getListTemplateMeShared.data
-  );
-
-  function handleTemplateChoose(id) {
-    history.push("/projects/template/" + id);
-  }
-
   function handleCategoryChoose(id) {
     history.push("/projects/template/group/" + id);
   }
@@ -118,27 +110,8 @@ const ProjectTemplateList = ({
                 sx={{ pl: 6 }}
               >
                 <ListItemText primary="Đã chia sẻ" />
-                {templates &&
-                  templates.length > 0 &&
-                  (isSharedOpen ? <ExpandLess /> : <ExpandMore />)}
               </ListItemButton>
             </ListItem>
-            <Collapse in={isSharedOpen} timeout="auto" unmountOnExit>
-              <List component="div">
-                {templates &&
-                  templates.length > 0 &&
-                  templates.map((child) => (
-                    <ListItem disablePadding disableGutters key={child.id}>
-                      <ListItemButton
-                        sx={{ pl: 8 }}
-                        onClick={() => handleTemplateChoose(child.id)}
-                      >
-                        <ListItemText primary={child.name} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-              </List>
-            </Collapse>
 
             <ListItem disablePadding disableGutters>
               <ListItemButton
