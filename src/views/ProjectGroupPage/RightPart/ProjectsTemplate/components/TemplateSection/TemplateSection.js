@@ -20,6 +20,16 @@ const TemplateSection = ({ categoryId, icon, title, extra, isEmpty }) => {
     }
     return [];
   }, [data]);
+  console.log(
+    "🚀 ---------------------------------------------------------------------"
+  );
+  console.log(
+    "🚀 ~ file: TemplateSection.js ~ line 23 ~ TemplateSection ~ data",
+    data
+  );
+  console.log(
+    "🚀 ---------------------------------------------------------------------"
+  );
 
   const fetchData = useCallback(async () => {
     await Promise.all[dispatch(getListTemplate())];
@@ -40,9 +50,10 @@ const TemplateSection = ({ categoryId, icon, title, extra, isEmpty }) => {
           </div>
 
           <div className="template-group__section__card">
-            {templates.map((template) => (
-              <TemplateCard key={template.id} template={template} />
-            ))}
+            {data &&
+              templates.map((template) => (
+                <TemplateCard key={template.id} template={template} />
+              ))}
             {isEmpty && <TemplateCard isEmpty />}
           </div>
         </>

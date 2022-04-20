@@ -36,7 +36,16 @@ const ProjectGroupTemplate = () => {
     fetchData();
   }, [fetchData]);
   function handleClick() {}
-
+  console.log(
+    "🚀 -----------------------------------------------------------------------------------------------------"
+  );
+  console.log(
+    "🚀 ~ file: ProjectGroupTemplate.js ~ line 43 ~ ProjectGroupTemplate ~ currentCategory",
+    currentCategory
+  );
+  console.log(
+    "🚀 -----------------------------------------------------------------------------------------------------"
+  );
   return (
     <>
       {currentCategory && (
