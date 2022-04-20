@@ -1,4 +1,5 @@
 import { CircularProgress, Menu, MenuItem } from "@material-ui/core";
+import { TimeRangePopover } from "components/CustomPopover";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
@@ -44,7 +45,7 @@ function AllProjectTable({
   const sortLocal = JSON.parse(dataSort);
   const { t } = useTranslation();
   const [data, setData] = React.useState(projects?.projects || []);
-  const [, setTimeAnchor] = React.useState(null);
+  const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
@@ -303,6 +304,17 @@ function AllProjectTable({
           </React.Fragment>
         )}
       </Container>
+
+      <TimeRangePopover
+        bgColor={bgColor}
+        anchorEl={timeAnchor}
+        setAnchorEl={setTimeAnchor}
+        timeOptionDefault={timeType}
+        handleTimeRange={(timeType, startDate, endDate) => {
+          handleTimeType(timeType);
+          // handleTimeRange(startDate, endDate);
+        }}
+      />
     </>
   );
 }
