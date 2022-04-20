@@ -1,6 +1,4 @@
 import { Grid } from "@material-ui/core";
-import { CustomTableContext } from "components/CustomTable";
-import HeaderProject from "components/HeaderProject";
 import { find, get, isNil } from "lodash";
 import React, { useContext } from "react";
 import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
@@ -19,14 +17,8 @@ const DashboardPresenters = ({
   handleExpand,
   status = {},
 }) => {
+  const topbar = document.getElementById("project-topbar");
   const { modalSetting, setModalSetting } = useContext(CustomLayoutContext);
-
-  const disableShowHide = !isNil(
-    find(
-      showHidePendings.pendings,
-      (pending) => pending === get(project.project, "id")
-    )
-  );
   const history = useHistory();
   const [openModalAlert, setOpenModalAlert] = React.useState({
     isOpen: false,
@@ -78,15 +70,6 @@ const DashboardPresenters = ({
 
   return (
     <div>
-      {/* <HeaderTableCustom
-        project={project}
-        memberID={memberID}
-        canUpdateProject={canUpdateProject}
-        disableShowHide={disableShowHide}
-        handleOpenModal={_handleOpenModal}
-        handleExpand={handleExpand}
-      /> */}
-
       <Grid
         container
         spacing={2}
@@ -94,7 +77,7 @@ const DashboardPresenters = ({
           width: "100%",
           margin: "0",
           overflowY: "scroll",
-          maxHeight: "calc(100vh - 130px)",
+          maxHeight: `calc(100vh - ${topbar?.clientHeight}px)`,
         }}
       >
         <Grid item xs={7}>

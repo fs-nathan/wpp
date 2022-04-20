@@ -112,7 +112,7 @@ const HeaderProject = ({
   };
 
   return (
-    <div className={classes.topbar}>
+    <div id="project-topbar" className={classes.topbar}>
       <div className={classes.burger} onClick={onExpand}>
         <Icon path={mdiMenu} size={1.2} />
       </div>

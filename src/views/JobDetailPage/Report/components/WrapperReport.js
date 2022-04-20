@@ -5,13 +5,15 @@ import LeftReportContent from "./LeftReportContent";
 import ResultWorking from "./ResultWorking";
 
 const WrapperReport = () => {
+  const topbar = document.getElementById("project-topbar");
+
   return (
     <Grid
       container
       spacing={2}
       style={{
         padding: "15px 25px",
-        maxHeight: "calc(100vh - 130px)",
+        maxHeight: `calc(100vh - ${topbar?.clientHeight}px)`,
         width: "calc(100% + 6px)",
         marginTop: 0,
         overflow: "auto",

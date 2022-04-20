@@ -15,7 +15,7 @@ import GroupColumn from "./GroupColumn";
 import HeaderColumn from "./HeaderColumn";
 
 const customStyleTable = {
-  maxHeight: "calc((((100vh - 55px) - 60px) - 55px) - 12px)",
+  maxHeight: "calc((((100vh - 55px)) - 55px) - 15px)",
   overflow: "visible",
 };
 
