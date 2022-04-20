@@ -62,7 +62,7 @@ const WPTableGroup = ({
     useSticky,
     useExpanded
   );
-  const {projectId} = useParams();
+  const { projectId } = useParams();
   const { getTableProps, headerGroups, rows, prepareRow } = table;
 
   const _handleDragEnd = (result) => {
@@ -74,6 +74,7 @@ const WPTableGroup = ({
   };
 
   const _renderRowAddGroup = (row) => {
+    if (!row) return null;
     const rowProps = row.getRowProps();
     return (
       <div className="tr row-add row-add-group" {...rowProps}>
