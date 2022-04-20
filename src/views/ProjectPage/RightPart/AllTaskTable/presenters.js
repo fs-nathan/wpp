@@ -13,16 +13,7 @@ import {
   SnackbarEmitter,
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
-import { exportToCSV } from "helpers/utils/exportData";
-import {
-  cloneDeep,
-  find,
-  flattenDeep,
-  get,
-  isNil,
-  join,
-  uniqueId,
-} from "lodash";
+import { cloneDeep, get, uniqueId } from "lodash";
 import React, { useContext, useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -69,7 +60,6 @@ function AllTaskTable({
   const { itemLocation } = useContext(CustomLayoutContext);
   const { projectId } = useParams();
   const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
-  const isLoading = useSelector(({ task }) => task?.listTask?.loading);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [state, dispatchState] = useReducer(reducer, {
     ...initialState,
@@ -159,42 +149,6 @@ function AllTaskTable({
     if (!dataColumn) return;
     /* Dispatching an action to the Redux store. */
     dispatch(listColumns({ project_id: projectId }));
-  };
-
-  const disableShowHide = !isNil(
-    find(
-      showHidePendings.pendings,
-      (pending) => pending === get(project.project, "id")
-    )
-  );
-
-  const _exportData = () => {
-    const data = flattenDeep(
-      tasks.tasks.map((groupTask) =>
-        get(groupTask, "tasks", []).map((task) => ({
-          id: get(task, "id", ""),
-          groupTask: get(groupTask, "name", ""),
-          name: get(task, "name", ""),
-          status: get(task, "status_name", ""),
-          duration:
-            get(task, "duration_value", 0) +
-            " " +
-            get(task, "duration_unit", ""),
-          start_time: get(task, "start_time", ""),
-          start_date: get(task, "start_date", ""),
-          end_time: get(task, "end_time", ""),
-          end_date: get(task, "end_date", ""),
-          progress: get(task, "complete", 0) + "%",
-          priority: get(task, "priority_name", ""),
-          members: join(
-            get(task, "members", []).map((member) => get(member, "name")),
-            ","
-          ),
-        }))
-      )
-    );
-
-    exportToCSV(data, "tasks");
   };
 
   const _handleUpdateFieldSuccess = (data) => {
@@ -324,10 +278,6 @@ function AllTaskTable({
     );
   };
 
-  const _handleReOrderColumn = (id) => {
-    console.log("aaaa", id);
-  };
-
   return (
     <Container>
       {state.isEmpty && (
@@ -341,21 +291,6 @@ function AllTaskTable({
 
       {!state.isEmpty && (
         <>
-          {/* <HeaderTableCustom
-            project={project}
-            memberID={memberID}
-            canUpdateProject={canUpdateProject}
-            disableShowHide={disableShowHide}
-            handleOpenModal={handleOpenModal}
-            handleShowOrHideProject={handleShowOrHideProject}
-            _exportData={_exportData}
-            handleExpand={handleExpand}
-            onReOrderColumns={_handleReOrderColumn}
-            onAddColumns={_handleAddNewColumns}
-            onHideColumn={_handleHideColumn}
-            setItemLocation={setItemLocation}
-          /> */}
-
           <WPReactTable
             isGroup
             isCollapsed={expand}

@@ -295,7 +295,6 @@ const LeftBar = ({
   }, [location.pathname]);
 
   const [currentRoute, setRoute] = React.useState(location.pathname);
-  console.log(numberMessageNotViewState);
   const [openCreateAccount, setOpenCreateAccount] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [openAddUSerModal, setOpenAddUserModal] = React.useState(false);
