@@ -22,7 +22,7 @@ async function doCreateProject({
   projectGroupId,
   priority,
   currency,
-  project_label_id,
+  projectLabelId,
   view_default,
 }) {
   try {
@@ -35,7 +35,7 @@ async function doCreateProject({
         project_group_id: projectGroupId,
         priority,
         currency,
-        project_label_id,
+        project_label_id: projectLabelId,
         view_default,
       },
     };

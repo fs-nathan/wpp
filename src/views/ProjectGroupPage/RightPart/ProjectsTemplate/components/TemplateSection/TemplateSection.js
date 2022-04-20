@@ -1,21 +1,63 @@
 import { Button } from "@mui/material";
+import { getListTemplate } from "actions/project/getListTemplate";
+import { getTemplateByCategory } from "actions/project/getTemplateByCategory";
 import { DETAIL_TEMPLATE } from "mocks/detail-template";
-import React from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import TemplateCard from "../TemplateCard/TemplateCard";
 import "./index.scss";
-const TemplateSection = ({ icon, title, templates, extra }) => {
+
+const TemplateSection = ({ categoryId, icon, title, extra, isEmpty }) => {
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.project.getListTemplate.data);
+
+  const templates = useMemo(() => {
+    if (data && data.length > 0) {
+      const currentTemplates = data.find(
+        (template) => template.category_id === categoryId
+      );
+      return currentTemplates ? currentTemplates.templates : [];
+    }
+    return [];
+  }, [data]);
+  console.log(
+    "🚀 ---------------------------------------------------------------------"
+  );
+  console.log(
+    "🚀 ~ file: TemplateSection.js ~ line 23 ~ TemplateSection ~ data",
+    data
+  );
+  console.log(
+    "🚀 ---------------------------------------------------------------------"
+  );
+
+  const fetchData = useCallback(async () => {
+    await Promise.all[dispatch(getListTemplate())];
+  }, [dispatch, getListTemplate, categoryId]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
   return (
     <div className="template-group__section">
-      <div className="template-group__section__title">
-        <span>{icon}</span>
-        <h3>{title}</h3>
-        <div>{extra && extra}</div>
-      </div>
-      <div className="template-group__section__card">
-        {templates.map((template) => (
-          <TemplateCard key={template.id} template={template} />
-        ))}
-      </div>
+      {templates && templates.length > 0 && (
+        <>
+          <div className="template-group__section__title">
+            <span>{icon}</span>
+            <h3>{title}</h3>
+            <div>{extra && extra}</div>
+          </div>
+
+          <div className="template-group__section__card">
+            {data &&
+              templates.map((template) => (
+                <TemplateCard key={template.id} template={template} />
+              ))}
+            {isEmpty && <TemplateCard isEmpty />}
+          </div>
+        </>
+      )}
     </div>
   );
 };

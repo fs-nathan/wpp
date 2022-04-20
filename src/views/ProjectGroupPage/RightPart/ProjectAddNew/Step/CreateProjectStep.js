@@ -31,10 +31,14 @@ import { useHistory, useLocation } from "react-router-dom";
 import SelectGroupProject from "./SelectGroupProject";
 import { connect, useSelector } from "react-redux";
 import { createProject } from "actions/project/createProject";
+import {
+  CREATE_PROJECT_FAIL,
+  CREATE_PROJECT_SUCCESS,
+} from "constants/actions/project/createProject";
 
 // import { ListTagsCreateProject } from "./components";
 
-const CreateProjectStep = ({ onNext, doCreateProject, onBack }) => {
+const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
   const { t } = useTranslation();
   const [haveDescription, setHaveDescription] = useState(false);
   const [name, setName, errorName] = useRequiredString("", 200);
@@ -46,14 +50,26 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack }) => {
     useState(false);
   const [view_default, setViewDefault] = useState(1);
 
-  function onNextHandler() {
-    // doCreateProject({
-    //   name,
-    //   description,
-    //   project_label_id: curProjectGroupId,
-    //   view_default,
-    // });
-    onNext();
+  useEffect(() => {
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      // history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
+      onNext(e.detail.project_id);
+    });
+    return CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      onNext(e.detail.project_id);
+    });
+  }, [onNext]);
+
+  async function onNextHandler() {
+    try {
+      await doCreateProject({
+        name,
+        description,
+        projectGroupId: curProjectGroupId,
+        projectLabelId: curProjectGroupId,
+        view_default,
+      });
+    } catch (error) {}
   }
 
   return (
@@ -197,16 +213,27 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack }) => {
     </>
   );
 };
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  status: state.project.createProject.status,
+});
 const mapDispatchToProps = (dispatch) => {
   return {
-    doCreateProject: ({ name, description, project_label_id, view_default }) =>
+    doCreateProject: ({
+      name,
+      description,
+      projectGroupId,
+      projectLabelId,
+      view_default,
+    }) =>
       dispatch(
         createProject({
           name,
           description,
-          project_label_id,
+          projectGroupId,
+          projectLabelId,
           view_default,
+          priority: 1,
+          currency: "1",
         })
       ),
   };

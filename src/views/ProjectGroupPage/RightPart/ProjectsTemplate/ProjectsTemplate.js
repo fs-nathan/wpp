@@ -1,6 +1,6 @@
 import { AutoComplete, Input } from "antd";
 import { SUGGESTION } from "mocks/suggestion";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "./index.scss";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 import TemplateGroup from "./components/TemplateGroup/TemplateGroup";
@@ -11,25 +11,9 @@ import AcUnitIcon from "@mui/icons-material/AcUnit";
 import { Button } from "@mui/material";
 import { TEMPLATE_GROUP } from "mocks/template-group";
 import SearchBar from "./components/SearchBar/SearchBar";
-
-// const searchResult = (query: string) =>
-//   SUGGESTION.map((suggestion) => {
-//     // const category = `${query}${idx}`;
-//     return {
-//       value: suggestion.id,
-//       label: (
-//         <div className="suggestion">
-//           <div className="suggestion__image">
-//             <img src={suggestion.thumbnail} alt="" />
-//           </div>
-//           <div className="suggestion__content">
-//             <h3>{suggestion.title}</h3>
-//             <p>bởi {suggestion.author}</p>
-//           </div>
-//         </div>
-//       ),
-//     };
-//   });
+import { getTemplateCategory } from "actions/project/getTemplateCategory";
+import { useDispatch, useSelector } from "react-redux";
+import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 
 const ProjectsTemplate = () => {
   const handleOnSearch = (string, results) => {
@@ -52,6 +36,32 @@ const ProjectsTemplate = () => {
     console.log("Focused");
   };
 
+  const dispatch = useDispatch();
+  const categories = useSelector(
+    (state) => state.project.getTemplateCategory.data
+  );
+
+  const templates = useSelector(
+    (state) => state.project.getListTemplateMeShared.data
+  );
+
+  const fetchTemplateCategory = useCallback(async () => {
+    try {
+      dispatch(getTemplateCategory());
+    } catch (error) {}
+  }, [dispatch, getTemplateCategory]);
+
+  const fetchListTemplateMeShared = useCallback(async () => {
+    try {
+      dispatch(getListTemplateMeShared());
+    } catch (error) {}
+  }, [dispatch, getListTemplateMeShared]);
+
+  useEffect(() => {
+    fetchTemplateCategory();
+    fetchListTemplateMeShared();
+  }, [fetchTemplateCategory, fetchListTemplateMeShared]);
+
   return (
     <div className="project-template-page__wrapper">
       <div className="project-template-page">
@@ -69,43 +79,45 @@ const ProjectsTemplate = () => {
 
         {/*Content*/}
         <div className="template-group__container">
-          {new Array(7).fill(0).map(() => (
-            <TemplateGroup
-              thumbnail="https://images.unsplash.com/photo-1551782450-a2132b4ba21d"
-              title="Business"
-            />
-          ))}
+          {categories &&
+            categories.length > 0 &&
+            categories.map((category) => (
+              <TemplateGroup
+                key={category.id}
+                thumbnail={category.image}
+                title={category.name}
+              />
+            ))}
         </div>
-
+        {/* // TODO: ? Recently shared */}
         <TemplateSection
           icon={<AcUnitIcon fontSize="large" />}
           title="Mẫu mới chia sẻ"
-          templates={new Array(3).fill(DETAIL_TEMPLATE)}
+          // templates={new Array(3).fill(DETAIL_TEMPLATE)}
         />
 
-        {TEMPLATE_GROUP.map((group) => (
-          <TemplateSection
-            key={group.id}
-            icon={<AcUnitIcon fontSize="large" />}
-            title={group.name}
-            templates={new Array(3).fill({
-              ...DETAIL_TEMPLATE,
-              thumbnail: group.thumbnail,
-            })}
-            extra={
-              <Button
-                variant="text"
-                sx={{
-                  color: "#969ead",
-                  backgroundColor: "#fafbfc",
-                  textTransform: "initial",
-                }}
-              >
-                Thêm mẫu cho {group.name}
-              </Button>
-            }
-          />
-        ))}
+        {categories &&
+          categories.length > 0 &&
+          categories.map((category) => (
+            <TemplateSection
+              key={category.id}
+              categoryId={category.id}
+              icon={<AcUnitIcon fontSize="large" />}
+              title={category.name}
+              extra={
+                <Button
+                  variant="text"
+                  sx={{
+                    color: "#969ead",
+                    backgroundColor: "#fafbfc",
+                    textTransform: "initial",
+                  }}
+                >
+                  Thêm mẫu cho {category.name}
+                </Button>
+              }
+            />
+          ))}
       </div>
     </div>
   );

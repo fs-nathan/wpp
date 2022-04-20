@@ -10,7 +10,7 @@ export const createProject = ({
   projectGroupId,
   priority,
   currency,
-  project_label_id,
+  projectLabelId,
   view_default,
 }) => ({
   type: CREATE_PROJECT,
@@ -20,8 +20,8 @@ export const createProject = ({
     projectGroupId,
     priority,
     currency,
-    project_label_id,
-    view_default: view_default,
+    projectLabelId,
+    view_default,
   },
 });
 

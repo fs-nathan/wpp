@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
-const AddNewDoneStep = ({ onNext }) => {
+const AddNewDoneStep = ({ onNext, projectId }) => {
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -14,13 +14,11 @@ const AddNewDoneStep = ({ onNext }) => {
   function navigate() {
     switch (option) {
       case 0:
-        history.push("/projects/task-table/5f7829ffc6d3bb4e519b7e9c");
+        //  history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
+        history.push(`/projects/task-table/${projectId}`);
         break;
       case 1:
-        history.push(
-          "/projects/task-table/5f7829ffc6d3bb4e519b7e9c?open-employee=true"
-        );
-
+        history.push(`/projects/task-table/${projectId}?open-employee=true`);
         break;
     }
   }
