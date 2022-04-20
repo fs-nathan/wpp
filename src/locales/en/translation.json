@@ -2536,6 +2536,7 @@
   "NOTIFY_MEMBER_CHANGE_FIELD": "Notify the member to change the value in this field",
   "LABEL_NAME": "Label name",
   "POSITION": "Position",
+  "TYPE": "Type",
   "FIND_FIELD_DATA": "Find data fields",
   "DATA_FIELD_EXITS": "Data exists",
   "ADD_DESCRIPTION": "Add description",

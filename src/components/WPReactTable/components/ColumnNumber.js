@@ -24,6 +24,13 @@ const ColumnNumber = ({
     if (!isFocus) refValue.current = e.target.value;
   };
 
+  const _handleKeyUp = (e) => {
+    if (e.key === "Enter") {
+      setIsFocus(false);
+      e.target.blur();
+    }
+  };
+
   const _handleBlur = (e) => {
     setIsFocus(false);
     e.target.closest(".td")?.classList?.remove("focus");
@@ -65,6 +72,7 @@ const ColumnNumber = ({
       })}
       onChange={_handleChange}
       onBlur={_handleBlur}
+      onKeyUp={_handleKeyUp}
       onFocus={_handleFocus}
       placeholder="—"
       value={finalValue()}

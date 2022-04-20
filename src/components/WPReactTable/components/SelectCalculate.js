@@ -13,7 +13,7 @@ const SelectCalculate = () => {
 
   return (
     <Grid item xs={3} pt={0}>
-      <TitleSectionModal label={t("POSITION")} style={{ marginTop: 0 }} />
+      <TitleSectionModal label={t("TYPE")} style={{ marginTop: 0 }} />
       <SelectFieldTypeDropdown
         options={[
           { text: t("total"), type: 1 },

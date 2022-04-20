@@ -93,12 +93,31 @@ const EditColumnModal = React.forwardRef(
       /* data_type: The data type of the project field that is currently being edited.
       /* name: The name of the project field that is currently being edited. */
       const dataUpdate = {
+        project_id: projectId,
+        name: state.name,
+
         task_id: state.taskId,
         project_field_id: state.idType,
-        project_id: projectId,
         data_type: state.dataType,
-        name: state.name,
       };
+
+      switch (data_type) {
+        case 2:
+          dataUpdate["format"] = contentValue.format;
+          dataUpdate["decimal"] = contentValue.decimal;
+          dataUpdate["position_format"] = contentValue.position_format;
+          dataUpdate["data_type"] = data_type;
+          break;
+        case 3:
+          dataUpdate["options"] = contentValue;
+          dataUpdate["data_type"] = data_type;
+          break;
+        case 1:
+          dataUpdate["data_type"] = data_type;
+          break;
+        default:
+          break;
+      }
 
       if (data_type === 3) dataUpdate["options"] = contentValue;
       dispatch(
@@ -151,19 +170,19 @@ const EditColumnModal = React.forwardRef(
         setOpen={handleOpen}
         confirmRender={() => t("EDIT")}
         cancleRender={() => t("DELETE_FIELDS")}
-        titleComponent={
-          <TitleModalAdd
-            isEditForm
-            value={state.value}
-            handleChangeTab={handleChangeTab}
-            setOpen={handleOpen}
-          />
-        }
+        // titleComponent={
+        //   <TitleModalAdd
+        //     isEditForm
+        //     value={state.value}
+        //     handleChangeTab={handleChangeTab}
+        //     setOpen={handleOpen}
+        //   />
+        // }
         canConfirm={!!state.name}
         className="offerModal"
         height={"medium"}
         manualClose={true}
-        onCancle={_handleDelete}
+        onCancle={() => handleOpen(false)}
         onConfirm={_handleConfirm}
       >
         <AlertModal
@@ -223,7 +242,7 @@ const EditColumnModal = React.forwardRef(
                 defaultNumFix={state.defaultNumFix}
               />
 
-              <Grid item>
+              <Grid item xs={12}>
                 <WrapperCheckbox
                   control={<Checkbox name="gilad" />}
                   label={t("ADD_FILED_TO_LIBRARY")}
