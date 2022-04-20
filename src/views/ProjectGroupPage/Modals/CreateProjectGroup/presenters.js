@@ -176,7 +176,7 @@ function CreateProjectGroup({
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
       manualClose={true}
-      height={"mini"}
+      height={ !isAddingDescription ?"mini" :"short" }
       maxWidth={"sm"}
       className=""
     >

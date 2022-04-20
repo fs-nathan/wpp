@@ -1,24 +1,31 @@
 .projectGroupListGrid {
-  // display: grid;
+  margin: 0 auto;
+
   // grid-template-columns: repeat(4, 265px);
   padding: 45px 80px;
   width: 100%;
-  min-height: calc(100vh - 60px);
+  height: calc(100vh - 60px);
   box-sizing: border-box;
   background-color: #f5f7f9;
   &__row {
     display: flex;
     margin-bottom: 25px;
     width: 100%;
+    justify-content: center;
 
     .smooth-dnd-container {
-      width: 100%;
-      display: flex;
+      min-width: 80%;
+      table-layout: fixed;
     }
     .smooth-dnd-draggable-wrapper {
-      justify-content: start;
-      flex: 1;
-      max-width: 265px;
+      max-width: 220px;
+      width: 22%;
+    }
+    @media only screen and (max-width: 1599px) {
+      .smooth-dnd-container {
+        min-width: 90%;
+      }
+     
     }
   }
   &__item--add {
@@ -30,13 +37,12 @@
     vertical-align: top;
   }
   &__item {
+    margin-right: 25px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border-radius: 5px;
-    max-width: 220px;
     height: 100px;
-    margin-right: 25px;
     flex-grow: 1;
     // background-color: #da4bbe;
     padding: 18px;
@@ -87,6 +93,8 @@
       -webkit-box-orient: vertical;
       text-overflow: ellipsis;
       overflow: hidden;
+      color: white;
+      text-decoration: none;
     }
   }
 

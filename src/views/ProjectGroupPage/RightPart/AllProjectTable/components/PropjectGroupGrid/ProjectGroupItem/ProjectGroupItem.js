@@ -29,11 +29,13 @@ function ProjectGroupItem({
     <div
       className="projectGroupListGrid__item"
       style={{ backgroundColor: backgroundColor }}
-      // to={`/projects?groupID=${projectGroup.id}`}
     >
-      <div className="projectGroupListGrid__item--title">
+      <NavLink
+        className="projectGroupListGrid__item--title"
+        to={`/projects?groupID=${projectGroup.id}`}
+      >
         {projectGroup?.name}
-      </div>
+      </NavLink>
 
       <div className="projectGroupListGrid__icon">
         <div className="projectGroupListGrid__icon--list">
