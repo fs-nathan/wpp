@@ -73,43 +73,47 @@ const SortListColumn = React.forwardRef(
             <RootRef rootRef={provided.innerRef}>
               <List style={getListStyle(snapshot.isDraggingOver)}>
                 {items.map((item, index) => {
+                  console.log("provided", item?.is_default);
                   return (
                     <Draggable
                       key={item.id}
                       draggableId={item.id}
                       index={index}
+                      isDragDisabled={item?.is_default}
                     >
-                      {(provided, snapshot) => (
-                        <ListItem
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                          style={getItemStyle(
-                            snapshot.isDragging,
-                            provided.draggableProps.style
-                          )}
-                        >
-                          <ListItemIcon style={{ minWidth: "20px" }}>
-                            <DragIndicatorIcon
-                              style={{
-                                width: "18px",
-                                height: "18px",
-                                fill: "#6d6e6f",
-                              }}
+                      {(provided, snapshot) => {
+                        return (
+                          <ListItem
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            {...provided.dragHandleProps}
+                            style={getItemStyle(
+                              snapshot.isDragging,
+                              provided.draggableProps.style
+                            )}
+                          >
+                            <ListItemIcon style={{ minWidth: "20px" }}>
+                              <DragIndicatorIcon
+                                style={{
+                                  width: "18px",
+                                  height: "18px",
+                                  fill: "#6d6e6f",
+                                }}
+                              />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={item.name}
+                              style={{ color: "#1e1f21" }}
                             />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={item.name}
-                            style={{ color: "#1e1f21" }}
-                          />
-                          <AntSwitch
-                            onChange={(e) => onChangeCheck(e, item.id, index)}
-                            defaultChecked={item.is_show}
-                            style={{ marginRight: 5 }}
-                            inputProps={{ "aria-label": "ant design" }}
-                          />
-                        </ListItem>
-                      )}
+                            <AntSwitch
+                              onChange={(e) => onChangeCheck(e, item.id, index)}
+                              defaultChecked={item.is_show}
+                              style={{ marginRight: 5 }}
+                              inputProps={{ "aria-label": "ant design" }}
+                            />
+                          </ListItem>
+                        );
+                      }}
                     </Draggable>
                   );
                 })}

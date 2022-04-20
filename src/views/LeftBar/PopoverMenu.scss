@@ -60,13 +60,17 @@
 
 .background-apply {
   background: rgb(255, 150, 1);
-  background: linear-gradient(90deg, rgba(255, 150, 1, 1) 52%, rgba(235, 138, 1, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 150, 1, 1) 52%,
+    rgba(235, 138, 1, 1) 100%
+  );
   color: white !important;
 }
 
-.MuiList-root {
-  padding: 0 0 !important;
-}
+// .MuiList-root {
+//   padding: 0 0 !important;
+// }
 
 .background-boolean {
   background-repeat: no-repeat;
