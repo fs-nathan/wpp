@@ -18,7 +18,7 @@ const getTableHeight = () => {
   const rootDocument = document.getElementById("root");
   const height = rootDocument.offsetHeight;
   const headerTableNav = document.getElementById("header-table-group");
-  return height - (headerTableNav.offsetHeight + 37);
+  return height - (headerTableNav?.offsetHeight || 0 + 37);
 };
 
 const WPTable = ({
@@ -30,8 +30,6 @@ const WPTable = ({
   onSort = () => {},
 }) => {
   const [dataRows, setDataRows] = React.useState([]);
-  const refSetted = React.useRef(false);
-
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 120,
@@ -88,7 +86,6 @@ const WPTable = ({
       <div
         className="tr"
         {...provided.draggableProps}
-        {...provided.dragHandleProps}
         ref={provided.innerRef}
         style={getStyle({
           draggableStyle: provided.draggableProps.style,
