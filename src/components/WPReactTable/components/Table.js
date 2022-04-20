@@ -17,9 +17,8 @@ export function reorder(list, startIndex, endIndex) {
 const getTableHeight = () => {
   const rootDocument = document.getElementById("root");
   const height = rootDocument.offsetHeight;
-  const headerNav = document.getElementById("topNavId");
   const headerTableNav = document.getElementById("header-table-group");
-  return height - (headerNav.offsetHeight + headerTableNav.offsetHeight + 37);
+  return height - (headerTableNav.offsetHeight + 37);
 };
 
 const WPTable = ({

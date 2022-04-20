@@ -5,7 +5,6 @@ import {
   getViewedChatSuccess,
   updateChatState,
 } from "actions/chat/chat";
-import { setNumberMessageNotView } from "actions/chat/threadChat";
 import {
   getListTaskDetail,
   getTaskDetailTabPartSuccess,
@@ -15,17 +14,10 @@ import {
   JOIN_CHAT_EVENT,
   JOIN_PROJECT_EVENT,
 } from "constants/actions/chat/chat";
-import {
-  CustomEventDispose,
-  CustomEventListener,
-  GET_REMIND_DETAIL_FAIL,
-} from "constants/events";
 import { differenceInDays } from "date-fns";
 import SwitchAccount from "favicon/SwitchAccount";
 import useNotificationFavicon from "favicon/useNotificationFavicon";
 import { CHAT_TYPE, findTask } from "helpers/jobDetail/arrayHelper";
-// import TopBar from "../views/TopBar";
-import { get } from "lodash";
 import findIndex from "lodash/findIndex";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
@@ -35,39 +27,48 @@ import { Route, Switch } from "react-router-dom";
 import io from "socket.io-client";
 import styled from "styled-components";
 import { postModule } from "views/HomePage/redux/post";
-import { loadDetailOffer } from "views/OfferPage/redux/actions";
 import useWebpush from "webpush/useWebpush";
-import { getRemindDetail } from "../actions/calendar/alarmCalendar/getRemindDetail";
 import {
   actioGetSettingDate,
   actionFetchGroupDetail,
   actionFetchListColor,
 } from "../actions/setting/setting";
 import {
-  actionActiveGroup,
   actionChangeNumMessageNotView,
   actionChangeNumNotificationNotView,
-  actionGetProfile,
   actionToast,
   getNumberMessageNotViewer,
   getNumberNotificationNotViewer,
   getProfileService,
-  openNoticeModal,
   setNumberDiscustonNotView,
+  actionGetProfile,
+  actionActiveGroup,
+  openNoticeModal,
 } from "../actions/system/system";
+import { loadDetailOffer } from "views/OfferPage/redux/actions";
+import { avatar_default_120 } from "../assets";
 import DocumentDetail from "../components/DocumentDetail/DocumentDetail";
 import DrawerComponent from "../components/Drawer/Drawer";
 import GroupModal from "../components/NoticeModal/GroupModal";
 import NoticeModal from "../components/NoticeModal/NoticeModal";
 import SnackbarComponent from "../components/Snackbars";
 import configURL from "../constants/apiConstant";
-import { NOTI_NUMBER, TOKEN } from "../constants/constants";
+import { MESS_NUMBER, NOTI_NUMBER, TOKEN } from "../constants/constants";
 import { Routes } from "../constants/routes";
 import routes from "../routes";
-import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
 import LeftBar from "../views/LeftBar";
+// import TopBar from "../views/TopBar";
+import { get } from "lodash";
 import DetailOfferModal from "../views/OfferPage/views/DetailOffer/DetailOfferModal";
-import TopBar from "../views/TopBar";
+import ViewDetailRemind from "../views/CalendarPage/views/Modals/ViewDetailRemind";
+import { getRemindDetail } from "../actions/calendar/alarmCalendar/getRemindDetail";
+import {
+  GET_REMIND_DETAIL_FAIL,
+  CustomEventListener,
+  CustomEventDispose,
+} from "constants/events";
+import { setNumberMessageNotView } from "actions/chat/threadChat";
+import * as images from "../assets";
 
 const Container = styled.div`
   --color-primary: ${(props) => props.color};
@@ -75,7 +76,7 @@ const Container = styled.div`
   width: 100vw;
   display: grid;
   // grid-template-rows: 55px 1fr;
-  grid-template-rows: 55px 1fr;
+  grid-template-rows: 0px 1fr;
   grid-template-columns: 140px minmax(0, 1fr);
   overflow-y: hidden;
 
@@ -552,7 +553,7 @@ function MainLayout({
               logo={groupDetail.logo}
             />
 
-            <TopBar />
+            {/* <TopBar /> */}
             <DrawerComponent />
             <NoticeModal />
             {toast.type && (
