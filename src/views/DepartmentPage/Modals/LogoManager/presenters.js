@@ -177,6 +177,8 @@ const LogoManagerModalWrapper = ({ children }) => {
     canUpload,
   } = useContext(LogoManagerContext);
   const { t } = useTranslation();
+
+  console.log("selectedIcon", selectedIcon);
   return (
     <CustomModal
       open={open}

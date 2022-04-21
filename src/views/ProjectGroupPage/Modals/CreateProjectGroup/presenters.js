@@ -76,9 +76,14 @@ function CreateProjectGroup({
     }
     setName(get(updatedProjectGroup, "name"));
     setDescription(get(updatedProjectGroup, "description"));
+
+    const foundedIcon = [...icons.defaults, ...icons.createds].find(
+      (icon) => icon.url_icon === updatedProjectGroup.icon
+    );
+
     setSelectedIcon({
-      url_full: get(updatedProjectGroup, "icon"),
-      url_sort: get(updatedProjectGroup, "sort_icon") || "",
+      url_full: get(foundedIcon, "url_icon"),
+      url_sort: get(foundedIcon, "icon"),
     });
     setSelectedColor(get(updatedProjectGroup, "color"));
   }, [updatedProjectGroup]);

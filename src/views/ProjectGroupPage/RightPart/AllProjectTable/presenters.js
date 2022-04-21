@@ -401,12 +401,12 @@ function AllProjectTable({
             onClick={(evt) => {
               setMenuAnchor(null);
               handleOpenModal("LOGO", {
-                selectedProjectGroup: currentGroup,
                 doSelectIcon: (icon) =>
                   handleUpdateProjectGroup({
                     projectGroupId: currentGroup.id,
                     icon: icon.url_sort,
                   }),
+                currentGroup: currentGroup,
               });
             }}
           >
