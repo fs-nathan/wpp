@@ -407,6 +407,7 @@ function AllProjectTable({
         open={openColorPickerGroup}
         setOpen={setOpenColorPickerGroup}
         handleSelectColor={({ projectGroupId, color }) => {
+          setActiveLoading(true);
           doEditProjectGroup({
             projectGroupId: projectGroupId,
             color: color,
