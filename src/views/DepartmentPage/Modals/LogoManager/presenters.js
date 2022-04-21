@@ -15,7 +15,7 @@ const LogoList = ({ className = "", tall = false, ...props }) => (
   <div
     className={`view_Department_Logo_Modal___logo-list${
       tall ? "-tall" : ""
-    } ${className}`}
+      } ${className}`}
     {...props}
   />
 );
@@ -26,7 +26,7 @@ const LogoBox = ({ className = "", isSelect, ...props }) => (
       isSelect
         ? "view_Department_Logo_Modal___logo-box-selected"
         : "view_Department_Logo_Modal___logo-box"
-    } ${className}`}
+      } ${className}`}
     {...props}
   />
 );
@@ -86,8 +86,7 @@ const LogoMnanagerStateLess = () => {
               key={get(icon, "id", "")}
               isSelect={
                 isSelect &&
-                get(selectedIcon, "url_sort", "x") ===
-                  get(icon, "url_sort", "y")
+                get(selectedIcon, "url_sort", "x") === get(icon, "url_sort", "y")
               }
             >
               <ButtonBase
@@ -108,11 +107,7 @@ const LogoMnanagerStateLess = () => {
                   })
                 }
               >
-                {mutateIcon.loading ? (
-                  <LoadingBox size={8} />
-                ) : (
-                  t("IDS_WP_DELETE")
-                )}
+                {mutateIcon.loading ? <LoadingBox size={8} /> : t("IDS_WP_DELETE")}
               </ColorButton>
             </LogoBox>
           ))}
@@ -122,8 +117,9 @@ const LogoMnanagerStateLess = () => {
   );
 };
 const UploadButton = () => {
-  const { mutateIcon, handleOpenModal, handleCreateIcon } =
-    useContext(LogoManagerContext);
+  const { mutateIcon, handleOpenModal, handleCreateIcon } = useContext(
+    LogoManagerContext
+  );
   const { t } = useTranslation();
   return (
     <>
@@ -132,10 +128,10 @@ const UploadButton = () => {
           <LoadingBox size={16} />
         </ColorButton>
       ) : (
-        <label htmlFor="raised-button-file">
-          <AddButton onClick={() => {}} label={t("IDS_WP_ADD")}></AddButton>
-        </label>
-      )}
+          <label htmlFor="raised-button-file">
+            <AddButton onClick={() => { }} label={t("IDS_WP_ADD")}></AddButton>
+          </label>
+        )}
       <input
         hidden
         disabled={mutateIcon.loading}
@@ -227,8 +223,7 @@ const LogoManagerModalWrapper = ({ children }) => {
               key={get(icon, "id", "")}
               isSelect={
                 isSelect &&
-                get(selectedIcon, "url_sort", "x") ===
-                  get(icon, "url_sort", "y")
+                get(selectedIcon, "url_sort", "x") === get(icon, "url_sort", "y")
               }
             >
               <ButtonBase
@@ -253,8 +248,8 @@ const LogoManagerModalWrapper = ({ children }) => {
                   {mutateIcon.loading ? (
                     <LoadingBox size={8} />
                   ) : (
-                    t("DMH.VIEW.DP.MODAL.LOGO.DEL")
-                  )}
+                      t("DMH.VIEW.DP.MODAL.LOGO.DEL")
+                    )}
                 </ColorButton>
               )}
             </LogoBox>
@@ -280,16 +275,16 @@ const LogoManagerModalWrapper = ({ children }) => {
                 <LoadingBox size={16} />
               </ColorButton>
             ) : (
-              <ColorButton
-                variant="text"
-                variantColor="blue"
-                size="small"
-                component="label"
-                htmlFor="raised-button-file"
-              >
-                {t("DMH.VIEW.DP.MODAL.LOGO.UPLOAD")}
-              </ColorButton>
-            )}
+                <ColorButton
+                  variant="text"
+                  variantColor="blue"
+                  size="small"
+                  component="label"
+                  htmlFor="raised-button-file"
+                >
+                  {t("DMH.VIEW.DP.MODAL.LOGO.UPLOAD")}
+                </ColorButton>
+              )}
           </>
         )}
       </>
@@ -308,7 +303,7 @@ function LogoManagerProvider({
   handleSelectIcon,
   handleOpenModal,
   canUpload,
-  selectedIconFromOut,
+  selectedIconFromOut
 }) {
   const [selectedIcon, setSelectedIcon] = React.useState({
     id: get(icons.defaults[0], "id"),
@@ -316,23 +311,18 @@ function LogoManagerProvider({
     url_full: get(icons.defaults[0], "url_icon"),
   });
   React.useEffect(() => {
-    debugger;
-    if (
-      selectedIconFromOut &&
-      selectedIconFromOut.url_sort != "" &&
-      selectedIconFromOut.url_sort != selectedIcon.url_sort
-    ) {
+    if (selectedIconFromOut && selectedIconFromOut.url_sort != "" && selectedIconFromOut.url_sort != selectedIcon.url_sort) {
       setSelectedIcon({
         url_sort: selectedIconFromOut.url_sort,
-        url_full: selectedIconFromOut.url_full,
-      });
+        url_full: selectedIconFromOut.url_full
+      })
     } else {
       setSelectedIcon({
         url_sort: get(icons.defaults[0], "icon"),
         url_full: get(icons.defaults[0], "url_icon"),
-      });
+      })
     }
-  }, [selectedIconFromOut]);
+  }, [selectedIconFromOut])
 
   return (
     <LogoManagerContext.Provider
@@ -355,10 +345,5 @@ function LogoManagerProvider({
     </LogoManagerContext.Provider>
   );
 }
-export {
-  LogoManagerContext,
-  LogoManagerModalWrapper,
-  LogoMnanagerStateLess,
-  UploadButton,
-};
+export { LogoManagerContext, LogoManagerModalWrapper, LogoMnanagerStateLess, UploadButton, };
 export default LogoManagerProvider;

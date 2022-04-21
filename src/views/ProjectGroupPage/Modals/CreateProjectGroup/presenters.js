@@ -58,27 +58,27 @@ function CreateProjectGroup({
   doReloadList,
   selectedColor,
   setSelectedColor,
-
+  defaultFirstColor,
   createSuccessCallBack = () => {},
 }) {
   const { t } = useTranslation();
   const [name, setName, errorName] = useRequiredString("", 150);
   const [description, setDescription] = useMaxlenString("", 500);
-
+  const [icon, setIcon] = React.useState({
+    url_full: "",
+    url_sort: "",
+  });
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [isAddingDescription, setIsAddingDescription] = React.useState(false);
   // const [selectedColor, setSelectedColor] = React.useState(colors[0]);
   const { icons, isSelect, selectedIcon, setSelectedIcon } =
     useContext(LogoManagerContext);
   React.useEffect(() => {
-    if (!updatedProjectGroup) {
-      return;
-    }
     setName(get(updatedProjectGroup, "name"));
     setDescription(get(updatedProjectGroup, "description"));
-    setSelectedIcon({
+    setIcon({
       url_full: get(updatedProjectGroup, "icon"),
-      url_sort: get(updatedProjectGroup, "sort_icon") || "",
+      url_sort: get(updatedProjectGroup, "sort_icon"),
     });
     setSelectedColor(get(updatedProjectGroup, "color"));
   }, [updatedProjectGroup]);
@@ -87,7 +87,6 @@ function CreateProjectGroup({
     const fail = () => {
       setActiveLoading(false);
     };
-    debugger;
     if (updatedProjectGroup) {
       CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, doReloadDetail);
       CustomEventListener(EDIT_PROJECT_GROUP.FAIL, fail);
@@ -132,7 +131,7 @@ function CreateProjectGroup({
       setOpen(false);
       setName("");
       setDescription("");
-      setSelectedIcon({
+      setIcon({
         url_full: "",
         url_sort: "",
       });
@@ -148,40 +147,8 @@ function CreateProjectGroup({
     };
   }, []);
 
-  const reorderColor = (colorList, selectedColor) => {
-    const colorArr = [...colorList];
-    const indexSelectedColor = colorArr.findIndex(
-      (color) => color === selectedColor
-    );
-    if (indexSelectedColor < 5) return colorArr;
-    if (indexSelectedColor !== -1) {
-      colorArr.splice(indexSelectedColor, 1);
-      colorArr.splice(0, 0, selectedColor);
-    }
-
-    return colorArr;
-  };
-  const reorderIcons = (icons, selectedIcon) => {
-    const iconsArr = [...icons];
-    if (selectedIcon.url_full === "") return iconsArr;
-
-    const indexSelectedIcon = iconsArr.findIndex(
-      (icon) => icon.url_icon === selectedIcon.url_full
-    );
-    if (indexSelectedIcon < 5) return iconsArr;
-    if (indexSelectedIcon !== -1) {
-      const removedIcon = iconsArr.splice(indexSelectedIcon, 1);
-      iconsArr.splice(0, 0, removedIcon[0]);
-    }
-
-    return iconsArr;
-  };
-
-  const orderedColorArr = reorderColor(colors, selectedColor).splice(0, 5);
-  const orderedIconArr = reorderIcons(icons.defaults, selectedIcon).splice(
-    0,
-    5
-  );
+  const COLOR_LIST = colors.slice(0, 5);
+  const iconList = icons.defaults.slice(0, 5);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setIsAddingDescription(isExpanded ? panel : false);
@@ -209,7 +176,7 @@ function CreateProjectGroup({
       onCancle={() => setOpen(false)}
       activeLoading={activeLoading}
       manualClose={true}
-      height={!isAddingDescription ? "mini" : "short"}
+      height={ !isAddingDescription ?"mini" :"short" }
       maxWidth={"sm"}
       className=""
     >
@@ -249,7 +216,20 @@ function CreateProjectGroup({
         </Title>
 
         <div className="createProjectGroup__theme--list">
-          {orderedColorArr.map((color) => {
+          {/* <div
+            className={`createProjectGroup__theme--item ${
+              selectedColor && selectedColor === updatedProjectGroup.color
+                ? "selected"
+                : ""
+            }`}
+            style={{ backgroundColor: updatedProjectGroup?.color || colors[0] }}
+            onClick={() => setSelectedColor(defaultFirstColor)}
+          >
+            {selectedColor && selectedColor === updatedProjectGroup.color && (
+              <DoneOutlinedIcon />
+            )}
+          </div> */}
+          {COLOR_LIST.map((color) => {
             const isSelected = selectedColor === color;
             return (
               <div
@@ -278,14 +258,13 @@ function CreateProjectGroup({
         </div>
 
         <div className="createProjectGroup__logo-box--list">
-          {orderedIconArr.map((icon) => {
+          {iconList.map((icon) => {
             return (
               <LogoBox
                 key={get(icon, "url_icon")}
                 isSelect={
                   isSelect &&
-                  get(selectedIcon, "url_full", "x") ===
-                    get(icon, "url_icon", "y")
+                  get(selectedIcon, "url_sort", "x") === get(icon, "icon", "y")
                 }
               >
                 <ButtonBase
@@ -314,8 +293,8 @@ function CreateProjectGroup({
             style={{ backgroundColor: "#f5f6f8" }}
             onClick={() =>
               handleOpenModal("LOGO", {
-                doSelectIcon: (icon) => setSelectedIcon(icon),
-                selectedIcon: selectedIcon,
+                doSelectIcon: (icon) => setIcon(icon),
+                selectedIcon: icon,
                 canUpload: true,
               })
             }

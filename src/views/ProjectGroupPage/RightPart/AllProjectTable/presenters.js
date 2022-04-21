@@ -405,7 +405,7 @@ function AllProjectTable({
                 doSelectIcon: (icon) =>
                   handleUpdateProjectGroup({
                     projectGroupId: currentGroup.id,
-                    icon: icon.url_sort,
+                    icon: icon.url_full,
                   }),
               });
             }}
