@@ -32,6 +32,8 @@ import ProjectsTemplate from "./RightPart/ProjectsTemplate/ProjectsTemplate";
 import ProjectTemplateList from "./LeftPart/ProjectTemplateList/ProjectTemplateList";
 import ProjectSingleTemplate from "./RightPart/ProjectsTemplate/ProjectSingleTemplate";
 import ProjectGroupTemplate from "./RightPart/ProjectsTemplate/ProjectGroupTemplate";
+import ProjectSharedTemplate from "./RightPart/ProjectsTemplate/ProjectSharedTemplate";
+import ProjectBeSharedTemplate from "./RightPart/ProjectsTemplate/ProjectBeSharedTemplate";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -44,7 +46,7 @@ function ProjectGroupPage({
   const { pathname } = useLocation();
   const [isCollapsed, setIsCollapsed] = useLocalStorage(
     "WPS_COLLAPSED_DEFAULT",
-    true
+    localStorage.getItem("WPS_COLLAPSED_DEFAULT")
   );
 
   const [test, setTest] = useState([]);
@@ -104,14 +106,20 @@ function ProjectGroupPage({
               handleExpand={_handleExpand}
             />
           </Route>
-          <Route exact path="/projects/template">
-            <ProjectsTemplate />
+          <Route exact path="/projects/template/group/:id">
+            <ProjectGroupTemplate />
+          </Route>
+          <Route exact path="/projects/template/shared">
+            <ProjectSharedTemplate />
+          </Route>
+          <Route exact path="/projects/template/be-shared">
+            <ProjectBeSharedTemplate />
           </Route>
           <Route exact path="/projects/template/:id">
             <ProjectSingleTemplate />
           </Route>
-          <Route exact path="/projects/template/group/:id">
-            <ProjectGroupTemplate />
+          <Route exact path="/projects/template">
+            <ProjectsTemplate />
           </Route>
           <Route exact path="/projects/group/:projectGroupId">
             <AllProjectTable

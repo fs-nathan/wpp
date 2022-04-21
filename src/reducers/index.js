@@ -519,6 +519,9 @@ import getBanner, {
 import getTemplateCategory, {
   initialState as getTemplateCategoryInitialState,
 } from "./project/getTemplateCategory";
+import getAllTemplate, {
+  initialState as getAllTemplateInitialState,
+} from "./project/getAllTemplate";
 import getNewestTemplate, {
   initialState as getNewestTemplateInitialState,
 } from "./project/getNewestTemplate";
@@ -534,6 +537,9 @@ import getListTemplate, {
 import getListTemplateMeShared, {
   initialState as getListTemplateMeSharedInitialState,
 } from "./project/getListTemplateMeShared";
+import searchTemplate, {
+  initialState as searchTemplateInitialState,
+} from "./project/searchTemplate";
 import updatePinBoardSetting, {
   initialState as updatePinBoardSettingInitialState,
 } from "./project/setting/updatePinBoardSetting";
@@ -661,11 +667,13 @@ const rootReducer = combineReducers({
     getProjectStatistic,
     getBanner,
     getTemplateCategory,
+    getAllTemplate,
     getNewestTemplate,
     getTemplateByCategory,
     getDetailTemplate,
     getListTemplate,
     getListTemplateMeShared,
+    searchTemplate,
     getWorkType,
     recentlyProjects,
     getStatusWorkGroup,
@@ -903,11 +911,13 @@ export const DEFAULT_STATE = {
     getWorkType: getWorkTypeInitialState,
     getBanner: getBannerInitialState,
     getTemplateCategory: getTemplateCategoryInitialState,
+    getAllTemplate: getAllTemplate,
     getNewestTemplate: getNewestTemplateInitialState,
     getTemplateByCategory: getTemplateByCategoryInitialState,
     getDetailTemplate: getDetailTemplateInitialState,
     getListTemplate: getListTemplateInitialState,
     getListTemplateMeShared: getListTemplateMeSharedInitialState,
+    searchTemplate: searchTemplateInitialState,
     countPersonalProjectsBoard: countPersonalProjectsBoardInitialState,
     setting: {
       detailStatus: detailStatusInitialState,

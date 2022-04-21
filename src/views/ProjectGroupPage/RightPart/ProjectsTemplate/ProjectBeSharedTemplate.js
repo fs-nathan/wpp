@@ -9,7 +9,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import TemplateCard from "./components/TemplateCard/TemplateCard";
 import TemplateSection from "./components/TemplateSection/TemplateSection";
 
-const ProjectSharedTemplate = () => {
+const ProjectBeSharedTemplate = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const templates = useSelector(
@@ -40,7 +40,7 @@ const ProjectSharedTemplate = () => {
                 >
                   Thư viện mẫu
                 </Link>
-                <Typography color="text.primary">Đã chia sẻ</Typography>
+                <Typography color="text.primary">Được chia sẻ</Typography>
               </Breadcrumbs>
             </div>
             <div style={{ width: 300 }}>
@@ -48,11 +48,11 @@ const ProjectSharedTemplate = () => {
             </div>
           </div>
 
-          <TemplateSection templates={templates} title="Các mẫu đã chia sẻ" />
+          <TemplateSection templates={templates} title="Các mẫu được chia sẻ" />
         </div>
       )}
     </ProjectTemplateWrapper>
   );
 };
 
-export default ProjectSharedTemplate;
+export default ProjectBeSharedTemplate;

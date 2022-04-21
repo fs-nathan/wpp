@@ -7,37 +7,15 @@ import { useDispatch, useSelector } from "react-redux";
 import TemplateCard from "../TemplateCard/TemplateCard";
 import "./index.scss";
 
-const TemplateSection = ({ categoryId, icon, title, extra, isEmpty }) => {
+const TemplateSection = ({
+  categoryId,
+  icon,
+  title,
+  extra,
+  isEmpty,
+  templates,
+}) => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.project.getListTemplate.data);
-
-  const templates = useMemo(() => {
-    if (data && data.length > 0) {
-      const currentTemplates = data.find(
-        (template) => template.category_id === categoryId
-      );
-      return currentTemplates ? currentTemplates.templates : [];
-    }
-    return [];
-  }, [data]);
-  console.log(
-    "🚀 ---------------------------------------------------------------------"
-  );
-  console.log(
-    "🚀 ~ file: TemplateSection.js ~ line 23 ~ TemplateSection ~ data",
-    data
-  );
-  console.log(
-    "🚀 ---------------------------------------------------------------------"
-  );
-
-  const fetchData = useCallback(async () => {
-    await Promise.all[dispatch(getListTemplate())];
-  }, [dispatch, getListTemplate, categoryId]);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
   return (
     <div className="template-group__section">
@@ -50,7 +28,7 @@ const TemplateSection = ({ categoryId, icon, title, extra, isEmpty }) => {
           </div>
 
           <div className="template-group__section__card">
-            {data &&
+            {templates &&
               templates.map((template) => (
                 <TemplateCard key={template.id} template={template} />
               ))}

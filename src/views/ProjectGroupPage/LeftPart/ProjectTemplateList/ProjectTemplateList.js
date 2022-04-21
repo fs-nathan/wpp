@@ -43,18 +43,16 @@ const ProjectTemplateList = ({
 }) => {
   const history = useHistory();
   const { t } = useTranslation();
-  const [isSharedOpen, setIsSharedOpen] = useState(false);
-  const [isBeSharedOpen, setIsBeSharedOpen] = useState(false);
   const [isPublicOpen, setIsPublicOpen] = useState(false);
 
   const handleClick = (tab) => {
     switch (tab) {
       case SideTab.Shared: {
-        setIsSharedOpen((pre) => !pre);
+        history.push("/projects/template/shared");
         break;
       }
       case SideTab.BeShared: {
-        setIsBeSharedOpen((pre) => !pre);
+        history.push("/projects/template/be-shared");
         break;
       }
       case SideTab.Public: {
