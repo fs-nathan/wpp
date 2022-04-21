@@ -14,6 +14,8 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import { getTemplateCategory } from "actions/project/getTemplateCategory";
 import { useDispatch, useSelector } from "react-redux";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
+import ProjectTemplateWrapper from ".";
+import { getNewestTemplate } from "actions/project/getNewestTemplate";
 
 const ProjectsTemplate = () => {
   const handleOnSearch = (string, results) => {
@@ -37,34 +39,24 @@ const ProjectsTemplate = () => {
   };
 
   const dispatch = useDispatch();
-  const categories = useSelector(
-    (state) => state.project.getTemplateCategory.data
-  );
-
+  const categories = useSelector((state) => state.project.getListTemplate.data);
   const templates = useSelector(
-    (state) => state.project.getListTemplateMeShared.data
+    (state) => state.project.getNewestTemplate.data
   );
 
-  const fetchTemplateCategory = useCallback(async () => {
+  const fetchData = useCallback(async () => {
     try {
-      dispatch(getTemplateCategory());
+      dispatch(getNewestTemplate());
     } catch (error) {}
-  }, [dispatch, getTemplateCategory]);
-
-  const fetchListTemplateMeShared = useCallback(async () => {
-    try {
-      dispatch(getListTemplateMeShared());
-    } catch (error) {}
-  }, [dispatch, getListTemplateMeShared]);
+  }, [dispatch, getNewestTemplate]);
 
   useEffect(() => {
-    fetchTemplateCategory();
-    fetchListTemplateMeShared();
-  }, [fetchTemplateCategory, fetchListTemplateMeShared]);
+    fetchData();
+  }, [fetchData]);
 
   return (
-    <div className="project-template-page__wrapper">
-      <div className="project-template-page">
+    <ProjectTemplateWrapper>
+      <div>
         <div className="project-template-page__header">
           <h1>Nhóm mẫu nổi bật</h1>
           <div style={{ width: 300 }}>
@@ -83,27 +75,28 @@ const ProjectsTemplate = () => {
             categories.length > 0 &&
             categories.map((category) => (
               <TemplateGroup
-                key={category.id}
-                thumbnail={category.image}
-                title={category.name}
+                key={category.category_id}
+                thumbnail={category.category_image}
+                title={category.category_name}
               />
             ))}
         </div>
-        {/* // TODO: ? Recently shared */}
+
         <TemplateSection
           icon={<AcUnitIcon fontSize="large" />}
           title="Mẫu mới chia sẻ"
-          // templates={new Array(3).fill(DETAIL_TEMPLATE)}
+          templates={templates}
         />
 
         {categories &&
           categories.length > 0 &&
           categories.map((category) => (
             <TemplateSection
-              key={category.id}
-              categoryId={category.id}
+              key={category.category_id}
+              categoryId={category.category_image}
               icon={<AcUnitIcon fontSize="large" />}
-              title={category.name}
+              title={category.category_name}
+              templates={category.templates}
               extra={
                 <Button
                   variant="text"
@@ -113,13 +106,13 @@ const ProjectsTemplate = () => {
                     textTransform: "initial",
                   }}
                 >
-                  Thêm mẫu cho {category.name}
+                  Thêm mẫu cho {category.category_name}
                 </Button>
               }
             />
           ))}
       </div>
-    </div>
+    </ProjectTemplateWrapper>
   );
 };
 

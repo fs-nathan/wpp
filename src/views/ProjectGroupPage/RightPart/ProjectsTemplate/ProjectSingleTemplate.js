@@ -16,6 +16,7 @@ import "./index.scss";
 import SingleAction from "./components/SingleAction/SingleAction";
 import { useDispatch, useSelector } from "react-redux";
 import { getDetailTemplate } from "actions/project/getDetailTemplate";
+import ProjectTemplateWrapper from ".";
 
 const ProjectSingleTemplate = () => {
   const history = useHistory();
@@ -35,11 +36,10 @@ const ProjectSingleTemplate = () => {
     fetchData();
   }, [fetchData]);
   function handleClick() {}
-  console.log(template);
 
   return (
-    <div className="project-single-template__wrapper">
-      <div className="project-single-template">
+    <ProjectTemplateWrapper>
+      <div>
         <div className="project-single-template__header">
           <div role="presentation" onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb">
@@ -53,10 +53,8 @@ const ProjectSingleTemplate = () => {
               >
                 {DETAIL_TEMPLATE.parent}
               </Link>
-              <Typography color="text.primary">
-                {template.user_share_name}
-              </Typography>
             </Breadcrumbs>
+            <Typography color="text.primary">{template.name}</Typography>
           </div>
           <div style={{ width: 300 }}>
             <SearchBar />
@@ -119,14 +117,19 @@ const ProjectSingleTemplate = () => {
                 Sử dụng mẫu
               </Link>{" "}
               hoặc{" "}
-              <Link href="#" variant="h6" color="inherit" underline="always">
+              <Link
+                href="/projects/add-new"
+                variant="h6"
+                color="inherit"
+                underline="always"
+              >
                 Bắt đầu với bảng trống
               </Link>
             </Typography>
           </div>
         </div>
       </div>
-    </div>
+    </ProjectTemplateWrapper>
   );
 };
 

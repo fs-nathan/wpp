@@ -474,12 +474,14 @@ import { getRemindDetail } from "./calendar/alarmCalendar/getRemindDetail";
 import { getProjectStatistic } from "./project/getStatistic";
 import { getWorkType } from "./project/getWorkType";
 import { getTemplateCategory } from "./project/getTemplateCategory";
+import { getAllTemplate } from "./project/getAllTemplate";
 import { getTemplateByCategory } from "./project/getTemplateByCategory";
 import { getNewestTemplate } from "./project/getNewestTemplate";
 import { getDetailTemplate } from "./project/getDetailTemplate";
 import { getListTemplate } from "./project/getListTemplate";
 import { getListTemplateMeShared } from "./project/getListTemplateMeShared";
 import { getBanner } from "./project/getBanner";
+import { searchTemplate } from "./project/searchTemplate";
 import { updatePinBoardSetting } from "./project/setting/updatePinBoardSetting";
 import { recentlyProjects } from "./project/recentlyProjects";
 import { getStatusWorkGroup } from "./project/getStatusWork";
@@ -520,6 +522,8 @@ import { GET_NEWEST_TEMPLATE } from "constants/actions/project/getNewestTemplate
 import { GET_DETAIL_TEMPLATE } from "constants/actions/project/getDetailTemplate";
 import { GET_LIST_TEMPLATE_ME_SHARED } from "constants/actions/project/getListTemplateMeShared";
 import { GET_BANNER } from "constants/actions/project/getBanner";
+import { SEARCH_TEMPLATE } from "constants/actions/project/searchTemplate";
+import { GET_ALL_TEMPLATE } from "constants/actions/project/getAllTemplate";
 
 function* rootSaga() {
   // Hoang - begin
@@ -1076,6 +1080,7 @@ function* rootSaga() {
   yield takeLatest(GET_PROJECT_PERSONAL_BOARD, getProjectOnBoard);
   yield takeLatest(GET_WORK_TYPE, getWorkType);
   yield takeLatest(GET_TEMPLATE_CATEGORY, getTemplateCategory);
+  yield takeLatest(GET_ALL_TEMPLATE, getAllTemplate);
   yield takeLatest(GET_TEMPLATE_BY_CATEGORY, getTemplateByCategory);
   yield takeLatest(GET_LIST_TEMPLATE, getListTemplate);
   yield takeLatest(GET_NEWEST_TEMPLATE, getNewestTemplate);
@@ -1085,6 +1090,7 @@ function* rootSaga() {
     getListTemplateMeShared
   );
   yield takeLatest(GET_BANNER, getBanner);
+  yield takeLatest(SEARCH_TEMPLATE, searchTemplate);
   //
 
   //calendar

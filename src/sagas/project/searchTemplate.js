@@ -1,8 +1,8 @@
 import { call, put } from "redux-saga/effects";
 import {
-  searchUserSuccess,
-  searchUserFail,
-} from "../../actions/groupUser/searchUser";
+  searchTemplateSuccess,
+  searchTemplateFail,
+} from "../../actions/project/searchTemplate";
 import { apiService } from "../../constants/axiosInstance";
 import {
   SnackbarEmitter,
@@ -11,13 +11,13 @@ import {
 } from "../../constants/snackbarController";
 import { get } from "lodash";
 
-async function doSearchUser({ info }) {
+async function doSearchTemplate({ search_data }) {
   try {
     const config = {
-      url: "/search-user",
+      url: "project/template/seach-template",
       method: "get",
       params: {
-        info,
+        search_data,
       },
     };
     const result = await apiService(config);
@@ -27,12 +27,12 @@ async function doSearchUser({ info }) {
   }
 }
 
-function* searchUser(action) {
+function* searchTemplate(action) {
   try {
-    const { member } = yield call(doSearchUser, action.options);
-    yield put(searchUserSuccess({ member }, action.options));
+    const { templates } = yield call(doSearchTemplate, action.options);
+    yield put(searchTemplateSuccess({ data: templates }, action.options));
   } catch (error) {
-    yield put(searchUserFail(error, action.options));
+    yield put(searchTemplateFail(error, action.options));
     SnackbarEmitter(
       SNACKBAR_VARIANT.ERROR,
       get(error, "message", DEFAULT_MESSAGE.QUERY.ERROR)
@@ -40,4 +40,4 @@ function* searchUser(action) {
   }
 }
 
-export { searchUser };
+export { searchTemplate };
