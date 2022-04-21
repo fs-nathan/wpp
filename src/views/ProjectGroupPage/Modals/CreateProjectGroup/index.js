@@ -28,6 +28,12 @@ function CreateProjectGroup({
   const [selectedColor, setSelectedColor] = React.useState(
     updatedProjectGroup?.color || null
   );
+  const [selectedLogo, setSelectedLogo] = React.useState(
+    updatedProjectGroup?.icon || {
+      url_full: "",
+      url_sort: "",
+    }
+  );
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -64,20 +70,21 @@ function CreateProjectGroup({
                   projectGroupId: get(updatedProjectGroup, "id"),
                   name,
                   description,
-                  icon: icon.url_full,
+                  icon: icon.url_sort,
                   color: color,
                 })
               : doCreateProjectGroup({
                   name,
                   description,
-                  icon: icon.url_full,
+                  icon: icon.url_sort,
                   color: color,
                 })
           }
           handleOpenModal={doOpenModal}
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
-          defaultFirstColor={updatedProjectGroup?.color || colors[0]}
+          selectedLogo={selectedLogo}
+          setSelectedLogo={setSelectedLogo}
         />
       </LogoManagerContainer>
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />

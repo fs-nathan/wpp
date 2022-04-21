@@ -411,7 +411,6 @@ function AllProjectTable({
             projectGroupId: projectGroupId,
             color: color,
           });
-          setActiveLoading(true);
         }}
         {...colorPickerProps}
       />
