@@ -1,10 +1,7 @@
 import { Dialog } from "@material-ui/core";
 import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
-import CustomModal from "components/CustomModal";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { currentColorSelector } from "views/Chat/selectors";
 import "./style.scss";
 
 export const colors = [

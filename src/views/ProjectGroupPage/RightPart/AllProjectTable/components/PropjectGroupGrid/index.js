@@ -50,9 +50,6 @@ const convertToGridLayout = (inputArray = []) => {
   }, []);
 };
 
-const convertFromGridLayoutToArray = (inputArray) => {
-  return inputArray.flat();
-};
 
 const ProjectGroupGrid = ({
   projectGroups = [],
