@@ -5,16 +5,39 @@ import {
   ListItemText,
   Switch,
 } from "@material-ui/core";
-import { isArray } from "lodash";
 import RootRef from "@material-ui/core/RootRef";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import ModeEditIcon from "@mui/icons-material/ModeEdit";
 import { listColumns } from "actions/columns/listColumns";
-import React, { useState } from "react";
+import EditColumnModal from "components/WPReactTable/components/EditColumnModal";
+import { isArray } from "lodash";
+import React, { useReducer, useRef, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { connect, useDispatch, useSelector } from "react-redux";
+import { useLocation, useParams } from "react-router-dom";
 import styled from "styled-components";
+import { COLUMNS_TASK_TABLE } from "views/ProjectPage/RightPart/constant/Columns";
+import { convertFieldsToTable } from "views/ProjectPage/RightPart/utils";
+import { get } from "lodash";
+import "./index.scss";
+import { useTimes } from "components/CustomPopover";
+import { localOptionSelector } from "views/ProjectGroupPage/selectors";
+import { listTask } from "actions/task/listTask";
+import { listGroupTask } from "actions/groupTask/listGroupTask";
+import moment from "moment";
+
+const initialState = {
+  arrColumns: COLUMNS_TASK_TABLE,
+  isEmpty: true,
+  isLoading: false,
+  isSetted: false,
+};
+
+const initialStatePopup = { openMenu: false, anchorEl: null };
+
+const reducer = (state, action) => {
+  return { ...state, ...action };
+};
 
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -25,13 +48,111 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const SortListColumn = React.forwardRef(
-  ({ onReOrderColumns, onHideColumn, setItemLocation }, ref) => {
+  (
+    {
+      onReOrderColumns,
+      localOption,
+      onHideColumn,
+      setItemLocation,
+      doListTask,
+      doListGroupTask,
+    },
+    ref
+  ) => {
+    const times = useTimes();
     const { projectId } = useParams();
     const fields = useSelector(
       ({ columns }) => columns?.listColumns?.data || []
     );
+    const { pathname } = useLocation();
+    const [, , , id] = pathname.split("/");
+    const { timeType } = localOption;
+    const timeRange = React.useMemo(() => {
+      const [timeStart, timeEnd] = times[timeType].option();
+      return {
+        timeStart,
+        timeEnd,
+      };
+    }, [timeType]);
+
     const [items, setItems] = useState(fields);
+    const [state, dispatchState] = useReducer(reducer, {
+      ...initialState,
+      columnsFields: fields,
+    });
+    const refEdit = useRef(null);
     const dispatch = useDispatch();
+
+    const _handleEditColumn = (type, data) => {
+      let data_type = 3;
+      switch (type) {
+        case 1:
+          data_type = "text";
+          break;
+        case 2:
+          data_type = "number";
+          break;
+        case 3:
+          data_type = "list";
+          break;
+        default:
+          break;
+      }
+      refEdit.current._open(data_type, data);
+    };
+
+    const reloadListTask = () => {
+      doListTask({
+        projectId: projectId || id,
+        timeStart: get(timeRange, "timeStart")
+          ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
+          : undefined,
+        timeEnd: get(timeRange, "timeEnd")
+          ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
+          : undefined,
+      });
+    };
+
+    const reloadListTaskAndGroupTask = () => {
+      reloadListTask();
+      doListGroupTask({ projectId: projectId || id });
+    };
+
+    const _handleUpdateFieldSuccess = (data) => {
+      const newColumnsFields = state.arrColumns.map((item) => {
+        if (item.id === data.project_field_id) {
+          const newItem = { ...item, name: data.name };
+          if (data.data_type === 3) {
+            newItem["options"] = data.options.map((item) => ({
+              ...item,
+              _id: item.id,
+            }));
+          }
+
+          return newItem;
+        }
+        return item;
+      });
+      /* Creating a new array of columns and setting it to the state. */
+      dispatchState({
+        arrColumns: convertFieldsToTable(
+          newColumnsFields,
+          _handleEditColumn,
+          reloadListTaskAndGroupTask()
+        ),
+        isSetted: true,
+      });
+    };
+
+    const _handleEditField = (column) => {
+      dispatchState(initialStatePopup);
+      _handleEditColumn(column.data_type, {
+        dataType: column.data_type,
+        idType: column.id,
+        name: column.name,
+        optionsType: column.options || [],
+      });
+    };
 
     React.useImperativeHandle(ref, () => ({ _addColumns }));
 
@@ -65,15 +186,32 @@ const SortListColumn = React.forwardRef(
       setItems(newItems);
     };
 
+    const _handleDeleteFieldSuccess = (data) => {
+      const newColumnsFields = state.arrColumns.filter(
+        (item) => item.id !== data.project_field_id
+      );
+      /* Creating a new array of columns and setting it to the state. */
+      dispatchState({
+        arrColumns: convertFieldsToTable(
+          newColumnsFields,
+          _handleEditColumn,
+          reloadListTaskAndGroupTask()
+        ),
+        isSetted: true,
+      });
+    };
+
     if (!isArray(items)) return null;
     return (
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId="droppable">
           {(provided, snapshot) => (
             <RootRef rootRef={provided.innerRef}>
-              <List style={getListStyle(snapshot.isDraggingOver)}>
+              <List
+                className="list_data_management"
+                style={getListStyle(snapshot.isDraggingOver)}
+              >
                 {items.map((item, index) => {
-                  console.log("provided", item?.is_default);
                   return (
                     <Draggable
                       key={item.id}
@@ -105,11 +243,29 @@ const SortListColumn = React.forwardRef(
                               primary={item.name}
                               style={{ color: "#1e1f21" }}
                             />
+                            {!item?.is_default && (
+                              <ListItemIcon
+                                onClick={() => _handleEditField(item)}
+                                className="icon_edit"
+                                style={{ minWidth: "20px" }}
+                              >
+                                <ModeEditIcon
+                                  style={{
+                                    width: "18px",
+                                    height: "18px",
+                                    fill: "#6d6e6f",
+                                  }}
+                                />
+                              </ListItemIcon>
+                            )}
                             <AntSwitch
                               onChange={(e) => onChangeCheck(e, item.id, index)}
-                              defaultChecked={item.is_show}
+                              defaultChecked={
+                                item?.is_default ? false : item.is_show
+                              }
                               style={{ marginRight: 5 }}
                               inputProps={{ "aria-label": "ant design" }}
+                              disabled={item?.is_default}
                             />
                           </ListItem>
                         );
@@ -122,6 +278,11 @@ const SortListColumn = React.forwardRef(
             </RootRef>
           )}
         </Droppable>
+        <EditColumnModal
+          ref={refEdit}
+          onUpdateSuccess={_handleUpdateFieldSuccess}
+          onDeleteSuccess={_handleDeleteFieldSuccess}
+        />
       </DragDropContext>
     );
   }
@@ -197,4 +358,19 @@ export const AntSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-export default SortListColumn;
+const mapStateToProps = (state) => {
+  return {
+    localOption: localOptionSelector(state),
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    doListTask: ({ projectId, timeStart, timeEnd }, quite) =>
+      dispatch(listTask({ projectId, timeStart, timeEnd }, quite)),
+    doListGroupTask: ({ projectId }, quite) =>
+      dispatch(listGroupTask({ projectId }, quite)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SortListColumn);
