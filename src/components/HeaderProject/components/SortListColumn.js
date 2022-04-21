@@ -48,17 +48,7 @@ const reorder = (list, startIndex, endIndex) => {
 };
 
 const SortListColumn = React.forwardRef(
-  (
-    {
-      onReOrderColumns,
-      localOption,
-      onHideColumn,
-      setItemLocation,
-      doListTask,
-      doListGroupTask,
-    },
-    ref
-  ) => {
+  ({ onReOrderColumns, localOption, onHideColumn, setItemLocation }, ref) => {
     const times = useTimes();
     const { projectId } = useParams();
     const fields = useSelector(
@@ -101,21 +91,8 @@ const SortListColumn = React.forwardRef(
       refEdit.current._open(data_type, data);
     };
 
-    const reloadListTask = () => {
-      doListTask({
-        projectId: projectId || id,
-        timeStart: get(timeRange, "timeStart")
-          ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
-          : undefined,
-        timeEnd: get(timeRange, "timeEnd")
-          ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
-          : undefined,
-      });
-    };
-
     const reloadListTaskAndGroupTask = () => {
-      reloadListTask();
-      doListGroupTask({ projectId: projectId || id });
+      dispatch(listColumns({ project_id: projectId || id }));
     };
 
     const _handleUpdateFieldSuccess = (data) => {
@@ -368,8 +345,6 @@ const mapDispatchToProps = (dispatch) => {
   return {
     doListTask: ({ projectId, timeStart, timeEnd }, quite) =>
       dispatch(listTask({ projectId, timeStart, timeEnd }, quite)),
-    doListGroupTask: ({ projectId }, quite) =>
-      dispatch(listGroupTask({ projectId }, quite)),
   };
 };
 
