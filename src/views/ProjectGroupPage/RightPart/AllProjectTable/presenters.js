@@ -110,24 +110,10 @@ function AllProjectTable({
     }
   };
 
-  const _handleDragEnd = (result) => {
-    const { source, destination, draggableId } = result;
-    if (!destination) return;
-    if (
-      destination.droppableId === source.droppableId &&
-      destination.index === source.index
-    )
-      return;
-    let sortData = [...projects.projects];
-    const indexes = sortData.map((data) => get(data, "sort_index"));
-    let removed = remove(sortData, { id: draggableId });
-    sortData = [
-      ...slice(sortData, 0, destination.index),
-      ...removed,
-      ...slice(sortData, destination.index),
-    ].map((data, index) => ({
-      ...data,
-      sort_index: indexes[index],
+  const _handleDragEnd = (resultSort) => {
+    const sortData = resultSort.map((item, index) => ({
+      id: item.id,
+      sort_index: index,
     }));
     handleSortProject(sortData);
   };

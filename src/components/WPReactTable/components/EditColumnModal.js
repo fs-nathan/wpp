@@ -153,6 +153,7 @@ const EditColumnModal = React.forwardRef(
         cancleRender={() => t("DELETE_FIELDS")}
         titleComponent={
           <TitleModalAdd
+            isEditForm
             value={state.value}
             handleChangeTab={handleChangeTab}
             setOpen={handleOpen}
@@ -231,36 +232,6 @@ const EditColumnModal = React.forwardRef(
             </Grid>
           </TabPanel>
           {/* End Tabs panel */}
-
-          <TabPanel value={state.value} index={1}>
-            <TextField
-              className="offerModal--titleText"
-              placeholder={t("FIND_FIELD_DATA")}
-              variant="outlined"
-              fullWidth
-              InputProps={{
-                startAdornment: <SearchIcon style={{ marginRight: "10px" }} />,
-                style: { marginTop: "15px", color: "rgb(102, 102, 102)" },
-              }}
-            />
-
-            <TitleSectionModal label={t("DATA_FIELD_EXITS")} />
-
-            <Grid container>
-              <Grid item xs={12}>
-                <WrapperCheckbox
-                  control={<Checkbox name="gilad" />}
-                  label="Lưu ý về dự án"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <WrapperCheckbox
-                  control={<Checkbox disabled name="gilad" />}
-                  label="Rủi ro dự án"
-                />
-              </Grid>
-            </Grid>
-          </TabPanel>
         </Box>
       </JobDetailModalWrap>
     );

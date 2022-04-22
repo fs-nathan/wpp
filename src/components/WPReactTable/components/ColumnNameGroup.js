@@ -6,10 +6,7 @@ import { updateGroupTask } from "actions/groupTask/updateGroupTask";
 import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import {
-  IconDrag,
-  TextAreaCustom,
-} from "views/ProjectPage/RightPart/constant/Columns";
+import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
 
 const ColumnNameGroup = ({
   row,
@@ -62,6 +59,17 @@ const NameGroup = ({ id = "", name = "" }) => {
       }
     }, 0);
     return () => clearTimeout(timeout);
+  }, [isEditing]);
+
+  React.useEffect(() => {
+    if (!refInput.current) return;
+    const cellHTML = refInput.current.closest(".td");
+    if (isEditing) {
+      cellHTML && cellHTML.classList.add("focus");
+    }
+    return () => {
+      cellHTML && cellHTML.classList.remove("focus");
+    };
   }, [isEditing]);
 
   const _handleEditing = () => setIsEditing(true);

@@ -54,6 +54,7 @@ const HeaderTableAllGroup = ({
 
   return (
     <div
+      id="header-table-group"
       className={`AllGroup__header--wrapper ${
         isDisplayGroupGrid ? "isAllGroup" : ""
       }`}

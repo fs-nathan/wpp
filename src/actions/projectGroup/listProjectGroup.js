@@ -2,15 +2,15 @@ import {
   LIST_PROJECT_GROUP,
   LIST_PROJECT_GROUP_FAIL,
   LIST_PROJECT_GROUP_SUCCESS,
-  LIST_PROJECT_GROUP_RESET,
-} from '../../constants/actions/projectGroup/listProjectGroup';
-import { apiService } from '../../constants/axiosInstance';
+} from "../../constants/actions/projectGroup/listProjectGroup";
+import { apiService } from "../../constants/axiosInstance";
 
-export const listProjectGroup = ({timeStart, timeEnd},quite = false) => ({
+export const listProjectGroup = ({ timeStart, timeEnd }, quite = false) => ({
   type: LIST_PROJECT_GROUP,
   quite,
   options: {
-    timeStart, timeEnd,
+    timeStart,
+    timeEnd,
   },
 });
 
@@ -28,11 +28,11 @@ export const listProjectGroupFail = (error, options) => ({
   error,
 });
 
-export const fetchListProjectGroup = params => {
+export const fetchListProjectGroup = (params) => {
   const config = {
-    url: '/project-group/list-basic',
-    method: 'get',
-    params
+    url: "/project-group/list-basic",
+    method: "get",
+    params,
   };
   return apiService(config);
 };

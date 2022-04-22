@@ -112,10 +112,10 @@ function AllProjectTable({
         type_data,
       });
     };
-    CustomEventListener(SORT_PROJECT, reloadListProject);
+    // CustomEventListener(SORT_PROJECT, reloadListProject);
     CustomEventListener(CREATE_PROJECT.SUCCESS, reloadListProject);
     return () => {
-      CustomEventDispose(SORT_PROJECT, reloadListProject);
+      // CustomEventDispose(SORT_PROJECT, reloadListProject);
       CustomEventDispose(CREATE_PROJECT.SUCCESS, reloadListProject);
     };
     // eslint-disable-next-line

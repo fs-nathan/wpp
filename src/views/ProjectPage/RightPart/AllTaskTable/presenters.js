@@ -1,9 +1,9 @@
-import { Box, ButtonBase, CircularProgress } from "@material-ui/core";
+import { ButtonBase } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
+import { addNewGroupTask } from "actions/task/listTask";
 import AlertModal from "components/AlertModal";
+import { CustomLayoutContext } from "components/CustomLayout";
 import { TimeRangePopover } from "components/CustomPopover";
-import { CustomTableContext } from "components/CustomTable";
-import HeaderProject from "components/HeaderProject";
 import { Container } from "components/TableComponents";
 import WPReactTable from "components/WPReactTable";
 import EditColumnModal from "components/WPReactTable/components/EditColumnModal";
@@ -14,8 +14,16 @@ import {
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
 import { exportToCSV } from "helpers/utils/exportData";
-import { cloneDeep, find, flattenDeep, get, isNil, join } from "lodash";
-import React, { useReducer, useRef } from "react";
+import {
+  cloneDeep,
+  find,
+  flattenDeep,
+  get,
+  isNil,
+  join,
+  uniqueId,
+} from "lodash";
+import React, { useContext, useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -45,6 +53,7 @@ function AllTaskTable({
   handleShowOrHideProject,
   handleSortTask,
   handleOpenModal,
+  handleReload,
   handleRemoveMemberFromTask,
   bgColor,
   timeType,
@@ -57,8 +66,10 @@ function AllTaskTable({
   canCreateTask,
   handleSortGroupTask,
 }) {
+  const { itemLocation } = useContext(CustomLayoutContext);
   const { projectId } = useParams();
   const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
+  const isLoading = useSelector(({ task }) => task?.listTask?.loading);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [state, dispatchState] = useReducer(reducer, {
     ...initialState,
@@ -68,7 +79,6 @@ function AllTaskTable({
   const refAlert = useRef(null);
   const dispatch = useDispatch();
   const { columnsFields } = state;
-
   /* Cloning the state.arrColumns array and storing it in the columns variable. */
   const columns = React.useMemo(() => {
     return cloneDeep(state.arrColumns);
@@ -86,9 +96,15 @@ function AllTaskTable({
   /* The columns are then passed to the dispatchState function, which sets the state. */
   React.useEffect(() => {
     if (columnsFields.length) {
+      const result = [...columnsFields];
+      if (itemLocation.id) {
+        const [removed] = result.splice(itemLocation.startIndex, 1);
+        result.splice(itemLocation.endIndex, 0, removed);
+      }
       const moreColumns = convertFieldsToTable(
-        columnsFields,
-        _handleEditColumn
+        result,
+        _handleEditColumn,
+        handleReload
       );
 
       dispatchState({
@@ -98,7 +114,13 @@ function AllTaskTable({
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [columnsFields, fields]);
+  }, [
+    columnsFields,
+    fields,
+    itemLocation.startIndex,
+    itemLocation.endIndex,
+    itemLocation.id,
+  ]);
 
   /* When the fields array changes, update the state.columnsFields. */
   React.useEffect(() => {
@@ -112,7 +134,6 @@ function AllTaskTable({
 
   const _handleEditColumn = (type, data) => {
     let data_type = 3;
-
     switch (type) {
       case 1:
         data_type = "text";
@@ -194,7 +215,11 @@ function AllTaskTable({
 
     /* Creating a new array of columns and setting it to the state. */
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
+      arrColumns: convertFieldsToTable(
+        newColumnsFields,
+        _handleEditColumn,
+        handleReload
+      ),
       isSetted: true,
     });
   };
@@ -205,32 +230,40 @@ function AllTaskTable({
     );
     /* Creating a new array of columns and setting it to the state. */
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
+      arrColumns: convertFieldsToTable(
+        newColumnsFields,
+        _handleEditColumn,
+        handleReload
+      ),
       isSetted: true,
     });
   };
 
-  const _handleHideColumn = async (idHide) => {
+  const _handleHideColumn = async (idHide, statusUpdate = 0, index) => {
     /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
     const newColumnsFields = state.arrColumns.filter(({ id }) => id !== idHide);
+    const columnHidden =
+      (!!statusUpdate && fields.filter(({ id }) => id === idHide)) || [];
+    if (columnHidden.length) {
+      newColumnsFields.splice(index, 0, { ...columnHidden[0], is_show: true });
+    }
     dispatchState({
-      arrColumns: convertFieldsToTable(newColumnsFields, _handleEditColumn),
+      arrColumns: convertFieldsToTable(
+        newColumnsFields,
+        _handleEditColumn,
+        handleReload
+      ),
       isSetted: true,
     });
-
-    const { status } = await apiService({
+    await apiService({
       data: {
         project_field_id: idHide,
         project_id: projectId,
-        status: 0,
+        status: statusUpdate,
       },
       url: "/project-field/set-status",
       method: "POST",
     });
-
-    if (status === 200) {
-      SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
-    }
   };
 
   const _handleSortColumn = async (id, method) => {
@@ -276,7 +309,24 @@ function AllTaskTable({
     }
   };
 
-  const _handleReOrderColumn = () => {};
+  const _handleAddNewGroup = () => {
+    const result = cloneDeep(columns);
+    result.splice(0, 1);
+    result.splice(result.length - 1, 1);
+    dispatch(
+      addNewGroupTask({
+        projectId,
+        name: "Untitled Section",
+        id: uniqueId(),
+        tasks: [],
+        data: result,
+      })
+    );
+  };
+
+  const _handleReOrderColumn = (id) => {
+    console.log("aaaa", id);
+  };
 
   return (
     <Container>
@@ -291,7 +341,7 @@ function AllTaskTable({
 
       {!state.isEmpty && (
         <>
-          <HeaderTableCustom
+          {/* <HeaderTableCustom
             project={project}
             memberID={memberID}
             canUpdateProject={canUpdateProject}
@@ -302,26 +352,24 @@ function AllTaskTable({
             handleExpand={handleExpand}
             onReOrderColumns={_handleReOrderColumn}
             onAddColumns={_handleAddNewColumns}
-          />
+            onHideColumn={_handleHideColumn}
+            setItemLocation={setItemLocation}
+          /> */}
 
-          {state.isLoading ? (
-            <Box sx={{ display: "flex", justifyContent: "center" }}>
-              <CircularProgress />
-            </Box>
-          ) : (
-            <WPReactTable
-              isCollapsed={expand}
-              columns={columns}
-              data={tasks.tasks}
-              isGroup
-              onAddNewColumns={_handleAddNewColumns}
-              onDragEnd={handleSortTask}
-              onEditColumn={_handleEditColumn}
-              onDeleteColumn={_handleDeleteColumn}
-              onHideColumn={_handleHideColumn}
-              onSortColumn={_handleSortColumn}
-            />
-          )}
+          <WPReactTable
+            isGroup
+            isCollapsed={expand}
+            columns={columns}
+            data={tasks.tasks}
+            onReload={handleReload}
+            onAddNewGroup={_handleAddNewGroup}
+            onAddNewColumns={_handleAddNewColumns}
+            onDragEnd={handleSortTask}
+            onEditColumn={_handleEditColumn}
+            onDeleteColumn={_handleDeleteColumn}
+            onHideColumn={_handleHideColumn}
+            onSortColumn={_handleSortColumn}
+          />
 
           <EditColumnModal
             ref={refEdit}
@@ -378,49 +426,53 @@ const ModalAlert = React.forwardRef(({ onConfirm = () => {} }, ref) => {
   );
 });
 
-const HeaderTableCustom = ({
-  project,
-  memberID,
-  canUpdateProject,
-  disableShowHide,
-  handleOpenModal,
-  handleShowOrHideProject,
-  _exportData,
-  handleExpand,
-  onReOrderColumns,
-  onAddColumns,
-}) => {
-  const TableContext = React.useContext(CustomTableContext);
-  return (
-    <HeaderProject
-      project={project.project}
-      valueSearch={get(TableContext?.options, "search.patern", "")}
-      onSearch={(value) =>
-        get(TableContext?.options, "search.onChange", () => null)(value)
-      }
-      hasMemberId={isNil(memberID)}
-      canUpdateProject={canUpdateProject && isNil(memberID)}
-      disableShowHide={disableShowHide}
-      onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
-      onUpdateTime={() => handleOpenModal("CALENDAR", {})}
-      onUpdateVisible={() => handleShowOrHideProject(project.project)}
-      onUpdateSetting={() =>
-        handleOpenModal("SETTING", {
-          curProject: project.project,
-          canChange: {
-            date: canUpdateProject,
-            copy: canUpdateProject,
-            view: true,
-          },
-        })
-      }
-      onExportData={_exportData}
-      onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
-      onExpand={handleExpand}
-      onReOrderColumns={onReOrderColumns}
-      onAddColumns={onAddColumns}
-    />
-  );
-};
+// export const HeaderTableCustom = ({
+//   project,
+//   memberID,
+//   canUpdateProject,
+//   disableShowHide,
+//   handleOpenModal,
+//   handleShowOrHideProject,
+//   _exportData,
+//   handleExpand,
+//   onReOrderColumns,
+//   onAddColumns,
+//   onHideColumn,
+//   setItemLocation,
+// }) => {
+//   const TableContext = React.useContext(CustomTableContext);
+//   return (
+//     <HeaderProject
+//       project={project.project}
+//       valueSearch={get(TableContext?.options, "search.patern", "")}
+//       onSearch={(value) =>
+//         get(TableContext?.options, "search.onChange", () => null)(value)
+//       }
+//       hasMemberId={isNil(memberID)}
+//       canUpdateProject={canUpdateProject && isNil(memberID)}
+//       disableShowHide={disableShowHide}
+//       onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
+//       onUpdateTime={() => handleOpenModal("CALENDAR", {})}
+//       onUpdateVisible={() => handleShowOrHideProject(project.project)}
+//       onUpdateSetting={() =>
+//         handleOpenModal("SETTING", {
+//           curProject: project.project,
+//           canChange: {
+//             date: canUpdateProject,
+//             copy: canUpdateProject,
+//             view: true,
+//           },
+//         })
+//       }
+//       onExportData={_exportData}
+//       onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
+//       onExpand={handleExpand}
+//       onReOrderColumns={onReOrderColumns}
+//       onAddColumns={onAddColumns}
+//       onHideColumn={onHideColumn}
+//       setItemLocation={setItemLocation}
+//     />
+//   );
+// };
 
 export default AllTaskTable;

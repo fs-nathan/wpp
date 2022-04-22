@@ -1,7 +1,8 @@
 import { mdiContentCopy, mdiNotePlusOutline } from "@mdi/js";
 import Icon from "@mdi/react";
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import CustomModal from "../../../../components/CustomModal";
 import CopyProjectModal from "../CopyProject";
 import CreateNewProjectModal from "../CreateNewProject";
@@ -24,6 +25,14 @@ function CreateProjectGroup({
   projectGroupId = null,
   work_types = null,
 }) {
+  const { push } = useHistory();
+
+  useEffect(() => {
+    if (open) {
+      push("/projects/add-new");
+    }
+  }, [open, push]);
+
   const { t } = useTranslation();
   const [createNew, setCreateNew] = React.useState(false);
   const [copy, setCopy] = React.useState(false);

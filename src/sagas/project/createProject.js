@@ -22,7 +22,8 @@ async function doCreateProject({
   projectGroupId,
   priority,
   currency,
-  project_label_id,
+  projectLabelId,
+  view_default,
 }) {
   try {
     const config = {
@@ -34,7 +35,8 @@ async function doCreateProject({
         project_group_id: projectGroupId,
         priority,
         currency,
-        project_label_id,
+        project_label_id: projectLabelId,
+        view_default,
       },
     };
     const result = await apiService(config);
@@ -46,6 +48,7 @@ async function doCreateProject({
 
 function* createProject(action) {
   try {
+    console.log(action);
     const { project } = yield call(doCreateProject, action.options);
     // yield put(createProjectSuccess({ project }, action.options));
     CustomEventEmitterWithParams(CREATE_PROJECT.SUCCESS, {

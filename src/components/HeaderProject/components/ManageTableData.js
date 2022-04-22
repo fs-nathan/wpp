@@ -9,6 +9,7 @@ import React, {
   useRef,
   useState,
 } from "react";
+import TasksScrollbar from "views/SettingGroupPage/GroupPermissionSettings/components/TasksScrollbar";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import SortListColumn, { AntSwitch } from "./SortListColumn";
@@ -19,6 +20,8 @@ const ManageTableData = forwardRef(
     {
       onFilter = () => {},
       onAddColumns = () => {},
+      onHideColumn = () => {},
+      setItemLocation = () => {},
       onReOrderColumns = () => {},
     },
     ref
@@ -65,7 +68,7 @@ const ManageTableData = forwardRef(
             />
           </div>
 
-          <div className={classes.wrapperManageData}>
+          <TasksScrollbar style={{ height: "calc(100% - 60px)" }}>
             <div className={classes.wrapperHeader}>
               <StyledTypo variant="h5" component="h5">
                 Danh sách cột
@@ -79,18 +82,15 @@ const ManageTableData = forwardRef(
             <SortListColumn
               ref={refSortColumns}
               onReOrderColumns={onReOrderColumns}
+              onHideColumn={onHideColumn}
+              setItemLocation={setItemLocation}
             />
-
-            <div className={classes.wrapperOption}>
-              <p>Hiện dữ liệu tổng hợp của nhóm việc</p>
-              <AntSwitch defaultChecked />
-            </div>
 
             <div className={classes.wrapperOption}>
               <p>Hiện dữ liệu tổng hợp của bảng việc</p>
               <AntSwitch defaultChecked />
             </div>
-          </div>
+          </TasksScrollbar>
         </Box>
         <AddColumnModal ref={refAdd} onAddColumns={_handleAddSuccess} />
       </>

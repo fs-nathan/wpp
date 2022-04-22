@@ -20,13 +20,10 @@ function KanbanPage({
   handleExpand,
 }) {
   return (
-    <Container isOpen={isOpen}>
-      <Header
-        projectId={projectId}
-        handleOpenModal={handleOpenModal}
-        expand={expand}
-        handleExpand={handleExpand}
-      />
+    <Container
+      isOpen={isOpen}
+      style={{ display: "flex", flexDirection: "column" }}
+    >
       <KanbanBoard projectId={projectId} handleOpenModal={handleOpenModal} />
     </Container>
   );

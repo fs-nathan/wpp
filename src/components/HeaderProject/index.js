@@ -25,11 +25,13 @@ const HeaderProject = ({
   project,
   status,
   valueSearch,
+  onSearch = () => {},
   onExpand = () => {},
   onOpenCreateModal = () => {},
   onUpdatePinBoardSetting = () => {},
-  onSearch = () => {},
   onAddColumns = () => {},
+  onHideColumn = () => {},
+  setItemLocation = () => {},
   onReOrderColumns = () => {},
   doDetailStatus,
   ...props
@@ -181,10 +183,13 @@ const HeaderProject = ({
         view={view}
         project={project}
         isProjectVisible={get(project, "visibility")}
+        isShareProject={get(project, "is_shared")}
         valueSearch={valueSearch}
         onSearch={onSearch}
         onReOrderColumns={onReOrderColumns}
         onAddColumns={onAddColumns}
+        onHideColumn={onHideColumn}
+        setItemLocation={setItemLocation}
         {...props}
       />
     </div>

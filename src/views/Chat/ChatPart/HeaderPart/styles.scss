@@ -89,7 +89,7 @@
         background: none;
       }
 
-      &>span>svg {
+      & > span > svg {
         &:hover {
           fill: #03b000;
         }
@@ -109,7 +109,7 @@
       background: #f2f2f2;
       border-radius: 3px;
 
-      &>span:first-child {
+      & > span:first-child {
         display: none;
       }
 
@@ -122,7 +122,7 @@
         border-radius: 3px;
       }
 
-      &>.MuiTypography-body1 {
+      & > .MuiTypography-body1 {
         font-size: 12px !important;
       }
     }
@@ -138,8 +138,8 @@
       padding-left: 5px;
     }
     .mpo-active-person {
-      border-left: 0px!important;
-      padding-left: 0px!important;
+      border-left: 0px !important;
+      padding-left: 0px !important;
     }
     .mpo-icon-people {
       float: left;
@@ -164,12 +164,12 @@
     }
   }
   .wrap-avatars-1 {
-    width: auto
+    width: auto;
   }
   .messenger-wrap-room-description {
     &:hover .edit-name-task-on-head-chat {
       display: inline-block;
-    };
+    }
   }
   .chatHeader--title {
     max-width: calc(100% - 40px);

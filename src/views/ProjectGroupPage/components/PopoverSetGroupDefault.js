@@ -5,14 +5,14 @@ import {
   MenuItem,
   MenuList,
   Popover,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 import React, {
   forwardRef,
   useImperativeHandle,
   useReducer,
-  useState
+  useState,
 } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -41,8 +41,6 @@ const PopoverSetGroupDefault = forwardRef(
         viewPermissions?.data?.projects?.manage_group_project || {}
     );
 
-
-
     useImperativeHandle(ref, () => ({ _open }));
 
     const _open = (anchorElGroup, selectedGroup) => {
@@ -70,8 +68,6 @@ const PopoverSetGroupDefault = forwardRef(
       e.stopPropagation();
       setIsShowCreateGroup(true);
     };
-
-    if (!state.anchorElGroup) return null;
 
     return (
       <>

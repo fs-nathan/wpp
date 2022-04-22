@@ -2,6 +2,9 @@ import Joi from "@hapi/joi";
 import { TOKEN } from "constants/constants";
 import moment from "moment";
 import React from "react";
+import { useMemo } from "react";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
 
 export function useRequiredString(initial = "", maxLength = 100) {
   const [string, setString] = React.useState(initial);
@@ -89,4 +92,11 @@ export function useGetToken() {
   }, []);
 
   return token;
+}
+
+export function useQuery() {
+  const { search } = useLocation();
+  const query: any = useMemo(() => queryString.parse(search), [search]);
+
+  return query;
 }

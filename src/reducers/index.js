@@ -272,6 +272,9 @@ import createProject, {
 import deleteProject, {
   initialState as deleteProjectInitialState,
 } from "./project/deleteProject";
+import cancelShare, {
+  initialState as cancelShareInitialState,
+} from "./project/cancelShare";
 import deleteTrashProject, {
   initialState as deleteTrashProjectInitialState,
 } from "./project/deleteTrashProject";
@@ -329,6 +332,9 @@ import updateStatusView, {
 import updateNotificationSetting, {
   initialState as updateNotificationSettingInitialState,
 } from "./project/setting/updateNotificationSetting";
+import shareProject, {
+  initialState as shareProjectInitialState,
+} from "./project/shareProject";
 import showProject, {
   initialState as showProjectInitialState,
 } from "./project/showProject";
@@ -507,6 +513,33 @@ import getProjectOnPersonalBoard, {
 import getWorkType, {
   initialState as getWorkTypeInitialState,
 } from "./project/getWorkType";
+import getBanner, {
+  initialState as getBannerInitialState,
+} from "./project/getBanner";
+import getTemplateCategory, {
+  initialState as getTemplateCategoryInitialState,
+} from "./project/getTemplateCategory";
+import getAllTemplate, {
+  initialState as getAllTemplateInitialState,
+} from "./project/getAllTemplate";
+import getNewestTemplate, {
+  initialState as getNewestTemplateInitialState,
+} from "./project/getNewestTemplate";
+import getTemplateByCategory, {
+  initialState as getTemplateByCategoryInitialState,
+} from "./project/getTemplateByCategory";
+import getDetailTemplate, {
+  initialState as getDetailTemplateInitialState,
+} from "./project/getDetailTemplate";
+import getListTemplate, {
+  initialState as getListTemplateInitialState,
+} from "./project/getListTemplate";
+import getListTemplateMeShared, {
+  initialState as getListTemplateMeSharedInitialState,
+} from "./project/getListTemplateMeShared";
+import searchTemplate, {
+  initialState as searchTemplateInitialState,
+} from "./project/searchTemplate";
 import updatePinBoardSetting, {
   initialState as updatePinBoardSettingInitialState,
 } from "./project/setting/updatePinBoardSetting";
@@ -609,6 +642,7 @@ const rootReducer = combineReducers({
     createProject,
     updateProject,
     deleteProject,
+    cancelShare,
     listProject,
     listDeletedProject,
     detailProject,
@@ -624,12 +658,22 @@ const rootReducer = combineReducers({
     updateGroupPermissionMember,
     removeGroupPermissionMember,
     assignMemberToAllTask,
+    shareProject,
     sortProject,
     copyProject,
     deleteTrashProject,
     restoreTrashProject,
     listProjectBasicInfo,
     getProjectStatistic,
+    getBanner,
+    getTemplateCategory,
+    getAllTemplate,
+    getNewestTemplate,
+    getTemplateByCategory,
+    getDetailTemplate,
+    getListTemplate,
+    getListTemplateMeShared,
+    searchTemplate,
     getWorkType,
     recentlyProjects,
     getStatusWorkGroup,
@@ -837,6 +881,7 @@ export const DEFAULT_STATE = {
     createProject: createProjectInitialState,
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
+    cancelShare: cancelShareInitialState,
     listProject: listProjectInitialState,
     checkHasRecently: checkHasRecentlyInitialState,
     listDeletedProject: listDeletedProjectInitialState,
@@ -853,6 +898,7 @@ export const DEFAULT_STATE = {
     updateGroupPermissionMember: updateGroupPermissionMemberInitialState,
     removeGroupPermissionMember: removeGroupPermissionMemberInitialState,
     assignMemberToAllTask: assignMemberToAllTaskInitialState,
+    shareProject: shareProjectInitialState,
     sortProject: sortProjectInitialState,
     copyProject: copyProjectInitialState,
     deleteTrashProject: deleteTrashProjectInitialState,
@@ -863,6 +909,15 @@ export const DEFAULT_STATE = {
     getStatusWorkGroup: getStatusWorkGroupInitialState,
     getProjectOnPersonalBoard: getProjectOnPersonalBoardInitialState,
     getWorkType: getWorkTypeInitialState,
+    getBanner: getBannerInitialState,
+    getTemplateCategory: getTemplateCategoryInitialState,
+    getAllTemplate: getAllTemplate,
+    getNewestTemplate: getNewestTemplateInitialState,
+    getTemplateByCategory: getTemplateByCategoryInitialState,
+    getDetailTemplate: getDetailTemplateInitialState,
+    getListTemplate: getListTemplateInitialState,
+    getListTemplateMeShared: getListTemplateMeSharedInitialState,
+    searchTemplate: searchTemplateInitialState,
     countPersonalProjectsBoard: countPersonalProjectsBoardInitialState,
     setting: {
       detailStatus: detailStatusInitialState,

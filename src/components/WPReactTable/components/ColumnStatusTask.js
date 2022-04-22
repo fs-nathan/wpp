@@ -45,6 +45,17 @@ const ColumnStatusTask = ({ taskId, statusCode, complete, fieldLabel }) => {
   const [tooltipChangeTaskStatus, setTooltipChangeTaskStatus] =
     React.useState(null);
 
+  React.useEffect(() => {
+    if (!tooltipChangeTaskStatus) return;
+    const cellHTML = tooltipChangeTaskStatus.closest(".td");
+    if (Boolean(tooltipChangeTaskStatus)) {
+      cellHTML && cellHTML.classList.add("focus");
+    }
+    return () => {
+      cellHTML && cellHTML.classList.remove("focus");
+    };
+  }, [tooltipChangeTaskStatus]);
+
   function handleUpdateTaskStatus(status) {
     setTooltipChangeTaskStatus(null);
     if (status === 4) {
@@ -107,7 +118,7 @@ const ColumnStatusTask = ({ taskId, statusCode, complete, fieldLabel }) => {
         <Box className={"toolTipUpdateStatus-body"}>
           {taskStatus.map(function (item, index) {
             return (
-              <>
+              <div key={index}>
                 {index === 3 && <Divider style={{ marginTop: 10 }} />}
                 <Box
                   className={"toolTipUpdateStatus-item"}
@@ -139,7 +150,7 @@ const ColumnStatusTask = ({ taskId, statusCode, complete, fieldLabel }) => {
                     </Typography>
                   </div>
                 </Box>
-              </>
+              </div>
             );
           })}
         </Box>

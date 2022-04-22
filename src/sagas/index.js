@@ -66,6 +66,7 @@ import {
 import { COPY_GROUP_TASK } from "../constants/actions/groupTask/copyGroupTask";
 import { DEFAULT_GROUP_TASK } from "../constants/actions/groupTask/defaultGroupTask";
 import { CREATE_GROUP_TASK } from "../constants/actions/groupTask/createGroupTask";
+import { ADD_GROUP_TASK } from "../constants/actions/task/listTask";
 import { DELETE_GROUP_TASK } from "../constants/actions/groupTask/deleteGroupTask";
 import { GET_ALL_GROUP_TASK } from "../constants/actions/groupTask/getAllGroupTask";
 import { LIST_GROUP_TASK } from "../constants/actions/groupTask/listGroupTask";
@@ -101,6 +102,10 @@ import { ASSIGN_MEMBER_TO_ALL_TASK } from "../constants/actions/project/assignMe
 import { COPY_PROJECT } from "../constants/actions/project/copyProject";
 import { CREATE_PROJECT } from "../constants/actions/project/createProject";
 import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
+import {
+  CANCEL_SHARE,
+  CANCEL_SHARE_SUCCESS,
+} from "../constants/actions/project/cancelShare";
 import { DELETE_TRASH_PROJECT } from "../constants/actions/project/deleteTrashProject";
 import { DETAIL_PROJECT } from "../constants/actions/project/detailProject";
 import { HIDE_PROJECT } from "../constants/actions/project/hideProject";
@@ -124,6 +129,7 @@ import { UPDATE_STATUS_DATE } from "../constants/actions/project/setting/updateS
 import { UPDATE_STATUS_VIEW } from "../constants/actions/project/setting/updateStatusView";
 import { UPDATE_NOTIFICATION_SETTING } from "../constants/actions/project/setting/updateNotificationSetting";
 import { UPDATE_PIN_BOARD_SETTING } from "../constants/actions/project/setting/updatePinBoardSetting";
+import { SHARE_PROJECT } from "../constants/actions/project/shareProject";
 import { SHOW_PROJECT } from "../constants/actions/project/showProject";
 import { SORT_PROJECT } from "../constants/actions/project/sortProject";
 import { UPDATE_GROUP_PERMISSION_MEMBER } from "../constants/actions/project/updateGroupPermissionMember";
@@ -373,8 +379,10 @@ import { addMemberProject } from "./project/addMemberProject";
 import { addProjectRoleToMember } from "./project/addProjectRoleToMember";
 import { assignMemberToAllTask } from "./project/assignMemberToAllTask";
 import { copyProject } from "./project/copyProject";
+import { shareProject } from "./project/shareProject";
 import { createProject } from "./project/createProject";
 import { deleteProject } from "./project/deleteProject";
+import { cancelShare } from "./project/cancelShare";
 import { deleteTrashProject } from "./project/deleteTrashProject";
 import { detailProject } from "./project/detailProject";
 import { hideProject } from "./project/hideProject";
@@ -465,6 +473,15 @@ import { listTaskMember } from "./task/listTaskMember";
 import { getRemindDetail } from "./calendar/alarmCalendar/getRemindDetail";
 import { getProjectStatistic } from "./project/getStatistic";
 import { getWorkType } from "./project/getWorkType";
+import { getTemplateCategory } from "./project/getTemplateCategory";
+import { getAllTemplate } from "./project/getAllTemplate";
+import { getTemplateByCategory } from "./project/getTemplateByCategory";
+import { getNewestTemplate } from "./project/getNewestTemplate";
+import { getDetailTemplate } from "./project/getDetailTemplate";
+import { getListTemplate } from "./project/getListTemplate";
+import { getListTemplateMeShared } from "./project/getListTemplateMeShared";
+import { getBanner } from "./project/getBanner";
+import { searchTemplate } from "./project/searchTemplate";
 import { updatePinBoardSetting } from "./project/setting/updatePinBoardSetting";
 import { recentlyProjects } from "./project/recentlyProjects";
 import { getStatusWorkGroup } from "./project/getStatusWork";
@@ -497,6 +514,16 @@ import { listColumns } from "./columns/listColumns";
 import { updateColumnsSaga } from "./columns/updateValueColumns";
 import { updateColumnsFieldSaga } from "./columns/updateColumns";
 import { defaultGroupTask } from "./groupTask/defaultGroupTask";
+import { createGroupTaskList } from "./task/createGroupTask";
+import { GET_TEMPLATE_CATEGORY } from "constants/actions/project/getTemplateCategory";
+import { GET_TEMPLATE_BY_CATEGORY } from "constants/actions/project/getTemplateByCategory";
+import { GET_LIST_TEMPLATE } from "constants/actions/project/getListTemplate";
+import { GET_NEWEST_TEMPLATE } from "constants/actions/project/getNewestTemplate";
+import { GET_DETAIL_TEMPLATE } from "constants/actions/project/getDetailTemplate";
+import { GET_LIST_TEMPLATE_ME_SHARED } from "constants/actions/project/getListTemplateMeShared";
+import { GET_BANNER } from "constants/actions/project/getBanner";
+import { SEARCH_TEMPLATE } from "constants/actions/project/searchTemplate";
+import { GET_ALL_TEMPLATE } from "constants/actions/project/getAllTemplate";
 
 function* rootSaga() {
   // Hoang - begin
@@ -568,11 +595,13 @@ function* rootSaga() {
   yield takeLeading(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
   yield takeEvery(CREATE_PROJECT, createProject);
   yield takeEvery(COPY_PROJECT, copyProject);
+  yield takeEvery(SHARE_PROJECT, shareProject);
   yield takeEvery(SORT_PROJECT, sortProject);
   yield takeEvery(UPDATE_PROJECT, updateProject);
   yield takeEvery(EDIT_PROJECT_LABELS, updateProjectLabels);
   yield takeEvery(CREATE_PROJECT_LABELS, createProjectLabels);
   yield takeEvery(DELETE_PROJECT, deleteProject);
+  yield takeEvery(CANCEL_SHARE, cancelShare);
   yield takeLatest(LIST_PROJECT, listProject);
   yield takeLatest(LIST_PROJECT_SELECT, listProject);
   yield takeLatest(CHECK_HAS_RECENTLY_PROJECT, checkHasProjectRecently);
@@ -602,6 +631,7 @@ function* rootSaga() {
   yield takeLatest(UPDATE_PIN_BOARD_SETTING, updatePinBoardSetting);
   yield takeLeading(LIST_GROUP_TASK, listGroupTask);
   yield takeEvery(CREATE_GROUP_TASK, createGroupTask);
+  yield takeEvery(ADD_GROUP_TASK, createGroupTaskList);
   yield takeEvery(COPY_GROUP_TASK, copyGroupTask);
   yield takeEvery(DEFAULT_GROUP_TASK, defaultGroupTask);
   yield takeEvery(UPDATE_GROUP_TASK, updateGroupTask);
@@ -1049,6 +1079,18 @@ function* rootSaga() {
   yield takeLatest(GET_PROJECT_STATUS_WORK, getStatusWorkGroup);
   yield takeLatest(GET_PROJECT_PERSONAL_BOARD, getProjectOnBoard);
   yield takeLatest(GET_WORK_TYPE, getWorkType);
+  yield takeLatest(GET_TEMPLATE_CATEGORY, getTemplateCategory);
+  yield takeLatest(GET_ALL_TEMPLATE, getAllTemplate);
+  yield takeLatest(GET_TEMPLATE_BY_CATEGORY, getTemplateByCategory);
+  yield takeLatest(GET_LIST_TEMPLATE, getListTemplate);
+  yield takeLatest(GET_NEWEST_TEMPLATE, getNewestTemplate);
+  yield takeLatest(GET_DETAIL_TEMPLATE, getDetailTemplate);
+  yield takeLatest(
+    [GET_LIST_TEMPLATE_ME_SHARED, CANCEL_SHARE_SUCCESS],
+    getListTemplateMeShared
+  );
+  yield takeLatest(GET_BANNER, getBanner);
+  yield takeLatest(SEARCH_TEMPLATE, searchTemplate);
   //
 
   //calendar

@@ -21,7 +21,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Fade direction="down" ref={ref} {...props} />;
 });
 
-function AlertModal({
+const AlertModal = ({
   open,
   setOpen,
   content = "",
@@ -33,7 +33,7 @@ function AlertModal({
   manualClose = false,
   actionLoading = false,
   activeLoading = false,
-}) {
+}) => {
   const { t } = useTranslation();
   const bgColor = colors.find((item) => item.selected === true);
 
@@ -55,8 +55,7 @@ function AlertModal({
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
-      disableBackdropClick={true}
-      disableEscapeKeyDown={true}
+      disableEscapeKeyDown
     >
       <DialogTitle
         className="comp_AlertModal___dialog-title"
@@ -71,7 +70,9 @@ function AlertModal({
         {content}
       </DialogContent>
       <DialogActions className="comp_AlertModal___dialog-actions">
-        {
+        {CustomFooter ? (
+          <CustomFooter bg={bgColor.color} />
+        ) : (
           <>
             <ButtonBase
               className="comp_AlertModal___cancle-button"
@@ -99,24 +100,24 @@ function AlertModal({
               {t("DMH.COMP.ALERT_MODAL.ACCEPT_BTN")}
             </ButtonBase>
           </>
-        }
+        )}
       </DialogActions>
     </Dialog>
   );
-}
-
-AlertModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired,
-  canConfirm: PropTypes.bool,
-  content: PropTypes.node,
-  onConfirm: PropTypes.func,
-  onCancle: PropTypes.func,
 };
+
+// AlertModal.propTypes = {
+//   open: PropTypes.bool.isRequired,
+//   setOpen: PropTypes.func.isRequired,
+//   canConfirm: PropTypes.bool,
+//   content: PropTypes.node,
+//   onConfirm: PropTypes.func,
+//   onCancle: PropTypes.func,
+// };
 
 export default connect(
   (state) => ({
     colors: state.setting.colors,
   }),
-  {}
+  undefined
 )(AlertModal);

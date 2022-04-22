@@ -50,7 +50,7 @@ export const StyledDialogTitle = ({ className = "", ...props }) => (
   />
 );
 
-const StyledDialogActions = ({ className = "", ...props }) => (
+export const StyledDialogActions = ({ className = "", ...props }) => (
   <DialogActions
     className={`comp_CustomModal___dialog-actions ${className}`}
     {...props}
@@ -69,7 +69,7 @@ export const ActionsAcceptButton = ({ className = "", disabled, ...props }) => (
   />
 );
 
-const ActionsCancleButton = ({ className = "", ...props }) => (
+export const ActionsCancleButton = ({ className = "", ...props }) => (
   <ButtonBase
     className={`comp_CustomModal___cancle-button ${className}`}
     {...props}

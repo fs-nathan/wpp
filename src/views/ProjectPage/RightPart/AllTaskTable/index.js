@@ -15,8 +15,9 @@ import {
 import { getPermissionViewDetailProject } from "actions/viewPermissions";
 import AlertModal from "components/AlertModal";
 import AssignCalendarModal from "components/AssignCalendarModal";
+import { CustomLayoutContext } from "components/CustomLayout";
 import { useTimes } from "components/CustomPopover";
-import { CustomTableWrapper } from "components/CustomTable";
+import ShareProjectModal from "components/ShareProjectModal/ShareProjectModal";
 import {
   COPY_GROUP_TASK,
   CREATE_GROUP_TASK,
@@ -33,7 +34,8 @@ import {
 } from "constants/events";
 import { get } from "lodash";
 import moment from "moment";
-import React from "react";
+import React, { useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
@@ -52,10 +54,6 @@ import {
   showHidePendingsSelector,
   tasksSelector,
 } from "./selectors";
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
 
 function AllTaskTable({
   expand,
@@ -85,6 +83,7 @@ function AllTaskTable({
   doSortGroupTask,
 }) {
   const times = useTimes();
+  const { t } = useTranslation();
   const { timeType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
@@ -94,11 +93,22 @@ function AllTaskTable({
     };
   }, [timeType]);
   const { projectId, memberId } = useParams();
-  const query = useQuery();
+  const reloadListTask = () => {
+    doListTask({
+      projectId,
+      timeStart: get(timeRange, "timeStart")
+        ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
+        : undefined,
+      timeEnd: get(timeRange, "timeEnd")
+        ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
+        : undefined,
+    });
+  };
 
-  // React.useLayoutEffect(() => {
-  //   doGetPermissionViewDetailProject({ projectId });
-  // }, [projectId]);
+  const reloadListTaskAndGroupTask = () => {
+    reloadListTask();
+    doListGroupTask({ projectId });
+  };
 
   React.useEffect(() => {
     if (projectId !== null) {
@@ -111,22 +121,6 @@ function AllTaskTable({
           ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
           : undefined,
       });
-      const reloadListTask = () => {
-        doListTask({
-          projectId,
-          timeStart: get(timeRange, "timeStart")
-            ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
-            : undefined,
-          timeEnd: get(timeRange, "timeEnd")
-            ? moment(get(timeRange, "timeEnd")).format("YYYY-MM-DD")
-            : undefined,
-        });
-      };
-
-      const reloadListTaskAndGroupTask = () => {
-        reloadListTask();
-        doListGroupTask({ projectId });
-      };
 
       const createTaskSuccess = (event) => {
         reloadListTask();
@@ -178,21 +172,6 @@ function AllTaskTable({
     }
   }, [projectId, timeRange]);
 
-  // React.useEffect(() => {
-  //   if(!isNil(memberId)) {
-  //     doListTaskMember({projectId, memberId});
-  //     const reloadAfterActionMember = () => {
-  //       doListTaskMember({projectId, memberId});
-  //     }
-  //     CustomEventListener(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
-  //     CustomEventListener(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-  //     return () => {
-  //       CustomEventDispose(EVENT_REMOVE_MEMBER_FROM_TASK_SUCCESS, reloadAfterActionMember);
-  //       CustomEventDispose(EVENT_ADD_MEMBER_TO_TASK_SUCCESS, reloadAfterActionMember);
-  //     }
-  //   }
-  // }, [memberId]);
-
   React.useEffect(() => {
     if (!get(viewPermissions.permissions, [projectId, "update_project"], false))
       return;
@@ -221,16 +200,28 @@ function AllTaskTable({
     }
   }, [projectId, timeRange]);
 
+  const {
+    openMemberSetting,
+    setOpenMemberSetting,
+    openCalendar,
+    setOpenCalendar,
+    openSetting,
+    setOpenSetting,
+    settingProps,
+    openMenuCreate,
+    setOpenMenuCreate,
+    selectedGroup,
+    setSelectedGroup,
+    openShareProject,
+    setOpenShareProject,
+    openUnShareProject,
+    setOpenUnShareProject,
+  } = useContext(CustomLayoutContext);
+
   const [openCreate, setOpenCreate] = React.useState(false);
-  const [openMenuCreate, setOpenmMenuCreate] = React.useState(null);
-  const [openSetting, setOpenSetting] = React.useState(false);
-  const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
-  const [openCalendar, setOpenCalendar] = React.useState(false);
-  const [selectedGroup, setSelectedGroup] = React.useState(null);
   const [openModalAddMember, setOpenModalAddMember] = React.useState(false);
-  const [openMemberSetting, setOpenMemberSetting] = React.useState(false);
   const [openCreateTaskGroup, setOpenCreateTaskGroup] = React.useState(false);
 
   function doOpenModal(type, props) {
@@ -240,25 +231,15 @@ function AllTaskTable({
         setSelectedGroup(props);
         return;
       case "MENU_CREATE":
-        setOpenmMenuCreate(true);
+        setOpenMenuCreate(true);
         setSelectedGroup(props);
-        return;
-      case "SETTING":
-        setOpenSetting(true);
-        setSettingProps(props);
         return;
       case "ALERT":
         setOpenAlert(true);
         setAlertProps(props);
         return;
-      case "CALENDAR":
-        setOpenCalendar(true);
-        return;
       case "ADD_MEMBER":
         setOpenModalAddMember(true);
-        return;
-      case "SETTING_MEMBER":
-        setOpenMemberSetting(true);
         return;
       default:
         return;
@@ -272,61 +253,65 @@ function AllTaskTable({
     // doAddMemberToTask({task_id: taskId, member_id: memberId});
   }
 
+  function handleUnShare() {
+    // get(project, "id")
+    setOpenUnShareProject(false);
+  }
+
   return (
     <>
-      <CustomTableWrapper>
-        <AllTaskTablePresenter
-          expand={expand}
-          handleExpand={handleExpand}
-          handleSubSlide={handleSubSlide}
-          canUpdateProject={get(
-            viewPermissions.permissions,
-            [projectId, "update_project"],
-            false
-          )}
-          canCreateTask={true}
-          isShortGroup={isShortGroup}
-          showHidePendings={showHidePendings}
-          tasks={tasks}
-          project={project}
-          memberID={memberId}
-          memberTask={memberTask}
-          handleShowOrHideProject={(project) =>
-            get(project, "visibility", false)
-              ? doHideProject({ projectId: get(project, "id") })
-              : doShowProject({ projectId: get(project, "id") })
-          }
-          handleDeleteTask={(task) => doDeleteTask({ taskId: get(task, "id") })}
-          handleSortGroupTask={(groupTaskId, sortIndex) =>
-            doSortGroupTask({ groupTaskId, sortIndex })
-          }
-          handleSortTask={(taskId, groupTask, sortIndex) =>
-            doSortTask({
-              taskId,
-              projectId,
-              groupTask: groupTask === "default" ? undefined : groupTask,
-              sortIndex,
-            })
-          }
-          handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
-          handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
-          handleOpenModal={doOpenModal}
-          bgColor={bgColor}
-          timeType={timeType}
-          handleTimeType={(timeType) =>
-            doSetProject({
-              ...localOption,
-              timeType,
-            })
-          }
-        />
-      </CustomTableWrapper>
+      <AllTaskTablePresenter
+        expand={expand}
+        handleExpand={handleExpand}
+        handleSubSlide={handleSubSlide}
+        canUpdateProject={get(
+          viewPermissions.permissions,
+          [projectId, "update_project"],
+          false
+        )}
+        canCreateTask={true}
+        isShortGroup={isShortGroup}
+        showHidePendings={showHidePendings}
+        tasks={tasks}
+        project={project}
+        memberID={memberId}
+        memberTask={memberTask}
+        handleShowOrHideProject={(project) =>
+          get(project, "visibility", false)
+            ? doHideProject({ projectId: get(project, "id") })
+            : doShowProject({ projectId: get(project, "id") })
+        }
+        handleDeleteTask={(task) => doDeleteTask({ taskId: get(task, "id") })}
+        handleSortGroupTask={(groupTaskId, sortIndex) =>
+          doSortGroupTask({ groupTaskId, sortIndex })
+        }
+        handleSortTask={(taskId, groupTask, sortIndex) =>
+          doSortTask({
+            taskId,
+            projectId,
+            groupTask: groupTask === "default" ? undefined : groupTask,
+            sortIndex,
+          })
+        }
+        handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
+        handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
+        handleOpenModal={doOpenModal}
+        handleReload={reloadListTaskAndGroupTask}
+        bgColor={bgColor}
+        timeType={timeType}
+        handleTimeType={(timeType) =>
+          doSetProject({
+            ...localOption,
+            timeType,
+          })
+        }
+      />
       <MenuCreateNew
         setOpenCreateTaskGroup={setOpenCreateTaskGroup}
-        setOpenmMenuCreate={setOpenmMenuCreate}
+        setOpenMenuCreate={setOpenMenuCreate}
         setOpenCreate={setOpenCreate}
         anchorEl={openMenuCreate}
-        setAnchorEl={setOpenmMenuCreate}
+        setAnchorEl={setOpenMenuCreate}
       />
       <CreateGroupTask
         open={openCreateTaskGroup}
@@ -350,6 +335,20 @@ function AllTaskTable({
       <AssignCalendarModal
         openModal={openCalendar}
         setopenModal={setOpenCalendar}
+      />
+      <ShareProjectModal
+        openModal={openShareProject}
+        setopenModal={setOpenShareProject}
+      />
+      <AlertModal
+        open={openUnShareProject}
+        setOpen={setOpenUnShareProject}
+        content={t("UN_SHARE_PROJECT_TITLE")}
+        onConfirm={() => {
+          handleUnShare();
+        }}
+        onCancle={() => setOpenUnShareProject(false)}
+        manualClose
       />
       <AlertModal open={openAlert} setOpen={setOpenAlert} {...alertProps} />
       {openModalAddMember && (
