@@ -49,9 +49,9 @@ const ProjectSingleTemplate = () => {
               <Link
                 underline="hover"
                 color="inherit"
-                href={`/projects/group/${DETAIL_TEMPLATE.parent}`}
+                href={`/projects/group/${template.category_id}`}
               >
-                {DETAIL_TEMPLATE.parent}
+                {template.category_name}
               </Link>
             </Breadcrumbs>
             <Typography color="text.primary">{template.name}</Typography>

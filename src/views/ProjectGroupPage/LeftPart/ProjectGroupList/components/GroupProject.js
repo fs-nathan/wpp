@@ -107,15 +107,17 @@ export const GroupProject = ({
             </div> */}
 
             <ListItemIcon>
-              <CustomAvatar
+              <div
                 style={{
                   // marginRight: "10px",
-                  width: 25,
-                  height: 25,
+                  width: 20,
+                  height: 20,
+                  borderRadius: 5,
+                  backgroundColor: "#4dcbc4",
                 }}
-                src={get(projectGroup, "icon")}
+                // src={get(projectGroup, "icon")}
                 alt="avatar"
-              />
+              ></div>
             </ListItemIcon>
 
             <ListItemText

@@ -19,23 +19,19 @@ const TemplateSection = ({
 
   return (
     <div className="template-group__section">
-      {templates && templates.length > 0 && (
-        <>
-          <div className="template-group__section__title">
-            <span>{icon}</span>
-            <h3>{title}</h3>
-            <div>{extra && extra}</div>
-          </div>
+      <div className="template-group__section__title">
+        <span>{icon}</span>
+        <h3>{title}</h3>
+        <div>{extra && extra}</div>
+      </div>
 
-          <div className="template-group__section__card">
-            {templates &&
-              templates.map((template) => (
-                <TemplateCard key={template.id} template={template} />
-              ))}
-            {isEmpty && <TemplateCard isEmpty />}
-          </div>
-        </>
-      )}
+      <div className="template-group__section__card">
+        {templates &&
+          templates.map((template) => (
+            <TemplateCard key={template.id} template={template} />
+          ))}
+        {isEmpty && <TemplateCard isEmpty />}
+      </div>
     </div>
   );
 };

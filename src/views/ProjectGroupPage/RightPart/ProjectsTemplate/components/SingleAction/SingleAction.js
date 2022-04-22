@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   Button,
@@ -16,11 +17,12 @@ import DialogUsing from "./DialogUsing";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelShare } from "actions/project/cancelShare";
+import { useTemplate } from "actions/project/useTemplate";
 import { useTranslation } from "react-i18next";
 import { actionToast } from "actions/system/system";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import { CANCEL_SHARE_SUCCESS } from "constants/actions/project/cancelShare";
-
+import moment from "moment";
 const SingleAction = () => {
   const [anchorUnShareEl, setAnchorUnShareEl] = useState(null);
   const [anchorRefferEl, setAnchorRefferEl] = useState(null);
@@ -83,7 +85,20 @@ const SingleAction = () => {
       history.replace("/projects/template");
     } catch (error) {}
   }
-  async function handleUsing() {}
+  async function handleUsing({ name, curProjectGroupId, startDate }) {
+    try {
+      await dispatch(
+        useTemplate({
+          template_id: projectId,
+          name,
+          project_group_id: curProjectGroupId,
+          day_start: startDate
+            ? moment(startDate).format("YYYY-MM-DD HH:mm:ss")
+            : undefined,
+        })
+      );
+    } catch (error) {}
+  }
 
   return (
     <>

@@ -75,6 +75,7 @@ const ProjectsTemplate = () => {
             categories.length > 0 &&
             categories.map((category) => (
               <TemplateGroup
+                id={category.category_id}
                 key={category.category_id}
                 thumbnail={category.category_image}
                 title={category.category_name}
