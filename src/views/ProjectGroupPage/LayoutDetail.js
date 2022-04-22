@@ -27,6 +27,12 @@ import {
   visibleSelector,
 } from "../KanbanPage/Header/selectors";
 
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
+
 const MiniContainer = ({ className = "", ...props }) => (
   <div
     className={`view_KanbanHeader___container-mini ${className}`}
@@ -64,6 +70,12 @@ const LayoutDetail = ({
       (pending) => pending === get(project.project, "id")
     )
   );
+  const query = useQuery();
+  React.useEffect(() => {
+    if (query.get("open-employee")) {
+      doOpenModal("SETTING_MEMBER", {});
+    }
+  }, [query]);
 
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
@@ -131,6 +143,8 @@ const LayoutDetail = ({
           ),
           onUpdateMember: () => doOpenModal("MEMBER_SETTING", {}),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
           onUpdateVisible: () =>
             get(project, "visibility", false)
               ? doHideProject({ projectId: get(project?.project, "id") })
@@ -156,6 +170,9 @@ const LayoutDetail = ({
           onSearch: (searchStr) => doSearchTask(searchStr),
           onOpenCreateModal: () => console.log("onOpenCreateModal"),
           onUpdateTime: () => console.log("CALENDAR"),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateSetting: () => console.log("SETTING"),
           expand: expand,
           onExpand: handleExpand,
@@ -185,6 +202,9 @@ const LayoutDetail = ({
           disableShowHide,
           onUpdateMember: () => doOpenModal("SETTING_MEMBER"),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateSetting: () =>
             doOpenModal("SETTING", {
               curProject: project.project,
@@ -229,6 +249,9 @@ const LayoutDetail = ({
           disableShowHide,
           onUpdateMember: () => doOpenModal("SETTING_MEMBER"),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateVisible: () =>
             get(project, "visibility", false)
               ? doHideProject({ projectId: get(project?.project, "id") })

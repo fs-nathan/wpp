@@ -118,7 +118,7 @@ const ColumnStatusTask = ({ taskId, statusCode, complete, fieldLabel }) => {
         <Box className={"toolTipUpdateStatus-body"}>
           {taskStatus.map(function (item, index) {
             return (
-              <>
+              <div key={index}>
                 {index === 3 && <Divider style={{ marginTop: 10 }} />}
                 <Box
                   className={"toolTipUpdateStatus-item"}
@@ -150,7 +150,7 @@ const ColumnStatusTask = ({ taskId, statusCode, complete, fieldLabel }) => {
                     </Typography>
                   </div>
                 </Box>
-              </>
+              </div>
             );
           })}
         </Box>

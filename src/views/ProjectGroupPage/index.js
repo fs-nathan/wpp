@@ -24,9 +24,16 @@ import ProjectGroupListDeleted from "./LeftPart/ProjectGroupListDeleted";
 import AllProjectTable from "./RightPart/AllProjectTable";
 import DeletedProjectTable from "./RightPart/DeletedProjectTable";
 import ProjectsStart from "./RightPart/ProjectsStart";
+import ProjectAddNew from "./RightPart/ProjectAddNew";
 import { routeSelector } from "./selectors";
 import { CustomTableWrapper } from "components/CustomTable";
 import { CustomLayoutProvider } from "components/CustomLayout";
+import ProjectsTemplate from "./RightPart/ProjectsTemplate/ProjectsTemplate";
+import ProjectTemplateList from "./LeftPart/ProjectTemplateList/ProjectTemplateList";
+import ProjectSingleTemplate from "./RightPart/ProjectsTemplate/ProjectSingleTemplate";
+import ProjectGroupTemplate from "./RightPart/ProjectsTemplate/ProjectGroupTemplate";
+import ProjectSharedTemplate from "./RightPart/ProjectsTemplate/ProjectSharedTemplate";
+import ProjectBeSharedTemplate from "./RightPart/ProjectsTemplate/ProjectBeSharedTemplate";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -39,10 +46,12 @@ function ProjectGroupPage({
   const { pathname } = useLocation();
   const [isCollapsed, setIsCollapsed] = useLocalStorage(
     "WPS_COLLAPSED_DEFAULT",
-    true
+    localStorage.getItem("WPS_COLLAPSED_DEFAULT")
   );
+
   const [test, setTest] = useState([]);
   const isDeletedPage = pathname.split("/")[2] === "deleted";
+  const isTemplatePage = pathname.split("/")[2] === "template";
 
   useLayoutEffect(() => {
     doGetPermissionViewProjects();
@@ -60,10 +69,21 @@ function ProjectGroupPage({
     >
       {!isCollapsed && (
         <div className={classNames(classes.leftSidebar, { isCollapsed })}>
-          {isDeletedPage ? <ProjectGroupListDeleted /> : <ProjectGroupList />}
+          {isTemplatePage ? (
+            <ProjectTemplateList />
+          ) : isDeletedPage ? (
+            <ProjectGroupListDeleted />
+          ) : (
+            <ProjectGroupList />
+          )}
         </div>
       )}
-      <div className={classNames(classes.mainContent, { isCollapsed })}>
+      <div
+        className={classNames(
+          isTemplatePage ? classes.mainContentOverflow : classes.mainContent,
+          { isCollapsed }
+        )}
+      >
         <Switch>
           <Route exact path="/projects/recently">
             <AllProjectTable
@@ -72,6 +92,10 @@ function ProjectGroupPage({
               handleExpand={_handleExpand}
             />
           </Route>
+          <Route exact path="/projects/add-new">
+            <ProjectAddNew handleExpand={_handleExpand} />
+          </Route>
+
           <Route exact path="/projects/start">
             <ProjectsStart expand={isCollapsed} handleExpand={_handleExpand} />
           </Route>
@@ -81,6 +105,21 @@ function ProjectGroupPage({
               expand={isCollapsed}
               handleExpand={_handleExpand}
             />
+          </Route>
+          <Route exact path="/projects/template/group/:id">
+            <ProjectGroupTemplate />
+          </Route>
+          <Route exact path="/projects/template/shared">
+            <ProjectSharedTemplate />
+          </Route>
+          <Route exact path="/projects/template/be-shared">
+            <ProjectBeSharedTemplate />
+          </Route>
+          <Route exact path="/projects/template/:id">
+            <ProjectSingleTemplate />
+          </Route>
+          <Route exact path="/projects/template">
+            <ProjectsTemplate />
           </Route>
           <Route exact path="/projects/group/:projectGroupId">
             <AllProjectTable
@@ -217,4 +256,8 @@ const useStyles = makeStyles({
     display: "initial",
   },
   mainContent: {},
+  mainContentOverflow: {
+    height: "100%",
+    overflowY: "auto",
+  },
 });

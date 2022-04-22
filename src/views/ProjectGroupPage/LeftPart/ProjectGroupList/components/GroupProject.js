@@ -1,8 +1,9 @@
 import {
-  Collapse, List,
+  Collapse,
+  List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
@@ -13,6 +14,8 @@ import Icon from "@mdi/react";
 import AddIcon from "@mui/icons-material/Add";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
@@ -28,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: "45px",
     "&:hover, &.active": {
       backgroundColor: "#e5e5e5!important",
-      color: "rgb(0, 145, 67)",
+      color: "#0076f3",
       "& $projectIconChecked": {
         display: "flex",
       },
@@ -46,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   projectIcon: { minWidth: "auto", marginRight: 5 },
-  projectIconChecked: { display: "none", color: "rgb(0, 145, 67)" },
+  projectIconChecked: { display: "none", color: "#0076f3" },
   projectIconOutLine: { display: "flex" },
   groupName: {
     whiteSpace: "nowrap",
@@ -96,17 +99,17 @@ export const GroupProject = ({
             to={`/projects?groupID=${projectGroup.id}`}
             // onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
           >
-            <div
+            {/* <div
               {...provided.dragHandleProps}
               className={"view_ProjectGroup_List-customListItem-dragIcon"}
             >
               <Icon path={mdiDragVertical} size={1} />
-            </div>
+            </div> */}
 
             <ListItemIcon>
               <CustomAvatar
                 style={{
-                  marginRight: "10px",
+                  // marginRight: "10px",
                   width: 25,
                   height: 25,
                 }}
@@ -200,19 +203,19 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
                 const id = pathname.split("/");
                 return id[3] === item.id;
               }}
-              style={{ paddingLeft: 80 }}
+              style={{ paddingLeft: 45 }}
               to={`${Routes.PROJECT}/${item.id}`}
             >
               <ListItemIcon
                 className={[classes.projectIcon, classes.projectIconChecked]}
               >
-                <RadioButtonCheckedIcon />
+                <CheckCircleIcon htmlColor="#0076f3" />
               </ListItemIcon>
 
               <ListItemIcon
                 className={[classes.projectIcon, classes.projectIconOutLine]}
               >
-                <RadioButtonUncheckedIcon />
+                <CheckCircleOutlineIcon />
               </ListItemIcon>
 
               <ListItemText

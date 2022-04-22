@@ -17,6 +17,7 @@ import AlertModal from "components/AlertModal";
 import AssignCalendarModal from "components/AssignCalendarModal";
 import { CustomLayoutContext } from "components/CustomLayout";
 import { useTimes } from "components/CustomPopover";
+import ShareProjectModal from "components/ShareProjectModal/ShareProjectModal";
 import {
   COPY_GROUP_TASK,
   CREATE_GROUP_TASK,
@@ -33,9 +34,10 @@ import {
 } from "constants/events";
 import { get } from "lodash";
 import moment from "moment";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { connect } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
@@ -81,6 +83,7 @@ function AllTaskTable({
   doSortGroupTask,
 }) {
   const times = useTimes();
+  const { t } = useTranslation();
   const { timeType } = localOption;
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
@@ -90,7 +93,6 @@ function AllTaskTable({
     };
   }, [timeType]);
   const { projectId, memberId } = useParams();
-
   const reloadListTask = () => {
     doListTask({
       projectId,
@@ -210,6 +212,10 @@ function AllTaskTable({
     setOpenMenuCreate,
     selectedGroup,
     setSelectedGroup,
+    openShareProject,
+    setOpenShareProject,
+    openUnShareProject,
+    setOpenUnShareProject,
   } = useContext(CustomLayoutContext);
 
   const [openCreate, setOpenCreate] = React.useState(false);
@@ -245,6 +251,11 @@ function AllTaskTable({
   }
   function handleAddMember(taskId) {
     // doAddMemberToTask({task_id: taskId, member_id: memberId});
+  }
+
+  function handleUnShare() {
+    // get(project, "id")
+    setOpenUnShareProject(false);
   }
 
   return (
@@ -324,6 +335,20 @@ function AllTaskTable({
       <AssignCalendarModal
         openModal={openCalendar}
         setopenModal={setOpenCalendar}
+      />
+      <ShareProjectModal
+        openModal={openShareProject}
+        setopenModal={setOpenShareProject}
+      />
+      <AlertModal
+        open={openUnShareProject}
+        setOpen={setOpenUnShareProject}
+        content={t("UN_SHARE_PROJECT_TITLE")}
+        onConfirm={() => {
+          handleUnShare();
+        }}
+        onCancle={() => setOpenUnShareProject(false)}
+        manualClose
       />
       <AlertModal open={openAlert} setOpen={setOpenAlert} {...alertProps} />
       {openModalAddMember && (

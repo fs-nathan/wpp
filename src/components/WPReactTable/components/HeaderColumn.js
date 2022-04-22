@@ -136,7 +136,7 @@ const HeaderColumn = ({
             transformOrigin={{ vertical: "top", horizontal: "start" }}
           >
             {!column.is_default && (
-              <>
+              <div>
                 <StyledMenuItem
                   onClick={_handleEditField}
                   style={{ marginBottom: 5 }}
@@ -144,7 +144,7 @@ const HeaderColumn = ({
                   <Typography textAlign="center">Chỉnh sửa trường</Typography>
                 </StyledMenuItem>
                 <Divider />
-              </>
+              </div>
             )}
 
             <StyledMenuItem

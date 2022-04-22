@@ -1,29 +1,41 @@
-import { ButtonBase, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Fade, IconButton } from '@material-ui/core';
-import { mdiClose } from '@mdi/js';
-import Icon from '@mdi/react';
-import PropTypes from 'prop-types';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { connect } from 'react-redux';
-import ColorTypo from '../ColorTypo';
-import './style.scss';
+import {
+  ButtonBase,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Fade,
+  IconButton,
+} from "@material-ui/core";
+import { mdiClose } from "@mdi/js";
+import Icon from "@mdi/react";
+import PropTypes from "prop-types";
+import React from "react";
+import { useTranslation } from "react-i18next";
+import { connect } from "react-redux";
+import ColorTypo from "../ColorTypo";
+import "./style.scss";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Fade direction='down' ref={ref} {...props} />;
+  return <Fade direction="down" ref={ref} {...props} />;
 });
 
-function AlertModal({
-  open, setOpen,
-  content = '', onConfirm = () => null, onCancle = () => null,
-  colors, canConfirm = true,
+const AlertModal = ({
+  open,
+  setOpen,
+  content = "",
+  onConfirm = () => null,
+  onCancle = () => null,
+  colors,
+  canConfirm = true,
   customFooter: CustomFooter,
   manualClose = false,
   actionLoading = false,
   activeLoading = false,
-}) {
-
+}) => {
   const { t } = useTranslation();
-  const bgColor = colors.find(item => item.selected === true);
+  const bgColor = colors.find((item) => item.selected === true);
 
   function handleCancle() {
     !manualClose && setOpen(false);
@@ -43,8 +55,7 @@ function AlertModal({
       TransitionComponent={Transition}
       onClose={() => handleCancle()}
       aria-labelledby="alert-dialog-slide-title"
-      disableBackdropClick={true}
-      disableEscapeKeyDown={true}
+      disableEscapeKeyDown
     >
       <DialogTitle
         className="comp_AlertModal___dialog-title"
@@ -59,7 +70,9 @@ function AlertModal({
         {content}
       </DialogContent>
       <DialogActions className="comp_AlertModal___dialog-actions">
-        {<CustomFooter bg={bgColor.color} /> || (
+        {CustomFooter ? (
+          <CustomFooter bg={bgColor.color} />
+        ) : (
           <>
             <ButtonBase
               className="comp_AlertModal___cancle-button"
@@ -91,19 +104,20 @@ function AlertModal({
       </DialogActions>
     </Dialog>
   );
-}
-
-AlertModal.propTypes = {
-  open: PropTypes.bool.isRequired,
-  setOpen: PropTypes.func.isRequired,
-  canConfirm: PropTypes.bool,
-  content: PropTypes.node,
-  onConfirm: PropTypes.func,
-  onCancle: PropTypes.func,
 };
 
-export default connect(state => ({
-  colors: state.setting.colors
-}),
-  {},
+// AlertModal.propTypes = {
+//   open: PropTypes.bool.isRequired,
+//   setOpen: PropTypes.func.isRequired,
+//   canConfirm: PropTypes.bool,
+//   content: PropTypes.node,
+//   onConfirm: PropTypes.func,
+//   onCancle: PropTypes.func,
+// };
+
+export default connect(
+  (state) => ({
+    colors: state.setting.colors,
+  }),
+  undefined
 )(AlertModal);

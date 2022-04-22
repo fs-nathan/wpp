@@ -1,29 +1,30 @@
-import { get } from 'lodash';
+import { get } from "lodash";
 import {
-  CHANGE_CALENDAR_PERMISSTION, CHANGE_COLUMN_INDEX,
+  CHANGE_CALENDAR_PERMISSTION,
+  CHANGE_COLUMN_INDEX,
   CHANGE_CONTENT_PREVIEW_PDF,
   CHANGE_FILTER_EXPORT_PDF,
   CHANGE_INSTANCE_GIRD,
   CHANGE_KEYWORD,
-
-
-
-
-
-  CHANGE_MAIN_CALENDAR, CHANGE_PROJECT_INFO,
-  CHANGE_PROJECT_SCHEDULE, CHANGE_RENDER_FULL_DAY,
+  CHANGE_MAIN_CALENDAR,
+  CHANGE_PROJECT_INFO,
+  CHANGE_PROJECT_SCHEDULE,
+  CHANGE_RENDER_FULL_DAY,
   CHANGE_ROW_HOVER,
   CHANGE_SCHEDULE_DETAIL_GANTT,
   CHANGE_TIMELINE_COLOR,
   CHANGE_VISIBLE,
-
-  FETCH_PROJECT_SCHEDULE, GANTT_SHOW_FULL_CHART,
+  FETCH_PROJECT_SCHEDULE,
+  GANTT_SHOW_FULL_CHART,
   GANTT_SHOW_HEADER,
-  SCROLL_GANTT
+  SCROLL_GANTT,
 } from "../../constants/actions/gantt";
 import { apiService } from "../../constants/axiosInstance";
-import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from '../../constants/snackbarController';
-
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "../../constants/snackbarController";
 
 const typeColorGanttSetting = {
   total: "color_total_duration",
@@ -113,11 +114,11 @@ export const changeFilterExportPdf = (start, end) => ({
 });
 
 export const changeInstanceGird = (gird) => {
-  localStorage.setItem("timeUnitGantt", gird)
+  localStorage.setItem("timeUnitGantt", gird);
   return {
     type: CHANGE_INSTANCE_GIRD,
     payload: gird,
-  }
+  };
 };
 
 export const scrollGantt = (flag) => ({
@@ -157,21 +158,21 @@ export const actionChangeCompleteTask = (task_id, complete) => {
 
 export const changeProjectSchedule = (schedules) => ({
   type: CHANGE_PROJECT_SCHEDULE,
-  payload: schedules
-})
+  payload: schedules,
+});
 
 export const changeMainCalendar = (_id) => {
-  localStorage.setItem('gantt_main_calendar', _id)
+  localStorage.setItem("gantt_main_calendar", _id);
   return {
     type: CHANGE_MAIN_CALENDAR,
-    payload: _id
-  }
-}
+    payload: _id,
+  };
+};
 
 export const changeFlagFetchProjectSchedules = (flag) => ({
   type: FETCH_PROJECT_SCHEDULE,
-  payload: flag
-})
+  payload: flag,
+});
 export const actionChangeTimeTask = ({
   task_id,
   start_date,
@@ -199,7 +200,7 @@ export const changeProjectInfo = ({ id, name, group_icon, work_type }) => ({
     id,
     name,
     group_icon,
-    work_type
+    work_type,
   },
 });
 
@@ -235,11 +236,14 @@ export const changeTaskduration = async ({
         end_time,
       },
     };
-    const result = await apiService(config);
-    console.log(result);
+    // const result = await apiService(config);
+    // console.log(result);
   } catch (err) {
     console.log(err);
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+    SnackbarEmitter(
+      SNACKBAR_VARIANT.ERROR,
+      get(err, "message", DEFAULT_MESSAGE.QUERY.ERROR)
+    );
   }
 };
 
@@ -253,10 +257,13 @@ export const changeTaskComplete = async ({ task_id, complete }) => {
         complete,
       },
     };
-    const result = await apiService(config);
+    // const result = await apiService(config);
   } catch (err) {
     console.log(err);
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+    SnackbarEmitter(
+      SNACKBAR_VARIANT.ERROR,
+      get(err, "message", DEFAULT_MESSAGE.QUERY.ERROR)
+    );
   }
 };
 
@@ -269,15 +276,18 @@ export const sortTask = async (task_id, group_task, project_id, sort_index) => {
         task_id,
         group_task,
         project_id,
-        sort_index
+        sort_index,
       },
     };
-    const result = await apiService(config);
+    // const result = await apiService(config);
   } catch (err) {
     console.log(err);
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+    SnackbarEmitter(
+      SNACKBAR_VARIANT.ERROR,
+      get(err, "message", DEFAULT_MESSAGE.QUERY.ERROR)
+    );
   }
-}
+};
 
 export const sortGroupTask = async (group_task_id, sort_index) => {
   try {
@@ -286,12 +296,15 @@ export const sortGroupTask = async (group_task_id, sort_index) => {
       method: "post",
       data: {
         group_task_id,
-        sort_index
+        sort_index,
       },
     };
-    const result = await apiService(config);
+    // const result = await apiService(config);
   } catch (err) {
     console.log(err);
-    SnackbarEmitter(SNACKBAR_VARIANT.ERROR, get(err, 'message', DEFAULT_MESSAGE.QUERY.ERROR));
+    SnackbarEmitter(
+      SNACKBAR_VARIANT.ERROR,
+      get(err, "message", DEFAULT_MESSAGE.QUERY.ERROR)
+    );
   }
-}
+};

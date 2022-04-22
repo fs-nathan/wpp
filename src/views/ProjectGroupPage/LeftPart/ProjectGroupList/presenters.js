@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Divider,
   IconButton,
   List,
@@ -24,6 +25,7 @@ import {
 import Icon from "@mdi/react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import LibraryAddCheckOutlined from "@mui/icons-material/LibraryAddCheckOutlined";
 import { size } from "lodash";
 import React from "react";
 import { DragDropContext, Droppable } from "react-beautiful-dnd";
@@ -48,6 +50,9 @@ import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import { GroupProject } from "./components";
 import "./style.scss";
 import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
+import { TEMPLATE } from "mocks/template";
+import { ExpandLess, ExpandMore } from "@material-ui/icons";
+import { Collapse, ListItem, ListItemButton } from "@mui/material";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -74,10 +79,19 @@ function ProjectList({
     "WPS_HIDE_WORKING_START_BUTTON",
     false
   );
+  const idGroupDefault = useSelector(
+    ({ groupTask }) => groupTask.defaultGroupTask.data || ""
+  );
+  const idGroupDefaultLocal = localStorage.getItem(
+    "WPS_WORKING_SPACE_DEFAULT_ACCESS"
+  );
+
+  const isDefaultGroup = idGroupDefault === "?" || "?" === idGroupDefaultLocal;
   const [hideBtnState, setHideBtnState] = React.useState(isHideStartButton);
   const dispatch = useDispatch();
   const [anchorElStartButton, setAnchorElStartButton] = React.useState(null);
   const [anchorElAddGroup, setAnchorElAddGroup] = React.useState(null);
+  const [anchorElSetDefault, setAnchorElSetDefault] = React.useState(null);
   const [anchorElAddBoard, setAnchorElAddBoard] = React.useState(null);
   const [anchorElGroup, setAnchorElGroup] = React.useState(null);
   const [openCreateGroup, setOpenCreateGroup] = React.useState(false);
@@ -94,6 +108,12 @@ function ProjectList({
   const personalProjectsBoard = useSelector(
     (state) => state.project.countPersonalProjectsBoard.projects
   );
+
+  const [open, setOpen] = React.useState(true);
+
+  const handleClick = () => {
+    setOpen(!open);
+  };
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
@@ -117,7 +137,7 @@ function ProjectList({
   }
 
   function handleSetDefault(value) {
-    if (value) dispatch(defaultGroupTask(value));
+    if (value !== null) dispatch(defaultGroupTask(value));
   }
 
   function handleDeleteGroup(evt) {
@@ -134,7 +154,6 @@ function ProjectList({
       setHideBtnState(e.detail.isHide);
     });
   }, []);
-
   return (
     <>
       <LeftContainer>
@@ -148,65 +167,68 @@ function ProjectList({
           />
         </Banner>
         <Box className={"view_ProjectGroup_List--LeftContainer"}>
-          {!Boolean(hideBtnState) && (
+          <Box>
             <Box
               className={`view_ProjectGroup_List--startButton ${
-                history.location.pathname.includes("/projects/start") &&
+                history.location.pathname.includes("/projects/template") &&
                 "active"
               }`}
-              onClick={() => history.push("/projects/start")}
+              onClick={() => history.push("/projects/template")}
             >
-              <Icon path={mdiPlayCircleOutline} size={1} color={"#BD3ADA"} />
-              <span>{t("LABEL_CHAT_TASK_BAT_DAU_LABEL")}</span>
-              <IconButton
-                className={"rightIconControlList"}
-                size={"small"}
-                onClick={(evt) => {
-                  evt.stopPropagation();
-                  setAnchorElStartButton(evt.currentTarget);
-                }}
-              >
-                <Icon
-                  path={mdiDotsVertical}
-                  size={1}
-                  color={"rgba(0,0,0,0.54)"}
-                />
-              </IconButton>
-              <Popover
-                open={Boolean(anchorElStartButton)}
-                anchorEl={anchorElStartButton}
-                disableRestoreFocus
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "left",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                onClose={() => setAnchorElStartButton(null)}
-                elevation={1}
-              >
-                <Box className={"startBtnSetting-container"}>
-                  <span className={"text-primary"}>
-                    {t("LABEL_HIDE_START")}
-                  </span>
-                  <Typography component={"body2"} color={"textSecondary"}>
-                    {t("LABEL_HIDE_START_DES")}
-                  </Typography>
-                  <Button className={"hideBtn"} onClick={handleHideStartBtn}>
-                    {t("IDS_WP_HIDE")}
-                  </Button>
-                </Box>
-              </Popover>
+              <LibraryAddCheckOutlined htmlColor="#d46ffb" />
+              <span>{t("LABEL_CHAT_TASK_THU_VIEN_MAU_LABEL")}</span>
             </Box>
-          )}
+
+            {history.location.pathname.includes("/projects/template") && (
+              <Box
+              // className={"view_ProjectGroup_List--listGroup-body scrollList"}
+              >
+                <List>
+                  {TEMPLATE.map((temp) => (
+                    <>
+                      <ListItem
+                        disablePadding
+                        disableGutters
+                        key={temp.id}
+                        // className="view_ProjectGroup_List-customListItem view_ProjectGroup_List-customListItem-nav"
+                      >
+                        <ListItemButton onClick={handleClick} sx={{ pl: 6 }}>
+                          <ListItemText primary={temp.name} />
+                          {temp.templates &&
+                            temp.templates.length > 0 &&
+                            (open ? <ExpandLess /> : <ExpandMore />)}
+                        </ListItemButton>
+                      </ListItem>
+                      {temp.templates && temp.templates.length > 0 && (
+                        <Collapse in={open} timeout="auto" unmountOnExit>
+                          <List component="div">
+                            {temp.templates.map((child) => (
+                              <ListItem
+                                disablePadding
+                                disableGutters
+                                key={child.id}
+                              >
+                                <ListItemButton sx={{ pl: 8 }}>
+                                  <ListItemText primary={child.name} />
+                                </ListItemButton>
+                              </ListItem>
+                            ))}
+                          </List>
+                        </Collapse>
+                      )}
+                    </>
+                  ))}
+                </List>
+              </Box>
+            )}
+          </Box>
+
           <Box className={"view_ProjectGroup_List--listGroup"}>
             <Box
               className={"view_ProjectGroup_List--listGroup-header textHeader"}
             >
               <Icon path={mdiBookmarkOutline} size={1} color={"#009CF3"} />
-              <span>{t("LABEL_QUICK_ACCESS_PANEL")}</span>
+              <span>{t("LABEL_SHORTCUT_PANEL")}</span>
             </Box>
             <Box className={"view_ProjectGroup_List--listGroup-body"}>
               <List component={"nav"}>
@@ -266,19 +288,79 @@ function ProjectList({
                 <path d="M6,13c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S8.2,13,6,13z M12,3C9.8,3,8,4.8,8,7s1.8,4,4,4s4-1.8,4-4S14.2,3,12,3z M18,13 c-2.2,0-4,1.8-4,4s1.8,4,4,4s4-1.8,4-4S20.2,13,18,13z" />
               </SvgIcon>
               <span>{t("LABEL_WORKING_GROUP")}</span>
-              <abbr title={t("Thêm nhóm")}>
+
+              <div className="wp-wrapper">
+                {isDefaultGroup && <FlagOutlinedIcon htmlColor={"red"} />}
                 <div className="wp-wrapper-button">
-                  <AddIcon
-                    onClick={(evt) => {
-                      evt.stopPropagation();
-                      setAnchorElAddGroup(evt.currentTarget);
-                    }}
-                    sx={{ color: "rgba(0,0,0,0.54)" }}
-                  >
-                    <Icon path={mdiPlus} size={1} />
-                  </AddIcon>
+                  <abbr title={t("Thêm nhóm")}>
+                    <AddIcon
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        setAnchorElAddGroup(evt.currentTarget);
+                      }}
+                      sx={{ color: "rgba(0,0,0,0.54)" }}
+                    >
+                      <Icon path={mdiPlus} size={1} />
+                    </AddIcon>
+                  </abbr>
                 </div>
-              </abbr>
+                <div className="wp-wrapper-button">
+                  <abbr title={t("Tuỳ chọn")}>
+                    <SvgIcon
+                      size={"small"}
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        setAnchorElSetDefault(evt.currentTarget);
+                      }}
+                    >
+                      <Icon
+                        path={mdiDotsVertical}
+                        size={1}
+                        color={"rgba(0,0,0,0.54)"}
+                      />
+                    </SvgIcon>
+                  </abbr>
+                </div>
+              </div>
+              <Popover
+                open={Boolean(anchorElSetDefault)}
+                anchorEl={anchorElSetDefault}
+                disableRestoreFocus
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "left",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                onClose={() => setAnchorElSetDefault(null)}
+                elevation={1}
+              >
+                <Box className={"startBtnSetting-container"}>
+                  <span className={"text-primary"}>
+                    {t("LABEL_SET_DEFAULT")}
+                  </span>
+                  <div className="description-container">
+                    <Typography
+                      color={"textSecondary"}
+                      className="text-secondary"
+                    >
+                      {t("LABEL_SET_DEFAULT_DES")}
+                    </Typography>
+                    <Button
+                      color={"primary"}
+                      onClick={(evt) => {
+                        evt.stopPropagation();
+                        setAnchorElSetDefault(null);
+                        handleSetDefault("?");
+                      }}
+                    >
+                      {t("LABEL_SET")}
+                    </Button>
+                  </div>
+                </Box>
+              </Popover>
             </Box>
             <Box
               className={"view_ProjectGroup_List--listGroup-body scrollList"}

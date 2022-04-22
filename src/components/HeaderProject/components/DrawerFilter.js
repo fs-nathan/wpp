@@ -16,12 +16,14 @@ import {
   mdiClose,
   mdiCogs,
   mdiDelete,
+  mdiDoNotDisturb,
   mdiDownload,
   mdiEye,
   mdiEyeOff,
   mdiFilter,
   mdiFlagTriangle,
   mdiPencil,
+  mdiShare,
   mdiViewGridPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
@@ -50,6 +52,7 @@ const DrawerFilter = forwardRef(
       view = "list",
       disableShowHide,
       isProjectVisible = false,
+      isProjectShared = false,
       canUpdateProject = false,
       onOpenFilterKanban = () => {},
       onOpenGranttConfig = () => {},
@@ -64,6 +67,8 @@ const DrawerFilter = forwardRef(
       onHideColumn = () => {},
       setItemLocation = () => {},
       onReOrderColumns = () => {},
+      onShareProject = () => {},
+      onUnShareProject = () => {},
     },
     ref
   ) => {
@@ -166,6 +171,13 @@ const DrawerFilter = forwardRef(
             onClick: (e) => !disableShowHide && onUpdateVisible(),
           },
           {
+            text: !isProjectShared ? "Chia sẻ bảng việc" : "Huỷ chia sẻ",
+            icon: !isProjectShared ? mdiShare : mdiDoNotDisturb,
+            isDeleteItem: isProjectShared,
+            onClick: (e) =>
+              !isProjectShared ? onShareProject() : onUnShareProject(),
+          },
+          {
             text: "Xoá bảng việc",
             icon: mdiDelete,
             onClick: (e) => _handleDeleteProject(project.id),
@@ -180,7 +192,8 @@ const DrawerFilter = forwardRef(
     };
 
     const _handleDeleted = (id) => {
-      history.replace(`/projects?groupID=${project.group_project_id}`);
+      if (project)
+        history.replace(`/projects?groupID=${project.group_project_id}`);
     };
 
     return (
