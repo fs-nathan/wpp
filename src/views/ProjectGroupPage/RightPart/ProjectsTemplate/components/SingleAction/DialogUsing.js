@@ -41,6 +41,13 @@ const DialogUsing = ({ onClose, onOk }) => {
 
   const formatDate = useSelector((state) => state.system.profile.format_date);
 
+  function handleOk() {
+    onOk({
+      name,
+      curProjectGroupId,
+      startDate,
+    });
+  }
   return (
     <>
       <Box width={320} p={1}>
@@ -93,12 +100,6 @@ const DialogUsing = ({ onClose, onOk }) => {
           <FormGroup>
             <FormControlLabel
               control={<Checkbox defaultChecked />}
-              label="Sao chép các thành viên trong bảng"
-            />
-          </FormGroup>
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
               label="Sao chép tiến độ công việc"
             />
           </FormGroup>
@@ -119,7 +120,7 @@ const DialogUsing = ({ onClose, onOk }) => {
           </Typography>
         </Box>
         <DialogActions sx={{ justifyContent: "flex-start" }}>
-          <Button variant="contained" color="primary" onClick={onOk}>
+          <Button variant="contained" color="primary" onClick={handleOk}>
             Tạo mới
           </Button>
         </DialogActions>
