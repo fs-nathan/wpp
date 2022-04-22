@@ -306,6 +306,7 @@ function AllProjectTable({
       </Container>
 
       <TimeRangePopover
+        className="time-range-popover"
         bgColor={bgColor}
         anchorEl={timeAnchor}
         setAnchorEl={setTimeAnchor}

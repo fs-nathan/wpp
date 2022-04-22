@@ -275,9 +275,13 @@ export const TimeRangePopover = ({
       open={Boolean(anchorEl)}
       className={className ? className : ""}
       onClose={(evt) => setAnchorEl(null)}
+      anchorOrigin={{
+        vertical: "center",
+        horizontal: "center",
+      }}
       transformOrigin={{
-        vertical: -30,
-        horizontal: "right",
+        vertical: "center",
+        horizontal: "center",
       }}
     >
       <TimeBox>
