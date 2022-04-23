@@ -60,7 +60,9 @@ function ProjectDelete({
         handleDeleteProject();
         setActiveLoading(true);
       }}
-      onCancle={() => setOpen(false)}
+      onCancle={() => {
+        setOpen(false);
+      }}
       manualClose={true}
       activeLoading={activeLoading}
     />

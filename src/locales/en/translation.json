@@ -331,8 +331,9 @@
             "U_TITLE": "Edit work team",
             "NAME": "Work team name",
             "DESC": "Work team descriptions",
-            "LOGO": "Work team icon",
-            "LOGO_SELECT": "Change icon"
+            "LOGO_THEME": "Work team themes, work team icons",
+            "LOGO_SELECT": "Change icon",
+            "ADD_DESC": "Add description"
           },
           "CUP": {
             "C_TITLE": "Create project",
@@ -389,6 +390,10 @@
             },
             "SETTING": "Settings",
             "EDIT": "Edit",
+            "ADD_TABLE_TASKS": "Add table tasks",
+            "CHANGE_COLOR": "Change color",
+            "CHANGE_ICON": "Change icon",
+            "SET_DEFAULT": "Set to default",
             "HIDE": "Hide",
             "SHOW": "Cancel hide",
             "DEL": "Delete",
@@ -471,6 +476,9 @@
               "LABEL": "Copy task group, phrase",
               "DESC": "Copy available task group, phrase"
             }
+          },
+          "COLOR_PICKER": {
+            "TITLE": "Change group color"
           },
           "CUGT": {
             "C_TITLE": "Create task group, phrase",

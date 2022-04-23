@@ -5,8 +5,12 @@ import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
 import { get } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
-import LogoManagerModal from "../../../DepartmentPage/Modals/LogoManager";
+import LogoManagerModal, {
+  LogoManagerContainer,
+} from "../../../DepartmentPage/Modals/LogoManager";
+import ColorGroupPickerModal from "../ColorGroupPickerModal";
 import CreateProjectGroupPresenter from "./presenters";
+import { colors } from "../ColorGroupPickerModal";
 
 function CreateProjectGroup({
   updatedProjectGroup = null,
@@ -19,6 +23,17 @@ function CreateProjectGroup({
 }) {
   const [openLogo, setOpenLogo] = React.useState(false);
   const [logoProps, setLogoProps] = React.useState({});
+  const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
+  const [colorPickerProps, setColorPickerProps] = React.useState({});
+  const [selectedColor, setSelectedColor] = React.useState(
+    updatedProjectGroup?.color || null
+  );
+  const [selectedLogo, setSelectedLogo] = React.useState(
+    updatedProjectGroup?.icon || {
+      url_full: "",
+      url_sort: "",
+    }
+  );
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -27,37 +42,63 @@ function CreateProjectGroup({
         setLogoProps(props);
         return;
       }
+      case "COLOR_PICKER": {
+        setOpenColorPickerGroup(true);
+        setColorPickerProps(props);
+        return;
+      }
       default:
         return;
     }
   }
+
+  console.log("selectedColor", selectedColor);
   return (
     <>
-      <CreateProjectGroupPresenter
-        updatedProjectGroup={updatedProjectGroup}
-        doReloadDetail={() =>
-          doReloadDetail({ projectGroupId: get(updatedProjectGroup, "id") })
-        }
-        doReloadList={() => doReloadList()}
-        open={open}
-        setOpen={setOpen}
-        handleCreateOrEditProjectGroup={(name, description, icon) =>
-          updatedProjectGroup
-            ? doEditProjectGroup({
-                projectGroupId: get(updatedProjectGroup, "id"),
-                name,
-                description,
-                icon: icon.url_sort,
-              })
-            : doCreateProjectGroup({
-                name,
-                description,
-                icon: icon.url_sort,
-              })
-        }
-        handleOpenModal={doOpenModal}
-      />
+      <LogoManagerContainer {...logoProps}>
+        <CreateProjectGroupPresenter
+          updatedProjectGroup={updatedProjectGroup}
+          doReloadDetail={() =>
+            doReloadDetail({ projectGroupId: get(updatedProjectGroup, "id") })
+          }
+          doReloadList={() => doReloadList()}
+          open={open}
+          setOpen={setOpen}
+          handleCreateOrEditProjectGroup={(name, description, icon, color) =>
+            updatedProjectGroup
+              ? doEditProjectGroup({
+                  projectGroupId: get(updatedProjectGroup, "id"),
+                  name,
+                  description,
+                  icon: icon.url_sort,
+                  color: color,
+                })
+              : doCreateProjectGroup({
+                  name,
+                  description,
+                  icon: icon.url_sort,
+                  color: color,
+                })
+          }
+          handleOpenModal={doOpenModal}
+          selectedColor={selectedColor}
+          setSelectedColor={setSelectedColor}
+          selectedLogo={selectedLogo}
+          setSelectedLogo={setSelectedLogo}
+        />
+      </LogoManagerContainer>
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />
+      <ColorGroupPickerModal
+        open={openColorPickerGroup}
+        setOpen={setOpenColorPickerGroup}
+        handleSelectColor={({ color }) => {
+          setSelectedColor(color);
+        }}
+        // projectId={projectId}
+        // groupId={selectedGroup}
+        // project={project}
+        {...colorPickerProps}
+      />
     </>
   );
 }
@@ -67,14 +108,17 @@ const mapDispatchToProps = (dispatch) => {
     doReloadList: () => dispatch(listProjectGroup(true)),
     doReloadDetail: ({ projectGroupId }) =>
       dispatch(detailProjectGroup({ projectGroupId }, true)),
-    doCreateProjectGroup: ({ name, icon, description, work_types }) =>
-      dispatch(createProjectGroup({ name, icon, description, work_types })),
+    doCreateProjectGroup: ({ name, icon, description, work_types, color }) =>
+      dispatch(
+        createProjectGroup({ name, icon, description, work_types, color })
+      ),
     doEditProjectGroup: ({
       projectGroupId,
       name,
       icon,
       description,
       work_types,
+      color,
     }) =>
       dispatch(
         editProjectGroup({
@@ -83,6 +127,7 @@ const mapDispatchToProps = (dispatch) => {
           icon,
           description,
           work_types,
+          color,
         })
       ),
   };
