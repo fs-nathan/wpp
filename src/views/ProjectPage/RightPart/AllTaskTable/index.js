@@ -92,7 +92,7 @@ function AllTaskTable({
       timeEnd,
     };
   }, [timeType]);
-  const { projectId, memberId } = useParams();
+  const { projectId, memberId, templateId } = useParams();
   const reloadListTask = () => {
     doListTask({
       projectId,
