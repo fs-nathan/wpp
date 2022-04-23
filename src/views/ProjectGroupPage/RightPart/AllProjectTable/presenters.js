@@ -69,6 +69,9 @@ function AllProjectTable({
   const isDisplayGroupGrid = !groupID;
   const history = useHistory();
 
+  const groupProjectPageRef = useRef(null);
+  const groupProjectContainerRef = useRef(null);
+
   const canDelete = isDisplayGroupGrid
     ? canModifyProjectGroup
     : get(curProject, "can_delete", false);
@@ -161,6 +164,28 @@ function AllProjectTable({
       }),
     [handleOpenModal]
   );
+
+  // React.useLayoutEffect(() => {
+  //   if (projectGroup.length === 0) return;
+
+  //   // // const lastRowGridLayouitem =
+  //   const groupProjectLastRow =
+  //     document.body.querySelector("#groupProject__4th");
+  //   const searchBox = groupProjectPageRef.current?.querySelector(
+  //     "#AllGroup__searchBox--isAllGroup"
+  //   );
+
+  //   console.log("searchBox", searchBox);
+  //   console.log("groupProjectLastRow", groupProjectLastRow);
+  //   if (searchBox && groupProjectLastRow) {
+  //     const bodyRect = document.body.getBoundingClientRect();
+  //     const elemRect = groupProjectLastRow.getBoundingClientRect();
+  //     const rightSpace = bodyRect.right - elemRect.right;
+
+  //     console.log("rightSpace", rightSpace);
+  //     searchBox.style.marginRight = `${rightSpace - 10}px`;
+  //   }
+  // }, [projectGroup]);
 
   const onEdit = (evt, project) => doOpenMenu(evt, project);
 
@@ -436,7 +461,7 @@ function AllProjectTable({
   };
 
   return (
-    <>
+    <div ref={groupProjectPageRef}>
       <Container>
         {size(projects.projects) === 0 &&
           !projects.loading &&
@@ -465,7 +490,7 @@ function AllProjectTable({
         {projects.loading && <LoadingBox />}
 
         {(size(projects) > 0 || isFiltering) && !projects.loading && (
-          <>
+          <div ref={groupProjectContainerRef}>
             {isDisplayGroupGrid ? (
               <ProjectGroupGrid
                 projectGroups={projectGroup}
@@ -491,10 +516,10 @@ function AllProjectTable({
 
             {isDisplayGroupGrid && <MenuProjectGroup />}
             {!isDisplayGroupGrid && <MenuProject />}
-          </>
+          </div>
         )}
       </Container>
-    </>
+    </div>
   );
 }
 

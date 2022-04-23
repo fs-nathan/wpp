@@ -27,18 +27,22 @@ export const DEFAULT_GROUP_BACKGROUND_COLOR = "#da4bbe";
  */
 const convertToGridLayout = (inputArray = []) => {
   if (inputArray.length === 0) return;
-  const clonnedInputArray = JSON.parse(JSON.stringify(inputArray));
+  const clonnedInputArray = [...inputArray];
   clonnedInputArray.push({ ...clonnedInputArray[0], idAdd: "add" });
 
   const dummyPlaceHolderElementNumber = clonnedInputArray.length % 4;
-  for (let index = 0; index < dummyPlaceHolderElementNumber; index++) {
+
+  for (let index = 0; index < 4 - dummyPlaceHolderElementNumber; index++) {
     clonnedInputArray.push({
       ...clonnedInputArray[0],
       idPlaceHolder: "placeHolder",
     });
   }
 
-  return clonnedInputArray.reduce((outputArr, current, index) => {
+  const arr = clonnedInputArray.reduce((outputArr, current, index) => {
+    if (index === 3) {
+      current["idHTML"] = "groupProject__4th";
+    }
     const rowIndex = Math.floor(index / 4);
     let newArr = JSON.parse(JSON.stringify(outputArr));
 
@@ -48,8 +52,10 @@ const convertToGridLayout = (inputArray = []) => {
     newArr.splice(rowIndex, 1, updatedRowArr);
     return newArr;
   }, []);
-};
 
+  console.log("arr", arr);
+  return arr;
+};
 
 const ProjectGroupGrid = ({
   projectGroups = [],
@@ -62,15 +68,10 @@ const ProjectGroupGrid = ({
   onOpenCreateModal,
 }) => {
   const [groupLayout, setGroupLayout] = React.useState([]);
-  const [projectGroupsInner, setProjectGroupInner] = React.useState([]);
 
   React.useEffect(() => {
-    if (!groupLayout || groupLayout.length === 0) {
-      const projLayout = convertToGridLayout(projectGroups);
-      setGroupLayout(projLayout || []);
-    }
-
-    setProjectGroupInner(projectGroups);
+    const projLayout = convertToGridLayout(projectGroups);
+    setGroupLayout(projLayout || []);
   }, [projectGroups]);
 
   React.useEffect(() => {
@@ -78,13 +79,13 @@ const ProjectGroupGrid = ({
       setActiveLoading(false);
     };
 
-    const reloadList = () => {
+    const reloadList = (projectGroups) => {
       setActiveLoading(false);
       doReloadList();
-      const projLayout = convertToGridLayout(projectGroupsInner);
-      setGroupLayout(projLayout || []);
     };
-    CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, reloadList);
+    CustomEventListener(EDIT_PROJECT_GROUP.SUCCESS, () =>
+      reloadList(projectGroups)
+    );
     CustomEventListener(EDIT_PROJECT_GROUP.FAIL, fail);
 
     return () => {
@@ -155,9 +156,7 @@ const ProjectGroupGrid = ({
 
                     debugger;
 
-                    const projectGroupsCloned = JSON.parse(
-                      JSON.stringify(projectGroups)
-                    );
+                    const projectGroupsCloned = [...projectGroups];
 
                     const sourceGroup = payload;
 
@@ -266,6 +265,7 @@ const ProjectGroupGrid = ({
                         }}
                         isDefaultGroup={isDefaultGroup}
                         isDisplayUpdate={isDisplayUpdate}
+                        idHTML={projectGroup?.idHTML}
                       />
                     </Draggable>
                   );

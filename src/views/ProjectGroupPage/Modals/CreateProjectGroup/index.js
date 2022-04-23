@@ -26,7 +26,7 @@ function CreateProjectGroup({
   const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
   const [colorPickerProps, setColorPickerProps] = React.useState({});
   const [selectedColor, setSelectedColor] = React.useState(
-    updatedProjectGroup?.color || null
+    updatedProjectGroup?.color || colors[0]
   );
   const [selectedLogo, setSelectedLogo] = React.useState(
     updatedProjectGroup?.icon || {
@@ -52,7 +52,6 @@ function CreateProjectGroup({
     }
   }
 
-  console.log("selectedColor", selectedColor);
   return (
     <>
       <LogoManagerContainer {...logoProps}>

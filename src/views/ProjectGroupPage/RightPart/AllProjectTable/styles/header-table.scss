@@ -136,12 +136,12 @@
     margin-left: auto;
     display: flex;
     &.isAllGroup {
-      margin-right: 15%;
+      margin-right: 20%;
     }
 
     @media only screen and (max-width: 1920px) {
       &.isAllGroup {
-        margin-right: calc(12% + 45px);
+        margin-right: 16%;
       }
     }
     @media only screen and (max-width: 1600px) {
@@ -151,12 +151,12 @@
     }
     @media only screen and (max-width: 1440px) {
       &.isAllGroup {
-        margin-right: calc(3% + 6px);
+        margin-right: calc(3% + 18px);
       }
     }
     @media only screen and (max-width: 1366px) {
       &.isAllGroup {
-        margin-right: 0.5%;
+        margin-right: calc(0.5% + 5px);
       }
     }
     @media only screen and (max-width: 1280px) {

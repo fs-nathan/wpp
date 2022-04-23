@@ -88,7 +88,10 @@ const HeaderTableAllGroup = ({
           />
         </div>
       ) : (
-        <div className={`AllGroup__header--right isAllGroup`}>
+        <div
+          id="AllGroup__searchBox--isAllGroup"
+          className={`AllGroup__header--right isAllGroup`}
+        >
           <SearchButton
             valueSearch={get(TableContext?.options, "search.patern", "")}
             onSearch={(value) => onSearch(value)}

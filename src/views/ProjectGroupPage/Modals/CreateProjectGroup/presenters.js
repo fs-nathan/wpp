@@ -287,9 +287,8 @@ function CreateProjectGroup({
               <LogoBox
                 key={get(icon, "url_icon")}
                 isSelect={
-                  isSelect &&
-                  get(selectedIcon, "url_full", "x") ===
-                    get(icon, "url_icon", "y")
+                  (isSelect && get(selectedIcon, "url_full", "x")) ||
+                  icons.defaults[0].url_icon === get(icon, "url_icon", "y")
                 }
               >
                 <ButtonBase
