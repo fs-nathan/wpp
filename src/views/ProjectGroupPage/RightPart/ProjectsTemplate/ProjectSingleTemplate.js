@@ -7,22 +7,39 @@ import {
   Typography,
 } from "@mui/material";
 import { DETAIL_TEMPLATE } from "mocks/detail-template";
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { useHistory, useParams } from "react-router-dom";
 import SearchBar from "./components/SearchBar/SearchBar";
 import ContentCopyRoundedIcon from "@mui/icons-material/ContentCopyRounded";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import "./index.scss";
 import SingleAction from "./components/SingleAction/SingleAction";
+import { useDispatch, useSelector } from "react-redux";
+import { getDetailTemplate } from "actions/project/getDetailTemplate";
+import ProjectTemplateWrapper from ".";
 
 const ProjectSingleTemplate = () => {
   const history = useHistory();
 
+  const { id: templateId } = useParams();
+  const dispatch = useDispatch();
+  const template = useSelector((state) => state.project.getDetailTemplate.data);
+
+  const fetchData = useCallback(async () => {
+    try {
+      if (templateId)
+        await dispatch(getDetailTemplate({ template_id: templateId }));
+    } catch (error) {}
+  }, [templateId, getDetailTemplate, dispatch]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   function handleClick() {}
 
   return (
-    <div className="project-single-template__wrapper">
-      <div className="project-single-template">
+    <ProjectTemplateWrapper>
+      <div>
         <div className="project-single-template__header">
           <div role="presentation" onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb">
@@ -32,14 +49,12 @@ const ProjectSingleTemplate = () => {
               <Link
                 underline="hover"
                 color="inherit"
-                href={`/projects/group/{DETAIL_TEMPLATE.parent}`}
+                href={`/projects/group/${template.category_id}`}
               >
-                {DETAIL_TEMPLATE.parent}
+                {template.category_name}
               </Link>
-              <Typography color="text.primary">
-                {DETAIL_TEMPLATE.title}
-              </Typography>
             </Breadcrumbs>
+            <Typography color="text.primary">{template.name}</Typography>
           </div>
           <div style={{ width: 300 }}>
             <SearchBar />
@@ -49,8 +64,8 @@ const ProjectSingleTemplate = () => {
         <div className="project-single-template__overview">
           <div className="project-single-template__overview__avatar">
             <Avatar
-              alt="Remy Sharp"
-              src="/images/avatar.jpeg"
+              alt={template.user_share_name}
+              src={template.user_share_avatar}
               sx={{
                 width: 72,
                 height: 72,
@@ -60,23 +75,23 @@ const ProjectSingleTemplate = () => {
           </div>
           <div className="project-single-template__overview__info">
             <Typography variant="h5" color="black">
-              {DETAIL_TEMPLATE.title}
+              {template.name}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Chia sẻ bởi @{DETAIL_TEMPLATE.author}
+              Chia sẻ bởi @{template.user_share_name}
             </Typography>
             <div className="action">
               <div className="copied">
                 <ContentCopyRoundedIcon />
                 <Typography variant="body2" color="text.secondary">
-                  {DETAIL_TEMPLATE.copied} lần sao chép
+                  {template.total_use} lần sao chép
                 </Typography>
               </div>
               <div className="views">
                 <RemoveRedEyeIcon />
 
                 <Typography variant="body2" color="text.secondary">
-                  {DETAIL_TEMPLATE.views} lượt xem
+                  {template.total_view} lượt xem
                 </Typography>
               </div>
             </div>
@@ -90,9 +105,7 @@ const ProjectSingleTemplate = () => {
           <Typography variant="h5" color="black">
             Về mẫu này
           </Typography>
-          <div
-            dangerouslySetInnerHTML={{ __html: DETAIL_TEMPLATE.detail }}
-          ></div>
+          <div dangerouslySetInnerHTML={{ __html: template.description }}></div>
           <Typography variant="h6" color="black">
             <Link href="#" variant="h6" color="inherit" underline="always">
               Xem mẫu
@@ -104,14 +117,19 @@ const ProjectSingleTemplate = () => {
                 Sử dụng mẫu
               </Link>{" "}
               hoặc{" "}
-              <Link href="#" variant="h6" color="inherit" underline="always">
+              <Link
+                href="/projects/add-new"
+                variant="h6"
+                color="inherit"
+                underline="always"
+              >
                 Bắt đầu với bảng trống
               </Link>
             </Typography>
           </div>
         </div>
       </div>
-    </div>
+    </ProjectTemplateWrapper>
   );
 };
 

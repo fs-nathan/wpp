@@ -51,10 +51,15 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
   const [view_default, setViewDefault] = useState(1);
 
   useEffect(() => {
-    if (status === CREATE_PROJECT_SUCCESS) {
-      onNext();
-    }
-  }, [status]);
+    CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      // history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
+      onNext(e.detail.project_id);
+    });
+    return CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
+      onNext(e.detail.project_id);
+    });
+  }, [onNext]);
+
   async function onNextHandler() {
     try {
       await doCreateProject({

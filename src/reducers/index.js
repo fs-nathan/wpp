@@ -269,6 +269,9 @@ import copyProject, {
 import createProject, {
   initialState as createProjectInitialState,
 } from "./project/createProject";
+import useTemplate, {
+  initialState as useTemplateInitialState,
+} from "./project/useTemplate";
 import deleteProject, {
   initialState as deleteProjectInitialState,
 } from "./project/deleteProject";
@@ -519,15 +522,27 @@ import getBanner, {
 import getTemplateCategory, {
   initialState as getTemplateCategoryInitialState,
 } from "./project/getTemplateCategory";
+import getAllTemplate, {
+  initialState as getAllTemplateInitialState,
+} from "./project/getAllTemplate";
+import getNewestTemplate, {
+  initialState as getNewestTemplateInitialState,
+} from "./project/getNewestTemplate";
 import getTemplateByCategory, {
   initialState as getTemplateByCategoryInitialState,
 } from "./project/getTemplateByCategory";
+import getDetailTemplate, {
+  initialState as getDetailTemplateInitialState,
+} from "./project/getDetailTemplate";
 import getListTemplate, {
   initialState as getListTemplateInitialState,
 } from "./project/getListTemplate";
 import getListTemplateMeShared, {
   initialState as getListTemplateMeSharedInitialState,
 } from "./project/getListTemplateMeShared";
+import searchTemplate, {
+  initialState as searchTemplateInitialState,
+} from "./project/searchTemplate";
 import updatePinBoardSetting, {
   initialState as updatePinBoardSettingInitialState,
 } from "./project/setting/updatePinBoardSetting";
@@ -628,6 +643,7 @@ const rootReducer = combineReducers({
   }),
   project: combineReducers({
     createProject,
+    useTemplate,
     updateProject,
     deleteProject,
     cancelShare,
@@ -655,9 +671,13 @@ const rootReducer = combineReducers({
     getProjectStatistic,
     getBanner,
     getTemplateCategory,
+    getAllTemplate,
+    getNewestTemplate,
     getTemplateByCategory,
+    getDetailTemplate,
     getListTemplate,
     getListTemplateMeShared,
+    searchTemplate,
     getWorkType,
     recentlyProjects,
     getStatusWorkGroup,
@@ -863,6 +883,7 @@ export const DEFAULT_STATE = {
   },
   project: {
     createProject: createProjectInitialState,
+    useTemplate: useTemplateInitialState,
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
     cancelShare: cancelShareInitialState,
@@ -895,9 +916,13 @@ export const DEFAULT_STATE = {
     getWorkType: getWorkTypeInitialState,
     getBanner: getBannerInitialState,
     getTemplateCategory: getTemplateCategoryInitialState,
+    getAllTemplate: getAllTemplate,
+    getNewestTemplate: getNewestTemplateInitialState,
     getTemplateByCategory: getTemplateByCategoryInitialState,
+    getDetailTemplate: getDetailTemplateInitialState,
     getListTemplate: getListTemplateInitialState,
     getListTemplateMeShared: getListTemplateMeSharedInitialState,
+    searchTemplate: searchTemplateInitialState,
     countPersonalProjectsBoard: countPersonalProjectsBoardInitialState,
     setting: {
       detailStatus: detailStatusInitialState,

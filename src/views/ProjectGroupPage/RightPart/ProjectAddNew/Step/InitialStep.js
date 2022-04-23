@@ -26,7 +26,7 @@ const InitialStep = ({ onNext }) => {
 
         <div
           className="initial-step-item initial-step-template"
-          onClick={() => push("/projects/choose-theme")}
+          onClick={() => push("/projects/template")}
         >
           <div className="initial-step-item-icon initial-step-template-icon">
             <img src="/images/rocket.png" alt="Rocket" />

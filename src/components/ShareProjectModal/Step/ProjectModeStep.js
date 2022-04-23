@@ -29,7 +29,7 @@ const ProjectModeStep = ({ onNext, setopenModal, openModal }) => {
     >
       <div className="share-project--modal__container">
         <div className="share-project--modal__body">
-          <Stack spacing={4}>
+          <Stack spacing={2}>
             <Paper
               variant="outlined"
               className={`share-project-card ${

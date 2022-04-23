@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   Button,
@@ -16,11 +17,12 @@ import DialogUsing from "./DialogUsing";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelShare } from "actions/project/cancelShare";
+import { useTemplate } from "actions/project/useTemplate";
 import { useTranslation } from "react-i18next";
 import { actionToast } from "actions/system/system";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import { CANCEL_SHARE_SUCCESS } from "constants/actions/project/cancelShare";
-
+import moment from "moment";
 const SingleAction = () => {
   const [anchorUnShareEl, setAnchorUnShareEl] = useState(null);
   const [anchorRefferEl, setAnchorRefferEl] = useState(null);
@@ -28,6 +30,7 @@ const SingleAction = () => {
   const { id: projectId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  const template = useSelector((state) => state.project.getDetailTemplate.data);
 
   const { t } = useTranslation();
   const handleUnShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -70,7 +73,6 @@ const SingleAction = () => {
   const status = useSelector((state) => state.project.cancelShare.status);
 
   useEffect(() => {
-    console.log(status);
     if (status === CANCEL_SHARE_SUCCESS) {
       dispatch(getListTemplateMeShared());
     }
@@ -83,38 +85,53 @@ const SingleAction = () => {
       history.replace("/projects/template");
     } catch (error) {}
   }
-  async function handleUsing() {}
+  async function handleUsing({ name, curProjectGroupId, startDate }) {
+    try {
+      await dispatch(
+        useTemplate({
+          template_id: projectId,
+          name,
+          project_group_id: curProjectGroupId,
+          day_start: startDate
+            ? moment(startDate).format("YYYY-MM-DD HH:mm:ss")
+            : undefined,
+        })
+      );
+    } catch (error) {}
+  }
 
   return (
     <>
-      <div>
-        <Button
-          aria-describedby={unShareId}
-          variant="contained"
-          sx={{
-            backgroundColor: "#f0f2f5",
-            color: "red",
-            "&:hover": {
+      {template.is_me_share && (
+        <div>
+          <Button
+            aria-describedby={unShareId}
+            variant="contained"
+            sx={{
               backgroundColor: "#f0f2f5",
-            },
-          }}
-          onClick={handleUnShareClick}
-        >
-          Huỷ chia sẻ
-        </Button>
-        <Popover
-          id={unShareId}
-          open={openUnShare}
-          anchorEl={anchorUnShareEl}
-          onClose={handleUnShareClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
-        >
-          <DialogUnShare onClose={handleUnShareClose} onOk={handleUnShare} />
-        </Popover>
-      </div>
+              color: "red",
+              "&:hover": {
+                backgroundColor: "#f0f2f5",
+              },
+            }}
+            onClick={handleUnShareClick}
+          >
+            Huỷ chia sẻ
+          </Button>
+          <Popover
+            id={unShareId}
+            open={openUnShare}
+            anchorEl={anchorUnShareEl}
+            onClose={handleUnShareClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+          >
+            <DialogUnShare onClose={handleUnShareClose} onOk={handleUnShare} />
+          </Popover>
+        </div>
+      )}
       <div>
         <Button
           aria-describedby={refferId}

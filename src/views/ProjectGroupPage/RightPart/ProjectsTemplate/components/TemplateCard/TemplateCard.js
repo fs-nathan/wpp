@@ -11,18 +11,49 @@ import React from "react";
 import "./index.scss";
 import { useHistory } from "react-router-dom";
 
-const TemplateCard = ({ template }) => {
+const TemplateCard = ({ template, isEmpty }) => {
   const history = useHistory();
 
   function onTemplateClick() {
     history.push("/projects/template/" + template.id);
+  }
+  function onAddNewClick() {
+    history.push("/projects/add-new/");
+  }
+
+  if (isEmpty) {
+    return (
+      <Card
+        sx={{
+          position: "relative",
+          // width: 345,
+          width: "100%",
+          height: 194,
+          boxShadow: "none",
+          border: "none",
+          backgroundColor: "#ebebeb",
+          cursor: "pointer",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+        className="template-card"
+        onClick={onAddNewClick}
+      >
+        <Typography variant="body1" color="text.secondary" fontSize={18}>
+          Bắt đầu với bảng trống
+        </Typography>
+      </Card>
+    );
   }
 
   return (
     <Card
       sx={{
         position: "relative",
-        width: 345,
+        // width: 345,
+        width: "100%",
+
         boxShadow: "none",
         border: "none",
         backgroundColor: "transparent",
