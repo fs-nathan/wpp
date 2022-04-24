@@ -38,6 +38,7 @@ const DialogUsing = ({ onClose, onOk }) => {
   const [startDate, setStartDate, errorDate] = useRequiredDate(
     moment().toDate()
   );
+  const [isDayStart, setIsDayStart] = useState(true);
 
   const formatDate = useSelector((state) => state.system.profile.format_date);
 
@@ -45,7 +46,7 @@ const DialogUsing = ({ onClose, onOk }) => {
     onOk({
       name,
       curProjectGroupId,
-      startDate,
+      startDate: isDayStart ? startDate : undefined,
     });
   }
   return (
@@ -99,21 +100,29 @@ const DialogUsing = ({ onClose, onOk }) => {
 
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={
+                <Checkbox
+                  defaultChecked
+                  checked={isDayStart}
+                  onChange={() => setIsDayStart((pre) => !pre)}
+                />
+              }
               label="Sao chép tiến độ công việc"
             />
           </FormGroup>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <CustomDatePicker
-              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
-              ampm={false}
-              value={startDate}
-              onChange={setStartDate}
-              format={formatDate}
-              required={true}
-              size="small"
-            />
-          </MuiPickersUtilsProvider>
+          {isDayStart && (
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <CustomDatePicker
+                label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
+                ampm={false}
+                value={startDate}
+                onChange={setStartDate}
+                format={formatDate}
+                required={true}
+                size="small"
+              />
+            </MuiPickersUtilsProvider>
+          )}
           <Typography>
             Mọi hoạt động thảo luận, tài liệu trong bảng sẽ không được sao chép
             sang bảng mới.

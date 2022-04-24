@@ -9,13 +9,14 @@ import { actionVisibleDrawerMessage } from "actions/system/system";
 import { CustomLayoutContext } from "components/CustomLayout";
 import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
+import TemplateHeader from "components/TemplateHeader";
 import { apiService } from "constants/axiosInstance";
 import { DRAWER_TYPE } from "constants/constants";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, flattenDeep, get, isNil, join } from "lodash";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { connect, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   projectSelector,
   showHidePendingsSelector,
@@ -63,7 +64,30 @@ const LayoutDetail = ({
   const { pathname } = useLocation();
   const isProject = pathname === "/projects";
   const TableContext = React.useContext(CustomTableContext);
-  const [, , view, projectId, memberId] = pathname.split("/");
+  const parsedPath = pathname.split("/");
+  const [view, setViewParam] = useState("");
+  const [projectId, setProjectId] = useState("");
+  const [memberId, setMemberId] = useState("");
+  const isTemplate = useMemo(() => {
+    return parsedPath.includes("template");
+  }, [parsedPath]);
+  useEffect(() => {
+    if (isTemplate) {
+      setViewParam(parsedPath[5]);
+      setProjectId(parsedPath[6]);
+      setMemberId(parsedPath[7]);
+    } else {
+      setViewParam(parsedPath[2]);
+      setProjectId(parsedPath[3]);
+      setMemberId(parsedPath[4]);
+    }
+  }, [isTemplate, parsedPath]);
+
+  useEffect(() => {
+    if (isTemplate && !expand) {
+      handleExpand();
+    }
+  }, [isTemplate, expand]);
   const disableShowHide = !isNil(
     find(
       showHidePendings.pendings,
@@ -284,7 +308,11 @@ const LayoutDetail = ({
       {!isProject && view === "task-kanban" && (
         <>
           {visible ? (
-            <HeaderProject {...setView()} />
+            isTemplate ? (
+              <TemplateHeader projectId={projectId} {...setView()} />
+            ) : (
+              <HeaderProject {...setView()} />
+            )
           ) : (
             <MiniContainer>
               <Icon
@@ -294,9 +322,16 @@ const LayoutDetail = ({
               />
             </MiniContainer>
           )}
+          )
         </>
       )}
-      {!isProject && view !== "task-kanban" && <HeaderProject {...setView()} />}
+      {!isProject &&
+        view !== "task-kanban" &&
+        (isTemplate ? (
+          <TemplateHeader projectId={projectId} {...setView()} />
+        ) : (
+          <HeaderProject {...setView()} />
+        ))}
       {React.cloneElement(children, { aaaa: 1 })}
     </>
   );

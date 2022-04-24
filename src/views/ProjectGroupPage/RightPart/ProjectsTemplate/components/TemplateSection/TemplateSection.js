@@ -8,6 +8,7 @@ import TemplateCard from "../TemplateCard/TemplateCard";
 import "./index.scss";
 
 const TemplateSection = ({
+  isMainPage = false,
   categoryId,
   icon,
   title,
@@ -19,17 +20,31 @@ const TemplateSection = ({
 
   return (
     <div className="template-group__section">
-      <div className="template-group__section__title">
-        <span>{icon}</span>
-        <h3>{title}</h3>
-        <div>{extra && extra}</div>
-      </div>
+      {isMainPage ? (
+        templates &&
+        templates.length > 0 && (
+          <div className="template-group__section__title">
+            <span>{icon}</span>
+            <h3>{title}</h3>
+            <div>{extra && extra}</div>
+          </div>
+        )
+      ) : (
+        <div className="template-group__section__title">
+          <span>{icon}</span>
+          <h3>{title}</h3>
+          <div>{extra && extra}</div>
+        </div>
+      )}
 
       <div className="template-group__section__card">
         {templates &&
-          templates.map((template) => (
-            <TemplateCard key={template.id} template={template} />
-          ))}
+          templates.length > 0 &&
+          templates
+            .slice(0, 3)
+            .map((template) => (
+              <TemplateCard key={template.id} template={template} />
+            ))}
         {isEmpty && <TemplateCard isEmpty />}
       </div>
     </div>

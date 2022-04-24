@@ -48,7 +48,11 @@ const ProjectSharedTemplate = () => {
             </div>
           </div>
 
-          <TemplateSection templates={templates} title="Các mẫu đã chia sẻ" />
+          <TemplateSection
+            icon={<img src="/images/mau-da-chia-se.png" />}
+            templates={templates}
+            title="Các mẫu đã chia sẻ"
+          />
         </div>
       )}
     </ProjectTemplateWrapper>

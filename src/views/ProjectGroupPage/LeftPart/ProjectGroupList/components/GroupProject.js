@@ -79,7 +79,7 @@ export const GroupProject = ({
     "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
 
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
 
   const isDefaultGroup =
     idGroupDefault === `?groupID=${projectGroup.id}` ||
@@ -110,10 +110,10 @@ export const GroupProject = ({
               <div
                 style={{
                   // marginRight: "10px",
-                  width: 20,
-                  height: 20,
-                  borderRadius: 5,
-                  backgroundColor: "#4dcbc4",
+                  width: 13,
+                  height: 13,
+                  borderRadius: 3,
+                  backgroundColor: get(projectGroup, "color"),
                 }}
                 // src={get(projectGroup, "icon")}
                 alt="avatar"

@@ -83,19 +83,22 @@ const ProjectsTemplate = () => {
             ))}
         </div>
 
-        <TemplateSection
-          icon={<AcUnitIcon fontSize="large" />}
-          title="Mẫu mới chia sẻ"
-          templates={templates}
-        />
+        {templates && templates.length > 0 && (
+          <TemplateSection
+            icon={<img src="/images/mau-new.png" />}
+            title="Mẫu mới chia sẻ"
+            templates={templates}
+          />
+        )}
 
         {categories &&
           categories.length > 0 &&
           categories.map((category) => (
             <TemplateSection
+              isMainPage
               key={category.category_id}
-              categoryId={category.category_image}
-              icon={<AcUnitIcon fontSize="large" />}
+              categoryId={category.category_id}
+              icon={<img src={category.category_image} />}
               title={category.category_name}
               templates={category.templates}
               extra={
