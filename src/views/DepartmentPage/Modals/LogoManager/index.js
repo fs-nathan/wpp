@@ -41,8 +41,6 @@ function LogoManager({
       (icon) => icon.url_icon === currentGroup.icon
     );
 
-    console.log("foundedIcon", foundedIcon);
-
     setSelectedIconFromOut({
       url_full: foundedIcon.url_icon,
       url_sort: foundedIcon.icon,

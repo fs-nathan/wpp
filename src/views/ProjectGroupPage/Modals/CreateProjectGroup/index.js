@@ -3,7 +3,7 @@ import { detailProjectGroup } from "actions/projectGroup/detailProjectGroup";
 import { editProjectGroup } from "actions/projectGroup/editProjectGroup";
 import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
 import { get } from "lodash";
-import React from "react";
+import React, { useContext } from "react";
 import { connect } from "react-redux";
 import LogoManagerModal, {
   LogoManagerContainer,
@@ -11,6 +11,7 @@ import LogoManagerModal, {
 import ColorGroupPickerModal from "../ColorGroupPickerModal";
 import CreateProjectGroupPresenter from "./presenters";
 import { colors } from "../ColorGroupPickerModal";
+import { LogoManagerContext } from "views/DepartmentPage/Modals/LogoManager/presenters";
 
 function CreateProjectGroup({
   updatedProjectGroup = null,
@@ -21,6 +22,8 @@ function CreateProjectGroup({
   doReloadList,
   doReloadDetail,
 }) {
+  const { icons } = useContext(LogoManagerContext);
+
   const [openLogo, setOpenLogo] = React.useState(false);
   const [logoProps, setLogoProps] = React.useState({});
   const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
@@ -28,12 +31,23 @@ function CreateProjectGroup({
   const [selectedColor, setSelectedColor] = React.useState(
     updatedProjectGroup?.color || colors[0]
   );
-  const [selectedLogo, setSelectedLogo] = React.useState(
-    updatedProjectGroup?.icon || {
-      url_full: "",
-      url_sort: "",
-    }
-  );
+  // const [selectedLogo, setSelectedLogo] = React.useState(
+  //   updatedProjectGroup?.icon || {
+  //     url_full: "",
+  //     url_sort: "",
+  //   }
+  // );
+
+  // React.useEffect(() => {
+  //   if (icons) return;
+  //   const firstIconDefaults = icons?.defaults[0];
+  //   if (selectedLogo?.url_full === "") {
+  //     setSelectedLogo({
+  //       url_sort: get(firstIconDefaults, "icon"),
+  //       url_full: get(firstIconDefaults, "url_icon"),
+  //     });
+  //   }
+  // }, [icons]);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -63,7 +77,7 @@ function CreateProjectGroup({
           doReloadList={() => doReloadList()}
           open={open}
           setOpen={setOpen}
-          handleCreateOrEditProjectGroup={(name, description, icon, color) =>
+          handleCreateOrEditProjectGroup={(name, description, icon, color) => {
             updatedProjectGroup
               ? doEditProjectGroup({
                   projectGroupId: get(updatedProjectGroup, "id"),
@@ -77,13 +91,13 @@ function CreateProjectGroup({
                   description,
                   icon: icon.url_sort,
                   color: color,
-                })
-          }
+                });
+          }}
           handleOpenModal={doOpenModal}
           selectedColor={selectedColor}
           setSelectedColor={setSelectedColor}
-          selectedLogo={selectedLogo}
-          setSelectedLogo={setSelectedLogo}
+          // selectedLogo={selectedLogo}
+          // setSelectedLogo={setSelectedLogo}
         />
       </LogoManagerContainer>
       <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />

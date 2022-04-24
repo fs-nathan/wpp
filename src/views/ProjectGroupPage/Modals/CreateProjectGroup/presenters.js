@@ -58,7 +58,6 @@ function CreateProjectGroup({
   doReloadList,
   selectedColor,
   setSelectedColor,
-
   createSuccessCallBack = () => {},
 }) {
   const { t } = useTranslation();
@@ -68,7 +67,7 @@ function CreateProjectGroup({
   const [activeLoading, setActiveLoading] = React.useState(false);
   const [isAddingDescription, setIsAddingDescription] = React.useState(false);
   // const [selectedColor, setSelectedColor] = React.useState(colors[0]);
-  const { icons, isSelect, selectedIcon, setSelectedIcon } =
+  const { icons, isSelect, selectedIcon, setSelectedIcon, defaultIcon } =
     useContext(LogoManagerContext);
   React.useEffect(() => {
     if (!updatedProjectGroup) {
@@ -136,10 +135,7 @@ function CreateProjectGroup({
       setOpen(false);
       setName("");
       setDescription("");
-      setSelectedIcon({
-        url_full: "",
-        url_sort: "",
-      });
+      setSelectedIcon(defaultIcon);
     };
     const fail = () => {
       setActiveLoading(false);
@@ -190,7 +186,7 @@ function CreateProjectGroup({
   const handleChange = (panel) => (event, isExpanded) => {
     setIsAddingDescription(isExpanded ? panel : false);
   };
-
+  console.log("selectedIcon", selectedIcon);
   return (
     <CustomModal
       title={
@@ -287,8 +283,8 @@ function CreateProjectGroup({
               <LogoBox
                 key={get(icon, "url_icon")}
                 isSelect={
-                  (isSelect && get(selectedIcon, "url_full", "x")) ||
-                  icons.defaults[0].url_icon === get(icon, "url_icon", "y")
+                  ((isSelect && get(selectedIcon, "url_full", "x")) ||
+                    icons.defaults[0].url_icon) === get(icon, "url_icon", "y")
                 }
               >
                 <ButtonBase

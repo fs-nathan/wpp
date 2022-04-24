@@ -178,7 +178,6 @@ const LogoManagerModalWrapper = ({ children }) => {
   } = useContext(LogoManagerContext);
   const { t } = useTranslation();
 
-  console.log("selectedIcon", selectedIcon);
   return (
     <CustomModal
       open={open}
@@ -317,23 +316,51 @@ function LogoManagerProvider({
     url_sort: get(icons.defaults[0], "icon"),
     url_full: get(icons.defaults[0], "url_icon"),
   });
+  const [defaultIcon, setDefaultIcon] = React.useState({
+    id: get(icons.defaults[0], "id"),
+    url_sort: get(icons.defaults[0], "icon"),
+    url_full: get(icons.defaults[0], "url_icon"),
+  });
   React.useEffect(() => {
     if (
       selectedIconFromOut &&
-      selectedIconFromOut.url_sort != "" &&
-      selectedIconFromOut.url_sort != selectedIcon.url_sort
+      !!selectedIconFromOut.url_sort &&
+      selectedIconFromOut.url_sort !== selectedIcon.url_sort
     ) {
+      console.log("go herre");
       setSelectedIcon({
         url_sort: selectedIconFromOut.url_sort,
         url_full: selectedIconFromOut.url_full,
       });
     } else {
+      if (icons.defaults[0]) {
+        setSelectedIcon({
+          url_sort: get(icons.defaults[0], "icon"),
+          url_full: get(icons.defaults[0], "url_icon"),
+        });
+      }
+    }
+  }, [selectedIconFromOut]);
+
+  React.useEffect(() => {
+    if (!icons.defaults[0]) return;
+    debugger;
+    if (!selectedIcon.id) {
       setSelectedIcon({
+        id: get(icons.defaults[0], "id"),
         url_sort: get(icons.defaults[0], "icon"),
         url_full: get(icons.defaults[0], "url_icon"),
       });
     }
-  }, [selectedIconFromOut]);
+
+    const defaultIcon = {
+      id: get(icons.defaults[0], "id"),
+      url_sort: get(icons.defaults[0], "icon"),
+      url_full: get(icons.defaults[0], "url_icon"),
+    };
+
+    setDefaultIcon(defaultIcon);
+  }, [icons]);
 
   return (
     <LogoManagerContext.Provider
@@ -350,6 +377,7 @@ function LogoManagerProvider({
         selectedIcon,
         setSelectedIcon,
         canUpload,
+        defaultIcon,
       }}
     >
       {children}
