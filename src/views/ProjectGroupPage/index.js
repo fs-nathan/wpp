@@ -94,7 +94,10 @@ function ProjectGroupPage({
             />
           </Route>
           <Route exact path="/projects/add-new">
-            <ProjectAddNew handleExpand={_handleExpand} />
+            <ProjectAddNew
+              handleExpand={_handleExpand}
+              isCollapsed={isCollapsed}
+            />
           </Route>
 
           <Route exact path="/projects/start">

@@ -10,7 +10,13 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ViewTimelineRoundedIcon from "@mui/icons-material/ViewTimelineRounded";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import * as images from "assets/index";
 import CustomModal, { Title } from "components/CustomModal";
 import CustomTextbox from "components/CustomTextbox";
@@ -35,6 +41,7 @@ import {
   CREATE_PROJECT_FAIL,
   CREATE_PROJECT_SUCCESS,
 } from "constants/actions/project/createProject";
+import CloseIcon from "@material-ui/icons/Close";
 
 // import { ListTagsCreateProject } from "./components";
 
@@ -72,11 +79,21 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
     } catch (error) {}
   }
 
+  function onClose() {
+    history.goBack();
+  }
   return (
     <>
       <Box className="create-project-step">
-        <div className="back-button" onClick={onBack}>
-          <ArrowBackIcon fontSize="large" htmlColor="#969ead" />
+        <div className="back-button">
+          <IconButton fontSize="large" htmlColor="#969ead" onClick={onBack}>
+            <ArrowBackIcon />
+          </IconButton>
+        </div>
+        <div className="close-button">
+          <IconButton fontSize="large" htmlColor="#969ead" onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
         </div>
         <div className="create-project-step-form">
           <Typography variant="h4" marginBottom={12}>
@@ -91,6 +108,7 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
             className={
               "view_ProjectGroup_CreateNew_Project_Modal_formItem per-line-step-in-form"
             }
+            style={{ fontSize: "16px" }}
           />
 
           {haveDescription ? (
@@ -189,6 +207,7 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
                 endIcon={<ArrowRightAltIcon />}
                 variant="contained"
                 color="primary"
+                style={{ boxShadow: "none" }}
                 onClick={onNextHandler}
               >
                 {t("CREATE_NEXT")}

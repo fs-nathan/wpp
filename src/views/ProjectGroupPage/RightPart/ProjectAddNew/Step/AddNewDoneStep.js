@@ -1,9 +1,10 @@
 import { Check } from "@material-ui/icons";
-import { Button, Paper, Typography } from "@mui/material";
+import { Button, IconButton, Paper, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import CloseIcon from "@material-ui/icons/Close";
 
 const AddNewDoneStep = ({ onNext, projectId }) => {
   const { t } = useTranslation();
@@ -22,8 +23,17 @@ const AddNewDoneStep = ({ onNext, projectId }) => {
         break;
     }
   }
+
+  function onClose() {
+    history.goBack();
+  }
   return (
     <Box className="add-new-done-step">
+      <div className="close-button">
+        <IconButton fontSize="large" htmlColor="#969ead" onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </div>
       <div className="add-new-done-step-form">
         <Typography variant="h4" marginBottom={4}>
           {t("CREATE_PROJECT_DONE_TITLE")}
@@ -69,6 +79,11 @@ const AddNewDoneStep = ({ onNext, projectId }) => {
             variant="contained"
             color="primary"
             onClick={navigate}
+            style={{
+              boxShadow: "none",
+              padding: "20px",
+              backgroundColor: "#0076F3",
+            }}
             fullWidth
           >
             {t("BEGIN")}

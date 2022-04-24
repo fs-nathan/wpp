@@ -79,7 +79,7 @@ export const GroupProject = ({
     "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
 
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
 
   const isDefaultGroup =
     idGroupDefault === `?groupID=${projectGroup.id}` ||
