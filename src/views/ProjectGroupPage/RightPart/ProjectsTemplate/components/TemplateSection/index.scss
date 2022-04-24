@@ -1,6 +1,6 @@
 .template-group {
   &__section {
-    width: 100%;
+    // width: 80%;
     margin: 16px auto;
     &__title {
       display: flex;
@@ -12,9 +12,10 @@
       }
     }
     &__card {
-      display: flex;
-      width: 100%;
-      gap: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 16px;
+      grid-row-gap: 16px;
     }
   }
 }

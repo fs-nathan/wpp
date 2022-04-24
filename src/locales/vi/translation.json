@@ -2623,5 +2623,6 @@
   "CREATE_PROJECT_DONE_NEW_CONTENT": "Chỉ định, đặt ngày đến hạn và bắt đầu làm việc",
   "CREATE_PROJECT_DONE_SHARE_LABEL": "Chia sẻ với đồng đội",
   "CREATE_PROJECT_DONE_SHARE_CONTENT": "Mời thành viên tham gia cùng làm việc nhóm hiệu quả",
-  "BEGIN": "Bắt đầu"
+  "BEGIN": "Bắt đầu",
+  "CHOOSE_PROJECT": "Chọn hình nền"
 }

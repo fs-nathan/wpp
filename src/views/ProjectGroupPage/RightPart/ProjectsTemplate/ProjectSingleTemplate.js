@@ -17,10 +17,11 @@ import SingleAction from "./components/SingleAction/SingleAction";
 import { useDispatch, useSelector } from "react-redux";
 import { getDetailTemplate } from "actions/project/getDetailTemplate";
 import ProjectTemplateWrapper from ".";
+import { SettingsInputSvideo } from "@material-ui/icons";
 
 const ProjectSingleTemplate = () => {
   const history = useHistory();
-
+  const [isOpenUsing, setIsOpenUsing] = useState(false);
   const { id: templateId } = useParams();
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
@@ -37,6 +38,11 @@ const ProjectSingleTemplate = () => {
   }, [fetchData]);
   function handleClick() {}
 
+  function previewTemplate() {
+    history.push(
+      `/projects/template/${templateId}/preview/task-table/${templateId}`
+    );
+  }
   return (
     <ProjectTemplateWrapper>
       <div>
@@ -49,9 +55,9 @@ const ProjectSingleTemplate = () => {
               <Link
                 underline="hover"
                 color="inherit"
-                href={`/projects/group/${DETAIL_TEMPLATE.parent}`}
+                href={`/projects/group/${template.category_id}`}
               >
-                {DETAIL_TEMPLATE.parent}
+                {template.category_name}
               </Link>
             </Breadcrumbs>
             <Typography color="text.primary">{template.name}</Typography>
@@ -97,7 +103,12 @@ const ProjectSingleTemplate = () => {
             </div>
           </div>
           <div className="project-single-template__overview__action">
-            <SingleAction />
+            <SingleAction
+              isOpenUsing={isOpenUsing}
+              closeUsing={() => {
+                setIsOpenUsing(false);
+              }}
+            />
           </div>
         </div>
 
@@ -107,15 +118,23 @@ const ProjectSingleTemplate = () => {
           </Typography>
           <div dangerouslySetInnerHTML={{ __html: template.description }}></div>
           <Typography variant="h6" color="black">
-            <Link href="#" variant="h6" color="inherit" underline="always">
+            <Link
+              href="#"
+              variant="h6"
+              color="inherit"
+              underline="always"
+              onClick={previewTemplate}
+            >
               Xem mẫu
             </Link>
           </Typography>
           <div>
-            <Typography variant="h6" color="black ">
-              <Link href="#" color="inherit" variant="h6" underline="always">
-                Sử dụng mẫu
-              </Link>{" "}
+            <Typography variant="h6" color="black">
+              <span onClick={() => setIsOpenUsing(true)}>
+                <Link color="inherit" variant="h6" underline="always">
+                  Sử dụng mẫu
+                </Link>
+              </span>{" "}
               hoặc{" "}
               <Link
                 href="/projects/add-new"

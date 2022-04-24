@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   Box,
   Button,
@@ -16,16 +17,17 @@ import DialogUsing from "./DialogUsing";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelShare } from "actions/project/cancelShare";
+import { useTemplate } from "actions/project/useTemplate";
 import { useTranslation } from "react-i18next";
 import { actionToast } from "actions/system/system";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import { CANCEL_SHARE_SUCCESS } from "constants/actions/project/cancelShare";
-
-const SingleAction = () => {
+import moment from "moment";
+const SingleAction = ({ isOpenUsing, closeUsing }) => {
+  const { id: projectId } = useParams();
   const [anchorUnShareEl, setAnchorUnShareEl] = useState(null);
   const [anchorRefferEl, setAnchorRefferEl] = useState(null);
   const [anchorUsingEl, setAnchorUsingEl] = useState(null);
-  const { id: projectId } = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
@@ -46,12 +48,17 @@ const SingleAction = () => {
   const handleRefferClose = () => {
     setAnchorRefferEl(null);
   };
-  const handleUsingClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorUsingEl(event.currentTarget);
+  const handleUsingClick = () => {
+    const event = document.getElementById("using-button");
+    console.log(event);
+    if (event) {
+      setAnchorUsingEl(event);
+    }
   };
 
   const handleUsingClose = () => {
     setAnchorUsingEl(null);
+    closeUsing();
   };
 
   const openUnShare = Boolean(anchorUnShareEl);
@@ -76,6 +83,14 @@ const SingleAction = () => {
     }
   }, [status]);
 
+  useEffect(() => {
+    if (isOpenUsing) {
+      handleUsingClick();
+    } else {
+      handleUsingClose();
+    }
+  }, [isOpenUsing]);
+
   async function handleUnShare() {
     try {
       dispatch(cancelShare({ projectId }));
@@ -83,7 +98,20 @@ const SingleAction = () => {
       history.replace("/projects/template");
     } catch (error) {}
   }
-  async function handleUsing() {}
+  async function handleUsing({ name, curProjectGroupId, startDate }) {
+    try {
+      await dispatch(
+        useTemplate({
+          template_id: projectId,
+          name,
+          project_group_id: curProjectGroupId,
+          day_start: startDate
+            ? moment(startDate).format("YYYY-MM-DD")
+            : undefined,
+        })
+      );
+    } catch (error) {}
+  }
 
   return (
     <>
@@ -151,6 +179,7 @@ const SingleAction = () => {
           aria-describedby={usingId}
           variant="contained"
           color="primary"
+          id="using-button"
           onClick={handleUsingClick}
         >
           Sử dụng mẫu

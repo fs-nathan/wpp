@@ -23,7 +23,7 @@ const ProjectGroupTemplate = () => {
       return categories.find((c) => c.category_id === groupId);
     }
     return null;
-  }, [categories]);
+  }, [categories, groupId]);
 
   // const fetchData = useCallback(async () => {
   //   try {

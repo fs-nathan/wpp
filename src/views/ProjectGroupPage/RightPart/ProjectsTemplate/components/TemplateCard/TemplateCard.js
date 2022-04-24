@@ -26,7 +26,8 @@ const TemplateCard = ({ template, isEmpty }) => {
       <Card
         sx={{
           position: "relative",
-          width: 345,
+          // width: 345,
+          width: "100%",
           height: 194,
           boxShadow: "none",
           border: "none",
@@ -50,7 +51,9 @@ const TemplateCard = ({ template, isEmpty }) => {
     <Card
       sx={{
         position: "relative",
-        width: 345,
+        // width: 345,
+        width: "100%",
+
         boxShadow: "none",
         border: "none",
         backgroundColor: "transparent",

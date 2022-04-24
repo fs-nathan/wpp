@@ -269,6 +269,9 @@ import copyProject, {
 import createProject, {
   initialState as createProjectInitialState,
 } from "./project/createProject";
+import useTemplate, {
+  initialState as useTemplateInitialState,
+} from "./project/useTemplate";
 import deleteProject, {
   initialState as deleteProjectInitialState,
 } from "./project/deleteProject";
@@ -640,6 +643,7 @@ const rootReducer = combineReducers({
   }),
   project: combineReducers({
     createProject,
+    useTemplate,
     updateProject,
     deleteProject,
     cancelShare,
@@ -879,6 +883,7 @@ export const DEFAULT_STATE = {
   },
   project: {
     createProject: createProjectInitialState,
+    useTemplate: useTemplateInitialState,
     updateProject: updateProjectInitialState,
     deleteProject: deleteProjectInitialState,
     cancelShare: cancelShareInitialState,
