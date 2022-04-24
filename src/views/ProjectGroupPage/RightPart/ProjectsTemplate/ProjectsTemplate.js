@@ -85,7 +85,7 @@ const ProjectsTemplate = () => {
 
         {templates && templates.length > 0 && (
           <TemplateSection
-            icon={<AcUnitIcon fontSize="large" />}
+            icon={<img src="/images/mau-new.png" />}
             title="Mẫu mới chia sẻ"
             templates={templates}
           />
@@ -97,8 +97,8 @@ const ProjectsTemplate = () => {
             <TemplateSection
               isMainPage
               key={category.category_id}
-              categoryId={category.category_image}
-              icon={<AcUnitIcon fontSize="large" />}
+              categoryId={category.category_id}
+              icon={<img src={category.category_image} />}
               title={category.category_name}
               templates={category.templates}
               extra={
