@@ -136,7 +136,6 @@ const ProjectGroupGrid = ({
                 orientation="horizontal"
                 dropPlaceholder={{
                   animationDuration: 150,
-                  showOnTop: true,
                   className: "projectGroupListGrid___dropPlaceholder-preview",
                 }}
                 onDragStart={({ isSource, payload, willAcceptDrop }) => {
@@ -149,8 +148,8 @@ const ProjectGroupGrid = ({
                 onDrop={(e) => {
                   const { removedIndex, addedIndex, payload } = e;
                   if (removedIndex === null && addedIndex === null) return;
+                  if (addedIndex > 3) return;
                   if (removedIndex === addedIndex) return;
-
                   if (addedIndex !== null) {
                     if (!groupLayout[index][addedIndex].sort_index) return;
 
