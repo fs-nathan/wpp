@@ -34,6 +34,7 @@ import ProjectSingleTemplate from "./RightPart/ProjectsTemplate/ProjectSingleTem
 import ProjectGroupTemplate from "./RightPart/ProjectsTemplate/ProjectGroupTemplate";
 import ProjectSharedTemplate from "./RightPart/ProjectsTemplate/ProjectSharedTemplate";
 import ProjectBeSharedTemplate from "./RightPart/ProjectsTemplate/ProjectBeSharedTemplate";
+import ProjectTemplatePreview from "./RightPart/ProjectsTemplate/ProjectTemplatePreview";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -114,6 +115,50 @@ function ProjectGroupPage({
           </Route>
           <Route exact path="/projects/template/be-shared">
             <ProjectBeSharedTemplate />
+          </Route>
+
+          <Route path="/projects/template/:id/preview">
+            <CustomTableWrapper>
+              <CustomLayoutProvider>
+                <LayoutDetail handleExpand={_handleExpand} expand={isCollapsed}>
+                  <Switch>
+                    <Route
+                      exact
+                      path="/projects/template/:id/preview/task-table/:projectId/:memberId?"
+                      render={(props) => (
+                        <AllTaskTable
+                          expand={isCollapsed}
+                          handleExpand={_handleExpand}
+                          {...props}
+                        />
+                      )}
+                    />
+                    <Route
+                      exact
+                      path="/projects/template/:id/preview/task-kanban/:projectId/:memberId?"
+                      render={(props) => (
+                        <KanbanPage
+                          expand={isCollapsed}
+                          handleExpand={_handleExpand}
+                        />
+                      )}
+                    />
+                    <Route
+                      exact
+                      path="/projects/template/:id/preview/task-gantt/:projectId/:memberId?"
+                      render={(props) => (
+                        <GranttPage
+                          expand={isCollapsed}
+                          handleExpand={_handleExpand}
+                          {...props}
+                        />
+                      )}
+                    />
+                  </Switch>
+                </LayoutDetail>
+              </CustomLayoutProvider>
+            </CustomTableWrapper>
+            {/* <ProjectTemplatePreview /> */}
           </Route>
           <Route exact path="/projects/template/:id">
             <ProjectSingleTemplate />

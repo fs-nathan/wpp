@@ -151,23 +151,22 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
         </Box>
       </CustomModal>
 
-      <Modal keepMounted open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            p: 4,
-            bgcolor: "white",
-            maxHeight: 500,
-            overflowY: "auto",
-          }}
-        >
-          <ImageList
-            sx={{ width: "100%", height: "100%", overflowY: "unset" }}
-            cols={3}
-          >
+      <CustomModal
+        maxWidth="lg"
+        height="small"
+        setOpen={setOpen}
+        open={open}
+        canConfirm={false}
+        confirmRender={null}
+        cancleRender={null}
+        manualClose={true}
+        onCancle={() => {
+          onBack();
+        }}
+        title={t("CHOOSE_PROJECT")}
+      >
+        <Box>
+          <ImageList sx={{ width: "100%", height: "100%" }} cols={3}>
             {banners &&
               banners.length > 0 &&
               banners.map((banner) => (
@@ -175,6 +174,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
                   key={banner.value}
                   onClick={() => handleChangeBanner(banner)}
                   sx={{ cursor: "pointer" }}
+                  className="image-list__items"
                 >
                   <img
                     src={`${banner.url}`}
@@ -185,7 +185,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
               ))}
           </ImageList>
         </Box>
-      </Modal>
+      </CustomModal>
     </>
   );
 };

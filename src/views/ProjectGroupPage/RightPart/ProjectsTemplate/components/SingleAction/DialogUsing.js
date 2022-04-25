@@ -38,9 +38,17 @@ const DialogUsing = ({ onClose, onOk }) => {
   const [startDate, setStartDate, errorDate] = useRequiredDate(
     moment().toDate()
   );
+  const [isDayStart, setIsDayStart] = useState(true);
 
   const formatDate = useSelector((state) => state.system.profile.format_date);
 
+  function handleOk() {
+    onOk({
+      name,
+      curProjectGroupId,
+      startDate: isDayStart ? startDate : undefined,
+    });
+  }
   return (
     <>
       <Box width={320} p={1}>
@@ -92,34 +100,36 @@ const DialogUsing = ({ onClose, onOk }) => {
 
           <FormGroup>
             <FormControlLabel
-              control={<Checkbox defaultChecked />}
-              label="Sao chép các thành viên trong bảng"
-            />
-          </FormGroup>
-          <FormGroup>
-            <FormControlLabel
-              control={<Checkbox defaultChecked />}
+              control={
+                <Checkbox
+                  defaultChecked
+                  checked={isDayStart}
+                  onChange={() => setIsDayStart((pre) => !pre)}
+                />
+              }
               label="Sao chép tiến độ công việc"
             />
           </FormGroup>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <CustomDatePicker
-              label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
-              ampm={false}
-              value={startDate}
-              onChange={setStartDate}
-              format={formatDate}
-              required={true}
-              size="small"
-            />
-          </MuiPickersUtilsProvider>
+          {isDayStart && (
+            <MuiPickersUtilsProvider utils={DateFnsUtils}>
+              <CustomDatePicker
+                label={t("DMH.VIEW.PGP.MODAL.COPY.RIGHT.PROJECT.DATE")}
+                ampm={false}
+                value={startDate}
+                onChange={setStartDate}
+                format={formatDate}
+                required={true}
+                size="small"
+              />
+            </MuiPickersUtilsProvider>
+          )}
           <Typography>
             Mọi hoạt động thảo luận, tài liệu trong bảng sẽ không được sao chép
             sang bảng mới.
           </Typography>
         </Box>
         <DialogActions sx={{ justifyContent: "flex-start" }}>
-          <Button variant="contained" color="primary" onClick={onOk}>
+          <Button variant="contained" color="primary" onClick={handleOk}>
             Tạo mới
           </Button>
         </DialogActions>
