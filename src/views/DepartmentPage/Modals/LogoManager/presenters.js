@@ -344,7 +344,6 @@ function LogoManagerProvider({
 
   React.useEffect(() => {
     if (!icons.defaults[0]) return;
-    debugger;
     if (!selectedIcon.id) {
       setSelectedIcon({
         id: get(icons.defaults[0], "id"),

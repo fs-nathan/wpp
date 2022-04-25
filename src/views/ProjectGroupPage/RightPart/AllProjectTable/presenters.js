@@ -9,7 +9,7 @@ import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -68,9 +68,6 @@ function AllProjectTable({
   const [selectedSort, setSelectedSort] = React.useState(sortLocal || null);
   const isDisplayGroupGrid = !groupID;
   const history = useHistory();
-
-  const groupProjectPageRef = useRef(null);
-  const groupProjectContainerRef = useRef(null);
 
   const canDelete = isDisplayGroupGrid
     ? canModifyProjectGroup
@@ -164,28 +161,6 @@ function AllProjectTable({
       }),
     [handleOpenModal]
   );
-
-  // React.useLayoutEffect(() => {
-  //   if (projectGroup.length === 0) return;
-
-  //   // // const lastRowGridLayouitem =
-  //   const groupProjectLastRow =
-  //     document.body.querySelector("#groupProject__4th");
-  //   const searchBox = groupProjectPageRef.current?.querySelector(
-  //     "#AllGroup__searchBox--isAllGroup"
-  //   );
-
-  //   console.log("searchBox", searchBox);
-  //   console.log("groupProjectLastRow", groupProjectLastRow);
-  //   if (searchBox && groupProjectLastRow) {
-  //     const bodyRect = document.body.getBoundingClientRect();
-  //     const elemRect = groupProjectLastRow.getBoundingClientRect();
-  //     const rightSpace = bodyRect.right - elemRect.right;
-
-  //     console.log("rightSpace", rightSpace);
-  //     searchBox.style.marginRight = `${rightSpace - 10}px`;
-  //   }
-  // }, [projectGroup]);
 
   const onEdit = (evt, project) => doOpenMenu(evt, project);
 
@@ -461,7 +436,7 @@ function AllProjectTable({
   };
 
   return (
-    <div ref={groupProjectPageRef}>
+    <div>
       <Container>
         {size(projects.projects) === 0 &&
           !projects.loading &&
@@ -490,7 +465,7 @@ function AllProjectTable({
         {projects.loading && <LoadingBox />}
 
         {(size(projects) > 0 || isFiltering) && !projects.loading && (
-          <div ref={groupProjectContainerRef}>
+          <div>
             {isDisplayGroupGrid ? (
               <ProjectGroupGrid
                 projectGroups={projectGroup}

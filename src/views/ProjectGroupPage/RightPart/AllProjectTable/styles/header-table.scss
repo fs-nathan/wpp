@@ -117,11 +117,11 @@
 
 .AllGroup__header {
   &--wrapper {
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     position: -webkit-sticky;
     height: 60px;
+
     position: sticky;
     top: 0;
     background-color: #fff;
@@ -132,37 +132,29 @@
       background-color: #f5f7f9;
     }
   }
+  &--wrapper-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 75%;
+    max-width: calc(980px - 25px);
+    // min-width: 900px;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  @media only screen and (max-width: 1599px) {
+    &--wrapper-inner {
+      width: 90%;
+    }
+  }
+  @media only screen and (max-width: 1399px) {
+    &--wrapper-inner {
+      width: 100%;
+    }
+  }
   &--right {
     margin-left: auto;
     display: flex;
-    &.isAllGroup {
-      margin-right: 20%;
-    }
-
-    @media only screen and (max-width: 1920px) {
-      &.isAllGroup {
-        margin-right: 16%;
-      }
-    }
-    @media only screen and (max-width: 1600px) {
-      &.isAllGroup {
-        margin-right: 9.5%;
-      }
-    }
-    @media only screen and (max-width: 1440px) {
-      &.isAllGroup {
-        margin-right: calc(3% + 18px);
-      }
-    }
-    @media only screen and (max-width: 1366px) {
-      &.isAllGroup {
-        margin-right: calc(0.5% + 5px);
-      }
-    }
-    @media only screen and (max-width: 1280px) {
-      &.isAllGroup {
-        margin-right: -1.5%;
-      }
-    }
   }
 }

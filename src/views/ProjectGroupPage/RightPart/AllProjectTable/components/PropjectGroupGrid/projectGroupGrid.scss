@@ -2,7 +2,9 @@
   margin: 0 auto;
 
   // grid-template-columns: repeat(4, 265px);
-  padding: 45px 80px;
+  // padding: 45px 80px;
+  padding-top: 45px;
+  padding-bottom: 45px;
   width: 100%;
   min-height: 100vh;
   height: 100%;
@@ -14,27 +16,29 @@
     width: 100%;
     justify-content: center;
 
-    .smooth-dnd-container {
-      min-width: 80%;
-      table-layout: fixed;
-    }
     .smooth-dnd-draggable-wrapper {
-      max-width: 245px;
       width: calc(100% / 4);
+    }
+
+    .smooth-dnd-container {
+      width: 75%;
+      max-width: 980px;
+      table-layout: fixed;
     }
     @media only screen and (max-width: 1599px) {
       .smooth-dnd-container {
-        min-width: 90%;
+        width: 90%;
       }
     }
     @media only screen and (max-width: 1399px) {
       .smooth-dnd-container {
-        min-width: 100%;
+        width: 100%;
+        table-layout: auto;
       }
     }
   }
   &__item {
-    width: calc( 100% - 25px);
+    width: calc(100% - 25px);
     min-width: 200px;
     margin-left: 12.5px;
     margin-right: 12.5px;

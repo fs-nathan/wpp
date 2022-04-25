@@ -53,7 +53,6 @@ const convertToGridLayout = (inputArray = []) => {
     return newArr;
   }, []);
 
-  console.log("arr", arr);
   return arr;
 };
 
@@ -152,8 +151,6 @@ const ProjectGroupGrid = ({
                   if (removedIndex === addedIndex) return;
                   if (addedIndex !== null) {
                     if (!groupLayout[index][addedIndex].sort_index) return;
-
-                    debugger;
 
                     const projectGroupsCloned = [...projectGroups];
 
