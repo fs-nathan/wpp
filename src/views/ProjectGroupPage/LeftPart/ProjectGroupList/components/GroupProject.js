@@ -29,9 +29,10 @@ const useStyles = makeStyles((theme) => ({
   projectItem: {
     padding: "5px 0",
     paddingLeft: "45px",
+
     "&:hover, &.active": {
-      backgroundColor: "#e5e5e5!important",
-      color: "#0076f3",
+      backgroundColor: "#e5e5e5 !important",
+      color: "#0076f3 !important",
       "& $projectIconChecked": {
         display: "flex",
       },
@@ -48,9 +49,19 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
   },
-  projectIcon: { minWidth: "auto", marginRight: 5 },
-  projectIconChecked: { display: "none", color: "#0076f3" },
-  projectIconOutLine: { display: "flex" },
+  projectIcon: {
+    minWidth: "auto",
+    marginRight: 5,
+  },
+  projectIconChecked: { display: "none", color: "#0076f3 !important" },
+  projectIconOutLine: {
+    display: "flex",
+    "& svg": {
+      width: "0.9em",
+      height: "0.9em",
+      color: "#989898",
+    },
+  },
   groupName: {
     whiteSpace: "nowrap",
   },
@@ -212,7 +223,7 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
               <ListItemIcon
                 className={[classes.projectIcon, classes.projectIconChecked]}
               >
-                <CheckCircleIcon htmlColor="#0076f3" />
+                <CheckCircleIcon />
               </ListItemIcon>
 
               <ListItemIcon

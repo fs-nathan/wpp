@@ -78,12 +78,24 @@ const TemplateCard = ({ template, isEmpty }) => {
         <Typography variant="h6" color="#172B4D" mb={2} fontSize="14px">
           {template.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={1}>
+        <Typography
+          variant="body2"
+          color="#6B778C"
+          mb={1}
+          fontSize="12px"
+          lineHeight={1.5}
+        >
           Chia sẻ bởi @{template.user_share_name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={2}>
-          {template.description}
-        </Typography>
+        <div
+          style={{
+            color: "#172B4D",
+            marginBottom: "16px",
+            lineHeight: 1.5,
+            fontSize: "12px",
+          }}
+          dangerouslySetInnerHTML={{ __html: template.description }}
+        ></div>
         <div className="template-card__action">
           <div className="template-card__action__copied">
             <ContentCopyRoundedIcon />

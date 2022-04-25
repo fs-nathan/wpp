@@ -136,32 +136,12 @@ const ProjectTemplateList = ({
                 </ListItemButton>
               </ListItem>
 
-              <ListItem
-                disablePadding
-                disableGutters
-                className={`list-button ${isBeShared && "list-button--active"}`}
-              >
-                <ListItemButton
-                  onClick={() => handleClick(SideTab.BeShared)}
-                  sx={{ pl: 6 }}
-                >
-                  <ListItemText primary="Được chia sẻ" />
-                  {/* {templates &&
-                  templates.length > 0 &&
-                  (isBeSharedOpen ? <ExpandLess /> : <ExpandMore />)} */}
-                </ListItemButton>
-              </ListItem>
-
-              <ListItem
-                disablePadding
-                disableGutters
-                className={`list-button `}
-              >
+              <ListItem disablePadding disableGutters className={`list-button`}>
                 <ListItemButton
                   onClick={() => handleClick(SideTab.Public)}
                   sx={{ pl: 6 }}
                 >
-                  <ListItemText primary="Công khai" />
+                  <ListItemText primary="Nhóm mẫu" />
                   {categories &&
                     categories.length > 0 &&
                     (isPublicOpen ? (
