@@ -78,6 +78,10 @@ const HeaderColumn = ({
    * This function is called when the user clicks the edit button.
    */
   const _handleEditField = () => {
+    console.log(column.data_type);
+    console.log(column.id);
+    console.log(column.name);
+    console.log(column.options);
     dispatchState(initialState);
     onEditColumn(column.data_type, {
       dataType: column.data_type,

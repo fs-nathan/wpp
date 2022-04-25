@@ -150,7 +150,7 @@
     &__expired {
       color: rgb(244, 67, 54);
       border: 1px solid rgb(244, 67, 54);
-      &>svg>path {
+      & > svg > path {
         fill: rgb(244, 67, 54);
       }
     }
@@ -250,6 +250,7 @@
 .toolTipUpdateStatus {
   .MuiPopover-paper {
     width: 250px;
+    box-shadow: 0 0 15px 0px #e5e5e5;
   }
   &-header {
     padding: 15px;
@@ -286,7 +287,6 @@
     }
     .radioDisabled {
       cursor: default;
-
     }
   }
 }

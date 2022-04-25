@@ -1,0 +1,12 @@
+.list_data_management {
+  li {
+    &:hover {
+      .icon_edit {
+        opacity: 1;
+      }
+    }
+    .icon_edit {
+      opacity: 0;
+    }
+  }
+}

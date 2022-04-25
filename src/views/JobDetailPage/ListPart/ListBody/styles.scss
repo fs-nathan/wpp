@@ -24,9 +24,10 @@
       .MuiPopover-paper {
         padding: 15px 20px;
         border-radius: 3px;
+        box-shadow: 0 0 15px 0px #e5e5e5;
       }
       .MuiPaper-elevation1 {
-        box-shadow: 0 1px 3px 2px rgba(0,0,0,0.12);
+        box-shadow: 0 1px 3px 2px rgba(0, 0, 0, 0.12);
       }
       .active {
         color: var(--color-primary);

@@ -128,7 +128,9 @@ const RowNew = React.forwardRef(
     const [isVisible, setIsVisible] = useState(false);
 
     React.useImperativeHandle(ref, (va) => ({
-      _set: () => setIsVisible(!isVisible),
+      _set: () => {
+        return setIsVisible(!isVisible);
+      },
     }));
 
     if (!isVisible) return null;
@@ -142,9 +144,9 @@ const RowNew = React.forwardRef(
               cell={cell}
               isNewRow
               isFocus
-              onSubmitAdd={onSubmit}
-              onBlur={() => {
+              onSubmitAdd={(e) => {
                 setIsVisible(!isVisible);
+                onSubmit(e);
               }}
             />
           );
