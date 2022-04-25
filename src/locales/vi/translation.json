@@ -2616,5 +2616,6 @@
   "CREATE_PROJECT_DONE_SHARE_LABEL": "Chia sẻ với đồng đội",
   "CREATE_PROJECT_DONE_SHARE_CONTENT": "Mời thành viên tham gia cùng làm việc nhóm hiệu quả",
   "BEGIN": "Bắt đầu",
-  "CHOOSE_PROJECT": "Chọn hình nền"
+  "CHOOSE_PROJECT": "Chọn hình nền",
+  "PROJECT_NAME": "Tên mẫu"
 }

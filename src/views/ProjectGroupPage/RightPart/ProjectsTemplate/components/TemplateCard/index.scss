@@ -4,6 +4,17 @@
     bottom: 8px;
     display: flex;
     gap: 8px;
+    color: #5e6c84;
+    svg {
+      display: inline-flex;
+      font-size: 16px;
+    }
+    p {
+      color: #5e6c84;
+
+      display: inline-flex;
+      font-size: 13px !important;
+    }
     div {
       display: flex;
       align-items: center;

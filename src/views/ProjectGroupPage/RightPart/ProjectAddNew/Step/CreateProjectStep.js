@@ -206,8 +206,7 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
                 size="large"
                 endIcon={<ArrowRightAltIcon />}
                 variant="contained"
-                color="primary"
-                style={{ boxShadow: "none" }}
+                style={{ boxShadow: "none", backgroundColor: "#0076F3" }}
                 onClick={onNextHandler}
               >
                 {t("CREATE_NEXT")}

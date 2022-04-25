@@ -16,8 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import ProjectTemplateWrapper from ".";
 import { getNewestTemplate } from "actions/project/getNewestTemplate";
+import { useHistory } from "react-router-dom";
 
 const ProjectsTemplate = () => {
+  const history = useHistory();
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
@@ -108,7 +110,15 @@ const ProjectsTemplate = () => {
                     color: "#969ead",
                     backgroundColor: "#fafbfc",
                     textTransform: "initial",
+                    "&:hover": {
+                      backgroundColor: " #ededed",
+                    },
                   }}
+                  onClick={() =>
+                    history.push(
+                      "/projects/template/group/" + category.category_id
+                    )
+                  }
                 >
                   Thêm mẫu cho {category.category_name}
                 </Button>

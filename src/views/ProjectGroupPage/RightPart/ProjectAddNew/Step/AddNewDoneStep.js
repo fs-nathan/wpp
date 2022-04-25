@@ -35,7 +35,7 @@ const AddNewDoneStep = ({ onNext, projectId }) => {
         </IconButton>
       </div>
       <div className="add-new-done-step-form">
-        <Typography variant="h4" marginBottom={4}>
+        <Typography variant="h4" marginBottom="50px">
           {t("CREATE_PROJECT_DONE_TITLE")}
         </Typography>
         <div>
