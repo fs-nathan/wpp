@@ -114,6 +114,7 @@ export const GroupProject = ({
                   height: 13,
                   borderRadius: 3,
                   backgroundColor: get(projectGroup, "color"),
+                  marginLeft: 3,
                 }}
                 // src={get(projectGroup, "icon")}
                 alt="avatar"

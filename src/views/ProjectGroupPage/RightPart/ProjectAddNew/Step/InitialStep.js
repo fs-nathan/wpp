@@ -36,6 +36,7 @@ const InitialStep = ({ onNext }) => {
             style={{
               marign: 0,
               fontSize: "14px",
+              fontWeight: 500,
             }}
           >
             Bảng việc trống
@@ -57,6 +58,7 @@ const InitialStep = ({ onNext }) => {
             style={{
               marign: 0,
               fontSize: "14px",
+              fontWeight: 500,
             }}
           >
             Sử dụng một mẫu
