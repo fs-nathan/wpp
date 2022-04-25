@@ -74,8 +74,8 @@ const TemplateCard = ({ template, isEmpty }) => {
           marginLeft: "20px",
         }}
       />
-      <CardContent>
-        <Typography variant="h6" color="black" mb={2}>
+      <CardContent sx={{ padding: "16px 0" }}>
+        <Typography variant="h6" color="#172B4D" mb={2} fontSize="14px">
           {template.name}
         </Typography>
         <Typography variant="body2" color="text.secondary" mb={1}>

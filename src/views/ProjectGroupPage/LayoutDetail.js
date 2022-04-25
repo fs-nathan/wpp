@@ -83,6 +83,11 @@ const LayoutDetail = ({
     }
   }, [isTemplate, parsedPath]);
 
+  useEffect(() => {
+    if (isTemplate && !expand) {
+      handleExpand();
+    }
+  }, [isTemplate, expand]);
   const disableShowHide = !isNil(
     find(
       showHidePendings.pendings,

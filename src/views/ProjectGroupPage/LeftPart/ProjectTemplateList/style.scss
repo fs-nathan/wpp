@@ -120,6 +120,8 @@ a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
     &__textPrimary {
       display: flex;
       align-items: center;
+      font-size: 15px;
+      line-height: 1.5;
       & > *:first-child {
         margin-right: 5px;
         max-width: 160px;
@@ -225,4 +227,16 @@ a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
       }
     }
   }
+}
+
+.list-button {
+  &:hover,
+  &--active {
+    background: #e5e5e5 !important;
+  }
+}
+
+.scrollList {
+  height: calc(100vh - 145px) !important;
+  overflow-y: auto;
 }

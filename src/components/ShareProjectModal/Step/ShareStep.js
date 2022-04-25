@@ -153,7 +153,6 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
 
       <CustomModal
         maxWidth="lg"
-        height="small"
         setOpen={setOpen}
         open={open}
         canConfirm={false}
