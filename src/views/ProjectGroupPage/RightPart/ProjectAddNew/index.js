@@ -10,15 +10,13 @@ const STEP = {
   DONE: "done",
 };
 
-const ProjectAddNew = ({ handleExpand, isCollapsed }) => {
+const ProjectAddNew = ({ handleClose }) => {
   const [step, setStep] = useState(STEP.INITIAL);
   const [projectId, setProjectId] = useState("");
 
   useEffect(() => {
-    if (!isCollapsed) {
-      handleExpand();
-    }
-  }, [isCollapsed]);
+    handleClose();
+  }, [handleClose]);
 
   function onInitialDone() {
     setStep(STEP.CREATE);

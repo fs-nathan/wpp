@@ -7,6 +7,9 @@ import {
 export const initialState = {
   error: null,
   loading: false,
+  data: {
+    project: null,
+  },
 };
 
 function reducer(state = initialState, action) {

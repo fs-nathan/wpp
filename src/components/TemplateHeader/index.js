@@ -30,11 +30,13 @@ import { actionToast } from "actions/system/system";
 import { useTemplate } from "actions/project/useTemplate";
 import moment from "moment";
 import CloseIcon from "@material-ui/icons/Close";
+import { CustomEventListener, USE_TEMPLATE } from "constants/events";
 
 const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
+  const project = useSelector((state) => state.project.useTemplate.data);
 
   const fetchData = useCallback(async () => {
     try {
@@ -44,11 +46,18 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   }, [projectId, getDetailTemplate, dispatch]);
 
   useEffect(() => {
-    localStorage.setItem("WPS_COLLAPSED_DEFAULT", false);
-  }, []);
-  useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    CustomEventListener(USE_TEMPLATE.SUCCESS, (project) =>
+      history.push("/projects/task-table/" + project.id)
+    );
+    return CustomEventListener(USE_TEMPLATE.SUCCESS, (project) =>
+      history.push("/projects/task-table/" + project.id)
+    );
+  }, [project]);
+
   const NAV_BARS_LIST = [
     {
       id: 1,
@@ -102,6 +111,7 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
             : undefined,
         })
       );
+      handleUsingClose();
     } catch (error) {}
   }
 
@@ -148,13 +158,17 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
               Chia sẻ bởi @{template.user_share_name}
             </Typography>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-              <ContentCopyRoundedIcon />
+              <ContentCopyRoundedIcon
+                sx={{ width: "13px", height: "13px", color: "#555" }}
+              />
               <Typography variant="body2" color="text.secondary">
                 {template.total_use} lần sao chép
               </Typography>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-              <RemoveRedEyeIcon />
+              <RemoveRedEyeIcon
+                sx={{ width: "13px", height: "13px", color: "#555" }}
+              />
               <Typography variant="body2" color="text.secondary">
                 {template.total_view} lượt xem
               </Typography>
@@ -181,6 +195,13 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
               color="primary"
               id="using-button"
               onClick={handleUsingClick}
+              sx={{
+                boxShadow: "none",
+                backgroundColor: "#0076F3",
+                "&:hover": {
+                  boxShadow: "none",
+                },
+              }}
             >
               Sử dụng mẫu
             </Button>

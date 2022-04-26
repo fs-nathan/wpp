@@ -19,9 +19,12 @@ export const useTemplate = ({
   },
 });
 
-export const useTemplateSuccess = (_, options) => ({
+export const useTemplateSuccess = ({ project }, options) => ({
   type: USE_TEMPLATE_SUCCESS,
   options,
+  data: {
+    project,
+  },
 });
 
 export const useTemplateFail = (error, options) => ({

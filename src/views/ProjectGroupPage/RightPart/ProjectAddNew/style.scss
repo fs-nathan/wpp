@@ -55,12 +55,48 @@
   top: 5%;
   left: 5%;
   cursor: pointer;
+  border-radius: 50%;
+
+  button {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  svg {
+    border-radius: 50%;
+
+    font-size: 26px;
+    padding: 10px;
+    user-select: none;
+    background-color: transparent;
+    &:hover {
+      background-color: #ebebeb;
+    }
+  }
 }
 .close-button {
   position: absolute;
   top: 5%;
   right: 5%;
   cursor: pointer;
+  border-radius: 50%;
+
+  button {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  svg {
+    border-radius: 50%;
+
+    font-size: 26px;
+    padding: 10px;
+    user-select: none;
+    background-color: transparent;
+    &:hover {
+      background-color: #ebebeb;
+    }
+  }
 }
 
 .create-project-step {
