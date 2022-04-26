@@ -15,6 +15,7 @@ const TemplateSection = ({
   extra,
   isEmpty,
   templates,
+  isLanding = false,
 }) => {
   const dispatch = useDispatch();
 
@@ -40,11 +41,23 @@ const TemplateSection = ({
       <div className="template-group__section__card">
         {templates &&
           templates.length > 0 &&
-          templates
-            .slice(0, 3)
-            .map((template) => (
-              <TemplateCard key={template.id} template={template} />
-            ))}
+          (isLanding
+            ? templates
+                .slice(0, 3)
+                .map((template) => (
+                  <TemplateCard
+                    key={template.id}
+                    template={template}
+                    categoryId={categoryId}
+                  />
+                ))
+            : templates.map((template) => (
+                <TemplateCard
+                  key={template.id}
+                  template={template}
+                  categoryId={categoryId}
+                />
+              )))}
         {isEmpty && <TemplateCard isEmpty />}
       </div>
     </div>

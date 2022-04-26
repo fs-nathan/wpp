@@ -122,9 +122,12 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
             variant="contained"
             sx={{
               backgroundColor: "#f0f2f5",
+              boxShadow: "none",
+              border: "1px solid #e5e5e5",
               color: "red",
               "&:hover": {
                 backgroundColor: "#f0f2f5",
+                // boxShadow: "none",
               },
             }}
             onClick={handleUnShareClick}
@@ -153,8 +156,11 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           sx={{
             backgroundColor: "#f0f2f5",
             color: "black",
+            boxShadow: "none",
+            border: "1px solid #e5e5e5",
             "&:hover": {
               backgroundColor: "#f0f2f5",
+              // boxShadow: "none",
             },
           }}
           onClick={handleRefferClick}
@@ -180,6 +186,14 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           variant="contained"
           color="primary"
           id="using-button"
+          sx={{
+            boxShadow: "none",
+            border: "1px solid #0076F3",
+            backgroundColor: "#0076F3",
+            // "&:hover": {
+            //   boxShadow: "none",
+            // },
+          }}
           onClick={handleUsingClick}
         >
           Sử dụng mẫu
@@ -192,6 +206,13 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          style={{
+            marginTop: "20px",
           }}
         >
           <DialogUsing onClose={handleUsingClose} onOk={handleUsing} />

@@ -67,15 +67,17 @@ const LayoutDetail = ({
   const parsedPath = pathname.split("/");
   const [view, setViewParam] = useState("");
   const [projectId, setProjectId] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [memberId, setMemberId] = useState("");
   const isTemplate = useMemo(() => {
     return parsedPath.includes("template");
   }, [parsedPath]);
   useEffect(() => {
     if (isTemplate) {
-      setViewParam(parsedPath[5]);
-      setProjectId(parsedPath[6]);
-      setMemberId(parsedPath[7]);
+      setCategoryId(parsedPath[3]);
+      setViewParam(parsedPath[6]);
+      setProjectId(parsedPath[7]);
+      setMemberId(parsedPath[8]);
     } else {
       setViewParam(parsedPath[2]);
       setProjectId(parsedPath[3]);
@@ -83,11 +85,6 @@ const LayoutDetail = ({
     }
   }, [isTemplate, parsedPath]);
 
-  useEffect(() => {
-    if (isTemplate && !expand) {
-      handleExpand();
-    }
-  }, [isTemplate, expand]);
   const disableShowHide = !isNil(
     find(
       showHidePendings.pendings,
@@ -309,7 +306,11 @@ const LayoutDetail = ({
         <>
           {visible ? (
             isTemplate ? (
-              <TemplateHeader projectId={projectId} {...setView()} />
+              <TemplateHeader
+                projectId={projectId}
+                categoryId={categoryId}
+                {...setView()}
+              />
             ) : (
               <HeaderProject {...setView()} />
             )
@@ -328,7 +329,11 @@ const LayoutDetail = ({
       {!isProject &&
         view !== "task-kanban" &&
         (isTemplate ? (
-          <TemplateHeader projectId={projectId} {...setView()} />
+          <TemplateHeader
+            projectId={projectId}
+            categoryId={categoryId}
+            {...setView()}
+          />
         ) : (
           <HeaderProject {...setView()} />
         ))}

@@ -9,9 +9,9 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import TemplateCard from "./components/TemplateCard/TemplateCard";
 import TemplateSection from "./components/TemplateSection/TemplateSection";
 
-const ProjectGroupTemplate = () => {
+const ProjectGroupTemplate = ({ expand, handleExpand }) => {
   const history = useHistory();
-  const { id: groupId } = useParams();
+  const { groupId } = useParams();
   const dispatch = useDispatch();
   const templates = useSelector(
     (state) => state.project.getTemplateByCategory.data
@@ -25,16 +25,16 @@ const ProjectGroupTemplate = () => {
     return null;
   }, [categories, groupId]);
 
-  // const fetchData = useCallback(async () => {
-  //   try {
-  //     if (groupId)
-  //       await dispatch(getTemplateByCategory({ category_id: groupId }));
-  //   } catch (error) {}
-  // }, [groupId, getTemplateByCategory, dispatch]);
+  const fetchData = useCallback(async () => {
+    try {
+      if (groupId)
+        await dispatch(getTemplateByCategory({ category_id: groupId }));
+    } catch (error) {}
+  }, [groupId, getTemplateByCategory, dispatch]);
 
-  // useEffect(() => {
-  //   fetchData();
-  // }, [fetchData]);
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
   function handleClick() {}
 
   return (
@@ -46,8 +46,14 @@ const ProjectGroupTemplate = () => {
               <Breadcrumbs aria-label="breadcrumb">
                 <Link
                   underline="hover"
-                  color="inherit"
-                  href="/projects/template"
+                  color="#172b4d"
+                  onClick={() => history.push("/projects/template")}
+                  // href="/projects/template"
+                  style={{
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    marign: 0,
+                  }}
                 >
                   Thư viện mẫu
                 </Link>
@@ -67,7 +73,7 @@ const ProjectGroupTemplate = () => {
                 isEmpty
                 key={currentCategory.category_id}
                 categoryId={currentCategory.category_id}
-                templates={currentCategory.templates}
+                templates={templates}
                 icon={
                   <div>
                     <img
@@ -84,23 +90,18 @@ const ProjectGroupTemplate = () => {
             <Divider />
             <div className="project-group-template__description">
               <div>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam
-                aperiam porro nesciunt explicabo facilis dolores quis rerum odio
-                vero iure ducimus tempora at nam obcaecati, natus, architecto
-                accusamus, nisi dolor? Vitae quas enim modi tenetur delectus
-                architecto ab? Accusantium aspernatur laboriosam numquam
-                corrupti minus voluptate ipsum voluptatum recusandae, mollitia
-                vitae sapiente eos atque rem sequi quis fugiat natus aperiam
-                odio! Voluptates porro quo ex at labore nostrum accusantium,
-                temporibus cum minima hic amet ullam fugit laboriosam repellat
-                culpa consequatur. Asperiores beatae vel repudiandae voluptate
-                natus sapiente fugiat praesentium odit tempore! Quasi voluptas
-                quibusdam reiciendis error placeat velit quaerat officiis unde
-                repellendus sit architecto beatae cumque rem expedita suscipit
-                qui esse itaque illum, commodi repudiandae, obcaecati dolorum
-                quis! Nam, consequuntur quasi? Repudiandae ipsa tenetur facilis
-                totam? Adipisci omnis molestiae eligendi, necessitatibus
-                dignissimos quia
+                Làm việc cùng nhau tốt hơn với các bảng mẫu Workplus được thiết
+                kế và chia sẻ bởi các thành viên trong cộng đồng sử dụng
+                Workplus. Cho dù bạn là một doanh nhân độc lập xây dựng doanh
+                nghiệp của mình từ những bước đầu hoặc bạn mới làm quen với việc
+                quản lý công việc theo cách có kế hoạch, Workplus là công cụ
+                hoàn hảo để giữ mọi người kết nối với nhau trong sự phát triển
+                doanh nghiệp hoặc nhóm của bạn. Sử dụng các mẫu trên Workplus để
+                đảm bảo toàn bộ công ty, nhóm luôn được cập nhật về các sáng
+                kiến quan trọng; đặt mục tiêu cao và minh bạch hơn; lên kế hoạch
+                cho các chủ đề thảo luận. Dù doanh nghiệp của bạn thuộc lĩnh vực
+                gì thì bạn cũng có thể lập kế hoạch công việc, tổ chức và hoàn
+                thành nó với Workplus!
               </div>
               <div>
                 <img
@@ -108,6 +109,9 @@ const ProjectGroupTemplate = () => {
                   alt=""
                   width="120px"
                   height="120px"
+                  style={{
+                    borderRadius: "5px",
+                  }}
                 />
               </div>
             </div>

@@ -35,6 +35,7 @@ import ProjectGroupTemplate from "./RightPart/ProjectsTemplate/ProjectGroupTempl
 import ProjectSharedTemplate from "./RightPart/ProjectsTemplate/ProjectSharedTemplate";
 import ProjectBeSharedTemplate from "./RightPart/ProjectsTemplate/ProjectBeSharedTemplate";
 import ProjectTemplatePreview from "./RightPart/ProjectsTemplate/ProjectTemplatePreview";
+import DemoTemplate from "./RightPart/DemoTemplate/DemoTemplate";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -110,24 +111,27 @@ function ProjectGroupPage({
               handleExpand={_handleExpand}
             />
           </Route>
-          <Route exact path="/projects/template/group/:id">
-            <ProjectGroupTemplate />
-          </Route>
           <Route exact path="/projects/template/shared">
             <ProjectSharedTemplate />
           </Route>
           <Route exact path="/projects/template/be-shared">
             <ProjectBeSharedTemplate />
           </Route>
+          <Route exact path="/projects/template/demo">
+            <DemoTemplate />
+          </Route>
+          <Route exact path="/projects/template/:groupId">
+            <ProjectGroupTemplate />
+          </Route>
 
-          <Route path="/projects/template/:id/preview">
+          <Route path="/projects/template/:groupId/:templateId/preview">
             <CustomTableWrapper>
               <CustomLayoutProvider>
                 <LayoutDetail handleExpand={_handleExpand} expand={isCollapsed}>
                   <Switch>
                     <Route
                       exact
-                      path="/projects/template/:id/preview/task-table/:projectId/:memberId?"
+                      path="/projects/template/:groupId/:templateId/preview/task-table/:projectId/:memberId?"
                       render={(props) => (
                         <AllTaskTable
                           expand={isCollapsed}
@@ -138,7 +142,7 @@ function ProjectGroupPage({
                     />
                     <Route
                       exact
-                      path="/projects/template/:id/preview/task-kanban/:projectId/:memberId?"
+                      path="/projects/template/:groupId/:templateId/preview/task-kanban/:projectId/:memberId?"
                       render={(props) => (
                         <KanbanPage
                           expand={isCollapsed}
@@ -148,7 +152,7 @@ function ProjectGroupPage({
                     />
                     <Route
                       exact
-                      path="/projects/template/:id/preview/task-gantt/:projectId/:memberId?"
+                      path="/projects/template/:groupId/:templateId/preview/task-gantt/:projectId/:memberId?"
                       render={(props) => (
                         <GranttPage
                           expand={isCollapsed}
@@ -163,7 +167,7 @@ function ProjectGroupPage({
             </CustomTableWrapper>
             {/* <ProjectTemplatePreview /> */}
           </Route>
-          <Route exact path="/projects/template/:id">
+          <Route exact path="/projects/template/:groupId/:templateId">
             <ProjectSingleTemplate />
           </Route>
           <Route exact path="/projects/template">
