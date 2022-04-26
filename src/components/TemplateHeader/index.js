@@ -31,7 +31,7 @@ import { useTemplate } from "actions/project/useTemplate";
 import moment from "moment";
 import CloseIcon from "@material-ui/icons/Close";
 
-const TemplateHeader = ({ view = "list", projectId, ...props }) => {
+const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
@@ -53,17 +53,17 @@ const TemplateHeader = ({ view = "list", projectId, ...props }) => {
     {
       id: 1,
       title: "Todo list",
-      to: `/projects/template/${projectId}/preview/task-table/${projectId}`,
+      to: `/projects/template/${categoryId}/${projectId}/preview/task-table/${projectId}`,
     },
     {
       id: 2,
       title: "Kanban",
-      to: `/projects/template/${projectId}/preview/task-kanban/${projectId}`,
+      to: `/projects/template/${categoryId}/${projectId}/preview/task-kanban/${projectId}`,
     },
     {
       id: 3,
       title: "Gantt",
-      to: `/projects/template/${projectId}/preview/task-gantt/${projectId}`,
+      to: `/projects/template/${categoryId}/${projectId}/preview/task-gantt/${projectId}`,
     },
   ];
   const [anchorUsingEl, setAnchorUsingEl] = useState(null);
@@ -106,7 +106,7 @@ const TemplateHeader = ({ view = "list", projectId, ...props }) => {
   }
 
   function onClosePreview() {
-    history.push("/projects/template/" + projectId);
+    history.push(`/projects/template/${categoryId}/${projectId}`);
   }
   return (
     <div className={classes.topbar}>

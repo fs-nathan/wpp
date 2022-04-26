@@ -35,8 +35,10 @@ const ProjectBeSharedTemplate = () => {
               <Breadcrumbs aria-label="breadcrumb">
                 <Link
                   underline="hover"
-                  color="inherit"
-                  href="/projects/template"
+                  color="#172b4d"
+                  onClick={() => history.push("/projects/template")}
+                  // href="/projects/template"
+                  style={{ cursor: "pointer" }}
                 >
                   Thư viện mẫu
                 </Link>

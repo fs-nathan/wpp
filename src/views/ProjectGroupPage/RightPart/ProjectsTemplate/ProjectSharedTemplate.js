@@ -9,7 +9,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import TemplateCard from "./components/TemplateCard/TemplateCard";
 import TemplateSection from "./components/TemplateSection/TemplateSection";
 
-const ProjectSharedTemplate = () => {
+const ProjectSharedTemplate = ({ expand, handleExpand }) => {
   const history = useHistory();
   const dispatch = useDispatch();
   const templates = useSelector(
@@ -35,8 +35,14 @@ const ProjectSharedTemplate = () => {
               <Breadcrumbs aria-label="breadcrumb">
                 <Link
                   underline="hover"
-                  color="inherit"
-                  href="/projects/template"
+                  color="#172b4d"
+                  onClick={() => history.push("/projects/template")}
+                  // href="/projects/template"
+                  style={{
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    marign: 0,
+                  }}
                 >
                   Thư viện mẫu
                 </Link>

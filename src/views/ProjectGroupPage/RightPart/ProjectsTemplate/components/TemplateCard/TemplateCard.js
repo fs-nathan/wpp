@@ -11,11 +11,11 @@ import React from "react";
 import "./index.scss";
 import { useHistory } from "react-router-dom";
 
-const TemplateCard = ({ template, isEmpty }) => {
+const TemplateCard = ({ template, isEmpty, categoryId }) => {
   const history = useHistory();
 
   function onTemplateClick() {
-    history.push("/projects/template/" + template.id);
+    history.push(`/projects/template/${categoryId}/${template.id}`);
   }
   function onAddNewClick() {
     history.push("/projects/add-new/");
@@ -36,6 +36,9 @@ const TemplateCard = ({ template, isEmpty }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          "&:hover": {
+            background: "#dedede",
+          },
         }}
         className="template-card"
         onClick={onAddNewClick}
@@ -88,12 +91,7 @@ const TemplateCard = ({ template, isEmpty }) => {
           Chia sẻ bởi @{template.user_share_name}
         </Typography>
         <div
-          style={{
-            color: "#172B4D",
-            marginBottom: "16px",
-            lineHeight: 1.5,
-            fontSize: "12px",
-          }}
+          className="template-card__description"
           dangerouslySetInnerHTML={{ __html: template.description }}
         ></div>
         <div className="template-card__action">

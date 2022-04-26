@@ -21,4 +21,19 @@
       gap: 4px;
     }
   }
+  &__description {
+    color: #172b4d;
+    margin-bottom: 16px;
+    line-height: 1.5;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    p {
+      margin: 0;
+    }
+  }
 }

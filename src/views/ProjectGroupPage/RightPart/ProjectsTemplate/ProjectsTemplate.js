@@ -18,7 +18,7 @@ import ProjectTemplateWrapper from ".";
 import { getNewestTemplate } from "actions/project/getNewestTemplate";
 import { useHistory } from "react-router-dom";
 
-const ProjectsTemplate = () => {
+const ProjectsTemplate = ({ expand, handleExpand }) => {
   const history = useHistory();
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
@@ -98,6 +98,7 @@ const ProjectsTemplate = () => {
           categories.map((category) => (
             <TemplateSection
               isMainPage
+              isLanding={true}
               key={category.category_id}
               categoryId={category.category_id}
               icon={<img src={category.category_image} />}

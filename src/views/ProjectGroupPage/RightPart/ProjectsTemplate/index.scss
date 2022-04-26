@@ -2,7 +2,8 @@
   &__wrapper {
     width: 100%;
     background-color: #fafbfc;
-    width: 100%;
+    min-height: 100vh;
+    height: 100%;
   }
   width: 80%;
   margin: 0 auto;
@@ -128,6 +129,21 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    &__link {
+      margin: 0;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #172b4d;
+      &__action {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 1.6;
+        margin: 0;
+        color: #0060ad;
+        cursor: pointer;
+      }
+    }
   }
 }
 

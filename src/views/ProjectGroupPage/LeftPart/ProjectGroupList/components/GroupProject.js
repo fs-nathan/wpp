@@ -107,6 +107,7 @@ export const GroupProject = ({
           <ListItem
             className="view_ProjectGroup_List-customListItem view_ProjectGroup_List-customListItem-nav"
             component={PathNavLink}
+            onClick={() => _toggleExpand()}
             to={`/projects?groupID=${projectGroup.id}`}
             // onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
           >
@@ -148,18 +149,6 @@ export const GroupProject = ({
             />
 
             {isDefaultGroup && <FlagOutlinedIcon htmlColor={"red"} />}
-
-            <div
-              className="wp-wrapper-button"
-              onClick={(evt) => {
-                evt.preventDefault();
-                setOpenCreateGroup(true);
-                setAnchorElAddGroup(null);
-                setSelectedGroup(null);
-              }}
-            >
-              <AddIcon sx={{ color: "rgba(0,0,0,0.54)" }} />
-            </div>
 
             <div
               className="wp-wrapper-button"

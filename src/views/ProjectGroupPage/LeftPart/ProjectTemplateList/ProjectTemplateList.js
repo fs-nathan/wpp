@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Box, List, ListItemIcon, ListItemText } from "@material-ui/core";
 import SvgIcon from "@material-ui/core/SvgIcon";
@@ -55,15 +55,9 @@ const ProjectTemplateList = ({
     return parsedPath.includes("be-shared");
   }, [parsedPath]);
 
-  const isPublic = useMemo(() => {
-    return parsedPath.includes("group");
-  }, [parsedPath]);
-
   const activeCategory = useMemo(() => {
-    if (isPublic) {
-      return parsedPath[4];
-    }
-  }, [isPublic, parsedPath]);
+    return parsedPath[3];
+  }, [parsedPath]);
 
   const handleClick = (tab) => {
     switch (tab) {
@@ -85,8 +79,8 @@ const ProjectTemplateList = ({
     (state) => state.project.getTemplateCategory.data
   );
 
-  function handleCategoryChoose(id) {
-    history.push("/projects/template/group/" + id);
+  function handleCategoryChoose(groupId) {
+    history.push("/projects/template/" + groupId);
   }
 
   return (
