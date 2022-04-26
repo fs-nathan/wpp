@@ -78,20 +78,22 @@ function KanbanBoard(props) {
               className: "view_KanbanColumn___container-preview",
             }}
           >
-            {tasks.map((groupTask, index) => (
-              <Draggable key={get(groupTask, "id")}>
-                <KanbanColumn
-                  groupTask={groupTask}
-                  key={index}
-                  index={index}
-                  handleOpenModal={handleOpenModal}
-                  placeholderProps={placeholderProps}
-                  projectId={projectId}
-                  handleItemDrop={handleItemDrop}
-                  stageName={stageName}
-                />
-              </Draggable>
-            ))}
+            {tasks.map((groupTask, index) => {
+              return (
+                <Draggable key={get(groupTask, "id")}>
+                  <KanbanColumn
+                    groupTask={groupTask}
+                    key={index}
+                    index={index}
+                    handleOpenModal={handleOpenModal}
+                    placeholderProps={placeholderProps}
+                    projectId={projectId}
+                    handleItemDrop={handleItemDrop}
+                    stageName={stageName}
+                  />
+                </Draggable>
+              );
+            })}
           </DragContainer>
           <NewGroupTaskDiv onClick={() => handleOpenModal("CREATE_GROUPTASK")}>
             {`+ ${t("IDS_WP_ADD")} ${stageName}`}
