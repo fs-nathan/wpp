@@ -46,10 +46,7 @@ function ProjectGroupPage({
 }) {
   const classes = useStyles();
   const { pathname } = useLocation();
-  const [isCollapsed, setIsCollapsed] = useLocalStorage(
-    "WPS_COLLAPSED_DEFAULT",
-    localStorage.getItem("WPS_COLLAPSED_DEFAULT")
-  );
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   const [test, setTest] = useState([]);
   const isDeletedPage = pathname.split("/")[2] === "deleted";
@@ -63,6 +60,8 @@ function ProjectGroupPage({
   }, []);
 
   const _handleExpand = () => setIsCollapsed(!isCollapsed);
+  const _handleOpen = () => setIsCollapsed(false);
+  const _handleClose = () => setIsCollapsed(true);
 
   return (
     <div
@@ -112,10 +111,10 @@ function ProjectGroupPage({
             />
           </Route>
           <Route exact path="/projects/template/shared">
-            <ProjectSharedTemplate />
+            <ProjectSharedTemplate handleOpen={_handleOpen} />
           </Route>
           <Route exact path="/projects/template/be-shared">
-            <ProjectBeSharedTemplate />
+            <ProjectBeSharedTemplate handleOpen={_handleOpen} />
           </Route>
           <Route exact path="/projects/template/demo">
             <DemoTemplate />
@@ -127,7 +126,11 @@ function ProjectGroupPage({
           <Route path="/projects/template/:groupId/:templateId/preview">
             <CustomTableWrapper>
               <CustomLayoutProvider>
-                <LayoutDetail handleExpand={_handleExpand} expand={isCollapsed}>
+                <LayoutDetail
+                  handleExpand={_handleExpand}
+                  expand={isCollapsed}
+                  handleClose={_handleClose}
+                >
                   <Switch>
                     <Route
                       exact
@@ -168,7 +171,7 @@ function ProjectGroupPage({
             {/* <ProjectTemplatePreview /> */}
           </Route>
           <Route exact path="/projects/template/:groupId/:templateId">
-            <ProjectSingleTemplate />
+            <ProjectSingleTemplate handleOpen={_handleOpen} />
           </Route>
           <Route exact path="/projects/template">
             <ProjectsTemplate />

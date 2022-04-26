@@ -58,6 +58,7 @@ const LayoutDetail = ({
   doActionVisibleDrawerMessage,
   visible,
   doSetVisibleHeader,
+  handleClose,
 }) => {
   const { doOpenModal, setItemLocation } = useContext(CustomLayoutContext);
   const dispatch = useDispatch();
@@ -72,6 +73,9 @@ const LayoutDetail = ({
   const isTemplate = useMemo(() => {
     return parsedPath.includes("template");
   }, [parsedPath]);
+  const isPreview = useMemo(() => {
+    return parsedPath.includes("preview");
+  }, [parsedPath]);
   useEffect(() => {
     if (isTemplate) {
       setCategoryId(parsedPath[3]);
@@ -84,6 +88,12 @@ const LayoutDetail = ({
       setMemberId(parsedPath[4]);
     }
   }, [isTemplate, parsedPath]);
+
+  useEffect(() => {
+    if (isPreview) {
+      handleClose();
+    }
+  }, [isPreview]);
 
   const disableShowHide = !isNil(
     find(

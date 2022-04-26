@@ -19,7 +19,7 @@ import { getDetailTemplate } from "actions/project/getDetailTemplate";
 import ProjectTemplateWrapper from ".";
 import { SettingsInputSvideo } from "@material-ui/icons";
 
-const ProjectSingleTemplate = ({ expand, handleExpand }) => {
+const ProjectSingleTemplate = ({ handleOpen }) => {
   const history = useHistory();
   const [isOpenUsing, setIsOpenUsing] = useState(false);
   const { templateId } = useParams();
@@ -37,6 +37,9 @@ const ProjectSingleTemplate = ({ expand, handleExpand }) => {
     fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    handleOpen();
+  }, []);
   function handleClick() {}
 
   function previewTemplate() {
