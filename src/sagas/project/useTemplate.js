@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { USE_TEMPLATE } from "constants/actions/project/useTemplate";
 import { get } from "lodash";
 import { call, put } from "redux-saga/effects";
 import {
@@ -43,8 +44,9 @@ async function doUseTemplate({
 
 function* useTemplate(action) {
   try {
-    yield call(doUseTemplate, action.options);
-    // yield put(useTemplateSuccess({ project }, action.options));
+    const { project } = yield call(doUseTemplate, action.options);
+    yield put(useTemplateSuccess({ project }, action.options));
+    CustomEventEmitterWithParams(USE_TEMPLATE.SUCCESS, { project });
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(useTemplateFail(error, action.options));

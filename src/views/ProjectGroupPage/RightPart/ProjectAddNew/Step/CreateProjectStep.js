@@ -86,12 +86,12 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
     <>
       <Box className="create-project-step">
         <div className="back-button">
-          <IconButton fontSize="large" htmlColor="#969ead" onClick={onBack}>
+          <IconButton htmlColor="#969ead" onClick={onBack}>
             <ArrowBackIcon />
           </IconButton>
         </div>
         <div className="close-button">
-          <IconButton fontSize="large" htmlColor="#969ead" onClick={onClose}>
+          <IconButton htmlColor="#969ead" onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </div>
@@ -147,60 +147,6 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
           </div>
 
           <div className="choose-view per-line-step-in-form">
-            <p>{t("CREATE_DEFAULT_VIEW")}</p>
-            <ButtonGroup
-              variant="outlined"
-              size="large"
-              aria-label="outlined primary button group "
-              className="choose-view-options per-line-step-in-form"
-            >
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={<List htmlColor="#f8949e" />}
-                className={`${
-                  view_default === 1 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(1)}
-              >
-                List
-              </Button>
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={<ViewKanbanRoundedIcon sx={{ color: "#3aaff5" }} />}
-                className={`${
-                  view_default === 2 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(2)}
-              >
-                Board
-              </Button>
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={
-                  <ViewTimelineRoundedIcon sx={{ color: "#2fbf9c" }} />
-                }
-                className={`${
-                  view_default === 3 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(3)}
-              >
-                Timeline
-              </Button>
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={<Forum htmlColor="#f7cd55" />}
-                className={`${
-                  view_default === 4 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(4)}
-              >
-                Discuss
-              </Button>
-            </ButtonGroup>
             <div className="submit-button">
               <Button
                 size="large"

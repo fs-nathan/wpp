@@ -12,7 +12,7 @@ const InitialStep = ({ onNext }) => {
   return (
     <Box className="initial-step">
       <div className="close-button">
-        <IconButton fontSize="large" htmlColor="#969ead" onClick={onClose}>
+        <IconButton htmlColor="#969ead" onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </div>

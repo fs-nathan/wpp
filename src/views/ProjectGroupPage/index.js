@@ -94,14 +94,15 @@ function ProjectGroupPage({
             />
           </Route>
           <Route exact path="/projects/add-new">
-            <ProjectAddNew
-              handleExpand={_handleExpand}
-              isCollapsed={isCollapsed}
-            />
+            <ProjectAddNew handleClose={_handleClose} />
           </Route>
 
           <Route exact path="/projects/start">
-            <ProjectsStart expand={isCollapsed} handleExpand={_handleExpand} />
+            <ProjectsStart
+              expand={isCollapsed}
+              handleExpand={_handleExpand}
+              handleOpen={_handleOpen}
+            />
           </Route>
           <Route exact path="/projects/personal-board">
             <AllProjectTable
@@ -120,7 +121,7 @@ function ProjectGroupPage({
             <DemoTemplate />
           </Route>
           <Route exact path="/projects/template/:groupId">
-            <ProjectGroupTemplate />
+            <ProjectGroupTemplate handleOpen={_handleOpen} />
           </Route>
 
           <Route path="/projects/template/:groupId/:templateId/preview">
@@ -174,7 +175,7 @@ function ProjectGroupPage({
             <ProjectSingleTemplate handleOpen={_handleOpen} />
           </Route>
           <Route exact path="/projects/template">
-            <ProjectsTemplate />
+            <ProjectsTemplate handleOpen={_handleOpen} />
           </Route>
           <Route exact path="/projects/group/:projectGroupId">
             <AllProjectTable
@@ -313,6 +314,6 @@ const useStyles = makeStyles({
   mainContent: {},
   mainContentOverflow: {
     height: "100%",
-    overflowY: "auto",
+    // overflowY: "auto",
   },
 });

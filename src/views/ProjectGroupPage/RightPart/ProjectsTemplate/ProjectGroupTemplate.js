@@ -9,7 +9,7 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import TemplateCard from "./components/TemplateCard/TemplateCard";
 import TemplateSection from "./components/TemplateSection/TemplateSection";
 
-const ProjectGroupTemplate = ({ expand, handleExpand }) => {
+const ProjectGroupTemplate = ({ expand, handleOpen }) => {
   const history = useHistory();
   const { groupId } = useParams();
   const dispatch = useDispatch();
@@ -35,6 +35,10 @@ const ProjectGroupTemplate = ({ expand, handleExpand }) => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    handleOpen();
+  }, [handleOpen]);
   function handleClick() {}
 
   return (

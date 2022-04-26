@@ -30,7 +30,7 @@ const AddNewDoneStep = ({ onNext, projectId }) => {
   return (
     <Box className="add-new-done-step">
       <div className="close-button">
-        <IconButton fontSize="large" htmlColor="#969ead" onClick={onClose}>
+        <IconButton htmlColor="#969ead" onClick={onClose}>
           <CloseIcon />
         </IconButton>
       </div>

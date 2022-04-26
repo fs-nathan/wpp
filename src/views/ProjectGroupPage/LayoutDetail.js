@@ -59,6 +59,7 @@ const LayoutDetail = ({
   visible,
   doSetVisibleHeader,
   handleClose,
+  handleOpen,
 }) => {
   const { doOpenModal, setItemLocation } = useContext(CustomLayoutContext);
   const dispatch = useDispatch();

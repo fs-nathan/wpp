@@ -18,7 +18,7 @@ import ProjectTemplateWrapper from ".";
 import { getNewestTemplate } from "actions/project/getNewestTemplate";
 import { useHistory } from "react-router-dom";
 
-const ProjectsTemplate = ({ expand, handleExpand }) => {
+const ProjectsTemplate = ({ expand, handleOpen }) => {
   const history = useHistory();
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
@@ -56,6 +56,9 @@ const ProjectsTemplate = ({ expand, handleExpand }) => {
     fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    handleOpen();
+  }, [handleOpen]);
   return (
     <ProjectTemplateWrapper>
       <div>
