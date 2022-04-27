@@ -146,7 +146,7 @@ const ProjectGroupGrid = ({
                 }}
                 onDrop={(e) => {
                   const { removedIndex, addedIndex, payload } = e;
-                  if (removedIndex === null && addedIndex === null) return;
+                  if (removedIndex === null || addedIndex === null) return;
                   if (addedIndex > 3) return;
                   if (removedIndex === addedIndex) return;
                   if (addedIndex !== null) {

@@ -4,10 +4,13 @@ import {
   AccordionSummary,
   ButtonBase,
 } from "@material-ui/core";
+import AddIcon from "@mui/icons-material/Add";
+import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import RemoveIcon from "@mui/icons-material/Remove";
 import CustomAvatar from "components/CustomAvatar";
 import CustomModal, { Title } from "components/CustomModal";
 import CustomTextbox from "components/CustomTextbox";
-import UploadButton from "components/UploadButton";
 import {
   CREATE_PROJECT_GROUP,
   CustomEventDispose,
@@ -20,15 +23,9 @@ import { useMaxlenString, useRequiredString } from "hooks";
 import { get } from "lodash";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
-import "./style.scss";
-import AddIcon from "@mui/icons-material/Add";
-import RemoveIcon from "@mui/icons-material/Remove";
-import { Typography } from "antd";
-import { colors } from "../ColorGroupPickerModal";
-import { DEFAULT_GROUP_BACKGROUND_COLOR } from "../../RightPart/AllProjectTable/components/PropjectGroupGrid";
-import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import DoneOutlinedIcon from "@mui/icons-material/DoneOutlined";
 import { LogoManagerContext } from "views/DepartmentPage/Modals/LogoManager/presenters";
+import { colors } from "../ColorGroupPickerModal";
+import "./style.scss";
 
 const ThemeLogoBox = ({ className = "", ...props }) => (
   <div
@@ -75,16 +72,25 @@ function CreateProjectGroup({
     }
     setName(get(updatedProjectGroup, "name"));
     setDescription(get(updatedProjectGroup, "description"));
+    setSelectedColor(get(updatedProjectGroup, "color"));
 
-    const foundedIcon = [...icons.defaults, ...icons.createds].find(
+    const foundedIconDefault = icons.defaults.find(
       (icon) => icon.url_icon === updatedProjectGroup.icon
     );
-
-    setSelectedIcon({
-      url_full: get(foundedIcon, "url_icon"),
-      url_sort: get(foundedIcon, "icon"),
-    });
-    setSelectedColor(get(updatedProjectGroup, "color"));
+    const foundedIconCreateds = icons.createds.find(
+      (icon) => icon.url_full === updatedProjectGroup.icon
+    );
+    if (foundedIconDefault) {
+      setSelectedIcon({
+        url_full: foundedIconDefault.url_icon,
+        url_sort: foundedIconDefault.icon,
+      });
+    } else if (foundedIconCreateds) {
+      setSelectedIcon({
+        url_full: foundedIconCreateds.url_full,
+        url_sort: foundedIconCreateds.url_sort,
+      });
+    }
   }, [updatedProjectGroup]);
 
   React.useEffect(() => {
@@ -135,7 +141,13 @@ function CreateProjectGroup({
       setOpen(false);
       setName("");
       setDescription("");
-      setSelectedIcon(defaultIcon);
+      if (icons.defaults.length > 0) {
+        setSelectedIcon({
+          id: get(icons.defaults[0], "id", ""),
+          url_sort: get(icons.defaults[0], "icon"),
+          url_full: get(icons.defaults[0], "url_icon"),
+        });
+      }
     };
     const fail = () => {
       setActiveLoading(false);
@@ -147,6 +159,21 @@ function CreateProjectGroup({
       CustomEventDispose(LIST_PROJECT_GROUP.FAIL, fail);
     };
   }, []);
+
+  React.useEffect(() => {
+    if (
+      !selectedIcon.url_full &&
+      !selectedIcon.url_sort &&
+      icons.defaults.length > 0
+    ) {
+      setSelectedIcon({
+        url_full: icons.defaults[0].url_icon,
+        url_sort: icons.defaults[0].icon,
+      });
+    }
+  }, [icons]);
+
+  console.log("selectedIcon", selectedIcon);
 
   const reorderColor = (colorList, selectedColor) => {
     const colorArr = [...colorList];
@@ -161,32 +188,48 @@ function CreateProjectGroup({
 
     return colorArr;
   };
-  const reorderIcons = (icons, selectedIcon) => {
-    const iconsArr = [...icons];
-    if (selectedIcon.url_full === "") return iconsArr;
+  const reorderIcons = (iconsDefaults, iconsCreated, selectedIcon) => {
+    const iconsDefaultsArr = [...iconsDefaults];
+    const iconsCreatedArr = [...iconsCreated];
+    debugger;
+    if (selectedIcon.url_full === "") return iconsDefaultsArr;
 
-    const indexSelectedIcon = iconsArr.findIndex(
+    const indexSelectedIconDefault = iconsDefaultsArr.findIndex(
       (icon) => icon.url_icon === selectedIcon.url_full
     );
-    if (indexSelectedIcon < 5) return iconsArr;
-    if (indexSelectedIcon !== -1) {
-      const removedIcon = iconsArr.splice(indexSelectedIcon, 1);
-      iconsArr.splice(0, 0, removedIcon[0]);
+    const indexSelectedIconCreated = iconsCreatedArr.findIndex(
+      (icon) => icon.url_full === selectedIcon.url_full
+    );
+    if (indexSelectedIconDefault !== -1 && indexSelectedIconDefault < 5)
+      return iconsDefaultsArr;
+    if (indexSelectedIconDefault !== -1) {
+      const removedIcon = iconsDefaultsArr.splice(indexSelectedIconDefault, 1);
+      iconsDefaultsArr.splice(0, 0, removedIcon[0]);
     }
 
-    return iconsArr;
+    if (indexSelectedIconCreated !== -1) {
+      const foundedIconCreated = iconsCreatedArr[indexSelectedIconCreated];
+      const iconCreatedMapped = {
+        icon: foundedIconCreated.url_sort,
+        url_icon: foundedIconCreated.url_full,
+      };
+
+      iconsDefaultsArr.splice(0, 0, iconCreatedMapped);
+    }
+
+    return iconsDefaultsArr;
   };
 
   const orderedColorArr = reorderColor(colors, selectedColor).splice(0, 5);
-  const orderedIconArr = reorderIcons(icons.defaults, selectedIcon).splice(
-    0,
-    5
-  );
+  const orderedIconArr = reorderIcons(
+    icons.defaults,
+    icons.createds,
+    selectedIcon
+  ).splice(0, 5);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setIsAddingDescription(isExpanded ? panel : false);
   };
-  console.log("selectedIcon", selectedIcon);
   return (
     <CustomModal
       title={

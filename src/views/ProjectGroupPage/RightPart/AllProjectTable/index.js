@@ -414,7 +414,12 @@ function AllProjectTable({
         }}
         {...colorPickerProps}
       />
-      <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />
+      <LogoManagerModal
+        open={openLogo}
+        setOpen={setOpenLogo}
+        {...logoProps}
+        canUpload
+      />
     </>
   );
 }

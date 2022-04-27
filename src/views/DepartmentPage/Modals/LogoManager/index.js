@@ -37,14 +37,27 @@ function LogoManager({
   }, []);
   React.useEffect(() => {
     if (!currentGroup) return;
-    const foundedIcon = [...icons.defaults, ...icons.createds].find(
+    const foundedIconDefault = icons.defaults.find(
       (icon) => icon.url_icon === currentGroup.icon
     );
+    const foundedIconCreateds = icons.createds.find(
+      (icon) => icon.url_full === currentGroup.icon
+    );
 
-    setSelectedIconFromOut({
-      url_full: foundedIcon.url_icon,
-      url_sort: foundedIcon.icon,
-    });
+    console.log("icons.createds", icons.createds);
+    console.log("currentGroup.icon", currentGroup.icon);
+    if (foundedIconDefault) {
+      console.log("go here");
+      setSelectedIconFromOut({
+        url_full: foundedIconDefault.url_icon,
+        url_sort: foundedIconDefault.icon,
+      });
+    } else if (foundedIconCreateds) {
+      setSelectedIconFromOut({
+        url_full: foundedIconCreateds.url_full,
+        url_sort: foundedIconCreateds.url_sort,
+      });
+    }
   }, [currentGroup]);
 
   const [openAlert, setOpenAlert] = React.useState(false);

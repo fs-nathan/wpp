@@ -343,22 +343,16 @@ function LogoManagerProvider({
   }, [selectedIconFromOut]);
 
   React.useEffect(() => {
-    if (!icons.defaults[0]) return;
-    if (!selectedIcon.id) {
+    if (
+      !selectedIcon.url_full &&
+      !selectedIcon.url_sort &&
+      icons.defaults.length > 0
+    ) {
       setSelectedIcon({
-        id: get(icons.defaults[0], "id"),
-        url_sort: get(icons.defaults[0], "icon"),
-        url_full: get(icons.defaults[0], "url_icon"),
+        url_full: icons.defaults[0].url_icon,
+        url_sort: icons.defaults[0].icon,
       });
     }
-
-    const defaultIcon = {
-      id: get(icons.defaults[0], "id"),
-      url_sort: get(icons.defaults[0], "icon"),
-      url_full: get(icons.defaults[0], "url_icon"),
-    };
-
-    setDefaultIcon(defaultIcon);
   }, [icons]);
 
   return (
