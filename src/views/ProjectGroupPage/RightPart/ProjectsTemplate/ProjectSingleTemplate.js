@@ -84,7 +84,16 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
               >
                 {template.category_name}
               </Link>
-              <Typography color="text.primary" style={{ cursor: "default" }}>
+              <Typography
+                color="text.primary"
+                style={{
+                  cursor: "default",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  maxWidth: "200px",
+                  whiteSpace: "nowrap",
+                }}
+              >
                 {template.name}
               </Typography>
             </Breadcrumbs>
@@ -113,7 +122,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                 margin: 0,
                 fontSize: "24px",
                 fontWeight: "500",
-                lineHeight: "20px",
+                lineHeight: "1",
                 color: "#172b4d",
               }}
             >

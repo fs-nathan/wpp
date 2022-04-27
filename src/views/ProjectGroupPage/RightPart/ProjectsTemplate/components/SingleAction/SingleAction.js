@@ -24,7 +24,7 @@ import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared
 import { CANCEL_SHARE_SUCCESS } from "constants/actions/project/cancelShare";
 import moment from "moment";
 const SingleAction = ({ isOpenUsing, closeUsing }) => {
-  const { id: projectId } = useParams();
+  const { templateId } = useParams();
   const [anchorUnShareEl, setAnchorUnShareEl] = useState(null);
   const [anchorRefferEl, setAnchorRefferEl] = useState(null);
   const [anchorUsingEl, setAnchorUsingEl] = useState(null);
@@ -32,6 +32,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
 
+  console.log(templateId);
   const { t } = useTranslation();
   const handleUnShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorUnShareEl(event.currentTarget);
@@ -93,7 +94,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
 
   async function handleUnShare() {
     try {
-      dispatch(cancelShare({ projectId }));
+      dispatch(cancelShare({ projectId: templateId }));
       handleUnShareClose();
       history.replace("/projects/template");
     } catch (error) {}
@@ -102,7 +103,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
     try {
       await dispatch(
         useTemplate({
-          template_id: projectId,
+          template_id: templateId,
           name,
           project_group_id: curProjectGroupId,
           day_start: startDate
