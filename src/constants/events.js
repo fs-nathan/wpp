@@ -4,6 +4,7 @@ export const CustomEventEmitter = (EVENT_TYPE) => {
 };
 
 export const CustomEventEmitterWithParams = (EVENT_TYPE, data) => {
+  console.log(data);
   const customEvent = new CustomEvent(EVENT_TYPE, data);
   window.dispatchEvent(customEvent);
 };

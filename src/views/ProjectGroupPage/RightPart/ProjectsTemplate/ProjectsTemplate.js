@@ -17,9 +17,11 @@ import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared
 import ProjectTemplateWrapper from ".";
 import { getNewestTemplate } from "actions/project/getNewestTemplate";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const ProjectsTemplate = ({ expand, handleOpen }) => {
   const history = useHistory();
+  const { t } = useTranslation();
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
@@ -73,7 +75,7 @@ const ProjectsTemplate = ({ expand, handleOpen }) => {
     <ProjectTemplateWrapper>
       <div>
         <div className="project-template-page__header">
-          <h1>Nhóm mẫu nổi bật</h1>
+          <h1>{t("TEMPLATE.Famous")}</h1>
           <div style={{ width: 300 }}>
             <SearchBar
               handleOnSearch={handleOnSearch}
@@ -101,7 +103,7 @@ const ProjectsTemplate = ({ expand, handleOpen }) => {
         {templates && templates.length > 0 && (
           <TemplateSection
             icon={<img src="/images/mau-new.png" />}
-            title="Mẫu mới chia sẻ"
+            title={t("TEMPLATE.Recently shared")}
             templates={templates}
           />
         )}
@@ -132,7 +134,7 @@ const ProjectsTemplate = ({ expand, handleOpen }) => {
                     history.push("/projects/template/" + category.category_id)
                   }
                 >
-                  Thêm mẫu cho {category.category_name}
+                  {t("TEMPLATE.Add new for")} {category.category_name}
                 </Button>
               }
             />

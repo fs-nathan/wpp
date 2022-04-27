@@ -32,12 +32,13 @@ import moment from "moment";
 import CloseIcon from "@material-ui/icons/Close";
 import { CustomEventListener, USE_TEMPLATE } from "constants/events";
 import "./styles.scss";
+import { useTranslation } from "react-i18next";
 const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
   const project = useSelector((state) => state.project.useTemplate.data);
-
+  const { t } = useTranslation();
   const fetchData = useCallback(async () => {
     try {
       if (projectId)
@@ -155,14 +156,14 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              Chia sẻ bởi @{template.user_share_name}
+              {t("TEMPLATE.Shared by")} @{template.user_share_name}
             </Typography>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
               <ContentCopyRoundedIcon
                 sx={{ width: "13px", height: "13px", color: "#555" }}
               />
               <Typography variant="body2" color="text.secondary">
-                {template.total_use} lần sao chép
+                {template.total_use} {t("TEMPLATE.copied")}
               </Typography>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
@@ -170,7 +171,7 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
                 sx={{ width: "13px", height: "13px", color: "#555" }}
               />
               <Typography variant="body2" color="text.secondary">
-                {template.total_view} lượt xem
+                {template.total_view} {t("TEMPLATE.views")}
               </Typography>
             </div>
           </div>
@@ -203,7 +204,7 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
                 },
               }}
             >
-              Sử dụng mẫu
+              {t("TEMPLATE.Using")}
             </Button>
             <Popover
               id={usingId}

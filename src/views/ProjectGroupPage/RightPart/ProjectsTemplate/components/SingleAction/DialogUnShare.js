@@ -10,12 +10,14 @@ import {
   Typography,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 
 const DialogUnShare = ({ onClose, onOk }) => {
+  const { t } = useTranslation();
   return (
     <Box width={320}>
       <DialogTitle sx={{ textAlign: "center", fontSize: 14 }}>
-        Huỷ chia sẻ mẫu
+        {t("TEMPLATE.Unshare full")}
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -31,18 +33,14 @@ const DialogUnShare = ({ onClose, onOk }) => {
       </DialogTitle>
       <Divider />
       <Box p={2}>
-        <Typography>
-          Bạn đã chia sẻ mẫu này cho cộng đồng và các thành viên khác sử dụng.
-        </Typography>
-        <Typography>
-          Nếu bạn huỷ chia sẻ các thành viên khác sẽ không còn thấy mẫu.
-        </Typography>
-        <Typography>Bạn vẫn muốn tiếp tục huỷ chia sẻ.</Typography>
+        <Typography>{t("TEMPLATE.Unshare 1")}</Typography>
+        <Typography>{t("TEMPLATE.Unshare 2")}</Typography>
+        <Typography>{t("TEMPLATE.Unshare 3")}</Typography>
       </Box>
       <Divider />
       <DialogActions sx={{ justifyContent: "center" }}>
         <Button variant="contained" color="primary" onClick={onOk}>
-          Đồng ý
+          {t("TEMPLATE.Agree")}
         </Button>
       </DialogActions>
     </Box>

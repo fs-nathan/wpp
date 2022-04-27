@@ -14,8 +14,8 @@ const ProjectModeStep = ({ onNext, setopenModal, openModal }) => {
       height="mini"
       setOpen={setopenModal}
       open={openModal}
-      confirmRender={() => "Tiếp theo"}
-      cancleRender={() => "Huỷ"}
+      confirmRender={() => t("SHARE.next")}
+      cancleRender={() => t("SHARE.cancel")}
       manualClose={true}
       onConfirm={() => {
         onNext();

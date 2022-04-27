@@ -4,6 +4,7 @@ import { get } from "lodash";
 import { call, put } from "redux-saga/effects";
 import {
   useTemplateFail,
+  useTemplateReset,
   useTemplateSuccess,
 } from "../../actions/project/useTemplate";
 import { apiService } from "../../constants/axiosInstance";
@@ -45,7 +46,6 @@ async function doUseTemplate({
 function* useTemplate(action) {
   try {
     const { project } = yield call(doUseTemplate, action.options);
-    yield put(useTemplateSuccess({ project }, action.options));
     CustomEventEmitterWithParams(USE_TEMPLATE.SUCCESS, { project });
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
@@ -58,4 +58,10 @@ function* useTemplate(action) {
   }
 }
 
-export { useTemplate };
+function* resetUseTemplate(action) {
+  try {
+    yield put(useTemplateReset());
+  } catch (error) {}
+}
+
+export { useTemplate, resetUseTemplate };

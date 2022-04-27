@@ -10,10 +10,11 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import React from "react";
 import "./index.scss";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const TemplateCard = ({ template, isEmpty, categoryId }) => {
   const history = useHistory();
-
+  const { t } = useTranslation();
   function onTemplateClick() {
     history.push(`/projects/template/${categoryId}/${template.id}`);
   }
@@ -44,7 +45,7 @@ const TemplateCard = ({ template, isEmpty, categoryId }) => {
         onClick={onAddNewClick}
       >
         <Typography variant="body1" color="text.secondary" fontSize={18}>
-          Bắt đầu với bảng trống
+          {t("TEMPLATE.Start blank")}
         </Typography>
       </Card>
     );
@@ -88,7 +89,7 @@ const TemplateCard = ({ template, isEmpty, categoryId }) => {
           fontSize="12px"
           lineHeight={1.5}
         >
-          Chia sẻ bởi @{template.user_share_name}
+          {t("TEMPLATE.Shared by")} @{template.user_share_name}
         </Typography>
         <div
           className="template-card__description"

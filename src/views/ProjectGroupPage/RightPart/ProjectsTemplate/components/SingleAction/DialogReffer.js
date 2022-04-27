@@ -12,8 +12,10 @@ import {
 } from "@mui/material";
 import copy from "copy-to-clipboard";
 import CloseIcon from "@mui/icons-material/Close";
+import { useTranslation } from "react-i18next";
 
 const DialogReffer = ({ onClose }) => {
+  const { t } = useTranslation();
   function copyUrl() {
     copy(window.location.href);
     onClose();
@@ -21,7 +23,7 @@ const DialogReffer = ({ onClose }) => {
   return (
     <Box width={320}>
       <DialogTitle sx={{ textAlign: "center", fontSize: 14 }}>
-        Giới thiệu mẫu cho thành viên
+        {t("TEMPLATE.Reffer")}
         <IconButton
           aria-label="close"
           onClick={onClose}
@@ -55,17 +57,14 @@ const DialogReffer = ({ onClose }) => {
           }}
         />
         <Button variant="contained" color="primary" onClick={copyUrl}>
-          Sao chép
+          {t("TEMPLATE.copy")}
         </Button>
       </Box>
       <Divider />
       <DialogActions sx={{ justifyContent: "center" }}>
         <Box sx={{ p: 1 }}>
-          <Typography>
-            Chia sẻ mẫu này bằng cách gửi đường dẫn cho các thành viên khác.
-          </Typography>
-
-          <Typography>Chỉ xem được mẫu này sau khi đăng nhập</Typography>
+          <Typography>{t("TEMPLATE.Reffer 1")}</Typography>
+          <Typography>{t("TEMPLATE.Reffer 2")}</Typography>
         </Box>
       </DialogActions>
     </Box>

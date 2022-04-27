@@ -17,12 +17,19 @@ import DialogUsing from "./DialogUsing";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelShare } from "actions/project/cancelShare";
-import { useTemplate } from "actions/project/useTemplate";
+import { useTemplate, useTemplateReset } from "actions/project/useTemplate";
 import { useTranslation } from "react-i18next";
 import { actionToast } from "actions/system/system";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import { CANCEL_SHARE_SUCCESS } from "constants/actions/project/cancelShare";
 import moment from "moment";
+import { USE_TEMPLATE_SUCCESS } from "constants/actions/project/useTemplate";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  USE_TEMPLATE,
+} from "constants/events";
+import { Routes } from "constants/routes";
 const SingleAction = ({ isOpenUsing, closeUsing }) => {
   const { templateId } = useParams();
   const [anchorUnShareEl, setAnchorUnShareEl] = useState(null);
@@ -77,12 +84,47 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
     }, 2000);
   };
   const status = useSelector((state) => state.project.cancelShare.status);
+  const { status: useTemplateStatus, data: useTemplateData } = useSelector(
+    (state) => state.project.useTemplate
+  );
 
   useEffect(() => {
     if (status === CANCEL_SHARE_SUCCESS) {
       dispatch(getListTemplateMeShared());
     }
   }, [status]);
+
+  useEffect(() => {
+    CustomEventListener(USE_TEMPLATE.SUCCESS, (e) => {
+      console.log(
+        "🚀 -----------------------------------------------------------------"
+      );
+      console.log(
+        "🚀 ~ file: SingleAction.js ~ line 104 ~ CustomEventListener ~ e",
+        e
+      );
+      console.log(
+        "🚀 -----------------------------------------------------------------"
+      );
+      history.push(`${Routes.PROJECT}/${e.project.id}`);
+    });
+
+    return () => {
+      CustomEventDispose(USE_TEMPLATE.SUCCESS, (e) => {
+        console.log(
+          "🚀 ----------------------------------------------------------------"
+        );
+        console.log(
+          "🚀 ~ file: SingleAction.js ~ line 111 ~ CustomEventDispose ~ e",
+          e
+        );
+        console.log(
+          "🚀 ----------------------------------------------------------------"
+        );
+        history.push(`${Routes.PROJECT}/${e.project.id}`);
+      });
+    };
+  }, [templateId]);
 
   useEffect(() => {
     if (isOpenUsing) {
@@ -111,6 +153,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
             : undefined,
         })
       );
+      handleUsingClose();
     } catch (error) {}
   }
 
@@ -133,7 +176,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
             }}
             onClick={handleUnShareClick}
           >
-            Huỷ chia sẻ
+            {t("TEMPLATE.Unshare")}
           </Button>
           <Popover
             id={unShareId}
@@ -166,7 +209,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           }}
           onClick={handleRefferClick}
         >
-          Giới thiệu
+          {t("TEMPLATE.Intro")}
         </Button>
         <Popover
           id={refferId}
@@ -197,7 +240,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           }}
           onClick={handleUsingClick}
         >
-          Sử dụng mẫu
+          {t("TEMPLATE.Using")}
         </Button>
         <Popover
           id={usingId}
