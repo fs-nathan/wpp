@@ -173,8 +173,6 @@ function CreateProjectGroup({
     }
   }, [icons]);
 
-  console.log("selectedIcon", selectedIcon);
-
   const reorderColor = (colorList, selectedColor) => {
     const colorArr = [...colorList];
     const indexSelectedColor = colorArr.findIndex(
@@ -191,7 +189,6 @@ function CreateProjectGroup({
   const reorderIcons = (iconsDefaults, iconsCreated, selectedIcon) => {
     const iconsDefaultsArr = [...iconsDefaults];
     const iconsCreatedArr = [...iconsCreated];
-    debugger;
     if (selectedIcon.url_full === "") return iconsDefaultsArr;
 
     const indexSelectedIconDefault = iconsDefaultsArr.findIndex(

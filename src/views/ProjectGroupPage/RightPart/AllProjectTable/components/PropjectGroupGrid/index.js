@@ -146,21 +146,22 @@ const ProjectGroupGrid = ({
                 }}
                 onDrop={(e) => {
                   const { removedIndex, addedIndex, payload } = e;
-                  if (removedIndex === null || addedIndex === null) return;
+                  if (removedIndex === null && addedIndex === null) return;
                   if (addedIndex > 3) return;
-                  if (removedIndex === addedIndex) return;
+                  // if (removedIndex === addedIndex) return;
                   if (addedIndex !== null) {
                     if (
-                      !groupLayout[index][addedIndex].sort_index &&
-                      groupLayout[index][addedIndex].sort_index !== 0
+                      !groupLayout[index] ||
+                      (!groupLayout[index][addedIndex].sort_index &&
+                        groupLayout[index][addedIndex].sort_index !== 0)
                     )
                       return;
-
                     const projectGroupsCloned = [...projectGroups];
 
                     const sourceGroup = payload;
 
                     const destinationGroup = groupLayout[index][addedIndex];
+                    if (sourceGroup.id === destinationGroup.id) return;
 
                     if (
                       destinationGroup.idAdd ||
