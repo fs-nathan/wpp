@@ -2,13 +2,18 @@
   position: relative;
   width: 100%;
   & > input {
+    position: relative;
+    float: right;
+    max-width: 200px;
     width: 100%;
-    padding: 12px 14px;
+    padding: 8px;
     outline: none;
+    border-radius: 3px;
+    border: 1px solid #e3e3e3;
   }
   &-result {
     border-radius: 5px;
-    margin-top: 8px;
+    margin-top: 40px;
     width: 100%;
     position: absolute;
     background-color: white;

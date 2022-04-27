@@ -10,7 +10,7 @@ import { getAllTemplate } from "actions/project/getAllTemplate";
 import "./index.scss";
 import { template } from "lodash";
 import { useHistory } from "react-router-dom";
-
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 const Suggestion = ({ item, onSelect }) => {
   function onClick(event) {
     console.log(event);
@@ -64,12 +64,11 @@ const SearchBar = ({
   }
 
   return (
-    <div
-      className="search-bar"
-      // onFocus={() => setIsFocus(true)}
-      // onBlur={() => setIsFocus(false)}
-    >
-      <input type="search" onChange={onSearch} />
+    <div className="search-bar">
+      <input type="text" onChange={onSearch} placeholder="Tìm mẫu" />
+      <SearchOutlinedIcon
+        style={{ position: "absolute", right: "5px", top: "5px" }}
+      />
       {!isEmpty && templates && templates.length > 0 && (
         <div className="search-bar-result">
           {templates.map((item) => (

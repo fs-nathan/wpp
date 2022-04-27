@@ -31,7 +31,7 @@ import { useTemplate } from "actions/project/useTemplate";
 import moment from "moment";
 import CloseIcon from "@material-ui/icons/Close";
 import { CustomEventListener, USE_TEMPLATE } from "constants/events";
-
+import "./styles.scss";
 const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
@@ -218,7 +218,7 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
               <DialogUsing onClose={handleUsingClose} onOk={handleUsing} />
             </Popover>
           </div>
-          <IconButton color="inherit" onClick={onClosePreview}>
+          <IconButton onClick={onClosePreview} className="close-button-preview">
             <CloseIcon />
           </IconButton>
         </div>

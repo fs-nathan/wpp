@@ -13,7 +13,7 @@ import {
   ExpandMore,
   LibraryAddCheckOutlined,
 } from "@material-ui/icons";
-import { Collapse, ListItem, ListItemButton } from "@mui/material";
+import { Collapse, IconButton, ListItem, ListItemButton } from "@mui/material";
 import "./style.scss";
 import { useSelector } from "react-redux";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
@@ -139,9 +139,13 @@ const ProjectTemplateList = ({
                   {categories &&
                     categories.length > 0 &&
                     (isPublicOpen ? (
-                      <ExpandMore />
+                      <div className="close-button-list">
+                        <ExpandMore />
+                      </div>
                     ) : (
-                      <ExpandLess style={{ transform: "rotate(90deg)" }} />
+                      <div className="close-button-list">
+                        <ExpandLess style={{ transform: "rotate(90deg)" }} />
+                      </div>
                     ))}
                 </ListItemButton>
               </ListItem>

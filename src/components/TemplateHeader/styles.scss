@@ -1,0 +1,22 @@
+.close-button-preview {
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: transparent !important;
+
+  button {
+    &:hover {
+      background-color: transparent !important;
+    }
+  }
+  svg {
+    border-radius: 50%;
+
+    font-size: 26px;
+    padding: 10px;
+    user-select: none;
+    background-color: transparent;
+    &:hover {
+      background-color: #ebebeb;
+    }
+  }
+}

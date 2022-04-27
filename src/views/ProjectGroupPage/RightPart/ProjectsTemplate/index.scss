@@ -3,7 +3,6 @@
     width: 100%;
     background-color: #fafbfc;
     min-height: 100vh;
-    height: 100%;
   }
   width: 80%;
   margin: 0 auto;
@@ -121,6 +120,7 @@
     &__action {
       align-items: flex-start;
       gap: 16px;
+      min-width: 345px;
     }
   }
 
@@ -161,6 +161,7 @@
     & > div {
       flex-grow: 1;
       color: #0000009c;
+      line-height: 1.5;
     }
   }
 }
