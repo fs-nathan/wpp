@@ -150,7 +150,11 @@ const ProjectGroupGrid = ({
                   if (addedIndex > 3) return;
                   if (removedIndex === addedIndex) return;
                   if (addedIndex !== null) {
-                    if (!groupLayout[index][addedIndex].sort_index) return;
+                    if (
+                      !groupLayout[index][addedIndex].sort_index &&
+                      groupLayout[index][addedIndex].sort_index !== 0
+                    )
+                      return;
 
                     const projectGroupsCloned = [...projectGroups];
 
