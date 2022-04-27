@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/styles";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { getPermissionViewProjects } from "actions/viewPermissions";
 import classNames from "classnames";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router";
 import { Route, Switch } from "react-router-dom";
@@ -49,8 +49,14 @@ function ProjectGroupPage({
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const [test, setTest] = useState([]);
+  const parsedPath = pathname.split("/");
+  const isPreviewPage = useMemo(() => {
+    return parsedPath.includes("preview");
+  }, [parsedPath]);
+  const isTemplatePage = useMemo(() => {
+    return parsedPath.includes("template");
+  }, [parsedPath]);
   const isDeletedPage = pathname.split("/")[2] === "deleted";
-  const isTemplatePage = pathname.split("/")[2] === "template";
 
   useLayoutEffect(() => {
     doGetPermissionViewProjects();
@@ -81,7 +87,11 @@ function ProjectGroupPage({
       )}
       <div
         className={classNames(
-          isTemplatePage ? classes.mainContentOverflow : classes.mainContent,
+          isTemplatePage
+            ? !isPreviewPage
+              ? classes.mainContentOverflow
+              : classes.mainContent
+            : classes.mainContent,
           { isCollapsed }
         )}
       >
@@ -314,6 +324,6 @@ const useStyles = makeStyles({
   mainContent: {},
   mainContentOverflow: {
     height: "100%",
-    // overflowY: "auto",
+    overflowY: "auto",
   },
 });
