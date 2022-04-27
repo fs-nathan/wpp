@@ -1,6 +1,7 @@
 import { Breadcrumbs, Divider, Icon, Link, Typography } from "@mui/material";
 import { getTemplateByCategory } from "actions/project/getTemplateByCategory";
 import React, { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -12,6 +13,7 @@ import TemplateSection from "./components/TemplateSection/TemplateSection";
 const ProjectGroupTemplate = ({ expand, handleOpen }) => {
   const history = useHistory();
   const { groupId } = useParams();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const templates = useSelector(
     (state) => state.project.getTemplateByCategory.data
@@ -59,7 +61,7 @@ const ProjectGroupTemplate = ({ expand, handleOpen }) => {
                     marign: 0,
                   }}
                 >
-                  Thư viện mẫu
+                  {t("TEMPLATE.Sample")}
                 </Link>
                 <Typography color="text.primary">
                   {currentCategory && currentCategory.category_name}
@@ -87,26 +89,15 @@ const ProjectGroupTemplate = ({ expand, handleOpen }) => {
                     />
                   </div>
                 }
-                title={"Các mẫu " + currentCategory.category_name}
+                title={
+                  t("TEMPLATE.Templates") + " " + currentCategory.category_name
+                }
               />
             </div>
 
             <Divider />
             <div className="project-group-template__description">
-              <div>
-                Làm việc cùng nhau tốt hơn với các bảng mẫu Workplus được thiết
-                kế và chia sẻ bởi các thành viên trong cộng đồng sử dụng
-                Workplus. Cho dù bạn là một doanh nhân độc lập xây dựng doanh
-                nghiệp của mình từ những bước đầu hoặc bạn mới làm quen với việc
-                quản lý công việc theo cách có kế hoạch, Workplus là công cụ
-                hoàn hảo để giữ mọi người kết nối với nhau trong sự phát triển
-                doanh nghiệp hoặc nhóm của bạn. Sử dụng các mẫu trên Workplus để
-                đảm bảo toàn bộ công ty, nhóm luôn được cập nhật về các sáng
-                kiến quan trọng; đặt mục tiêu cao và minh bạch hơn; lên kế hoạch
-                cho các chủ đề thảo luận. Dù doanh nghiệp của bạn thuộc lĩnh vực
-                gì thì bạn cũng có thể lập kế hoạch công việc, tổ chức và hoàn
-                thành nó với Workplus!
-              </div>
+              <div>{t("TEMPLATE.Footer")}</div>
               <div>
                 <img
                   src={currentCategory.category_image}

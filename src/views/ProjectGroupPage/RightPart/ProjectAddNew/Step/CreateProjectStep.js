@@ -34,7 +34,6 @@ import { useEffect, useRef, useState } from "react";
 // import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
-import SelectGroupProject from "./SelectGroupProject";
 import { connect, useSelector } from "react-redux";
 import { createProject } from "actions/project/createProject";
 import {
@@ -42,7 +41,7 @@ import {
   CREATE_PROJECT_SUCCESS,
 } from "constants/actions/project/createProject";
 import CloseIcon from "@material-ui/icons/Close";
-
+import SelectGroupProject from "../../../Modals/SelectGroupProject";
 // import { ListTagsCreateProject } from "./components";
 
 const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
@@ -127,7 +126,7 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
               startIcon={<Add />}
               onClick={() => setHaveDescription(true)}
             >
-              Thêm mô tả
+              {t("ADD_NEW.More description")}
             </Button>
           )}
 

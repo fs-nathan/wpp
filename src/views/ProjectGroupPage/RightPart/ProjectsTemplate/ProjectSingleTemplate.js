@@ -18,12 +18,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDetailTemplate } from "actions/project/getDetailTemplate";
 import ProjectTemplateWrapper from ".";
 import { SettingsInputSvideo } from "@material-ui/icons";
+import { useTranslation } from "react-i18next";
 
 const ProjectSingleTemplate = ({ handleOpen }) => {
   const history = useHistory();
   const [isOpenUsing, setIsOpenUsing] = useState(false);
   const { templateId } = useParams();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
 
   const fetchData = useCallback(async () => {
@@ -65,7 +67,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                   marign: 0,
                 }}
               >
-                Thư viện mẫu
+                {t("TEMPLATE.Sample")}
               </Link>
               <Link
                 underline="hover"
@@ -76,9 +78,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                   marign: 0,
                 }}
                 onClick={() =>
-                  history.push(
-                    `/projects/template/group/${template.category_id}`
-                  )
+                  history.push(`/projects/template/${template.category_id}`)
                 }
                 // href={`/projects/group/${template.category_id}`}
               >
@@ -138,7 +138,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                 color: "#172b4d",
               }}
             >
-              Chia sẻ bởi @{template.user_share_name}
+              {t("TEMPLATE.Shared by")} @{template.user_share_name}
             </Typography>
             <div className="action">
               <div className="copied">
@@ -147,7 +147,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                   variant="body2"
                   sx={{ fontSize: "13px", color: "rgb(107,119,140)" }}
                 >
-                  {template.total_use} lần sao chép
+                  {template.total_use} {t("TEMPLATE.copied")}
                 </Typography>
               </div>
               <div className="views">
@@ -157,7 +157,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                   variant="body2"
                   sx={{ fontSize: "13px", color: "rgb(107,119,140)" }}
                 >
-                  {template.total_view} lượt xem
+                  {template.total_view} {t("TEMPLATE.views")}
                 </Typography>
               </div>
             </div>
@@ -184,7 +184,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
               lineHeight: "24px",
             }}
           >
-            Về mẫu này
+            {t("TEMPLATE.About")}
           </Typography>
           <div
             style={{
@@ -204,7 +204,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
               onClick={previewTemplate}
               className="project-single-template__description__link__action"
             >
-              Xem mẫu
+              {t("TEMPLATE.Preview")}
             </Link>
           </Typography>
           <div>
@@ -219,10 +219,10 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                   underline="always"
                   className="project-single-template__description__link__action"
                 >
-                  Sử dụng mẫu
+                  {t("TEMPLATE.Use")}
                 </Link>
               </span>{" "}
-              hoặc{" "}
+              {t("TEMPLATE.Or")}{" "}
               <Link
                 href="/projects/add-new"
                 variant="h6"
@@ -230,7 +230,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
                 underline="always"
                 className="project-single-template__description__link__action"
               >
-                Bắt đầu với bảng trống
+                {t("TEMPLATE.Start blank")}
               </Link>
             </Typography>
           </div>

@@ -1,6 +1,7 @@
 import {
   USE_TEMPLATE,
   USE_TEMPLATE_FAIL,
+  USE_TEMPLATE_RESET,
   USE_TEMPLATE_SUCCESS,
 } from "../../constants/actions/project/useTemplate";
 
@@ -31,4 +32,8 @@ export const useTemplateFail = (error, options) => ({
   type: USE_TEMPLATE_FAIL,
   options,
   error,
+});
+
+export const useTemplateReset = () => ({
+  type: USE_TEMPLATE_RESET,
 });

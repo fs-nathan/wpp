@@ -126,7 +126,7 @@ const ProjectTemplateList = ({
                   onClick={() => handleClick(SideTab.Shared)}
                   sx={{ pl: 6 }}
                 >
-                  <ListItemText primary="Đã chia sẻ" />
+                  <ListItemText primary={t("TEMPLATE.Shared")} />
                 </ListItemButton>
               </ListItem>
 
@@ -135,7 +135,7 @@ const ProjectTemplateList = ({
                   onClick={() => handleClick(SideTab.Public)}
                   sx={{ pl: 6 }}
                 >
-                  <ListItemText primary="Nhóm mẫu" />
+                  <ListItemText primary={t("TEMPLATE.Group")} />
                   {categories &&
                     categories.length > 0 &&
                     (isPublicOpen ? (

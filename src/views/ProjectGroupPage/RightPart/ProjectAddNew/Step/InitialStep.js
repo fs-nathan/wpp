@@ -2,10 +2,11 @@ import { Add, PlusOneOutlined } from "@material-ui/icons";
 import { Box, IconButton, Typography } from "@mui/material";
 import { useHistory } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
+import { useTranslation } from "react-i18next";
 
 const InitialStep = ({ onNext }) => {
   const history = useHistory();
-
+  const { t } = useTranslation();
   function onClose() {
     history.goBack();
   }
@@ -17,14 +18,14 @@ const InitialStep = ({ onNext }) => {
         </IconButton>
       </div>
       <Typography variant="h4" style={{ margin: "0 0 10px" }}>
-        Tạo một bảng việc mới
+        {t("ADD_NEW.Create new project")}
       </Typography>
       <Typography
         variant="subtitle1"
         color="#6d6e6f"
         style={{ margin: "0 0 96px", fontWeight: 300 }}
       >
-        Bạn muốn bắt đầu như thế nào?
+        {t("ADD_NEW.How do you want to do")}
       </Typography>
       <div className="initial-step-options" onClick={onNext}>
         <div className="initial-step-item initial-step-create-new">
@@ -39,10 +40,10 @@ const InitialStep = ({ onNext }) => {
               fontWeight: 500,
             }}
           >
-            Bảng việc trống
+            {t("ADD_NEW.Blank page")}
           </Typography>
           <Typography variant="subtitle1" color="#6d6e6f">
-            Bắt đầu từ đầu
+            {t("ADD_NEW.Start")}
           </Typography>
         </div>
 
@@ -61,10 +62,10 @@ const InitialStep = ({ onNext }) => {
               fontWeight: 500,
             }}
           >
-            Sử dụng một mẫu
+            {t("ADD_NEW.Use a template")}
           </Typography>
           <Typography variant="subtitle1" color="#6d6e6f">
-            Chọn từ thư viện
+            {t("ADD_NEW.From library")}
           </Typography>
         </div>
       </div>

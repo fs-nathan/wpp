@@ -97,8 +97,8 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
         maxWidth="sm"
         setOpen={setopenModal}
         open={openModal}
-        confirmRender={() => "Chia sẻ"}
-        cancleRender={() => "Quay lại"}
+        confirmRender={() => t("SHARE.share")}
+        cancleRender={() => t("SHARE.Back")}
         manualClose={true}
         onConfirm={onShareProject}
         onCancle={() => {
@@ -167,7 +167,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
                 },
               }}
             >
-              Thay đổi
+              {t("SHARE.change")}
             </Button>
           </div>
         </Box>
