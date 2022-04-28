@@ -72,7 +72,12 @@ const SearchBar = ({
         placeholder={t("TEMPLATE.Find template")}
       />
       <SearchOutlinedIcon
-        style={{ position: "absolute", right: "5px", top: "5px" }}
+        style={{
+          position: "absolute",
+          right: "10px",
+          top: "10px",
+          color: "#857d7d",
+        }}
       />
       {!isEmpty && templates && templates.length > 0 && (
         <div className="search-bar-result">

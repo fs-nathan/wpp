@@ -150,7 +150,7 @@ const ProjectTemplateList = ({
                 </ListItemButton>
               </ListItem>
               <Collapse in={isPublicOpen} timeout="auto" unmountOnExit>
-                <List component="nav">
+                <List className="template-group-nav" component="nav">
                   {categories &&
                     categories.length > 0 &&
                     categories.map((child) => (
