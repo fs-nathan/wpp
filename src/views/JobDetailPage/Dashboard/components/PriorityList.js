@@ -6,9 +6,9 @@ import React from "react";
 import styled from "styled-components";
 
 const options = [
-  { id: 0, name: "Thấp", value: 0, color: "#d2ebd3" },
-  { id: 1, name: "Trung bình", value: 1, color: "#ffe5bf" },
-  { id: 2, name: "Cao", value: 2, color: "#fec1c1" },
+  { id: 0, name: "Thấp", value: 0, color: "#03C30B" },
+  { id: 1, name: "Trung bình", value: 1, color: "#FF9800" },
+  { id: 2, name: "Cao", value: 2, color: "#ff0000" },
 ];
 
 const PriorityList = ({ projectId = null, defaultPriority = 0 }) => {

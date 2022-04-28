@@ -61,12 +61,10 @@ const LeftPart = ({
           {projectInfo?.duration} ngày
         </Typography>
         <p style={{ fontWeight: 500 }}>
-          Bắt đầu: Ngày {projectInfo?.date_start} (ngày bắt đầu của công việc
-          bắt đầu sớm nhất)
+          Bắt đầu: Ngày {projectInfo?.date_start}
         </p>
         <Typography variant="p" style={{ fontWeight: 500 }}>
-          Kết thúc: Ngày {projectInfo?.date_end} (ngày kết thúc của công việc
-          kết thúc muộn nhất)
+          Kết thúc: Ngày {projectInfo?.date_end}
         </Typography>
       </WrapperInformation>
 
