@@ -5,18 +5,17 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const ProjectModeStep = ({ onNext, setopenModal, openModal }) => {
-  const [shareOption, setShareOption] = useState("internal");
+  const [shareOption, setShareOption] = useState("public");
   const { t } = useTranslation();
 
   return (
     <CustomModal
       maxWidth="sm"
       height="mini"
-      className="h-full"
       setOpen={setopenModal}
       open={openModal}
-      confirmRender={() => "Tiếp theo"}
-      cancleRender={() => "Huỷ"}
+      confirmRender={() => t("SHARE.next")}
+      cancleRender={() => t("SHARE.cancel")}
       manualClose={true}
       onConfirm={() => {
         onNext();
@@ -29,8 +28,8 @@ const ProjectModeStep = ({ onNext, setopenModal, openModal }) => {
     >
       <div className="share-project--modal__container">
         <div className="share-project--modal__body">
-          <Stack spacing={2}>
-            <Paper
+          {/* <Stack spacing={2}> */}
+          {/* <Paper
               variant="outlined"
               className={`share-project-card ${
                 shareOption === "internal" && "share-project-card--active"
@@ -49,28 +48,28 @@ const ProjectModeStep = ({ onNext, setopenModal, openModal }) => {
                 <h2>{t("SHARE_PROJECT_TITLE_INTERNAL")}</h2>
                 <p>{t("SHARE_PROJECT_TITLE_INTERNAL_CONTENT")}</p>
               </div>
-            </Paper>
-            <Paper
-              variant="outlined"
-              className={`share-project-card ${
-                shareOption === "public" && "share-project-card--active"
+            </Paper> */}
+          <Paper
+            variant="outlined"
+            className={`share-project-card ${
+              shareOption === "public" && "share-project-card--active"
+            }`}
+            onClick={() => setShareOption("public")}
+          >
+            <div
+              className={`share-project-card-icon  ${
+                shareOption === "public" && "share-project-card-icon--active"
               }`}
-              onClick={() => setShareOption("public")}
             >
-              <div
-                className={`share-project-card-icon  ${
-                  shareOption === "public" && "share-project-card-icon--active"
-                }`}
-              >
-                <Check />
-              </div>
+              <Check />
+            </div>
 
-              <div className="share-project-card-content">
-                <h2>{t("SHARE_PROJECT_TITLE_PUBLIC")}</h2>
-                <p>{t("SHARE_PROJECT_TITLE_PUBLIC_CONTENT")}</p>
-              </div>
-            </Paper>
-          </Stack>
+            <div className="share-project-card-content">
+              <h2>{t("SHARE_PROJECT_TITLE_PUBLIC")}</h2>
+              <p>{t("SHARE_PROJECT_TITLE_PUBLIC_CONTENT")}</p>
+            </div>
+          </Paper>
+          {/* </Stack> */}
         </div>
       </div>
     </CustomModal>

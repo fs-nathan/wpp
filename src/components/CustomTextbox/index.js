@@ -1,4 +1,5 @@
 import { TextField } from "@material-ui/core";
+import { TextareaAutosize } from "@mui/material";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import "./style.scss";
@@ -6,6 +7,13 @@ import "./style.scss";
 const StyledTextField = ({ className = "", ...rest }) => (
   <TextField
     className={`comp_CustomTextbox___text-field ${className}`}
+    {...rest}
+  />
+);
+
+const StyledTextArea = ({ className = "", ...rest }) => (
+  <TextareaAutosize
+    className={`comp_CustomTextbox___text-area ${className}`}
     {...rest}
   />
 );
@@ -25,6 +33,7 @@ function CustomTextbox({
   multiline = false,
   required = false,
   size = "medium",
+  isTextarea = false,
 }) {
   const { t } = useTranslation();
   if (isReadOnly) {
@@ -57,16 +66,25 @@ function CustomTextbox({
         {description && (
           <p className="custom-text-box-description">{description}</p>
         )}
-        <StyledTextField
-          multiline={multiline}
-          fullWidth
-          rows={multiline ? 3 : undefined}
-          variant="outlined"
-          size={size}
-          value={value}
-          onChange={(evt) => onChange(evt.target.value)}
-          placeholder={placeholder ?? t("CUSTOM_TEXTBOX_CONTENT_LABEL")}
-        />
+        {isTextarea ? (
+          <StyledTextArea
+            minRows={multiline ? 3 : undefined}
+            value={value}
+            onChange={(evt) => onChange(evt.target.value)}
+            placeholder={placeholder ?? t("CUSTOM_TEXTBOX_CONTENT_LABEL")}
+          />
+        ) : (
+          <StyledTextField
+            multiline={multiline}
+            fullWidth
+            rows={multiline ? 3 : undefined}
+            variant="outlined"
+            size={size}
+            value={value}
+            onChange={(evt) => onChange(evt.target.value)}
+            placeholder={placeholder ?? t("CUSTOM_TEXTBOX_CONTENT_LABEL")}
+          />
+        )}
       </StyledTextBox>
     );
   }

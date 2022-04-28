@@ -18,12 +18,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDetailTemplate } from "actions/project/getDetailTemplate";
 import ProjectTemplateWrapper from ".";
 import { SettingsInputSvideo } from "@material-ui/icons";
+import { useTranslation } from "react-i18next";
 
-const ProjectSingleTemplate = () => {
+const ProjectSingleTemplate = ({ handleOpen }) => {
   const history = useHistory();
   const [isOpenUsing, setIsOpenUsing] = useState(false);
-  const { id: templateId } = useParams();
+  const { templateId } = useParams();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
 
   const fetchData = useCallback(async () => {
@@ -36,31 +38,65 @@ const ProjectSingleTemplate = () => {
   useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    handleOpen();
+  }, []);
   function handleClick() {}
 
   function previewTemplate() {
     history.push(
-      `/projects/template/${templateId}/preview/task-table/${templateId}`
+      `/projects/template/${template.category_id}/${templateId}/preview/task-table/${templateId}`
     );
   }
+
   return (
     <ProjectTemplateWrapper>
       <div>
         <div className="project-single-template__header">
           <div role="presentation" onClick={handleClick}>
             <Breadcrumbs aria-label="breadcrumb">
-              <Link underline="hover" color="inherit" href="/projects/template">
-                Thư viện mẫu
+              <Link
+                underline="hover"
+                color="#172b4d"
+                onClick={() => history.push("/projects/template")}
+                // href="/projects/template"
+                style={{
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  marign: 0,
+                }}
+              >
+                {t("TEMPLATE.Sample")}
               </Link>
               <Link
                 underline="hover"
-                color="inherit"
-                href={`/projects/group/${template.category_id}`}
+                color="#172b4d"
+                style={{
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  marign: 0,
+                }}
+                onClick={() =>
+                  history.push(`/projects/template/${template.category_id}`)
+                }
+                // href={`/projects/group/${template.category_id}`}
               >
                 {template.category_name}
               </Link>
+              <Typography
+                color="text.primary"
+                style={{
+                  cursor: "default",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  maxWidth: "200px",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {template.name}
+              </Typography>
             </Breadcrumbs>
-            <Typography color="text.primary">{template.name}</Typography>
           </div>
           <div style={{ width: 300 }}>
             <SearchBar />
@@ -80,24 +116,48 @@ const ProjectSingleTemplate = () => {
             />
           </div>
           <div className="project-single-template__overview__info">
-            <Typography variant="h5" color="black">
+            <Typography
+              variant="h5"
+              sx={{
+                margin: 0,
+                fontSize: "24px",
+                fontWeight: "500",
+                lineHeight: "1",
+                color: "#172b4d",
+              }}
+            >
               {template.name}
             </Typography>
-            <Typography variant="body2" color="text.secondary">
-              Chia sẻ bởi @{template.user_share_name}
+            <Typography
+              variant="body2"
+              sx={{
+                margin: 0,
+                fontSize: "13px",
+                fontWeight: "normal",
+                lineHeight: "20px",
+                color: "#172b4d",
+              }}
+            >
+              {t("TEMPLATE.Shared by")} @{template.user_share_name}
             </Typography>
             <div className="action">
               <div className="copied">
-                <ContentCopyRoundedIcon />
-                <Typography variant="body2" color="text.secondary">
-                  {template.total_use} lần sao chép
+                <ContentCopyRoundedIcon sx={{ fontSize: "13px" }} />
+                <Typography
+                  variant="body2"
+                  sx={{ fontSize: "13px", color: "rgb(107,119,140)" }}
+                >
+                  {template.total_use} {t("TEMPLATE.copied")}
                 </Typography>
               </div>
               <div className="views">
-                <RemoveRedEyeIcon />
+                <RemoveRedEyeIcon sx={{ fontSize: "13px" }} />
 
-                <Typography variant="body2" color="text.secondary">
-                  {template.total_view} lượt xem
+                <Typography
+                  variant="body2"
+                  sx={{ fontSize: "13px", color: "rgb(107,119,140)" }}
+                >
+                  {template.total_view} {t("TEMPLATE.views")}
                 </Typography>
               </div>
             </div>
@@ -113,10 +173,28 @@ const ProjectSingleTemplate = () => {
         </div>
 
         <div className="project-single-template__description">
-          <Typography variant="h5" color="black">
-            Về mẫu này
+          <Typography
+            variant="h5"
+            color="black"
+            sx={{
+              color: "#172b4d",
+              fontSize: "20px",
+              fontWeight: 500,
+              letterSpacing: "-0.008em",
+              lineHeight: "24px",
+            }}
+          >
+            {t("TEMPLATE.About")}
           </Typography>
-          <div dangerouslySetInnerHTML={{ __html: template.description }}></div>
+          <div
+            style={{
+              color: "#172B4D",
+              fontSize: "14px",
+              fontWeight: 400,
+              lineHeight: "20px",
+            }}
+            dangerouslySetInnerHTML={{ __html: template.description }}
+          ></div>
           <Typography variant="h6" color="black">
             <Link
               href="#"
@@ -124,25 +202,35 @@ const ProjectSingleTemplate = () => {
               color="inherit"
               underline="always"
               onClick={previewTemplate}
+              className="project-single-template__description__link__action"
             >
-              Xem mẫu
+              {t("TEMPLATE.Preview")}
             </Link>
           </Typography>
           <div>
-            <Typography variant="h6" color="black">
+            <Typography
+              variant="h6"
+              className="project-single-template__description__link"
+            >
               <span onClick={() => setIsOpenUsing(true)}>
-                <Link color="inherit" variant="h6" underline="always">
-                  Sử dụng mẫu
+                <Link
+                  color="inherit"
+                  variant="h6"
+                  underline="always"
+                  className="project-single-template__description__link__action"
+                >
+                  {t("TEMPLATE.Use")}
                 </Link>
               </span>{" "}
-              hoặc{" "}
+              {t("TEMPLATE.Or")}{" "}
               <Link
                 href="/projects/add-new"
                 variant="h6"
                 color="inherit"
                 underline="always"
+                className="project-single-template__description__link__action"
               >
-                Bắt đầu với bảng trống
+                {t("TEMPLATE.Start blank")}
               </Link>
             </Typography>
           </div>

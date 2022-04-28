@@ -6,9 +6,7 @@ import { listProject } from "actions/project/listProject";
 import { showProject } from "actions/project/showProject";
 import { sortProject } from "actions/project/sortProject";
 import { detailProjectGroup } from "actions/projectGroup/detailProjectGroup";
-import { editProjectGroup } from "actions/projectGroup/editProjectGroup";
 import { listProjectGroup } from "actions/projectGroup/listProjectGroup";
-import { sortProjectGroup } from "actions/projectGroup/sortProjectGroup";
 import { useFilters, useTimes } from "components/CustomPopover";
 import { CustomTableWrapper } from "components/CustomTable";
 import { CREATE_PROJECT } from "constants/events";
@@ -23,15 +21,12 @@ import moment from "moment";
 import React from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router";
-import ColorGroupPickerModal from "views/ProjectGroupPage/Modals/ColorGroupPickerModal";
-import CreateProjectGroup from "views/ProjectGroupPage/Modals/CreateProjectGroup";
-import DeleteProjectGroup from "views/ProjectGroupPage/Modals/DeleteProjectGroup";
-import LogoManagerModal from "../../../DepartmentPage/Modals/LogoManager";
 import MembersSettingModal from "../../../ProjectPage/Modals/MembersSetting";
 import { routeSelector } from "../../../ProjectPage/selectors";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 import CreateProjectModal from "../../Modals/CreateProject";
 import DeleteProjectModal from "../../Modals/DeleteProject";
+import EditProjectModal from "../../Modals/EditProject";
 import GuideLineAddUserModal from "../../Modals/GuideLineAddUserModal";
 import NoProjectGroupModal from "../../Modals/NoProjectGroup";
 import ProjectSettingModal from "../../Modals/ProjectSetting";
@@ -57,15 +52,12 @@ function AllProjectTable({
   doHideProject,
   doShowProject,
   doSortProject,
-  doSortProjectGroup,
   route,
   viewPermissions,
   doListProject,
   doListProjectGroup,
   localOption,
   doSetProjectGroup,
-  doEditProjectGroup,
-  doReloadList,
   type_data = null,
 }) {
   const times = useTimes();
@@ -86,7 +78,6 @@ function AllProjectTable({
   const filters = useFilters();
   const query = useQuery();
   const groupID = query.get("groupID");
-  const isCreatingTask = query.has("createTask");
 
   React.useEffect(() => {
     if (groupID === "deleted") return;
@@ -182,9 +173,6 @@ function AllProjectTable({
       });
     };
   }, []);
-  React.useEffect(() => {
-    setOpenCreate(isCreatingTask);
-  }, [isCreatingTask]);
 
   const [guideLineModal, setGuideLineModal] = React.useState(false);
   const [newCreatedBoard, setNewCreatedBoard] = React.useState(null);
@@ -198,13 +186,6 @@ function AllProjectTable({
   const [settingProps, setSettingProps] = React.useState({});
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
-  const [openDeleteGroup, setOpenDeleteGroup] = React.useState(false);
-  const [deleteGroupProps, setDeleteGroupProps] = React.useState({});
-  const [openColorPickerGroup, setOpenColorPickerGroup] = React.useState(false);
-  const [colorPickerProps, setColorPickerProps] = React.useState({});
-  const [openLogo, setOpenLogo] = React.useState(false);
-  const [logoProps, setLogoProps] = React.useState({});
-  const [activeLoading, setActiveLoading] = React.useState(false);
 
   function doOpenModal(type, props) {
     switch (type) {
@@ -218,7 +199,6 @@ function AllProjectTable({
         });
         return;
       }
-
       case "UPDATE": {
         setOpenEdit(true);
         setEditProps({
@@ -243,32 +223,8 @@ function AllProjectTable({
         });
         return;
       }
-      case "DELETE_GROUP": {
-        setOpenDeleteGroup(true);
-        setDeleteGroupProps({
-          groupID,
-          ...props,
-        });
-        return;
-      }
       case "ADD_PERSONAL_BOARD": {
         setOpenPersonalBoard(true);
-        return;
-      }
-      case "COLOR_PICKER": {
-        setOpenColorPickerGroup(true);
-        setColorPickerProps({
-          groupID,
-          ...props,
-        });
-        return;
-      }
-      case "LOGO": {
-        setOpenLogo(true);
-        setLogoProps({
-          groupID,
-          ...props,
-        });
         return;
       }
       default:
@@ -293,7 +249,6 @@ function AllProjectTable({
           type_data={type_data}
           filterType={filterType}
           labelType={labelType}
-          doReloadList={() => doReloadList()}
           handleSearch={_handleSearch}
           handleFilterType={(filterType) =>
             doSetProjectGroup({
@@ -340,21 +295,10 @@ function AllProjectTable({
             doDeleteProject({ projectId: get(project, "id") })
           }
           handleSortProject={(sortData) => doSortProject({ sortData })}
-          handleSortProjectGroup={(projectGroupId, sortIndex) =>
-            doSortProjectGroup(projectGroupId, sortIndex)
-          }
-          handleUpdateProjectGroup={doEditProjectGroup}
           handleOpenModal={doOpenModal}
           groupID={groupID}
           isFiltering={isFiltering}
           setIsFiltering={setIsFiltering}
-          activeLoading={activeLoading}
-          setActiveLoading={setActiveLoading}
-          canModifyProjectGroup={get(
-            viewPermissions.permissions,
-            "manage_group_project",
-            false
-          )}
         />
       </CustomTableWrapper>
       <CreateProjectModal
@@ -362,12 +306,8 @@ function AllProjectTable({
         setOpen={setOpenCreate}
         {...createProps}
       />
-      <CreateProjectGroup
-        open={openEdit}
-        setOpen={setOpenEdit}
-        {...editProps}
-      />
       <NoProjectGroupModal open={openNoPG} setOpen={setOpenNoPG} />
+      <EditProjectModal open={openEdit} setOpen={setOpenEdit} {...editProps} />
       <ProjectSettingModal
         open={openSetting}
         setOpen={setOpenSetting}
@@ -380,12 +320,6 @@ function AllProjectTable({
         setOpen={setOpenAlert}
         {...alertProps}
       />
-      <DeleteProjectGroup
-        open={openDeleteGroup}
-        setOpen={setOpenDeleteGroup}
-        {...deleteGroupProps}
-      />
-
       <GuideLineAddUserModal
         open={guideLineModal}
         setOpen={setGuideLineModal}
@@ -403,19 +337,6 @@ function AllProjectTable({
         open={openPersonalBoard}
         setOpen={setOpenPersonalBoard}
       />
-      <ColorGroupPickerModal
-        open={openColorPickerGroup}
-        setOpen={setOpenColorPickerGroup}
-        handleSelectColor={({ projectGroupId, color }) => {
-          setActiveLoading(true);
-          doEditProjectGroup({
-            projectGroupId: projectGroupId,
-            color: color,
-          });
-        }}
-        {...colorPickerProps}
-      />
-      <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />
     </>
   );
 }
@@ -433,7 +354,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    doReloadList: () => dispatch(listProjectGroup(true)),
     doListProject: (options, quite) => dispatch(listProject(options, quite)),
     doListProjectGroup: (options, quite) =>
       dispatch(listProjectGroup(options, quite)),
@@ -446,26 +366,6 @@ const mapDispatchToProps = (dispatch) => {
     doDetailProjectGroup: ({ projectGroupId }, quite) =>
       dispatch(detailProjectGroup({ projectGroupId }, quite)),
     doSetProjectGroup: (value) => dispatch(setProjectGroup(value)),
-    doSortProjectGroup: (projectGroupId, sortIndex) =>
-      dispatch(sortProjectGroup({ projectGroupId, sortIndex })),
-    doEditProjectGroup: ({
-      projectGroupId,
-      name,
-      icon,
-      description,
-      work_types,
-      color,
-    }) =>
-      dispatch(
-        editProjectGroup({
-          projectGroupId,
-          name,
-          icon,
-          description,
-          work_types,
-          color,
-        })
-      ),
   };
 };
 

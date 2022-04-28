@@ -14,9 +14,20 @@ import CustomTextboxSelect from "components/CustomTextboxSelect";
 import Modal from "@mui/material/Modal";
 import TitleSectionModal from "components/TitleSectionModal";
 import { shareProject } from "actions/project/shareProject";
+import { parseHTML } from "helpers/utils/parseHTML";
 
 const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const categories = useSelector(
+    (state) => state.project.getTemplateCategory.data
+  );
+  const banners = useSelector((state) => state.project.getBanner.data);
+  const {
+    project: { id: project_id, name },
+  } = useSelector((state) => state.project.detailProject.data);
+
+  const [projectName, setProjectName] = useState(name || "");
   const [description, setDescription] = useState("");
   const [curTemplateCategory, setCurTemplateCategory] = useState(null);
   const [banner, setBanner] = useState(null);
@@ -36,15 +47,6 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
     setBanner(banner);
     handleClose();
   }
-
-  const dispatch = useDispatch();
-  const categories = useSelector(
-    (state) => state.project.getTemplateCategory.data
-  );
-  const banners = useSelector((state) => state.project.getBanner.data);
-  const {
-    project: { id: project_id, name },
-  } = useSelector((state) => state.project.detailProject.data);
 
   const fetchData = useCallback(async () => {
     await Promise.all[(dispatch(getTemplateCategory()), dispatch(getBanner()))];
@@ -82,8 +84,8 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
           project_id,
           banner: banner.value,
           category_id: curTemplateCategory.value,
-          description,
-          name,
+          description: parseHTML(description),
+          name: projectName,
         })
       );
       onNext();
@@ -95,8 +97,8 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
         maxWidth="sm"
         setOpen={setopenModal}
         open={openModal}
-        confirmRender={() => "Chia sẻ"}
-        cancleRender={() => "Quay lại"}
+        confirmRender={() => t("SHARE.share")}
+        cancleRender={() => t("SHARE.Back")}
         manualClose={true}
         onConfirm={onShareProject}
         onCancle={() => {
@@ -106,8 +108,20 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
         title={t("SHARE_PROJECT_TITLE")}
       >
         <Box className="share-step__container">
+          <CustomTextbox
+            value={projectName}
+            onChange={(value) => setProjectName(value)}
+            label={`${t("PROJECT_NAME")}`}
+            fullWidth
+            required
+            className={
+              "view_ProjectGroup_CreateNew_Project_Modal_formItem per-line-step-in-form"
+            }
+            style={{ fontSize: "16px" }}
+          />
           <div className="per-line-step-in-form">
             <CustomTextbox
+              isTextarea={true}
               value={description}
               onChange={(value) => setDescription(value)}
               label={`${t("SHARE_STEP_DESCRIPTION_LABEL")}`}
@@ -144,8 +158,16 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
             >
               <img src={banner ? banner.url : ""} alt="Temp" loading="lazy" />
             </div>
-            <Button variant="text" onClick={handleOpen}>
-              Thay đổi
+            <Button
+              variant="text"
+              onClick={handleOpen}
+              sx={{
+                "&:hover": {
+                  backgroundColor: "#f3f3f3",
+                },
+              }}
+            >
+              {t("SHARE.change")}
             </Button>
           </div>
         </Box>
@@ -153,7 +175,6 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
 
       <CustomModal
         maxWidth="lg"
-        height="small"
         setOpen={setOpen}
         open={open}
         canConfirm={false}

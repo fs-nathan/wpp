@@ -3,13 +3,11 @@ import { mdiClose, mdiMagnify } from "@mdi/js";
 import Icon from "@mdi/react";
 import classNames from "classnames";
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 
 const SearchButton = ({ valueSearch, onSearch = () => {} }) => {
   const classes = useStyles();
   const [isExpand, setIsExpand] = useState(false);
   const [value, setValue] = useState(valueSearch || "");
-  const { t } = useTranslation();
 
   const _toggleSearch = () => {
     setIsExpand(!isExpand);
@@ -20,23 +18,35 @@ const SearchButton = ({ valueSearch, onSearch = () => {} }) => {
     setValue(evt.target.value);
   };
 
+  const _handleClearSearch = () => {
+    setValue("");
+    onSearch("");
+    setIsExpand(false);
+  };
+
   const _divClick = () => {
     !isExpand && setIsExpand(true);
   };
 
   return (
     <div
-      className={classNames(classes.wrapperButton, "isExpand")}
+      className={classNames(classes.wrapperButton, { isExpand })}
       onClick={_divClick}
     >
+      <Icon path={mdiMagnify} size={1} onClick={_toggleSearch} />
       <input
         type="text"
         className={classes.inputSearch}
-        placeholder={t("LABEL_SEARCH")}
+        placeholder="Nhập nội dung cần tìm"
         value={value}
         onChange={_handleChange}
       />
-      <Icon path={mdiMagnify} size={1} onClick={_toggleSearch} />
+      <Icon
+        className={classes.buttonClose}
+        path={mdiClose}
+        size={1}
+        onClick={_handleClearSearch}
+      />
     </div>
   );
 };
@@ -47,11 +57,11 @@ const useStyles = makeStyles({
     justifyContent: "flex-start",
     alignItems: "center",
     cursor: "pointer",
-    backgroundColor: "#ebedef",
-    color: "#adaeba",
+    backgroundColor: "#f4f4f4",
+    color: "#666",
     marginLeft: 10,
     fontWeight: 500,
-    padding: "10px 12px",
+    padding: "7.75px 9.5px",
     borderRadius: 3,
     transition: "0.5s all ease-in-out",
     overflow: "hidden",
@@ -59,7 +69,7 @@ const useStyles = makeStyles({
       backgroundColor: "#e5e5e5",
     },
     "&.isExpand": {
-      width: 260,
+      width: 230,
       "& $inputSearch": { display: "block" },
       "& $buttonClose": { display: "block" },
     },
@@ -73,11 +83,6 @@ const useStyles = makeStyles({
     width: "100%",
     height: "100%",
     outline: "none",
-
-    "&::placeholder": {
-      color: "#cdcfd0",
-      fontSize: '16px'
-    },
   },
   buttonClose: {},
 });

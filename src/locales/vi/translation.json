@@ -332,9 +332,8 @@
             "U_TITLE": "Cập nhật nhóm làm việc",
             "NAME": "Tên nhóm làm việc",
             "DESC": "Mô tả nhóm làm việc",
-            "LOGO_THEME": "Phông nền, biểu tượng nhóm",
-            "LOGO_SELECT": "Thay đổi biểu tượng",
-            "ADD_DESC": "Thêm mô tả"
+            "LOGO": "Biểu tượng nhóm",
+            "LOGO_SELECT": "Thay đổi biểu tượng"
           },
           "CUP": {
             "C_TITLE": "Tạo mới dự án",
@@ -390,14 +389,10 @@
               "PRIO": "Ưu tiên"
             },
             "SETTING": "Cài đặt",
+            "EDIT": "Chỉnh sửa",
             "HIDE": "Ẩn",
             "SHOW": "Bỏ ẩn",
-            "EDIT": "Sửa tên, mô tả",
-            "ADD_TABLE_TASKS": "Tạo bảng việc",
-            "CHANGE_COLOR": "Thay đổi màu",
-            "CHANGE_ICON": "Thay đổi biểu tượng",
-            "SET_DEFAULT": "Đặt làm mặc định",
-            "DEL": "Xóa nhóm làm việc",
+            "DEL": "Xóa",
             "ALERT": "Bạn chắc chắn muốn xóa dự án?",
             "NO_DATA": {
               "NO_PROJECT": "Chưa có dự án nào được khởi tạo. Hãy click vào nút + TẠO DỰ ÁN để bắt đầu quản lý dự án và công việc của bạn.",
@@ -477,9 +472,6 @@
               "LABEL": "Sao chép nhóm công việc, giai đoạn",
               "DESC": "Sao chép các nhóm công việc, giai đoạn có sẵn"
             }
-          },
-          "COLOR_PICKER": {
-            "TITLE": "Thay đổi màu nhóm"
           },
           "CUGT": {
             "C_TITLE": "Tạo mới nhóm công việc, giai đoạn",
@@ -2624,5 +2616,59 @@
   "CREATE_PROJECT_DONE_SHARE_LABEL": "Chia sẻ với đồng đội",
   "CREATE_PROJECT_DONE_SHARE_CONTENT": "Mời thành viên tham gia cùng làm việc nhóm hiệu quả",
   "BEGIN": "Bắt đầu",
-  "CHOOSE_PROJECT": "Chọn hình nền"
+  "CHOOSE_PROJECT": "Chọn hình nền",
+  "PROJECT_NAME": "Tên mẫu",
+  "ADD_NEW": {
+    "Create new project": "Tạo một bảng việc mới",
+    "How do you want to do": "Bạn muốn bắt đầu như thế nào?",
+    "Blank page": "Bảng việc trống",
+    "Start": "Bắt đầu từ đầu",
+    "Use a template": "Sử dụng một mẫu",
+    "From library": "Chọn từ thư viện",
+    "More description": "Thêm mô tả"
+  },
+  "TEMPLATE": {
+    "Shared": "Đã chia sẻ",
+    "Group": "Nhóm mẫu",
+    "Famous": "Nhóm mẫu nổi bật",
+    "Recently shared": "Mẫu mới chia sẻ",
+    "Add new for": "Thêm mẫu cho",
+    "Sample": "Thư viện mẫu",
+    "Shared template": "Các mẫu đã chia sẻ",
+    "Templates": "Các mẫu",
+    "Footer": "Làm việc cùng nhau tốt hơn với các bảng mẫu Workplus được thiết kế và chia sẻ bởi các thành viên trong cộng đồng sử dụng Workplus. Cho dù bạn là một doanh nhân độc lập xây dựng doanh nghiệp của mình từ những bước đầu hoặc bạn mới làm quen với việc quản lý công việc theo cách có kế hoạch, Workplus là công cụ hoàn hảo để giữ mọi người kết nối với nhau trong sự phát triển doanh nghiệp hoặc nhóm của bạn. Sử dụng các mẫu trên Workplus để đảm bảo toàn bộ công ty, nhóm luôn được cập nhật về các sáng kiến quan trọng; đặt mục tiêu cao và minh bạch hơn; lên kế hoạch cho các chủ đề thảo luận. Dù doanh nghiệp của bạn thuộc lĩnh vực gì thì bạn cũng có thể lập kế hoạch công việc, tổ chức và hoàn thành nó với Workplus!",
+    "Shared by": "Chia sẻ bởi",
+    "copied": "lần sao chép",
+    "views": "lượt xem",
+    "About": "Về mẫu này",
+    "Preview": "Xem mẫu",
+    "Use": "Sử dụng mẫu",
+    "Or": "hoặc",
+    "Start blank": "Bắt đầu với bảng trống",
+    "Find template": "Tìm mẫu",
+    "Create new": "Tạo bảng mới từ mẫu này",
+    "Clone start time": "Sao chép tiến độ công việc",
+    "Using subtitle": " Mọi hoạt động thảo luận, tài liệu trong bảng sẽ không được sao chép sang bảng mới.",
+    "Create": "Tạo mới",
+    "Unshare": "Huỷ chia sẻ",
+    "Intro": "Giới thiệu",
+    "Using": "Sử dụng mẫu",
+    "Unshare full": "Huỷ chia sẻ mẫu",
+    "Unshare 1": "Bạn đã chia sẻ mẫu này cho cộng đồng và các thành viên khác sử dụng.",
+    "Unshare 2": "Nếu bạn huỷ chia sẻ các thành viên khác sẽ không còn thấy mẫu.",
+    "Unshare 3": "Bạn vẫn muốn tiếp tục huỷ chia sẻ.",
+    "Agree": "Đồng ý",
+    "Reffer": "Giới thiệu mẫu cho thành viên",
+    "copy": "Sao chép",
+    "Reffer 1": "Chia sẻ mẫu này bằng cách gửi đường dẫn cho các thành viên khác.",
+    "Reffer 2": "Chỉ xem được mẫu này sau khi đăng nhập",
+    "Cancel": "Quay lại"
+  },
+  "SHARE": {
+    "share": "Chia sẻ",
+    "change": " Thay đổi",
+    "next": "Tiếp theo",
+    "cancel": "Huỷ",
+    "Back": "Quay lại"
+  }
 }

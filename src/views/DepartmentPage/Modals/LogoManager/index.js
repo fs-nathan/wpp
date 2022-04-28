@@ -7,12 +7,7 @@ import CropModal from "components/ImageCropper/ImageCropper";
 import { get } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
-import LogoManagerPresenter, {
-  LogoManagerContext,
-  LogoManagerModalWrapper,
-  LogoMnanagerStateLess,
-  UploadButton,
-} from "./presenters";
+import LogoManagerPresenter, { LogoManagerContext, LogoManagerModalWrapper, LogoMnanagerStateLess, UploadButton } from "./presenters";
 import { iconsSelector, mutateIconSelector } from "./selectors";
 
 function LogoManager({
@@ -27,27 +22,13 @@ function LogoManager({
   children,
   doListIcon,
   canUpload = false,
-  selectedIcon,
-  currentGroup,
+  selectedIcon
 }) {
-  const [selectedIconFromOut, setSelectedIconFromOut] = React.useState();
+
   React.useEffect(() => {
     doListIcon();
     // eslint-disable-next-line
   }, []);
-  React.useEffect(() => {
-    if (!currentGroup) return;
-    const foundedIcon = [...icons.defaults, ...icons.createds].find(
-      (icon) => icon.url_icon === currentGroup.icon
-    );
-
-    console.log("foundedIcon", foundedIcon);
-
-    setSelectedIconFromOut({
-      url_full: foundedIcon.url_icon,
-      url_sort: foundedIcon.icon,
-    });
-  }, [currentGroup]);
 
   const [openAlert, setOpenAlert] = React.useState(false);
   const [alertProps, setAlertProps] = React.useState({});
@@ -84,7 +65,7 @@ function LogoManager({
         handleSelectIcon={(icon) => doSelectIcon(icon)}
         handleOpenModal={doOpenModal}
         canUpload={canUpload}
-        selectedIconFromOut={selectedIcon || selectedIconFromOut}
+        selectedIconFromOut={selectedIcon}
       >
         {children}
       </LogoManagerPresenter>
@@ -126,11 +107,11 @@ const LogoManagerModal = (props) => {
             return icons.error !== null ? (
               <ErrorBox />
             ) : (
-              <>
-                <LogoMnanagerStateLess />
-                <UploadButton />
-              </>
-            );
+                <>
+                  <LogoMnanagerStateLess />
+                  <UploadButton />
+                </>
+              );
           }}
         </LogoManagerContext.Consumer>
       </LogoManagerModalWrapper>

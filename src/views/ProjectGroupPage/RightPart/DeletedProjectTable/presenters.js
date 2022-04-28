@@ -1,28 +1,29 @@
 import { Button, CircularProgress, Typography } from "@material-ui/core";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import { mdiArrowLeft } from "@mdi/js";
-import AlertModal from "components/AlertModal";
-import { concat, find, get, isNil } from "lodash";
+import { mdiArrowLeft, mdiMenuDown } from "@mdi/js";
+import { concat, filter, find, get, isNil } from "lodash";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import * as images from "../../../../assets";
 import CustomAvatar from "../../../../components/CustomAvatar";
 import CustomBadge from "../../../../components/CustomBadge";
 import CustomTable from "../../../../components/CustomTable";
 import LoadingBox from "../../../../components/LoadingBox";
 import { StateBox } from "../../../../components/TableComponents";
-import { WORKPLACE_TYPES } from "../../../../constants/constants";
+import "./style.scss";
+import AlertModal from "components/AlertModal";
 import {
   CustomEventDispose,
   CustomEventListener,
   DELETE_TRASH_PROJECT,
-  DELETE_TRASH_PROJECT_FAIL
+  DELETE_TRASH_PROJECT_FAIL,
 } from "../../../../constants/events";
+import * as images from "../../../../assets";
+import Icon from "@mdi/react";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import { WORKPLACE_TYPES } from "../../../../constants/constants";
+import { connect } from "react-redux";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
-import "./style.scss";
-
 
 const Container = ({ className = "", ...props }) => (
   <div

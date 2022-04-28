@@ -58,30 +58,47 @@ const LayoutDetail = ({
   doActionVisibleDrawerMessage,
   visible,
   doSetVisibleHeader,
+  handleClose,
+  handleOpen,
 }) => {
   const { doOpenModal, setItemLocation } = useContext(CustomLayoutContext);
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const isProject = pathname === "/projects";
+  const location = useLocation();
+  const isProject = location.pathname === "/projects";
   const TableContext = React.useContext(CustomTableContext);
-  const parsedPath = pathname.split("/");
+  const parsedPath = location.pathname.split("/");
   const [view, setViewParam] = useState("");
   const [projectId, setProjectId] = useState("");
+  const [categoryId, setCategoryId] = useState("");
   const [memberId, setMemberId] = useState("");
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const groupID = params.get("groupID");
+
   const isTemplate = useMemo(() => {
     return parsedPath.includes("template");
   }, [parsedPath]);
+  const isPreview = useMemo(() => {
+    return parsedPath.includes("preview");
+  }, [parsedPath]);
   useEffect(() => {
     if (isTemplate) {
-      setViewParam(parsedPath[5]);
-      setProjectId(parsedPath[6]);
-      setMemberId(parsedPath[7]);
+      setCategoryId(parsedPath[3]);
+      setViewParam(parsedPath[6]);
+      setProjectId(parsedPath[7]);
+      setMemberId(parsedPath[8]);
     } else {
       setViewParam(parsedPath[2]);
       setProjectId(parsedPath[3]);
       setMemberId(parsedPath[4]);
     }
   }, [isTemplate, parsedPath]);
+
+  useEffect(() => {
+    if (isPreview) {
+      handleClose();
+    }
+  }, [isPreview]);
 
   const disableShowHide = !isNil(
     find(
@@ -304,7 +321,11 @@ const LayoutDetail = ({
         <>
           {visible ? (
             isTemplate ? (
-              <TemplateHeader projectId={projectId} {...setView()} />
+              <TemplateHeader
+                projectId={projectId}
+                categoryId={categoryId}
+                {...setView()}
+              />
             ) : (
               <HeaderProject {...setView()} />
             )
@@ -317,17 +338,31 @@ const LayoutDetail = ({
               />
             </MiniContainer>
           )}
-          )
         </>
       )}
       {!isProject &&
         view !== "task-kanban" &&
         (isTemplate ? (
-          <TemplateHeader projectId={projectId} {...setView()} />
+          <TemplateHeader
+            projectId={projectId}
+            categoryId={categoryId}
+            {...setView()}
+          />
         ) : (
           <HeaderProject {...setView()} />
         ))}
-      {React.cloneElement(children, { aaaa: 1 })}
+      {isTemplate || (!groupID && !isProject) ? (
+        <div
+          className="template-preview-body"
+          style={{
+            height: isTemplate ? "calc(100vh - 88px)" : "calc(100vh - 75px)",
+          }}
+        >
+          {React.cloneElement(children, { aaaa: 1 })}
+        </div>
+      ) : (
+        React.cloneElement(children, { aaaa: 1 })
+      )}
     </>
   );
 };

@@ -279,6 +279,7 @@ function CreateJobModal(props) {
 
   React.useEffect(() => {
     if (props.isOpen && Number.isInteger(props.editMode)) {
+      console.log('xxxx')
       const closeModal = () => {
         setIsUpdating(false)
         props.setOpen(false)

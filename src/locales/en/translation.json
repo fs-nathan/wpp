@@ -48,7 +48,8 @@
           "COMPLETE": "Complete",
           "EXPIRED": "Expired",
           "CREATED": "You create",
-          "ASSIGNED": "You joined"
+          "ASSIGNED": "You joined",
+          "LOCK": "Locked"
         }
       },
       "CUSTOM_TEXTBOX": {
@@ -323,7 +324,8 @@
                 "TITLE": "Member settings",
                 "KEEP": "Keep members",
                 "DISCARD": "Delete all members"
-              }
+              },
+              "TITLE_COPY_TO": "Copy to"
             }
           },
           "CUPG": {
@@ -331,9 +333,8 @@
             "U_TITLE": "Edit work team",
             "NAME": "Work team name",
             "DESC": "Work team descriptions",
-            "LOGO_THEME": "Work team themes, work team icons",
-            "LOGO_SELECT": "Change icon",
-            "ADD_DESC": "Add description"
+            "LOGO": "Work team icon",
+            "LOGO_SELECT": "Change icon"
           },
           "CUP": {
             "C_TITLE": "Create project",
@@ -390,10 +391,6 @@
             },
             "SETTING": "Settings",
             "EDIT": "Edit",
-            "ADD_TABLE_TASKS": "Add table tasks",
-            "CHANGE_COLOR": "Change color",
-            "CHANGE_ICON": "Change icon",
-            "SET_DEFAULT": "Set to default",
             "HIDE": "Hide",
             "SHOW": "Cancel hide",
             "DEL": "Delete",
@@ -476,9 +473,6 @@
               "LABEL": "Copy task group, phrase",
               "DESC": "Copy available task group, phrase"
             }
-          },
-          "COLOR_PICKER": {
-            "TITLE": "Change group color"
           },
           "CUGT": {
             "C_TITLE": "Create task group, phrase",
@@ -2594,5 +2588,91 @@
   "CREATE_PROJECT_DONE_NEW_CONTENT": "Specify, set due date and start working",
   "CREATE_PROJECT_DONE_SHARE_LABEL": "Share with teams",
   "CREATE_PROJECT_DONE_SHARE_CONTENT": "Invite members to join in effective teamwork",
-  "BEGIN": "Begin"
+  "BEGIN": "Begin",
+  "ADD_NEW": {
+    "Blank page": "Job board is empty",
+    "Create new project": "Create a new job board",
+    "From library": "Choose from the library",
+    "How do you want to do": "How would you like to start?",
+    "More description": "Add description",
+    "Start": "Start from scratch",
+    "Use a template": "Use a template"
+  },
+  "ADD_NEW_TASK": "More work",
+  "CHOOSE_PROJECT": "Choose wallpaper",
+  "Complete": "Complete",
+  "Duration": "Progress",
+  "EDIT": "Editing",
+  "EDIT_FIELDS": "Edit field",
+  "EMPTY_WORKING_GROUP_MESSAGE_1": "Categorize and plan your work system for easy management by creating workgroups",
+  "EMPTY_WORKING_GROUP_MESSAGE_2": "Tip: Create workgroups based on size, nature, or the way that's easiest for you to follow.",
+  "EMPTY_WORKING_GROUP_MESSAGE_3": "Experience: Usually, working groups will be built by the CEO or the Board of Directors to be consistent with the governance chart in the system.",
+  "EMPTY_WORKING_GROUP_MESSAGE_4": "Each member can create their own set of tasks, for example: My work...",
+  "LABEL_ALL_DELETED_WORKING_BOARD": "All boards deleted",
+  "LABEL_CATEGORY": "Classify",
+  "LABEL_CHAT_TASK_TIEN_DO_CONG_VIEC_DA_DUOC_CHAY": "Job progress has been run",
+  "LABEL_FILTER_WORKING_BOARD": "Filter job boards",
+  "LABEL_GANTT_NAME_TODAY_MENU": "Today",
+  "LABEL_GROUP_ACCOUNT_EMPTY_INVITATIONS": "No group invites yet!",
+  "LABEL_GROUP_ACCOUNT_EMPTY_REQUIREMENTS": "No group membership required!",
+  "LABEL_TASK_DETAIL": "Job details",
+  "LABEL_WORKING_BOARD_CREATE_NEW": "Create a new job board",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING": "Add members to join the work",
+  "MESSAGE_GUIDELINE_ADD_MEMBER_WORKING_DES": "Please add members to this job and decentralize them to perform and manage effectively.",
+  "Priority": "Prioritize",
+  "Status": "Status",
+  "TRASH": "Garbage can",
+  "Time end": "End",
+  "Time start": "Begin",
+  "VIEW_OFFER_LABEL_FILTER_BY_TIME": "Filter by time",
+  "ç": "Request",
+  "TEMPLATE": {
+    "Group": "Sample group",
+    "Shared": "Shared",
+    "Add new for": "More templates for",
+    "Famous": "Featured model group",
+    "Recently shared": "New model to share",
+    "About": "About this model",
+    "Find template": "Find samples",
+    "Footer": "Work better together with Workplus templates designed and shared by members of the Workplus community. \nWhether you're an independent entrepreneur building your business from the ground up or you're new to managing your work in a planned way, Workplus is the perfect tool to keep people connected. \nin your business or team growth. \nUse Workplus templates to ensure your entire company or team is up to date on key initiatives; \nset high goals and be more transparent; \nPlan topics for discussion. \nWhatever your business, you can plan, organize and get it done with Workplus!",
+    "Or": "or",
+    "Preview": "View samples",
+    "Sample": "Sample Library",
+    "Shared by": "Shared by",
+    "Shared template": "Samples shared",
+    "Start blank": "Start with an empty board",
+    "Templates": "Samples",
+    "Use": "Use templates",
+    "copied": "times copied",
+    "views": "view",
+    "Agree": "Agree",
+    "Clone start time": "Copy work progress",
+    "Create": "Create new",
+    "Create new": "Create a new board from this template",
+    "Intro": "Introduce",
+    "Reffer": "Model introduction for members",
+    "Reffer 1": "Share this template by sending the link to other members.",
+    "Reffer 2": "This form can only be viewed after logging in",
+    "Unshare": "Cancel sharing",
+    "Unshare 1": "You have shared this template for the community and other members to use.",
+    "Unshare 2": "If you unshare the other members will no longer see the template.",
+    "Unshare 3": "You still want to continue to unshare.",
+    "Unshare full": "Cancel sample sharing",
+    "Using": "Use templates",
+    "Using subtitle": "Any discussion, document in the table will not be copied to the new board.",
+    "copy": "Copy",
+    "Cancel": "Come back"
+  },
+  "MESSAGE_NO_PERMISSION": "You are not authorized to perform this action",
+  "Member": "Member",
+  "PROJECT_NAME": "Form name",
+  "PROJECT_SETTING_MODAL_PANEL_PIN": "Pin to Personal Board",
+  "PROJECT_SETTING_MODAL_PANEL_PIN_DESCRIPTION": "Pin projects to personal boards for quick dashboard access",
+  "SHARE": {
+    "Back": "Come back",
+    "cancel": "Cancel",
+    "change": "Change",
+    "next": "Next",
+    "share": "Share"
+  }
 }

@@ -3,7 +3,7 @@
   .MuiOutlinedInput-root {
     color: var(--color-primary);
   }
-  & > div:nth-child(3) {
+  &>div:nth-child(3) {
     z-index: 999;
   }
 }
@@ -64,8 +64,7 @@
 
 .comp_CustomModal___dialog-content {
   overflow: hidden;
-  max-height: 100%;
-  & > input[type="file"] {
+  &>input[type="file"] {
     display: none;
   }
   .MuiInputBase-input {
@@ -78,13 +77,13 @@
   padding: 6px 24px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 
-  & > h2 {
+  &>h2 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 
-    & > button {
+    &>button {
       padding: 12px;
       margin-right: -12px;
     }
@@ -112,7 +111,7 @@
   text-transform: uppercase;
   min-width: unset;
 
-  & > span:last-child {
+  &>span:last-child {
     display: none;
   }
 }
@@ -136,12 +135,13 @@
 }
 
 @mixin comp_CustomModal___dialog {
-  & > div:nth-child(3) > div {
+  &>div:nth-child(3)>div {
     overflow: hidden;
     min-width: 40vw;
     max-width: 70vw;
   }
 }
+
 
 .comp_CustomModal___dialog {
   &-sm {
@@ -157,7 +157,7 @@
   }
 
   &-xs {
-    & > div:nth-child(3) > div {
+    &>div:nth-child(3)>div {
       overflow: hidden;
       min-width: 27vw;
       max-width: 40vw;
@@ -169,7 +169,7 @@
   display: grid;
   grid-template-rows: 1fr;
 
-  & > * {
+  &>* {
     &:first-child {
       border-right: 1px solid rgba(0, 0, 0, 0.1);
     }
@@ -239,7 +239,7 @@
 .per-line-modal {
   margin-bottom: 20px;
   p {
-    margin-top: 0px;
+    margin-top: 0px
   }
   .field-required {
     margin: 0px 5px;
