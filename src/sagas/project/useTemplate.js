@@ -1,8 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import { USE_TEMPLATE } from "constants/actions/project/useTemplate";
 import { get } from "lodash";
 import { call, put } from "redux-saga/effects";
 import {
   useTemplateFail,
+  useTemplateReset,
   useTemplateSuccess,
 } from "../../actions/project/useTemplate";
 import { apiService } from "../../constants/axiosInstance";
@@ -16,6 +18,8 @@ import {
   SnackbarEmitter,
   SNACKBAR_VARIANT,
 } from "../../constants/snackbarController";
+import { push } from "react-router-redux";
+import history from "helpers/utils/history";
 
 async function doUseTemplate({
   template_id,
@@ -43,8 +47,19 @@ async function doUseTemplate({
 
 function* useTemplate(action) {
   try {
-    yield call(doUseTemplate, action.options);
-    // yield put(useTemplateSuccess({ project }, action.options));
+    const { project } = yield call(doUseTemplate, action.options);
+    console.log(
+      "🚀 ----------------------------------------------------------------------------"
+    );
+    console.log(
+      "🚀 ~ file: useTemplate.js ~ line 51 ~ function*useTemplate ~ project",
+      project
+    );
+    console.log(
+      "🚀 ----------------------------------------------------------------------------"
+    );
+    CustomEventEmitterWithParams(USE_TEMPLATE.SUCCESS, { project });
+    history.push("/projects/task-table/" + project.id);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(useTemplateFail(error, action.options));
@@ -56,4 +71,10 @@ function* useTemplate(action) {
   }
 }
 
-export { useTemplate };
+function* resetUseTemplate(action) {
+  try {
+    yield put(useTemplateReset());
+  } catch (error) {}
+}
+
+export { useTemplate, resetUseTemplate };

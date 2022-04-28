@@ -4,10 +4,36 @@
     bottom: 8px;
     display: flex;
     gap: 8px;
+    color: #5e6c84;
+    svg {
+      display: inline-flex;
+      font-size: 16px;
+    }
+    p {
+      color: #5e6c84;
+
+      display: inline-flex;
+      font-size: 13px !important;
+    }
     div {
       display: flex;
       align-items: center;
       gap: 4px;
+    }
+  }
+  &__description {
+    color: #172b4d;
+    margin-bottom: 16px;
+    line-height: 1.5;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    p {
+      margin: 0;
     }
   }
 }

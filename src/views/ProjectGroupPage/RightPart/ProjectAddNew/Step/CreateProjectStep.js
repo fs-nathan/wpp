@@ -10,7 +10,13 @@ import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
 import ViewTimelineRoundedIcon from "@mui/icons-material/ViewTimelineRounded";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Box, Button, ButtonGroup, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import * as images from "assets/index";
 import CustomModal, { Title } from "components/CustomModal";
 import CustomTextbox from "components/CustomTextbox";
@@ -28,14 +34,14 @@ import { useEffect, useRef, useState } from "react";
 // import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory, useLocation } from "react-router-dom";
-import SelectGroupProject from "./SelectGroupProject";
 import { connect, useSelector } from "react-redux";
 import { createProject } from "actions/project/createProject";
 import {
   CREATE_PROJECT_FAIL,
   CREATE_PROJECT_SUCCESS,
 } from "constants/actions/project/createProject";
-
+import CloseIcon from "@material-ui/icons/Close";
+import SelectGroupProject from "../../../Modals/SelectGroupProject";
 // import { ListTagsCreateProject } from "./components";
 
 const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
@@ -72,11 +78,21 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
     } catch (error) {}
   }
 
+  function onClose() {
+    history.goBack();
+  }
   return (
     <>
       <Box className="create-project-step">
-        <div className="back-button" onClick={onBack}>
-          <ArrowBackIcon fontSize="large" htmlColor="#969ead" />
+        <div className="back-button">
+          <IconButton htmlColor="#969ead" onClick={onBack}>
+            <ArrowBackIcon />
+          </IconButton>
+        </div>
+        <div className="close-button">
+          <IconButton htmlColor="#969ead" onClick={onClose}>
+            <CloseIcon />
+          </IconButton>
         </div>
         <div className="create-project-step-form">
           <Typography variant="h4" marginBottom={12}>
@@ -91,6 +107,7 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
             className={
               "view_ProjectGroup_CreateNew_Project_Modal_formItem per-line-step-in-form"
             }
+            style={{ fontSize: "16px" }}
           />
 
           {haveDescription ? (
@@ -109,7 +126,7 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
               startIcon={<Add />}
               onClick={() => setHaveDescription(true)}
             >
-              Thêm mô tả
+              {t("ADD_NEW.More description")}
             </Button>
           )}
 
@@ -129,66 +146,12 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
           </div>
 
           <div className="choose-view per-line-step-in-form">
-            <p>{t("CREATE_DEFAULT_VIEW")}</p>
-            <ButtonGroup
-              variant="outlined"
-              size="large"
-              aria-label="outlined primary button group "
-              className="choose-view-options per-line-step-in-form"
-            >
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={<List htmlColor="#f8949e" />}
-                className={`${
-                  view_default === 1 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(1)}
-              >
-                List
-              </Button>
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={<ViewKanbanRoundedIcon sx={{ color: "#3aaff5" }} />}
-                className={`${
-                  view_default === 2 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(2)}
-              >
-                Board
-              </Button>
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={
-                  <ViewTimelineRoundedIcon sx={{ color: "#2fbf9c" }} />
-                }
-                className={`${
-                  view_default === 3 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(3)}
-              >
-                Timeline
-              </Button>
-              <Button
-                variant="outline"
-                size="large"
-                startIcon={<Forum htmlColor="#f7cd55" />}
-                className={`${
-                  view_default === 4 && "choose-view-button--active"
-                }`}
-                onClick={() => setViewDefault(4)}
-              >
-                Discuss
-              </Button>
-            </ButtonGroup>
             <div className="submit-button">
               <Button
                 size="large"
                 endIcon={<ArrowRightAltIcon />}
                 variant="contained"
-                color="primary"
+                style={{ boxShadow: "none", backgroundColor: "#0076F3" }}
                 onClick={onNextHandler}
               >
                 {t("CREATE_NEXT")}

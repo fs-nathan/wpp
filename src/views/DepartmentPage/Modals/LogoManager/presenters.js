@@ -327,7 +327,6 @@ function LogoManagerProvider({
       !!selectedIconFromOut.url_sort &&
       selectedIconFromOut.url_sort !== selectedIcon.url_sort
     ) {
-      console.log("go herre");
       setSelectedIcon({
         url_sort: selectedIconFromOut.url_sort,
         url_full: selectedIconFromOut.url_full,

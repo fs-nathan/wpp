@@ -23,7 +23,6 @@ import {
 import { decodePriorityCode } from "../../../../helpers/project/commonHelpers";
 import "./style.scss";
 
-
 const Container = ({ className = "", ...props }) => (
   <div
     className={`view_ProjectGroupPage_Table_Deleted___container ${className}`}

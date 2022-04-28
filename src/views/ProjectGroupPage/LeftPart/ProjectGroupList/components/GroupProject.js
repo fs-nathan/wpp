@@ -29,9 +29,10 @@ const useStyles = makeStyles((theme) => ({
   projectItem: {
     padding: "5px 0",
     paddingLeft: "45px",
+
     "&:hover, &.active": {
-      backgroundColor: "#e5e5e5!important",
-      color: "#0076f3",
+      backgroundColor: "#e5e5e5 !important",
+      color: "#0076f3 !important",
       "& $projectIconChecked": {
         display: "flex",
       },
@@ -48,9 +49,19 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
   },
-  projectIcon: { minWidth: "auto", marginRight: 5 },
-  projectIconChecked: { display: "none", color: "#0076f3" },
-  projectIconOutLine: { display: "flex" },
+  projectIcon: {
+    minWidth: "auto",
+    marginRight: 5,
+  },
+  projectIconChecked: { display: "none", color: "#0076f3 !important" },
+  projectIconOutLine: {
+    display: "flex",
+    "& svg": {
+      width: "0.9em",
+      height: "0.9em",
+      color: "#989898",
+    },
+  },
   groupName: {
     whiteSpace: "nowrap",
   },
@@ -79,7 +90,7 @@ export const GroupProject = ({
     "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
 
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
 
   const isDefaultGroup =
     idGroupDefault === `?groupID=${projectGroup.id}` ||
@@ -96,6 +107,7 @@ export const GroupProject = ({
           <ListItem
             className="view_ProjectGroup_List-customListItem view_ProjectGroup_List-customListItem-nav"
             component={PathNavLink}
+            onClick={() => _toggleExpand()}
             to={`/projects?groupID=${projectGroup.id}`}
             // onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
           >
@@ -110,10 +122,11 @@ export const GroupProject = ({
               <div
                 style={{
                   // marginRight: "10px",
-                  width: 20,
-                  height: 20,
-                  borderRadius: 5,
-                  backgroundColor: "#4dcbc4",
+                  width: 13,
+                  height: 13,
+                  borderRadius: 3,
+                  backgroundColor: get(projectGroup, "color"),
+                  marginLeft: 3,
                 }}
                 // src={get(projectGroup, "icon")}
                 alt="avatar"
@@ -136,18 +149,6 @@ export const GroupProject = ({
             />
 
             {isDefaultGroup && <FlagOutlinedIcon htmlColor={"red"} />}
-
-            <div
-              className="wp-wrapper-button"
-              onClick={(evt) => {
-                evt.preventDefault();
-                setOpenCreateGroup(true);
-                setAnchorElAddGroup(null);
-                setSelectedGroup(null);
-              }}
-            >
-              <AddIcon sx={{ color: "rgba(0,0,0,0.54)" }} />
-            </div>
 
             <div
               className="wp-wrapper-button"
@@ -211,7 +212,7 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
               <ListItemIcon
                 className={[classes.projectIcon, classes.projectIconChecked]}
               >
-                <CheckCircleIcon htmlColor="#0076f3" />
+                <CheckCircleIcon />
               </ListItemIcon>
 
               <ListItemIcon

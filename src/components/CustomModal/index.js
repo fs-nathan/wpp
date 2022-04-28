@@ -169,6 +169,7 @@ function TwoColumns({ maxWidth, left, right, height }) {
 }
 
 function CustomModal({
+  fullScreen = false,
   loading = false,
   actionLoading = false,
   activeLoading = false,
@@ -211,6 +212,7 @@ function CustomModal({
 
   return (
     <StyledDialog
+      fullScreen={fullScreen}
       maxWidth={maxWidth}
       fullWidth={fullWidth}
       open={open}

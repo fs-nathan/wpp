@@ -14,6 +14,8 @@ import {
 } from "@material-ui/core";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
+import AddIcon from "@mui/icons-material/Add";
 import {
   mdiBookmarkOutline,
   mdiDotsVertical,
@@ -21,10 +23,8 @@ import {
   mdiPlus,
 } from "@mdi/js";
 import Icon from "@mdi/react";
-import AddIcon from "@mui/icons-material/Add";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
-
 import LibraryAddCheckOutlined from "@mui/icons-material/LibraryAddCheckOutlined";
 import { size } from "lodash";
 import React from "react";
@@ -40,12 +40,15 @@ import {
   CustomEventDispose,
   CustomEventListener,
 } from "../../../../constants/events";
+import {
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "../../../../constants/snackbarController";
 import AddToPersonalBoardModal from "../../Modals/AddPersonalBoard";
 import CreateProjectGroup from "../../Modals/CreateProjectGroup";
 import ProjectGroupDelete from "../../Modals/DeleteProjectGroup";
 import { GroupProject } from "./components";
 import "./style.scss";
-import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
 import { TEMPLATE } from "mocks/template";
 import { ExpandLess, ExpandMore } from "@material-ui/icons";
@@ -114,7 +117,6 @@ function ProjectList({
 
   function onDragEnd(result) {
     const { source, destination, draggableId } = result;
-
     if (!destination) return;
     if (
       destination.droppableId === source.droppableId &&

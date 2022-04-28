@@ -1,6 +1,7 @@
 import {
   USE_TEMPLATE,
   USE_TEMPLATE_FAIL,
+  USE_TEMPLATE_RESET,
   USE_TEMPLATE_SUCCESS,
 } from "../../constants/actions/project/useTemplate";
 
@@ -19,13 +20,20 @@ export const useTemplate = ({
   },
 });
 
-export const useTemplateSuccess = (_, options) => ({
+export const useTemplateSuccess = ({ project }, options) => ({
   type: USE_TEMPLATE_SUCCESS,
   options,
+  data: {
+    project,
+  },
 });
 
 export const useTemplateFail = (error, options) => ({
   type: USE_TEMPLATE_FAIL,
   options,
   error,
+});
+
+export const useTemplateReset = () => ({
+  type: USE_TEMPLATE_RESET,
 });

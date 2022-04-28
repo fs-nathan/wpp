@@ -26,7 +26,7 @@ import DateFnsUtils from "@date-io/date-fns";
 import CustomTextbox from "components/CustomTextbox";
 import { useTranslation } from "react-i18next";
 import CustomDatePicker from "components/CustomDatePicker";
-import SelectGroupProject from "./SelectGroupProject";
+import SelectGroupProject from "../../../../Modals/SelectGroupProject";
 
 const DialogUsing = ({ onClose, onOk }) => {
   const { t } = useTranslation();
@@ -53,7 +53,7 @@ const DialogUsing = ({ onClose, onOk }) => {
     <>
       <Box width={320} p={1}>
         <DialogTitle sx={{ textAlign: "center", fontSize: 14 }}>
-          Tạo bảng mới từ mẫu này
+          {t("TEMPLATE.Create new")}
           <IconButton
             aria-label="close"
             onClick={onClose}
@@ -107,7 +107,7 @@ const DialogUsing = ({ onClose, onOk }) => {
                   onChange={() => setIsDayStart((pre) => !pre)}
                 />
               }
-              label="Sao chép tiến độ công việc"
+              label={t("TEMPLATE.Clone start time")}
             />
           </FormGroup>
           {isDayStart && (
@@ -123,14 +123,11 @@ const DialogUsing = ({ onClose, onOk }) => {
               />
             </MuiPickersUtilsProvider>
           )}
-          <Typography>
-            Mọi hoạt động thảo luận, tài liệu trong bảng sẽ không được sao chép
-            sang bảng mới.
-          </Typography>
+          <Typography>{t("TEMPLATE.Using subtitle")}</Typography>
         </Box>
         <DialogActions sx={{ justifyContent: "flex-start" }}>
           <Button variant="contained" color="primary" onClick={handleOk}>
-            Tạo mới
+            {t("TEMPLATE.Create")}
           </Button>
         </DialogActions>
       </Box>

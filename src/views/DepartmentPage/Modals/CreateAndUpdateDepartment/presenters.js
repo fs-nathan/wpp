@@ -134,8 +134,6 @@ function CreateAndUpdateDepartment({
     // eslint-disable-next-line
   }, [updateDepartment]);
 
-
-
   return (
     <React.Fragment>
       <CustomModal

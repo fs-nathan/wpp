@@ -58,7 +58,7 @@ function KanbanBoard(props) {
       }}
     >
       <BoardScrollbars autoHide autoHideTimeout={500}>
-        <Container style={{ height: "calc(100% - 10%)" }}>
+        <Container>
           <DragContainer
             onDrop={(dropResult) =>
               handleColumnDrop(
