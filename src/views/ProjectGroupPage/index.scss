@@ -41,8 +41,16 @@
   position: absolute;
   bottom: 0;
   width: 100%;
-  height: calc(100vh - 88px);
-  .comp_TableComponents___container {
+  .gantt__container {
+    height: 100% !important;
+  }
+  .offset-gantt-container {
+    height: 100% !important;
+  }
+  .gantt-chart__container .scroll-gantt {
+    height: 100% !important;
+  }
+  & > div {
     display: flex;
     align-items: stretch;
     & > div {

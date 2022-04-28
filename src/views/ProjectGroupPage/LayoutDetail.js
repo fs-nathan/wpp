@@ -63,14 +63,18 @@ const LayoutDetail = ({
 }) => {
   const { doOpenModal, setItemLocation } = useContext(CustomLayoutContext);
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const isProject = pathname === "/projects";
+  const location = useLocation();
+  const isProject = location.pathname === "/projects";
   const TableContext = React.useContext(CustomTableContext);
-  const parsedPath = pathname.split("/");
+  const parsedPath = location.pathname.split("/");
   const [view, setViewParam] = useState("");
   const [projectId, setProjectId] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [memberId, setMemberId] = useState("");
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const groupID = params.get("groupID");
+
   const isTemplate = useMemo(() => {
     return parsedPath.includes("template");
   }, [parsedPath]);
@@ -347,8 +351,13 @@ const LayoutDetail = ({
         ) : (
           <HeaderProject {...setView()} />
         ))}
-      {isTemplate && view !== "task-kanban" ? (
-        <div className="template-preview-body">
+      {isTemplate || (!groupID && !isProject) ? (
+        <div
+          className="template-preview-body"
+          style={{
+            height: isTemplate ? "calc(100vh - 88px)" : "calc(100vh - 75px)",
+          }}
+        >
           {React.cloneElement(children, { aaaa: 1 })}
         </div>
       ) : (
