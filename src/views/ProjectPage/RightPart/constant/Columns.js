@@ -3,7 +3,11 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ColumnNameGroup from "components/WPReactTable/components/ColumnNameGroup";
 import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
 import { apiService } from "constants/axiosInstance";
-import { DEFAULT_MESSAGE, SnackbarEmitter, SNACKBAR_VARIANT } from "constants/snackbarController";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
 import { get } from "lodash";
 import React, { useEffect, useRef } from "react";
 import styled from "styled-components";

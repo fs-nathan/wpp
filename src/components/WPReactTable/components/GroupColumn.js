@@ -67,7 +67,10 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
       <div className="tr" {...rowProps} key={row.original.id}>
         <ListContentColumn
           data={row.cells}
-          onVisibleAddRow={_handleAddNewTask}
+          onVisibleAddRow={(e) => {
+            _handleAddNewTask();
+            _handleAddNewRow();
+          }}
           dragHandle={{ ...provided.dragHandleProps }}
           isGroupColumn
           hasSub={!!row.subRows.length}

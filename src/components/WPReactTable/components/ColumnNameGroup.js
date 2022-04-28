@@ -28,19 +28,16 @@ const ColumnNameGroup = ({
             <ArrowDropDownRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
           )}
         </WrapperButton>
-
         {/* Name group */}
         <NameGroup id={group.id} name={value} />
         {/* End name group */}
-      </WrapperLeft>
-      <WrapperRight className="wrapper-right">
         <WrapperButton className="right-side" onClick={onVisibleAddRow}>
           <AddRoundedIcon sx={{ fill: "#6d6e6f" }} />
         </WrapperButton>
         <WrapperButton className="right-side">
           <MoreHorizRoundedIcon sx={{ fill: "#6d6e6f" }} />
         </WrapperButton>
-      </WrapperRight>
+      </WrapperLeft>
     </WrapperMainGroup>
   );
 };
@@ -93,6 +90,7 @@ const NameGroup = ({ id = "", name = "" }) => {
   if (isEditing)
     return (
       <InputCustom
+        border="none"
         ref={refInput}
         isGroup
         placeholder={"Write a task name"}
@@ -195,10 +193,11 @@ const StyledHeadingGroup = styled(TextEllipsis)`
 `;
 
 const WrapperName = styled.div`
+  min-height: 36px;
   font-size: 15px;
   font-weight: 400;
   margin-left: 0;
-  min-width: 1px;
+  min-width: 120px;
   outline: none;
   cursor: pointer;
 `;

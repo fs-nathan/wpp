@@ -36,26 +36,14 @@ const initialState = {
 
 function AllTaskTable({
   expand,
-  handleExpand,
-  showHidePendings,
-  handleSubSlide,
   tasks,
   project,
-  handleShowOrHideProject,
   handleSortTask,
   handleOpenModal,
   handleReload,
-  handleRemoveMemberFromTask,
   bgColor,
   timeType,
-  handleAddMemberToTask,
   handleTimeType,
-  memberID,
-  memberTask,
-  isShortGroup,
-  canUpdateProject,
-  canCreateTask,
-  handleSortGroupTask,
 }) {
   const { itemLocation } = useContext(CustomLayoutContext);
   const { projectId } = useParams();
@@ -145,6 +133,7 @@ function AllTaskTable({
    * It takes a dataColumn object as an argument, and then dispatches an action to the Redux store.
    * @returns The list of columns.
    */
+
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
     /* Dispatching an action to the Redux store. */
