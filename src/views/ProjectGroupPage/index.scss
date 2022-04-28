@@ -36,3 +36,21 @@
     }
   }
 }
+
+.template-preview-body {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: calc(100vh - 88px);
+  .comp_TableComponents___container {
+    display: flex;
+    align-items: stretch;
+    & > div {
+      display: flex;
+      align-items: stretch;
+      div[role="table"] {
+        height: 100%;
+      }
+    }
+  }
+}

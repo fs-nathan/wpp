@@ -5,7 +5,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const ProjectModeStep = ({ onNext, setopenModal, openModal }) => {
-  const [shareOption, setShareOption] = useState("internal");
+  const [shareOption, setShareOption] = useState("public");
   const { t } = useTranslation();
 
   return (

@@ -18,6 +18,8 @@ import {
   SnackbarEmitter,
   SNACKBAR_VARIANT,
 } from "../../constants/snackbarController";
+import { push } from "react-router-redux";
+import history from "helpers/utils/history";
 
 async function doUseTemplate({
   template_id,
@@ -46,7 +48,18 @@ async function doUseTemplate({
 function* useTemplate(action) {
   try {
     const { project } = yield call(doUseTemplate, action.options);
+    console.log(
+      "🚀 ----------------------------------------------------------------------------"
+    );
+    console.log(
+      "🚀 ~ file: useTemplate.js ~ line 51 ~ function*useTemplate ~ project",
+      project
+    );
+    console.log(
+      "🚀 ----------------------------------------------------------------------------"
+    );
     CustomEventEmitterWithParams(USE_TEMPLATE.SUCCESS, { project });
+    history.push("/projects/task-table/" + project.id);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(useTemplateFail(error, action.options));

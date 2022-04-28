@@ -120,7 +120,12 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
     history.push(`/projects/template/${categoryId}/${projectId}`);
   }
   return (
-    <div className={classes.topbar}>
+    <div
+      className={`${classes.topbar}`}
+      style={{
+        maxHeight: "88px",
+      }}
+    >
       <div className={classes.header}>
         <div
           style={{

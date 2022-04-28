@@ -334,7 +334,6 @@ const LayoutDetail = ({
               />
             </MiniContainer>
           )}
-          )
         </>
       )}
       {!isProject &&
@@ -348,7 +347,13 @@ const LayoutDetail = ({
         ) : (
           <HeaderProject {...setView()} />
         ))}
-      {React.cloneElement(children, { aaaa: 1 })}
+      {isTemplate && view !== "task-kanban" ? (
+        <div className="template-preview-body">
+          {React.cloneElement(children, { aaaa: 1 })}
+        </div>
+      ) : (
+        React.cloneElement(children, { aaaa: 1 })
+      )}
     </>
   );
 };

@@ -97,7 +97,7 @@ export const GroupProject = ({
     `?groupID=${projectGroup.id}` === idGroupDefaultLocal;
 
   const _toggleExpand = () => {
-    setIsActive(!isActive);
+    setIsActive((pre) => !pre);
   };
 
   return (
