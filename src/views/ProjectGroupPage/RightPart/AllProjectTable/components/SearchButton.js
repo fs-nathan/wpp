@@ -76,7 +76,7 @@ const useStyles = makeStyles({
 
     "&::placeholder": {
       color: "#cdcfd0",
-      fontSize: '16px'
+      fontSize: "16px",
     },
   },
   buttonClose: {},

@@ -1,6 +1,7 @@
 import { Breadcrumbs, Divider, Icon, Link, Typography } from "@mui/material";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import React, { useCallback, useEffect, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
@@ -9,8 +10,9 @@ import SearchBar from "./components/SearchBar/SearchBar";
 import TemplateCard from "./components/TemplateCard/TemplateCard";
 import TemplateSection from "./components/TemplateSection/TemplateSection";
 
-const ProjectSharedTemplate = () => {
+const ProjectSharedTemplate = ({ expand, handleExpand }) => {
   const history = useHistory();
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const templates = useSelector(
     (state) => state.project.getListTemplateMeShared.data
@@ -35,12 +37,20 @@ const ProjectSharedTemplate = () => {
               <Breadcrumbs aria-label="breadcrumb">
                 <Link
                   underline="hover"
-                  color="inherit"
-                  href="/projects/template"
+                  color="#172b4d"
+                  onClick={() => history.push("/projects/template")}
+                  // href="/projects/template"
+                  style={{
+                    cursor: "pointer",
+                    textDecoration: "none",
+                    marign: 0,
+                  }}
                 >
-                  Thư viện mẫu
+                  {t("TEMPLATE.Sample")}
                 </Link>
-                <Typography color="text.primary">Đã chia sẻ</Typography>
+                <Typography color="text.primary">
+                  {t("TEMPLATE.Shared")}
+                </Typography>
               </Breadcrumbs>
             </div>
             <div style={{ width: 300 }}>
@@ -48,7 +58,11 @@ const ProjectSharedTemplate = () => {
             </div>
           </div>
 
-          <TemplateSection templates={templates} title="Các mẫu đã chia sẻ" />
+          <TemplateSection
+            icon={<img src="/images/mau-da-chia-se.png" />}
+            templates={templates}
+            title={t("TEMPLATE.Shared template")}
+          />
         </div>
       )}
     </ProjectTemplateWrapper>

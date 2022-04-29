@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import "./style.scss";
 
 export const colors = [
+  "#00bcd4",
   "#004393",
   "#3682f9",
   "#9fa5c2",

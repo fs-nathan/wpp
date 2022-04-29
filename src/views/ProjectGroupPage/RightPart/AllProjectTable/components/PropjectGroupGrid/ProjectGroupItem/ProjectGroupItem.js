@@ -24,11 +24,13 @@ function ProjectGroupItem({
   isDefaultGroup,
   isDisplayUpdate,
   handleClickEdit,
+  idHTML,
 }) {
   return (
     <div
       className="projectGroupListGrid__item"
       style={{ backgroundColor: backgroundColor }}
+      id={idHTML}
     >
       <NavLink
         className="projectGroupListGrid__item--title"

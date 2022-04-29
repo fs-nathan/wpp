@@ -182,9 +182,6 @@ function CopyProject({
   const [workingGroup, setWorkingGroup] = React.useState(
     projectGroupId ? projectGroupId : null
   );
-  groups.map((e) => {
-    console.log(e.id);
-  });
   // groups.map(e => {
   //   if (e.work_types.includes(String(workingTypeNew))) {
   //     workingGroupFilter.push(e)

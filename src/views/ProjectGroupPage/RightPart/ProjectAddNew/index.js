@@ -10,13 +10,13 @@ const STEP = {
   DONE: "done",
 };
 
-const ProjectAddNew = ({ handleExpand }) => {
+const ProjectAddNew = ({ handleClose }) => {
   const [step, setStep] = useState(STEP.INITIAL);
   const [projectId, setProjectId] = useState("");
 
   useEffect(() => {
-    handleExpand();
-  }, []);
+    handleClose();
+  }, [handleClose]);
 
   function onInitialDone() {
     setStep(STEP.CREATE);

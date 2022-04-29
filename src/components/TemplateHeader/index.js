@@ -30,12 +30,15 @@ import { actionToast } from "actions/system/system";
 import { useTemplate } from "actions/project/useTemplate";
 import moment from "moment";
 import CloseIcon from "@material-ui/icons/Close";
-
-const TemplateHeader = ({ view = "list", projectId, ...props }) => {
+import { CustomEventListener, USE_TEMPLATE } from "constants/events";
+import "./styles.scss";
+import { useTranslation } from "react-i18next";
+const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
-
+  const project = useSelector((state) => state.project.useTemplate.data);
+  const { t } = useTranslation();
   const fetchData = useCallback(async () => {
     try {
       if (projectId)
@@ -44,26 +47,33 @@ const TemplateHeader = ({ view = "list", projectId, ...props }) => {
   }, [projectId, getDetailTemplate, dispatch]);
 
   useEffect(() => {
-    localStorage.setItem("WPS_COLLAPSED_DEFAULT", false);
-  }, []);
-  useEffect(() => {
     fetchData();
   }, [fetchData]);
+
+  useEffect(() => {
+    CustomEventListener(USE_TEMPLATE.SUCCESS, (project) =>
+      history.push("/projects/task-table/" + project.id)
+    );
+    return CustomEventListener(USE_TEMPLATE.SUCCESS, (project) =>
+      history.push("/projects/task-table/" + project.id)
+    );
+  }, [project]);
+
   const NAV_BARS_LIST = [
     {
       id: 1,
       title: "Todo list",
-      to: `/projects/template/${projectId}/preview/task-table/${projectId}`,
+      to: `/projects/template/${categoryId}/${projectId}/preview/task-table/${projectId}`,
     },
     {
       id: 2,
       title: "Kanban",
-      to: `/projects/template/${projectId}/preview/task-kanban/${projectId}`,
+      to: `/projects/template/${categoryId}/${projectId}/preview/task-kanban/${projectId}`,
     },
     {
       id: 3,
       title: "Gantt",
-      to: `/projects/template/${projectId}/preview/task-gantt/${projectId}`,
+      to: `/projects/template/${categoryId}/${projectId}/preview/task-gantt/${projectId}`,
     },
   ];
   const [anchorUsingEl, setAnchorUsingEl] = useState(null);
@@ -102,14 +112,20 @@ const TemplateHeader = ({ view = "list", projectId, ...props }) => {
             : undefined,
         })
       );
+      handleUsingClose();
     } catch (error) {}
   }
 
   function onClosePreview() {
-    history.push("/projects/template/" + projectId);
+    history.push(`/projects/template/${categoryId}/${projectId}`);
   }
   return (
-    <div className={classes.topbar}>
+    <div
+      className={`${classes.topbar}`}
+      style={{
+        maxHeight: "88px",
+      }}
+    >
       <div className={classes.header}>
         <div
           style={{
@@ -145,18 +161,22 @@ const TemplateHeader = ({ view = "list", projectId, ...props }) => {
             }}
           >
             <Typography variant="body2" color="text.secondary">
-              Chia sẻ bởi @{template.user_share_name}
+              {t("TEMPLATE.Shared by")} @{template.user_share_name}
             </Typography>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-              <ContentCopyRoundedIcon />
+              <ContentCopyRoundedIcon
+                sx={{ width: "13px", height: "13px", color: "#555" }}
+              />
               <Typography variant="body2" color="text.secondary">
-                {template.total_use} lần sao chép
+                {template.total_use} {t("TEMPLATE.copied")}
               </Typography>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-              <RemoveRedEyeIcon />
+              <RemoveRedEyeIcon
+                sx={{ width: "13px", height: "13px", color: "#555" }}
+              />
               <Typography variant="body2" color="text.secondary">
-                {template.total_view} lượt xem
+                {template.total_view} {t("TEMPLATE.views")}
               </Typography>
             </div>
           </div>
@@ -181,8 +201,15 @@ const TemplateHeader = ({ view = "list", projectId, ...props }) => {
               color="primary"
               id="using-button"
               onClick={handleUsingClick}
+              sx={{
+                boxShadow: "none",
+                backgroundColor: "#0076F3",
+                "&:hover": {
+                  boxShadow: "none",
+                },
+              }}
             >
-              Sử dụng mẫu
+              {t("TEMPLATE.Using")}
             </Button>
             <Popover
               id={usingId}
@@ -197,7 +224,7 @@ const TemplateHeader = ({ view = "list", projectId, ...props }) => {
               <DialogUsing onClose={handleUsingClose} onOk={handleUsing} />
             </Popover>
           </div>
-          <IconButton color="inherit" onClick={onClosePreview}>
+          <IconButton onClick={onClosePreview} className="close-button-preview">
             <CloseIcon />
           </IconButton>
         </div>

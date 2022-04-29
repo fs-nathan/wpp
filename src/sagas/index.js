@@ -101,7 +101,10 @@ import { ADD_PROJECT_ROLE_TO_MEMBER } from "../constants/actions/project/addProj
 import { ASSIGN_MEMBER_TO_ALL_TASK } from "../constants/actions/project/assignMemberToAllTask";
 import { COPY_PROJECT } from "../constants/actions/project/copyProject";
 import { CREATE_PROJECT } from "../constants/actions/project/createProject";
-import { USE_TEMPLATE } from "../constants/actions/project/useTemplate";
+import {
+  USE_TEMPLATE,
+  USE_TEMPLATE_RESET,
+} from "../constants/actions/project/useTemplate";
 
 import { DELETE_PROJECT } from "../constants/actions/project/deleteProject";
 import {
@@ -383,7 +386,7 @@ import { assignMemberToAllTask } from "./project/assignMemberToAllTask";
 import { copyProject } from "./project/copyProject";
 import { shareProject } from "./project/shareProject";
 import { createProject } from "./project/createProject";
-import { useTemplate } from "./project/useTemplate";
+import { resetUseTemplate, useTemplate } from "./project/useTemplate";
 import { deleteProject } from "./project/deleteProject";
 import { cancelShare } from "./project/cancelShare";
 import { deleteTrashProject } from "./project/deleteTrashProject";
@@ -598,6 +601,7 @@ function* rootSaga() {
   yield takeLeading(DETAIL_DEFAULT_GROUP, detailDefaultGroup);
   yield takeEvery(CREATE_PROJECT, createProject);
   yield takeEvery(USE_TEMPLATE, useTemplate);
+  yield takeEvery(USE_TEMPLATE_RESET, resetUseTemplate);
   yield takeEvery(COPY_PROJECT, copyProject);
   yield takeEvery(SHARE_PROJECT, shareProject);
   yield takeEvery(SORT_PROJECT, sortProject);

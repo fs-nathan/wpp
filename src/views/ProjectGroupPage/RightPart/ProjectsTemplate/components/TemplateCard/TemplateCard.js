@@ -10,12 +10,13 @@ import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import React from "react";
 import "./index.scss";
 import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const TemplateCard = ({ template, isEmpty }) => {
+const TemplateCard = ({ template, isEmpty, categoryId }) => {
   const history = useHistory();
-
+  const { t } = useTranslation();
   function onTemplateClick() {
-    history.push("/projects/template/" + template.id);
+    history.push(`/projects/template/${categoryId}/${template.id}`);
   }
   function onAddNewClick() {
     history.push("/projects/add-new/");
@@ -36,12 +37,15 @@ const TemplateCard = ({ template, isEmpty }) => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
+          "&:hover": {
+            background: "#dedede",
+          },
         }}
         className="template-card"
         onClick={onAddNewClick}
       >
         <Typography variant="body1" color="text.secondary" fontSize={18}>
-          Bắt đầu với bảng trống
+          {t("TEMPLATE.Start blank")}
         </Typography>
       </Card>
     );
@@ -74,16 +78,23 @@ const TemplateCard = ({ template, isEmpty }) => {
           marginLeft: "20px",
         }}
       />
-      <CardContent>
-        <Typography variant="h6" color="black" mb={2}>
+      <CardContent sx={{ padding: "16px 0" }}>
+        <Typography variant="h6" color="#172B4D" mb={2} fontSize="14px">
           {template.name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={1}>
-          Chia sẻ bởi @{template.user_share_name}
+        <Typography
+          variant="body2"
+          color="#6B778C"
+          mb={1}
+          fontSize="12px"
+          lineHeight={1.5}
+        >
+          {t("TEMPLATE.Shared by")} @{template.user_share_name}
         </Typography>
-        <Typography variant="body2" color="text.secondary" mb={2}>
-          {template.description}
-        </Typography>
+        <div
+          className="template-card__description"
+          dangerouslySetInnerHTML={{ __html: template.description }}
+        ></div>
         <div className="template-card__action">
           <div className="template-card__action__copied">
             <ContentCopyRoundedIcon />

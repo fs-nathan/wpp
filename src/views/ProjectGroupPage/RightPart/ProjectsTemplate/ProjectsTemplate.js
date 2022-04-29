@@ -16,8 +16,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import ProjectTemplateWrapper from ".";
 import { getNewestTemplate } from "actions/project/getNewestTemplate";
+import { useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const ProjectsTemplate = () => {
+const ProjectsTemplate = ({ expand, handleOpen }) => {
+  const history = useHistory();
+  const { t } = useTranslation();
   const handleOnSearch = (string, results) => {
     // onSearch will have as the first callback parameter
     // the string searched and for the second the results.
@@ -43,6 +47,16 @@ const ProjectsTemplate = () => {
   const templates = useSelector(
     (state) => state.project.getNewestTemplate.data
   );
+  console.log(
+    "🚀 ---------------------------------------------------------------------------------"
+  );
+  console.log(
+    "🚀 ~ file: ProjectsTemplate.js ~ line 48 ~ ProjectsTemplate ~ categories",
+    categories
+  );
+  console.log(
+    "🚀 ---------------------------------------------------------------------------------"
+  );
 
   const fetchData = useCallback(async () => {
     try {
@@ -54,11 +68,14 @@ const ProjectsTemplate = () => {
     fetchData();
   }, [fetchData]);
 
+  useEffect(() => {
+    handleOpen();
+  }, [handleOpen]);
   return (
     <ProjectTemplateWrapper>
       <div>
         <div className="project-template-page__header">
-          <h1>Nhóm mẫu nổi bật</h1>
+          <h1>{t("TEMPLATE.Famous")}</h1>
           <div style={{ width: 300 }}>
             <SearchBar
               handleOnSearch={handleOnSearch}
@@ -85,8 +102,8 @@ const ProjectsTemplate = () => {
 
         {templates && templates.length > 0 && (
           <TemplateSection
-            icon={<AcUnitIcon fontSize="large" />}
-            title="Mẫu mới chia sẻ"
+            icon={<img src="/images/mau-new.png" />}
+            title={t("TEMPLATE.Recently shared")}
             templates={templates}
           />
         )}
@@ -96,9 +113,10 @@ const ProjectsTemplate = () => {
           categories.map((category) => (
             <TemplateSection
               isMainPage
+              isLanding={true}
               key={category.category_id}
-              categoryId={category.category_image}
-              icon={<AcUnitIcon fontSize="large" />}
+              categoryId={category.category_id}
+              icon={<img src={category.category_image} />}
               title={category.category_name}
               templates={category.templates}
               extra={
@@ -108,9 +126,15 @@ const ProjectsTemplate = () => {
                     color: "#969ead",
                     backgroundColor: "#fafbfc",
                     textTransform: "initial",
+                    "&:hover": {
+                      backgroundColor: " #ededed",
+                    },
                   }}
+                  onClick={() =>
+                    history.push("/projects/template/" + category.category_id)
+                  }
                 >
-                  Thêm mẫu cho {category.category_name}
+                  {t("TEMPLATE.Add new for")} {category.category_name}
                 </Button>
               }
             />

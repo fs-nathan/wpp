@@ -178,7 +178,6 @@ const LogoManagerModalWrapper = ({ children }) => {
   } = useContext(LogoManagerContext);
   const { t } = useTranslation();
 
-  console.log("selectedIcon", selectedIcon);
   return (
     <CustomModal
       open={open}
@@ -317,23 +316,43 @@ function LogoManagerProvider({
     url_sort: get(icons.defaults[0], "icon"),
     url_full: get(icons.defaults[0], "url_icon"),
   });
+  const [defaultIcon, setDefaultIcon] = React.useState({
+    id: get(icons.defaults[0], "id"),
+    url_sort: get(icons.defaults[0], "icon"),
+    url_full: get(icons.defaults[0], "url_icon"),
+  });
   React.useEffect(() => {
     if (
       selectedIconFromOut &&
-      selectedIconFromOut.url_sort != "" &&
-      selectedIconFromOut.url_sort != selectedIcon.url_sort
+      !!selectedIconFromOut.url_sort &&
+      selectedIconFromOut.url_sort !== selectedIcon.url_sort
     ) {
       setSelectedIcon({
         url_sort: selectedIconFromOut.url_sort,
         url_full: selectedIconFromOut.url_full,
       });
     } else {
-      setSelectedIcon({
-        url_sort: get(icons.defaults[0], "icon"),
-        url_full: get(icons.defaults[0], "url_icon"),
-      });
+      if (icons.defaults[0]) {
+        setSelectedIcon({
+          url_sort: get(icons.defaults[0], "icon"),
+          url_full: get(icons.defaults[0], "url_icon"),
+        });
+      }
     }
   }, [selectedIconFromOut]);
+
+  React.useEffect(() => {
+    if (
+      !selectedIcon.url_full &&
+      !selectedIcon.url_sort &&
+      icons.defaults.length > 0
+    ) {
+      setSelectedIcon({
+        url_full: icons.defaults[0].url_icon,
+        url_sort: icons.defaults[0].icon,
+      });
+    }
+  }, [icons]);
 
   return (
     <LogoManagerContext.Provider
@@ -350,6 +369,7 @@ function LogoManagerProvider({
         selectedIcon,
         setSelectedIcon,
         canUpload,
+        defaultIcon,
       }}
     >
       {children}

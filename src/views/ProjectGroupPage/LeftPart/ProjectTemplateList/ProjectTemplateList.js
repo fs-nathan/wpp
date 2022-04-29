@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { Box, List, ListItemIcon, ListItemText } from "@material-ui/core";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import SearchInput from "../../../../components/SearchInput";
 import { TEMPLATE } from "mocks/template";
@@ -13,9 +13,10 @@ import {
   ExpandMore,
   LibraryAddCheckOutlined,
 } from "@material-ui/icons";
-import { Collapse, ListItem, ListItemButton } from "@mui/material";
+import { Collapse, IconButton, ListItem, ListItemButton } from "@mui/material";
 import "./style.scss";
 import { useSelector } from "react-redux";
+import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -42,8 +43,21 @@ const ProjectTemplateList = ({
   handleOpenModal,
 }) => {
   const history = useHistory();
+  const { pathname } = useLocation();
   const { t } = useTranslation();
-  const [isPublicOpen, setIsPublicOpen] = useState(false);
+  const [isPublicOpen, setIsPublicOpen] = useState(true);
+  const parsedPath = pathname.split("/");
+  const isShared = useMemo(() => {
+    return parsedPath.includes("shared");
+  }, [parsedPath]);
+
+  const isBeShared = useMemo(() => {
+    return parsedPath.includes("be-shared");
+  }, [parsedPath]);
+
+  const activeCategory = useMemo(() => {
+    return parsedPath[3];
+  }, [parsedPath]);
 
   const handleClick = (tab) => {
     switch (tab) {
@@ -65,8 +79,8 @@ const ProjectTemplateList = ({
     (state) => state.project.getTemplateCategory.data
   );
 
-  function handleCategoryChoose(id) {
-    history.push("/projects/template/group/" + id);
+  function handleCategoryChoose(groupId) {
+    history.push("/projects/template/" + groupId);
   }
 
   return (
@@ -100,57 +114,66 @@ const ProjectTemplateList = ({
           <span>{t("LABEL_CHAT_TASK_THU_VIEN_MAU_LABEL")}</span>
         </Box>
 
-        <Box>
-          <List>
-            <ListItem disablePadding disableGutters>
-              <ListItemButton
-                onClick={() => handleClick(SideTab.Shared)}
-                sx={{ pl: 6 }}
+        <Box className="scrollList">
+          <Scrollbars autoHide autoHideTimeOut={500}>
+            <List>
+              <ListItem
+                disablePadding
+                disableGutters
+                className={`list-button ${isShared && "list-button--active"}`}
               >
-                <ListItemText primary="Đã chia sẻ" />
-              </ListItemButton>
-            </ListItem>
+                <ListItemButton
+                  onClick={() => handleClick(SideTab.Shared)}
+                  sx={{ pl: 6 }}
+                >
+                  <ListItemText primary={t("TEMPLATE.Shared")} />
+                </ListItemButton>
+              </ListItem>
 
-            <ListItem disablePadding disableGutters>
-              <ListItemButton
-                onClick={() => handleClick(SideTab.BeShared)}
-                sx={{ pl: 6 }}
-              >
-                <ListItemText primary="Được chia sẻ" />
-                {/* {templates &&
-                  templates.length > 0 &&
-                  (isBeSharedOpen ? <ExpandLess /> : <ExpandMore />)} */}
-              </ListItemButton>
-            </ListItem>
-
-            <ListItem disablePadding disableGutters>
-              <ListItemButton
-                onClick={() => handleClick(SideTab.Public)}
-                sx={{ pl: 6 }}
-              >
-                <ListItemText primary="Công khai" />
-                {categories &&
-                  categories.length > 0 &&
-                  (isPublicOpen ? <ExpandLess /> : <ExpandMore />)}
-              </ListItemButton>
-            </ListItem>
-            <Collapse in={isPublicOpen} timeout="auto" unmountOnExit>
-              <List component="div">
-                {categories &&
-                  categories.length > 0 &&
-                  categories.map((child) => (
-                    <ListItem disablePadding disableGutters key={child.id}>
-                      <ListItemButton
-                        sx={{ pl: 8 }}
-                        onClick={() => handleCategoryChoose(child.id)}
+              <ListItem disablePadding disableGutters className={`list-button`}>
+                <ListItemButton
+                  onClick={() => handleClick(SideTab.Public)}
+                  sx={{ pl: 6 }}
+                >
+                  <ListItemText primary={t("TEMPLATE.Group")} />
+                  {categories &&
+                    categories.length > 0 &&
+                    (isPublicOpen ? (
+                      <div className="close-button-list">
+                        <ExpandMore />
+                      </div>
+                    ) : (
+                      <div className="close-button-list">
+                        <ExpandLess style={{ transform: "rotate(90deg)" }} />
+                      </div>
+                    ))}
+                </ListItemButton>
+              </ListItem>
+              <Collapse in={isPublicOpen} timeout="auto" unmountOnExit>
+                <List className="template-group-nav" component="nav">
+                  {categories &&
+                    categories.length > 0 &&
+                    categories.map((child) => (
+                      <ListItem
+                        disablePadding
+                        disableGutters
+                        key={child.id}
+                        className={`list-button ${
+                          child.id === activeCategory && "list-button--active"
+                        }`}
                       >
-                        <ListItemText primary={child.name} />
-                      </ListItemButton>
-                    </ListItem>
-                  ))}
-              </List>
-            </Collapse>
-          </List>
+                        <ListItemButton
+                          sx={{ pl: 8 }}
+                          onClick={() => handleCategoryChoose(child.id)}
+                        >
+                          <ListItemText primary={child.name} />
+                        </ListItemButton>
+                      </ListItem>
+                    ))}
+                </List>
+              </Collapse>
+            </List>
+          </Scrollbars>
         </Box>
       </Box>
     </LeftContainer>

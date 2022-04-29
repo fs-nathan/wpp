@@ -407,7 +407,6 @@ function AllProjectTable({
         open={openColorPickerGroup}
         setOpen={setOpenColorPickerGroup}
         handleSelectColor={({ projectGroupId, color }) => {
-          setActiveLoading(true);
           doEditProjectGroup({
             projectGroupId: projectGroupId,
             color: color,
@@ -415,7 +414,12 @@ function AllProjectTable({
         }}
         {...colorPickerProps}
       />
-      <LogoManagerModal open={openLogo} setOpen={setOpenLogo} {...logoProps} />
+      <LogoManagerModal
+        open={openLogo}
+        setOpen={setOpenLogo}
+        {...logoProps}
+        canUpload
+      />
     </>
   );
 }

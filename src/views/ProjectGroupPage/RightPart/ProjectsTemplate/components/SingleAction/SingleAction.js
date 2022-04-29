@@ -17,14 +17,21 @@ import DialogUsing from "./DialogUsing";
 import { useHistory, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { cancelShare } from "actions/project/cancelShare";
-import { useTemplate } from "actions/project/useTemplate";
+import { useTemplate, useTemplateReset } from "actions/project/useTemplate";
 import { useTranslation } from "react-i18next";
 import { actionToast } from "actions/system/system";
 import { getListTemplateMeShared } from "actions/project/getListTemplateMeShared";
 import { CANCEL_SHARE_SUCCESS } from "constants/actions/project/cancelShare";
 import moment from "moment";
+import { USE_TEMPLATE_SUCCESS } from "constants/actions/project/useTemplate";
+import {
+  CustomEventDispose,
+  CustomEventListener,
+  USE_TEMPLATE,
+} from "constants/events";
+import { Routes } from "constants/routes";
 const SingleAction = ({ isOpenUsing, closeUsing }) => {
-  const { id: projectId } = useParams();
+  const { templateId } = useParams();
   const [anchorUnShareEl, setAnchorUnShareEl] = useState(null);
   const [anchorRefferEl, setAnchorRefferEl] = useState(null);
   const [anchorUsingEl, setAnchorUsingEl] = useState(null);
@@ -32,6 +39,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
 
+  console.log(templateId);
   const { t } = useTranslation();
   const handleUnShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorUnShareEl(event.currentTarget);
@@ -76,12 +84,47 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
     }, 2000);
   };
   const status = useSelector((state) => state.project.cancelShare.status);
+  const { status: useTemplateStatus, data: useTemplateData } = useSelector(
+    (state) => state.project.useTemplate
+  );
 
   useEffect(() => {
     if (status === CANCEL_SHARE_SUCCESS) {
       dispatch(getListTemplateMeShared());
     }
   }, [status]);
+
+  useEffect(() => {
+    CustomEventListener(USE_TEMPLATE.SUCCESS, (e) => {
+      console.log(
+        "🚀 -----------------------------------------------------------------"
+      );
+      console.log(
+        "🚀 ~ file: SingleAction.js ~ line 104 ~ CustomEventListener ~ e",
+        e
+      );
+      console.log(
+        "🚀 -----------------------------------------------------------------"
+      );
+      history.push(`${Routes.PROJECT}/${e.project.id}`);
+    });
+
+    return () => {
+      CustomEventDispose(USE_TEMPLATE.SUCCESS, (e) => {
+        console.log(
+          "🚀 ----------------------------------------------------------------"
+        );
+        console.log(
+          "🚀 ~ file: SingleAction.js ~ line 111 ~ CustomEventDispose ~ e",
+          e
+        );
+        console.log(
+          "🚀 ----------------------------------------------------------------"
+        );
+        history.push(`${Routes.PROJECT}/${e.project.id}`);
+      });
+    };
+  }, [templateId]);
 
   useEffect(() => {
     if (isOpenUsing) {
@@ -93,7 +136,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
 
   async function handleUnShare() {
     try {
-      dispatch(cancelShare({ projectId }));
+      dispatch(cancelShare({ projectId: templateId }));
       handleUnShareClose();
       history.replace("/projects/template");
     } catch (error) {}
@@ -102,7 +145,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
     try {
       await dispatch(
         useTemplate({
-          template_id: projectId,
+          template_id: templateId,
           name,
           project_group_id: curProjectGroupId,
           day_start: startDate
@@ -110,6 +153,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
             : undefined,
         })
       );
+      handleUsingClose();
     } catch (error) {}
   }
 
@@ -122,14 +166,17 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
             variant="contained"
             sx={{
               backgroundColor: "#f0f2f5",
+              boxShadow: "none",
+              border: "1px solid #e5e5e5",
               color: "red",
               "&:hover": {
                 backgroundColor: "#f0f2f5",
+                // boxShadow: "none",
               },
             }}
             onClick={handleUnShareClick}
           >
-            Huỷ chia sẻ
+            {t("TEMPLATE.Unshare")}
           </Button>
           <Popover
             id={unShareId}
@@ -153,13 +200,16 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           sx={{
             backgroundColor: "#f0f2f5",
             color: "black",
+            boxShadow: "none",
+            border: "1px solid #e5e5e5",
             "&:hover": {
               backgroundColor: "#f0f2f5",
+              // boxShadow: "none",
             },
           }}
           onClick={handleRefferClick}
         >
-          Giới thiệu
+          {t("TEMPLATE.Intro")}
         </Button>
         <Popover
           id={refferId}
@@ -180,9 +230,17 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           variant="contained"
           color="primary"
           id="using-button"
+          sx={{
+            boxShadow: "none",
+            border: "1px solid #0076F3",
+            backgroundColor: "#0076F3",
+            // "&:hover": {
+            //   boxShadow: "none",
+            // },
+          }}
           onClick={handleUsingClick}
         >
-          Sử dụng mẫu
+          {t("TEMPLATE.Using")}
         </Button>
         <Popover
           id={usingId}
@@ -192,6 +250,13 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          style={{
+            marginTop: "20px",
           }}
         >
           <DialogUsing onClose={handleUsingClose} onOk={handleUsing} />

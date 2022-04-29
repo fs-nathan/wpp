@@ -7,7 +7,7 @@ const TemplateGroup = ({ thumbnail, title, id }) => {
   return (
     <div
       className="template-group"
-      onClick={() => history.push("/projects/template/group/" + id)}
+      onClick={() => history.push("/projects/template/" + id)}
     >
       <span>
         <img src={thumbnail} alt="" />

@@ -120,6 +120,9 @@ a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
     &__textPrimary {
       display: flex;
       align-items: center;
+      font-size: 15px;
+      line-height: 1.5;
+      cursor: pointer;
       & > *:first-child {
         margin-right: 5px;
         max-width: 160px;
@@ -225,4 +228,50 @@ a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
       }
     }
   }
+}
+
+.list-button {
+  &:hover,
+  &--active {
+    background: #e5e5e5 !important;
+  }
+}
+
+.scrollList {
+  height: calc(100vh - 145px) !important;
+  overflow-y: auto;
+}
+
+.close-button-list {
+  cursor: pointer;
+  border-radius: 10px;
+
+  svg {
+    padding: 5px;
+    border-radius: 10px;
+    background-color: transparent;
+    &:hover {
+      background-color: #ebebeb;
+    }
+  }
+}
+
+.template-group-nav {
+  padding-bottom: 50px !important;
+}
+#root
+  > div
+  > div
+  > div.sc-iRbamj.jQVHoO
+  > div
+  > div.makeStyles-leftSidebar-3
+  > div
+  > div.MuiBox-root.MuiBox-root-6.view_ProjectGroup_List--LeftContainer
+  > div.MuiBox-root.MuiBox-root-10.scrollList
+  > div
+  > div:nth-child(1)
+  > ul
+  > li:nth-child(2)
+  > div:hover {
+  background-color: transparent;
 }

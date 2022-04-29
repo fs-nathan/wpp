@@ -36,3 +36,29 @@
     }
   }
 }
+
+.template-preview-body {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  .gantt__container {
+    height: 100% !important;
+  }
+  .offset-gantt-container {
+    height: 100% !important;
+  }
+  .gantt-chart__container .scroll-gantt {
+    height: 100% !important;
+  }
+  & > div {
+    display: flex;
+    align-items: stretch;
+    & > div {
+      display: flex;
+      align-items: stretch;
+      div[role="table"] {
+        height: 100%;
+      }
+    }
+  }
+}
