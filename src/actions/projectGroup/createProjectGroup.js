@@ -2,15 +2,22 @@ import {
   CREATE_PROJECT_GROUP,
   CREATE_PROJECT_GROUP_FAIL,
   CREATE_PROJECT_GROUP_SUCCESS,
-} from '../../constants/actions/projectGroup/createProjectGroup';
+} from "../../constants/actions/projectGroup/createProjectGroup";
 
-export const createProjectGroup = ({ name, icon, description, work_types }) => ({
+export const createProjectGroup = ({
+  name,
+  icon,
+  description,
+  work_types,
+  color,
+}) => ({
   type: CREATE_PROJECT_GROUP,
   options: {
     name,
     icon,
     description,
-    work_types
+    work_types,
+    color,
   },
 });
 
