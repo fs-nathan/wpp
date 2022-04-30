@@ -13,6 +13,7 @@ export const TitleTable = ({
   typeData,
   expand,
   onExpand = () => {},
+  isAllGroup = false,
 }) => {
   const { t } = useTranslation();
   const isAllProjects = !!!currentGroup?.name;
@@ -37,21 +38,35 @@ export const TitleTable = ({
   };
 
   const _renderTitleRecently = () => (
-    <div className={"view_ProjectGroup_Table_All_titleTop"}>
+    <div
+      className={`view_ProjectGroup_Table_All_titleTop ${
+        isAllGroup ? "is-all-group" : ""
+      }`}
+    >
       {_renderIconExpand()}
       <span>{t("LABEL_SEE_RECENTLY")}</span>
     </div>
   );
 
   const _renderTitlePersonal = () => (
-    <div className={"view_ProjectGroup_Table_All_titleTop"}>
+    <div
+      className={`view_ProjectGroup_Table_All_titleTop ${
+        isAllGroup ? "is-all-group" : ""
+      }
+  `}
+    >
       {_renderIconExpand()}
       <span>{t("LABEL_PERSONAL_BOARD")}</span>
     </div>
   );
 
   const _renderTitleAllProject = () => (
-    <div className="view_ProjectGroup_Table_All_titleTop">
+    <div
+      className={`view_ProjectGroup_Table_All_titleTop ${
+        isAllGroup ? "is-all-group" : ""
+      }
+`}
+    >
       {_renderIconExpand()}
       {!isAllProjects && (
         <img

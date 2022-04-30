@@ -131,26 +131,31 @@
       border: none;
       background-color: #f5f7f9;
     }
+    &:not(.isAllGroup) {
+      .AllGroup__header--wrapper-inner {
+        width: calc(100% - 25px);
+        max-width: calc(100% - 25px);
+      }
+    }
   }
   &--wrapper-inner {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    width: 75%;
+    width: calc(75% - 25px);
     max-width: calc(980px - 25px);
-    // min-width: 900px;
     height: 100%;
     margin: 0 auto;
   }
 
   @media only screen and (max-width: 1599px) {
     &--wrapper-inner {
-      width: 90%;
+      width: calc(90% - 25px);
     }
   }
   @media only screen and (max-width: 1399px) {
     &--wrapper-inner {
-      width: 100%;
+      width: calc(100% - 25px);
     }
   }
   &--right {
