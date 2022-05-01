@@ -194,6 +194,7 @@ function CustomModal({
   manualClose = false,
   type = "button",
   form = null,
+  isDisabled = false,
 }) {
   const colors = useSelector((state) => state.setting.colors);
 
@@ -265,7 +266,9 @@ function CustomModal({
               color: bgColor.color,
               opacity: !canConfirm || actionLoading || activeLoading ? 0.5 : 1,
             }}
-            disabled={!canConfirm || actionLoading || activeLoading}
+            disabled={
+              isDisabled || !canConfirm || actionLoading || activeLoading
+            }
             onClick={() => handleConfirm()}
             type={type}
             form={form}

@@ -143,6 +143,7 @@ function ProjectGroupPage({
                     handleExpand={_handleExpand}
                     expand={isCollapsed}
                     handleClose={_handleClose}
+                    handleOpen={_handleOpen}
                   >
                     <Switch>
                       <Route
@@ -208,6 +209,8 @@ function ProjectGroupPage({
                   <LayoutDetail
                     handleExpand={_handleExpand}
                     expand={isCollapsed}
+                    handleClose={_handleClose}
+                    handleOpen={_handleOpen}
                   >
                     <Switch>
                       <Route exact path="/projects">

@@ -101,6 +101,7 @@ const ShareStep = ({ onNext, setopenModal, openModal, onBack }) => {
         cancleRender={() => t("SHARE.Back")}
         manualClose={true}
         onConfirm={onShareProject}
+        isDisabled={!Boolean(projectName) || !Boolean(curTemplateCategory)}
         onCancle={() => {
           onBack();
         }}

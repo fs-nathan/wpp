@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo, useState } from "react";
-
+import React, { useEffect, useMemo, useState, useCallback } from "react";
+import { getListTemplate } from "actions/project/getListTemplate";
+import { getTemplateCategory } from "actions/project/getTemplateCategory";
 import { Box, List, ListItemIcon, ListItemText } from "@material-ui/core";
 import SvgIcon from "@material-ui/core/SvgIcon";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
@@ -15,8 +16,9 @@ import {
 } from "@material-ui/icons";
 import { Collapse, IconButton, ListItem, ListItemButton } from "@mui/material";
 import "./style.scss";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import Scrollbars from "react-custom-scrollbars/lib/Scrollbars";
+import { Suggestion } from "views/ProjectGroupPage/RightPart/ProjectsTemplate/components/SearchBar/SearchBar";
 
 const Banner = ({ className = "", ...props }) => (
   <div className={`view_ProjectGroup_List___banner ${className}`} {...props} />
@@ -37,8 +39,6 @@ const ProjectTemplateList = ({
   groups,
   route,
   canModify,
-  searchPattern,
-  setSearchPattern,
   handleSortProjectGroup,
   handleOpenModal,
 }) => {
@@ -79,20 +79,71 @@ const ProjectTemplateList = ({
     (state) => state.project.getTemplateCategory.data
   );
 
+  const dispatch = useDispatch();
+
+  const fetchTemplateCategory = useCallback(async () => {
+    try {
+      dispatch(getTemplateCategory());
+      dispatch(getListTemplate());
+    } catch (error) {}
+  }, [dispatch, getTemplateCategory, getListTemplate]);
+
+  useEffect(() => {
+    fetchTemplateCategory();
+  }, [fetchTemplateCategory]);
+
   function handleCategoryChoose(groupId) {
     history.push("/projects/template/" + groupId);
   }
 
+  const [searchPattern, setSearchPattern] = useState(null);
+
+  const categoriesSearchResult = useMemo(() => {
+    if (categories && categories.length > 0) {
+      return categories.filter((category) => {
+        if (searchPattern) {
+          let keyword = searchPattern.toLowerCase();
+          const currentCategoryName = category.name.toLowerCase();
+          return currentCategoryName.indexOf(keyword) > -1;
+        }
+        return;
+      });
+    } else {
+      return [];
+    }
+  }, [categories, searchPattern]);
+
+  function handleOnSelect(id) {
+    history.push("/projects/template/" + id);
+    setSearchPattern("");
+  }
   return (
     <LeftContainer>
       <Banner>
-        <SearchInput
-          fullWidth
-          placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND_TEMPLATE")}
-          value={searchPattern}
-          onChange={(evt) => setSearchPattern(evt.target.value)}
-          style={{ background: "#fff" }}
-        />
+        <div sx={{ position: "relative" }}>
+          <SearchInput
+            fullWidth
+            placeholder={t("DMH.VIEW.PGP.LEFT.LIST.FIND_TEMPLATE")}
+            value={searchPattern}
+            onChange={(evt) => setSearchPattern(evt.target.value)}
+            style={{ background: "#fff" }}
+          />
+          {searchPattern &&
+            categoriesSearchResult &&
+            categoriesSearchResult.length > 0 && (
+              <div className="search-group-result">
+                {categoriesSearchResult.map((item, index) => (
+                  <div
+                    key={index}
+                    className="search-group-result__content"
+                    onClick={() => handleOnSelect(item.id)}
+                  >
+                    {item.name}
+                  </div>
+                ))}
+              </div>
+            )}
+        </div>
       </Banner>
       <Box className={"view_ProjectGroup_List--LeftContainer"}>
         <Box className={"view_ProjectGroup_List--listGroup"}>
