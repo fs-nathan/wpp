@@ -117,16 +117,41 @@
 
 .AllGroup__header {
   &--wrapper {
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
     position: -webkit-sticky;
     height: 60px;
+
     position: sticky;
     top: 0;
     background-color: #fff;
     z-index: 400;
     border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    &.isAllGroup {
+      border: none;
+      background-color: #f5f7f9;
+    }
+  }
+  &--wrapper-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 75%;
+    max-width: calc(980px - 25px);
+    // min-width: 900px;
+    height: 100%;
+    margin: 0 auto;
+  }
+
+  @media only screen and (max-width: 1599px) {
+    &--wrapper-inner {
+      width: 90%;
+    }
+  }
+  @media only screen and (max-width: 1399px) {
+    &--wrapper-inner {
+      width: 100%;
+    }
   }
   &--right {
     margin-left: auto;

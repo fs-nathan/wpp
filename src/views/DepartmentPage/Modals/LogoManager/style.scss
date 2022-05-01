@@ -55,6 +55,7 @@
     @include view_Department_Logo_Modal___logo-box;
     & > button:first-child {
       border: 1px solid #05b50c;
+      overflow: hidden;
     }
   }
 };

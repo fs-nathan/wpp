@@ -34,7 +34,7 @@ import { FilterDrawerAllGroup } from "./FilterDrawerAllGroup";
 import SearchButton from "./SearchButton";
 import { TitleTable } from "./TitleTable";
 
-const HeaderTableAllGroup = ({
+const HeaderGridProjectGroups = ({
   currentGroup,
   expand,
   onExpand,
@@ -55,59 +55,35 @@ const HeaderTableAllGroup = ({
   return (
     <div
       id="header-table-group"
-      className={`AllGroup__header--wrapper ${
-        isDisplayGroupGrid ? "isAllGroup" : ""
-      }`}
+      className={`AllGroup__header--wrapper  isAllGroup`}
     >
       <div className="AllGroup__header--wrapper-inner">
-        <TitleTable
-          // don't show tilte when click on info icon
-          currentGroup={!isDisplayGroupGrid && currentGroup}
-          expand={expand}
-          typeData={typeData}
-          onExpand={onExpand}
-        />
-        {!isDisplayGroupGrid ? (
-          <div className={`AllGroup__header--right`}>
-            <SearchButton
-              valueSearch={get(TableContext?.options, "search.patern", "")}
-              onSearch={(value) => onSearch(value)}
-            />
-            <div className={classes.wrapperButton} onClick={_toggleDrawerMenu}>
-              <Icon path={mdiDotsHorizontal} size={1} />
-              <span style={{ marginLeft: 5 }}>Hiện menu</span>
-            </div>
-            <div className={classes.wrapperButton} onClick={onOpenCreateModal}>
-              <Icon path={mdiPlus} size={1} />
-              <span style={{ marginLeft: 5 }}>Tạo mới</span>
-            </div>
-            <MenuDrawer
-              ref={refMenuDrawer}
-              onFilterType={onFilterType}
-              onSetTimeRangeAnchor={onSetTimeRangeAnchor}
-              {...props}
-            />
+        {
+          <TitleTable
+            // don't show tilte when click on info icon
+            currentGroup={!isDisplayGroupGrid && currentGroup}
+            expand={expand}
+            typeData={typeData}
+          />
+        }
+        <div
+          id="AllGroup__searchBox--isAllGroup"
+          className={`AllGroup__header--right isAllGroup`}
+        >
+          <SearchButton
+            valueSearch={get(TableContext?.options, "search.patern", "")}
+            onSearch={(value) => onSearch(value)}
+          />
+          <div className={classes.wrapperButton} onClick={onOpenCreateModal}>
+            <Icon path={mdiPlus} size={1} />
           </div>
-        ) : (
-          <div
-            id="AllGroup__searchBox--isAllGroup"
-            className={`AllGroup__header--right isAllGroup`}
-          >
-            <SearchButton
-              valueSearch={get(TableContext?.options, "search.patern", "")}
-              onSearch={(value) => onSearch(value)}
-            />
-            <div className={classes.wrapperButton} onClick={onOpenCreateModal}>
-              <Icon path={mdiPlus} size={1} />
-            </div>
-            <MenuDrawer
-              ref={refMenuDrawer}
-              onFilterType={onFilterType}
-              onSetTimeRangeAnchor={onSetTimeRangeAnchor}
-              {...props}
-            />
-          </div>
-        )}
+          <MenuDrawer
+            ref={refMenuDrawer}
+            onFilterType={onFilterType}
+            onSetTimeRangeAnchor={onSetTimeRangeAnchor}
+            {...props}
+          />
+        </div>
       </div>
     </div>
   );
@@ -261,4 +237,4 @@ const useStyles = makeStyles({
   menuIcon: { minWidth: 35 },
 });
 
-export default HeaderTableAllGroup;
+export default HeaderGridProjectGroups;
