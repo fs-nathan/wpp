@@ -18,7 +18,6 @@ import "antd/lib/grid/style/index.css";
 import "antd/lib/table/style/index.css";
 import CustomModal from "components/CustomModalGantt";
 import "components/Drawer/DrawerPDF/drawerpdf.css";
-import HeaderProject from "components/HeaderProject";
 import LoadingBox from "components/LoadingBox";
 import "components/PreviewModal/previewModal.css";
 import update from "immutability-helper";
@@ -77,7 +76,6 @@ import CreateProject from "../../views/ProjectPage/Modals/CreateGroupTask";
 import DragableBodyRow from "./DragableBodyRow";
 import DragTable from "./DragableHOC";
 import EditCell from "./EditCell";
-import Header from "./Header";
 import "./table.css";
 
 let haveError = false;
@@ -94,12 +92,6 @@ const RenderJobModal = React.memo(
   }
 );
 
-const RenderHeader = (props) => (
-  <div className="apply-antd-css">
-    <Header {...props} />
-  </div>
-);
-
 const RenderDrawers = React.memo((props) => (
   <React.Fragment>
     <ConfigGanttDrawer height={props.height} />
@@ -108,7 +100,9 @@ const RenderDrawers = React.memo((props) => (
   </React.Fragment>
 ));
 
-const RenderDragTable = React.memo((props) => <DragTable {...props} />);
+const RenderDragTable = React.memo((props) => {
+  return <DragTable {...props} />;
+});
 
 const RenderQuickViewTaskDetailDrawer = React.memo(
   (props) => <QuickViewTaskDetailDrawer {...props} />,
@@ -288,6 +282,7 @@ class DragSortingTable extends React.Component {
       canScroll: true,
       width: 800,
       widthTable: 800,
+      sizeTable: 618,
       cellDetail: {},
       endTimeProject: "",
       sort_task: true,
@@ -954,15 +949,8 @@ class DragSortingTable extends React.Component {
   };
   setRenderTime = (startTime, endTime, startTimeProject) => {
     const { girdInstance } = this.props;
-    const {
-      formatString,
-      unit,
-      parentUnit,
-      getWidthParent,
-      getTextParent,
-      getTimeCompare,
-      formatChild,
-    } = girdInstance;
+    const { unit, parentUnit, getWidthParent, getTextParent, getTimeCompare } =
+      girdInstance;
     const allMonth = [
       {
         text: "",
@@ -1054,7 +1042,6 @@ class DragSortingTable extends React.Component {
     this.fetchSettingGantt(projectId);
     const style = document.getElementById("gantt-style-link");
     style.href = "../../style/antd.css";
-    // this.fetchListDetailProject(projectId);
     await this.fetchListTask(projectId);
     this.fetchListTask(projectId, true, this.props.girdType);
     this.fetchContentPreview(projectId);
@@ -1284,15 +1271,8 @@ class DragSortingTable extends React.Component {
         saveStartTimeProject,
       } = this.state;
       const { girdInstance } = this.props;
-      const {
-        formatString,
-        unit,
-        parentUnit,
-        getWidthParent,
-        getTextParent,
-        getTimeCompare,
-        formatChild,
-      } = girdInstance;
+      const { parentUnit, getWidthParent, getTextParent, getTimeCompare } =
+        girdInstance;
       const { start, end } = this.props.filterExportPdf;
       const daysRender = [];
       const endDate = !this.props.renderFullDay
@@ -1661,6 +1641,13 @@ class DragSortingTable extends React.Component {
     }
     scrollGantt(true);
   };
+
+  handleResizeTable = (size) => {
+    this.setState({
+      sizeTable: window.innerWidth - 80 - size,
+    });
+  };
+
   render() {
     const columns = this.state.columns.map((col, index) => ({
       ...col,
@@ -1670,20 +1657,26 @@ class DragSortingTable extends React.Component {
       }),
     }));
     const { indexColumn, visibleTable, girdInstance } = this.props;
+    const { sizeTable } = this.state;
     let colShow = columns.map((item, index) => columns[indexColumn[index]]);
     colShow = colShow.filter((col) => visibleTable[col.dataIndex]);
     const { startTimeProject, endTimeProject } = this.state;
     const boundRectTimeLineContainer = document.getElementById(
       "drag-width-gantt-container"
     );
+
+    console.log(sizeTable);
+
     const widthExtra = boundRectTimeLineContainer
       ? boundRectTimeLineContainer.getBoundingClientRect().x
       : 800;
+
     const widthPdf = this.props.renderFullDay
       ? endTimeProject.diff(startTimeProject, girdInstance.unit) * 30 +
         widthExtra -
         80
       : "auto";
+
     const scroll = this.props.renderFullDay
       ? {}
       : {
@@ -1711,14 +1704,6 @@ class DragSortingTable extends React.Component {
             }}
           />
         }
-        {/* <RenderHeader
-          handleShowProject={this.handleShowProject}
-          titleProject={this.state.titleProject}
-          showProject={this.state.showProject}
-          scheduleIdDefault={this.state.scheduleIdDefault}
-          start={this.state.startTimeProject}
-          end={this.state.endTimeProject}
-        /> */}
 
         <MenuCreateNew
           setOpenCreateTaskGroup={this.handleOpenCreateProjectModal}
@@ -1806,7 +1791,13 @@ class DragSortingTable extends React.Component {
                 taskId={this.state.quickViewId}
               />
             )}
-            <div ref={this.tableRef}>
+            <div
+              ref={this.tableRef}
+              style={{
+                maxWidth: `calc(100% - ${sizeTable}px)`,
+                overflowX: "auto",
+              }}
+            >
               {this.state.showProject && (
                 <div
                   className="gantt__select-project"
@@ -1871,6 +1862,7 @@ class DragSortingTable extends React.Component {
               </div>
             </div>
             <RenderDragTable
+              handleResizeTable={this.handleResizeTable}
               setDataSource={this.setDataSource}
               setProcessDatasource={this.setProcessDatasource}
               minLeft={this.state.minLeft}

@@ -201,6 +201,9 @@ const WrapperDetailInfo = styled.div`
   padding: 0 15px;
   visibility: hidden;
   .detail {
+    background: #f0eeef;
+    padding: 5px 8px;
+    border-radius: 5px;
     span {
       font-size: 11px;
       font-weight: 400;
