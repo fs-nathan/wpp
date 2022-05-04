@@ -18,7 +18,8 @@ const getTableHeight = () => {
   const rootDocument = document.getElementById("root");
   const height = rootDocument.offsetHeight;
   const headerTableNav = document.getElementById("header-table-group");
-  return height - (headerTableNav?.offsetHeight || 0 + 37);
+
+  return height - ((headerTableNav?.offsetHeight || 0) + 37);
 };
 
 const WPTable = ({
@@ -40,10 +41,7 @@ const WPTable = ({
   );
 
   React.useEffect(() => {
-    // if (!refSetted.current || !dataRows.length) {
     setDataRows(data);
-    //   refSetted.current = true;
-    // }
   }, [data]);
 
   const {
@@ -232,7 +230,7 @@ const ContentColumn = ({ cell, dragHandle = {} }) => {
   );
 };
 
-const scrollbarWidth = () => {
+export const scrollbarWidth = () => {
   // thanks too https://davidwalsh.name/detect-scrollbar-width
   const scrollDiv = document.createElement("div");
   scrollDiv.setAttribute(

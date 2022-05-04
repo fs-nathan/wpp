@@ -14,10 +14,7 @@ const WPReactTable = ({
   ...props
 }) => {
   return (
-    <Styles
-      className={classNames({ "not-group-table": !isGroup })}
-      isCollapsed={isCollapsed}
-    >
+    <Styles className="not-group-table" isCollapsed={isCollapsed}>
       {isGroup ? (
         <WPTableGroup
           data={data}
