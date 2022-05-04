@@ -74,6 +74,7 @@ const LayoutDetail = ({
   const search = location.search;
   const params = new URLSearchParams(search);
   const groupID = params.get("groupID");
+  const { templateId } = useParams();
 
   const isTemplate = useMemo(() => {
     return parsedPath.includes("template");
@@ -333,6 +334,7 @@ const LayoutDetail = ({
               <TemplateHeader
                 projectId={projectId}
                 categoryId={categoryId}
+                templateId={templateId}
                 {...setView()}
               />
             ) : (
@@ -355,6 +357,7 @@ const LayoutDetail = ({
           <TemplateHeader
             projectId={projectId}
             categoryId={categoryId}
+            templateId={templateId}
             {...setView()}
           />
         ) : (

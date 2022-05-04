@@ -33,7 +33,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { CustomEventListener, USE_TEMPLATE } from "constants/events";
 import "./styles.scss";
 import { useTranslation } from "react-i18next";
-const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
+const TemplateHeader = ({ view = "list", projectId, categoryId, templateId, ...props }) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
@@ -41,10 +41,10 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   const { t } = useTranslation();
   const fetchData = useCallback(async () => {
     try {
-      if (projectId)
-        await dispatch(getDetailTemplate({ template_id: projectId }));
+      if (templateId)
+        await dispatch(getDetailTemplate({ template_id: templateId }));
     } catch (error) {}
-  }, [projectId, getDetailTemplate, dispatch]);
+  }, [projectId, templateId, getDetailTemplate, dispatch]);
 
   useEffect(() => {
     fetchData();
@@ -63,17 +63,17 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
     {
       id: 1,
       title: "Todo list",
-      to: `/projects/template/${categoryId}/${projectId}/preview/task-table/${projectId}`,
+      to: `/projects/template/${categoryId}/${templateId}/preview/task-table/${projectId}`,
     },
     {
       id: 2,
       title: "Kanban",
-      to: `/projects/template/${categoryId}/${projectId}/preview/task-kanban/${projectId}`,
+      to: `/projects/template/${categoryId}/${templateId}/preview/task-kanban/${projectId}`,
     },
     {
       id: 3,
       title: "Gantt",
-      to: `/projects/template/${categoryId}/${projectId}/preview/task-gantt/${projectId}`,
+      to: `/projects/template/${categoryId}/${templateId}/preview/task-gantt/${projectId}`,
     },
   ];
   const [anchorUsingEl, setAnchorUsingEl] = useState(null);
@@ -104,7 +104,7 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
       await dispatch(
         // eslint-disable-next-line react-hooks/rules-of-hooks
         useTemplate({
-          template_id: projectId,
+          template_id: templateId,
           name,
           project_group_id: curProjectGroupId,
           day_start: startDate
@@ -117,7 +117,7 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, ...props }) => {
   }
 
   function onClosePreview() {
-    history.push(`/projects/template/${categoryId}/${projectId}`);
+    history.push(`/projects/template/${categoryId}/${templateId}`);
   }
   return (
     <div

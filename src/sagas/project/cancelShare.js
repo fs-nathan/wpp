@@ -12,13 +12,13 @@ import {
   SNACKBAR_VARIANT,
 } from "../../constants/snackbarController";
 
-async function doCancelShare({ projectId }) {
+async function doCancelShare({ templateId }) {
   try {
     const config = {
       url: "/project/template/cancel-share",
       method: "post",
       data: {
-        project_id: projectId,
+        template_id: templateId,
       },
     };
     const result = await apiService(config);

@@ -4,10 +4,10 @@ import {
   CANCEL_SHARE_SUCCESS,
 } from "../../constants/actions/project/cancelShare";
 
-export const cancelShare = ({ projectId }) => ({
+export const cancelShare = ({ templateId }) => ({
   type: CANCEL_SHARE,
   options: {
-    projectId,
+    templateId,
   },
 });
 
