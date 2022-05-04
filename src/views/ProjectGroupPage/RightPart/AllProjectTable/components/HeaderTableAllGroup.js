@@ -62,6 +62,7 @@ const HeaderTableAllGroup = ({
       <div className="AllGroup__header--wrapper-inner">
         <TitleTable
           // don't show tilte when click on info icon
+          isAllGroup={isDisplayGroupGrid}
           currentGroup={!isDisplayGroupGrid && currentGroup}
           expand={expand}
           typeData={typeData}
