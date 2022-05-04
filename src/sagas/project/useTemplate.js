@@ -49,6 +49,7 @@ function* useTemplate(action) {
   try {
     const { project } = yield call(doUseTemplate, action.options);
     CustomEventEmitterWithParams(USE_TEMPLATE.SUCCESS, { project });
+    yield put(useTemplateSuccess({ project }, action.options));
     history.push("/projects/task-table/" + project.id);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

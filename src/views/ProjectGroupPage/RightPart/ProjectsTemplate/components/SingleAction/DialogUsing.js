@@ -50,6 +50,17 @@ const DialogUsing = ({ onClose, onOk }) => {
       startDate: isDayStart ? startDate : undefined,
     });
   }
+  console.log(
+    "🚀 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+  );
+  console.log(
+    "🚀 ~ file: DialogUsing.js ~ line 54 ~ DialogUsing ~  !Boolean(name) || !Boolean(curProjectGroupId) || loading",
+    !Boolean(name) || !Boolean(curProjectGroupId) || loading
+  );
+  console.log(
+    "🚀 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+  );
+
   return (
     <>
       <Box width={320} p={1}>
