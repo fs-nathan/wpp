@@ -1,22 +1,23 @@
-import { listLevel } from 'actions/level/listLevel';
-import { listMajor } from 'actions/major/listMajor';
-import { listPosition } from 'actions/position/listPosition';
-import { listRoom } from 'actions/room/listRoom';
-import { detailUser } from 'actions/user/detailUser';
-import { uploadDocumentsUser } from 'actions/user/uploadDocumentsUser';
-import { get } from 'lodash';
-import React from 'react';
-import { connect } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import SendFileModal from 'views/JobDetailPage/ChatComponent/SendFile/SendFileModal';
-import DeleteDocumentModal from '../../Modals/DeleteDocument';
-import UpdateUserModal from '../../Modals/UpdateUser';
-import { viewPermissionsSelector } from '../../selectors';
-import UserInfoPresenter from './presenters';
-import { userSelector } from './selectors';
+import { listLevel } from "actions/level/listLevel";
+import { listMajor } from "actions/major/listMajor";
+import { listPosition } from "actions/position/listPosition";
+import { listRoom } from "actions/room/listRoom";
+import { detailUser } from "actions/user/detailUser";
+import { uploadDocumentsUser } from "actions/user/uploadDocumentsUser";
+import { get } from "lodash";
+import React from "react";
+import { connect } from "react-redux";
+import { useParams } from "react-router-dom";
+import SendFileModal from "views/JobDetailPage/ChatComponent/SendFile/SendFileModal";
+import DeleteDocumentModal from "../../Modals/DeleteDocument";
+import UpdateUserModal from "../../Modals/UpdateUser";
+import { viewPermissionsSelector } from "../../selectors";
+import UserInfoPresenter from "./presenters";
+import { userSelector } from "./selectors";
 
 function UserInfo({
-  user, viewPermissions,
+  user,
+  viewPermissions,
   doUploadDocumentsUser,
   doListRoom,
   doListPosition,
@@ -25,7 +26,6 @@ function UserInfo({
   doDetailUser,
   doReloadUser,
 }) {
-
   React.useEffect(() => {
     doListRoom();
     // eslint-disable-next-line
@@ -49,7 +49,21 @@ function UserInfo({
   const { userId } = useParams();
 
   React.useEffect(() => {
-    if (userId !== null) {
+    console.log(
+      "🚀 ---------------------------------------------------------------"
+    );
+    console.log(
+      "🚀 ~ file: index.js ~ line 53 ~ React.useEffect ~ userId",
+      userId
+    );
+    console.log(
+      "🚀 ---------------------------------------------------------------"
+    );
+    console.log(
+      "🚀 ~ file: index.js ~ line 53 ~ React.useEffect ~ userId",
+      userId
+    );
+    if (Boolean(userId)) {
       doDetailUser({ userId });
     }
     // eslint-disable-next-line
@@ -64,59 +78,81 @@ function UserInfo({
 
   function doOpenModal(type, props) {
     switch (type) {
-      case 'UPDATE': {
-        if (get(viewPermissions.permissions, 'can_modify', false)) {
+      case "UPDATE": {
+        if (get(viewPermissions.permissions, "can_modify", false)) {
           setOpenUpdate(true);
           setUpdateProps(props);
         }
         return;
       }
-      case 'UPLOAD': {
+      case "UPLOAD": {
         setOpenUpload(true);
         setUploadProps(props);
         return;
       }
-      case 'DELETE': {
+      case "DELETE": {
         setOpenDelete(true);
         setDeleteProps(props);
         return;
       }
-      default: return;
+      default:
+        return;
     }
   }
 
   return (
     <>
       <UserInfoPresenter
-        canModify={get(viewPermissions.permissions, 'can_modify', false)}
-        user={user} userId={userId}
-        handleUploadComputerDocumentsUser={files => doUploadDocumentsUser({ userId, files })}
-        handleUploadVtaskDocumentsUser={fileIds => doUploadDocumentsUser({ userId, fileIds })}
-        handleUploadGoogleDocumentsUser={googleData => doUploadDocumentsUser({ userId, googleData })}
+        canModify={get(viewPermissions.permissions, "can_modify", false)}
+        user={user}
+        userId={userId}
+        handleUploadComputerDocumentsUser={(files) =>
+          doUploadDocumentsUser({ userId, files })
+        }
+        handleUploadVtaskDocumentsUser={(fileIds) =>
+          doUploadDocumentsUser({ userId, fileIds })
+        }
+        handleUploadGoogleDocumentsUser={(googleData) =>
+          doUploadDocumentsUser({ userId, googleData })
+        }
         handleOpenModal={doOpenModal}
         doReloadUser={() => doReloadUser({ userId })}
       />
-      <UpdateUserModal open={openUpdate} setOpen={setOpenUpdate} {...updateProps} />
-      <SendFileModal open={openUpload} setOpen={setOpenUpload} {...uploadProps} />
-      <DeleteDocumentModal open={openDelete} setOpen={setOpenDelete} {...deleteProps} />
+      <UpdateUserModal
+        open={openUpdate}
+        setOpen={setOpenUpdate}
+        {...updateProps}
+      />
+      <SendFileModal
+        open={openUpload}
+        setOpen={setOpenUpload}
+        {...uploadProps}
+      />
+      <DeleteDocumentModal
+        open={openDelete}
+        setOpen={setOpenDelete}
+        {...deleteProps}
+      />
     </>
-  )
+  );
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     user: userSelector(state),
     viewPermissions: viewPermissionsSelector(state),
   };
 };
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = (dispatch) => {
   return {
     doReloadUser: ({ userId }) => {
       dispatch(detailUser({ userId }));
     },
-    doDetailUser: ({ userId }, quite) => dispatch(detailUser({ userId }, quite)),
-    doUploadDocumentsUser: ({ userId, files, fileIds, googleData }) => dispatch(uploadDocumentsUser({ userId, files, fileIds, googleData })),
+    doDetailUser: ({ userId }, quite) =>
+      dispatch(detailUser({ userId }, quite)),
+    doUploadDocumentsUser: ({ userId, files, fileIds, googleData }) =>
+      dispatch(uploadDocumentsUser({ userId, files, fileIds, googleData })),
     doListRoom: (quite) => dispatch(listRoom(quite)),
     doListPosition: (quite) => dispatch(listPosition(quite)),
     doListMajor: (quite) => dispatch(listMajor(quite)),
@@ -124,7 +160,4 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(UserInfo);
+export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);

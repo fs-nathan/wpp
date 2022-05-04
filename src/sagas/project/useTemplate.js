@@ -48,16 +48,6 @@ async function doUseTemplate({
 function* useTemplate(action) {
   try {
     const { project } = yield call(doUseTemplate, action.options);
-    console.log(
-      "🚀 ----------------------------------------------------------------------------"
-    );
-    console.log(
-      "🚀 ~ file: useTemplate.js ~ line 51 ~ function*useTemplate ~ project",
-      project
-    );
-    console.log(
-      "🚀 ----------------------------------------------------------------------------"
-    );
     CustomEventEmitterWithParams(USE_TEMPLATE.SUCCESS, { project });
     history.push("/projects/task-table/" + project.id);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);

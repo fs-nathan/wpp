@@ -20,10 +20,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
 import { get } from "lodash-es";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   projectItem: {
@@ -89,13 +89,18 @@ export const GroupProject = ({
   const idGroupDefaultLocal = localStorage.getItem(
     "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
+  const { pathname } = useLocation();
 
   const [isActive, setIsActive] = useState(false);
-
+  const params = useParams();
   const isDefaultGroup =
     idGroupDefault === `?groupID=${projectGroup.id}` ||
     `?groupID=${projectGroup.id}` === idGroupDefaultLocal;
+  const id = pathname.split("/");
 
+  function handleProjectActive(parentId: string) {
+    setIsActive(projectGroup.id === parentId);
+  }
   const _toggleExpand = () => {
     setIsActive(!isActive);
   };
@@ -180,8 +185,10 @@ export const GroupProject = ({
           </ListItem>
 
           <CollapseListProject
+            parentId={projectGroup.id}
             data={projectGroup.projects}
             isActive={isActive}
+            onActive={handleProjectActive}
           />
           {provided.placeholder}
         </div>
@@ -190,7 +197,12 @@ export const GroupProject = ({
   );
 };
 
-const CollapseListProject = ({ data = [], isActive = true }) => {
+const CollapseListProject = ({
+  parentId,
+  onActive,
+  data = [],
+  isActive = true,
+}) => {
   const classes = useStyles();
 
   return (
@@ -204,6 +216,7 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
               component={NavLink}
               isActive={(match, { pathname }) => {
                 const id = pathname.split("/");
+                if (id[3] === item.id) onActive(parentId);
                 return id[3] === item.id;
               }}
               style={{ paddingLeft: 45 }}

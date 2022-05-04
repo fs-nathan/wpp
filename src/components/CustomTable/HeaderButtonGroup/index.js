@@ -34,7 +34,7 @@ import {
 import Icon from "@mdi/react";
 import { find, get, isNil } from "lodash";
 import * as images from "assets/index";
-import Popover from '@material-ui/core/Popover';
+import Popover from "@material-ui/core/Popover";
 import { connect, useDispatch } from "react-redux";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -59,23 +59,30 @@ import { mdiCheckDecagram, mdiUpload } from "@mdi/js";
 import { listRoom } from "actions/room/listRoom";
 import { CustomEventListener, CustomEventDispose } from "constants/events";
 import { detailUser } from "actions/user/detailUser";
-import { listUserFilterOfGroupSuccess, listUserOfGroup,listUserOfGroupSuccess } from "actions/user/listUserOfGroup";
+import {
+  listUserFilterOfGroupSuccess,
+  listUserOfGroup,
+  listUserOfGroupSuccess,
+} from "actions/user/listUserOfGroup";
 import { DETAIL_USER } from "constants/actions/user/detailUser";
 import { LIST_USER_OF_GROUP } from "constants/actions/user/listUserOfGroup";
 import { UPDATE_USER } from "constants/actions/user/updateUser";
 import MySelect from "components/MySelect";
-import ModalOptionCreateAccount from '../Modal/optionCreateAccount';
+import ModalOptionCreateAccount from "../Modal/optionCreateAccount";
 import { actionToast } from "actions/system/system";
 import ModalCreateAccount from "../Modal/create-account";
-import ModalContinueCreateAccount from "../Modal/continue-create-account"
+import ModalContinueCreateAccount from "../Modal/continue-create-account";
 import ModalUplaodExcel from "../Modal/uploadExcel";
 import ModalResultCreateAccount from "../Modal/result-create-account";
 import { LensTwoTone } from "@material-ui/icons";
-import { filterUserOfRoomSuccess, getUserOfRoom, getUserOfRoomSuccess } from "actions/room/getUserOfRoom";
+import {
+  filterUserOfRoomSuccess,
+  getUserOfRoom,
+  getUserOfRoomSuccess,
+} from "actions/room/getUserOfRoom";
 
 export const StyledButton = ({ className = "", ...rest }) => (
   <Button
-  
     className={`comp_CustomTable_HeaderButtonGroup___button ${className}`}
     {...rest}
   />
@@ -104,10 +111,10 @@ function HeaderButtonGroup({
   doReloadUser,
   resetDesireUser,
   profile,
-  updatedUser = null, 
+  updatedUser = null,
   room,
   listUser,
-  userGroup
+  userGroup,
 }) {
   const { options } = React.useContext(CustomTableContext);
   const [searchAnchor, setSearchAnchor] = React.useState(null);
@@ -118,31 +125,28 @@ function HeaderButtonGroup({
   const [openUploadExcel, setOpenUploadExcel] = React.useState(false);
   const [fileExcel, setFileExcel] = React.useState("");
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [valueFilter,setValueFilter] = React.useState('all');
-  const [openResultCreateAccount, setOpenResultCreateAccount] = React.useState(
-    false
-  );
+  const [valueFilter, setValueFilter] = React.useState("all");
+  const [openResultCreateAccount, setOpenResultCreateAccount] =
+    React.useState(false);
   const [roomList, setRoomList] = React.useState(null);
   const [activeLoading, setActiveLoading] = React.useState(false);
-  const [userJoin,setUserJoin] = React.useState(null);
-  const [userInternal,setUserInternal] = React.useState(null);
-  const [userJoinGroup,setUserJoinGroup] = React.useState(null);
-  const [userInternalGroup,setUserInternalGroup] = React.useState(null);
-  const [countAllUser,setCountAllUser] = React.useState(0);
-  const [countJoinUser,setCountJoinUser] = React.useState(0);
-  const [countInternalUser,setCountInternalUser] = React.useState(0);
-  const [countAllUserGroup,setCountAllUserGroup] = React.useState(0);
-  const [countJoinUserGroup,setCountJoinUserGroup] = React.useState(0);
-  const [countInternalUserGroup,setCountInternalUserGroup] = React.useState(0);
+  const [userJoin, setUserJoin] = React.useState(null);
+  const [userInternal, setUserInternal] = React.useState(null);
+  const [userJoinGroup, setUserJoinGroup] = React.useState(null);
+  const [userInternalGroup, setUserInternalGroup] = React.useState(null);
+  const [countAllUser, setCountAllUser] = React.useState(0);
+  const [countJoinUser, setCountJoinUser] = React.useState(0);
+  const [countInternalUser, setCountInternalUser] = React.useState(0);
+  const [countAllUserGroup, setCountAllUserGroup] = React.useState(0);
+  const [countJoinUserGroup, setCountJoinUserGroup] = React.useState(0);
+  const [countInternalUserGroup, setCountInternalUserGroup] = React.useState(0);
 
   const [activeMask, setActiveMask] = React.useState(-1);
-  const [
-    openContinueCreateAccount,
-    setOpenContinueCreateAccount,
-  ] = React.useState(false);
+  const [openContinueCreateAccount, setOpenContinueCreateAccount] =
+    React.useState(false);
   const [disable, setDisable] = React.useState(false);
   const [result, setResult] = React.useState(null);
- 
+
   const dispatch = useDispatch();
   let fileInputRef = React.useRef();
 
@@ -158,11 +162,11 @@ function HeaderButtonGroup({
   function handleMoreOpen(evt) {
     setMoreAnchor(evt.currentTarget);
   }
-  React.useEffect(()=>{
-    if(room){
-      setRoomList(room.data.rooms)
+  React.useEffect(() => {
+    if (room) {
+      setRoomList(room.data.rooms);
     }
-  },[room])
+  }, [room]);
   function handleMoreClick(handler) {
     return (evt) => {
       setMoreAnchor(null);
@@ -176,126 +180,127 @@ function HeaderButtonGroup({
     setMoreAnchor(null);
   }
 
- 
-
   const handleFilterAll = (event) => {
     setAnchorEl(event.currentTarget);
     let countAll = 0;
-    if(listUser){
+    if (listUser) {
       // eslint-disable-next-line no-unused-expressions
-      listUser?.data?.rooms?.map((el,index) => {
+      listUser?.data?.rooms?.map((el, index) => {
         countAll = countAll + el.number_member;
-      
-      return null;
-     })
-     setCountAllUser(countAll);
+
+        return null;
+      });
+      setCountAllUser(countAll);
     }
 
-    const newList = listUser?.data?.rooms?.map(el => {
-      
-      return {...el,users: el?.users?.filter(item => item.user_type === 3)}
-     });
-     let countJoin = 0;
-     // eslint-disable-next-line no-unused-expressions
-     newList?.map((el,index) => {
+    const newList = listUser?.data?.rooms?.map((el) => {
+      return {
+        ...el,
+        users: el?.users?.filter((item) => item.user_type === 3),
+      };
+    });
+    let countJoin = 0;
+    // eslint-disable-next-line no-unused-expressions
+    newList?.map((el, index) => {
       countJoin = countJoin + el?.users?.length;
-      
+
       return null;
-     })
-     setCountJoinUser(countJoin);
-     setUserJoin(newList);
-     let countInternal = 0;
-     const internal = listUser?.data?.rooms?.map(el => {
-      return {...el,users: el?.users?.filter(item => item.user_type === 2)}
-     });
-     // eslint-disable-next-line no-unused-expressions
-     internal?.map((el,index) => {
+    });
+    setCountJoinUser(countJoin);
+    setUserJoin(newList);
+    let countInternal = 0;
+    const internal = listUser?.data?.rooms?.map((el) => {
+      return {
+        ...el,
+        users: el?.users?.filter((item) => item.user_type === 2),
+      };
+    });
+    // eslint-disable-next-line no-unused-expressions
+    internal?.map((el, index) => {
       countInternal = countInternal + el.users.length;
-      
+
       return null;
-     })
-     setCountInternalUser(countInternal);
-     setUserInternal(internal);
+    });
+    setCountInternalUser(countInternal);
+    setUserInternal(internal);
   };
 
   const handleFilterGroup = (event) => {
     setAnchorEl(event.currentTarget);
     let countAll = 0;
-    if(userGroup){
+    if (userGroup) {
       // eslint-disable-next-line no-unused-expressions
-        countAll = countAll + userGroup?.data?.users?.length;
+      countAll = countAll + userGroup?.data?.users?.length;
     }
     setCountAllUserGroup(countAll);
-    const newList = userGroup?.data?.users?.filter(el => el.user_type === 3);
-     let countJoin = 0;
-     // eslint-disable-next-line no-unused-expressions
-      countJoin = countJoin + newList.length;
-      
-     setCountJoinUserGroup(countJoin);
-     setUserJoinGroup(newList);
-     let countInternal = 0;
-     const internal = userGroup?.data?.users?.filter(el => el.user_type ===  2);
-     // eslint-disable-next-line no-unused-expressions
-      countInternal = countInternal + internal.length;
-     setCountInternalUserGroup(countInternal);
-     setUserInternalGroup(internal);
-  }
+    const newList = userGroup?.data?.users?.filter((el) => el.user_type === 3);
+    let countJoin = 0;
+    // eslint-disable-next-line no-unused-expressions
+    countJoin = countJoin + newList.length;
+
+    setCountJoinUserGroup(countJoin);
+    setUserJoinGroup(newList);
+    let countInternal = 0;
+    const internal = userGroup?.data?.users?.filter((el) => el.user_type === 2);
+    // eslint-disable-next-line no-unused-expressions
+    countInternal = countInternal + internal.length;
+    setCountInternalUserGroup(countInternal);
+    setUserInternalGroup(internal);
+  };
   const handleClose = () => {
     setAnchorEl(null);
     setCountInternalUser(0);
     setCountJoinUser(0);
     setCountAllUser(0);
   };
-  
-  
- 
+
   const opens = Boolean(anchorEl);
-  const id = opens ? 'simple-popover' : undefined;
+  const id = opens ? "simple-popover" : undefined;
 
   const handleChangeFilter = (e) => {
-    setValueFilter(e.target.value)
+    setValueFilter(e.target.value);
     switch (e.target.value) {
-      case 'all':
+      case "all":
         dispatch(listUserOfGroup(true));
-        return ;
-        
-      case 'join':
-        (dispatch(listUserFilterOfGroupSuccess({rooms: userJoin, maxUser: 20})))
-        return ;
-        case 'internal':
-          (dispatch(listUserFilterOfGroupSuccess({rooms: userInternal, maxUser: 20})));
-        return ;
-        default:
+        return;
+
+      case "join":
+        dispatch(
+          listUserFilterOfGroupSuccess({ rooms: userJoin, maxUser: 20 })
+        );
+        return;
+      case "internal":
+        dispatch(
+          listUserFilterOfGroupSuccess({ rooms: userInternal, maxUser: 20 })
+        );
+        return;
+      default:
         break;
     }
-     
-     
-  }
+  };
   const handleChangeFilterGroup = (e) => {
-    setValueFilter(e.target.value)
+    setValueFilter(e.target.value);
     switch (e.target.value) {
-      case 'all':
-        (dispatch(getUserOfRoom({roomId: userGroup?.data?.users[0]?.room}, true)));
-        return ;
-        
-      case 'join':
-        (dispatch(filterUserOfRoomSuccess({users: userJoinGroup})))
-        return ;
-        case 'internal':
-          dispatch(filterUserOfRoomSuccess({users: userInternalGroup}));
-        return ;
-        default:
+      case "all":
+        dispatch(
+          getUserOfRoom({ roomId: userGroup?.data?.users[0]?.room }, true)
+        );
+        return;
+
+      case "join":
+        dispatch(filterUserOfRoomSuccess({ users: userJoinGroup }));
+        return;
+      case "internal":
+        dispatch(filterUserOfRoomSuccess({ users: userInternalGroup }));
+        return;
+      default:
         break;
     }
-     
-     
-  }
+  };
   React.useEffect(() => {
     doListRoom();
     // eslint-disable-next-line
   }, []);
-  
-
 
   React.useEffect(() => {
     const fail = () => {
@@ -310,10 +315,10 @@ function HeaderButtonGroup({
     // eslint-disable-next-line
   }, [updatedUser]);
 
-const handlesetFileExcel = (file) => {
-  setFileExcel(file);
-}
-   
+  const handlesetFileExcel = (file) => {
+    setFileExcel(file);
+  };
+
   React.useEffect(() => {
     const success = (bit) => () => {
       setActiveMask((oldMask) => oldMask | (1 << bit));
@@ -376,47 +381,114 @@ const handlesetFileExcel = (file) => {
         )}
         {get(options, "filter") && (
           <div>
-          <StyledButton
-          onClick={get(options, "filter.option") === 'all'? handleFilterAll : handleFilterGroup}
-          aria-describedby={id}
-        >
-          <div>
-            <Icon
-              path={
-                mdiFilter
+            <StyledButton
+              onClick={
+                get(options, "filter.option") === "all"
+                  ? handleFilterAll
+                  : handleFilterGroup
               }
-              size={1}
-              color={"rgba(0, 0, 0, 0.54)"}
-            />
+              aria-describedby={id}
+            >
+              <div>
+                <Icon path={mdiFilter} size={1} color={"rgba(0, 0, 0, 0.54)"} />
+              </div>
+              <span>
+                {get(options, "filter.label") && valueFilter === "all"
+                  ? t("IDS_WP_ALL")
+                  : valueFilter === "join"
+                  ? t("IDS_WP_ACCOUNT_MEMBER_JOIN")
+                  : t(
+                      "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL"
+                    )}
+              </span>
+            </StyledButton>
+            <Popover
+              id={id}
+              open={opens}
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "center",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+            >
+              <div style={{ padding: "10px 15px" }}>
+                <h5>{t("IDS_WP_FILTER_LIST_MEMBER")}</h5>
+                <RadioGroup
+                  value={valueFilter}
+                  aria-label="gender"
+                  name="gender1"
+                  value={valueFilter}
+                  onChange={
+                    get(options, "filter.option") === "all"
+                      ? handleChangeFilter
+                      : handleChangeFilterGroup
+                  }
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FormControlLabel
+                      value="all"
+                      control={<Radio />}
+                      label={t("IDS_WP_ALL")}
+                    />{" "}
+                    <div>
+                      {get(options, "filter.option") === "all"
+                        ? countAllUser
+                        : countAllUserGroup}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FormControlLabel
+                      value="join"
+                      control={<Radio />}
+                      label={t("IDS_WP_ACCOUNT_MEMBER_JOIN")}
+                    />
+                    <div>
+                      {get(options, "filter.option") === "all"
+                        ? countJoinUser
+                        : countJoinUserGroup}
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <FormControlLabel
+                      value="internal"
+                      control={<Radio />}
+                      label={t(
+                        "IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL"
+                      )}
+                    />
+                    <div>
+                      {get(options, "filter.option") === "all"
+                        ? countInternalUser
+                        : countInternalUserGroup}
+                    </div>
+                  </div>
+                </RadioGroup>
+              </div>
+            </Popover>
           </div>
-          <span>
-            {get(options, "filter.label") && valueFilter === 'all' ? t('IDS_WP_ALL'): valueFilter === 'join' ? t('IDS_WP_ACCOUNT_MEMBER_JOIN'): t('IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL')}
-          </span>
-        </StyledButton>
-        <Popover
-        id={id}
-        open={opens}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'center',
-        }}
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'center',
-        }}
-      >
-        <div style={{padding: '10px 15px'}}>
-          <h5>{t('IDS_WP_FILTER_LIST_MEMBER')}</h5>
-        <RadioGroup value={valueFilter}  aria-label="gender" name="gender1" value={valueFilter} onChange={get(options, "filter.option") === 'all'? handleChangeFilter:handleChangeFilterGroup}>
-        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><FormControlLabel value="all" control={<Radio />} label={t('IDS_WP_ALL')} /> <div>{get(options, "filter.option") === 'all'? countAllUser : countAllUserGroup}</div></div>
-        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><FormControlLabel value="join" control={<Radio />} label={t('IDS_WP_ACCOUNT_MEMBER_JOIN')} /><div>{get(options, "filter.option") === 'all'? countJoinUser: countJoinUserGroup}</div></div>
-        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}><FormControlLabel value="internal" control={<Radio />} label={t('IDS_WP_ACCOUNT_INTERNAL_RESULT_CREATE_ACCOUNT_CREATED_INTERNAL')} /><div>{get(options, "filter.option") === 'all'?countInternalUser:countInternalUserGroup}</div></div>
-        </RadioGroup>
-      </div>
-      </Popover>
-      </div>
         )}
         {get(options, "expand") && (
           <StyledButton
@@ -508,7 +580,7 @@ const handlesetFileExcel = (file) => {
                 )}
                 {get(item, "iconPath") ? (
                   <Icon
-                  style={{paddingRight: '10px'}}
+                    style={{ paddingRight: "10px" }}
                     path={get(item, "iconPath")}
                     size={1}
                     color={"rgba(0, 0, 0, 0.54)"}
@@ -535,7 +607,7 @@ const mapStateToProps = (state) => {
     profile: state.system.profile,
     room: state.room.listRoom,
     listUser: state.user.listUserOfGroup,
-    userGroup: state.room.getUserOfRoom
+    userGroup: state.room.getUserOfRoom,
   };
 };
 
@@ -543,14 +615,16 @@ const mapDispatchToProps = (dispatch) => {
   return {
     actionToast,
     doReloadUser: ({ userId }) => {
-      dispatch(detailUser({ userId }, true));
+      if (userId) {
+        dispatch(detailUser({ userId }, true));
+      }
       dispatch(listUserOfGroup(true));
     },
     doSearchUser: ({ info }, quite) => dispatch(searchUser({ info }, quite)),
     doSearchUserReset: () => dispatch(searchUserReset()),
     doInviteUserJoinGroup: ({ userId }) =>
       dispatch(inviteUserJoinGroup({ userId })),
-      doListRoom: (quite) => dispatch(listRoom(quite)),
+    doListRoom: (quite) => dispatch(listRoom(quite)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(HeaderButtonGroup);
