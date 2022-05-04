@@ -231,3 +231,7 @@ a.MuiListItem-root.view_ProjectGroup_List-customListItem.MuiListItem-gutters {
     }
   }
 }
+
+.view_ProjectGroup_List--listGroup-body.scrollList > div > div:nth-child(1) {
+  padding-bottom: 180px;
+}

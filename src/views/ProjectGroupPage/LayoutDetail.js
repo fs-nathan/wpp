@@ -78,6 +78,9 @@ const LayoutDetail = ({
   const isTemplate = useMemo(() => {
     return parsedPath.includes("template");
   }, [parsedPath]);
+  const isProjectAddNew = useMemo(() => {
+    return parsedPath.includes("add-new");
+  }, [parsedPath]);
   const isPreview = useMemo(() => {
     return parsedPath.includes("preview");
   }, [parsedPath]);
@@ -99,6 +102,12 @@ const LayoutDetail = ({
       handleClose();
     }
   }, [isPreview]);
+
+  useEffect(() => {
+    if (isProject && !isProjectAddNew) {
+      handleOpen();
+    }
+  }, [isProject, isProjectAddNew]);
 
   const disableShowHide = !isNil(
     find(
@@ -351,7 +360,8 @@ const LayoutDetail = ({
         ) : (
           <HeaderProject {...setView()} />
         ))}
-      {isTemplate || (!groupID && !isProject) ? (
+      {isTemplate ||
+      (!groupID && !isProject && view !== "task-chat" && view !== "report") ? (
         <div
           className="template-preview-body"
           style={{

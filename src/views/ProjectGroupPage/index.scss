@@ -41,6 +41,7 @@
   position: absolute;
   bottom: 0;
   width: 100%;
+  overflow-y: hidden;
   .gantt__container {
     height: 100% !important;
   }

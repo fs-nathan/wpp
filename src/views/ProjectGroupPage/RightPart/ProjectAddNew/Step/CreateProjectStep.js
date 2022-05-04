@@ -149,9 +149,17 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
             <div className="submit-button">
               <Button
                 size="large"
+                disabled={!Boolean(name) || !Boolean(curProjectGroupId)}
                 endIcon={<ArrowRightAltIcon />}
                 variant="contained"
-                style={{ boxShadow: "none", backgroundColor: "#0076F3" }}
+                sx={{
+                  boxShadow: "none",
+                  backgroundColor: "#0076F3",
+                  "&:disabled": {
+                    backgroundColor: "rgba(0,0,0,0.12)",
+                  },
+                }}
+                style={{}}
                 onClick={onNextHandler}
               >
                 {t("CREATE_NEXT")}

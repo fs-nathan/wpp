@@ -42,6 +42,7 @@ const DialogUsing = ({ onClose, onOk }) => {
 
   const formatDate = useSelector((state) => state.system.profile.format_date);
 
+  const loading = useSelector((state) => state.project.useTemplate.loading);
   function handleOk() {
     onOk({
       name,
@@ -126,7 +127,18 @@ const DialogUsing = ({ onClose, onOk }) => {
           <Typography>{t("TEMPLATE.Using subtitle")}</Typography>
         </Box>
         <DialogActions sx={{ justifyContent: "flex-start" }}>
-          <Button variant="contained" color="primary" onClick={handleOk}>
+          <Button
+            loading={loading}
+            variant="contained"
+            onClick={handleOk}
+            sx={{
+              backgroundColor: "#0076F3",
+              boxShadow: "none",
+              "&:hover": {
+                boxShadow: "none",
+              },
+            }}
+          >
             {t("TEMPLATE.Create")}
           </Button>
         </DialogActions>
