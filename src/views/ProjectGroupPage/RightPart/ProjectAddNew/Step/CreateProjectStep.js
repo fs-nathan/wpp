@@ -55,7 +55,7 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
   const [openSelectGroupProjectModal, setOpenSelectGroupProjectModal] =
     useState(false);
   const [view_default, setViewDefault] = useState(1);
-
+  const loading = useSelector((state) => state.project.createProject.loading);
   useEffect(() => {
     CustomEventListener(CREATE_PROJECT.SUCCESS, (e) => {
       // history.push(`${Routes.PROJECT}/${e.detail.project_id}?guideline=true`);
@@ -149,7 +149,9 @@ const CreateProjectStep = ({ onNext, doCreateProject, onBack, status }) => {
             <div className="submit-button">
               <Button
                 size="large"
-                disabled={!Boolean(name) || !Boolean(curProjectGroupId)}
+                disabled={
+                  !Boolean(name) || !Boolean(curProjectGroupId) || loading
+                }
                 endIcon={<ArrowRightAltIcon />}
                 variant="contained"
                 sx={{

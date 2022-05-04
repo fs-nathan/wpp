@@ -128,7 +128,7 @@ const DialogUsing = ({ onClose, onOk }) => {
         </Box>
         <DialogActions sx={{ justifyContent: "flex-start" }}>
           <Button
-            loading={loading}
+            disabled={!Boolean(name) || !Boolean(curProjectGroupId) || loading}
             variant="contained"
             onClick={handleOk}
             sx={{
@@ -136,6 +136,9 @@ const DialogUsing = ({ onClose, onOk }) => {
               boxShadow: "none",
               "&:hover": {
                 boxShadow: "none",
+              },
+              "&:disabled": {
+                backgroundColor: "rgba(0,0,0,0.12)",
               },
             }}
           >
