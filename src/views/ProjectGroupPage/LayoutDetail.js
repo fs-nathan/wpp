@@ -74,9 +74,13 @@ const LayoutDetail = ({
   const search = location.search;
   const params = new URLSearchParams(search);
   const groupID = params.get("groupID");
+  const { templateId } = useParams();
 
   const isTemplate = useMemo(() => {
     return parsedPath.includes("template");
+  }, [parsedPath]);
+  const isProjectAddNew = useMemo(() => {
+    return parsedPath.includes("add-new");
   }, [parsedPath]);
   const isPreview = useMemo(() => {
     return parsedPath.includes("preview");
@@ -99,6 +103,12 @@ const LayoutDetail = ({
       handleClose();
     }
   }, [isPreview]);
+
+  useEffect(() => {
+    if (isProject && !isProjectAddNew) {
+      handleOpen();
+    }
+  }, [isProject, isProjectAddNew]);
 
   const disableShowHide = !isNil(
     find(
@@ -324,6 +334,7 @@ const LayoutDetail = ({
               <TemplateHeader
                 projectId={projectId}
                 categoryId={categoryId}
+                templateId={templateId}
                 {...setView()}
               />
             ) : (
@@ -346,12 +357,14 @@ const LayoutDetail = ({
           <TemplateHeader
             projectId={projectId}
             categoryId={categoryId}
+            templateId={templateId}
             {...setView()}
           />
         ) : (
           <HeaderProject {...setView()} />
         ))}
-      {isTemplate || (!groupID && !isProject) ? (
+      {isTemplate ||
+      (!groupID && !isProject && view !== "task-chat" && view !== "report") ? (
         <div
           className="template-preview-body"
           style={{

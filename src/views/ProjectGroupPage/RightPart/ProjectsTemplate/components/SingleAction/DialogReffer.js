@@ -56,7 +56,18 @@ const DialogReffer = ({ onClose }) => {
             readOnly: true,
           }}
         />
-        <Button variant="contained" color="primary" onClick={copyUrl}>
+        <Button
+          variant="contained"
+          onClick={copyUrl}
+          sx={{
+            backgroundColor: "#0076F3",
+            boxShadow: "none",
+            padding: "7px 16px",
+            "&:hover": {
+              boxShadow: "none",
+            },
+          }}
+        >
           {t("TEMPLATE.copy")}
         </Button>
       </Box>

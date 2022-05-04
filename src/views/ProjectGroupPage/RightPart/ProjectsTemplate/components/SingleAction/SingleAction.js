@@ -136,7 +136,7 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
 
   async function handleUnShare() {
     try {
-      dispatch(cancelShare({ projectId: templateId }));
+      dispatch(cancelShare({ templateId: templateId }));
       handleUnShareClose();
       history.replace("/projects/template");
     } catch (error) {}

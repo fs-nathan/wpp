@@ -46,7 +46,7 @@ const ProjectSingleTemplate = ({ handleOpen }) => {
 
   function previewTemplate() {
     history.push(
-      `/projects/template/${template.category_id}/${templateId}/preview/task-table/${templateId}`
+      `/projects/template/${template.category_id}/${templateId}/preview/task-table/${template.project_id}`
     );
   }
 

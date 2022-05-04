@@ -48,14 +48,14 @@ const TemplateSection = ({
                   <TemplateCard
                     key={template.id}
                     template={template}
-                    categoryId={categoryId}
+                    categoryId={template.category_id || categoryId}
                   />
                 ))
             : templates.map((template) => (
                 <TemplateCard
                   key={template.id}
                   template={template}
-                  categoryId={categoryId}
+                  categoryId={template.category_id || categoryId}
                 />
               )))}
         {isEmpty && <TemplateCard isEmpty />}
