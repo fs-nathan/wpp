@@ -67,7 +67,7 @@ export const TitleTable = ({
       }
 `}
     >
-      {_renderIconExpand()}
+      {!isAllGroup && _renderIconExpand()}
       {!isAllProjects && (
         <img
           src={get(currentGroup, "icon")}
