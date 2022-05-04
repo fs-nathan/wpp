@@ -82,6 +82,9 @@ export const GroupProject = ({
   setAnchorElAddGroup,
   setSelectedGroup,
   setAnchorElGroup,
+  open,
+  close,
+  currentProjectGroup,
 }) => {
   const idGroupDefault = useSelector(
     ({ groupTask }) => groupTask.defaultGroupTask.data || ""
@@ -91,7 +94,9 @@ export const GroupProject = ({
   );
   const { pathname } = useLocation();
 
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(
+    currentProjectGroup === projectGroup.id
+  );
   const params = useParams();
   const isDefaultGroup =
     idGroupDefault === `?groupID=${projectGroup.id}` ||
@@ -99,12 +104,30 @@ export const GroupProject = ({
   const id = pathname.split("/");
 
   function handleProjectActive(parentId: string) {
-    setIsActive(projectGroup.id === parentId);
+    // setIsActive(projectGroup.id === parentId);
   }
+  useEffect(() => {
+    if (currentProjectGroup !== projectGroup.id) {
+      setIsActive(false);
+    }
+  }, [currentProjectGroup, projectGroup.id]);
   const _toggleExpand = () => {
+    if (!isActive) {
+      open(projectGroup.id);
+    } else {
+      close();
+    }
     setIsActive(!isActive);
   };
 
+  const _openExpand = () => {
+    open(projectGroup.id);
+    setIsActive(true);
+  };
+  const _closeExpand = () => {
+    close();
+    setIsActive(false);
+  };
   return (
     <Draggable draggableId={get(projectGroup, "id")} index={index}>
       {(provided, snapshot) => (
@@ -173,12 +196,12 @@ export const GroupProject = ({
               {isActive ? (
                 <KeyboardArrowUpOutlinedIcon
                   sx={{ color: "rgba(0,0,0,0.54)" }}
-                  onClick={_toggleExpand}
+                  onClick={_closeExpand}
                 />
               ) : (
                 <KeyboardArrowDownOutlinedIcon
                   sx={{ color: "rgba(0,0,0,0.54)" }}
-                  onClick={_toggleExpand}
+                  onClick={_openExpand}
                 />
               )}
             </div>

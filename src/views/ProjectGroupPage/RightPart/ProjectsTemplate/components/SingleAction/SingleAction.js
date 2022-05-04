@@ -39,7 +39,6 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
   const dispatch = useDispatch();
   const template = useSelector((state) => state.project.getDetailTemplate.data);
 
-  console.log(templateId);
   const { t } = useTranslation();
   const handleUnShareClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorUnShareEl(event.currentTarget);
@@ -58,7 +57,6 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
   };
   const handleUsingClick = () => {
     const event = document.getElementById("using-button");
-    console.log(event);
     if (event) {
       setAnchorUsingEl(event);
     }
@@ -96,31 +94,11 @@ const SingleAction = ({ isOpenUsing, closeUsing }) => {
 
   useEffect(() => {
     CustomEventListener(USE_TEMPLATE.SUCCESS, (e) => {
-      console.log(
-        "🚀 -----------------------------------------------------------------"
-      );
-      console.log(
-        "🚀 ~ file: SingleAction.js ~ line 104 ~ CustomEventListener ~ e",
-        e
-      );
-      console.log(
-        "🚀 -----------------------------------------------------------------"
-      );
       history.push(`${Routes.PROJECT}/${e.project.id}`);
     });
 
     return () => {
       CustomEventDispose(USE_TEMPLATE.SUCCESS, (e) => {
-        console.log(
-          "🚀 ----------------------------------------------------------------"
-        );
-        console.log(
-          "🚀 ~ file: SingleAction.js ~ line 111 ~ CustomEventDispose ~ e",
-          e
-        );
-        console.log(
-          "🚀 ----------------------------------------------------------------"
-        );
         history.push(`${Routes.PROJECT}/${e.project.id}`);
       });
     };

@@ -48,7 +48,6 @@ async function doCreateProject({
 
 function* createProject(action) {
   try {
-    console.log(action);
     const { project } = yield call(doCreateProject, action.options);
     // yield put(createProjectSuccess({ project }, action.options));
     CustomEventEmitterWithParams(CREATE_PROJECT.SUCCESS, {
