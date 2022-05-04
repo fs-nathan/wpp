@@ -98,13 +98,15 @@ const ProjectTemplateList = ({
 
   const [searchPattern, setSearchPattern] = useState(null);
 
-  const categoriesSearchResult = useMemo(() => {
+  const filterCategories = useMemo(() => {
     if (categories && categories.length > 0) {
       return categories.filter((category) => {
         if (searchPattern) {
           let keyword = searchPattern.toLowerCase();
           const currentCategoryName = category.name.toLowerCase();
           return currentCategoryName.indexOf(keyword) > -1;
+        } else {
+          return categories;
         }
         return;
       });
@@ -128,7 +130,7 @@ const ProjectTemplateList = ({
             onChange={(evt) => setSearchPattern(evt.target.value)}
             style={{ background: "#fff" }}
           />
-          {searchPattern &&
+          {/* {searchPattern &&
             categoriesSearchResult &&
             categoriesSearchResult.length > 0 && (
               <div className="search-group-result">
@@ -142,7 +144,7 @@ const ProjectTemplateList = ({
                   </div>
                 ))}
               </div>
-            )}
+            )} */}
         </div>
       </Banner>
       <Box className={"view_ProjectGroup_List--LeftContainer"}>
@@ -202,9 +204,9 @@ const ProjectTemplateList = ({
               </ListItem>
               <Collapse in={isPublicOpen} timeout="auto" unmountOnExit>
                 <List className="template-group-nav" component="nav">
-                  {categories &&
-                    categories.length > 0 &&
-                    categories.map((child) => (
+                  {filterCategories &&
+                    filterCategories.length > 0 &&
+                    filterCategories.map((child) => (
                       <ListItem
                         disablePadding
                         disableGutters
