@@ -93,6 +93,19 @@ const WPTableGroup = ({
     setDataRows(data);
   }, [data]);
 
+  React.useLayoutEffect(() => {
+    const tbody = document.querySelectorAll(".tbody")[0];
+    const header = document.getElementById("header-row");
+    if (tbody) {
+      tbody.addEventListener("scroll", (e) => _handleSyncScroll(e, header));
+    }
+  }, []);
+
+  const _handleSyncScroll = (e, scrollSync) => {
+    const scrollLeft = e.currentTarget.scrollLeft;
+    scrollSync.scrollLeft = scrollLeft;
+  };
+
   const _handleDragEnd = (result) => {
     console.log("@Pham_Tinh_Console:", result);
   };
