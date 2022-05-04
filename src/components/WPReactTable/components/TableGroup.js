@@ -169,7 +169,7 @@ const WPTableGroup = ({
               {...cellProps}
               style={{
                 ...cellProps.style,
-                maxWidth: cellProps.style.width,
+                width: totalColumnsWidth + scrollBarSize + 50,
               }}
               className="td add-cell"
             >
@@ -201,7 +201,7 @@ const WPTableGroup = ({
               {...headerProps}
               style={{
                 ...headerProps.style,
-                width: `calc(${headerProps.style.width} - 20px)`,
+                width: totalColumnsWidth + scrollBarSize + 50,
               }}
               key={`header_group_${index}`}
               className="tr header"
