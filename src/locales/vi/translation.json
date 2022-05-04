@@ -400,6 +400,7 @@
             "SET_DEFAULT": "Đặt làm mặc định",
             "DEL": "Xóa nhóm làm việc",
             "ALERT": "Bạn chắc chắn muốn xóa dự án?",
+            "TASK": "bảng việc",
             "NO_DATA": {
               "NO_PROJECT": "Chưa có dự án nào được khởi tạo. Hãy click vào nút + TẠO DỰ ÁN để bắt đầu quản lý dự án và công việc của bạn.",
               "NO_TASK": "Hãy tạo mới dữ liệu hoặc kiểm tra bộ lọc để xuất hiện dữ liệu"
