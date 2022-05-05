@@ -20,10 +20,10 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
 import { get } from "lodash-es";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   projectItem: {
@@ -82,6 +82,9 @@ export const GroupProject = ({
   setAnchorElAddGroup,
   setSelectedGroup,
   setAnchorElGroup,
+  open,
+  close,
+  currentProjectGroup,
 }) => {
   const idGroupDefault = useSelector(
     ({ groupTask }) => groupTask.defaultGroupTask.data || ""
@@ -89,17 +92,42 @@ export const GroupProject = ({
   const idGroupDefaultLocal = localStorage.getItem(
     "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
+  const { pathname } = useLocation();
 
-  const [isActive, setIsActive] = useState(false);
-
+  const [isActive, setIsActive] = useState(
+    currentProjectGroup === projectGroup.id
+  );
+  const params = useParams();
   const isDefaultGroup =
     idGroupDefault === `?groupID=${projectGroup.id}` ||
     `?groupID=${projectGroup.id}` === idGroupDefaultLocal;
+  const id = pathname.split("/");
 
+  function handleProjectActive(parentId: string) {
+    // setIsActive(projectGroup.id === parentId);
+  }
+  useEffect(() => {
+    if (currentProjectGroup !== projectGroup.id) {
+      setIsActive(false);
+    }
+  }, [currentProjectGroup, projectGroup.id]);
   const _toggleExpand = () => {
+    if (!isActive) {
+      open(projectGroup.id);
+    } else {
+      close();
+    }
     setIsActive(!isActive);
   };
 
+  const _openExpand = () => {
+    open(projectGroup.id);
+    setIsActive(true);
+  };
+  const _closeExpand = () => {
+    close();
+    setIsActive(false);
+  };
   return (
     <Draggable draggableId={get(projectGroup, "id")} index={index}>
       {(provided, snapshot) => (
@@ -168,20 +196,22 @@ export const GroupProject = ({
               {isActive ? (
                 <KeyboardArrowUpOutlinedIcon
                   sx={{ color: "rgba(0,0,0,0.54)" }}
-                  onClick={_toggleExpand}
+                  onClick={_closeExpand}
                 />
               ) : (
                 <KeyboardArrowDownOutlinedIcon
                   sx={{ color: "rgba(0,0,0,0.54)" }}
-                  onClick={_toggleExpand}
+                  onClick={_openExpand}
                 />
               )}
             </div>
           </ListItem>
 
           <CollapseListProject
+            parentId={projectGroup.id}
             data={projectGroup.projects}
             isActive={isActive}
+            onActive={handleProjectActive}
           />
           {provided.placeholder}
         </div>
@@ -190,7 +220,12 @@ export const GroupProject = ({
   );
 };
 
-const CollapseListProject = ({ data = [], isActive = true }) => {
+const CollapseListProject = ({
+  parentId,
+  onActive,
+  data = [],
+  isActive = true,
+}) => {
   const classes = useStyles();
 
   return (
@@ -204,6 +239,7 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
               component={NavLink}
               isActive={(match, { pathname }) => {
                 const id = pathname.split("/");
+                if (id[3] === item.id) onActive(parentId);
                 return id[3] === item.id;
               }}
               style={{ paddingLeft: 45 }}

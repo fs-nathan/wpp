@@ -80,7 +80,6 @@ const TemplateHeader = ({ view = "list", projectId, categoryId, templateId, ...p
   const history = useHistory();
   const handleUsingClick = () => {
     const event = document.getElementById("using-button");
-    console.log(event);
     if (event) {
       setAnchorUsingEl(event);
     }

@@ -50,6 +50,17 @@ const DialogUsing = ({ onClose, onOk }) => {
       startDate: isDayStart ? startDate : undefined,
     });
   }
+  console.log(
+    "🚀 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+  );
+  console.log(
+    "🚀 ~ file: DialogUsing.js ~ line 54 ~ DialogUsing ~  !Boolean(name) || !Boolean(curProjectGroupId) || loading",
+    !Boolean(name) || !Boolean(curProjectGroupId) || loading
+  );
+  console.log(
+    "🚀 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+  );
+
   return (
     <>
       <Box width={320} p={1}>
@@ -128,7 +139,7 @@ const DialogUsing = ({ onClose, onOk }) => {
         </Box>
         <DialogActions sx={{ justifyContent: "flex-start" }}>
           <Button
-            loading={loading}
+            disabled={!Boolean(name) || !Boolean(curProjectGroupId) || loading}
             variant="contained"
             onClick={handleOk}
             sx={{
@@ -136,6 +147,9 @@ const DialogUsing = ({ onClose, onOk }) => {
               boxShadow: "none",
               "&:hover": {
                 boxShadow: "none",
+              },
+              "&:disabled": {
+                backgroundColor: "rgba(0,0,0,0.12)",
               },
             }}
           >

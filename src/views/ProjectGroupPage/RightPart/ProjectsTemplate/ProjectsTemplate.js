@@ -47,16 +47,6 @@ const ProjectsTemplate = ({ expand, handleOpen }) => {
   const templates = useSelector(
     (state) => state.project.getNewestTemplate.data
   );
-  console.log(
-    "🚀 ---------------------------------------------------------------------------------"
-  );
-  console.log(
-    "🚀 ~ file: ProjectsTemplate.js ~ line 48 ~ ProjectsTemplate ~ categories",
-    categories
-  );
-  console.log(
-    "🚀 ---------------------------------------------------------------------------------"
-  );
 
   const fetchData = useCallback(async () => {
     try {
