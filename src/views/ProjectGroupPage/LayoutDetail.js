@@ -9,13 +9,14 @@ import { actionVisibleDrawerMessage } from "actions/system/system";
 import { CustomLayoutContext } from "components/CustomLayout";
 import { CustomTableContext } from "components/CustomTable";
 import HeaderProject from "components/HeaderProject";
+import TemplateHeader from "components/TemplateHeader";
 import { apiService } from "constants/axiosInstance";
 import { DRAWER_TYPE } from "constants/constants";
 import { exportToCSV } from "helpers/utils/exportData";
 import { find, flattenDeep, get, isNil, join } from "lodash";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { connect, useDispatch } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import {
   projectSelector,
   showHidePendingsSelector,
@@ -26,6 +27,12 @@ import {
   taskSearchSelector,
   visibleSelector,
 } from "../KanbanPage/Header/selectors";
+
+function useQuery() {
+  const { search } = useLocation();
+
+  return React.useMemo(() => new URLSearchParams(search), [search]);
+}
 
 const MiniContainer = ({ className = "", ...props }) => (
   <div
@@ -51,19 +58,70 @@ const LayoutDetail = ({
   doActionVisibleDrawerMessage,
   visible,
   doSetVisibleHeader,
+  handleClose,
+  handleOpen,
 }) => {
   const { doOpenModal, setItemLocation } = useContext(CustomLayoutContext);
   const dispatch = useDispatch();
-  const { pathname } = useLocation();
-  const isProject = pathname === "/projects";
+  const location = useLocation();
+  const isProject = location.pathname === "/projects";
   const TableContext = React.useContext(CustomTableContext);
-  const [, , view, projectId, memberId] = pathname.split("/");
+  const parsedPath = location.pathname.split("/");
+  const [view, setViewParam] = useState("");
+  const [projectId, setProjectId] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [memberId, setMemberId] = useState("");
+  const search = location.search;
+  const params = new URLSearchParams(search);
+  const groupID = params.get("groupID");
+  const { templateId } = useParams();
+
+  const isTemplate = useMemo(() => {
+    return parsedPath.includes("template");
+  }, [parsedPath]);
+  const isProjectAddNew = useMemo(() => {
+    return parsedPath.includes("add-new");
+  }, [parsedPath]);
+  const isPreview = useMemo(() => {
+    return parsedPath.includes("preview");
+  }, [parsedPath]);
+  useEffect(() => {
+    if (isTemplate) {
+      setCategoryId(parsedPath[3]);
+      setViewParam(parsedPath[6]);
+      setProjectId(parsedPath[7]);
+      setMemberId(parsedPath[8]);
+    } else {
+      setViewParam(parsedPath[2]);
+      setProjectId(parsedPath[3]);
+      setMemberId(parsedPath[4]);
+    }
+  }, [isTemplate, parsedPath]);
+
+  useEffect(() => {
+    if (isPreview) {
+      handleClose();
+    }
+  }, [isPreview]);
+
+  useEffect(() => {
+    if (isProject && !isProjectAddNew) {
+      handleOpen();
+    }
+  }, [isProject, isProjectAddNew]);
+
   const disableShowHide = !isNil(
     find(
       showHidePendings.pendings,
       (pending) => pending === get(project.project, "id")
     )
   );
+  const query = useQuery();
+  React.useEffect(() => {
+    if (query.get("open-employee")) {
+      doOpenModal("SETTING_MEMBER", {});
+    }
+  }, [query]);
 
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
@@ -131,6 +189,8 @@ const LayoutDetail = ({
           ),
           onUpdateMember: () => doOpenModal("MEMBER_SETTING", {}),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
           onUpdateVisible: () =>
             get(project, "visibility", false)
               ? doHideProject({ projectId: get(project?.project, "id") })
@@ -156,6 +216,9 @@ const LayoutDetail = ({
           onSearch: (searchStr) => doSearchTask(searchStr),
           onOpenCreateModal: () => console.log("onOpenCreateModal"),
           onUpdateTime: () => console.log("CALENDAR"),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateSetting: () => console.log("SETTING"),
           expand: expand,
           onExpand: handleExpand,
@@ -185,6 +248,9 @@ const LayoutDetail = ({
           disableShowHide,
           onUpdateMember: () => doOpenModal("SETTING_MEMBER"),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateSetting: () =>
             doOpenModal("SETTING", {
               curProject: project.project,
@@ -229,6 +295,9 @@ const LayoutDetail = ({
           disableShowHide,
           onUpdateMember: () => doOpenModal("SETTING_MEMBER"),
           onUpdateTime: () => doOpenModal("CALENDAR", {}),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
           onUpdateVisible: () =>
             get(project, "visibility", false)
               ? doHideProject({ projectId: get(project?.project, "id") })
@@ -261,7 +330,16 @@ const LayoutDetail = ({
       {!isProject && view === "task-kanban" && (
         <>
           {visible ? (
-            <HeaderProject {...setView()} />
+            isTemplate ? (
+              <TemplateHeader
+                projectId={projectId}
+                categoryId={categoryId}
+                templateId={templateId}
+                {...setView()}
+              />
+            ) : (
+              <HeaderProject {...setView()} />
+            )
           ) : (
             <MiniContainer>
               <Icon
@@ -273,8 +351,31 @@ const LayoutDetail = ({
           )}
         </>
       )}
-      {!isProject && view !== "task-kanban" && <HeaderProject {...setView()} />}
-      {React.cloneElement(children, { aaaa: 1 })}
+      {!isProject &&
+        view !== "task-kanban" &&
+        (isTemplate ? (
+          <TemplateHeader
+            projectId={projectId}
+            categoryId={categoryId}
+            templateId={templateId}
+            {...setView()}
+          />
+        ) : (
+          <HeaderProject {...setView()} />
+        ))}
+      {isTemplate ||
+      (!groupID && !isProject && view !== "task-chat" && view !== "report") ? (
+        <div
+          className="template-preview-body"
+          style={{
+            height: isTemplate ? "calc(100vh - 88px)" : "calc(100vh - 75px)",
+          }}
+        >
+          {React.cloneElement(children, { aaaa: 1 })}
+        </div>
+      ) : (
+        React.cloneElement(children, { aaaa: 1 })
+      )}
     </>
   );
 };

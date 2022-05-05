@@ -62,8 +62,11 @@ const WPTable = ({
     useSticky
   );
 
-  const scrollBarSize = React.useMemo(() => scrollbarWidth(), []);
-  const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
+  const scrollBarSize = React.useMemo(() => scrollbarWidth(), [scrollbarWidth]);
+  const scrollTableHeight = React.useMemo(
+    () => getTableHeight(),
+    [getTableHeight]
+  );
 
   React.useLayoutEffect(() => {
     const tbody = document.querySelectorAll(".tbody")[0];

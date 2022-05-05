@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/styles";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { getPermissionViewProjects } from "actions/viewPermissions";
 import classNames from "classnames";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useMemo, useState } from "react";
 import { connect } from "react-redux";
 import { useLocation } from "react-router";
 import { Route, Switch } from "react-router-dom";
@@ -24,9 +24,19 @@ import ProjectGroupListDeleted from "./LeftPart/ProjectGroupListDeleted";
 import AllProjectTable from "./RightPart/AllProjectTable";
 import DeletedProjectTable from "./RightPart/DeletedProjectTable";
 import ProjectsStart from "./RightPart/ProjectsStart";
+import ProjectAddNew from "./RightPart/ProjectAddNew";
 import { routeSelector } from "./selectors";
 import { CustomTableWrapper } from "components/CustomTable";
 import { CustomLayoutProvider } from "components/CustomLayout";
+import ProjectsTemplate from "./RightPart/ProjectsTemplate/ProjectsTemplate";
+import ProjectTemplateList from "./LeftPart/ProjectTemplateList/ProjectTemplateList";
+import ProjectSingleTemplate from "./RightPart/ProjectsTemplate/ProjectSingleTemplate";
+import ProjectGroupTemplate from "./RightPart/ProjectsTemplate/ProjectGroupTemplate";
+import ProjectSharedTemplate from "./RightPart/ProjectsTemplate/ProjectSharedTemplate";
+import ProjectBeSharedTemplate from "./RightPart/ProjectsTemplate/ProjectBeSharedTemplate";
+import ProjectTemplatePreview from "./RightPart/ProjectsTemplate/ProjectTemplatePreview";
+import DemoTemplate from "./RightPart/DemoTemplate/DemoTemplate";
+import Scrollbars from "react-custom-scrollbars";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -37,11 +47,16 @@ function ProjectGroupPage({
 }) {
   const classes = useStyles();
   const { pathname } = useLocation();
-  const [isCollapsed, setIsCollapsed] = useLocalStorage(
-    "WPS_COLLAPSED_DEFAULT",
-    true
-  );
+  const [isCollapsed, setIsCollapsed] = useState(false);
+
   const [test, setTest] = useState([]);
+  const parsedPath = pathname.split("/");
+  const isPreviewPage = useMemo(() => {
+    return parsedPath.includes("preview");
+  }, [parsedPath]);
+  const isTemplatePage = useMemo(() => {
+    return parsedPath.includes("template");
+  }, [parsedPath]);
   const isDeletedPage = pathname.split("/")[2] === "deleted";
 
   useLayoutEffect(() => {
@@ -52,6 +67,8 @@ function ProjectGroupPage({
   }, []);
 
   const _handleExpand = () => setIsCollapsed(!isCollapsed);
+  const _handleOpen = () => setIsCollapsed(false);
+  const _handleClose = () => setIsCollapsed(true);
 
   return (
     <div
@@ -60,125 +77,222 @@ function ProjectGroupPage({
     >
       {!isCollapsed && (
         <div className={classNames(classes.leftSidebar, { isCollapsed })}>
-          {isDeletedPage ? <ProjectGroupListDeleted /> : <ProjectGroupList />}
+          {isTemplatePage ? (
+            <ProjectTemplateList />
+          ) : isDeletedPage ? (
+            <ProjectGroupListDeleted />
+          ) : (
+            <ProjectGroupList />
+          )}
         </div>
       )}
-      <div className={classNames(classes.mainContent, { isCollapsed })}>
-        <Switch>
-          <Route exact path="/projects/recently">
-            <AllProjectTable
-              type_data={1}
-              expand={isCollapsed}
-              handleExpand={_handleExpand}
-            />
-          </Route>
-          <Route exact path="/projects/start">
-            <ProjectsStart expand={isCollapsed} handleExpand={_handleExpand} />
-          </Route>
-          <Route exact path="/projects/personal-board">
-            <AllProjectTable
-              type_data={2}
-              expand={isCollapsed}
-              handleExpand={_handleExpand}
-            />
-          </Route>
-          <Route exact path="/projects/group/:projectGroupId">
-            <AllProjectTable
-              expand={isCollapsed}
-              handleExpand={_handleExpand}
-            />
-          </Route>
-          <Route exact path="/projects/deleted">
-            <DeletedProjectTable
-              expand={isCollapsed}
-              handleExpand={_handleExpand}
-            />
-          </Route>
+      <div
+        className={classNames(
+          isTemplatePage
+            ? !isPreviewPage
+              ? classes.mainContentOverflow
+              : classes.mainContent
+            : classes.mainContent,
+          { isCollapsed }
+        )}
+      >
+        <Scrollbars autoHide autoHideTimeout={500}>
+          <Switch>
+            <Route exact path="/projects/recently">
+              <AllProjectTable
+                type_data={1}
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/add-new">
+              <ProjectAddNew handleClose={_handleClose} />
+            </Route>
 
-          <Route path="/projects">
-            <CustomTableWrapper>
-              <CustomLayoutProvider>
-                <LayoutDetail handleExpand={_handleExpand} expand={isCollapsed}>
-                  <Switch>
-                    <Route exact path="/projects">
-                      <AllProjectTable
-                        expand={isCollapsed}
-                        handleExpand={_handleExpand}
-                        setTest={setTest}
+            <Route exact path="/projects/start">
+              <ProjectsStart
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+                handleOpen={_handleOpen}
+              />
+            </Route>
+            <Route exact path="/projects/personal-board">
+              <AllProjectTable
+                type_data={2}
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/template/shared">
+              <ProjectSharedTemplate handleOpen={_handleOpen} />
+            </Route>
+            <Route exact path="/projects/template/be-shared">
+              <ProjectBeSharedTemplate handleOpen={_handleOpen} />
+            </Route>
+            <Route exact path="/projects/template/demo">
+              <DemoTemplate />
+            </Route>
+            <Route exact path="/projects/template/:groupId">
+              <ProjectGroupTemplate handleOpen={_handleOpen} />
+            </Route>
+
+            <Route path="/projects/template/:groupId/:templateId/preview">
+              <CustomTableWrapper>
+                <CustomLayoutProvider>
+                  <LayoutDetail
+                    handleExpand={_handleExpand}
+                    expand={isCollapsed}
+                    handleClose={_handleClose}
+                    handleOpen={_handleOpen}
+                  >
+                    <Switch>
+                      <Route
+                        exact
+                        path="/projects/template/:groupId/:templateId/preview/task-table/:projectId/:memberId?"
+                        render={(props) => (
+                          <AllTaskTable
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                            {...props}
+                          />
+                        )}
                       />
-                    </Route>
-                    <Route
-                      exact
-                      path="/projects/task-table/:projectId/:memberId?"
-                      render={(props) => (
-                        <AllTaskTable
+                      <Route
+                        exact
+                        path="/projects/template/:groupId/:templateId/preview/task-kanban/:projectId/:memberId?"
+                        render={(props) => (
+                          <KanbanPage
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/projects/template/:groupId/:templateId/preview/task-gantt/:projectId/:memberId?"
+                        render={(props) => (
+                          <GranttPage
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                            {...props}
+                          />
+                        )}
+                      />
+                    </Switch>
+                  </LayoutDetail>
+                </CustomLayoutProvider>
+              </CustomTableWrapper>
+              {/* <ProjectTemplatePreview /> */}
+            </Route>
+            <Route exact path="/projects/template/:groupId/:templateId">
+              <ProjectSingleTemplate handleOpen={_handleOpen} />
+            </Route>
+            <Route exact path="/projects/template">
+              <ProjectsTemplate handleOpen={_handleOpen} />
+            </Route>
+            <Route exact path="/projects/group/:projectGroupId">
+              <AllProjectTable
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+            <Route exact path="/projects/deleted">
+              <DeletedProjectTable
+                expand={isCollapsed}
+                handleExpand={_handleExpand}
+              />
+            </Route>
+
+            <Route path="/projects">
+              <CustomTableWrapper>
+                <CustomLayoutProvider>
+                  <LayoutDetail
+                    handleExpand={_handleExpand}
+                    expand={isCollapsed}
+                    handleClose={_handleClose}
+                    handleOpen={_handleOpen}
+                  >
+                    <Switch>
+                      <Route exact path="/projects">
+                        <AllProjectTable
                           expand={isCollapsed}
                           handleExpand={_handleExpand}
-                          {...props}
+                          setTest={setTest}
                         />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path="/projects/task-kanban/:projectId/:memberId?"
-                      render={(props) => (
-                        <KanbanPage
-                          expand={isCollapsed}
-                          handleExpand={_handleExpand}
-                        />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path="/projects/task-gantt/:projectId/:memberId?"
-                      render={(props) => (
-                        <GranttPage
-                          expand={isCollapsed}
-                          handleExpand={_handleExpand}
-                          {...props}
-                        />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path="/projects/task-chat/:projectId/:memberId?"
-                      render={(props) => (
-                        <ChatPage
-                          expand={isCollapsed}
-                          handleExpand={_handleExpand}
-                          {...props}
-                        />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path="/projects/dashboard/:projectId/:memberId?"
-                      render={(props) => (
-                        <DashboardPage
-                          expand={isCollapsed}
-                          handleExpand={_handleExpand}
-                          doDetailStatus={doDetailStatus}
-                          {...props}
-                        />
-                      )}
-                    />
-                    <Route
-                      exact
-                      path="/projects/report/:projectId/:memberId?"
-                      render={(props) => (
-                        <ReportPage
-                          expand={isCollapsed}
-                          handleExpand={_handleExpand}
-                          {...props}
-                        />
-                      )}
-                    />
-                  </Switch>
-                </LayoutDetail>
-              </CustomLayoutProvider>
-            </CustomTableWrapper>
-          </Route>
-        </Switch>
+                      </Route>
+                      <Route
+                        exact
+                        path="/projects/task-table/:projectId/:memberId?"
+                        render={(props) => (
+                          <AllTaskTable
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                            {...props}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/projects/task-kanban/:projectId/:memberId?"
+                        render={(props) => (
+                          <KanbanPage
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/projects/task-gantt/:projectId/:memberId?"
+                        render={(props) => (
+                          <GranttPage
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                            {...props}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/projects/task-chat/:projectId/:memberId?"
+                        render={(props) => (
+                          <ChatPage
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                            {...props}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/projects/dashboard/:projectId/:memberId?"
+                        render={(props) => (
+                          <DashboardPage
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                            doDetailStatus={doDetailStatus}
+                            {...props}
+                          />
+                        )}
+                      />
+                      <Route
+                        exact
+                        path="/projects/report/:projectId/:memberId?"
+                        render={(props) => (
+                          <ReportPage
+                            expand={isCollapsed}
+                            handleExpand={_handleExpand}
+                            {...props}
+                          />
+                        )}
+                      />
+                    </Switch>
+                  </LayoutDetail>
+                </CustomLayoutProvider>
+              </CustomTableWrapper>
+            </Route>
+          </Switch>
+        </Scrollbars>
       </div>
     </div>
   );
@@ -217,4 +331,8 @@ const useStyles = makeStyles({
     display: "initial",
   },
   mainContent: {},
+  mainContentOverflow: {
+    height: "100%",
+    overflowY: "auto",
+  },
 });

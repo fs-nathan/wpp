@@ -1826,7 +1826,7 @@ class DragSortingTable extends React.Component {
                   <Table
                     columns={colShow}
                     size="small"
-                    className="table-gantt-header"
+                    className="table-gantt-header gantt-header-custom"
                     bordered
                     {...scroll}
                     rowClassName={(record, index) => {

@@ -1,3 +1,9 @@
+.gantt__container * {
+  -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+  -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+  box-sizing: border-box;
+}
+
 .react-resizable {
   position: relative;
   background-clip: padding-box;
@@ -6,8 +12,8 @@
 .gantt-table-col.react-resizable-handle {
   position: absolute;
   width: 20px;
-  height: 50%;
-  top: 25%;
+  /*height: 50%;*/
+  top: 17px;
   right: -12px;
   cursor: ew-resize;
   z-index: 1;
@@ -879,16 +885,18 @@ div.checkbox-colortag--drawer {
 .gantt--parent-header {
   border-bottom: 1px solid #e4e4e4;
   border-top: 1px solid #e4e4e4;
-  padding: 1.5px 0px;
   border-right: 1px solid #e4e4e4;
   background-color: #fafafa;
   text-align: center;
+  height: 26px;
+  line-height: 26px;
 }
 
 .gantt--child-header {
   border-bottom: 1px solid #f0f0f0;
   border-right: 1px solid #f0f0f0;
-  padding: 2px 0px;
+  height: 26px;
+  line-height: 26px;
   background-color: #fafafa;
   text-align: center;
   width: 30px;
@@ -938,6 +946,13 @@ input[type="time"]::-webkit-outside-spin-button {
 
 .ant-table-cell {
   height: 32px;
+}
+.gantt-header-custom .ant-table-header .ant-table-cell {
+  height: 50px;
+  padding: 0px 14px!important
+}
+.gantt-header-custom .ant-table-header tr > th {
+  border-bottom: 0px;
 }
 .gant--comp_CustomModal___dialog-content .comp_TwoColumnsLayout___container-normal {
   grid-template-columns: 30% 70%;

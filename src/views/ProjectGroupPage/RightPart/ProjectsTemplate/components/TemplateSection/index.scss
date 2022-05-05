@@ -1,0 +1,29 @@
+.template-group {
+  &__section {
+    // width: 80%;
+    margin: 16px auto;
+    &__title {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      span {
+        border-radius: 2px;
+        overflow: hidden;
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+      h3 {
+        flex-grow: 1;
+        font-size: 20px;
+      }
+    }
+    &__card {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-column-gap: 16px;
+      grid-row-gap: 16px;
+    }
+  }
+}

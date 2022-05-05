@@ -1,8 +1,9 @@
 import {
-  Collapse, List,
+  Collapse,
+  List,
   ListItem,
   ListItemIcon,
-  ListItemText
+  ListItemText,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
@@ -13,6 +14,8 @@ import Icon from "@mdi/react";
 import AddIcon from "@mui/icons-material/Add";
 import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
 import KeyboardArrowUpOutlinedIcon from "@mui/icons-material/KeyboardArrowUpOutlined";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CustomAvatar from "components/CustomAvatar";
 import { Routes } from "constants/routes";
@@ -26,9 +29,10 @@ const useStyles = makeStyles((theme) => ({
   projectItem: {
     padding: "5px 0",
     paddingLeft: "45px",
+
     "&:hover, &.active": {
-      backgroundColor: "#e5e5e5!important",
-      color: "rgb(0, 145, 67)",
+      backgroundColor: "#e5e5e5 !important",
+      color: "#0076f3 !important",
       "& $projectIconChecked": {
         display: "flex",
       },
@@ -45,9 +49,19 @@ const useStyles = makeStyles((theme) => ({
       textOverflow: "ellipsis",
     },
   },
-  projectIcon: { minWidth: "auto", marginRight: 5 },
-  projectIconChecked: { display: "none", color: "rgb(0, 145, 67)" },
-  projectIconOutLine: { display: "flex" },
+  projectIcon: {
+    minWidth: "auto",
+    marginRight: 5,
+  },
+  projectIconChecked: { display: "none", color: "#0076f3 !important" },
+  projectIconOutLine: {
+    display: "flex",
+    "& svg": {
+      width: "0.9em",
+      height: "0.9em",
+      color: "#989898",
+    },
+  },
   groupName: {
     whiteSpace: "nowrap",
   },
@@ -76,7 +90,7 @@ export const GroupProject = ({
     "WPS_WORKING_SPACE_DEFAULT_ACCESS"
   );
 
-  const [isActive, setIsActive] = useState(true);
+  const [isActive, setIsActive] = useState(false);
 
   const isDefaultGroup =
     idGroupDefault === `?groupID=${projectGroup.id}` ||
@@ -93,26 +107,30 @@ export const GroupProject = ({
           <ListItem
             className="view_ProjectGroup_List-customListItem view_ProjectGroup_List-customListItem-nav"
             component={PathNavLink}
+            onClick={() => _toggleExpand()}
             to={`/projects?groupID=${projectGroup.id}`}
             // onClick={() => history.push(`/projects?groupID=${projectGroup.id}`)}
           >
-            <div
+            {/* <div
               {...provided.dragHandleProps}
               className={"view_ProjectGroup_List-customListItem-dragIcon"}
             >
               <Icon path={mdiDragVertical} size={1} />
-            </div>
+            </div> */}
 
             <ListItemIcon>
-              <CustomAvatar
+              <div
                 style={{
-                  marginRight: "10px",
-                  width: 25,
-                  height: 25,
+                  // marginRight: "10px",
+                  width: 13,
+                  height: 13,
+                  borderRadius: 3,
+                  backgroundColor: get(projectGroup, "color"),
+                  marginLeft: 3,
                 }}
-                src={get(projectGroup, "icon")}
+                // src={get(projectGroup, "icon")}
                 alt="avatar"
-              />
+              ></div>
             </ListItemIcon>
 
             <ListItemText
@@ -131,18 +149,6 @@ export const GroupProject = ({
             />
 
             {isDefaultGroup && <FlagOutlinedIcon htmlColor={"red"} />}
-
-            <div
-              className="wp-wrapper-button"
-              onClick={(evt) => {
-                evt.preventDefault();
-                setOpenCreateGroup(true);
-                setAnchorElAddGroup(null);
-                setSelectedGroup(null);
-              }}
-            >
-              <AddIcon sx={{ color: "rgba(0,0,0,0.54)" }} />
-            </div>
 
             <div
               className="wp-wrapper-button"
@@ -200,19 +206,19 @@ const CollapseListProject = ({ data = [], isActive = true }) => {
                 const id = pathname.split("/");
                 return id[3] === item.id;
               }}
-              style={{ paddingLeft: 80 }}
+              style={{ paddingLeft: 45 }}
               to={`${Routes.PROJECT}/${item.id}`}
             >
               <ListItemIcon
                 className={[classes.projectIcon, classes.projectIconChecked]}
               >
-                <RadioButtonCheckedIcon />
+                <CheckCircleIcon />
               </ListItemIcon>
 
               <ListItemIcon
                 className={[classes.projectIcon, classes.projectIconOutLine]}
               >
-                <RadioButtonUncheckedIcon />
+                <CheckCircleOutlineIcon />
               </ListItemIcon>
 
               <ListItemText

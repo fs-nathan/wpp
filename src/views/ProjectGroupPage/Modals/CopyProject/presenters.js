@@ -14,7 +14,6 @@ import {
   mdiCheckboxMarkedCircle,
 } from "@mdi/js";
 import Icon from "@mdi/react";
-import { ic_no_data22 } from "assets";
 import ColorTypo from "components/ColorTypo";
 import CustomDatePicker from "components/CustomDatePicker";
 import { Primary, StyledList, StyledListItem } from "components/CustomList";
@@ -27,16 +26,18 @@ import {
   CustomEventListener,
   LIST_PROJECT,
 } from "constants/events.js";
-import { Routes } from "constants/routes";
-import { useMaxlenString, useRequiredDate, useRequiredString } from "hooks";
 import { find, get, reduce } from "lodash";
 import moment from "moment";
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import "./style.scss";
 import MySelect from "../../../../components/MySelect";
 import { WORKPLACE_TYPES } from "../../../../constants/constants";
+import { ic_no_data22 } from "assets";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Routes } from "constants/routes";
+import { useMaxlenString, useRequiredDate, useRequiredString } from "hooks";
 import "./style.scss";
 
 const StyledFormControl = ({ className = "", ...props }) => (
@@ -182,9 +183,6 @@ function CopyProject({
   const [workingGroup, setWorkingGroup] = React.useState(
     projectGroupId ? projectGroupId : null
   );
-  groups.map((e) => {
-    console.log(e.id);
-  });
   // groups.map(e => {
   //   if (e.work_types.includes(String(workingTypeNew))) {
   //     workingGroupFilter.push(e)

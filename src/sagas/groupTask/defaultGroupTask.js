@@ -13,6 +13,7 @@ import {
 function* defaultGroupTask(action) {
   try {
     yield put(defaultGroupTaskSuccess(action.payload));
+    console.log(action.payload);
     localStorage.setItem("WPS_WORKING_SPACE_DEFAULT_ACCESS", action.payload);
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {

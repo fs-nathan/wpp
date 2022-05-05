@@ -101,6 +101,7 @@ const MenuMoreGantt = ({
   return (
     <React.Fragment>
       <AssignCalendarModal setopenModal={setopenModal} openModal={openModal} />
+
       <CustomModal
         title={t("GANTT_CALENDAR_TITLE_MODAL")}
         className="gantt--calendar-modal__container"

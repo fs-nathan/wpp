@@ -1,0 +1,23 @@
+.search-bar {
+  position: relative;
+  width: 100%;
+  & > input {
+    position: relative;
+    float: right;
+    max-width: 200px;
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border-radius: 3px;
+    border: 1px solid #e3e3e3;
+  }
+  &-result {
+    border-radius: 5px;
+    margin-top: 40px;
+    width: 100%;
+    position: absolute;
+    background-color: white;
+    z-index: 100;
+    box-shadow: 5px 5px 30px rgba($color: #000000, $alpha: 0.4);
+  }
+}
