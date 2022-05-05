@@ -14,7 +14,6 @@ function WorkplacePage() {
     false
   );
   const personal = "/personal-board";
-  const start = "/start";
 
   return (
     <Redirect
@@ -24,7 +23,7 @@ function WorkplacePage() {
         isNil(defaultAccessItem)
           ? isHideStartButton
             ? personal
-            : start
+            : ""
           : defaultAccessItem
       }`}
     />

@@ -401,6 +401,7 @@
             "SHOW": "Cancel hide",
             "DEL": "Delete",
             "ALERT": "Are you sure want to delete project ?",
+            "TASK": "task(s)",
             "NO_DATA": {
               "NO_PROJECT": "No project was created. Let click + CREATE PROJECT to start of your management project and tasks.",
               "NO_TASK": "Let create new data or filter data"

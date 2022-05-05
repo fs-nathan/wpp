@@ -4,6 +4,7 @@ import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import Tooltip from "@mui/material/Tooltip";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { NavLink } from "react-router-dom";
 import "../projectGroupGrid.scss";
 
@@ -26,6 +27,8 @@ function ProjectGroupItem({
   handleClickEdit,
   idHTML,
 }) {
+  const { t } = useTranslation();
+
   return (
     <div
       className="projectGroupListGrid__item"
@@ -43,7 +46,9 @@ function ProjectGroupItem({
         <div className="projectGroupListGrid__icon--list">
           <label
             className="projectGroupListGrid__icon--item"
-            title={`${projectGroup?.number_project || 0} bảng việc`}
+            title={`${projectGroup?.number_project || 0} ${t(
+              "DMH.VIEW.PGP.RIGHT.ALL.TASK"
+            )}`}
           >
             <ArticleOutlinedIcon />
             <span className="projectGroupListGrid__icon--number">
