@@ -133,7 +133,6 @@ function CreateAndUpdateDepartment({
     };
     // eslint-disable-next-line
   }, [updateDepartment]);
-
   return (
     <React.Fragment>
       <CustomModal
@@ -182,7 +181,7 @@ function CreateAndUpdateDepartment({
           </div>
 
           <div>
-            {icons.defaults.map((icon) => {
+            {icons && icons.defaults.map((icon) => {
               return (
                 <LogoBox
                   key={get(icon, "url_icon")}
