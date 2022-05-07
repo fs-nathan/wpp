@@ -194,7 +194,9 @@ const SortListColumn = React.forwardRef(
                       key={item.id}
                       draggableId={item.id}
                       index={index}
-                      isDragDisabled={item?.is_default}
+                      isDragDisabled={
+                        item?.is_default && item.id === "pfd-name"
+                      }
                     >
                       {(provided, snapshot) => {
                         return (
@@ -208,13 +210,7 @@ const SortListColumn = React.forwardRef(
                             )}
                           >
                             <ListItemIcon style={{ minWidth: "20px" }}>
-                              <DragIndicatorIcon
-                                style={{
-                                  width: "18px",
-                                  height: "18px",
-                                  fill: "#6d6e6f",
-                                }}
-                              />
+                              <DragIndicatorIcon style={iconStyle} />
                             </ListItemIcon>
                             <ListItemText
                               primary={item.name}
@@ -226,20 +222,12 @@ const SortListColumn = React.forwardRef(
                                 className="icon_edit"
                                 style={{ minWidth: "20px" }}
                               >
-                                <ModeEditIcon
-                                  style={{
-                                    width: "18px",
-                                    height: "18px",
-                                    fill: "#6d6e6f",
-                                  }}
-                                />
+                                <ModeEditIcon style={iconStyle} />
                               </ListItemIcon>
                             )}
                             <AntSwitch
                               onChange={(e) => onChangeCheck(e, item.id, index)}
-                              defaultChecked={
-                                item?.is_default ? false : item.is_show
-                              }
+                              defaultChecked={item.is_show}
                               style={{ marginRight: 5 }}
                               inputProps={{ "aria-label": "ant design" }}
                               disabled={item?.is_default}
@@ -264,6 +252,8 @@ const SortListColumn = React.forwardRef(
     );
   }
 );
+
+const iconStyle = { width: "18px", height: "18px", fill: "#6d6e6f" };
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // styles we need to apply on draggables
