@@ -200,11 +200,12 @@ const WPTableGroup = ({
         >
           {(provided) => (
             <div
+              className="tbody"
               {...getTableBodyProps()}
               style={{
                 maxHeight: scrollTableHeight,
                 height: scrollTableHeight,
-                overflow: 'auto'
+                overflow: "auto",
               }}
             >
               {rows.map((row, i) => {
