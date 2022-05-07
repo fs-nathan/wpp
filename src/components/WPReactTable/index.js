@@ -158,12 +158,12 @@ const Styles = styled.div`
         &.isGroupColumn {
           border-color: transparent !important;
           &.focus {
-            z-index: 500 !important;
+            z-index: 999 !important;
             border: 1px solid #4573d2 !important;
           }
         }
         &.focus {
-          z-index: 500 !important;
+          z-index: 999 !important;
           border-color: #4573d2 !important;
         }
       }

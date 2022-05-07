@@ -13,6 +13,7 @@ import {
 import { useSticky } from "react-table-sticky";
 import styled from "styled-components";
 import ItemClone from "../ItemClone";
+import { getCellStyle, getRowStyle } from "../utils";
 import HeaderColumn from "./HeaderColumn";
 import { scrollbarWidth } from "./Table";
 
@@ -224,22 +225,14 @@ const WPTableGroup = ({
                           className="tr"
                           {...row.getRowProps()}
                           {...provided.draggableProps}
-                          style={{
-                            ...row.getRowProps().style,
-                            maxWidth: row.getRowProps().style.width,
-                            minWidth: row.getRowProps().style.width,
-                          }}
                           ref={provided.innerRef}
                           isDragging={snapshot.isDragging}
+                          style={{ ...getRowStyle(row.getRowProps()) }}
                         >
                           {row.cells.map((cell) => (
                             <div
                               {...cell.getCellProps()}
-                              style={{
-                                ...cell.getCellProps().style,
-                                maxWidth: cell.getCellProps().style.width,
-                                minWidth: cell.getCellProps().style.width,
-                              }}
+                              style={{ ...getCellStyle(cell.getCellProps()) }}
                               className={classNames("td", {
                                 "column-align-right":
                                   cell?.column?.id === "progress",
