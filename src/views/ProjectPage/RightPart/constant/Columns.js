@@ -147,6 +147,7 @@ const CellNameTask = ({ row, value, ...props }) => {
         row={row}
         value={value}
         dragHandle={props.dragHandle}
+        onMouseDown={props.onMouseDown}
         onVisibleAddRow={props.onVisibleAddRow}
         {...props}
       />

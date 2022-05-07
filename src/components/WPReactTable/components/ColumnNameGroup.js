@@ -13,12 +13,17 @@ const ColumnNameGroup = ({
   value,
   dragHandle = {},
   onVisibleAddRow = () => {},
+  onMouseDown = () => {},
 }) => {
   const group = row.original;
   return (
     <WrapperMainGroup>
       <WrapperLeft>
-        <WrapperIconDrag className="drag-icon" {...dragHandle}>
+        <WrapperIconDrag
+          className="drag-icon"
+          {...dragHandle}
+          onMouseDown={onMouseDown}
+        >
           <IconDrag />
         </WrapperIconDrag>
         <WrapperButton {...row.getToggleRowExpandedProps()}>

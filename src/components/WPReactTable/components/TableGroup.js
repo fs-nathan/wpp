@@ -1,6 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import classNames from "classnames";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useRef, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -12,8 +11,6 @@ import {
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import styled from "styled-components";
-import ItemClone from "../ItemClone";
-import { getCellStyle, getRowStyle } from "../utils";
 import HeaderColumn from "./HeaderColumn";
 import Row from "./Row";
 import { scrollbarWidth } from "./Table";
@@ -47,6 +44,9 @@ const WPTableGroup = ({
   ...props
 }) => {
   const { t } = useTranslation();
+  const refDroppableIdOver = useRef(null);
+  const refMousePosition = useRef({ x: 0, y: 0 });
+
   const getSubRows = useCallback((row) => {
     return row.tasks || [];
   }, []);
@@ -76,8 +76,10 @@ const WPTableGroup = ({
     useSticky,
     useExpanded
   );
+
   const { projectId } = useParams();
   const [dataRows, setDataRows] = React.useState([]);
+
   const {
     getTableProps,
     getTableBodyProps,
@@ -95,6 +97,20 @@ const WPTableGroup = ({
   }, [data]);
 
   React.useLayoutEffect(() => {
+    const _handleMouseUpdate = (event) => {
+      refMousePosition.current = { x: event.clientX, y: event.clientY };
+    };
+
+    document.addEventListener("mousemove", _handleMouseUpdate, false);
+    document.addEventListener("mouseenter", _handleMouseUpdate, false);
+
+    return () => {
+      document.removeEventListener("mousemove", _handleMouseUpdate, false);
+      document.removeEventListener("mouseenter", _handleMouseUpdate, false);
+    };
+  }, []);
+
+  React.useLayoutEffect(() => {
     const tbody = document.querySelectorAll(".tbody")[0];
     const header = document.getElementById("header-row");
     if (tbody) {
@@ -108,7 +124,60 @@ const WPTableGroup = ({
   };
 
   const _handleDragEnd = (result) => {
-    console.log("@Pham_Tinh_Console:", result);
+    if (refDroppableIdOver.current) {
+      const stringQuery = `[data-rbd-droppable-id='${refDroppableIdOver.current.id}']`;
+      const divWrapper = document.querySelector(stringQuery);
+
+      divWrapper.style.height = `${refDroppableIdOver.current.oldHeight}px`;
+      refDroppableIdOver.current = null;
+    }
+
+    const elements = document.querySelectorAll(".wrapper-sub-rows");
+
+    for (let index = 0; index < elements.length; index++) {
+      const element = elements[index];
+      element.style.display = "block";
+    }
+  };
+
+  const _handleBeforeCapture = (result) => {
+    const draggableId = result?.draggableId || "";
+    const index = rows.findIndex(
+      (row) => row.original.id === draggableId && row.depth === 0
+    );
+
+    if (index >= 0) {
+      const elements = document.querySelectorAll(".wrapper-sub-rows");
+
+      for (let index = 0; index < elements.length; index++) {
+        const element = elements[index];
+        element.style.display = "none";
+      }
+    }
+  };
+
+  const _handleDragStart = (result) => {};
+
+  const _handleDragUpdate = (result) => {
+    const { destination, source } = result;
+    const droppableIdWrapper = destination?.droppableId;
+
+    if (droppableIdWrapper && droppableIdWrapper !== source?.droppableId) {
+      const stringQuery = `[data-rbd-droppable-id='${droppableIdWrapper}']`;
+      const divWrapper = document.querySelector(stringQuery);
+
+      if (divWrapper) {
+        const wrap = rows.find(
+          ({ original }) => original.id === droppableIdWrapper
+        );
+
+        refDroppableIdOver.current = {
+          id: droppableIdWrapper,
+          oldHeight: divWrapper.clientHeight,
+        };
+        divWrapper.style.height = `${wrap?.subRows?.length * 48 + 48}px`;
+      }
+    }
   };
 
   const _renderRowAddGroup = (row) => {
@@ -188,8 +257,13 @@ const WPTableGroup = ({
       {/*End header table */}
 
       {/* Body of table */}
-      <DragDropContext onDragEnd={_handleDragEnd}>
-        <Droppable droppableId="droppable-table">
+      <DragDropContext
+        onBeforeCapture={_handleBeforeCapture}
+        onDragStart={_handleDragStart}
+        onDragEnd={_handleDragEnd}
+        onDragUpdate={_handleDragUpdate}
+      >
+        <Droppable droppableId="droppable-table" type="group">
           {(provided) => (
             <div
               className="tbody"

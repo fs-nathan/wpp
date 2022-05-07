@@ -1,8 +1,9 @@
 import classNames from "classnames";
 import React from "react";
 import { getCellStyle, getRowStyle } from "../utils";
+import ItemRow from "./ItemRow";
 
-const Row = ({ row, provided, rowProps, snapshot }) => {
+const Row = ({ row, provided, rowProps, snapshot, isVisible = true }) => {
   const finalStyle = getRowStyle(
     rowProps,
     provided.draggableProps,
@@ -27,19 +28,29 @@ const Row = ({ row, provided, rowProps, snapshot }) => {
   };
 
   return (
-    <div
-      ref={provided.innerRef}
-      className="tr"
-      {...rowProps}
-      style={{ display: "flex", ...finalStyle }}
-      {...provided.draggableProps}
-    >
-      {ListCells()}
-    </div>
+    <>
+      <div
+        ref={provided.innerRef}
+        id={row.id}
+        className="tr"
+        {...rowProps}
+        style={{ display: "flex", ...finalStyle }}
+        {...provided.draggableProps}
+      >
+        {ListCells()}
+      </div>
+
+      <ItemRow
+        id={row.original.id}
+        subRows={row.subRows}
+        isVisible={isVisible}
+      />
+      {provided.placeholder}
+    </>
   );
 };
 
-const getClassName = (id) => ({
+export const getClassName = (id) => ({
   "column-align-right": id === "progress",
   "column-align-center": id === "start_date" || id === "end_date",
 });
