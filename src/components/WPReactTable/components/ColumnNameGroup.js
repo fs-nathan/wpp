@@ -115,6 +115,14 @@ const WrapperLeft = styled.div`
   display: flex;
   align-items: center;
   max-width: calc(100% - 72px);
+  .right-side {
+    visibility: hidden;
+  }
+  &:hover{
+    .right-side{
+      visibility: visible;
+    }
+  }
 `;
 
 const WrapperRight = styled.div`

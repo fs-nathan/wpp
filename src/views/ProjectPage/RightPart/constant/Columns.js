@@ -201,7 +201,6 @@ const WrapperDetailInfo = styled.div`
   padding: 0 15px;
   visibility: hidden;
   .detail {
-    background: #f0eeef;
     padding: 5px 8px;
     border-radius: 5px;
     span {
@@ -210,6 +209,9 @@ const WrapperDetailInfo = styled.div`
     }
     display: flex;
     align-items: center;
+    &:hover {
+      background: #f0eeef;
+    }
   }
   &:hover {
     background-color: #f9f8f8;

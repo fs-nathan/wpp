@@ -201,6 +201,8 @@ const WPTableGroup = ({
           {(provided) => (
             <div
               className="tbody"
+              ref={provided.innerRef}
+              {...provided.droppableProps}
               {...getTableBodyProps()}
               style={{
                 maxHeight: scrollTableHeight,
