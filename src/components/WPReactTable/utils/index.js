@@ -1,8 +1,11 @@
-export const getRowStyle = (rowProps) => {
+export const getRowStyle = (rowProps, providedProps, isDragging = false) => {
+  const style = rowProps.style || {};
+  if (isDragging) return { ...providedProps.style };
   return {
-    ...rowProps.style,
-    maxWidth: rowProps.style.width,
-    minWidth: rowProps.style.width,
+    display: "flex",
+    maxWidth: style.width,
+    minWidth: style.width,
+    width: style.width,
   };
 };
 

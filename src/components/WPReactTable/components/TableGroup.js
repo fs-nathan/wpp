@@ -15,6 +15,7 @@ import styled from "styled-components";
 import ItemClone from "../ItemClone";
 import { getCellStyle, getRowStyle } from "../utils";
 import HeaderColumn from "./HeaderColumn";
+import Row from "./Row";
 import { scrollbarWidth } from "./Table";
 
 const getTableHeight = () => {
@@ -188,23 +189,13 @@ const WPTableGroup = ({
 
       {/* Body of table */}
       <DragDropContext onDragEnd={_handleDragEnd}>
-        <Droppable
-          mode="virtual"
-          droppableId="droppable-table"
-          renderClone={(provided, snapshot, rubric) => (
-            <ItemClone
-              provided={provided}
-              isDragging={snapshot.isDragging}
-              item={rows[rubric.source.index].original}
-            />
-          )}
-        >
+        <Droppable droppableId="droppable-table">
           {(provided) => (
             <div
               className="tbody"
               ref={provided.innerRef}
-              {...provided.droppableProps}
               {...getTableBodyProps()}
+              {...provided.droppableProps}
               style={{
                 maxHeight: scrollTableHeight,
                 height: scrollTableHeight,
@@ -213,6 +204,8 @@ const WPTableGroup = ({
             >
               {rows.map((row, i) => {
                 prepareRow(row);
+                if (row.depth !== 0) return null;
+
                 return (
                   <Draggable
                     draggableId={row.original.id}
@@ -220,42 +213,21 @@ const WPTableGroup = ({
                     index={row.index}
                   >
                     {(provided, snapshot) => {
+                      const rowProps = row.getRowProps();
+
                       return (
-                        <div
-                          className="tr"
-                          {...row.getRowProps()}
-                          {...provided.draggableProps}
-                          ref={provided.innerRef}
-                          isDragging={snapshot.isDragging}
-                          style={{ ...getRowStyle(row.getRowProps()) }}
-                        >
-                          {row.cells.map((cell) => (
-                            <div
-                              {...cell.getCellProps()}
-                              style={{ ...getCellStyle(cell.getCellProps()) }}
-                              className={classNames("td", {
-                                "column-align-right":
-                                  cell?.column?.id === "progress",
-                                "column-align-center":
-                                  cell?.column?.id === "start_date" ||
-                                  cell?.column?.id === "end_date",
-                              })}
-                            >
-                              {cell.render("Cell", {
-                                dragHandle:
-                                  cell?.column?.id === "name"
-                                    ? provided.dragHandleProps
-                                    : {},
-                              })}
-                            </div>
-                          ))}
-                        </div>
+                        <Row
+                          key={rowProps.key}
+                          row={row}
+                          provided={provided}
+                          rowProps={rowProps}
+                          snapshot={snapshot}
+                        />
                       );
                     }}
                   </Draggable>
                 );
               })}
-
               {provided.placeholder}
             </div>
           )}
