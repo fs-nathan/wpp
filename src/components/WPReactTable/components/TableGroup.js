@@ -222,6 +222,11 @@ const WPTableGroup = ({
                           className="tr"
                           {...row.getRowProps()}
                           {...provided.draggableProps}
+                          style={{
+                            ...row.getRowProps().style,
+                            maxWidth: row.getRowProps().style.width,
+                            minWidth: row.getRowProps().style.width,
+                          }}
                           ref={provided.innerRef}
                           isDragging={snapshot.isDragging}
                         >
