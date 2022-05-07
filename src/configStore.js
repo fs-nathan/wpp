@@ -5,11 +5,11 @@ import rootSaga from "./sagas";
 
 const middlewares = [];
 
-if (process.env.NODE_ENV === `development`) {
-  const { logger } = require(`redux-logger`);
+// if (process.env.NODE_ENV === `development`) {
+//   const { logger } = require(`redux-logger`);
 
-  middlewares.push(logger);
-}
+//   middlewares.push(logger);
+// }
 
 const sagaMiddleware = createSagaMiddleware();
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

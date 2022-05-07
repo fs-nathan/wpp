@@ -11,9 +11,8 @@ import {
   useTable,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
-import { areEqual, FixedSizeList } from "react-window";
 import styled from "styled-components";
-import ItemClone, { getStyle } from "../ItemClone";
+import ItemClone from "../ItemClone";
 import HeaderColumn from "./HeaderColumn";
 import { scrollbarWidth } from "./Table";
 
@@ -110,52 +109,6 @@ const WPTableGroup = ({
     console.log("@Pham_Tinh_Console:", result);
   };
 
-  const Item = React.memo(({ provided, item, style, isDragging }) => {
-    if (!item) return null;
-    return (
-      <div
-        className="tr"
-        {...provided.draggableProps}
-        ref={provided.innerRef}
-        style={getStyle({
-          draggableStyle: provided.draggableProps.style,
-          virtualStyle: style,
-          isDragging,
-        })}
-      >
-        {item.cells.map((cell) => {
-          return (
-            <ContentColumn
-              cell={cell}
-              dragHandle={{ ...provided.dragHandleProps }}
-            />
-          );
-        })}
-      </div>
-    );
-  }, areEqual);
-
-  const RenderRow = React.useCallback(
-    function Row(props) {
-      const { data: items, index, style } = props;
-      const item = items[index];
-      prepareRow(item);
-      return (
-        <Draggable draggableId={item.id} index={index} key={item.id}>
-          {(provided) => (
-            <Item
-              provided={provided}
-              item={item}
-              style={{ ...style, width: totalColumnsWidth + scrollBarSize }}
-            />
-          )}
-        </Draggable>
-      );
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [prepareRow]
-  );
-
   const _renderRowAddGroup = (row) => {
     if (!row) return null;
     const rowProps = row.getRowProps();
@@ -246,47 +199,68 @@ const WPTableGroup = ({
           )}
         >
           {(provided) => (
-            <div {...getTableBodyProps()}>
-              <FixedSizeList
-                outerRef={provided.innerRef}
-                className="tbody"
-                itemCount={rows.length}
-                itemSize={50}
-                height={scrollTableHeight}
-                itemData={rows}
-                overscanCount={40}
-                width={totalColumnsWidth + scrollBarSize}
-              >
-                {RenderRow}
-              </FixedSizeList>
+            <div
+              {...getTableBodyProps()}
+              style={{
+                maxHeight: scrollTableHeight,
+                height: scrollTableHeight,
+                overflow: 'auto'
+              }}
+            >
+              {rows.map((row, i) => {
+                prepareRow(row);
+                return (
+                  <Draggable
+                    draggableId={row.original.id}
+                    key={row.original.id}
+                    index={row.index}
+                  >
+                    {(provided, snapshot) => {
+                      return (
+                        <div
+                          className="tr"
+                          {...row.getRowProps()}
+                          {...provided.draggableProps}
+                          ref={provided.innerRef}
+                          isDragging={snapshot.isDragging}
+                        >
+                          {row.cells.map((cell) => (
+                            <div
+                              {...cell.getCellProps()}
+                              style={{
+                                ...cell.getCellProps().style,
+                                maxWidth: cell.getCellProps().style.width,
+                                minWidth: cell.getCellProps().style.width,
+                              }}
+                              className={classNames("td", {
+                                "column-align-right":
+                                  cell?.column?.id === "progress",
+                                "column-align-center":
+                                  cell?.column?.id === "start_date" ||
+                                  cell?.column?.id === "end_date",
+                              })}
+                            >
+                              {cell.render("Cell", {
+                                dragHandle:
+                                  cell?.column?.id === "name"
+                                    ? provided.dragHandleProps
+                                    : {},
+                              })}
+                            </div>
+                          ))}
+                        </div>
+                      );
+                    }}
+                  </Draggable>
+                );
+              })}
+
               {provided.placeholder}
             </div>
           )}
         </Droppable>
       </DragDropContext>
       {/* End body of table */}
-    </div>
-  );
-};
-
-const ContentColumn = ({ cell, dragHandle = {} }) => {
-  const canDragColumn = cell?.column?.id === "name";
-  const cellProps = cell?.getCellProps();
-  const styleProps = cellProps.style;
-
-  return (
-    <div
-      {...cellProps}
-      style={{ ...styleProps, maxWidth: styleProps.width }}
-      className={classNames("td", {
-        "column-align-right": cell?.column?.id === "progress",
-        "column-align-center":
-          cell?.column?.id === "start_date" || cell?.column?.id === "end_date",
-      })}
-    >
-      {cell.render("Cell", {
-        dragHandle: canDragColumn ? dragHandle : {},
-      })}
     </div>
   );
 };
