@@ -1,5 +1,5 @@
 import AddIcon from "@mui/icons-material/Add";
-import React, { useCallback, useMemo, useRef, useState } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
@@ -41,6 +41,7 @@ const WPTableGroup = ({
   onDeleteColumn = () => {},
   onAddNewColumns = () => {},
   onAddNewGroup = () => {},
+  onReorderData = () => {},
   ...props
 }) => {
   const { t } = useTranslation();
@@ -70,6 +71,7 @@ const WPTableGroup = ({
       initialState: {
         expanded: getInitialExpand(),
       },
+      onReorderData,
     },
     useBlockLayout,
     useResizeColumns,
@@ -124,6 +126,7 @@ const WPTableGroup = ({
   };
 
   const _handleDragEnd = (result) => {
+    const { destination, source, type } = result;
     if (refDroppableIdOver.current) {
       const stringQuery = `[data-rbd-droppable-id='${refDroppableIdOver.current.id}']`;
       const divWrapper = document.querySelector(stringQuery);
@@ -138,6 +141,15 @@ const WPTableGroup = ({
       const element = elements[index];
       element.style.display = "block";
     }
+
+    // Saving data
+    if (!destination) return;
+
+    const isSameGroup = destination.droppableId === source.droppableId;
+    const isSamePosition = destination.index === source.index;
+    if (isSameGroup && isSamePosition) return;
+
+    if (type === "group") onReorderData(source.index, destination.index);
   };
 
   const _handleBeforeCapture = (result) => {

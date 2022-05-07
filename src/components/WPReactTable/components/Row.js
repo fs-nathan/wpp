@@ -40,11 +40,7 @@ const Row = ({ row, provided, rowProps, snapshot, isVisible = true }) => {
         {ListCells()}
       </div>
 
-      <ItemRow
-        id={row.original.id}
-        subRows={row.subRows}
-        isVisible={isVisible}
-      />
+      {row.isExpanded && <ItemRow id={row.original.id} subRows={row.subRows} />}
       {provided.placeholder}
     </>
   );

@@ -55,6 +55,7 @@ function AllTaskTable({
   });
   const refEdit = useRef(null);
   const refAlert = useRef(null);
+  const refIsFirstTime = useRef(true);
   const dispatch = useDispatch();
   const { columnsFields } = state;
   /* Cloning the state.arrColumns array and storing it in the columns variable. */
@@ -65,6 +66,9 @@ function AllTaskTable({
   /* When the projectId changes, dispatch the listColumns action. */
   React.useEffect(() => {
     dispatch(listColumns({ project_id: projectId }));
+    return () => {
+      refIsFirstTime.current = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
@@ -107,7 +111,13 @@ function AllTaskTable({
 
   /* This code is checking to see if the tasks array is empty. If it is, then it will dispatch the state to set isEmpty to true. */
   React.useEffect(() => {
-    dispatchState({ isEmpty: tasks.tasks.length === 0 });
+    if (refIsFirstTime.current && tasks.tasks.length) {
+      dispatchState({
+        isEmpty: tasks.tasks.length === 0,
+        tasksData: tasks.tasks,
+      });
+      refIsFirstTime.current = false;
+    }
   }, [tasks.tasks]);
 
   const _handleEditColumn = (type, data) => {
@@ -267,6 +277,14 @@ function AllTaskTable({
     );
   };
 
+  const _handleReorderData = (startIndex, endIndex) => {
+    const newData = [...state.tasksData];
+    const [movedRow] = newData.splice(startIndex, 1);
+    newData.splice(endIndex, 0, movedRow);
+    console.log("@Pham_Tinh_Console:", newData);
+    dispatchState({ tasksData: newData });
+  };
+
   return (
     <Container>
       {state.isEmpty && (
@@ -284,7 +302,7 @@ function AllTaskTable({
             isGroup
             isCollapsed={expand}
             columns={columns}
-            data={tasks.tasks}
+            data={state.tasksData}
             onReload={handleReload}
             onAddNewGroup={_handleAddNewGroup}
             onAddNewColumns={_handleAddNewColumns}
@@ -293,6 +311,7 @@ function AllTaskTable({
             onDeleteColumn={_handleDeleteColumn}
             onHideColumn={_handleHideColumn}
             onSortColumn={_handleSortColumn}
+            onReorderData={_handleReorderData}
           />
 
           <EditColumnModal
