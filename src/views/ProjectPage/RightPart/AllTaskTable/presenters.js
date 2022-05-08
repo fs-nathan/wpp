@@ -277,7 +277,11 @@ function AllTaskTable({
     );
   };
 
-  const _handleReorderData = (result = {}, isSameList = false) => {
+  const _handleReorderData = (
+    result = {},
+    isSameList = false,
+    isBetweenGroup = false
+  ) => {
     const { destination, source } = result;
     const finalTasks = cloneDeep(state.tasksData);
 
@@ -296,6 +300,42 @@ function AllTaskTable({
       finalTasks[index].tasks = tasks;
 
       return dispatchState({ tasksData: cloneDeep(finalTasks) });
+    }
+
+    if (isBetweenGroup) {
+      let indexSource = -1;
+      let indexDestination = -1;
+      const newTasksData = cloneDeep(finalTasks);
+
+      [...newTasksData].forEach((element, index) => {
+        if (element.id === source.droppableId) indexSource = index;
+        if (element.id === destination.droppableId) indexDestination = index;
+      });
+
+      if (indexSource === -1 || indexDestination === -1) return;
+
+      const row = newTasksData[indexSource].tasks[source.index];
+      const sourceRow = newTasksData[indexSource];
+      const destinationRow = newTasksData[indexDestination];
+
+      // 1. Remove item from source row
+      const newSourceRow = {
+        ...sourceRow,
+        tasks: [...sourceRow.tasks],
+      };
+      newSourceRow.tasks.splice(result.source.index, 1);
+      newTasksData[indexSource] = newSourceRow;
+
+      // 2. Insert into destination row
+      const newDestinationRow = {
+        ...destinationRow,
+        tasks: [...destinationRow.tasks],
+      };
+      newDestinationRow.tasks.splice(destination.index, 0, row);
+      newTasksData[indexDestination] = newDestinationRow;
+
+      dispatchState({ tasksData: [...newTasksData] });
+      return;
     }
 
     const tasksReordered = _handleReorderList(finalTasks, startIndex, endIndex);

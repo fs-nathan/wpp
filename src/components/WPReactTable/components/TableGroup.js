@@ -141,10 +141,19 @@ const WPTableGroup = ({
     if (isSameGroup && isSamePosition) return;
 
     // Is group reorder
-    if (type === "group") onReorderData(result);
+    if (type === "group") {
+      onReorderData(result);
+      return;
+    }
+
     // Reordering in same list
-    if (source.droppableId === destination.droppableId)
+    if (source.droppableId === destination.droppableId) {
       onReorderData(result, true);
+      return;
+    }
+
+    // moving between Groups
+    onReorderData(result, false, true);
   };
 
   const _handleBeforeCapture = (result) => {
