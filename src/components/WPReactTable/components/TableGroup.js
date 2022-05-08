@@ -47,6 +47,8 @@ const WPTableGroup = ({
   const { t } = useTranslation();
   const { projectId } = useParams();
 
+  const [isVisible, setIsVisible] = React.useState(true);
+
   const refDroppableIdOver = useRef(null);
   const refMousePosition = useRef({ x: 0, y: 0 });
 
@@ -121,6 +123,7 @@ const WPTableGroup = ({
   };
 
   const _handleDragEnd = (result) => {
+    setIsVisible(true);
     const { destination, source, type } = result;
     if (refDroppableIdOver.current) {
       const stringQuery = `[data-rbd-droppable-id='${refDroppableIdOver.current.id}']`;
@@ -128,13 +131,6 @@ const WPTableGroup = ({
 
       divWrapper.style.height = `${refDroppableIdOver.current.oldHeight}px`;
       refDroppableIdOver.current = null;
-    }
-
-    const elements = document.querySelectorAll(".wrapper-sub-rows");
-
-    for (let index = 0; index < elements.length; index++) {
-      const element = elements[index];
-      element.style.display = "block";
     }
 
     // Saving data
@@ -156,14 +152,8 @@ const WPTableGroup = ({
     const index = rows.findIndex(
       (row) => row.original.id === draggableId && row.depth === 0
     );
-
     if (index >= 0) {
-      const elements = document.querySelectorAll(".wrapper-sub-rows");
-
-      for (let index = 0; index < elements.length; index++) {
-        const element = elements[index];
-        element.style.display = "none";
-      }
+      setIsVisible(false);
     }
   };
 
@@ -307,6 +297,7 @@ const WPTableGroup = ({
                           provided={provided}
                           rowProps={rowProps}
                           snapshot={snapshot}
+                          isVisible={isVisible}
                         />
                       );
                     }}
