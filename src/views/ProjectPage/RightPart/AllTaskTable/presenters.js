@@ -1,6 +1,8 @@
 import { ButtonBase } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
+import { sortGroupTask } from "actions/groupTask/sortGroupTask";
 import { addNewGroupTask } from "actions/task/listTask";
+import { sortTask } from "actions/task/sortTask";
 import AlertModal from "components/AlertModal";
 import { CustomLayoutContext } from "components/CustomLayout";
 import { TimeRangePopover } from "components/CustomPopover";
@@ -298,8 +300,18 @@ function AllTaskTable({
       );
 
       finalTasks[index].tasks = tasks;
+      console.log('@Pham_Tinh_Console:',result)
 
-      return dispatchState({ tasksData: cloneDeep(finalTasks) });
+      dispatch(
+        sortTask({
+          projectId,
+          taskId: result.draggableId,
+          groupTask: destination.droppableId,
+          sortIndex: endIndex,
+        })
+      );
+      dispatchState({ tasksData: cloneDeep(finalTasks) });
+      return;
     }
 
     if (isBetweenGroup) {
@@ -334,11 +346,22 @@ function AllTaskTable({
       newDestinationRow.tasks.splice(destination.index, 0, row);
       newTasksData[indexDestination] = newDestinationRow;
 
+      dispatch(
+        sortTask({
+          projectId,
+          taskId: result.draggableId,
+          groupTask: destination.droppableId,
+          sortIndex: endIndex,
+        })
+      );
       dispatchState({ tasksData: [...newTasksData] });
       return;
     }
 
     const tasksReordered = _handleReorderList(finalTasks, startIndex, endIndex);
+    const options = { groupTaskId: result.draggableId, sortIndex: endIndex };
+
+    dispatch(sortGroupTask(options));
     dispatchState({ tasksData: tasksReordered });
   };
 
