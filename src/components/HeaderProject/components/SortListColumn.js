@@ -230,7 +230,9 @@ const SortListColumn = React.forwardRef(
                               defaultChecked={item.is_show}
                               style={{ marginRight: 5 }}
                               inputProps={{ "aria-label": "ant design" }}
-                              disabled={item?.is_default}
+                              disabled={
+                                item?.is_default && item.id === "pfd-name"
+                              }
                             />
                           </ListItem>
                         );
