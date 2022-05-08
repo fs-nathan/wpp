@@ -300,7 +300,6 @@ function AllTaskTable({
       );
 
       finalTasks[index].tasks = tasks;
-      console.log('@Pham_Tinh_Console:',result)
 
       dispatch(
         sortTask({
