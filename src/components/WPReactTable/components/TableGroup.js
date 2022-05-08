@@ -45,8 +45,13 @@ const WPTableGroup = ({
   ...props
 }) => {
   const { t } = useTranslation();
+  const { projectId } = useParams();
+
   const refDroppableIdOver = useRef(null);
   const refMousePosition = useRef({ x: 0, y: 0 });
+
+  const scrollBarSize = React.useMemo(() => scrollbarWidth(), []);
+  const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
 
   const getSubRows = useCallback((row) => {
     return row.tasks || [];
@@ -79,9 +84,6 @@ const WPTableGroup = ({
     useExpanded
   );
 
-  const { projectId } = useParams();
-  const [dataRows, setDataRows] = React.useState([]);
-
   const {
     getTableProps,
     getTableBodyProps,
@@ -90,13 +92,6 @@ const WPTableGroup = ({
     totalColumnsWidth,
     prepareRow,
   } = table;
-
-  const scrollBarSize = React.useMemo(() => scrollbarWidth(), []);
-  const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
-
-  React.useEffect(() => {
-    setDataRows(data);
-  }, [data]);
 
   React.useLayoutEffect(() => {
     const _handleMouseUpdate = (event) => {
@@ -149,7 +144,11 @@ const WPTableGroup = ({
     const isSamePosition = destination.index === source.index;
     if (isSameGroup && isSamePosition) return;
 
-    if (type === "group") onReorderData(source.index, destination.index);
+    // Is group reorder
+    if (type === "group") onReorderData(result);
+    // Reordering in same list
+    if (source.droppableId === destination.droppableId)
+      onReorderData(result, true);
   };
 
   const _handleBeforeCapture = (result) => {

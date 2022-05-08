@@ -277,12 +277,36 @@ function AllTaskTable({
     );
   };
 
-  const _handleReorderData = (startIndex, endIndex) => {
-    const newData = [...state.tasksData];
+  const _handleReorderData = (result = {}, isSameList = false) => {
+    const { destination, source } = result;
+    const finalTasks = cloneDeep(state.tasksData);
+
+    const startIndex = source.index;
+    const endIndex = destination.index;
+
+    if (isSameList) {
+      const index = finalTasks.findIndex(({ id }) => id === source.droppableId);
+      if (index === -1) return;
+      const tasks = _handleReorderList(
+        finalTasks[index].tasks,
+        source.index,
+        destination.index
+      );
+
+      finalTasks[index].tasks = tasks;
+
+      return dispatchState({ tasksData: cloneDeep(finalTasks) });
+    }
+
+    const tasksReordered = _handleReorderList(finalTasks, startIndex, endIndex);
+    dispatchState({ tasksData: tasksReordered });
+  };
+
+  const _handleReorderList = (list, startIndex, endIndex) => {
+    const newData = cloneDeep(list);
     const [movedRow] = newData.splice(startIndex, 1);
     newData.splice(endIndex, 0, movedRow);
-    console.log("@Pham_Tinh_Console:", newData);
-    dispatchState({ tasksData: newData });
+    return newData;
   };
 
   return (
