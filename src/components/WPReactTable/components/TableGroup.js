@@ -34,7 +34,6 @@ const WPTableGroup = ({
   columns,
   data,
   displayAddColumn = false,
-  onDragEnd = () => {},
   onHideColumn = () => {},
   onSortColumn = () => {},
   onEditColumn = () => {},

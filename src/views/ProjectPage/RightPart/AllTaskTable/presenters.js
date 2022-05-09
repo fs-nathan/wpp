@@ -40,12 +40,12 @@ function AllTaskTable({
   expand,
   tasks,
   project,
-  handleSortTask,
   handleOpenModal,
   handleReload,
   bgColor,
   timeType,
   handleTimeType,
+  handleReloadListTask,
 }) {
   const { itemLocation } = useContext(CustomLayoutContext);
   const { projectId } = useParams();
@@ -113,13 +113,10 @@ function AllTaskTable({
 
   /* This code is checking to see if the tasks array is empty. If it is, then it will dispatch the state to set isEmpty to true. */
   React.useEffect(() => {
-    if (refIsFirstTime.current && tasks.tasks.length) {
-      dispatchState({
-        isEmpty: tasks.tasks.length === 0,
-        tasksData: tasks.tasks,
-      });
-      refIsFirstTime.current = false;
-    }
+    dispatchState({
+      isEmpty: tasks.tasks.length === 0,
+      tasksData: tasks.tasks,
+    });
   }, [tasks.tasks]);
 
   const _handleEditColumn = (type, data) => {
@@ -223,7 +220,6 @@ function AllTaskTable({
 
   const _handleSortColumn = async (id, method) => {
     try {
-      dispatchState({ isLoading: true });
       /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
       const { status } = await apiService({
         data: {
@@ -236,7 +232,7 @@ function AllTaskTable({
       });
 
       /* Fetching the list of columns from the server. */
-      if (status === 200) dispatch(listColumns({ project_id: projectId }));
+      if (status === 200) handleReloadListTask();
     } catch (error) {}
   };
 
@@ -392,7 +388,6 @@ function AllTaskTable({
             onReload={handleReload}
             onAddNewGroup={_handleAddNewGroup}
             onAddNewColumns={_handleAddNewColumns}
-            onDragEnd={handleSortTask}
             onEditColumn={_handleEditColumn}
             onDeleteColumn={_handleDeleteColumn}
             onHideColumn={_handleHideColumn}

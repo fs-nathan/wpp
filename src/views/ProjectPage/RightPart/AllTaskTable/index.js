@@ -35,7 +35,7 @@ import {
 } from "constants/events";
 import { get } from "lodash";
 import moment from "moment";
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, useDispatch } from "react-redux";
 import { useLocation, useParams } from "react-router-dom";
@@ -284,21 +284,11 @@ function AllTaskTable({
             : doShowProject({ projectId: get(project, "id") })
         }
         handleDeleteTask={(task) => doDeleteTask({ taskId: get(task, "id") })}
-        handleSortGroupTask={(groupTaskId, sortIndex) =>
-          doSortGroupTask({ groupTaskId, sortIndex })
-        }
-        handleSortTask={(taskId, groupTask, sortIndex) =>
-          doSortTask({
-            taskId,
-            projectId,
-            groupTask: groupTask === "default" ? undefined : groupTask,
-            sortIndex,
-          })
-        }
         handleRemoveMemberFromTask={(taskId) => handleRemoveMember(taskId)}
         handleAddMemberToTask={(taskId) => handleAddMember(taskId)}
         handleOpenModal={doOpenModal}
         handleReload={reloadListTaskAndGroupTask}
+        handleReloadListTask={reloadListTask}
         bgColor={bgColor}
         timeType={timeType}
         handleTimeType={(timeType) =>
