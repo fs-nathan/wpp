@@ -117,11 +117,13 @@ const HeaderProject = ({
         <Icon path={mdiMenu} size={1.2} />
       </div>
       <div className={classes.header}>
-        <Avatar
-          alt="Logo"
-          src={get(project, "group_icon", "")}
-          style={{ width: 40, height: 40 }}
-        />
+        <div className={classes.logo}>
+          <Avatar
+            alt="Logo"
+            src={get(project, "group_icon", "")}
+            style={{ width: 40, height: 40 }}
+          />
+        </div>
         <div className={classes.titleAndNav}>
           <div className={classes.titleRow}>
             <div className={classes.leftWrapper}>

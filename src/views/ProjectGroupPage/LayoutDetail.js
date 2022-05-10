@@ -85,6 +85,7 @@ const LayoutDetail = ({
   const isPreview = useMemo(() => {
     return parsedPath.includes("preview");
   }, [parsedPath]);
+
   useEffect(() => {
     if (isTemplate) {
       setCategoryId(parsedPath[3]);
@@ -226,7 +227,15 @@ const LayoutDetail = ({
       case "task-chat":
         return {
           view: "chat",
-          project: { id: projectId },
+          project,
+          valueSearch: keyword,
+          onSearch: (searchStr) => doSearchTask(searchStr),
+          onOpenCreateModal: () => console.log("onOpenCreateModal"),
+          onUpdateTime: () => console.log("CALENDAR"),
+          onShareProject: () => doOpenModal("SHARE_PROJECT", {}),
+          onUnShareProject: () => doOpenModal("UN_SHARE_PROJECT", {}),
+
+          onUpdateSetting: () => console.log("SETTING"),
           expand: expand,
           onExpand: handleExpand,
         };

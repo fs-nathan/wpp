@@ -1,6 +1,9 @@
 const { makeStyles } = require("@material-ui/core");
 
 export const useStyles = makeStyles({
+  logo: {
+    marginTop: "-8px",
+  },
   topbar: {
     alignItems: "center",
     background: "#fff",
@@ -135,6 +138,11 @@ export const useStyles = makeStyles({
     flex: "0 0 auto",
     marginLeft: "auto",
     paddingLeft: "8px",
+
+    position: "absolute",
+    right: "10px",
+    top: "50%",
+    transform: "translateY(-50%)",
   },
   leftWrapper: { display: "flex", alignItems: "center" },
   wrapperButton: {

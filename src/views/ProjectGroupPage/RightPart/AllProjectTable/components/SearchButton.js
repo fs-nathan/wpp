@@ -26,7 +26,7 @@ const SearchButton = ({ valueSearch, onSearch = () => {} }) => {
 
   return (
     <div
-      className={classNames(classes.wrapperButton, "isExpand")}
+      className={classNames(classes.wrapperButton, { isExpand })}
       onClick={_divClick}
     >
       <input
