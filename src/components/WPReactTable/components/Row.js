@@ -3,7 +3,14 @@ import React from "react";
 import { getCellStyle, getRowStyle } from "../utils";
 import ItemRow from "./ItemRow";
 
-const Row = ({ row, provided, rowProps, snapshot, isVisible = true }) => {
+const Row = ({
+  row,
+  width,
+  provided,
+  rowProps,
+  snapshot,
+  isVisible = true,
+}) => {
   const finalStyle = getRowStyle(
     rowProps,
     provided.draggableProps,
@@ -27,6 +34,8 @@ const Row = ({ row, provided, rowProps, snapshot, isVisible = true }) => {
     });
   };
 
+  console.log("@Pham_Tinh_Console:", width);
+
   return (
     <>
       <div
@@ -34,16 +43,21 @@ const Row = ({ row, provided, rowProps, snapshot, isVisible = true }) => {
         id={row.id}
         className="tr"
         {...rowProps}
-        style={{ display: "flex", ...finalStyle }}
         {...provided.draggableProps}
+        style={{
+          display: "flex",
+          ...finalStyle,
+          width: width,
+          minWidth: width,
+          maxWidth: width,
+        }}
       >
         {ListCells()}
       </div>
 
       {isVisible && row.isExpanded && (
-        <ItemRow id={row.original.id} subRows={row.subRows} />
+        <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
       )}
-      {provided.placeholder}
     </>
   );
 };

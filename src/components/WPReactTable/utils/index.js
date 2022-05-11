@@ -18,6 +18,7 @@ export const getCellStyle = (cellProps) => {
     ...cellProps.style,
     maxWidth: cellProps.style.width,
     minWidth: cellProps.style.width,
+    width: cellProps.style.width,
   };
 };
 

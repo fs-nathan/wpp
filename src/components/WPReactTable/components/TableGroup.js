@@ -1,4 +1,3 @@
-import AddIcon from "@mui/icons-material/Add";
 import React, { useCallback, useMemo, useRef } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { useTranslation } from "react-i18next";
@@ -10,9 +9,9 @@ import {
   useTable,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
-import styled from "styled-components";
 import HeaderColumn from "./HeaderColumn";
 import Row from "./Row";
+import RowAddGroup from "./RowAddGroup";
 import { scrollbarWidth } from "./Table";
 
 const getTableHeight = () => {
@@ -116,6 +115,11 @@ const WPTableGroup = ({
     }
   }, []);
 
+  const width = useMemo(
+    () => totalColumnsWidth + scrollBarSize + 50,
+    [scrollBarSize, totalColumnsWidth]
+  );
+
   const _handleSyncScroll = (e, scrollSync) => {
     const scrollLeft = e.currentTarget.scrollLeft;
     scrollSync.scrollLeft = scrollLeft;
@@ -187,34 +191,6 @@ const WPTableGroup = ({
         divWrapper.style.height = `${wrap?.subRows?.length * 48 + 48}px`;
       }
     }
-  };
-
-  const _renderRowAddGroup = (row) => {
-    if (!row) return null;
-    const rowProps = row.getRowProps();
-    return (
-      <div className="tr row-add row-add-group" {...rowProps}>
-        {row.cells.map((item, index) => {
-          if (index !== 0) return null;
-          const cellProps = item.getCellProps();
-          return (
-            <div
-              {...cellProps}
-              style={{
-                ...cellProps.style,
-                width: totalColumnsWidth + scrollBarSize + 50,
-              }}
-              className="td add-cell"
-            >
-              <CellAddGroup onClick={onAddNewGroup}>
-                <AddIcon sx={{ fontSize: 18, marginRight: "5px" }} />
-                <div>{t("add_group")}</div>
-              </CellAddGroup>
-            </div>
-          );
-        })}
-      </div>
-    );
   };
 
   return (
@@ -306,12 +282,19 @@ const WPTableGroup = ({
                           rowProps={rowProps}
                           snapshot={snapshot}
                           isVisible={isVisible}
+                          width={width}
                         />
                       );
                     }}
                   </Draggable>
                 );
               })}
+
+              {/* <RowAddGroup
+                row={rows[0]}
+                width={totalColumnsWidth + scrollBarSize + 50}
+              /> */}
+
               {provided.placeholder}
             </div>
           )}
@@ -321,34 +304,5 @@ const WPTableGroup = ({
     </div>
   );
 };
-
-const CellAddGroup = styled.div`
-  font-size: 16px;
-  padding: 0 8px;
-  align-items: center;
-  background-color: #00000000;
-  border-radius: 6px;
-  box-sizing: border-box;
-  color: #6d6e6f;
-  cursor: pointer;
-  display: inline-flex;
-  flex-shrink: 0;
-  font-weight: 500;
-  height: 36px;
-  justify-content: center;
-  line-height: 36px;
-  transition-duration: 0.2s;
-  transition-property: background, border, box-shadow, color, fill;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  &:hover {
-    background-color: #37171708;
-    border-color: #00000000;
-    color: #1e1f21;
-    fill: #1e1f21;
-  }
-`;
 
 export default WPTableGroup;

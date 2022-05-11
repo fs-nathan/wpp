@@ -4,7 +4,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { getCellStyle, getRowStyle } from "../utils";
 import { getClassName } from "./Row";
 
-const ItemRow = ({ id, isVisible = true, subRows = [] }) => {
+const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
   const ListCells = (row, provided) => {
     return row.cells.map((cell) => {
       const idCell = cell?.column?.id;
@@ -35,7 +35,7 @@ const ItemRow = ({ id, isVisible = true, subRows = [] }) => {
             ref={provided.innerRef}
             className="wrapper-sub-rows"
             {...provided.droppableProps}
-            style={getStyleWrapper(snapshot.isDraggingOver)}
+            style={{ ...getStyleWrapper(snapshot.isDraggingOver), width }}
           >
             {subRows.map((row) => {
               return (

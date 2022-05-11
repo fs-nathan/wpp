@@ -96,7 +96,7 @@ function ProjectGroupPage({
           { isCollapsed }
         )}
       >
-        <Scrollbars autoHide autoHideTimeout={500}>
+        {/* <Scrollbars autoHide autoHideTimeout={500}> */}
           <Switch>
             <Route exact path="/projects/recently">
               <AllProjectTable
@@ -204,7 +204,7 @@ function ProjectGroupPage({
             </Route>
 
             <Route path="/projects">
-              <CustomTableWrapper>
+              {/* <CustomTableWrapper> */}
                 <CustomLayoutProvider>
                   <LayoutDetail
                     handleExpand={_handleExpand}
@@ -289,10 +289,10 @@ function ProjectGroupPage({
                     </Switch>
                   </LayoutDetail>
                 </CustomLayoutProvider>
-              </CustomTableWrapper>
+              {/* </CustomTableWrapper> */}
             </Route>
           </Switch>
-        </Scrollbars>
+        {/* </Scrollbars> */}
       </div>
     </div>
   );
