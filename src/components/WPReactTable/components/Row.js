@@ -35,8 +35,6 @@ const Row = ({
     });
   };
 
-  console.log("@Pham_Tinh_Console:", width);
-
   return (
     <>
       <div

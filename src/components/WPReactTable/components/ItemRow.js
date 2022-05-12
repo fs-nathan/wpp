@@ -57,8 +57,8 @@ const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
                         ref={provided.innerRef}
                         className="tr"
                         {...rowProps}
-                        style={finalStyle}
                         {...provided.draggableProps}
+                        style={{ ...finalStyle, width }}
                       >
                         {ListCells(row, provided)}
                       </div>
