@@ -50,7 +50,6 @@ const ColumnNameGroup = ({
 
 const NameGroup = ({ id = "", name = "" }) => {
   const [isEditing, setIsEditing] = React.useState(false);
-  const [value, setValue] = React.useState(name || "");
   const refInput = React.useRef(null);
   const refWrapper = React.useRef(null);
   const dispatch = useDispatch();
@@ -78,43 +77,45 @@ const NameGroup = ({ id = "", name = "" }) => {
 
   const _handleEditing = () => setIsEditing(true);
 
-  const _handleBlur = () => {
+  const _handleBlur = (e) => {
     setIsEditing(false);
+    if (e.target.value === name) return;
+    dispatch(updateGroupTask({ groupTaskId: id, name: e.target.value }));
   };
 
   const _handleKeyPress = (e) => {
     if (e.which === 13 && !e.shiftKey) {
       refInput.current.blur();
-      setValue(e.target.value);
+      if (e.target.value === name) return;
       dispatch(updateGroupTask({ groupTaskId: id, name: e.target.value }));
     }
   };
 
   if (isEditing)
     return (
-      <div ref={refWrapper}>
+      <div ref={refWrapper} style={{ width: "calc(100% - 105px)" }}>
         <NameInput
           isGroup
           ref={refInput}
           border="none"
           placeholder={"Write a task name"}
-          maxWidth="calc(100% - 72px)"
+          maxWidth="calc(100% - 15px)"
           defaultValue={name}
           onBlur={_handleBlur}
-          // onChange={_handleChange}
           onKeyPress={_handleKeyPress}
         />
       </div>
     );
   return (
     <WrapperName onClick={_handleEditing}>
-      <StyledHeadingGroup>{value}</StyledHeadingGroup>
+      <StyledHeadingGroup>{name}</StyledHeadingGroup>
     </WrapperName>
   );
 };
 
 const WrapperLeft = styled.div`
   width: 100%;
+
   display: flex;
   align-items: center;
 
