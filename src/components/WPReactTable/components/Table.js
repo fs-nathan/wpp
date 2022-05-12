@@ -169,6 +169,7 @@ const WPTable = ({
                   selectedSort={selectedSort}
                   typeMenu="default"
                   onSortColumn={onSort}
+                  scrollTableHeight={scrollTableHeight}
                 />
               ))}
             </div>

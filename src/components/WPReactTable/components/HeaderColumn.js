@@ -5,23 +5,24 @@ import {
   MenuItem,
   Typography,
 } from "@material-ui/core";
+import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
+import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
 import SearchOffIcon from "@mui/icons-material/SearchOff";
 import UpgradeIcon from "@mui/icons-material/Upgrade";
 import classNames from "classnames";
-import React, { useReducer } from "react";
-import styled from "styled-components";
-import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
-import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
-import { default as NestedMenuItem } from "./NestedMenu";
 import { apiService } from "constants/axiosInstance";
 import {
   DEFAULT_MESSAGE,
   SnackbarEmitter,
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
+import React, { useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
+import { default as NestedMenuItem } from "./NestedMenu";
+import ResizeHeaderDiv from "./ResizeDiv";
 
 /**
  * It takes the previous state and the new state as arguments. If the new state is an object, it
@@ -47,6 +48,7 @@ const HeaderColumn = ({
   isFirstColumn = false,
   isLastColumn = false,
   selectedSort = null,
+  scrollTableHeight,
   typeMenu = "group",
   onHideColumn = () => {},
   onEditColumn = () => {},
@@ -55,6 +57,7 @@ const HeaderColumn = ({
   onAddNewColumns = () => {},
 }) => {
   const { t } = useTranslation();
+
   /* The above code is creating a state and dispatch function. */
   const [state, dispatchState] = useReducer(reducer, initialState);
   const isDuration = column.id === "pfd-duration";
@@ -78,10 +81,6 @@ const HeaderColumn = ({
    * This function is called when the user clicks the edit button.
    */
   const _handleEditField = () => {
-    console.log(column.data_type);
-    console.log(column.id);
-    console.log(column.name);
-    console.log(column.options);
     dispatchState(initialState);
     onEditColumn(column.data_type, {
       dataType: column.data_type,
@@ -338,9 +337,9 @@ const HeaderColumn = ({
       </LeftStructure>
 
       {!isLastColumn && (
-        <ResizeDiv
-          {...column.getResizerProps()}
-          isResizing={column.isResizing}
+        <ResizeHeaderDiv
+          column={column}
+          scrollTableHeight={scrollTableHeight}
         />
       )}
 
@@ -482,32 +481,6 @@ const LeftStructure = styled.div`
     .wp-wrapper-button {
       visibility: visible;
     }
-  }
-`;
-
-const ResizeDiv = styled.div`
-  height: 100%;
-  position: absolute;
-  right: -5px;
-  top: 0;
-  width: 10px;
-  z-index: 9999999;
-
-  &:hover {
-    background: #008ce3;
-    &:after {
-      content: "";
-    }
-  }
-  &:after {
-    content: none;
-    height: 100vh;
-    background: ${(props) => (!props.isResizing ? "#008ce3" : "#008ce3")};
-    width: 1px;
-    z-index: 3;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
   }
 `;
 

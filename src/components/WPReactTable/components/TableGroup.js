@@ -10,7 +10,7 @@ import {
 import { useSticky } from "react-table-sticky";
 import HeaderColumn from "./HeaderColumn";
 import { scrollbarWidth } from "./Table";
-import TableBody from "./TableBody";
+import TableBody, { getTableHeight } from "./TableBody";
 
 export function reorderList(list, startIndex, endIndex) {
   const result = Array.from(list);
@@ -109,6 +109,8 @@ const WPTableGroup = ({
     scrollSync.scrollLeft = scrollLeft;
   };
 
+  const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
+
   return (
     <div {...getTableProps()} className="table">
       {/* Header table */}
@@ -143,6 +145,7 @@ const WPTableGroup = ({
                     column={column}
                     isFirstColumn={index === 0}
                     isLastColumn={index === listHeaders.length - 1}
+                    scrollTableHeight={scrollTableHeight}
                     onAddNewColumns={onAddNewColumns}
                     onHideColumn={onHideColumn}
                     onSortColumn={onSortColumn}
@@ -163,6 +166,7 @@ const WPTableGroup = ({
         prepareRow={prepareRow}
         getTableBodyProps={getTableBodyProps}
         isColumnResizing={isColumnResizing}
+        scrollTableHeight={scrollTableHeight}
         onReorderData={onReorderData}
       />
     </div>

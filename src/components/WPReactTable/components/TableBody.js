@@ -6,14 +6,13 @@ const TableBody = ({
   rows,
   width,
   getTableBodyProps,
+  scrollTableHeight,
   prepareRow,
   onReorderData = () => {},
 }) => {
   const [isVisible, setIsVisible] = React.useState(true);
 
   const refDroppableIdOver = useRef(null);
-
-  const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
 
   const _handleDragEnd = (result) => {
     setIsVisible(true);
@@ -145,7 +144,7 @@ const TableBody = ({
   );
 };
 
-const getTableHeight = () => {
+export const getTableHeight = () => {
   const rootDocument = document.getElementById("root");
   const height = rootDocument.offsetHeight;
   const headerTableNav = document.getElementById("project-topbar");
