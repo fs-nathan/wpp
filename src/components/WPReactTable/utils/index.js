@@ -5,6 +5,14 @@ export const getRowStyle = (
   isDraggingOver = false
 ) => {
   const style = rowProps.style || {};
+  if (isDragging)
+    return {
+      maxWidth: style.width,
+      minWidth: style.width,
+      width: style.width,
+      ...providedProps.style,
+      justifyContent: "flex-start",
+    };
   return {
     maxWidth: style.width,
     minWidth: style.width,

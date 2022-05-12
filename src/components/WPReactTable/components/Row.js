@@ -14,7 +14,8 @@ const Row = ({
   const finalStyle = getRowStyle(
     rowProps,
     provided.draggableProps,
-    snapshot.isDragging
+    snapshot.isDragging,
+    width
   );
 
   const ListCells = () => {
@@ -47,9 +48,6 @@ const Row = ({
         style={{
           display: "flex",
           ...finalStyle,
-          width: width,
-          minWidth: width,
-          maxWidth: width,
         }}
       >
         {ListCells()}
