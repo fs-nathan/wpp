@@ -225,15 +225,16 @@ const SortListColumn = React.forwardRef(
                                 <ModeEditIcon style={iconStyle} />
                               </ListItemIcon>
                             )}
-                            <AntSwitch
-                              onChange={(e) => onChangeCheck(e, item.id, index)}
-                              defaultChecked={item.is_show}
-                              style={{ marginRight: 5 }}
-                              inputProps={{ "aria-label": "ant design" }}
-                              disabled={
-                                item?.is_default && item.id === "pfd-name"
-                              }
-                            />
+                            {item.id !== "pfd-name" && (
+                              <AntSwitch
+                                onChange={(e) =>
+                                  onChangeCheck(e, item.id, index)
+                                }
+                                defaultChecked={item.is_show}
+                                style={{ marginRight: 5 }}
+                                inputProps={{ "aria-label": "ant design" }}
+                              />
+                            )}
                           </ListItem>
                         );
                       }}

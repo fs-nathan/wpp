@@ -7,6 +7,7 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
+import NameInput from "./NameInput";
 
 const ColumnNameGroup = ({
   row,
@@ -51,21 +52,22 @@ const NameGroup = ({ id = "", name = "" }) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [value, setValue] = React.useState(name || "");
   const refInput = React.useRef(null);
+  const refWrapper = React.useRef(null);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     let timeout = setTimeout(() => {
       if (isEditing) {
         refInput.current.focus();
-        refInput.current.selectionStart = refInput.current.selectionEnd = 10000;
+        refInput.current.moveToEnd();
       }
     }, 0);
     return () => clearTimeout(timeout);
   }, [isEditing]);
 
   React.useEffect(() => {
-    if (!refInput.current) return;
-    const cellHTML = refInput.current.closest(".td");
+    if (!refWrapper.current) return;
+    const cellHTML = refWrapper.current.closest(".td");
     if (isEditing) {
       cellHTML && cellHTML.classList.add("focus");
     }
@@ -88,25 +90,21 @@ const NameGroup = ({ id = "", name = "" }) => {
     }
   };
 
-  const _handleChange = (e) => {
-    setValue(e.target.value);
-  };
-
   if (isEditing)
     return (
-      <InputCustom
-        border="none"
-        ref={refInput}
-        isGroup
-        placeholder={"Write a task name"}
-        rows="1"
-        tabindex="-1"
-        wrap="off"
-        value={value}
-        onBlur={_handleBlur}
-        onChange={_handleChange}
-        onKeyPress={_handleKeyPress}
-      />
+      <div ref={refWrapper}>
+        <NameInput
+          isGroup
+          ref={refInput}
+          border="none"
+          placeholder={"Write a task name"}
+          maxWidth="calc(100% - 72px)"
+          defaultValue={name}
+          onBlur={_handleBlur}
+          // onChange={_handleChange}
+          onKeyPress={_handleKeyPress}
+        />
+      </div>
     );
   return (
     <WrapperName onClick={_handleEditing}>
@@ -119,12 +117,12 @@ const WrapperLeft = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  max-width: calc(100% - 72px);
+
   .right-side {
     visibility: hidden;
   }
-  &:hover{
-    .right-side{
+  &:hover {
+    .right-side {
       visibility: visible;
     }
   }
@@ -213,42 +211,6 @@ const WrapperName = styled.div`
   min-width: 120px;
   outline: none;
   cursor: pointer;
-`;
-
-const InputCustom = styled.input`
-  white-space: pre;
-  background: transparent;
-  border-radius: 1.5px;
-  display: block;
-  outline: 0;
-  overflow: hidden;
-  resize: none;
-  width: calc(100% - 160px);
-  margin-left: 5px;
-  border: 1px solid transparent;
-  font-size: 14px;
-  line-height: 20px;
-  margin: 0;
-  min-width: 20px;
-  padding: 0 5px;
-  text-rendering: optimizeSpeed;
-  color: #1e1f21;
-  ${(props) => {
-    if (props.isGroup) {
-      return {
-        fontWeight: 500,
-        fontSize: 16,
-        padding: 5,
-        borderColor: "#edeae9",
-      };
-    }
-  }}
-  &:hover {
-    border: 1px solid #edeae9;
-  }
-  &:focus {
-    border-color: ${(props) => (props.isGroup ? "#edeae9" : "transparent")};
-  }
 `;
 
 export default ColumnNameGroup;

@@ -2,6 +2,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ColumnNameGroup from "components/WPReactTable/components/ColumnNameGroup";
 import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
+import NameInput from "components/WPReactTable/components/NameInput";
 import { apiService } from "constants/axiosInstance";
 import {
   DEFAULT_MESSAGE,
@@ -109,22 +110,12 @@ const CellItemGroup = ({
         <IconDrag />
       </WrapperIconDrag>
 
-      <TextAreaCustom
-        ref={refText}
-        placeholder={"Write a task name"}
-        rows="1"
-        tabindex="-1"
-        wrap="off"
-        value={name}
+      <NameInput
         defaultValue={isNewRow ? "" : value}
         onFocus={_handleFocus}
         onKeyPress={_handleKeyPress}
         onChange={_handleChange}
         onBlur={_handleBlur}
-        style={{
-          marginLeft: 0,
-          width: "calc(100% - 140px)",
-        }}
       />
 
       <WrapperDetailInfo className="detail-info">
@@ -226,41 +217,5 @@ const WrapperItemName = styled.div`
     ${WrapperIconDrag} {
       visibility: visible;
     }
-  }
-`;
-
-export const TextAreaCustom = styled.textarea`
-  white-space: pre;
-  background: transparent;
-  border-radius: 1.5px;
-  display: block;
-  outline: 0;
-  overflow: hidden;
-  resize: none;
-  width: calc(100% - 160px);
-  margin-left: 5px;
-  border: 1px solid transparent;
-  font-size: 14px;
-  line-height: 20px;
-  margin: 0;
-  min-width: 20px;
-  padding: 0 5px;
-  text-rendering: optimizeSpeed;
-  color: #1e1f21;
-  ${(props) => {
-    if (props.isGroup) {
-      return {
-        fontWeight: 500,
-        fontSize: 16,
-        padding: 5,
-        borderColor: "#edeae9",
-      };
-    }
-  }}
-  &:hover {
-    border: 1px solid #edeae9;
-  }
-  &:focus {
-    border-color: ${(props) => (props.isGroup ? "#edeae9" : "transparent")};
   }
 `;
