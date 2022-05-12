@@ -5,7 +5,7 @@ import {
   useBlockLayout,
   useExpanded,
   useResizeColumns,
-  useTable
+  useTable,
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import HeaderColumn from "./HeaderColumn";
@@ -115,7 +115,7 @@ const WPTableGroup = ({
       <div
         id="header-row"
         className="wrapper-row-header"
-        style={{ position: "sticky", top: 0, zIndex: 350 }}
+        style={{ position: "sticky", top: 0, zIndex: 350, overflow: "hidden" }}
       >
         {headerGroups.map((headerGroup, index) => {
           const headerProps = headerGroup.getHeaderGroupProps();

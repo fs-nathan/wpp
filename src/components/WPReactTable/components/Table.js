@@ -144,7 +144,7 @@ const WPTable = ({
       <div
         id="header-row"
         className="wrapper-row-header"
-        style={{ position: "sticky", top: 0, zIndex: 350 }}
+        style={{ position: "sticky", top: 0, zIndex: 350, overflow: "hidden" }}
       >
         {headerGroups.map((headerGroup) => {
           const headerProps = headerGroup.getHeaderGroupProps();
