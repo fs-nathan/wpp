@@ -62,13 +62,15 @@ const Row = ({
         <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
       )}
 
-      <RowAddTask
-        ref={refAddRow}
-        id={row.id}
-        cells={row.cells}
-        {...rowProps}
-        style={style}
-      />
+      {isVisible && (
+        <RowAddTask
+          ref={refAddRow}
+          id={row.id}
+          cells={row.cells}
+          {...rowProps}
+          style={style}
+        />
+      )}
     </>
   );
 };

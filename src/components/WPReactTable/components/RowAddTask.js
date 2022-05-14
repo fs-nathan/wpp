@@ -16,7 +16,7 @@ const RowAddTask = ({ id, cells = [], ...props }, ref) => {
           <div
             {...cell.getCellProps()}
             style={{ ...getCellStyle(cell.getCellProps()) }}
-            className="td"
+            className="td row-add-task"
           >
             {index === 0 ? <CellAdd /> : cell.render("Cell")}
           </div>
