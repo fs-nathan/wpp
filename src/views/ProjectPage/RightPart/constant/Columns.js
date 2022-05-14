@@ -49,7 +49,7 @@ const CellItemGroup = ({
   useEffect(() => {
     if (isNewRow) {
       setTimeout(() => {
-        refNameInput.current.focus();
+        refNameInput.current && refNameInput.current.focus();
       }, 0);
     }
   }, [isNewRow]);
@@ -79,7 +79,10 @@ const CellItemGroup = ({
   const _handleKeyPress = (e) => {
     if (e.which === 13 && !e.shiftKey) {
       e.preventDefault();
-      if (e.target.value !== value) _handleSubmit();
+      if (e.target.value !== value) {
+        _handleSubmit();
+        onBlur(e);
+      }
     }
   };
 

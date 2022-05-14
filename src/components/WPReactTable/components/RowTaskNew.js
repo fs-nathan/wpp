@@ -36,11 +36,10 @@ const RowTaskNew = ({ cells = [], ...props }, ref) => {
       return;
     }
 
-    setIsVisible(false);
-
     const newData = { ...refData.current, name: e.target.value, isBasic: true };
     dispatch(createTask(newData));
     dispatch(addNewTaskTemp(newData));
+    e.target.value = "";
   };
 
   if (!isVisible) return null;
