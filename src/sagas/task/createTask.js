@@ -3,13 +3,13 @@ import { createTaskFail, createTaskSuccess } from '../../actions/task/createTask
 import { apiService } from '../../constants/axiosInstance';
 import { CREATE_TASK, CustomEventEmitter } from '../../constants/events';
 
-async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, scheduleId, }) {
+async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, scheduleId,isBasic }) {
   try {
     const config = {
-      url: '/task/create',
-      method: 'post',
+      url: isBasic ? "/task/create-basic" : "/task/create",
+      method: "post",
       params: {
-        gird: 'table',
+        gird: "table",
       },
       data: {
         name,
@@ -22,9 +22,9 @@ async function doCreateTask({ name, projectId, groupTask, typeAssign, priority, 
         start_time: startTime,
         end_date: endDate,
         end_time: endTime,
-        schedule_id: scheduleId
+        schedule_id: scheduleId,
       },
-    }
+    };
     const result = await apiService(config);
     return result.data;
   } catch (error) {
@@ -45,4 +45,3 @@ function* createTask(action) {
 }
 
 export { createTask, };
-

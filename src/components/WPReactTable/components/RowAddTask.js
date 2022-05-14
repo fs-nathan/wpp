@@ -1,10 +1,9 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import { addNewTaskTemp } from "actions/task/listTask";
 import React, {
-  forwardRef,
-  useImperativeHandle,
-  useRef,
-  useState,
+    forwardRef,
+    useImperativeHandle,
+    useRef,
+    useState
 } from "react";
 import styled from "styled-components";
 import { getCellStyle } from "../utils";
@@ -21,13 +20,11 @@ const RowAddTask = (
 
   const _handleAddNewTask = () => {
     refRowTaskNew.current._open({
-      group_task: groupId,
+      groupTask: groupId,
       description: "",
-      from_view: "Table",
       name: "",
       priority: 2,
-      project_id: projectId,
-      schedule_id: "5edda26e6701cf16239a4341",
+      projectId: projectId,
       type: 0,
       indexGroup,
     });

@@ -73,6 +73,7 @@ function reducer(state = initialState, action) {
     case LIST_TASK_RESET:
       return initialState;
     case CREATE_TASK_SUCCESS: {
+      console.log('@Pham_Tinh_Console:','are you enter here?');
       const newTasks = state.data.tasks.map((groupTask) =>
         get(groupTask, "id") === get(action.data, "task.group_task")
           ? {

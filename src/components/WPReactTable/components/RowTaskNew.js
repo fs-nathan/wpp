@@ -1,3 +1,4 @@
+import { createTask } from "actions/task/createTask";
 import { addNewTaskTemp } from "actions/task/listTask";
 import React, {
   forwardRef,
@@ -36,7 +37,10 @@ const RowTaskNew = ({ cells = [], ...props }, ref) => {
     }
 
     setIsVisible(false);
-    dispatch(addNewTaskTemp({ ...refData.current, name: e.target.value }));
+
+    const newData = { ...refData.current, name: e.target.value, isBasic: true };
+    dispatch(createTask(newData));
+    dispatch(addNewTaskTemp(newData));
   };
 
   if (!isVisible) return null;

@@ -122,17 +122,14 @@ function AllTaskTable({
           : undefined,
       });
 
-      // const createTaskSuccess = (event) => {
-      //   reloadListTask();
-      //   if (
-      //     !localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)
-      //   ) {
-      //     setOpenModalAddMember(event.detail.task);
-      //   }
-      // };
+      const createTaskSuccess = (event) => {
+        reloadListTask();
+
+        // TODO: need event to create basic task
+      };
 
       CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-      // CustomEventListener(CREATE_TASK, createTaskSuccess);
+      CustomEventListener(CREATE_TASK, createTaskSuccess);
       CustomEventListener(SORT_TASK, reloadListTask);
       CustomEventListener(UPDATE_DURATION_TASK, reloadListTask);
       CustomEventListener(UPDATE_INFOMATION_TASK, reloadListTask);
@@ -151,7 +148,7 @@ function AllTaskTable({
       );
       return () => {
         CustomEventDispose(SORT_GROUP_TASK, reloadListTaskAndGroupTask);
-        // CustomEventDispose(CREATE_TASK, createTaskSuccess);
+        CustomEventDispose(CREATE_TASK, createTaskSuccess);
         CustomEventDispose(SORT_TASK, reloadListTask);
         CustomEventDispose(UPDATE_DURATION_TASK, reloadListTask);
         CustomEventDispose(UPDATE_INFOMATION_TASK, reloadListTask);
