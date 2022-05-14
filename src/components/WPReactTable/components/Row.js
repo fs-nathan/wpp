@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import React from "react";
+import React, { useRef } from "react";
 import { getCellStyle, getRowStyle } from "../utils";
 import ItemRow from "./ItemRow";
 import RowAddTask from "./RowAddTask";
@@ -12,6 +12,8 @@ const Row = ({
   snapshot,
   isVisible = true,
 }) => {
+  const refAddRow = useRef(null);
+
   const finalStyle = getRowStyle(
     rowProps,
     provided.draggableProps,
@@ -20,6 +22,10 @@ const Row = ({
   );
 
   const style = { display: "flex", ...finalStyle };
+
+  const _handleToggleAdd = () => {
+    refAddRow.current._toggle();
+  };
 
   const ListCells = () => {
     return row.cells.map((cell) => {
@@ -32,6 +38,7 @@ const Row = ({
         >
           {cell.render("Cell", {
             dragHandle: idCell === "name" ? provided.dragHandleProps : {},
+            handleToggleAdd: _handleToggleAdd,
           })}
         </div>
       );
@@ -55,7 +62,13 @@ const Row = ({
         <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
       )}
 
-      <RowAddTask id={row.id} cells={row.cells} {...rowProps} style={style} />
+      <RowAddTask
+        ref={refAddRow}
+        id={row.id}
+        cells={row.cells}
+        {...rowProps}
+        style={style}
+      />
     </>
   );
 };

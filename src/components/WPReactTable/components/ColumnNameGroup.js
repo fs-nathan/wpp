@@ -13,7 +13,7 @@ const ColumnNameGroup = ({
   row,
   value,
   dragHandle = {},
-  onVisibleAddRow = () => {},
+  onToggleAdd = () => {},
   onMouseDown = () => {},
 }) => {
   const group = row.original;
@@ -37,7 +37,7 @@ const ColumnNameGroup = ({
         {/* Name group */}
         <NameGroup id={group.id} name={value} />
         {/* End name group */}
-        <WrapperButton className="right-side" onClick={onVisibleAddRow}>
+        <WrapperButton className="right-side" onClick={onToggleAdd}>
           <AddRoundedIcon sx={{ fill: "#6d6e6f" }} />
         </WrapperButton>
         <WrapperButton className="right-side">

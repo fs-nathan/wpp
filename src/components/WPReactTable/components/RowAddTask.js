@@ -1,9 +1,14 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import React from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import styled from "styled-components";
 import { getCellStyle } from "../utils";
 
-const RowAddTask = ({ id, cells = [], ...props }) => {
+const RowAddTask = ({ id, cells = [], ...props }, ref) => {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useImperativeHandle(ref, () => ({ _toggle: () => setIsVisible(!isVisible) }));
+
+  if (!isVisible) return null;
   return (
     <WrapperRow id={id} className="tr row-add" {...props}>
       {cells.map((cell, index) => {
@@ -51,4 +56,4 @@ const StyledIconAdd = styled(AddOutlinedIcon)`
   margin-right: 5px;
 `;
 
-export default RowAddTask;
+export default forwardRef(RowAddTask);

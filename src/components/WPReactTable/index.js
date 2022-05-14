@@ -60,7 +60,7 @@ const Styles = styled.div`
     overflow: auto;
 
     max-width: ${({ isCollapsed }) =>
-      !isCollapsed ? "calc(100vw - 370px - 70px)" : "calc(100vw - 70px)"};
+      !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
     .thead {
       overflow-y: auto;
