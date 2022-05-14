@@ -38,7 +38,6 @@ const CellItemGroup = ({
   onBlur = () => {},
   isFocus = true,
 }) => {
-  const refText = useRef(null);
   const refFocus = useRef(false);
   const [name, setName] = React.useState(isNewRow ? "" : value);
 
@@ -48,6 +47,7 @@ const CellItemGroup = ({
 
   const _handleSubmit = async () => {
     if (isNewRow) return onSubmitAdd(name);
+
     try {
       const config = {
         url: "/task/update-name-description",
@@ -59,7 +59,6 @@ const CellItemGroup = ({
       };
       await apiService(config);
       refFocus.current = true;
-      refText.current.blur();
     } catch (error) {
       SnackbarEmitter(
         SNACKBAR_VARIANT.ERROR,
@@ -68,28 +67,17 @@ const CellItemGroup = ({
     }
   };
 
-  useEffect(() => {
-    if (isFocus && isNewRow) {
-      setTimeout(() => {
-        refText.current.focus();
-      }, 0);
-    }
-  }, [isFocus, isNewRow]);
-
   const _handleKeyPress = (e) => {
     if (e.which === 13 && !e.shiftKey) {
       e.preventDefault();
-      _handleSubmit();
-      if (isNewRow) refText.current.value = "";
+      if (e.target.value !== value) _handleSubmit();
     }
   };
 
   const _handleBlur = (e) => {
-    if (!refFocus.current) {
-      onBlur(e);
-      _handleSubmit();
-      refFocus.current = false;
-    }
+    onBlur(e);
+    if (e.target.value !== value) _handleSubmit();
+    refFocus.current = false;
     const columnHTML = e.target.closest(".td");
     columnHTML.classList.remove("focus");
   };

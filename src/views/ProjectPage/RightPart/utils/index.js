@@ -14,7 +14,6 @@ export const convertFieldsToTable = (
 ) => {
   const result = [];
 
-  console.log("@Pham_Tinh_Console:", data);
   data.forEach((item) => {
     if (
       item.id !== "pfd-name" &&
