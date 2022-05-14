@@ -128,13 +128,6 @@ const CellRender = ({
   switch (dataType) {
     case 1:
     case 2:
-      if (
-        idType === "627bc2e885c66f38c0fa0e15" &&
-        dataType === 2 &&
-        Object.keys(data).length === 0
-      ) {
-        console.log("@Pham_Tinh_Console:", props.column);
-      }
       return (
         <ColumnNumber
           taskId={taskId}
