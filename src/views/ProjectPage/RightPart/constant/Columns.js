@@ -39,11 +39,20 @@ const CellItemGroup = ({
   isFocus = true,
 }) => {
   const refFocus = useRef(false);
+  const refNameInput = useRef(null);
   const [name, setName] = React.useState(isNewRow ? "" : value);
 
   useEffect(() => {
     isNewRow ? setName("") : setName(value);
   }, [value, isNewRow]);
+
+  useEffect(() => {
+    if (isNewRow) {
+      setTimeout(() => {
+        refNameInput.current.focus();
+      }, 0);
+    }
+  }, [isNewRow]);
 
   const _handleSubmit = async () => {
     if (isNewRow) return onSubmitAdd(name);
@@ -99,6 +108,7 @@ const CellItemGroup = ({
       </WrapperIconDrag>
 
       <NameInput
+        ref={refNameInput}
         defaultValue={isNewRow ? "" : value}
         onFocus={_handleFocus}
         onKeyPress={_handleKeyPress}

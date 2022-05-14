@@ -36,7 +36,6 @@ import ProjectSharedTemplate from "./RightPart/ProjectsTemplate/ProjectSharedTem
 import ProjectBeSharedTemplate from "./RightPart/ProjectsTemplate/ProjectBeSharedTemplate";
 import ProjectTemplatePreview from "./RightPart/ProjectsTemplate/ProjectTemplatePreview";
 import DemoTemplate from "./RightPart/DemoTemplate/DemoTemplate";
-import Scrollbars from "react-custom-scrollbars";
 
 function ProjectGroupPage({
   doGetPermissionViewProjects,
@@ -207,7 +206,6 @@ function ProjectGroupPage({
           </Route>
 
           <Route path="/projects">
-            {/* <CustomTableWrapper> */}
             <CustomLayoutProvider>
               <LayoutDetail
                 handleExpand={_handleExpand}
@@ -292,10 +290,8 @@ function ProjectGroupPage({
                 </Switch>
               </LayoutDetail>
             </CustomLayoutProvider>
-            {/* </CustomTableWrapper> */}
           </Route>
         </Switch>
-        {/* </Scrollbars> */}
       </div>
     </div>
   );

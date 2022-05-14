@@ -8,13 +8,14 @@ import {
   mdiStarOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
+import { detailProject } from "actions/project/detailProject";
 import { detailStatus } from "actions/project/setting/detailStatus";
 import { updatePinBoardSetting } from "actions/project/setting/updatePinBoardSetting";
 import Avatar from "components/CustomAvatar";
 import { get, isNil } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { statusSelector } from "views/ProjectGroupPage/Modals/ProjectSetting/selectors";
 import SearchButton from "views/ProjectGroupPage/RightPart/AllProjectTable/components/SearchButton";
 import DrawerFilter from "./components/DrawerFilter";
@@ -36,11 +37,15 @@ const HeaderProject = ({
   doDetailStatus,
   ...props
 }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const refFilter = useRef(null);
+  const refID = useRef();
+
   const [isPinned, setIsPinned] = useState(false);
   const refIsFirstTime = useRef(true);
-  const projectId = get(project, "id", "");
+  const { pathname } = useLocation();
+  const projectId = pathname.split("/")[3];
   const total =
     get(project, "task_doing", 0) +
     get(project, "task_complete", 0) +
@@ -83,6 +88,13 @@ const HeaderProject = ({
       to: `/projects/report/${projectId}`,
     },
   ];
+
+  React.useEffect(() => {
+    if (projectId && projectId !== refID.current) {
+      dispatch(detailProject({ projectId }, true));
+      refID.current = projectId;
+    }
+  }, [projectId]);
 
   useEffect(() => {
     if (project && !isNil(get(project, "id"))) {

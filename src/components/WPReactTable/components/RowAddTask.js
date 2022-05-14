@@ -1,28 +1,62 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
-import React, { forwardRef, useImperativeHandle, useState } from "react";
+import { addNewTaskTemp } from "actions/task/listTask";
+import React, {
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import styled from "styled-components";
 import { getCellStyle } from "../utils";
+import RowTaskNew from "./RowTaskNew";
 
-const RowAddTask = ({ id, cells = [], ...props }, ref) => {
+const RowAddTask = (
+  { id, groupId, projectId, indexGroup, cells = [], ...props },
+  ref
+) => {
+  const refRowTaskNew = useRef(null);
   const [isVisible, setIsVisible] = useState(true);
 
   useImperativeHandle(ref, () => ({ _toggle: () => setIsVisible(!isVisible) }));
 
+  const _handleAddNewTask = () => {
+    refRowTaskNew.current._open({
+      group_task: groupId,
+      description: "",
+      from_view: "Table",
+      name: "",
+      priority: 2,
+      project_id: projectId,
+      schedule_id: "5edda26e6701cf16239a4341",
+      type: 0,
+      indexGroup,
+    });
+  };
+
   if (!isVisible) return null;
   return (
-    <WrapperRow id={id} className="tr row-add" {...props}>
-      {cells.map((cell, index) => {
-        return (
-          <div
-            {...cell.getCellProps()}
-            style={{ ...getCellStyle(cell.getCellProps()) }}
-            className="td row-add-task"
-          >
-            {index === 0 ? <CellAdd /> : cell.render("Cell")}
-          </div>
-        );
-      })}
-    </WrapperRow>
+    <>
+      <RowTaskNew ref={refRowTaskNew} cells={cells} {...props} />
+      <WrapperRow
+        className="tr row-add"
+        onClick={_handleAddNewTask}
+        {...props}
+        key={`row_add_task_key_${props.key}`}
+      >
+        {cells.map((cell, index) => {
+          return (
+            <div
+              {...cell.getCellProps()}
+              key={`key_add_row_cell${cell.getCellProps().key}`}
+              style={{ ...getCellStyle(cell.getCellProps()) }}
+              className="td"
+            >
+              {index === 0 ? <CellAdd /> : cell.render("Cell")}
+            </div>
+          );
+        })}
+      </WrapperRow>
+    </>
   );
 };
 

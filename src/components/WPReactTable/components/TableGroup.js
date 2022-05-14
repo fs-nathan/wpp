@@ -1,4 +1,3 @@
-import { width } from "@mui/system";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -164,6 +163,7 @@ const WPTableGroup = ({
         rows={rows}
         width={totalColumnsWidth + scrollBarSize}
         prepareRow={prepareRow}
+        projectId={projectId}
         getTableBodyProps={getTableBodyProps}
         isColumnResizing={isColumnResizing}
         scrollTableHeight={scrollTableHeight}

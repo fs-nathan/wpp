@@ -8,6 +8,7 @@ const TableBody = ({
   getTableBodyProps,
   scrollTableHeight,
   prepareRow,
+  projectId,
   onReorderData = () => {},
 }) => {
   const [isVisible, setIsVisible] = React.useState(true);
@@ -123,6 +124,7 @@ const TableBody = ({
                         rowProps={rowProps}
                         snapshot={snapshot}
                         isVisible={isVisible}
+                        projectId={projectId}
                         width={width}
                       />
                     );

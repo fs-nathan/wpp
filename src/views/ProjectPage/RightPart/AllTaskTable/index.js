@@ -122,17 +122,17 @@ function AllTaskTable({
           : undefined,
       });
 
-      const createTaskSuccess = (event) => {
-        reloadListTask();
-        if (
-          !localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)
-        ) {
-          setOpenModalAddMember(event.detail.task);
-        }
-      };
+      // const createTaskSuccess = (event) => {
+      //   reloadListTask();
+      //   if (
+      //     !localStorage.getItem(`MODAL_MEMBER_TASK_MARK_NOT_SHOW_${projectId}`)
+      //   ) {
+      //     setOpenModalAddMember(event.detail.task);
+      //   }
+      // };
 
       CustomEventListener(SORT_GROUP_TASK, reloadListTask);
-      CustomEventListener(CREATE_TASK, createTaskSuccess);
+      // CustomEventListener(CREATE_TASK, createTaskSuccess);
       CustomEventListener(SORT_TASK, reloadListTask);
       CustomEventListener(UPDATE_DURATION_TASK, reloadListTask);
       CustomEventListener(UPDATE_INFOMATION_TASK, reloadListTask);
@@ -151,7 +151,7 @@ function AllTaskTable({
       );
       return () => {
         CustomEventDispose(SORT_GROUP_TASK, reloadListTaskAndGroupTask);
-        CustomEventDispose(CREATE_TASK, createTaskSuccess);
+        // CustomEventDispose(CREATE_TASK, createTaskSuccess);
         CustomEventDispose(SORT_TASK, reloadListTask);
         CustomEventDispose(UPDATE_DURATION_TASK, reloadListTask);
         CustomEventDispose(UPDATE_INFOMATION_TASK, reloadListTask);
@@ -172,33 +172,33 @@ function AllTaskTable({
     }
   }, [projectId, timeRange]);
 
-  React.useEffect(() => {
-    if (!get(viewPermissions.permissions, [projectId, "update_project"], false))
-      return;
-    if (projectId !== null) {
-      doListGroupTask({ projectId });
-      const reloadListGroupTask = () => {
-        doListGroupTask({ projectId });
-      };
-      CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
-      return () => {
-        CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
-      };
-    }
-  }, [projectId, viewPermissions]);
+  // React.useEffect(() => {
+  //   if (!get(viewPermissions.permissions, [projectId, "update_project"], false))
+  //     return;
+  //   if (projectId !== null) {
+  //     doListGroupTask({ projectId });
+  //     const reloadListGroupTask = () => {
+  //       doListGroupTask({ projectId });
+  //     };
+  //     CustomEventListener(SORT_GROUP_TASK, reloadListGroupTask);
+  //     return () => {
+  //       CustomEventDispose(SORT_GROUP_TASK, reloadListGroupTask);
+  //     };
+  //   }
+  // }, [projectId, viewPermissions]);
 
-  React.useEffect(() => {
-    if (projectId !== null) {
-      doDetailProject({ projectId });
-      const reloadDetailProject = () => {
-        doDetailProject({ projectId });
-      };
-      CustomEventListener(DELETE_TASK, reloadDetailProject);
-      return () => {
-        CustomEventDispose(DELETE_TASK, reloadDetailProject);
-      };
-    }
-  }, [projectId, timeRange]);
+  // React.useEffect(() => {
+  //   if (projectId !== null) {
+  //     doDetailProject({ projectId });
+  //     const reloadDetailProject = () => {
+  //       doDetailProject({ projectId });
+  //     };
+  //     CustomEventListener(DELETE_TASK, reloadDetailProject);
+  //     return () => {
+  //       CustomEventDispose(DELETE_TASK, reloadDetailProject);
+  //     };
+  //   }
+  // }, [projectId, timeRange]);
 
   const {
     openMemberSetting,

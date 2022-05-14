@@ -68,8 +68,9 @@ const CellRender = ({
   ...props
 }) => {
   const taskId = row?.original?.id;
-  const data = row?.original?.data[props.column.id] || {};
+  const data = row?.original?.data?.[props.column.id] || {};
 
+  if (!data) return null;
   if (row.depth === 0) return null;
 
   // eslint-disable-next-line default-case

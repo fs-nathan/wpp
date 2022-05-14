@@ -4,6 +4,7 @@ import {
   LIST_TASK_SUCCESS,
   LIST_TASK_RESET,
   ADD_GROUP_TASK,
+  ADD_NEW_TASK_TEMP,
 } from "../../constants/actions/task/listTask";
 
 export const listTask = ({ projectId, timeStart, timeEnd }, quite = false) => ({
@@ -37,5 +38,10 @@ export const listTaskReset = () => ({
 
 export const addNewGroupTask = (payload) => ({
   type: ADD_GROUP_TASK,
+  payload,
+});
+
+export const addNewTaskTemp = (payload) => ({
+  type: ADD_NEW_TASK_TEMP,
   payload,
 });

@@ -1665,8 +1665,6 @@ class DragSortingTable extends React.Component {
       "drag-width-gantt-container"
     );
 
-    console.log(sizeTable);
-
     const widthExtra = boundRectTimeLineContainer
       ? boundRectTimeLineContainer.getBoundingClientRect().x
       : 800;

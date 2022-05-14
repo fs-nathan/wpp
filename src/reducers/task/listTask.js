@@ -12,6 +12,7 @@ import { DELETE_TASK_SUCCESS } from "../../constants/actions/task/deleteTask";
 import {
   ADD_GROUP_TASK,
   ADD_GROUP_TASK_SUCCESS,
+  ADD_NEW_TASK_TEMP,
   LIST_TASK,
   LIST_TASK_FAIL,
   LIST_TASK_RESET,
@@ -161,10 +162,30 @@ function reducer(state = initialState, action) {
           }),
         },
       };
+    case ADD_NEW_TASK_TEMP:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          tasks: _handleAddTemp(cloneDeep(state.data.tasks), action.payload),
+        },
+      };
 
     default:
       return state;
   }
 }
+
+const _handleAddTemp = (tasks, dataTemp) => {
+  const result = [...tasks];
+  const oldDataGroup = result[dataTemp.indexGroup];
+
+  result[dataTemp.indexGroup] = {
+    ...oldDataGroup,
+    tasks: [...(oldDataGroup.tasks || []), dataTemp],
+  };
+
+  return result;
+};
 
 export default reducer;

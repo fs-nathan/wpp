@@ -10,6 +10,7 @@ const Row = ({
   provided,
   rowProps,
   snapshot,
+  projectId,
   isVisible = true,
 }) => {
   const refAddRow = useRef(null);
@@ -57,7 +58,6 @@ const Row = ({
       >
         {ListCells()}
       </div>
-
       {isVisible && row.isExpanded && (
         <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
       )}
@@ -65,9 +65,13 @@ const Row = ({
       {isVisible && (
         <RowAddTask
           ref={refAddRow}
-          id={row.id}
+          id={`row_add_task_id_${row.id}`}
           cells={row.cells}
           {...rowProps}
+          indexGroup={row.index}
+          groupId={row.original.id}
+          projectId={projectId}
+          key={`row_add_task_key_${rowProps.key}`}
           style={style}
         />
       )}

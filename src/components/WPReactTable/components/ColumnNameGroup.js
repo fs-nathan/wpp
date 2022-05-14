@@ -17,6 +17,7 @@ const ColumnNameGroup = ({
   onMouseDown = () => {},
 }) => {
   const group = row.original;
+  const style = { fontSize: 28, fill: "#6d6e6f" };
   return (
     <WrapperMainGroup>
       <WrapperLeft>
@@ -29,9 +30,9 @@ const ColumnNameGroup = ({
         </WrapperIconDrag>
         <WrapperButton {...row.getToggleRowExpandedProps()}>
           {!row.isExpanded ? (
-            <ArrowRightRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
+            <ArrowRightRoundedIcon sx={style} />
           ) : (
-            <ArrowDropDownRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
+            <ArrowDropDownRoundedIcon sx={style} />
           )}
         </WrapperButton>
         {/* Name group */}
