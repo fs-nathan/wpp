@@ -93,7 +93,7 @@ const NameGroup = ({ id = "", name = "" }) => {
 
   if (isEditing)
     return (
-      <div ref={refWrapper} style={{ width: "calc(100% - 105px)" }}>
+      <div ref={refWrapper} style={{ maxWidth: "calc(100% - 105px)" }}>
         <NameInput
           isGroup
           ref={refInput}
