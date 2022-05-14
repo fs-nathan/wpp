@@ -33,6 +33,7 @@ function* updateColumnsSaga(action) {
     SnackbarEmitter(SNACKBAR_VARIANT.SUCCESS, DEFAULT_MESSAGE.MUTATE.SUCCESS);
   } catch (error) {
     yield put(updateValueColumnsFail(error, action.options));
+    action.callbackFailed();
     SnackbarEmitter(
       SNACKBAR_VARIANT.ERROR,
       get(error, "message", DEFAULT_MESSAGE.MUTATE.ERROR)

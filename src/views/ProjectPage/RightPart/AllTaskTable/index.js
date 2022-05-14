@@ -4,7 +4,6 @@ import { setProject } from "actions/localStorage";
 import { detailProject } from "actions/project/detailProject";
 import { hideProject } from "actions/project/hideProject";
 import { showProject } from "actions/project/showProject";
-import { useTemplateReset } from "actions/project/useTemplate";
 import { createTask } from "actions/task/createTask";
 import { deleteTask } from "actions/task/deleteTask";
 import { listTask } from "actions/task/listTask";
@@ -38,7 +37,7 @@ import moment from "moment";
 import React, { useContext } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, useDispatch } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import CreateJobModal from "views/JobDetailPage/ListPart/ListHeader/CreateJobModal";
 import MenuCreateNew from "views/JobDetailPage/ListPart/ListHeader/MenuCreateNew";
 import CreateGroupTask from "views/ProjectPage/Modals/CreateGroupTask";
@@ -105,7 +104,6 @@ function AllTaskTable({
         : undefined,
     });
   };
-  const dispatch = useDispatch();
 
   const reloadListTaskAndGroupTask = () => {
     reloadListTask();
