@@ -128,7 +128,7 @@ const WPTableGroup = ({
               {...headerProps}
               style={{
                 ...headerProps.style,
-                width: totalColumnsWidth + scrollBarSize + 50,
+                width: totalColumnsWidth + scrollBarSize / 2 - 1,
               }}
               key={`header_group_${index}`}
               className="tr header"

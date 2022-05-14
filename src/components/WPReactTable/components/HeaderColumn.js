@@ -3,7 +3,7 @@ import {
   ListItemIcon,
   Menu,
   MenuItem,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
 import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
@@ -16,9 +16,9 @@ import { apiService } from "constants/axiosInstance";
 import {
   DEFAULT_MESSAGE,
   SnackbarEmitter,
-  SNACKBAR_VARIANT,
+  SNACKBAR_VARIANT
 } from "constants/snackbarController";
-import React, { useReducer, useRef } from "react";
+import React, { useReducer } from "react";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import { default as NestedMenuItem } from "./NestedMenu";

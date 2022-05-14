@@ -358,6 +358,7 @@ const LeftBar = ({
         setOpenContinueCreateAccount={setOpenContinueCreateAccount}
       />
       <div
+        id="left-bar-menu"
         className={`left-bar-container`}
         style={{
           background: bgColor.color,

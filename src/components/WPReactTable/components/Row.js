@@ -2,6 +2,7 @@ import classNames from "classnames";
 import React from "react";
 import { getCellStyle, getRowStyle } from "../utils";
 import ItemRow from "./ItemRow";
+import RowAddTask from "./RowAddTask";
 
 const Row = ({
   row,
@@ -54,6 +55,8 @@ const Row = ({
       {isVisible && row.isExpanded && (
         <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
       )}
+
+      {/* <RowAddTask width={width} /> */}
     </>
   );
 };
