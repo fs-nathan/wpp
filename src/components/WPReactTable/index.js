@@ -89,12 +89,15 @@ const Styles = styled.div`
       &.row-add {
         .td {
           border-right: 0 !important;
+          border-left: 0 !important;
           border-top: 1px solid #edeae9 !important;
           border-bottom: 0;
           z-index: 201;
+          cursor: pointer;
           &:hover {
             border-bottom: 0;
           }
+
           &:last-child {
             border-right: 0 !important;
           }

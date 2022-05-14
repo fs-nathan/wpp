@@ -128,7 +128,7 @@ const WPTableGroup = ({
               {...headerProps}
               style={{
                 ...headerProps.style,
-                width: totalColumnsWidth + scrollBarSize / 2 - 1,
+                width: totalColumnsWidth + scrollBarSize + 50,
               }}
               key={`header_group_${index}`}
               className="tr header"
@@ -162,7 +162,7 @@ const WPTableGroup = ({
 
       <TableBody
         rows={rows}
-        width={width}
+        width={totalColumnsWidth + scrollBarSize}
         prepareRow={prepareRow}
         getTableBodyProps={getTableBodyProps}
         isColumnResizing={isColumnResizing}

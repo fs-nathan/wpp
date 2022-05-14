@@ -19,6 +19,8 @@ const Row = ({
     width
   );
 
+  const style = { display: "flex", ...finalStyle };
+
   const ListCells = () => {
     return row.cells.map((cell) => {
       const idCell = cell?.column?.id;
@@ -44,10 +46,7 @@ const Row = ({
         className="tr"
         {...rowProps}
         {...provided.draggableProps}
-        style={{
-          display: "flex",
-          ...finalStyle,
-        }}
+        style={style}
       >
         {ListCells()}
       </div>
@@ -56,7 +55,7 @@ const Row = ({
         <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
       )}
 
-      {/* <RowAddTask width={width} /> */}
+      <RowAddTask id={row.id} cells={row.cells} {...rowProps} style={style} />
     </>
   );
 };

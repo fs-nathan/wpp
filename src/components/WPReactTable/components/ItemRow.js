@@ -3,6 +3,7 @@ import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { getCellStyle, getRowStyle } from "../utils";
 import { getClassName } from "./Row";
+import RowAddTask from "./RowAddTask";
 
 const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
   const ListCells = (row, provided) => {
@@ -28,49 +29,51 @@ const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
   };
 
   return (
-    <Droppable droppableId={id} type="sub-row">
-      {(provided, snapshot) => {
-        return (
-          <div
-            ref={provided.innerRef}
-            className="wrapper-sub-rows"
-            {...provided.droppableProps}
-            style={{ ...getStyleWrapper(snapshot.isDraggingOver), width }}
-          >
-            {subRows.map((row) => {
-              return (
-                <Draggable
-                  draggableId={row.original.id}
-                  key={row.original.id}
-                  index={row.index}
-                >
-                  {(provided, snapshot) => {
-                    if (typeof row?.getRowProps !== "function") return null;
-                    const rowProps = row.getRowProps();
-                    const finalStyle = getRowStyle(
-                      rowProps,
-                      provided.draggableProps,
-                      snapshot.isDragging
-                    );
-                    return (
-                      <div
-                        ref={provided.innerRef}
-                        className="tr"
-                        {...rowProps}
-                        {...provided.draggableProps}
-                        style={{ ...finalStyle, width }}
-                      >
-                        {ListCells(row, provided)}
-                      </div>
-                    );
-                  }}
-                </Draggable>
-              );
-            })}
-          </div>
-        );
-      }}
-    </Droppable>
+    <>
+      <Droppable droppableId={id} type="sub-row">
+        {(provided, snapshot) => {
+          return (
+            <div
+              ref={provided.innerRef}
+              className="wrapper-sub-rows"
+              {...provided.droppableProps}
+              style={{ ...getStyleWrapper(snapshot.isDraggingOver), width }}
+            >
+              {subRows.map((row) => {
+                return (
+                  <Draggable
+                    draggableId={row.original.id}
+                    key={row.original.id}
+                    index={row.index}
+                  >
+                    {(provided, snapshot) => {
+                      if (typeof row?.getRowProps !== "function") return null;
+                      const rowProps = row.getRowProps();
+                      const finalStyle = getRowStyle(
+                        rowProps,
+                        provided.draggableProps,
+                        snapshot.isDragging
+                      );
+                      return (
+                        <div
+                          ref={provided.innerRef}
+                          className="tr"
+                          {...rowProps}
+                          {...provided.draggableProps}
+                          style={{ ...finalStyle, width }}
+                        >
+                          {ListCells(row, provided)}
+                        </div>
+                      );
+                    }}
+                  </Draggable>
+                );
+              })}
+            </div>
+          );
+        }}
+      </Droppable>
+    </>
   );
 };
 
