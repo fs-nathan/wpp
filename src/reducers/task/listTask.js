@@ -1,12 +1,4 @@
-import {
-  cloneDeep,
-  find,
-  findIndex,
-  get,
-  remove,
-  slice,
-  uniqueId,
-} from "lodash";
+import { cloneDeep, find, findIndex, get, remove, slice } from "lodash";
 import { CREATE_TASK_SUCCESS } from "../../constants/actions/task/createTask";
 import { DELETE_TASK_SUCCESS } from "../../constants/actions/task/deleteTask";
 import {
@@ -27,6 +19,7 @@ import {
   LIST_TASK_MEMBER_FAIL,
   LIST_TASK_MEMBER,
 } from "../../constants/actions/task/listTaskMember";
+
 export const initialState = {
   data: {
     tasks: [],

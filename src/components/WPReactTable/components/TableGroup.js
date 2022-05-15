@@ -24,6 +24,7 @@ export function reorderList(list, startIndex, endIndex) {
 const WPTableGroup = ({
   columns,
   data,
+  isShowTotal = false,
   displayAddColumn = false,
   onHideColumn = () => {},
   onSortColumn = () => {},
@@ -34,7 +35,6 @@ const WPTableGroup = ({
   onReorderData = () => {},
   ...props
 }) => {
-  const isTotal = true;
   const { projectId } = useParams();
 
   const refMousePosition = useRef({ x: 0, y: 0 });
@@ -101,14 +101,28 @@ const WPTableGroup = ({
   React.useLayoutEffect(() => {
     const tbody = document.querySelectorAll(".tbody")[0];
     const header = document.getElementById("header-row");
-    if (tbody) {
-      tbody.addEventListener("scroll", (e) => _handleSyncScroll(e, header));
-    }
-  }, []);
+    const rowTotal = document.getElementById("row-total-group");
 
-  const _handleSyncScroll = (e, scrollSync) => {
+    if (tbody) {
+      tbody.addEventListener("scroll", (e) =>
+        _handleSyncScroll(e, header, rowTotal)
+      );
+    }
+
+    console.log("@Pham_Tinh_Console:", data);
+
+    return () => {
+      tbody.removeEventListener("scroll", (e) =>
+        _handleSyncScroll(e, header, rowTotal)
+      );
+    };
+  }, [data]);
+
+  const _handleSyncScroll = (e, scrollSync, totalRow) => {
     const scrollLeft = e.currentTarget.scrollLeft;
     scrollSync.scrollLeft = scrollLeft;
+
+    if (isShowTotal && totalRow) totalRow.scrollLeft = scrollLeft;
   };
 
   const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
@@ -116,7 +130,7 @@ const WPTableGroup = ({
   return (
     <div
       {...getTableProps()}
-      className={classNames("table", { "has-total": isTotal })}
+      className={classNames("table", { "has-total": isShowTotal })}
     >
       {/* Header table */}
       <div
@@ -166,7 +180,7 @@ const WPTableGroup = ({
       {/*End header table */}
 
       <TableBody
-        isTotal={isTotal}
+        isTotal={isShowTotal}
         rows={rows}
         width={totalColumnsWidth + scrollBarSize}
         prepareRow={prepareRow}
@@ -178,7 +192,7 @@ const WPTableGroup = ({
         onAddNewGroup={onAddNewGroup}
       />
 
-      {isTotal && <RowTotal row={rows[0]} scrollBarSize={scrollBarSize} />}
+      {isShowTotal && <RowTotal row={rows[0]} scrollBarSize={scrollBarSize} />}
     </div>
   );
 };

@@ -259,6 +259,7 @@ function AllTaskTable({
     <>
       <AllTaskTablePresenter
         expand={expand}
+        isShowTotal={tasks?.summary_row?.is_show || false}
         handleExpand={handleExpand}
         handleSubSlide={handleSubSlide}
         canUpdateProject={get(

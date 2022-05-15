@@ -39,6 +39,7 @@ const initialState = {
 function AllTaskTable({
   expand,
   tasks,
+  isShowTotal = false,
   project,
   handleOpenModal,
   handleReload,
@@ -382,6 +383,7 @@ function AllTaskTable({
         <>
           <WPReactTable
             isGroup
+            isShowTotal={isShowTotal}
             isCollapsed={expand}
             columns={columns}
             data={state.tasksData}
