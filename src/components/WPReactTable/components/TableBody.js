@@ -11,6 +11,7 @@ const TableBody = ({
   prepareRow,
   projectId,
   onReorderData = () => {},
+  onAddNewGroup = () => {},
 }) => {
   const [isVisible, setIsVisible] = React.useState(true);
 
@@ -134,7 +135,12 @@ const TableBody = ({
               );
             })}
 
-            <RowAddGroup row={rows[0]} width={width} />
+            <RowAddGroup
+              row={rows[0]}
+              width={width}
+              projectId={projectId}
+              onAddNewGroup={onAddNewGroup}
+            />
 
             {provided.placeholder}
           </div>

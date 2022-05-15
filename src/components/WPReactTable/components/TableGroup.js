@@ -168,6 +168,7 @@ const WPTableGroup = ({
         isColumnResizing={isColumnResizing}
         scrollTableHeight={scrollTableHeight}
         onReorderData={onReorderData}
+        onAddNewGroup={onAddNewGroup}
       />
     </div>
   );

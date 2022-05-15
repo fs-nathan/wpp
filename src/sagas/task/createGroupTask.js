@@ -1,3 +1,9 @@
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
+import get from "lodash/get";
 import { call, put } from "redux-saga/effects";
 import {
   createGroupTaskFail,
@@ -36,6 +42,10 @@ function* createGroupTaskList(action) {
     );
   } catch (error) {
     yield put(createGroupTaskFail(error, action.options));
+    SnackbarEmitter(
+      SNACKBAR_VARIANT.ERROR,
+      get(error, "message", DEFAULT_MESSAGE.MUTATE.ERROR)
+    );
   }
 }
 

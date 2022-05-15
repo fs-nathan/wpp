@@ -1,15 +1,14 @@
-import React from "react";
 import AddIcon from "@mui/icons-material/Add";
-import styled from "styled-components";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import styled from "styled-components";
 
-const RowAddGroup = ({ row, width, onAddNewGroup = () => {} }) => {
+const RowAddGroup = ({ row, width, projectId, onAddNewGroup = () => {} }) => {
   const { t } = useTranslation();
-  if (!row) return null;
 
-  const rowProps = row.getRowProps();
+  if (!row) return null;
   return (
-    <div className="tr row-add row-add-group" {...rowProps}>
+    <div className="tr row-add row-add-group" {...row.getRowProps()}>
       {row.cells.map((item, index) => {
         const cellProps = item.getCellProps();
         return (
@@ -63,4 +62,4 @@ const CellAddGroup = styled.div`
   }
 `;
 
-export default RowAddGroup;
+export default React.memo(RowAddGroup);

@@ -73,7 +73,6 @@ function reducer(state = initialState, action) {
     case LIST_TASK_RESET:
       return initialState;
     case CREATE_TASK_SUCCESS: {
-      console.log('@Pham_Tinh_Console:','are you enter here?');
       const newTasks = state.data.tasks.map((groupTask) =>
         get(groupTask, "id") === get(action.data, "task.group_task")
           ? {
@@ -155,12 +154,11 @@ function reducer(state = initialState, action) {
         ...state,
         data: {
           ...state.data,
-          tasks: cloneDeep(state.data.tasks).map((item) => {
-            if (action.data.oldId === item.id) {
-              return { ...item, ...action.data.groupTask };
-            }
-            return item;
-          }),
+          tasks: _handleAddGroupSuccess(
+            state.data.tasks,
+            action.data.groupTask,
+            action.data.oldId
+          ),
         },
       };
     case ADD_NEW_TASK_TEMP:
@@ -185,6 +183,15 @@ const _handleAddTemp = (tasks, dataTemp) => {
     ...oldDataGroup,
     tasks: [...(oldDataGroup.tasks || []), dataTemp],
   };
+
+  return result;
+};
+
+const _handleAddGroupSuccess = (tasks, newData, oldId) => {
+  const result = [...tasks].map((item) => {
+    if (item.id === oldId) return { ...item, ...newData };
+    return item;
+  });
 
   return result;
 };
