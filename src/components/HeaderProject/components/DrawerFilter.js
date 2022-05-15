@@ -217,11 +217,19 @@ const DrawerFilter = forwardRef(
             />
           </div>
 
-          <List>
-            {DRAWER_MENU_ITEMS.map((item, index) => (
-              <GroupFilter key={index} {...item} />
-            ))}
-          </List>
+          {view !== "chat" ? (
+            <List>
+              {DRAWER_MENU_ITEMS.map((item, index) => (
+                <GroupFilter key={index} {...item} />
+              ))}
+            </List>
+          ) : (
+            <List>
+              {DRAWER_MENU_ITEMS.slice(1, 2).map((item, index) => (
+                <GroupFilter key={index} {...item} />
+              ))}
+            </List>
+          )}
         </Box>
 
         <DeleteProjectModal
