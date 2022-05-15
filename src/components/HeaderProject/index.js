@@ -9,7 +9,10 @@ import {
 } from "@mdi/js";
 import Icon from "@mdi/react";
 import { detailProject } from "actions/project/detailProject";
-import { detailStatus } from "actions/project/setting/detailStatus";
+import {
+  detailStatus,
+  getProjectSetting,
+} from "actions/project/setting/detailStatus";
 import { updatePinBoardSetting } from "actions/project/setting/updatePinBoardSetting";
 import Avatar from "components/CustomAvatar";
 import { get, isNil } from "lodash";
@@ -43,6 +46,7 @@ const HeaderProject = ({
   const refID = useRef();
 
   const [isPinned, setIsPinned] = useState(false);
+  const [defaultView, setDefaultView] = useState(null);
   const refIsFirstTime = useRef(true);
   const { pathname } = useLocation();
   const projectId = pathname.split("/")[3];
@@ -57,33 +61,32 @@ const HeaderProject = ({
 
   const NAV_BARS_LIST = [
     {
-      id: 1,
+      id: 0,
       title: "Todo list",
       to: `/projects/task-table/${projectId}`,
     },
     {
-      id: 2,
+      id: 1,
       title: "Kanban",
       to: `/projects/task-kanban/${projectId}`,
     },
     {
-      id: 3,
+      id: 2,
       title: "Gantt",
       to: `/projects/task-gantt/${projectId}`,
     },
     {
-      id: 4,
+      id: 3,
       title: "Chat",
       to: `/projects/task-chat/${projectId}`,
-      icon: mdiStarOutline,
     },
     {
-      id: 5,
+      id: 4,
       title: "Tổng quan",
       to: `/projects/dashboard/${projectId}`,
     },
     {
-      id: 6,
+      id: 5,
       title: "Báo cáo",
       to: `/projects/report/${projectId}`,
     },
@@ -93,8 +96,15 @@ const HeaderProject = ({
     if (projectId && projectId !== refID.current) {
       dispatch(detailProject({ projectId }, true));
       refID.current = projectId;
+
+      const fetchSetting = async (projectId) => {
+        const { data } = await getProjectSetting(projectId);
+        setDefaultView(data.task_view);
+      };
+
+      fetchSetting(projectId);
     }
-  }, [projectId]);
+  }, [dispatch, projectId]);
 
   useEffect(() => {
     if (project && !isNil(get(project, "id"))) {
@@ -175,14 +185,17 @@ const HeaderProject = ({
                 <span style={{ marginLeft: 5 }}>Tạo mới</span>
               </div>
             </div>
-
           </div>
           <div className={classes.navMenuRow}>
             <div className={classes.navBar}>
               <nav className={classes.tabNavBar}>
                 <ul>
                   {NAV_BARS_LIST.map((item) => (
-                    <ItemNav key={item.id} {...item} />
+                    <ItemNav
+                      key={item.id}
+                      defaultView={defaultView}
+                      {...item}
+                    />
                   ))}
                 </ul>
               </nav>
@@ -209,12 +222,14 @@ const HeaderProject = ({
   );
 };
 
-const ItemNav = ({ to, id, title, icon }) => {
+const ItemNav = ({ to, id, title, defaultView }) => {
   const classes = useStyles();
   return (
-    <li style={{ marginLeft: id === 1 ? 0 : 24 }}>
+    <li style={{ marginLeft: id === 0 ? 0 : 24 }}>
       <NavLink to={to} className={classes.link}>
-        {icon && <Icon path={icon} size={1} style={{ marginRight: 5 }} />}
+        {defaultView === id && (
+          <Icon path={mdiStarOutline} size={1} style={{ marginRight: 5 }} />
+        )}
         {title}
       </NavLink>
     </li>

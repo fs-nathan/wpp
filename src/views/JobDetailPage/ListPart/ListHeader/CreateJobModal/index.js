@@ -136,7 +136,7 @@ function CreateJobModal(props) {
       updateData.start_time = undefined;
       updateData.end_time = undefined;
     }
-    
+
     switch (props.editMode) {
       case EDIT_MODE.NAME_DES:
         dispatch(updateNameDescription(taskId, data.name, updateData.description, props.fromView));
