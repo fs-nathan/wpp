@@ -98,6 +98,9 @@ const Styles = styled.div`
             border-bottom: 0;
           }
 
+          &:first-child {
+            border-right: 1px solid #edeae9 !important;
+          }
           &:last-child {
             border-right: 0 !important;
           }
@@ -163,6 +166,9 @@ const Styles = styled.div`
           &.focus {
             z-index: 999 !important;
             border: 1px solid #4573d2 !important;
+          }
+          &:first-child {
+            border-right: 1px solid #edeae9!important;
           }
         }
         &.focus {
