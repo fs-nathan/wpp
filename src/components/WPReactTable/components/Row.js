@@ -62,7 +62,7 @@ const Row = ({
         <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
       )}
 
-      {isVisible && (
+      {isVisible && row.isExpanded && (
         <RowAddTask
           ref={refAddRow}
           id={`row_add_task_id_${row.id}`}
@@ -84,4 +84,4 @@ export const getClassName = (id) => ({
   "column-align-center": id === "start_date" || id === "end_date",
 });
 
-export default Row;
+export default React.memo(Row);

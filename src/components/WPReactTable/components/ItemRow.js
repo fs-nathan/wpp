@@ -3,7 +3,6 @@ import React from "react";
 import { Draggable, Droppable } from "react-beautiful-dnd";
 import { getCellStyle, getRowStyle } from "../utils";
 import { getClassName } from "./Row";
-import RowAddTask from "./RowAddTask";
 
 const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
   const ListCells = (row, provided) => {
@@ -77,4 +76,4 @@ const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
   );
 };
 
-export default ItemRow;
+export default React.memo(ItemRow);

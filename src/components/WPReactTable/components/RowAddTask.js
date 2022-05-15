@@ -1,9 +1,9 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import React, {
-    forwardRef,
-    useImperativeHandle,
-    useRef,
-    useState
+  forwardRef,
+  useImperativeHandle,
+  useRef,
+  useState,
 } from "react";
 import styled from "styled-components";
 import { getCellStyle } from "../utils";
@@ -87,4 +87,4 @@ const StyledIconAdd = styled(AddOutlinedIcon)`
   margin-right: 5px;
 `;
 
-export default forwardRef(RowAddTask);
+export default React.memo(forwardRef(RowAddTask));
