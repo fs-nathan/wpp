@@ -118,7 +118,7 @@ function ListHeader(props) {
   return (
     <div>
       <div className="list-header">
-        <ListHeaderSelect {...props} projectDetail={projectThis} />
+        {/* <ListHeaderSelect {...props} projectDetail={projectThis} /> */}
         <div className="header-bottom-box">
           <SearchInput
             placeholder={t('LABEL_CHAT_TASK_TIM_CONG_VIEC_TRONG_DU_AN')}
