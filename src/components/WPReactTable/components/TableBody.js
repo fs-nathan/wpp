@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Row from "./Row";
+import RowAddGroup from "./RowAddGroup";
 
 const TableBody = ({
   rows,
@@ -133,10 +134,7 @@ const TableBody = ({
               );
             })}
 
-            {/* <RowAddGroup
-                row={rows[0]}
-                width={totalColumnsWidth + scrollBarSize + 50}
-              /> */}
+            <RowAddGroup row={rows[0]} width={width} />
 
             {provided.placeholder}
           </div>

@@ -11,7 +11,6 @@ const RowAddGroup = ({ row, width, onAddNewGroup = () => {} }) => {
   return (
     <div className="tr row-add row-add-group" {...rowProps}>
       {row.cells.map((item, index) => {
-        if (index !== 0) return null;
         const cellProps = item.getCellProps();
         return (
           <div
@@ -22,10 +21,12 @@ const RowAddGroup = ({ row, width, onAddNewGroup = () => {} }) => {
             }}
             className="td add-cell"
           >
-            <CellAddGroup onClick={onAddNewGroup}>
-              <AddIcon sx={{ fontSize: 18, marginRight: "5px" }} />
-              <div>{t("add_group")}</div>
-            </CellAddGroup>
+            {index === 0 ? (
+              <CellAddGroup onClick={onAddNewGroup}>
+                <AddIcon sx={{ fontSize: 18, marginRight: "5px" }} />
+                <div>{t("add_group")}</div>
+              </CellAddGroup>
+            ) : null}
           </div>
         );
       })}
