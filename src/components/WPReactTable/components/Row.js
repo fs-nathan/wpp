@@ -59,7 +59,12 @@ const Row = ({
         {ListCells()}
       </div>
       {isVisible && row.isExpanded && (
-        <ItemRow id={row.original.id} width={width} subRows={row.subRows} />
+        <ItemRow
+          id={row.original.id}
+          width={width}
+          subRows={row.subRows}
+          projectId={projectId}
+        />
       )}
 
       {isVisible && row.isExpanded && (

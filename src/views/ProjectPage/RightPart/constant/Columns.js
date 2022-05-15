@@ -11,6 +11,7 @@ import {
 } from "constants/snackbarController";
 import { get } from "lodash";
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const IconDrag = () => (
@@ -32,6 +33,7 @@ export const IconDrag = () => (
 const CellItemGroup = ({
   value,
   row,
+  projectId,
   isNewRow = false,
   dragHandle = {},
   onSubmitAdd = () => {},
@@ -124,9 +126,13 @@ const CellItemGroup = ({
           <MoreVertIcon sx={{ fontSize: 16 }} />
         </div>
 
-        <div className="detail">
+        <Link
+          to={`/projects/task-chat/${projectId}?task_id=${row?.original?.id}`}
+          className="detail"
+          style={{ color: "#000" }}
+        >
           <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
-        </div>
+        </Link>
       </WrapperDetailInfo>
     </WrapperItemName>
   );

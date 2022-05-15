@@ -4,7 +4,7 @@ import { Draggable, Droppable } from "react-beautiful-dnd";
 import { getCellStyle, getRowStyle } from "../utils";
 import { getClassName } from "./Row";
 
-const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
+const ItemRow = ({ id, width, projectId, isVisible = true, subRows = [] }) => {
   const ListCells = (row, provided) => {
     return row.cells.map((cell) => {
       const idCell = cell?.column?.id;
@@ -16,6 +16,7 @@ const ItemRow = ({ id, width, isVisible = true, subRows = [] }) => {
         >
           {cell.render("Cell", {
             dragHandle: idCell === "name" ? provided.dragHandleProps : {},
+            projectId,
           })}
         </div>
       );
