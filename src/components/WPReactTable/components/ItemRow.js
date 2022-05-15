@@ -37,7 +37,10 @@ const ItemRow = ({ id, width, projectId, isVisible = true, subRows = [] }) => {
               ref={provided.innerRef}
               className="wrapper-sub-rows"
               {...provided.droppableProps}
-              style={{ ...getStyleWrapper(snapshot.isDraggingOver), width }}
+              style={{
+                ...getStyleWrapper(snapshot.isDraggingOver),
+                width: width - 100,
+              }}
             >
               {subRows.map((row) => {
                 return (

@@ -1,3 +1,4 @@
+import classNames from "classnames";
 import React, { useCallback, useMemo, useRef } from "react";
 import { useParams } from "react-router-dom";
 import {
@@ -8,6 +9,7 @@ import {
 } from "react-table";
 import { useSticky } from "react-table-sticky";
 import HeaderColumn from "./HeaderColumn";
+import RowTotal from "./RowTotal";
 import { scrollbarWidth } from "./Table";
 import TableBody, { getTableHeight } from "./TableBody";
 
@@ -32,6 +34,7 @@ const WPTableGroup = ({
   onReorderData = () => {},
   ...props
 }) => {
+  const isTotal = true;
   const { projectId } = useParams();
 
   const refMousePosition = useRef({ x: 0, y: 0 });
@@ -111,7 +114,10 @@ const WPTableGroup = ({
   const scrollTableHeight = React.useMemo(() => getTableHeight(), []);
 
   return (
-    <div {...getTableProps()} className="table">
+    <div
+      {...getTableProps()}
+      className={classNames("table", { "has-total": isTotal })}
+    >
       {/* Header table */}
       <div
         id="header-row"
@@ -160,6 +166,7 @@ const WPTableGroup = ({
       {/*End header table */}
 
       <TableBody
+        isTotal={isTotal}
         rows={rows}
         width={totalColumnsWidth + scrollBarSize}
         prepareRow={prepareRow}
@@ -170,6 +177,8 @@ const WPTableGroup = ({
         onReorderData={onReorderData}
         onAddNewGroup={onAddNewGroup}
       />
+
+      {isTotal && <RowTotal row={rows[0]} scrollBarSize={scrollBarSize} />}
     </div>
   );
 };

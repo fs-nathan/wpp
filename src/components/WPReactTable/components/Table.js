@@ -247,4 +247,17 @@ export const scrollbarWidth = () => {
   return scrollbarWidth;
 };
 
+export const scrollbarHeight = () => {
+  // thanks too https://davidwalsh.name/detect-scrollbar-width
+  const scrollDiv = document.createElement("div");
+  scrollDiv.setAttribute(
+    "style",
+    "width: 100px; height: 100px; overflow: scroll; position:absolute; top:-9999px;"
+  );
+  document.body.appendChild(scrollDiv);
+  const scrollbarWidth = scrollDiv.offsetHeight - scrollDiv.clientHeight;
+  document.body.removeChild(scrollDiv);
+  return scrollbarWidth;
+};
+
 export default WPTable;

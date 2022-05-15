@@ -151,6 +151,7 @@ const CellNameTask = ({ row, value, ...props }) => {
       />
     );
   }
+
   return (
     <CellItemGroup
       row={row}

@@ -4,6 +4,7 @@ import Row from "./Row";
 import RowAddGroup from "./RowAddGroup";
 
 const TableBody = ({
+  isTotal = false,
   rows,
   width,
   getTableBodyProps,
@@ -100,9 +101,10 @@ const TableBody = ({
             {...getTableBodyProps()}
             {...provided.droppableProps}
             style={{
-              maxHeight: scrollTableHeight,
-              height: scrollTableHeight,
+              maxHeight: isTotal ? scrollTableHeight - 48 : scrollTableHeight,
+              height: isTotal ? scrollTableHeight - 48 : scrollTableHeight,
               overflow: "auto",
+              paddingBottom: isTotal ? 48 : 0,
             }}
           >
             {rows.map((row, i) => {

@@ -62,6 +62,10 @@ const Styles = styled.div`
     max-width: ${({ isCollapsed }) =>
       !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
+    &.has-total {
+      position: relative;
+    }
+
     .thead {
       overflow-y: auto;
       overflow-x: hidden;
@@ -168,7 +172,7 @@ const Styles = styled.div`
             border: 1px solid #4573d2 !important;
           }
           &:first-child {
-            border-right: 1px solid #edeae9!important;
+            border-right: 1px solid #edeae9 !important;
           }
         }
         &.focus {
