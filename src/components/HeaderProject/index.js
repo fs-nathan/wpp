@@ -8,13 +8,17 @@ import {
   mdiStarOutline,
 } from "@mdi/js";
 import Icon from "@mdi/react";
-import { detailStatus } from "actions/project/setting/detailStatus";
+import { detailProject } from "actions/project/detailProject";
+import {
+  detailStatus,
+  getProjectSetting,
+} from "actions/project/setting/detailStatus";
 import { updatePinBoardSetting } from "actions/project/setting/updatePinBoardSetting";
 import Avatar from "components/CustomAvatar";
 import { get, isNil } from "lodash";
 import React, { useEffect, useRef, useState } from "react";
-import { connect } from "react-redux";
-import { Link, NavLink } from "react-router-dom";
+import { connect, useDispatch } from "react-redux";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { statusSelector } from "views/ProjectGroupPage/Modals/ProjectSetting/selectors";
 import SearchButton from "views/ProjectGroupPage/RightPart/AllProjectTable/components/SearchButton";
 import DrawerFilter from "./components/DrawerFilter";
@@ -36,11 +40,16 @@ const HeaderProject = ({
   doDetailStatus,
   ...props
 }) => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const refFilter = useRef(null);
+  const refID = useRef();
+
   const [isPinned, setIsPinned] = useState(false);
+  const [defaultView, setDefaultView] = useState(null);
   const refIsFirstTime = useRef(true);
-  const projectId = get(project, "id", "");
+  const { pathname } = useLocation();
+  const projectId = pathname.split("/")[3];
   const total =
     get(project, "task_doing", 0) +
     get(project, "task_complete", 0) +
@@ -52,37 +61,50 @@ const HeaderProject = ({
 
   const NAV_BARS_LIST = [
     {
-      id: 1,
+      id: 0,
       title: "Todo list",
       to: `/projects/task-table/${projectId}`,
     },
     {
-      id: 2,
+      id: 1,
       title: "Kanban",
       to: `/projects/task-kanban/${projectId}`,
     },
     {
-      id: 3,
+      id: 2,
       title: "Gantt",
       to: `/projects/task-gantt/${projectId}`,
     },
     {
-      id: 4,
+      id: 3,
       title: "Chat",
       to: `/projects/task-chat/${projectId}`,
-      icon: mdiStarOutline,
     },
     {
-      id: 5,
+      id: 4,
       title: "Tổng quan",
       to: `/projects/dashboard/${projectId}`,
     },
     {
-      id: 6,
+      id: 5,
       title: "Báo cáo",
       to: `/projects/report/${projectId}`,
     },
   ];
+
+  React.useEffect(() => {
+    if (projectId && projectId !== refID.current) {
+      dispatch(detailProject({ projectId }, true));
+      refID.current = projectId;
+
+      const fetchSetting = async (projectId) => {
+        const { data } = await getProjectSetting(projectId);
+        setDefaultView(data.task_view);
+      };
+
+      fetchSetting(projectId);
+    }
+  }, [dispatch, projectId]);
 
   useEffect(() => {
     if (project && !isNil(get(project, "id"))) {
@@ -112,16 +134,18 @@ const HeaderProject = ({
   };
 
   return (
-    <div className={classes.topbar}>
+    <div id="project-topbar" className={classes.topbar}>
       <div className={classes.burger} onClick={onExpand}>
         <Icon path={mdiMenu} size={1.2} />
       </div>
       <div className={classes.header}>
-        <Avatar
-          alt="Logo"
-          src={get(project, "group_icon", "")}
-          style={{ width: 40, height: 40 }}
-        />
+        <div className={classes.logo}>
+          <Avatar
+            alt="Logo"
+            src={get(project, "group_icon", "")}
+            style={{ width: 40, height: 40 }}
+          />
+        </div>
         <div className={classes.titleAndNav}>
           <div className={classes.titleRow}>
             <div className={classes.leftWrapper}>
@@ -144,32 +168,34 @@ const HeaderProject = ({
               </div>
             </div>
 
-            {view !== "chat" && (
-              <div className={classes.rightWrapper}>
-                <SearchButton valueSearch={valueSearch} onSearch={onSearch} />
-                <div
-                  className={classes.wrapperButton}
-                  onClick={_toggleDrawerMenu}
-                >
-                  <Icon path={mdiDotsHorizontal} size={1} />
-                  <span style={{ marginLeft: 5 }}>Hiện menu</span>
-                </div>
-                <div
-                  className={classes.wrapperButton}
-                  onClick={onOpenCreateModal}
-                >
-                  <Icon path={mdiPlus} size={1} />
-                  <span style={{ marginLeft: 5 }}>Tạo mới</span>
-                </div>
+            <div className={classes.rightWrapper}>
+              <SearchButton valueSearch={valueSearch} onSearch={onSearch} />
+              <div
+                className={classes.wrapperButton}
+                onClick={_toggleDrawerMenu}
+              >
+                <Icon path={mdiDotsHorizontal} size={1} />
+                <span style={{ marginLeft: 5 }}>Hiện menu</span>
               </div>
-            )}
+              <div
+                className={classes.wrapperButton}
+                onClick={onOpenCreateModal}
+              >
+                <Icon path={mdiPlus} size={1} />
+                <span style={{ marginLeft: 5 }}>Tạo mới</span>
+              </div>
+            </div>
           </div>
           <div className={classes.navMenuRow}>
             <div className={classes.navBar}>
               <nav className={classes.tabNavBar}>
                 <ul>
                   {NAV_BARS_LIST.map((item) => (
-                    <ItemNav key={item.id} {...item} />
+                    <ItemNav
+                      key={item.id}
+                      defaultView={defaultView}
+                      {...item}
+                    />
                   ))}
                 </ul>
               </nav>
@@ -196,12 +222,14 @@ const HeaderProject = ({
   );
 };
 
-const ItemNav = ({ to, id, title, icon }) => {
+const ItemNav = ({ to, id, title, defaultView }) => {
   const classes = useStyles();
   return (
-    <li style={{ marginLeft: id === 1 ? 0 : 24 }}>
+    <li style={{ marginLeft: id === 0 ? 0 : 24 }}>
       <NavLink to={to} className={classes.link}>
-        {icon && <Icon path={icon} size={1} style={{ marginRight: 5 }} />}
+        {defaultView === id && (
+          <Icon path={mdiStarOutline} size={1} style={{ marginRight: 5 }} />
+        )}
         {title}
       </NavLink>
     </li>

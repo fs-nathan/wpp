@@ -43,12 +43,12 @@ const initialState = {
 const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
   const typingTimeoutRef = React.useRef();
   const [dataSearch, setDataSearch] = React.useState([]);
+  const [ListSources, setListSources] = React.useState([]);
   const { t } = useTranslation();
   const { projectId } = useParams();
   const [state, dispatchState] = React.useReducer(reducer, initialState);
   const refContent = React.useRef(null);
   const dispatch = useDispatch();
-
   React.useImperativeHandle(ref, () => ({
     _open: (type, data) => handleClickOpen(type, data),
   }));
@@ -58,8 +58,6 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
   };
 
   const handleClickOpen = (type, data) => {
-    console.log(type, data);
-
     dispatchState({ open: true, type, ...data });
   };
 
@@ -85,7 +83,19 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
     typingTimeoutRef.current = setTimeout(() => {
       console.log(value);
     }, 500);
-    // dispatchState({ name: e.target.value });
+
+    dispatchState({ name: e.target.value });
+  };
+
+  const _getDataType = () => {
+    switch (state.type) {
+      case "list":
+        return 3;
+      case "number":
+        return 2;
+      default:
+        return 1;
+    }
   };
 
   const _handleConfirm = async () => {
@@ -99,10 +109,16 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
 
     switch (data_type) {
       case 2:
-        data["format"] = contentValue.format;
-        data["decimal"] = contentValue.decimal;
-        data["position_format"] = contentValue.position_format;
-        data["data_type"] = data_type;
+        if (state.defaultFormat !== "hash") {
+          data["format"] = contentValue.format;
+          data["decimal"] = contentValue.decimal;
+          data["position_format"] = contentValue.position_format;
+          data["data_type"] = data_type;
+        } else {
+          data["calculate_method"] = contentValue.position_format;
+          data["calculate_from"] = ListSources;
+          data["data_type"] = 4;
+        }
         break;
       case 3:
         data["options"] = contentValue;
@@ -127,17 +143,6 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
         onAddColumns({ data, _id: new Date().getTime() });
       })
     );
-  };
-
-  const _getDataType = () => {
-    switch (state.type) {
-      case "list":
-        return 3;
-      case "number":
-        return 2;
-      default:
-        return 1;
-    }
   };
 
   return (
@@ -195,6 +200,7 @@ const AddColumnModal = React.forwardRef(({ onAddColumns = () => {} }, ref) => {
               defaultPosition={state.defaultPosition}
               defaultFormat={state.defaultFormat}
               defaultNumFix={state.defaultNumFix}
+              setListSources={setListSources}
             />
 
             <Grid item xs={12}>

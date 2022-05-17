@@ -1,24 +1,24 @@
-.menu-create-new{
-    .MuiPopover-paper{
-       top: 125px !important;
-       padding: 20px;
-       right: 15px;
-       
+.menu-create-new {
+  .MuiPopover-paper {
+    top: 125px !important;
+    padding: 20px;
+    right: 15px;
+    box-shadow: 0 0 15px 0px #e5e5e5;
+  }
+  .create-work {
+    &-item {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 10px 0px;
+      svg {
+        fill: rgba(0, 0, 0, 0.54);
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+      span {
+        padding-left: 15px;
+      }
     }
-    .create-work{
-        &-item{
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            padding: 10px 0px;
-            svg{
-                fill: rgba(0, 0, 0, 0.54);
-                width: 1.5rem;
-                height: 1.5rem;
-            }
-            span{
-                padding-left: 15px;
-            }
-        }
-    }
+  }
 }

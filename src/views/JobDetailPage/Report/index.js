@@ -1,6 +1,4 @@
 import { detailProject } from "actions/project/detailProject";
-import { CustomTableWrapper } from "components/CustomTable";
-import { get } from "lodash";
 import React from "react";
 import { connect } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -15,7 +13,6 @@ import {
   viewPermissionsSelector,
 } from "views/ProjectPage/selectors.js";
 import WrapperReport from "./components/WrapperReport";
-import ReportPresenter from "./presenters";
 
 function Report({
   expand,
@@ -31,8 +28,7 @@ function Report({
   localOption,
   memberTask,
 }) {
-  const { timeType } = localOption;
-  const { projectId, memberId } = useParams();
+  const { projectId } = useParams();
 
   React.useEffect(() => {
     if (projectId !== null) {
@@ -41,30 +37,7 @@ function Report({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
-  return (
-    <>
-      {/* <ReportPresenter
-        expand={expand}
-        handleExpand={handleExpand}
-        handleSubSlide={handleSubSlide}
-        canUpdateProject={get(
-          viewPermissions.permissions,
-          [projectId, "update_project"],
-          false
-        )}
-        canCreateTask={true}
-        isShortGroup={isShortGroup}
-        showHidePendings={showHidePendings}
-        tasks={tasks}
-        project={project}
-        memberID={memberId}
-        memberTask={memberTask}
-        bgColor={bgColor}
-        timeType={timeType}
-      /> */}
-      <WrapperReport />
-    </>
-  );
+  return <WrapperReport />;
 }
 
 const mapStateToProps = (state) => {

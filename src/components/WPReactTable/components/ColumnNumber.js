@@ -11,7 +11,6 @@ const ColumnNumber = ({
   format = "",
   idType,
   dataType,
-  optionsType = [],
   ...props
 }) => {
   const [value, setValue] = React.useState(defaultValue);
@@ -19,26 +18,41 @@ const ColumnNumber = ({
   const refValue = React.useRef(defaultValue);
   const dispatch = useDispatch();
 
+  const refOldValue = React.useRef(defaultValue);
+
   const _handleChange = (e) => {
     setValue(e.target.value);
     if (!isFocus) refValue.current = e.target.value;
+  };
+
+  const _handleKeyUp = (e) => {
+    if (e.key === "Enter") {
+      setIsFocus(false);
+      e.target.blur();
+    }
   };
 
   const _handleBlur = (e) => {
     setIsFocus(false);
     e.target.closest(".td")?.classList?.remove("focus");
     if (isNaN(e.target.value) && dataType === 2) setValue(refValue.current);
+    const value = e.target.value;
 
-    if (e.target.value !== refValue.current.toString()) {
+    if (value !== refValue.current.toString()) {
       dispatch(
         updateValueColumns(
           {
             task_id: taskId,
             field_id: idType,
             data_type: dataType,
-            value: e.target.value,
+            value: value,
           },
-          () => {}
+          () => {
+            refOldValue.current = value;
+          },
+          () => {
+            setValue(refOldValue.current);
+          }
         )
       );
     }
@@ -65,9 +79,10 @@ const ColumnNumber = ({
       })}
       onChange={_handleChange}
       onBlur={_handleBlur}
+      onKeyUp={_handleKeyUp}
       onFocus={_handleFocus}
       placeholder="—"
-      value={finalValue()}
+      value={value ? finalValue() : ''}
     />
   );
 };

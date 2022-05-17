@@ -26,7 +26,6 @@ import {
   CustomEventListener,
   LIST_PROJECT,
 } from "constants/events.js";
-import { useMaxlenString, useRequiredDate, useRequiredString } from "hooks";
 import { find, get, reduce } from "lodash";
 import moment from "moment";
 import React from "react";
@@ -38,6 +37,8 @@ import { ic_no_data22 } from "assets";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { Routes } from "constants/routes";
+import { useMaxlenString, useRequiredDate, useRequiredString } from "hooks";
+import "./style.scss";
 
 const StyledFormControl = ({ className = "", ...props }) => (
   <FormControl

@@ -9,7 +9,6 @@ import {
   Typography,
 } from "@material-ui/core";
 import ArrowCircleDownIcon from "@mui/icons-material/ArrowCircleDown";
-import SearchIcon from "@mui/icons-material/Search";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import { updateColumns } from "actions/columns/updateColumns";
@@ -25,11 +24,11 @@ import * as React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useLocation } from "react-use";
 import styled from "styled-components";
 import JobDetailModalWrap from "views/JobDetailPage/JobDetailModalWrap";
 import { OPTIONS_FIELDS_TYPE } from "./Dropdown";
 import TabContentColumn from "./TabContentColumn";
-import TitleModalAdd from "./TitleModalAdd";
 import ToggleInput from "./ToggleInput";
 
 const reducer = (state, action) => {
@@ -55,6 +54,8 @@ const EditColumnModal = React.forwardRef(
     const { projectId } = useParams();
     const [state, dispatchState] = React.useReducer(reducer, initialState);
     const refContent = React.useRef(null);
+    const { pathname } = useLocation();
+    const [, , , id] = pathname.split("/");
     const dispatch = useDispatch();
 
     React.useImperativeHandle(ref, () => ({
@@ -93,13 +94,31 @@ const EditColumnModal = React.forwardRef(
       /* data_type: The data type of the project field that is currently being edited.
       /* name: The name of the project field that is currently being edited. */
       const dataUpdate = {
+        project_id: projectId || id,
+        name: state.name,
+
         task_id: state.taskId,
         project_field_id: state.idType,
-        project_id: projectId,
         data_type: state.dataType,
-        name: state.name,
       };
 
+      switch (data_type) {
+        case 2:
+          dataUpdate["format"] = contentValue.format;
+          dataUpdate["decimal"] = contentValue.decimal;
+          dataUpdate["position_format"] = contentValue.position_format;
+          dataUpdate["data_type"] = data_type;
+          break;
+        case 3:
+          dataUpdate["options"] = contentValue;
+          dataUpdate["data_type"] = data_type;
+          break;
+        case 1:
+          dataUpdate["data_type"] = data_type;
+          break;
+        default:
+          break;
+      }
       if (data_type === 3) dataUpdate["options"] = contentValue;
       dispatch(
         updateColumns(dataUpdate, () => {
@@ -151,19 +170,19 @@ const EditColumnModal = React.forwardRef(
         setOpen={handleOpen}
         confirmRender={() => t("EDIT")}
         cancleRender={() => t("DELETE_FIELDS")}
-        titleComponent={
-          <TitleModalAdd
-            isEditForm
-            value={state.value}
-            handleChangeTab={handleChangeTab}
-            setOpen={handleOpen}
-          />
-        }
+        // titleComponent={
+        //   <TitleModalAdd
+        //     isEditForm
+        //     value={state.value}
+        //     handleChangeTab={handleChangeTab}
+        //     setOpen={handleOpen}
+        //   />
+        // }
         canConfirm={!!state.name}
         className="offerModal"
         height={"medium"}
         manualClose={true}
-        onCancle={_handleDelete}
+        onCancle={() => handleOpen(false)}
         onConfirm={_handleConfirm}
       >
         <AlertModal
@@ -223,7 +242,7 @@ const EditColumnModal = React.forwardRef(
                 defaultNumFix={state.defaultNumFix}
               />
 
-              <Grid item>
+              <Grid item xs={12}>
                 <WrapperCheckbox
                   control={<Checkbox name="gilad" />}
                   label={t("ADD_FILED_TO_LIBRARY")}

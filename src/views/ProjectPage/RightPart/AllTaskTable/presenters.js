@@ -1,6 +1,8 @@
 import { ButtonBase } from "@material-ui/core";
 import { listColumns } from "actions/columns/listColumns";
+import { sortGroupTask } from "actions/groupTask/sortGroupTask";
 import { addNewGroupTask } from "actions/task/listTask";
+import { sortTask } from "actions/task/sortTask";
 import AlertModal from "components/AlertModal";
 import { CustomLayoutContext } from "components/CustomLayout";
 import { TimeRangePopover } from "components/CustomPopover";
@@ -13,16 +15,7 @@ import {
   SnackbarEmitter,
   SNACKBAR_VARIANT,
 } from "constants/snackbarController";
-import { exportToCSV } from "helpers/utils/exportData";
-import {
-  cloneDeep,
-  find,
-  flattenDeep,
-  get,
-  isNil,
-  join,
-  uniqueId,
-} from "lodash";
+import { cloneDeep, get, uniqueId } from "lodash";
 import React, { useContext, useReducer, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -45,31 +38,19 @@ const initialState = {
 
 function AllTaskTable({
   expand,
-  handleExpand,
-  showHidePendings,
-  handleSubSlide,
   tasks,
+  isShowTotal = false,
   project,
-  handleShowOrHideProject,
-  handleSortTask,
   handleOpenModal,
   handleReload,
-  handleRemoveMemberFromTask,
   bgColor,
   timeType,
-  handleAddMemberToTask,
   handleTimeType,
-  memberID,
-  memberTask,
-  isShortGroup,
-  canUpdateProject,
-  canCreateTask,
-  handleSortGroupTask,
+  handleReloadListTask,
 }) {
   const { itemLocation } = useContext(CustomLayoutContext);
   const { projectId } = useParams();
   const fields = useSelector(({ columns }) => columns?.listColumns?.data || []);
-  const isLoading = useSelector(({ task }) => task?.listTask?.loading);
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [state, dispatchState] = useReducer(reducer, {
     ...initialState,
@@ -77,6 +58,7 @@ function AllTaskTable({
   });
   const refEdit = useRef(null);
   const refAlert = useRef(null);
+  const refIsFirstTime = useRef(true);
   const dispatch = useDispatch();
   const { columnsFields } = state;
   /* Cloning the state.arrColumns array and storing it in the columns variable. */
@@ -87,6 +69,9 @@ function AllTaskTable({
   /* When the projectId changes, dispatch the listColumns action. */
   React.useEffect(() => {
     dispatch(listColumns({ project_id: projectId }));
+    return () => {
+      refIsFirstTime.current = true;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [projectId]);
 
@@ -129,7 +114,10 @@ function AllTaskTable({
 
   /* This code is checking to see if the tasks array is empty. If it is, then it will dispatch the state to set isEmpty to true. */
   React.useEffect(() => {
-    dispatchState({ isEmpty: tasks.tasks.length === 0 });
+    dispatchState({
+      isEmpty: tasks.tasks.length === 0,
+      tasksData: tasks.tasks,
+    });
   }, [tasks.tasks]);
 
   const _handleEditColumn = (type, data) => {
@@ -155,46 +143,11 @@ function AllTaskTable({
    * It takes a dataColumn object as an argument, and then dispatches an action to the Redux store.
    * @returns The list of columns.
    */
+
   const _handleAddNewColumns = (dataColumn) => {
     if (!dataColumn) return;
     /* Dispatching an action to the Redux store. */
     dispatch(listColumns({ project_id: projectId }));
-  };
-
-  const disableShowHide = !isNil(
-    find(
-      showHidePendings.pendings,
-      (pending) => pending === get(project.project, "id")
-    )
-  );
-
-  const _exportData = () => {
-    const data = flattenDeep(
-      tasks.tasks.map((groupTask) =>
-        get(groupTask, "tasks", []).map((task) => ({
-          id: get(task, "id", ""),
-          groupTask: get(groupTask, "name", ""),
-          name: get(task, "name", ""),
-          status: get(task, "status_name", ""),
-          duration:
-            get(task, "duration_value", 0) +
-            " " +
-            get(task, "duration_unit", ""),
-          start_time: get(task, "start_time", ""),
-          start_date: get(task, "start_date", ""),
-          end_time: get(task, "end_time", ""),
-          end_date: get(task, "end_date", ""),
-          progress: get(task, "complete", 0) + "%",
-          priority: get(task, "priority_name", ""),
-          members: join(
-            get(task, "members", []).map((member) => get(member, "name")),
-            ","
-          ),
-        }))
-      )
-    );
-
-    exportToCSV(data, "tasks");
   };
 
   const _handleUpdateFieldSuccess = (data) => {
@@ -268,7 +221,6 @@ function AllTaskTable({
 
   const _handleSortColumn = async (id, method) => {
     try {
-      dispatchState({ isLoading: true });
       /* Filtering the array of columns and removing the column with the id of the column that is hidden. */
       const { status } = await apiService({
         data: {
@@ -281,7 +233,7 @@ function AllTaskTable({
       });
 
       /* Fetching the list of columns from the server. */
-      if (status === 200) dispatch(listColumns({ project_id: projectId }));
+      if (status === 200) handleReloadListTask();
     } catch (error) {}
   };
 
@@ -324,8 +276,96 @@ function AllTaskTable({
     );
   };
 
-  const _handleReOrderColumn = (id) => {
-    console.log("aaaa", id);
+  const _handleReorderData = (
+    result = {},
+    isSameList = false,
+    isBetweenGroup = false
+  ) => {
+    const { destination, source } = result;
+    const finalTasks = cloneDeep(state.tasksData);
+
+    const startIndex = source.index;
+    const endIndex = destination.index;
+
+    if (isSameList) {
+      const index = finalTasks.findIndex(({ id }) => id === source.droppableId);
+      if (index === -1) return;
+      const tasks = _handleReorderList(
+        finalTasks[index].tasks,
+        source.index,
+        destination.index
+      );
+
+      finalTasks[index].tasks = tasks;
+
+      dispatch(
+        sortTask({
+          projectId,
+          taskId: result.draggableId,
+          groupTask: destination.droppableId,
+          sortIndex: endIndex,
+        })
+      );
+      dispatchState({ tasksData: cloneDeep(finalTasks) });
+      return;
+    }
+
+    if (isBetweenGroup) {
+      let indexSource = -1;
+      let indexDestination = -1;
+      const newTasksData = cloneDeep(finalTasks);
+
+      [...newTasksData].forEach((element, index) => {
+        if (element.id === source.droppableId) indexSource = index;
+        if (element.id === destination.droppableId) indexDestination = index;
+      });
+
+      if (indexSource === -1 || indexDestination === -1) return;
+
+      const row = newTasksData[indexSource].tasks[source.index];
+      const sourceRow = newTasksData[indexSource];
+      const destinationRow = newTasksData[indexDestination];
+
+      // 1. Remove item from source row
+      const newSourceRow = {
+        ...sourceRow,
+        tasks: [...sourceRow.tasks],
+      };
+      newSourceRow.tasks.splice(result.source.index, 1);
+      newTasksData[indexSource] = newSourceRow;
+
+      // 2. Insert into destination row
+      const newDestinationRow = {
+        ...destinationRow,
+        tasks: [...destinationRow.tasks],
+      };
+      newDestinationRow.tasks.splice(destination.index, 0, row);
+      newTasksData[indexDestination] = newDestinationRow;
+
+      dispatch(
+        sortTask({
+          projectId,
+          taskId: result.draggableId,
+          groupTask: destination.droppableId,
+          sortIndex: endIndex,
+        })
+      );
+      dispatchState({ tasksData: [...newTasksData] });
+      return;
+    }
+
+    const tasksReordered = _handleReorderList(finalTasks, startIndex, endIndex);
+    const options = { groupTaskId: result.draggableId, sortIndex: endIndex };
+
+    dispatch(sortGroupTask(options));
+    dispatchState({ tasksData: tasksReordered });
+  };
+
+  const _handleReorderList = (list, startIndex, endIndex) => {
+    const newData = cloneDeep(list);
+    const [movedRow] = newData.splice(startIndex, 1);
+    newData.splice(endIndex, 0, movedRow);
+    return newData;
   };
 
   return (
@@ -341,34 +381,20 @@ function AllTaskTable({
 
       {!state.isEmpty && (
         <>
-          {/* <HeaderTableCustom
-            project={project}
-            memberID={memberID}
-            canUpdateProject={canUpdateProject}
-            disableShowHide={disableShowHide}
-            handleOpenModal={handleOpenModal}
-            handleShowOrHideProject={handleShowOrHideProject}
-            _exportData={_exportData}
-            handleExpand={handleExpand}
-            onReOrderColumns={_handleReOrderColumn}
-            onAddColumns={_handleAddNewColumns}
-            onHideColumn={_handleHideColumn}
-            setItemLocation={setItemLocation}
-          /> */}
-
           <WPReactTable
             isGroup
+            isShowTotal={isShowTotal}
             isCollapsed={expand}
             columns={columns}
-            data={tasks.tasks}
+            data={state.tasksData}
             onReload={handleReload}
             onAddNewGroup={_handleAddNewGroup}
             onAddNewColumns={_handleAddNewColumns}
-            onDragEnd={handleSortTask}
             onEditColumn={_handleEditColumn}
             onDeleteColumn={_handleDeleteColumn}
             onHideColumn={_handleHideColumn}
             onSortColumn={_handleSortColumn}
+            onReorderData={_handleReorderData}
           />
 
           <EditColumnModal
@@ -425,54 +451,5 @@ const ModalAlert = React.forwardRef(({ onConfirm = () => {} }, ref) => {
     />
   );
 });
-
-// export const HeaderTableCustom = ({
-//   project,
-//   memberID,
-//   canUpdateProject,
-//   disableShowHide,
-//   handleOpenModal,
-//   handleShowOrHideProject,
-//   _exportData,
-//   handleExpand,
-//   onReOrderColumns,
-//   onAddColumns,
-//   onHideColumn,
-//   setItemLocation,
-// }) => {
-//   const TableContext = React.useContext(CustomTableContext);
-//   return (
-//     <HeaderProject
-//       project={project.project}
-//       valueSearch={get(TableContext?.options, "search.patern", "")}
-//       onSearch={(value) =>
-//         get(TableContext?.options, "search.onChange", () => null)(value)
-//       }
-//       hasMemberId={isNil(memberID)}
-//       canUpdateProject={canUpdateProject && isNil(memberID)}
-//       disableShowHide={disableShowHide}
-//       onUpdateMember={() => handleOpenModal("SETTING_MEMBER")}
-//       onUpdateTime={() => handleOpenModal("CALENDAR", {})}
-//       onUpdateVisible={() => handleShowOrHideProject(project.project)}
-//       onUpdateSetting={() =>
-//         handleOpenModal("SETTING", {
-//           curProject: project.project,
-//           canChange: {
-//             date: canUpdateProject,
-//             copy: canUpdateProject,
-//             view: true,
-//           },
-//         })
-//       }
-//       onExportData={_exportData}
-//       onOpenCreateModal={() => handleOpenModal("MENU_CREATE")}
-//       onExpand={handleExpand}
-//       onReOrderColumns={onReOrderColumns}
-//       onAddColumns={onAddColumns}
-//       onHideColumn={onHideColumn}
-//       setItemLocation={setItemLocation}
-//     />
-//   );
-// };
 
 export default AllTaskTable;

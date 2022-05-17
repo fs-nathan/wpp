@@ -7,7 +7,6 @@ const SelectLabel = ({ options = [], handleSelectLabel }) => {
   const { t } = useTranslation();
 
   const _handleSelect = (value) => {
-    console.log("@Pham_Tinh_Console:", value);
     handleSelectLabel(value);
   }
 

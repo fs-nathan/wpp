@@ -1,32 +1,16 @@
 import { Grid } from "@material-ui/core";
-import { CustomTableContext } from "components/CustomTable";
-import HeaderProject from "components/HeaderProject";
-import { find, get, isNil } from "lodash";
+import { CustomLayoutContext } from "components/CustomLayout";
 import React, { useContext } from "react";
-import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
+import { useHistory } from "react-router-dom";
 import AddMemberModal from "views/JobDetailPage/ListPart/ListHeader/AddMemberModal";
 import DeleteProjectModal from "views/ProjectGroupPage/Modals/DeleteProject";
+import ProjectSettingModal from "views/ProjectGroupPage/Modals/ProjectSetting";
 import LeftPart from "./components/LeftPart";
 import RightPart from "./components/RightPart";
-import { useHistory } from "react-router-dom";
-import { CustomLayoutContext } from "components/CustomLayout";
 
-const DashboardPresenters = ({
-  project,
-  memberID,
-  canUpdateProject,
-  showHidePendings,
-  handleExpand,
-  status = {},
-}) => {
+const DashboardPresenters = ({ project, status = {} }) => {
+  const topbar = document.getElementById("project-topbar");
   const { modalSetting, setModalSetting } = useContext(CustomLayoutContext);
-
-  const disableShowHide = !isNil(
-    find(
-      showHidePendings.pendings,
-      (pending) => pending === get(project.project, "id")
-    )
-  );
   const history = useHistory();
   const [openModalAlert, setOpenModalAlert] = React.useState({
     isOpen: false,
@@ -36,26 +20,9 @@ const DashboardPresenters = ({
 
   const _handleOpenModal = (type, props) => {
     switch (type) {
-      // case "CREATE":
-      //   setOpenCreate(true);
-      //   setSelectedGroup(props);
-      //   return;
-      // case "MENU_CREATE":
-      //   setOpenmMenuCreate(true);
-      //   setSelectedGroup(props);
-      //   return;
       case "ALERT":
         setOpenModalAlert({ isOpen: true, alertProps: props });
         return;
-      // case "CALENDAR":
-      //   setOpenCalendar(true);
-      //   return;
-      // case "ADD_MEMBER":
-      //   setOpenModalAddMember(true);
-      //   return;
-      // case "SETTING_MEMBER":
-      //   setOpenMemberSetting(true);
-      //   return;
       case "SETTING":
         setModalSetting({
           isOpen: true,
@@ -78,15 +45,6 @@ const DashboardPresenters = ({
 
   return (
     <div>
-      {/* <HeaderTableCustom
-        project={project}
-        memberID={memberID}
-        canUpdateProject={canUpdateProject}
-        disableShowHide={disableShowHide}
-        handleOpenModal={_handleOpenModal}
-        handleExpand={handleExpand}
-      /> */}
-
       <Grid
         container
         spacing={2}
@@ -94,7 +52,7 @@ const DashboardPresenters = ({
           width: "100%",
           margin: "0",
           overflowY: "scroll",
-          maxHeight: "calc(100vh - 130px)",
+          maxHeight: `calc(100vh - ${topbar?.clientHeight}px)`,
         }}
       >
         <Grid item xs={7}>

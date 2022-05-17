@@ -2,8 +2,16 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import ColumnNameGroup from "components/WPReactTable/components/ColumnNameGroup";
 import { AddHeading } from "components/WPReactTable/components/HeadingColumn";
+import NameInput from "components/WPReactTable/components/NameInput";
 import { apiService } from "constants/axiosInstance";
+import {
+  DEFAULT_MESSAGE,
+  SnackbarEmitter,
+  SNACKBAR_VARIANT,
+} from "constants/snackbarController";
+import { get } from "lodash";
 import React, { useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const IconDrag = () => (
@@ -25,22 +33,32 @@ export const IconDrag = () => (
 const CellItemGroup = ({
   value,
   row,
+  projectId,
   isNewRow = false,
   dragHandle = {},
   onSubmitAdd = () => {},
   onBlur = () => {},
   isFocus = true,
 }) => {
-  const refText = useRef(null);
   const refFocus = useRef(false);
+  const refNameInput = useRef(null);
   const [name, setName] = React.useState(isNewRow ? "" : value);
 
   useEffect(() => {
     isNewRow ? setName("") : setName(value);
   }, [value, isNewRow]);
 
+  useEffect(() => {
+    if (isNewRow) {
+      setTimeout(() => {
+        refNameInput.current && refNameInput.current.focus();
+      }, 0);
+    }
+  }, [isNewRow]);
+
   const _handleSubmit = async () => {
     if (isNewRow) return onSubmitAdd(name);
+
     try {
       const config = {
         url: "/task/update-name-description",
@@ -52,34 +70,28 @@ const CellItemGroup = ({
       };
       await apiService(config);
       refFocus.current = true;
-      refText.current.blur();
     } catch (error) {
-      throw error;
+      SnackbarEmitter(
+        SNACKBAR_VARIANT.ERROR,
+        get(error, "message", DEFAULT_MESSAGE.QUERY.ERROR)
+      );
     }
   };
-
-  useEffect(() => {
-    if (isFocus && isNewRow) {
-      setTimeout(() => {
-        refText.current.focus();
-      }, 0);
-    }
-  }, [isFocus, isNewRow]);
 
   const _handleKeyPress = (e) => {
     if (e.which === 13 && !e.shiftKey) {
       e.preventDefault();
-      _handleSubmit();
-      if (isNewRow) refText.current.value = "";
+      if (e.target.value !== value) {
+        _handleSubmit();
+        onBlur(e);
+      }
     }
   };
 
   const _handleBlur = (e) => {
-    if (!refFocus.current) {
-      onBlur(e);
-      _handleSubmit();
-      refFocus.current = false;
-    }
+    onBlur(e);
+    if (e.target.value !== value) _handleSubmit();
+    refFocus.current = false;
     const columnHTML = e.target.closest(".td");
     columnHTML.classList.remove("focus");
   };
@@ -100,22 +112,13 @@ const CellItemGroup = ({
         <IconDrag />
       </WrapperIconDrag>
 
-      <TextAreaCustom
-        ref={refText}
-        placeholder={"Write a task name"}
-        rows="1"
-        tabindex="-1"
-        wrap="off"
-        value={name}
+      <NameInput
+        ref={refNameInput}
         defaultValue={isNewRow ? "" : value}
         onFocus={_handleFocus}
         onKeyPress={_handleKeyPress}
         onChange={_handleChange}
         onBlur={_handleBlur}
-        style={{
-          marginLeft: 0,
-          width: "calc(100% - 140px)",
-        }}
       />
 
       <WrapperDetailInfo className="detail-info">
@@ -123,9 +126,13 @@ const CellItemGroup = ({
           <MoreVertIcon sx={{ fontSize: 16 }} />
         </div>
 
-        <div className="detail">
+        <Link
+          to={`/projects/task-chat/${projectId}?task_id=${row?.original?.id}`}
+          className="detail"
+          style={{ color: "#000" }}
+        >
           <span>Chi tiết</span> <ChevronRightIcon sx={{ fontSize: 16 }} />
-        </div>
+        </Link>
       </WrapperDetailInfo>
     </WrapperItemName>
   );
@@ -138,11 +145,13 @@ const CellNameTask = ({ row, value, ...props }) => {
         row={row}
         value={value}
         dragHandle={props.dragHandle}
-        onVisibleAddRow={props.onVisibleAddRow}
+        onMouseDown={props.onMouseDown}
+        onToggleAdd={props.handleToggleAdd}
         {...props}
       />
     );
   }
+
   return (
     <CellItemGroup
       row={row}
@@ -192,12 +201,17 @@ const WrapperDetailInfo = styled.div`
   padding: 0 15px;
   visibility: hidden;
   .detail {
+    padding: 5px 8px;
+    border-radius: 5px;
     span {
       font-size: 11px;
       font-weight: 400;
     }
     display: flex;
     align-items: center;
+    &:hover {
+      background: #f0eeef;
+    }
   }
   &:hover {
     background-color: #f9f8f8;
@@ -211,41 +225,5 @@ const WrapperItemName = styled.div`
     ${WrapperIconDrag} {
       visibility: visible;
     }
-  }
-`;
-
-export const TextAreaCustom = styled.textarea`
-  white-space: pre;
-  background: transparent;
-  border-radius: 1.5px;
-  display: block;
-  outline: 0;
-  overflow: hidden;
-  resize: none;
-  width: calc(100% - 160px);
-  margin-left: 5px;
-  border: 1px solid transparent;
-  font-size: 14px;
-  line-height: 20px;
-  margin: 0;
-  min-width: 20px;
-  padding: 0 5px;
-  text-rendering: optimizeSpeed;
-  color: #1e1f21;
-  ${(props) => {
-    if (props.isGroup) {
-      return {
-        fontWeight: 500,
-        fontSize: 16,
-        padding: 5,
-        borderColor: "#edeae9",
-      };
-    }
-  }}
-  &:hover {
-    border: 1px solid #edeae9;
-  }
-  &:focus {
-    border-color: ${(props) => (props.isGroup ? "#edeae9" : "transparent")};
   }
 `;

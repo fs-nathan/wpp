@@ -272,8 +272,6 @@ function MainLayout({
     updateChatState(data.id, { type: CHAT_TYPE.TEXT, is_deleted: true });
   }
 
-
-
   function handleViewChat(data) {
     console.log("handleViewChat", data);
     const { user_name, user_avatar, user_id } = data;

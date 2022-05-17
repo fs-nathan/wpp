@@ -17,14 +17,9 @@ export function reorder(list, startIndex, endIndex) {
 const getTableHeight = () => {
   const rootDocument = document.getElementById("root");
   const height = rootDocument.offsetHeight;
-  const headerNav = document.getElementById("topNavId");
   const headerTableNav = document.getElementById("header-table-group");
-  if (headerNav) {
-    return height - (headerNav.offsetHeight + headerTableNav.offsetHeight + 37);
-  } else if (headerTableNav) {
-    return height - (headerTableNav.offsetHeight + 37);
-  }
-  return height - 37;
+
+  return height - ((headerTableNav?.offsetHeight || 0) + 37);
 };
 
 const WPTable = ({
@@ -36,8 +31,6 @@ const WPTable = ({
   onSort = () => {},
 }) => {
   const [dataRows, setDataRows] = React.useState([]);
-  const refSetted = React.useRef(false);
-
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 120,
@@ -48,10 +41,7 @@ const WPTable = ({
   );
 
   React.useEffect(() => {
-    // if (!refSetted.current || !dataRows.length) {
     setDataRows(data);
-    //   refSetted.current = true;
-    // }
   }, [data]);
 
   const {
@@ -97,7 +87,6 @@ const WPTable = ({
       <div
         className="tr"
         {...provided.draggableProps}
-        {...provided.dragHandleProps}
         ref={provided.innerRef}
         style={getStyle({
           draggableStyle: provided.draggableProps.style,
@@ -155,7 +144,7 @@ const WPTable = ({
       <div
         id="header-row"
         className="wrapper-row-header"
-        style={{ position: "sticky", top: 0, zIndex: 350 }}
+        style={{ position: "sticky", top: 0, zIndex: 350, overflow: "hidden" }}
       >
         {headerGroups.map((headerGroup) => {
           const headerProps = headerGroup.getHeaderGroupProps();
@@ -180,6 +169,7 @@ const WPTable = ({
                   selectedSort={selectedSort}
                   typeMenu="default"
                   onSortColumn={onSort}
+                  scrollTableHeight={scrollTableHeight}
                 />
               ))}
             </div>
@@ -244,7 +234,7 @@ const ContentColumn = ({ cell, dragHandle = {} }) => {
   );
 };
 
-const scrollbarWidth = () => {
+export const scrollbarWidth = () => {
   // thanks too https://davidwalsh.name/detect-scrollbar-width
   const scrollDiv = document.createElement("div");
   scrollDiv.setAttribute(
@@ -253,6 +243,19 @@ const scrollbarWidth = () => {
   );
   document.body.appendChild(scrollDiv);
   const scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
+  document.body.removeChild(scrollDiv);
+  return scrollbarWidth;
+};
+
+export const scrollbarHeight = () => {
+  // thanks too https://davidwalsh.name/detect-scrollbar-width
+  const scrollDiv = document.createElement("div");
+  scrollDiv.setAttribute(
+    "style",
+    "width: 100px; height: 100px; overflow: scroll; position:absolute; top:-9999px;"
+  );
+  document.body.appendChild(scrollDiv);
+  const scrollbarWidth = scrollDiv.offsetHeight - scrollDiv.clientHeight;
   document.body.removeChild(scrollDiv);
   return scrollbarWidth;
 };

@@ -1,4 +1,3 @@
-import classNames from "classnames";
 import React from "react";
 import styled from "styled-components";
 import WPTable from "./components/Table";
@@ -14,10 +13,7 @@ const WPReactTable = ({
   ...props
 }) => {
   return (
-    <Styles
-      className={classNames({ "not-group-table": !isGroup })}
-      isCollapsed={isCollapsed}
-    >
+    <Styles className="not-group-table" isCollapsed={isCollapsed}>
       {isGroup ? (
         <WPTableGroup
           data={data}
@@ -66,6 +62,10 @@ const Styles = styled.div`
     max-width: ${({ isCollapsed }) =>
       !isCollapsed ? "calc(100vw - 370px)" : "calc(100vw - 70px)"};
 
+    &.has-total {
+      position: relative;
+    }
+
     .thead {
       overflow-y: auto;
       overflow-x: hidden;
@@ -93,11 +93,17 @@ const Styles = styled.div`
       &.row-add {
         .td {
           border-right: 0 !important;
+          border-left: 0 !important;
           border-top: 1px solid #edeae9 !important;
           border-bottom: 0;
           z-index: 201;
+          cursor: pointer;
           &:hover {
             border-bottom: 0;
+          }
+
+          &:first-child {
+            border-right: 1px solid #edeae9 !important;
           }
           &:last-child {
             border-right: 0 !important;
@@ -162,12 +168,15 @@ const Styles = styled.div`
         &.isGroupColumn {
           border-color: transparent !important;
           &.focus {
-            z-index: 500 !important;
+            z-index: 999 !important;
             border: 1px solid #4573d2 !important;
+          }
+          &:first-child {
+            border-right: 1px solid #edeae9 !important;
           }
         }
         &.focus {
-          z-index: 500 !important;
+          z-index: 999 !important;
           border-color: #4573d2 !important;
         }
       }

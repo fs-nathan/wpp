@@ -4,10 +4,15 @@ import {
   UPDATE_VALUE_COLUMNS_SUCCESS,
 } from "../../constants/actions/columns/updateValueColumns";
 
-export const updateValueColumns = (options, callbackSuccess) => ({
+export const updateValueColumns = (
+  options,
+  callbackSuccess,
+  callbackFailed
+) => ({
   type: UPDATE_VALUE_COLUMNS,
   options,
   callbackSuccess,
+  callbackFailed,
 });
 
 export const updateValueColumnsSuccess = ({ task }, options) => ({

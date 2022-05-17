@@ -1,53 +1,39 @@
-import React from "react";
-import KanbanHeaderPresenter from "./presenter";
-import { connect } from "react-redux";
-import { actionVisibleDrawerMessage } from "actions/system/system";
-import { setMemberFilter, setVisibleHeader } from "actions/kanban/setting";
-import { memberProject } from "actions/project/memberProject";
-import { searchTask } from "actions/kanban/setting";
 import { detailProject as kanbanDetailProject } from "actions/kanban/detailProject";
-import { detailProject } from "actions/project/detailProject";
-import { showProject } from "actions/project/showProject";
-import { hideProject } from "actions/project/hideProject";
-import { getProjectListBasic } from "actions/taskDetail/taskDetailActions";
 import {
-  projectSelector,
-  visibleSelector,
-  showHidePendingsSelector,
-  taskSearchSelector,
-  viewPermissionsSelector,
-} from "./selectors";
+  searchTask,
+  setMemberFilter,
+  setVisibleHeader,
+} from "actions/kanban/setting";
+import { detailProject } from "actions/project/detailProject";
+import { hideProject } from "actions/project/hideProject";
+import { memberProject } from "actions/project/memberProject";
+import { showProject } from "actions/project/showProject";
+import { actionVisibleDrawerMessage } from "actions/system/system";
+import { getProjectListBasic } from "actions/taskDetail/taskDetailActions";
 import {
   CustomEventDispose,
   CustomEventListener,
   UPDATE_PROJECT,
 } from "constants/events.js";
 import { get } from "lodash";
+import React from "react";
+import { connect } from "react-redux";
+import {
+  projectSelector,
+  showHidePendingsSelector,
+  taskSearchSelector,
+  viewPermissionsSelector,
+  visibleSelector,
+} from "./selectors";
 
 function KanbanPage({
-  doActionVisibleDrawerMessage,
   doKanbanDetailProject,
   doDetailProject,
   doMemberProject,
   projectId,
   project,
-  visible,
-  doSetVisibleHeader,
-  statusFilter,
-  setStatusFilter,
-  priorityFilter,
-  setPriorityFilter,
   doSetMemberFitler,
-  handleOpenModal,
-  doShowProject,
-  doHideProject,
-  showHidePendings,
   doGetProjectListBasic,
-  taskSearchStr,
-  doSearchTask,
-  viewPermissions,
-  expand,
-  handleExpand,
 }) {
   React.useEffect(() => {
     doKanbanDetailProject({ projectId });
@@ -72,34 +58,7 @@ function KanbanPage({
     doSetMemberFitler(initialMemberFilter);
   }, [project]);
 
-  return (
-    <KanbanHeaderPresenter
-      search={taskSearchStr}
-      handleSearchChange={(searchStr) => doSearchTask(searchStr)}
-      handleVisibleDrawerMessage={doActionVisibleDrawerMessage}
-      project={project.project}
-      isOpen={visible}
-      setIsOpen={doSetVisibleHeader}
-      statusFilter={statusFilter}
-      setStatusFilter={setStatusFilter}
-      priorityFilter={priorityFilter}
-      setPriorityFilter={setPriorityFilter}
-      handleOpenModal={handleOpenModal}
-      handleShowOrHideProject={(project) =>
-        get(project, "visibility", false)
-          ? doHideProject({ projectId: get(project, "id") })
-          : doShowProject({ projectId: get(project, "id") })
-      }
-      showHidePendings={showHidePendings}
-      canUpdate={get(
-        viewPermissions.permissions,
-        [projectId, "update_project"],
-        false
-      )}
-      expand={expand}
-      onExpand={handleExpand}
-    />
-  );
+  return <></>;
 }
 
 const mapStateToProps = (state) => {

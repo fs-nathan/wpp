@@ -4,7 +4,7 @@ import {
   CREATE_TASK_SUCCESS,
 } from '../../constants/actions/task/createTask';
 
-export const createTask = ({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime }) => ({
+export const createTask = ({ name, projectId, groupTask, typeAssign, priority, description, startDate, startTime, endDate, endTime, isBasic }) => ({
   type: CREATE_TASK,
   options: {
     name,
@@ -17,6 +17,7 @@ export const createTask = ({ name, projectId, groupTask, typeAssign, priority, d
     startTime,
     endDate,
     endTime,
+    isBasic
   },
 });
 

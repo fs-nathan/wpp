@@ -3,13 +3,14 @@ import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOu
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import InsertEmoticonOutlinedIcon from "@mui/icons-material/InsertEmoticonOutlined";
-import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
 import PaletteOutlinedIcon from "@mui/icons-material/PaletteOutlined";
 import { defaultGroupTask } from "actions/groupTask/defaultGroupTask";
+import { TimeRangePopover } from "components/CustomPopover";
 import WPReactTable from "components/WPReactTable";
 import { exportToCSV } from "helpers/utils/exportData";
-import { find, get, isNil, isObject, join, remove, size, slice } from "lodash";
-import React, { useRef, useState } from "react";
+import ModeEditOutlineOutlinedIcon from "@mui/icons-material/ModeEditOutlineOutlined";
+import { find, get, isNil, isObject, join, size } from "lodash";
+import React, { useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { connect, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -59,7 +60,7 @@ function AllProjectTable({
   const sortLocal = JSON.parse(dataSort);
   const { t } = useTranslation();
   const [data, setData] = React.useState(projects?.projects || []);
-  const [, setTimeAnchor] = React.useState(null);
+  const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
   const [showHideDisabled, setShowHideDisabled] = React.useState(false);
@@ -494,6 +495,18 @@ function AllProjectTable({
           </div>
         )}
       </Container>
+
+      <TimeRangePopover
+        className="time-range-popover"
+        bgColor={bgColor}
+        anchorEl={timeAnchor}
+        setAnchorEl={setTimeAnchor}
+        timeOptionDefault={timeType}
+        handleTimeRange={(timeType, startDate, endDate) => {
+          handleTimeType(timeType);
+          // handleTimeRange(startDate, endDate);
+        }}
+      />
     </div>
   );
 }

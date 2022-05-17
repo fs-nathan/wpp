@@ -13,6 +13,7 @@ export const convertFieldsToTable = (
   handleReload = () => {}
 ) => {
   const result = [];
+
   data.forEach((item) => {
     if (
       item.id !== "pfd-name" &&
@@ -67,8 +68,9 @@ const CellRender = ({
   ...props
 }) => {
   const taskId = row?.original?.id;
-  const data = row?.original?.data[props.column.id] || {};
+  const data = row?.original?.data?.[props.column.id] || {};
 
+  if (!data) return null;
   if (row.depth === 0) return null;
 
   // eslint-disable-next-line default-case
@@ -131,7 +133,7 @@ const CellRender = ({
           taskId={taskId}
           idType={idType}
           dataType={dataType}
-          optionsType={optionsType}
+          {...(props?.column || {})}
           {...data}
         />
       );

@@ -1,17 +1,10 @@
-import {
-  cloneDeep,
-  find,
-  findIndex,
-  get,
-  remove,
-  slice,
-  uniqueId,
-} from "lodash";
+import { cloneDeep, find, findIndex, get, remove, slice } from "lodash";
 import { CREATE_TASK_SUCCESS } from "../../constants/actions/task/createTask";
 import { DELETE_TASK_SUCCESS } from "../../constants/actions/task/deleteTask";
 import {
   ADD_GROUP_TASK,
   ADD_GROUP_TASK_SUCCESS,
+  ADD_NEW_TASK_TEMP,
   LIST_TASK,
   LIST_TASK_FAIL,
   LIST_TASK_RESET,
@@ -26,6 +19,7 @@ import {
   LIST_TASK_MEMBER_FAIL,
   LIST_TASK_MEMBER,
 } from "../../constants/actions/task/listTaskMember";
+
 export const initialState = {
   data: {
     tasks: [],
@@ -153,12 +147,19 @@ function reducer(state = initialState, action) {
         ...state,
         data: {
           ...state.data,
-          tasks: cloneDeep(state.data.tasks).map((item) => {
-            if (action.data.oldId === item.id) {
-              return { ...item, ...action.data.groupTask };
-            }
-            return item;
-          }),
+          tasks: _handleAddGroupSuccess(
+            state.data.tasks,
+            action.data.groupTask,
+            action.data.oldId
+          ),
+        },
+      };
+    case ADD_NEW_TASK_TEMP:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          tasks: _handleAddTemp(cloneDeep(state.data.tasks), action.payload),
         },
       };
 
@@ -166,5 +167,26 @@ function reducer(state = initialState, action) {
       return state;
   }
 }
+
+const _handleAddTemp = (tasks, dataTemp) => {
+  const result = [...tasks];
+  const oldDataGroup = result[dataTemp.indexGroup];
+
+  result[dataTemp.indexGroup] = {
+    ...oldDataGroup,
+    tasks: [...(oldDataGroup.tasks || []), dataTemp],
+  };
+
+  return result;
+};
+
+const _handleAddGroupSuccess = (tasks, newData, oldId) => {
+  const result = [...tasks].map((item) => {
+    if (item.id === oldId) return { ...item, ...newData };
+    return item;
+  });
+
+  return result;
+};
 
 export default reducer;

@@ -16,6 +16,7 @@ const TabNumber = forwardRef(
       defaultPosition = "right",
       defaultFormat = "number",
       defaultNumFix = 0,
+      setListSources,
     },
     ref
   ) => {
@@ -25,7 +26,6 @@ const TabNumber = forwardRef(
     const [position, setPosition] = useState(defaultPosition);
     const [format, setFormat] = useState(defaultFormat);
     const [optionsLabelSelect, setOptionsLabelSelect] = useState([]);
-
     const isAdditionLabel = format === "other_label";
     const isHashFormat = format === "hash";
 
@@ -61,6 +61,12 @@ const TabNumber = forwardRef(
     };
 
     const _handleSelectLabelSelect = (selected) => {
+      const listID = [];
+      (selected || []).forEach((element) => {
+        if (!element.id) return;
+        listID.push(element.id);
+      });
+      setListSources && setListSources(listID);
       setOptionsLabelSelect(selected);
     };
 
@@ -110,7 +116,7 @@ const TabNumber = forwardRef(
               </Grid>
             )}
             {isHashFormat ? (
-              <SelectCalculate />
+              <SelectCalculate handleSelectPosition={_handleSelectPosition} />
             ) : (
               format !== "number" && (
                 <SelectPosition handleSelectPosition={_handleSelectPosition} />

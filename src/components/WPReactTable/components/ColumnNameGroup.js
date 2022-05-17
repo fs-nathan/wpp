@@ -7,63 +7,67 @@ import React from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { IconDrag } from "views/ProjectPage/RightPart/constant/Columns";
+import NameInput from "./NameInput";
 
 const ColumnNameGroup = ({
   row,
   value,
   dragHandle = {},
-  onVisibleAddRow = () => {},
+  onToggleAdd = () => {},
+  onMouseDown = () => {},
 }) => {
   const group = row.original;
+  const style = { fontSize: 28, fill: "#6d6e6f" };
   return (
     <WrapperMainGroup>
       <WrapperLeft>
-        <WrapperIconDrag className="drag-icon" {...dragHandle}>
+        <WrapperIconDrag
+          className="drag-icon"
+          {...dragHandle}
+          onMouseDown={onMouseDown}
+        >
           <IconDrag />
         </WrapperIconDrag>
         <WrapperButton {...row.getToggleRowExpandedProps()}>
           {!row.isExpanded ? (
-            <ArrowRightRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
+            <ArrowRightRoundedIcon sx={style} />
           ) : (
-            <ArrowDropDownRoundedIcon sx={{ fontSize: 28, fill: "#6d6e6f" }} />
+            <ArrowDropDownRoundedIcon sx={style} />
           )}
         </WrapperButton>
-
         {/* Name group */}
         <NameGroup id={group.id} name={value} />
         {/* End name group */}
-      </WrapperLeft>
-      <WrapperRight className="wrapper-right">
-        <WrapperButton className="right-side" onClick={onVisibleAddRow}>
+        <WrapperButton className="right-side" onClick={onToggleAdd}>
           <AddRoundedIcon sx={{ fill: "#6d6e6f" }} />
         </WrapperButton>
         <WrapperButton className="right-side">
           <MoreHorizRoundedIcon sx={{ fill: "#6d6e6f" }} />
         </WrapperButton>
-      </WrapperRight>
+      </WrapperLeft>
     </WrapperMainGroup>
   );
 };
 
 const NameGroup = ({ id = "", name = "" }) => {
   const [isEditing, setIsEditing] = React.useState(false);
-  const [value, setValue] = React.useState(name || "");
   const refInput = React.useRef(null);
+  const refWrapper = React.useRef(null);
   const dispatch = useDispatch();
 
   React.useEffect(() => {
     let timeout = setTimeout(() => {
       if (isEditing) {
         refInput.current.focus();
-        refInput.current.selectionStart = refInput.current.selectionEnd = 10000;
+        refInput.current.moveToEnd();
       }
     }, 0);
     return () => clearTimeout(timeout);
   }, [isEditing]);
 
   React.useEffect(() => {
-    if (!refInput.current) return;
-    const cellHTML = refInput.current.closest(".td");
+    if (!refWrapper.current) return;
+    const cellHTML = refWrapper.current.closest(".td");
     if (isEditing) {
       cellHTML && cellHTML.classList.add("focus");
     }
@@ -74,49 +78,56 @@ const NameGroup = ({ id = "", name = "" }) => {
 
   const _handleEditing = () => setIsEditing(true);
 
-  const _handleBlur = () => {
+  const _handleBlur = (e) => {
     setIsEditing(false);
+    if (e.target.value === name) return;
+    dispatch(updateGroupTask({ groupTaskId: id, name: e.target.value }));
   };
 
   const _handleKeyPress = (e) => {
     if (e.which === 13 && !e.shiftKey) {
       refInput.current.blur();
-      setValue(e.target.value);
+      if (e.target.value === name) return;
       dispatch(updateGroupTask({ groupTaskId: id, name: e.target.value }));
     }
   };
 
-  const _handleChange = (e) => {
-    setValue(e.target.value);
-  };
-
   if (isEditing)
     return (
-      <InputCustom
-        ref={refInput}
-        isGroup
-        placeholder={"Write a task name"}
-        rows="1"
-        tabindex="-1"
-        wrap="off"
-        value={value}
-        onBlur={_handleBlur}
-        onChange={_handleChange}
-        onKeyPress={_handleKeyPress}
-      />
+      <div ref={refWrapper} style={{ maxWidth: "calc(100% - 105px)" }}>
+        <NameInput
+          isGroup
+          ref={refInput}
+          border="none"
+          placeholder={"Write a task name"}
+          maxWidth="calc(100% - 15px)"
+          defaultValue={name}
+          onBlur={_handleBlur}
+          onKeyPress={_handleKeyPress}
+        />
+      </div>
     );
   return (
     <WrapperName onClick={_handleEditing}>
-      <StyledHeadingGroup>{value}</StyledHeadingGroup>
+      <StyledHeadingGroup>{name}</StyledHeadingGroup>
     </WrapperName>
   );
 };
 
 const WrapperLeft = styled.div`
   width: 100%;
+
   display: flex;
   align-items: center;
-  max-width: calc(100% - 72px);
+
+  .right-side {
+    visibility: hidden;
+  }
+  &:hover {
+    .right-side {
+      visibility: visible;
+    }
+  }
 `;
 
 const WrapperRight = styled.div`
@@ -195,48 +206,13 @@ const StyledHeadingGroup = styled(TextEllipsis)`
 `;
 
 const WrapperName = styled.div`
+  min-height: 36px;
   font-size: 15px;
   font-weight: 400;
   margin-left: 0;
-  min-width: 1px;
+  min-width: 120px;
   outline: none;
   cursor: pointer;
-`;
-
-const InputCustom = styled.input`
-  white-space: pre;
-  background: transparent;
-  border-radius: 1.5px;
-  display: block;
-  outline: 0;
-  overflow: hidden;
-  resize: none;
-  width: calc(100% - 160px);
-  margin-left: 5px;
-  border: 1px solid transparent;
-  font-size: 14px;
-  line-height: 20px;
-  margin: 0;
-  min-width: 20px;
-  padding: 0 5px;
-  text-rendering: optimizeSpeed;
-  color: #1e1f21;
-  ${(props) => {
-    if (props.isGroup) {
-      return {
-        fontWeight: 500,
-        fontSize: 16,
-        padding: 5,
-        borderColor: "#edeae9",
-      };
-    }
-  }}
-  &:hover {
-    border: 1px solid #edeae9;
-  }
-  &:focus {
-    border-color: ${(props) => (props.isGroup ? "#edeae9" : "transparent")};
-  }
 `;
 
 export default ColumnNameGroup;

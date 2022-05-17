@@ -67,7 +67,10 @@ const GroupColumn = ({ row, provided, snapshot, ...props }) => {
       <div className="tr" {...rowProps} key={row.original.id}>
         <ListContentColumn
           data={row.cells}
-          onVisibleAddRow={_handleAddNewTask}
+          onVisibleAddRow={(e) => {
+            _handleAddNewTask();
+            _handleAddNewRow();
+          }}
           dragHandle={{ ...provided.dragHandleProps }}
           isGroupColumn
           hasSub={!!row.subRows.length}
@@ -128,7 +131,9 @@ const RowNew = React.forwardRef(
     const [isVisible, setIsVisible] = useState(false);
 
     React.useImperativeHandle(ref, (va) => ({
-      _set: () => setIsVisible(!isVisible),
+      _set: () => {
+        return setIsVisible(!isVisible);
+      },
     }));
 
     if (!isVisible) return null;
@@ -142,9 +147,9 @@ const RowNew = React.forwardRef(
               cell={cell}
               isNewRow
               isFocus
-              onSubmitAdd={onSubmit}
-              onBlur={() => {
+              onSubmitAdd={(e) => {
                 setIsVisible(!isVisible);
+                onSubmit(e);
               }}
             />
           );
