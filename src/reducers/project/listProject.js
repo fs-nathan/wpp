@@ -16,6 +16,7 @@ export const initialState = {
     projects: [],
     projectsForSelect: [],
     summary: null,
+    loadedGroups: {}
   },
   error: null,
   loading: false,
@@ -27,10 +28,14 @@ export const initialState = {
 function reducer(state = initialState, action) {
   switch (action.type) {
     case LIST_PROJECT:
+      const groupId = action.options.groupProject
+      const stateData = { ...state.data}
+      if (groupId && !stateData.loadedGroups[groupId]) stateData.loadedGroups[groupId] = []
       return {
         ...state,
         error: null,
         loading: true,
+        data: stateData
       };
     case LIST_PROJECT_SELECT:
       return {
@@ -39,9 +44,16 @@ function reducer(state = initialState, action) {
         selectLoading: true
       };
     case LIST_PROJECT_SUCCESS:
+      const { groupProject, ...params} = action.data
+      let data = params
+      const loadedGroups = {...state.data.loadedGroups}
+      if (groupProject) {
+        loadedGroups[groupProject] = data.projects
+      }
+      data = {...data, loadedGroups: loadedGroups}
       return {
         ...state,
-        data: action.data,
+        data: data,
         error: null,
         loading: false,
         firstTime: false,

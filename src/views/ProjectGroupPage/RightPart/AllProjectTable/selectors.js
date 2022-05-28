@@ -14,7 +14,7 @@ export const projectsSelector = createSelector(
   [listProjectGroup, listProject, listIcon, sortProject,detailProjectGroup],
   (listProjectGroup, listProject, listIcon, sortProject,detailProjectGroup) => {
     const {
-      data: { projects },
+      data: { projects, loadedGroups },
       loading: listProjectLoading,
       error: listProjectError,
       firstTime,
@@ -73,6 +73,7 @@ export const projectsSelector = createSelector(
       loading: loading,
       error,
       firstTime,
+      loadedGroups
     }
   }
 );

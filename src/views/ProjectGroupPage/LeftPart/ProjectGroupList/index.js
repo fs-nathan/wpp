@@ -11,7 +11,7 @@ import {
 import { filter, get } from "lodash";
 import moment from "moment";
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import CreateProjectGroup from "../../Modals/CreateProjectGroup";
 import {
   localOptionSelector,
@@ -32,6 +32,7 @@ function ProjectList({
 }) {
   const times = useTimes();
   const { timeType } = localOption;
+  const projectGroups = useSelector(state => state.projectGroup.listProjectGroup.data.projectGroups)
   const timeRange = React.useMemo(() => {
     const [timeStart, timeEnd] = times[timeType].option();
     return {
@@ -40,7 +41,7 @@ function ProjectList({
     };
   }, [timeType]);
   React.useEffect(() => {
-    doListProjectGroup({
+    if (timeRange.timeEnd || timeRange.timeStart || projectGroups.length < 1) doListProjectGroup({
       timeStart: get(timeRange, "timeStart")
         ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
         : undefined,

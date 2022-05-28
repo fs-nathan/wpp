@@ -24,6 +24,8 @@ import EmptyWorkingBoard from "./Intro/EmptyWorkingBoard";
 import EmptyWorkingGroup from "./Intro/EmptyWorkingGroup";
 import "./styles/style.scss";
 import { _sortByAscGroupTable, _sortByDescGroupTable } from "./utils";
+import { useQuery } from "hooks";
+import { useLocation } from "react-router-dom/cjs/react-router-dom.min";
 
 const KEY_LOCAL_STORAGE_SORT = "sort_project_table";
 
@@ -55,11 +57,12 @@ function AllProjectTable({
   activeLoading,
   setActiveLoading,
   canModifyProjectGroup = false,
+  loadedGroups
 }) {
   const dataSort = localStorage.getItem(KEY_LOCAL_STORAGE_SORT);
   const sortLocal = JSON.parse(dataSort);
   const { t } = useTranslation();
-  const [data, setData] = React.useState(projects?.projects || []);
+  const [data, setData] = React.useState(get(loadedGroups, groupID, []));
   const [timeAnchor, setTimeAnchor] = React.useState(null);
   const [menuAnchor, setMenuAnchor] = React.useState(null);
   const [curProject, setCurProject] = React.useState(null);
@@ -118,6 +121,10 @@ function AllProjectTable({
     }));
     handleSortProject(sortData);
   };
+
+  React.useEffect(() => {
+    setData([...get(loadedGroups, groupID, [])])
+  }, [groupID, loadedGroups])
 
   React.useEffect(() => {
     if (projects) {
@@ -518,6 +525,7 @@ export default connect(
       "projectGroups",
       []
     ),
+    loadedGroups: get(state, "project.listProject.data.loadedGroups", {})
   }),
   {}
 )(AllProjectTable);

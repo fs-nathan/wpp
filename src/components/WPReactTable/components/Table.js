@@ -30,7 +30,7 @@ const WPTable = ({
   onDragEnd = () => {},
   onSort = () => {},
 }) => {
-  const [dataRows, setDataRows] = React.useState([]);
+  const [dataRows, setDataRows] = React.useState(data);
   const defaultColumn = React.useMemo(
     () => ({
       minWidth: 120,
@@ -41,8 +41,12 @@ const WPTable = ({
   );
 
   React.useEffect(() => {
-    setDataRows(data);
+    setDataRows([...data])
   }, [data]);
+
+  React.useEffect(() => {
+    console.log('dataRows changed: ', dataRows)
+  }, [dataRows]);
 
   const {
     getTableProps,
@@ -139,76 +143,79 @@ const WPTable = ({
   };
 
   return (
-    <div {...getTableProps()} className="table">
-      {/* Header table */}
-      <div
-        id="header-row"
-        className="wrapper-row-header"
-        style={{ position: "sticky", top: 0, zIndex: 350, overflow: "hidden" }}
-      >
-        {headerGroups.map((headerGroup) => {
-          const headerProps = headerGroup.getHeaderGroupProps();
-          const listHeaders = headerGroup.headers;
-
-          return (
-            <div
-              {...headerProps}
-              style={{
-                ...headerProps.style,
-                width: totalColumnsWidth + scrollBarSize,
-              }}
-              className="tr header"
-            >
-              {listHeaders.map((column, index) => (
-                <HeaderColumn
-                  zIndex={listHeaders.length - index}
-                  isSticky={!index}
-                  length={listHeaders.length}
-                  column={column}
-                  isFirstColumn={index === 0}
-                  selectedSort={selectedSort}
-                  typeMenu="default"
-                  onSortColumn={onSort}
-                  scrollTableHeight={scrollTableHeight}
-                />
-              ))}
-            </div>
-          );
-        })}
-      </div>
-      {/*End header table */}
-
-      <DragDropContext onDragEnd={_handleDragEnd}>
-        <Droppable
-          droppableId="droppable-table"
-          mode="virtual"
-          renderClone={(provided, snapshot, rubric) => (
-            <ItemClone
-              provided={provided}
-              isDragging={snapshot.isDragging}
-              item={rows[rubric.source.index].original}
-            />
-          )}
+    <>
+      { dataRows.length > 0 && <div {...getTableProps()} className="table">
+        {/* Header table */}
+        <div
+          id="header-row"
+          className="wrapper-row-header"
+          style={{ position: "sticky", top: 0, zIndex: 350, overflow: "hidden" }}
         >
-          {(provided) => (
-            <div {...getTableBodyProps()}>
-              <FixedSizeList
-                className="tbody"
-                itemCount={rows.length}
-                itemSize={48}
-                height={scrollTableHeight}
-                outerRef={provided.innerRef}
-                itemData={rows}
-                width={totalColumnsWidth + scrollBarSize}
+          {headerGroups.map((headerGroup) => {
+            const headerProps = headerGroup.getHeaderGroupProps();
+            const listHeaders = headerGroup.headers;
+
+            return (
+              <div
+                {...headerProps}
+                style={{
+                  ...headerProps.style,
+                  width: totalColumnsWidth + scrollBarSize,
+                }}
+                className="tr header"
               >
-                {RenderRow}
-              </FixedSizeList>
-              {provided.placeholder}
-            </div>
-          )}
-        </Droppable>
-      </DragDropContext>
-    </div>
+                {listHeaders.map((column, index) => (
+                  <HeaderColumn
+                    zIndex={listHeaders.length - index}
+                    isSticky={!index}
+                    length={listHeaders.length}
+                    column={column}
+                    isFirstColumn={index === 0}
+                    selectedSort={selectedSort}
+                    typeMenu="default"
+                    onSortColumn={onSort}
+                    scrollTableHeight={scrollTableHeight}
+                  />
+                ))}
+              </div>
+            );
+          })}
+        </div>
+        {/*End header table */}
+
+        <DragDropContext onDragEnd={_handleDragEnd}>
+          <Droppable
+            droppableId="droppable-table"
+            mode="virtual"
+            renderClone={(provided, snapshot, rubric) => (
+              <ItemClone
+                provided={provided}
+                isDragging={snapshot.isDragging}
+                item={rows[rubric.source.index].original}
+              />
+            )}
+          >
+            {(provided) => (
+              <div {...getTableBodyProps()}>
+                <FixedSizeList
+                  className="tbody"
+                  itemCount={rows.length}
+                  itemSize={48}
+                  height={scrollTableHeight}
+                  outerRef={provided.innerRef}
+                  itemData={rows}
+                  width={totalColumnsWidth + scrollBarSize}
+                >
+                  {RenderRow}
+                </FixedSizeList>
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+      </div>
+      }
+    </>
   );
 };
 

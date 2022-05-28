@@ -21,7 +21,7 @@ import {
 import { filter, get, reverse, size, sortBy } from "lodash";
 import moment from "moment";
 import React from "react";
-import { connect } from "react-redux";
+import { connect, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import ColorGroupPickerModal from "views/ProjectGroupPage/Modals/ColorGroupPickerModal";
 import CreateProjectGroup from "views/ProjectGroupPage/Modals/CreateProjectGroup";
@@ -82,6 +82,7 @@ function AllProjectTable({
   const [searchValue, setSearchValue] = React.useState("");
   const [newProjects, setNewProjects] = React.useState(projects);
   const [openPersonalBoard, setOpenPersonalBoard] = React.useState(false);
+  const projectGroups = useSelector(state => state.projectGroup.listProjectGroup.data.projectGroups)
 
   const filters = useFilters();
   const query = useQuery();
@@ -90,7 +91,9 @@ function AllProjectTable({
 
   React.useEffect(() => {
     if (groupID === "deleted") return;
-    doListProject({
+    // call API khi project list chua co trong state hoac co filter params
+    if (timeRange.timeEnd || timeRange.timeStart || type_data || (groupID && !(Object.keys(projects?.loadedGroups)).includes(groupID))) doListProject({
+    // doListProject({
       groupProject: groupID,
       timeStart: get(timeRange, "timeStart")
         ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
@@ -122,7 +125,7 @@ function AllProjectTable({
   }, [groupID, timeRange, type_data]);
 
   React.useEffect(() => {
-    doListProjectGroup({
+    if (timeRange.timeEnd || timeRange.timeStart || projectGroups.length < 1) doListProjectGroup({
       timeStart: get(timeRange, "timeStart")
         ? moment(get(timeRange, "timeStart")).format("YYYY-MM-DD")
         : undefined,

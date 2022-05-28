@@ -22,12 +22,13 @@ export const listProject = ({ groupProject, type, status, timeStart, timeEnd, ty
   },
 });
 
-export const listProjectSuccess = ({ projects, summary }, options) => ({
+export const listProjectSuccess = ({ projects, summary, ...params }, options) => ({
   type: LIST_PROJECT_SUCCESS,
   options,
   data: {
     projects,
     summary,
+    ...params
   }
 });
 

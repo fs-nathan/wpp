@@ -32,7 +32,7 @@ function* listProject(action) {
     const { projects, summary } = yield call(doListProject, action.options);
     if(action.options.isForSelect) {
       yield put(listProjectForSelectSuccess({ projects }));
-    } else yield put(listProjectSuccess({ projects, summary }, action.options));
+    } else yield put(listProjectSuccess({ projects, summary, groupProject: action.options.groupProject }, action.options));
     CustomEventEmitter(LIST_PROJECT.SUCCESS);
   } catch (error) {
     yield put(listProjectFail(error, action.options));

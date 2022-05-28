@@ -30,7 +30,6 @@ function LogoManager({
   selectedIcon,
   currentGroup,
 }) {
-  console.log('xxxx', icons)
   const [selectedIconFromOut, setSelectedIconFromOut] = React.useState();
   React.useEffect(() => {
     doListIcon();

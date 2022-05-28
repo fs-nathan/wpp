@@ -111,16 +111,6 @@ function ProjectList({
 
   const [open, setOpen] = React.useState(true);
   const [currentProjectGroup, setCurrentProjectGroup] = React.useState();
-  console.log(
-    "🚀 -----------------------------------------------------------------------------"
-  );
-  console.log(
-    "🚀 ~ file: presenters.js ~ line 114 ~ currentProjectGroup",
-    currentProjectGroup
-  );
-  console.log(
-    "🚀 -----------------------------------------------------------------------------"
-  );
 
   function handleOpen(projectGroupId) {
     setCurrentProjectGroup(projectGroupId);

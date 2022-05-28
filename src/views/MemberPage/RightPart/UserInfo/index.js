@@ -49,20 +49,6 @@ function UserInfo({
   const { userId } = useParams();
 
   React.useEffect(() => {
-    console.log(
-      "🚀 ---------------------------------------------------------------"
-    );
-    console.log(
-      "🚀 ~ file: index.js ~ line 53 ~ React.useEffect ~ userId",
-      userId
-    );
-    console.log(
-      "🚀 ---------------------------------------------------------------"
-    );
-    console.log(
-      "🚀 ~ file: index.js ~ line 53 ~ React.useEffect ~ userId",
-      userId
-    );
     if (Boolean(userId)) {
       doDetailUser({ userId });
     }

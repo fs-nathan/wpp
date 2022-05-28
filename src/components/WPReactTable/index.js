@@ -14,7 +14,7 @@ const WPReactTable = ({
 }) => {
   return (
     <Styles className="not-group-table" isCollapsed={isCollapsed}>
-      {isGroup ? (
+      {isGroup && (
         <WPTableGroup
           data={data}
           columns={columns}
@@ -22,7 +22,8 @@ const WPReactTable = ({
           onAddNewColumns={onAddNewColumns}
           {...props}
         />
-      ) : (
+      )}
+      {!isGroup && (
         <WPTable
           data={data}
           columns={columns}
